@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
 import type ContractorDetailsModel from '../../Data/models/ContractorDetailsModel'
 import editContractorParams from '../../Core/params/editContractorParams'
@@ -18,6 +18,7 @@ import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import HandleFIlesUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const emit = defineEmits(['update:data'])
 
@@ -236,10 +237,81 @@ const handleFilesChange = (files: any) => {
   updateData()
   console.log(UploadedFiles.value)
 }
+
+type RequiredFieldRule = {
+  key: string
+  message: string
+  isMissing: () => boolean
+}
+
+const requiredFieldErrors = ref<Record<string, string>>({})
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+
+const requiredFields = computed<RequiredFieldRule[]>(() => [
+  {
+    key: 'Name',
+    message: 'Contractor Name Is Required',
+    isMissing: () => !hasValue(Name.value),
+  },
+  {
+    key: 'phoneNumber',
+    message: 'Contractor Phone Number Is Required',
+    isMissing: () => !hasValue(phoneNumber.value),
+  },
+  {
+    key: 'contactPersonPhone',
+    message: 'Contact Person Phone Is Required',
+    isMissing: () => !hasValue(contactPersonPhone.value),
+  },
+  {
+    key: 'Scope',
+    message: 'Scope Is Required',
+    isMissing: () => !Scope.value?.length,
+  },
+  {
+    key: 'SelectedStatus',
+    message: 'Contract Status Is Required',
+    isMissing: () => !SelectedStatus.value?.id,
+  },
+  {
+    key: 'date',
+    message: 'Contract Expiry Date Is Required',
+    isMissing: () => !date.value,
+  },
+])
+
+const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
+
+const scrollToRequiredField = async (key: string) => {
+  await nextTick()
+  document.querySelector<HTMLElement>(`[data-required-field="${key}"]`)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
+}
+
+const validateRequiredFields = async () => {
+  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
+    errors[field.key] = field.message
+    return errors
+  }, {})
+
+  if (!missedFields.length) return true
+
+  new OpenWarningDilaog(missedFields[0].message).openDialog()
+  await scrollToRequiredField(missedFields[0].key)
+  return false
+}
+
+defineExpose({
+  validateRequiredFields,
+})
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2 input-wrapper field-required">
+  <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Name">
     <label for="name">{{ $t('contractor_name') }}</label>
     <input
       type="text"
@@ -249,6 +321,9 @@ const handleFilesChange = (files: any) => {
       @input="setName"
       placeholder="Enter Name "
     />
+    <p v-if="getFieldError('Name')" class="required-field-message">
+      {{ getFieldError('Name') }}
+    </p>
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
     <label for="serialNumber">{{ $t('serial_number') }}</label>
@@ -265,7 +340,10 @@ const handleFilesChange = (files: any) => {
       "
     />
   </div>
-  <div class="input-wrapper col-span-4 md:col-span-2 field-required">
+  <div
+    class="input-wrapper col-span-4 md:col-span-2 field-required"
+    data-required-field="phoneNumber"
+  >
     <label for="company_number">{{ $t('contractor_phone_number') }}</label>
     <input
       type="text"
@@ -276,6 +354,9 @@ const handleFilesChange = (files: any) => {
       @input="setPhoneNumber"
       placeholder="Enter contractor Phone "
     />
+    <p v-if="getFieldError('phoneNumber')" class="required-field-message">
+      {{ getFieldError('phoneNumber') }}
+    </p>
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="company_email">{{ $t('contractor_email') }}</label>
@@ -321,7 +402,10 @@ const handleFilesChange = (files: any) => {
       placeholder="Enter Contact Person Email"
     />
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper field-required">
+  <div
+    class="col-span-4 md:col-span-2 input-wrapper field-required"
+    data-required-field="contactPersonPhone"
+  >
     <label for="contact_person_phone">{{ $t('contact_person_phone') }}</label>
     <input
       type="text"
@@ -331,8 +415,11 @@ const handleFilesChange = (files: any) => {
       @input="setcontactPersonPhone"
       placeholder="Enter Contact Person Phone"
     />
+    <p v-if="getFieldError('contactPersonPhone')" class="required-field-message">
+      {{ getFieldError('contactPersonPhone') }}
+    </p>
   </div>
-  <div class="col-span-6 md:col-span-2 input-wrapper">
+  <div class="col-span-6 md:col-span-2 input-wrapper" data-required-field="Scope">
     <!-- <CustomSelectInput
     :modelValue="Scope"
         class="input"
@@ -367,9 +454,12 @@ const handleFilesChange = (files: any) => {
         <AddScope @update:data="scopeDialogRef = false" />
       </template>
     </UpdatedCustomInputSelect>
+    <p v-if="getFieldError('Scope')" class="required-field-message">
+      {{ getFieldError('Scope') }}
+    </p>
   </div>
 
-  <div class="col-span-6 md:col-span-2 input-wrapper">
+  <div class="col-span-6 md:col-span-2 input-wrapper" data-required-field="SelectedStatus">
     <CustomSelectInput
       :modelValue="SelectedStatus"
       class="input"
@@ -380,9 +470,12 @@ const handleFilesChange = (files: any) => {
       placeholder="Select Status"
       @update:modelValue="setStatus"
     />
+    <p v-if="getFieldError('SelectedStatus')" class="required-field-message">
+      {{ getFieldError('SelectedStatus') }}
+    </p>
   </div>
 
-  <div class="col-span-6 md:col-span-2 input-wrapper">
+  <div class="col-span-6 md:col-span-2 input-wrapper" data-required-field="date">
     <label for="expiry_date">{{ $t('contract_expiry_date') }}</label>
     <DatePicker
       :modelValue="date"
@@ -392,6 +485,9 @@ const handleFilesChange = (files: any) => {
       placeholder="Contruct Expiry Date"
       @update:modelValue="setExpiryDate"
     />
+    <p v-if="getFieldError('date')" class="required-field-message">
+      {{ getFieldError('date') }}
+    </p>
   </div>
   <div class="col-span-6 md:col-span-2">
     <HandleFIlesUpload
@@ -426,6 +522,13 @@ const handleFilesChange = (files: any) => {
 }
 :deep(.file-upload-wrapper) {
   gap: 4px !important;
+}
+
+.required-field-message {
+  margin-top: 0.35rem;
+  color: #dc2626;
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 </style>
 

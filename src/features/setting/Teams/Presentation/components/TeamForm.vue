@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { markRaw, onMounted, ref, watch } from 'vue'
+import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
@@ -20,6 +20,7 @@ import type TeamDetailsModel from '../../Data/models/TeamDetailsModel'
 import editTeamParams from '../../Core/params/editTeamParams'
 import AddTeamParams from '../../Core/params/addTeamParams'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])
@@ -115,18 +116,18 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new editTeamParams(
-      props.data?.id! ?? 0,
-      translationsParams,
-      AllIndustry,
-      industry.value?.map((item) => item.id) ?? [],
-    )
+        props.data?.id! ?? 0,
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id) ?? [],
+      )
     : new AddTeamParams(
-      translationsParams,
-      AllIndustry,
-      industry.value?.map((item) => item.id),
-      // SerialNumber.value?.SerialNumber,
-      // id,
-    )
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id),
+        // SerialNumber.value?.SerialNumber,
+        // id,
+      )
 
   // console.log(params, 'params')
   emit('update:data', params)
@@ -190,11 +191,69 @@ const fields = ref([
     enabled: props?.data?.id ? false : true,
   },
 ])
+
+type RequiredFieldRule = {
+  key: string
+  message: string
+  isMissing: () => boolean
+}
+
+const requiredFieldErrors = ref<Record<string, string>>({})
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+const hasLangValue = () => langs.value.some((lang) => hasValue(lang.title))
+
+const requiredFields = computed<RequiredFieldRule[]>(() => [
+  {
+    key: 'langs',
+    message: 'Name Is Required',
+    isMissing: () => !hasLangValue(),
+  },
+  {
+    key: 'industry',
+    message: 'Industry Is Required',
+    isMissing: () =>
+      user.user?.type === OrganizationTypeEnum.ADMIN &&
+      !allIndustries.value &&
+      !industry.value?.length,
+  },
+])
+
+const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
+
+const scrollToRequiredField = async (key: string) => {
+  await nextTick()
+  document.querySelector<HTMLElement>(`[data-required-field="${key}"]`)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
+}
+
+const validateRequiredFields = async () => {
+  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
+    errors[field.key] = field.message
+    return errors
+  }, {})
+
+  if (!missedFields.length) return true
+
+  new OpenWarningDilaog(missedFields[0].message).openDialog()
+  await scrollToRequiredField(missedFields[0].key)
+  return false
+}
+
+defineExpose({
+  validateRequiredFields,
+})
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-2" data-required-field="langs">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+    <p v-if="getFieldError('langs')" class="required-field-message">
+      {{ getFieldError('langs') }}
+    </p>
   </div>
 
   <!--  <div class="col-span-4 md:col-span-2 input-wrapper check-box">-->
@@ -207,13 +266,31 @@ const fields = ref([
   <!--      @change="updateData"-->
   <!--    />-->
   <!--  </div>-->
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum.ADMIN">
+  <div
+    class="col-span-4 md:col-span-2 input-wrapper check-box"
+    v-if="user.user?.type == OrganizationTypeEnum.ADMIN"
+  >
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />
   </div>
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
-    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
-      id="Teams" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
+    data-required-field="industry"
+  >
+    <CustomSelectInput
+      :modelValue="industry"
+      :controller="industryController"
+      :params="industryParams"
+      label="industry"
+      id="Teams"
+      placeholder="Select industry"
+      :type="2"
+      @update:modelValue="setIndustry"
+    />
+    <p v-if="getFieldError('industry')" class="required-field-message">
+      {{ getFieldError('industry') }}
+    </p>
   </div>
   <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
       <SwitchInput
@@ -235,3 +312,12 @@ const fields = ref([
   <!--    />-->
   <!--  </div>-->
 </template>
+
+<style scoped>
+.required-field-message {
+  margin-top: 0.35rem;
+  color: #dc2626;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+</style>

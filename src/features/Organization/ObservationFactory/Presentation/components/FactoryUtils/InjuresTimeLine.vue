@@ -73,6 +73,7 @@ const UpdateData = () => {
 const UpdateInjury = (item: TitleInterface, index: number) => {
   console.log(item)
   Answers.value[index].infectionTypeId = new TitleInterface({ id: item.id, title: item.title })
+  UpdateData()
 }
 
 const isSelectHasContent = ref<boolean[]>([])
@@ -111,8 +112,7 @@ const toggleWorkStopped = (index: number) => {
 
 const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
   const organizationEmployee = item?.organization_employee as any
-  const employeeId =
-    organizationEmployee?.organization_employee_id || organizationEmployee?.id || 0
+  const employeeId = organizationEmployee?.organization_employee_id || organizationEmployee?.id || 0
   const employeeTitle =
     organizationEmployee?.name ||
     organizationEmployee?.title ||

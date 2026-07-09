@@ -1,17 +1,19 @@
 <script lang="ts" setup>
-import { markRaw, onMounted, ref, watch } from 'vue'
+import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import AddScopeParams from '../../Core/params/addScopeParams'
 import EditScopeParams from '../../Core/params/editScopeParams'
 import type ScopeDetailsModel from '../../Data/models/ScopeDetailsModel'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
+import USA from '@/shared/icons/USA.vue'
+import SA from '@/shared/icons/SA.vue'
 import { LangsMap } from '@/constant/langs.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
 import { useUserStore } from '@/stores/user'
 import TranslationsParams from '@/base/core/params/translations_params'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
-
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const route = useRoute()
 const emit = defineEmits(['update:data'])
@@ -68,7 +70,6 @@ const fetchLang = async (
       { locale: 'en', icon: USA, title: '' },
       { locale: 'ar', icon: SA, title: '' },
     ]
-
   }
 }
 
@@ -76,7 +77,6 @@ onMounted(() => {
   fetchLang()
 })
 const updateData = () => {
-
   const translationsParams = new TranslationsParams()
 
   // titles
@@ -84,15 +84,10 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
   const params = props.data?.id
-    ? new EditScopeParams(
-      props.data.id,
-      translationsParams
-    )
-    : new AddScopeParams(
-      translationsParams,
-    )
+    ? new EditScopeParams(props.data.id, translationsParams)
+    : new AddScopeParams(translationsParams)
 
-  console.log(params, "params");
+  console.log(params, 'params')
   emit('update:data', params)
 }
 const scope = ref<string>(props?.data?.title || '')
@@ -124,7 +119,7 @@ watch(
   () => {
     updateData()
   },
-  { deep: true }
+  { deep: true },
 )
 
 const UpdateSerial = (data) => {
@@ -143,16 +138,73 @@ const fields = ref([
     enabled: props?.data?.id ? false : true,
   },
 ])
+
+type RequiredFieldRule = {
+  key: string
+  message: string
+  isMissing: () => boolean
+}
+
+const requiredFieldErrors = ref<Record<string, string>>({})
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+const hasLangValue = () => langs.value.some((lang) => hasValue(lang.title))
+
+const requiredFields = computed<RequiredFieldRule[]>(() => [
+  {
+    key: 'langs',
+    message: 'Name Is Required',
+    isMissing: () => !hasLangValue(),
+  },
+])
+
+const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
+
+const scrollToRequiredField = async (key: string) => {
+  await nextTick()
+  document.querySelector<HTMLElement>(`[data-required-field="${key}"]`)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
+}
+
+const validateRequiredFields = async () => {
+  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
+    errors[field.key] = field.message
+    return errors
+  }, {})
+
+  if (!missedFields.length) return true
+
+  new OpenWarningDilaog(missedFields[0].message).openDialog()
+  await scrollToRequiredField(missedFields[0].key)
+  return false
+}
+
+defineExpose({
+  validateRequiredFields,
+})
 </script>
 
 <template>
-
-
-  <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)" />
+  <div class="col-span-4 md:col-span-2" data-required-field="langs">
+    <LangTitleInput
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="(val) => (langs = val)"
+    />
+    <p v-if="getFieldError('langs')" class="required-field-message">
+      {{ getFieldError('langs') }}
+    </p>
   </div>
-
-
-
-
 </template>
+
+<style scoped>
+.required-field-message {
+  margin-top: 0.35rem;
+  color: #dc2626;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+</style>

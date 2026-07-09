@@ -8,10 +8,12 @@ import AddProjectController from '../controllers/addProjectController'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
+const formRef = ref<InstanceType<typeof ProjectForm> | null>(null)
 
 const addProjectController = AddProjectController.getInstance()
 const loading = ref(false)
 const addProject = async () => {
+  if (!(await formRef.value?.validateRequiredFields())) return
   loading.value = true
   const state = await addProjectController.addProject(params.value as AddProjectParams, router)
   if (state.value.data) {
@@ -26,7 +28,7 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addProject">
-    <ProjectForm @update:data="setParams" />
+    <ProjectForm ref="formRef" @update:data="setParams" />
 
     <div class="col-span-4 btns button-wrapper flex w-full">
       <router-link to="/organization/projects?type=1" @click.prevent class="btn btn-cancel">{{

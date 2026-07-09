@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { markRaw, onMounted, ref, watch } from 'vue'
+import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
@@ -30,6 +30,7 @@ import LocationSelectDialog from './SelectDialogs/LocationSelectDialog.vue'
 import AddProjectZoneDialog from './Dialogs/AddProjectZoneDialog.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import StarRequiredInput from '@/shared/icons/StarRequiredInput.vue'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const emit = defineEmits(['update:data'])
 const SerialNumber = ref<string>('')
@@ -331,19 +332,89 @@ const UpdateSerial = (data) => {
   console.log(SerialNumber.value, 'data')
   updateData()
 }
+
+type RequiredFieldRule = {
+  key: string
+  message: string
+  isMissing: () => boolean
+}
+
+const requiredFieldErrors = ref<Record<string, string>>({})
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+const hasLangValue = () => langs.value.some((lang) => hasValue(lang.title))
+
+const requiredFields = computed<RequiredFieldRule[]>(() => [
+  {
+    key: 'langs',
+    message: 'Project Name Is Required',
+    isMissing: () => !hasLangValue(),
+  },
+  {
+    key: 'date',
+    message: 'Start Date Is Required',
+    isMissing: () => !date.value,
+  },
+  {
+    key: 'endDate',
+    message: 'End Date Is Required',
+    isMissing: () => !endDate.value,
+  },
+  {
+    key: 'location',
+    message: 'Location Is Required',
+    isMissing: () => !location.value?.length,
+  },
+  {
+    key: 'ZoneIds',
+    message: 'Zone Is Required',
+    isMissing: () => !ZoneIds.value?.length,
+  },
+])
+
+const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
+
+const scrollToRequiredField = async (key: string) => {
+  await nextTick()
+  document.querySelector<HTMLElement>(`[data-required-field="${key}"]`)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
+}
+
+const validateRequiredFields = async () => {
+  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
+    errors[field.key] = field.message
+    return errors
+  }, {})
+
+  if (!missedFields.length) return true
+
+  new OpenWarningDilaog(missedFields[0].message).openDialog()
+  await scrollToRequiredField(missedFields[0].key)
+  return false
+}
+
+defineExpose({
+  validateRequiredFields,
+})
 </script>
 
 <template>
   <div class="col-span-4">
     <PagesHeader :title="$t(`project_info`)" />
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="langs">
     <LangTitleInput
       :label="`Project Name`"
       :langs="langDefault"
       :modelValue="langs"
       @update:modelValue="(val) => (langs = val)"
     />
+    <p v-if="getFieldError('langs')" class="required-field-message">
+      {{ getFieldError('langs') }}
+    </p>
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
     <SwitchInput
@@ -367,7 +438,7 @@ const UpdateSerial = (data) => {
       "
     /> -->
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="date">
     <label for="date" class="flex gap-2 items-center">
       {{ $t('start_date') }}
       <StarRequiredInput />
@@ -378,8 +449,11 @@ const UpdateSerial = (data) => {
       id="date"
       :placeholder="`select the date`"
     />
+    <p v-if="getFieldError('date')" class="required-field-message">
+      {{ getFieldError('date') }}
+    </p>
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="endDate">
     <label for="end-date" class="flex gap-2 items-center">
       {{ $t('end_date') }}
       <StarRequiredInput />
@@ -390,9 +464,12 @@ const UpdateSerial = (data) => {
       id="end-date"
       :placeholder="`select the end date`"
     />
+    <p v-if="getFieldError('endDate')" class="required-field-message">
+      {{ getFieldError('endDate') }}
+    </p>
   </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="location">
     <CustomSelectInput
       :required="false"
       :modelValue="ContractorIds"
@@ -418,9 +495,12 @@ const UpdateSerial = (data) => {
       :type="2"
       :onclick="ShowLocationDialog"
     />
+    <p v-if="getFieldError('location')" class="required-field-message">
+      {{ getFieldError('location') }}
+    </p>
   </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="ZoneIds">
     <label for="zone" class="flex flex-start item-center gap-2">
       <span class="flex items-center gap-2">
         <span>{{ $t('zones') }}</span>
@@ -436,6 +516,9 @@ const UpdateSerial = (data) => {
       @update:data="UpdateZones"
       :selectedZones="SelectedZones"
     />
+    <p v-if="getFieldError('ZoneIds')" class="required-field-message">
+      {{ getFieldError('ZoneIds') }}
+    </p>
   </div>
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <LangTitleInput
@@ -452,3 +535,12 @@ const UpdateSerial = (data) => {
   <ContructorSelectDialog v-model:visible="ContructorVisible" />
   <LocationSelectDialog v-model:visible="LocationVisible" />
 </template>
+
+<style scoped>
+.required-field-message {
+  margin-top: 0.35rem;
+  color: #dc2626;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+</style>

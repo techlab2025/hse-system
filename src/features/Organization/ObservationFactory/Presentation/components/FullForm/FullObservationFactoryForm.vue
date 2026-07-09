@@ -537,6 +537,54 @@ const requiredFieldErrors = ref<Record<string, string>>({})
 const hasValue = (value: unknown) =>
   value !== null && value !== undefined && String(value).trim().length > 0
 const hasSelectedId = (value?: TitleInterface | null) => Boolean(value?.id)
+const hasEmployeeValue = (employee: any) =>
+  Boolean(Number(employee?.id)) || hasValue(employee?.title) || hasValue(employee?.name)
+const hasFiles = (files: any) => Array.isArray(files) && files.length > 0
+const shouldValidateIncidentSections = () =>
+  saveStatus.value === SaveStatusEnum.NotSaved &&
+  ObservationFactoryType.value !== Observation.ObservationType
+const getInvalidWitnessMessage = () => {
+  if (!shouldValidateIncidentSections() || witnesses.value?.isAnotherMeeting !== 1) return ''
+
+  const rows = witnesses.value?.AllWitnessesData ?? []
+  if (!rows.length) return 'Witness Employee Is Required'
+
+  const invalidIndex = rows.findIndex((witness: any) => !hasEmployeeValue(witness?.employee))
+  return invalidIndex === -1 ? '' : `Witness ${invalidIndex + 1} Employee Is Required`
+}
+
+const getInvalidInjuryMessage = () => {
+  if (!shouldValidateIncidentSections() || Accidents.value?.isAnotherMeeting !== 1) return ''
+
+  const rows = Accidents.value?.accidentsData ?? []
+  if (!rows.length) return 'Injury Data Is Required'
+
+  for (const [index, injury] of rows.entries()) {
+    const rowNumber = index + 1
+    if (!hasEmployeeValue(injury?.employee)) return `Injury ${rowNumber} Employee Is Required`
+    if (!hasSelectedId(injury?.infectionTypeId)) return `Injury ${rowNumber} Type Is Required`
+    if (!hasValue(injury?.text)) return `Injury ${rowNumber} Description Is Required`
+    if (!hasFiles(injury?.images)) return `Injury ${rowNumber} Evidence Is Required`
+  }
+
+  return ''
+}
+
+const getInvalidFatalityMessage = () => {
+  if (!shouldValidateIncidentSections() || Fatalities.value?.isAnotherMeeting !== 1) return ''
+
+  const rows = Fatalities.value?.DethsData ?? []
+  if (!rows.length) return 'Fatality Data Is Required'
+
+  for (const [index, fatality] of rows.entries()) {
+    const rowNumber = index + 1
+    if (!hasEmployeeValue(fatality?.employee)) return `Fatality ${rowNumber} Employee Is Required`
+    if (!hasValue(fatality?.text)) return `Fatality ${rowNumber} Circumstances Is Required`
+    if (!hasFiles(fatality?.images)) return `Fatality ${rowNumber} Evidence Is Required`
+  }
+
+  return ''
+}
 
 const requiredFields = computed<RequiredFieldRule[]>(() => [
   {
@@ -600,6 +648,21 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     key: 'Oragnizationemployee',
     message: 'Employee Name Is Required',
     isMissing: () => !hasValue(Oragnizationemployee.value) || OragnizationemployeeName.value,
+  },
+  {
+    key: 'witnesses',
+    message: getInvalidWitnessMessage() || 'Witness Employee Is Required',
+    isMissing: () => Boolean(getInvalidWitnessMessage()),
+  },
+  {
+    key: 'Accidents',
+    message: getInvalidInjuryMessage() || 'Injury Data Is Required',
+    isMissing: () => Boolean(getInvalidInjuryMessage()),
+  },
+  {
+    key: 'Fatalities',
+    message: getInvalidFatalityMessage() || 'Fatality Data Is Required',
+    isMissing: () => Boolean(getInvalidFatalityMessage()),
   },
 ])
 
@@ -1278,36 +1341,48 @@ defineExpose({
 
     <div
       class="col-span-6 md:col-span-6 input-wrapper w-full"
+      data-required-field="witnesses"
       v-if="
         saveStatus == SaveStatusEnum.NotSaved &&
         ObservationFactoryType != Observation?.ObservationType
       "
     >
       <Factorywitnesses class="not-colored" @update:data="Updatewitnesses" />
+      <p v-if="getFieldError('witnesses')" class="required-field-message">
+        {{ getFieldError('witnesses') }}
+      </p>
     </div>
 
     <!-- FactoryAccidents -->
     <!-- v-if="ObservationFactoryType != Observation?.ObservationType" -->
     <div
       class="col-span-6 md:col-span-6 input-wrapper w-full"
+      data-required-field="Accidents"
       v-if="
         saveStatus == SaveStatusEnum.NotSaved &&
         ObservationFactoryType != Observation?.ObservationType
       "
     >
       <FactoryAccidents class="not-colored" @update:data="UpdateAccidents" />
+      <p v-if="getFieldError('Accidents')" class="required-field-message">
+        {{ getFieldError('Accidents') }}
+      </p>
     </div>
 
     <!-- FactoryFatalities -->
     <!-- v-if="ObservationFactoryType != Observation?.ObservationType" -->
     <div
       class="col-span-6 md:col-span-6 input-wrapper w-full"
+      data-required-field="Fatalities"
       v-if="
         saveStatus == SaveStatusEnum.NotSaved &&
         ObservationFactoryType != Observation?.ObservationType
       "
     >
       <FactoryFatalities class="not-colored" @update:data="UpdateFatalities" />
+      <p v-if="getFieldError('Fatalities')" class="required-field-message">
+        {{ getFieldError('Fatalities') }}
+      </p>
     </div>
   </div>
 </template>

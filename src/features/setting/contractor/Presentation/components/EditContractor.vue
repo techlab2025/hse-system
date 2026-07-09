@@ -13,6 +13,7 @@ const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
+const formRef = ref<InstanceType<typeof ContractorForm> | null>(null)
 
 const showContractorController = ShowContractorController.getInstance()
 const state = ref(showContractorController.state.value)
@@ -27,6 +28,7 @@ onMounted(() => {
 })
 
 const EditContractor = async (draft: boolean) => {
+  if (!(await formRef.value?.validateRequiredFields())) return
   if (draft) {
     await EditContractorController.getInstance().editContractor(params.value!, router)
   } else {
@@ -57,7 +59,7 @@ const setParams = (data: Params) => {
 
       <!--      </pre>-->
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditContractor">
-        <ContractorForm @update:data="setParams" :data="state.data!" />
+        <ContractorForm ref="formRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>

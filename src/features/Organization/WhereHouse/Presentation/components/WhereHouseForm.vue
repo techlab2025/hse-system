@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import EditWhereHouseParams from '../../Core/params/editWhereHouseParams'
 import AddWhereHouseParams from '../../Core/params/addWhereHouseParams'
 import type WhereHouseDetailsModel from '../../Data/models/WhereHouseDetailsModel'
@@ -12,6 +12,7 @@ import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import AddWhereHouseType from '@/features/Organization/WhereHouseType/Presentation/components/AddWhereHouseType.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const emit = defineEmits(['update:data'])
 
@@ -77,10 +78,61 @@ const setName = (data) => {
   updateData()
 }
 const WarehouseTypeDialog = ref<boolean>(false)
+
+type RequiredFieldRule = {
+  key: string
+  message: string
+  isMissing: () => boolean
+}
+
+const requiredFieldErrors = ref<Record<string, string>>({})
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+
+const requiredFields = computed<RequiredFieldRule[]>(() => [
+  {
+    key: 'Name',
+    message: 'Name Is Required',
+    isMissing: () => !hasValue(Name.value),
+  },
+  {
+    key: 'SelectedWhereHouseType',
+    message: 'Warehouse Type Is Required',
+    isMissing: () => !SelectedWhereHouseType.value?.id,
+  },
+])
+
+const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
+
+const scrollToRequiredField = async (key: string) => {
+  await nextTick()
+  document.querySelector<HTMLElement>(`[data-required-field="${key}"]`)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
+}
+
+const validateRequiredFields = async () => {
+  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
+    errors[field.key] = field.message
+    return errors
+  }, {})
+
+  if (!missedFields.length) return true
+
+  new OpenWarningDilaog(missedFields[0].message).openDialog()
+  await scrollToRequiredField(missedFields[0].key)
+  return false
+}
+
+defineExpose({
+  validateRequiredFields,
+})
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2 input-wrapper field-required">
+  <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Name">
     <label for="name">{{ $t('name') }}</label>
     <input
       type="text"
@@ -90,6 +142,9 @@ const WarehouseTypeDialog = ref<boolean>(false)
       @input="setName"
       :placeholder="$t('Enter Name')"
     />
+    <p v-if="getFieldError('Name')" class="required-field-message">
+      {{ getFieldError('Name') }}
+    </p>
   </div>
 
   <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
@@ -108,7 +163,7 @@ const WarehouseTypeDialog = ref<boolean>(false)
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="SelectedWhereHouseType">
     <!-- <CustomSelectInput :required="false" :modelValue="SelectedWhereHouseType"
       :controller="indexWhereHouseTypeController" :params="indexWhereHouseTypeParams" :label="$t('Where House Type')"
       id="Equipment" placeholder="Select Where House Type" @update:modelValue="setSelectedWhereHouseType" /> -->
@@ -131,5 +186,17 @@ const WarehouseTypeDialog = ref<boolean>(false)
         <AddWhereHouseType @update:data="WarehouseTypeDialog = false" />
       </template>
     </UpdatedCustomInputSelect>
+    <p v-if="getFieldError('SelectedWhereHouseType')" class="required-field-message">
+      {{ getFieldError('SelectedWhereHouseType') }}
+    </p>
   </div>
 </template>
+
+<style scoped>
+.required-field-message {
+  margin-top: 0.35rem;
+  color: #dc2626;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+</style>

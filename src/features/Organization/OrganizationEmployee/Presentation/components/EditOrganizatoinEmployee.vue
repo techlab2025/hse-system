@@ -13,6 +13,7 @@ const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
+const formRef = ref<InstanceType<typeof OrganizatoinEmployeeForm> | null>(null)
 
 const showOrganizatoinEmployeeController = ShowOrganizatoinEmployeeController.getInstance()
 const state = ref(showOrganizatoinEmployeeController.state.value)
@@ -27,11 +28,18 @@ onMounted(() => {
 })
 
 const EditOrganizatoinEmployee = async (draft: boolean) => {
-  console.log(params.value , "parsmsmsmasmdasda");
+  if (!(await formRef.value?.validateRequiredFields())) return
+  console.log(params.value, 'parsmsmsmasmdasda')
   if (draft) {
-    await EditOrganizatoinEmployeeController.getInstance().editOrganizatoinEmployee(params.value!, router)
+    await EditOrganizatoinEmployeeController.getInstance().editOrganizatoinEmployee(
+      params.value!,
+      router,
+    )
   } else {
-    await EditOrganizatoinEmployeeController.getInstance().editOrganizatoinEmployee(params.value!, router)
+    await EditOrganizatoinEmployeeController.getInstance().editOrganizatoinEmployee(
+      params.value!,
+      router,
+    )
   }
 }
 
@@ -57,8 +65,11 @@ const setParams = (data: Params) => {
       <!--              {{ state.data?.titles }}-->
 
       <!--      </pre>-->
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditOrganizatoinEmployee">
-        <OrganizatoinEmployeeForm @update:data="setParams" :data="state.data!" />
+      <form
+        class="grid grid-cols-1 md:grid-cols-4 gap-4"
+        @submit.prevent="EditOrganizatoinEmployee"
+      >
+        <OrganizatoinEmployeeForm ref="formRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>

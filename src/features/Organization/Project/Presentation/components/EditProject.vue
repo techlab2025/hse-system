@@ -13,6 +13,7 @@ const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
+const formRef = ref<InstanceType<typeof ProjectForm> | null>(null)
 
 const showProjectController = ShowProjectController.getInstance()
 const state = ref(showProjectController.state.value)
@@ -27,6 +28,7 @@ onMounted(() => {
 })
 
 const EditProject = async (draft: boolean) => {
+  if (!(await formRef.value?.validateRequiredFields())) return
   if (draft) {
     await EditProjectController.getInstance().editProject(params.value!, router)
   } else {
@@ -52,7 +54,7 @@ const setParams = (data: Params) => {
   <DataStatus :controller="state">
     <template #success>
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditProject">
-        <ProjectForm @update:data="setParams" :data="state.data!" />
+        <ProjectForm ref="formRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper w-full">
           <button type="submit" class="btn btn-primary w-full">{{ $t('save') }}</button>
         </div>

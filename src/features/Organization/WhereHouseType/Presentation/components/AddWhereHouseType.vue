@@ -9,11 +9,13 @@ import type AddWhereHouseTypeParams from '../../Core/params/addWhereHouseTypePar
 
 const router = useRouter()
 const params = ref<Params | null>(null)
+const formRef = ref<InstanceType<typeof WhereHouseTypeForm> | null>(null)
 const emit = defineEmits(['update:data'])
 
 const addWhereHouseTypeController = AddWhereHouseTypeController.getInstance()
 
 const addWhereHouseType = async () => {
+  if (!(await formRef.value?.validateRequiredFields())) return
   await addWhereHouseTypeController.addWhereHouseType(
     params.value as AddWhereHouseTypeParams,
     router,
@@ -27,7 +29,7 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addWhereHouseType">
-    <WhereHouseTypeForm @update:data="setParams" />
+    <WhereHouseTypeForm ref="formRef" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
       <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>

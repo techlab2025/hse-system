@@ -11,17 +11,24 @@ const router = useRouter()
 const route = useRoute()
 const params = ref<Params | null>(null)
 const formKey = ref(0)
+const formRef = ref<InstanceType<typeof HerikalyForm> | null>(null)
 
 const addHerikalyController = AddHerikalyController.getInstance()
 
 const addHerikaly = async () => {
+  if (!(await formRef.value?.validateRequiredFields())) return
   console.log(params.value, 'params')
   await addHerikalyController.addHerikaly(params.value as AddHerikalyParams, router)
   emit('update:data')
 }
 
 const saveAndAdd = async () => {
-  const state = await addHerikalyController.addHerikaly(params.value as AddHerikalyParams, router, true)
+  if (!(await formRef.value?.validateRequiredFields())) return
+  const state = await addHerikalyController.addHerikaly(
+    params.value as AddHerikalyParams,
+    router,
+    true,
+  )
   if (!state.value.error) {
     params.value = null
     formKey.value++
@@ -35,7 +42,7 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addHerikaly">
-    <HerikalyForm :key="formKey" @update:data="setParams" />
+    <HerikalyForm ref="formRef" :key="formKey" @update:data="setParams" />
     <div class="col-span-4 button-wrapper">
       <button
         type="submit"
@@ -62,8 +69,12 @@ const setParams = (data: Params) => {
   flex-direction: row !important;
   width: 100% !important;
   button {
-    &.w-full { width: 100%; }
-    &.w-1\/2 { width: 50%; }
+    &.w-full {
+      width: 100%;
+    }
+    &.w-1\/2 {
+      width: 50%;
+    }
   }
 }
 </style>

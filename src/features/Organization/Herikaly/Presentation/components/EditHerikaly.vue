@@ -13,6 +13,7 @@ const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
+const formRef = ref<InstanceType<typeof HerikalyForm> | null>(null)
 
 const showHerikalyController = ShowHerikalyController.getInstance()
 const state = ref(showHerikalyController.state.value)
@@ -26,6 +27,7 @@ onMounted(() => {
 })
 
 const EditHerikaly = async (draft: boolean) => {
+  if (!(await formRef.value?.validateRequiredFields())) return
   if (draft) {
     await EditHerikalyController.getInstance().editHerikaly(params.value!, router)
   } else {
@@ -52,7 +54,7 @@ const setParams = (data: Params) => {
   <DataStatus :controller="state">
     <template #success>
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditHerikaly">
-        <HerikalyForm @update:data="setParams" :data="state.data!" />
+        <HerikalyForm ref="formRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>

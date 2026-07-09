@@ -13,6 +13,7 @@ const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
+const formRef = ref<InstanceType<typeof WhereHouseTypeForm> | null>(null)
 
 const showWhereHouseTypeController = ShowWhereHouseTypeteController.getInstance()
 const state = ref(showWhereHouseTypeController.state.value)
@@ -27,6 +28,7 @@ onMounted(() => {
 })
 
 const EditWhereHouseType = async (draft: boolean) => {
+  if (!(await formRef.value?.validateRequiredFields())) return
   if (draft) {
     await EditWhereHouseTypeController.getInstance().editWhereHouseType(params.value!, router)
   } else {
@@ -38,7 +40,7 @@ watch(
   () => showWhereHouseTypeController.state.value,
   (newState) => {
     if (newState) {
-      console.log(newState , "new satattatata")
+      console.log(newState, 'new satattatata')
       state.value = newState
     }
   },
@@ -57,7 +59,7 @@ const setParams = (data: Params) => {
 
       <!--      </pre>-->
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditWhereHouseType">
-        <WhereHouseTypeForm @update:data="setParams" :data="state.data!" />
+        <WhereHouseTypeForm ref="formRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>

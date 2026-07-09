@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { markRaw, onMounted, ref, watch } from 'vue'
+import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
@@ -26,6 +26,7 @@ import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import AddRole from '@/features/Organization/Role/Presentation/components/AddRole.vue'
 import AddHerikaly from '@/features/Organization/Herikaly/Presentation/components/AddHerikaly.vue'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const toast = useToast()
 
@@ -237,10 +238,81 @@ const updaetAllPermissions = (status: number) => {
   updateData()
 }
 const PositionDialog = ref(false)
+
+type RequiredFieldRule = {
+  key: string
+  message: string
+  isMissing: () => boolean
+}
+
+const requiredFieldErrors = ref<Record<string, string>>({})
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+
+const requiredFields = computed<RequiredFieldRule[]>(() => [
+  {
+    key: 'Name',
+    message: 'Name Is Required',
+    isMissing: () => !hasValue(Name.value),
+  },
+  {
+    key: 'Phone',
+    message: 'Phone Is Required',
+    isMissing: () => !hasValue(Phone.value),
+  },
+  {
+    key: 'Email',
+    message: 'Email Is Required',
+    isMissing: () => !hasValue(Email.value),
+  },
+  {
+    key: 'Password',
+    message: 'Password Is Required',
+    isMissing: () => !props.data?.id && booleandashAccessStatus.value && !hasValue(Password.value),
+  },
+  {
+    key: 'Heirarchy',
+    message: 'Position Is Required',
+    isMissing: () => !Heirarchy.value?.id,
+  },
+  {
+    key: 'role',
+    message: 'Permission Is Required',
+    isMissing: () => !AllPermissions.value && !role.value?.length,
+  },
+])
+
+const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
+
+const scrollToRequiredField = async (key: string) => {
+  await nextTick()
+  document.querySelector<HTMLElement>(`[data-required-field="${key}"]`)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
+}
+
+const validateRequiredFields = async () => {
+  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
+    errors[field.key] = field.message
+    return errors
+  }, {})
+
+  if (!missedFields.length) return true
+
+  new OpenWarningDilaog(missedFields[0].message).openDialog()
+  await scrollToRequiredField(missedFields[0].key)
+  return false
+}
+
+defineExpose({
+  validateRequiredFields,
+})
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2 input-wrapper field-required">
+  <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Name">
     <label for="name">{{ $t('employee_name') }}</label>
     <input
       id="name"
@@ -249,6 +321,9 @@ const PositionDialog = ref(false)
       @input="UpdateName"
       :placeholder="$t('enter your name')"
     />
+    <p v-if="getFieldError('Name')" class="required-field-message">
+      {{ getFieldError('Name') }}
+    </p>
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
     <label for="serialNumber">{{ $t('serial_number') }}</label>
@@ -265,7 +340,7 @@ const PositionDialog = ref(false)
       "
     />
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper field-required">
+  <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Phone">
     <label for="phone">{{ $t('employee_phone') }}</label>
     <input
       id="phone"
@@ -274,8 +349,11 @@ const PositionDialog = ref(false)
       @input="UpdatePhone"
       :placeholder="$t('enter your phone')"
     />
+    <p v-if="getFieldError('Phone')" class="required-field-message">
+      {{ getFieldError('Phone') }}
+    </p>
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper field-required">
+  <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Email">
     <label for="email">{{ $t('employee_email') }}</label>
     <input
       id="email"
@@ -284,8 +362,15 @@ const PositionDialog = ref(false)
       @input="UpdateEmail"
       :placeholder="$t('enter your email')"
     />
+    <p v-if="getFieldError('Email')" class="required-field-message">
+      {{ getFieldError('Email') }}
+    </p>
   </div>
-  <div v-if="booleandashAccessStatus" class="col-span-4 md:col-span-2 input-wrapper field-required">
+  <div
+    v-if="booleandashAccessStatus"
+    class="col-span-4 md:col-span-2 input-wrapper field-required"
+    data-required-field="Password"
+  >
     <label for="password">{{ $t('Password') }}</label>
     <input
       id="password"
@@ -295,6 +380,9 @@ const PositionDialog = ref(false)
       @input="UpdatePassword"
       :placeholder="$t('enter your password')"
     />
+    <p v-if="getFieldError('Password')" class="required-field-message">
+      {{ getFieldError('Password') }}
+    </p>
   </div>
   <!--<div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="password_confirmation">{{ $t('confirm_password') }}</label>
@@ -302,7 +390,7 @@ const PositionDialog = ref(false)
       :placeholder="$t('enter your confirm password')" />
   </div>-->
   <!-- :type="2" -->
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="Heirarchy">
     <UpdatedCustomInputSelect
       :modelValue="Heirarchy"
       @update:modelValue="setHeirarchy"
@@ -310,8 +398,8 @@ const PositionDialog = ref(false)
       :params="HerikalyParams"
       :label="$t('position')"
       :placeholder="$t('select_position')"
-    :isDialog="true"
-     v-model:dialogVisible="PositionDialog"
+      :isDialog="true"
+      v-model:dialogVisible="PositionDialog"
     >
       <template #LabelHeader>
         <span class="add-dialog" @click="PositionDialog = true">New</span>
@@ -320,7 +408,9 @@ const PositionDialog = ref(false)
         <AddHerikaly @update:data="PositionDialog = false" />
       </template>
     </UpdatedCustomInputSelect>
-
+    <p v-if="getFieldError('Heirarchy')" class="required-field-message">
+      {{ getFieldError('Heirarchy') }}
+    </p>
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomCheckbox
@@ -330,7 +420,11 @@ const PositionDialog = ref(false)
       @update:checked="updaetAllPermissions"
     />
   </div>
-  <div v-if="!AllPermissions" class="col-span-4 md:col-span-2 input-wrapper">
+  <div
+    v-if="!AllPermissions"
+    class="col-span-4 md:col-span-2 input-wrapper"
+    data-required-field="role"
+  >
     <UpdatedCustomInputSelect
       :modelValue="role"
       @update:modelValue="setRole"
@@ -340,7 +434,7 @@ const PositionDialog = ref(false)
       :type="2"
       :placeholder="$t('Select Role')"
       :isDialog="true"
-        v-model:dialogVisible="RoleDialog"
+      v-model:dialogVisible="RoleDialog"
     >
       <template #LabelHeader>
         <span class="add-dialog" @click="RoleDialog = true">New</span>
@@ -349,6 +443,9 @@ const PositionDialog = ref(false)
         <AddRole @update:data="RoleDialog = false" />
       </template>
     </UpdatedCustomInputSelect>
+    <p v-if="getFieldError('role')" class="required-field-message">
+      {{ getFieldError('role') }}
+    </p>
   </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomCheckbox :index="5" :title="$t('isAdmin')" :label="$t('admin_status')" :checked="EmployeeStatus"
@@ -377,3 +474,12 @@ const PositionDialog = ref(false)
       :placeholder="$t('Select Certificates')" />
   </div> -->
 </template>
+
+<style scoped>
+.required-field-message {
+  margin-top: 0.35rem;
+  color: #dc2626;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+</style>

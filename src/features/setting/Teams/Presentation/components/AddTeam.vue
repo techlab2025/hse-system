@@ -10,16 +10,19 @@ const router = useRouter()
 const route = useRoute()
 const params = ref<Params | null>(null)
 const formKey = ref(0)
+const formRef = ref<InstanceType<typeof TeamForm> | null>(null)
 const emit = defineEmits(['update:data'])
 const addTeamController = AddTeamController.getInstance()
 
 const addTeam = async () => {
+  if (!(await formRef.value?.validateRequiredFields())) return
   console.log(params.value, 'params')
   await addTeamController.addTeam(params.value as AddTeamParams, router)
   emit('update:data')
 }
 
 const saveAndAdd = async () => {
+  if (!(await formRef.value?.validateRequiredFields())) return
   const state = await addTeamController.addTeam(params.value as AddTeamParams, router, true)
   if (!state.value.error) {
     params.value = null
@@ -34,7 +37,7 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-8" @submit.prevent="addTeam">
-    <TeamForm :key="formKey" @update:data="setParams" />
+    <TeamForm ref="formRef" :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
       <button
@@ -62,8 +65,12 @@ const setParams = (data: Params) => {
   flex-direction: row !important;
   width: 100% !important;
   button {
-    &.w-full { width: 100%; }
-    &.w-1\/2 { width: 50%; }
+    &.w-full {
+      width: 100%;
+    }
+    &.w-1\/2 {
+      width: 50%;
+    }
   }
 }
 </style>

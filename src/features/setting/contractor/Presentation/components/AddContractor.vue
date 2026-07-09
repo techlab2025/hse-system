@@ -10,10 +10,12 @@ import type AddContractorParams from '../../Core/params/addContractorParams'
 const emit = defineEmits(['update:data'])
 const router = useRouter()
 const params = ref<Params | null>(null)
+const formRef = ref<InstanceType<typeof ContractorForm> | null>(null)
 
 const addContractorController = AddContractorController.getInstance()
 
 const addContractor = async () => {
+  if (!(await formRef.value?.validateRequiredFields())) return
   console.log(params.value, 'params')
   await addContractorController.addContractor(params.value as AddContractorParams, router)
 }
@@ -24,10 +26,12 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-8" @submit.prevent="addContractor">
-    <ContractorForm @update:data="setParams" />
+    <ContractorForm ref="formRef" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary w-full" @click="$emit('update:data')">{{ $t('save') }}</button>
+      <button type="submit" class="btn btn-primary w-full" @click="$emit('update:data')">
+        {{ $t('save') }}
+      </button>
     </div>
   </form>
 </template>

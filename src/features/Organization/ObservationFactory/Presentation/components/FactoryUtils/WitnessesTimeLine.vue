@@ -49,14 +49,14 @@ const ensureEmployee = (item: any) => {
 }
 const toggleMode = (index: number, isManual: boolean) => {
   // 1. Update the toggle state
-  isSelectHasContent.value[index] = isManual;
+  isSelectHasContent.value[index] = isManual
 
   // 2. Reset the employee object to a clean slate
   // This prevents the "Select" mode from holding onto old data
-  Answers.value[index].employee = new TitleInterface({ id: 0, title: '' });
+  Answers.value[index].employee = new TitleInterface({ id: 0, title: '' })
 
   // 3. Notify parent
-  UpdateData();
+  UpdateData()
 }
 </script>
 <template>
@@ -66,8 +66,13 @@ const toggleMode = (index: number, isManual: boolean) => {
         <div class="timeline-wrapper">
           <div class="timeline-line"></div>
 
-          <div class="timeline-item" v-for="(item, index) in Answers" :key="index" :class="{ active: index === 0 }"
-            :style="{ animationDelay: `${index * 0.15}s` }">
+          <div
+            class="timeline-item"
+            v-for="(item, index) in Answers"
+            :key="index"
+            :class="{ active: index === 0 }"
+            :style="{ animationDelay: `${index * 0.15}s` }"
+          >
             <div class="timeline-marker">
               <div class="timeline-dot">
                 <div class="timeline-dot-inner"></div>
@@ -75,46 +80,68 @@ const toggleMode = (index: number, isManual: boolean) => {
               </div>
 
               <div class="timeline-icon">
-                <DeleteItemAction class="cursor-pointer" v-if="index >= 0 && index !== Answers.length - 1"
-                  @click="DeleteItem(index)" />
+                <DeleteItemAction
+                  class="cursor-pointer"
+                  v-if="index >= 0 && index !== Answers.length - 1"
+                  @click="DeleteItem(index)"
+                />
                 <AddAnswer v-else @click="addNewAnswer" class="cursor-pointer" />
               </div>
             </div>
 
             <div class="timeline-content">
-               <div class="input-wrapper">
-
-
-                <UpdatedCustomInputSelect :controller="fetchOriganizatioEmployeeController"
-                  :params="fetchOrganizationEmployeeParams" v-model="item.employee" placeholder="Select Witness name"
-                  class="mt-4 mr-2 input" :label="$t('Witness name')" @update:model-value="UpdateData"
-                  :hascontent="isSelectHasContent[index]">
+              <div class="input-wrapper">
+                <UpdatedCustomInputSelect
+                  :controller="fetchOriganizatioEmployeeController"
+                  :params="fetchOrganizationEmployeeParams"
+                  v-model="item.employee"
+                  placeholder="Select Witness name"
+                  class="mt-4 mr-2 input"
+                  :label="$t('Witness name')"
+                  @update:model-value="UpdateData"
+                  :hascontent="isSelectHasContent[index]"
+                >
                   <template #reloadHeader>
                     <div class="flex gap-2 items-center">
-                      <button :class="isSelectHasContent[index] ? 'active' : ''" class="emp-name"
-                        @click.prevent="toggleMode(index, true)">
+                      <button
+                        :class="isSelectHasContent[index] ? 'active' : ''"
+                        class="emp-name"
+                        @click.prevent="toggleMode(index, true)"
+                      >
                         {{ $t('unemployed_witness') }}
                       </button>
 
-                      <button :class="isSelectHasContent[index] ? '' : 'active'" class="emp-select"
-                        @click.prevent="toggleMode(index, false)">
+                      <button
+                        :class="isSelectHasContent[index] ? '' : 'active'"
+                        class="emp-select"
+                        @click.prevent="toggleMode(index, false)"
+                      >
                         {{ $t('select') }}
                       </button>
                     </div>
                   </template>
                   <template #content>
-                    <input type="text" v-model="item.employee.title" class="input" placeholder="Select Employee">
+                    <input
+                      type="text"
+                      v-model="item.employee.title"
+                      class="input"
+                      placeholder="Select Employee"
+                      @input="UpdateData"
+                    />
                   </template>
                 </UpdatedCustomInputSelect>
-
-
               </div>
-              <div class=" input-wrapper">
+              <div class="input-wrapper">
                 <label for="wetness-text">{{ $t('Witness statement') }}</label>
-                <input type="text" id="wetness-text" v-model="item.text" class="input" placeholder="add your title"
-                  @input="UpdateData" />
+                <input
+                  type="text"
+                  id="wetness-text"
+                  v-model="item.text"
+                  class="input"
+                  placeholder="add your title"
+                  @input="UpdateData"
+                />
               </div>
-
             </div>
           </div>
         </div>
