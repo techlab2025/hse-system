@@ -577,6 +577,7 @@ const { user } = useUserStore()
             @blur="hideTooltip"
           >
             <component :is="r.icon" class="strip-icon" />
+            <span class="icon-label">{{ $t(r.name) }}</span>
           </router-link>
         </PermissionBuilder>
       </template>
@@ -592,6 +593,7 @@ const { user } = useUserStore()
           @blur="hideTooltip"
         >
           <component :is="r.icon" class="strip-icon" />
+          <span class="icon-label">{{ $t(r.name) }}</span>
         </router-link>
       </PermissionBuilder>
 
@@ -606,6 +608,7 @@ const { user } = useUserStore()
           @blur="hideTooltip"
         >
           <component :is="r.icon" class="strip-icon" />
+          <span class="icon-label">{{ $t(r.name) }}</span>
         </router-link>
       </PermissionBuilder>
 
@@ -620,6 +623,7 @@ const { user } = useUserStore()
           @blur="hideTooltip"
         >
           <component :is="r.icon" class="strip-icon" />
+          <span class="icon-label">{{ $t(r.name) }}</span>
         </router-link>
       </PermissionBuilder>
 
@@ -634,6 +638,7 @@ const { user } = useUserStore()
           @blur="hideTooltip"
         >
           <component :is="r.icon" class="strip-icon" />
+          <span class="icon-label">{{ $t(r.name) }}</span>
         </router-link>
       </PermissionBuilder>
 
@@ -648,6 +653,7 @@ const { user } = useUserStore()
           @blur="hideTooltip"
         >
           <component :is="r.icon" class="strip-icon" />
+          <span class="icon-label">{{ $t(r.name) }}</span>
         </router-link>
       </PermissionBuilder>
     </div>
@@ -693,7 +699,7 @@ const { user } = useUserStore()
               >
                 <li>
                   <router-link :to="guideroute.link" :data-title="$t(guideroute.name)">
-                    <component v-if="!open" :is="guideroute.icon" class="route-icon" />
+                    <component :is="guideroute.icon" class="route-icon" />
                     <span>{{ $t(guideroute.name) }}</span>
                   </router-link>
                 </li>
@@ -728,7 +734,7 @@ const { user } = useUserStore()
               >
                 <li>
                   <router-link :to="operation.link" :data-title="$t(operation.name)">
-                    <component v-if="!open" :is="operation.icon" class="route-icon" />
+                    <component :is="operation.icon" class="route-icon" />
                     <span>{{ $t(operation.name) }}</span>
                   </router-link>
                 </li>
@@ -767,7 +773,7 @@ const { user } = useUserStore()
               >
                 <li>
                   <router-link :to="orgroute.link" :data-title="$t(orgroute.name)">
-                    <component v-if="!open" :is="orgroute.icon" class="route-icon" />
+                    <component :is="orgroute.icon" class="route-icon" />
                     <span>{{ $t(orgroute.name) }}</span>
                   </router-link>
                 </li>
@@ -800,7 +806,7 @@ const { user } = useUserStore()
               >
                 <li>
                   <router-link :to="r.link" :data-title="$t(r.name)">
-                    <component v-if="!open" :is="r.icon" class="route-icon" />
+                    <component :is="r.icon" class="route-icon" />
                     <span>{{ $t(r.name) }}</span>
                   </router-link>
                 </li>
@@ -835,7 +841,7 @@ const { user } = useUserStore()
               >
                 <li>
                   <router-link :to="orgroute.link" :data-title="$t(orgroute.name)">
-                    <component v-if="!open" :is="orgroute.icon" class="route-icon" />
+                    <component :is="orgroute.icon" class="route-icon" />
                     <span>{{ $t(orgroute.name) }}</span>
                   </router-link>
                 </li>
@@ -870,7 +876,7 @@ const { user } = useUserStore()
               >
                 <li>
                   <router-link :to="ticketroute.link" :data-title="$t(ticketroute.name)">
-                    <component v-if="!open" :is="ticketroute.icon" class="route-icon" />
+                    <component :is="ticketroute.icon" class="route-icon" />
                     <span>{{ $t(ticketroute.name) }}</span>
                   </router-link>
                 </li>
@@ -891,8 +897,8 @@ const { user } = useUserStore()
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  padding: 8px 0;
+  gap: 8px;
+  padding: 8px 0 16px;
   overflow-y: auto;
   flex: 1;
   scrollbar-width: none;
@@ -904,29 +910,49 @@ const { user } = useUserStore()
 
 .icon-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 8px;
-  color: #aaaaaa;
+  gap: 6px;
+  width: 72px;
+  min-height: 68px;
+  padding: 8px 4px;
+  border-radius: 16px;
+  color: #64748b;
   transition:
     background 0.2s ease,
-    color 0.2s ease;
+    color 0.2s ease,
+    transform 0.2s ease;
   position: relative;
   text-decoration: none;
   flex-shrink: 0;
+  text-align: center;
 }
 
 .icon-item:hover,
 .icon-item.router-link-active {
-  background: rgba(31, 65, 187, 0.08);
+  background: #eef4ff;
   color: var(--PrimaryColor);
+  transform: translateY(-1px);
 }
 
 .strip-icon {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.icon-label {
+  max-width: 64px;
+  font-size: 10px;
+  line-height: 1.15;
+  font-weight: 700;
+  text-align: center;
+  color: inherit;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .route-icon {

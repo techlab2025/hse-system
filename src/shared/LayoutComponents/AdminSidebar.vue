@@ -759,30 +759,35 @@ watch(LoackupsAccordion, (val) => {
       <PermissionBuilder v-for="r in SettingsRoutes" :key="r.link" :code="r.permissions">
         <router-link :to="r.link" class="icon-item" :data-title="r.name">
           <component :is="r.icon" class="strip-icon" />
+          <span class="icon-label">{{ $t(r.name) }}</span>
         </router-link>
       </PermissionBuilder>
 
       <PermissionBuilder v-for="r in LocationRoutes" :key="r.link" :code="r.permissions">
         <router-link :to="r.link" class="icon-item" :data-title="r.name">
           <component :is="r.icon" class="strip-icon" />
+          <span class="icon-label">{{ $t(r.name) }}</span>
         </router-link>
       </PermissionBuilder>
 
       <PermissionBuilder v-for="r in SubscriptionTypeRoutes" :key="r.link" :code="r.permissions">
         <router-link :to="r.link" class="icon-item" :data-title="r.name">
           <component :is="r.icon" class="strip-icon" />
+          <span class="icon-label">{{ $t(r.name) }}</span>
         </router-link>
       </PermissionBuilder>
 
       <PermissionBuilder v-for="r in WebsiteRoutes" :key="r.link" :code="r.permissions">
         <router-link :to="r.link" class="icon-item" :data-title="r.name">
           <component :is="r.icon" class="strip-icon" />
+          <span class="icon-label">{{ $t(r.name) }}</span>
         </router-link>
       </PermissionBuilder>
 
       <PermissionBuilder v-for="r in LockUpsRoutes" :key="r.link" :code="r.permissions">
         <router-link :to="r.link" class="icon-item" :data-title="r.name">
           <component :is="r.icon" class="strip-icon" />
+          <span class="icon-label">{{ $t(r.name) }}</span>
         </router-link>
       </PermissionBuilder>
     </div>
@@ -825,7 +830,7 @@ watch(LoackupsAccordion, (val) => {
               >
                 <li>
                   <router-link :to="r.link">
-                    <component v-if="!open" :is="r.icon" class="route-icon" />
+                    <component :is="r.icon" class="route-icon" />
                     <span>{{ $t(r.name) }}</span>
                   </router-link>
                 </li>
@@ -857,7 +862,7 @@ watch(LoackupsAccordion, (val) => {
               >
                 <li>
                   <router-link :to="r.link">
-                    <component v-if="!open" :is="r.icon" class="route-icon" />
+                    <component :is="r.icon" class="route-icon" />
                     <span>{{ $t(r.name) }}</span>
                   </router-link>
                 </li>
@@ -898,7 +903,7 @@ watch(LoackupsAccordion, (val) => {
               >
                 <li>
                   <router-link :to="r.link">
-                    <component v-if="!open" :is="r.icon" class="route-icon" />
+                    <component :is="r.icon" class="route-icon" />
                     <span>{{ $t(r.name) }}</span>
                   </router-link>
                 </li>
@@ -962,7 +967,7 @@ watch(LoackupsAccordion, (val) => {
               >
                 <li>
                   <router-link :to="r.link">
-                    <component v-if="!open" :is="r.icon" class="route-icon" />
+                    <component :is="r.icon" class="route-icon" />
                     <span>{{ $t(r.name) }}</span>
                   </router-link>
                 </li>
@@ -997,7 +1002,7 @@ watch(LoackupsAccordion, (val) => {
               >
                 <li>
                   <router-link :to="r.link" :class="route?.fullPath?.includes(r.link) ? '' : ''">
-                    <component v-if="!open" :is="r.icon" class="route-icon" />
+                    <component :is="r.icon" class="route-icon" />
                     <span>{{ $t(r.name) }}</span>
                   </router-link>
                 </li>
@@ -1018,8 +1023,8 @@ watch(LoackupsAccordion, (val) => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  padding: 8px 0;
+  gap: 8px;
+  padding: 8px 0 16px;
   overflow-y: auto;
   flex: 1;
   scrollbar-width: none;
@@ -1031,24 +1036,30 @@ watch(LoackupsAccordion, (val) => {
 
 .icon-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 8px;
-  color: #aaaaaa;
+  gap: 6px;
+  width: 72px;
+  min-height: 68px;
+  padding: 8px 4px;
+  border-radius: 16px;
+  color: #64748b;
   transition:
     background 0.2s ease,
-    color 0.2s ease;
+    color 0.2s ease,
+    transform 0.2s ease;
   position: relative;
   text-decoration: none;
   flex-shrink: 0;
+  text-align: center;
 }
 
 .icon-item:hover,
 .icon-item.router-link-active {
-  background: rgba(31, 65, 187, 0.08);
+  background: #eef4ff;
   color: var(--PrimaryColor);
+  transform: translateY(-1px);
 }
 
 .icon-item::after {
@@ -1076,8 +1087,22 @@ watch(LoackupsAccordion, (val) => {
 }
 
 .strip-icon {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.icon-label {
+  max-width: 64px;
+  font-size: 10px;
+  line-height: 1.15;
+  font-weight: 700;
+  text-align: center;
+  color: inherit;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 .route-icon {
