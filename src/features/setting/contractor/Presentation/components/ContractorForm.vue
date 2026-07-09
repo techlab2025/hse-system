@@ -264,11 +264,11 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     message: 'Contact Person Phone Is Required',
     isMissing: () => !hasValue(contactPersonPhone.value),
   },
-  {
-    key: 'Scope',
-    message: 'Scope Is Required',
-    isMissing: () => !Scope.value?.length,
-  },
+  // {
+  //   key: 'Scope',
+  //   message: 'Scope Is Required',
+  //   isMissing: () => !Scope.value?.length,
+  // },
   {
     key: 'SelectedStatus',
     message: 'Contract Status Is Required',

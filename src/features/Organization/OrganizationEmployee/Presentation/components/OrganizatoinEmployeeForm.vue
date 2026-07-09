@@ -265,21 +265,21 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     message: 'Email Is Required',
     isMissing: () => !hasValue(Email.value),
   },
-  {
-    key: 'Password',
-    message: 'Password Is Required',
-    isMissing: () => !props.data?.id && booleandashAccessStatus.value && !hasValue(Password.value),
-  },
-  {
-    key: 'Heirarchy',
-    message: 'Position Is Required',
-    isMissing: () => !Heirarchy.value?.id,
-  },
-  {
-    key: 'role',
-    message: 'Permission Is Required',
-    isMissing: () => !AllPermissions.value && !role.value?.length,
-  },
+  // {
+  //   key: 'Password',
+  //   message: 'Password Is Required',
+  //   isMissing: () => !props.data?.id && booleandashAccessStatus.value && !hasValue(Password.value),
+  // },
+  // {
+  //   key: 'Heirarchy',
+  //   message: 'Position Is Required',
+  //   isMissing: () => !Heirarchy.value?.id,
+  // },
+  // {
+  //   key: 'role',
+  //   message: 'Permission Is Required',
+  //   isMissing: () => !AllPermissions.value && !role.value?.length,
+  // },
 ])
 
 const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
@@ -368,7 +368,7 @@ defineExpose({
   </div>
   <div
     v-if="booleandashAccessStatus"
-    class="col-span-4 md:col-span-2 input-wrapper field-required"
+    class="col-span-4 md:col-span-2 input-wrapper "
     data-required-field="Password"
   >
     <label for="password">{{ $t('Password') }}</label>

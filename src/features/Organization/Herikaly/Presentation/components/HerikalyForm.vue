@@ -171,11 +171,11 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     message: 'Title Is Required',
     isMissing: () => !hasLangValue(),
   },
-  {
-    key: 'Certificate',
-    message: 'Certificate Is Required',
-    isMissing: () => !Certificate.value?.length,
-  },
+  // {
+  //   key: 'Certificate',
+  //   message: 'Certificate Is Required',
+  //   isMissing: () => !Certificate.value?.length,
+  // },
 ])
 
 const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
