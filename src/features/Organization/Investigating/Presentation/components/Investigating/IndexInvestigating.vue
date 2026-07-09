@@ -1,8 +1,8 @@
 <script lang="ts" setup>
 import { ref, onMounted, watch } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import InvestigatingSidebar from './InvestigatingSidebar.vue'
+import InvestigatingCardsLoader from './InvestigatingCardsLoader.vue'
 import { InvestegationStatusEnum } from '../../../Core/Enums/InvestegationStatusEnum'
 // import { link } from 'fs'
 import LiveLink from '@/assets/images/LiveLink.png'
@@ -368,10 +368,10 @@ const GerIncidantCount = (data: any): number => {
       />
     </template>
     <template #loader>
-      <TableLoader :cols="3" :rows="10" />
+      <InvestigatingCardsLoader :rows="5" />
     </template>
     <template #initial>
-      <TableLoader :cols="3" :rows="10" />
+      <InvestigatingCardsLoader :rows="5" />
     </template>
     <template #empty>
       <!-- <DataEmpty :link="`/organization/hazard/add`" addText="Add Hazard"
