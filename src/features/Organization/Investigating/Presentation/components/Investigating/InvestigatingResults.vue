@@ -441,11 +441,22 @@ const capaFieldKey = (
 
 const isTimelineStarted = (item: EventTimelineItem) =>
   Boolean(item.time) || hasValue(item.description)
-const isInjuryStarted = (item: any) =>
+const hasInjuryEmployee = (item: any) =>
   hasEmployeeValue(item?.employee) ||
-  hasSelectedId(item?.infectionTypeId) ||
-  hasValue(item?.text) ||
-  hasFiles(item?.images)
+  Boolean(Number(item?.organization_employee_id)) ||
+  hasValue(item?.employee_name)
+const hasInjuryType = (item: any) =>
+  hasSelectedId(item?.infectionTypeId) || Boolean(Number(item?.injury_type_id))
+const hasInjuryDescription = (item: any) => hasValue(item?.text) || hasValue(item?.note)
+const isInjuryStarted = (item: any) =>
+  hasInjuryEmployee(item) ||
+  hasInjuryType(item) ||
+  hasInjuryDescription(item) ||
+  hasFiles(item?.images) ||
+  hasFiles(item?.files)
+const isAddedInjuryRow = (index: number) => index >= Math.max(initialInjuries.value?.length ?? 0, 1)
+const shouldValidateInjury = (item: any, index: number) =>
+  isInjuryStarted(item) || isAddedInjuryRow(index)
 const isViewerStarted = (item: any) =>
   hasValue(item?.witnessesStatements) ||
   hasValue(item?.employeeName) ||
@@ -485,19 +496,19 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
       key: `Accidents.${index}.employee`,
       message: `Injury ${index + 1} Employee Is Required`,
       panel: '4',
-      isMissing: () => isInjuryStarted(item) && !hasEmployeeValue(item?.employee),
+      isMissing: () => shouldValidateInjury(item, index) && !hasInjuryEmployee(item),
     },
     {
       key: `Accidents.${index}.infectionTypeId`,
       message: `Injury ${index + 1} Type Is Required`,
       panel: '4',
-      isMissing: () => isInjuryStarted(item) && !hasSelectedId(item?.infectionTypeId),
+      isMissing: () => shouldValidateInjury(item, index) && !hasInjuryType(item),
     },
     {
       key: `Accidents.${index}.text`,
       message: `Injury ${index + 1} Description Is Required`,
       panel: '4',
-      isMissing: () => isInjuryStarted(item) && !hasValue(item?.text),
+      isMissing: () => shouldValidateInjury(item, index) && !hasInjuryDescription(item),
     },
     // {
     //   key: `Accidents.${index}.images`,
