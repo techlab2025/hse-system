@@ -455,12 +455,17 @@ const isInjuryStarted = (item: any) =>
   hasFiles(item?.images) ||
   hasFiles(item?.files)
 const isAddedInjuryRow = (index: number) => index >= Math.max(initialInjuries.value?.length ?? 0, 1)
+const hasInitialInjuryRows = () => Boolean(initialInjuries.value?.length)
 const shouldValidateInjury = (item: any, index: number) =>
-  isInjuryStarted(item) || isAddedInjuryRow(index)
+  isInjuryStarted(item) || hasInitialInjuryRows() || isAddedInjuryRow(index)
 const isViewerStarted = (item: any) =>
   hasValue(item?.witnessesStatements) ||
   hasValue(item?.employeeName) ||
   Boolean(Number(item?.organizationEmployeeId))
+const isAddedViewerRow = (index: number) => index >= Math.max(initialViewers.value?.length ?? 0, 1)
+const hasInitialViewerRows = () => Boolean(initialViewers.value?.length)
+const shouldValidateViewer = (item: any, index: number) =>
+  isViewerStarted(item) || hasInitialViewerRows() || isAddedViewerRow(index)
 const getTaskEmployee = (task: any) => task?.employee ?? task?.investigation_task_employees?.[0]
 const getTaskResponsible = (task: any) =>
   task?.ResponablePerson ?? {
@@ -523,15 +528,18 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
       message: `Witness ${index + 1} Employee Is Required`,
       panel: '5',
       isMissing: () =>
-        isViewerStarted(item) && !item?.organizationEmployeeId && !hasValue(item?.employeeName),
+        shouldValidateViewer(item, index) &&
+        !item?.organizationEmployeeId &&
+        !hasValue(item?.employeeName),
     },
     {
       key: viewerFieldKey('statement', index),
       message: `Witness ${index + 1} Statement Is Required`,
       panel: '5',
-      isMissing: () => isViewerStarted(item) && !hasValue(item?.witnessesStatements),
+      isMissing: () => shouldValidateViewer(item, index) && !hasValue(item?.witnessesStatements),
     },
   ]),
+
   ...(['corrective', 'preventive'] as const).flatMap((type) =>
     getRawCapaTasks(type).flatMap((task: any, index: number) => [
       {
