@@ -240,6 +240,11 @@ const hasArrayItems = (value: unknown) => Array.isArray(value) && value.length >
 
 const requiredFields = computed<RequiredFieldRule[]>(() => [
   {
+    key: 'SelectedProject',
+    message: 'Please select the Project where this inspection will be conducted before continuing.',
+    isMissing: () => (isEmployeeAssignment() || isZoneAssignment()) && !DataParams.value?.ProjectId,
+  },
+  {
     key: 'SelectedEquipment',
     message:
       'Please select the Equipment for this inspection, or create a new one using the New button before continuing.',
@@ -254,11 +259,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
       'Please select the Inspection Template that will be used for this Equipment before continuing.',
     isMissing: () => !selectedTemplateId(),
   },
-  {
-    key: 'SelectedProject',
-    message: 'Please select the Project where this inspection will be conducted before continuing.',
-    isMissing: () => (isEmployeeAssignment() || isZoneAssignment()) && !DataParams.value?.ProjectId,
-  },
+
   {
     key: 'ProjectZoneId',
     message:
