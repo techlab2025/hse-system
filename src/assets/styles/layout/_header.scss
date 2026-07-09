@@ -33,9 +33,9 @@
     @include flex-row(nowrap, center, center);
     gap: $XlSize;
 
-    @media (max-width: 768px) {
-      display: none;
-    }
+    // @media (max-width: 768px) {
+    //   display: none;
+    // }
     .countery-icon {
       width: 60px;
       height: 60px;
