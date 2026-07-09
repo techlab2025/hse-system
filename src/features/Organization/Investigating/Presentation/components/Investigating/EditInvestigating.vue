@@ -13,6 +13,7 @@ const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
+const investigatingFormRef = ref<InstanceType<typeof InvestigatingForm> | null>(null)
 
 const showInvestigatingController = ShowInvestigatingController.getInstance()
 const state = ref(showInvestigatingController.state.value)
@@ -26,12 +27,11 @@ onMounted(() => {
   fetchInvestigatingDetails()
 })
 
-const EditInvestigating = async (draft: boolean) => {
-  if (draft) {
-    await EditInvestigatingController.getInstance().editInvestigating(params.value!, router)
-  } else {
-    await EditInvestigatingController.getInstance().editInvestigating(params.value!, router)
-  }
+const EditInvestigating = async () => {
+  const isValid = await investigatingFormRef.value?.validateRequiredFields()
+  if (isValid === false) return
+
+  await EditInvestigatingController.getInstance().editInvestigating(params.value!, router)
 }
 
 watch(
@@ -57,7 +57,7 @@ const setParams = (data: Params) => {
 
       <!--      </pre>-->
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditInvestigating">
-        <InvestigatingForm @update:data="setParams" :data="state.data!" />
+        <InvestigatingForm ref="investigatingFormRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>

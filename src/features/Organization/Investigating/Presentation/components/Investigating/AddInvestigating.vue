@@ -8,10 +8,13 @@ import type AddInvestigatingParams from '../../../Core/params/addInvestigatingPa
 
 const router = useRouter()
 const params = ref<Params | null>(null)
+const investigatingFormRef = ref<InstanceType<typeof InvestigatingForm> | null>(null)
 
 const addInvestigatingController = AddInvestigatingController.getInstance()
 
 const addInvestigating = async () => {
+  const isValid = await investigatingFormRef.value?.validateRequiredFields()
+  if (isValid === false) return
   console.log(params.value, 'params')
   await addInvestigatingController.addInvestigating(params.value as AddInvestigatingParams, router)
 }
@@ -23,7 +26,7 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-6 gap-4" @submit.prevent="addInvestigating">
-    <InvestigatingForm @update:data="setParams" />
+    <InvestigatingForm ref="investigatingFormRef" @update:data="setParams" />
 
     <div class="col-span-6 button-wrapper flex gap-2">
       <router-link to="/organization/investigating" @click.prevent="" class="btn btn-cancel "

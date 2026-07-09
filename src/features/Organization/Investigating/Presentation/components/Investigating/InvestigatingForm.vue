@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type ShowInvestigatingTypeModel from '@/features/setting/InvestigatingType/Data/models/hazardTypeDetailsModel'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
@@ -35,6 +35,7 @@ import { formatTime } from '@/base/Presentation/utils/time_format'
 import ShowInvestigatingResultController from '../../controllers/investegationResult/ShowInvestigatingResultController'
 import ShowInvestigationResultParams from '../../../Core/params/investegationResult/ShowInvestigationResultParams'
 import { InvestigationMeetingEnum } from '../../../Core/Enums/investigation_meeting_enum'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog.ts'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -159,6 +160,88 @@ const setTeamLeader = (data: TitleInterface) => {
   updateData()
 }
 
+type RequiredFieldRule = {
+  key: string
+  message: string
+  isMissing: () => boolean
+}
+
+const requiredFieldErrors = ref<Record<string, string>>({})
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+
+const requiredFields = computed<RequiredFieldRule[]>(() => [
+  {
+    key: 'SelectedTeam',
+    message: 'Investigation Team Is Required',
+    isMissing: () => !SelectedTeam.value.length,
+  },
+  {
+    key: 'SelectedTeamLeader',
+    message: 'Team Leader Is Required',
+    isMissing: () => SelectedTeam.value.length > 0 && !hasValue(SelectedTeamLeader.value?.id),
+  },
+  {
+    key: 'date',
+    message: 'Meeting Date Is Required',
+    isMissing: () => !date.value,
+  },
+  {
+    key: 'time',
+    message: 'Meeting Time Is Required',
+    isMissing: () => !time.value,
+  },
+  {
+    key: 'SelectedPlatform',
+    message: 'Meeting Platform Is Required',
+    isMissing: () => !hasValue(SelectedPlatform.value?.id),
+  },
+  {
+    key: 'MeetingPlace',
+    message: 'Meeting Place Is Required When Platform Is Other',
+    isMissing: () => isOtherMeetingPlatform() && !hasValue(MeetingPlace.value),
+  },
+])
+
+const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
+
+const clearResolvedRequiredErrors = () => {
+  requiredFields.value.forEach((field) => {
+    if (requiredFieldErrors.value[field.key] && !field.isMissing()) {
+      const { [field.key]: _removed, ...rest } = requiredFieldErrors.value
+      requiredFieldErrors.value = rest
+    }
+  })
+}
+
+const scrollToRequiredField = async (key: string) => {
+  await nextTick()
+  const container = document.querySelector<HTMLElement>(`[data-required-field="${key}"]`)
+  container?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
+}
+
+const validateRequiredFields = async () => {
+  clearResolvedRequiredErrors()
+  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((acc, field) => {
+    acc[field.key] = field.message
+    return acc
+  }, {})
+
+  if (!missedFields.length) return true
+
+  new OpenWarningDilaog(missedFields[0].message).openDialog()
+  await scrollToRequiredField(missedFields[0].key)
+  return false
+}
+
+defineExpose({
+  validateRequiredFields,
+})
+
 const MeetingPlatforms = ref<TitleInterface[]>([
   new TitleInterface({ id: InvestigationMeetingEnum.ZOOM, title: 'Zoom' }),
   new TitleInterface({ id: InvestigationMeetingEnum.TEAM, title: 'Teams' }),
@@ -209,6 +292,9 @@ watch(
     }
   },
 )
+
+
+
 </script>
 
 <template>
@@ -228,7 +314,7 @@ watch(
     </div>
   </div>
 
-  <div class="col-span-6 md:col-span-4 input-wrapper">
+  <div class="col-span-6 md:col-span-4 input-wrapper" data-required-field="SelectedTeam">
     <CustomSelectInput
       :modelValue="SelectedTeam"
       class="input"
@@ -240,8 +326,11 @@ watch(
       placeholder="select your team"
       @update:modelValue="setTeams"
     />
+    <p v-if="getFieldError('SelectedTeam')" class="required-field-message">
+      {{ getFieldError('SelectedTeam') }}
+    </p>
   </div>
-  <div class="col-span-6 md:col-span-2 input-wrapper">
+  <div class="col-span-6 md:col-span-2 input-wrapper" data-required-field="SelectedTeamLeader">
     <CustomSelectInput
       :modelValue="SelectedTeamLeader"
       class="input"
@@ -251,6 +340,9 @@ watch(
       placeholder="select your leader"
       @update:modelValue="setTeamLeader"
     />
+    <p v-if="getFieldError('SelectedTeamLeader')" class="required-field-message">
+      {{ getFieldError('SelectedTeamLeader') }}
+    </p>
   </div>
 
   <div class="meeting-investigation col-span-6 md:col-span-6">
@@ -259,11 +351,14 @@ watch(
     <p>{{ $t('Investigation Meeting') }}</p>
   </div>
 
-  <div class="col-span-6 md:col-span-3 input-wrapper">
+  <div class="col-span-6 md:col-span-3 input-wrapper" data-required-field="date">
     <label for="date">{{ $t('Date') }}</label>
     <DatePicker v-model="date" placeholder="Add your date" />
+    <p v-if="getFieldError('date')" class="required-field-message">
+      {{ getFieldError('date') }}
+    </p>
   </div>
-  <div class="col-span-6 md:col-span-3 input-wrapper">
+  <div class="col-span-6 md:col-span-3 input-wrapper" data-required-field="time">
     <label for="time">{{ $t('Time') }}</label>
     <DatePicker
       v-model="time"
@@ -272,10 +367,13 @@ watch(
       placeholder="Add your time"
       @update:modelValue="updateData"
     />
+    <p v-if="getFieldError('time')" class="required-field-message">
+      {{ getFieldError('time') }}
+    </p>
   </div>
 
   <!-- <FactorInvestigating /> -->
-  <div class="col-span-6 md:col-span-6 input-wrapper">
+  <div class="col-span-6 md:col-span-6 input-wrapper" data-required-field="SelectedPlatform">
     <CustomSelectInput
       :modelValue="SelectedPlatform"
       class="input"
@@ -285,8 +383,15 @@ watch(
       placeholder="select meeting platform"
       @update:modelValue="setSelectedPlatform"
     />
+    <p v-if="getFieldError('SelectedPlatform')" class="required-field-message">
+      {{ getFieldError('SelectedPlatform') }}
+    </p>
   </div>
-  <div v-if="isOtherMeetingPlatform()" class="col-span-6 md:col-span-6 input-wrapper">
+  <div
+    v-if="isOtherMeetingPlatform()"
+    class="col-span-6 md:col-span-6 input-wrapper"
+    data-required-field="MeetingPlace"
+  >
     <label for="meeting-place">Meeting place</label>
     <input
       id="meeting-place"
@@ -296,5 +401,17 @@ watch(
       placeholder="Enter meeting place"
       @input="setMeetingPlace"
     />
+    <p v-if="getFieldError('MeetingPlace')" class="required-field-message">
+      {{ getFieldError('MeetingPlace') }}
+    </p>
   </div>
 </template>
+
+<style scoped>
+.required-field-message {
+  margin-top: 0.35rem;
+  color: #dc2626;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+</style>
