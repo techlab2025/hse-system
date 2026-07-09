@@ -592,7 +592,9 @@ const getInvalidInjuryMessage = () => {
 
   for (const [index, injury] of rows.entries()) {
     const rowNumber = index + 1
-    if (!hasEmployeePayload(injury?.employee)) return `Injury ${rowNumber} Employee Is Required`
+    // if (!hasEmployeePayload(injury?.employee)) return `Injury ${rowNumber} Employee Is Required`
+    if (!hasEmployeePayload(injury?.employee))
+      return `in Injury ${rowNumber} If you open the Injuries section, you must select the injured employee before continuing.`
   }
 
   return ''
@@ -645,14 +647,14 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   // },
   {
     key: 'SelectedObservationType',
-    message: 'Observation Type Is Required',
+    message: 'Please select an Observation Type or create a new one before continuing.',
     isMissing: () =>
       ObservationFactoryType.value === Observation.ObservationType &&
       !hasSelectedId(SelectedObservationType.value),
   },
   {
     key: 'AccidentsType',
-    message: 'Incident Category Is Required',
+    message: 'Please select an Incident Type or create a new one before continuing.',
     isMissing: () =>
       ObservationFactoryType.value === Observation.AccidentsType &&
       !hasSelectedId(AccidentsType.value),
@@ -672,7 +674,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   // },
   {
     key: 'Oragnizationemployee',
-    message: 'Employee Name Is Required',
+    message: 'Please select the employee who reported this Incident before continuing.',
     isMissing: () => !hasValue(Oragnizationemployee.value) || OragnizationemployeeName.value,
   },
   {
@@ -925,7 +927,7 @@ defineExpose({
         class="input"
         :controller="indexAccidentsTypeController"
         :params="indexAccidentsTypeParams"
-        :label="$t('incident Category')"
+        :label="$t('incident Type')"
         id="incident"
         placeholder="Select Incident Type"
         @update:modelValue="setAccidentsType"
