@@ -639,11 +639,11 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
       saveStatus.value === SaveStatusEnum.NotSaved &&
       !hasSelectedId(HazardType.value),
   },
-  {
-    key: 'text',
-    message: 'Description Is Required',
-    isMissing: () => !hasValue(text.value),
-  },
+  // {
+  //   key: 'text',
+  //   message: 'Description Is Required',
+  //   isMissing: () => !hasValue(text.value),
+  // },
   {
     key: 'Oragnizationemployee',
     message: 'Employee Name Is Required',
@@ -763,7 +763,7 @@ defineExpose({
     </div>
 
     <!-- title -->
-    <div class="input-wrapper col-span-6" data-required-field="ObservationTitle">
+    <div class="input-wrapper col-span-6 field-required" data-required-field="ObservationTitle">
       <label for="title">{{ GetHeader(ObservationFactoryType) }} {{ $t('title') }}</label>
       <input
         type="text"
@@ -905,6 +905,7 @@ defineExpose({
         @update:modelValue="setAccidentsType"
         @close="acedentDialogRef = false"
         :isDialog="true"
+        :required="true"
         v-model:dialogVisible="acedentDialogRef"
       >
         <template #LabelHeader>
@@ -980,6 +981,7 @@ defineExpose({
         :params="fetchOrganizationEmployeeParams"
         v-model="Oragnizationemployee"
         placeholder="Select Employee"
+        :required="true"
         class="mt-4 mr-2 input"
         :label="$t('employee name')"
         @update:model-value="setOragnizationemployee"
@@ -1158,6 +1160,7 @@ defineExpose({
         :placeholder="$t('Select Hazard Classification')"
         @update:modelValue="setHazardType"
         :isDialog="true"
+        :required="true"
         v-model:dialogVisible="HazardTypeDialog"
       >
         <template #LabelHeader>
@@ -1191,6 +1194,7 @@ defineExpose({
         :placeholder="$t('Select Hazard')"
         @update:modelValue="setSubHazardType"
         :isDialog="true"
+        :required="true"
         v-model:dialogVisible="HazardDialog"
       >
         <template #LabelHeader>
@@ -1421,5 +1425,8 @@ defineExpose({
   color: #dc2626;
   font-size: 0.82rem;
   font-weight: 700;
+}
+label {
+  width: fit-content;
 }
 </style>
