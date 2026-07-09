@@ -339,6 +339,8 @@ const setCapaActionPlan = (data: any) => {
   capaActionPlan.value = {
     corrective: data?.corrective ?? [],
     preventive: data?.preventive ?? [],
+    rawCorrective: data?.rawCorrective ?? capaActionPlan.value?.rawCorrective ?? [],
+    rawPreventive: data?.rawPreventive ?? capaActionPlan.value?.rawPreventive ?? [],
   }
 }
 const lessonLearnt = ref('')
@@ -423,24 +425,130 @@ type RequiredFieldRule = {
 const requiredFieldErrors = ref<Record<string, string>>({})
 const hasValue = (value: unknown) =>
   value !== null && value !== undefined && String(value).trim().length > 0
+const hasSelectedId = (value: any) => Boolean(Number(value?.id))
+const hasEmployeeValue = (employee: any) =>
+  hasSelectedId(employee) || hasValue(employee?.title) || hasValue(employee?.name)
+const hasFiles = (files: any) => Array.isArray(files) && files.length > 0
 const timelineFieldKey = (field: 'time' | 'description', index: number) =>
   `eventTimelineItems.${index}.${field}`
+const viewerFieldKey = (field: 'employee' | 'statement', index: number) =>
+  `viewersResults.${index}.${field}`
+const capaFieldKey = (
+  type: 'corrective' | 'preventive',
+  field: 'text' | 'date' | 'employee' | 'responsible',
+  index: number,
+) => `capaActionPlan.${type}.${index}.${field}`
+
+const isTimelineStarted = (item: EventTimelineItem) =>
+  Boolean(item.time) || hasValue(item.description)
+const isInjuryStarted = (item: any) =>
+  hasEmployeeValue(item?.employee) ||
+  hasSelectedId(item?.infectionTypeId) ||
+  hasValue(item?.text) ||
+  hasFiles(item?.images)
+const isViewerStarted = (item: any) =>
+  hasValue(item?.witnessesStatements) ||
+  hasValue(item?.employeeName) ||
+  Boolean(Number(item?.organizationEmployeeId))
+const getTaskEmployee = (task: any) => task?.employee ?? task?.investigation_task_employees?.[0]
+const getTaskResponsible = (task: any) =>
+  task?.ResponablePerson ?? {
+    id: task?.investigation_task_employees?.[0]?.organization_employee_follow_id,
+  }
+const isCapaTaskStarted = (task: any) =>
+  hasValue(task?.text ?? task?.title) ||
+  Boolean(task?.date) ||
+  hasSelectedId(getTaskEmployee(task)) ||
+  hasSelectedId(getTaskResponsible(task))
+const getRawCapaTasks = (type: 'corrective' | 'preventive') =>
+  type === 'corrective'
+    ? (capaActionPlan.value?.rawCorrective ?? [])
+    : (capaActionPlan.value?.rawPreventive ?? [])
 
 const requiredFields = computed<RequiredFieldRule[]>(() => [
-  // ...eventTimelineItems.value.flatMap((item, index) => [
-  //   {
-  //     key: timelineFieldKey('time', index),
-  //     message: `Event ${index + 1} Time Is Required`,
-  //     panel: '3',
-  //     isMissing: () => !item.time,
-  //   },
-  //   {
-  //     key: timelineFieldKey('description', index),
-  //     message: `Event ${index + 1} Description Is Required`,
-  //     panel: '3',
-  //     isMissing: () => !hasValue(item.description),
-  //   },
-  // ]),
+  ...eventTimelineItems.value.flatMap((item, index) => [
+    {
+      key: timelineFieldKey('time', index),
+      message: `Event ${index + 1} Time Is Required`,
+      panel: '3',
+      isMissing: () => isTimelineStarted(item) && !item.time,
+    },
+    {
+      key: timelineFieldKey('description', index),
+      message: `Event ${index + 1} Description Is Required`,
+      panel: '3',
+      isMissing: () => isTimelineStarted(item) && !hasValue(item.description),
+    },
+  ]),
+  ...(Accidents.value?.accidentsData ?? []).flatMap((item: any, index: number) => [
+    {
+      key: `Accidents.${index}.employee`,
+      message: `Injury ${index + 1} Employee Is Required`,
+      panel: '4',
+      isMissing: () => isInjuryStarted(item) && !hasEmployeeValue(item?.employee),
+    },
+    {
+      key: `Accidents.${index}.infectionTypeId`,
+      message: `Injury ${index + 1} Type Is Required`,
+      panel: '4',
+      isMissing: () => isInjuryStarted(item) && !hasSelectedId(item?.infectionTypeId),
+    },
+    {
+      key: `Accidents.${index}.text`,
+      message: `Injury ${index + 1} Description Is Required`,
+      panel: '4',
+      isMissing: () => isInjuryStarted(item) && !hasValue(item?.text),
+    },
+    // {
+    //   key: `Accidents.${index}.images`,
+    //   message: `Injury ${index + 1} Evidence Is Required`,
+    //   panel: '4',
+    //   isMissing: () => isInjuryStarted(item) && !hasFiles(item?.images),
+    // },
+  ]),
+  ...(viewersResults.value ?? []).flatMap((item: any, index: number) => [
+    {
+      key: viewerFieldKey('employee', index),
+      message: `Witness ${index + 1} Employee Is Required`,
+      panel: '5',
+      isMissing: () =>
+        isViewerStarted(item) && !item?.organizationEmployeeId && !hasValue(item?.employeeName),
+    },
+    {
+      key: viewerFieldKey('statement', index),
+      message: `Witness ${index + 1} Statement Is Required`,
+      panel: '5',
+      isMissing: () => isViewerStarted(item) && !hasValue(item?.witnessesStatements),
+    },
+  ]),
+  ...(['corrective', 'preventive'] as const).flatMap((type) =>
+    getRawCapaTasks(type).flatMap((task: any, index: number) => [
+      {
+        key: capaFieldKey(type, 'text', index),
+        message: `${type === 'corrective' ? 'Corrective' : 'Preventive'} Action ${index + 1} Title Is Required`,
+        panel: '8',
+        isMissing: () => isCapaTaskStarted(task) && !hasValue(task?.text ?? task?.title),
+      },
+      {
+        key: capaFieldKey(type, 'date', index),
+        message: `${type === 'corrective' ? 'Corrective' : 'Preventive'} Action ${index + 1} Date Is Required`,
+        panel: '8',
+        isMissing: () => isCapaTaskStarted(task) && !task?.date,
+      },
+      {
+        key: capaFieldKey(type, 'employee', index),
+        message: `${type === 'corrective' ? 'Corrective' : 'Preventive'} Action ${index + 1} Implementation Responsibility Is Required`,
+        panel: '8',
+        isMissing: () => isCapaTaskStarted(task) && !hasSelectedId(getTaskEmployee(task)),
+      },
+      {
+        key: capaFieldKey(type, 'responsible', index),
+        message: `${type === 'corrective' ? 'Corrective' : 'Preventive'} Action ${index + 1} Monitoring Responsibility Is Required`,
+        panel: '8',
+        isMissing: () => isCapaTaskStarted(task) && !hasSelectedId(getTaskResponsible(task)),
+      },
+    ]),
+  ),
   // {
   //   key: 'RootCauses',
   //   message: 'Root Cause Is Required',
@@ -469,6 +577,8 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
 ])
 
 const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
+const getFirstFieldError = (prefix: string) =>
+  Object.entries(requiredFieldErrors.value).find(([key]) => key.startsWith(prefix))?.[1] ?? ''
 
 const clearResolvedRequiredErrors = () => {
   requiredFields.value.forEach((field) => {
@@ -483,7 +593,21 @@ const scrollToRequiredField = async (field: RequiredFieldRule) => {
   ActivePanel.value = field.panel
   await nextTick()
   window.setTimeout(() => {
-    document.querySelector<HTMLElement>(`[data-required-field="${field.key}"]`)?.scrollIntoView({
+    const target =
+      document.querySelector<HTMLElement>(`[data-required-field="${field.key}"]`) ??
+      (field.key.startsWith('Accidents.')
+        ? document.querySelector<HTMLElement>('[data-required-field="Accidents.0.employee"]')
+        : null) ??
+      (field.key.startsWith('viewersResults.')
+        ? document.querySelector<HTMLElement>('[data-required-field="viewersResults.0.employee"]')
+        : null) ??
+      (field.key.startsWith('capaActionPlan.')
+        ? document.querySelector<HTMLElement>(
+            '[data-required-field="capaActionPlan.corrective.0.text"]',
+          )
+        : null)
+
+    target?.scrollIntoView({
       behavior: 'smooth',
       block: 'center',
     })
@@ -715,13 +839,16 @@ const validateRequiredFields = async () => {
               </div>
             </AccordionHeader>
             <AccordionContent>
-              <div class="investigation-injury">
+              <div class="investigation-injury" data-required-field="Accidents.0.employee">
                 <FactoryAccidents
                   :injuries="initialInjuries"
                   class="not-colored"
                   @update:data="UpdateAccidents"
                   :isOpen="true"
                 />
+                <p v-if="getFirstFieldError('Accidents.')" class="required-field-message">
+                  {{ getFirstFieldError('Accidents.') }}
+                </p>
               </div>
             </AccordionContent>
           </AccordionPanel>
@@ -734,11 +861,16 @@ const validateRequiredFields = async () => {
               </div>
             </AccordionHeader>
             <AccordionContent>
-              <ViewersResults
-                :isInvestigation="true"
-                :viwers="initialViewers"
-                @update:data="setViewersResults"
-              />
+              <div data-required-field="viewersResults.0.employee">
+                <ViewersResults
+                  :isInvestigation="true"
+                  :viwers="initialViewers"
+                  @update:data="setViewersResults"
+                />
+                <p v-if="getFirstFieldError('viewersResults.')" class="required-field-message">
+                  {{ getFirstFieldError('viewersResults.') }}
+                </p>
+              </div>
             </AccordionContent>
           </AccordionPanel>
           <AccordionPanel value="6" data-investigation-panel="6">
@@ -816,7 +948,12 @@ const validateRequiredFields = async () => {
               </div>
             </AccordionHeader>
             <AccordionContent>
-              <CapaActionPlan @update:data="setCapaActionPlan" />
+              <div data-required-field="capaActionPlan.corrective.0.text">
+                <CapaActionPlan @update:data="setCapaActionPlan" />
+                <p v-if="getFirstFieldError('capaActionPlan.')" class="required-field-message">
+                  {{ getFirstFieldError('capaActionPlan.') }}
+                </p>
+              </div>
             </AccordionContent>
           </AccordionPanel>
           <AccordionPanel value="9" data-investigation-panel="9">

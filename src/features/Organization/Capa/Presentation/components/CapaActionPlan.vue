@@ -15,6 +15,10 @@ const selectedTasks = ref<Record<ActionType, Record<string, any>[]>>({
   corrective: [],
   preventive: [],
 })
+const rawSelectedTasks = ref<Record<ActionType, Record<string, any>[]>>({
+  corrective: [],
+  preventive: [],
+})
 const employeeOptions = ref<TitleInterface[]>([])
 const isEmployeeOptionsLoaded = ref(false)
 const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
@@ -39,10 +43,13 @@ const mapTasks = (data: any[]) => {
 }
 
 const updateTasks = (type: ActionType, data: any[]) => {
+  rawSelectedTasks.value[type] = data
   selectedTasks.value[type] = mapTasks(data)
   emit('update:data', {
     corrective: selectedTasks.value.corrective,
     preventive: selectedTasks.value.preventive,
+    rawCorrective: rawSelectedTasks.value.corrective,
+    rawPreventive: rawSelectedTasks.value.preventive,
   })
 }
 

@@ -18,21 +18,19 @@ const { capaStyles, staticEmployeeOptions, useStaticEmployeeOptions } = definePr
 const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 1)
 const employeeOptions = ref<TitleInterface[]>([])
-const Answers = ref([
-  {
-    text: ' ',
-    employee: new TitleInterface({ id: 0, title: '' }),
-    date: new Date(),
-    ResponablePerson: new TitleInterface({ id: 0, title: '' }),
-  },
-])
+const createEmptyAnswer = () => ({
+  text: ' ',
+  employee: new TitleInterface({ id: 0, title: '' }),
+  date: capaStyles ? null : new Date(),
+  ResponablePerson: new TitleInterface({ id: 0, title: '' }),
+})
+
+const Answers = ref([createEmptyAnswer()])
 
 const addNewAnswer = () => {
   Answers.value.push({
+    ...createEmptyAnswer(),
     text: '',
-    employee: new TitleInterface({ id: 0, title: '' }),
-    date: new Date(),
-    ResponablePerson: new TitleInterface({ id: 0, title: '' }),
   })
   UpdateData()
 }
