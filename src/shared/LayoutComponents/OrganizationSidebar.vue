@@ -707,9 +707,9 @@ const { user } = useUserStore()
             </ul>
           </AccordionContent>
         </AccordionPanel>
-        <AccordionPanel class="active-panel-out" v-if="SelectedGauideRoutes && !GauideAccordion">
+        <!-- <AccordionPanel class="active-panel-out" v-if="SelectedGauideRoutes && !GauideAccordion">
           <span>{{ SelectedGauideRoutes }}</span>
-        </AccordionPanel>
+        </AccordionPanel> -->
       </Accordion>
     </PermissionBuilder>
 
@@ -742,13 +742,13 @@ const { user } = useUserStore()
             </ul>
           </AccordionContent>
         </AccordionPanel>
-        <AccordionPanel
+        <!-- <AccordionPanel
           class="active-panel-out"
           v-if="SelectedOperationsRoutes && !OperationsAccordion"
           :value="6"
         >
           <span>{{ SelectedOperationsRoutes }}</span>
-        </AccordionPanel>
+        </AccordionPanel> -->
       </Accordion>
     </PermissionBuilder>
 
@@ -781,9 +781,9 @@ const { user } = useUserStore()
             </ul>
           </AccordionContent>
         </AccordionPanel>
-        <AccordionPanel class="active-panel-out" v-if="SelectedOrgRoute && !orgAccordion">
+        <!-- <AccordionPanel class="active-panel-out" v-if="SelectedOrgRoute && !orgAccordion">
           <span>{{ SelectedOrgRoute }}</span>
-        </AccordionPanel>
+        </AccordionPanel> -->
       </Accordion>
     </PermissionBuilder>
 
@@ -814,9 +814,9 @@ const { user } = useUserStore()
             </ul>
           </AccordionContent>
         </AccordionPanel>
-        <AccordionPanel class="active-panel-out" v-if="SelectedLocationRoute && !locationAccordion">
+        <!-- <AccordionPanel class="active-panel-out" v-if="SelectedLocationRoute && !locationAccordion">
           <span>{{ SelectedLocationRoute }}</span>
-        </AccordionPanel>
+        </AccordionPanel> -->
       </Accordion>
     </PermissionBuilder>
 
@@ -849,9 +849,9 @@ const { user } = useUserStore()
             </ul>
           </AccordionContent>
         </AccordionPanel>
-        <AccordionPanel class="active-panel-out" v-if="SelectedLockupsRoute && !orgAccordion">
+        <!-- <AccordionPanel class="active-panel-out" v-if="SelectedLockupsRoute && !orgAccordion">
           <span>{{ SelectedLockupsRoute }}</span>
-        </AccordionPanel>
+        </AccordionPanel> -->
       </Accordion>
     </PermissionBuilder>
 
@@ -884,9 +884,9 @@ const { user } = useUserStore()
             </ul>
           </AccordionContent>
         </AccordionPanel>
-        <AccordionPanel class="active-panel-out" v-if="SelectedTicketRoutes && !TicketAccordion">
+        <!-- <AccordionPanel class="active-panel-out" v-if="SelectedTicketRoutes && !TicketAccordion">
           <span>{{ SelectedTicketRoutes }}</span>
-        </AccordionPanel>
+        </AccordionPanel> -->
       </Accordion>
     </PermissionBuilder>
   </template>
