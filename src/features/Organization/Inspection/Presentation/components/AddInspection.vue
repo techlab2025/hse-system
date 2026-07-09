@@ -8,10 +8,13 @@ import InspectionForm from './InspectionForm.vue'
 
 const router = useRouter()
 const params = ref<Params | null>(null)
+const inspectionFormRef = ref<InstanceType<typeof InspectionForm> | null>(null)
 
 const addInspectionController = AddInspectionController.getInstance()
 
 const addInspection = async () => {
+  const isValid = await inspectionFormRef.value?.validateRequiredFields()
+  if (!isValid) return
   await addInspectionController.addInspection(params.value as AddInspectionParams, router)
 }
 const setParams = (data: Params) => {
@@ -22,7 +25,7 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-6 gap-4" @submit.prevent="addInspection">
-    <InspectionForm @update:data="setParams" />
+    <InspectionForm ref="inspectionFormRef" @update:data="setParams" />
 
     <div class="col-span-6 button-wrapper">
       <button type="submit" class="btn btn-primary w-full">{{ $t('save') }}</button>

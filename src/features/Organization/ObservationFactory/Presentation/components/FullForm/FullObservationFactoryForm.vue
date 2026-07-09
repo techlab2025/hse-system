@@ -582,7 +582,9 @@ const getInvalidWitnessMessage = () => {
   if (!rows.length) return ''
 
   const invalidIndex = rows.findIndex((witness: any) => !hasEmployeePayload(witness?.employee))
-  return invalidIndex === -1 ? '' : `in Witness ${invalidIndex + 1} If you choose to add a Witness, you must select a witness employee to complete this section.`
+  return invalidIndex === -1
+    ? ''
+    : `in Witness ${invalidIndex + 1} If you choose to add a Witness, you must select a witness employee to complete this section.`
 }
 
 const getInvalidInjuryMessage = () => {
@@ -664,11 +666,21 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   },
   {
     key: 'HazardType',
-    message: 'Hazard Classification Is Required',
+    message:
+      'For a Negative Observation, you must select a Hazard Classification or create a new one using the New button before continuing.',
     isMissing: () =>
       ObservationFactoryType.value !== Observation.AccidentsType &&
       saveStatus.value === SaveStatusEnum.NotSaved &&
       !hasSelectedId(HazardType.value),
+  },
+  {
+    key: 'SubHazardType',
+    message:
+      'For a Negative Observation, you must select a Hazard or create a new one using the New button before continuing.',
+    isMissing: () =>
+      ObservationFactoryType.value !== Observation.AccidentsType &&
+      saveStatus.value === SaveStatusEnum.NotSaved &&
+      !hasSelectedId(SubHazardType.value),
   },
   // {
   //   key: 'text',
@@ -1235,6 +1247,9 @@ defineExpose({
           <AddHazard @update:data="HazardDialog = false" :hazardTypeId="HazardType.id" />
         </template>
       </UpdatedCustomInputSelect>
+      <p v-if="getFieldError('SubHazardType')" class="required-field-message">
+        {{ getFieldError('SubHazardType') }}
+      </p>
     </div>
 
     <!-- IsWorkStopped -->

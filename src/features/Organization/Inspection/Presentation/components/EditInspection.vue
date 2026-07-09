@@ -14,6 +14,7 @@ const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
+const inspectionFormRef = ref<InstanceType<typeof InspectionForm> | null>(null)
 
 const showInspectionController = ShowInspectionController.getInstance()
 const state = ref(showInspectionController.state.value)
@@ -28,6 +29,8 @@ onMounted(() => {
 })
 
 const EditInspection = async (draft: boolean) => {
+  const isValid = await inspectionFormRef.value?.validateRequiredFields()
+  if (!isValid) return
   if (draft) {
     await EditInspectionController.getInstance().editInspection(params.value!, router)
   } else {
@@ -58,7 +61,7 @@ const setParams = (data: Params) => {
 
       <!--      </pre>-->
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditInspection">
-        <InspectionForm @update:data="setParams" :data="state.data!" />
+        <InspectionForm ref="inspectionFormRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>
