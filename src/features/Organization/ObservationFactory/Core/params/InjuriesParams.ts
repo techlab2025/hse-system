@@ -28,10 +28,10 @@ export default class InjuryParams implements Params {
     const data: Record<string, number | string | string[]> = {}
     if (!this.organizationEmployeeId && this.employeeName) data['employee_name'] = this.employeeName
     if (this.organizationEmployeeId) data['organization_employee_id'] = this.organizationEmployeeId
-    data['note'] = this.note
-    data['injury_type_id'] = this.injuryTypeId
-    data['is_work_stopped'] = this.isWorkStopped
-    if (!this.images.some((el) => !isBase64(el))) data['files'] = this.images
+    if (this.note) data['note'] = this.note
+    if (this.injuryTypeId) data['injury_type_id'] = this.injuryTypeId
+    if (this.isWorkStopped) data['is_work_stopped'] = this.isWorkStopped
+    if (this.images?.length && !this.images.some((el) => !isBase64(el))) data['files'] = this.images
     return data
   }
 }

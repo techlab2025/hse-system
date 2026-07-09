@@ -118,6 +118,7 @@ const hasInjuryData = (item: any) =>
   hasEmployeePayload(item?.employee) ||
   hasSectionValue(item?.text) ||
   Boolean(Number(item?.infectionTypeId?.id)) ||
+  Boolean(item?.isWorkStopped) ||
   hasSectionFiles(item?.images)
 
 const hasFatalityData = (item: any) =>
@@ -581,7 +582,7 @@ const getInvalidWitnessMessage = () => {
   if (!rows.length) return ''
 
   const invalidIndex = rows.findIndex((witness: any) => !hasEmployeePayload(witness?.employee))
-  return invalidIndex === -1 ? '' : `Witness ${invalidIndex + 1} Employee Is Required`
+  return invalidIndex === -1 ? '' : `in Witness ${invalidIndex + 1} If you choose to add a Witness, you must select a witness employee to complete this section.`
 }
 
 const getInvalidInjuryMessage = () => {
@@ -608,7 +609,9 @@ const getInvalidFatalityMessage = () => {
 
   for (const [index, fatality] of rows.entries()) {
     const rowNumber = index + 1
-    if (!hasEmployeePayload(fatality?.employee)) return `Fatality ${rowNumber} Employee Is Required`
+    // if (!hasEmployeePayload(fatality?.employee)) return `Fatality ${rowNumber} Employee Is Required`
+    if (!hasEmployeePayload(fatality?.employee))
+      return `in Fatality ${rowNumber}If you choose to add a Fatality Report, you must select the deceased employee to complete this section.`
   }
 
   return ''
@@ -881,7 +884,7 @@ defineExpose({
         /> -->
 
       <UpdatedCustomInputSelect
-        :required="false"
+        :required="true"
         :modelValue="SelectedObservationType"
         :controller="indexObservatioTyepController"
         :params="indexObservationTypeParams"
@@ -1313,14 +1316,13 @@ defineExpose({
     </div>
 
     <div
-      v-if="saveStatus == SaveStatusEnum.NotSaved"
+      v-if="
+        saveStatus == SaveStatusEnum.NotSaved && ObservationFactoryType != Observation.AccidentsType
+      "
       class="hazard-type-container incedant col-span-6 md:col-span-6"
     >
       <div class="input-wrapper radio-container incedant col-span-12 md:col-span-12">
-        <div
-          class="col-span-12 md:col-span-12"
-          v-if="ObservationFactoryType != Observation.AccidentsType"
-        >
+        <div class="col-span-12 md:col-span-12">
           <label class="radio-title">{{ $t('observation_status') }}</label>
           <div class="radio-answers flex">
             <div class="radio-selection" :class="{ selected: solved === ActionStatusEnum.CLOSED }">

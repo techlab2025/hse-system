@@ -20,9 +20,9 @@ export default class WitnessParams implements Params {
   toMap(): Record<string, number | string | string[]> {
     const data: Record<string, number | string | string[]> = {}
     if (!this.organizationEmployeeId && this.employeeName) data['employee_name'] = this.employeeName
-    data['note'] = this.note
+    if (this.note) data['note'] = this.note
     if (this.organizationEmployeeId) data['organization_employee_id'] = this.organizationEmployeeId
-    if (this.files) data['files'] = this.files
+    if (this.files?.length) data['files'] = this.files
 
     return data
   }

@@ -4,13 +4,8 @@ export default class DethParams implements Params {
   public employeeName: string
   public note: string
   public organizationEmployeeId: number
-  public img: []
-  constructor(
-    employeeName: string,
-    note: string,
-    organizationEmployeeId: number,
-    img: [],
-  ) {
+  public img: any[]
+  constructor(employeeName: string, note: string, organizationEmployeeId: number, img: any[]) {
     this.employeeName = employeeName
     this.note = note
     this.organizationEmployeeId = organizationEmployeeId
@@ -19,10 +14,10 @@ export default class DethParams implements Params {
 
   toMap(): Record<string, number | string | any> {
     const data: Record<string, number | string | any> = {}
-    data['note'] = this.note
+    if (this.note) data['note'] = this.note
     if (this.organizationEmployeeId) data['organization_employee_id'] = this.organizationEmployeeId
     if (!this.organizationEmployeeId && this.employeeName) data['employee_name'] = this.employeeName
-    if (this.img) data['files'] = this.img
+    if (this.img?.length) data['files'] = this.img
 
     return data
   }
