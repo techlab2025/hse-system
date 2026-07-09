@@ -23,6 +23,7 @@ const props = defineProps<{
 const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
 const employeeOptions = ref<TitleInterface[]>([])
+const injuryOptions = ref<TitleInterface[]>([])
 type AnswerModel = {
   text: string
   employee: TitleInterface
@@ -46,6 +47,10 @@ const fetchEmployees = async () => {
   employeeOptions.value = await fetchOriganizatioEmployeeController.fetch(
     fetchOrganizationEmployeeParams,
   )
+}
+
+const fetchInjuryTypes = async () => {
+  injuryOptions.value = await indexInjuryController.fetch(indexInjuryParams)
 }
 
 const addNewAnswer = () => {
@@ -155,7 +160,9 @@ watch(
   { immediate: true, deep: true },
 )
 
-onMounted(fetchEmployees)
+onMounted(async () => {
+  await Promise.all([fetchEmployees(), fetchInjuryTypes()])
+})
 </script>
 <template>
   <div class="template-container col-span-6 injuries-timeline">
@@ -259,9 +266,8 @@ onMounted(fetchEmployees)
 
                 <UpdatedCustomInputSelect
                   :modelValue="item.infectionTypeId"
+                  :staticOptions="injuryOptions"
                   class="input"
-                  :controller="indexInjuryController"
-                  :params="indexInjuryParams"
                   :label="$t('Type and Nature of Injury')"
                   id="injury"
                   :placeholder="$t('select your injury Classification')"

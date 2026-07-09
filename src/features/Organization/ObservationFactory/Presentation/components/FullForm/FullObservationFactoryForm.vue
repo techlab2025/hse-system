@@ -92,20 +92,54 @@ const riskLevel = ref<RiskLevelEnum | null>(RiskLevelEnum.Low)
 const isNearMiss = ref<boolean | number>(0)
 const type = ref<TypesEnum>(TypesEnum.ObservationType)
 
-const updateData = () => {
-  const getEmployeePayload = (employee: any) => {
-    const id = Number(employee?.id) || 0
-    const name = String(employee?.title || employee?.name || '').trim()
+const getEmployeePayload = (employee: any) => {
+  const id = Number(employee?.id) || 0
+  const name = String(employee?.title || employee?.name || '').trim()
 
-    return {
-      id,
-      name: id ? '' : name,
-    }
+  return {
+    id,
+    name: id ? '' : name,
   }
+}
 
+const hasEmployeePayload = (employee: any) => {
+  const payload = getEmployeePayload(employee)
+  return Boolean(payload.id || payload.name)
+}
+
+const hasSectionFiles = (files: any) => Array.isArray(files) && files.length > 0
+const hasSectionValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+
+const hasWitnessData = (item: any) =>
+  hasEmployeePayload(item?.employee) || hasSectionValue(item?.text)
+
+const hasInjuryData = (item: any) =>
+  hasEmployeePayload(item?.employee) ||
+  hasSectionValue(item?.text) ||
+  Boolean(Number(item?.infectionTypeId?.id)) ||
+  hasSectionFiles(item?.images)
+
+const hasFatalityData = (item: any) =>
+  hasEmployeePayload(item?.employee) || hasSectionValue(item?.text) || hasSectionFiles(item?.images)
+
+const updateData = () => {
   const rootCausesIdParams = RootCauses.value?.map((item) => {
     return new RootCausesIdParams({ root_cause_id: item.id })
   })
+
+  const injuryRows =
+    Accidents?.value?.isAnotherMeeting === 1
+      ? (Accidents.value?.accidentsData ?? []).filter(hasInjuryData)
+      : []
+  const fatalityRows =
+    Fatalities?.value?.isAnotherMeeting === 1
+      ? (Fatalities.value?.DethsData ?? []).filter(hasFatalityData)
+      : []
+  const witnessRows =
+    witnesses?.value?.isAnotherMeeting === 1
+      ? (witnesses.value?.AllWitnessesData ?? []).filter(hasWitnessData)
+      : []
 
   console.log(
     Accidents.value?.accidentsData?.map((item: any) => item),
@@ -170,49 +204,46 @@ const updateData = () => {
         date: date.value ?? null,
         capa: [],
         isAction: takeAction.value === 'yes' ? 1 : 0,
-        isThereInjuries: Accidents?.value?.isAnotherMeeting === 1 ? true : false,
-        isThereDeath: Fatalities?.value?.isAnotherMeeting === 1 ? true : false,
-        isThereWitnessStatement: witnesses?.value?.isAnotherMeeting === 1 ? true : false,
-        Injury:
-          Accidents?.value?.isAnotherMeeting === 1
-            ? Accidents.value?.accidentsData?.map((item: any) => {
-                const employee = getEmployeePayload(item?.employee)
-                return new InjuryParams(
-                  employee.id,
-                  employee.name,
-                  item?.text || null,
-                  item?.infectionTypeId?.id || 0,
-                  item?.isWorkStopped ? 1 : 0,
-                  item?.images?.map((el: any) => el.file) || [],
-                )
-              })
-            : [],
-        deaths:
-          Fatalities?.value?.isAnotherMeeting === 1
-            ? Fatalities?.value.DethsData?.map((item: any) => {
-                const employee = getEmployeePayload(item?.employee)
-                return new DethParams(
-                  employee.name,
-                  item?.text || null,
-                  employee.id,
-                  item?.images?.map((el: any) => el.file) || [],
-                )
-              })
-            : // ? [
-              //   new DethParams(
-              //     Fatalities?.value?.text || '',
-              //     Fatalities?.value?.SelectedEmployee || 0,
-              //     Fatalities?.value?.img || [],
-              //   ),
-              // ]
-              [],
-        witnesses:
-          witnesses?.value?.isAnotherMeeting === 1
-            ? witnesses?.value?.AllWitnessesData?.map((w: any) => {
-                const employee = getEmployeePayload(w?.employee)
-                return new WitnessParams(employee.name, w?.text || '', employee.id)
-              })
-            : [],
+        isThereInjuries: injuryRows.length ? true : null,
+        isThereDeath: fatalityRows.length ? true : null,
+        isThereWitnessStatement: witnessRows.length ? true : null,
+        Injury: injuryRows.length
+          ? injuryRows.map((item: any) => {
+              const employee = getEmployeePayload(item?.employee)
+              return new InjuryParams(
+                employee.id,
+                employee.name,
+                item?.text || null,
+                item?.infectionTypeId?.id || 0,
+                item?.isWorkStopped ? 1 : 0,
+                item?.images?.map((el: any) => el.file) || [],
+              )
+            })
+          : [],
+        deaths: fatalityRows.length
+          ? fatalityRows.map((item: any) => {
+              const employee = getEmployeePayload(item?.employee)
+              return new DethParams(
+                employee.name,
+                item?.text || null,
+                employee.id,
+                item?.images?.map((el: any) => el.file) || [],
+              )
+            })
+          : // ? [
+            //   new DethParams(
+            //     Fatalities?.value?.text || '',
+            //     Fatalities?.value?.SelectedEmployee || 0,
+            //     Fatalities?.value?.img || [],
+            //   ),
+            // ]
+            [],
+        witnesses: witnessRows.length
+          ? witnessRows.map((w: any) => {
+              const employee = getEmployeePayload(w?.employee)
+              return new WitnessParams(employee.name, w?.text || '', employee.id)
+            })
+          : [],
 
         severity: SelectedSeverity.value?.id,
         Likelihood: SelectedLikelihood.value?.id,
@@ -546,25 +577,22 @@ const shouldValidateIncidentSections = () =>
 const getInvalidWitnessMessage = () => {
   if (!shouldValidateIncidentSections() || witnesses.value?.isAnotherMeeting !== 1) return ''
 
-  const rows = witnesses.value?.AllWitnessesData ?? []
-  if (!rows.length) return 'Witness Employee Is Required'
+  const rows = (witnesses.value?.AllWitnessesData ?? []).filter(hasWitnessData)
+  if (!rows.length) return ''
 
-  const invalidIndex = rows.findIndex((witness: any) => !hasEmployeeValue(witness?.employee))
+  const invalidIndex = rows.findIndex((witness: any) => !hasEmployeePayload(witness?.employee))
   return invalidIndex === -1 ? '' : `Witness ${invalidIndex + 1} Employee Is Required`
 }
 
 const getInvalidInjuryMessage = () => {
   if (!shouldValidateIncidentSections() || Accidents.value?.isAnotherMeeting !== 1) return ''
 
-  const rows = Accidents.value?.accidentsData ?? []
-  if (!rows.length) return 'Injury Data Is Required'
+  const rows = (Accidents.value?.accidentsData ?? []).filter(hasInjuryData)
+  if (!rows.length) return ''
 
   for (const [index, injury] of rows.entries()) {
     const rowNumber = index + 1
-    if (!hasEmployeeValue(injury?.employee)) return `Injury ${rowNumber} Employee Is Required`
-    if (!hasSelectedId(injury?.infectionTypeId)) return `Injury ${rowNumber} Type Is Required`
-    if (!hasValue(injury?.text)) return `Injury ${rowNumber} Description Is Required`
-    if (!hasFiles(injury?.images)) return `Injury ${rowNumber} Evidence Is Required`
+    if (!hasEmployeePayload(injury?.employee)) return `Injury ${rowNumber} Employee Is Required`
   }
 
   return ''
@@ -573,14 +601,12 @@ const getInvalidInjuryMessage = () => {
 const getInvalidFatalityMessage = () => {
   if (!shouldValidateIncidentSections() || Fatalities.value?.isAnotherMeeting !== 1) return ''
 
-  const rows = Fatalities.value?.DethsData ?? []
-  if (!rows.length) return 'Fatality Data Is Required'
+  const rows = (Fatalities.value?.DethsData ?? []).filter(hasFatalityData)
+  if (!rows.length) return ''
 
   for (const [index, fatality] of rows.entries()) {
     const rowNumber = index + 1
-    if (!hasEmployeeValue(fatality?.employee)) return `Fatality ${rowNumber} Employee Is Required`
-    if (!hasValue(fatality?.text)) return `Fatality ${rowNumber} Circumstances Is Required`
-    if (!hasFiles(fatality?.images)) return `Fatality ${rowNumber} Evidence Is Required`
+    if (!hasEmployeePayload(fatality?.employee)) return `Fatality ${rowNumber} Employee Is Required`
   }
 
   return ''

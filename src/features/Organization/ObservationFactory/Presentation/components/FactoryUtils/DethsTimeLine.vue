@@ -13,6 +13,7 @@ const emit = defineEmits(['update:data'])
 
 const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
+const employeeOptions = ref<TitleInterface[]>([])
 const Answers = ref([
   {
     text: ' ',
@@ -39,7 +40,14 @@ const UpdateData = () => {
   Answers.value.forEach(ensureEmployee)
   emit('update:data', Answers.value)
 }
-onMounted(() => {
+const fetchEmployees = async () => {
+  employeeOptions.value = await fetchOriganizatioEmployeeController.fetch(
+    fetchOrganizationEmployeeParams,
+  )
+}
+
+onMounted(async () => {
+  await fetchEmployees()
   emit('update:data', Answers.value)
 })
 
@@ -102,8 +110,7 @@ const toggleMode = (index: number, isManual: boolean) => {
             <div class="grid grid-cols-12 gap-2">
               <div class="col-span-6 md:col-span-6 input-wrapper w-full">
                 <UpdatedCustomInputSelect
-                  :controller="fetchOriganizatioEmployeeController"
-                  :params="fetchOrganizationEmployeeParams"
+                  :staticOptions="employeeOptions"
                   v-model="item.employee"
                   placeholder="Select Employee"
                   class="mt-4 mr-2 input"
