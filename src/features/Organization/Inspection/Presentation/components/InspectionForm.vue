@@ -253,12 +253,6 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
       SelectedAssigned.value === AssignToTypeEnum.MACHINE &&
       !hasSelectedId(SelectedEquipment.value),
   },
-  {
-    key: 'InspectionTemplate',
-    message:
-      'Please select the Inspection Template that will be used for this Equipment before continuing.',
-    isMissing: () => !selectedTemplateId(),
-  },
 
   {
     key: 'ProjectZoneId',
@@ -282,6 +276,12 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     key: 'InspectionGeneralForm',
     message: 'Inspection Schedule Is Required',
     isMissing: () => !selectedGeneralData(),
+  },
+  {
+    key: 'InspectionTemplate',
+    message:
+      'Please select the Inspection Template that will be used for this Equipment before continuing.',
+    isMissing: () => !selectedTemplateId(),
   },
   {
     key: 'InspectionDate',
