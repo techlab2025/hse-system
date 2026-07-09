@@ -279,8 +279,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   },
   {
     key: 'InspectionTemplate',
-    message:
-      'Please select the Inspection Template that will be used for this Equipment before continuing.',
+    message: 'Please select the Inspection Template that will be used before continuing.',
     isMissing: () => !selectedTemplateId(),
   },
   {
