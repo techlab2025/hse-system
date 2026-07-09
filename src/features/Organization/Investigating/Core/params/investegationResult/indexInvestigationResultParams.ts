@@ -27,7 +27,7 @@ export default class IndexInvestigationResultParams implements Params {
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
-    if (this.ObservatoinRiskLevel) data['observation_risk_level'] = this.ObservatoinRiskLevel
+    if (this.ObservatoinRiskLevel) data['type'] = this.ObservatoinRiskLevel
 
     return data
   }

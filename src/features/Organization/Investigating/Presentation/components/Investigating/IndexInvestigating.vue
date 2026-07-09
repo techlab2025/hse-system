@@ -127,18 +127,18 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
 
 const GethighObservationCount = (data: any): number => {
   console.log(
-    data.filter((el) => el.observation?.riskLevel == RiskLevelEnum.High),
-    'el.observation?.riskLevel',
+    data.filter((el) => el.observation.type),
+    'elll',
   )
-  return data.filter((el) => el.observation?.riskLevel == RiskLevelEnum.High).length
+  return data.filter(
+    (el) =>
+      el.observation?.type == Observation.ObservationType ||
+      el.observation?.type == Observation.HazardType,
+  ).length
 }
 
-const GetMediumObservationCount = (data: any): number => {
-  console.log(
-    data.filter((el) => el.observation?.riskLevel === RiskLevelEnum.Medium).length,
-    'data.map((el) => el.observation?.riskLevel === RiskLevelEnum.Medium).length',
-  )
-  return data.filter((el) => el.observation?.riskLevel === RiskLevelEnum.Medium).length
+const GerIncidantCount = (data: any): number => {
+  return data.filter((el) => el.observation?.type === Observation.AccidentsType).length
 }
 // const GetLowObservationCount = (data: any): number => {
 // //   console.log(data.filter((el) => el.observation?.riskLevel === RiskLevelEnum.Low).length, "data.map((el) => el.observation?.riskLevel === RiskLevelEnum.Low).length");
@@ -153,11 +153,12 @@ const GetMediumObservationCount = (data: any): number => {
       <div class="grid grid-cols-12 gap-4 index-investigating">
         <!-- Sidebar -->
         <!--  :mediumObservationCount="GetMediumObservationCount(state.data)" -->
+
         <InvestigatingSidebar
           :selectedRiskLevel="observationRiskLevel"
           :highObservationCount="GethighObservationCount(state.data)"
           @update:data="GetRiskLevel"
-          :mediumObservationCount="GetMediumObservationCount(state.data)"
+          :mediumObservationCount="GerIncidantCount(state.data)"
           :allIncident="state.pagination?.total"
         />
 
@@ -188,7 +189,6 @@ const GetMediumObservationCount = (data: any): number => {
                             class="first-label-item-primary"
                             :class="GetObservationRiskLevel(item?.observation?.riskLevel)"
                           >
-
                             <!-- {{
                               GetObservationRiskLevel(item?.observation?.riskLevel) +
                               ' ' +
@@ -202,13 +202,12 @@ const GetMediumObservationCount = (data: any): number => {
                           <p :class="`status ${ReturnStatusTitle(item?.status)}`">
                             {{ ReturnStatusTitle(item?.status) }}
                           </p>
-
                         </div>
+                        <p class="label-item-secondary title">
+                          {{ GetInvestigationType(item?.observation?.type) }} title
+                          <span>{{ item?.observation?.title }}</span>
+                        </p>
                         <div class="first-card-details">
-                          <p class="label-item-secondary">
-                             {{ GetInvestigationType(item?.observation?.type) }}  {{ $t(` title`) }}:
-                            <span>{{ item?.observation?.title }}</span>
-                          </p>
                           <p class="label-item-secondary">
                             {{ $t('Date & Time') }}:
                             <span>{{ item?.date }} , {{ item?.observation?.time }}</span>
@@ -469,7 +468,7 @@ const GetMediumObservationCount = (data: any): number => {
 .first-card-header {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 12px;
   height: 100%;
 }
 
@@ -571,6 +570,12 @@ const GetMediumObservationCount = (data: any): number => {
   font-size: 0.88rem;
   font-weight: 800;
   line-height: 1.55;
+}
+.label-item-secondary.title {
+  font-size: 1rem;
+  width: fit-content;
+  background-color: none !important;
+  border: none !important;
 }
 
 .label-item-primary span,

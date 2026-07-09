@@ -1,17 +1,18 @@
 <script lang="ts" setup>
 import booksImage from '@/assets/images/books.png'
-import { ref, watch } from 'vue';
-import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum';
+import { ref, watch } from 'vue'
+import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
+import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   highObservationCount: number
   mediumObservationCount: number
   selectedRiskLevel: RiskLevelEnum | null
-  allIncident:number
+  allIncident: number
 }>()
-const ObservationRiskLevel = ref<RiskLevelEnum | null>(props.selectedRiskLevel)
-const selectRisk = (value: RiskLevelEnum | null) => {
+const ObservationRiskLevel = ref<Observation | null>()
+const selectRisk = (value: Observation | null) => {
   ObservationRiskLevel.value = value
   emit('update:data', value)
 }
@@ -29,10 +30,20 @@ const selectRisk = (value: RiskLevelEnum | null) => {
           </div>
           <div class="sidebar-card-details">
             <ul class="sidebar-list">
-              <li @click="selectRisk(null)" :class="{ active: ObservationRiskLevel === null }">
+              <li
+                @click="selectRisk(Observation.AccidentsType)"
+                :class="{ active: ObservationRiskLevel === null }"
+              >
                 All Incident
                 <!-- <span>({{ props.highObservationCount + props.mediumObservationCount }})</span> -->
-                <span>({{ allIncident }})</span>
+                <span>({{ mediumObservationCount }})</span>
+              </li>
+              <li
+                @click="selectRisk(Observation.ObservationType)"
+                :class="{ active: ObservationRiskLevel === null }"
+              >
+                Observation
+                <span>({{ highObservationCount }})</span>
               </li>
 
               <!-- <li @click="selectRisk(RiskLevelEnum.High)"
@@ -46,7 +57,6 @@ const selectRisk = (value: RiskLevelEnum | null) => {
                 Medium observation
                 <span>({{ props.mediumObservationCount }})</span>
               </li> -->
-
             </ul>
           </div>
         </div>
