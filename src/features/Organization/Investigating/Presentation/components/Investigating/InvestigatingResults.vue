@@ -42,7 +42,7 @@ import AccordionContent from 'primevue/accordioncontent'
 import InvestigationFormSkilaton from '../../SubComponents/InvestigationFormSkilaton.vue'
 import DownArrow from '@/shared/icons/DownArrow.vue'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum.ts'
-
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 interface items {
   title: string
@@ -116,6 +116,8 @@ const ShoeInvestegationResultDetails = async () => {
 const openDialog = ref(false)
 
 const AddEnvestigatingResult = async () => {
+  if (!(await validateRequiredFields())) return
+
   const RootCausesIds = RootCauses.value.map(
     (el) => new RootCausesIdParams({ root_cause_id: el.id }),
   )
@@ -381,8 +383,6 @@ watch(
   },
 )
 
-
-
 const ActivePanel = ref<string | null>('1')
 const isPanelOpen = (panel: string) => ActivePanel.value === panel
 
@@ -412,6 +412,98 @@ watch(ActivePanel, (panel, previousPanel) => {
     scrollToActivePanel(panel)
   }
 })
+
+type RequiredFieldRule = {
+  key: string
+  message: string
+  panel: string
+  isMissing: () => boolean
+}
+
+const requiredFieldErrors = ref<Record<string, string>>({})
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+const timelineFieldKey = (field: 'time' | 'description', index: number) =>
+  `eventTimelineItems.${index}.${field}`
+
+const requiredFields = computed<RequiredFieldRule[]>(() => [
+  // ...eventTimelineItems.value.flatMap((item, index) => [
+  //   {
+  //     key: timelineFieldKey('time', index),
+  //     message: `Event ${index + 1} Time Is Required`,
+  //     panel: '3',
+  //     isMissing: () => !item.time,
+  //   },
+  //   {
+  //     key: timelineFieldKey('description', index),
+  //     message: `Event ${index + 1} Description Is Required`,
+  //     panel: '3',
+  //     isMissing: () => !hasValue(item.description),
+  //   },
+  // ]),
+  // {
+  //   key: 'RootCauses',
+  //   message: 'Root Cause Is Required',
+  //   panel: '7',
+  //   isMissing: () => !RootCauses.value?.length,
+  // },
+  // {
+  //   key: 'CauseOfAction',
+  //   message: 'Root Cause Factors Is Required',
+  //   panel: '7',
+  //   isMissing: () => !CauseOfAction.value?.factors?.length,
+  // },
+  // {
+  //   key: 'lessonLearnt',
+  //   message: 'Lesson Learnt Is Required',
+  //   panel: '9',
+  //   isMissing: () => !hasValue(lessonLearnt.value),
+  // },
+  // {
+  //   key: 'anotherMeeting',
+  //   message: 'Another Meeting Status Is Required',
+  //   panel: '12',
+  //   isMissing: () =>
+  //     anotherMeeting.value?.isAnother === null || anotherMeeting.value?.isAnother === undefined,
+  // },
+])
+
+const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
+
+const clearResolvedRequiredErrors = () => {
+  requiredFields.value.forEach((field) => {
+    if (requiredFieldErrors.value[field.key] && !field.isMissing()) {
+      const { [field.key]: _removed, ...rest } = requiredFieldErrors.value
+      requiredFieldErrors.value = rest
+    }
+  })
+}
+
+const scrollToRequiredField = async (field: RequiredFieldRule) => {
+  ActivePanel.value = field.panel
+  await nextTick()
+  window.setTimeout(() => {
+    document.querySelector<HTMLElement>(`[data-required-field="${field.key}"]`)?.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+    })
+  }, 180)
+}
+
+const validateRequiredFields = async () => {
+  clearResolvedRequiredErrors()
+  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
+    errors[field.key] = field.message
+    return errors
+  }, {})
+
+  if (!missedFields.length) return true
+
+  new OpenWarningDilaog(missedFields[0].message).openDialog()
+  await scrollToRequiredField(missedFields[0])
+  return false
+}
 </script>
 <template>
   <DataStatus :controller="state">
@@ -452,7 +544,7 @@ watch(ActivePanel, (panel, previousPanel) => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>Investigation Team </p>
+                <p>Investigation Team</p>
                 <span class="arrow" :class="{ open: isPanelOpen('2') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
@@ -557,7 +649,10 @@ watch(ActivePanel, (panel, previousPanel) => {
                       </div>
 
                       <div class="event-timeline-fields">
-                        <div class="input-wrapper">
+                        <div
+                          class="input-wrapper"
+                          :data-required-field="timelineFieldKey('time', index)"
+                        >
                           <label :for="`event_time_${index}`">{{ $t('time') }}</label>
                           <DatePicker
                             :id="`event_time_${index}`"
@@ -568,9 +663,18 @@ watch(ActivePanel, (panel, previousPanel) => {
                             :placeholder="`Enter the time `"
                             @update:model-value="updateIncidentTimelineDescription"
                           />
+                          <p
+                            v-if="getFieldError(timelineFieldKey('time', index))"
+                            class="required-field-message"
+                          >
+                            {{ getFieldError(timelineFieldKey('time', index)) }}
+                          </p>
                         </div>
 
-                        <div class="input-wrapper event-description-field">
+                        <div
+                          class="input-wrapper event-description-field"
+                          :data-required-field="timelineFieldKey('description', index)"
+                        >
                           <label :for="`event_description_${index}`">{{ $t('description') }}</label>
                           <textarea
                             :id="`event_description_${index}`"
@@ -580,6 +684,12 @@ watch(ActivePanel, (panel, previousPanel) => {
                             :placeholder="'What happened? (in detail)'"
                             @input="updateIncidentTimelineDescription"
                           ></textarea>
+                          <p
+                            v-if="getFieldError(timelineFieldKey('description', index))"
+                            class="required-field-message"
+                          >
+                            {{ getFieldError(timelineFieldKey('description', index)) }}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -592,7 +702,11 @@ watch(ActivePanel, (panel, previousPanel) => {
               </section>
             </AccordionContent>
           </AccordionPanel>
-          <AccordionPanel value="4" data-investigation-panel="4" v-if="state?.data?.observation?.type == Observation.AccidentsType">
+          <AccordionPanel
+            value="4"
+            data-investigation-panel="4"
+            v-if="state?.data?.observation?.type == Observation.AccidentsType"
+          >
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
@@ -637,7 +751,10 @@ watch(ActivePanel, (panel, previousPanel) => {
             </AccordionHeader>
             <AccordionContent>
               <div class="investigating-header-container">
-                <div class="incidant-description col-span-2" v-if="state?.data?.observation?.action ">
+                <div
+                  class="incidant-description col-span-2"
+                  v-if="state?.data?.observation?.action"
+                >
                   <p class="title">{{ $t('Immediate Action Retrieval') }}</p>
                   <p class="description">{{ state?.data?.observation?.action }}</p>
                 </div>
@@ -656,7 +773,7 @@ watch(ActivePanel, (panel, previousPanel) => {
             <AccordionContent>
               <FiveWhyQuestions @update:data="setFiveWhyQuestions" />
               <!-- root causes -->
-              <div class="input-wrapper w-full root-cause-panel">
+              <div class="input-wrapper w-full root-cause-panel" data-required-field="RootCauses">
                 <UpdatedCustomInputSelect
                   :modelValue="RootCauses"
                   class="input"
@@ -678,8 +795,16 @@ watch(ActivePanel, (panel, previousPanel) => {
                     <AddRootCauses @close:data="RootCausesDialog = false" />
                   </template>
                 </UpdatedCustomInputSelect>
+                <p v-if="getFieldError('RootCauses')" class="required-field-message">
+                  {{ getFieldError('RootCauses') }}
+                </p>
               </div>
-              <CauseOfAccidant @update:data="setCauseOfAction" />
+              <div data-required-field="CauseOfAction">
+                <CauseOfAccidant @update:data="setCauseOfAction" />
+                <p v-if="getFieldError('CauseOfAction')" class="required-field-message">
+                  {{ getFieldError('CauseOfAction') }}
+                </p>
+              </div>
             </AccordionContent>
           </AccordionPanel>
           <AccordionPanel value="8" data-investigation-panel="8">
@@ -706,14 +831,17 @@ watch(ActivePanel, (panel, previousPanel) => {
               <section class="lesson-section">
                 <div class="section-heading">
                   <!-- <span>Lesson learnt</span> -->
-                  <h2>Lessons Learned </h2>
+                  <h2>Lessons Learned</h2>
                 </div>
-                <div class="input-wrapper">
+                <div class="input-wrapper" data-required-field="lessonLearnt">
                   <textarea
                     id="lesson_learnt"
                     v-model="lessonLearnt"
                     placeholder="Write the lesson learnt, what changed, and what should be shared with other teams."
                   ></textarea>
+                  <p v-if="getFieldError('lessonLearnt')" class="required-field-message">
+                    {{ getFieldError('lessonLearnt') }}
+                  </p>
                 </div>
               </section>
             </AccordionContent>
@@ -789,7 +917,12 @@ watch(ActivePanel, (panel, previousPanel) => {
               </div>
             </AccordionHeader>
             <AccordionContent>
-              <AnotherMeeting @update:data="setAnotherMeeting" />
+              <div data-required-field="anotherMeeting">
+                <AnotherMeeting @update:data="setAnotherMeeting" />
+                <p v-if="getFieldError('anotherMeeting')" class="required-field-message">
+                  {{ getFieldError('anotherMeeting') }}
+                </p>
+              </div>
               <div class="btns">
                 <!-- <CloseInvestegaionDialog :investegationId="state.data?.id" /> -->
                 <router-link to="/organization/investigating" class="btn btn-cancel">{{
@@ -967,6 +1100,13 @@ watch(ActivePanel, (panel, previousPanel) => {
     box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.16) !important;
     outline: none !important;
   }
+}
+
+.required-field-message {
+  margin-top: 0.35rem;
+  color: #dc2626;
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 
 .lesson-section {
@@ -1162,9 +1302,8 @@ watch(ActivePanel, (panel, previousPanel) => {
   .input-wrapper {
     margin: 0;
     width: 75% !important;
-    &:first-child{
+    &:first-child {
       width: 25% !important;
-
     }
     textarea {
       max-height: 50px;

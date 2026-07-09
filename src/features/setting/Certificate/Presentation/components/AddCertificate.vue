@@ -10,10 +10,12 @@ import AddCertificateController from '../controllers/addCertificateController'
 const router = useRouter()
 const params = ref<Params | null>(null)
 const formKey = ref(0)
+const formRef = ref<InstanceType<typeof CertificateForm> | null>(null)
 const emit = defineEmits(['update:data'])
 const addCertificateController = AddCertificateController.getInstance()
 
 const addCertificate = async () => {
+  if (!(await formRef.value?.validateRequiredFields())) return
   await addCertificateController.addCertificate(params.value as AddCertificateParams, router)
   emit('update:data')
 }
@@ -22,6 +24,7 @@ const setParams = (data: Params) => {
 }
 
 const addcertificate = async () => {
+  if (!(await formRef.value?.validateRequiredFields())) return
   const state = await addCertificateController.addCertificate(
     params.value as AddCertificateParams,
     router,
@@ -37,7 +40,7 @@ const route = useRoute()
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addCertificate">
-    <CertificateForm :key="formKey" @update:data="setParams" />
+    <CertificateForm ref="formRef" :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
       <button

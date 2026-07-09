@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, markRaw, onMounted, ref, watch } from 'vue'
+import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
@@ -46,6 +46,7 @@ import OwnedIcon from '@/shared/icons/OwnedIcon.vue'
 import RentIcon from '@/shared/icons/RentIcon.vue'
 import AddWhereHouse from '@/features/Organization/WhereHouse/Presentation/components/AddWhereHouse.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 // import AddWhereHouse from '@/views/Organization/WhereHouse/AddWhereHouse.vue'
 
 const emit = defineEmits(['update:data'])
@@ -633,6 +634,108 @@ const GetEquipmentTitle = (equipmenttype: EquipmentTypesEnum) => {
 const WarehouseDialog = ref(false)
 import Checkbox from 'primevue/checkbox'
 import CheckboxGroup from 'primevue/checkboxgroup'
+
+type RequiredFieldRule = {
+  key: string
+  message: string
+  isMissing: () => boolean
+}
+
+const requiredFieldErrors = ref<Record<string, string>>({})
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+const hasLangValue = () => langs.value.some((lang) => hasValue(lang.title))
+const hasSelectedId = (value?: TitleInterface | null) => Boolean(value?.id)
+
+const requiredFields = computed<RequiredFieldRule[]>(() => [
+  {
+    key: 'langs',
+    message: `${GetEquipmentTitle(activeTab.value)} Name Is Required`,
+    isMissing: () => !hasLangValue(),
+  },
+  {
+    key: 'equipmentType',
+    message: `${GetEquipmentTitle(activeTab.value)} Type Is Required`,
+    isMissing: () => !hasSelectedId(equipmentType.value),
+  },
+  {
+    key: 'deviceStatus',
+    message: 'Status Is Required',
+    isMissing: () =>
+      user?.type === OrganizationTypeEnum.ORGANIZATION &&
+      (deviceStatus.value === null || deviceStatus.value === undefined),
+  },
+  {
+    key: 'SelectedContractor',
+    message: 'Contractor Is Required',
+    isMissing: () =>
+      user?.type === OrganizationTypeEnum.ORGANIZATION &&
+      deviceStatus.value === EquipmentStatus.RENT &&
+      !hasSelectedId(SelectedContractor.value),
+  },
+  {
+    key: 'SelectedRentType',
+    message: 'Rent Type Is Required',
+    isMissing: () =>
+      user?.type === OrganizationTypeEnum.ORGANIZATION &&
+      deviceStatus.value === EquipmentStatus.RENT &&
+      !hasSelectedId(SelectedRentType.value),
+  },
+  {
+    key: 'Rent',
+    message: 'Rent Period Is Required',
+    isMissing: () =>
+      user?.type === OrganizationTypeEnum.ORGANIZATION &&
+      deviceStatus.value === EquipmentStatus.RENT &&
+      (!hasValue(Rent.value) || Number(Rent.value) < 1),
+  },
+  {
+    key: 'StartDate',
+    message: 'Rent Start Date Is Required',
+    isMissing: () =>
+      user?.type === OrganizationTypeEnum.ORGANIZATION &&
+      deviceStatus.value === EquipmentStatus.RENT &&
+      !StartDate.value,
+  },
+])
+
+const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
+
+const clearResolvedRequiredErrors = () => {
+  requiredFields.value.forEach((field) => {
+    if (requiredFieldErrors.value[field.key] && !field.isMissing()) {
+      const { [field.key]: _removed, ...rest } = requiredFieldErrors.value
+      requiredFieldErrors.value = rest
+    }
+  })
+}
+
+const scrollToRequiredField = async (key: string) => {
+  await nextTick()
+  document.querySelector<HTMLElement>(`[data-required-field="${key}"]`)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
+}
+
+const validateRequiredFields = async () => {
+  clearResolvedRequiredErrors()
+  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
+    errors[field.key] = field.message
+    return errors
+  }, {})
+
+  if (!missedFields.length) return true
+
+  new OpenWarningDilaog(missedFields[0].message).openDialog()
+  await scrollToRequiredField(missedFields[0].key)
+  return false
+}
+
+defineExpose({
+  validateRequiredFields,
+})
 </script>
 
 <template>
@@ -664,13 +767,16 @@ import CheckboxGroup from 'primevue/checkboxgroup'
     </div>
 
     <div class="grid grid-cols-2 gap-6 mt-8">
-      <div class="col-span-2 md:col-span-1">
+      <div class="col-span-2 md:col-span-1" data-required-field="langs">
         <LangTitleInput
           :label="`${GetEquipmentTitle(activeTab)} Name`"
           :langs="langDefault"
           :modelValue="langs"
           @update:modelValue="setLangs"
         />
+        <p v-if="getFieldError('langs')" class="required-field-message">
+          {{ getFieldError('langs') }}
+        </p>
       </div>
 
       <div class="col-span-2 md:col-span-1 flex flex-col gap-2 input-wrapper" v-if="!data?.id">
@@ -689,7 +795,7 @@ import CheckboxGroup from 'primevue/checkboxgroup'
         />
       </div>
 
-      <div class="col-span-2 md:col-span-1">
+      <div class="col-span-2 md:col-span-1" data-required-field="equipmentType">
         <UpdatedCustomInputSelect
           @update:reload="GetEquipmentType"
           :modelValue="equipmentType"
@@ -709,6 +815,9 @@ import CheckboxGroup from 'primevue/checkboxgroup'
             <AddEquipmentType @close:data="EquipmentTypeDialog = false" />
           </template>
         </UpdatedCustomInputSelect>
+        <p v-if="getFieldError('equipmentType')" class="required-field-message">
+          {{ getFieldError('equipmentType') }}
+        </p>
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
@@ -753,6 +862,7 @@ import CheckboxGroup from 'primevue/checkboxgroup'
       <div
         v-if="user?.type === OrganizationTypeEnum.ORGANIZATION"
         class="col-span-2 flex item-center justify-start gap-4"
+        data-required-field="deviceStatus"
       >
         <div
           class="radio-wrapper"
@@ -780,6 +890,9 @@ import CheckboxGroup from 'primevue/checkboxgroup'
             @change="UpdateDeviceStatus"
           />
         </div>
+        <p v-if="getFieldError('deviceStatus')" class="required-field-message">
+          {{ getFieldError('deviceStatus') }}
+        </p>
       </div>
 
       <div
@@ -787,6 +900,7 @@ import CheckboxGroup from 'primevue/checkboxgroup'
           deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
         "
         class="col-span-2 md:col-span-1"
+        data-required-field="SelectedContractor"
       >
         <UpdatedCustomInputSelect
           :modelValue="SelectedContractor"
@@ -806,6 +920,9 @@ import CheckboxGroup from 'primevue/checkboxgroup'
             <AddContractor @update:data="ContractorDialog = false" />
           </template>
         </UpdatedCustomInputSelect>
+        <p v-if="getFieldError('SelectedContractor')" class="required-field-message">
+          {{ getFieldError('SelectedContractor') }}
+        </p>
       </div>
 
       <div
@@ -813,6 +930,7 @@ import CheckboxGroup from 'primevue/checkboxgroup'
           deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
         "
         class="col-span-2 md:col-span-1"
+        data-required-field="SelectedRentType"
       >
         <CustomSelectInput
           :staticOptions="RentTypes"
@@ -822,6 +940,9 @@ import CheckboxGroup from 'primevue/checkboxgroup'
           placeholder="Selected Rent Type.."
           @update:modelValue="setRentType"
         />
+        <p v-if="getFieldError('SelectedRentType')" class="required-field-message">
+          {{ getFieldError('SelectedRentType') }}
+        </p>
       </div>
       <div class="col-span-2 md:col-span-1" v-if="!data?.id">
         <!-- <CustomSelectInput :controller="indexWhereHouseController" :params="indexWhereHouseParams"
@@ -853,6 +974,7 @@ import CheckboxGroup from 'primevue/checkboxgroup'
         v-if="
           deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
         "
+        data-required-field="Rent"
       >
         <label for="rent-time"
           >Rent {{ RentTypes.find((el) => el.id == SelectedRentType?.id)?.title }}</label
@@ -865,6 +987,9 @@ import CheckboxGroup from 'primevue/checkboxgroup'
           v-model="Rent"
           @input="setRentTime"
         />
+        <p v-if="getFieldError('Rent')" class="required-field-message">
+          {{ getFieldError('Rent') }}
+        </p>
       </div>
 
       <div
@@ -872,6 +997,7 @@ import CheckboxGroup from 'primevue/checkboxgroup'
         v-if="
           deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
         "
+        data-required-field="StartDate"
       >
         <label>{{ $t('start_date') }}</label>
         <DatePicker
@@ -881,6 +1007,9 @@ import CheckboxGroup from 'primevue/checkboxgroup'
           :showTime="true"
           @update:modelValue="setStartDate"
         />
+        <p v-if="getFieldError('StartDate')" class="required-field-message">
+          {{ getFieldError('StartDate') }}
+        </p>
       </div>
 
       <div
@@ -1027,5 +1156,12 @@ import CheckboxGroup from 'primevue/checkboxgroup'
       justify-content: center;
     } */
   }
+}
+
+.required-field-message {
+  margin-top: 0.35rem;
+  color: #dc2626;
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 </style>

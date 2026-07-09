@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, markRaw, onMounted, ref, watch } from 'vue'
+import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 
@@ -25,6 +25,7 @@ import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import RadioButton from 'primevue/radiobutton'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import { CertificateTypeEnum } from '../../Core/Enums/CertificateTypeEnum'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const emit = defineEmits(['update:data'])
 
@@ -310,10 +311,75 @@ const updateCertificateType = (data: TitleInterface) => {
   console.log(certificateType.value, 'certificateType')
   updateData()
 }
+
+type RequiredFieldRule = {
+  key: string
+  message: string
+  isMissing: () => boolean
+}
+
+const requiredFieldErrors = ref<Record<string, string>>({})
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+const hasLangValue = () => langs.value.some((lang) => hasValue(lang.title))
+
+const requiredFields = computed<RequiredFieldRule[]>(() => [
+  {
+    key: 'langs',
+    message: 'Name Is Required',
+    isMissing: () => !hasLangValue(),
+  },
+  {
+    key: 'industry',
+    message: 'Industry Is Required',
+    isMissing: () =>
+      user.user?.type === OrganizationTypeEnum.ADMIN &&
+      !allIndustries.value &&
+      !industry.value?.length,
+  },
+])
+
+const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
+
+const clearResolvedRequiredErrors = () => {
+  requiredFields.value.forEach((field) => {
+    if (requiredFieldErrors.value[field.key] && !field.isMissing()) {
+      const { [field.key]: _removed, ...rest } = requiredFieldErrors.value
+      requiredFieldErrors.value = rest
+    }
+  })
+}
+
+const scrollToRequiredField = async (key: string) => {
+  await nextTick()
+  document.querySelector<HTMLElement>(`[data-required-field="${key}"]`)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
+}
+
+const validateRequiredFields = async () => {
+  clearResolvedRequiredErrors()
+  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
+    errors[field.key] = field.message
+    return errors
+  }, {})
+
+  if (!missedFields.length) return true
+
+  new OpenWarningDilaog(missedFields[0].message).openDialog()
+  await scrollToRequiredField(missedFields[0].key)
+  return false
+}
+
+defineExpose({
+  validateRequiredFields,
+})
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2">
+  <div class="col-span-4 md:col-span-2" data-required-field="langs">
     <LangTitleInput
       :langs="langDefault"
       :modelValue="langs"
@@ -321,6 +387,9 @@ const updateCertificateType = (data: TitleInterface) => {
       :required="true"
       :label="`name`"
     />
+    <p v-if="getFieldError('langs')" class="required-field-message">
+      {{ getFieldError('langs') }}
+    </p>
   </div>
 
   <!-- <div class="input-wrapper col-span-4">
@@ -370,6 +439,7 @@ const updateCertificateType = (data: TitleInterface) => {
   <div
     class="col-span-4 md:col-span-2"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
+    data-required-field="industry"
   >
     <CustomSelectInput
       :modelValue="industry"
@@ -381,6 +451,9 @@ const updateCertificateType = (data: TitleInterface) => {
       :type="2"
       @update:modelValue="(val) => (industry = val)"
     />
+    <p v-if="getFieldError('industry')" class="required-field-message">
+      {{ getFieldError('industry') }}
+    </p>
   </div>
 
   <div class="col-span-4 md:col-span-4">
@@ -394,3 +467,12 @@ const updateCertificateType = (data: TitleInterface) => {
     />
   </div>
 </template>
+
+<style scoped>
+.required-field-message {
+  margin-top: 0.35rem;
+  color: #dc2626;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+</style>

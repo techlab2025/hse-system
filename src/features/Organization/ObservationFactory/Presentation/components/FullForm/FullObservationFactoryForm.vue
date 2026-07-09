@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
@@ -67,6 +67,7 @@ import AddHazard from '@/features/setting/SubHazard/Presentation/components/AddH
 import IndexShiftController from '@/features/Organization/Shifts/Presentation/controllers/IndexShiftController.ts'
 import IndexShiftParams from '@/features/Organization/Shifts/Core/params/IndexAShiftParams.ts'
 import AddShift from '@/features/Organization/Shifts/Presentation/components/AddShift.vue'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const emit = defineEmits(['update:data'])
 //
@@ -207,12 +208,10 @@ const updateData = () => {
               [],
         witnesses:
           witnesses?.value?.isAnotherMeeting === 1
-            ? witnesses?.value?.AllWitnessesData?.map(
-                (w: any) => {
-                  const employee = getEmployeePayload(w?.employee)
-                  return new WitnessParams(employee.name, w?.text || '', employee.id)
-                },
-              )
+            ? witnesses?.value?.AllWitnessesData?.map((w: any) => {
+                const employee = getEmployeePayload(w?.employee)
+                return new WitnessParams(employee.name, w?.text || '', employee.id)
+              })
             : [],
 
         severity: SelectedSeverity.value?.id,
@@ -527,6 +526,120 @@ const setShifts = (data: TitleInterface) => {
   updateData()
 }
 const ShiftsDialog = ref(false)
+
+type RequiredFieldRule = {
+  key: string
+  message: string
+  isMissing: () => boolean
+}
+
+const requiredFieldErrors = ref<Record<string, string>>({})
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+const hasSelectedId = (value?: TitleInterface | null) => Boolean(value?.id)
+
+const requiredFields = computed<RequiredFieldRule[]>(() => [
+  {
+    key: 'SelectedProjectId',
+    message: 'Project Is Required',
+    isMissing: () => !SelectedProjectId.value,
+  },
+  {
+    key: 'ZoneIds',
+    message: 'Zone Is Required',
+    isMissing: () => !ZoneIds.value,
+  },
+  {
+    key: 'ObservationTitle',
+    message: `${GetHeader(ObservationFactoryType.value)} Title Is Required`,
+    isMissing: () => !hasValue(ObservationTitle.value),
+  },
+  {
+    key: 'date',
+    message: 'Date Is Required',
+    isMissing: () => !date.value,
+  },
+  {
+    key: 'SelctedTime',
+    message: 'Time Is Required',
+    isMissing: () => !SelctedTime.value,
+  },
+  // {
+  //   key: 'PlaceText',
+  //   message: 'Work Area / Facility Is Required',
+  //   isMissing: () => !hasValue(PlaceText.value),
+  // },
+  {
+    key: 'SelectedObservationType',
+    message: 'Observation Type Is Required',
+    isMissing: () =>
+      ObservationFactoryType.value === Observation.ObservationType &&
+      !hasSelectedId(SelectedObservationType.value),
+  },
+  {
+    key: 'AccidentsType',
+    message: 'Incident Category Is Required',
+    isMissing: () =>
+      ObservationFactoryType.value === Observation.AccidentsType &&
+      !hasSelectedId(AccidentsType.value),
+  },
+  {
+    key: 'HazardType',
+    message: 'Hazard Classification Is Required',
+    isMissing: () =>
+      ObservationFactoryType.value !== Observation.AccidentsType &&
+      saveStatus.value === SaveStatusEnum.NotSaved &&
+      !hasSelectedId(HazardType.value),
+  },
+  {
+    key: 'text',
+    message: 'Description Is Required',
+    isMissing: () => !hasValue(text.value),
+  },
+  {
+    key: 'Oragnizationemployee',
+    message: 'Employee Name Is Required',
+    isMissing: () => !hasValue(Oragnizationemployee.value) || OragnizationemployeeName.value,
+  },
+])
+
+const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
+
+const clearResolvedRequiredErrors = () => {
+  requiredFields.value.forEach((field) => {
+    if (requiredFieldErrors.value[field.key] && !field.isMissing()) {
+      const { [field.key]: _removed, ...rest } = requiredFieldErrors.value
+      requiredFieldErrors.value = rest
+    }
+  })
+}
+
+const scrollToRequiredField = async (key: string) => {
+  await nextTick()
+  document.querySelector<HTMLElement>(`[data-required-field="${key}"]`)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
+}
+
+const validateRequiredFields = async () => {
+  clearResolvedRequiredErrors()
+  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
+    errors[field.key] = field.message
+    return errors
+  }, {})
+
+  if (!missedFields.length) return true
+
+  new OpenWarningDilaog(missedFields[0].message).openDialog()
+  await scrollToRequiredField(missedFields[0].key)
+  return false
+}
+
+defineExpose({
+  validateRequiredFields,
+})
 </script>
 
 <template>
@@ -540,7 +653,10 @@ const ShiftsDialog = ref(false)
         </p>
       </div>
     </div>
-    <div class="form-filter-panel form-projects-panel col-span-6 md:col-span-6">
+    <div
+      class="form-filter-panel form-projects-panel col-span-6 md:col-span-6"
+      data-required-field="SelectedProjectId"
+    >
       <div class="form-filter-panel-header">
         <span class="filter-marker"></span>
         <p>{{ $t('Projects') }}</p>
@@ -560,9 +676,15 @@ const ShiftsDialog = ref(false)
         :isForm="true"
         @update:data="GetProjectId"
       />
+      <p v-if="getFieldError('SelectedProjectId')" class="required-field-message">
+        {{ getFieldError('SelectedProjectId') }}
+      </p>
     </div>
 
-    <div class="form-filter-panel form-zones-panel col-span-6 md:col-span-6">
+    <div
+      class="form-filter-panel form-zones-panel col-span-6 md:col-span-6"
+      data-required-field="ZoneIds"
+    >
       <div class="form-filter-panel-header">
         <span class="filter-marker"></span>
         <p>{{ $t('zones') }}</p>
@@ -572,12 +694,13 @@ const ShiftsDialog = ref(false)
         :ProjectId="SelectedProjectId"
         @update:data="GetZones"
       />
+      <p v-if="getFieldError('ZoneIds')" class="required-field-message">
+        {{ getFieldError('ZoneIds') }}
+      </p>
     </div>
 
-
-
     <!-- title -->
-    <div class="input-wrapper col-span-6">
+    <div class="input-wrapper col-span-6" data-required-field="ObservationTitle">
       <label for="title">{{ GetHeader(ObservationFactoryType) }} {{ $t('title') }}</label>
       <input
         type="text"
@@ -586,16 +709,22 @@ const ShiftsDialog = ref(false)
         @input="updateData"
         :placeholder="$t('Enter Observation title')"
       />
+      <p v-if="getFieldError('ObservationTitle')" class="required-field-message">
+        {{ getFieldError('ObservationTitle') }}
+      </p>
     </div>
 
     <!-- Date -->
-    <div class="col-span-2 md:col-span-2 input-wrapper">
+    <div class="col-span-2 md:col-span-2 input-wrapper" data-required-field="date">
       <label for="date">{{ $t('date') }}</label>
       <DatePicker input-id="date" v-model="date" :Lplaceholder="$t('Add your date')" />
+      <p v-if="getFieldError('date')" class="required-field-message">
+        {{ getFieldError('date') }}
+      </p>
     </div>
 
     <!-- Time -->
-    <div class="input-wrapper col-span-2 md:grid-cols-12">
+    <div class="input-wrapper col-span-2 md:grid-cols-12" data-required-field="SelctedTime">
       <label for="time">{{ $t('time') }}</label>
       <DatePicker
         v-model="SelctedTime"
@@ -605,6 +734,9 @@ const ShiftsDialog = ref(false)
         input-id="time"
         :time-only="true"
       />
+      <p v-if="getFieldError('SelctedTime')" class="required-field-message">
+        {{ getFieldError('SelctedTime') }}
+      </p>
     </div>
 
     <!-- Serial -->
@@ -625,7 +757,7 @@ const ShiftsDialog = ref(false)
     </div>
 
     <!-- Place -->
-    <div class="input-wrapper col-span-3 md:grid-cols-12">
+    <div class="input-wrapper col-span-3 md:grid-cols-12" data-required-field="PlaceText">
       <label for="place">{{ $t('Work Area / Facility') }}</label>
       <input
         type="text"
@@ -634,11 +766,15 @@ const ShiftsDialog = ref(false)
         @input="updateData"
         :placeholder="$t('Enter Work Area / Facility')"
       />
+      <p v-if="getFieldError('PlaceText')" class="required-field-message">
+        {{ getFieldError('PlaceText') }}
+      </p>
     </div>
 
     <!-- Observation Type -->
     <div
       class="col-span-3 md:col-span-3 input-wrapper"
+      data-required-field="SelectedObservationType"
       v-if="ObservationFactoryType == Observation.ObservationType"
     >
       <!-- <CustomSelectInput
@@ -673,11 +809,15 @@ const ShiftsDialog = ref(false)
           <AddObserverationType @update:data="observationTypeDialog = false" />
         </template>
       </UpdatedCustomInputSelect>
+      <p v-if="getFieldError('SelectedObservationType')" class="required-field-message">
+        {{ getFieldError('SelectedObservationType') }}
+      </p>
     </div>
 
     <!-- Incedant Type -->
     <div
       class="col-span-3 md:col-span-3 input-wrapper"
+      data-required-field="AccidentsType"
       v-if="ObservationFactoryType == Observation.AccidentsType"
     >
       <!-- <CustomSelectInput
@@ -711,6 +851,9 @@ const ShiftsDialog = ref(false)
           <AddAccidentsType @update:data="acedentDialogRef = false" />
         </template>
       </UpdatedCustomInputSelect>
+      <p v-if="getFieldError('AccidentsType')" class="required-field-message">
+        {{ getFieldError('AccidentsType') }}
+      </p>
     </div>
 
     <!-- Root Cause -->
@@ -809,6 +952,9 @@ const ShiftsDialog = ref(false)
           />
         </template>
       </UpdatedCustomInputSelect>
+      <p v-if="getFieldError('Oragnizationemployee')" class="required-field-message">
+        {{ getFieldError('Oragnizationemployee') }}
+      </p>
     </div>
 
     <!-- Shifts -->
@@ -837,7 +983,7 @@ const ShiftsDialog = ref(false)
     </div>
 
     <!-- description -->
-    <div class="col-span-6 md:col-span-6 input-wrapper">
+    <div class="col-span-6 md:col-span-6 input-wrapper" data-required-field="text">
       <label for="description">{{ $t('description') }}</label>
       <input
         :placeholder="$t('Add your description')"
@@ -847,6 +993,9 @@ const ShiftsDialog = ref(false)
         v-model="text"
         @input="updateData"
       />
+      <p v-if="getFieldError('text')" class="required-field-message">
+        {{ getFieldError('text') }}
+      </p>
     </div>
 
     <!-- Image -->
@@ -924,8 +1073,14 @@ const ShiftsDialog = ref(false)
       />
     </div>
     <!-- Hazard Type -->
+    <!-- {{
+      ObservationFactoryType !== Observation.AccidentsType &&
+      saveStatus === SaveStatusEnum.NotSaved &&
+      !hasSelectedId(HazardType)
+    }} -->
     <div
       class="col-span-3 md:col-span-3 input-wrapper"
+      data-required-field="HazardType"
       v-if="
         saveStatus == SaveStatusEnum.NotSaved && ObservationFactoryType != Observation.AccidentsType
       "
@@ -949,6 +1104,9 @@ const ShiftsDialog = ref(false)
           <AddHazardType @update:data="HazardTypeDialog = false" />
         </template>
       </UpdatedCustomInputSelect>
+      <p v-if="getFieldError('HazardType')" class="required-field-message">
+        {{ getFieldError('HazardType') }}
+      </p>
     </div>
 
     <!--Sub Hazard Type -->
@@ -1181,5 +1339,12 @@ const ShiftsDialog = ref(false)
   width: 100%;
   height: 100%;
   z-index: 999;
+}
+
+.required-field-message {
+  margin-top: 0.35rem;
+  color: #dc2626;
+  font-size: 0.82rem;
+  font-weight: 700;
 }
 </style>
