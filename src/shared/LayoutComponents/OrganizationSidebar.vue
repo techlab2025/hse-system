@@ -918,7 +918,7 @@ const { user } = useUserStore()
   min-height: 68px;
   padding: 8px 4px;
   border-radius: 16px;
-  color: #64748b;
+  color: #dbeafe;
   transition:
     background 0.2s ease,
     color 0.2s ease,
@@ -931,8 +931,8 @@ const { user } = useUserStore()
 
 .icon-item:hover,
 .icon-item.router-link-active {
-  background: #eef4ff;
-  color: var(--PrimaryColor);
+  background: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
   transform: translateY(-1px);
 }
 

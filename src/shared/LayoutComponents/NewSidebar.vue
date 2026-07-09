@@ -43,24 +43,25 @@ const user = useUserStore()
 <style scoped>
 .sidebar {
   padding-top: 20px;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%), #fff;
-  box-shadow: 10px 0 28px rgba(15, 23, 42, 0.06);
+  background: linear-gradient(155deg, #1d4ed8 0%, #1e40af 44%, #0f2f80 100%), #1d4ed8 !important;
+  box-shadow:
+    18px 0 38px rgba(30, 64, 175, 0.22),
+    inset -1px 0 0 rgba(255, 255, 255, 0.12);
 }
 .sidebar.close {
   width: 92px;
 }
 .sidebar.open {
   background: linear-gradient(155deg, #1d4ed8 0%, #1e40af 44%, #0f2f80 100%), #1d4ed8 !important;
-  box-shadow:
-    18px 0 38px rgba(30, 64, 175, 0.22),
-    inset -1px 0 0 rgba(255, 255, 255, 0.12);
 }
 .sidebar-wrapper {
   padding-inline: 8px;
 }
+.sidebar-wrapper {
+  background: transparent !important;
+}
 .sidebar.open .sidebar-wrapper {
   padding-inline: 12px;
-  background: transparent !important;
 }
 .close .sidebar-wrapper {
   gap: 8px;
@@ -97,6 +98,16 @@ const user = useUserStore()
   border: none;
   color: #ffffff;
   box-shadow: none;
+}
+.sidebar.close .sidebar-toggle {
+  color: #ffffff;
+}
+.sidebar-toggle :deep(svg) {
+  width: 26px;
+  height: 26px;
+}
+.sidebar-toggle :deep(path) {
+  fill: currentColor !important;
 }
 
 .sidebar-toggle:hover {
@@ -137,6 +148,18 @@ const user = useUserStore()
   border-color: transparent;
   color: #ffffff !important;
   box-shadow: none;
+}
+.sidebar.close .sidebar-back {
+  background: transparent !important;
+  border-color: transparent;
+  color: #ffffff !important;
+  box-shadow: none;
+}
+.sidebar.close .sidebar-back:hover,
+.sidebar.close .sidebar-back.router-link-active {
+  background: rgba(255, 255, 255, 0.14) !important;
+  border-color: transparent;
+  color: #ffffff !important;
 }
 .sidebar.open .sidebar-back:hover,
 .sidebar.open .sidebar-back.router-link-active {
@@ -179,6 +202,12 @@ const user = useUserStore()
   border-color: transparent;
   color: #ffffff;
 }
+.sidebar.close .home-icon {
+  background: transparent;
+  border-color: transparent;
+  color: #ffffff;
+  box-shadow: none;
+}
 .home-icon :deep(svg) {
   width: 19px;
   height: 19px;
@@ -219,18 +248,32 @@ const user = useUserStore()
   border-color: transparent !important;
   transform: none;
 }
+.sidebar.open :deep(.p-accordionheader) {
+  margin-bottom: 4px !important;
+  background: rgba(255, 255, 255, 0.16) !important;
+  border-left: 3px solid #bfdbfe !important;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.sidebar.open :deep(.p-accordionheader:hover) {
+  background: rgba(255, 255, 255, 0.22) !important;
+}
 .sidebar.open :deep(.links-header) {
   justify-content: flex-start;
   width: 100%;
-  gap: 8px;
+  gap: 10px;
   color: #ffffff !important;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 800;
   letter-spacing: 0;
 }
 .sidebar.open :deep(.links-header svg) {
-  width: 20px;
-  height: 20px;
-  color: #ffffff;
+  width: 28px;
+  height: 28px;
+  padding: 5px;
+  border-radius: 10px;
+  color: #1d4ed8;
+  background: #ffffff;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
 }
 .sidebar.open :deep(.p-accordioncontent-content) {
   padding: 0 !important;
