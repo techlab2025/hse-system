@@ -6,11 +6,26 @@ import AdminSidebar from './AdminSidebar.vue'
 import SIdebarOpenIcon from '../icons/SIdebarOpenIcon.vue'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus.ts'
 import HomeProjectIcon from '../icons/HomeProjectIcon.vue'
+import IconLogout from '../icons/IconLogout.vue'
 
 defineProps<{ open: boolean }>()
 const emit = defineEmits<{ 'update:open': [value: boolean] }>()
 
 const user = useUserStore()
+
+const logout = () => {
+  if (user.user?.type == OrganizationTypeEnum.ADMIN) {
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
+    localStorage.removeItem('ProjectSelect')
+    window.location.href = '/login/admin'
+  } else if (user.user?.type == OrganizationTypeEnum.ORGANIZATION) {
+    localStorage.removeItem('user')
+    localStorage.removeItem('token')
+    localStorage.removeItem('ProjectSelect')
+    window.location.href = '/login/organization'
+  }
+}
 </script>
 
 <template>
@@ -36,6 +51,11 @@ const user = useUserStore()
           <OrganizationSidebar :open="open" />
         </template>
       </div>
+
+      <button class="mobile-sidebar-logout" type="button" @click="logout">
+        <IconLogout />
+        <span>{{ $t('logout') }}</span>
+      </button>
     </div>
   </aside>
 </template>
@@ -59,6 +79,9 @@ const user = useUserStore()
 }
 .sidebar-wrapper {
   background: transparent !important;
+}
+.mobile-sidebar-logout {
+  display: none;
 }
 .sidebar.open .sidebar-wrapper {
   padding-inline: 12px;
@@ -358,5 +381,52 @@ const user = useUserStore()
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+}
+
+@media (max-width: 768px) {
+  .sidebar-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .links {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+  }
+
+  .mobile-sidebar-logout {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    width: calc(100% - 24px);
+    min-height: 46px;
+    margin: auto 12px 18px;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 800;
+    text-align: start;
+    margin-bottom: 40px;
+  }
+
+  .mobile-sidebar-logout:hover {
+    background: rgba(255, 255, 255, 0.22);
+  }
+
+  .mobile-sidebar-logout :deep(svg) {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .mobile-sidebar-logout :deep(path) {
+    fill: currentColor !important;
+  }
 }
 </style>

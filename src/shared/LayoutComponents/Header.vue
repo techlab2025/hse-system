@@ -217,7 +217,7 @@ const toggle = (event: Event) => {
           <Notification />
         </div>
 
-        <div class="user cursor-pointer dropdown-trigger" @click="toggleDropMenu">
+        <div class="user cursor-pointer dropdown-trigger header-user-menu" @click="toggleDropMenu">
           <IconArrowDownNav class="drop-icon" />
           <div class="profile-data">
             <span>{{ user?.name.split(' ')[0] }}</span>
@@ -294,6 +294,12 @@ const toggle = (event: Event) => {
 .drawer {
   @media (min-width: 768px) {
     display: none;
+  }
+}
+
+.header-user-menu {
+  @media (max-width: 768px) {
+    display: none !important;
   }
 }
 </style>
