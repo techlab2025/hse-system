@@ -3,70 +3,81 @@
 @use '../variables' as *;
 
 .all-observation {
-  padding-block: $MdSize;
+  padding-block: $XlSize;
 
   .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: $XlSize2;
     margin-top: $XlSize2;
+    align-items: stretch;
 
-    @media screen and (max-width: 900px) {
+    @media screen and (max-width: 1100px) {
       grid-template-columns: 1fr;
     }
 
     .card {
-      min-height: 240px;
-      padding: $XlSize2;
-      border: 1px solid rgba(15, 23, 42, 0.06);
-      border-radius: 24px;
+      min-height: 270px;
+      padding: $MdSize;
+      border: 1px solid color-mix(in srgb, var(--card-accent, #1d4ed8) 16%, #e8edf7);
+      border-radius: 22px;
       overflow: hidden;
       position: relative;
       isolation: isolate;
       display: grid;
-      grid-template-columns: minmax(120px, 0.42fr) minmax(0, 1fr);
-      gap: $XlSize;
+      grid-template-columns: minmax(150px, 0.44fr) minmax(0, 1fr);
+      gap: $MdSize;
       background:
-        radial-gradient(120% 140% at 100% 0%, color-mix(in srgb, var(--card-accent, #1d4ed8) 6%, transparent), transparent 55%),
-        linear-gradient(180deg, #fff, #fcfcfd);
+        radial-gradient(
+          120% 110% at 0% 0%,
+          color-mix(in srgb, var(--card-accent, #1d4ed8) 14%, transparent),
+          transparent 52%
+        ),
+        linear-gradient(145deg, #ffffff 0%, #f8fbff 100%);
       box-shadow:
         0 1px 2px rgba(15, 23, 42, 0.04),
-        0 18px 36px rgba(15, 23, 42, 0.06);
+        0 18px 42px rgba(15, 23, 42, 0.08);
       transition: $TransitionFast;
-      transition-property: transform, box-shadow, border-color;
+      transition-property: transform, box-shadow, border-color, background;
 
-      // &::before {
-      //   content: '';
-      //   position: absolute;
-      //   inset: 0 0 auto 0;
-      //   height: 3px;
-      //   background: linear-gradient(90deg, var(--card-accent, #1d4ed8), transparent 85%);
-      //   opacity: 0.75;
-      //   transition: opacity 0.25s ease;
-      // }
+      &::before {
+        content: '';
+        position: absolute;
+        inset-inline-start: 0;
+        inset-block: $MdSize;
+        width: 5px;
+        border-radius: 999px;
+        background: linear-gradient(
+          180deg,
+          var(--card-accent, #1d4ed8),
+          color-mix(in srgb, var(--card-accent, #1d4ed8) 45%, #ffffff)
+        );
+        opacity: 0.9;
+        transition: width 0.25s ease, opacity 0.25s ease;
+      }
 
-      // &::after {
-      //   content: '';
-      //   position: absolute;
-      //   right: -60px;
-      //   top: -70px;
-      //   width: 190px;
-      //   height: 190px;
-      //   border-radius: 50%;
-      //   background: color-mix(in srgb, var(--card-accent, #1d4ed8) 14%, transparent);
-      //   filter: blur(6px);
-      //   z-index: -1;
-      //   transition: transform 0.35s ease, opacity 0.35s ease;
-      // }
+      &::after {
+        content: '';
+        position: absolute;
+        inset-inline-end: -72px;
+        inset-block-start: -82px;
+        width: 210px;
+        height: 210px;
+        border-radius: 50%;
+        background: color-mix(in srgb, var(--card-accent, #1d4ed8) 12%, transparent);
+        z-index: -1;
+        transition: transform 0.35s ease, opacity 0.35s ease;
+      }
 
       &:hover {
         transform: translateY(-6px);
-        border-color: color-mix(in srgb, var(--card-accent, #1d4ed8) 30%, #eef1f6);
+        border-color: color-mix(in srgb, var(--card-accent, #1d4ed8) 42%, #eef1f6);
         box-shadow:
           0 10px 20px rgba(15, 23, 42, 0.07),
-          0 30px 54px rgba(15, 23, 42, 0.14);
+          0 30px 58px rgba(15, 23, 42, 0.16);
 
         &::before {
+          width: 7px;
           opacity: 1;
         }
 
@@ -83,55 +94,83 @@
         }
       }
 
-      // &.observation-hub-card--inspection {
-      //   --card-accent: #1d4ed8;
-      //   --card-soft: #eff6ff;
-      // }
+      &.observation-hub-card--inspection {
+        --card-accent: #1d4ed8;
+        --card-soft: #eff6ff;
+      }
 
-      // &.observation-hub-card--observation {
-      //   --card-accent: #f59e0b;
-      //   --card-soft: #fff7ed;
-      // }
+      &.observation-hub-card--observation {
+        --card-accent: #f4971e;
+        --card-soft: #fff7ed;
+      }
 
-      // &.observation-hub-card--incident {
-      //   --card-accent: #dc2626;
-      //   --card-soft: #fef2f2;
-      // }
+      &.observation-hub-card--incident {
+        --card-accent: #ce1515;
+        --card-soft: #fef2f2;
+      }
 
-      // &.observation-hub-card--investigation {
-      //   --card-accent: #0f766e;
-      //   --card-soft: #f0fdfa;
-      // }
+      &.observation-hub-card--investigation {
+        --card-accent: #0f766e;
+        --card-soft: #f0fdfa;
+      }
 
-      // &.observation-hub-card--capa {
-      //   --card-accent: #7c3aed;
-      //   --card-soft: #f5f3ff;
-      // }
+      &.observation-hub-card--capa {
+        --card-accent: #7c3aed;
+        --card-soft: #f5f3ff;
+      }
 
       .card-visual {
         min-height: 100%;
         width: 100%;
         border-radius: 18px;
-        background: linear-gradient(160deg, var(--card-soft, #eff6ff), #fff 70%);
+        background:
+          linear-gradient(145deg, color-mix(in srgb, var(--card-accent, #1d4ed8) 12%, #ffffff), #ffffff 72%),
+          var(--card-soft, #eff6ff);
         @include flex(column, nowrap, center, center);
         gap: $SmSize;
         padding: $MdSize;
         position: relative;
+        overflow: hidden;
+
+        &::before,
+        &::after {
+          content: '';
+          position: absolute;
+          border-radius: 50%;
+          background: color-mix(in srgb, var(--card-accent, #1d4ed8) 14%, transparent);
+        }
+
+        &::before {
+          width: 96px;
+          height: 96px;
+          inset-inline-start: -34px;
+          inset-block-end: -32px;
+        }
+
+        &::after {
+          width: 56px;
+          height: 56px;
+          inset-inline-end: 16px;
+          inset-block-start: 18px;
+          opacity: 0.65;
+        }
 
         .image {
-          width: 112px;
-          height: 112px;
+          width: 118px;
+          height: 118px;
           border-radius: 24px;
-          background: rgba(255, 255, 255, 0.78);
+          background: rgba(255, 255, 255, 0.88);
           @include flex(row, nowrap, center, center);
           box-shadow:
             inset 0 0 0 1px rgba(255, 255, 255, 0.75),
             0 8px 16px color-mix(in srgb, var(--card-accent, #1d4ed8) 14%, transparent);
           transition: transform 0.35s ease, box-shadow 0.35s ease;
+          position: relative;
+          z-index: 1;
 
           img {
-            width: 78px;
-            height: 78px;
+            width: 84px;
+            height: 84px;
             object-fit: contain;
             filter: drop-shadow(0 12px 18px rgba(15, 23, 42, 0.16));
           }
@@ -150,7 +189,8 @@
 
       .card-body {
         @include flex(column, nowrap, space-between, stretch);
-        gap: $MdSize;
+        gap: $XlSize;
+        padding: $XsSize2 $XsSize2 $XsSize2 0;
 
         .card-content {
           @include flex(column, nowrap, flex-start, flex-start);
@@ -162,16 +202,18 @@
         display: flex;
         flex-wrap: wrap;
         align-items: center;
-        gap: $XsSize3;
+        gap: $XsSize2;
 
         > * {
-          min-width: fit-content;
+          flex: 1 1 116px;
+          min-width: 116px;
         }
 
         .card-action {
-          min-height: 38px;
-          border-radius: 999px;
-          padding: 9px 16px;
+          min-height: 40px;
+          width: 100%;
+          border-radius: 12px;
+          padding: 10px 14px;
           display: inline-flex;
           align-items: center;
           justify-content: center;
@@ -180,7 +222,8 @@
           color: #344054;
           font-size: $SmSize;
           font-weight: $BaseFontSemiBoldWeight;
-          line-height: 1;
+          line-height: 1.2;
+          text-align: center;
           box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
           transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease,
             transform 0.2s ease, box-shadow 0.2s ease;
@@ -223,9 +266,14 @@
 
       @media screen and (max-width: 560px) {
         grid-template-columns: 1fr;
+        padding: $MdSize;
 
         .card-visual {
           min-height: 160px;
+        }
+
+        .card-body {
+          padding: 0;
         }
       }
     }
