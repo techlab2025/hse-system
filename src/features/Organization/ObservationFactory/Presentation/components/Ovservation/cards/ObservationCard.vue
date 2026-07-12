@@ -37,7 +37,7 @@ const cardTone = item.title.toLowerCase().replace(/\s+/g, '-')
     <div class="card-body">
       <div class="card-content">
         <h4 class="card-header-title">{{ item.title }}</h4>
-        <p class="description">{{ item.description }}</p>
+        <!-- <p class="description">{{ item.description }}</p> -->
       </div>
 
       <div class="card-options">

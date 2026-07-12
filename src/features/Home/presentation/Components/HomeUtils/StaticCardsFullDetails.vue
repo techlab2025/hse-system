@@ -97,9 +97,14 @@ const { homeInspectionState } = defineProps<{
 <style scoped lang="scss">
 .details-signal-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
   min-width: 0;
+}
+@media (max-width: 900px) {
+  .details-signal-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .details-signal-grid :deep(.incidant-factor-container) {
