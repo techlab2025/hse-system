@@ -155,12 +155,12 @@ const GetStatus = (status: ActionStatusEnum) => {
           class="severity-container flex flex-col"
           v-if="props.data?.type == Observation.HazardType && props.data?.hazardType?.title"
         >
-          <span class="severity-title">{{ $t('Hazard Type') }}</span>
+          <span class="severity-title">{{ $t('Hazard Classification') }}</span>
           <p class="severity">{{ props.data?.hazardType?.title }}</p>
         </div>
 
         <div class="severity-container flex flex-col" v-if="props.data?.hazardSubType?.title">
-          <span class="severity-title">{{ $t('Hazard Sub Type') }}</span>
+          <span class="severity-title">{{ $t('Hazard ') }}</span>
           <p class="severity">{{ props.data?.hazardSubType?.title }}</p>
         </div>
 
