@@ -13,7 +13,6 @@ const emit = defineEmits(['update:data'])
 
 const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
-const employeeOptions = ref<TitleInterface[]>([])
 const Answers = ref([
   {
     text: ' ',
@@ -28,11 +27,14 @@ const addNewAnswer = () => {
     employee: new TitleInterface({ id: 0, title: '' }),
     images: [],
   })
+  isSelectHasContent.value.push(false)
   UpdateData()
 }
 
 const DeleteItem = (index: number) => {
+  if (Answers.value.length <= 1) return
   Answers.value.splice(index, 1)
+  isSelectHasContent.value.splice(index, 1)
   UpdateData()
 }
 
@@ -40,14 +42,14 @@ const UpdateData = () => {
   Answers.value.forEach(ensureEmployee)
   emit('update:data', Answers.value)
 }
-const fetchEmployees = async () => {
-  employeeOptions.value = await fetchOriganizatioEmployeeController.fetch(
-    fetchOrganizationEmployeeParams,
-  )
-}
 
-onMounted(async () => {
-  await fetchEmployees()
+const getSelectedEmployeeIds = (currentIndex: number) =>
+  Answers.value
+    .filter((_, index) => index !== currentIndex)
+    .map((item) => item.employee?.id)
+    .filter((id): id is number => !!id)
+
+onMounted(() => {
   emit('update:data', Answers.value)
 })
 
@@ -56,7 +58,7 @@ const setImages = async (data: string[], index: number) => {
   UpdateData()
 }
 
-const isSelectHasContent = ref([])
+const isSelectHasContent = ref<boolean[]>([])
 
 const ensureEmployee = (item: any) => {
   if (!item.employee) {
@@ -96,13 +98,17 @@ const toggleMode = (index: number, isManual: boolean) => {
                 <div class="timeline-pulse"></div>
               </div>
 
-              <div class="timeline-icon">
+              <div class="timeline-icon timeline-actions">
                 <DeleteItemAction
-                  class="cursor-pointer"
-                  v-if="index >= 0 && index !== Answers.length - 1"
+                  class="timeline-action cursor-pointer"
+                  v-if="Answers.length > 1"
                   @click="DeleteItem(index)"
                 />
-                <AddAnswer v-else @click="addNewAnswer" class="cursor-pointer" />
+                <AddAnswer
+                  v-if="index === Answers.length - 1"
+                  @click="addNewAnswer"
+                  class="timeline-action cursor-pointer"
+                />
               </div>
             </div>
 
@@ -110,11 +116,13 @@ const toggleMode = (index: number, isManual: boolean) => {
             <div class="grid grid-cols-12 gap-2">
               <div class="col-span-6 md:col-span-6 input-wrapper w-full">
                 <UpdatedCustomInputSelect
-                  :staticOptions="employeeOptions"
+                  :controller="fetchOriganizatioEmployeeController"
+                  :params="fetchOrganizationEmployeeParams"
                   v-model="item.employee"
                   placeholder="Select Employee"
                   class="mt-4 mr-2 input"
                   :label="$t('Employee  ')"
+                  :excludedOptionIds="getSelectedEmployeeIds(index)"
                   @update:model-value="UpdateData"
                   :hascontent="isSelectHasContent[index]"
                 >
@@ -185,3 +193,25 @@ const toggleMode = (index: number, isManual: boolean) => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.timeline-actions {
+  width: auto;
+  height: auto;
+  min-width: 30px;
+  min-height: 30px;
+  gap: 6px;
+  flex-direction: column;
+  background: transparent;
+  border: 0;
+}
+
+.timeline-action {
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  border: 1px solid rgba(156, 163, 175, 0.4);
+  border-radius: 50%;
+  background: #f1f3f5;
+}
+</style>

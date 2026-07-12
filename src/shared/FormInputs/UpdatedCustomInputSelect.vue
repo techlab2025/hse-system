@@ -16,6 +16,7 @@ interface Props {
   label?: string
   options?: TitleInterface[]
   staticOptions?: TitleInterface[] | null
+  excludedOptionIds?: Array<number | string>
   modelValue: TitleInterface | TitleInterface[] | null
   placeholder: string
   controller?: SelectControllerInterface<any>
@@ -34,7 +35,13 @@ interface Props {
 }
 
 // const emit = defineEmits(['update:modelValue', 'update:slot'])
-const emit = defineEmits(['update:modelValue', 'update:slot', 'update:dialogVisible', 'close'])
+const emit = defineEmits([
+  'update:modelValue',
+  'update:slot',
+  'update:reload',
+  'update:dialogVisible',
+  'close',
+])
 const props = withDefaults(defineProps<Props>(), {
   type: 1,
   required: false,
@@ -66,7 +73,16 @@ const dynamicOptions = ref<TitleInterface[]>([])
 // Computed properties
 const isMultiselect = computed(() => Number(type.value) === 2)
 const componentType = computed(() => (isMultiselect.value ? MultiSelect : Select))
-const mergedOptions = computed(() => staticOptions?.value ?? dynamicOptions.value)
+const excludedOptionIdSet = computed(
+  () => new Set((props.excludedOptionIds ?? []).map((id) => String(id))),
+)
+const mergedOptions = computed(() => {
+  const options = staticOptions?.value ?? dynamicOptions.value
+
+  if (!excludedOptionIdSet.value.size) return options
+
+  return options.filter((option) => !excludedOptionIdSet.value.has(String(option.id)))
+})
 const multiselectProps = computed(() =>
   isMultiselect.value ? { display: 'chip', maxSelectedLabels: 6 } : {},
 )
@@ -157,6 +173,7 @@ function handleFetchError(error: unknown): void {
 }
 
 async function reloadData(): Promise<void> {
+  emit('update:reload')
   if (loading.value) return
   await fetchOptions()
   normalizedValue.value = isMultiselect.value ? [] : null

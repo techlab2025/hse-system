@@ -75,10 +75,22 @@ const UpdateData = () => {
   emit('update:data', Answers.value)
 }
 
-const UpdateInjury = (item: TitleInterface, index: number) => {
-  console.log(item)
-  Answers.value[index].infectionTypeId = new TitleInterface({ id: item.id, title: item.title })
+const getSelectedEmployeeIds = (currentIndex: number) =>
+  Answers.value
+    .filter((_, index) => index !== currentIndex)
+    .map((item) => item.employee?.id)
+    .filter((id): id is number => !!id)
+
+const UpdateInjury = (item: TitleInterface | null, index: number) => {
+  Answers.value[index].infectionTypeId = item
+    ? new TitleInterface({ id: item.id, title: item.title })
+    : new TitleInterface({ id: 0, title: '' })
   UpdateData()
+}
+
+const handleInjuryCreated = async () => {
+  InjuryVisable.value = false
+  await fetchInjuryTypes()
 }
 
 const isSelectHasContent = ref<boolean[]>([])
@@ -214,8 +226,10 @@ onMounted(async () => {
                   placeholder="Select Employee"
                   class="mt-4 mr-2 input"
                   :label="$t('Injured Person')"
-                  :reload="false"
+                  :reload="true"
+                  :excludedOptionIds="getSelectedEmployeeIds(index)"
                   @update:model-value="UpdateData"
+                  @update:reload="fetchEmployees"
                   :hascontent="isSelectHasContent[index]"
                 >
                   <!-- <template #reloadHeader>
@@ -272,9 +286,11 @@ onMounted(async () => {
                   id="injury"
                   :placeholder="$t('select your injury Classification')"
                   @update:modelValue="UpdateInjury($event, index)"
+                  @update:reload="fetchInjuryTypes"
                   @close="InjuryVisable = false"
                   :isDialog="true"
                   v-model:dialogVisible="InjuryVisable"
+                  :reload="true"
                 >
                   <template #LabelHeader>
                     <span class="add-dialog" @click="InjuryVisable = true">{{ $t('New') }}</span>
@@ -282,7 +298,7 @@ onMounted(async () => {
                   <template #Dialog>
                     <AddInjury
                       @close:dialog="InjuryVisable = false"
-                      @update:data="InjuryVisable = false"
+                      @update:data="handleInjuryCreated"
                     />
                   </template>
                 </UpdatedCustomInputSelect>

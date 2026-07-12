@@ -261,6 +261,7 @@ const updateData = () => {
         OragnizationemployeeId: !isSelectHasContent.value ? Oragnizationemployee.value?.id : null,
         workShiftId: Shifts.value?.id ?? null,
       })
+  console.log(params, 'params')
   emit('update:data', params)
 }
 
@@ -543,6 +544,7 @@ const toggleMode = (isManual: boolean) => {
 const OragnizationemployeeName = ref<string>('')
 const setOragnizationemployeeName = (data: Event) => {
   OragnizationemployeeName.value = data?.target?.value
+  console.log(OragnizationemployeeName.value, 'OragnizationemployeeName.value')
   updateData()
 }
 
@@ -690,7 +692,8 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   {
     key: 'Oragnizationemployee',
     message: 'Please select the employee who reported this Incident before continuing.',
-    isMissing: () => !hasValue(Oragnizationemployee.value) || OragnizationemployeeName.value,
+    isMissing: () =>
+      !hasValue(Oragnizationemployee.value) && OragnizationemployeeName.value.length < 1,
   },
   {
     key: 'witnesses',
