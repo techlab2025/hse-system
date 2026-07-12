@@ -61,6 +61,22 @@
     @include flex-column(nowrap, flex-start, flex-start);
     gap: 12px;
     height: 100%;
+    background:
+      radial-gradient(circle at 100% 0%, var(--tone-soft), transparent 42%),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.94));
+    color: #0f172a;
+    text-decoration: none;
+    box-shadow:
+      0 16px 34px rgba(15, 23, 42, 0.065),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    overflow: hidden;
+    padding: 16px;
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    transition:
+      border-color 0.22s ease,
+      box-shadow 0.22s ease,
+      transform 0.22s ease;
+          border-radius: 20px;
     .incidant-factor-header-container {
       @include flex-row(nowrap, space-between, center);
       // padding-right: 80px;
@@ -70,7 +86,7 @@
       .incidant-factor-header {
         @include flex-column(nowrap, flex-start, flex-start);
         gap: 4px;
-        padding-left: 25px;
+        // padding-left: 25px;
 
         .static {
           color: #9ca3af;
@@ -95,7 +111,7 @@
 
     .static-data {
       width: 100%;
-      padding-left: 12px;
+      // padding-left: 12px;
       // @include flex-column(nowrap, flex-start, flex-start);
       // gap: 8px;
       // height: 70%;
