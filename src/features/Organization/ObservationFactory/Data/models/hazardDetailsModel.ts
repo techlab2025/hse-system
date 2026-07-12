@@ -17,7 +17,6 @@ import { Observation } from '../../Core/Enums/ObservationTypeEnum'
 import type { ActionStatusEnum } from '../../Core/Enums/ActionStatusEnum'
 import type ShiftModel from '@/features/Organization/Shifts/Data/models/ShiftModel'
 
-
 export default class HazardDetailsModel {
   public id: number
   public title: string
@@ -60,6 +59,8 @@ export default class HazardDetailsModel {
   public lastest_inspection_result: InspectionObservatioModel
   public task: any
   public work_shift: ShiftModel
+  public hazardSubType: TitleInterface
+  public hazardType: TitleInterface
   constructor(
     id: number,
     title: string,
@@ -102,6 +103,8 @@ export default class HazardDetailsModel {
     lastest_inspection_result: InspectionObservatioModel,
     task: any,
     work_shift: ShiftModel,
+    hazardSubType: TitleInterface,
+    hazardType: TitleInterface,
   ) {
     this.id = id
     this.title = title
@@ -144,6 +147,8 @@ export default class HazardDetailsModel {
     this.lastest_inspection_result = lastest_inspection_result
     this.task = task
     this.work_shift = work_shift
+    this.hazardSubType = hazardSubType
+    this.hazardType = hazardType
   }
 
   static fromMap(data: any): HazardDetailsModel {
@@ -191,6 +196,8 @@ export default class HazardDetailsModel {
         : null,
       data?.task,
       data?.work_shift,
+      data?.hazard_sub_type,
+      data?.hazard_type,
     )
   }
 

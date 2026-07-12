@@ -103,13 +103,13 @@ const GetStatus = (status: ActionStatusEnum) => {
           {{ GetRiskLevel(props.data?.riskLevel) }} {{ $t('Level') }}
         </span>
 
-        <div class="flex flex-col gap-2">
-          <!-- <p class="observation-type" v-if="props.data?.type != Observation.HazardType">
+        <!-- <div class="flex flex-col gap-2"> -->
+        <!-- <p class="observation-type" v-if="props.data?.type != Observation.HazardType">
             {{ GetHeader(props.data?.type) }} {{ $t('Type') }} :
             <span>{{ props.data?.typeModel?.title }}</span>
           </p> -->
 
-          <!-- <div class="root-causes" v-if="props.data?.rootCauses && props.data?.rootCauses.length > 0">
+        <!-- <div class="root-causes" v-if="props.data?.rootCauses && props.data?.rootCauses.length > 0">
             <div class="icon_title">
               <RootCase />
 
@@ -126,10 +126,10 @@ const GetStatus = (status: ActionStatusEnum) => {
               </p>
             </div>
           </div> -->
-        </div>
+        <!-- </div> -->
 
-        <div class="image-container">
-          <div class="" v-if="props?.data?.media && props?.data?.media.length > 0">
+        <div class="image-container" v-if="props?.data?.media && props?.data?.media.length > 0">
+          <div class="">
             <UploadMultiImage
               @update:images="UpdateImg"
               class="image-upload"
@@ -149,25 +149,27 @@ const GetStatus = (status: ActionStatusEnum) => {
 
       <div
         class="hazard-info w-full flex items-center justify-between gap-2"
-        v-if="props.data?.type == Observation.HazardType"
+        v-if="
+          props.data?.type == Observation.HazardType &&
+          (props.data?.hazardType?.title || props.data?.hazardSubType?.title)
+        "
       >
         <div
           class="severity-container flex flex-col"
-          v-if="props.data?.type == Observation.HazardType && props.data?.typeModel?.title"
+          v-if="props.data?.type == Observation.HazardType && props.data?.hazardType?.title"
         >
           <span class="severity-title">{{ $t('Hazard Type') }}</span>
-          <p class="severity">{{ props.data?.typeModel?.title }}</p>
+          <p class="severity">{{ props.data?.hazardType?.title }}</p>
         </div>
 
-        <!-- <div class="severity-container flex flex-col"
-         >
+        <div class="severity-container flex flex-col" v-if="props.data?.hazardSubType?.title">
           <span class="severity-title">Hazard </span>
-          <p class="severity">{{ props.data?.typeModel?.title }}</p>
-        </div> -->
+          <p class="severity">{{ props.data?.hazardSubType?.title }}</p>
+        </div>
 
+        <!-- <div class="severity-container"></div>
         <div class="severity-container"></div>
-        <div class="severity-container"></div>
-        <div class="severity-container"></div>
+        <div class="severity-container"></div> -->
       </div>
     </div>
 
