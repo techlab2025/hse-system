@@ -287,12 +287,23 @@ const setImages = async (data: string[]) => {
 }
 
 const Projects = ref<MyProjectsModel[]>([])
+const isProjectsLoading = ref(false)
 const FetchMyProjects = async () => {
   const fetchMyProjectsParams = new FetchMyProjectsParams()
   const fetchMyProjectsController = FetchMyProjectsController.getInstance()
-  const res = await fetchMyProjectsController.getData(fetchMyProjectsParams)
-  if (res.value.data) {
-    Projects.value = res.value.data
+  isProjectsLoading.value = true
+
+  try {
+    const res = await fetchMyProjectsController.getData(fetchMyProjectsParams)
+    if (res.value.data) {
+      Projects.value = res.value.data
+
+      if (!SelectedProjectId.value && Projects.value.length) {
+        GetProjectId(Projects.value[0].id)
+      }
+    }
+  } finally {
+    isProjectsLoading.value = false
   }
 }
 onMounted(() => {
@@ -301,6 +312,10 @@ onMounted(() => {
 
 const SelectedProjectId = ref<number>()
 const GetProjectId = (id: number) => {
+  if (SelectedProjectId.value !== id) {
+    ZoneIds.value = undefined
+  }
+
   SelectedProjectId.value = id
   updateData()
 }
@@ -779,7 +794,11 @@ defineExpose({
         "
         :img="ObservationImage"
       /> -->
+      <div v-if="isProjectsLoading" class="form-filter-skeleton" aria-hidden="true">
+        <span v-for="item in 4" :key="item"></span>
+      </div>
       <HeaderProjectsFilter
+        v-show="!isProjectsLoading"
         class="colored"
         :projects="Projects"
         :isForm="true"
@@ -797,6 +816,13 @@ defineExpose({
       <div class="form-filter-panel-header">
         <span class="filter-marker"></span>
         <p>{{ $t('zones') }}</p>
+      </div>
+      <div
+        v-if="isProjectsLoading && !SelectedProjectId"
+        class="form-filter-skeleton zones"
+        aria-hidden="true"
+      >
+        <span v-for="item in 3" :key="item"></span>
       </div>
       <TabsSelection
         v-if="SelectedProjectId"
@@ -1474,6 +1500,55 @@ defineExpose({
   font-size: 0.82rem;
   font-weight: 700;
 }
+
+.form-filter-skeleton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  overflow: hidden;
+  border: none !important;
+}
+
+.form-filter-skeleton span {
+  width: 126px;
+  height: 40px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #eef2f7 25%, #f8fafc 50%, #eef2f7 75%);
+  background-size: 220% 100%;
+  animation: form-filter-shimmer 1.15s linear infinite;
+}
+
+.form-filter-skeleton span:nth-child(2) {
+  width: 154px;
+}
+
+.form-filter-skeleton span:nth-child(3) {
+  width: 112px;
+}
+
+.form-filter-skeleton.zones span {
+  height: 58px;
+  border-radius: 16px;
+}
+
+@keyframes form-filter-shimmer {
+  0% {
+    background-position: 220% 0;
+  }
+
+  100% {
+    background-position: -220% 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-filter-skeleton span {
+    min-width: 96px;
+    width: 96px;
+  }
+}
+
 label {
   width: fit-content;
 }
