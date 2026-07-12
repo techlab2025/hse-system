@@ -1,11 +1,12 @@
-@use "../variables" as *;
+@use '../variables' as *;
 
 .btn-primary {
   background-color: $PrimaryColor;
   color: $White;
   border-color: $PrimaryColor;
-  font-family: "Regular";
+  font-family: 'Regular';
   font-size: $XsSize;
+  text-align: center;
   &:hover {
     background-color: transparent;
     color: $PrimaryColor;
