@@ -141,17 +141,118 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
     <HomeCards :ProgressValue="Number(ProgressValue)" />
 
     <template v-if="ProjectStatics?.data">
-      <div class="statics">
-        <ProjectsStatistics :projectStatistics="ProjectStatics?.data" />
-        <StaticsCardPerMonth :homeInspectionState="homeInspectionState" />
-        <StaticCardsFullDetails :homeInspectionState="homeInspectionState" />
-      </div>
-      <EquipmentStaticss :EquipmentStatics="EquipmentStatics" />
-      <InvestegationStatics
-        :OverviewHazardChartstate="OverviewHazardChartstate"
-        :overviewInvestigationsChartstate="overviewInvestigationsChartstate"
-      />
+      <section class="home-analytics-shell">
+        <!-- <div class="home-analytics-heading">
+          <span>{{ $t('dashboard') }}</span>
+          <h2>{{ $t('overview') }}</h2>
+        </div> -->
+
+        <div class="home-overview-grid">
+          <div class="home-panel home-panel-projects">
+            <ProjectsStatistics :projectStatistics="ProjectStatics?.data" />
+          </div>
+
+          <div class="home-panel home-panel-kpis">
+            <StaticsCardPerMonth :homeInspectionState="homeInspectionState" />
+          </div>
+
+          <div class="home-panel home-panel-details">
+            <StaticCardsFullDetails :homeInspectionState="homeInspectionState" />
+          </div>
+        </div>
+
+        <EquipmentStaticss :EquipmentStatics="EquipmentStatics" />
+        <InvestegationStatics
+          :OverviewHazardChartstate="OverviewHazardChartstate"
+          :overviewInvestigationsChartstate="overviewInvestigationsChartstate"
+        />
+      </section>
     </template>
     <HomeSkelaton v-if="!ProjectStatics?.data" />
   </div>
 </template>
+
+<style scoped lang="scss">
+.home-analytics-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+  margin-top: 24px;
+}
+
+.home-analytics-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  span {
+    width: fit-content;
+    padding: 6px 12px;
+    border: 1px solid color-mix(in srgb, var(--PrimaryColor) 16%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--PrimaryColor) 8%, transparent);
+    color: var(--PrimaryColor);
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--header-page-color);
+    font-family: 'bold';
+    font-size: clamp(22px, 2vw, 30px);
+    font-weight: 900;
+  }
+}
+
+.home-overview-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.home-panel {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--main-border) 78%, transparent);
+  border-radius: 24px;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--PrimaryColor) 8%, transparent),
+      transparent 38%
+    ),
+    linear-gradient(180deg, var(--BgWhite), var(--Gray-1));
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.04),
+    0 18px 42px rgba(15, 23, 42, 0.07);
+}
+
+.home-panel-projects {
+  grid-row: auto;
+}
+
+.home-panel-kpis,
+.home-panel-details {
+  padding: 14px;
+}
+
+@media (max-width: 640px) {
+  .home-analytics-shell {
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .home-panel {
+    border-radius: 18px;
+  }
+
+  .home-panel-kpis,
+  .home-panel-details {
+    padding: 10px;
+  }
+}
+</style>

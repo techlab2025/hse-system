@@ -28,64 +28,101 @@
 <script setup lang="ts">
 import wordSlice from '@/base/Presentation/utils/word_slice'
 import OverviewInvestigationsChartModel from '@/features/Home/data/Model/OverviewInvestigationsChartModel'
-import { ref, computed } from 'vue'
-
-const data = ref([65, 59, 80, 81, 56])
+import { computed } from 'vue'
 
 const props = defineProps<{
   overviewInvestigationsChartstate: OverviewInvestigationsChartModel[]
 }>()
 
-const maxTotal = computed(() =>
-  Math.max(...props.overviewInvestigationsChartstate.map((v) => v.total)),
-)
+const maxTotal = computed(() => {
+  const totals = props.overviewInvestigationsChartstate.map((v) => Number(v.total) || 0)
+  return totals.length ? Math.max(...totals) : 0
+})
 </script>
 
 <style lang="scss" scoped>
 .investigations_container {
-  padding-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+  padding-bottom: 16px;
 
   .title {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin: 0;
+
     h6 {
-      font-size: 20px;
-      font-weight: 700;
+      margin: 0;
+      color: var(--header-page-color);
       font-family: 'bold';
-      color: #0c2058;
+      font-size: 19px;
+      font-weight: 900;
+      line-height: 1.15;
     }
 
     p {
-      font-size: 12px;
-      font-weight: 600;
+      max-width: 320px;
+      margin: 0;
+      color: var(--GrayText-1);
       font-family: 'regular';
-      color: #bcbcbc;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.45;
     }
-
-    margin: 1.8rem 0;
   }
 }
 
 .chart_container {
   display: flex;
-  gap: 1rem;
-  height: 35vh;
+  align-items: flex-end;
+  gap: 14px;
+  height: clamp(250px, 34vh, 380px);
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 42px 4px 34px;
+  border: 1px solid color-mix(in srgb, var(--main-border) 82%, transparent);
+  border-radius: 20px;
+  background:
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent calc(25% - 1px),
+      color-mix(in srgb, var(--main-border) 52%, transparent) 25%,
+      transparent calc(25% + 1px),
+      transparent calc(50% - 1px),
+      color-mix(in srgb, var(--main-border) 52%, transparent) 50%,
+      transparent calc(50% + 1px),
+      transparent calc(75% - 1px),
+      color-mix(in srgb, var(--main-border) 52%, transparent) 75%,
+      transparent calc(75% + 1px)
+    ),
+    linear-gradient(180deg, var(--BgWhite), var(--Gray-1));
   position: relative;
-  margin-bottom: 1rem;
-}
-@media (max-width: 900px) {
-  .chart_container {
-    height: 15vh;
-  }
+  scrollbar-color: color-mix(in srgb, var(--PrimaryColor) 38%, transparent) transparent;
+  scrollbar-width: thin;
 }
 
 .chart_container p {
-  color: #0c2058;
-  font-size: 12px;
-  font-weight: 700;
+  color: var(--header-page-color);
+  font-size: 11px;
+  font-weight: 900;
 }
 
 .chart_container .zone_title {
   position: absolute;
-  bottom: -30px;
+  bottom: -28px;
+  left: 50%;
+  width: 64px;
+  margin: 0;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  transform: translateX(-50%);
+  white-space: nowrap;
 }
 
 .chart_container span {
@@ -94,14 +131,17 @@ const maxTotal = computed(() =>
 
 .chart_row {
   position: relative;
-  width: 100%;
-  background-color: rgba(227, 239, 255, 1);
-  border-radius: 12px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  max-width: 35px;
+  width: 44px;
+  min-width: 44px;
+  height: 100%;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, transparent);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--PrimaryColor) 8%, var(--BgWhite));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
 
   .span:nth-child(1) {
     bottom: 10%;
@@ -124,7 +164,7 @@ const maxTotal = computed(() =>
   }
 
   .span:nth-child(5) {
-    bottom: 800%;
+    bottom: 82%;
     transform: rotate(160deg);
   }
 
@@ -135,16 +175,22 @@ const maxTotal = computed(() =>
 
   .span {
     position: absolute;
-    width: 100%;
-    height: 2px;
-    background-color: rgb(149, 192, 248);
+    width: 78%;
+    height: 1px;
+    border-radius: 999px;
+    background-color: color-mix(in srgb, var(--PrimaryColor) 20%, transparent);
   }
 
   .total_count_chart {
     position: relative;
-    background: linear-gradient(163.62deg, #789eff 2.14%, #1d4ed8 97.96%);
-    box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-    border-radius: 12px;
+    min-height: 16px;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--PrimaryColor) 72%, #ffffff),
+      var(--PrimaryColor)
+    );
+    box-shadow: 0 12px 22px color-mix(in srgb, var(--PrimaryColor) 26%, transparent);
+    border-radius: 14px;
     width: 100%;
     text-align: center;
     color: white;
@@ -152,14 +198,14 @@ const maxTotal = computed(() =>
     align-items: flex-end;
     justify-content: center;
     font-weight: bold;
-    font-size: 13px;
-    padding: 0 0.5rem 1rem;
+    font-size: 12px;
+    padding: 0 0.35rem 12px;
     z-index: 11;
-    text-shadow: 2px 2px 4px #000000;
+    text-shadow: none;
 
     .top-indicator {
       position: absolute;
-      top: -35px;
+      top: -38px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
@@ -169,13 +215,14 @@ const maxTotal = computed(() =>
       z-index: 20;
 
       .indicator-label {
-        background: white;
-        color: #1d4ed8;
+        background: var(--BgWhite);
+        color: var(--PrimaryColor);
         font-size: 11px;
-        font-weight: 700;
+        font-weight: 900;
         padding: 3px 8px;
-        border-radius: 6px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        border: 1px solid color-mix(in srgb, var(--PrimaryColor) 16%, transparent);
+        border-radius: 999px;
+        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
         white-space: nowrap;
         text-shadow: none;
         animation: floatIndicator 1.8s ease-in-out infinite;
@@ -184,10 +231,10 @@ const maxTotal = computed(() =>
       .indicator-dot {
         width: 10px;
         height: 10px;
-        background: #3b82f6;
-        border: 2px solid white;
+        background: var(--PrimaryColor);
+        border: 2px solid var(--BgWhite);
         border-radius: 50%;
-        box-shadow: 0 2px 6px rgba(59, 130, 246, 0.5);
+        box-shadow: 0 0 0 5px color-mix(in srgb, var(--PrimaryColor) 16%, transparent);
       }
     }
   }
@@ -208,16 +255,23 @@ const maxTotal = computed(() =>
 }
 
 @media (max-width: 600px) {
+  .investigations_container {
+    gap: 14px;
+  }
+
   .chart_row {
-    max-width: 25px;
+    width: 36px;
+    min-width: 36px;
   }
 
   .total_count_chart {
-    font-size: 12px !important;
+    font-size: 10px !important;
   }
 
   .chart_container {
-    overflow: scroll;
+    height: 250px;
+    padding-inline: 2px;
+    border-radius: 16px;
   }
 }
 </style>
