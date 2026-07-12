@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { nextTick, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import OrganizationSidebar from './OrganizationSidebar.vue'
@@ -8,10 +10,54 @@ import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee
 import HomeProjectIcon from '../icons/HomeProjectIcon.vue'
 import IconLogout from '../icons/IconLogout.vue'
 
-defineProps<{ open: boolean }>()
+const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ 'update:open': [value: boolean] }>()
 
 const user = useUserStore()
+const route = useRoute()
+const sidebarRef = ref<HTMLElement | null>(null)
+
+const scrollClosedSidebarToActiveRoute = async () => {
+  if (props.open) return
+
+  await nextTick()
+  requestAnimationFrame(() => {
+    const sidebar = sidebarRef.value
+    const activeRoute = sidebar?.querySelector<HTMLElement>(
+      '.icon-strip .router-link-exact-active, .icon-strip .router-link-active',
+    )
+
+    if (!activeRoute) return
+
+    const scrollContainer =
+      activeRoute.closest<HTMLElement>('.icon-strip') ||
+      activeRoute.closest<HTMLElement>('.links')
+
+    if (!scrollContainer) return
+
+    const containerRect = scrollContainer.getBoundingClientRect()
+    const activeRect = activeRoute.getBoundingClientRect()
+    const centeredTop =
+      activeRect.top -
+      containerRect.top +
+      scrollContainer.scrollTop -
+      scrollContainer.clientHeight / 2 +
+      activeRoute.offsetHeight / 2
+
+    scrollContainer.scrollTo({
+      top: Math.max(centeredTop, 0),
+      behavior: 'smooth',
+    })
+  })
+}
+
+watch(
+  () => [props.open, route.fullPath],
+  () => {
+    scrollClosedSidebarToActiveRoute()
+  },
+  { immediate: true },
+)
 
 const logout = () => {
   if (user.user?.type == OrganizationTypeEnum.ADMIN) {
@@ -29,7 +75,7 @@ const logout = () => {
 </script>
 
 <template>
-  <aside :class="['sidebar', open ? 'open' : 'close']">
+  <aside ref="sidebarRef" :class="['sidebar', open ? 'open' : 'close']">
     <div class="sidebar-wrapper">
       <button class="sidebar-toggle" @click="emit('update:open', !open)" title="Toggle sidebar">
         <SIdebarOpenIcon />
