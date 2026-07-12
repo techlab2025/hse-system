@@ -24,7 +24,7 @@ const user = useUserStore()
         :to="`${Number(user.user?.type) === EmployeeStatusEnum.Admin ? '/admin' : '/organization'}`"
         class="sidebar-back"
       >
-        <span class="home-icon"><HomeProjectIcon /></span>
+        <!-- <span class="home-icon"><HomeProjectIcon /></span> -->
         <span>Home</span>
       </router-link>
 
@@ -129,6 +129,10 @@ const user = useUserStore()
     border-color 0.22s ease,
     color 0.22s ease,
     transform 0.22s ease;
+  text-align: center !important;
+  margin-inline: auto !important;
+  align-items: center !important;
+  width: 100% !important;
 }
 .sidebar-back:hover,
 .sidebar-back.router-link-active {

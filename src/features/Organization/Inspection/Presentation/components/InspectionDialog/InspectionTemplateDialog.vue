@@ -12,7 +12,6 @@ import DeleteTemplateIcon from '@/shared/icons/DeleteTemplateIcon.vue'
 import AddNewTemplateDialog from './AddNewTemplateDialog.vue'
 import { TemplateTypeEnum } from '../../../Core/Enum/TemplateTypeEnum'
 
-
 const visible = ref(false)
 const isConfirmed = ref(false)
 
@@ -22,7 +21,15 @@ const state = ref(indexTemplateController.state.value)
 const selectedTemplates = ref<number>()
 
 const fetchTemplateItem = async () => {
-  const deleteTemplateItemTypeParams = new IndexTemplateParams('', 1, 30, 1, null, true, SelectedTemplateType.value)
+  const deleteTemplateItemTypeParams = new IndexTemplateParams(
+    '',
+    1,
+    30,
+    1,
+    null,
+    true,
+    SelectedTemplateType.value,
+  )
   await indexTemplateController.getData(deleteTemplateItemTypeParams)
 }
 
@@ -69,14 +76,15 @@ const clearSelectedTemplate = () => {
   // ShowTemplate.value = false
   visible.value = false
   TemplateTitle.value = ''
-
 }
 
 const TemplateId = ref()
 
-
-
-const GetTemplateInfo = (data: { templateId: number, isInLibrary: number, teamplateTitle: string }) => {
+const GetTemplateInfo = (data: {
+  templateId: number
+  isInLibrary: number
+  teamplateTitle: string
+}) => {
   TemplateId.value = data.templateId
   isInLibrary.value = data.isInLibrary
   TemplateTitle.value = data.teamplateTitle
@@ -109,50 +117,55 @@ const handleDialogHide = () => {
 // 1 my template
 // 2 system template
 const SelectedTemplateType = ref(1)
-watch(() => SelectedTemplateType.value, () => {
-  fetchTemplateItem()
-})
+watch(
+  () => SelectedTemplateType.value,
+  () => {
+    fetchTemplateItem()
+  },
+)
 </script>
 
 <template>
-  <div class="inspection-template-dialog-container ">
-
-
-    <div class="input-wrapper col-span-6 pt-15 md:col-span-3">
+  <div class="inspection-template-dialog-container">
+    <div class="input-wrapper col-span-6 pt-15 md:col-span-3 field-required">
       <div class="title">
         <span>{{ $t('inspection template') }}</span>
-        <ImportantIcon />
+        <!-- <ImportantIcon /> -->
+        <span class="required">*</span>
       </div>
 
       <button type="button" @click="visible = true" class="inspection-template-button">
         {{ $t('select inspection template') }}
       </button>
 
-
       <!-- && ShowTemplate -->
-      <div class="template-header" v-if="(selectedTemplates || TemplateTitle)">
+      <div class="template-header" v-if="selectedTemplates || TemplateTitle">
         <button class="delete" @click.prevent="clearSelectedTemplate">
           <DeleteTemplateIcon class="delete-icon" />
         </button>
         <p class="header-title">
-          {{
-            TemplateTitle || selectedTemplateHeader?.title
-          }}
+          {{ TemplateTitle || selectedTemplateHeader?.title }}
         </p>
         <img :src="DocumnetHeader" alt="header" />
-
       </div>
     </div>
 
-
-    <Dialog v-model:visible="visible" @hide="handleDialogHide" modal :dissmissible-mask="true"
-      :style="{ width: '70vw', height: '80vh' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
-      class="inspection-template-dialog">
-
+    <Dialog
+      v-model:visible="visible"
+      @hide="handleDialogHide"
+      modal
+      :dissmissible-mask="true"
+      :style="{ width: '70vw', height: '80vh' }"
+      :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+      class="inspection-template-dialog"
+    >
       <template #header>
         <div class="add-equipment-header">
-          <HeaderSection :img="InspectionTemplateImage" :title="$t('inspection template')"
-            :subtitle="$t('Select from the available templates.')" />
+          <HeaderSection
+            :img="InspectionTemplateImage"
+            :title="$t('inspection template')"
+            :subtitle="$t('Select from the available templates.')"
+          />
         </div>
       </template>
 
@@ -163,22 +176,31 @@ watch(() => SelectedTemplateType.value, () => {
           <AddNewTemplateDialog :visible="visible" @update:templateId="GetTemplateInfo" />
         </div>
         <div class="fillter-system-templets">
-          <div @click="SelectedTemplateType = TemplateTypeEnum.SystemTemplate" class="system-templets"
-            :class="SelectedTemplateType == TemplateTypeEnum.SystemTemplate ? 'active' : ''">
-            <input type="radio" name="system-templets">
+          <div
+            @click="SelectedTemplateType = TemplateTypeEnum.SystemTemplate"
+            class="system-templets"
+            :class="SelectedTemplateType == TemplateTypeEnum.SystemTemplate ? 'active' : ''"
+          >
+            <input type="radio" name="system-templets" />
             <label for="system-templets">{{ $t('system templets') }}</label>
           </div>
-          <div @click="SelectedTemplateType = TemplateTypeEnum.MyTemplate" class="system-templets"
-            :class="SelectedTemplateType == TemplateTypeEnum.MyTemplate ? 'active' : ''">
-            <input type="radio" name="system-templets" v-model="SelectedTemplateType">
+          <div
+            @click="SelectedTemplateType = TemplateTypeEnum.MyTemplate"
+            class="system-templets"
+            :class="SelectedTemplateType == TemplateTypeEnum.MyTemplate ? 'active' : ''"
+          >
+            <input type="radio" name="system-templets" v-model="SelectedTemplateType" />
             <label for="my-templets">{{ $t('my templets') }}</label>
           </div>
         </div>
 
         <div class="inspection-templates-items">
-          <TemplateSelector :data="state.data" @update:data="GetTemplateId" :selectedTemplates="selectedTemplates" />
+          <TemplateSelector
+            :data="state.data"
+            @update:data="GetTemplateId"
+            :selectedTemplates="selectedTemplates"
+          />
         </div>
-
       </div>
       <button class="confirm-btn btn btn-primary w-full !mt-4" @click="sendTemplatesId">
         {{ $t('confirm') }}
@@ -194,5 +216,8 @@ watch(() => SelectedTemplateType.value, () => {
   margin: auto;
   margin-bottom: 12px;
   /* margin-inline: 12px; */
+}
+.required {
+  color: red !important;
 }
 </style>

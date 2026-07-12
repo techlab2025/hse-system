@@ -1,19 +1,20 @@
 <script setup lang="ts">
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue';
-import { ref, watch } from 'vue';
-import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams';
-import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController';
-import InspectionGeneralForm from './InspectionGeneralForm.vue';
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import { ref, watch } from 'vue'
+import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
+import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
+import InspectionGeneralForm from './InspectionGeneralForm.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 // import IndexEmployeeParams from '@/features/employee/Core
 import InspectionTemplateDialog from '../InspectionDialog/InspectionTemplateDialog.vue'
-import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController';
-import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams';
-import FetchMyZonesController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController';
-import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/params/FetchMyZonesParams';
-import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel';
-import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController';
-import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams';
+import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
+import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
+import FetchMyZonesController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController'
+import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/params/FetchMyZonesParams'
+import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
+import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
+import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 
 const emit = defineEmits(['update:data'])
 const SelectedProject = ref<TitleInterface>()
@@ -21,10 +22,18 @@ const SelectedEmployee = ref<TitleInterface>()
 const SelectedProjectZone = ref<TitleInterface>()
 
 const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
-const indexEmployeeParams = ref<IndexOrganizatoinEmployeeParams | null>(null);
+const indexEmployeeParams = ref<IndexOrganizatoinEmployeeParams | null>(null)
 watch(SelectedProjectZone, (newVal) => {
-  indexEmployeeParams.value = new IndexOrganizatoinEmployeeParams('', 1, 1, 0, null, newVal?.id, false);
-});
+  indexEmployeeParams.value = new IndexOrganizatoinEmployeeParams(
+    '',
+    1,
+    1,
+    0,
+    null,
+    newVal?.id,
+    false,
+  )
+})
 
 const indexProjectController = IndexProjectController.getInstance()
 const indexProjectParams = new IndexProjectParams('', 1, 10, 0)
@@ -35,7 +44,6 @@ const fetchMyZoneParams = ref<FetchMyZonesParams | null>(null)
 //   fetchMyZoneParams.value = new FetchMyZonesParams(newVal?.id);
 // });
 
-
 // const ProjectZoneId = ref<number>()
 const UpdateData = () => {
   emit('update:data', {
@@ -44,7 +52,7 @@ const UpdateData = () => {
     TempalteIds: TempalteIds.value,
     ProjectZoneId: SelectedProjectZone.value?.id,
     ProjectId: SelectedProject.value?.id,
-    SelectedEquipment: SelectedEquipment.value?.id
+    SelectedEquipment: SelectedEquipment.value?.id,
   })
 }
 const setEmployee = (data: TitleInterface) => {
@@ -93,7 +101,7 @@ const GetProjectZones = async (projectId: number) => {
         new TitleInterface({
           id: zone.ProjectZoneId,
           title: zone.title,
-        })
+        }),
       )
     })
   }
@@ -115,7 +123,7 @@ const ClearDate = () => {
 }
 
 const indexEquipmentController = IndexEquipmentController.getInstance()
-const deleteEquipmentTypeParams = new IndexEquipmentParams("", 1, 10, 0)
+const deleteEquipmentTypeParams = new IndexEquipmentParams('', 1, 10, 0)
 
 const SelectedEquipment = ref<TitleInterface>()
 const setEquipment = (data: TitleInterface) => {
@@ -126,24 +134,55 @@ const setEquipment = (data: TitleInterface) => {
 
 <template>
   <div class="input-wrapper">
-    <CustomSelectInput :modelValue="SelectedProject" class="input" :controller="indexProjectController"
-      :params="indexProjectParams" :label="$t('Projects')" id="project" :placeholder="$t('select your Project')"
-      @update:modelValue="setProject" />
+    <UpdatedCustomInputSelect
+      :required="true"
+      :modelValue="SelectedProject"
+      class="input"
+      :controller="indexProjectController"
+      :params="indexProjectParams"
+      :label="$t('Projects')"
+      id="project"
+      :placeholder="$t('select your Project')"
+      @update:modelValue="setProject"
+    />
 
-    <CustomSelectInput v-if="SelectedProject" :modelValue="SelectedProjectZone" class="input" :static-options="AllZones"
-      :label="$t('Zones')" id="project" :placeholder="$t('select your Zone')" @update:modelValue="setProjectZone" />
+    <UpdatedCustomInputSelect
+      :required="true"
+      v-if="SelectedProject"
+      :modelValue="SelectedProjectZone"
+      class="input"
+      :static-options="AllZones"
+      :label="$t('Zones')"
+      id="project"
+      :placeholder="$t('select your Zone')"
+      @update:modelValue="setProjectZone"
+    />
 
+    <UpdatedCustomInputSelect
+      :required="true"
+      v-if="SelectedProjectZone"
+      :modelValue="SelectedEmployee"
+      class="input"
+      :controller="indexOrganizatoinEmployeeController"
+      :params="indexEmployeeParams"
+      :label="$t('Employee')"
+      id="employee"
+      :placeholder="$t('select your employee')"
+      @update:modelValue="setEmployee"
+    />
 
-    <CustomSelectInput v-if="SelectedProjectZone" :modelValue="SelectedEmployee" class="input"
-      :controller="indexOrganizatoinEmployeeController" :params="indexEmployeeParams" :label="$t('Employee')" id="employee"
-      :placeholder="$t('select your employee')" @update:modelValue="setEmployee" />
-
-    <CustomSelectInput :modelValue="SelectedEquipment" class="input" :controller="indexEquipmentController"
-      :params="deleteEquipmentTypeParams" :label="$t('Equipment')" id="equipment" :placeholder="$t('select your equipment')"
-      @update:modelValue="setEquipment" />
+    <UpdatedCustomInputSelect
+      :modelValue="SelectedEquipment"
+      class="input"
+      :controller="indexEquipmentController"
+      :params="deleteEquipmentTypeParams"
+      :label="$t('Equipment')"
+      id="equipment"
+      :placeholder="$t('select your equipment')"
+      @update:modelValue="setEquipment"
+    />
 
     <InspectionTemplateDialog @update:data="GetTemplateId" />
-
   </div>
   <InspectionGeneralForm @change:btn="ClearDate" @update:data="GetGeneralData" />
 </template>
