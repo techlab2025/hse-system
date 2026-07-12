@@ -303,6 +303,20 @@ const logout = () => {
 .sidebar.close .links::-webkit-scrollbar {
   display: none;
 }
+.sidebar.close :deep(.strip-icon) {
+  width: 34px !important;
+  height: 34px !important;
+  padding: 7px;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #1d4ed8;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.14);
+}
+.sidebar.close :deep(.icon-item.router-link-active .strip-icon),
+.sidebar.close :deep(.icon-item:hover .strip-icon) {
+  color: #0f2f80;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.2);
+}
 .sidebar.open :deep(.p-accordionheader) {
   margin-inline: 0 !important;
   padding: 12px 14px !important;
