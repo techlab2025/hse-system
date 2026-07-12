@@ -185,7 +185,12 @@ const GerIncidantCount = (data: any): number => {
                     <div class="first-card">
                       <div class="first-card-header">
                         <div class="header">
-                          <p
+                          <router-link
+                            :to="
+                              item?.observation?.type === Observation.AccidentsType
+                                ? `/organization/equipment-mangement/incedant/show/${item?.observation?.id}`
+                                : `/organization/equipment-mangement/observation/show/${item?.observation?.id}`
+                            "
                             class="first-label-item-primary"
                             :class="GetObservationRiskLevel(item?.observation?.riskLevel)"
                           >
@@ -198,7 +203,7 @@ const GerIncidantCount = (data: any): number => {
                             <span v-if="item?.observation?.serial">{{
                               `_` + item?.observation?.serialName || '_OBS-2025-0112'
                             }}</span>
-                          </p>
+                          </router-link>
                           <p :class="`status ${ReturnStatusTitle(item?.status)}`">
                             {{ ReturnStatusTitle(item?.status) }}
                           </p>
