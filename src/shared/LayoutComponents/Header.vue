@@ -75,9 +75,7 @@ const updateDropdownPosition = () => {
   const isRtl = document.documentElement.dir === 'rtl'
   dropdownPosition.value = {
     top: `${rect.bottom + 12}px`,
-    ...(isRtl
-      ? { left: `${rect.left}px` }
-      : { right: `${window.innerWidth - rect.right}px` }),
+    ...(isRtl ? { left: `${rect.left}px` } : { right: `${window.innerWidth - rect.right}px` }),
   }
 }
 
@@ -213,7 +211,7 @@ const toggle = (event: Event) => {
       </div>
 
       <div
-        class="input-wrapper"
+        class="input-wrapper header-select"
         v-if="!showProjectSelect && user?.type != OrganizationTypeEnum.ADMIN"
       >
         <!-- label="Project" -->
@@ -225,6 +223,7 @@ const toggle = (event: Event) => {
           :placeholder="$t('select your project')"
           @update:modelValue="setSelectedProject"
           :reload="false"
+          label=""
         />
       </div>
       <!-- <div class="search">
@@ -314,6 +313,10 @@ const toggle = (event: Event) => {
 </template>
 
 <style scoped lang="scss">
+.input-wrapper :deep(label) {
+  display: none !important;
+}
+
 .header {
   position: sticky;
   top: 0;

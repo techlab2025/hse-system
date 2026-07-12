@@ -333,20 +333,14 @@ const logout = () => {
 .sidebar.open :deep(.links-header) {
   justify-content: flex-start;
   width: 100%;
-  gap: 10px;
+  gap: 0;
   color: #ffffff !important;
   font-size: 14px;
   font-weight: 800;
   letter-spacing: 0;
 }
 .sidebar.open :deep(.links-header svg) {
-  width: 28px;
-  height: 28px;
-  padding: 5px;
-  border-radius: 10px;
-  color: #1d4ed8;
-  background: #ffffff;
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
+  display: none !important;
 }
 .sidebar.open :deep(.p-accordioncontent-content) {
   padding: 0 !important;
@@ -374,7 +368,7 @@ const logout = () => {
   flex-direction: row;
   align-items: center !important;
   justify-content: flex-start;
-  gap: 10px !important;
+  gap: 0 !important;
   min-height: 44px;
   width: 100%;
   padding: 9px 12px !important;
@@ -408,12 +402,7 @@ const logout = () => {
   display: none !important;
 }
 .sidebar.open :deep(.route-icon) {
-  display: block;
-  width: 19px;
-  height: 19px;
-  flex-shrink: 0;
-  opacity: 1;
-  color: currentColor;
+  display: none !important;
 }
 .sidebar.open :deep(.p-accordioncontent-content li a span) {
   width: 100% !important;

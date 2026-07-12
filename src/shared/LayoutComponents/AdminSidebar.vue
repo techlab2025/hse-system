@@ -25,7 +25,6 @@ import ShieldIcon from '@/shared/icons/shield.vue'
 import TicketIcon from '@/shared/icons/TicketIcon.vue'
 import ArchiveBook from '@/shared/icons/ArchiveBook.vue'
 import ItemsIcon from '@/shared/icons/items.vue'
-import LocationIcon from '@/shared/icons/LocationIcon.vue'
 import IconArea from '@/shared/icons/IconArea.vue'
 import MoneyIcon from '@/shared/icons/MoneyIcon.vue'
 import ReceiptAdd from '@/shared/icons/ReceiptAdd.vue'
@@ -48,6 +47,22 @@ import EyeIcon from '@/shared/icons/EyeIcon.vue'
 import RootCaseIcon from '@/shared/icons/RootCase.vue'
 import InjuredIcon from '@/shared/icons/injured.vue'
 import LockerIcon from '@/shared/icons/LockerIcon.vue'
+import IconGlobal from '@/shared/icons/IconGlobal.vue'
+import HomeLocationIcon from '@/shared/icons/HomeLocationIcon.vue'
+import IconMap from '@/shared/icons/IconMap.vue'
+import TicketStarIcon from '@/shared/icons/ticketStar.vue'
+import CloudIcon from '@/shared/icons/CloudIcon.vue'
+import IconMethod from '@/shared/icons/IconMethod.vue'
+import Repeaticon from '@/shared/icons/Repeaticon.vue'
+import QuestionMarkIcon from '@/shared/icons/QuestionMarkIcon.vue'
+import IconDiets from '@/shared/icons/IconDiets.vue'
+import DangerIcon from '@/shared/icons/DangerIcon.vue'
+import CardsIcon from '@/shared/icons/CardsIcon.vue'
+import OrganizationPermission from '@/shared/icons/OrganizationPermission.vue'
+import IconWallet from '@/shared/icons/IconWallet.vue'
+import IconStatus from '@/shared/icons/IconStatus.vue'
+import AddEquipmentIcon from '@/shared/icons/AddEquipmentIcon.vue'
+import ImportantIcon from '@/shared/icons/ImportantIcon.vue'
 
 const props = defineProps<{ open: boolean }>()
 
@@ -179,7 +194,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/ticket-type',
     name: t('ticket_types'),
-    icon: TicketIcon,
+    icon: TicketStarIcon,
     permissions: [
       PermissionsEnum.TICKET_TYPE_ALL,
       PermissionsEnum.TICKET_TYPE_CREATE,
@@ -224,25 +239,13 @@ const SettingsRoutes = ref<Routes[]>([
       PermissionsEnum.CATALOG_UPDATE,
     ],
   },
-  // {
-  //   link: '/admin/certificate',
-  //   name: t('certificates'),
-  //   icon: ItemsIcon,
-  //   permissions: [
-  //     PermissionsEnum.CERTIFICATE_ALL,
-  //     PermissionsEnum.CERTIFICATE_CREATE,
-  //     PermissionsEnum.CERTIFICATE_DELETE,
-  //     PermissionsEnum.CERTIFICATE_FETCH,
-  //     PermissionsEnum.CERTIFICATE_UPDATE,
-  //   ],
-  // },
 ])
 
 const LocationRoutes = ref<Routes[]>([
   {
     link: '/admin/countries',
     name: t('country'),
-    icon: LocationIcon,
+    icon: IconGlobal,
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum?.LOCATION_ALL,
@@ -256,7 +259,7 @@ const LocationRoutes = ref<Routes[]>([
   {
     link: '/admin/states',
     name: t('state'),
-    icon: LocationIcon,
+    icon: HomeLocationIcon,
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.LOCATION_ALL,
@@ -269,7 +272,7 @@ const LocationRoutes = ref<Routes[]>([
   {
     link: '/admin/cities',
     name: t('city'),
-    icon: LocationIcon,
+    icon: IconMap,
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.LOCATION_ALL,
@@ -311,7 +314,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/admin/hazard-type',
     name: t('hazard_type'),
-    icon: HazardIcon,
+    icon: IconStatus,
     permissions: [
       PermissionsEnum.HAZARD_TYPE_ALL,
       PermissionsEnum.HAZARD_TYPE_FETCH,
@@ -324,7 +327,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/admin/accidents-type',
     name: t('incident_types'),
-    icon: WarningIcon,
+    icon: ImportantIcon,
     permissions: [
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
       PermissionsEnum.ACCIDENTS_TYPE_FETCH,
@@ -350,7 +353,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/admin/equipment-types',
     name: t('equipment_types'),
-    icon: ToolIcon,
+    icon: AddEquipmentIcon,
     permissions: [
       PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
       PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
@@ -495,7 +498,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/headers',
     name: t('headers'),
-    icon: IconSetting,
+    icon: CloudIcon,
     permissions: [
       PermissionsEnum.HEADER_ALL,
       PermissionsEnum.HEADER_CREATE,
@@ -507,7 +510,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/service-features',
     name: t('service_features'),
-    icon: GeerIcon,
+    icon: IconMethod,
     permissions: [
       PermissionsEnum.SERVICE_FEATURE_ALL,
       PermissionsEnum.SERVICE_FEATURE_CREATE,
@@ -543,7 +546,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/system-works',
     name: t('system_works'),
-    icon: GeerIcon,
+    icon: Repeaticon,
     permissions: [
       PermissionsEnum.SYSTEM_WORK_ALL,
       PermissionsEnum.SYSTEM_WORK_CREATE,
@@ -565,7 +568,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/home-view-pricing',
     name: t('homeViewPricing'),
-    icon: MoneyIcon,
+    icon: IconWallet,
     permissions: [
       PermissionsEnum.HOME_VIEW_PRICING_ALL,
       PermissionsEnum.HOME_VIEW_PRICING_CREATE,
@@ -613,7 +616,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/about-us-features',
     name: t('about_us_features'),
-    icon: GeerIcon,
+    icon: QuestionMarkIcon,
     permissions: [
       PermissionsEnum.ABOUT_US_FEATURE_ALL,
       PermissionsEnum.ABOUT_US_FEATURE_CREATE,
@@ -625,7 +628,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/about-us-core',
     name: t('about_us_core'),
-    icon: GeerIcon,
+    icon: IconDiets,
     permissions: [
       PermissionsEnum.ABOUT_US_CORE_ALL,
       PermissionsEnum.ABOUT_US_CORE_CREATE,
@@ -685,7 +688,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/system_feature',
     name: t('systemFeature'),
-    icon: GeerIcon,
+    icon: CardsIcon,
     permissions: [
       PermissionsEnum.OUR_SYSTEM_FEATURE_ALL,
       PermissionsEnum.OUR_SYSTEM_FEATURE_CREATE,
@@ -697,7 +700,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/system_risk_type',
     name: t('systemRiskType'),
-    icon: WarningIcon,
+    icon: DangerIcon,
     permissions: [
       PermissionsEnum.OUR_SYSTEM_RISK_TYPE_ALL,
       PermissionsEnum.OUR_SYSTEM_RISK_TYPE_CREATE,
@@ -709,7 +712,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/system_components',
     name: t('systemComponents'),
-    icon: ElementIcon,
+    icon: OrganizationPermission,
     permissions: [
       PermissionsEnum.OUR_SYSTEM_COMPONENT_ALL,
       PermissionsEnum.OUR_SYSTEM_COMPONENT_CREATE,

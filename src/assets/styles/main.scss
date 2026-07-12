@@ -497,3 +497,13 @@ label {
   color: #202020 !important;
   font-family: 'Light' !important;
 }
+
+.header-select {
+  label {
+    display: none !important;
+  }
+}
+
+.header-select :deep(label) {
+  display: none !important;
+}

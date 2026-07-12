@@ -16,12 +16,8 @@ import { useUserStore } from '@/stores/user'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 
 import AwardIcon from '@/shared/icons/AwardIcon.vue'
-import BookIcon from '@/shared/icons/BookIcon.vue'
-import AddHerikly from '@/shared/icons/AddHerikly.vue'
-import EmployeeIcon from '@/shared/icons/EmployeeIcon.vue'
 import TeamIcon from '@/shared/icons/TeamIcon.vue'
 import ContractorIcon from '@/shared/icons/ContractorIcon.vue'
-import ShieldIcon from '@/shared/icons/shield.vue'
 import IconScopes from '@/shared/icons/IconScopes.vue'
 import LockerIcon from '@/shared/icons/LockerIcon.vue'
 import AddcertificatesIcon from '@/shared/icons/Addcertificates.vue'
@@ -44,7 +40,20 @@ import HierarchyIco from '../icons/HierarchyIco.vue'
 import EmployeeIconSidebar from '../icons/EmployeeIconSidebar.vue'
 import RolesIcon from '../icons/RolesIcon.vue'
 import WareHouseIconSidebar from '../icons/WareHouseIconSidebar.vue'
-import { InspectionPageType } from '@/features/Organization/ObservationFactory/Core/Enums/InspectionTypeEnum.ts'
+import AddEquipmentIcon from '@/shared/icons/AddEquipmentIcon.vue'
+import InvestegationIcon from '@/shared/icons/InvestegationIcon.vue'
+import CapaIcon from '@/shared/icons/CapaIcon.vue'
+import ObservDetailsIcon from '@/shared/icons/observdetails.vue'
+import ChecklistIcon from '@/shared/icons/ChecklistIcon.vue'
+import IconProjectShow from '@/shared/icons/IconProjectShow.vue'
+import IconGlobal from '@/shared/icons/IconGlobal.vue'
+import HomeLocationIcon from '@/shared/icons/HomeLocationIcon.vue'
+import IconMap from '@/shared/icons/IconMap.vue'
+import DangerIcon from '@/shared/icons/DangerIcon.vue'
+import IconDocumentation from '@/shared/icons/IconDocumentation.vue'
+import IconTime from '@/shared/icons/IconTime.vue'
+import IconStatus from '@/shared/icons/IconStatus.vue'
+import IconMethod from '@/shared/icons/IconMethod.vue'
 
 const props = defineProps<{ open: boolean }>()
 
@@ -75,43 +84,43 @@ const OperationsRoutes = ref<Routes[]>([
   {
     link: '/organization/projects',
     name: t('Projects'),
-    icon: ProjectProgressIcon,
+    icon: IconProjectShow,
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/equipments',
     name: t('equipment'),
-    icon: ProjectProgressIcon,
+    icon: AddEquipmentIcon,
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/Investigating',
     name: t('investigations'),
-    icon: ProjectProgressIcon,
+    icon: InvestegationIcon,
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/capa',
     name: t('CAPA'),
-    icon: ProjectProgressIcon,
+    icon: CapaIcon,
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/equipment-mangement/incedant?isAll=1',
     name: t('Incidents'),
-    icon: ProjectProgressIcon,
+    icon: WarningIcon,
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/equipment-mangement/observation?isAll=1&type=2',
     name: t('observations'),
-    icon: ProjectProgressIcon,
+    icon: ObservDetailsIcon,
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/equipment-mangement/inspection?inspectionType=1',
     name: t('Inspection'),
-    icon: ProjectProgressIcon,
+    icon: ChecklistIcon,
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
 ])
@@ -265,7 +274,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/factory',
     name: t('Hazard factor'),
-    icon: FactorItemIcon,
+    icon: DangerIcon,
     permissions: [
       PermissionsEnum.ORG_FACTORY_ALL,
       PermissionsEnum.ORG_FACTORY_CREATE,
@@ -289,7 +298,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/document-refrence',
     name: 'Document Refrence',
-    icon: InjuredIcon,
+    icon: IconDocumentation,
     permissions: [
       PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_ALL,
       PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_CREATE,
@@ -301,7 +310,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/shifts',
     name: t('shifts'),
-    icon: ProjectProgressIcon,
+    icon: IconTime,
     permissions: [
       PermissionsEnum.ORG_SHIFT_ALL,
       PermissionsEnum.ORG_SHIFT_CREATE,
@@ -330,7 +339,7 @@ const LocationRoutes = ref<Routes[]>([
   {
     link: '/organization/countries',
     name: t('country'),
-    icon: LocationIcon,
+    icon: IconGlobal,
     permissions: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.LOCATION_ORG_ALL,
@@ -344,7 +353,7 @@ const LocationRoutes = ref<Routes[]>([
   {
     link: '/organization/states',
     name: t('state'),
-    icon: LocationIcon,
+    icon: HomeLocationIcon,
     permissions: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.LOCATION_ORG_ALL,
@@ -358,7 +367,7 @@ const LocationRoutes = ref<Routes[]>([
   {
     link: '/organization/cities',
     name: t('city'),
-    icon: LocationIcon,
+    icon: IconMap,
     permissions: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.LOCATION_ORG_ALL,
@@ -414,7 +423,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/organization/hazard-type',
     name: t('hazard_classifications'),
-    icon: HazardIcon,
+    icon: IconStatus,
     permissions: [
       PermissionsEnum.HAZARD_TYPE_ALL,
       PermissionsEnum.HAZARD_TYPE_FETCH,
@@ -427,7 +436,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/organization/accidents-type',
     name: t('incident_types'),
-    icon: WarningIcon,
+    icon: IconMethod,
     permissions: [
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
       PermissionsEnum.ACCIDENTS_TYPE_FETCH,
