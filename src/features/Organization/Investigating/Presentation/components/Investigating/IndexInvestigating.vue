@@ -154,16 +154,16 @@ const GerIncidantCount = (data: any): number => {
         <!-- Sidebar -->
         <!--  :mediumObservationCount="GetMediumObservationCount(state.data)" -->
 
-        <InvestigatingSidebar
+        <!-- <InvestigatingSidebar
           :selectedRiskLevel="observationRiskLevel"
           :highObservationCount="GethighObservationCount(state.data)"
           @update:data="GetRiskLevel"
           :mediumObservationCount="GerIncidantCount(state.data)"
           :allIncident="state.pagination?.total"
-        />
+        /> -->
 
         <!-- Main content (Cards) -->
-        <div class="col-span-9">
+        <div class="col-span-12">
           <!-- Header -->
           <div class="flex items-center justify-between mb-4">
             <!-- <IndexFilter :filters="Filters" /> -->

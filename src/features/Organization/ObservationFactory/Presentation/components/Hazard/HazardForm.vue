@@ -295,7 +295,7 @@ const UpdateSerial = (data) => {
       :params="indexHazardTypeParams"
       label="HazardType"
       id="HazardType"
-      placeholder="Select Hazard Type"
+      placeholder="Select Hazard Classification"
       @update:modelValue="setHazardType"
     />
   </div>
