@@ -75,7 +75,11 @@ const showSidebar = computed(() => {
       }"
     >
       <NewSidebar v-if="showSidebar" v-model:open="isSidebarOpen" />
-      <div v-if="isSidebarOpen && showSidebar" class="sidebar-backdrop" @click="isSidebarOpen = false"></div>
+      <div
+        v-if="isSidebarOpen && showSidebar"
+        class="sidebar-backdrop"
+        @click="isSidebarOpen = false"
+      ></div>
     </div>
     <section class="content-wrapper">
       <Header @open="toggleSidebar" />
@@ -85,9 +89,135 @@ const showSidebar = computed(() => {
       </div>
     </section>
   </main>
+  <footer :class="['footer bottom-0 left-0 right-0 z-50', { 'is-dark': isDarkMode }]">
+    <div class="footer-shell">
+      <div class="footer-brand">
+        <span class="footer-mark">HSE</span>
+        <span class="footer-title">HSE.Cloud.Ai</span>
+        <span class="footer-divider"></span>
+        <span class="footer-powered">Powered by <strong>TechLab</strong></span>
+      </div>
+
+      <p class="footer-copy">© 2026 TechLab. All rights reserved.</p>
+    </div>
+  </footer>
 </template>
 
 <style scoped lang="scss">
+.content {
+  // padding-bottom: 74px;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  border-top: 1px solid rgba(29, 78, 216, 0.14);
+  background: #f8f9fb;
+  box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(16px);
+}
+
+.footer-shell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 22px;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 10px;
+  color: #0f2f80;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.footer-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 26px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: linear-gradient(155deg, #0f36a8 0%, #102d79 55%, #061f56 100%);
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0;
+  box-shadow: 0 8px 18px rgba(30, 64, 175, 0.24);
+}
+
+.footer-title,
+.footer-powered {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.footer-divider {
+  width: 1px;
+  height: 18px;
+  flex-shrink: 0;
+  background: rgba(29, 78, 216, 0.18);
+}
+
+.footer-powered {
+  color: #64748b;
+  font-weight: 700;
+
+  strong {
+    color: #1d4ed8;
+    font-weight: 900;
+  }
+}
+
+.footer-copy {
+  margin: 0;
+  flex-shrink: 0;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.footer.is-dark .footer-shell {
+  background: transparent;
+  box-shadow: none;
+}
+
+.footer.is-dark {
+  border-top-color: rgba(148, 163, 184, 0.16);
+  background:
+    linear-gradient(90deg, rgba(15, 23, 42, 0.96), rgba(17, 24, 39, 0.94)), rgba(15, 23, 42, 0.92);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.24);
+}
+
+.footer.is-dark .footer-brand {
+  color: #f8fafc;
+}
+
+.footer.is-dark .footer-divider {
+  background: rgba(148, 163, 184, 0.22);
+}
+
+.footer.is-dark .footer-powered,
+.footer.is-dark .footer-copy {
+  color: #94a3b8;
+}
+
+.footer.is-dark .footer-powered strong {
+  color: #60a5fa;
+}
+
 .content.is-dark,
 .content.is-dark .content-wrapper,
 .content.is-dark .main-content {
@@ -101,6 +231,35 @@ const showSidebar = computed(() => {
 }
 
 @media (max-width: 768px) {
+  .content {
+    padding-bottom: 92px;
+  }
+
+  .footer {
+    padding: 0;
+  }
+
+  .footer-shell {
+    align-items: center;
+    flex-direction: column;
+    gap: 5px;
+    min-height: 0;
+    padding: 9px 12px;
+  }
+
+  .footer-brand {
+    justify-content: center;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .footer-copy {
+    width: 100%;
+    font-size: 11px;
+    text-align: center;
+    white-space: normal;
+  }
+
   .sidebar-container {
     position: fixed;
     top: 0;
