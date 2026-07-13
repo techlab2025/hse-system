@@ -9,6 +9,9 @@ import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enu
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import CapaIcon from '@/assets/images/Capa.png'
 import Investigation from '@/assets/images/Investigation.png'
+import { useThemeMode } from '@/composables/useThemeMode'
+
+const { isDarkMode } = useThemeMode()
 
 const items = [
   {
@@ -124,7 +127,7 @@ const items = [
 </script>
 
 <template>
-  <div class="all-observation">
+  <div class="all-observation" :class="{ 'is-dark': isDarkMode }">
     <!-- <HeaderPage :title="'all you need in one page'" subtitle="select what you want to do" :img="allObservationImage" /> -->
 
     <div class="cards">

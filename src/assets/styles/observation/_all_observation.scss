@@ -302,4 +302,92 @@
       transition: none !important;
     }
   }
+
+  &.is-dark {
+    .cards {
+      .card {
+        border-color: color-mix(in srgb, var(--card-accent, #1d4ed8) 24%, var(--main-border));
+        background:
+          radial-gradient(
+            120% 110% at 0% 0%,
+            color-mix(in srgb, var(--card-accent, #1d4ed8) 16%, transparent),
+            transparent 52%
+          ),
+          linear-gradient(145deg, var(--surface-1) 0%, var(--surface-2) 100%);
+        box-shadow:
+          0 1px 2px rgba(0, 0, 0, 0.18),
+          0 18px 42px rgba(0, 0, 0, 0.24);
+
+        &::before {
+          background: linear-gradient(
+            180deg,
+            var(--card-accent, #1d4ed8),
+            color-mix(in srgb, var(--card-accent, #1d4ed8) 50%, #14b8a6)
+          );
+        }
+
+        &:hover {
+          border-color: color-mix(in srgb, var(--card-accent, #1d4ed8) 48%, var(--main-border));
+          box-shadow:
+            0 12px 24px rgba(0, 0, 0, 0.26),
+            0 30px 58px rgba(0, 0, 0, 0.34);
+        }
+
+        .card-visual {
+          border: 1px solid var(--main-border);
+          background:
+            linear-gradient(
+              145deg,
+              color-mix(in srgb, var(--card-accent, #1d4ed8) 16%, var(--surface-2)),
+              var(--surface-3) 72%
+            ),
+            var(--surface-2);
+        }
+
+        .card-visual .image {
+          background: color-mix(in srgb, var(--surface-1) 86%, transparent);
+          box-shadow:
+            inset 0 0 0 1px var(--main-border),
+            0 10px 22px color-mix(in srgb, var(--card-accent, #1d4ed8) 20%, transparent);
+        }
+
+        .card-visual .image img {
+          filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.28));
+        }
+
+        .card-body,
+        .card-content,
+        .card-options {
+          background: transparent;
+        }
+
+        .card-header-title {
+          color: var(--text-strong);
+        }
+
+        .description {
+          color: var(--text-soft);
+        }
+
+        .card-action {
+          border-color: color-mix(in srgb, var(--card-accent, #1d4ed8) 22%, var(--main-border));
+          background: var(--surface-1);
+          color: var(--text-soft);
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+        }
+
+        .card-action:hover,
+        .card-action-primary {
+          border-color: var(--card-accent, #1d4ed8);
+          background: linear-gradient(
+            135deg,
+            var(--card-accent, #1d4ed8),
+            color-mix(in srgb, var(--card-accent, #1d4ed8) 76%, #020617)
+          );
+          color: #ffffff;
+          box-shadow: 0 10px 20px color-mix(in srgb, var(--card-accent, #1d4ed8) 28%, transparent);
+        }
+      }
+    }
+  }
 }

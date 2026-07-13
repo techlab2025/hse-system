@@ -1607,5 +1607,85 @@ label {
     background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%) !important;
     background-size: 220% 100%;
   }
+
+  :deep(.colored),
+  :deep(.another-meeting),
+  :deep(.another-meeting-header),
+  :deep(.another-meeting-contect),
+  :deep(.timeline-content),
+  :deep(.timeline-wrapper),
+  :deep(.timeline-content-text),
+  :deep(.injury-timeline-card),
+  :deep(.timeline-contect-select),
+  :deep(.title-header),
+  :deep(.meeting-status),
+  :deep(.multi-image-uploader),
+  :deep(.radio-wrapper),
+  :deep(.observation-container),
+  :deep(.observation-level),
+  :deep(.save-status-selector),
+  :deep(.is-stopped-white) {
+    background:
+      radial-gradient(
+        circle at 100% 0%,
+        color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+        transparent 40%
+      ),
+      linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
+    border-color: var(--main-border) !important;
+    color: var(--Black) !important;
+    box-shadow: none !important;
+  }
+
+  :deep(.meeting-status),
+  :deep(.injury-timeline-card),
+  :deep(.timeline-content),
+  :deep(.timeline-contect-select),
+  :deep(.multi-image-uploader),
+  :deep(.radio-wrapper),
+  :deep(.observation-level) {
+    border: 1px solid var(--main-border) !important;
+  }
+
+  :deep(.title-header .title),
+  :deep(.title-header h1),
+  :deep(.title-header h2),
+  :deep(.injury-card-header strong),
+  :deep(.timeline-content .title),
+  :deep(.radio-wrapper.active),
+  :deep(.add-dialog) {
+    color: var(--text-strong) !important;
+  }
+
+  :deep(.title-header .subtitle),
+  :deep(.title-header p),
+  :deep(.injury-card-header span),
+  :deep(.timeline-content label),
+  :deep(.timeline-content-text),
+  :deep(.timeline-content-text p),
+  :deep(.meeting-status button),
+  :deep(.emp-name),
+  :deep(.emp-select) {
+    color: var(--text-soft) !important;
+  }
+
+  :deep(.input-select),
+  :deep(.p-select),
+  :deep(.p-multiselect),
+  :deep(.p-datepicker),
+  :deep(.p-inputtext),
+  :deep(.timeline-content input),
+  :deep(.timeline-content textarea),
+  :deep(.injury-timeline-card .input) {
+    background-color: var(--surface-2) !important;
+    border-color: var(--main-border) !important;
+    color: var(--text-strong) !important;
+  }
+
+  :deep(.emp-name.active),
+  :deep(.emp-select.active),
+  :deep(.meeting-status button.active) {
+    color: #ffffff !important;
+  }
 }
 </style>

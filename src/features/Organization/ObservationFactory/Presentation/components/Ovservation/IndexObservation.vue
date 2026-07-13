@@ -47,8 +47,10 @@ import ToggleObservationWorkStoppedParams from '../../../Core/params/ToggleObser
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import CustomCheckboxToggle from '../../SubComponent/CustomCheckboxToggle.vue'
 import CardSkelaton from '@/features/Organization/Inspection/Presentation/components/SubComponent/CardSkelaton.vue'
+import { useThemeMode } from '@/composables/useThemeMode'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
+const { isDarkMode } = useThemeMode()
 
 // import DialogChangeStatusHazard from "@/features/setting/Hazard/Presentation/components/Hazard/DialogChangeStatusHazard.vue";
 // const route = useRoute()
@@ -266,7 +268,7 @@ const GetObservationType = (type: number) => {
 </script>
 
 <template>
-  <div class="grid grid-cols-12 gap-4">
+  <div class="grid grid-cols-12 gap-4 observation-index-page" :class="{ 'is-dark': isDarkMode }">
     <IndexEquipmentMangement class="col-span-2" />
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
       <PermissionBuilder
@@ -502,5 +504,63 @@ const GetObservationType = (type: number) => {
   align-items: center;
   gap: 10px;
   cursor: pointer;
+}
+
+.observation-index-page.is-dark {
+  :deep(.index-table-card),
+  :deep(.card-header-container),
+  :deep(.observation-dwspcription-more),
+  :deep(.card-description) {
+    border-color: var(--main-border) !important;
+    background:
+      radial-gradient(
+        circle at 100% 0%,
+        color-mix(in srgb, var(--PrimaryColor) 8%, transparent),
+        transparent 38%
+      ),
+      linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
+    color: var(--Black) !important;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22) !important;
+  }
+
+  :deep(.card-content),
+  :deep(.card-details),
+  :deep(.project-details),
+  :deep(.card-info) {
+    background: transparent !important;
+  }
+
+  :deep(.project-details .label-item-primary),
+  :deep(.label-item-primary),
+  :deep(.label-item-secondary),
+  :deep(.observation-dwspcription-more .show-more) {
+    border-color: var(--main-border) !important;
+    background: var(--surface-2) !important;
+    color: var(--text-soft) !important;
+  }
+
+  :deep(.title),
+  :deep(.card-details .title),
+  :deep(.label-item-primary span),
+  :deep(.label-item-secondary span) {
+    color: var(--text-strong) !important;
+  }
+
+  :deep(.subtitle),
+  :deep(.description),
+  :deep(.card-description .description) {
+    color: var(--text-soft) !important;
+  }
+
+  :deep(.p-image img) {
+    border: 1px solid var(--main-border) !important;
+    background: var(--surface-3) !important;
+  }
+
+  :deep(.observation-risk-level) {
+    border-color: color-mix(in srgb, var(--PrimaryColor) 30%, var(--main-border)) !important;
+    background: color-mix(in srgb, var(--PrimaryColor) 14%, var(--surface-2)) !important;
+    color: var(--text-strong) !important;
+  }
 }
 </style>
