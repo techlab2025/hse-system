@@ -23,28 +23,6 @@ const router = useRouter()
 const NOTIFICATION_SOUND_BASE64 =
   'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIF2W56+mmUBELTKXh8bllHAU2jdXvyn0tBSh+zPLaizsKGGS46Om1XBoFM4nU8c1+LgYngM3y3I4+ChlluOvpplARC0ul4fG5ZRwFNo3V78p9LQUofszy2os7ChhluevrpVERC0yn4fG3ZBwFOI7U8ct+LQUoftDy24k7ChZluujoplARDEul4e+3ZRwGOY/V8Mp/LgYpf9Dy3Ik7CxZluejpplARDEym4fG3ZBwFOI/V8cp+LQYoftDy24o7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuujqplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/'
 // const NOTIFICATION_SOUND_BASE64 = Ring;
-// Integrate new notification system
-const { notifications, unreadCount, acknowledgeNotification, wsConnected } =
-  useIntegratedNotifications({
-    autoConnect: true,
-    token: userStore.user?.WebSocketToken,
-    userId: userStore.user?.id,
-    fetchNotifications: true,
-    userToken: userStore.user?.apiToken,
-    onNotification: (notification) => {
-      console.log(notification, 'nooooooooooooot')
-      // make ring sound
-      const audio = new Audio(NOTIFICATION_SOUND_BASE64)
-      audio.play()
-      // Show global toast
-      toast.add({
-        severity: 'info',
-        summary: notification.title,
-        detail: notification.body?.[0]?.title,
-        life: 5000,
-      })
-    },
-  })
 const getNotificationPayload = (notification: EnrichedNotification) => {
   const body = notification.body
   const bodyItem = Array.isArray(body) ? body[0] : undefined
@@ -70,6 +48,12 @@ const getNotificationPayload = (notification: EnrichedNotification) => {
         parsedBodyItem?.type_id ??
         parsedData?.type_id,
     ),
+    title:
+      notification.title ||
+      bodyItem?.title ||
+      parsedBodyItem?.title ||
+      notification.parsedBody?.title ||
+      'New Notification',
     message:
       notification.displayMessage ||
       bodyItem?.message ||
@@ -79,6 +63,28 @@ const getNotificationPayload = (notification: EnrichedNotification) => {
       '',
   }
 }
+
+// Integrate new notification system
+const { notifications, unreadCount, acknowledgeNotification, wsConnected } =
+  useIntegratedNotifications({
+    autoConnect: true,
+    token: userStore.user?.WebSocketToken,
+    userId: userStore.user?.id,
+    fetchNotifications: true,
+    userToken: userStore.user?.apiToken,
+    onNotification: (notification) => {
+      const payload = getNotificationPayload(notification)
+      const audio = new Audio(NOTIFICATION_SOUND_BASE64)
+      audio.play()
+
+      toast.add({
+        severity: 'info',
+        summary: payload.title,
+        detail: payload.message,
+        life: 5000,
+      })
+    },
+  })
 
 const handleNotificationClick = (notification: EnrichedNotification) => {
   const payload = getNotificationPayload(notification)
@@ -150,7 +156,7 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
         >
           <div class="notification-content-wrapper">
             <button @click="handleNotificationClick(notification)" class="notification-text">
-              <strong>{{ wordSlice(notification.title, 25) }}</strong>
+              <strong>{{ wordSlice(getNotificationPayload(notification).title, 25) }}</strong>
               <p>
                 {{ getNotificationPayload(notification).message }}
                 <!-- {{ wordSlice(JSON.parse(notification?.body!)?.message, 35) }} -->
