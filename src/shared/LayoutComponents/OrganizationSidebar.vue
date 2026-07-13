@@ -1,17 +1,11 @@
 <script setup lang="ts">
-import Accordion from 'primevue/accordion'
-import AccordionPanel from 'primevue/accordionpanel'
-import AccordionHeader from 'primevue/accordionheader'
-import AccordionContent from 'primevue/accordioncontent'
-import { onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import type { Component } from 'vue'
 import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import GeerIcon from '../icons/GeerIcon.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import Sidebarlocation from '../icons/sidebarlocation.vue'
-import Locaps from '../icons/locaps.vue'
 import { useUserStore } from '@/stores/user'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 
@@ -55,7 +49,7 @@ import IconTime from '@/shared/icons/IconTime.vue'
 import IconStatus from '@/shared/icons/IconStatus.vue'
 import IconMethod from '@/shared/icons/IconMethod.vue'
 
-const props = defineProps<{ open: boolean }>()
+defineProps<{ open: boolean }>()
 
 const route = useRoute()
 interface Routes {
@@ -498,574 +492,588 @@ const LockUpsRoutes = ref<Routes[]>([
   },
 ])
 
-const SelectedOrgRoute = ref<string>('')
-const SelectedLocationRoute = ref<string>('')
-const SelectedLockupsRoute = ref<string>('')
-const SelectedGauideRoutes = ref<string>('')
-const SelectedOperationsRoutes = ref<string>('')
-const SelectedTicketRoutes = ref<string>('')
+const { user } = useUserStore()
+
+interface RouteGroup {
+  key: string
+  label: string
+  eyebrow: string
+  icon: Component
+  routes: Routes[]
+  permissions: PermissionsEnum[]
+  adminOnly?: boolean
+}
+
+const flattenPermissions = (routes: Routes[]) =>
+  routes.map((item) => item.permissions.map((permission) => permission)).flat()
+
+const routeGroups = computed<RouteGroup[]>(() => [
+  {
+    key: 'overview',
+    label: t('overview'),
+    eyebrow: t('overview'),
+    icon: ProjectProgressIcon,
+    routes: GauideRoutes.value,
+    permissions: flattenPermissions(GauideRoutes.value),
+    adminOnly: true,
+  },
+  {
+    key: 'operations',
+    label: t('project managment'),
+    eyebrow: t('project managment'),
+    icon: IconProjectShow,
+    routes: OperationsRoutes.value,
+    permissions: flattenPermissions(OperationsRoutes.value),
+  },
+  {
+    key: 'organization',
+    label: t('organization_setting'),
+    eyebrow: t('organization_setting'),
+    icon: GeerIcon,
+    routes: OrganizationRoutes.value,
+    permissions: flattenPermissions(OrganizationRoutes.value),
+  },
+  {
+    key: 'locations',
+    label: t('location'),
+    eyebrow: t('location'),
+    icon: LocationIcon,
+    routes: LocationRoutes.value,
+    permissions: [PermissionsEnum?.LOCATION_ORG_ALL],
+  },
+  {
+    key: 'lockups',
+    label: t('Lockups'),
+    eyebrow: t('Lockups'),
+    icon: LockerIcon,
+    routes: LockUpsRoutes.value,
+    permissions: flattenPermissions(LockUpsRoutes.value),
+  },
+  {
+    key: 'support',
+    label: t('support'),
+    eyebrow: t('support'),
+    icon: TicketIcon,
+    routes: TicketRoutes.value,
+    permissions: flattenPermissions(TicketRoutes.value),
+  },
+])
+
+const activeGroupKey = ref('operations')
+const searchTerm = ref('')
+const isPaneVisible = ref(false)
+let closePaneTimer: number | undefined
+
+const isLinkActive = (link: Routes['link']) => {
+  if (typeof link !== 'string') return false
+
+  const [pathOnly] = link.split('?')
+
+  return route.fullPath === link || route.path === pathOnly
+}
+
+const groupHasActiveRoute = (group: RouteGroup) =>
+  group.routes.some((item) => isLinkActive(item.link))
+
+const activeGroup = computed(() => {
+  return (
+    routeGroups.value.find((group) => group.key === activeGroupKey.value) || routeGroups.value[0]
+  )
+})
+
+const filteredActiveRoutes = computed(() => {
+  const query = searchTerm.value.trim().toLocaleLowerCase()
+
+  if (!query) return activeGroup.value?.routes || []
+
+  return (activeGroup.value?.routes || []).filter((item) =>
+    t(item.name).toLocaleLowerCase().includes(query),
+  )
+})
+
+const selectGroup = (groupKey: string) => {
+  activeGroupKey.value = groupKey
+  searchTerm.value = ''
+}
+
+const clearClosePaneTimer = () => {
+  if (!closePaneTimer) return
+
+  window.clearTimeout(closePaneTimer)
+  closePaneTimer = undefined
+}
+
+const openGroup = (groupKey: string) => {
+  clearClosePaneTimer()
+  selectGroup(groupKey)
+  isPaneVisible.value = true
+}
+
+const keepPaneOpen = () => {
+  clearClosePaneTimer()
+}
+
+const hidePane = () => {
+  clearClosePaneTimer()
+  isPaneVisible.value = false
+  searchTerm.value = ''
+}
+
+const scheduleClosePane = () => {
+  clearClosePaneTimer()
+
+  closePaneTimer = window.setTimeout(() => {
+    hidePane()
+  }, 160)
+}
 
 watch(
-  () => route.path,
-  (newPath) => {
-    SelectedOrgRoute.value = OrganizationRoutes.value.find((item) => item.link === newPath)?.name
-    SelectedLocationRoute.value = LocationRoutes.value.find((item) => item.link === newPath)?.name
-    SelectedLockupsRoute.value = LockUpsRoutes.value.find((item) => item.link === newPath)?.name
-    SelectedGauideRoutes.value = GauideRoutes.value.find((item) => item.link === newPath)?.name
-    SelectedOperationsRoutes.value = OperationsRoutes.value.find(
-      (item) => item.link === newPath,
-    )?.name
-    SelectedTicketRoutes.value = TicketRoutes.value.find((item) => item.link === newPath)?.name
+  () => route.fullPath,
+  () => {
+    const routeGroup = routeGroups.value.find((group) => groupHasActiveRoute(group))
+
+    if (routeGroup) {
+      activeGroupKey.value = routeGroup.key
+    }
   },
+  { immediate: true },
 )
 
-const orgAccordion = ref<string | null>('1')
-const locationAccordion = ref<string | null>('2')
-const LoackupsAccordion = ref<string | null>('4')
-const GauideAccordion = ref<string | null>('5')
-const OperationsAccordion = ref<string | null>('6')
-const TicketAccordion = ref<string | null>('7')
-const activeTooltip = ref<{
-  title: string
-  top: number
-  left?: number
-  right?: number
-} | null>(null)
-
-const showTooltip = (event: MouseEvent, title: string) => {
-  const target = event.currentTarget as HTMLElement
-  const rect = target.getBoundingClientRect()
-  const isRtl = document.documentElement.dir === 'rtl'
-
-  activeTooltip.value = {
-    title,
-    top: rect.top + rect.height / 2,
-    ...(isRtl ? { right: window.innerWidth - rect.left + 10 } : { left: rect.right + 10 }),
-  }
-}
-
-const hideTooltip = () => {
-  activeTooltip.value = null
-}
-
-watch(orgAccordion, (val) => {
-  orgAccordion.value = val
+onBeforeUnmount(() => {
+  clearClosePaneTimer()
 })
-watch(locationAccordion, (val) => {
-  locationAccordion.value = val
-})
-watch(LoackupsAccordion, (val) => {
-  LoackupsAccordion.value = val
-})
-watch(GauideAccordion, (val) => {
-  GauideAccordion.value = val
-})
-watch(OperationsAccordion, (val) => {
-  OperationsAccordion.value = val
-})
-watch(TicketAccordion, (val) => {
-  TicketAccordion.value = val
-})
-
-const { user } = useUserStore()
 </script>
 
 <template>
-  <!-- Icon strip shown when sidebar is closed -->
-  <template v-if="!open">
-    <div class="icon-strip">
-      <template v-if="user?.employeeType == EmployeeStatusEnum.Admin">
-        <PermissionBuilder v-for="r in GauideRoutes" :key="r.link" :code="r.permissions">
-          <router-link
-            :to="r.link"
-            class="icon-item"
-            :data-title="$t(r.name)"
-            @mouseenter="showTooltip($event, $t(r.name))"
-            @mouseleave="hideTooltip"
-            @focus="showTooltip($event, $t(r.name))"
-            @blur="hideTooltip"
+  <div class="modern-sidebar">
+    <nav class="side-rail-nav" aria-label="Main sidebar groups">
+      <template v-for="group in routeGroups" :key="group.key">
+        <PermissionBuilder
+          v-if="!group.adminOnly || user?.employeeType == EmployeeStatusEnum.Admin"
+          :code="group.permissions"
+        >
+          <button
+            type="button"
+            :class="[
+              'side-rail-btn',
+              {
+                'is-selected': activeGroupKey === group.key,
+                'is-active': groupHasActiveRoute(group),
+              },
+            ]"
+            :title="group.label"
+            @click="openGroup(group.key)"
+            @mouseenter="openGroup(group.key)"
+            @mouseleave="scheduleClosePane"
+            @focus="openGroup(group.key)"
+            @blur="scheduleClosePane"
           >
-            <component :is="r.icon" class="strip-icon" />
-            <span class="icon-label">{{ $t(r.name) }}</span>
-          </router-link>
+            <component :is="group.icon" class="strip-icon" />
+            <span>{{ group.label }}</span>
+          </button>
         </PermissionBuilder>
       </template>
+    </nav>
 
-      <PermissionBuilder v-for="r in OrganizationRoutes" :key="r.link" :code="r.permissions">
-        <router-link
-          :to="r.link"
-          class="icon-item"
-          :data-title="$t(r.name)"
-          @mouseenter="showTooltip($event, $t(r.name))"
-          @mouseleave="hideTooltip"
-          @focus="showTooltip($event, $t(r.name))"
-          @blur="hideTooltip"
-        >
-          <component :is="r.icon" class="strip-icon" />
-          <span class="icon-label">{{ $t(r.name) }}</span>
-        </router-link>
-      </PermissionBuilder>
-
-      <PermissionBuilder v-for="r in TicketRoutes" :key="r.link" :code="r.permissions">
-        <router-link
-          :to="r.link"
-          class="icon-item"
-          :data-title="$t(r.name)"
-          @mouseenter="showTooltip($event, $t(r.name))"
-          @mouseleave="hideTooltip"
-          @focus="showTooltip($event, $t(r.name))"
-          @blur="hideTooltip"
-        >
-          <component :is="r.icon" class="strip-icon" />
-          <span class="icon-label">{{ $t(r.name) }}</span>
-        </router-link>
-      </PermissionBuilder>
-
-      <PermissionBuilder v-for="r in OperationsRoutes" :key="r.link" :code="r.permissions">
-        <router-link
-          :to="r.link"
-          class="icon-item"
-          :data-title="$t(r.name)"
-          @mouseenter="showTooltip($event, $t(r.name))"
-          @mouseleave="hideTooltip"
-          @focus="showTooltip($event, $t(r.name))"
-          @blur="hideTooltip"
-        >
-          <component :is="r.icon" class="strip-icon" />
-          <span class="icon-label">{{ $t(r.name) }}</span>
-        </router-link>
-      </PermissionBuilder>
-
-      <PermissionBuilder v-for="r in LocationRoutes" :key="r.link" :code="r.permissions">
-        <router-link
-          :to="r.link"
-          class="icon-item"
-          :data-title="$t(r.name)"
-          @mouseenter="showTooltip($event, $t(r.name))"
-          @mouseleave="hideTooltip"
-          @focus="showTooltip($event, $t(r.name))"
-          @blur="hideTooltip"
-        >
-          <component :is="r.icon" class="strip-icon" />
-          <span class="icon-label">{{ $t(r.name) }}</span>
-        </router-link>
-      </PermissionBuilder>
-
-      <PermissionBuilder v-for="r in LockUpsRoutes" :key="r.link" :code="r.permissions">
-        <router-link
-          :to="r.link"
-          class="icon-item"
-          :data-title="$t(r.name)"
-          @mouseenter="showTooltip($event, $t(r.name))"
-          @mouseleave="hideTooltip"
-          @focus="showTooltip($event, $t(r.name))"
-          @blur="hideTooltip"
-        >
-          <component :is="r.icon" class="strip-icon" />
-          <span class="icon-label">{{ $t(r.name) }}</span>
-        </router-link>
-      </PermissionBuilder>
-    </div>
-
-    <Teleport to="body">
-      <Transition name="hover-tooltip-fade">
-        <div
-          v-if="activeTooltip"
-          class="hover-tooltip"
-          :style="{
-            top: activeTooltip.top + 'px',
-            left: activeTooltip.left ? activeTooltip.left + 'px' : undefined,
-            right: activeTooltip.right ? activeTooltip.right + 'px' : undefined,
-          }"
-        >
-          {{ activeTooltip.title }}
-        </div>
-      </Transition>
-    </Teleport>
-  </template>
-
-  <!-- Full accordion view when sidebar is open -->
-  <template v-else>
-    <PermissionBuilder
-      :code="OrganizationRoutes?.map((item) => item.permissions.map((item) => item)).flat()"
-      v-if="user?.employeeType == EmployeeStatusEnum.Admin"
-    >
-      <Accordion v-model:value="GauideAccordion">
-        <AccordionPanel value="5">
-          <AccordionHeader>
-            <div class="links-header">
-              <GeerIcon />
-              {{ $t('overview') }}
+    <Transition name="side-pane">
+      <aside
+        v-if="isPaneVisible && activeGroup"
+        class="side-pane"
+        @mouseenter="keepPaneOpen"
+        @mouseleave="scheduleClosePane"
+        @focusin="keepPaneOpen"
+        @focusout="scheduleClosePane"
+      >
+        <header class="side-pane-header">
+          <div class="side-pane-heading">
+            <span class="side-pane-icon">
+              <component :is="activeGroup.icon" />
+            </span>
+            <div>
+              <strong>{{ activeGroup.label }}</strong>
+              <span>{{ activeGroup.eyebrow }}</span>
             </div>
-          </AccordionHeader>
+          </div>
 
-          <AccordionContent>
-            <ul>
-              <PermissionBuilder
-                v-for="(guideroute, index) in GauideRoutes"
-                :key="index"
-                :code="guideroute?.permissions"
+          <label class="sidebar-search">
+            <svg
+              class="sidebar-search__icon"
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                opacity="0.4"
+                d="M9.17 16.68a7.51 7.51 0 1 0 0-15.01 7.51 7.51 0 0 0 0 15.01Z"
+                fill="currentColor"
+              />
+              <path
+                d="m17.5 17.5-2.5-2.5M11.25 9.17H7.08"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+            <input
+              v-model="searchTerm"
+              type="search"
+              class="sidebar-search__input"
+              :placeholder="$t('Search') || 'Search all routes...'"
+              aria-label="Search all sidebar routes"
+              @keydown.esc="hidePane"
+            />
+          </label>
+        </header>
+
+        <nav class="side-pane-routes" :aria-label="`${activeGroup.label} routes`">
+          <div class="side-pane-routes__inner">
+            <PermissionBuilder
+              v-for="sidebarRoute in filteredActiveRoutes"
+              :key="String(sidebarRoute.link)"
+              :code="sidebarRoute.permissions"
+            >
+              <router-link
+                :to="sidebarRoute.link"
+                :class="['side-btn', { active: isLinkActive(sidebarRoute.link) }]"
+                :title="$t(sidebarRoute.name)"
+                @click="hidePane"
               >
-                <li>
-                  <router-link :to="guideroute.link" :data-title="$t(guideroute.name)">
-                    <component :is="guideroute.icon" class="route-icon" />
-                    <span>{{ $t(guideroute.name) }}</span>
-                  </router-link>
-                </li>
-              </PermissionBuilder>
-            </ul>
-          </AccordionContent>
-        </AccordionPanel>
-        <!-- <AccordionPanel class="active-panel-out" v-if="SelectedGauideRoutes && !GauideAccordion">
-          <span>{{ SelectedGauideRoutes }}</span>
-        </AccordionPanel> -->
-      </Accordion>
-    </PermissionBuilder>
+                <component :is="sidebarRoute.icon" class="side-icon" />
+                <span class="side-label">{{ $t(sidebarRoute.name) }}</span>
+                <span class="side-link-arrow">›</span>
+              </router-link>
+            </PermissionBuilder>
 
-    <PermissionBuilder
-      :code="OperationsRoutes?.map((item) => item.permissions.map((item) => item)).flat()"
-    >
-      <Accordion v-model:value="OperationsAccordion">
-        <AccordionPanel value="6">
-          <AccordionHeader>
-            <div class="links-header">
-              <GeerIcon />
-              {{ $t('project managment') }}
-            </div>
-          </AccordionHeader>
-
-          <AccordionContent>
-            <ul>
-              <PermissionBuilder
-                v-for="(operation, index) in OperationsRoutes"
-                :key="index"
-                :code="operation?.permissions"
-              >
-                <li>
-                  <router-link :to="operation.link" :data-title="$t(operation.name)">
-                    <component :is="operation.icon" class="route-icon" />
-                    <span>{{ $t(operation.name) }}</span>
-                  </router-link>
-                </li>
-              </PermissionBuilder>
-            </ul>
-          </AccordionContent>
-        </AccordionPanel>
-        <!-- <AccordionPanel
-          class="active-panel-out"
-          v-if="SelectedOperationsRoutes && !OperationsAccordion"
-          :value="6"
-        >
-          <span>{{ SelectedOperationsRoutes }}</span>
-        </AccordionPanel> -->
-      </Accordion>
-    </PermissionBuilder>
-
-    <PermissionBuilder
-      :code="OrganizationRoutes?.map((item) => item.permissions.map((item) => item)).flat()"
-    >
-      <Accordion v-model:value="orgAccordion">
-        <AccordionPanel value="1">
-          <AccordionHeader>
-            <div class="links-header">
-              <GeerIcon />
-              {{ $t('organization_setting') }}
-            </div>
-          </AccordionHeader>
-
-          <AccordionContent>
-            <ul>
-              <PermissionBuilder
-                v-for="(orgroute, index) in OrganizationRoutes"
-                :key="index"
-                :code="orgroute?.permissions"
-              >
-                <li>
-                  <router-link :to="orgroute.link" :data-title="$t(orgroute.name)">
-                    <component :is="orgroute.icon" class="route-icon" />
-                    <span>{{ $t(orgroute.name) }}</span>
-                  </router-link>
-                </li>
-              </PermissionBuilder>
-            </ul>
-          </AccordionContent>
-        </AccordionPanel>
-        <!-- <AccordionPanel class="active-panel-out" v-if="SelectedOrgRoute && !orgAccordion">
-          <span>{{ SelectedOrgRoute }}</span>
-        </AccordionPanel> -->
-      </Accordion>
-    </PermissionBuilder>
-
-    <PermissionBuilder :code="[PermissionsEnum?.LOCATION_ORG_ALL]">
-      <Accordion v-model:value="locationAccordion">
-        <AccordionPanel value="2">
-          <AccordionHeader>
-            <div class="links-header">
-              <Sidebarlocation />
-              {{ $t('location') }}
-            </div>
-          </AccordionHeader>
-
-          <AccordionContent>
-            <ul>
-              <PermissionBuilder
-                v-for="(r, index) in LocationRoutes"
-                :key="index"
-                :code="r.permissions"
-              >
-                <li>
-                  <router-link :to="r.link" :data-title="$t(r.name)">
-                    <component :is="r.icon" class="route-icon" />
-                    <span>{{ $t(r.name) }}</span>
-                  </router-link>
-                </li>
-              </PermissionBuilder>
-            </ul>
-          </AccordionContent>
-        </AccordionPanel>
-        <!-- <AccordionPanel class="active-panel-out" v-if="SelectedLocationRoute && !locationAccordion">
-          <span>{{ SelectedLocationRoute }}</span>
-        </AccordionPanel> -->
-      </Accordion>
-    </PermissionBuilder>
-
-    <PermissionBuilder
-      :code="LockUpsRoutes?.map((item) => item.permissions.map((item) => item)).flat()"
-    >
-      <Accordion v-model:value="LoackupsAccordion">
-        <AccordionPanel value="4">
-          <AccordionHeader>
-            <div class="links-header">
-              <Locaps />
-              {{ $t('Lockups') }}
-            </div>
-          </AccordionHeader>
-
-          <AccordionContent>
-            <ul>
-              <PermissionBuilder
-                v-for="(orgroute, index) in LockUpsRoutes"
-                :key="index"
-                :code="orgroute?.permissions"
-              >
-                <li>
-                  <router-link :to="orgroute.link" :data-title="$t(orgroute.name)">
-                    <component :is="orgroute.icon" class="route-icon" />
-                    <span>{{ $t(orgroute.name) }}</span>
-                  </router-link>
-                </li>
-              </PermissionBuilder>
-            </ul>
-          </AccordionContent>
-        </AccordionPanel>
-        <!-- <AccordionPanel class="active-panel-out" v-if="SelectedLockupsRoute && !orgAccordion">
-          <span>{{ SelectedLockupsRoute }}</span>
-        </AccordionPanel> -->
-      </Accordion>
-    </PermissionBuilder>
-
-    <PermissionBuilder
-      :code="TicketRoutes?.map((item) => item.permissions.map((item) => item)).flat()"
-    >
-      <Accordion v-model:value="TicketAccordion">
-        <AccordionPanel value="7">
-          <AccordionHeader>
-            <div class="links-header">
-              <GeerIcon />
-              {{ $t('support') }}
-            </div>
-          </AccordionHeader>
-
-          <AccordionContent>
-            <ul>
-              <PermissionBuilder
-                v-for="(ticketroute, index) in TicketRoutes"
-                :key="index"
-                :code="ticketroute?.permissions"
-              >
-                <li>
-                  <router-link :to="ticketroute.link" :data-title="$t(ticketroute.name)">
-                    <component :is="ticketroute.icon" class="route-icon" />
-                    <span>{{ $t(ticketroute.name) }}</span>
-                  </router-link>
-                </li>
-              </PermissionBuilder>
-            </ul>
-          </AccordionContent>
-        </AccordionPanel>
-        <!-- <AccordionPanel class="active-panel-out" v-if="SelectedTicketRoutes && !TicketAccordion">
-          <span>{{ SelectedTicketRoutes }}</span>
-        </AccordionPanel> -->
-      </Accordion>
-    </PermissionBuilder>
-  </template>
+            <p v-if="!filteredActiveRoutes.length" class="side-pane-empty">
+              {{ $t('No Data Found') }}
+            </p>
+          </div>
+        </nav>
+      </aside>
+    </Transition>
+  </div>
 </template>
 
 <style scoped>
-.icon-strip {
+.side-pane-icon :deep(svg) {
+  width: 35px !important;
+  height: 35px !important;
+  margin-left: 2px;
+  margin-top: 2px;
+
+}
+.modern-sidebar {
   display: flex;
+  min-height: 0;
+  flex: 1 1 auto;
+  color: #ffffff;
+}
+
+.side-rail-nav {
+  display: flex;
+  flex: 0 0 74px;
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  padding: 8px 0 16px;
+  height: 100%;
+  min-height: 0;
+  padding: 8px 0 18px;
   overflow-y: auto;
-  flex: 1;
   scrollbar-width: none;
 }
 
-.icon-strip::-webkit-scrollbar {
+.side-rail-nav::-webkit-scrollbar {
   display: none;
 }
 
-.icon-item {
+.side-rail-btn {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   gap: 6px;
-  width: 72px;
-  min-height: 68px;
-  padding: 8px 4px;
+  width: 74px;
+  min-height: 58px;
+  padding: 7px 6px;
+  border: 0;
   border-radius: 16px;
-  color: #dbeafe;
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
-  position: relative;
-  text-decoration: none;
-  flex-shrink: 0;
+  background: transparent;
+  color: #b2bbc6;
+  cursor: pointer;
   text-align: center;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
 }
 
-.icon-item:hover,
-.icon-item.router-link-active {
-  background: rgba(255, 255, 255, 0.14);
+.side-rail-btn:hover,
+.side-rail-btn.is-selected,
+.side-rail-btn.is-active {
+  background: rgba(255, 255, 255, 0.11);
   color: #ffffff;
   transform: translateY(-1px);
 }
 
-.strip-icon {
-  width: 22px;
-  height: 22px;
+.side-rail-btn span {
+  max-width: 62px;
+  overflow: hidden;
+  color: inherit;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.strip-icon,
+.side-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: currentColor;
+}
+
+.strip-icon :deep(path),
+.side-icon :deep(path),
+.side-pane-icon :deep(path) {
+  fill: currentColor !important;
+  stroke: currentColor;
+}
+
+.side-pane {
+  position: fixed;
+  inset-block: 0;
+  inset-inline-start: 90px;
+  z-index: 10060;
+  display: flex;
+  width: 316px;
+  height: 100vh;
+  max-width: calc(100vw - 90px);
+  flex-direction: column;
+  padding: 22px 16px 14px;
+  background:
+    radial-gradient(circle at 0 0, rgba(30, 58, 142, 0.82), transparent 36%),
+    linear-gradient(180deg, #111827 0%, #1f2937 100%);
+  box-shadow: 18px 0 42px rgba(9, 11, 14, 0.36);
+}
+
+.side-pane-header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   flex-shrink: 0;
 }
 
-.icon-label {
-  max-width: 64px;
-  font-size: 10px;
+.side-pane-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.side-pane-heading strong,
+.side-pane-heading span {
+  display: block;
+}
+
+.side-pane-heading strong {
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 900;
   line-height: 1.15;
+}
+
+.side-pane-heading div > span {
+  margin-top: 3px;
+  color: rgba(217, 230, 243, 0.62);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.side-pane-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #b2bbc6;
+}
+
+.side-pane-icon :deep(svg) {
+  width: 20px;
+  height: 20px;
+}
+
+.sidebar-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(217, 230, 243, 0.66);
+}
+
+.sidebar-search__icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.sidebar-search__input {
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.sidebar-search__input::placeholder {
+  color: rgba(217, 230, 243, 0.52);
+}
+
+.side-pane-routes {
+  min-height: 0;
+  flex: 1 1 auto;
+  margin-top: 16px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
+}
+
+.side-pane-routes::-webkit-scrollbar {
+  width: 4px;
+}
+
+.side-pane-routes::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.side-pane-routes__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 18px;
+}
+
+.side-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 12px 13px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  color: rgba(229, 237, 247, 0.82);
+  text-decoration: none;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.side-btn:hover,
+.side-btn.active,
+.side-btn.router-link-active {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transform: translateX(2px);
+}
+
+.side-label {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.side-link-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: rgba(217, 230, 243, 0.5);
+  font-size: 20px;
+  line-height: 1;
+}
+
+.side-pane-empty {
+  margin: 18px 0 0;
+  color: rgba(217, 230, 243, 0.62);
+  font-size: 13px;
   font-weight: 700;
   text-align: center;
-  color: inherit;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-.route-icon {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-  opacity: 0.7;
-}
-
-/* ---------------------------------------------------------------- */
-/* Custom popover tooltip (replaces native `title` attribute)        */
-/* Driven entirely by `data-title`, fully styleable & themeable.     */
-/* ---------------------------------------------------------------- */
-
-.icon-item::before,
-.icon-item::after {
-  pointer-events: none;
-  opacity: 0;
-  position: absolute;
-  inset-inline-start: calc(100% + 10px);
-  top: 50%;
-  transform: translateY(-50%) translateX(-4px);
-  transition:
-    opacity 0.15s ease,
-    transform 0.15s ease;
-  transition-delay: 0s;
-  z-index: 999;
-}
-
-/* Tooltip bubble */
-.icon-item::after {
-  content: attr(data-title);
-  background: #1f1f1f;
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 6px;
-  white-space: nowrap;
-  font-size: 12px;
-  line-height: 1.4;
-  font-family: 'Regular', sans-serif;
-  box-shadow:
-    0 4px 10px rgba(0, 0, 0, 0.18),
-    0 1px 3px rgba(0, 0, 0, 0.12);
-}
-
-/* Arrow pointing back at the icon */
-.icon-item::before {
-  content: '';
-  inset-inline-start: calc(100% + 4px);
-  width: 0;
-  height: 0;
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-  border-inline-end: 6px solid #1f1f1f;
-  transform: translateY(-50%) translateX(-4px);
-}
-
-.icon-item:hover::after,
-.icon-item:hover::before {
-  opacity: 0;
-  transform: translateY(-50%) translateX(0);
-  transition-delay: 0.25s;
 }
 
 .hover-tooltip {
   position: fixed;
-  transform: translateY(-50%);
-  background: #1f1f1f;
+  z-index: 10070;
+  padding: 7px 11px;
+  border-radius: 8px;
+  background: #101827;
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.24),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
   color: #fff;
-  padding: 6px 12px;
-  border-radius: 6px;
-  white-space: nowrap;
+  font-family: 'Regular', sans-serif;
   font-size: 12px;
   line-height: 1.4;
-  font-family: 'Regular', sans-serif;
-  box-shadow:
-    0 4px 10px rgba(0, 0, 0, 0.18),
-    0 1px 3px rgba(0, 0, 0, 0.12);
   pointer-events: none;
-  z-index: 9999;
-}
-
-.hover-tooltip::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  right: 100%;
-  width: 0;
-  height: 0;
   transform: translateY(-50%);
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-  border-right: 6px solid #1f1f1f;
+  white-space: nowrap;
 }
 
+.side-pane-enter-active,
+.side-pane-leave-active,
 .hover-tooltip-fade-enter-active,
 .hover-tooltip-fade-leave-active {
   transition:
-    opacity 0.15s ease,
-    transform 0.15s ease;
+    opacity 0.16s ease,
+    transform 0.16s ease;
 }
+
+.side-pane-enter-from,
+.side-pane-leave-to {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
 .hover-tooltip-fade-enter-from,
 .hover-tooltip-fade-leave-to {
   opacity: 0;
   transform: translateY(-50%) translateX(-4px);
+}
+
+html[dir='rtl'] .side-btn:hover,
+html[dir='rtl'] .side-btn.active,
+html[dir='rtl'] .side-btn.router-link-active {
+  transform: translateX(-2px);
+}
+
+@media (max-width: 768px) {
+  .side-pane {
+    inset-inline-start: 90px;
+    width: calc(100vw - 90px);
+  }
 }
 </style>

@@ -14,13 +14,23 @@ const route = useRoute()
 const { isDarkMode } = useThemeMode()
 
 const isSidebarOpen = ref(true)
+const isOrganizationSidebar = computed(() => user?.type === OrganizationTypeEnum.ORGANIZATION)
 
 const checkScreenSize = () => {
-  if (window.innerWidth <= 768) {
+  if (isOrganizationSidebar.value || window.innerWidth <= 768) {
     isSidebarOpen.value = false
   } else {
     isSidebarOpen.value = true
   }
+}
+
+const toggleSidebar = () => {
+  if (isOrganizationSidebar.value) {
+    isSidebarOpen.value = false
+    return
+  }
+
+  isSidebarOpen.value = !isSidebarOpen.value
 }
 
 onMounted(() => {
@@ -42,6 +52,10 @@ watch(
   },
 )
 
+watch(isOrganizationSidebar, () => {
+  checkScreenSize()
+})
+
 const showSidebar = computed(() => {
   if (!user) return false
   return user.type === OrganizationTypeEnum.ADMIN || user.employeeType == EmployeeStatusEnum.Admin
@@ -55,7 +69,7 @@ const showSidebar = computed(() => {
       <div v-if="isSidebarOpen && showSidebar" class="sidebar-backdrop" @click="isSidebarOpen = false"></div>
     </div>
     <section class="content-wrapper">
-      <Header @open="isSidebarOpen = !isSidebarOpen" />
+      <Header @open="toggleSidebar" />
       <div class="main-content minmize">
         <BreadCrumb v-if="!route.fullPath.includes('project-progress')" />
         <slot />

@@ -367,7 +367,7 @@ const toggle = (event: Event) => {
 
 .header {
   position: sticky;
-  top: 0;
+  top: 6px;
   z-index: 80;
   overflow: visible;
   isolation: isolate;
@@ -379,6 +379,10 @@ const toggle = (event: Event) => {
     linear-gradient(155deg, #1d4ed8 0%, #1e40af 44%, #0f2f80 100%) !important;
   border-bottom-left-radius: 22px;
   border-bottom-right-radius: 22px;
+  border-top-left-radius: 22px;
+
+  border-top-right-radius: 22px;
+
   box-shadow:
     0 4px 10px rgba(10, 54, 129, 0.22),
     inset 0 -1px 0 rgba(255, 255, 255, 0.18);

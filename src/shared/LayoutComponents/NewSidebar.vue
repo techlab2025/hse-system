@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
@@ -18,9 +18,13 @@ const user = useUserStore()
 const route = useRoute()
 const sidebarRef = ref<HTMLElement | null>(null)
 const { isDarkMode } = useThemeMode()
+const isOrganizationSidebar = computed(() => user.user?.type === OrganizationTypeEnum.ORGANIZATION)
+const sidebarDisplayState = computed(() =>
+  isOrganizationSidebar.value ? 'close' : props.open ? 'open' : 'close',
+)
 
 const scrollClosedSidebarToActiveRoute = async () => {
-  if (props.open) return
+  if (props.open && !isOrganizationSidebar.value) return
 
   await nextTick()
   requestAnimationFrame(() => {
@@ -77,17 +81,27 @@ const logout = () => {
 </script>
 
 <template>
-  <aside ref="sidebarRef" :class="['sidebar', open ? 'open' : 'close', { 'is-dark': isDarkMode }]">
+  <aside
+    ref="sidebarRef"
+    :class="[
+      'sidebar',
+      sidebarDisplayState,
+      {
+        'is-dark': isDarkMode,
+        'organization-modern': isOrganizationSidebar,
+      },
+    ]"
+  >
     <div class="sidebar-wrapper">
-      <button class="sidebar-toggle" @click="emit('update:open', !open)" title="Toggle sidebar">
+      <!-- <button class="sidebar-toggle" @click="emit('update:open', !open)" title="Toggle sidebar">
         <SIdebarOpenIcon />
-      </button>
+      </button> -->
 
       <router-link
         :to="`${Number(user.user?.type) === EmployeeStatusEnum.Admin ? '/admin' : '/organization'}`"
         class="sidebar-back"
       >
-        <!-- <span class="home-icon"><HomeProjectIcon /></span> -->
+        <span class="home-icon"><HomeProjectIcon /></span>
         <span>Home</span>
       </router-link>
 
@@ -95,8 +109,8 @@ const logout = () => {
         <template v-if="user?.user?.type === OrganizationTypeEnum?.ADMIN">
           <AdminSidebar :open="open" />
         </template>
-        <template v-if="user?.user?.type === OrganizationTypeEnum?.ORGANIZATION">
-          <OrganizationSidebar :open="open" />
+        <template v-if="isOrganizationSidebar">
+          <OrganizationSidebar :open="false" />
         </template>
       </div>
 
@@ -495,6 +509,123 @@ const logout = () => {
   -webkit-box-orient: vertical;
 }
 
+.sidebar.organization-modern {
+  width: 90px;
+  padding-top: 0;
+  overflow: visible;
+  border-radius: 0;
+  background: #1e3a8a !important;
+  box-shadow: none;
+  z-index: 10040;
+  transition:
+    width 0.24s ease,
+    background 0.24s ease;
+}
+
+.sidebar.organization-modern.open {
+  width: 90px;
+  background: #1e3a8a !important;
+}
+
+.sidebar.organization-modern.close {
+  width: 90px;
+}
+
+.sidebar.organization-modern .sidebar-wrapper {
+  position: relative;
+  gap: 8px;
+  padding-inline: 8px;
+  overflow: visible;
+  background: transparent !important;
+}
+
+.sidebar.organization-modern .sidebar-toggle {
+  display: none;
+}
+
+.sidebar.organization-modern .sidebar-back {
+  display: flex;
+  width: 74px !important;
+  min-height: 62px;
+  margin: 10px auto 4px !important;
+  padding: 8px 4px !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  border: 0;
+  border-radius: 16px;
+  background: transparent !important;
+  box-shadow: none;
+  color: #b2bbc6 !important;
+}
+
+.sidebar.organization-modern.open .sidebar-back,
+.sidebar.organization-modern.close .sidebar-back {
+  width: 74px !important;
+  margin-top: 10px !important;
+  background: transparent !important;
+  color: #b2bbc6 !important;
+}
+
+.sidebar.organization-modern .sidebar-back:hover,
+.sidebar.organization-modern .sidebar-back.router-link-active {
+  background: rgba(255, 255, 255, 0.11) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+}
+
+.sidebar.organization-modern .home-icon {
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: currentColor;
+}
+
+.sidebar.organization-modern .home-icon :deep(svg) {
+  width: 20px;
+  height: 20px;
+}
+
+.sidebar.organization-modern .sidebar-back > span:not(.home-icon) {
+  max-width: 62px;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.sidebar.organization-modern .links {
+  position: static;
+  min-height: 0;
+  flex: 1 1 auto;
+  padding: 0 0 12px;
+  overflow: visible;
+}
+
+.sidebar.organization-modern.open .links,
+.sidebar.organization-modern.close .links {
+  overflow: visible;
+}
+
+.sidebar.organization-modern :deep(.strip-icon) {
+  width: 20px !important;
+  height: 20px !important;
+  padding: 0;
+  border-radius: 0;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: currentColor !important;
+}
+
+.sidebar.organization-modern.is-dark,
+.sidebar.organization-modern.is-dark.open {
+  background: #111827 !important;
+}
+
 @media (max-width: 768px) {
   .sidebar-wrapper {
     display: flex;
@@ -539,6 +670,14 @@ const logout = () => {
 
   .mobile-sidebar-logout :deep(path) {
     fill: currentColor !important;
+  }
+
+  .sidebar.organization-modern.open {
+    width: 100vw !important;
+  }
+
+  .sidebar.organization-modern.close {
+    width: 90px !important;
   }
 }
 </style>
