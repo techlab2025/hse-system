@@ -113,16 +113,16 @@ const showSidebar = computed(() => {
   justify-content: center;
   padding: 0;
   border-top: 1px solid rgba(29, 78, 216, 0.14);
-  background: #f8f9fb;
-  box-shadow: 0 -10px 30px rgba(15, 23, 42, 0.08);
-  backdrop-filter: blur(16px);
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
 .footer-shell {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 18px;
+  justify-content: center;
+  gap: 30px;
   width: 100%;
   min-height: 48px;
   padding: 10px 22px;
@@ -196,9 +196,8 @@ const showSidebar = computed(() => {
 
 .footer.is-dark {
   border-top-color: rgba(148, 163, 184, 0.16);
-  background:
-    linear-gradient(90deg, rgba(15, 23, 42, 0.96), rgba(17, 24, 39, 0.94)), rgba(15, 23, 42, 0.92);
-  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.24);
+  background: transparent;
+  box-shadow: none;
 }
 
 .footer.is-dark .footer-brand {
