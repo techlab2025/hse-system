@@ -821,9 +821,9 @@ onBeforeUnmount(() => {
   flex-direction: column;
   padding: 22px 16px 14px;
   background:
-    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.2) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.18) 0 16%, transparent 34%),
-    linear-gradient(155deg, #1d4ed8 0%, #1e40af 44%, #0f2f80 100%);
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.1) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.09) 0 16%, transparent 34%),
+    linear-gradient(155deg, #0f36a8 0%, #102d79 44%, #061f56 100%);
   border-inline-end: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow:
     18px 0 42px rgba(10, 54, 129, 0.28),

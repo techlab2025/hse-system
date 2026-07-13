@@ -33,8 +33,7 @@ const scrollClosedSidebarToActiveRoute = async () => {
     if (!activeRoute) return
 
     const scrollContainer =
-      activeRoute.closest<HTMLElement>('.icon-strip') ||
-      activeRoute.closest<HTMLElement>('.links')
+      activeRoute.closest<HTMLElement>('.icon-strip') || activeRoute.closest<HTMLElement>('.links')
 
     if (!scrollContainer) return
 
@@ -119,9 +118,9 @@ const logout = () => {
 .sidebar {
   padding-top: 20px;
   background:
-    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.2) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.18) 0 16%, transparent 34%),
-    linear-gradient(155deg, #1d4ed8 0%, #1e40af 44%, #0f2f80 100%) !important;
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.1) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.09) 0 16%, transparent 34%),
+    linear-gradient(155deg, #0f36a8 0%, #102d79 44%, #061f56 100%) !important;
   box-shadow:
     18px 0 38px rgba(30, 64, 175, 0.22),
     inset -1px 0 0 rgba(255, 255, 255, 0.12);
@@ -131,9 +130,9 @@ const logout = () => {
 }
 .sidebar.open {
   background:
-    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.2) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.18) 0 16%, transparent 34%),
-    linear-gradient(155deg, #1d4ed8 0%, #1e40af 44%, #0f2f80 100%) !important;
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.1) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.09) 0 16%, transparent 34%),
+    linear-gradient(155deg, #0f36a8 0%, #102d79 44%, #061f56 100%) !important;
 }
 
 .sidebar.is-dark,
@@ -515,9 +514,9 @@ const logout = () => {
   overflow: visible;
   border-radius: 0;
   background:
-    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.2) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.18) 0 16%, transparent 34%),
-    linear-gradient(155deg, #1d4ed8 0%, #1e40af 44%, #0f2f80 100%) !important;
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.1) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.09) 0 16%, transparent 34%),
+    linear-gradient(155deg, #0f36a8 0%, #102d79 44%, #061f56 100%) !important;
   box-shadow:
     14px 0 32px rgba(30, 64, 175, 0.22),
     inset -1px 0 0 rgba(255, 255, 255, 0.12);
@@ -530,9 +529,9 @@ const logout = () => {
 .sidebar.organization-modern.open {
   width: 90px;
   background:
-    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.2) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.18) 0 16%, transparent 34%),
-    linear-gradient(155deg, #1d4ed8 0%, #1e40af 44%, #0f2f80 100%) !important;
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.1) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.09) 0 16%, transparent 34%),
+    linear-gradient(155deg, #0f36a8 0%, #102d79 44%, #061f56 100%) !important;
 }
 
 .sidebar.organization-modern.close {
