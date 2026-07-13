@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
@@ -14,14 +14,20 @@ const props = defineProps<{ open: boolean }>()
 const user = useUserStore()
 const route = useRoute()
 const sidebarRef = ref<HTMLElement | null>(null)
+const isMobileSidebar = ref(false)
 const { isDarkMode } = useThemeMode()
 const isOrganizationSidebar = computed(() => user.user?.type === OrganizationTypeEnum.ORGANIZATION)
+const shouldRenderCompactRail = computed(() => isOrganizationSidebar.value || isMobileSidebar.value)
 const sidebarDisplayState = computed(() =>
-  isOrganizationSidebar.value ? 'close' : props.open ? 'open' : 'close',
+  shouldRenderCompactRail.value ? 'close' : props.open ? 'open' : 'close',
 )
 
+const syncSidebarViewport = () => {
+  isMobileSidebar.value = window.innerWidth <= 768
+}
+
 const scrollClosedSidebarToActiveRoute = async () => {
-  if (props.open && !isOrganizationSidebar.value) return
+  if (props.open && !isOrganizationSidebar.value && !isMobileSidebar.value) return
 
   await nextTick()
   requestAnimationFrame(() => {
@@ -54,12 +60,21 @@ const scrollClosedSidebarToActiveRoute = async () => {
 }
 
 watch(
-  () => [props.open, route.fullPath],
+  () => [props.open, route.fullPath, isMobileSidebar.value],
   () => {
     scrollClosedSidebarToActiveRoute()
   },
   { immediate: true },
 )
+
+onMounted(() => {
+  syncSidebarViewport()
+  window.addEventListener('resize', syncSidebarViewport)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', syncSidebarViewport)
+})
 
 const logout = () => {
   if (user.user?.type == OrganizationTypeEnum.ADMIN) {
@@ -99,10 +114,10 @@ const logout = () => {
 
       <div class="links">
         <template v-if="user?.user?.type === OrganizationTypeEnum?.ADMIN">
-          <AdminSidebar :open="open" />
+          <AdminSidebar :open="open && !isMobileSidebar" />
         </template>
         <template v-if="isOrganizationSidebar">
-          <OrganizationSidebar :open="false" />
+          <OrganizationSidebar :open="open" />
         </template>
       </div>
 
@@ -643,7 +658,66 @@ const logout = () => {
   background: #111827 !important;
 }
 
+.sidebar.close .mobile-sidebar-logout,
+.sidebar.organization-modern .mobile-sidebar-logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+  width: 72px;
+  min-height: 58px;
+  margin: auto auto 14px;
+  padding: 7px 6px;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+  color: #dbeafe;
+  cursor: pointer;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.15;
+  text-align: center;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.sidebar.close .mobile-sidebar-logout:hover,
+.sidebar.organization-modern .mobile-sidebar-logout:hover {
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 12px 24px rgba(10, 54, 129, 0.18);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.sidebar.close .mobile-sidebar-logout :deep(svg),
+.sidebar.close .mobile-sidebar-logout :deep(.sidebar-unicon),
+.sidebar.organization-modern .mobile-sidebar-logout :deep(svg),
+.sidebar.organization-modern .mobile-sidebar-logout :deep(.sidebar-unicon) {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.sidebar.close .mobile-sidebar-logout span,
+.sidebar.organization-modern .mobile-sidebar-logout span {
+  max-width: 62px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 @media (max-width: 768px) {
+  .sidebar.close,
+  .sidebar.organization-modern {
+    width: 90px !important;
+    overflow: visible;
+  }
+
   .sidebar-wrapper {
     display: flex;
     flex-direction: column;
@@ -657,43 +731,12 @@ const logout = () => {
     overscroll-behavior-x: none;
   }
 
-  .mobile-sidebar-logout {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 10px;
-    width: calc(100% - 24px);
-    min-height: 46px;
-    margin: auto 12px 18px;
-    padding: 10px 14px;
-    border: 0;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.14);
-    color: #ffffff;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 800;
-    text-align: start;
-    margin-bottom: 40px;
-  }
-
-  .mobile-sidebar-logout:hover {
-    background: rgba(255, 255, 255, 0.22);
-  }
-
-  .mobile-sidebar-logout :deep(svg),
-  .mobile-sidebar-logout :deep(.sidebar-unicon) {
-    width: 20px;
-    height: 20px;
-    flex-shrink: 0;
-  }
-
   .mobile-sidebar-logout :deep(path) {
     fill: currentColor !important;
   }
 
   .sidebar.organization-modern.open {
-    width: 100vw !important;
+    width: 90px !important;
   }
 
   .sidebar.organization-modern.close {

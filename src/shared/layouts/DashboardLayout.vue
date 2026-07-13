@@ -14,10 +14,13 @@ const route = useRoute()
 const { isDarkMode } = useThemeMode()
 
 const isSidebarOpen = ref(true)
+const isMobileScreen = ref(false)
 const isOrganizationSidebar = computed(() => user?.type === OrganizationTypeEnum.ORGANIZATION)
 
 const checkScreenSize = () => {
-  if (isOrganizationSidebar.value || window.innerWidth <= 768) {
+  isMobileScreen.value = window.innerWidth <= 768
+
+  if (isOrganizationSidebar.value || isMobileScreen.value) {
     isSidebarOpen.value = false
   } else {
     isSidebarOpen.value = true
@@ -25,7 +28,7 @@ const checkScreenSize = () => {
 }
 
 const toggleSidebar = () => {
-  if (isOrganizationSidebar.value) {
+  if (isOrganizationSidebar.value && !isMobileScreen.value) {
     isSidebarOpen.value = false
     return
   }
@@ -64,7 +67,13 @@ const showSidebar = computed(() => {
 
 <template>
   <main :class="['content', { 'is-dark': isDarkMode }]">
-    <div class="sidebar-container" :class="{ 'sidebar-open': isSidebarOpen }">
+    <div
+      class="sidebar-container"
+      :class="{
+        'sidebar-open': isSidebarOpen,
+        'organization-sidebar-container': isOrganizationSidebar,
+      }"
+    >
       <NewSidebar v-if="showSidebar" v-model:open="isSidebarOpen" />
       <div v-if="isSidebarOpen && showSidebar" class="sidebar-backdrop" @click="isSidebarOpen = false"></div>
     </div>
@@ -102,6 +111,12 @@ const showSidebar = computed(() => {
 
     &.sidebar-open {
       pointer-events: auto;
+    }
+
+    &.sidebar-open :deep(.sidebar.close),
+    &.sidebar-open :deep(.sidebar.organization-modern) {
+      left: 0 !important;
+      width: 90px !important;
     }
 
     .sidebar-backdrop {

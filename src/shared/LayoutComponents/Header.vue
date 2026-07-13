@@ -187,12 +187,14 @@ const toggle = (event: Event) => {
   <header :class="['header minmize', { 'is-dark': isDarkMode }]">
     <nav class="nav">
       <div class="menu flex items-center gap-3">
-        <span
+        <button
+          type="button"
           class="drawer cursor-pointer flex items-center justify-center p-1"
+          :aria-label="$t('open menu') || 'Open menu'"
           @click="emit('open')"
         >
           <IconMenu />
-        </span>
+        </button>
         <!-- <div class="header-link flex gap-sm items-center">
           <h1>
             <router-link to="/">{{ $t('home') }} </router-link>
@@ -604,6 +606,8 @@ const toggle = (event: Event) => {
   color: #ffffff;
   background: rgba(255, 255, 255, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.18);
+  appearance: none;
+  cursor: pointer;
   transition:
     transform 0.2s ease,
     background 0.2s ease;
@@ -613,7 +617,7 @@ const toggle = (event: Event) => {
     background: rgba(255, 255, 255, 0.22);
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 769px) {
     display: none;
   }
 }

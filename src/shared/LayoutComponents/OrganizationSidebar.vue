@@ -8,7 +8,7 @@ import { useUserStore } from '@/stores/user'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 import SidebarUnicon from '@/shared/icons/SidebarUnicon.vue'
 
-defineProps<{ open: boolean }>()
+const props = defineProps<{ open: boolean }>()
 
 const route = useRoute()
 interface Routes {
@@ -601,6 +601,15 @@ const scheduleClosePane = () => {
     hidePane()
   }, 160)
 }
+
+watch(
+  () => props.open,
+  (open) => {
+    if (!open) {
+      hidePane()
+    }
+  },
+)
 
 watch(
   () => route.fullPath,
