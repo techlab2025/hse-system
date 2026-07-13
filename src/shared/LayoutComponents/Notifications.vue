@@ -10,6 +10,7 @@ import wordSlice from '@/base/Presentation/utils/word_slice'
 import Notification from '../icons/Notification.vue'
 import { NotificationEnum } from './Enums/NotificationEnum'
 import Ring from '@/assets/Ring/Ring.txt'
+import type { EnrichedNotification } from '@/services/WebSocketNotificationService'
 
 const op = ref()
 const toggle = (event: Event) => {
@@ -44,6 +45,47 @@ const { notifications, unreadCount, acknowledgeNotification, wsConnected } =
       })
     },
   })
+const getNotificationPayload = (notification: EnrichedNotification) => {
+  const body = notification.body
+  const bodyItem = Array.isArray(body) ? body[0] : undefined
+  const parsedBodyItem = Array.isArray(notification.parsedBody)
+    ? notification.parsedBody[0]
+    : undefined
+  const parsedData = !Array.isArray(notification.parsedBody)
+    ? notification.parsedBody?.data
+    : undefined
+
+  return {
+    type: Number(
+      notification.routeType ??
+        notification.data?.type ??
+        bodyItem?.type ??
+        parsedBodyItem?.type ??
+        parsedData?.type,
+    ),
+    typeId: Number(
+      notification.routeTypeId ??
+        notification.data?.type_id ??
+        bodyItem?.type_id ??
+        parsedBodyItem?.type_id ??
+        parsedData?.type_id,
+    ),
+    message:
+      notification.displayMessage ||
+      bodyItem?.message ||
+      parsedBodyItem?.message ||
+      notification.parsedBody?.message ||
+      notification.message ||
+      '',
+  }
+}
+
+const handleNotificationClick = (notification: EnrichedNotification) => {
+  const payload = getNotificationPayload(notification)
+  navigateToNotification(payload.type, payload.typeId)
+  op.value?.hide?.()
+}
+
 const navigateToNotification = (notificationType: number, typeId?: number) => {
   switch (notificationType) {
     case NotificationEnum.OBSERVATION: // PDSP
@@ -71,7 +113,9 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
 
     case NotificationEnum.PROJECT: // PDSP
       router.push(
-        typeId ? `/organization/project-details/${typeId}?type=1` : '/organization/projects',
+        typeId
+          ? { name: 'Project Details', params: { id: typeId }, query: { type: '1' } }
+          : '/organization/projects',
       )
 
       break
@@ -106,14 +150,12 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
         >
           <div class="notification-content-wrapper">
             <button
-              @click="
-                navigateToNotification(notification?.body[0]?.type, notification?.body[0]?.type_id)
-              "
+              @click="handleNotificationClick(notification)"
               class="notification-text"
             >
               <strong>{{ wordSlice(notification.title, 25) }}</strong>
               <p>
-                {{ notification?.body[0].message }}
+                {{ getNotificationPayload(notification).message }}
                 <!-- {{ wordSlice(JSON.parse(notification?.body!)?.message, 35) }} -->
               </p>
               <small v-if="notification.receivedAt">{{

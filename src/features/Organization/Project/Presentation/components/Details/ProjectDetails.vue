@@ -7,7 +7,7 @@ import InspectionsSections from './Inspection/InspectionsSections.vue'
 import LocationsTeamsSection from './LocationsTeams/LocationsTeamsSection.vue'
 import MainObjectivesSection from './Objectives/MainObjectivesSection.vue'
 import ProjectSiteSection from './ProjectSite/ProjectSiteSection.vue'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
@@ -20,8 +20,8 @@ const showProjectDetailsController = ShowProjectDetailsController.getInstance()
 const state = ref(showProjectDetailsController.state.value)
 
 const route = useRoute()
-const id = route.params.id
 const GetProjectDetails = async () => {
+  const id = route.params.id
   const showProjectDetailsParams = new ShowProjectDetailsParams(Number(id))
   await showProjectDetailsController.showProjectDetails(showProjectDetailsParams)
 }
@@ -48,10 +48,6 @@ const projectOverview = computed(() => [
   },
 ])
 
-onMounted(() => {
-  GetProjectDetails()
-})
-
 watch(
   () => showProjectDetailsController.state.value,
   (newState) => {
@@ -59,13 +55,13 @@ watch(
   },
 )
 
-// watch(
-//   () => route.params.id,
-//   () => {
-//     GetProjectDetails()
-//   },
-//   { immediate: true },
-// )
+watch(
+  () => route.params.id,
+  () => {
+    GetProjectDetails()
+  },
+  { immediate: true },
+)
 </script>
 <template>
   <DataStatus :controller="state">
