@@ -9,6 +9,7 @@ import SIdebarOpenIcon from '../icons/SIdebarOpenIcon.vue'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus.ts'
 import HomeProjectIcon from '../icons/HomeProjectIcon.vue'
 import IconLogout from '../icons/IconLogout.vue'
+import { useThemeMode } from '@/composables/useThemeMode'
 
 const props = defineProps<{ open: boolean }>()
 const emit = defineEmits<{ 'update:open': [value: boolean] }>()
@@ -16,6 +17,7 @@ const emit = defineEmits<{ 'update:open': [value: boolean] }>()
 const user = useUserStore()
 const route = useRoute()
 const sidebarRef = ref<HTMLElement | null>(null)
+const { isDarkMode } = useThemeMode()
 
 const scrollClosedSidebarToActiveRoute = async () => {
   if (props.open) return
@@ -75,7 +77,7 @@ const logout = () => {
 </script>
 
 <template>
-  <aside ref="sidebarRef" :class="['sidebar', open ? 'open' : 'close']">
+  <aside ref="sidebarRef" :class="['sidebar', open ? 'open' : 'close', { 'is-dark': isDarkMode }]">
     <div class="sidebar-wrapper">
       <button class="sidebar-toggle" @click="emit('update:open', !open)" title="Toggle sidebar">
         <SIdebarOpenIcon />
@@ -119,6 +121,20 @@ const logout = () => {
 }
 .sidebar.open {
   background: linear-gradient(155deg, #1d4ed8 0%, #1e40af 44%, #0f2f80 100%), #1d4ed8 !important;
+}
+
+.sidebar.is-dark,
+.sidebar.is-dark.open {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(96, 165, 250, 0.16), transparent 34%),
+    linear-gradient(155deg, #111827 0%, #0f172a 54%, #07111f 100%) !important;
+  box-shadow:
+    18px 0 38px rgba(0, 0, 0, 0.32),
+    inset -1px 0 0 rgba(148, 163, 184, 0.14);
+}
+
+.sidebar.is-dark .sidebar-wrapper {
+  background: transparent !important;
 }
 .sidebar-wrapper {
   padding-inline: 8px;
@@ -234,6 +250,25 @@ const logout = () => {
   border-color: transparent;
   color: #ffffff !important;
 }
+
+.sidebar.is-dark .sidebar-back,
+.sidebar.is-dark.open .sidebar-back,
+.sidebar.is-dark.close .sidebar-back {
+  color: #f8fafc !important;
+  background: rgba(30, 41, 59, 0.66) !important;
+  border-color: rgba(148, 163, 184, 0.16) !important;
+}
+
+.sidebar.is-dark .sidebar-back:hover,
+.sidebar.is-dark .sidebar-back.router-link-active,
+.sidebar.is-dark.open .sidebar-back:hover,
+.sidebar.is-dark.open .sidebar-back.router-link-active,
+.sidebar.is-dark.close .sidebar-back:hover,
+.sidebar.is-dark.close .sidebar-back.router-link-active {
+  background: rgba(96, 165, 250, 0.16) !important;
+  border-color: rgba(96, 165, 250, 0.28) !important;
+  color: #ffffff !important;
+}
 .sidebar.open .sidebar-back:hover,
 .sidebar.open .sidebar-back.router-link-active {
   background: rgba(255, 255, 255, 0.14) !important;
@@ -312,6 +347,12 @@ const logout = () => {
   color: #1d4ed8;
   box-shadow: 0 8px 18px rgba(15, 23, 42, 0.14);
 }
+
+.sidebar.is-dark.close :deep(.strip-icon) {
+  background: #1e293b !important;
+  color: #60a5fa !important;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.24);
+}
 .sidebar.close :deep(.icon-item.router-link-active .strip-icon),
 .sidebar.close :deep(.icon-item:hover .strip-icon) {
   color: #0f2f80;
@@ -329,6 +370,17 @@ const logout = () => {
     background 0.22s ease,
     border-color 0.22s ease,
     transform 0.22s ease;
+}
+
+.sidebar.is-dark.open :deep(.p-accordionheader) {
+  background: rgba(30, 41, 59, 0.82) !important;
+  border-left-color: #60a5fa !important;
+  color: #f8fafc !important;
+  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.1);
+}
+
+.sidebar.is-dark.open :deep(.p-accordionheader:hover) {
+  background: rgba(51, 65, 85, 0.92) !important;
 }
 .sidebar.open :deep(.p-accordionheader:hover) {
   background: rgba(255, 255, 255, 0.12) !important;
@@ -408,6 +460,17 @@ const logout = () => {
   font-size: inherit !important;
   font-weight: 700;
   box-shadow: none;
+}
+
+.sidebar.is-dark.open :deep(.p-accordioncontent-content li) {
+  color: #cbd5e1 !important;
+}
+
+.sidebar.is-dark.open :deep(.p-accordioncontent-content li a:hover),
+.sidebar.is-dark.open :deep(.p-accordioncontent-content li a.router-link-active),
+.sidebar.is-dark.open :deep(.p-accordioncontent-content li a.active-link) {
+  background: rgba(96, 165, 250, 0.16) !important;
+  color: #ffffff !important;
 }
 .sidebar.open :deep(.p-accordioncontent-content li a.router-link-active::before),
 .sidebar.open :deep(.p-accordioncontent-content li a.router-link-active::after),

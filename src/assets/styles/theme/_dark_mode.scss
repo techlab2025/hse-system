@@ -1,0 +1,2207 @@
+html,
+:root {
+  background: var(--app-bg);
+  color-scheme: light;
+}
+
+html[data-theme='dark'] {
+  background: var(--app-bg) !important;
+  color-scheme: dark;
+}
+
+body,
+#app {
+  min-height: 100vh;
+  background: var(--app-bg);
+  color: var(--Black);
+}
+
+body,
+.content .main-content,
+.sidebar,
+.sidebar-wrapper,
+.p-component,
+.p-dialog,
+.p-popover {
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+[data-theme='dark'] {
+  &,
+  #app,
+  .content,
+  .content-wrapper,
+  .main-content {
+    background-color: var(--app-bg) !important;
+  }
+
+  body {
+    background-color: var(--app-bg) !important;
+    color: var(--Black) !important;
+  }
+
+  .content .main-content,
+  .content .content-wrapper,
+  .table-responsive,
+  .sidebar,
+  .sidebar-wrapper,
+  .p-dialog,
+  .p-dialog-header,
+  .p-dialog-content,
+  .p-dialog-footer,
+  .p-popover,
+  .p-popover-content,
+  .p-card,
+  .p-panel,
+  .p-accordionpanel,
+  .p-accordionheader,
+  .p-accordioncontent-content,
+  .p-datatable,
+  .p-datatable-table,
+  .p-tabpanels,
+  .p-tablist-tab-list,
+  .breadcrumbs,
+  .idnex-header,
+  .idnex-filter,
+  .filter-container,
+  .index-table-card-container-inspection,
+  .index-table-card,
+  .header-container,
+  .main-table,
+  .list-body,
+  .action-list-body,
+  .form-container,
+  .form-section,
+  .data-container,
+  .details-card,
+  .statics-card,
+  .project-card,
+  .inspection-card,
+  .observation-card,
+  .equipment-card,
+  .employee-tasks-card,
+  .certificate-card,
+  .performance-box,
+  .template-document-container,
+  .template-document-content,
+  .card,
+  .box {
+    background-color: var(--surface-1) !important;
+    color: var(--Black) !important;
+    border-color: var(--main-border) !important;
+  }
+
+  .breadcrumbs,
+  .idnex-header,
+  .idnex-filter {
+    box-shadow: none !important;
+  }
+
+  .idnex-header .title,
+  .index-length,
+  .index-length span,
+  .inspection-card .title,
+  .inspection-card .position,
+  .inspection-card .position span,
+  .inspection-card .view-inspection,
+  .index-table-card .title,
+  .index-table-card .card-details span {
+    color: var(--Black) !important;
+  }
+
+  .inspection-card .date,
+  .inspection-card .info-box p,
+  .inspection-card .session-header h4,
+  .inspection-card .session-header h5,
+  .inspection-card .content-items span {
+    color: var(--subtitle-color) !important;
+  }
+
+  .inspection-card .inspection-history,
+  .inspection-card .tool-box,
+  .inspection-card .session-box,
+  .index-table-card,
+  .template-selector .panel-acc {
+    background-color: var(--surface-1) !important;
+    border-color: var(--main-border) !important;
+  }
+
+  .inspection-card .title-container {
+    border-image: repeating-linear-gradient(
+        to right,
+        var(--main-border) 0,
+        var(--main-border) 10px,
+        transparent 10px,
+        transparent 20px
+      )
+      1 !important;
+  }
+
+  .inspection-card .show-button,
+  .index-table-card .show-details {
+    background-color: rgba(96, 165, 250, 0.1) !important;
+    border-color: var(--PrimaryColor) !important;
+    color: var(--PrimaryColor) !important;
+  }
+
+  .idnex-header .categories-container,
+  .idnex-filter .filter-container {
+    scrollbar-color: var(--PrimaryColor) var(--surface-3);
+  }
+
+  .idnex-header .category,
+  .idnex-filter .filter,
+  .filter-container .filter,
+  .categories-container .category {
+    background-color: var(--surface-2) !important;
+    color: var(--Black) !important;
+    border-color: var(--main-border) !important;
+  }
+
+  .idnex-header .category.active,
+  .idnex-filter .filter.active,
+  .filter-container .filter.active,
+  .categories-container .category.active {
+    background-color: var(--PrimaryColor) !important;
+    color: #ffffff !important;
+    border-color: var(--PrimaryColor) !important;
+  }
+
+  .idnex-header .category span,
+  .idnex-filter .filter span,
+  .filter-container .filter span,
+  .categories-container .category span {
+    color: inherit !important;
+  }
+
+  .main-content :where(h1, h2, h3, h4, h5, h6, label, .title, .card-title, .project-title) {
+    color: var(--Black) !important;
+  }
+
+  .main-content :where(p, span, small, .subtitle, .description, .text, .empty-msg) {
+    color: var(--subtitle-color);
+  }
+
+  :where(input, textarea, select, .p-inputtext, .p-select, .p-multiselect, .p-dropdown, .p-textarea) {
+    background-color: var(--surface-2) !important;
+    color: var(--Black) !important;
+    border-color: var(--main-border) !important;
+  }
+
+  :where(input::placeholder, textarea::placeholder, .p-placeholder) {
+    color: var(--text-muted) !important;
+  }
+
+  :where(.p-select-overlay, .p-multiselect-overlay, .p-datepicker-panel, .p-menu, .p-tieredmenu, .p-drawer) {
+    background-color: var(--surface-1) !important;
+    color: var(--Black) !important;
+    border-color: var(--main-border) !important;
+  }
+
+  :where(.p-select-option, .p-multiselect-option, .p-menu-item-content, .p-datepicker-day, .p-datepicker-month, .p-datepicker-year) {
+    color: var(--Black) !important;
+  }
+
+  :where(.p-select-option:hover, .p-multiselect-option:hover, .p-menu-item-content:hover) {
+    background-color: var(--surface-3) !important;
+  }
+
+  :where(table, thead, tbody, tr, th, td, .p-datatable-thead > tr > th, .p-datatable-tbody > tr > td) {
+    background-color: var(--surface-1) !important;
+    color: var(--Black) !important;
+    border-color: var(--main-border) !important;
+  }
+
+  :where(.main-table thead tr th, .p-datatable-thead > tr > th) {
+    background-color: var(--surface-2) !important;
+  }
+
+  .table-responsive {
+    background:
+      radial-gradient(
+        circle at 0% 0%,
+        color-mix(in srgb, var(--PrimaryColor) 10%, transparent),
+        transparent 36%
+      ),
+      linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
+    border-color: var(--main-border) !important;
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22) !important;
+    scrollbar-color: var(--PrimaryColor) var(--surface-3) !important;
+  }
+
+  .table-responsive::-webkit-scrollbar-track {
+    background-color: var(--surface-3) !important;
+  }
+
+  .table-responsive::-webkit-scrollbar-thumb {
+    border-color: var(--surface-3) !important;
+    background: linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--PrimaryColor) 72%, transparent),
+      rgba(20, 184, 166, 0.72)
+    ) !important;
+  }
+
+  .table-responsive table.main-table {
+    background-color: transparent !important;
+  }
+
+  .table-responsive table.main-table thead tr th {
+    background:
+      linear-gradient(180deg, var(--surface-2), var(--surface-3)),
+      var(--surface-2) !important;
+    border-color: var(--main-border) !important;
+    color: var(--text-soft) !important;
+  }
+
+  .table-responsive table.main-table thead tr th:first-child,
+  .table-responsive table.main-table thead tr th:last-child,
+  .table-responsive table.main-table thead tr th.empty {
+    background:
+      linear-gradient(180deg, var(--surface-2), var(--surface-3)),
+      var(--surface-2) !important;
+  }
+
+  .table-responsive table.main-table tbody tr {
+    background-color: transparent !important;
+  }
+
+  .table-responsive table.main-table tbody tr:nth-child(even) {
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--PrimaryColor) 8%, transparent),
+        transparent 46%
+      ),
+      transparent !important;
+  }
+
+  .table-responsive table.main-table tbody tr td {
+    background-color: var(--surface-1) !important;
+    border-color: var(--main-border) !important;
+    color: var(--text-strong) !important;
+    box-shadow: none !important;
+  }
+
+  .table-responsive table.main-table tbody tr td:first-child,
+  .table-responsive table.main-table tbody tr td:last-child,
+  .table-responsive table.main-table tbody tr td:last-of-type {
+    background-color: var(--surface-1) !important;
+    border-color: var(--main-border) !important;
+  }
+
+  .table-responsive table.main-table tbody tr:hover td {
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--PrimaryColor) 13%, transparent),
+        color-mix(in srgb, #14b8a6 8%, transparent)
+      ),
+      var(--surface-2) !important;
+    border-color: color-mix(in srgb, var(--PrimaryColor) 32%, var(--main-border)) !important;
+    color: var(--text-strong) !important;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18) !important;
+  }
+
+  .table-responsive table.main-table tbody tr td a,
+  .table-responsive table.main-table tbody tr td:first-child,
+  .table-responsive table.main-table tbody tr td .counter {
+    color: var(--PrimaryColor) !important;
+  }
+
+  .table-responsive table.main-table tbody tr td img {
+    border-color: var(--surface-3) !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.28) !important;
+  }
+
+  .table-responsive table.main-table .image_certificate_container,
+  .table-responsive table.main-table .image_certificate_container span,
+  .table-responsive table.main-table .list-trigger {
+    background-color: transparent !important;
+    color: var(--text-soft) !important;
+  }
+
+  .table-responsive table.main-table .list-trigger svg path {
+    fill: var(--PrimaryColor) !important;
+  }
+
+  @media (max-width: 768px) {
+    .table-responsive table.main-table tbody tr {
+      background-color: var(--surface-1) !important;
+      border-color: var(--main-border) !important;
+    }
+
+    .table-responsive table.main-table tbody tr td::before {
+      color: var(--text-muted) !important;
+    }
+  }
+
+  :where(.btn-secondary, .filter-btn, .export-btn, .p-button-outlined) {
+    background-color: var(--surface-2) !important;
+    color: var(--Black) !important;
+    border-color: var(--main-border) !important;
+  }
+
+  :where(.header-dropdown-menu) {
+    background-color: var(--surface-1) !important;
+    border-color: var(--main-border) !important;
+    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.34) !important;
+  }
+
+  :where(.header-dropdown-menu li) {
+    color: var(--Black) !important;
+  }
+
+  :where(.header-dropdown-menu li:hover) {
+    background-color: var(--surface-3) !important;
+    color: var(--PrimaryColor) !important;
+  }
+
+  :where(.p-toast-message) {
+    background-color: var(--surface-1) !important;
+    color: var(--Black) !important;
+    border-color: var(--main-border) !important;
+  }
+
+  .inspection-index-page.is-dark {
+    color: var(--Black);
+
+    .inspection-controls-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .inspection-table-responsive {
+      background-color: transparent !important;
+    }
+
+    .inspection-list-panel {
+      background-color: transparent !important;
+      border-color: transparent !important;
+    }
+  }
+
+  .idnex-header.is-dark {
+    background-color: var(--surface-1) !important;
+    border: 1px solid var(--main-border) !important;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.24) !important;
+
+    .title,
+    .index-length span {
+      color: var(--text-strong) !important;
+    }
+
+    .index-length {
+      color: var(--text-soft) !important;
+    }
+  }
+
+  .idnex-filter.is-dark {
+    background: var(--surface-1) !important;
+    border-color: var(--main-border) !important;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.24) !important;
+
+    .filter-container {
+      background-color: transparent !important;
+      border-color: transparent !important;
+      scrollbar-color: var(--PrimaryColor) var(--surface-3);
+    }
+
+    .filter {
+      background-color: var(--surface-2) !important;
+      border-color: var(--main-border) !important;
+      color: var(--text-soft) !important;
+
+      &:hover {
+        background-color: var(--surface-3) !important;
+        border-color: rgba(96, 165, 250, 0.5) !important;
+        color: var(--PrimaryColor) !important;
+      }
+
+      &.active {
+        background: rgba(96, 165, 250, 0.18) !important;
+        border-color: rgba(96, 165, 250, 0.56) !important;
+        color: #bfdbfe !important;
+      }
+    }
+
+    .btns {
+      a {
+        text-decoration: none;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #2563eb, #14b8a6) !important;
+        border-color: transparent !important;
+        color: #ffffff !important;
+        box-shadow: 0 14px 28px rgba(37, 99, 235, 0.24) !important;
+
+        &:hover {
+          color: #ffffff !important;
+          filter: brightness(1.08);
+        }
+      }
+    }
+  }
+
+  .inspection-card.is-dark {
+    background-color: transparent !important;
+
+    .inspection-history {
+      background-color: var(--surface-1) !important;
+      border-color: var(--main-border) !important;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+    }
+
+    .bg {
+      opacity: 0.18;
+    }
+
+    .title-container {
+      border-image: repeating-linear-gradient(
+          to right,
+          rgba(148, 163, 184, 0.54) 0,
+          rgba(148, 163, 184, 0.54) 10px,
+          transparent 10px,
+          transparent 20px
+        )
+        1 !important;
+    }
+
+    .title,
+    .position,
+    .position span,
+    .tool-box .contents h3,
+    .show-button .button-text h5 {
+      color: var(--text-strong) !important;
+    }
+
+    .date,
+    .info-box p,
+    .session-header h4,
+    .session-header h5,
+    .content-items span,
+    .tool-box .contents .past h6 {
+      color: var(--text-soft) !important;
+    }
+
+    .count h5,
+    .tool-box .contents .past h4 {
+      color: var(--PrimaryColor) !important;
+    }
+
+    .count span {
+      color: var(--text-muted) !important;
+    }
+
+    .session-box,
+    .tool-box {
+      background-color: var(--surface-2) !important;
+      border-color: var(--main-border) !important;
+    }
+
+    .tool-box {
+      background-image: none !important;
+    }
+
+    .tool-img img {
+      border-color: var(--main-border) !important;
+    }
+
+    .show-button {
+      background-color: rgba(96, 165, 250, 0.12) !important;
+      border-color: rgba(96, 165, 250, 0.68) !important;
+      color: var(--PrimaryColor) !important;
+
+      &:hover {
+        background-color: rgba(96, 165, 250, 0.2) !important;
+        border-color: var(--PrimaryColor) !important;
+      }
+
+      svg path {
+        fill: var(--PrimaryColor) !important;
+      }
+    }
+
+    .last-inspection-card {
+      background-color: var(--surface-2) !important;
+      border-color: var(--main-border) !important;
+
+      .title,
+      p span {
+        color: var(--text-strong) !important;
+      }
+
+      p {
+        color: var(--text-soft) !important;
+      }
+    }
+  }
+
+  .organization-home-page,
+  .home-page {
+    background-color: transparent !important;
+    color: var(--Black) !important;
+  }
+
+  .home-routes-card,
+  .home-panel,
+  .analytics-panel,
+  .project-statistics,
+  .project-card-container,
+  .total-insedent-card,
+  .incidant-factor-container,
+  .total-machines-container,
+  .total-observation-container,
+  .investigations_container,
+  .top-teams-container,
+  .machine-statics {
+    background:
+      radial-gradient(
+        circle at 100% 0%,
+        color-mix(in srgb, var(--PrimaryColor) 10%, transparent),
+        transparent 40%
+      ),
+      linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
+    border-color: var(--main-border) !important;
+    color: var(--Black) !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22) !important;
+  }
+
+  .home-routes-card:hover,
+  .project-card-container:hover,
+  .total-insedent-card:hover,
+  .incidant-factor-container:hover {
+    border-color: color-mix(in srgb, var(--PrimaryColor) 36%, var(--main-border)) !important;
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.28) !important;
+  }
+
+  .home-routes-card .card-img,
+  .project-statistics .header-img,
+  .project-card-container .project-employees,
+  .project-card-container .locations,
+  .project-card-container .data-info,
+  .project-statistics .count,
+  .total-machines-header-container .static-data p,
+  .details-signal-grid .static-data p,
+  .monthly-kpi-grid .total-insedent-card {
+    background-color: var(--surface-2) !important;
+    border-color: var(--main-border) !important;
+    color: var(--text-soft) !important;
+    box-shadow: none !important;
+  }
+
+  .home-routes-card .card-img {
+    background:
+      linear-gradient(145deg, var(--surface-2), var(--surface-3)),
+      color-mix(in srgb, var(--PrimaryColor) 8%, transparent) !important;
+  }
+
+  .home-routes-card .title,
+  .project-statistics .title,
+  .project-card-container .project-title,
+  .project-card-container .info-count,
+  .total-insedent-card .data p,
+  .incidant-factor-container .static-title,
+  .total-machines-container .static-title,
+  .total-observation-container .static-title,
+  .investigations_container .title h6,
+  .dashboard-section-heading h3 {
+    color: var(--text-strong) !important;
+  }
+
+  .home-routes-card .description,
+  .project-statistics .description,
+  .project-statistics .count,
+  .project-card-container .serial,
+  .project-card-container .project-employees,
+  .project-card-container .locations,
+  .project-card-container .info-title,
+  .total-insedent-card .titlte p,
+  .total-insedent-card .data h6,
+  .incidant-factor-container .static-data p,
+  .total-machines-container .static,
+  .total-machines-container .static-data p,
+  .total-observation-container .legend-label,
+  .investigations_container .title p,
+  .investigations_container .chart_container p,
+  .chart-container .col-name {
+    color: var(--text-soft) !important;
+  }
+
+  .project-statistics .header {
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+        transparent
+      ),
+      var(--surface-1) !important;
+    border-color: var(--main-border) !important;
+  }
+
+  .project-statistics .header .header-container .header-img {
+    background-color: color-mix(in srgb, var(--PrimaryColor) 14%, var(--surface-2)) !important;
+    border: 1px solid var(--main-border) !important;
+  }
+
+  .project-statistics .header .header-container .title-content .content-info .title {
+    color: var(--text-strong) !important;
+  }
+
+  .project-statistics .header .header-container .title-content .description,
+  .project-statistics .header .header-container .title-content .content-info .count {
+    color: var(--text-soft) !important;
+  }
+
+  .project-statistics .header .header-container .title-content .content-info .count {
+    background-color: var(--surface-2) !important;
+    border-color: var(--main-border) !important;
+  }
+
+  .project-statistics .header .header-container .title-content .content-info .count .counter {
+    color: var(--PrimaryColor) !important;
+  }
+
+  .project-statistics .statistics-content {
+    scrollbar-color: var(--PrimaryColor) var(--surface-3) !important;
+  }
+
+  .project-statistics .statistics-content::-webkit-scrollbar-track,
+  .chart-scroll-wrapper::-webkit-scrollbar-track,
+  .chart-container::-webkit-scrollbar-track {
+    background-color: var(--surface-3) !important;
+  }
+
+  .project-statistics .statistics-content::-webkit-scrollbar-thumb,
+  .chart-scroll-wrapper::-webkit-scrollbar-thumb,
+  .chart-container::-webkit-scrollbar-thumb {
+    background-color: var(--PrimaryColor) !important;
+  }
+
+  .project-card-container .project-card-divider {
+    background: linear-gradient(90deg, transparent, var(--main-border), transparent) !important;
+  }
+
+  .project-card-container .status,
+  .project-card-container .locations span,
+  .project-card-container .project-employees span,
+  .project-statistics .counter {
+    color: var(--PrimaryColor) !important;
+  }
+
+  .total-machines-container .chart-container,
+  .investigations_container .chart_container,
+  .total-observation-container .chart-scroll-wrapper,
+  .total-observation-container .chart-wrapper {
+    background:
+      linear-gradient(
+        180deg,
+        transparent 0%,
+        transparent calc(25% - 1px),
+        color-mix(in srgb, var(--main-border) 50%, transparent) 25%,
+        transparent calc(25% + 1px),
+        transparent calc(50% - 1px),
+        color-mix(in srgb, var(--main-border) 50%, transparent) 50%,
+        transparent calc(50% + 1px),
+        transparent calc(75% - 1px),
+        color-mix(in srgb, var(--main-border) 50%, transparent) 75%,
+        transparent calc(75% + 1px)
+      ),
+      var(--surface-1) !important;
+    border-color: var(--main-border) !important;
+  }
+
+  .investigations_container .chart_row {
+    background: color-mix(in srgb, var(--PrimaryColor) 12%, var(--surface-1)) !important;
+    border-color: color-mix(in srgb, var(--PrimaryColor) 24%, var(--main-border)) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  }
+
+  .investigations_container .chart_row .span {
+    background-color: color-mix(in srgb, var(--PrimaryColor) 28%, transparent) !important;
+  }
+
+  .investigations_container .indicator-label,
+  .total-machines-container .info-container {
+    background-color: var(--surface-2) !important;
+    color: var(--text-strong) !important;
+    border-color: var(--main-border) !important;
+  }
+
+  .total-machines-container .total-value {
+    color: var(--text-strong) !important;
+  }
+
+  .full-observation-form.is-dark,
+  .equipment-form.is-dark,
+  .incident-index-page.is-dark,
+  .equipment-index-page.is-dark {
+    color: var(--Black) !important;
+  }
+
+  .full-observation-form.is-dark,
+  .equipment-form.is-dark {
+    :where(
+        .Hazard-form-header,
+        .form-filter-panel,
+        .hazard-type-container,
+        .not-colored,
+        .is-stopped,
+        .vehicle,
+        .card_Qr,
+        .machine_card,
+        .Qr_EQUIPMENt,
+        .radio-wrapper
+      ) {
+      background: var(--surface-1) !important;
+      border-color: var(--main-border) !important;
+      color: var(--Black) !important;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    :where(label, .title, .radio-title, .form-filter-panel-header p, .machine_card h6) {
+      color: var(--text-strong) !important;
+    }
+
+    :where(.machine_card p, .subtitle, .description, .radio-wrapper label) {
+      color: var(--text-soft) !important;
+    }
+
+    :where(input, textarea, .p-inputtext, .p-select, .p-multiselect, .p-datepicker-input) {
+      background-color: var(--surface-2) !important;
+      border-color: var(--main-border) !important;
+      color: var(--text-strong) !important;
+    }
+
+    :where(input::placeholder, textarea::placeholder, .p-placeholder) {
+      color: var(--text-muted) !important;
+    }
+
+    .radio-wrapper.active,
+    .radio-selection.selected {
+      background: color-mix(in srgb, var(--PrimaryColor) 18%, var(--surface-1)) !important;
+      border-color: color-mix(in srgb, var(--PrimaryColor) 48%, var(--main-border)) !important;
+    }
+  }
+
+  .equipment-index-page.is-dark {
+    .input-search input {
+      background-color: var(--surface-2) !important;
+      border-color: var(--main-border) !important;
+      color: var(--text-strong) !important;
+    }
+
+    .input-search input::placeholder {
+      color: var(--text-muted) !important;
+    }
+
+    :where(.tool-card, .equipment-card, .equipment-skeleton-card) {
+      background:
+        radial-gradient(
+          circle at 100% 0%,
+          color-mix(in srgb, var(--PrimaryColor) 8%, transparent),
+          transparent 36%
+        ),
+        var(--surface-1) !important;
+      border-color: var(--main-border) !important;
+      color: var(--Black) !important;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22) !important;
+    }
+
+    :where(.tool-card-media, .equipment-meta .meta-item, .equipment-project-info) {
+      background-color: var(--surface-2) !important;
+      border-color: var(--main-border) !important;
+      color: var(--text-soft) !important;
+    }
+
+    :where(.type, .main-type, .title, .project-name-title, .meta-item strong) {
+      color: var(--text-strong) !important;
+    }
+
+    :where(.subtype, .subtype-title, .meta-label, .project-zone-name p) {
+      color: var(--text-soft) !important;
+    }
+
+    .equipment-status {
+      background-color: color-mix(in srgb, var(--PrimaryColor) 20%, var(--surface-2)) !important;
+      border-color: color-mix(in srgb, var(--PrimaryColor) 36%, var(--main-border)) !important;
+      color: var(--text-strong) !important;
+    }
+
+    .skeleton-block {
+      background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%) !important;
+      background-size: 220% 100% !important;
+    }
+  }
+
+  .tool-card.is-dark,
+  .tool-card.equipment-card {
+    .equipment-project-info {
+      background-color: var(--surface-2) !important;
+      border-color: var(--main-border) !important;
+      color: var(--text-soft) !important;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+    }
+
+    .equipment-project-info .project-name,
+    .equipment-project-info .project-zone-name,
+    .equipment-project-info .project-zone-name p {
+      color: var(--text-soft) !important;
+    }
+
+    .equipment-project-info .project-name-title {
+      color: var(--text-strong) !important;
+    }
+
+    .equipment-project-info > img,
+    .equipment-project-info .project-zone-name img {
+      background-color: color-mix(in srgb, var(--PrimaryColor) 14%, var(--surface-3)) !important;
+      border-color: var(--main-border) !important;
+      border-radius: 10px;
+    }
+  }
+
+  .equipment-project-info {
+    background: var(--surface-2) !important;
+    border: 1px solid var(--main-border) !important;
+    color: var(--text-soft) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+  }
+
+  .equipment-project-info .project-data,
+  .equipment-project-info .project-name,
+  .equipment-project-info .project-zone-name,
+  .equipment-project-info .project-zone-name p {
+    background: transparent !important;
+    color: var(--text-soft) !important;
+  }
+
+  .equipment-project-info .project-name-title {
+    color: var(--text-strong) !important;
+  }
+
+  .equipment-project-info > img,
+  .equipment-project-info .project-zone-name img {
+    background-color: color-mix(in srgb, var(--PrimaryColor) 14%, var(--surface-3)) !important;
+    border: 1px solid var(--main-border) !important;
+    border-radius: 10px !important;
+  }
+
+  .project-progress-container {
+    color: var(--Black) !important;
+
+    .project-progress-actions,
+    .project-progress-body-sidebar,
+    .project-progress-body-content .full-content,
+    .lottie-container,
+    .component-wrapper {
+      background:
+        radial-gradient(
+          circle at 100% 0%,
+          color-mix(in srgb, var(--PrimaryColor) 9%, transparent),
+          transparent 38%
+        ),
+        linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
+      border-color: var(--main-border) !important;
+      color: var(--Black) !important;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22) !important;
+    }
+
+    .project-progress-body-container,
+    .timeline-container,
+    .timeline-content,
+    .timeline-content-header,
+    .project-progress-info-text {
+      background: transparent !important;
+    }
+
+    .project-progress-actions .back span {
+      color: var(--text-soft) !important;
+    }
+
+    .project-progress-actions .skip span {
+      color: var(--PrimaryColor) !important;
+    }
+
+    .project-progress-actions .back svg rect {
+      stroke: var(--text-muted) !important;
+    }
+
+    .project-progress-actions .back svg path {
+      fill: var(--text-muted) !important;
+    }
+
+    .timeline-wrapper {
+      scrollbar-color: var(--PrimaryColor) var(--surface-3) !important;
+    }
+
+    .timeline-wrapper::-webkit-scrollbar-track {
+      background-color: var(--surface-3) !important;
+    }
+
+    .timeline-wrapper::-webkit-scrollbar-thumb {
+      background: linear-gradient(
+        90deg,
+        color-mix(in srgb, var(--PrimaryColor) 72%, transparent),
+        rgba(20, 184, 166, 0.72)
+      ) !important;
+    }
+
+    .timeline-line {
+      background-color: var(--main-border) !important;
+    }
+
+    .timeline-item {
+      background: var(--surface-1) !important;
+      border-color: var(--main-border) !important;
+      color: var(--Black) !important;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .timeline-item:hover {
+      background: color-mix(in srgb, var(--PrimaryColor) 10%, var(--surface-1)) !important;
+      border-color: color-mix(in srgb, var(--PrimaryColor) 36%, var(--main-border)) !important;
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.28) !important;
+    }
+
+    .timeline-item.active {
+      background:
+        linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--PrimaryColor) 13%, var(--surface-1)),
+          var(--surface-1)
+        ) !important;
+      border-color: color-mix(in srgb, var(--PrimaryColor) 48%, var(--main-border)) !important;
+    }
+
+    .timeline-marker.not-active .timeline-icon,
+    .timeline-marker.not-active .timeline-dot,
+    .timeline-dot,
+    .timeline-icon {
+      background-color: var(--surface-2) !important;
+      border-color: var(--main-border) !important;
+    }
+
+    .timeline-dot-inner,
+    .timeline-pulse {
+      background-color: var(--PrimaryColor) !important;
+    }
+
+    .timeline-icon svg path {
+      fill: var(--PrimaryColor) !important;
+    }
+
+    .timeline-link {
+      background-color: color-mix(in srgb, var(--PrimaryColor) 12%, var(--surface-2)) !important;
+      border: 1px solid color-mix(in srgb, var(--PrimaryColor) 28%, var(--main-border)) !important;
+    }
+
+    .timeline-link:hover {
+      background-color: color-mix(in srgb, var(--PrimaryColor) 18%, var(--surface-2)) !important;
+    }
+
+    .timeline-link svg path {
+      stroke: var(--PrimaryColor) !important;
+    }
+
+    :where(.first-item-title, .time-line-title, .content-header .title, .lottie-header .title) {
+      color: var(--text-strong) !important;
+    }
+
+    :where(
+        .first-item-description,
+        .time-line-description,
+        .content-header .description,
+        .lottie-header .text
+      ) {
+      color: var(--text-soft) !important;
+    }
+
+    .timeline-item.active .time-line-title,
+    .lottie-header .title {
+      color: var(--PrimaryColor) !important;
+    }
+
+    .p-knob-range {
+      stroke: var(--surface-3) !important;
+    }
+
+    .p-knob-text {
+      fill: var(--text-strong) !important;
+    }
+
+    .completed-mark {
+      background: #16a34a !important;
+      box-shadow: 0 18px 36px rgba(22, 163, 74, 0.28) !important;
+    }
+  }
+
+  .project-progress-header-container {
+    background:
+      radial-gradient(
+        circle at 0% 0%,
+        color-mix(in srgb, var(--PrimaryColor) 12%, transparent),
+        transparent 42%
+      ),
+      linear-gradient(90deg, var(--surface-1), var(--surface-2)) !important;
+    border-color: color-mix(in srgb, var(--PrimaryColor) 24%, var(--main-border)) !important;
+    color: var(--Black) !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22) !important;
+
+    .project-progress-info,
+    .project-progress-info-text {
+      background: transparent !important;
+    }
+
+    .project-progress-info > svg rect {
+      fill: color-mix(in srgb, var(--PrimaryColor) 16%, var(--surface-2)) !important;
+    }
+
+    .project-progress-info > svg path {
+      stroke: var(--PrimaryColor) !important;
+    }
+
+    .project-progress-info > svg circle {
+      fill: var(--PrimaryColor) !important;
+    }
+
+    .project-progress-info-text .title {
+      color: var(--text-strong) !important;
+    }
+
+    .project-progress-info-text .description {
+      color: var(--text-soft) !important;
+    }
+  }
+
+  .project-cards-grid,
+  .modern-table-responsive.project-cards-grid,
+  .project-card-container,
+  .project-card-container.is-loading,
+  .project-location-popover,
+  form:has(.input-wrapper),
+  .add-hierarchy,
+  .add-employee,
+  .emoloyees-details,
+  .employee-header,
+  .hierarchy-form,
+  .employee-form,
+  .form-employee-wrapper,
+  .equipment-form,
+  .add-employee-cards,
+  .add-employee-card,
+  .zone-form,
+  .zone-container,
+  .zone-content,
+  .zones,
+  .equipments-sections,
+  .zoon-header {
+    color: var(--Black) !important;
+  }
+
+  .project-card-container,
+  .project-location-popover,
+  .popover-head,
+  .location-list,
+  .add-hierarchy .hierarchy-form,
+  .add-employee .employee-form,
+  .add-employee .hierarchy-empty,
+  .form-employee-wrapper,
+  .emoloyees-details,
+  .employee-header,
+  .employee-form .type,
+  .employee-form .location,
+  .hierarchy-form .title,
+  .equipment-form,
+  .equipment-form .input-container,
+  .equipment-form .select-container,
+  .equipment-form .select-item,
+  .add-employee-cards,
+  .add-employee-card,
+  .zone-form,
+  .zone-container,
+  .zone-content-container,
+  .zone-content,
+  .empty-zone,
+  .zones,
+  .zones .zone,
+  .equipments-sections,
+  .zoon-header,
+  .project-teams-cards,
+  .employees-section {
+    background:
+      radial-gradient(
+        circle at 100% 0%,
+        color-mix(in srgb, var(--PrimaryColor) 8%, transparent),
+        transparent 38%
+      ),
+      linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
+    border-color: var(--main-border) !important;
+    color: var(--Black) !important;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  .project-card-container:hover,
+  .project-card-container.completed:hover,
+  .project-card-container.on-hold:hover,
+  .project-card-container.cancelled:hover {
+    border-color: color-mix(in srgb, var(--PrimaryColor) 38%, var(--main-border)) !important;
+    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.28) !important;
+  }
+
+  .project-card-header-container,
+  .project-card-header,
+  .project-header,
+  .project-card-info,
+  .project-card-data,
+  .card-header,
+  .card-actions,
+  .employee-form .type,
+  .form-employee-wrapper .title,
+  .zone-form .location-header,
+  .zone-form .zone-content-container,
+  .zone-form .zone-container,
+  .add-employee-card-header,
+  .popover-head,
+  .location-list {
+    background: transparent !important;
+    border-color: var(--main-border) !important;
+  }
+
+  :where(
+      .project-card-container .project-title,
+      .project-card-container .serial,
+      .project-card-container .info-count,
+      .project-card-container .popover-head h4,
+      .project-card-container .location-title,
+      .add-hierarchy .title h5,
+      .add-employee .title h5,
+      .add-employee .location h5,
+      .emoloyees-details .employee,
+      .emoloyees-details .employee-count,
+      .zone-form .title,
+      .zone-form .zone-title,
+      .zones .zone,
+      .zoon-title,
+      .add-employee-card .title
+    ) {
+    color: var(--text-strong) !important;
+  }
+
+  :where(
+      .project-card-container .project-employees,
+      .project-card-container .locations,
+      .project-card-container .info-title,
+      .project-card-container .popover-empty,
+      .project-card-container .popover-kicker,
+      .add-employee .location sub,
+      .emoloyees-details .subtitle,
+      .zone-form .empty-zone,
+      .employee-header .subtitle
+    ) {
+    color: var(--text-soft) !important;
+  }
+
+  :where(
+      .project-card-container .status,
+      .project-card-container .popover-trigger-count,
+      .project-card-container .popover-total,
+      .project-card-container .info-count.warn,
+      .emoloyees-details .edit-btn,
+      .emoloyees-details .add-btn,
+      .zone-form .zone-content.active .zone-title,
+      .zone-form .confirm-btn
+    ) {
+    color: var(--PrimaryColor) !important;
+  }
+
+  .project-card-container .project-employees,
+  .project-card-container .locations,
+  .project-card-container .data-info,
+  .project-card-container .popover-trigger-count,
+  .project-card-container .location-data,
+  .project-card-container .location-index,
+  .project-card-container .popover-kicker,
+  .project-card-container .popover-total,
+  .equipment-form .radio-wrapper,
+  .equipment-form .select-item,
+  .zone-form .zone-content,
+  .zone-form .empty-zone,
+  .add-employee-card .input-wrapper {
+    background-color: var(--surface-2) !important;
+    border-color: var(--main-border) !important;
+    color: var(--text-soft) !important;
+  }
+
+  .equipment-form .radio-wrapper.active,
+  .equipment-form .select-item.active,
+  .zone-form .zone-content.active {
+    background-color: color-mix(in srgb, var(--PrimaryColor) 16%, var(--surface-2)) !important;
+    border-color: color-mix(in srgb, var(--PrimaryColor) 46%, var(--main-border)) !important;
+    color: var(--PrimaryColor) !important;
+  }
+
+  :where(.project-card-divider, .employee-hr, .dashed-line, .hr-dashed-line, .add-equipment-hr, .add-employee-hr) {
+    background-color: var(--main-border) !important;
+    border-color: var(--main-border) !important;
+  }
+
+  .project-card-container .skeleton-bar {
+    background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%) !important;
+    background-size: 220% 100% !important;
+  }
+
+  .project-card-container svg path,
+  .emoloyees-details svg path,
+  .add-hierarchy svg path,
+  .add-employee svg path,
+  .zone-form svg path,
+  .zoon-header svg path {
+    fill: var(--PrimaryColor) !important;
+    stroke: var(--PrimaryColor) !important;
+  }
+
+  .emoloyees-details {
+    background:
+      radial-gradient(
+        circle at 100% 0%,
+        color-mix(in srgb, var(--PrimaryColor) 8%, transparent),
+        transparent 36%
+      ),
+      var(--surface-1) !important;
+    border: 1px solid var(--main-border) !important;
+    border-radius: 18px !important;
+    color: var(--Black) !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.24) !important;
+  }
+
+  .emoloyees-details .card-header {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .emoloyees-details .section-header {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+  }
+
+  .emoloyees-details .section-img {
+    background-color: color-mix(in srgb, var(--PrimaryColor) 12%, var(--surface-2)) !important;
+    border: 1px solid var(--main-border) !important;
+    border-radius: 12px !important;
+  }
+
+  .emoloyees-details .header-text .title {
+    color: var(--text-strong) !important;
+  }
+
+  .emoloyees-details .header-text .subtitle {
+    color: var(--text-soft) !important;
+  }
+
+  .emoloyees-details .card-actions .edit-btn {
+    background-color: color-mix(in srgb, var(--PrimaryColor) 14%, var(--surface-2)) !important;
+    border: 1px solid color-mix(in srgb, var(--PrimaryColor) 48%, var(--main-border)) !important;
+    color: var(--PrimaryColor) !important;
+  }
+
+  .emoloyees-details .card-actions .add-btn {
+    background-color: color-mix(in srgb, var(--PrimaryColor) 20%, var(--surface-2)) !important;
+    border: 1px solid color-mix(in srgb, var(--PrimaryColor) 52%, var(--main-border)) !important;
+    color: #dbeafe !important;
+  }
+
+  .emoloyees-details .card-actions .btn-primary {
+    background: linear-gradient(135deg, #2563eb, #14b8a6) !important;
+    border-color: transparent !important;
+    color: #ffffff !important;
+  }
+
+  .emoloyees-details .employee-hr {
+    border-color: var(--main-border) !important;
+    background: transparent !important;
+  }
+
+  .emoloyees-details .employees-section,
+  .emoloyees-details .project-teams-cards {
+    background-color: var(--surface-2) !important;
+    border: 1px solid var(--main-border) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+  }
+
+  .emoloyees-details .employees-section:empty,
+  .emoloyees-details .project-teams-cards:empty {
+    min-height: 44px;
+    background:
+      repeating-linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--main-border) 42%, transparent) 0 1px,
+        transparent 1px 12px
+      ),
+      var(--surface-2) !important;
+  }
+
+  .emoloyees-details .member-card,
+  .emoloyees-details .member-card.employee-card,
+  .emoloyees-details .team-card,
+  .emoloyees-details .team-card.employee-card {
+    background:
+      linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
+    border: 1px solid var(--main-border) !important;
+    color: var(--Black) !important;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  .emoloyees-details .member-card:hover,
+  .emoloyees-details .team-card:hover {
+    border-color: color-mix(in srgb, var(--PrimaryColor) 38%, var(--main-border)) !important;
+    transform: translateY(-1px);
+  }
+
+  .emoloyees-details .member-img {
+    border: 1px solid var(--main-border) !important;
+    border-radius: 999px !important;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22) !important;
+  }
+
+  .emoloyees-details .member-data,
+  .emoloyees-details .team-card-header,
+  .emoloyees-details .members-section {
+    background: transparent !important;
+  }
+
+  .emoloyees-details .member-data .name,
+  .emoloyees-details .team-card-title {
+    color: var(--text-strong) !important;
+  }
+
+  .emoloyees-details .member-data .position,
+  .emoloyees-details .member-data > span,
+  .emoloyees-details .team-card-members {
+    color: var(--text-soft) !important;
+  }
+
+  .emoloyees-details .card-delete path:first-child {
+    stroke: var(--surface-1) !important;
+  }
+
+  .emoloyees-details .card-delete path {
+    fill: #ef4444 !important;
+  }
+
+  .employee-header {
+    background:
+      radial-gradient(
+        circle at 0% 0%,
+        color-mix(in srgb, var(--PrimaryColor) 12%, transparent),
+        transparent 42%
+      ),
+      linear-gradient(135deg, var(--surface-1), var(--surface-2)) !important;
+    border: 1px solid var(--main-border) !important;
+    color: var(--Black) !important;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22) !important;
+  }
+
+  .employee-header .left-blue-background,
+  .employee-header .left-yellow-background,
+  .employee-header .right-yellow-background,
+  .employee-header .right-blue-background {
+    opacity: 0.08 !important;
+    filter: saturate(0.85) brightness(0.75);
+  }
+
+  .employee-header .employee-header-text,
+  .employee-header .header-text {
+    background: transparent !important;
+  }
+
+  .employee-header .header-text .title {
+    color: var(--text-strong) !important;
+  }
+
+  .employee-header .header-text .subtitle {
+    color: var(--text-soft) !important;
+  }
+
+  .empty-zones-equipment {
+    background:
+      radial-gradient(
+        circle at 100% 0%,
+        color-mix(in srgb, var(--PrimaryColor) 9%, transparent),
+        transparent 38%
+      ),
+      linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
+    border: 1px solid var(--main-border) !important;
+    color: var(--Black) !important;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22) !important;
+  }
+
+  .empty-zones-equipment .empty-zones-equipment-container,
+  .empty-zones-equipment .header,
+  .empty-zones-equipment .content {
+    background: transparent !important;
+  }
+
+  .empty-zones-equipment .empty-zones-equipment-container img {
+    background-color: color-mix(in srgb, var(--PrimaryColor) 12%, var(--surface-2)) !important;
+    border: 1px solid var(--main-border) !important;
+    border-radius: 12px !important;
+    padding: 5px;
+  }
+
+  .empty-zones-equipment .header .title {
+    color: var(--text-strong) !important;
+  }
+
+  .empty-zones-equipment .header .description,
+  .empty-zones-equipment .header .description span {
+    color: var(--text-soft) !important;
+  }
+
+  .empty-zones-equipment .content .card {
+    background: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .empty-zones-equipment .content .content-btn {
+    background-color: color-mix(in srgb, var(--PrimaryColor) 12%, var(--surface-2)) !important;
+    border: 1px solid color-mix(in srgb, var(--PrimaryColor) 32%, var(--main-border)) !important;
+    color: var(--PrimaryColor) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+  }
+
+  .empty-zones-equipment .content .content-btn:hover {
+    background-color: color-mix(in srgb, var(--PrimaryColor) 18%, var(--surface-2)) !important;
+    border-color: color-mix(in srgb, var(--PrimaryColor) 52%, var(--main-border)) !important;
+  }
+
+  .equipments-sections .project-equipment-card-container:empty {
+    min-height: 34px;
+    border: 1px dashed var(--main-border) !important;
+    border-radius: 12px;
+    background:
+      repeating-linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--main-border) 38%, transparent) 0 1px,
+        transparent 1px 12px
+      ),
+      var(--surface-2) !important;
+  }
+
+  .breadcrump-container,
+  .breadcrump-container.is-dark {
+    background-color: var(--surface-1) !important;
+    border: 1px solid var(--main-border) !important;
+    color: var(--Black) !important;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18) !important;
+
+    .breadcrump,
+    .p-breadcrumb,
+    .p-breadcrumb-list {
+      background-color: transparent !important;
+      color: var(--Black) !important;
+      border-color: transparent !important;
+    }
+
+    .sidebar-back {
+      background-color: transparent !important;
+      color: var(--text-soft) !important;
+
+      &:hover {
+        background-color: var(--surface-3) !important;
+        color: var(--PrimaryColor) !important;
+      }
+
+      .icon path {
+        fill: currentColor !important;
+      }
+    }
+
+    .p-breadcrumb-item-label {
+      color: var(--PrimaryColor) !important;
+    }
+
+    .p-breadcrumb-item:last-child .p-breadcrumb-item-label {
+      color: var(--text-soft) !important;
+    }
+
+    .p-breadcrumb-separator {
+      color: var(--text-muted) !important;
+    }
+  }
+
+  .project-details-section {
+    color: var(--Black) !important;
+
+    .project-details-page-header,
+    > .project-header-container,
+    > .main-objective,
+    > .project-location,
+    > .locations-teams,
+    > .equipment-section,
+    > .inspections-sections,
+    .project-location-header,
+    .locations-teams-header,
+    .equipment-section-header,
+    .card-section,
+    .locations-sections,
+    .equipments-sections,
+    .project-equipment-card,
+    .project-equipment-card-container,
+    .section-header-page-container,
+    .section-header-page,
+    .objective-details,
+    .location-card,
+    .location-card.dialog,
+    .team-card,
+    .member-card,
+    .member-card.employee-card,
+    .equipment-card,
+    .tool-card,
+    .tool-card.equipment-card,
+    .empty-zones-equipment,
+    .empty-teams,
+    .all-employees,
+    .teams-container,
+    .teams-container.equipment,
+    .team-members,
+    .teams,
+    .location-container,
+    .location-info-statics,
+    .equipment-inspections-info,
+    .inspection-data,
+    .last-inspection-info-container,
+    .locations .location-title,
+    .project-overview-card,
+    .inspections-card,
+    .inspection-dialog {
+      background:
+        radial-gradient(
+          circle at 100% 0%,
+          color-mix(in srgb, var(--PrimaryColor) 8%, transparent),
+          transparent 38%
+        ),
+        linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
+      border-color: var(--main-border) !important;
+      color: var(--Black) !important;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .project-header-container {
+      background-color: var(--surface-1) !important;
+    }
+
+    .project-header-container .bg-yellow,
+    .project-header-container .bg-blue {
+      opacity: 0.16 !important;
+    }
+
+    .section-header,
+    .card-header,
+    .location-header,
+    .location,
+    .locations,
+    .equipment-card-header-container,
+    .equipment-card-header,
+    .location-header-container,
+    .team-card-header,
+    .tool-card-header,
+    .tool-card-header-text,
+    .all-employees-header-container,
+    .all-employees-header,
+    .project-data,
+    .project-name,
+    .project-zone-name {
+      background: transparent !important;
+      border-color: var(--main-border) !important;
+    }
+
+    :where(
+        .page-title,
+        .project-name,
+        .title,
+        .title-page,
+        .team-card-title,
+        .name,
+        .state,
+        .employee,
+        .employee-count,
+        .main-type,
+        .subtype-title,
+        .serial-number,
+        .equipment-card-header-text .title,
+        .location-header .title,
+        .location-title,
+        .inspection-data span,
+        .last-inspection-info .by span,
+        .last-inspection-info .date-time span,
+        .no-zoon,
+        .empty-text .title,
+        .content-title
+      ) {
+      color: var(--text-strong) !important;
+    }
+
+    :where(
+        .description,
+        .subtitle,
+        .subtitle-page,
+        .serial,
+        .date,
+        .overview-label,
+        .zone,
+        .position,
+        .team-card-members,
+        .inspection-data,
+        .last-inspection,
+        .last-inspection-info .by,
+        .last-inspection-info .date-time,
+        .no-zoon-description,
+        .empty-text .subtitle,
+        .content-date,
+        .tool-subtitle .subtitle,
+        .meta-label,
+        .equipment-card-header-text .subtitle
+      ) {
+      color: var(--text-soft) !important;
+    }
+
+    :where(
+        .page-eyebrow,
+        .overview-value,
+        .contractor,
+        .location,
+        .add-zone,
+        .show-all,
+        .show-all-btn,
+        .all-employees-view,
+        .tasks-num,
+        .status,
+        .per,
+        .type,
+        .location-info-statics p,
+        .certificat-btn
+      ) {
+      color: var(--PrimaryColor) !important;
+    }
+
+    :where(
+        .serial span,
+        .date span,
+        .zone span,
+        .location-info-statics span,
+        .equipment-card-header-text .subtitle span
+      ) {
+      color: var(--text-strong) !important;
+    }
+
+    :where(.card-hr, .equipment-hr, .tool-hr, .card-divider, .divider, .location-hr) {
+      background-color: var(--main-border) !important;
+      border-color: var(--main-border) !important;
+    }
+
+    .section-img,
+    .section-img-page,
+    .section-number-page,
+    .tool-card-media,
+    .tool-card-header > img,
+    .inspection-icon,
+    .equipment-status,
+    .equipment-meta .meta-item,
+    .content-btn {
+      background-color: var(--surface-2) !important;
+      border-color: var(--main-border) !important;
+      color: var(--text-soft) !important;
+    }
+
+    .p-accordion,
+    .p-accordionpanel,
+    .p-accordionheader,
+    .p-accordioncontent,
+    .p-accordioncontent-content {
+      background-color: transparent !important;
+      border-color: var(--main-border) !important;
+      color: var(--Black) !important;
+    }
+
+    .p-accordionpanel {
+      background:
+        linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
+      border: 1px solid var(--main-border) !important;
+      border-radius: 14px !important;
+      overflow: hidden !important;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18) !important;
+    }
+
+    .p-accordionheader,
+    .p-accordioncontent-content {
+      background-color: var(--surface-1) !important;
+    }
+
+    .p-accordionheader:hover {
+      background-color: var(--surface-3) !important;
+    }
+
+    .p-accordionheader-toggle-icon,
+    .p-icon.p-accordionheader-toggle-icon {
+      color: var(--PrimaryColor) !important;
+    }
+
+    .arrow-accord path,
+    .arrow-right path,
+    .location-container svg path,
+    .all-employees-header-container svg path {
+      fill: var(--PrimaryColor) !important;
+      stroke: var(--PrimaryColor) !important;
+    }
+  }
+
+  .index-investigating {
+    color: var(--Black) !important;
+
+    .table-responsive,
+    .index-table-card-container,
+    .card-header-container,
+    .first-container,
+    .header-container,
+    .first-card-header,
+    .header,
+    .card-details,
+    .project-details,
+    .btns-container,
+    .unsolved-btns,
+    .solved-btn,
+    .btn-inprogress {
+      background: transparent !important;
+    }
+
+    .index-table-card,
+    .card-header-container.show,
+    .first-card,
+    .card-content,
+    .show-investigation-meeting-details,
+    .project-details .label-item-primary,
+    .status,
+    .view-btn,
+    .second-btn,
+    .investigation-show-details-btn,
+    .sidebar-card {
+      background:
+        radial-gradient(
+          circle at 100% 0%,
+          color-mix(in srgb, var(--PrimaryColor) 8%, transparent),
+          transparent 38%
+        ),
+        linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
+      border-color: var(--main-border) !important;
+      color: var(--Black) !important;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .index-table-card:hover {
+      border-color: color-mix(in srgb, var(--PrimaryColor) 34%, var(--main-border)) !important;
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28) !important;
+    }
+
+    .card-header,
+    .show-investigation-meeting-details .title,
+    .sidebar-card-header,
+    .sidebar-list li {
+      border-color: var(--main-border) !important;
+    }
+
+    .label-item-secondary.title,
+    .label-item-secondary span,
+    .label-item-primary span,
+    .card-header .label-item-secondary,
+    .show-investigation-meeting-details .title h6,
+    .show-investigation-meeting-details .dome-info span,
+    .live-link,
+    .join {
+      color: var(--text-strong) !important;
+    }
+
+    .label-item-primary,
+    .label-item-secondary,
+    .show-investigation-meeting-details .dome-info p,
+    .show-investigation-meeting-details .dome-info h6,
+    .sidebar-list li,
+    .sidebar-card-details {
+      color: var(--text-soft) !important;
+    }
+
+    .first-label-item-primary,
+    .sidebar-label-item-primary {
+      background: color-mix(in srgb, var(--PrimaryColor) 14%, var(--surface-2)) !important;
+      border-color: color-mix(in srgb, var(--PrimaryColor) 24%, var(--main-border)) !important;
+      color: var(--PrimaryColor) !important;
+    }
+
+    .status,
+    .view-btn,
+    .second-btn,
+    .investigation-show-details-btn {
+      border-color: color-mix(in srgb, var(--PrimaryColor) 24%, var(--main-border)) !important;
+    }
+
+    .investigation-show-details-btn {
+      min-height: 44px !important;
+      border: 1px solid color-mix(in srgb, var(--PrimaryColor) 24%, var(--main-border)) !important;
+      border-radius: 12px !important;
+      color: var(--PrimaryColor) !important;
+      font-weight: 900 !important;
+      padding: 0.65rem 1rem !important;
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease !important;
+    }
+
+    .investigation-show-details-btn:hover,
+    .second-btn:hover,
+    .view-btn:hover {
+      background: color-mix(in srgb, var(--PrimaryColor) 16%, var(--surface-2)) !important;
+      border-color: var(--PrimaryColor) !important;
+      transform: translateY(-1px);
+    }
+
+    .status.New,
+    .status.Open {
+      color: var(--PrimaryColor) !important;
+    }
+
+    .status.InProgress,
+    .status.Hold {
+      color: var(--medium-color) !important;
+    }
+
+    .status.Closed,
+    .status.Completed {
+      color: var(--green) !important;
+    }
+
+    .sidebar-list li.active,
+    .sidebar-list li:hover {
+      background: color-mix(in srgb, var(--PrimaryColor) 14%, var(--surface-2)) !important;
+      color: var(--text-strong) !important;
+    }
+  }
+
+  .investigation-result {
+    color: var(--Black) !important;
+
+    .p-accordion,
+    .p-accordionpanel,
+    .p-accordionheader,
+    .p-accordioncontent,
+    .p-accordioncontent-content {
+      background: transparent !important;
+      border-color: var(--main-border) !important;
+      color: var(--Black) !important;
+    }
+
+    .p-accordionpanel {
+      overflow: hidden !important;
+      margin-bottom: 14px !important;
+      border: 1px solid var(--main-border) !important;
+      border-radius: 18px !important;
+      background:
+        radial-gradient(
+          circle at 100% 0%,
+          color-mix(in srgb, var(--PrimaryColor) 8%, transparent),
+          transparent 38%
+        ),
+        linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22) !important;
+    }
+
+    .p-accordionheader {
+      background: var(--surface-1) !important;
+      color: var(--text-strong) !important;
+    }
+
+    .p-accordionheader:hover {
+      background: var(--surface-3) !important;
+    }
+
+    .p-accordioncontent-content {
+      background: var(--surface-2) !important;
+    }
+
+    .investigation-title,
+    .investigation-title p,
+    .section-heading h2,
+    .event-timeline-card-header h4,
+    .meeting-info p span,
+    .team-member .name,
+    .title,
+    .page-title,
+    .content-title,
+    .factot-title span:not(.subtitle),
+    .radio-label,
+    .sub-radio-label,
+    .select-type label span,
+    .attachments-show .title,
+    .similar-observation-card strong {
+      color: var(--text-strong) !important;
+    }
+
+    .meeting-info p,
+    .team-member .serial,
+    .employee-text .serial,
+    .description,
+    .subtitle,
+    .event-timeline-card-header span,
+    .event-timeline-fields label,
+    .similar-observation-card small,
+    .similar-observations-empty,
+    .add-text,
+    .input-wrapper label {
+      color: var(--text-soft) !important;
+    }
+
+    .investigating-header-container,
+    .meeting-info-container,
+    .meeting-info,
+    .team-container,
+    .team-member,
+    .incidant-description,
+    .lesson-section,
+    .event-timeline-builder,
+    .event-timeline-summary,
+    .event-timeline-card,
+    .similar-observations-section,
+    .similar-observation-card,
+    .similar-observations-empty,
+    .attachments-show,
+    .attachment-preview,
+    .rate-of-actions,
+    .rate-of-actions-content,
+    .select-type,
+    .cause-of-accidant,
+    .cause-of-accidant-content,
+    .viwers-result,
+    .five-why,
+    .investegation-attachment,
+    .another-meeting,
+    .another-meeting-header,
+    .another-meeting-contect,
+    .factor-item,
+    .factor-items-container,
+    .radio-grid,
+    .radio-column,
+    .radio-item,
+    .sub-radio-group,
+    .sub-radio-item,
+    .template-container,
+    .heirarchy-info,
+    .timeline-container,
+    .timeline-wrapper,
+    .timeline-content,
+    .timeline-contect-select,
+    .timeline-content-text,
+    .investigation-injury {
+      background:
+        radial-gradient(
+          circle at 100% 0%,
+          color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+          transparent 40%
+        ),
+        linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
+      border-color: var(--main-border) !important;
+      color: var(--Black) !important;
+      box-shadow: none !important;
+    }
+
+    .meeting-info-container,
+    .team-container,
+    .team-member,
+    .incidant-description,
+    .lesson-section,
+    .event-timeline-builder,
+    .event-timeline-summary,
+    .event-timeline-card,
+    .similar-observations-section,
+    .similar-observation-card,
+    .attachments-show,
+    .attachment-preview,
+    .rate-of-actions,
+    .cause-of-accidant,
+    .viwers-result,
+    .investegation-attachment,
+    .another-meeting,
+    .factor-item,
+    .timeline-content,
+    .select-type {
+      border: 1px solid var(--main-border) !important;
+      border-radius: 16px !important;
+    }
+
+    .title-header,
+    .section-header-page,
+    .section-header-page-container,
+    .header,
+    .header-container,
+    .project-data,
+    .content-info {
+      background: transparent !important;
+      border-color: var(--main-border) !important;
+    }
+
+    .title-header img,
+    .investigation-title img,
+    .team-member img,
+    .equipemtn-card-image {
+      background: var(--surface-3) !important;
+      border-color: var(--main-border) !important;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22) !important;
+    }
+
+    .p-accordion div.input-select,
+    .p-accordion div.p-select,
+    .p-accordion div.p-multiselect,
+    .p-accordion div.p-datepicker,
+    .p-accordion div.p-inputwrapper,
+    .p-accordion .input-wrapper input,
+    .p-accordion .input-wrapper textarea,
+    .p-accordion .p-inputtext,
+    .multi-image-uploader,
+    input,
+    textarea {
+      background: var(--surface-1) !important;
+      border-color: var(--main-border) !important;
+      color: var(--text-strong) !important;
+      box-shadow: none !important;
+    }
+
+    .p-accordion div.input-select:hover,
+    .p-accordion div.p-select:hover,
+    .p-accordion div.p-multiselect:hover,
+    .p-accordion .input-wrapper input:hover,
+    .p-accordion .input-wrapper textarea:hover,
+    .p-accordion .p-inputtext:hover {
+      border-color: color-mix(in srgb, var(--PrimaryColor) 32%, var(--main-border)) !important;
+    }
+
+    .p-accordion div.input-select:focus-within,
+    .p-accordion div.input-select.p-focus,
+    .p-accordion div.p-select:focus-within,
+    .p-accordion div.p-select.p-focus,
+    .p-accordion div.p-multiselect:focus-within,
+    .p-accordion div.p-multiselect.p-focus,
+    .p-accordion .input-wrapper input:focus,
+    .p-accordion .input-wrapper textarea:focus,
+    .p-accordion .p-inputtext:focus,
+    input:focus,
+    textarea:focus {
+      border-color: var(--PrimaryColor) !important;
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 18%, transparent) !important;
+      outline: none !important;
+    }
+
+    input::placeholder,
+    textarea::placeholder,
+    .p-placeholder {
+      color: var(--text-muted) !important;
+    }
+
+    .event-timeline-marker span,
+    .timeline-dot,
+    .tree-dot,
+    .timeline-dot-inner,
+    .tree-dot-inner {
+      border-color: var(--surface-2) !important;
+    }
+
+    .timeline-line,
+    .event-timeline-list::before {
+      background: linear-gradient(180deg, var(--PrimaryColor), #14b8a6) !important;
+      opacity: 0.38 !important;
+    }
+
+    .event-timeline-delete {
+      background: color-mix(in srgb, #ef4444 16%, var(--surface-2)) !important;
+      color: #fca5a5 !important;
+    }
+
+    .similar-observation-card span,
+    .meeting-status button,
+    .emp-name,
+    .emp-select {
+      background: color-mix(in srgb, var(--PrimaryColor) 14%, var(--surface-2)) !important;
+      border-color: color-mix(in srgb, var(--PrimaryColor) 26%, var(--main-border)) !important;
+      color: var(--PrimaryColor) !important;
+    }
+
+    .meeting-status button.active,
+    .emp-name.active,
+    .emp-select.active,
+    .select-type.active,
+    .radio-item:hover,
+    .sub-radio-item:hover {
+      background: color-mix(in srgb, var(--PrimaryColor) 20%, var(--surface-2)) !important;
+      border-color: var(--PrimaryColor) !important;
+      color: var(--text-strong) !important;
+    }
+
+    .similar-observation-card.loading span,
+    .similar-observation-card.loading strong,
+    .similar-observation-card.loading small,
+    .p-skeleton {
+      background: linear-gradient(90deg, #1e293b, #334155, #1e293b) !important;
+      color: transparent !important;
+    }
+
+    svg path {
+      stroke: currentColor;
+    }
+  }
+
+  .investigation-skeleton {
+    .skeleton-panel,
+    .panel-header,
+    .panel-body,
+    .timeline-card,
+    .mini-card,
+    .field-skeleton,
+    .member-row,
+    .summary-block {
+      background: var(--surface-1) !important;
+      border-color: var(--main-border) !important;
+      color: var(--Black) !important;
+    }
+
+    .p-skeleton,
+    .field-skeleton,
+    .mini-card,
+    .member-row,
+    .timeline-card {
+      background: linear-gradient(90deg, #1e293b, #334155, #1e293b) !important;
+    }
+  }
+
+  .incident-index-page.is-dark {
+    :where(.index-table-card, .card-header-container) {
+      background: var(--surface-1) !important;
+      border-color: var(--main-border) !important;
+      color: var(--Black) !important;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22) !important;
+    }
+
+    :where(.title, strong) {
+      color: var(--text-strong) !important;
+    }
+
+    :where(.subtitle, .label-item-primary, .label-item-secondary) {
+      color: var(--text-soft) !important;
+    }
+  }
+}

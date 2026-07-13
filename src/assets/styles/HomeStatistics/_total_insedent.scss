@@ -13,7 +13,7 @@
   );
   // @include flex-row(nowrap, space-between, center);
   // gap: $XlSize2;
-  border: 1px solid #f5f6f6;
+  // border: 1px solid #f5f6f6;
 
   .total-insedent-card {
     @include flex-column(nowrap, center, center);

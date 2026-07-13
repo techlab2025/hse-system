@@ -507,3 +507,8 @@ label {
 .header-select :deep(label) {
   display: none !important;
 }
+
+[data-theme='dark'] label,
+[data-theme='dark'] .input-label label {
+  color: var(--Black) !important;
+}

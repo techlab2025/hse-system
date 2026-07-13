@@ -2,8 +2,11 @@
 @use '../mixins/flex' as *;
 
 body {
-  background-color: #f8f9fb;
+  background-color: var(--app-bg);
   color: $Black;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 
   scrollbar-width: thin;
   --webkit-scrollbar-width: thin;

@@ -38,6 +38,14 @@
   --p-rent-500: #8bbefb;
 
   --icon-bg: #f2f4f6;
+  --app-bg: #f8f9fb;
+  --surface-1: #ffffff;
+  --surface-2: #f8fafc;
+  --surface-3: #eef2f7;
+  --text-primary: #0f172a;
+  --text-strong: #0f172a;
+  --text-soft: #475569;
+  --text-muted: #64748b;
   --xl-size-3: clamp(calc(50 * 0.8px), calc(50 * 100vw / var(--base-width)), calc(50 * 1px));
   --xl-size-2: clamp(calc(30 * 0.8px), calc(30 * 100vw / var(--base-width)), calc(30 * 1px));
   --xl-size-1: clamp(calc(24 * 0.8px), calc(24 * 100vw / var(--base-width)), calc(24 * 1px));
@@ -63,6 +71,38 @@
   //  --BgWhite: #121212;
   //  --BgBlack: #FFFFFF;
   //} //  --TextGray: #B7C9D9; //  --TextColor: #FFFFFF; //  --BgGray: #1E1E1E;
+}
+
+:root[data-theme='dark'] {
+  --PrimaryColor: #60a5fa;
+  --header-page-color: #e2e8f0;
+  --second-dark-color: #f8fafc;
+  --primary-dark: rgba(96, 165, 250, 0.22);
+  --card-observation-bg: #111827;
+  --delay-color: rgba(245, 158, 11, 0.18);
+  --BgWhite: #111827;
+  --Gray-1: #0f172a;
+  --Gray-4: #334155;
+  --Gray-2: #1e293b;
+  --Gray-3: #94a3b8;
+  --GrayText-1: #cbd5e1;
+  --GrayText: #cbd5e1;
+  --DarkGray: #94a3b8;
+  --LightGray: #1e293b;
+  --Black: #f8fafc;
+  --main-border: #334155;
+  --checkbox-bg: #1e293b;
+  --subtitle-color: #94a3b8;
+  --third-color: #e2e8f0;
+  --icon-bg: #1e293b;
+  --app-bg: #07111f;
+  --surface-1: #111827;
+  --surface-2: #172033;
+  --surface-3: #1e293b;
+  --text-primary: #f8fafc;
+  --text-strong: #f8fafc;
+  --text-soft: #cbd5e1;
+  --text-muted: #94a3b8;
 }
 
 /*<editor-fold desc="colors">*/

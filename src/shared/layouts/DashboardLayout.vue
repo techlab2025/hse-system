@@ -7,9 +7,11 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import NewSidebar from '../LayoutComponents/NewSidebar.vue'
 import BreadCrumb from '../LayoutComponents/BreadCrumb.vue'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
+import { useThemeMode } from '@/composables/useThemeMode'
 
 const { user } = useUserStore()
 const route = useRoute()
+const { isDarkMode } = useThemeMode()
 
 const isSidebarOpen = ref(true)
 
@@ -47,7 +49,7 @@ const showSidebar = computed(() => {
 </script>
 
 <template>
-  <main class="content">
+  <main :class="['content', { 'is-dark': isDarkMode }]">
     <div class="sidebar-container" :class="{ 'sidebar-open': isSidebarOpen }">
       <NewSidebar v-if="showSidebar" v-model:open="isSidebarOpen" />
       <div v-if="isSidebarOpen && showSidebar" class="sidebar-backdrop" @click="isSidebarOpen = false"></div>
@@ -63,6 +65,18 @@ const showSidebar = computed(() => {
 </template>
 
 <style scoped lang="scss">
+.content.is-dark,
+.content.is-dark .content-wrapper,
+.content.is-dark .main-content {
+  background-color: var(--app-bg) !important;
+  color: var(--Black) !important;
+}
+
+.content.is-dark .main-content {
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
 @media (max-width: 768px) {
   .sidebar-container {
     position: fixed;

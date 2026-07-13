@@ -47,10 +47,12 @@ import RentIcon from '@/shared/icons/RentIcon.vue'
 import AddWhereHouse from '@/features/Organization/WhereHouse/Presentation/components/AddWhereHouse.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import { useThemeMode } from '@/composables/useThemeMode'
 // import AddWhereHouse from '@/views/Organization/WhereHouse/AddWhereHouse.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{ data?: EquipmentDetailsModel }>()
+const { isDarkMode } = useThemeMode()
 
 const route = useRoute()
 const router = useRouter()
@@ -739,7 +741,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="w-full col-span-6 equipment-form">
+  <div :class="['w-full col-span-6 equipment-form', { 'is-dark': isDarkMode }]">
     <Tabs @update:activeTab="UpdateActiveTap" :activeTabData="activeTab" />
 
     <div class="vehicle flex w-full col-span-6" v-if="activeTab === EquipmentTypesEnum.EQUIPMENT">
@@ -1163,5 +1165,46 @@ defineExpose({
   color: #dc2626;
   font-size: 0.82rem;
   font-weight: 700;
+}
+
+.equipment-form.is-dark {
+  color: var(--text-strong);
+}
+
+.equipment-form.is-dark .vehicle,
+.equipment-form.is-dark .card_Qr,
+.equipment-form.is-dark .machine_card,
+.equipment-form.is-dark .Qr_EQUIPMENt,
+.equipment-form.is-dark .radio-wrapper {
+  background: var(--surface-1) !important;
+  border-color: var(--main-border) !important;
+  color: var(--text-strong) !important;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2) !important;
+}
+
+.equipment-form.is-dark .machine_card p,
+.equipment-form.is-dark .radio-wrapper label,
+.equipment-form.is-dark label,
+.equipment-form.is-dark .input-wrapper label {
+  color: var(--text-soft) !important;
+}
+
+.equipment-form.is-dark .machine_card h6 {
+  color: var(--text-strong) !important;
+}
+
+.equipment-form.is-dark .radio-wrapper.active {
+  background: color-mix(in srgb, var(--PrimaryColor) 18%, var(--surface-1)) !important;
+  border-color: color-mix(in srgb, var(--PrimaryColor) 48%, var(--main-border)) !important;
+}
+
+.equipment-form.is-dark input {
+  background-color: var(--surface-2) !important;
+  border-color: var(--main-border) !important;
+  color: var(--text-strong) !important;
+}
+
+.equipment-form.is-dark input::placeholder {
+  color: var(--text-muted) !important;
 }
 </style>

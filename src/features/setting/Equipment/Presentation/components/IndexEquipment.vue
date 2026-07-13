@@ -49,8 +49,10 @@ import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
 import Dialog from 'primevue/dialog'
 import UploadEquipmentExeclSheet from './UploadEquipmentExeclSheet.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
+import { useThemeMode } from '@/composables/useThemeMode'
 
 const { t } = useI18n()
+const { isDarkMode } = useThemeMode()
 
 // import DialogChangeStatusEquipmentType from "@/features/setting/EquipmentTypes/Presentation/components/EquipmentType/DialogChangeStatusEquipmentType.vue";
 // const route = useRoute()
@@ -304,25 +306,35 @@ const IndexEquipmentactionList = () => [
 </script>
 
 <template>
-
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="; (word = ''), searchEquipmentType()">
-        <Search />
-      </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchEquipmentType" />
+  <div :class="['equipment-index-page', { 'is-dark': isDarkMode }]">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <div class="input-search col-span-1">
+        <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
+        <span class="icon-remove" @click="; (word = ''), searchEquipmentType()">
+          <Search />
+        </span>
+        <input
+          v-model="word"
+          :placeholder="'search'"
+          class="input"
+          type="text"
+          @input="searchEquipmentType"
+        />
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <ActionsList
+          :show-actions="true"
+          :actionList="IndexEquipmentactionList()"
+          :actionsNumber="5"
+        >
+          <template #custom>
+            <ExportPdf :isDropList="true" />
+          </template>
+        </ActionsList>
+      </div>
     </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <ActionsList :show-actions="true" :actionList="IndexEquipmentactionList()" :actionsNumber="5">
-        <template #custom>
-          <ExportPdf :isDropList="true" />
-        </template>
-      </ActionsList>
-    </div>
-  </div>
 
-  <PermissionBuilder :code="[
+    <PermissionBuilder :code="[
     PermissionsEnum.ADMIN,
     PermissionsEnum.ORGANIZATION_EMPLOYEE,
     PermissionsEnum.EQUIPMENT_ALL,
@@ -381,9 +393,9 @@ const IndexEquipmentactionList = () => [
       <DataFailed addText="Have not  Permission"
         description="Sorry .. You have no Equipment .. All your joined customers will appear here when you add your customer data" />
     </template>
-  </PermissionBuilder>
+    </PermissionBuilder>
 
-  <Dialog
+    <Dialog
     v-model:visible="showUploadDialog"
     modal
     :dismissable-mask="true"
@@ -400,13 +412,36 @@ const IndexEquipmentactionList = () => [
     />
   </Dialog>
 
-  <input
+    <input
     ref="fileInputRef"
     type="file"
     accept=".xls,.xlsx"
     style="display: none"
     @change="onFileSelected"
-  />
+    />
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+.equipment-index-page.is-dark {
+  color: var(--text-strong);
+}
+
+.equipment-index-page.is-dark :deep(.input-search) {
+  background-color: transparent !important;
+}
+
+.equipment-index-page.is-dark :deep(.input-search input) {
+  background-color: var(--surface-2) !important;
+  border-color: var(--main-border) !important;
+  color: var(--text-strong) !important;
+}
+
+.equipment-index-page.is-dark :deep(.input-search input::placeholder) {
+  color: var(--text-muted) !important;
+}
+
+.equipment-index-page.is-dark :deep(.equipment-cards-grid) {
+  background-color: transparent !important;
+}
+</style>

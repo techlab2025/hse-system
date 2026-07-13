@@ -11,9 +11,11 @@ import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 import HomeInfoIcon from '../icons/HomeInfoIcon.vue'
 import HomeDialogInfo from './HomeDialogInfo.vue'
+import { useThemeMode } from '@/composables/useThemeMode'
 
 const route = useRoute()
 const router = useRouter()
+const { isDarkMode } = useThemeMode()
 
 const RouterBack = () => {
   router.back()
@@ -147,7 +149,7 @@ const ShowBackBtn = computed(() => {
 </script>
 
 <template>
-  <div class="breadcrump-container">
+  <div :class="['breadcrump-container', { 'is-dark': isDarkMode }]">
     <div class="breadcrump">
       <button
         class="sidebar-back"

@@ -38,8 +38,10 @@ import IndexEquipmentMangement from '../indexEquipmentMangement.vue'
 import CardSkelaton from '@/features/Organization/Inspection/Presentation/components/SubComponent/CardSkelaton.vue'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format.ts'
 import { formatTime } from '@/base/Presentation/utils/time_format.ts'
+import { useThemeMode } from '@/composables/useThemeMode'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
+const { isDarkMode } = useThemeMode()
 
 // import DialogChangeStatusHazard from "@/features/setting/Hazard/Presentation/components/Hazard/DialogChangeStatusHazard.vue";
 // const route = useRoute()
@@ -240,7 +242,7 @@ const ShowDetails = ref<number[]>([])
 </script>
 
 <template>
-  <div class="grid grid-cols-12 gap-4">
+  <div :class="['incident-index-page grid grid-cols-12 gap-4', { 'is-dark': isDarkMode }]">
     <IndexEquipmentMangement class="col-span-2" />
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
       <PermissionBuilder
@@ -289,8 +291,8 @@ const ShowDetails = ref<number[]>([])
         </div>
         <DataStatus :controller="state">
           <template #success>
-            <div class="table-responsive">
-              <div class="index-table-card-container">
+            <div class="table-responsive incident-table-responsive">
+              <div class="index-table-card-container incident-card-list">
                 <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
                   <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
                     <div class="header-container">
@@ -415,5 +417,40 @@ const ShowDetails = ref<number[]>([])
 .btns-filter {
   margin-left: auto;
   margin-block: 20px;
+}
+
+.incident-index-page.is-dark {
+  .incident-table-responsive,
+  .incident-card-list {
+    background-color: transparent !important;
+  }
+
+  .index-table-card {
+    background: var(--surface-1) !important;
+    border-color: var(--main-border) !important;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22) !important;
+  }
+
+  .card-header-container {
+    border-color: var(--main-border) !important;
+  }
+
+  .title {
+    color: var(--text-strong) !important;
+  }
+
+  .subtitle,
+  .label-item-primary,
+  .label-item-secondary {
+    color: var(--text-soft) !important;
+  }
+
+  .label-item-primary span,
+  .label-item-secondary span {
+    color: var(--PrimaryColor) !important;
+  }
+}
+.table-responsive.is-dark {
+  background-color: var(--surface-1) !important;
 }
 </style>

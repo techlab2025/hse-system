@@ -68,8 +68,10 @@ import IndexShiftController from '@/features/Organization/Shifts/Presentation/co
 import IndexShiftParams from '@/features/Organization/Shifts/Core/params/IndexAShiftParams.ts'
 import AddShift from '@/features/Organization/Shifts/Presentation/components/AddShift.vue'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import { useThemeMode } from '@/composables/useThemeMode'
 
 const emit = defineEmits(['update:data'])
+const { isDarkMode } = useThemeMode()
 //
 const RootCausesDialog = ref<boolean>(false)
 const props = defineProps<{
@@ -767,7 +769,12 @@ defineExpose({
 </script>
 
 <template>
-  <div class="full-observation-form col-span-6 grid items-start grid-cols-1 md:grid-cols-6 gap-4">
+  <div
+    :class="[
+      'full-observation-form col-span-6 grid items-start grid-cols-1 md:grid-cols-6 gap-4',
+      { 'is-dark': isDarkMode },
+    ]"
+  >
     <div class="Hazard-form col-span-6 md:col-span-6">
       <div class="Hazard-form-header">
         <!-- <HazardIcon class="icon" /> -->
@@ -1551,5 +1558,54 @@ defineExpose({
 
 label {
   width: fit-content;
+}
+
+.full-observation-form.is-dark {
+  .Hazard-form-header,
+  .form-filter-panel,
+  .hazard-type-container,
+  .not-colored,
+  .is-stopped {
+    background: var(--surface-1) !important;
+    border-color: var(--main-border) !important;
+    color: var(--text-strong) !important;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22) !important;
+  }
+
+  .Hazard-form-header .title,
+  .form-filter-panel-header p,
+  label,
+  .radio-title {
+    color: var(--text-strong) !important;
+  }
+
+  input,
+  textarea {
+    background-color: var(--surface-2) !important;
+    border-color: var(--main-border) !important;
+    color: var(--text-strong) !important;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-muted) !important;
+  }
+
+  .radio-selection {
+    background-color: var(--surface-2) !important;
+    border-color: var(--main-border) !important;
+    color: var(--text-soft) !important;
+  }
+
+  .radio-selection.selected {
+    background-color: color-mix(in srgb, var(--PrimaryColor) 18%, var(--surface-2)) !important;
+    border-color: color-mix(in srgb, var(--PrimaryColor) 48%, var(--main-border)) !important;
+    color: var(--text-strong) !important;
+  }
+
+  .form-filter-skeleton span {
+    background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%) !important;
+    background-size: 220% 100%;
+  }
 }
 </style>

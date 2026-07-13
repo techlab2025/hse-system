@@ -1,5 +1,11 @@
+<script setup lang="ts">
+import { useThemeMode } from '@/composables/useThemeMode'
+
+const { isDarkMode } = useThemeMode()
+</script>
+
 <template>
-  <div class="skeleton-card">
+  <div :class="['skeleton-card', { 'is-dark': isDarkMode }]">
     <div class="index-table-card-container">
       <div class="index-table-card skeleton-item" v-for="i in 3" :key="i">
 
@@ -58,6 +64,8 @@
 
 $shimmer-base: #ebebeb;
 $shimmer-highlight: #f5f5f5;
+$shimmer-dark-base: #1e293b;
+$shimmer-dark-highlight: #334155;
 
 @mixin shimmer {
   background: linear-gradient(90deg,
@@ -155,6 +163,29 @@ $shimmer-highlight: #f5f5f5;
 /* ── Skeleton placeholder elements ── */
 .sk {
   @include shimmer;
+}
+
+.skeleton-card.is-dark {
+  .index-table-card {
+    background: var(--surface-1);
+    border-color: var(--main-border);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+  }
+
+  .card-header-container {
+    border-color: var(--main-border);
+  }
+
+  .sk {
+    background: linear-gradient(
+      90deg,
+      $shimmer-dark-base 25%,
+      $shimmer-dark-highlight 50%,
+      $shimmer-dark-base 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+  }
 }
 
 /* label-item-primary row chip */

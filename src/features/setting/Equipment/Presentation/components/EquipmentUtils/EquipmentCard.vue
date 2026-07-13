@@ -124,7 +124,9 @@ import EmptyEquipment from '@/assets/images/EmptyEquipment.png'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import ActionsTableShild from '@/shared/icons/ActionsTableShild.vue'
 import ActionsTableView from '@/shared/icons/ActionsTableView.vue'
+import { useThemeMode } from '@/composables/useThemeMode'
 
+const { isDarkMode } = useThemeMode()
 function setEquipmentDefaultImage(event: Event) {
   const img = event.target as HTMLImageElement
   img.src = EmptyEquipment
@@ -147,6 +149,7 @@ watch(
     :class="[
       isSelect ? 'is-select' : '',
       tool?.status == EquipmentStatus.RENT ? 'is-rent' : 'is-own',
+      { 'is-dark': isDarkMode },
     ]"
   >
     <div class="tool-card-header w-full">

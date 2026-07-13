@@ -18,6 +18,7 @@ import FetchEquipmentStaticsController from '../Controllers/FetchEquipmentStatic
 import FetchEquipmentStaticsParams from '../../core/params/FetchEquipmentStaticsParams'
 import OverviewInvestigationsChartParams from '../../core/params/OverviewInvestigationsChartParams'
 import HomeSkelaton from '../subComponent/HomeSkelaton.vue'
+import { useThemeMode } from '@/composables/useThemeMode'
 
 const InvestegationStatics = defineAsyncComponent(
   () => import('./HomeUtils/InvestegationStatics.vue'),
@@ -30,6 +31,7 @@ const StaticsCardPerMonth = defineAsyncComponent(
   () => import('./HomeUtils/StaticsCardPerMonth.vue'),
 )
 const HomeCards = defineAsyncComponent(() => import('./HomeUtils/HomeCards.vue'))
+const { isDarkMode } = useThemeMode()
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
 const state = computed(() => fetchPorjectStatisticsController.state.value)
@@ -114,7 +116,7 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
 })
 </script>
 <template>
-  <div class="home-page">
+  <div :class="['home-page organization-home-page', { 'is-dark': isDarkMode }]">
     <router-link
       @click="setVisited"
       to="/organization/project-progress"
@@ -229,6 +231,58 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
   box-shadow:
     0 1px 2px rgba(15, 23, 42, 0.04),
     0 18px 42px rgba(15, 23, 42, 0.07);
+}
+
+.organization-home-page.is-dark {
+  .home-panel {
+    border-color: var(--main-border);
+    background:
+      radial-gradient(
+        circle at 100% 0%,
+        color-mix(in srgb, var(--PrimaryColor) 12%, transparent),
+        transparent 40%
+      ),
+      linear-gradient(180deg, var(--surface-1), var(--surface-2));
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
+  }
+
+  .home-analytics-heading h2 {
+    color: var(--text-strong);
+  }
+
+  :deep(.project-statistics .header) {
+    border-color: var(--main-border) !important;
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+        transparent
+      ),
+      var(--surface-1) !important;
+  }
+
+  :deep(.project-statistics .header-img) {
+    background-color: color-mix(in srgb, var(--PrimaryColor) 14%, var(--surface-2)) !important;
+    border: 1px solid var(--main-border);
+  }
+
+  :deep(.project-statistics .title-content .title) {
+    color: var(--text-strong) !important;
+  }
+
+  :deep(.project-statistics .title-content .description) {
+    color: var(--text-soft) !important;
+  }
+
+  :deep(.project-statistics .title-content .count) {
+    background-color: var(--surface-2) !important;
+    border-color: var(--main-border) !important;
+    color: var(--text-soft) !important;
+  }
+
+  :deep(.project-statistics .title-content .counter) {
+    color: var(--PrimaryColor) !important;
+  }
 }
 
 .home-panel-projects {

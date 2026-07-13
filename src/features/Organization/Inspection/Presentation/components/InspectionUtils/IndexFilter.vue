@@ -2,7 +2,9 @@
   import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
   import IndexFilterIcon from '@/shared/icons/IndexFilterIcon.vue'
   import { ref } from 'vue'
+  import { useThemeMode } from '@/composables/useThemeMode'
   const emit = defineEmits(['update:data'])
+  const { isDarkMode } = useThemeMode()
 
   const props = defineProps<{
     filters: MyZonesModel[]
@@ -26,7 +28,7 @@
 
 </script>
   <template>
-    <div class="idnex-filter">
+    <div :class="['idnex-filter', { 'is-dark': isDarkMode }]">
       <div class="filter-container">
         <div class="filter"  :class="SelectedFilter.includes(item.id) ? 'active' : ''"
           v-for="item in filters" :key="item.id" @click="UpdateData(item.id)">

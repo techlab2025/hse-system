@@ -17,10 +17,12 @@ import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 import ShowInvestegationDetailsDialog from './InvestegationDialogs/ShowInvestegationDetailsDialog.vue'
 import Meeting from '@/shared/icons/meeting.vue'
+import { useThemeMode } from '@/composables/useThemeMode'
 
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
+const { isDarkMode } = useThemeMode()
 const indexInvestigatingController = IndexInvestigatingController.getInstance()
 const state = ref(indexInvestigatingController.state.value)
 // const InvestigatingList = ref(InvestigatingData)
@@ -150,7 +152,7 @@ const GerIncidantCount = (data: any): number => {
   <DataStatus :controller="state">
     <template #success>
       <!-- {{ console.log(state.data, 'state') }} -->
-      <div class="grid grid-cols-12 gap-4 index-investigating">
+      <div class="grid grid-cols-12 gap-4 index-investigating" :class="{ 'is-dark': isDarkMode }">
         <!-- Sidebar -->
         <!--  :mediumObservationCount="GetMediumObservationCount(state.data)" -->
 
@@ -761,6 +763,139 @@ const GerIncidantCount = (data: any): number => {
 
 .join {
   white-space: nowrap;
+}
+
+.index-investigating.is-dark {
+  .table-responsive,
+  .index-table-card-container,
+  .card-header-container,
+  .first-container,
+  .header-container,
+  .first-card-header .header,
+  .card-details,
+  .project-details,
+  .first-card-details,
+  .btns-container,
+  .unsolved-btns,
+  .solved-btn,
+  .btn-inprogress {
+    background: transparent !important;
+  }
+
+  .index-table-card,
+  .card-header-container.show,
+  .first-card,
+  .first-card-header,
+  .card-content,
+  .show-investigation-meeting-details,
+  .project-details .label-item-primary,
+  .status,
+  .second-btn,
+  .view-btn,
+  :deep(.investigation-show-details-btn) {
+    border-color: var(--main-border) !important;
+    background:
+      radial-gradient(
+        circle at 100% 0%,
+        color-mix(in srgb, var(--PrimaryColor) 8%, transparent),
+        transparent 38%
+      ),
+      linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
+    color: var(--Black) !important;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22) !important;
+  }
+
+  .index-table-card:hover {
+    border-color: color-mix(in srgb, var(--PrimaryColor) 34%, var(--main-border)) !important;
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.3) !important;
+  }
+
+  .first-card-header {
+    overflow: hidden;
+    border-radius: 14px !important;
+    padding: 0.9rem !important;
+  }
+
+  .first-card-header .label-item-secondary.title,
+  .first-card-details .label-item-secondary {
+    width: 100%;
+    border: 1px solid var(--main-border) !important;
+    border-radius: 12px !important;
+    background: color-mix(in srgb, var(--surface-3) 72%, transparent) !important;
+    color: var(--text-soft) !important;
+    padding: 0.7rem 0.85rem !important;
+  }
+
+  .label-item-secondary,
+  .label-item-primary,
+  .show-investigation-meeting-details .dome-info p,
+  .show-investigation-meeting-details .dome-info h6 {
+    color: var(--text-soft) !important;
+  }
+
+  .label-item-secondary span,
+  .label-item-primary span,
+  .show-investigation-meeting-details .title h6,
+  .show-investigation-meeting-details .dome-info span,
+  .live-link,
+  .join {
+    color: var(--text-strong) !important;
+  }
+
+  .card-header,
+  .show-investigation-meeting-details .title {
+    border-color: var(--main-border) !important;
+  }
+
+  .first-label-item-primary {
+    border: 1px solid color-mix(in srgb, var(--PrimaryColor) 24%, var(--main-border)) !important;
+    background: color-mix(in srgb, var(--PrimaryColor) 14%, var(--surface-2)) !important;
+    color: var(--PrimaryColor) !important;
+  }
+
+  .first-label-item-primary.high {
+    background: color-mix(in srgb, var(--danger-color) 18%, var(--surface-2)) !important;
+    color: #fca5a5 !important;
+  }
+
+  .first-label-item-primary.medium {
+    background: color-mix(in srgb, var(--medium-color) 18%, var(--surface-2)) !important;
+    color: #facc15 !important;
+  }
+
+  .first-label-item-primary.low {
+    background: color-mix(in srgb, var(--green) 18%, var(--surface-2)) !important;
+    color: #86efac !important;
+  }
+
+  .status.New,
+  .status.Open {
+    color: var(--PrimaryColor) !important;
+  }
+
+  .status.InProgress,
+  .status.Hold {
+    color: var(--medium-color) !important;
+  }
+
+  .status.Closed,
+  .status.Completed {
+    color: var(--green) !important;
+  }
+
+  .second-btn,
+  .view-btn,
+  :deep(.investigation-show-details-btn) {
+    border: 1px solid color-mix(in srgb, var(--PrimaryColor) 24%, var(--main-border)) !important;
+    color: var(--PrimaryColor) !important;
+  }
+
+  .second-btn:hover,
+  .view-btn:hover,
+  :deep(.investigation-show-details-btn:hover) {
+    border-color: var(--PrimaryColor) !important;
+    background: color-mix(in srgb, var(--PrimaryColor) 16%, var(--surface-2)) !important;
+  }
 }
 
 @media (max-width: 1180px) {

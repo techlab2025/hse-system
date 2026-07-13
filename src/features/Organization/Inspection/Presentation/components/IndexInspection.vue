@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -39,8 +39,10 @@ import FetchInspectionsResultsParams from '../../Core/params/FetchInspectionsRes
 import InspectionsResultsPage from './InspectionPages/InspectionsResultsPage.vue'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
 import CardSkelaton from './SubComponent/CardSkelaton.vue'
+import { useThemeMode } from '@/composables/useThemeMode'
 
 const { t } = useI18n()
+const { isDarkMode } = useThemeMode()
 
 const word = ref('')
 const currentPage = ref(1)
@@ -57,7 +59,9 @@ const InspectionsResultsState = ref(fetchInspectionsResultsController.state.valu
 const route = useRoute()
 const router = useRouter()
 const id = route.params.parent_id
-const inspectionType = route.query.inspectionType
+const inspectionType = computed(() => route.query.inspectionType)
+const selectedProjctesFilters = ref<number>()
+const SelectedZonesFilter = ref<number[]>([])
 
 const fetchInspection = async (
   query: string = '',
@@ -82,14 +86,6 @@ const fetchInspection = async (
   const res = await indexInspectionController.getData(deleteInspectionParams)
   console.log(res, 'res')
 }
-
-watch(
-  () => route.query.typeId,
-  () => {
-    fetchInspection()
-  },
-  { immediate: true },
-)
 
 const InspectionFormTasks = async (
   query: string = '',
@@ -126,57 +122,83 @@ const InspectionsResultsTasks = async (
   const res = await fetchInspectionsResultsController.getData(fetchInspectionsResultsParams)
 }
 
-onMounted(() => {
-  // if (selectedProjctesFilters.value) {
+const getSelectedZonesFilter = () =>
+  SelectedZonesFilter.value.length > 0 ? SelectedZonesFilter.value : undefined
+
+const fetchCurrentInspectionData = (
+  query: string = '',
+  pageNumber: number = currentPage.value,
+  perPage: number = countPerPage.value,
+  withPage: number = 1,
+) => {
   if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
-    fetchInspection()
+    return fetchInspection(
+      query,
+      pageNumber,
+      perPage,
+      withPage,
+      undefined,
+      getSelectedZonesFilter(),
+    )
   } else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
-    InspectionFormTasks()
+    return InspectionFormTasks(query, pageNumber, perPage, withPage, getSelectedZonesFilter())
   } else {
-    InspectionsResultsTasks()
+    return InspectionsResultsTasks(query, pageNumber, perPage, withPage, getSelectedZonesFilter())
   }
-  // }
+}
+
+watch(
+  () => [route.query.typeId, route.query.inspectionType],
+  () => {
+    currentPage.value = 1
+    fetchCurrentInspectionData('', 1, countPerPage.value)
+  },
+  { immediate: true },
+)
+
+onMounted(() => {
   FetchMyProjects()
 })
 
 const searchInspection = debounce(() => {
-  fetchInspection(word.value)
+  currentPage.value = 1
+  fetchCurrentInspectionData(word.value, 1, countPerPage.value)
 })
 
 const deleteInspection = async (id: number) => {
   const deleteInspectionParams = new DeleteInspectionParams(id)
   await DeleteInspectionController.getInstance().deleteInspection(deleteInspectionParams)
-  await fetchInspection()
+  await fetchCurrentInspectionData()
 }
 
 // Inspection Form
 const handleInspectionFormChangePage = (page: number) => {
   currentPage.value = page
-  InspectionFormTasks('', currentPage.value, countPerPage.value)
+  InspectionFormTasks('', currentPage.value, countPerPage.value, 1, getSelectedZonesFilter())
 }
 const handleInspectionFormCountPerPage = (count: number) => {
   countPerPage.value = count
-  InspectionFormTasks('', currentPage.value, countPerPage.value)
+  InspectionFormTasks('', currentPage.value, countPerPage.value, 1, getSelectedZonesFilter())
 }
 
 // Drag Inspection Form
 const handleDragInspectionChangePage = (page: number) => {
   currentPage.value = page
-  fetchInspection('', currentPage.value, countPerPage.value)
+  fetchInspection('', currentPage.value, countPerPage.value, 1, undefined, getSelectedZonesFilter())
 }
 const handleDragInspectionCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchInspection('', currentPage.value, countPerPage.value)
+  fetchInspection('', currentPage.value, countPerPage.value, 1, undefined, getSelectedZonesFilter())
 }
 
 // Inspection Results Form
 const handleInspectionResultsChangePage = (page: number) => {
   currentPage.value = page
-  fetchInspection('', currentPage.value, countPerPage.value)
+  InspectionsResultsTasks('', currentPage.value, countPerPage.value, 1, getSelectedZonesFilter())
 }
 const handleInspectionResultsCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchInspection('', currentPage.value, countPerPage.value)
+  InspectionsResultsTasks('', currentPage.value, countPerPage.value, 1, getSelectedZonesFilter())
 }
 
 const { user } = useUserStore()
@@ -219,7 +241,6 @@ const FetchMyProjects = async () => {
 }
 
 const ShowDetails = ref<number[]>([])
-const selectedProjctesFilters = ref<number>()
 
 const Filters = ref<MyZonesModel[]>()
 const fetchMyZonesController = FetchMyZonesController.getInstance()
@@ -233,18 +254,12 @@ const FetchMyZones = async () => {
   }
 }
 
-const SelectedZonesFilter = ref<number[]>([])
 const ApplayFilter = (data: number[]) => {
   SelectedZonesFilter.value = data
 
   if (data) {
-    if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
-      fetchInspection('', 1, 10, 1, null, SelectedZonesFilter.value)
-    } else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
-      InspectionFormTasks('', 1, 10, 1, SelectedZonesFilter.value)
-    } else {
-      InspectionsResultsTasks('', 1, 10, 1, SelectedZonesFilter.value)
-    }
+    currentPage.value = 1
+    fetchCurrentInspectionData('', 1, countPerPage.value)
   }
 }
 
@@ -256,13 +271,8 @@ const setSelectedProjectFilter = (data) => {
   selectedProjctesFilters.value = data
 
   if (data) {
-    if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
-      fetchInspection()
-    } else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
-      InspectionFormTasks()
-    } else {
-      InspectionsResultsTasks()
-    }
+    currentPage.value = 1
+    fetchCurrentInspectionData('', 1, countPerPage.value)
   }
 
   if (data) {
@@ -310,7 +320,7 @@ watch(
 
 <template>
   <!-- {{ selectedProjctesFilters }} -->
-  <div class="grid grid-cols-12 gap-4">
+  <div :class="['inspection-index-page grid grid-cols-12 gap-4', { 'is-dark': isDarkMode }]">
     <IndexEquipmentMangement class="col-span-2" />
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
       <PermissionBuilder
@@ -325,7 +335,7 @@ watch(
           PermissionsEnum?.ORG_INSPECTION_FETCH,
         ]"
       >
-        <div>
+        <div class="inspection-controls-panel">
           <IndexInspectionHeader
             :title="`Inspection`"
             :length="
@@ -359,8 +369,8 @@ watch(
           :controller="AllTasksState"
         >
           <template #success>
-            <div class="table-responsive">
-              <div class="index-table-card-container-inspection">
+            <div class="table-responsive inspection-table-responsive">
+              <div class="index-table-card-container-inspection inspection-list-panel">
                 <div class="header-container w-full">
                   <InspectionFormPage
                     v-if="String(inspectionType) == String(InspectionPageType.InspectionForm)"
@@ -418,8 +428,8 @@ watch(
           :controller="state"
         >
           <template #success>
-            <div class="table-responsive">
-              <div class="index-table-card-container-inspection">
+            <div class="table-responsive inspection-table-responsive">
+              <div class="index-table-card-container-inspection inspection-list-panel">
                 <div class="header-container w-full">
                   <InspectionDragPage
                     v-if="String(inspectionType) == String(InspectionPageType.DragInspection)"
@@ -475,8 +485,8 @@ watch(
           :controller="InspectionsResultsState"
         >
           <template #success>
-            <div class="table-responsive">
-              <div class="index-table-card-container-inspection">
+            <div class="table-responsive inspection-table-responsive">
+              <div class="index-table-card-container-inspection inspection-list-panel">
                 <div class="header-container w-full">
                   <InspectionsResultsPage
                     v-if="String(inspectionType) == String(InspectionPageType.Result)"
@@ -540,3 +550,14 @@ watch(
     </div>
   </div>
 </template>
+
+<style scoped>
+.table-responsive {
+  padding: 0 !important;
+  border: none !important;
+  background-color: var(--surface-1) !important;
+}
+.index-table-card-container-inspection {
+  background-color: var(--surface-1) !important;
+}
+</style>

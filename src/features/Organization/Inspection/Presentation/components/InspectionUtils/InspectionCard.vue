@@ -19,6 +19,7 @@ import { PeriodTypeEnum } from '../../../Core/Enum/PeriodTypeEnum'
 import image from '@/assets/images/onceimg.png'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
+import { useThemeMode } from '@/composables/useThemeMode'
 
 const props = defineProps<{
   tasks: InspectionModel[]
@@ -27,6 +28,8 @@ const props = defineProps<{
   showresult?: boolean
   isEquipment?: boolean
 }>()
+
+const { isDarkMode } = useThemeMode()
 
 const GetInspectionTitle = (task: InspectionModel) => {
   return task.template?.titles?.find((title: any) => title.locale === localStorage.getItem('lang'))
@@ -49,7 +52,7 @@ const GetEquipmentType = (type: number) => {
 
 </script>
 <template>
-  <div class="inspection-card">
+  <div :class="['inspection-card', { 'is-dark': isDarkMode }]">
     <div class="inspection-history-container">
       <div class="inspection-history w-full flex items-start gap-2" v-for="(task, index) in tasks" :key="index">
         <img class="bg" :src="InspectionTaskbg" alt="" />

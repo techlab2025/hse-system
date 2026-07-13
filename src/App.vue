@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent, onMounted } from 'vue'
 import MainDialog from './base/Presentation/Dialogs/MainDialogs/MainDialog.vue'
 import Toast from 'primevue/toast'
 import TicketIcon from './shared/icons/TicketIcon.vue'
 import { useTicketStore } from './stores/TicketStor'
 import { useRoute } from 'vue-router'
 import ErrorDialog from './base/Presentation/Dialogs/MainDialogs/ErrorDialog.vue'
+import { useThemeMode } from '@/composables/useThemeMode'
 
 const LoaderDialog = defineAsyncComponent(
   () => import('./base/Presentation/Dialogs/LoaderDialogs/LoaderDialog.vue'),
@@ -17,11 +18,14 @@ const TicketDialog = defineAsyncComponent(
 
 const ticketStore = useTicketStore()
 const route = useRoute()
+const { initThemeMode } = useThemeMode()
 const showTicketTools = computed(() => {
   const path = route.path
 
   return (path.startsWith('/organization') || path.startsWith('/admin')) && !path.includes('ticket')
 })
+
+onMounted(initThemeMode)
 </script>
 
 <template>

@@ -4,6 +4,7 @@ import HeaderProjectsFilter from '@/features/Organization/ObservationFactory/Pre
 import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 import { useProjectSelectStore } from '@/stores/ProjectSelect';
 import { onMounted, ref, watch } from 'vue'
+import { useThemeMode } from '@/composables/useThemeMode'
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   title: string
@@ -11,6 +12,7 @@ const props = defineProps<{
   projects: MyProjectsModel[]
 }>()
 const ProjectSelectStore = useProjectSelectStore()
+const { isDarkMode } = useThemeMode()
 const ActiveTap = ref(ProjectSelectStore?.project?.id != -1 ? ProjectSelectStore?.project?.id : props.projects?.[0]?.id)
 
 onMounted(() => {
@@ -38,7 +40,7 @@ const GetProjectId = (id: number) => {
 </script>
 <template>
 
-  <div class="idnex-header">
+  <div :class="['idnex-header', { 'is-dark': isDarkMode }]">
     <p class="title">{{ title }}</p>
     <p class="index-length">
       {{ $t('Total') }}: <span>{{ length }}</span>

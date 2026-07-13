@@ -30,6 +30,7 @@ import { useToast } from 'primevue/usetoast'
 import wordSlice from '@/base/Presentation/utils/word_slice'
 import Notifications from './Notifications.vue'
 import Ring from '@/assets/Ring/Ring.txt'
+import { useThemeMode } from '@/composables/useThemeMode'
 // import { NOTIFICATION_SOUND_BASE64 } from '@/base/Presentation/utils/notification_ring.ts'
 
 const route = useRoute()
@@ -46,6 +47,7 @@ const props = defineProps({
 const emit = defineEmits(['open'])
 
 const language = ref<string>('')
+const { isDarkMode, initThemeMode, toggleThemeMode } = useThemeMode()
 
 const router = useRouter()
 // const userStore = useUserStore();
@@ -108,6 +110,7 @@ const GetAllProjects = async () => {
   }
 }
 onMounted(() => {
+  initThemeMode()
   if (user?.type == OrganizationTypeEnum.ORGANIZATION) {
     GetAllProjects()
   }
@@ -181,7 +184,7 @@ const toggle = (event: Event) => {
 
 <template>
   <!-- {{ notifications }} -->
-  <header class="header minmize">
+  <header :class="['header minmize', { 'is-dark': isDarkMode }]">
     <nav class="nav">
       <div class="menu flex items-center gap-3">
         <span
@@ -234,6 +237,50 @@ const toggle = (event: Event) => {
 
       <div class="setting">
         <ChangeLanguage class="countery-icon" />
+        <!-- <button
+          class="theme-toggle"
+          type="button"
+          :aria-label="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+          :title="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+          @click="toggleThemeMode"
+        >
+          <svg
+            v-if="isDarkMode"
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12 4V2M12 22v-2M4.93 4.93 3.52 3.52M20.48 20.48l-1.41-1.41M4 12H2M22 12h-2M4.93 19.07l-1.41 1.41M20.48 3.52l-1.41 1.41"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <path
+              d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+          </svg>
+          <svg
+            v-else
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M20.35 15.35A8.5 8.5 0 0 1 8.65 3.65 8.5 8.5 0 1 0 20.35 15.35Z"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button> -->
         <Notifications />
         <!-- {{ wsConnected }} -->
         <!-- <div class="notification cursor-pointer" @click="toggleFullScreen">
@@ -337,6 +384,18 @@ const toggle = (event: Event) => {
     inset 0 -1px 0 rgba(255, 255, 255, 0.18);
 }
 
+.header.is-dark {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(96, 165, 250, 0.16) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(20, 184, 166, 0.12) 0 16%, transparent 34%),
+    linear-gradient(155deg, #111827 0%, #0f172a 52%, #07111f 100%) !important;
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-top: 0;
+  box-shadow:
+    0 4px 18px rgba(0, 0, 0, 0.32),
+    inset 0 -1px 0 rgba(148, 163, 184, 0.16);
+}
+
 .header::before {
   content: '';
   position: absolute;
@@ -361,6 +420,18 @@ const toggle = (event: Event) => {
   opacity: 0.75;
 }
 
+.header.is-dark::before {
+  background:
+    linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.1), transparent),
+    repeating-linear-gradient(135deg, rgba(148, 163, 184, 0.04) 0 1px, transparent 1px 18px);
+  opacity: 0.7;
+}
+
+.header.is-dark::after {
+  background: linear-gradient(90deg, transparent, #334155, #60a5fa, transparent);
+  opacity: 0.65;
+}
+
 .nav {
   position: relative;
   gap: 16px;
@@ -371,13 +442,36 @@ const toggle = (event: Event) => {
   padding: 7px 12px 7px 8px;
   border-radius: 18px;
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.11);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  // background: rgba(255, 255, 255, 0.11);
+  // border: 1px solid rgba(255, 255, 255, 0.16);
+  // box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
   transition:
     transform 0.2s ease,
     background 0.2s ease,
     border-color 0.2s ease;
+}
+
+.header.is-dark .brand-link,
+.header.is-dark .countery-icon,
+.header.is-dark .notification,
+.header.is-dark .theme-toggle,
+.header.is-dark .drawer,
+.header.is-dark .user {
+  // background: rgba(30, 41, 59, 0.86) !important;
+  border-color: rgba(148, 163, 184, 0.2) !important;
+  // box-shadow:
+  //   inset 0 1px 0 rgba(255, 255, 255, 0.06),
+  //   0 10px 24px rgba(0, 0, 0, 0.16);
+}
+
+.header.is-dark .brand-link:hover,
+.header.is-dark .countery-icon:hover,
+.header.is-dark .notification:hover,
+.header.is-dark .theme-toggle:hover,
+.header.is-dark .drawer:hover,
+.header.is-dark .user:hover {
+  background: rgba(51, 65, 85, 0.94) !important;
+  border-color: rgba(96, 165, 250, 0.34) !important;
 }
 
 .brand-link:hover {
@@ -391,8 +485,13 @@ const toggle = (event: Event) => {
   height: 34px;
   padding: 6px;
   border-radius: 12px;
-  background: #ffffff;
-  box-shadow: 0 10px 20px rgba(15, 23, 42, 0.18);
+  // background: #ffffff;
+  // box-shadow: 0 10px 20px rgba(15, 23, 42, 0.18);
+}
+
+.header.is-dark .brand-link img {
+  // background: #e2e8f0;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.28);
 }
 
 .logo {
@@ -447,7 +546,8 @@ const toggle = (event: Event) => {
 }
 
 .countery-icon,
-.notification {
+.notification,
+.theme-toggle {
   display: flex !important;
   align-items: center;
   justify-content: center;
@@ -458,6 +558,8 @@ const toggle = (event: Event) => {
   background: rgba(255, 255, 255, 0.14) !important;
   border: 1px solid rgba(255, 255, 255, 0.18);
   color: #ffffff;
+  appearance: none;
+  cursor: pointer;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
   backdrop-filter: blur(10px);
   transition:
@@ -467,14 +569,16 @@ const toggle = (event: Event) => {
 }
 
 .countery-icon:hover,
-.notification:hover {
+.notification:hover,
+.theme-toggle:hover {
   transform: translateY(-1px);
   background: rgba(255, 255, 255, 0.22) !important;
   border-color: rgba(255, 255, 255, 0.3);
 }
 
 .countery-icon :deep(svg),
-.notification :deep(svg) {
+.notification :deep(svg),
+.theme-toggle svg {
   width: 22px;
   height: 22px;
 }
@@ -483,6 +587,10 @@ const toggle = (event: Event) => {
 .drawer :deep(path),
 .drop-icon :deep(path) {
   fill: #ffffff !important;
+}
+
+.theme-toggle path {
+  stroke: currentColor;
 }
 
 .drawer {
@@ -602,6 +710,20 @@ const toggle = (event: Event) => {
 
 :global(.header-dropdown-menu li:hover svg path) {
   fill: #1d4ed8 !important;
+}
+
+:global([data-theme='dark'] .header-dropdown-menu) {
+  background: #111827 !important;
+  border-color: #334155 !important;
+}
+
+:global([data-theme='dark'] .header-dropdown-menu li) {
+  color: #f8fafc !important;
+}
+
+:global([data-theme='dark'] .header-dropdown-menu li:hover) {
+  background: #1e293b !important;
+  color: #60a5fa !important;
 }
 
 .header-user-menu {

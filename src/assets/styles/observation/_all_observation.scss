@@ -56,18 +56,18 @@
         transition: width 0.25s ease, opacity 0.25s ease;
       }
 
-      &::after {
-        content: '';
-        position: absolute;
-        inset-inline-end: -72px;
-        inset-block-start: -82px;
-        width: 210px;
-        height: 210px;
-        border-radius: 50%;
-        background: color-mix(in srgb, var(--card-accent, #1d4ed8) 12%, transparent);
-        z-index: -1;
-        transition: transform 0.35s ease, opacity 0.35s ease;
-      }
+      // &::after {
+      //   content: '';
+      //   position: absolute;
+      //   inset-inline-end: -72px;
+      //   inset-block-start: -82px;
+      //   width: 210px;
+      //   height: 210px;
+      //   border-radius: 50%;
+      //   background: color-mix(in srgb, var(--card-accent, #1d4ed8) 12%, transparent);
+      //   z-index: -1;
+      //   transition: transform 0.35s ease, opacity 0.35s ease;
+      // }
 
       &:hover {
         transform: translateY(-6px);
@@ -94,30 +94,30 @@
         }
       }
 
-      &.observation-hub-card--inspection {
-        --card-accent: #1d4ed8;
-        --card-soft: #eff6ff;
-      }
+      // &.observation-hub-card--inspection {
+      //   --card-accent: #1d4ed8;
+      //   --card-soft: #eff6ff;
+      // }
 
-      &.observation-hub-card--observation {
-        --card-accent: #f4971e;
-        --card-soft: #fff7ed;
-      }
+      // &.observation-hub-card--observation {
+      //   --card-accent: #f4971e;
+      //   --card-soft: #fff7ed;
+      // }
 
-      &.observation-hub-card--incident {
-        --card-accent: #ce1515;
-        --card-soft: #fef2f2;
-      }
+      // &.observation-hub-card--incident {
+      //   --card-accent: #ce1515;
+      //   --card-soft: #fef2f2;
+      // }
 
-      &.observation-hub-card--investigation {
-        --card-accent: #0f766e;
-        --card-soft: #f0fdfa;
-      }
+      // &.observation-hub-card--investigation {
+      //   --card-accent: #0f766e;
+      //   --card-soft: #f0fdfa;
+      // }
 
-      &.observation-hub-card--capa {
-        --card-accent: #7c3aed;
-        --card-soft: #f5f3ff;
-      }
+      // &.observation-hub-card--capa {
+      //   --card-accent: #7c3aed;
+      //   --card-soft: #f5f3ff;
+      // }
 
       .card-visual {
         min-height: 100%;
@@ -132,28 +132,28 @@
         position: relative;
         overflow: hidden;
 
-        &::before,
-        &::after {
-          content: '';
-          position: absolute;
-          border-radius: 50%;
-          background: color-mix(in srgb, var(--card-accent, #1d4ed8) 14%, transparent);
-        }
+        // &::before,
+        // &::after {
+        //   content: '';
+        //   position: absolute;
+        //   border-radius: 50%;
+        //   background: color-mix(in srgb, var(--card-accent, #1d4ed8) 14%, transparent);
+        // }
 
-        &::before {
-          width: 96px;
-          height: 96px;
-          inset-inline-start: -34px;
-          inset-block-end: -32px;
-        }
+        // &::before {
+        //   width: 96px;
+        //   height: 96px;
+        //   inset-inline-start: -34px;
+        //   inset-block-end: -32px;
+        // }
 
-        &::after {
-          width: 56px;
-          height: 56px;
-          inset-inline-end: 16px;
-          inset-block-start: 18px;
-          opacity: 0.65;
-        }
+        // &::after {
+        //   width: 56px;
+        //   height: 56px;
+        //   inset-inline-end: 16px;
+        //   inset-block-start: 18px;
+        //   opacity: 0.65;
+        // }
 
         .image {
           width: 118px;

@@ -1,6 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useThemeMode } from '@/composables/useThemeMode'
+
+const { isDarkMode } = useThemeMode()
+</script>
 <template>
-  <div class="skeleton-wrapper">
+  <div :class="['skeleton-wrapper', { 'is-dark': isDarkMode }]">
     <!-- Progress bar skeleton -->
     <div class="sk" style="height: 120px; margin-bottom: 20px; border-radius: 12px"></div>
 
@@ -100,6 +104,19 @@
   border: 0.5px solid rgba(0, 0, 0, 0.1);
   border-radius: 12px;
   padding: 1rem 1.25rem;
+}
+
+.skeleton-wrapper.is-dark {
+  .sk {
+    background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
+    background-size: 600px 100%;
+  }
+
+  .sk-card {
+    background: var(--surface-1);
+    border-color: var(--main-border);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+  }
 }
 
 .projects-stats-sk {

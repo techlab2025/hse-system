@@ -1,5 +1,6 @@
 import './assets/styles/main.scss'
 import './assets/styles/tailwind.css'
+import './assets/styles/theme/_dark_mode.scss'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
@@ -57,7 +58,7 @@ app.use(PrimeVue, {
     preset: Aura,
     options: {
       prefix: 'p',
-      darkModeSelector: false,
+      darkModeSelector: '[data-theme="dark"]',
       cssLayer: false,
     },
   },
