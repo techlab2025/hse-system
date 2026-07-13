@@ -76,12 +76,21 @@ const fetchInspection = async (
     zoneId || null,
     null,
     selectedProjctesFilters.value || null,
-    null,
     route.query.typeId ? Number(route.query.typeId) : null,
+    null,
   )
   const res = await indexInspectionController.getData(deleteInspectionParams)
   console.log(res, 'res')
 }
+
+watch(
+  () => route.query.typeId,
+  () => {
+    fetchInspection()
+  },
+  { immediate: true },
+)
+
 const InspectionFormTasks = async (
   query: string = '',
   pageNumber: number = 1,

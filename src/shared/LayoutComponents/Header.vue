@@ -149,28 +149,30 @@ const NOTIFICATION_SOUND_BASE64 =
 // const NOTIFICATION_SOUND_BASE64 = Ring;
 
 // Integrate new notification system
-const { notifications, unreadCount, acknowledgeNotification, wsConnected } = useIntegratedNotifications({
-  autoConnect: true,
-  token: userStore.user?.WebSocketToken,
-  userId: userStore.user?.id,
-  fetchNotifications: true,
-  userToken: userStore.user?.apiToken,
+const { notifications, unreadCount, acknowledgeNotification, wsConnected } =
+  useIntegratedNotifications({
+    autoConnect: true,
+    token: userStore.user?.WebSocketToken,
+    // token: 'st_yzJJdPw8s4Dm_OSNQNVoUvt0PK8KYZzca2r1JTd9_MA',
+    userId: userStore.user?.id,
+    fetchNotifications: true,
+    userToken: userStore.user?.apiToken,
 
-  onNotification: (notification) => {
-    console.log(notification)
-    // make ring sound
-    const audio = new Audio(NOTIFICATION_SOUND_BASE64)
-    audio.play()
+    onNotification: (notification) => {
+      console.log(notification)
+      // make ring sound
+      const audio = new Audio(NOTIFICATION_SOUND_BASE64)
+      audio.play()
 
-    // Show global toast
-    toast.add({
-      severity: 'info',
-      summary: notification.title,
-      detail: wordSlice(JSON.parse(notification?.body!)?.message, 35) || notification.body,
-      life: 5000,
-    })
-  },
-})
+      // Show global toast
+      toast.add({
+        severity: 'info',
+        summary: notification.title,
+        detail: wordSlice(JSON.parse(notification?.body!)?.message, 35) || notification.body,
+        life: 5000,
+      })
+    },
+  })
 const op = ref()
 
 const toggle = (event: Event) => {
@@ -179,6 +181,7 @@ const toggle = (event: Event) => {
 </script>
 
 <template>
+  <!-- {{ notifications }} -->
   <header class="header minmize">
     <nav class="nav">
       <div class="menu flex items-center gap-3">
@@ -232,11 +235,11 @@ const toggle = (event: Event) => {
 
       <div class="setting">
         <ChangeLanguage class="countery-icon" />
-        <!-- <Notifications /> -->
+        <Notifications />
         <!-- {{ wsConnected }} -->
-        <div class="notification cursor-pointer" @click="toggleFullScreen">
+        <!-- <div class="notification cursor-pointer" @click="toggleFullScreen">
           <Notification />
-        </div>
+        </div> -->
 
         <div
           ref="userMenuRef"

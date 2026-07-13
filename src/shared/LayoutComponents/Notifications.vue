@@ -9,7 +9,7 @@ import Popover from 'primevue/popover'
 import wordSlice from '@/base/Presentation/utils/word_slice'
 import Notification from '../icons/Notification.vue'
 import { NotificationEnum } from './Enums/NotificationEnum'
-import Ring from "@/assets/Ring/Ring.txt"
+import Ring from '@/assets/Ring/Ring.txt'
 
 const op = ref()
 const toggle = (event: Event) => {
@@ -47,13 +47,33 @@ const { notifications, unreadCount, acknowledgeNotification, wsConnected } =
 const navigateToNotification = (notificationType: number, typeId?: number) => {
   switch (notificationType) {
     case NotificationEnum.OBSERVATION: // PDSP
-      router.push(typeId ? `/organization/equipment-mangement/observation/show/${typeId}?type=2` : '/organization/equipment-mangement/observation?isAll=1&type=2')
+      router.push(
+        typeId
+          ? `/organization/equipment-mangement/observation/show/${typeId}?type=2`
+          : '/organization/equipment-mangement/observation?isAll=1&type=2',
+      )
       break
     case NotificationEnum.INCIDENT: // PDSP
-      router.push(typeId ? `/organization/equipment-mangement/incedant/show/${typeId}` : '/organization/equipment-mangement/incedant?isAll=1')
+      router.push(
+        typeId
+          ? `/organization/equipment-mangement/incedant/show/${typeId}`
+          : '/organization/equipment-mangement/incedant?isAll=1',
+      )
       break
     case NotificationEnum.TASK: // PDSP
-      router.push(typeId ? `/organization/equipment-mangement/inspection?inspectionType=2&typeId=${typeId}` : '/organization/equipment-mangement/inspection?inspectionType=2')
+      router.push(
+        typeId
+          ? `/organization/equipment-mangement/inspection?inspectionType=2&typeId=${typeId}`
+          : '/organization/equipment-mangement/inspection?inspectionType=2',
+      )
+
+      break
+
+    case NotificationEnum.PROJECT: // PDSP
+      router.push(
+        typeId ? `/organization/project-details/${typeId}?type=1` : '/organization/projects',
+      )
+
       break
 
     default:
@@ -78,18 +98,23 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
         <li v-if="notifications.length === 0" class="list-notifaction-item empty-msg">
           No new notifications
         </li>
-        <li v-for="notification in notifications" :key="notification.id" class="list-notifaction-item"
-          :class="{ 'new-item': notification.status === 'PENDING' }">
+        <li
+          v-for="notification in notifications"
+          :key="notification.id"
+          class="list-notifaction-item"
+          :class="{ 'new-item': notification.status === 'PENDING' }"
+        >
           <div class="notification-content-wrapper">
-            <button @click="
-              navigateToNotification(
-                JSON.parse(notification?.body!)?.data?.type,
-                JSON.parse(notification?.body!)?.data?.type_id,
-              )
-              " class="notification-text">
+            <button
+              @click="
+                navigateToNotification(notification?.body[0]?.type, notification?.body[0]?.type_id)
+              "
+              class="notification-text"
+            >
               <strong>{{ wordSlice(notification.title, 25) }}</strong>
               <p>
-                {{ wordSlice(JSON.parse(notification?.body!)?.message, 35) }}
+                {{ notification?.body[0].message }}
+                <!-- {{ wordSlice(JSON.parse(notification?.body!)?.message, 35) }} -->
               </p>
               <small v-if="notification.receivedAt">{{
                 notification.receivedAt.toLocaleTimeString()
@@ -205,7 +230,6 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
 }
 
 @keyframes pulse {
-
   0%,
   100% {
     box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);

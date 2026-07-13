@@ -18,14 +18,26 @@ export interface Notification {
   isBroadcast?: boolean
   targetUserId?: string
   message?: string
+  readStatus?: 'READ' | 'UNREAD'
+  // Legacy UI field; derived from readStatus during normalization.
   status?: 'READ' | 'PENDING'
   data?: { type: number; type_id: number }
-  body?: string
+  body?: string | Record<string, any> | null
   [key: string]: any
 }
 export interface EnrichedNotification extends Notification {
   type: NotificationType
   receivedAt: Date
+  parsedBody: Record<string, any>
+  displayMessage: string
+  routeType?: number
+  routeTypeId?: number
+}
+
+export interface NotificationCount {
+  read: number
+  unread: number
+  total: number
 }
 
 export type NotificationType = 'broadcast' | 'direct' | 'pending'
@@ -38,7 +50,8 @@ class WebSocketNotificationService {
   public notifications: Ref<EnrichedNotification[]>
   public acknowledgeCount: Ref<number>
   public logs: Ref<string[]>
-  public unreadCount: Ref<number>
+  public unreadCount: Ref<number | string>
+  public notificationCount: Ref<NotificationCount>
 
   private processedNotificationIds: Set<string>
   private subscriptions: Map<string, StompSubscription>
@@ -46,7 +59,9 @@ class WebSocketNotificationService {
   private eventHandlers: Map<string, EventHandler[]>
   private reconnectAttempts: number
   private connectionTimeout: NodeJS.Timeout | null
+  private connectionPromise: Promise<IFrame | void> | null
   private isManualDisconnect: boolean
+  private usesNotificationCountEndpoint: boolean
 
   constructor() {
     this.client = null
@@ -59,18 +74,21 @@ class WebSocketNotificationService {
     this.config = {
       brokerURL: 'wss://socket.techlabeg.com/ws',
       reconnectDelay: 50000,
-      heartbeatIncoming: 50000,
-      heartbeatOutgoing: 50000,
+      heartbeatIncoming: 10000,
+      heartbeatOutgoing: 10000,
       debug: true,
-      maxReconnectAttempts: 10,
+      maxReconnectAttempts: 5,
       connectionTimeout: 30000,
     }
     this.eventHandlers = new Map()
     this.reconnectAttempts = 0
     this.connectionTimeout = null
+    this.connectionPromise = null
     this.isManualDisconnect = false
+    this.usesNotificationCountEndpoint = false
     this.acknowledgeCount = ref(0)
     this.unreadCount = ref(0)
+    this.notificationCount = ref({ read: 0, unread: 0, total: 0 })
   }
 
   /**
@@ -141,10 +159,112 @@ class WebSocketNotificationService {
   }
 
   /**
+   * Safely parse notification body from API/WebSocket payloads.
+   */
+  private parseNotificationBody(body: Notification['body']): Record<string, any> {
+    if (!body) return {}
+
+    if (typeof body === 'object') {
+      return body
+    }
+
+    try {
+      const parsed = JSON.parse(body)
+      return parsed && typeof parsed === 'object' ? parsed : {}
+    } catch {
+      return {}
+    }
+  }
+
+  /**
+   * Normalize live and fetched notifications into one UI-safe shape.
+   */
+  private normalizeNotification(
+    notification: Notification,
+    type: NotificationType,
+  ): EnrichedNotification {
+    console.log('Normalizing notification:', notification, 'Type:', type)
+    const parsedBody = this.parseNotificationBody(notification.body)
+    const bodyMessage = typeof parsedBody.message === 'string' ? parsedBody.message : ''
+    const plainBody = typeof notification.body === 'string' ? notification.body : ''
+    const receivedAtSource =
+      notification.receivedAt ||
+      parsedBody.timestamp ||
+      notification.created_at ||
+      notification.createdAt
+    const receivedAt = receivedAtSource ? new Date(receivedAtSource) : new Date()
+    const readStatus =
+      notification.readStatus ?? (notification.status === 'READ' ? 'READ' : 'UNREAD')
+
+    return {
+      ...notification,
+      readStatus,
+      status: readStatus === 'READ' ? 'READ' : 'PENDING',
+      type,
+      receivedAt: Number.isNaN(receivedAt.getTime()) ? new Date() : receivedAt,
+      parsedBody,
+      displayMessage: notification.message || bodyMessage || plainBody || '',
+      routeType: notification.data?.type ?? parsedBody.data?.type,
+      routeTypeId: notification.data?.type_id ?? parsedBody.data?.type_id,
+    }
+  }
+
+  private recalculateUnreadCount(): void {
+    if (this.usesNotificationCountEndpoint) {
+      return
+    }
+
+    const unread = this.notifications.value.filter(
+      (notification) => notification.readStatus === 'UNREAD',
+    ).length
+
+    this.notificationCount.value = {
+      read: this.notifications.value.length - unread,
+      unread,
+      total: this.notifications.value.length,
+    }
+    this.unreadCount.value = this.formatUnreadCount(unread)
+  }
+
+  private formatUnreadCount(unread: number): number | string {
+    return unread > 100 ? '+99' : unread
+  }
+
+  private normalizeCount(value: unknown): number {
+    const count = Number(value)
+    return Number.isFinite(count) && count > 0 ? count : 0
+  }
+
+  private applyNotificationCount(count: Partial<NotificationCount>): void {
+    const read = this.normalizeCount(count.read)
+    const unread = this.normalizeCount(count.unread)
+    const total = this.normalizeCount(count.total ?? read + unread)
+
+    this.notificationCount.value = { read, unread, total }
+    this.unreadCount.value = this.formatUnreadCount(unread)
+    this.usesNotificationCountEndpoint = true
+  }
+
+  private updateNotificationCount(changes: Partial<NotificationCount>): void {
+    if (!this.usesNotificationCountEndpoint) {
+      this.recalculateUnreadCount()
+      return
+    }
+
+    const current = this.notificationCount.value
+    this.applyNotificationCount({
+      read: current.read + (changes.read ?? 0),
+      unread: current.unread + (changes.unread ?? 0),
+      total: current.total + (changes.total ?? 0),
+    })
+  }
+
+  /**
    * Handle incoming notifications
    */
   handleNotification(notification: Notification, type: NotificationType): void {
     // Prevent duplicates
+    console.log('Received notification:', notification)
     if (this.processedNotificationIds.has(notification.id)) {
       this.addLog(`⚠ Duplicate ${type} notification ignored: ${notification.id}`)
       return
@@ -158,39 +278,55 @@ class WebSocketNotificationService {
 
     this.addLog(`${typeIcon[type] || '📬'} ${type}: ${notification.title} (ID: ${notification.id})`)
 
-    const enrichedNotification: EnrichedNotification = {
-      ...notification,
-      type,
-      receivedAt: new Date(),
-    }
+    const enrichedNotification = this.normalizeNotification(notification, type)
     this.notifications.value.unshift(enrichedNotification)
     this.processedNotificationIds.add(notification.id)
+    if (enrichedNotification.readStatus === 'UNREAD') {
+      this.updateNotificationCount({ unread: 1, total: 1 })
+    } else {
+      this.updateNotificationCount({ read: 1, total: 1 })
+    }
 
     // Emit event for external handlers
     this.emit('notification', enrichedNotification)
     this.emit(`notification:${type}`, enrichedNotification)
-
-    // Send acknowledgment
-    this.acknowledgeNotification(notification.id)
   }
 
   /**
-   * Send acknowledgment for a notification
+   * Mark a notification as read on the WebSocket server.
    */
   acknowledgeNotification(notificationId: string): void {
-    if (this.client && this.client.connected) {
-      try {
-        this.client.publish({
-          destination: '/app/acknowledge',
-          body: JSON.stringify({ notificationId }),
-        })
+    if (!this.client || !this.client.connected) {
+      this.addLog(`⚠ Cannot mark notification ${notificationId} as read: Not connected`)
+      return
+    }
 
-        this.addLog(`✓ ACK sent for notification ${notificationId}`)
-        this.emit('acknowledged', notificationId)
-        // this.notifications.value = this.notifications.value.filter(notification => notification.id !== notificationId)
-      } catch (error: any) {
-        this.addLog(`❌ Failed to send ACK: ${error.message}`)
+    const notification = this.notifications.value.find((item) => item.id === notificationId)
+    if (notification?.readStatus === 'READ') {
+      return
+    }
+
+    try {
+      console.log('Acknowledging notification:', notificationId)
+      this.client.publish({
+        destination: '/app/messages/read',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ messageId: notificationId }),
+      })
+
+      if (notification) {
+        notification.readStatus = 'READ'
+        notification.status = 'READ'
+        this.updateNotificationCount({ read: 1, unread: -1 })
+        this.emit('notifications:updated', this.notifications.value)
+        this.emit('notification:read', notification)
       }
+
+      this.acknowledgeCount.value += 1
+      this.addLog(`✓ Notification marked as read: ${notificationId}`)
+      this.emit('acknowledged', notificationId)
+    } catch (error: any) {
+      this.addLog(`❌ Failed to mark notification as read: ${error.message}`)
     }
   }
 
@@ -208,9 +344,11 @@ class WebSocketNotificationService {
     }
 
     try {
+      this.unsubscribe(destination)
+
       const subscription = this.client.subscribe(destination, (message) => {
         try {
-          const data = JSON.parse(message.body)
+          const data = message.body ? JSON.parse(message.body) : null
           handler(data, channelType)
         } catch (error: any) {
           this.addLog(`❌ Error parsing message from ${destination}: ${error.message}`)
@@ -269,10 +407,10 @@ class WebSocketNotificationService {
       '/user/queue/pending',
       (data) => {
         console.log('data', data)
-        this.addLog(`📦 Received ${data.length ?? 0} pending/unacknowledged notifications`)
+        const pendingCount = Array.isArray(data) ? data.length : 0
+        this.addLog(`📦 Received ${pendingCount} pending/unacknowledged notifications`)
 
         if (Array.isArray(data)) {
-          this.addLog(`📦 Received ${data.length ?? 0} pending/unacknowledged notifications`)
           this.addLog(`data ${data}`)
           data.forEach((notification) => {
             const type: NotificationType = notification.isBroadcast
@@ -319,17 +457,35 @@ class WebSocketNotificationService {
       return Promise.resolve()
     }
 
+    if (this.client?.active && this.connectionPromise) {
+      this.addLog('⚠ Connection already in progress')
+      return this.connectionPromise
+    }
+
+    if (this.client?.active) {
+      this.addLog('⚠ WebSocket client already active')
+      return Promise.resolve()
+    }
+
     this.isManualDisconnect = false
 
-    return new Promise((resolve, reject) => {
+    this.connectionPromise = new Promise((resolve, reject) => {
       this.addLog(`🔌 Connecting to WebSocket... (Attempt ${this.reconnectAttempts + 1})`)
+
+      // Set connection timeout
+      // this.connectionTimeout = setTimeout(() => {
+      //     this.addLog('❌ Connection timeout')
+      //     this.error.value = 'Connection timeout'
+      //     if (this.client) {
+      //         this.client.deactivate()
+      //     }
+      //     reject(new Error('Connection timeout'))
+      // }, this.config.connectionTimeout || 30000)
 
       this.client = new Client({
         brokerURL: this.config.brokerURL,
         connectHeaders: {
-          Authorization: `Bearer ${token}`,
-          'Accept-Version': '1.2',
-          'heart-beat': `${this.config.heartbeatOutgoing},${this.config.heartbeatIncoming}`,
+          token,
         },
         debug: (str) => {
           if (this.config.debug && str.length < 200) {
@@ -340,19 +496,9 @@ class WebSocketNotificationService {
         heartbeatIncoming: this.config.heartbeatIncoming,
         heartbeatOutgoing: this.config.heartbeatOutgoing,
 
-        // Important: Configure WebSocket options
-        webSocketFactory: () => {
-          const ws = new WebSocket(this.config.brokerURL)
-
-          ws.onerror = (event) => {
-            this.addLog('❌ WebSocket error occurred')
-          }
-
-          return ws
-        },
-
         onConnect: (frame) => {
           this.clearConnectionTimeout()
+          this.connectionPromise = null
           this.addLog('✅ CONNECTED!')
           this.connected.value = true
           this.error.value = null
@@ -370,6 +516,7 @@ class WebSocketNotificationService {
 
         onStompError: (frame) => {
           this.clearConnectionTimeout()
+          this.connectionPromise = null
           const errorMsg = frame.headers['message'] || 'STOMP protocol error'
           this.addLog(`❌ STOMP Error: ${errorMsg}`)
           this.error.value = errorMsg
@@ -382,7 +529,8 @@ class WebSocketNotificationService {
           }
         },
 
-        onWebSocketError: (event) => {
+        onWebSocketError: () => {
+          this.connectionPromise = null
           this.addLog('❌ WebSocket Error')
           this.error.value = 'WebSocket error'
           this.connected.value = false
@@ -391,6 +539,7 @@ class WebSocketNotificationService {
 
         onWebSocketClose: (event) => {
           this.clearConnectionTimeout()
+          this.connectionPromise = null
 
           // Error code 1006 means abnormal closure
           if (event.code === 1006) {
@@ -418,6 +567,7 @@ class WebSocketNotificationService {
 
         onDisconnect: () => {
           this.clearConnectionTimeout()
+          this.connectionPromise = null
           this.addLog('🔌 Disconnected')
           this.connected.value = false
           this.emit('disconnected')
@@ -428,11 +578,14 @@ class WebSocketNotificationService {
         this.client.activate()
       } catch (error: any) {
         this.clearConnectionTimeout()
+        this.connectionPromise = null
         this.addLog(`❌ Failed to activate client: ${error.message}`)
         this.error.value = error.message
         reject(error)
       }
     })
+
+    return this.connectionPromise
   }
 
   /**
@@ -458,11 +611,12 @@ class WebSocketNotificationService {
   disconnect(): void {
     this.isManualDisconnect = true
     this.clearConnectionTimeout()
+    this.connectionPromise = null
 
     if (this.client) {
       try {
         // Unsubscribe from all channels
-        this.subscriptions.forEach((_, destination) => {
+        Array.from(this.subscriptions.keys()).forEach((destination) => {
           this.unsubscribe(destination)
         })
 
@@ -501,6 +655,9 @@ class WebSocketNotificationService {
   clearNotifications(): void {
     this.notifications.value = []
     this.processedNotificationIds.clear()
+    this.usesNotificationCountEndpoint = false
+    this.notificationCount.value = { read: 0, unread: 0, total: 0 }
+    this.unreadCount.value = 0
     this.addLog('🗑 Notifications cleared')
     this.emit('notifications:cleared')
   }
@@ -532,8 +689,14 @@ class WebSocketNotificationService {
   removeNotification(id: string): void {
     const index = this.notifications.value.findIndex((n) => n.id === id)
     if (index !== -1) {
+      const notification = this.notifications.value[index]
       this.notifications.value.splice(index, 1)
       this.processedNotificationIds.delete(id)
+      this.updateNotificationCount({
+        read: notification.readStatus === 'READ' ? -1 : 0,
+        unread: notification.readStatus === 'UNREAD' ? -1 : 0,
+        total: -1,
+      })
       this.emit('notification:removed', id)
     }
   }
@@ -564,24 +727,72 @@ class WebSocketNotificationService {
      fetch notifications
      */
   async fetchNotifications(token: string): Promise<void> {
-    const res = await fetch(baseUrl + 'organization/' + 'fetch_notifications', {
+    const [notificationsResult, countResult] = await Promise.allSettled([
+      fetch(baseUrl + 'organization/' + 'fetch_notifications', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+
+        body: JSON.stringify({
+          page: 1,
+          per_page: 10,
+          with_pagination: 1,
+        }),
+      }),
+      this.fetchNotificationCount(token),
+    ])
+
+    if (countResult.status === 'rejected') {
+      console.error('Failed to fetch notification count:', countResult.reason)
+    }
+
+    if (notificationsResult.status === 'rejected' || !notificationsResult.value.ok) {
+      throw new Error('Failed to fetch notifications')
+    }
+    const data = await notificationsResult.value.json()
+
+    console.log('Notification data:', data.data)
+    const notifications = data.data?.items ? data.data.items : []
+    this.notifications.value = notifications.map((notification: Notification) => {
+      // const type: NotificationType = notification.isBroadcast
+      //     ? 'broadcast'
+      //     : notification.targetUserId
+      //         ? 'direct'
+      //         : 'pending'
+      return this.normalizeNotification(notification, 'direct')
+    })
+    this.processedNotificationIds = new Set(
+      this.notifications.value.map((notification) => notification.id),
+    )
+    console.log('Fetched notifications:', this.notifications.value)
+    this.recalculateUnreadCount()
+    this.emit('notifications:updated', this.notifications.value)
+  }
+
+  async fetchNotificationCount(token: string): Promise<void> {
+    const res = await fetch(baseUrl + 'organization/' + 'fetch_unread_notification_count', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
       },
     })
 
     if (!res.ok) {
-      throw new Error('Failed to fetch notifications')
+      throw new Error('Failed to fetch notification count')
     }
-    const data = await res.json()
-    // console.log(data)
-    this.notifications.value = data.data
-    this.unreadCount.value = data.data.filter(
-      (notification: any) => notification.status === 'PENDING',
-    ).length
-    this.emit('notifications:updated', data.data)
+
+    const response = await res.json()
+    const count = response.data ?? response
+    this.applyNotificationCount({
+      read: count.count_read,
+      unread: count.count_unread,
+      total: count.total,
+    })
   }
 }
 

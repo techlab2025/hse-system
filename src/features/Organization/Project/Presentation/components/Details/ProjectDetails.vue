@@ -58,6 +58,14 @@ watch(
     state.value = newState
   },
 )
+
+// watch(
+//   () => route.params.id,
+//   () => {
+//     GetProjectDetails()
+//   },
+//   { immediate: true },
+// )
 </script>
 <template>
   <DataStatus :controller="state">
