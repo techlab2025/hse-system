@@ -12,6 +12,15 @@ export interface WebSocketConfig {
   connectionTimeout?: number
 }
 
+interface NotificationBody {
+  from: string
+  message: string
+  timestamp: string
+  title: string
+  type: number
+  type_id: number
+}
+
 export interface Notification {
   id: string
   title: string
@@ -22,7 +31,7 @@ export interface Notification {
   // Legacy UI field; derived from readStatus during normalization.
   status?: 'READ' | 'PENDING'
   data?: { type: number; type_id: number }
-  body?: string | Record<string, any> | null
+  body?: NotificationBody[]
   [key: string]: any
 }
 export interface EnrichedNotification extends Notification {
@@ -184,9 +193,9 @@ class WebSocketNotificationService {
     type: NotificationType,
   ): EnrichedNotification {
     console.log('Normalizing notification:', notification, 'Type:', type)
-    const parsedBody = this.parseNotificationBody(notification.body)
+    const parsedBody = this.parseNotificationBody(notification?.body?.[0] ?? null)
     const bodyMessage = typeof parsedBody.message === 'string' ? parsedBody.message : ''
-    const plainBody = typeof notification.body === 'string' ? notification.body : ''
+    const plainBody = notification?.body?.[0]?.message
     const receivedAtSource =
       notification.receivedAt ||
       parsedBody.timestamp ||
@@ -265,8 +274,8 @@ class WebSocketNotificationService {
   handleNotification(notification: Notification, type: NotificationType): void {
     // Prevent duplicates
     console.log('Received notification:', notification)
-    if (this.processedNotificationIds.has(notification.id)) {
-      this.addLog(`⚠ Duplicate ${type} notification ignored: ${notification.id}`)
+    if (this.processedNotificationIds.has(notification.messageId)) {
+      this.addLog(`⚠ Duplicate ${type} notification ignored: ${notification.messageId}`)
       return
     }
 
@@ -280,7 +289,7 @@ class WebSocketNotificationService {
 
     const enrichedNotification = this.normalizeNotification(notification, type)
     this.notifications.value.unshift(enrichedNotification)
-    this.processedNotificationIds.add(notification.id)
+    this.processedNotificationIds.add(notification.messageId)
     if (enrichedNotification.readStatus === 'UNREAD') {
       this.updateNotificationCount({ unread: 1, total: 1 })
     } else {

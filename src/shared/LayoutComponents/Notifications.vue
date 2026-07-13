@@ -32,7 +32,7 @@ const { notifications, unreadCount, acknowledgeNotification, wsConnected } =
     fetchNotifications: true,
     userToken: userStore.user?.apiToken,
     onNotification: (notification) => {
-      //   console.log(notification)
+      console.log(notification, 'nooooooooooooot')
       // make ring sound
       const audio = new Audio(NOTIFICATION_SOUND_BASE64)
       audio.play()
@@ -40,7 +40,7 @@ const { notifications, unreadCount, acknowledgeNotification, wsConnected } =
       toast.add({
         severity: 'info',
         summary: notification.title,
-        detail: wordSlice(JSON.parse(notification?.body!)?.message, 35) || notification.body,
+        detail: notification.body?.[0]?.title,
         life: 5000,
       })
     },
@@ -149,10 +149,7 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
           :class="{ 'new-item': notification.status === 'PENDING' }"
         >
           <div class="notification-content-wrapper">
-            <button
-              @click="handleNotificationClick(notification)"
-              class="notification-text"
-            >
+            <button @click="handleNotificationClick(notification)" class="notification-text">
               <strong>{{ wordSlice(notification.title, 25) }}</strong>
               <p>
                 {{ getNotificationPayload(notification).message }}
