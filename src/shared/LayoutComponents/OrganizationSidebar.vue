@@ -581,14 +581,30 @@ const activeGroup = computed(() => {
   )
 })
 
-const filteredActiveRoutes = computed(() => {
+const isSearching = computed(() => searchTerm.value.trim().length > 0)
+
+const visibleRouteGroups = computed<RouteGroup[]>(() => {
   const query = searchTerm.value.trim().toLocaleLowerCase()
+  const groups = query ? routeGroups.value : activeGroup.value ? [activeGroup.value] : []
 
-  if (!query) return activeGroup.value?.routes || []
+  return groups
+    .filter((group) => !group.adminOnly || user?.employeeType == EmployeeStatusEnum.Admin)
+    .map((group) => {
+      const routes = query
+        ? group.routes.filter((item) => {
+            const routeName = t(item.name).toLocaleLowerCase()
+            const groupName = group.label.toLocaleLowerCase()
 
-  return (activeGroup.value?.routes || []).filter((item) =>
-    t(item.name).toLocaleLowerCase().includes(query),
-  )
+            return routeName.includes(query) || groupName.includes(query)
+          })
+        : group.routes
+
+      return {
+        ...group,
+        routes,
+      }
+    })
+    .filter((group) => group.routes.length > 0)
 })
 
 const selectGroup = (groupKey: string) => {
@@ -729,24 +745,36 @@ onBeforeUnmount(() => {
 
         <nav class="side-pane-routes" :aria-label="`${activeGroup.label} routes`">
           <div class="side-pane-routes__inner">
-            <PermissionBuilder
-              v-for="sidebarRoute in filteredActiveRoutes"
-              :key="String(sidebarRoute.link)"
-              :code="sidebarRoute.permissions"
-            >
-              <router-link
-                :to="sidebarRoute.link"
-                :class="['side-btn', { active: isLinkActive(sidebarRoute.link) }]"
-                :title="$t(sidebarRoute.name)"
-                @click="hidePane"
+            <template v-for="group in visibleRouteGroups" :key="group.key">
+              <PermissionBuilder
+                v-if="isSearching"
+                :code="group.permissions"
               >
-                <component :is="sidebarRoute.icon" class="side-icon" />
-                <span class="side-label">{{ $t(sidebarRoute.name) }}</span>
-                <span class="side-link-arrow">›</span>
-              </router-link>
-            </PermissionBuilder>
+                <p class="side-route-group-title">{{ group.label }}</p>
+              </PermissionBuilder>
 
-            <p v-if="!filteredActiveRoutes.length" class="side-pane-empty">
+              <PermissionBuilder
+                v-for="sidebarRoute in group.routes"
+                :key="`${group.key}-${String(sidebarRoute.link)}`"
+                :code="sidebarRoute.permissions"
+              >
+                <router-link
+                  :to="sidebarRoute.link"
+                  :class="['side-btn', { active: isLinkActive(sidebarRoute.link) }]"
+                  :title="$t(sidebarRoute.name)"
+                  @click="hidePane"
+                >
+                  <component :is="sidebarRoute.icon" class="side-icon" />
+                  <span class="side-label-wrap">
+                    <span class="side-label">{{ $t(sidebarRoute.name) }}</span>
+                    <span v-if="isSearching" class="side-label-parent">{{ group.label }}</span>
+                  </span>
+                  <span class="side-link-arrow">›</span>
+                </router-link>
+              </PermissionBuilder>
+            </template>
+
+            <p v-if="!visibleRouteGroups.length" class="side-pane-empty">
               {{ $t('No Data Found') }}
             </p>
           </div>
@@ -968,6 +996,15 @@ onBeforeUnmount(() => {
   padding-bottom: 18px;
 }
 
+.side-route-group-title {
+  margin: 12px 4px 0;
+  color: rgba(191, 219, 254, 0.72);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
 .side-btn {
   display: flex;
   align-items: center;
@@ -994,13 +1031,30 @@ onBeforeUnmount(() => {
   transform: translateX(2px);
 }
 
-.side-label {
+.side-label-wrap {
+  display: flex;
   min-width: 0;
   flex: 1 1 auto;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.side-label {
+  min-width: 0;
   overflow: hidden;
   font-size: 13px;
   font-weight: 800;
   line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.side-label-parent {
+  overflow: hidden;
+  color: rgba(217, 230, 243, 0.5);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.1;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
