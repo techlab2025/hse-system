@@ -117,6 +117,7 @@ const logout = () => {
 <style scoped>
 .sidebar {
   padding-top: 20px;
+  overscroll-behavior-x: none;
   background:
     radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.1) 0 18%, transparent 34%),
     radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.09) 0 16%, transparent 34%),
@@ -150,6 +151,7 @@ const logout = () => {
 }
 .sidebar-wrapper {
   padding-inline: 8px;
+  overflow-x: hidden;
 }
 .sidebar-wrapper {
   background: transparent !important;
@@ -335,6 +337,8 @@ const logout = () => {
 }
 .links {
   padding-bottom: 18px;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
 }
 .sidebar.open .links {
   padding-top: 2px;
@@ -346,6 +350,7 @@ const logout = () => {
 }
 .sidebar.close .links {
   overflow-y: auto;
+  overflow-x: hidden;
   scrollbar-width: none;
 }
 .sidebar.close .links::-webkit-scrollbar {
@@ -543,6 +548,7 @@ const logout = () => {
   gap: 8px;
   padding-inline: 8px;
   overflow: visible;
+  overscroll-behavior-x: none;
   background: transparent !important;
 }
 
@@ -614,6 +620,7 @@ const logout = () => {
   flex: 1 1 auto;
   padding: 0 0 12px;
   overflow: visible;
+  overscroll-behavior-x: none;
 }
 
 .sidebar.organization-modern.open .links,
@@ -646,6 +653,8 @@ const logout = () => {
     flex: 1 1 auto;
     min-height: 0;
     overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
   }
 
   .mobile-sidebar-logout {

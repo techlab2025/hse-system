@@ -731,6 +731,7 @@ onBeforeUnmount(() => {
   min-height: 0;
   flex: 1 1 auto;
   color: #ffffff;
+  overscroll-behavior-x: none;
 }
 
 .side-rail-nav {
@@ -743,6 +744,8 @@ onBeforeUnmount(() => {
   min-height: 0;
   padding: 8px 0 18px;
   overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
   scrollbar-width: none;
 }
 
@@ -819,6 +822,8 @@ onBeforeUnmount(() => {
   height: 100vh;
   max-width: calc(100vw - 90px);
   flex-direction: column;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
   padding: 22px 16px 14px;
   background:
     radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.1) 0 18%, transparent 34%),
@@ -922,6 +927,8 @@ onBeforeUnmount(() => {
   flex: 1 1 auto;
   margin-top: 16px;
   overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
 }
@@ -937,6 +944,7 @@ onBeforeUnmount(() => {
 
 .side-pane-routes__inner {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   gap: 8px;
   padding-bottom: 18px;
@@ -955,6 +963,7 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   gap: 12px;
+  max-width: 100%;
   min-height: 48px;
   padding: 12px 13px;
   border: 1px solid transparent;

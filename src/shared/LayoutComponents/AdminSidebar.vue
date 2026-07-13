@@ -975,6 +975,8 @@ watch(LoackupsAccordion, (val) => {
   gap: 8px;
   padding: 8px 0 16px;
   overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
   flex: 1;
   scrollbar-width: none;
 }
