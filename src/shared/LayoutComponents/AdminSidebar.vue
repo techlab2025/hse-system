@@ -4,65 +4,11 @@ import AccordionPanel from 'primevue/accordionpanel'
 import AccordionHeader from 'primevue/accordionheader'
 import AccordionContent from 'primevue/accordioncontent'
 import { ref, watch } from 'vue'
-import type { Component } from 'vue'
 import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import IconSetting from '@/shared/icons/IconSetting.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import Sidebarlocation from '@/shared/icons/sidebarlocation.vue'
-import Locaps from '@/shared/icons/locaps.vue'
-
-import PersonIcon from '@/shared/icons/PersonIcon.vue'
-import GlobalIcon from '@/shared/icons/global.vue'
-import GeerIcon from '@/shared/icons/GeerIcon.vue'
-import ToolIcon from '@/shared/icons/ToolIcon.vue'
-import FactorItemIcon from '@/shared/icons/FactorItemIcon.vue'
-import HazardIcon from '@/shared/icons/HazardIcon.vue'
-import BookIcon from '@/shared/icons/BookIcon.vue'
-import IconCommunity from '@/shared/icons/IconCommunity.vue'
-import ShieldIcon from '@/shared/icons/shield.vue'
-import TicketIcon from '@/shared/icons/TicketIcon.vue'
-import ArchiveBook from '@/shared/icons/ArchiveBook.vue'
-import ItemsIcon from '@/shared/icons/items.vue'
-import IconArea from '@/shared/icons/IconArea.vue'
-import MoneyIcon from '@/shared/icons/MoneyIcon.vue'
-import ReceiptAdd from '@/shared/icons/ReceiptAdd.vue'
-import OpinionIcon from '@/shared/icons/opinion.vue'
-import MessageIcon from '@/shared/icons/message.vue'
-import MenuBoardIcon from '@/shared/icons/menuBoard.vue'
-import TagIcon from '@/shared/icons/tag.vue'
-import DocumentTextIcon from '@/shared/icons/documentText.vue'
-import ElementIcon from '@/shared/icons/element.vue'
-import HighLevelIcon from '@/shared/icons/HighLevel.vue'
-import LockIcon from '@/shared/icons/LockIcon.vue'
-import HistoryLogIcon from '@/shared/icons/HistoryLog.vue'
-import BoookIcon from '@/shared/icons/Boookicon.vue'
-import HomeInfoIcon from '@/shared/icons/HomeInfoIcon.vue'
-import MessageQuestionIcon from '@/shared/icons/messageQuestion.vue'
-import WarningIcon from '@/shared/icons/WarningIcon.vue'
-import ImageIcon from '@/shared/icons/ImageIcon.vue'
-import NewArrowIcon from '@/shared/icons/newarrow.vue'
-import EyeIcon from '@/shared/icons/EyeIcon.vue'
-import RootCaseIcon from '@/shared/icons/RootCase.vue'
-import InjuredIcon from '@/shared/icons/injured.vue'
-import LockerIcon from '@/shared/icons/LockerIcon.vue'
-import IconGlobal from '@/shared/icons/IconGlobal.vue'
-import HomeLocationIcon from '@/shared/icons/HomeLocationIcon.vue'
-import IconMap from '@/shared/icons/IconMap.vue'
-import TicketStarIcon from '@/shared/icons/ticketStar.vue'
-import CloudIcon from '@/shared/icons/CloudIcon.vue'
-import IconMethod from '@/shared/icons/IconMethod.vue'
-import Repeaticon from '@/shared/icons/Repeaticon.vue'
-import QuestionMarkIcon from '@/shared/icons/QuestionMarkIcon.vue'
-import IconDiets from '@/shared/icons/IconDiets.vue'
-import DangerIcon from '@/shared/icons/DangerIcon.vue'
-import CardsIcon from '@/shared/icons/CardsIcon.vue'
-import OrganizationPermission from '@/shared/icons/OrganizationPermission.vue'
-import IconWallet from '@/shared/icons/IconWallet.vue'
-import IconStatus from '@/shared/icons/IconStatus.vue'
-import AddEquipmentIcon from '@/shared/icons/AddEquipmentIcon.vue'
-import ImportantIcon from '@/shared/icons/ImportantIcon.vue'
+import SidebarUnicon from '@/shared/icons/SidebarUnicon.vue'
 
 const props = defineProps<{ open: boolean }>()
 
@@ -72,7 +18,7 @@ interface Routes {
   link: string
   name: string
   permissions: PermissionsEnum[]
-  icon: Component
+  icon: string
 }
 const { t } = useI18n()
 
@@ -80,7 +26,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/admins',
     name: t('admins'),
-    icon: PersonIcon,
+    icon: 'user-circle',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum?.ADMIN_ALL,
@@ -94,7 +40,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/languages',
     name: t('languages'),
-    icon: GlobalIcon,
+    icon: 'language',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum?.LANGUAGE_ALL,
@@ -108,7 +54,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/industry',
     name: t('industry'),
-    icon: GeerIcon,
+    icon: 'building',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.INDUSTRY_ALL,
@@ -121,7 +67,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/equipments',
     name: t('equipments'),
-    icon: ToolIcon,
+    icon: 'wrench',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.EQUIPMENT_ALL,
@@ -134,7 +80,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/factories-items',
     name: t('hazard_factor_items'),
-    icon: FactorItemIcon,
+    icon: 'circle-layer',
     permissions: [
       PermissionsEnum.FACTORY_ITEM_ALL,
       PermissionsEnum.FACTORY_ITEM_CREATE,
@@ -146,7 +92,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/factory',
     name: t('hazard_factors'),
-    icon: HazardIcon,
+    icon: 'shield-exclamation',
     permissions: [
       PermissionsEnum.FACTORY_ALL,
       PermissionsEnum.FACTORY_CREATE,
@@ -158,7 +104,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/template',
     name: t('templates'),
-    icon: BookIcon,
+    icon: 'book-open',
     permissions: [
       PermissionsEnum.TEMPLATE_ALL,
       PermissionsEnum.TEMPLATE_CREATE,
@@ -170,7 +116,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/organization',
     name: t('organization'),
-    icon: IconCommunity,
+    icon: 'building',
     permissions: [
       PermissionsEnum.ORGANIZATION_ALL,
       PermissionsEnum.ORGANIZATION_CREATE,
@@ -182,7 +128,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/role',
     name: t('roles'),
-    icon: ShieldIcon,
+    icon: 'shield-check',
     permissions: [
       PermissionsEnum.ROLE_ALL,
       PermissionsEnum.ROLE_CREATE,
@@ -194,7 +140,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/ticket-type',
     name: t('ticket_types'),
-    icon: TicketStarIcon,
+    icon: 'ticket',
     permissions: [
       PermissionsEnum.TICKET_TYPE_ALL,
       PermissionsEnum.TICKET_TYPE_CREATE,
@@ -206,7 +152,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/ticket',
     name: t('ticket'),
-    icon: TicketIcon,
+    icon: 'ticket',
     permissions: [
       PermissionsEnum.TICKET_ALL,
       PermissionsEnum.TICKET_CREATE,
@@ -218,7 +164,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/catalog',
     name: t('catalog'),
-    icon: ArchiveBook,
+    icon: 'books',
     permissions: [
       PermissionsEnum.CATALOG_ALL,
       PermissionsEnum.CATALOG_CREATE,
@@ -230,7 +176,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/catalog-items',
     name: t('catalog_items'),
-    icon: ItemsIcon,
+    icon: 'list-ui-alt',
     permissions: [
       PermissionsEnum.CATALOG_ALL,
       PermissionsEnum.CATALOG_CREATE,
@@ -245,7 +191,7 @@ const LocationRoutes = ref<Routes[]>([
   {
     link: '/admin/countries',
     name: t('country'),
-    icon: IconGlobal,
+    icon: 'globe',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum?.LOCATION_ALL,
@@ -259,7 +205,7 @@ const LocationRoutes = ref<Routes[]>([
   {
     link: '/admin/states',
     name: t('state'),
-    icon: HomeLocationIcon,
+    icon: 'map-marker-alt',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.LOCATION_ALL,
@@ -272,7 +218,7 @@ const LocationRoutes = ref<Routes[]>([
   {
     link: '/admin/cities',
     name: t('city'),
-    icon: IconMap,
+    icon: 'map',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.LOCATION_ALL,
@@ -285,7 +231,7 @@ const LocationRoutes = ref<Routes[]>([
   {
     link: '/admin/areas',
     name: t('locations'),
-    icon: IconArea,
+    icon: 'location-point',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.LOCATION_ALL,
@@ -301,7 +247,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/admin/where-house-type',
     name: t('warehouse_types'),
-    icon: LockerIcon,
+    icon: 'store-alt',
     permissions: [
       PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
       PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
@@ -314,7 +260,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/admin/hazard-type',
     name: t('hazard_type'),
-    icon: IconStatus,
+    icon: 'shield-exclamation',
     permissions: [
       PermissionsEnum.HAZARD_TYPE_ALL,
       PermissionsEnum.HAZARD_TYPE_FETCH,
@@ -327,7 +273,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/admin/accidents-type',
     name: t('incident_types'),
-    icon: ImportantIcon,
+    icon: 'exclamation-octagon',
     permissions: [
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
       PermissionsEnum.ACCIDENTS_TYPE_FETCH,
@@ -340,7 +286,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/admin/observation-type',
     name: t('observation_type'),
-    icon: EyeIcon,
+    icon: 'eye',
     permissions: [
       PermissionsEnum.OBSERVATION_TYPE_ALL,
       PermissionsEnum.OBSERVATION_TYPE_FETCH,
@@ -353,7 +299,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/admin/equipment-types',
     name: t('equipment_types'),
-    icon: AddEquipmentIcon,
+    icon: 'hard-hat',
     permissions: [
       PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
       PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
@@ -366,7 +312,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/admin/root-causes',
     name: t('root_causes'),
-    icon: RootCaseIcon,
+    icon: 'sitemap',
     permissions: [
       PermissionsEnum.ROOT_CAUSES_ALL,
       PermissionsEnum.ROOT_CAUSES_CREATE,
@@ -378,7 +324,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/admin/injury',
     name: t('injury'),
-    icon: InjuredIcon,
+    icon: 'medical-square',
     permissions: [
       PermissionsEnum.INJURY_ALL,
       PermissionsEnum.INJURY_CREATE,
@@ -393,7 +339,7 @@ const SubscriptionTypeRoutes = ref<Routes[]>([
   {
     link: '/admin/subscription-types',
     name: t('subscription_type'),
-    icon: MoneyIcon,
+    icon: 'money-bill',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum?.SUBSCRIPTION_TYPE_ALL,
@@ -407,7 +353,7 @@ const SubscriptionTypeRoutes = ref<Routes[]>([
   {
     link: '/admin/subscription-application',
     name: t('subscriptions_request'),
-    icon: ReceiptAdd,
+    icon: 'receipt',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum?.SUBSCRIPTION_APPLICATION_ALL,
@@ -424,7 +370,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/client-opinions',
     name: t('client_opinion'),
-    icon: OpinionIcon,
+    icon: 'feedback',
     permissions: [
       PermissionsEnum?.WEBSITE,
       PermissionsEnum?.CLIENT_OPINION_ALL,
@@ -438,7 +384,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/home-contact-us',
     name: t('home_contact_us'),
-    icon: MessageIcon,
+    icon: 'comment-message',
     permissions: [
       PermissionsEnum?.WEBSITE,
       PermissionsEnum?.HOME_CONTACT_US_ALL,
@@ -452,7 +398,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/categories',
     name: t('categories'),
-    icon: MenuBoardIcon,
+    icon: 'list-ui-alt',
     permissions: [
       PermissionsEnum.CATEGORY_ALL,
       PermissionsEnum.CATEGORY_CREATE,
@@ -464,7 +410,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/services',
     name: t('services'),
-    icon: IconSetting,
+    icon: 'setting',
     permissions: [
       PermissionsEnum.SERVICE_ALL,
       PermissionsEnum.SERVICE_CREATE,
@@ -476,7 +422,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/hashtags',
     name: t('hashtags'),
-    icon: TagIcon,
+    icon: 'tag-alt',
     permissions: [
       PermissionsEnum.HASHTAG_ALL,
       PermissionsEnum.HASHTAG_CREATE,
@@ -488,7 +434,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/term/add',
     name: t('terms'),
-    icon: DocumentTextIcon,
+    icon: 'file-contract',
     permissions: [
       PermissionsEnum.TERM_ALL,
       PermissionsEnum.TERM_CREATE_OR_UPDATE,
@@ -498,7 +444,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/headers',
     name: t('headers'),
-    icon: CloudIcon,
+    icon: 'window',
     permissions: [
       PermissionsEnum.HEADER_ALL,
       PermissionsEnum.HEADER_CREATE,
@@ -510,7 +456,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/service-features',
     name: t('service_features'),
-    icon: IconMethod,
+    icon: 'bolt',
     permissions: [
       PermissionsEnum.SERVICE_FEATURE_ALL,
       PermissionsEnum.SERVICE_FEATURE_CREATE,
@@ -522,7 +468,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/service_section',
     name: t('service_section'),
-    icon: ElementIcon,
+    icon: 'web-section',
     permissions: [
       PermissionsEnum.SERVICE_SECTION_ALL,
       PermissionsEnum.SERVICE_SECTION_CREATE,
@@ -534,7 +480,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/powerfull-features',
     name: t('powerful_features'),
-    icon: HighLevelIcon,
+    icon: 'star',
     permissions: [
       PermissionsEnum.POWERFUL_FEATURE_ALL,
       PermissionsEnum.POWERFUL_FEATURE_CREATE,
@@ -546,7 +492,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/system-works',
     name: t('system_works'),
-    icon: Repeaticon,
+    icon: 'sync',
     permissions: [
       PermissionsEnum.SYSTEM_WORK_ALL,
       PermissionsEnum.SYSTEM_WORK_CREATE,
@@ -558,7 +504,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/privacy/add',
     name: t('privacy'),
-    icon: LockIcon,
+    icon: 'lock',
     permissions: [
       PermissionsEnum.PRIVACY_ALL,
       PermissionsEnum.PRIVACY_CREATE_OR_UPDATE,
@@ -568,7 +514,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/home-view-pricing',
     name: t('homeViewPricing'),
-    icon: IconWallet,
+    icon: 'wallet',
     permissions: [
       PermissionsEnum.HOME_VIEW_PRICING_ALL,
       PermissionsEnum.HOME_VIEW_PRICING_CREATE,
@@ -580,7 +526,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/service_logs',
     name: t('service_logs'),
-    icon: HistoryLogIcon,
+    icon: 'history',
     permissions: [
       PermissionsEnum.SERVICE_LOG_ALL,
       PermissionsEnum.SERVICE_LOG_CREATE,
@@ -592,7 +538,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/blog',
     name: t('blogs'),
-    icon: BoookIcon,
+    icon: 'book',
     permissions: [
       PermissionsEnum.BLOG_ALL,
       PermissionsEnum.BLOG_CREATE,
@@ -604,7 +550,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/home-about-us',
     name: t('home_about_us'),
-    icon: HomeInfoIcon,
+    icon: 'estate',
     permissions: [
       PermissionsEnum.HOME_ABOUT_US_ALL,
       PermissionsEnum.HOME_ABOUT_US_CREATE,
@@ -616,7 +562,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/about-us-features',
     name: t('about_us_features'),
-    icon: QuestionMarkIcon,
+    icon: 'question-circle',
     permissions: [
       PermissionsEnum.ABOUT_US_FEATURE_ALL,
       PermissionsEnum.ABOUT_US_FEATURE_CREATE,
@@ -628,7 +574,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/about-us-core',
     name: t('about_us_core'),
-    icon: IconDiets,
+    icon: 'bullseye',
     permissions: [
       PermissionsEnum.ABOUT_US_CORE_ALL,
       PermissionsEnum.ABOUT_US_CORE_CREATE,
@@ -640,7 +586,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/faq',
     name: t('faqs'),
-    icon: MessageQuestionIcon,
+    icon: 'comment-question',
     permissions: [
       PermissionsEnum.FAQ_ALL,
       PermissionsEnum.FAQ_CREATE,
@@ -652,7 +598,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/system-risk-management',
     name: t('systemRiskManagement'),
-    icon: WarningIcon,
+    icon: 'shield-exclamation',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_ALL,
       PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_CREATE,
@@ -664,7 +610,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/our-system-step',
     name: t('ourSystemStep'),
-    icon: NewArrowIcon,
+    icon: 'directions',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_STEP_ALL,
       PermissionsEnum.OUR_SYSTEM_STEP_CREATE,
@@ -676,7 +622,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/system_banner',
     name: t('systemBanner'),
-    icon: ImageIcon,
+    icon: 'image',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_BANNER_ALL,
       PermissionsEnum.OUR_SYSTEM_BANNER_CREATE,
@@ -688,7 +634,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/system_feature',
     name: t('systemFeature'),
-    icon: CardsIcon,
+    icon: 'grid',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_FEATURE_ALL,
       PermissionsEnum.OUR_SYSTEM_FEATURE_CREATE,
@@ -700,7 +646,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/system_risk_type',
     name: t('systemRiskType'),
-    icon: DangerIcon,
+    icon: 'exclamation-triangle',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_RISK_TYPE_ALL,
       PermissionsEnum.OUR_SYSTEM_RISK_TYPE_CREATE,
@@ -712,7 +658,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/system_components',
     name: t('systemComponents'),
-    icon: OrganizationPermission,
+    icon: 'layers',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_COMPONENT_ALL,
       PermissionsEnum.OUR_SYSTEM_COMPONENT_CREATE,
@@ -761,35 +707,35 @@ watch(LoackupsAccordion, (val) => {
     <div class="icon-strip">
       <PermissionBuilder v-for="r in SettingsRoutes" :key="r.link" :code="r.permissions">
         <router-link :to="r.link" class="icon-item" :data-title="r.name">
-          <component :is="r.icon" class="strip-icon" />
+          <SidebarUnicon :name="r.icon" class="strip-icon" />
           <span class="icon-label">{{ $t(r.name) }}</span>
         </router-link>
       </PermissionBuilder>
 
       <PermissionBuilder v-for="r in LocationRoutes" :key="r.link" :code="r.permissions">
         <router-link :to="r.link" class="icon-item" :data-title="r.name">
-          <component :is="r.icon" class="strip-icon" />
+          <SidebarUnicon :name="r.icon" class="strip-icon" />
           <span class="icon-label">{{ $t(r.name) }}</span>
         </router-link>
       </PermissionBuilder>
 
       <PermissionBuilder v-for="r in SubscriptionTypeRoutes" :key="r.link" :code="r.permissions">
         <router-link :to="r.link" class="icon-item" :data-title="r.name">
-          <component :is="r.icon" class="strip-icon" />
+          <SidebarUnicon :name="r.icon" class="strip-icon" />
           <span class="icon-label">{{ $t(r.name) }}</span>
         </router-link>
       </PermissionBuilder>
 
       <PermissionBuilder v-for="r in WebsiteRoutes" :key="r.link" :code="r.permissions">
         <router-link :to="r.link" class="icon-item" :data-title="r.name">
-          <component :is="r.icon" class="strip-icon" />
+          <SidebarUnicon :name="r.icon" class="strip-icon" />
           <span class="icon-label">{{ $t(r.name) }}</span>
         </router-link>
       </PermissionBuilder>
 
       <PermissionBuilder v-for="r in LockUpsRoutes" :key="r.link" :code="r.permissions">
         <router-link :to="r.link" class="icon-item" :data-title="r.name">
-          <component :is="r.icon" class="strip-icon" />
+          <SidebarUnicon :name="r.icon" class="strip-icon" />
           <span class="icon-label">{{ $t(r.name) }}</span>
         </router-link>
       </PermissionBuilder>
@@ -819,7 +765,7 @@ watch(LoackupsAccordion, (val) => {
         <AccordionPanel value="0">
           <AccordionHeader>
             <div class="links-header">
-              <IconSetting />
+              <SidebarUnicon name="setting" />
               {{ $t('settings') }}
             </div>
           </AccordionHeader>
@@ -833,7 +779,7 @@ watch(LoackupsAccordion, (val) => {
               >
                 <li>
                   <router-link :to="r.link">
-                    <component :is="r.icon" class="route-icon" />
+                    <SidebarUnicon :name="r.icon" class="route-icon" />
                     <span>{{ $t(r.name) }}</span>
                   </router-link>
                 </li>
@@ -852,7 +798,7 @@ watch(LoackupsAccordion, (val) => {
         <AccordionPanel value="1">
           <AccordionHeader>
             <div class="links-header">
-              <Sidebarlocation />
+              <SidebarUnicon name="map-marker-alt" />
               {{ $t('location') }}
             </div>
           </AccordionHeader>
@@ -865,7 +811,7 @@ watch(LoackupsAccordion, (val) => {
               >
                 <li>
                   <router-link :to="r.link">
-                    <component :is="r.icon" class="route-icon" />
+                    <SidebarUnicon :name="r.icon" class="route-icon" />
                     <span>{{ $t(r.name) }}</span>
                   </router-link>
                 </li>
@@ -893,7 +839,7 @@ watch(LoackupsAccordion, (val) => {
         <AccordionPanel value="3">
           <AccordionHeader>
             <div class="links-header">
-              <MoneyIcon />
+              <SidebarUnicon name="money-bill" />
               {{ $t('subscription_type') }}
             </div>
           </AccordionHeader>
@@ -906,7 +852,7 @@ watch(LoackupsAccordion, (val) => {
               >
                 <li>
                   <router-link :to="r.link">
-                    <component :is="r.icon" class="route-icon" />
+                    <SidebarUnicon :name="r.icon" class="route-icon" />
                     <span>{{ $t(r.name) }}</span>
                   </router-link>
                 </li>
@@ -956,7 +902,7 @@ watch(LoackupsAccordion, (val) => {
         <AccordionPanel value="2">
           <AccordionHeader>
             <div class="links-header">
-              <GlobalIcon />
+              <SidebarUnicon name="globe" />
               {{ $t('website') }}
             </div>
           </AccordionHeader>
@@ -970,7 +916,7 @@ watch(LoackupsAccordion, (val) => {
               >
                 <li>
                   <router-link :to="r.link">
-                    <component :is="r.icon" class="route-icon" />
+                    <SidebarUnicon :name="r.icon" class="route-icon" />
                     <span>{{ $t(r.name) }}</span>
                   </router-link>
                 </li>
@@ -991,7 +937,7 @@ watch(LoackupsAccordion, (val) => {
         <AccordionPanel value="4">
           <AccordionHeader>
             <div class="links-header">
-              <Locaps />
+              <SidebarUnicon name="lock" />
               {{ $t('Lockups') }}
             </div>
           </AccordionHeader>
@@ -1005,7 +951,7 @@ watch(LoackupsAccordion, (val) => {
               >
                 <li>
                   <router-link :to="r.link" :class="route?.fullPath?.includes(r.link) ? '' : ''">
-                    <component :is="r.icon" class="route-icon" />
+                    <SidebarUnicon :name="r.icon" class="route-icon" />
                     <span>{{ $t(r.name) }}</span>
                   </router-link>
                 </li>
@@ -1047,7 +993,7 @@ watch(LoackupsAccordion, (val) => {
   min-height: 68px;
   padding: 8px 4px;
   border-radius: 16px;
-  color: #dbeafe;
+  color: #d9e3f2;
   transition:
     background 0.2s ease,
     color 0.2s ease,
@@ -1061,6 +1007,9 @@ watch(LoackupsAccordion, (val) => {
 .icon-item:hover,
 .icon-item.router-link-active {
   background: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 12px 24px rgba(10, 54, 129, 0.18);
   color: #ffffff;
   transform: translateY(-1px);
 }
@@ -1093,6 +1042,7 @@ watch(LoackupsAccordion, (val) => {
   width: 22px;
   height: 22px;
   flex-shrink: 0;
+  color: currentColor;
 }
 
 .icon-label {
@@ -1112,6 +1062,7 @@ watch(LoackupsAccordion, (val) => {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
-  opacity: 0.7;
+  color: currentColor;
+  opacity: 0.82;
 }
 </style>

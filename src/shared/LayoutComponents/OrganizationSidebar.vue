@@ -1,53 +1,12 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
-import type { Component } from 'vue'
 import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import GeerIcon from '../icons/GeerIcon.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/user'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
-
-import AwardIcon from '@/shared/icons/AwardIcon.vue'
-import TeamIcon from '@/shared/icons/TeamIcon.vue'
-import ContractorIcon from '@/shared/icons/ContractorIcon.vue'
-import IconScopes from '@/shared/icons/IconScopes.vue'
-import LockerIcon from '@/shared/icons/LockerIcon.vue'
-import AddcertificatesIcon from '@/shared/icons/Addcertificates.vue'
-import PathSerialIcon from '@/shared/icons/pathSerial.vue'
-import HazardIcon from '@/shared/icons/HazardIcon.vue'
-import FactorItemIcon from '@/shared/icons/FactorItemIcon.vue'
-import TicketIcon from '@/shared/icons/TicketIcon.vue'
-import HomeProjectIcon from '@/shared/icons/HomeProjectIcon.vue'
-import LocationIcon from '@/shared/icons/LocationIcon.vue'
-import IconArea from '@/shared/icons/IconArea.vue'
-import ZoneIcon from '@/shared/icons/ZoneIcon.vue'
-import WarningIcon from '@/shared/icons/WarningIcon.vue'
-import EyeIcon from '@/shared/icons/EyeIcon.vue'
-import ToolIcon from '@/shared/icons/ToolIcon.vue'
-import RootCaseIcon from '@/shared/icons/RootCase.vue'
-import InjuredIcon from '@/shared/icons/injured.vue'
-import ProjectProgressIcon from '../icons/ProjectProgressIcon.vue'
-import TemplateIcon from '../icons/TemplateIcon.vue'
-import HierarchyIco from '../icons/HierarchyIco.vue'
-import EmployeeIconSidebar from '../icons/EmployeeIconSidebar.vue'
-import RolesIcon from '../icons/RolesIcon.vue'
-import WareHouseIconSidebar from '../icons/WareHouseIconSidebar.vue'
-import AddEquipmentIcon from '@/shared/icons/AddEquipmentIcon.vue'
-import InvestegationIcon from '@/shared/icons/InvestegationIcon.vue'
-import CapaIcon from '@/shared/icons/CapaIcon.vue'
-import ObservDetailsIcon from '@/shared/icons/observdetails.vue'
-import ChecklistIcon from '@/shared/icons/ChecklistIcon.vue'
-import IconProjectShow from '@/shared/icons/IconProjectShow.vue'
-import IconGlobal from '@/shared/icons/IconGlobal.vue'
-import HomeLocationIcon from '@/shared/icons/HomeLocationIcon.vue'
-import IconMap from '@/shared/icons/IconMap.vue'
-import DangerIcon from '@/shared/icons/DangerIcon.vue'
-import IconDocumentation from '@/shared/icons/IconDocumentation.vue'
-import IconTime from '@/shared/icons/IconTime.vue'
-import IconStatus from '@/shared/icons/IconStatus.vue'
-import IconMethod from '@/shared/icons/IconMethod.vue'
+import SidebarUnicon from '@/shared/icons/SidebarUnicon.vue'
 
 defineProps<{ open: boolean }>()
 
@@ -56,7 +15,7 @@ interface Routes {
   link: string | {}
   name: string
   permissions: PermissionsEnum[]
-  icon: Component
+  icon: string
 }
 const { t } = useI18n()
 
@@ -64,7 +23,7 @@ const GauideRoutes = ref<Routes[]>([
   {
     link: '/organization/project-progress',
     name: t('overview'),
-    icon: ProjectProgressIcon,
+    icon: 'dashboard',
     permissions: [
       PermissionsEnum.ADMIN,
       PermissionsEnum.PROJECT_PROGRESS_ALL,
@@ -78,43 +37,43 @@ const OperationsRoutes = ref<Routes[]>([
   {
     link: '/organization/projects',
     name: t('Projects'),
-    icon: IconProjectShow,
+    icon: 'briefcase-alt',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/equipments',
     name: t('equipment'),
-    icon: AddEquipmentIcon,
+    icon: 'hard-hat',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/Investigating',
     name: t('investigations'),
-    icon: InvestegationIcon,
+    icon: 'search-alt',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/capa',
     name: t('CAPA'),
-    icon: CapaIcon,
+    icon: 'shield-check',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/equipment-mangement/incedant?isAll=1',
     name: t('Incidents'),
-    icon: WarningIcon,
+    icon: 'exclamation-triangle',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/equipment-mangement/observation?isAll=1&type=2',
     name: t('observations'),
-    icon: ObservDetailsIcon,
+    icon: 'eye',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/equipment-mangement/inspection?inspectionType=1',
     name: t('Inspection'),
-    icon: ChecklistIcon,
+    icon: 'clipboard-notes',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
 ])
@@ -123,7 +82,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/certificate',
     name: t('certificates'),
-    icon: AwardIcon,
+    icon: 'award',
     permissions: [
       PermissionsEnum.CERTIFICATE_ALL,
       PermissionsEnum.CERTIFICATE_CREATE,
@@ -135,7 +94,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/template',
     name: t('templates'),
-    icon: TemplateIcon,
+    icon: 'book-open',
     permissions: [
       PermissionsEnum.ORG_TEMPLATE_ALL,
       PermissionsEnum.ORG_TEMPLATE_CREATE,
@@ -147,7 +106,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/herikaly',
     name: t('positions'),
-    icon: HierarchyIco,
+    icon: 'sitemap',
     permissions: [
       PermissionsEnum.HERIKALY_ALL,
       PermissionsEnum.HERIKALY_CREATE,
@@ -159,7 +118,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/organization-employee',
     name: t('employees'),
-    icon: EmployeeIconSidebar,
+    icon: 'users-alt',
     permissions: [
       PermissionsEnum.ORG_EMPLOYEE_ALL,
       PermissionsEnum.ORG_EMPLOYEE_CREATE,
@@ -172,7 +131,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/team',
     name: t('team'),
-    icon: TeamIcon,
+    icon: 'user-check',
     permissions: [
       PermissionsEnum.ORG_TEAM_ALL,
       PermissionsEnum.ORG_TEAM_CREATE,
@@ -184,7 +143,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/contractor',
     name: t('contractors'),
-    icon: ContractorIcon,
+    icon: 'constructor',
     permissions: [
       PermissionsEnum.ORG_CONTRACTOR_ALL,
       PermissionsEnum.ORG_CONTRACTOR_CREATE,
@@ -196,7 +155,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/role',
     name: t('roles'),
-    icon: RolesIcon,
+    icon: 'shield-check',
     permissions: [
       PermissionsEnum.ORG_ROLE_ALL,
       PermissionsEnum.ORG_ROLE_CREATE,
@@ -208,7 +167,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/scope',
     name: t('contractor_scope'),
-    icon: IconScopes,
+    icon: 'crosshair',
     permissions: [
       PermissionsEnum.SCOPE_ALL,
       PermissionsEnum.SCOPE_CREATE,
@@ -220,7 +179,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/where-house',
     name: t('warehouse'),
-    icon: WareHouseIconSidebar,
+    icon: 'store',
     permissions: [
       PermissionsEnum.WHIERE_HOUSE_ALL,
       PermissionsEnum.WHIERE_HOUSE_CREATE,
@@ -232,7 +191,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/employee-certificate',
     name: t('employee_certificate'),
-    icon: AddcertificatesIcon,
+    icon: 'file-plus-alt',
     permissions: [
       PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
       PermissionsEnum.EMPLOYEE_CERTIFICATE_CREATE,
@@ -244,7 +203,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/serial-number',
     name: t('coding_system'),
-    icon: PathSerialIcon,
+    icon: 'qrcode-scan',
     permissions: [
       PermissionsEnum.CODING_SYSTEM_ALL,
       PermissionsEnum.CODING_SYSTEM_CREATE,
@@ -256,7 +215,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/hazard',
     name: t('hazard'),
-    icon: HazardIcon,
+    icon: 'shield-exclamation',
     permissions: [
       PermissionsEnum.ORG_HAZARD_ALL,
       PermissionsEnum.ORG_HAZARD_CREATE,
@@ -268,7 +227,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/factory',
     name: t('Hazard factor'),
-    icon: DangerIcon,
+    icon: 'exclamation-octagon',
     permissions: [
       PermissionsEnum.ORG_FACTORY_ALL,
       PermissionsEnum.ORG_FACTORY_CREATE,
@@ -280,7 +239,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/factories-items',
     name: t('Hazard factor item'),
-    icon: FactorItemIcon,
+    icon: 'circle-layer',
     permissions: [
       PermissionsEnum.ORG_FACTORY_ITEM_ALL,
       PermissionsEnum.ORG_FACTORY_ITEM_CREATE,
@@ -292,7 +251,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/document-refrence',
     name: 'Document Refrence',
-    icon: IconDocumentation,
+    icon: 'file-contract',
     permissions: [
       PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_ALL,
       PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_CREATE,
@@ -304,7 +263,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/shifts',
     name: t('shifts'),
-    icon: IconTime,
+    icon: 'clock',
     permissions: [
       PermissionsEnum.ORG_SHIFT_ALL,
       PermissionsEnum.ORG_SHIFT_CREATE,
@@ -318,7 +277,7 @@ const TicketRoutes = ref<Routes[]>([
   {
     link: '/organization/ticket',
     name: t('support'),
-    icon: TicketIcon,
+    icon: 'ticket',
     permissions: [
       PermissionsEnum.TICKET_ALL,
       PermissionsEnum.TICKET_CREATE,
@@ -333,7 +292,7 @@ const LocationRoutes = ref<Routes[]>([
   {
     link: '/organization/countries',
     name: t('country'),
-    icon: IconGlobal,
+    icon: 'globe',
     permissions: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.LOCATION_ORG_ALL,
@@ -347,7 +306,7 @@ const LocationRoutes = ref<Routes[]>([
   {
     link: '/organization/states',
     name: t('state'),
-    icon: HomeLocationIcon,
+    icon: 'map-marker-alt',
     permissions: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.LOCATION_ORG_ALL,
@@ -361,7 +320,7 @@ const LocationRoutes = ref<Routes[]>([
   {
     link: '/organization/cities',
     name: t('city'),
-    icon: IconMap,
+    icon: 'map',
     permissions: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.LOCATION_ORG_ALL,
@@ -375,7 +334,7 @@ const LocationRoutes = ref<Routes[]>([
   {
     link: '/organization/areas',
     name: t('location'),
-    icon: IconArea,
+    icon: 'location-point',
     permissions: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.LOCATION_ORG_ALL,
@@ -389,7 +348,7 @@ const LocationRoutes = ref<Routes[]>([
   {
     link: '/organization/project-zone',
     name: t('zones'),
-    icon: ZoneIcon,
+    icon: 'map-pin-alt',
     permissions: [
       PermissionsEnum.PROJECT_ZONE_ALL,
       PermissionsEnum.PROJECT_ZONE_CREATE,
@@ -404,7 +363,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/organization/where-house-type',
     name: t('warehouse_types'),
-    icon: LockerIcon,
+    icon: 'store-alt',
     permissions: [
       PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
       PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
@@ -417,7 +376,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/organization/hazard-type',
     name: t('hazard_classifications'),
-    icon: IconStatus,
+    icon: 'shield-exclamation',
     permissions: [
       PermissionsEnum.HAZARD_TYPE_ALL,
       PermissionsEnum.HAZARD_TYPE_FETCH,
@@ -430,7 +389,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/organization/accidents-type',
     name: t('incident_types'),
-    icon: IconMethod,
+    icon: 'exclamation-octagon',
     permissions: [
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
       PermissionsEnum.ACCIDENTS_TYPE_FETCH,
@@ -443,7 +402,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/organization/observation-type',
     name: t('observation_type'),
-    icon: EyeIcon,
+    icon: 'eye',
     permissions: [
       PermissionsEnum.OBSERVATION_TYPE_ALL,
       PermissionsEnum.OBSERVATION_TYPE_FETCH,
@@ -456,7 +415,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/organization/equipment-types',
     name: t('equipment_types'),
-    icon: ToolIcon,
+    icon: 'wrench',
     permissions: [
       PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
       PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
@@ -469,7 +428,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/organization/root-causes',
     name: t('root_causes'),
-    icon: RootCaseIcon,
+    icon: 'sitemap',
     permissions: [
       PermissionsEnum.ROOT_CAUSES_ALL,
       PermissionsEnum.ROOT_CAUSES_CREATE,
@@ -481,7 +440,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/organization/injury',
     name: t('injury'),
-    icon: InjuredIcon,
+    icon: 'medical-square',
     permissions: [
       PermissionsEnum.INJURY_ALL,
       PermissionsEnum.INJURY_CREATE,
@@ -498,7 +457,7 @@ interface RouteGroup {
   key: string
   label: string
   eyebrow: string
-  icon: Component
+  icon: string
   routes: Routes[]
   permissions: PermissionsEnum[]
   adminOnly?: boolean
@@ -512,7 +471,7 @@ const routeGroups = computed<RouteGroup[]>(() => [
     key: 'overview',
     label: t('overview'),
     eyebrow: t('overview'),
-    icon: ProjectProgressIcon,
+    icon: 'dashboard',
     routes: GauideRoutes.value,
     permissions: flattenPermissions(GauideRoutes.value),
     adminOnly: true,
@@ -521,7 +480,7 @@ const routeGroups = computed<RouteGroup[]>(() => [
     key: 'operations',
     label: t('project managment'),
     eyebrow: t('project managment'),
-    icon: IconProjectShow,
+    icon: 'briefcase-alt',
     routes: OperationsRoutes.value,
     permissions: flattenPermissions(OperationsRoutes.value),
   },
@@ -529,7 +488,7 @@ const routeGroups = computed<RouteGroup[]>(() => [
     key: 'organization',
     label: t('organization_setting'),
     eyebrow: t('organization_setting'),
-    icon: GeerIcon,
+    icon: 'setting',
     routes: OrganizationRoutes.value,
     permissions: flattenPermissions(OrganizationRoutes.value),
   },
@@ -537,7 +496,7 @@ const routeGroups = computed<RouteGroup[]>(() => [
     key: 'locations',
     label: t('location'),
     eyebrow: t('location'),
-    icon: LocationIcon,
+    icon: 'map-marker-alt',
     routes: LocationRoutes.value,
     permissions: [PermissionsEnum?.LOCATION_ORG_ALL],
   },
@@ -545,7 +504,7 @@ const routeGroups = computed<RouteGroup[]>(() => [
     key: 'lockups',
     label: t('Lockups'),
     eyebrow: t('Lockups'),
-    icon: LockerIcon,
+    icon: 'lock',
     routes: LockUpsRoutes.value,
     permissions: flattenPermissions(LockUpsRoutes.value),
   },
@@ -553,7 +512,7 @@ const routeGroups = computed<RouteGroup[]>(() => [
     key: 'support',
     label: t('support'),
     eyebrow: t('support'),
-    icon: TicketIcon,
+    icon: 'ticket',
     routes: TicketRoutes.value,
     permissions: flattenPermissions(TicketRoutes.value),
   },
@@ -684,7 +643,7 @@ onBeforeUnmount(() => {
             @focus="openGroup(group.key)"
             @blur="scheduleClosePane"
           >
-            <component :is="group.icon" class="strip-icon" />
+            <SidebarUnicon :name="group.icon" class="strip-icon" />
             <span>{{ group.label }}</span>
           </button>
         </PermissionBuilder>
@@ -703,7 +662,7 @@ onBeforeUnmount(() => {
         <header class="side-pane-header">
           <div class="side-pane-heading">
             <span class="side-pane-icon">
-              <component :is="activeGroup.icon" />
+              <SidebarUnicon :name="activeGroup.icon" />
             </span>
             <div>
               <strong>{{ activeGroup.label }}</strong>
@@ -712,26 +671,7 @@ onBeforeUnmount(() => {
           </div>
 
           <label class="sidebar-search">
-            <svg
-              class="sidebar-search__icon"
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                opacity="0.4"
-                d="M9.17 16.68a7.51 7.51 0 1 0 0-15.01 7.51 7.51 0 0 0 0 15.01Z"
-                fill="currentColor"
-              />
-              <path
-                d="m17.5 17.5-2.5-2.5M11.25 9.17H7.08"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-              />
-            </svg>
+            <SidebarUnicon name="search" class="sidebar-search__icon" />
             <input
               v-model="searchTerm"
               type="search"
@@ -746,10 +686,7 @@ onBeforeUnmount(() => {
         <nav class="side-pane-routes" :aria-label="`${activeGroup.label} routes`">
           <div class="side-pane-routes__inner">
             <template v-for="group in visibleRouteGroups" :key="group.key">
-              <PermissionBuilder
-                v-if="isSearching"
-                :code="group.permissions"
-              >
+              <PermissionBuilder v-if="isSearching" :code="group.permissions">
                 <p class="side-route-group-title">{{ group.label }}</p>
               </PermissionBuilder>
 
@@ -764,7 +701,7 @@ onBeforeUnmount(() => {
                   :title="$t(sidebarRoute.name)"
                   @click="hidePane"
                 >
-                  <component :is="sidebarRoute.icon" class="side-icon" />
+                  <SidebarUnicon :name="sidebarRoute.icon" class="side-icon" />
                   <span class="side-label-wrap">
                     <span class="side-label">{{ $t(sidebarRoute.name) }}</span>
                     <span v-if="isSearching" class="side-label-parent">{{ group.label }}</span>
@@ -788,9 +725,6 @@ onBeforeUnmount(() => {
 .side-pane-icon :deep(svg) {
   width: 35px !important;
   height: 35px !important;
-  margin-left: 2px;
-  margin-top: 2px;
-
 }
 .modern-sidebar {
   display: flex;
@@ -826,9 +760,9 @@ onBeforeUnmount(() => {
   min-height: 58px;
   padding: 7px 6px;
   border: 0;
-  border-radius: 16px;
+  border-radius: 18px;
   background: transparent;
-  color: #b2bbc6;
+  color: #dbeafe;
   cursor: pointer;
   text-align: center;
   transition:
@@ -840,7 +774,10 @@ onBeforeUnmount(() => {
 .side-rail-btn:hover,
 .side-rail-btn.is-selected,
 .side-rail-btn.is-active {
-  background: rgba(255, 255, 255, 0.11);
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 12px 24px rgba(10, 54, 129, 0.18);
   color: #ffffff;
   transform: translateY(-1px);
 }
@@ -864,11 +801,12 @@ onBeforeUnmount(() => {
   color: currentColor;
 }
 
-.strip-icon :deep(path),
-.side-icon :deep(path),
-.side-pane-icon :deep(path) {
-  fill: currentColor !important;
-  stroke: currentColor;
+.strip-icon :deep(svg),
+.side-icon :deep(svg),
+.side-pane-icon :deep(svg),
+.sidebar-search__icon :deep(svg) {
+  width: 100%;
+  height: 100%;
 }
 
 .side-pane {
@@ -883,9 +821,13 @@ onBeforeUnmount(() => {
   flex-direction: column;
   padding: 22px 16px 14px;
   background:
-    radial-gradient(circle at 0 0, rgba(30, 58, 142, 0.82), transparent 36%),
-    linear-gradient(180deg, #111827 0%, #1f2937 100%);
-  box-shadow: 18px 0 42px rgba(9, 11, 14, 0.36);
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.2) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.18) 0 16%, transparent 34%),
+    linear-gradient(155deg, #1d4ed8 0%, #1e40af 44%, #0f2f80 100%);
+  border-inline-end: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    18px 0 42px rgba(10, 54, 129, 0.28),
+    inset -1px 0 0 rgba(255, 255, 255, 0.12);
 }
 
 .side-pane-header {
@@ -929,8 +871,11 @@ onBeforeUnmount(() => {
   height: 38px;
   flex-shrink: 0;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #b2bbc6;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    0 12px 24px rgba(10, 54, 129, 0.2);
+  color: #ffffff;
 }
 
 .side-pane-icon :deep(svg) {
@@ -944,10 +889,11 @@ onBeforeUnmount(() => {
   gap: 10px;
   height: 42px;
   padding: 0 12px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.075);
   color: rgba(217, 230, 243, 0.66);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
 .sidebar-search__icon {
@@ -1013,7 +959,7 @@ onBeforeUnmount(() => {
   padding: 12px 13px;
   border: 1px solid transparent;
   border-radius: 14px;
-  color: rgba(229, 237, 247, 0.82);
+  color: rgba(229, 237, 247, 0.84);
   text-decoration: none;
   transition:
     background 0.18s ease,
@@ -1025,8 +971,11 @@ onBeforeUnmount(() => {
 .side-btn:hover,
 .side-btn.active,
 .side-btn.router-link-active {
-  border-color: rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 12px 24px rgba(10, 54, 129, 0.18);
   color: #ffffff;
   transform: translateX(2px);
 }

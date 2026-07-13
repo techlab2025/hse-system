@@ -5,14 +5,11 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import OrganizationSidebar from './OrganizationSidebar.vue'
 import AdminSidebar from './AdminSidebar.vue'
-import SIdebarOpenIcon from '../icons/SIdebarOpenIcon.vue'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus.ts'
-import HomeProjectIcon from '../icons/HomeProjectIcon.vue'
-import IconLogout from '../icons/IconLogout.vue'
+import SidebarUnicon from '@/shared/icons/SidebarUnicon.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
 
 const props = defineProps<{ open: boolean }>()
-const emit = defineEmits<{ 'update:open': [value: boolean] }>()
 
 const user = useUserStore()
 const route = useRoute()
@@ -93,15 +90,11 @@ const logout = () => {
     ]"
   >
     <div class="sidebar-wrapper">
-      <!-- <button class="sidebar-toggle" @click="emit('update:open', !open)" title="Toggle sidebar">
-        <SIdebarOpenIcon />
-      </button> -->
-
       <router-link
         :to="`${Number(user.user?.type) === EmployeeStatusEnum.Admin ? '/admin' : '/organization'}`"
         class="sidebar-back"
       >
-        <span class="home-icon"><HomeProjectIcon /></span>
+        <span class="home-icon"><SidebarUnicon name="home" /></span>
         <span>Home</span>
       </router-link>
 
@@ -115,7 +108,7 @@ const logout = () => {
       </div>
 
       <button class="mobile-sidebar-logout" type="button" @click="logout">
-        <IconLogout />
+        <SidebarUnicon name="signout" />
         <span>{{ $t('logout') }}</span>
       </button>
     </div>
@@ -125,7 +118,10 @@ const logout = () => {
 <style scoped>
 .sidebar {
   padding-top: 20px;
-  background: linear-gradient(155deg, #1d4ed8 0%, #1e40af 44%, #0f2f80 100%), #1d4ed8 !important;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.2) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.18) 0 16%, transparent 34%),
+    linear-gradient(155deg, #1d4ed8 0%, #1e40af 44%, #0f2f80 100%) !important;
   box-shadow:
     18px 0 38px rgba(30, 64, 175, 0.22),
     inset -1px 0 0 rgba(255, 255, 255, 0.12);
@@ -134,7 +130,10 @@ const logout = () => {
   width: 92px;
 }
 .sidebar.open {
-  background: linear-gradient(155deg, #1d4ed8 0%, #1e40af 44%, #0f2f80 100%), #1d4ed8 !important;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.2) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.18) 0 16%, transparent 34%),
+    linear-gradient(155deg, #1d4ed8 0%, #1e40af 44%, #0f2f80 100%) !important;
 }
 
 .sidebar.is-dark,
@@ -330,7 +329,8 @@ const logout = () => {
   color: #ffffff;
   box-shadow: none;
 }
-.home-icon :deep(svg) {
+.home-icon :deep(svg),
+.home-icon :deep(.sidebar-unicon) {
   width: 19px;
   height: 19px;
 }
@@ -514,8 +514,13 @@ const logout = () => {
   padding-top: 0;
   overflow: visible;
   border-radius: 0;
-  background: #1e3a8a !important;
-  box-shadow: none;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.2) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.18) 0 16%, transparent 34%),
+    linear-gradient(155deg, #1d4ed8 0%, #1e40af 44%, #0f2f80 100%) !important;
+  box-shadow:
+    14px 0 32px rgba(30, 64, 175, 0.22),
+    inset -1px 0 0 rgba(255, 255, 255, 0.12);
   z-index: 10040;
   transition:
     width 0.24s ease,
@@ -524,7 +529,10 @@ const logout = () => {
 
 .sidebar.organization-modern.open {
   width: 90px;
-  background: #1e3a8a !important;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.2) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.18) 0 16%, transparent 34%),
+    linear-gradient(155deg, #1d4ed8 0%, #1e40af 44%, #0f2f80 100%) !important;
 }
 
 .sidebar.organization-modern.close {
@@ -557,7 +565,7 @@ const logout = () => {
   border-radius: 16px;
   background: transparent !important;
   box-shadow: none;
-  color: #b2bbc6 !important;
+  color: #dbeafe !important;
 }
 
 .sidebar.organization-modern.open .sidebar-back,
@@ -565,13 +573,16 @@ const logout = () => {
   width: 74px !important;
   margin-top: 10px !important;
   background: transparent !important;
-  color: #b2bbc6 !important;
+  color: #dbeafe !important;
 }
 
 .sidebar.organization-modern .sidebar-back:hover,
 .sidebar.organization-modern .sidebar-back.router-link-active {
-  background: rgba(255, 255, 255, 0.11) !important;
+  background: rgba(255, 255, 255, 0.14) !important;
   color: #ffffff !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 12px 24px rgba(10, 54, 129, 0.18);
   transform: translateY(-1px);
 }
 
@@ -662,7 +673,8 @@ const logout = () => {
     background: rgba(255, 255, 255, 0.22);
   }
 
-  .mobile-sidebar-logout :deep(svg) {
+  .mobile-sidebar-logout :deep(svg),
+  .mobile-sidebar-logout :deep(.sidebar-unicon) {
     width: 20px;
     height: 20px;
     flex-shrink: 0;
