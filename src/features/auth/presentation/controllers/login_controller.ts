@@ -5,7 +5,6 @@ import type Params from '@/base/core/params/params'
 import LoginUseCase from '@/features/auth/Domain/use_case/login_use_case'
 import { useUserStore } from '@/stores/user'
 import errorImage from '@/assets/images/error.png'
-import successImage from '@/assets/images/success-dialog.png'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import { OrganizationTypeEnum } from '../../Core/Enum/organization_type'
 import LoginOrganizationUseCase from '../../Domain/use_case/login_organization_use_case'
@@ -50,13 +49,6 @@ export default class LoginController extends ControllerInterface<UserModel> {
 
       console.log(this.isDataSuccess(), 'this.isDataSuccess()')
       if (this.isDataSuccess()) {
-        DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog-success',
-          titleContent: 'Login Success',
-          imageElement: successImage,
-          messageContent: null,
-        })
-
         const userStore = useUserStore()
         const ProjectSelector = useProjectSelectStore()
 

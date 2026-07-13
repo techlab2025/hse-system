@@ -47,7 +47,7 @@ const isPasswordVisible = ref()
 </script>
 
 <template>
-  <section class="login" :class="{ 'is-entering-workspace': isEnteringWorkspace }">
+  <section class="login login--admin" :class="{ 'is-entering-workspace': isEnteringWorkspace }">
     <div v-if="isEnteringWorkspace" class="login-route-loader" aria-live="polite">
       <div class="loader-card">
         <div class="loader-orbit">
@@ -94,6 +94,7 @@ const isPasswordVisible = ref()
         </div>
 
         <div class="text">
+          <span class="auth-badge">{{ $t('Admin workspace') }}</span>
           <p>{{ $t('Log in now') }}</p>
           <span>{{ $t('Please enter your email and password to log in') }}</span>
         </div>
@@ -130,7 +131,8 @@ const isPasswordVisible = ref()
         </div>
       </div>
       <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
-        {{ isEnteringWorkspace ? $t('Entering workspace') : isSubmitting ? $t('loading') : $t('login') }}
+        <span v-if="isSubmitting" class="login-button-loader"></span>
+        <span>{{ isEnteringWorkspace ? $t('Entering workspace') : isSubmitting ? $t('loading') : $t('login') }}</span>
       </button>
     </form>
   </section>
