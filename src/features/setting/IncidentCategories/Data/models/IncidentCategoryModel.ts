@@ -1,0 +1,70 @@
+import TitleInterface from '@/base/Data/Models/title_interface'
+import TitleModel from '@/base/Data/Models/title_model.ts'
+// import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
+
+export default class IncidentCategoryModel extends TitleInterface {
+  public id: number
+  // public hasCertificate: number
+  public allIndustries: number
+  public industries: TitleModel<string>[]
+  public parentId: number
+  public image: string
+  public titles: string
+  public incidentType: TitleInterface | null
+
+  constructor(
+    id: number,
+    title: string,
+    subtitle: string,
+    // hasCertificate: number,
+    allIndustries: number,
+    industries: TitleModel<string>[] = [],
+    parentId: number,
+    image: string,
+    titles: string,
+    incidentType: TitleInterface | null = null,
+  ) {
+    super({ id, title, subtitle })
+
+    this.id = id
+    // this.hasCertificate = hasCertificate
+    this.allIndustries = allIndustries
+    this.industries = industries
+    this.parentId = parentId
+    this.image = image
+    this.titles = titles
+    this.incidentType = incidentType
+  }
+
+  static fromMap(data: any): IncidentCategoryModel {
+    return new IncidentCategoryModel(
+      data.id,
+      data.title,
+      data.subtitle,
+      // data.has_certificate,
+      data.all_industries,
+      data.industries?.length > 0
+        ? data.industries?.map((industry) => TitleModel.fromMap(industry))
+        : [],
+      data.parent_id,
+      data.image,
+      data.titles,
+      data.incident_type ? TitleModel.fromMap(data.incident_type) : null,
+    )
+  }
+  static transformData(data: string[][]): IncidentCategoryModel[] {
+    return data.map(
+      (row, index) =>
+        new IncidentCategoryModel(
+          index + 1,
+          row[0] || '',
+          row[1] || '',
+          row[2] ? parseInt(row[2]) : 0,
+          [],
+          row[3] ? parseInt(row[3]) : 0,
+          row[4] || '',
+          row[5] || '',
+        ),
+    )
+  }
+}

@@ -284,6 +284,19 @@ const LockUpsRoutes = ref<Routes[]>([
     ],
   },
   {
+    link: '/admin/incident-category',
+    name: t('incident_categories'),
+    icon: 'list-ui-alt',
+    permissions: [
+      PermissionsEnum.ACCIDENTS_TYPE_ALL,
+      PermissionsEnum.ACCIDENTS_TYPE_FETCH,
+      PermissionsEnum.ACCIDENTS_TYPE_DETAILS,
+      PermissionsEnum.ACCIDENTS_TYPE_CREATE,
+      PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
+      PermissionsEnum.ACCIDENTS_TYPE_DELETE,
+    ],
+  },
+  {
     link: '/admin/observation-type',
     name: t('observation_type'),
     icon: 'eye',

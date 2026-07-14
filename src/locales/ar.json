@@ -877,6 +877,7 @@
   "add_warehouse_type": "إضافة نوع مخزن",
   "hazard_classifications": "تصنيف المخاطر",
   "incident_types": "أنواع الحوادث",
+  "incident_categories": "فئات الحوادث",
   "observation_type": "أنواع الملاحظات",
   "equipment_types": "أنواع المعدات",
   "root_causes": "الأسباب الجذرية",

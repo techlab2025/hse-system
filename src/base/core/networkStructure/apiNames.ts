@@ -905,6 +905,26 @@ class ApiNames {
     return this.prefix + 'disable_accidents_type'
   }
 
+  // Incident Categories
+  public get CreateIncidentCategory() {
+    return this.prefix + 'create_incident_category'
+  }
+  public get IndexIncidentCategory() {
+    return this.prefix + 'fetch_incident_categories'
+  }
+  public get ShowIncidentCategory() {
+    return this.prefix + 'fetch_incident_category_details'
+  }
+  public get EditIncidentCategory() {
+    return this.prefix + 'update_incident_category'
+  }
+  public get DeleteIncidentCategory() {
+    return this.prefix + 'delete_incident_category'
+  }
+  public get DisIncidentCategory() {
+    return this.prefix + 'disable_incident_category'
+  }
+
   // Organization
   public get CreateOrganization() {
     return this.prefix + 'create_organization'
@@ -1599,6 +1619,9 @@ class ApiNames {
   }
   public get CreateSystemAccidentsType() {
     return this.prefix + 'clone_accidant_type_types'
+  }
+  public get CreateSystemIncidentCategory() {
+    return this.prefix + 'clone_incident_categories'
   }
   public get CreateSystemObserverationType() {
     return this.prefix + 'clone_observation_types'

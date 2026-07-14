@@ -1178,6 +1178,7 @@
   "warehouse_types": "Warehouse Types",
   "hazard_type": "Hazard Type",
   "incident_types": "Incident Types",
+  "incident_categories": "Incident Categories",
   "observation_type": "Observation Type",
   "template_item_tag": "Template Item Tag",
   "contract_status": "Contract Status",
