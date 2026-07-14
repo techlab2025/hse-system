@@ -121,7 +121,7 @@ const hasInjuryData = (item: any) =>
   hasEmployeePayload(item?.employee) ||
   hasSectionValue(item?.text) ||
   Boolean(Number(item?.infectionTypeId?.id)) ||
-  Boolean(item?.isWorkStopped) ||
+  hasSectionFiles(item?.incidentCategories) ||
   hasSectionFiles(item?.images)
 
 const hasFatalityData = (item: any) =>
@@ -219,7 +219,9 @@ const updateData = () => {
                 employee.name,
                 item?.text || null,
                 item?.infectionTypeId?.id || 0,
-                item?.isWorkStopped ? 1 : 0,
+                item?.incidentCategories
+                  ?.map((category: TitleInterface) => Number(category.id))
+                  .filter(Boolean) || [],
                 item?.images?.map((el: any) => el.file) || [],
               )
             })
@@ -852,7 +854,7 @@ defineExpose({
         id="title"
         v-model="ObservationTitle"
         @input="updateData"
-        :placeholder="$t('Enter Observation title')"
+        :placeholder="$t(`Enter ${GetHeader(ObservationFactoryType)} title`)"
       />
       <p v-if="getFieldError('ObservationTitle')" class="required-field-message">
         {{ getFieldError('ObservationTitle') }}
@@ -1519,7 +1521,11 @@ defineExpose({
         ObservationFactoryType != Observation?.ObservationType
       "
     >
-      <FactoryAccidents class="not-colored" @update:data="UpdateAccidents" />
+      <FactoryAccidents
+        class="not-colored"
+        :incident-type-id="AccidentsType?.id ?? null"
+        @update:data="UpdateAccidents"
+      />
       <p v-if="getFieldError('Accidents')" class="required-field-message">
         {{ getFieldError('Accidents') }}
       </p>
@@ -1592,7 +1598,12 @@ defineExpose({
   width: 126px;
   height: 40px;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--brand-primary-50) 25%, var(--brand-primary-50) 50%, var(--brand-primary-50) 75%);
+  background: linear-gradient(
+    90deg,
+    var(--brand-primary-50) 25%,
+    var(--brand-primary-50) 50%,
+    var(--brand-primary-50) 75%
+  );
   background-size: 220% 100%;
   animation: form-filter-shimmer 1.15s linear infinite;
 }
@@ -1748,7 +1759,12 @@ label {
   }
 
   .form-filter-skeleton span {
-    background: linear-gradient(90deg, var(--brand-primary-800) 25%, var(--brand-primary-700) 50%, var(--brand-primary-800) 75%) !important;
+    background: linear-gradient(
+      90deg,
+      var(--brand-primary-800) 25%,
+      var(--brand-primary-700) 50%,
+      var(--brand-primary-800) 75%
+    ) !important;
     background-size: 220% 100%;
   }
 

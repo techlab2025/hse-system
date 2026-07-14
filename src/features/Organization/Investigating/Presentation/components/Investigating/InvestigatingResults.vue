@@ -160,7 +160,9 @@ const AddEnvestigatingResult = async () => {
         employeeId ? '' : item?.employee?.title || '',
         item?.text || null,
         item?.infectionTypeId?.id || 0,
-        item?.isWorkStopped ? 1 : 0,
+        item?.incidentCategories
+          ?.map((category: TitleInterface) => Number(category.id))
+          .filter(Boolean) || [],
         item?.images?.map((el: any) => el.file) || [],
       )
     }),
@@ -463,6 +465,7 @@ const isInjuryStarted = (item: any) =>
   hasInjuryEmployee(item) ||
   hasInjuryType(item) ||
   hasInjuryDescription(item) ||
+  hasFiles(item?.incidentCategories) ||
   hasFiles(item?.images) ||
   hasFiles(item?.files)
 const isAddedInjuryRow = (index: number) => index >= Math.max(initialInjuries.value?.length ?? 0, 1)
@@ -884,6 +887,7 @@ const validateRequiredFields = async () => {
               <div class="investigation-injury" data-required-field="Accidents.0.employee">
                 <FactoryAccidents
                   :injuries="initialInjuries"
+                  :incident-type-id="state?.data?.observation?.typeId ?? null"
                   class="not-colored"
                   @update:data="UpdateAccidents"
                   :isOpen="true"
@@ -1653,7 +1657,12 @@ const validateRequiredFields = async () => {
     small {
       display: block;
       border-radius: 999px;
-      background: linear-gradient(90deg, var(--brand-primary-50), var(--brand-primary-50), var(--brand-primary-50));
+      background: linear-gradient(
+        90deg,
+        var(--brand-primary-50),
+        var(--brand-primary-50),
+        var(--brand-primary-50)
+      );
       background-size: 220% 100%;
       color: transparent;
       animation: similarLoading 1.2s ease-in-out infinite;

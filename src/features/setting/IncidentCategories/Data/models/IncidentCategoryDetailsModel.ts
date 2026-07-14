@@ -37,6 +37,8 @@ export default class IncidentCategoryDetailsModel {
   }
 
   static fromMap(data: any): IncidentCategoryDetailsModel {
+    const accidentsType = data.accidents_type ?? data.incident_type
+
     return new IncidentCategoryDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
@@ -47,16 +49,19 @@ export default class IncidentCategoryDetailsModel {
         : [],
       data.parent_id,
       data.image,
-      data.incident_type ? this.getTitle(data.incident_type) : null,
+      accidentsType ? this.getTitle(accidentsType) : null,
     )
   }
 
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
+    const localizedTitle = data.titles?.find(
+      (title: any) => title.locale === savedLocale,
+    )?.title
 
     return new TitleInterface({
       id: data.id,
-      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      title: localizedTitle ?? data.title ?? data.titles?.[0]?.title ?? '',
     })
   }
 }

@@ -5,31 +5,33 @@ import IndexOrganizatoinEmployeeController from '@/features/Organization/Organiz
 import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
 import { onMounted, ref, watch } from 'vue'
-import DatePicker from 'primevue/datepicker'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import IndexInjuryController from '@/features/Organization/Injury/Presentation/controllers/indexInjuryController'
 import IndexInjuryParams from '@/features/Organization/Injury/Core/params/indexInjuryParams'
 import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
-import Checkbox from 'primevue/checkbox'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import AddInjury from '@/views/Organization/Injury/AddInjury.vue'
 import type InjuryDetailsModel from '../../../Data/models/InjuryModel'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
+import IndexIncidentCategoryController from '@/features/setting/IncidentCategories/Presentation/controllers/indexIncidentCategoryController'
+import IndexIncidentCategoryParams from '@/features/setting/IncidentCategories/Core/params/indexIncidentCategoryParams'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   isOpen?: boolean
   injuries?: InjuryDetailsModel[]
+  incidentTypeId?: number | null
 }>()
 const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
 const employeeOptions = ref<TitleInterface[]>([])
 const injuryOptions = ref<TitleInterface[]>([])
+const incidentCategoryOptions = ref<TitleInterface[]>([])
 type AnswerModel = {
   text: string
   employee: TitleInterface
   employeeName: string
-  isWorkStopped: boolean
+  incidentCategories: TitleInterface[]
   images: any[]
   infectionTypeId: TitleInterface
 }
@@ -38,7 +40,7 @@ const createEmptyAnswer = (): AnswerModel => ({
   employee: new TitleInterface({ id: 0, title: '' }),
   infectionTypeId: new TitleInterface({ id: 0, title: '' }),
   employeeName: '',
-  isWorkStopped: false,
+  incidentCategories: [],
   images: [],
 })
 
@@ -52,6 +54,21 @@ const fetchEmployees = async () => {
 
 const fetchInjuryTypes = async () => {
   injuryOptions.value = await indexInjuryController.fetch(indexInjuryParams)
+}
+
+const indexIncidentCategoryController = IndexIncidentCategoryController.getInstance()
+const fetchIncidentCategories = async () => {
+  incidentCategoryOptions.value = await indexIncidentCategoryController.fetch(
+    new IndexIncidentCategoryParams(
+      '',
+      1,
+      100,
+      0,
+      undefined,
+      undefined,
+      props.incidentTypeId || undefined,
+    ),
+  )
 }
 
 const addNewAnswer = () => {
@@ -89,6 +106,17 @@ const UpdateInjury = (item: TitleInterface | null, index: number) => {
   UpdateData()
 }
 
+const updateIncidentCategories = (
+  items: TitleInterface | TitleInterface[] | null,
+  index: number,
+) => {
+  const selections = Array.isArray(items) ? items : []
+  Answers.value[index].incidentCategories = selections.map(
+    (item) => new TitleInterface({ id: item.id, title: item.title }),
+  )
+  UpdateData()
+}
+
 const handleInjuryCreated = async () => {
   InjuryVisable.value = false
   await fetchInjuryTypes()
@@ -123,11 +151,6 @@ const toggleMode = (index: number, isManual: boolean) => {
   UpdateData()
 }
 
-const toggleWorkStopped = (index: number) => {
-  Answers.value[index].isWorkStopped = !Answers.value[index].isWorkStopped
-  UpdateData()
-}
-
 const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
   const organizationEmployee = item?.organization_employee as any
   const employeeId = organizationEmployee?.organization_employee_id || organizationEmployee?.id || 0
@@ -141,6 +164,7 @@ const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
     (item as any)?.title ||
     ''
   const manualEmployeeName = item?.employee_name || (!employeeId ? employeeTitle : '')
+  const incidentCategories = item?.incident_categories ?? (item as any)?.incidentCategories ?? []
 
   return {
     employee: new TitleInterface({ id: employeeId, title: employeeTitle }),
@@ -149,10 +173,33 @@ const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
     infectionTypeId:
       new TitleInterface({ id: item?.injury_type?.id, title: item?.injury_type?.title }) ||
       new TitleInterface({ id: 0, title: '' }),
-    isWorkStopped: !!item?.is_work_stopped,
+    incidentCategories: incidentCategories.map((category: any) => {
+      const value = category?.incident_category ?? category
+      return new TitleInterface({
+        id: category?.incident_category_id ?? value?.id ?? 0,
+        title: value?.title ?? '',
+      })
+    }),
     text: item?.note || '',
   }
 }
+
+const hasLoadedIncidentCategories = ref(false)
+watch(
+  () => props.incidentTypeId,
+  async (incidentTypeId, previousIncidentTypeId) => {
+    if (hasLoadedIncidentCategories.value && incidentTypeId !== previousIncidentTypeId) {
+      Answers.value.forEach((answer) => {
+        answer.incidentCategories = []
+      })
+      UpdateData()
+    }
+
+    await fetchIncidentCategories()
+    hasLoadedIncidentCategories.value = true
+  },
+  { immediate: true },
+)
 
 watch(
   () => props.injuries,
@@ -218,7 +265,9 @@ onMounted(async () => {
                   <span>{{ $t('injury record') }}</span>
                   <strong>#{{ index + 1 }}</strong>
                 </div>
-                <p v-if="item.isWorkStopped">{{ $t('stopped work ') }}</p>
+                <p v-if="item.incidentCategories.length">
+                  {{ item.incidentCategories.length }} {{ $t('Incident Categories') }}
+                </p>
               </div>
               <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <UpdatedCustomInputSelect
@@ -338,26 +387,17 @@ onMounted(async () => {
                   :index="index + 2000"
                 />
               </div>
-              <div
-                v-if="!props.isOpen"
-                class="col-span-12 md:col-span-12 input-wrapper w-full is-stopped is-stopped-white"
-                @click="toggleWorkStopped(index)"
-              >
-                <div class="flex items-center gap-2 w-full">
-                  <label :for="`is-stopped-${index}`">{{
-                    $t('Did The Injury Cause He Stopped To Work?')
-                  }}</label>
-                  <FieldHelpIcon
-                    text="Indicate whether the injured person had to stop working because of the injury."
-                  />
-                </div>
-                <Checkbox
-                  binary
-                  disabled
-                  :modelValue="item.isWorkStopped"
-                  @change="UpdateData"
-                  :inputId="`is-stopped-${index}`"
-                  :name="`is-stopped-${index}`"
+              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
+                <UpdatedCustomInputSelect
+                  :id="`incident-categories-${index}`"
+                  :modelValue="item.incidentCategories"
+                  :staticOptions="incidentCategoryOptions"
+                  :type="2"
+                  :reload="false"
+                  :label="$t('Incident Categories')"
+                  :placeholder="$t('Select Incident Categories')"
+                  help-text="Select all incident categories related to this injury. The list is filtered by the incident type selected above."
+                  @update:modelValue="updateIncidentCategories($event, index)"
                 />
               </div>
             </div>
@@ -401,7 +441,12 @@ onMounted(async () => {
   inset-inline-start: 22px;
   width: 2px;
   border-radius: 999px;
-  background: linear-gradient(180deg, var(--brand-primary-500) 0%, var(--status-success) 48%, color-mix(in srgb, var(--brand-primary-200) 35%, transparent) 100%);
+  background: linear-gradient(
+    180deg,
+    var(--brand-primary-500) 0%,
+    var(--status-success) 48%,
+    color-mix(in srgb, var(--brand-primary-200) 35%, transparent) 100%
+  );
 }
 
 .injury-timeline-container .timeline-item {
@@ -475,8 +520,16 @@ onMounted(async () => {
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 95%, transparent);
   border-radius: 22px;
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 94%, transparent)),
-    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--status-success) 9%, transparent), transparent 30%);
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface-1) 98%, transparent),
+      color-mix(in srgb, var(--brand-primary-50) 94%, transparent)
+    ),
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--status-success) 9%, transparent),
+      transparent 30%
+    );
   box-shadow: 0 20px 46px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
   transition:
     transform 0.2s ease,
@@ -528,8 +581,8 @@ onMounted(async () => {
 .injury-card-header p {
   padding: 7px 11px;
   border-radius: 999px;
-  color: var(--status-danger);
-  background: var(--status-danger-soft);
+  color: var(--brand-primary-700);
+  background: var(--brand-primary-50);
   font-size: 12px;
   font-weight: 800;
 }
@@ -595,24 +648,6 @@ onMounted(async () => {
   color: var(--text-on-brand);
   background: var(--brand-primary-500);
   box-shadow: 0 10px 22px color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
-}
-
-.injury-timeline-card .is-stopped {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  min-height: 54px;
-  padding: 12px 14px;
-  border: 1px solid color-mix(in srgb, var(--brand-accent-500) 22%, transparent);
-  border-radius: 16px;
-  background: var(--brand-accent-50);
-  cursor: pointer;
-}
-
-.injury-timeline-card .is-stopped label {
-  margin: 0;
-  color: var(--brand-accent-700);
 }
 
 @media screen and (max-width: 720px) {

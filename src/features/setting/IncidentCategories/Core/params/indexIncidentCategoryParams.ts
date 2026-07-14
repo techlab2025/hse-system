@@ -9,6 +9,7 @@ export default class IndexIncidentCategoryParams implements Params {
   public pageNumber: number = 10
   public id?: number
   public isSystemOnly?: boolean
+  public incidentTypeId?: number
 
   constructor(
     word: string,
@@ -17,6 +18,7 @@ export default class IndexIncidentCategoryParams implements Params {
     withPage: number = 1,
     id?: number,
     isSystemOnly?: boolean,
+    incidentTypeId?: number,
     // code?: LangEnum,
   ) {
     this.word = word
@@ -25,6 +27,7 @@ export default class IndexIncidentCategoryParams implements Params {
     this.perPage = perPage
     this.id = id
     this.isSystemOnly = isSystemOnly
+    this.incidentTypeId = incidentTypeId
     // this.code = code
   }
 
@@ -36,6 +39,7 @@ export default class IndexIncidentCategoryParams implements Params {
     data['limit'] = this.perPage
     if (this.id) data['parent_id'] = this.id
     data['is_system_only'] = this.isSystemOnly
+    if (this.incidentTypeId) data['accidents_type_id'] = this.incidentTypeId
     // if (this.code) data['code'] = this.code
     return data
   }

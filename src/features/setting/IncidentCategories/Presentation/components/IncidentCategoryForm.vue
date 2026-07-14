@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { markRaw, onMounted, ref, watch } from 'vue'
+import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
@@ -15,6 +15,7 @@ import IndexAccidentsTypeController from '@/features/setting/AccidentsTypes/Pres
 import AddIncidentCategoryParams from '../../Core/params/addIncidentCategoryParams'
 import EditIncidentCategoryParams from '../../Core/params/editIncidentCategoryParams'
 import type IncidentCategoryDetailsModel from '../../Data/models/IncidentCategoryDetailsModel'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{ data?: IncidentCategoryDetailsModel }>()
@@ -36,7 +37,9 @@ const fetchLanguages = async () => {
     return
   }
 
-  const response = await IndexLangController.getInstance().getData(new IndexLangParams('', 1, 10, 0))
+  const response = await IndexLangController.getInstance().getData(
+    new IndexLangParams('', 1, 10, 0),
+  )
   langDefault.value = response.value?.data?.length
     ? response.value.data.map((item: any) => ({
         locale: item.code,
@@ -68,8 +71,55 @@ const setLangs = (value: { locale: string; title: string }[]) => {
 
 const setIncidentType = (value: TitleInterface | null) => {
   incidentType.value = value
+  if (value?.id) {
+    const { incidentTypeId: _removed, ...rest } = requiredFieldErrors.value
+    requiredFieldErrors.value = rest
+  }
   updateData()
 }
+
+type RequiredFieldRule = {
+  key: string
+  message: string
+  isMissing: () => boolean
+}
+
+const requiredFieldErrors = ref<Record<string, string>>({})
+const requiredFields = computed<RequiredFieldRule[]>(() => [
+  {
+    key: 'incidentTypeId',
+    message: 'Incident Type Is Required',
+    isMissing: () => !Number(incidentType.value?.id),
+  },
+])
+
+const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
+
+const scrollToRequiredField = async (key: string) => {
+  await nextTick()
+  document.querySelector<HTMLElement>(`[data-required-field="${key}"]`)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
+}
+
+const validateRequiredFields = async () => {
+  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
+    errors[field.key] = field.message
+    return errors
+  }, {})
+
+  if (!missedFields.length) return true
+
+  new OpenWarningDilaog(missedFields[0].message).openDialog()
+  await scrollToRequiredField(missedFields[0].key)
+  return false
+}
+
+defineExpose({
+  validateRequiredFields,
+})
 
 watch(
   [() => props.data, langDefault],
@@ -93,7 +143,10 @@ onMounted(fetchLanguages)
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div
+    class="col-span-4 md:col-span-2 input-wrapper field-required"
+    data-required-field="incidentTypeId"
+  >
     <UpdatedCustomInputSelect
       :modelValue="incidentType"
       :controller="incidentTypeController"
@@ -104,5 +157,17 @@ onMounted(fetchLanguages)
       :required="true"
       @update:modelValue="setIncidentType"
     />
+    <p v-if="getFieldError('incidentTypeId')" class="required-field-message">
+      {{ getFieldError('incidentTypeId') }}
+    </p>
   </div>
 </template>
+
+<style scoped>
+.required-field-message {
+  margin-top: 0.35rem;
+  color: var(--status-danger);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+</style>

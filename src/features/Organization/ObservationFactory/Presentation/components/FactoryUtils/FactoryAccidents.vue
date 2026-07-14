@@ -7,9 +7,10 @@ import type InjuryDetailsModel from '../../../Data/models/InjuryModel.ts'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
-const { isOpen, injuries } = defineProps<{
+const { isOpen, injuries, incidentTypeId } = defineProps<{
   isOpen?: boolean
   injuries?: InjuryDetailsModel[]
+  incidentTypeId?: number | null
 }>()
 const isAnotherMeeting = ref(isOpen ? isOpen : 0)
 const updateData = () => {
@@ -44,13 +45,13 @@ watch(
   <div class="another-meeting">
     <div class="another-meeting-header" v-if="!isOpen">
       <!-- <div class="section-title-with-help"> -->
-        <HeaderPage
-          :title="`Are there Injuries?`"
-          :subtitle="`Did this incident result in any physical injuries`"
-          :img="acc"
-          class="title-header"
-        />
-        <!-- <FieldHelpIcon
+      <HeaderPage
+        :title="`Are there Injuries?`"
+        :subtitle="`Did this incident result in any physical injuries`"
+        :img="acc"
+        class="title-header"
+      />
+      <!-- <FieldHelpIcon
           text="Choose Yes if the incident caused any physical injury, even if it appears minor."
         /> -->
       <!-- </div> -->
@@ -73,7 +74,12 @@ watch(
     </div>
 
     <div class="another-meeting-contect" v-if="isAnotherMeeting == 1">
-      <InjuresTimeLine :injuries="injuries" :isOpen="isOpen" @update:data="UpdateAccidentsData" />
+      <InjuresTimeLine
+        :injuries="injuries"
+        :isOpen="isOpen"
+        :incident-type-id="incidentTypeId"
+        @update:data="UpdateAccidentsData"
+      />
     </div>
   </div>
 </template>

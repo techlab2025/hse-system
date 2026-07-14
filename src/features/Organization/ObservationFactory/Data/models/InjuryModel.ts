@@ -1,4 +1,4 @@
-import type TitleInterface from '@/base/Data/Models/title_interface'
+import TitleInterface from '@/base/Data/Models/title_interface'
 import type FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
 import OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
 
@@ -9,6 +9,7 @@ export default class InjuryDetailsModel {
   public created_at: string
   public employee_name: string
   public is_work_stopped: boolean
+  public incident_categories: TitleInterface[]
   public media: FilesModel[]
   public note: string
   public organization_employee: OrganizatoinEmployeeModel
@@ -30,7 +31,8 @@ export default class InjuryDetailsModel {
     status: number,
     type: number,
     updated_at: string,
-    injury_type?: TitleInterface
+    injury_type?: TitleInterface,
+    incident_categories: TitleInterface[] = [],
   ) {
     this.id = id
     this.title = title
@@ -45,6 +47,7 @@ export default class InjuryDetailsModel {
     this.type = type
     this.updated_at = updated_at
     this.injury_type = injury_type
+    this.incident_categories = incident_categories
   }
 
   static fromMap(data: any): InjuryDetailsModel {
@@ -61,7 +64,18 @@ export default class InjuryDetailsModel {
       data.status,
       data.type,
       data.updated_at,
-      data.injury_type
+      data.injury_type,
+      (data.incident_categories ?? []).map((item: any) => {
+        const category = item?.incident_category ?? item
+        const locale = localStorage.getItem('lang')
+        return new TitleInterface({
+          id: Number(item?.incident_category_id ?? category?.id ?? item) || 0,
+          title:
+            category?.title ??
+            category?.titles?.find((title: any) => title.locale === locale)?.title ??
+            '',
+        })
+      }),
     )
   }
 

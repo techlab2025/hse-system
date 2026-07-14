@@ -6,21 +6,21 @@ export default class InjuryParams implements Params {
   public employeeName: string
   public note: string
   public injuryTypeId: number
-  public isWorkStopped: number
+  public incidentCategoryIds: number[]
   public images: string[]
   constructor(
     organizationEmployeeId: number,
     employeeName: string,
     note: string,
     injuryTypeId: number,
-    isWorkStopped: number,
+    incidentCategoryIds: number[],
     images: string[],
   ) {
     this.employeeName = employeeName
     this.organizationEmployeeId = organizationEmployeeId
     this.note = note
     this.injuryTypeId = injuryTypeId
-    this.isWorkStopped = isWorkStopped
+    this.incidentCategoryIds = incidentCategoryIds
     this.images = images
   }
 
@@ -30,7 +30,7 @@ export default class InjuryParams implements Params {
     if (this.organizationEmployeeId) data['organization_employee_id'] = this.organizationEmployeeId
     if (this.note) data['note'] = this.note
     if (this.injuryTypeId) data['injury_type_id'] = this.injuryTypeId
-    if (this.isWorkStopped) data['is_work_stopped'] = this.isWorkStopped
+    if (this.incidentCategoryIds.length) data['incident_category_ids'] = this.incidentCategoryIds
     if (this.images?.length && !this.images.some((el) => !isBase64(el))) data['files'] = this.images
     return data
   }
