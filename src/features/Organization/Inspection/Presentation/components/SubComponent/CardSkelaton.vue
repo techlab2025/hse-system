@@ -62,10 +62,10 @@ const { isDarkMode } = useThemeMode()
   }
 }
 
-$shimmer-base: #ebebeb;
-$shimmer-highlight: #f5f5f5;
-$shimmer-dark-base: #1e293b;
-$shimmer-dark-highlight: #334155;
+$shimmer-base: var(--surface-2);
+$shimmer-highlight: var(--surface-1);
+$shimmer-dark-base: var(--brand-primary-800);
+$shimmer-dark-highlight: var(--brand-primary-700);
 
 @mixin shimmer {
   background: linear-gradient(90deg,
@@ -93,7 +93,7 @@ $shimmer-dark-highlight: #334155;
 }
 
 .index-table-card {
-  border: 1px solid #f6f6f6;
+  border: 1px solid var(--surface-1);
   padding: 12px;
   border-radius: 20px;
   width: 100%;
@@ -106,7 +106,7 @@ $shimmer-dark-highlight: #334155;
   flex-direction: column;
   align-items: flex-end;
   padding-bottom: 12px;
-  border-bottom: 2px dashed #e1e4ed;
+  border-bottom: 2px dashed var(--brand-primary-100);
   width: 100%;
   gap: 10px;
 
@@ -169,7 +169,7 @@ $shimmer-dark-highlight: #334155;
   .index-table-card {
     background: var(--surface-1);
     border-color: var(--main-border);
-    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 22%, transparent);
   }
 
   .card-header-container {

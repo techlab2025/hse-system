@@ -374,9 +374,9 @@ onBeforeUnmount(() => {
 <style scoped>
 .total-observation-container {
   width: 100%;
-  background: white;
+  background: var(--surface-1);
   border-radius: 12px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--text-strong) 8%, transparent);
   padding-bottom: 8px;
 }
 
@@ -394,7 +394,7 @@ onBeforeUnmount(() => {
   font-size: 17px;
   font-weight: 700;
   font-family: "bold";
-  color: #0C2058;
+  color: var(--brand-primary-800);
   margin: 0;
 }
 
@@ -421,7 +421,7 @@ onBeforeUnmount(() => {
 .legend-label {
   font-size: 13px;
   font-weight: 500;
-  color: #374151;
+  color: var(--brand-primary-700);
 }
 
 /* ✅ Chart scroll wrapper */
@@ -430,7 +430,7 @@ onBeforeUnmount(() => {
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: thin;
-  scrollbar-color: #d1d5db transparent;
+  scrollbar-color: var(--main-border) transparent;
 }
 
 .chart-scroll-wrapper::-webkit-scrollbar {
@@ -442,7 +442,7 @@ onBeforeUnmount(() => {
 }
 
 .chart-scroll-wrapper::-webkit-scrollbar-thumb {
-  background-color: #d1d5db;
+  background-color: var(--main-border);
   border-radius: 4px;
 }
 

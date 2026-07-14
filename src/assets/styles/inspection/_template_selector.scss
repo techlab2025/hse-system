@@ -14,9 +14,9 @@
 
   .template-document-container {
     //     .template-document-header{
-    //  border: 2px dashed #E6E8EA !important;
+    //  border: 2px dashed var(--surface-2) !important;
     //       border-radius: 22px;
-    //       background-color: #FAFAFA66;
+    //       background-color: color-mix(in srgb, var(--surface-1) 40%, transparent);
     //     }
 
     .p-accordioncontent {
@@ -33,7 +33,7 @@
         display: none;
       }
       .active {
-        border: 10px solid red !important;
+        border: 10px solid var(--status-danger) !important;
       }
       .p-radiobutton-checked .p-radiobutton-box {
         border-color: $PrimaryColor !important;
@@ -48,7 +48,7 @@
 }
 
 .new-border-AccordionPanel {
-  border: 2px dashed #e6e8ea !important;
+  border: 2px dashed var(--surface-2) !important;
   border-radius: 22px;
-  background-color: #fafafa66;
+  background-color: color-mix(in srgb, var(--surface-1) 40%, transparent);
 }

@@ -79,15 +79,15 @@ watch(
   top: 16px;
   overflow: hidden;
   min-width: 0;
-  border: 1px solid rgba(189, 199, 217, 0.74);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-200) 74%, transparent);
   border-radius: 26px;
   background:
-    radial-gradient(circle at 12% 8%, rgba(29, 78, 216, 0.12), transparent 28%),
-    radial-gradient(circle at 88% 4%, rgba(74, 174, 58, 0.12), transparent 30%),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(246, 249, 254, 0.96));
+    radial-gradient(circle at 12% 8%, color-mix(in srgb, var(--brand-primary-500) 12%, transparent), transparent 28%),
+    radial-gradient(circle at 88% 4%, color-mix(in srgb, var(--status-success) 12%, transparent), transparent 30%),
+    linear-gradient(145deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 96%, transparent));
   box-shadow:
-    0 24px 55px rgba(15, 25, 39, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    0 24px 55px color-mix(in srgb, var(--brand-primary-900) 10%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--shadow-color) 90%, transparent);
 }
 
 .show-template-container::before {
@@ -96,10 +96,10 @@ watch(
   pointer-events: none;
   content: '';
   background-image:
-    linear-gradient(rgba(29, 78, 216, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(29, 78, 216, 0.045) 1px, transparent 1px);
+    linear-gradient(color-mix(in srgb, var(--brand-primary-500) 4.5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary-500) 4.5%, transparent) 1px, transparent 1px);
   background-size: 28px 28px;
-  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.72), transparent 72%);
+  mask-image: linear-gradient(180deg, color-mix(in srgb, var(--text-strong) 72%, transparent), transparent 72%);
 }
 
 .preview-glow {
@@ -116,7 +116,7 @@ watch(
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  background: rgba(29, 78, 216, 0.1);
+  background: color-mix(in srgb, var(--brand-primary-500) 10%, transparent);
 }
 
 .preview-glow-green {
@@ -125,7 +125,7 @@ watch(
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  background: rgba(74, 174, 58, 0.12);
+  background: color-mix(in srgb, var(--status-success) 12%, transparent);
 }
 
 .template-title {
@@ -147,17 +147,17 @@ watch(
   align-items: center;
   min-height: 24px;
   padding: 0 10px;
-  border: 1px solid rgba(74, 174, 58, 0.2);
+  border: 1px solid color-mix(in srgb, var(--status-success) 20%, transparent);
   border-radius: 999px;
-  color: #287b22;
+  color: var(--status-success);
   font-size: 11px;
   font-weight: 900;
-  background: rgba(74, 174, 58, 0.1);
+  background: color-mix(in srgb, var(--status-success) 10%, transparent);
 }
 
 .template-title .title {
   margin: 9px 0 0;
-  color: #041953;
+  color: var(--brand-primary-800);
   font-size: clamp(22px, 3vw, 30px);
   font-weight: 900;
   letter-spacing: 0;
@@ -167,7 +167,7 @@ watch(
 .template-title .subtitle {
   max-width: 310px;
   margin-top: 6px;
-  color: #607086;
+  color: var(--brand-primary-500);
   font-size: 12px;
   font-weight: 700;
   line-height: 1.45;
@@ -179,10 +179,10 @@ watch(
   height: 46px;
   flex: 0 0 auto;
   place-items: center;
-  border: 1px solid rgba(29, 78, 216, 0.14);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-500) 14%, transparent);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.86);
-  box-shadow: 0 14px 28px rgba(29, 78, 216, 0.12);
+  background: color-mix(in srgb, var(--surface-1) 86%, transparent);
+  box-shadow: 0 14px 28px color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
 }
 
 .preview-icon :deep(svg) {
@@ -198,7 +198,7 @@ watch(
   overflow: auto;
   padding: 0 14px 16px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(29, 78, 216, 0.38) transparent;
+  scrollbar-color: color-mix(in srgb, var(--brand-primary-500) 38%, transparent) transparent;
 }
 
 .template-document::-webkit-scrollbar {
@@ -207,7 +207,7 @@ watch(
 
 .template-document::-webkit-scrollbar-thumb {
   border-radius: 999px;
-  background: rgba(29, 78, 216, 0.32);
+  background: color-mix(in srgb, var(--brand-primary-500) 32%, transparent);
 }
 
 .left-header-background,

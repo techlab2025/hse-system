@@ -33,17 +33,17 @@
       }
 
       &::-webkit-scrollbar-track {
-        background: #f1f1f1;
+        background: var(--surface-2);
         border-radius: 10px;
       }
 
       &::-webkit-scrollbar-thumb {
-        background: #888;
+        background: var(--brand-secondary-700);
         border-radius: 10px;
       }
 
       &::-webkit-scrollbar-thumb:hover {
-        background: #555;
+        background: var(--brand-secondary-700);
       }
 
       .widgets-types {
@@ -54,7 +54,7 @@
   }
 
   .widgets-types {
-    background-color: #fafafa;
+    background-color: var(--text-on-brand);
     @include flex-column(nowrap, center, center);
     gap: $XlSize;
     border-radius: $XsSize;
@@ -72,11 +72,11 @@
     }
 
     .title {
-      color: #041953;
+      color: var(--brand-primary-800);
       font-size: $XsSize;
       font-weight: $BaseFontSemiBoldWeight;
       text-align: center;
-      background-color: white;
+      background-color: var(--text-on-brand);
       padding: $XsSize4 $XsSize2;
       border-radius: $SmSize;
       width: 100%;
@@ -86,7 +86,7 @@
   .add-widget {
     padding: $XsSize2;
     border-radius: $XsSize;
-    background-color: #1d4ed80f;
+    background-color: color-mix(in srgb, var(--brand-primary-500) 5.88%, transparent);
     border-radius: $XsSize;
     @include flex-column(nowrap, flex-start, flex-start);
     gap: $XsSize2;
@@ -101,7 +101,7 @@
       text-align: start;
     }
     .subtitle {
-      color: #9ca3af;
+      color: var(--text-soft);
       font-size: $XsSize;
       font-weight: $BaseFontMediumWeight;
       max-width: 120px;

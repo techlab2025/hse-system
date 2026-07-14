@@ -57,7 +57,7 @@ const ReturnStatusTitle = (status: InvestegationStatusEnum): string => {
 
 <!-- <style scoped>
 .investigation-show-details{
-  border-bottom: 2px dashed #E1E4ED;
+  border-bottom: 2px dashed var(--brand-primary-100);
   padding-bottom: 1rem;
 }
 </style> -->

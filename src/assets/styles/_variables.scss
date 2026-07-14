@@ -1,13 +1,13 @@
 :root {
   /* Light mode defaults */
   --PrimaryColor: #1d4ed8;
-  --header-page-color: #041953;
-  --second-dark-color: #121212;
-  --primary-dark: #1d4ed880;
+  --header-page-color: var(--identity-secondary);
+  --second-dark-color: var(--brand-secondary-900);
+  --primary-dark: color-mix(in srgb, var(--identity-primary) 50%, transparent);
   --Red-opacity: #e2353599;
   --green: #4aae3a;
   --green-done: #4caf501a;
-  --card-observation-bg: #f8f9fb;
+  --card-observation-bg: var(--surface-2);
   --delay-color: #ffbf521a;
   --BgWhite: rgba(255, 255, 255, 1);
   --Gray-1: rgba(248, 249, 250, 1);
@@ -22,20 +22,20 @@
   --Red: rgb(237, 28, 36);
   --danger-color: #e23535;
   --main-border: rgb(221, 226, 237);
-  --checkbox-bg: #f5f5ff;
+  --checkbox-bg: var(--brand-primary-50);
   --subtitle-color: #9ca3af;
   --base-width: 1440;
   --base-height: 900;
   --font-family: 'URW DIN Arabic';
-  --third-color: #170f49;
-  --low-color: #8a38f5;
-  --medium-color: #ffbf52;
-  --high-color: #e23535;
-  --hazard-color: #1d4ed8;
-  --observation-color: #6230a8;
-  --incidant-color: #a83030;
-  --p-owned-500: #1d4ed8;
-  --p-rent-500: #8bbefb;
+  --third-color: var(--brand-secondary-800);
+  --low-color: var(--brand-accent-500);
+  --medium-color: var(--status-warning);
+  --high-color: var(--status-danger);
+  --hazard-color: var(--identity-primary);
+  --observation-color: var(--identity-accent);
+  --incidant-color: var(--status-danger);
+  --p-owned-500: var(--identity-primary);
+  --p-rent-500: var(--brand-primary-200);
 
   --icon-bg: #f2f4f6;
   --app-bg: #f8f9fb;
@@ -46,6 +46,57 @@
   --text-strong: #0f172a;
   --text-soft: #475569;
   --text-muted: #64748b;
+
+  /* System Identity semantic palette
+   * Component and SCSS colors should use these tokens so a saved identity can
+   * recolor the complete application without weakening status semantics. */
+  --identity-primary: var(--PrimaryColor);
+  --identity-secondary: #041953;
+  --identity-accent: #6230a8;
+  --text-on-brand: #ffffff;
+  --shadow-color: rgba(15, 23, 42, 0.14);
+
+  --brand-primary-50: color-mix(in srgb, var(--identity-primary) 6%, var(--surface-1));
+  --brand-primary-100: color-mix(in srgb, var(--identity-primary) 12%, var(--surface-1));
+  --brand-primary-200: color-mix(in srgb, var(--identity-primary) 24%, var(--surface-1));
+  --brand-primary-300: color-mix(in srgb, var(--identity-primary) 42%, var(--surface-1));
+  --brand-primary-400: color-mix(in srgb, var(--identity-primary) 68%, var(--surface-1));
+  --brand-primary-500: var(--identity-primary);
+  --brand-primary-600: color-mix(in srgb, var(--identity-primary) 84%, var(--text-strong));
+  --brand-primary-700: color-mix(in srgb, var(--identity-primary) 68%, var(--text-strong));
+  --brand-primary-800: color-mix(in srgb, var(--identity-primary) 52%, var(--text-strong));
+  --brand-primary-900: color-mix(in srgb, var(--identity-primary) 34%, var(--text-strong));
+
+  --brand-secondary-50: color-mix(in srgb, var(--identity-secondary) 6%, var(--surface-1));
+  --brand-secondary-100: color-mix(in srgb, var(--identity-secondary) 12%, var(--surface-1));
+  --brand-secondary-200: color-mix(in srgb, var(--identity-secondary) 24%, var(--surface-1));
+  --brand-secondary-300: color-mix(in srgb, var(--identity-secondary) 42%, var(--surface-1));
+  --brand-secondary-400: color-mix(in srgb, var(--identity-secondary) 68%, var(--surface-1));
+  --brand-secondary-500: var(--identity-secondary);
+  --brand-secondary-600: color-mix(in srgb, var(--identity-secondary) 84%, var(--text-strong));
+  --brand-secondary-700: color-mix(in srgb, var(--identity-secondary) 68%, var(--text-strong));
+  --brand-secondary-800: color-mix(in srgb, var(--identity-secondary) 52%, var(--text-strong));
+  --brand-secondary-900: color-mix(in srgb, var(--identity-secondary) 34%, var(--text-strong));
+
+  --brand-accent-50: color-mix(in srgb, var(--identity-accent) 6%, var(--surface-1));
+  --brand-accent-100: color-mix(in srgb, var(--identity-accent) 12%, var(--surface-1));
+  --brand-accent-200: color-mix(in srgb, var(--identity-accent) 24%, var(--surface-1));
+  --brand-accent-300: color-mix(in srgb, var(--identity-accent) 42%, var(--surface-1));
+  --brand-accent-400: color-mix(in srgb, var(--identity-accent) 68%, var(--surface-1));
+  --brand-accent-500: var(--identity-accent);
+  --brand-accent-600: color-mix(in srgb, var(--identity-accent) 84%, var(--text-strong));
+  --brand-accent-700: color-mix(in srgb, var(--identity-accent) 68%, var(--text-strong));
+  --brand-accent-800: color-mix(in srgb, var(--identity-accent) 52%, var(--text-strong));
+  --brand-accent-900: color-mix(in srgb, var(--identity-accent) 34%, var(--text-strong));
+
+  --status-success: #16a34a;
+  --status-success-soft: color-mix(in srgb, var(--status-success) 12%, var(--surface-1));
+  --status-warning: #f59e0b;
+  --status-warning-soft: color-mix(in srgb, var(--status-warning) 14%, var(--surface-1));
+  --status-danger: var(--danger-color);
+  --status-danger-soft: color-mix(in srgb, var(--status-danger) 10%, var(--surface-1));
+  --status-info: #0f766e;
+  --status-info-soft: color-mix(in srgb, var(--status-info) 10%, var(--surface-1));
   --xl-size-3: clamp(calc(50 * 0.8px), calc(50 * 100vw / var(--base-width)), calc(50 * 1px));
   --xl-size-2: clamp(calc(30 * 0.8px), calc(30 * 100vw / var(--base-width)), calc(30 * 1px));
   --xl-size-1: clamp(calc(24 * 0.8px), calc(24 * 100vw / var(--base-width)), calc(24 * 1px));
@@ -75,10 +126,11 @@
 
 :root[data-theme='dark'] {
   --PrimaryColor: #60a5fa;
-  --header-page-color: #e2e8f0;
-  --second-dark-color: #f8fafc;
+  --identity-secondary: #e2e8f0;
+  --header-page-color: var(--identity-secondary);
+  --second-dark-color: var(--text-strong);
   --primary-dark: rgba(96, 165, 250, 0.22);
-  --card-observation-bg: #111827;
+  --card-observation-bg: var(--surface-1);
   --delay-color: rgba(245, 158, 11, 0.18);
   --BgWhite: #111827;
   --Gray-1: #0f172a;
@@ -91,10 +143,10 @@
   --LightGray: #1e293b;
   --Black: #f8fafc;
   --main-border: #334155;
-  --checkbox-bg: #1e293b;
+  --checkbox-bg: var(--brand-primary-50);
   --subtitle-color: #94a3b8;
-  --third-color: #e2e8f0;
-  --icon-bg: #1e293b;
+  --third-color: var(--brand-secondary-800);
+  --icon-bg: var(--surface-3);
   --app-bg: #07111f;
   --surface-1: #111827;
   --surface-2: #172033;
@@ -103,6 +155,8 @@
   --text-strong: #f8fafc;
   --text-soft: #cbd5e1;
   --text-muted: #94a3b8;
+  --text-on-brand: #ffffff;
+  --shadow-color: rgba(0, 0, 0, 0.3);
 }
 
 /*<editor-fold desc="colors">*/

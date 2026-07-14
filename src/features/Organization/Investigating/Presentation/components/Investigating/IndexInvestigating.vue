@@ -426,7 +426,7 @@ const GerIncidantCount = (data: any): number => {
   border: 1px solid var(--main-border);
   border-radius: 18px;
   background: var(--BgWhite);
-  box-shadow: 0 10px 28px color-mix(in srgb, var(--Black) 8%, transparent);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--text-strong) 8%, transparent);
   transition:
     transform 0.2s ease-in-out,
     box-shadow 0.2s ease-in-out,
@@ -443,7 +443,7 @@ const GerIncidantCount = (data: any): number => {
 
 .index-table-card:hover {
   border-color: color-mix(in srgb, var(--PrimaryColor) 28%, var(--main-border));
-  box-shadow: 0 16px 36px color-mix(in srgb, var(--Black) 12%, transparent);
+  box-shadow: 0 16px 36px color-mix(in srgb, var(--text-strong) 12%, transparent);
   transform: translateY(-2px);
 }
 
@@ -801,13 +801,13 @@ const GerIncidantCount = (data: any): number => {
         transparent 38%
       ),
       linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
-    color: var(--Black) !important;
-    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22) !important;
+    color: var(--text-strong) !important;
+    box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 22%, transparent) !important;
   }
 
   .index-table-card:hover {
     border-color: color-mix(in srgb, var(--PrimaryColor) 34%, var(--main-border)) !important;
-    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.3) !important;
+    box-shadow: 0 18px 42px color-mix(in srgb, var(--text-strong) 30%, transparent) !important;
   }
 
   .first-card-header {
@@ -855,17 +855,17 @@ const GerIncidantCount = (data: any): number => {
 
   .first-label-item-primary.high {
     background: color-mix(in srgb, var(--danger-color) 18%, var(--surface-2)) !important;
-    color: #fca5a5 !important;
+    color: var(--status-danger-soft) !important;
   }
 
   .first-label-item-primary.medium {
     background: color-mix(in srgb, var(--medium-color) 18%, var(--surface-2)) !important;
-    color: #facc15 !important;
+    color: var(--brand-accent-500) !important;
   }
 
   .first-label-item-primary.low {
     background: color-mix(in srgb, var(--green) 18%, var(--surface-2)) !important;
-    color: #86efac !important;
+    color: var(--status-success) !important;
   }
 
   .status.New,

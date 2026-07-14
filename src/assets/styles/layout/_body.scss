@@ -3,7 +3,7 @@
 
 body {
   background-color: var(--app-bg);
-  color: $Black;
+  color: var(--text-strong);
   transition:
     background-color 0.2s ease,
     color 0.2s ease;
@@ -48,7 +48,7 @@ $minimizeScreen: true;
   }
 
   .main-content {
-    background-color: $White;
+    background-color: var(--surface-1);
     padding: $MdSize;
     border-radius: $XlSize;
     overflow: hidden;

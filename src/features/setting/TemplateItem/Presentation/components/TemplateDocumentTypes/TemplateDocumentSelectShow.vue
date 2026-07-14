@@ -29,6 +29,6 @@ const Selected = ref()
 .tag {
   font-size: 12px;
   font-weight: 500;
-  color: gray;
+  color: var(--text-muted);
 }
 </style>

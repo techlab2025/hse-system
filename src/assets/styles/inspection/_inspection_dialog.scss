@@ -12,7 +12,7 @@
 
     span {
       font-size: $MdSize;
-      color: #202020;
+      color: var(--text-strong);
       font-weight: $BaseFontSemiBoldWeight;
       text-transform: capitalize;
       white-space: nowrap;
@@ -33,7 +33,7 @@
   }
 
   .template-header {
-    background-color: #f8f8f8;
+    background-color: var(--text-on-brand);
     border-top-left-radius: $XlSize;
     border-top-right-radius: $XlSize;
     width: 100%;
@@ -47,13 +47,13 @@
       position: absolute;
       top: 0;
       right: 0;
-      color: red;
+      color: var(--status-danger);
       padding: 5px;
       .delete-icon {
         padding: 2px;
         width: 20px;
         height: 20px;
-        background-color: red;
+        background-color: var(--status-danger);
         border-radius: 50%;
       }
     }
@@ -63,7 +63,7 @@
     }
     .header-title {
       font-family: 'Regular';
-      color: #041953;
+      color: var(--brand-primary-800);
       font-size: calc($XlSize + 2px);
       font-weight: $BaseFontWeightBold;
       padding-top: 12px;
@@ -76,9 +76,9 @@
       p {
         font-size: $XsSize;
         font-weight: $BaseFontMediumWeight;
-        color: #6b7280;
+        color: var(--text-soft);
         span {
-          color: #121212;
+          color: var(--text-strong);
         }
       }
     }
@@ -108,9 +108,9 @@
   }
 
   .p-dialog-footer {
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--surface-2);
     padding: 16px;
-    background: #fff;
+    background: var(--surface-1);
   }
 
   .inspection-template-dialog-data {
@@ -122,8 +122,8 @@
       @include flex-row(wrap, flex-start, center);
       gap: $XsSize2;
       cursor: pointer;
-      background-color: #3443c60a;
-      border: 1px solid #3443c699;
+      background-color: color-mix(in srgb, var(--brand-primary-500) 3.92%, transparent);
+      border: 1px solid color-mix(in srgb, var(--brand-primary-500) 60%, transparent);
       border-radius: $MdSize;
       padding: $XsSize2 $MdSize;
       margin-inline: 20px;
@@ -131,21 +131,21 @@
         @include flex-column(nowrap flex-start, flex-start);
         gap: $XsSize4;
         .title {
-          color: #3443c6;
+          color: var(--brand-primary-500);
           font-size: $MdSize2;
           font-weight: $BaseFontWeightBold;
         }
       }
       .descripetion {
-        color: #b9bcc5;
+        color: var(--text-muted);
         font-size: $SmSize;
         font-weight: $BaseFontSemiBoldWeight;
       }
     }
     .inspection-template-dialog-divider {
       width: 100%;
-      border-color: #f1f3f5;
-      // background-color: #f1f3f5;
+      border-color: var(--brand-primary-50);
+      // background-color: var(--brand-primary-50);
       // height: 1px;
       margin-bottom: $MdSize;
     }
@@ -189,9 +189,9 @@
 
       .item {
         padding: 0 $XsSize3 $XsSize3 $XsSize3;
-        background-color: #fafafa66;
+        background-color: color-mix(in srgb, var(--surface-1) 40%, transparent);
         border-radius: $BorderRadiusMd;
-        border: 0.5px solid #e6e8ea;
+        border: 0.5px solid var(--surface-2);
         height: 700px;
         width: 100%;
         // overflow-y: auto;
@@ -211,7 +211,7 @@
           position: sticky;
           top: 0;
           z-index: 55555555;
-          background-color: $White;
+          background-color: var(--text-on-brand);
           //   margin-bottom: $XsSize;
 
           .select-input {
@@ -228,7 +228,7 @@
             gap: $XsSize2;
             span {
               font-size: $MdSize;
-              color: #000;
+              color: var(--text-strong);
               font-weight: $BaseFontWeightBold;
               text-transform: capitalize;
             }
@@ -243,21 +243,21 @@
       .system-templets {
         width: 50%;
         text-align: center;
-        background-color: #f9fafb;
+        background-color: var(--brand-primary-50);
         padding: 10px;
         border-radius: 14px;
         &.active {
-          border: 1px solid #1d4ed833;
-          background-color: #1d4ed80a;
-          color: #1f41bb;
+          border: 1px solid color-mix(in srgb, var(--brand-primary-500) 20%, transparent);
+          background-color: color-mix(in srgb, var(--brand-primary-500) 3.92%, transparent);
+          color: var(--brand-primary-600);
           label {
-            color: #1f41bb;
+            color: var(--brand-primary-600);
           }
         }
 
         cursor: pointer;
         label {
-          color: #a9acb7;
+          color: var(--text-soft);
           font-size: $XlSize;
           width: 100%;
         }
@@ -273,8 +273,8 @@
 
 .show-more-btn {
   width: 100%;
-  // background: linear-gradient(135deg, #1F41BB, #3A5BDB);
-  color: black;
+  // background: linear-gradient(135deg, var(--brand-primary-600), var(--brand-primary-500));
+  color: var(--text-strong);
   padding: 10px;
   border-radius: 35px;
   margin: 1rem 0;

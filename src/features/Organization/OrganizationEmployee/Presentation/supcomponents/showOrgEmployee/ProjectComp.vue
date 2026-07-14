@@ -71,10 +71,10 @@ const getStatusText = (status, startDate) => {
 .projects-section {
   overflow: hidden;
   padding: 16px;
-  border: 1px solid rgba(221, 226, 237, 0.78);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 78%, transparent);
   border-radius: 22px;
-  background: linear-gradient(135deg, #ffffff, #f8fbff);
-  box-shadow: 0 16px 36px rgba(15, 25, 39, 0.06);
+  background: linear-gradient(135deg, var(--surface-1), var(--brand-primary-50));
+  box-shadow: 0 16px 36px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
 }
 
 .section-header {
@@ -87,17 +87,17 @@ const getStatusText = (status, startDate) => {
   height: 42px;
   padding: 8px;
   border-radius: 14px;
-  background: rgba(74, 174, 58, 0.1);
+  background: color-mix(in srgb, var(--status-success) 10%, transparent);
 }
 
 .section-header-text h4 {
-  color: #041953;
+  color: var(--brand-primary-800);
   font-size: 17px;
   font-weight: 900;
 }
 
 .section-header-text .hint {
-  color: #607086;
+  color: var(--brand-primary-500);
   font-size: 11px;
   font-weight: 700;
 }
@@ -106,9 +106,9 @@ const getStatusText = (status, startDate) => {
   position: relative;
   margin: 0 0 9px;
   padding: 12px;
-  border: 1px solid rgba(221, 226, 237, 0.82);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 82%, transparent);
   border-radius: 15px;
-  background: #fff;
+  background: var(--surface-1);
 }
 
 .project-item::before {
@@ -119,13 +119,13 @@ const getStatusText = (status, startDate) => {
   width: 3px;
   border-radius: 999px;
   content: '';
-  background: linear-gradient(180deg, #1d4ed8, #4aae3a);
+  background: linear-gradient(180deg, var(--brand-primary-500), var(--status-success));
 }
 
 .project-title {
   margin: 0;
   padding-inline-start: 8px;
-  color: #111827;
+  color: var(--brand-primary-900);
   font-size: 13px;
   font-weight: 900;
 }
@@ -133,11 +133,11 @@ const getStatusText = (status, startDate) => {
 .side-empty {
   margin: 0;
   padding: 14px;
-  border: 1px dashed rgba(29, 78, 216, 0.22);
+  border: 1px dashed color-mix(in srgb, var(--brand-primary-500) 22%, transparent);
   border-radius: 14px;
-  color: #607086;
+  color: var(--brand-primary-500);
   font-size: 11px;
   font-weight: 800;
-  background: rgba(29, 78, 216, 0.04);
+  background: color-mix(in srgb, var(--brand-primary-500) 4%, transparent);
 }
 </style>

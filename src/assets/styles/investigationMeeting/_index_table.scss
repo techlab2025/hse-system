@@ -19,7 +19,7 @@
       width: 100%;
       gap: $XsSize4;
       font-family: 'Regular';
-      background-color: rgba(251, 251, 251, 1);
+      background-color: var(--surface-1);
       padding: $XsSize;
       border-radius: 20px;
     }
@@ -27,20 +27,20 @@
     .header {
       @include flex-row(nowrap, space-between, center);
       padding: unset !important;
-      background-color: rgba(251, 251, 251, 1);
+      background-color: var(--surface-1);
       .first-label-item-primary {
         color: $PrimaryColor;
         font-size: $MdSize2;
         font-weight: $BaseFontWeightBold;
         span {
-          color: rgba(202, 205, 219, 1);
+          color: var(--brand-primary-200);
           font-size: $SmSize;
           font-weight: $BaseFontMediumWeight;
         }
       }
       .new {
         font-weight: $BaseFontMediumWeight;
-        color: rgba(76, 175, 80, 1);
+        color: var(--status-success);
         font-size: $MdSize;
       }
     }
@@ -55,7 +55,7 @@
       display: inline-block;
       width: 6px;
       height: 6px;
-      background-color: rgba(76, 175, 80, 1);
+      background-color: var(--status-success);
       border-radius: 50%;
       margin-right: 4px;
       vertical-align: middle;
@@ -81,14 +81,14 @@
     // second card
     .index-table-card {
       @include flex-column(nowrap, flex-start, flex-start);
-      border: 1px solid #f6f6f6;
+      border: 1px solid var(--surface-1);
       padding: $XsSize;
       border-radius: $XlSize;
       width: 100%;
       .card-header-container {
         @include flex-column(nowrap, flex-end, flex-end);
         padding-bottom: $XsSize;
-        border-bottom: 2px dashed #e1e4ed;
+        border-bottom: 2px dashed var(--brand-primary-100);
         width: 100%;
         gap: $XsSize;
         &.show {
@@ -102,7 +102,7 @@
           padding: $XsSize 0;
 
           .label-item-secondary {
-            color: rgba(32, 32, 32, 1);
+            color: var(--text-strong);
             font-size: $MdSize;
             font-weight: $BaseFontWeightBold;
           }
@@ -112,24 +112,24 @@
   }
 
   .label-item-primary {
-    color: rgba(174, 174, 178, 1);
+    color: var(--text-soft);
     font-size: $MdSize;
     font-weight: $BaseFontMediumWeight;
     font-family: 'Regular';
     span {
-      color: rgba(32, 32, 32, 1);
+      color: var(--text-strong);
       font-weight: $BaseFontMediumWeight;
       font-family: 'Regular';
     }
   }
 
   .label-item {
-    color: #aeaeb2;
+    color: var(--text-soft);
     font-size: $SmSize;
     font-weight: $BaseFontMediumWeight;
 
     span {
-      color: #000000;
+      color: var(--text-strong);
     }
   }
   .date-color {
@@ -137,21 +137,21 @@
   }
 
   .first-label-item-primary.high-observation {
-    color: rgba(216, 0, 39, 1) !important;
+    color: var(--status-danger) !important;
   }
 
   .first-label-item-primary.medium-observation {
-    color: rgba(255, 191, 82, 1) !important;
+    color: var(--brand-accent-300) !important;
   }
   .google-icon {
     @include flex-row(nowrap, center, center);
     gap: $XsSize4;
     background: linear-gradient(
       90deg,
-      rgba(255, 186, 0, 1) 0%,
-      rgba(0, 172, 71, 1) 33.15%,
-      rgba(66, 133, 244, 1) 72%,
-      rgba(234, 68, 53, 1) 100%
+      var(--brand-accent-500) 0%,
+      var(--status-success) 33.15%,
+      var(--brand-primary-400) 72%,
+      var(--status-danger) 100%
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -161,7 +161,7 @@
   .card-footer {
     @include flex-row(nowrap, flex-start, center);
     gap: $XsSize4;
-    background-color: rgba(226, 53, 53, 0.05);
+    background-color: color-mix(in srgb, var(--status-danger) 5%, transparent);
     width: 100%;
     padding: 1rem;
     border-radius: 23px;
@@ -184,7 +184,7 @@
     .join-now {
       @include flex-row(nowrap, center, center);
       gap: $XsSize4;
-      color: rgba(226, 53, 53, 1);
+      color: var(--status-danger);
       font-size: $MdSize;
       font-weight: $BaseFontWeightBold;
     }

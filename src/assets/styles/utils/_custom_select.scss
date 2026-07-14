@@ -9,7 +9,7 @@
 }
 
 .p-select {
-  border-color: #d9dbe9 !important;
+  border-color: var(--brand-primary-100) !important;
   font-family: 'Regular';
   font-size: $SmSize;
   font-weight: $BaseFontSemiBoldWeight;
@@ -17,17 +17,17 @@
   border-radius: calc(var(--xl-size-base) + 2px);
   // margin-top: $XsSize3;
   &:focus {
-    border-color: #d9dbe9 !important;
+    border-color: var(--brand-primary-100) !important;
   }
 }
 
 .p-select-overlay {
-  background-color: white !important;
+  background-color: var(--text-on-brand) !important;
   border: none !important;
   font-size: $SmSize;
   font-weight: $BaseFontSemiBoldWeight;
   .p-inputtext {
-    background-color: white !important;
+    background-color: var(--text-on-brand) !important;
     border: none !important;
   }
 }
@@ -36,25 +36,25 @@
   font-family: 'Regular';
   font-size: $SmSize;
   font-weight: $BaseFontSemiBoldWeight;
-  background-color: white !important;
-  color: black !important;
+  background-color: var(--text-on-brand) !important;
+  color: var(--text-strong) !important;
 }
 .p-select-empty-message {
-  color: black !important;
+  color: var(--text-strong) !important;
 }
 
 .p-multiselect-overlay {
   font-family: 'Regular';
   font-size: $SmSize;
   font-weight: $BaseFontSemiBoldWeight;
-  background-color: white !important;
+  background-color: var(--text-on-brand) !important;
   border: none !important;
-  color: black !important;
+  color: var(--text-strong) !important;
   margin-top: $XlSize !important;
   .p-inputtext {
-    color: black !important;
-    background-color: white !important;
-    border: 1px solid #d9dbe9 !important;
+    color: var(--text-strong) !important;
+    background-color: var(--text-on-brand) !important;
+    border: 1px solid var(--brand-primary-100) !important;
   }
 }
 
@@ -62,8 +62,8 @@
   font-family: 'Regular';
   font-size: $SmSize;
   font-weight: $BaseFontSemiBoldWeight;
-  background-color: white !important;
-  color: #0f1927 !important;
+  background-color: var(--text-on-brand) !important;
+  color: var(--brand-primary-900) !important;
   font-size: $SmSize !important;
   font-weight: $BaseFontSemiBoldWeight !important;
   // New Styles Start
@@ -74,7 +74,7 @@
   // New Styles End
 
   &:hover {
-    background-color: #1d4ed80f !important;
+    background-color: color-mix(in srgb, var(--brand-primary-500) 5.88%, transparent) !important;
   }
 }
 
@@ -82,9 +82,9 @@
   font-family: 'Regular';
   font-size: $SmSize;
   font-weight: $BaseFontSemiBoldWeight;
-  background-color: white !important;
+  background-color: var(--text-on-brand) !important;
   &:focus {
-    border: 1px solid #d9dbe9 !important;
+    border: 1px solid var(--brand-primary-100) !important;
   }
 }
 
@@ -92,7 +92,7 @@
   font-family: 'Regular';
   font-size: $SmSize;
   font-weight: $BaseFontSemiBoldWeight;
-  border-color: #d9dbe9 !important;
+  border-color: var(--brand-primary-100) !important;
   // padding: $XsSize3;
   padding: var(--md-size-2) var(--md-size);
   border-radius: calc(var(--xl-size-base) + 2px) !important;
@@ -100,21 +100,21 @@
 
   // margin-top: $XsSize3;
   &:focus {
-    border-color: #d9dbe9 !important;
+    border-color: var(--brand-primary-100) !important;
   }
 }
 
 .p-multiselect-label {
-  color: black !important;
+  color: var(--text-strong) !important;
   // color: ;
-  // background-color: rgb(29, 79, 216) !important;
+  // background-color: var(--brand-primary-500) !important;
   margin-inline: 5px;
   padding: 0 !important;
   border-radius: calc(var(--xl-size-base) + 2px);
   line-height: normal;
   width: fit-content;
   &.p-placeholder {
-    color: #9ca3af !important;
+    color: var(--text-soft) !important;
     font-size: 14px !important;
     font-weight: 500 !important;
     // height: 12px;
@@ -122,8 +122,8 @@
 }
 
 .p-checkbox-box {
-  background-color: white !important;
-  border: 1px solid #8d8d8d !important;
+  background-color: var(--text-on-brand) !important;
+  border: 1px solid var(--text-soft) !important;
   transition: all 0.2s ease;
   border-radius: 50% !important;
   width: $XlSize !important;
@@ -136,7 +136,7 @@
 
 .p-checkbox-checked {
   .p-checkbox-box {
-    background-color: #1d4ed8 !important;
+    background-color: var(--brand-primary-500) !important;
     border: none !important;
     svg {
       display: none !important;
@@ -146,10 +146,10 @@
 .p-checkbox-box.p-highlight {
   background-color: $PrimaryColor !important;
   border-color: $PrimaryColor !important;
-  color: white !important;
+  color: var(--text-on-brand) !important;
 
   .p-checkbox-icon {
-    color: white !important;
+    color: var(--text-on-brand) !important;
   }
 }
 
@@ -166,33 +166,33 @@
 }
 
 .p-multiselect-chip-item {
-  background-color: #1d4ed81a !important;
+  background-color: color-mix(in srgb, var(--brand-primary-500) 10.2%, transparent) !important;
   // border-radius: $XlSize !important;
   border-radius: $SmSize !important;
   .p-chip {
     // border-radius: $XlSize !important;
-    // // background-color: #1D4ED8 !important;
-    // color: #1d4ed8 !important;
-    background-color: #ffffff !important;
+    // // background-color: var(--brand-primary-500) !important;
+    // color: var(--brand-primary-500) !important;
+    background-color: var(--text-on-brand) !important;
     color: $PrimaryColor !important;
     // padding: $XsSize2 $XsSize !important;
     border-radius: $SmSize !important;
     font-size: $SmSize !important;
     font-weight: $BaseFontSemiBoldWeight !important;
-    box-shadow: inset 3px 2px 13px rgba(29, 79, 216, 0.2) !important;
+    box-shadow: inset 3px 2px 13px color-mix(in srgb, var(--brand-primary-500) 20%, transparent) !important;
     display: inline-flex !important;
     align-items: center !important;
     gap: 4px !important;
-    border: 1px solid #d9dbe9 !important;
+    border: 1px solid var(--brand-primary-100) !important;
     flex-shrink: 0 !important;
     height: 32px !important;
     line-height: 1 !important;
   }
 
   svg {
-    background: white !important;
+    background: var(--surface-1) !important;
     path {
-      fill: #1d4ed8 !important;
+      fill: var(--brand-primary-500) !important;
     }
   }
 }
@@ -200,7 +200,7 @@
 .p-select-label {
   font-size: $SmSize !important;
   font-weight: $BaseFontMediumWeight !important;
-  // background-color: #1d4ed81a !important;
+  // background-color: color-mix(in srgb, var(--brand-primary-500) 10.2%, transparent) !important;
   border-radius: 20px !important;
   width: fit-content !important;
   color: $PrimaryColor !important;
@@ -209,7 +209,7 @@
   &.p-placeholder {
     font-weight: 300 !important;
     font-size: 14px !important;
-    color: #9ca3af !important;
+    color: var(--text-soft) !important;
     padding: 0 !important;
   }
 }
@@ -238,7 +238,7 @@
     text-align: start;
     font-weight: $BaseFontSemiBoldWeight;
     font-size: $MdSize;
-    color: #202020;
+    color: var(--text-strong);
     font-family: 'Light';
     margin-inline-start: auto;
   }
@@ -254,7 +254,7 @@
   &::placeholder {
     font-weight: 300 !important;
     font-size: 14px !important;
-    color: #9ca3af !important;
+    color: var(--text-soft) !important;
   }
 }
 
@@ -263,7 +263,7 @@
   position: absolute;
   top: 10px;
   left: 12px;
-  color: #9ca3af !important;
+  color: var(--text-soft) !important;
   font-weight: 400 !important;
   font-size: 14px !important;
   font-style: normal !important;

@@ -9,14 +9,14 @@
   gap: 12px;
   width: 100%;
   padding: 16px;
-  border: 1px solid #e6edf7;
+  border: 1px solid var(--brand-primary-100);
   border-radius: 8px;
-  background: #ffffff;
-  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.04);
+  background: var(--surface-1);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
 
   &.five-why {
-    border-color: #d8efe9;
-    background: linear-gradient(180deg, #ffffff 0%, rgba(240, 253, 250, 0.55) 100%);
+    border-color: var(--status-success-soft);
+    background: linear-gradient(180deg, var(--surface-1) 0%, color-mix(in srgb, var(--status-success-soft) 55%, transparent) 100%);
 
     .section-header-page {
       padding: 12px !important;
@@ -31,9 +31,9 @@
   .template-container {
     width: 100%;
     padding: 18px;
-    border: 1px solid #e7edf6;
+    border: 1px solid var(--brand-primary-100);
     border-radius: 8px;
-    background: #f8fafc;
+    background: var(--brand-primary-50);
     position: relative;
 
     > .timeline-item {
@@ -53,10 +53,10 @@
     .timeline-content {
       width: 100%;
       padding: 16px;
-      border: 1px solid #e1e9f5;
+      border: 1px solid var(--brand-primary-100);
       border-radius: 8px;
-      background: #ffffff;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+      background: var(--surface-1);
+      box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
     }
 
     .timeline-content-text {
@@ -80,9 +80,9 @@
       gap: 8px;
       min-height: 100%;
       padding: 10px;
-      border: 1px dashed #c8d5e6;
+      border: 1px dashed var(--brand-primary-200);
       border-radius: 8px;
-      background: #ffffff;
+      background: var(--surface-1);
 
       > div {
         position: relative;
@@ -91,7 +91,7 @@
       }
 
       .add-text {
-        color: #1d4ed8;
+        color: var(--brand-primary-500);
         font-family: 'Bold';
         font-size: 13px;
         font-weight: 700;
@@ -113,8 +113,8 @@
       width: 14px;
       height: 14px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #1d4ed8 0%, #14b8a6 100%);
-      box-shadow: 0 0 0 6px rgba(29, 78, 216, 0.08);
+      background: linear-gradient(135deg, var(--brand-primary-500) 0%, var(--status-success) 100%);
+      box-shadow: 0 0 0 6px color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
       z-index: 1;
     }
 
@@ -128,11 +128,11 @@
       place-items: center;
       width: 34px;
       height: 34px;
-      border: 1px solid #d7e1ee;
+      border: 1px solid var(--brand-primary-100);
       border-radius: 8px;
-      background: #ffffff;
-      color: #1d4ed8;
-      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.1);
+      background: var(--surface-1);
+      color: var(--brand-primary-500);
+      box-shadow: 0 8px 18px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
     }
 
     .tree-pulse {
@@ -141,7 +141,7 @@
       width: 42px;
       height: 42px;
       border-radius: 50%;
-      background: rgba(20, 184, 166, 0.16);
+      background: color-mix(in srgb, var(--status-success) 16%, transparent);
       opacity: 0;
     }
 

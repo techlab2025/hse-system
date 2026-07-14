@@ -121,7 +121,7 @@ const sections = [
   border: 1px solid var(--main-border);
   border-radius: 14px;
   background: var(--BgWhite);
-  box-shadow: 0 8px 18px color-mix(in srgb, var(--Black) 7%, transparent);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--text-strong) 7%, transparent);
 }
 
 .panel-header {
@@ -181,7 +181,7 @@ const sections = [
 .mini-card {
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 10%, var(--main-border));
   border-radius: 12px;
-  background: color-mix(in srgb, var(--PrimaryColor) 3%, white);
+  background: color-mix(in srgb, var(--PrimaryColor) 3%, var(--surface-1));
   padding: 1rem;
 }
 

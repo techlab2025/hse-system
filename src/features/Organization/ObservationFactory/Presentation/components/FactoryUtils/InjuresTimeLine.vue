@@ -401,7 +401,7 @@ onMounted(async () => {
   inset-inline-start: 22px;
   width: 2px;
   border-radius: 999px;
-  background: linear-gradient(180deg, #1d4ed8 0%, #14b8a6 48%, rgba(203, 213, 225, 0.35) 100%);
+  background: linear-gradient(180deg, var(--brand-primary-500) 0%, var(--status-success) 48%, color-mix(in srgb, var(--brand-primary-200) 35%, transparent) 100%);
 }
 
 .injury-timeline-container .timeline-item {
@@ -426,22 +426,22 @@ onMounted(async () => {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: #ffffff;
-  border: 1px solid rgba(29, 78, 216, 0.22);
-  box-shadow: 0 10px 24px rgba(29, 78, 216, 0.14);
+  background: var(--surface-1);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-500) 22%, transparent);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--brand-primary-500) 14%, transparent);
 }
 
 .injury-timeline-container .timeline-dot-inner {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #1d4ed8, #14b8a6);
+  background: linear-gradient(135deg, var(--brand-primary-500), var(--status-success));
 }
 
 .injury-timeline-container .timeline-pulse {
   position: absolute;
   inset: -7px;
-  border: 1px solid rgba(29, 78, 216, 0.18);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
   border-radius: inherit;
   animation: injuryPulse 1.8s ease-out infinite;
 }
@@ -451,11 +451,11 @@ onMounted(async () => {
   place-items: center;
   width: 34px;
   height: 34px;
-  border: 1px solid rgba(226, 232, 240, 0.95);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 95%, transparent);
   border-radius: 12px;
-  background: #ffffff;
-  color: #1d4ed8;
-  box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+  background: var(--surface-1);
+  color: var(--brand-primary-500);
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
@@ -464,20 +464,20 @@ onMounted(async () => {
 
 .injury-timeline-container .timeline-icon:hover {
   /* transform: translateY(-1px); */
-  border-color: rgba(29, 78, 216, 0.24);
-  box-shadow: 0 16px 30px rgba(29, 78, 216, 0.14);
+  border-color: color-mix(in srgb, var(--brand-primary-500) 24%, transparent);
+  box-shadow: 0 16px 30px color-mix(in srgb, var(--brand-primary-500) 14%, transparent);
 }
 
 .injury-timeline-card {
   position: relative;
   overflow: visible;
   padding: 18px;
-  border: 1px solid rgba(226, 232, 240, 0.95);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 95%, transparent);
   border-radius: 22px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.94)),
-    radial-gradient(circle at 100% 0%, rgba(20, 184, 166, 0.09), transparent 30%);
-  box-shadow: 0 20px 46px rgba(15, 23, 42, 0.07);
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 94%, transparent)),
+    radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--status-success) 9%, transparent), transparent 30%);
+  box-shadow: 0 20px 46px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
@@ -486,8 +486,8 @@ onMounted(async () => {
 
 .injury-timeline-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(29, 78, 216, 0.18);
-  box-shadow: 0 24px 56px rgba(15, 23, 42, 0.1);
+  border-color: color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
+  box-shadow: 0 24px 56px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
 }
 
 .injury-card-header {
@@ -496,7 +496,7 @@ onMounted(async () => {
   justify-content: space-between;
   gap: 12px;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+  border-bottom: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
 }
 
 .injury-card-header div {
@@ -506,7 +506,7 @@ onMounted(async () => {
 }
 
 .injury-card-header span {
-  color: #64748b;
+  color: var(--brand-primary-500);
   font-size: 13px;
   font-weight: 800;
   text-transform: uppercase;
@@ -520,16 +520,16 @@ onMounted(async () => {
   height: 28px;
   padding-inline: 10px;
   border-radius: 999px;
-  color: #1d4ed8;
-  background: #eff6ff;
+  color: var(--brand-primary-500);
+  background: var(--brand-primary-50);
   font-weight: 900;
 }
 
 .injury-card-header p {
   padding: 7px 11px;
   border-radius: 999px;
-  color: #b42318;
-  background: #fff1f2;
+  color: var(--status-danger);
+  background: var(--status-danger-soft);
   font-size: 12px;
   font-weight: 800;
 }
@@ -541,25 +541,25 @@ onMounted(async () => {
 .injury-timeline-card .input-wrapper label {
   display: inline-flex;
   margin-bottom: 7px;
-  color: #334155;
+  color: var(--brand-primary-700);
   font-size: 13px;
   font-weight: 800;
 }
 
 .injury-timeline-card .input {
   min-height: 46px;
-  border: 1px solid rgba(203, 213, 225, 0.9);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-200) 90%, transparent);
   border-radius: 14px;
-  background: #ffffff;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+  background: var(--surface-1);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease;
 }
 
 .injury-timeline-card .input:focus {
-  border-color: rgba(29, 78, 216, 0.42);
-  box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.08);
+  border-color: color-mix(in srgb, var(--brand-primary-500) 42%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
 }
 
 .injury-timeline-card .add-dialog {
@@ -568,8 +568,8 @@ onMounted(async () => {
   min-height: 30px;
   padding: 6px 11px;
   border-radius: 999px;
-  color: #1d4ed8;
-  background: #eff6ff;
+  color: var(--brand-primary-500);
+  background: var(--brand-primary-50);
   font-size: 12px;
   font-weight: 800;
   cursor: pointer;
@@ -580,8 +580,8 @@ onMounted(async () => {
   min-height: 32px;
   padding: 7px 12px;
   border-radius: 999px;
-  color: #64748b;
-  background: #f8fafc;
+  color: var(--brand-primary-500);
+  background: var(--brand-primary-50);
   font-size: 12px;
   font-weight: 800;
   transition:
@@ -592,9 +592,9 @@ onMounted(async () => {
 
 .injury-timeline-card .emp-name.active,
 .injury-timeline-card .emp-select.active {
-  color: #ffffff;
-  background: #1d4ed8;
-  box-shadow: 0 10px 22px rgba(29, 78, 216, 0.18);
+  color: var(--text-on-brand);
+  background: var(--brand-primary-500);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
 }
 
 .injury-timeline-card .is-stopped {
@@ -604,15 +604,15 @@ onMounted(async () => {
   gap: 12px;
   min-height: 54px;
   padding: 12px 14px;
-  border: 1px solid rgba(245, 158, 11, 0.22);
+  border: 1px solid color-mix(in srgb, var(--brand-accent-500) 22%, transparent);
   border-radius: 16px;
-  background: #fffbeb;
+  background: var(--brand-accent-50);
   cursor: pointer;
 }
 
 .injury-timeline-card .is-stopped label {
   margin: 0;
-  color: #92400e;
+  color: var(--brand-accent-700);
 }
 
 @media screen and (max-width: 720px) {

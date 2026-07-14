@@ -48,18 +48,18 @@
       // padding-left: 25px;
 
       .static {
-        color: #9ca3af;
+        color: var(--text-soft);
         font-size: $SmSize;
         font-weight: $BaseFontWeightBold;
       }
 
       .static-title {
-        color: #0c2058;
+        color: var(--brand-primary-800);
         font-size: $XlSize;
         font-family: 'bold';
         font-weight: $BaseFontWeightBold;
         span {
-          color: #bcbcbc;
+          color: var(--text-muted);
           font-size: $XsSize;
           font-weight: $BaseFontMediumWeight;
         }
@@ -71,12 +71,12 @@
       gap: $XsSize3;
 
       p {
-        background-color: #f8faff80;
-        border: 1px solid #f1f3f7d1;
+        background-color: color-mix(in srgb, var(--brand-primary-50) 50.2%, transparent);
+        border: 1px solid color-mix(in srgb, var(--brand-primary-50) 81.96%, transparent);
         padding: $XsSize3;
         padding-inline: 18px;
         border-radius: $XsSize;
-        color: #19213d;
+        color: var(--brand-primary-800);
         font-size: $XsSize;
         font-weight: $BaseFontMediumWeight;
         position: relative;
@@ -93,17 +93,17 @@
 
         &:first-child {
           &::before {
-            background-color: #1d4ed8;
+            background-color: var(--brand-primary-500);
           }
         }
         &:nth-child(2) {
           &::before {
-            background-color: #8bbefb;
+            background-color: var(--brand-primary-200);
           }
         }
         &:last-child {
           &::before {
-            background-color: #4e9fff;
+            background-color: var(--brand-primary-400);
           }
         }
       }

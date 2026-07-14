@@ -13,7 +13,7 @@
     @include flex-justify();
     width: 100%;
     .title {
-      color: #202020;
+      color: var(--text-strong);
       font-size: $MdSize;
       font-weight: $BaseFontSemiBoldWeight;
     }
@@ -25,7 +25,7 @@
         gap: $XsSize2;
         cursor: pointer;
         .checkbox-label {
-          color: #0f1927;
+          color: var(--brand-primary-900);
           font-size: $SmSize;
           font-weight: $BaseFontMediumWeight;
         }
@@ -53,7 +53,7 @@
         &.selected {
           border: 1px solid $PrimaryColor;
           border-radius: 10px;
-          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 2px 5px color-mix(in srgb, var(--text-strong) 10%, transparent);
         }
         &.disabled {
           opacity: 0.5;
@@ -79,7 +79,7 @@
       }
 
       label {
-        color: #0f1927;
+        color: var(--brand-primary-900);
         font-size: $SmSize;
         font-weight: $BaseFontSemiBoldWeight;
       }
@@ -98,11 +98,11 @@
   .p-checkbox-box {
     border-radius: 5px !important;
     svg {
-      fill: white !important;
+      fill: var(--text-on-brand) !important;
     }
   }
   .p-checkbox-checked .p-checkbox-box svg {
-    fill: white !important;
+    fill: var(--text-on-brand) !important;
     display: block !important;
   }
 }

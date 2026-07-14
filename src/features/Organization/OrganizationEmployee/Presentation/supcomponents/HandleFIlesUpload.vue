@@ -407,7 +407,7 @@ const inputId = `file-upload-${props.index ?? Math.random().toString(36).substri
   bottom: 0;
   left: 0;
   right: 0;
-  background: linear-gradient(transparent, var(--black-alpha-60));
+  background: linear-gradient(transparent, color-mix(in srgb, var(--text-strong) 60%, transparent));
   padding: 20px 6px 5px;
   display: flex;
   flex-direction: column;
@@ -431,7 +431,7 @@ const inputId = `file-upload-${props.index ?? Math.random().toString(36).substri
 
 .preview-size {
   font-size: 9px;
-  color: var(--white-alpha-75);
+  color: color-mix(in srgb, var(--surface-1) 75%, transparent);
 }
 
 .download-badge {
@@ -463,7 +463,7 @@ const inputId = `file-upload-${props.index ?? Math.random().toString(36).substri
   height: 20px;
   border-radius: 50%;
   border: none;
-  background: var(--black-alpha-45);
+  background: color-mix(in srgb, var(--text-strong) 45%, transparent);
   color: var(--BgWhite);
   font-size: 10px;
   cursor: pointer;

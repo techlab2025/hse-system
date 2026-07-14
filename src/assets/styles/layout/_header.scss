@@ -7,7 +7,7 @@
   width: 100%;
   padding: $XlSize;
   font-family: 'Regular';
-  background-color: white;
+  background-color: var(--surface-1);
   border-bottom-left-radius: $XlSize;
   border-bottom-right-radius: $XlSize;
   // &.minmize {
@@ -23,7 +23,7 @@
     width: 100%;
 
     .logo {
-      color: #170f49;
+      color: var(--brand-primary-800);
       font-weight: 700;
       font-size: 20px;
     }
@@ -41,7 +41,7 @@
       height: 60px;
       padding: 10px;
       border-radius: 50%;
-      background-color: #f8f9fb;
+      background-color: var(--brand-primary-50);
       cursor: pointer;
 
       svg {
@@ -57,7 +57,7 @@
       margin: auto;
       padding: $XsSize2;
       border-radius: 50%;
-      background-color: #f8f9fb;
+      background-color: var(--brand-primary-50);
     }
 
     .user {
@@ -75,14 +75,14 @@
         span {
           text-align: start;
           &:first-child {
-            color: black;
+            color: var(--text-strong);
             text-align: right;
             width: 100%;
             min-width: 130px;
           }
           &:last-child {
             margin-left: auto;
-            color: #9ca3af;
+            color: var(--text-soft);
           }
         }
       }
@@ -91,9 +91,9 @@
         position: absolute;
         right: var(--space-sm);
         top: calc($XlSize4 + $XlSize);
-        background-color: #fff;
+        background-color: var(--surface-1);
         border-radius: var(--radius-xs);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 8px color-mix(in srgb, var(--text-strong) 10%, transparent);
         z-index: 1000;
         min-width: 150px;
         /*display: none;*/
@@ -105,15 +105,15 @@
           display: flex;
           align-items: center;
           gap: var(--gap-sm);
-          color: rgba(84, 104, 129, 1);
+          color: var(--brand-primary-600);
           transition: all 0.2s ease-in-out;
 
           &:not(:last-child) {
-            border-bottom: 1px solid rgba(242, 242, 243, 1);
+            border-bottom: 1px solid var(--surface-2);
           }
 
           &:hover {
-            background-color: rgba(242, 242, 243, 1);
+            background-color: var(--surface-2);
 
             svg {
               path {
@@ -130,7 +130,7 @@
     width: 60%;
     @include flex-row(nowrap, center, center);
     gap: $XsSize3;
-    background-color: #f8f9fb;
+    background-color: var(--brand-primary-50);
     padding: $SmSize;
     border-radius: $XlSize;
 

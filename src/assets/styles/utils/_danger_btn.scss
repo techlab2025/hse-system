@@ -2,7 +2,7 @@
 @use "../mixins/border" as *;
 
 .btn-danger {
-  background-color: $White;
+  background-color: var(--text-on-brand);
   color: $Red;
   //border-color: $BgRed;
 
@@ -14,6 +14,6 @@
 
   &:hover {
     background-color: $Red;
-    color: $White;
+    color: var(--text-on-brand);
   }
 }

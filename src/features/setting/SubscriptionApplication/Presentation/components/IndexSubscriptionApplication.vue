@@ -320,28 +320,28 @@ const GetProjectStatus = (status: number) => {
 <style scoped>
 .status {
   &.PENDING {
-    color: black;
+    color: var(--text-strong);
   }
 
   &.APPROVED {
-    color: #00ff00;
+    color: var(--status-success);
   }
 
   &.REJECTED {
-    color: #ff0000;
+    color: var(--status-danger);
   }
 
   /*
   &.IN_REVIEW {
-    background-color: #0000ff;
+    background-color: var(--brand-primary-500);
   }
 
   &.MISSING_DATA {
-    background-color: #0000ff;
+    background-color: var(--brand-primary-500);
   }
 
   &.EXPIRED {
-    background-color: #0000ff;
+    background-color: var(--brand-primary-500);
   } */
 }
 </style>

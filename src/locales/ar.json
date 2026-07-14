@@ -885,5 +885,6 @@
   "import_equipment": "استيراد المعدات",
   "import_equipment_type": "استيراد أنواع المعدات",
   "shifts": "الورديات",
-  "add_shift": "إضافة وردية"
+  "add_shift": "إضافة وردية",
+  "system_identity": "هوية النظام"
 }

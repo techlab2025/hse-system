@@ -5,7 +5,7 @@
 .objectives {
   width: 100%;
   font-family: 'Regular';
-  color: #334155;
+  color: var(--brand-primary-700);
   font-size: $MdSize;
   line-height: 1.8;
   word-break: break-word;
@@ -13,7 +13,7 @@
 
   p {
     margin: 0;
-    color: #334155;
+    color: var(--brand-primary-700);
   }
 
   p + p {
@@ -27,7 +27,7 @@
   h5,
   h6 {
     margin: 0 0 $XsSize3;
-    color: #111827;
+    color: var(--brand-primary-900);
     font-family: 'bold';
     line-height: 1.35;
   }
@@ -53,7 +53,7 @@
 
   strong,
   b {
-    color: #111827;
+    color: var(--brand-primary-900);
     font-family: 'bold';
   }
 
@@ -62,8 +62,8 @@
     padding: $XsSize $SmSize;
     border-inline-start: 3px solid $PrimaryColor;
     border-radius: $BorderRadiusSm;
-    background-color: rgba(29, 78, 216, 0.05);
-    color: #475569;
+    background-color: color-mix(in srgb, var(--brand-primary-500) 5%, transparent);
+    color: var(--brand-primary-600);
   }
 
   .object {
@@ -88,14 +88,14 @@
   &.is-empty {
     @include flex-row(nowrap, center, center);
     min-height: 110px;
-    border: 1px dashed #dbe3ef;
+    border: 1px dashed var(--brand-primary-100);
     border-radius: $BorderRadiusSm;
-    background-color: #f8fafc;
-    color: #7c8798;
+    background-color: var(--brand-primary-50);
+    color: var(--text-soft);
     text-align: center;
 
     p {
-      color: #7c8798;
+      color: var(--text-soft);
       font-size: $SmSize;
       font-weight: $BaseFontSemiBoldWeight;
     }

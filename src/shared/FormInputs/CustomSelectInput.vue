@@ -224,7 +224,7 @@ const updateSlot = (data: any) => {
   height: 20px;
   margin-right: 6px;
   cursor: pointer;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   text-decoration: underline;
   font-family: 'Regular';
 
@@ -241,7 +241,7 @@ const updateSlot = (data: any) => {
   // padding: 16px 0;
 
   &:focus {
-    border: 1px solid #d9dbe9 !important;
+    border: 1px solid var(--brand-primary-100) !important;
   }
 }
 </style>

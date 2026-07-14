@@ -3,11 +3,11 @@
 // @use '../mixins/border' as *;
 
 // .sidebar {
-//   background-color: $White;
+//   background-color: var(--surface-1);
 //   width: 250px;
 //   height: 100vh;
 
-//   //box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+//   //box-shadow: 0 0 5px color-mix(in srgb, var(--text-strong) 10%, transparent);
 //   transition: all 0.3s ease-in-out;
 //   border-radius: 0 $XlSize $XlSize 0;
 //   position: sticky;
@@ -19,7 +19,7 @@
 //     // position: fixed;
 //     height: 100vh;
 //     width: 100%;
-//     background-color: $White;
+//     background-color: var(--surface-1);
 //   }
 
 //   @include flex-column();
@@ -41,7 +41,7 @@
 //     h2 {
 //       font-size: $XlSize;
 //       font-weight: $BaseFontWeightBold;
-//       color: $Black;
+//       color: var(--text-strong);
 //     }
 //   }
 
@@ -52,12 +52,12 @@
 //     z-index: 100;
 //     cursor: pointer;
 //     //border: none;
-//     background-color: $White;
+//     background-color: var(--surface-1);
 //     @include flex-center();
 //     width: calc($XlSize4 - $SmSize);
 //     height: calc($XlSize4 - $SmSize);
 
-//     @include border($BorderWidth3, #f8f9fb, solid, 50%);
+//     @include border($BorderWidth3, var(--brand-primary-50), solid, 50%);
 //   }
 
 //   .links {

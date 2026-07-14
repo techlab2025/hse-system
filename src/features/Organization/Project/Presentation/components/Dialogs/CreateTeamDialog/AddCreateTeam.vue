@@ -72,15 +72,15 @@ const UpdateData = () => {
 .pluse-icon {
   width: 20px;
   height: 20px;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   cursor: pointer;
-  background-color: #1d4fd856;
+  background-color: color-mix(in srgb, var(--brand-primary-500) 33.73%, transparent);
   border-radius: 50%;
   padding: 3px;
 }
 .btn-text {
   font-size: 14px;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   font-weight: 500;
   cursor: pointer;
 }

@@ -15,6 +15,7 @@ import SearchIcon from '../icons/SearchIcon.vue'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import defaultLogo from '@/assets/images/logo.svg'
+import { useSystemIdentity } from '@/composables/useSystemIdentity'
 import CustomSelectInput from '../FormInputs/CustomSelectInput.vue'
 import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
 import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
@@ -48,6 +49,17 @@ const emit = defineEmits(['open'])
 
 const language = ref<string>('')
 const { isDarkMode, initThemeMode, toggleThemeMode } = useThemeMode()
+const { identity: systemIdentity } = useSystemIdentity()
+const brandLogo = computed(() =>
+  systemIdentity.value.isActive && systemIdentity.value.logo
+    ? systemIdentity.value.logo
+    : defaultLogo,
+)
+const brandName = computed(() =>
+  systemIdentity.value.isActive && systemIdentity.value.name
+    ? systemIdentity.value.name
+    : 'HSE.Cloud.Ai',
+)
 
 const router = useRouter()
 // const userStore = useUserStore();
@@ -211,8 +223,8 @@ const toggle = (event: Event) => {
                 : '/organization'
           "
         >
-          <img :src="defaultLogo" alt="logo-img" />
-          <p class="logo">HSE.Cloud.Ai</p>
+          <img :src="brandLogo" :alt="`${brandName} logo`" />
+          <p class="logo">{{ brandName }}</p>
         </router-link>
       </div>
 
@@ -376,9 +388,9 @@ const toggle = (event: Event) => {
   padding: 14px 22px;
   min-height: 76px;
   background:
-    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.2) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.18) 0 16%, transparent 34%),
-    linear-gradient(155deg, #1d4ed8 0%, #1e40af 44%, #0f2f80 100%) !important;
+    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--surface-1) 20%, transparent) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--brand-primary-300) 18%, transparent) 0 16%, transparent 34%),
+    linear-gradient(155deg, var(--brand-primary-500) 0%, var(--brand-primary-600) 44%, var(--brand-primary-700) 100%) !important;
   border-bottom-left-radius: 22px;
   border-bottom-right-radius: 22px;
   border-top-left-radius: 22px;
@@ -386,20 +398,20 @@ const toggle = (event: Event) => {
   border-top-right-radius: 22px;
 
   box-shadow:
-    0 4px 10px rgba(10, 54, 129, 0.22),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.18);
+    0 4px 10px color-mix(in srgb, var(--brand-primary-700) 22%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, var(--shadow-color) 18%, transparent);
 }
 
 .header.is-dark {
   background:
-    radial-gradient(circle at 18% 0%, rgba(96, 165, 250, 0.16) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, rgba(20, 184, 166, 0.12) 0 16%, transparent 34%),
-    linear-gradient(155deg, #111827 0%, #0f172a 52%, #07111f 100%) !important;
-  border: 1px solid rgba(148, 163, 184, 0.14);
+    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--brand-primary-300) 16%, transparent) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--status-success) 12%, transparent) 0 16%, transparent 34%),
+    linear-gradient(155deg, var(--brand-primary-900) 0%, var(--brand-primary-900) 52%, var(--brand-primary-900) 100%) !important;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-400) 14%, transparent);
   border-top: 0;
   box-shadow:
-    0 4px 18px rgba(0, 0, 0, 0.32),
-    inset 0 -1px 0 rgba(148, 163, 184, 0.16);
+    0 4px 18px color-mix(in srgb, var(--shadow-color) 32%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, var(--brand-primary-400) 16%, transparent);
 }
 
 .header::before {
@@ -409,8 +421,8 @@ const toggle = (event: Event) => {
   z-index: -1;
   pointer-events: none;
   background:
-    linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16), transparent),
-    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.045) 0 1px, transparent 1px 18px);
+    linear-gradient(90deg, transparent, color-mix(in srgb, var(--surface-1) 16%, transparent), transparent),
+    repeating-linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 4.5%, transparent) 0 1px, transparent 1px 18px);
   opacity: 0.78;
 }
 
@@ -422,19 +434,19 @@ const toggle = (event: Event) => {
   width: 220px;
   height: 3px;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent, #93c5fd, #ffffff, transparent);
+  background: linear-gradient(90deg, transparent, var(--brand-primary-200), var(--surface-1), transparent);
   opacity: 0.75;
 }
 
 .header.is-dark::before {
   background:
-    linear-gradient(90deg, transparent, rgba(96, 165, 250, 0.1), transparent),
-    repeating-linear-gradient(135deg, rgba(148, 163, 184, 0.04) 0 1px, transparent 1px 18px);
+    linear-gradient(90deg, transparent, color-mix(in srgb, var(--brand-primary-300) 10%, transparent), transparent),
+    repeating-linear-gradient(135deg, color-mix(in srgb, var(--brand-primary-400) 4%, transparent) 0 1px, transparent 1px 18px);
   opacity: 0.7;
 }
 
 .header.is-dark::after {
-  background: linear-gradient(90deg, transparent, #334155, #60a5fa, transparent);
+  background: linear-gradient(90deg, transparent, var(--brand-primary-700), var(--brand-primary-300), transparent);
   opacity: 0.65;
 }
 
@@ -447,10 +459,10 @@ const toggle = (event: Event) => {
   min-height: 48px;
   padding: 7px 12px 7px 8px;
   border-radius: 18px;
-  color: #ffffff;
-  // background: rgba(255, 255, 255, 0.11);
-  // border: 1px solid rgba(255, 255, 255, 0.16);
-  // box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  color: var(--text-on-brand);
+  // background: color-mix(in srgb, var(--surface-1) 11%, transparent);
+  // border: 1px solid color-mix(in srgb, var(--surface-1) 16%, transparent);
+  // box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 16%, transparent);
   transition:
     transform 0.2s ease,
     background 0.2s ease,
@@ -463,11 +475,11 @@ const toggle = (event: Event) => {
 .header.is-dark .theme-toggle,
 .header.is-dark .drawer,
 .header.is-dark .user {
-  // background: rgba(30, 41, 59, 0.86) !important;
-  border-color: rgba(148, 163, 184, 0.2) !important;
+  // background: color-mix(in srgb, var(--brand-primary-800) 86%, transparent) !important;
+  border-color: color-mix(in srgb, var(--brand-primary-400) 20%, transparent) !important;
   // box-shadow:
-  //   inset 0 1px 0 rgba(255, 255, 255, 0.06),
-  //   0 10px 24px rgba(0, 0, 0, 0.16);
+  //   inset 0 1px 0 color-mix(in srgb, var(--shadow-color) 6%, transparent),
+  //   0 10px 24px color-mix(in srgb, var(--shadow-color) 16%, transparent);
 }
 
 .header.is-dark .brand-link:hover,
@@ -476,14 +488,14 @@ const toggle = (event: Event) => {
 .header.is-dark .theme-toggle:hover,
 .header.is-dark .drawer:hover,
 .header.is-dark .user:hover {
-  background: rgba(51, 65, 85, 0.94) !important;
-  border-color: rgba(96, 165, 250, 0.34) !important;
+  background: color-mix(in srgb, var(--brand-primary-700) 94%, transparent) !important;
+  border-color: color-mix(in srgb, var(--brand-primary-300) 34%, transparent) !important;
 }
 
 .brand-link:hover {
   transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.17);
-  border-color: rgba(255, 255, 255, 0.26);
+  background: color-mix(in srgb, var(--surface-1) 17%, transparent);
+  border-color: color-mix(in srgb, var(--surface-1) 26%, transparent);
 }
 
 .brand-link img {
@@ -491,21 +503,21 @@ const toggle = (event: Event) => {
   height: 34px;
   padding: 6px;
   border-radius: 12px;
-  // background: #ffffff;
-  // box-shadow: 0 10px 20px rgba(15, 23, 42, 0.18);
+  // background: var(--surface-1);
+  // box-shadow: 0 10px 20px color-mix(in srgb, var(--brand-primary-900) 18%, transparent);
 }
 
 .header.is-dark .brand-link img {
-  // background: #e2e8f0;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.28);
+  // background: var(--brand-primary-100);
+  box-shadow: 0 10px 20px color-mix(in srgb, var(--text-strong) 28%, transparent);
 }
 
 .logo {
-  color: #ffffff !important;
+  color: var(--text-on-brand) !important;
   font-size: 18px !important;
   line-height: 1;
   letter-spacing: 0;
-  text-shadow: 0 1px 10px rgba(15, 23, 42, 0.18);
+  text-shadow: 0 1px 10px color-mix(in srgb, var(--brand-primary-900) 18%, transparent);
 }
 
 .input-wrapper {
@@ -517,21 +529,21 @@ const toggle = (event: Event) => {
   :deep(.p-multiselect),
   :deep(input) {
     min-height: 46px;
-    border-color: rgba(255, 255, 255, 0.24) !important;
-    background: rgba(255, 255, 255, 0.14) !important;
-    color: #ffffff !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    border-color: color-mix(in srgb, var(--surface-1) 24%, transparent) !important;
+    background: color-mix(in srgb, var(--surface-1) 14%, transparent) !important;
+    color: var(--text-on-brand) !important;
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 12%, transparent);
     backdrop-filter: blur(10px);
   }
 
   :deep(input::placeholder),
   :deep(.p-placeholder) {
-    color: rgba(255, 255, 255, 0.78) !important;
+    color: color-mix(in srgb, var(--surface-1) 78%, transparent) !important;
   }
 
   :deep(.p-select-label),
   :deep(.p-multiselect-label) {
-    color: #ffffff !important;
+    color: var(--text-on-brand) !important;
   }
 
   @media (max-width: 1000px) {
@@ -561,12 +573,12 @@ const toggle = (event: Event) => {
   height: 46px !important;
   padding: 10px !important;
   border-radius: 16px !important;
-  background: rgba(255, 255, 255, 0.14) !important;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  color: #ffffff;
+  background: color-mix(in srgb, var(--surface-1) 14%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--surface-1) 18%, transparent);
+  color: var(--text-on-brand);
   appearance: none;
   cursor: pointer;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 14%, transparent);
   backdrop-filter: blur(10px);
   transition:
     transform 0.2s ease,
@@ -578,8 +590,8 @@ const toggle = (event: Event) => {
 .notification:hover,
 .theme-toggle:hover {
   transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.22) !important;
-  border-color: rgba(255, 255, 255, 0.3);
+  background: color-mix(in srgb, var(--surface-1) 22%, transparent) !important;
+  border-color: color-mix(in srgb, var(--surface-1) 30%, transparent);
 }
 
 .countery-icon :deep(svg),
@@ -592,7 +604,7 @@ const toggle = (event: Event) => {
 .notification :deep(path),
 .drawer :deep(path),
 .drop-icon :deep(path) {
-  fill: #ffffff !important;
+  fill: var(--text-on-brand) !important;
 }
 
 .theme-toggle path {
@@ -603,9 +615,9 @@ const toggle = (event: Event) => {
   width: 42px;
   height: 42px;
   border-radius: 14px;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: var(--text-on-brand);
+  background: color-mix(in srgb, var(--surface-1) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--surface-1) 18%, transparent);
   appearance: none;
   cursor: pointer;
   transition:
@@ -614,7 +626,7 @@ const toggle = (event: Event) => {
 
   &:hover {
     transform: translateY(-1px);
-    background: rgba(255, 255, 255, 0.22);
+    background: color-mix(in srgb, var(--surface-1) 22%, transparent);
   }
 
   @media (min-width: 769px) {
@@ -627,10 +639,10 @@ const toggle = (event: Event) => {
   min-height: 54px;
   padding: 7px 8px 7px 14px;
   border-radius: 20px;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  color: var(--text-on-brand);
+  background: color-mix(in srgb, var(--surface-1) 14%, transparent);
+  border: 1px solid color-mix(in srgb, var(--surface-1) 18%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 14%, transparent);
   backdrop-filter: blur(10px);
   transition:
     transform 0.2s ease,
@@ -640,16 +652,16 @@ const toggle = (event: Event) => {
 
 .user:hover {
   transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.2);
-  border-color: rgba(255, 255, 255, 0.28);
+  background: color-mix(in srgb, var(--surface-1) 20%, transparent);
+  border-color: color-mix(in srgb, var(--surface-1) 28%, transparent);
 }
 
 .user img {
   width: 42px !important;
   height: 42px;
   object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.78);
-  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.2);
+  border: 2px solid color-mix(in srgb, var(--surface-1) 78%, transparent);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--brand-primary-900) 20%, transparent);
 }
 
 .profile-data {
@@ -657,14 +669,14 @@ const toggle = (event: Event) => {
 }
 
 .profile-data span:first-child {
-  color: #ffffff !important;
+  color: var(--text-on-brand) !important;
   min-width: 0 !important;
   font-size: 14px;
   font-weight: 800;
 }
 
 .profile-data span:last-child {
-  color: rgba(226, 232, 240, 0.82) !important;
+  color: color-mix(in srgb, var(--brand-primary-100) 82%, transparent) !important;
   margin-left: 0 !important;
   font-size: 12px;
   max-width: 150px;
@@ -687,9 +699,9 @@ const toggle = (event: Event) => {
   overflow: hidden;
   padding: 6px;
   border-radius: 16px !important;
-  background: #ffffff !important;
-  border: 1px solid rgba(30, 64, 175, 0.1);
-  box-shadow: 0 22px 48px rgba(15, 23, 42, 0.18) !important;
+  background: var(--surface-1) !important;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-600) 10%, transparent);
+  box-shadow: 0 22px 48px color-mix(in srgb, var(--brand-primary-900) 18%, transparent) !important;
 }
 
 :global(.header-dropdown-menu ul) {
@@ -704,7 +716,7 @@ const toggle = (event: Event) => {
   gap: 10px;
   padding: 12px 14px;
   border-radius: 12px !important;
-  color: #334155 !important;
+  color: var(--brand-primary-700) !important;
   cursor: pointer;
   transition:
     color 0.2s ease,
@@ -712,26 +724,26 @@ const toggle = (event: Event) => {
 }
 
 :global(.header-dropdown-menu li:hover) {
-  background: #eef4ff !important;
-  color: #1d4ed8 !important;
+  background: var(--brand-primary-50) !important;
+  color: var(--brand-primary-500) !important;
 }
 
 :global(.header-dropdown-menu li:hover svg path) {
-  fill: #1d4ed8 !important;
+  fill: var(--brand-primary-500) !important;
 }
 
 :global([data-theme='dark'] .header-dropdown-menu) {
-  background: #111827 !important;
-  border-color: #334155 !important;
+  background: var(--brand-primary-900) !important;
+  border-color: var(--brand-primary-700) !important;
 }
 
 :global([data-theme='dark'] .header-dropdown-menu li) {
-  color: #f8fafc !important;
+  color: var(--brand-primary-50) !important;
 }
 
 :global([data-theme='dark'] .header-dropdown-menu li:hover) {
-  background: #1e293b !important;
-  color: #60a5fa !important;
+  background: var(--brand-primary-800) !important;
+  color: var(--brand-primary-300) !important;
 }
 
 .header-user-menu {

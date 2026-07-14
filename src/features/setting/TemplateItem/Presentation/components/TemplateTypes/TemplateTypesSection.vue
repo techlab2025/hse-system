@@ -96,13 +96,13 @@ const UpdateData = () => {
 
 .template-title {
   margin: 0;
-  color: #041953;
+  color: var(--brand-primary-800);
   font-size: var(--md-size);
   font-weight: 900;
 }
 
 .template-title-note {
-  color: #6b7280;
+  color: var(--text-soft);
   font-size: 12px;
   font-weight: 700;
 }
@@ -111,9 +111,9 @@ const UpdateData = () => {
   position: relative;
   min-height: 132px;
   overflow: hidden;
-  border: 1px solid rgba(221, 226, 237, 0.86);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 86%, transparent);
   border-radius: 16px;
-  background: #fff;
+  background: var(--surface-1);
   cursor: pointer;
   transition:
     transform 0.22s ease,
@@ -136,17 +136,17 @@ const UpdateData = () => {
 
 .action-box:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 28px rgba(15, 25, 39, 0.08);
+  box-shadow: 0 14px 28px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
 }
 
 .action-box.selected {
-  border-color: rgba(29, 78, 216, 0.38);
-  background: linear-gradient(135deg, rgba(29, 78, 216, 0.08), rgba(255, 255, 255, 0.96));
-  box-shadow: 0 14px 28px rgba(29, 78, 216, 0.12);
+  border-color: color-mix(in srgb, var(--brand-primary-500) 38%, transparent);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--brand-primary-500) 8%, transparent), color-mix(in srgb, var(--surface-1) 96%, transparent));
+  box-shadow: 0 14px 28px color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
 }
 
 .action-box.selected::before {
-  background: linear-gradient(180deg, #1d4ed8, #4aae3a);
+  background: linear-gradient(180deg, var(--brand-primary-500), var(--status-success));
 }
 
 .action-box label {
@@ -161,14 +161,14 @@ const UpdateData = () => {
 }
 
 .action-box span {
-  color: #3d4c5e;
+  color: var(--brand-primary-700);
   font-size: 13px;
   font-weight: 900;
   text-transform: capitalize;
 }
 
 .action-box.selected span {
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
 }
 
 .action-box img {
@@ -176,7 +176,7 @@ const UpdateData = () => {
   height: 100%;
   object-fit: contain;
   opacity: 0.92;
-  filter: drop-shadow(0 10px 12px rgba(15, 25, 39, 0.08));
+  filter: drop-shadow(0 10px 12px color-mix(in srgb, var(--brand-primary-900) 8%, transparent));
 }
 
 .action-box input {

@@ -10,17 +10,17 @@ $nav-item-size: 56px;
 $nav-active-lift: -28px;
 $nav-bg-blur: 20px;
 $nav-border-radius: 24px;
-$nav-shadow: 0 -8px 32px rgb(255, 253, 253);
-$nav-glass-bg: rgba(255, 255, 255, 0.979);
-$nav-glass-border: rgba(255, 255, 255, 0.616);
+$nav-shadow: 0 -8px 32px var(--shadow-color);
+$nav-glass-bg: color-mix(in srgb, var(--surface-1) 97.9%, transparent);
+$nav-glass-border: color-mix(in srgb, var(--surface-1) 61.6%, transparent);
 
 // Color Variables - Using your brand color
-$primary-color: #00c3f7;
+$primary-color: var(--identity-primary);
 
-$active-bg: rgba(2, 182, 232, 0.223);
-$icon-default: #ffffff;
+$active-bg: color-mix(in srgb, var(--identity-primary) 22.3%, transparent);
+$icon-default: var(--text-on-brand);
 $icon-active: $primary-color;
-$text-default: #ffffff;
+$text-default: var(--text-on-brand);
 $text-active: $primary-color;
 
 // Animation Variables
@@ -75,7 +75,7 @@ $transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         position: absolute;
         inset: 0;
         border-radius: $nav-border-radius;
-        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.1));
+        background: linear-gradient(to bottom, color-mix(in srgb, var(--surface-1) 60%, transparent), color-mix(in srgb, var(--surface-1) 10%, transparent));
         pointer-events: none;
         z-index: 0;
       }
@@ -109,9 +109,9 @@ $transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
           z-index: -1;
           transform: translateY($nav-active-lift);
           box-shadow:
-            0 4px 12px rgba($primary-color, 0.2),
-            0 2px 8px rgba($primary-color, 0.15),
-            inset 0 1px 2px rgba(255, 255, 255, 0.5);
+            0 4px 12px color-mix(in srgb, var(--identity-primary) 20%, transparent),
+            0 2px 8px color-mix(in srgb, var(--identity-primary) 15%, transparent),
+            inset 0 1px 2px color-mix(in srgb, var(--shadow-color) 50%, transparent);
           animation: pulseGlow 2s ease-in-out infinite;
         }
       }
@@ -149,7 +149,9 @@ $transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         .icon {
           color: $icon-active;
           transform: translateY(-2px) scale(1.1);
-          filter: drop-shadow(0 4px 8px rgba($primary-color, 0.3));
+          filter: drop-shadow(
+            0 4px 8px color-mix(in srgb, var(--identity-primary) 30%, transparent)
+          );
         }
 
         .text {
@@ -164,7 +166,9 @@ $transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         .icon {
           color: $icon-active;
           transform: scale(1.15);
-          filter: drop-shadow(0 6px 12px rgba(red, 0.4));
+          filter: drop-shadow(
+            0 6px 12px color-mix(in srgb, var(--identity-primary) 40%, transparent)
+          );
 
           :deep(svg) {
             animation: iconBounce 0.6s ease-out;
@@ -172,7 +176,7 @@ $transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         .text {
-          color: #fff;
+          color: var(--text-on-brand);
           opacity: 1;
           font-weight: 700;
           transform: scale(1.05);
@@ -244,9 +248,9 @@ $transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
       pointer-events: all;
 
       .menu {
-        // background: rgba(255, 255, 255, 0.9);
+        // background: color-mix(in srgb, var(--surface-1) 90%, transparent);
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        border: 1px solid color-mix(in srgb, var(--surface-1) 30%, transparent);
         border-radius: 12px;
         padding: 8px 10px;
         display: flex;
@@ -254,14 +258,14 @@ $transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         gap: 6px;
         font-weight: 600;
         font-size: 13px;
-        color: #333;
+        color: var(--text-strong);
         cursor: pointer;
         transition: all 0.3s ease;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 2px 8px color-mix(in srgb, var(--text-strong) 8%, transparent);
 
         &:hover {
-          // background: rgba(255, 255, 255, 1);
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+          // background: var(--surface-1);
+          box-shadow: 0 4px 12px color-mix(in srgb, var(--text-strong) 12%, transparent);
           transform: translateY(-2px);
         }
 
@@ -283,22 +287,22 @@ $transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         backdrop-filter: blur(20px);
         padding: 12px;
         border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 4px 20px color-mix(in srgb, var(--text-strong) 15%, transparent);
         z-index: 99;
         width: 100px;
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        border: 1px solid color-mix(in srgb, var(--surface-1) 30%, transparent);
 
         .wrapper-content {
           h4 {
             margin: 0 0 8px 0;
             font-size: 13px;
             font-weight: 600;
-            color: #333;
+            color: var(--text-strong);
           }
 
           hr {
             border: none;
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            border-top: 1px solid color-mix(in srgb, var(--text-strong) 10%, transparent);
             margin: 8px 0;
           }
         }
@@ -312,7 +316,7 @@ $transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
             margin-top: 8px;
 
             a {
-              color: #333;
+              color: var(--text-strong);
               text-decoration: none;
               transition: color 0.2s;
               display: block;
@@ -322,7 +326,7 @@ $transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 
               &:hover {
                 color: $primary-color;
-                background: rgba($primary-color, 0.1);
+                background: color-mix(in srgb, var(--identity-primary) 10%, transparent);
               }
             }
           }
@@ -387,65 +391,65 @@ $transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   .navigation {
     @media screen and (max-width: 992px) {
       > ul {
-        background: rgb(231 226 226 / 50%);
-        border-color: rgba(255, 255, 255, 0.1);
+        background: color-mix(in srgb, var(--surface-2) 50%, transparent);
+        border-color: color-mix(in srgb, var(--surface-1) 10%, transparent);
 
         &::before {
           background: linear-gradient(
             to bottom,
-            rgba(255, 255, 255, 0.08),
-            rgba(255, 255, 255, 0.02)
+            color-mix(in srgb, var(--surface-1) 8%, transparent),
+            color-mix(in srgb, var(--surface-1) 2%, transparent)
           );
         }
       }
 
       li.active::before,
       .list.active::before {
-        filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.2));
+        filter: drop-shadow(0 6px 10px color-mix(in srgb, var(--text-strong) 20%, transparent));
       }
 
       .icon {
-        color: #8e8e93;
+        color: var(--text-soft);
       }
 
       .text {
-        color: #06283b;
+        color: var(--brand-primary-900);
       }
 
       .nav-link.active {
         // .icon {
-        //   color: #1fff17;
+        //   color: var(--status-success);
         // }
 
         .text {
-          color: #00c3f7;
+          color: var(--status-info);
         }
       }
 
       // .lang_sar {
       //   .menu {
-      //     background: rgba(28, 28, 30, 0.9);
-      //     color: #fff;
-      //     border-color: rgba(255, 255, 255, 0.15);
+      //     background: color-mix(in srgb, var(--text-strong) 90%, transparent);
+      //     color: var(--text-on-brand);
+      //     border-color: color-mix(in srgb, var(--surface-1) 15%, transparent);
       //   }
 
       //   .menu-content {
-      //     background: rgba(28, 28, 30, 0.95);
-      //     border-color: rgba(255, 255, 255, 0.15);
+      //     background: color-mix(in srgb, var(--text-strong) 95%, transparent);
+      //     border-color: color-mix(in srgb, var(--surface-1) 15%, transparent);
 
       //     h4 {
-      //       color: #fff;
+      //       color: var(--text-on-brand);
       //     }
 
       //     hr {
-      //       border-color: rgba(255, 255, 255, 0.1);
+      //       border-color: color-mix(in srgb, var(--surface-1) 10%, transparent);
       //     }
 
       //     .lang-item a {
-      //       color: #fff;
+      //       color: var(--text-on-brand);
 
       //       &:hover {
-      //         background: rgba(171, 0, 44, 0.2);
+      //         background: color-mix(in srgb, var(--brand-accent-700) 20%, transparent);
       //       }
       //     }
       //   }

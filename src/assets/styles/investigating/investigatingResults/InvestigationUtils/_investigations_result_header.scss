@@ -2,13 +2,13 @@
 @use '../../../mixins/flex' as *;
 
 .investigation-result .investigating-header-container {
-  --case-surface: rgba(255, 255, 255, 0.84);
-  --case-line: rgba(226, 232, 240, 0.92);
-  --case-muted: #64748b;
-  --case-ink: #0f172a;
-  --case-blue: #1d4ed8;
-  --case-teal: #0f766e;
-  --case-amber: #d97706;
+  --case-surface: color-mix(in srgb, var(--surface-1) 84%, transparent);
+  --case-line: color-mix(in srgb, var(--brand-primary-100) 92%, transparent);
+  --case-muted: var(--brand-primary-500);
+  --case-ink: var(--brand-primary-900);
+  --case-blue: var(--brand-primary-500);
+  --case-teal: var(--status-info);
+  --case-amber: var(--status-warning);
 
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
@@ -18,8 +18,8 @@
   border: 1px solid var(--case-line);
   border-radius: 8px;
   background:
-    linear-gradient(135deg, rgba(248, 250, 252, 0.96) 0%, rgba(239, 246, 255, 0.78) 100%), #ffffff;
-  box-shadow: 0 18px 44px rgba(15, 23, 42, 0.08);
+    linear-gradient(135deg, color-mix(in srgb, var(--brand-primary-50) 96%, transparent) 0%, color-mix(in srgb, var(--brand-primary-50) 78%, transparent) 100%), var(--surface-1);
+  box-shadow: 0 18px 44px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
   font-family: 'Regular';
   overflow: hidden;
   position: relative;
@@ -31,7 +31,7 @@
   //   top: 0;
   //   height: 4px;
   //   border-radius: 0 0 999px 999px;
-  //   background: linear-gradient(90deg, var(--case-blue), #14b8a6, #f59e0b, #ef4444);
+  //   background: linear-gradient(90deg, var(--case-blue), var(--status-success), var(--status-warning), var(--status-danger));
   // }
 
   // &::after {
@@ -42,7 +42,7 @@
   //   width: 220px;
   //   height: 220px;
   //   border-radius: 50%;
-  //   background: radial-gradient(circle, rgba(29, 78, 216, 0.14), transparent 68%);
+  //   background: radial-gradient(circle, color-mix(in srgb, var(--brand-primary-500) 14%, transparent), transparent 68%);
   //   pointer-events: none;
   // }
 
@@ -53,10 +53,10 @@
   .equipment-card {
     position: relative;
     z-index: 1;
-    border: 1px solid rgba(226, 232, 240, 0.86);
+    border: 1px solid color-mix(in srgb, var(--brand-primary-100) 86%, transparent);
     border-radius: 8px;
     background: var(--case-surface);
-    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.05);
+    box-shadow: 0 10px 26px color-mix(in srgb, var(--brand-primary-900) 5%, transparent);
     backdrop-filter: blur(14px);
   }
 
@@ -73,7 +73,7 @@
       //   position: absolute;
       //   inset-inline-end: 18px;
       //   bottom: -12px;
-      //   color: rgba(29, 78, 216, 0.06);
+      //   color: color-mix(in srgb, var(--brand-primary-500) 6%, transparent);
       //   font-family: 'Bold';
       //   font-size: 72px;
       //   font-weight: 700;
@@ -98,9 +98,9 @@
         align-items: center;
         min-height: 30px;
         padding: 5px 12px;
-        border: 1px solid rgba(29, 78, 216, 0.16);
+        border: 1px solid color-mix(in srgb, var(--brand-primary-500) 16%, transparent);
         border-radius: 999px;
-        background: rgba(29, 78, 216, 0.08);
+        background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
         color: var(--case-blue);
         font-family: 'Bold';
         font-size: 12px;
@@ -114,9 +114,9 @@
         gap: 8px;
         max-width: 100%;
         padding: 8px 10px;
-        border: 1px solid rgba(15, 118, 110, 0.14);
+        border: 1px solid color-mix(in srgb, var(--status-info) 14%, transparent);
         border-radius: 8px;
-        background: rgba(240, 253, 250, 0.8);
+        background: color-mix(in srgb, var(--status-success-soft) 80%, transparent);
         color: var(--case-muted);
         font-size: 12px;
         font-weight: 600;
@@ -143,14 +143,14 @@
       p {
         min-height: 72px;
         padding: 14px;
-        border: 1px solid rgba(226, 232, 240, 0.9);
+        border: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
         border-radius: 8px;
-        background: #ffffff;
+        background: var(--surface-1);
         color: var(--case-muted);
         font-size: 12px;
         font-weight: $BaseFontMediumWeight;
         line-height: 1.4;
-        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+        box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
         text-transform: none;
 
         &::before {
@@ -160,7 +160,7 @@
           height: 3px;
           margin-bottom: 10px;
           border-radius: 999px;
-          background: linear-gradient(90deg, var(--case-blue), #14b8a6);
+          background: linear-gradient(90deg, var(--case-blue), var(--status-success));
         }
 
         span {
@@ -198,7 +198,7 @@
           width: 100%;
           height: 1px;
           border: 0;
-          background: linear-gradient(90deg, rgba(29, 78, 216, 0.22), transparent);
+          background: linear-gradient(90deg, color-mix(in srgb, var(--brand-primary-500) 22%, transparent), transparent);
         }
       }
 
@@ -211,9 +211,9 @@
         p {
           min-height: 74px;
           padding: 12px;
-          border: 1px solid rgba(226, 232, 240, 0.92);
+          border: 1px solid color-mix(in srgb, var(--brand-primary-100) 92%, transparent);
           border-radius: 8px;
-          background: rgba(248, 250, 252, 0.96);
+          background: color-mix(in srgb, var(--brand-primary-50) 96%, transparent);
           color: var(--case-muted);
           font-size: 12px;
           font-weight: 600;
@@ -292,10 +292,10 @@
         gap: 10px;
         min-width: 0;
         padding: 10px;
-        border: 1px solid rgba(226, 232, 240, 0.9);
+        border: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
         border-radius: 8px;
-        background: #ffffff !important;
-        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.04);
+        background: var(--surface-1) !important;
+        box-shadow: 0 8px 18px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
         transition:
           transform 0.2s ease,
           border-color 0.2s ease,
@@ -303,18 +303,18 @@
 
         &:hover {
           transform: translateY(-2px);
-          border-color: rgba(29, 78, 216, 0.24);
-          box-shadow: 0 14px 26px rgba(15, 23, 42, 0.08);
+          border-color: color-mix(in srgb, var(--brand-primary-500) 24%, transparent);
+          box-shadow: 0 14px 26px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
         }
 
         img {
           width: 42px;
           height: 42px;
           flex: 0 0 42px;
-          border: 2px solid #ffffff;
+          border: 2px solid var(--surface-1);
           border-radius: 50%;
           object-fit: cover;
-          box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.12);
+          box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
         }
 
         .employee-text {
@@ -349,9 +349,9 @@
       grid-column: 1 / -1;
       gap: 12px;
       padding: 12px;
-      border-color: rgba(15, 118, 110, 0.18);
+      border-color: color-mix(in srgb, var(--status-info) 18%, transparent);
       background:
-        linear-gradient(135deg, rgba(240, 253, 250, 0.78), rgba(255, 255, 255, 0.92)), #ffffff;
+        linear-gradient(135deg, color-mix(in srgb, var(--status-success-soft) 78%, transparent), color-mix(in srgb, var(--surface-1) 92%, transparent)), var(--surface-1);
 
       .equipemtn-card-image {
         width: 76px;
@@ -359,8 +359,8 @@
         flex: 0 0 76px;
         border-radius: 8px;
         object-fit: cover;
-        background: #f8fafc;
-        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.09);
+        background: var(--brand-primary-50);
+        box-shadow: 0 10px 22px color-mix(in srgb, var(--brand-primary-900) 9%, transparent);
       }
 
       .equipment-text {

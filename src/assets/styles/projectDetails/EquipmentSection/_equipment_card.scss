@@ -6,10 +6,10 @@
   @include flex-column(nowrap, flex-start, flex-start);
   width: 100%;
   font-family: 'Regular';
-  background-color: white;
+  background-color: var(--surface-1);
   border-radius: $XlSize;
   padding: $XsSize;
-  border: 1px solid #f4f4f4;
+  border: 1px solid var(--surface-2);
   margin-block: 12px;
 
   .equipment-card-header-container {
@@ -25,17 +25,17 @@
         @include flex-column(nowrap, flex-start, flex-start);
         gap: 2px;
         .title {
-          color: #121212;
+          color: var(--text-strong);
           font-weight: $BaseFontWeightBold;
           font-size: $MdSize2;
         }
 
         .subtitle {
-          color: #6b7280;
+          color: var(--text-soft);
           font-size: $SmSize;
           font-weight: $BaseFontSemiBoldWeight;
           span {
-            color: #121212;
+            color: var(--text-strong);
           }
         }
       }
@@ -51,7 +51,7 @@
     border: none;
     height: 1px;
     margin-block: $MdSize;
-    background-color: #f1f3f5;
+    background-color: var(--brand-primary-50);
     width: 100%;
   }
 

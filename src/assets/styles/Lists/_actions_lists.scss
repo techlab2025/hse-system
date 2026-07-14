@@ -2,18 +2,18 @@
 @use '../mixins/flex' as *;
 
 .action-list-trigger {
-  background-color: #1d4ed80d;
+  background-color: color-mix(in srgb, var(--brand-primary-500) 5.1%, transparent);
   padding: $MdSize;
   border-radius: calc($XlSize2 + 4px);
   width: 250px;
   cursor: pointer;
   @include flex-row(nowrap, space-between, center);
   .action-icon {
-    color: #1f41bb;
+    color: var(--brand-primary-600);
     font-size: $MdSize;
     font-weight: $BaseFontWeightBold;
     span {
-      background-color: #1f41bb33;
+      background-color: color-mix(in srgb, var(--brand-primary-600) 20%, transparent);
       margin-inline: $XsSize4;
       padding: 2px 4px;
       border-radius: 4px;
@@ -22,11 +22,11 @@
 }
 
 .action-list-body {
-  background-color: #ffffff;
+  background-color: var(--surface-1);
   font-family: 'medium', sans-serif;
   /*padding: var(--space-sm) var(--space-md);*/
   border-radius: $SmSize;
-  color: black;
+  color: var(--text-strong);
   border: none;
   .p-popover {
     border: none;
@@ -53,36 +53,36 @@
       font-weight: $BaseFontMediumWeight;
       cursor: pointer;
       border-radius: 5px;
-      background-color: #c4c4c40f;
-      color: #575b71;
+      background-color: color-mix(in srgb, var(--main-border) 5.88%, transparent);
+      color: var(--text-soft);
       // padding: 5px;
       border: none !important;
 
       &.info {
         &:hover {
-          background-color: #1f41bb0f;
+          background-color: color-mix(in srgb, var(--brand-primary-600) 5.88%, transparent);
         }
       }
       &.error {
         &:hover {
-          background-color: #ff1d1d0f;
+          background-color: color-mix(in srgb, var(--status-danger) 5.88%, transparent);
         }
       }
       &.success {
         &:hover {
-          background-color: #0ac9050f;
+          background-color: color-mix(in srgb, var(--status-success) 5.88%, transparent);
         }
       }
       &.warning {
         &:hover {
-          background-color: #f5b2001a;
+          background-color: color-mix(in srgb, var(--brand-accent-500) 10.2%, transparent);
         }
       }
 
       a {
         padding: $XsSize2 $XsSize;
 
-        //color: black;
+        //color: var(--text-strong);
         width: 100%;
       }
       // padding: 0 var(--space-sm);
@@ -95,7 +95,7 @@
         // border-bottom: 1px solid $Gray-2;
       }
       &:hover {
-        background-color: #1d4ed80f;
+        background-color: color-mix(in srgb, var(--brand-primary-500) 5.88%, transparent);
       }
       button {
         display: flex;

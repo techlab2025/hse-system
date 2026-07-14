@@ -116,7 +116,7 @@ watch(
   width: 150px;
   height: 58px;
   border-radius: 16px;
-  background: linear-gradient(90deg, #eef2f7 25%, #f8fafc 50%, #eef2f7 75%);
+  background: linear-gradient(90deg, var(--brand-primary-50) 25%, var(--brand-primary-50) 50%, var(--brand-primary-50) 75%);
   background-size: 220% 100%;
   animation: tabs-selection-shimmer 1.15s linear infinite;
 }

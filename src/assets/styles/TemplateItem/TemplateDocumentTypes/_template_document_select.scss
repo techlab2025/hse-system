@@ -7,7 +7,7 @@
   font-family: 'Regular';
   width: 100%;
   .title {
-    color: #5e5e5e;
+    color: var(--text-soft);
     font-size: calc($MdSize + 1px);
     font-weight: $BaseFontMediumWeight;
   }
@@ -26,7 +26,7 @@
   .options-container {
     width: 100%;
     @include flex-row(nowrap, space-between, center);
-    border-bottom: 1px dashed #ebebeb;
+    border-bottom: 1px dashed var(--surface-2);
     padding-bottom: 12px;
     gap: 10px;
     .input-wrapper {
@@ -53,7 +53,7 @@
 
       .custom-select {
         width: 100%;
-        border: 1px solid #ebebeb;
+        border: 1px solid var(--surface-2);
         padding: 10px;
         border-radius: 12px;
       }

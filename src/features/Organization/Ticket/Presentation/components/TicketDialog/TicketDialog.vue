@@ -116,13 +116,13 @@ const CloseDialog = () => {
     .title {
       font-size: 24px;
       font-weight: 700;
-      color: #202020;
+      color: var(--text-strong);
     }
 
     .description {
       font-size: 14px;
       font-weight: 500;
-      color: #6B7280;
+      color: var(--text-soft);
     }
   }
 
@@ -134,7 +134,7 @@ const CloseDialog = () => {
     align-items: space-between;
 
     img {
-      border: 1px dashed #E5E5E5;
+      border: 1px dashed var(--surface-2);
       padding: 10px;
       border-radius: 12px;
       margin-left: auto;
@@ -150,14 +150,14 @@ const CloseDialog = () => {
     width: 100%;
 
     .btn-close {
-      border: 1px dashed #E5E5E5;
+      border: 1px dashed var(--surface-2);
       border-radius: 15px;
       padding: 12px;
       width: 50%;
       transition: 0.3s all linear;
 
       &:hover {
-        background-color: #E5E5E5;
+        background-color: var(--surface-2);
       }
     }
 

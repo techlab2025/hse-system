@@ -11,7 +11,7 @@
   font-weight: $BaseFontWeightBold;
   padding-left: $XlSize;
   input {
-    background-color: #f6f6f699;
+    background-color: color-mix(in srgb, var(--surface-1) 60%, transparent);
     width: 90px;
     text-align: center;
     height: fit-content;
@@ -21,13 +21,13 @@
     outline: none;
 
     &.green {
-      color: #4caf50;
+      color: var(--status-success);
     }
     &.red {
-      color: #e23535;
+      color: var(--status-danger);
     }
     &.random {
-      color: #969eff;
+      color: var(--brand-primary-200);
     }
   }
 }

@@ -519,8 +519,8 @@ const GetObservationType = (type: number) => {
         transparent 38%
       ),
       linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
-    color: var(--Black) !important;
-    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22) !important;
+    color: var(--text-strong) !important;
+    box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 22%, transparent) !important;
   }
 
   :deep(.card-content),

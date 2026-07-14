@@ -7,7 +7,7 @@
     width: 100%;
   }
   .add-asset {
-    color: #121212;
+    color: var(--text-strong);
     font-size: 16px;
     font-weight: 700;
   }
@@ -30,7 +30,7 @@
     .add-equipment-hr {
       width: 100%;
       border: none;
-      background-color: #f1f3f5;
+      background-color: var(--brand-primary-50);
       height: 1px;
     }
   }

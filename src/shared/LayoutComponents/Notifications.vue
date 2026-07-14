@@ -197,7 +197,7 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 5px 5px color-mix(in srgb, var(--text-strong) 10%, transparent);
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -239,13 +239,13 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
   backdrop-filter: blur(10px);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid color-mix(in srgb, var(--surface-1) 10%, transparent);
 }
 
 .notification:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: color-mix(in srgb, var(--surface-1) 10%, transparent);
   transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--text-strong) 10%, transparent);
 }
 
 .notification:active {
@@ -260,29 +260,29 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  border: 2px solid #fff;
+  border: 2px solid var(--surface-1);
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 .status-dot.connected {
-  background: #10b981;
-  box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  background: var(--status-success);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--status-success) 70%, transparent);
 }
 
 .status-dot.disconnected {
-  background: #ef4444;
-  box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  background: var(--status-danger);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--status-danger) 70%, transparent);
   animation: none;
 }
 
 @keyframes pulse {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--status-success) 70%, transparent);
   }
 
   50% {
-    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+    box-shadow: 0 0 0 6px transparent;
   }
 }
 
@@ -298,12 +298,12 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, var(--danger-color) 0%, var(--danger-color) 100%);
-  color: white;
+  color: var(--text-on-brand);
   font-size: 11px;
   font-weight: 600;
   border-radius: 10px;
-  border: 2px solid #fff;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  border: 2px solid var(--surface-1);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--brand-primary-400) 40%, transparent);
   animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
@@ -327,11 +327,11 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
 .list-notifaction-body {
   width: 380px;
   max-height: 500px;
-  background: #ffffff;
+  background: var(--surface-1);
   border-radius: 16px;
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(0, 0, 0, 0.05);
+    0 20px 60px color-mix(in srgb, var(--shadow-color) 15%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--shadow-color) 5%, transparent);
   overflow: hidden;
   animation: slideDown 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -366,12 +366,12 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
 }
 
 .list-notifaction::-webkit-scrollbar-thumb {
-  background: #d1d5db;
+  background: var(--main-border);
   border-radius: 3px;
 }
 
 .list-notifaction::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
+  background: var(--brand-secondary-700);
 }
 
 /* List Items */
@@ -390,7 +390,7 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
 .empty-msg {
   padding: 48px 24px;
   text-align: center;
-  color: #9ca3af;
+  color: var(--text-soft);
   font-size: 14px;
 }
 
@@ -398,12 +398,12 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
 .list-notifaction-item.new-item {
   position: relative;
   padding: 12px;
-  background: #f9fafb;
+  background: var(--brand-primary-50);
   cursor: pointer;
 }
 
 .list-notifaction-item.new-item:hover {
-  background: #f3f4f6;
+  background: var(--brand-primary-50);
   transform: translateX(4px);
 }
 
@@ -435,7 +435,7 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
 
 .notification-text strong {
   display: block;
-  color: #111827;
+  color: var(--brand-primary-900);
   font-size: 14px;
   font-weight: 600;
   margin-bottom: 4px;
@@ -443,7 +443,7 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
 }
 
 .notification-text p {
-  color: #6b7280;
+  color: var(--text-soft);
   font-size: 13px;
   line-height: 1.5;
   margin: 0 0 6px 0;
@@ -451,7 +451,7 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
 }
 
 .notification-text small {
-  color: #9ca3af;
+  color: var(--text-soft);
   font-size: 11px;
   font-weight: 500;
 }
@@ -467,7 +467,7 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
   border: none;
   border-radius: 6px;
   background: transparent;
-  color: #9ca3af;
+  color: var(--text-soft);
   font-size: 20px;
   line-height: 1;
   cursor: pointer;
@@ -476,8 +476,8 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
 }
 
 .remove-btn:hover {
-  background: #ef4444;
-  color: white;
+  background: var(--status-danger);
+  color: var(--text-on-brand);
   opacity: 1;
   transform: rotate(90deg);
 }
@@ -492,7 +492,7 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
   align-items: center;
   justify-content: center;
   padding: 16px;
-  color: #667eea;
+  color: var(--brand-primary-400);
   font-weight: 600;
   font-size: 14px;
   text-decoration: none;
@@ -500,8 +500,8 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
 }
 
 .align-center:hover {
-  background: #f3f4f6;
-  color: #764ba2;
+  background: var(--brand-primary-50);
+  color: var(--brand-accent-500);
 }
 
 /* Responsive */
@@ -523,7 +523,7 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 5px 5px color-mix(in srgb, var(--text-strong) 10%, transparent);
   border-radius: 8px;
   border: none;
   cursor: pointer;
@@ -542,17 +542,17 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 5px 10px color-mix(in srgb, var(--text-strong) 15%, transparent);
 
     .year-text {
-      color: white;
+      color: var(--text-on-brand);
     }
 
     svg {
-      stroke: white;
+      stroke: var(--text-on-brand);
 
       path {
-        fill: white;
+        fill: var(--text-on-brand);
       }
     }
   }
@@ -567,9 +567,9 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
 
 .year-option {
   padding: 1rem;
-  border: 2px solid #e0e0e0;
+  border: 2px solid var(--surface-2);
   border-radius: 8px;
-  background-color: white;
+  background-color: var(--text-on-brand);
   font-size: 1.125rem;
   font-weight: 600;
   cursor: pointer;
@@ -584,7 +584,7 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
   &.year-option-active {
     border-color: var(--primary-color);
     background-color: var(--primary-color);
-    color: white;
+    color: var(--text-on-brand);
 
     &:hover {
       background-color: var(--primary-color);
@@ -607,10 +607,10 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
     justify-content: center;
     margin: 0;
     // min-height: calc(100vh - 16px);
-    // background: white;
+    // background: var(--surface-1);
     position: relative;
-    // background: #171717;
-    // color: #000;
+    // background: var(--brand-secondary-900);
+    // color: var(--text-strong);
     animation: movement 1s ease-in-out infinite alternate;
 
     @keyframes movement {
@@ -631,7 +631,7 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
   h1:before {
     content: attr(data-text);
     position: absolute;
-    background: linear-gradient(#1e3a8e, #282828, #909dad, #1e3a8e, #0168f8, #a200f7);
+    background: linear-gradient(var(--brand-primary-700), var(--text-strong), var(--brand-primary-400), var(--brand-primary-700), var(--brand-primary-500), var(--brand-accent-500));
     -webkit-background-clip: text;
     color: transparent;
     background-size: 100% 90%;

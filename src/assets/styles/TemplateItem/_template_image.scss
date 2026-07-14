@@ -6,7 +6,7 @@
   @include flex-column(nowrap, flex-start, flex-start);
   margin-top: $XlSize;
   font-family: 'Light';
-  background-color: #f1f3f566;
+  background-color: color-mix(in srgb, var(--brand-primary-50) 40%, transparent);
   border-radius: $SmSize;
   padding: $XsSize;
 
@@ -15,7 +15,7 @@
     gap: $XsSize2;
     width: 100%;
     .title {
-      color: #6b7280;
+      color: var(--text-soft);
       font-size: $MdSize;
       font-weight: $BaseFontMediumWeight;
     }
@@ -29,7 +29,7 @@
     height: 1px;
     width: 100%;
 
-    background-color: #f0f0f0;
+    background-color: var(--text-on-brand);
     margin-block: $XsSize2;
   }
   .template-image-type-container {
@@ -40,7 +40,7 @@
       gap: 6px;
 
       label {
-        color: #3d4c5e;
+        color: var(--brand-primary-700);
         font-size: $SmSize;
         font-weight: $BaseFontSemiBoldWeight;
       }
@@ -48,13 +48,13 @@
   }
   .p-checkbox-box {
     border-radius: 5px !important;
-    border: 1px solid #f0f2f4 !important;
+    border: 1px solid var(--brand-primary-50) !important;
     svg {
-      fill: white !important;
+      fill: var(--text-on-brand) !important;
     }
   }
   .p-checkbox-checked .p-checkbox-box svg {
-    fill: white !important;
+    fill: var(--text-on-brand) !important;
     display: block !important;
   }
 

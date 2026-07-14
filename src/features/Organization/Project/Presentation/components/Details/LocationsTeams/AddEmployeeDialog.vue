@@ -133,11 +133,11 @@ onMounted(() => {
 
 <style scoped>
 .btn-primary {
-  background-color: #041953;
+  background-color: var(--brand-primary-800);
   &:hover {
-    color: #041953;
-    background-color: white;
-    border: 1px solid #041953;
+    color: var(--brand-primary-800);
+    background-color: var(--surface-1);
+    border: 1px solid var(--brand-primary-800);
   }
   /* margin-top: 10px; */
 }

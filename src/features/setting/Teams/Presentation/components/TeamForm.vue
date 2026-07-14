@@ -316,7 +316,7 @@ defineExpose({
 <style scoped>
 .required-field-message {
   margin-top: 0.35rem;
-  color: #dc2626;
+  color: var(--status-danger);
   font-size: 0.82rem;
   font-weight: 700;
 }

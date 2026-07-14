@@ -112,7 +112,7 @@ const showSidebar = computed(() => {
   display: flex;
   justify-content: center;
   padding: 0;
-  border-top: 1px solid rgba(29, 78, 216, 0.14);
+  border-top: 1px solid color-mix(in srgb, var(--brand-primary-500) 14%, transparent);
   background: transparent;
   box-shadow: none;
   backdrop-filter: none;
@@ -133,7 +133,7 @@ const showSidebar = computed(() => {
   align-items: center;
   min-width: 0;
   gap: 10px;
-  color: #0f2f80;
+  color: var(--brand-primary-700);
   font-size: 12px;
   font-weight: 800;
   line-height: 1.2;
@@ -147,12 +147,12 @@ const showSidebar = computed(() => {
   height: 26px;
   flex-shrink: 0;
   border-radius: 10px;
-  background: linear-gradient(155deg, #0f36a8 0%, #102d79 55%, #061f56 100%);
-  color: #ffffff;
+  background: linear-gradient(155deg, var(--brand-primary-600) 0%, var(--brand-primary-700) 55%, var(--brand-primary-800) 100%);
+  color: var(--text-on-brand);
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 0;
-  box-shadow: 0 8px 18px rgba(30, 64, 175, 0.24);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--brand-primary-600) 24%, transparent);
 }
 
 .footer-title,
@@ -166,15 +166,15 @@ const showSidebar = computed(() => {
   width: 1px;
   height: 18px;
   flex-shrink: 0;
-  background: rgba(29, 78, 216, 0.18);
+  background: color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
 }
 
 .footer-powered {
-  color: #64748b;
+  color: var(--brand-primary-500);
   font-weight: 700;
 
   strong {
-    color: #1d4ed8;
+    color: var(--brand-primary-500);
     font-weight: 900;
   }
 }
@@ -182,7 +182,7 @@ const showSidebar = computed(() => {
 .footer-copy {
   margin: 0;
   flex-shrink: 0;
-  color: #64748b;
+  color: var(--brand-primary-500);
   font-size: 12px;
   font-weight: 700;
   line-height: 1.2;
@@ -195,38 +195,38 @@ const showSidebar = computed(() => {
 }
 
 .footer.is-dark {
-  border-top-color: rgba(148, 163, 184, 0.16);
+  border-top-color: color-mix(in srgb, var(--brand-primary-400) 16%, transparent);
   background: transparent;
   box-shadow: none;
 }
 
 .footer.is-dark .footer-brand {
-  color: #f8fafc;
+  color: var(--brand-primary-50);
 }
 
 .footer.is-dark .footer-divider {
-  background: rgba(148, 163, 184, 0.22);
+  background: color-mix(in srgb, var(--brand-primary-400) 22%, transparent);
 }
 
 .footer.is-dark .footer-powered,
 .footer.is-dark .footer-copy {
-  color: #94a3b8;
+  color: var(--brand-primary-400);
 }
 
 .footer.is-dark .footer-powered strong {
-  color: #60a5fa;
+  color: var(--brand-primary-300);
 }
 
 .content.is-dark,
 .content.is-dark .content-wrapper,
 .content.is-dark .main-content {
   background-color: var(--app-bg) !important;
-  color: var(--Black) !important;
+  color: var(--text-strong) !important;
 }
 
 .content.is-dark .main-content {
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-400) 14%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 3%, transparent);
 }
 
 @media (max-width: 768px) {
@@ -280,7 +280,7 @@ const showSidebar = computed(() => {
     .sidebar-backdrop {
       position: fixed;
       inset: 0;
-      background-color: rgba(0, 0, 0, 0.4);
+      background-color: color-mix(in srgb, var(--text-strong) 40%, transparent);
       z-index: 9998;
     }
   }

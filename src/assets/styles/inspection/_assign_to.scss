@@ -7,7 +7,7 @@
   gap: $MdSize;
   font-family: 'Regular';
   width: 100%;
-  background-color: #fbfbfb;
+  background-color: var(--surface-1);
   border-radius: calc($MdSize2 + 1px);
   padding: $XsSize $SmSize;
   .assign-to-header {
@@ -20,7 +20,7 @@
       @include flex-row(nowrap, flex-start, center);
       gap: $XsSize4;
       .title {
-        color: #121212;
+        color: var(--text-strong);
         font-size: $XlSize;
         font-weight: $BaseFontWeightBold;
       }
@@ -43,7 +43,7 @@
       transition: 0.2s all linear;
       cursor: pointer;
       &.active {
-        background-color: #1d4ed80d;
+        background-color: color-mix(in srgb, var(--brand-primary-500) 5.1%, transparent);
         label {
           color: $PrimaryColor;
         }
@@ -51,7 +51,7 @@
       label {
         width: 100%;
         text-align: center;
-        color: #9ca3af;
+        color: var(--text-soft);
         font-size: $MdSize2;
         font-weight: $BaseFontWeightBold;
         transition: 0.2s all linear;

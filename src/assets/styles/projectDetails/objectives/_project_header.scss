@@ -8,7 +8,7 @@
   font-family: 'Regular';
   padding: $MdSize $XsSize;
   border-radius: $MdSize;
-  background-color: #fbfbfb;
+  background-color: var(--surface-1);
   position: relative;
   overflow: hidden;
   .bg-yellow {
@@ -35,29 +35,29 @@
       z-index: 999;
 
       .serial {
-        color: #9ca3af;
+        color: var(--text-soft);
         font-size: $XsSize;
         font-weight: $BaseFontMediumWeight;
         span {
           font-family: 'Regular';
-          color: #4b5563;
+          color: var(--brand-primary-600);
         }
       }
 
       .date {
-        color: #9ca3af;
+        color: var(--text-soft);
         font-size: $XsSize;
         font-weight: $BaseFontMediumWeight;
 
         span {
           font-family: 'Regular';
-          color: #4b5563;
+          color: var(--brand-primary-600);
           font-size: $XsSize;
         }
       }
     }
     .project-name {
-      color: #121212;
+      color: var(--text-strong);
       font-size: calc($XlSize2 + 2px);
       font-weight: $BaseFontWeightBold;
       z-index: 999;

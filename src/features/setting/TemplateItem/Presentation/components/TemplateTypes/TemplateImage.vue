@@ -107,12 +107,12 @@ watch(
   margin-top: 14px;
   padding: 16px;
   overflow: hidden;
-  border: 1px solid #e4e9f4;
+  border: 1px solid var(--brand-primary-100);
   border-radius: 16px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(248, 251, 255, 0.96)),
-    #fff;
-  box-shadow: 0 14px 34px rgba(15, 25, 39, 0.07);
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 96%, transparent), color-mix(in srgb, var(--brand-primary-50) 96%, transparent)),
+    var(--surface-1);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
   transition:
     border-color 0.25s ease,
     box-shadow 0.25s ease,
@@ -124,7 +124,7 @@ watch(
   position: absolute;
   inset: 0 auto 0 0;
   width: 4px;
-  background: #cfd8ea;
+  background: var(--brand-primary-100);
   transition:
     width 0.25s ease,
     background 0.25s ease;
@@ -133,17 +133,17 @@ watch(
 
 .template-upload-img:hover {
   transform: translateY(-1px);
-  box-shadow: 0 18px 42px rgba(15, 25, 39, 0.1);
+  box-shadow: 0 18px 42px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
 }
 
 .template-upload-img.is-enabled {
-  border-color: rgba(29, 78, 216, 0.28);
-  box-shadow: 0 18px 42px rgba(29, 78, 216, 0.12);
+  border-color: color-mix(in srgb, var(--brand-primary-500) 28%, transparent);
+  box-shadow: 0 18px 42px color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
 }
 
 .template-upload-img.is-enabled::before {
   width: 6px;
-  background: #1d4ed8;
+  background: var(--brand-primary-500);
 }
 
 .template-upload-header {
@@ -166,10 +166,10 @@ watch(
   height: 48px;
   flex: 0 0 48px;
   place-items: center;
-  border: 1px solid rgba(29, 78, 216, 0.12);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
   border-radius: 14px;
-  background: #f3f7ff;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  background: var(--brand-primary-50);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 85%, transparent);
 }
 
 .template-upload-icon .icon {
@@ -179,7 +179,7 @@ watch(
 
 .title {
   margin: 0;
-  color: #0f1927;
+  color: var(--brand-primary-900);
   font-size: var(--md-size);
   font-weight: 900;
   line-height: 1.25;
@@ -187,7 +187,7 @@ watch(
 
 .subtitle {
   margin-top: 4px;
-  color: #6b7280;
+  color: var(--text-soft);
   font-size: var(--sm-size);
   font-weight: 600;
   line-height: 1.4;
@@ -201,19 +201,19 @@ watch(
   gap: 10px;
   min-height: 40px;
   padding: 6px 8px 6px 12px;
-  border: 1px solid #e3e8f2;
+  border: 1px solid var(--brand-primary-100);
   border-radius: 999px;
-  background: #fff;
-  color: #748095;
+  background: var(--surface-1);
+  color: var(--brand-primary-500);
   font-size: 12px !important;
   font-weight: 800 !important;
   cursor: pointer;
 }
 
 .is-enabled .template-upload-switch {
-  border-color: rgba(29, 78, 216, 0.24);
-  background: #f3f7ff;
-  color: #1d4ed8;
+  border-color: color-mix(in srgb, var(--brand-primary-500) 24%, transparent);
+  background: var(--brand-primary-50);
+  color: var(--brand-primary-500);
 }
 
 .template-image-type-container {
@@ -222,7 +222,7 @@ watch(
   gap: 10px;
   margin-top: 14px;
   padding-top: 14px;
-  border-top: 1px solid rgba(221, 226, 237, 0.78);
+  border-top: 1px solid color-mix(in srgb, var(--brand-primary-100) 78%, transparent);
   animation: slideIn 0.22s ease-out;
 }
 
@@ -232,9 +232,9 @@ watch(
   align-items: center;
   min-height: 58px;
   padding: 11px 12px;
-  border: 1px solid #e2e8f3;
+  border: 1px solid var(--brand-primary-100);
   border-radius: 14px;
-  background: #fbfdff;
+  background: var(--brand-primary-50);
   cursor: pointer;
   transition:
     border-color 0.2s ease,
@@ -243,19 +243,19 @@ watch(
 }
 
 .template-image-type:hover {
-  border-color: rgba(29, 78, 216, 0.28);
-  background: #f7faff;
+  border-color: color-mix(in srgb, var(--brand-primary-500) 28%, transparent);
+  background: var(--brand-primary-50);
 }
 
 .template-image-type.selected {
-  border-color: rgba(29, 78, 216, 0.46);
-  background: #f1f6ff;
-  box-shadow: inset 0 0 0 1px rgba(29, 78, 216, 0.08);
+  border-color: color-mix(in srgb, var(--brand-primary-500) 46%, transparent);
+  background: var(--brand-primary-50);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
 }
 
 .template-image-type label {
   grid-column: 1;
-  color: #152033 !important;
+  color: var(--brand-primary-900) !important;
   font-size: var(--sm-size) !important;
   font-weight: 900 !important;
   cursor: pointer;
@@ -264,7 +264,7 @@ watch(
 .type-hint {
   grid-column: 1;
   margin-top: 3px;
-  color: #7b8798;
+  color: var(--text-soft);
   font-size: 11px;
   font-weight: 700;
   line-height: 1.25;
@@ -282,7 +282,7 @@ watch(
 
 :deep(.p-checkbox-box),
 :deep(.p-radiobutton-box) {
-  border-color: rgba(29, 78, 216, 0.3) !important;
+  border-color: color-mix(in srgb, var(--brand-primary-500) 30%, transparent) !important;
   box-shadow: none !important;
 }
 
@@ -290,25 +290,25 @@ watch(
   width: 24px !important;
   height: 24px !important;
   border-radius: 999px !important;
-  background: #fff !important;
+  background: var(--surface-1) !important;
 }
 
 :deep(.p-radiobutton-box) {
-  background: #fff !important;
+  background: var(--surface-1) !important;
 }
 
 :deep(.p-checkbox-checked .p-checkbox-box),
 :deep(.p-radiobutton-checked .p-radiobutton-box) {
-  border-color: #1d4ed8 !important;
-  background: #1d4ed8 !important;
+  border-color: var(--brand-primary-500) !important;
+  background: var(--brand-primary-500) !important;
 }
 
 :deep(.p-checkbox-checked .p-checkbox-box svg) {
-  color: #fff !important;
+  color: var(--text-on-brand) !important;
 }
 
 :deep(.p-radiobutton-checked .p-radiobutton-box .p-radiobutton-icon) {
-  background: #fff !important;
+  background: var(--surface-1) !important;
 }
 
 @keyframes slideIn {

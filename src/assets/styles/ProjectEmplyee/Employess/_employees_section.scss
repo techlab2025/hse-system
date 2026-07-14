@@ -3,7 +3,7 @@
 @use '../../mixins/grid' as *;
 
 .emoloyees-details {
-  background-color: #fcfcfc;
+  background-color: var(--text-on-brand);
   padding: $SmSize;
   margin-block: 30px;
   .card-header {
@@ -37,27 +37,27 @@
         transition: all 0.3s linear;
 
         &.edit-btn {
-          background-color: #1d4ed80f;
+          background-color: color-mix(in srgb, var(--brand-primary-500) 5.88%, transparent);
           border: 1px solid $PrimaryColor;
           color: $PrimaryColor;
           &:hover {
-            color: white;
+            color: var(--text-on-brand);
             background-color: $PrimaryColor;
-            border: 1px solid #1d4ed80f;
+            border: 1px solid color-mix(in srgb, var(--brand-primary-500) 5.88%, transparent);
           }
         }
         &.create-btn {
           background-color: $PrimaryColor;
-          color: white;
+          color: var(--text-on-brand);
         }
         &.add-btn {
-          background-color: #041953;
-          color: white;
+          background-color: var(--brand-primary-800);
+          color: var(--text-on-brand);
 
           &:hover {
-            color: #041953;
-            background-color: white;
-            border: 1px solid #041953;
+            color: var(--brand-primary-800);
+            background-color: var(--text-on-brand);
+            border: 1px solid var(--brand-primary-800);
           }
         }
       }
@@ -67,7 +67,7 @@
   .employee-hr {
     margin-block: $MdSize2;
     border-style: dashed;
-    border-color: #dce3ef;
+    border-color: var(--brand-primary-100);
   }
   .employees-section {
     // @include flex-row(nowrap, flex-start, center);
@@ -81,7 +81,7 @@
     // scroll-behavior: smooth;
     // scroll-snap-type: x mandatory;
 
-    background: #8080801a;
+    background: color-mix(in srgb, var(--text-soft) 10.2%, transparent);
     padding: 10px;
     border-radius: 12px 12px 0 0;
     @include grid(
@@ -99,14 +99,14 @@
       // scroll-snap-align: start;
       flex: 0 0 auto;
       width: 100%;
-      background-color: #8080801b;
+      background-color: color-mix(in srgb, var(--text-soft) 10.59%, transparent);
     }
 
     // &::-webkit-scrollbar {
     //   height: 6px;
     // }
     // &::-webkit-scrollbar-thumb {
-    //   background-color: rgba(0, 0, 0, 0.2);
+    //   background-color: color-mix(in srgb, var(--text-strong) 20%, transparent);
     //   border-radius: 4px;
     // }
     // &::-webkit-scrollbar-track {
@@ -117,7 +117,7 @@
     padding-top: 10px;
     @include flex-column(nowrap, flex-start, flex-start);
     gap: $MdSize2;
-    background: #8080801a;
+    background: color-mix(in srgb, var(--text-soft) 10.2%, transparent);
     padding: 10px;
     border-radius: 0 0 12px 12px;
   }

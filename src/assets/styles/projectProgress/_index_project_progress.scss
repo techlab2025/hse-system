@@ -7,7 +7,7 @@
     margin-bottom: $XsSize;
     border-radius: $XlSize2 $XlSize2 0 0;
     width: 100%;
-    background-color: #fbfbfb;
+    background-color: var(--surface-1);
     @include flex-row(nowrap, space-between, center);
     .skip {
       @include flex-row(nowrap, flex-end, center);
@@ -23,7 +23,7 @@
       gap: $XsSize;
       cursor: pointer;
       span {
-        color: #c3c3d1;
+        color: var(--brand-primary-200);
         font-size: $MdSize;
         font-weight: $BaseFontSemiBoldWeight;
       }
@@ -39,9 +39,9 @@
     .project-progress-body-sidebar {
       width: 100%;
       min-width: 0;
-      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-      border: 1px solid #e7edf8;
-      box-shadow: 0 12px 30px rgba(15, 25, 39, 0.06);
+      background: linear-gradient(180deg, var(--surface-1) 0%, var(--brand-primary-50) 100%);
+      border: 1px solid var(--brand-primary-100);
+      box-shadow: 0 12px 30px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
       padding: $MdSize;
       border-radius: 12px;
       overflow: hidden;
@@ -51,10 +51,10 @@
         top: -11px !important;
         &.not-active {
           .timeline-icon {
-            background-color: white;
+            background-color: var(--surface-1);
           }
           .timeline-dot {
-            background-color: white;
+            background-color: var(--surface-1);
           }
         }
       }
@@ -79,7 +79,7 @@
           }
 
           &::-webkit-scrollbar-thumb {
-            background: #d7e1f2;
+            background: var(--brand-primary-100);
             border-radius: 999px;
           }
         }
@@ -118,13 +118,13 @@
             gap: 10px;
 
             .first-item-title {
-              color: #000060;
+              color: var(--brand-primary-800);
               font-size: $MdSize2;
               font-weight: $BaseFontWeightBold;
             }
           }
           .first-item-description {
-            color: #96aac3;
+            color: var(--brand-primary-300);
             font-size: $SmSize;
             font-weight: $BaseFontMediumWeight;
             display: -webkit-box;
@@ -141,10 +141,10 @@
           gap: $XsSize;
           min-height: 116px;
           padding: $SmSize;
-          border: 1px solid #edf2f9;
+          border: 1px solid var(--brand-primary-50);
           border-radius: 12px;
-          background-color: #fff;
-          box-shadow: 0 8px 20px rgba(15, 25, 39, 0.04);
+          background-color: var(--surface-1);
+          box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
           scroll-snap-align: start;
           transition:
             border-color 0.25s ease,
@@ -154,8 +154,8 @@
 
           &:hover {
             transform: translateY(-2px);
-            border-color: rgba(29, 78, 216, 0.22);
-            box-shadow: 0 14px 28px rgba(15, 25, 39, 0.08);
+            border-color: color-mix(in srgb, var(--brand-primary-500) 22%, transparent);
+            box-shadow: 0 14px 28px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
           }
 
           .time-line-title {
@@ -173,13 +173,13 @@
               @include flex-row(nowrap, space-between, center);
               gap: 10px;
               .time-line-title {
-                color: #9ca3af;
+                color: var(--text-soft);
                 font-size: $MdSize2;
                 font-weight: $BaseFontWeightBold;
               }
             }
             .time-line-description {
-              color: #96aac3;
+              color: var(--brand-primary-300);
               font-size: $SmSize;
               font-weight: $BaseFontMediumWeight;
               display: -webkit-box;
@@ -189,8 +189,8 @@
             }
           }
           &.active {
-            border-color: rgba(29, 78, 216, 0.28);
-            background: linear-gradient(180deg, #ffffff 0%, #f5f8ff 100%);
+            border-color: color-mix(in srgb, var(--brand-primary-500) 28%, transparent);
+            background: linear-gradient(180deg, var(--surface-1) 0%, var(--brand-primary-50) 100%);
             .timeline-content {
               .timeline-content-header {
                 @include flex-row(nowrap, space-between, center);
@@ -202,7 +202,7 @@
                 }
               }
               .time-line-description {
-                color: #96aac3;
+                color: var(--brand-primary-300);
                 font-size: $SmSize;
                 font-weight: $BaseFontMediumWeight;
               }
@@ -221,19 +221,19 @@
         gap: $XsSize3;
         margin-block: $MdSize;
         .title {
-          color: #202020;
+          color: var(--text-strong);
           font-size: calc($XlSize3 + 2px);
           font-weight: $BaseFontWeightBold;
         }
         .description {
-          color: #6b7280;
+          color: var(--text-soft);
           font-size: $MdSize2;
           font-weight: $BaseFontMediumWeight;
         }
       }
       .full-content {
-        background-color: #fdfdfd;
-        border: 1px solid #e6e8ea4d;
+        background-color: var(--surface-1);
+        border: 1px solid color-mix(in srgb, var(--surface-2) 30.2%, transparent);
         border-radius: $XlSize3;
         padding: $MdSize;
         width: 100%;

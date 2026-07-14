@@ -224,8 +224,8 @@ const toggleMode = (index: number, isManual: boolean) => {
   width: 30px;
   height: 30px;
   padding: 5px;
-  border: 1px solid rgba(156, 163, 175, 0.4);
+  border: 1px solid color-mix(in srgb, var(--text-soft) 40%, transparent);
   border-radius: 50%;
-  background: #f1f3f5;
+  background: var(--brand-primary-50);
 }
 </style>

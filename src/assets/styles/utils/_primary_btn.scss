@@ -2,7 +2,7 @@
 
 .btn-primary {
   background-color: $PrimaryColor;
-  color: $White;
+  color: var(--text-on-brand);
   border-color: $PrimaryColor;
   font-family: 'Regular';
   font-size: $XsSize;

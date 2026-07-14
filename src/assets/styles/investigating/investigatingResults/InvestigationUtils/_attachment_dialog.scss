@@ -6,12 +6,12 @@
   @include flex-row(nowrap, center, center);
   gap: $XsSize3;
   width: 100%;
-  border: 1px dashed #f1f3f5;
+  border: 1px dashed var(--brand-primary-50);
   padding: $XlSize;
   border-radius: $XlSize;
   span {
     // width: 100%;
-    color: #9ca3af;
+    color: var(--text-soft);
     font-size: $SmSize;
     font-weight: $BaseFontMediumWeight;
   }
@@ -24,7 +24,7 @@
     border: none;
     height: 2px;
     width: 100%;
-    background-color: #f1f3f5;
+    background-color: var(--brand-primary-50);
   }
   .input-wrapper {
     width: 100%;
@@ -33,7 +33,7 @@
 
   .file-upload {
     .input-image {
-      border: 1px dashed #9ca3af9c;
+      border: 1px dashed color-mix(in srgb, var(--text-soft) 61.18%, transparent);
     }
     margin-block: 12px;
   }

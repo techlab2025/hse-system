@@ -67,14 +67,14 @@ const CreateInvestegationTaskResult = async () => {
 
 <style scoped lang="scss">
 .investigation-answer-header {
-  border-bottom: 1px solid #e6edf7;
+  border-bottom: 1px solid var(--brand-primary-100);
   width: 100%;
   padding-bottom: 15px;
 }
 
 .investigation-answer-header .title {
   width: 100%;
-  color: #0f172a;
+  color: var(--brand-primary-900);
   font-size: 22px;
   font-weight: 800;
 }
@@ -87,17 +87,17 @@ const CreateInvestegationTaskResult = async () => {
   width: 100%;
 
   .questions-title {
-    border: 1px solid #d9dbe9;
+    border: 1px solid var(--brand-primary-100);
     padding: 14px;
     border-radius: 12px;
     width: 100%;
-    background: #f8fafc;
-    color: #0f172a;
+    background: var(--brand-primary-50);
+    color: var(--brand-primary-900);
     font-weight: 700;
   }
 
   .answer-label {
-    color: #202020;
+    color: var(--text-strong);
     font-size: 16px;
     font-weight: 700;
   }
@@ -113,7 +113,7 @@ const CreateInvestegationTaskResult = async () => {
   border: 0;
   border-radius: 8px;
   background: var(--PrimaryColor);
-  color: #ffffff;
+  color: var(--text-on-brand);
   font-family: 'Bold';
   font-size: 13px;
   font-weight: 800;
@@ -125,7 +125,7 @@ const CreateInvestegationTaskResult = async () => {
 
   &:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 10px 18px rgba(29, 78, 216, 0.18);
+    box-shadow: 0 10px 18px color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
   }
 
   &:disabled {

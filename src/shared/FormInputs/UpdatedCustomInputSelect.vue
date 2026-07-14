@@ -274,7 +274,7 @@ const closeDialog = async () => {
   border-radius: 24px;
 
   &:focus {
-    border: 1px solid #d9dbe9 !important;
+    border: 1px solid var(--brand-primary-100) !important;
   }
 }
 </style>

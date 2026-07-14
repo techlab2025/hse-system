@@ -125,10 +125,10 @@ const GetEquipmentTypeTitle = (type: number) => {
     align-items: center;
     justify-content: center;
     gap: 20px;
-    /* background-color: rgba(255, 255, 255, 0.836); */
-    background-color: #e9ebeebb;
+    /* background-color: color-mix(in srgb, var(--surface-1) 83.6%, transparent); */
+    background-color: color-mix(in srgb, var(--surface-2) 73.33%, transparent);
     backdrop-filter: blur(5px);
-    color: #727B99;
+    color: var(--brand-primary-500);
     font-weight: 500;
     font-size: 12px;
     border-radius: 4px;
@@ -152,19 +152,19 @@ const GetEquipmentTypeTitle = (type: number) => {
 
         &.tool {
           &::before {
-            background-color: #3b82f6;
+            background-color: var(--brand-primary-400);
           }
         }
 
         &.equipment {
           &::before {
-            background-color: #60a5fa;
+            background-color: var(--brand-primary-300);
           }
         }
 
         &.device {
           &::before {
-            background-color: #93c5fd;
+            background-color: var(--brand-primary-200);
           }
         }
 
@@ -200,7 +200,7 @@ const GetEquipmentTypeTitle = (type: number) => {
   justify-content: space-between;
   align-items: center;
   gap: 30px;
-  color: black;
+  color: var(--text-strong);
   margin-top: 8px;
 }
 
@@ -216,7 +216,7 @@ const GetEquipmentTypeTitle = (type: number) => {
   overflow-x: auto;
   overflow-y: visible;
   scrollbar-width: thin;
-  scrollbar-color: #e2e8f0 transparent;
+  scrollbar-color: var(--brand-primary-100) transparent;
   -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar {
@@ -228,7 +228,7 @@ const GetEquipmentTypeTitle = (type: number) => {
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #e2e8f0;
+    background-color: var(--brand-primary-100);
     border-radius: 4px;
   }
 
@@ -298,8 +298,8 @@ const GetEquipmentTypeTitle = (type: number) => {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: white;
-    color: #3b82f6;
+    background-color: var(--surface-1);
+    color: var(--brand-primary-400);
     font-size: 12px;
     border-radius: 4px;
     padding: 3px;
@@ -318,8 +318,8 @@ const GetEquipmentTypeTitle = (type: number) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white;
-  color: #3b82f6;
+  background-color: var(--surface-1);
+  color: var(--brand-primary-400);
   font-size: 12px;
   border-radius: 4px;
   padding: 3px;

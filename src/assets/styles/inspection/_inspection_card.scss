@@ -16,7 +16,7 @@
       border-radius: $XsSize;
       @include flex-column(nowrap, flex-start, flex-start);
       gap: 5px;
-      border: 1px solid #eef3fe;
+      border: 1px solid var(--brand-primary-50);
 
       .bg {
         position: absolute;
@@ -43,8 +43,8 @@
             border-bottom: 1px solid transparent;
             border-image: repeating-linear-gradient(
                 to right,
-                #efefef 0,
-                #efefef 10px,
+                var(--main-border) 0,
+                var(--main-border) 10px,
                 transparent 10px,
                 transparent 20px
               )
@@ -56,13 +56,13 @@
               width: 100%;
               @include flex(row, nowrap, space-between, center);
               .title {
-                color: #121212;
+                color: var(--text-strong);
                 font-size: $MdSize2;
                 font-weight: $BaseFontWeightBold;
                 border: none;
               }
               .date {
-                color: #6b7280;
+                color: var(--text-soft);
                 font-size: $XsSize;
                 font-weight: $BaseFontMediumWeight;
               }
@@ -104,10 +104,10 @@
               .position {
                 font-size: $MdSize2;
                 font-weight: bold;
-                color: #80879780;
+                color: color-mix(in srgb, var(--text-soft) 50.2%, transparent);
                 font-family: 'Regular';
                 span {
-                  color: #202020;
+                  color: var(--text-strong);
                   font-size: $SmSize;
                   font-weight: $BaseFontSemiBoldWeight;
                   font-family: 'Regular';
@@ -120,8 +120,8 @@
               }
             }
             .session-box {
-              background: #fcfcfd;
-              border: 1px solid #1d4ed803;
+              background: var(--brand-primary-50);
+              border: 1px solid color-mix(in srgb, var(--brand-primary-500) 1.18%, transparent);
               border-radius: $XsSize2;
               padding: $XsSize2;
               gap: 6px;
@@ -140,7 +140,7 @@
                 gap: 4px;
 
                 h4 {
-                  color: #bcc1d0;
+                  color: var(--brand-primary-200);
                   font-size: $XsSize;
                   font-weight: $BaseFontSemiBoldWeight;
                 }
@@ -148,7 +148,7 @@
                 h5 {
                   font-size: $XsSize;
                   font-weight: $BaseFontWeight;
-                  color: #848995;
+                  color: var(--text-soft);
 
                   span {
                     font-weight: $BaseFontSemiBoldWeight;
@@ -161,10 +161,10 @@
 
                 span {
                   padding: 0 $XsSize;
-                  color: #6b7280;
+                  color: var(--text-soft);
 
                   &:not(:last-of-type) {
-                    border-inline-end: 1px solid #eef1f5;
+                    border-inline-end: 1px solid var(--brand-primary-50);
                   }
                 }
               }
@@ -194,7 +194,7 @@
 
       .tool-box {
         width: 100%;
-        background: url('@/assets/images/toolOv.png') right / contain no-repeat #fcfcfd;
+        background: url('@/assets/images/toolOv.png') right / contain no-repeat var(--brand-primary-50);
         padding: $XsSize;
 
         border-radius: $SmSize;
@@ -211,7 +211,7 @@
         //   // height: 100%;
         //   left: 0;
         //   top: 50%;
-        //   // background-color: #0f1927;
+        //   // background-color: var(--brand-primary-900);
         // }
         .tool-img {
           max-width: $XlSize4;
@@ -220,7 +220,7 @@
             width: 100%;
             height: 100%;
             border-radius: $XsSize;
-            border: 1px solid #f4f4f4;
+            border: 1px solid var(--surface-2);
           }
         }
         .contents {
@@ -241,7 +241,7 @@
             }
           }
           h3 {
-            color: #0f1927;
+            color: var(--brand-primary-900);
             font-size: $SmSize;
             font-weight: $BaseFontWeightBold;
           }
@@ -251,7 +251,7 @@
   }
   .show-button {
     @include flex(row, nowrap, space-between, center);
-    background: #1f41bb0d;
+    background: color-mix(in srgb, var(--brand-primary-600) 5.1%, transparent);
     border: 1px solid $PrimaryColor;
     border-radius: $SmSize;
     padding: $XsSize4 $MdSize;
@@ -264,8 +264,8 @@
       transform 0.2s ease;
 
     &:hover {
-      background: rgba($PrimaryColor, 0.12);
-      border-color: darken(#1d4ed8, 5%);
+      background: color-mix(in srgb, var(--identity-primary) 12%, transparent);
+      border-color: var(--brand-primary-600);
       transform: translateY(-2px);
     }
 
@@ -281,7 +281,7 @@
       }
 
       span {
-        background: #dfe2ea;
+        background: var(--brand-primary-100);
         font-weight: $BaseFontSemiBoldWeight;
         font-size: $MdSize;
         color: $PrimaryColor;
@@ -292,7 +292,7 @@
     }
 
     &:hover .button-text span {
-      background: lighten(#1d4ed8, 40%);
+      background: var(--brand-primary-100);
     }
   }
 }

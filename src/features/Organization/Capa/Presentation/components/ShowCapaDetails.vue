@@ -180,7 +180,7 @@ onMounted(() => {
     linear-gradient(135deg, var(--primary-dark), transparent);
   color: var(--header-page-color);
   padding: clamp(1.4rem, 3vw, 2.4rem);
-  box-shadow: 0 16px 32px color-mix(in srgb, var(--Black) 10%, transparent);
+  box-shadow: 0 16px 32px color-mix(in srgb, var(--text-strong) 10%, transparent);
 }
 
 .hero-content,
@@ -262,7 +262,7 @@ onMounted(() => {
   border: 1px solid var(--main-border);
   border-radius: 18px;
   background: var(--BgWhite);
-  box-shadow: 0 8px 16px color-mix(in srgb, var(--Black) 10%, transparent);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--text-strong) 10%, transparent);
 }
 
 .summary-card {

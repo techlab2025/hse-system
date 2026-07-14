@@ -80,6 +80,16 @@ const OperationsRoutes = ref<Routes[]>([
 
 const OrganizationRoutes = ref<Routes[]>([
   {
+    link: '/organization/system-identity',
+    name: t('system_identity'),
+    icon: 'palette',
+    permissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_ALL,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    ],
+  },
+  {
     link: '/organization/certificate',
     name: t('certificates'),
     icon: 'award',
@@ -752,7 +762,7 @@ onBeforeUnmount(() => {
   display: flex;
   min-height: 0;
   flex: 1 1 auto;
-  color: #ffffff;
+  color: var(--text-on-brand);
   overscroll-behavior-x: none;
 }
 
@@ -787,7 +797,7 @@ onBeforeUnmount(() => {
   border: 0;
   border-radius: 18px;
   background: transparent;
-  color: #dbeafe;
+  color: var(--brand-primary-100);
   cursor: pointer;
   text-align: center;
   transition:
@@ -799,11 +809,11 @@ onBeforeUnmount(() => {
 .side-rail-btn:hover,
 .side-rail-btn.is-selected,
 .side-rail-btn.is-active {
-  background: rgba(255, 255, 255, 0.14);
+  background: color-mix(in srgb, var(--surface-1) 14%, transparent);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
-    0 12px 24px rgba(10, 54, 129, 0.18);
-  color: #ffffff;
+    inset 0 0 0 1px color-mix(in srgb, var(--shadow-color) 12%, transparent),
+    0 12px 24px color-mix(in srgb, var(--brand-primary-700) 18%, transparent);
+  color: var(--text-on-brand);
   transform: translateY(-1px);
 }
 
@@ -848,13 +858,13 @@ onBeforeUnmount(() => {
   overscroll-behavior-x: none;
   padding: 22px 16px 14px;
   background:
-    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.1) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.09) 0 16%, transparent 34%),
-    linear-gradient(155deg, #0f36a8 0%, #102d79 44%, #061f56 100%);
-  border-inline-end: 1px solid rgba(255, 255, 255, 0.12);
+    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%, transparent 34%),
+    linear-gradient(155deg, var(--brand-primary-600) 0%, var(--brand-primary-700) 44%, var(--brand-primary-800) 100%);
+  border-inline-end: 1px solid color-mix(in srgb, var(--surface-1) 12%, transparent);
   box-shadow:
-    18px 0 42px rgba(10, 54, 129, 0.28),
-    inset -1px 0 0 rgba(255, 255, 255, 0.12);
+    18px 0 42px color-mix(in srgb, var(--brand-primary-700) 28%, transparent),
+    inset -1px 0 0 color-mix(in srgb, var(--shadow-color) 12%, transparent);
 }
 
 .side-pane-header {
@@ -877,7 +887,7 @@ onBeforeUnmount(() => {
 }
 
 .side-pane-heading strong {
-  color: #ffffff;
+  color: var(--text-on-brand);
   font-size: 18px;
   font-weight: 900;
   line-height: 1.15;
@@ -885,7 +895,7 @@ onBeforeUnmount(() => {
 
 .side-pane-heading div > span {
   margin-top: 3px;
-  color: rgba(217, 230, 243, 0.62);
+  color: color-mix(in srgb, var(--brand-primary-100) 62%, transparent);
   font-size: 12px;
   font-weight: 700;
 }
@@ -898,11 +908,11 @@ onBeforeUnmount(() => {
   height: 38px;
   flex-shrink: 0;
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.14);
+  background: color-mix(in srgb, var(--surface-1) 14%, transparent);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
-    0 12px 24px rgba(10, 54, 129, 0.2);
-  color: #ffffff;
+    inset 0 0 0 1px color-mix(in srgb, var(--shadow-color) 10%, transparent),
+    0 12px 24px color-mix(in srgb, var(--brand-primary-700) 20%, transparent);
+  color: var(--text-on-brand);
 }
 
 .side-pane-icon :deep(svg) {
@@ -916,11 +926,11 @@ onBeforeUnmount(() => {
   gap: 10px;
   height: 42px;
   padding: 0 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid color-mix(in srgb, var(--surface-1) 10%, transparent);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.075);
-  color: rgba(217, 230, 243, 0.66);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  background: color-mix(in srgb, var(--surface-1) 7.5%, transparent);
+  color: color-mix(in srgb, var(--brand-primary-100) 66%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 4%, transparent);
 }
 
 .sidebar-search__icon {
@@ -935,13 +945,13 @@ onBeforeUnmount(() => {
   border: 0;
   outline: 0;
   background: transparent;
-  color: #ffffff;
+  color: var(--text-on-brand);
   font-size: 12px;
   font-weight: 700;
 }
 
 .sidebar-search__input::placeholder {
-  color: rgba(217, 230, 243, 0.52);
+  color: color-mix(in srgb, var(--brand-primary-100) 52%, transparent);
 }
 
 .side-pane-routes {
@@ -952,7 +962,7 @@ onBeforeUnmount(() => {
   overflow-x: hidden;
   overscroll-behavior-x: none;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
+  scrollbar-color: color-mix(in srgb, var(--surface-1) 28%, transparent) transparent;
 }
 
 .side-pane-routes::-webkit-scrollbar {
@@ -961,7 +971,7 @@ onBeforeUnmount(() => {
 
 .side-pane-routes::-webkit-scrollbar-thumb {
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.28);
+  background: color-mix(in srgb, var(--surface-1) 28%, transparent);
 }
 
 .side-pane-routes__inner {
@@ -974,7 +984,7 @@ onBeforeUnmount(() => {
 
 .side-route-group-title {
   margin: 12px 4px 0;
-  color: rgba(191, 219, 254, 0.72);
+  color: color-mix(in srgb, var(--brand-primary-100) 72%, transparent);
   font-size: 11px;
   font-weight: 900;
   letter-spacing: 0;
@@ -990,7 +1000,7 @@ onBeforeUnmount(() => {
   padding: 12px 13px;
   border: 1px solid transparent;
   border-radius: 14px;
-  color: rgba(229, 237, 247, 0.84);
+  color: color-mix(in srgb, var(--brand-primary-100) 84%, transparent);
   text-decoration: none;
   transition:
     background 0.18s ease,
@@ -1002,12 +1012,12 @@ onBeforeUnmount(() => {
 .side-btn:hover,
 .side-btn.active,
 .side-btn.router-link-active {
-  border-color: rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.14);
+  border-color: color-mix(in srgb, var(--surface-1) 12%, transparent);
+  background: color-mix(in srgb, var(--surface-1) 14%, transparent);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 12px 24px rgba(10, 54, 129, 0.18);
-  color: #ffffff;
+    inset 0 0 0 1px color-mix(in srgb, var(--shadow-color) 6%, transparent),
+    0 12px 24px color-mix(in srgb, var(--brand-primary-700) 18%, transparent);
+  color: var(--text-on-brand);
   transform: translateX(2px);
 }
 
@@ -1031,7 +1041,7 @@ onBeforeUnmount(() => {
 
 .side-label-parent {
   overflow: hidden;
-  color: rgba(217, 230, 243, 0.5);
+  color: color-mix(in srgb, var(--brand-primary-100) 50%, transparent);
   font-size: 10px;
   font-weight: 800;
   line-height: 1.1;
@@ -1046,14 +1056,14 @@ onBeforeUnmount(() => {
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  color: rgba(217, 230, 243, 0.5);
+  color: color-mix(in srgb, var(--brand-primary-100) 50%, transparent);
   font-size: 20px;
   line-height: 1;
 }
 
 .side-pane-empty {
   margin: 18px 0 0;
-  color: rgba(217, 230, 243, 0.62);
+  color: color-mix(in srgb, var(--brand-primary-100) 62%, transparent);
   font-size: 13px;
   font-weight: 700;
   text-align: center;
@@ -1064,11 +1074,11 @@ onBeforeUnmount(() => {
   z-index: 10070;
   padding: 7px 11px;
   border-radius: 8px;
-  background: #101827;
+  background: var(--brand-primary-900);
   box-shadow:
-    0 8px 18px rgba(0, 0, 0, 0.24),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
-  color: #fff;
+    0 8px 18px color-mix(in srgb, var(--shadow-color) 24%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--shadow-color) 6%, transparent);
+  color: var(--text-on-brand);
   font-family: 'Regular', sans-serif;
   font-size: 12px;
   line-height: 1.4;

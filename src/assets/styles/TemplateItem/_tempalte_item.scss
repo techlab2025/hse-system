@@ -17,8 +17,8 @@
     gap: $XsSize2;
     font-size: $MdSize;
     font-weight: $BaseFontSemiBoldWeight;
-    color: #9ca3af;
-    background-color: #f8f9fa99;
+    color: var(--text-soft);
+    background-color: color-mix(in srgb, var(--brand-primary-50) 60%, transparent);
     padding: $XlSize $MdSize;
     border-radius: $XsSize2;
     cursor: pointer;

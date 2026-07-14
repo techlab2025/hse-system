@@ -20,12 +20,12 @@
         font-weight: $BaseFontSemiBoldWeight;
       }
       input {
-        background-color: white !important;
-        color: #3d4c5e !important;
+        background-color: var(--surface-1) !important;
+        color: var(--brand-primary-700) !important;
         font-size: $SmSize;
         font-weight: $BaseFontSemiBoldWeight;
         &::placeholder {
-          color: #9ca3af !important;
+          color: var(--text-soft) !important;
         }
       }
     }
@@ -34,6 +34,6 @@
 
 .input-wrapper input:not([type='checkbox']):disabled,
 .input-wrapper textarea:disabled {
-  background-color: white !important;
-  color: #9ca3af !important;
+  background-color: var(--surface-1) !important;
+  color: var(--text-soft) !important;
 }

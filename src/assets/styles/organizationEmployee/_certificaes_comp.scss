@@ -4,7 +4,7 @@
 
 // _certifications.scss
 .certifications-section {
-  background: #f9f9f9;
+  background: var(--surface-1);
   border-radius: $XlSize;
   padding: $SmSize;
 }
@@ -34,32 +34,32 @@
   border-radius: 50%;
   margin-top: $XsSize4;
   flex-shrink: 0;
-  // box-shadow: 0 0 6px rgba(239, 68, 68, 0.7);
+  // box-shadow: 0 0 6px color-mix(in srgb, var(--status-danger) 70%, transparent);
   &.Valid {
     background: $Green;
-    box-shadow: 0 0 6px rgba(24, 168, 81, 0.7);
+    box-shadow: 0 0 6px color-mix(in srgb, var(--status-success) 70%, transparent);
   }
   &.Invalid {
-    background: #8a38f5;
-    box-shadow: 0 0 6px rgba(138, 56, 245, 0.7);
+    background: var(--brand-accent-400);
+    box-shadow: 0 0 6px color-mix(in srgb, var(--brand-accent-400) 70%, transparent);
   }
   &.Expired {
-    background: #8a38f5;
-    box-shadow: 0 0 6px rgba(138, 56, 245, 0.7);
+    background: var(--brand-accent-400);
+    box-shadow: 0 0 6px color-mix(in srgb, var(--brand-accent-400) 70%, transparent);
   }
   &.NotRequired {
-    background: #8a38f5;
-    box-shadow: 0 0 6px rgba(138, 56, 245, 0.7);
+    background: var(--brand-accent-400);
+    box-shadow: 0 0 6px color-mix(in srgb, var(--brand-accent-400) 70%, transparent);
   }
 }
 
 .status-dot.success {
   background: $Green;
-  box-shadow: 0 0 6px rgba(24, 168, 81, 0.7);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--status-success) 70%, transparent);
 }
 .status-dot.invalidCert {
-  background: #8a38f5;
-  box-shadow: 0 0 6px rgba(138, 56, 245, 0.7);
+  background: var(--brand-accent-400);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--brand-accent-400) 70%, transparent);
 }
 
 .cert-text {
@@ -82,10 +82,10 @@
   span {
     font-size: $XsSize;
     font-weight: $BaseFontMediumWeight;
-    color: #ef4444;
+    color: var(--status-danger);
   }
   h6 {
-    color: #9ca3af;
+    color: var(--text-soft);
     font-size: $XsSize;
     font-weight: $BaseFontMediumWeight;
   }

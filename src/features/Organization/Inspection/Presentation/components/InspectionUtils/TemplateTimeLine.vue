@@ -224,10 +224,10 @@ watch(
 
 <style scoped>
 .inspection-template-timeline {
-  --template-blue: #1d4ed8;
-  --template-navy: #041953;
-  --template-green: #4aae3a;
-  --template-border: rgba(221, 226, 237, 0.82);
+  --template-blue: var(--brand-primary-500);
+  --template-navy: var(--brand-primary-800);
+  --template-green: var(--status-success);
+  --template-border: color-mix(in srgb, var(--brand-primary-100) 82%, transparent);
   margin-top: 2px;
 }
 
@@ -244,10 +244,10 @@ watch(
   gap: 12px;
   padding: 12px 14px;
   margin-bottom: 12px;
-  border: 1px solid rgba(221, 226, 237, 0.82);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 82%, transparent);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.9);
-  box-shadow: 0 10px 26px rgba(15, 25, 39, 0.04);
+  background: color-mix(in srgb, var(--surface-1) 90%, transparent);
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
 }
 
 .timeline-toolbar-copy {
@@ -255,7 +255,7 @@ watch(
   align-items: center;
   gap: 8px;
   min-width: 0;
-  color: #041953;
+  color: var(--brand-primary-800);
   font-size: var(--sm-size);
   font-weight: 900;
 }
@@ -267,7 +267,7 @@ watch(
   place-items: center;
   border-radius: 10px;
   color: var(--template-blue);
-  background: rgba(29, 78, 216, 0.1);
+  background: color-mix(in srgb, var(--brand-primary-500) 10%, transparent);
 }
 
 .timeline-add-main,
@@ -278,14 +278,14 @@ watch(
   gap: 8px;
   min-height: 40px;
   padding: 0 14px;
-  border: 1px solid rgba(29, 78, 216, 0.18);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
   border-radius: 999px;
-  color: #fff;
+  color: var(--text-on-brand);
   font-size: 13px;
   font-weight: 900;
   white-space: nowrap;
   background: linear-gradient(135deg, var(--template-blue), var(--template-navy));
-  box-shadow: 0 12px 22px rgba(29, 78, 216, 0.18);
+  box-shadow: 0 12px 22px color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
   cursor: pointer;
   transition:
     transform 0.2s ease,
@@ -295,7 +295,7 @@ watch(
 .timeline-add-main:hover,
 .timeline-add-footer:hover {
   transform: translateY(-1px);
-  box-shadow: 0 16px 28px rgba(29, 78, 216, 0.24);
+  box-shadow: 0 16px 28px color-mix(in srgb, var(--brand-primary-500) 24%, transparent);
 }
 
 .timeline-add-main :deep(svg),
@@ -306,13 +306,13 @@ watch(
 
 .timeline-add-main :deep(svg circle),
 .timeline-add-footer :deep(svg circle) {
-  fill: rgba(255, 255, 255, 0.14);
-  stroke: rgba(255, 255, 255, 0.34);
+  fill: color-mix(in srgb, var(--surface-1) 14%, transparent);
+  stroke: color-mix(in srgb, var(--surface-1) 34%, transparent);
 }
 
 .timeline-add-main :deep(svg path),
 .timeline-add-footer :deep(svg path) {
-  fill: #fff;
+  fill: var(--text-on-brand);
 }
 
 .inspection-template-timeline .timeline-wrapper {
@@ -325,7 +325,7 @@ watch(
   bottom: 30px;
   width: 3px;
   border-radius: 999px;
-  background: linear-gradient(180deg, rgba(29, 78, 216, 0.72), rgba(74, 174, 58, 0.58)) !important;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--brand-primary-500) 72%, transparent), color-mix(in srgb, var(--status-success) 58%, transparent)) !important;
   opacity: 1;
 }
 
@@ -348,13 +348,13 @@ watch(
   width: 34px;
   height: 34px;
   place-items: center;
-  border: 4px solid #fff;
+  border: 4px solid var(--surface-1);
   background: linear-gradient(135deg, var(--template-blue), var(--template-navy));
-  box-shadow: 0 12px 22px rgba(29, 78, 216, 0.25);
+  box-shadow: 0 12px 22px color-mix(in srgb, var(--brand-primary-500) 25%, transparent);
 }
 
 .inspection-template-timeline .timeline-dot-inner span {
-  color: #fff;
+  color: var(--text-on-brand);
   font-size: 12px;
   font-weight: 900;
 }
@@ -366,10 +366,10 @@ watch(
   display: flex;
   gap: 6px;
   padding: 4px;
-  border: 1px solid rgba(221, 226, 237, 0.88);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 88%, transparent);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 10px 20px rgba(15, 25, 39, 0.08);
+  background: color-mix(in srgb, var(--surface-1) 94%, transparent);
+  box-shadow: 0 10px 20px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
 }
 
 .timeline-action {
@@ -388,17 +388,17 @@ watch(
 
 .timeline-action.add {
   color: var(--template-blue);
-  background: rgba(29, 78, 216, 0.1);
+  background: color-mix(in srgb, var(--brand-primary-500) 10%, transparent);
 }
 
 .timeline-action.danger {
-  color: #e23535;
-  background: rgba(226, 53, 53, 0.1);
+  color: var(--status-danger);
+  background: color-mix(in srgb, var(--status-danger) 10%, transparent);
 }
 
 .timeline-action:hover {
   transform: translateY(-1px);
-  box-shadow: 0 8px 16px rgba(15, 25, 39, 0.1);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
 }
 
 .timeline-action :deep(svg) {
@@ -419,9 +419,9 @@ watch(
   border: 1px solid var(--template-border) !important;
   border-radius: 22px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(250, 252, 255, 0.94)),
-    linear-gradient(90deg, rgba(29, 78, 216, 0.06), rgba(74, 174, 58, 0.05));
-  box-shadow: 0 18px 42px rgba(15, 25, 39, 0.07);
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 94%, transparent)),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary-500) 6%, transparent), color-mix(in srgb, var(--status-success) 5%, transparent));
+  box-shadow: 0 18px 42px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
 }
 
 .template-timeline-content::before {
@@ -449,13 +449,13 @@ watch(
   color: var(--template-blue);
   font-size: 12px;
   font-weight: 900;
-  background: rgba(29, 78, 216, 0.1);
+  background: color-mix(in srgb, var(--brand-primary-500) 10%, transparent);
 }
 
 .template-section-rule {
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, rgba(29, 78, 216, 0.24), rgba(221, 226, 237, 0));
+  background: linear-gradient(90deg, color-mix(in srgb, var(--brand-primary-500) 24%, transparent), transparent);
 }
 
 .timeline-remove-card {
@@ -465,13 +465,13 @@ watch(
   gap: 6px;
   min-height: 34px;
   padding: 0 11px;
-  border: 1px solid rgba(226, 53, 53, 0.18);
+  border: 1px solid color-mix(in srgb, var(--status-danger) 18%, transparent);
   border-radius: 999px;
-  color: #e23535;
+  color: var(--status-danger);
   font-size: 12px;
   font-weight: 900;
   white-space: nowrap;
-  background: rgba(226, 53, 53, 0.08);
+  background: color-mix(in srgb, var(--status-danger) 8%, transparent);
   cursor: pointer;
   transition:
     transform 0.2s ease,
@@ -482,9 +482,9 @@ watch(
 
 .timeline-remove-card:hover {
   transform: translateY(-1px);
-  color: #fff;
-  background: #e23535;
-  box-shadow: 0 10px 20px rgba(226, 53, 53, 0.16);
+  color: var(--text-on-brand);
+  background: var(--status-danger);
+  box-shadow: 0 10px 20px color-mix(in srgb, var(--status-danger) 16%, transparent);
 }
 
 .timeline-remove-card :deep(svg) {
@@ -493,7 +493,7 @@ watch(
 }
 
 .timeline-remove-card:hover :deep(svg path) {
-  stroke: #fff;
+  stroke: var(--text-on-brand);
 }
 
 .template-timeline-content .input-wrapper {
@@ -503,15 +503,15 @@ watch(
 .template-timeline-content :deep(input),
 .template-timeline-content :deep(.p-select),
 .template-timeline-content :deep(.p-multiselect) {
-  border-color: rgba(221, 226, 237, 0.95) !important;
-  background: rgba(255, 255, 255, 0.95) !important;
-  box-shadow: 0 6px 18px rgba(15, 25, 39, 0.04);
+  border-color: color-mix(in srgb, var(--brand-primary-100) 95%, transparent) !important;
+  background: color-mix(in srgb, var(--surface-1) 95%, transparent) !important;
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
 }
 
 .template-timeline-content :deep(input:focus),
 .template-timeline-content :deep(.p-focus) {
-  border-color: rgba(29, 78, 216, 0.55) !important;
-  box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.1) !important;
+  border-color: color-mix(in srgb, var(--brand-primary-500) 55%, transparent) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand-primary-500) 10%, transparent) !important;
 }
 
 .type-select {

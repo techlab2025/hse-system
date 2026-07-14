@@ -376,8 +376,8 @@ html[lang='ar'] .lang-input {
   position: absolute;
   top: -2px;
   right: -2px;
-  background: #10b981;
-  color: white;
+  background: var(--status-success);
+  color: var(--text-on-brand);
   border-radius: 50%;
   width: 16px;
   height: 16px;
@@ -394,7 +394,7 @@ html[lang='ar'] .lang-input {
 }
 
 .validation-error {
-  color: #ef4444;
+  color: var(--status-danger);
   font-size: 0.875rem;
   margin-top: 0.25rem;
 }

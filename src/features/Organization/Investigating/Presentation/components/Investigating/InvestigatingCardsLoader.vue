@@ -68,7 +68,7 @@ withDefaults(
   border: 1px solid var(--main-border);
   border-radius: 18px;
   background: var(--BgWhite);
-  box-shadow: 0 10px 28px color-mix(in srgb, var(--Black) 8%, transparent);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--text-strong) 8%, transparent);
 }
 
 .card-header-container {

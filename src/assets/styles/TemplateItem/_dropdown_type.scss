@@ -10,12 +10,12 @@
     font-family: 'Light';
     padding-left: calc($XlSize2 + 1px);
     .title {
-      color: #202020;
+      color: var(--text-strong);
       font-size: $MdSize;
       font-weight: $BaseFontSemiBoldWeight;
     }
     .subtitle {
-      color: #9ca3af;
+      color: var(--text-soft);
       font-size: $XsSize;
       font-weight: $BaseFontMediumWeight;
     }

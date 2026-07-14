@@ -164,7 +164,7 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
   flex-direction: row !important;
 }
 .place.title {
-  color: black !important;
+  color: var(--text-strong) !important;
 }
 .small-title {
   width: 33% !important;
@@ -172,12 +172,12 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
   flex-wrap: wrap;
 }
 .small-title.serial {
-  background: #eff2f9 !important;
+  background: var(--brand-primary-50) !important;
   display: flex;
   flex-direction: row !important;
   width: 100%;
   .place {
-    color: #1d4ed8 !important;
+    color: var(--brand-primary-500) !important;
     max-width: 80%;
   }
 }

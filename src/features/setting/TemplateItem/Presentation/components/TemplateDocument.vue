@@ -217,7 +217,7 @@ const showMore = ref(false)
   align-items: center;
   gap: 9px;
   margin: 8px 0 10px;
-  color: #041953;
+  color: var(--brand-primary-800);
   font-family: 'Regular';
   font-size: 14px;
   font-weight: 900;
@@ -231,7 +231,7 @@ const showMore = ref(false)
   flex: 0 0 auto;
   border-radius: 999px;
   content: '';
-  background: linear-gradient(180deg, #1d4ed8, #4aae3a);
+  background: linear-gradient(180deg, var(--brand-primary-500), var(--status-success));
 }
 
 .template-document-content {
@@ -240,12 +240,12 @@ const showMore = ref(false)
   margin-bottom: 10px;
   padding: 14px;
   overflow: hidden;
-  border: 1px solid rgba(221, 226, 237, 0.84);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 84%, transparent);
   border-radius: 18px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(250, 252, 255, 0.95)),
-    linear-gradient(90deg, rgba(29, 78, 216, 0.035), rgba(74, 174, 58, 0.035));
-  box-shadow: 0 12px 28px rgba(15, 25, 39, 0.055);
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 96%, transparent), color-mix(in srgb, var(--brand-primary-50) 95%, transparent)),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary-500) 3.5%, transparent), color-mix(in srgb, var(--status-success) 3.5%, transparent));
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--brand-primary-900) 5.5%, transparent);
 }
 
 .template-document-content::before {
@@ -255,7 +255,7 @@ const showMore = ref(false)
   bottom: 0;
   width: 4px;
   content: '';
-  background: linear-gradient(180deg, #1d4ed8, #4aae3a);
+  background: linear-gradient(180deg, var(--brand-primary-500), var(--status-success));
 }
 
 .actions {
@@ -272,12 +272,12 @@ const showMore = ref(false)
   gap: 8px;
   min-height: 40px;
   padding: 0 14px;
-  border: 1px solid rgba(29, 78, 216, 0.18);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
   border-radius: 999px;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   font-size: 12px;
   font-weight: 900;
-  background: rgba(29, 78, 216, 0.08);
+  background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
   cursor: pointer;
 }
 
@@ -298,7 +298,7 @@ const showMore = ref(false)
 :deep(.show-template-document-select label) {
   margin: 0;
   padding-inline-end: 38px;
-  color: #111827;
+  color: var(--brand-primary-900);
   font-size: 14px;
   font-weight: 900;
   line-height: 1.35;
@@ -327,15 +327,15 @@ const showMore = ref(false)
   justify-content: space-between !important;
   gap: 8px !important;
   padding: 8px 10px;
-  border: 1px solid rgba(221, 226, 237, 0.86);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 86%, transparent);
   border-radius: 13px;
-  background: #f8fafc;
+  background: var(--brand-primary-50);
 }
 
 :deep(.options-box .label) {
   min-width: 0;
   overflow: hidden;
-  color: #3d4c5e !important;
+  color: var(--brand-primary-700) !important;
   font-size: 12px !important;
   font-weight: 900 !important;
   text-overflow: ellipsis;
@@ -349,8 +349,8 @@ const showMore = ref(false)
 
 :deep(.p-checkbox-box),
 :deep(.p-radiobutton-box) {
-  border-color: rgba(29, 78, 216, 0.28) !important;
-  background: #fff !important;
+  border-color: color-mix(in srgb, var(--brand-primary-500) 28%, transparent) !important;
+  background: var(--surface-1) !important;
 }
 
 :deep(.show-template-document-select .options-container) {
@@ -370,9 +370,9 @@ const showMore = ref(false)
 :deep(.show-template-document-select .input) {
   width: 100%;
   min-height: 44px;
-  border: 1px solid rgba(221, 226, 237, 0.9) !important;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent) !important;
   border-radius: 14px !important;
-  background: #f8fafc !important;
+  background: var(--brand-primary-50) !important;
   box-shadow: none !important;
 }
 
@@ -381,9 +381,9 @@ const showMore = ref(false)
   height: 38px !important;
   flex: 0 0 auto;
   padding: 8px;
-  border: 1px solid rgba(74, 174, 58, 0.2);
+  border: 1px solid color-mix(in srgb, var(--status-success) 20%, transparent);
   border-radius: 13px;
-  background: rgba(74, 174, 58, 0.1);
+  background: color-mix(in srgb, var(--status-success) 10%, transparent);
 }
 
 @media (max-width: 640px) {

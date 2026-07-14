@@ -5,7 +5,7 @@
 .team-card {
   padding: $XsSize;
   border-radius: $XlSize;
-  background-color: white;
+  background-color: var(--surface-1);
   font-family: 'Regular';
   width: 100%;
   height: 100%;
@@ -15,7 +15,7 @@
   &.employee-card {
     .members-section {
       .member-card {
-        border: 1px solid #fafafa;
+        border: 1px solid var(--surface-1);
         padding: 8px;
         width: 100%;
         @media (max-width: 1000px) {
@@ -47,14 +47,14 @@
       }
 
       .team-card-members {
-        color: #6b7280;
+        color: var(--text-soft);
         font-size: $XsSize;
         font-weight: $BaseFontMediumWeight;
       }
     }
   }
   .state {
-    color: #121212;
+    color: var(--text-strong);
     font-size: $SmSize;
     font-weight: $BaseFontWeightBold;
     button {
@@ -88,7 +88,7 @@
     // scroll-snap-align: start;
     flex: 0 0 auto;
     width: 100%;
-    background-color: #8080801b;
+    background-color: color-mix(in srgb, var(--text-soft) 10.59%, transparent);
     padding: 5px !important;
     &.isLeader {
       border: 1px solid $PrimaryColor;
@@ -99,7 +99,7 @@
   //   height: 6px;
   // }
   // &::-webkit-scrollbar-thumb {
-  //   background-color: rgba(0, 0, 0, 0.2);
+  //   background-color: color-mix(in srgb, var(--text-strong) 20%, transparent);
   //   border-radius: 4px;
   // }
   // &::-webkit-scrollbar-track {

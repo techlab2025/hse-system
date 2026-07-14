@@ -3,8 +3,8 @@
 .add-btn {
   font-family: 'Light';
 
-  background-color: #041953;
-  color: white;
+  background-color: var(--brand-primary-800);
+  color: var(--text-on-brand);
   padding-inline: calc($XlSize + 2px);
   padding-block: $XsSize3;
   font-size: $SmSize;
@@ -13,8 +13,8 @@
   transition: all 0.3s linear;
 
   &:hover {
-    color: #041953;
-    background-color: white;
-    border: 1px solid #041953;
+    color: var(--brand-primary-800);
+    background-color: var(--text-on-brand);
+    border: 1px solid var(--brand-primary-800);
   }
 }

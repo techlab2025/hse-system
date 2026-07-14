@@ -5,7 +5,7 @@
   @include flex-row(nowrap, space-between, center);
   width: 100%;
   font-family: 'Regular';
-  border: 1px solid #f4f4f4;
+  border: 1px solid var(--surface-2);
   border-radius: $XlSize2;
   padding: $XsSize3;
   margin-block: 12px;
@@ -21,17 +21,17 @@
       @include flex-column(nowrap, flex-start, flex-start);
 
       .title {
-        color: #000061;
+        color: var(--brand-primary-800);
         font-size: $MdSize2;
         font-weight: $BaseFontWeightBold;
       }
       .description {
-        color: #9da4b2;
+        color: var(--text-soft);
         font-size: $SmSize;
         font-weight: $BaseFontMediumWeight;
 
         span {
-          color: #121212;
+          color: var(--text-strong);
         }
       }
     }
@@ -39,7 +39,7 @@
   .content {
     @include flex-row(nowrap, flex-start, center);
     .content-btn {
-      background-color: #fafbfc;
+      background-color: var(--brand-primary-50);
       padding: $XsSize $XlSize2;
       border-radius: $SmSize;
     }

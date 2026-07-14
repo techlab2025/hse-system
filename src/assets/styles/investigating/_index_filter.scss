@@ -7,7 +7,7 @@
     @include flex-row(wrap, space-between, center);
     gap: $XsSize;
     font-family: 'Regular';
-    // border: 3px solid #5571b927;
+    // border: 3px solid color-mix(in srgb, var(--brand-primary-500) 15.29%, transparent);
     // border-radius: calc($XlSize + 2px);
     padding: $MdSize;
     background-color: transparent !important;
@@ -26,7 +26,7 @@
         height: 4px;
       }
       &::-webkit-scrollbar-thumb {
-        background-color: rgba(0, 0, 0, 0.2);
+        background-color: color-mix(in srgb, var(--text-strong) 20%, transparent);
         border-radius: 4px;
       }
       &::-webkit-scrollbar-track {
@@ -34,16 +34,16 @@
       }
 
       .filter {
-        color: #3d4c5e;
+        color: var(--brand-primary-700);
         font-size: $XsSize;
         font-weight: $BaseFontSemiBoldWeight;
-        border: 1px solid #dde2ed;
+        border: 1px solid var(--brand-primary-100);
         border-radius: calc($XlSize3 + 5px);
         padding: $XsSize2 $MdSize;
         cursor: pointer;
 
         &.active {
-          background-color: #1f41bb0d;
+          background-color: color-mix(in srgb, var(--brand-primary-600) 5.1%, transparent);
           color: $PrimaryColor;
           border: 1px solid $PrimaryColor;
         }
@@ -58,12 +58,12 @@
     .btn-filter {
       @include flex-center();
       color: $PrimaryColor;
-      background-color: #1f41bb0a;
-      border: 1px solid #5571b927;
+      background-color: color-mix(in srgb, var(--brand-primary-600) 3.92%, transparent);
+      border: 1px solid color-mix(in srgb, var(--brand-primary-500) 15.29%, transparent);
       border-radius: calc($XlSize3 + 10px);
       transition: 0.3s all linear;
       &:hover {
-        background-color: white;
+        background-color: var(--surface-1);
       }
     }
   }

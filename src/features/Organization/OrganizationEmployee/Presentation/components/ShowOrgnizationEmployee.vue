@@ -109,13 +109,13 @@ const hiddenTasksCount = computed(() => Math.max(tasks.value.length - 1, 0))
   margin-bottom: 18px;
   padding: 18px;
   overflow: hidden;
-  border: 1px solid rgba(221, 226, 237, 0.76);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 76%, transparent);
   border-radius: 24px;
   background:
-    radial-gradient(circle at 0 0, rgba(29, 78, 216, 0.13), transparent 30%),
-    radial-gradient(circle at 100% 20%, rgba(74, 174, 58, 0.13), transparent 32%),
-    linear-gradient(135deg, #ffffff, #f8fbff);
-  box-shadow: 0 18px 42px rgba(15, 25, 39, 0.07);
+    radial-gradient(circle at 0 0, color-mix(in srgb, var(--brand-primary-500) 13%, transparent), transparent 30%),
+    radial-gradient(circle at 100% 20%, color-mix(in srgb, var(--status-success) 13%, transparent), transparent 32%),
+    linear-gradient(135deg, var(--surface-1), var(--brand-primary-50));
+  box-shadow: 0 18px 42px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
 }
 
 .page-kicker,
@@ -124,18 +124,18 @@ const hiddenTasksCount = computed(() => Math.max(tasks.value.length - 1, 0))
   align-items: center;
   min-height: 24px;
   padding: 0 10px;
-  border: 1px solid rgba(29, 78, 216, 0.18);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
   border-radius: 999px;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   font-size: 11px;
   font-weight: 900;
-  background: rgba(29, 78, 216, 0.08);
+  background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
 }
 
 .employee-page-topbar h1,
 .tasks-panel-header h2 {
   margin: 8px 0 0;
-  color: #041953;
+  color: var(--brand-primary-800);
   font-weight: 900;
   letter-spacing: 0;
   line-height: 1.12;
@@ -165,9 +165,9 @@ const hiddenTasksCount = computed(() => Math.max(tasks.value.length - 1, 0))
 
 .print-page-btn {
   padding: 0 18px;
-  color: #fff;
-  background: linear-gradient(135deg, #1d4ed8, #041953);
-  box-shadow: 0 14px 26px rgba(29, 78, 216, 0.18);
+  color: var(--text-on-brand);
+  background: linear-gradient(135deg, var(--brand-primary-500), var(--brand-primary-800));
+  box-shadow: 0 14px 26px color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
 }
 
 .employee-layout {
@@ -199,10 +199,10 @@ const hiddenTasksCount = computed(() => Math.max(tasks.value.length - 1, 0))
 .tasks-panel {
   min-width: 0;
   padding: 16px;
-  border: 1px solid rgba(221, 226, 237, 0.78);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 78%, transparent);
   border-radius: 24px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 251, 255, 0.96));
-  box-shadow: 0 18px 42px rgba(15, 25, 39, 0.06);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 96%, transparent));
+  box-shadow: 0 18px 42px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
 }
 
 .tasks-panel-header {
@@ -224,10 +224,10 @@ const hiddenTasksCount = computed(() => Math.max(tasks.value.length - 1, 0))
   align-items: center;
   padding: 0 12px;
   border-radius: 999px;
-  color: #287b22;
+  color: var(--status-success);
   font-size: 12px;
   font-weight: 900;
-  background: rgba(74, 174, 58, 0.1);
+  background: color-mix(in srgb, var(--status-success) 10%, transparent);
 }
 
 .all-emp-tasks + .all-emp-tasks {
@@ -236,31 +236,31 @@ const hiddenTasksCount = computed(() => Math.max(tasks.value.length - 1, 0))
 
 .tasks-empty {
   padding: 18px;
-  border: 1px dashed rgba(29, 78, 216, 0.24);
+  border: 1px dashed color-mix(in srgb, var(--brand-primary-500) 24%, transparent);
   border-radius: 18px;
-  color: #607086;
+  color: var(--brand-primary-500);
   font-size: 13px;
   font-weight: 800;
-  background: rgba(29, 78, 216, 0.04);
+  background: color-mix(in srgb, var(--brand-primary-500) 4%, transparent);
 }
 
 .view-all-tasks {
   width: 100%;
   margin-top: 14px;
   padding: 0 16px;
-  color: #1d4ed8;
-  background: rgba(29, 78, 216, 0.08);
+  color: var(--brand-primary-500);
+  background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
 }
 
 .view-all-tasks:hover,
 .print-page-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 14px 26px rgba(15, 25, 39, 0.12);
+  box-shadow: 0 14px 26px color-mix(in srgb, var(--brand-primary-900) 12%, transparent);
 }
 
 .view-all-tasks:hover {
-  color: #fff;
-  background: #041953;
+  color: var(--text-on-brand);
+  background: var(--brand-primary-800);
 }
 
 .view-all-tasks :deep(svg) {
@@ -269,7 +269,7 @@ const hiddenTasksCount = computed(() => Math.max(tasks.value.length - 1, 0))
 }
 
 .view-all-tasks:hover :deep(svg path) {
-  fill: #fff;
+  fill: var(--text-on-brand);
 }
 
 @media (max-width: 1024px) {

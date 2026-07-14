@@ -309,13 +309,13 @@ const onMappingClose = () => {
 }
 .title-container {
   .title {
-    color: #1f41bb;
+    color: var(--brand-primary-600);
     font-size: 20px;
     font-weight: 600;
   }
 
   .sub-title {
-    color: #1e293b;
+    color: var(--brand-primary-800);
     font-size: 16px;
     font-weight: 500;
   }
@@ -327,19 +327,19 @@ const onMappingClose = () => {
 }
 
 a {
-  background-color: white;
+  background-color: var(--text-on-brand);
   display: flex;
   align-items: center;
   padding: 12px;
   border-radius: 6px;
   width: fit-content;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--brand-primary-100);
   cursor: pointer;
   transition: 0.3s all linear;
 }
 
 a:hover {
-  background-color: #e5e7eb;
+  background-color: var(--brand-primary-100);
 }
 
 .download-title {
@@ -349,15 +349,15 @@ a:hover {
 }
 
 .excel-warning {
-  /* background-color: #fffaf0; */
+  /* background-color: var(--brand-accent-50); */
   /* Light cream/amber */
-  /* border: 1px solid #fbd38d; */
+  /* border: 1px solid var(--brand-accent-200); */
   /* Amber border */
   border-radius: 12px;
   padding: 20px;
   max-width: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 6px -1px color-mix(in srgb, var(--text-strong) 5%, transparent);
 }
 
 .warning-header {
@@ -365,12 +365,12 @@ a:hover {
   align-items: center;
   gap: 10px;
   margin-bottom: 15px;
-  /* border-bottom: 1px ridge #fbd38d; */
+  /* border-bottom: 1px ridge var(--brand-accent-200); */
   padding-bottom: 10px;
 }
 
 .warning-header .title {
-  color: #1f41bb;
+  color: var(--brand-primary-600);
   /* Deep amber/brown */
   font-weight: 700;
   font-size: 1.1rem;
@@ -387,14 +387,14 @@ a:hover {
 .rule-label {
   font-size: 22px;
   font-weight: 700;
-  color: #00057f;
+  color: var(--brand-primary-800);
   font-family: 'Regular';
   /* margin-bottom: 8px; */
 }
 
 .rule-description {
   font-size: 0.8rem;
-  color: #6b7280;
+  color: var(--text-soft);
 }
 
 .chips {
@@ -405,13 +405,13 @@ a:hover {
 }
 
 .chip {
-  background: #f4f6f9;
-  border: 1px solid #e2e8f0;
+  background: var(--brand-primary-50);
+  border: 1px solid var(--brand-primary-100);
   padding: 10px 38px;
   border-radius: 12px;
   font-size: 18px;
   font-weight: 600;
-  color: #4a5568;
+  color: var(--brand-primary-600);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -420,16 +420,16 @@ a:hover {
 
 .chip:hover {
   transform: translateY(-2px);
-  border-color: #cbd5e0;
+  border-color: var(--brand-primary-200);
 }
 
 /* The "Key" look for numbers */
 kbd {
-  background-color: #1d4ed81a;
+  background-color: color-mix(in srgb, var(--brand-primary-500) 10.2%, transparent);
   border-radius: 6px;
-  /* border: 1px solid #cbd5e0; */
-  /* box-shadow: 0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset; */
-  color: #1f41bb;
+  /* border: 1px solid var(--brand-primary-200); */
+  /* box-shadow: 0 1px 1px color-mix(in srgb, var(--text-strong) 20%, transparent), 0 2px 0 0 color-mix(in srgb, var(--surface-1) 70%, transparent) inset; */
+  color: var(--brand-primary-600);
   display: inline-block;
   font-size: 1rem;
   font-weight: 700;
@@ -442,28 +442,28 @@ kbd {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.5);
+  background: color-mix(in srgb, var(--surface-1) 50%, transparent);
   padding: 10px;
   border-radius: 8px;
-  /* border: 1px dashed #fbd38d; */
+  /* border: 1px dashed var(--brand-accent-200); */
 }
 
 .field-tag {
-  background: #f4f6f9;
-  color: #000000;
+  background: var(--brand-primary-50);
+  color: var(--text-strong);
   font-family: 'Light';
   /* Makes it look like code/field names */
   font-size: 18px;
   font-weight: 600;
   padding: 10px 24px;
   border-radius: 12px;
-  /* border: 1px solid #e2e8f0; */
+  /* border: 1px solid var(--brand-primary-100); */
 }
 
 /* A subtle line to separate headers from values */
 .separator {
   border: 0;
-  border-top: 1px solid #f1f3f5;
+  border-top: 1px solid var(--brand-primary-50);
   margin: 15px 0;
 }
 
@@ -476,9 +476,9 @@ kbd {
 }
 
 .btn-delete-row {
-  background: #fef2f2;
-  color: #b91c1c;
-  border: 1px solid #fecaca;
+  background: var(--status-danger-soft);
+  color: var(--status-danger);
+  border: 1px solid var(--status-danger-soft);
   border-radius: 8px;
   padding: 6px 10px;
   cursor: pointer;
@@ -489,7 +489,7 @@ kbd {
 }
 
 .btn-delete-row:hover {
-  background: #fee2e2;
+  background: var(--status-danger-soft);
   transform: scale(1.1);
 }
 
@@ -500,9 +500,9 @@ kbd {
 }
 
 .error-banner {
-  background: #fef2f2;
-  color: #b91c1c;
-  border: 1px solid #fecaca;
+  background: var(--status-danger-soft);
+  color: var(--status-danger);
+  border: 1px solid var(--status-danger-soft);
   border-radius: 10px;
   padding: 12px 16px;
 }
@@ -512,7 +512,7 @@ kbd {
   align-items: center;
   gap: 8px;
   padding: 12px 16px;
-  background: #eff6ff;
+  background: var(--brand-primary-50);
   border-radius: 10px;
 }
 
@@ -520,7 +520,7 @@ kbd {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #3b82f6;
+  background: var(--brand-primary-400);
   animation: bounce 1s infinite alternate;
 }
 
@@ -539,8 +539,8 @@ kbd {
 .table-container {
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-  background: #fff;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--text-strong) 6%, transparent);
+  background: var(--surface-1);
 }
 
 .table-header {
@@ -556,13 +556,13 @@ kbd {
 .main-table th {
   padding: 12px 16px;
   text-align: left;
-  color: #1d4ed8;
-  border-bottom: 2px solid #e5e7eb;
+  color: var(--brand-primary-500);
+  border-bottom: 2px solid var(--brand-primary-100);
 }
 
 .main-table td {
   padding: 12px 16px;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--brand-primary-50);
 }
 
 .row-thumb {
@@ -570,14 +570,14 @@ kbd {
   height: 40px;
   object-fit: cover;
   border-radius: 6px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--brand-primary-100);
 }
 
 .btn-confirm {
   width: 100%;
   padding: 14px;
-  background: #1d4ed8;
-  color: #fff;
+  background: var(--brand-primary-500);
+  color: var(--text-on-brand);
   border-radius: 12px;
   cursor: pointer;
   border: none;
@@ -585,6 +585,6 @@ kbd {
 }
 
 .no-img-text {
-  color: #9ca3af;
+  color: var(--text-soft);
 }
 </style>

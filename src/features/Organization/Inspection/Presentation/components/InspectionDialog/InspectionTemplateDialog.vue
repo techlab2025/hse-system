@@ -218,6 +218,6 @@ watch(
   /* margin-inline: 12px; */
 }
 .required {
-  color: red !important;
+  color: var(--status-danger) !important;
 }
 </style>

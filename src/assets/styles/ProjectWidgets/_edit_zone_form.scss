@@ -7,7 +7,7 @@
   .edit-zone-hr {
     margin-block: $XlSize2;
     border: none;
-    background-color: #f1f3f5;
+    background-color: var(--brand-primary-50);
     width: 100%;
     height: 2px;
   }
@@ -49,11 +49,11 @@
           .title {
             font-size: $MdSize;
             font-weight: $BaseFontWeightBold;
-            color: #121212;
+            color: var(--text-strong);
           }
         }
         .delete {
-          color: #e23535;
+          color: var(--status-danger);
           font-size: 16px;
           font-weight: $MdSize$BaseFontWeightBold;
           text-decoration: underline;
@@ -63,7 +63,7 @@
     .zone-image {
       grid-column: span 2;
       width: 100%;
-      background-color: #f9f9f9;
+      background-color: var(--surface-1);
       padding: $MdSize $XlSize;
       height: fit-content;
       border-radius: $MdSize2;
@@ -84,7 +84,7 @@
         .title {
           font-family: 'Light';
 
-          color: #202020;
+          color: var(--text-strong);
           font-size: $MdSize;
           font-weight: $BaseFontSemiBoldWeight;
         }

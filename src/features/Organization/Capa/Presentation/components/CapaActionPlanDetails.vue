@@ -253,7 +253,7 @@ const saveTaskStatus = async () => {
   border: 1px solid var(--main-border);
   border-radius: 18px;
   background: var(--BgWhite);
-  box-shadow: 0 8px 16px color-mix(in srgb, var(--Black) 10%, transparent);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--text-strong) 10%, transparent);
   padding: 1.25rem;
 }
 
@@ -356,7 +356,7 @@ const saveTaskStatus = async () => {
   &:hover {
     transform: translateY(-2px);
     border-color: color-mix(in srgb, var(--PrimaryColor) 22%, var(--main-border));
-    box-shadow: 0 14px 28px color-mix(in srgb, var(--Black) 8%, transparent);
+    box-shadow: 0 14px 28px color-mix(in srgb, var(--text-strong) 8%, transparent);
   }
 }
 
@@ -373,35 +373,35 @@ const saveTaskStatus = async () => {
   padding: 0.35rem 0.7rem;
 
   &.status-1 {
-    border: 1px solid #f59e0b;
-    background: #fffbeb;
-    color: #b45309;
-    box-shadow: 0 4px 12px rgb(245 158 11 / 28%);
+    border: 1px solid var(--status-warning);
+    background: var(--brand-accent-50);
+    color: var(--brand-accent-600);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--status-warning) 28%, transparent);
   }
 
   &.status-2 {
-    background: color-mix(in srgb, var(--PrimaryColor) 12%, white);
+    background: color-mix(in srgb, var(--PrimaryColor) 12%, var(--surface-1));
     color: var(--PrimaryColor);
   }
 
   &.status-3 {
-    background: #fff7ed;
-    color: #c2410c;
+    background: var(--brand-accent-50);
+    color: var(--status-danger);
   }
 
   &.status-4 {
-    background: #fef2f2;
-    color: #dc2626;
+    background: var(--status-danger-soft);
+    color: var(--status-danger);
   }
 
   &.status-5 {
-    background: color-mix(in srgb, var(--green) 14%, white);
+    background: color-mix(in srgb, var(--green) 14%, var(--surface-1));
     color: var(--green);
   }
 
   &.status-6 {
-    background: #e2e8f0;
-    color: #334155;
+    background: var(--brand-primary-100);
+    color: var(--brand-primary-700);
   }
 }
 
@@ -456,7 +456,7 @@ const saveTaskStatus = async () => {
   min-height: 38px;
   border: 0;
   border-radius: 10px;
-  // background: linear-gradient(135deg, var(--PrimaryColor), #14b8a6);
+  // background: linear-gradient(135deg, var(--PrimaryColor), var(--status-success));
   background: var(--PrimaryColor);
 
   color: var(--BgWhite);
@@ -531,13 +531,13 @@ const saveTaskStatus = async () => {
   &.selected {
     transform: translateY(-1px);
     border-color: color-mix(in srgb, var(--PrimaryColor) 32%, var(--main-border));
-    box-shadow: 0 12px 24px color-mix(in srgb, var(--Black) 7%, transparent);
+    box-shadow: 0 12px 24px color-mix(in srgb, var(--text-strong) 7%, transparent);
   }
 
   &.selected {
     background: linear-gradient(
       135deg,
-      color-mix(in srgb, var(--PrimaryColor) 8%, white),
+      color-mix(in srgb, var(--PrimaryColor) 8%, var(--surface-1)),
       var(--BgWhite)
     );
   }

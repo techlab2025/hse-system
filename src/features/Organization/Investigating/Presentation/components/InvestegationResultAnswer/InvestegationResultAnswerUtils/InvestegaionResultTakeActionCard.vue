@@ -14,13 +14,13 @@ const props = defineProps<{
 </template>
 <style scoped lang="scss">
 .wrong-action {
-  color: red !important;
+  color: var(--status-danger) !important;
 }
 .wrong-action::before {
-  background-color: red !important;
+  background-color: var(--status-danger) !important;
 }
 .investegaion-take-action-card.wrong-action {
-  background: linear-gradient(180deg, #f4dddd, #ffffff);
+  background: linear-gradient(180deg, var(--status-danger-soft), var(--surface-1));
   border: none !important;
 }
 </style>

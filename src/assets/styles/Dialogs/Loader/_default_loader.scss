@@ -9,7 +9,7 @@
   margin: auto;
   // background: red;
 
-  background-color: rgba(155, 155, 155, 0.178) !important;
+  background-color: color-mix(in srgb, var(--text-soft) 17.8%, transparent) !important;
   backdrop-filter: blur(5px);
   .loader-container {
     padding: 20px 60px;
@@ -33,7 +33,7 @@
   height: 22px;
   border-radius: 20px;
   color: $PrimaryColor;
-  background-color: rgba(29, 78, 216, 0.14);
+  background-color: color-mix(in srgb, var(--brand-primary-500) 14%, transparent);
   position: relative;
 }
 .loader::before {
@@ -55,8 +55,8 @@
   .loader {
     width: 120px;
     height: 20px;
-    -webkit-mask: radial-gradient(circle closest-side,#000 94%,#0000) left/20% 100%;
-    background: linear-gradient(#000 0 0) left/0% 100% no-repeat #ddd;
+    -webkit-mask: radial-gradient(circle closest-side,var(--text-strong) 94%,transparent) left/20% 100%;
+    background: linear-gradient(var(--text-strong) 0 0) left/0% 100% no-repeat var(--surface-2);
     animation: l17 2s infinite steps(6);
   }
   @keyframes l17 {

@@ -124,8 +124,8 @@
   font-weight: 500;
   cursor: pointer;
   border-radius: 5px;
-  background-color: #c4c4c40f;
-  counter-reset: #575b71;
+  background-color: color-mix(in srgb, var(--main-border) 5.88%, transparent);
+  counter-reset: var(--text-soft);
   border: none !important;
   display: flex;
   align-items: center;
@@ -135,7 +135,7 @@
   border-radius: 8px;
 
   &:hover {
-    background-color: #1d4ed80f;
+    background-color: color-mix(in srgb, var(--brand-primary-500) 5.88%, transparent);
   }
 
 }

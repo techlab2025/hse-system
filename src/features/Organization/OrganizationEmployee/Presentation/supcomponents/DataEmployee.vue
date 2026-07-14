@@ -21,7 +21,7 @@ import Handemployee from '@/shared/icons/handemployee.vue';
   justify-content: flex-start;
   gap: 5px;
   width: 100%;
-  background-color: #F7F9FC;
+  background-color: var(--brand-primary-50);
   padding: 16px;
   margin: 12px 0;
   border-radius: 12px;
@@ -46,7 +46,7 @@ import Handemployee from '@/shared/icons/handemployee.vue';
     h2 {
       text-align: start;
       width: 100%;
-      color: #202020;
+      color: var(--text-strong);
       font-weight: 700;
       font-size: 14px;
       font-family: "Regular";
@@ -55,9 +55,9 @@ import Handemployee from '@/shared/icons/handemployee.vue';
 
     p {
       width: 100%;
-      color: gray;
+      color: var(--text-muted);
       text-align: start;
-      color: #3D4C5E;
+      color: var(--brand-primary-700);
       font-size: 500;
       font-size: 12px;
 

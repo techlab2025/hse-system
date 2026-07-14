@@ -57,8 +57,8 @@
 .skeleton-button,
 .skeleton-dot,
 .skeleton-progress-circle {
-  background: #f6f7f8;
-  background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+  background: var(--surface-1);
+  background-image: linear-gradient(to right, var(--surface-1) 0%, var(--surface-2) 20%, var(--surface-1) 40%, var(--surface-1) 100%);
   background-repeat: no-repeat;
   background-size: 800px 100%;
   display: inline-block;
@@ -99,7 +99,7 @@
   display: flex;
   gap: 15px;
   padding: 15px 0;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid var(--surface-2);
 
   .skeleton-dot {
     width: 12px;

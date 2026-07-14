@@ -140,9 +140,9 @@ onMounted(() => {
   margin-top: 14px;
   padding: 14px;
   overflow: hidden;
-  border: 1px solid rgba(221, 226, 237, 0.8);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 80%, transparent);
   border-radius: 18px;
-  background: #fbfcff;
+  background: var(--brand-primary-50);
 }
 
 .choice-builder-header {
@@ -155,14 +155,14 @@ onMounted(() => {
 
 .title {
   margin: 0;
-  color: #041953;
+  color: var(--brand-primary-800);
   font-size: var(--md-size);
   font-weight: 900;
 }
 
 .subtitle {
   margin-top: 3px;
-  color: #6b7280;
+  color: var(--text-soft);
   font-size: 12px;
   font-weight: 700;
 }
@@ -176,19 +176,19 @@ onMounted(() => {
   gap: 7px;
   min-height: 38px;
   padding: 0 13px;
-  border: 1px solid rgba(29, 78, 216, 0.18);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
   border-radius: 999px;
-  color: #fff;
+  color: var(--text-on-brand);
   font-size: 12px;
   font-weight: 900;
-  background: linear-gradient(135deg, #1d4ed8, #041953);
-  box-shadow: 0 12px 22px rgba(29, 78, 216, 0.16);
+  background: linear-gradient(135deg, var(--brand-primary-500), var(--brand-primary-800));
+  box-shadow: 0 12px 22px color-mix(in srgb, var(--brand-primary-500) 16%, transparent);
   cursor: pointer;
 }
 
 .choice-inline-add {
-  color: #1d4ed8;
-  background: rgba(29, 78, 216, 0.08);
+  color: var(--brand-primary-500);
+  background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
   box-shadow: none;
 }
 
@@ -201,11 +201,11 @@ onMounted(() => {
 
 .choice-add-btn :deep(svg path),
 .choice-footer-add :deep(svg path) {
-  fill: #fff;
+  fill: var(--text-on-brand);
 }
 
 .choice-inline-add :deep(svg path) {
-  fill: #1d4ed8;
+  fill: var(--brand-primary-500);
 }
 
 .choice-list {
@@ -224,10 +224,10 @@ onMounted(() => {
   gap: 10px;
   align-items: start;
   padding: 10px;
-  border: 1px solid rgba(221, 226, 237, 0.76);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 76%, transparent);
   border-radius: 15px;
-  background: #fff;
-  box-shadow: 0 8px 22px rgba(15, 25, 39, 0.035);
+  background: var(--surface-1);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--brand-primary-900) 3.5%, transparent);
 }
 
 .choice-index {
@@ -237,10 +237,10 @@ onMounted(() => {
   margin-top: 8px;
   place-items: center;
   border-radius: 10px;
-  color: #fff;
+  color: var(--text-on-brand);
   font-size: 12px;
   font-weight: 900;
-  background: linear-gradient(135deg, #1d4ed8, #041953);
+  background: linear-gradient(135deg, var(--brand-primary-500), var(--brand-primary-800));
 }
 
 .choice-text {
@@ -252,8 +252,8 @@ onMounted(() => {
 .choice-text input {
   width: 100%;
   min-height: 42px;
-  border: 1px solid rgba(221, 226, 237, 0.95) !important;
-  background: #fff !important;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 95%, transparent) !important;
+  background: var(--surface-1) !important;
 }
 
 .choice-options {
@@ -273,12 +273,12 @@ onMounted(() => {
   min-width: 0;
   min-height: 42px;
   padding: 7px 10px;
-  border: 1px solid rgba(221, 226, 237, 0.86);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 86%, transparent);
   border-radius: 12px;
-  color: #3d4c5e;
+  color: var(--brand-primary-700);
   font-size: 11px;
   font-weight: 900;
-  background: #f8fafc;
+  background: var(--brand-primary-50);
   cursor: pointer;
 }
 
@@ -290,9 +290,9 @@ onMounted(() => {
 }
 
 .choice-pill.active {
-  border-color: rgba(29, 78, 216, 0.4);
-  color: #1d4ed8;
-  background: rgba(29, 78, 216, 0.08);
+  border-color: color-mix(in srgb, var(--brand-primary-500) 40%, transparent);
+  color: var(--brand-primary-500);
+  background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
 }
 
 .choice-pill.subtle:not(.active) {
@@ -302,7 +302,7 @@ onMounted(() => {
 .choice-pill input {
   width: 16px;
   height: 16px;
-  accent-color: #1d4ed8;
+  accent-color: var(--brand-primary-500);
 }
 
 .choice-remove-btn {
@@ -313,22 +313,22 @@ onMounted(() => {
   min-height: 42px;
   min-width: 0;
   padding: 0 10px;
-  border: 1px solid rgba(226, 53, 53, 0.2);
+  border: 1px solid color-mix(in srgb, var(--status-danger) 20%, transparent);
   border-radius: 12px;
-  color: #e23535;
+  color: var(--status-danger);
   font-size: 11px;
   font-weight: 900;
-  background: rgba(226, 53, 53, 0.08);
+  background: color-mix(in srgb, var(--status-danger) 8%, transparent);
   cursor: pointer;
 }
 
 .choice-remove-btn:hover {
-  color: #fff;
-  background: #e23535;
+  color: var(--text-on-brand);
+  background: var(--status-danger);
 }
 
 .choice-remove-btn:hover :deep(svg path) {
-  stroke: #fff;
+  stroke: var(--text-on-brand);
 }
 
 .choice-footer-add {

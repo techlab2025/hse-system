@@ -141,7 +141,7 @@ const maxTotal = computed(() => {
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, transparent);
   border-radius: 16px;
   background: color-mix(in srgb, var(--PrimaryColor) 8%, var(--BgWhite));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 85%, transparent);
 
   .span:nth-child(1) {
     bottom: 10%;
@@ -186,14 +186,14 @@ const maxTotal = computed(() => {
     min-height: 16px;
     background: linear-gradient(
       180deg,
-      color-mix(in srgb, var(--PrimaryColor) 72%, #ffffff),
+      color-mix(in srgb, var(--PrimaryColor) 72%, var(--surface-1)),
       var(--PrimaryColor)
     );
     box-shadow: 0 12px 22px color-mix(in srgb, var(--PrimaryColor) 26%, transparent);
     border-radius: 14px;
     width: 100%;
     text-align: center;
-    color: white;
+    color: var(--text-on-brand);
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -222,7 +222,7 @@ const maxTotal = computed(() => {
         padding: 3px 8px;
         border: 1px solid color-mix(in srgb, var(--PrimaryColor) 16%, transparent);
         border-radius: 999px;
-        box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
+        box-shadow: 0 10px 22px color-mix(in srgb, var(--brand-primary-900) 12%, transparent);
         white-space: nowrap;
         text-shadow: none;
         animation: floatIndicator 1.8s ease-in-out infinite;

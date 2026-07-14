@@ -9,14 +9,14 @@
 
   .index-table-card {
     @include flex-column(nowrap, flex-start, flex-start);
-    border: 1px solid #f6f6f6;
+    border: 1px solid var(--surface-1);
     padding: $XsSize;
     border-radius: $XlSize;
     width: 100%;
     .card-header-container {
       @include flex-column(nowrap, flex-end, flex-end);
       //   padding-bottom: $XsSize;
-      border-bottom: 2px dashed #e1e4ed;
+      border-bottom: 2px dashed var(--brand-primary-100);
       width: 100%;
       gap: $XsSize;
       &.show {
@@ -47,14 +47,14 @@
             gap: $XsSize4;
 
             .title {
-              color: #0f1927;
+              color: var(--brand-primary-900);
               font-size: $XlSize;
               text-decoration: underline;
               font-weight: $BaseFontSemiBoldWeight;
             }
             span {
               font-family: 'Light';
-              color: #6b7280;
+              color: var(--text-soft);
               font-size: $XsSize;
               font-weight: $BaseFontSemiBoldWeight;
             }
@@ -63,7 +63,7 @@
 
         .card-info-status {
           background: $greenDone;
-          color: #4caf50;
+          color: var(--status-success);
           padding: $XsSize2 $XlSize4;
           border-radius: $XlSize2;
           font-weight: $BaseFontWeightBold;
@@ -72,9 +72,9 @@
         .show-details {
           @include flex(row, nowrap, center, center);
           gap: $XsSize2;
-          background: #1f41bb0a;
-          border: 1px solid #1f41bb80;
-          color: #1f41bb;
+          background: color-mix(in srgb, var(--brand-primary-600) 3.92%, transparent);
+          border: 1px solid color-mix(in srgb, var(--brand-primary-600) 50.2%, transparent);
+          color: var(--brand-primary-600);
           font-size: $MdSize;
           font-weight: $BaseFontSemiBoldWeight;
           cursor: pointer;

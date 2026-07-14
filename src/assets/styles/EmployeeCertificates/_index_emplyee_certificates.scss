@@ -12,7 +12,7 @@
   }
   .not-required {
     font-family: 'Light';
-    color: #adadad;
+    color: var(--text-soft);
     font-size: $XsSize;
     font-weight: $BaseFontSemiBoldWeight;
     height: 100%;

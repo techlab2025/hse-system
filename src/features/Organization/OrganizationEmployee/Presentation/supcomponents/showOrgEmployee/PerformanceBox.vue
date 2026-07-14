@@ -61,10 +61,10 @@ const { state } = defineProps<{
   border-radius: 50%;
   background: conic-gradient(
     from -0deg,
-    #1e3a8e 0%,
-    #1e3a8e calc(var(--progress) * 0.5%),
-    #1e3a8e calc(var(--progress) * 1%),
-    #e5e7eb 0
+    var(--brand-primary-700) 0%,
+    var(--brand-primary-700) calc(var(--progress) * 0.5%),
+    var(--brand-primary-700) calc(var(--progress) * 1%),
+    var(--brand-primary-100) 0
   );
 
   display: flex;
@@ -80,7 +80,7 @@ const { state } = defineProps<{
   content: '';
   position: absolute;
   inset: 5px;
-  background: #f9f9f9;
+  background: var(--surface-1);
   border-radius: 50%;
 }
 
@@ -89,7 +89,7 @@ const { state } = defineProps<{
   position: relative;
   font-size: 14px;
   font-family: 'Bold';
-  color: #1e3a8e;
+  color: var(--brand-primary-700);
 }
 
 .progress-circle {
@@ -101,10 +101,10 @@ const { state } = defineProps<{
   border-radius: 50%;
   background: conic-gradient(
     from -0deg,
-    #3262ff 0%,
-    #55b97e calc(var(--progress) * 0.5%),
-    #cfe3d7 calc(var(--progress) * 1%),
-    #ff2727 calc(var(--progress) * 100%)
+    var(--brand-primary-400) 0%,
+    var(--status-success) calc(var(--progress) * 0.5%),
+    var(--status-success-soft) calc(var(--progress) * 1%),
+    var(--status-danger) calc(var(--progress) * 100%)
   );
 
   display: flex;
@@ -120,7 +120,7 @@ const { state } = defineProps<{
   content: '';
   position: absolute;
   inset: 12px;
-  background: #fff;
+  background: var(--surface-1);
   border-radius: 50%;
 }
 
@@ -128,7 +128,7 @@ const { state } = defineProps<{
 .progress-circle span {
   position: relative;
   font-size: 28px;
-  background: linear-gradient(90deg, #22d3ee, #34d399, #6366f1);
+  background: linear-gradient(90deg, var(--status-info), var(--status-success), var(--brand-primary-300));
   font-weight: bold;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;

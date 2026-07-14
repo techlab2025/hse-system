@@ -325,10 +325,10 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
   margin-bottom: 14px;
   padding: 18px;
   overflow: hidden;
-  border: 1px solid rgba(221, 226, 237, 0.76);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 76%, transparent);
   border-radius: 24px;
-  background: radial-gradient(circle at 0 0, rgba(29, 78, 216, 0.13), transparent 34%);
-  box-shadow: 0 18px 42px rgba(15, 25, 39, 0.07);
+  background: radial-gradient(circle at 0 0, color-mix(in srgb, var(--brand-primary-500) 13%, transparent), transparent 34%);
+  box-shadow: 0 18px 42px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
 }
 
 .matrix-kicker {
@@ -336,17 +336,17 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
   align-items: center;
   min-height: 24px;
   padding: 0 10px;
-  border: 1px solid rgba(29, 78, 216, 0.18);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
   border-radius: 999px;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   font-size: 11px;
   font-weight: 900;
-  background: rgba(29, 78, 216, 0.08);
+  background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
 }
 
 .certificate-matrix-toolbar h1 {
   margin: 8px 0 4px;
-  color: #041953;
+  color: var(--brand-primary-800);
   font-size: clamp(24px, 3vw, 34px);
   font-weight: 900;
   letter-spacing: 0;
@@ -356,7 +356,7 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
 .certificate-matrix-toolbar p {
   max-width: 620px;
   margin: 0;
-  color: #607086;
+  color: var(--brand-primary-500);
   font-size: 13px;
   font-weight: 700;
   line-height: 1.45;
@@ -373,12 +373,12 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
 .matrix-stats span {
   min-height: 32px;
   padding: 8px 11px;
-  border: 1px solid rgba(74, 174, 58, 0.2);
+  border: 1px solid color-mix(in srgb, var(--status-success) 20%, transparent);
   border-radius: 999px;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   font-size: 11px;
   font-weight: 900;
-  background: rgba(29, 78, 216, 0.08);
+  background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
 }
 
 .matrix-search-row {
@@ -395,10 +395,10 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
 .matrix-search .input {
   min-height: 46px;
   padding-inline-start: 44px;
-  border: 1px solid rgba(221, 226, 237, 0.9) !important;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent) !important;
   border-radius: 16px !important;
-  background: #fff !important;
-  box-shadow: 0 12px 26px rgba(15, 25, 39, 0.05);
+  background: var(--surface-1) !important;
+  box-shadow: 0 12px 26px color-mix(in srgb, var(--brand-primary-900) 5%, transparent);
 }
 
 .matrix-search .icon-remove {
@@ -410,7 +410,7 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
   width: 24px;
   height: 24px;
   place-items: center;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   transform: translateY(-50%);
   cursor: pointer;
 }
@@ -424,12 +424,12 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
   max-width: 100%;
   padding: 12px;
   overflow-x: auto;
-  border: 1px solid rgba(221, 226, 237, 0.78);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 78%, transparent);
   border-radius: 24px;
   background:
-    radial-gradient(circle at 0 0, rgba(29, 78, 216, 0.1), transparent 28%),
-    linear-gradient(135deg, #ffffff, #f8fbff);
-  box-shadow: 0 20px 48px rgba(15, 25, 39, 0.08);
+    radial-gradient(circle at 0 0, color-mix(in srgb, var(--brand-primary-500) 10%, transparent), transparent 28%),
+    linear-gradient(135deg, var(--surface-1), var(--brand-primary-50));
+  box-shadow: 0 20px 48px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
 }
 
 .employee-certificates-matrix .main-table {
@@ -443,8 +443,8 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
   min-width: 168px;
   max-width: 220px;
   padding: 14px 16px !important;
-  border-block: 1px solid rgba(221, 226, 237, 0.92) !important;
-  color: #3d4c5e !important;
+  border-block: 1px solid color-mix(in srgb, var(--brand-primary-100) 92%, transparent) !important;
+  color: var(--brand-primary-700) !important;
   font-size: 12px !important;
   font-weight: 900 !important;
   line-height: 1.25;
@@ -452,7 +452,7 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
   text-transform: none !important;
   white-space: normal !important;
   background:
-    linear-gradient(135deg, rgba(29, 78, 216, 0.08), rgba(74, 174, 58, 0.06)), #f8fafc !important;
+    linear-gradient(135deg, color-mix(in srgb, var(--brand-primary-500) 8%, transparent), color-mix(in srgb, var(--status-success) 6%, transparent)), var(--brand-primary-50) !important;
 }
 
 .table-responsive table.main-table thead tr th:first-child {
@@ -460,12 +460,12 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
   z-index: 8 !important;
   inset-inline-start: 0 !important;
   min-width: 240px;
-  border-inline-start: 1px solid rgba(221, 226, 237, 0.92) !important;
+  border-inline-start: 1px solid color-mix(in srgb, var(--brand-primary-100) 92%, transparent) !important;
   border-start-start-radius: 16px;
   border-end-start-radius: 16px;
   text-align: start !important;
-  background: linear-gradient(135deg, #041953, #1d4ed8) !important;
-  color: #fff !important;
+  background: linear-gradient(135deg, var(--brand-primary-800), var(--brand-primary-500)) !important;
+  color: var(--text-on-brand) !important;
 }
 
 .table-responsive table.main-table thead tr th:last-child,
@@ -477,8 +477,8 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
 .employee-certificates-matrix .main-table td {
   min-width: 168px;
   padding: 12px !important;
-  border-block: 1px solid rgba(221, 226, 237, 0.78) !important;
-  background: #fff !important;
+  border-block: 1px solid color-mix(in srgb, var(--brand-primary-100) 78%, transparent) !important;
+  background: var(--surface-1) !important;
   text-align: center !important;
   vertical-align: middle !important;
 }
@@ -488,21 +488,21 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
   z-index: 7 !important;
   inset-inline-start: 0 !important;
   min-width: 240px;
-  border-inline-start: 1px solid rgba(221, 226, 237, 0.78) !important;
+  border-inline-start: 1px solid color-mix(in srgb, var(--brand-primary-100) 78%, transparent) !important;
   border-start-start-radius: 16px;
   border-end-start-radius: 16px;
   text-align: start !important;
-  background: linear-gradient(90deg, #fff 78%, rgba(255, 255, 255, 0)), #fff !important;
-  box-shadow: 16px 0 24px rgba(15, 25, 39, 0.07);
+  background: linear-gradient(90deg, var(--surface-1) 78%, transparent), var(--surface-1) !important;
+  box-shadow: 16px 0 24px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
 }
 
 .employee-certificates-matrix .main-table tbody tr:hover td {
   background:
-    linear-gradient(135deg, rgba(29, 78, 216, 0.045), rgba(74, 174, 58, 0.035)), #fff !important;
+    linear-gradient(135deg, color-mix(in srgb, var(--brand-primary-500) 4.5%, transparent), color-mix(in srgb, var(--status-success) 3.5%, transparent)), var(--surface-1) !important;
 }
 
 .employee-certificates-matrix .main-table tbody tr:hover td:first-child {
-  background: linear-gradient(90deg, #f8fbff 78%, rgba(248, 251, 255, 0)), #f8fbff !important;
+  background: linear-gradient(90deg, var(--brand-primary-50) 78%, transparent), var(--brand-primary-50) !important;
 }
 
 .employee-info-container .employee-info {
@@ -522,17 +522,17 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
   flex: 0 0 auto;
   place-items: center;
   border-radius: 13px;
-  color: #fff;
+  color: var(--text-on-brand);
   font-size: 14px;
   font-weight: 900;
-  background: linear-gradient(135deg, #1d4ed8, #041953);
-  box-shadow: 0 10px 18px rgba(29, 78, 216, 0.18);
+  background: linear-gradient(135deg, var(--brand-primary-500), var(--brand-primary-800));
+  box-shadow: 0 10px 18px color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
 }
 
 .employee-info-container .name {
   min-width: 0;
   overflow: hidden;
-  color: #111827;
+  color: var(--brand-primary-900);
   font-size: 13px;
   font-weight: 900;
   text-overflow: ellipsis;
@@ -552,25 +552,25 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
 }
 
 .employee-certificates-matrix :deep(.valid-certificate) {
-  border: 1px solid rgba(74, 174, 58, 0.18);
-  background: rgba(74, 174, 58, 0.08);
+  border: 1px solid color-mix(in srgb, var(--status-success) 18%, transparent);
+  background: color-mix(in srgb, var(--status-success) 8%, transparent);
 }
 
 .employee-certificates-matrix :deep(.invalid-certificate) {
-  border: 1px solid rgba(226, 53, 53, 0.18);
-  background: rgba(226, 53, 53, 0.06);
+  border: 1px solid color-mix(in srgb, var(--status-danger) 18%, transparent);
+  background: color-mix(in srgb, var(--status-danger) 6%, transparent);
 }
 
 .employee-certificates-matrix :deep(.expired-certificate) {
-  border: 1px solid rgba(245, 158, 11, 0.22);
-  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid color-mix(in srgb, var(--brand-accent-500) 22%, transparent);
+  background: color-mix(in srgb, var(--brand-accent-500) 8%, transparent);
 }
 
 .employee-certificates-matrix :deep(.not-required-container) {
   min-width: 130px;
   justify-content: center;
-  border: 1px solid rgba(148, 163, 184, 0.22);
-  background: #f8fafc;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-400) 22%, transparent);
+  background: var(--brand-primary-50);
 }
 
 .employee-certificates-matrix :deep(.valid-title),
@@ -583,7 +583,7 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
 }
 
 .employee-certificates-matrix :deep(.valid-date) {
-  color: #607086;
+  color: var(--brand-primary-500);
   font-size: 10px;
   font-weight: 800;
 }

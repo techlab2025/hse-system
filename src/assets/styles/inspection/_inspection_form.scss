@@ -16,8 +16,8 @@
     }
   }
   .inspection-show {
-    background-color: #fbfbfb;
-    border: 1px solid #eff3fc;
+    background-color: var(--surface-1);
+    border: 1px solid var(--brand-primary-50);
     border-radius: $XlSize2;
     padding: $SmSize;
     .inspection-show-title {
@@ -32,7 +32,7 @@
       }
     }
     .cards {
-      background-color: $White;
+      background-color: var(--surface-1);
       border-radius: $XlSize;
       padding: $SmSize $XlSize;
       margin-top: $SmSize;
@@ -40,7 +40,7 @@
       .employee-card {
         @include flex(row, wrap, space-between, center);
         padding-bottom: $SmSize;
-        border-bottom: 1px dashed #e6e8ea;
+        border-bottom: 1px dashed var(--surface-2);
 
         .info {
           @include flex(row, wrap, flex-start, flex-start);
@@ -87,7 +87,7 @@
         }
         .task-card {
           padding: $SmSize $MdSize;
-          border: 1px solid #e6e8ea;
+          border: 1px solid var(--surface-2);
           border-radius: $XlSize;
           width: 100%;
           margin-block: $MdSize;
@@ -103,8 +103,8 @@
             height: 20px;
             background: linear-gradient(
               180deg,
-              rgba(16, 146, 207, 0.8) -9.32%,
-              rgba(199, 201, 214, 0.8) 68.63%
+              color-mix(in srgb, var(--brand-primary-600) 80%, transparent) -9.32%,
+              color-mix(in srgb, var(--brand-primary-200) 80%, transparent) 68.63%
             );
             z-index: 1;
             filter: blur(30px);

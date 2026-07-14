@@ -133,12 +133,12 @@ const deleteOrganizatoinEmployee = async (id: number) => {
   align-items: stretch;
   overflow: hidden;
   padding: 18px;
-  border: 1px solid rgba(221, 226, 237, 0.76);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 76%, transparent);
   border-radius: 26px;
   background:
-    radial-gradient(circle at 0 0, rgba(29, 78, 216, 0.14), transparent 32%),
-    linear-gradient(135deg, #ffffff, #f8fbff);
-  box-shadow: 0 22px 48px rgba(15, 25, 39, 0.08);
+    radial-gradient(circle at 0 0, color-mix(in srgb, var(--brand-primary-500) 14%, transparent), transparent 32%),
+    linear-gradient(135deg, var(--surface-1), var(--brand-primary-50));
+  box-shadow: 0 22px 48px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
 }
 
 .employee-profile-box::before {
@@ -148,7 +148,7 @@ const deleteOrganizatoinEmployee = async (id: number) => {
   bottom: 0;
   width: 5px;
   content: '';
-  background: linear-gradient(180deg, #1d4ed8, #4aae3a);
+  background: linear-gradient(180deg, var(--brand-primary-500), var(--status-success));
 }
 
 .employee-img {
@@ -159,10 +159,10 @@ const deleteOrganizatoinEmployee = async (id: number) => {
 .employee-img img {
   width: 132px;
   height: 132px;
-  border: 5px solid #fff;
+  border: 5px solid var(--surface-1);
   border-radius: 24px;
   object-fit: cover;
-  box-shadow: 0 18px 34px rgba(15, 25, 39, 0.14);
+  box-shadow: 0 18px 34px color-mix(in srgb, var(--brand-primary-900) 14%, transparent);
 }
 
 .all-info {
@@ -192,15 +192,15 @@ const deleteOrganizatoinEmployee = async (id: number) => {
   align-items: center;
   padding: 0 10px;
   border-radius: 999px;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   font-size: 12px !important;
   font-weight: 900;
-  background: rgba(29, 78, 216, 0.09);
+  background: color-mix(in srgb, var(--brand-primary-500) 9%, transparent);
 }
 
 .employee-name {
   margin-top: 8px;
-  color: #041953;
+  color: var(--brand-primary-800);
   font-size: clamp(22px, 3vw, 32px);
   font-weight: 900;
   line-height: 1.1;
@@ -208,7 +208,7 @@ const deleteOrganizatoinEmployee = async (id: number) => {
 
 .employee-position {
   margin-top: 5px;
-  color: #607086;
+  color: var(--brand-primary-500);
   font-size: 13px;
   font-weight: 800;
   line-height: 1.4;
@@ -224,12 +224,12 @@ const deleteOrganizatoinEmployee = async (id: number) => {
 .employee-badges span {
   min-height: 26px;
   padding: 5px 9px;
-  border: 1px solid rgba(74, 174, 58, 0.2);
+  border: 1px solid color-mix(in srgb, var(--status-success) 20%, transparent);
   border-radius: 999px;
-  color: #287b22;
+  color: var(--status-success);
   font-size: 11px;
   font-weight: 900;
-  background: rgba(74, 174, 58, 0.1);
+  background: color-mix(in srgb, var(--status-success) 10%, transparent);
 }
 
 .print-btn {
@@ -245,14 +245,14 @@ const deleteOrganizatoinEmployee = async (id: number) => {
 .all-info-row-item {
   min-width: 0;
   padding: 12px;
-  border: 1px solid rgba(221, 226, 237, 0.82);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 82%, transparent);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.74);
+  background: color-mix(in srgb, var(--surface-1) 74%, transparent);
 }
 
 .all-info-row-item-label {
   margin: 0 0 5px;
-  color: #7a8797;
+  color: var(--text-soft);
   font-size: 11px;
   font-weight: 900;
 }
@@ -261,7 +261,7 @@ const deleteOrganizatoinEmployee = async (id: number) => {
   display: block;
   min-width: 0;
   overflow: hidden;
-  color: #111827;
+  color: var(--brand-primary-900);
   font-size: 13px;
   font-weight: 900;
   text-overflow: ellipsis;
@@ -289,7 +289,7 @@ const deleteOrganizatoinEmployee = async (id: number) => {
   }
 
   body {
-    background: white;
+    background: var(--surface-1);
   }
 
   .grid {

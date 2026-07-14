@@ -135,7 +135,7 @@ const deleteZone = (index: number) => {
 
 <style scoped>
 .placeholder{
-  color:#9CA3AF;
+  color:var(--text-soft);
   font-size: 14px;
   font-weight: 500;
 }

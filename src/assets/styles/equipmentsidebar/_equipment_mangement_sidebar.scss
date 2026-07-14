@@ -28,7 +28,7 @@
         display: none;
       }
       &.router-link-active {
-        background-color: #fcfcfc;
+        background-color: var(--surface-1);
         li {
           color: $PrimaryColor;
           overflow: hidden;
@@ -60,7 +60,7 @@
         }
       }
       li {
-        color: #a8a8a8;
+        color: var(--text-soft);
         padding: 12px;
         overflow: hidden;
       }

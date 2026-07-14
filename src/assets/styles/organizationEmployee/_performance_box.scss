@@ -10,7 +10,7 @@
   margin: $XlSize4 0;
   padding: 0 $MdSize $XlSize;
   border-radius: calc($XlSize + 2px);
-  background-color: #f9f9f9;
+  background-color: var(--surface-1);
 
   // Gradient decorations
   &::before,
@@ -28,7 +28,7 @@
     left: -50px;
     width: 200px;
     height: 200px;
-    background: radial-gradient(#1d4ed8 20%, #e8d5b5af 70%);
+    background: radial-gradient(var(--brand-primary-500) 20%, color-mix(in srgb, var(--brand-accent-200) 68.63%, transparent) 70%);
 
     @media (max-width: 768px) {
       width: 120px;
@@ -44,7 +44,7 @@
     right: -50px;
     width: 150px;
     height: 150px;
-    background: radial-gradient(#e8d5b58c 30%, #1d4fd83e 70%);
+    background: radial-gradient(color-mix(in srgb, var(--brand-accent-200) 54.9%, transparent) 30%, color-mix(in srgb, var(--brand-primary-500) 24.31%, transparent) 70%);
 
     @media (max-width: 768px) {
       width: 120px;
@@ -86,8 +86,8 @@
     border-bottom: 1px solid transparent;
     border-image: repeating-linear-gradient(
         to right,
-        #e5e5ea 0,
-        #e5e5ea 10px,
+        var(--main-border) 0,
+        var(--main-border) 10px,
         transparent 10px,
         transparent 20px
       )
@@ -102,7 +102,7 @@
       .title {
         font-size: $MdSize2;
         font-weight: $BaseFontWeightBold;
-        color: #041953;
+        color: var(--brand-primary-800);
       }
 
       .description {
@@ -117,7 +117,7 @@
     @include flex-row(nowrap, space-between, start);
     width: 100%;
     padding: $XlSize $MdSize;
-    border-bottom: 3px solid #f5f5f5;
+    border-bottom: 3px solid var(--surface-1);
 
     .info {
       @include flex-column(nowrap, start, start);
@@ -132,7 +132,7 @@
       span {
         font-size: $MdSize;
         font-weight: $BaseFontSemiBoldWeight;
-        color: #3d4c5e;
+        color: var(--brand-primary-700);
       }
     }
   }
@@ -140,12 +140,12 @@
   .per-wrapper {
     @include flex-row(nowrap, start, start);
     padding: $MdSize 0;
-    border-bottom: 1px dashed #e5e5ea;
+    border-bottom: 1px dashed var(--surface-2);
     border-bottom: 1px solid transparent;
     border-image: repeating-linear-gradient(
         to right,
-        #e5e5ea 0,
-        #e5e5ea 10px,
+        var(--main-border) 0,
+        var(--main-border) 10px,
         transparent 10px,
         transparent 20px
       )
@@ -171,7 +171,7 @@
     @include flex-row(nowrap, space-between, start);
     width: 100%;
     padding: $XlSize $MdSize;
-    border-bottom: 3px solid #f5f5f5;
+    border-bottom: 3px solid var(--surface-1);
 
     .info {
       @include flex-column(nowrap, start, start);
@@ -184,7 +184,7 @@
       span {
         font-size: $MdSize;
         font-weight: $BaseFontSemiBoldWeight;
-        color: #3d4c5e;
+        color: var(--brand-primary-700);
       }
     }
   }

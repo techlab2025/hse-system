@@ -9,7 +9,7 @@
   z-index: 0;
   overflow: hidden;
   // padding: 0px 169px 190px 169px;
-  background-color: #1c1b03;
+  background-color: var(--brand-accent-900);
   width: 100%;
   height: 100vh;
   gap: calc($MdSize2 + 1px);
@@ -33,27 +33,27 @@
     .not-found-title {
       font-size: calc($XlSize2 + 4px);
       font-weight: $BaseFontWeightBold;
-      color: white;
+      color: var(--text-on-brand);
       text-align: center;
     }
 
     .not-found-description {
       font-size: $MdSize;
       font-weight: $BaseFontWeight;
-      color: #f7f4fb;
+      color: var(--brand-accent-50);
       max-width: clamp(calc(688px * 0.8), 688px, calc(688px * 1.2));
       text-align: center;
     }
   }
 
   .btn-explore {
-    color: #0b0413;
+    color: var(--brand-accent-900);
     font-size: $MdSize;
     font-weight: $BaseFontSemiBoldWeight;
     padding: $MdSize2 calc($XlSize3 + 5px);
 
     &:hover {
-      // background-color: #f7f4fb;
+      // background-color: var(--brand-accent-50);
       color: $BgWhite;
 
       .explore-icon {
@@ -64,7 +64,7 @@
     }
 
     .explore-icon {
-      // fill: black;
+      // fill: var(--text-strong);
       path {
         stroke: $BgBlack;
       }
@@ -81,7 +81,7 @@
   height: 100%;
   background: radial-gradient(
     circle at var(--x, 30%) var(--y, 30%),
-    rgba(255, 255, 255, 0.8) 0%,
+    color-mix(in srgb, var(--surface-1) 80%, transparent) 0%,
     transparent 20%
   );
   z-index: 5;

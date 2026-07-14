@@ -125,7 +125,7 @@ const { printArea, print } = usePrint()
   min-height: calc(100vh - 120px);
   padding: clamp(14px, 2vw, 22px);
   border-radius: 18px;
-  background: #f8fafc;
+  background: var(--brand-primary-50);
 }
 
 .show-equ-head {
@@ -144,14 +144,14 @@ const { printArea, print } = usePrint()
 .show-equipment-card-shell :deep(.card-equipment) {
   height: 100%;
   border-radius: 18px;
-  border-color: #e2e8f0;
-  background: #ffffff;
-  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+  border-color: var(--brand-primary-100);
+  background: var(--surface-1);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
 }
 
 .show-equipment-card-shell :deep(.img-equipment) {
   border-radius: 14px;
-  background: #f8fafc;
+  background: var(--brand-primary-50);
 }
 
 .show-equipment-card-shell :deep(.drop-down-btn) {
@@ -160,10 +160,10 @@ const { printArea, print } = usePrint()
   justify-content: center;
   width: 38px;
   height: 38px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--brand-primary-100);
   border-radius: 12px;
-  background: #ffffff;
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+  background: var(--surface-1);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -171,7 +171,7 @@ const { printArea, print } = usePrint()
 
 .show-equipment-card-shell :deep(.drop-down-btn:hover) {
   transform: translateY(-1px);
-  box-shadow: 0 16px 34px rgba(29, 78, 216, 0.13);
+  box-shadow: 0 16px 34px color-mix(in srgb, var(--brand-primary-500) 13%, transparent);
 }
 
 .equipment-qr-panel {
@@ -184,11 +184,11 @@ const { printArea, print } = usePrint()
   min-height: 220px;
   padding: 18px 20px;
   overflow: hidden;
-  border: 1px solid #dbeafe;
+  border: 1px solid var(--brand-primary-100);
   border-radius: 18px;
-  background: linear-gradient(135deg, #ffffff 0%, #f8fbff 58%, #eef5ff 100%), #ffffff;
-  color: #0f172a;
-  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+  background: linear-gradient(135deg, var(--surface-1) 0%, var(--brand-primary-50) 58%, var(--brand-primary-50) 100%), var(--surface-1);
+  color: var(--brand-primary-900);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
 }
 
 .equipment-qr-panel::before {
@@ -200,7 +200,7 @@ const { printArea, print } = usePrint()
   height: 96px;
   pointer-events: none;
   border-radius: 999px;
-  background: rgba(29, 78, 216, 0.08);
+  background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
 }
 
 .equipment-qr-panel > * {
@@ -215,7 +215,7 @@ const { printArea, print } = usePrint()
   border-radius: 0 !important;
   background: transparent !important;
   box-shadow: none !important;
-  color: #0f172a;
+  color: var(--brand-primary-900);
 }
 
 .qr-scan {
@@ -224,11 +224,11 @@ const { printArea, print } = usePrint()
   width: 150px;
   height: 150px;
   padding: 12px;
-  border: 1px solid #dbeafe;
+  border: 1px solid var(--brand-primary-100);
   border-radius: 18px;
-  background: #ffffff;
+  background: var(--surface-1);
   object-fit: contain;
-  box-shadow: 0 14px 30px rgba(29, 78, 216, 0.12);
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
 }
 
 .print-icon {
@@ -237,14 +237,14 @@ const { printArea, print } = usePrint()
   right: 16px;
   z-index: 3;
   cursor: pointer;
-  color: #ffffff;
-  background: #1d4ed8;
-  border: 1px solid #1d4ed8;
+  color: var(--text-on-brand);
+  background: var(--brand-primary-500);
+  border: 1px solid var(--brand-primary-500);
   border-radius: 999px;
   padding: 8px 16px;
   font-family: 'Regular';
   font-weight: 700;
-  box-shadow: 0 12px 24px rgba(29, 78, 216, 0.18);
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
@@ -253,8 +253,8 @@ const { printArea, print } = usePrint()
 
 .print-icon:hover {
   transform: translateY(-1px);
-  background: #1e40af;
-  box-shadow: 0 16px 30px rgba(29, 78, 216, 0.22);
+  background: var(--brand-primary-600);
+  box-shadow: 0 16px 30px color-mix(in srgb, var(--brand-primary-500) 22%, transparent);
 }
 
 .inspection-switch {
@@ -267,10 +267,10 @@ const { printArea, print } = usePrint()
   max-width: 520px;
   margin: 0 auto;
   padding: 6px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--brand-primary-100);
   border-radius: 16px;
-  background: #ffffff;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+  background: var(--surface-1);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--brand-primary-900) 5%, transparent);
 }
 
 .inspection-switch button {
@@ -282,7 +282,7 @@ const { printArea, print } = usePrint()
   min-height: 48px;
   border: 1px solid transparent;
   border-radius: 12px;
-  color: #64748b;
+  color: var(--brand-primary-500);
   font-weight: 800;
   transition:
     transform 0.2s ease,
@@ -292,14 +292,14 @@ const { printArea, print } = usePrint()
 }
 
 .inspection-switch button:hover {
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   transform: translateY(-1px);
 }
 
 .inspection-switch button.active {
-  color: #0f172a;
-  border-color: rgba(29, 78, 216, 0.16);
-  background: #eef5ff;
+  color: var(--brand-primary-900);
+  border-color: color-mix(in srgb, var(--brand-primary-500) 16%, transparent);
+  background: var(--brand-primary-50);
   box-shadow: none;
 }
 
@@ -307,7 +307,7 @@ const { printArea, print } = usePrint()
   width: 9px;
   height: 9px;
   border-radius: 999px;
-  background: #cbd5e1;
+  background: var(--brand-primary-200);
   transition:
     transform 0.2s ease,
     background 0.2s ease,
@@ -316,8 +316,8 @@ const { printArea, print } = usePrint()
 
 .inspection-switch button.active .tab-dot {
   transform: scale(1.2);
-  background: #1d4ed8;
-  box-shadow: 0 0 0 5px rgba(29, 78, 216, 0.12);
+  background: var(--brand-primary-500);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
 }
 
 .history-qr {
@@ -327,9 +327,9 @@ const { printArea, print } = usePrint()
 
 .history-qr :deep(.history-log) {
   border-radius: 18px;
-  border-color: #e2e8f0;
-  background: #ffffff;
-  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+  border-color: var(--brand-primary-100);
+  background: var(--surface-1);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
 }
 
 .history-qr :deep(.history-card) {
@@ -341,7 +341,7 @@ const { printArea, print } = usePrint()
   height: 20px;
   margin-right: 6px;
   cursor: pointer;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   text-decoration: underline;
   font-family: 'Regular';
 }
@@ -365,10 +365,10 @@ const { printArea, print } = usePrint()
   align-items: center;
   justify-content: center;
   min-height: 260px;
-  border: 1px dashed rgba(148, 163, 184, 0.7);
+  border: 1px dashed color-mix(in srgb, var(--brand-primary-400) 70%, transparent);
   border-radius: 24px;
-  color: #64748b;
-  background: #f8fafc;
+  color: var(--brand-primary-500);
+  background: var(--brand-primary-50);
   font-weight: 800;
 }
 
@@ -427,8 +427,8 @@ const { printArea, print } = usePrint()
     top: 0;
     left: 0;
     width: 100%;
-    color: #000000 !important;
-    background: #ffffff !important;
+    color: var(--text-strong) !important;
+    background: var(--surface-1) !important;
     box-shadow: none !important;
   }
 

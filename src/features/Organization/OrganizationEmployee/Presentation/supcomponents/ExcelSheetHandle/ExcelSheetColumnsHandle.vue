@@ -162,7 +162,7 @@ const getMappedSentKey = (colIndex: number): string => {
 }
 
 .instructions {
-  color: #6B7280;
+  color: var(--text-soft);
   font-size: 14px;
   margin-bottom: 20px;
 }
@@ -184,7 +184,7 @@ const getMappedSentKey = (colIndex: number): string => {
 .column-list__title {
   font-size: 13px;
   font-weight: 600;
-  color: #374151;
+  color: var(--brand-primary-700);
   margin-bottom: 12px;
   text-align: center;
 }
@@ -217,8 +217,8 @@ const getMappedSentKey = (colIndex: number): string => {
 
 /* Sent columns */
 .sent-columns {
-  background-color: #F7F8F9;
-  color: #9CA3AF;
+  background-color: var(--brand-primary-50);
+  color: var(--text-soft);
   font-size: 16px;
   font-weight: 700;
   padding: 16px 32px;
@@ -230,8 +230,8 @@ const getMappedSentKey = (colIndex: number): string => {
 
 /* Excel columns */
 .excel-columns {
-  background-color: #1D4ED80D;
-  color: #1D4ED8;
+  background-color: color-mix(in srgb, var(--brand-primary-500) 5.1%, transparent);
+  color: var(--brand-primary-500);
   font-size: 16px;
   font-weight: 700;
   padding: 16px 32px;
@@ -256,8 +256,8 @@ const getMappedSentKey = (colIndex: number): string => {
 }
 
 .excel-columns.is-drag-over {
-  background-color: #1D4ED81A;
-  box-shadow: 0 0 0 2px #1D4ED8;
+  background-color: color-mix(in srgb, var(--brand-primary-500) 10.2%, transparent);
+  box-shadow: 0 0 0 2px var(--brand-primary-500);
   transform: scale(1.02);
 }
 
@@ -267,21 +267,21 @@ const getMappedSentKey = (colIndex: number): string => {
 
 .drag-handle {
   font-size: 18px;
-  color: #93C5FD;
+  color: var(--brand-primary-200);
   line-height: 1;
   flex-shrink: 0;
 }
 
 .drag-hint {
-  color: #9CA3AF;
+  color: var(--text-soft);
   font-weight: 400;
   font-size: 11px;
 }
 
 /* Footer button */
 .confirm-btn {
-  background-color: #1D4ED8;
-  color: white;
+  background-color: var(--brand-primary-500);
+  color: var(--text-on-brand);
   border: none;
   border-radius: 12px;
   padding: 10px 28px;
@@ -292,6 +292,6 @@ const getMappedSentKey = (colIndex: number): string => {
 }
 
 .confirm-btn:hover {
-  background-color: #1e40af;
+  background-color: var(--brand-primary-600);
 }
 </style>

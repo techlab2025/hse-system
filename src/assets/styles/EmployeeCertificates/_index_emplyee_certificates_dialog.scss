@@ -25,7 +25,7 @@
     transition: 0.3s all linear;
 
     &:hover {
-      background-color: #f5f5f5;
+      background-color: var(--text-on-brand);
     }
   }
 
@@ -40,12 +40,12 @@
       @include flex-row(nowrap, flex-start, flex-start);
       font-family: 'Regular';
       gap: 30px;
-      background-color: #fcfcfc;
+      background-color: var(--text-on-brand);
       padding: 5px;
       border-radius: 12px;
       width: fit-content;
       .name {
-        color: #202020;
+        color: var(--text-strong);
         font-size: $MdSize;
         font-weight: $BaseFontSemiBoldWeight;
         width: 150px;
@@ -61,7 +61,7 @@
       @include flex-column(nowrap, flex-start, flex-start);
       font-family: 'Regular';
       .valid-counter {
-        color: #6cb765;
+        color: var(--status-success);
         position: relative;
         padding-left: 10px;
         font-size: $XsSize;
@@ -76,12 +76,12 @@
           left: -5px;
           width: 6px;
           height: 6px;
-          background-color: #6cb765;
+          background-color: var(--status-success);
           border-radius: 50%;
         }
       }
       .invalid-counter {
-        color: #ff5b5b;
+        color: var(--status-danger);
         position: relative;
         padding-left: 3px;
         font-size: $XsSize;
@@ -96,12 +96,12 @@
           left: -5px;
           width: 6px;
           height: 6px;
-          background-color: #ff5b5b;
+          background-color: var(--status-danger);
           border-radius: 50%;
         }
       }
       .expired-counter {
-        color: #ffc456;
+        color: var(--brand-accent-300);
         position: relative;
         padding-left: 3px;
         font-size: $XsSize;
@@ -116,7 +116,7 @@
           left: -5px;
           width: 6px;
           height: 6px;
-          background-color: #ffc456;
+          background-color: var(--brand-accent-300);
           border-radius: 50%;
         }
       }
@@ -124,7 +124,7 @@
   }
   .not-required {
     font-family: 'Light';
-    color: #adadad;
+    color: var(--text-soft);
     font-size: $XsSize;
     font-weight: $BaseFontSemiBoldWeight;
     height: 100%;
@@ -136,7 +136,7 @@
       display: block;
       width: 5px;
       height: 5px;
-      background-color: #adadad;
+      background-color: var(--brand-secondary-700);
       border-radius: 50%;
       margin-top: 3px;
       &::after {
@@ -147,7 +147,7 @@
         left: -4px;
         width: 8px;
         height: 1px;
-        background-color: #adadad;
+        background-color: var(--brand-secondary-700);
       }
     }
     .not-required-right {
@@ -155,7 +155,7 @@
 
       width: 5px;
       height: 5px;
-      background-color: #adadad;
+      background-color: var(--brand-secondary-700);
       border-radius: 50%;
       position: relative;
       display: block;
@@ -167,7 +167,7 @@
         right: -4px;
         width: 8px;
         height: 1px;
-        background-color: #adadad;
+        background-color: var(--brand-secondary-700);
       }
     }
   }
@@ -190,18 +190,18 @@
       font-size: $MdSize !important;
       font-weight: $BaseFontMediumWeight !important;
       padding: 14px !important;
-      background-color: #fcfcfc !important;
+      background-color: var(--text-on-brand) !important;
       margin: 0 !important;
       text-align: center;
     }
   }
   .cert_not_required {
     .cert-status {
-      color: #7f8188 !important;
+      color: var(--text-soft) !important;
       font-size: $MdSize !important;
       font-weight: $BaseFontMediumWeight !important;
       padding: 14px !important;
-      background-color: #fcfcfc !important;
+      background-color: var(--text-on-brand) !important;
       text-align: center;
     }
   }

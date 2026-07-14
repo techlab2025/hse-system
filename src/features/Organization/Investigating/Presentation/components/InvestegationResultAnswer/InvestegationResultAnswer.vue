@@ -536,12 +536,12 @@ watch(
   position: relative;
   overflow: hidden;
   padding: 18px;
-  border: 1px solid rgba(221, 226, 237, 0.9);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
   border-radius: 18px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(249, 251, 255, 0.94)),
-    linear-gradient(90deg, rgba(29, 78, 216, 0.05), rgba(74, 174, 58, 0.05));
-  box-shadow: 0 18px 38px rgba(15, 25, 39, 0.06);
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 94%, transparent)),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary-500) 5%, transparent), color-mix(in srgb, var(--status-success) 5%, transparent));
+  box-shadow: 0 18px 38px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
 }
 
 .final-answer-section::before {
@@ -551,7 +551,7 @@ watch(
   bottom: 0;
   width: 5px;
   content: '';
-  background: linear-gradient(180deg, #1d4ed8, #4aae3a);
+  background: linear-gradient(180deg, var(--brand-primary-500), var(--status-success));
 }
 
 .final-section-heading {
@@ -567,15 +567,15 @@ watch(
   height: 34px;
   place-items: center;
   border-radius: 10px;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   font-size: 12px;
   font-weight: 900;
-  background: rgba(29, 78, 216, 0.1);
+  background: color-mix(in srgb, var(--brand-primary-500) 10%, transparent);
 }
 
 .final-section-heading h2 {
   margin: 0;
-  color: #0f1927;
+  color: var(--brand-primary-900);
   font-size: 18px;
   font-weight: 900;
 }
@@ -591,10 +591,10 @@ watch(
 .answer-card-grid article,
 .answer-person-grid article,
 .answer-timeline article {
-  border: 1px solid rgba(221, 226, 237, 0.86);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 86%, transparent);
   border-radius: 14px;
-  background: rgba(255, 255, 255, 0.88);
-  box-shadow: 0 10px 20px rgba(15, 25, 39, 0.04);
+  background: color-mix(in srgb, var(--surface-1) 88%, transparent);
+  box-shadow: 0 10px 20px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
 }
 
 .answer-info-grid article,
@@ -612,14 +612,14 @@ watch(
 
 .answer-info-grid span,
 .answer-card-grid span {
-  color: #6b7280;
+  color: var(--text-soft);
   font-size: 12px;
   font-weight: 700;
 }
 
 .answer-info-grid strong,
 .answer-card-grid strong {
-  color: #0f1927;
+  color: var(--brand-primary-900);
   font-size: 14px;
   font-weight: 800;
   line-height: 1.6;
@@ -631,14 +631,14 @@ watch(
 .answer-note,
 .answer-empty {
   margin: 0;
-  color: #4b5563;
+  color: var(--brand-primary-600);
   font-size: 14px;
   font-weight: 600;
   line-height: 1.7;
 }
 
 .answer-card-grid small {
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   font-size: 12px;
   font-weight: 800;
 }
@@ -666,13 +666,13 @@ watch(
 
 .answer-person-grid strong {
   display: block;
-  color: #0f1927;
+  color: var(--brand-primary-900);
   font-size: 14px;
   font-weight: 900;
 }
 
 .answer-person-grid span {
-  color: #6b7280;
+  color: var(--text-soft);
   font-size: 12px;
   font-weight: 700;
 }
@@ -696,13 +696,13 @@ watch(
   height: 32px;
   place-items: center;
   border-radius: 50%;
-  color: #fff;
+  color: var(--text-on-brand);
   font-weight: 900;
-  background: #1d4ed8;
+  background: var(--brand-primary-500);
 }
 
 .answer-timeline strong {
-  color: #0f1927;
+  color: var(--brand-primary-900);
   font-weight: 900;
 }
 
@@ -716,28 +716,28 @@ watch(
 .answer-tags span {
   padding: 8px 12px;
   border-radius: 999px;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   font-size: 12px;
   font-weight: 900;
-  background: rgba(29, 78, 216, 0.1);
+  background: color-mix(in srgb, var(--brand-primary-500) 10%, transparent);
 }
 
 .answer-note {
   padding: 14px;
   border-radius: 14px;
-  background: rgba(29, 78, 216, 0.06);
+  background: color-mix(in srgb, var(--brand-primary-500) 6%, transparent);
 }
 
 .answer-note.subtle {
   margin-top: 10px;
-  background: rgba(74, 174, 58, 0.08);
+  background: color-mix(in srgb, var(--status-success) 8%, transparent);
 }
 
 .answer-empty {
   padding: 14px;
-  border: 1px dashed rgba(29, 78, 216, 0.22);
+  border: 1px dashed color-mix(in srgb, var(--brand-primary-500) 22%, transparent);
   border-radius: 14px;
-  background: rgba(29, 78, 216, 0.04);
+  background: color-mix(in srgb, var(--brand-primary-500) 4%, transparent);
 }
 
 .similar-observations-section {
@@ -761,12 +761,12 @@ watch(
   gap: 12px;
   overflow: hidden;
   padding: 16px;
-  border: 1px solid rgba(221, 226, 237, 0.88);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 88%, transparent);
   border-radius: 16px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(247, 250, 255, 0.92)),
-    linear-gradient(180deg, rgba(29, 78, 216, 0.07), rgba(74, 174, 58, 0.05));
-  box-shadow: 0 14px 28px rgba(15, 25, 39, 0.06);
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 96%, transparent), color-mix(in srgb, var(--brand-primary-50) 92%, transparent)),
+    linear-gradient(180deg, color-mix(in srgb, var(--brand-primary-500) 7%, transparent), color-mix(in srgb, var(--status-success) 5%, transparent));
+  box-shadow: 0 14px 28px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
   transition:
     transform 0.2s ease,
     border-color 0.2s ease,
@@ -780,7 +780,7 @@ watch(
   bottom: 0;
   width: 4px;
   content: '';
-  background: linear-gradient(180deg, #1d4ed8, #4aae3a);
+  background: linear-gradient(180deg, var(--brand-primary-500), var(--status-success));
 }
 
 .similar-observation-card::after {
@@ -791,13 +791,13 @@ watch(
   height: 86px;
   border-radius: 50%;
   content: '';
-  background: rgba(29, 78, 216, 0.06);
+  background: color-mix(in srgb, var(--brand-primary-500) 6%, transparent);
 }
 
 .similar-observation-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(29, 78, 216, 0.24);
-  box-shadow: 0 18px 34px rgba(15, 25, 39, 0.09);
+  border-color: color-mix(in srgb, var(--brand-primary-500) 24%, transparent);
+  box-shadow: 0 18px 34px color-mix(in srgb, var(--brand-primary-900) 9%, transparent);
 }
 
 .similar-observation-card span {
@@ -807,17 +807,17 @@ watch(
   max-width: 100%;
   padding: 7px 10px;
   border-radius: 999px;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   font-size: 12px;
   font-weight: 900;
-  background: rgba(29, 78, 216, 0.1);
+  background: color-mix(in srgb, var(--brand-primary-500) 10%, transparent);
   overflow-wrap: anywhere;
 }
 
 .similar-observation-card strong {
   position: relative;
   z-index: 1;
-  color: #0f1927;
+  color: var(--brand-primary-900);
   font-size: 15px;
   font-weight: 900;
   line-height: 1.5;
@@ -827,7 +827,7 @@ watch(
 .similar-observation-card small {
   position: relative;
   z-index: 1;
-  color: #6b7280;
+  color: var(--text-soft);
   font-size: 12px;
   font-weight: 800;
 }
@@ -842,7 +842,7 @@ watch(
   position: relative;
   overflow: hidden;
   color: transparent;
-  background: rgba(229, 235, 246, 0.9);
+  background: color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
 }
 
 .similar-observation-card.loading span {
@@ -871,9 +871,9 @@ watch(
   transform: translateX(-100%);
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0),
-    rgba(255, 255, 255, 0.72),
-    rgba(255, 255, 255, 0)
+    transparent,
+    color-mix(in srgb, var(--surface-1) 72%, transparent),
+    transparent
   );
   animation: similarCardLoading 1.25s ease-in-out infinite;
 }
@@ -885,15 +885,15 @@ watch(
   justify-content: center;
   margin: 0;
   padding: 18px;
-  border: 1px dashed rgba(29, 78, 216, 0.24);
+  border: 1px dashed color-mix(in srgb, var(--brand-primary-500) 24%, transparent);
   border-radius: 16px;
-  color: #64748b;
+  color: var(--brand-primary-500);
   font-size: 14px;
   font-weight: 800;
   text-align: center;
   background:
-    linear-gradient(135deg, rgba(29, 78, 216, 0.045), rgba(74, 174, 58, 0.045)),
-    rgba(255, 255, 255, 0.78);
+    linear-gradient(135deg, color-mix(in srgb, var(--brand-primary-500) 4.5%, transparent), color-mix(in srgb, var(--status-success) 4.5%, transparent)),
+    color-mix(in srgb, var(--surface-1) 78%, transparent);
 }
 
 @keyframes similarCardLoading {

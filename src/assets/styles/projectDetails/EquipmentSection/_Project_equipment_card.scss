@@ -3,11 +3,11 @@
 
 .project-equipment-card {
   width: 100%;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.034);
+  box-shadow: 0px 0px 10px 0px color-mix(in srgb, var(--text-strong) 3.4%, transparent);
 
   .tool-card {
     width: 100%;
-    background-color: #fafafa;
+    background-color: var(--text-on-brand);
     padding: 5px;
     border-radius: $SmSize;
     font-family: 'Light';
@@ -15,7 +15,7 @@
     padding-inline: 12px;
 
     &.equipment-card {
-      background-color: #ffffff;
+      background-color: var(--text-on-brand);
       width: 100%;
       // height: 15vh;
     }
@@ -49,12 +49,12 @@
         height: 100%;
 
         .certificat-btn {
-          color: #4b5563;
+          color: var(--brand-primary-600);
         }
         .type {
           @include flex-row(nowrap, center, center);
           .main-type {
-            color: #0f1927;
+            color: var(--brand-primary-900);
             font-weight: $BaseFontWeightBold;
             font-size: $MdSize2;
           }
@@ -64,7 +64,7 @@
           }
         }
 
-        color: #9ca3af;
+        color: var(--text-soft);
         // @include flex-row(nowrap, flex-start, center);
         .main-type {
           color: $PrimaryColor;
@@ -74,12 +74,12 @@
         }
 
         .subtype {
-          // color: #9ca3af;
+          // color: var(--text-soft);
           font-weight: $BaseFontWeightBold;
           font-size: $MdSize2;
           @include flex-row(nowrap, flex-start, center);
           gap: 6px;
-          color: #0f1927;
+          color: var(--brand-primary-900);
           padding-top: 3px;
 
           .subtype-title {
@@ -89,25 +89,25 @@
            
           }
           .arrow {
-            color: #9ca3af;
+            color: var(--text-soft);
             font-size: 14px;
             font-weight: 600;
           }
         }
 
         .title {
-          color: #9ca3af;
+          color: var(--text-soft);
           font-weight: $BaseFontSemiBoldWeight;
           font-size: $SmSize;
         }
 
         .inspection {
-          color: #9ca3af;
+          color: var(--text-soft);
           font-weight: $BaseFontMediumWeight;
           font-size: $SmSize;
 
           .date {
-            color: #4b5563;
+            color: var(--brand-primary-600);
           }
           .per {
             color: $PrimaryColor;
@@ -121,14 +121,14 @@
       height: 1px;
       border: none;
       margin-block: $XsSize;
-      background-color: #f1f3f5;
+      background-color: var(--brand-primary-50);
     }
 
     .tool-subtitle {
       @include flex-row(nowrap, flex-start, center);
       gap: $XsSize2;
       .subtitle {
-        color: #121212;
+        color: var(--text-strong);
         font-weight: $BaseFontSemiBoldWeight;
         font-size: $SmSize;
       }
@@ -140,21 +140,21 @@
       margin-top: $XsSize;
 
       p {
-        color: #6b7280;
+        color: var(--text-soft);
         font-weight: $BaseFontMediumWeight;
         font-size: $XsSize;
 
         &.date,
         &.added-by {
           span {
-            color: #121212;
+            color: var(--text-strong);
             font-weight: $BaseFontSemiBoldWeight;
           }
         }
 
         &.status {
           span {
-            color: #4caf50;
+            color: var(--status-success);
           }
         }
       }
@@ -163,7 +163,7 @@
     .equipment-project-info {
       @include flex-row(nowrap, flex-start, center);
       gap: 10px;
-      background-color: #fefcfa;
+      background-color: var(--brand-accent-50);
       padding: $XsSize2;
       border-radius: $SmSize;
       width: 100%;
@@ -177,14 +177,14 @@
         gap: 4px;
         .project-name {
           padding-left: 6px;
-          color: #d36816;
+          color: var(--brand-accent-500);
           font-size: $SmSize;
           font-weight: $BaseFontSemiBoldWeight;
         }
         .project-zone-name {
           @include flex-row(nowrap, flex-start, flex-start);
           gap: 4px;
-          color: #9ca3af;
+          color: var(--text-soft);
           font-size: $XsSize;
           font-weight: $BaseFontSemiBoldWeight;
           img {
@@ -200,11 +200,11 @@
       gap: $MdSize;
       margin-block: $XsSize2;
       .inspection-data {
-        color: #6b7280;
+        color: var(--text-soft);
         font-size: $XsSize;
         font-weight: $BaseFontMediumWeight;
         span {
-          background-color: #f6f8fb;
+          background-color: var(--brand-primary-50);
           padding: 5px;
           border-radius: 14px;
           color: $PrimaryColor;
@@ -217,12 +217,12 @@
       width: 100%;
       @include flex-row(nowrap, space-between, center);
       gap: $XsSize3;
-      background-color: #f7f8f9;
+      background-color: var(--brand-primary-50);
       padding: 4px;
       padding-inline: 10px;
       border-radius: $SmSize;
       .last-inspection {
-        color: #202020;
+        color: var(--text-strong);
         font-size: calc($XsSize + 2px);
         font-weight: $BaseFontSemiBoldWeight;
         width: 20px;
@@ -234,7 +234,7 @@
         font-family: 'Regular';
         cursor: pointer;
         .by {
-          color: #6b7280;
+          color: var(--text-soft);
           font-size: $XsSize2;
           font-weight: $BaseFontSemiBoldWeight;
 
@@ -243,7 +243,7 @@
           }
         }
         .date-time {
-          color: #6b7280;
+          color: var(--text-soft);
           font-size: $XsSize2;
           font-weight: $BaseFontSemiBoldWeight;
           span {
@@ -261,10 +261,10 @@
 
 /* background عند hover */
 .p-accordion-header:hover {
-  background-color: #f5f5f5 !important;
+  background-color: var(--text-on-brand) !important;
 }
 
 /* تغيير لون الأيقونة */
 .p-accordion-header:hover .p-accordion-toggle-icon {
-  color: #fff !important;
+  color: var(--text-on-brand) !important;
 }

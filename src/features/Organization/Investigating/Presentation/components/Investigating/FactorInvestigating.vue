@@ -84,7 +84,7 @@ watch(
 
 <style scoped>
 .subtitle {
-  color: #bdcbda;
+  color: var(--brand-primary-200);
   font-size: 14px;
   font-weight: 500;
 }

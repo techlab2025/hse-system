@@ -19,12 +19,12 @@
       gap: 4px;
       transform: translateY(20px);
       .static-title {
-        color: #0c2058;
+        color: var(--brand-primary-800);
         font-size: $XlSize;
         font-family: 'bold';
         font-weight: $BaseFontWeightBold;
         span {
-          color: #bcbcbc;
+          color: var(--text-muted);
           font-size: $XsSize;
           font-family: 'regular';
           font-weight: $BaseFontMediumWeight;

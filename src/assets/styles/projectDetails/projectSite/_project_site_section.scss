@@ -3,7 +3,7 @@
 @use '../../mixins/grid' as *;
 
 .project-location {
-  background-color: #fafafacc;
+  background-color: color-mix(in srgb, var(--surface-1) 80%, transparent);
   padding: $MdSize;
   border-radius: $XlSize;
   font-family: 'Regular';
@@ -16,7 +16,7 @@
     @include flex-row(nowrap, space-between, center);
 
     .show-all-btn {
-      color: #3d4c5e;
+      color: var(--brand-primary-700);
       font-size: $MdSize;
       font-weight: $BaseFontWeightBold;
       text-decoration: underline;

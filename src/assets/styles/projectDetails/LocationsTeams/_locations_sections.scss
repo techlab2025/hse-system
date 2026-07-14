@@ -31,7 +31,7 @@
         transform: translateY(-80%);
         width: $XsSize;
         height: $XsSize;
-        background-color: #1d4ed81a;
+        background-color: color-mix(in srgb, var(--brand-primary-500) 10.2%, transparent);
         rotate: 45deg;
         z-index: 999;
       }
@@ -43,14 +43,14 @@
         transform: translateY(-80%);
         width: $XsSize;
         height: $XsSize;
-        background-color: #1d4ed81a;
+        background-color: color-mix(in srgb, var(--brand-primary-500) 10.2%, transparent);
         rotate: 45deg;
       }
       .location-hr {
         width: 100%;
         border: none;
         height: 2px;
-        background-color: #1d4ed81a;
+        background-color: color-mix(in srgb, var(--brand-primary-500) 10.2%, transparent);
       }
       .location-title {
         position: absolute;
@@ -102,19 +102,19 @@
   }
 
   div.member-card {
-    border: 1px solid #f9f9f9 !important;
+    border: 1px solid var(--surface-1) !important;
     margin-inline: 12px;
   }
 
   div.project-equipment-card {
-    border: 1px solid #f6f6f6 !important;
+    border: 1px solid var(--surface-1) !important;
     margin-inline: 12px;
   }
 }
 
 .p-accordion {
   .location-container {
-    border-bottom: 2px dashed #dce3ef;
+    border-bottom: 2px dashed var(--brand-primary-100);
     padding-bottom: $XsSize;
 
     .arrow-accord {
@@ -122,7 +122,7 @@
     }
 
     .location-title {
-      color: #121212;
+      color: var(--text-strong);
       font-size: $XlSize;
       font-weight: $BaseFontWeightBold;
     }
@@ -134,19 +134,19 @@
     gap: $XsSize2;
 
     p {
-      color: #202020;
+      color: var(--text-strong);
       font-size: $XsSize;
       font-weight: $BaseFontMediumWeight;
 
       span {
-        color: #6b7280;
+        color: var(--text-soft);
       }
     }
   }
 
   .all-employees,
   .teams-container {
-    background-color: #ffffff;
+    background-color: var(--surface-1);
     padding: $XsSize;
     border-radius: $SmSize;
     width: 100%;
@@ -159,7 +159,7 @@
     .all-employees-header-container {
       width: 100%;
       @include flex-row(nowrap, space-between, center);
-      background-color: #fcfcfc;
+      background-color: var(--surface-1);
       border-radius: $XsSize;
       padding: $XsSize;
       .icon {
@@ -176,14 +176,14 @@
         }
 
         .employee-count {
-          color: #6b7280;
+          color: var(--text-soft);
           font-size: $XsSize;
           font-weight: $BaseFontMediumWeight;
         }
       }
 
       .all-employees-view {
-        color: #121212;
+        color: var(--text-strong);
         font-size: $SmSize;
         font-weight: $BaseFontWeightBold;
         text-decoration: underline;
@@ -196,7 +196,7 @@
       @include flex-row(nowrap, flex-start, flex-start);
       overflow-x: auto;
       .member-card {
-        border: 1px solid #fafafa;
+        border: 1px solid var(--surface-1);
       }
     }
     .teams-container {
@@ -216,7 +216,7 @@
         )
       );
 
-      // background-color: #fafafa;
+      // background-color: var(--surface-1);
       // overflow-x: auto;
       padding-right: 30px;
       width: 100%;

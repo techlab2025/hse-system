@@ -218,12 +218,12 @@ const ClearTitle = () => {
 .template-form-card,
 .template-builder-card {
   width: 100%;
-  border: 1px solid rgba(221, 226, 237, 0.8);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 80%, transparent);
   border-radius: 22px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(249, 251, 255, 0.94)),
-    linear-gradient(90deg, rgba(29, 78, 216, 0.04), rgba(74, 174, 58, 0.04));
-  box-shadow: 0 18px 42px rgba(15, 25, 39, 0.06);
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 94%, transparent)),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary-500) 4%, transparent), color-mix(in srgb, var(--status-success) 4%, transparent));
+  box-shadow: 0 18px 42px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
 }
 
 .template-form-card {
@@ -244,23 +244,23 @@ const ClearTitle = () => {
   height: 38px;
   place-items: center;
   border-radius: 14px;
-  color: #fff;
+  color: var(--text-on-brand);
   font-size: 13px;
   font-weight: 900;
-  background: linear-gradient(135deg, #1d4ed8, #041953);
-  box-shadow: 0 10px 18px rgba(29, 78, 216, 0.18);
+  background: linear-gradient(135deg, var(--brand-primary-500), var(--brand-primary-800));
+  box-shadow: 0 10px 18px color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
 }
 
 .template-form-title {
   margin: 0;
-  color: #041953;
+  color: var(--brand-primary-800);
   font-size: var(--md-size);
   font-weight: 900;
 }
 
 .template-form-subtitle {
   margin-top: 2px;
-  color: #6b7280;
+  color: var(--text-soft);
   font-size: 12px;
   font-weight: 700;
 }
@@ -276,14 +276,14 @@ const ClearTitle = () => {
 }
 
 .template-fields-grid input {
-  border: 1px solid rgba(221, 226, 237, 0.92) !important;
-  background: #fff !important;
-  box-shadow: 0 8px 18px rgba(15, 25, 39, 0.04);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 92%, transparent) !important;
+  background: var(--surface-1) !important;
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
 }
 
 .template-fields-grid input:focus {
-  border-color: rgba(29, 78, 216, 0.52) !important;
-  box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.1) !important;
+  border-color: color-mix(in srgb, var(--brand-primary-500) 52%, transparent) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand-primary-500) 10%, transparent) !important;
 }
 
 .form-container {
@@ -295,7 +295,7 @@ const ClearTitle = () => {
   margin-top: 15px;
   border-radius: 15px;
   font-weight: 900;
-  box-shadow: 0 14px 24px rgba(29, 78, 216, 0.16);
+  box-shadow: 0 14px 24px color-mix(in srgb, var(--brand-primary-500) 16%, transparent);
 }
 
 @media (max-width: 900px) {

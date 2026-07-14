@@ -91,14 +91,14 @@ onBeforeUnmount(hideTooltip)
 <style scoped>
 .field-help,
 .field-help__tooltip {
-  --field-help-accent: var(--PrimaryColor, #1d4ed8);
-  --field-help-surface: var(--surface-1, #ffffff);
-  --field-help-surface-soft: var(--surface-2, #f8fafc);
-  --field-help-border: var(--main-border, #dde2ed);
-  --field-help-text: var(--text-strong, #0f172a);
-  --field-help-text-soft: var(--text-soft, #475569);
-  --field-help-on-accent: #ffffff;
-  --field-help-shadow-color: color-mix(in srgb, var(--text-primary, #0f172a) 18%, transparent);
+  --field-help-accent: var(--brand-primary-500);
+  --field-help-surface: var(--surface-1);
+  --field-help-surface-soft: var(--surface-2);
+  --field-help-border: var(--main-border);
+  --field-help-text: var(--text-strong);
+  --field-help-text-soft: var(--text-soft);
+  --field-help-on-accent: var(--text-on-brand);
+  --field-help-shadow-color: color-mix(in srgb, var(--text-primary) 18%, transparent);
 }
 
 .field-help {

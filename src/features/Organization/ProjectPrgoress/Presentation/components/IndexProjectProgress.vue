@@ -434,14 +434,14 @@ watch(
     .title {
       font-size: 24px;
       font-weight: 700;
-      color: #1d4ed8;
+      color: var(--brand-primary-500);
     }
 
     .text {
       font-size: 16px;
       font-weight: 400;
 
-      color: #6b7280;
+      color: var(--text-soft);
     }
 
     .btn-primary {
@@ -453,9 +453,9 @@ watch(
     width: 96px;
     height: 96px;
     border-radius: 50%;
-    background: #16a34a;
+    background: var(--status-success);
     position: relative;
-    box-shadow: 0 18px 36px rgba(22, 163, 74, 0.22);
+    box-shadow: 0 18px 36px color-mix(in srgb, var(--status-success) 22%, transparent);
     margin-block: 30px;
     &::after {
       content: '';
@@ -464,7 +464,7 @@ watch(
       top: 24px;
       width: 28px;
       height: 44px;
-      border: solid #fff;
+      border: solid var(--surface-1);
       border-width: 0 8px 8px 0;
       transform: rotate(45deg);
     }
@@ -483,8 +483,8 @@ watch(
   width: 100vw;
   height: 100vh;
   background:
-    radial-gradient(circle at 50% 20%, rgba(29, 78, 216, 0.22), transparent 32%),
-    rgba(4, 12, 28, 0.64);
+    radial-gradient(circle at 50% 20%, color-mix(in srgb, var(--brand-primary-500) 22%, transparent), transparent 32%),
+    color-mix(in srgb, var(--brand-primary-900) 64%, transparent);
   backdrop-filter: blur(7px);
   z-index: 998;
   pointer-events: all;
@@ -493,13 +493,13 @@ watch(
 .highlight-active {
   position: relative !important;
   z-index: 99999 !important;
-  background: white;
+  background: var(--surface-1);
   border-radius: 16px;
-  outline: 2px solid rgba(29, 78, 216, 0.42);
+  outline: 2px solid color-mix(in srgb, var(--brand-primary-500) 42%, transparent);
   outline-offset: 6px;
   box-shadow:
-    0 0 0 10px rgba(29, 78, 216, 0.08),
-    0 24px 70px rgba(0, 0, 0, 0.24);
+    0 0 0 10px color-mix(in srgb, var(--brand-primary-500) 8%, transparent),
+    0 24px 70px color-mix(in srgb, var(--shadow-color) 24%, transparent);
   pointer-events: all;
 }
 
@@ -508,14 +508,14 @@ watch(
   width: min(360px, calc(100vw - 32px));
   overflow: visible;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 255, 0.98)),
-    #fff;
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 98%, transparent)),
+    var(--surface-1);
   padding: 18px;
-  border: 1px solid rgba(214, 225, 246, 0.9);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
   border-radius: 18px;
   box-shadow:
-    0 24px 60px rgba(0, 0, 0, 0.34),
-    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+    0 24px 60px color-mix(in srgb, var(--shadow-color) 34%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--shadow-color) 95%, transparent);
   z-index: 99999 !important;
   animation: tipPop 0.32s ease-out;
 }
@@ -525,9 +525,9 @@ watch(
   position: absolute;
   width: 18px;
   height: 18px;
-  background: #fff;
-  border-top: 1px solid rgba(214, 225, 246, 0.9);
-  border-left: 1px solid rgba(214, 225, 246, 0.9);
+  background: var(--surface-1);
+  border-top: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
+  border-left: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
   transform: rotate(45deg);
 }
 
@@ -550,21 +550,21 @@ watch(
 .content-tip::before {
   top: 42px;
   right: -10px;
-  border-right: 1px solid rgba(214, 225, 246, 0.9);
-  border-bottom: 1px solid rgba(214, 225, 246, 0.9);
+  border-right: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
   border-top: 0;
   border-left: 0;
 }
 
 .overlay-note h3 {
-  color: #0f1927;
+  color: var(--brand-primary-900);
   font-weight: 900;
   font-size: 20px;
   margin: 8px 0 8px;
 }
 
 .overlay-note p {
-  color: #536173;
+  color: var(--brand-primary-600);
   font-size: 14px;
   font-weight: 600;
   line-height: 1.5;
@@ -577,10 +577,10 @@ watch(
   gap: 6px;
   min-height: 26px;
   padding: 5px 10px;
-  border: 1px solid rgba(29, 78, 216, 0.16);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-500) 16%, transparent);
   border-radius: 999px;
-  background: #eef4ff;
-  color: #1d4ed8;
+  background: var(--brand-primary-50);
+  color: var(--brand-primary-500);
   font-size: 12px;
   font-weight: 900;
 }
@@ -590,8 +590,8 @@ watch(
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #1d4ed8;
-  box-shadow: 0 0 0 5px rgba(29, 78, 216, 0.12);
+  background: var(--brand-primary-500);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
 }
 
 .tip-progress {
@@ -605,16 +605,16 @@ watch(
   width: 22px;
   height: 5px;
   border-radius: 999px;
-  background: #dbe4f3;
+  background: var(--brand-primary-100);
 }
 
 .tip-progress .done {
-  background: #9fb4e8;
+  background: var(--brand-primary-200);
 }
 
 .tip-progress .active {
   width: 34px;
-  background: #1d4ed8;
+  background: var(--brand-primary-500);
 }
 
 .ok-btn {
@@ -623,14 +623,14 @@ watch(
   justify-content: center;
   width: 100%;
   min-height: 42px;
-  background: linear-gradient(135deg, #1d4ed8, #0f3bb2);
-  color: white;
+  background: linear-gradient(135deg, var(--brand-primary-500), var(--brand-primary-600));
+  color: var(--text-on-brand);
   border: none;
   padding: 10px 18px;
   border-radius: 12px;
   font-weight: 900;
   cursor: pointer;
-  box-shadow: 0 12px 22px rgba(29, 78, 216, 0.24);
+  box-shadow: 0 12px 22px color-mix(in srgb, var(--brand-primary-500) 24%, transparent);
   transition:
     box-shadow 0.2s ease,
     transform 0.2s ease;
@@ -638,7 +638,7 @@ watch(
 
 .ok-btn:hover {
   transform: translateY(-1px);
-  box-shadow: 0 16px 28px rgba(29, 78, 216, 0.3);
+  box-shadow: 0 16px 28px color-mix(in srgb, var(--brand-primary-500) 30%, transparent);
 }
 
 .project-progress-body-content {
@@ -696,8 +696,8 @@ watch(
     top: -10px;
     left: 50%;
     right: auto;
-    border-top: 1px solid rgba(214, 225, 246, 0.9);
-    border-left: 1px solid rgba(214, 225, 246, 0.9);
+    border-top: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
+    border-left: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
     border-right: 0;
     border-bottom: 0;
   }

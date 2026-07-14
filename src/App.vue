@@ -7,6 +7,7 @@ import { useTicketStore } from './stores/TicketStor'
 import { useRoute } from 'vue-router'
 import ErrorDialog from './base/Presentation/Dialogs/MainDialogs/ErrorDialog.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
+import { useSystemIdentity } from '@/composables/useSystemIdentity'
 
 const LoaderDialog = defineAsyncComponent(
   () => import('./base/Presentation/Dialogs/LoaderDialogs/LoaderDialog.vue'),
@@ -19,13 +20,17 @@ const TicketDialog = defineAsyncComponent(
 const ticketStore = useTicketStore()
 const route = useRoute()
 const { initThemeMode } = useThemeMode()
+const { loadIdentity } = useSystemIdentity()
 const showTicketTools = computed(() => {
   const path = route.path
 
   return (path.startsWith('/organization') || path.startsWith('/admin')) && !path.includes('ticket')
 })
 
-onMounted(initThemeMode)
+onMounted(() => {
+  initThemeMode()
+  loadIdentity()
+})
 </script>
 
 <template>

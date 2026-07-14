@@ -46,6 +46,6 @@ const UpdatData = (data) => {
 
 <style scoped>
 .required {
-  color: red !important;
+  color: var(--status-danger) !important;
 }
 </style>

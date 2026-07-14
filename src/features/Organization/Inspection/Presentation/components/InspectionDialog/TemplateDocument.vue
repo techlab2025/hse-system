@@ -318,11 +318,11 @@ const visibleTemplateItemTags = computed(() => {
   height: 100%;
   width: 100%;
   z-index: 9999;
-  background-color: red;
+  background-color: var(--status-danger);
 }
 
 .tag-title {
-  color: #041953;
+  color: var(--brand-primary-800);
   font-size: 22px;
   font-weight: 700;
   font-family: 'Regular';

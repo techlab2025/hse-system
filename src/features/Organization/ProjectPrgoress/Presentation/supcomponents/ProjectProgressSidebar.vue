@@ -261,10 +261,10 @@ const AllPagesToView = ref([
 </template>
 <style scoped>
 .overlay-focus {
-  /* background: white;
+  /* background: var(--surface-1);
   border-radius: 8px;
   padding: 10px;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); */
+  box-shadow: 0 0 15px color-mix(in srgb, var(--surface-1) 30%, transparent); */
   position: absolute;
   top: 0;
   left: 0;
@@ -285,14 +285,14 @@ const AllPagesToView = ref([
   width: 28px;
   height: 28px;
   border-radius: 8px;
-  background-color: #f2f6ff;
+  background-color: var(--brand-primary-50);
   transition:
     background-color 0.2s ease,
     transform 0.2s ease;
 }
 
 .timeline-link:hover {
-  background-color: #e4ecff;
+  background-color: var(--brand-primary-50);
   transform: translateY(-1px);
 }
 

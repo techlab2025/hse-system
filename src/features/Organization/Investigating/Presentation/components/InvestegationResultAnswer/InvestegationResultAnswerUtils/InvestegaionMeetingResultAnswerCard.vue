@@ -92,21 +92,21 @@ const GetMeetingStatus = (status: number) => {
 
 <style scoped lang="scss">
 .investegaion-meeting-card {
-  --meeting-accent: #64748b;
-  --meeting-soft: #f8fafc;
+  --meeting-accent: var(--brand-primary-500);
+  --meeting-soft: var(--brand-primary-50);
   position: relative;
   isolation: isolate;
   min-height: 220px;
   padding: 16px;
-  border: 1px solid #e8edf5;
+  border: 1px solid var(--brand-primary-100);
   border-radius: 18px;
   overflow: hidden;
   background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.96)),
-    #fff;
+    linear-gradient(145deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 96%, transparent)),
+    var(--surface-1);
   box-shadow:
-    0 1px 2px rgba(15, 23, 42, 0.04),
-    0 16px 34px rgba(15, 23, 42, 0.07);
+    0 1px 2px color-mix(in srgb, var(--brand-primary-900) 4%, transparent),
+    0 16px 34px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -138,20 +138,20 @@ const GetMeetingStatus = (status: number) => {
 
   &:hover {
     transform: translateY(-4px);
-    border-color: color-mix(in srgb, var(--meeting-accent) 34%, #e8edf5);
+    border-color: color-mix(in srgb, var(--meeting-accent) 34%, var(--brand-primary-100));
     box-shadow:
-      0 10px 22px rgba(15, 23, 42, 0.08),
-      0 26px 44px rgba(15, 23, 42, 0.12);
+      0 10px 22px color-mix(in srgb, var(--brand-primary-900) 8%, transparent),
+      0 26px 44px color-mix(in srgb, var(--brand-primary-900) 12%, transparent);
   }
 
   &.active {
-    --meeting-accent: #16a34a;
-    --meeting-soft: #f0fdf4;
+    --meeting-accent: var(--status-success);
+    --meeting-soft: var(--status-success-soft);
   }
 
   &.ended {
-    --meeting-accent: #64748b;
-    --meeting-soft: #f8fafc;
+    --meeting-accent: var(--brand-primary-500);
+    --meeting-soft: var(--brand-primary-50);
   }
 }
 
@@ -170,7 +170,7 @@ const GetMeetingStatus = (status: number) => {
 
   p {
     margin: 0;
-    color: #101828;
+    color: var(--brand-primary-900);
     font-size: 15px;
     font-weight: 700;
     line-height: 1.3;
@@ -178,7 +178,7 @@ const GetMeetingStatus = (status: number) => {
 
   small {
     display: block;
-    color: #98a2b3;
+    color: var(--brand-primary-400);
     font-size: 12px;
     font-weight: 600;
     line-height: 1.3;
@@ -194,7 +194,7 @@ const GetMeetingStatus = (status: number) => {
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.75);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--surface-1) 75%, transparent);
 
   :deep(svg) {
     width: 24px;
@@ -220,14 +220,14 @@ const GetMeetingStatus = (status: number) => {
 }
 
 .schedule-item {
-  border: 1px solid #edf1f7;
+  border: 1px solid var(--brand-primary-50);
   border-radius: 14px;
   padding: 10px;
-  background: #fff;
+  background: var(--surface-1);
 
   .schedule-label {
     display: block;
-    color: #98a2b3;
+    color: var(--brand-primary-400);
     font-size: 12px;
     font-weight: 600;
     margin-bottom: 4px;
@@ -235,7 +235,7 @@ const GetMeetingStatus = (status: number) => {
 
   strong {
     display: block;
-    color: #344054;
+    color: var(--brand-primary-700);
     font-size: 13px;
     font-weight: 700;
     line-height: 1.35;
@@ -246,7 +246,7 @@ const GetMeetingStatus = (status: number) => {
 .meeting-place,
 .meeting-note {
   margin: 0;
-  color: #667085;
+  color: var(--brand-primary-500);
   font-size: 13px;
   font-weight: 600;
   line-height: 1.55;
@@ -268,7 +268,7 @@ const GetMeetingStatus = (status: number) => {
   justify-content: center;
   padding: 10px 12px;
   background: var(--meeting-accent);
-  color: #fff;
+  color: var(--text-on-brand);
   font-size: 13px;
   font-weight: 700;
   transition:

@@ -90,8 +90,8 @@ const { OverviewHazardChartstate, overviewInvestigationsChartstate } = definePro
     var(--BgWhite);
   padding: 16px;
   box-shadow:
-    0 1px 2px rgba(15, 23, 42, 0.04),
-    0 18px 42px rgba(15, 23, 42, 0.07);
+    0 1px 2px color-mix(in srgb, var(--brand-primary-900) 4%, transparent),
+    0 18px 42px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
 }
 
 .analytics-panel :deep(.total-observation-container),

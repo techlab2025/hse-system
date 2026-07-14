@@ -3,7 +3,7 @@
 @use '../mixins/flex' as *;
 @use '../mixins/grid' as *;
 .projects-section {
-  background: #f9f9f9;
+  background: var(--surface-1);
   border-radius: $XlSize;
   padding: $SmSize;
 }
@@ -11,7 +11,7 @@
 .project-item {
   padding: $SmSize 0;
   margin-bottom: $XsSize;
-  border-bottom: 2px solid #eeeeee;
+  border-bottom: 2px solid var(--surface-2);
 
   &:last-child {
     margin-bottom: 0;
@@ -41,7 +41,7 @@
 .project-title {
   font-size: $MdSize;
   font-weight: $BaseFontSemiBoldWeight;
-  color: #3d4c5e;
+  color: var(--brand-primary-700);
   margin: 0 0 $XsSize2 0;
   line-height: 1.4;
 }
@@ -69,7 +69,7 @@
     color: $SubtitleColor;
 
     .value {
-      color: #6b7280;
+      color: var(--text-soft);
     }
   }
 }

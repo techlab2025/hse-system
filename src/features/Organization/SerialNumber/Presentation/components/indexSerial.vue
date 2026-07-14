@@ -86,7 +86,7 @@ const GetSerialTypeTitle = (type: SertialNumberStatusEnum) => {
 }
 .subtitle {
   font-size: 14px;
-  color: #9ca3af;
+  color: var(--text-soft);
   margin-top: 8px;
   display: block;
 }

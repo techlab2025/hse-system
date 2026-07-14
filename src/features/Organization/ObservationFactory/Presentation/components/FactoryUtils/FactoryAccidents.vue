@@ -97,10 +97,10 @@ watch(
     flex-shrink: 0;
     gap: 6px;
     padding: 4px;
-    border: 1px solid #dbe5f2;
+    border: 1px solid var(--brand-primary-100);
     border-radius: 8px;
-    background: #ffffff;
-    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+    background: var(--surface-1);
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary-900) 5%, transparent);
     width: fit-content;
     position: absolute;
     top: 75%;
@@ -124,23 +124,23 @@ watch(
 
     .meeting-status-yes {
       background: transparent;
-      color: #15803d;
+      color: var(--status-success);
 
       &.active {
-        color: #ffffff;
-        background: #16a34a;
-        box-shadow: 0 8px 18px rgba(22, 163, 74, 0.22);
+        color: var(--text-on-brand);
+        background: var(--status-success);
+        box-shadow: 0 8px 18px color-mix(in srgb, var(--status-success) 22%, transparent);
       }
     }
 
     .meeting-status-on {
       background: transparent;
-      color: #dc2626;
+      color: var(--status-danger);
 
       &.active {
-        color: #ffffff;
-        background: #dc2626;
-        box-shadow: 0 8px 18px rgba(220, 38, 38, 0.22);
+        color: var(--text-on-brand);
+        background: var(--status-danger);
+        box-shadow: 0 8px 18px color-mix(in srgb, var(--status-danger) 22%, transparent);
       }
     }
   }

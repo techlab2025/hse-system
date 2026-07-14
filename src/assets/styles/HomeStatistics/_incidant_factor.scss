@@ -23,36 +23,36 @@
     // flex-wrap: wrap;
   }
   .ExpiredClass {
-    background-color: #d8002708 !important;
+    background-color: color-mix(in srgb, var(--status-danger) 3.14%, transparent) !important;
     .Expired {
-      color: red !important;
+      color: var(--status-danger) !important;
     }
   }
   .more-time-class {
-    background-color: #1d4ed808 !important;
+    background-color: color-mix(in srgb, var(--brand-primary-500) 3.14%, transparent) !important;
     .more-time {
-      color: #1d4ed8;
+      color: var(--brand-primary-500);
     }
   }
   .finished-class {
-    background-color: #8ff98f24 !important;
-    color: #004b00 !important;
+    background-color: color-mix(in srgb, var(--status-success) 14.12%, transparent) !important;
+    color: var(--status-success) !important;
     .finished {
-      color: #4caf50 !important;
+      color: var(--status-success) !important;
     }
   }
   .in-progress-class {
-    background-color: #ffa6302b !important;
-    color: #9b5800 !important;
+    background-color: color-mix(in srgb, var(--brand-accent-400) 16.86%, transparent) !important;
+    color: var(--brand-accent-700) !important;
     .in-progress {
-      color: #9b5800 !important;
+      color: var(--brand-accent-700) !important;
     }
   }
   .duration-ended-class {
-    background-color: #00007e17 !important;
-    color: #00007e !important;
+    background-color: color-mix(in srgb, var(--brand-primary-800) 9.02%, transparent) !important;
+    color: var(--brand-primary-800) !important;
     .duration-ended {
-      color: #00007e !important;
+      color: var(--brand-primary-800) !important;
     }
   }
   .incidant-factor-container {
@@ -63,15 +63,15 @@
     height: 100%;
     background:
       radial-gradient(circle at 100% 0%, var(--tone-soft), transparent 42%),
-      linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.94));
-    color: #0f172a;
+      linear-gradient(145deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 94%, transparent));
+    color: var(--brand-primary-900);
     text-decoration: none;
     box-shadow:
-      0 16px 34px rgba(15, 23, 42, 0.065),
-      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      0 16px 34px color-mix(in srgb, var(--brand-primary-900) 6.5%, transparent),
+      inset 0 1px 0 color-mix(in srgb, var(--shadow-color) 90%, transparent);
     overflow: hidden;
     padding: 16px;
-    border: 1px solid rgba(226, 232, 240, 0.9);
+    border: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
     transition:
       border-color 0.22s ease,
       box-shadow 0.22s ease,
@@ -89,19 +89,19 @@
         // padding-left: 25px;
 
         .static {
-          color: #9ca3af;
+          color: var(--text-soft);
           font-size: $SmSize;
           font-weight: $BaseFontWeightBold;
         }
 
         .static-title {
-          color: #0c2058;
+          color: var(--brand-primary-800);
           font-size: $XlSize;
           font-family: 'bold';
           font-weight: $BaseFontWeightBold;
           min-height: 50px;
           span {
-            color: #bcbcbc;
+            color: var(--text-muted);
             font-size: $XsSize;
             font-weight: $BaseFontMediumWeight;
           }
@@ -119,10 +119,10 @@
       p {
         @include flex-row(nowrap, flex-start, center);
         gap: 8px;
-        color: #9ca3af;
+        color: var(--text-soft);
         font-size: $MdSize;
         font-weight: $BaseFontSemiBoldWeight;
-        background-color: #fcfcfc;
+        background-color: var(--text-on-brand);
         padding: $XsSize3;
         width: 100%;
         border-radius: 12px;

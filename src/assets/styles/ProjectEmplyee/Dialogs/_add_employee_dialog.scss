@@ -11,7 +11,7 @@
     .add-employee-hr {
       width: 100%;
       border: none;
-      background-color: #f1f3f5;
+      background-color: var(--brand-primary-50);
       height: 1px;
     }
     .p-tablist-tab-list {
@@ -20,7 +20,7 @@
       width: 100% !important;
       .p-tab {
         width: 50% !important;
-        color: #e4e4e4 !important;
+        color: var(--text-on-brand) !important;
         position: relative;
         transition: 0.3s all linear;
         &::before {
@@ -30,13 +30,13 @@
           left: 0px;
           height: 5px;
           width: 100%;
-          background-color: #f8f8f8 !important;
+          background-color: var(--text-on-brand) !important;
           transition: 0.3s all linear;
           z-index: 1;
           border-radius: 20px;
         }
         &.p-tab-active {
-          // background-color: #f8f8f8 !important;
+          // background-color: var(--text-on-brand) !important;
           color: $PrimaryColor !important;
           border-radius: $XlSize;
           border: none !important;

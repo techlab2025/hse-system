@@ -3,7 +3,7 @@
 @use '../../mixins/grid' as *;
 
 .equipment-section {
-  background-color: #fbfbfbcc;
+  background-color: color-mix(in srgb, var(--surface-1) 80%, transparent);
   padding: $MdSize $MdSize $XlSize3 $MdSize;
   border-radius: $XlSize;
   font-family: 'Regular';
@@ -13,7 +13,7 @@
   .p-accordion {
     border-radius: $XlSize4 !important;
     padding: $XsSize $XsSize4;
-    background-color: #fafafa;
+    background-color: var(--surface-1);
     .p-accordionpanel {
       border-radius: $XlSize4 !important;
       margin-block: $XsSize;
@@ -29,7 +29,7 @@
     width: 100%;
 
     .show-all {
-      color: #3d4c5e;
+      color: var(--brand-primary-700);
       font-size: $MdSize;
       font-weight: $BaseFontWeightBold;
       text-decoration: underline;
@@ -54,14 +54,14 @@
     }
   }
   .p-accordioncontent {
-    background-color: white !important;
+    background-color: var(--surface-1) !important;
     .project-equipment-card {
-      border: 1px solid gray;
+      border: 1px solid var(--main-border);
       border-radius: 12px;
     }
   }
   .p-accordionheader {
-    background-color: white !important;
+    background-color: var(--surface-1) !important;
   }
 }
 .project-equipment-card-container {

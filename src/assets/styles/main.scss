@@ -188,7 +188,7 @@ html {
 
 body {
   font-family: 'Regular', sans-serif;
-  color: black;
+  color: var(--text-strong);
   // overflow-x: hidden;
 
   p,
@@ -230,7 +230,7 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: black;
+  color: var(--text-strong);
 }
 
 // for garrery
@@ -256,7 +256,7 @@ body {
   }
 }
 .p-radiobutton-box {
-  border: 1px solid #8c8c8c59 !important;
+  border: 1px solid color-mix(in srgb, var(--text-soft) 34.9%, transparent) !important;
 }
 
 .factor-item .p-radiobutton-checked .p-radiobutton-box {
@@ -271,8 +271,8 @@ body {
   font-family: 'Regular';
   // padding: 5px;
   margin-left: auto;
-  background-color: red;
-  color: white;
+  background-color: var(--status-danger);
+  color: var(--text-on-brand);
   border-radius: 4px;
   width: 20px;
   height: 20px;
@@ -290,7 +290,7 @@ body {
   height: 20px;
   margin-right: 6px;
   cursor: pointer;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   text-decoration: underline;
   font-family: 'Regular';
 }
@@ -373,10 +373,10 @@ input {
   border-radius: calc($XlSize + 2px) !important;
 }
 .highlight-active .description {
-  color: white !important;
+  color: var(--text-on-brand) !important;
 }
 .highlight-active .project-progress-header-container {
-  background-image: linear-gradient(to right, #a7a2a256, #b8b3b3a2);
+  background-image: linear-gradient(to right, color-mix(in srgb, var(--text-soft) 33.73%, transparent), color-mix(in srgb, var(--main-border) 63.53%, transparent));
 }
 
 .image_certificate_container .p-image-preview-mask {
@@ -390,14 +390,14 @@ input {
 }
 
 // .p-panel-content{
-//   background-color: #f5f6f7 !important;
+//   background-color: var(--text-on-brand) !important;
 // }
 // .p-panel-header{
-//   background-color: #f5f6f7 !important;
+//   background-color: var(--text-on-brand) !important;
 // }
 .p-panel.p-component {
-  // background-color: #f5f6f7 !important;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1) !important;
+  // background-color: var(--text-on-brand) !important;
+  box-shadow: 0px 1px 3px color-mix(in srgb, var(--text-strong) 10%, transparent) !important;
 }
 .p-selectbutton {
   width: 100% !important;
@@ -405,7 +405,7 @@ input {
   // background-color: $PrimaryColor !important;
 }
 .p-togglebutton {
-  background-color: #1d4ed80f !important;
+  background-color: color-mix(in srgb, var(--brand-primary-500) 5.88%, transparent) !important;
   width: 50% !important;
 }
 
@@ -420,9 +420,9 @@ input {
 }
 
 .template-selector .panel-acc {
-  border: 2px dashed #e6e8ea !important;
+  border: 2px dashed var(--surface-2) !important;
   border-radius: 22px;
-  background-color: #fafafa66;
+  background-color: color-mix(in srgb, var(--surface-1) 40%, transparent);
   padding: 1rem;
 }
 
@@ -465,7 +465,7 @@ html[dir='ltr'] .actions-container {
 .field-required {
   label::after {
     content: '*';
-    color: red;
+    color: var(--status-danger);
     margin-left: 4px;
     margin-top: 4px;
   }
@@ -486,7 +486,7 @@ html[dir='ltr'] .actions-container {
   text-align: start;
   font-weight: 600;
   font-size: var(--md-size);
-  color: #202020;
+  color: var(--text-strong);
   font-family: 'Light';
   margin-inline-start: auto;
 }
@@ -494,7 +494,7 @@ html[dir='ltr'] .actions-container {
 label {
   font-weight: 600 !important;
   font-size: var(--md-size) !important;
-  color: #202020 !important;
+  color: var(--text-strong) !important;
   font-family: 'Light' !important;
 }
 
@@ -510,5 +510,5 @@ label {
 
 [data-theme='dark'] label,
 [data-theme='dark'] .input-label label {
-  color: var(--Black) !important;
+  color: var(--text-strong) !important;
 }

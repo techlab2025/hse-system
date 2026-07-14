@@ -7,10 +7,10 @@
   min-height: 152px;
   width: 100%;
   padding: 14px;
-  border: 1px solid #e1e9f5;
+  border: 1px solid var(--brand-primary-100);
   border-radius: 8px;
-  background: #f8fafc;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+  background: var(--brand-primary-50);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
   font-family: 'Regular';
   transition:
     transform 0.2s ease,
@@ -19,13 +19,13 @@
 
   &:hover {
     transform: translateY(-2px);
-    border-color: rgba(29, 78, 216, 0.22);
-    box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+    border-color: color-mix(in srgb, var(--brand-primary-500) 22%, transparent);
+    box-shadow: 0 14px 28px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
   }
 
   &.active {
-    border-color: rgba(29, 78, 216, 0.28);
-    background: linear-gradient(180deg, rgba(239, 246, 255, 0.95), #ffffff);
+    border-color: color-mix(in srgb, var(--brand-primary-500) 28%, transparent);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--brand-primary-50) 95%, transparent), var(--surface-1));
   }
 
   .card-header {
@@ -37,7 +37,7 @@
       @include flex-row(nowrap, flex-start, center);
       gap: 8px;
       min-width: 0;
-      color: #0f172a;
+      color: var(--brand-primary-900);
       font-family: 'Bold';
       font-size: 13px;
       font-weight: 700;
@@ -59,19 +59,19 @@
     }
 
     .status-Ended {
-      background: #f1f5f9;
-      color: #94a3b8;
+      background: var(--brand-primary-50);
+      color: var(--brand-primary-400);
     }
 
     .status-Coming {
-      background: rgba(29, 78, 216, 0.08);
-      color: #1d4ed8;
+      background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
+      color: var(--brand-primary-500);
     }
   }
 
   .meeting-date,
   .meeting-time {
-    color: #64748b;
+    color: var(--brand-primary-500);
     font-size: 13px;
     font-weight: 600;
     line-height: 1.45;
@@ -80,7 +80,7 @@
     span {
       display: block;
       margin-top: 3px;
-      color: #0f172a;
+      color: var(--brand-primary-900);
       font-family: 'Bold';
       font-weight: 700;
     }

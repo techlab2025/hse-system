@@ -1008,7 +1008,7 @@ watch(LoackupsAccordion, (val) => {
   min-height: 68px;
   padding: 8px 4px;
   border-radius: 16px;
-  color: #d9e3f2;
+  color: var(--brand-primary-100);
   transition:
     background 0.2s ease,
     color 0.2s ease,
@@ -1021,11 +1021,11 @@ watch(LoackupsAccordion, (val) => {
 
 .icon-item:hover,
 .icon-item.router-link-active {
-  background: rgba(255, 255, 255, 0.14);
+  background: color-mix(in srgb, var(--surface-1) 14%, transparent);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
-    0 12px 24px rgba(10, 54, 129, 0.18);
-  color: #ffffff;
+    inset 0 0 0 1px color-mix(in srgb, var(--shadow-color) 12%, transparent),
+    0 12px 24px color-mix(in srgb, var(--brand-primary-700) 18%, transparent);
+  color: var(--text-on-brand);
   transform: translateY(-1px);
 }
 
@@ -1035,8 +1035,8 @@ watch(LoackupsAccordion, (val) => {
   inset-inline-start: calc(100% + 6px);
   top: 50%;
   transform: translateY(-50%);
-  background: #2c2c2c;
-  color: #fff;
+  background: var(--brand-secondary-900);
+  color: var(--text-on-brand);
   padding: 5px 10px;
   border-radius: 6px;
   white-space: nowrap;
@@ -1046,7 +1046,7 @@ watch(LoackupsAccordion, (val) => {
   pointer-events: none;
   transition: opacity 0.15s ease;
   z-index: 9999;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--text-strong) 15%, transparent);
 }
 
 .icon-item:hover::after {

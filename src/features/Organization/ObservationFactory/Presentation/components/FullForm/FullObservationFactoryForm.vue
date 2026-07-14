@@ -1549,7 +1549,7 @@ defineExpose({
   height: 20px;
   margin-right: 6px;
   cursor: pointer;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   text-decoration: underline;
   font-family: 'Regular';
 } */
@@ -1574,7 +1574,7 @@ defineExpose({
 
 .required-field-message {
   margin-top: 0.35rem;
-  color: #dc2626;
+  color: var(--status-danger);
   font-size: 0.82rem;
   font-weight: 700;
 }
@@ -1592,7 +1592,7 @@ defineExpose({
   width: 126px;
   height: 40px;
   border-radius: 999px;
-  background: linear-gradient(90deg, #eef2f7 25%, #f8fafc 50%, #eef2f7 75%);
+  background: linear-gradient(90deg, var(--brand-primary-50) 25%, var(--brand-primary-50) 50%, var(--brand-primary-50) 75%);
   background-size: 220% 100%;
   animation: form-filter-shimmer 1.15s linear infinite;
 }
@@ -1649,10 +1649,10 @@ label {
   gap: 6px;
   width: fit-content;
   padding: 4px;
-  border: 1px solid #dbe5f2;
+  border: 1px solid var(--brand-primary-100);
   border-radius: 8px;
-  background: #ffffff;
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+  background: var(--surface-1);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary-900) 5%, transparent);
 }
 
 .meeting-status button {
@@ -1673,24 +1673,24 @@ label {
 
 .meeting-status-yes {
   background: transparent;
-  color: #15803d;
+  color: var(--status-success);
 }
 
 .meeting-status-yes.active {
-  color: #ffffff;
-  background: #16a34a;
-  box-shadow: 0 8px 18px rgba(22, 163, 74, 0.22);
+  color: var(--text-on-brand);
+  background: var(--status-success);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--status-success) 22%, transparent);
 }
 
 .meeting-status-on {
   background: transparent;
-  color: #dc2626;
+  color: var(--status-danger);
 }
 
 .meeting-status-on.active {
-  color: #ffffff;
-  background: #dc2626;
-  box-shadow: 0 8px 18px rgba(220, 38, 38, 0.22);
+  color: var(--text-on-brand);
+  background: var(--status-danger);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--status-danger) 22%, transparent);
 }
 
 @media (max-width: 480px) {
@@ -1711,9 +1711,9 @@ label {
   .not-colored,
   .is-stopped {
     background: var(--surface-1) !important;
-    border-color: var(--main-border) !important;
+    border-color: var(--text-muted) !important;
     color: var(--text-strong) !important;
-    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22) !important;
+    box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 22%, transparent) !important;
   }
 
   .Hazard-form-header .title,
@@ -1725,8 +1725,8 @@ label {
 
   input,
   textarea {
-    background-color: var(--surface-2) !important;
-    border-color: var(--main-border) !important;
+    background-color: var(--text-on-brand) !important;
+    border-color: var(--text-muted) !important;
     color: var(--text-strong) !important;
   }
 
@@ -1736,8 +1736,8 @@ label {
   }
 
   .radio-selection {
-    background-color: var(--surface-2) !important;
-    border-color: var(--main-border) !important;
+    background-color: var(--text-on-brand) !important;
+    border-color: var(--text-muted) !important;
     color: var(--text-soft) !important;
   }
 
@@ -1748,7 +1748,7 @@ label {
   }
 
   .form-filter-skeleton span {
-    background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%) !important;
+    background: linear-gradient(90deg, var(--brand-primary-800) 25%, var(--brand-primary-700) 50%, var(--brand-primary-800) 75%) !important;
     background-size: 220% 100%;
   }
 
@@ -1776,8 +1776,8 @@ label {
         transparent 40%
       ),
       linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
-    border-color: var(--main-border) !important;
-    color: var(--Black) !important;
+    border-color: var(--text-muted) !important;
+    color: var(--text-strong) !important;
     box-shadow: none !important;
   }
 
@@ -1821,15 +1821,15 @@ label {
   :deep(.timeline-content input),
   :deep(.timeline-content textarea),
   :deep(.injury-timeline-card .input) {
-    background-color: var(--surface-2) !important;
-    border-color: var(--main-border) !important;
+    background-color: var(--text-on-brand) !important;
+    border-color: var(--text-muted) !important;
     color: var(--text-strong) !important;
   }
 
   :deep(.emp-name.active),
   :deep(.emp-select.active),
   :deep(.meeting-status button.active) {
-    color: #ffffff !important;
+    color: var(--text-on-brand) !important;
   }
 }
 </style>

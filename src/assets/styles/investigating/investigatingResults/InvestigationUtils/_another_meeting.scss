@@ -8,10 +8,10 @@
   width: 100%;
   margin-top: 0;
   padding: 16px;
-  border: 1px solid #e6edf7;
+  border: 1px solid var(--brand-primary-100);
   border-radius: 8px;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.04);
+  background: linear-gradient(180deg, var(--surface-1) 0%, var(--brand-primary-50) 100%);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
 
   &.not-colored .section-header-page {
     background: transparent !important;
@@ -32,10 +32,10 @@
       flex-shrink: 0;
       gap: 6px;
       padding: 4px;
-      border: 1px solid #dbe5f2;
+      border: 1px solid var(--brand-primary-100);
       border-radius: 8px;
-      background: #ffffff;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+      background: var(--surface-1);
+      box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary-900) 5%, transparent);
 
       button {
         min-width: 82px;
@@ -53,23 +53,23 @@
 
       .meeting-status-yes {
         background: transparent;
-        color: #15803d;
+        color: var(--status-success);
 
         &.active {
-          color: #ffffff;
-          background: #16a34a;
-          box-shadow: 0 8px 18px rgba(22, 163, 74, 0.22);
+          color: var(--text-on-brand);
+          background: var(--status-success);
+          box-shadow: 0 8px 18px color-mix(in srgb, var(--status-success) 22%, transparent);
         }
       }
 
       .meeting-status-on {
         background: transparent;
-        color: #dc2626;
+        color: var(--status-danger);
 
         &.active {
-          color: #ffffff;
-          background: #dc2626;
-          box-shadow: 0 8px 18px rgba(220, 38, 38, 0.22);
+          color: var(--text-on-brand);
+          background: var(--status-danger);
+          box-shadow: 0 8px 18px color-mix(in srgb, var(--status-danger) 22%, transparent);
         }
       }
     }
@@ -81,9 +81,9 @@
     gap: 12px;
     width: 100%;
     padding: 14px;
-    border: 1px dashed #c8d5e6;
+    border: 1px dashed var(--brand-primary-200);
     border-radius: 8px;
-    background: #ffffff;
+    background: var(--surface-1);
 
     .mt-4 {
       margin-top: 8px;

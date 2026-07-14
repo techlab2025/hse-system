@@ -139,7 +139,7 @@ const removeImage = () => {
 
 <style scoped>
 /* .multi-image-uploader {
-  border: 1px dashed #E5E7EB;
+  border: 1px dashed var(--brand-primary-100);
 } */
 
 .input-image {
@@ -161,12 +161,12 @@ const removeImage = () => {
 .title {
   font-size: 26px;
   font-weight: 700;
-  color: #202020;
+  color: var(--text-strong);
 }
 
 .description {
   font-size: 18px;
   font-weight: 600;
-  color: #9ca3af;
+  color: var(--text-soft);
 }
 </style>

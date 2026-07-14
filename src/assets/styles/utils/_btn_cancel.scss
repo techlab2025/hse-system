@@ -2,8 +2,8 @@
 @use '../mixins/flex' as *;
 .btn-cancel {
   font-family: 'Regular';
-  background-color: #e235351a;
-  color: #e23535;
+  background-color: color-mix(in srgb, var(--status-danger) 10.2%, transparent);
+  color: var(--status-danger);
   padding: $XsSize2 $MdSize;
   font-size: $MdSize;
   font-weight: $BaseFontWeightBold;
@@ -11,8 +11,8 @@
   transition: all 0.3s linear;
 
   &:hover {
-    color: white;
-    background-color: #e23535;
-    border: 1px solid red;
+    color: var(--text-on-brand);
+    background-color: var(--status-danger);
+    border: 1px solid var(--status-danger);
   }
 }

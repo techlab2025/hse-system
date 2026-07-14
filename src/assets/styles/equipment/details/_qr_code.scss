@@ -9,12 +9,12 @@
     gap: 18px;
     min-height: 292px;
     padding: 18px 18px 18px 22px;
-    border: 1px solid rgba(148, 163, 184, 0.2);
+    border: 1px solid color-mix(in srgb, var(--brand-primary-400) 20%, transparent);
     border-radius: 24px;
     background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.97), rgba(248, 251, 255, 0.93)),
-      radial-gradient(circle at 100% 0%, rgba(29, 78, 216, 0.12), transparent 34%);
-    box-shadow: 0 22px 55px rgba(15, 23, 42, 0.08);
+      linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 97%, transparent), color-mix(in srgb, var(--brand-primary-50) 93%, transparent)),
+      radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--brand-primary-500) 12%, transparent), transparent 34%);
+    box-shadow: 0 22px 55px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
 
     @media screen and (max-width: 700px) {
       @include flex(column, nowrap, center, stretch);
@@ -24,9 +24,9 @@
     .demo-card {
       flex: 1 1 auto;
       min-width: 0;
-      border: 1px dashed rgba(148, 163, 184, 0.36);
+      border: 1px dashed color-mix(in srgb, var(--brand-primary-400) 36%, transparent);
       border-radius: 18px;
-      background: rgba(255, 255, 255, 0.78);
+      background: color-mix(in srgb, var(--surface-1) 78%, transparent);
 
       .sub-card {
         align-items: center;
@@ -39,11 +39,11 @@
       height: 136px;
       align-self: center;
       padding: 10px;
-      border: 1px solid rgba(29, 78, 216, 0.14);
+      border: 1px solid color-mix(in srgb, var(--brand-primary-500) 14%, transparent);
       border-radius: 20px;
-      background: #ffffff;
+      background: var(--surface-1);
       object-fit: contain;
-      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.1);
+      box-shadow: 0 16px 35px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
 
       @media screen and (max-width: 700px) {
         flex-basis: auto;
@@ -62,7 +62,7 @@
       @include flex(column, nowrap, center, center);
       width: 30%;
       height: 218px;
-      background-color: #f1f3f5;
+      background-color: var(--brand-primary-50);
       padding: $XsSize $MdSize;
       border-radius: $SmSize;
       @media screen and (max-width: 900px) {

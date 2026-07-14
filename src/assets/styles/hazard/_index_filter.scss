@@ -6,11 +6,11 @@
   gap: 12px;
   width: 100%;
   padding: 14px;
-  border: 1px solid #e6edf7;
+  border: 1px solid var(--brand-primary-100);
   border-radius: 8px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 250, 252, 0.96)), #ffffff;
-  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+    linear-gradient(180deg, color-mix(in srgb, var(--surface-1) 96%, transparent), color-mix(in srgb, var(--brand-primary-50) 96%, transparent)), var(--surface-1);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
   font-family: 'Regular';
 
   .btns {
@@ -26,7 +26,7 @@
     padding-bottom: 4px;
     overflow-x: auto;
     scrollbar-width: thin;
-    scrollbar-color: rgba(148, 163, 184, 0.5) transparent;
+    scrollbar-color: color-mix(in srgb, var(--brand-primary-400) 50%, transparent) transparent;
 
     &::-webkit-scrollbar {
       height: 5px;
@@ -34,7 +34,7 @@
 
     &::-webkit-scrollbar-thumb {
       border-radius: 999px;
-      background: rgba(148, 163, 184, 0.55);
+      background: color-mix(in srgb, var(--brand-primary-400) 55%, transparent);
     }
 
     &::-webkit-scrollbar-track {
@@ -46,10 +46,10 @@
       flex: 0 0 auto;
       min-height: 34px;
       padding: 7px 13px;
-      border: 1px solid #dbe7f5;
+      border: 1px solid var(--brand-primary-100);
       border-radius: 999px;
-      background: #ffffff;
-      color: #475569;
+      background: var(--surface-1);
+      color: var(--brand-primary-600);
       font-size: 12px;
       font-weight: $BaseFontSemiBoldWeight;
       letter-spacing: 0;
@@ -64,16 +64,16 @@
 
       &:hover {
         transform: translateY(-1px);
-        border-color: #93c5fd;
-        background: #eff6ff;
-        color: #1d4ed8;
+        border-color: var(--brand-primary-200);
+        background: var(--brand-primary-50);
+        color: var(--brand-primary-500);
       }
 
       &.active {
-        border-color: rgba(20, 184, 166, 0.46);
-        background: linear-gradient(135deg, rgba(29, 78, 216, 0.1), rgba(20, 184, 166, 0.16));
-        box-shadow: inset 0 0 0 1px rgba(29, 78, 216, 0.08);
-        color: #0f766e;
+        border-color: color-mix(in srgb, var(--status-success) 46%, transparent);
+        background: linear-gradient(135deg, color-mix(in srgb, var(--brand-primary-500) 10%, transparent), color-mix(in srgb, var(--status-success) 16%, transparent));
+        box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
+        color: var(--status-info);
       }
     }
   }
@@ -95,9 +95,9 @@
     padding-inline: 16px;
     border-radius: 8px;
     border-color: transparent;
-    // background: linear-gradient(135deg, #1d4ed8, #14b8a6);
-    box-shadow: 0 12px 24px rgba(29, 78, 216, 0.2);
-    color: #ffffff;
+    // background: linear-gradient(135deg, var(--brand-primary-500), var(--status-success));
+    box-shadow: 0 12px 24px color-mix(in srgb, var(--brand-primary-500) 20%, transparent);
+    color: var(--text-on-brand);
     font-family: 'Bold';
     font-size: 13px;
     font-weight: $BaseFontWeightBold;
@@ -108,7 +108,7 @@
 
     &:hover {
       transform: translateY(-1px);
-      box-shadow: 0 16px 30px rgba(29, 78, 216, 0.25);
+      box-shadow: 0 16px 30px color-mix(in srgb, var(--brand-primary-500) 25%, transparent);
       filter: saturate(1.05);
       color: $PrimaryColor;
     }
@@ -117,10 +117,10 @@
   .btn-filter {
     @include flex-center();
     min-height: 40px;
-    border: 1px solid #dbe7f5;
+    border: 1px solid var(--brand-primary-100);
     border-radius: 8px;
-    background: #ffffff;
-    color: #1d4ed8;
+    background: var(--surface-1);
+    color: var(--brand-primary-500);
     transition:
       transform 0.18s ease,
       background 0.18s ease,
@@ -128,8 +128,8 @@
 
     &:hover {
       transform: translateY(-1px);
-      border-color: #93c5fd;
-      background: #eff6ff;
+      border-color: var(--brand-primary-200);
+      background: var(--brand-primary-50);
     }
   }
 }

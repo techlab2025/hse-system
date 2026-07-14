@@ -59,7 +59,7 @@ const props = defineProps<{
 .switch-track {
   width: var(--track-width);
   height: var(--track-height);
-  background-color: #e2e8f0;
+  background-color: var(--brand-primary-100);
   /* Off color */
   border-radius: 999px;
   position: relative;
@@ -67,15 +67,15 @@ const props = defineProps<{
 }
 
 .hidden-input:checked+.switch-label .switch-track {
-  background-color: #3b82f6;
+  background-color: var(--brand-primary-400);
   /* On color (Blue) */
-  /* background-color: #D2D5DA !important; */
+  /* background-color: var(--main-border) !important; */
 }
 
 .switch-thumb {
   width: var(--thumb-size);
   height: var(--thumb-size);
-  background-color: white;
+  background-color: var(--surface-1);
   border-radius: 50%;
   position: absolute;
   top: var(--padding);
@@ -84,7 +84,7 @@ const props = defineProps<{
   align-items: center;
   justify-content: center;
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--text-strong) 10%, transparent);
 }
 
 .hidden-input:checked+.switch-label .switch-thumb {
@@ -95,12 +95,12 @@ const props = defineProps<{
 .icon {
   width: 70%;
   height: 70%;
-  color: #64748b;
+  color: var(--brand-primary-500);
   /* Icon color when off */
 }
 
 .hidden-input:checked+.switch-label .icon {
-  color: #3b82f6;
+  color: var(--brand-primary-400);
   /* Icon color when on */
 }
 

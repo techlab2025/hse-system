@@ -176,9 +176,9 @@ onMounted(() => {
 .tempalte-item-conatainer {
   width: 100%;
   padding: 12px;
-  border: 1px solid rgba(221, 226, 237, 0.72);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 72%, transparent);
   border-radius: 16px;
-  background: #fbfcff;
+  background: var(--brand-primary-50);
   grid-column: span 4;
 }
 
@@ -197,7 +197,7 @@ onMounted(() => {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #041953;
+  color: var(--brand-primary-800);
   font-size: 13px;
   font-weight: 900;
   white-space: nowrap;
@@ -208,13 +208,13 @@ onMounted(() => {
   height: 8px;
   content: '';
   border-radius: 999px;
-  background: #4aae3a;
-  box-shadow: 0 0 0 5px rgba(74, 174, 58, 0.12);
+  background: var(--status-success);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--status-success) 12%, transparent);
 }
 
 .add-answer hr {
   min-width: 32px;
-  border-color: rgba(29, 78, 216, 0.12);
+  border-color: color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
 }
 
 .answer-count {
@@ -223,10 +223,10 @@ onMounted(() => {
   height: 24px;
   place-items: center;
   border-radius: 8px;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   font-size: 12px;
   font-weight: 900;
-  background: rgba(29, 78, 216, 0.08);
+  background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
 }
 
 .answer-header-action {
@@ -236,14 +236,14 @@ onMounted(() => {
   gap: 6px;
   min-height: 34px;
   padding: 0 12px;
-  border: 1px solid rgba(29, 78, 216, 0.16);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-500) 16%, transparent);
   border-radius: 999px;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   font-size: 12px;
   font-weight: 900;
   white-space: nowrap;
-  background: #fff;
-  box-shadow: 0 8px 18px rgba(29, 78, 216, 0.08);
+  background: var(--surface-1);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
   cursor: pointer;
   transition:
     transform 0.2s ease,
@@ -253,8 +253,8 @@ onMounted(() => {
 
 .answer-header-action:hover {
   transform: translateY(-1px);
-  border-color: rgba(29, 78, 216, 0.32);
-  box-shadow: 0 12px 22px rgba(29, 78, 216, 0.12);
+  border-color: color-mix(in srgb, var(--brand-primary-500) 32%, transparent);
+  box-shadow: 0 12px 22px color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
 }
 
 .answer-header-action :deep(svg) {
@@ -270,15 +270,15 @@ onMounted(() => {
   width: 100%;
   padding: 10px;
   margin-bottom: 8px;
-  border: 1px solid rgba(221, 226, 237, 0.76);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 76%, transparent);
   border-radius: 14px;
-  background: #fff;
-  box-shadow: 0 8px 22px rgba(15, 25, 39, 0.035);
+  background: var(--surface-1);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--brand-primary-900) 3.5%, transparent);
   animation: fadeInUp 0.35s ease both;
 }
 
 .answer-row.active {
-  border-color: rgba(29, 78, 216, 0.2);
+  border-color: color-mix(in srgb, var(--brand-primary-500) 20%, transparent);
 }
 
 .answer-index {
@@ -288,11 +288,11 @@ onMounted(() => {
   margin-top: 8px;
   place-items: center;
   border-radius: 10px;
-  color: #fff;
+  color: var(--text-on-brand);
   font-size: 12px;
   font-weight: 900;
-  background: linear-gradient(135deg, #1d4ed8, #041953);
-  box-shadow: 0 8px 16px rgba(29, 78, 216, 0.16);
+  background: linear-gradient(135deg, var(--brand-primary-500), var(--brand-primary-800));
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--brand-primary-500) 16%, transparent);
 }
 
 .answer-text-input {
@@ -302,14 +302,14 @@ onMounted(() => {
 
 .answer-text-input input {
   min-height: 42px;
-  border: 1px solid rgba(221, 226, 237, 0.96) !important;
-  background: #fff !important;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 96%, transparent) !important;
+  background: var(--surface-1) !important;
   box-shadow: none;
 }
 
 .answer-text-input input:focus {
-  border-color: rgba(29, 78, 216, 0.55) !important;
-  box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.1) !important;
+  border-color: color-mix(in srgb, var(--brand-primary-500) 55%, transparent) !important;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand-primary-500) 10%, transparent) !important;
 }
 
 .answer-options {
@@ -326,9 +326,9 @@ onMounted(() => {
   min-height: 42px;
   min-width: 0;
   padding: 7px 10px !important;
-  border: 1px solid rgba(221, 226, 237, 0.88);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 88%, transparent);
   border-radius: 12px !important;
-  background: #f8fafc;
+  background: var(--brand-primary-50);
   transition:
     border-color 0.2s ease,
     background-color 0.2s ease,
@@ -337,14 +337,14 @@ onMounted(() => {
 
 .option-pill.active,
 .option-pill:has(input:checked) {
-  border-color: rgba(29, 78, 216, 0.42);
-  background: rgba(29, 78, 216, 0.08);
-  box-shadow: inset 0 0 0 1px rgba(29, 78, 216, 0.08);
+  border-color: color-mix(in srgb, var(--brand-primary-500) 42%, transparent);
+  background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
 }
 
 .option-pill label {
   margin: 0;
-  color: #3d4c5e !important;
+  color: var(--brand-primary-700) !important;
   font-size: 11px !important;
   font-weight: 800 !important;
   white-space: nowrap;
@@ -355,7 +355,7 @@ onMounted(() => {
   width: 16px;
   height: 16px;
   margin-inline-start: 7px;
-  accent-color: #1d4ed8;
+  accent-color: var(--brand-primary-500);
   cursor: pointer;
 }
 
@@ -384,9 +384,9 @@ onMounted(() => {
   width: 100%;
   margin-top: 8px;
   padding: 4px;
-  border: 1px solid rgba(221, 226, 237, 0.85);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 85%, transparent);
   border-radius: 11px;
-  background: rgba(255, 255, 255, 0.72);
+  background: color-mix(in srgb, var(--surface-1) 72%, transparent);
 }
 
 .textarea-choice {
@@ -398,7 +398,7 @@ onMounted(() => {
   padding: 4px 8px;
   overflow: hidden;
   border-radius: 8px;
-  color: #6b7280;
+  color: var(--text-soft);
   background: transparent;
   transition:
     color 0.2s ease,
@@ -416,9 +416,9 @@ onMounted(() => {
 }
 
 .textarea-choice.active {
-  color: #1d4ed8;
-  background: #fff;
-  box-shadow: 0 6px 14px rgba(29, 78, 216, 0.12);
+  color: var(--brand-primary-500);
+  background: var(--surface-1);
+  box-shadow: 0 6px 14px color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
 }
 
 .text-area-type input[type='radio'] {
@@ -435,12 +435,12 @@ onMounted(() => {
 .answer-remove {
   min-height: 42px;
   padding: 0 10px;
-  border: 1px solid rgba(226, 53, 53, 0.2);
+  border: 1px solid color-mix(in srgb, var(--status-danger) 20%, transparent);
   border-radius: 12px;
-  color: #e23535;
+  color: var(--status-danger);
   font-size: 11px;
   font-weight: 900;
-  background: rgba(226, 53, 53, 0.08);
+  background: color-mix(in srgb, var(--status-danger) 8%, transparent);
   cursor: pointer;
   transition:
     transform 0.2s ease,
@@ -449,8 +449,8 @@ onMounted(() => {
 
 .answer-remove:hover {
   transform: translateY(-1px);
-  color: #fff;
-  background: #e23535;
+  color: var(--text-on-brand);
+  background: var(--status-danger);
 }
 
 @media (max-width: 768px) {

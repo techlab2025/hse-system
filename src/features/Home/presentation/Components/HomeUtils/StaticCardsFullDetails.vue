@@ -131,7 +131,7 @@ const { homeInspectionState } = defineProps<{
 .details-signal-grid :deep(.incidant-factor-container:hover) {
   transform: translateY(-3px);
   border-color: color-mix(in srgb, var(--PrimaryColor) 28%, var(--main-border));
-  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.1);
+  box-shadow: 0 16px 34px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
 }
 
 .details-signal-grid :deep(.incidant-factor-header-container) {

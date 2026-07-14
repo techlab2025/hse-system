@@ -30,7 +30,7 @@
 <style scoped>
 /* The Base Skeleton Look */
 .skeleton-bar {
-  background-color: #e2e8f0;
+  background-color: var(--brand-primary-100);
   /* Light gray */
   border-radius: 4px;
   display: inline-block;

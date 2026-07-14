@@ -119,7 +119,7 @@ const submitVerification = async () => {
   border: 1px solid var(--main-border);
   border-radius: 18px;
   background: var(--BgWhite);
-  box-shadow: 0 8px 16px color-mix(in srgb, var(--Black) 10%, transparent);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--text-strong) 10%, transparent);
   padding: 1.25rem;
 }
 

@@ -102,12 +102,12 @@ watch(
 .zoon-header {
   margin-block: 10px;
   width: 100%;
-  background-color: rgba(231, 227, 227, 0.301);
+  background-color: color-mix(in srgb, var(--surface-2) 30.1%, transparent);
   padding: 12px;
   border-radius: 12px;
 
   .zoon-title {
-    color: #121212;
+    color: var(--text-strong);
     font-size: 18px;
     font-weight: 700;
   }

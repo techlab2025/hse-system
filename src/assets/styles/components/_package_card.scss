@@ -130,7 +130,7 @@
 
   svg,
   path {
-    stroke: red;
-    fill: red;
+    stroke: var(--status-danger);
+    fill: var(--status-danger);
   }
 }

@@ -229,8 +229,8 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
     ),
     linear-gradient(180deg, var(--BgWhite), var(--Gray-1));
   box-shadow:
-    0 1px 2px rgba(15, 23, 42, 0.04),
-    0 18px 42px rgba(15, 23, 42, 0.07);
+    0 1px 2px color-mix(in srgb, var(--brand-primary-900) 4%, transparent),
+    0 18px 42px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
 }
 
 .organization-home-page.is-dark {
@@ -243,7 +243,7 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
         transparent 40%
       ),
       linear-gradient(180deg, var(--surface-1), var(--surface-2));
-    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 18px 42px color-mix(in srgb, var(--text-strong) 22%, transparent);
   }
 
   .home-analytics-heading h2 {

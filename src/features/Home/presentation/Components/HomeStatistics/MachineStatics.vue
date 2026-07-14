@@ -97,7 +97,7 @@ watch(
   gap: 10px;
   padding: 10px;
   border-radius: 10px;
-  // box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  // box-shadow: 0px 4px 8px color-mix(in srgb, var(--text-strong) 10%, transparent);
   width: 100%;
   // height: 400px;
 }

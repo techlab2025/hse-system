@@ -134,31 +134,31 @@ const logout = () => {
   padding-top: 20px;
   overscroll-behavior-x: none;
   background:
-    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.1) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.09) 0 16%, transparent 34%),
-    linear-gradient(155deg, #0f36a8 0%, #102d79 44%, #061f56 100%) !important;
+    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%, transparent 34%),
+    linear-gradient(155deg, var(--brand-primary-600) 0%, var(--brand-primary-700) 44%, var(--brand-primary-800) 100%) !important;
   box-shadow:
-    18px 0 38px rgba(30, 64, 175, 0.22),
-    inset -1px 0 0 rgba(255, 255, 255, 0.12);
+    18px 0 38px color-mix(in srgb, var(--brand-primary-600) 22%, transparent),
+    inset -1px 0 0 color-mix(in srgb, var(--shadow-color) 12%, transparent);
 }
 .sidebar.close {
   width: 92px;
 }
 .sidebar.open {
   background:
-    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.1) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.09) 0 16%, transparent 34%),
-    linear-gradient(155deg, #0f36a8 0%, #102d79 44%, #061f56 100%) !important;
+    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%, transparent 34%),
+    linear-gradient(155deg, var(--brand-primary-600) 0%, var(--brand-primary-700) 44%, var(--brand-primary-800) 100%) !important;
 }
 
 .sidebar.is-dark,
 .sidebar.is-dark.open {
   background:
-    radial-gradient(circle at 0% 0%, rgba(96, 165, 250, 0.16), transparent 34%),
-    linear-gradient(155deg, #111827 0%, #0f172a 54%, #07111f 100%) !important;
+    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--brand-primary-300) 16%, transparent), transparent 34%),
+    linear-gradient(155deg, var(--brand-primary-900) 0%, var(--brand-primary-900) 54%, var(--brand-primary-900) 100%) !important;
   box-shadow:
-    18px 0 38px rgba(0, 0, 0, 0.32),
-    inset -1px 0 0 rgba(148, 163, 184, 0.14);
+    18px 0 38px color-mix(in srgb, var(--shadow-color) 32%, transparent),
+    inset -1px 0 0 color-mix(in srgb, var(--brand-primary-400) 14%, transparent);
 }
 
 .sidebar.is-dark .sidebar-wrapper {
@@ -210,11 +210,11 @@ const logout = () => {
 .sidebar.open .sidebar-toggle {
   background: transparent;
   border: none;
-  color: #ffffff;
+  color: var(--text-on-brand);
   box-shadow: none;
 }
 .sidebar.close .sidebar-toggle {
-  color: #ffffff;
+  color: var(--text-on-brand);
 }
 .sidebar-toggle :deep(svg) {
   width: 26px;
@@ -225,10 +225,10 @@ const logout = () => {
 }
 
 .sidebar-toggle:hover {
-  background: rgba(0, 0, 0, 0.08);
+  background: color-mix(in srgb, var(--text-strong) 8%, transparent);
 }
 .sidebar.open .sidebar-toggle:hover {
-  background: rgba(255, 255, 255, 0.24);
+  background: color-mix(in srgb, var(--surface-1) 24%, transparent);
 }
 
 .sidebar-back {
@@ -236,8 +236,8 @@ const logout = () => {
   flex-direction: column !important;
   justify-content: center !important;
   gap: 7px !important;
-  border: 1px solid #e7ecf5;
-  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.05);
+  border: 1px solid var(--brand-primary-100);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--brand-primary-900) 5%, transparent);
   transition:
     background 0.22s ease,
     border-color 0.22s ease,
@@ -250,8 +250,8 @@ const logout = () => {
 }
 .sidebar-back:hover,
 .sidebar-back.router-link-active {
-  background: #eef4ff !important;
-  border-color: rgba(31, 65, 187, 0.22);
+  background: var(--brand-primary-50) !important;
+  border-color: color-mix(in srgb, var(--brand-primary-600) 22%, transparent);
   color: var(--PrimaryColor) !important;
   transform: translateY(-1px);
 }
@@ -264,28 +264,28 @@ const logout = () => {
   padding: 8px 12px !important;
   background: transparent !important;
   border-color: transparent;
-  color: #ffffff !important;
+  color: var(--text-on-brand) !important;
   box-shadow: none;
 }
 .sidebar.close .sidebar-back {
   background: transparent !important;
   border-color: transparent;
-  color: #ffffff !important;
+  color: var(--text-on-brand) !important;
   box-shadow: none;
 }
 .sidebar.close .sidebar-back:hover,
 .sidebar.close .sidebar-back.router-link-active {
-  background: rgba(255, 255, 255, 0.14) !important;
+  background: color-mix(in srgb, var(--surface-1) 14%, transparent) !important;
   border-color: transparent;
-  color: #ffffff !important;
+  color: var(--text-on-brand) !important;
 }
 
 .sidebar.is-dark .sidebar-back,
 .sidebar.is-dark.open .sidebar-back,
 .sidebar.is-dark.close .sidebar-back {
-  color: #f8fafc !important;
-  background: rgba(30, 41, 59, 0.66) !important;
-  border-color: rgba(148, 163, 184, 0.16) !important;
+  color: var(--brand-primary-50) !important;
+  background: color-mix(in srgb, var(--brand-primary-800) 66%, transparent) !important;
+  border-color: color-mix(in srgb, var(--brand-primary-400) 16%, transparent) !important;
 }
 
 .sidebar.is-dark .sidebar-back:hover,
@@ -294,15 +294,15 @@ const logout = () => {
 .sidebar.is-dark.open .sidebar-back.router-link-active,
 .sidebar.is-dark.close .sidebar-back:hover,
 .sidebar.is-dark.close .sidebar-back.router-link-active {
-  background: rgba(96, 165, 250, 0.16) !important;
-  border-color: rgba(96, 165, 250, 0.28) !important;
-  color: #ffffff !important;
+  background: color-mix(in srgb, var(--brand-primary-300) 16%, transparent) !important;
+  border-color: color-mix(in srgb, var(--brand-primary-300) 28%, transparent) !important;
+  color: var(--text-on-brand) !important;
 }
 .sidebar.open .sidebar-back:hover,
 .sidebar.open .sidebar-back.router-link-active {
-  background: rgba(255, 255, 255, 0.14) !important;
+  background: color-mix(in srgb, var(--surface-1) 14%, transparent) !important;
   border-color: transparent;
-  color: #ffffff !important;
+  color: var(--text-on-brand) !important;
 }
 .sidebar.close .sidebar-back {
   width: 72px !important;
@@ -329,20 +329,20 @@ const logout = () => {
   width: 34px;
   height: 34px;
   border-radius: 13px;
-  background: #ffffff;
-  border: 1px solid #edf1f7;
+  background: var(--surface-1);
+  border: 1px solid var(--brand-primary-50);
   color: currentColor;
-  box-shadow: inset 0 -1px 0 rgba(15, 23, 42, 0.04);
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
 }
 .sidebar.open .home-icon {
   background: transparent;
   border-color: transparent;
-  color: #ffffff;
+  color: var(--text-on-brand);
 }
 .sidebar.close .home-icon {
   background: transparent;
   border-color: transparent;
-  color: #ffffff;
+  color: var(--text-on-brand);
   box-shadow: none;
 }
 .home-icon :deep(svg),
@@ -358,10 +358,10 @@ const logout = () => {
 .sidebar.open .links {
   padding-top: 2px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.38) transparent;
+  scrollbar-color: color-mix(in srgb, var(--surface-1) 38%, transparent) transparent;
 }
 .sidebar.open .links::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.38);
+  background: color-mix(in srgb, var(--surface-1) 38%, transparent);
 }
 .sidebar.close .links {
   overflow-y: auto;
@@ -376,26 +376,26 @@ const logout = () => {
   height: 34px !important;
   padding: 7px;
   border-radius: 12px;
-  background: #ffffff;
-  color: #1d4ed8;
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.14);
+  background: var(--surface-1);
+  color: var(--brand-primary-500);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--brand-primary-900) 14%, transparent);
 }
 
 .sidebar.is-dark.close :deep(.strip-icon) {
-  background: #1e293b !important;
-  color: #60a5fa !important;
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.24);
+  background: var(--brand-primary-800) !important;
+  color: var(--brand-primary-300) !important;
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--text-strong) 24%, transparent);
 }
 .sidebar.close :deep(.icon-item.router-link-active .strip-icon),
 .sidebar.close :deep(.icon-item:hover .strip-icon) {
-  color: #0f2f80;
-  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.2);
+  color: var(--brand-primary-700);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--brand-primary-900) 20%, transparent);
 }
 .sidebar.open :deep(.p-accordionheader) {
   margin-inline: 0 !important;
   padding: 12px 14px !important;
   border-radius: 12px !important;
-  color: #ffffff !important;
+  color: var(--text-on-brand) !important;
   background: transparent !important;
   border: none !important;
   box-shadow: none;
@@ -406,34 +406,34 @@ const logout = () => {
 }
 
 .sidebar.is-dark.open :deep(.p-accordionheader) {
-  background: rgba(30, 41, 59, 0.82) !important;
-  border-left-color: #60a5fa !important;
-  color: #f8fafc !important;
-  box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.1);
+  background: color-mix(in srgb, var(--brand-primary-800) 82%, transparent) !important;
+  border-left-color: var(--brand-primary-300) !important;
+  color: var(--brand-primary-50) !important;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand-primary-400) 10%, transparent);
 }
 
 .sidebar.is-dark.open :deep(.p-accordionheader:hover) {
-  background: rgba(51, 65, 85, 0.92) !important;
+  background: color-mix(in srgb, var(--brand-primary-700) 92%, transparent) !important;
 }
 .sidebar.open :deep(.p-accordionheader:hover) {
-  background: rgba(255, 255, 255, 0.12) !important;
+  background: color-mix(in srgb, var(--surface-1) 12%, transparent) !important;
   border-color: transparent !important;
   transform: none;
 }
 .sidebar.open :deep(.p-accordionheader) {
   margin-bottom: 4px !important;
-  background: rgba(255, 255, 255, 0.16) !important;
-  border-left: 3px solid #bfdbfe !important;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  background: color-mix(in srgb, var(--surface-1) 16%, transparent) !important;
+  border-left: 3px solid var(--brand-primary-100) !important;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--surface-1) 8%, transparent);
 }
 .sidebar.open :deep(.p-accordionheader:hover) {
-  background: rgba(255, 255, 255, 0.22) !important;
+  background: color-mix(in srgb, var(--surface-1) 22%, transparent) !important;
 }
 .sidebar.open :deep(.links-header) {
   justify-content: flex-start;
   width: 100%;
   gap: 0;
-  color: #ffffff !important;
+  color: var(--text-on-brand) !important;
   font-size: 14px;
   font-weight: 800;
   letter-spacing: 0;
@@ -460,7 +460,7 @@ const logout = () => {
   display: block !important;
   min-width: 0;
   width: 100%;
-  color: #dbeafe !important;
+  color: var(--brand-primary-100) !important;
 }
 .sidebar.open :deep(.p-accordioncontent-content li a) {
   display: flex !important;
@@ -486,9 +486,9 @@ const logout = () => {
 .sidebar.open :deep(.p-accordioncontent-content li a:hover),
 .sidebar.open :deep(.p-accordioncontent-content li a.router-link-active),
 .sidebar.open :deep(.p-accordioncontent-content li a.active-link) {
-  background: rgba(255, 255, 255, 0.14) !important;
+  background: color-mix(in srgb, var(--surface-1) 14%, transparent) !important;
   border-color: transparent;
-  color: #ffffff !important;
+  color: var(--text-on-brand) !important;
   transform: none;
   font-size: inherit !important;
   font-weight: 700;
@@ -496,14 +496,14 @@ const logout = () => {
 }
 
 .sidebar.is-dark.open :deep(.p-accordioncontent-content li) {
-  color: #cbd5e1 !important;
+  color: var(--brand-primary-200) !important;
 }
 
 .sidebar.is-dark.open :deep(.p-accordioncontent-content li a:hover),
 .sidebar.is-dark.open :deep(.p-accordioncontent-content li a.router-link-active),
 .sidebar.is-dark.open :deep(.p-accordioncontent-content li a.active-link) {
-  background: rgba(96, 165, 250, 0.16) !important;
-  color: #ffffff !important;
+  background: color-mix(in srgb, var(--brand-primary-300) 16%, transparent) !important;
+  color: var(--text-on-brand) !important;
 }
 .sidebar.open :deep(.p-accordioncontent-content li a.router-link-active::before),
 .sidebar.open :deep(.p-accordioncontent-content li a.router-link-active::after),
@@ -534,12 +534,12 @@ const logout = () => {
   overflow: visible;
   border-radius: 0;
   background:
-    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.1) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.09) 0 16%, transparent 34%),
-    linear-gradient(155deg, #0f36a8 0%, #102d79 44%, #061f56 100%) !important;
+    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%, transparent 34%),
+    linear-gradient(155deg, var(--brand-primary-600) 0%, var(--brand-primary-700) 44%, var(--brand-primary-800) 100%) !important;
   box-shadow:
-    14px 0 32px rgba(30, 64, 175, 0.22),
-    inset -1px 0 0 rgba(255, 255, 255, 0.12);
+    14px 0 32px color-mix(in srgb, var(--brand-primary-600) 22%, transparent),
+    inset -1px 0 0 color-mix(in srgb, var(--shadow-color) 12%, transparent);
   z-index: 10040;
   transition:
     width 0.24s ease,
@@ -549,9 +549,9 @@ const logout = () => {
 .sidebar.organization-modern.open {
   width: 90px;
   background:
-    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.1) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, rgba(125, 211, 252, 0.09) 0 16%, transparent 34%),
-    linear-gradient(155deg, #0f36a8 0%, #102d79 44%, #061f56 100%) !important;
+    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%, transparent 34%),
+    radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%, transparent 34%),
+    linear-gradient(155deg, var(--brand-primary-600) 0%, var(--brand-primary-700) 44%, var(--brand-primary-800) 100%) !important;
 }
 
 .sidebar.organization-modern.close {
@@ -585,7 +585,7 @@ const logout = () => {
   border-radius: 16px;
   background: transparent !important;
   box-shadow: none;
-  color: #dbeafe !important;
+  color: var(--brand-primary-100) !important;
 }
 
 .sidebar.organization-modern.open .sidebar-back,
@@ -593,16 +593,16 @@ const logout = () => {
   width: 74px !important;
   margin-top: 10px !important;
   background: transparent !important;
-  color: #dbeafe !important;
+  color: var(--brand-primary-100) !important;
 }
 
 .sidebar.organization-modern .sidebar-back:hover,
 .sidebar.organization-modern .sidebar-back.router-link-active {
-  background: rgba(255, 255, 255, 0.14) !important;
-  color: #ffffff !important;
+  background: color-mix(in srgb, var(--surface-1) 14%, transparent) !important;
+  color: var(--text-on-brand) !important;
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
-    0 12px 24px rgba(10, 54, 129, 0.18);
+    inset 0 0 0 1px color-mix(in srgb, var(--shadow-color) 12%, transparent),
+    0 12px 24px color-mix(in srgb, var(--brand-primary-700) 18%, transparent);
   transform: translateY(-1px);
 }
 
@@ -655,7 +655,7 @@ const logout = () => {
 
 .sidebar.organization-modern.is-dark,
 .sidebar.organization-modern.is-dark.open {
-  background: #111827 !important;
+  background: var(--brand-primary-900) !important;
 }
 
 .sidebar.close .mobile-sidebar-logout,
@@ -672,7 +672,7 @@ const logout = () => {
   border: 0;
   border-radius: 18px;
   background: transparent;
-  color: #dbeafe;
+  color: var(--brand-primary-100);
   cursor: pointer;
   font-size: 10px;
   font-weight: 800;
@@ -686,11 +686,11 @@ const logout = () => {
 
 .sidebar.close .mobile-sidebar-logout:hover,
 .sidebar.organization-modern .mobile-sidebar-logout:hover {
-  background: rgba(255, 255, 255, 0.14);
+  background: color-mix(in srgb, var(--surface-1) 14%, transparent);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
-    0 12px 24px rgba(10, 54, 129, 0.18);
-  color: #ffffff;
+    inset 0 0 0 1px color-mix(in srgb, var(--shadow-color) 12%, transparent),
+    0 12px 24px color-mix(in srgb, var(--brand-primary-700) 18%, transparent);
+  color: var(--text-on-brand);
   transform: translateY(-1px);
 }
 

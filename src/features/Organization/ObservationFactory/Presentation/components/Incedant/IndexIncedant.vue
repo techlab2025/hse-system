@@ -428,7 +428,7 @@ const ShowDetails = ref<number[]>([])
   .index-table-card {
     background: var(--surface-1) !important;
     border-color: var(--main-border) !important;
-    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22) !important;
+    box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 22%, transparent) !important;
   }
 
   .card-header-container {

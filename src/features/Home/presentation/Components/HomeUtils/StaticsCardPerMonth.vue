@@ -92,7 +92,7 @@ const { homeInspectionState } = defineProps<{
 .monthly-kpi-grid :deep(.total-insedent-card:hover) {
   transform: translateY(-4px);
   border-color: color-mix(in srgb, var(--PrimaryColor) 34%, var(--main-border));
-  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.12);
+  box-shadow: 0 18px 36px color-mix(in srgb, var(--brand-primary-900) 12%, transparent);
 }
 
 .monthly-kpi-grid :deep(.titlte p) {

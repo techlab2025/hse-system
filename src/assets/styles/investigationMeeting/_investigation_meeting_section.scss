@@ -12,11 +12,11 @@
     gap: 4px;
 
     .title {
-      color: #170f49;
+      color: var(--brand-primary-800);
       font-size: $XlSize;
       font-weight: $BaseFontWeightBold;
       span {
-        color: #1f41bb;
+        color: var(--brand-primary-600);
         font-size: $SmSize;
         font-weight: $BaseFontSemiBoldWeight;
       }
@@ -29,19 +29,19 @@
 }
 
 .optional {
-  color: #c3c6cd;
+  color: var(--text-muted);
   font-size: $MdSize;
   font-weight: $BaseFontMediumWeight;
 }
 .factor-item {
   opacity: 1;
   border-radius: 20px;
-  background-color: rgba(249, 249, 249, 1);
+  background-color: var(--text-on-brand);
   padding: $XsSize;
   // @include flex-column(nowrap, flex-start, flex-start);
   .factot-title {
     font-weight: $BaseFontWeightBold;
-    color: #000;
+    color: var(--text-strong);
     font-style: Bold !important;
   }
   .radio-grid {
@@ -63,7 +63,7 @@
     .radio-label {
       font-weight: $BaseFontSemiBoldWeight;
       font-size: $MdSize;
-      color: rgba(158, 158, 158, 1);
+      color: var(--text-soft);
     }
   }
   .p-radiobutton-checked .p-radiobutton-box {
@@ -74,7 +74,7 @@
     background-color: $PrimaryColor !important;
   }
   .p-radiobutton.p-radiobutton-checked + .radio-label {
-    color: rgba(31, 65, 187, 1) !important;
+    color: var(--brand-primary-600) !important;
     font-weight: $BaseFontSemiBoldWeight;
     font-size: $MdSize;
   }
@@ -90,13 +90,13 @@
     .sub-radio-label {
       font-weight: $BaseFontSemiBoldWeight;
       font-size: $MdSize;
-      color: rgba(158, 158, 158, 1);
+      color: var(--text-soft);
     }
   }
 }
 .meeting-investigation {
   @include flex-row(nowrap, center, center);
-  background: rgba(247, 249, 252, 1);
+  background: var(--brand-primary-50);
   padding: 1.5rem;
   gap: 10px;
   p {

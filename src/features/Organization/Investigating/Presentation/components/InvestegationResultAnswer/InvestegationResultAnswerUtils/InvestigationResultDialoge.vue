@@ -100,7 +100,7 @@ const taskAnswer = computed(
   min-height: 38px;
   border: 0;
   border-radius: 8px;
-  background: rgba(29, 78, 216, 0.08);
+  background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
   color: var(--PrimaryColor);
   cursor: pointer;
   font-family: 'Bold';
@@ -114,8 +114,8 @@ const taskAnswer = computed(
 
   &:hover {
     transform: translateY(-1px);
-    background: rgba(29, 78, 216, 0.12);
-    box-shadow: 0 10px 18px rgba(29, 78, 216, 0.1);
+    background: color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
+    box-shadow: 0 10px 18px color-mix(in srgb, var(--brand-primary-500) 10%, transparent);
   }
 }
 
@@ -138,7 +138,7 @@ const taskAnswer = computed(
   }
 
   h3 {
-    color: #0f172a;
+    color: var(--brand-primary-900);
     font-size: 20px;
     font-weight: 900;
     line-height: 1.35;
@@ -156,9 +156,9 @@ const taskAnswer = computed(
   .user-img-side,
   .info-item,
   .notes {
-    border: 1px solid #e6edf7;
+    border: 1px solid var(--brand-primary-100);
     border-radius: 12px;
-    background: #ffffff;
+    background: var(--surface-1);
   }
 
   .all-text-content {
@@ -170,7 +170,7 @@ const taskAnswer = computed(
 
   .main-title {
     margin: 0 0 12px;
-    color: #0f172a;
+    color: var(--brand-primary-900);
     font-size: 18px;
     font-weight: 900;
   }
@@ -184,7 +184,7 @@ const taskAnswer = computed(
   .info-item,
   .notes {
     padding: 12px;
-    background: #f8fafc;
+    background: var(--brand-primary-50);
 
     h5,
     h4,
@@ -194,7 +194,7 @@ const taskAnswer = computed(
 
     h5,
     h4 {
-      color: #64748b;
+      color: var(--brand-primary-500);
       font-size: 12px;
       font-weight: 900;
       text-transform: uppercase;
@@ -204,7 +204,7 @@ const taskAnswer = computed(
     p {
       display: block;
       margin-top: 6px;
-      color: #0f172a;
+      color: var(--brand-primary-900);
       font-size: 14px;
       font-weight: 700;
       line-height: 1.7;
@@ -219,7 +219,7 @@ const taskAnswer = computed(
     justify-content: center;
     gap: 12px;
     padding: 16px;
-    background: linear-gradient(180deg, rgba(239, 246, 255, 0.84), #ffffff);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--brand-primary-50) 84%, transparent), var(--surface-1));
     text-align: center;
 
     img {
@@ -228,7 +228,7 @@ const taskAnswer = computed(
     }
 
     span {
-      color: #64748b;
+      color: var(--brand-primary-500);
       font-size: 12px;
       font-weight: 900;
       text-transform: uppercase;
@@ -236,7 +236,7 @@ const taskAnswer = computed(
 
     p {
       margin: 4px 0 0;
-      color: #0f172a;
+      color: var(--brand-primary-900);
       font-weight: 900;
     }
   }

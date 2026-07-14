@@ -61,11 +61,11 @@ const visible = ref(false)
 </template>
 <style scoped>
 .observation-details {
-  background-color: rgba(72, 110, 246, 0.1);
+  background-color: color-mix(in srgb, var(--brand-primary-400) 10%, transparent);
   padding: 0.6rem 0.8rem;
   border-radius: 20px;
 
-  border-bottom: 2px solid #1f41bb;
+  border-bottom: 2px solid var(--brand-primary-600);
 
   &:hover {
     cursor: pointer;
@@ -78,7 +78,7 @@ const visible = ref(false)
     font-family: 'bold';
     font-weight: 700;
     font-size: 16px;
-    color: #1f41bb;
+    color: var(--brand-primary-600);
   }
 }
 </style>

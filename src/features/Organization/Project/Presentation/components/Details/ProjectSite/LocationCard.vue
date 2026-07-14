@@ -43,8 +43,8 @@ const { title, zoneLength, zoons, LocationId, projectId } = defineProps<{
 </template>
 <style scoped>
 .location-card {
-  border: 1px solid rgb(233, 232, 232);
+  border: 1px solid var(--surface-2);
   border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+  box-shadow: color-mix(in srgb, var(--text-strong) 10%, transparent) 0px 4px 6px -1px, color-mix(in srgb, var(--text-strong) 6%, transparent) 0px 2px 4px -1px;
 }
 </style>

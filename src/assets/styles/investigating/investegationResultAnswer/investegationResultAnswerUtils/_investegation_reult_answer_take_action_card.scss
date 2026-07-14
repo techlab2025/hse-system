@@ -6,16 +6,16 @@
   gap: 10px;
   width: 100%;
   padding: 16px;
-  border: 1px solid rgba(22, 163, 74, 0.16);
+  border: 1px solid color-mix(in srgb, var(--status-success) 16%, transparent);
   border-radius: 8px;
-  background: linear-gradient(180deg, rgba(240, 253, 244, 0.94), #ffffff);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--status-success-soft) 94%, transparent), var(--surface-1));
   font-family: 'Regular';
 
   .corrective-action {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    color: #16a34a;
+    color: var(--status-success);
     font-family: 'Bold';
     font-size: 15px;
     font-weight: 700;
@@ -25,13 +25,13 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: #16a34a;
-      box-shadow: 0 0 0 5px rgba(22, 163, 74, 0.12);
+      background: var(--status-success);
+      box-shadow: 0 0 0 5px color-mix(in srgb, var(--status-success) 12%, transparent);
     }
   }
 
   .description {
-    color: #334155;
+    color: var(--brand-primary-700);
     font-size: 14px;
     font-weight: 600;
     line-height: 1.7;

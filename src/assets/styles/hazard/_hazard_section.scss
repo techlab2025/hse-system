@@ -12,11 +12,11 @@
     gap: 4px;
 
     .title {
-      color: #170f49;
+      color: var(--brand-primary-800);
       font-size: $XlSize;
       font-weight: $BaseFontWeightBold;
       span {
-        color: #1f41bb;
+        color: var(--brand-primary-600);
         font-size: $SmSize;
         font-weight: $BaseFontSemiBoldWeight;
       }
@@ -29,7 +29,7 @@
 }
 
 .optional {
-  color: #c3c6cd;
+  color: var(--text-muted);
   font-size: $MdSize;
   font-weight: $BaseFontMediumWeight;
 }

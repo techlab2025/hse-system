@@ -50,6 +50,6 @@ const UpdateData = (id: number) => {
 
 <style scoped>
 .isLeader {
-  border: 1px solid #1d4ed8 !important;
+  border: 1px solid var(--brand-primary-500) !important;
 }
 </style>

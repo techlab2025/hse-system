@@ -15,19 +15,19 @@
   gap: 1rem;
   .template-title {
     grid-column: span 2;
-    color: #202020;
+    color: var(--text-strong);
     font-size: $MdSize;
     font-weight: $BaseFontSemiBoldWeight;
   }
 
   .action-box {
     padding: 1rem;
-    border: 1px solid #e2e8f0;
+    border: 1px solid var(--brand-primary-100);
     border-radius: $SmSize;
-    background-color: white;
+    background-color: var(--surface-1);
     cursor: pointer;
     transition: all 0.3s ease;
-    color: #9ca3af;
+    color: var(--text-soft);
     font-size: $SmSize;
     font-weight: $BaseFontSemiBoldWeight;
     width: 100%;
@@ -46,7 +46,7 @@
     label {
       cursor: pointer;
       transition: all 0.3s ease;
-      color: #9ca3af;
+      color: var(--text-soft);
       font-size: $SmSize;
       font-weight: $BaseFontSemiBoldWeight;
       @include flex-column(nowrap, flex-start, flex-start);
@@ -60,7 +60,7 @@
       display: none;
     }
     &:hover {
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 6px color-mix(in srgb, var(--text-strong) 10%, transparent);
       transform: translateY(-2px);
     }
   }

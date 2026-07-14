@@ -306,13 +306,13 @@ watch(
   padding: 16px;
   overflow: hidden;
   cursor: pointer;
-  border: 1px solid rgba(29, 78, 216, 0.16);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-500) 16%, transparent);
   border-radius: 18px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(248, 251, 255, 0.9)),
-    radial-gradient(circle at 12% 18%, rgba(74, 174, 58, 0.16), transparent 32%),
-    radial-gradient(circle at 94% 12%, rgba(29, 78, 216, 0.16), transparent 28%);
-  box-shadow: 0 16px 38px rgba(15, 25, 39, 0.08);
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 96%, transparent), color-mix(in srgb, var(--brand-primary-50) 90%, transparent)),
+    radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--status-success) 16%, transparent), transparent 32%),
+    radial-gradient(circle at 94% 12%, color-mix(in srgb, var(--brand-primary-500) 16%, transparent), transparent 28%);
+  box-shadow: 0 16px 38px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
   transition:
     transform 0.25s ease,
     border-color 0.25s ease,
@@ -327,13 +327,13 @@ watch(
   width: 4px;
   content: '';
   border-radius: 999px;
-  background: linear-gradient(180deg, #1d4ed8, #4aae3a);
+  background: linear-gradient(180deg, var(--brand-primary-500), var(--status-success));
 }
 
 .add-new-template-btn:hover {
   transform: translateY(-2px);
-  border-color: rgba(29, 78, 216, 0.34);
-  box-shadow: 0 20px 48px rgba(29, 78, 216, 0.14);
+  border-color: color-mix(in srgb, var(--brand-primary-500) 34%, transparent);
+  box-shadow: 0 20px 48px color-mix(in srgb, var(--brand-primary-500) 14%, transparent);
 }
 
 .add-template-icon-shell {
@@ -343,8 +343,8 @@ watch(
   height: 48px;
   place-items: center;
   border-radius: 16px;
-  background: linear-gradient(135deg, #1d4ed8, #041953);
-  box-shadow: 0 12px 24px rgba(29, 78, 216, 0.24);
+  background: linear-gradient(135deg, var(--brand-primary-500), var(--brand-primary-800));
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--brand-primary-500) 24%, transparent);
 }
 
 .add-template-icon-shell :deep(svg) {
@@ -357,7 +357,7 @@ watch(
 }
 
 .add-new-template-header .title {
-  color: #041953;
+  color: var(--brand-primary-800);
   font-size: var(--md-size-2);
   font-weight: 800;
 }
@@ -365,25 +365,25 @@ watch(
 .add-new-template-header .descripetion {
   max-width: 720px;
   margin-top: 4px;
-  color: #6b7280;
+  color: var(--text-soft);
   font-size: var(--sm-size);
   line-height: 1.55;
 }
 
 :global(.add-new-template-dialog-container) {
   overflow: hidden;
-  border: 1px solid rgba(221, 226, 237, 0.92);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 92%, transparent);
   border-radius: 24px !important;
-  background: #f7f9fc;
-  box-shadow: 0 28px 90px rgba(15, 25, 39, 0.18);
+  background: var(--brand-primary-50);
+  box-shadow: 0 28px 90px color-mix(in srgb, var(--brand-primary-900) 18%, transparent);
 }
 
 :global(.add-new-template-dialog-container .p-dialog-header) {
   padding: 20px 24px 16px;
-  border-bottom: 1px solid rgba(221, 226, 237, 0.72);
+  border-bottom: 1px solid color-mix(in srgb, var(--brand-primary-100) 72%, transparent);
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(241, 246, 255, 0.94)),
-    linear-gradient(90deg, rgba(29, 78, 216, 0.08), rgba(74, 174, 58, 0.08));
+    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 94%, transparent)),
+    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary-500) 8%, transparent), color-mix(in srgb, var(--status-success) 8%, transparent));
 }
 
 :global(.add-new-template-dialog-container .add-new-template-dialog-header) {
@@ -392,19 +392,19 @@ watch(
 }
 
 :global(.add-new-template-dialog-container .add-new-template-dialog-header .title) {
-  color: #041953;
+  color: var(--brand-primary-800);
   font-size: var(--xl-size-1);
   font-weight: 800;
 }
 
 :global(.add-new-template-dialog-container .add-new-template-dialog-header p:not(.title)) {
   margin-top: 4px;
-  color: #6b7280;
+  color: var(--text-soft);
   font-size: var(--sm-size);
 }
 
 :global(.add-new-template-dialog-container .p-dialog-content) {
-  background: #f7f9fc;
+  background: var(--brand-primary-50);
 }
 
 :global(.add-new-template-dialog-container .dialog-body) {
@@ -417,23 +417,23 @@ watch(
 
 .template-field-panel {
   padding: 14px;
-  border: 1px solid rgba(221, 226, 237, 0.78);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 78%, transparent);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.86);
-  box-shadow: 0 10px 26px rgba(15, 25, 39, 0.04);
+  background: color-mix(in srgb, var(--surface-1) 86%, transparent);
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
 }
 
 .inspection-template-dialog-divider {
   margin: 0;
-  border-color: rgba(221, 226, 237, 0.86);
+  border-color: color-mix(in srgb, var(--brand-primary-100) 86%, transparent);
 }
 
 :global(.add-new-template-dialog-container .dialog-footer) {
   gap: 12px;
   padding: 14px 22px 18px;
-  border-top: 1px solid rgba(221, 226, 237, 0.88);
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 -12px 30px rgba(15, 25, 39, 0.05);
+  border-top: 1px solid color-mix(in srgb, var(--brand-primary-100) 88%, transparent);
+  background: color-mix(in srgb, var(--surface-1) 94%, transparent);
+  box-shadow: 0 -12px 30px color-mix(in srgb, var(--brand-primary-900) 5%, transparent);
 }
 
 :global(.add-new-template-dialog-container .dialog-footer .btn) {
@@ -450,7 +450,7 @@ watch(
 }
 
 :global(.add-new-template-dialog-container .dialog-footer .btn-primary) {
-  box-shadow: 0 14px 24px rgba(29, 78, 216, 0.18);
+  box-shadow: 0 14px 24px color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
 }
 
 @media (max-width: 768px) {

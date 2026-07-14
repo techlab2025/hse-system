@@ -6,9 +6,9 @@
   gap: 12px;
   width: 100%;
   padding: 14px;
-  border: 1px dashed #b9c9df;
+  border: 1px dashed var(--brand-primary-200);
   border-radius: 8px;
-  background: #f8fbff;
+  background: var(--brand-primary-50);
   font-family: 'Regular';
 
   .title {
@@ -16,12 +16,12 @@
     max-width: 100%;
     padding: 7px 11px;
     border-radius: 999px;
-    background: #ffffff;
-    color: #1d4ed8;
+    background: var(--surface-1);
+    color: var(--brand-primary-500);
     font-family: 'Bold';
     font-size: 14px;
     font-weight: 700;
-    box-shadow: 0 6px 18px rgba(29, 78, 216, 0.08);
+    box-shadow: 0 6px 18px color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
   }
 
   .investegaion-attachment-card-media {
@@ -33,11 +33,11 @@
     img {
       width: 100%;
       aspect-ratio: 1;
-      border: 1px solid #e3ebf6;
+      border: 1px solid var(--brand-primary-100);
       border-radius: 8px;
-      background: #ffffff;
+      background: var(--surface-1);
       object-fit: cover;
-      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+      box-shadow: 0 8px 18px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
     }
   }
 }

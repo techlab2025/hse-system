@@ -2,7 +2,7 @@
 @use '../../mixins/flex' as *;
 
 .locations-teams {
-  background-color: #fdfdfd;
+  background-color: var(--surface-1);
   padding: $MdSize $MdSize $XlSize3 $MdSize;
   border-radius: $XlSize;
   font-family: 'Regular';
@@ -13,10 +13,10 @@
     @include flex-row(nowrap, space-between, center);
     gap: $XsSize3;
     width: 100%;
-    background-color: white;
+    background-color: var(--surface-1);
 
     .show-all {
-      color: #3d4c5e;
+      color: var(--brand-primary-700);
       font-size: $MdSize;
       font-weight: $BaseFontWeightBold;
       text-decoration: underline;
@@ -25,11 +25,11 @@
 
   .locations-sections {
     width: 100%;
-    background-color: white;
+    background-color: var(--surface-1);
     .p-accordion {
       border-radius: $XlSize !important;
       padding: $XsSize $XsSize4;
-      background-color: #fafafa;
+      background-color: var(--surface-1);
       margin-block: $XsSize;
     }
   }

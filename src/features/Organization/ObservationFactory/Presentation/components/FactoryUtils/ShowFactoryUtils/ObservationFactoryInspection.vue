@@ -40,7 +40,7 @@ const props = defineProps<{
 <style scoped>
 .inspection-start-template {
   padding: 12px;
-  border: 1px solid #1d4ed8;
+  border: 1px solid var(--brand-primary-500);
   border-radius: 12px;
 }
 </style>

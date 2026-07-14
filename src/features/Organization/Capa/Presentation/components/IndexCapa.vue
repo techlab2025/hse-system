@@ -344,7 +344,7 @@ watch(
       font-family: 'Regular';
       font-weight: 600;
       font-size: 15px;
-      color: #6a717d;
+      color: var(--text-soft);
 
       &.description {
         font-family: 'Light';
@@ -355,7 +355,7 @@ watch(
   }
 
   .card-details {
-    background-color: #1f41bb0a;
+    background-color: color-mix(in srgb, var(--brand-primary-600) 3.92%, transparent);
     padding: 0.7rem;
     border-radius: 20px;
     width: 100%;
@@ -376,23 +376,23 @@ watch(
       margin: 0.5rem 0;
 
       p {
-        color: #9ca3af;
+        color: var(--text-soft);
         font-weight: 600;
         font-size: 14px;
 
         span {
-          color: #505050;
+          color: var(--text-soft);
         }
       }
     }
   }
 
   .observation-details {
-    background-color: rgba(72, 110, 246, 0.1);
+    background-color: color-mix(in srgb, var(--brand-primary-400) 10%, transparent);
     padding: 0.6rem 0.8rem;
     border-radius: 20px;
 
-    border-bottom: 2px solid #1f41bb;
+    border-bottom: 2px solid var(--brand-primary-600);
 
     &:hover {
       cursor: pointer;
@@ -406,7 +406,7 @@ watch(
       font-family: 'bold';
       font-weight: 700;
       font-size: 16px;
-      color: #1f41bb;
+      color: var(--brand-primary-600);
     }
   }
 
@@ -419,7 +419,7 @@ watch(
   //     font-family: 'bold';
   //     font-weight: 700;
   //     font-size: 16px;
-  //     color: #1F41BB;
+  //     color: var(--brand-primary-600);
 
   //     span {
   //       display: flex;
@@ -469,15 +469,15 @@ watch(
   display: flex;
   align-items: center;
   gap: 15px;
-  background-color: #f5f5f5;
+  background-color: var(--surface-1);
   padding: 0.4rem 1rem;
   border-radius: 40px;
 
   .active {
-    background-color: #f4f6ff;
-    border: 1px solid #1f41bb33;
+    background-color: var(--brand-primary-50);
+    border: 1px solid color-mix(in srgb, var(--brand-primary-600) 20%, transparent);
     padding: 0.5rem 1rem;
-    color: #1f41bb;
+    color: var(--brand-primary-600);
     font-weight: 700;
     border-radius: 40px;
     font-family: 'bold';

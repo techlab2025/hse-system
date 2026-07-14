@@ -7,15 +7,15 @@
   gap: $XsSize4;
   width: 100%;
   padding: $XsSize3;
-  background: #fdfffd;
-  border: 1px solid #6cb7651a;
+  background: var(--status-success-soft);
+  border: 1px solid color-mix(in srgb, var(--status-success) 10.2%, transparent);
   border-radius: $XsSize2;
   // max-width: 150px;
   .valid {
     @include flex-center();
     gap: $XsSize4;
     .valid-title {
-      color: #6cb765;
+      color: var(--status-success);
       font-size: $MdSize;
       font-weight: $BaseFontSemiBoldWeight;
       text-align: center;
@@ -23,7 +23,7 @@
     }
   }
   .valid-date {
-    color: #939393;
+    color: var(--text-soft);
     font-size: $XsSize;
     font-weight: $BaseFontMediumWeight;
     text-align: center;
@@ -32,7 +32,7 @@
     @include flex-center();
     gap: $XsSize4;
     .not-required-date {
-      color: #2f2d2d;
+      color: var(--text-strong);
       font-size: $MdSize;
       font-weight: $BaseFontSemiBoldWeight;
 

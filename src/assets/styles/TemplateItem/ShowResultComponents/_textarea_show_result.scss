@@ -10,7 +10,7 @@
     .options-container {
       width: 100%;
       @include flex-row(nowrap, space-between, center);
-      // border-bottom: 1px dashed #fddddd;
+      // border-bottom: 1px dashed var(--status-danger-soft);
       padding-bottom: $XsSize;
       gap: $XsSize2;
       position: relative;
@@ -24,7 +24,7 @@
         height: 100%;
         width: 7px;
         border-radius: 18px;
-        background-color: #1f41bb0a;
+        background-color: color-mix(in srgb, var(--brand-primary-600) 3.92%, transparent);
       }
       &::after {
         position: absolute;
@@ -40,25 +40,25 @@
         color: $PrimaryColor;
         font-size: $SmSize;
         font-weight: $BaseFontWeightBold;
-        background-color: #1f41bb0a;
+        background-color: color-mix(in srgb, var(--brand-primary-600) 3.92%, transparent);
         padding: 10px;
         padding-inline: 15px;
         border-radius: 8px;
       }
       .question {
-        color: #5e5e5e;
+        color: var(--text-soft);
       }
     }
   }
   .textarea-conatneir {
-    background-color: #fbfbfb;
+    background-color: var(--surface-1);
     @include flex-column(nowrap, flex-start, flex-start);
     padding-left: 15px;
     width: 100%;
     padding: 10px;
     border-radius: 12px;
     .title {
-      color: #121212;
+      color: var(--text-strong);
       font-size: 14px;
       font-weight: 700;
     }

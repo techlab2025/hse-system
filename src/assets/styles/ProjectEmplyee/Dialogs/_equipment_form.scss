@@ -14,7 +14,7 @@
     .select-item {
       padding: $XsSize calc($XlSize2 + 4px);
       border-radius: $XlSize;
-      background-color: #fafbfc;
+      background-color: var(--brand-primary-50);
       position: relative;
       border-radius: $XlSize;
       overflow: hidden;
@@ -66,7 +66,7 @@
       .item {
         @include flex-row(nowrap, flex-start, center);
         gap: $XsSize;
-        color: #9ca3af;
+        color: var(--text-soft);
         font-size: $MdSize;
         font-weight: $BaseFontSemiBoldWeight;
         transition: 0.3s all linear;
@@ -90,7 +90,7 @@
     button {
       padding: $MdSize;
       width: 100%;
-      color: white;
+      color: var(--text-on-brand);
       background-color: $PrimaryColor;
     }
   }
@@ -101,15 +101,15 @@
     border-radius: 12px;
     cursor: pointer;
     transition: 0.3s all linear;
-    border: 1px solid #f1f3f5b2;
-    color: #04195393;
+    border: 1px solid color-mix(in srgb, var(--brand-primary-50) 69.8%, transparent);
+    color: color-mix(in srgb, var(--brand-primary-800) 57.65%, transparent);
     padding: 22px;
-    border: 1px solid #d9d9e8;
+    border: 1px solid var(--brand-primary-100);
 
     &.active {
-      // background-color: #0419531a;
+      // background-color: color-mix(in srgb, var(--brand-primary-800) 10.2%, transparent);
       color: $PrimaryColor;
-      background: radial-gradient(white 40%, #cce1f544);
+      background: radial-gradient(var(--surface-1) 40%, color-mix(in srgb, var(--brand-primary-100) 26.67%, transparent));
     }
     label {
       width: 100%;

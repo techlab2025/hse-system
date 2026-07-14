@@ -4,7 +4,7 @@
 
 .section-header-page-container {
   width: 100%;
-  background: #f7f9fc;
+  background: var(--brand-primary-50);
   padding: $SmSize $MdSize;
   border-radius: calc($XlSize + 3px);
   font-family: 'Regular';
@@ -13,7 +13,7 @@
   .section-header-page {
     @include flex-row(wrap, flex-start, center);
     gap: $SmSize;
-    background: #f7f9fc;
+    background: var(--brand-primary-50);
     width: 100%;
     padding: $SmSize $MdSize;
     border-radius: calc($XlSize + 3px);
@@ -31,8 +31,8 @@
 
     .section-number-page {
       border-radius: 11px;
-      border: 2px solid #fff;
-      background: #f7f9fc;
+      border: 2px solid var(--surface-1);
+      background: var(--brand-primary-50);
       @include flex(row, nowrap, center, center);
 
       width: 45px;

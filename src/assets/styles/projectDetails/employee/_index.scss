@@ -15,7 +15,7 @@
     .btn {
       // padding: $MdSize;
       // flex: 1;
-      // color: #fff;
+      // color: var(--text-on-brand);
       // // background-color: $PrimaryColor;
       // border-radius: 36px;
       // text-align: center;
@@ -27,12 +27,12 @@
 
       &.btn-cancel {
         // flex: 0.25;
-        border: 1px solid rgba(226, 53, 53, 0.4);
-        background: rgba(226, 53, 53, 0.1);
+        border: 1px solid color-mix(in srgb, var(--status-danger) 40%, transparent);
+        background: color-mix(in srgb, var(--status-danger) 10%, transparent);
         color: var(--danger-color);
 
         &:hover {
-          background: rgba(226, 53, 53, 0.2);
+          background: color-mix(in srgb, var(--status-danger) 20%, transparent);
         }
       }
     }
@@ -41,7 +41,7 @@
   .employee-form {
     margin-top: $XlSize4;
     width: 100%;
-    background-color: #fbfbfb;
+    background-color: var(--text-on-brand);
     padding: $SmSize $XsSize;
     border-radius: $XlSize;
     @include flex(column, nowrap, flex-start, flex-start);
@@ -62,7 +62,7 @@
         top: 39%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background-color: #fbfbfb;
+        background-color: var(--text-on-brand);
         // margin-bottom: 1.5rem;
         padding: 0 $XlSize;
         border-radius: 50%;
@@ -76,7 +76,7 @@
         }
 
         sub {
-          color: #cdcdcd;
+          color: var(--text-muted);
           font-family: 'Regular';
           font-size: $XsSize;
         }
@@ -97,12 +97,12 @@
       .hr-dashed-line {
         margin-block: $SmSize;
         width: 100%;
-        border-bottom: 1px dashed #9ca3af3d;
+        border-bottom: 1px dashed color-mix(in srgb, var(--text-soft) 23.92%, transparent);
         border-bottom: 1px solid transparent;
         border-image: repeating-linear-gradient(
             to right,
-            #e9ebf4 0,
-            #e9ebf4 10px,
+            var(--brand-primary-100) 0,
+            var(--brand-primary-100) 10px,
             transparent 10px,
             transparent 20px
           )

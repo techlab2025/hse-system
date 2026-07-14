@@ -9,7 +9,7 @@
   .employee-interface-card {
     @include flex-row(nowrap, space-between, center);
     border-radius: $XlSize2;
-    border: 1px solid #eceef4;
+    border: 1px solid var(--brand-primary-50);
     padding: $MdSize $XlSize2;
     width: 100%;
     gap: $XlSize2;
@@ -37,66 +37,66 @@
     /* ================= Inspection ================= */
     &.Inspection {
       &::before {
-        background: #1f41bb;
+        background: var(--brand-primary-600);
       }
 
       .card-title {
-        color: #1f41bb;
+        color: var(--brand-primary-600);
       }
 
       .button-main {
-        background: #1f41bb;
-        border-color: #1f41bb;
+        background: var(--brand-primary-600);
+        border-color: var(--brand-primary-600);
       }
 
       .button-view {
-        color: #1f41bb;
-        border-color: #1f41bb33;
-        background: #f4f8ff;
+        color: var(--brand-primary-600);
+        border-color: color-mix(in srgb, var(--brand-primary-600) 20%, transparent);
+        background: var(--brand-primary-50);
       }
     }
 
     /* ================= Observation ================= */
     &.Observation {
       &::before {
-        background: #f4971e;
+        background: var(--brand-accent-500);
       }
 
       .card-title {
-        color: #f4971e;
+        color: var(--brand-accent-500);
       }
 
       .button-main {
-        background: #f4971e;
-        border-color: #f4971e;
+        background: var(--brand-accent-500);
+        border-color: var(--brand-accent-500);
       }
 
       .button-view {
-        color: #f4971e;
-        border-color: rgba(244, 151, 30, 0.3);
-        background: #fff6eb;
+        color: var(--brand-accent-500);
+        border-color: color-mix(in srgb, var(--brand-accent-500) 30%, transparent);
+        background: var(--brand-accent-50);
       }
     }
 
     /* ================= Incident ================= */
     &.Incident {
       &::before {
-        background: #ce1515;
+        background: var(--status-danger);
       }
 
       .card-title {
-        color: #ce1515;
+        color: var(--status-danger);
       }
 
       .button-main {
-        background: #ce1515;
-        border-color: #ce1515;
+        background: var(--status-danger);
+        border-color: var(--status-danger);
       }
 
       .button-view {
-        color: #ce1515;
-        border-color: rgba(226, 53, 53, 0.3);
-        background: #ce151533;
+        color: var(--status-danger);
+        border-color: color-mix(in srgb, var(--status-danger) 30%, transparent);
+        background: color-mix(in srgb, var(--status-danger) 20%, transparent);
       }
     }
 
@@ -125,7 +125,7 @@
       .card-subtitle {
         font-size: $MdSize2;
         font-weight: $BaseFontMediumWeight;
-        color: #cbcbcb;
+        color: var(--text-muted);
       }
 
       .actions-button {
@@ -143,7 +143,7 @@
         }
 
         .button-main {
-          color: #fff;
+          color: var(--text-on-brand);
         }
       }
     }

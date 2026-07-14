@@ -46,10 +46,10 @@ const props = defineProps<{
   gap: 14px;
   overflow: hidden;
   padding: 16px;
-  border: 1px solid rgba(221, 226, 237, 0.82);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 82%, transparent);
   border-radius: 20px;
-  background: radial-gradient(circle at 0 0, rgba(29, 78, 216, 0.1), transparent 32%), #fff;
-  box-shadow: 0 12px 30px rgba(15, 25, 39, 0.055);
+  background: radial-gradient(circle at 0 0, color-mix(in srgb, var(--brand-primary-500) 10%, transparent), transparent 32%), var(--surface-1);
+  box-shadow: 0 12px 30px color-mix(in srgb, var(--brand-primary-900) 5.5%, transparent);
 }
 
 .employee-tasks-card::before {
@@ -59,7 +59,7 @@ const props = defineProps<{
   bottom: 0;
   width: 4px;
   content: '';
-  background: linear-gradient(180deg, #1d4ed8, #4aae3a);
+  background: linear-gradient(180deg, var(--brand-primary-500), var(--status-success));
 }
 
 .task-details,
@@ -88,18 +88,18 @@ const props = defineProps<{
 }
 
 .task-chip {
-  color: #1d4ed8;
-  background: rgba(29, 78, 216, 0.08);
+  color: var(--brand-primary-500);
+  background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
 }
 
 .task-date-pill {
-  color: #287b22;
-  background: rgba(74, 174, 58, 0.1);
+  color: var(--status-success);
+  background: color-mix(in srgb, var(--status-success) 10%, transparent);
 }
 
 .task-date h6 {
   margin: 0;
-  color: #041953;
+  color: var(--brand-primary-800);
   font-size: 18px;
   font-weight: 900;
   line-height: 1.3;
@@ -110,13 +110,13 @@ const props = defineProps<{
   flex-wrap: wrap;
   gap: 6px;
   margin: 10px 0 0;
-  color: #7a8797;
+  color: var(--text-soft);
   font-size: 12px;
   font-weight: 900;
 }
 
 .project-name span {
-  color: #111827;
+  color: var(--brand-primary-900);
 }
 
 .info-employee-task {
@@ -132,9 +132,9 @@ const props = defineProps<{
   align-items: center;
   gap: 10px;
   padding: 10px;
-  border: 1px solid rgba(221, 226, 237, 0.82);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 82%, transparent);
   border-radius: 16px;
-  background: #f8fafc;
+  background: var(--brand-primary-50);
 }
 
 .imge img {
@@ -149,14 +149,14 @@ const props = defineProps<{
 }
 
 .info span {
-  color: #7a8797;
+  color: var(--text-soft);
   font-size: 10px;
   font-weight: 900;
 }
 
 .info h6 {
   margin: 2px 0 0;
-  color: #111827;
+  color: var(--brand-primary-900);
   font-size: 13px;
   font-weight: 900;
 }
@@ -164,7 +164,7 @@ const props = defineProps<{
 .info p {
   margin: 2px 0 0;
   overflow: hidden;
-  color: #607086;
+  color: var(--brand-primary-500);
   font-size: 11px;
   font-weight: 800;
   text-overflow: ellipsis;

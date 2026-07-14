@@ -5,11 +5,11 @@
 
 .hotel-swiper {
   &::part(bullet) {
-    background-color: $White;
+    background-color: var(--surface-1);
   }
 
   &::part(bullet-active) {
-    background-color: $White;
+    background-color: var(--surface-1);
     width: 16px;
     //height: 45px;
     border-radius: $XlSize3;

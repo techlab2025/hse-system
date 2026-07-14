@@ -2,9 +2,9 @@
 @use '../mixins/flex' as *;
 
 .certificate-card {
-  box-shadow: 0px 4px 20px 0px #a2a2a21a;
+  box-shadow: 0px 4px 20px 0px color-mix(in srgb, var(--text-soft) 10.2%, transparent);
   border-radius: $XlSize3;
-  border: 1px solid #fefefe;
+  border: 1px solid var(--surface-1);
   padding: $SmSize;
   @include flex-row(nowrap, space-between, stretch);
 
@@ -21,7 +21,7 @@
         .title {
           font-size: calc($XlSize + 2px);
           font-weight: $BaseFontWeightBold;
-          color: #000000;
+          color: var(--text-strong);
         }
         .status {
           font-size: $MdSize;
@@ -32,11 +32,11 @@
       .created-at {
         font-size: $SmSize;
         font-weight: $BaseFontMediumWeight;
-        color: #6b7280;
+        color: var(--text-soft);
         span {
           font-size: $SmSize;
           font-weight: $BaseFontMediumWeight;
-          color: #9ca3af;
+          color: var(--text-soft);
         }
       }
     }
@@ -50,12 +50,12 @@
           &:first-child {
             font-size: $SmSize;
             font-weight: $BaseFontMediumWeight;
-            color: #6b7280;
+            color: var(--text-soft);
           }
           &:last-child {
             font-size: $MdSize;
             font-weight: $BaseFontSemiBoldWeight;
-            color: #333435;
+            color: var(--text-strong);
           }
         }
       }

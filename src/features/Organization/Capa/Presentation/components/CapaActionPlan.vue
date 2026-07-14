@@ -128,7 +128,7 @@ onMounted(async () => {
   background:
     linear-gradient(135deg, var(--BgWhite), var(--Gray-1)),
     radial-gradient(circle at top left, var(--primary-dark), transparent 34%);
-  box-shadow: 0 12px 24px color-mix(in srgb, var(--Black) 10%, transparent);
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--text-strong) 10%, transparent);
   padding: 1.25rem;
 }
 
@@ -173,7 +173,7 @@ h4 {
   border: 1px solid var(--main-border);
   background: var(--BgWhite);
   color: var(--header-page-color);
-  box-shadow: 0 4px 8px color-mix(in srgb, var(--Black) 10%, transparent);
+  box-shadow: 0 4px 8px color-mix(in srgb, var(--text-strong) 10%, transparent);
 }
 
 .task-total {

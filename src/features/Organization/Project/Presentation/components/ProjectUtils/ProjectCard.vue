@@ -190,7 +190,7 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
     ),
     var(--BgWhite);
   color: var(--GrayText-1);
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.06);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
 }
 
 .update-locations:hover {
@@ -236,7 +236,7 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
     ),
     linear-gradient(180deg, var(--BgWhite), var(--Gray-1));
   padding: 14px;
-  box-shadow: 0 22px 48px rgba(15, 23, 42, 0.16);
+  box-shadow: 0 22px 48px color-mix(in srgb, var(--brand-primary-900) 16%, transparent);
 }
 
 .popover-head {
@@ -326,7 +326,7 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
 .location-data:hover {
   transform: translateX(2px);
   border-color: color-mix(in srgb, var(--PrimaryColor) 25%, var(--main-border));
-  box-shadow: 0 10px 18px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 10px 18px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
 }
 
 .location-index {

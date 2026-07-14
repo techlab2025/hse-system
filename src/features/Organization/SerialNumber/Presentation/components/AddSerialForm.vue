@@ -328,7 +328,7 @@ const route = useRoute()
 
 <style lang="scss" scoped>
 .generated-serial {
-  background-color: rgba(249, 249, 252, 1);
+  background-color: var(--brand-primary-50);
   border-radius: 24px;
   padding: 1rem;
   width: 100%;
@@ -351,7 +351,7 @@ const route = useRoute()
       font-size: 1rem;
       font-weight: 600;
       font-family: 'regular';
-      color: rgba(32, 32, 32, 1);
+      color: var(--text-strong);
     }
   }
 
@@ -375,10 +375,10 @@ const route = useRoute()
       font-size: 0.8rem;
       font-weight: 600;
       font-family: 'regular';
-      color: rgba(130, 130, 139, 1);
+      color: var(--text-soft);
 
       span {
-        color: rgba(32, 32, 32, 1);
+        color: var(--text-strong);
       }
     }
   }

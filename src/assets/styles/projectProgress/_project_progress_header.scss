@@ -4,8 +4,8 @@
 .project-progress-header-container {
   width: 100%;
   @include flex-row(nowrap, space-between, center);
-  background-image: linear-gradient(to right, #8baaff1e, #ffffff);
-  border: 1px solid #1f41bb12;
+  background-image: linear-gradient(to right, color-mix(in srgb, var(--brand-primary-200) 11.76%, transparent), var(--surface-1));
+  border: 1px solid color-mix(in srgb, var(--brand-primary-600) 7.06%, transparent);
   border-radius: $XlSize2;
   padding: $SmSize $XlSize2;
   .project-progress-info {
@@ -16,12 +16,12 @@
       gap: $XsSize4;
 
       .title {
-        color: #170f49;
+        color: var(--brand-primary-800);
         font-size: $XlSize;
         font-weight: $BaseFontWeightBold;
       }
       .description {
-        color: #aeaeba;
+        color: var(--text-muted);
         font-size: $MdSize;
         font-weight: $BaseFontMediumWeight;
       }

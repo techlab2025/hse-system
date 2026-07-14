@@ -588,7 +588,7 @@ defineExpose({
   height: 20px;
   margin-right: 6px;
   cursor: pointer;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   text-decoration: underline;
   font-family: 'Regular';
 }
@@ -600,7 +600,7 @@ defineExpose({
 
 .required-field-message {
   margin-top: 0.35rem;
-  color: #dc2626;
+  color: var(--status-danger);
   font-size: 0.82rem;
   font-weight: 700;
 }

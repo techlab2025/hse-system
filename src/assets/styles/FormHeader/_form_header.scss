@@ -6,14 +6,14 @@
   width: 100%;
   padding: $XlSize2 $SmSize;
   font-family: 'Regular';
-  background-color: #f8f9fb;
+  background-color: var(--brand-primary-50);
   border-radius: calc($XlSize2 + 3px);
   .form-header {
-    background-color: #f8f9fb;
+    background-color: var(--brand-primary-50);
     @include flex-column(nowrap, flex-start, flex-start);
     gap: $XsSize3;
     .title {
-      color: #121212;
+      color: var(--text-strong);
       font-size: calc($XlSize2 + 2px);
       font-weight: $BaseFontWeightBold;
     }

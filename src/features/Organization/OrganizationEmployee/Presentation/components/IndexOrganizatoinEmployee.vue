@@ -597,6 +597,6 @@ const IndexOrganizationEmployeectionList = () => [
   align-items: center;
 }
 .table-Hierarchy {
-  color: #1f41bb !important;
+  color: var(--brand-primary-600) !important;
 }
 </style>

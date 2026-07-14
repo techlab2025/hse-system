@@ -281,11 +281,11 @@ watch(
 }
 .tasks-index-toolbar,
 .tasks-board {
-  border: 1px solid #e6edf7;
+  border: 1px solid var(--brand-primary-100);
   border-radius: 8px;
   background:
-    linear-gradient(180deg, rgba(248, 250, 252, 0.92), rgba(255, 255, 255, 0.96)), #ffffff;
-  box-shadow: 0 16px 34px rgba(15, 23, 42, 0.06);
+    linear-gradient(180deg, color-mix(in srgb, var(--brand-primary-50) 92%, transparent), color-mix(in srgb, var(--surface-1) 96%, transparent)), var(--surface-1);
+  box-shadow: 0 16px 34px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
 }
 
 .tasks-index-toolbar {
@@ -309,7 +309,7 @@ watch(
   h1,
   h2 {
     margin: 4px 0 0;
-    color: #0f172a;
+    color: var(--brand-primary-900);
     font-family: 'Bold';
     font-weight: 900;
     line-height: 1.25;
@@ -340,7 +340,7 @@ watch(
     width: 30px;
     height: 30px;
     border-radius: 8px;
-    background: rgba(29, 78, 216, 0.08);
+    background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
     color: var(--PrimaryColor);
     cursor: pointer;
     transform: translateY(-50%);
@@ -349,9 +349,9 @@ watch(
   .input {
     width: 100%;
     min-height: 46px;
-    border: 1px solid #dbe5f2;
+    border: 1px solid var(--brand-primary-100);
     border-radius: 8px;
-    background: #ffffff;
+    background: var(--surface-1);
     padding-inline-start: 52px;
     font-weight: 700;
     transition:
@@ -359,8 +359,8 @@ watch(
       box-shadow 0.2s ease;
 
     &:focus {
-      border-color: rgba(29, 78, 216, 0.34);
-      box-shadow: 0 0 0 4px rgba(29, 78, 216, 0.08);
+      border-color: color-mix(in srgb, var(--brand-primary-500) 34%, transparent);
+      box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
       outline: none;
     }
   }
@@ -380,12 +380,12 @@ watch(
   justify-content: space-between;
   gap: 16px;
   padding-bottom: 14px;
-  border-bottom: 1px dashed #dbe5f2;
+  border-bottom: 1px dashed var(--brand-primary-100);
 
   p {
     max-width: 420px;
     margin: 0;
-    color: #64748b;
+    color: var(--brand-primary-500);
     font-size: 13px;
     font-weight: 700;
     line-height: 1.6;

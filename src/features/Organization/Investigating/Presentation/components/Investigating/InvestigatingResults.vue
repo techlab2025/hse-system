@@ -1220,7 +1220,7 @@ const validateRequiredFields = async () => {
     width: 28px;
     height: 28px;
     margin-inline-start: auto;
-    color: #94a3b8;
+    color: var(--brand-primary-400);
     transform: rotate(0deg);
     transition:
       transform 0.25s ease,
@@ -1253,9 +1253,9 @@ const validateRequiredFields = async () => {
   :deep(.p-accordion .input-wrapper textarea),
   :deep(.p-accordion .p-inputtext),
   :deep(.multi-image-uploader) {
-    border: 1px solid #cbd5e1 !important;
+    border: 1px solid var(--brand-primary-200) !important;
     border-radius: 14px !important;
-    background-color: #ffffff !important;
+    background-color: var(--text-on-brand) !important;
     box-shadow: none !important;
   }
 
@@ -1265,7 +1265,7 @@ const validateRequiredFields = async () => {
   :deep(.p-accordion .input-wrapper input:hover),
   :deep(.p-accordion .input-wrapper textarea:hover),
   :deep(.p-accordion .p-inputtext:hover) {
-    border-color: #94a3b8 !important;
+    border-color: var(--brand-primary-400) !important;
   }
 
   :deep(.p-accordion div.input-select:focus-within),
@@ -1277,15 +1277,15 @@ const validateRequiredFields = async () => {
   :deep(.p-accordion .input-wrapper input:focus),
   :deep(.p-accordion .input-wrapper textarea:focus),
   :deep(.p-accordion .p-inputtext:focus) {
-    border-color: #94a3b8 !important;
-    box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.16) !important;
+    border-color: var(--brand-primary-400) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary-400) 16%, transparent) !important;
     outline: none !important;
   }
 }
 
 .required-field-message {
   margin-top: 0.35rem;
-  color: #dc2626;
+  color: var(--status-danger);
   font-size: 0.82rem;
   font-weight: 700;
 }
@@ -1318,7 +1318,7 @@ const validateRequiredFields = async () => {
   border: 1px solid var(--main-border);
   border-radius: 18px;
   background: var(--BgWhite);
-  box-shadow: 0 8px 16px color-mix(in srgb, var(--Black) 10%, transparent);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--text-strong) 10%, transparent);
   padding: 1.25rem;
 }
 
@@ -1334,8 +1334,8 @@ const validateRequiredFields = async () => {
       color-mix(in srgb, var(--PrimaryColor) 10%, transparent),
       transparent 34%
     ),
-    linear-gradient(180deg, var(--BgWhite), #f8fbff);
-  box-shadow: 0 14px 32px color-mix(in srgb, var(--Black) 8%, transparent);
+    linear-gradient(180deg, var(--BgWhite), var(--brand-primary-50));
+  box-shadow: 0 14px 32px color-mix(in srgb, var(--text-strong) 8%, transparent);
   padding: clamp(14px, 2vw, 22px);
 }
 
@@ -1343,7 +1343,7 @@ const validateRequiredFields = async () => {
   margin-bottom: 1rem;
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
   border-radius: 16px;
-  background: color-mix(in srgb, var(--PrimaryColor) 5%, white);
+  background: color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-1));
   padding: 1rem;
 
   .title,
@@ -1380,7 +1380,7 @@ const validateRequiredFields = async () => {
     inset-inline-start: 20px;
     width: 2px;
     border-radius: 999px;
-    background: linear-gradient(180deg, var(--PrimaryColor), #14b8a6);
+    background: linear-gradient(180deg, var(--PrimaryColor), var(--status-success));
     opacity: 0.28;
   }
 }
@@ -1406,10 +1406,10 @@ const validateRequiredFields = async () => {
     justify-content: center;
     width: 38px;
     height: 38px;
-    border: 4px solid #ffffff;
+    border: 4px solid var(--surface-1);
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--PrimaryColor), #14b8a6);
-    color: #ffffff;
+    background: linear-gradient(135deg, var(--PrimaryColor), var(--status-success));
+    color: var(--text-on-brand);
     font-size: 0.85rem;
     font-weight: 900;
     box-shadow: 0 12px 24px color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
@@ -1417,10 +1417,10 @@ const validateRequiredFields = async () => {
 }
 
 .event-timeline-card {
-  border: 1px solid rgba(226, 232, 240, 0.9);
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 12px 24px color-mix(in srgb, var(--Black) 6%, transparent);
+  background: color-mix(in srgb, var(--surface-1) 94%, transparent);
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--text-strong) 6%, transparent);
   padding: 1rem;
   transition:
     transform 0.2s ease,
@@ -1430,7 +1430,7 @@ const validateRequiredFields = async () => {
   &:hover {
     transform: translateY(-2px);
     border-color: color-mix(in srgb, var(--PrimaryColor) 24%, var(--main-border));
-    box-shadow: 0 18px 34px color-mix(in srgb, var(--Black) 9%, transparent);
+    box-shadow: 0 18px 34px color-mix(in srgb, var(--text-strong) 9%, transparent);
   }
 }
 
@@ -1475,8 +1475,8 @@ const validateRequiredFields = async () => {
 
 .event-timeline-delete {
   border-radius: 999px;
-  background: #fef2f2;
-  color: #dc2626;
+  background: var(--status-danger-soft);
+  color: var(--status-danger);
   font-size: 0.78rem;
   padding: 0.45rem 0.75rem;
 }
@@ -1502,7 +1502,7 @@ const validateRequiredFields = async () => {
   label {
     display: block;
     margin-bottom: 0.45rem;
-    color: #64748b;
+    color: var(--brand-primary-500);
     font-size: 0.78rem;
     font-weight: 900;
   }
@@ -1520,8 +1520,8 @@ const validateRequiredFields = async () => {
   min-height: 42px;
   margin-top: 1rem;
   border-radius: 12px;
-  background: linear-gradient(135deg, var(--PrimaryColor), #14b8a6);
-  color: #ffffff;
+  background: linear-gradient(135deg, var(--PrimaryColor), var(--status-success));
+  color: var(--text-on-brand);
   font-size: 0.9rem;
   padding: 0.7rem 1.1rem;
   box-shadow: 0 14px 26px color-mix(in srgb, var(--PrimaryColor) 22%, transparent);
@@ -1533,9 +1533,9 @@ const validateRequiredFields = async () => {
 
 :deep(.event-timeline-fields .p-inputtext) {
   width: 100%;
-  border-color: rgba(226, 232, 240, 0.95);
+  border-color: color-mix(in srgb, var(--brand-primary-100) 95%, transparent);
   border-radius: 14px !important;
-  background: #ffffff;
+  background: var(--surface-1);
   color: var(--header-page-color);
   font-weight: 800;
   padding: 0.78rem 0.9rem !important;
@@ -1578,7 +1578,7 @@ const validateRequiredFields = async () => {
       transparent 34%
     ),
     var(--BgWhite);
-  box-shadow: 0 8px 16px color-mix(in srgb, var(--Black) 10%, transparent);
+  box-shadow: 0 8px 16px color-mix(in srgb, var(--text-strong) 10%, transparent);
   padding: 1.25rem;
 }
 
@@ -1607,7 +1607,7 @@ const validateRequiredFields = async () => {
   background: linear-gradient(
     135deg,
     var(--BgWhite),
-    color-mix(in srgb, var(--PrimaryColor) 5%, white)
+    color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-1))
   );
   padding: 1rem;
   transition:
@@ -1618,13 +1618,13 @@ const validateRequiredFields = async () => {
   &:hover {
     transform: translateY(-2px);
     border-color: color-mix(in srgb, var(--PrimaryColor) 30%, var(--main-border));
-    box-shadow: 0 16px 30px color-mix(in srgb, var(--Black) 8%, transparent);
+    box-shadow: 0 16px 30px color-mix(in srgb, var(--text-strong) 8%, transparent);
   }
 
   span {
     width: fit-content;
     border-radius: 999px;
-    background: color-mix(in srgb, var(--PrimaryColor) 12%, white);
+    background: color-mix(in srgb, var(--PrimaryColor) 12%, var(--surface-1));
     color: var(--PrimaryColor);
     font-size: 0.75rem;
     font-weight: 900;
@@ -1653,7 +1653,7 @@ const validateRequiredFields = async () => {
     small {
       display: block;
       border-radius: 999px;
-      background: linear-gradient(90deg, #eef2f7, #f8fafc, #eef2f7);
+      background: linear-gradient(90deg, var(--brand-primary-50), var(--brand-primary-50), var(--brand-primary-50));
       background-size: 220% 100%;
       color: transparent;
       animation: similarLoading 1.2s ease-in-out infinite;
@@ -1720,12 +1720,12 @@ const validateRequiredFields = async () => {
 }
 
 :deep(.p-editor-toolbar) {
-  border-color: var(--main-border);
+  border-color: var(--text-muted);
   background: var(--Gray-1);
 }
 
 :deep(.p-editor-content) {
-  border-color: var(--main-border);
+  border-color: var(--text-muted);
 }
 
 .investigation-result-inputs {

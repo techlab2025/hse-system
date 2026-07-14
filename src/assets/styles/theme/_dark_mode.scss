@@ -13,7 +13,7 @@ body,
 #app {
   min-height: 100vh;
   background: var(--app-bg);
-  color: var(--Black);
+  color: var(--text-strong);
 }
 
 body,
@@ -40,7 +40,7 @@ body,
 
   body {
     background-color: var(--app-bg) !important;
-    color: var(--Black) !important;
+    color: var(--text-strong) !important;
   }
 
   .content .main-content,
@@ -89,9 +89,9 @@ body,
   .template-document-content,
   .card,
   .box {
-    background-color: var(--surface-1) !important;
-    color: var(--Black) !important;
-    border-color: var(--main-border) !important;
+    background-color: var(--text-on-brand) !important;
+    color: var(--text-strong) !important;
+    border-color: var(--text-muted) !important;
   }
 
   .breadcrumbs,
@@ -109,7 +109,7 @@ body,
   .inspection-card .view-inspection,
   .index-table-card .title,
   .index-table-card .card-details span {
-    color: var(--Black) !important;
+    color: var(--text-strong) !important;
   }
 
   .inspection-card .date,
@@ -125,8 +125,8 @@ body,
   .inspection-card .session-box,
   .index-table-card,
   .template-selector .panel-acc {
-    background-color: var(--surface-1) !important;
-    border-color: var(--main-border) !important;
+    background-color: var(--text-on-brand) !important;
+    border-color: var(--text-muted) !important;
   }
 
   .inspection-card .title-container {
@@ -142,7 +142,7 @@ body,
 
   .inspection-card .show-button,
   .index-table-card .show-details {
-    background-color: rgba(96, 165, 250, 0.1) !important;
+    background-color: color-mix(in srgb, var(--brand-primary-300) 10%, transparent) !important;
     border-color: var(--PrimaryColor) !important;
     color: var(--PrimaryColor) !important;
   }
@@ -156,9 +156,9 @@ body,
   .idnex-filter .filter,
   .filter-container .filter,
   .categories-container .category {
-    background-color: var(--surface-2) !important;
-    color: var(--Black) !important;
-    border-color: var(--main-border) !important;
+    background-color: var(--text-on-brand) !important;
+    color: var(--text-strong) !important;
+    border-color: var(--text-muted) !important;
   }
 
   .idnex-header .category.active,
@@ -166,7 +166,7 @@ body,
   .filter-container .filter.active,
   .categories-container .category.active {
     background-color: var(--PrimaryColor) !important;
-    color: #ffffff !important;
+    color: var(--text-on-brand) !important;
     border-color: var(--PrimaryColor) !important;
   }
 
@@ -178,7 +178,7 @@ body,
   }
 
   .main-content :where(h1, h2, h3, h4, h5, h6, label, .title, .card-title, .project-title) {
-    color: var(--Black) !important;
+    color: var(--text-strong) !important;
   }
 
   .main-content :where(p, span, small, .subtitle, .description, .text, .empty-msg) {
@@ -186,9 +186,9 @@ body,
   }
 
   :where(input, textarea, select, .p-inputtext, .p-select, .p-multiselect, .p-dropdown, .p-textarea) {
-    background-color: var(--surface-2) !important;
-    color: var(--Black) !important;
-    border-color: var(--main-border) !important;
+    background-color: var(--text-on-brand) !important;
+    color: var(--text-strong) !important;
+    border-color: var(--text-muted) !important;
   }
 
   :where(input::placeholder, textarea::placeholder, .p-placeholder) {
@@ -196,27 +196,27 @@ body,
   }
 
   :where(.p-select-overlay, .p-multiselect-overlay, .p-datepicker-panel, .p-menu, .p-tieredmenu, .p-drawer) {
-    background-color: var(--surface-1) !important;
-    color: var(--Black) !important;
-    border-color: var(--main-border) !important;
+    background-color: var(--text-on-brand) !important;
+    color: var(--text-strong) !important;
+    border-color: var(--text-muted) !important;
   }
 
   :where(.p-select-option, .p-multiselect-option, .p-menu-item-content, .p-datepicker-day, .p-datepicker-month, .p-datepicker-year) {
-    color: var(--Black) !important;
+    color: var(--text-strong) !important;
   }
 
   :where(.p-select-option:hover, .p-multiselect-option:hover, .p-menu-item-content:hover) {
-    background-color: var(--surface-3) !important;
+    background-color: var(--text-on-brand) !important;
   }
 
   :where(table, thead, tbody, tr, th, td, .p-datatable-thead > tr > th, .p-datatable-tbody > tr > td) {
-    background-color: var(--surface-1) !important;
-    color: var(--Black) !important;
-    border-color: var(--main-border) !important;
+    background-color: var(--text-on-brand) !important;
+    color: var(--text-strong) !important;
+    border-color: var(--text-muted) !important;
   }
 
   :where(.main-table thead tr th, .p-datatable-thead > tr > th) {
-    background-color: var(--surface-2) !important;
+    background-color: var(--text-on-brand) !important;
   }
 
   .table-responsive {
@@ -227,21 +227,21 @@ body,
         transparent 36%
       ),
       linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
-    border-color: var(--main-border) !important;
-    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.22) !important;
+    border-color: var(--text-muted) !important;
+    box-shadow: 0 18px 42px color-mix(in srgb, var(--text-strong) 22%, transparent) !important;
     scrollbar-color: var(--PrimaryColor) var(--surface-3) !important;
   }
 
   .table-responsive::-webkit-scrollbar-track {
-    background-color: var(--surface-3) !important;
+    background-color: var(--text-on-brand) !important;
   }
 
   .table-responsive::-webkit-scrollbar-thumb {
-    border-color: var(--surface-3) !important;
+    border-color: var(--text-on-brand) !important;
     background: linear-gradient(
       90deg,
       color-mix(in srgb, var(--PrimaryColor) 72%, transparent),
-      rgba(20, 184, 166, 0.72)
+      color-mix(in srgb, var(--status-success) 72%, transparent)
     ) !important;
   }
 
@@ -253,7 +253,7 @@ body,
     background:
       linear-gradient(180deg, var(--surface-2), var(--surface-3)),
       var(--surface-2) !important;
-    border-color: var(--main-border) !important;
+    border-color: var(--text-muted) !important;
     color: var(--text-soft) !important;
   }
 
@@ -280,8 +280,8 @@ body,
   }
 
   .table-responsive table.main-table tbody tr td {
-    background-color: var(--surface-1) !important;
-    border-color: var(--main-border) !important;
+    background-color: var(--text-on-brand) !important;
+    border-color: var(--text-muted) !important;
     color: var(--text-strong) !important;
     box-shadow: none !important;
   }
@@ -289,8 +289,8 @@ body,
   .table-responsive table.main-table tbody tr td:first-child,
   .table-responsive table.main-table tbody tr td:last-child,
   .table-responsive table.main-table tbody tr td:last-of-type {
-    background-color: var(--surface-1) !important;
-    border-color: var(--main-border) !important;
+    background-color: var(--text-on-brand) !important;
+    border-color: var(--text-muted) !important;
   }
 
   .table-responsive table.main-table tbody tr:hover td {
@@ -298,12 +298,12 @@ body,
       linear-gradient(
         90deg,
         color-mix(in srgb, var(--PrimaryColor) 13%, transparent),
-        color-mix(in srgb, #14b8a6 8%, transparent)
+        color-mix(in srgb, var(--status-success) 8%, transparent)
       ),
       var(--surface-2) !important;
     border-color: color-mix(in srgb, var(--PrimaryColor) 32%, var(--main-border)) !important;
     color: var(--text-strong) !important;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18) !important;
+    box-shadow: 0 12px 24px color-mix(in srgb, var(--text-strong) 18%, transparent) !important;
   }
 
   .table-responsive table.main-table tbody tr td a,
@@ -313,8 +313,8 @@ body,
   }
 
   .table-responsive table.main-table tbody tr td img {
-    border-color: var(--surface-3) !important;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.28) !important;
+    border-color: var(--text-on-brand) !important;
+    box-shadow: 0 10px 20px color-mix(in srgb, var(--text-strong) 28%, transparent) !important;
   }
 
   .table-responsive table.main-table .image_certificate_container,
@@ -330,8 +330,8 @@ body,
 
   @media (max-width: 768px) {
     .table-responsive table.main-table tbody tr {
-      background-color: var(--surface-1) !important;
-      border-color: var(--main-border) !important;
+      background-color: var(--text-on-brand) !important;
+      border-color: var(--text-muted) !important;
     }
 
     .table-responsive table.main-table tbody tr td::before {
@@ -340,34 +340,34 @@ body,
   }
 
   :where(.btn-secondary, .filter-btn, .export-btn, .p-button-outlined) {
-    background-color: var(--surface-2) !important;
-    color: var(--Black) !important;
-    border-color: var(--main-border) !important;
+    background-color: var(--text-on-brand) !important;
+    color: var(--text-strong) !important;
+    border-color: var(--text-muted) !important;
   }
 
   :where(.header-dropdown-menu) {
-    background-color: var(--surface-1) !important;
-    border-color: var(--main-border) !important;
-    box-shadow: 0 22px 48px rgba(0, 0, 0, 0.34) !important;
+    background-color: var(--text-on-brand) !important;
+    border-color: var(--text-muted) !important;
+    box-shadow: 0 22px 48px color-mix(in srgb, var(--text-strong) 34%, transparent) !important;
   }
 
   :where(.header-dropdown-menu li) {
-    color: var(--Black) !important;
+    color: var(--text-strong) !important;
   }
 
   :where(.header-dropdown-menu li:hover) {
-    background-color: var(--surface-3) !important;
+    background-color: var(--text-on-brand) !important;
     color: var(--PrimaryColor) !important;
   }
 
   :where(.p-toast-message) {
-    background-color: var(--surface-1) !important;
-    color: var(--Black) !important;
-    border-color: var(--main-border) !important;
+    background-color: var(--text-on-brand) !important;
+    color: var(--text-strong) !important;
+    border-color: var(--text-muted) !important;
   }
 
   .inspection-index-page.is-dark {
-    color: var(--Black);
+    color: var(--text-strong);
 
     .inspection-controls-panel {
       display: flex;
@@ -386,9 +386,9 @@ body,
   }
 
   .idnex-header.is-dark {
-    background-color: var(--surface-1) !important;
+    background-color: var(--text-on-brand) !important;
     border: 1px solid var(--main-border) !important;
-    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.24) !important;
+    box-shadow: 0 14px 32px color-mix(in srgb, var(--text-strong) 24%, transparent) !important;
 
     .title,
     .index-length span {
@@ -402,8 +402,8 @@ body,
 
   .idnex-filter.is-dark {
     background: var(--surface-1) !important;
-    border-color: var(--main-border) !important;
-    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.24) !important;
+    border-color: var(--text-muted) !important;
+    box-shadow: 0 14px 32px color-mix(in srgb, var(--text-strong) 24%, transparent) !important;
 
     .filter-container {
       background-color: transparent !important;
@@ -412,20 +412,20 @@ body,
     }
 
     .filter {
-      background-color: var(--surface-2) !important;
-      border-color: var(--main-border) !important;
+      background-color: var(--text-on-brand) !important;
+      border-color: var(--text-muted) !important;
       color: var(--text-soft) !important;
 
       &:hover {
-        background-color: var(--surface-3) !important;
-        border-color: rgba(96, 165, 250, 0.5) !important;
+        background-color: var(--text-on-brand) !important;
+        border-color: color-mix(in srgb, var(--brand-primary-300) 50%, transparent) !important;
         color: var(--PrimaryColor) !important;
       }
 
       &.active {
-        background: rgba(96, 165, 250, 0.18) !important;
-        border-color: rgba(96, 165, 250, 0.56) !important;
-        color: #bfdbfe !important;
+        background: color-mix(in srgb, var(--brand-primary-300) 18%, transparent) !important;
+        border-color: color-mix(in srgb, var(--brand-primary-300) 56%, transparent) !important;
+        color: var(--brand-primary-100) !important;
       }
     }
 
@@ -435,13 +435,13 @@ body,
       }
 
       .btn-primary {
-        background: linear-gradient(135deg, #2563eb, #14b8a6) !important;
+        background: linear-gradient(135deg, var(--brand-primary-500), var(--status-success)) !important;
         border-color: transparent !important;
-        color: #ffffff !important;
-        box-shadow: 0 14px 28px rgba(37, 99, 235, 0.24) !important;
+        color: var(--text-on-brand) !important;
+        box-shadow: 0 14px 28px color-mix(in srgb, var(--brand-primary-500) 24%, transparent) !important;
 
         &:hover {
-          color: #ffffff !important;
+          color: var(--text-on-brand) !important;
           filter: brightness(1.08);
         }
       }
@@ -452,9 +452,9 @@ body,
     background-color: transparent !important;
 
     .inspection-history {
-      background-color: var(--surface-1) !important;
-      border-color: var(--main-border) !important;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+      background-color: var(--text-on-brand) !important;
+      border-color: var(--text-muted) !important;
+      box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 22%, transparent);
     }
 
     .bg {
@@ -464,8 +464,8 @@ body,
     .title-container {
       border-image: repeating-linear-gradient(
           to right,
-          rgba(148, 163, 184, 0.54) 0,
-          rgba(148, 163, 184, 0.54) 10px,
+          color-mix(in srgb, var(--brand-primary-400) 54%, transparent) 0,
+          color-mix(in srgb, var(--brand-primary-400) 54%, transparent) 10px,
           transparent 10px,
           transparent 20px
         )
@@ -500,8 +500,8 @@ body,
 
     .session-box,
     .tool-box {
-      background-color: var(--surface-2) !important;
-      border-color: var(--main-border) !important;
+      background-color: var(--text-on-brand) !important;
+      border-color: var(--text-muted) !important;
     }
 
     .tool-box {
@@ -509,16 +509,16 @@ body,
     }
 
     .tool-img img {
-      border-color: var(--main-border) !important;
+      border-color: var(--text-muted) !important;
     }
 
     .show-button {
-      background-color: rgba(96, 165, 250, 0.12) !important;
-      border-color: rgba(96, 165, 250, 0.68) !important;
+      background-color: color-mix(in srgb, var(--brand-primary-300) 12%, transparent) !important;
+      border-color: color-mix(in srgb, var(--brand-primary-300) 68%, transparent) !important;
       color: var(--PrimaryColor) !important;
 
       &:hover {
-        background-color: rgba(96, 165, 250, 0.2) !important;
+        background-color: color-mix(in srgb, var(--brand-primary-300) 20%, transparent) !important;
         border-color: var(--PrimaryColor) !important;
       }
 
@@ -528,8 +528,8 @@ body,
     }
 
     .last-inspection-card {
-      background-color: var(--surface-2) !important;
-      border-color: var(--main-border) !important;
+      background-color: var(--text-on-brand) !important;
+      border-color: var(--text-muted) !important;
 
       .title,
       p span {
@@ -545,7 +545,7 @@ body,
   .organization-home-page,
   .home-page {
     background-color: transparent !important;
-    color: var(--Black) !important;
+    color: var(--text-strong) !important;
   }
 
   .home-routes-card,
@@ -567,9 +567,9 @@ body,
         transparent 40%
       ),
       linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
-    border-color: var(--main-border) !important;
-    color: var(--Black) !important;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22) !important;
+    border-color: var(--text-muted) !important;
+    color: var(--text-strong) !important;
+    box-shadow: 0 16px 36px color-mix(in srgb, var(--text-strong) 22%, transparent) !important;
   }
 
   .home-routes-card:hover,
@@ -577,7 +577,7 @@ body,
   .total-insedent-card:hover,
   .incidant-factor-container:hover {
     border-color: color-mix(in srgb, var(--PrimaryColor) 36%, var(--main-border)) !important;
-    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.28) !important;
+    box-shadow: 0 20px 44px color-mix(in srgb, var(--text-strong) 28%, transparent) !important;
   }
 
   .home-routes-card .card-img,
@@ -589,8 +589,8 @@ body,
   .total-machines-header-container .static-data p,
   .details-signal-grid .static-data p,
   .monthly-kpi-grid .total-insedent-card {
-    background-color: var(--surface-2) !important;
-    border-color: var(--main-border) !important;
+    background-color: var(--text-on-brand) !important;
+    border-color: var(--text-muted) !important;
     color: var(--text-soft) !important;
     box-shadow: none !important;
   }
@@ -641,7 +641,7 @@ body,
         transparent
       ),
       var(--surface-1) !important;
-    border-color: var(--main-border) !important;
+    border-color: var(--text-muted) !important;
   }
 
   .project-statistics .header .header-container .header-img {
@@ -659,8 +659,8 @@ body,
   }
 
   .project-statistics .header .header-container .title-content .content-info .count {
-    background-color: var(--surface-2) !important;
-    border-color: var(--main-border) !important;
+    background-color: var(--text-on-brand) !important;
+    border-color: var(--text-muted) !important;
   }
 
   .project-statistics .header .header-container .title-content .content-info .count .counter {
@@ -674,7 +674,7 @@ body,
   .project-statistics .statistics-content::-webkit-scrollbar-track,
   .chart-scroll-wrapper::-webkit-scrollbar-track,
   .chart-container::-webkit-scrollbar-track {
-    background-color: var(--surface-3) !important;
+    background-color: var(--text-on-brand) !important;
   }
 
   .project-statistics .statistics-content::-webkit-scrollbar-thumb,
@@ -713,13 +713,13 @@ body,
         transparent calc(75% + 1px)
       ),
       var(--surface-1) !important;
-    border-color: var(--main-border) !important;
+    border-color: var(--text-muted) !important;
   }
 
   .investigations_container .chart_row {
     background: color-mix(in srgb, var(--PrimaryColor) 12%, var(--surface-1)) !important;
     border-color: color-mix(in srgb, var(--PrimaryColor) 24%, var(--main-border)) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 5%, transparent) !important;
   }
 
   .investigations_container .chart_row .span {
@@ -728,9 +728,9 @@ body,
 
   .investigations_container .indicator-label,
   .total-machines-container .info-container {
-    background-color: var(--surface-2) !important;
+    background-color: var(--text-on-brand) !important;
     color: var(--text-strong) !important;
-    border-color: var(--main-border) !important;
+    border-color: var(--text-muted) !important;
   }
 
   .total-machines-container .total-value {
@@ -741,7 +741,7 @@ body,
   .equipment-form.is-dark,
   .incident-index-page.is-dark,
   .equipment-index-page.is-dark {
-    color: var(--Black) !important;
+    color: var(--text-strong) !important;
   }
 
   .full-observation-form.is-dark,
@@ -759,9 +759,9 @@ body,
         .radio-wrapper
       ) {
       background: var(--surface-1) !important;
-      border-color: var(--main-border) !important;
-      color: var(--Black) !important;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2) !important;
+      border-color: var(--text-muted) !important;
+      color: var(--text-strong) !important;
+      box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 20%, transparent) !important;
     }
 
     :where(label, .title, .radio-title, .form-filter-panel-header p, .machine_card h6) {
@@ -773,8 +773,8 @@ body,
     }
 
     :where(input, textarea, .p-inputtext, .p-select, .p-multiselect, .p-datepicker-input) {
-      background-color: var(--surface-2) !important;
-      border-color: var(--main-border) !important;
+      background-color: var(--text-on-brand) !important;
+      border-color: var(--text-muted) !important;
       color: var(--text-strong) !important;
     }
 
@@ -791,8 +791,8 @@ body,
 
   .equipment-index-page.is-dark {
     .input-search input {
-      background-color: var(--surface-2) !important;
-      border-color: var(--main-border) !important;
+      background-color: var(--text-on-brand) !important;
+      border-color: var(--text-muted) !important;
       color: var(--text-strong) !important;
     }
 
@@ -808,14 +808,14 @@ body,
           transparent 36%
         ),
         var(--surface-1) !important;
-      border-color: var(--main-border) !important;
-      color: var(--Black) !important;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22) !important;
+      border-color: var(--text-muted) !important;
+      color: var(--text-strong) !important;
+      box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 22%, transparent) !important;
     }
 
     :where(.tool-card-media, .equipment-meta .meta-item, .equipment-project-info) {
-      background-color: var(--surface-2) !important;
-      border-color: var(--main-border) !important;
+      background-color: var(--text-on-brand) !important;
+      border-color: var(--text-muted) !important;
       color: var(--text-soft) !important;
     }
 
@@ -834,7 +834,7 @@ body,
     }
 
     .skeleton-block {
-      background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%) !important;
+      background: linear-gradient(90deg, var(--brand-primary-800) 25%, var(--brand-primary-700) 50%, var(--brand-primary-800) 75%) !important;
       background-size: 220% 100% !important;
     }
   }
@@ -842,10 +842,10 @@ body,
   .tool-card.is-dark,
   .tool-card.equipment-card {
     .equipment-project-info {
-      background-color: var(--surface-2) !important;
-      border-color: var(--main-border) !important;
+      background-color: var(--text-on-brand) !important;
+      border-color: var(--text-muted) !important;
       color: var(--text-soft) !important;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+      box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 4%, transparent) !important;
     }
 
     .equipment-project-info .project-name,
@@ -861,7 +861,7 @@ body,
     .equipment-project-info > img,
     .equipment-project-info .project-zone-name img {
       background-color: color-mix(in srgb, var(--PrimaryColor) 14%, var(--surface-3)) !important;
-      border-color: var(--main-border) !important;
+      border-color: var(--text-muted) !important;
       border-radius: 10px;
     }
   }
@@ -870,7 +870,7 @@ body,
     background: var(--surface-2) !important;
     border: 1px solid var(--main-border) !important;
     color: var(--text-soft) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 4%, transparent) !important;
   }
 
   .equipment-project-info .project-data,
@@ -893,7 +893,7 @@ body,
   }
 
   .project-progress-container {
-    color: var(--Black) !important;
+    color: var(--text-strong) !important;
 
     .project-progress-actions,
     .project-progress-body-sidebar,
@@ -907,9 +907,9 @@ body,
           transparent 38%
         ),
         linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
-      border-color: var(--main-border) !important;
-      color: var(--Black) !important;
-      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22) !important;
+      border-color: var(--text-muted) !important;
+      color: var(--text-strong) !important;
+      box-shadow: 0 16px 36px color-mix(in srgb, var(--text-strong) 22%, transparent) !important;
     }
 
     .project-progress-body-container,
@@ -941,32 +941,32 @@ body,
     }
 
     .timeline-wrapper::-webkit-scrollbar-track {
-      background-color: var(--surface-3) !important;
+      background-color: var(--text-on-brand) !important;
     }
 
     .timeline-wrapper::-webkit-scrollbar-thumb {
       background: linear-gradient(
         90deg,
         color-mix(in srgb, var(--PrimaryColor) 72%, transparent),
-        rgba(20, 184, 166, 0.72)
+        color-mix(in srgb, var(--status-success) 72%, transparent)
       ) !important;
     }
 
     .timeline-line {
-      background-color: var(--main-border) !important;
+      background-color: var(--text-muted) !important;
     }
 
     .timeline-item {
       background: var(--surface-1) !important;
-      border-color: var(--main-border) !important;
-      color: var(--Black) !important;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2) !important;
+      border-color: var(--text-muted) !important;
+      color: var(--text-strong) !important;
+      box-shadow: 0 12px 28px color-mix(in srgb, var(--text-strong) 20%, transparent) !important;
     }
 
     .timeline-item:hover {
       background: color-mix(in srgb, var(--PrimaryColor) 10%, var(--surface-1)) !important;
       border-color: color-mix(in srgb, var(--PrimaryColor) 36%, var(--main-border)) !important;
-      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.28) !important;
+      box-shadow: 0 16px 32px color-mix(in srgb, var(--text-strong) 28%, transparent) !important;
     }
 
     .timeline-item.active {
@@ -983,8 +983,8 @@ body,
     .timeline-marker.not-active .timeline-dot,
     .timeline-dot,
     .timeline-icon {
-      background-color: var(--surface-2) !important;
-      border-color: var(--main-border) !important;
+      background-color: var(--text-on-brand) !important;
+      border-color: var(--text-muted) !important;
     }
 
     .timeline-dot-inner,
@@ -1028,7 +1028,7 @@ body,
     }
 
     .p-knob-range {
-      stroke: var(--surface-3) !important;
+      stroke: var(--text-on-brand) !important;
     }
 
     .p-knob-text {
@@ -1036,8 +1036,8 @@ body,
     }
 
     .completed-mark {
-      background: #16a34a !important;
-      box-shadow: 0 18px 36px rgba(22, 163, 74, 0.28) !important;
+      background: var(--status-success) !important;
+      box-shadow: 0 18px 36px color-mix(in srgb, var(--status-success) 28%, transparent) !important;
     }
   }
 
@@ -1050,8 +1050,8 @@ body,
       ),
       linear-gradient(90deg, var(--surface-1), var(--surface-2)) !important;
     border-color: color-mix(in srgb, var(--PrimaryColor) 24%, var(--main-border)) !important;
-    color: var(--Black) !important;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22) !important;
+    color: var(--text-strong) !important;
+    box-shadow: 0 16px 36px color-mix(in srgb, var(--text-strong) 22%, transparent) !important;
 
     .project-progress-info,
     .project-progress-info-text {
@@ -1101,7 +1101,7 @@ body,
   .zones,
   .equipments-sections,
   .zoon-header {
-    color: var(--Black) !important;
+    color: var(--text-strong) !important;
   }
 
   .project-card-container,
@@ -1141,9 +1141,9 @@ body,
         transparent 38%
       ),
       linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
-    border-color: var(--main-border) !important;
-    color: var(--Black) !important;
-    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2) !important;
+    border-color: var(--text-muted) !important;
+    color: var(--text-strong) !important;
+    box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 20%, transparent) !important;
   }
 
   .project-card-container:hover,
@@ -1151,7 +1151,7 @@ body,
   .project-card-container.on-hold:hover,
   .project-card-container.cancelled:hover {
     border-color: color-mix(in srgb, var(--PrimaryColor) 38%, var(--main-border)) !important;
-    box-shadow: 0 20px 44px rgba(0, 0, 0, 0.28) !important;
+    box-shadow: 0 20px 44px color-mix(in srgb, var(--text-strong) 28%, transparent) !important;
   }
 
   .project-card-header-container,
@@ -1170,7 +1170,7 @@ body,
   .popover-head,
   .location-list {
     background: transparent !important;
-    border-color: var(--main-border) !important;
+    border-color: var(--text-muted) !important;
   }
 
   :where(
@@ -1233,8 +1233,8 @@ body,
   .zone-form .zone-content,
   .zone-form .empty-zone,
   .add-employee-card .input-wrapper {
-    background-color: var(--surface-2) !important;
-    border-color: var(--main-border) !important;
+    background-color: var(--text-on-brand) !important;
+    border-color: var(--text-muted) !important;
     color: var(--text-soft) !important;
   }
 
@@ -1247,12 +1247,12 @@ body,
   }
 
   :where(.project-card-divider, .employee-hr, .dashed-line, .hr-dashed-line, .add-equipment-hr, .add-employee-hr) {
-    background-color: var(--main-border) !important;
-    border-color: var(--main-border) !important;
+    background-color: var(--text-muted) !important;
+    border-color: var(--text-muted) !important;
   }
 
   .project-card-container .skeleton-bar {
-    background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%) !important;
+    background: linear-gradient(90deg, var(--brand-primary-800) 25%, var(--brand-primary-700) 50%, var(--brand-primary-800) 75%) !important;
     background-size: 220% 100% !important;
   }
 
@@ -1276,8 +1276,8 @@ body,
       var(--surface-1) !important;
     border: 1px solid var(--main-border) !important;
     border-radius: 18px !important;
-    color: var(--Black) !important;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.24) !important;
+    color: var(--text-strong) !important;
+    box-shadow: 0 16px 36px color-mix(in srgb, var(--text-strong) 24%, transparent) !important;
   }
 
   .emoloyees-details .card-header {
@@ -1315,25 +1315,25 @@ body,
   .emoloyees-details .card-actions .add-btn {
     background-color: color-mix(in srgb, var(--PrimaryColor) 20%, var(--surface-2)) !important;
     border: 1px solid color-mix(in srgb, var(--PrimaryColor) 52%, var(--main-border)) !important;
-    color: #dbeafe !important;
+    color: var(--brand-primary-100) !important;
   }
 
   .emoloyees-details .card-actions .btn-primary {
-    background: linear-gradient(135deg, #2563eb, #14b8a6) !important;
+    background: linear-gradient(135deg, var(--brand-primary-500), var(--status-success)) !important;
     border-color: transparent !important;
-    color: #ffffff !important;
+    color: var(--text-on-brand) !important;
   }
 
   .emoloyees-details .employee-hr {
-    border-color: var(--main-border) !important;
+    border-color: var(--text-muted) !important;
     background: transparent !important;
   }
 
   .emoloyees-details .employees-section,
   .emoloyees-details .project-teams-cards {
-    background-color: var(--surface-2) !important;
+    background-color: var(--text-on-brand) !important;
     border: 1px solid var(--main-border) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 4%, transparent) !important;
   }
 
   .emoloyees-details .employees-section:empty,
@@ -1355,8 +1355,8 @@ body,
     background:
       linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
     border: 1px solid var(--main-border) !important;
-    color: var(--Black) !important;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2) !important;
+    color: var(--text-strong) !important;
+    box-shadow: 0 10px 24px color-mix(in srgb, var(--text-strong) 20%, transparent) !important;
   }
 
   .emoloyees-details .member-card:hover,
@@ -1368,7 +1368,7 @@ body,
   .emoloyees-details .member-img {
     border: 1px solid var(--main-border) !important;
     border-radius: 999px !important;
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22) !important;
+    box-shadow: 0 8px 18px color-mix(in srgb, var(--text-strong) 22%, transparent) !important;
   }
 
   .emoloyees-details .member-data,
@@ -1389,11 +1389,11 @@ body,
   }
 
   .emoloyees-details .card-delete path:first-child {
-    stroke: var(--surface-1) !important;
+    stroke: var(--text-on-brand) !important;
   }
 
   .emoloyees-details .card-delete path {
-    fill: #ef4444 !important;
+    fill: var(--status-danger) !important;
   }
 
   .employee-header {
@@ -1405,8 +1405,8 @@ body,
       ),
       linear-gradient(135deg, var(--surface-1), var(--surface-2)) !important;
     border: 1px solid var(--main-border) !important;
-    color: var(--Black) !important;
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.22) !important;
+    color: var(--text-strong) !important;
+    box-shadow: 0 16px 36px color-mix(in srgb, var(--text-strong) 22%, transparent) !important;
   }
 
   .employee-header .left-blue-background,
@@ -1439,8 +1439,8 @@ body,
       ),
       linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
     border: 1px solid var(--main-border) !important;
-    color: var(--Black) !important;
-    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22) !important;
+    color: var(--text-strong) !important;
+    box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 22%, transparent) !important;
   }
 
   .empty-zones-equipment .empty-zones-equipment-container,
@@ -1475,7 +1475,7 @@ body,
     background-color: color-mix(in srgb, var(--PrimaryColor) 12%, var(--surface-2)) !important;
     border: 1px solid color-mix(in srgb, var(--PrimaryColor) 32%, var(--main-border)) !important;
     color: var(--PrimaryColor) !important;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 4%, transparent) !important;
   }
 
   .empty-zones-equipment .content .content-btn:hover {
@@ -1498,16 +1498,16 @@ body,
 
   .breadcrump-container,
   .breadcrump-container.is-dark {
-    background-color: var(--surface-1) !important;
+    background-color: var(--text-on-brand) !important;
     border: 1px solid var(--main-border) !important;
-    color: var(--Black) !important;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18) !important;
+    color: var(--text-strong) !important;
+    box-shadow: 0 12px 28px color-mix(in srgb, var(--text-strong) 18%, transparent) !important;
 
     .breadcrump,
     .p-breadcrumb,
     .p-breadcrumb-list {
       background-color: transparent !important;
-      color: var(--Black) !important;
+      color: var(--text-strong) !important;
       border-color: transparent !important;
     }
 
@@ -1516,7 +1516,7 @@ body,
       color: var(--text-soft) !important;
 
       &:hover {
-        background-color: var(--surface-3) !important;
+        background-color: var(--text-on-brand) !important;
         color: var(--PrimaryColor) !important;
       }
 
@@ -1539,7 +1539,7 @@ body,
   }
 
   .project-details-section {
-    color: var(--Black) !important;
+    color: var(--text-strong) !important;
 
     .project-details-page-header,
     > .project-header-container,
@@ -1590,13 +1590,13 @@ body,
           transparent 38%
         ),
         linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
-      border-color: var(--main-border) !important;
-      color: var(--Black) !important;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2) !important;
+      border-color: var(--text-muted) !important;
+      color: var(--text-strong) !important;
+      box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 20%, transparent) !important;
     }
 
     .project-header-container {
-      background-color: var(--surface-1) !important;
+      background-color: var(--text-on-brand) !important;
     }
 
     .project-header-container .bg-yellow,
@@ -1621,7 +1621,7 @@ body,
     .project-name,
     .project-zone-name {
       background: transparent !important;
-      border-color: var(--main-border) !important;
+      border-color: var(--text-muted) !important;
     }
 
     :where(
@@ -1704,8 +1704,8 @@ body,
     }
 
     :where(.card-hr, .equipment-hr, .tool-hr, .card-divider, .divider, .location-hr) {
-      background-color: var(--main-border) !important;
-      border-color: var(--main-border) !important;
+      background-color: var(--text-muted) !important;
+      border-color: var(--text-muted) !important;
     }
 
     .section-img,
@@ -1717,8 +1717,8 @@ body,
     .equipment-status,
     .equipment-meta .meta-item,
     .content-btn {
-      background-color: var(--surface-2) !important;
-      border-color: var(--main-border) !important;
+      background-color: var(--text-on-brand) !important;
+      border-color: var(--text-muted) !important;
       color: var(--text-soft) !important;
     }
 
@@ -1728,8 +1728,8 @@ body,
     .p-accordioncontent,
     .p-accordioncontent-content {
       background-color: transparent !important;
-      border-color: var(--main-border) !important;
-      color: var(--Black) !important;
+      border-color: var(--text-muted) !important;
+      color: var(--text-strong) !important;
     }
 
     .p-accordionpanel {
@@ -1738,16 +1738,16 @@ body,
       border: 1px solid var(--main-border) !important;
       border-radius: 14px !important;
       overflow: hidden !important;
-      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18) !important;
+      box-shadow: 0 12px 28px color-mix(in srgb, var(--text-strong) 18%, transparent) !important;
     }
 
     .p-accordionheader,
     .p-accordioncontent-content {
-      background-color: var(--surface-1) !important;
+      background-color: var(--text-on-brand) !important;
     }
 
     .p-accordionheader:hover {
-      background-color: var(--surface-3) !important;
+      background-color: var(--text-on-brand) !important;
     }
 
     .p-accordionheader-toggle-icon,
@@ -1765,7 +1765,7 @@ body,
   }
 
   .index-investigating {
-    color: var(--Black) !important;
+    color: var(--text-strong) !important;
 
     .table-responsive,
     .index-table-card-container,
@@ -1801,21 +1801,21 @@ body,
           transparent 38%
         ),
         linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
-      border-color: var(--main-border) !important;
-      color: var(--Black) !important;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.2) !important;
+      border-color: var(--text-muted) !important;
+      color: var(--text-strong) !important;
+      box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 20%, transparent) !important;
     }
 
     .index-table-card:hover {
       border-color: color-mix(in srgb, var(--PrimaryColor) 34%, var(--main-border)) !important;
-      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28) !important;
+      box-shadow: 0 18px 42px color-mix(in srgb, var(--text-strong) 28%, transparent) !important;
     }
 
     .card-header,
     .show-investigation-meeting-details .title,
     .sidebar-card-header,
     .sidebar-list li {
-      border-color: var(--main-border) !important;
+      border-color: var(--text-muted) !important;
     }
 
     .label-item-secondary.title,
@@ -1896,7 +1896,7 @@ body,
   }
 
   .investigation-result {
-    color: var(--Black) !important;
+    color: var(--text-strong) !important;
 
     .p-accordion,
     .p-accordionpanel,
@@ -1904,8 +1904,8 @@ body,
     .p-accordioncontent,
     .p-accordioncontent-content {
       background: transparent !important;
-      border-color: var(--main-border) !important;
-      color: var(--Black) !important;
+      border-color: var(--text-muted) !important;
+      color: var(--text-strong) !important;
     }
 
     .p-accordionpanel {
@@ -1920,7 +1920,7 @@ body,
           transparent 38%
         ),
         linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22) !important;
+      box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 22%, transparent) !important;
     }
 
     .p-accordionheader {
@@ -2016,8 +2016,8 @@ body,
           transparent 40%
         ),
         linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
-      border-color: var(--main-border) !important;
-      color: var(--Black) !important;
+      border-color: var(--text-muted) !important;
+      color: var(--text-strong) !important;
       box-shadow: none !important;
     }
 
@@ -2053,7 +2053,7 @@ body,
     .project-data,
     .content-info {
       background: transparent !important;
-      border-color: var(--main-border) !important;
+      border-color: var(--text-muted) !important;
     }
 
     .title-header img,
@@ -2061,8 +2061,8 @@ body,
     .team-member img,
     .equipemtn-card-image {
       background: var(--surface-3) !important;
-      border-color: var(--main-border) !important;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22) !important;
+      border-color: var(--text-muted) !important;
+      box-shadow: 0 10px 24px color-mix(in srgb, var(--text-strong) 22%, transparent) !important;
     }
 
     .p-accordion div.input-select,
@@ -2077,7 +2077,7 @@ body,
     input,
     textarea {
       background: var(--surface-1) !important;
-      border-color: var(--main-border) !important;
+      border-color: var(--text-muted) !important;
       color: var(--text-strong) !important;
       box-shadow: none !important;
     }
@@ -2118,18 +2118,18 @@ body,
     .tree-dot,
     .timeline-dot-inner,
     .tree-dot-inner {
-      border-color: var(--surface-2) !important;
+      border-color: var(--text-on-brand) !important;
     }
 
     .timeline-line,
     .event-timeline-list::before {
-      background: linear-gradient(180deg, var(--PrimaryColor), #14b8a6) !important;
+      background: linear-gradient(180deg, var(--PrimaryColor), var(--status-success)) !important;
       opacity: 0.38 !important;
     }
 
     .event-timeline-delete {
-      background: color-mix(in srgb, #ef4444 16%, var(--surface-2)) !important;
-      color: #fca5a5 !important;
+      background: color-mix(in srgb, var(--status-danger) 16%, var(--surface-2)) !important;
+      color: var(--status-danger-soft) !important;
     }
 
     .similar-observation-card span,
@@ -2156,7 +2156,7 @@ body,
     .similar-observation-card.loading strong,
     .similar-observation-card.loading small,
     .p-skeleton {
-      background: linear-gradient(90deg, #1e293b, #334155, #1e293b) !important;
+      background: linear-gradient(90deg, var(--brand-primary-800), var(--brand-primary-700), var(--brand-primary-800)) !important;
       color: transparent !important;
     }
 
@@ -2175,8 +2175,8 @@ body,
     .member-row,
     .summary-block {
       background: var(--surface-1) !important;
-      border-color: var(--main-border) !important;
-      color: var(--Black) !important;
+      border-color: var(--text-muted) !important;
+      color: var(--text-strong) !important;
     }
 
     .p-skeleton,
@@ -2184,16 +2184,16 @@ body,
     .mini-card,
     .member-row,
     .timeline-card {
-      background: linear-gradient(90deg, #1e293b, #334155, #1e293b) !important;
+      background: linear-gradient(90deg, var(--brand-primary-800), var(--brand-primary-700), var(--brand-primary-800)) !important;
     }
   }
 
   .incident-index-page.is-dark {
     :where(.index-table-card, .card-header-container) {
       background: var(--surface-1) !important;
-      border-color: var(--main-border) !important;
-      color: var(--Black) !important;
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22) !important;
+      border-color: var(--text-muted) !important;
+      color: var(--text-strong) !important;
+      box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 22%, transparent) !important;
     }
 
     :where(.title, strong) {

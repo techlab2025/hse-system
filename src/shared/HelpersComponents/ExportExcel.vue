@@ -273,7 +273,7 @@ nextTick(() => {
 }
 
 .table th {
-  background-color: #f8f9fa;
+  background-color: var(--brand-primary-50);
   font-weight: 600;
 }
 

@@ -503,11 +503,11 @@ defineExpose({
 
 <style scoped>
 :deep(.input-file) {
-  border: 1px solid #d9dbe9 !important;
+  border: 1px solid var(--brand-primary-100) !important;
   padding: 11px;
   border-radius: 20px !important;
   cursor: pointer;
-  color: #202020;
+  color: var(--text-strong);
   font-family: 'Light';
 }
 
@@ -517,7 +517,7 @@ defineExpose({
   text-align: start;
   font-weight: 600;
   font-size: var(--md-size);
-  color: #202020;
+  color: var(--text-strong);
   font-family: 'Light';
 }
 :deep(.file-upload-wrapper) {
@@ -526,7 +526,7 @@ defineExpose({
 
 .required-field-message {
   margin-top: 0.35rem;
-  color: #dc2626;
+  color: var(--status-danger);
   font-size: 0.82rem;
   font-weight: 700;
 }

@@ -3,8 +3,8 @@
 .delete-dialog {
   padding: 3rem;
   text-align: center;
-  background-color: white !important;
-  color: black !important;
+  background-color: var(--surface-1) !important;
+  color: var(--text-strong) !important;
 
   img {
     width: 350px;
@@ -21,11 +21,11 @@
   p {
     font-family: 'Regular', sans-serif;
     font-size: 1rem;
-    color: #717171;
+    color: var(--text-soft);
     margin-bottom: var(--space-sm);
   }
   .btn-third {
-    border: 1px solid #000000;
+    border: 1px solid var(--text-strong);
   }
 
   .btns {
