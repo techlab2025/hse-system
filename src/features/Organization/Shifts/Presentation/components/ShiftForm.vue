@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { markRaw, onMounted, ref, watch } from 'vue'
+import { computed, markRaw, onMounted, ref, watch } from 'vue'
+import DatePicker from 'primevue/datepicker'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
@@ -25,6 +26,39 @@ type InpuLangModel = {
 const langs = ref<InpuLangModel[]>([])
 const startTime = ref('')
 const endTime = ref('')
+
+const toTimeDate = (value: string) => {
+  if (!value) return null
+
+  const [hours, minutes] = value.split(':').map(Number)
+  if (!Number.isFinite(hours) || !Number.isFinite(minutes)) return null
+
+  const date = new Date()
+  date.setHours(hours, minutes, 0, 0)
+  return date
+}
+
+const toTimeString = (value: Date | null) => {
+  if (!value) return ''
+
+  return `${String(value.getHours()).padStart(2, '0')}:${String(value.getMinutes()).padStart(2, '0')}`
+}
+
+const startTimeValue = computed<Date | null>({
+  get: () => toTimeDate(startTime.value),
+  set: (value) => {
+    startTime.value = toTimeString(value)
+    updateData()
+  },
+})
+
+const endTimeValue = computed<Date | null>({
+  get: () => toTimeDate(endTime.value),
+  set: (value) => {
+    endTime.value = toTimeString(value)
+    updateData()
+  },
+})
 
 const SystemLanguages = ref<
   {
@@ -129,17 +163,26 @@ const GetTitle = (title: InpuLangModel[]) => {
   </div>
   <div class="col-span-4 md:col-span-1 input-wrapper">
     <label for="start_time">{{ $t('start_time') }}</label>
-    <input
-      id="start_time"
-      v-model="startTime"
-      type="time"
+    <DatePicker
+      v-model="startTimeValue"
+      input-id="start_time"
+      time-only
+      hour-format="24"
+      :placeholder="$t('Select time')"
       class="input"
       required
-      @input="updateData"
     />
   </div>
   <div class="col-span-4 md:col-span-1 input-wrapper">
     <label for="end_time">{{ $t('end_time') }}</label>
-    <input id="end_time" v-model="endTime" type="time" class="input" required @input="updateData" />
+    <DatePicker
+      v-model="endTimeValue"
+      input-id="end_time"
+      time-only
+      hour-format="24"
+      :placeholder="$t('Select time')"
+      class="input"
+      required
+    />
   </div>
 </template>
