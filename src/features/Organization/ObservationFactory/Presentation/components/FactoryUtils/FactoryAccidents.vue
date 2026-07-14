@@ -43,17 +43,17 @@ watch(
 <template>
   <div class="another-meeting">
     <div class="another-meeting-header" v-if="!isOpen">
-      <div class="section-title-with-help">
+      <!-- <div class="section-title-with-help"> -->
         <HeaderPage
           :title="`Are there Injuries?`"
           :subtitle="`Did this incident result in any physical injuries`"
           :img="acc"
           class="title-header"
         />
-        <FieldHelpIcon
+        <!-- <FieldHelpIcon
           text="Choose Yes if the incident caused any physical injury, even if it appears minor."
-        />
-      </div>
+        /> -->
+      <!-- </div> -->
       <div class="meeting-status">
         <button
           class="meeting-status-yes"

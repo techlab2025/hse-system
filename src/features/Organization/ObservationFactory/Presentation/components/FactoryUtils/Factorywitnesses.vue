@@ -38,17 +38,15 @@ watch(
 <template>
   <div class="another-meeting">
     <div class="another-meeting-header">
-      <div class="section-title-with-help">
         <HeaderPage
           :title="`Are there witnesses?`"
           :subtitle="`Please Record the statements of those present at the scene .`"
           :img="people"
           class="title-header"
         />
-        <FieldHelpIcon
+        <!-- <FieldHelpIcon
           text="Choose Yes if anyone witnessed the event and can provide a statement."
-        />
-      </div>
+        /> -->
       <div class="meeting-status">
         <button
           class="meeting-status-yes"

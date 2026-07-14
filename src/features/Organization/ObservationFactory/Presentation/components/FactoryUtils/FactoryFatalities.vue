@@ -38,15 +38,15 @@ watch(
 <template>
   <div class="another-meeting">
     <div class="another-meeting-header">
-      <div class="section-title-with-help">
+      <!-- <div class="section-title-with-help"> -->
         <HeaderPage
           :title="`fatality repoting`"
           :subtitle="`Add any fatalities from the accident.`"
           :img="RIP"
           class="title-header"
         />
-        <FieldHelpIcon text="Choose Yes if the incident resulted in one or more fatalities." />
-      </div>
+        <!-- <FieldHelpIcon text="Choose Yes if the incident resulted in one or more fatalities." /> -->
+      <!-- </div> -->
       <div class="meeting-status">
         <button
           class="meeting-status-yes"
