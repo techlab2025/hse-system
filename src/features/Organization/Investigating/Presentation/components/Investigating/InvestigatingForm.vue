@@ -335,9 +335,9 @@ watch(
       :modelValue="SelectedTeamLeader"
       class="input"
       :staticOptions="SelectedTeam"
-      label="assign leader "
+      label="assign team leader "
       id="leader"
-      placeholder="select your leader"
+      placeholder="select your team leader"
       @update:modelValue="setTeamLeader"
     />
     <p v-if="getFieldError('SelectedTeamLeader')" class="required-field-message">

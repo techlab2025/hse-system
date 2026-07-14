@@ -5,7 +5,6 @@ import investigationImg from '@/assets/images/investigationImg.png'
 import CauseOfAccidant from './InvestegationResultParts/CauseOfAccidant.vue'
 import RateActions from './InvestegationResultParts/RateActions.vue'
 import InvestegationAttachment from './InvestegationResultParts/InvestegationAttachment.vue'
-import ViewersResults from './InvestegationResultParts/ViewersResults.vue'
 import AnotherMeeting from './InvestegationResultParts/AnotherMeeting.vue'
 import AddInvestigatingResultController from '../../controllers/investegationResult/addInvestigatingResultController'
 import AddInvestigationResultParams from '../../../Core/params/investegationResult/addInvestigationResultParams'
@@ -25,7 +24,9 @@ import RootCausesIdParams from '@/features/Organization/ObservationFactory/Core/
 import InvestigationCapaDialog from '../../SubComponents/InvestigationCapaDialog.vue'
 import InvestegationAnotherMeetingParams from '../../../Core/params/investegationResult/InvestegationAnotherMeetingParams.ts'
 import FactoryAccidents from '@/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/FactoryAccidents.vue'
+import WitnessesTimeLine from '@/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/WitnessesTimeLine.vue'
 import InjuryParams from '@/features/Organization/ObservationFactory/Core/params/InjuriesParams.ts'
+import InvestegationWitnessesParams from '../../../Core/params/investegationResult/InvestegationWitnessesParams.ts'
 import CapaActionPlan from '@/features/Organization/Capa/Presentation/components/CapaActionPlan.vue'
 import AddRootCauses from '@/features/setting/RootCauses/Presentation/components/AddRootCauses.vue'
 import SimilarObservationController from '../../controllers/similarObservation/SimilarObservationController.ts'
@@ -214,8 +215,17 @@ const setInvestigationAttachments = (data) => {
 }
 
 const viewersResults = ref()
-const setViewersResults = (data) => {
-  viewersResults.value = data
+const Updatewitnesses = (data: any[]) => {
+  viewersResults.value = (data ?? []).map((item: any) => {
+    const employeeId = Number(item?.employee?.id) || 0
+    const employeeName = employeeId ? undefined : item?.employee?.title?.trim() || ''
+
+    return new InvestegationWitnessesParams(
+      item?.text?.trim() || '',
+      employeeId || undefined,
+      employeeName,
+    )
+  })
 }
 const uniqueByIdOrName = (items: any[]) => {
   const seen = new Set<string>()
@@ -881,11 +891,7 @@ const validateRequiredFields = async () => {
             </AccordionHeader>
             <AccordionContent>
               <div data-required-field="viewersResults.0.employee">
-                <ViewersResults
-                  :isInvestigation="true"
-                  :viwers="initialViewers"
-                  @update:data="setViewersResults"
-                />
+                <WitnessesTimeLine @update:data="Updatewitnesses" />
                 <p v-if="getFirstFieldError('viewersResults.')" class="required-field-message">
                   {{ getFirstFieldError('viewersResults.') }}
                 </p>
