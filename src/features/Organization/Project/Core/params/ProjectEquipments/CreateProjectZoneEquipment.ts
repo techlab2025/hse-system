@@ -34,6 +34,6 @@ export default class CreateProjectZoneEquipment implements Params {
 }
 
 interface Zoons {
-  project_zoon_id: number
+  project_zoon_id: number | null
   equipment_ids: number[]
 }
