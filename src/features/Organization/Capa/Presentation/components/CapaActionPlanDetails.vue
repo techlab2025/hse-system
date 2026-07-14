@@ -373,8 +373,10 @@ const saveTaskStatus = async () => {
   padding: 0.35rem 0.7rem;
 
   &.status-1 {
-    background: #f1f5f9;
-    color: #475569;
+    border: 1px solid #f59e0b;
+    background: #fffbeb;
+    color: #b45309;
+    box-shadow: 0 4px 12px rgb(245 158 11 / 28%);
   }
 
   &.status-2 {
