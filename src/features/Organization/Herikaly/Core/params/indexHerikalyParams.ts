@@ -7,7 +7,7 @@ export default class IndexHerikalyParams implements Params {
   public perPage: number = 10
   public pageNumber: number = 10
   public parentOnly: boolean
-  public projectId: number | null
+  public projectId?: number | null
 
   constructor(
     word: string,
@@ -15,7 +15,7 @@ export default class IndexHerikalyParams implements Params {
     perPage: number = 10,
     withPage: number = 1,
     parentOnly: boolean,
-    projectId: number | null,
+    projectId?: number | null,
   ) {
     this.word = word
     this.withPage = withPage
