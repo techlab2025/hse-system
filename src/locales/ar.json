@@ -886,5 +886,21 @@
   "import_equipment_type": "استيراد أنواع المعدات",
   "shifts": "الورديات",
   "add_shift": "إضافة وردية",
-  "system_identity": "هوية النظام"
+  "system_identity": "هوية النظام",
+  "add_notification_plan": "إضافة خطة إشعارات",
+  "notification_plan": "خطة الإشعارات",
+  "enter_notification_plan_title": "أدخل عنوان خطة الإشعارات",
+  "select_actions": "اختر الإجراءات",
+  "select_employees": "اختر الموظفين",
+  "select_hierarchies": "اختر الهياكل",
+  "hierarchies": "الهياكل",
+  "all_statuses": "كل الحالات",
+  "inactive": "غير مفعل",
+  "not_available": "غير متاح",
+  "select_employee_or_hierarchy_error": "اختر موظفا واحدا أو هيكلا واحدا على الأقل",
+  "no_notification_plans": "لا توجد خطط إشعارات",
+  "no_notification_plans_description": "لم يتم العثور على خطط إشعارات.",
+  "task_assigned": "تم تعيين مهمة",
+  "project_location_hierarchy_assignment": "تعيين هيكل موقع المشروع",
+  "observation_created": "تم إنشاء ملاحظة"
 }

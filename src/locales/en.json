@@ -1399,5 +1399,20 @@
   "stuff_member": "Stuff Member",
   "not_stuff_member": "Not Stuff Member",
   "add_risk": "add risk",
-  "system_identity": "System Identity"
+  "system_identity": "System Identity",
+  "add_notification_plan": "Add Notification Plan",
+  "notification_plan": "Notification Plan",
+  "enter_notification_plan_title": "Enter notification plan title",
+  "select_actions": "Select actions",
+  "select_hierarchies": "Select hierarchies",
+  "hierarchies": "Hierarchies",
+  "all_statuses": "All statuses",
+  "inactive": "Inactive",
+  "not_available": "N/A",
+  "select_employee_or_hierarchy_error": "Select at least one employee or hierarchy",
+  "no_notification_plans": "No Notification Plans",
+  "no_notification_plans_description": "No notification plans were found.",
+  "task_assigned": "Task assigned",
+  "project_location_hierarchy_assignment": "Project location hierarchy assignment",
+  "observation_created": "Observation created"
 }
