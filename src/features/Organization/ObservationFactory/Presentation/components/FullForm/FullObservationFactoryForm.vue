@@ -69,6 +69,7 @@ import IndexShiftParams from '@/features/Organization/Shifts/Core/params/IndexAS
 import AddShift from '@/features/Organization/Shifts/Presentation/components/AddShift.vue'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import { useThemeMode } from '@/composables/useThemeMode'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
 const { isDarkMode } = useThemeMode()
@@ -840,7 +841,12 @@ defineExpose({
 
     <!-- title -->
     <div class="input-wrapper col-span-6 field-required" data-required-field="ObservationTitle">
-      <label for="title">{{ GetHeader(ObservationFactoryType) }} {{ $t('title') }}</label>
+      <div class="field-label">
+        <label for="title">{{ GetHeader(ObservationFactoryType) }} {{ $t('title') }}</label>
+        <FieldHelpIcon
+          text="A short, clear name that summarizes the reported event or observation."
+        />
+      </div>
       <input
         type="text"
         id="title"
@@ -855,7 +861,10 @@ defineExpose({
 
     <!-- Date -->
     <div class="col-span-2 md:col-span-2 input-wrapper" data-required-field="date">
-      <label for="date">{{ $t('date') }}</label>
+      <div class="field-label">
+        <label for="date">{{ $t('date') }}</label
+        ><FieldHelpIcon text="The date when the event or observation occurred." />
+      </div>
       <DatePicker input-id="date" v-model="date" :Lplaceholder="$t('Add your date')" />
       <p v-if="getFieldError('date')" class="required-field-message">
         {{ getFieldError('date') }}
@@ -864,7 +873,10 @@ defineExpose({
 
     <!-- Time -->
     <div class="input-wrapper col-span-2 md:grid-cols-12" data-required-field="SelctedTime">
-      <label for="time">{{ $t('time') }}</label>
+      <div class="field-label">
+        <label for="time">{{ $t('time') }}</label
+        ><FieldHelpIcon text="The approximate time when the event or observation occurred." />
+      </div>
       <DatePicker
         v-model="SelctedTime"
         class="mt-4 mr-2 input date-picker"
@@ -880,7 +892,12 @@ defineExpose({
 
     <!-- Serial -->
     <div class="input-wrapper col-span-2 md:grid-cols-12" v-if="!data?.id">
-      <label for="serialNumber">{{ GetHeader(ObservationFactoryType) }} {{ $t(`serial`) }}.</label>
+      <div class="field-label">
+        <label for="serialNumber">{{ GetHeader(ObservationFactoryType) }} {{ $t(`serial`) }}.</label
+        ><FieldHelpIcon
+          text="The unique reference number for this report. It may be generated automatically."
+        />
+      </div>
       <input
         type="text"
         v-model="SerialNumber"
@@ -897,7 +914,12 @@ defineExpose({
 
     <!-- Place -->
     <div class="input-wrapper col-span-3 md:grid-cols-12" data-required-field="PlaceText">
-      <label for="place">{{ $t('Work Area / Facility') }}</label>
+      <div class="field-label">
+        <label for="place">{{ $t('Work Area / Facility') }}</label
+        ><FieldHelpIcon
+          text="The specific work area, building, or facility where the event occurred."
+        />
+      </div>
       <input
         type="text"
         id="place"
@@ -934,6 +956,7 @@ defineExpose({
         :controller="indexObservatioTyepController"
         :params="indexObservationTypeParams"
         :label="$t('Observation Type')"
+        help-text="The category that best describes this observation."
         id="Equipment"
         :placeholder="$t('Select Observation Type')"
         @update:modelValue="setSelectedObservationType"
@@ -976,6 +999,7 @@ defineExpose({
         :controller="indexAccidentsTypeController"
         :params="indexAccidentsTypeParams"
         :label="$t('incident Type')"
+        help-text="The category that best describes the incident."
         id="incident"
         placeholder="Select Incident Type"
         @update:modelValue="setAccidentsType"
@@ -1042,6 +1066,7 @@ defineExpose({
         :controller="indexEquipmentController"
         :params="indexEquipmentParams"
         :label="$t('Equipment / Tag No')"
+        help-text="The equipment involved in the event, including its tag number when available."
         id="machine"
         :placeholder="$t('select Equipment')"
         @update:modelValue="setMachine"
@@ -1060,6 +1085,7 @@ defineExpose({
         :required="true"
         class="mt-4 mr-2 input"
         :label="$t('Involved Persons')"
+        help-text="The employee or external person directly involved in the event."
         @update:model-value="setOragnizationemployee"
         :hascontent="isSelectHasContent"
         :reload="false"
@@ -1107,6 +1133,7 @@ defineExpose({
         placeholder="Select Shift"
         class="mt-4 mr-2 input"
         :label="$t('work shift')"
+        help-text="The work shift during which the event or observation occurred."
         @update:model-value="setShifts"
         :reload="true"
         @close="ShiftsDialog = false"
@@ -1125,7 +1152,12 @@ defineExpose({
 
     <!-- description -->
     <div class="col-span-6 md:col-span-6 input-wrapper" data-required-field="text">
-      <label for="description">{{ $t('description') }}</label>
+      <div class="field-label">
+        <label for="description">{{ $t('description') }}</label
+        ><FieldHelpIcon
+          text="Describe what happened, what was observed, and any important surrounding details."
+        />
+      </div>
       <input
         :placeholder="$t('Add your description')"
         type="text"
@@ -1141,7 +1173,12 @@ defineExpose({
 
     <!-- Image -->
     <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-      <label for="">{{ $t('upload image') }}</label>
+      <div class="field-label">
+        <label>{{ $t('upload image') }}</label
+        ><FieldHelpIcon
+          text="Attach photos that help document the location, condition, damage, or evidence."
+        />
+      </div>
       <MultiImagesInput :initialImages="image" @update:images="setImages" />
     </div>
 
@@ -1172,6 +1209,7 @@ defineExpose({
         :static-options="SeverityList"
         :reload="false"
         :label="$t('Consequence Severity')"
+        help-text="The potential seriousness of the outcome if the hazard causes harm."
         id="Severity"
         :placeholder="$t('Select Consequence Severity')"
         @update:modelValue="setSeverity"
@@ -1192,6 +1230,7 @@ defineExpose({
         :static-options="LikelihoodList"
         :reload="false"
         :label="$t('Probability of Occurrence')"
+        help-text="How likely it is that this event or harmful outcome could occur."
         id="Likelihood"
         :placeholder="$t('Select Probability of Occurrence')"
         @update:modelValue="setLikelihood"
@@ -1232,6 +1271,7 @@ defineExpose({
         :controller="indexHazardTypeController"
         :params="indexHazardTypeParams"
         :label="$t('Hazard Classification')"
+        help-text="The main category of hazard associated with this report."
         id="HazardType"
         :placeholder="$t('Select Hazard Classification')"
         @update:modelValue="setHazardType"
@@ -1266,6 +1306,7 @@ defineExpose({
         :controller="indexSubHazardTypeController"
         :params="indexSubHazardTypeParams"
         :label="$t('Risk')"
+        help-text="Select the specific hazard or risk within the chosen classification."
         id="Hazard"
         :placeholder="$t('Select Risk')"
         @update:modelValue="setSubHazardType"
@@ -1293,7 +1334,12 @@ defineExpose({
       v-if="saveStatus == SaveStatusEnum.NotSaved"
       class="col-span-6 md:col-span-6 w-full is-stopped"
     >
-      <label class="w-full" for="is_stopedd">{{ $t('is_work_stopped') }}</label>
+      <div class="field-label w-full">
+        <label for="is_stopedd">{{ $t('is_work_stopped') }}</label
+        ><FieldHelpIcon
+          text="Indicate whether work was stopped because of this event or unsafe condition."
+        />
+      </div>
       <div class="meeting-status">
         <button
           type="button"
@@ -1327,7 +1373,12 @@ defineExpose({
     >
       <div class="input-wrapper radio-container incedant col-span-12 md:col-span-12">
         <div class="col-span-12 md:col-span-12">
-          <label class="radio-title">{{ $t('action_taken') }}</label>
+          <div class="field-label">
+            <label class="radio-title">{{ $t('action_taken') }}</label
+            ><FieldHelpIcon
+              text="Indicate whether an immediate action was taken to control or correct the issue."
+            />
+          </div>
           <div class="radio-answers flex">
             <div class="radio-selection" :class="{ selected: takeAction === 'yes' }">
               <RadioButton
@@ -1361,7 +1412,12 @@ defineExpose({
       class="input-wrapper col-span-6 md:col-span-6"
       v-show="showSolvedAndDescription"
     >
-      <label for="action">{{ $t('immediatly_action_taken') }}</label>
+      <div class="field-label">
+        <label for="action">{{ $t('immediatly_action_taken') }}</label
+        ><FieldHelpIcon
+          text="Describe the immediate action taken to make the situation safe or prevent recurrence."
+        />
+      </div>
       <textarea
         id="action"
         class="input"
@@ -1379,7 +1435,12 @@ defineExpose({
     >
       <div class="input-wrapper radio-container incedant col-span-12 md:col-span-12">
         <div class="col-span-12 md:col-span-12">
-          <label class="radio-title">{{ $t('observation_status') }}</label>
+          <div class="field-label">
+            <label class="radio-title">{{ $t('observation_status') }}</label
+            ><FieldHelpIcon
+              text="Choose Closed when the issue is resolved, or Open when further action is required."
+            />
+          </div>
           <div class="radio-answers flex">
             <div class="radio-selection" :class="{ selected: solved === ActionStatusEnum.CLOSED }">
               <RadioButton
@@ -1417,9 +1478,14 @@ defineExpose({
       class="input-wrapper col-span-6 md:col-span-6"
       v-show="showObservationAndDescription"
     >
-      <label for="action">{{ $t('Open Note') }}</label>
+      <div class="field-label">
+        <label for="open-note">{{ $t('Open Note') }}</label
+        ><FieldHelpIcon
+          text="Explain what remains open and what follow-up action is still needed."
+        />
+      </div>
       <textarea
-        id="action"
+        id="open-note"
         class="input"
         v-model="preventive_action_open"
         @input="updateData"
@@ -1562,6 +1628,13 @@ defineExpose({
 }
 
 label {
+  width: fit-content;
+}
+
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
   width: fit-content;
 }
 

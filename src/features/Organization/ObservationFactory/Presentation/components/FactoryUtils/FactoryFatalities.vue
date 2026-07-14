@@ -3,9 +3,7 @@ import HeaderPage from '@/features/Organization/Project/Presentation/components/
 import { ref, watch } from 'vue'
 import RIP from '@/assets/images/RIP.png'
 import DethsTimeLine from './DethsTimeLine.vue'
-
-
-
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
 const isAnotherMeeting = ref(0)
@@ -19,34 +17,49 @@ const updateData = () => {
 const DethsData = ref()
 const UpdateDethsData = (data: any) => {
   DethsData.value = data
-  console.log(DethsData.value, "DethsData.value");
+  console.log(DethsData.value, 'DethsData.value')
   updateData()
 }
 
-watch(() => isAnotherMeeting.value, (newVal) => {
-  if (newVal == 1) {
-    updateData()
-  } else {
-    emit('update:data', {
-      isAnotherMeeting: isAnotherMeeting.value,
-    })
-    DethsData.value = []
-  }
-})
-
+watch(
+  () => isAnotherMeeting.value,
+  (newVal) => {
+    if (newVal == 1) {
+      updateData()
+    } else {
+      emit('update:data', {
+        isAnotherMeeting: isAnotherMeeting.value,
+      })
+      DethsData.value = []
+    }
+  },
+)
 </script>
 <template>
   <div class="another-meeting">
     <div class="another-meeting-header">
-      <HeaderPage :title="`fatality repoting`" :subtitle="`Add any fatalities from the accident.`" :img="RIP"
-        class="title-header" />
+      <div class="section-title-with-help">
+        <HeaderPage
+          :title="`fatality repoting`"
+          :subtitle="`Add any fatalities from the accident.`"
+          :img="RIP"
+          class="title-header"
+        />
+        <FieldHelpIcon text="Choose Yes if the incident resulted in one or more fatalities." />
+      </div>
       <div class="meeting-status">
-        <button class="meeting-status-yes" @click.prevent="isAnotherMeeting = 1"
-          :class="isAnotherMeeting == 1 ? 'active' : ''">
+        <button
+          class="meeting-status-yes"
+          @click.prevent="isAnotherMeeting = 1"
+          :class="isAnotherMeeting == 1 ? 'active' : ''"
+        >
           {{ $t('Yes') }}
         </button>
-        <button class="meeting-status-on" @click.prevent="isAnotherMeeting = 0"
-          :class="isAnotherMeeting == 0 ? 'active' : ''">
+        <button
+          class="meeting-status-on"
+          @click.prevent="isAnotherMeeting = 0"
+          :class="isAnotherMeeting == 0 ? 'active' : ''"
+        >
           {{ $t('No') }}
         </button>
       </div>
@@ -124,5 +137,11 @@ watch(() => isAnotherMeeting.value, (newVal) => {
       }
     }
   }
+}
+
+.section-title-with-help {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 </style>

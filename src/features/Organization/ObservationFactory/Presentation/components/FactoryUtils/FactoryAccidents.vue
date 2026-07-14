@@ -4,7 +4,7 @@ import { ref, watch } from 'vue'
 import acc from '@/assets/images/acc.png'
 import InjuresTimeLine from './InjuresTimeLine.vue'
 import type InjuryDetailsModel from '../../../Data/models/InjuryModel.ts'
-
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
 const { isOpen, injuries } = defineProps<{
@@ -43,12 +43,17 @@ watch(
 <template>
   <div class="another-meeting">
     <div class="another-meeting-header" v-if="!isOpen">
-      <HeaderPage
-        :title="`Are there Injuries?`"
-        :subtitle="`Did this incident result in any physical injuries`"
-        :img="acc"
-        class="title-header"
-      />
+      <div class="section-title-with-help">
+        <HeaderPage
+          :title="`Are there Injuries?`"
+          :subtitle="`Did this incident result in any physical injuries`"
+          :img="acc"
+          class="title-header"
+        />
+        <FieldHelpIcon
+          text="Choose Yes if the incident caused any physical injury, even if it appears minor."
+        />
+      </div>
       <div class="meeting-status">
         <button
           class="meeting-status-yes"
@@ -139,5 +144,11 @@ watch(
       }
     }
   }
+}
+
+.section-title-with-help {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 </style>

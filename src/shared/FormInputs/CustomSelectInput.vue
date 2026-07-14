@@ -9,6 +9,7 @@ import ValidationService from '@/base/Presentation/utils/validationService'
 import IconBackStage from '@/shared/icons/IconBackStage.vue'
 import PlusIcon from '../icons/PlusIcon.vue'
 import StarRequiredInput from '../icons/StarRequiredInput.vue'
+import FieldHelpIcon from './FieldHelpIcon.vue'
 
 export type ComponentType = 'select' | 'multiselect'
 
@@ -28,6 +29,7 @@ interface Props {
   optional?: boolean
   component?: Component
   onclick?: () => void
+  helpText?: string
 }
 
 const emit = defineEmits(['update:modelValue', 'update:slot', 'update:reload'])
@@ -166,9 +168,15 @@ const updateSlot = (data: any) => {
 </script>
 
 <template>
-  <div class="input-label flex justify-between w-full"
-    :class="{ full: !onclick, fullReload: enableReload && !onclick }">
-    <span v-if="enableReload" class="reload-icon cursor-pointer flex items-center w-full" @click="reloadData">
+  <div
+    class="input-label flex justify-between w-full"
+    :class="{ full: !onclick, fullReload: enableReload && !onclick }"
+  >
+    <span
+      v-if="enableReload"
+      class="reload-icon cursor-pointer flex items-center w-full"
+      @click="reloadData"
+    >
       <span>
         <component @update:data="updateSlot" v-if="component" :is="component" />
       </span>
@@ -177,21 +185,32 @@ const updateSlot = (data: any) => {
     </span>
 
     <div class="label-container flex justify-center items-center gap-2">
-      <label :class="{ required: required }" class="input-label flex items-center gap-2" >
+      <label :class="{ required: required }" class="input-label flex items-center gap-2">
         <span v-if="required" class="text-red-500">
           <StarRequiredInput />
         </span>
         {{ $t(label ?? '') }}
       </label>
 
+      <FieldHelpIcon v-if="helpText" :text="helpText" />
+
       <span v-if="onclick" @click="onclick" class="add-dialog">
         {{ $t('new') }}
       </span>
     </div>
   </div>
-  <component :is="componentType" v-model="normalizedValue" :options="mergedOptions" :placeholder="placeholder"
-    class="input-select w-full" option-label="title" v-bind="multiselectProps" filter :loading="loading"
-    :empty-message="message" />
+  <component
+    :is="componentType"
+    v-model="normalizedValue"
+    :options="mergedOptions"
+    :placeholder="placeholder"
+    class="input-select w-full"
+    option-label="title"
+    v-bind="multiselectProps"
+    filter
+    :loading="loading"
+    :empty-message="message"
+  />
   <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
 
   <!-- <template v-else>

@@ -6,6 +6,7 @@ import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
 import { onMounted, ref } from 'vue'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -110,6 +111,7 @@ const toggleMode = (index: number, isManual: boolean) => {
                   placeholder="Select Witness name"
                   class="mt-4 mr-2 input"
                   :label="$t('Witness name')"
+                  help-text="Select the witness from the employee list, or enter their name manually if they are not an employee."
                   :excludedOptionIds="getSelectedEmployeeIds(index)"
                   @update:model-value="UpdateData"
                   :hascontent="isSelectHasContent[index]"
@@ -145,10 +147,15 @@ const toggleMode = (index: number, isManual: boolean) => {
                 </UpdatedCustomInputSelect>
               </div>
               <div class="input-wrapper">
-                <label for="wetness-text">{{ $t('Witness statement') }}</label>
+                <div class="flex items-center gap-2">
+                  <label :for="`witness-text-${index}`">{{ $t('Witness statement') }}</label>
+                  <FieldHelpIcon
+                    text="Record what this witness saw, heard, or knows about the event."
+                  />
+                </div>
                 <input
                   type="text"
-                  id="wetness-text"
+                  :id="`witness-text-${index}`"
                   v-model="item.text"
                   class="input"
                   placeholder="add your title"

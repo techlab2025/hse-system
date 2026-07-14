@@ -3,6 +3,7 @@ import HeaderPage from '@/features/Organization/Project/Presentation/components/
 import { computed, ref, watch } from 'vue'
 import WitnessesTimeLine from './WitnessesTimeLine.vue'
 import people from '@/assets/images/people.png'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -37,12 +38,17 @@ watch(
 <template>
   <div class="another-meeting">
     <div class="another-meeting-header">
-      <HeaderPage
-        :title="`Are there witnesses?`"
-        :subtitle="`Please Record the statements of those present at the scene .`"
-        :img="people"
-        class="title-header"
-      />
+      <div class="section-title-with-help">
+        <HeaderPage
+          :title="`Are there witnesses?`"
+          :subtitle="`Please Record the statements of those present at the scene .`"
+          :img="people"
+          class="title-header"
+        />
+        <FieldHelpIcon
+          text="Choose Yes if anyone witnessed the event and can provide a statement."
+        />
+      </div>
       <div class="meeting-status">
         <button
           class="meeting-status-yes"
@@ -133,5 +139,11 @@ watch(
       }
     }
   }
+}
+
+.section-title-with-help {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 </style>

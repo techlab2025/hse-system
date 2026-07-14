@@ -9,6 +9,7 @@ import ValidationService from '@/base/Presentation/utils/validationService'
 import IconBackStage from '@/shared/icons/IconBackStage.vue'
 import PlusIcon from '../icons/PlusIcon.vue'
 import Dialog from 'primevue/dialog'
+import FieldHelpIcon from './FieldHelpIcon.vue'
 
 export type ComponentType = 'select' | 'multiselect'
 
@@ -32,6 +33,7 @@ interface Props {
   isDialog?: boolean
   dialogVisible?: boolean
   onclick?: () => void
+  helpText?: string
 }
 
 // const emit = defineEmits(['update:modelValue', 'update:slot'])
@@ -215,6 +217,8 @@ const closeDialog = async () => {
           <span v-if="required" class="text-red-500">*</span>
           {{ $t(label ?? '') }}
         </label>
+
+        <FieldHelpIcon v-if="helpText" :text="helpText" />
 
         <slot name="LabelHeader"></slot>
       </div>

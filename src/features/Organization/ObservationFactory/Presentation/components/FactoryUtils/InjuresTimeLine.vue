@@ -14,6 +14,7 @@ import Checkbox from 'primevue/checkbox'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import AddInjury from '@/views/Organization/Injury/AddInjury.vue'
 import type InjuryDetailsModel from '../../../Data/models/InjuryModel'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -226,6 +227,7 @@ onMounted(async () => {
                   placeholder="Select Employee"
                   class="mt-4 mr-2 input"
                   :label="$t('Injured Person')"
+                  help-text="Select the injured employee, or enter the person's name manually if they are not an employee."
                   :reload="true"
                   :excludedOptionIds="getSelectedEmployeeIds(index)"
                   @update:model-value="UpdateData"
@@ -283,6 +285,7 @@ onMounted(async () => {
                   :staticOptions="injuryOptions"
                   class="input"
                   :label="$t('Type and Nature of Injury')"
+                  help-text="Choose the classification that best describes the injury sustained."
                   id="injury"
                   :placeholder="$t('select your injury Classification')"
                   @update:modelValue="UpdateInjury($event, index)"
@@ -304,9 +307,17 @@ onMounted(async () => {
                 </UpdatedCustomInputSelect>
               </div>
               <div class="col-span-12 md:col-span-12 input-wrapper w-full">
-                <label for="">{{ $t('Description of Injury') }}</label>
+                <div class="flex items-center gap-2">
+                  <label :for="`injury-description-${index}`">{{
+                    $t('Description of Injury')
+                  }}</label>
+                  <FieldHelpIcon
+                    text="Describe the injury, affected body part, and any relevant medical details."
+                  />
+                </div>
                 <input
                   type="text"
+                  :id="`injury-description-${index}`"
                   class="input"
                   :placeholder="$t('add your title')"
                   v-model="item.text"
@@ -315,7 +326,12 @@ onMounted(async () => {
               </div>
 
               <div class="col-span-12 md:col-span-12 input-wrapper w-full">
-                <label for="">{{ $t('Evidence Retrieval (Photos)') }}</label>
+                <div class="flex items-center gap-2">
+                  <label>{{ $t('Evidence Retrieval (Photos)') }}</label>
+                  <FieldHelpIcon
+                    text="Attach photos that document the injury or related evidence, where appropriate and permitted."
+                  />
+                </div>
                 <MultiImagesInput
                   :initialImages="item.images"
                   @update:images="setImages($event, index)"
@@ -327,16 +343,21 @@ onMounted(async () => {
                 class="col-span-12 md:col-span-12 input-wrapper w-full is-stopped is-stopped-white"
                 @click="toggleWorkStopped(index)"
               >
-                <label class="w-full" for="is_sstoped">{{
-                  $t('Did The Injury Cause He Stopped To Work?')
-                }}</label>
+                <div class="flex items-center gap-2 w-full">
+                  <label :for="`is-stopped-${index}`">{{
+                    $t('Did The Injury Cause He Stopped To Work?')
+                  }}</label>
+                  <FieldHelpIcon
+                    text="Indicate whether the injured person had to stop working because of the injury."
+                  />
+                </div>
                 <Checkbox
                   binary
                   disabled
                   :modelValue="item.isWorkStopped"
                   @change="UpdateData"
-                  inputId="is_sstoped"
-                  :name="`is_sstoped`"
+                  :inputId="`is-stopped-${index}`"
+                  :name="`is-stopped-${index}`"
                 />
               </div>
             </div>

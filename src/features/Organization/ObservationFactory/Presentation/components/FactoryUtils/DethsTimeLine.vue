@@ -8,6 +8,7 @@ import { onMounted, ref } from 'vue'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -122,6 +123,7 @@ const toggleMode = (index: number, isManual: boolean) => {
                   placeholder="Select Employee"
                   class="mt-4 mr-2 input"
                   :label="$t('Employee  ')"
+                  help-text="Select the deceased employee, or enter the person's name manually if they are not an employee."
                   :excludedOptionIds="getSelectedEmployeeIds(index)"
                   @update:model-value="UpdateData"
                   :hascontent="isSelectHasContent[index]"
@@ -168,10 +170,17 @@ const toggleMode = (index: number, isManual: boolean) => {
                 </UpdatedCustomInputSelect>
               </div>
               <div class="col-span-6 md:col-span-6 input-wrapper w-full">
-                <label for="deth-text">{{ $t('circumstances of fatality') }}</label>
+                <div class="flex items-center gap-2">
+                  <label :for="`fatality-circumstances-${index}`">{{
+                    $t('circumstances of fatality')
+                  }}</label>
+                  <FieldHelpIcon
+                    text="Describe the known circumstances surrounding the fatality."
+                  />
+                </div>
                 <input
                   type="text"
-                  id="deth-text"
+                  :id="`fatality-circumstances-${index}`"
                   v-model="item.text"
                   class="input"
                   :placeholder="$t('add your title')"
@@ -179,7 +188,12 @@ const toggleMode = (index: number, isManual: boolean) => {
                 />
               </div>
               <div class="col-span-12 md:col-span-12 input-wrapper w-full">
-                <label for="">{{ $t('sensitive content - legal evidence only') }}</label>
+                <div class="flex items-center gap-2">
+                  <label>{{ $t('sensitive content - legal evidence only') }}</label>
+                  <FieldHelpIcon
+                    text="Attach only authorized evidence required for legal or official investigation purposes."
+                  />
+                </div>
                 <MultiImagesInput
                   :initialImages="item.images"
                   @update:images="setImages($event, index)"
