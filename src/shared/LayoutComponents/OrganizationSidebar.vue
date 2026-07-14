@@ -31,6 +31,17 @@ const GauideRoutes = ref<Routes[]>([
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
     ],
   },
+  {
+    link: '/organization/notification-plan',
+    name: t('notification_plan'),
+    icon: 'ticket',
+    permissions: [
+      PermissionsEnum.NOTIFICATION_PLAN_ALL,
+      PermissionsEnum.NOTIFICATION_PLAN_CREATE,
+      PermissionsEnum.NOTIFICATION_PLAN_FETCH,
+      PermissionsEnum.NOTIFICATION_PLAN_UPDATE,
+    ],
+  },
 ])
 
 const OperationsRoutes = ref<Routes[]>([
@@ -283,6 +294,7 @@ const OrganizationRoutes = ref<Routes[]>([
     ],
   },
 ])
+
 const TicketRoutes = ref<Routes[]>([
   {
     link: '/organization/ticket',
@@ -297,7 +309,6 @@ const TicketRoutes = ref<Routes[]>([
     ],
   },
 ])
-
 const LocationRoutes = ref<Routes[]>([
   {
     link: '/organization/countries',

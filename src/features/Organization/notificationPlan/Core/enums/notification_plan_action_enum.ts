@@ -1,0 +1,5 @@
+export enum NotificationPlanActionEnum {
+  TASK_ASSIGNED = 1,
+  PROJECT_LOCATION_HIERARCHY_ASSIGNMENT = 3,
+  OBSERVATION_CREATED = 4,
+}

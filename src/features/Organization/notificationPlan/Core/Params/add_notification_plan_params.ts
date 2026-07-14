@@ -1,0 +1,24 @@
+import type Params from '@/base/core/params/params'
+
+export default class AddNotificationPlanParams implements Params {
+  constructor(
+    public title: string,
+    public actionValues: number[],
+    public employeeIds: number[] = [],
+    public hierarchyIds: number[] = [],
+    public isActive?: boolean,
+  ) {}
+
+  toMap(): { [p: string]: any } {
+    const data: { [p: string]: any } = {
+      title: this.title,
+      action_values: this.actionValues,
+    }
+
+    if (this.isActive !== undefined) data.is_active = this.isActive
+    if (this.employeeIds.length > 0) data.employee_ids = this.employeeIds
+    if (this.hierarchyIds.length > 0) data.hierarchy_ids = this.hierarchyIds
+
+    return data
+  }
+}

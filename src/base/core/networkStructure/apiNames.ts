@@ -1690,6 +1690,20 @@ class ApiNames {
   public get FetchSimilarObservation() {
     return this.prefix + 'fetch_similar_observations'
   }
+
+  // notifications plan
+  public get CreateNotificationPlan() {
+    return this.baseUrl + this.organizationPrefix + 'create_notification_plan'
+  }
+  public get IndexNotificationPlan() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_notification_plans'
+  }
+  public get ShowNotificationPlan() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_notification_plan_details'
+  }
+  public get EditNotificationPlan() {
+    return this.baseUrl + this.organizationPrefix + 'update_notification_plan'
+  }
 }
 
 export { ApiNames }
