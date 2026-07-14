@@ -4,6 +4,7 @@ import checkActions from '@/assets/images/checkActions.png'
 import { ref } from 'vue'
 import wrongAction from '@/assets/images/wrongAction.png'
 import conrrectAction from '@/assets/images/conrrectAction.png'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 const ActionRate = ref<number>(1)
 const notes = ref<string>()
 
@@ -30,6 +31,9 @@ const UpdateData = (data) => {
         <div class="input-wrapper select-type" :class="ActionRate == 1 ? 'active' : ''">
           <label for="wrong">
             <span>{{ $t('Not Effective') }}</span>
+            <FieldHelpIcon
+              text="Choose this when the immediate action did not adequately control or remove the risk."
+            />
             <img :src="wrongAction" alt="wrong" />
           </label>
           <input
@@ -44,6 +48,9 @@ const UpdateData = (data) => {
         <div class="input-wrapper select-type" :class="ActionRate == 2 ? 'active' : ''">
           <label for="correct">
             <span>{{ $t('Effective') }}</span>
+            <FieldHelpIcon
+              text="Choose this when the immediate action successfully controlled the risk or made the situation safe."
+            />
             <img :src="conrrectAction" alt="correct" />
           </label>
           <input
@@ -58,7 +65,12 @@ const UpdateData = (data) => {
       </div>
 
       <div class="input-wrapper">
-        <label for="notes">{{ $t('notes') }}</label>
+        <div class="flex items-center gap-2">
+          <label for="notes">{{ $t('notes') }}</label>
+          <FieldHelpIcon
+            text="Explain why the immediate action was effective or ineffective and note any remaining concerns."
+          />
+        </div>
         <textarea
           id="notes"
           class="input"

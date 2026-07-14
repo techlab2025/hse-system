@@ -10,6 +10,7 @@ import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 
 import { useUserStore } from '@/stores/user'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const props = defineProps<{
   images: string[]
@@ -63,19 +64,32 @@ const updateTilte = (data: string) => {
       <hr class="attch-hr" />
 
       <div class="input-wrapper">
-        <label for="title">title</label>
+        <div class="flex items-center gap-2">
+          <label for="title">title</label
+          ><FieldHelpIcon
+            text="Enter a clear title that identifies this group of investigation attachments."
+          />
+        </div>
         <input type="text" id="title" v-model="title" class="input" @input="updateTilte" />
       </div>
 
-      <FileUpload
-        class="file-upload"
-        label="Image"
-        id="image"
-        placeholder="Select image"
-        :multiable="true"
-        :initialFileData="images"
-        @update:fileData="setFiles"
-      />
+      <div class="input-wrapper">
+        <div class="flex items-center gap-2">
+          <span>Files</span
+          ><FieldHelpIcon
+            text="Upload photos or documents that support the investigation findings. Each file must meet the allowed size and format rules."
+          />
+        </div>
+        <FileUpload
+          class="file-upload"
+          label="Image"
+          id="image"
+          placeholder="Select image"
+          :multiable="true"
+          :initialFileData="images"
+          @update:fileData="setFiles"
+        />
+      </div>
     </div>
 
     <button class="btn btn-primary w-full" @click="SendData">Confirm</button>

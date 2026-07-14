@@ -89,6 +89,18 @@ onBeforeUnmount(hideTooltip)
 </template>
 
 <style scoped>
+.field-help,
+.field-help__tooltip {
+  --field-help-accent: var(--PrimaryColor, #1d4ed8);
+  --field-help-surface: var(--surface-1, #ffffff);
+  --field-help-surface-soft: var(--surface-2, #f8fafc);
+  --field-help-border: var(--main-border, #dde2ed);
+  --field-help-text: var(--text-strong, #0f172a);
+  --field-help-text-soft: var(--text-soft, #475569);
+  --field-help-on-accent: #ffffff;
+  --field-help-shadow-color: color-mix(in srgb, var(--text-primary, #0f172a) 18%, transparent);
+}
+
 .field-help {
   position: relative;
   display: inline-flex;
@@ -99,17 +111,17 @@ onBeforeUnmount(hideTooltip)
   height: 21px;
   margin: 0 0 4px;
   padding: 0;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor, #5b6cff) 32%, transparent);
+  border: 1px solid color-mix(in srgb, var(--field-help-accent) 32%, transparent);
   border-radius: 7px;
   background: linear-gradient(
     145deg,
-    color-mix(in srgb, var(--PrimaryColor, #5b6cff) 13%, white),
-    color-mix(in srgb, var(--PrimaryColor, #5b6cff) 4%, white)
+    color-mix(in srgb, var(--field-help-accent) 13%, var(--field-help-surface)),
+    color-mix(in srgb, var(--field-help-accent) 4%, var(--field-help-surface-soft))
   );
-  color: var(--PrimaryColor, #5b6cff);
+  color: var(--field-help-accent);
   box-shadow:
-    0 3px 9px color-mix(in srgb, var(--PrimaryColor, #5b6cff) 17%, transparent),
-    inset 0 1px 0 rgb(255 255 255 / 75%);
+    0 3px 9px color-mix(in srgb, var(--field-help-accent) 17%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--field-help-surface) 75%, transparent);
   /* cursor: help; */
   outline: none;
   isolation: isolate;
@@ -133,7 +145,7 @@ onBeforeUnmount(hideTooltip)
   inset: -4px;
   z-index: -1;
   border-radius: 10px;
-  background: color-mix(in srgb, var(--PrimaryColor, #5b6cff) 16%, transparent);
+  background: color-mix(in srgb, var(--field-help-accent) 16%, transparent);
   opacity: 0;
   transform: scale(0.75);
   transition:
@@ -143,14 +155,14 @@ onBeforeUnmount(hideTooltip)
 
 .field-help:hover,
 .field-help:focus-visible {
-  border-color: color-mix(in srgb, var(--PrimaryColor, #5b6cff) 65%, transparent);
-  color: #fff;
+  border-color: color-mix(in srgb, var(--field-help-accent) 65%, transparent);
+  color: var(--field-help-on-accent);
   background: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--PrimaryColor, #5b6cff) 78%, #8b5cf6),
-    var(--PrimaryColor, #5b6cff)
+    color-mix(in srgb, var(--field-help-accent) 82%, var(--field-help-text-soft)),
+    var(--field-help-accent)
   );
-  box-shadow: 0 7px 16px color-mix(in srgb, var(--PrimaryColor, #5b6cff) 28%, transparent);
+  box-shadow: 0 7px 16px color-mix(in srgb, var(--field-help-accent) 28%, transparent);
   transform: translateY(-2px) rotate(-3deg);
 }
 
@@ -161,7 +173,7 @@ onBeforeUnmount(hideTooltip)
 }
 
 .field-help:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--PrimaryColor, #5b6cff) 20%, transparent);
+  outline: 3px solid color-mix(in srgb, var(--field-help-accent) 20%, transparent);
   outline-offset: 2px;
 }
 
@@ -176,15 +188,19 @@ onBeforeUnmount(hideTooltip)
   max-width: min(300px, 78vw);
   padding: 12px 14px 13px;
   overflow: visible;
-  border: 1px solid rgb(255 255 255 / 11%);
+  border: 1px solid var(--field-help-border);
   border-radius: 13px;
   background:
-    radial-gradient(circle at 100% 0, rgb(124 92 255 / 24%), transparent 42%),
-    linear-gradient(145deg, rgb(25 32 54 / 98%), rgb(12 18 34 / 98%));
-  color: #fff;
+    radial-gradient(
+      circle at 100% 0,
+      color-mix(in srgb, var(--field-help-accent) 18%, transparent),
+      transparent 42%
+    ),
+    linear-gradient(145deg, var(--field-help-surface), var(--field-help-surface-soft));
+  color: var(--field-help-text);
   box-shadow:
-    0 18px 42px rgb(2 6 23 / 28%),
-    0 4px 12px rgb(2 6 23 / 20%);
+    0 18px 42px var(--field-help-shadow-color),
+    0 4px 12px color-mix(in srgb, var(--field-help-shadow-color) 70%, transparent);
   text-align: start;
   pointer-events: none;
   animation: field-help-enter 0.2s cubic-bezier(0.2, 0.8, 0.2, 1) both;
@@ -204,7 +220,7 @@ onBeforeUnmount(hideTooltip)
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #b9c2ff;
+  color: var(--field-help-accent);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -213,12 +229,12 @@ onBeforeUnmount(hideTooltip)
 }
 
 .field-help__spark {
-  color: #a78bfa;
+  color: var(--field-help-accent);
   font-size: 11px;
 }
 
 .field-help__text {
-  color: #f8fafc;
+  color: var(--field-help-text);
   font-size: 12px;
   font-weight: 500;
   line-height: 1.5;
@@ -230,7 +246,7 @@ onBeforeUnmount(hideTooltip)
   inset-inline-start: 50%;
   width: 10px;
   height: 10px;
-  background: rgb(12 18 34 / 98%);
+  background: var(--field-help-surface-soft);
   transform: translateX(-50%) rotate(45deg);
 }
 
@@ -242,6 +258,7 @@ onBeforeUnmount(hideTooltip)
 .field-help__tooltip--bottom .field-help__arrow {
   bottom: 100%;
   margin-bottom: -5px;
+  background: var(--field-help-surface);
 }
 
 @keyframes field-help-enter {

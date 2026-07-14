@@ -55,11 +55,7 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
 
 
     </div> -->
-    <pre>
-
-
-</pre
-    >
+    <pre></pre>
     <div class="meeting-info-container">
       <div class="meeting-info">
         <p>
@@ -75,7 +71,7 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
           Incident Classification : <span class="incidant-type">{{ incidantType?.title }}</span>
         </p>
         <p>
-          Created By : <span class="incidant-type">{{ observationCreator   }}</span>
+          Created By : <span class="incidant-type">{{ observationCreator }}</span>
         </p>
         <p>
           date & time & shift :
@@ -94,6 +90,7 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
             :controller="indexDocumentRefrencesController"
             :params="indexDocumentRefrencesParams"
             :label="$t('Regulatory/Legal Compliance Reference')"
+            help-text="Select any regulation, standard, procedure, or legal reference relevant to this investigation."
             id="DocumentRefrence"
             :placeholder="$t('select your Regulatory/Legal Compliance Reference')"
             @update:modelValue="setDocumentRefrences"

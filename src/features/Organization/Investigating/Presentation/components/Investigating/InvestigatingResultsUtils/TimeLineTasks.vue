@@ -7,6 +7,7 @@ import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
 import { onMounted, ref } from 'vue'
 import DatePicker from 'primevue/datepicker'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -97,10 +98,15 @@ onMounted(async () => {
 
             <div class="timeline-content" :class="{ 'capa-timeline-content': capaStyles }">
               <div class="timeline-content-text input-wrapper">
-                <label for="text">Action</label>
+                <div class="flex items-center gap-2">
+                  <label :for="`action-${index}`">Action</label
+                  ><FieldHelpIcon
+                    text="Describe the specific corrective or preventive action to be completed."
+                  />
+                </div>
                 <input
                   type="text"
-                  id="text"
+                  :id="`action-${index}`"
                   v-model="item.text"
                   class="input"
                   placeholder="add your title"
@@ -115,18 +121,25 @@ onMounted(async () => {
                     placeholder="Select Employee"
                     class="mt-4 mr-2 input"
                     label="Implementation Responsibility "
+                    help-text="Select the person responsible for carrying out this action."
                     :reload="false"
                     @update:model-value="UpdateData"
                   />
                 </div>
                 <div class="flex flex-col gap-2 input-wrapper">
-                  <label for="date">Expected Time for Implementation </label>
+                  <div class="flex items-center gap-2">
+                    <label :for="`implementation-date-${index}`"
+                      >Expected Time for Implementation</label
+                    ><FieldHelpIcon
+                      text="Select the target date by which this action should be completed."
+                    />
+                  </div>
                   <DatePicker
                     v-model="item.date"
                     class="mt-4 mr-2 input date-picker"
                     placeholder="Select Date"
                     @update:model-value="UpdateData"
-                    input-id="date"
+                    :input-id="`implementation-date-${index}`"
                   />
                 </div>
                 <div class="input-wrapper">
@@ -136,6 +149,7 @@ onMounted(async () => {
                     placeholder="Select Responable Person"
                     class="mt-4 mr-2 input"
                     label="Monitoring Responsibility "
+                    help-text="Select the person responsible for verifying progress and confirming completion."
                     :reload="false"
                     @update:model-value="UpdateData"
                   />

@@ -9,13 +9,16 @@ import InvestegationAnotherMeetingParams from '@/features/Organization/Investiga
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { formatTime } from '@/base/Presentation/utils/time_format'
 import { InvestigationMeetingEnum } from '../../../../Core/Enums/investigation_meeting_enum'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
 const MeetingType = ref<string>('')
 
 const time = ref(new Date())
 const date = ref(new Date())
-const SelectedPlatform = ref<TitleInterface>(new TitleInterface({ id: InvestigationMeetingEnum.ZOOM, title: 'zoom' }))
+const SelectedPlatform = ref<TitleInterface>(
+  new TitleInterface({ id: InvestigationMeetingEnum.ZOOM, title: 'zoom' }),
+)
 
 const Platforms = ref<TitleInterface[]>([
   new TitleInterface({ id: InvestigationMeetingEnum.ZOOM, title: 'Zoom' }),
@@ -61,12 +64,17 @@ watch(
 <template>
   <div class="another-meeting col-span-6">
     <div class="another-meeting-header">
-      <HeaderPage
-        :title="`Do you want another meeting?`"
-        :subtitle="`If the first meeting is not sufficient to close the investigation into the case`"
-        :img="AnotherMeeting"
-        class="title-header"
-      />
+      <!-- <div class="flex items-center gap-2"> -->
+        <HeaderPage
+          :title="`Do you want another meeting?`"
+          :subtitle="`If the first meeting is not sufficient to close the investigation into the case`"
+          :img="AnotherMeeting"
+          class="title-header"
+        />
+        <!-- <FieldHelpIcon
+          text="Choose Yes when more discussion, evidence, or review is required before closing the investigation."
+        />
+      </div> -->
       <div class="meeting-status">
         <button
           class="meeting-status-yes"
@@ -87,7 +95,12 @@ watch(
 
     <div class="another-meeting-contect" v-if="isAnotherMeeting == 1">
       <div class="flex flex-col gap-2 input-wrapper col-span-3">
-        <label for="time">time</label>
+        <div class="flex items-center gap-2">
+          <label for="time">time</label
+          ><FieldHelpIcon
+            text="Select the planned start time for the follow-up investigation meeting."
+          />
+        </div>
         <DatePicker
           v-model="time"
           class="mt-4 mr-2 input date-picker"
@@ -98,7 +111,10 @@ watch(
         />
       </div>
       <div class="flex flex-col gap-2 input-wrapper col-span-3">
-        <label for="date">date</label>
+        <div class="flex items-center gap-2">
+          <label for="date">date</label
+          ><FieldHelpIcon text="Select the planned date for the follow-up investigation meeting." />
+        </div>
         <DatePicker
           v-model="date"
           class="mt-4 mr-2 input date-picker"
@@ -115,12 +131,18 @@ watch(
           placeholder="Select meeting platform"
           class="mt-4 mr-2 input"
           label="meeting platform"
+          help-text="Select the platform where the follow-up meeting will take place."
           @update:model-value="setPlatform"
         />
       </div>
 
       <div class="input-wrapper col-span-3" v-if="isOtherMeetingPlatform()">
-        <label for="place">Meeting Place</label>
+        <div class="flex items-center gap-2">
+          <label for="place">Meeting Place</label
+          ><FieldHelpIcon
+            text="Enter the physical location or other meeting method when Other is selected."
+          />
+        </div>
         <input
           id="place"
           placeholder="Enter meeting place"

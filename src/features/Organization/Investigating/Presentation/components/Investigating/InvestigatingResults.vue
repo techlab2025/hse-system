@@ -44,6 +44,7 @@ import InvestigationFormSkilaton from '../../SubComponents/InvestigationFormSkil
 import DownArrow from '@/shared/icons/DownArrow.vue'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum.ts'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 interface items {
   title: string
@@ -806,7 +807,12 @@ const validateRequiredFields = async () => {
                           class="input-wrapper"
                           :data-required-field="timelineFieldKey('time', index)"
                         >
-                          <label :for="`event_time_${index}`">{{ $t('time') }}</label>
+                          <div class="field-label">
+                            <label :for="`event_time_${index}`">{{ $t('time') }}</label>
+                            <FieldHelpIcon
+                              text="Enter the time when this event occurred in the incident sequence."
+                            />
+                          </div>
                           <DatePicker
                             :id="`event_time_${index}`"
                             v-model="item.time"
@@ -828,7 +834,14 @@ const validateRequiredFields = async () => {
                           class="input-wrapper event-description-field"
                           :data-required-field="timelineFieldKey('description', index)"
                         >
-                          <label :for="`event_description_${index}`">{{ $t('description') }}</label>
+                          <div class="field-label">
+                            <label :for="`event_description_${index}`">{{
+                              $t('description')
+                            }}</label>
+                            <FieldHelpIcon
+                              text="Describe what happened at this point in the timeline, including relevant actions and conditions."
+                            />
+                          </div>
                           <textarea
                             :id="`event_description_${index}`"
                             v-model="item.description"
@@ -937,6 +950,7 @@ const validateRequiredFields = async () => {
                   :controller="indexRootCaueseController"
                   :params="indexRootCaueseParams"
                   :label="$t('Identified Root Cause')"
+                  help-text="Select the underlying causes that directly contributed to the incident."
                   id="rootCause"
                   :placeholder="$t('select your root_cause')"
                   @update:modelValue="setRootCause"
@@ -993,7 +1007,12 @@ const validateRequiredFields = async () => {
               <section class="lesson-section">
                 <div class="section-heading">
                   <!-- <span>Lesson learnt</span> -->
-                  <h2>Lessons Learned</h2>
+                  <div class="field-label">
+                    <h2>Lessons Learned</h2>
+                    <FieldHelpIcon
+                      text="Record the key learning from this investigation and what should be shared to prevent recurrence."
+                    />
+                  </div>
                 </div>
                 <div class="input-wrapper" data-required-field="lessonLearnt">
                   <textarea
@@ -1269,6 +1288,13 @@ const validateRequiredFields = async () => {
   color: #dc2626;
   font-size: 0.82rem;
   font-weight: 700;
+}
+
+.field-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  width: fit-content;
 }
 
 .lesson-section {

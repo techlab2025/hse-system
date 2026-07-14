@@ -7,6 +7,7 @@ import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
 import { onMounted, ref } from 'vue'
 import DatePicker from 'primevue/datepicker'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
 const MAX_ANSWERS = 5
@@ -79,10 +80,15 @@ onMounted(() => {
             <div class="timeline-content">
               <div class="timeline-contect-select w-full flex flex-col">
                 <div class="input-wrapper w-full">
-                  <label for="question">{{ $t('question') }}</label>
+                  <div class="flex items-center gap-2">
+                    <label :for="`why-question-${index}`">{{ $t('question') }}</label
+                    ><FieldHelpIcon
+                      text="Ask why the previous event or condition occurred to move closer to the root cause."
+                    />
+                  </div>
                   <input
                     type="text"
-                    id="question"
+                    :id="`why-question-${index}`"
                     v-model="item.question"
                     class="input"
                     placeholder="add your question"
@@ -90,9 +96,14 @@ onMounted(() => {
                   />
                 </div>
                 <div class="input-wrapper w-full">
-                  <label for="answer">{{ $t('answer') }}</label>
+                  <div class="flex items-center gap-2">
+                    <label :for="`why-answer-${index}`">{{ $t('answer') }}</label
+                    ><FieldHelpIcon
+                      text="Provide an evidence-based answer that explains the cause, not just the symptom."
+                    />
+                  </div>
                   <textarea
-                    id="answer"
+                    :id="`why-answer-${index}`"
                     v-model="item.answer"
                     class="input"
                     placeholder="add your answer"
