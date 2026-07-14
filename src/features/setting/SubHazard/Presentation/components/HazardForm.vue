@@ -269,7 +269,7 @@ const fields = ref([
     />
   </div>
 
-  <div class="input-wrapper col-span-4 md:col-span-2">
+  <!-- <div class="input-wrapper col-span-4 md:col-span-2">
     <CustomSelectInput
       :modelValue="Factor"
       :controller="indexFactoryController"
@@ -280,7 +280,7 @@ const fields = ref([
       :type="2"
       @update:modelValue="setFactor"
     />
-  </div>
+  </div> -->
   <div
     class="input-wrapper col-span-4 md:col-span-2"
     v-if="!route.params.parent_id && !props.hazardTypeId"

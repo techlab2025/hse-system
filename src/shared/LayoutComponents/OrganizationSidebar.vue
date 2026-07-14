@@ -214,7 +214,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/hazard',
-    name: t('hazard'),
+    name: t('risk'),
     icon: 'shield-exclamation',
     permissions: [
       PermissionsEnum.ORG_HAZARD_ALL,

@@ -1394,5 +1394,8 @@
   "In_service": "In Service",
   "show_all_actions": "Show All Actions",
   "unemployed_witness": "unemployed witness",
-  "unemployed_injured_name ": "unemployed injured name "
+  "unemployed_injured_name ": "unemployed injured name ",
+  "stuff_member": "Stuff Member",
+  "not_stuff_member": "Not Stuff Member",
+  "add_risk":"add risk"
 }

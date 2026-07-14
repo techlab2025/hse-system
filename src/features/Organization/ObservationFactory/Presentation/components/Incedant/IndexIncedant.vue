@@ -283,7 +283,7 @@ const ShowDetails = ref<number[]>([])
                 ]"
               >
                 <router-link :to="`/organization/equipment-mangement/incedant/add`">
-                  <button class="btn btn-primary">{{ $t('Create incedant') }}</button>
+                  <button class="btn btn-primary">{{ $t('incedent Report') }}</button>
                 </router-link>
               </PermissionBuilder>
             </div>

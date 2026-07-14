@@ -185,13 +185,13 @@ const DialogVisable = computed({
   },
   set(val) {
     emit('update:dialogVisible', val)
-    if (!val) {
-      reloadData()
-    }
-  }
+  },
 })
-const closeDailog = () => {
+
+const closeDialog = async () => {
   emit('close', false)
+  emit('update:reload')
+  await fetchOptions()
 }
 </script>
 
@@ -240,7 +240,7 @@ const closeDailog = () => {
   <slot v-else name="content"> </slot>
   <div v-if="isDialog">
     <Dialog
-      @hide="closeDailog"
+      @hide="closeDialog"
       v-model:visible="DialogVisable"
       modal
       :dismissable-mask="true"

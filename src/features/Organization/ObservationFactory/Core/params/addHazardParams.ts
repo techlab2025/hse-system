@@ -41,7 +41,7 @@ export default class AddHazardParams implements Params {
   public place: string
   public isWorkStopped: number
   public HazardTypeId: number
-  public HazardSubtypeId: number
+  public HazardSubtypeId: number[]
   public RootCausesId: number[]
   public actionstatus: ActionStatusEnum
   public OpenNote: string
@@ -86,7 +86,7 @@ export default class AddHazardParams implements Params {
     place: string
     isWorkStopped: number
     HazardTypeId: number
-    HazardSubtypeId: number
+    HazardSubtypeId: number[]
     RootCausesId: number[]
     actionstatus: ActionStatusEnum
     code: string
@@ -188,7 +188,7 @@ export default class AddHazardParams implements Params {
     if (this.place) data['place'] = this.place
     if (this.isWorkStopped) data['is_work_stopped'] = this.isWorkStopped
     if (this.HazardTypeId) data['hazard_type_id'] = this.HazardTypeId
-    if (this.HazardSubtypeId) data['hazard_sub_type_id'] = this.HazardSubtypeId
+    if (this.HazardSubtypeId.length > 0) data['hazard_sub_type_id'] = this.HazardSubtypeId[0]
     if (this.RootCausesId) data['root_causes'] = this.RootCausesId
     if (this.actionstatus) data['action_status'] = this.actionstatus
     if (useProjectAppStatusStore().isSerialNumberAuto()) {

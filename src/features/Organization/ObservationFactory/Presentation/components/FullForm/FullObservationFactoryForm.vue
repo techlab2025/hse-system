@@ -254,7 +254,7 @@ const updateData = () => {
         place: PlaceText.value,
         isWorkStopped: isWorkStopped.value ? 1 : 0,
         HazardTypeId: HazardType.value?.id,
-        HazardSubtypeId: SubHazardType.value?.id,
+        HazardSubtypeId: SubHazardType.value.map((item) => item.id),
         actionstatus: solved.value,
         code: SerialNumber.value,
         RootCausesId: rootCausesIdParams,
@@ -466,8 +466,8 @@ const indexSubHazardTypeParams = ref(
   new IndexHazardTypeParams('', 1, 10, 0, HazardType?.value?.id, HazardTypeParentEnum?.Child),
 )
 const indexSubHazardTypeController = IndexHazardTypeController.getInstance()
-const SubHazardType = ref<TitleInterface>()
-const setSubHazardType = (data: TitleInterface) => {
+const SubHazardType = ref<TitleInterface[]>([])
+const setSubHazardType = (data: TitleInterface[]) => {
   SubHazardType.value = data
   updateData()
 }
@@ -481,8 +481,8 @@ const setAccidentsType = (data: TitleInterface) => {
 }
 
 const isWorkStopped = ref()
-const UpdateWorkStatus = (data) => {
-  isWorkStopped.value = data?.target?.checked
+const setWorkStopped = (isStopped: boolean) => {
+  isWorkStopped.value = isStopped ? 1 : 0
   updateData()
 }
 
@@ -535,10 +535,6 @@ const setRootCause = (data: TitleInterface[]) => {
   updateData()
 }
 
-const WorkStopedHandle = () => {
-  isWorkStopped.value = !isWorkStopped.value
-  updateData()
-}
 const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
 
@@ -587,7 +583,8 @@ type RequiredFieldRule = {
 const requiredFieldErrors = ref<Record<string, string>>({})
 const hasValue = (value: unknown) =>
   value !== null && value !== undefined && String(value).trim().length > 0
-const hasSelectedId = (value?: TitleInterface | null) => Boolean(value?.id)
+const hasSelectedId = (value?: TitleInterface | TitleInterface[] | null) =>
+  Array.isArray(value) ? value.some((item) => Boolean(item?.id)) : Boolean(value?.id)
 const hasEmployeeValue = (employee: any) =>
   Boolean(Number(employee?.id)) || hasValue(employee?.title) || hasValue(employee?.name)
 const hasFiles = (files: any) => Array.isArray(files) && files.length > 0
@@ -1059,10 +1056,10 @@ defineExpose({
         :controller="fetchOriganizatioEmployeeController"
         :params="fetchOrganizationEmployeeParams"
         v-model="Oragnizationemployee"
-        placeholder="Select Employee"
+        placeholder="Select Involved Persons"
         :required="true"
         class="mt-4 mr-2 input"
-        :label="$t('employee name')"
+        :label="$t('Involved Persons')"
         @update:model-value="setOragnizationemployee"
         :hascontent="isSelectHasContent"
         :reload="false"
@@ -1074,7 +1071,7 @@ defineExpose({
               class="emp-name"
               @click.prevent="toggleMode(true)"
             >
-              {{ $t('employee_name') }}
+              {{ $t('not_stuff_member') }}
             </button>
 
             <button
@@ -1082,7 +1079,7 @@ defineExpose({
               class="emp-select"
               @click.prevent="toggleMode(false)"
             >
-              {{ $t('select') }}
+              {{ $t('stuff_member') }}
             </button>
           </div>
         </template>
@@ -1268,13 +1265,14 @@ defineExpose({
         class="input"
         :controller="indexSubHazardTypeController"
         :params="indexSubHazardTypeParams"
-        :label="$t('Hazard')"
+        :label="$t('Risk')"
         id="Hazard"
-        :placeholder="$t('Select Hazard')"
+        :placeholder="$t('Select Risk')"
         @update:modelValue="setSubHazardType"
         :isDialog="true"
         :required="true"
         v-model:dialogVisible="HazardDialog"
+        :type="2"
       >
         <template #LabelHeader>
           <span class="add-dialog" @click="HazardDialog = true">New</span>
@@ -1294,19 +1292,26 @@ defineExpose({
     <div
       v-if="saveStatus == SaveStatusEnum.NotSaved"
       class="col-span-6 md:col-span-6 w-full is-stopped"
-      @click="WorkStopedHandle"
     >
-      <!-- isWorkStopped = !isWorkStopped;
-      updateData() -->
       <label class="w-full" for="is_stopedd">{{ $t('is_work_stopped') }}</label>
-      <Checkbox
-        binary
-        disabled
-        :modelValue="isWorkStopped"
-        @change="UpdateWorkStatus"
-        inputId="is_stoped"
-        :name="`is_stopedd`"
-      />
+      <div class="meeting-status">
+        <button
+          type="button"
+          class="meeting-status-yes"
+          @click="setWorkStopped(true)"
+          :class="isWorkStopped == 1 ? 'active' : ''"
+        >
+          {{ $t('Yes') }}
+        </button>
+        <button
+          type="button"
+          class="meeting-status-on"
+          @click="setWorkStopped(false)"
+          :class="isWorkStopped == 0 ? 'active' : ''"
+        >
+          {{ $t('No') }}
+        </button>
+      </div>
     </div>
     <!-- <div class="col-span-6 md:col-span-6 input-wrapper w-full is-stopped">
       <label class="w-full" for="is_stopedd" @click="isWorkStopped = !isWorkStopped">{{ $t('is_there_work_days_lost')
@@ -1558,6 +1563,72 @@ defineExpose({
 
 label {
   width: fit-content;
+}
+
+.is-stopped {
+  cursor: default;
+}
+
+.meeting-status {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 6px;
+  width: fit-content;
+  padding: 4px;
+  border: 1px solid #dbe5f2;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+}
+
+.meeting-status button {
+  min-width: 82px;
+  min-height: 38px;
+  padding: 9px 18px;
+  border: 0;
+  border-radius: 6px;
+  font-family: 'Bold';
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.meeting-status-yes {
+  background: transparent;
+  color: #15803d;
+}
+
+.meeting-status-yes.active {
+  color: #ffffff;
+  background: #16a34a;
+  box-shadow: 0 8px 18px rgba(22, 163, 74, 0.22);
+}
+
+.meeting-status-on {
+  background: transparent;
+  color: #dc2626;
+}
+
+.meeting-status-on.active {
+  color: #ffffff;
+  background: #dc2626;
+  box-shadow: 0 8px 18px rgba(220, 38, 38, 0.22);
+}
+
+@media (max-width: 480px) {
+  .is-stopped {
+    flex-wrap: wrap;
+  }
+
+  .meeting-status,
+  .meeting-status button {
+    flex: 1;
+  }
 }
 
 .full-observation-form.is-dark {
