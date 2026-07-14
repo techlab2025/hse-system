@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
@@ -10,8 +11,10 @@ import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/in
 import AddNotificationPlanController from '../controllers/add_notification_plan_controller'
 import AddNotificationPlanParams from '../../Core/Params/add_notification_plan_params'
 import { notificationPlanActionOptions } from '../../Data/const/notification_plan_actions'
+import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 
 const router = useRouter()
+const { t } = useI18n()
 
 const indexEmployeesController = IndexOrganizatoinEmployeeController.getInstance()
 const indexEmployeesParams = new IndexOrganizatoinEmployeeParams('', 1, 30, 1)
@@ -25,6 +28,22 @@ const selectedActions = ref<TitleInterface[]>([])
 const selectedEmployees = ref<TitleInterface[]>([])
 const selectedHierarchies = ref<TitleInterface[]>([])
 const assignmentError = ref('')
+
+const actionTitleKeys: Record<string, string> = {
+  'Task assigned': 'task_assigned',
+  'Project location hierarchy assignment': 'project_location_hierarchy_assignment',
+  'Observation created': 'observation_created',
+}
+
+const localizedActionOptions = computed(() =>
+  notificationPlanActionOptions.map(
+    (item) =>
+      new TitleInterface({
+        id: item.id,
+        title: t(actionTitleKeys[item.title] ?? item.title),
+      }),
+  ),
+)
 
 const canSubmit = computed(() => {
   return (
@@ -52,7 +71,7 @@ const addNotificationPlan = async () => {
   if (!canSubmit.value) {
     assignmentError.value =
       selectedEmployees.value.length === 0 && selectedHierarchies.value.length === 0
-        ? 'Select at least one employee or hierarchy'
+        ? t('select_employee_or_hierarchy_error')
         : ''
     return
   }
@@ -73,84 +92,101 @@ const addNotificationPlan = async () => {
 </script>
 
 <template>
-  <form @submit.prevent="addNotificationPlan" class="grid grid-cols-1 md:grid-cols-3 gap-4">
-    <div class="col-span-3 md:col-span-2 input-wrapper">
-      <label for="title">Title</label>
+  <form @submit.prevent="addNotificationPlan" class="notification-plan-form">
+    <div class="input-wrapper title-field">
+      <label for="title">{{ $t('title') }}</label>
       <input
         id="title"
         v-model.trim="title"
         class="input"
         type="text"
         maxlength="255"
-        placeholder="Enter title"
+        :placeholder="$t('enter_notification_plan_title')"
         required
       />
     </div>
 
-    <div class="col-span-3 md:col-span-1 input-wrapper status-field">
-      <label for="is-active">Active</label>
-      <input id="is-active" v-model="isActive" type="checkbox" />
+    <div class="input-wrapper status-field">
+      <CustomCheckbox
+        title="active"
+        :checked="isActive"
+        :index="0"
+        @update:checked="isActive = $event"
+      />
     </div>
 
-    <div class="col-span-3 input-wrapper">
+    <div class="input-wrapper full-width">
       <CustomSelectInput
         id="action-values"
         :modelValue="selectedActions"
-        label="Actions"
-        :static-options="notificationPlanActionOptions"
+        label="actions"
+        :static-options="localizedActionOptions"
         :reload="false"
         :type="2"
         required
-        placeholder="Select actions"
+        :placeholder="$t('select_actions')"
         @update:modelValue="updateActions"
       />
     </div>
 
-    <div class="col-span-3 md:col-span-1 input-wrapper">
+    <div class="input-wrapper">
       <CustomSelectInput
         id="employee-ids"
         :modelValue="selectedEmployees"
-        label="Employees"
+        label="employees"
         :controller="indexEmployeesController"
         :params="indexEmployeesParams"
         :type="2"
-        placeholder="Select employees"
+        :placeholder="$t('select_employees')"
         @update:modelValue="updateEmployees"
       />
     </div>
 
-    <div class="col-span-3 md:col-span-1 input-wrapper">
+    <div class="input-wrapper">
       <CustomSelectInput
         id="hierarchy-ids"
         :modelValue="selectedHierarchies"
-        label="Hierarchies"
+        label="hierarchies"
         :controller="indexHierarchiesController"
         :params="indexHierarchiesParams"
         :type="2"
-        placeholder="Select hierarchies"
+        :placeholder="$t('select_hierarchies')"
         @update:modelValue="updateHierarchies"
       />
     </div>
 
-    <p v-if="assignmentError" class="col-span-3 form-error">{{ assignmentError }}</p>
+    <p v-if="assignmentError" class="full-width form-error">{{ assignmentError }}</p>
 
-    <div class="col-span-3 button-wrapper">
-      <button class="primary-button" type="submit" :disabled="!canSubmit">Save</button>
+    <div class="full-width plan-button-wrapper">
+      <button class="btn btn-primary" type="submit" :disabled="!canSubmit">
+        {{ $t('save') }}
+      </button>
     </div>
   </form>
 </template>
 
 <style scoped>
+.notification-plan-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+.input-wrapper {
+  min-width: 0;
+}
+
+.title-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .status-field {
   display: flex;
   align-items: center;
-  gap: 12px;
-}
-
-.status-field input {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
+  min-height: 100%;
 }
 
 .form-error {
@@ -158,17 +194,28 @@ const addNotificationPlan = async () => {
   font-size: 14px;
 }
 
-.primary-button {
-  padding: 10px 20px;
-  background-color: #3b82f6;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.plan-button-wrapper button {
+  width: 100%;
 }
 
-.primary-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+.full-width {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 768px) {
+  .notification-plan-form {
+    grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr);
+    align-items: end;
+  }
+
+  .status-field {
+    align-items: flex-end;
+  }
+}
+
+@media (max-width: 767px) {
+  .status-field {
+    align-items: flex-start;
+  }
 }
 </style>

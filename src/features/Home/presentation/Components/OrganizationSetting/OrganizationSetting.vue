@@ -1,42 +1,41 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 
-import FilesOrganization from "@/assets/images/FilesOrganization.png";
-import OrganizationSettingIcon from "@/assets/images/OrganizationSettingIcon.png";
-import PersonalData from "@/assets/images/PersonalData.png";
-import SettingLocation from "@/assets/images/SettingLocation.png";
+import FilesOrganization from '@/assets/images/FilesOrganization.png'
+import OrganizationSettingIcon from '@/assets/images/OrganizationSettingIcon.png'
+import PersonalData from '@/assets/images/PersonalData.png'
+import SettingLocation from '@/assets/images/SettingLocation.png'
 
-import { PermissionsEnum } from "@/features/users/Admin/Core/Enum/permission_enum";
-import PermissionBuilder from "@/components/DataStatus/PermissionBuilder.vue";
-import { RouterEnum } from "@/features/Home/core/enums/SettingEnum/SettingEnum";
-import HomeOrganizationSetting from "@/shared/icons/HomeOrganizationSetting.vue";
-import OperationHomeIcon from "@/shared/icons/OperationHomeIcon.vue";
-import HomeSettingEmployeeIcon from "@/shared/icons/HomeSettingEmployeeIcon.vue";
-import HomeLocationIcon from "@/shared/icons/HomeLocationIcon.vue";
-import { useI18n } from "vue-i18n";
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
+import { RouterEnum } from '@/features/Home/core/enums/SettingEnum/SettingEnum'
+import HomeOrganizationSetting from '@/shared/icons/HomeOrganizationSetting.vue'
+import OperationHomeIcon from '@/shared/icons/OperationHomeIcon.vue'
+import HomeSettingEmployeeIcon from '@/shared/icons/HomeSettingEmployeeIcon.vue'
+import HomeLocationIcon from '@/shared/icons/HomeLocationIcon.vue'
+import { useI18n } from 'vue-i18n'
 
 interface OrganizationSettingItem {
-  id: RouterEnum;
-  title: string;
-  icon: any;
-  description: string;
-  routes: { route: string, Name: string, permissions: PermissionsEnum[] }[];
-
+  id: RouterEnum
+  title: string
+  icon: any
+  description: string
+  routes: { route: string; Name: string; permissions: PermissionsEnum[] }[]
 }
-const router = useRouter();
+const router = useRouter()
 const { t } = useI18n()
 const OrganizationSetting = ref<OrganizationSettingItem[]>([
   {
     id: RouterEnum.ORGANIZATION,
-    title: "organization setting",
+    title: 'organization setting',
     icon: HomeOrganizationSetting,
     description:
-      "partners . projects . certifications . templet . methods . contractors . management . roles",
+      'partners . projects . certifications . templet . methods . contractors . management . roles',
     routes: [
       {
-        route: "/organization/partner",
-        Name: t("partners"),
+        route: '/organization/partner',
+        Name: t('partners'),
         permissions: [
           PermissionsEnum.WEBSITE,
           PermissionsEnum.PARTNER_ALL,
@@ -59,8 +58,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       //   ],
       // },
       {
-        route: "/organization/certificate",
-        Name: t("certifications"),
+        route: '/organization/certificate',
+        Name: t('certifications'),
         permissions: [
           PermissionsEnum.CERTIFICATE_ALL,
           PermissionsEnum.CERTIFICATE_CREATE,
@@ -70,8 +69,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/template",
-        Name: t("templates"),
+        route: '/organization/template',
+        Name: t('templates'),
         permissions: [
           PermissionsEnum.ORG_TEMPLATE_ALL,
           PermissionsEnum.ORG_TEMPLATE_CREATE,
@@ -85,8 +84,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       //   Name: "methods",
       // },
       {
-        route: "/organization/contractor",
-        Name: t("contractors"),
+        route: '/organization/contractor',
+        Name: t('contractors'),
         permissions: [
           PermissionsEnum.ORG_CONTRACTOR_ALL,
           PermissionsEnum.ORG_CONTRACTOR_CREATE,
@@ -107,14 +106,24 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       //   ],
       // },
       {
-        route: "/organization/role",
-        Name: t("roles"),
+        route: '/organization/role',
+        Name: t('roles'),
         permissions: [
           PermissionsEnum.ORG_ROLE_ALL,
           PermissionsEnum.ORG_ROLE_CREATE,
           PermissionsEnum.ORG_ROLE_DELETE,
           PermissionsEnum.ORG_ROLE_FETCH,
           PermissionsEnum.ORG_ROLE_UPDATE,
+        ],
+      },
+      {
+        route: '/organization/notification-plan',
+        Name: t('notification_plan'),
+        permissions: [
+          PermissionsEnum.NOTIFICATION_PLAN_ALL,
+          PermissionsEnum.NOTIFICATION_PLAN_CREATE,
+          PermissionsEnum.NOTIFICATION_PLAN_FETCH,
+          PermissionsEnum.NOTIFICATION_PLAN_UPDATE,
         ],
       },
       {
@@ -209,22 +218,17 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.CODING_SYSTEM_UPDATE,
         ],
       },
-
-
-
     ],
-
   },
   {
     id: RouterEnum.OPERATION,
-    title: "operation setting",
+    title: 'operation setting',
     icon: OperationHomeIcon,
-    description:
-      "hazard type . types of observation . hazard . factor . factors item",
+    description: 'hazard type . types of observation . hazard . factor . factors item',
     routes: [
       {
-        route: "/organization/hazard-type",
-        Name: "hazard-type",
+        route: '/organization/hazard-type',
+        Name: 'hazard-type',
         permissions: [
           PermissionsEnum.ORG_HAZARD_TYPE_ALL,
           PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
@@ -234,8 +238,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/equipment-mangement/observation",
-        Name: "observation",
+        route: '/organization/equipment-mangement/observation',
+        Name: 'observation',
         permissions: [
           PermissionsEnum.ORG_OBSERVATION_ALL,
           PermissionsEnum.ORG_OBSERVATION_CREATE,
@@ -245,8 +249,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/hazard",
-        Name: "hazard",
+        route: '/organization/hazard',
+        Name: 'hazard',
         permissions: [
           PermissionsEnum.ORG_HAZARD_ALL,
           PermissionsEnum.ORG_HAZARD_CREATE,
@@ -256,8 +260,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/factory",
-        Name: "factor",
+        route: '/organization/factory',
+        Name: 'factor',
         permissions: [
           PermissionsEnum.ORG_FACTORY_ALL,
           PermissionsEnum.ORG_FACTORY_CREATE,
@@ -267,8 +271,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/factories-items",
-        Name: "factor-item",
+        route: '/organization/factories-items',
+        Name: 'factor-item',
         permissions: [
           PermissionsEnum.ORG_FACTORY_ITEM_ALL,
           PermissionsEnum.ORG_FACTORY_ITEM_CREATE,
@@ -305,19 +309,17 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.INJURY_DETAILS,
         ],
       },
-
     ],
-
   },
   {
     id: RouterEnum.EMPLOYEES,
-    title: "employees",
+    title: 'employees',
     icon: HomeSettingEmployeeIcon,
-    description: "organization employee . position . team",
+    description: 'organization employee . position . team',
     routes: [
       {
-        route: "/organization/organization-employee",
-        Name: "employees",
+        route: '/organization/organization-employee',
+        Name: 'employees',
         permissions: [
           PermissionsEnum.ORG_EMPLOYEE_ALL,
           PermissionsEnum.ORG_EMPLOYEE_CREATE,
@@ -328,8 +330,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/herikaly",
-        Name: "Position",
+        route: '/organization/herikaly',
+        Name: 'Position',
         permissions: [
           PermissionsEnum.HERIKALY_ALL,
           PermissionsEnum.HERIKALY_CREATE,
@@ -339,8 +341,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/team",
-        Name: "team",
+        route: '/organization/team',
+        Name: 'team',
         permissions: [
           PermissionsEnum.ORG_TEAM_ALL,
           PermissionsEnum.ORG_TEAM_CREATE,
@@ -348,18 +350,18 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
           PermissionsEnum.ORG_TEAM_FETCH,
           PermissionsEnum.ORG_TEAM_UPDATE,
         ],
-      }
+      },
     ],
   },
   {
     id: RouterEnum.LOCATION,
-    title: "location setting",
+    title: 'location setting',
     icon: HomeLocationIcon,
-    description: "state . country . city . location . zones",
+    description: 'state . country . city . location . zones',
     routes: [
       {
-        route: "/organization/countries",
-        Name: "countries",
+        route: '/organization/countries',
+        Name: 'countries',
         permissions: [
           PermissionsEnum?.ORGANIZATION_EMPLOYEE,
           PermissionsEnum?.LOCATION_ORG_ALL,
@@ -371,8 +373,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/states",
-        Name: "states",
+        route: '/organization/states',
+        Name: 'states',
         permissions: [
           PermissionsEnum?.ORGANIZATION_EMPLOYEE,
           PermissionsEnum?.LOCATION_ORG_ALL,
@@ -385,8 +387,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       },
 
       {
-        route: "/organization/cities",
-        Name: "cities",
+        route: '/organization/cities',
+        Name: 'cities',
         permissions: [
           PermissionsEnum?.ORGANIZATION_EMPLOYEE,
           PermissionsEnum?.LOCATION_ORG_ALL,
@@ -398,8 +400,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/areas",
-        Name: "locations",
+        route: '/organization/areas',
+        Name: 'locations',
         permissions: [
           PermissionsEnum?.ORGANIZATION_EMPLOYEE,
           PermissionsEnum?.LOCATION_ORG_ALL,
@@ -411,8 +413,8 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
         ],
       },
       {
-        route: "/organization/project-zone",
-        Name: "zones",
+        route: '/organization/project-zone',
+        Name: 'zones',
         permissions: [
           PermissionsEnum.PROJECT_ZONE_ALL,
           PermissionsEnum.PROJECT_ZONE_CREATE,
@@ -423,29 +425,29 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       },
     ],
   },
-]);
+])
 
-const selectedRoutesType = ref<RouterEnum | null>(RouterEnum.ORGANIZATION);
+const selectedRoutesType = ref<RouterEnum | null>(RouterEnum.ORGANIZATION)
 
 const selectedCard = computed(() => {
-  return OrganizationSetting.value.find(
-    (item) => item.id === selectedRoutesType.value
-  );
-});
+  return OrganizationSetting.value.find((item) => item.id === selectedRoutesType.value)
+})
 
 const handleCardClick = (id: RouterEnum) => {
-  selectedRoutesType.value = id;
-};
-
-
+  selectedRoutesType.value = id
+}
 </script>
 
 <template>
   <div class="organization-setting">
     <div class="organization-setting-container">
-
-      <div v-for="(card, index) in OrganizationSetting" :key="index" class="organization-setting-card"
-        :class="{ active: selectedRoutesType === card.id }" @click="handleCardClick(card.id)">
+      <div
+        v-for="(card, index) in OrganizationSetting"
+        :key="index"
+        class="organization-setting-card"
+        :class="{ active: selectedRoutesType === card.id }"
+        @click="handleCardClick(card.id)"
+      >
         <!-- <img :src="card.icon" :alt="card.title" /> -->
         <component :is="card.icon"></component>
         <div class="card-content">
@@ -456,12 +458,15 @@ const handleCardClick = (id: RouterEnum) => {
     </div>
 
     <div class="routers w-full" v-if="selectedCard">
-      <PermissionBuilder v-for="(routeName, index) in selectedCard.routes" :key="index" :code="routeName?.permissions">
-        <router-link :to="`${routeName.route}?type=${selectedRoutesType}`" class="btn-route w-full ">
+      <PermissionBuilder
+        v-for="(routeName, index) in selectedCard.routes"
+        :key="index"
+        :code="routeName?.permissions"
+      >
+        <router-link :to="`${routeName.route}?type=${selectedRoutesType}`" class="btn-route w-full">
           {{ routeName.Name }}
         </router-link>
       </PermissionBuilder>
-
     </div>
   </div>
 </template>

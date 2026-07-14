@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import AddItemButton from '@/shared/HelpersComponents/AddItemButton.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
@@ -12,29 +12,36 @@ import IndexNotificationPlanParams from '../../Core/Params/index_notification_pl
 
 const indexNotificationPlanController = IndexNotificationPlanController.getInstance()
 const state = ref(indexNotificationPlanController.state.value)
+const { t, locale } = useI18n()
 
-const activeOptions = [
-  new TitleInterface({ id: -1, title: 'All statuses' }),
-  new TitleInterface({ id: 1, title: 'Active' }),
-  new TitleInterface({ id: 0, title: 'Inactive' }),
-]
+const activeOptions = computed(() => [
+  new TitleInterface({ id: -1, title: t('all_statuses') }),
+  new TitleInterface({ id: 1, title: t('active') }),
+  new TitleInterface({ id: 0, title: t('inactive') }),
+])
 
-const selectedActive = ref<TitleInterface | null>(activeOptions[0])
+const selectedActive = ref<TitleInterface | null>(null)
 
-const isActiveValue = () => {
-  if (selectedActive.value === null || selectedActive.value.id === -1) return null
-  return selectedActive.value.id === 1
+const selectedActiveId = computed(() => selectedActive.value?.id ?? -1)
+
+const actionTitleKeys: Record<string, string> = {
+  'Task assigned': 'task_assigned',
+  'Project location hierarchy assignment': 'project_location_hierarchy_assignment',
+  'Observation created': 'observation_created',
+}
+
+const notificationActionName = (name: string) => t(actionTitleKeys[name] ?? name)
+
+const emptyValue = computed(() => t('not_available'))
+
+const isActiveFilterValue = () => {
+  if (selectedActiveId.value === -1) return undefined
+  return selectedActiveId.value === 1
 }
 
 const fetchNotificationPlans = async () => {
   await indexNotificationPlanController.getData(
-    new IndexNotificationPlanParams(
-      '',
-      10,
-      1,
-      1,
-      selectedActive.value?.id === 1 ? true : selectedActive.value?.id === 0 ? false : undefined,
-    ),
+    new IndexNotificationPlanParams('', 10, 1, 1, isActiveFilterValue()),
   )
 }
 
@@ -51,27 +58,31 @@ watch(
   },
 )
 
+watch(locale, () => {
+  selectedActive.value =
+    activeOptions.value.find((option) => option.id === selectedActiveId.value) ?? null
+})
+
 onMounted(fetchNotificationPlans)
 </script>
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-2 mb-4">
-    <div class="col-span-3 md:col-span-1 input-wrapper">
+  <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-2" :style="{ marginBottom: '20px' }">
+    <div class="col-span-1 md:col-span-1 input-wrapper">
       <CustomSelectInput
         id="is-active-filter"
-        :modelValue="selectedActive"
-        label="Status"
+        :modelValue="selectedActive ?? activeOptions[0]"
+        label="status"
         :static-options="activeOptions"
         :reload="false"
-        placeholder="All statuses"
+        :placeholder="$t('all_statuses')"
         @update:modelValue="updateActive"
       />
     </div>
 
-    <div class="col-span-3 md:col-span-2 flex justify-end">
-      <AddItemButton
-        addLink="/organization/notification-plan/add"
-        addText="Add Notification Plan"
-      />
+    <div class="col-span-1 md:col-span-2 flex justify-end">
+      <router-link to="notification-plan/add" class="btn btn-primary">{{
+        $t('add_notification_plan')
+      }}</router-link>
     </div>
   </div>
   <DataStatus :controller="state">
@@ -81,32 +92,33 @@ onMounted(fetchNotificationPlans)
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Title</th>
-              <th scope="col">Employees</th>
-              <th scope="col">Hierarchies</th>
-              <th scope="col">Actions</th>
-              <th scope="col">Status</th>
+              <th scope="col">{{ $t('title') }}</th>
+              <th scope="col">{{ $t('employees') }}</th>
+              <th scope="col">{{ $t('hierarchies') }}</th>
+              <th scope="col">{{ $t('actions') }}</th>
+              <th scope="col">{{ $t('status') }}</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(item, index) in state.data" :key="item.notification_plan_id">
-              <!-- {{ item }} -->
               <td data-label="#">
                 {{ index + 1 }}
               </td>
-              <td data-label="Title">{{ item.title || 'N/A' }}</td>
-              <td data-label="Employees">
-                {{ item.employees.map((e) => e.title).join(', ') || 'N/A' }}
+              <td :data-label="$t('title')">{{ item.title || emptyValue }}</td>
+              <td :data-label="$t('employees')">
+                {{ item.employees.map((e) => e.title).join(', ') || emptyValue }}
               </td>
-              <td data-label="Hierarchies">
-                {{ item.hierarchies.map((h) => h.title).join(', ') || 'N/A' }}
+              <td :data-label="$t('hierarchies')">
+                {{ item.hierarchies.map((h) => h.title).join(', ') || emptyValue }}
               </td>
-              <td data-label="Actions">
-                {{ item.actions.map((a) => a.name).join(', ') || 'N/A' }}
+              <td :data-label="$t('actions')">
+                {{
+                  item.actions.map((a) => notificationActionName(a.name)).join(', ') || emptyValue
+                }}
               </td>
-              <td data-label="Status">
+              <td :data-label="$t('status')">
                 <span :class="['status-badge', item.is_active ? 'is-active' : 'is-inactive']">
-                  {{ item.is_active ? 'Active' : 'Inactive' }}
+                  {{ item.is_active ? $t('active') : $t('inactive') }}
                 </span>
               </td>
             </tr>
@@ -117,9 +129,9 @@ onMounted(fetchNotificationPlans)
     <template #failed>
       <DataFailed
         link="/notification-plan/add"
-        addText="Add Notification Plan"
-        description="No notification plans were found."
-        title="No Notification Plans"
+        :addText="$t('add_notification_plan')"
+        :description="$t('no_notification_plans_description')"
+        :title="$t('no_notification_plans')"
       />
     </template>
     <template #loader>
@@ -128,9 +140,9 @@ onMounted(fetchNotificationPlans)
     <template #empty>
       <DataEmpty
         link="/notification-plan/add"
-        addText="Add Notification Plan"
-        description="No notification plans were found."
-        title="No Notification Plans"
+        :addText="$t('add_notification_plan')"
+        :description="$t('no_notification_plans_description')"
+        :title="$t('no_notification_plans')"
       />
     </template>
   </DataStatus>
