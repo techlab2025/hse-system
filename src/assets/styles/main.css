@@ -7956,7 +7956,7 @@ ul {
     grid-column: 1/-1;
   }
 }
-@media (max-width: 720px) {
+@media (max-width: 768px) {
   .investigation-result .investigating-header-container {
     padding: 12px;
   }
@@ -7975,6 +7975,21 @@ ul {
   .investigation-result .investigating-header-container .team-container .team {
     grid-template-columns: 1fr;
   }
+  .investigation-result .investigating-header-container .meeting-info-container,
+  .investigation-result .investigating-header-container .team-container,
+  .investigation-result .investigating-header-container .incidant-description {
+    padding: 12px;
+  }
+  .investigation-result .investigating-header-container .meeting-info-container .meeting-info p,
+  .investigation-result .investigating-header-container .investigating-info p {
+    min-height: auto;
+    overflow-wrap: anywhere;
+  }
+  .investigation-result .investigating-header-container .input-label,
+  .investigation-result .investigating-header-container .label-container {
+    min-width: 0;
+    flex-wrap: wrap;
+  }
   .investigation-result .investigating-header-container .equipment-card {
     align-items: flex-start;
   }
@@ -7982,6 +7997,23 @@ ul {
     width: 58px;
     height: 58px;
     flex-basis: 58px;
+  }
+}
+@media (max-width: 480px) {
+  .investigation-result .investigating-header-container {
+    gap: 10px;
+    padding: 8px;
+  }
+  .investigation-result .investigating-header-container .investigating-header,
+  .investigation-result .investigating-header-container .meeting-info-container,
+  .investigation-result .investigating-header-container .team-container,
+  .investigation-result .investigating-header-container .incidant-description,
+  .investigation-result .investigating-header-container .equipment-card {
+    border-radius: 10px;
+    padding: 10px;
+  }
+  .investigation-result .investigating-header-container .team-container .team-member {
+    width: 100%;
   }
 }
 
@@ -8208,6 +8240,26 @@ ul {
   }
   .investigation-result .template-container .timeline-container .timeline-content .timeline-contect-select {
     flex-wrap: wrap;
+  }
+  .investigation-result .template-container .timeline-container .timeline-content .timeline-contect-select > .input-wrapper {
+    flex: 1 1 240px;
+    min-width: 0;
+  }
+}
+@media (max-width: 480px) {
+  .investigation-result .template-container .timeline-container .timeline-content {
+    gap: 10px;
+    border-radius: 10px;
+    padding: 10px;
+  }
+  .investigation-result .template-container .timeline-container .timeline-content .timeline-contect-select {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .investigation-result .template-container .timeline-container .timeline-content .timeline-contect-select > .input-wrapper {
+    width: 100%;
+    flex-basis: auto;
   }
 }
 
@@ -8648,6 +8700,41 @@ ul {
     grid-template-columns: 1fr;
   }
 }
+@media (max-width: 480px) {
+  .investigation-result .another-meeting {
+    gap: 10px;
+    padding: 10px;
+  }
+  .investigation-result .another-meeting .another-meeting-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .investigation-result .another-meeting .another-meeting-header .title-header {
+    width: 100%;
+    min-width: 0;
+  }
+  .investigation-result .another-meeting .another-meeting-header .meeting-status {
+    width: 100%;
+  }
+  .investigation-result .another-meeting .another-meeting-header .meeting-status button {
+    min-width: 0;
+    padding-inline: 10px;
+  }
+  .investigation-result .another-meeting .another-meeting-contect {
+    gap: 10px;
+    padding: 10px;
+  }
+  .investigation-result .another-meeting .another-meeting-contect .input-wrapper,
+  .investigation-result .another-meeting .another-meeting-contect .p-datepicker,
+  .investigation-result .another-meeting .another-meeting-contect input {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .investigation-result .another-meeting .another-meeting-contect .mr-2 {
+    margin-inline-end: 0;
+  }
+}
 
 .add-attachment-btn {
   display: flex;
@@ -8667,6 +8754,23 @@ ul {
   font-weight: 500;
 }
 
+@media (max-width: 480px) {
+  .add-attachment-btn {
+    align-items: center;
+    flex-direction: column-reverse;
+    padding: 14px;
+    text-align: center;
+  }
+  .add-attachment-btn span {
+    overflow-wrap: anywhere;
+  }
+  .add-attachment-btn img {
+    width: 32px;
+    height: 32px;
+    -o-object-fit: contain;
+       object-fit: contain;
+  }
+}
 .investegation-attachment-dialog-content {
   display: flex;
   flex-direction: column;
@@ -9611,6 +9715,9 @@ ul {
   .investegation-result-answer-container .investigating-answer-header-container .investigating-answer-data .investigating-info,
   .investegation-result-answer-container .investigating-answer-header-container .investigating-answer-data .meeting-info-container .meeting-info {
     grid-template-columns: 1fr;
+  }
+  .investegation-result-answer-container .investigating-answer-header-container .investigating-answer-data .meeting-info-container .meeting-info p {
+    grid-column: span 2;
   }
   .investegation-result-answer-container .investigating-answer-header-container .investigating-answer-complete-task {
     min-height: 180px;
@@ -24450,6 +24557,70 @@ html[dir=rtl] .performance-box::after {
   width: 100%;
 }
 
+/* Shared mobile foundation. Component-specific breakpoints can refine these rules. */
+@media (max-width: 768px) {
+  html,
+  body,
+  #app {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+  :where(main, section, article, aside, header, footer, nav, form, fieldset, div) {
+    min-width: 0;
+  }
+  :where(img, picture, video, canvas, iframe) {
+    max-width: 100%;
+    height: auto;
+  }
+  :where(.container, .page-container, .content-container, .main-container) {
+    width: 100%;
+    max-width: 100%;
+    padding-inline: 12px;
+  }
+  :where(input, textarea, select, .p-inputtext, .p-select, .p-multiselect, .p-datepicker) {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+  :where(.p-dialog, .p-drawer, .p-popover, .p-overlaypanel, dialog) {
+    max-width: calc(100vw - 24px) !important;
+  }
+  :where(.p-dialog, dialog) {
+    max-height: calc(100dvh - 24px);
+  }
+  :where(.p-dialog-content, .p-drawer-content, dialog) {
+    overflow: auto;
+  }
+  :where(.table-responsive, .table-container, .p-datatable-wrapper) {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  :where(.btns, .actions, .action-buttons, .button-group, .form-actions, .filter-actions) {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 480px) {
+  :where(.container, .page-container, .content-container, .main-container) {
+    padding-inline: 8px;
+  }
+  :where(.p-dialog, .p-drawer, .p-popover, .p-overlaypanel, dialog) {
+    width: calc(100vw - 16px) !important;
+    max-width: calc(100vw - 16px) !important;
+  }
+  :where(.p-dialog-header, .p-dialog-content, .p-dialog-footer, .p-drawer-content) {
+    padding-inline: 12px;
+  }
+  :where(.btns, .actions, .action-buttons, .button-group, .form-actions, .filter-actions) > :where(button, a, .btn, .p-button) {
+    width: 100%;
+    max-width: 100%;
+  }
+  :where(.grid, [class*=-grid], [class*=_grid]) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
 html {
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;
@@ -24762,4 +24933,19 @@ label {
 .system-data-add {
   background-color: color-mix(in srgb, var(--brand-primary-500) 5.1%, transparent) !important;
   color: var(--text-on-brand);
+}
+
+@media (max-width: 768px) {
+  .investigation-result .p-accordioncontent-content {
+    margin: 0 !important;
+  }
+  .investigation-result .p-accordionpanel {
+    margin-block: 14px !important;
+  }
+  .input-image {
+    overflow: hidden;
+  }
+  .input-label-images {
+    max-width: 50% !important;
+  }
 }/*# sourceMappingURL=main.css.map */
