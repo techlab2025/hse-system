@@ -1,97 +1,20 @@
 /* Shared mobile foundation. Component-specific breakpoints can refine these rules. */
 @media (max-width: 768px) {
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
   html,
   body,
   #app {
     width: 100%;
-    min-width: 0;
     max-width: 100%;
     overflow-x: clip;
-  }
-
-  body {
-    margin: 0;
-  }
-
-  .content {
-    display: block !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100vw !important;
-    gap: 0 !important;
-    overflow-x: clip;
-  }
-
-  .content-wrapper,
-  .main-content {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-  }
-
-  .content-wrapper {
-    overflow-x: clip !important;
-  }
-
-  .main-content {
-    padding: 12px !important;
-    border-radius: 14px !important;
-    overflow-x: clip !important;
-  }
-
-  .main-content * {
-    max-width: 100%;
-  }
-
-  .content .p-accordioncontent-content,
-  .content .p-accordionpanel.active-panel-out {
-    margin-inline: 0 !important;
   }
 
   :where(main, section, article, aside, header, footer, nav, form, fieldset, div) {
     min-width: 0;
   }
 
-  .main-content :where(
-      section,
-      article,
-      form,
-      fieldset,
-      .p-card,
-      .card,
-      [class$='-card'],
-      [class$='_card'],
-      [class*='-container'],
-      [class*='_container'],
-      [class*='-wrapper'],
-      [class*='_wrapper'],
-      [class*='-content'],
-      [class*='_content']
-    ) {
-    min-width: 0 !important;
-    max-width: 100% !important;
-  }
-
   :where(img, picture, video, canvas, iframe) {
     max-width: 100%;
     height: auto;
-  }
-
-  :where(pre, code) {
-    max-width: 100%;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-  }
-
-  :where(h1, h2, h3, h4, h5, h6, p, label, legend, a, button, td, th) {
-    max-width: 100%;
-    overflow-wrap: anywhere;
   }
 
   :where(.container, .page-container, .content-container, .main-container) {
@@ -100,56 +23,13 @@
     padding-inline: 12px;
   }
 
-  :where(
-      .input-wrapper,
-      .input-label,
-      .input-select,
-      .p-inputwrapper,
-      .p-floatlabel,
-      input:not([type='checkbox']):not([type='radio']),
-      textarea,
-      select,
-      .p-inputtext,
-      .p-select,
-      .p-multiselect,
-      .p-datepicker,
-      .p-editor-container
-    ) {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-  }
-
-  :where(textarea) {
-    resize: vertical;
-  }
-
-  :where(.p-select-label, .p-multiselect-label, .p-inputtext) {
+  :where(input, textarea, select, .p-inputtext, .p-select, .p-multiselect, .p-datepicker) {
+    width: 100%;
+    max-width: 100%;
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
-  :where(
-      .file-upload,
-      .upload-container,
-      .upload-wrapper,
-      .multi-image-uploader,
-      [class*='file-upload'],
-      [class*='image-upload']
-    ) {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-    overflow-wrap: anywhere;
-  }
-
-  :where(.p-dialog, .p-drawer, .p-popover, .p-overlaypanel, .p-menu, dialog) {
-    max-width: calc(100vw - 24px) !important;
-  }
-
-  :where(.toast, .notification, [class*='toast-'], [class*='notification-']) {
-    min-width: 0 !important;
+  :where(.p-dialog, .p-drawer, .p-popover, .p-overlaypanel, dialog) {
     max-width: calc(100vw - 24px) !important;
   }
 
@@ -157,33 +37,8 @@
     max-height: calc(100dvh - 24px);
   }
 
-  :where(.p-dialog-content, .p-drawer-content, .p-popover-content, dialog) {
+  :where(.p-dialog-content, .p-drawer-content, dialog) {
     overflow: auto;
-  }
-
-  :where(.p-accordion, .p-accordionpanel, .p-accordionheader, .p-accordioncontent) {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-  }
-
-  :where(.p-accordionheader) {
-    white-space: normal;
-  }
-
-  :where(.p-tabs, .p-tablist, .tabs, [class$='-tabs'], [class$='_tabs']) {
-    max-width: 100%;
-  }
-
-  :where(.p-tablist-tab-list, .tabs-list, [class*='tabs-list']) {
-    overflow-x: auto;
-    overscroll-behavior-inline: contain;
-    scrollbar-width: thin;
-  }
-
-  :where(.ql-toolbar) {
-    display: flex;
-    flex-wrap: wrap;
   }
 
   :where(.table-responsive, .table-container, .p-datatable-wrapper) {
@@ -196,18 +51,9 @@
   :where(.btns, .actions, .action-buttons, .button-group, .form-actions, .filter-actions) {
     flex-wrap: wrap;
   }
-
-  :where(button, a, input, select, textarea, .p-button, .p-select) {
-    touch-action: manipulation;
-  }
 }
 
 @media (max-width: 480px) {
-  .main-content {
-    padding: 8px !important;
-    border-radius: 10px !important;
-  }
-
   :where(.container, .page-container, .content-container, .main-container) {
     padding-inline: 8px;
   }
@@ -221,57 +67,13 @@
     padding-inline: 12px;
   }
 
-  :where(.p-dialog-content) {
-    max-height: calc(100dvh - 112px);
-  }
-
   :where(.btns, .actions, .action-buttons, .button-group, .form-actions, .filter-actions) >
     :where(button, a, .btn, .p-button) {
     width: 100%;
     max-width: 100%;
   }
 
-  .main-content * {
-    grid-template-columns: minmax(0, 1fr) !important;
-  }
-
   :where(.grid, [class*='-grid'], [class*='_grid']) {
     grid-template-columns: minmax(0, 1fr) !important;
-  }
-
-  :where(.grid, [class*='-grid'], [class*='_grid']) > [class*='col-span-'],
-  :where(.grid, [class*='-grid'], [class*='_grid']) > [class*='col_span_'] {
-    grid-column: 1 / -1 !important;
-  }
-
-  .main-content :where([class*='col-span-'], [class*='col_span_']) {
-    grid-column: 1 / -1 !important;
-  }
-
-  .main-content :where(.flex) {
-    min-width: 0;
-    max-width: 100%;
-    flex-wrap: wrap;
-  }
-
-  .main-content :where([class*='w-1/'], [class*='w-2/'], [class*='w-3/'], .w-50) {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-  :where(.p-accordioncontent-content) {
-    padding-inline: 6px !important;
-  }
-
-  :where(.p-paginator) {
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-
-  :where(.p-toast) {
-    inset-inline: 8px !important;
-    width: auto !important;
-    max-width: calc(100vw - 16px) !important;
   }
 }

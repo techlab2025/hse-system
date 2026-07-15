@@ -113,37 +113,5 @@
     margin-top: 20px;
     height: 210px !important;
     width: 850px !important;
-    max-width: 100% !important;
-  }
-
-  @media (max-width: 768px) {
-    margin-top: 20px;
-
-    .total-machines-header-container {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 10px;
-      width: 100%;
-      padding-inline: 0;
-
-      .static-data {
-        justify-content: flex-start;
-        flex-wrap: wrap;
-      }
-    }
-
-    canvas {
-      width: 100% !important;
-      height: auto !important;
-      min-height: 210px;
-    }
-  }
-
-  @media (max-width: 480px) {
-    margin-top: 12px;
-
-    .total-machines-header-container .static-data p {
-      padding: 6px 10px;
-    }
   }
 }

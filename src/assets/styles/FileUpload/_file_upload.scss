@@ -78,29 +78,4 @@
       }
     }
   }
-
-  @media (max-width: 480px) {
-    gap: 10px;
-
-    .input-image {
-      width: 100%;
-      min-width: 0;
-      min-height: 92px;
-      padding: 12px;
-
-      .input-label-images {
-        width: 100%;
-        min-width: 0;
-        justify-content: flex-start;
-        white-space: normal;
-
-        span,
-        small {
-          min-width: 0;
-          white-space: normal;
-          overflow-wrap: anywhere;
-        }
-      }
-    }
-  }
 }

@@ -269,7 +269,7 @@ onMounted(async () => {
                   {{ item.incidentCategories.length }} {{ $t('Incident Categories') }}
                 </p>
               </div>
-              <div class="col-span-12 md:col-span-12 input-wrapper w-full injury-field">
+              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <UpdatedCustomInputSelect
                   :staticOptions="employeeOptions"
                   v-model="item.employee"
@@ -324,7 +324,7 @@ onMounted(async () => {
                   </template>
                 </UpdatedCustomInputSelect>
               </div>
-              <div class="col-span-12 md:col-span-12 input-wrapper w-full injury-field">
+              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <!-- <CustomSelectInput :modelValue="item.infectionTypeId" class="input" :controller="indexInjuryController"
                   :params="indexInjuryParams" :label="$t('injury Type')" id="injury"
                   :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)" /> -->
@@ -355,7 +355,7 @@ onMounted(async () => {
                   </template>
                 </UpdatedCustomInputSelect>
               </div>
-              <div class="col-span-12 md:col-span-12 input-wrapper w-full injury-field">
+              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <div class="flex items-center gap-2">
                   <label :for="`injury-description-${index}`">{{
                     $t('Description of Injury')
@@ -374,7 +374,7 @@ onMounted(async () => {
                 />
               </div>
 
-              <div class="col-span-12 md:col-span-12 input-wrapper w-full injury-field">
+              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <div class="flex items-center gap-2">
                   <label>{{ $t('Evidence Retrieval (Photos)') }}</label>
                   <FieldHelpIcon
@@ -387,7 +387,7 @@ onMounted(async () => {
                   :index="index + 2000"
                 />
               </div>
-              <div class="col-span-12 md:col-span-12 input-wrapper w-full injury-field">
+              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
                 <UpdatedCustomInputSelect
                   :id="`incident-categories-${index}`"
                   :modelValue="item.incidentCategories"
@@ -591,19 +591,6 @@ onMounted(async () => {
   margin: 0;
 }
 
-.injury-timeline-card .injury-field,
-.injury-timeline-card :deep(.updated-custom-select),
-.injury-timeline-card :deep(.multi-image-uploader),
-.injury-timeline-card :deep(.input-image) {
-  width: 100% !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
-}
-
-.injury-timeline-card .injury-field {
-  grid-column: 1 / -1 !important;
-}
-
 .injury-timeline-card .input-wrapper label {
   display: inline-flex;
   margin-bottom: 7px;
@@ -663,150 +650,23 @@ onMounted(async () => {
   box-shadow: 0 10px 22px color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 720px) {
   .injury-timeline-container .timeline-wrapper {
     padding-inline-start: 0;
   }
 
   .injury-timeline-container .timeline-line,
-  .injury-timeline-container .timeline-dot {
-    display: none;
-  }
-
   .injury-timeline-container .timeline-marker {
-    position: static;
-    display: flex;
-    width: 100%;
-    min-height: 0;
-    align-items: center;
-    justify-content: flex-end;
-    margin-bottom: 8px;
-  }
-
-  .injury-timeline-container .timeline-icon {
-    display: flex;
-    width: auto;
-    height: auto;
-    min-width: 0;
-    min-height: 0;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 8px;
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-  }
-
-  .injury-timeline-container .timeline-icon :deep(.cursor-pointer) {
-    width: 38px;
-    height: 38px;
-    flex: 0 0 38px;
-    padding: 5px;
-    border: 1px solid var(--brand-primary-100);
-    border-radius: 11px;
-    background: var(--surface-1);
-    box-shadow: 0 7px 16px color-mix(in srgb, var(--brand-primary-900) 9%, transparent);
+    display: none;
   }
 
   .injury-timeline-card {
     padding: 14px;
-    min-width: 0;
-  }
-
-  .injury-timeline-card .injury-field {
-    display: flex;
-    align-items: stretch;
-    flex-direction: column;
   }
 
   .injury-card-header {
     align-items: flex-start;
     flex-direction: column;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .injury-timeline-container {
-    padding: 0;
-  }
-
-  .injury-timeline-container .timeline-wrapper {
-    gap: 12px;
-  }
-
-  .injury-timeline-card {
-    grid-template-columns: minmax(0, 1fr) !important;
-    gap: 12px;
-    padding: 10px;
-    border-radius: 14px;
-  }
-
-  .injury-timeline-card > *,
-  .injury-timeline-card .input-wrapper,
-  .injury-timeline-card .input {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-  }
-
-  .injury-card-header,
-  .injury-card-header div {
-    width: 100%;
-    flex-wrap: wrap;
-  }
-
-  .injury-timeline-card :deep(.flex.items-center) {
-    min-width: 0;
-    flex-wrap: wrap;
-  }
-
-  .injury-timeline-card :deep(.emp-name),
-  .injury-timeline-card :deep(.emp-select) {
-    max-width: 100%;
-    min-height: 36px;
-    white-space: normal;
-    overflow-wrap: anywhere;
-  }
-
-  .injury-timeline-card :deep(.emp-name) {
-    flex: 1 1 150px;
-  }
-
-  .injury-timeline-card :deep(.emp-select) {
-    flex: 0 0 86px;
-  }
-
-  .injury-timeline-card :deep(.p-select),
-  .injury-timeline-card :deep(.p-multiselect),
-  .injury-timeline-card :deep(.input-select),
-  .injury-timeline-card :deep(.updated-custom-select),
-  .injury-timeline-card :deep(.multi-image-uploader),
-  .injury-timeline-card :deep(.input-image),
-  .injury-timeline-card :deep(.upload-container),
-  .injury-timeline-card :deep(.upload-wrapper) {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: 100% !important;
-  }
-
-  .injury-timeline-card :deep(.upload-container),
-  .injury-timeline-card :deep(.upload-wrapper) {
-    overflow: hidden;
-  }
-
-  .injury-timeline-card :deep(.select-mode-tools) {
-    width: 100%;
-  }
-
-  .injury-timeline-card :deep(.select-mode-tools > .flex) {
-    width: 100%;
-    flex-wrap: nowrap;
-  }
-
-  .injury-timeline-card :deep(label),
-  .injury-timeline-card :deep(p),
-  .injury-timeline-card :deep(span) {
-    overflow-wrap: anywhere;
   }
 }
 

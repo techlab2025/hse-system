@@ -11,8 +11,6 @@ import PlusIcon from '../icons/PlusIcon.vue'
 import Dialog from 'primevue/dialog'
 import FieldHelpIcon from './FieldHelpIcon.vue'
 
-defineOptions({ inheritAttrs: false })
-
 export type ComponentType = 'select' | 'multiselect'
 
 interface Props {
@@ -200,69 +198,67 @@ const closeDialog = async () => {
 </script>
 
 <template>
-  <div class="updated-custom-select">
-    <div class="input-label select-field-header">
-      <slot v-if="!hasHeader">
-        <div class="select-label-group">
-          <label :class="{ required: required }" class="select-field-label">
-            <span v-if="required" class="text-red-500">*</span>
-            {{ $t(label ?? '') }}
-          </label>
+  <div class="input-label flex justify-between w-full">
+    <slot v-if="!hasHeader">
+      <div class="flex items-center">
+        <slot name="reloadHeader"></slot>
+        <span
+          v-if="enableReload"
+          class="reload-icon cursor-pointer flex items-center gap-sm me-2 w-full"
+          @click="reloadData"
+        >
+          <span class="optional-text" v-if="optional">({{ $t('optional') }})</span>
+          <IconBackStage />
+        </span>
+      </div>
 
-          <FieldHelpIcon v-if="helpText" :text="helpText" />
-          <slot name="LabelHeader"></slot>
+      <div class="flex items-center gap-2">
+        <label :class="{ required: required }" class="input-label">
+          <span v-if="required" class="text-red-500">*</span>
+          {{ $t(label ?? '') }}
+        </label>
 
-          <button
-            v-if="enableReload"
-            class="reload-icon"
-            type="button"
-            :aria-label="$t('reload')"
-            @click="reloadData"
-          >
-            <span class="optional-text" v-if="optional">({{ $t('optional') }})</span>
-            <IconBackStage />
-          </button>
-        </div>
+        <FieldHelpIcon v-if="helpText" :text="helpText" />
 
-        <div v-if="$slots.reloadHeader" class="select-mode-tools">
-          <slot name="reloadHeader"></slot>
-        </div>
-      </slot>
-      <slot v-else name="Header"></slot>
-    </div>
-
-    <slot v-if="!hascontent">
-      <component
-        :is="componentType"
-        v-model="normalizedValue"
-        :options="mergedOptions"
-        :placeholder="placeholder"
-        class="input-select w-full"
-        option-label="title"
-        v-bind="multiselectProps"
-        filter
-        :loading="loading"
-        :empty-message="message"
-      />
-      <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
+        <slot name="LabelHeader"></slot>
+      </div>
     </slot>
-    <slot v-else name="content"> </slot>
+    <slot v-else name="Header"></slot>
+  </div>
 
-    <div v-if="isDialog">
-      <Dialog
-        @hide="closeDialog"
-        v-model:visible="DialogVisable"
-        modal
-        :dismissable-mask="true"
-        :style="{ width: '50rem' }"
-      >
-        <slot name="Dialog"></slot>
-      </Dialog>
-    </div>
+  <slot v-if="!hascontent">
+    <component
+      :is="componentType"
+      v-model="normalizedValue"
+      :options="mergedOptions"
+      :placeholder="placeholder"
+      class="input-select w-full"
+      option-label="title"
+      v-bind="multiselectProps"
+      filter
+      :loading="loading"
+      :empty-message="message"
+    />
+    <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
+  </slot>
+  <slot v-else name="content"> </slot>
+  <div v-if="isDialog">
+    <Dialog
+      @hide="closeDialog"
+      v-model:visible="DialogVisable"
+      modal
+      :dismissable-mask="true"
+      :style="{ width: '50rem' }"
+    >
+      <slot name="Dialog"></slot>
+    </Dialog>
   </div>
 </template>
 
 <style scoped lang="scss">
+.reload-icon {
+  background-color: transparent !important;
+}
 .add-dialog {
   width: 20px;
   height: 20px;
@@ -276,122 +272,12 @@ const closeDialog = async () => {
 }
 
 .input-select {
-  width: 100% !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
+  width: 100%;
   background-color: transparent;
   border-radius: 24px;
 
   &:focus {
     border: 1px solid var(--brand-primary-100) !important;
-  }
-}
-
-.updated-custom-select {
-  display: flex;
-  width: 100%;
-  min-width: 0;
-  max-width: 100%;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.select-field-header {
-  display: flex;
-  width: 100%;
-  min-width: 0;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-  gap: 10px;
-}
-
-.select-label-group,
-.select-mode-tools,
-.select-mode-tools :deep(.flex) {
-  display: flex;
-  min-width: 0;
-  align-items: center;
-  gap: 7px;
-}
-
-.select-label-group {
-  flex: 1 1 auto;
-  flex-wrap: wrap;
-}
-
-.select-mode-tools {
-  flex: 0 1 auto;
-  justify-content: flex-end;
-}
-
-.select-field-label {
-  width: auto !important;
-  min-width: 0;
-  margin: 0 !important;
-  white-space: normal;
-  text-align: start;
-  overflow-wrap: anywhere;
-}
-
-.reload-icon {
-  display: inline-flex;
-  width: 32px;
-  height: 32px;
-  flex: 0 0 32px;
-  align-items: center;
-  justify-content: center;
-  border: 0;
-  border-radius: 9px;
-  background: var(--brand-primary-50);
-  color: var(--brand-primary-500);
-  cursor: pointer;
-}
-
-.reload-icon :deep(svg) {
-  width: 18px;
-  height: 18px;
-}
-
-.optional-text {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-}
-
-.updated-custom-select :deep(.p-select-label),
-.updated-custom-select :deep(.p-multiselect-label) {
-  width: auto !important;
-  min-width: 0 !important;
-  flex: 1 1 auto;
-}
-
-.updated-custom-select :deep(.p-select-dropdown),
-.updated-custom-select :deep(.p-multiselect-dropdown) {
-  flex: 0 0 auto;
-}
-
-@media (max-width: 480px) {
-  .select-field-header {
-    align-items: stretch;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .select-label-group,
-  .select-mode-tools {
-    width: 100%;
-  }
-
-  .select-mode-tools {
-    justify-content: flex-start;
-  }
-
-  .select-mode-tools :deep(.flex) {
-    width: 100%;
-    flex-wrap: wrap;
   }
 }
 </style>

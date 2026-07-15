@@ -228,19 +228,4 @@ const toggleMode = (index: number, isManual: boolean) => {
   border-radius: 50%;
   background: var(--brand-primary-50);
 }
-
-@media (max-width: 768px) {
-  .timeline-actions {
-    align-items: center;
-    justify-content: flex-end;
-    flex-direction: row;
-  }
-
-  .timeline-action {
-    width: 38px;
-    height: 38px;
-    flex: 0 0 38px;
-    border-radius: 11px;
-  }
-}
 </style>

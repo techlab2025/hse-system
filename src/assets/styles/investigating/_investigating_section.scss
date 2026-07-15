@@ -46,7 +46,7 @@
   }
   .radio-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
     @media (max-width: 668px) {
       grid-template-columns: repeat(1, minmax(100px, 1fr)) !important;
     }
@@ -82,7 +82,7 @@
     font-size: $MdSize;
   }
   .sub-radio-group {
-    margin-inline-start: 1.3rem;
+    margin-left: 1.3rem;
     @include flex-column(nowrap, flex-start, center);
     gap: 8px;
   }
