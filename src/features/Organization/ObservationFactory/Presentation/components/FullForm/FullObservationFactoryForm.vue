@@ -708,7 +708,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   // },
   {
     key: 'Oragnizationemployee',
-    message: 'Please select the employee who reported this Incident before continuing.',
+    message: 'Please select the employee who involved before continuing.',
     isMissing: () =>
       !hasValue(Oragnizationemployee.value) && OragnizationemployeeName.value.length < 1,
   },

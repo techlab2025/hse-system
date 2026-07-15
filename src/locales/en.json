@@ -1441,5 +1441,11 @@
   "no_notification_plans_description": "No notification plans were found.",
   "task_assigned": "Task assigned",
   "project_location_hierarchy_assignment": "Project location hierarchy assignment",
-  "observation_created": "Observation created"
+  "observation_created": "Observation created",
+  "not_stuff_witness": "Not Stuff Witness",
+  "stuff_witness": "Stuff Witness",
+  "not_stuff_injured": "Not Stuff Injured",
+  "stuff_injured": "Stuff Injured",
+  "not_stuff_deceased": "Not Stuff Deceased",
+  "stuff_deceased": "Stuff Deceased"
 }

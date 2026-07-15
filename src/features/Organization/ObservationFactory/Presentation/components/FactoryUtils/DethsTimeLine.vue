@@ -146,7 +146,7 @@ const toggleMode = (index: number, isManual: boolean) => {
                         class="emp-name"
                         @click.prevent="toggleMode(index, true)"
                       >
-                        {{ $t('unemployed') }}
+                        {{ $t('not_stuff_deceased') }}
                       </button>
 
                       <button
@@ -154,7 +154,7 @@ const toggleMode = (index: number, isManual: boolean) => {
                         class="emp-select"
                         @click.prevent="toggleMode(index, false)"
                       >
-                        {{ $t('select') }}
+                        {{ $t('stuff_deceased') }}
                       </button>
                     </div>
                   </template>

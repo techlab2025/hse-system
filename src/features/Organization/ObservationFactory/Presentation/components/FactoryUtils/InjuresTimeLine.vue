@@ -301,7 +301,7 @@ onMounted(async () => {
                         class="emp-name"
                         @click.prevent="toggleMode(index, true)"
                       >
-                        {{ $t('unemployed_injured_name ') }}
+                        {{ $t('not_stuff_injured') }}
                       </button>
 
                       <button
@@ -309,7 +309,7 @@ onMounted(async () => {
                         class="emp-select"
                         @click.prevent="toggleMode(index, false)"
                       >
-                        {{ $t('select') }}
+                        {{ $t('stuff_injured') }}
                       </button>
                     </div>
                   </template>
