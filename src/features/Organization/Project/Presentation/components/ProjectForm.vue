@@ -31,6 +31,7 @@ import AddProjectZoneDialog from './Dialogs/AddProjectZoneDialog.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import StarRequiredInput from '@/shared/icons/StarRequiredInput.vue'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
 const SerialNumber = ref<string>('')
@@ -410,6 +411,7 @@ defineExpose({
       :label="`Project Name`"
       :langs="langDefault"
       :modelValue="langs"
+      help-text="Enter the project name in each available language so it is clear throughout the system."
       @update:modelValue="(val) => (langs = val)"
     />
     <p v-if="getFieldError('langs')" class="required-field-message">
@@ -422,6 +424,7 @@ defineExpose({
       :switch_title="$t('auto')"
       :isAuto="true"
       :switch_reverse="true"
+      help-text="Enter a unique project serial number, or enable automatic generation to let the system create it."
       @update:value="UpdateSerial"
     />
     <!-- <label for="serialNumber">{{ $t('serial_number') }}</label>
@@ -442,6 +445,7 @@ defineExpose({
     <label for="date" class="flex gap-2 items-center">
       {{ $t('start_date') }}
       <StarRequiredInput />
+      <FieldHelpIcon text="Select the planned date when work on this project starts." />
     </label>
     <DatePicker
       v-model="date"
@@ -457,6 +461,7 @@ defineExpose({
     <label for="end-date" class="flex gap-2 items-center">
       {{ $t('end_date') }}
       <StarRequiredInput />
+      <FieldHelpIcon text="Select the planned completion date for this project." />
     </label>
     <DatePicker
       v-model="endDate"
@@ -480,6 +485,7 @@ defineExpose({
       label="contractors"
       :placeholder="$t('sub_contractors')"
       :onclick="ShowContructorDialog"
+      help-text="Select every contractor or subcontractor assigned to work on this project."
     />
   </div>
 
@@ -494,6 +500,7 @@ defineExpose({
       placeholder="location"
       :type="2"
       :onclick="ShowLocationDialog"
+      help-text="Select the project locations or work areas where project activities will take place."
     />
     <p v-if="getFieldError('location')" class="required-field-message">
       {{ getFieldError('location') }}
@@ -505,6 +512,7 @@ defineExpose({
       <span class="flex items-center gap-2">
         <span>{{ $t('zones') }}</span>
         <StarRequiredInput />
+        <FieldHelpIcon text="Select the specific zones within the chosen project locations." />
       </span>
       <AddProjectZoneDialog @update:data="UpdateZones" />
     </label>
@@ -530,6 +538,7 @@ defineExpose({
       type="textarea"
       :placeholder="`What is the project scope of work?`"
       :required="false"
+      help-text="Describe the project scope, main activities, and work boundaries in each available language."
     />
   </div>
   <ContructorSelectDialog v-model:visible="ContructorVisible" />

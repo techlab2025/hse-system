@@ -48,6 +48,7 @@ import AddWhereHouse from '@/features/Organization/WhereHouse/Presentation/compo
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import { useThemeMode } from '@/composables/useThemeMode'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 // import AddWhereHouse from '@/views/Organization/WhereHouse/AddWhereHouse.vue'
 
 const emit = defineEmits(['update:data'])
@@ -384,7 +385,7 @@ const breadcrumbs = [
 
 const indexContractorController = IndexContractorController.getInstance()
 const indexContractorTypeParams = new IndexContractorParams('', 1, 10, 0, false)
-const SelectedContractor = ref<TitleInterface>()
+const SelectedContractor = ref<TitleInterface | null>(null)
 const setContructor = (data: TitleInterface) => {
   SelectedContractor.value = data
   updateData()
@@ -559,14 +560,14 @@ const UpdateSerial = (data) => {
 
 const indexWhereHouseController = IndexWhereHouseController.getInstance()
 const indexWhereHouseParams = new IndexWhereHouseParams('', 1, 10, 1, false)
-const SelectedWhereHosue = ref<TitleInterface>()
+const SelectedWhereHosue = ref<TitleInterface | null>(null)
 
 const setSelectedWhereHouse = (data: TitleInterface) => {
   SelectedWhereHosue.value = data
   updateData()
 }
 
-const EndDate = ref<Date>()
+const EndDate = ref<Date | null>(null)
 
 const setEndDate = (data) => {
   EndDate.value = data
@@ -748,8 +749,11 @@ defineExpose({
       <div class="flex gap-2 w-full col-span-6">
         <Car />
         <div class="input-wrapper check-box">
-          <label for="vehicle">
+          <label for="vehicle" class="flex items-center gap-2">
             <p>Mark if this equipment is a <b>vehicle</b></p>
+            <FieldHelpIcon
+              text="Enable this when the equipment is a road vehicle so its mileage can be recorded."
+            />
           </label>
           <!-- <Checkbox v-model="isVehicle" @change="updateData" type="checkbox" id="vehicle" binary /> -->
 
@@ -757,6 +761,10 @@ defineExpose({
         </div>
       </div>
       <div class="input-wrapper w-1/2" v-if="isVehicle">
+        <label for="inspection_duration" class="flex items-center gap-2">
+          Current vehicle mileage
+          <FieldHelpIcon text="Enter the vehicle's current odometer reading in kilometres." />
+        </label>
         <input
           class="input"
           placeholder="Enter Vehicle Km"
@@ -774,6 +782,7 @@ defineExpose({
           :label="`${GetEquipmentTitle(activeTab)} Name`"
           :langs="langDefault"
           :modelValue="langs"
+          help-text="Enter the equipment name in each available language so users can identify it easily."
           @update:modelValue="setLangs"
         />
         <p v-if="getFieldError('langs')" class="required-field-message">
@@ -782,7 +791,12 @@ defineExpose({
       </div>
 
       <div class="col-span-2 md:col-span-1 flex flex-col gap-2 input-wrapper" v-if="!data?.id">
-        <label for="serialNumber">{{ $t('serial_number') }}</label>
+        <label for="serialNumber" class="flex items-center gap-2">
+          {{ $t('serial_number') }}
+          <FieldHelpIcon
+            text="Enter a unique serial number, or leave it empty when automatic generation is enabled."
+          />
+        </label>
         <input
           type="text"
           v-model="SerialNumber"
@@ -806,6 +820,7 @@ defineExpose({
           :label="`${GetEquipmentTitle(activeTab)} Type`"
           :id="`${GetEquipmentTitle(activeTab)} Type`"
           :placeholder="`Select ${GetEquipmentTitle(activeTab)} Type`"
+          help-text="Select the type that best classifies this equipment, device, or tool."
           @update:modelValue="setEquipmentType"
           :isDialog="true"
           v-model:dialogVisible="EquipmentTypeDialog"
@@ -823,7 +838,10 @@ defineExpose({
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
-        <label>{{ $t('upload image') }}</label>
+        <label class="flex items-center gap-2">
+          {{ $t('upload image') }}
+          <FieldHelpIcon text="Upload a clear image that helps users identify this equipment." />
+        </label>
         <SingleFileUpload
           :returnType="`base64`"
           v-model="image"
@@ -837,8 +855,11 @@ defineExpose({
 
       <!-- {{ certificateImage }} -->
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
-        <label class="flex justify-between flex-wrap">
+        <label class="flex items-center gap-2 flex-wrap">
           <p>{{ $t('Certification / Inspection Image upload') }}</p>
+          <FieldHelpIcon
+            text="Upload the current certificate or inspection evidence associated with this equipment."
+          />
         </label>
         <SingleFileUpload
           :returnType="`base64`"
@@ -852,7 +873,12 @@ defineExpose({
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
-        <label>{{ $t('certification / Inspection expiry date') }}</label>
+        <label class="flex items-center gap-2">
+          {{ $t('certification / Inspection expiry date') }}
+          <FieldHelpIcon
+            text="Select the expiry date printed on the certificate or inspection document."
+          />
+        </label>
         <DatePicker
           :model-value="decommissioningDateObj"
           id="Date of Decommissioning"
@@ -863,34 +889,42 @@ defineExpose({
 
       <div
         v-if="user?.type === OrganizationTypeEnum.ORGANIZATION"
-        class="col-span-2 flex item-center justify-start gap-4"
+        class="col-span-2 flex flex-wrap item-center justify-start gap-4"
         data-required-field="deviceStatus"
       >
-        <div
-          class="radio-wrapper"
-          :class="deviceStatus == option?.id ? 'active' : ''"
-          v-for="(option, index) in deviceStatusOptions"
-          :key="index"
-          @click="deviceStatus = option?.id"
-        >
-          <div class="flex items-center justify-center gap-1 w-full h-full">
-            <label
-              class="text-lg w-full flex justify-center"
-              :for="`${option?.id}-${option?.title}`"
-            >
-              {{ option?.title }}
-            </label>
-            <RentIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.RENT" />
-            <OwnedIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.OWN" />
-          </div>
-          <input
-            :id="`${option?.id}-${option?.title}`"
-            type="radio"
-            v-model="deviceStatus"
-            :value="option?.id"
-            name="radio"
-            @change="UpdateDeviceStatus"
+        <div class="equipment-status-guide flex basis-full items-center gap-2">
+          <span>{{ $t('status') }}</span>
+          <FieldHelpIcon
+            text="Choose Owned when the organization owns the asset, or Rent when it is supplied temporarily."
           />
+        </div>
+        <div class="equipment-status-options">
+          <div
+            class="radio-wrapper"
+            :class="deviceStatus == option?.id ? 'active' : ''"
+            v-for="(option, index) in deviceStatusOptions"
+            :key="index"
+            @click="deviceStatus = option?.id"
+          >
+            <div class="flex items-center justify-center gap-1 w-full h-full">
+              <label
+                class="text-lg w-full flex justify-center"
+                :for="`${option?.id}-${option?.title}`"
+              >
+                {{ option?.title }}
+              </label>
+              <RentIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.RENT" />
+              <OwnedIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.OWN" />
+            </div>
+            <input
+              :id="`${option?.id}-${option?.title}`"
+              type="radio"
+              v-model="deviceStatus"
+              :value="option?.id"
+              name="radio"
+              @change="UpdateDeviceStatus"
+            />
+          </div>
         </div>
         <p v-if="getFieldError('deviceStatus')" class="required-field-message">
           {{ getFieldError('deviceStatus') }}
@@ -911,6 +945,7 @@ defineExpose({
           :label="`Contructor`"
           id="Contructor"
           :placeholder="`Select Contructor`"
+          help-text="Select the contractor or supplier providing this rented equipment."
           @update:modelValue="setContructor"
           :isDialog="true"
           v-model:dialogVisible="ContractorDialog"
@@ -940,6 +975,7 @@ defineExpose({
           label="Rent Type"
           id="Rent Type"
           placeholder="Selected Rent Type.."
+          help-text="Choose the time unit used to calculate the rental period."
           @update:modelValue="setRentType"
         />
         <p v-if="getFieldError('SelectedRentType')" class="required-field-message">
@@ -958,6 +994,7 @@ defineExpose({
           label="Warehouse"
           id="Warehouse"
           placeholder="Select Warehouse.."
+          help-text="Select the warehouse where this equipment will initially be stored."
           @update:modelValue="setSelectedWhereHouse"
           :isDialog="true"
           v-model:dialogVisible="WarehouseDialog"
@@ -978,9 +1015,10 @@ defineExpose({
         "
         data-required-field="Rent"
       >
-        <label for="rent-time"
-          >Rent {{ RentTypes.find((el) => el.id == SelectedRentType?.id)?.title }}</label
-        >
+        <label for="rent-time" class="flex items-center gap-2">
+          Rent {{ RentTypes.find((el) => el.id == SelectedRentType?.id)?.title }}
+          <FieldHelpIcon text="Enter the rental duration using the selected rent time unit." />
+        </label>
         <input
           class="input"
           placeholder="Enter Rent Time"
@@ -1001,7 +1039,10 @@ defineExpose({
         "
         data-required-field="StartDate"
       >
-        <label>{{ $t('start_date') }}</label>
+        <label class="flex items-center gap-2">
+          {{ $t('start_date') }}
+          <FieldHelpIcon text="Select the date and time when the equipment rental begins." />
+        </label>
         <DatePicker
           v-model="StartDate"
           id="start_date"
@@ -1020,7 +1061,12 @@ defineExpose({
           deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
         "
       >
-        <label>{{ $t('end_date') }}</label>
+        <label class="flex items-center gap-2">
+          {{ $t('end_date') }}
+          <FieldHelpIcon
+            text="This date is calculated automatically from the start date, duration, and rent type."
+          />
+        </label>
         <DatePicker
           :showTime="true"
           v-model="EndDate"
@@ -1031,8 +1077,11 @@ defineExpose({
       </div>
 
       <div class="input-wrapper col-span-2 md:col-span-1">
-        <label for="License Plate Number">
+        <label for="License Plate Number" class="flex items-center gap-2">
           {{ $t('License Plate No.') }}
+          <FieldHelpIcon
+            text="Enter the official registration plate number when this equipment is a vehicle."
+          />
         </label>
         <input
           type="text"
@@ -1047,12 +1096,17 @@ defineExpose({
         class="input-wrapper col-span-2 md:col-span-1"
         v-if="user?.type == OrganizationTypeEnum?.ADMIN"
       >
-        <CustomCheckbox
-          :title="'all_industries'"
-          :checked="allIndustries"
-          @update:checked="allIndustries = $event"
-          :index="2"
-        />
+        <div class="flex items-center gap-2">
+          <CustomCheckbox
+            :title="'all_industries'"
+            :checked="allIndustries"
+            @update:checked="allIndustries = $event"
+            :index="2"
+          />
+          <FieldHelpIcon
+            text="Enable this when the equipment is available to every industry instead of selected industries only."
+          />
+        </div>
       </div>
       <div class="input-wrapper" v-if="deviceStatus == EquipmentStatus.RENT"></div>
 
@@ -1068,6 +1122,7 @@ defineExpose({
           id="EquipmentType"
           placeholder="Select industry"
           :type="2"
+          help-text="Select the industries allowed to use or view this equipment."
           @update:modelValue="setIndustry"
         />
       </div>
@@ -1106,7 +1161,14 @@ defineExpose({
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.check-box {
+  width: 100%;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
 .Qr_EQUIPMENt {
   display: flex;
   align-items: center;
@@ -1129,6 +1191,19 @@ defineExpose({
 
 .radio-wrapper {
   padding: 0;
+}
+
+.equipment-status-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+}
+
+.equipment-status-options .radio-wrapper {
+  width: 100%;
+  min-width: 0;
 }
 
 .h-full {

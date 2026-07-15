@@ -12,7 +12,7 @@ const props = defineProps<{ open: boolean }>()
 
 const route = useRoute()
 interface Routes {
-  link: string | {}
+  link: string | object
   name: string
   permissions: PermissionsEnum[]
   icon: string
@@ -22,7 +22,7 @@ const { t } = useI18n()
 const GauideRoutes = ref<Routes[]>([
   {
     link: '/organization/project-progress',
-    name: t('overview'),
+    name: 'overview',
     icon: 'dashboard',
     permissions: [
       PermissionsEnum.ADMIN,
@@ -36,43 +36,43 @@ const GauideRoutes = ref<Routes[]>([
 const OperationsRoutes = ref<Routes[]>([
   {
     link: '/organization/projects',
-    name: t('Projects'),
+    name: 'Projects',
     icon: 'briefcase-alt',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/equipments',
-    name: t('equipment'),
+    name: 'equipment',
     icon: 'hard-hat',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/Investigating',
-    name: t('investigations'),
+    name: 'investigations',
     icon: 'search-alt',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/capa',
-    name: t('CAPA'),
+    name: 'CAPA',
     icon: 'shield-check',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/equipment-mangement/incedant?isAll=1',
-    name: t('Incidents'),
+    name: 'Incidents',
     icon: 'exclamation-triangle',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/equipment-mangement/observation?isAll=1&type=2',
-    name: t('observations'),
+    name: 'observations',
     icon: 'eye',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     link: '/organization/equipment-mangement/inspection?inspectionType=1',
-    name: t('Inspection'),
+    name: 'Inspection',
     icon: 'clipboard-notes',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
@@ -81,7 +81,7 @@ const OperationsRoutes = ref<Routes[]>([
 const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/system-identity',
-    name: t('system_identity'),
+    name: 'system_identity',
     icon: 'palette',
     permissions: [
       PermissionsEnum.ADMIN,
@@ -91,7 +91,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/certificate',
-    name: t('certificates'),
+    name: 'certificates',
     icon: 'award',
     permissions: [
       PermissionsEnum.CERTIFICATE_ALL,
@@ -103,7 +103,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/template',
-    name: t('templates'),
+    name: 'templates',
     icon: 'book-open',
     permissions: [
       PermissionsEnum.ORG_TEMPLATE_ALL,
@@ -115,7 +115,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/herikaly',
-    name: t('positions'),
+    name: 'positions',
     icon: 'sitemap',
     permissions: [
       PermissionsEnum.HERIKALY_ALL,
@@ -127,7 +127,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/organization-employee',
-    name: t('employees'),
+    name: 'employees',
     icon: 'users-alt',
     permissions: [
       PermissionsEnum.ORG_EMPLOYEE_ALL,
@@ -140,7 +140,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/team',
-    name: t('team'),
+    name: 'team',
     icon: 'user-check',
     permissions: [
       PermissionsEnum.ORG_TEAM_ALL,
@@ -152,7 +152,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/contractor',
-    name: t('contractors'),
+    name: 'contractors',
     icon: 'constructor',
     permissions: [
       PermissionsEnum.ORG_CONTRACTOR_ALL,
@@ -164,7 +164,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/role',
-    name: t('roles'),
+    name: 'roles',
     icon: 'shield-check',
     permissions: [
       PermissionsEnum.ORG_ROLE_ALL,
@@ -176,7 +176,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/notification-plan',
-    name: t('notification_plan'),
+    name: 'notification_plan',
     icon: 'ticket',
     permissions: [
       PermissionsEnum.NOTIFICATION_PLAN_ALL,
@@ -187,7 +187,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/scope',
-    name: t('contractor_scope'),
+    name: 'contractor_scope',
     icon: 'crosshair',
     permissions: [
       PermissionsEnum.SCOPE_ALL,
@@ -199,7 +199,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/where-house',
-    name: t('warehouse'),
+    name: 'warehouse',
     icon: 'store',
     permissions: [
       PermissionsEnum.WHIERE_HOUSE_ALL,
@@ -211,7 +211,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/employee-certificate',
-    name: t('employee_certificate'),
+    name: 'employee_certificate',
     icon: 'file-plus-alt',
     permissions: [
       PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
@@ -223,7 +223,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/serial-number',
-    name: t('coding_system'),
+    name: 'coding_system',
     icon: 'qrcode-scan',
     permissions: [
       PermissionsEnum.CODING_SYSTEM_ALL,
@@ -235,7 +235,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/hazard',
-    name: t('risk'),
+    name: 'risk',
     icon: 'shield-exclamation',
     permissions: [
       PermissionsEnum.ORG_HAZARD_ALL,
@@ -247,7 +247,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/factory',
-    name: t('Hazard factor'),
+    name: 'Hazard factor',
     icon: 'exclamation-octagon',
     permissions: [
       PermissionsEnum.ORG_FACTORY_ALL,
@@ -259,7 +259,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/factories-items',
-    name: t('Hazard factor item'),
+    name: 'Hazard factor item',
     icon: 'circle-layer',
     permissions: [
       PermissionsEnum.ORG_FACTORY_ITEM_ALL,
@@ -283,7 +283,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/shifts',
-    name: t('shifts'),
+    name: 'shifts',
     icon: 'clock',
     permissions: [
       PermissionsEnum.ORG_SHIFT_ALL,
@@ -298,7 +298,7 @@ const OrganizationRoutes = ref<Routes[]>([
 const TicketRoutes = ref<Routes[]>([
   {
     link: '/organization/ticket',
-    name: t('support'),
+    name: 'support',
     icon: 'ticket',
     permissions: [
       PermissionsEnum.TICKET_ALL,
@@ -312,7 +312,7 @@ const TicketRoutes = ref<Routes[]>([
 const LocationRoutes = ref<Routes[]>([
   {
     link: '/organization/countries',
-    name: t('country'),
+    name: 'country',
     icon: 'globe',
     permissions: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -326,7 +326,7 @@ const LocationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/states',
-    name: t('state'),
+    name: 'state',
     icon: 'map-marker-alt',
     permissions: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -340,7 +340,7 @@ const LocationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/cities',
-    name: t('city'),
+    name: 'city',
     icon: 'map',
     permissions: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -354,7 +354,7 @@ const LocationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/areas',
-    name: t('location'),
+    name: 'location',
     icon: 'location-point',
     permissions: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -368,7 +368,7 @@ const LocationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/project-zone',
-    name: t('zones'),
+    name: 'zones',
     icon: 'map-pin-alt',
     permissions: [
       PermissionsEnum.PROJECT_ZONE_ALL,
@@ -383,7 +383,7 @@ const LocationRoutes = ref<Routes[]>([
 const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/organization/where-house-type',
-    name: t('warehouse_types'),
+    name: 'warehouse_types',
     icon: 'store-alt',
     permissions: [
       PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
@@ -396,7 +396,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/hazard-type',
-    name: t('hazard_classifications'),
+    name: 'hazard_classifications',
     icon: 'shield-exclamation',
     permissions: [
       PermissionsEnum.HAZARD_TYPE_ALL,
@@ -409,7 +409,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/accidents-type',
-    name: t('incident_types'),
+    name: 'incident_types',
     icon: 'exclamation-octagon',
     permissions: [
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
@@ -422,7 +422,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/incident-category',
-    name: t('incident_categories'),
+    name: 'incident_categories',
     icon: 'list-ui-alt',
     permissions: [
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
@@ -435,7 +435,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/observation-type',
-    name: t('observation_type'),
+    name: 'observation_type',
     icon: 'eye',
     permissions: [
       PermissionsEnum.OBSERVATION_TYPE_ALL,
@@ -448,7 +448,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/equipment-types',
-    name: t('equipment_types'),
+    name: 'equipment_types',
     icon: 'wrench',
     permissions: [
       PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
@@ -461,7 +461,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/root-causes',
-    name: t('root_causes'),
+    name: 'root_causes',
     icon: 'sitemap',
     permissions: [
       PermissionsEnum.ROOT_CAUSES_ALL,
@@ -473,7 +473,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/injury',
-    name: t('injury'),
+    name: 'injury',
     icon: 'medical-square',
     permissions: [
       PermissionsEnum.INJURY_ALL,
@@ -719,7 +719,7 @@ onBeforeUnmount(() => {
               v-model="searchTerm"
               type="search"
               class="sidebar-search__input"
-              :placeholder="$t('Search') || 'Search all routes...'"
+              :placeholder="$t('search')"
               aria-label="Search all sidebar routes"
               @keydown.esc="hidePane"
             />

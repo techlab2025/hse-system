@@ -8,6 +8,8 @@ import CloseDelete from '@/shared/icons/CloseDelete.vue'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
 
+defineOptions({ inheritAttrs: false })
+
 const visible = ref(false)
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -104,12 +106,19 @@ const deleteZone = (index: number) => {
 </script>
 
 <template>
-  <div class="input-wrapper">
+  <div class="input-wrapper" v-bind="$attrs">
     <div class="zones input" @click="visible = true">
-      <div class="zone" v-for="(zone, index) in currentZoneTitles" :key="index" @click.stop  v-if="currentZoneTitles.length > 0">
-        {{ zone }}
-        <CloseDelete class="delete" @click.stop="deleteZone(index)" />
-      </div>
+      <template v-if="currentZoneTitles.length > 0">
+        <div
+          class="zone"
+          v-for="(zone, index) in currentZoneTitles"
+          :key="index"
+          @click.stop
+        >
+          {{ zone }}
+          <CloseDelete class="delete" @click.stop="deleteZone(index)" />
+        </div>
+      </template>
       <div v-else>
         <span class="placeholder">at least 1 zone required</span>
       </div>

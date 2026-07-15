@@ -41,7 +41,7 @@ export default class FetchMyProjectsController extends SelectControllerInterface
     const data = await this.getData(params)
     const adaptData: any[] = []
     if (this.isDataSuccess()) {
-      console.log(params, "params");
+      // console.log(params, "params");
       // if (params.allProject) {
       adaptData.push(
         new TitleInterface({
