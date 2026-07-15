@@ -536,4 +536,11 @@ label {
   .input-label-images {
     max-width: 50% !important;
   }
+  .input-wrapper{
+    grid-column: span 24 ;
+  }
+  header{
+    width:96% !important;
+    margin-inline:auto !important;
+  }
 }

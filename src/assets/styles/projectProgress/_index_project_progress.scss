@@ -2,7 +2,13 @@
 @use '../mixins/flex' as *;
 @use '../mixins/grid' as *;
 .project-progress-container {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
+
   .project-progress-actions {
+    box-sizing: border-box;
     padding: $XsSize2 $XlSize2;
     margin-bottom: $XsSize;
     border-radius: $XlSize2 $XlSize2 0 0;
@@ -61,6 +67,7 @@
       .timeline-container {
         cursor: pointer;
         width: 100%;
+        min-width: 0;
         overflow: hidden;
 
         .timeline-wrapper {
@@ -73,6 +80,8 @@
           padding: $XsSize3 $XsSize3 $SmSize;
           scroll-snap-type: x proximity;
           scrollbar-width: thin;
+          overscroll-behavior-inline: contain;
+          -webkit-overflow-scrolling: touch;
 
           &::-webkit-scrollbar {
             height: 6px;
@@ -238,6 +247,145 @@
         padding: $MdSize;
         width: 100%;
         min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: auto;
+
+        > * {
+          min-width: 0;
+          max-width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .project-progress-container {
+    .project-progress-actions {
+      margin-bottom: 8px;
+      padding: 10px 14px;
+      border-radius: 14px 14px 0 0;
+
+      .back {
+        gap: 8px;
+
+        svg {
+          width: 30px;
+          height: 30px;
+        }
+
+        span {
+          font-size: $SmSize;
+        }
+      }
+    }
+
+    .project-progress-body-container {
+      gap: 12px;
+      margin-block: 10px;
+
+      .project-progress-body-sidebar {
+        padding: 10px;
+        border-radius: 14px;
+
+        .timeline-container {
+          .timeline-wrapper {
+            gap: 10px;
+            padding: 4px 4px 10px;
+            scroll-padding-inline: 4px;
+            scroll-snap-type: x mandatory;
+          }
+
+          .timeline-item {
+            flex-basis: min(280px, calc(100vw - 68px));
+            min-height: 104px;
+            gap: 10px;
+            padding: 12px;
+            scroll-snap-stop: always;
+          }
+
+          .timeline-marker,
+          .timeline-marker > svg,
+          .timeline-dot {
+            width: 36px;
+            height: 36px;
+          }
+
+          .timeline-marker {
+            left: 0 !important;
+            top: 0 !important;
+          }
+
+          .timeline-content {
+            .timeline-content-header {
+              gap: 6px;
+
+              .first-item-title,
+              .time-line-title {
+                font-size: $MdSize;
+                line-height: 1.35;
+              }
+            }
+
+            .first-item-description,
+            .time-line-description {
+              margin-top: 4px;
+              font-size: 12px;
+              line-height: 1.4;
+            }
+          }
+        }
+      }
+
+      .project-progress-body-content {
+        .content-header {
+          gap: 6px;
+          margin-block: 12px;
+
+          > div:first-child {
+            width: 100%;
+            min-width: 0;
+            flex-wrap: wrap;
+          }
+
+          .title {
+            min-width: 0;
+            font-size: $XlSize;
+            line-height: 1.3;
+            overflow-wrap: anywhere;
+          }
+
+          .description {
+            font-size: $SmSize;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+          }
+        }
+
+        .full-content {
+          padding: 12px;
+          border-radius: 14px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 420px) {
+  .project-progress-container {
+    .project-progress-body-container {
+      .project-progress-body-sidebar {
+        padding: 8px;
+
+        .timeline-container .timeline-item {
+          flex-basis: calc(100vw - 54px);
+          padding: 10px;
+        }
+      }
+
+      .project-progress-body-content .full-content {
+        padding: 10px;
       }
     }
   }

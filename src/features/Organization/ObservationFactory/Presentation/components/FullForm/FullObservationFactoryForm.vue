@@ -1192,7 +1192,7 @@ defineExpose({
 
     <!-- Save Status Positive or Negative -->
     <div
-      class="col-span-6 md:col-span-6 input-wrapper w-full"
+      class="factory-people-section witnesses-section col-span-6 md:col-span-6 input-wrapper w-full"
       v-if="ObservationFactoryType != Observation.AccidentsType"
     >
       <SaveStatusSelector :modelValue="saveStatus" @update:saveStatus="UpdateSaveStatus" />
@@ -1498,7 +1498,7 @@ defineExpose({
     <!-- Factorywitnesses -->
 
     <div
-      class="col-span-6 md:col-span-6 input-wrapper w-full"
+      class="factory-people-section witnesses-section col-span-6 md:col-span-6 input-wrapper w-full"
       data-required-field="witnesses"
       v-if="
         saveStatus == SaveStatusEnum.NotSaved &&
@@ -1514,7 +1514,7 @@ defineExpose({
     <!-- FactoryAccidents -->
     <!-- v-if="ObservationFactoryType != Observation?.ObservationType" -->
     <div
-      class="col-span-6 md:col-span-6 input-wrapper w-full"
+      class="factory-people-section injuries-section col-span-6 md:col-span-6 input-wrapper w-full"
       data-required-field="Accidents"
       v-if="
         saveStatus == SaveStatusEnum.NotSaved &&
@@ -1534,7 +1534,7 @@ defineExpose({
     <!-- FactoryFatalities -->
     <!-- v-if="ObservationFactoryType != Observation?.ObservationType" -->
     <div
-      class="col-span-6 md:col-span-6 input-wrapper w-full"
+      class="factory-people-section fatalities-section col-span-6 md:col-span-6 input-wrapper w-full"
       data-required-field="Fatalities"
       v-if="
         saveStatus == SaveStatusEnum.NotSaved &&
@@ -1583,6 +1583,26 @@ defineExpose({
   color: var(--status-danger);
   font-size: 0.82rem;
   font-weight: 700;
+}
+
+.factory-people-section {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: clip;
+}
+
+.factory-people-section :deep(.another-meeting),
+.factory-people-section :deep(.another-meeting-contect),
+.factory-people-section :deep(.template-container),
+.factory-people-section :deep(.heirarchy-info),
+.factory-people-section :deep(.timeline-container),
+.factory-people-section :deep(.timeline-wrapper),
+.factory-people-section :deep(.timeline-item) {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .form-filter-skeleton {
@@ -1846,6 +1866,26 @@ label {
   :deep(.emp-select.active),
   :deep(.meeting-status button.active) {
     color: var(--text-on-brand) !important;
+  }
+}
+@media (max-width: 768px) {
+  .full-observation-form > div {
+    grid-column: 1 / -1 !important;
+  }
+
+  .factory-people-section {
+    padding: 12px !important;
+    border-radius: 16px !important;
+  }
+
+  .factory-people-section :deep(.another-meeting-contect) {
+    margin-top: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .factory-people-section {
+    padding: 10px !important;
   }
 }
 </style>

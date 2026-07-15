@@ -225,7 +225,7 @@ onMounted(async () => {
 })
 </script>
 <template>
-  <div class="template-container col-span-6 injuries-timeline">
+  <div class="template-container col-span-6 injuries-timeline w-full">
     <div class="heirarchy-info">
       <div class="timeline-container injury-timeline-container">
         <div class="timeline-wrapper">
@@ -259,8 +259,8 @@ onMounted(async () => {
             </div>
 
             <!-- timeline-content -->
-            <div class="injury-timeline-card grid grid-cols-12 gap-3">
-              <div class="injury-card-header col-span-12">
+            <div class="injury-timeline-card">
+              <div class="injury-card-header">
                 <div>
                   <span>{{ $t('injury record') }}</span>
                   <strong>#{{ index + 1 }}</strong>
@@ -269,7 +269,7 @@ onMounted(async () => {
                   {{ item.incidentCategories.length }} {{ $t('Incident Categories') }}
                 </p>
               </div>
-              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
+              <div class="injury-field input-wrapper w-full">
                 <UpdatedCustomInputSelect
                   :staticOptions="employeeOptions"
                   v-model="item.employee"
@@ -284,7 +284,7 @@ onMounted(async () => {
                   :hascontent="isSelectHasContent[index]"
                 >
                   <!-- <template #reloadHeader>
-                    <div class="flex gap-2 items-center">
+                    <div class="employee-mode-actions flex gap-2 items-center">
                       <button :class="isSelectHasContent[index] ? 'active' : ''" class="emp-name"
                         @click.prevent="isSelectHasContent[index] = true; item.employee.title = ''">{{
                           $t('name_of_the_injured_person')
@@ -324,7 +324,7 @@ onMounted(async () => {
                   </template>
                 </UpdatedCustomInputSelect>
               </div>
-              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
+              <div class="injury-field input-wrapper w-full">
                 <!-- <CustomSelectInput :modelValue="item.infectionTypeId" class="input" :controller="indexInjuryController"
                   :params="indexInjuryParams" :label="$t('injury Type')" id="injury"
                   :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)" /> -->
@@ -355,7 +355,7 @@ onMounted(async () => {
                   </template>
                 </UpdatedCustomInputSelect>
               </div>
-              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
+              <div class="injury-field input-wrapper w-full">
                 <div class="flex items-center gap-2">
                   <label :for="`injury-description-${index}`">{{
                     $t('Description of Injury')
@@ -374,7 +374,7 @@ onMounted(async () => {
                 />
               </div>
 
-              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
+              <div class="injury-field input-wrapper w-full">
                 <div class="flex items-center gap-2">
                   <label>{{ $t('Evidence Retrieval (Photos)') }}</label>
                   <FieldHelpIcon
@@ -387,7 +387,7 @@ onMounted(async () => {
                   :index="index + 2000"
                 />
               </div>
-              <div class="col-span-12 md:col-span-12 input-wrapper w-full">
+              <div class="injury-field input-wrapper w-full">
                 <UpdatedCustomInputSelect
                   :id="`incident-categories-${index}`"
                   :modelValue="item.incidentCategories"
@@ -409,12 +409,11 @@ onMounted(async () => {
 </template>
 
 <style scoped>
-.input-wrapper:nth-child(2) {
-  grid-column: span 12 !important;
-}
 .injuries-timeline {
   position: relative;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .injuries-timeline .heirarchy-info {
@@ -425,6 +424,8 @@ onMounted(async () => {
   position: relative;
   width: 100%;
   padding: 8px 0;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .injury-timeline-container .timeline-wrapper {
@@ -451,6 +452,9 @@ onMounted(async () => {
 
 .injury-timeline-container .timeline-item {
   position: relative;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   animation: injuryFadeUp 0.35s ease both;
 }
 
@@ -515,6 +519,14 @@ onMounted(async () => {
 
 .injury-timeline-card {
   position: relative;
+  display: flex !important;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
   overflow: visible;
   padding: 18px;
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 95%, transparent);
@@ -591,6 +603,18 @@ onMounted(async () => {
   margin: 0;
 }
 
+.injury-timeline-card > .injury-field {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: stretch;
+  align-self: stretch;
+  inline-size: 100% !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+}
+
 .injury-timeline-card .input-wrapper label {
   display: inline-flex;
   margin-bottom: 7px;
@@ -650,23 +674,155 @@ onMounted(async () => {
   box-shadow: 0 10px 22px color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
 }
 
+.employee-mode-actions {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+/* Keep the form full-width; timeline actions live inside the card instead of using a side gutter. */
+.injuries-timeline .heirarchy-info,
+.injury-timeline-container .timeline-wrapper,
+.injury-timeline-container .timeline-item,
+.injury-timeline-card {
+  inline-size: 100% !important;
+  max-inline-size: none !important;
+}
+
+.injury-timeline-container .timeline-wrapper {
+  align-items: stretch;
+  padding-inline-start: 0;
+}
+
+.injury-timeline-container .timeline-line,
+.injury-timeline-container .timeline-dot {
+  display: none;
+}
+
+.injury-timeline-container .timeline-marker {
+  position: absolute;
+  display: block;
+  inset-inline-start: auto;
+  inset-inline-end: 14px;
+  top: 14px;
+  width: auto;
+  z-index: 3;
+}
+
+.injury-timeline-container .timeline-icon {
+  position: static;
+  display: flex;
+  width: auto;
+  height: auto;
+  gap: 7px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+.injury-timeline-container .timeline-icon :deep(svg) {
+  display: block;
+  width: 34px;
+  height: 34px;
+  padding: 5px;
+  border: 1px solid var(--brand-primary-100);
+  border-radius: 50%;
+  background: var(--brand-primary-50);
+}
+
+.injury-timeline-card {
+  align-self: stretch;
+  justify-self: stretch;
+  padding-top: 62px;
+}
+
+.injury-timeline-card > * {
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+
+.injury-timeline-card :deep(.input-select),
+.injury-timeline-card :deep(.p-select),
+.injury-timeline-card :deep(.p-multiselect),
+.injury-timeline-card :deep(.updated-select-header),
+.injury-timeline-card :deep(.multi-image-uploader),
+.injury-timeline-card :deep(.input-image) {
+  width: 100% !important;
+  min-width: 0;
+  max-width: none;
+}
+
 @media screen and (max-width: 720px) {
   .injury-timeline-container .timeline-wrapper {
     padding-inline-start: 0;
   }
 
   .injury-timeline-container .timeline-line,
-  .injury-timeline-container .timeline-marker {
+  .injury-timeline-container .timeline-dot {
     display: none;
   }
 
+  .injury-timeline-container .timeline-marker {
+    position: absolute;
+    display: block;
+    inset-inline-start: auto;
+    inset-inline-end: 10px;
+    top: 10px;
+    width: auto;
+    z-index: 3;
+  }
+
+  .injury-timeline-container .timeline-icon {
+    position: static;
+    display: flex;
+    width: auto;
+    height: auto;
+    gap: 6px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .injury-timeline-container .timeline-icon :deep(svg) {
+    display: block;
+    width: 32px;
+    height: 32px;
+    padding: 5px;
+    border: 1px solid var(--brand-primary-100);
+    border-radius: 50%;
+    background: var(--brand-primary-50);
+  }
+
   .injury-timeline-card {
-    padding: 14px;
+    gap: 12px;
+    padding: 54px 12px 12px;
+    border-radius: 16px;
   }
 
   .injury-card-header {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .injury-timeline-card :deep(.input-label.flex.justify-between.w-full) {
+    align-items: stretch;
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .employee-mode-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .employee-mode-actions button {
+    min-width: 0;
+    padding-inline: 8px;
+    text-align: center;
+    overflow-wrap: anywhere;
   }
 }
 

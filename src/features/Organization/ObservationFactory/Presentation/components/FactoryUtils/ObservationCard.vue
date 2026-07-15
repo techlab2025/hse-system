@@ -30,7 +30,7 @@ const GetHeader = (value: number) => {
   return Observation[value] == 'ObservationType'
     ? 'Observation'
     : Observation[value] == 'HazardType'
-      ? 'Hazard'
+      ? 'Observation'
       : 'incident'
 }
 
