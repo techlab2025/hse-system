@@ -1207,4 +1207,71 @@ defineExpose({
 .equipment-form.is-dark input::placeholder {
   color: var(--text-muted) !important;
 }
+
+@media (max-width: 768px) {
+  .equipment-form {
+    width: 100%;
+    min-width: 0;
+
+    > .grid {
+      grid-template-columns: minmax(0, 1fr) !important;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    > .grid > * {
+      grid-column: 1 / -1 !important;
+      min-width: 0;
+    }
+  }
+
+  .vehicle {
+    align-items: stretch;
+    flex-direction: column !important;
+
+    > div,
+    .input-wrapper,
+    .w-1\/2 {
+      width: 100% !important;
+    }
+  }
+
+  .card_Qr {
+    grid-template-columns: minmax(0, 1fr) !important;
+    padding: 16px !important;
+  }
+
+  .Qr_EQUIPMENt {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .equipment-form > .grid {
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .equipment-form .col-span-2.flex.item-center {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 8px;
+
+    .radio-wrapper {
+      width: 100%;
+    }
+  }
+
+  .card_Qr {
+    border-radius: 14px !important;
+    padding: 12px !important;
+  }
+
+  .Qr_EQUIPMENt {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 10px;
+  }
+}
 </style>

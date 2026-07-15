@@ -117,4 +117,45 @@
       grid-template-columns: 1fr;
     }
   }
+
+  @media (max-width: 480px) {
+    gap: 10px;
+    padding: 10px;
+
+    .another-meeting-header {
+      align-items: stretch;
+      flex-direction: column;
+
+      .title-header {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .meeting-status {
+        width: 100%;
+
+        button {
+          min-width: 0;
+          padding-inline: 10px;
+        }
+      }
+    }
+
+    .another-meeting-contect {
+      gap: 10px;
+      padding: 10px;
+
+      .input-wrapper,
+      .p-datepicker,
+      input {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+      }
+
+      .mr-2 {
+        margin-inline-end: 0;
+      }
+    }
+  }
 }

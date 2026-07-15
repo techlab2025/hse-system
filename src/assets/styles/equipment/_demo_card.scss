@@ -89,4 +89,38 @@
       }
     }
   }
+
+  @media (max-width: 480px) {
+    .demo-card {
+      width: 100%;
+      min-width: 0;
+      padding: 8px;
+
+      .texts .subtitle {
+        width: 100%;
+      }
+
+      .sub-card {
+        align-items: flex-start;
+        flex-direction: column;
+
+        .demo-img,
+        > img {
+          width: 72px;
+          height: 72px;
+        }
+
+        .sub-card-header {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 6px;
+        }
+
+        .inspection,
+        .date_rent {
+          flex-wrap: wrap;
+        }
+      }
+    }
+  }
 }

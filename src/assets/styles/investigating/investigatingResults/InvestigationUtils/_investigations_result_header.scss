@@ -399,7 +399,7 @@
       }
     }
 
-    @media (max-width: 720px) {
+    @media (max-width: 768px) {
       padding: 12px;
 
       .investigating-header {
@@ -421,6 +421,24 @@
         grid-template-columns: 1fr;
       }
 
+      .meeting-info-container,
+      .team-container,
+      .incidant-description {
+        padding: 12px;
+      }
+
+      .meeting-info-container .meeting-info p,
+      .investigating-info p {
+        min-height: auto;
+        overflow-wrap: anywhere;
+      }
+
+      .input-label,
+      .label-container {
+        min-width: 0;
+        flex-wrap: wrap;
+      }
+
       .equipment-card {
         align-items: flex-start;
 
@@ -431,5 +449,22 @@
         }
       }
     }
-  }
 
+    @media (max-width: 480px) {
+      gap: 10px;
+      padding: 8px;
+
+      .investigating-header,
+      .meeting-info-container,
+      .team-container,
+      .incidant-description,
+      .equipment-card {
+        border-radius: 10px;
+        padding: 10px;
+      }
+
+      .team-container .team-member {
+        width: 100%;
+      }
+    }
+  }

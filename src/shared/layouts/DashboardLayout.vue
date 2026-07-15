@@ -235,7 +235,29 @@ const showSidebar = computed(() => {
 
 @media (max-width: 768px) {
   .content {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100vw;
     padding-bottom: 92px;
+    overflow-x: clip;
+  }
+
+  .content-wrapper,
+  .main-content {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .content-wrapper {
+    overflow-x: clip;
+  }
+
+  .main-content {
+    padding: 12px;
+    border-radius: 14px;
+    overflow-x: clip;
   }
 
   .footer {
@@ -287,6 +309,13 @@ const showSidebar = computed(() => {
       background-color: color-mix(in srgb, var(--text-strong) 40%, transparent);
       z-index: 9998;
     }
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 8px;
+    border-radius: 10px;
   }
 }
 </style>

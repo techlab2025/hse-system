@@ -55,7 +55,7 @@ watch(
             Factors.title
           }}</label>
         </div>
-        <di
+        <div
           v-if="selectedFactors.some((factor) => factor === Factors?.id) && Factors?.id"
           class="sub-radio-group"
         >
@@ -76,7 +76,7 @@ watch(
               subfactor.title
             }}</label>
           </div>
-        </di>
+        </div>
       </div>
     </div>
   </div>
@@ -87,5 +87,60 @@ watch(
   color: var(--brand-primary-200);
   font-size: 14px;
   font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .factor-items-container,
+  .radio-grid,
+  .radio-column,
+  .radio-item,
+  .sub-radio-group,
+  .sub-radio-item {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .radio-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100%;
+  }
+
+  .radio-label,
+  .sub-radio-label {
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 480px) {
+  .factor-items-container {
+    padding: 10px !important;
+    border-radius: 12px;
+  }
+
+  .factot-title {
+    align-items: flex-start;
+    min-width: 0;
+    flex-wrap: wrap;
+  }
+
+  .radio-grid {
+    gap: 10px !important;
+  }
+
+  .radio-column {
+    gap: 8px;
+  }
+
+  .radio-item,
+  .sub-radio-item {
+    align-items: flex-start !important;
+  }
+
+  .sub-radio-group {
+    align-items: stretch !important;
+    margin-inline-start: 12px !important;
+  }
 }
 </style>

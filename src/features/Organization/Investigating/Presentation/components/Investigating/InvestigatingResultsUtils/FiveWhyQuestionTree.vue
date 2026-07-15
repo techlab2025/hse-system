@@ -130,4 +130,36 @@ onMounted(() => {
   flex-direction: column !important;
   gap: 12px;
 }
+
+@media (max-width: 768px) {
+  .template-container,
+  .heirarchy-info,
+  .timeline-container,
+  .timeline-wrapper,
+  .timeline-item,
+  .timeline-content,
+  .timeline-contect-select,
+  .input-wrapper {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .timeline-content {
+    padding: 10px !important;
+  }
+
+  .timeline-contect-select {
+    gap: 10px;
+  }
+
+  .input,
+  textarea {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
 </style>

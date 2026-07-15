@@ -60,4 +60,35 @@ $minimizeScreen: true;
     // }
     min-height: 82vh;
   }
+
+  @media (max-width: 768px) {
+    gap: 0;
+
+    .content-wrapper {
+      min-width: 0;
+      max-width: 100%;
+      overflow-x: clip;
+    }
+
+    .p-accordioncontent-content,
+    .p-accordionpanel.active-panel-out {
+      margin-inline: 0;
+    }
+
+    .main-content {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      padding: 12px;
+      border-radius: 14px;
+      overflow-x: clip;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .main-content {
+      padding: 8px;
+      border-radius: 10px;
+    }
+  }
 }

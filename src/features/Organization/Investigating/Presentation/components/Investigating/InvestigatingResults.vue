@@ -1759,4 +1759,150 @@ const validateRequiredFields = async () => {
 .investigation-result .btns .btn-primary {
   max-width: 100% !important;
 }
+
+@media (max-width: 768px) {
+  .investigation-result {
+    width: 100%;
+    min-width: 0;
+
+    :deep(.p-accordion),
+    :deep(.p-accordionpanel),
+    :deep(.p-accordioncontent),
+    :deep(.p-accordioncontent-content),
+    :deep(.template-container),
+    :deep(.timeline-content),
+    :deep(.capa-action-plan),
+    :deep(.task-lane),
+    :deep(.input-wrapper) {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    :deep(.p-accordioncontent-content) {
+      padding: 12px;
+    }
+
+    :deep(.timeline-contect-select) {
+      flex-wrap: wrap;
+    }
+
+    :deep(input),
+    :deep(textarea),
+    :deep(.p-select),
+    :deep(.p-multiselect),
+    :deep(.p-datepicker) {
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+    }
+  }
+
+  .investigation-title {
+    min-width: 0;
+
+    p {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    img,
+    .arrow {
+      flex-shrink: 0;
+    }
+  }
+
+  .event-timeline-fields {
+    flex-direction: column;
+
+    .input-wrapper,
+    .input-wrapper:first-child {
+      width: 100% !important;
+    }
+  }
+
+  .attachments-show .image-container {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .btns {
+    align-items: stretch;
+    flex-direction: column-reverse;
+
+    button,
+    a {
+      width: 100% !important;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .investigation-result {
+    gap: 10px;
+    padding: 8px;
+
+    :deep(.p-accordionheader) {
+      padding: 0;
+    }
+
+    :deep(.p-accordioncontent-content) {
+      padding: 8px 4px 12px;
+    }
+
+    :deep(.viwers-result),
+    :deep(.investegation-attachment),
+    :deep(.cause-of-accidant),
+    :deep(.rate-of-actions),
+    :deep(.another-meeting),
+    :deep(.capa-action-plan) {
+      padding: 10px;
+    }
+  }
+
+  .investigation-title {
+    gap: 8px;
+    padding: 10px;
+
+    img {
+      width: 38px;
+      height: 38px;
+      padding: 6px;
+    }
+
+    p {
+      padding-inline-end: 0;
+      font-size: 15px;
+      line-height: 1.35;
+    }
+  }
+
+  .event-timeline-builder,
+  .lesson-section,
+  .similar-observations-section {
+    border-radius: 12px;
+    padding: 10px;
+  }
+
+  .event-timeline-item {
+    display: block;
+  }
+
+  .event-timeline-list::before,
+  .event-timeline-marker {
+    display: none;
+  }
+
+  .event-timeline-card {
+    padding: 10px;
+  }
+
+  .event-timeline-delete,
+  .event-timeline-builder > .btn {
+    width: 100%;
+  }
+
+  .attachments-show .image-container {
+    grid-template-columns: 1fr;
+  }
+}
 </style>

@@ -157,4 +157,32 @@ watch(
   align-items: center;
   gap: 8px;
 }
+
+@media (max-width: 768px) {
+  .another-meeting-header {
+    align-items: stretch !important;
+    flex-direction: column;
+
+    .meeting-status {
+      position: static;
+      width: 100%;
+      transform: none;
+
+      button {
+        flex: 1;
+        min-width: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .another-meeting-header .meeting-status {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+}
 </style>

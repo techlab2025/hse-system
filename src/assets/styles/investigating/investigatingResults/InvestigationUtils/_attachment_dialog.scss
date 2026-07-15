@@ -17,6 +17,25 @@
   }
 }
 
+@media (max-width: 480px) {
+  .add-attachment-btn {
+    align-items: center;
+    flex-direction: column-reverse;
+    padding: 14px;
+    text-align: center;
+
+    span {
+      overflow-wrap: anywhere;
+    }
+
+    img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+  }
+}
+
 .investegation-attachment-dialog-content {
   @include flex-column(nowrap, flex-start, flex-start);
   gap: 5px;
