@@ -902,5 +902,6 @@
   "no_notification_plans_description": "لم يتم العثور على خطط إشعارات.",
   "task_assigned": "تم تعيين مهمة",
   "project_location_hierarchy_assignment": "تعيين هيكل موقع المشروع",
-  "observation_created": "تم إنشاء ملاحظة"
+  "observation_created": "تم إنشاء ملاحظة",
+  "require_expired_date": "يتطلب تاريخ انتهاء"
 }

@@ -48,6 +48,86 @@
     -webkit-overflow-scrolling: touch;
   }
 
+  /* Shared search/actions header used above the project's index tables. */
+  :where(.grid:has(> .input-search)) {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    padding: 10px;
+    border: 1px solid color-mix(in srgb, var(--brand-primary-100) 72%, transparent);
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--surface-1) 96%, transparent);
+  }
+
+  :where(.grid:has(> .input-search)) > .input-search {
+    grid-column: 1 / -1 !important;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+
+  :where(.grid:has(> .input-search)) > .input-search input {
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
+  }
+
+  :where(.grid:has(> .input-search)) > :where(.col-span-2.flex, .table-header-actions) {
+    display: grid !important;
+    grid-column: 1 / -1 !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    justify-content: stretch !important;
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  :where(.grid:has(> .input-search))
+    > :where(.col-span-2.flex, .table-header-actions)
+    > :where(.btn, button, a, .action-list-trigger, .actions-wrapper) {
+    width: 100% !important;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  :where(.grid:has(> .input-search))
+    > :where(.col-span-2.flex, .table-header-actions)
+    > :where(.btn, button, a) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding-inline: 10px;
+    line-height: 1.25;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  :where(.grid:has(> .input-search)) .action-list-trigger {
+    width: 100% !important;
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  :where(.grid:has(> .input-search)) .action-list-trigger .action-icon {
+    min-width: 0;
+    text-align: start;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  :where(.grid:has(> .input-search)) .actions-wrapper,
+  :where(.grid:has(> .input-search)) .actions-wrapper .trigger-btn {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
   :where(.btns, .actions, .action-buttons, .button-group, .form-actions, .filter-actions) {
     flex-wrap: wrap;
   }
@@ -71,6 +151,16 @@
     :where(button, a, .btn, .p-button) {
     width: 100%;
     max-width: 100%;
+  }
+
+  :where(.grid:has(> .input-search)) {
+    gap: 8px;
+    padding: 8px;
+    border-radius: 14px;
+  }
+
+  :where(.grid:has(> .input-search)) > :where(.col-span-2.flex, .table-header-actions) {
+    grid-template-columns: minmax(0, 1fr);
   }
 
   :where(.grid, [class*='-grid'], [class*='_grid']) {
