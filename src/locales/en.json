@@ -1452,5 +1452,8 @@
   "in_progress_investigation_hint": "Add the findings and answers from the latest investigation meeting.",
   "closed_investigation_hint": "This investigation is closed. View the submitted results and answers.",
   "add_investigation_result": "Add Investigation Result",
-  "show_investigation_result_answers": "Show Investigation Result Answers"
+  "show_investigation_result_answers": "Show Investigation Result Answers",
+  "Select zones to refine the observation list": "Select zones to refine the observation list",
+  "Select zones to refine the incident list": "Select zones to refine the incident list",
+  "all": "All"
 }

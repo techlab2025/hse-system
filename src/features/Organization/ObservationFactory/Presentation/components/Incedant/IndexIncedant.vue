@@ -256,36 +256,62 @@ const ShowDetails = ref<number[]>([])
           PermissionsEnum.ORG_INCEDANT_CREATE,
         ]"
       >
-        <div>
-          <IndexHazardHeader
-            :title="'incedant'"
-            :length="state?.data?.length"
-            :projects="Projects"
-            :isProjectsLoading="isProjectsLoading"
-            @update:data="setSelectedProjectFilter"
-          />
-          <div class="flex items-center justify-between">
-            <IndexFilter
-              v-if="Filters?.length != null && Filters?.length > 0"
-              :filters="Filters"
-              @update:data="ApplayFilter"
-              :link="'/organization/equipment-mangement/incedant/add'"
-              :linkText="'Create incedant'"
-            />
+        <div class="incident-control-center">
+          <div class="incident-control-glow" aria-hidden="true"></div>
 
-            <div class="btns-filter">
-              <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
+          <div class="incident-control-header">
+            <IndexHazardHeader
+              :title="'incedant'"
+              :length="state?.pagination?.total"
+              :projects="Projects"
+              :isProjectsLoading="isProjectsLoading"
+              @update:data="setSelectedProjectFilter"
+            >
+              <template #actions>
+                <PermissionBuilder
+                  :code="[
+                    PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                    PermissionsEnum?.ORG_INCEDANT_CREATE,
+                  ]"
+                >
+                  <router-link :to="`/organization/equipment-mangement/incedant/add`">
+                    <button class="btn btn-primary create-incident-btn">
+                      <span class="create-icon" aria-hidden="true">+</span>
+                      <span>{{ $t('incedent Report') }}</span>
+                    </button>
+                  </router-link>
+                </PermissionBuilder>
+              </template>
+            </IndexHazardHeader>
+          </div>
 
-              <PermissionBuilder
-                :code="[
-                  PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-                  PermissionsEnum?.ORG_INCEDANT_CREATE,
-                ]"
-              >
-                <router-link :to="`/organization/equipment-mangement/incedant/add`">
-                  <button class="btn btn-primary">{{ $t('incedent Report') }}</button>
-                </router-link>
-              </PermissionBuilder>
+          <div v-if="Filters?.length" class="incident-control-toolbar">
+            <div class="incident-filter-area">
+              <div v-if="Filters?.length" class="incident-filter-heading">
+                <span class="filter-symbol" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M4 6h16M7 12h10M10 18h4"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                </span>
+                <div>
+                  <p>{{ $t('Zone') }}</p>
+                  <span>{{ $t('Select zones to refine the incident list') }}</span>
+                </div>
+              </div>
+
+              <IndexFilter
+                v-if="Filters?.length"
+                class="incident-zone-filter"
+                :filters="Filters"
+                @update:data="ApplayFilter"
+                :link="'/organization/equipment-mangement/incedant/add'"
+                :linkText="'Create incedant'"
+              />
             </div>
           </div>
         </div>
@@ -414,9 +440,204 @@ const ShowDetails = ref<number[]>([])
   </div>
 </template>
 <style scoped lang="scss">
-.btns-filter {
-  margin-left: auto;
-  margin-block: 20px;
+.incident-control-center {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-bottom: 24px;
+  padding: 20px;
+  border: 1px solid color-mix(in srgb, var(--status-danger) 16%, var(--main-border));
+  border-radius: 22px;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--status-danger) 6%, transparent),
+      transparent 48%
+    ),
+    var(--BgWhite);
+  box-shadow: 0 18px 45px color-mix(in srgb, var(--text-strong) 9%, transparent);
+}
+
+.incident-control-glow {
+  position: absolute;
+  z-index: -1;
+  top: -90px;
+  inset-inline-end: -70px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--status-danger) 14%, transparent);
+  filter: blur(45px);
+  pointer-events: none;
+}
+
+.incident-control-header {
+  padding-bottom: 18px;
+  // border-bottom: 1px solid color-mix(in srgb, var(--status-danger) 10%, var(--main-border));
+}
+
+.incident-control-header :deep(.idnex-header) {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.incident-control-header :deep(.idnex-header > .title) {
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+}
+
+.incident-control-toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 18px;
+}
+
+.incident-filter-area {
+  min-width: 0;
+  flex: 1;
+}
+
+.incident-filter-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.filter-symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--status-danger) 9%, transparent);
+  color: var(--status-danger);
+}
+
+.filter-symbol svg {
+  width: 20px;
+  height: 20px;
+}
+
+.incident-filter-heading p {
+  margin: 0;
+  color: var(--header-page-color);
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.incident-filter-heading div > span {
+  color: var(--GrayText-1);
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.incident-zone-filter :deep(.idnex-filter) {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.incident-zone-filter :deep(.filter-container) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.incident-zone-filter :deep(.filter) {
+  margin: 0;
+  padding: 9px 14px;
+  border: 1px solid var(--main-border);
+  border-radius: 999px;
+  background: var(--surface-1);
+  color: var(--GrayText-1);
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.incident-zone-filter :deep(.filter:hover) {
+  border-color: color-mix(in srgb, var(--status-danger) 28%, var(--main-border));
+  color: var(--status-danger);
+  transform: translateY(-1px);
+}
+
+.incident-zone-filter :deep(.filter.active) {
+  border-color: var(--status-danger);
+  background: var(--status-danger);
+  color: white;
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--status-danger) 22%, transparent);
+}
+
+.incident-create-action {
+  flex: 0 0 auto;
+}
+
+.create-incident-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 48px;
+  padding-inline: 18px;
+  border-radius: 14px;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.create-incident-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--PrimaryColor) 30%, transparent);
+}
+
+.create-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  background: color-mix(in srgb, white 18%, transparent);
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+@media (max-width: 860px) {
+  .incident-control-center {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .incident-control-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .incident-create-action,
+  .incident-create-action :deep(a),
+  .create-incident-btn {
+    width: 100%;
+  }
 }
 
 .incident-index-page.is-dark {

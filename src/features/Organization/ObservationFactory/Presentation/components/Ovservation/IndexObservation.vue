@@ -281,43 +281,68 @@ const GetObservationType = (type: number) => {
           PermissionsEnum.ORG_OBSERVATION_CREATE,
         ]"
       >
-        <div>
-          <IndexHazardHeader
-            :title="`observation`"
-            :length="state?.data?.length || 0"
-            :projects="Projects"
-            :isProjectsLoading="isProjectsLoading"
-            @update:data="setSelectedProjectFilter"
-          />
+        <div class="observation-control-center">
+          <div class="observation-control-glow" aria-hidden="true"></div>
 
-          <div class="flex items-center justify-between">
-            <PermissionBuilder
-              :code="[
-                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-                PermissionsEnum?.ORG_OBSERVATION_CREATE,
-              ]"
-              v-if="Filters?.length != null && Filters?.length > 0"
+          <div class="observation-control-header">
+            <IndexHazardHeader
+              :title="`observation`"
+              :length="state?.pagination?.total || 0"
+              :projects="Projects"
+              :isProjectsLoading="isProjectsLoading"
+              @update:data="setSelectedProjectFilter"
             >
-              <IndexFilter
-                :filters="Filters"
-                @update:data="ApplayFilter"
-                :link="'/organization/equipment-mangement/observation/add'"
-                :linkText="'Create Observation'"
-              />
-            </PermissionBuilder>
+              <template #actions>
+                <PermissionBuilder
+                  :code="[
+                    PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                    PermissionsEnum?.ORG_OBSERVATION_CREATE,
+                  ]"
+                >
+                  <router-link :to="`/organization/equipment-mangement/observation/add`">
+                    <button class="btn btn-primary create-observation-btn">
+                      <span class="create-icon" aria-hidden="true">+</span>
+                      <span>{{ $t('create_observation') }}</span>
+                    </button>
+                  </router-link>
+                </PermissionBuilder>
+              </template>
+            </IndexHazardHeader>
+          </div>
 
-            <div class="btns-filter">
-              <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
+          <div v-if="Filters?.length" class="observation-control-toolbar">
+            <div class="observation-filter-area">
+              <div v-if="Filters?.length" class="observation-filter-heading">
+                <span class="filter-symbol" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M4 6h16M7 12h10M10 18h4"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                </span>
+                <div>
+                  <p>{{ $t('Zone') }}</p>
+                  <span>{{ $t('Select zones to refine the observation list') }}</span>
+                </div>
+              </div>
 
               <PermissionBuilder
+                v-if="Filters?.length"
                 :code="[
                   PermissionsEnum?.ORGANIZATION_EMPLOYEE,
                   PermissionsEnum?.ORG_OBSERVATION_CREATE,
                 ]"
               >
-                <router-link :to="`/organization/equipment-mangement/observation/add`">
-                  <button class="btn btn-primary">{{ $t('create_observation') }}</button>
-                </router-link>
+                <IndexFilter
+                  class="observation-zone-filter"
+                  :filters="Filters"
+                  @update:data="ApplayFilter"
+                  :link="'/organization/equipment-mangement/observation/add'"
+                  :linkText="'Create Observation'"
+                />
               </PermissionBuilder>
             </div>
           </div>
@@ -495,10 +520,206 @@ const GetObservationType = (type: number) => {
 </template>
 
 <style scoped lang="scss">
-.btns-filter {
-  margin-left: auto;
-  margin-block: 20px;
+.observation-control-center {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-bottom: 24px;
+  padding: 20px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
+  border-radius: 22px;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+      transparent 48%
+    ),
+    var(--BgWhite);
+  box-shadow: 0 18px 45px color-mix(in srgb, var(--text-strong) 9%, transparent);
 }
+
+.observation-control-glow {
+  position: absolute;
+  z-index: -1;
+  top: -90px;
+  inset-inline-end: -70px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--PrimaryColor) 16%, transparent);
+  filter: blur(45px);
+  pointer-events: none;
+}
+
+.observation-control-header {
+  padding-bottom: 18px;
+  // border-bottom: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
+}
+
+.observation-control-header :deep(.idnex-header) {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.observation-control-header :deep(.idnex-header > .title) {
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+}
+
+.observation-control-toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 18px;
+}
+
+.observation-filter-area {
+  min-width: 0;
+  flex: 1;
+}
+
+.observation-filter-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.filter-symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--PrimaryColor) 11%, transparent);
+  color: var(--PrimaryColor);
+}
+
+.filter-symbol svg {
+  width: 20px;
+  height: 20px;
+}
+
+.observation-filter-heading p {
+  margin: 0;
+  color: var(--header-page-color);
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.observation-filter-heading div > span {
+  color: var(--GrayText-1);
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.observation-zone-filter :deep(.idnex-filter) {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+}
+
+.observation-zone-filter :deep(.filter-container) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.observation-zone-filter :deep(.filter) {
+  margin: 0;
+  padding: 9px 14px;
+  border: 1px solid var(--main-border);
+  border-radius: 999px;
+  background: var(--surface-1);
+  color: var(--GrayText-1);
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.observation-zone-filter :deep(.filter:hover) {
+  border-color: color-mix(in srgb, var(--PrimaryColor) 32%, var(--main-border));
+  color: var(--PrimaryColor);
+  transform: translateY(-1px);
+}
+
+.observation-zone-filter :deep(.filter.active) {
+  border-color: var(--PrimaryColor);
+  background: var(--PrimaryColor);
+  color: white;
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+}
+
+.observation-create-action {
+  flex: 0 0 auto;
+}
+
+.create-observation-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 48px;
+  padding-inline: 18px;
+  border-radius: 14px;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.create-observation-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--PrimaryColor) 30%, transparent);
+}
+
+.create-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  background: color-mix(in srgb, white 18%, transparent);
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+@media (max-width: 860px) {
+  .observation-control-center {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .observation-control-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .observation-create-action,
+  .observation-create-action :deep(a),
+  .create-observation-btn {
+    width: 100%;
+  }
+}
+
 .show-more {
   display: flex;
   align-items: center;
