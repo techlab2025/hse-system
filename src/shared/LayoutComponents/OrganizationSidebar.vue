@@ -766,7 +766,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .side-pane-icon :deep(svg) {
-  width: 35px !important;
+  width: 37px !important;
   height: 35px !important;
 }
 .modern-sidebar {

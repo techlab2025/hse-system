@@ -952,5 +952,17 @@
   "show_investigation_result_answers": "عرض نتائج وإجابات التحقيق",
   "Select zones to refine the observation list": "حدد المناطق لتصفية قائمة الملاحظات",
   "Select zones to refine the incident list": "حدد المناطق لتصفية قائمة الحوادث",
-  "all": "الكل"
+  "all": "الكل",
+  "Create Inspection": "إنشاء تفتيش",
+  "Select zones to refine the inspection list": "حدد المناطق لتصفية قائمة التفتيش",
+  "Projects": "المشاريع",
+  "Select a project to filter the displayed records": "حدد مشروعًا لتصفية السجلات المعروضة",
+  "Manage, filter, and review workplace inspections": "إدارة وتصفية ومراجعة عمليات التفتيش في مكان العمل",
+  "New inspection": "تفتيش جديد",
+  "New report": "تقرير جديد",
+  "Manage, filter, and review workplace observations": "إدارة وتصفية ومراجعة ملاحظات مكان العمل",
+  "Manage, filter, and review workplace incidents": "إدارة وتصفية ومراجعة حوادث مكان العمل",
+  "Nothing to display yet": "لا يوجد ما يمكن عرضه بعد",
+  "No data available": "لا توجد بيانات متاحة",
+  "There are no records to show right now. You can return or create a new record.": "لا توجد سجلات لعرضها حاليًا. يمكنك الرجوع أو إنشاء سجل جديد."
 }

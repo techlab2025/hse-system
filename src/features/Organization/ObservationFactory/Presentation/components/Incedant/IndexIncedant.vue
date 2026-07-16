@@ -265,6 +265,8 @@ const ShowDetails = ref<number[]>([])
               :length="state?.pagination?.total"
               :projects="Projects"
               :isProjectsLoading="isProjectsLoading"
+              subtitle="Manage, filter, and review workplace incidents"
+              variant="incident"
               @update:data="setSelectedProjectFilter"
             >
               <template #actions>
@@ -277,7 +279,10 @@ const ShowDetails = ref<number[]>([])
                   <router-link :to="`/organization/equipment-mangement/incedant/add`">
                     <button class="btn btn-primary create-incident-btn">
                       <span class="create-icon" aria-hidden="true">+</span>
-                      <span>{{ $t('incedent Report') }}</span>
+                      <span class="create-copy"
+                        ><small>{{ $t('New report') }}</small
+                        ><strong>{{ $t('incedent Report') }}</strong></span
+                      >
                     </button>
                   </router-link>
                 </PermissionBuilder>
@@ -620,6 +625,28 @@ const ShowDetails = ref<number[]>([])
   background: color-mix(in srgb, white 18%, transparent);
   font-size: 1.2rem;
   line-height: 1;
+}
+
+.create-copy {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 2px;
+  text-align: start;
+}
+
+.create-copy small {
+  color: color-mix(in srgb, white 72%, transparent);
+  font-size: 0.64rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.create-copy strong {
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 900;
+  line-height: 1.15;
 }
 
 @media (max-width: 860px) {

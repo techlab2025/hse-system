@@ -1465,5 +1465,17 @@
   "show_investigation_result_answers": "Show Investigation Result Answers",
   "Select zones to refine the observation list": "Select zones to refine the observation list",
   "Select zones to refine the incident list": "Select zones to refine the incident list",
-  "all": "All"
+  "all": "All",
+  "Create Inspection": "Create Inspection",
+  "Select zones to refine the inspection list": "Select zones to refine the inspection list",
+  "Projects": "Projects",
+  "Select a project to filter the displayed records": "Select a project to filter the displayed records",
+  "Manage, filter, and review workplace inspections": "Manage, filter, and review workplace inspections",
+  "New inspection": "New inspection",
+  "New report": "New report",
+  "Manage, filter, and review workplace observations": "Manage, filter, and review workplace observations",
+  "Manage, filter, and review workplace incidents": "Manage, filter, and review workplace incidents",
+  "Nothing to display yet": "Nothing to display yet",
+  "No data available": "No data available",
+  "There are no records to show right now. You can return or create a new record.": "There are no records to show right now. You can return or create a new record."
 }

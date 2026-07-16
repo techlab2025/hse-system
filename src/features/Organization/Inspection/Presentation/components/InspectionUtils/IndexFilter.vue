@@ -1,53 +1,58 @@
-  <script setup lang="ts">
-  import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
-  import IndexFilterIcon from '@/shared/icons/IndexFilterIcon.vue'
-  import { ref } from 'vue'
-  import { useThemeMode } from '@/composables/useThemeMode'
-  const emit = defineEmits(['update:data'])
-  const { isDarkMode } = useThemeMode()
+<script setup lang="ts">
+import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
+import IndexFilterIcon from '@/shared/icons/IndexFilterIcon.vue'
+import { ref } from 'vue'
+import { useThemeMode } from '@/composables/useThemeMode'
+const emit = defineEmits(['update:data'])
+const { isDarkMode } = useThemeMode()
 
-  const props = defineProps<{
-    filters: MyZonesModel[]
-    link: string
-    linkTitle: string
-    SelectdProject: number[]
-  }>()
+const props = defineProps<{
+  filters: MyZonesModel[]
+  link: string
+  linkTitle: string
+  SelectdProject: number[]
+}>()
 
-  const SelectedFilter = ref<number[]>([])
+const SelectedFilter = ref<number[]>([])
 
-  const UpdateData = (data: number) => {
-    console.log(data, 'zonw dta')
-    if (SelectedFilter.value.includes(data)) {
-      SelectedFilter.value = SelectedFilter.value.filter((i) => i !== data)
-      return
-    }
-
-    SelectedFilter.value.push(data)
+const UpdateData = (data: number) => {
+  console.log(data, 'zonw dta')
+  if (SelectedFilter.value.includes(data)) {
+    SelectedFilter.value = SelectedFilter.value.filter((i) => i !== data)
     emit('update:data', SelectedFilter.value)
+    return
   }
 
+  SelectedFilter.value.push(data)
+  emit('update:data', SelectedFilter.value)
+}
 </script>
-  <template>
-    <div :class="['idnex-filter', { 'is-dark': isDarkMode }]">
-      <div class="filter-container">
-        <div class="filter"  :class="SelectedFilter.includes(item.id) ? 'active' : ''"
-          v-for="item in filters" :key="item.id" @click="UpdateData(item.id)">
-          <p v-if="item?.title != null">
-            <span>
-              {{ item?.title }}
-            </span>
-          </p>
-        </div>
+<template>
+  <div :class="['idnex-filter', { 'is-dark': isDarkMode }]">
+    <div class="filter-container">
+      <div
+        class="filter"
+        :class="SelectedFilter.includes(item.id) ? 'active' : ''"
+        v-for="item in filters"
+        :key="item.id"
+        @click="UpdateData(item.id)"
+      >
+        <p v-if="item?.title != null">
+          <span>
+            {{ item?.title }}
+          </span>
+        </p>
       </div>
-      <div class="btns">
-        <!-- <button class="btn btn-filter">
+    </div>
+    <div class="btns">
+      <!-- <button class="btn btn-filter">
           <span>Filter</span>
           <IndexFilterIcon />
         </button> -->
 
-        <router-link :to="link" v-if="link != ''">
-          <button class="btn btn-primary">{{ linkTitle }}</button>
-        </router-link>
-      </div>
+      <router-link :to="link" v-if="link != ''">
+        <button class="btn btn-primary">{{ linkTitle }}</button>
+      </router-link>
     </div>
-  </template>
+  </div>
+</template>
