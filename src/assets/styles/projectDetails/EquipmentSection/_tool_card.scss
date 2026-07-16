@@ -370,6 +370,52 @@
       grid-template-columns: 1fr;
     }
   }
+
+  @media (max-width: 640px) {
+    padding: $SmSize;
+
+    .tool-card-header {
+      align-items: stretch;
+      flex-direction: column;
+      gap: $SmSize;
+
+      .tool-card-media {
+        align-items: center;
+        width: 100%;
+        min-width: 0;
+
+        > img {
+          width: min(100%, 180px);
+          height: 130px;
+        }
+      }
+
+      .tool-card-header-text {
+        width: 100%;
+
+        .type .main-type,
+        .title {
+          white-space: normal;
+          overflow-wrap: anywhere;
+        }
+
+        .subtype {
+          flex-wrap: wrap;
+        }
+      }
+    }
+
+    .equipment-meta {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tool-card-footer,
+    .last-inspection-info-container,
+    .equipment-inspections-info {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
 }
 
 .equipment-cards-grid {

@@ -52,4 +52,20 @@
       font-weight: $BaseFontMediumWeight;
     }
   }
+
+  @media (max-width: 480px) {
+    min-width: min(200px, 82vw);
+    padding: $XsSize3;
+
+    .member-data {
+      min-width: 0;
+
+      .name,
+      .position,
+      span {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+      }
+    }
+  }
 }

@@ -14,6 +14,7 @@
   .project-location-header {
     width: 100%;
     @include flex-row(nowrap, space-between, center);
+    gap: $SmSize;
 
     .show-all-btn {
       color: var(--brand-primary-700);
@@ -34,5 +35,23 @@
     );
     gap: $XsSize3;
     width: 100%;
+  }
+
+  @media (max-width: 640px) {
+    gap: $SmSize;
+    padding: $SmSize;
+
+    .project-location-header {
+      align-items: flex-start;
+      flex-direction: column;
+
+      > * {
+        max-width: 100%;
+      }
+    }
+
+    .card-section {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 }

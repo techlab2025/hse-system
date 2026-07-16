@@ -11,10 +11,14 @@
   gap: $XlSize;
   width: 100%;
   .p-accordion {
+    width: 100%;
+    min-width: 0;
+
     border-radius: $XlSize4 !important;
     padding: $XsSize $XsSize4;
     background-color: var(--surface-1);
     .p-accordionpanel {
+      min-width: 0;
       border-radius: $XlSize4 !important;
       margin-block: $XsSize;
     }
@@ -63,6 +67,10 @@
   .p-accordionheader {
     background-color: var(--surface-1) !important;
   }
+
+  .p-accordionheader-toggle-icon {
+    display: none !important;
+  }
 }
 .project-equipment-card-container {
   @include grid(
@@ -74,4 +82,76 @@
   );
   padding: 12px;
   width: 100%;
+}
+
+@media (max-width: 768px) {
+  .equipment-section {
+    gap: $SmSize;
+    padding: $SmSize;
+
+    .equipment-section-header {
+      align-items: flex-start;
+      flex-direction: column;
+
+      .show-all {
+        min-width: 0;
+        font-size: $SmSize;
+      }
+    }
+
+    .p-accordion {
+      width: 100%;
+      min-width: 0;
+      padding: 0;
+
+      .location-container {
+        align-items: flex-start;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        gap: $XsSize;
+
+        .location {
+          flex: 1 1 auto;
+          min-width: 0;
+
+          > div {
+            min-width: 0;
+          }
+
+          .location-title {
+            max-width: 100%;
+            overflow-wrap: anywhere;
+          }
+        }
+
+        .zone-equipment-action {
+          flex: 0 0 auto;
+        }
+      }
+    }
+  }
+
+  .project-equipment-card-container {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .equipment-section {
+    .p-accordion {
+      .p-accordionheader {
+        padding-inline: $XsSize3;
+      }
+
+      .location-container {
+        align-items: stretch;
+        flex-direction: column;
+
+        .zone-equipment-action {
+          align-self: flex-end;
+        }
+      }
+    }
+  }
 }

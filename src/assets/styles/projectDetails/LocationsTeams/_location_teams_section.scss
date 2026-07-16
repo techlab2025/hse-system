@@ -33,4 +33,25 @@
       margin-block: $XsSize;
     }
   }
+
+  @media (max-width: 640px) {
+    gap: $SmSize;
+    padding: $SmSize;
+
+    .locations-teams-header {
+      align-items: flex-start;
+      flex-direction: column;
+
+      .show-all {
+        min-width: 0;
+        font-size: $SmSize;
+      }
+    }
+
+    .locations-sections {
+      .p-accordion {
+        padding: 0;
+      }
+    }
+  }
 }

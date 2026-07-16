@@ -80,7 +80,13 @@ onMounted(() => {
     <img class="add-equipment-icon" v-else :src="plus" alt="" @click="visible = true" />
 
     <!-- <button @click="visible = true" class="content-btn">{{ btn_name }}</button> -->
-    <Dialog v-model:visible="visible" modal dismissable-mask :style="{ width: '50rem' }">
+    <Dialog
+      v-model:visible="visible"
+      modal
+      dismissable-mask
+      class="project-equipment-dialog"
+      :style="{ width: 'min(50rem, calc(100vw - 24px))' }"
+    >
       <template #header>
         <HeaderSection
           :img="EquipmentImg"
@@ -114,3 +120,32 @@ onMounted(() => {
     </Dialog>
   </div>
 </template>
+
+<style scoped>
+.card {
+  min-width: 0;
+}
+
+.add-equipment-icon {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+.equipment-selection {
+  min-width: 0;
+}
+
+.equipment-selection :deep(.p-multiselect) {
+  width: 100% !important;
+  max-width: 100%;
+}
+
+@media (max-width: 640px) {
+  .add-equipment-icon {
+    width: 34px;
+    height: 34px;
+  }
+}
+</style>

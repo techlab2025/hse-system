@@ -3,6 +3,7 @@
 
 .project-equipment-card {
   width: 100%;
+  min-width: 0;
   box-shadow: 0px 0px 10px 0px color-mix(in srgb, var(--text-strong) 3.4%, transparent);
 
   .tool-card {
@@ -112,6 +113,56 @@
           .per {
             color: $PrimaryColor;
           }
+        }
+      }
+    }
+
+    @media (max-width: 640px) {
+      padding-inline: $XsSize3;
+
+      .tool-card-header {
+        align-items: stretch;
+        flex-direction: column;
+
+        > img {
+          align-self: center;
+          width: min(100%, 180px);
+          height: 120px;
+        }
+
+        .tool-card-header-text {
+          min-width: 0;
+
+          .card-type {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: $XsSize2;
+
+            > div {
+              flex-wrap: wrap;
+              min-width: 0;
+            }
+
+            .serial-number {
+              max-width: 100%;
+              overflow-wrap: anywhere;
+            }
+          }
+
+          .type {
+            max-width: 100%;
+
+            .main-type {
+              white-space: normal;
+              overflow-wrap: anywhere;
+            }
+          }
+        }
+
+        .equipment-inspections-info {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: $XsSize2;
         }
       }
     }

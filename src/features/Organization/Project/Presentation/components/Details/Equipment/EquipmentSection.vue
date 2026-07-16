@@ -72,7 +72,12 @@ watch(
               </div>
               <div></div>
             </div>
-            <AddNewEquipmentEmptyDialog :project_zone_id="zone?.projectZoonId" :isEmpty="false" />
+            <AddNewEquipmentEmptyDialog
+              class="zone-equipment-action"
+              :project_zone_id="zone?.projectZoonId"
+              :isEmpty="false"
+              @click.stop
+            />
           </div>
         </AccordionHeader>
         <AccordionContent>

@@ -154,6 +154,7 @@
   @media (max-width: 640px) {
     padding: 0;
     gap: $SmSize;
+    overflow-x: hidden;
 
     .project-details-page-header {
       padding: $SmSize;
@@ -170,6 +171,15 @@
     > .equipment-section,
     > .inspections-sections {
       padding: $SmSize;
+    }
+
+    .p-accordion,
+    .p-accordionpanel,
+    .p-accordionheader,
+    .p-accordioncontent,
+    .p-accordioncontent-content {
+      min-width: 0;
+      max-width: 100%;
     }
   }
 }

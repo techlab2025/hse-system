@@ -78,4 +78,47 @@
       }
     }
   }
+
+  @media (max-width: 768px) {
+    gap: $XsSize;
+    padding: $SmSize;
+
+    .project-header {
+      min-width: 0;
+
+      .project-info {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        row-gap: $XsSize2;
+      }
+
+      .project-name {
+        max-width: 100%;
+        font-size: $XlSize;
+        line-height: 1.3;
+        overflow-wrap: anywhere;
+      }
+
+      .project-statics {
+        flex-wrap: wrap;
+
+        .contractor {
+          font-size: $SmSize;
+        }
+      }
+    }
+
+    > :last-child {
+      flex: 0 0 auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .bg-yellow,
+    .bg-blue {
+      width: 70%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 }
