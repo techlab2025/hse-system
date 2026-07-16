@@ -1,9 +1,14 @@
 import type Params from '@/base/core/params/params'
 
+export interface NotificationPlanActionValueParam {
+  action: number
+  sub_action: number | null
+}
+
 export default class AddNotificationPlanParams implements Params {
   constructor(
     public title: string,
-    public actionValues: number[],
+    public actionValues: NotificationPlanActionValueParam[],
     public employeeIds: number[] = [],
     public hierarchyIds: number[] = [],
     public isActive?: boolean,

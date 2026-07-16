@@ -1,10 +1,10 @@
-import type TitleInterface from "@/base/Data/Models/title_interface"
-import TitleModel from "@/base/Data/Models/title_model"
+import TitleModel from '@/base/Data/Models/title_model'
 
 export interface NotificationPlanActionModel {
   value: number
   name: string
   label: string
+  sub_action: any
 }
 
 // export interface NotificationPlanEmployeeModel {
@@ -64,6 +64,7 @@ export default class NotificationPlanModel {
         value: action?.value ?? 0,
         name: action?.name ?? '',
         label: action?.label ?? '',
+        sub_action: action?.sub_action ?? null,
       })),
       (data?.employees ?? []).map((employee: any) => TitleModel.fromMap<string>(employee)),
       (data?.hierarchies ?? []).map((hierarchy: any) => TitleModel.fromMap<string>(hierarchy)),

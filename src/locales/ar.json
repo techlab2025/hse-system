@@ -891,6 +891,8 @@
   "notification_plan": "خطة الإشعارات",
   "enter_notification_plan_title": "أدخل عنوان خطة الإشعارات",
   "select_actions": "اختر الإجراءات",
+  "select_sub_actions": "اختر الإجراءات الفرعية",
+  "clear": "مسح",
   "select_employees": "اختر الموظفين",
   "select_hierarchies": "اختر الهياكل",
   "hierarchies": "الهياكل",
@@ -902,5 +904,13 @@
   "no_notification_plans_description": "لم يتم العثور على خطط إشعارات.",
   "task_assigned": "تم تعيين مهمة",
   "project_location_hierarchy_assignment": "تعيين هيكل موقع المشروع",
-  "observation_created": "تم إنشاء ملاحظة"
+  "observation_created": "تم إنشاء ملاحظة",
+  "investigation_task_created": "تم إنشاء مهمة تحقيق",
+  "investigation_task_status_changed": "تم تغيير حالة مهمة التحقيق",
+  "investigation_team_added": "تمت إضافة فريق تحقيق",
+  "sub_actions": "الإجراءات الفرعية",
+  "low": "منخفض",
+  "medium": "متوسط",
+  "medium_is_near_miss": "متوسط - كاد أن يقع",
+  "high": "مرتفع"
 }

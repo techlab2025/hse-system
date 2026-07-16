@@ -1404,6 +1404,8 @@
   "notification_plan": "Notification Plan",
   "enter_notification_plan_title": "Enter notification plan title",
   "select_actions": "Select actions",
+  "select_sub_actions": "Select sub-actions",
+  "clear": "Clear",
   "select_hierarchies": "Select hierarchies",
   "hierarchies": "Hierarchies",
   "all_statuses": "All statuses",
@@ -1414,5 +1416,13 @@
   "no_notification_plans_description": "No notification plans were found.",
   "task_assigned": "Task assigned",
   "project_location_hierarchy_assignment": "Project location hierarchy assignment",
-  "observation_created": "Observation created"
+  "observation_created": "Observation created",
+  "investigation_task_created": "Investigation task created",
+  "investigation_task_status_changed": "Investigation task status changed",
+  "investigation_team_added": "Investigation team added",
+  "sub_actions": "Sub-actions",
+  "low": "Low",
+  "medium": "Medium",
+  "medium_is_near_miss": "Medium is near miss",
+  "high": "High"
 }

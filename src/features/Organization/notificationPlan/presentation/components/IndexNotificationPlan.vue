@@ -9,6 +9,11 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IndexNotificationPlanController from '../controllers/index_notification_plan_controller'
 import IndexNotificationPlanParams from '../../Core/Params/index_notification_plan_params'
+import {
+  notificationPlanActionOptions,
+  notificationPlanSubActionOptions,
+} from '../../Data/const/notification_plan_actions'
+import type { NotificationPlanActionModel } from '../../Data/models/notification_plan_model'
 
 const indexNotificationPlanController = IndexNotificationPlanController.getInstance()
 const state = ref(indexNotificationPlanController.state.value)
@@ -28,9 +33,66 @@ const actionTitleKeys: Record<string, string> = {
   'Task assigned': 'task_assigned',
   'Project location hierarchy assignment': 'project_location_hierarchy_assignment',
   'Observation created': 'observation_created',
+  'Investigation task created': 'investigation_task_created',
+  'Investigation task status changed': 'investigation_task_status_changed',
+  'Investigation team added': 'investigation_team_added',
 }
 
-const notificationActionName = (name: string) => t(actionTitleKeys[name] ?? name)
+const subActionTitleKeys: Record<string, string> = {
+  Low: 'low',
+  Medium: 'medium',
+  'Medium is near miss': 'medium_is_near_miss',
+  High: 'high',
+}
+
+const normalizeTitle = (value: string) =>
+  value
+    .toLowerCase()
+    .split('_')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ')
+
+const translatedOptionTitle = (title: string, titleKeys: Record<string, string>) =>
+  t(titleKeys[title] ?? title)
+
+const notificationActionName = (action: NotificationPlanActionModel) => {
+  const optionTitle =
+    notificationPlanActionOptions.find((option) => option.id === action.value)?.title ??
+    action.label ??
+    normalizeTitle(action.name)
+
+  return translatedOptionTitle(optionTitle, actionTitleKeys)
+}
+
+const notificationSubActionName = (subAction: any) => {
+  if (subAction === null || subAction === undefined) return ''
+
+  const subActionValue =
+    typeof subAction === 'object' ? (subAction.value ?? subAction.id ?? null) : subAction
+
+  const optionTitle = notificationPlanSubActionOptions.find(
+    (option) => option.id === Number(subActionValue),
+  )?.title
+
+  if (optionTitle) return translatedOptionTitle(optionTitle, subActionTitleKeys)
+
+  const fallbackTitle =
+    typeof subAction === 'object'
+      ? (subAction.label ?? normalizeTitle(subAction.name ?? ''))
+      : String(subActionValue)
+
+  return translatedOptionTitle(fallbackTitle, subActionTitleKeys)
+}
+
+const notificationActionKey = (action: NotificationPlanActionModel, index: number) => {
+  const subAction =
+    typeof action.sub_action === 'object'
+      ? (action.sub_action?.value ?? action.sub_action?.id ?? index)
+      : (action.sub_action ?? 'none')
+
+  return `${action.value}-${subAction}-${index}`
+}
 
 const emptyValue = computed(() => t('not_available'))
 
@@ -112,9 +174,18 @@ onMounted(fetchNotificationPlans)
                 {{ item.hierarchies.map((h) => h.title).join(', ') || emptyValue }}
               </td>
               <td :data-label="$t('actions')">
-                {{
-                  item.actions.map((a) => notificationActionName(a.name)).join(', ') || emptyValue
-                }}
+                <ul v-if="item.actions.length > 0" class="action-list-tree">
+                  <li
+                    v-for="(action, actionIndex) in item.actions"
+                    :key="notificationActionKey(action, actionIndex)"
+                  >
+                    <span>{{ notificationActionName(action) }}</span>
+                    <ul v-if="notificationSubActionName(action.sub_action)" class="sub-action-list">
+                      <li>{{ notificationSubActionName(action.sub_action) }}</li>
+                    </ul>
+                  </li>
+                </ul>
+                <span v-else>{{ emptyValue }}</span>
               </td>
               <td :data-label="$t('status')">
                 <span :class="['status-badge', item.is_active ? 'is-active' : 'is-inactive']">
@@ -168,5 +239,32 @@ onMounted(fetchNotificationPlans)
 .status-badge.is-inactive {
   color: #b91c1c;
   background: #fee2e2;
+}
+
+.action-list-tree,
+.sub-action-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.action-list-tree {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.action-list-tree > li {
+  font-weight: 600;
+}
+
+.sub-action-list {
+  margin-top: 4px;
+  margin-inline-start: 14px;
+  padding-inline-start: 12px;
+  border-inline-start: 1px solid #d1d5db;
+  color: #4b5563;
+  font-size: 13px;
+  font-weight: 500;
 }
 </style>
