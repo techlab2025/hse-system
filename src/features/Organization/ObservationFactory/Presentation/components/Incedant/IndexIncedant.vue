@@ -451,12 +451,12 @@ const ShowDetails = ref<number[]>([])
   overflow: hidden;
   margin-bottom: 24px;
   padding: 20px;
-  border: 1px solid color-mix(in srgb, var(--status-danger) 16%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 16%, var(--main-border));
   border-radius: 22px;
   background:
     linear-gradient(
       135deg,
-      color-mix(in srgb, var(--status-danger) 6%, transparent),
+      color-mix(in srgb, var(--PrimaryColor) 6%, transparent),
       transparent 48%
     ),
     var(--BgWhite);
@@ -471,7 +471,7 @@ const ShowDetails = ref<number[]>([])
   width: 240px;
   height: 240px;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--status-danger) 14%, transparent);
+  background: color-mix(in srgb, var(--PrimaryColor) 14%, transparent);
   filter: blur(45px);
   pointer-events: none;
 }
@@ -503,7 +503,7 @@ const ShowDetails = ref<number[]>([])
 .incident-filter-area {
   min-width: 0;
   padding: 14px;
-  border: 1px solid color-mix(in srgb, var(--status-danger) 11%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 11%, var(--main-border));
   border-radius: 16px;
   background: color-mix(in srgb, var(--surface-1) 88%, transparent);
   box-shadow: inset 0 1px 0 color-mix(in srgb, white 65%, transparent);
@@ -524,8 +524,8 @@ const ShowDetails = ref<number[]>([])
   height: 38px;
   flex: 0 0 38px;
   border-radius: 12px;
-  background: color-mix(in srgb, var(--status-danger) 9%, transparent);
-  color: var(--status-danger);
+  background: color-mix(in srgb, var(--PrimaryColor) 9%, transparent);
+  color: var(--PrimaryColor);
 }
 
 .filter-symbol svg {

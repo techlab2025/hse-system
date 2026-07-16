@@ -117,9 +117,9 @@ const UpdateData = (Id?: number) => {
 }
 
 .is-incident .index-title-icon {
-  border-color: color-mix(in srgb, var(--status-danger) 20%, transparent);
-  background: color-mix(in srgb, var(--status-danger) 9%, var(--surface-1));
-  color: var(--status-danger);
+  border-color: color-mix(in srgb, var(--PrimaryColor) 20%, transparent);
+  background: color-mix(in srgb, var(--PrimaryColor) 10%, var(--surface-1));
+  color: var(--PrimaryColor);
 }
 
 .index-title-icon svg {
