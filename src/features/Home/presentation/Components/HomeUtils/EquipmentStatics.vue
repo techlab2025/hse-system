@@ -125,5 +125,13 @@ const { EquipmentStatics } = defineProps<{
     border-radius: 18px;
     padding: 12px;
   }
+
+  .analytics-panel :deep(.total-machines-header-container) {
+    align-items: flex-start;
+  }
+
+  .analytics-panel :deep(.chart-container) {
+    margin-inline: 0;
+  }
 }
 </style>

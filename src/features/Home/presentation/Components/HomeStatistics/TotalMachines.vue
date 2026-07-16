@@ -98,6 +98,7 @@ const GetEquipmentTypeTitle = (type: number) => {
   width: 100%;
   max-width: 100%;
   padding-inline: 10px;
+  justify-content: flex-start;
 
   .month {
     max-width: 45px;
@@ -215,6 +216,7 @@ const GetEquipmentTypeTitle = (type: number) => {
   max-width: 100%;
   overflow-x: auto;
   overflow-y: visible;
+  overscroll-behavior-inline: contain;
   scrollbar-width: thin;
   scrollbar-color: var(--brand-primary-100) transparent;
   -webkit-overflow-scrolling: touch;
@@ -233,42 +235,50 @@ const GetEquipmentTypeTitle = (type: number) => {
   }
 
   .month {
-    max-width: 45px;
-    min-width: 36px;
+    width: 48px;
+    min-width: 48px;
+    max-width: 48px;
     flex-shrink: 0;
+    scroll-snap-align: start;
   }
 
   @media (max-width: 768px) {
-    padding: 1rem !important;
-    gap: 0.5rem !important;
+    padding: 12px 4px 10px !important;
+    gap: 12px !important;
+    scroll-snap-type: x proximity;
 
     .month {
-      max-width: 36px;
-      min-width: 28px;
+      width: 42px;
+      min-width: 42px;
+      max-width: 42px;
     }
 
     .precentage-container {
-      width: 2rem !important;
+      width: 2.25rem !important;
       height: 9rem !important;
     }
 
     .col-name {
+      width: 100%;
       font-size: 10px !important;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 
   @media (max-width: 480px) {
-    padding: 0.75rem !important;
-    gap: 0.35rem !important;
+    padding: 10px 2px 8px !important;
+    gap: 10px !important;
 
     .month {
-      max-width: 28px;
-      min-width: 22px;
+      width: 38px;
+      min-width: 38px;
+      max-width: 38px;
     }
 
     .precentage-container {
-      width: 1.5rem !important;
-      height: 7rem !important;
+      width: 2rem !important;
+      height: 8rem !important;
     }
 
     .col-name {
