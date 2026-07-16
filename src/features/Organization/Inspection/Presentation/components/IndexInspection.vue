@@ -235,8 +235,6 @@ const FetchMyProjects = async () => {
   const res = await fetchMyProjectsController.getData(fetchMyProjectsParams)
   if (res.value.data) {
     Projects.value = res.value.data
-    FetchMyZones()
-    // console.log(res.value.data?.length, "res.value.data?.length");
   }
 }
 
@@ -251,6 +249,8 @@ const FetchMyZones = async () => {
     if (response.value.data) {
       Filters.value = response.value.data
     }
+  } else {
+    Filters.value = []
   }
 }
 
@@ -263,17 +263,13 @@ const ApplayFilter = (data: number[]) => {
   }
 }
 
-const setSelectedProjectFilter = (data) => {
-  // if(data != selectedProjctesFilters.value){
-  //   SelectedZonesFilter.value = []
-  //   Filters.value =
-  // }
+const setSelectedProjectFilter = (data?: number) => {
   selectedProjctesFilters.value = data
+  SelectedZonesFilter.value = []
+  Filters.value = []
+  currentPage.value = 1
 
-  if (data) {
-    currentPage.value = 1
-    fetchCurrentInspectionData('', 1, countPerPage.value)
-  }
+  fetchCurrentInspectionData('', 1, countPerPage.value)
 
   if (data) {
     FetchMyZones()
@@ -346,23 +342,64 @@ watch(
             "
             :projects="Projects"
             @update:data="setSelectedProjectFilter"
-          />
-
-          <PermissionBuilder
-            :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]"
           >
-            <IndexFilter
-              :SelectdProject="selectedProjctesFilters"
-              :filters="Filters"
-              @update:data="ApplayFilter"
-              :link="
-                String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)
-                  ? '/organization/equipment-mangement/inspection/add'
-                  : ''
-              "
-              :linkTitle="'Create Inspection'"
-            />
-          </PermissionBuilder>
+            <template #actions>
+              <PermissionBuilder
+                :code="[
+                  PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                  PermissionsEnum?.ORG_INSPECTION_CREATE,
+                ]"
+              >
+                <router-link
+                  v-if="
+                    String(route?.query?.inspectionType) ==
+                    String(InspectionPageType.InspectionForm)
+                  "
+                  to="/organization/equipment-mangement/inspection/add"
+                >
+                  <button class="btn btn-primary create-inspection-btn">
+                    <span class="create-icon" aria-hidden="true">+</span>
+                    <span>{{ $t('Create Inspection') }}</span>
+                  </button>
+                </router-link>
+              </PermissionBuilder>
+            </template>
+          </IndexInspectionHeader>
+
+          <div v-if="Filters?.length" class="inspection-zone-section">
+            <div class="inspection-filter-heading">
+              <span class="filter-symbol" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M4 6h16M7 12h10M10 18h4"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </span>
+              <div>
+                <p>{{ $t('Zone') }}</p>
+                <span>{{ $t('Select zones to refine the inspection list') }}</span>
+              </div>
+            </div>
+
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_INSPECTION_CREATE,
+              ]"
+            >
+              <IndexFilter
+                class="inspection-zone-filter"
+                :SelectdProject="selectedProjctesFilters"
+                :filters="Filters"
+                @update:data="ApplayFilter"
+                link=""
+                :linkTitle="'Create Inspection'"
+              />
+            </PermissionBuilder>
+          </div>
         </div>
         <DataStatus
           v-if="String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)"
@@ -552,6 +589,161 @@ watch(
 </template>
 
 <style scoped>
+.inspection-controls-panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-bottom: 24px;
+  padding: 20px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
+  border-radius: 22px;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+      transparent 48%
+    ),
+    var(--BgWhite);
+  box-shadow: 0 18px 45px color-mix(in srgb, var(--text-strong) 9%, transparent);
+}
+
+.inspection-controls-panel :deep(.idnex-header) {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.inspection-controls-panel :deep(.idnex-header > .title),
+.inspection-controls-panel :deep(.index-title-row > .title) {
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+}
+
+.inspection-zone-section {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
+}
+
+.inspection-filter-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.filter-symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--PrimaryColor) 11%, transparent);
+  color: var(--PrimaryColor);
+}
+
+.filter-symbol svg {
+  width: 20px;
+  height: 20px;
+}
+
+.inspection-filter-heading p {
+  margin: 0;
+  color: var(--header-page-color);
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.inspection-filter-heading div > span {
+  color: var(--GrayText-1);
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.inspection-zone-filter :deep(.idnex-filter) {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.inspection-zone-filter :deep(.filter-container) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.inspection-zone-filter :deep(.filter) {
+  margin: 0;
+  padding: 9px 14px;
+  border: 1px solid var(--main-border);
+  border-radius: 999px;
+  background: var(--surface-1);
+  color: var(--GrayText-1);
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.inspection-zone-filter :deep(.filter:hover) {
+  border-color: color-mix(in srgb, var(--PrimaryColor) 32%, var(--main-border));
+  color: var(--PrimaryColor);
+  transform: translateY(-1px);
+}
+
+.inspection-zone-filter :deep(.filter.active) {
+  border-color: var(--PrimaryColor);
+  background: var(--PrimaryColor);
+  color: white;
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+}
+
+.create-inspection-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 48px;
+  padding-inline: 18px;
+  border-radius: 14px;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+}
+
+.create-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  background: color-mix(in srgb, white 18%, transparent);
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .inspection-controls-panel {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .create-inspection-btn {
+    width: 100%;
+  }
+}
+
 .table-responsive {
   padding: 0 !important;
   border: none !important;

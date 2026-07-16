@@ -11,7 +11,7 @@ export default class IndexInspectionParams implements Params {
   public id?: number[]
   public zoneIds?: number[]
   public isOverDue?: boolean
-  public projectIds?: number[]
+  public projectIds?: number | number[]
   public taskId?: number
 
   constructor(
@@ -22,7 +22,7 @@ export default class IndexInspectionParams implements Params {
     id?: number[],
     zoneIds?: number[],
     isOverDue?: boolean,
-    projectIds?: number[],
+    projectIds?: number | number[],
     taskId?: number,
     // code?: LangEnum,
   ) {
@@ -40,6 +40,19 @@ export default class IndexInspectionParams implements Params {
 
   toMap(): Record<string, string | number | number[] | null | any> {
     const data: Record<string, string | number | number[] | null | any> = {}
+    const headerProjectId = Number(useProjectSelectStore().getProjectId())
+    const explicitProjectIds = Array.isArray(this.projectIds)
+      ? this.projectIds
+      : this.projectIds
+        ? [this.projectIds]
+        : []
+    const projectIds =
+      explicitProjectIds.length > 0
+        ? explicitProjectIds.filter((id) => Number(id) > 0)
+        : headerProjectId > 0
+          ? [headerProjectId]
+          : []
+
     if (this.word) data['word'] = this.word
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
@@ -47,9 +60,7 @@ export default class IndexInspectionParams implements Params {
     if (this.id) data['employee_ids'] = this.id
     if (this.zoneIds) data['zone_ids'] = this.zoneIds
     if (this.isOverDue) data['is_over_due'] = this.isOverDue
-    // if (this.projectIds) data['project_ids'] = [this.projectIds]
-    if ((this.projectIds || useProjectSelectStore().getProjectId()) && useProjectSelectStore().SelectedProjectId(this.projectIds!) != null)
-      data['project_ids'] = [useProjectSelectStore().SelectedProjectId(this.projectIds!)]
+    if (projectIds.length > 0) data['project_ids'] = projectIds
     if (this.taskId) data['task_id'] = this.taskId
     // if (this.code) data['code'] = this.code
     return data
