@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -16,6 +16,7 @@ import {
 } from '../../Data/const/notification_plan_actions'
 import { NotificationPlanActionEnum } from '../../Core/enums/notification_plan_action_enum'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const router = useRouter()
 const { t } = useI18n()
@@ -34,6 +35,13 @@ const selectedEmployees = ref<TitleInterface[]>([])
 const selectedHierarchies = ref<TitleInterface[]>([])
 const assignmentError = ref('')
 const actionValueError = ref('')
+const titleError = ref('')
+
+type RequiredFieldRule = {
+  key: string
+  message: string
+  isMissing: () => boolean
+}
 
 const actionTitleKeys: Record<string, string> = {
   'Task assigned': 'task_assigned',
@@ -89,13 +97,49 @@ const actionValues = computed(() =>
   })),
 )
 
-const canSubmit = computed(() => {
-  return (
-    title.value.trim().length > 0 &&
-    actionValues.value.length > 0 &&
-    (selectedEmployees.value.length > 0 || selectedHierarchies.value.length > 0)
-  )
-})
+const requiredFields = computed<RequiredFieldRule[]>(() => [
+  {
+    key: 'title',
+    message: t('notification_plan_title_required'),
+    isMissing: () => title.value.trim().length === 0,
+  },
+  {
+    key: 'actions',
+    message: t('select_actions'),
+    isMissing: () => selectedActions.value.length === 0,
+  },
+  {
+    key: 'assignments',
+    message: t('select_employee_or_hierarchy_error'),
+    isMissing: () =>
+      selectedEmployees.value.length === 0 && selectedHierarchies.value.length === 0,
+  },
+])
+
+const setRequiredErrors = (missedFields: RequiredFieldRule[]) => {
+  titleError.value = missedFields.find((field) => field.key === 'title')?.message ?? ''
+  actionValueError.value = missedFields.find((field) => field.key === 'actions')?.message ?? ''
+  assignmentError.value = missedFields.find((field) => field.key === 'assignments')?.message ?? ''
+}
+
+const scrollToRequiredField = async (key: string) => {
+  await nextTick()
+  document.querySelector<HTMLElement>(`[data-required-field="${key}"]`)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
+}
+
+const validateRequiredFields = async () => {
+  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  setRequiredErrors(missedFields)
+
+  if (!missedFields.length) return true
+
+  new OpenWarningDilaog(missedFields[0].message).openDialog()
+  await scrollToRequiredField(missedFields[0].key)
+  return false
+}
 
 const eventChecked = (event: Event) => (event.target as HTMLInputElement).checked
 
@@ -151,14 +195,7 @@ const updateHierarchies = (data: TitleInterface[]) => {
 }
 
 const addNotificationPlan = async () => {
-  if (!canSubmit.value) {
-    assignmentError.value =
-      selectedEmployees.value.length === 0 && selectedHierarchies.value.length === 0
-        ? t('select_employee_or_hierarchy_error')
-        : ''
-    actionValueError.value = selectedActions.value.length === 0 ? t('select_actions') : ''
-    return
-  }
+  if (!(await validateRequiredFields())) return
 
   const notificationPlanParams = new AddNotificationPlanParams(
     title.value.trim(),
@@ -177,7 +214,7 @@ const addNotificationPlan = async () => {
 
 <template>
   <form @submit.prevent="addNotificationPlan" class="notification-plan-form">
-    <div class="input-wrapper title-field">
+    <div class="input-wrapper title-field" data-required-field="title">
       <label for="title">{{ $t('title') }}</label>
       <input
         id="title"
@@ -186,8 +223,10 @@ const addNotificationPlan = async () => {
         type="text"
         maxlength="255"
         :placeholder="$t('enter_notification_plan_title')"
-        required
+        :class="{ 'input--error': titleError }"
+        @input="titleError = ''"
       />
+      <p v-if="titleError" class="form-error">{{ titleError }}</p>
     </div>
 
     <div class="input-wrapper status-field">
@@ -199,7 +238,7 @@ const addNotificationPlan = async () => {
       />
     </div>
 
-    <div class="input-wrapper full-width action-tree-field">
+    <div class="input-wrapper full-width action-tree-field" data-required-field="actions">
       <label class="tree-label required">{{ $t('actions') }}</label>
 
       <div class="action-tree">
@@ -284,7 +323,7 @@ const addNotificationPlan = async () => {
 
     <p v-if="actionValueError" class="full-width form-error">{{ actionValueError }}</p>
 
-    <div class="input-wrapper">
+    <div class="input-wrapper" data-required-field="assignments">
       <CustomSelectInput
         id="employee-ids"
         :modelValue="selectedEmployees"
@@ -313,7 +352,7 @@ const addNotificationPlan = async () => {
     <p v-if="assignmentError" class="full-width form-error">{{ assignmentError }}</p>
 
     <div class="full-width plan-button-wrapper">
-      <button class="btn btn-primary" type="submit" :disabled="!canSubmit">
+      <button class="btn btn-primary" type="submit">
         {{ $t('save') }}
       </button>
     </div>
@@ -330,6 +369,10 @@ const addNotificationPlan = async () => {
 
 .input-wrapper {
   min-width: 0;
+}
+
+.input--error {
+  border-color: var(--status-danger, #e23535);
 }
 
 .title-field {

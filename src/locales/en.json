@@ -1430,6 +1430,7 @@
   "add_notification_plan": "Add Notification Plan",
   "notification_plan": "Notification Plan",
   "enter_notification_plan_title": "Enter notification plan title",
+  "notification_plan_title_required": "Notification plan title is required",
   "select_actions": "Select actions",
   "select_sub_actions": "Select sub-actions",
   "clear": "Clear",

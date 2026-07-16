@@ -890,6 +890,7 @@
   "add_notification_plan": "إضافة خطة إشعارات",
   "notification_plan": "خطة الإشعارات",
   "enter_notification_plan_title": "أدخل عنوان خطة الإشعارات",
+  "notification_plan_title_required": "عنوان خطة الإشعارات مطلوب",
   "select_actions": "اختر الإجراءات",
   "select_sub_actions": "اختر الإجراءات الفرعية",
   "clear": "مسح",
