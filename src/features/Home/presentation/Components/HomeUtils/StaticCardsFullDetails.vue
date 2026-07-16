@@ -7,7 +7,7 @@ const { homeInspectionState } = defineProps<{
 </script>
 <template>
   <div class="most-incidat-factor details-signal-grid">
-    <MostIncidantFactor
+    <!-- <MostIncidantFactor
       :title="$t('high-risk hazards unmitigated')"
       v-if="homeInspectionState?.data?.Hazard?.length! > 0"
       :data="[
@@ -30,7 +30,7 @@ const { homeInspectionState } = defineProps<{
           link: `/organization/equipment-mangement/observation?isAll=1&type=2&hazard=${homeInspectionState?.data?.Hazard[2]?.hazard_id}`,
         },
       ]"
-    />
+    /> -->
     <MostIncidantFactor
       :title="$t('Employee certificates status')"
       :data="[
