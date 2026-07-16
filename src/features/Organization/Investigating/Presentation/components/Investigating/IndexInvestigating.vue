@@ -18,6 +18,8 @@ import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 import ShowInvestegationDetailsDialog from './InvestegationDialogs/ShowInvestegationDetailsDialog.vue'
 import Meeting from '@/shared/icons/meeting.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format.ts'
+import { formatTime } from '@/base/Presentation/utils/time_format.ts'
 
 const word = ref('')
 const currentPage = ref(1)
@@ -127,6 +129,11 @@ const GetObservationRiskLevel = (riskLevel: RiskLevelEnum) => {
   }
 }
 
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+
+const getDateTime = (date?: string, time?: string) => [date, time].filter(hasValue).join(' , ')
+
 const GethighObservationCount = (data: any): number => {
   console.log(
     data.filter((el) => el.observation.type),
@@ -184,15 +191,17 @@ const GerIncidantCount = (data: any): number => {
               <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
                 <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
                   <div class="first-container">
-                    <div class="first-card">
+                    <router-link
+                      :to="
+                        item?.observation?.type === Observation.AccidentsType
+                          ? `/organization/equipment-mangement/incedant/show/${item?.observation?.id}`
+                          : `/organization/equipment-mangement/observation/show/${item?.observation?.id}`
+                      "
+                      class="first-card first-card-link"
+                    >
                       <div class="first-card-header">
                         <div class="header">
-                          <router-link
-                            :to="
-                              item?.observation?.type === Observation.AccidentsType
-                                ? `/organization/equipment-mangement/incedant/show/${item?.observation?.id}`
-                                : `/organization/equipment-mangement/observation/show/${item?.observation?.id}`
-                            "
+                          <span
                             class="first-label-item-primary"
                             :class="GetObservationRiskLevel(item?.observation?.riskLevel)"
                           >
@@ -205,27 +214,64 @@ const GerIncidantCount = (data: any): number => {
                             <span v-if="item?.observation?.serial">{{
                               `_` + item?.observation?.serialName || '_OBS-2025-0112'
                             }}</span>
-                          </router-link>
+                          </span>
                           <p :class="`status ${ReturnStatusTitle(item?.status)}`">
                             {{ ReturnStatusTitle(item?.status) }}
                           </p>
                         </div>
-                        <p class="label-item-secondary title">
-                          {{ GetInvestigationType(item?.observation?.type) }} title
-                          <span>{{ item?.observation?.title }}</span>
-                        </p>
-                        <div class="first-card-details">
-                          <p class="label-item-secondary">
-                            {{ $t('Date & Time') }}:
-                            <span>{{ item?.date }} , {{ item?.observation?.time }}</span>
-                          </p>
-                          <p class="title label-item-secondary" v-if="item?.observer?.name">
-                            {{ $t('the victim') }} : <span>{{ item?.observer?.name }}</span>
-                            <span>({{ $t('observer') }})</span>
-                          </p>
+                        <div class="investigation-summary-grid">
+                          <div
+                            v-if="hasValue(item?.observation?.title)"
+                            class="investigation-summary-box summary-title"
+                          >
+                            <span class="summary-label">
+                              {{ GetInvestigationType(item?.observation?.type) }} {{ $t('title') }}
+                            </span>
+                            <span class="summary-value">{{ item?.observation?.title }}</span>
+                          </div>
+
+                          <div
+                            v-if="getDateTime(item?.date, item?.observation?.time)"
+                            class="investigation-summary-box"
+                          >
+                            <span class="summary-label">{{ $t('Date & Time') }}</span>
+                            <span class="summary-value">
+                              {{ getDateTime(item?.date, item?.observation?.time) }}
+                            </span>
+                          </div>
+
+                          <div
+                            v-if="hasValue(item?.observer?.name)"
+                            class="investigation-summary-box"
+                          >
+                            <span class="summary-label">{{ $t('the victim') }}</span>
+                            <span class="summary-value">
+                              {{ item?.observer?.name }}
+                              <small>({{ $t('observer') }})</small>
+                            </span>
+                          </div>
+
+                          <div
+                            v-if="hasValue(item?.location?.title)"
+                            class="investigation-summary-box"
+                          >
+                            <span class="summary-label">{{ $t('Location') }}</span>
+                            <span class="summary-value">{{ item?.location?.title }}</span>
+                          </div>
+
+                          <div
+                            v-if="hasValue(item?.observation?.zoon?.title)"
+                            class="investigation-summary-box"
+                          >
+                            <span class="summary-label summary-label-with-icon">
+                              <img :src="mark" alt="zone" />
+                              {{ $t('Zone') }}
+                            </span>
+                            <span class="summary-value">{{ item?.observation?.zoon?.title }}</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </router-link>
                   </div>
 
                   <!-- second container -->
@@ -238,15 +284,14 @@ const GerIncidantCount = (data: any): number => {
                       <div class="card-details">
                         <div class="project-details">
                           <!-- <pre>{{ item?.observation }}</pre> -->
-                          <p class="label-item-primary" v-if="item?.location">
-                            {{ $t('Location') }}:
-                            <span>{{ item?.location?.title || 'N/A' }}</span>
+                          <p class="label-item-primary" v-if="item?.observation?.createdAt">
+                            {{ $t('investigation date & time') }}:
+                            <span
+                              >{{ formatJoinDate(item?.observation?.createdAt) || 'N/A' }} &
+                              {{ formatTime(item?.observation?.createdAt) }}</span
+                            >
                           </p>
-                          <p class="label-item-primary flex" v-if="item?.observation?.zoon">
-                            <img :src="mark" alt="zone" />
-                            {{ $t('Zone') }}:
-                            <span>{{ item?.observation?.zoon?.title || 'N/A' }}</span>
-                          </p>
+
                           <!-- <p class="label-item-primary">
                             {{ $t('Status') }}:
                             <span>{{
@@ -472,11 +517,89 @@ const GerIncidantCount = (data: any): number => {
   padding: 1rem;
 }
 
+.first-card-link {
+  display: block;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+.first-card-link:hover {
+  border-color: color-mix(in srgb, var(--PrimaryColor) 32%, var(--main-border));
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--PrimaryColor) 9%, transparent);
+  transform: translateY(-1px);
+}
+
+.first-card-link:focus-visible {
+  outline: 2px solid var(--PrimaryColor);
+  outline-offset: 3px;
+}
+
 .first-card-header {
   display: flex;
   flex-direction: column;
   gap: 12px;
   height: 100%;
+}
+
+.investigation-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.investigation-summary-box {
+  display: flex;
+  min-width: 0;
+  min-height: 76px;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.8rem;
+  border: 1px solid var(--main-border);
+  border-radius: 14px;
+  background: var(--BgWhite);
+}
+
+.investigation-summary-box.summary-title {
+  grid-column: 1 / -1;
+}
+
+.summary-label {
+  color: var(--GrayText-1);
+  font-size: 0.76rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.summary-label-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.summary-label img {
+  width: 17px;
+  height: 17px;
+  object-fit: contain;
+}
+
+.summary-value {
+  overflow-wrap: anywhere;
+  color: var(--header-page-color);
+  font-size: 0.92rem;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.summary-value small {
+  color: var(--GrayText-1);
+  font-size: 0.75rem;
+  font-weight: 700;
 }
 
 .header {
@@ -726,6 +849,16 @@ const GerIncidantCount = (data: any): number => {
 
 .btns-container .btn:hover {
   transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+  .investigation-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .investigation-summary-box.summary-title {
+    grid-column: auto;
+  }
 }
 
 .second-btn,

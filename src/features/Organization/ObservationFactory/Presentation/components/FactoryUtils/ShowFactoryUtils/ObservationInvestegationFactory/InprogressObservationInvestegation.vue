@@ -13,6 +13,10 @@ const props = defineProps<{
 }>()
 
 const latestMeetingId = computed(() => {
+  if (props.data?.latest_investigation_meeting_id) {
+    return props.data.latest_investigation_meeting_id
+  }
+
   const meetings = props.data?.investigationMeetings ?? props.data?.meeting ?? []
   return meetings[meetings.length - 1]?.id
 })
@@ -79,7 +83,7 @@ const addResultRoute = computed(() =>
       </div>
     </div>
     <div class="investigation-container-inprogress-info">
-      <div class="last-meeting">
+      <div class="last-meeting" v-if="data.lastMeetingDate">
         <div class="last-meeting-header">
           <LastMeetingIcon />
           <p class="title">{{ $t('last meeting') }}</p>

@@ -361,6 +361,8 @@ const SelctedTime = ref<Date>(new Date())
 const PlaceText = ref<string>()
 const SerialNumber = ref()
 
+watch([date, SelctedTime], () => updateData(), { flush: 'sync' })
+
 const fields = ref([
   {
     key: 'SerialNumber',
@@ -885,7 +887,6 @@ defineExpose({
         v-model="SelctedTime"
         class="mt-4 mr-2 input date-picker"
         :placeholder="$t('Select time')"
-        @update:model-value="updateData"
         input-id="time"
         :time-only="true"
       />
