@@ -961,5 +961,8 @@
   "New inspection": "تفتيش جديد",
   "New report": "تقرير جديد",
   "Manage, filter, and review workplace observations": "إدارة وتصفية ومراجعة ملاحظات مكان العمل",
-  "Manage, filter, and review workplace incidents": "إدارة وتصفية ومراجعة حوادث مكان العمل"
+  "Manage, filter, and review workplace incidents": "إدارة وتصفية ومراجعة حوادث مكان العمل",
+  "Nothing to display yet": "لا يوجد ما يمكن عرضه بعد",
+  "No data available": "لا توجد بيانات متاحة",
+  "There are no records to show right now. You can return or create a new record.": "لا توجد سجلات لعرضها حاليًا. يمكنك الرجوع أو إنشاء سجل جديد."
 }
