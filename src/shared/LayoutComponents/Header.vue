@@ -306,7 +306,7 @@ const toggle = (event: Event) => {
           class="user cursor-pointer dropdown-trigger header-user-menu"
           @click.stop="toggleDropMenu"
         >
-          <IconArrowDownNav class="drop-icon" />
+            <!--  <IconArrowDownNav class="drop-icon" /> -->
           <div class="profile-data">
             <span>{{ user?.name.split(' ')[0] }}</span>
             <!-- <span>{{ user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization' }}</span> -->
@@ -317,7 +317,7 @@ const toggle = (event: Event) => {
           <img src="https://cyber.comolho.com/static/img/avatar.png" alt="employee" />
         </div>
 
-        <Teleport to="body">
+        <!-- <Teleport to="body">
           <div
             class="header-dropdown-menu"
             v-if="isDropMenuOpen"
@@ -331,7 +331,7 @@ const toggle = (event: Event) => {
               </li>
             </ul>
           </div>
-        </Teleport>
+        </Teleport> -->
 
         <!-- <button class="notification" type="button" @click="toggle">
           <Notifacations />
@@ -499,8 +499,8 @@ const toggle = (event: Event) => {
 }
 
 .brand-link img {
-  width: 34px;
-  height: 34px;
+  width: 50px;
+  height: 50px;
   padding: 6px;
   border-radius: 12px;
   // background: var(--surface-1);
@@ -677,7 +677,7 @@ const toggle = (event: Event) => {
 
 .profile-data span:last-child {
   color: color-mix(in srgb, var(--brand-primary-100) 82%, transparent) !important;
-  margin-left: 0 !important;
+  margin-left: auto !important;
   font-size: 12px;
   max-width: 150px;
   overflow: hidden;

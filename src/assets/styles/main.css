@@ -11543,13 +11543,6 @@ body {
   gap: var(--md-size);
   width: 100%;
   overflow: hidden;
-  max-width: 1550px;
-  margin: 0 auto;
-}
-@media (max-width: 768px) {
-  .content .content-wrapper {
-    max-width: 100%;
-  }
 }
 .content .p-accordioncontent-content {
   margin-inline: 19px;
@@ -13171,6 +13164,154 @@ html[dir=rtl] .table-responsive table.main-table tbody tr td:last-child {
   left: 0;
 }
 
+/* Tablet tables remain scrollable without sticky columns covering the middle cells. */
+@media (min-width: 769px) and (max-width: 1100px) {
+  .table-responsive table.main-table thead tr th:first-child,
+  .table-responsive table.main-table thead tr th:last-child,
+  .table-responsive table.main-table tbody tr td:first-child,
+  .table-responsive table.main-table tbody tr td:last-child {
+    position: static;
+    right: auto;
+    left: auto;
+  }
+}
+/* Mobile tables become readable record cards instead of compressed desktop columns. */
+@media (max-width: 768px) {
+  .table-responsive {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow: visible;
+    padding: 6px;
+    border-radius: 16px;
+  }
+  .table-responsive table.main-table {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    border: 0;
+    border-spacing: 0;
+  }
+  .table-responsive table.main-table thead {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+  .table-responsive table.main-table tbody {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+  }
+  .table-responsive table.main-table tbody tr {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--brand-primary-100) 88%, transparent);
+    border-radius: 15px;
+    background: linear-gradient(135deg, var(--surface-1), color-mix(in srgb, var(--brand-primary-50) 52%, var(--surface-1)));
+    box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary-900) 5%, transparent);
+    transform: none;
+  }
+  .table-responsive table.main-table tbody tr:hover {
+    transform: none;
+  }
+  .table-responsive table.main-table tbody tr td {
+    position: static !important;
+    display: grid;
+    grid-template-columns: minmax(100px, 36%) minmax(0, 1fr);
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 48px;
+    padding: 11px 12px;
+    overflow: visible;
+    border: 0 !important;
+    border-bottom: 1px solid color-mix(in srgb, var(--brand-primary-100) 62%, transparent) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    color: var(--brand-primary-700);
+    text-align: end !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  .table-responsive table.main-table tbody tr td::before {
+    content: attr(data-label);
+    min-width: 0;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 800;
+    line-height: 1.3;
+    text-align: start;
+    text-transform: capitalize;
+    overflow-wrap: anywhere;
+  }
+  .table-responsive table.main-table tbody tr td:not([data-label]) {
+    display: block;
+    text-align: start !important;
+  }
+  .table-responsive table.main-table tbody tr td:not([data-label])::before, .table-responsive table.main-table tbody tr td[colspan]::before {
+    display: none;
+  }
+  .table-responsive table.main-table tbody tr td[colspan] {
+    display: block;
+    width: 100%;
+    text-align: start !important;
+  }
+  .table-responsive table.main-table tbody tr td:first-child, .table-responsive table.main-table tbody tr td:last-child {
+    right: auto !important;
+    left: auto !important;
+  }
+  .table-responsive table.main-table tbody tr td:last-child {
+    border-bottom: 0 !important;
+  }
+  .table-responsive table.main-table tbody tr td > * {
+    min-width: 0;
+    max-width: 100%;
+    justify-self: end;
+  }
+  .table-responsive table.main-table tbody tr td img {
+    width: 38px;
+    height: 38px;
+  }
+  .table-responsive table.main-table tbody tr td .actions-container,
+  .table-responsive table.main-table tbody tr td .actions,
+  .table-responsive table.main-table tbody tr td .drop-list,
+  .table-responsive table.main-table tbody tr td .p-button {
+    max-width: 100%;
+    margin-inline-start: auto;
+  }
+}
+@media (max-width: 420px) {
+  .table-responsive {
+    padding: 4px;
+  }
+  .table-responsive table.main-table tbody tr td {
+    grid-template-columns: minmax(86px, 34%) minmax(0, 1fr);
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px;
+    font-size: 0.82rem;
+  }
+}
 /*</editor-fold>*/
 /*<editor-fold desc="list">*/
 .list-trigger {
@@ -24776,6 +24917,73 @@ html[dir=rtl] .performance-box::after {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
+  /* Shared search/actions header used above the project's index tables. */
+  :where(.grid:has(> .input-search)) {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    padding: 10px;
+    border: 1px solid color-mix(in srgb, var(--brand-primary-100) 72%, transparent);
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--surface-1) 96%, transparent);
+  }
+  :where(.grid:has(> .input-search)) > .input-search {
+    grid-column: 1/-1 !important;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+  :where(.grid:has(> .input-search)) > .input-search input {
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
+  }
+  :where(.grid:has(> .input-search)) > :where(.col-span-2.flex, .table-header-actions) {
+    display: grid !important;
+    grid-column: 1/-1 !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    justify-content: stretch !important;
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
+  }
+  :where(.grid:has(> .input-search)) > :where(.col-span-2.flex, .table-header-actions) > :where(.btn, button, a, .action-list-trigger, .actions-wrapper) {
+    width: 100% !important;
+    min-width: 0;
+    max-width: 100%;
+  }
+  :where(.grid:has(> .input-search)) > :where(.col-span-2.flex, .table-header-actions) > :where(.btn, button, a) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding-inline: 10px;
+    line-height: 1.25;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  :where(.grid:has(> .input-search)) .action-list-trigger {
+    width: 100% !important;
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 12px;
+    gap: 8px;
+  }
+  :where(.grid:has(> .input-search)) .action-list-trigger .action-icon {
+    min-width: 0;
+    text-align: start;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+  :where(.grid:has(> .input-search)) .actions-wrapper,
+  :where(.grid:has(> .input-search)) .actions-wrapper .trigger-btn {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
   :where(.btns, .actions, .action-buttons, .button-group, .form-actions, .filter-actions) {
     flex-wrap: wrap;
   }
@@ -24794,6 +25002,14 @@ html[dir=rtl] .performance-box::after {
   :where(.btns, .actions, .action-buttons, .button-group, .form-actions, .filter-actions) > :where(button, a, .btn, .p-button) {
     width: 100%;
     max-width: 100%;
+  }
+  :where(.grid:has(> .input-search)) {
+    gap: 8px;
+    padding: 8px;
+    border-radius: 14px;
+  }
+  :where(.grid:has(> .input-search)) > :where(.col-span-2.flex, .table-header-actions) {
+    grid-template-columns: minmax(0, 1fr);
   }
   :where(.grid, [class*=-grid], [class*=_grid]) {
     grid-template-columns: minmax(0, 1fr) !important;

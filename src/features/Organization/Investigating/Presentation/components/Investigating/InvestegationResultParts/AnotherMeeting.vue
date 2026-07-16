@@ -51,7 +51,7 @@ const setPlatform = (data: TitleInterface) => {
   UpdateData()
 }
 
-const isAnotherMeeting = ref(1)
+const isAnotherMeeting = ref(0)
 
 watch(
   () => isAnotherMeeting.value,

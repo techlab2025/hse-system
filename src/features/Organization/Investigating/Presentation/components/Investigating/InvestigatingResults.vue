@@ -1114,7 +1114,7 @@ const validateRequiredFields = async () => {
                   $t('cancel')
                 }}</router-link>
                 <button @click="AddEnvestigatingResult" class="btn btn-primary">
-                  {{ $t('confirm') }}
+                  {{ $t('Confirm') }}
                 </button>
               </div>
             </AccordionContent>

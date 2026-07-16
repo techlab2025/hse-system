@@ -19,7 +19,7 @@ body {
   // }
 }
 
-$minimizeScreen: true;
+$minimizeScreen: false;
 .content {
   @include flex(row, flex-start, stretch);
   gap: $XlSize3;

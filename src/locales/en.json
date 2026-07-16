@@ -1447,5 +1447,10 @@
   "not_stuff_injured": "Not Stuff Injured",
   "stuff_injured": "Stuff Injured",
   "not_stuff_deceased": "Not Stuff Deceased",
-  "stuff_deceased": "Stuff Deceased"
+  "stuff_deceased": "Stuff Deceased",
+  "new_investigation_hint": "Click here to assign the investigation team and configure the first meeting.",
+  "in_progress_investigation_hint": "Add the findings and answers from the latest investigation meeting.",
+  "closed_investigation_hint": "This investigation is closed. View the submitted results and answers.",
+  "add_investigation_result": "Add Investigation Result",
+  "show_investigation_result_answers": "Show Investigation Result Answers"
 }

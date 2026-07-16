@@ -934,5 +934,10 @@
   "Contructor": "المقاول",
   "Rent Type": "نوع الإيجار",
   "Warehouse": "المستودع",
-  "require_expired_date": "يتطلب تاريخ انتهاء"
+  "require_expired_date": "يتطلب تاريخ انتهاء",
+  "new_investigation_hint": "اضغط هنا لتعيين فريق التحقيق وإعداد الاجتماع الأول.",
+  "in_progress_investigation_hint": "أضف نتائج وإجابات أحدث اجتماع للتحقيق.",
+  "closed_investigation_hint": "تم إغلاق هذا التحقيق. يمكنك عرض النتائج والإجابات المقدمة.",
+  "add_investigation_result": "إضافة نتيجة التحقيق",
+  "show_investigation_result_answers": "عرض نتائج وإجابات التحقيق"
 }

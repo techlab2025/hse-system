@@ -48,7 +48,7 @@ export default class AddHazardParams implements Params {
 
   public code: string
   public OragnizationemployeeName: string
-  public OragnizationemployeeId: number
+  public OragnizationemployeeIds: number[]
   public workShiftId: number
 
   public static readonly validation = new ClassValidation().setRules({
@@ -92,7 +92,7 @@ export default class AddHazardParams implements Params {
     code: string
     OpenNote: string
     OragnizationemployeeName: string
-    OragnizationemployeeId: number
+    OragnizationemployeeIds: number[]
     workShiftId: number
   }) {
     this.title = data.title
@@ -130,7 +130,7 @@ export default class AddHazardParams implements Params {
     this.code = data.code
     this.OpenNote = data.OpenNote
     this.OragnizationemployeeName = data.OragnizationemployeeName
-    this.OragnizationemployeeId = data.OragnizationemployeeId
+    this.OragnizationemployeeIds = data.OragnizationemployeeIds
     this.workShiftId = data.workShiftId
   }
 
@@ -198,8 +198,8 @@ export default class AddHazardParams implements Params {
     }
     if (this.OpenNote) data['open_note'] = this.OpenNote
     if (this.OragnizationemployeeName != null) data['employee_name'] = this.OragnizationemployeeName
-    if (this.OragnizationemployeeId != null)
-      data['organization_employee_id'] = this.OragnizationemployeeId
+    if (this.OragnizationemployeeIds.length > 0)
+      data['organization_employee_ids'] = this.OragnizationemployeeIds
     if (this.workShiftId != null) data['work_shift_id'] = this.workShiftId
     return data
   }

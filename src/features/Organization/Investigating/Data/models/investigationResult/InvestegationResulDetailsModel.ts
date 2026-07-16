@@ -55,6 +55,7 @@ export default class InvestegationResultDetailsModel {
   public correctiveTasks: any[]
   public preventiveTasks: any[]
   public investigationDocumentations: any[]
+  public latest_investigation_meeting_id :number
 
   constructor(
     id: number,
@@ -92,6 +93,7 @@ export default class InvestegationResultDetailsModel {
     correctiveTasks: any[] = [],
     preventiveTasks: any[] = [],
     investigationDocumentations: any[] = [],
+    latest_investigation_meeting_id:number
   ) {
     this.id = id
     this.title = title
@@ -128,6 +130,7 @@ export default class InvestegationResultDetailsModel {
     this.correctiveTasks = correctiveTasks
     this.preventiveTasks = preventiveTasks
     this.investigationDocumentations = investigationDocumentations
+    this.latest_investigation_meeting_id = latest_investigation_meeting_id
   }
 
   static fromMap(data: any): InvestegationResultDetailsModel {
@@ -167,6 +170,7 @@ export default class InvestegationResultDetailsModel {
       data.corrective_tasks ?? data.correctiveTasks ?? [],
       data.preventive_tasks ?? data.preventiveTasks ?? [],
       data.investigation_documentations ?? data.investigationDocumentations ?? [],
+      data.latest_investigation_meeting_id ?? 0
     )
   }
   // static example: InvestegationResultDetailsModel = new InvestegationResultDetailsModel(

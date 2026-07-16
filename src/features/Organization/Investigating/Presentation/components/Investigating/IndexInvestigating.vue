@@ -295,7 +295,7 @@ const GerIncidantCount = (data: any): number => {
                           class="unsolved-btns gap-2"
                           v-if="item?.status == InvestegationStatusEnum.NEW"
                         >
-                          <ShowInvestegationDetailsDialog :item="item" class="first-btn" />
+                          <!-- <ShowInvestegationDetailsDialog :item="item" class="first-btn" /> -->
 
                           <router-link
                             :to="`/organization/investigating/add?id=${item?.Investegationid}`"

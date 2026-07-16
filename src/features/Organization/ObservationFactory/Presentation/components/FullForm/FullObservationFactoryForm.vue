@@ -263,7 +263,9 @@ const updateData = () => {
         RootCausesId: rootCausesIdParams,
         OpenNote: preventive_action_open.value,
         OragnizationemployeeName: isSelectHasContent.value ? OragnizationemployeeName.value : null,
-        OragnizationemployeeId: !isSelectHasContent.value ? Oragnizationemployee.value?.id : null,
+        OragnizationemployeeIds: !isSelectHasContent.value
+          ? Oragnizationemployee.value.map((employee) => Number(employee.id))
+          : [],
         workShiftId: Shifts.value?.id ?? null,
       })
   console.log(params, 'params')
@@ -541,8 +543,8 @@ const setRootCause = (data: TitleInterface[]) => {
 const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
 
-const Oragnizationemployee = ref<TitleInterface | null>(null)
-const setOragnizationemployee = (data: TitleInterface) => {
+const Oragnizationemployee = ref<TitleInterface[]>([])
+const setOragnizationemployee = (data: TitleInterface[]) => {
   Oragnizationemployee.value = data
   updateData()
 }
@@ -551,7 +553,7 @@ const isSelectHasContent = ref<boolean>(false)
 const toggleMode = (isManual: boolean) => {
   isSelectHasContent.value = isManual
   if (isManual) {
-    Oragnizationemployee.value = null
+    Oragnizationemployee.value = []
   } else {
     OragnizationemployeeName.value = ''
   }
@@ -706,12 +708,12 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   //   message: 'Description Is Required',
   //   isMissing: () => !hasValue(text.value),
   // },
-  {
-    key: 'Oragnizationemployee',
-    message: 'Please select the employee who involved before continuing.',
-    isMissing: () =>
-      !hasValue(Oragnizationemployee.value) && OragnizationemployeeName.value.length < 1,
-  },
+  // {
+  //   key: 'Oragnizationemployee',
+  //   message: 'Please select the employee who involved before continuing.',
+  //   isMissing: () =>
+  //     !hasValue(Oragnizationemployee.value) && OragnizationemployeeName.value.length < 1,
+  // },
   {
     key: 'witnesses',
     message: getInvalidWitnessMessage() || 'Witness Employee Is Required',
@@ -1084,13 +1086,14 @@ defineExpose({
         :params="fetchOrganizationEmployeeParams"
         v-model="Oragnizationemployee"
         placeholder="Select Involved Persons"
-        :required="true"
+        :required="false"
         class="mt-4 mr-2 input"
         :label="$t('Involved Persons')"
         help-text="The employee or external person directly involved in the event."
         @update:model-value="setOragnizationemployee"
         :hascontent="isSelectHasContent"
         :reload="false"
+        :type="2"
       >
         <template #reloadHeader>
           <div class="flex gap-2 items-center">
@@ -1337,7 +1340,7 @@ defineExpose({
       class="col-span-6 md:col-span-6 w-full is-stopped"
     >
       <div class="field-label w-full">
-        <label for="is_stopedd">{{ $t('is_work_stopped') }}</label
+        <label for="is_stopedd">{{ $t('is_work_stopped') }} ?</label
         ><FieldHelpIcon
           text="Indicate whether work was stopped because of this event or unsafe condition."
         />

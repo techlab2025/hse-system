@@ -92,11 +92,11 @@ const showSidebar = computed(() => {
   <footer :class="['footer bottom-0 left-0 right-0 z-50', { 'is-dark': isDarkMode }]">
     <div class="footer-shell">
       <div class="footer-brand">
-        <p class="footer-copy">© 2026 HSE.Cloud.Ai. All rights reserved.</p>
+        <p class="footer-copy"> All rights reserved © 2026 <a href="https://hse.techlabeg.com/">HSE.Cloud.Ai</a>.</p>
         <!-- <span class="footer-mark">HSE</span>
         <span class="footer-title">HSE.Cloud.Ai</span>
         <span class="footer-divider"></span> -->
-        <span class="footer-powered">Powered by <strong>TechLab</strong></span>
+        <span class="footer-powered">Powered by <a href="https://techlabeg.com/">TechLab</a></span>
       </div>
     </div>
   </footer>
@@ -109,7 +109,7 @@ const showSidebar = computed(() => {
 
 .footer {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   padding: 0;
   border-top: 1px solid color-mix(in srgb, var(--brand-primary-500) 14%, transparent);
   background: transparent;
@@ -130,12 +130,15 @@ const showSidebar = computed(() => {
 .footer-brand {
   display: flex;
   align-items: center;
+  justify-content: space-between !important;
   min-width: 0;
   gap: 10px;
   color: var(--brand-primary-700);
   font-size: 12px;
   font-weight: 800;
   line-height: 1.2;
+  width: 100%;
+
 }
 
 .footer-mark {

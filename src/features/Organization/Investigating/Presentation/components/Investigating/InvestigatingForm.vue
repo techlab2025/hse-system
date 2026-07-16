@@ -147,15 +147,33 @@ watch([title, date, riskLevel, isNearMiss, saveStatus, time], () => {
 const SelectedTeam = ref<TitleInterface[]>([])
 const setTeams = (data: TitleInterface[]) => {
   SelectedTeam.value = data
-  Employees.value = data.map((el) => new InvestigatingEmployeeParams(el.id!, false))
+
+  const selectedLeaderId = SelectedTeamLeader.value?.id
+  const leaderStillSelected = data.some((employee) => employee.id === selectedLeaderId)
+
+  if (!leaderStillSelected) {
+    SelectedTeamLeader.value = null
+  }
+
+  Employees.value = data.map(
+    (employee) =>
+      new InvestigatingEmployeeParams(
+        employee.id!,
+        leaderStillSelected && employee.id === selectedLeaderId,
+      ),
+  )
   updateData()
 }
 
-const SelectedTeamLeader = ref<TitleInterface>(null)
-const setTeamLeader = (data: TitleInterface) => {
+const SelectedTeamLeader = ref<TitleInterface | null>(null)
+const setTeamLeader = (data: TitleInterface | null) => {
   SelectedTeamLeader.value = data
-  Employees.value = Employees.value.map((el) =>
-    el.organization_employee_id === data.id ? { ...el, is_leader: true } : el,
+  Employees.value = Employees.value.map(
+    (el) =>
+      new InvestigatingEmployeeParams(
+        el.organization_employee_id,
+        Boolean(data?.id && el.organization_employee_id === data.id),
+      ),
   )
   updateData()
 }
@@ -292,9 +310,6 @@ watch(
     }
   },
 )
-
-
-
 </script>
 
 <template>
