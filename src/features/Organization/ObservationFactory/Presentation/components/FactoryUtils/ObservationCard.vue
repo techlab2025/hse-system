@@ -30,7 +30,7 @@ const GetHeader = (value: number) => {
   return Observation[value] == 'ObservationType'
     ? 'Observation'
     : Observation[value] == 'HazardType'
-      ? 'Hazard'
+      ? 'Observation'
       : 'incident'
 }
 
@@ -75,12 +75,14 @@ const GoToShowPage = () => {
   <div class="observation-card">
     <div class="header-container">
       <div class="card-content">
-        <div class="title_observation" @click="GoToShowPage">
+        <!-- @click="GoToShowPage" -->
+        <div class="title_observation" >
           <p class="observation-title">{{ data?.title }}</p>
           <p class="Description">{{ data?.description }}</p>
         </div>
         <div class="card-header">
-          <p class="label-item-primary cursor-pointer" @click="GoToShowPage">
+          <!--  @click="GoToShowPage" -->
+          <p class="label-item-primary cursor-pointer">
             <span>{{ $t('Serial') }} : </span> <span>{{ data?.serialName }}</span>
           </p>
           <h6 class="label-item-secondary">

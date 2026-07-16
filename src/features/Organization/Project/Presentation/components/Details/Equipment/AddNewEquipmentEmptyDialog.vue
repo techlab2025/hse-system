@@ -3,8 +3,6 @@ import { onMounted, ref } from 'vue'
 import Dialog from 'primevue/dialog'
 import EquipmentImg from '@/assets/images/Equipment.png'
 import plus from '@/assets/images/plus.png'
-
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import { useRoute, useRouter } from 'vue-router'
 import HeaderSection from '../../Details/DetailsHeader/HeaderSection.vue'
@@ -41,9 +39,6 @@ const setEquipments = (data: TitleInterface[]) => {
 }
 
 const AddEquipment = async () => {
-  // try {
-  //   if (!selectedZoneId.value || equipments.value.length === 0) return
-
   const payload = new CreateProjectZoneEquipment(projectId, [
     {
       project_zoon_id: selectedZoneId.value,
@@ -57,9 +52,6 @@ const AddEquipment = async () => {
   visible.value = false
   equipments.value = []
   selectedZoneId.value = null
-  // } catch (error) {
-  //   console.log(error)
-  // }
 }
 
 const AllEquipments = ref([])

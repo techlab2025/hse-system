@@ -141,7 +141,7 @@ const { homeInspectionState } = defineProps<{
 }
 
 .monthly-kpi-grid :deep(.ToatlInsedant-four) {
-  color: var(--p-rent-500);
+  color: var(--brand-primary-500);
 }
 
 @media (max-width: 680px) {

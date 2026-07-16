@@ -68,8 +68,8 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     data['hierarchies'] = this.hierarchies
     data['roles'] = this.roles.map((item) => item.toMap())
     data['employee_type'] = Number(this.EmployeeStatus)
-    if (this.dashAccessStatus || this.dashAccessStatus == false)
-      data['can_access_dashboard'] = this.dashAccessStatus
+
+    data['can_access_dashboard'] = Number(this.dashAccessStatus)
     // data['certificate_id'] = this.certificateId.map((id) => id)
     data['allow_all_permissions'] = this.allPermissions
 

@@ -1,35 +1,25 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import Editor from 'primevue/editor'
-import StarRequiredInput from '../icons/StarRequiredInput.vue'
+import { computed, ref, watch, type Component } from 'vue'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
+
+type LocalizedField = {
+  locale: string
+  title?: string
+  subtitle?: string
+  description?: string
+  button_title?: string
+  answer?: string
+  question?: string
+  feature?: string
+  old?: string
+  new?: string
+}
 
 const props = withDefaults(
   defineProps<{
-    langs: { title: string; locale: string; icon?: any }[]
-    modelValue?: {
-      locale: string
-      title?: string
-      subtitle?: string
-      description?: string
-      button_title?: string
-      answer?: string
-      question?: string
-      feature?: string
-      old?: string
-      new?: string
-    }[]
-    defaultLang?: {
-      locale: string
-      title?: string
-      subtitle?: string
-      description?: string
-      button_title?: string
-      answer?: string
-      question?: string
-      feature?: string
-      old?: string
-      new?: string
-    }
+    langs: { title: string; locale: string; icon?: Component | string }[]
+    modelValue?: LocalizedField[]
+    defaultLang?: LocalizedField
     label?: string
     type?: 'text' | 'textarea' | 'email' | 'password' | 'number' | 'url'
     placeholder?: string
@@ -47,6 +37,7 @@ const props = withDefaults(
       | 'old'
       | 'new'
       | 'feature'
+    helpText?: string
   }>(),
   {
     langs: () => [],
@@ -119,7 +110,9 @@ const titles = ref<
 )
 
 // Get the current field value based on fieldType
-const getFieldValue = (item: any) => {
+const getFieldValue = (item?: LocalizedField) => {
+  if (!item) return undefined
+
   switch (props.fieldType) {
     case 'subtitle':
       return item.subtitle
@@ -143,7 +136,7 @@ const getFieldValue = (item: any) => {
 }
 
 // Set the current field value based on fieldType
-const setFieldValue = (item: any, value: string) => {
+const setFieldValue = (item: LocalizedField, value: string) => {
   switch (props.fieldType) {
     case 'subtitle':
       item.subtitle = value
@@ -307,6 +300,7 @@ watch(hasAtLeastOneValue, (isValid) => {
           <!-- <StarRequiredInput /> -->
           *
         </span>
+        <FieldHelpIcon v-if="helpText" :text="helpText" />
       </label>
 
       <!-- Dynamic Languages -->

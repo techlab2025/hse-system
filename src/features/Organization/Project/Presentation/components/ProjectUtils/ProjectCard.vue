@@ -152,11 +152,12 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
         </div> -->
         <div class="data-info">
           <span class="info-title">{{ $t('incident') }} :</span>
-          <span class="info-count">{{ data?.observation_accidents_count }}</span>
+
+          <span class="info-count">{{ data?.observation_accidents_count || 0 }}</span>
         </div>
         <div class="data-info">
           <span class="info-title">{{ $t('Investigation') }} :</span>
-          <span class="info-count warn">{{ data?.investigation_count }}</span>
+          <span class="info-count">{{ data?.investigation_count || 0 }}</span>
         </div>
         <!-- <div class="data-info">
           <span class="info-title">{{ $t('Equipment') }} :</span>
@@ -164,7 +165,7 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
         </div> -->
         <div class="data-info">
           <span class="info-title">{{ $t('Inspection') }} :</span>
-          <span class="info-count warn">{{ data?.inspections_count }}</span>
+          <span class="info-count">{{ data?.inspections_count || 0 }}</span>
         </div>
       </div>
     </div>

@@ -172,6 +172,7 @@
 @use './Certificates/certificate_import';
 @use './ExcelSheet/excel_imports';
 @use './SystemDialogs/system_dialog';
+@use './responsive';
 
 html {
   scroll-behavior: smooth;
@@ -376,7 +377,11 @@ input {
   color: var(--text-on-brand) !important;
 }
 .highlight-active .project-progress-header-container {
-  background-image: linear-gradient(to right, color-mix(in srgb, var(--text-soft) 33.73%, transparent), color-mix(in srgb, var(--main-border) 63.53%, transparent));
+  background-image: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--text-soft) 33.73%, transparent),
+    color-mix(in srgb, var(--main-border) 63.53%, transparent)
+  );
 }
 
 .image_certificate_container .p-image-preview-mask {
@@ -511,4 +516,31 @@ label {
 [data-theme='dark'] label,
 [data-theme='dark'] .input-label label {
   color: var(--text-strong) !important;
+}
+
+.system-data-add {
+  background-color: color-mix(in srgb, var(--brand-primary-500) 5.1%, transparent) !important;
+  color: var(--text-on-brand);
+}
+
+@media (max-width: 768px) {
+  .investigation-result .p-accordioncontent-content {
+    margin: 0 !important;
+  }
+  .investigation-result .p-accordionpanel {
+    margin-block: 14px !important;
+  }
+  .input-image{
+    overflow:hidden;
+  }
+  .input-label-images {
+    max-width: 50% !important;
+  }
+  .input-wrapper{
+    grid-column: span 24 ;
+  }
+  header{
+    width:96% !important;
+    margin-inline:auto !important;
+  }
 }

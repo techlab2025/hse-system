@@ -474,6 +474,10 @@ watch(
 .project-progress-container {
   position: relative;
   min-height: 100vh;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 .container-overlay {
@@ -676,7 +680,41 @@ watch(
 
 @media (max-width: 768px) {
   .project-progress-body-content {
-    padding: 10px;
+    padding: 0;
+  }
+
+  .lottie-container {
+    min-height: 360px;
+    height: auto;
+    padding: 28px 16px;
+
+    .lottie-header {
+      width: 100%;
+      text-align: center;
+
+      .title {
+        font-size: 20px;
+        line-height: 1.35;
+      }
+
+      .text {
+        font-size: 14px;
+      }
+    }
+
+    .completed-mark {
+      width: 78px;
+      height: 78px;
+      margin-block: 20px;
+
+      &::after {
+        left: 25px;
+        top: 19px;
+        width: 23px;
+        height: 36px;
+        border-width: 0 7px 7px 0;
+      }
+    }
   }
 
   .overlay-note {
@@ -700,6 +738,20 @@ watch(
     border-left: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
     border-right: 0;
     border-bottom: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .overlay-note {
+    width: calc(100vw - 24px);
+    padding: 14px;
+  }
+
+  .highlight-active {
+    outline-offset: 3px;
+    box-shadow:
+      0 0 0 5px color-mix(in srgb, var(--brand-primary-500) 8%, transparent),
+      0 18px 46px color-mix(in srgb, var(--shadow-color) 22%, transparent);
   }
 }
 

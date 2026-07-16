@@ -90,14 +90,19 @@ const updateData = () => {
         isThereWitnessStatement: witnesses?.value?.isAnotherMeeting === 1 ? true : false,
         Injury:
           Accidents?.value?.isAnotherMeeting === 1
-            ? [
-                new InjuryParams(
-                  Accidents?.value?.employeeId || [],
-                  Accidents?.value?.employeeName || '',
-                  Accidents?.value?.text || null,
-                  Accidents?.value?.infectionTypeId || 0,
-                ),
-              ]
+            ? (Accidents.value?.accidentsData ?? []).map((item: any) => {
+                const employeeId = Number(item?.employee?.id) || 0
+                return new InjuryParams(
+                  employeeId,
+                  employeeId ? '' : item?.employee?.title || '',
+                  item?.text || '',
+                  item?.infectionTypeId?.id || 0,
+                  item?.incidentCategories
+                    ?.map((category: TitleInterface) => Number(category.id))
+                    .filter(Boolean) || [],
+                  item?.images?.map((image: any) => image?.file ?? image) || [],
+                )
+              })
             : [],
         deaths:
           Fatalities?.value?.isAnotherMeeting === 1

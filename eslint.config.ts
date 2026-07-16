@@ -26,9 +26,6 @@ export default defineConfigWithVueTs(
           argsIgnorePattern: '^_',
         },
       ],
-
-      // Required for <script setup>
-      'vue/script-setup-uses-vars': 'error',
     },
   },
 

@@ -2,12 +2,11 @@
 import { CertificateStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/CertificateStatusEnum'
 import CertificateImageDialog from './CertificateImageDialog.vue'
 
-const props = defineProps<{
+defineProps<{
   certificateId: number
   organizationEmployeeId: number
   is_expire_date: boolean
   status: CertificateStatusEnum
-  cert: any
 }>()
 
 const emit = defineEmits(['update:data'])
@@ -20,7 +19,12 @@ const updateData = () => {
     <div class="invalid">
       <span class="invalid-title">invalid</span>
     </div>
-    <CertificateImageDialog @update:data="updateData" :certificateId="certificateId"
-      :organizationEmployeeId="organizationEmployeeId" :is_expire_date="cert.requireExpiredDate" :status="status" />
+    <CertificateImageDialog
+      @update:data="updateData"
+      :certificateId="certificateId"
+      :organizationEmployeeId="organizationEmployeeId"
+      :is_expire_date="is_expire_date"
+      :status="status"
+    />
   </div>
 </template>

@@ -198,9 +198,9 @@ const closeDialog = async () => {
 </script>
 
 <template>
-  <div class="input-label flex justify-between w-full">
+  <div class="input-label updated-select-header flex justify-between w-full">
     <slot v-if="!hasHeader">
-      <div class="flex items-center">
+      <div class="updated-select-tools flex items-center">
         <slot name="reloadHeader"></slot>
         <span
           v-if="enableReload"
@@ -212,7 +212,7 @@ const closeDialog = async () => {
         </span>
       </div>
 
-      <div class="flex items-center gap-2">
+      <div class="updated-select-label flex items-center gap-2">
         <label :class="{ required: required }" class="input-label">
           <span v-if="required" class="text-red-500">*</span>
           {{ $t(label ?? '') }}
@@ -248,7 +248,7 @@ const closeDialog = async () => {
       v-model:visible="DialogVisable"
       modal
       :dismissable-mask="true"
-      :style="{ width: '50rem' }"
+      :style="{ width: 'min(50rem, calc(100vw - 24px))' }"
     >
       <slot name="Dialog"></slot>
     </Dialog>
@@ -256,6 +256,22 @@ const closeDialog = async () => {
 </template>
 
 <style scoped lang="scss">
+.reload-icon {
+  background-color: transparent !important;
+  width: auto !important;
+  flex: 0 0 auto;
+}
+
+.updated-select-header,
+.updated-select-tools,
+.updated-select-label {
+  min-width: 0;
+}
+
+.updated-select-header,
+.updated-select-tools {
+  gap: 8px;
+}
 .add-dialog {
   width: 20px;
   height: 20px;
@@ -275,6 +291,24 @@ const closeDialog = async () => {
 
   &:focus {
     border: 1px solid var(--brand-primary-100) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .updated-select-header {
+    align-items: stretch;
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .updated-select-tools {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .updated-select-label {
+    width: 100%;
+    flex-wrap: wrap;
   }
 }
 </style>

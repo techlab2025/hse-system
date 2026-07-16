@@ -7,9 +7,10 @@ import type InjuryDetailsModel from '../../../Data/models/InjuryModel.ts'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
-const { isOpen, injuries } = defineProps<{
+const { isOpen, injuries, incidentTypeId } = defineProps<{
   isOpen?: boolean
   injuries?: InjuryDetailsModel[]
+  incidentTypeId?: number | null
 }>()
 const isAnotherMeeting = ref(isOpen ? isOpen : 0)
 const updateData = () => {
@@ -44,13 +45,13 @@ watch(
   <div class="another-meeting">
     <div class="another-meeting-header" v-if="!isOpen">
       <!-- <div class="section-title-with-help"> -->
-        <HeaderPage
-          :title="`Are there Injuries?`"
-          :subtitle="`Did this incident result in any physical injuries`"
-          :img="acc"
-          class="title-header"
-        />
-        <!-- <FieldHelpIcon
+      <HeaderPage
+        :title="`Are there Injuries?`"
+        :subtitle="`Did this incident result in any physical injuries`"
+        :img="acc"
+        class="title-header"
+      />
+      <!-- <FieldHelpIcon
           text="Choose Yes if the incident caused any physical injury, even if it appears minor."
         /> -->
       <!-- </div> -->
@@ -73,11 +74,23 @@ watch(
     </div>
 
     <div class="another-meeting-contect" v-if="isAnotherMeeting == 1">
-      <InjuresTimeLine :injuries="injuries" :isOpen="isOpen" @update:data="UpdateAccidentsData" />
+      <InjuresTimeLine
+        :injuries="injuries"
+        :isOpen="isOpen"
+        :incident-type-id="incidentTypeId"
+        @update:data="UpdateAccidentsData"
+      />
     </div>
   </div>
 </template>
 <style scoped>
+.another-meeting,
+.another-meeting-contect {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
 .another-meeting-header {
   display: flex !important;
   justify-content: space-between !important;
@@ -87,6 +100,8 @@ watch(
   width: 100%;
 
   .title-header {
+    flex: 1;
+    min-width: 0;
     background-color: transparent !important;
   }
 
@@ -150,5 +165,59 @@ watch(
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .another-meeting-header {
+    align-items: stretch !important;
+    flex-direction: column;
+    gap: 10px;
+
+    .meeting-status {
+      position: static;
+      width: 100%;
+      transform: none;
+
+      button {
+        flex: 1;
+        min-width: 0;
+      }
+    }
+  }
+
+  :deep(.title-header) {
+    padding: 8px;
+    border-radius: 14px;
+  }
+
+  :deep(.title-header .section-header-page) {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    min-width: 0;
+    padding: 8px;
+  }
+
+  :deep(.title-header .section-img-page) {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 auto;
+  }
+
+  :deep(.title-header .header-text-page) {
+    min-width: 0;
+  }
+
+  :deep(.title-header .title-page),
+  :deep(.title-header .subtitle-page) {
+    text-align: start;
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 480px) {
+  .another-meeting-header .meeting-status button {
+    min-height: 42px;
+    padding: 8px 12px;
+  }
 }
 </style>

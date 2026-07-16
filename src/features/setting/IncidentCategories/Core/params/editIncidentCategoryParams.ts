@@ -5,7 +5,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 export default class EditIncidentCategoryParams implements Params {
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true },
-    incidentTypeId: { required: true },
+    incidentTypeId: { required: true, min: 1 },
   })
 
   constructor(

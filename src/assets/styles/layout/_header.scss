@@ -10,6 +10,7 @@
   background-color: var(--surface-1);
   border-bottom-left-radius: $XlSize;
   border-bottom-right-radius: $XlSize;
+
   // &.minmize {
   //   max-width: 85%;
   //   margin: 0 auto;
@@ -83,6 +84,7 @@
           &:last-child {
             margin-left: auto;
             color: var(--text-soft);
+
           }
         }
       }

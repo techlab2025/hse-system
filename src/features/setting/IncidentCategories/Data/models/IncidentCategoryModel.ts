@@ -49,7 +49,7 @@ export default class IncidentCategoryModel extends TitleInterface {
       data.parent_id,
       data.image,
       data.titles,
-      data.incident_type ? TitleModel.fromMap(data.incident_type) : null,
+      data.accidents_type ? TitleModel.fromMap(data.accidents_type) : null,
     )
   }
   static transformData(data: string[][]): IncidentCategoryModel[] {

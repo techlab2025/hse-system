@@ -6,7 +6,6 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import { useRoute } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import Search from '@/shared/icons/Search.vue'
@@ -27,7 +26,6 @@ import IndexEmployeeCertificateParams from '../../Core/params/IndexEmployeeCerti
 
 import { CertificateStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/CertificateStatusEnum'
 
-const { t } = useI18n()
 const route = useRoute()
 
 /* ---------------------------------- STATE --------------------------------- */
@@ -129,16 +127,7 @@ watch(
 /* --------------------------- CERTIFICATE STATUS ---------------------------- */
 
 const getCertificateStatus = (employee: OrganizatoinEmployeeModel, certificateId: number) => {
-  const cert = employee.certificates?.find((c: any) => c.id === certificateId)
-  return cert?.status
-}
-
-const getEmployeeCertificationStatus = (
-  employee: OrganizatoinEmployeeModel,
-  certificateId: number,
-) => {
-  const cert = employee.employee_certificates?.find((c: any) => c.certificate_id === certificateId)
-
+  const cert = employee.certificates?.find((certificate) => certificate.id === certificateId)
   return cert?.status
 }
 
@@ -227,9 +216,9 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
                     <ValidCertificate
                       v-if="getCertificateStatus(employee, cert.id) == CertificateStatusEnum.Valid"
                       :expiry_date="
-                        employee?.certificates?.find((el) => el.id == cert.id)?.expired_at
+                        employee?.certificates?.find((certificate) => certificate.id == cert.id)
+                          ?.expiry_date
                       "
-                      :status="getCertificateStatus(employee, cert.id)"
                     />
 
                     <!-- INVALID -->
@@ -240,7 +229,6 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
                       @update:data="fetchOrganizationEmployee"
                       :certificateId="cert.id"
                       :organizationEmployeeId="employee.id"
-                      :cert="cert"
                       :is_expire_date="cert.requireExpiredDate"
                       :status="getCertificateStatus(employee, cert.id)"
                     />
@@ -253,7 +241,6 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
                       @update:data="fetchOrganizationEmployee"
                       :certificateId="cert.id"
                       :organizationEmployeeId="employee.id"
-                      :cert="cert"
                       :is_expire_date="cert.requireExpiredDate"
                       :status="getCertificateStatus(employee, cert.id)"
                     />
@@ -265,7 +252,6 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
                       :certificateId="cert.id"
                       :organizationEmployeeId="employee.id"
                       :is_expire_date="cert.requireExpiredDate"
-                      :status="getCertificateStatus(employee, cert.id)"
                     />
                   </td>
                 </tr>

@@ -121,7 +121,7 @@ const hasInjuryData = (item: any) =>
   hasEmployeePayload(item?.employee) ||
   hasSectionValue(item?.text) ||
   Boolean(Number(item?.infectionTypeId?.id)) ||
-  Boolean(item?.isWorkStopped) ||
+  hasSectionFiles(item?.incidentCategories) ||
   hasSectionFiles(item?.images)
 
 const hasFatalityData = (item: any) =>
@@ -219,7 +219,9 @@ const updateData = () => {
                 employee.name,
                 item?.text || null,
                 item?.infectionTypeId?.id || 0,
-                item?.isWorkStopped ? 1 : 0,
+                item?.incidentCategories
+                  ?.map((category: TitleInterface) => Number(category.id))
+                  .filter(Boolean) || [],
                 item?.images?.map((el: any) => el.file) || [],
               )
             })
@@ -261,7 +263,9 @@ const updateData = () => {
         RootCausesId: rootCausesIdParams,
         OpenNote: preventive_action_open.value,
         OragnizationemployeeName: isSelectHasContent.value ? OragnizationemployeeName.value : null,
-        OragnizationemployeeId: !isSelectHasContent.value ? Oragnizationemployee.value?.id : null,
+        OragnizationemployeeIds: !isSelectHasContent.value
+          ? Oragnizationemployee.value.map((employee) => Number(employee.id))
+          : [],
         workShiftId: Shifts.value?.id ?? null,
       })
   console.log(params, 'params')
@@ -356,6 +360,8 @@ const preventive_action_open = ref<string>()
 const SelctedTime = ref<Date>(new Date())
 const PlaceText = ref<string>()
 const SerialNumber = ref()
+
+watch([date, SelctedTime], () => updateData(), { flush: 'sync' })
 
 const fields = ref([
   {
@@ -539,8 +545,8 @@ const setRootCause = (data: TitleInterface[]) => {
 const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
 
-const Oragnizationemployee = ref<TitleInterface | null>(null)
-const setOragnizationemployee = (data: TitleInterface) => {
+const Oragnizationemployee = ref<TitleInterface[]>([])
+const setOragnizationemployee = (data: TitleInterface[]) => {
   Oragnizationemployee.value = data
   updateData()
 }
@@ -549,7 +555,7 @@ const isSelectHasContent = ref<boolean>(false)
 const toggleMode = (isManual: boolean) => {
   isSelectHasContent.value = isManual
   if (isManual) {
-    Oragnizationemployee.value = null
+    Oragnizationemployee.value = []
   } else {
     OragnizationemployeeName.value = ''
   }
@@ -704,12 +710,12 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   //   message: 'Description Is Required',
   //   isMissing: () => !hasValue(text.value),
   // },
-  {
-    key: 'Oragnizationemployee',
-    message: 'Please select the employee who reported this Incident before continuing.',
-    isMissing: () =>
-      !hasValue(Oragnizationemployee.value) && OragnizationemployeeName.value.length < 1,
-  },
+  // {
+  //   key: 'Oragnizationemployee',
+  //   message: 'Please select the employee who involved before continuing.',
+  //   isMissing: () =>
+  //     !hasValue(Oragnizationemployee.value) && OragnizationemployeeName.value.length < 1,
+  // },
   {
     key: 'witnesses',
     message: getInvalidWitnessMessage() || 'Witness Employee Is Required',
@@ -852,7 +858,7 @@ defineExpose({
         id="title"
         v-model="ObservationTitle"
         @input="updateData"
-        :placeholder="$t('Enter Observation title')"
+        :placeholder="$t(`Enter ${GetHeader(ObservationFactoryType)} title`)"
       />
       <p v-if="getFieldError('ObservationTitle')" class="required-field-message">
         {{ getFieldError('ObservationTitle') }}
@@ -881,7 +887,6 @@ defineExpose({
         v-model="SelctedTime"
         class="mt-4 mr-2 input date-picker"
         :placeholder="$t('Select time')"
-        @update:model-value="updateData"
         input-id="time"
         :time-only="true"
       />
@@ -1082,13 +1087,14 @@ defineExpose({
         :params="fetchOrganizationEmployeeParams"
         v-model="Oragnizationemployee"
         placeholder="Select Involved Persons"
-        :required="true"
+        :required="false"
         class="mt-4 mr-2 input"
         :label="$t('Involved Persons')"
         help-text="The employee or external person directly involved in the event."
         @update:model-value="setOragnizationemployee"
         :hascontent="isSelectHasContent"
         :reload="false"
+        :type="2"
       >
         <template #reloadHeader>
           <div class="flex gap-2 items-center">
@@ -1190,7 +1196,7 @@ defineExpose({
 
     <!-- Save Status Positive or Negative -->
     <div
-      class="col-span-6 md:col-span-6 input-wrapper w-full"
+      class="factory-people-section witnesses-section col-span-6 md:col-span-6 input-wrapper w-full"
       v-if="ObservationFactoryType != Observation.AccidentsType"
     >
       <SaveStatusSelector :modelValue="saveStatus" @update:saveStatus="UpdateSaveStatus" />
@@ -1335,7 +1341,7 @@ defineExpose({
       class="col-span-6 md:col-span-6 w-full is-stopped"
     >
       <div class="field-label w-full">
-        <label for="is_stopedd">{{ $t('is_work_stopped') }}</label
+        <label for="is_stopedd">{{ $t('is_work_stopped') }} ?</label
         ><FieldHelpIcon
           text="Indicate whether work was stopped because of this event or unsafe condition."
         />
@@ -1496,7 +1502,7 @@ defineExpose({
     <!-- Factorywitnesses -->
 
     <div
-      class="col-span-6 md:col-span-6 input-wrapper w-full"
+      class="factory-people-section witnesses-section col-span-6 md:col-span-6 input-wrapper w-full"
       data-required-field="witnesses"
       v-if="
         saveStatus == SaveStatusEnum.NotSaved &&
@@ -1512,14 +1518,18 @@ defineExpose({
     <!-- FactoryAccidents -->
     <!-- v-if="ObservationFactoryType != Observation?.ObservationType" -->
     <div
-      class="col-span-6 md:col-span-6 input-wrapper w-full"
+      class="factory-people-section injuries-section col-span-6 md:col-span-6 input-wrapper w-full"
       data-required-field="Accidents"
       v-if="
         saveStatus == SaveStatusEnum.NotSaved &&
         ObservationFactoryType != Observation?.ObservationType
       "
     >
-      <FactoryAccidents class="not-colored" @update:data="UpdateAccidents" />
+      <FactoryAccidents
+        class="not-colored"
+        :incident-type-id="AccidentsType?.id ?? null"
+        @update:data="UpdateAccidents"
+      />
       <p v-if="getFieldError('Accidents')" class="required-field-message">
         {{ getFieldError('Accidents') }}
       </p>
@@ -1528,7 +1538,7 @@ defineExpose({
     <!-- FactoryFatalities -->
     <!-- v-if="ObservationFactoryType != Observation?.ObservationType" -->
     <div
-      class="col-span-6 md:col-span-6 input-wrapper w-full"
+      class="factory-people-section fatalities-section col-span-6 md:col-span-6 input-wrapper w-full"
       data-required-field="Fatalities"
       v-if="
         saveStatus == SaveStatusEnum.NotSaved &&
@@ -1579,6 +1589,26 @@ defineExpose({
   font-weight: 700;
 }
 
+.factory-people-section {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow: clip;
+}
+
+.factory-people-section :deep(.another-meeting),
+.factory-people-section :deep(.another-meeting-contect),
+.factory-people-section :deep(.template-container),
+.factory-people-section :deep(.heirarchy-info),
+.factory-people-section :deep(.timeline-container),
+.factory-people-section :deep(.timeline-wrapper),
+.factory-people-section :deep(.timeline-item) {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 .form-filter-skeleton {
   display: flex;
   align-items: center;
@@ -1592,7 +1622,12 @@ defineExpose({
   width: 126px;
   height: 40px;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--brand-primary-50) 25%, var(--brand-primary-50) 50%, var(--brand-primary-50) 75%);
+  background: linear-gradient(
+    90deg,
+    var(--brand-primary-50) 25%,
+    var(--brand-primary-50) 50%,
+    var(--brand-primary-50) 75%
+  );
   background-size: 220% 100%;
   animation: form-filter-shimmer 1.15s linear infinite;
 }
@@ -1748,7 +1783,12 @@ label {
   }
 
   .form-filter-skeleton span {
-    background: linear-gradient(90deg, var(--brand-primary-800) 25%, var(--brand-primary-700) 50%, var(--brand-primary-800) 75%) !important;
+    background: linear-gradient(
+      90deg,
+      var(--brand-primary-800) 25%,
+      var(--brand-primary-700) 50%,
+      var(--brand-primary-800) 75%
+    ) !important;
     background-size: 220% 100%;
   }
 
@@ -1830,6 +1870,26 @@ label {
   :deep(.emp-select.active),
   :deep(.meeting-status button.active) {
     color: var(--text-on-brand) !important;
+  }
+}
+@media (max-width: 768px) {
+  .full-observation-form > div {
+    grid-column: 1 / -1 !important;
+  }
+
+  .factory-people-section {
+    padding: 12px !important;
+    border-radius: 16px !important;
+  }
+
+  .factory-people-section :deep(.another-meeting-contect) {
+    margin-top: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  .factory-people-section {
+    padding: 10px !important;
   }
 }
 </style>

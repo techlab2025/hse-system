@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import wordSlice from '@/base/Presentation/utils/word_slice'
 import BreadCrumb from '@/shared/HelpersComponents/BreadCrumb.vue'
-import CertificateImageDialog from '../certificateImageDialog.vue'
-import { useUserStore } from '@/stores/user'
-import { watch } from 'vue'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import { EquipmentStatus } from '../../../Core/enum/equipmentStatus'
-import RentIcon from '@/shared/icons/RentIcon.vue'
 import Rent from '@/shared/icons/rent.vue'
-import type { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 import { RentTypeEnum } from '../../../Core/enum/RentTypeEnum'
 import { formatTime } from '@/base/Presentation/utils/time_format'
+
+type EquipmentTranslation = {
+  locale: string
+  title: string
+}
+
 const props = withDefaults(
   defineProps<{
     isBreadCramp: boolean
@@ -23,14 +23,14 @@ const props = withDefaults(
     decommissioningDate?: string
     certificateImage?: string
     cardType?: string
-    selctedequipment: any
-    selectedequipmentType: any
+    selctedequipment: EquipmentTranslation[]
+    selectedequipmentType?: TitleInterface | null
     isForm?: boolean
-    expiredate: string
-    startDate: string
-    EndDate: string
-    rentType: RentTypeEnum
-    typerent?: OrganizationTypeEnum
+    expiredate?: string | Date | null
+    startDate?: string | Date | null
+    EndDate?: string | Date | null
+    rentType?: RentTypeEnum
+    typerent?: boolean
     deviceStatus?: number
   }>(),
   {
@@ -40,10 +40,13 @@ const props = withDefaults(
     image: '',
     decommissioningDate: '',
     certificateImage: '',
+    selectedequipmentType: null,
+    expiredate: null,
+    startDate: null,
+    EndDate: null,
+    rentType: undefined,
   },
 )
-
-const { user } = useUserStore()
 
 // const getSelectedLang = (data) => {
 //   const currentLang = user?.languages?.[0]?.code || 'en'
@@ -97,16 +100,16 @@ const { user } = useUserStore()
               start date :
               <span>{{
                 rentType === RentTypeEnum.HOUR
-                  ? formatJoinDate(startDate) + ' ' + formatTime(startDate)
-                  : formatJoinDate(startDate)
+                  ? formatJoinDate(startDate!) + ' ' + formatTime(startDate!)
+                  : formatJoinDate(startDate!)
               }}</span>
             </h6>
             <h6 class="end_date">
               end date :
               <span>{{
                 rentType === RentTypeEnum.HOUR
-                  ? formatJoinDate(EndDate) + ' ' + formatTime(EndDate)
-                  : formatJoinDate(EndDate)
+                  ? formatJoinDate(EndDate!) + ' ' + formatTime(EndDate!)
+                  : formatJoinDate(EndDate!)
               }}</span>
             </h6>
           </div>

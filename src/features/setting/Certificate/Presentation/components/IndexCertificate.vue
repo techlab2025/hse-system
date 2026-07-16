@@ -293,7 +293,7 @@ const IndexOrganizationEmployeectionList = () => [
                 <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{ $t('industries') }}
                 </th>
-                <th scope="col">{{ $t('requireExpiredDate') }}</th>
+                <th scope="col">{{ $t('require_expired_date') }}</th>
                 <th scope="col">{{ $t('image') }}</th>
 
                 <!-- <th scope="col">{{ $t('actions') }}</th> -->
@@ -319,7 +319,7 @@ const IndexOrganizationEmployeectionList = () => [
                       : $t('no')
                   }}
                 </td>
-                <td>
+                <td :data-label="$t('require_expired_date')">
                   {{ item.requireExpiredDate ? $t('yes') : $t('no') }}
                 </td>
                 <td data-label="image">

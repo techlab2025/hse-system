@@ -7,6 +7,9 @@ import type AddOrganizatoinEmployeeParams from '../../Core/params/addOrganizatoi
 import OrganizatoinEmployeeForm from './OrganizatoinEmployeeForm.vue'
 
 const emit = defineEmits(['update:data'])
+const props = defineProps<{
+  heirarchyId?: number
+}>()
 const router = useRouter()
 const route = useRoute()
 const params = ref<Params | null>(null)
@@ -50,7 +53,12 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addOrganizatoinEmployee">
-    <OrganizatoinEmployeeForm ref="formRef" :key="formKey" @update:data="setParams" />
+    <OrganizatoinEmployeeForm
+      ref="formRef"
+      :key="formKey"
+      :heirarchy-id="props.heirarchyId"
+      @update:data="setParams"
+    />
     <div class="col-span-4 button-wrapper">
       <button
         type="submit"

@@ -604,8 +604,6 @@ body,
   .home-routes-card .title,
   .project-statistics .title,
   .project-card-container .project-title,
-  .project-card-container .info-count,
-  .total-insedent-card .data p,
   .incidant-factor-container .static-title,
   .total-machines-container .static-title,
   .total-observation-container .static-title,
@@ -1176,7 +1174,6 @@ body,
   :where(
       .project-card-container .project-title,
       .project-card-container .serial,
-      .project-card-container .info-count,
       .project-card-container .popover-head h4,
       .project-card-container .location-title,
       .add-hierarchy .title h5,
@@ -1211,13 +1208,16 @@ body,
       .project-card-container .status,
       .project-card-container .popover-trigger-count,
       .project-card-container .popover-total,
-      .project-card-container .info-count.warn,
       .emoloyees-details .edit-btn,
       .emoloyees-details .add-btn,
       .zone-form .zone-content.active .zone-title,
       .zone-form .confirm-btn
     ) {
     color: var(--PrimaryColor) !important;
+  }
+
+  .project-card-container .info-count {
+    color: var(--project-accent) !important;
   }
 
   .project-card-container .project-employees,

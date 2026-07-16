@@ -254,6 +254,9 @@
       .meeting-info-container .meeting-info {
         grid-template-columns: 1fr;
       }
+       .meeting-info-container .meeting-info p {
+        grid-column: span 2 ;
+       }
     }
 
     .investigating-answer-complete-task {

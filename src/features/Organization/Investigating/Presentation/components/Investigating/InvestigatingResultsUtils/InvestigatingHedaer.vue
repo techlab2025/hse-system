@@ -5,7 +5,7 @@ import IndexDocumentRefrenceController from '@/features/Organization/DocumentRef
 import type InvestegationEmployeeModel from '@/features/Organization/Investigating/Data/models/investigationResult/InvestegationEmployeeModel'
 import type EquipmentDetailsModel from '@/features/setting/Equipment/Data/models/equipmentDetailsModel'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import ShiftModel from '../../../../../Shifts/Data/models/ShiftModel'
 import AddDocumentRefrence from '@/features/Organization/DocumentRefrence/Presentation/components/AddDocumentRefrence.vue'
 
@@ -38,6 +38,13 @@ const setDocumentRefrences = (data: TitleInterface[]) => {
 }
 const indexDocumentRefrencesController = IndexDocumentRefrenceController.getInstance()
 const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 0)
+
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+
+const dateTimeShift = computed(() =>
+  [props.date, props.time, props.shift?.title].filter(hasValue).join(' & '),
+)
 </script>
 <template>
   <div class="investigating-header-container">
@@ -55,32 +62,31 @@ const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 
 
 
     </div> -->
-    <pre></pre>
     <div class="meeting-info-container">
       <div class="meeting-info">
-        <p>
+        <p v-if="hasValue(serial)">
           Incident serial : <span class="meet-date">{{ serial }} </span>
         </p>
-        <p>
+        <p v-if="hasValue(serialName)">
           Investigation serial : <span class="meet-date">{{ serialName }} </span>
         </p>
-        <p>
+        <p v-if="hasValue(title)">
           Incident title : <span class="team-leader">{{ title }}</span>
         </p>
-        <p>
+        <p v-if="hasValue(incidantType?.title)">
           Incident Classification : <span class="incidant-type">{{ incidantType?.title }}</span>
         </p>
-        <p>
+        <p v-if="hasValue(observationCreator)">
           Created By : <span class="incidant-type">{{ observationCreator }}</span>
         </p>
-        <p>
+        <p v-if="hasValue(dateTimeShift)">
           date & time & shift :
-          <span class="incidant-type">{{ date }} & {{ time }} & {{ shift?.title }}</span>
+          <span class="incidant-type">{{ dateTimeShift }}</span>
         </p>
-        <p>
+        <p v-if="hasValue(place)">
           Work Area / Facility : <span class="team-number">{{ place }}</span>
         </p>
-        <p>
+        <p v-if="hasValue(equipment?.serial_name)">
           Equipment / Tag No : <span class="team-number">{{ equipment?.serial_name }}</span>
         </p>
         <div class="input-wrapper col-span-2 w-full root-cause-panel">

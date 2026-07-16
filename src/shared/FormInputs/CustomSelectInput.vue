@@ -1,17 +1,18 @@
 <script lang="ts" setup>
 import MultiSelect from 'primevue/multiselect'
 import Select from 'primevue/select'
-import { computed, ref, watch, toRefs, type Component, useSlots } from 'vue'
+import { computed, ref, watch, toRefs, type Component } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import type Params from '@/base/core/Params/params'
+import type Params from '@/base/core/params/params'
 import ValidationService from '@/base/Presentation/utils/validationService'
 import IconBackStage from '@/shared/icons/IconBackStage.vue'
-import PlusIcon from '../icons/PlusIcon.vue'
 import StarRequiredInput from '../icons/StarRequiredInput.vue'
 import FieldHelpIcon from './FieldHelpIcon.vue'
 
 export type ComponentType = 'select' | 'multiselect'
+
+defineOptions({ inheritAttrs: false })
 
 interface Props {
   label?: string
@@ -19,7 +20,7 @@ interface Props {
   staticOptions?: TitleInterface[] | null
   modelValue: TitleInterface | TitleInterface[] | null
   placeholder: string
-  controller?: SelectControllerInterface<any>
+  controller?: SelectControllerInterface<unknown>
   params?: Params
   type?: ComponentType | number
   required?: boolean
@@ -161,8 +162,7 @@ async function reloadData(): Promise<void> {
   normalizedValue.value = isMultiselect.value ? [] : null
 }
 
-const updateSlot = (data: any) => {
-  console.log(data, 'data')
+const updateSlot = (data: unknown) => {
   emit('update:slot', data)
 }
 </script>
@@ -189,7 +189,7 @@ const updateSlot = (data: any) => {
         <span v-if="required" class="text-red-500">
           <StarRequiredInput />
         </span>
-        {{ $t(label ?? '') }}
+        {{ label ? $t(label) : '' }}
       </label>
 
       <FieldHelpIcon v-if="helpText" :text="helpText" />
@@ -206,7 +206,7 @@ const updateSlot = (data: any) => {
     :placeholder="placeholder"
     class="input-select w-full"
     option-label="title"
-    v-bind="multiselectProps"
+    v-bind="{ ...multiselectProps, ...$attrs }"
     filter
     :loading="loading"
     :empty-message="message"

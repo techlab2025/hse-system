@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { watch } from 'vue'
 import ToggleSwitch from 'primevue/toggleswitch'
+import FieldHelpIcon from './FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:value'])
 const props = defineProps<{
@@ -8,6 +9,7 @@ const props = defineProps<{
   switch_title?: string
   switch_reverse?: boolean
   isAuto?: boolean | true
+  helpText?: string
 }>()
 
 
@@ -30,9 +32,12 @@ watch(props.fields, (newVal) => {
 
 <template>
   <div class="zone-data-container">
-    <div v-for="(field, index) in fields" :key="field.key" class="input-wrapper">
+    <div v-for="field in fields" :key="field.key" class="input-wrapper">
       <div class="input-title">
-        <label class="title" :for="field.key">{{ $t(field.label) }}</label>
+        <label class="title flex items-center gap-2" :for="field.key">
+          {{ $t(field.label) }}
+          <FieldHelpIcon v-if="helpText" :text="helpText" />
+        </label>
         <div class="switch-btn" v-if="isAuto">
           <p class="title">{{ switch_title }}</p>
           <ToggleSwitch v-model="field.enabled" />

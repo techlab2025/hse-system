@@ -61,6 +61,7 @@ export default class HazardDetailsModel {
   public work_shift: ShiftModel
   public hazardSubType: TitleInterface
   public hazardType: TitleInterface
+  public createdAt:string
   constructor(
     id: number,
     title: string,
@@ -105,6 +106,7 @@ export default class HazardDetailsModel {
     work_shift: ShiftModel,
     hazardSubType: TitleInterface,
     hazardType: TitleInterface,
+    createdAt:string
   ) {
     this.id = id
     this.title = title
@@ -149,6 +151,7 @@ export default class HazardDetailsModel {
     this.work_shift = work_shift
     this.hazardSubType = hazardSubType
     this.hazardType = hazardType
+    this.createdAt=createdAt
   }
 
   static fromMap(data: any): HazardDetailsModel {
@@ -198,6 +201,7 @@ export default class HazardDetailsModel {
       data?.work_shift,
       data?.hazard_sub_type,
       data?.hazard_type,
+      data?.created_at
     )
   }
 

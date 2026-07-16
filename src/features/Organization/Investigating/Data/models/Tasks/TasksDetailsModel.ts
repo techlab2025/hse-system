@@ -20,14 +20,23 @@ export default class TasksDetailsModel {
     this.date = date
   }
 
-  static fromMap(data: any): TasksDetailsModel {
+  static fromMap(data: {
+    id: number
+    investigation: investigationMeeting
+    status: number
+    title: string
+    due_date: string
+  }): TasksDetailsModel {
     return new TasksDetailsModel(data.id, data.investigation, data.status, data.title, data.due_date)
   }
 
-  static example: TasksDetailsModel=
-    new TasksDetailsModel(1, { id: 1, date: '2025-12-23', status: 0, type: 0 }, 1, '2025-12-23', '12:00'),
-
-
+  static example: TasksDetailsModel = new TasksDetailsModel(
+    1,
+    { id: 1, date: '2025-12-23', status: 0, type: 0 },
+    1,
+    '2025-12-23',
+    '12:00',
+  )
 }
 
 interface investigationMeeting {

@@ -34,6 +34,7 @@ const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
   data?: OrganizatoinEmployeeDetailsModel
+  heirarchyId?: number
 }>()
 const Name = ref(props.data?.name)
 const Phone = ref(props.data?.phone)
@@ -121,7 +122,8 @@ const updaetdashAccessStatus = (status: number) => {
   updateData()
 }
 const updateData = () => {
-  const HeirarchyIds = new HirarachyEmployeeParams(Heirarchy?.value?.id)
+  const hierarchyId = props.heirarchyId ?? Heirarchy.value?.id
+  const HeirarchyIds = new HirarachyEmployeeParams(hierarchyId as number)
   const RoleIds = role.value?.map((item) => new RolesOrganizationEmployeeParams(item.id))
   console.log(booleandashAccessStatus.value, 'booleandashAccessStatus')
   const params = props.data?.id
@@ -205,6 +207,11 @@ const setHeirarchy = (data: TitleInterface) => {
   Heirarchy.value = data
   updateData()
 }
+
+watch(
+  () => props.heirarchyId,
+  () => updateData(),
+)
 
 const setRole = (data: TitleInterface[]) => {
   role.value = data
@@ -390,7 +397,11 @@ defineExpose({
       :placeholder="$t('enter your confirm password')" />
   </div>-->
   <!-- :type="2" -->
-  <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="Heirarchy">
+  <div
+    v-if="props.heirarchyId == null"
+    class="col-span-4 md:col-span-2 input-wrapper"
+    data-required-field="Heirarchy"
+  >
     <UpdatedCustomInputSelect
       :modelValue="Heirarchy"
       @update:modelValue="setHeirarchy"

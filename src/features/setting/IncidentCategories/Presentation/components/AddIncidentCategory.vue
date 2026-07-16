@@ -10,10 +10,12 @@ const router = useRouter()
 const route = useRoute()
 const params = ref<Params | null>(null)
 const formKey = ref(0)
+const formRef = ref<InstanceType<typeof IncidentCategoryForm> | null>(null)
 const emit = defineEmits(['update:data'])
 const addIncidentCategoryController = AddIncidentCategoryController.getInstance()
 
 const addIncidentCategory = async () => {
+  if (!(await formRef.value?.validateRequiredFields())) return
   await addIncidentCategoryController.addIncidentCategory(
     params.value as AddIncidentCategoryParams,
     router,
@@ -22,6 +24,7 @@ const addIncidentCategory = async () => {
 }
 
 const saveAndAdd = async () => {
+  if (!(await formRef.value?.validateRequiredFields())) return
   const state = await addIncidentCategoryController.addIncidentCategory(
     params.value as AddIncidentCategoryParams,
     router,
@@ -40,7 +43,7 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addIncidentCategory">
-    <IncidentCategoryForm :key="formKey" @update:data="setParams" />
+    <IncidentCategoryForm ref="formRef" :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
       <button
@@ -68,8 +71,12 @@ const setParams = (data: Params) => {
   flex-direction: row !important;
   width: 100% !important;
   button {
-    &.w-full { width: 100%; }
-    &.w-1\/2 { width: 50%; }
+    &.w-full {
+      width: 100%;
+    }
+    &.w-1\/2 {
+      width: 50%;
+    }
   }
 }
 </style>

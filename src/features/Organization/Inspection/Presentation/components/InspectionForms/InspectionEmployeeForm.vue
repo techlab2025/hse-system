@@ -84,6 +84,7 @@ const setProject = (data: TitleInterface) => {
 
 const setProjectZone = (data: TitleInterface) => {
   SelectedProjectZone.value = data
+  SelectedEmployee.value = null
   UpdateData()
 }
 

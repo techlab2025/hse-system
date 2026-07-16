@@ -117,13 +117,13 @@ const toggleMode = (index: number, isManual: boolean) => {
                   :hascontent="isSelectHasContent[index]"
                 >
                   <template #reloadHeader>
-                    <div class="flex gap-2 items-center">
+                    <div class="employee-mode-actions flex gap-2 items-center">
                       <button
                         :class="isSelectHasContent[index] ? 'active' : ''"
                         class="emp-name"
                         @click.prevent="toggleMode(index, true)"
                       >
-                        {{ $t('unemployed_witness') }}
+                        {{ $t('not_stuff_witness') }}
                       </button>
 
                       <button
@@ -131,7 +131,7 @@ const toggleMode = (index: number, isManual: boolean) => {
                         class="emp-select"
                         @click.prevent="toggleMode(index, false)"
                       >
-                        {{ $t('select') }}
+                        {{ $t('stuff_witness') }}
                       </button>
                     </div>
                   </template>
@@ -171,6 +171,25 @@ const toggleMode = (index: number, isManual: boolean) => {
 </template>
 
 <style scoped>
+.template-container,
+.heirarchy-info,
+.timeline-container,
+.timeline-wrapper,
+.timeline-item,
+.timeline-content {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.timeline-content .input-wrapper,
+.timeline-content input {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
 .timeline-actions {
   width: auto;
   height: auto;
@@ -189,5 +208,75 @@ const toggleMode = (index: number, isManual: boolean) => {
   border: 1px solid color-mix(in srgb, var(--text-soft) 40%, transparent);
   border-radius: 50%;
   background: var(--brand-primary-50);
+}
+
+.employee-mode-actions {
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .timeline-wrapper {
+    padding-left: 0;
+    padding-inline-start: 0;
+  }
+
+  .timeline-line,
+  .timeline-dot {
+    display: none;
+  }
+
+  .timeline-item {
+    padding-top: 44px;
+    margin-bottom: 14px;
+    border: 1px solid var(--brand-primary-100);
+    background: var(--surface-1);
+  }
+
+  .timeline-marker {
+    position: absolute;
+    inset-inline-start: auto;
+    inset-inline-end: 10px;
+    top: 8px;
+    width: auto;
+    z-index: 3;
+  }
+
+  .timeline-actions {
+    position: static;
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    height: auto;
+    transform: none;
+  }
+
+  .timeline-action {
+    display: block;
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .timeline-content {
+    padding: 10px 12px 12px;
+  }
+
+  .timeline-content :deep(.input-label.flex.justify-between.w-full) {
+    align-items: stretch;
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .employee-mode-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .employee-mode-actions button {
+    min-width: 0;
+    text-align: center;
+  }
 }
 </style>

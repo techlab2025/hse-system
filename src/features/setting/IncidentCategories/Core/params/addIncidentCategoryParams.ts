@@ -5,7 +5,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 export default class AddIncidentCategoryParams implements Params {
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true },
-    incidentTypeId: { required: true },
+    incidentTypeId: { required: true, min: 1 },
   })
 
   constructor(
@@ -16,7 +16,7 @@ export default class AddIncidentCategoryParams implements Params {
   toMap(): Record<string, any> {
     return {
       translations: this.translation.toMap(),
-      incident_type_id: this.incidentTypeId,
+      accidents_type_id: this.incidentTypeId,
     }
   }
 

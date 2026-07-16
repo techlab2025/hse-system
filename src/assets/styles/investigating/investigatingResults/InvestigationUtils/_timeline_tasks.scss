@@ -207,6 +207,30 @@
 
       .timeline-content .timeline-contect-select {
         flex-wrap: wrap;
+
+        > .input-wrapper {
+          flex: 1 1 240px;
+          min-width: 0;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .timeline-container .timeline-content {
+      gap: 10px;
+      border-radius: 10px;
+      padding: 10px;
+
+      .timeline-contect-select {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 10px;
+
+        > .input-wrapper {
+          width: 100%;
+          flex-basis: auto;
+        }
       }
     }
   }

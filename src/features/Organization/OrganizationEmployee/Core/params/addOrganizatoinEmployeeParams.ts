@@ -88,8 +88,8 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     } else {
       data['serial'] = this.serialNumber
     }
-    if (this.dashAccessStatus || this.dashAccessStatus == false)
-      data['can_access_dashboard'] = this.dashAccessStatus
+
+    data['can_access_dashboard'] = Number(this.dashAccessStatus)
     // data['certificate_id'] = this.certificateId.map((id) => id)
     data['allow_all_permissions'] = this.allPermissions
 

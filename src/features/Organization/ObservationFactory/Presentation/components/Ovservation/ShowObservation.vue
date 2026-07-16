@@ -64,55 +64,37 @@ const GetHeader = (value: number) => {
         <span class="title"> {{ $t('This Hazared caused the project to be halted') }}. </span>
       </div>
 
-      <div class="show-observation-container top-card">
+      <div class="show-observation-container observation-details-card">
         <ObservationCard :data="state.data" @update:data="ShowData" />
+
+        <template v-if="state.data?.type != Observation.ObservationType">
+          <div class="observation-type-container">
+            <ObservationFactoryGenralInfo :data="state.data" />
+          </div>
+
+          <ObservationFactoryInspection
+            v-if="state?.data?.taskResultItemAnswer"
+            :data="state?.data?.taskResultItemAnswer"
+            :templateId="state?.data?.task?.template_id"
+            :taskId="state?.data?.task?.task_id"
+          />
+
+          <ObservationInjuriesShow
+            v-if="state.data?.injuries?.length"
+            :data="state.data?.injuries"
+          />
+
+          <ObservationWitnessStatements
+            v-if="state.data?.witnessStatements?.length"
+            :data="state.data?.witnessStatements"
+          />
+
+          <ObservationDeths v-if="state.data?.deaths?.length" :data="state.data?.deaths" />
+        </template>
       </div>
-      <div
-        class="show-observation-container"
-        v-if="state.data?.type != Observation.ObservationType"
-      >
-        <!-- <HeaderPage :title="`${GetHeader(state.data?.type)}`"
-          :subtitle="'Identify and report potential Incedants before they cause harm'" :img="HazardImage" /> -->
 
-        <div class="observation-type-container">
-          <!-- <p class="observation-type-title">{{ GetHeader(state?.data?.type) }} {{ $t('Type') }}</p> -->
-          <ObservationFactoryGenralInfo :data="state.data" />
-        </div>
-
-        <ObservationFactoryInspection
-          v-if="state?.data?.taskResultItemAnswer"
-          :data="state?.data?.taskResultItemAnswer"
-          :templateId="state?.data?.task?.template_id"
-          :taskId="state?.data?.task?.task_id"
-        />
-
-        <!-- <ObservationCapaDestails
-          v-if="state?.data?.capa || state?.data?.type == Observation.HazardType"
-          :data="state.data?.capa"
-        /> -->
-
-        <!-- المصابين -->
-        <ObservationInjuriesShow
-          v-if="state.data?.injuries?.length && state.data?.injuries?.length > 0"
-          :data="state.data?.injuries"
-        />
-
-        <!-- الشهادات -->
-        <ObservationWitnessStatements
-          v-if="state.data?.witnessStatements?.length && state.data?.witnessStatements?.length > 0"
-          :data="state.data?.witnessStatements"
-        />
-
-        <!-- الوفيات -->
-        <ObservationDeths
-          v-if="state.data?.deaths?.length && state.data?.deaths?.length > 0"
-          :data="state.data?.deaths"
-        />
-
-        <ObservationInvestigationDetails
-          v-if="state.data?.investigation"
-          :data="state.data?.investigation"
-        />
+      <div v-if="state.data?.investigation" class="show-observation-container investigation-card">
+        <ObservationInvestigationDetails :data="state.data?.investigation" />
       </div>
     </template>
     <template #loader>
@@ -151,5 +133,13 @@ const GetHeader = (value: number) => {
 <style scoped>
 .index-table-card-container {
   margin-top: 20px;
+}
+
+.observation-details-card {
+  margin-bottom: 16px;
+}
+
+.investigation-card {
+  padding: 18px;
 }
 </style>

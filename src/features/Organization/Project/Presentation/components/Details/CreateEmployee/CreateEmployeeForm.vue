@@ -50,7 +50,10 @@ onMounted(() => {
             :placeholder="$t('employee')" @update:modelValue="updateEmployee" :onclick="ShowEmployeeDialog" />
         </div>
       </div>
-      <EmployeeSelectDialog v-model:visible="EmployeeVisable" />
+      <EmployeeSelectDialog
+        v-model:visible="EmployeeVisable"
+        :heirarchy-id="props.heirarchyId"
+      />
     </form>
   </div>
 </template>
