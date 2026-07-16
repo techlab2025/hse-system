@@ -714,22 +714,46 @@ watch(
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
-  min-height: 48px;
-  padding-inline: 18px;
-  border-radius: 14px;
-  box-shadow: 0 10px 24px color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+  gap: 8px;
+  width: auto;
+  min-width: max-content;
+  min-height: 42px;
+  padding: 9px 15px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    var(--PrimaryColor),
+    color-mix(in srgb, var(--PrimaryColor) 78%, var(--status-success))
+  );
+  color: white;
+  font-size: 0.82rem;
+  font-weight: 900;
+  white-space: nowrap;
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--PrimaryColor) 20%, transparent);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease;
+}
+
+.create-inspection-btn:hover {
+  color: white;
+  filter: saturate(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--PrimaryColor) 26%, transparent);
 }
 
 .create-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
-  border-radius: 8px;
+  width: 21px;
+  height: 21px;
+  border-radius: 7px;
   background: color-mix(in srgb, white 18%, transparent);
-  font-size: 1.2rem;
+  font-size: 1rem;
+  font-weight: 700;
   line-height: 1;
 }
 

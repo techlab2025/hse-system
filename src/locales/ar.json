@@ -954,5 +954,7 @@
   "Select zones to refine the incident list": "حدد المناطق لتصفية قائمة الحوادث",
   "all": "الكل",
   "Create Inspection": "إنشاء تفتيش",
-  "Select zones to refine the inspection list": "حدد المناطق لتصفية قائمة التفتيش"
+  "Select zones to refine the inspection list": "حدد المناطق لتصفية قائمة التفتيش",
+  "Projects": "المشاريع",
+  "Select a project to filter the displayed records": "حدد مشروعًا لتصفية السجلات المعروضة"
 }

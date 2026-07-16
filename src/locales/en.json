@@ -1467,5 +1467,7 @@
   "Select zones to refine the incident list": "Select zones to refine the incident list",
   "all": "All",
   "Create Inspection": "Create Inspection",
-  "Select zones to refine the inspection list": "Select zones to refine the inspection list"
+  "Select zones to refine the inspection list": "Select zones to refine the inspection list",
+  "Projects": "Projects",
+  "Select a project to filter the displayed records": "Select a project to filter the displayed records"
 }

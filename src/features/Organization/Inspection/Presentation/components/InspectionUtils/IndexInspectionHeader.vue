@@ -54,15 +54,11 @@ const GetProjectId = (id: number) => {
       </p>
     </div>
 
-    <div class="index-project-filter-row">
-      <div class="project-filter-content">
-        <HeaderProjectsFilter class="noborder" :projects="projects" @update:data="GetProjectId" />
-      </div>
-
-      <div class="index-header-actions">
+    <HeaderProjectsFilter class="noborder" :projects="projects" @update:data="GetProjectId">
+      <template #actions>
         <slot name="actions"></slot>
-      </div>
-    </div>
+      </template>
+    </HeaderProjectsFilter>
   </div>
 </template>
 
@@ -101,34 +97,9 @@ const GetProjectId = (id: number) => {
   font-weight: 900;
 }
 
-.index-project-filter-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  min-width: 0;
-  width: 100%;
-}
-
-.project-filter-content {
-  min-width: 0;
-  flex: 1;
-}
-
-.index-header-actions {
-  flex: 0 0 auto;
-}
-
 @media (max-width: 768px) {
-  .index-project-filter-row {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .index-header-actions,
-  .index-header-actions :deep(a),
-  .index-header-actions :deep(button) {
-    width: 100%;
+  .idnex-header {
+    gap: 12px;
   }
 }
 </style>
