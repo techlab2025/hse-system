@@ -12,6 +12,8 @@ const props = defineProps<{
   length: number
   projects: ProjectModel[]
   isProjectsLoading?: boolean
+  subtitle?: string
+  variant?: 'observation' | 'incident'
 }>()
 const projectSelectStore = useProjectSelectStore()
 const ActiveTap = ref(
@@ -29,30 +31,50 @@ const UpdateData = (Id?: number) => {
 </script>
 
 <template>
-  <div class="idnex-header">
+  <div :class="['idnex-header', `is-${variant || 'observation'}`]">
     <div class="index-title-row">
-      <p class="title">{{ title }}</p>
-      <p class="index-length">
-        Total: <span>{{ length || 0 }}</span>
-      </p>
-    </div>
-
-    <div class="index-project-filter-row">
-      <div class="project-filter-content">
-        <div v-if="isProjectsLoading" class="projects-filter-skeleton" aria-hidden="true">
-          <span v-for="item in 4" :key="item"></span>
+      <div class="index-title-content">
+        <span class="index-title-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path
+              d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"
+              stroke="currentColor"
+              stroke-width="1.8"
+            />
+            <path
+              d="M8 8h8M8 12h8M8 16h5"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+            />
+          </svg>
+        </span>
+        <div class="index-title-copy">
+          <div class="index-title-line">
+            <h1 class="title">{{ title }}</h1>
+            <span class="index-length"
+              ><strong>{{ length || 0 }}</strong> Total</span
+            >
+          </div>
+          <p v-if="subtitle" class="index-subtitle">{{ $t(subtitle) }}</p>
         </div>
-        <HeaderProjectsFilter
-          v-else
-          class="noborder"
-          :projects="projects"
-          @update:data="UpdateData"
-        />
       </div>
 
-      <div class="index-header-actions">
+      <div class="index-primary-action">
         <slot name="actions"></slot>
       </div>
+    </div>
+
+    <div class="project-filter-content project-filter-panel">
+      <div v-if="isProjectsLoading" class="projects-filter-skeleton" aria-hidden="true">
+        <span v-for="item in 4" :key="item"></span>
+      </div>
+      <HeaderProjectsFilter
+        v-else
+        class="noborder"
+        :projects="projects"
+        @update:data="UpdateData"
+      />
     </div>
   </div>
 </template>
@@ -67,47 +89,111 @@ const UpdateData = (Id?: number) => {
 
 .index-title-row {
   display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-width: 0;
 }
 
-.index-title-row .title,
-.index-title-row .index-length {
+.index-title-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.index-title-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 20%, transparent);
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--PrimaryColor) 10%, var(--surface-1));
+  color: var(--PrimaryColor);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--PrimaryColor) 13%, transparent);
+}
+
+.is-incident .index-title-icon {
+  border-color: color-mix(in srgb, var(--status-danger) 20%, transparent);
+  background: color-mix(in srgb, var(--status-danger) 9%, var(--surface-1));
+  color: var(--status-danger);
+}
+
+.index-title-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.index-title-copy {
+  min-width: 0;
+}
+
+.index-title-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.index-title-line .title,
+.index-title-line .index-length,
+.index-subtitle {
   margin: 0;
 }
 
-.index-title-row .index-length {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--GrayText-1);
-  font-size: 0.72rem;
-  font-weight: 700;
+.index-title-line .title {
+  color: var(--header-page-color);
+  font-size: clamp(1.45rem, 2vw, 1.9rem);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  text-transform: capitalize;
 }
 
-.index-title-row .index-length span {
+.index-title-line .index-length {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 9px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 16%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1));
   color: var(--PrimaryColor);
-  font-size: 0.78rem;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.index-title-line .index-length strong {
+  font-size: 0.82rem;
   font-weight: 900;
 }
 
-.index-project-filter-row {
+.index-subtitle {
+  margin-top: 5px;
+  color: var(--GrayText-1);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.index-primary-action {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  min-width: 0;
-  width: 100%;
+  flex: 0 0 auto;
 }
 
 .project-filter-content {
   min-width: 0;
-  flex: 1;
+  width: 100%;
 }
 
-.index-header-actions {
-  flex: 0 0 auto;
+.project-filter-panel {
+  padding: 14px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 11%, var(--main-border));
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface-1) 88%, transparent);
 }
 
 .projects-filter-skeleton {
@@ -151,14 +237,25 @@ const UpdateData = (Id?: number) => {
 }
 
 @media (max-width: 768px) {
-  .index-project-filter-row {
+  .index-title-row {
     align-items: stretch;
     flex-direction: column;
+    gap: 14px;
   }
 
-  .index-header-actions,
-  .index-header-actions :deep(a),
-  .index-header-actions :deep(button) {
+  .index-title-content {
+    align-items: flex-start;
+  }
+
+  .index-title-icon {
+    width: 44px;
+    height: 44px;
+    flex-basis: 44px;
+  }
+
+  .index-primary-action,
+  .index-primary-action :deep(a),
+  .index-primary-action :deep(button) {
     width: 100%;
   }
 

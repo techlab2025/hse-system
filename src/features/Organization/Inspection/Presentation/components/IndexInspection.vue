@@ -358,8 +358,31 @@ watch(
                   to="/organization/equipment-mangement/inspection/add"
                 >
                   <button class="btn btn-primary create-inspection-btn">
-                    <span class="create-icon" aria-hidden="true">+</span>
-                    <span>{{ $t('Create Inspection') }}</span>
+                    <span class="create-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M12 5v14M5 12h14"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                        />
+                      </svg>
+                    </span>
+                    <span class="create-copy">
+                      <small>{{ $t('New inspection') }}</small>
+                      <strong>{{ $t('Create Inspection') }}</strong>
+                    </span>
+                    <span class="create-arrow" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="m9 18 6-6-6-6"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                    </span>
                   </button>
                 </router-link>
               </PermissionBuilder>
@@ -711,50 +734,127 @@ watch(
 }
 
 .create-inspection-btn {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   width: auto;
   min-width: max-content;
-  min-height: 42px;
-  padding: 9px 15px;
+  min-height: 52px;
+  padding: 7px 9px 7px 10px;
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
-  border-radius: 12px;
+  border-radius: 15px;
   background: linear-gradient(
     135deg,
     var(--PrimaryColor),
     color-mix(in srgb, var(--PrimaryColor) 78%, var(--status-success))
   );
   color: white;
-  font-size: 0.82rem;
-  font-weight: 900;
   white-space: nowrap;
-  box-shadow: 0 8px 18px color-mix(in srgb, var(--PrimaryColor) 20%, transparent);
+  box-shadow:
+    0 10px 22px color-mix(in srgb, var(--PrimaryColor) 22%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 24%, transparent);
   transition:
     transform 0.18s ease,
     box-shadow 0.18s ease,
     filter 0.18s ease;
 }
 
+.create-inspection-btn::before {
+  content: '';
+  position: absolute;
+  top: -36px;
+  inset-inline-end: -22px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: color-mix(in srgb, white 12%, transparent);
+  pointer-events: none;
+}
+
 .create-inspection-btn:hover {
   color: white;
   filter: saturate(1.08);
-  transform: translateY(-1px);
-  box-shadow: 0 12px 24px color-mix(in srgb, var(--PrimaryColor) 26%, transparent);
+  transform: translateY(-2px);
+  box-shadow:
+    0 15px 28px color-mix(in srgb, var(--PrimaryColor) 28%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 28%, transparent);
 }
 
 .create-icon {
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 21px;
-  height: 21px;
-  border-radius: 7px;
-  background: color-mix(in srgb, white 18%, transparent);
-  font-size: 1rem;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border: 1px solid color-mix(in srgb, white 18%, transparent);
+  border-radius: 11px;
+  background: color-mix(in srgb, white 14%, transparent);
+}
+
+.create-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.create-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  text-align: start;
+}
+
+.create-copy small {
+  color: color-mix(in srgb, white 72%, transparent);
+  font-size: 0.64rem;
   font-weight: 700;
   line-height: 1;
+}
+
+.create-copy strong {
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.create-arrow {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 34px;
+  border-radius: 10px;
+  background: color-mix(in srgb, white 10%, transparent);
+  transition: transform 0.18s ease;
+}
+
+.create-arrow svg {
+  width: 16px;
+  height: 16px;
+}
+
+.create-inspection-btn:hover .create-arrow {
+  transform: translateX(2px);
+}
+
+[dir='rtl'] .create-arrow svg {
+  transform: rotate(180deg);
+}
+
+[dir='rtl'] .create-inspection-btn:hover .create-arrow {
+  transform: translateX(-2px);
 }
 
 @media (max-width: 768px) {

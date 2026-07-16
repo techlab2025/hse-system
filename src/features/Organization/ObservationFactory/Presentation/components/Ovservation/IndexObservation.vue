@@ -290,6 +290,8 @@ const GetObservationType = (type: number) => {
               :length="state?.pagination?.total || 0"
               :projects="Projects"
               :isProjectsLoading="isProjectsLoading"
+              subtitle="Manage, filter, and review workplace observations"
+              variant="observation"
               @update:data="setSelectedProjectFilter"
             >
               <template #actions>
@@ -302,7 +304,10 @@ const GetObservationType = (type: number) => {
                   <router-link :to="`/organization/equipment-mangement/observation/add`">
                     <button class="btn btn-primary create-observation-btn">
                       <span class="create-icon" aria-hidden="true">+</span>
-                      <span>{{ $t('create_observation') }}</span>
+                      <span class="create-copy"
+                        ><small>{{ $t('New report') }}</small
+                        ><strong>{{ $t('create_observation') }}</strong></span
+                      >
                     </button>
                   </router-link>
                 </PermissionBuilder>
@@ -700,6 +705,28 @@ const GetObservationType = (type: number) => {
   background: color-mix(in srgb, white 18%, transparent);
   font-size: 1.2rem;
   line-height: 1;
+}
+
+.create-copy {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 2px;
+  text-align: start;
+}
+
+.create-copy small {
+  color: color-mix(in srgb, white 72%, transparent);
+  font-size: 0.64rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.create-copy strong {
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 900;
+  line-height: 1.15;
 }
 
 @media (max-width: 860px) {

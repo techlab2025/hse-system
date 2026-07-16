@@ -956,5 +956,10 @@
   "Create Inspection": "إنشاء تفتيش",
   "Select zones to refine the inspection list": "حدد المناطق لتصفية قائمة التفتيش",
   "Projects": "المشاريع",
-  "Select a project to filter the displayed records": "حدد مشروعًا لتصفية السجلات المعروضة"
+  "Select a project to filter the displayed records": "حدد مشروعًا لتصفية السجلات المعروضة",
+  "Manage, filter, and review workplace inspections": "إدارة وتصفية ومراجعة عمليات التفتيش في مكان العمل",
+  "New inspection": "تفتيش جديد",
+  "New report": "تقرير جديد",
+  "Manage, filter, and review workplace observations": "إدارة وتصفية ومراجعة ملاحظات مكان العمل",
+  "Manage, filter, and review workplace incidents": "إدارة وتصفية ومراجعة حوادث مكان العمل"
 }

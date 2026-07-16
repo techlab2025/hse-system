@@ -1469,5 +1469,10 @@
   "Create Inspection": "Create Inspection",
   "Select zones to refine the inspection list": "Select zones to refine the inspection list",
   "Projects": "Projects",
-  "Select a project to filter the displayed records": "Select a project to filter the displayed records"
+  "Select a project to filter the displayed records": "Select a project to filter the displayed records",
+  "Manage, filter, and review workplace inspections": "Manage, filter, and review workplace inspections",
+  "New inspection": "New inspection",
+  "New report": "New report",
+  "Manage, filter, and review workplace observations": "Manage, filter, and review workplace observations",
+  "Manage, filter, and review workplace incidents": "Manage, filter, and review workplace incidents"
 }
