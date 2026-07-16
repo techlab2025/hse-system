@@ -647,8 +647,11 @@ watch(
 
 .inspection-zone-section {
   margin-top: 18px;
-  padding-top: 18px;
-  border-top: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
+  padding: 14px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 11%, var(--main-border));
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface-1) 88%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 65%, transparent);
 }
 
 .inspection-filter-heading {
@@ -698,19 +701,34 @@ watch(
 
 .inspection-zone-filter :deep(.filter-container) {
   display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  padding: 2px 2px 8px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--brand-primary-400) 50%, transparent)
+    transparent;
 }
 
 .inspection-zone-filter :deep(.filter) {
+  flex: 0 0 auto;
   margin: 0;
-  padding: 9px 14px;
-  border: 1px solid var(--main-border);
+  min-height: 36px;
+  padding: 8px 14px;
+  border: 1px solid var(--brand-primary-100);
   border-radius: 999px;
-  background: var(--surface-1);
-  color: var(--GrayText-1);
-  font-size: 0.8rem;
+  background: color-mix(in srgb, var(--surface-1) 86%, transparent);
+  color: var(--brand-primary-600);
+  font-family: 'Bold';
+  font-size: 12px;
   font-weight: 800;
+  letter-spacing: 0;
+  white-space: nowrap;
   cursor: pointer;
   transition:
     transform 0.18s ease,
@@ -721,16 +739,17 @@ watch(
 }
 
 .inspection-zone-filter :deep(.filter:hover) {
-  border-color: color-mix(in srgb, var(--PrimaryColor) 32%, var(--main-border));
-  color: var(--PrimaryColor);
   transform: translateY(-1px);
+  border-color: var(--brand-primary-200);
+  background: var(--brand-primary-50);
+  color: var(--brand-primary-500);
 }
 
 .inspection-zone-filter :deep(.filter.active) {
-  border-color: var(--PrimaryColor);
+  border-color: color-mix(in srgb, var(--status-success) 50%, transparent);
   background: var(--PrimaryColor);
-  color: white;
-  box-shadow: 0 8px 20px color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+  color: var(--text-on-brand);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--brand-primary-500) 20%, transparent);
 }
 
 .create-inspection-btn {
