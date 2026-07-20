@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type TaskResultItemModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/ItemTasksResultModel'
-import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
+import AnswerTextField from './AnswerTextField.vue'
+import EvidenceImageUpload from './EvidenceImageUpload.vue'
+import QuestionHeader from './QuestionHeader.vue'
 import { onMounted, ref, watch } from 'vue'
 
 type ValidationErrors = {
@@ -21,7 +23,7 @@ const TextValue = ref('')
 const questionImages = ref<string[]>([])
 
 const UpdateQuestionImages = (data: string[]) => {
-  questionImages.value = data
+  questionImages.value = data ?? []
   UpdateData()
 }
 
@@ -50,59 +52,38 @@ onMounted(UpdateData)
 </script>
 
 <template>
-  <div class="show-template-document-textarea flex flex-col gap-4">
-    <div class="input-wrapper">
-      <label class="font-bold mb-2 block">{{ title }}</label>
-      <textarea
-        v-model="TextValue"
-        class="input w-full border rounded-md p-2 min-h-[80px]"
-        :placeholder="$t(`Please enter details...`)"
-        @change="UpdateData"
-      />
-    </div>
+  <div class="show-template-document-textarea question-response">
+    <QuestionHeader type="text" :title="title" />
 
-    <div
+    <AnswerTextField
+      v-model="TextValue"
+      :label="$t('your_answer')"
+      :placeholder="$t('Please enter details...')"
+      min-height="150px"
+    />
+
+    <EvidenceImageUpload
       v-if="require_image"
-      class="image-field mt-2"
-      :data-answer-validation-error="Boolean(validation_errors?.questionImage)"
-    >
-      <label class="evidence-label">
-        {{ $t('question_photo') }}
-        <span v-if="Number(required_type) === 2" class="required-mark">*</span>
-      </label>
-      <UploadMultiImage
-        @update:images="UpdateQuestionImages"
-        :initialImages="selected_data?.files?.map((file) => file.url) || []"
-      />
-      <p v-if="validation_errors?.questionImage" class="required-field-message">
-        {{ validation_errors.questionImage }}
-      </p>
-    </div>
+      :label="$t('question_photo')"
+      :required="Number(required_type) === 2"
+      :error="validation_errors?.questionImage"
+      :initial-images="
+        questionImages.length ? questionImages : selected_data?.files?.map((file) => file.url) || []
+      "
+      @update:images="UpdateQuestionImages"
+    />
   </div>
 </template>
 
 <style scoped>
-.evidence-label {
-  display: block;
-  margin-bottom: 0.45rem;
-  font-size: 0.875rem;
-  font-weight: 700;
+.question-response {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
 }
 
-.required-mark,
-.required-field-message {
-  color: var(--status-danger);
-}
-
-.required-field-message {
-  margin-top: 0.35rem;
-  font-size: 0.8rem;
-  font-weight: 700;
-}
-
-[data-answer-validation-error='true'].image-field {
-  padding: 0.65rem;
-  border: 1px solid var(--status-danger);
-  border-radius: 0.6rem;
+:deep(.answer-text-field) {
+  margin-top: 0;
 }
 </style>

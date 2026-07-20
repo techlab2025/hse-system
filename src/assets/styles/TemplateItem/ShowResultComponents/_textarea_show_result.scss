@@ -16,26 +16,26 @@
       position: relative;
       padding-left: 15px;
 
-      &::before {
-        position: absolute;
-        content: '';
-        left: 0;
-        top: 0;
-        height: 100%;
-        width: 7px;
-        border-radius: 18px;
-        background-color: color-mix(in srgb, var(--brand-primary-600) 3.92%, transparent);
-      }
-      &::after {
-        position: absolute;
-        content: '';
-        left: 2px;
-        top: 0;
-        height: 90%;
-        width: 3px;
-        border-radius: 18px;
-        background-color: $PrimaryColor;
-      }
+      // &::before {
+      //   position: absolute;
+      //   content: '';
+      //   left: 0;
+      //   top: 0;
+      //   height: 100%;
+      //   width: 7px;
+      //   border-radius: 18px;
+      //   background-color: color-mix(in srgb, var(--brand-primary-600) 3.92%, transparent);
+      // }
+      // &::after {
+      //   position: absolute;
+      //   content: '';
+      //   left: 2px;
+      //   top: 0;
+      //   height: 90%;
+      //   width: 3px;
+      //   border-radius: 18px;
+      //   background-color: $PrimaryColor;
+      // }
       .answer {
         color: $PrimaryColor;
         font-size: $SmSize;

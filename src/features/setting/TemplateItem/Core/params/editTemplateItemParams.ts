@@ -54,6 +54,7 @@ export default class implements Params {
     data['items'] = this.answers.map((item) => ({
       title: item.title,
       is_danger: item.is_danger ? 1 : 0,
+      is_upload: item.is_upload ? 1 : 0,
       textarea_type: item.has_auto_observation
         ? TextAreaStatusEnum.required
         : item.textarea_type
@@ -71,6 +72,7 @@ export default class implements Params {
 interface items {
   title: string
   is_danger: boolean
+  is_upload: boolean
   textarea_type: boolean
   has_auto_observation: boolean
 }

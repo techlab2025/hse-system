@@ -26,16 +26,16 @@
         border-radius: 18px;
         background-color: color-mix(in srgb, var(--brand-primary-600) 3.92%, transparent);
       }
-      &::after {
-        position: absolute;
-        content: '';
-        left: 2px;
-        top: 0;
-        height: 90%;
-        width: 3px;
-        border-radius: 18px;
-        background-color: $PrimaryColor;
-      }
+      // &::after {
+      //   position: absolute;
+      //   content: '';
+      //   left: 2px;
+      //   top: 0;
+      //   height: 90%;
+      //   width: 3px;
+      //   border-radius: 18px;
+      //   background-color: $PrimaryColor;
+      // }
       .answer {
         color: $PrimaryColor;
         font-size: $SmSize;

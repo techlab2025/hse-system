@@ -18,7 +18,7 @@ export default class ItemModel extends TitleInterface {
       kpi: String(textareaType),
       decodedData: String(hasObservation),
     })
-    this.is_upload = !!isUpload
+    this.is_upload = isUpload === true || Number(isUpload) === 1
   }
 
   static fromMap(data: any): ItemModel {
@@ -28,7 +28,7 @@ export default class ItemModel extends TitleInterface {
       data.is_danger,
       data.textarea_type,
       data.has_auto_observation,
-      data.is_upload,
+      data.is_upload ?? data.isUpload ?? false,
     )
   }
 }
