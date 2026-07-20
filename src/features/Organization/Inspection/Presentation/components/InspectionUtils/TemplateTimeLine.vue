@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import TitleInterface from '@/base/Data/Models/title_interface'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
 import { onMounted, ref, watch } from 'vue'
@@ -22,7 +21,10 @@ const createNewAnswerObject = () => ({
   id: Math.random().toString(36).substring(2, 9),
   itemTitle: '',
   itemTag: '',
-  SelectedActionType: new TitleInterface({ id: ActionsEnum.CHECKBOX, title: 'Checkbox' }),
+  SelectedActionType: new TitleInterface({
+    id: ActionsEnum.CHECKBOX,
+    title: 'Multiple Choice',
+  }),
   TemplateItems: [],
   isUpdloadImage: false,
   ImageStatus: 0,
@@ -63,9 +65,24 @@ const ActionsType = ref<TitleInterface[]>([
   new TitleInterface({ id: ActionsEnum.DROPDOWN, title: 'Dropdown', subtitle: '' }),
   new TitleInterface({ id: ActionsEnum.TEXTAREA, title: 'Text', subtitle: '' }),
 ])
+const UpdateType = (itemIndex: number, selectedTypeId: number | string | null) => {
+  const selectedId = Number(selectedTypeId)
+  if (!Number.isFinite(selectedId)) return
+  const nextType = ActionsType.value.find((type) => type.id === selectedId)
+  const item = Answers.value[itemIndex]
+  if (!nextType || !item) return
 
-const UpdateType = () => {
+  item.SelectedActionType = nextType
+
+  if (nextType.id === ActionsEnum.TEXTAREA) {
+    item.TemplateItems = []
+  }
+
   UpdateData()
+}
+
+const UpdateTypeFromEvent = (itemIndex: number, event: Event) => {
+  UpdateType(itemIndex, (event.target as HTMLSelectElement).value)
 }
 
 const updateTemplateImage = (
@@ -150,7 +167,17 @@ watch(
               </div>
             </div>
 
-            <div class="timeline-content template-timeline-content grid grid-cols-4 w-full" :data-template-validation-error="Boolean(fieldError(index, 'title') || fieldError(index, 'tag') || fieldError(index, 'type') || fieldError(index, 'answers'))">
+            <div
+              class="timeline-content template-timeline-content grid grid-cols-4 w-full"
+              :data-template-validation-error="
+                Boolean(
+                  fieldError(index, 'title') ||
+                    fieldError(index, 'tag') ||
+                    fieldError(index, 'type') ||
+                    fieldError(index, 'answers'),
+                )
+              "
+            >
               <div class="template-section-topline col-span-4">
                 <span class="template-section-chip">{{ index + 1 }}</span>
                 <span class="template-section-rule"></span>
@@ -174,7 +201,9 @@ watch(
                     :placeholder="$t('add your title')"
                     @input="UpdateData"
                   />
-                  <p v-if="fieldError(index, 'title')" class="required-field-message">{{ fieldError(index, 'title') }}</p>
+                  <p v-if="fieldError(index, 'title')" class="required-field-message">
+                    {{ fieldError(index, 'title') }}
+                  </p>
                 </div>
                 <div class="timeline-content-text input-wrapper w-full">
                   <label for="text">{{ $t('inspection_exemined_tag') }}</label>
@@ -185,20 +214,28 @@ watch(
                     :placeholder="$t('add your tag')"
                     @input="UpdateData"
                   />
-                  <p v-if="fieldError(index, 'tag')" class="required-field-message">{{ fieldError(index, 'tag') }}</p>
+                  <p v-if="fieldError(index, 'tag')" class="required-field-message">
+                    {{ fieldError(index, 'tag') }}
+                  </p>
                 </div>
-
                 <div class="input-wrapper type-select">
-                  <CustomSelectInput
-                    :static-options="ActionsType"
-                    v-model="item.SelectedActionType"
-                    :placeholder="$t('select template type..')"
-                    class="mt-4 mr-2 input"
-                    :label="$t('result_type')"
-                    :reload="false"
-                    @update:modelValue="UpdateType"
-                  />
-                  <p v-if="fieldError(index, 'type')" class="required-field-message">{{ fieldError(index, 'type') }}</p>
+                  <label class="input-label">{{ $t('result_type') }}</label>
+                  <select
+                    class="result-type-native-select w-full mt-4 mr-2 input"
+                    :value="item.SelectedActionType?.id"
+                    @change="UpdateTypeFromEvent(index, $event)"
+                  >
+                    <option
+                      v-for="actionType in ActionsType"
+                      :key="actionType.id"
+                      :value="actionType.id"
+                    >
+                      {{ actionType.title }}
+                    </option>
+                  </select>
+                  <p v-if="fieldError(index, 'type')" class="required-field-message">
+                    {{ fieldError(index, 'type') }}
+                  </p>
                 </div>
               </div>
 
@@ -217,7 +254,9 @@ watch(
                 :deletedIndex="DeletedIndex"
                 :validation-errors="validationErrors"
               />
-              <p v-if="fieldError(index, 'answers')" class="required-field-message col-span-4">{{ fieldError(index, 'answers') }}</p>
+              <p v-if="fieldError(index, 'answers')" class="required-field-message col-span-4">
+                {{ fieldError(index, 'answers') }}
+              </p>
             </div>
           </div>
 
@@ -232,6 +271,12 @@ watch(
 </template>
 
 <style scoped>
+.input-label {
+  margin-right: auto;
+  text-align: end;
+  width: 100%;
+  justify-content: start;
+}
 .inspection-template-timeline {
   --template-blue: var(--brand-primary-500);
   --template-navy: var(--brand-primary-800);
@@ -334,7 +379,11 @@ watch(
   bottom: 30px;
   width: 3px;
   border-radius: 999px;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--brand-primary-500) 72%, transparent), color-mix(in srgb, var(--status-success) 58%, transparent)) !important;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--brand-primary-500) 72%, transparent),
+    color-mix(in srgb, var(--status-success) 58%, transparent)
+  ) !important;
   opacity: 1;
 }
 
@@ -428,8 +477,16 @@ watch(
   border: 1px solid var(--template-border) !important;
   border-radius: 22px;
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 94%, transparent)),
-    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary-500) 6%, transparent), color-mix(in srgb, var(--status-success) 5%, transparent));
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface-1) 98%, transparent),
+      color-mix(in srgb, var(--brand-primary-50) 94%, transparent)
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--brand-primary-500) 6%, transparent),
+      color-mix(in srgb, var(--status-success) 5%, transparent)
+    );
   box-shadow: 0 18px 42px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
 }
 
@@ -464,7 +521,11 @@ watch(
 .template-section-rule {
   flex: 1;
   height: 1px;
-  background: linear-gradient(90deg, color-mix(in srgb, var(--brand-primary-500) 24%, transparent), transparent);
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--brand-primary-500) 24%, transparent),
+    transparent
+  );
 }
 
 .timeline-remove-card {
@@ -525,6 +586,22 @@ watch(
 
 .type-select {
   min-width: 220px;
+}
+
+.result-type-native-select {
+  min-height: 46px;
+  padding: 10px 38px 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 95%, transparent);
+  border-radius: 14px;
+  background: var(--surface-1);
+  color: var(--text-strong);
+  cursor: pointer;
+  outline: none;
+}
+
+.result-type-native-select:focus {
+  border-color: color-mix(in srgb, var(--brand-primary-500) 55%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand-primary-500) 10%, transparent);
 }
 
 .required-field-message {

@@ -59,7 +59,6 @@ const {
 // Reactive state
 const loading = ref(false)
 const message = ref('No Data Found')
-const localValue = ref(props.modelValue)
 const dynamicOptions = ref<TitleInterface[]>([])
 
 // Computed properties
@@ -72,20 +71,15 @@ const multiselectProps = computed(() =>
 
 // Value handling
 const normalizedValue = computed({
-  get: () => localValue.value,
+  get: () => modelValue.value,
   set: (newValue) => {
-    localValue.value = isMultiselect.value ? ensureArray(newValue) : ensureSingle(newValue)
-    // console.log(localValue.value, 'localValue.value');
-    emitUpdate()
+    const normalized = isMultiselect.value ? ensureArray(newValue) : ensureSingle(newValue)
+    emitUpdate(normalized)
   },
 })
 
 // Watchers
-watch(modelValue, syncLocalValue)
 watch([params, controller], handleOptionUpdates, { immediate: true })
-
-// Initialization
-syncLocalValue(props.modelValue)
 
 // Methods
 function ensureArray(value: unknown): TitleInterface[] {
@@ -93,20 +87,15 @@ function ensureArray(value: unknown): TitleInterface[] {
 }
 
 function ensureSingle(value: unknown): TitleInterface | null {
-  // console.log(value , "single");
-  return value instanceof TitleInterface ? value : null
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null
+
+  // PrimeVue can return a reactive proxy or a plain API object, so instanceof is not reliable here.
+  const option = value as Partial<TitleInterface>
+  return option.id !== undefined && option.id !== null ? (value as TitleInterface) : null
 }
 
-function syncLocalValue(newValue: typeof props.modelValue): void {
-  if (newValue !== localValue.value) {
-    // console.log(newValue);
-    localValue.value = newValue
-  }
-}
-
-function emitUpdate(): void {
-  // console.log(localValue.value);
-  emit('update:modelValue', localValue.value)
+function emitUpdate(value: TitleInterface | TitleInterface[] | null): void {
+  emit('update:modelValue', value)
   ValidationService.clearError(id.value)
 }
 
@@ -201,8 +190,10 @@ const updateSlot = (data: unknown) => {
   </div>
   <component
     :is="componentType"
-    v-model="normalizedValue"
+    :model-value="normalizedValue"
+    @update:model-value="normalizedValue = $event"
     :options="mergedOptions"
+    data-key="id"
     :placeholder="placeholder"
     class="input-select w-full"
     option-label="title"
