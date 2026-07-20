@@ -1766,5 +1766,12 @@
   "supporting_evidence": "الأدلة المرفقة",
   "answered": "تمت الإجابة",
   "no_answer": "لا توجد إجابة",
-  "open_photo": "فتح الصورة"
+  "open_photo": "فتح الصورة",
+  "open_photo_gallery": "فتح معرض الصور",
+  "photo_gallery": "معرض الصور",
+  "all_photos": "جميع الصور",
+  "browse_evidence_photos": "تصفح صور الأدلة المرفقة.",
+  "photos": "صور",
+  "view_original": "عرض الصورة الأصلية",
+  "no_photos": "لا توجد صور للعرض"
 }

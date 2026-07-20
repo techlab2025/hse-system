@@ -1752,5 +1752,12 @@
   "supporting_evidence": "Supporting evidence",
   "answered": "Answered",
   "no_answer": "No answer",
-  "open_photo": "Open photo"
+  "open_photo": "Open photo",
+  "open_photo_gallery": "Open photo gallery",
+  "photo_gallery": "Photo gallery",
+  "all_photos": "All photos",
+  "browse_evidence_photos": "Browse the attached evidence photos.",
+  "photos": "Photos",
+  "view_original": "View original",
+  "no_photos": "No photos to display"
 }
