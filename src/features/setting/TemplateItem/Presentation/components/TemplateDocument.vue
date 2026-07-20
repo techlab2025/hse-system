@@ -105,6 +105,7 @@ const showMore = ref(false)
       <img :src="DocumnetHeader" alt="header" />
     </div>
     <div class="template-document-content-container">
+      
       <div
         v-for="(tag, index) in route.path.includes('equipment-mangement/inspection/add')
           ? showMore

@@ -10,10 +10,7 @@ import TemplateDocumentTextAreaShow from './TemplateDocumentTypes/TemplateDocume
 import { ActionsEnum } from '@/features/setting/TemplateItem/Core/Enum/ActionsEnum'
 import type TaskResultModel from '../../../Data/models/FetchTaskResultModels/TasksResultModel'
 import type TaskResultItemModel from '../../../Data/models/FetchTaskResultModels/ItemTasksResultModel'
-import TemplateDocumentSelectShowResult from '../ShowResultActions/TemplateDocumentSelectShowResult.vue'
-import TemplateDocumentCheckboxShowResult from '../ShowResultActions/TemplateDocumentCheckboxShowResult.vue'
-import TemplateDocumentRadioShowResult from '../ShowResultActions/TemplateDocumentRadioShowResult.vue'
-import TemplateDocumentTextAreaShowResult from '../ShowResultActions/TemplateDocumentTextAreaShowResult.vue'
+import ModernAnswerResult from '../ShowResultActions/ModernAnswerResult.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -359,14 +356,11 @@ const totalVisibleQuestions = computed(() =>
             <span class="question-number">{{ questionIndex + 1 }}</span>
 
             <div v-if="item?.action == ActionsEnum.CHECKBOX" class="question-content">
-              <TemplateDocumentCheckboxShowResult
+              <ModernAnswerResult
                 v-if="hasTaskResults"
+                type="checkbox"
                 :title="item.name"
-                :item_id="item.id"
-                :options="item.options"
-                :require_image="item.requiredImage"
-                :selected_data="getAnsweredResultForItem(item.id, ActionsEnum.CHECKBOX)"
-                @update:data="UpdateCheckBoxs"
+                :selected-data="getAnsweredResultForItem(item.id, ActionsEnum.CHECKBOX)"
               />
               <TemplateDocumentCheckboxShow
                 v-else
@@ -382,14 +376,11 @@ const totalVisibleQuestions = computed(() =>
             </div>
 
             <div v-else-if="item?.action == ActionsEnum.RADIOBUTTON" class="question-content">
-              <TemplateDocumentRadioShowResult
+              <ModernAnswerResult
                 v-if="hasTaskResults"
+                type="radio"
                 :title="item.name"
-                :item_id="item.id"
-                :options="item.options"
-                :require_image="item.requiredImage"
-                :selected_data="getAnsweredResultForItem(item.id, ActionsEnum.RADIOBUTTON)"
-                @update:data="UpdateRadioButtons"
+                :selected-data="getAnsweredResultForItem(item.id, ActionsEnum.RADIOBUTTON)"
               />
               <TemplateDocumentRadioButtonShow
                 v-else
@@ -405,14 +396,11 @@ const totalVisibleQuestions = computed(() =>
             </div>
 
             <div v-else-if="item?.action == ActionsEnum.DROPDOWN" class="question-content">
-              <TemplateDocumentSelectShowResult
+              <ModernAnswerResult
                 v-if="hasTaskResults"
+                type="select"
                 :title="item.name"
-                :item_id="item.id"
-                :options="item.options"
-                :require_image="item.requiredImage"
-                :selected_data="getAnsweredResultForItem(item.id, ActionsEnum.DROPDOWN)"
-                @update:data="UpdateSelects"
+                :selected-data="getAnsweredResultForItem(item.id, ActionsEnum.DROPDOWN)"
               />
               <TemplateDocumentSelectShow
                 v-else
@@ -428,13 +416,11 @@ const totalVisibleQuestions = computed(() =>
             </div>
 
             <div v-else-if="item?.action == ActionsEnum.TEXTAREA" class="question-content">
-              <TemplateDocumentTextAreaShowResult
+              <ModernAnswerResult
                 v-if="hasTaskResults"
+                type="textarea"
                 :title="item.name"
-                :item_id="item.id"
-                :require_image="item.requiredImage"
-                :selected_data="getAnsweredResultForItem(item.id, ActionsEnum.TEXTAREA)"
-                @update:data="UpdateTextAreas"
+                :selected-data="getAnsweredResultForItem(item.id, ActionsEnum.TEXTAREA)"
               />
               <TemplateDocumentTextAreaShow
                 v-else
@@ -723,90 +709,6 @@ const totalVisibleQuestions = computed(() =>
 .question-content {
   width: 100%;
   min-width: 0;
-}
-
-:deep(.show-template-result-checkbox-conatiner),
-:deep(.show-template-result-radio-container),
-:deep(.show-template-result-select-container),
-:deep(.show-template-result-textarea-container) {
-  width: 100%;
-  min-width: 0;
-}
-
-:deep(.show-template-result-checkbox .options-container),
-:deep(.show-template-result-radio .options-container),
-:deep(.show-template-result-select .options-container),
-:deep(.show-template-result-textarea .options-container) {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 0;
-  border: 0;
-}
-
-:deep(.show-template-result-checkbox .question),
-:deep(.show-template-result-radio .question),
-:deep(.show-template-result-select .question),
-:deep(.show-template-result-textarea .question) {
-  padding-inline-end: 34px;
-  color: var(--text-strong, #172033);
-  font-size: 1rem;
-  font-weight: 850;
-  line-height: 1.45;
-}
-
-:deep(.asnwers-container) {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-}
-
-:deep(.show-template-result-checkbox .answer),
-:deep(.show-template-result-radio .answer),
-:deep(.show-template-result-select .answer) {
-  display: inline-flex;
-  width: fit-content;
-  padding: 7px 11px;
-  border: 1px solid color-mix(in srgb, var(--status-success, #22c55e) 24%, transparent);
-  border-radius: 999px;
-  color: color-mix(in srgb, var(--status-success, #15803d) 84%, #102a1b);
-  background: color-mix(in srgb, var(--status-success, #22c55e) 9%, transparent);
-  font-size: 0.78rem;
-  font-weight: 800;
-}
-
-:deep(.textarea-conatneir) {
-  min-width: 0;
-  flex: 1;
-  margin-top: 12px;
-  padding: 13px 14px;
-  border: 1px solid color-mix(in srgb, var(--brand-primary-500, #386cfe) 11%, transparent);
-  border-radius: 15px;
-  background: color-mix(in srgb, var(--brand-primary-50, #eff6ff) 45%, #fff);
-}
-
-:deep(.textarea-conatneir .title) {
-  margin: 0 0 5px;
-  color: var(--brand-primary-600, #2563eb);
-  font-size: 0.66rem;
-  font-weight: 850;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-:deep(.textarea-answer) {
-  color: var(--text-strong, #172033);
-  font-size: 0.875rem;
-  line-height: 1.6;
-  white-space: pre-wrap;
-}
-
-:deep(.show-template-result-checkbox-conatiner .replace-trigger),
-:deep(.show-template-result-radio-container .replace-trigger),
-:deep(.show-template-result-select-container .replace-trigger) {
-  display: none !important;
 }
 
 @media (max-width: 700px) {

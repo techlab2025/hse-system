@@ -1746,5 +1746,11 @@
   "inspection_in_progress": "Inspection in progress",
   "inspection_completed": "Inspection completed",
   "complete_required_fields": "Complete all required fields before saving.",
-  "save_results": "Save results"
+  "save_results": "Save results",
+  "answer_summary": "Answer summary",
+  "selected_answers": "Selected answers",
+  "supporting_evidence": "Supporting evidence",
+  "answered": "Answered",
+  "no_answer": "No answer",
+  "open_photo": "Open photo"
 }

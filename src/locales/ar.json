@@ -1760,5 +1760,11 @@
   "inspection_in_progress": "التفتيش قيد التنفيذ",
   "inspection_completed": "التفتيش مكتمل",
   "complete_required_fields": "أكمل جميع الحقول المطلوبة قبل الحفظ.",
-  "save_results": "حفظ النتائج"
+  "save_results": "حفظ النتائج",
+  "answer_summary": "ملخص الإجابة",
+  "selected_answers": "الإجابات المحددة",
+  "supporting_evidence": "الأدلة المرفقة",
+  "answered": "تمت الإجابة",
+  "no_answer": "لا توجد إجابة",
+  "open_photo": "فتح الصورة"
 }
