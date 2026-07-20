@@ -71,7 +71,9 @@ const message = ref('No Data Found')
 const dynamicOptions = ref<TitleInterface[]>([])
 
 // Computed properties
-const isMultiselect = computed(() => Number(type.value) === 2)
+const isMultiselect = computed(
+  () => Number(type.value) === 2 || String(type.value).toLowerCase() === 'multiselect',
+)
 const componentType = computed(() => (isMultiselect.value ? MultiSelect : Select))
 const excludedOptionIdSet = computed(
   () => new Set((props.excludedOptionIds ?? []).map((id) => String(id))),
@@ -87,56 +89,49 @@ const multiselectProps = computed(() =>
   isMultiselect.value ? { display: 'chip', maxSelectedLabels: 6 } : {},
 )
 
-// Value handling
-type OptionId = number | string
-
-const getOptionId = (value: unknown): OptionId | null => {
-  if (typeof value === 'number' || typeof value === 'string') return value
-  if (!value || typeof value !== 'object' || Array.isArray(value)) return null
-
-  const optionId = (value as Partial<TitleInterface>).id
-  return optionId === undefined || optionId === null ? null : optionId
+// PrimeVue matches the selected option against `options` by data-key ("id") using
+// strict equality. IDs coming from the parent's modelValue aren't guaranteed to be
+// the same type (string vs number) as the ones in mergedOptions, so we resolve to
+// the actual option instance instead of trusting the raw value's shape - otherwise
+// the widget silently falls back to the placeholder even though the value is correct.
+function resolveOption(value: TitleInterface | null): TitleInterface | null {
+  if (!value) return null
+  return mergedOptions.value.find((option) => String(option.id) === String(value.id)) ?? value
 }
 
-const findOption = (value: unknown): TitleInterface | null => {
-  const optionId = getOptionId(value)
-  if (optionId === null) return null
-
-  return mergedOptions.value.find((option) => String(option.id) === String(optionId)) ?? null
+function resolveSelectedValue(
+  value: TitleInterface | TitleInterface[] | null,
+  multiselect: boolean,
+): TitleInterface | TitleInterface[] | null {
+  if (multiselect) {
+    return (Array.isArray(value) ? value : []).map((item) => resolveOption(item) ?? item)
+  }
+  return resolveOption(value as TitleInterface | null)
 }
 
-const normalizedValue = computed<OptionId | OptionId[] | null>({
-  get: () => {
-    if (isMultiselect.value) {
-      return ensureArray(modelValue.value)
-        .map((option) => findOption(option)?.id ?? getOptionId(option))
-        .filter((optionId): optionId is OptionId => optionId !== null)
-    }
-
-    return findOption(modelValue.value)?.id ?? getOptionId(modelValue.value)
-  },
-  set: (newValue) => {
-    if (isMultiselect.value) {
-      const selectedOptions = (Array.isArray(newValue) ? newValue : [])
-        .map(findOption)
-        .filter((option): option is TitleInterface => option !== null)
-      emitUpdate(selectedOptions)
-      return
-    }
-
-    emitUpdate(findOption(newValue))
-  },
-})
+// Keep an immediate local value for PrimeVue, then synchronize external changes
+// from the parent. The public v-model still emits complete option objects.
+const selectedValue = ref<TitleInterface | TitleInterface[] | null>(
+  resolveSelectedValue(modelValue.value, isMultiselect.value),
+)
 
 // Watchers
 watch([params, controller], handleOptionUpdates, { immediate: true })
-
+watch(
+  [modelValue, isMultiselect],
+  ([value, multiselect]) => {
+    selectedValue.value = resolveSelectedValue(value, multiselect)
+  },
+  { deep: true },
+)
+// Re-resolve once options finish loading (e.g. async fetch), so a value set before
+// the options arrived still gets matched up instead of sticking to the placeholder.
+watch(mergedOptions, () => {
+  selectedValue.value = resolveSelectedValue(selectedValue.value, isMultiselect.value)
+})
 // Methods
-function ensureArray(value: unknown): TitleInterface[] {
-  return Array.isArray(value) ? value : []
-}
-
 function emitUpdate(value: TitleInterface | TitleInterface[] | null): void {
+  selectedValue.value = value
   emit('update:modelValue', value)
   ValidationService.clearError(id.value)
 }
@@ -176,7 +171,7 @@ function updateControllerState(): void {
 
 function handleAutoFill(options: TitleInterface[]): void {
   if (autoFill?.value && options.length === 1) {
-    normalizedValue.value = isMultiselect.value ? [options[0].id] : options[0].id
+    selectedValue.value = isMultiselect.value ? [options[0]] : options[0]
   }
 }
 
@@ -190,7 +185,7 @@ async function reloadData(): Promise<void> {
   emit('update:reload')
   if (loading.value) return
   await fetchOptions()
-  normalizedValue.value = isMultiselect.value ? [] : null
+  selectedValue.value = isMultiselect.value ? [] : null
 }
 
 const DialogVisable = computed({
@@ -241,11 +236,10 @@ const closeDialog = async () => {
   <slot v-if="!hascontent">
     <component
       :is="componentType"
-      :model-value="normalizedValue"
-      @update:model-value="normalizedValue = $event"
+      :model-value="selectedValue"
+      @update:model-value="emitUpdate"
       :options="mergedOptions"
       data-key="id"
-      option-value="id"
       :placeholder="placeholder"
       class="input-select w-full"
       option-label="title"
@@ -254,7 +248,7 @@ const closeDialog = async () => {
       :loading="loading"
       :empty-message="message"
     />
-    <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />
+    <input type="text" class="hidden w-full" :value="selectedValue" :id="id" />
   </slot>
   <slot v-else name="content"> </slot>
   <div v-if="isDialog">
