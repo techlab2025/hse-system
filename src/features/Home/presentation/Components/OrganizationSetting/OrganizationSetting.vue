@@ -451,8 +451,8 @@ const handleCardClick = (id: RouterEnum) => {
         <!-- <img :src="card.icon" :alt="card.title" /> -->
         <component :is="card.icon"></component>
         <div class="card-content">
-          <p class="title">{{ card.title }}</p>
-          <p class="description">{{ card.description }}</p>
+          <p class="title">{{ t(card.title) }}</p>
+          <p class="description">{{ t(card.description) }}</p>
         </div>
       </div>
     </div>
@@ -464,7 +464,7 @@ const handleCardClick = (id: RouterEnum) => {
         :code="routeName?.permissions"
       >
         <router-link :to="`${routeName.route}?type=${selectedRoutesType}`" class="btn-route w-full">
-          {{ routeName.Name }}
+          {{ t(routeName.Name) }}
         </router-link>
       </PermissionBuilder>
     </div>

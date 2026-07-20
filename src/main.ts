@@ -13,6 +13,7 @@ import { createI18n } from 'vue-i18n'
 // import * as Sentry from '@sentry/vue'
 import ar from './locales/ar.json'
 import en from './locales/en.json'
+import { createAutoTranslate } from './plugins/autoTranslate'
 
 const savedLanguage = localStorage.getItem('lang') || 'en'
 
@@ -52,6 +53,7 @@ pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 app.use(router)
 app.use(i18n)
+app.use(createAutoTranslate(i18n.global))
 app.use(ToastService)
 app.use(PrimeVue, {
   theme: {

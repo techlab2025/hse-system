@@ -55,7 +55,7 @@ const CheckProjectLocationEmployeeEmpty = computed(
     <div class="empty-teams" v-else>
       <EmptyData
         :img="EmptyFolder"
-        title="No Team Members Yet"
+        :title="$t('No Team Members Yet')"
         :subtitle="
           $t('You haven’t added any employees to this team. Start building your crew now!')
         "

@@ -664,7 +664,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="modern-sidebar">
-    <nav class="side-rail-nav" aria-label="Main sidebar groups">
+    <nav class="side-rail-nav" :aria-label="$t('main_sidebar_groups')">
       <template v-for="group in routeGroups" :key="group.key">
         <PermissionBuilder
           v-if="!group.adminOnly || user?.employeeType == EmployeeStatusEnum.Admin"
@@ -720,13 +720,16 @@ onBeforeUnmount(() => {
               type="search"
               class="sidebar-search__input"
               :placeholder="$t('search')"
-              aria-label="Search all sidebar routes"
+              :aria-label="$t('search_all_sidebar_routes')"
               @keydown.esc="hidePane"
             />
           </label>
         </header>
 
-        <nav class="side-pane-routes" :aria-label="`${activeGroup.label} routes`">
+        <nav
+          class="side-pane-routes"
+          :aria-label="$t('sidebar_group_routes', { group: activeGroup.label })"
+        >
           <div class="side-pane-routes__inner">
             <template v-for="group in visibleRouteGroups" :key="group.key">
               <PermissionBuilder v-if="isSearching" :code="group.permissions">

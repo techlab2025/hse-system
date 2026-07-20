@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import IconSaudiArabia from '@/shared/icons/SA.vue'
 import IconEnglish from '@/shared/icons/IconEnglish.vue'
 
-const { locale } = useI18n({ useScope: 'global' })
+const { locale, t } = useI18n({ useScope: 'global' })
 
 const applyLangToDOM = (langCode: string) => {
   document.documentElement.lang = langCode
@@ -17,7 +17,7 @@ const targetLanguageIcon = computed(() =>
   targetLanguage.value === 'ar' ? IconSaudiArabia : IconEnglish,
 )
 const targetLanguageLabel = computed(() =>
-  targetLanguage.value === 'ar' ? 'Switch to Arabic' : 'Switch to English',
+  targetLanguage.value === 'ar' ? t('switch_to_arabic') : t('switch_to_english'),
 )
 
 const changeLang = (langCode: string) => {

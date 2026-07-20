@@ -51,7 +51,7 @@ const {ProgressValue} = defineProps<{
         <HomeRoutesCard
           :icon="HomeOperationIcon"
           :title="`${$t('operations')}`"
-          :description="`${$t('inspection')} . ${$t('Observations ')} . ${$t('hazerd')} . ${$t('incedant')} `"
+          :description="`${$t('inspection')} · ${$t('Observations')} · ${$t('hazerd')} · ${$t('incedant')}`"
         />
       </router-link>
     </PermissionBuilder>

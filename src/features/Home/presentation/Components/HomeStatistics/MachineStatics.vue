@@ -2,10 +2,12 @@
 import { ref, onMounted } from 'vue'
 import Chart from 'primevue/chart'
 import { watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps<{
   statics: { rent: number; owned: number }
 }>()
+const { t, locale } = useI18n()
 // watch(() => props.statics, () => {
 //   chartData.value = setChartData();
 //   chartOptions.value = setChartOptions();
@@ -24,7 +26,7 @@ const setChartData = () => {
   const documentStyle = getComputedStyle(document.body)
 
   return {
-    labels: ['rent', 'owned'],
+    labels: [t('rent'), t('owned')],
     datasets: [
       {
         data: [Rent.value, Owned.value],
@@ -67,12 +69,16 @@ watch(
     chartOptions.value = setChartOptions()
   },
 )
+
+watch(locale, () => {
+  chartData.value = setChartData()
+})
 </script>
 <template>
   <div class="top-teams-container">
     <div class="top-teams-header">
-      <span class="static">static</span>
-      <p class="static-title">Equipment & Devices & Tools</p>
+      <span class="static">{{ $t('statistics') }}</span>
+      <p class="static-title">{{ $t('equipment_devices_tools') }}</p>
     </div>
     <!-- <div class="top-teams-container"> -->
     <div class="machine-statics">

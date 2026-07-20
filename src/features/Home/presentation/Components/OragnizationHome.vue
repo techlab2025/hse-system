@@ -126,7 +126,7 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
     >
       <ProjectProgressHeader :progressValue="ProgressValue" style="margin-block: 20px" />
       <div v-if="showOverlay && !visited" class="overlay-note sidebar-note">
-        <span class="tip-kicker">Step 1 of 3</span>
+        <span class="tip-kicker">{{ $t('step_1_of_3') }}</span>
         <h3>{{ $t('Step_1_Click_Here_To_Start_Adding_Your_Data') }}</h3>
         <p>{{ $t('Fill_All_Data_From_this_page') }}</p>
         <div class="tip-progress" aria-hidden="true">
@@ -134,7 +134,7 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
           <span></span>
           <span></span>
         </div>
-        <span class="tip-action">Click this setup card to continue</span>
+        <span class="tip-action">{{ $t('click_setup_card_to_continue') }}</span>
       </div>
     </router-link>
 

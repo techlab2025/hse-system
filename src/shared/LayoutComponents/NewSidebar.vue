@@ -109,7 +109,7 @@ const logout = () => {
         class="sidebar-back"
       >
         <span class="home-icon"><SidebarUnicon name="home" /></span>
-        <span>Home</span>
+        <span>{{ $t('home') }}</span>
       </router-link>
 
       <div class="links">

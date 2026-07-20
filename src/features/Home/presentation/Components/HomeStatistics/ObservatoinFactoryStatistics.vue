@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type OverviewHazardChartModel from "@/features/Home/data/Model/OverviewHazardChartModel";
 import { ref, onMounted, onBeforeUnmount, watch } from "vue";
+import { useI18n } from "vue-i18n";
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const chartData = ref<any>(null);
@@ -12,6 +13,7 @@ const props = defineProps<{
   chartHeight?: string;
   chartWidth?: string;
 }>();
+const { t, locale } = useI18n();
 
 const HazardValues = ref<number[]>([]);
 const Accidentsvalues = ref<number[]>([]);
@@ -53,20 +55,20 @@ const setChartData = () => {
     labels:
       Zonetitle.value.length > 0
         ? Zonetitle.value.map((z) => z)
-        : ["Zone A", "Zone B", "Zone C", "Zone D", "Zone E", "Zone F", "Zone G"],
+        : Array.from({ length: 7 }, (_, index) => t("zone_number", { number: index + 1 })),
     datasets: [
       {
-        label: "Hazard",
+        label: t("Hazard"),
         backgroundColor: hazardColor,
         data: HazardValues.value.length > 0 ? HazardValues.value : [0, 0, 0, 0, 0, 0, 0],
       },
       {
-        label: "Observation",
+        label: t("Observation"),
         backgroundColor: observationColor,
         data: Observationsvalues.value.length > 0 ? Observationsvalues.value : [0, 0, 0, 0, 0, 0, 0],
       },
       {
-        label: "Incident",
+        label: t("Incident"),
         backgroundColor: incidentColor,
         data: Accidentsvalues.value.length > 0 ? Accidentsvalues.value : [0, 0, 0, 0, 0, 0, 0],
       },
@@ -119,7 +121,7 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
     ctx.font = `${Math.max(11, 14 * scale)}px sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText("No data available", width / 2, height / 2);
+    ctx.fillText(t("No data available"), width / 2, height / 2);
     return;
   }
 
@@ -320,6 +322,11 @@ watch(chartData, () => {
   if (canvasRef.value) resizeCanvas();
 });
 
+watch(locale, () => {
+  chartData.value = setChartData();
+  if (canvasRef.value) resizeCanvas();
+});
+
 onMounted(() => {
   if (!canvasRef.value) return;
   const container = canvasRef.value.closest(".chart-wrapper") as HTMLElement;
@@ -348,7 +355,7 @@ onBeforeUnmount(() => {
   <div class="total-observation-container">
     <!-- ✅ Header: عنوان يسار + legend يمين (مطابق للديزاين) -->
     <div class="total-observation-header-container">
-      <p class="static-title">Hazard & Observation & Incident Overview</p>
+      <p class="static-title">{{ $t('hazard_observation_incident_overview') }}</p>
 
       <div class="legend-container">
         <div

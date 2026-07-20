@@ -92,11 +92,11 @@ const showSidebar = computed(() => {
   <footer :class="['footer bottom-0 left-0 right-0 z-50', { 'is-dark': isDarkMode }]">
     <div class="footer-shell">
       <div class="footer-brand">
-        <p class="footer-copy"> All rights reserved © 2026 <a href="https://hse.techlabeg.com/">HSE.Cloud.Ai</a>.</p>
+        <p class="footer-copy">{{ $t('all_rights_reserved', { year: 2026 }) }} <a href="https://hse.techlabeg.com/">HSE.Cloud.Ai</a>.</p>
         <!-- <span class="footer-mark">HSE</span>
         <span class="footer-title">HSE.Cloud.Ai</span>
         <span class="footer-divider"></span> -->
-        <span class="footer-powered">Powered by <a href="https://techlabeg.com/">TechLab</a></span>
+        <span class="footer-powered">{{ $t('powered_by') }} <a href="https://techlabeg.com/">TechLab</a></span>
       </div>
     </div>
   </footer>

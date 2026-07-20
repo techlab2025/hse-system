@@ -11,7 +11,7 @@ defineProps<{
   <div class="project-statistics">
     <div class="header">
       <div class="header-container">
-        <img class="header-img" :src="AllProjects" alt="all-projects" />
+        <img class="header-img" :src="AllProjects" :alt="$t('all_projects')" />
         <div class="title-content">
           <div class="content-info">
             <span class="title">{{ $t('all_projects') }}</span>

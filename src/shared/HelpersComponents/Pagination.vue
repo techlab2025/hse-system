@@ -8,7 +8,7 @@ import { computed, ref } from 'vue'
 const emit = defineEmits(['changePage', 'countPerPage'])
 
 const op = ref()
-const toggle = (event) => {
+const toggle = (event: Event) => {
   op.value.toggle(event)
 }
 const props = defineProps<{
@@ -21,10 +21,13 @@ const numberOfPages = computed(() => {
 </script>
 
 <template>
-  <div v-if="pagination?.last > 1" class="pagination-wrapper">
+  <div v-if="pagination && pagination.last > 1" class="pagination-wrapper">
     <span class="show-results">
-      show {{ pagination?.current }} to {{ pagination?.next }} of
-      {{ pagination?.total }}
+      {{ $t('pagination_results', {
+        from: pagination?.current,
+        to: pagination?.next,
+        total: pagination?.total,
+      }) }}
     </span>
 
     <div class="pagination">
@@ -32,7 +35,7 @@ const numberOfPages = computed(() => {
         class="pagination-btn"
         @click="emit('changePage', pagination?.current! > 1 ? pagination?.current! - 1 : 1)"
       >
-        Prev
+        {{ $t('previous') }}
       </button>
       <span
         v-for="(item,index) in numberOfPages.slice(
@@ -54,12 +57,12 @@ const numberOfPages = computed(() => {
           )
         "
       >
-        Next
+        {{ $t('next') }}
       </button>
     </div>
 
     <div class="count-per-page">
-      <span> Show </span>
+      <span>{{ $t('show') }}</span>
       <button class="pagination-btn" @click="toggle">
         {{ pagination?.count }} <span><IconArrowDown /></span>
       </button>
@@ -70,7 +73,7 @@ const numberOfPages = computed(() => {
           <span @click="emit('countPerPage', 30)">30</span>
         </div>
       </Popover>
-      <span> per page </span>
+      <span>{{ $t('per_page') }}</span>
     </div>
   </div>
 </template>

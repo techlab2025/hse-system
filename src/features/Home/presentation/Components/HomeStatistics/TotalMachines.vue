@@ -3,10 +3,12 @@ import wordSlice from '@/base/Presentation/utils/word_slice';
 import { EquipmentTypeEnum } from '@/features/Home/core/enums/SettingEnum/EquipmentTypeEnum';
 import type StatisticsMachineModel from '@/features/Home/data/Model/StatisticsMachineModel';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
   totalMachines: StatisticsMachineModel[]
 }>()
+const { t } = useI18n()
 
 const chartData = computed(() => {
   return props.totalMachines?.map(machine => {
@@ -30,11 +32,11 @@ const chartData = computed(() => {
 const GetEquipmentTypeTitle = (type: number) => {
   switch (type) {
     case 1:
-      return 'equipment'
+      return t('equipment')
     case 2:
-      return 'device'
+      return t('device')
     case 3:
-      return 'tool'
+      return t('tool')
   }
 }
 </script>
@@ -42,13 +44,13 @@ const GetEquipmentTypeTitle = (type: number) => {
   <div class="total-machines-container ">
     <div class="total-machines-header-container">
       <div class="total-machines-header">
-        <span class="static">static</span>
-        <p class="static-title">most used Equipments </p>
+        <span class="static">{{ $t('statistics') }}</span>
+        <p class="static-title">{{ $t('most_used_equipment') }}</p>
       </div>
       <div class="static-data">
-        <p>tool</p>
-        <p>equipment</p>
-        <p>device</p>
+        <p>{{ $t('tool') }}</p>
+        <p>{{ $t('equipment') }}</p>
+        <p>{{ $t('device') }}</p>
       </div>
     </div>
     <div class="chart-container flex items-end gap-4 p-8 bg-white rounded-xl font-sans">
@@ -67,7 +69,7 @@ const GetEquipmentTypeTitle = (type: number) => {
                 }}</span>
               <span class="value">{{ segment.number }}</span>
             </div>
-            <p class="total-value"><span>total:</span> <span class="value">{{month.segments.reduce((sum, segment) => sum
+            <p class="total-value"><span>{{ $t('total') }}:</span> <span class="value">{{month.segments.reduce((sum, segment) => sum
               + segment.number, 0)}}</span>
             </p>
           </div>

@@ -223,7 +223,7 @@ const toggle = (event: Event) => {
                 : '/organization'
           "
         >
-          <img :src="brandLogo" :alt="`${brandName} logo`" />
+          <img :src="brandLogo" :alt="$t('brand_logo', { brand: brandName })" />
           <p class="logo">{{ brandName }}</p>
         </router-link>
       </div>
@@ -314,7 +314,7 @@ const toggle = (event: Event) => {
           </div>
 
           <!-- <img alt="user" src="../../assets/images/travel.png" /> -->
-          <img src="https://cyber.comolho.com/static/img/avatar.png" alt="employee" />
+          <img src="https://cyber.comolho.com/static/img/avatar.png" :alt="$t('employee')" />
         </div>
 
         <!-- <Teleport to="body">

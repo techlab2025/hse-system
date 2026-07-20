@@ -1,8 +1,8 @@
 <template>
   <div class="investigations_container">
     <div class="title">
-      <h6>Overview investigations</h6>
-      <p>These are the percentages of closed investigations for each month.</p>
+      <h6>{{ $t('investigations_overview') }}</h6>
+      <p>{{ $t('closed_investigations_monthly_percentages') }}</p>
     </div>
     <div class="chart_container">
       <div

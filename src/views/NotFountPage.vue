@@ -4,8 +4,10 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import { useUserStore } from '@/stores/user'
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 
 const userStore = useUserStore()
+const { t } = useI18n()
 
 const homePath = computed(() =>
   userStore.user?.type === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization',
@@ -19,19 +21,18 @@ const homePath = computed(() =>
 
     <section class="not-found__card">
       <div class="not-found__copy">
-        <span class="not-found__eyebrow">Error 404</span>
+        <span class="not-found__eyebrow">{{ t('not_found.error_code') }}</span>
         <p class="not-found__code" aria-hidden="true">404</p>
-        <h1 id="not-found-title">Oops! This page took a wrong turn.</h1>
+        <h1 id="not-found-title">{{ t('not_found.title') }}</h1>
         <p class="not-found__description">
-          The page you’re looking for may have moved, been removed, or never existed.
-          Let’s get you back somewhere familiar.
+          {{ t('not_found.description') }}
         </p>
 
         <RouterLink class="home-button" :to="homePath">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M3 10.8 12 3l9 7.8v9.7a.5.5 0 0 1-.5.5H15v-6H9v6H3.5a.5.5 0 0 1-.5-.5v-9.7Z" />
           </svg>
-          Back to home
+          {{ t('not_found.back_home') }}
           <span aria-hidden="true">→</span>
         </RouterLink>
       </div>

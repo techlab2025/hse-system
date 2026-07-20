@@ -247,7 +247,7 @@ const setSelectedProjectFilter = (data) => {
                   </div>
 
                   <!-- <div v-if="ShowDetails[index]" class="card-description">
-                    <p class="title">Description</p>
+                    <p class="title">{{ $t('Description') }}</p>
                     <p class="description">
                       {{ item.description || '__' }}
                     </p>

@@ -4,21 +4,23 @@ import type ProjectModel from '../../../Data/models/ProjectModel'
 import Stopcard from '@/shared/icons/stopcard.vue'
 import CustomPopover from '../../supcomponents/CustomPopover.vue'
 import PinIcons from '@/shared/icons/PinIcons.vue'
+import { useI18n } from 'vue-i18n'
 
 defineProps<{
   data: ProjectModel
 }>()
+const { t } = useI18n()
 
 const GetProjectStatus = (status?: ProjectStatusEnum) => {
   switch (status) {
     case ProjectStatusEnum.active:
-      return 'active'
+      return t('project_status_active')
     case ProjectStatusEnum.completed:
-      return 'completed'
+      return t('project_status_completed')
     case ProjectStatusEnum.onHold:
-      return 'onHold'
+      return t('project_status_on_hold')
     case ProjectStatusEnum.cancelled:
-      return 'cancelled'
+      return t('project_status_cancelled')
     default:
       return ''
   }
