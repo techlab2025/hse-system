@@ -4,11 +4,14 @@ import type EquipmentDetailsModel from '@/features/_templateFeature/Data/models/
 import type ProjectLocationEquipmentModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationEquipmentModel';
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum';
 import ToolIcon from '@/shared/icons/ToolIcon.vue';
+import { useI18n } from 'vue-i18n';
 
 
 const props = defineProps<{
   tool: ProjectLocationEquipmentModel
 }>()
+
+const { t } = useI18n()
 
 const GetEquipmentType = (type: number) => {
   return EquipmentTypesEnum[type]
@@ -20,13 +23,13 @@ const GetEquipmentType = (type: number) => {
   <div class="tool-card">
     <div class="tool-card-header">
       <!-- <pre>{{ tool?.equipment?.image }}</pre> -->
-      <img :src="tool?.equipment?.image || '/src/assets/images/logo.svg'" alt="tool" @error="setDefaultImage">
+      <img :src="tool?.equipment?.image || '/src/assets/images/logo.svg'" :alt="$t('tool')" @error="setDefaultImage">
       <div class="tool-card-header-text">
 
         <div class="flex gap-2 items-center card-type">
           <span class="subtype" v-if="tool?.equipment?.[0]?.equipment_type?.type">
             <span>
-              {{ GetEquipmentType(tool?.equipment?.[0]?.equipment_type?.type) }}
+              {{ t(GetEquipmentType(tool?.equipment?.[0]?.equipment_type?.type) ?? '') }}
             </span>
             <span class="arrow">></span>
           </span>

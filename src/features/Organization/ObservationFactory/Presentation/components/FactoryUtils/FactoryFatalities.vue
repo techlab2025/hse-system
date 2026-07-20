@@ -40,8 +40,8 @@ watch(
     <div class="another-meeting-header">
       <!-- <div class="section-title-with-help"> -->
         <HeaderPage
-          :title="`fatality repoting`"
-          :subtitle="`Add any fatalities from the accident.`"
+          title="incident_fatalities_question"
+          subtitle="incident_fatalities_description"
           :img="RIP"
           class="title-header"
         />
@@ -106,7 +106,7 @@ watch(
     width: fit-content;
     position: absolute;
     top: 75%;
-    left: 100%;
+    left: 20%;
     transform: translate(-120%, -100%);
     display: flex;
 

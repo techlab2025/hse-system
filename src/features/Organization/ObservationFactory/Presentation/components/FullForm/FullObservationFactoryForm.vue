@@ -70,9 +70,11 @@ import AddShift from '@/features/Organization/Shifts/Presentation/components/Add
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import { useThemeMode } from '@/composables/useThemeMode'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
+import { useI18n } from 'vue-i18n'
 
 const emit = defineEmits(['update:data'])
 const { isDarkMode } = useThemeMode()
+const { t } = useI18n()
 //
 const RootCausesDialog = ref<boolean>(false)
 const props = defineProps<{
@@ -607,7 +609,7 @@ const getInvalidWitnessMessage = () => {
   const invalidIndex = rows.findIndex((witness: any) => !hasEmployeePayload(witness?.employee))
   return invalidIndex === -1
     ? ''
-    : `in Witness ${invalidIndex + 1} If you choose to add a Witness, you must select a witness employee to complete this section.`
+    : t('witness_employee_required_at_row', { row: invalidIndex + 1 })
 }
 
 const getInvalidInjuryMessage = () => {
@@ -620,7 +622,7 @@ const getInvalidInjuryMessage = () => {
     const rowNumber = index + 1
     // if (!hasEmployeePayload(injury?.employee)) return `Injury ${rowNumber} Employee Is Required`
     if (!hasEmployeePayload(injury?.employee))
-      return `in Injury ${rowNumber} If you open the Injuries section, you must select the injured employee before continuing.`
+      return t('injured_employee_required_at_row', { row: rowNumber })
   }
 
   return ''
@@ -636,7 +638,7 @@ const getInvalidFatalityMessage = () => {
     const rowNumber = index + 1
     // if (!hasEmployeePayload(fatality?.employee)) return `Fatality ${rowNumber} Employee Is Required`
     if (!hasEmployeePayload(fatality?.employee))
-      return `in Fatality ${rowNumber}If you choose to add a Fatality Report, you must select the deceased employee to complete this section.`
+      return t('deceased_employee_required_at_row', { row: rowNumber })
   }
 
   return ''
@@ -645,27 +647,27 @@ const getInvalidFatalityMessage = () => {
 const requiredFields = computed<RequiredFieldRule[]>(() => [
   {
     key: 'SelectedProjectId',
-    message: 'Project Is Required',
+    message: t('project_required'),
     isMissing: () => !SelectedProjectId.value,
   },
   {
     key: 'ZoneIds',
-    message: 'Zone Is Required',
+    message: t('zone_required'),
     isMissing: () => !ZoneIds.value,
   },
   {
     key: 'ObservationTitle',
-    message: `${GetHeader(ObservationFactoryType.value)} Title Is Required`,
+    message: t('record_title_required'),
     isMissing: () => !hasValue(ObservationTitle.value),
   },
   {
     key: 'date',
-    message: 'Date Is Required',
+    message: t('date_required'),
     isMissing: () => !date.value,
   },
   {
     key: 'SelctedTime',
-    message: 'Time Is Required',
+    message: t('time_required'),
     isMissing: () => !SelctedTime.value,
   },
   // {
@@ -675,22 +677,21 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   // },
   {
     key: 'SelectedObservationType',
-    message: 'Please select an Observation Type or create a new one before continuing.',
+    message: t('observation_type_required'),
     isMissing: () =>
       ObservationFactoryType.value === Observation.ObservationType &&
       !hasSelectedId(SelectedObservationType.value),
   },
   {
     key: 'AccidentsType',
-    message: 'Please select an Incident Type or create a new one before continuing.',
+    message: t('incident_type_required'),
     isMissing: () =>
       ObservationFactoryType.value === Observation.AccidentsType &&
       !hasSelectedId(AccidentsType.value),
   },
   {
     key: 'HazardType',
-    message:
-      'For a Negative Observation, you must select a Hazard Classification or create a new one using the New button before continuing.',
+    message: t('hazard_classification_required'),
     isMissing: () =>
       ObservationFactoryType.value !== Observation.AccidentsType &&
       saveStatus.value === SaveStatusEnum.NotSaved &&
@@ -698,8 +699,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   },
   {
     key: 'SubHazardType',
-    message:
-      'For a Negative Observation, you must select a Hazard or create a new one using the New button before continuing.',
+    message: t('hazard_required_for_negative_observation'),
     isMissing: () =>
       ObservationFactoryType.value !== Observation.AccidentsType &&
       saveStatus.value === SaveStatusEnum.NotSaved &&
@@ -718,17 +718,17 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   // },
   {
     key: 'witnesses',
-    message: getInvalidWitnessMessage() || 'Witness Employee Is Required',
+    message: getInvalidWitnessMessage() || t('witness_employee_required'),
     isMissing: () => Boolean(getInvalidWitnessMessage()),
   },
   {
     key: 'Accidents',
-    message: getInvalidInjuryMessage() || 'Injury Data Is Required',
+    message: getInvalidInjuryMessage() || t('injury_data_required'),
     isMissing: () => Boolean(getInvalidInjuryMessage()),
   },
   {
     key: 'Fatalities',
-    message: getInvalidFatalityMessage() || 'Fatality Data Is Required',
+    message: getInvalidFatalityMessage() || t('fatality_data_required'),
     isMissing: () => Boolean(getInvalidFatalityMessage()),
   },
 ])

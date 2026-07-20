@@ -234,7 +234,7 @@ onMounted(() => {
               $t('You haven’t added any employees to this team. Start building your crew now!')
             "
             :link="`/organization/project-employee/project/${id}?locationId=${location?.locationId}`"
-            linkText=" Start building your crew now!"
+            :linkText="$t('Start building your crew now!')"
           />
         </div>
       </AccordionContent>

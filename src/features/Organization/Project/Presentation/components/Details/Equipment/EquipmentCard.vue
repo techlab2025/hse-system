@@ -26,10 +26,10 @@ watch(() => props.zones, (newValue) => {
   <div class="equipment-card" v-if="Zones?.projectZoonEquipments?.length > 0">
     <div class="equipment-card-header-container">
       <div class="equipment-card-header">
-        <img :src="LocationPin" alt="equipment logo">
+        <img :src="LocationPin" :alt="$t('Equipment')">
         <div class="equipment-card-header-text">
           <p class="title">{{ Zones?.zoonTitle }}</p>
-          <p class="subtitle"><span>{{ Zones?.projectZoonEquipments?.length }} </span> Equipment & Devices</p>
+          <p class="subtitle"><span>{{ Zones?.projectZoonEquipments?.length }} </span> {{ $t('Equipment & Devices') }}</p>
         </div>
       </div>
       <div class="equipment-card-actions">

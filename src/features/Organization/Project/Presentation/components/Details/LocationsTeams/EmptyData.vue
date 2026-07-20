@@ -14,7 +14,7 @@ const props = defineProps<{
 </script>
 <template>
   <router-link :to="link || route.path" class="empty-teams">
-    <img :src="img" alt="empty">
+    <img :src="img" :alt="$t('empty_state')">
     <div class="empty-text">
       <p class="title">{{ title }}</p>
       <p class="subtitle">{{ subtitle }} <span v-if="linkText">{{ linkText }}</span></p>

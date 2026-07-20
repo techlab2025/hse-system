@@ -11,6 +11,6 @@ import EmptyZoon from '@/assets/images/EmptyZoon.png'
         }}
       </p>
     </div>
-    <img :src="EmptyZoon" alt="empty-zoon" />
+    <img :src="EmptyZoon" :alt="$t('no_zones')" />
   </div>
 </template>

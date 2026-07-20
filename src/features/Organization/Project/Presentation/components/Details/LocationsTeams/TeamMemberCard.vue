@@ -34,7 +34,7 @@ const UpdateData = (id: number) => {
         )
       "
     />
-    <img class="member-img" src="https://cyber.comolho.com/static/img/avatar.png" alt="employee" />
+    <img class="member-img" src="https://cyber.comolho.com/static/img/avatar.png" :alt="$t('Employee')" />
 
     <div class="member-data">
       <p class="name">{{ wordSlice(member?.name, 18) }}</p>

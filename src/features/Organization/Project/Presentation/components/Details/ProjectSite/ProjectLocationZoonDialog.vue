@@ -53,7 +53,7 @@ const setProjectLocationZoon = (data: TitleInterface) => {
         :modelValue="SelectedProjectZone"
         :controller="indexProjectZoneController"
         :params="indexProjectZoneParams"
-        label="Zoon"
+        label="zone"
         id="Equipment"
         :placeholder="$t('Select Zoon')"
         @update:modelValue="setProjectLocationZoon"

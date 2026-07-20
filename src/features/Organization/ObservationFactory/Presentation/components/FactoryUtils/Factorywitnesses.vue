@@ -38,13 +38,13 @@ watch(
 <template>
   <div class="another-meeting">
     <div class="another-meeting-header">
-        <HeaderPage
-          :title="`Are there witnesses?`"
-          :subtitle="`Please Record the statements of those present at the scene .`"
-          :img="people"
-          class="title-header"
-        />
-        <!-- <FieldHelpIcon
+      <HeaderPage
+        title="incident_witnesses_question"
+        subtitle="incident_witnesses_description"
+        :img="people"
+        class="title-header"
+      />
+      <!-- <FieldHelpIcon
           text="Choose Yes if anyone witnessed the event and can provide a statement."
         /> -->
       <div class="meeting-status">
@@ -106,7 +106,7 @@ watch(
     width: fit-content;
     position: absolute;
     top: 75%;
-    left: 100%;
+    left: 20%;
     transform: translate(-120%, -100%);
     display: flex;
 

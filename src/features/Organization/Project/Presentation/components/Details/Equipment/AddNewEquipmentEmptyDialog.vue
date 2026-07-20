@@ -71,9 +71,9 @@ onMounted(() => {
       v-if="isEmpty"
       @click="visible = true"
       :img="EquimentFolderEmpty"
-      title="No Equipment Yet"
-      subtitle="You haven’t added any equipment to this project. Start building your crew now!"
-      linkText=" Start adding equipment now!"
+      :title="$t('No Equipment Yet')"
+      :subtitle="$t('You haven’t added any equipment to this project. Start building your crew now!')"
+      :linkText="$t('Start adding equipment now!')"
     />
 
     <!-- <p class="add-equipment-icon" v-else @click="visible = true">{{ `add_equipment` }}</p> -->

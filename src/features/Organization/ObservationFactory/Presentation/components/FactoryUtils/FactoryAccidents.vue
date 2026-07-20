@@ -46,8 +46,8 @@ watch(
     <div class="another-meeting-header" v-if="!isOpen">
       <!-- <div class="section-title-with-help"> -->
       <HeaderPage
-        :title="`Are there Injuries?`"
-        :subtitle="`Did this incident result in any physical injuries`"
+        title="incident_injuries_question"
+        subtitle="incident_injuries_description"
         :img="acc"
         class="title-header"
       />
@@ -119,7 +119,7 @@ watch(
     width: fit-content;
     position: absolute;
     top: 75%;
-    left: 100%;
+    left: 20%;
     transform: translate(-120%, -100%);
     display: flex;
 

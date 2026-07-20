@@ -42,8 +42,8 @@ watch(
     <div class="equipment-section-header">
       <HeaderSection
         :img="Equipment"
-        title="Equipment , tools & Devices by Site "
-        subtitle="View and manage all equipment assigned to each operational zone"
+        title="Equipment_tools_&_devices_by_zone"
+        subtitle="view_and_manage_all_equipment_assigned_to_each_operational_zone"
       />
       <router-link :to="`/organization/project-equipment/project/${id}`" class="show-all">{{
         $t('Show all')

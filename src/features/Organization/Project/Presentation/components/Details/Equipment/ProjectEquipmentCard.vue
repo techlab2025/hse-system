@@ -36,7 +36,7 @@ const deleteEquipment = async (id: number) => {
       <div class="tool-card-header w-full">
         <img
           :src="tool?.equipment?.image || '/src/assets/images/logo.svg'"
-          alt="tool"
+          :alt="$t('tool')"
           @error="setDefaultImage"
         />
         <div class="tool-card-header-text w-full">
@@ -44,7 +44,7 @@ const deleteEquipment = async (id: number) => {
             <div class="flex items-center gap-2">
               <span class="subtype" v-if="tool?.equipment?.equipment_type">
                 <span class="subtype-title">
-                  {{ GetEquipmentType(tool?.equipment?.equipment_type?.type) }}
+                  {{ t(GetEquipmentType(tool?.equipment?.equipment_type?.type) ?? '') }}
                 </span>
                 <span class="arrow">></span>
               </span>

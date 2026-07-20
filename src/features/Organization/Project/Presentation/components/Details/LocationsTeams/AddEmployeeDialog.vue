@@ -109,7 +109,7 @@ onMounted(() => {
         :static-options="AllLocationHerarchy"
         label="Hierarchy"
         id="Hierarchy"
-        placeholder="Select Hierarchy"
+        :placeholder="$t('Select Hierarchy')"
         @update:modelValue="setSelectedHierarchy"
       />
     </div>
@@ -122,12 +122,12 @@ onMounted(() => {
         label="Employee"
         :type="2"
         id="Employee"
-        placeholder="Select Employee"
+        :placeholder="$t('Select Employee')"
         @update:modelValue="setSelectedEmployee"
       />
     </div>
 
-    <button class="btn btn-primary w-full" @click.prevent="UpdateDate">Confirm</button>
+    <button class="btn btn-primary w-full" @click.prevent="UpdateDate">{{ $t('Confirm') }}</button>
   </Dialog>
 </template>
 
