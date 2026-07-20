@@ -11,7 +11,11 @@ import { ActionsEnum } from '@/features/setting/TemplateItem/Core/Enum/ActionsEn
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   visable: boolean
+  validationErrors?: Record<string, string>
 }>()
+
+const fieldError = (itemIndex: number, field: string) =>
+  props.validationErrors?.[`items.${itemIndex}.${field}`] ?? ''
 
 // Helper to create a new empty answer object with a unique ID
 const createNewAnswerObject = () => ({
@@ -146,7 +150,7 @@ watch(
               </div>
             </div>
 
-            <div class="timeline-content template-timeline-content grid grid-cols-4 w-full">
+            <div class="timeline-content template-timeline-content grid grid-cols-4 w-full" :data-template-validation-error="Boolean(fieldError(index, 'title') || fieldError(index, 'tag') || fieldError(index, 'type') || fieldError(index, 'answers'))">
               <div class="template-section-topline col-span-4">
                 <span class="template-section-chip">{{ index + 1 }}</span>
                 <span class="template-section-rule"></span>
@@ -170,6 +174,7 @@ watch(
                     :placeholder="$t('add your title')"
                     @input="UpdateData"
                   />
+                  <p v-if="fieldError(index, 'title')" class="required-field-message">{{ fieldError(index, 'title') }}</p>
                 </div>
                 <div class="timeline-content-text input-wrapper w-full">
                   <label for="text">{{ $t('inspection_exemined_tag') }}</label>
@@ -180,6 +185,7 @@ watch(
                     :placeholder="$t('add your tag')"
                     @input="UpdateData"
                   />
+                  <p v-if="fieldError(index, 'tag')" class="required-field-message">{{ fieldError(index, 'tag') }}</p>
                 </div>
 
                 <div class="input-wrapper type-select">
@@ -192,6 +198,7 @@ watch(
                     :reload="false"
                     @update:modelValue="UpdateType"
                   />
+                  <p v-if="fieldError(index, 'type')" class="required-field-message">{{ fieldError(index, 'type') }}</p>
                 </div>
               </div>
 
@@ -208,7 +215,9 @@ watch(
                 @update:data="item.TemplateItems = $event"
                 :isRadio="item.SelectedActionType.id === ActionsEnum.RADIOBUTTON"
                 :deletedIndex="DeletedIndex"
+                :validation-errors="validationErrors"
               />
+              <p v-if="fieldError(index, 'answers')" class="required-field-message col-span-4">{{ fieldError(index, 'answers') }}</p>
             </div>
           </div>
 
@@ -516,6 +525,17 @@ watch(
 
 .type-select {
   min-width: 220px;
+}
+
+.required-field-message {
+  margin-top: 6px;
+  color: var(--status-danger);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+[data-template-validation-error='true'] {
+  border-color: color-mix(in srgb, var(--status-danger) 55%, transparent) !important;
 }
 
 @media (max-width: 768px) {

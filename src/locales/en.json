@@ -61,6 +61,14 @@
   "witness_employee_required": "A witness must be selected.",
   "injury_data_required": "Injury details are required.",
   "fatality_data_required": "Fatality details are required.",
+  "template_title_required": "Template title is required.",
+  "template_type_required": "Template type is required.",
+  "template_item_required": "Add at least one inspection item.",
+  "inspection_item_title_required": "Inspection examined title is required for item {item}.",
+  "inspection_item_tag_required": "Inspection examined tag is required for item {item}.",
+  "result_type_required": "Result type is required for item {item}.",
+  "result_answer_required": "Add at least one result answer for item {item}.",
+  "result_answer_text_required": "Result answer {answer} in item {item} is required.",
   "main_sidebar_groups": "Main sidebar groups",
   "search_all_sidebar_routes": "Search all sidebar routes",
   "sidebar_group_routes": "{group} routes",
@@ -1711,5 +1719,6 @@
   "Add Items from the System": "Add Items from the System",
   "New Test Type": "New Test Type",
   "new test": "new test",
-  "Validation Faield": "Validation Faield"
+  "Validation Faield": "Validation Faield",
+  "new_template": "new Template"
 }

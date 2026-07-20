@@ -292,4 +292,41 @@ const showSidebar = computed(() => {
     }
   }
 }
+
+@media (max-width: 400px) {
+  .content {
+    width: 100%;
+    max-width: 100vw;
+    padding-bottom: 104px;
+    overflow-x: clip;
+  }
+
+  .content-wrapper,
+  .main-content {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .main-content {
+    padding-inline: 6px !important;
+  }
+
+  .footer-shell {
+    padding: 8px;
+  }
+
+  .footer-brand {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .footer-powered,
+  .footer-copy {
+    width: 100%;
+    font-size: 10px;
+    text-align: center;
+    white-space: normal;
+  }
+}
 </style>

@@ -7,7 +7,11 @@ const props = defineProps<{
   itemindex: number
   isRadio?: boolean
   deletedIndex?: number
+  validationErrors?: Record<string, string>
 }>()
+
+const answerError = (answerIndex: number) =>
+  props.validationErrors?.[`items.${props.itemindex}.answers.${answerIndex}`] ?? ''
 
 interface Answer {
   text: string
@@ -90,7 +94,7 @@ onMounted(() => {
     >
       <span class="answer-index">{{ index + 1 }}</span>
 
-      <div class="input-wrapper answer-text-input">
+      <div class="input-wrapper answer-text-input" :data-template-validation-error="Boolean(answerError(index))">
         <input
           type="text"
           :id="`result-${index}-${itemindex}`"
@@ -99,6 +103,7 @@ onMounted(() => {
           :placeholder="$t('add your Item')"
           @input="UpdateData"
         />
+        <p v-if="answerError(index)" class="required-field-message">{{ answerError(index) }}</p>
       </div>
 
       <div class="answer-options">
@@ -310,6 +315,17 @@ onMounted(() => {
 .answer-text-input input:focus {
   border-color: color-mix(in srgb, var(--brand-primary-500) 55%, transparent) !important;
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand-primary-500) 10%, transparent) !important;
+}
+
+.required-field-message {
+  margin-top: 5px;
+  color: var(--status-danger);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+[data-template-validation-error='true'] input {
+  border-color: color-mix(in srgb, var(--status-danger) 65%, transparent) !important;
 }
 
 .answer-options {

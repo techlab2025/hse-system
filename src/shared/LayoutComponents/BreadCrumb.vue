@@ -168,3 +168,62 @@ const ShowBackBtn = computed(() => {
     <!-- <FastRoutes /> -->
   </div>
 </template>
+
+<style scoped lang="scss">
+@media (max-width: 400px) {
+  .breadcrump-container,
+  .breadcrump {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .breadcrump {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow: hidden;
+  }
+
+  .sidebar-back {
+    flex: 0 0 auto;
+    min-width: 42px;
+    min-height: 42px;
+    padding: 8px;
+  }
+
+  .sidebar-back span {
+    display: none;
+  }
+
+  :deep(.p-breadcrumb) {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 8px !important;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  :deep(.p-breadcrumb::-webkit-scrollbar) {
+    display: none;
+  }
+
+  :deep(.p-breadcrumb-list) {
+    flex-wrap: nowrap;
+    width: max-content;
+    min-width: 100%;
+  }
+
+  :deep(.p-breadcrumb-item-link) {
+    min-height: 36px;
+    padding-inline: 4px;
+  }
+
+  :deep(.p-breadcrumb-item-label) {
+    max-width: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+</style>

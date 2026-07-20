@@ -4,7 +4,7 @@ import ImportantIcon from '@/shared/icons/ImportantIcon.vue'
 import Dialog from 'primevue/dialog'
 import InspectionTemplateImage from '@/assets/images/check-list.png'
 
-import { markRaw, onMounted, ref, watch } from 'vue'
+import { markRaw, nextTick, onMounted, ref, watch } from 'vue'
 
 import AddNewTemplateIcon from '@/shared/icons/AddNewTemplateIcon.vue'
 import NewTemplateArrowIcon from '@/shared/icons/NewTemplateArrowIcon.vue'
@@ -19,6 +19,7 @@ import IndexLangController from '@/features/setting/languages/Presentation/contr
 import { LangsMap } from '@/constant/langs'
 import { useUserStore } from '@/stores/user'
 import { ActionsEnum } from '@/features/setting/Template/Core/Enum/ActionType'
+import { ActionsEnum as TemplateItemActionsEnum } from '@/features/setting/TemplateItem/Core/Enum/ActionsEnum'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import TemplateTimeLine from '../InspectionUtils/TemplateTimeLine.vue'
@@ -26,10 +27,14 @@ import AddTemplateItemParams from '@/features/setting/TemplateItem/Core/params/a
 import AddTemplateController from '@/features/setting/Template/Presentation/controllers/addTemplateController'
 import { useRouter } from 'vue-router'
 import TemplateImage from '@/features/setting/TemplateItem/Presentation/components/TemplateTypes/TemplateImage.vue'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import { useI18n } from 'vue-i18n'
 // import TemplateTimeLine from '../../InspectionUtils/TemplateTimeLine.vue
 
 const visible = ref(false)
+const { t } = useI18n()
 const emit = defineEmits(['update:data', 'update:templateId'])
+const validationErrors = ref<Record<string, string>>({})
 
 // Translations
 const langs = ref<{ locale: string; title: string }[]>([])
@@ -148,6 +153,7 @@ const updateData = () => {
 const setLangs = (data: { locale: string; title: string }[]) => {
   langs.value = data
   updateData()
+  if (Object.keys(validationErrors.value).length) validateTemplate()
 }
 
 const SelectedTemplateType = ref<TitleInterface | null>(null)
@@ -161,19 +167,81 @@ const TemplateTypes = ref<TitleInterface[]>([
 const setTemplateType = (data: TitleInterface) => {
   SelectedTemplateType.value = data
   updateData()
+  if (Object.keys(validationErrors.value).length) validateTemplate()
 }
 
 const TemplateData = ref<any[]>([])
 const GetTemplateData = (data) => {
   TemplateData.value = data
   console.log(TemplateData.value, 'TemplateData.value')
+  if (Object.keys(validationErrors.value).length) validateTemplate()
 }
 
 const addTemplateController = AddTemplateController.getInstance()
 
 const router = useRouter()
 
+const validateTemplate = () => {
+  const errors: Record<string, string> = {}
+
+  if (!langs.value.some((lang) => lang.title?.trim())) {
+    errors.templateTitle = t('template_title_required')
+  }
+  if (!SelectedTemplateType.value?.id) {
+    errors.templateType = t('template_type_required')
+  }
+  if (!TemplateData.value.length) {
+    errors.items = t('template_item_required')
+  }
+
+  TemplateData.value.forEach((item, itemIndex) => {
+    const itemNumber = itemIndex + 1
+    if (!item.itemTitle?.trim()) {
+      errors[`items.${itemIndex}.title`] = t('inspection_item_title_required', { item: itemNumber })
+    }
+    if (!item.itemTag?.trim()) {
+      errors[`items.${itemIndex}.tag`] = t('inspection_item_tag_required', { item: itemNumber })
+    }
+    if (!item.SelectedActionType?.id) {
+      errors[`items.${itemIndex}.type`] = t('result_type_required', { item: itemNumber })
+    }
+
+    if (item.SelectedActionType?.id !== TemplateItemActionsEnum.TEXTAREA) {
+      const answers = Array.isArray(item.TemplateItems) ? item.TemplateItems : []
+      if (!answers.length || !answers.some((answer: any) => answer.text?.trim())) {
+        errors[`items.${itemIndex}.answers`] = t('result_answer_required', { item: itemNumber })
+      }
+      answers.forEach((answer: any, answerIndex: number) => {
+        if (!answer.text?.trim()) {
+          errors[`items.${itemIndex}.answers.${answerIndex}`] = t('result_answer_text_required', {
+            answer: answerIndex + 1,
+            item: itemNumber,
+          })
+        }
+      })
+    }
+  })
+
+  validationErrors.value = errors
+  return Object.keys(errors).length === 0
+}
+
+const showFirstValidationError = async () => {
+  const firstMessage = Object.values(validationErrors.value)[0]
+  if (!firstMessage) return
+  new OpenWarningDilaog(firstMessage).openDialog()
+  await nextTick()
+  document.querySelector<HTMLElement>('[data-template-validation-error="true"]')?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
+}
+
 const addTemplate = async (isInLibrary: number) => {
+  if (!validateTemplate()) {
+    await showFirstValidationError()
+    return
+  }
   const translationsParams = new TranslationsParams()
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
@@ -220,6 +288,7 @@ watch(
       langs.value = []
       SelectedTemplateType.value = null
       image.value = null
+      validationErrors.value = {}
     }
   },
 )
@@ -265,10 +334,22 @@ watch(
       <div class="inspection-template-dialog-data grid grid-cols-4 gap-4">
         <hr class="inspection-template-dialog-divider col-span-4" />
 
-        <div class="template-field-panel col-span-4 md:col-span-2">
-          <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" :label="`Template title`" />
+        <div
+          class="template-field-panel col-span-4 md:col-span-2"
+          :data-template-validation-error="Boolean(validationErrors.templateTitle)"
+        >
+          <LangTitleInput
+            :langs="langDefault"
+            :modelValue="langs"
+            @update:modelValue="setLangs"
+            :label="`Template title`"
+          />
+          <p v-if="validationErrors.templateTitle" class="required-field-message">
+            {{ validationErrors.templateTitle }}
+          </p>
         </div>
 
+        <!-- :data-template-validation-error="Boolean(validationErrors.templateType)" -->
         <div class="template-field-panel col-span-4 md:col-span-2">
           <CustomSelectInput
             :modelValue="SelectedTemplateType"
@@ -279,9 +360,14 @@ watch(
             :placeholder="$t('Select Template Type')"
             @update:modelValue="setTemplateType"
           />
+          <!-- <p v-if="validationErrors.templateType" class="required-field-message">{{ validationErrors.templateType }}</p> -->
         </div>
 
-        <TemplateTimeLine :visable="visible" @update:data="GetTemplateData" />
+        <TemplateTimeLine
+          :visable="visible"
+          :validation-errors="validationErrors"
+          @update:data="GetTemplateData"
+        />
       </div>
     </div>
 
@@ -309,9 +395,21 @@ watch(
   border: 1px solid color-mix(in srgb, var(--brand-primary-500) 16%, transparent);
   border-radius: 18px;
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 96%, transparent), color-mix(in srgb, var(--brand-primary-50) 90%, transparent)),
-    radial-gradient(circle at 12% 18%, color-mix(in srgb, var(--status-success) 16%, transparent), transparent 32%),
-    radial-gradient(circle at 94% 12%, color-mix(in srgb, var(--brand-primary-500) 16%, transparent), transparent 28%);
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface-1) 96%, transparent),
+      color-mix(in srgb, var(--brand-primary-50) 90%, transparent)
+    ),
+    radial-gradient(
+      circle at 12% 18%,
+      color-mix(in srgb, var(--status-success) 16%, transparent),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 94% 12%,
+      color-mix(in srgb, var(--brand-primary-500) 16%, transparent),
+      transparent 28%
+    );
   box-shadow: 0 16px 38px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
   transition:
     transform 0.25s ease,
@@ -382,8 +480,16 @@ watch(
   padding: 20px 24px 16px;
   border-bottom: 1px solid color-mix(in srgb, var(--brand-primary-100) 72%, transparent);
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 94%, transparent)),
-    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary-500) 8%, transparent), color-mix(in srgb, var(--status-success) 8%, transparent));
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface-1) 98%, transparent),
+      color-mix(in srgb, var(--brand-primary-50) 94%, transparent)
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--brand-primary-500) 8%, transparent),
+      color-mix(in srgb, var(--status-success) 8%, transparent)
+    );
 }
 
 :global(.add-new-template-dialog-container .add-new-template-dialog-header) {
@@ -426,6 +532,17 @@ watch(
 .inspection-template-dialog-divider {
   margin: 0;
   border-color: color-mix(in srgb, var(--brand-primary-100) 86%, transparent);
+}
+
+.required-field-message {
+  margin-top: 7px;
+  color: var(--status-danger);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+[data-template-validation-error='true'] {
+  border-color: color-mix(in srgb, var(--status-danger) 55%, transparent) !important;
 }
 
 :global(.add-new-template-dialog-container .dialog-footer) {

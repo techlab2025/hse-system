@@ -3,57 +3,57 @@ import { useRoute } from 'vue-router'
 import ShowProjectDetailsParams from '../../../Core/params/ShowProjectDetailsParams'
 import ShowProjectDetailsController from '../../controllers/ShowProjectDetailsController'
 import EquipmentSection from './Equipment/EquipmentSection.vue'
-import InspectionsSections from './Inspection/InspectionsSections.vue'
+// import InspectionsSections from './Inspection/InspectionsSections.vue'
 import LocationsTeamsSection from './LocationsTeams/LocationsTeamsSection.vue'
 import MainObjectivesSection from './Objectives/MainObjectivesSection.vue'
 import ProjectSiteSection from './ProjectSite/ProjectSiteSection.vue'
-import { computed, ref, watch } from 'vue'
+import { watch } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import ProjectHeader from './PorjectUtils/ProjectHeader.vue'
-import zoneInspectionTasks from '@/assets/images/InspectionTaskbg.png'
-import EmployeeInspectionTasks from '@/assets/images/employee Inspection Tasks.png'
+// import zoneInspectionTasks from '@/assets/images/InspectionTaskbg.png'
+// import EmployeeInspectionTasks from '@/assets/images/employee Inspection Tasks.png'
 
 const showProjectDetailsController = ShowProjectDetailsController.getInstance()
-const state = ref(showProjectDetailsController.state.value)
+const state = showProjectDetailsController.state
 
 const route = useRoute()
 const GetProjectDetails = async () => {
-  const id = route.params.id
-  const showProjectDetailsParams = new ShowProjectDetailsParams(Number(id))
-  await showProjectDetailsController.showProjectDetails(showProjectDetailsParams)
+  const projectId = Number(route.params.id)
+  if (!Number.isFinite(projectId) || projectId <= 0) return
+
+  const showProjectDetailsParams = new ShowProjectDetailsParams(projectId)
+  try {
+    await showProjectDetailsController.showProjectDetails(showProjectDetailsParams)
+  } catch (error) {
+    // The controller has already stored DataFailed; DataStatus renders it safely.
+    console.error('Unable to refresh project details', error)
+  }
 }
 
-const projectOverview = computed(() => [
-  {
-    label: 'locations',
-    value: state.value.data?.locations?.length || 0,
-  },
-  {
-    label: 'zones',
-    value: state.value.data?.projectZoons?.length || 0,
-  },
-  {
-    label: 'teams',
-    value: state.value.data?.TeamLocations?.length || 0,
-  },
-  {
-    label: 'Equipment',
-    value:
-      state.value.data?.projectZoons?.reduce((total, zone) => {
-        return total + (zone?.projectZoonEquipments?.length || 0)
-      }, 0) || 0,
-  },
-])
-
-watch(
-  () => showProjectDetailsController.state.value,
-  (newState) => {
-    state.value = newState
-  },
-)
+// const projectOverview = computed(() => [
+//   {
+//     label: 'locations',
+//     value: state.value.data?.locations?.length || 0,
+//   },
+//   {
+//     label: 'zones',
+//     value: state.value.data?.projectZoons?.length || 0,
+//   },
+//   {
+//     label: 'teams',
+//     value: state.value.data?.TeamLocations?.length || 0,
+//   },
+//   {
+//     label: 'Equipment',
+//     value:
+//       state.value.data?.projectZoons?.reduce((total, zone) => {
+//         return total + (zone?.projectZoonEquipments?.length || 0)
+//       }, 0) || 0,
+//   },
+// ])
 
 watch(
   () => route.params.id,

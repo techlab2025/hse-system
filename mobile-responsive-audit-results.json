@@ -1,0 +1,120 @@
+{
+  "routes": [
+    "/organization",
+    "/organization/projects",
+    "/organization/equipment-mangement/all-observatin",
+    "/organization/equipments",
+    "/organization/organization-employee",
+    "/organization/project-progress",
+    "/organization/Investigating",
+    "/organization/capa",
+    "/organization/equipment-mangement/incedant",
+    "/organization/equipment-mangement/observation",
+    "/organization/equipment-mangement/inspection",
+    "/organization/certificate",
+    "/organization/system-identity",
+    "/organization/template",
+    "/organization/herikaly",
+    "/organization/team",
+    "/organization/contractor",
+    "/organization/role",
+    "/organization/notification-plan",
+    "/organization/scope",
+    "/organization/where-house",
+    "/organization/employee-certificate",
+    "/organization/serial-number",
+    "/organization/hazard",
+    "/organization/factory",
+    "/organization/factories-items",
+    "/organization/document-refrence",
+    "/organization/shifts",
+    "/organization/countries",
+    "/organization/states",
+    "/organization/cities",
+    "/organization/areas",
+    "/organization/project-zone",
+    "/organization/where-house-type",
+    "/organization/hazard-type",
+    "/organization/accidents-type",
+    "/organization/incident-category",
+    "/organization/observation-type",
+    "/organization/equipment-types",
+    "/organization/root-causes",
+    "/organization/injury",
+    "/organization/ticket"
+  ],
+  "findings": [
+    {
+      "route": "/organization/project-progress",
+      "tag": "div",
+      "classes": "skeleton-line main-desc",
+      "width": 500,
+      "left": -116,
+      "right": 384,
+      "text": ""
+    },
+    {
+      "route": "/organization/equipment-mangement/incedant",
+      "tag": "div",
+      "classes": "incident-control-glow",
+      "width": 240,
+      "left": -63,
+      "right": 177,
+      "text": ""
+    },
+    {
+      "route": "/organization/equipment-mangement/incedant",
+      "tag": "span",
+      "classes": "",
+      "width": 96,
+      "left": -52,
+      "right": 44,
+      "text": ""
+    },
+    {
+      "route": "/organization/equipment-mangement/observation",
+      "tag": "div",
+      "classes": "observation-control-glow",
+      "width": 240,
+      "left": -55,
+      "right": 185,
+      "text": ""
+    },
+    {
+      "route": "/organization/equipment-mangement/observation",
+      "tag": "span",
+      "classes": "",
+      "width": 96,
+      "left": -60,
+      "right": 36,
+      "text": ""
+    },
+    {
+      "route": "/organization/system-identity",
+      "tag": "input",
+      "classes": "",
+      "width": 400,
+      "left": -46,
+      "right": 354,
+      "text": ""
+    },
+    {
+      "route": "/organization/serial-number",
+      "tag": "div",
+      "classes": "left-header-background",
+      "width": 466,
+      "left": -33,
+      "right": 433,
+      "text": ""
+    },
+    {
+      "route": "/organization/serial-number",
+      "tag": "div",
+      "classes": "right-header-background",
+      "width": 466,
+      "left": -33,
+      "right": 433,
+      "text": ""
+    }
+  ]
+}

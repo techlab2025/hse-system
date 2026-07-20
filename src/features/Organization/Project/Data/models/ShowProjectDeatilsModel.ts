@@ -83,17 +83,17 @@ export default class ShowProjectDetailsModel {
       data.title,
       data.description,
       data.partner,
-      data.locations,
-      data.team_locations.map((item: any) => TeamLocation.fromMap(item)),
-      data.methods.map((item: any) => this.getTitle(item)),
-      data.project_zoons.map((item: any) => SohwProjectZoonModel.fromMap(item)),
+      data.locations ?? [],
+      data?.team_locations?.map((item: any) => TeamLocation.fromMap(item)) ?? [],
+      data.methods?.map((item: any) => this.getTitle(item)) ?? [],
+      data?.project_zoons?.map((item: any) => SohwProjectZoonModel.fromMap(item)) ?? [],
       data.serial_number,
       data.start_date,
-      data.locations.map((item: any) => this.getLocationsWithKeys(item, 4, LocationEnum.COUNTRY)), //
-      data.locations.map((item: any) => this.getLocationsWithKeys(item, 3, LocationEnum.STATE)), //
-      data.locations.map((item: any) => this.getLocationsWithKeys(item, 2, LocationEnum.CITY)), //
-      data.locations.map((item: any) => this.getLocationsWithKeys(item, 1, LocationEnum.AREA)), //
-      data.locations.map((item: any) => SohwProjectZoonModel.fromMap(item)),
+      data.locations?.map((item: any) => this.getLocationsWithKeys(item, 4, LocationEnum.COUNTRY)) ?? [], //
+      data.locations?.map((item: any) => this.getLocationsWithKeys(item, 3, LocationEnum.STATE)) ?? [], //
+      data.locations?.map((item: any) => this.getLocationsWithKeys(item, 2, LocationEnum.CITY)) ?? [], //
+      data.locations?.map((item: any) => this.getLocationsWithKeys(item, 1, LocationEnum.AREA)) ?? [], //
+      data.locations?.map((item: any) => SohwProjectZoonModel.fromMap(item)) ?? [],
       data.contractors?.map((item: any) => ContractorDetailsModel.fromMap(item)),
       data.hierarchies,
       data.organization_employees?.map((item: any) =>

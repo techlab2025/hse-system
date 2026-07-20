@@ -167,3 +167,178 @@
     grid-template-columns: minmax(0, 1fr) !important;
   }
 }
+
+/* Compact-phone contract: every authenticated screen must remain usable at 400px. */
+@media (max-width: 400px) {
+  html {
+    font-size: 14px;
+  }
+
+  body,
+  #app {
+    min-width: 320px;
+    max-width: 100vw;
+  }
+
+  :where(*) {
+    box-sizing: border-box;
+  }
+
+  :where(.content-wrapper, .main-content, .page, [class$='-page'], [class*='page-container']) {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  :where(.main-content, .page, [class$='-page'], [class*='page-container']) {
+    padding-inline: 8px !important;
+  }
+
+  :where(h1, .h1) {
+    font-size: clamp(1.35rem, 7vw, 1.65rem) !important;
+    line-height: 1.25;
+  }
+
+  :where(h2, .h2, .page-title, .section-title) {
+    font-size: clamp(1.12rem, 5.5vw, 1.4rem) !important;
+    line-height: 1.3;
+  }
+
+  :where(h3, h4, h5, h6, p, span, label, a, button, th, td) {
+    overflow-wrap: anywhere;
+  }
+
+  :where(.flex, [class*='-header'], [class*='_header'], [class*='-actions'], [class*='_actions']) {
+    min-width: 0;
+  }
+
+  :where(.flex-wrap-mobile, .form-actions, .filter-actions, .header-actions, .page-actions) {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  :where(button, [role='button'], .p-button, a.btn, .btn) {
+    max-width: 100%;
+    min-height: 42px;
+    touch-action: manipulation;
+  }
+
+  :where(input, textarea, select, .p-inputtext, .p-select, .p-multiselect, .p-datepicker) {
+    min-height: 44px;
+    font-size: 16px !important;
+  }
+
+  textarea {
+    min-height: 96px;
+  }
+
+  :where(.p-dialog, dialog) {
+    width: calc(100vw - 12px) !important;
+    max-width: calc(100vw - 12px) !important;
+    max-height: calc(100dvh - 12px) !important;
+    margin: 6px !important;
+    border-radius: 14px !important;
+  }
+
+  :where(.p-dialog-header, .p-dialog-content, .p-dialog-footer) {
+    padding: 12px !important;
+  }
+
+  .p-dialog-footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .p-dialog-footer > * {
+    flex: 1 1 120px;
+  }
+
+  :where(.p-datatable, .main-table, table) {
+    max-width: 100%;
+  }
+
+  :where(.p-datatable-wrapper, .table-responsive, .table-container, [class*='table-wrapper']) {
+    display: block;
+    width: 100%;
+    max-width: calc(100vw - 16px);
+    overflow-x: auto !important;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
+  }
+
+  :where(.p-datatable-table, .main-table, table) {
+    width: max-content;
+    min-width: 100%;
+  }
+
+  :where(th, td) {
+    max-width: 230px;
+    padding: 9px 10px !important;
+    white-space: normal !important;
+  }
+
+  :where(.p-paginator, .pagination, [class*='pagination']) {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 4px !important;
+  }
+
+  :where(.p-paginator-page, .p-paginator-next, .p-paginator-prev, .p-paginator-first, .p-paginator-last) {
+    min-width: 36px !important;
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  :where(.p-tablist, .tabs, [class*='tabs-container'], [class*='tab-list']) {
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-width: thin;
+  }
+
+  :where(.p-tab, [role='tab']) {
+    flex: 0 0 auto;
+    min-height: 42px;
+  }
+
+  :where(.card, [class$='-card'], [class*=' card-'], [class*='-card ']) {
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  :where(.p-toast, .p-confirmdialog, .p-popover, .p-overlaypanel) {
+    width: calc(100vw - 16px) !important;
+    max-width: calc(100vw - 16px) !important;
+  }
+
+  :where(.p-select-overlay, .p-multiselect-overlay, .p-datepicker-panel) {
+    max-width: calc(100vw - 16px) !important;
+  }
+
+  :where(svg) {
+    flex-shrink: 0;
+  }
+
+  /* Large decorative header artwork must never enlarge the mobile canvas. */
+  :where(.left-header-background, .right-header-background) {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    pointer-events: none;
+  }
+
+  :where(.left-blue-background, .left-yellow-background, .right-blue-background, .right-yellow-background) {
+    display: none !important;
+  }
+
+  :where(.incident-control-glow, .observation-control-glow) {
+    inset-inline-end: -24px !important;
+    width: 160px !important;
+    height: 160px !important;
+  }
+
+  :where(.skeleton-line) {
+    max-width: 100% !important;
+  }
+}
