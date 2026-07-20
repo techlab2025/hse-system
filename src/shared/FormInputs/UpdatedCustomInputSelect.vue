@@ -1,49 +1,60 @@
 <script lang="ts" setup>
+import { computed, ref, watch, useAttrs } from 'vue'
+
 import MultiSelect from 'primevue/multiselect'
 import Select from 'primevue/select'
-import { computed, ref, watch, toRefs } from 'vue'
+import Dialog from 'primevue/dialog'
+
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import type Params from '@/base/core/params/params'
+import type Params from '@/base/core/Params/params'
+
 import ValidationService from '@/base/Presentation/utils/validationService'
 import IconBackStage from '@/shared/icons/IconBackStage.vue'
-import Dialog from 'primevue/dialog'
-import FieldHelpIcon from './FieldHelpIcon.vue'
 
 export type ComponentType = 'select' | 'multiselect'
 
+defineOptions({ inheritAttrs: false })
+
 interface Props {
   label?: string
+
   options?: TitleInterface[]
   staticOptions?: TitleInterface[] | null
-  excludedOptionIds?: Array<number | string>
-  modelValue: TitleInterface | TitleInterface[] | null
-  placeholder: string
+
+  /*
+   * modelValue is optional because the parent may initially send undefined.
+   * It will be converted to null through withDefaults.
+   */
+  modelValue?: TitleInterface | TitleInterface[] | null
+
+  placeholder?: string
+
   controller?: SelectControllerInterface<any>
   params?: Params
+
   type?: ComponentType | number
+
   required?: boolean
   id?: string
   autoFill?: boolean
   reload?: boolean
   optional?: boolean
+
   hascontent?: boolean
   hasHeader?: boolean
+
   isDialog?: boolean
   dialogVisible?: boolean
+
   onclick?: () => void
-  helpText?: string
 }
 
-// const emit = defineEmits(['update:modelValue', 'update:slot'])
-const emit = defineEmits([
-  'update:modelValue',
-  'update:slot',
-  'update:reload',
-  'update:dialogVisible',
-  'close',
-])
+const attrs = useAttrs()
+
 const props = withDefaults(defineProps<Props>(), {
+  modelValue: null,
+  placeholder: '',
   type: 1,
   required: false,
   autoFill: false,
@@ -51,236 +62,403 @@ const props = withDefaults(defineProps<Props>(), {
   reload: true,
   staticOptions: null,
   optional: false,
+  hascontent: false,
+  hasHeader: false,
+  isDialog: false,
+  dialogVisible: false,
 })
 
-const {
-  modelValue,
-  type,
-  controller,
-  params,
-  staticOptions,
-  autoFill,
-  id,
-  required,
-  reload: enableReload,
-} = toRefs(props)
+const emit = defineEmits<{
+  (event: 'update:modelValue', value: TitleInterface | TitleInterface[] | null): void
 
+  (event: 'update:slot', value: unknown): void
+  (event: 'update:dialogVisible', value: boolean): void
+  (event: 'close', value: boolean): void
+}>()
+
+// -----------------------------------------------------------------------------
 // Reactive state
+// -----------------------------------------------------------------------------
+
 const loading = ref(false)
 const message = ref('No Data Found')
 const dynamicOptions = ref<TitleInterface[]>([])
 
+// Prevent an older request from replacing the latest request result.
+let currentRequestId = 0
+
+// -----------------------------------------------------------------------------
 // Computed properties
-const isMultiselect = computed(
-  () => Number(type.value) === 2 || String(type.value).toLowerCase() === 'multiselect',
-)
-const componentType = computed(() => (isMultiselect.value ? MultiSelect : Select))
-const excludedOptionIdSet = computed(
-  () => new Set((props.excludedOptionIds ?? []).map((id) => String(id))),
-)
-const mergedOptions = computed(() => {
-  const options = staticOptions?.value ?? props.options ?? dynamicOptions.value
+// -----------------------------------------------------------------------------
 
-  if (!excludedOptionIdSet.value.size) return options
-
-  return options.filter((option) => !excludedOptionIdSet.value.has(String(option.id)))
+const isMultiselect = computed<boolean>(() => {
+  return props.type === 'multiselect' || Number(props.type) === 2
 })
-const multiselectProps = computed(() =>
-  isMultiselect.value ? { display: 'chip', maxSelectedLabels: 6 } : {},
-)
 
-// PrimeVue matches the selected option against `options` by data-key ("id") using
-// strict equality. IDs coming from the parent's modelValue aren't guaranteed to be
-// the same type (string vs number) as the ones in mergedOptions, so we resolve to
-// the actual option instance instead of trusting the raw value's shape - otherwise
-// the widget silently falls back to the placeholder even though the value is correct.
-function resolveOption(value: TitleInterface | null): TitleInterface | null {
-  if (!value) return null
-  return mergedOptions.value.find((option) => String(option.id) === String(value.id)) ?? value
-}
+const componentType = computed(() => {
+  return isMultiselect.value ? MultiSelect : Select
+})
 
-function resolveSelectedValue(
-  value: TitleInterface | TitleInterface[] | null,
-  multiselect: boolean,
-): TitleInterface | TitleInterface[] | null {
-  if (multiselect) {
-    return (Array.isArray(value) ? value : []).map((item) => resolveOption(item) ?? item)
+const mergedOptions = computed<TitleInterface[]>(() => {
+  /*
+   * Priority:
+   * 1. staticOptions
+   * 2. options
+   * 3. fetched dynamic options
+   */
+  if (props.staticOptions !== null) {
+    return props.staticOptions ?? []
   }
-  return resolveOption(value as TitleInterface | null)
-}
 
-// Keep an immediate local value for PrimeVue, then synchronize external changes
-// from the parent. The public v-model still emits complete option objects.
-const selectedValue = ref<TitleInterface | TitleInterface[] | null>(
-  resolveSelectedValue(modelValue.value, isMultiselect.value),
-)
+  if (props.options) {
+    return props.options
+  }
 
+  return dynamicOptions.value
+})
+
+const multiselectProps = computed(() => {
+  if (!isMultiselect.value) {
+    return {}
+  }
+
+  return {
+    display: 'chip',
+    maxSelectedLabels: 6,
+  }
+})
+
+/*
+ * Store the selection locally so PrimeVue updates its label immediately.
+ * Parent model changes are synchronized below.
+ */
+const localValue = ref<TitleInterface | TitleInterface[] | null>(normalizeValue(props.modelValue))
+
+const normalizedValue = computed<TitleInterface | TitleInterface[] | null>({
+  get: () => localValue.value,
+  set: (newValue) => {
+    const normalized = normalizeValue(newValue)
+    localValue.value = normalized
+    emit('update:modelValue', normalized)
+    ValidationService.clearError(props.id)
+  },
+})
+
+const dialogVisibleModel = computed<boolean>({
+  get() {
+    return props.dialogVisible ?? false
+  },
+
+  set(value) {
+    emit('update:dialogVisible', value)
+
+    if (!value) {
+      void reloadData()
+    }
+  },
+})
+
+const hiddenInputValue = computed<string>(() => {
+  const value = normalizedValue.value
+
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => getOptionKey(item))
+      .filter(Boolean)
+      .join(',')
+  }
+
+  if (value && typeof value === 'object') {
+    return getOptionKey(value)
+  }
+
+  return ''
+})
+
+// -----------------------------------------------------------------------------
 // Watchers
-watch([params, controller], handleOptionUpdates, { immediate: true })
+// -----------------------------------------------------------------------------
+
 watch(
-  [modelValue, isMultiselect],
-  ([value, multiselect]) => {
-    selectedValue.value = resolveSelectedValue(value, multiselect)
+  () => props.modelValue,
+  (value) => {
+    localValue.value = normalizeValue(value)
   },
   { deep: true },
 )
-// Re-resolve once options finish loading (e.g. async fetch), so a value set before
-// the options arrived still gets matched up instead of sticking to the placeholder.
-watch(mergedOptions, () => {
-  selectedValue.value = resolveSelectedValue(selectedValue.value, isMultiselect.value)
-})
-// Methods
-function emitUpdate(value: TitleInterface | TitleInterface[] | null): void {
-  selectedValue.value = value
-  emit('update:modelValue', value)
-  ValidationService.clearError(id.value)
+
+watch(
+  () => props.params,
+  () => {
+    void handleOptionUpdates()
+  },
+  {
+    immediate: true,
+    deep: true,
+  },
+)
+
+watch(
+  () => props.controller,
+  () => {
+    void handleOptionUpdates()
+  },
+)
+
+watch(
+  () => props.staticOptions,
+  (options) => {
+    if (options !== null) {
+      handleAutoFill(options ?? [])
+    }
+  },
+  {
+    deep: true,
+  },
+)
+
+watch(
+  () => props.options,
+  (options) => {
+    if (props.staticOptions === null) {
+      handleAutoFill(options ?? [])
+    }
+  },
+  {
+    deep: true,
+  },
+)
+
+// -----------------------------------------------------------------------------
+// Value methods
+// -----------------------------------------------------------------------------
+
+function normalizeValue(value: unknown): TitleInterface | TitleInterface[] | null {
+  if (isMultiselect.value) {
+    return ensureArray(value)
+  }
+
+  return ensureSingle(value)
 }
 
-async function handleOptionUpdates(): Promise<void> {
-  if (params?.value && controller?.value) {
-    await fetchOptions()
-  } else {
-    dynamicOptions.value = staticOptions?.value ?? []
+function ensureArray(value: unknown): TitleInterface[] {
+  return Array.isArray(value) ? (value as TitleInterface[]) : []
+}
+
+function ensureSingle(value: unknown): TitleInterface | null {
+  /*
+   * Do not use:
+   *
+   * value instanceof TitleInterface
+   *
+   * because objects returned from the API are plain JavaScript objects.
+   */
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    return value as TitleInterface
   }
+
+  return null
+}
+
+function getOptionKey(option: TitleInterface): string {
+  const item = option as TitleInterface & {
+    id?: string | number
+    uuid?: string
+  }
+
+  if (item.id !== undefined && item.id !== null) {
+    return String(item.id)
+  }
+
+  if (item.uuid) {
+    return item.uuid
+  }
+
+  return ''
+}
+
+// -----------------------------------------------------------------------------
+// Options methods
+// -----------------------------------------------------------------------------
+
+async function handleOptionUpdates(): Promise<void> {
+  if (props.controller && props.params) {
+    await fetchOptions()
+    return
+  }
+
+  dynamicOptions.value = props.staticOptions ?? props.options ?? []
 }
 
 async function fetchOptions(): Promise<void> {
-  if (!controller?.value || !params?.value) return
+  if (!props.controller || !props.params) {
+    return
+  }
+
+  const requestId = ++currentRequestId
+
   try {
     loading.value = true
     message.value = 'Loading Data'
-    const response = await controller.value.fetch(params.value)
-    dynamicOptions.value = response
+
+    const response = await props.controller.fetch(props.params)
+
+    /*
+     * Ignore the result when a newer request has already started.
+     */
+    if (requestId !== currentRequestId) {
+      return
+    }
+
+    dynamicOptions.value = Array.isArray(response) ? response : []
+
     updateControllerState()
-    handleAutoFill(response)
+    handleAutoFill(dynamicOptions.value)
   } catch (error) {
+    if (requestId !== currentRequestId) {
+      return
+    }
+
     handleFetchError(error)
   } finally {
-    loading.value = false
+    if (requestId === currentRequestId) {
+      loading.value = false
+    }
   }
 }
 
 function updateControllerState(): void {
-  if (!controller?.value) return
-  if (controller.value.isDataFailed()) {
+  if (!props.controller) {
+    return
+  }
+
+  if (props.controller.isDataFailed()) {
     message.value = 'An Error Occurred'
-  } else if (controller.value.isDataSuccess()) {
+    return
+  }
+
+  if (props.controller.isDataSuccess()) {
     message.value = 'No Data Found'
   }
 }
 
 function handleAutoFill(options: TitleInterface[]): void {
-  if (autoFill?.value && options.length === 1) {
-    selectedValue.value = isMultiselect.value ? [options[0]] : options[0]
+  if (!props.autoFill || options.length !== 1) {
+    return
   }
+
+  const option = options[0]
+
+  if (!option) {
+    return
+  }
+
+  normalizedValue.value = isMultiselect.value ? [option] : option
 }
 
 function handleFetchError(error: unknown): void {
   console.error('Fetch error:', error)
+
   message.value = 'Failed to load data'
   dynamicOptions.value = []
 }
 
 async function reloadData(): Promise<void> {
-  emit('update:reload')
-  if (loading.value) return
-  await fetchOptions()
-  selectedValue.value = isMultiselect.value ? [] : null
+  if (loading.value) {
+    return
+  }
+
+  /*
+   * Clear the selected value before fetching.
+   * This allows autoFill to select the only available option afterward.
+   */
+  normalizedValue.value = isMultiselect.value ? [] : null
+
+  if (props.controller && props.params) {
+    await fetchOptions()
+    return
+  }
+
+  dynamicOptions.value = props.staticOptions ?? props.options ?? []
 }
 
-const DialogVisable = computed({
-  get() {
-    return props.dialogVisible
-  },
-  set(val) {
-    emit('update:dialogVisible', val)
-  },
-})
-
-const closeDialog = async () => {
+function closeDialog(): void {
   emit('close', false)
-  emit('update:reload')
-  await fetchOptions()
 }
+// const sselee = ref()
+// const UpdateSelctedValue = (event) => {
+//   sselee.value = event.value
+//   console.log(event.value, 'eee')
+// }
 </script>
 
 <template>
-  <div class="input-label updated-select-header flex justify-between w-full">
-    <slot v-if="!hasHeader">
-      <div class="updated-select-tools flex items-center">
-        <slot name="reloadHeader"></slot>
-        <span
-          v-if="enableReload"
-          class="reload-icon cursor-pointer flex items-center gap-sm me-2 w-full"
-          @click="reloadData"
-        >
-          <span class="optional-text" v-if="optional">({{ $t('optional') }})</span>
-          <IconBackStage />
-        </span>
-      </div>
+  <div v-bind="attrs" class="updated-custom-input-select">
+    <div class="input-label flex w-full justify-between">
+      <slot v-if="!hasHeader">
+        <div class="flex items-center">
+          <slot name="reloadHeader" />
 
-      <div class="updated-select-label flex items-center gap-2">
-        <label :class="{ required: required }" class="input-label">
-          <span v-if="required" class="text-red-500">*</span>
-          {{ $t(label ?? '') }}
-        </label>
+          <span
+            v-if="reload"
+            class="reload-icon me-2 flex w-full cursor-pointer items-center gap-sm"
+            @click="reloadData"
+          >
+            <span v-if="optional" class="optional-text"> ({{ $t('optional') }}) </span>
 
-        <FieldHelpIcon v-if="helpText" :text="helpText" />
+            <IconBackStage />
+          </span>
+        </div>
 
-        <slot name="LabelHeader"></slot>
-      </div>
+        <div class="flex items-center gap-2">
+          <label class="input-label" :class="{ required }">
+            <span v-if="required" class="text-red-500"> * </span>
+
+            {{ $t(label ?? '') }}
+          </label>
+
+          <slot name="LabelHeader" />
+        </div>
+      </slot>
+
+      <slot v-else name="Header" />
+    </div>
+
+    <slot v-if="!hascontent">
+      <component
+        :is="componentType"
+        v-model="normalizedValue"
+        :options="mergedOptions"
+        :placeholder="placeholder"
+        :loading="loading"
+        :empty-message="message"
+        :data-key="'id'"
+        class="input-select w-full"
+        option-label="title"
+        filter
+        v-bind="multiselectProps"
+      />
+
+      <input :id="id" :value="hiddenInputValue" type="text" class="hidden w-full" />
     </slot>
-    <slot v-else name="Header"></slot>
-  </div>
 
-  <slot v-if="!hascontent">
-    <component
-      :is="componentType"
-      :model-value="selectedValue"
-      @update:model-value="emitUpdate"
-      :options="mergedOptions"
-      data-key="id"
-      :placeholder="placeholder"
-      class="input-select w-full"
-      option-label="title"
-      v-bind="multiselectProps"
-      filter
-      :loading="loading"
-      :empty-message="message"
-    />
-    <input type="text" class="hidden w-full" :value="selectedValue" :id="id" />
-  </slot>
-  <slot v-else name="content"> </slot>
-  <div v-if="isDialog">
-    <Dialog
-      @hide="closeDialog"
-      v-model:visible="DialogVisable"
-      modal
-      :dismissable-mask="true"
-      :style="{ width: 'min(50rem, calc(100vw - 24px))' }"
-    >
-      <slot name="Dialog"></slot>
-    </Dialog>
+    <slot v-else name="content" />
+
+    <div v-if="isDialog">
+      <Dialog
+        v-model:visible="dialogVisibleModel"
+        modal
+        :dismissable-mask="true"
+        :style="{ width: '50rem' }"
+        @hide="closeDialog"
+      >
+        <slot name="Dialog" />
+      </Dialog>
+    </div>
   </div>
 </template>
 
 <style scoped lang="scss">
-.reload-icon {
-  background-color: transparent !important;
-  width: auto !important;
-  flex: 0 0 auto;
-}
-
-.updated-select-header,
-.updated-select-tools,
-.updated-select-label {
-  min-width: 0;
-}
-
-.updated-select-header,
-.updated-select-tools {
-  gap: 8px;
-}
 .add-dialog {
   width: 20px;
   height: 20px;
@@ -299,25 +477,7 @@ const closeDialog = async () => {
   border-radius: 24px;
 
   &:focus {
-    border: 1px solid var(--brand-primary-100) !important;
-  }
-}
-
-@media (max-width: 640px) {
-  .updated-select-header {
-    align-items: stretch;
-    flex-direction: column-reverse;
-    gap: 8px;
-  }
-
-  .updated-select-tools {
-    width: 100%;
-    flex-wrap: wrap;
-  }
-
-  .updated-select-label {
-    width: 100%;
-    flex-wrap: wrap;
+    border: 1px solid #d9dbe9 !important;
   }
 }
 </style>

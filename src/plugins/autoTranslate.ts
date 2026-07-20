@@ -18,7 +18,9 @@ const TRANSLATABLE_ATTRIBUTES = [
 ] as const
 
 const originalText = new WeakMap<Text, string>()
+const appliedText = new WeakMap<Text, string>()
 const originalAttributes = new WeakMap<Element, Map<string, string>>()
+const appliedAttributes = new WeakMap<Element, Map<string, string>>()
 
 function flattenMessages(messages: LocaleMessages, result = new Map<string, string>()) {
   Object.entries(messages).forEach(([key, value]) => {
@@ -70,10 +72,24 @@ function translateElement(root: Node, translations: Map<string, string>) {
     const parent = node.parentElement
     if (!parent || ['SCRIPT', 'STYLE', 'CODE', 'PRE'].includes(parent.tagName)) return
 
-    if (!originalText.has(node)) originalText.set(node, node.data)
-    const source = originalText.get(node) ?? node.data
+    const currentValue = node.data
+    const lastAppliedValue = appliedText.get(node)
+
+    // Vue and third-party components reuse text nodes. If their value changed
+    // since our last translation, it is new application state (for example, a
+    // Select changing its placeholder into the selected option label).
+    if (
+      !originalText.has(node) ||
+      (lastAppliedValue !== undefined && currentValue !== lastAppliedValue)
+    ) {
+      originalText.set(node, currentValue)
+    }
+
+    const source = originalText.get(node) ?? currentValue
     const translated = translateValue(source, translations)
-    if (node.data !== translated) node.data = translated
+    appliedText.set(node, translated)
+
+    if (currentValue !== translated) node.data = translated
   })
 
   const elements: Element[] = []
@@ -87,13 +103,28 @@ function translateElement(root: Node, translations: Map<string, string>) {
       originalAttributes.set(element, storedAttributes)
     }
 
+    let lastAppliedAttributes = appliedAttributes.get(element)
+    if (!lastAppliedAttributes) {
+      lastAppliedAttributes = new Map()
+      appliedAttributes.set(element, lastAppliedAttributes)
+    }
+
     TRANSLATABLE_ATTRIBUTES.forEach((attribute) => {
       const currentValue = element.getAttribute(attribute)
       if (currentValue === null) return
-      if (!storedAttributes.has(attribute)) storedAttributes.set(attribute, currentValue)
+
+      const lastAppliedValue = lastAppliedAttributes.get(attribute)
+      if (
+        !storedAttributes.has(attribute) ||
+        (lastAppliedValue !== undefined && currentValue !== lastAppliedValue)
+      ) {
+        storedAttributes.set(attribute, currentValue)
+      }
 
       const source = storedAttributes.get(attribute) ?? currentValue
       const translated = translateValue(source, translations)
+      lastAppliedAttributes.set(attribute, translated)
+
       if (currentValue !== translated) element.setAttribute(attribute, translated)
     })
   })
@@ -113,7 +144,7 @@ export function createAutoTranslate(composer: I18nComposerLike) {
           const translatePage = () => translateElement(document.body, translations)
           const observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
-              if (mutation.type === 'characterData') {
+              if (mutation.type === 'characterData' || mutation.type === 'attributes') {
                 translateElement(mutation.target, translations)
                 return
               }
@@ -123,7 +154,13 @@ export function createAutoTranslate(composer: I18nComposerLike) {
           })
 
           translatePage()
-          observer.observe(document.body, { childList: true, characterData: true, subtree: true })
+          observer.observe(document.body, {
+            childList: true,
+            characterData: true,
+            attributes: true,
+            attributeFilter: [...TRANSLATABLE_ATTRIBUTES],
+            subtree: true,
+          })
 
           watch(
             () => composer.locale.value,

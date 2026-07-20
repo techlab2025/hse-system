@@ -261,6 +261,7 @@ const fields = ref([
       id="Factor"
       placeholder="Select factor"
       @update:modelValue="setFactory"
+      :type="1"
     />
   </div>
   <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
