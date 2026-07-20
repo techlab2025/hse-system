@@ -69,6 +69,7 @@
   "result_type_required": "يرجى تحديد نوع النتيجة لبند الفحص رقم {item}.",
   "result_answer_required": "يرجى إضافة إجابة واحدة على الأقل لبند الفحص رقم {item}.",
   "result_answer_text_required": "يرجى إدخال نص الإجابة رقم {answer} في بند الفحص رقم {item}.",
+  "choice_options_minimum_required": "يرجى إضافة خيارين مكتملين على الأقل لبند الاختيار رقم {item}.",
   "main_sidebar_groups": "مجموعات القائمة الجانبية الرئيسية",
   "search_all_sidebar_routes": "البحث في جميع صفحات القائمة الجانبية",
   "sidebar_group_routes": "صفحات {group}",

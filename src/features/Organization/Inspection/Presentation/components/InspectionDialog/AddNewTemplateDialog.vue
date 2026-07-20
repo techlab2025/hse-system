@@ -208,7 +208,17 @@ const validateTemplate = () => {
 
     if (item.SelectedActionType?.id !== TemplateItemActionsEnum.TEXTAREA) {
       const answers = Array.isArray(item.TemplateItems) ? item.TemplateItems : []
-      if (!answers.length || !answers.some((answer: any) => answer.text?.trim())) {
+      const completedAnswers = answers.filter((answer: any) => answer.text?.trim())
+      const requiresTwoOptions = [
+        TemplateItemActionsEnum.CHECKBOX,
+        TemplateItemActionsEnum.RADIOBUTTON,
+      ].includes(item.SelectedActionType?.id)
+
+      if (requiresTwoOptions && completedAnswers.length < 2) {
+        errors[`items.${itemIndex}.answers`] = t('choice_options_minimum_required', {
+          item: itemNumber,
+        })
+      } else if (!answers.length || completedAnswers.length < 1) {
         errors[`items.${itemIndex}.answers`] = t('result_answer_required', { item: itemNumber })
       }
       answers.forEach((answer: any, answerIndex: number) => {

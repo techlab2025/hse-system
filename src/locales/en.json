@@ -69,6 +69,7 @@
   "result_type_required": "Result type is required for item {item}.",
   "result_answer_required": "Add at least one result answer for item {item}.",
   "result_answer_text_required": "Result answer {answer} in item {item} is required.",
+  "choice_options_minimum_required": "Add at least two completed options for choice item {item}.",
   "main_sidebar_groups": "Main sidebar groups",
   "search_all_sidebar_routes": "Search all sidebar routes",
   "sidebar_group_routes": "{group} routes",
