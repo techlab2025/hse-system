@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import MultiSelect from 'primevue/multiselect'
 import Select from 'primevue/select'
-import { computed, ref, watch, toRefs, type Component, useSlots, onMounted } from 'vue'
+import { computed, ref, watch, toRefs } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import type Params from '@/base/core/Params/params'
+import type Params from '@/base/core/params/params'
 import ValidationService from '@/base/Presentation/utils/validationService'
 import IconBackStage from '@/shared/icons/IconBackStage.vue'
-import PlusIcon from '../icons/PlusIcon.vue'
 import Dialog from 'primevue/dialog'
 import FieldHelpIcon from './FieldHelpIcon.vue'
 
@@ -78,7 +77,7 @@ const excludedOptionIdSet = computed(
   () => new Set((props.excludedOptionIds ?? []).map((id) => String(id))),
 )
 const mergedOptions = computed(() => {
-  const options = staticOptions?.value ?? dynamicOptions.value
+  const options = staticOptions?.value ?? props.options ?? dynamicOptions.value
 
   if (!excludedOptionIdSet.value.size) return options
 
@@ -89,11 +88,43 @@ const multiselectProps = computed(() =>
 )
 
 // Value handling
-const normalizedValue = computed({
-  get: () => modelValue.value,
+type OptionId = number | string
+
+const getOptionId = (value: unknown): OptionId | null => {
+  if (typeof value === 'number' || typeof value === 'string') return value
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null
+
+  const optionId = (value as Partial<TitleInterface>).id
+  return optionId === undefined || optionId === null ? null : optionId
+}
+
+const findOption = (value: unknown): TitleInterface | null => {
+  const optionId = getOptionId(value)
+  if (optionId === null) return null
+
+  return mergedOptions.value.find((option) => String(option.id) === String(optionId)) ?? null
+}
+
+const normalizedValue = computed<OptionId | OptionId[] | null>({
+  get: () => {
+    if (isMultiselect.value) {
+      return ensureArray(modelValue.value)
+        .map((option) => findOption(option)?.id ?? getOptionId(option))
+        .filter((optionId): optionId is OptionId => optionId !== null)
+    }
+
+    return findOption(modelValue.value)?.id ?? getOptionId(modelValue.value)
+  },
   set: (newValue) => {
-    const normalized = isMultiselect.value ? ensureArray(newValue) : ensureSingle(newValue)
-    emitUpdate(normalized)
+    if (isMultiselect.value) {
+      const selectedOptions = (Array.isArray(newValue) ? newValue : [])
+        .map(findOption)
+        .filter((option): option is TitleInterface => option !== null)
+      emitUpdate(selectedOptions)
+      return
+    }
+
+    emitUpdate(findOption(newValue))
   },
 })
 
@@ -103,12 +134,6 @@ watch([params, controller], handleOptionUpdates, { immediate: true })
 // Methods
 function ensureArray(value: unknown): TitleInterface[] {
   return Array.isArray(value) ? value : []
-}
-
-function ensureSingle(value: unknown): TitleInterface | null {
-  if (!value || typeof value !== 'object' || Array.isArray(value)) return null
-  const option = value as Partial<TitleInterface>
-  return option.id !== undefined && option.id !== null ? (value as TitleInterface) : null
 }
 
 function emitUpdate(value: TitleInterface | TitleInterface[] | null): void {
@@ -151,7 +176,7 @@ function updateControllerState(): void {
 
 function handleAutoFill(options: TitleInterface[]): void {
   if (autoFill?.value && options.length === 1) {
-    normalizedValue.value = isMultiselect.value ? [options[0]] : options[0]
+    normalizedValue.value = isMultiselect.value ? [options[0].id] : options[0].id
   }
 }
 
@@ -220,6 +245,7 @@ const closeDialog = async () => {
       @update:model-value="normalizedValue = $event"
       :options="mergedOptions"
       data-key="id"
+      option-value="id"
       :placeholder="placeholder"
       class="input-select w-full"
       option-label="title"

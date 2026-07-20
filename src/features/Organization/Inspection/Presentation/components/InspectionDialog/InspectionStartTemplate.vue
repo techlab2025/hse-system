@@ -17,8 +17,12 @@ import { InspectionStatus } from '../../../Core/Enum/InspectionStatusEnum'
 import ArrowDetails from '@/shared/icons/ArrowDetails.vue'
 import { InspectionPageType } from '@/features/Organization/ObservationFactory/Core/Enums/InspectionTypeEnum'
 import ShowResultIcon from '@/shared/icons/ShowResultIcon.vue'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const visible = ref(false)
+const templateDocumentRef = ref<{
+  validateAnswers: () => Promise<{ isValid: boolean; firstMessage: string }>
+} | null>(null)
 
 const { templateId, taskId, autoObservation } = defineProps<{
   templateId: number
@@ -159,6 +163,12 @@ const formatTaskAnswer = () => {
 }
 
 const CreateAnswer = async () => {
+  const validation = await templateDocumentRef.value?.validateAnswers()
+  if (validation && !validation.isValid) {
+    new OpenWarningDilaog(validation.firstMessage).openDialog()
+    return
+  }
+
   const formatted = formatTaskAnswer()
   const UpdatedFormat = formatted.map((item) => {
     return new ItemResultParams(item.result, item.template_item_id, item.files, item.item_answers)
@@ -284,6 +294,7 @@ watch(
       <!-- {{ console.log(TaskResults?.taskResults[TaskResults?.taskResults], "resullllttt") }} -->
       <!-- {{ console.log(TaskResults?.taskResults?.[TaskResults?.taskResults?.length - 1], "resullllttt") }} -->
       <TemplateDocument
+        ref="templateDocumentRef"
         :isOverlay="status == InspectionStatus.FINISHED"
         :allData="AllDocument"
         @update:data="UpdateData"
@@ -312,5 +323,4 @@ watch(
   align-items: center;
   justify-content: center;
 }
-
 </style>

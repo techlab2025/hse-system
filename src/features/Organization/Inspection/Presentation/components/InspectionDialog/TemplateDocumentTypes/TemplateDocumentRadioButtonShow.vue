@@ -3,7 +3,13 @@ import type TaskResultItemModel from '@/features/Organization/Inspection/Data/mo
 import type ItemModel from '@/features/setting/TemplateItem/Data/models/ItemMode'
 import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
 import RadioButton from 'primevue/radiobutton'
-import { ref, watch, computed, nextTick } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
+
+type ValidationErrors = {
+  questionImage?: string
+  answerImages?: Record<number, string>
+  notes?: string
+}
 
 const emit = defineEmits(['update:data'])
 
@@ -12,76 +18,77 @@ const props = defineProps<{
   item_id: number
   options: ItemModel[]
   require_image: boolean
+  required_type?: number
+  validation_errors?: ValidationErrors
   selected_data?: TaskResultItemModel
 }>()
 
-const Img = ref()
+const questionImages = ref<string[]>([])
+const answerImages = ref<Record<number, string[]>>({})
 const textArea = ref('')
 const SelectedOption = ref<ItemModel | null>(null)
 
-const UpdateImg = (data: string) => {
-  Img.value = data
+const showTextArea = computed(() => ['1', '2'].includes(String(SelectedOption.value?.kpi ?? '0')))
+
+const isTextAreaRequired = computed(() => String(SelectedOption.value?.kpi) === '2')
+const showAnswerImage = computed(() => Boolean(SelectedOption.value?.is_upload))
+
+const UpdateQuestionImages = (data: string[]) => {
+  questionImages.value = data
+  UpdateData()
+}
+
+const UpdateAnswerImages = (data: string[]) => {
+  const optionId = SelectedOption.value?.id
+  if (!optionId) return
+  answerImages.value = { [optionId]: data }
   UpdateData()
 }
 
 const UpdateOptions = (option: ItemModel) => {
-  // Toggle logic: if clicking same option, deselect it
-  if (SelectedOption.value?.id === option.id) {
-    SelectedOption.value = null
-  } else {
-    SelectedOption.value = option
-  }
-
-  // Use nextTick to ensure the ref has updated
-  nextTick(() => {
-    UpdateData()
-  })
+  SelectedOption.value = SelectedOption.value?.id === option.id ? null : option
+  nextTick(UpdateData)
 }
 
 const UpdateData = () => {
-  const dataToEmit = {
+  emit('update:data', {
     itemid: props.item_id,
     value: SelectedOption.value?.id || 0,
-    img: Img.value,
-    notes: textArea.value,
-  }
-
-  // Debug log to verify correct data
-  console.log('Radio emitting data:', dataToEmit)
-
-  emit('update:data', dataToEmit)
+    img: [...questionImages.value, ...Object.values(answerImages.value).flat()],
+    questionImg: [...questionImages.value],
+    answerImages: { ...answerImages.value },
+    notes: showTextArea.value ? textArea.value : '',
+  })
 }
 
-// Watch for manual text changes to emit updates
-watch(textArea, () => {
-  UpdateData()
-})
+watch(
+  () => SelectedOption.value?.id,
+  (optionId) => {
+    answerImages.value =
+      optionId && answerImages.value[optionId] ? { [optionId]: answerImages.value[optionId] } : {}
+    if (!showTextArea.value) textArea.value = ''
+    UpdateData()
+  },
+)
 
-// Watch for incoming data to populate the form (Edit Mode)
+watch(textArea, UpdateData)
+
 watch(
   () => props.selected_data,
   (newVal) => {
-    if (newVal?.answers?.[0]) {
-      const answer = newVal.answers[0]
-      const optId = answer.templateItemOption?.id
+    if (!newVal?.answers?.[0]) return
 
-      // Sync Radio Selection
-      const matched = props.options.find(o => o.id === optId)
-      if (matched) SelectedOption.value = matched
-
-      // Sync Text Area
-      if (answer.answer) {
-        textArea.value = answer.answer
-      }
-    }
+    const answer = newVal.answers[0]
+    const optionId = answer.templateItemOption?.id
+    SelectedOption.value = props.options.find((option) => option.id === optionId) ?? null
+    textArea.value = answer.answer || ''
+    questionImages.value = newVal.files?.map((file) => file.url) ?? []
+    UpdateData()
   },
-  { immediate: true }
+  { immediate: true },
 )
 
-const showTextArea = computed(() => {
-  if (!SelectedOption.value) return false
-  return !!SelectedOption.value.decodedData || SelectedOption.value.kpi === '2'
-})
+onMounted(UpdateData)
 </script>
 
 <template>
@@ -90,25 +97,75 @@ const showTextArea = computed(() => {
 
     <div class="options-container">
       <div class="options flex flex-wrap gap-4">
-        <div class="options-box flex items-center gap-2" v-for="(option, index) in options" :key="option.id">
-          <RadioButton class="input" :value="option.id" :modelValue="SelectedOption?.id"
-            @update:modelValue="UpdateOptions(option)" :inputId="`radio-${item_id}-${option.id}`"
-            :name="`radio-${item_id}`" />
+        <div v-for="option in options" :key="option.id" class="options-box flex items-center gap-2">
+          <RadioButton
+            class="input"
+            :value="option.id"
+            :modelValue="SelectedOption?.id"
+            @update:modelValue="UpdateOptions(option)"
+            :inputId="`radio-${item_id}-${option.id}`"
+            :name="`radio-${item_id}`"
+          />
           <label :for="`radio-${item_id}-${option.id}`" class="label cursor-pointer">
             {{ option.title }}
           </label>
         </div>
       </div>
 
-      <div v-if="showTextArea" class="input-wrapper w-full animate-fade-in mt-4">
-        <label for="notes" class="block mb-1 text-sm font-medium">{{ $t('Notes') }}</label>
-        <textarea id="notes" class="input w-full border rounded-md p-2 min-h-[80px]" v-model="textArea"
-          :placeholder="$t('Please enter details...')"></textarea>
+      <div
+        v-if="showTextArea"
+        class="input-wrapper w-full animate-fade-in mt-4"
+        :data-answer-validation-error="Boolean(validation_errors?.notes)"
+      >
+        <label :for="`notes-${item_id}`" class="block mb-1 text-sm font-medium">
+          {{ $t('Notes') }} <span v-if="isTextAreaRequired" class="required-mark">*</span>
+        </label>
+        <textarea
+          :id="`notes-${item_id}`"
+          v-model="textArea"
+          class="input w-full border rounded-md p-2 min-h-[80px]"
+          :placeholder="$t(`Please enter details...`)"
+        />
+        <p v-if="validation_errors?.notes" class="required-field-message">
+          {{ validation_errors.notes }}
+        </p>
       </div>
 
-      <div v-if="require_image" class="mt-4">
-        <UploadMultiImage @update:images="UpdateImg" class="image-upload"
-          :initialImages="selected_data?.files?.map((el) => el.url) || []" />
+      <div
+        v-if="require_image"
+        class="image-field mt-4"
+        :data-answer-validation-error="Boolean(validation_errors?.questionImage)"
+      >
+        <label class="evidence-label">
+          {{ $t('question_photo') }}
+          <span v-if="Number(required_type) === 2" class="required-mark">*</span>
+        </label>
+        <UploadMultiImage
+          @update:images="UpdateQuestionImages"
+          :initialImages="selected_data?.files?.map((file) => file.url) || []"
+        />
+        <p v-if="validation_errors?.questionImage" class="required-field-message">
+          {{ validation_errors.questionImage }}
+        </p>
+      </div>
+
+      <div
+        v-if="showAnswerImage && SelectedOption"
+        class="image-field mt-4 animate-fade-in"
+        :data-answer-validation-error="
+          Boolean(validation_errors?.answerImages?.[SelectedOption.id])
+        "
+      >
+        <label class="evidence-label">
+          {{ $t('answer_photo') }}: {{ SelectedOption.title }} <span class="required-mark">*</span>
+        </label>
+        <UploadMultiImage :key="SelectedOption.id" @update:images="UpdateAnswerImages" />
+        <p
+          v-if="validation_errors?.answerImages?.[SelectedOption.id]"
+          class="required-field-message"
+        >
+          {{ validation_errors.answerImages[SelectedOption.id] }}
+        </p>
       </div>
     </div>
   </div>
@@ -118,6 +175,34 @@ const showTextArea = computed(() => {
 .animate-fade-in {
   margin-top: 10px;
   animation: fadeIn 0.3s ease-in;
+}
+
+.evidence-label {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.required-mark,
+.required-field-message {
+  color: var(--status-danger);
+}
+
+.required-field-message {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+[data-answer-validation-error='true'].image-field {
+  padding: 0.65rem;
+  border: 1px solid var(--status-danger);
+  border-radius: 0.6rem;
+}
+
+[data-answer-validation-error='true'] textarea {
+  border-color: var(--status-danger);
 }
 
 @keyframes fadeIn {

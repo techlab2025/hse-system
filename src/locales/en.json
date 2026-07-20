@@ -1721,5 +1721,10 @@
   "New Test Type": "New Test Type",
   "new test": "new test",
   "Validation Faield": "Validation Faield",
-  "new_template": "new Template"
+  "new_template": "new Template",
+  "question_photo": "Question photo",
+  "answer_photo": "Selected answer photo",
+  "validation_question_photo_required": "A photo is required for this question.",
+  "validation_answer_photo_required": "A photo is required for the selected answer.",
+  "validation_answer_details_required": "Please enter the required details for the selected answer."
 }

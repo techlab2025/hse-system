@@ -8,6 +8,7 @@ export default class TemplateItemDetailsModel {
   public industries: []
   public action: number
   public requiredImage: boolean
+  public requiredType: number
   public options: ItemModel[]
   public has_textarea: number = 0
   public tag: TitleLocale[]
@@ -20,6 +21,7 @@ export default class TemplateItemDetailsModel {
     industries: [],
     action: number,
     requiredImage: boolean,
+    requiredType: number,
     options: ItemModel[] = [],
     has_textarea: number = 0,
     tag: TitleLocale[],
@@ -30,6 +32,7 @@ export default class TemplateItemDetailsModel {
     this.industries = industries
     this.action = action
     this.requiredImage = requiredImage
+    this.requiredType = requiredType
     this.options = options
     this.has_textarea = has_textarea
     this.tag = tag
@@ -43,6 +46,7 @@ export default class TemplateItemDetailsModel {
       data.industries ?? [],
       data.action ?? 0,
       data.require_image,
+      Number(data.required_type) || 0,
       data.options.length > 0 ? data.options.map((item) => ItemModel.fromMap(item)) : [],
       data.has_textarea,
       data.template_item_tag,

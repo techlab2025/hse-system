@@ -1735,5 +1735,10 @@
   "Add Items from the System": "إضافة عناصر من النظام",
   "New Test Type": "نوع الاختبار الجديد",
   "new test": "اختبار جديد",
-  "Validation Faield": "فشل التحقق من الصحة"
+  "Validation Faield": "فشل التحقق من الصحة",
+  "question_photo": "صورة السؤال",
+  "answer_photo": "صورة الإجابة المحددة",
+  "validation_question_photo_required": "إرفاق صورة لهذا السؤال مطلوب.",
+  "validation_answer_photo_required": "إرفاق صورة للإجابة المحددة مطلوب.",
+  "validation_answer_details_required": "يرجى إدخال التفاصيل المطلوبة للإجابة المحددة."
 }

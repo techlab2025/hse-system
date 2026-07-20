@@ -16,16 +16,15 @@ const handleUpload = (event: Event) => {
 
   images.value = []
 
-  const files = Array.from(target.files)
-  files.forEach((file) => {
+  Array.from(target.files).forEach((file) => {
     const reader = new FileReader()
-    reader.onload = (e) => {
-      if (e.target?.result) images.value.push(e.target.result as string)
+    reader.onload = (loadEvent) => {
+      if (!loadEvent.target?.result) return
+      images.value.push(loadEvent.target.result as string)
+      emit('update:images', [...images.value])
     }
     reader.readAsDataURL(file)
   })
-
-  emit('update:images', images.value)
 }
 
 const previewImages = computed(() => images.value.slice(0, 3))

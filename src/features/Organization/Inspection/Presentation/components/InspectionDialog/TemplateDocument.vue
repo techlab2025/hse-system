@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import type TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
 import TemplateDocumentCheckboxShow from './TemplateDocumentTypes/TemplateDocumentCheckboxShow.vue'
 import TemplateDocumentRadioButtonShow from './TemplateDocumentTypes/TemplateDocumentRadioButtonShow.vue'
@@ -125,7 +126,106 @@ const UpdateTextAreas = (data) => {
   UpdateData()
 }
 
+type AnswerValidationErrors = {
+  questionImage?: string
+  answerImages?: Record<number, string>
+  notes?: string
+}
+
+const { t } = useI18n()
+const validationErrors = ref<Record<number, AnswerValidationErrors>>({})
+const validationAttempted = ref(false)
+
+const hasImages = (value: unknown) =>
+  Array.isArray(value) ? value.length > 0 : Boolean(String(value ?? '').trim())
+
+const getAnswerEntry = (itemId: number, action: number): any => {
+  if (action === ActionsEnum.CHECKBOX) {
+    return SelectedCheckBoxs.value.find((entry) => entry.itemid === itemId)
+  }
+  if (action === ActionsEnum.RADIOBUTTON) {
+    return SelectedRadioButtons.value.find((entry) => entry.itemid === itemId)
+  }
+  if (action === ActionsEnum.DROPDOWN) {
+    return SelectedSelects.value.find((entry) => entry.itemId === itemId)
+  }
+  return SelectedTextAreas.value.find((entry) => entry.itemid === itemId)
+}
+
+const getSelectedOptionIds = (entry: any, action: number): number[] => {
+  if (!entry) return []
+  if (action === ActionsEnum.CHECKBOX) return entry.selected ?? []
+  if (action === ActionsEnum.RADIOBUTTON) return entry.value ? [entry.value] : []
+  if (action === ActionsEnum.DROPDOWN) return entry.selected ? [entry.selected] : []
+  return []
+}
+
+const buildValidationErrors = () => {
+  const errors: Record<number, AnswerValidationErrors> = {}
+  const tags = props.allData?.templateItemTags ?? []
+
+  tags.forEach((tag: any) => {
+    ;(tag.templateItems ?? []).forEach((item: any) => {
+      const entry = getAnswerEntry(item.id, item.action)
+      const itemErrors: AnswerValidationErrors = {}
+      const selectedOptionIds = getSelectedOptionIds(entry, item.action)
+      const selectedOptions = (item.options ?? []).filter((option: any) =>
+        selectedOptionIds.includes(option.id),
+      )
+
+      if (item.requiredImage && Number(item.requiredType) === 2 && !hasImages(entry?.questionImg)) {
+        itemErrors.questionImage = t('validation_question_photo_required')
+      }
+
+      const answerImageErrors: Record<number, string> = {}
+      selectedOptions.forEach((option: any) => {
+        if (option.is_upload && !hasImages(entry?.answerImages?.[option.id])) {
+          answerImageErrors[option.id] = t('validation_answer_photo_required')
+        }
+      })
+      if (Object.keys(answerImageErrors).length) itemErrors.answerImages = answerImageErrors
+
+      const requiresNotes = selectedOptions.some((option: any) => Number(option.kpi) === 2)
+      const notes = item.action === ActionsEnum.DROPDOWN ? entry?.value : entry?.notes
+      if (requiresNotes && !String(notes ?? '').trim()) {
+        itemErrors.notes = t('validation_answer_details_required')
+      }
+
+      if (Object.keys(itemErrors).length) errors[item.id] = itemErrors
+    })
+  })
+
+  validationErrors.value = errors
+  return errors
+}
+
+const validateAnswers = async () => {
+  validationAttempted.value = true
+  const errors = buildValidationErrors()
+  await nextTick()
+
+  document
+    .querySelector<HTMLElement>('[data-answer-validation-error=true]')
+    ?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+
+  const firstItemError = Object.values(errors)[0]
+  const firstMessage =
+    firstItemError?.questionImage ??
+    Object.values(firstItemError?.answerImages ?? {})[0] ??
+    firstItemError?.notes ??
+    ''
+
+  return {
+    isValid: Object.keys(errors).length === 0,
+    firstMessage,
+  }
+}
+
+defineExpose({ validateAnswers })
+
 const UpdateData = () => {
+  if (validationAttempted.value) buildValidationErrors()
+
   emit('update:data', {
     check: SelectedCheckBoxs.value,
     radio: SelectedRadioButtons.value,
@@ -146,7 +246,9 @@ const hasAnsweredResult = (resultItem?: TaskResultItemModel) => {
     return Boolean(textAnswer || option?.id || option?.title)
   })
 
-  return Boolean(hasAnswer || resultItem.files?.length > 0 || String(resultItem.result ?? '').trim())
+  return Boolean(
+    hasAnswer || resultItem.files?.length > 0 || String(resultItem.result ?? '').trim(),
+  )
 }
 
 const getAnsweredResultForItem = (templateItemId: number, action: number) => {
@@ -236,6 +338,8 @@ const visibleTemplateItemTags = computed(() => {
               :item_id="item.id"
               :options="item.options"
               :require_image="item.requiredImage"
+              :required_type="item.requiredType"
+              :validation_errors="validationErrors[item.id]"
               @update:data="UpdateCheckBoxs"
               :selected_data="getAnsweredResultForItem(item.id, ActionsEnum.CHECKBOX)"
             />
@@ -258,6 +362,8 @@ const visibleTemplateItemTags = computed(() => {
               :item_id="item.id"
               :options="item.options"
               :require_image="item.requiredImage"
+              :required_type="item.requiredType"
+              :validation_errors="validationErrors[item.id]"
               @update:data="UpdateRadioButtons"
               :selected_data="getAnsweredResultForItem(item.id, ActionsEnum.RADIOBUTTON)"
             />
@@ -282,6 +388,8 @@ const visibleTemplateItemTags = computed(() => {
               :item_id="item.id"
               :options="item.options"
               :require_image="item.requiredImage"
+              :required_type="item.requiredType"
+              :validation_errors="validationErrors[item.id]"
               @update:data="UpdateSelects"
               :selected_data="getAnsweredResultForItem(item.id, ActionsEnum.DROPDOWN)"
             />
@@ -301,6 +409,8 @@ const visibleTemplateItemTags = computed(() => {
               :title="item.name"
               :item_id="item.id"
               :require_image="item.requiredImage"
+              :required_type="item.requiredType"
+              :validation_errors="validationErrors[item.id]"
               @update:data="UpdateTextAreas"
               :selected_data="getAnsweredResultForItem(item.id, ActionsEnum.TEXTAREA)"
             />
