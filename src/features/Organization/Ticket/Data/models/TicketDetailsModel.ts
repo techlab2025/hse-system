@@ -3,13 +3,14 @@ import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import TranslationsModel from '@/base/core/Models/translations_model'
 import TicketHistoryModel from './TicketHistoryModel'
 import type TitleModel from '@/base/core/Models/title_model'
+import type { TicketMedia } from './TicketModel'
 
 export default class TicketDetailsModel {
   public id: number
   public translation: TranslationsModel
   public description: string
   public type: string
-  public media: string[]
+  public media: TicketMedia[]
   public title: string
   public status: number
   public createdAt: string
@@ -21,7 +22,7 @@ export default class TicketDetailsModel {
     translation: TranslationsModel,
     description: string,
     type: string,
-    media: string[],
+    media: TicketMedia[],
     title: string,
     status: number,
     createdAt: string,

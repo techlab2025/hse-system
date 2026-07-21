@@ -7,8 +7,6 @@ import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
-import wordSlice from '@/base/Presentation/utils/word_slice'
-
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
@@ -28,6 +26,8 @@ import DeleteTicketController from '../controllers/deleteTicketController'
 import DeleteTicketParams from '../../Core/params/deleteTicketParams'
 import { StatusEnum } from '../../Core/Enums/statusEnum'
 import MultiImagesDialog from '@/shared/HelpersComponents/dialog/MultiImagesDialog.vue'
+import DefaultTicketImage from '@/assets/images/ToDoLogo.png'
+import type { TicketMedia } from '../../Data/models/TicketModel'
 
 const { t } = useI18n()
 
@@ -105,8 +105,9 @@ const actionList = (id: number, deleteTicket: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-      }/root-causes/${id}`,
+    link: `/${
+      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+    }/root-causes/${id}`,
     permission: [
       PermissionsEnum.TICKET_TYPE_UPDATE,
       PermissionsEnum.ADMIN,
@@ -197,9 +198,20 @@ const getStatusMeta = (status: StatusEnum | undefined) => {
 }
 
 const canOpenDescription = (status: StatusEnum | undefined) =>
-  status == StatusEnum.SOLVED ||
-  status == StatusEnum.RESOLVED ||
-  status == StatusEnum.CLOSED
+  status == StatusEnum.SOLVED || status == StatusEnum.RESOLVED || status == StatusEnum.CLOSED
+
+const getTicketImages = (media?: Array<string | TicketMedia> | null): string[] =>
+  media
+    ?.map((item) => (typeof item === 'string' ? item : item?.url))
+    .filter((url): url is string => typeof url === 'string' && url.trim().length > 0) ?? []
+
+const showDefaultTicketImage = (event: Event) => {
+  const image = event.currentTarget as HTMLImageElement
+  image.onerror = null
+  image.src = DefaultTicketImage
+  image.classList.add('ticket-media-image--empty')
+  image.parentElement?.classList.add('ticket-media-frame--empty')
+}
 </script>
 
 <template>
@@ -212,13 +224,14 @@ const canOpenDescription = (status: StatusEnum | undefined) =>
         <span class="ticket-index-kicker">{{ $t('tickets') }}</span>
         <h1 class="ticket-index-title">Support flow with a cleaner ticket overview</h1>
         <p class="ticket-index-subtitle">
-          Review open requests, track progress by status, and jump into action from one branded workspace.
+          Review open requests, track progress by status, and jump into action from one branded
+          workspace.
         </p>
       </div>
 
       <div class="ticket-index-controls">
         <label class="ticket-search" for="ticket-search">
-          <span class="ticket-search-icon" @click="; ((word = ''), searchTickets())">
+          <span class="ticket-search-icon" @click=";((word = ''), searchTickets())">
             <Search />
           </span>
           <input
@@ -235,11 +248,13 @@ const canOpenDescription = (status: StatusEnum | undefined) =>
           <div class="ticket-action-export">
             <ExportPdf />
           </div>
-          <PermissionBuilder :code="[
-            PermissionsEnum.ADMIN,
-            PermissionsEnum.ORGANIZATION_EMPLOYEE,
-            PermissionsEnum.TICKET_TYPE_CREATE,
-          ]">
+          <PermissionBuilder
+            :code="[
+              PermissionsEnum.ADMIN,
+              PermissionsEnum.ORGANIZATION_EMPLOYEE,
+              PermissionsEnum.TICKET_TYPE_CREATE,
+            ]"
+          >
             <router-link
               :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket/add`"
               class="ticket-create-btn"
@@ -251,15 +266,17 @@ const canOpenDescription = (status: StatusEnum | undefined) =>
       </div>
     </div>
 
-    <PermissionBuilder :code="[
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.TICKET_TYPE_ALL,
-      PermissionsEnum.TICKET_TYPE_DELETE,
-      PermissionsEnum.TICKET_TYPE_FETCH,
-      PermissionsEnum.TICKET_TYPE_UPDATE,
-      PermissionsEnum.TICKET_TYPE_CREATE,
-    ]">
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum.ADMIN,
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.TICKET_TYPE_ALL,
+        PermissionsEnum.TICKET_TYPE_DELETE,
+        PermissionsEnum.TICKET_TYPE_FETCH,
+        PermissionsEnum.TICKET_TYPE_UPDATE,
+        PermissionsEnum.TICKET_TYPE_CREATE,
+      ]"
+    >
       <DataStatus :controller="state">
         <template #success>
           <div class="ticket-grid">
@@ -281,42 +298,63 @@ const canOpenDescription = (status: StatusEnum | undefined) =>
                 :to="`/${user?.type == OrganizationTypeEnum.ADMIN || user?.type == OrganizationTypeEnum.ORGANIZATION ? 'admin' : 'organization'}/ticket/${ticket?.id}`"
               >
                 <div class="ticket-copy">
-                  <h2 class="ticket-card-title">{{ wordSlice(ticket?.title, 42) }}</h2>
+                  <h2 class="ticket-card-title">{{ ticket?.title }}</h2>
                   <p class="ticket-card-summary">
                     {{ getStatusMeta(ticket?.status).summary }}
                   </p>
                 </div>
-
-                <MultiImagesDialog :images="ticket?.media.map((img) => img.url) || []">
-                  <div class="ticket-media-stack">
-                    <div v-if="ticket?.media?.length" class="ticket-media-track">
-                      <img
-                        v-for="(img, i) in ticket?.media.slice(0, 3)"
-                        :key="i"
-                        :src="img.url"
-                        :alt="ticket?.title || 'ticket image'"
-                      />
-                    </div>
-                    <div v-else class="ticket-media-empty">
-                      {{ ticket?.title?.charAt(0) || 'T' }}
-                    </div>
-                  </div>
-                </MultiImagesDialog>
+                <span class="ticket-open-arrow" aria-hidden="true">&#8599;</span>
               </router-link>
+              <MultiImagesDialog
+                v-if="getTicketImages(ticket?.media).length"
+                :images="getTicketImages(ticket?.media)"
+              >
+                <div class="ticket-media-frame">
+                  <img
+                    class="ticket-media-image"
+                    :src="getTicketImages(ticket?.media)[0]"
+                    :alt="ticket?.title || 'ticket image'"
+                    @error="showDefaultTicketImage"
+                  />
+                  <div class="ticket-media-overlay">
+                    <span class="ticket-media-count">
+                      {{ getTicketImages(ticket?.media).length }}
+                      {{ getTicketImages(ticket?.media).length === 1 ? $t('photo') : $t('photos') }}
+                    </span>
+                    <span class="ticket-media-action">{{ $t('view') }} &#8594;</span>
+                  </div>
+                </div>
+              </MultiImagesDialog>
+
+              <div v-else class="ticket-media-frame ticket-media-frame--empty">
+                <img
+                  class="ticket-media-image ticket-media-image--empty"
+                  :src="DefaultTicketImage"
+                  alt="Default ticket image"
+                />
+                <span class="ticket-media-empty-label">{{ $t('no_photos') }}</span>
+              </div>
 
               <component
                 :is="canOpenDescription(ticket.status) ? 'RouterLink' : 'div'"
                 class="ticket-description-panel"
                 :to="canOpenDescription(ticket.status) ? `/ticket/${ticket?.id}` : undefined"
               >
+                <span class="ticket-description-label">{{ $t('description') }}</span>
                 <p class="ticket-description">
-                  {{ wordSlice(ticket?.description, 90) || 'No additional description was added for this ticket.' }}
+                  {{
+                    ticket?.description || 'No additional description was added for this ticket.'
+                  }}
                 </p>
               </component>
             </article>
           </div>
 
-          <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
         </template>
         <template #loader>
           <TableLoader :cols="3" :rows="10" />
@@ -325,11 +363,13 @@ const canOpenDescription = (status: StatusEnum | undefined) =>
           <TableLoader :cols="3" :rows="10" />
         </template>
         <template #empty>
-          <PermissionBuilder :code="[
-            PermissionsEnum.ADMIN,
-            PermissionsEnum.ORGANIZATION_EMPLOYEE,
-            PermissionsEnum.TICKET_TYPE_CREATE,
-          ]">
+          <PermissionBuilder
+            :code="[
+              PermissionsEnum.ADMIN,
+              PermissionsEnum.ORGANIZATION_EMPLOYEE,
+              PermissionsEnum.TICKET_TYPE_CREATE,
+            ]"
+          >
             <DataEmpty
               :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket-type/add`"
               addText="Add Ticket"
@@ -339,11 +379,13 @@ const canOpenDescription = (status: StatusEnum | undefined) =>
           </PermissionBuilder>
         </template>
         <template #failed>
-          <PermissionBuilder :code="[
-            PermissionsEnum.ADMIN,
-            PermissionsEnum.ORGANIZATION_EMPLOYEE,
-            PermissionsEnum.TICKET_TYPE_CREATE,
-          ]">
+          <PermissionBuilder
+            :code="[
+              PermissionsEnum.ADMIN,
+              PermissionsEnum.ORGANIZATION_EMPLOYEE,
+              PermissionsEnum.TICKET_TYPE_CREATE,
+            ]"
+          >
             <DataFailed
               :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket-type/add`"
               addText="Add Ticket"
@@ -372,9 +414,21 @@ const canOpenDescription = (status: StatusEnum | undefined) =>
   border: 1px solid color-mix(in srgb, var(--brand-primary-200) 70%, transparent);
   border-radius: 28px;
   background:
-    radial-gradient(circle at top left, color-mix(in srgb, var(--brand-primary-500) 12%, transparent), transparent 28%),
-    radial-gradient(circle at right center, color-mix(in srgb, var(--status-success) 10%, transparent), transparent 26%),
-    linear-gradient(145deg, color-mix(in srgb, var(--surface-1) 99%, transparent), color-mix(in srgb, var(--brand-primary-50) 95%, transparent));
+    radial-gradient(
+      circle at top left,
+      color-mix(in srgb, var(--brand-primary-500) 12%, transparent),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at right center,
+      color-mix(in srgb, var(--status-success) 10%, transparent),
+      transparent 26%
+    ),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--surface-1) 99%, transparent),
+      color-mix(in srgb, var(--brand-primary-50) 95%, transparent)
+    );
   box-shadow:
     0 26px 64px color-mix(in srgb, var(--brand-primary-900) 8%, transparent),
     inset 0 1px 0 color-mix(in srgb, var(--surface-1) 92%, transparent);
@@ -386,10 +440,21 @@ const canOpenDescription = (status: StatusEnum | undefined) =>
   pointer-events: none;
   content: '';
   background-image:
-    linear-gradient(color-mix(in srgb, var(--brand-primary-500) 4%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary-500) 4%, transparent) 1px, transparent 1px);
+    linear-gradient(
+      color-mix(in srgb, var(--brand-primary-500) 4%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--brand-primary-500) 4%, transparent) 1px,
+      transparent 1px
+    );
   background-size: 26px 26px;
-  mask-image: linear-gradient(180deg, color-mix(in srgb, var(--text-strong) 72%, transparent), transparent 80%);
+  mask-image: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--text-strong) 72%, transparent),
+    transparent 80%
+  );
 }
 
 .ticket-index-glow {
@@ -561,23 +626,28 @@ const canOpenDescription = (status: StatusEnum | undefined) =>
   gap: 1rem;
   margin-bottom: 1.3rem;
 }
-@media(max-width:768px){
-.ticket-grid {
-  grid-template-columns: repeat(1, minmax(280px, 1fr));
-}
+@media (max-width: 768px) {
+  .ticket-grid {
+    grid-template-columns: repeat(1, minmax(280px, 1fr));
+  }
 }
 
 .ticket-card {
   position: relative;
   overflow: hidden;
   display: grid;
-  gap: 1rem;
-  min-height: 260px;
-  padding: 1rem;
+  grid-template-rows: auto auto 180px 1fr;
+  gap: 0.9rem;
+  min-height: 440px;
+  padding: 1.1rem;
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 92%, transparent);
-  border-radius: 24px;
+  border-radius: 26px;
   background:
-    linear-gradient(160deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 95%, transparent)),
+    linear-gradient(
+      160deg,
+      color-mix(in srgb, var(--surface-1) 98%, transparent),
+      color-mix(in srgb, var(--brand-primary-50) 95%, transparent)
+    ),
     color-mix(in srgb, var(--surface-1) 92%, transparent);
   box-shadow:
     0 22px 44px color-mix(in srgb, var(--brand-primary-900) 7%, transparent),
@@ -598,9 +668,9 @@ const canOpenDescription = (status: StatusEnum | undefined) =>
 
 .ticket-card-noise {
   position: absolute;
-  inset: auto -20px -48px auto;
-  width: 180px;
-  height: 180px;
+  inset: -80px -75px auto auto;
+  width: 210px;
+  height: 210px;
   border-radius: 50%;
   background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
   filter: blur(4px);
@@ -608,14 +678,16 @@ const canOpenDescription = (status: StatusEnum | undefined) =>
 }
 
 .ticket-card-top,
-.ticket-card-main {
+.ticket-card-main,
+.ticket-media-frame,
+.ticket-description-panel {
   position: relative;
   z-index: 1;
 }
 
 .ticket-card-top {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 0.75rem;
 }
@@ -673,22 +745,26 @@ const canOpenDescription = (status: StatusEnum | undefined) =>
 }
 
 .ticket-type-chip {
+  max-width: 58%;
   color: var(--text-soft);
   border: 1px solid color-mix(in srgb, var(--brand-primary-200) 76%, transparent);
   background: color-mix(in srgb, var(--surface-1) 78%, transparent);
+  overflow-wrap: anywhere;
+  text-align: end;
 }
 
 .ticket-card-main {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  padding: 0.15rem 0.15rem 0.3rem;
   text-decoration: none;
 }
 
 .ticket-copy {
   display: grid;
-  gap: 0.7rem;
+  gap: 0.45rem;
   min-width: 0;
 }
 
@@ -698,6 +774,8 @@ const canOpenDescription = (status: StatusEnum | undefined) =>
   font-size: clamp(1.15rem, 1.8vw, 1.5rem);
   font-weight: 900;
   line-height: 1.25;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .ticket-card-summary {
@@ -708,49 +786,126 @@ const canOpenDescription = (status: StatusEnum | undefined) =>
   line-height: 1.65;
 }
 
-.ticket-media-stack {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-end;
-  min-width: 84px;
+.ticket-open-arrow {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-300) 55%, transparent);
+  border-radius: 14px;
+  color: var(--brand-primary-600);
+  background: color-mix(in srgb, var(--surface-1) 82%, transparent);
+  font-size: 1.05rem;
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease,
+    background 0.2s ease;
 }
 
-.ticket-media-track {
+.ticket-card:hover .ticket-open-arrow {
+  transform: translate(2px, -2px);
+  color: var(--text-on-brand);
+  background: var(--brand-primary-600);
+}
+
+.ticket-media-frame {
+  overflow: hidden;
+  width: 100%;
+  height: 180px;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-200) 62%, transparent);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--brand-primary-50) 90%, var(--surface-1));
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 75%, transparent);
+}
+
+.ticket-media-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+
+.ticket-card:hover .ticket-media-image:not(.ticket-media-image--empty) {
+  transform: scale(1.04);
+}
+
+.ticket-media-overlay {
+  position: absolute;
+  inset: auto 0 0;
   display: flex;
   align-items: center;
-  padding-inline-start: 0.75rem;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 2.5rem 0.85rem 0.75rem;
+  color: #fff;
+  background: linear-gradient(transparent, rgb(8 15 35 / 78%));
 }
 
-.ticket-media-track img {
-  width: 52px;
-  height: 52px;
-  margin-inline-start: -0.75rem;
-  border: 3px solid var(--surface-1);
-  border-radius: 16px;
-  object-fit: cover;
-  box-shadow: 0 12px 22px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
+.ticket-media-count,
+.ticket-media-action,
+.ticket-media-empty-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
 }
 
-.ticket-media-empty {
+.ticket-media-count {
+  padding: 0.34rem 0.62rem;
+  border: 1px solid rgb(255 255 255 / 24%);
+  border-radius: 999px;
+  background: rgb(255 255 255 / 14%);
+  backdrop-filter: blur(8px);
+}
+
+.ticket-media-frame--empty {
   display: grid;
-  width: 58px;
-  height: 58px;
   place-items: center;
-  border-radius: 18px;
-  background: linear-gradient(135deg, var(--brand-primary-100), color-mix(in srgb, var(--status-success) 18%, var(--brand-primary-50)));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--brand-primary-50) 94%, var(--surface-1)),
+    color-mix(in srgb, var(--status-success) 10%, var(--surface-1))
+  );
+}
+
+.ticket-media-image--empty {
+  width: 112px;
+  height: 112px;
+  padding: 0.5rem;
+  object-fit: contain;
+}
+
+.ticket-media-empty-label {
+  position: absolute;
+  inset: auto 0.75rem 0.7rem auto;
+  padding: 0.34rem 0.62rem;
+  border-radius: 999px;
   color: var(--brand-primary-700);
-  font-size: 1.1rem;
-  font-weight: 900;
+  background: color-mix(in srgb, var(--surface-1) 84%, transparent);
 }
 
 .ticket-description-panel {
-  position: relative;
-  z-index: 1;
-  padding: 0.95rem 1rem;
+  min-width: 0;
+  padding: 0.9rem 1rem 1rem;
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 88%, transparent);
-  border-radius: 20px;
-  background: color-mix(in srgb, var(--surface-1) 80%, transparent);
+  border-radius: 18px;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--surface-1) 88%, transparent),
+    color-mix(in srgb, var(--brand-primary-50) 65%, transparent)
+  );
   text-decoration: none;
+}
+
+.ticket-description-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--brand-primary-500);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .ticket-description {
@@ -758,6 +913,8 @@ const canOpenDescription = (status: StatusEnum | undefined) =>
   color: var(--text-soft);
   font-size: 0.92rem;
   line-height: 1.75;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 @media (min-width: 992px) {
@@ -778,17 +935,22 @@ const canOpenDescription = (status: StatusEnum | undefined) =>
   }
 
   .ticket-card {
+    grid-template-rows: auto auto 165px auto;
     min-height: unset;
   }
 
-  .ticket-card-top,
-  .ticket-card-main {
+  .ticket-card-top {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  .ticket-media-stack {
-    justify-content: flex-start;
+  .ticket-type-chip {
+    max-width: 100%;
+    text-align: start;
+  }
+
+  .ticket-media-frame {
+    height: 165px;
   }
 
   .ticket-index-actions {
