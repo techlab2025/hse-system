@@ -1727,6 +1727,7 @@
   "validation_question_photo_required": "A photo is required for this question.",
   "validation_answer_photo_required": "A photo is required for the selected answer.",
   "validation_answer_details_required": "Please enter the required details for the selected answer.",
+  "validation_inspection_answer_required": "Please add at least one inspection answer before saving the results.",
   "evidence": "Evidence",
   "photo": "Photo",
   "upload_photos": "Upload photos",

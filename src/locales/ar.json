@@ -1741,6 +1741,7 @@
   "validation_question_photo_required": "إرفاق صورة لهذا السؤال مطلوب.",
   "validation_answer_photo_required": "إرفاق صورة للإجابة المحددة مطلوب.",
   "validation_answer_details_required": "يرجى إدخال التفاصيل المطلوبة للإجابة المحددة.",
+  "validation_inspection_answer_required": "يرجى إضافة إجابة واحدة على الأقل قبل حفظ نتائج الفحص.",
   "evidence": "الدليل",
   "photo": "صورة",
   "upload_photos": "رفع الصور",

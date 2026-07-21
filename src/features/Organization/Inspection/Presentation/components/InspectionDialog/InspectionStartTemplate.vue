@@ -58,7 +58,7 @@ watch(
   { deep: true },
 )
 
-const { locale } = useI18n()
+const { locale, t } = useI18n()
 const title = ref('')
 const getTitle = () => {
   title.value = state.value?.data?.titles?.find((item) => item?.locale === locale?.value)?.title
@@ -170,6 +170,11 @@ const CreateAnswer = async () => {
   }
 
   const formatted = formatTaskAnswer()
+  if (!formatted.length) {
+    new OpenWarningDilaog(t('validation_inspection_answer_required')).openDialog()
+    return
+  }
+
   const UpdatedFormat = formatted.map((item) => {
     return new ItemResultParams(item.result, item.template_item_id, item.files, item.item_answers)
   })
