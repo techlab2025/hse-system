@@ -1760,5 +1760,13 @@
   "browse_evidence_photos": "Browse the attached evidence photos.",
   "photos": "Photos",
   "view_original": "View original",
-  "no_photos": "No photos to display"
+  "no_photos": "No photos to display",
+  "Inspection Results": "Inspection Results",
+  "Results": "Results",
+  "Review progress, completion, and submitted inspection records in one place.": "Review progress, completion, and submitted inspection records in one place.",
+  "Live overview": "Live overview",
+  "Performance snapshot": "Performance snapshot",
+  "records": "records",
+  "Inspection activity": "Inspection activity",
+  "Submitted results": "Submitted results"
 }

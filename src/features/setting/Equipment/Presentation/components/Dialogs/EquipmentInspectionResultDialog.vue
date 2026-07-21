@@ -19,11 +19,11 @@ import ActionsIcon from '@/shared/icons/ActionsIcon.vue'
 
 const visible = ref(false)
 
-const { templateId, taskId } = defineProps<{
-  templateId: number,
+const { templateId = 0, taskId } = defineProps<{
+  templateId?: number,
   taskId: number,
-  status: number,
-  all_document: TaskFullResponseModel
+  status?: number,
+  all_document?: TaskFullResponseModel
 }>()
 
 const router = useRouter()
@@ -198,7 +198,8 @@ watch(() => fetchTaskResultController.state.value, (newState) => {
     </button>
 
     <button v-if="Actionbtn" @click="GetData">
-      <ActionsIcon />
+      <!-- <ActionsIcon /> -->
+show
 
     </button>
 

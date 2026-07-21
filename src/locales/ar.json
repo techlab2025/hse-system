@@ -1774,5 +1774,13 @@
   "browse_evidence_photos": "تصفح صور الأدلة المرفقة.",
   "photos": "صور",
   "view_original": "عرض الصورة الأصلية",
-  "no_photos": "لا توجد صور للعرض"
+  "no_photos": "لا توجد صور للعرض",
+  "Inspection Results": "نتائج التفتيش",
+  "Results": "النتائج",
+  "Review progress, completion, and submitted inspection records in one place.": "راجع التقدم والإنجاز وسجلات التفتيش المقدمة في مكان واحد.",
+  "Live overview": "نظرة عامة مباشرة",
+  "Performance snapshot": "ملخص الأداء",
+  "records": "سجلات",
+  "Inspection activity": "نشاط التفتيش",
+  "Submitted results": "النتائج المقدمة"
 }
