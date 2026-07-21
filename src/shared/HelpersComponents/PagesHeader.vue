@@ -11,8 +11,8 @@ const props = defineProps<{
 <template>
   <div class="employee-header">
     <div class="left-header-background">
-      <img class="left-blue-background" :src="EmployeeBg" alt="bg">
-      <img class="left-yellow-background" :src="Yellowback" alt="bg">
+      <!-- <img class="left-blue-background" :src="EmployeeBg" alt="bg"> -->
+      <!-- <img class="left-yellow-background" :src="Yellowback" alt="bg"> -->
     </div>
     <div class="employee-header-text">
       <!-- <span>image</span> -->
@@ -26,8 +26,8 @@ const props = defineProps<{
       </div>
     </div>
     <div class="right-header-background">
-      <img class="right-yellow-background" :src="Yellowback" alt="bg">
-      <img class="right-blue-background" :src="EmployeeBg" alt="bg">
+      <!-- <img class="right-yellow-background" :src="Yellowback" alt="bg"> -->
+      <!-- <img class="right-blue-background" :src="EmployeeBg" alt="bg"> -->
     </div>
   </div>
 </template>
