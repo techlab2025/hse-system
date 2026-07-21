@@ -711,8 +711,7 @@ watch(
   scroll-behavior: smooth;
   scroll-snap-type: x proximity;
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--brand-primary-400) 50%, transparent)
-    transparent;
+  scrollbar-color: color-mix(in srgb, var(--brand-primary-400) 50%, transparent) transparent;
 }
 
 .inspection-zone-filter :deep(.filter) {
@@ -893,6 +892,15 @@ watch(
   background-color: var(--surface-1) !important;
 }
 .index-table-card-container-inspection {
+  width: 100% !important;
+  max-width: none !important;
   background-color: var(--surface-1) !important;
+}
+
+.inspection-list-panel,
+.inspection-list-panel .header-container,
+.inspection-table-responsive {
+  width: 100% !important;
+  max-width: none !important;
 }
 </style>
