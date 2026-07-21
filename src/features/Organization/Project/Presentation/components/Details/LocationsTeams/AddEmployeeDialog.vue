@@ -92,8 +92,16 @@ onMounted(() => {
 })
 </script>
 <template>
-  <button @click.prevent="visible = true" class="btn btn-primary">{{ $t('add_employee') }}</button>
-  <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem' }">
+  <button @click.prevent="visible = true" class="btn btn-primary add-employee-trigger">
+    <span aria-hidden="true">+</span>{{ $t('add_employee') }}
+  </button>
+  <Dialog
+    v-model:visible="visible"
+    modal
+    :dismissable-mask="true"
+    class="project-employee-dialog"
+    :style="{ width: 'min(50rem, calc(100vw - 24px))' }"
+  >
     <template #header>
       <HeaderSection
         :img="ZoneDialog"
@@ -102,7 +110,14 @@ onMounted(() => {
       />
     </template>
 
-    <div class="input-wrapper">
+    <div class="employee-dialog-intro">
+      <span>01</span>
+      <div>
+        <strong>{{ $t('Assign employees by hierarchy') }}</strong>
+        <p>{{ $t('Choose a position first, then select the employees to assign') }}</p>
+      </div>
+    </div>
+    <div class="input-wrapper dialog-field">
       <CustomSelectInput
         :required="false"
         :modelValue="SelectedHierarchy"
@@ -113,7 +128,7 @@ onMounted(() => {
         @update:modelValue="setSelectedHierarchy"
       />
     </div>
-    <div class="input-wrapper" v-if="SelectedHierarchy">
+    <div class="input-wrapper dialog-field" v-if="SelectedHierarchy">
       <CustomSelectInput
         :required="false"
         :modelValue="SelectedEmployee"
@@ -127,18 +142,86 @@ onMounted(() => {
       />
     </div>
 
-    <button class="btn btn-primary w-full" @click.prevent="UpdateDate">{{ $t('Confirm') }}</button>
+    <button
+      class="btn btn-primary w-full confirm-employee-btn"
+      :disabled="!SelectedHierarchy || !SelectedEmployee?.length"
+      @click.prevent="UpdateDate"
+    >
+      {{ $t('Confirm') }} <span aria-hidden="true">→</span>
+    </button>
   </Dialog>
 </template>
 
-<style scoped>
-.btn-primary {
-  background-color: var(--brand-primary-800);
-  &:hover {
-    color: var(--brand-primary-800);
-    background-color: var(--surface-1);
-    border: 1px solid var(--brand-primary-800);
-  }
-  /* margin-top: 10px; */
+<style scoped lang="scss">
+.add-employee-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  gap: 6px;
+  border-radius: 10px;
+  font-size: 0.68rem;
+}
+
+.add-employee-trigger > span {
+  font-size: 1rem;
+}
+
+.employee-dialog-intro {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 13px;
+  padding: 13px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 15%, var(--main-border));
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-2));
+}
+
+.employee-dialog-intro > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 11px;
+  background: var(--PrimaryColor);
+  color: white;
+  font-family: 'Bold';
+  font-size: 0.68rem;
+}
+
+.employee-dialog-intro strong {
+  color: var(--text-strong);
+  font-size: 0.78rem;
+}
+
+.employee-dialog-intro p {
+  margin: 2px 0 0;
+  color: var(--text-soft);
+  font-size: 0.67rem;
+}
+
+.dialog-field {
+  margin-bottom: 11px;
+  padding: 13px;
+  border: 1px solid var(--main-border);
+  border-radius: 13px;
+  background: var(--surface-2);
+}
+
+.confirm-employee-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  gap: 9px;
+  border-radius: 12px;
+}
+
+.confirm-employee-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 </style>

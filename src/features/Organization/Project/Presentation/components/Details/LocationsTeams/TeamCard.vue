@@ -59,9 +59,7 @@ const DeleteTeamMember = async (id: number) => {
           </p>
         </div>
       </div>
-      <div class="state">
-        <!-- <button>Done</button> -->
-      </div>
+      <div class="state"><i aria-hidden="true"></i>{{ $t('Active') }}</div>
     </div>
     <div class="members-section">
       <TeamMemberCard
@@ -90,3 +88,105 @@ const DeleteTeamMember = async (id: number) => {
     </div>
   </div>
 </template>
+
+<style scoped lang="scss">
+.team-card {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  padding: 15px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 15%, var(--main-border));
+  border-radius: 18px;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+      transparent 35%
+    ),
+    var(--surface-1);
+  box-shadow: 0 11px 26px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
+}
+
+.team-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 13px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--main-border);
+}
+
+.team-card-header-content {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 10px;
+}
+
+.team-card-header-content :deep(.team-icon) {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  padding: 8px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--PrimaryColor) 9%, transparent);
+}
+
+.team-card-text {
+  min-width: 0;
+}
+
+.team-card-text .team-card-title {
+  overflow: hidden;
+  margin: 0;
+  color: var(--text-strong);
+  font-family: 'Bold';
+  font-size: 0.86rem;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.team-card-text .team-card-members {
+  margin: 2px 0 0;
+  color: var(--text-soft);
+  font-size: 0.66rem;
+}
+
+.team-card-members span {
+  color: var(--PrimaryColor);
+  font-family: 'Bold';
+}
+
+.state {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--status-success) 9%, transparent);
+  color: var(--status-success);
+  font-size: 0.61rem;
+  font-weight: 850;
+}
+
+.state i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.members-section {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+@media (max-width: 620px) {
+  .members-section {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

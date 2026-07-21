@@ -29,6 +29,8 @@ const CreatProjectZoon = async () => {
     SelectedProjectZone?.value?.id!,
   )
   await createProjectZoonController.CreateProjectZoon(createProjectZoonParams, projectId!)
+  visible.value = false
+  SelectedProjectZone.value = null
   emit('update:data')
 }
 
@@ -37,8 +39,16 @@ const setProjectLocationZoon = (data: TitleInterface) => {
 }
 </script>
 <template>
-  <button class="add-zone" @click="visible = true">{{ $t('add Zone') }}</button>
-  <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem' }">
+  <button class="add-zone" type="button" @click="visible = true">
+    <span aria-hidden="true">+</span>{{ $t('add Zone') }}
+  </button>
+  <Dialog
+    v-model:visible="visible"
+    modal
+    :dismissable-mask="true"
+    class="project-zone-dialog"
+    :style="{ width: 'min(50rem, calc(100vw - 24px))' }"
+  >
     <template #header>
       <HeaderSection
         :img="ZoneDialog"
@@ -47,24 +57,122 @@ const setProjectLocationZoon = (data: TitleInterface) => {
       />
     </template>
 
-    <div class="input-wrapper">
-      <CustomSelectInput
-        :required="false"
-        :modelValue="SelectedProjectZone"
-        :controller="indexProjectZoneController"
-        :params="indexProjectZoneParams"
-        label="zone"
-        id="Equipment"
-        :placeholder="$t('Select Zoon')"
-        @update:modelValue="setProjectLocationZoon"
-      />
+    <div class="zone-dialog-content">
+      <div class="zone-guidance">
+        <span class="guidance-index">01</span>
+        <div>
+          <strong>{{ $t('Choose an operational zone') }}</strong>
+          <p>{{ $t('The selected zone will be linked to this project location') }}</p>
+        </div>
+      </div>
+      <div class="input-wrapper zone-select-field">
+        <CustomSelectInput
+          :required="false"
+          :modelValue="SelectedProjectZone"
+          :controller="indexProjectZoneController"
+          :params="indexProjectZoneParams"
+          label="zone"
+          id="project-zone"
+          :placeholder="$t('Select Zoon')"
+          @update:modelValue="setProjectLocationZoon"
+        />
+      </div>
+      <button
+        class="btn btn-primary confirm-zone-btn"
+        type="button"
+        :disabled="!SelectedProjectZone"
+        @click="CreatProjectZoon"
+      >
+        <span>{{ $t('Confirm') }}</span
+        ><span aria-hidden="true">→</span>
+      </button>
     </div>
-    <button class="btn btn-primary w-full" @click="CreatProjectZoon">{{ $t('Confirm') }}</button>
   </Dialog>
 </template>
 
-<style scoped>
-.btn-primary {
-  margin-top: 10px;
+<style scoped lang="scss">
+.add-zone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 20%, var(--main-border));
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1));
+  color: var(--PrimaryColor);
+  font-size: 0.7rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.add-zone span {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.zone-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-top: 8px;
+}
+
+.zone-guidance {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 15%, var(--main-border));
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-2));
+}
+
+.guidance-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 11px;
+  background: var(--PrimaryColor);
+  color: white;
+  font-family: 'Bold';
+  font-size: 0.68rem;
+}
+
+.zone-guidance strong {
+  color: var(--text-strong);
+  font-size: 0.78rem;
+}
+
+.zone-guidance p {
+  margin: 2px 0 0;
+  color: var(--text-soft);
+  font-size: 0.68rem;
+}
+
+.zone-select-field {
+  padding: 14px;
+  border: 1px solid var(--main-border);
+  border-radius: 14px;
+  background: var(--surface-2);
+}
+
+.confirm-zone-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  gap: 10px;
+  width: 100%;
+  border-radius: 12px;
+}
+
+.confirm-zone-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 </style>

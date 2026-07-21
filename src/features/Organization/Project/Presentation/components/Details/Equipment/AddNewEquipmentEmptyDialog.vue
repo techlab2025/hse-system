@@ -59,7 +59,6 @@ const getEquipment = async () => {
   const res = await indexEquipmentController.getData(indexEquipmentParams)
   AllEquipments.value = res.value?.data || []
 }
-const Equipment = ref<TitleInterface[]>([])
 onMounted(() => {
   getEquipment()
 })
@@ -72,12 +71,23 @@ onMounted(() => {
       @click="visible = true"
       :img="EquimentFolderEmpty"
       :title="$t('No Equipment Yet')"
-      :subtitle="$t('You haven’t added any equipment to this project. Start building your crew now!')"
+      :subtitle="
+        $t('You haven’t added any equipment to this project. Start building your crew now!')
+      "
       :linkText="$t('Start adding equipment now!')"
     />
 
     <!-- <p class="add-equipment-icon" v-else @click="visible = true">{{ `add_equipment` }}</p> -->
-    <img class="add-equipment-icon" v-else :src="plus" alt="" @click="visible = true" />
+    <button
+      v-else
+      class="add-equipment-trigger"
+      type="button"
+      :aria-label="$t('Add Equipment')"
+      @click="visible = true"
+    >
+      <img class="add-equipment-icon" :src="plus" alt="" />
+      <span>{{ $t('Add Equipment') }}</span>
+    </button>
 
     <!-- <button @click="visible = true" class="content-btn">{{ btn_name }}</button> -->
     <Dialog
@@ -96,12 +106,19 @@ onMounted(() => {
       </template>
       <!-- Equipment selection -->
       <div class="equipment-selection">
+        <div class="equipment-dialog-intro">
+          <span>01</span>
+          <div>
+            <strong>{{ $t('Assign equipment to this zone') }}</strong>
+            <p>{{ $t('Select one or more available tools and devices') }}</p>
+          </div>
+        </div>
         <!-- <CustomSelectInput :modelValue="equipments" :controller="indexEquipmentController"
           :params="indexEquipmentParams" label="Equipment" placeholder="Select Your Equipment" :type="2"
           @update:modelValue="setEquipments" /> -->
         <label for="equipment">{{ $t('Select Equipment') }}</label>
         <MultiSelect
-          :modelValue="Equipment"
+          :modelValue="equipments"
           :options="AllEquipments"
           optionLabel="title"
           filter
@@ -112,8 +129,12 @@ onMounted(() => {
         />
 
         <div class="submit-btn w-full mt-4">
-          <button class="btn btn-primary w-full" @click="AddEquipment">
-            {{ $t('Confirm') }}
+          <button
+            class="btn btn-primary w-full confirm-equipment-btn"
+            :disabled="!equipments.length"
+            @click="AddEquipment"
+          >
+            {{ $t('Confirm') }} <span aria-hidden="true">→</span>
           </button>
         </div>
       </div>
@@ -121,31 +142,109 @@ onMounted(() => {
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .card {
   min-width: 0;
 }
 
-.add-equipment-icon {
-  width: 38px;
-  height: 38px;
-  object-fit: contain;
+.add-equipment-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  gap: 7px;
+  padding: 5px 9px 5px 6px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1));
+  color: var(--PrimaryColor);
+  font-size: 0.66rem;
+  font-weight: 900;
   cursor: pointer;
+}
+
+.add-equipment-icon {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
 }
 
 .equipment-selection {
   min-width: 0;
+  padding-top: 5px;
+}
+
+.equipment-dialog-intro {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 14px;
+  padding: 13px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 15%, var(--main-border));
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-2));
+}
+
+.equipment-dialog-intro > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 11px;
+  background: var(--PrimaryColor);
+  color: white;
+  font-family: 'Bold';
+  font-size: 0.68rem;
+}
+
+.equipment-dialog-intro strong {
+  color: var(--text-strong);
+  font-size: 0.78rem;
+}
+
+.equipment-dialog-intro p {
+  margin: 2px 0 0;
+  color: var(--text-soft);
+  font-size: 0.67rem;
+}
+
+.equipment-selection > label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--text-strong);
+  font-size: 0.72rem;
+  font-weight: 850;
 }
 
 .equipment-selection :deep(.p-multiselect) {
   width: 100% !important;
   max-width: 100%;
+  min-height: 48px;
+  border-color: var(--main-border);
+  border-radius: 12px;
+  background: var(--surface-1);
+}
+
+.confirm-equipment-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  gap: 9px;
+  border-radius: 12px;
+}
+
+.confirm-equipment-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 
 @media (max-width: 640px) {
   .add-equipment-icon {
-    width: 34px;
-    height: 34px;
+    width: 24px;
+    height: 24px;
   }
 }
 </style>

@@ -112,15 +112,44 @@ watch(
           />
         </div> -->
 
-        <ProjectSiteSection :locations="state.data?.locations" :projectId="state.data?.id" />
+        <section class="project-operations-workspace">
+          <div class="operations-intro">
+            <div class="operations-title">
+              <span class="operations-mark" aria-hidden="true"> <i></i><i></i><i></i> </span>
+              <div>
+                <span class="operations-eyebrow">{{ $t('Operational workspace') }}</span>
+                <h2>{{ $t('Project resources and field structure') }}</h2>
+                <p>
+                  {{
+                    $t(
+                      'Manage locations, workforce assignments, and equipment from one connected view',
+                    )
+                  }}
+                </p>
+              </div>
+            </div>
 
-        <LocationsTeamsSection
-          :teamLocations="state.data?.TeamLocations"
-          :projectLocations="state.data?.project_locations"
-          :hierarchy="state.data?.hierarchies"
-          :orgganizationEmployeeWithHierarchy="state.data?.organization_employees"
-        />
-        <EquipmentSection :project_zoons="state.data?.projectZoons" />
+            <div class="operations-flow" aria-label="Project resource sections">
+              <span><strong>01</strong>{{ $t('Sites') }}</span>
+              <i aria-hidden="true"></i>
+              <span><strong>02</strong>{{ $t('Teams') }}</span>
+              <i aria-hidden="true"></i>
+              <span><strong>03</strong>{{ $t('Equipment') }}</span>
+            </div>
+          </div>
+
+          <div class="project-operations-stack">
+            <ProjectSiteSection :locations="state.data?.locations" :projectId="state.data?.id" />
+
+            <LocationsTeamsSection
+              :teamLocations="state.data?.TeamLocations"
+              :projectLocations="state.data?.project_locations"
+              :hierarchy="state.data?.hierarchies"
+              :orgganizationEmployeeWithHierarchy="state.data?.organization_employees"
+            />
+            <EquipmentSection :project_zoons="state.data?.projectZoons" />
+          </div>
+        </section>
       </div>
     </template>
     <template #loader>
@@ -147,3 +176,178 @@ watch(
     </template>
   </DataStatus>
 </template>
+
+<style scoped lang="scss">
+.project-details-section {
+  gap: 20px;
+  padding: 12px;
+}
+
+.project-operations-workspace {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 18px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 16%, var(--main-border));
+  border-radius: 27px;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--PrimaryColor) 10%, transparent),
+      transparent 27%
+    ),
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--PrimaryColor) 4%, transparent),
+      transparent 45%
+    ),
+    var(--surface-2);
+  box-shadow: 0 22px 55px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
+}
+
+.operations-intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 17px;
+  padding: 17px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 13%, var(--main-border));
+  border-radius: 19px;
+  background: color-mix(in srgb, var(--surface-1) 88%, transparent);
+}
+
+.operations-title {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 13px;
+}
+
+.operations-mark {
+  display: grid;
+  width: 50px;
+  height: 50px;
+  flex: 0 0 50px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+  padding: 11px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, var(--PrimaryColor), var(--brand-primary-700));
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+}
+
+.operations-mark i {
+  border-radius: 3px;
+  background: color-mix(in srgb, white 82%, transparent);
+}
+
+.operations-mark i:last-child {
+  grid-column: 1 / -1;
+}
+
+.operations-eyebrow {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--PrimaryColor);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.operations-title h2 {
+  margin: 0;
+  color: var(--text-strong);
+  font-family: 'Bold';
+  font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+  font-weight: 900;
+}
+
+.operations-title p {
+  max-width: 600px;
+  margin: 3px 0 0;
+  color: var(--text-soft);
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+
+.operations-flow {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px;
+  border: 1px solid var(--main-border);
+  border-radius: 13px;
+  background: var(--surface-2);
+}
+
+.operations-flow span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 8px;
+  border-radius: 9px;
+  color: var(--text-soft);
+  font-size: 0.62rem;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.operations-flow strong {
+  color: var(--PrimaryColor);
+  font-family: 'Bold';
+}
+
+.operations-flow > i {
+  width: 15px;
+  height: 1px;
+  background: var(--main-border);
+}
+
+.project-operations-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+@media (max-width: 920px) {
+  .operations-intro {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 620px) {
+  .project-details-section {
+    padding: 0;
+  }
+
+  .project-operations-workspace {
+    padding: 10px;
+    border-radius: 20px;
+  }
+
+  .operations-intro {
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .operations-title {
+    align-items: flex-start;
+  }
+
+  .operations-mark {
+    width: 43px;
+    height: 43px;
+    flex-basis: 43px;
+    padding: 9px;
+    border-radius: 13px;
+  }
+
+  .operations-flow {
+    width: 100%;
+    overflow-x: auto;
+  }
+}
+</style>
