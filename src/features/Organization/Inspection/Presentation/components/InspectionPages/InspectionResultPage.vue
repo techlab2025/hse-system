@@ -12,13 +12,13 @@ import FetchTaskResultDetailsController from '../../controllers/FetchTaskResultD
 import FetchTaskResultDetailsParams from '../../../Core/params/FetchTaskResultDetailsParams'
 import { useRoute } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import { AssignToTypeEnum } from '../../../Core/Enum/AssignToTypesEnum'
 import FetchInspectionResultController from '../../controllers/FetchInspectionResultController'
 import FetchInspectionResultParams from '../../../Core/params/FetchInspectionResultParams'
 import EquipmentInspectionResultDialog from '@/features/setting/Equipment/Presentation/components/Dialogs/EquipmentInspectionResultDialog.vue'
+import InspectionResultPageSkeleton from './InspectionResultPageSkeleton.vue'
 
 const route = useRoute()
 const routeId = Array.isArray(route.params.id) ? route.params.id[0] : route.params.id
@@ -99,7 +99,9 @@ const getEmployeeInitial = (name?: string) => name?.trim().charAt(0).toUpperCase
 <template>
   <DataStatus :controller="state">
     <template #success>
-      <main class="inspection-results-page">
+      <InspectionResultPageSkeleton v-if="!staticstate?.data" />
+
+      <main v-else class="inspection-results-page">
         <span class="page-glow page-glow--primary" aria-hidden="true"></span>
         <span class="page-glow page-glow--accent" aria-hidden="true"></span>
 
@@ -246,10 +248,10 @@ const getEmployeeInitial = (name?: string) => name?.trim().charAt(0).toUpperCase
       </main>
     </template>
     <template #loader>
-      <TableLoader :cols="3" :rows="10" />
+      <InspectionResultPageSkeleton />
     </template>
     <template #initial>
-      <TableLoader :cols="3" :rows="10" />
+      <InspectionResultPageSkeleton />
     </template>
     <template #empty>
       <DataEmpty

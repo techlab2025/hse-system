@@ -14,10 +14,12 @@ import ModernAnswerResult from '../ShowResultActions/ModernAnswerResult.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
-  allData: TemplateDetailsModel
-  task_results: TaskResultModel
+  allData?: TemplateDetailsModel
+  task_results?: TaskResultModel
   isOverlay?: boolean
 }>()
+
+const isLoading = computed(() => !props.allData)
 
 watch(
   () => props.allData,
@@ -31,16 +33,41 @@ watch(
   },
 )
 
-const SelectedCheckBoxs = ref<
-  {
-    itemid: number
-    selected: number[]
-    img: string
-    notes: string
-  }[]
->([])
+type AnswerImages = Record<number, string[]>
+type CheckboxAnswer = {
+  itemid: number
+  selected: number[]
+  img: string[]
+  questionImg?: string[]
+  answerImages?: AnswerImages
+  notes: string
+}
+type RadioAnswer = {
+  itemid: number
+  value: number
+  img: string[]
+  questionImg?: string[]
+  answerImages?: AnswerImages
+  notes: string
+}
+type SelectAnswer = {
+  itemId: number
+  selected?: number
+  img: string[]
+  questionImg?: string[]
+  answerImages?: AnswerImages
+  value: string
+}
+type TextAnswer = {
+  itemid: number
+  value: string
+  img: string[]
+  questionImg?: string[]
+}
 
-const UpdateCheckBoxs = (data) => {
+const SelectedCheckBoxs = ref<CheckboxAnswer[]>([])
+
+const UpdateCheckBoxs = (data: CheckboxAnswer) => {
   // Find existing item index
   const existingIndex = SelectedCheckBoxs.value.findIndex((item) => item.itemid === data.itemid)
 
@@ -55,16 +82,9 @@ const UpdateCheckBoxs = (data) => {
   UpdateData()
 }
 
-const SelectedRadioButtons = ref<
-  {
-    itemid: number
-    value: number
-    img: string
-    notes: string
-  }[]
->([])
+const SelectedRadioButtons = ref<RadioAnswer[]>([])
 
-const UpdateRadioButtons = (data) => {
+const UpdateRadioButtons = (data: RadioAnswer) => {
   // Find existing item index
   const existingIndex = SelectedRadioButtons.value.findIndex((item) => item.itemid === data.itemid)
 
@@ -79,14 +99,9 @@ const UpdateRadioButtons = (data) => {
   UpdateData()
 }
 
-const SelectedSelects = ref<
-  {
-    itemId: number
-    selected: any
-  }[]
->([])
+const SelectedSelects = ref<SelectAnswer[]>([])
 
-const UpdateSelects = (data) => {
+const UpdateSelects = (data: SelectAnswer) => {
   // Find existing item index
   const existingIndex = SelectedSelects.value.findIndex((item) => item.itemId === data.itemId)
 
@@ -101,14 +116,9 @@ const UpdateSelects = (data) => {
   UpdateData()
 }
 
-const SelectedTextAreas = ref<
-  {
-    itemid: number
-    value: string
-  }[]
->([])
+const SelectedTextAreas = ref<TextAnswer[]>([])
 
-const UpdateTextAreas = (data) => {
+const UpdateTextAreas = (data: TextAnswer) => {
   // Find existing item index
   const existingIndex = SelectedTextAreas.value.findIndex((item) => item.itemid === data.itemid)
 
@@ -280,7 +290,7 @@ const visibleTemplateItemTags = computed(() => {
 
 const getLocalizedTitle = (
   titles: { locale?: string; title?: string }[] | undefined,
-  fallback = '',
+  fallback: string | null | undefined = '',
 ) =>
   titles?.find((item) => item.locale === locale.value)?.title ||
   titles?.find((item) => item.locale === 'en')?.title ||
@@ -293,7 +303,53 @@ const totalVisibleQuestions = computed(() =>
 )
 </script>
 <template>
-  <div class="template-document-container">
+  <div
+    v-if="isLoading"
+    class="template-document-container template-document-skeleton"
+    aria-busy="true"
+    aria-label="Loading inspection document"
+  >
+    <header class="template-skeleton-hero">
+      <div class="template-skeleton-hero__copy">
+        <span class="template-skeleton-block template-skeleton-block--eyebrow"></span>
+        <span class="template-skeleton-block template-skeleton-block--title"></span>
+        <span class="template-skeleton-block template-skeleton-block--meta"></span>
+      </div>
+      <span class="template-skeleton-block template-skeleton-block--visual"></span>
+    </header>
+
+    <main class="template-skeleton-content">
+      <section v-for="section in 2" :key="section" class="template-skeleton-section">
+        <header class="template-skeleton-section__header">
+          <span class="template-skeleton-block template-skeleton-block--index"></span>
+          <div class="template-skeleton-section__copy">
+            <span class="template-skeleton-block template-skeleton-block--label"></span>
+            <span class="template-skeleton-block template-skeleton-block--section-title"></span>
+          </div>
+          <span class="template-skeleton-block template-skeleton-block--count"></span>
+        </header>
+
+        <div class="template-skeleton-questions">
+          <article v-for="question in 3" :key="question" class="template-skeleton-question">
+            <div class="template-skeleton-question__heading">
+              <span class="template-skeleton-block template-skeleton-block--question-title"></span>
+              <span class="template-skeleton-block template-skeleton-block--question-number"></span>
+            </div>
+            <span class="template-skeleton-block template-skeleton-block--answer"></span>
+            <div class="template-skeleton-options">
+              <span
+                v-for="option in 3"
+                :key="option"
+                class="template-skeleton-block template-skeleton-block--option"
+              ></span>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div v-else class="template-document-container">
     <header class="template-document-header">
       <div class="template-hero__content">
         <span class="template-hero__eyebrow">
@@ -711,6 +767,189 @@ const totalVisibleQuestions = computed(() =>
   min-width: 0;
 }
 
+.template-document-skeleton {
+  min-height: 620px;
+}
+
+.template-skeleton-hero {
+  display: flex;
+  min-height: 170px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 28px 30px;
+  border-radius: 25px 25px 0 0;
+  background: linear-gradient(
+    125deg,
+    color-mix(in srgb, var(--brand-primary-700, #1d4ed8) 88%, #fff),
+    color-mix(in srgb, var(--brand-primary-500, #386cfe) 74%, #fff)
+  );
+}
+
+.template-skeleton-hero__copy {
+  display: grid;
+  width: min(620px, 72%);
+  gap: 12px;
+}
+
+.template-skeleton-block {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--brand-primary-100, #dbeafe) 65%, var(--surface-2));
+}
+
+.template-skeleton-block::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+  background: linear-gradient(
+    100deg,
+    transparent 18%,
+    color-mix(in srgb, var(--surface-1, #fff) 72%, transparent) 48%,
+    transparent 78%
+  );
+  transform: translateX(-110%);
+  animation: templateSkeletonShimmer 1.45s ease-in-out infinite;
+}
+
+.template-skeleton-hero .template-skeleton-block {
+  background: rgb(255 255 255 / 17%);
+}
+
+.template-skeleton-block--eyebrow {
+  width: 145px;
+  height: 27px;
+  border-radius: 999px;
+}
+
+.template-skeleton-block--title {
+  width: min(420px, 88%);
+  height: 29px;
+}
+
+.template-skeleton-block--meta {
+  width: 190px;
+  height: 18px;
+}
+
+.template-skeleton-block--visual {
+  width: 104px;
+  height: 104px;
+  flex: 0 0 104px;
+  border-radius: 30px;
+  transform: rotate(8deg);
+}
+
+.template-skeleton-content {
+  display: grid;
+  gap: 18px;
+  padding: 22px;
+}
+
+.template-skeleton-section {
+  padding: 16px;
+  border: 1px solid
+    color-mix(in srgb, var(--brand-primary-500, #386cfe) 8%, var(--surface-2, #e5e7eb));
+  border-radius: 22px;
+  background: color-mix(in srgb, var(--surface-1, #fff) 96%, var(--brand-primary-50));
+}
+
+.template-skeleton-section__header,
+.template-skeleton-question__heading {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.template-skeleton-section__header {
+  margin-bottom: 13px;
+}
+
+.template-skeleton-block--index {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border-radius: 13px;
+}
+
+.template-skeleton-section__copy {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 5px;
+}
+
+.template-skeleton-block--label {
+  width: 62px;
+  height: 9px;
+}
+
+.template-skeleton-block--section-title {
+  width: min(280px, 70%);
+  height: 17px;
+}
+
+.template-skeleton-block--count {
+  width: 82px;
+  height: 27px;
+  flex: 0 0 82px;
+  border-radius: 999px;
+}
+
+.template-skeleton-questions {
+  display: grid;
+  gap: 11px;
+}
+
+.template-skeleton-question {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid
+    color-mix(in srgb, var(--brand-primary-500, #386cfe) 8%, var(--surface-2, #e5e7eb));
+  border-radius: 19px;
+  background: var(--surface-1, #fff);
+}
+
+.template-skeleton-question__heading {
+  justify-content: space-between;
+}
+
+.template-skeleton-block--question-title {
+  width: min(390px, 62%);
+  height: 18px;
+}
+
+.template-skeleton-block--question-number {
+  width: 25px;
+  height: 25px;
+  border-radius: 9px;
+}
+
+.template-skeleton-block--answer {
+  width: 48%;
+  height: 13px;
+}
+
+.template-skeleton-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.template-skeleton-block--option {
+  height: 44px;
+  border-radius: 13px;
+}
+
+@keyframes templateSkeletonShimmer {
+  to {
+    transform: translateX(110%);
+  }
+}
+
 @media (max-width: 700px) {
   .template-document-header {
     min-height: 145px;
@@ -736,6 +975,43 @@ const totalVisibleQuestions = computed(() =>
 
   .template-section__count {
     display: none;
+  }
+
+  .template-skeleton-hero {
+    min-height: 145px;
+    padding: 22px 20px;
+  }
+
+  .template-skeleton-hero__copy {
+    width: 100%;
+  }
+
+  .template-skeleton-block--visual,
+  .template-skeleton-block--count {
+    display: none;
+  }
+
+  .template-skeleton-content {
+    padding: 12px;
+  }
+
+  .template-skeleton-section {
+    padding: 11px;
+    border-radius: 18px;
+  }
+
+  .template-skeleton-question {
+    padding: 15px 12px;
+  }
+
+  .template-skeleton-options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .template-skeleton-block::after {
+    animation: none;
   }
 }
 </style>
