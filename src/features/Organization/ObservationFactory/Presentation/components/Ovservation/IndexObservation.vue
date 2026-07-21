@@ -15,7 +15,6 @@ import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enu
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
 import ViewIcon from '@/shared/icons/ViewIcon.vue'
 
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -206,9 +205,7 @@ const setSelectedProjectFilter = (data?: number) => {
   FetchMyZones()
 }
 
-const ShowDetails = ref<number[]>([])
-
-const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
+const GetRiskLevel = (riskLevel?: RiskLevelEnum) => {
   switch (riskLevel) {
     case RiskLevelEnum.Low:
       return 'Low'
@@ -237,6 +234,18 @@ const GetSaveStatus = (saveStatus: SaveStatusEnum) => {
     case SaveStatusEnum.NotSaved:
       return 'Negative'
   }
+}
+
+const getObserverInitials = (name?: string) => {
+  if (!name) return 'OB'
+
+  return name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((part) => part.charAt(0))
+    .join('')
+    .toUpperCase()
 }
 
 const toggleObservationWorkStopped = async (id: number) => {
@@ -356,116 +365,150 @@ const GetObservationType = (type: number) => {
           <template #success>
             <div class="table-responsive">
               <div class="index-table-card-container">
-                <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
-                  <!-- :to="`observation/show/${item?.id}`" -->
-                  <div class="w-full">
-                    <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
-                      <div class="header-container">
-                        <div class="card-content" style="flex: 1">
-                          <div class="card-header">
-                            <p class="label-item-primary">
-                              {{ $t('Serial') }} : <span>{{ item.serialName }}</span>
-                            </p>
-                            <p class="label-item-secondary">
-                              {{ $t('Date & Time') }} :
-                              <span>{{ item.date }} & {{ item.time }}</span>
-                            </p>
-                            <p class="label-item-secondary flex items-center gap-1">
-                              {{ $t('observation_type') }} :
-                              <!-- <span>{{ GetObservationType(item.type) }}</span> -->
-                              {{ GetSaveStatus(item.saveStatus) || 'N/A' }}
-                            </p>
-                            <!-- <p class="label-item-secondary flex items-center gap-1" v-if="item.actionStatus">
-                              {{ $t('status') }} : <span>{{ GetAcionStatus(item.actionStatus) }}</span>
-                              <CustomCheckboxToggle :index="item.id" title="" :checked="item.actionStatus == 1"
-                                @update:checked="toggleObservationActionStatus(item?.id)" />
-                            </p> -->
-                            <!-- <p class="label-item-secondary flex items-center gap-1"
-                              :class="`${GetSaveStatus(item.saveStatus)}`" v-if="item.saveStatus">
-                              {{ GetSaveStatus(item.saveStatus) }}
-
-                            </p> -->
-                            <p
-                              class="label-item-secondary Negative flex items-center gap-1"
-                              v-if="item.isWorkStopped == 1"
-                            >
-                              {{ item.isWorkStopped == 1 ? 'Work Stoped' : '' }}
-                              <CustomCheckboxToggle
-                                class="text-black"
-                                :index="item.id + 100"
-                                title=""
-                                :checked="item.isWorkStopped == 1"
-                                @update:checked="toggleObservationWorkStopped(item?.id)"
-                              />
-                            </p>
-                          </div>
-                          <router-link :to="`observation/show/${item?.id}`" class="card-details">
-                            <p class="title">
-                              {{ item.observer.name }} <span>{{ '(observer)' }}</span>
-                            </p>
-                            <p class="subtitle">{{ item.title }}</p>
-                            <!-- <p class="subtitle">{{ item.description }}</p> -->
-                            <div class="project-details">
-                              <p
-                                class="label-item-primary flex items-center gap-1"
-                                v-if="item.zoon?.title"
-                              >
-                                <PinIcons /> {{ $t('Zone') }} : <span>{{ item.zoon?.title }}</span>
-                              </p>
-                              <p class="label-item-primary" v-if="item.equipment?.title">
-                                {{ $t('Machine') }} : <span>{{ item.equipment?.title }}</span>
-                              </p>
-                              <!-- <p class="label-item-primary" v-if="item.status">
-                                Status : <span>{{ item?.status }}</span>
-                              </p> -->
-                            </div>
-                          </router-link>
-                        </div>
-
-                        <div class="card-info">
-                          <span
-                            v-if="item.riskLevel && item.saveStatus == SaveStatusEnum.NotSaved"
-                            class="observation-risk-level flex items-center gap-1"
-                            :class="GetRiskLevel(item.riskLevel)"
-                          >
-                            {{ GetRiskLevel(item.riskLevel) }} {{ '(Level)' }}
-                            <HighLevel v-if="GetRiskLevel(item.riskLevel) === 'High'" />
-                          </span>
-                          <!-- <img :src="item.HazardImg" alt="hazard-img"> -->
-                          <Image
-                            v-if="item.media[0]?.url"
-                            :src="item.media[0]?.url"
-                            alt="Image"
-                            preview
-                          >
-                            <template #previewicon>
-                              <div class="perview">
-                                <span>{{ $t('View') }}</span>
-                                <ViewIcon />
-                              </div>
-                            </template>
-                          </Image>
-                          <!-- <img v-else src="@/assets/images/logo.svg" alt=""> -->
-                        </div>
+                <article
+                  class="index-table-card observation-card"
+                  :class="[
+                    `risk-${GetRiskLevel(item.riskLevel).toLowerCase()}`,
+                    { 'is-work-stopped': item.isWorkStopped == 1 },
+                  ]"
+                  v-for="(item, index) in state.data"
+                  :key="item.id || index"
+                >
+                  <header class="observation-card-header">
+                    <div class="observation-title-group">
+                      <span class="observation-mark" aria-hidden="true">O</span>
+                      <div>
+                        <span class="observation-eyebrow">{{ $t('Observation') }}</span>
+                        <router-link :to="`observation/show/${item?.id}`">
+                          <h3>{{ item.title || '—' }}</h3>
+                        </router-link>
                       </div>
                     </div>
-                  </div>
 
-                  <div class="observation-dwspcription-more">
-                    <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
-                      <span v-if="ShowDetails[index]">{{ $t('Show Less') }}</span>
-                      <span v-else>{{ $t('Show More') }}</span>
-                      <ShowMoreIcon />
-                    </p>
-
-                    <div v-if="ShowDetails[index]" class="card-description">
-                      <p class="title">{{ $t('description') }} :</p>
-                      <p class="description">
-                        {{ item.description }}
-                      </p>
+                    <div class="observation-card-statuses">
+                      <span
+                        class="observation-type-chip"
+                        :class="GetSaveStatus(item.saveStatus)?.toLowerCase()"
+                      >
+                        <i aria-hidden="true"></i>
+                        {{ GetSaveStatus(item.saveStatus) || 'N/A' }}
+                      </span>
+                      <span
+                        v-if="item.riskLevel && item.saveStatus == SaveStatusEnum.NotSaved"
+                        class="observation-risk-level"
+                        :class="GetRiskLevel(item.riskLevel)"
+                      >
+                        <HighLevel v-if="GetRiskLevel(item.riskLevel) === 'High'" />
+                        {{ GetRiskLevel(item.riskLevel) }} {{ $t('Level') }}
+                      </span>
                     </div>
+                  </header>
+
+                  <div class="observation-card-body">
+                    <div class="observation-information">
+                      <div class="observation-meta-grid">
+                        <div class="meta-item serial-meta">
+                          <span class="meta-icon serial-icon" aria-hidden="true">#</span>
+                          <div>
+                            <span class="meta-label">{{ $t('Serial') }}</span>
+                            <strong>{{ item.serialName || '—' }}</strong>
+                          </div>
+                        </div>
+
+                        <div class="meta-item">
+                          <span class="observer-avatar" aria-hidden="true">
+                            {{ getObserverInitials(item.observer?.name) }}
+                          </span>
+                          <div>
+                            <span class="meta-label">{{ $t('observer') }}</span>
+                            <strong>{{ item.observer?.name || '—' }}</strong>
+                          </div>
+                        </div>
+
+                        <div class="meta-item">
+                          <span class="meta-icon date-icon" aria-hidden="true"></span>
+                          <div>
+                            <span class="meta-label">{{ $t('Date & Time') }}</span>
+                            <strong>{{ item.date || '—' }} · {{ item.time || '—' }}</strong>
+                          </div>
+                        </div>
+
+                        <div class="meta-item">
+                          <span class="meta-icon"><PinIcons /></span>
+                          <div>
+                            <span class="meta-label">{{ $t('Zone') }}</span>
+                            <strong>{{ item.zoon?.title || '—' }}</strong>
+                          </div>
+                        </div>
+
+                        <div class="meta-item">
+                          <span class="meta-icon machine-symbol" aria-hidden="true">M</span>
+                          <div>
+                            <span class="meta-label">{{ $t('Machine') }}</span>
+                            <strong>{{ item.equipment?.title || '—' }}</strong>
+                          </div>
+                        </div>
+
+                        <div class="meta-item">
+                          <span class="meta-icon type-icon" aria-hidden="true"></span>
+                          <div>
+                            <span class="meta-label">{{ $t('observation_type') }}</span>
+                            <strong>{{ GetSaveStatus(item.saveStatus) || 'N/A' }}</strong>
+                          </div>
+                        </div>
+                      </div>
+
+                      <section class="observation-description">
+                        <span class="description-label">{{ $t('description') }}</span>
+                        <p>{{ item.description || '—' }}</p>
+                      </section>
+                    </div>
+
+                    <aside class="observation-media-panel">
+                      <span class="media-label">{{ $t('Attachment') }}</span>
+                      <div v-if="item.media?.[0]?.url" class="card-info">
+                        <Image
+                          :src="item.media[0].url"
+                          :alt="item.title || $t('Observation')"
+                          preview
+                        >
+                          <template #previewicon>
+                            <div class="perview">
+                              <ViewIcon />
+                              <span>{{ $t('View') }}</span>
+                            </div>
+                          </template>
+                        </Image>
+                      </div>
+                      <div v-else class="no-media">
+                        <ViewIcon />
+                        <span>{{ $t('No attachment') }}</span>
+                      </div>
+                    </aside>
                   </div>
-                </div>
+
+                  <div class="observation-card-footer">
+                    <div v-if="item.isWorkStopped == 1" class="work-stopped-control">
+                      <span class="stop-indicator" aria-hidden="true">!</span>
+                      <span>{{ $t('Work Stopped') }}</span>
+                      <CustomCheckboxToggle
+                        class="text-black"
+                        :index="item.id + 100"
+                        title=""
+                        :checked="item.isWorkStopped == 1"
+                        @update:checked="toggleObservationWorkStopped(item?.id)"
+                      />
+                    </div>
+
+                    <router-link
+                      :to="`observation/show/${item?.id}`"
+                      class="view-observation-action"
+                    >
+                      <span>{{ $t('View Details') }}</span>
+                      <span class="action-arrow" aria-hidden="true">→</span>
+                    </router-link>
+                  </div>
+                </article>
               </div>
             </div>
             <Pagination
@@ -647,8 +690,7 @@ const GetObservationType = (type: number) => {
   scroll-behavior: smooth;
   scroll-snap-type: x proximity;
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--brand-primary-400) 50%, transparent)
-    transparent;
+  scrollbar-color: color-mix(in srgb, var(--brand-primary-400) 50%, transparent) transparent;
 }
 
 .observation-zone-filter :deep(.filter) {
@@ -763,11 +805,917 @@ const GetObservationType = (type: number) => {
   }
 }
 
+.index-table-card-container {
+  gap: 18px;
+  padding-block: 4px 14px;
+}
+
+.observation-card {
+  --card-accent: var(--brand-primary-500);
+  --card-accent-soft: color-mix(in srgb, var(--brand-primary-500) 9%, transparent);
+  position: relative;
+  isolation: isolate;
+  display: block;
+  overflow: hidden;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--card-accent) 20%, var(--main-border));
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 100% 0%, var(--card-accent-soft), transparent 34%), var(--surface-1);
+  box-shadow: 0 14px 38px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.observation-card::before {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 5px;
+  background: linear-gradient(180deg, var(--card-accent), var(--brand-accent-500));
+}
+
+.observation-card::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: -74px;
+  inset-inline-end: -54px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: var(--card-accent-soft);
+  filter: blur(12px);
+  pointer-events: none;
+}
+
+.observation-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--card-accent) 38%, var(--main-border));
+  box-shadow: 0 20px 46px color-mix(in srgb, var(--brand-primary-900) 13%, transparent);
+}
+
+.observation-card.risk-low {
+  --card-accent: var(--status-success);
+}
+
+.observation-card.risk-medium {
+  --card-accent: var(--brand-accent-500);
+}
+
+.observation-card.risk-high,
+.observation-card.is-work-stopped {
+  --card-accent: var(--status-danger);
+}
+
+.observation-card-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 58px;
+  padding: 12px 18px 12px 22px;
+  border-bottom: 1px solid color-mix(in srgb, var(--card-accent) 13%, var(--main-border));
+  background: color-mix(in srgb, var(--surface-2) 74%, transparent);
+}
+
+.observation-card-reference,
+.observation-card-statuses,
+.observer-row,
+.project-details,
+.observation-card-footer,
+.work-stopped-control,
 .show-more {
   display: flex;
   align-items: center;
-  gap: 10px;
+}
+
+.observation-card-reference {
+  gap: 9px;
+  min-width: 0;
+}
+
+.reference-label {
+  color: var(--text-soft);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.observation-card-reference strong {
+  overflow: hidden;
+  padding: 6px 10px;
+  border: 1px solid color-mix(in srgb, var(--card-accent) 20%, transparent);
+  border-radius: 9px;
+  background: var(--card-accent-soft);
+  color: var(--card-accent);
+  font-family: 'Bold';
+  font-size: 0.76rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.observation-card-statuses {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+.observation-type-chip,
+.observation-risk-level {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 5px 10px;
+  border: 1px solid color-mix(in srgb, var(--card-accent) 22%, transparent);
+  border-radius: 999px;
+  background: var(--card-accent-soft);
+  color: var(--card-accent);
+  font-size: 0.72rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.observation-type-chip i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 13%, transparent);
+}
+
+.observation-type-chip.positive {
+  border-color: color-mix(in srgb, var(--status-success) 24%, transparent);
+  background: color-mix(in srgb, var(--status-success) 9%, transparent);
+  color: var(--status-success);
+}
+
+.observation-type-chip.negative {
+  border-color: color-mix(in srgb, var(--status-danger) 22%, transparent);
+  background: color-mix(in srgb, var(--status-danger) 8%, transparent);
+  color: var(--status-danger);
+}
+
+.observation-card-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 20px;
+  padding: 20px 18px 18px 22px;
+}
+
+.observation-card .card-details {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 16px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.observer-row {
+  gap: 11px;
+  min-width: 0;
+}
+
+.observer-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border: 1px solid color-mix(in srgb, var(--card-accent) 22%, transparent);
+  border-radius: 13px;
+  background: linear-gradient(145deg, var(--card-accent-soft), var(--surface-2));
+  color: var(--card-accent);
+  font-family: 'Bold';
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.observer-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.observer-copy span,
+.observation-card-heading > span,
+.detail-chip small {
+  color: var(--text-soft);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.observer-copy strong {
+  overflow: hidden;
+  color: var(--text-strong);
+  font-family: 'Bold';
+  font-size: 0.88rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.observation-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-inline-start: auto;
+  color: var(--text-soft);
+  font-size: 0.73rem;
+  font-weight: 750;
+  white-space: nowrap;
+}
+
+.observation-date small {
+  padding: 4px 7px;
+  border-radius: 7px;
+  background: var(--surface-2);
+  color: var(--text-strong);
+  font-size: 0.68rem;
+}
+
+.observation-card-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.observation-card-heading h3 {
+  margin: 0;
+  color: var(--text-strong);
+  font-family: 'Bold';
+  font-size: clamp(1rem, 1.6vw, 1.2rem);
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+.project-details {
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.detail-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 150px;
+  min-height: 42px;
+  padding: 7px 11px;
+  border: 1px solid var(--main-border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface-2) 76%, transparent);
+  color: var(--text-strong);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.detail-chip > span:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.detail-chip svg,
+.machine-symbol {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  padding: 5px;
+  border-radius: 8px;
+  background: var(--card-accent-soft);
+  color: var(--card-accent);
+}
+
+.machine-symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bold';
+  font-size: 0.65rem;
+}
+
+.observation-card .card-info {
+  width: 168px;
+  min-width: 168px;
+}
+
+.observation-card .card-info :deep(.p-image) {
+  display: block;
+  width: 168px;
+  height: 132px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--card-accent) 17%, var(--main-border));
+  border-radius: 15px;
+  background: var(--surface-2);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
+}
+
+.observation-card .card-info :deep(.p-image img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.observation-card:hover .card-info :deep(.p-image img) {
+  transform: scale(1.035);
+}
+
+.observation-card .card-info :deep(.p-image-preview-mask) {
+  border-radius: 15px;
+  background: color-mix(in srgb, var(--brand-primary-900) 55%, transparent);
+}
+
+.perview {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  border: 1px solid color-mix(in srgb, white 28%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-primary-900) 55%, transparent);
+  color: white;
+  font-size: 0.72rem;
+  font-weight: 850;
+  backdrop-filter: blur(5px);
+}
+
+.observation-card-footer {
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 54px;
+  padding: 10px 18px 10px 22px;
+  border-top: 1px solid var(--main-border);
+  background: color-mix(in srgb, var(--surface-2) 70%, transparent);
+}
+
+.work-stopped-control {
+  gap: 8px;
+  color: var(--status-danger);
+  font-size: 0.74rem;
+  font-weight: 900;
+}
+
+.stop-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--status-danger) 10%, transparent);
+  font-family: 'Bold';
+}
+
+.show-more {
+  justify-content: center;
+  gap: 8px;
+  min-height: 34px;
+  margin-inline-start: auto;
+  padding: 6px 11px;
+  border: 1px solid color-mix(in srgb, var(--card-accent) 18%, var(--main-border));
+  border-radius: 10px;
+  background: var(--surface-1);
+  color: var(--card-accent);
+  font: inherit;
+  font-size: 0.73rem;
+  font-weight: 850;
   cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease;
+}
+
+.show-more:hover {
+  transform: translateY(-1px);
+  background: var(--card-accent-soft);
+}
+
+.show-more svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.2s ease;
+}
+
+.observation-card.is-expanded .show-more svg {
+  transform: rotate(180deg);
+}
+
+.observation-card .card-description {
+  margin: 0 18px 18px 22px;
+  padding: 14px 16px;
+  border: 1px solid color-mix(in srgb, var(--card-accent) 15%, var(--main-border));
+  border-radius: 13px;
+  background: var(--card-accent-soft);
+}
+
+.observation-card .card-description .title {
+  margin: 0 0 5px;
+  color: var(--card-accent);
+  font-family: 'Bold';
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.observation-card .card-description .description {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
+.description-reveal-enter-active,
+.description-reveal-leave-active {
+  transition: 0.2s ease;
+}
+
+.description-reveal-enter-from,
+.description-reveal-leave-to {
+  transform: translateY(-5px);
+  opacity: 0;
+}
+
+@media (max-width: 720px) {
+  .observation-card-topline,
+  .observation-card-body,
+  .observation-card-footer {
+    padding-inline: 18px 14px;
+  }
+
+  .observation-card-topline {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .observation-card-statuses {
+    justify-content: flex-start;
+  }
+
+  .observation-card-body {
+    grid-template-columns: 1fr;
+  }
+
+  .observation-card .card-info,
+  .observation-card .card-info :deep(.p-image) {
+    width: 100%;
+  }
+
+  .observation-card .card-info :deep(.p-image) {
+    height: auto;
+    aspect-ratio: 16 / 7;
+  }
+
+  .observation-card .card-description {
+    margin-inline: 18px 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .observer-row {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .observer-copy {
+    max-width: calc(100% - 56px);
+  }
+
+  .observation-date {
+    width: 100%;
+    margin-inline-start: 53px;
+  }
+
+  .detail-chip {
+    width: 100%;
+  }
+
+  .observation-card-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .show-more {
+    width: 100%;
+    margin-inline-start: 0;
+  }
+}
+
+/* Clear, information-first observation card */
+.observation-card {
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--card-accent) 5%, transparent),
+      transparent 40%
+    ),
+    var(--surface-1);
+}
+
+.observation-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 22px 22px 18px 26px;
+  border-bottom: 1px solid var(--main-border);
+  background: color-mix(in srgb, var(--surface-2) 68%, transparent);
+}
+
+.observation-title-group {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 14px;
+}
+
+.observation-title-group > div {
+  min-width: 0;
+}
+
+.observation-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  border: 1px solid color-mix(in srgb, var(--card-accent) 25%, transparent);
+  border-radius: 15px;
+  background: linear-gradient(145deg, var(--card-accent), var(--brand-primary-700));
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--card-accent) 24%, transparent);
+  color: white;
+  font-family: 'Bold';
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.observation-eyebrow {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--card-accent);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.observation-title-group a {
+  text-decoration: none;
+}
+
+.observation-title-group h3 {
+  overflow: hidden;
+  margin: 0;
+  color: var(--text-strong);
+  font-family: 'Bold';
+  font-size: clamp(1.12rem, 1.8vw, 1.38rem);
+  font-weight: 900;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+
+.observation-title-group a:hover h3 {
+  color: var(--card-accent);
+}
+
+.observation-card-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  align-items: stretch;
+  gap: 20px;
+  padding: 22px 22px 22px 26px;
+}
+
+.observation-information {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.observation-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  min-width: 0;
+  min-height: 72px;
+  gap: 11px;
+  padding: 12px;
+  border: 1px solid var(--main-border);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface-2) 76%, transparent);
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.meta-item:hover {
+  border-color: color-mix(in srgb, var(--card-accent) 25%, var(--main-border));
+  background: var(--card-accent-soft);
+}
+
+.meta-item > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meta-label,
+.description-label,
+.media-label {
+  color: var(--text-soft);
+  font-size: 0.66rem;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.meta-item strong {
+  overflow: hidden;
+  color: var(--text-strong);
+  font-family: 'Bold';
+  font-size: 0.82rem;
+  font-weight: 850;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meta-icon,
+.meta-item .observer-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--card-accent) 18%, transparent);
+  border-radius: 12px;
+  background: var(--card-accent-soft);
+  color: var(--card-accent);
+  font-family: 'Bold';
+  font-size: 0.73rem;
+  font-weight: 900;
+}
+
+.meta-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.date-icon,
+.type-icon {
+  position: relative;
+}
+
+.date-icon::before {
+  content: '';
+  width: 17px;
+  height: 15px;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+}
+
+.date-icon::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  width: 11px;
+  border-top: 2px solid currentColor;
+}
+
+.type-icon::before {
+  content: '';
+  width: 15px;
+  height: 15px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 3px var(--surface-2);
+  background: currentColor;
+}
+
+.observation-description {
+  position: relative;
+  min-height: 90px;
+  padding: 15px 16px 15px 20px;
+  border: 1px solid color-mix(in srgb, var(--card-accent) 14%, var(--main-border));
+  border-radius: 15px;
+  background: var(--card-accent-soft);
+}
+
+.observation-description::before {
+  content: '';
+  position: absolute;
+  inset-block: 15px;
+  inset-inline-start: 0;
+  width: 3px;
+  border-radius: 999px;
+  background: var(--card-accent);
+}
+
+.observation-description p {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 7px 0 0;
+  color: var(--text-strong);
+  font-size: 0.84rem;
+  font-weight: 650;
+  line-height: 1.65;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.observation-media-panel {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--main-border);
+  border-radius: 17px;
+  background: color-mix(in srgb, var(--surface-2) 78%, transparent);
+}
+
+.media-label {
+  padding-inline: 3px;
+}
+
+.observation-card .card-info,
+.observation-card .card-info :deep(.p-image) {
+  width: 100%;
+  height: 100%;
+  min-height: 184px;
+}
+
+.observation-card .card-info :deep(.p-image) {
+  border-radius: 12px;
+}
+
+.observation-card .card-info :deep(.p-image img) {
+  border-radius: 12px;
+}
+
+.no-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 184px;
+  flex: 1;
+  flex-direction: column;
+  gap: 9px;
+  border: 1px dashed color-mix(in srgb, var(--card-accent) 22%, var(--main-border));
+  border-radius: 12px;
+  background: var(--surface-1);
+  color: var(--text-soft);
+  font-size: 0.72rem;
+  font-weight: 750;
+}
+
+.no-media svg {
+  width: 24px;
+  height: 24px;
+  color: var(--card-accent);
+  opacity: 0.7;
+}
+
+.observation-card-footer {
+  min-height: 62px;
+  padding: 11px 22px 11px 26px;
+  background: color-mix(in srgb, var(--surface-2) 72%, transparent);
+}
+
+.view-observation-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  gap: 10px;
+  margin-inline-start: auto;
+  padding: 8px 9px 8px 15px;
+  border-radius: 12px;
+  background: var(--card-accent);
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--card-accent) 22%, transparent);
+  color: white;
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-decoration: none;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.view-observation-action:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 11px 22px color-mix(in srgb, var(--card-accent) 28%, transparent);
+}
+
+.action-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  background: color-mix(in srgb, white 18%, transparent);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+[dir='rtl'] .action-arrow {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 1050px) {
+  .observation-meta-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .observation-card-header,
+  .observation-card-body,
+  .observation-card-footer {
+    padding-inline: 20px 16px;
+  }
+
+  .observation-card-header {
+    flex-direction: column;
+  }
+
+  .observation-card-statuses {
+    justify-content: flex-start;
+  }
+
+  .observation-card-body {
+    grid-template-columns: 1fr;
+  }
+
+  .observation-card .card-info,
+  .observation-card .card-info :deep(.p-image),
+  .no-media {
+    min-height: 190px;
+  }
+
+  .observation-card .card-info :deep(.p-image) {
+    height: 190px;
+    aspect-ratio: auto;
+  }
+}
+
+@media (max-width: 540px) {
+  .observation-card {
+    border-radius: 18px;
+  }
+
+  .observation-title-group {
+    align-items: flex-start;
+  }
+
+  .observation-mark {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
+    border-radius: 13px;
+  }
+
+  .observation-meta-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .meta-item {
+    min-height: 66px;
+  }
+
+  .observation-card-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .view-observation-action {
+    width: 100%;
+    margin-inline-start: 0;
+  }
 }
 
 .observation-index-page.is-dark {
@@ -822,9 +1770,23 @@ const GetObservationType = (type: number) => {
   }
 
   :deep(.observation-risk-level) {
-    border-color: color-mix(in srgb, var(--PrimaryColor) 30%, var(--main-border)) !important;
-    background: color-mix(in srgb, var(--PrimaryColor) 14%, var(--surface-2)) !important;
-    color: var(--text-strong) !important;
+    border-color: color-mix(in srgb, var(--card-accent) 34%, var(--main-border)) !important;
+    background: color-mix(in srgb, var(--card-accent) 13%, var(--surface-2)) !important;
+    color: var(--card-accent) !important;
+  }
+
+  .observation-card-header,
+  .observation-card-footer,
+  .meta-item,
+  .observation-media-panel {
+    border-color: var(--main-border);
+    background: color-mix(in srgb, var(--surface-2) 82%, transparent);
+  }
+
+  .observation-description,
+  .no-media {
+    border-color: color-mix(in srgb, var(--card-accent) 24%, var(--main-border));
+    background: color-mix(in srgb, var(--card-accent) 8%, var(--surface-2));
   }
 }
 </style>

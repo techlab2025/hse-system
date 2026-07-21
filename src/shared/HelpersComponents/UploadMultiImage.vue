@@ -63,11 +63,11 @@ const extraCount = computed(() => images.value.length - 3)
         </div>
       </MultiImagesDialog>
 
-      <label class="replace-trigger cursor-pointer">
+      <!-- <label class="replace-trigger cursor-pointer">
         <UploadImage class="image-upload" />
         <span v-if="variant === 'evidence'">{{ $t('replace_photos') }}</span>
         <input type="file" multiple accept="image/*" class="hidden" @change="handleUpload" />
-      </label>
+      </label> -->
     </div>
   </div>
 </template>
