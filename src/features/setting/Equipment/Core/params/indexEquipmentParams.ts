@@ -9,6 +9,7 @@ export default class IndexEquipmentParams implements Params {
   public pageNumber: number = 10
   public id?: number
   public isPaginate: boolean = false
+  public zoonId:number | undefined
   // public code?: LangEnum
 
   constructor(
@@ -18,7 +19,8 @@ export default class IndexEquipmentParams implements Params {
     withPage: number = 1,
     id?: number,
     // code?: LangEnum,
-    isPaginate: boolean = false
+    isPaginate: boolean = false,
+     zoonId:number | undefined = undefined
   ) {
     this.word = word
     this.withPage = withPage
@@ -26,6 +28,7 @@ export default class IndexEquipmentParams implements Params {
     this.perPage = perPage
     this.id = id
     this.isPaginate = isPaginate
+    this.zoonId = zoonId
     // this.code = code
   }
 
@@ -36,6 +39,7 @@ export default class IndexEquipmentParams implements Params {
     if(this.isPaginate) data['page'] = this.pageNumber
     if(this.isPaginate) data['limit'] = this.perPage
     if (this.id && this.isPaginate) data['parent_id'] = this.id
+    if(this.zoonId) data['project_zoon_id'] = this.zoonId
     // if (this.code) data['code'] = this.code
     return data
   }

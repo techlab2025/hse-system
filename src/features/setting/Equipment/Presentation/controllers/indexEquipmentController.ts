@@ -22,7 +22,8 @@ export default class IndexEquipmentController extends SelectControllerInterface<
 
   async getData(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
-    // console.log(params)
+    console.log(params , "paramsparamsparams")
+
     this.setLoading()
     const dataState: DataState<EquipmentModel[]> = await this.indexEquipmentUseCase.call(params)
 

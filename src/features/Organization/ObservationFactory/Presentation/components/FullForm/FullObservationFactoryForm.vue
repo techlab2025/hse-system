@@ -275,8 +275,11 @@ const updateData = () => {
 }
 
 watch([() => props.data], ([newData]) => {}, { immediate: true })
+const ZoneIds = ref<number>()
 
-const indexEquipmentParams = new IndexEquipmentParams('', 1, 10, 1)
+const indexEquipmentParams = computed(
+  () => new IndexEquipmentParams('', 1, 10, 1, undefined, false, ZoneIds.value),
+)
 const indexEquipmentController = IndexEquipmentController.getInstance()
 const SelectedMachine = ref<TitleInterface | null>(null)
 const setMachine = (data: TitleInterface | null) => {
@@ -284,7 +287,6 @@ const setMachine = (data: TitleInterface | null) => {
   updateData()
 }
 
-const ZoneIds = ref<number>()
 const GetZones = (data: number) => {
   ZoneIds.value = data
   updateData()
