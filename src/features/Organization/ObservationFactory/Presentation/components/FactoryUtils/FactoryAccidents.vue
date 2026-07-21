@@ -119,7 +119,7 @@ watch(
     width: fit-content;
     position: absolute;
     top: 75%;
-    left: 20%;
+    left: 100%;
     transform: translate(-120%, -100%);
     display: flex;
 
