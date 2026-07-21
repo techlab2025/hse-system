@@ -18,10 +18,8 @@ import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/
 import { Observation } from '@/features/Organization/ObservationFactory/Core/Enums/ObservationTypeEnum'
 import IndexHazardHeader from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexHazardHeader.vue'
 import IndexFilter from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexFilter.vue'
-import PinIcons from '@/shared/icons/PinIcons.vue'
 import Observdetails from '@/shared/icons/observdetails.vue'
 import type CapaModel from '@/features/Organization/ObservationFactory/Data/models/CapaModel'
-import CapaDialog from '../supcomponents/CapaDialog.vue'
 import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel.ts'
 
 const currentPage = ref(1)
@@ -114,14 +112,14 @@ const setSelectedProjectFilter = (data: any) => {
   }
 }
 
-const ShowDetails = ref<number[]>([])
-
 const GetObservationType = (type: number) => {
   switch (type) {
     case Observation.ObservationType:
       return 'Observation'
+      case Observation.AccidentsType:
+        return 'incident'
     case Observation.HazardType:
-      return 'Hazard'
+      return 'Observation'
   }
 }
 
@@ -135,6 +133,17 @@ const GetCapaStataus = (capa: CapaModel) => {
   if (String(capa?.corrective)?.length == 0 && String(capa?.preventive)?.length > 0) {
     return 'Preventive'
   }
+}
+
+const getPlainText = (value?: string) => {
+  if (!value) return 'Not added yet'
+
+  return (
+    value
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim() || 'Not added yet'
+  )
 }
 watch(
   () => indexCapaController.state.value,
@@ -151,7 +160,7 @@ watch(
 </script>
 
 <template>
-  <div class="grid grid-cols-12 gap-4">
+  <div class="capa-index-page grid grid-cols-12 gap-4">
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
       <PermissionBuilder
         :code="[
@@ -190,84 +199,142 @@ watch(
         <DataStatus :controller="state">
           <template #success>
             <div class="table-responsive">
-              <div class="index-table-card-container">
-                <div
-                  class="index-table-card"
-                  style="box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1)"
+              <div class="index-table-card-container capa-card-list">
+                <article
+                  class="index-table-card capa-card"
                   v-for="(item, index) in state.data"
-                  :key="index"
+                  :key="item?.capa?.capaId || index"
                 >
-                  <div class="w-full">
-                    <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
-                      <div class="header-container">
-                        <div class="card-content" style="flex: 1">
-                          <div class="card-header">
-                            <p class="label-item-primary">
-                              {{ $t('Capa serial') }} :
-                              <span>{{ item?.capa?.serial_name || 'N/A' }}</span>
-                            </p>
-                            <p class="label-item-secondary">
-                              {{ $t('capa date') }} :
-                              <span
-                                >{{ item.capa?.date }} &
-                                {{ item.capa?.time }}
-                              </span>
-                            </p>
-                            <router-link
-                              :to="`/organization/equipment-mangement/incedant/show/${item.capa?.observationId}`"
-                              class="label-item-secondary incidant"
-                            >
-                              {{ $t('incidant serial') }} :
-                              <span>{{ item?.serialName }} </span>
-                            </router-link>
-                          </div>
-                          <div class="sup-title">{{ item.description || 'N/A' }}</div>
-
-                          <!-- <div class="card-details">
-                            <div class="name">
-                              <p class="title">
-                                {{ item?.observer?.name }} <span>{{ '(observer)' }}</span>
-                              </p>
-                            </div>
-
-                            <div class="location-observation">
-                              <div class="location">
-                                <p
-                                  class="label-item-primary flex items-center gap-1"
-                                  v-if="item.zoon?.title"
-                                >
-                                  <PinIcons /> {{ $t('Zone') }} :
-                                  <span>{{ item.zoon?.title }}</span>
-                                </p>
-                                <p class="label-item-primary" v-if="item.equipment?.title">
-                                  {{ $t('Machine') }} : <span>{{ item.equipment?.title }}</span>
-                                </p>
-                                <p class="label-item-secondary">
-                                  {{ $t('observation Date & Time') }} :
-                                  <span>{{ item.date }} & {{ item.time }}</span>
-                                </p>
-                              </div>
-                            </div>
-                            <div class="btn-investegation-observation">
-                            </div>
-                          </div> -->
-                          <!-- <CapaDialog :capa="item?.capa" /> -->
-                        </div>
-                        <div class="card-content new-btn">
-                          <router-link :to="`/organization/capa/${item?.capa?.capaId}`">
-                            <div class="observation-details">
-                              <!--  {{ GetObservationType(item.type) }}  -->
-                              <p>
-                                details
-                                <Observdetails />
-                              </p>
-                            </div>
-                          </router-link>
-                        </div>
+                  <header class="capa-card-header">
+                    <div class="capa-title-group">
+                      <span class="capa-mark" aria-hidden="true">C</span>
+                      <div>
+                        <span class="capa-eyebrow">{{ $t('Action plan') }}</span>
+                        <h3>{{ item.title || $t('Corrective and preventive action') }}</h3>
                       </div>
                     </div>
+
+                    <div class="capa-header-badges">
+                      <!-- <span class="capa-type-badge">{{
+                        GetObservationType(item.type) || 'CAPA'
+                      }}</span> -->
+                      <!-- <span class="capa-status-badge">
+                        <i aria-hidden="true"></i>
+                        {{ GetCapaStataus(item.capa) || $t('Action required') }}
+                      </span> -->
+                    </div>
+                  </header>
+
+                  <div class="capa-card-body">
+                    <div class="capa-meta-grid">
+                      <div class="capa-meta-item">
+                        <span class="capa-meta-icon" aria-hidden="true">#</span>
+                        <div>
+                          <span>{{ $t('CAPA Serial') }}</span>
+                          <strong>{{ item?.capa?.serial_name || '—' }}</strong>
+                        </div>
+                      </div>
+
+                      <div class="capa-meta-item">
+                        <span class="capa-meta-icon date-symbol" aria-hidden="true"></span>
+                        <div>
+                          <span>{{ $t('CAPA Date & Time') }}</span>
+                          <strong
+                            >{{ item.capa?.date || '—' }} · {{ item.capa?.time || '—' }}</strong
+                          >
+                        </div>
+                      </div>
+
+                      <div class="capa-meta-item">
+                        <span class="capa-meta-icon" aria-hidden="true">S</span>
+                        <div>
+                          <span>{{ $t(`${GetObservationType(item.type)} Serial`) }}</span>
+                          <strong>{{ item?.serialName || '—' }}</strong>
+                        </div>
+                      </div>
+
+                      <!-- <div class="capa-meta-item">
+                        <span class="capa-meta-icon person-symbol" aria-hidden="true"></span>
+                        <div>
+                          <span>{{ $t('Observer') }}</span>
+                          <strong>{{ item?.observer?.name || '—' }}</strong>
+                        </div>
+                      </div> -->
+<!-- 
+                      <div class="capa-meta-item">
+                        <span class="capa-meta-icon zone-symbol" aria-hidden="true"></span>
+                        <div>
+                          <span>{{ $t('Zone') }}</span>
+                          <strong>{{ item.zoon?.title || '—' }}</strong>
+                        </div>
+                      </div> -->
+
+                      <!-- <div class="capa-meta-item">
+                        <span class="capa-meta-icon" aria-hidden="true">M</span>
+                        <div>
+                          <span>{{ $t('Machine') }}</span>
+                          <strong>{{ item.equipment?.title || '—' }}</strong>
+                        </div>
+                      </div> -->
+                    </div>
+
+                    <!-- <section class="capa-context">
+                      <span>{{ $t('Source description') }}</span>
+                      <p>{{ item.description || '—' }}</p>
+                    </section> -->
+
+                    <!-- <div class="capa-actions-preview">
+                      <article class="action-preview corrective-preview">
+                        <div class="preview-heading">
+                          <span class="preview-symbol" aria-hidden="true">✓</span>
+                          <div>
+                            <small>{{ $t('Response') }}</small>
+                            <strong>{{ $t('Corrective Action') }}</strong>
+                          </div>
+                        </div>
+                        <p>{{ getPlainText(item.capa?.corrective) }}</p>
+                      </article>
+
+                      <article class="action-preview preventive-preview">
+                        <div class="preview-heading">
+                          <span class="preview-symbol" aria-hidden="true">◇</span>
+                          <div>
+                            <small>{{ $t('Prevention') }}</small>
+                            <strong>{{ $t('Preventive Action') }}</strong>
+                          </div>
+                        </div>
+                        <p>{{ getPlainText(item.capa?.preventive) }}</p>
+                      </article>
+                    </div> -->
                   </div>
-                </div>
+
+                  <footer class="capa-card-footer">
+                    <span class="capa-footer-note">
+                      <!-- <i aria-hidden="true"></i>
+                      {{ $t('CAPA record ready for review') }} -->
+                    </span>
+
+                    <div class="capa-card-actions">
+                      <router-link
+                        :to="`/organization/equipment-mangement/incedant/show/${item.capa?.observationId}`"
+                        class="source-details-btn"
+                      >
+                      <!-- observation type -->
+                        <span>{{ $t(`${GetObservationType(item.type)} Details`) }}</span>
+                        <span class="button-arrow" aria-hidden="true">↗</span>
+                      </router-link>
+
+                      <router-link
+                        :to="`/organization/capa/${item?.capa?.capaId}`"
+                        class="capa-details-btn"
+                      >
+                        <!-- <Observdetails /> -->
+                        <span>{{ $t('View CAPA Details') }}</span>
+                        <span class="button-arrow" aria-hidden="true">→</span>
+                      </router-link>
+                    </div>
+                  </footer>
+                </article>
               </div>
             </div>
             <Pagination
@@ -499,6 +566,541 @@ watch(
       width: 16px;
       height: 16px;
     }
+  }
+}
+
+.capa-card-list {
+  gap: 20px;
+  padding-block: 8px 16px;
+}
+
+.capa-card {
+  --capa-accent: var(--PrimaryColor);
+  --capa-accent-soft: color-mix(in srgb, var(--PrimaryColor) 8%, transparent);
+  position: relative;
+  isolation: isolate;
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--capa-accent) 20%, var(--main-border));
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 100% 0%, var(--capa-accent-soft), transparent 30%), var(--surface-1);
+  box-shadow: 0 16px 42px color-mix(in srgb, var(--brand-primary-900) 9%, transparent);
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.capa-card::before {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 5px;
+  background: linear-gradient(180deg, var(--capa-accent), var(--status-success));
+}
+
+.capa-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--capa-accent) 38%, var(--main-border));
+  box-shadow: 0 22px 50px color-mix(in srgb, var(--brand-primary-900) 13%, transparent);
+}
+
+.capa-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px 22px 18px 26px;
+  border-bottom: 1px solid var(--main-border);
+  background: color-mix(in srgb, var(--surface-2) 70%, transparent);
+}
+
+.capa-title-group {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 14px;
+}
+
+.capa-title-group > div {
+  min-width: 0;
+}
+
+.capa-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  flex: 0 0 50px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, var(--capa-accent), var(--brand-primary-700));
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--capa-accent) 25%, transparent);
+  color: white;
+  font-family: 'Bold';
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.capa-eyebrow {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--capa-accent);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.capa-title-group h3 {
+  overflow: hidden;
+  margin: 0;
+  color: var(--text-strong);
+  font-family: 'Bold';
+  font-size: clamp(1.08rem, 1.7vw, 1.32rem);
+  font-weight: 900;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+
+.capa-header-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.capa-type-badge,
+.capa-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.capa-type-badge {
+  border: 1px solid var(--main-border);
+  background: var(--surface-1);
+  color: var(--text-soft);
+}
+
+.capa-status-badge {
+  border: 1px solid color-mix(in srgb, var(--status-success) 25%, transparent);
+  background: color-mix(in srgb, var(--status-success) 9%, transparent);
+  color: var(--status-success);
+}
+
+.capa-status-badge i,
+.capa-footer-note i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.capa-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 22px 22px 26px;
+}
+
+.capa-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.capa-meta-item {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 70px;
+  gap: 10px;
+  padding: 11px 12px;
+  border: 1px solid var(--main-border);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface-2) 74%, transparent);
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.capa-meta-item:hover {
+  border-color: color-mix(in srgb, var(--capa-accent) 25%, var(--main-border));
+  background: var(--capa-accent-soft);
+}
+
+.capa-meta-item > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.capa-meta-item div > span,
+.capa-context > span {
+  color: var(--text-soft);
+  font-size: 0.64rem;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.capa-meta-item strong {
+  overflow: hidden;
+  color: var(--text-strong);
+  font-family: 'Bold';
+  font-size: 0.8rem;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.capa-meta-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border: 1px solid color-mix(in srgb, var(--capa-accent) 18%, transparent);
+  border-radius: 12px;
+  background: var(--capa-accent-soft);
+  color: var(--capa-accent);
+  font-family: 'Bold';
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.date-symbol::before {
+  content: '';
+  width: 17px;
+  height: 15px;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+}
+
+.date-symbol::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  width: 11px;
+  border-top: 2px solid currentColor;
+}
+
+.person-symbol::before {
+  content: '';
+  width: 9px;
+  height: 9px;
+  margin-bottom: 8px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.person-symbol::after {
+  content: '';
+  position: absolute;
+  bottom: 7px;
+  width: 17px;
+  height: 8px;
+  border: 2px solid currentColor;
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+}
+
+.zone-symbol::before {
+  content: '';
+  width: 13px;
+  height: 13px;
+  border: 2px solid currentColor;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+}
+
+.zone-symbol::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.capa-context {
+  position: relative;
+  padding: 14px 16px 14px 20px;
+  border: 1px solid color-mix(in srgb, var(--capa-accent) 14%, var(--main-border));
+  border-radius: 14px;
+  background: var(--capa-accent-soft);
+}
+
+.capa-context::before {
+  content: '';
+  position: absolute;
+  inset-block: 14px;
+  inset-inline-start: 0;
+  width: 3px;
+  border-radius: 999px;
+  background: var(--capa-accent);
+}
+
+.capa-context p {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 6px 0 0;
+  color: var(--text-strong);
+  font-size: 0.82rem;
+  font-weight: 650;
+  line-height: 1.65;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.capa-actions-preview {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.action-preview {
+  position: relative;
+  overflow: hidden;
+  min-height: 130px;
+  padding: 14px;
+  border: 1px solid var(--main-border);
+  border-radius: 16px;
+  background: var(--surface-1);
+}
+
+.action-preview::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 3px;
+}
+
+.corrective-preview::before {
+  background: linear-gradient(90deg, var(--brand-accent-500), var(--status-danger));
+}
+
+.preventive-preview::before {
+  background: linear-gradient(90deg, var(--status-success), var(--PrimaryColor));
+}
+
+.preview-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.preview-symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 11px;
+  font-family: 'Bold';
+  font-size: 0.85rem;
+}
+
+.corrective-preview .preview-symbol {
+  background: color-mix(in srgb, var(--brand-accent-500) 11%, transparent);
+  color: var(--brand-accent-600);
+}
+
+.preventive-preview .preview-symbol {
+  background: color-mix(in srgb, var(--status-success) 10%, transparent);
+  color: var(--status-success);
+}
+
+.preview-heading > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.preview-heading small {
+  color: var(--text-soft);
+  font-size: 0.61rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.preview-heading strong {
+  color: var(--text-strong);
+  font-family: 'Bold';
+  font-size: 0.82rem;
+}
+
+.action-preview > p {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 11px 0 0;
+  color: var(--text-soft);
+  font-size: 0.76rem;
+  line-height: 1.6;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.capa-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 68px;
+  padding: 12px 22px 12px 26px;
+  border-top: 1px solid var(--main-border);
+  background: color-mix(in srgb, var(--surface-2) 72%, transparent);
+}
+
+.capa-footer-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--status-success);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.capa-card-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 9px;
+}
+
+.source-details-btn,
+.capa-details-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  gap: 8px;
+  padding: 8px 10px 8px 14px;
+  border-radius: 12px;
+  font-size: 0.74rem;
+  font-weight: 900;
+  text-decoration: none;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.source-details-btn {
+  border: 1px solid color-mix(in srgb, var(--capa-accent) 22%, var(--main-border));
+  background: var(--surface-1);
+  color: var(--capa-accent);
+}
+
+.capa-details-btn {
+  border: 1px solid var(--capa-accent);
+  background: var(--capa-accent);
+  box-shadow: 0 9px 20px color-mix(in srgb, var(--capa-accent) 23%, transparent);
+  color: white;
+}
+
+.capa-details-btn :deep(svg) {
+  width: 17px;
+  height: 17px;
+}
+
+.source-details-btn:hover,
+.capa-details-btn:hover {
+  transform: translateY(-2px);
+}
+
+.source-details-btn:hover {
+  border-color: var(--capa-accent);
+}
+
+.capa-details-btn:hover {
+  box-shadow: 0 12px 25px color-mix(in srgb, var(--capa-accent) 30%, transparent);
+}
+
+.button-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  font-size: 0.9rem;
+}
+
+.capa-details-btn .button-arrow {
+  background: color-mix(in srgb, white 18%, transparent);
+}
+
+[dir='rtl'] .capa-details-btn .button-arrow {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 900px) {
+  .capa-meta-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .capa-card-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .capa-card-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 620px) {
+  .capa-card {
+    border-radius: 18px;
+  }
+
+  .capa-card-header,
+  .capa-card-body,
+  .capa-card-footer {
+    padding-inline: 19px 15px;
+  }
+
+  .capa-card-header {
+    flex-direction: column;
+  }
+
+  .capa-header-badges {
+    justify-content: flex-start;
+  }
+
+  .capa-meta-grid,
+  .capa-actions-preview {
+    grid-template-columns: 1fr;
+  }
+
+  .capa-card-actions,
+  .source-details-btn,
+  .capa-details-btn {
+    width: 100%;
   }
 }
 </style>

@@ -18,6 +18,7 @@ import ObservationInjuriesShow from '../FactoryUtils/ShowFactoryUtils/Observatio
 import ObservationWitnessStatements from '../FactoryUtils/ShowFactoryUtils/ObservationWitnessStatements.vue'
 import ObservationDeths from '../FactoryUtils/ShowFactoryUtils/ObservationDeths.vue'
 import ObservationInvestigationDetails from '../FactoryUtils/ShowFactoryUtils/ObservationInvestigationDetails.vue'
+import ShowObservationSkeleton from './ShowObservationSkeleton.vue'
 
 const route = useRoute()
 const id = route.params?.id
@@ -98,10 +99,10 @@ const GetHeader = (value: number) => {
       </div>
     </template>
     <template #loader>
-      <TableLoader :cols="3" :rows="10" />
+      <ShowObservationSkeleton />
     </template>
     <template #initial>
-      <TableLoader :cols="3" :rows="10" />
+      <ShowObservationSkeleton />
     </template>
     <template #empty>
       <PermissionBuilder
