@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, markRaw, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, markRaw, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 // import IconFullScreen from '@/shared/icons/IconFullScreen.vue'
 import IconMenu from '@/shared/icons/IconMenu.vue'
@@ -32,6 +32,8 @@ import wordSlice from '@/base/Presentation/utils/word_slice'
 import Notifications from './Notifications.vue'
 import Ring from '@/assets/Ring/Ring.txt'
 import { useThemeMode } from '@/composables/useThemeMode'
+import RefreshNotificationParams from '@/features/notification/Core/params/RefreshNotificationParams.ts'
+import RefreshNotificationTokenController from '@/features/notification/Presentation/controllers/RefreshNotificationTokenController.ts'
 // import { NOTIFICATION_SOUND_BASE64 } from '@/base/Presentation/utils/notification_ring.ts'
 
 const route = useRoute()
@@ -164,34 +166,43 @@ const NOTIFICATION_SOUND_BASE64 =
 
 // Integrate new notification system
 // const { notifications, unreadCount, acknowledgeNotification, wsConnected } =
-  useIntegratedNotifications({
-    autoConnect: true,
-    token: userStore.user?.WebSocketToken,
-    // token: 'st_yzJJdPw8s4Dm_OSNQNVoUvt0PK8KYZzca2r1JTd9_MA',
-    userId: userStore.user?.id,
-    fetchNotifications: true,
-    userToken: userStore.user?.apiToken,
+// useIntegratedNotifications({
+//   autoConnect: true,
+//   token: userStore.user?.WebSocketToken,
+//   // token: 'st_yzJJdPw8s4Dm_OSNQNVoUvt0PK8KYZzca2r1JTd9_MA',
+//   userId: userStore.user?.id,
+//   fetchNotifications: true,
+//   userToken: userStore.user?.apiToken,
 
-    onNotification: (notification) => {
-      console.log(notification)
-      // make ring sound
-      const audio = new Audio(NOTIFICATION_SOUND_BASE64)
-      audio.play()
+//   onNotification: (notification) => {
+//     console.log(notification)
+//     // make ring sound
+//     const audio = new Audio(NOTIFICATION_SOUND_BASE64)
+//     audio.play()
 
-      // Show global toast
-      toast.add({
-        severity: 'info',
-        summary: notification.title,
-        detail: wordSlice(JSON.parse(notification?.body!)?.message, 35) || notification.body,
-        life: 5000,
-      })
-    },
-  })
+//     // Show global toast
+//     toast.add({
+//       severity: 'info',
+//       summary: notification.title,
+//       detail: wordSlice(JSON.parse(notification?.body!)?.message, 35) || notification.body,
+//       life: 5000,
+//     })
+//   },
+// })
 const op = ref()
 
 const toggle = (event: Event) => {
   op.value.toggle(event)
 }
+
+// const refreshNotificationTokenController = RefreshNotificationTokenController.getInstance();
+// watch(()=>wsConnected , async (newvalue)=>{
+//   console.log(wsConnected , "wsConnected");
+//   if(!newvalue){
+//     const params = new RefreshNotificationParams()
+//    const result = await refreshNotificationTokenController.RefreshToken(params);
+//   }
+// })
 </script>
 
 <template>
@@ -295,7 +306,7 @@ const toggle = (event: Event) => {
             />
           </svg>
         </button> -->
-        <Notifications />
+        <Notifications class="notifications-control" />
         <!-- {{ wsConnected }} -->
         <!-- <div class="notification cursor-pointer" @click="toggleFullScreen">
           <Notification />
@@ -306,7 +317,7 @@ const toggle = (event: Event) => {
           class="user cursor-pointer dropdown-trigger header-user-menu"
           @click.stop="toggleDropMenu"
         >
-            <!--  <IconArrowDownNav class="drop-icon" /> -->
+          <!--  <IconArrowDownNav class="drop-icon" /> -->
           <div class="profile-data">
             <span>{{ user?.name.split(' ')[0] }}</span>
             <!-- <span>{{ user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization' }}</span> -->
@@ -388,9 +399,22 @@ const toggle = (event: Event) => {
   padding: 14px 22px;
   min-height: 76px;
   background:
-    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--surface-1) 20%, transparent) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--brand-primary-300) 18%, transparent) 0 16%, transparent 34%),
-    linear-gradient(155deg, var(--brand-primary-500) 0%, var(--brand-primary-600) 44%, var(--brand-primary-700) 100%) !important;
+    radial-gradient(
+      circle at 18% 0%,
+      color-mix(in srgb, var(--surface-1) 20%, transparent) 0 18%,
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 82% 18%,
+      color-mix(in srgb, var(--brand-primary-300) 18%, transparent) 0 16%,
+      transparent 34%
+    ),
+    linear-gradient(
+      155deg,
+      var(--brand-primary-500) 0%,
+      var(--brand-primary-600) 44%,
+      var(--brand-primary-700) 100%
+    ) !important;
   border-bottom-left-radius: 22px;
   border-bottom-right-radius: 22px;
   border-top-left-radius: 22px;
@@ -404,9 +428,22 @@ const toggle = (event: Event) => {
 
 .header.is-dark {
   background:
-    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--brand-primary-300) 16%, transparent) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--status-success) 12%, transparent) 0 16%, transparent 34%),
-    linear-gradient(155deg, var(--brand-primary-900) 0%, var(--brand-primary-900) 52%, var(--brand-primary-900) 100%) !important;
+    radial-gradient(
+      circle at 18% 0%,
+      color-mix(in srgb, var(--brand-primary-300) 16%, transparent) 0 18%,
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 82% 18%,
+      color-mix(in srgb, var(--status-success) 12%, transparent) 0 16%,
+      transparent 34%
+    ),
+    linear-gradient(
+      155deg,
+      var(--brand-primary-900) 0%,
+      var(--brand-primary-900) 52%,
+      var(--brand-primary-900) 100%
+    ) !important;
   border: 1px solid color-mix(in srgb, var(--brand-primary-400) 14%, transparent);
   border-top: 0;
   box-shadow:
@@ -421,8 +458,17 @@ const toggle = (event: Event) => {
   z-index: -1;
   pointer-events: none;
   background:
-    linear-gradient(90deg, transparent, color-mix(in srgb, var(--surface-1) 16%, transparent), transparent),
-    repeating-linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 4.5%, transparent) 0 1px, transparent 1px 18px);
+    linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--surface-1) 16%, transparent),
+      transparent
+    ),
+    repeating-linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface-1) 4.5%, transparent) 0 1px,
+      transparent 1px 18px
+    );
   opacity: 0.78;
 }
 
@@ -434,19 +480,40 @@ const toggle = (event: Event) => {
   width: 220px;
   height: 3px;
   border-radius: 999px;
-  background: linear-gradient(90deg, transparent, var(--brand-primary-200), var(--surface-1), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--brand-primary-200),
+    var(--surface-1),
+    transparent
+  );
   opacity: 0.75;
 }
 
 .header.is-dark::before {
   background:
-    linear-gradient(90deg, transparent, color-mix(in srgb, var(--brand-primary-300) 10%, transparent), transparent),
-    repeating-linear-gradient(135deg, color-mix(in srgb, var(--brand-primary-400) 4%, transparent) 0 1px, transparent 1px 18px);
+    linear-gradient(
+      90deg,
+      transparent,
+      color-mix(in srgb, var(--brand-primary-300) 10%, transparent),
+      transparent
+    ),
+    repeating-linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--brand-primary-400) 4%, transparent) 0 1px,
+      transparent 1px 18px
+    );
   opacity: 0.7;
 }
 
 .header.is-dark::after {
-  background: linear-gradient(90deg, transparent, var(--brand-primary-700), var(--brand-primary-300), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--brand-primary-700),
+    var(--brand-primary-300),
+    transparent
+  );
   opacity: 0.65;
 }
 
@@ -556,7 +623,16 @@ const toggle = (event: Event) => {
 }
 
 .setting {
-  gap: 12px !important;
+  position: relative;
+  gap: 8px !important;
+  padding: 5px;
+  border: 1px solid color-mix(in srgb, var(--surface-1) 18%, transparent);
+  border-radius: 21px;
+  background: color-mix(in srgb, var(--brand-primary-900) 12%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--surface-1) 13%, transparent),
+    0 10px 30px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
+  backdrop-filter: blur(14px);
 }
 
 .setting :deep(svg path) {
@@ -564,7 +640,6 @@ const toggle = (event: Event) => {
 }
 
 .countery-icon,
-.notification,
 .theme-toggle {
   display: flex !important;
   align-items: center;
@@ -587,7 +662,6 @@ const toggle = (event: Event) => {
 }
 
 .countery-icon:hover,
-.notification:hover,
 .theme-toggle:hover {
   transform: translateY(-1px);
   background: color-mix(in srgb, var(--surface-1) 22%, transparent) !important;
@@ -595,16 +669,28 @@ const toggle = (event: Event) => {
 }
 
 .countery-icon :deep(svg),
-.notification :deep(svg),
 .theme-toggle svg {
   width: 22px;
   height: 22px;
 }
 
-.notification :deep(path),
 .drawer :deep(path),
 .drop-icon :deep(path) {
   fill: var(--text-on-brand) !important;
+}
+
+.notifications-control {
+  display: inline-flex;
+  flex: none;
+}
+
+.notifications-control :deep(.notification) {
+  border-color: color-mix(in srgb, var(--surface-1) 18%, transparent);
+}
+
+.notifications-control :deep(.circle-icon path) {
+  fill: none !important;
+  stroke: var(--text-on-brand) !important;
 }
 
 .theme-toggle path {
@@ -772,6 +858,19 @@ const toggle = (event: Event) => {
 
   .logo {
     font-size: 16px !important;
+  }
+
+  .setting {
+    gap: 5px !important;
+    padding: 4px;
+    border-radius: 18px;
+  }
+
+  .countery-icon,
+  .notifications-control :deep(.notification) {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 14px !important;
   }
 }
 </style>

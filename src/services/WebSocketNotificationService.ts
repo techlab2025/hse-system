@@ -598,6 +598,34 @@ class WebSocketNotificationService {
   }
 
   /**
+   * Start a fresh connection with a newly issued socket token.
+   * This is intentionally separate from the STOMP client's automatic reconnect,
+   * because the automatic reconnect keeps the previous connect headers.
+   */
+  async reconnect(token: string): Promise<IFrame | void> {
+    if (this.connected.value) {
+      this.addLog('⚠ Reconnect skipped: Already connected')
+      return
+    }
+
+    this.isManualDisconnect = true
+    this.clearConnectionTimeout()
+    this.connectionPromise = null
+
+    if (this.client?.active) {
+      await this.client.deactivate()
+    }
+
+    this.client = null
+    this.subscriptions.clear()
+    this.reconnectAttempts = 0
+    this.error.value = null
+    this.isManualDisconnect = false
+
+    return this.connect(token)
+  }
+
+  /**
    * Request pending notifications
    */
   requestPendingNotifications(): void {

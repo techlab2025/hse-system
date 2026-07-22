@@ -73,6 +73,20 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
       return false
     }
   }
+
+  const reconnectWebSocket = async (authToken: string | null | undefined): Promise<boolean> => {
+    if (!authToken || wsConnected.value) return wsConnected.value
+
+    try {
+      notificationService.configure({ brokerURL })
+      await notificationService.reconnect(authToken)
+      setupChannels()
+      return true
+    } catch (error) {
+      console.error('❌ WebSocket reconnection failed:', error)
+      return false
+    }
+  }
   const setupChannels = () => {
     const channels = []
     // Notifications channels
@@ -382,6 +396,7 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
     // Methods
     setupNotifications,
     setupWebSocket,
+    reconnectWebSocket,
     setupPushNotifications,
     requestPushPermission,
     disablePushNotifications,
