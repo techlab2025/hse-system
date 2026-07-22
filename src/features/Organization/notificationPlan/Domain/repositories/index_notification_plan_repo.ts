@@ -17,8 +17,12 @@ class IndexNotificationPlanRepo extends RepoInterface<NotificationPlanModel[]> {
     return this.instance
   }
 
+  override get hasPagination(): boolean {
+    return true
+  }
+
   onParse(data: any): NotificationPlanModel[] {
-    return Array.isArray(data?.data) ? data.data.map((item: any) => NotificationPlanModel.fromMap(item)) : []
+    return Array.isArray(data) ? data.map((item: any) => NotificationPlanModel.fromMap(item)) : []
   }
 
   get serviceInstance(): ServicesInterface {

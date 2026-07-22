@@ -126,6 +126,14 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
       )
 
       break
+      // case NotificationEnum.INVESTEGATION: // PDSP
+      // router.push(
+      //   typeId
+      //     ? `/organization/Investigating-result/207?investigating_id=${typeId}`
+      //     : '/organization/Investigating',
+      // )
+
+      break
 
     default:
       console.warn('Unknown notification type:', notificationType)

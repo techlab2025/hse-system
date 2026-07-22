@@ -16,4 +16,6 @@ export enum NotificationEnum {
   CERTIFICATE = 15,
   TASKRESULTITEMANSWER = 16,
   INCIDENT = 17,
+  INVESTEGATION = 20,
+
 }

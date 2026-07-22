@@ -22,10 +22,10 @@ const router = useRouter()
 const { t } = useI18n()
 
 const indexEmployeesController = IndexOrganizatoinEmployeeController.getInstance()
-const indexEmployeesParams = new IndexOrganizatoinEmployeeParams('', 1, 30, 1)
+const indexEmployeesParams = new IndexOrganizatoinEmployeeParams('', 1, 30, 0)
 
 const indexHierarchiesController = IndexHerikalyController.getInstance()
-const indexHierarchiesParams = new IndexHerikalyParams('', 1, 30, 1, true)
+const indexHierarchiesParams = new IndexHerikalyParams('', 1, 30, 0, true)
 
 const title = ref('')
 const isActive = ref(true)
@@ -33,6 +33,8 @@ const selectedActions = ref<TitleInterface[]>([])
 const selectedSubActionByAction = ref<Record<number, number>>({})
 const selectedEmployees = ref<TitleInterface[]>([])
 const selectedHierarchies = ref<TitleInterface[]>([])
+type AssignmentMode = 'employees' | 'hierarchies'
+const assignmentMode = ref<AssignmentMode>('employees')
 const assignmentError = ref('')
 const actionValueError = ref('')
 const titleError = ref('')
@@ -112,7 +114,9 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     key: 'assignments',
     message: t('select_employee_or_hierarchy_error'),
     isMissing: () =>
-      selectedEmployees.value.length === 0 && selectedHierarchies.value.length === 0,
+      assignmentMode.value === 'employees'
+        ? selectedEmployees.value.length === 0
+        : selectedHierarchies.value.length === 0,
   },
 ])
 
@@ -194,6 +198,20 @@ const updateHierarchies = (data: TitleInterface[]) => {
   assignmentError.value = ''
 }
 
+const updateAssignmentMode = (mode: AssignmentMode) => {
+  if (assignmentMode.value === mode) return
+
+  assignmentMode.value = mode
+  assignmentError.value = ''
+
+  if (mode === 'employees') {
+    selectedHierarchies.value = []
+    return
+  }
+
+  selectedEmployees.value = []
+}
+
 const addNotificationPlan = async () => {
   if (!(await validateRequiredFields())) return
 
@@ -203,6 +221,7 @@ const addNotificationPlan = async () => {
     selectedEmployees.value.map((item) => item.id),
     selectedHierarchies.value.map((item) => item.id),
     isActive.value,
+    assignmentMode.value === 'hierarchies' ? 1 : 0,
   )
 
   await AddNotificationPlanController.getInstance().addNotificationPlan(
@@ -323,33 +342,101 @@ const addNotificationPlan = async () => {
 
     <p v-if="actionValueError" class="full-width form-error">{{ actionValueError }}</p>
 
-    <div class="input-wrapper" data-required-field="assignments">
-      <CustomSelectInput
-        id="employee-ids"
-        :modelValue="selectedEmployees"
-        label="employees"
-        :controller="indexEmployeesController"
-        :params="indexEmployeesParams"
-        :type="2"
-        :placeholder="$t('select_employees')"
-        @update:modelValue="updateEmployees"
-      />
-    </div>
+    <section class="assignment-field full-width" data-required-field="assignments">
+      <div class="assignment-heading">
+        <div>
+          <label class="tree-label required">{{ $t('Choose recipients') }}</label>
+          <p>{{ $t('Select how this notification plan should assign recipients.') }}</p>
+        </div>
+        <span class="assignment-step">{{ $t('Assignment type') }}</span>
+      </div>
 
-    <div class="input-wrapper">
-      <CustomSelectInput
-        id="hierarchy-ids"
-        :modelValue="selectedHierarchies"
-        label="hierarchies"
-        :controller="indexHierarchiesController"
-        :params="indexHierarchiesParams"
-        :type="2"
-        :placeholder="$t('select_hierarchies')"
-        @update:modelValue="updateHierarchies"
-      />
-    </div>
+      <div class="assignment-mode-options" role="radiogroup" :aria-label="$t('Assignment type')">
+        <label
+          class="assignment-mode-card"
+          :class="{ 'assignment-mode-card--active': assignmentMode === 'hierarchies' }"
+          for="assignment-mode-hierarchies"
+        >
+          <input
+            id="assignment-mode-hierarchies"
+            type="radio"
+            name="assignment-mode"
+            value="hierarchies"
+            :checked="assignmentMode === 'hierarchies'"
+            @change="updateAssignmentMode('hierarchies')"
+          />
+          <span class="assignment-mode-icon hierarchy-mode-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <rect x="9" y="3" width="6" height="5" rx="1" />
+              <rect x="3" y="16" width="6" height="5" rx="1" />
+              <rect x="15" y="16" width="6" height="5" rx="1" />
+              <path d="M12 8v4M6 16v-4h12v4" />
+            </svg>
+          </span>
+          <span class="assignment-mode-copy">
+            <strong>{{ $t('Positions') }}</strong>
+            <small>{{ $t('Assign an entire Position') }}</small>
+          </span>
+          <span class="assignment-radio" aria-hidden="true"><i></i></span>
+        </label>
+        <label
+          class="assignment-mode-card"
+          :class="{ 'assignment-mode-card--active': assignmentMode === 'employees' }"
+          for="assignment-mode-employees"
+        >
+          <input
+            id="assignment-mode-employees"
+            type="radio"
+            name="assignment-mode"
+            value="employees"
+            :checked="assignmentMode === 'employees'"
+            @change="updateAssignmentMode('employees')"
+          />
+          <span class="assignment-mode-icon employee-mode-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <circle cx="9" cy="8" r="3" />
+              <path
+                d="M3.5 20v-2a5.5 5.5 0 0 1 11 0v2M16 5a3 3 0 0 1 0 6M17 14a5 5 0 0 1 3.5 4.8V20"
+              />
+            </svg>
+          </span>
+          <span class="assignment-mode-copy">
+            <strong>{{ $t('employees') }}</strong>
+            <small>{{ $t('Assign individual employees') }}</small>
+          </span>
+          <span class="assignment-radio" aria-hidden="true"><i></i></span>
+        </label>
+      </div>
 
-    <p v-if="assignmentError" class="full-width form-error">{{ assignmentError }}</p>
+      <Transition name="assignment-swap" mode="out-in">
+        <div v-if="assignmentMode === 'employees'" key="employees" class="assignment-select">
+          <CustomSelectInput
+            id="employee-ids"
+            :modelValue="selectedEmployees"
+            label="employees"
+            :controller="indexEmployeesController"
+            :params="indexEmployeesParams"
+            :type="2"
+            :placeholder="$t('select_employees')"
+            @update:modelValue="updateEmployees"
+          />
+        </div>
+        <div v-else key="hierarchies" class="assignment-select">
+          <CustomSelectInput
+            id="hierarchy-ids"
+            :modelValue="selectedHierarchies"
+            label="positions"
+            :controller="indexHierarchiesController"
+            :params="indexHierarchiesParams"
+            :type="2"
+            :placeholder="$t('select_hierarchies')"
+            @update:modelValue="updateHierarchies"
+          />
+        </div>
+      </Transition>
+
+      <p v-if="assignmentError" class="form-error">{{ assignmentError }}</p>
+    </section>
 
     <div class="full-width plan-button-wrapper">
       <button class="btn btn-primary" type="submit">
@@ -360,6 +447,9 @@ const addNotificationPlan = async () => {
 </template>
 
 <style scoped>
+.w-full {
+  width: 100%;
+}
 .notification-plan-form {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -414,12 +504,9 @@ const addNotificationPlan = async () => {
   padding: 16px;
   border: 1px solid var(--brand-primary-100, #e0e7ff);
   border-radius: 16px;
-  background: linear-gradient(
-    145deg,
-    var(--surface-1, #fff),
-    var(--surface-2, #f8fafc)
-  );
-  box-shadow: 0 4px 20px color-mix(in srgb, var(--shadow-color, rgba(15,23,42,0.14)) 40%, transparent);
+  background: linear-gradient(145deg, var(--surface-1, #fff), var(--surface-2, #f8fafc));
+  box-shadow: 0 4px 20px
+    color-mix(in srgb, var(--shadow-color, rgba(15, 23, 42, 0.14)) 40%, transparent);
 }
 
 /* ── Action Card ── */
@@ -429,7 +516,10 @@ const addNotificationPlan = async () => {
   border-radius: 12px;
   background: var(--surface-1, #fff);
   overflow: hidden;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
 }
 
 .action-card:hover {
@@ -485,7 +575,9 @@ const addNotificationPlan = async () => {
   height: 24px;
   border-radius: 12px;
   background: var(--Gray-4, #d9dbe9);
-  transition: background 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    background 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 .action-card__native-input:checked + .action-card__toggle {
@@ -506,8 +598,9 @@ const addNotificationPlan = async () => {
   border-radius: 50%;
   background: var(--surface-1, #fff);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
-  transition: inset-inline-start 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
-              transform 0.2s ease;
+  transition:
+    inset-inline-start 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transform 0.2s ease;
 }
 
 .action-card__native-input:checked + .action-card__toggle .action-card__toggle-knob {
@@ -541,8 +634,14 @@ const addNotificationPlan = async () => {
 }
 
 @keyframes badge-pop {
-  0% { opacity: 0; transform: scale(0.7); }
-  100% { opacity: 1; transform: scale(1); }
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 /* ── Sub-Action Panel ── */
@@ -553,12 +652,7 @@ const addNotificationPlan = async () => {
 .sub-action-panel__divider {
   height: 1px;
   margin-bottom: 12px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--brand-primary-200, #c7d2fe),
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, var(--brand-primary-200, #c7d2fe), transparent);
 }
 
 .sub-action-panel__pills {
@@ -685,6 +779,197 @@ const addNotificationPlan = async () => {
   max-height: 200px;
 }
 
+/* ── Recipient Assignment ── */
+.assignment-field {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  padding: 16px;
+  border: 1px solid var(--brand-primary-100, #e0e7ff);
+  border-radius: 16px;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--brand-primary-500) 4%, transparent),
+      transparent 34%
+    ),
+    var(--surface-1, #fff);
+}
+
+.assignment-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.assignment-heading > div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.assignment-heading p {
+  margin: 0;
+  color: var(--text-soft, #64748b);
+  font-size: 12px;
+}
+
+.assignment-step {
+  flex: 0 0 auto;
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: var(--brand-primary-500, #1d4ed8);
+  background: var(--brand-primary-50, #eef2ff);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.assignment-mode-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.assignment-mode-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 82px;
+  gap: 11px;
+  padding: 13px;
+  border: 1px solid var(--main-border, #e2e8f0);
+  border-radius: 14px;
+  background: var(--surface-1, #fff);
+  cursor: pointer;
+  user-select: none;
+  transition:
+    border-color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.18s ease;
+}
+
+.assignment-mode-card:hover {
+  transform: translateY(-1px);
+  border-color: var(--brand-primary-200, #c7d2fe);
+  box-shadow: 0 5px 16px color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
+}
+
+.assignment-mode-card--active {
+  border-color: var(--brand-primary-400, #6366f1);
+  background: color-mix(in srgb, var(--brand-primary-500) 5%, var(--surface-1));
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
+}
+
+.assignment-mode-card > input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.assignment-mode-card:has(input:focus-visible) {
+  outline: 2px solid var(--PrimaryColor);
+  outline-offset: 2px;
+}
+
+.assignment-mode-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 44px;
+  border-radius: 13px;
+  color: var(--brand-primary-500, #1d4ed8);
+  background: var(--brand-primary-50, #eef2ff);
+}
+
+.hierarchy-mode-icon {
+  color: var(--brand-accent-500, #d97706);
+  background: color-mix(in srgb, var(--brand-accent-500) 9%, transparent);
+}
+
+.assignment-mode-icon svg {
+  width: 23px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+
+.assignment-mode-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.assignment-mode-copy strong {
+  color: var(--text-strong, #0f172a);
+  font-size: 14px;
+}
+
+.assignment-mode-copy small {
+  color: var(--text-soft, #64748b);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.assignment-radio {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  border: 2px solid var(--main-border, #cbd5e1);
+  border-radius: 50%;
+  transition: 0.2s ease;
+}
+
+.assignment-radio i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: transparent;
+  transition: 0.2s ease;
+}
+
+.assignment-mode-card--active .assignment-radio {
+  border-color: var(--brand-primary-500, #1d4ed8);
+}
+
+.assignment-mode-card--active .assignment-radio i {
+  background: var(--brand-primary-500, #1d4ed8);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
+}
+
+.assignment-select {
+  padding: 13px;
+  border: 1px solid var(--main-border, #e2e8f0);
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--surface-2, #f8fafc) 68%, var(--surface-1, #fff));
+}
+
+.assignment-swap-enter-active,
+.assignment-swap-leave-active {
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease;
+}
+
+.assignment-swap-enter-from,
+.assignment-swap-leave-to {
+  opacity: 0;
+  transform: translateY(5px);
+}
+
 /* ── Error & Button ── */
 .form-error {
   color: var(--status-danger, #dc2626);
@@ -721,6 +1006,14 @@ const addNotificationPlan = async () => {
 
   .sub-action-pill {
     justify-content: center;
+  }
+
+  .assignment-mode-options {
+    grid-template-columns: 1fr;
+  }
+
+  .assignment-heading {
+    flex-direction: column;
   }
 }
 </style>

@@ -3,10 +3,10 @@ import { NotificationPlanActionEnum } from '../../Core/enums/notification_plan_a
 import { NotificationPlanSubActionEnum } from '../../Core/enums/notification_plan_sub_action_enum'
 
 export const notificationPlanActionOptions: TitleInterface[] = [
-  new TitleInterface({
-    id: NotificationPlanActionEnum.TASK_ASSIGNED,
-    title: 'Task assigned',
-  }),
+  // new TitleInterface({
+  //   id: NotificationPlanActionEnum.TASK_ASSIGNED,
+  //   title: 'Task assigned',
+  // }),
   new TitleInterface({
     id: NotificationPlanActionEnum.PROJECT_LOCATION_HIERARCHY_ASSIGNMENT,
     title: 'Project location hierarchy assignment',

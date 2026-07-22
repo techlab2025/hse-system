@@ -1704,6 +1704,10 @@ class ApiNames {
   public get EditNotificationPlan() {
     return this.baseUrl + this.organizationPrefix + 'update_notification_plan'
   }
+  public get ActiveNotificationPlan(){
+    return this.baseUrl + this.organizationPrefix + 'change_notification_active_status'
+
+  }
 }
 
 export { ApiNames }

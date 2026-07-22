@@ -49,7 +49,7 @@ const route = useRoute()
 const id = route.query?.id
 
 const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
-const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 1)
+const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
 
 const Employees = ref<InvestigatingEmployeeParams[]>([])
 const meetings = ref<MeetingParams[]>([])

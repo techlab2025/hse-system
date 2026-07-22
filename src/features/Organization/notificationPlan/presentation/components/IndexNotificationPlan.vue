@@ -14,6 +14,9 @@ import {
   notificationPlanSubActionOptions,
 } from '../../Data/const/notification_plan_actions'
 import type { NotificationPlanActionModel } from '../../Data/models/notification_plan_model'
+import ActiveNotificationPlanController from '../controllers/active_notification_plan_controller'
+import ActiveNotificationPlanParams from '../../Core/Params/active_notification_plan_params'
+import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 
 const indexNotificationPlanController = IndexNotificationPlanController.getInstance()
 const state = ref(indexNotificationPlanController.state.value)
@@ -95,6 +98,9 @@ const notificationActionKey = (action: NotificationPlanActionModel, index: numbe
 }
 
 const emptyValue = computed(() => t('not_available'))
+const activatingPlanId = ref<number | null>(null)
+const currentPage = ref(1)
+const countPerPage = ref(10)
 
 const isActiveFilterValue = () => {
   if (selectedActiveId.value === -1) return undefined
@@ -103,12 +109,19 @@ const isActiveFilterValue = () => {
 
 const fetchNotificationPlans = async () => {
   await indexNotificationPlanController.getData(
-    new IndexNotificationPlanParams('', 10, 1, 1, isActiveFilterValue()),
+    new IndexNotificationPlanParams(
+      '',
+      countPerPage.value,
+      currentPage.value,
+      1,
+      isActiveFilterValue(),
+    ),
   )
 }
 
 const updateActive = (data: TitleInterface | null) => {
   selectedActive.value = data
+  currentPage.value = 1
   fetchNotificationPlans()
 }
 
@@ -126,6 +139,31 @@ watch(locale, () => {
 })
 
 onMounted(fetchNotificationPlans)
+
+const activeNotificationPlanController = ActiveNotificationPlanController.getInstance()
+const ActiveAction = async (id: number) => {
+  if (activatingPlanId.value !== null) return
+
+  activatingPlanId.value = id
+  try {
+    const activeNotificationPlanParams = new ActiveNotificationPlanParams(id)
+    await activeNotificationPlanController.ActiveNotificationPlan(activeNotificationPlanParams)
+    await fetchNotificationPlans()
+  } finally {
+    activatingPlanId.value = null
+  }
+}
+const handleChangePage = (page: number) => {
+  currentPage.value = page
+  fetchNotificationPlans()
+}
+
+// Handle count per page change
+const handleCountPerPage = (count: number) => {
+  countPerPage.value = count
+  currentPage.value = 1
+  fetchNotificationPlans()
+}
 </script>
 <template>
   <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-2" :style="{ marginBottom: '20px' }">
@@ -188,14 +226,38 @@ onMounted(fetchNotificationPlans)
                 <span v-else>{{ emptyValue }}</span>
               </td>
               <td :data-label="$t('status')">
-                <span :class="['status-badge', item.is_active ? 'is-active' : 'is-inactive']">
-                  {{ item.is_active ? $t('active') : $t('inactive') }}
-                </span>
+                <button
+                  type="button"
+                  role="switch"
+                  :aria-checked="item.is_active"
+                  :aria-busy="activatingPlanId === item.notification_plan_id"
+                  :aria-label="`${item.is_active ? $t('inactive') : $t('active')} ${item.title}`"
+                  :class="['status-toggle', item.is_active ? 'is-active' : 'is-inactive']"
+                  :disabled="activatingPlanId !== null"
+                  @click="ActiveAction(item.notification_plan_id)"
+                >
+                  <span class="toggle-track" aria-hidden="true">
+                    <i></i>
+                  </span>
+                  <span class="toggle-label">
+                    {{ item.is_active ? $t('active') : $t('inactive') }}
+                  </span>
+                  <span
+                    v-if="activatingPlanId === item.notification_plan_id"
+                    class="toggle-spinner"
+                    aria-hidden="true"
+                  ></span>
+                </button>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
+      <Pagination
+        :pagination="state.pagination"
+        @changePage="handleChangePage"
+        @countPerPage="handleCountPerPage"
+      />
     </template>
     <template #failed>
       <DataFailed
@@ -220,25 +282,105 @@ onMounted(fetchNotificationPlans)
 </template>
 
 <style scoped>
-.status-badge {
+.status-toggle {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-width: 76px;
-  padding: 4px 10px;
+  justify-content: flex-start;
+  min-width: 122px;
+  gap: 8px;
+  padding: 6px 9px;
+  border: 1px solid transparent;
   border-radius: 999px;
+  cursor: pointer;
   font-size: 13px;
   font-weight: 700;
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
 }
 
-.status-badge.is-active {
+.status-toggle:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.status-toggle:focus-visible {
+  outline: 2px solid var(--PrimaryColor);
+  outline-offset: 2px;
+}
+
+.status-toggle:disabled {
+  cursor: wait;
+  opacity: 0.68;
+}
+
+.status-toggle.is-active {
+  border-color: #bbf7d0;
   color: #15803d;
   background: #dcfce7;
 }
 
-.status-badge.is-inactive {
+.status-toggle.is-inactive {
+  border-color: #fecaca;
   color: #b91c1c;
   background: #fee2e2;
+}
+
+.toggle-track {
+  position: relative;
+  display: inline-flex;
+  width: 34px;
+  height: 19px;
+  flex: 0 0 34px;
+  border-radius: 999px;
+  background: #fca5a5;
+  transition: background 0.2s ease;
+}
+
+.toggle-track i {
+  position: absolute;
+  top: 3px;
+  inset-inline-start: 3px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.22);
+  transition: transform 0.2s ease;
+}
+
+.status-toggle.is-active .toggle-track {
+  background: #22c55e;
+}
+
+.status-toggle.is-active .toggle-track i {
+  transform: translateX(15px);
+}
+
+:global([dir='rtl']) .status-toggle.is-active .toggle-track i {
+  transform: translateX(-15px);
+}
+
+.toggle-label {
+  flex: 1;
+  text-align: start;
+}
+
+.toggle-spinner {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 13px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: status-spin 0.65s linear infinite;
+}
+
+@keyframes status-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .action-list-tree,
