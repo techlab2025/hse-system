@@ -23,6 +23,8 @@ const { teamLocations, projectLocations, hierarchy, orgganizationEmployeeWithHie
   }>()
 
 const hasOperationalLocations = computed(() => (teamLocations?.length || 0) > 0)
+const previewLocations = computed(() => teamLocations?.slice(0, 2) || [])
+const remainingLocations = computed(() => Math.max((teamLocations?.length || 0) - 2, 0))
 
 const totalEmployees = computed(
   () =>
@@ -109,13 +111,20 @@ const totalTeams = computed(
 
     <div class="locations-sections" v-if="hasOperationalLocations">
       <LocationsSection
-        v-for="(location, index) in teamLocations"
+        v-for="(location, index) in previewLocations"
         :key="location.locationId || index"
         :location="location"
         :projectLocation="projectLocations"
         :hierarchy="hierarchy"
         :employeesHierarchy="orgganizationEmployeeWithHierarchy"
       />
+      <div class="more-locations" v-if="remainingLocations > 0">
+        <span>+{{ remainingLocations }}</span>
+        <p>
+          <strong>{{ $t('More locations available') }}</strong>
+          <small>{{ $t('Use Manage workforce to explore all teams and employees.') }}</small>
+        </p>
+      </div>
     </div>
     <div class="empty-teams" v-else>
       <EmptyData
@@ -328,6 +337,47 @@ const totalTeams = computed(
   gap: 11px;
   width: 100%;
   background: transparent;
+}
+
+.more-locations {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 13px;
+  border: 1px dashed color-mix(in srgb, var(--PrimaryColor) 25%, var(--main-border));
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--PrimaryColor) 4%, transparent);
+}
+
+.more-locations > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 30px;
+  padding: 0 8px;
+  border-radius: 10px;
+  color: var(--PrimaryColor);
+  background: color-mix(in srgb, var(--PrimaryColor) 10%, transparent);
+  font-family: 'Bold';
+  font-size: 0.7rem;
+}
+
+.more-locations p {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
+.more-locations strong {
+  color: var(--text-strong);
+  font-size: 0.67rem;
+}
+
+.more-locations small {
+  color: var(--text-soft);
+  font-size: 0.58rem;
 }
 
 .section-context {

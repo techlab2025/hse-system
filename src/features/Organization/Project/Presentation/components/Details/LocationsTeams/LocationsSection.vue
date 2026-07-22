@@ -255,7 +255,7 @@ watch(
           />
         </div>
         <div class="inline-empty" v-else-if="visibleTeams.length < 1">
-          <span class="inline-empty-icon" aria-hidden="true">+</span>
+          <!-- <span class="inline-empty-icon" aria-hidden="true">+</span> -->
           <span>
             <strong>{{ $t('Employees are ready — create the first team') }}</strong>
             <small>{{
