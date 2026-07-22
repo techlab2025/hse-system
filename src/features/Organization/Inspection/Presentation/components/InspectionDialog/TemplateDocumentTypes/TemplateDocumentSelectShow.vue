@@ -162,49 +162,52 @@ onMounted(UpdateData)
   width: 100%;
   min-width: 0;
   flex-direction: column;
+  gap: 16px;
 }
 
 .select-answer-card {
   display: flex;
   min-width: 0;
-  align-items: center;
-  gap: 12px;
-  padding: 13px;
-  border: 1px solid
-    color-mix(in srgb, var(--brand-primary-500, #386cfe) 14%, var(--surface-2, #e5e7eb));
-  border-radius: 17px;
-  background: color-mix(in srgb, var(--surface-1, #fff) 96%, var(--brand-primary-50, #eff6ff));
+  align-items: flex-start;
+  gap: 16px;
+  width: 100%;
+  padding: 18px 18px 18px 16px;
+  border: 1px solid var(--surface-2, #e5e7eb);
+  border-radius: 20px;
+  background: var(--surface-1, #fff);
   transition:
-    border-color 180ms ease,
-    box-shadow 180ms ease,
-    background 180ms ease;
+    border-color 200ms ease,
+    box-shadow 200ms ease,
+    background 200ms ease,
+    transform 200ms ease;
+}
+
+.select-answer-card:hover {
+  box-shadow: 0 14px 40px rgb(15 23 42 / 8%);
 }
 
 .select-answer-card--selected,
 .select-answer-card:focus-within {
-  border-color: color-mix(in srgb, var(--brand-primary-500, #386cfe) 52%, transparent);
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--brand-primary-500, #386cfe) 8%, #fff),
-    #fff
-  );
-  box-shadow: 0 10px 26px rgb(29 78 216 / 9%);
+  border-color: var(--brand-primary-500, #386cfe);
+  background: color-mix(in srgb, var(--brand-primary-500, #386cfe) 5%, var(--surface-1, #ffffff));
+  box-shadow: 0 16px 36px rgb(56 108 254 / 12%);
+  transform: translateY(-1px);
 }
 
 .select-answer-card__icon {
   display: grid;
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
   place-items: center;
-  border-radius: 13px;
+  border-radius: 16px;
   color: var(--brand-primary-600, #2563eb);
-  background: color-mix(in srgb, var(--brand-primary-500, #386cfe) 10%, transparent);
+  background: color-mix(in srgb, var(--brand-primary-500, #386cfe) 12%, transparent);
 }
 
 .select-answer-card__icon svg {
-  width: 19px;
-  height: 19px;
+  width: 20px;
+  height: 20px;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -219,10 +222,12 @@ onMounted(UpdateData)
 
 .select-answer-card__label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   color: var(--text-muted, #667085);
-  font-size: 0.68rem;
+  font-size: 0.72rem;
   font-weight: 800;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 :deep(.select-answer-card .updated-custom-input-select),
@@ -239,20 +244,32 @@ onMounted(UpdateData)
 :deep(.select-answer-card .p-multiselect),
 :deep(.select-answer-card .input-select) {
   width: 100% !important;
-  min-height: 44px;
+  min-height: 50px;
   border-color: color-mix(
     in srgb,
     var(--brand-primary-500, #386cfe) 16%,
     var(--surface-2, #e5e7eb)
   ) !important;
-  border-radius: 13px !important;
+  border-radius: 16px !important;
   background: var(--surface-1, #fff) !important;
   box-shadow: none !important;
 }
 
+:deep(.select-answer-card .p-select:focus-within),
+:deep(.select-answer-card .p-multiselect:focus-within),
+:deep(.select-answer-card .input-select:focus-within) {
+  border-color: var(--brand-primary-500, #386cfe) !important;
+}
+
 @media (max-width: 640px) {
+  .select-answer-card {
+    flex-direction: column;
+    padding: 16px;
+  }
+
   .select-answer-card__icon {
-    display: none;
+    width: 38px;
+    height: 38px;
   }
 }
 </style>

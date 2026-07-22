@@ -59,6 +59,7 @@ const typeLabel = computed(() => {
   align-items: center;
   gap: 12px;
   margin-bottom: 14px;
+width:100%;
 }
 
 .question-heading__icon {
