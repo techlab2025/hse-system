@@ -133,7 +133,7 @@ const assignedEmployeesCount = computed(() =>
             </div>
           </section>
 
-          <div class="workflow-progress" aria-label="Employee assignment progress">
+          <!-- <div class="workflow-progress" aria-label="Employee assignment progress">
             <span class="progress-item is-complete"
               ><i>✓</i
               ><span
@@ -157,7 +157,7 @@ const assignedEmployeesCount = computed(() =>
                 ><small>{{ $t('Confirm assignment') }}</small></span
               ></span
             >
-          </div>
+          </div> -->
 
           <section class="employee-form">
             <header class="location-header">
@@ -173,13 +173,13 @@ const assignedEmployeesCount = computed(() =>
               >
             </header>
 
-            <div class="assignment-guide">
+            <!-- <div class="assignment-guide">
               <div>
                 <strong>{{ $t('Position assignments') }}</strong
                 ><small>{{ $t('Select one or more employees for every position below.') }}</small>
               </div>
               <span>{{ assignedEmployeesCount }} {{ $t('selected') }}</span>
-            </div>
+            </div> -->
 
             <div class="position-grid">
               <article

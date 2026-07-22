@@ -58,7 +58,7 @@ const remainingLocations = computed(() => Math.max((locations?.length || 0) - 2,
       </div>
     </div>
 
-    <div class="site-context" v-if="hasLocations">
+    <!-- <div class="site-context" v-if="hasLocations">
       <div>
         <span class="context-dot" aria-hidden="true"></span>
         <span
@@ -67,7 +67,7 @@ const remainingLocations = computed(() => Math.max((locations?.length || 0) - 2,
         >
       </div>
       <span class="coverage-state"><i></i>{{ $t('Mapped') }}</span>
-    </div>
+    </div> -->
 
     <div class="card-section" v-if="hasLocations">
       <LocationCard

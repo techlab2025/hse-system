@@ -7,10 +7,10 @@ const route = useRoute()
 </script>
 <template>
   <main class="project-people-page">
-    <PagesHeader
+    <!-- <PagesHeader
       :title="$t('Teams by Operational location')"
       :subtitle="$t('View all working teams assigned to each operational zone')"
-    />
+    /> -->
     <ProjectEmployeeSection />
 
     <div class="page-footer">

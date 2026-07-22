@@ -129,13 +129,13 @@ watch(
               </div>
             </div>
 
-            <div class="operations-flow" aria-label="Project resource sections">
+            <!-- <div class="operations-flow" aria-label="Project resource sections">
               <span><strong>01</strong>{{ $t('Sites') }}</span>
               <i aria-hidden="true"></i>
               <span><strong>02</strong>{{ $t('Teams') }}</span>
               <i aria-hidden="true"></i>
               <span><strong>03</strong>{{ $t('Equipment') }}</span>
-            </div>
+            </div> -->
           </div>
 
           <div class="project-operations-stack">

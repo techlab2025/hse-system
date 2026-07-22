@@ -91,7 +91,7 @@ const totalTeams = computed(
       </div>
     </div>
 
-    <div class="section-context" v-if="hasOperationalLocations">
+    <!-- <div class="section-context" v-if="hasOperationalLocations">
       <div>
         <span class="context-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24">
@@ -105,7 +105,7 @@ const totalTeams = computed(
         >
       </div>
       <span class="location-total">{{ teamLocations?.length || 0 }}</span>
-    </div>
+    </div> -->
 
     <div class="locations-sections" v-if="hasOperationalLocations">
       <LocationsSection

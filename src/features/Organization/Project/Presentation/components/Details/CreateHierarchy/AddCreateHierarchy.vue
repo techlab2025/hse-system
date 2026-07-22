@@ -107,7 +107,7 @@ watch(
           </div>
         </section>
 
-        <div class="workflow-progress" aria-label="Position setup progress">
+        <!-- <div class="workflow-progress" aria-label="Position setup progress">
           <span class="progress-item is-active">
             <i>01</i>
             <span
@@ -131,7 +131,7 @@ watch(
               ><small>{{ $t('Confirm your selection') }}</small></span
             >
           </span>
-        </div>
+        </div> -->
 
         <div class="hierarchy-workspace">
           <template v-for="(item, index) in state.data" :key="item.id || index">
@@ -164,7 +164,7 @@ watch(
                 :selectedHirarchy="item.locationHierarchy"
               />
 
-              <div class="form-tip">
+              <!-- <div class="form-tip">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                   <circle cx="12" cy="12" r="9" />
                   <path d="M12 11v5M12 8h.01" />
@@ -176,7 +176,7 @@ watch(
                     )
                   }}
                 </span>
-              </div>
+              </div> -->
             </article>
           </template>
 

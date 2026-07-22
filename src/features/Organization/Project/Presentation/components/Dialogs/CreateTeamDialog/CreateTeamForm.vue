@@ -91,13 +91,13 @@ const canSubmit = computed(
 <template>
   <div class="equipment-form team-form">
     <form @submit.prevent="CreateProjectLocationTeamEmployee">
-      <div class="form-readiness" :class="{ ready: canSubmit }">
+      <!-- <div class="form-readiness" :class="{ ready: canSubmit }">
         <span
           ><i aria-hidden="true"></i
           >{{ canSubmit ? $t('Ready to assign') : $t('Complete required selections') }}</span
         >
         <strong>{{ Employees.length }} {{ $t('members selected') }}</strong>
-      </div>
+      </div> -->
       <div class="input-container">
         <div class="input-wrapper modern-team-field" v-if="!teamId">
           <span class="field-step">01</span>

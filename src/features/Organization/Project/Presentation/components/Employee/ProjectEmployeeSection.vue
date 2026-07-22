@@ -198,7 +198,7 @@ watch(
               />
             </div>
             <div class="section-empty" v-else>
-              <span>+</span>
+              <!-- <span>+</span> -->
               <p>
                 <strong>{{ $t('No employees assigned yet') }}</strong
                 ><small>{{
@@ -236,7 +236,7 @@ watch(
               />
             </div>
             <div class="section-empty" v-else>
-              <span>+</span>
+              <!-- <span>+</span> -->
               <p>
                 <strong>{{ $t('No teams created yet') }}</strong
                 ><small>{{

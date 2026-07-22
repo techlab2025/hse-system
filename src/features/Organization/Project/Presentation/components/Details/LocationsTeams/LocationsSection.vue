@@ -149,62 +149,99 @@ watch(
         </div>
       </AccordionHeader>
       <AccordionContent>
-        <div class="location-content-overview">
-          <span>{{ $t('Location workforce') }}</span>
-          <p>
-            {{ $t('Review assigned employees and the active teams operating at this location.') }}
-          </p>
-        </div>
-
-        <div class="all-employees" v-if="employeeCount > 0">
-          <div class="all-employees-header-container">
-            <div class="flex items-center gap-2">
-              <ProjectEmployeeIcon class="icon" />
-              <div class="all-employees-header flex flex-col">
-                <p class="employee">{{ $t('Employees') }}</p>
-                <p class="employee-count">{{ employeeCount }} {{ $t('Employees') }}</p>
-              </div>
+        <div class="workforce-intro" v-if="employeeCount > 0 || visibleTeams.length > 0">
+          <div class="workforce-intro-copy">
+            <span class="workforce-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <circle cx="8" cy="8" r="3" />
+                <circle cx="17" cy="9" r="2.5" />
+                <path d="M2.5 20v-2a5.5 5.5 0 0 1 11 0v2M14 15a4.5 4.5 0 0 1 6.5 4v1" />
+              </svg>
+            </span>
+            <div>
+              <span class="workforce-kicker">{{ $t('Location workforce') }}</span>
+              <h3>{{ $t('Teams and employees') }}</h3>
+              <p>
+                {{
+                  $t('Review assigned employees and the active teams operating at this location.')
+                }}
+              </p>
             </div>
-            <router-link :to="`/organization/employee-details/${id}`" class="all-employees-view"
-              >{{ $t('View all employees') }} ({{ employeeCount }})</router-link
+          </div>
+          <div class="workforce-summary" aria-label="Workforce totals">
+            <span
+              ><strong>{{ employeeCount }}</strong> {{ $t('Employees') }}</span
+            >
+            <i aria-hidden="true"></i>
+            <span
+              ><strong>{{ visibleTeams.length }}</strong> {{ $t('Teams') }}</span
+            >
+            <i aria-hidden="true"></i>
+            <span
+              ><strong>{{ teamMembersCount }}</strong> {{ $t('Team members') }}</span
             >
           </div>
-          <div class="team-members">
-            <TeamMemberCard
-              v-for="(member, index) in selectedLocation?.employees"
-              :key="member.id || index"
-              :member="member"
-              @update:data="DeleteTeamMember"
-              :hierarchy="employeesHierarchy?.find((h) => h.id === member.organization_employee_id)"
-            />
-          </div>
         </div>
 
-        <div class="teams-container" v-if="visibleTeams.length > 0">
-          <div class="all-employees-header-container">
-            <div class="flex items-center gap-2">
-              <TeamsIcon class="icon" />
-              <div class="all-employees-header flex flex-col">
-                <p class="employee">{{ $t('Teams') }}</p>
-                <p class="employee-count">
-                  {{ visibleTeams.length }} {{ $t('Teams') }} · {{ teamMembersCount }}
-                  {{ $t('members') }}
-                </p>
+        <div class="workforce-sections">
+          <section class="all-employees workforce-panel employees-panel" v-if="employeeCount > 0">
+            <div class="all-employees-header-container">
+              <div class="section-title">
+                <span class="section-icon"><ProjectEmployeeIcon class="icon" /></span>
+                <div class="all-employees-header flex flex-col">
+                  <span class="section-kicker">{{ $t('People') }}</span>
+                  <p class="employee">{{ $t('Employees') }}</p>
+                  <p class="employee-count">{{ $t('People assigned to this location') }}</p>
+                </div>
               </div>
+              <router-link :to="`/organization/employee-details/${id}`" class="all-employees-view"
+                >{{ $t('View all') }} <span>{{ employeeCount }}</span>
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6" /></svg>
+              </router-link>
             </div>
-            <router-link :to="`/organization/employee-details/${id}`" class="all-employees-view"
-              >{{ $t('View all teams') }} ({{ visibleTeams.length }})</router-link
-            >
-          </div>
-          <div class="teams">
-            <TeamCard
-              :isShow="true"
-              v-for="(team, index) in visibleTeams"
-              :key="team.teamId || index"
-              :team="team"
-              :location="location"
-            />
-          </div>
+            <div class="team-members">
+              <TeamMemberCard
+                v-for="(member, index) in selectedLocation?.employees"
+                :key="member.id || index"
+                :member="member"
+                @update:data="DeleteTeamMember"
+                :hierarchy="
+                  employeesHierarchy?.find((h) => h.id === member.organization_employee_id)
+                "
+              />
+            </div>
+          </section>
+
+          <section
+            class="teams-container workforce-panel teams-panel"
+            v-if="visibleTeams.length > 0"
+          >
+            <div class="all-employees-header-container">
+              <div class="section-title">
+                <span class="section-icon"><TeamsIcon class="icon" /></span>
+                <div class="all-employees-header flex flex-col">
+                  <span class="section-kicker">{{ $t('Collaboration') }}</span>
+                  <p class="employee">{{ $t('Teams') }}</p>
+                  <p class="employee-count">
+                    {{ $t('Active groups working at this location') }}
+                  </p>
+                </div>
+              </div>
+              <router-link :to="`/organization/employee-details/${id}`" class="all-employees-view"
+                >{{ $t('View all') }} <span>{{ visibleTeams.length }}</span>
+                <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6" /></svg>
+              </router-link>
+            </div>
+            <div class="teams">
+              <TeamCard
+                :isShow="true"
+                v-for="(team, index) in visibleTeams"
+                :key="team.teamId || index"
+                :team="team"
+                :location="location"
+              />
+            </div>
+          </section>
         </div>
         <div class="empty-teams" v-if="employeeCount < 1">
           <EmptyData
@@ -421,36 +458,169 @@ watch(
   }
 }
 
-.location-content-overview {
+.workforce-intro {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
-  padding: 10px 12px;
-  border-inline-start: 3px solid var(--PrimaryColor);
-  border-radius: 10px;
-  background: color-mix(in srgb, var(--PrimaryColor) 5%, transparent);
+  overflow: hidden;
+  gap: 20px;
+  margin-bottom: 14px;
+  padding: 18px 20px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
+  border-radius: 17px;
+  background:
+    radial-gradient(
+      circle at 100% 0,
+      color-mix(in srgb, var(--PrimaryColor) 14%, transparent),
+      transparent 38%
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1)),
+      var(--surface-1)
+    );
 }
 
-.location-content-overview span {
+.workforce-intro::after {
+  position: absolute;
+  inset-inline-end: -34px;
+  bottom: -58px;
+  width: 130px;
+  height: 130px;
+  border: 22px solid color-mix(in srgb, var(--PrimaryColor) 5%, transparent);
+  border-radius: 50%;
+  content: '';
+  pointer-events: none;
+}
+
+.workforce-intro-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 13px;
+}
+
+.workforce-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  border-radius: 15px;
+  color: var(--text-on-brand);
+  background: linear-gradient(135deg, var(--PrimaryColor), var(--brand-secondary-500));
+  box-shadow: 0 9px 20px color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+}
+
+.workforce-mark svg {
+  width: 25px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+}
+
+.workforce-kicker,
+.section-kicker {
+  display: block;
+  color: var(--PrimaryColor);
+  font-size: 0.55rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.workforce-intro h3 {
+  margin: 3px 0 2px;
   color: var(--text-strong);
   font-family: 'Bold';
-  font-size: 0.72rem;
+  font-size: 0.96rem;
 }
-.location-content-overview p {
+
+.workforce-intro p {
   margin: 0;
   color: var(--text-soft);
-  font-size: 0.6rem;
+  font-size: 0.64rem;
+  line-height: 1.5;
+}
+
+.workforce-summary {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 11px;
+  padding: 10px 12px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 13%, var(--main-border));
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--surface-1) 84%, transparent);
+  backdrop-filter: blur(8px);
+}
+
+.workforce-summary span {
+  display: flex;
+  flex-direction: column;
+  color: var(--text-soft);
+  font-size: 0.55rem;
+  white-space: nowrap;
+}
+
+.workforce-summary strong {
+  color: var(--text-strong);
+  font-family: 'Bold';
+  font-size: 0.9rem;
+  line-height: 1.1;
+}
+
+.workforce-summary i {
+  width: 1px;
+  height: 25px;
+  background: var(--main-border);
+}
+
+.workforce-sections {
+  display: grid;
+  gap: 14px;
 }
 
 .all-employees,
 .teams-container {
   margin: 0 0 14px;
-  padding: 14px;
+  padding: 15px;
   border: 1px solid var(--main-border);
-  border-radius: 15px;
-  background: color-mix(in srgb, var(--surface-2) 56%, transparent);
+  border-radius: 17px;
+}
+
+.workforce-panel {
+  position: relative;
+  overflow: hidden;
+}
+
+.employees-panel {
+  background:
+    linear-gradient(
+      105deg,
+      color-mix(in srgb, var(--status-success) 5%, transparent),
+      transparent 30%
+    ),
+    color-mix(in srgb, var(--surface-2) 52%, var(--surface-1));
+}
+
+.teams-panel {
+  background:
+    linear-gradient(
+      105deg,
+      color-mix(in srgb, var(--brand-secondary-500) 6%, transparent),
+      transparent 32%
+    ),
+    color-mix(in srgb, var(--surface-2) 52%, var(--surface-1));
 }
 
 .all-employees-header-container {
@@ -464,12 +634,32 @@ watch(
   background: transparent;
 }
 
-.all-employees-header-container :deep(.icon) {
+.section-title {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 10px;
+}
+
+.section-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--status-success) 9%, var(--surface-1));
+}
+
+.teams-panel .section-icon {
+  background: color-mix(in srgb, var(--brand-secondary-500) 9%, var(--surface-1));
+}
+
+.section-icon :deep(.icon) {
   width: 40px;
   height: 40px;
-  padding: 7px;
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--PrimaryColor) 9%, transparent);
+  padding: 8px;
 }
 
 .all-employees-header .employee {
@@ -480,18 +670,57 @@ watch(
 }
 
 .all-employees-header .employee-count {
+  margin: 2px 0 0;
   color: var(--text-soft);
   font-size: 0.64rem;
 }
 
 .all-employees-view {
-  padding: 6px 9px;
-  border-radius: 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 8px 7px 10px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, transparent);
+  border-radius: 10px;
   background: color-mix(in srgb, var(--PrimaryColor) 8%, transparent);
   color: var(--PrimaryColor);
   font-size: 0.64rem;
   font-weight: 850;
   text-decoration: none;
+  transition: 0.18s ease;
+}
+
+.all-employees-view span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  border-radius: 7px;
+  color: var(--surface-1);
+  background: var(--PrimaryColor);
+  font-size: 0.58rem;
+}
+
+.all-employees-view svg {
+  width: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.all-employees-view:hover {
+  transform: translateX(2px);
+  background: var(--PrimaryColor);
+  color: var(--text-on-brand);
+}
+
+.all-employees-view:hover span {
+  color: var(--PrimaryColor);
+  background: var(--surface-1);
 }
 
 .team-members,
@@ -552,6 +781,10 @@ watch(
   .team-members {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  .workforce-intro {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 640px) {
@@ -566,9 +799,17 @@ watch(
   .location-pin {
     display: none !important;
   }
-  .location-content-overview {
-    align-items: flex-start;
-    flex-direction: column;
+  .workforce-intro {
+    padding: 15px;
+  }
+  .workforce-summary {
+    width: 100%;
+    justify-content: space-around;
+  }
+  .workforce-mark {
+    width: 42px;
+    height: 42px;
+    flex-basis: 42px;
   }
   .team-members,
   .teams {
@@ -580,7 +821,15 @@ watch(
   }
   .all-employees-view {
     width: 100%;
-    text-align: center;
+    justify-content: center;
   }
+}
+
+:global([dir='rtl']) .all-employees-view svg {
+  transform: rotate(180deg);
+}
+
+:global([dir='rtl']) .all-employees-view:hover {
+  transform: translateX(-2px);
 }
 </style>

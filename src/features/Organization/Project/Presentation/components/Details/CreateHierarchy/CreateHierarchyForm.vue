@@ -77,7 +77,7 @@ watch(
       </div>
 
       <div class="selection-placeholder" v-else>
-        <span class="placeholder-icon">+</span>
+        <!-- <span class="placeholder-icon">+</span> -->
         <span>
           <strong>{{ $t('No positions selected') }}</strong>
           <small>{{ $t('Open the selector to add one or more functional positions.') }}</small>
