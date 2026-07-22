@@ -1,0 +1,30 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none"
+     xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title">
+  <title id="title">Refresh</title>
+
+  <!-- Button background -->
+  <circle cx="24" cy="24" r="23.5" fill="#4F69B3" stroke="#6F88D2"/>
+
+  <!-- Refresh arc -->
+  <path d="M32.8 18.2A10.5 10.5 0 0 0 15.1 20"
+        stroke="#F4F7FF" stroke-width="2.2"
+        stroke-linecap="round" fill="none"/>
+
+  <!-- Top arrow -->
+  <path d="M31.7 13.9L33.2 18.5L28.5 19.7"
+        stroke="#F4F7FF" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Refresh arc -->
+  <path d="M15.2 29.8A10.5 10.5 0 0 0 32.9 28"
+        stroke="#F4F7FF" stroke-width="2.2"
+        stroke-linecap="round" fill="none"/>
+
+  <!-- Bottom arrow in cyan accent -->
+  <path d="M16.3 34.1L14.8 29.5L19.5 28.3"
+        stroke="#18D5E7" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Small cyan accent dot -->
+  <circle cx="34.2" cy="24" r="1.8" fill="#18D5E7"/>
+</svg>

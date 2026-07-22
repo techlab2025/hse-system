@@ -255,54 +255,71 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
   /**
    * Listen for notification clicks from service worker
    */
+  const handleServiceWorkerMessage = (event: MessageEvent) => {
+    if (event.data && event.data.type === 'NOTIFICATION_CLICKED') {
+      console.log('Notification clicked in background:', event.data.data)
+      const notificationData = event.data.data
+
+      if (onNotification) {
+        onNotification(notificationData)
+      }
+
+      window.dispatchEvent(
+        new CustomEvent('notification-clicked', {
+          detail: notificationData,
+        }),
+      )
+    }
+  }
+
   const listenForNotificationClicks = () => {
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.addEventListener('message', (event) => {
-        if (event.data && event.data.type === 'NOTIFICATION_CLICKED') {
-          console.log('Notification clicked in background:', event.data.data)
-          // Handle the notification data
-          const notificationData = event.data.data
-          // Emit custom event or call callback
-          if (onNotification) {
-            onNotification(notificationData)
-          }
-          // You can also emit a custom event for components to listen to
-          window.dispatchEvent(
-            new CustomEvent('notification-clicked', {
-              detail: notificationData,
-            }),
-          )
-        }
-      })
+      navigator.serviceWorker.addEventListener('message', handleServiceWorkerMessage)
     }
   }
   /**
    * Setup WebSocket event handlers
    */
+  const handleIncomingNotification = (notification: EnrichedNotification) => {
+    console.log('📬 New notification via WebSocket:', notification)
+
+    if (onNotification) {
+      onNotification(notification)
+    }
+
+    if (document.hidden && Notification.permission === 'granted') {
+      showNativeBrowserNotification(notification)
+    }
+  }
+
+  const handleWebSocketConnected = () => {
+    console.log('✅ WebSocket connected')
+  }
+
+  const handleWebSocketDisconnected = () => {
+    console.log('🔌 WebSocket disconnected')
+  }
+
+  const handleWebSocketError = (error: unknown) => {
+    console.error('❌ WebSocket error:', error)
+  }
+
   const setupWebSocketHandlers = () => {
-    // Handle new notifications
-    notificationService.on('notification', (notification) => {
-      console.log('📬 New notification via WebSocket:', notification)
-      // Call user's callback for in-app handling (toasts, etc.)
-      if (onNotification) {
-        onNotification(notification)
-      }
-      // IMPORTANT: Show native browser notification if app is in background/hidden
-      // This is DIFFERENT from app toasts - browser handles this
-      if (document.hidden && Notification.permission === 'granted') {
-        showNativeBrowserNotification(notification)
-      }
-    })
-    // Connection status
-    notificationService.on('connected', () => {
-      console.log('✅ WebSocket connected')
-    })
-    notificationService.on('disconnected', () => {
-      console.log('🔌 WebSocket disconnected')
-    })
-    notificationService.on('error', (error) => {
-      console.error('❌ WebSocket error:', error)
-    })
+    notificationService.on('notification', handleIncomingNotification)
+    notificationService.on('connected', handleWebSocketConnected)
+    notificationService.on('disconnected', handleWebSocketDisconnected)
+    notificationService.on('error', handleWebSocketError)
+  }
+
+  const removeEventHandlers = () => {
+    notificationService.off('notification', handleIncomingNotification)
+    notificationService.off('connected', handleWebSocketConnected)
+    notificationService.off('disconnected', handleWebSocketDisconnected)
+    notificationService.off('error', handleWebSocketError)
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.removeEventListener('message', handleServiceWorkerMessage)
+    }
   }
   /**
    * When app is completely closed, Service Worker handles notifications via Push API
@@ -377,9 +394,8 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
     }
   })
   onUnmounted(() => {
-    // Don't disconnect - keep connections alive across components
-    // But maybe we want to unsubscribe if this component was the only one?
-    // For now, consistent with original behavior, we don't auto-disconnect
+    // Keep the shared socket alive, but remove callbacks owned by this component.
+    removeEventHandlers()
   })
   return {
     // State

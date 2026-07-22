@@ -203,6 +203,7 @@ const toggle = (event: Event) => {
 //    const result = await refreshNotificationTokenController.RefreshToken(params);
 //   }
 // })
+
 </script>
 
 <template>
@@ -306,7 +307,7 @@ const toggle = (event: Event) => {
             />
           </svg>
         </button> -->
-        <Notifications class="notifications-control" />
+        <Notifications class="notifications-control"  />
         <!-- {{ wsConnected }} -->
         <!-- <div class="notification cursor-pointer" @click="toggleFullScreen">
           <Notification />

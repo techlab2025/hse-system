@@ -14,7 +14,8 @@ import type { EnrichedNotification } from '@/services/WebSocketNotificationServi
 import RefreshNotificationTokenController from '@/features/notification/Presentation/controllers/RefreshNotificationTokenController.ts'
 import RefreshNotificationParams from '@/features/notification/Core/params/RefreshNotificationParams.ts'
 // import { NOTIFICATION_SOUND_BASE64 } from '@/base/Presentation/utils/notification_ring.ts'
-
+import refreshIcon from '@/assets/images/refresh-icon.svg'
+// const emit = defineEmits(['rerfreshToken'])
 const op = ref()
 const toggle = (event: Event) => {
   op.value.toggle(event)
@@ -23,6 +24,7 @@ const toast = useToast()
 const userStore = useUserStore() // Already defined above
 const router = useRouter()
 // Notification sound
+const newRefreshToken = ref()
 
 const getNotificationPayload = (notification: EnrichedNotification) => {
   const body = notification.body
@@ -80,7 +82,7 @@ const {
   reconnectWebSocket,
 } = useIntegratedNotifications({
   autoConnect: true,
-  token: userStore.user?.WebSocketToken,
+  token: newRefreshToken.value ? newRefreshToken.value : userStore.user?.WebSocketToken,
   userId: userStore.user?.id,
   fetchNotifications: true,
   userToken: userStore.user?.apiToken,
@@ -199,9 +201,18 @@ watch(
   },
   { immediate: true },
 )
+const RefreshToken = async ()=>{
+  const refreshNotificationTokenController = RefreshNotificationTokenController.getInstance()
+  const result = await refreshNotificationTokenController.RefreshToken(new RefreshNotificationParams())
+  newRefreshToken.value = result.value.data?.notificationSocketToken
+  // emit('rerfreshToken', newRefreshToken.value);
+      await reconnectWebSocket(newRefreshToken.value);
+
+}
 </script>
 <template>
   <div class="notification-center">
+    <img v-if="!wsConnected" @click="RefreshToken" :src="refreshIcon" alt="refresh" width="40" class="image-refresh">
     <button
       class="notification"
       type="button"
@@ -304,6 +315,14 @@ watch(
   </div>
 </template>
 <style lang="scss" scoped>
+.image-refresh{
+  margin-inline: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.image-refresh:hover{
+  transform: rotate(90deg) translateY(-2px);
+}
 .p-popover {
   border-radius: 16px !important;
 }

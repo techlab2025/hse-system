@@ -274,8 +274,10 @@ class WebSocketNotificationService {
   handleNotification(notification: Notification, type: NotificationType): void {
     // Prevent duplicates
     console.log('Received notification:', notification)
-    if (this.processedNotificationIds.has(notification.messageId)) {
-      this.addLog(`⚠ Duplicate ${type} notification ignored: ${notification.messageId}`)
+    const notificationKey = String(notification.messageId ?? notification.id ?? '')
+
+    if (notificationKey && this.processedNotificationIds.has(notificationKey)) {
+      this.addLog(`⚠ Duplicate ${type} notification ignored: ${notificationKey}`)
       return
     }
 
@@ -289,7 +291,9 @@ class WebSocketNotificationService {
 
     const enrichedNotification = this.normalizeNotification(notification, type)
     this.notifications.value.unshift(enrichedNotification)
-    this.processedNotificationIds.add(notification.messageId)
+    if (notificationKey) {
+      this.processedNotificationIds.add(notificationKey)
+    }
     if (enrichedNotification.readStatus === 'UNREAD') {
       this.updateNotificationCount({ unread: 1, total: 1 })
     } else {
