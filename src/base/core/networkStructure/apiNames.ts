@@ -1704,10 +1704,13 @@ class ApiNames {
   public get EditNotificationPlan() {
     return this.baseUrl + this.organizationPrefix + 'update_notification_plan'
   }
-  public get ActiveNotificationPlan(){
+  public get ActiveNotificationPlan() {
     return this.baseUrl + this.organizationPrefix + 'change_notification_active_status'
   }
-   public get RefreshNotification(){
+  public get DeleteNotificationPlan() {
+    return this.baseUrl + this.organizationPrefix + 'delete_notification_plan'
+  }
+  public get RefreshNotification() {
     return this.baseUrl + this.organizationPrefix + 'register_notification_socket_user'
   }
 

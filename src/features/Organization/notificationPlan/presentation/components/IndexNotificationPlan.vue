@@ -17,6 +17,10 @@ import type { NotificationPlanActionModel } from '../../Data/models/notification
 import ActiveNotificationPlanController from '../controllers/active_notification_plan_controller'
 import ActiveNotificationPlanParams from '../../Core/Params/active_notification_plan_params'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
+import DropList from '@/shared/HelpersComponents/DropList.vue'
+import IconDelete from '@/shared/icons/IconDelete.vue'
+import DeleteNotificationPlanController from '../controllers/delete_notification_plan_controller'
+import DeleteNotificationPlanParams from '../../Core/Params/delete_notification_plan_params'
 
 const indexNotificationPlanController = IndexNotificationPlanController.getInstance()
 const state = ref(indexNotificationPlanController.state.value)
@@ -99,6 +103,7 @@ const notificationActionKey = (action: NotificationPlanActionModel, index: numbe
 
 const emptyValue = computed(() => t('not_available'))
 const activatingPlanId = ref<number | null>(null)
+const deletingPlanId = ref<number | null>(null)
 const currentPage = ref(1)
 const countPerPage = ref(10)
 
@@ -141,6 +146,7 @@ watch(locale, () => {
 onMounted(fetchNotificationPlans)
 
 const activeNotificationPlanController = ActiveNotificationPlanController.getInstance()
+const deleteNotificationPlanController = DeleteNotificationPlanController.getInstance()
 const ActiveAction = async (id: number) => {
   if (activatingPlanId.value !== null) return
 
@@ -153,6 +159,33 @@ const ActiveAction = async (id: number) => {
     activatingPlanId.value = null
   }
 }
+
+const deleteNotificationPlan = async (id: number) => {
+  if (deletingPlanId.value !== null) return
+
+  deletingPlanId.value = id
+  try {
+    await deleteNotificationPlanController.DeleteNotificationPlan(
+      new DeleteNotificationPlanParams(id),
+    )
+
+    if (state.value.data.length === 1 && currentPage.value > 1) {
+      currentPage.value -= 1
+    }
+    await fetchNotificationPlans()
+  } finally {
+    deletingPlanId.value = null
+  }
+}
+
+const managementActions = (id: number) => [
+  {
+    text: t('delete'),
+    icon: IconDelete,
+    action: () => deleteNotificationPlan(id),
+  },
+]
+
 const handleChangePage = (page: number) => {
   currentPage.value = page
   fetchNotificationPlans()
@@ -197,6 +230,7 @@ const handleCountPerPage = (count: number) => {
               <th scope="col">{{ $t('hierarchies') }}</th>
               <th scope="col">{{ $t('actions') }}</th>
               <th scope="col">{{ $t('status') }}</th>
+              <th scope="col">{{ $t('management') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -248,6 +282,12 @@ const handleCountPerPage = (count: number) => {
                     aria-hidden="true"
                   ></span>
                 </button>
+              </td>
+              <td :data-label="$t('management')">
+                <DropList
+                  :action-list="managementActions(item.notification_plan_id)"
+                  :show-actions="deletingPlanId === null"
+                />
               </td>
             </tr>
           </tbody>
