@@ -889,7 +889,7 @@ onBeforeUnmount(() => {
   z-index: 10060;
   display: flex;
   width: 316px;
-  height: 100vh;
+  /* height: 100%; */
   height: 100dvh;
   max-height: 100dvh;
   max-width: calc(100vw - 90px);
