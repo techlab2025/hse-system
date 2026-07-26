@@ -7,7 +7,9 @@ import { InvestegationTaskEnum } from '../../Core/Core/InvestegationTaskEnum'
 import UpdateInvestigationTaskController from '../controllers/investigationTask/UpdateInvestigationTaskController'
 import UpdateInvestigationTaskParams from '../../Core/params/InvestigationTask/UpdateInvestigationTaskParams'
 import VerificationOfEffectiveness from '../supcomponents/VerificationOfEffectiveness.vue'
+import { useRoute } from 'vue-router'
 
+const route = useRoute()
 defineProps<{
   correctiveTasks: CapaTaskDetailsModel[]
   preventiveTasks: CapaTaskDetailsModel[]
@@ -304,6 +306,7 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
         </div>
       </template>
 
+
       <VerificationOfEffectiveness
         v-if="selectedVerificationTask"
         :key="selectedVerificationTask.id"
@@ -311,6 +314,7 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
         :props-verification-methodology="selectedVerificationTask.verificationMethodology"
         :props-verification-status="selectedVerificationTask.verificationStatus"
         :props-result-findings="selectedVerificationTask.resultFindings"
+        :capa_id="Number(route.params.id!)"
         @saved="handleVerificationSaved"
       />
     </Dialog>

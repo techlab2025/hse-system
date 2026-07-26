@@ -5,14 +5,17 @@ import RadioButton from 'primevue/radiobutton'
 import { VerificationEnum } from '../../Core/Core/VerificationEnum'
 import SetInvestigationTaskVerificationController from '../controllers/investigationTask/SetInvestigationTaskVerificationController'
 import SetInvestigationTaskVerificationParams from '../../Core/params/InvestigationTask/SetInvestigationTaskVerificationParams'
+import FetchInvestigationTaskVerificationController from '../controllers/investigationTask/FetchInvestigationTaskVerificationController'
+import FetchInvestigationTaskVerificationParams from '../../Core/params/InvestigationTask/FetchInvestigationTaskVerificationParams'
 
 const emit = defineEmits(['update:data', 'saved'])
-const { taskId, propsVerificationMethodology, propsVerificationStatus, propsResultFindings } =
+const { taskId, propsVerificationMethodology, propsVerificationStatus, propsResultFindings , capa_id } =
   defineProps<{
     taskId: number
     propsVerificationMethodology?: string
     propsVerificationStatus?: number
     propsResultFindings?: string
+    capa_id?:number
   }>()
 
 const verificationMethodology = ref(propsVerificationMethodology || '')
@@ -45,11 +48,36 @@ const emitData = () => {
   })
 }
 
-watch([verificationMethodology, resultFindings, verificationStatus], emitData, {
+watch([verificationMethodology, resultFindings, verificationStatus, capa_id], emitData, {
   immediate: true,
 })
 
 const verificationController = SetInvestigationTaskVerificationController.getInstance()
+const fetchVerificationController = FetchInvestigationTaskVerificationController.getInstance()
+
+const loadVerification = async () => {
+  if (!taskId || !capa_id) return
+
+  await fetchVerificationController.getData(new FetchInvestigationTaskVerificationParams(taskId, capa_id))
+
+  if (fetchVerificationController.isDataSuccess()) {
+    const data = fetchVerificationController.state.value.data
+    if (data) {
+      verificationMethodology.value = data.verificationMethodology || ''
+      resultFindings.value = data.resultFindings || ''
+      verificationStatus.value = data.verificationStatus || VerificationEnum.Pending
+    }
+  }
+}
+
+watch(
+  () => taskId,
+  () => {
+    loadVerification()
+  },
+  { immediate: true },
+)
+
 const submitVerification = async () => {
   if (!taskId || isSaving.value) return
 
@@ -60,6 +88,7 @@ const submitVerification = async () => {
       verificationMethodology.value,
       resultFindings.value,
       verificationStatus.value,
+      capa_id!
     )
     await verificationController.getData(params)
     if (verificationController.isDataSuccess()) emit('saved')
@@ -75,6 +104,7 @@ const submitVerification = async () => {
       <span>Verification of effectiveness</span>
       <h2>Make sure actions actually changed the risk</h2>
     </div>
+
 
     <div class="verification-form">
       <div class="editor-field">

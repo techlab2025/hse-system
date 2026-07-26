@@ -1614,6 +1614,9 @@ class ApiNames {
   public get SetInvestigationTaskVerification() {
     return this.prefix + 'set_investigation_task_verification'
   }
+  public get FetchInvestigationTaskVerification() {
+    return this.prefix + 'fetch_investigation_task_verifications'
+  }
   public get DeleteCapa() {
     return this.prefix + 'delete_capa'
   }

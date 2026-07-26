@@ -798,7 +798,8 @@ onBeforeUnmount(() => {
 }
 .modern-sidebar {
   display: flex;
-  min-height: 0;
+  height: 100dvh;
+  min-height: 100dvh;
   flex: 1 1 auto;
   color: var(--text-on-brand);
   overscroll-behavior-x: none;
@@ -810,8 +811,8 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  height: 100%;
-  min-height: 0;
+  height: 100dvh;
+  min-height: 100dvh;
   padding: 8px 0 18px;
   overflow-y: auto;
   overflow-x: hidden;
@@ -889,7 +890,6 @@ onBeforeUnmount(() => {
   z-index: 10060;
   display: flex;
   width: 316px;
-  /* height: 100%; */
   height: 100dvh;
   max-height: 100dvh;
   max-width: calc(100vw - 90px);
