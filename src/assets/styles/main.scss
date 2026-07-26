@@ -199,6 +199,14 @@ body {
   }
 }
 
+// RTL changes reading direction only. Keep the application viewport upright.
+html,
+body,
+#app {
+  rotate: 0deg !important;
+  transform: none !important;
+}
+
 .p-accordionheader {
   background: transparent !important;
 }
@@ -548,4 +556,3 @@ label {
 .capa-index-page .project-filter-content{
   display: none ;
 }
-

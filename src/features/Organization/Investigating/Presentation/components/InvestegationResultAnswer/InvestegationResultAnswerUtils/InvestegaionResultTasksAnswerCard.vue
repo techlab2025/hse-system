@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AssignedToicon from '@/shared/icons/AssignedToicon.vue'
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import type InvestegationTasksModel from '@/features/Organization/Investigating/Data/models/InvestegationTasksModel'
 import type { CapaTaskDetailsModel } from '@/features/Organization/Capa/Data/models/CapaTasksModel'
 import Dialog from 'primevue/dialog'
@@ -9,12 +10,40 @@ import { InvestegationTaskEnum } from '@/features/Organization/Capa/Core/Core/In
 import UpdateInvestigationTaskController from '@/features/Organization/Capa/Presentation/controllers/investigationTask/UpdateInvestigationTaskController'
 import UpdateInvestigationTaskParams from '@/features/Organization/Capa/Core/params/InvestigationTask/UpdateInvestigationTaskParams'
 
+interface TaskCardEmployee {
+  name?: string
+}
+
+interface TaskCardValue {
+  description?: string
+  title?: string
+  due_date?: string
+  dueDate?: string
+  date?: string
+  reason?: string
+  statusReason?: string
+  investigation_task_employees?: Array<{
+    follow_up_employee?: TaskCardEmployee
+    employee?: TaskCardEmployee
+  }>
+  investigationTaskEmployees?: Array<{
+    follow_up_employee?: TaskCardEmployee
+    employee?: TaskCardEmployee
+  }>
+  responablePerson?: { title?: string }
+  ResponsablePerson?: TaskCardEmployee
+  responsiblePersonName?: string
+  assignedTo?: TaskCardEmployee
+  assignedToName?: string
+}
+
 const props = defineProps<{
   task: InvestegationTasksModel | CapaTaskDetailsModel
   isChangeStatus?: boolean
 }>()
+const { t } = useI18n({ useScope: 'global' })
 const emit = defineEmits(['answered'])
-const taskValue = computed(() => props.task as any)
+const taskValue = computed(() => props.task as unknown as TaskCardValue)
 const statusDialogVisible = ref(false)
 const selectedStatus = ref<number>(InvestegationTaskEnum.NotStarted)
 const selectedStatusReason = ref('')
@@ -24,33 +53,33 @@ const isSavingStatus = ref(false)
 const taskStatusOptions = [
   {
     value: InvestegationTaskEnum.NotStarted,
-    label: 'Not Started',
-    description: 'Work has not yet begun.',
+    label: t('task_status_not_started'),
+    description: t('task_status_not_started_description'),
   },
   {
     value: InvestegationTaskEnum.InProgress,
-    label: 'In Progress',
-    description: 'Active work is underway.',
+    label: t('task_status_in_progress'),
+    description: t('task_status_in_progress_description'),
   },
   {
     value: InvestegationTaskEnum.PendingOnHold,
-    label: 'Pending / On Hold',
-    description: 'Work is temporarily suspended, for example awaiting resources.',
+    label: t('task_status_pending'),
+    description: t('task_status_pending_description'),
   },
   {
     value: InvestegationTaskEnum.Overdue,
-    label: 'Overdue',
-    description: 'Work is ongoing but past the target deadline.',
+    label: t('task_status_overdue'),
+    description: t('task_status_overdue_description'),
   },
   {
     value: InvestegationTaskEnum.Completed,
-    label: 'Completed',
-    description: 'Implementation is finished and ready for verification.',
+    label: t('task_status_completed'),
+    description: t('task_status_completed_description'),
   },
   {
     value: InvestegationTaskEnum.Cancelled,
-    label: 'Cancelled',
-    description: 'The action will not be implemented due to process changes or redundancy.',
+    label: t('task_status_cancelled'),
+    description: t('task_status_cancelled_description'),
   },
 ]
 
@@ -68,12 +97,15 @@ const isReasonRequired = computed(() => statusesThatNeedReason.includes(selected
 const taskStatus = computed(() => localStatus.value ?? normalizeTaskStatus(props.task?.status))
 const taskStatusLabel = computed(
   () =>
-    taskStatusOptions.find((option) => option.value === taskStatus.value)?.label || 'Not Started',
+    taskStatusOptions.find((option) => option.value === taskStatus.value)?.label ||
+    t('task_status_not_started'),
 )
 const taskTitle = computed(
-  () => taskValue.value?.description || taskValue.value?.title || 'Untitled task',
+  () => taskValue.value?.description || taskValue.value?.title || t('task_untitled'),
 )
-const dueDate = computed(() => taskValue.value?.due_date || taskValue.value?.dueDate || 'N/A')
+const dueDate = computed(
+  () => taskValue.value?.date || taskValue.value?.due_date || taskValue.value?.dueDate || 'N/A',
+)
 const responsiblePerson = computed(
   () =>
     taskValue.value?.investigation_task_employees?.[0]?.follow_up_employee?.name ||
@@ -136,10 +168,10 @@ const saveTaskStatus = async () => {
 
       <div class="info">
         <span class="date"
-          >due date :<span>{{ task?.date || dueDate }}</span></span
+          >{{ $t('task_due_date') }} :<span>{{ dueDate }}</span></span
         >
         <span class="responsable"
-          >Responsible:
+          >{{ $t('task_responsible') }}:
           <span>{{ responsiblePerson }}</span>
         </span>
       </div>
@@ -148,7 +180,7 @@ const saveTaskStatus = async () => {
         <div class="assigned-to">
           <AssignedToicon class="icon" />
           <div class="assigned-to-info">
-            <p class="assign">assigned to :</p>
+            <p class="assign">{{ $t('assigned_to') }} :</p>
 
             <p class="person">
               {{ assignedTo }}
@@ -156,8 +188,10 @@ const saveTaskStatus = async () => {
           </div>
         </div>
 
-      <div class="task-actions" v-if="!isChangeStatus">
-          <button class="change-status-btn" @click="openStatusDialog">Change status</button>
+        <div class="task-actions" v-if="!isChangeStatus">
+          <button class="change-status-btn" @click="openStatusDialog">
+            {{ $t('task_change_status') }}
+          </button>
         </div>
       </div>
     </div>
@@ -170,7 +204,7 @@ const saveTaskStatus = async () => {
     >
       <template #header>
         <div class="status-dialog-header">
-          <span>Task status</span>
+          <span>{{ $t('task_status') }}</span>
           <h3>{{ taskTitle }}</h3>
         </div>
       </template>
@@ -196,11 +230,11 @@ const saveTaskStatus = async () => {
         </label>
 
         <label v-if="isReasonRequired" class="status-reason-field">
-          <span>Reason</span>
+          <span>{{ $t('task_reason') }}</span>
           <textarea
             v-model="selectedStatusReason"
             rows="4"
-            placeholder="Add the reason for this status"
+            :placeholder="$t('task_reason_placeholder')"
           ></textarea>
         </label>
       </div>
@@ -211,7 +245,7 @@ const saveTaskStatus = async () => {
           :disabled="isSavingStatus || (isReasonRequired && !selectedStatusReason.trim())"
           @click="saveTaskStatus"
         >
-          {{ isSavingStatus ? 'Saving...' : 'Save status' }}
+          {{ isSavingStatus ? $t('task_saving') : $t('task_save_status') }}
         </button>
       </template>
     </Dialog>

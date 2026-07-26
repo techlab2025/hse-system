@@ -8,8 +8,17 @@ import IconEnglish from '@/shared/icons/IconEnglish.vue'
 const { locale, t } = useI18n({ useScope: 'global' })
 
 const applyLangToDOM = (langCode: string) => {
+  const direction = langCode === 'ar' ? 'rtl' : 'ltr'
+
   document.documentElement.lang = langCode
-  document.documentElement.dir = langCode === 'ar' ? 'rtl' : 'ltr'
+  document.documentElement.dir = direction
+
+  // Language direction must never transform the application canvas.
+  const applicationRoots = [document.documentElement, document.body, document.getElementById('app')]
+  applicationRoots.forEach((element) => {
+    element?.style.removeProperty('rotate')
+    element?.style.removeProperty('transform')
+  })
 }
 
 const targetLanguage = computed(() => (locale.value === 'ar' ? 'en' : 'ar'))
@@ -26,7 +35,6 @@ const changeLang = (langCode: string) => {
   locale.value = langCode
   localStorage.setItem('lang', langCode)
   applyLangToDOM(langCode)
-  sessionStorage.setItem('lang-reload', 'true')
   window.location.reload()
 }
 
@@ -35,10 +43,6 @@ const initializeLang = () => {
 
   locale.value = savedLang
   applyLangToDOM(savedLang)
-
-  if (sessionStorage.getItem('lang-reload')) {
-    sessionStorage.removeItem('lang-reload')
-  }
 }
 
 onMounted(() => {

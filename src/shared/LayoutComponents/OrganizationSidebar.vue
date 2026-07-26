@@ -721,6 +721,7 @@ onBeforeUnmount(() => {
         @focusout="scheduleClosePane"
       >
         <header class="side-pane-header">
+
           <div class="side-pane-heading">
             <span class="side-pane-icon">
               <SidebarUnicon :name="activeGroup.icon" />

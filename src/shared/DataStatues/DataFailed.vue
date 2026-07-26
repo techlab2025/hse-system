@@ -10,12 +10,14 @@ const props = withDefaults(
     description?: string
     link?: string
     addText?: string
+    withbtn?: boolean
   }>(),
   {
     title: '',
     description: '',
     link: '',
     addText: 'Home',
+    withbtn: true
   },
 )
 
@@ -56,7 +58,7 @@ const actionLink = computed(
           }}
         </p>
 
-        <router-link :to="actionLink" class="state-action">
+        <router-link v-if="withbtn " :to="actionLink" class="state-action">
           <span>{{ $t(addText) }}</span>
           <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path

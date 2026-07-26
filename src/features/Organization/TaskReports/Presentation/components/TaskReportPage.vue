@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import { DataSuccess } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -10,6 +11,7 @@ import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import Search from '@/shared/icons/Search.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+import { Observation } from '@/features/Organization/ObservationFactory/Core/Enums/ObservationTypeEnum'
 import InvestegaionResultTasksAnswerCard from '@/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswerUtils/InvestegaionResultTasksAnswerCard.vue'
 import FetchTaskReportParams from '../../Core/params/FetchTaskReportParams'
 import CorrectiveTasksController from '../controllers/CorrectiveTasksController'
@@ -18,6 +20,7 @@ import PreventiveTasksController from '../controllers/PreventiveTasksController'
 type ReportType = 'corrective' | 'preventive'
 
 const props = defineProps<{ type: ReportType }>()
+const { t } = useI18n({ useScope: 'global' })
 
 const controller =
   props.type === 'corrective'
@@ -32,30 +35,22 @@ const countPerPage = ref(10)
 const content = computed(() =>
   props.type === 'corrective'
     ? {
-        eyebrow: 'Corrective intelligence',
-        title: 'Corrective action report',
-        description:
-          'Track actions created to remove confirmed causes and prevent incidents from recurring.',
-        emptyTitle: 'No corrective actions found',
-        emptyDescription: 'Corrective tasks will appear here when they are assigned.',
+        eyebrow: t('report_corrective_eyebrow'),
+        title: t('report_corrective_title'),
+        description: t('report_corrective_description'),
+        emptyTitle: t('report_corrective_empty_title'),
+        emptyDescription: t('report_corrective_empty_description'),
       }
     : {
-        eyebrow: 'Preventive intelligence',
-        title: 'Preventive action report',
-        description:
-          'Monitor proactive actions designed to control risk before an incident can occur.',
-        emptyTitle: 'No preventive actions found',
-        emptyDescription: 'Preventive tasks will appear here when they are assigned.',
+        eyebrow: t('report_preventive_eyebrow'),
+        title: t('report_preventive_title'),
+        description: t('report_preventive_description'),
+        emptyTitle: t('report_preventive_empty_title'),
+        emptyDescription: t('report_preventive_empty_description'),
       },
 )
 
 const tasks = computed(() => (state.value instanceof DataSuccess ? (state.value.data ?? []) : []))
-const summary = computed(() => ({
-  visible: tasks.value.length,
-  active: tasks.value.filter((task) => ![5, 6].includes(Number(task.status))).length,
-  overdue: tasks.value.filter((task) => Number(task.status) === 4).length,
-  completed: tasks.value.filter((task) => Number(task.status) === 5).length,
-}))
 
 const fetchReport = async (
   query: string = word.value,
@@ -86,6 +81,17 @@ const handleCountPerPage = (count: number) => {
   currentPage.value = 1
   fetchReport(word.value, 1, count)
 }
+
+const observationTypeLabel = (observationType: number) => {
+  if (observationType === Observation.AccidentsType) return t('report_incident')
+  if (observationType === Observation.HazardType) return t('report_hazard')
+  return t('report_observation')
+}
+
+const observationLink = (id: number, observationType: number) =>
+  observationType === Observation.AccidentsType
+    ? `/organization/equipment-mangement/incedant/show/${id}`
+    : `/organization/equipment-mangement/observation/show/${id}`
 
 watch(
   () => controller.state.value,
@@ -128,7 +134,31 @@ onMounted(() => fetchReport())
         </svg>
       </div>
     </section>
+    <header class="report-board-header">
+      <div>
+        <span class="report-eyebrow">{{ $t('report_action_register') }}</span>
+        <h2>{{ content.title }}</h2>
+        <p>{{ $t('report_register_description') }}</p>
+      </div>
 
+      <label class="report-search">
+        <Search aria-hidden="true" />
+        <input
+          v-model="word"
+          type="search"
+          :placeholder="$t('report_search_actions')"
+          @input="searchReport"
+        />
+        <button
+          v-if="word"
+          type="button"
+          :aria-label="$t('report_clear_search')"
+          @click="clearSearch"
+        >
+          ×
+        </button>
+      </label>
+    </header>
     <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE]">
       <DataStatus :controller="state">
         <template #success>
@@ -148,34 +178,53 @@ onMounted(() => fetchReport())
           </section> -->
 
           <section class="report-board">
-            <header class="report-board-header">
-              <div>
-                <span class="report-eyebrow">Action register</span>
-                <h2>{{ content.title }}</h2>
-                <p>Assignments, deadlines, owners, and current status in one view.</p>
-              </div>
-
-              <label class="report-search">
-                <Search aria-hidden="true" />
-                <input
-                  v-model="word"
-                  type="search"
-                  placeholder="Search report actions"
-                  @input="searchReport"
-                />
-                <button v-if="word" type="button" aria-label="Clear search" @click="clearSearch">
-                  ×
-                </button>
-              </label>
-            </header>
-
             <div class="report-grid">
-              <InvestegaionResultTasksAnswerCard
-                v-for="task in tasks"
-                :key="task.id"
-                :task="task"
-                :is-change-status="true"
-              />
+              <article v-for="task in tasks" :key="task.id" class="report-card-shell">
+                <InvestegaionResultTasksAnswerCard :task="task" :is-change-status="true" />
+
+                <div class="task-reference-grid" :aria-label="$t('lessons_related_records')">
+                  <RouterLink
+                    v-if="task.project.id"
+                    class="task-reference-link"
+                    :to="`/organization/project-details/${task.project.id}`"
+                  >
+                    <span class="task-reference-mark" aria-hidden="true">P</span>
+                    <span class="task-reference-copy">
+                      <small>{{ $t('report_project') }}</small>
+                      <strong>{{ task.project.serial_name || task.project.title || 'N/A' }}</strong>
+                    </span>
+                    <span class="task-reference-arrow" aria-hidden="true">→</span>
+                  </RouterLink>
+
+                  <RouterLink
+                    v-if="task.observation?.id"
+                    class="task-reference-link observation-link"
+                    :to="observationLink(task.observation.id, Number(task.observation.type))"
+                  >
+                    <span class="task-reference-mark" aria-hidden="true">O</span>
+                    <span class="task-reference-copy">
+                      <small>{{ observationTypeLabel(Number(task.observation.type)) }}</small>
+                      <strong>{{
+                        task.observation.serialName || task.observation.serial || 'N/A'
+                      }}</strong>
+                    </span>
+                    <span class="task-reference-arrow" aria-hidden="true">→</span>
+                  </RouterLink>
+
+                  <RouterLink
+                    v-if="task.investigation_id"
+                    class="task-reference-link investigation-link"
+                    :to="`/organization/Investigating-result-answer/${task.investigation_id}`"
+                  >
+                    <span class="task-reference-mark" aria-hidden="true">I</span>
+                    <span class="task-reference-copy">
+                      <small>{{ $t('report_investigation') }}</small>
+                      <strong>{{ task.serial_name || `#${task.investigation_id}` }}</strong>
+                    </span>
+                    <span class="task-reference-arrow" aria-hidden="true">→</span>
+                  </RouterLink>
+                </div>
+              </article>
             </div>
           </section>
 
@@ -198,28 +247,31 @@ onMounted(() => fetchReport())
           <DataEmpty
             :title="content.emptyTitle"
             :description="content.emptyDescription"
-            link="/organization"
-            add-text="overview"
+            :withbtn="false"
           />
+          <!-- link="/organization" -->
+          <!-- add-text="overview" -->
         </template>
 
         <template #failed>
           <DataFailed
-            title="Unable to load the report"
-            description="The task report could not be loaded. Please try again."
-            link="/organization"
-            add-text="overview"
+            :title="$t('report_load_failed_title')"
+            :description="$t('report_load_failed_description')"
+            :withbtn="false"
           />
+          <!-- link="/organization" -->
+          <!-- add-text="overview" -->
         </template>
       </DataStatus>
 
       <template #notPermitted>
         <DataFailed
-          title="Permission required"
-          description="You do not have permission to view this report."
-          link="/organization"
-          add-text="overview"
+          :title="$t('report_permission_required')"
+          :description="$t('report_permission_description')"
+          :withbtn="false"
         />
+        <!-- link="/organization" -->
+        <!-- add-text="overview" -->
       </template>
     </PermissionBuilder>
   </main>
@@ -306,6 +358,9 @@ onMounted(() => fetchReport())
   font-weight: 900;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+}
+.report-board-header {
+  width: 100%;
 }
 
 .hero-copy h1,
@@ -431,6 +486,8 @@ onMounted(() => fetchReport())
   z-index: 1;
   width: 20px;
   color: var(--report-tone);
+  left: 100%;
+  transform: translateX(-150%);
 }
 
 .report-search input {
@@ -469,6 +526,110 @@ onMounted(() => fetchReport())
   grid-template-columns: repeat(2, minmax(300px, 1fr));
   gap: 1rem;
   align-items: stretch;
+}
+
+.report-card-shell {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.report-card-shell > :deep(.investegaion-task-card) {
+  flex: 1;
+}
+
+.task-reference-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.task-reference-link {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+  min-height: 60px;
+  padding: 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--report-tone) 18%, var(--main-border));
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--report-tone) 5%, var(--surface-1));
+  color: var(--text-strong);
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.task-reference-link:hover,
+.task-reference-link:focus-visible {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--report-tone) 42%, var(--main-border));
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--report-tone) 12%, transparent);
+  outline: none;
+}
+
+.task-reference-mark {
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--report-tone) 12%, var(--surface-1));
+  color: var(--report-tone);
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.observation-link .task-reference-mark {
+  background: var(--status-warning-soft);
+  color: var(--status-warning);
+}
+
+.investigation-link .task-reference-mark {
+  background: var(--status-success-soft);
+  color: var(--status-success);
+}
+
+.task-reference-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.task-reference-copy small {
+  color: var(--text-muted);
+  font-size: 0.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.task-reference-copy strong {
+  overflow: hidden;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.task-reference-arrow {
+  color: var(--report-tone);
+  font-size: 0.85rem;
+  transition: transform 0.2s ease;
+}
+
+.task-reference-link:hover .task-reference-arrow,
+.task-reference-link:focus-visible .task-reference-arrow {
+  transform: translateX(2px);
+}
+
+[dir='rtl'] .task-reference-link:hover .task-reference-arrow,
+[dir='rtl'] .task-reference-link:focus-visible .task-reference-arrow {
+  transform: translateX(-2px);
 }
 
 /* Report-only treatment for the shared investigation task card. */
@@ -661,6 +822,10 @@ onMounted(() => fetchReport())
 
   .report-grid :deep(.investegaion-task-card) {
     min-height: 0;
+  }
+
+  .task-reference-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>

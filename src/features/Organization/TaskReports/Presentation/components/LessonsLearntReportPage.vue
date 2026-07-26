@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { DataSuccess } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import { Observation } from '@/features/Organization/ObservationFactory/Core/Enums/ObservationTypeEnum'
@@ -15,6 +16,7 @@ import FetchTaskReportParams from '../../Core/params/FetchTaskReportParams'
 import LessonsLearntController from '../controllers/LessonsLearntController'
 
 const controller = LessonsLearntController.getInstance()
+const { t } = useI18n({ useScope: 'global' })
 const state = ref(controller.state.value)
 const word = ref('')
 const currentPage = ref(1)
@@ -68,16 +70,9 @@ const handleCountPerPage = (count: number) => {
 }
 
 const observationType = (type: number) => {
-  if (type === Observation.AccidentsType) return 'Incident'
-  if (type === Observation.HazardType) return 'Hazard'
-  return 'Observation'
-}
-
-const riskLabel = (riskLevel: number) => {
-  if (riskLevel === 3) return 'High risk'
-  if (riskLevel === 2) return 'Medium risk'
-  if (riskLevel === 1) return 'Low risk'
-  return 'Not rated'
+  if (type === Observation.AccidentsType) return t('report_incident')
+  if (type === Observation.HazardType) return t('report_hazard')
+  return t('report_observation')
 }
 
 const observationLink = (id: number, type: number) =>
@@ -100,11 +95,9 @@ onMounted(() => fetchLessons())
   <main class="lessons-report-page">
     <section class="lessons-hero">
       <div class="hero-copy">
-        <span class="eyebrow">Organizational knowledge</span>
-        <h1>Lessons learnt report</h1>
-        <p>
-          Turn observations and incidents into knowledge that helps every team make safer decisions.
-        </p>
+        <span class="eyebrow">{{ $t('lessons_organizational_knowledge') }}</span>
+        <h1>{{ $t('lessons_report_title') }}</h1>
+        <p>{{ $t('lessons_report_description') }}</p>
       </div>
 
       <div class="knowledge-mark" aria-hidden="true">
@@ -130,6 +123,31 @@ onMounted(() => fetchLessons())
       </div>
     </section>
 
+    <header class="board-header">
+      <div>
+        <span class="eyebrow">{{ $t('lessons_knowledge_library') }}</span>
+        <h2>{{ $t('lessons_connected_title') }}</h2>
+        <p>{{ $t('lessons_connected_description') }}</p>
+      </div>
+
+      <label class="lessons-search">
+        <Search aria-hidden="true" />
+        <input
+          v-model="word"
+          type="search"
+          :placeholder="$t('lessons_search_placeholder')"
+          @input="searchLessons"
+        />
+        <button
+          v-if="word"
+          type="button"
+          :aria-label="$t('report_clear_search')"
+          @click="clearSearch"
+        >
+          ×
+        </button>
+      </label>
+    </header>
     <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE]">
       <DataStatus :controller="state">
         <template #success>
@@ -149,27 +167,6 @@ onMounted(() => fetchLessons())
           </section> -->
 
           <section class="lessons-board">
-            <header class="board-header">
-              <div>
-                <span class="eyebrow">Knowledge library</span>
-                <h2>Lessons connected to field observations</h2>
-                <p>Review the learning and its original operational context together.</p>
-              </div>
-
-              <label class="lessons-search">
-                <Search aria-hidden="true" />
-                <input
-                  v-model="word"
-                  type="search"
-                  placeholder="Search lessons learnt"
-                  @input="searchLessons"
-                />
-                <button v-if="word" type="button" aria-label="Clear search" @click="clearSearch">
-                  ×
-                </button>
-              </label>
-            </header>
-
             <div class="lessons-grid">
               <article
                 v-for="(item, index) in lessons"
@@ -179,17 +176,60 @@ onMounted(() => fetchLessons())
                 <div class="lesson-card-top">
                   <span class="lesson-number">{{ String(index + 1).padStart(2, '0') }}</span>
                   <div class="card-tags">
-                    <span class="type-tag">{{ observationType(item.observation?.type) }}</span>
+                    <!-- <span class="type-tag">{{ observationType(item.observation?.type) }}</span>
                     <span class="risk-tag" :class="`risk-${item.observation?.riskLevel}`">
                       {{ riskLabel(item.observation?.riskLevel) }}
-                    </span>
+                    </span> -->
                   </div>
                 </div>
 
                 <blockquote>
                   <span aria-hidden="true">“</span>
-                  <p v-html="item.lesson_learnt || 'No lesson details provided.'"></p>
+                  <p v-html="item.lesson_learnt || $t('lessons_no_details')"></p>
                 </blockquote>
+
+                <div class="lesson-references" :aria-label="$t('lessons_related_records')">
+                  <RouterLink
+                    v-if="item.project.id"
+                    class="reference-link project-reference"
+                    :to="`/organization/project-details/${item.project.id}`"
+                  >
+                    <span class="reference-icon" aria-hidden="true">P</span>
+                    <span class="reference-copy">
+                      <small>{{ $t('report_project') }}</small>
+                      <strong>{{ item.project.serial_name || item.project.title || 'N/A' }}</strong>
+                    </span>
+                    <span class="reference-arrow" aria-hidden="true">→</span>
+                  </RouterLink>
+
+                  <RouterLink
+                    v-if="item.observation?.id"
+                    class="reference-link observation-reference"
+                    :to="observationLink(item.observation.id, Number(item.observation.type))"
+                  >
+                    <span class="reference-icon" aria-hidden="true">O</span>
+                    <span class="reference-copy">
+                      <small>{{ observationType(Number(item.observation.type)) }}</small>
+                      <strong>{{
+                        item.observation.serialName || item.observation.serial || 'N/A'
+                      }}</strong>
+                    </span>
+                    <span class="reference-arrow" aria-hidden="true">→</span>
+                  </RouterLink>
+
+                  <RouterLink
+                    v-if="item.investigation_id"
+                    class="reference-link investigation-reference"
+                    :to="`/organization/Investigating-result-answer/${item.investigation_id}`"
+                  >
+                    <span class="reference-icon" aria-hidden="true">I</span>
+                    <span class="reference-copy">
+                      <small>{{ $t('report_investigation') }}</small>
+                      <strong>{{ item.serial_name || `#${item.investigation_id}` }}</strong>
+                    </span>
+                    <span class="reference-arrow" aria-hidden="true">→</span>
+                  </RouterLink>
+                </div>
 
                 <!-- <div class="observation-context">
                   <div
@@ -266,28 +306,25 @@ onMounted(() => fetchLessons())
         </template>
         <template #empty>
           <DataEmpty
-            title="No lessons learnt found"
-            description="Lessons will appear here when they are recorded against observations."
-            link="/organization"
-            add-text="overview"
+            :title="$t('lessons_empty_title')"
+            :description="$t('lessons_empty_description')"
+            :withbtn="false"
           />
         </template>
         <template #failed>
           <DataFailed
-            title="Unable to load lessons learnt"
-            description="The lessons learnt report could not be loaded. Please try again."
-            link="/organization"
-            add-text="overview"
+            :title="$t('lessons_load_failed_title')"
+            :description="$t('lessons_load_failed_description')"
+            :withbtn="false"
           />
         </template>
       </DataStatus>
 
       <template #notPermitted>
         <DataFailed
-          title="Permission required"
-          description="You do not have permission to view this report."
-          link="/organization"
-          add-text="overview"
+          :title="$t('report_permission_required')"
+          :description="$t('report_permission_description')"
+          :withbtn="false"
         />
       </template>
     </PermissionBuilder>
@@ -464,6 +501,8 @@ onMounted(() => fetchLessons())
   z-index: 1;
   width: 20px;
   color: var(--lesson-tone);
+  left: 100% !important;
+  transform: translateX(-150%);
 }
 
 .lessons-search input {
@@ -631,6 +670,100 @@ blockquote p {
   font-weight: 700;
   line-height: 1.65;
   text-transform: none;
+}
+
+.lesson-references {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.reference-link {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+  min-height: 64px;
+  padding: 0.65rem;
+  border: 1px solid color-mix(in srgb, var(--lesson-tone) 18%, var(--main-border));
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface-2) 78%, var(--surface-1));
+  color: var(--text-strong);
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.reference-link:hover,
+.reference-link:focus-visible {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--lesson-tone) 45%, var(--main-border));
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--lesson-tone) 12%, transparent);
+  outline: none;
+}
+
+.reference-icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--lesson-tone) 12%, var(--surface-1));
+  color: var(--lesson-tone);
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.observation-reference .reference-icon {
+  background: var(--status-warning-soft);
+  color: var(--status-warning);
+}
+
+.investigation-reference .reference-icon {
+  background: var(--status-success-soft);
+  color: var(--status-success);
+}
+
+.reference-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.reference-copy small {
+  color: var(--text-muted);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.reference-copy strong {
+  overflow: hidden;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.reference-arrow {
+  color: var(--lesson-tone);
+  font-size: 0.9rem;
+  transition: transform 0.2s ease;
+}
+
+.reference-link:hover .reference-arrow,
+.reference-link:focus-visible .reference-arrow {
+  transform: translateX(2px);
+}
+
+[dir='rtl'] .reference-link:hover .reference-arrow,
+[dir='rtl'] .reference-link:focus-visible .reference-arrow {
+  transform: translateX(-2px);
 }
 
 .observation-context {
@@ -804,6 +937,10 @@ blockquote p {
 
   .lessons-summary,
   .lessons-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lesson-references {
     grid-template-columns: 1fr;
   }
 

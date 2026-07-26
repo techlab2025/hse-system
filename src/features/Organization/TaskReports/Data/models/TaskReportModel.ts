@@ -1,4 +1,5 @@
 import { CapaTaskDetailsModel } from '@/features/Organization/Capa/Data/models/CapaTasksModel'
+import HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel'
 
 type RawTask = Record<string, unknown>
 
@@ -34,10 +35,20 @@ const firstResultNotes = (data: RawTask) => {
   return stringValue(asRecord(data.task_result).notes, asRecord(data.taskResult).notes, data.notes)
 }
 
+export interface TaskReportProjectReference {
+  id: number
+  title: string
+  serial_name: string
+}
+
 export default class TaskReportModel extends CapaTaskDetailsModel {
   public description: string
   public createdAt: string
   public investigationMeetingId: number | null
+  public investigation_id: number
+  public serial_name: string
+  public observation: HazardDetailsModel
+  public project: TaskReportProjectReference
 
   constructor(data: {
     id: number
@@ -50,11 +61,19 @@ export default class TaskReportModel extends CapaTaskDetailsModel {
     responsiblePersonName: string
     investigationMeetingId: number | null
     answerNotes?: string
+    investigation_id?: number
+    serial_name?: string
+    observation?: HazardDetailsModel
+    project?: TaskReportProjectReference
   }) {
     super(data)
     this.description = data.description
     this.createdAt = data.createdAt
     this.investigationMeetingId = data.investigationMeetingId
+    this.investigation_id = data.investigation_id ?? 0
+    this.serial_name = data.serial_name ?? ''
+    this.observation = data.observation ?? HazardDetailsModel.fromMap({})
+    this.project = data.project ?? { id: 0, title: '', serial_name: '' }
   }
 
   static fromMap(value: unknown): TaskReportModel {
@@ -62,6 +81,7 @@ export default class TaskReportModel extends CapaTaskDetailsModel {
     const taskEmployee =
       asArray(data.investigation_task_employees)[0] ?? asArray(data.investigationTaskEmployees)[0]
     const employee = asRecord(taskEmployee)
+    const project = asRecord(data.project)
 
     return new TaskReportModel({
       id: numberValue(data.id, 0),
@@ -84,6 +104,14 @@ export default class TaskReportModel extends CapaTaskDetailsModel {
           ? null
           : numberValue(data.investigation_meeting_id ?? data.investigationMeetingId, 0),
       answerNotes: firstResultNotes(data),
+      investigation_id: numberValue(data.investigation_id, 0),
+      serial_name: stringValue(data.serial_name),
+      observation: HazardDetailsModel.fromMap(data.observation ?? {}),
+      project: {
+        id: numberValue(project.id ?? project.project_id, 0),
+        title: stringValue(project.title),
+        serial_name: stringValue(project.serial_name),
+      },
     })
   }
 

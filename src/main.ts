@@ -17,6 +17,9 @@ import { createAutoTranslate } from './plugins/autoTranslate'
 
 const savedLanguage = localStorage.getItem('lang') || 'en'
 
+document.documentElement.lang = savedLanguage
+document.documentElement.dir = savedLanguage === 'ar' ? 'rtl' : 'ltr'
+
 const i18n = createI18n({
   legacy: false,
   locale: savedLanguage,
