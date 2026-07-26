@@ -1,4 +1,5 @@
 import { CapaTaskDetailsModel } from '@/features/Organization/Capa/Data/models/CapaTasksModel'
+import InvestigatingDetailsModel from '@/features/Organization/Investigating/Data/models/investigatingDetailsModel'
 import HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel'
 
 type RawTask = Record<string, unknown>
@@ -48,6 +49,7 @@ export default class TaskReportModel extends CapaTaskDetailsModel {
   public investigation_id: number
   public serial_name: string
   public observation: HazardDetailsModel
+  public investigation: InvestigatingDetailsModel | null
   public project: TaskReportProjectReference
 
   constructor(data: {
@@ -65,6 +67,7 @@ export default class TaskReportModel extends CapaTaskDetailsModel {
     serial_name?: string
     observation?: HazardDetailsModel
     project?: TaskReportProjectReference
+     investigation: InvestigatingDetailsModel | null
   }) {
     super(data)
     this.description = data.description
@@ -74,6 +77,7 @@ export default class TaskReportModel extends CapaTaskDetailsModel {
     this.serial_name = data.serial_name ?? ''
     this.observation = data.observation ?? HazardDetailsModel.fromMap({})
     this.project = data.project ?? { id: 0, title: '', serial_name: '' }
+    this.investigation = data.investigation ?? null
   }
 
   static fromMap(value: unknown): TaskReportModel {
@@ -112,20 +116,21 @@ export default class TaskReportModel extends CapaTaskDetailsModel {
         title: stringValue(project.title),
         serial_name: stringValue(project.serial_name),
       },
-    })
-  }
+      investigation: InvestigatingDetailsModel.fromMap(data.investigation ?? {}),
+  })}
 
-  static examples: TaskReportModel[] = [
-    new TaskReportModel({
-      id: 1,
-      title: 'Review the corrective action plan',
-      description: 'Verify that the assigned action resolves the identified root cause.',
-      status: 2,
-      dueDate: '2026-08-15',
-      createdAt: '2026-07-20',
-      assignedToName: 'HSE team member',
-      responsiblePersonName: 'HSE manager',
-      investigationMeetingId: 1,
-    }),
-  ]
+  // static examples: TaskReportModel[] = [
+  //   new TaskReportModel({
+  //     id: 1,
+  //     title: 'Review the corrective action plan',
+  //     description: 'Verify that the assigned action resolves the identified root cause.',
+  //     status: 2,
+  //     dueDate: '2026-08-15',
+  //     createdAt: '2026-07-20',
+  //     assignedToName: 'HSE team member',
+  //     responsiblePersonName: 'HSE manager',
+  //     investigationMeetingId: 1,
+  //     investigation_id: 1,
+  //   }),
+  // ]
 }

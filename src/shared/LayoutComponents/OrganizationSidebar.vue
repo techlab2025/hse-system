@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { useRoute } from 'vue-router'
@@ -573,6 +573,7 @@ const routeGroups = computed<RouteGroup[]>(() => [
 const activeGroupKey = ref('operations')
 const searchTerm = ref('')
 const isPaneVisible = ref(false)
+const sidePaneRoutesRef = ref<HTMLElement | null>(null)
 let closePaneTimer: number | undefined
 
 const isLinkActive = (link: Routes['link']) => {
@@ -634,6 +635,10 @@ const openGroup = (groupKey: string) => {
   clearClosePaneTimer()
   selectGroup(groupKey)
   isPaneVisible.value = true
+
+  nextTick(() => {
+    if (sidePaneRoutesRef.value) sidePaneRoutesRef.value.scrollTop = 0
+  })
 }
 
 const keepPaneOpen = () => {
@@ -721,7 +726,6 @@ onBeforeUnmount(() => {
         @focusout="scheduleClosePane"
       >
         <header class="side-pane-header">
-
           <div class="side-pane-heading">
             <span class="side-pane-icon">
               <SidebarUnicon :name="activeGroup.icon" />
@@ -746,6 +750,7 @@ onBeforeUnmount(() => {
         </header>
 
         <nav
+          ref="sidePaneRoutesRef"
           class="side-pane-routes"
           :aria-label="$t('sidebar_group_routes', { group: activeGroup.label })"
         >
@@ -885,15 +890,30 @@ onBeforeUnmount(() => {
   display: flex;
   width: 316px;
   height: 100vh;
+  height: 100dvh;
+  max-height: 100dvh;
   max-width: calc(100vw - 90px);
   flex-direction: column;
   overflow-x: hidden;
   overscroll-behavior-x: none;
   padding: 22px 16px 14px;
   background:
-    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%, transparent 34%),
-    linear-gradient(155deg, var(--brand-primary-600) 0%, var(--brand-primary-700) 44%, var(--brand-primary-800) 100%);
+    radial-gradient(
+      circle at 18% 0%,
+      color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%,
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 82% 18%,
+      color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%,
+      transparent 34%
+    ),
+    linear-gradient(
+      155deg,
+      var(--brand-primary-600) 0%,
+      var(--brand-primary-700) 44%,
+      var(--brand-primary-800) 100%
+    );
   border-inline-end: 1px solid color-mix(in srgb, var(--surface-1) 12%, transparent);
   box-shadow:
     18px 0 42px color-mix(in srgb, var(--brand-primary-700) 28%, transparent),
@@ -996,6 +1016,7 @@ onBeforeUnmount(() => {
   overscroll-behavior-x: none;
   scrollbar-width: thin;
   scrollbar-color: color-mix(in srgb, var(--surface-1) 28%, transparent) transparent;
+  scrollbar-gutter: stable;
 }
 
 .side-pane-routes::-webkit-scrollbar {

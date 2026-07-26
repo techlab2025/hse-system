@@ -93,6 +93,66 @@ const observationLink = (id: number, observationType: number) =>
     ? `/organization/equipment-mangement/incedant/show/${id}`
     : `/organization/equipment-mangement/observation/show/${id}`
 
+type TaskReportItem = {
+  project?: {
+    id?: number
+    serial_name?: string
+    title?: string
+  }
+  observation?: {
+    id?: number
+    type?: number | string
+    serialName?: string
+    serial?: string | number
+  }
+  investigation?: {
+    investigationId?: number
+    serialName?: string
+  } | null
+  investigation_id?: number | string | null
+}
+
+const buildRelatedLinks = (task: TaskReportItem) => {
+  const links: Array<{
+    label: string
+    text: string
+    to: string
+    mark: string
+    className?: string
+  }> = []
+
+  if (task.project?.id) {
+    links.push({
+      label: t('report_project'),
+      text: task.project.serial_name || task.project.title || 'N/A',
+      to: `/organization/project-details/${task.project.id}`,
+      mark: 'P',
+    })
+  }
+
+  if (task.observation?.id) {
+    links.push({
+      label: observationTypeLabel(Number(task.observation.type)),
+      text: String(task.observation.serialName || task.observation.serial || 'N/A'),
+      to: observationLink(task.observation.id, Number(task.observation.type)),
+      mark: 'O',
+      className: 'observation-link',
+    })
+  }
+
+  if (task.investigation?.investigationId) {
+    links.push({
+      label: t('report_investigation'),
+      text: task.investigation?.serialName || `#${task.investigation_id}`,
+      to: `/organization/Investigating-result-answer/${task.investigation?.investigationId}`,
+      mark: 'I',
+      className: 'investigation-link',
+    })
+  }
+
+  return links
+}
+
 watch(
   () => controller.state.value,
   (newState) => {
@@ -180,50 +240,11 @@ onMounted(() => fetchReport())
           <section class="report-board">
             <div class="report-grid">
               <article v-for="task in tasks" :key="task.id" class="report-card-shell">
-                <InvestegaionResultTasksAnswerCard :task="task" :is-change-status="true" />
-
-                <div class="task-reference-grid" :aria-label="$t('lessons_related_records')">
-                  <RouterLink
-                    v-if="task.project.id"
-                    class="task-reference-link"
-                    :to="`/organization/project-details/${task.project.id}`"
-                  >
-                    <span class="task-reference-mark" aria-hidden="true">P</span>
-                    <span class="task-reference-copy">
-                      <small>{{ $t('report_project') }}</small>
-                      <strong>{{ task.project.serial_name || task.project.title || 'N/A' }}</strong>
-                    </span>
-                    <span class="task-reference-arrow" aria-hidden="true">→</span>
-                  </RouterLink>
-
-                  <RouterLink
-                    v-if="task.observation?.id"
-                    class="task-reference-link observation-link"
-                    :to="observationLink(task.observation.id, Number(task.observation.type))"
-                  >
-                    <span class="task-reference-mark" aria-hidden="true">O</span>
-                    <span class="task-reference-copy">
-                      <small>{{ observationTypeLabel(Number(task.observation.type)) }}</small>
-                      <strong>{{
-                        task.observation.serialName || task.observation.serial || 'N/A'
-                      }}</strong>
-                    </span>
-                    <span class="task-reference-arrow" aria-hidden="true">→</span>
-                  </RouterLink>
-
-                  <RouterLink
-                    v-if="task.investigation_id"
-                    class="task-reference-link investigation-link"
-                    :to="`/organization/Investigating-result-answer/${task.investigation_id}`"
-                  >
-                    <span class="task-reference-mark" aria-hidden="true">I</span>
-                    <span class="task-reference-copy">
-                      <small>{{ $t('report_investigation') }}</small>
-                      <strong>{{ task.serial_name || `#${task.investigation_id}` }}</strong>
-                    </span>
-                    <span class="task-reference-arrow" aria-hidden="true">→</span>
-                  </RouterLink>
-                </div>
+                <InvestegaionResultTasksAnswerCard
+                  :task="task"
+                  :is-change-status="true"
+                  :related-links="buildRelatedLinks(task)"
+                />
               </article>
             </div>
           </section>
@@ -723,6 +744,7 @@ onMounted(() => fetchReport())
   overflow-wrap: anywhere;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+  line-clamp: 2;
 }
 
 .report-grid :deep(.investegaion-task-card .info) {

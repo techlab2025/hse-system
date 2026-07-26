@@ -37,9 +37,18 @@ interface TaskCardValue {
   assignedToName?: string
 }
 
+interface RelatedLink {
+  label: string
+  text: string
+  to: string
+  mark: string
+  className?: string
+}
+
 const props = defineProps<{
   task: InvestegationTasksModel | CapaTaskDetailsModel
   isChangeStatus?: boolean
+  relatedLinks?: RelatedLink[]
 }>()
 const { t } = useI18n({ useScope: 'global' })
 const emit = defineEmits(['answered'])
@@ -194,6 +203,23 @@ const saveTaskStatus = async () => {
           </button>
         </div>
       </div>
+
+      <div v-if="relatedLinks?.length" class="task-reference-grid" :aria-label="$t('lessons_related_records')">
+        <RouterLink
+          v-for="link in relatedLinks"
+          :key="`${link.to}-${link.mark}`"
+          class="task-reference-link"
+          :class="link.className"
+          :to="link.to"
+        >
+          <span class="task-reference-mark" aria-hidden="true">{{ link.mark }}</span>
+          <span class="task-reference-copy">
+            <small>{{ link.label }}</small>
+            <strong>{{ link.text }}</strong>
+          </span>
+          <span class="task-reference-arrow" aria-hidden="true">→</span>
+        </RouterLink>
+      </div>
     </div>
 
     <Dialog
@@ -253,6 +279,100 @@ const saveTaskStatus = async () => {
 </template>
 
 <style scoped lang="scss">
+.task-reference-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.85rem;
+}
+
+.task-reference-link {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+  min-height: 60px;
+  padding: 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-1));
+  color: var(--text-strong);
+  text-decoration: none;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.task-reference-link:hover,
+.task-reference-link:focus-visible {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--PrimaryColor) 42%, var(--main-border));
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--PrimaryColor) 12%, transparent);
+  outline: none;
+}
+
+.task-reference-mark {
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--PrimaryColor) 12%, var(--surface-1));
+  color: var(--PrimaryColor);
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.observation-link .task-reference-mark {
+  background: var(--status-warning-soft);
+  color: var(--status-warning);
+}
+
+.investigation-link .task-reference-mark {
+  background: var(--status-success-soft);
+  color: var(--status-success);
+}
+
+.task-reference-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.task-reference-copy small {
+  color: var(--text-muted);
+  font-size: 0.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.task-reference-copy strong {
+  overflow: hidden;
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.task-reference-arrow {
+  color: var(--PrimaryColor);
+  font-size: 0.85rem;
+  transition: transform 0.2s ease;
+}
+
+.task-reference-link:hover .task-reference-arrow,
+.task-reference-link:focus-visible .task-reference-arrow {
+  transform: translateX(2px);
+}
+
+[dir='rtl'] .task-reference-link:hover .task-reference-arrow,
+[dir='rtl'] .task-reference-link:focus-visible .task-reference-arrow {
+  transform: translateX(-2px);
+}
+
 .task-status-pill {
   width: fit-content;
   border-radius: 999px;
