@@ -1782,5 +1782,8 @@
   "Performance snapshot": "ملخص الأداء",
   "records": "سجلات",
   "Inspection activity": "نشاط التفتيش",
-  "Submitted results": "النتائج المقدمة"
+  "Submitted results": "النتائج المقدمة",
+  "corrective_report": "تقرير الإجراءات التصحيحية",
+  "preventive_report": "تقرير الإجراءات الوقائية",
+  "lessons_learnt_report": "تقرير الدروس المستفادة"
 }

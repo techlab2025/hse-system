@@ -1768,5 +1768,8 @@
   "Performance snapshot": "Performance snapshot",
   "records": "records",
   "Inspection activity": "Inspection activity",
-  "Submitted results": "Submitted results"
+  "Submitted results": "Submitted results",
+  "corrective_report": "Corrective Report",
+  "preventive_report": "Preventive Report",
+  "lessons_learnt_report": "Lessons Learnt Report"
 }

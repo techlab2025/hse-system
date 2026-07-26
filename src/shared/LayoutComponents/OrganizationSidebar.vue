@@ -58,6 +58,24 @@ const OperationsRoutes = ref<Routes[]>([
     icon: 'shield-check',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
+  // {
+  //   link: '/organization/corrective-report',
+  //   name: 'corrective_report',
+  //   icon: 'file-check-alt',
+  //   permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  // },
+  // {
+  //   link: '/organization/preventive-report',
+  //   name: 'preventive_report',
+  //   icon: 'clipboard-notes',
+  //   permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  // },
+  {
+    link: '/organization/lessons-learnt-report',
+    name: 'lessons_learnt_report',
+    icon: 'lightbulb-alt',
+    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
   {
     link: '/organization/equipment-mangement/incedant?isAll=1',
     name: 'Incidents',

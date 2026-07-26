@@ -1422,6 +1422,15 @@ class ApiNames {
   public get IndexTasks() {
     return this.prefix + 'fetch_investigation_tasks'
   }
+  public get FetchCorrectiveTasks() {
+    return this.prefix + 'fetch_corrective_tasks'
+  }
+  public get FetchPreventiveTasks() {
+    return this.prefix + 'fetch_preventive_tasks'
+  }
+  public get FetchLessonsLearnt() {
+    return this.prefix + 'fetch_lesson_learnt'
+  }
   public get FetchProjectStatistics() {
     return this.prefix + 'fetch_project_statistics'
   }
