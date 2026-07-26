@@ -2,7 +2,7 @@
 import { useRoute } from 'vue-router'
 import ShowCapaDetailsParams from '../../Core/params/ShowCapaDetailsParams'
 import ShowCapaDetailsController from '../controllers/ShowCapaDetailsController'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
@@ -10,30 +10,16 @@ import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 // import Editor from 'primevue/editor'
 // import CapaActionPlan from './CapaActionPlan.vue'
 import CapaActionPlanDetails from './CapaActionPlanDetails.vue'
-import VerificationOfEffectiveness from '../supcomponents/VerificationOfEffectiveness.vue'
-import { watch } from 'vue'
 
 const showCapaDetailsController = ShowCapaDetailsController.getInstance()
 const state = computed(() => showCapaDetailsController.state.value)
 const route = useRoute()
-
-const lessonLearnt = ref('')
-const capaActionPlan = ref()
-const verificationOfEffectiveness = ref()
 
 const ShowCapaDetails = () => {
   const showCapaSetailsParams = new ShowCapaDetailsParams({
     observationcapaId: Number(route.params.id),
   })
   showCapaDetailsController.getData(showCapaSetailsParams)
-}
-
-const setCapaActionPlan = (data: any) => {
-  capaActionPlan.value = data
-}
-
-const setVerificationOfEffectiveness = (data: any) => {
-  verificationOfEffectiveness.value = data
 }
 
 const summaryCards = computed(() => [
@@ -111,15 +97,9 @@ onMounted(() => {
         </section> -->
 
         <CapaActionPlanDetails
-          :correctiveTasks="state.data?.investigation?.correctiveTask ?? []"
-          :preventiveTasks="state.data?.investigation?.preventiveTask ?? []"
+          :corrective-tasks="state.data?.investigation?.correctiveTask ?? []"
+          :preventive-tasks="state.data?.investigation?.preventiveTask ?? []"
           @answered="ShowCapaDetails"
-        />
-        <VerificationOfEffectiveness
-          :propsVerificationMethodology="state.data?.verificationMethodology"
-          :obsrvationId="Number(state.data?.observationCapaId)"
-          :propsVerificationStatus="state.data?.verificationStatus"
-          :propsResultFindings="state.data?.resultFindings"
         />
         <section class="lesson-section">
           <div class="saved-lesson">

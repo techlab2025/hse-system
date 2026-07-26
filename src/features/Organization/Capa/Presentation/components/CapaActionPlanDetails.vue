@@ -6,13 +6,16 @@ import RadioButton from 'primevue/radiobutton'
 import { InvestegationTaskEnum } from '../../Core/Core/InvestegationTaskEnum'
 import UpdateInvestigationTaskController from '../controllers/investigationTask/UpdateInvestigationTaskController'
 import UpdateInvestigationTaskParams from '../../Core/params/InvestigationTask/UpdateInvestigationTaskParams'
+import VerificationOfEffectiveness from '../supcomponents/VerificationOfEffectiveness.vue'
 
 defineProps<{
   correctiveTasks: CapaTaskDetailsModel[]
   preventiveTasks: CapaTaskDetailsModel[]
 }>()
-const emit = defineEmits(['answered', 'statusChanged'])
+const emit = defineEmits(['answered', 'statusChanged', 'verificationSaved'])
 const statusDialogVisible = ref(false)
+const verificationDialogVisible = ref(false)
+const selectedVerificationTask = ref<CapaTaskDetailsModel | null>(null)
 const selectedStatusTask = ref<CapaTaskDetailsModel | null>(null)
 const selectedStatus = ref(0)
 const selectedStatusReason = ref('')
@@ -67,7 +70,7 @@ const statusLabel = (status?: number) => {
 const openStatusDialog = (task: CapaTaskDetailsModel) => {
   selectedStatusTask.value = task
   selectedStatus.value = taskStatus(task)
-  selectedStatusReason.value = (task as any)?.reason || (task as any)?.statusReason || ''
+  selectedStatusReason.value = task.reason || ''
   statusDialogVisible.value = true
 }
 
@@ -87,6 +90,9 @@ const saveTaskStatus = async () => {
     await updateInvestigationTaskController.getData(updateInvestigationTaskParams)
 
     localStatuses.value[selectedStatusTask.value.id] = selectedStatus.value
+    selectedStatusTask.value.reason = isReasonRequired.value
+      ? selectedStatusReason.value.trim()
+      : ''
     emit('statusChanged', {
       taskId: selectedStatusTask.value.id,
       status: selectedStatus.value,
@@ -96,6 +102,17 @@ const saveTaskStatus = async () => {
   } finally {
     isSavingStatus.value = false
   }
+}
+
+const handleVerificationSaved = () => {
+  verificationDialogVisible.value = false
+  emit('verificationSaved')
+  emit('answered')
+}
+
+const openVerificationDialog = (task: CapaTaskDetailsModel) => {
+  selectedVerificationTask.value = task
+  verificationDialogVisible.value = true
 }
 </script>
 
@@ -120,9 +137,19 @@ const saveTaskStatus = async () => {
           <div v-for="task in correctiveTasks" :key="task.id" class="task-card">
             <div class="task-card-header">
               <h4>{{ task.title || 'Untitled Actions' }}</h4>
-              <span class="task-status-pill" :class="`status-${taskStatus(task)}`">
-                {{ statusLabel(taskStatus(task)) }}
-              </span>
+              <div
+                class="task-status-wrap"
+                :class="{ 'has-reason': task.reason }"
+                :tabindex="task.reason ? 0 : undefined"
+              >
+                <span class="task-status-pill" :class="`status-${taskStatus(task)}`">
+                  {{ statusLabel(taskStatus(task)) }}
+                </span>
+                <div v-if="task.reason" class="task-reason-popover" role="tooltip">
+                  <strong>Status reason</strong>
+                  <p>{{ task.reason }}</p>
+                </div>
+              </div>
             </div>
             <div class="task-meta">
               <p>
@@ -141,6 +168,9 @@ const saveTaskStatus = async () => {
             <div class="task-actions">
               <button class="change-status-btn" @click="openStatusDialog(task)">
                 Change status
+              </button>
+              <button class="verification-task-btn" @click="openVerificationDialog(task)">
+                Verify effectiveness
               </button>
             </div>
           </div>
@@ -162,9 +192,19 @@ const saveTaskStatus = async () => {
           <div v-for="task in preventiveTasks" :key="task.id" class="task-card">
             <div class="task-card-header">
               <h4>{{ task.title || 'Untitled task' }}</h4>
-              <span class="task-status-pill" :class="`status-${taskStatus(task)}`">
-                {{ statusLabel(taskStatus(task)) }}
-              </span>
+              <div
+                class="task-status-wrap"
+                :class="{ 'has-reason': task.reason }"
+                :tabindex="task.reason ? 0 : undefined"
+              >
+                <span class="task-status-pill" :class="`status-${taskStatus(task)}`">
+                  {{ statusLabel(taskStatus(task)) }}
+                </span>
+                <div v-if="task.reason" class="task-reason-popover" role="tooltip">
+                  <strong>Status reason</strong>
+                  <p>{{ task.reason }}</p>
+                </div>
+              </div>
             </div>
             <div class="task-meta">
               <p>
@@ -183,6 +223,9 @@ const saveTaskStatus = async () => {
             <div class="task-actions">
               <button class="change-status-btn" @click="openStatusDialog(task)">
                 Change status
+              </button>
+              <button class="verification-task-btn" @click="openVerificationDialog(task)">
+                Verify effectiveness
               </button>
             </div>
           </div>
@@ -245,6 +288,32 @@ const saveTaskStatus = async () => {
         </button>
       </template>
     </Dialog>
+
+    <Dialog
+      v-model:visible="verificationDialogVisible"
+      modal
+      :dismissable-mask="true"
+      :style="{ width: '72rem', maxWidth: '95vw' }"
+      class="verification-dialog"
+    >
+      <template #header>
+        <div class="verification-dialog-header">
+          <span>Action effectiveness</span>
+          <h3>{{ selectedVerificationTask?.title || 'Verify task effectiveness' }}</h3>
+          <p>Document the methodology, findings, and final verification decision.</p>
+        </div>
+      </template>
+
+      <VerificationOfEffectiveness
+        v-if="selectedVerificationTask"
+        :key="selectedVerificationTask.id"
+        :task-id="selectedVerificationTask.id"
+        :props-verification-methodology="selectedVerificationTask.verificationMethodology"
+        :props-verification-status="selectedVerificationTask.verificationStatus"
+        :props-result-findings="selectedVerificationTask.resultFindings"
+        @saved="handleVerificationSaved"
+      />
+    </Dialog>
   </section>
 </template>
 
@@ -273,6 +342,36 @@ const saveTaskStatus = async () => {
     color: var(--header-page-color);
     font-size: 1.35rem;
     font-weight: 900;
+  }
+}
+
+.verification-dialog-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+
+  > span {
+    color: var(--PrimaryColor);
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h3,
+  p {
+    margin: 0;
+  }
+
+  h3 {
+    color: var(--header-page-color);
+    font-size: 1.2rem;
+    font-weight: 900;
+  }
+
+  p {
+    color: var(--GrayText-1);
+    font-size: 0.82rem;
   }
 }
 
@@ -366,6 +465,8 @@ const saveTaskStatus = async () => {
 }
 
 .task-status-pill {
+  display: inline-flex;
+  align-items: center;
   flex-shrink: 0;
   border-radius: 999px;
   font-size: 0.75rem;
@@ -402,6 +503,81 @@ const saveTaskStatus = async () => {
   &.status-6 {
     background: var(--brand-primary-100);
     color: var(--brand-primary-700);
+  }
+}
+
+.task-status-wrap {
+  position: relative;
+  flex-shrink: 0;
+  border-radius: 999px;
+  outline: none;
+
+  &.has-reason {
+    cursor: help;
+  }
+
+  &.has-reason:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 18%, transparent);
+  }
+
+  &:hover .task-reason-popover,
+  &:focus .task-reason-popover,
+  &:focus-within .task-reason-popover {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+}
+
+.task-reason-popover {
+  position: absolute;
+  z-index: 20;
+  inset-inline-end: 0;
+  top: calc(100% + 0.65rem);
+  visibility: hidden;
+  width: min(280px, 75vw);
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 22%, var(--main-border));
+  border-radius: 13px;
+  background: var(--BgWhite);
+  box-shadow: 0 18px 38px color-mix(in srgb, var(--text-strong) 18%, transparent);
+  opacity: 0;
+  padding: 0.8rem 0.9rem;
+  pointer-events: none;
+  transform: translateY(-5px);
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    visibility 0.18s ease;
+
+  &::before {
+    position: absolute;
+    inset-inline-end: 1rem;
+    bottom: 100%;
+    width: 0;
+    height: 0;
+    border-right: 7px solid transparent;
+    border-bottom: 7px solid var(--BgWhite);
+    border-left: 7px solid transparent;
+    content: '';
+  }
+
+  strong {
+    display: block;
+    color: var(--PrimaryColor);
+    font-size: 0.74rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  p {
+    margin: 0.35rem 0 0;
+    color: var(--header-page-color);
+    font-size: 0.84rem;
+    font-weight: 700;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
   }
 }
 
@@ -449,7 +625,8 @@ const saveTaskStatus = async () => {
   border-top: 1px dashed var(--main-border);
 }
 
-.change-status-btn {
+.change-status-btn,
+.verification-task-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -474,6 +651,12 @@ const saveTaskStatus = async () => {
     filter: brightness(0.95);
     box-shadow: 0 12px 22px color-mix(in srgb, var(--PrimaryColor) 22%, transparent);
   }
+}
+
+.verification-task-btn {
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 35%, var(--main-border));
+  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--BgWhite));
+  color: var(--PrimaryColor);
 }
 
 .status-dialog-header {

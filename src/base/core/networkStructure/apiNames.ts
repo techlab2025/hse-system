@@ -1423,13 +1423,13 @@ class ApiNames {
     return this.prefix + 'fetch_investigation_tasks'
   }
   public get FetchCorrectiveTasks() {
-    return this.prefix + 'fetch_corrective_tasks'
+    return this.prefix + 'fetch_corrective_action_plan'
   }
   public get FetchPreventiveTasks() {
-    return this.prefix + 'fetch_preventive_tasks'
+    return this.prefix + 'fetch_preventive_action_plan'
   }
   public get FetchLessonsLearnt() {
-    return this.prefix + 'fetch_lesson_learnt'
+    return this.prefix + 'fetch_investigations_lesson_learnt'
   }
   public get FetchProjectStatistics() {
     return this.prefix + 'fetch_project_statistics'
@@ -1611,6 +1611,9 @@ class ApiNames {
   public get UpdateCapa() {
     return this.prefix + 'update_capa'
   }
+  public get SetInvestigationTaskVerification() {
+    return this.prefix + 'set_investigation_task_verification'
+  }
   public get DeleteCapa() {
     return this.prefix + 'delete_capa'
   }
@@ -1722,7 +1725,6 @@ class ApiNames {
   public get RefreshNotification() {
     return this.baseUrl + this.organizationPrefix + 'register_notification_socket_user'
   }
-
 }
 
 export { ApiNames }

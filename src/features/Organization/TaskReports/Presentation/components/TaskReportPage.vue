@@ -132,7 +132,7 @@ onMounted(() => fetchReport())
     <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE]">
       <DataStatus :controller="state">
         <template #success>
-          <section class="report-summary" aria-label="Current page summary">
+          <!-- <section class="report-summary" aria-label="Current page summary">
             <article>
               <span>Visible actions</span><strong>{{ summary.visible }}</strong>
             </article>
@@ -145,7 +145,7 @@ onMounted(() => fetchReport())
             <article class="is-completed">
               <span>Completed</span><strong>{{ summary.completed }}</strong>
             </article>
-          </section>
+          </section> -->
 
           <section class="report-board">
             <header class="report-board-header">

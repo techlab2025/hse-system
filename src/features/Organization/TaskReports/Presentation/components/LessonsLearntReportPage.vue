@@ -188,10 +188,10 @@ onMounted(() => fetchLessons())
 
                 <blockquote>
                   <span aria-hidden="true">“</span>
-                  <p>{{ item.lesson_learnt || 'No lesson details provided.' }}</p>
+                  <p v-html="item.lesson_learnt || 'No lesson details provided.'"></p>
                 </blockquote>
 
-                <div class="observation-context">
+                <!-- <div class="observation-context">
                   <div
                     v-if="item.observation?.image || item.observation?.media?.[0]?.url"
                     class="context-image"
@@ -246,7 +246,7 @@ onMounted(() => fetchLessons())
                   >
                     View source <span aria-hidden="true">→</span>
                   </RouterLink>
-                </footer>
+                </footer> -->
               </article>
             </div>
           </section>

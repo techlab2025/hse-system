@@ -1,4 +1,4 @@
-export class  CapaTaskDetailsModel {
+export class CapaTaskDetailsModel {
   public id: number
   public title: string
   public status: number
@@ -6,6 +6,11 @@ export class  CapaTaskDetailsModel {
   public assignedToName: string
   public responsiblePersonName: string
   public answerNotes: string
+  public verificationMethodology: string
+  public verificationStatus: number
+  public resultFindings: string
+  public reason: string
+
 
   constructor(data: {
     id: number
@@ -15,6 +20,10 @@ export class  CapaTaskDetailsModel {
     assignedToName: string
     responsiblePersonName: string
     answerNotes?: string
+    verificationMethodology?: string
+    verificationStatus?: number
+    resultFindings?: string
+    reason?: string
   }) {
     this.id = data.id
     this.title = data.title
@@ -23,6 +32,10 @@ export class  CapaTaskDetailsModel {
     this.assignedToName = data.assignedToName
     this.responsiblePersonName = data.responsiblePersonName
     this.answerNotes = data.answerNotes ?? ''
+    this.verificationMethodology = data.verificationMethodology ?? ''
+    this.verificationStatus = data.verificationStatus ?? 0
+    this.resultFindings = data.resultFindings ?? ''
+    this.reason = data.reason ?? ''
   }
 
   static fromMap(data: any): CapaTaskDetailsModel {
@@ -54,6 +67,11 @@ export class  CapaTaskDetailsModel {
         data?.taskResult?.notes ||
         data?.notes ||
         '',
+      verificationMethodology:
+        data?.verification_methodology || data?.verificationMethodology || '',
+      verificationStatus: data?.verification_status ?? data?.verificationStatus ?? 0,
+      resultFindings: data?.result_findings || data?.resultFindings || '',
+      reason: data?.reason || data?.Reason || '',
     })
   }
 }

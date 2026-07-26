@@ -2,14 +2,14 @@
 import { ref, watch } from 'vue'
 import Editor from 'primevue/editor'
 import RadioButton from 'primevue/radiobutton'
-import UpdateCapaController from '../controllers/UpdateCapaController'
-import updateCapaParms from '../../Core/params/updateCapaParms'
 import { VerificationEnum } from '../../Core/Core/VerificationEnum'
+import SetInvestigationTaskVerificationController from '../controllers/investigationTask/SetInvestigationTaskVerificationController'
+import SetInvestigationTaskVerificationParams from '../../Core/params/InvestigationTask/SetInvestigationTaskVerificationParams'
 
-const emit = defineEmits(['update:data'])
-const { obsrvationId, propsVerificationMethodology, propsVerificationStatus, propsResultFindings } =
+const emit = defineEmits(['update:data', 'saved'])
+const { taskId, propsVerificationMethodology, propsVerificationStatus, propsResultFindings } =
   defineProps<{
-    obsrvationId: number
+    taskId: number
     propsVerificationMethodology?: string
     propsVerificationStatus?: number
     propsResultFindings?: string
@@ -20,6 +20,7 @@ const resultFindings = ref(propsResultFindings || '')
 const verificationStatus = ref<VerificationEnum>(
   propsVerificationStatus || VerificationEnum.Pending,
 )
+const isSaving = ref(false)
 
 const statusOptions = [
   {
@@ -48,15 +49,23 @@ watch([verificationMethodology, resultFindings, verificationStatus], emitData, {
   immediate: true,
 })
 
-const updateCapaController = UpdateCapaController.getInstance()
+const verificationController = SetInvestigationTaskVerificationController.getInstance()
 const submitVerification = async () => {
-  const updateCapaParams = new updateCapaParms({
-    observationcapaId: obsrvationId,
-    result_findings: resultFindings.value,
-    verification_methodology: verificationMethodology.value,
-    verification_status: verificationStatus.value,
-  })
-  await updateCapaController.getData(updateCapaParams)
+  if (!taskId || isSaving.value) return
+
+  isSaving.value = true
+  try {
+    const params = new SetInvestigationTaskVerificationParams(
+      taskId,
+      verificationMethodology.value,
+      resultFindings.value,
+      verificationStatus.value,
+    )
+    await verificationController.getData(params)
+    if (verificationController.isDataSuccess()) emit('saved')
+  } finally {
+    isSaving.value = false
+  }
 }
 </script>
 
@@ -110,7 +119,13 @@ const submitVerification = async () => {
       </div>
     </div>
 
-    <button class="btn btn-primary w-full mt-2" @click="submitVerification">Save</button>
+    <button
+      class="btn btn-primary w-full mt-2"
+      :disabled="isSaving || !taskId"
+      @click="submitVerification"
+    >
+      {{ isSaving ? 'Saving verification...' : 'Save verification' }}
+    </button>
   </section>
 </template>
 
