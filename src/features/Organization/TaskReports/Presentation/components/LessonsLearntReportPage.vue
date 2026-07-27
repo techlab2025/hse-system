@@ -12,6 +12,8 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import Search from '@/shared/icons/Search.vue'
+import ReportFilterDialog from '../subComponents/ReportFilterDialog.vue'
+import ExportReportPdf from '../subComponents/ExportReportPdf.vue'
 import FetchTaskReportParams from '../../Core/params/FetchTaskReportParams'
 import LessonsLearntController from '../controllers/LessonsLearntController'
 
@@ -21,8 +23,38 @@ const state = ref(controller.state.value)
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
+const isFilterDialogVisible = ref(false)
+const selectedFromDate = ref('')
+const selectedToDate = ref('')
 
 const lessons = computed(() => (state.value instanceof DataSuccess ? (state.value.data ?? []) : []))
+
+const parseDateValue = (value?: string | null) => {
+  if (!value) return null
+
+  const trimmed = String(value).trim()
+  if (!trimmed) return null
+
+  const direct = new Date(trimmed)
+  if (!Number.isNaN(direct.getTime())) return direct
+
+  const normalized = trimmed.split('/').reverse().join('-')
+  const fallback = new Date(normalized)
+  return Number.isNaN(fallback.getTime()) ? null : fallback
+}
+
+const matchesFilters = (item: Record<string, any>) => {
+  const itemDate = parseDateValue(item?.observation?.date || item?.observation?.createdAt || item?.createdAt)
+  const fromDate = parseDateValue(selectedFromDate.value)
+  const toDate = parseDateValue(selectedToDate.value)
+
+  if (fromDate && itemDate && itemDate < fromDate) return false
+  if (toDate && itemDate && itemDate > toDate) return false
+
+  return true
+}
+
+const visibleLessons = computed(() => lessons.value.filter((item) => matchesFilters(item as Record<string, any>)))
 
 // const summary = computed(() => ({
 //   visible: lessons.value.length,
@@ -43,8 +75,10 @@ const fetchLessons = async (
   query: string = word.value,
   page: number = currentPage.value,
   limit: number = countPerPage.value,
+  fromDate: string = selectedFromDate.value,
+  toDate: string = selectedToDate.value,
 ) => {
-  await controller.fetch(new FetchTaskReportParams(query, page, limit, 1))
+  await controller.fetch(new FetchTaskReportParams(query, page, limit, 1, null, fromDate, toDate))
 }
 
 const searchLessons = debounce(() => {
@@ -67,6 +101,24 @@ const handleCountPerPage = (count: number) => {
   countPerPage.value = count
   currentPage.value = 1
   fetchLessons(word.value, 1, count)
+}
+
+const openFilterDialog = () => {
+  isFilterDialogVisible.value = true
+}
+
+const applyFilters = ({ fromDate, toDate }: { status: string | number; fromDate: string; toDate: string }) => {
+  selectedFromDate.value = fromDate
+  selectedToDate.value = toDate
+  currentPage.value = 1
+  fetchLessons(word.value, 1, countPerPage.value, fromDate, toDate)
+}
+
+const resetFilters = () => {
+  selectedFromDate.value = ''
+  selectedToDate.value = ''
+  currentPage.value = 1
+  fetchLessons(word.value, 1, countPerPage.value, '', '')
 }
 
 const observationType = (type: number) => {
@@ -130,24 +182,50 @@ onMounted(() => fetchLessons())
         <p>{{ $t('lessons_connected_description') }}</p>
       </div>
 
-      <label class="lessons-search">
-        <Search aria-hidden="true" />
-        <input
-          v-model="word"
-          type="search"
-          :placeholder="$t('lessons_search_placeholder')"
-          @input="searchLessons"
-        />
-        <button
-          v-if="word"
-          type="button"
-          :aria-label="$t('report_clear_search')"
-          @click="clearSearch"
-        >
-          ×
+      <div class="report-actions">
+        <button type="button" class="report-action-btn report-action-btn--ghost" @click="openFilterDialog">
+          {{ $t('Filter') }}
         </button>
-      </label>
+        <ExportReportPdf
+          :target-selector="'.lessons-board'"
+          :file-name="'lessons-report'"
+          :data="visibleLessons"
+          :columns="[
+            { key: 'lesson_learnt', label: $t('lessons_report_title') },
+            { key: 'project.serial_name', label: $t('report_project') },
+            { key: 'observation.serialName', label: $t('report_observation') },
+          ]"
+        />
+        <label class="lessons-search">
+          <Search aria-hidden="true" />
+          <input
+            v-model="word"
+            type="search"
+            :placeholder="$t('lessons_search_placeholder')"
+            @input="searchLessons"
+          />
+          <button
+            v-if="word"
+            type="button"
+            :aria-label="$t('report_clear_search')"
+            @click="clearSearch"
+          >
+            ×
+          </button>
+        </label>
+      </div>
     </header>
+    <ReportFilterDialog
+      v-model="isFilterDialogVisible"
+      :show-status-filter="false"
+      :initial-from-date="selectedFromDate"
+      :initial-to-date="selectedToDate"
+      :title="$t('Filter')"
+      :subtitle="$t('lessons_connected_description')"
+      @apply="applyFilters"
+      @reset="resetFilters"
+    />
+
     <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE]">
       <DataStatus :controller="state">
         <template #success>
@@ -169,7 +247,7 @@ onMounted(() => fetchLessons())
           <section class="lessons-board">
             <div class="lessons-grid">
               <article
-                v-for="(item, index) in lessons"
+                v-for="(item, index) in visibleLessons"
                 :key="`${item.observation?.id ?? 'lesson'}-${index}`"
                 class="lesson-card"
               >
@@ -393,6 +471,35 @@ onMounted(() => fetchLessons())
   color: var(--text-strong);
   font-weight: 900;
   line-height: 1.15;
+}
+
+.report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+}
+
+.report-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.report-action-btn--ghost {
+  background: color-mix(in srgb, var(--main-border) 68%, transparent);
+  color: var(--text-strong);
+}
+
+.report-action-btn--primary {
+  background: var(--identity-primary);
+  color: white;
 }
 
 .hero-copy h1 {

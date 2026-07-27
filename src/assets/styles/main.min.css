@@ -25486,6 +25486,13 @@ body div {
   text-transform: capitalize;
 }
 
+html,
+body,
+#app {
+  rotate: 0deg !important;
+  transform: none !important;
+}
+
 .p-accordionheader {
   background: transparent !important;
 }
@@ -25800,4 +25807,33 @@ label {
 }
 .capa-index-page .project-filter-content {
   display: none;
+}
+
+.p-dialog-mask {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 1rem !important;
+  overflow-y: auto !important;
+}
+
+.p-dialog {
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100dvh - 2rem);
+  margin: auto !important;
+  transform: none !important;
+}
+
+.p-dialog-content {
+  max-height: calc(100dvh - 8rem);
+  overflow-y: auto;
 }/*# sourceMappingURL=main.min.css.map */

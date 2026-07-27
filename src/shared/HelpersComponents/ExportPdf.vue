@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import jsPDF from 'jspdf'
-import html2canvas from 'html2canvas'
+import html2canvas from 'html2canvas-pro'
 import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import PdefActionIcon from '../icons/PdefActionIcon.vue'
 
