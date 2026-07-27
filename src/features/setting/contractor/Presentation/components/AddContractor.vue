@@ -18,6 +18,7 @@ const addContractor = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
   console.log(params.value, 'params')
   await addContractorController.addContractor(params.value as AddContractorParams, router)
+  emit('update:data')
 }
 const setParams = (data: Params) => {
   params.value = data
@@ -29,7 +30,7 @@ const setParams = (data: Params) => {
     <ContractorForm ref="formRef" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary w-full" @click="$emit('update:data')">
+      <button type="submit" class="btn btn-primary w-full">
         {{ $t('save') }}
       </button>
     </div>

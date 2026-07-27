@@ -282,6 +282,7 @@ onMounted(async () => {
                   @update:model-value="UpdateData"
                   @update:reload="fetchEmployees"
                   :hascontent="isSelectHasContent[index]"
+                  @reload-data="fetchEmployees"
                 >
                   <!-- <template #reloadHeader>
                     <div class="employee-mode-actions flex gap-2 items-center">
@@ -343,6 +344,7 @@ onMounted(async () => {
                   :isDialog="true"
                   v-model:dialogVisible="InjuryVisable"
                   :reload="true"
+                  @reload-data="fetchInjuryTypes"
                 >
                   <template #LabelHeader>
                     <span class="add-dialog" @click="InjuryVisable = true">{{ $t('New') }}</span>
@@ -625,7 +627,7 @@ onMounted(async () => {
 
 .injury-timeline-card .input {
   min-height: 46px;
-  border: 1px solid color-mix(in srgb, var(--brand-primary-200) 90%, transparent);
+  /* border: 1px solid color-mix(in srgb, var(--brand-primary-200) 90%, transparent); */
   border-radius: 14px;
   background: var(--surface-1);
   box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);

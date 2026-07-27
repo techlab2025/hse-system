@@ -74,6 +74,7 @@ const emit = defineEmits<{
   (event: 'update:slot', value: unknown): void
   (event: 'update:dialogVisible', value: boolean): void
   (event: 'close', value: boolean): void
+  (event: 'reload-data', value: unknown): void
 }>()
 
 // -----------------------------------------------------------------------------
@@ -380,6 +381,7 @@ async function reloadData(): Promise<void> {
   }
 
   dynamicOptions.value = props.staticOptions ?? props.options ?? []
+  emit('reload-data')
 }
 
 function closeDialog(): void {
