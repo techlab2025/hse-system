@@ -44,7 +44,9 @@ const parseDateValue = (value?: string | null) => {
 }
 
 const matchesFilters = (item: Record<string, any>) => {
-  const itemDate = parseDateValue(item?.observation?.date || item?.observation?.createdAt || item?.createdAt)
+  const itemDate = parseDateValue(
+    item?.observation?.date || item?.observation?.createdAt || item?.createdAt,
+  )
   const fromDate = parseDateValue(selectedFromDate.value)
   const toDate = parseDateValue(selectedToDate.value)
 
@@ -54,7 +56,9 @@ const matchesFilters = (item: Record<string, any>) => {
   return true
 }
 
-const visibleLessons = computed(() => lessons.value.filter((item) => matchesFilters(item as Record<string, any>)))
+const visibleLessons = computed(() =>
+  lessons.value.filter((item) => matchesFilters(item as Record<string, any>)),
+)
 
 // const summary = computed(() => ({
 //   visible: lessons.value.length,
@@ -107,7 +111,14 @@ const openFilterDialog = () => {
   isFilterDialogVisible.value = true
 }
 
-const applyFilters = ({ fromDate, toDate }: { status: string | number; fromDate: string; toDate: string }) => {
+const applyFilters = ({
+  fromDate,
+  toDate,
+}: {
+  status: string | number
+  fromDate: string
+  toDate: string
+}) => {
   selectedFromDate.value = fromDate
   selectedToDate.value = toDate
   currentPage.value = 1
@@ -131,6 +142,27 @@ const observationLink = (id: number, type: number) =>
   type === Observation.AccidentsType
     ? `/organization/equipment-mangement/incedant/show/${id}`
     : `/organization/equipment-mangement/observation/show/${id}`
+
+const getRowNumber = (index: number) =>
+  String((currentPage.value - 1) * countPerPage.value + index + 1).padStart(2, '0')
+
+const getLessonDate = (item: Record<string, any>) =>
+  item?.observation?.date || item?.observation?.createdAt || item?.createdAt || 'N/A'
+
+const getProjectLabel = (item: Record<string, any>) =>
+  item?.project?.serial_name ||
+  item?.project?.title ||
+  item?.observation?.project?.serial_name ||
+  item?.observation?.project?.title ||
+  'N/A'
+
+const getObservationLabel = (item: Record<string, any>) =>
+  item?.observation?.serialName || item?.observation?.serial || 'N/A'
+
+const getInvestigationLabel = (item: Record<string, any>) =>
+  item?.serial_name ||
+  item?.investigation?.serialName ||
+  (item?.investigation_id ? `#${item.investigation_id}` : 'N/A')
 
 watch(
   () => controller.state.value,
@@ -183,12 +215,17 @@ onMounted(() => fetchLessons())
       </div>
 
       <div class="report-actions">
-        <button type="button" class="report-action-btn report-action-btn--ghost" @click="openFilterDialog">
+        <button
+          type="button"
+          class="report-action-btn report-action-btn--ghost"
+          @click="openFilterDialog"
+        >
           {{ $t('Filter') }}
         </button>
+
         <ExportReportPdf
           :target-selector="'.lessons-board'"
-          :file-name="'lessons-report'"
+          file-name="lessons-report"
           :data="visibleLessons"
           :columns="[
             { key: 'lesson_learnt', label: $t('lessons_report_title') },
@@ -196,6 +233,7 @@ onMounted(() => fetchLessons())
             { key: 'observation.serialName', label: $t('report_observation') },
           ]"
         />
+
         <label class="lessons-search">
           <Search aria-hidden="true" />
           <input
@@ -215,6 +253,7 @@ onMounted(() => fetchLessons())
         </label>
       </div>
     </header>
+
     <ReportFilterDialog
       v-model="isFilterDialogVisible"
       :show-status-filter="false"
@@ -229,147 +268,102 @@ onMounted(() => fetchLessons())
     <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE]">
       <DataStatus :controller="state">
         <template #success>
-          <!-- <section class="lessons-summary" aria-label="Current page summary">
-            <article>
-              <span>Visible lessons</span><strong>{{ summary.visible }}</strong>
-            </article>
-            <article>
-              <span>Incidents</span><strong>{{ summary.incidents }}</strong>
-            </article>
-            <article>
-              <span>Observations</span><strong>{{ summary.observations }}</strong>
-            </article>
-            <article>
-              <span>Projects</span><strong>{{ summary.projects }}</strong>
-            </article>
-          </section> -->
+          <section v-if="visibleLessons.length" class="lessons-board">
+            <div class="lessons-table-scroll">
+              <table class="lessons-table">
+                <thead>
+                  <tr>
+                    <th class="number-column">#</th>
+                    <th class="lesson-column">{{ $t('lessons_report_title') }}</th>
+                    <!-- <th>{{ $t('type') }}</th> -->
+                    <!-- <th>{{ $t('date') }}</th> -->
+                    <th>{{ $t('report_project') }}</th>
+                    <th>{{ $t('report_observation') }}</th>
+                    <th>{{ $t('report_investigation') }}</th>
+                  </tr>
+                </thead>
 
-          <section class="lessons-board">
-            <div class="lessons-grid">
-              <article
-                v-for="(item, index) in visibleLessons"
-                :key="`${item.observation?.id ?? 'lesson'}-${index}`"
-                class="lesson-card"
-              >
-                <div class="lesson-card-top">
-                  <span class="lesson-number">{{ String(index + 1).padStart(2, '0') }}</span>
-                  <div class="card-tags">
-                    <!-- <span class="type-tag">{{ observationType(item.observation?.type) }}</span>
-                    <span class="risk-tag" :class="`risk-${item.observation?.riskLevel}`">
-                      {{ riskLabel(item.observation?.riskLevel) }}
-                    </span> -->
-                  </div>
-                </div>
-
-                <blockquote>
-                  <span aria-hidden="true">“</span>
-                  <p v-html="item.lesson_learnt || $t('lessons_no_details')"></p>
-                </blockquote>
-
-                <div class="lesson-references" :aria-label="$t('lessons_related_records')">
-                  <RouterLink
-                    v-if="item.project.id"
-                    class="reference-link project-reference"
-                    :to="`/organization/project-details/${item.project.id}`"
+                <tbody>
+                  <tr
+                    v-for="(item, index) in visibleLessons"
+                    :key="`${item.observation?.id ?? item.investigation_id ?? 'lesson'}-${index}`"
                   >
-                    <span class="reference-icon" aria-hidden="true">P</span>
-                    <span class="reference-copy">
-                      <small>{{ $t('report_project') }}</small>
-                      <strong>{{ item.project.serial_name || item.project.title || 'N/A' }}</strong>
-                    </span>
-                    <span class="reference-arrow" aria-hidden="true">→</span>
-                  </RouterLink>
+                    <td class="number-cell">
+                      <span>{{ getRowNumber(index) }}</span>
+                    </td>
 
-                  <RouterLink
-                    v-if="item.observation?.id"
-                    class="reference-link observation-reference"
-                    :to="observationLink(item.observation.id, Number(item.observation.type))"
-                  >
-                    <span class="reference-icon" aria-hidden="true">O</span>
-                    <span class="reference-copy">
-                      <small>{{ observationType(Number(item.observation.type)) }}</small>
-                      <strong>{{
-                        item.observation.serialName || item.observation.serial || 'N/A'
-                      }}</strong>
-                    </span>
-                    <span class="reference-arrow" aria-hidden="true">→</span>
-                  </RouterLink>
+                    <td class="lesson-cell">
+                      <div
+                        class="lesson-content"
+                        v-html="item.lesson_learnt || $t('lessons_no_details')"
+                      ></div>
+                    </td>
 
-                  <RouterLink
-                    v-if="item.investigation_id"
-                    class="reference-link investigation-reference"
-                    :to="`/organization/Investigating-result-answer/${item.investigation_id}`"
-                  >
-                    <span class="reference-icon" aria-hidden="true">I</span>
-                    <span class="reference-copy">
-                      <small>{{ $t('report_investigation') }}</small>
-                      <strong>{{ item.serial_name || `#${item.investigation_id}` }}</strong>
-                    </span>
-                    <span class="reference-arrow" aria-hidden="true">→</span>
-                  </RouterLink>
-                </div>
+                    <!-- <td>
+                      <span class="source-type">
+                        {{ observationType(Number(item.observation?.type)) }}
+                      </span>
+                    </td>
 
-                <!-- <div class="observation-context">
-                  <div
-                    v-if="item.observation?.image || item.observation?.media?.[0]?.url"
-                    class="context-image"
-                  >
-                    <img
-                      :src="item.observation?.image || item.observation?.media?.[0]?.url"
-                      :alt="item.observation?.title || 'Observation image'"
-                    />
-                  </div>
+                    <td>
+                      <span class="table-value table-date">
+                        {{ getLessonDate(item) }}
+                      </span>
+                    </td> -->
 
-                  <div class="context-copy">
-                    <span>Source observation</span>
-                    <h3>{{ item.observation?.title || 'Untitled observation' }}</h3>
-                    <p>{{ item.observation?.description || 'No description available.' }}</p>
-                  </div>
-                </div>
+                    <td class="reference-cell">
+                      <RouterLink
+                        v-if="item.project?.id || item.observation?.project?.id"
+                        class="table-reference-link project-reference"
+                        :to="`/organization/project-details/${item.project?.id || item.observation?.project?.id}`"
+                      >
+                        <span class="reference-mark" aria-hidden="true">P</span>
+                        <span class="reference-text">{{ getProjectLabel(item) }}</span>
+                        <span class="reference-arrow" aria-hidden="true">→</span>
+                      </RouterLink>
+                      <span v-else class="empty-value">—</span>
+                    </td>
 
-                <dl class="observation-meta">
-                  <div>
-                    <dt>Reference</dt>
-                    <dd>{{ item.observation?.serialName || item.observation?.serial || 'N/A' }}</dd>
-                  </div>
-                  <div>
-                    <dt>Date</dt>
-                    <dd>{{ item.observation?.date || item.observation?.createdAt || 'N/A' }}</dd>
-                  </div>
-                  <div>
-                    <dt>Project</dt>
-                    <dd>{{ item.observation?.project?.title || 'N/A' }}</dd>
-                  </div>
-                  <div>
-                    <dt>Zone</dt>
-                    <dd>{{ item.observation?.zoon?.title || 'N/A' }}</dd>
-                  </div>
-                </dl>
+                    <td class="reference-cell">
+                      <RouterLink
+                        v-if="item.observation?.id"
+                        class="table-reference-link observation-reference"
+                        :to="observationLink(item.observation.id, Number(item.observation.type))"
+                      >
+                        <span class="reference-mark" aria-hidden="true">O</span>
+                        <span class="reference-text">{{ getObservationLabel(item) }}</span>
+                        <span class="reference-arrow" aria-hidden="true">→</span>
+                      </RouterLink>
+                      <span v-else class="empty-value">—</span>
+                    </td>
 
-                <footer class="lesson-card-footer">
-                  <div class="observer">
-                    <span class="observer-avatar" aria-hidden="true">
-                      {{ (item.observation?.observer?.name || 'U').charAt(0) }}
-                    </span>
-                    <span
-                      ><small>Reported by</small
-                      ><b>{{ item.observation?.observer?.name || 'Unknown' }}</b></span
-                    >
-                  </div>
-
-                  <RouterLink
-                    v-if="item.observation?.id"
-                    class="view-source"
-                    :to="observationLink(item.observation.id, item.observation.type)"
-                  >
-                    View source <span aria-hidden="true">→</span>
-                  </RouterLink>
-                </footer> -->
-              </article>
+                    <td class="reference-cell">
+                      <RouterLink
+                        v-if="item.investigation_id"
+                        class="table-reference-link investigation-reference"
+                        :to="`/organization/Investigating-result-answer/${item.investigation_id}`"
+                      >
+                        <span class="reference-mark" aria-hidden="true">I</span>
+                        <span class="reference-text">{{ getInvestigationLabel(item) }}</span>
+                        <span class="reference-arrow" aria-hidden="true">→</span>
+                      </RouterLink>
+                      <span v-else class="empty-value">—</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </section>
 
+          <DataEmpty
+            v-else
+            :title="$t('lessons_empty_title')"
+            :description="$t('lessons_empty_description')"
+            :withbtn="false"
+          />
+
           <Pagination
+            v-if="visibleLessons.length"
             :pagination="state.pagination"
             @change-page="handleChangePage"
             @count-per-page="handleCountPerPage"
@@ -377,11 +371,17 @@ onMounted(() => fetchLessons())
         </template>
 
         <template #loader>
-          <section class="lessons-loading"><TableLoader :cols="2" :rows="6" /></section>
+          <section class="lessons-loading">
+            <TableLoader :cols="7" :rows="6" />
+          </section>
         </template>
+
         <template #initial>
-          <section class="lessons-loading"><TableLoader :cols="2" :rows="6" /></section>
+          <section class="lessons-loading">
+            <TableLoader :cols="7" :rows="6" />
+          </section>
         </template>
+
         <template #empty>
           <DataEmpty
             :title="$t('lessons_empty_title')"
@@ -389,6 +389,7 @@ onMounted(() => fetchLessons())
             :withbtn="false"
           />
         </template>
+
         <template #failed>
           <DataFailed
             :title="$t('lessons_load_failed_title')"
@@ -426,6 +427,7 @@ onMounted(() => fetchLessons())
 .lessons-hero,
 .lessons-board,
 .lessons-loading {
+  width: 100%;
   border: 1px solid color-mix(in srgb, var(--lesson-tone) 18%, var(--main-border));
   border-radius: 24px;
   background: var(--surface-1);
@@ -473,35 +475,6 @@ onMounted(() => fetchLessons())
   line-height: 1.15;
 }
 
-.report-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 0.65rem;
-}
-
-.report-action-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 0;
-  border-radius: 999px;
-  padding: 0.7rem 1rem;
-  cursor: pointer;
-  font-weight: 800;
-}
-
-.report-action-btn--ghost {
-  background: color-mix(in srgb, var(--main-border) 68%, transparent);
-  color: var(--text-strong);
-}
-
-.report-action-btn--primary {
-  background: var(--identity-primary);
-  color: white;
-}
-
 .hero-copy h1 {
   font-size: clamp(1.75rem, 3vw, 2.7rem);
   letter-spacing: -0.035em;
@@ -530,60 +503,12 @@ onMounted(() => fetchLessons())
   width: 58%;
 }
 
-.lessons-summary {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.75rem;
-  margin-top: 1rem;
-}
-
-.lessons-summary article {
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 90px;
-  padding: 1rem;
-  border: 1px solid var(--main-border);
-  border-radius: 18px;
-  background: linear-gradient(145deg, var(--surface-1), var(--surface-2));
-}
-
-.lessons-summary article::after {
-  content: '';
-  position: absolute;
-  inset-block: 0;
-  inset-inline-start: 0;
-  width: 4px;
-  background: var(--lesson-tone);
-}
-
-.lessons-summary span {
-  color: var(--text-muted);
-  font-size: 0.82rem;
-  font-weight: 800;
-}
-
-.lessons-summary strong {
-  color: var(--text-strong);
-  font-size: 1.8rem;
-  font-weight: 900;
-}
-
-.lessons-board {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-top: 1rem;
-  padding: clamp(1rem, 2vw, 1.4rem);
-}
-
 .board-header {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(270px, 410px);
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 520px);
   align-items: center;
   gap: 1rem;
+  width: 100%;
   padding-bottom: 1rem;
   border-bottom: 1px dashed color-mix(in srgb, var(--lesson-tone) 24%, var(--main-border));
 }
@@ -596,10 +521,37 @@ onMounted(() => fetchLessons())
   font-size: 0.86rem;
 }
 
+.report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+}
+
+.report-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  font-weight: 800;
+}
+
+.report-action-btn--ghost {
+  background: color-mix(in srgb, var(--main-border) 68%, transparent);
+  color: var(--text-strong);
+}
+
 .lessons-search {
   position: relative;
   display: flex;
   align-items: center;
+  flex: 1 1 230px;
+  min-width: 210px;
 }
 
 .lessons-search > svg {
@@ -608,7 +560,7 @@ onMounted(() => fetchLessons())
   z-index: 1;
   width: 20px;
   color: var(--lesson-tone);
-  left: 100% !important;
+  left: 100%;
   transform: translateX(-150%);
 }
 
@@ -621,6 +573,10 @@ onMounted(() => fetchLessons())
   background: var(--surface-2);
   color: var(--text-strong);
   outline: none;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .lessons-search input:focus {
@@ -642,160 +598,153 @@ onMounted(() => fetchLessons())
   font-size: 1.2rem;
 }
 
-.lessons-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(300px, 1fr));
-  gap: 1rem;
-  align-items: stretch;
-}
-
-.lesson-card {
-  position: relative;
+.lessons-board {
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  min-width: 0;
-  padding: 1.15rem;
-  border: 1px solid color-mix(in srgb, var(--lesson-tone) 18%, var(--main-border));
-  border-radius: 20px;
-  background:
-    radial-gradient(
-      circle at 100% 0,
-      color-mix(in srgb, var(--lesson-tone) 9%, transparent),
-      transparent 31%
-    ),
-    linear-gradient(
-      145deg,
-      var(--surface-1),
-      color-mix(in srgb, var(--surface-2) 74%, var(--surface-1))
-    );
-  box-shadow: 0 14px 32px color-mix(in srgb, var(--shadow-color) 28%, transparent);
-  transition: 0.2s ease;
+  margin-top: 1rem;
 }
 
-.lesson-card::before {
-  content: '';
-  position: absolute;
-  inset-block: 1.1rem;
-  inset-inline-start: 0;
-  width: 4px;
-  border-radius: 0 999px 999px 0;
-  background: var(--lesson-tone);
+.lessons-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
 }
 
-[dir='rtl'] .lesson-card::before {
-  border-radius: 999px 0 0 999px;
+.lessons-table {
+  width: 100%;
+  min-width: 1120px;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--text-strong);
+  table-layout: fixed;
 }
 
-.lesson-card:hover {
-  transform: translateY(-4px);
-  border-color: color-mix(in srgb, var(--lesson-tone) 38%, var(--main-border));
-  box-shadow: 0 22px 44px color-mix(in srgb, var(--lesson-tone) 13%, transparent);
+.lessons-table th,
+.lessons-table td {
+  padding: 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--main-border) 84%, transparent);
+  text-align: start;
+  vertical-align: middle;
 }
 
-.lesson-card-top,
-.card-tags,
-.lesson-card-footer,
-.observer {
-  display: flex;
-  align-items: center;
+.lessons-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: color-mix(in srgb, var(--lesson-tone) 7%, var(--surface-1));
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
-.lesson-card-top,
-.lesson-card-footer {
-  justify-content: space-between;
-  gap: 0.75rem;
+.lessons-table thead th:first-child {
+  border-start-start-radius: 23px;
 }
 
-.lesson-number {
-  color: color-mix(in srgb, var(--lesson-tone) 46%, var(--text-muted));
+.lessons-table thead th:last-child {
+  border-start-end-radius: 23px;
+}
+
+.lessons-table tbody tr {
+  background: var(--surface-1);
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.lessons-table tbody tr:hover {
+  background: color-mix(in srgb, var(--lesson-tone) 4%, var(--surface-1));
+}
+
+.lessons-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.number-column {
+  width: 72px;
+}
+
+.lesson-column {
+  width: 31%;
+}
+
+.number-cell span {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--lesson-tone) 10%, var(--surface-1));
+  color: var(--lesson-tone);
   font-family: monospace;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 900;
 }
 
-.card-tags {
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 0.45rem;
+.lesson-cell {
+  min-width: 0;
 }
 
-.type-tag,
-.risk-tag {
-  padding: 0.36rem 0.65rem;
+.lesson-content {
+  display: -webkit-box;
+  max-height: 4.8rem;
+  overflow: hidden;
+  color: var(--text-strong);
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+}
+
+.lesson-content :deep(p) {
+  margin: 0;
+}
+
+.source-type {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid color-mix(in srgb, var(--lesson-tone) 18%, transparent);
   border-radius: 999px;
   background: color-mix(in srgb, var(--lesson-tone) 9%, var(--surface-1));
   color: var(--lesson-tone);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 900;
+  white-space: nowrap;
 }
 
-.risk-tag.risk-3 {
-  background: var(--status-danger-soft);
-  color: var(--status-danger);
+.table-value {
+  display: inline-block;
+  color: var(--text-soft);
+  font-size: 0.8rem;
+  font-weight: 800;
 }
 
-.risk-tag.risk-2 {
-  background: var(--status-warning-soft);
-  color: var(--status-warning);
+.table-date {
+  white-space: nowrap;
 }
 
-.risk-tag.risk-1 {
-  background: var(--status-success-soft);
-  color: var(--status-success);
+.reference-cell {
+  min-width: 0;
 }
 
-blockquote {
-  position: relative;
-  min-height: 88px;
-  margin: 0;
-  padding: 1rem 1rem 1rem 3rem;
-  border: 1px solid color-mix(in srgb, var(--lesson-tone) 15%, var(--main-border));
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--lesson-tone) 6%, var(--surface-1));
-}
-
-[dir='rtl'] blockquote {
-  padding: 1rem 3rem 1rem 1rem;
-}
-
-blockquote > span {
-  position: absolute;
-  inset-block-start: 0.35rem;
-  inset-inline-start: 0.8rem;
-  color: color-mix(in srgb, var(--lesson-tone) 40%, transparent);
-  font-family: Georgia, serif;
-  font-size: 3.2rem;
-  line-height: 1;
-}
-
-blockquote p {
-  margin: 0;
-  color: var(--text-strong);
-  font-size: 0.96rem;
-  font-weight: 700;
-  line-height: 1.65;
-  text-transform: none;
-}
-
-.lesson-references {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.55rem;
-}
-
-.reference-link {
+.table-reference-link {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.45rem;
   min-width: 0;
-  min-height: 64px;
-  padding: 0.65rem;
-  border: 1px solid color-mix(in srgb, var(--lesson-tone) 18%, var(--main-border));
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--surface-2) 78%, var(--surface-1));
+  min-height: 44px;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--lesson-tone) 16%, var(--main-border));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--surface-2) 74%, var(--surface-1));
   color: var(--text-strong);
   text-decoration: none;
   transition:
@@ -804,54 +753,39 @@ blockquote p {
     box-shadow 0.2s ease;
 }
 
-.reference-link:hover,
-.reference-link:focus-visible {
-  transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--lesson-tone) 45%, var(--main-border));
-  box-shadow: 0 10px 22px color-mix(in srgb, var(--lesson-tone) 12%, transparent);
+.table-reference-link:hover,
+.table-reference-link:focus-visible {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--lesson-tone) 40%, var(--main-border));
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--lesson-tone) 10%, transparent);
   outline: none;
 }
 
-.reference-icon {
+.reference-mark {
   display: grid;
   place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 10px;
+  width: 28px;
+  height: 28px;
+  border-radius: 9px;
   background: color-mix(in srgb, var(--lesson-tone) 12%, var(--surface-1));
   color: var(--lesson-tone);
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 900;
 }
 
-.observation-reference .reference-icon {
+.observation-reference .reference-mark {
   background: var(--status-warning-soft);
   color: var(--status-warning);
 }
 
-.investigation-reference .reference-icon {
+.investigation-reference .reference-mark {
   background: var(--status-success-soft);
   color: var(--status-success);
 }
 
-.reference-copy {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.reference-copy small {
-  color: var(--text-muted);
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.reference-copy strong {
+.reference-text {
   overflow: hidden;
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 900;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -859,166 +793,23 @@ blockquote p {
 
 .reference-arrow {
   color: var(--lesson-tone);
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   transition: transform 0.2s ease;
 }
 
-.reference-link:hover .reference-arrow,
-.reference-link:focus-visible .reference-arrow {
+.table-reference-link:hover .reference-arrow,
+.table-reference-link:focus-visible .reference-arrow {
   transform: translateX(2px);
 }
 
-[dir='rtl'] .reference-link:hover .reference-arrow,
-[dir='rtl'] .reference-link:focus-visible .reference-arrow {
+[dir='rtl'] .table-reference-link:hover .reference-arrow,
+[dir='rtl'] .table-reference-link:focus-visible .reference-arrow {
   transform: translateX(-2px);
 }
 
-.observation-context {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: center;
-  gap: 0.8rem;
-}
-
-.context-image {
-  overflow: hidden;
-  width: 76px;
-  height: 76px;
-  border-radius: 15px;
-  background: var(--surface-3);
-}
-
-.context-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.context-copy {
-  min-width: 0;
-}
-
-.context-copy > span {
-  color: var(--lesson-tone);
-  font-size: 0.68rem;
-  font-weight: 900;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-}
-
-.context-copy h3 {
-  margin: 0.25rem 0 0;
-  overflow: hidden;
-  color: var(--text-strong);
-  font-size: 1rem;
-  font-weight: 900;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.context-copy p {
-  display: -webkit-box;
-  margin: 0.25rem 0 0;
-  overflow: hidden;
-  color: var(--text-soft);
-  font-size: 0.8rem;
-  line-height: 1.45;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.observation-meta {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.6rem;
-  margin: 0;
-}
-
-.observation-meta div {
-  min-width: 0;
-  padding: 0.7rem;
-  border: 1px solid var(--main-border);
-  border-radius: 13px;
-  background: color-mix(in srgb, var(--surface-2) 80%, var(--surface-1));
-}
-
-.observation-meta dt {
+.empty-value {
   color: var(--text-muted);
-  font-size: 0.68rem;
   font-weight: 800;
-  text-transform: uppercase;
-}
-
-.observation-meta dd {
-  margin: 0.25rem 0 0;
-  overflow: hidden;
-  color: var(--text-strong);
-  font-size: 0.8rem;
-  font-weight: 800;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.lesson-card-footer {
-  margin-top: auto;
-  padding-top: 0.85rem;
-  border-top: 1px dashed color-mix(in srgb, var(--lesson-tone) 20%, var(--main-border));
-}
-
-.observer {
-  gap: 0.55rem;
-  min-width: 0;
-}
-
-.observer-avatar {
-  display: grid;
-  place-items: center;
-  flex: 0 0 auto;
-  width: 36px;
-  height: 36px;
-  border-radius: 11px;
-  background: color-mix(in srgb, var(--lesson-tone) 13%, var(--surface-1));
-  color: var(--lesson-tone);
-  font-weight: 900;
-}
-
-.observer > span:last-child {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.observer small {
-  color: var(--text-muted);
-  font-size: 0.68rem;
-}
-
-.observer b {
-  overflow: hidden;
-  color: var(--text-strong);
-  font-size: 0.78rem;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.view-source {
-  display: inline-flex;
-  align-items: center;
-  flex: 0 0 auto;
-  gap: 0.4rem;
-  padding: 0.6rem 0.75rem;
-  border-radius: 11px;
-  background: var(--lesson-tone);
-  color: var(--text-on-brand);
-  font-size: 0.75rem;
-  font-weight: 900;
-  text-decoration: none;
-  transition: 0.2s ease;
-}
-
-.view-source:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 20px color-mix(in srgb, var(--lesson-tone) 24%, transparent);
 }
 
 .lessons-loading {
@@ -1027,37 +818,42 @@ blockquote p {
 }
 
 @media (max-width: 900px) {
-  .lessons-summary,
-  .lessons-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .board-header {
     grid-template-columns: 1fr;
+  }
+
+  .report-actions {
+    justify-content: flex-start;
   }
 }
 
 @media (max-width: 620px) {
+  .lessons-report-page {
+    padding: 0.7rem;
+  }
+
+  .lessons-hero {
+    min-height: 160px;
+  }
+
   .knowledge-mark {
     display: none;
   }
 
-  .lessons-summary,
-  .lessons-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .lesson-references {
-    grid-template-columns: 1fr;
-  }
-
-  .lesson-card-footer {
+  .report-actions {
     align-items: stretch;
     flex-direction: column;
   }
 
-  .view-source {
-    justify-content: center;
+  .report-action-btn,
+  .lessons-search {
+    width: 100%;
+  }
+
+  .lessons-board,
+  .lessons-hero,
+  .lessons-loading {
+    border-radius: 18px;
   }
 }
 </style>
