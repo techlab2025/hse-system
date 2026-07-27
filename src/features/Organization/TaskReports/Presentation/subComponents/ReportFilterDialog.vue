@@ -4,6 +4,8 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 import Dialog from 'primevue/dialog'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import DatePicker from 'primevue/datepicker';
+
 
 interface StatusOption {
   label: string
@@ -42,9 +44,32 @@ const emit = defineEmits<{
 
 const { t } = useI18n({ useScope: 'global' })
 
-const draftStatus = ref<TitleInterface >(props.initialStatus)
-const draftFromDate = ref(props.initialFromDate)
-const draftToDate = ref(props.initialToDate)
+const parseDateValue = (value?: string | null): Date | null => {
+  if (!value) return null
+
+  const trimmed = String(value).trim()
+  if (!trimmed) return null
+
+  const parsed = new Date(trimmed)
+  return Number.isNaN(parsed.getTime()) ? null : parsed
+}
+
+const formatDateValue = (value: Date | string | null | undefined): string => {
+  if (!value) return ''
+
+  if (value instanceof Date) {
+    const year = value.getFullYear()
+    const month = String(value.getMonth() + 1).padStart(2, '0')
+    const day = String(value.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}`
+  }
+
+  return String(value).trim()
+}
+
+const draftStatus = ref<TitleInterface>(props.initialStatus)
+const draftFromDate = ref<Date | null>(parseDateValue(props.initialFromDate))
+const draftToDate = ref<Date | null>(parseDateValue(props.initialToDate))
 
 watch(
   () => props.modelValue,
@@ -52,8 +77,8 @@ watch(
     if (!visible) return
 
     draftStatus.value = props.initialStatus
-    draftFromDate.value = props.initialFromDate
-    draftToDate.value = props.initialToDate
+    draftFromDate.value = parseDateValue(props.initialFromDate)
+    draftToDate.value = parseDateValue(props.initialToDate)
   },
   { flush: 'post' },
 )
@@ -63,9 +88,9 @@ watch(
   ([status, fromDate, toDate]) => {
     if (!props.modelValue) return
 
-    draftStatus.value = status
-    draftFromDate.value = fromDate
-    draftToDate.value = toDate
+    draftStatus.value = status as TitleInterface
+    draftFromDate.value = parseDateValue(fromDate as string | undefined)
+    draftToDate.value = parseDateValue(toDate as string | undefined)
   },
   { flush: 'post' },
 )
@@ -79,8 +104,8 @@ const closeDialog = () => {
 const handleApply = () => {
   emit('apply', {
     status: draftStatus.value,
-    fromDate: draftFromDate.value,
-    toDate: draftToDate.value,
+    fromDate: formatDateValue(draftFromDate.value),
+    toDate: formatDateValue(draftToDate.value),
   })
   closeDialog()
 }
@@ -90,11 +115,12 @@ const handleReset = () => {
     title: 'all',
     id: 1,
   })
-  draftFromDate.value = ''
-  draftToDate.value = ''
+  draftFromDate.value = null
+  draftToDate.value = null
   emit('reset')
   closeDialog()
 }
+
 </script>
 
 <template>
@@ -122,12 +148,12 @@ const handleReset = () => {
 
       <label class="report-filter-dialog__field">
         <span>{{ $t('date_from') }}</span>
-        <input v-model="draftFromDate" type="date" />
+        <DatePicker v-model="draftFromDate" :show-icon="true" date-format="yy-mm-dd" />
       </label>
 
       <label class="report-filter-dialog__field">
         <span>{{ $t('date_to') }}</span>
-        <input v-model="draftToDate" type="date" />
+        <DatePicker v-model="draftToDate" :show-icon="true" date-format="yy-mm-dd" />
       </label>
 
       <div class="report-filter-dialog__actions">

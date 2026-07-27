@@ -25489,7 +25489,7 @@ body div {
 html,
 body,
 #app {
-  rotate: 0deg !important;
+  rotate: none !important;
   transform: none !important;
 }
 

@@ -105,6 +105,7 @@ const showSidebar = computed(() => {
 <style scoped lang="scss">
 .content {
   // padding-bottom: 74px;
+
 }
 
 .footer {
