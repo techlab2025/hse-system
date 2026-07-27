@@ -119,6 +119,26 @@ onMounted(() => {
   </div>
 </template>
 <style scoped>
+.template-container,
+.heirarchy-info,
+.timeline-container,
+.timeline-wrapper,
+.timeline-item,
+.timeline-content {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.timeline-content .input-wrapper,
+.timeline-content input,
+.timeline-content textarea {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
 .timeline-icon {
   display: flex;
   align-items: center;
@@ -129,5 +149,66 @@ onMounted(() => {
   display: flex;
   flex-direction: column !important;
   gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .timeline-wrapper {
+    padding-left: 0;
+    padding-inline-start: 0;
+  }
+
+  .timeline-line,
+  .timeline-dot {
+    display: none;
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-top: 44px;
+    margin-bottom: 14px;
+    border: 1px solid var(--brand-primary-100);
+    border-radius: 8px;
+    background: var(--surface-1);
+    grid-template-columns: 1fr;
+  }
+
+  .timeline-marker {
+    position: absolute;
+    inset-inline-start: auto;
+    inset-inline-end: 10px;
+    top: 8px;
+    width: auto;
+    z-index: 3;
+    padding-top: 0;
+  }
+
+  .timeline-icon {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    width: auto;
+    height: auto;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .timeline-icon > svg,
+  .timeline-icon > :deep(svg) {
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+    border-radius: 50%;
+    background: var(--brand-primary-50);
+    border: 1px solid color-mix(in srgb, var(--brand-primary-500) 20%, transparent);
+    cursor: pointer;
+  }
+
+  .timeline-content {
+    padding: 10px 12px 12px;
+    border: 0;
+    box-shadow: none;
+    background: transparent;
+  }
 }
 </style>
