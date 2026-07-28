@@ -10,6 +10,8 @@ import type RoleModel from '../../Data/models/RoleModel'
 import AddRoleteUseCase from '../../Domain/useCase/addRoleUseCase'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import type AddRoleParams from '../../Core/params/addRoleParams'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class AddRoleController extends ControllerInterface<RoleModel> {
   private static instance: AddRoleController
@@ -25,9 +27,17 @@ export default class AddRoleController extends ControllerInterface<RoleModel> {
     return this.instance
   }
 
-  async addRole(params: Params, router: Router, draft: boolean = false) {
+  async addRole(params: AddRoleParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+      if (params.role.length < 1) {
+        new OpenWarningDilaog('You Should Add Role ').openDialog()
+        return
+      }
+      if (params.roleName.length < 1) {
+        new OpenWarningDilaog('You Should Add Role Name').openDialog()
+        return
+      }
       const dataState: DataState<RoleModel> = await this.AddRoleUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
