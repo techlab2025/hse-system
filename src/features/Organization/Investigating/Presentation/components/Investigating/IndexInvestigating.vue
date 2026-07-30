@@ -230,14 +230,14 @@ const GerIncidantCount = (data: any): number => {
           <div class="flex items-center justify-between mb-4">
             <!-- <IndexFilter :filters="Filters" /> -->
             <div class="btns-filter">
-              <IndexFilterDialog
+              <!-- <IndexFilterDialog
                 show-date
                 :fields="filterFields"
                 :initial-date="filterDate"
                 :initial-values="{ status: filterStatus, observationType: filterObservationType }"
                 @apply="applyFilters"
                 @reset="resetFilters"
-              />
+              /> -->
               <!-- <router-link :to="`/organization/investigating/add`">
             <button class="btn btn-primary">Create Investigating</button>
           </router-link> -->

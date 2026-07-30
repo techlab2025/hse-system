@@ -26,7 +26,6 @@ import DeleteHazardController from '../../controllers/deleteHazardController'
 import IndexHazardHeader from '../Hazard/HazardUtils/IndexHazardHeader.vue'
 import IndexFilter from '../Hazard/HazardUtils/IndexFilter.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
-import FilterDialog from '../Hazard/HazardUtils/FilterDialog.vue'
 import type MyProjectsModel from '../../../Data/models/MyProjectsModel'
 import FetchMyProjectsParams from '../../../Core/params/fetchMyProjectsParams'
 import FetchMyProjectsController from '../../controllers/FetchMyProjectsController'
@@ -47,6 +46,7 @@ import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import CustomCheckboxToggle from '../../SubComponent/CustomCheckboxToggle.vue'
 import CardSkelaton from '@/features/Organization/Inspection/Presentation/components/SubComponent/CardSkelaton.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
+import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 const { isDarkMode } = useThemeMode()
@@ -57,6 +57,28 @@ const { isDarkMode } = useThemeMode()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
+const filterDate = ref('')
+const filterSaveStatus = ref<number | null>(null)
+const filterRiskLevel = ref<number | null>(null)
+const filterFields = [
+  {
+    key: 'saveStatus',
+    label: 'Observation Type',
+    options: [
+      new TitleInterface({ id: SaveStatusEnum.Saved, title: t('Positive') }),
+      new TitleInterface({ id: SaveStatusEnum.NotSaved, title: t('Negative') }),
+    ],
+  },
+  {
+    key: 'riskLevel',
+    label: 'Risk Level',
+    options: [
+      new TitleInterface({ id: RiskLevelEnum.High, title: t('High') }),
+      new TitleInterface({ id: RiskLevelEnum.Medium, title: t('Medium') }),
+      new TitleInterface({ id: RiskLevelEnum.Low, title: t('Low') }),
+    ],
+  },
+]
 const indexHazardController = IndexHazardController.getInstance()
 const state = ref(indexHazardController.state.value)
 const route = useRoute()
@@ -85,7 +107,14 @@ const fetchHazard = async (
     projectZoneLozationId,
     null,
     route.query.hazard ? route.query.hazard : null,
-    route.query.risk_level ? [route.query.risk_level] : null,
+    filterRiskLevel.value != null
+      ? [filterRiskLevel.value]
+      : route.query.risk_level
+        ? [Number(route.query.risk_level)]
+        : null,
+    null,
+    filterSaveStatus.value != null ? [filterSaveStatus.value] : null,
+    filterDate.value,
   )
   console.log(params, 'Params')
   await indexHazardController.getData(params)
@@ -99,7 +128,16 @@ onMounted(() => {
 })
 
 const searchHazard = debounce(() => {
-  fetchHazard(word.value)
+  fetchHazard(
+    word.value,
+    1,
+    countPerPage.value,
+    1,
+    null,
+    null,
+    SelectedZonesFilter.value,
+    selectedProjctesFilters.value,
+  )
 })
 
 const deleteHazard = async (id: number) => {
@@ -110,13 +148,71 @@ const deleteHazard = async (id: number) => {
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchHazard('', currentPage.value, countPerPage.value)
+  fetchHazard(
+    word.value,
+    currentPage.value,
+    countPerPage.value,
+    1,
+    null,
+    null,
+    SelectedZonesFilter.value,
+    selectedProjctesFilters.value,
+  )
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchHazard('', currentPage.value, countPerPage.value)
+  fetchHazard(
+    word.value,
+    currentPage.value,
+    countPerPage.value,
+    1,
+    null,
+    null,
+    SelectedZonesFilter.value,
+    selectedProjctesFilters.value,
+  )
+}
+
+const applyDialogFilters = ({
+  date,
+  values,
+}: {
+  date: string
+  values: Record<string, number | null>
+}) => {
+  filterDate.value = date
+  filterSaveStatus.value = values.saveStatus ?? null
+  filterRiskLevel.value = values.riskLevel ?? null
+  currentPage.value = 1
+  fetchHazard(
+    word.value,
+    1,
+    countPerPage.value,
+    1,
+    null,
+    null,
+    SelectedZonesFilter.value,
+    selectedProjctesFilters.value,
+  )
+}
+
+const resetDialogFilters = () => {
+  filterDate.value = ''
+  filterSaveStatus.value = null
+  filterRiskLevel.value = null
+  currentPage.value = 1
+  fetchHazard(
+    word.value,
+    1,
+    countPerPage.value,
+    1,
+    null,
+    null,
+    SelectedZonesFilter.value,
+    selectedProjctesFilters.value,
+  )
 }
 
 watch(
@@ -304,6 +400,14 @@ const GetObservationType = (type: number) => {
               @update:data="setSelectedProjectFilter"
             >
               <template #actions>
+                <IndexFilterDialog
+                  show-date
+                  :fields="filterFields"
+                  :initial-date="filterDate"
+                  :initial-values="{ saveStatus: filterSaveStatus, riskLevel: filterRiskLevel }"
+                  @apply="applyDialogFilters"
+                  @reset="resetDialogFilters"
+                />
                 <PermissionBuilder
                   :code="[
                     PermissionsEnum?.ORGANIZATION_EMPLOYEE,
