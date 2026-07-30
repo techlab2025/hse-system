@@ -7,7 +7,8 @@ export default class IndexProjectParams implements Params {
   public withPage: number = 1
   public perPage: number = 10
   public pageNumber: number = 10
-  // public id?: number
+  public id?: number
+  public date?: string
   // public code?: LangEnum
 
   constructor(
@@ -15,14 +16,16 @@ export default class IndexProjectParams implements Params {
     pageNumber: number = 1,
     perPage: number = 10,
     withPage: number = 1,
-    // id?: number,
+    id?: number,
+    date?: string,
     // code?: LangEnum,
   ) {
     this.word = word
     this.withPage = withPage
     this.pageNumber = pageNumber
     this.perPage = perPage
-    // this.id = id
+    this.id = id
+    this.date = date
     // this.code = code
   }
 
@@ -32,7 +35,7 @@ export default class IndexProjectParams implements Params {
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
-    // if (this.id) data['parent_id'] = this.id
+    if (this.date) data['date'] = this.date
     // if (this.code) data['code'] = this.code
     return data
   }

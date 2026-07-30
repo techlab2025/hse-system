@@ -8,6 +8,8 @@ export default class FetchInspectionsResultsParams implements Params {
   public pageNumber: number = 10
   public zoneIds?: number[]
   public projectIds?: number | number[]
+  public inspectionType?: number
+  public date?: string
   // public id: number
 
   constructor(
@@ -17,6 +19,8 @@ export default class FetchInspectionsResultsParams implements Params {
     withPage: number = 1,
     zoneIds?: number[],
     projectIds?: number | number[],
+    inspectionType?: number,
+    date?: string,
     // id: number,
   ) {
     this.word = word
@@ -25,6 +29,8 @@ export default class FetchInspectionsResultsParams implements Params {
     this.perPage = perPage
     this.zoneIds = zoneIds
     this.projectIds = projectIds
+    this.inspectionType = inspectionType
+    this.date = date
     // this.id = id
   }
 
@@ -49,6 +55,8 @@ export default class FetchInspectionsResultsParams implements Params {
     data['limit'] = this.perPage
     if (this.zoneIds) data['zone_ids'] = this.zoneIds
     if (projectIds.length > 0) data['project_ids'] = projectIds
+    if (this.inspectionType != null) data['inspection_type'] = this.inspectionType
+    if (this.date) data['date'] = this.date
 
     // data['task_id'] = this.id
     return data

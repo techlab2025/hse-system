@@ -20,6 +20,8 @@ import Meeting from '@/shared/icons/meeting.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format.ts'
 import { formatTime } from '@/base/Presentation/utils/time_format.ts'
+import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
+import TitleInterface from '@/base/Data/Models/title_interface'
 
 const word = ref('')
 const currentPage = ref(1)
@@ -31,20 +33,49 @@ const state = ref(indexInvestigatingController.state.value)
 const router = useRouter()
 const ShowDetails = ref<boolean[]>([])
 const observationRiskLevel = ref<RiskLevelEnum | null>(null)
+const filterDate = ref('')
+const filterStatus = ref<number | null>(null)
+const filterObservationType = ref<number | null>(null)
+const filterFields = [
+  {
+    key: 'status',
+    label: 'status',
+    options: [
+      new TitleInterface({ id: InvestegationStatusEnum.OPEN, title: 'Open' }),
+      new TitleInterface({ id: InvestegationStatusEnum.NEW, title: 'New' }),
+      new TitleInterface({ id: InvestegationStatusEnum.IN_PROGRESS, title: 'In Progress' }),
+      new TitleInterface({ id: InvestegationStatusEnum.HOLD, title: 'Hold' }),
+      new TitleInterface({ id: InvestegationStatusEnum.CLOSED, title: 'Closed' }),
+      new TitleInterface({ id: InvestegationStatusEnum.COMPLETED, title: 'Completed' }),
+    ],
+  },
+  {
+    key: 'observationType',
+    label: 'Observation Type',
+    options: [
+      new TitleInterface({ id: Observation.ObservationType, title: 'Observation' }),
+      new TitleInterface({ id: Observation.HazardType, title: 'Hazard' }),
+      new TitleInterface({ id: Observation.AccidentsType, title: 'Incident' }),
+    ],
+  },
+]
 
 const GetInvsetegationResult = async (
   query = '',
   pageNumber = 1,
   perPage = 10,
   withPage = 1,
-  observationRiskLevel?: RiskLevelEnum,
+  riskLevel: RiskLevelEnum | undefined = observationRiskLevel.value ?? undefined,
 ) => {
   const indexInvestigationResultParams = new IndexInvestigationResultParams(
     query,
     pageNumber,
     perPage,
     withPage,
-    observationRiskLevel,
+    riskLevel,
+    filterStatus.value ?? undefined,
+    filterDate.value,
+    filterObservationType.value ?? undefined,
   )
   await indexInvestigatingController.getData(indexInvestigationResultParams)
 }
@@ -98,13 +129,35 @@ const GetInvestigationType = (type: number) => {
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  GetInvsetegationResult('', currentPage.value, countPerPage.value)
+  GetInvsetegationResult(word.value, currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  GetInvsetegationResult('', currentPage.value, countPerPage.value)
+  GetInvsetegationResult(word.value, currentPage.value, countPerPage.value)
+}
+
+const applyFilters = ({
+  date,
+  values,
+}: {
+  date: string
+  values: Record<string, number | null>
+}) => {
+  filterDate.value = date
+  filterStatus.value = values.status ?? null
+  filterObservationType.value = values.observationType ?? null
+  currentPage.value = 1
+  GetInvsetegationResult(word.value, 1, countPerPage.value)
+}
+
+const resetFilters = () => {
+  filterDate.value = ''
+  filterStatus.value = null
+  filterObservationType.value = null
+  currentPage.value = 1
+  GetInvsetegationResult(word.value, 1, countPerPage.value)
 }
 
 const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
@@ -177,7 +230,14 @@ const GerIncidantCount = (data: any): number => {
           <div class="flex items-center justify-between mb-4">
             <!-- <IndexFilter :filters="Filters" /> -->
             <div class="btns-filter">
-              <!-- <FilterDialog /> -->
+              <IndexFilterDialog
+                show-date
+                :fields="filterFields"
+                :initial-date="filterDate"
+                :initial-values="{ status: filterStatus, observationType: filterObservationType }"
+                @apply="applyFilters"
+                @reset="resetFilters"
+              />
               <!-- <router-link :to="`/organization/investigating/add`">
             <button class="btn btn-primary">Create Investigating</button>
           </router-link> -->

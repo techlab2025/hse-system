@@ -40,6 +40,8 @@ import InspectionsResultsPage from './InspectionPages/InspectionsResultsPage.vue
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
 import CardSkelaton from './SubComponent/CardSkelaton.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
+import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
+import TitleInterface from '@/base/Data/Models/title_interface'
 
 const { t } = useI18n()
 const { isDarkMode } = useThemeMode()
@@ -62,6 +64,18 @@ const id = route.params.parent_id
 const inspectionType = computed(() => route.query.inspectionType)
 const selectedProjctesFilters = ref<number>()
 const SelectedZonesFilter = ref<number[]>([])
+const filterDate = ref('')
+const filterInspectionType = ref<number | null>(null)
+const filterFields = [
+  {
+    key: 'inspectionType',
+    label: 'Inspection Type',
+    options: [
+      new TitleInterface({ id: InspectionTypeEnum.DAY, title: 'Daily' }),
+      new TitleInterface({ id: InspectionTypeEnum.PERIOD, title: 'Periodic' }),
+    ],
+  },
+]
 
 const fetchInspection = async (
   query: string = '',
@@ -81,7 +95,8 @@ const fetchInspection = async (
     null,
     selectedProjctesFilters.value || null,
     route.query.typeId ? Number(route.query.typeId) : null,
-    null,
+    filterInspectionType.value ?? undefined,
+    filterDate.value,
   )
   const res = await indexInspectionController.getData(deleteInspectionParams)
   console.log(res, 'res')
@@ -101,6 +116,8 @@ const InspectionFormTasks = async (
     withPage,
     filter?.length > 0 ? filter : null,
     selectedProjctesFilters.value || null,
+    filterInspectionType.value ?? undefined,
+    filterDate.value,
   )
   const res = await fetchAllTasksController.getData(fetchAllTasksParams)
 }
@@ -118,6 +135,8 @@ const InspectionsResultsTasks = async (
     withPage,
     filter?.length > 0 ? filter : null,
     selectedProjctesFilters.value || null,
+    filterInspectionType.value ?? undefined,
+    filterDate.value,
   )
   const res = await fetchInspectionsResultsController.getData(fetchInspectionsResultsParams)
 }
@@ -165,6 +184,26 @@ const searchInspection = debounce(() => {
   fetchCurrentInspectionData(word.value, 1, countPerPage.value)
 })
 
+const applyFilters = ({
+  date,
+  values,
+}: {
+  date: string
+  values: Record<string, number | null>
+}) => {
+  filterDate.value = date
+  filterInspectionType.value = values.inspectionType ?? null
+  currentPage.value = 1
+  fetchCurrentInspectionData(word.value, 1, countPerPage.value)
+}
+
+const resetFilters = () => {
+  filterDate.value = ''
+  filterInspectionType.value = null
+  currentPage.value = 1
+  fetchCurrentInspectionData(word.value, 1, countPerPage.value)
+}
+
 const deleteInspection = async (id: number) => {
   const deleteInspectionParams = new DeleteInspectionParams(id)
   await DeleteInspectionController.getInstance().deleteInspection(deleteInspectionParams)
@@ -174,31 +213,69 @@ const deleteInspection = async (id: number) => {
 // Inspection Form
 const handleInspectionFormChangePage = (page: number) => {
   currentPage.value = page
-  InspectionFormTasks('', currentPage.value, countPerPage.value, 1, getSelectedZonesFilter())
+  InspectionFormTasks(
+    word.value,
+    currentPage.value,
+    countPerPage.value,
+    1,
+    getSelectedZonesFilter(),
+  )
 }
 const handleInspectionFormCountPerPage = (count: number) => {
   countPerPage.value = count
-  InspectionFormTasks('', currentPage.value, countPerPage.value, 1, getSelectedZonesFilter())
+  InspectionFormTasks(
+    word.value,
+    currentPage.value,
+    countPerPage.value,
+    1,
+    getSelectedZonesFilter(),
+  )
 }
 
 // Drag Inspection Form
 const handleDragInspectionChangePage = (page: number) => {
   currentPage.value = page
-  fetchInspection('', currentPage.value, countPerPage.value, 1, undefined, getSelectedZonesFilter())
+  fetchInspection(
+    word.value,
+    currentPage.value,
+    countPerPage.value,
+    1,
+    undefined,
+    getSelectedZonesFilter(),
+  )
 }
 const handleDragInspectionCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchInspection('', currentPage.value, countPerPage.value, 1, undefined, getSelectedZonesFilter())
+  fetchInspection(
+    word.value,
+    currentPage.value,
+    countPerPage.value,
+    1,
+    undefined,
+    getSelectedZonesFilter(),
+  )
 }
 
 // Inspection Results Form
 const handleInspectionResultsChangePage = (page: number) => {
   currentPage.value = page
-  InspectionsResultsTasks('', currentPage.value, countPerPage.value, 1, getSelectedZonesFilter())
+  InspectionsResultsTasks(
+    word.value,
+    currentPage.value,
+    countPerPage.value,
+    1,
+    getSelectedZonesFilter(),
+  )
 }
 const handleInspectionResultsCountPerPage = (count: number) => {
   countPerPage.value = count
-  InspectionsResultsTasks('', currentPage.value, countPerPage.value, 1, getSelectedZonesFilter())
+  InspectionsResultsTasks(
+    word.value,
+    currentPage.value,
+    countPerPage.value,
+    1,
+    getSelectedZonesFilter(),
+  )
 }
 
 const { user } = useUserStore()
@@ -344,6 +421,14 @@ watch(
             @update:data="setSelectedProjectFilter"
           >
             <template #actions>
+              <IndexFilterDialog
+                show-date
+                :fields="filterFields"
+                :initial-date="filterDate"
+                :initial-values="{ inspectionType: filterInspectionType }"
+                @apply="applyFilters"
+                @reset="resetFilters"
+              />
               <PermissionBuilder
                 :code="[
                   PermissionsEnum?.ORGANIZATION_EMPLOYEE,

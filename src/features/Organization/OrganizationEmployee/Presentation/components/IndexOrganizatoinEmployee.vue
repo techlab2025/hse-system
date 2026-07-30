@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
@@ -44,6 +44,9 @@ import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import Dialog from 'primevue/dialog'
 import UploadOrganizationEmployee from './UploadOrganizationEmployee.vue'
+import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
+import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController'
+import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams'
 
 const { t } = useI18n()
 
@@ -58,6 +61,11 @@ const state = ref(indexOrganizatoinEmployeeController.state.value)
 const route = useRoute()
 // const id = route.params.parent_id
 const id = route?.query?.heirarchy_id
+const filterHierarchyId = ref<number | null>(id ? Number(id) : null)
+const hierarchyOptions = ref<TitleInterface[]>([])
+const filterFields = computed(() => [
+  { key: 'hierarchyId', label: 'position', options: hierarchyOptions.value },
+])
 
 // const type = ref<OrganizatoinEmployeeStatusEnum>(OrganizatoinEmployeeStatusEnum[route.params.type as keyof typeof OrganizatoinEmployeeStatusEnum])
 
@@ -72,7 +80,7 @@ const fetchOrganizatoinEmployee = async (
     pageNumber,
     perPage,
     withPage,
-    id,
+    filterHierarchyId.value,
     null,
     false,
     route.query.certificate_id ? route.query.certificate_id : null,
@@ -85,8 +93,11 @@ const fetchOrganizatoinEmployee = async (
   await indexOrganizatoinEmployeeController.getData(deleteOrganizatoinEmployeeParams)
 }
 
-onMounted(() => {
+onMounted(async () => {
   fetchOrganizatoinEmployee()
+  hierarchyOptions.value = await IndexHerikalyController.getInstance().fetch(
+    new IndexHerikalyParams('', 1, 100, 0, false, null),
+  )
 })
 
 const searchOrganizatoinEmployee = debounce(() => {
@@ -103,13 +114,25 @@ const deleteOrganizatoinEmployee = async (id: number) => {
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchOrganizatoinEmployee('', currentPage.value, countPerPage.value)
+  fetchOrganizatoinEmployee(word.value, currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchOrganizatoinEmployee('', currentPage.value, countPerPage.value)
+  fetchOrganizatoinEmployee(word.value, currentPage.value, countPerPage.value)
+}
+
+const applyFilters = ({ values }: { values: Record<string, number | null> }) => {
+  filterHierarchyId.value = values.hierarchyId ?? null
+  currentPage.value = 1
+  fetchOrganizatoinEmployee(word.value, 1, countPerPage.value)
+}
+
+const resetFilters = () => {
+  filterHierarchyId.value = null
+  currentPage.value = 1
+  fetchOrganizatoinEmployee(word.value, 1, countPerPage.value)
 }
 
 watch(
@@ -315,6 +338,12 @@ const onFileSelected = (e: Event) => {
   ;(e.target as HTMLInputElement).value = ''
 }
 
+const handleUploadComplete = () => {
+  showUploadDialog.value = false
+  pendingFile.value = null
+  fetchOrganizatoinEmployee()
+}
+
 const DownloadExample = () => {
   const worksheetData = [
     {
@@ -428,6 +457,12 @@ const IndexOrganizationEmployeectionList = () => [
       class="col-span-2 flex justify-end gap-2"
       v-if="!route.query.heirarchy_id && !route.query.certificate_id"
     >
+      <IndexFilterDialog
+        :fields="filterFields"
+        :initial-values="{ hierarchyId: filterHierarchyId }"
+        @apply="applyFilters"
+        @reset="resetFilters"
+      />
       <!-- <IndexActions @export:pdf="exportPDF" @export:excel="exportExcel"
         :permissions="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]" ,
         :addLink="`/organization/organization-employee/add`"
@@ -565,14 +600,7 @@ const IndexOrganizationEmployeectionList = () => [
     :header="$t('upload_excel')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <UploadOrganizationEmployee
-      :initial-file="pendingFile"
-      @uploaded="
-        showUploadDialog = false;
-        pendingFile = null;
-        fetchOrganizatoinEmployee()
-      "
-    />
+    <UploadOrganizationEmployee :initial-file="pendingFile" @uploaded="handleUploadComplete" />
   </Dialog>
 
   <input

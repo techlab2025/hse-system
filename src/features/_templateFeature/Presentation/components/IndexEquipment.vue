@@ -2,7 +2,7 @@
 // import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/indexEquipmentTypeParams'
 // import IndexEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/indexEquipmentTypeController'
 
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
@@ -32,6 +32,11 @@ import DeleteEquipmentParams from '../../Core/params/deleteEquipmentParams'
 import DeleteEquipmentController from '../controllers/deleteEquipmentController'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
+import TitleInterface from '@/base/Data/Models/title_interface'
+import IndexEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/indexEquipmentTypeController'
+import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/indexEquipmentTypeParams'
+import { EquipmentStatus } from '@/features/setting/Equipment/Core/enum/equipmentStatus'
 
 const { t } = useI18n()
 
@@ -41,6 +46,18 @@ const { t } = useI18n()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
+const filterDate = ref('')
+const filterStatus = ref<number | null>(null)
+const filterEquipmentType = ref<number | null>(null)
+const equipmentTypeOptions = ref<TitleInterface[]>([])
+const ownershipOptions = [
+  new TitleInterface({ id: EquipmentStatus.RENT, title: 'Rent' }),
+  new TitleInterface({ id: EquipmentStatus.OWN, title: 'Owned' }),
+]
+const filterFields = computed(() => [
+  { key: 'status', label: 'Rent Type', options: ownershipOptions },
+  { key: 'equipmentType', label: 'Equipment Type', options: equipmentTypeOptions.value },
+])
 const indexEquipmentController = IndexEquipmentController.getInstance()
 const state = ref(indexEquipmentController.state.value)
 const route = useRoute()
@@ -59,12 +76,19 @@ const fetchEquipment = async (
     perPage,
     withPage,
     id,
+    undefined,
+    filterDate.value,
+    filterStatus.value ?? undefined,
+    filterEquipmentType.value ?? undefined,
   )
   await indexEquipmentController.getData(deleteEquipmentTypeParams)
 }
 
-onMounted(() => {
+onMounted(async () => {
   fetchEquipment()
+  equipmentTypeOptions.value = await IndexEquipmentTypeController.getInstance().fetch(
+    new IndexEquipmentTypeParams('', 1, 100, 0),
+  )
 })
 
 const searchEquipmentType = debounce(() => {
@@ -79,13 +103,35 @@ const deleteEquipment = async (id: number) => {
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchEquipment('', currentPage.value, countPerPage.value)
+  fetchEquipment(word.value, currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchEquipment('', currentPage.value, countPerPage.value)
+  fetchEquipment(word.value, currentPage.value, countPerPage.value)
+}
+
+const applyFilters = ({
+  date,
+  values,
+}: {
+  date: string
+  values: Record<string, number | null>
+}) => {
+  filterDate.value = date
+  filterStatus.value = values.status ?? null
+  filterEquipmentType.value = values.equipmentType ?? null
+  currentPage.value = 1
+  fetchEquipment(word.value, 1, countPerPage.value)
+}
+
+const resetFilters = () => {
+  filterDate.value = ''
+  filterStatus.value = null
+  filterEquipmentType.value = null
+  currentPage.value = 1
+  fetchEquipment(word.value, 1, countPerPage.value)
 }
 
 watch(
@@ -166,33 +212,53 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchEquipmentType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchEquipmentType" />
+      <input
+        v-model="word"
+        :placeholder="'search'"
+        class="input"
+        type="text"
+        @input="searchEquipmentType"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
+      <IndexFilterDialog
+        show-date
+        :fields="filterFields"
+        :initial-date="filterDate"
+        :initial-values="{ status: filterStatus, equipmentType: filterEquipmentType }"
+        @apply="applyFilters"
+        @reset="resetFilters"
+      />
       <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
-      <permission-builder :code="[
-        PermissionsEnum.ADMIN,
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.EQUIPMENT_CREATE,
-      ]">
-        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/add`"
-          class="btn btn-primary">
+      <permission-builder
+        :code="[
+          PermissionsEnum.ADMIN,
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.EQUIPMENT_CREATE,
+        ]"
+      >
+        <router-link
+          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/add`"
+          class="btn btn-primary"
+        >
           {{ $t('Add_Equipment') }}
         </router-link>
       </permission-builder>
     </div>
   </div>
 
-  <permission-builder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.EQUIPMENT_ALL,
-    PermissionsEnum.EQUIPMENT_DELETE,
-    PermissionsEnum.EQUIPMENT_FETCH,
-    PermissionsEnum.EQUIPMENT_UPDATE,
-    PermissionsEnum.EQUIPMENT_CREATE,
-  ]">
+  <permission-builder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.EQUIPMENT_ALL,
+      PermissionsEnum.EQUIPMENT_DELETE,
+      PermissionsEnum.EQUIPMENT_FETCH,
+      PermissionsEnum.EQUIPMENT_UPDATE,
+      PermissionsEnum.EQUIPMENT_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -214,8 +280,8 @@ watch(
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
                   <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/edit/${item.id}`">{{
-                      index + 1 }}
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/edit/${item.id}`"
+                    >{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
@@ -238,13 +304,20 @@ watch(
                   <!--                  @EquipmentTypeChangeStatus="fetchEquipmentType"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteEquipment)" @delete="deleteEquipment(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteEquipment)"
+                    @delete="deleteEquipment(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -253,22 +326,28 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EquipmentType`"
+        <DataEmpty
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EquipmentType`"
           addText="Add EquipmentType"
           description="Sorry .. You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EquipmentTypes" />
+          title="..ops! You have No EquipmentTypes"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EquipmentType`"
+        <DataFailed
+          :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EquipmentType`"
           addText="Add EquipmentType"
           description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EquipmentTypes" />
+          title="..ops! You have No EquipmentTypes"
+        />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        addText="Have not  Permission"
+        description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
+      />
     </template>
   </permission-builder>
 </template>

@@ -8,6 +8,8 @@ export default class FetchAllTasksParams implements Params {
   public pageNumber: number = 10
   public zoneIds?: number[]
   public projectIds?: number | number[]
+  public inspectionType?: number
+  public date?: string
 
   constructor(
     word: string,
@@ -16,6 +18,8 @@ export default class FetchAllTasksParams implements Params {
     withPage: number = 1,
     zoneIds?: number[],
     projectIds?: number | number[],
+    inspectionType?: number,
+    date?: string,
   ) {
     this.word = word
     this.withPage = withPage
@@ -23,6 +27,8 @@ export default class FetchAllTasksParams implements Params {
     this.perPage = perPage
     this.zoneIds = zoneIds
     this.projectIds = projectIds
+    this.inspectionType = inspectionType
+    this.date = date
   }
 
   toMap(): Record<string, string | number | number[] | null | any> {
@@ -46,6 +52,8 @@ export default class FetchAllTasksParams implements Params {
     data['limit'] = this.perPage
     if (this.zoneIds) data['zone_ids'] = this.zoneIds
     if (projectIds.length > 0) data['project_ids'] = projectIds
+    if (this.inspectionType != null) data['inspection_type'] = this.inspectionType
+    if (this.date) data['date'] = this.date
     return data
   }
 }

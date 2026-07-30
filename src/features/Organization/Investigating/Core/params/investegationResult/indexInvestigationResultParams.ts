@@ -7,18 +7,27 @@ export default class IndexInvestigationResultParams implements Params {
   public perPage: number = 10
   public pageNumber: number = 10
   public ObservatoinRiskLevel?: RiskLevelEnum
+  public status?: number
+  public date?: string
+  public observationType?: number
   constructor(
     word: string,
     pageNumber: number = 1,
     perPage: number = 10,
     withPage: number = 1,
     ObservatoinRiskLevel?: RiskLevelEnum,
+    status?: number,
+    date?: string,
+    observationType?: number,
   ) {
     this.word = word
     this.withPage = withPage
     this.pageNumber = pageNumber
     this.perPage = perPage
     this.ObservatoinRiskLevel = ObservatoinRiskLevel
+    this.status = status
+    this.date = date
+    this.observationType = observationType
   }
 
   toMap(): Record<string, number | string | any> {
@@ -28,6 +37,9 @@ export default class IndexInvestigationResultParams implements Params {
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.ObservatoinRiskLevel) data['type'] = this.ObservatoinRiskLevel
+    if (this.status != null) data['status'] = this.status
+    if (this.date) data['date'] = this.date
+    if (this.observationType != null) data['observation_type'] = this.observationType
 
     return data
   }

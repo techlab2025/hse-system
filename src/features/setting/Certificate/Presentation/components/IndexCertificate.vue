@@ -32,11 +32,13 @@ import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import UploadCertificateExeclSheet from './UploadCertificateExeclSheet.vue'
+import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
 
 const { t } = useI18n()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
+const filterDate = ref('')
 const indexCertificateController = IndexCertificateController.getInstance()
 const state = ref(indexCertificateController.state.value)
 const route = useRoute()
@@ -51,9 +53,11 @@ const fetchCertificate = async (
 ) => {
   const deleteCertificateParams = new IndexCertificateParams(
     query,
-    route.query.page ? Number(route.query.page) : pageNumber,
+    pageNumber,
     perPage,
     withPage,
+    undefined,
+    filterDate.value,
     // id.value?? '',
   )
   await indexCertificateController.getData(deleteCertificateParams)
@@ -88,7 +92,7 @@ const deleteCertificate = async (id: number) => {
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchCertificate('', currentPage.value, countPerPage.value)
+  fetchCertificate(word.value, currentPage.value, countPerPage.value)
   router.push({
     query: {
       ...route.query,
@@ -101,7 +105,19 @@ const handleChangePage = (page: number) => {
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchCertificate('', currentPage.value, countPerPage.value)
+  fetchCertificate(word.value, currentPage.value, countPerPage.value)
+}
+
+const applyFilters = ({ date }: { date: string }) => {
+  filterDate.value = date
+  currentPage.value = 1
+  fetchCertificate(word.value, 1, countPerPage.value)
+}
+
+const resetFilters = () => {
+  filterDate.value = ''
+  currentPage.value = 1
+  fetchCertificate(word.value, 1, countPerPage.value)
 }
 
 watch(
@@ -128,6 +144,12 @@ const onFileSelected = (e: Event) => {
   pendingFile.value = file
   showUploadDialog.value = true
   ;(e.target as HTMLInputElement).value = ''
+}
+
+const handleUploadComplete = () => {
+  showUploadDialog.value = false
+  pendingFile.value = null
+  fetchCertificate()
 }
 
 const actionList = (id: number, deleteCertificate: (id: number) => void) => [
@@ -215,12 +237,10 @@ const IndexOrganizationEmployeectionList = () => [
     permission: [PermissionsEnum?.ORG_EMPLOYEE_CREATE, PermissionsEnum?.ADMIN],
   },
 ]
-
 </script>
 
 <template>
-
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <span class="icon-remove" @click="((word = ''), searchCertificate())">
         <Search />
@@ -234,6 +254,12 @@ const IndexOrganizationEmployeectionList = () => [
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
+      <IndexFilterDialog
+        show-date
+        :initial-date="filterDate"
+        @apply="applyFilters"
+        @reset="resetFilters"
+      />
       <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
 
       <ExportPdf />
@@ -392,14 +418,7 @@ const IndexOrganizationEmployeectionList = () => [
     :header="$t('upload_certificate_sheet')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <UploadCertificateExeclSheet
-      :initial-file="pendingFile"
-      @uploaded="
-        showUploadDialog = false;
-        pendingFile = null;
-        fetchCertificate()
-      "
-    />
+    <UploadCertificateExeclSheet :initial-file="pendingFile" @uploaded="handleUploadComplete" />
   </Dialog>
 
   <input

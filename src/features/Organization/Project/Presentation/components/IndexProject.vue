@@ -16,12 +16,14 @@ import IndexProjectController from '../controllers/indexProjectController'
 import IndexProjectParams from '../../Core/params/indexProjectParams'
 import ProjectCard from './ProjectUtils/ProjectCard.vue'
 import ProjectCardSkelaton from './ProjectUtils/ProjectCardSkelaton.vue'
+import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
 
 const { t } = useI18n()
 
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
+const filterDate = ref('')
 const indexProjectController = IndexProjectController.getInstance()
 const state = ref(indexProjectController.state.value)
 const route = useRoute()
@@ -32,7 +34,14 @@ const fetchProject = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteProjectParams = new IndexProjectParams(query, pageNumber, perPage, withPage)
+  const deleteProjectParams = new IndexProjectParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    undefined,
+    filterDate.value,
+  )
   await indexProjectController.getData(deleteProjectParams)
 }
 
@@ -46,12 +55,24 @@ const searchProject = debounce(() => {
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchProject('', currentPage.value, countPerPage.value)
+  fetchProject(word.value, currentPage.value, countPerPage.value)
 }
 
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchProject('', currentPage.value, countPerPage.value)
+  fetchProject(word.value, currentPage.value, countPerPage.value)
+}
+
+const applyFilters = ({ date }: { date: string }) => {
+  filterDate.value = date
+  currentPage.value = 1
+  fetchProject(word.value, 1, countPerPage.value)
+}
+
+const resetFilters = () => {
+  filterDate.value = ''
+  currentPage.value = 1
+  fetchProject(word.value, 1, countPerPage.value)
 }
 
 watch(
@@ -90,6 +111,12 @@ watch(
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
+      <IndexFilterDialog
+        show-date
+        :initial-date="filterDate"
+        @apply="applyFilters"
+        @reset="resetFilters"
+      />
       <ExportPdf />
       <PermissionBuilder
         :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.PROJECT_CREATE]"
