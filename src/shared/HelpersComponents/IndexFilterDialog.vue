@@ -6,6 +6,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import type Params from '@/base/core/params/params'
 import type { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import { useRoute } from 'vue-router'
 
 interface IndexFilterField {
   key: string
@@ -91,6 +92,7 @@ const resetFilters = () => {
   emit('reset')
   visible.value = false
 }
+const route = useRoute()
 </script>
 
 <template>
@@ -126,15 +128,16 @@ const resetFilters = () => {
     :style="{ width: 'min(520px, 92vw)' }"
   >
     <div class="index-filter-dialog">
-      <label v-if="showDate" class="index-filter-date">
+      <!-- @todo: implement date filter -->
+      <!-- <label v-if="showDate" class="index-filter-date">
         <span>{{ $t('date') }}</span>
         <DatePicker
           v-model="draftDate"
           show-icon
           date-format="yy-mm-dd"
           :placeholder="$t('date')"
-        />
-      </label>
+        /> -->
+      <!-- </label> -->
 
       <UpdatedCustomInputSelect
         v-for="field in fields"

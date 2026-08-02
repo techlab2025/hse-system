@@ -111,12 +111,12 @@ watch(
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <IndexFilterDialog
+      <!-- <IndexFilterDialog
         show-date
         :initial-date="filterDate"
         @apply="applyFilters"
         @reset="resetFilters"
-      />
+      /> -->
       <ExportPdf />
       <PermissionBuilder
         :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.PROJECT_CREATE]"
