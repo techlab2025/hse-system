@@ -577,6 +577,9 @@ const assignedEmployeesCount = computed(() =>
 .position-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  // display: flex;
+  // flex-direction: row;
+  width: 100%;
   gap: 11px;
   padding: 14px 18px 18px;
 }
