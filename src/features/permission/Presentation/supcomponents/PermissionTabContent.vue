@@ -116,12 +116,12 @@ onMounted(() => {
             <h5>{{ prem.label }}</h5>
 
             <!-- ✅ Group Select All auto-sync -->
-            <label class="select_all"
+            <!-- <label class="select_all"
               @click.prevent="toggleGroupSelectAll(prem, { target: { checked: !isGroupFullyChecked(prem) } })">
               <input type="checkbox" :checked="isGroupFullyChecked(prem)" tabindex="-1" />
               <span class="checkmark"></span>
               <span>{{ $t('select_all') }}</span>
-            </label>
+            </label> -->
           </div>
 
           <hr />

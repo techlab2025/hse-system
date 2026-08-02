@@ -94,7 +94,7 @@ const actionList = (id: number) => [
       <div class="meta-item contractors-item">
         <span class="meta-icon" aria-hidden="true"><ContractorIcon class="contractor-icon" /></span>
         <span class="meta-copy">
-          <small>{{ t('contractors') }}</small>
+          <small>{{ t('sub_contractors') }}</small>
           <strong>{{ Contractors || 0 }}</strong>
         </span>
       </div>

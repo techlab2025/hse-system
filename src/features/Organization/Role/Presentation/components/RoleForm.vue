@@ -69,10 +69,10 @@ const { user } = useUserStore()
     <label for="role">{{ $t('role') }}</label>
     <input type="text" id="role" v-model="role" class="input" @input="updateData" />
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper field-required">
+  <!-- <div class="col-span-4 md:col-span-2 input-wrapper field-required">
     <label for="roleName">{{ $t('role_name') }}</label>
     <input type="text" id="roleName" v-model="roleName" class="input" @input="updateData" />
-  </div>
+  </div> -->
   <div
     class="col-span-4 md:col-span-2 input-wrapper"
     v-if="user?.type == OrganizationTypeEnum?.ADMIN"

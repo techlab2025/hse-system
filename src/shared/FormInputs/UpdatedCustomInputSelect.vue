@@ -152,10 +152,6 @@ const dialogVisibleModel = computed<boolean>({
 
   set(value) {
     emit('update:dialogVisible', value)
-
-    if (!value) {
-      void reloadData()
-    }
   },
 })
 
@@ -227,6 +223,15 @@ watch(
   },
   {
     deep: true,
+  },
+)
+
+watch(
+  () => props.dialogVisible,
+  (isVisible, wasVisible) => {
+    if (wasVisible && !isVisible) {
+      void refetchOptions()
+    }
   },
 )
 
@@ -375,6 +380,16 @@ async function reloadData(): Promise<void> {
    */
   normalizedValue.value = isMultiselect.value ? [] : null
 
+  if (props.controller && props.params) {
+    await fetchOptions()
+    return
+  }
+
+  dynamicOptions.value = props.staticOptions ?? props.options ?? []
+  emit('reload-data')
+}
+
+async function refetchOptions(): Promise<void> {
   if (props.controller && props.params) {
     await fetchOptions()
     return
