@@ -3,9 +3,9 @@ import { onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams'
 import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import type ProjectLocationHierarchyModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationHierarchyModel'
-import HeirarchySelectDialog from '../../SelectDialogs/HeirarchySelectDialog.vue'
+import AddHerikaly from '@/features/Organization/Herikaly/Presentation/components/AddHerikaly.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 
 const props = defineProps<{
   selectedHirarchy: TitleInterface[]
@@ -26,10 +26,7 @@ const updateHerikaly = (value: TitleInterface[]) => {
   emit('update:herikaly', herikaly.value)
 }
 
-const HeirarchyVisable = ref<boolean>()
-const ShowHeirarchyDialog = () => {
-  HeirarchyVisable.value = true
-}
+const HeirarchyVisable = ref(false)
 
 onMounted(() => {
   updateHerikaly(herikaly.value)
@@ -48,7 +45,7 @@ watch(
     <form>
       <div class="input-container">
         <div class="input-wrapper">
-          <CustomSelectInput
+          <UpdatedCustomInputSelect
             :modelValue="herikaly"
             :params="HerikalyParams"
             :controller="indexHerikalyController"
@@ -58,8 +55,20 @@ watch(
             :type="2"
             :placeholder="$t('functional Positions')"
             @update:modelValue="updateHerikaly"
-            :onclick="ShowHeirarchyDialog"
-          />
+            :isDialog="true"
+            v-model:dialogVisible="HeirarchyVisable"
+            @close="HeirarchyVisable = false"
+          >
+            <template #LabelHeader>
+              <button type="button" class="add-dialog" @click="HeirarchyVisable = true">
+                {{ $t('new') }}
+              </button>
+            </template>
+
+            <template #Dialog>
+              <AddHerikaly @update:data="HeirarchyVisable = false" />
+            </template>
+          </UpdatedCustomInputSelect>
         </div>
       </div>
 
@@ -83,8 +92,6 @@ watch(
           <small>{{ $t('Open the selector to add one or more functional positions.') }}</small>
         </span>
       </div>
-
-      <HeirarchySelectDialog v-model:visible="HeirarchyVisable" />
     </form>
   </div>
 </template>
@@ -104,6 +111,16 @@ watch(
 .input-container {
   margin: 0 !important;
   padding: 0 !important;
+}
+
+.add-dialog {
+  padding: 0;
+  border: 0;
+  color: var(--PrimaryColor);
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
 }
 
 .selection-preview,
