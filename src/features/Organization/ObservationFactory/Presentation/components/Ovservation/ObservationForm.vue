@@ -8,7 +8,7 @@ import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
 import DatePicker from 'primevue/datepicker'
 
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
@@ -397,7 +397,7 @@ const setSelectedObservationType = (data: TitleInterface) => {
 
       <!-- Observation Type -->
       <div class="col-span-6 md:grid-cols-12">
-        <CustomSelectInput
+        <UpdatedCustomInputSelect
           :required="false"
           :modelValue="SelectedObservationType"
           :controller="indexObservatioTyepController"
@@ -423,7 +423,7 @@ const setSelectedObservationType = (data: TitleInterface) => {
 
       <!-- Sevarity -->
       <div class="col-span-6 md:grid-cols-12">
-        <CustomSelectInput
+        <UpdatedCustomInputSelect
           :required="false"
           :modelValue="SelectedSeverity"
           :static-options="SeverityList"
@@ -436,7 +436,7 @@ const setSelectedObservationType = (data: TitleInterface) => {
 
       <!-- Likelihood -->
       <div class="col-span-6 md:grid-cols-12">
-        <CustomSelectInput
+        <UpdatedCustomInputSelect
           :required="false"
           :modelValue="SelectedLikelihood"
           :static-options="LikelihoodList"
@@ -449,7 +449,7 @@ const setSelectedObservationType = (data: TitleInterface) => {
 
       <!-- Equipemt -->
       <div class="col-span-6 md:grid-cols-12">
-        <CustomSelectInput
+        <UpdatedCustomInputSelect
           :required="false"
           :modelValue="equipment"
           :controller="equipmentController"

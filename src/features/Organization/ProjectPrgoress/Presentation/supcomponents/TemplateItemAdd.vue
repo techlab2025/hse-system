@@ -11,7 +11,7 @@ import IndexLangController from '@/features/setting/languages/Presentation/contr
 import { LangsMap } from '@/constant/langs'
 import { useUserStore } from '@/stores/user'
 import { ActionsEnum } from '@/features/setting/Template/Core/Enum/ActionType'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import AddTemplateItemParams from '@/features/setting/TemplateItem/Core/params/addTemplateItemParams'
 import AddTemplateController from '@/features/setting/Template/Presentation/controllers/addTemplateController'
@@ -250,7 +250,7 @@ watch(
         </div>
 
         <div class="col-span-4 md:col-span-2">
-          <CustomSelectInput :key="formKey" :modelValue="SelectedTemplateType" :staticOptions="TemplateTypes" :required="true"
+          <UpdatedCustomInputSelect :key="formKey" :modelValue="SelectedTemplateType" :staticOptions="TemplateTypes" :required="true"
             :label="$t('Template Type')" id="TemplateType" :placeholder="$t('Select Template Type')"
             @update:modelValue="setTemplateType" />
         </div>

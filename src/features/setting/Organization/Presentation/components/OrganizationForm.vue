@@ -5,7 +5,7 @@ import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { LangsMap } from '@/constant/langs.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
@@ -233,7 +233,7 @@ const updateAdminData = (status: boolean) => {
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
@@ -246,7 +246,7 @@ const updateAdminData = (status: boolean) => {
 
   <!-- Language select -->
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="lang"
       :controller="indexLangController"
       :params="indexLangParams"
@@ -261,7 +261,7 @@ const updateAdminData = (status: boolean) => {
 
   <!-- Country select -->
   <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="SelectedCountry"
       :controller="indexLocationCountriesController"
       :params="indexLocationCountriesParams"

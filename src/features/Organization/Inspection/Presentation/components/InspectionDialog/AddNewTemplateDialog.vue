@@ -20,7 +20,7 @@ import { LangsMap } from '@/constant/langs'
 import { useUserStore } from '@/stores/user'
 import { ActionsEnum } from '@/features/setting/Template/Core/Enum/ActionType'
 import { ActionsEnum as TemplateItemActionsEnum } from '@/features/setting/TemplateItem/Core/Enum/ActionsEnum'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import TemplateTimeLine from '../InspectionUtils/TemplateTimeLine.vue'
 import AddTemplateItemParams from '@/features/setting/TemplateItem/Core/params/addTemplateItemParams'
@@ -361,7 +361,7 @@ watch(
 
         <!-- :data-template-validation-error="Boolean(validationErrors.templateType)" -->
         <div class="template-field-panel col-span-4 md:col-span-2">
-          <CustomSelectInput
+          <UpdatedCustomInputSelect
             :modelValue="SelectedTemplateType"
             :staticOptions="TemplateTypes"
             :required="true"

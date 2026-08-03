@@ -326,7 +326,7 @@ onMounted(async () => {
                 </UpdatedCustomInputSelect>
               </div>
               <div class="injury-field input-wrapper w-full">
-                <!-- <CustomSelectInput :modelValue="item.infectionTypeId" class="input" :controller="indexInjuryController"
+                <!-- <UpdatedCustomInputSelect :modelValue="item.infectionTypeId" class="input" :controller="indexInjuryController"
                   :params="indexInjuryParams" :label="$t('injury Type')" id="injury"
                   :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)" /> -->
 

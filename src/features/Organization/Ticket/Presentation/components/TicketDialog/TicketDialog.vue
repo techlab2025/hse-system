@@ -3,7 +3,7 @@ import { ref } from "vue";
 import Dialog from 'primevue/dialog';
 import { useTicketStore } from "@/stores/TicketStor";
 import TicktDialogHedaerIcon from "@/shared/icons/TicktDialogHedaerIcon.vue";
-import CustomSelectInput from "@/shared/FormInputs/CustomSelectInput.vue";
+import UpdatedCustomInputSelect from "@/shared/FormInputs/UpdatedCustomInputSelect.vue";
 import IndexTicketTypeController from "@/features/Organization/TicketType/Presentation/controllers/indexTicketTypeController";
 import IndexTicketTypeParams from "@/features/Organization/TicketType/Core/params/indexTicketTypeParams";
 import AddTicketParams from "../../../Core/params/addTicketParams";
@@ -78,12 +78,12 @@ const CloseDialog = () => {
       <div class=" dialog-content flex items-center gap-2">
         <div class="flex flex-col w-full">
           <div class="input-wrapper">
-            <CustomSelectInput :modelValue="TicketType" :controller="indexTicketTypeController"
+            <UpdatedCustomInputSelect :modelValue="TicketType" :controller="indexTicketTypeController"
               :params="indexTicketTypeParams" :label="$t('type_of_problem')" id="TicketType"
               :placeholder="$t('Select_ticket_type')" @update:modelValue="setTicketType" />
           </div>
           <div class="input-wrapper col-span-4 md:col-span-4" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
-            <CustomSelectInput :modelValue="SelectedOrganization" :controller="indexOrganizationController"
+            <UpdatedCustomInputSelect :modelValue="SelectedOrganization" :controller="indexOrganizationController"
               :params="organizationParams" label="Select Organization" id="organization"
               placeholder="Select organization" @update:modelValue="setOrganization" />
           </div>

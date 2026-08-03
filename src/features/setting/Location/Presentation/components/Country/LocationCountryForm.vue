@@ -12,7 +12,7 @@ import type LocationDetailsModel from '../../../Data/models/LocationDetailsModel
 import EditLocationParams from '../../../Core/params/editLocationParams'
 import AddLocationParams from '../../../Core/params/addLocationParams'
 import { LocationEnum } from '../../../Core/Enum/LocationEnum'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
@@ -192,7 +192,7 @@ const fields = ref([
   </div> -->
 
   <!-- <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="LocationType"
       :staticOptions="TypesSelection"
       label="Location Type"

@@ -16,7 +16,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexLocationController from '@/features/setting/Location/Presentation/controllers/indexLocationController'
 import IndexLocationParams from '@/features/setting/Location/Core/params/indexLocationParams'
 import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -255,7 +255,7 @@ watch(
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :controller="indexCountryController"
       :params="indexCountryParams"
       :modelValue="country_id"
@@ -266,7 +266,7 @@ watch(
   </div>
   
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :controller="indexCityController"
       :params="indexCityParams"
       :modelValue="city_id"
@@ -277,7 +277,7 @@ watch(
   </div>
   
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :controller="indexStateController"
       :params="indexStateParams"
       :modelValue="state_id"
@@ -287,7 +287,7 @@ watch(
     />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :controller="indexAreaController"
       :params="indexAreaParams"
       :modelValue="area_id"

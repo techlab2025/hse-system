@@ -5,7 +5,7 @@ import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
@@ -220,7 +220,7 @@ const setOrganization = (data: TitleInterface) => {
 
 <template>
   <div class="col-span-4 md:col-span-4">
-    <CustomSelectInput :modelValue="SelectedTicketType" :controller="indexTicketTypeController"
+    <UpdatedCustomInputSelect :modelValue="SelectedTicketType" :controller="indexTicketTypeController"
       :params="ticketTypeParams" label="Select Ticket Type" id="ticket" placeholder="Select ticket type"
       @update:modelValue="setTicketType" />
   </div>
@@ -236,7 +236,7 @@ const setOrganization = (data: TitleInterface) => {
   </div>
 
   <div class="input-wrapper col-span-4 md:col-span-4" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomSelectInput :modelValue="SelectedOrganization" :controller="indexOrganizationController"
+    <UpdatedCustomInputSelect :modelValue="SelectedOrganization" :controller="indexOrganizationController"
       :params="organizationParams" label="Select Organization" id="organization" placeholder="Select organization"
       @update:modelValue="setOrganization" />
   </div>

@@ -13,7 +13,7 @@ import EditWhereHouseTypeParams from '../../Core/params/editWhereHouseTypeParams
 import AddWhereHouseTypeParams from '../../Core/params/addWhereHouseTypeParams'
 import type WhereHouseTypeDetailsModel from '../../Data/models/WhereHouseTypeDetailsModel'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams'
@@ -268,7 +268,7 @@ defineExpose({
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
     data-required-field="industry"
   >
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"

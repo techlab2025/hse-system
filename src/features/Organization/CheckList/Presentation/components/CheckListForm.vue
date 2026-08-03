@@ -9,7 +9,7 @@ import IndexLangParams from '@/features/setting/languages/Core/params/indexLangP
 import { LangsMap } from '@/constant/langs.ts'
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams'
@@ -185,7 +185,7 @@ const updateAllIndustries = (data) => {
       @update:checked="updateAllIndustries" />
   </div>
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
-    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
+    <UpdatedCustomInputSelect :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
       id="AccidentsType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
   </div>
   <!-- <div class="col-span-4 md:col-span-2" v-if="!data?.id">

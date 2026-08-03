@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
 import type ContractorDetailsModel from '../../Data/models/ContractorDetailsModel'
@@ -6,13 +7,11 @@ import editContractorParams from '../../Core/params/editContractorParams'
 import AddContractorParams from '../../Core/params/addContractorParams'
 import IndexScopeController from '@/features/Organization/Scope/Presentation/controllers/indexScopeController'
 import IndexScopeParams from '@/features/Organization/Scope/Core/params/indexScopeParams'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import DatePicker from 'primevue/datepicker'
 import { ContractorStatusEnum } from '../../Core/Enum/ContractorStatusEnum'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import ScopeIdParams from '../../Core/params/AddscopesParams'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import AddScope from '@/features/Organization/Scope/Presentation/components/AddScope.vue'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
@@ -420,7 +419,7 @@ defineExpose({
     </p>
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper" data-required-field="Scope">
-    <!-- <CustomSelectInput
+    <!-- <UpdatedCustomInputSelect
     :modelValue="Scope"
         class="input"
         :controller="indexScopeController"
@@ -460,7 +459,7 @@ defineExpose({
   </div>
 
   <div class="col-span-6 md:col-span-2 input-wrapper" data-required-field="SelectedStatus">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="SelectedStatus"
       class="input"
       :static-options="StatusList"

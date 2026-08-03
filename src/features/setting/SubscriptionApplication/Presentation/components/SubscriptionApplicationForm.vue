@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
@@ -6,7 +7,6 @@ import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
@@ -21,7 +21,6 @@ import AddSubscriptionParams from '../../Core/params/ApproveSubscriptionApplicat
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import type SubscriptionDetailsModel from '../../Data/models/SubscriptionApplicationDetailsModel'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import IndexSubscriptionController from '../controllers/indexSubscriptionApplicationController'
 import IndexSubscriptionTypeController from '@/features/setting/SubscriptionType/Presentation/controllers/indexSubscriptionTypeController'
 import IndexSubscriptionTypeParams from '@/features/setting/SubscriptionType/Core/params/indexSubscriptionTypeParams'

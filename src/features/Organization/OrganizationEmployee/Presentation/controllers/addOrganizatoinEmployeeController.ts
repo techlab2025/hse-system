@@ -1,14 +1,11 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
-// import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
-import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import AddOrganizatoinEmployeeUseCase from '../../Domain/useCase/addOrganizatoinEmployeeUseCase'
 import type OrganizatoinEmployeeModel from '../../Data/models/OrganizatoinEmployeeModel'
-import type AddOrganizatoinEmployeeParams from '../../Core/params/addOrganizatoinEmployeeParams'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class AddOrganizatoinEmployeeController extends ControllerInterface<
@@ -27,10 +24,10 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
     return this.instance
   }
 
-  async addOrganizatoinEmployee(params: any , router: Router, draft: boolean = false) {
+  async addOrganizatoinEmployee(params: any, router: Router, draft: boolean = false) {
     console.log(params, 'paraaamsss controller')
     // useLoaderStore().setLoadingWithDialog();
-    if (params.data!= undefined && params?.data?.length > 0) {
+    if (params.data != undefined && params?.data?.length > 0) {
       for (const el of params.data) {
         if (!el.name) {
           new OpenWarningDilaog('Name Is Required').openDialog()
@@ -47,9 +44,9 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
         }
       }
     } else {
-      if(params.positions.map((item: any) => item.hierarchy_id).includes(undefined)){
-        new OpenWarningDilaog('Please Select Position For All Employees').openDialog();
-        return ;
+      if (params.positions.map((item: any) => item.hierarchy_id).includes(undefined)) {
+        new OpenWarningDilaog('Please Select Position For All Employees').openDialog()
+        return
       }
       params.validate()
       if (!params.validate().isValid) {

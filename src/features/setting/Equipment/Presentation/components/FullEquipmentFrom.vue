@@ -1,9 +1,9 @@
 <script lang="ts" setup>
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import DatePicker from 'primevue/datepicker'
 import QrCard from './EquipmentUtils/QrCard.vue'
@@ -37,7 +37,6 @@ import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import IndexWhereHouseController from '@/features/Organization/WhereHouse/Presentation/controllers/indexWhereHouseController'
 import IndexWhereHouseParams from '@/features/Organization/WhereHouse/Core/params/indexWhereHouseParams'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import EquipmentTypeForm from '@/features/setting/EquipmentType/Presentation/components/EquipmentTypeForm.vue'
 import { formatTime } from '@/base/Presentation/utils/time_format'
 import AddEquipmentType from '@/features/setting/EquipmentType/Presentation/components/AddEquipmentType.vue'
@@ -969,7 +968,7 @@ defineExpose({
         class="col-span-2 md:col-span-1"
         data-required-field="SelectedRentType"
       >
-        <CustomSelectInput
+        <UpdatedCustomInputSelect
           :staticOptions="RentTypes"
           :modelValue="SelectedRentType"
           label="Rent Type"
@@ -983,7 +982,7 @@ defineExpose({
         </p>
       </div>
       <div class="col-span-2 md:col-span-1" v-if="!data?.id">
-        <!-- <CustomSelectInput :controller="indexWhereHouseController" :params="indexWhereHouseParams"
+        <!-- <UpdatedCustomInputSelect :controller="indexWhereHouseController" :params="indexWhereHouseParams"
           :modelValue="SelectedWhereHosue" label="Warehouse" id="Warehouse" placeholder="Select Warehouse.."
           @update:modelValue="setSelectedWhereHouse" /> -->
 
@@ -1114,7 +1113,7 @@ defineExpose({
         class="col-span-2 md:col-span-1"
         v-if="!allIndustries && user?.type == OrganizationTypeEnum?.ADMIN"
       >
-        <CustomSelectInput
+        <UpdatedCustomInputSelect
           :modelValue="industry"
           :controller="industryController"
           :params="industryParams"

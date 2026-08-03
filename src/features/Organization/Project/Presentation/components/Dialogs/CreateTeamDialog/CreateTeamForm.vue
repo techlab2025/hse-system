@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexTeamController from '@/features/setting/Teams/Presentation/controllers/indexTeamController'
 import IndexTeamParams from '@/features/setting/Teams/Core/params/indexTeamParams'
@@ -9,7 +9,6 @@ import IndexHierarchyEmployeeController from '../../../controllers/Hierarchy/Hie
 import IndexLocationHierarchyEmployeeParams from '@/features/Organization/Project/Core/params/Hierarchy/HierarchyEmployee/indexHierarchyEmployeeParams'
 import CreateProjectLocationTeamEmployeeController from '../../../controllers/CreateProjectLocationTeamEmployeeController'
 import CreateProjectLocationTeamEmployeeParams from '@/features/Organization/Project/Core/params/CreateProjectLocationTeamEmployeeParams'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import AddTeam from '@/features/setting/Teams/Presentation/components/AddTeam.vue'
 
 const emit = defineEmits(['update:data'])
@@ -124,7 +123,7 @@ const canSubmit = computed(
 
         <div class="input-wrapper modern-team-field">
           <span class="field-step">{{ teamId ? '01' : '02' }}</span>
-          <CustomSelectInput
+          <UpdatedCustomInputSelect
             :modelValue="Employees"
             :controller="indexHierarchyEmployeeController"
             :params="indexLocationHierarchyEmployeeParams"
@@ -142,7 +141,7 @@ const canSubmit = computed(
           v-if="mode !== 'leader' && mode !== 'employee'"
         >
           <span class="field-step">03</span>
-          <CustomSelectInput
+          <UpdatedCustomInputSelect
             :modelValue="TeamLeader"
             class="input"
             :staticOptions="Employees"

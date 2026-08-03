@@ -113,7 +113,7 @@ onMounted(() => {
             <p>{{ $t('Select one or more available tools and devices') }}</p>
           </div>
         </div>
-        <!-- <CustomSelectInput :modelValue="equipments" :controller="indexEquipmentController"
+        <!-- <UpdatedCustomInputSelect :modelValue="equipments" :controller="indexEquipmentController"
           :params="indexEquipmentParams" label="Equipment" placeholder="Select Your Equipment" :type="2"
           @update:modelValue="setEquipments" /> -->
         <label for="equipment">{{ $t('Select Equipment') }}</label>

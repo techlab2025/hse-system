@@ -26,12 +26,11 @@ import InspectionZonesForm from './InspectionForms/InspectionZonesForm.vue'
 import InspectionGeneralForm from './InspectionForms/InspectionGeneralForm.vue'
 import InspectionTemplateDialog from './InspectionDialog/InspectionTemplateDialog.vue'
 import EmployeeTasksCard from './employeeTasksCard/employeeTasksCard.vue'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 
 /* Equipment */
 import IndexEquipmentController from '@/features/_templateFeature/Presentation/controllers/indexEquipmentController'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 // import AddInspection from './AddInspection.vue'
 import AddEquipment from '@/features/_templateFeature/Presentation/components/AddEquipment.vue'
 import AddFullEquipment from '@/features/setting/Equipment/Presentation/components/AddFullEquipment.vue'
@@ -466,7 +465,7 @@ defineExpose({
         >
           <!-- Machine Selection -->
 
-          <!-- <CustomSelectInput
+          <!-- <UpdatedCustomInputSelect
                  New Update => Custom input Select inspection Form
         /> -->
 
@@ -475,7 +474,7 @@ defineExpose({
             data-required-field="SelectedEquipment"
             v-if="!id && SelectedAssigned === AssignToTypeEnum.MACHINE"
           >
-            <!-- <CustomSelectInput
+            <!-- <UpdatedCustomInputSelect
         v-if="SelectedAssigned === AssignToTypeEnum.MACHINE"
         class="input"
           :modelValue="SelectedEquipment"

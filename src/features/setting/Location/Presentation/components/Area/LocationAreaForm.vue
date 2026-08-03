@@ -12,7 +12,7 @@ import type LocationDetailsModel from '../../../Data/models/LocationDetailsModel
 import EditLocationParams from '../../../Core/params/editLocationParams'
 import AddLocationParams from '../../../Core/params/addLocationParams'
 import { LocationEnum } from '../../../Core/Enum/LocationEnum'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { useRoute, useRouter } from 'vue-router'
 import IndexLocationController from '../../controllers/indexLocationController'
 import IndexLocationParams from '../../../Core/params/indexLocationParams'
@@ -250,7 +250,7 @@ const fields = ref([
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!ParentId">
-    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
+    <UpdatedCustomInputSelect :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
       :params="indexLocationCountriesParams" label="Country " id="Location" placeholder="Select  Country" :type="2"
       @update:modelValue="SetCountrySelection" />
   </div>
@@ -264,12 +264,12 @@ const fields = ref([
     />
   </div> -->
   <div class="col-span-4 md:col-span-2" v-if="!ParentId && SelectedCountry?.length != 0">
-    <CustomSelectInput :modelValue="SelectedState" :controller="indexLocationStatesController"
+    <UpdatedCustomInputSelect :modelValue="SelectedState" :controller="indexLocationStatesController"
       :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State" :type="2"
       @update:modelValue="SetStateSelection" />
   </div>
   <div class="col-span-4 md:col-span-2" v-if="!ParentId && SelectedState?.length != 0">
-    <CustomSelectInput :modelValue="SelectedCity" :controller="indexLocationAreasController"
+    <UpdatedCustomInputSelect :modelValue="SelectedCity" :controller="indexLocationAreasController"
       :params="indexLocationAreasParams" label="City" id="City" placeholder="Select City"
       @update:modelValue="SetCitySelection" />
   </div>

@@ -10,7 +10,7 @@ import AddOrganizatoinEmployeeController from '../controllers/addOrganizatoinEmp
 import AddOrganizationEmployeeExcelParams from '../../Core/params/AddOrganizationEmployeeExcelParams'
 import { useRouter } from 'vue-router'
 import AddTeamController from '@/features/setting/Teams/Presentation/controllers/addTeamController'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams'
 import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController'
@@ -360,7 +360,7 @@ const onMappingClose = () => {
     <!-- ── Hierarchy Select ─────────────────────────────────── -->
     <div class="grid grid-cols-6 gap-4 w-full mb-4">
       <div class="col-span-2 input-wrapper">
-        <CustomSelectInput
+        <UpdatedCustomInputSelect
           :modelValue="Heirarchy"
           @update:modelValue="setHeirarchy"
           :controller="indexHerikalyController"

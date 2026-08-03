@@ -10,7 +10,7 @@ import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
 import EditEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/editEquipmentTypeParams'
 import AddEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/addEquipmentTypeParams.ts'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
@@ -240,7 +240,7 @@ const UpdateActiveTap = (data) => {
 
   <!-- Equipment Selection -->
   <!-- <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="EquipmentType"
       :static-options="EquipmentsTypes"
       label="Category"
@@ -273,7 +273,7 @@ const UpdateActiveTap = (data) => {
     class="col-span-4 md:col-span-2"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
   >
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"

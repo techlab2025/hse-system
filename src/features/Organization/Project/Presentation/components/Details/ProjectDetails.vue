@@ -90,8 +90,6 @@ watch(
           :endDate="state.data?.endDate"
         />
 
-        <MainObjectivesSection :description="state.data?.description" />
-
         <!-- <div class="inspections-sections">
           <InspectionsSections
             :inspectionsImage="zoneInspectionTasks"
@@ -113,6 +111,8 @@ watch(
         </div> -->
 
         <section class="project-operations-workspace">
+          <MainObjectivesSection class="main-objective" :description="state.data?.description" />
+
           <div class="operations-intro">
             <div class="operations-title">
               <span class="operations-mark" aria-hidden="true"> <i></i><i></i><i></i> </span>
@@ -178,6 +178,9 @@ watch(
 </template>
 
 <style scoped lang="scss">
+.main-objective {
+  margin-block: 12px;
+}
 .project-details-section {
   gap: 20px;
   padding: 12px;

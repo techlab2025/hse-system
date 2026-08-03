@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TitleInterface from '@/base/Data/Models/title_interface'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { ref } from 'vue'
 import InspectionGeneralForm from './InspectionGeneralForm.vue'
 import InspectionTemplateDialog from '@/features/Organization/Inspection/Presentation/components/InspectionDialog/InspectionTemplateDialog.vue'
@@ -85,7 +85,7 @@ const setEquipment = (data: TitleInterface) => {
       <div class="selection-grid">
         <div class="selection-field">
           <span class="field-step">01</span>
-          <CustomSelectInput
+          <UpdatedCustomInputSelect
             :required="true"
             :modelValue="SelectedProject"
             class="input"
@@ -100,7 +100,7 @@ const setEquipment = (data: TitleInterface) => {
 
         <div v-if="SelectedProject" class="selection-field">
           <span class="field-step">02</span>
-          <CustomSelectInput
+          <UpdatedCustomInputSelect
             :required="true"
             :modelValue="SelectedZones"
             class="input"
@@ -115,7 +115,7 @@ const setEquipment = (data: TitleInterface) => {
 
         <div class="selection-field selection-field--optional">
           <span class="optional-badge">{{ $t('optional') }}</span>
-          <CustomSelectInput
+          <UpdatedCustomInputSelect
             :modelValue="SelectedEquipment"
             class="input"
             :controller="indexEquipmentController"

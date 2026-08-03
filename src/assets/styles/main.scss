@@ -176,14 +176,9 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
 
   @media (prefers-reduced-motion: reduce) {
     scroll-behavior: auto;
-  }
-
-  > section {
-    scroll-snap-align: start;
   }
 }
 

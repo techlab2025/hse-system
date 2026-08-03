@@ -1,15 +1,14 @@
 <script lang="ts" setup>
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { computed, nextTick, ref, watch } from 'vue'
 import EditWhereHouseParams from '../../Core/params/editWhereHouseParams'
 import AddWhereHouseParams from '../../Core/params/addWhereHouseParams'
 import type WhereHouseDetailsModel from '../../Data/models/WhereHouseDetailsModel'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { useRoute } from 'vue-router'
 import IndexWhereHouseTypeController from '@/features/Organization/WhereHouseType/Presentation/controllers/indexWhereHouseTypeController'
 import IndexWhereHouseTypeParams from '@/features/Organization/WhereHouseType/Core/params/indexWhereHouseTypeParams'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import AddWhereHouseType from '@/features/Organization/WhereHouseType/Presentation/components/AddWhereHouseType.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
@@ -164,7 +163,7 @@ defineExpose({
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="SelectedWhereHouseType">
-    <!-- <CustomSelectInput :required="false" :modelValue="SelectedWhereHouseType"
+    <!-- <UpdatedCustomInputSelect :required="false" :modelValue="SelectedWhereHouseType"
       :controller="indexWhereHouseTypeController" :params="indexWhereHouseTypeParams" :label="$t('Where House Type')"
       id="Equipment" placeholder="Select Where House Type" @update:modelValue="setSelectedWhereHouseType" /> -->
     <UpdatedCustomInputSelect

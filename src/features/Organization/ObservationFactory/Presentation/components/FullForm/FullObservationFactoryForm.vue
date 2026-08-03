@@ -1,8 +1,8 @@
 <script lang="ts" setup>
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
 import DatePicker from 'primevue/datepicker'
 import ObservationImage from '@/assets/images/create_obs.png'
@@ -50,7 +50,6 @@ import { SaveStatusEnum } from '../../../Core/Enums/save_status_enum'
 import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 import { TypesEnum } from '../../../Core/Enums/types_enum'
 import { HazardTypeParentEnum } from '@/features/setting/HazardType/Core/Enums/HazardTypeEnum'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import AddObserverationType from '@/features/setting/ObserverationType/Presentation/components/AddObserverationType.vue'
 import AddFullEquipment from '@/features/setting/Equipment/Presentation/components/AddFullEquipment.vue'
 import AddHazardType from '@/features/setting/HazardType/Presentation/components/AddHazardType.vue'
@@ -945,7 +944,7 @@ defineExpose({
       data-required-field="SelectedObservationType"
       v-if="ObservationFactoryType == Observation.ObservationType"
     >
-      <!-- <CustomSelectInput
+      <!-- <UpdatedCustomInputSelect
       :required="false" :modelValue="SelectedObservationType"
         :controller="indexObservatioTyepController"
         :params="indexObservationTypeParams"
@@ -953,7 +952,7 @@ defineExpose({
         id="Equipment" placeholder="Select Observation Type"
         @update:modelValue="setSelectedObservationType" /> -->
 
-      <!-- <CustomSelectInput
+      <!-- <UpdatedCustomInputSelect
                  New Update => Custom input Select inspection Observisoon Form
         /> -->
 
@@ -989,7 +988,7 @@ defineExpose({
       data-required-field="AccidentsType"
       v-if="ObservationFactoryType == Observation.AccidentsType"
     >
-      <!-- <CustomSelectInput
+      <!-- <UpdatedCustomInputSelect
         :modelValue="AccidentsType"
         class="input"
         :controller="indexAccidentsTypeController"
@@ -1056,7 +1055,7 @@ defineExpose({
     </div> -->
 
     <div class="col-span-3 md:col-span-3 input-wrapper">
-      <!-- <CustomSelectInput
+      <!-- <UpdatedCustomInputSelect
         :modelValue="SelectedMachine"
         class="input"
         :controller="indexEquipmentController"
@@ -1211,7 +1210,7 @@ defineExpose({
         saveStatus == SaveStatusEnum.NotSaved
       "
     >
-      <CustomSelectInput
+      <UpdatedCustomInputSelect
         :required="false"
         :modelValue="SelectedSeverity"
         :static-options="SeverityList"
@@ -1232,7 +1231,7 @@ defineExpose({
         saveStatus == SaveStatusEnum.NotSaved
       "
     >
-      <CustomSelectInput
+      <UpdatedCustomInputSelect
         :required="false"
         :modelValue="SelectedLikelihood"
         :static-options="LikelihoodList"

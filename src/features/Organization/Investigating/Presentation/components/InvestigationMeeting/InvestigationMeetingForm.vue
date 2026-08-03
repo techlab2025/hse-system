@@ -2,7 +2,7 @@
 import { ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 // import type ShowInvestigatingTypeModel from '@/features/setting/InvestigatingType/Data/models/hazardTypeDetailsModel'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 // import InvestigatingIcon from '@/shared/icons/InvestigatingIcon.vue'
 import DatePicker from 'primevue/datepicker'
 
@@ -157,7 +157,7 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
   </div>
 
   <div class="col-span-6 md:col-span-4 input-wrapper">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="SelectedMachine"
       class="input"
       :controller="indexEquipmentController"
@@ -169,7 +169,7 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
     />
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="SelectedMachine"
       class="input"
       :controller="indexEquipmentController"
@@ -198,7 +198,7 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
 
   <!-- <FactorInvestigating /> -->
   <div class="col-span-6 md:col-span-6 input-wrapper">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="SelectedMachine"
       class="input"
       :controller="indexEquipmentController"

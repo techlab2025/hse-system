@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
@@ -201,7 +201,7 @@ const handleCountPerPage = (count: number) => {
 <template>
   <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-2" :style="{ marginBottom: '20px' }">
     <div class="col-span-1 md:col-span-1 input-wrapper">
-      <CustomSelectInput
+      <UpdatedCustomInputSelect
         id="is-active-filter"
         :modelValue="selectedActive ?? activeOptions[0]"
         label="status"

@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import Dialog from 'primevue/dialog';
 import EquipmentImg from "@/assets/images/Equipment.png";
-import CustomSelectInput from "@/shared/FormInputs/CustomSelectInput.vue";
+import UpdatedCustomInputSelect from "@/shared/FormInputs/UpdatedCustomInputSelect.vue";
 import type TitleInterface from "@/base/Data/Models/title_interface";
 import { useRoute, useRouter } from "vue-router";
 import HeaderSection from "../../Details/DetailsHeader/HeaderSection.vue";
@@ -84,7 +84,7 @@ onMounted(() => {
       </template>
       <!-- Equipment selection -->
       <div class="equipment-selection">
-        <!-- <CustomSelectInput :modelValue="equipments" :controller="indexEquipmentController"
+        <!-- <UpdatedCustomInputSelect :modelValue="equipments" :controller="indexEquipmentController"
           :params="indexEquipmentParams" label="Equipment" placeholder="Select Your Equipment" :type="2"
           @update:modelValue="setEquipments" /> -->
         <label for="equipment">{{ $t('Select Equipment') }}</label>

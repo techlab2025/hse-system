@@ -14,7 +14,7 @@ import { useUserStore } from '@/stores/user'
 import { useRoute } from 'vue-router'
 import IndexCertificateController from '@/features/setting/Certificate/Presentation/controllers/indexCertificateController'
 import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
@@ -221,7 +221,7 @@ defineExpose({
     </p>
   </div>
   <div class="input-wrapper col-span-4 md:col-span-2" data-required-field="Certificate">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="Certificate"
       :controller="indexCertificateController"
       :params="indexCertificateParams"

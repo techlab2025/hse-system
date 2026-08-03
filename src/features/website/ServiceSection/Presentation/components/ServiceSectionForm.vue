@@ -16,7 +16,7 @@ import ItemParams from '../../Core/params/ItemParams'
 
 import IndexServiceController from '@/features/website/Service/Presentation/controllers/indexServiceController'
 import IndexServiceParams from '@/features/website/Service/Core/params/indexServiceParams'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import EditServiceSectionParams from '../../Core/params/editServiceSectionParams'
 
 const emit = defineEmits(['update:data'])
@@ -246,7 +246,7 @@ const setImage = async (data: File | string) => {
   </div>
 
   <div class="col-span-4 md:col-span-4">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="SelectedService"
       :controller="indexServiceController"
       :params="indexServiceParams"

@@ -34,10 +34,10 @@ export default class AddRoleController extends ControllerInterface<RoleModel> {
         new OpenWarningDilaog('You Should Add Role ').openDialog()
         return
       }
-      if (params.roleName.length < 1) {
-        new OpenWarningDilaog('You Should Add Role Name').openDialog()
-        return
-      }
+      // if (params.roleName.length < 1) {
+      //   new OpenWarningDilaog('You Should Add Role Name').openDialog()
+      //   return
+      // }
       const dataState: DataState<RoleModel> = await this.AddRoleUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {

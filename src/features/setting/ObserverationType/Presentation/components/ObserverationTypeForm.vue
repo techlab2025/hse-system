@@ -10,7 +10,7 @@ import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
 import EditObserverationTypeParams from '@/features/setting/ObserverationType/Core/params/editObserverationTypeParams.ts'
 import AddObserverationTypeParams from '@/features/setting/ObserverationType/Core/params/addObserverationTypeParams.ts'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
@@ -244,7 +244,7 @@ const updateAllIndustries = (data) => {
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
-    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
+    <UpdatedCustomInputSelect :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
       id="ObserverationType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
   </div> -->
   <div
@@ -262,7 +262,7 @@ const updateAllIndustries = (data) => {
     class="col-span-4 md:col-span-2"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
   >
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"

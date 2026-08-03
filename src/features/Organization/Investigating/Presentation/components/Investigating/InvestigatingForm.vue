@@ -2,7 +2,7 @@
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type ShowInvestigatingTypeModel from '@/features/setting/InvestigatingType/Data/models/hazardTypeDetailsModel'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
 // import InvestigatingIcon from '@/shared/icons/InvestigatingIcon.vue'
 import DatePicker from 'primevue/datepicker'
@@ -381,7 +381,7 @@ watch(
           data-required-field="SelectedTeam"
         >
           <span class="field-number">01</span>
-          <CustomSelectInput
+          <UpdatedCustomInputSelect
             :modelValue="SelectedTeam"
             class="input"
             :controller="indexOrganizatoinEmployeeController"
@@ -403,7 +403,7 @@ watch(
           data-required-field="SelectedTeamLeader"
         >
           <span class="field-number">02</span>
-          <CustomSelectInput
+          <UpdatedCustomInputSelect
             :modelValue="SelectedTeamLeader"
             class="input"
             :staticOptions="SelectedTeam"
@@ -481,7 +481,7 @@ watch(
           data-required-field="SelectedPlatform"
         >
           <span class="field-number">03</span>
-          <CustomSelectInput
+          <UpdatedCustomInputSelect
             :modelValue="SelectedPlatform"
             class="input"
             :staticOptions="MeetingPlatforms"

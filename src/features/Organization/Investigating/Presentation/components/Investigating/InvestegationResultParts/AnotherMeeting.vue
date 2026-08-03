@@ -2,7 +2,7 @@
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
 import AnotherMeeting from '@/assets/images/AnotherMeeting.png'
 import { ref, watch } from 'vue'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import DatePicker from 'primevue/datepicker'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import InvestegationAnotherMeetingParams from '@/features/Organization/Investigating/Core/params/investegationResult/InvestegationAnotherMeetingParams'
@@ -124,7 +124,7 @@ watch(
         />
       </div>
       <div class="input-wrapper col-span-3">
-        <CustomSelectInput
+        <UpdatedCustomInputSelect
           :reload="false"
           :static-options="Platforms"
           v-model="SelectedPlatform"

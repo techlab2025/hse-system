@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import AnswerTextField from './AnswerTextField.vue'
 import EvidenceImageUpload from './EvidenceImageUpload.vue'
@@ -115,7 +115,7 @@ onMounted(UpdateData)
       </span>
       <div class="select-answer-card__field">
         <span class="select-answer-card__label">{{ $t('choose_answer') }}</span>
-        <CustomSelectInput
+        <UpdatedCustomInputSelect
           :id="`option-${item_id}`"
           label=""
           :placeholder="$t('select')"

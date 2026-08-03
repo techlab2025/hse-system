@@ -41,7 +41,7 @@ import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
 import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import Dialog from 'primevue/dialog'
 import UploadOrganizationEmployee from './UploadOrganizationEmployee.vue'
 import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
@@ -419,7 +419,7 @@ const IndexOrganizationEmployeectionList = () => [
       class="w-full col-span-3 md:col-span-3 mt-5 gap-2 add-emplyee-hierarchy"
     >
       <div class="flex gap-2 input-wrapper" style="width: 80%; margin-block: 8px">
-        <CustomSelectInput
+        <UpdatedCustomInputSelect
           :modelValue="SelectedEmployees"
           @update:modelValue="setSelectedEmployees"
           :controller="indexEmployeeController"
