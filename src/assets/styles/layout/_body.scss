@@ -24,7 +24,7 @@ $minimizeScreen: false;
   @include flex(row, flex-start, stretch);
   gap: $XlSize3;
   //padding: $MdSize;
-  width: 100%;
+  width: 98%;
 
   .content-wrapper {
     flex: 1;

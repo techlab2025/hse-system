@@ -11531,7 +11531,7 @@ body {
   justify-content: stretch;
   align-items: stretch;
   gap: var(--xl-size-2);
-  width: 100%;
+  width: 98%;
 }
 .content .content-wrapper {
   flex: 1;
@@ -21056,7 +21056,7 @@ html[dir=rtl] .employee-header .right-header-background .right-blue-background {
 
 .home-routes-cards {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: var(--sm-size);
   width: 100%;
   align-items: stretch;
