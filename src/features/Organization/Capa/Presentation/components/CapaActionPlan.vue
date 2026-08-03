@@ -38,7 +38,12 @@ const mapTasks = (data: any[]) => {
       item?.ResponablePerson?.id,
     )
 
-    return new InvestegationTasksParams(item.text, item.date, [itemEmployees]).toMap()
+    return new InvestegationTasksParams(
+      item.text,
+      item.isGoing ? null : item.date,
+      [itemEmployees],
+      item.isGoing ? 1 : 0,
+    ).toMap()
   })
 }
 
@@ -91,6 +96,7 @@ onMounted(async () => {
         </p>
         <TimeLineTasks
           v-if="isEmployeeOptionsLoaded"
+          :allowOngoing="true"
           :capaStyles="true"
           :staticEmployeeOptions="employeeOptions"
           :useStaticEmployeeOptions="true"
@@ -111,6 +117,7 @@ onMounted(async () => {
         </p>
         <TimeLineTasks
           v-if="isEmployeeOptionsLoaded"
+          :allowOngoing="true"
           :capaStyles="true"
           :staticEmployeeOptions="employeeOptions"
           :useStaticEmployeeOptions="true"

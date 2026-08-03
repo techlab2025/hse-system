@@ -13,7 +13,16 @@ export const useProjectSelectStore = defineStore(
       AllProjects.value = newAllProjects
     }
 
-    function setProjectId(newProjectId: TitleInterface) {
+    function clearProject() {
+      project.value = null
+    }
+
+    function setProjectId(newProjectId: TitleInterface | null) {
+      if (!newProjectId || newProjectId.id === -1) {
+        clearProject()
+        return
+      }
+
       project.value = newProjectId
     }
 
@@ -29,7 +38,7 @@ export const useProjectSelectStore = defineStore(
       return project.value
     }
 
-    function SelectedProjectId(projectId: number |number[]) {
+    function SelectedProjectId(projectId: number | number[]) {
       if (projectId) {
         return projectId
       }
@@ -44,6 +53,7 @@ export const useProjectSelectStore = defineStore(
     return {
       project,
       setProjectId,
+      clearProject,
       getProjectId,
       SelectedProjectId,
       getProject,

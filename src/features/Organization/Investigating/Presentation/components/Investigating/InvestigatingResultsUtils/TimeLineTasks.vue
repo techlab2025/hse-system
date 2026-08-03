@@ -7,11 +7,13 @@ import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
 import { onMounted, ref } from 'vue'
 import DatePicker from 'primevue/datepicker'
+import ToggleSwitch from 'primevue/toggleswitch'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
 
-const { capaStyles, staticEmployeeOptions, useStaticEmployeeOptions } = defineProps<{
+const { allowOngoing, capaStyles, staticEmployeeOptions, useStaticEmployeeOptions } = defineProps<{
+  allowOngoing?: boolean
   capaStyles?: boolean
   staticEmployeeOptions?: TitleInterface[]
   useStaticEmployeeOptions?: boolean
@@ -23,6 +25,7 @@ const createEmptyAnswer = () => ({
   text: ' ',
   employee: new TitleInterface({ id: 0, title: '' }),
   date: capaStyles ? null : new Date(),
+  isGoing: false,
   ResponablePerson: new TitleInterface({ id: 0, title: '' }),
 })
 
@@ -44,6 +47,14 @@ const DeleteItem = (index: number) => {
 
 const UpdateData = () => {
   emit('update:data', Answers.value)
+}
+
+const updateOngoing = (item: (typeof Answers.value)[number]) => {
+  if (item.isGoing) {
+    item.date = null
+  }
+
+  UpdateData()
 }
 
 const fetchEmployees = async () => {
@@ -127,7 +138,18 @@ onMounted(async () => {
                   />
                 </div>
                 <div class="flex flex-col gap-2 input-wrapper">
-                  <div class="flex items-center gap-2">
+                  <div v-if="allowOngoing" class="ongoing-switch-row">
+                    <div>
+                      <label :for="`ongoing-action-${index}`">{{ $t('Ongoing') }}</label>
+                      <small>{{ $t('No completion date required') }}</small>
+                    </div>
+                    <ToggleSwitch
+                      v-model="item.isGoing"
+                      :input-id="`ongoing-action-${index}`"
+                      @update:model-value="updateOngoing(item)"
+                    />
+                  </div>
+                  <div v-if="!item.isGoing" class="flex items-center gap-2">
                     <label :for="`implementation-date-${index}`"
                       >Expected Time for Implementation</label
                     ><FieldHelpIcon
@@ -135,6 +157,7 @@ onMounted(async () => {
                     />
                   </div>
                   <DatePicker
+                    v-if="!item.isGoing"
                     v-model="item.date"
                     class="mt-4 mr-2 input date-picker"
                     placeholder="Select Date"
@@ -198,6 +221,34 @@ onMounted(async () => {
   grid-template-columns: 1fr !important;
   gap: 12px !important;
   width: 100%;
+}
+
+.ongoing-switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--brand-primary-100);
+  border-radius: 10px;
+  background: var(--brand-primary-50);
+}
+
+.ongoing-switch-row > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ongoing-switch-row label {
+  color: var(--text-strong);
+  font-weight: 700;
+}
+
+.ongoing-switch-row small {
+  color: var(--text-soft);
+  font-size: 0.72rem;
 }
 
 @media (max-width: 768px) {

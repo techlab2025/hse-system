@@ -488,6 +488,7 @@ const getTaskResponsible = (task: any) =>
 const isCapaTaskStarted = (task: any) =>
   hasValue(task?.text ?? task?.title) ||
   Boolean(task?.date) ||
+  Boolean(task?.isGoing) ||
   hasSelectedId(getTaskEmployee(task)) ||
   hasSelectedId(getTaskResponsible(task))
 const getRawCapaTasks = (type: 'corrective' | 'preventive') =>
@@ -566,7 +567,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
         key: capaFieldKey(type, 'date', index),
         message: `${type === 'corrective' ? 'Corrective' : 'Preventive'} Action ${index + 1} Date Is Required`,
         panel: '8',
-        isMissing: () => isCapaTaskStarted(task) && !task?.date,
+        isMissing: () => isCapaTaskStarted(task) && !task?.isGoing && !task?.date,
       },
       {
         key: capaFieldKey(type, 'employee', index),

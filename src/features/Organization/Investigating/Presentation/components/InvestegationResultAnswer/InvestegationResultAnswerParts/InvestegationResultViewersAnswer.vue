@@ -11,15 +11,15 @@ defineProps<{
 
 <template>
   <div class="vieawers-answer">
-    <div class="header">
+    <!-- <div class="header">
       <HeaderPage
         :title="`viewers result`"
         :subtitle="`a description of each witness to the incident.`"
         :img="AnswersViewers"
         class="title-header answer-header border-top"
-      />
+      /> -->
       <!-- <button class="show-all-btn">{{ $t('show_all_tasks') }}</button> -->
-    </div>
+    <!-- </div> -->
 
     <div class="content">
       <InvestegaionMeetingViewersCard

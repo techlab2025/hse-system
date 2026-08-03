@@ -137,19 +137,23 @@ onBeforeUnmount(() => {
   window.removeEventListener('scroll', updateDropdownPosition, true)
 })
 
-const setSelectedProject = async (project: TitleInterface) => {
+const setSelectedProject = async (project: TitleInterface | null) => {
   const organizationEmployeeDefaultProjectRepoController =
     OrganizationEmployeeDefaultProjectRepoController.getInstance()
   const organizationEmployeeDefaultProjectParams = new OrganizationEmployeeDefaultProjectParams(
     user?.id,
-    project?.id == -1 ? null : project?.id,
+    project?.id === -1 || !project ? null : project.id,
   )
   await organizationEmployeeDefaultProjectRepoController.SetorganizationEmployeeDefaultProject(
     organizationEmployeeDefaultProjectParams,
     router,
   )
   // SelectProject.value = project
-  ProjectSelector.setProjectId(project)
+  if (project?.id === -1 || !project) {
+    ProjectSelector.clearProject()
+  } else {
+    ProjectSelector.setProjectId(project)
+  }
   // location.reload()
 }
 
@@ -203,7 +207,6 @@ const toggle = (event: Event) => {
 //    const result = await refreshNotificationTokenController.RefreshToken(params);
 //   }
 // })
-
 </script>
 
 <template>
@@ -307,7 +310,7 @@ const toggle = (event: Event) => {
             />
           </svg>
         </button> -->
-        <Notifications class="notifications-control"  />
+        <Notifications class="notifications-control" />
         <!-- {{ wsConnected }} -->
         <!-- <div class="notification cursor-pointer" @click="toggleFullScreen">
           <Notification />

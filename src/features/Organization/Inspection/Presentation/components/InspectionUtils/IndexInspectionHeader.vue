@@ -10,6 +10,7 @@ const props = defineProps<{
   title: string
   length: number
   projects: MyProjectsModel[]
+  isProject?: number
 }>()
 const ProjectSelectStore = useProjectSelectStore()
 const { isDarkMode } = useThemeMode()
@@ -93,7 +94,7 @@ const GetProjectId = (id: number) => {
       </div>
     </div>
 
-    <div class="inspection-project-panel">
+    <div class="inspection-project-panel" v-if="!isProject">
       <HeaderProjectsFilter class="noborder" :projects="projects" @update:data="GetProjectId" />
     </div>
   </div>

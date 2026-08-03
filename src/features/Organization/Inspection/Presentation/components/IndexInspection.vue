@@ -389,6 +389,7 @@ watch(
     deep: true,
   },
 )
+const selectedProject = useProjectSelectStore()
 </script>
 
 <template>
@@ -418,6 +419,7 @@ watch(
               0
             "
             :projects="Projects"
+            :isProject="selectedProject.project?.id"
             @update:data="setSelectedProjectFilter"
           >
             <template #actions>
