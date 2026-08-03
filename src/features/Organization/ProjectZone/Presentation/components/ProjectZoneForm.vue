@@ -11,7 +11,7 @@ import { useUserStore } from '@/stores/user'
 import { useRoute } from 'vue-router'
 import EditProjectZoneParams from '../../Core/params/editProjectZoneParams'
 import AddProjectZoneParams from '../../Core/params/addProjectZoneParams'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type ProjectZoneDetailsModel from '../../Data/models/ProjectZoneDetailsModel'
 import IndexLocationController from '@/features/setting/Location/Presentation/controllers/indexLocationController'
@@ -210,30 +210,30 @@ const fields = ref([
   </div> -->
 
   <div class="col-span-4 md:col-span-2">
-    <UpdatedCustomInputSelect :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
+    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
       :params="indexLocationCountriesParams" :label="$t('Country')" id="Location" :placeholder="$t('Select Country')"
       @update:modelValue="SetCountrySelection" />
   </div>
   <div class="col-span-4 md:col-span-2">
-    <UpdatedCustomInputSelect :modelValue="SelectedState" v-if="SelectedCountry" :controller="indexLocationStatesController"
+    <CustomSelectInput :modelValue="SelectedState" v-if="SelectedCountry" :controller="indexLocationStatesController"
       :params="indexLocationStatesParams" :label="$t('State')" id="Location" :placeholder="$t('Select State')"
       @update:modelValue="SetStateSelection" />
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <UpdatedCustomInputSelect :modelValue="SelectedCity" v-if="SelectedState" :controller="indexLocationCityController"
+    <CustomSelectInput :modelValue="SelectedCity" v-if="SelectedState" :controller="indexLocationCityController"
       :params="indexLocationCityParams" :label="$t('City')" id="City" :placeholder="$t('Select City')"
       @update:modelValue="SetCitySelection" />
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <UpdatedCustomInputSelect :modelValue="SelectedArea" v-if="SelectedCity && SelectedState && SelectedCountry"
+    <CustomSelectInput :modelValue="SelectedArea" v-if="SelectedCity && SelectedState && SelectedCountry"
       :controller="indexLocationAreasController" :params="indexLocationAreasParams" :label="$t('Location')" id="Area"
       :placeholder="$t('Select Location')" @update:modelValue="SetAreaSelection" />
   </div>
 
   <!-- <div class="col-span-4 md:col-span-2">
-    <UpdatedCustomInputSelect :controller="indexLocationController" :params="indexLocationParams"
+    <CustomSelectInput :controller="indexLocationController" :params="indexLocationParams"
       :modelValue="SelectedLocation" label="Location" id="location" placeholder="Select Location"
       @update:modelValue="setLocation" />
   </div> -->

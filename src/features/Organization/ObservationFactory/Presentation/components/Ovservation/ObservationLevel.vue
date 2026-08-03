@@ -59,12 +59,12 @@ watch(() => props.modelIsNearMiss, (val) => { selectedStatus.value = val ?? null
         <div class="status-container">
           <label class="status-option">
             <input type="radio" v-model="selectedStatus" :value="1" class="radio-input" />
-            <span class="status-value">{{ $t('near miss') }}</span>
+            <span class="status-value">{{ $t('nermiss') }}</span>
           </label>
 
           <label class="status-option">
             <input type="radio" v-model="selectedStatus" :value="0" class="radio-input" />
-            <span class="status-values">{{ $t('Non') }}</span>
+            <span class="status-values">{{ $t('Not_a_nermiss') }}</span>
           </label>
         </div>
       </div>

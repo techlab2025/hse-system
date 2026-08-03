@@ -1,8 +1,8 @@
 <script lang="ts" setup>
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
 import DatePicker from 'primevue/datepicker'
 import ObservationImage from '@/assets/images/create_obs.png'
@@ -50,6 +50,7 @@ import { SaveStatusEnum } from '../../../Core/Enums/save_status_enum'
 import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 import { TypesEnum } from '../../../Core/Enums/types_enum'
 import { HazardTypeParentEnum } from '@/features/setting/HazardType/Core/Enums/HazardTypeEnum'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import AddObserverationType from '@/features/setting/ObserverationType/Presentation/components/AddObserverationType.vue'
 import AddFullEquipment from '@/features/setting/Equipment/Presentation/components/AddFullEquipment.vue'
 import AddHazardType from '@/features/setting/HazardType/Presentation/components/AddHazardType.vue'
@@ -70,6 +71,7 @@ import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import { useThemeMode } from '@/composables/useThemeMode'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 import { useI18n } from 'vue-i18n'
+import { useProjectSelectStore } from '@/stores/ProjectSelect.ts'
 
 const emit = defineEmits(['update:data'])
 const { isDarkMode } = useThemeMode()
@@ -608,9 +610,7 @@ const getInvalidWitnessMessage = () => {
   if (!rows.length) return ''
 
   const invalidIndex = rows.findIndex((witness: any) => !hasEmployeePayload(witness?.employee))
-  return invalidIndex === -1
-    ? ''
-    : t('witness_employee_required_at_row', { row: invalidIndex + 1 })
+  return invalidIndex === -1 ? '' : t('witness_employee_required_at_row', { row: invalidIndex + 1 })
 }
 
 const getInvalidInjuryMessage = () => {
@@ -771,6 +771,7 @@ const validateRequiredFields = async () => {
 defineExpose({
   validateRequiredFields,
 })
+const selectedProject = useProjectSelectStore()
 </script>
 
 <template>
@@ -792,6 +793,7 @@ defineExpose({
     <div
       class="form-filter-panel form-projects-panel col-span-6 md:col-span-6"
       data-required-field="SelectedProjectId"
+      v-if="!selectedProject.project?.id"
     >
       <div class="form-filter-panel-header">
         <span class="filter-marker"></span>
@@ -944,7 +946,7 @@ defineExpose({
       data-required-field="SelectedObservationType"
       v-if="ObservationFactoryType == Observation.ObservationType"
     >
-      <!-- <UpdatedCustomInputSelect
+      <!-- <CustomSelectInput
       :required="false" :modelValue="SelectedObservationType"
         :controller="indexObservatioTyepController"
         :params="indexObservationTypeParams"
@@ -952,7 +954,7 @@ defineExpose({
         id="Equipment" placeholder="Select Observation Type"
         @update:modelValue="setSelectedObservationType" /> -->
 
-      <!-- <UpdatedCustomInputSelect
+      <!-- <CustomSelectInput
                  New Update => Custom input Select inspection Observisoon Form
         /> -->
 
@@ -988,7 +990,7 @@ defineExpose({
       data-required-field="AccidentsType"
       v-if="ObservationFactoryType == Observation.AccidentsType"
     >
-      <!-- <UpdatedCustomInputSelect
+      <!-- <CustomSelectInput
         :modelValue="AccidentsType"
         class="input"
         :controller="indexAccidentsTypeController"
@@ -1055,7 +1057,7 @@ defineExpose({
     </div> -->
 
     <div class="col-span-3 md:col-span-3 input-wrapper">
-      <!-- <UpdatedCustomInputSelect
+      <!-- <CustomSelectInput
         :modelValue="SelectedMachine"
         class="input"
         :controller="indexEquipmentController"
@@ -1210,7 +1212,7 @@ defineExpose({
         saveStatus == SaveStatusEnum.NotSaved
       "
     >
-      <UpdatedCustomInputSelect
+      <CustomSelectInput
         :required="false"
         :modelValue="SelectedSeverity"
         :static-options="SeverityList"
@@ -1231,7 +1233,7 @@ defineExpose({
         saveStatus == SaveStatusEnum.NotSaved
       "
     >
-      <UpdatedCustomInputSelect
+      <CustomSelectInput
         :required="false"
         :modelValue="SelectedLikelihood"
         :static-options="LikelihoodList"
@@ -1564,6 +1566,24 @@ defineExpose({
   text-decoration: underline;
   font-family: 'Regular';
 } */
+.is-stopped {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  div {
+    &:first-child {
+      width: 85%;
+    }
+    &:last-child {
+      width: 15%;
+    }
+  }
+}
+.meeting-status {
+  button {
+    width: 100%;
+  }
+}
 
 .add-dialog svg {
   width: 18px;
@@ -1679,64 +1699,47 @@ label {
 }
 
 .meeting-status {
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-  gap: 6px;
-  width: fit-content;
-  padding: 4px;
-  border: 1px solid var(--brand-primary-100);
-  border-radius: 8px;
-  background: var(--surface-1);
-  box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary-900) 5%, transparent);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
 }
 
 .meeting-status button {
-  min-width: 82px;
-  min-height: 38px;
-  padding: 9px 18px;
-  border: 0;
-  border-radius: 6px;
-  font-family: 'Bold';
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+  min-height: 48px;
+  padding: 10px 14px;
+  border: 1px solid var(--brand-primary-100);
+  border-radius: 14px;
+  background: var(--brand-primary-50);
+  color: var(--brand-primary-600);
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   transition:
+    border-color 0.2s ease,
     background 0.2s ease,
     color 0.2s ease,
     box-shadow 0.2s ease;
 }
 
-.meeting-status-yes {
-  background: transparent;
-  color: var(--status-success);
+.meeting-status button.active {
+  border-color: color-mix(in srgb, var(--brand-primary-500) 42%, transparent);
+  background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
+  color: var(--PrimaryColor);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
 }
 
-.meeting-status-yes.active {
-  color: var(--text-on-brand);
-  background: var(--status-success);
-  box-shadow: 0 8px 18px color-mix(in srgb, var(--status-success) 22%, transparent);
-}
-
-.meeting-status-on {
-  background: transparent;
-  color: var(--status-danger);
-}
-
-.meeting-status-on.active {
-  color: var(--text-on-brand);
-  background: var(--status-danger);
-  box-shadow: 0 8px 18px color-mix(in srgb, var(--status-danger) 22%, transparent);
-}
-
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .is-stopped {
     flex-wrap: wrap;
   }
 
-  .meeting-status,
-  .meeting-status button {
-    flex: 1;
+  .meeting-status {
+    grid-template-columns: 1fr;
   }
 }
 

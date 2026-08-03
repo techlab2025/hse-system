@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
@@ -40,7 +40,7 @@ onMounted(() => {
     <form>
       <div class="input-container">
         <div class="input-wrapper">
-          <UpdatedCustomInputSelect
+          <CustomSelectInput
             :modelValue="employees"
             :params="indexEmployeeTypeParams"
             :controller="indexEmployeeTypeController"

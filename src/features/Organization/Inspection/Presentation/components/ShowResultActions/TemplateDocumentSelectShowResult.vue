@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TitleInterface from '@/base/Data/Models/title_interface'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import { ref, watch } from 'vue'
 import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
 import type TaskResultItemModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/ItemTasksResultModel'

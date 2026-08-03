@@ -10,7 +10,7 @@ import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
 import EditLangParams from '@/features/setting/languages/Core/params/editLangParams'
 import AddLangParams from '@/features/setting/languages/Core/params/addLangParams'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 
@@ -147,7 +147,7 @@ watch(
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <UpdatedCustomInputSelect :modelValue="lang" :staticOptions="langsList" label="Language" id="lang"
+    <CustomSelectInput :modelValue="lang" :staticOptions="langsList" label="Language" id="lang"
       placeholder="Select Language" @update:modelValue="setLang" :required="true" />
   </div>
 </template>

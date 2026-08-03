@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TitleInterface from '@/base/Data/Models/title_interface';
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue';
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue';
 import LocationIcon from '@/shared/icons/LocationIcon.vue';
 import { ref } from 'vue';
 const employee = ref<TitleInterface>()
@@ -23,7 +23,7 @@ const setEmployee = (data: TitleInterface) => {
           <p class="title">Alexandria</p>
         </div>
         <div class="input-wrapper">
-          <UpdatedCustomInputSelect :modelValue="employee" :static-options="employees" class="input" :label="$t('employee')"
+          <CustomSelectInput :modelValue="employee" :static-options="employees" class="input" :label="$t('employee')"
             id="Employee" :placeholder="$t('select employee')" @update:modelValue="setEmployee" />
         </div>
       </div>
@@ -33,7 +33,7 @@ const setEmployee = (data: TitleInterface) => {
           <p class="title">Cairo</p>
         </div>
         <div class="input-wrapper">
-          <UpdatedCustomInputSelect :modelValue="employee" :static-options="employees" class="input" :label="$t('employee')"
+          <CustomSelectInput :modelValue="employee" :static-options="employees" class="input" :label="$t('employee')"
             id="Employee" :placeholder="$t('select employee')" @update:modelValue="setEmployee" />
         </div>
       </div>
@@ -43,7 +43,7 @@ const setEmployee = (data: TitleInterface) => {
           <p class="title">Cairo</p>
         </div>
         <div class="input-wrapper">
-          <UpdatedCustomInputSelect :modelValue="employee" :static-options="employees" class="input" :label="$t('employee')"
+          <CustomSelectInput :modelValue="employee" :static-options="employees" class="input" :label="$t('employee')"
             id="Employee" :placeholder="$t('select employee')" @update:modelValue="setEmployee" />
         </div>
       </div>

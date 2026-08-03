@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref, watch, useAttrs, type Component } from 'vue'
+import { computed, ref, watch, useAttrs } from 'vue'
 
 import MultiSelect from 'primevue/multiselect'
 import Select from 'primevue/select'
@@ -7,11 +7,10 @@ import Dialog from 'primevue/dialog'
 
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import type Params from '@/base/core/params/params'
+import type Params from '@/base/core/Params/params'
 
 import ValidationService from '@/base/Presentation/utils/validationService'
 import IconBackStage from '@/shared/icons/IconBackStage.vue'
-import FieldHelpIcon from './FieldHelpIcon.vue'
 
 export type ComponentType = 'select' | 'multiselect'
 
@@ -40,12 +39,7 @@ interface Props {
   id?: string
   autoFill?: boolean
   reload?: boolean
-  /** @deprecated Kept for compatibility with older misspelled callsites. */
-  relaod?: boolean
   optional?: boolean
-
-  component?: Component
-  helpText?: string
 
   hascontent?: boolean
   hasHeader?: boolean
@@ -74,17 +68,14 @@ const props = withDefaults(defineProps<Props>(), {
   dialogVisible: false,
 })
 
-// Keep event payloads permissive for compatibility with the legacy select's
-// untyped emits. Existing forms narrow their setter argument to single- or
-// multi-select values depending on their configured `type`.
-const emit = defineEmits([
-  'update:modelValue',
-  'update:slot',
-  'update:reload',
-  'update:dialogVisible',
-  'close',
-  'reload-data',
-])
+const emit = defineEmits<{
+  (event: 'update:modelValue', value: TitleInterface | TitleInterface[] | null): void
+
+  (event: 'update:slot', value: unknown): void
+  (event: 'update:dialogVisible', value: boolean): void
+  (event: 'close', value: boolean): void
+  (event: 'reload-data', value: unknown): void
+}>()
 
 // -----------------------------------------------------------------------------
 // Reactive state
@@ -137,8 +128,6 @@ const multiselectProps = computed(() => {
     maxSelectedLabels: 6,
   }
 })
-
-const reloadEnabled = computed<boolean>(() => props.relaod ?? props.reload)
 
 /*
  * Store the selection locally so PrimeVue updates its label immediately.
@@ -390,7 +379,6 @@ async function reloadData(): Promise<void> {
    * This allows autoFill to select the only available option afterward.
    */
   normalizedValue.value = isMultiselect.value ? [] : null
-  emit('update:reload')
 
   if (props.controller && props.params) {
     await fetchOptions()
@@ -414,10 +402,6 @@ async function refetchOptions(): Promise<void> {
 function closeDialog(): void {
   emit('close', false)
 }
-
-function updateSlot(value: unknown): void {
-  emit('update:slot', value)
-}
 // const sselee = ref()
 // const UpdateSelctedValue = (event) => {
 //   sselee.value = event.value
@@ -430,12 +414,10 @@ function updateSlot(value: unknown): void {
     <div class="input-label flex w-full justify-between">
       <slot v-if="!hasHeader">
         <div class="flex items-center">
-          <slot name="reloadHeader">
-            <component :is="component" v-if="component" @update:data="updateSlot" />
-          </slot>
+          <slot name="reloadHeader" />
 
           <span
-            v-if="reloadEnabled"
+            v-if="reload"
             class="reload-icon me-2 flex w-full cursor-pointer items-center gap-sm"
             @click="reloadData"
           >
@@ -451,12 +433,6 @@ function updateSlot(value: unknown): void {
 
             {{ $t(label ?? '') }}
           </label>
-
-          <FieldHelpIcon v-if="helpText" :text="helpText" />
-
-          <button v-if="onclick" type="button" class="add-dialog" @click="onclick">
-            {{ $t('new') }}
-          </button>
 
           <slot name="LabelHeader" />
         </div>
@@ -477,7 +453,7 @@ function updateSlot(value: unknown): void {
         class="input-select w-full"
         option-label="title"
         filter
-        v-bind="{ ...multiselectProps, ...attrs }"
+        v-bind="multiselectProps"
       />
 
       <input :id="id" :value="hiddenInputValue" type="text" class="hidden w-full" />
@@ -501,16 +477,10 @@ function updateSlot(value: unknown): void {
 
 <style scoped lang="scss">
 .add-dialog {
-  width: auto;
-  height: auto;
+  width: 20px;
+  height: 20px;
   margin-right: 6px;
-  padding: 0;
-  border: 0;
-  background: transparent;
   cursor: pointer;
-  color: var(--brand-primary-500);
-  text-decoration: underline;
-  font: inherit;
 
   svg {
     width: 18px;

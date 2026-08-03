@@ -3,7 +3,7 @@ import { computed, nextTick, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController'
@@ -410,7 +410,7 @@ const addNotificationPlan = async () => {
 
       <Transition name="assignment-swap" mode="out-in">
         <div v-if="assignmentMode === 'employees'" key="employees" class="assignment-select">
-          <UpdatedCustomInputSelect
+          <CustomSelectInput
             id="employee-ids"
             :modelValue="selectedEmployees"
             label="employees"
@@ -422,7 +422,7 @@ const addNotificationPlan = async () => {
           />
         </div>
         <div v-else key="hierarchies" class="assignment-select">
-          <UpdatedCustomInputSelect
+          <CustomSelectInput
             id="hierarchy-ids"
             :modelValue="selectedHierarchies"
             label="positions"

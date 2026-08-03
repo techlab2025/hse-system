@@ -12,7 +12,7 @@ import type LocationDetailsModel from '../../../Data/models/LocationDetailsModel
 import EditLocationParams from '../../../Core/params/editLocationParams'
 import AddLocationParams from '../../../Core/params/addLocationParams'
 import { LocationEnum } from '../../../Core/Enum/LocationEnum'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import { useRoute, useRouter } from 'vue-router'
 import IndexLocationController from '../../controllers/indexLocationController'
 import IndexLocationParams from '../../../Core/params/indexLocationParams'
@@ -246,13 +246,13 @@ const fields = ref([
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!ParentId">
-    <UpdatedCustomInputSelect :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
+    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
       :params="indexLocationCountriesParams" label="Country" id="Location" placeholder="Select  Country" :type="2"
       @update:modelValue="SetCountrySelection" />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!ParentId && SelectedCountry?.length != 0">
-    <UpdatedCustomInputSelect :modelValue="SelectedState" :controller="indexLocationStatesController"
+    <CustomSelectInput :modelValue="SelectedState" :controller="indexLocationStatesController"
       :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State"
       @update:modelValue="SetStateSelection" />
   </div>

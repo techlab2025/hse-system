@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import HeaderSection from '../DetailsHeader/HeaderSection.vue'
 import ZoneDialog from '@/assets/images/ZoneDialog.png'
 import Dialog from 'primevue/dialog'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import CreateProjectZoonController from '../../../controllers/CreateProjectZoonController'
 import CreateProjectZoneParams from '@/features/Organization/Project/Core/params/CreateProjectZoneParams'
@@ -66,7 +66,7 @@ const setProjectLocationZoon = (data: TitleInterface) => {
         </div>
       </div>
       <div class="input-wrapper zone-select-field">
-        <UpdatedCustomInputSelect
+        <CustomSelectInput
           :required="false"
           :modelValue="SelectedProjectZone"
           :controller="indexProjectZoneController"

@@ -17,7 +17,7 @@ import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import type ServiceFeatureDetailsModel from '../../Data/models/ServiceFeatureDetailsModel'
 import AddServiceFeatureParams from '../../Core/params/addServiceFeatureParams'
 import EditServiceFeatureParams from '../../Core/params/editServiceFeatureParams'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexServiceController from '@/features/website/Service/Presentation/controllers/indexServiceController'
 import IndexServiceParams from '@/features/website/Service/Core/params/indexServiceParams'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -282,7 +282,7 @@ watch(
   </div>
 
   <div class="col-span-4 md:col-span-4">
-    <UpdatedCustomInputSelect
+    <CustomSelectInput
       :controller="indexServiceController"
       :modelValue="service_id"
       :params="ServiceParams"

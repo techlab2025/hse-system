@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
@@ -8,6 +7,7 @@ import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
@@ -26,6 +26,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -238,7 +239,7 @@ const fields = ref([
     class="input-wrapper col-span-4 md:col-span-2"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
   >
-    <UpdatedCustomInputSelect
+    <CustomSelectInput
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"

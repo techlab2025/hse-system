@@ -3,7 +3,7 @@ import { ref, watch, computed } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import RadioButton from 'primevue/radiobutton'
 
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/indexHazardTypeController.ts'
 import IndexHazardTypeParams from '@/features/setting/HazardType/Core/params/indexHazardTypeParams'
 import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
@@ -82,7 +82,7 @@ const updateEmitData = () => {
     <div class="col-span-12">
       <!-- Hazard Type Select -->
       <div class="input-wrapper" v-if="showHazardSection">
-        <UpdatedCustomInputSelect
+        <CustomSelectInput
           :modelValue="hazerd"
           :controller="indexHazardController"
           :params="hazerdParams"

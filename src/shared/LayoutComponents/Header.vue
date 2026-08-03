@@ -16,7 +16,7 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import defaultLogo from '@/assets/images/logo.svg'
 import { useSystemIdentity } from '@/composables/useSystemIdentity'
-import UpdatedCustomInputSelect from '../FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '../FormInputs/CustomSelectInput.vue'
 import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
 import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -245,7 +245,7 @@ const toggle = (event: Event) => {
         v-if="!showProjectSelect && user?.type != OrganizationTypeEnum.ADMIN"
       >
         <!-- label="Project" -->
-        <UpdatedCustomInputSelect
+        <CustomSelectInput
           :modelValue="SelectProject"
           class="input"
           :staticOptions="ProjectSelector.AllProjects"

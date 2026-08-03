@@ -12,7 +12,7 @@ import type LocationDetailsModel from '../../../Data/models/LocationDetailsModel
 import EditLocationParams from '../../../Core/params/editLocationParams'
 import AddLocationParams from '../../../Core/params/addLocationParams'
 import { LocationEnum } from '../../../Core/Enum/LocationEnum'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import { useRoute, useRouter } from 'vue-router'
 import IndexLocationController from '../../controllers/indexLocationController'
 import IndexLocationParams from '../../../Core/params/indexLocationParams'
@@ -202,7 +202,7 @@ const fields = ref([
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!ParentId">
-    <UpdatedCustomInputSelect :modelValue="SelectedCountry" :controller="indexLocationController" :params="indexLocationParams"
+    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationController" :params="indexLocationParams"
       label="Country" id="Location" placeholder="Selected Country" @update:modelValue="SetCountrySelection" />
   </div>
 </template>

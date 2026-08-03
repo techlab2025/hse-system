@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
@@ -13,6 +12,7 @@ import { useUserStore } from '@/stores/user'
 import { useToast } from 'primevue/usetoast'
 import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController'
 import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexCertificateController from '@/features/setting/Certificate/Presentation/controllers/indexCertificateController'
 import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
@@ -23,6 +23,7 @@ import RolesOrganizationEmployeeParams from '../../Core/params/RolesOrganization
 import { EmployeeStatusEnum } from '../../Core/Enum/EmployeeStatus'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import AddRole from '@/features/Organization/Role/Presentation/components/AddRole.vue'
 import AddHerikaly from '@/features/Organization/Herikaly/Presentation/components/AddHerikaly.vue'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
@@ -479,7 +480,7 @@ defineExpose({
     />
   </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
-    <UpdatedCustomInputSelect :modelValue="Certificates" @update:modelValue="setCertificates"
+    <CustomSelectInput :modelValue="Certificates" @update:modelValue="setCertificates"
       :controller="indexCertificateController" :type="2" :params="deleteCertificateParams" :label="$t('Certificates')"
       :placeholder="$t('Select Certificates')" />
   </div> -->

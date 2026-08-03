@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
@@ -7,6 +6,7 @@ import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
@@ -21,6 +21,7 @@ import AddSubscriptionTypeParams from '../../Core/params/addSubscriptionTypePara
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import type SubscriptionTypeDetailsModel from '../../Data/models/SubscriptionTypeDetailsModel'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { SubscriptionTypeEnum } from '../../Core/Enum/SubscriptionTypeEnum'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 

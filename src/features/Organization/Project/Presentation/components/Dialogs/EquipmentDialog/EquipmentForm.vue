@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 import IndexEquipmentParams from '@/features/_templateFeature/Core/params/indexEquipmentParams'
@@ -81,7 +81,7 @@ onMounted(() => {
       <div class="input-container">
         <div class="input-wrapper w-full">
 
-          <!-- <UpdatedCustomInputSelect :modelValue="Equipment" :controller="indexEquipmentController"
+          <!-- <CustomSelectInput :modelValue="Equipment" :controller="indexEquipmentController"
             :params="indexEquipmentParams" class="input" label="Equipment" id="Equipment" :type="2"
             placeholder="Select Your Equipment" @update:modelValue="setEquipments" /> -->
           <label for="equipment">{{ $t('Select Equipment') }}</label>

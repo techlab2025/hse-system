@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import InspectionTypeSelection from '../InspectionUtils/InspectionTypeSelection.vue'
 import PeriodTypeSelect from '../InspectionUtils/PeriodTypeSelect.vue'
 import { InspectionTypeEnum } from '../../../Core/Enum/InspectionTypeEnum'
@@ -222,7 +222,7 @@ const setWithDayesType = (data: TitleInterface) => {
           class="input-wrapper schedule-field"
           v-if="SelectedPeriodType === PeriodTypeEnum.BYDAY"
         >
-          <UpdatedCustomInputSelect
+          <CustomSelectInput
             :modelValue="SelectedDay"
             class="input"
             :static-options="DayesSelection"
@@ -238,7 +238,7 @@ const setWithDayesType = (data: TitleInterface) => {
           class="input-wrapper schedule-field"
           v-if="SelectedPeriodType === PeriodTypeEnum.WHITDATE"
         >
-          <UpdatedCustomInputSelect
+          <CustomSelectInput
             :modelValue="SelectedWithDateDays"
             class="input"
             :static-options="WithDateDayesSelection"
@@ -270,7 +270,7 @@ const setWithDayesType = (data: TitleInterface) => {
           class="input-wrapper schedule-field"
           v-if="SelectedPeriodType === PeriodTypeEnum.WITHDAY"
         >
-          <UpdatedCustomInputSelect
+          <CustomSelectInput
             :modelValue="SelectedWithDaysType"
             class="input"
             :static-options="WithDaysType"

@@ -2,7 +2,7 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
 import DatePicker from 'primevue/datepicker'
 import HazardImage from '@/assets/images/alert 2.png'
@@ -300,7 +300,7 @@ const UpdateSerial = (data) => {
 
   <!-- Machine -->
   <div class="col-span-3 md:col-span-3 input-wrapper">
-    <UpdatedCustomInputSelect
+    <CustomSelectInput
       :modelValue="SelectedMachine"
       class="input"
       :controller="indexEquipmentController"

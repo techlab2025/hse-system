@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue'
 import HeaderSection from '../DetailsHeader/HeaderSection.vue'
 import ZoneDialog from '@/assets/images/ZoneDialog.png'
 import Dialog from 'primevue/dialog'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
@@ -118,7 +118,7 @@ onMounted(() => {
       </div>
     </div>
     <div class="input-wrapper dialog-field">
-      <UpdatedCustomInputSelect
+      <CustomSelectInput
         :required="false"
         :modelValue="SelectedHierarchy"
         :static-options="AllLocationHerarchy"
@@ -129,7 +129,7 @@ onMounted(() => {
       />
     </div>
     <div class="input-wrapper dialog-field" v-if="SelectedHierarchy">
-      <UpdatedCustomInputSelect
+      <CustomSelectInput
         :required="false"
         :modelValue="SelectedEmployee"
         :controller="indexOrganizatoinEmployeeController"

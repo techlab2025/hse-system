@@ -12,7 +12,7 @@ import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 // import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import ItemParams from '../../Core/params/ItemParams'
 
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import type ServiceLogDetailsModel from '../../Data/models/ServiceDetailsLogModel'
 import IndexServiceController from '@/features/website/Service/Presentation/controllers/indexServiceController'
 import IndexServiceParams from '@/features/website/Service/Core/params/indexServiceParams'
@@ -152,7 +152,7 @@ watch(
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <UpdatedCustomInputSelect
+    <CustomSelectInput
       :modelValue="SelectedService"
       :controller="indexServiceController"
       :params="indexServiceParams"

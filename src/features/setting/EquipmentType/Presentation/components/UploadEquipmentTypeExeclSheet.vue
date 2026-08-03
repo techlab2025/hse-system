@@ -18,7 +18,7 @@ import AddEquipmentTypeController from '../controllers/addEquipmentTypeControlle
 import AddEquipmentTypeExcelParams from '../../Core/params/AddEquipmentTypeExcelParams'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 
 interface ExtractedImage {
   name: string
@@ -258,7 +258,7 @@ const setEquipmentType = (data) => {
     </div>
 
     <div class="col-span-4 md:col-span-2">
-      <UpdatedCustomInputSelect
+      <CustomSelectInput
         :modelValue="EquipmentType"
         :static-options="EquipmentsTypes"
         label="Category"

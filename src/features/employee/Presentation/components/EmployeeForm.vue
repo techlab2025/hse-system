@@ -5,7 +5,7 @@ import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
 import { LangsMap } from '@/constant/langs'
@@ -154,7 +154,7 @@ watch(
     class="col-span-4 md:col-span-2"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
   >
-    <UpdatedCustomInputSelect
+    <CustomSelectInput
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
@@ -166,7 +166,7 @@ watch(
     />
   </div>
   <div class="col-span-4 md:col-span-2">
-    <UpdatedCustomInputSelect
+    <CustomSelectInput
       :modelValue="Employee"
       :controller="indexEmployeeTypeController"
       :params="indexEmployeeTypeParams"

@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { markRaw, onMounted, ref, watch } from 'vue'
 import type { Component } from 'vue'
 
@@ -7,6 +6,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import type ShowHazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeDetailsModel'
 
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 
 import USA from '@/shared/icons/USA.vue'
@@ -35,6 +35,7 @@ import IndexHazardTypeParams from '@/features/setting/HazardType/Core/params/ind
 import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum'
 import { routeLocationKey, useRoute } from 'vue-router'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 
 /* ================= props & emits ================= */
 
@@ -256,7 +257,7 @@ const fields = ref([
     class="input-wrapper col-span-4 md:col-span-2"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
   >
-    <UpdatedCustomInputSelect
+    <CustomSelectInput
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
@@ -269,7 +270,7 @@ const fields = ref([
   </div>
 
   <!-- <div class="input-wrapper col-span-4 md:col-span-2">
-    <UpdatedCustomInputSelect
+    <CustomSelectInput
       :modelValue="Factor"
       :controller="indexFactoryController"
       :params="indexFactoryParams"

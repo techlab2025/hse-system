@@ -13,7 +13,7 @@ import { useUserStore } from '@/stores/user'
 import EditInjuryParams from '../../Core/params/editInjuryParams'
 import AddInjuryParams from '../../Core/params/addInjuryParams'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController'
@@ -180,7 +180,7 @@ const setIndustry = (data: TitleInterface[]) => {
       @update:checked="updateAllIndustries" />
   </div>
   <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN">
-    <UpdatedCustomInputSelect :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
+    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams" label="industry"
       id="AccidentsType" placeholder="Select industry" :type="2" @update:modelValue="setIndustry" />
   </div>
 

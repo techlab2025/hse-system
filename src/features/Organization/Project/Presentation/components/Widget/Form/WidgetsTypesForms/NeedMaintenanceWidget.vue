@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import ColorSelection from '../WidgetUtils/ColorSelection.vue'
 import RadioSection from '@/shared/HelpersComponents/RadioSection.vue'
 import TitleInterface from '@/base/Data/Models/title_interface';
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue';
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue';
 import ZoneTitlesForm from '../WidgetUtils/ZoneTitlesForm.vue';
 
 const emit = defineEmits(['update:value'])
@@ -105,7 +105,7 @@ const UpdateTitle = (data) => {
       @update:value="v => updateField('WantedType', v)" :Customize="true" @update:customize="console.log($event);" />
   </div>
   <div class="type-select">
-    <UpdatedCustomInputSelect :staticOptions="Options" @update:modelValue="UpdateOption" :modelValue="SelectedOption"
+    <CustomSelectInput :staticOptions="Options" @update:modelValue="UpdateOption" :modelValue="SelectedOption"
       :label="$t('select the types you want')" id="EmployeeType" :placeholder="$t('select here')" />
   </div>
   <div class="selctors-container">

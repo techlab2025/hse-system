@@ -7,7 +7,7 @@ import EmptyData from "../Details/LocationsTeams/EmptyData.vue";
 import EquimentFolderEmpty from "@/assets/images/EquimentFolderEmpty.png"
 import type SohwProjectZoonModel from "../../../Data/models/ShowProjectZone";
 import ProjectZoneSelection from "../Details/PorjectUtils/ProjectZoneSelection.vue";
-import UpdatedCustomInputSelect from "@/shared/FormInputs/UpdatedCustomInputSelect.vue";
+import CustomSelectInput from "@/shared/FormInputs/CustomSelectInput.vue";
 import IndexEquipmentController from "@/features/_templateFeature/Presentation/controllers/indexEquipmentController";
 import IndexEquipmentParams from "@/features/_templateFeature/Core/params/indexEquipmentParams";
 import CreateProjectZoneEquipment from "../../../Core/params/ProjectEquipments/CreateProjectZoneEquipment.ts";
@@ -89,7 +89,7 @@ const AddEquipment = async () => {
 
       <!-- Equipment selection -->
       <div class="equipment-selection">
-        <UpdatedCustomInputSelect :modelValue="equipments" :controller="indexEquipmentController"
+        <CustomSelectInput :modelValue="equipments" :controller="indexEquipmentController"
           :params="indexEquipmentParams" :label="$t('Equipment')" :placeholder="$t('Select Your Equipment')" :type="2"
           @update:modelValue="setEquipments" />
 

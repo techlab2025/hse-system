@@ -1,11 +1,11 @@
 <script lang="ts" setup>
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
@@ -25,6 +25,7 @@ import type SohwProjectZoonModel from '../../Data/models/ShowProjectZone'
 import IndexContractorController from '@/features/setting/contractor/Presentation/controllers/indexContractorController'
 import IndexContractorParams from '@/features/setting/contractor/Core/params/indexContractorParams'
 import ContructorSelectDialog from './SelectDialogs/ContructorSelectDialog.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import LocationSelectDialog from './SelectDialogs/LocationSelectDialog.vue'
 import AddProjectZoneDialog from './Dialogs/AddProjectZoneDialog.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
@@ -474,7 +475,7 @@ defineExpose({
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="location">
-    <UpdatedCustomInputSelect
+    <CustomSelectInput
       :required="false"
       :modelValue="ContractorIds"
       @update:modelValue="setContractorIds"
@@ -489,7 +490,7 @@ defineExpose({
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <UpdatedCustomInputSelect
+    <CustomSelectInput
       :required="true"
       :modelValue="location"
       @update:modelValue="SetAreaSelection"

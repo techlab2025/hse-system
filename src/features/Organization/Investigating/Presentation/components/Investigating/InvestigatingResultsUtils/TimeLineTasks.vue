@@ -2,7 +2,7 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
 import { onMounted, ref } from 'vue'
@@ -115,7 +115,7 @@ onMounted(async () => {
               </div>
               <div class="timeline-contect-select" :class="{ 'capa-timeline-select': capaStyles }">
                 <div class="input-wrapper">
-                  <UpdatedCustomInputSelect
+                  <CustomSelectInput
                     :staticOptions="employeeOptions"
                     v-model="item.employee"
                     placeholder="Select Employee"
@@ -143,7 +143,7 @@ onMounted(async () => {
                   />
                 </div>
                 <div class="input-wrapper">
-                  <UpdatedCustomInputSelect
+                  <CustomSelectInput
                     :staticOptions="employeeOptions"
                     v-model="item.ResponablePerson"
                     placeholder="Select Responable Person"

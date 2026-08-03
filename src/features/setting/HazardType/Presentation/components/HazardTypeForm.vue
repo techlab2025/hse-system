@@ -8,7 +8,7 @@ import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
 import EditHazardTypeParams from '@/features/setting/HazardType/Core/params/editHazardTypeParams.ts'
 import AddHazardTypeParams from '@/features/setting/HazardType/Core/params/addHazardTypeParams.ts'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
@@ -247,7 +247,7 @@ const updateAllIndustries = (data) => {
     class="col-span-4 md:col-span-2"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
   >
-    <UpdatedCustomInputSelect
+    <CustomSelectInput
       :modelValue="industry"
       :controller="industryController"
       :params="industryParams"
@@ -260,7 +260,7 @@ const updateAllIndustries = (data) => {
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="route.params.parent_id || route.query.parent_id">
-    <UpdatedCustomInputSelect
+    <CustomSelectInput
       :modelValue="Factor"
       :controller="indexFactoryController"
       :params="indexFactoryParams"

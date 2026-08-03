@@ -6,7 +6,7 @@ import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
@@ -263,12 +263,12 @@ const setImage = async (data: File | string) => {
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <UpdatedCustomInputSelect :controller="indexHashtagController" :params="indexHashtagParams" label="Hashtag" id="Hashtag"
+    <CustomSelectInput :controller="indexHashtagController" :params="indexHashtagParams" label="Hashtag" id="Hashtag"
       placeholder="Selected Hashtag" :type="2" :modelValue="SelectedHashtag" @update:modelValue="SetHashtagSelection" />
   </div>
 
   <div class="col-span-4 md:col-span-2">
-    <UpdatedCustomInputSelect :controller="indexCategoryController" :params="indexCategoryParams" label="Category"
+    <CustomSelectInput :controller="indexCategoryController" :params="indexCategoryParams" label="Category"
       id="Category" placeholder="Selected Category" :type="2" :modelValue="SelectedCategory"
       @update:modelValue="SetCategorySelection" />
   </div>

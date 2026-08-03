@@ -795,7 +795,7 @@ onBeforeUnmount(() => {
                     <span class="side-label">{{ $t(sidebarRoute.name) }}</span>
                     <span v-if="isSearching" class="side-label-parent">{{ group.label }}</span>
                   </span>
-                  <span class="side-link-arrow">›</span>
+                  <!-- <span class="side-link-arrow">›</span> -->
                 </router-link>
               </PermissionBuilder>
             </template>

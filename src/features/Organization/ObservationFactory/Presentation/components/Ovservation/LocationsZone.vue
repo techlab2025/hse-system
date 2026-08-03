@@ -17,7 +17,7 @@ import { ref } from 'vue'
 
 // import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
 // import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
-// import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+// import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 
 // import { useUserStore } from '@/stores/user'
 // import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'

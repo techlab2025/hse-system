@@ -2,7 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type ShowHazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeDetailsModel'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
 import HazardIcon from '@/shared/icons/HazardIcon.vue'
 import DatePicker from 'primevue/datepicker'
@@ -288,7 +288,7 @@ const UpdateSerial = (data) => {
   </div>
 
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <UpdatedCustomInputSelect
+    <CustomSelectInput
       :modelValue="HazardType"
       class="input"
       :controller="indexHazardTypeController"
@@ -300,7 +300,7 @@ const UpdateSerial = (data) => {
     />
   </div>
   <div class="col-span-6 md:col-span-2 input-wrapper">
-    <UpdatedCustomInputSelect
+    <CustomSelectInput
       :modelValue="SelectedMachine"
       class="input"
       :controller="indexEquipmentController"
@@ -313,7 +313,7 @@ const UpdateSerial = (data) => {
   </div>
 
   <div class="col-span-3 md:grid-cols-12">
-    <UpdatedCustomInputSelect
+    <CustomSelectInput
       :required="false"
       :modelValue="SelectedSeverity"
       :static-options="SeverityList"
@@ -324,7 +324,7 @@ const UpdateSerial = (data) => {
     />
   </div>
   <div class="col-span-3 md:grid-cols-12">
-    <UpdatedCustomInputSelect
+    <CustomSelectInput
       :required="false"
       :modelValue="SelectedLikelihood"
       :static-options="LikelihoodList"
