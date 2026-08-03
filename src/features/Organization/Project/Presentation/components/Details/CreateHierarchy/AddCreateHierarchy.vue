@@ -8,7 +8,7 @@ import LocationHierarchyParams from '@/features/Organization/Project/Core/params
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import AddLocationHierarchyController from '../../../controllers/Hierarchy/LocationHierarchy/addLocationHierarchyController'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import ProjectPageSkeleton from '../Skeletons/ProjectPageSkeleton.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
@@ -227,8 +227,8 @@ watch(
           </div>
         </footer>
       </template>
-      <template #loader><TableLoader :cols="8" :rows="10" /></template>
-      <template #initial><TableLoader :cols="8" :rows="10" /></template>
+      <template #loader><ProjectPageSkeleton variant="hierarchy" /></template>
+      <template #initial><ProjectPageSkeleton variant="hierarchy" /></template>
       <template #empty>
         <DataEmpty
           :link="`/organization/project/add`"

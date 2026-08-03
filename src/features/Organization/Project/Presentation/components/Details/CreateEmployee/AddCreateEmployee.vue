@@ -13,7 +13,7 @@ import ProjectCustomLocationParams from '@/features/Organization/Project/Core/pa
 import ProjectCustomLocationController from '../../../controllers/ProjectCustomLocationController'
 import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
 
-import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import ProjectPageSkeleton from '../Skeletons/ProjectPageSkeleton.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
@@ -259,8 +259,8 @@ const assignedEmployeesCount = computed(() =>
         </div>
       </template>
 
-      <template #loader><TableLoader :cols="8" :rows="10" /></template>
-      <template #initial><TableLoader :cols="8" :rows="10" /></template>
+      <template #loader><ProjectPageSkeleton variant="assignment" /></template>
+      <template #initial><ProjectPageSkeleton variant="assignment" /></template>
       <template #empty>
         <DataEmpty
           :link="`/organization/project/add`"

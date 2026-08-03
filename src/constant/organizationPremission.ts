@@ -467,7 +467,7 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.CERTIFICATE_ALL,
           code: PermissionsEnum.CERTIFICATE_ALL,
-          label: 'Certificate',
+          label: 'Certificate List',
           permissions: [
             {
               key: PermissionsEnum.CERTIFICATE_ALL,
@@ -1341,7 +1341,7 @@ export const OrgPermissions: PermissionItem = {
           ],
         },
         // Capa
-         {
+        {
           key: PermissionsEnum.CAPA_ALL,
           code: PermissionsEnum.CAPA_ALL,
           label: 'Capa',

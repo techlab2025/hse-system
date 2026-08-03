@@ -9,7 +9,7 @@ import MainObjectivesSection from './Objectives/MainObjectivesSection.vue'
 import ProjectSiteSection from './ProjectSite/ProjectSiteSection.vue'
 import { watch } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import ProjectPageSkeleton from './Skeletons/ProjectPageSkeleton.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import ProjectHeader from './PorjectUtils/ProjectHeader.vue'
@@ -153,10 +153,10 @@ watch(
       </div>
     </template>
     <template #loader>
-      <TableLoader :cols="8" :rows="10" />
+      <ProjectPageSkeleton variant="details" />
     </template>
     <template #initial>
-      <TableLoader :cols="8" :rows="10" />
+      <ProjectPageSkeleton variant="details" />
     </template>
     <template #empty>
       <DataEmpty

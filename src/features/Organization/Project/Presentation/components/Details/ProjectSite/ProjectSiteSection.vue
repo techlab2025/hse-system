@@ -54,7 +54,11 @@ const remainingLocations = computed(() => Math.max((locations?.length || 0) - 2,
             >
           </span>
         </div>
-        <ShowAllZonesDialog :locations="locations" :projectId="projectId" />
+        <ShowAllZonesDialog
+          v-if="locations?.length! > 2"
+          :locations="locations"
+          :projectId="projectId"
+        />
       </div>
     </div>
 

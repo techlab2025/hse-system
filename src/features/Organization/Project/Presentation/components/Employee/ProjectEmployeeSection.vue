@@ -7,7 +7,7 @@ import TeamCard from '../Details/LocationsTeams/TeamCard.vue'
 import AddCreateTeam from '../Dialogs/CreateTeamDialog/AddCreateTeam.vue'
 import { useRoute } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import ProjectPageSkeleton from '../Details/Skeletons/ProjectPageSkeleton.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import ProjectCustomLocationParams from '../../../Core/params/ProjectCustomLocationParams'
@@ -249,10 +249,10 @@ watch(
       </div>
     </template>
     <template #loader>
-      <TableLoader :cols="3" :rows="10" />
+      <ProjectPageSkeleton variant="people" />
     </template>
     <template #initial>
-      <TableLoader :cols="3" :rows="10" />
+      <ProjectPageSkeleton variant="people" />
     </template>
     <template #empty>
       <DataEmpty
