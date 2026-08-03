@@ -533,7 +533,7 @@ const assignedEmployeesCount = computed(() =>
   border-radius: 999px;
   color: var(--status-success);
   background: color-mix(in srgb, var(--status-success) 9%, transparent);
-  font-size: 0.59rem;
+  font-size: 0.7rem;
   font-weight: 850;
 }
 .location-summary i {

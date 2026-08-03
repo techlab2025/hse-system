@@ -1,14 +1,18 @@
 <script setup lang="ts">
+import SidebarUnicon from '@/shared/icons/SidebarUnicon.vue'
+
 const props = defineProps<{
   img?: string
+  icon?: string
   title: string
   subtitle?: string
 }>()
 </script>
 <template>
   <div class="section-header">
-    <span v-if="img" class="section-img-wrap">
-      <img class="section-img" :src="img" :alt="$t('section_illustration')" />
+    <span v-if="icon || img" class="section-img-wrap">
+      <SidebarUnicon v-if="icon" :name="icon" class="section-icon" />
+      <img v-else class="section-img" :src="img" :alt="$t('section_illustration')" />
     </span>
     <div class="header-text">
       <span class="section-eyebrow">{{ $t('Project workspace') }}</span>
@@ -48,6 +52,12 @@ const props = defineProps<{
   border-radius: 0;
   background: transparent;
   object-fit: contain;
+}
+
+.section-img-wrap .section-icon {
+  width: 30px;
+  height: 30px;
+  color: var(--PrimaryColor);
 }
 
 .header-text {
@@ -98,6 +108,11 @@ const props = defineProps<{
   .section-img-wrap .section-img {
     width: 32px;
     height: 32px;
+  }
+
+  .section-img-wrap .section-icon {
+    width: 27px;
+    height: 27px;
   }
 }
 </style>

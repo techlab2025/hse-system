@@ -1077,6 +1077,7 @@ const selectedProject = useProjectSelectStore()
         help-text="The equipment involved in the event, including its tag number when available."
         id="machine"
         :placeholder="$t('select Equipment')"
+        showOptionSerial
         @update:modelValue="setMachine"
         @close="machineDialogRef = false"
         :isDialog="true"

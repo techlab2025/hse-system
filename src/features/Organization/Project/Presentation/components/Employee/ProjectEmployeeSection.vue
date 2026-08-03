@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import EmployeeIcon from '@/assets/images/EmployeeIcon.png'
 import HeaderSection from '../Details/DetailsHeader/HeaderSection.vue'
 import TeamMemberCard from '../Details/LocationsTeams/TeamMemberCard.vue'
 import { computed, onMounted, ref, watch } from 'vue'
@@ -135,7 +134,7 @@ watch(
             <div class="location-heading">
               <span class="location-number">{{ String(index + 1).padStart(2, '0') }}</span>
               <HeaderSection
-                :img="EmployeeIcon"
+                icon="sitemap"
                 :title="locationTeam?.title"
                 :subtitle="`${locationTeam?.locationEmplyees?.length || 0} ${$t('employees')} · ${locationTeam?.locationTeams?.length || 0} ${$t('teams')}`"
               />

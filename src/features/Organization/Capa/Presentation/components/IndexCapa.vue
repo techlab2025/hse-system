@@ -209,7 +209,7 @@ watch(
                     <div class="capa-title-group">
                       <span class="capa-mark" aria-hidden="true">C</span>
                       <div>
-                        <span class="capa-eyebrow">{{ $t('Action plan') }}</span>
+                        <!-- <span class="capa-eyebrow">{{ $t('Action plan') }}</span> -->
                         <h3>{{ item.title || $t('Corrective and preventive action') }}</h3>
                       </div>
                     </div>
@@ -260,7 +260,7 @@ watch(
                           <strong>{{ item?.observer?.name || '—' }}</strong>
                         </div>
                       </div> -->
-<!-- 
+<!--
                       <div class="capa-meta-item">
                         <span class="capa-meta-icon zone-symbol" aria-hidden="true"></span>
                         <div>

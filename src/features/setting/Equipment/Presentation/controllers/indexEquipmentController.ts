@@ -20,9 +20,15 @@ export default class IndexEquipmentController extends SelectControllerInterface<
     return this.instance
   }
 
+  override async fetch(params: Params): Promise<EquipmentModel[]> {
+    const data = await this.getData(params)
+
+    return this.isDataSuccess() ? (data.value?.data ?? []) : []
+  }
+
   async getData(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
-    console.log(params , "paramsparamsparams")
+    console.log(params, 'paramsparamsparams')
 
     this.setLoading()
     const dataState: DataState<EquipmentModel[]> = await this.indexEquipmentUseCase.call(params)

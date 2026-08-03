@@ -43,6 +43,7 @@ interface Props {
 
   hascontent?: boolean
   hasHeader?: boolean
+  showOptionSerial?: boolean
 
   isDialog?: boolean
   dialogVisible?: boolean
@@ -283,6 +284,26 @@ function getOptionKey(option: TitleInterface): string {
   return ''
 }
 
+function getOptionSerial(option: TitleInterface): string | number {
+  const item = option as TitleInterface & {
+    serialName?: string
+    serial_name?: string
+    serialNumber?: string
+    serial_number?: string
+    serial?: string
+  }
+
+  return (
+    item.serialName ??
+    item.serial_name ??
+    item.serialNumber ??
+    item.serial_number ??
+    item.serial ??
+    item.subtitle ??
+    ''
+  )
+}
+
 // -----------------------------------------------------------------------------
 // Options methods
 // -----------------------------------------------------------------------------
@@ -454,7 +475,16 @@ function closeDialog(): void {
         option-label="title"
         filter
         v-bind="multiselectProps"
-      />
+      >
+        <template v-if="showOptionSerial" #option="{ option }">
+          <span class="equipment-option">
+            <strong>{{ option?.title }}</strong>
+            <small v-if="getOptionSerial(option)">
+              {{ $t('serial_number') }}: {{ getOptionSerial(option) }}
+            </small>
+          </span>
+        </template>
+      </component>
 
       <input :id="id" :value="hiddenInputValue" type="text" class="hidden w-full" />
     </slot>
@@ -496,5 +526,22 @@ function closeDialog(): void {
   &:focus {
     border: 1px solid #d9dbe9 !important;
   }
+}
+
+.equipment-option {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.equipment-option strong {
+  color: var(--text-strong);
+  font-weight: 600;
+}
+
+.equipment-option small {
+  color: var(--text-soft);
+  font-size: 0.75rem;
 }
 </style>

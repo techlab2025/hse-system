@@ -103,7 +103,7 @@ onBeforeUnmount(hideTooltip)
 
 .field-help {
   position: relative;
-  margin-right: auto;
+  margin-right: auto !important;
   display: inline-flex;
   align-items: center;
   justify-content: center;

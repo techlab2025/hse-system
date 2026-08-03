@@ -30,7 +30,7 @@ export default class EquipmentModel extends TitleInterface {
   public license_plate_number: number
   public date: string
   public inService: boolean
-
+  public serialName: string
 
   constructor(
     id: number,
@@ -55,8 +55,8 @@ export default class EquipmentModel extends TitleInterface {
     checkout_date: string,
     license_plate_number: number,
     date: string,
-    inService: boolean
-
+    inService: boolean,
+    serialName: string,
   ) {
     super({ id, title, subtitle })
 
@@ -80,6 +80,7 @@ export default class EquipmentModel extends TitleInterface {
     this.license_plate_number = license_plate_number
     this.date = date
     this.inService = inService
+    this.serialName = serialName
   }
 
   static fromMap(data: any): EquipmentModel {
@@ -110,6 +111,7 @@ export default class EquipmentModel extends TitleInterface {
       data.license_plate_number,
       data.date,
       data.in_service,
+      data.serial_name ?? data.serial_number ?? data.serial ?? data.subtitle ?? '',
     )
   }
 

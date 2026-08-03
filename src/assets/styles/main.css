@@ -8358,7 +8358,7 @@ ul {
   min-height: 130px;
   resize: vertical;
 }
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .investigation-result .rate-of-actions {
     padding: 12px;
   }
@@ -9833,6 +9833,7 @@ ul {
   color: var(--brand-primary-500);
   font-family: "Bold";
   font-weight: 700;
+  font-size: 12px;
 }
 .investegation-result-answer-container .investegaion-task-card .card-content .assigned-to-container {
   display: flex;
@@ -11403,7 +11404,6 @@ ul {
   margin: auto;
   padding: var(--xs-size-2);
   border-radius: 50%;
-  background-color: var(--brand-primary-50);
 }
 .header .setting .user {
   display: flex;
@@ -14106,7 +14106,6 @@ html[dir=rtl] .table-responsive table.main-table tbody tr td:last-child {
 
 .section-header-page-container {
   width: 100%;
-  background: var(--brand-primary-50);
   padding: var(--sm-size) var(--md-size);
   border-radius: calc(var(--xl-size-base) + 3px);
   font-family: "Regular";
@@ -25467,15 +25466,11 @@ html[dir=rtl] .performance-box::after {
 }
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
 }
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-}
-html > section {
-  scroll-snap-align: start;
 }
 
 body {
@@ -25486,6 +25481,13 @@ body p,
 body span,
 body div {
   text-transform: capitalize;
+}
+
+html,
+body,
+#app {
+  rotate: none !important;
+  transform: none !important;
 }
 
 .p-accordionheader {
@@ -25799,4 +25801,36 @@ label {
     width: 96% !important;
     margin-inline: auto !important;
   }
+}
+.capa-index-page .project-filter-content {
+  display: none;
+}
+
+.p-dialog-mask {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 1rem !important;
+  overflow-y: auto !important;
+}
+
+.p-dialog {
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100dvh - 2rem);
+  margin: auto !important;
+  transform: none !important;
+}
+
+.p-dialog-content {
+  max-height: calc(100dvh - 8rem);
+  overflow-y: auto;
 }/*# sourceMappingURL=main.css.map */

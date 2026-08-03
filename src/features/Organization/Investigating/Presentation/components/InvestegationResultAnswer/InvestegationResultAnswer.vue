@@ -384,7 +384,7 @@ watch(
         <section class="final-answer-section">
           <div class="final-section-heading">
             <span>07</span>
-            <h2>Root Cause Analysis (5 Whys)</h2>
+            <h2>Root Analysis (5 Whys)</h2>
           </div>
           <div v-if="fiveWhyQuestions.length" class="answer-card-grid">
             <article v-for="question in fiveWhyQuestions" :key="question.id">
@@ -392,6 +392,13 @@ watch(
               <strong>{{ question.question || '-' }}</strong>
               <p>{{ question.answer || '-' }}</p>
             </article>
+          </div>
+        </section>
+
+        <section class="final-answer-section">
+          <div class="final-section-heading">
+            <span>08</span>
+            <h2>Root Causes</h2>
           </div>
           <div v-if="rootCauses.length" class="answer-tags">
             <span v-for="rootCause in rootCauses" :key="rootCause.id">{{
@@ -407,7 +414,7 @@ watch(
 
         <section class="final-answer-section">
           <div class="final-section-heading">
-            <span>08</span>
+            <span>09</span>
             <h2>Action Plan : Corrective and Preventive Actions</h2>
           </div>
           <InvestegationResultTasksAnswer
@@ -422,7 +429,7 @@ watch(
 
         <section class="final-answer-section">
           <div class="final-section-heading">
-            <span>09</span>
+            <span>10</span>
             <h2>Lessons Learned</h2>
           </div>
           <p class="answer-note">{{ lessonLearnt || 'No lesson learnt was added.' }}</p>
@@ -431,7 +438,7 @@ watch(
 
         <section class="final-answer-section">
           <div class="final-section-heading">
-            <span>10</span>
+            <span>11</span>
             <h2>Similar incident Retrieval</h2>
           </div>
           <!-- <p class="answer-empty"> -->
@@ -463,7 +470,7 @@ watch(
 
         <section class="final-answer-section">
           <div class="final-section-heading">
-            <span>11</span>
+            <span>12</span>
             <h2>Attachments</h2>
           </div>
           <InvestegationResultAttachmentAnswer
@@ -475,8 +482,8 @@ watch(
 
         <section class="final-answer-section">
           <div class="final-section-heading">
-            <span>12</span>
-            <h2>Another Meeting</h2>
+            <span>13</span>
+            <h2>Meeting</h2>
           </div>
           <!-- <div class="answer-info-grid"> -->
           <!-- <article>
@@ -539,8 +546,16 @@ watch(
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
   border-radius: 18px;
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 94%, transparent)),
-    linear-gradient(90deg, color-mix(in srgb, var(--brand-primary-500) 5%, transparent), color-mix(in srgb, var(--status-success) 5%, transparent));
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface-1) 98%, transparent),
+      color-mix(in srgb, var(--brand-primary-50) 94%, transparent)
+    ),
+    linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--brand-primary-500) 5%, transparent),
+      color-mix(in srgb, var(--status-success) 5%, transparent)
+    );
   box-shadow: 0 18px 38px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
 }
 
@@ -764,8 +779,16 @@ watch(
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 88%, transparent);
   border-radius: 16px;
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 96%, transparent), color-mix(in srgb, var(--brand-primary-50) 92%, transparent)),
-    linear-gradient(180deg, color-mix(in srgb, var(--brand-primary-500) 7%, transparent), color-mix(in srgb, var(--status-success) 5%, transparent));
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface-1) 96%, transparent),
+      color-mix(in srgb, var(--brand-primary-50) 92%, transparent)
+    ),
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--brand-primary-500) 7%, transparent),
+      color-mix(in srgb, var(--status-success) 5%, transparent)
+    );
   box-shadow: 0 14px 28px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
   transition:
     transform 0.2s ease,
@@ -892,7 +915,11 @@ watch(
   font-weight: 800;
   text-align: center;
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--brand-primary-500) 4.5%, transparent), color-mix(in srgb, var(--status-success) 4.5%, transparent)),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--brand-primary-500) 4.5%, transparent),
+      color-mix(in srgb, var(--status-success) 4.5%, transparent)
+    ),
     color-mix(in srgb, var(--surface-1) 78%, transparent);
 }
 

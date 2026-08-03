@@ -124,6 +124,9 @@ onMounted(() => {
           filter
           :placeholder="$t('Select Your Equipment')"
           display="chip"
+          simpleOptions
+          showOptionSerial
+          showSelectAllOption
           class="w-full md:w-80"
           @update:modelValue="setEquipments"
         />

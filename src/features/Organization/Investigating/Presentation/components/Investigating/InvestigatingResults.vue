@@ -924,16 +924,16 @@ const validateRequiredFields = async () => {
               </div>
             </AccordionHeader>
             <AccordionContent>
-              <div class="investigating-header-container">
-                <div
-                  class="incidant-description col-span-2"
-                  v-if="state?.data?.observation?.action"
-                >
-                  <p class="title">{{ $t('Immediate Action Retrieval') }}</p>
-                  <p class="description">{{ state?.data?.observation?.action }}</p>
+              <section class="immediate-action-evaluation">
+                <div class="immediate-action-summary" v-if="state?.data?.observation?.action">
+                  <span class="immediate-action-summary-icon" aria-hidden="true">✓</span>
+                  <div>
+                    <p class="title">{{ $t('Immediate Action Retrieval') }}</p>
+                    <p class="description">{{ state?.data?.observation?.action }}</p>
+                  </div>
                 </div>
-              </div>
-              <RateActions @update:data="setRateAction" />
+                <RateActions @update:data="setRateAction" />
+              </section>
             </AccordionContent>
           </AccordionPanel>
           <AccordionPanel value="7" data-investigation-panel="7">
@@ -1304,6 +1304,125 @@ const validateRequiredFields = async () => {
 .lesson-section {
   width: 100%;
 }
+
+.immediate-action-evaluation {
+  display: grid;
+  width: 100%;
+  gap: 16px;
+  overflow: hidden;
+  padding: clamp(14px, 2vw, 20px);
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 16%, var(--main-border));
+  border-radius: 18px;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--PrimaryColor) 9%, transparent),
+      transparent 34%
+    ),
+    linear-gradient(180deg, var(--surface-1), var(--surface-2));
+  box-shadow: 0 14px 32px color-mix(in srgb, var(--text-strong) 7%, transparent);
+}
+
+.immediate-action-summary {
+  position: relative;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 15%, var(--main-border));
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-1));
+
+  &::after {
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 4px;
+    background: linear-gradient(180deg, var(--PrimaryColor), var(--status-success));
+    content: '';
+  }
+
+  .title,
+  .description {
+    margin: 0;
+  }
+
+  .title {
+    color: var(--PrimaryColor);
+    font-size: 0.76rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .description {
+    margin-top: 6px;
+    color: var(--text-strong);
+    font-size: 0.94rem;
+    font-weight: 700;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+  }
+}
+
+.immediate-action-summary-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--status-success) 14%, var(--surface-1));
+  color: var(--status-success);
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.immediate-action-evaluation :deep(.rate-of-actions) {
+  gap: 14px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.immediate-action-evaluation :deep(.rate-of-actions .section-header-page-container) {
+  border-color: color-mix(in srgb, var(--PrimaryColor) 14%, var(--main-border));
+  border-radius: 14px;
+  box-shadow: none;
+}
+
+.immediate-action-evaluation :deep(.rate-of-actions .select-type) {
+  border-radius: 12px;
+}
+
+.immediate-action-evaluation :deep(.rate-of-actions textarea) {
+  min-height: 112px;
+}
+
+@media (max-width: 560px) {
+  .immediate-action-evaluation {
+    gap: 12px;
+    padding: 10px;
+    border-radius: 14px;
+  }
+
+  .immediate-action-summary {
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .immediate-action-summary-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+}
+
 .w-50 {
   width: 50%;
 }
