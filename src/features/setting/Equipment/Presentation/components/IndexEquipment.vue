@@ -55,6 +55,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/indexEquipmentTypeController'
 import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/indexEquipmentTypeParams'
 import { EquipmentStatus } from '../../Core/enum/equipmentStatus'
+import { EquipmentTypeEnum } from '@/features/Home/core/enums/SettingEnum/EquipmentTypeEnum'
 
 const { t } = useI18n()
 const { isDarkMode } = useThemeMode()
@@ -81,6 +82,18 @@ const indexEquipmentController = IndexEquipmentController.getInstance()
 const state = ref(indexEquipmentController.state.value)
 const route = useRoute()
 let id = route.params.id
+const routeEquipmentType = computed(() => {
+  const queryValue = Array.isArray(route.query.equipment_type)
+    ? route.query.equipment_type[0]
+    : route.query.equipment_type
+  const equipmentType = Number(queryValue)
+
+  return [EquipmentTypeEnum.Tool, EquipmentTypeEnum.Device, EquipmentTypeEnum.Machine].includes(
+    equipmentType,
+  )
+    ? equipmentType
+    : undefined
+})
 // const type = ref<EquipmentTypeStatusEnum>(EquipmentTypeStatusEnum[route.params.type as keyof typeof EquipmentTypeStatusEnum])
 
 const fetchEquipment = async (
@@ -100,6 +113,7 @@ const fetchEquipment = async (
     filterDate.value,
     filterStatus.value ?? undefined,
     filterEquipmentType.value ?? undefined,
+    routeEquipmentType.value,
   )
   await indexEquipmentController.getData(deleteEquipmentTypeParams)
 }
@@ -233,6 +247,14 @@ watch(
   (Newvalue) => {
     id = Newvalue
     fetchEquipment()
+  },
+)
+
+watch(
+  () => route.query.equipment_type,
+  () => {
+    currentPage.value = 1
+    fetchEquipment(word.value, 1, countPerPage.value)
   },
 )
 

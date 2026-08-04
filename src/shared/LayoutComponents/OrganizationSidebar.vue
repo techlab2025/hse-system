@@ -8,6 +8,7 @@ import { useUserStore } from '@/stores/user'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 import SidebarUnicon from '@/shared/icons/SidebarUnicon.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+import { EquipmentTypeEnum } from '@/features/Home/core/enums/SettingEnum/EquipmentTypeEnum'
 
 const props = defineProps<{ open: boolean }>()
 
@@ -17,6 +18,7 @@ interface Routes {
   name: string
   permissions: PermissionsEnum[]
   icon: string
+  children?: Routes[]
 }
 const { t } = useI18n()
 
@@ -46,6 +48,26 @@ const OperationsRoutes = ref<Routes[]>([
     name: 'equipment',
     icon: 'hard-hat',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+    children: [
+      {
+        link: `/organization/equipments?equipment_type=${EquipmentTypeEnum.Tool}`,
+        name: 'Tools',
+        icon: 'wrench',
+        permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+      },
+      {
+        link: `/organization/equipments?equipment_type=${EquipmentTypeEnum.Device}`,
+        name: 'Devices',
+        icon: 'desktop',
+        permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+      },
+      {
+        link: `/organization/equipments?equipment_type=${EquipmentTypeEnum.Machine}`,
+        name: 'Machines',
+        icon: 'setting',
+        permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+      },
+    ],
   },
   {
     link: '/organization/Investigating',
@@ -522,8 +544,11 @@ interface RouteGroup {
   adminOnly?: boolean
 }
 
-const flattenPermissions = (routes: Routes[]) =>
-  routes.map((item) => item.permissions.map((permission) => permission)).flat()
+const flattenPermissions = (routes: Routes[]): PermissionsEnum[] =>
+  routes.flatMap((item) => [
+    ...item.permissions,
+    ...(item.children ? flattenPermissions(item.children) : []),
+  ])
 
 const routeGroups = computed<RouteGroup[]>(() => {
  const groups: RouteGroup[] = [
@@ -598,13 +623,21 @@ let closePaneTimer: number | undefined
 const isLinkActive = (link: Routes['link']) => {
   if (typeof link !== 'string') return false
 
-  const [pathOnly] = link.split('?')
+  const [pathOnly, queryString] = link.split('?')
+  if (!queryString) return route.path === pathOnly
 
-  return route.fullPath === link || route.path === pathOnly
+  const expectedQuery = new URLSearchParams(queryString)
+  return (
+    route.path === pathOnly &&
+    [...expectedQuery.entries()].every(([key, value]) => String(route.query[key] ?? '') === value)
+  )
 }
 
 const groupHasActiveRoute = (group: RouteGroup) =>
-  group.routes.some((item) => isLinkActive(item.link))
+  group.routes.some(
+    (item) =>
+      isLinkActive(item.link) || item.children?.some((child) => isLinkActive(child.link)),
+  )
 
 const activeGroup = computed(() => {
   return (
@@ -625,8 +658,11 @@ const visibleRouteGroups = computed<RouteGroup[]>(() => {
         ? group.routes.filter((item) => {
             const routeName = t(item.name).toLocaleLowerCase()
             const groupName = group.label.toLocaleLowerCase()
+            const hasMatchingChild = item.children?.some((child) =>
+              t(child.name).toLocaleLowerCase().includes(query),
+            )
 
-            return routeName.includes(query) || groupName.includes(query)
+            return routeName.includes(query) || groupName.includes(query) || hasMatchingChild
           })
         : group.routes
 
@@ -784,19 +820,38 @@ onBeforeUnmount(() => {
                 :key="`${group.key}-${String(sidebarRoute.link)}`"
                 :code="sidebarRoute.permissions"
               >
-                <router-link
-                  :to="sidebarRoute.link"
-                  :class="['side-btn', { active: isLinkActive(sidebarRoute.link) }]"
-                  :title="$t(sidebarRoute.name)"
-                  @click="hidePane"
-                >
-                  <SidebarUnicon :name="sidebarRoute.icon" class="side-icon" />
-                  <span class="side-label-wrap">
-                    <span class="side-label">{{ $t(sidebarRoute.name) }}</span>
-                    <span v-if="isSearching" class="side-label-parent">{{ group.label }}</span>
-                  </span>
-                  <!-- <span class="side-link-arrow">›</span> -->
-                </router-link>
+                <div class="side-route-entry">
+                  <router-link
+                    :to="sidebarRoute.link"
+                    :class="['side-btn', { active: isLinkActive(sidebarRoute.link) }]"
+                    :title="$t(sidebarRoute.name)"
+                    @click="hidePane"
+                  >
+                    <SidebarUnicon :name="sidebarRoute.icon" class="side-icon" />
+                    <span class="side-label-wrap">
+                      <span class="side-label">{{ $t(sidebarRoute.name) }}</span>
+                      <span v-if="isSearching" class="side-label-parent">{{ group.label }}</span>
+                    </span>
+                  </router-link>
+
+                  <div v-if="sidebarRoute.children?.length" class="side-route-children">
+                    <PermissionBuilder
+                      v-for="childRoute in sidebarRoute.children"
+                      :key="String(childRoute.link)"
+                      :code="childRoute.permissions"
+                    >
+                      <router-link
+                        :to="childRoute.link"
+                        :class="['side-btn side-btn--child', { active: isLinkActive(childRoute.link) }]"
+                        :title="$t(childRoute.name)"
+                        @click="hidePane"
+                      >
+                        <SidebarUnicon :name="childRoute.icon" class="side-icon" />
+                        <span class="side-label">{{ $t(childRoute.name) }}</span>
+                      </router-link>
+                    </PermissionBuilder>
+                  </div>
+                </div>
               </PermissionBuilder>
             </template>
 
@@ -1055,6 +1110,19 @@ onBeforeUnmount(() => {
   padding-bottom: 18px;
 }
 
+.side-route-entry {
+  display: grid;
+  gap: 5px;
+}
+
+.side-route-children {
+  display: grid;
+  gap: 4px;
+  margin-inline-start: 25px;
+  padding-inline-start: 10px;
+  border-inline-start: 1px solid color-mix(in srgb, var(--surface-1) 18%, transparent);
+}
+
 .side-route-group-title {
   margin: 12px 4px 0;
   color: color-mix(in srgb, var(--brand-primary-100) 72%, transparent);
@@ -1083,8 +1151,7 @@ onBeforeUnmount(() => {
 }
 
 .side-btn:hover,
-.side-btn.active,
-.side-btn.router-link-active {
+.side-btn.active {
   border-color: color-mix(in srgb, var(--surface-1) 12%, transparent);
   background: color-mix(in srgb, var(--surface-1) 14%, transparent);
   box-shadow:
@@ -1092,6 +1159,18 @@ onBeforeUnmount(() => {
     0 12px 24px color-mix(in srgb, var(--brand-primary-700) 18%, transparent);
   color: var(--text-on-brand);
   transform: translateX(2px);
+}
+
+.side-btn--child {
+  min-height: 39px;
+  padding: 8px 11px;
+  border-radius: 11px;
+  font-size: 0.82rem;
+}
+
+.side-btn--child .side-icon {
+  width: 17px;
+  height: 17px;
 }
 
 .side-label-wrap {
@@ -1182,8 +1261,7 @@ onBeforeUnmount(() => {
 }
 
 html[dir='rtl'] .side-btn:hover,
-html[dir='rtl'] .side-btn.active,
-html[dir='rtl'] .side-btn.router-link-active {
+html[dir='rtl'] .side-btn.active {
   transform: translateX(-2px);
 }
 

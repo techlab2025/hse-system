@@ -13,6 +13,7 @@ export default class IndexEquipmentParams implements Params {
   public date?: string
   public status?: number
   public equipmentTypeId?: number
+  public equipmentType?: number
   // public code?: LangEnum
 
   constructor(
@@ -27,6 +28,7 @@ export default class IndexEquipmentParams implements Params {
     date?: string,
     status?: number,
     equipmentTypeId?: number,
+    equipmentType?: number,
   ) {
     this.word = word
     this.withPage = withPage
@@ -38,6 +40,7 @@ export default class IndexEquipmentParams implements Params {
     this.date = date
     this.status = status
     this.equipmentTypeId = equipmentTypeId
+    this.equipmentType = equipmentType
     // this.code = code
   }
 
@@ -52,6 +55,7 @@ export default class IndexEquipmentParams implements Params {
     if (this.date) data['date'] = this.date
     if (this.status != null) data['status'] = this.status
     if (this.equipmentTypeId != null) data['equipment_type_id'] = this.equipmentTypeId
+    if (this.equipmentType != null) data['equipment_type'] = this.equipmentType
     // if (this.code) data['code'] = this.code
     return data
   }
