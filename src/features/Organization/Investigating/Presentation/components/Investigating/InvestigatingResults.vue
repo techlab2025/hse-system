@@ -615,13 +615,16 @@ const getFirstFieldError = (prefix: string) =>
   Object.entries(requiredFieldErrors.value).find(([key]) => key.startsWith(prefix))?.[1] ?? ''
 
 const clearResolvedRequiredErrors = () => {
-  requiredFields.value.forEach((field) => {
-    if (requiredFieldErrors.value[field.key] && !field.isMissing()) {
-      const { [field.key]: _removed, ...rest } = requiredFieldErrors.value
-      requiredFieldErrors.value = rest
-    }
-  })
+  const rulesByKey = new Map(requiredFields.value.map((field) => [field.key, field]))
+  requiredFieldErrors.value = Object.fromEntries(
+    Object.entries(requiredFieldErrors.value).filter(([key]) => {
+      const rule = rulesByKey.get(key)
+      return rule?.isMissing() ?? false
+    }),
+  )
 }
+
+watch(capaActionPlan, clearResolvedRequiredErrors, { deep: true })
 
 const scrollToRequiredField = async (field: RequiredFieldRule) => {
   ActivePanel.value = field.panel
@@ -992,11 +995,11 @@ const validateRequiredFields = async () => {
               </div>
             </AccordionHeader>
             <AccordionContent>
-              <div data-required-field="capaActionPlan.corrective.0.text">
-                <CapaActionPlan @update:data="setCapaActionPlan" />
-                <p v-if="getFirstFieldError('capaActionPlan.')" class="required-field-message">
-                  {{ getFirstFieldError('capaActionPlan.') }}
-                </p>
+              <div>
+                <CapaActionPlan
+                  :validation-errors="requiredFieldErrors"
+                  @update:data="setCapaActionPlan"
+                />
               </div>
             </AccordionContent>
           </AccordionPanel>

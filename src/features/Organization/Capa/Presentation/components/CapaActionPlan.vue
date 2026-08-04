@@ -10,6 +10,9 @@ import IndexOrganizatoinEmployeeController from '@/features/Organization/Organiz
 type ActionType = 'corrective' | 'preventive'
 
 const emit = defineEmits(['update:data'])
+defineProps<{
+  validationErrors?: Record<string, string>
+}>()
 
 const selectedTasks = ref<Record<ActionType, Record<string, any>[]>>({
   corrective: [],
@@ -98,8 +101,10 @@ onMounted(async () => {
           v-if="isEmployeeOptionsLoaded"
           :allowOngoing="true"
           :capaStyles="true"
+          fieldPrefix="capaActionPlan.corrective"
           :staticEmployeeOptions="employeeOptions"
           :useStaticEmployeeOptions="true"
+          :validationErrors="validationErrors"
           @update:data="(data) => updateTasks('corrective', data)"
         />
       </article>
@@ -119,8 +124,10 @@ onMounted(async () => {
           v-if="isEmployeeOptionsLoaded"
           :allowOngoing="true"
           :capaStyles="true"
+          fieldPrefix="capaActionPlan.preventive"
           :staticEmployeeOptions="employeeOptions"
           :useStaticEmployeeOptions="true"
+          :validationErrors="validationErrors"
           @update:data="(data) => updateTasks('preventive', data)"
         />
       </article>

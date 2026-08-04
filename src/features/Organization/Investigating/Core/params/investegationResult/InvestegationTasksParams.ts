@@ -22,7 +22,7 @@ export default class InvestegationTasksParams implements Params {
   toMap(): Record<string, number | string | any> {
     const data: Record<string, number | string | any> = {}
     data['title'] = this.title
-    data['is_going'] = this.isGoing
+    data['on_going'] = this.isGoing
     if (!this.isGoing && this.dueDate) {
       data['due_date'] = formatJoinDate(this.dueDate)
     }

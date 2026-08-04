@@ -12,11 +12,20 @@ import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
 
-const { allowOngoing, capaStyles, staticEmployeeOptions, useStaticEmployeeOptions } = defineProps<{
+const {
+  allowOngoing,
+  capaStyles,
+  fieldPrefix,
+  staticEmployeeOptions,
+  useStaticEmployeeOptions,
+  validationErrors,
+} = defineProps<{
   allowOngoing?: boolean
   capaStyles?: boolean
+  fieldPrefix?: string
   staticEmployeeOptions?: TitleInterface[]
   useStaticEmployeeOptions?: boolean
+  validationErrors?: Record<string, string>
 }>()
 const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 1)
@@ -30,6 +39,14 @@ const createEmptyAnswer = () => ({
 })
 
 const Answers = ref([createEmptyAnswer()])
+type TaskField = 'text' | 'employee' | 'date' | 'responsible'
+
+const fieldKey = (index: number, field: TaskField) =>
+  fieldPrefix ? `${fieldPrefix}.${index}.${field}` : ''
+const fieldError = (index: number, field: TaskField) =>
+  validationErrors?.[fieldKey(index, field)] ?? ''
+const fieldId = (index: number, field: TaskField | 'ongoing') =>
+  `${(fieldPrefix || 'timeline-task').replace(/[^a-zA-Z0-9_-]/g, '-')}-${field}-${index}`
 
 const addNewAnswer = () => {
   Answers.value.push({
@@ -108,24 +125,36 @@ onMounted(async () => {
             </div>
 
             <div class="timeline-content" :class="{ 'capa-timeline-content': capaStyles }">
-              <div class="timeline-content-text input-wrapper">
+              <div
+                class="timeline-content-text input-wrapper"
+                :class="{ 'field-has-error': fieldError(index, 'text') }"
+                :data-required-field="fieldKey(index, 'text') || undefined"
+              >
                 <div class="flex items-center gap-2">
-                  <label :for="`action-${index}`">Action</label
+                  <label :for="fieldId(index, 'text')">Action</label
                   ><FieldHelpIcon
                     text="Describe the specific corrective or preventive action to be completed."
                   />
                 </div>
                 <input
                   type="text"
-                  :id="`action-${index}`"
+                  :id="fieldId(index, 'text')"
                   v-model="item.text"
                   class="input"
                   placeholder="add your title"
+                  :aria-invalid="Boolean(fieldError(index, 'text'))"
                   @input="UpdateData"
                 />
+                <p v-if="fieldError(index, 'text')" class="required-field-message">
+                  {{ fieldError(index, 'text') }}
+                </p>
               </div>
               <div class="timeline-contect-select" :class="{ 'capa-timeline-select': capaStyles }">
-                <div class="input-wrapper">
+                <div
+                  class="input-wrapper"
+                  :class="{ 'field-has-error': fieldError(index, 'employee') }"
+                  :data-required-field="fieldKey(index, 'employee') || undefined"
+                >
                   <CustomSelectInput
                     :staticOptions="employeeOptions"
                     v-model="item.employee"
@@ -136,21 +165,28 @@ onMounted(async () => {
                     :reload="false"
                     @update:model-value="UpdateData"
                   />
+                  <p v-if="fieldError(index, 'employee')" class="required-field-message">
+                    {{ fieldError(index, 'employee') }}
+                  </p>
                 </div>
-                <div class="flex flex-col gap-2 input-wrapper">
+                <div
+                  class="flex flex-col gap-2 input-wrapper"
+                  :class="{ 'field-has-error': fieldError(index, 'date') }"
+                  :data-required-field="fieldKey(index, 'date') || undefined"
+                >
                   <div v-if="allowOngoing" class="ongoing-switch-row">
                     <div>
-                      <label :for="`ongoing-action-${index}`">{{ $t('Ongoing') }}</label>
+                      <label :for="fieldId(index, 'ongoing')">{{ $t('Ongoing') }}</label>
                       <small>{{ $t('No completion date required') }}</small>
                     </div>
                     <ToggleSwitch
                       v-model="item.isGoing"
-                      :input-id="`ongoing-action-${index}`"
+                      :input-id="fieldId(index, 'ongoing')"
                       @update:model-value="updateOngoing(item)"
                     />
                   </div>
                   <div v-if="!item.isGoing" class="flex items-center gap-2">
-                    <label :for="`implementation-date-${index}`"
+                    <label :for="fieldId(index, 'date')"
                       >Expected Time for Implementation</label
                     ><FieldHelpIcon
                       text="Select the target date by which this action should be completed."
@@ -162,10 +198,17 @@ onMounted(async () => {
                     class="mt-4 mr-2 input date-picker"
                     placeholder="Select Date"
                     @update:model-value="UpdateData"
-                    :input-id="`implementation-date-${index}`"
+                    :input-id="fieldId(index, 'date')"
                   />
+                  <p v-if="fieldError(index, 'date')" class="required-field-message">
+                    {{ fieldError(index, 'date') }}
+                  </p>
                 </div>
-                <div class="input-wrapper">
+                <div
+                  class="input-wrapper"
+                  :class="{ 'field-has-error': fieldError(index, 'responsible') }"
+                  :data-required-field="fieldKey(index, 'responsible') || undefined"
+                >
                   <CustomSelectInput
                     :staticOptions="employeeOptions"
                     v-model="item.ResponablePerson"
@@ -176,6 +219,9 @@ onMounted(async () => {
                     :reload="false"
                     @update:model-value="UpdateData"
                   />
+                  <p v-if="fieldError(index, 'responsible')" class="required-field-message">
+                    {{ fieldError(index, 'responsible') }}
+                  </p>
                 </div>
               </div>
               <!-- </div> -->
@@ -249,6 +295,20 @@ onMounted(async () => {
 .ongoing-switch-row small {
   color: var(--text-soft);
   font-size: 0.72rem;
+}
+
+.required-field-message {
+  margin: 0.35rem 0 0;
+  color: var(--status-danger);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.field-has-error > input,
+.field-has-error :deep(.p-inputtext),
+.field-has-error :deep(.p-select),
+.field-has-error :deep(.input-select) {
+  border-color: var(--status-danger) !important;
 }
 
 @media (max-width: 768px) {
