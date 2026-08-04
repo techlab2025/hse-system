@@ -315,6 +315,12 @@ class ApiNames {
   public get DeleteProject() {
     return this.prefix + 'delete_project'
   }
+  public get GetTodayTalk() {
+    return this.prefix + 'get_today_talk'
+  }
+  public get CreateTodayTalk() {
+    return this.prefix + 'create_today_talk'
+  }
 
   // AboutUsFeature
   public get CreateAboutUsFeature() {

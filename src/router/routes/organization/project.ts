@@ -41,6 +41,16 @@ export const projectRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: 'project-details/:id/today-talk/create',
+    name: 'Create Today Talk',
+    component: () => import('@/views/Organization/Project/TodayTalk/CreateTodayTalk.vue'),
+    meta: {
+      breadcrumb: 'Create Today Talk',
+      parent: 'Project Details',
+      isSidebar: false,
+    },
+  },
+  {
     path: 'employee-details/:project_id',
     name: 'Employee Details',
     component: () => import('@/views/Organization/Project/EmployeeDetails.vue'),
