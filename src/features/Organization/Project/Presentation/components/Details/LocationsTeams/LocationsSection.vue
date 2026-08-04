@@ -99,10 +99,8 @@ watch(
       <AccordionHeader>
         <div class="location-container">
           <div class="location">
-            <span class="accordion-arrow">
-              <AccordArrowDown v-if="OpenAccordion.includes('0')" class="arrow-accord" />
-              <AccordArrowRight v-else class="arrow-right" />
-            </span>
+            <AccordArrowDown v-if="OpenAccordion.includes('0')" class="arrow-accord" />
+            <AccordArrowRight v-else class="arrow-right" />
             <span class="location-pin" aria-hidden="true"><i></i></span>
             <div class="location-copy">
               <span class="location-eyebrow">{{ $t('Operational location') }}</span>
@@ -311,22 +309,11 @@ watch(
     margin: 0;
   }
 
-  .accordion-arrow {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 31px;
-    height: 31px;
-    flex: 0 0 31px;
-    border: 1px solid var(--main-border);
-    border-radius: 10px;
-    color: var(--PrimaryColor);
-    background: var(--surface-1);
-  }
-
-  .accordion-arrow :deep(svg) {
-    width: 17px;
-    height: 17px;
+  .location > :deep(.arrow-accord),
+  .location > :deep(.arrow-right) {
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
   }
 
   .location-pin {

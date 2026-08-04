@@ -107,6 +107,8 @@ const logout = () => {
       <router-link
         :to="`${Number(user.user?.type) === EmployeeStatusEnum.Admin ? '/admin' : '/organization'}`"
         class="sidebar-back"
+        active-class=""
+        exact-active-class="sidebar-home-active"
       >
         <span class="home-icon"><SidebarUnicon name="home" /></span>
         <span>{{ $t('home') }}</span>
@@ -249,7 +251,7 @@ const logout = () => {
   width: 100% !important;
 }
 .sidebar-back:hover,
-.sidebar-back.router-link-active {
+.sidebar-back.sidebar-home-active {
   background: var(--brand-primary-50) !important;
   border-color: color-mix(in srgb, var(--brand-primary-600) 22%, transparent);
   color: var(--PrimaryColor) !important;
@@ -274,7 +276,7 @@ const logout = () => {
   box-shadow: none;
 }
 .sidebar.close .sidebar-back:hover,
-.sidebar.close .sidebar-back.router-link-active {
+.sidebar.close .sidebar-back.sidebar-home-active {
   background: color-mix(in srgb, var(--surface-1) 14%, transparent) !important;
   border-color: transparent;
   color: var(--text-on-brand) !important;
@@ -289,17 +291,17 @@ const logout = () => {
 }
 
 .sidebar.is-dark .sidebar-back:hover,
-.sidebar.is-dark .sidebar-back.router-link-active,
+.sidebar.is-dark .sidebar-back.sidebar-home-active,
 .sidebar.is-dark.open .sidebar-back:hover,
-.sidebar.is-dark.open .sidebar-back.router-link-active,
+.sidebar.is-dark.open .sidebar-back.sidebar-home-active,
 .sidebar.is-dark.close .sidebar-back:hover,
-.sidebar.is-dark.close .sidebar-back.router-link-active {
+.sidebar.is-dark.close .sidebar-back.sidebar-home-active {
   background: color-mix(in srgb, var(--brand-primary-300) 16%, transparent) !important;
   border-color: color-mix(in srgb, var(--brand-primary-300) 28%, transparent) !important;
   color: var(--text-on-brand) !important;
 }
 .sidebar.open .sidebar-back:hover,
-.sidebar.open .sidebar-back.router-link-active {
+.sidebar.open .sidebar-back.sidebar-home-active {
   background: color-mix(in srgb, var(--surface-1) 14%, transparent) !important;
   border-color: transparent;
   color: var(--text-on-brand) !important;
@@ -597,7 +599,7 @@ const logout = () => {
 }
 
 .sidebar.organization-modern .sidebar-back:hover,
-.sidebar.organization-modern .sidebar-back.router-link-active {
+.sidebar.organization-modern .sidebar-back.sidebar-home-active {
   background: color-mix(in srgb, var(--surface-1) 14%, transparent) !important;
   color: var(--text-on-brand) !important;
   box-shadow:

@@ -633,6 +633,10 @@ const isLinkActive = (link: Routes['link']) => {
   )
 }
 
+const isParentLinkActive = (sidebarRoute: Routes) =>
+  isLinkActive(sidebarRoute.link) &&
+  !sidebarRoute.children?.some((child) => isLinkActive(child.link))
+
 const groupHasActiveRoute = (group: RouteGroup) =>
   group.routes.some(
     (item) =>
@@ -753,7 +757,7 @@ onBeforeUnmount(() => {
             :class="[
               'side-rail-btn',
               {
-                'is-selected': activeGroupKey === group.key,
+                'is-selected': isPaneVisible && activeGroupKey === group.key,
                 'is-active': groupHasActiveRoute(group),
               },
             ]"
@@ -823,7 +827,7 @@ onBeforeUnmount(() => {
                 <div class="side-route-entry">
                   <router-link
                     :to="sidebarRoute.link"
-                    :class="['side-btn', { active: isLinkActive(sidebarRoute.link) }]"
+                    :class="['side-btn', { active: isParentLinkActive(sidebarRoute) }]"
                     :title="$t(sidebarRoute.name)"
                     @click="hidePane"
                   >
