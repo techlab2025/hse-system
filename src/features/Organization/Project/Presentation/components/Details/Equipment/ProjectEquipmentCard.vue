@@ -81,6 +81,11 @@ const deleteEquipment = async (id: number) => {
             <!-- <img :src="Rent" alt="rent" > -->
           </p>
 
+          <div class="license-plate" v-if="tool?.equipment?.licensePlateNumber">
+            <span>{{ $t('License Plate Number') }}</span>
+            <strong>{{ tool.equipment.licensePlateNumber }}</strong>
+          </div>
+
           <!-- <div class="equipment-project-info" v-if="tool?.equipment?.project?.title">
             <img :src="Helmet" alt="helmet">
             <div class="project-data">
@@ -277,6 +282,31 @@ const deleteEquipment = async (id: number) => {
   font-family: 'Bold';
   font-size: 0.94rem;
   font-weight: 900;
+}
+
+.license-plate {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 34px;
+  gap: 8px;
+  padding: 6px 9px;
+  border: 1px solid var(--main-border);
+  border-radius: 10px;
+  background: var(--surface-2);
+}
+
+.license-plate span {
+  color: var(--text-soft);
+  font-size: 0.59rem;
+}
+
+.license-plate strong {
+  color: var(--text-strong);
+  font-family: 'Bold';
+  font-size: 0.7rem;
+  overflow-wrap: anywhere;
+  text-align: end;
 }
 
 .equipment-inspections-info {
