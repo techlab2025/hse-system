@@ -51,7 +51,7 @@ const totalTeams = computed(
         subtitle="view_all_working_teams_assigned_to_each_operational_zone"
       />
       <div class="team-section-actions">
-        <span class="actions-label"><i aria-hidden="true"></i>{{ $t('Workforce overview') }}</span>
+        <!-- <span class="actions-label"><i aria-hidden="true"></i>{{ $t('Workforce overview') }}</span> -->
         <div class="team-action-row">
           <div class="team-summary">
             <span class="summary-item employees-summary">

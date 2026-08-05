@@ -52,7 +52,7 @@ const actionList = (id: number) => [
           </svg>
         </span>
         <div>
-          <span class="project-eyebrow"><i></i>{{ t('Project overview') }}</span>
+          <!-- <span class="project-eyebrow"><i></i>{{ t('Project overview') }}</span> -->
           <h1 class="project-name">{{ projectName || t('Project') }}</h1>
         </div>
       </div>

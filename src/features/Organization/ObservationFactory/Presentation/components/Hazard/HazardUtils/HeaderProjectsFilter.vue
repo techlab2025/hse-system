@@ -12,8 +12,13 @@ const props = defineProps<{
 }>()
 
 const ProjectStore = useProjectSelectStore()
+const selectedProjectId = ProjectStore.getProjectId()
 const ActiveTap = ref<number | undefined>(
-  ProjectStore.getProjectId() === -1 ? undefined : props.projects?.[0]?.id,
+  selectedProjectId !== -1 && selectedProjectId != null
+    ? selectedProjectId
+    : props.isForm
+      ? props.projects?.[0]?.id
+      : undefined,
 )
 const AllProjects = ref(props.projects)
 

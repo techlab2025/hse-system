@@ -28,6 +28,7 @@ const UpdateData = (Id?: number) => {
       : projectSelectStore?.project?.id
   emit('update:data', ActiveTap.value)
 }
+const ProjectSelect = useProjectSelectStore()
 </script>
 
 <template>
@@ -65,7 +66,7 @@ const UpdateData = (Id?: number) => {
       </div>
     </div>
 
-    <div class="project-filter-content project-filter-panel">
+    <div class="project-filter-content project-filter-panel" v-if="!ProjectSelect.project?.id">
       <div v-if="isProjectsLoading" class="projects-filter-skeleton" aria-hidden="true">
         <span v-for="item in 4" :key="item"></span>
       </div>

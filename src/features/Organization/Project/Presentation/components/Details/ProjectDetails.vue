@@ -121,7 +121,7 @@ watch(
             <div class="operations-title">
               <span class="operations-mark" aria-hidden="true"> <i></i><i></i><i></i> </span>
               <div>
-                <span class="operations-eyebrow">{{ $t('Operational workspace') }}</span>
+                <!-- <span class="operations-eyebrow">{{ $t('Operational workspace') }}</span> -->
                 <h2>{{ $t('Project resources and field structure') }}</h2>
                 <p>
                   {{

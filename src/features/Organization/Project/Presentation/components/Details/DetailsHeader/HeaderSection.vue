@@ -15,7 +15,7 @@ const props = defineProps<{
       <img v-else class="section-img" :src="img" :alt="$t('section_illustration')" />
     </span>
     <div class="header-text">
-      <span class="section-eyebrow">{{ $t('Project workspace') }}</span>
+      <!-- <span class="section-eyebrow">{{ $t('Project workspace') }}</span> -->
       <p class="title" v-if="title">{{ $t(title) }}</p>
       <p class="subtitle" v-if="subtitle">{{ $t(subtitle) }}</p>
     </div>
