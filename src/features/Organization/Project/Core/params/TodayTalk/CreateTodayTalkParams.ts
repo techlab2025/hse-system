@@ -2,6 +2,7 @@ import type Params from '@/base/core/params/params'
 
 export type TodayTalkEmployeeParams = {
   organization_employee_id: number
+  is_attend: boolean
 }
 
 export default class CreateTodayTalkParams implements Params {

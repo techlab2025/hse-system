@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import ToggleSwitch from 'primevue/toggleswitch'
 import ProjectCustomLocationParams from '../../../Core/params/ProjectCustomLocationParams'
 import { ProjectCustomLocationEnum } from '../../../Core/Enums/ProjectCustomLocationEnum'
 import CreateTodayTalkParams from '../../../Core/params/TodayTalk/CreateTodayTalkParams'
@@ -9,8 +10,14 @@ import ProjectCustomLocationController from '../../controllers/ProjectCustomLoca
 import CreateTodayTalkController from '../../controllers/TodayTalk/CreateTodayTalkController'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
-import TitleInterface from '@/base/Data/Models/title_interface'
+
+type AttendanceEmployee = {
+  organizationEmployeeId: number
+  name: string
+  email: string
+  image: string
+  isAttend: boolean
+}
 
 const route = useRoute()
 const router = useRouter()
@@ -30,18 +37,36 @@ const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 60_000)
 const content = ref('')
 const date = ref(localDate.toISOString().slice(0, 10))
 const time = ref(localDate.toISOString().slice(11, 16))
-const employeeOptions = ref<TitleInterface[]>([])
-const selectedEmployees = ref<TitleInterface[]>([])
+const attendance = ref<AttendanceEmployee[]>([])
 const contentError = ref('')
 const dateError = ref('')
 const timeError = ref('')
 const employeesError = ref('')
+const isEmployeesLoading = ref(false)
+const hasEmployeeError = ref(false)
 const isSaving = computed(() => createController.isDataLoading())
+const attendingCount = computed(() =>
+  attendance.value.reduce((count, employee) => count + Number(employee.isAttend), 0),
+)
+const allAttending = computed(
+  () => Boolean(attendance.value.length) && attendingCount.value === attendance.value.length,
+)
+
+const initials = (name: string) =>
+  name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join('') || '—'
 
 const hydrateEmployees = (locations?: ProjectCustomLocationModel[] | null) => {
   if (!locations) return
 
-  const employees = new Map<number, TitleInterface>()
+  const currentAttendance = new Map(
+    attendance.value.map((employee) => [employee.organizationEmployeeId, employee.isAttend]),
+  )
+  const employees = new Map<number, AttendanceEmployee>()
 
   locations.forEach((location) => {
     const locationEmployees = [
@@ -55,44 +80,58 @@ const hydrateEmployees = (locations?: ProjectCustomLocationModel[] | null) => {
       )
       if (!organizationEmployeeId || employees.has(organizationEmployeeId)) return
 
-      employees.set(
+      employees.set(organizationEmployeeId, {
         organizationEmployeeId,
-        new TitleInterface({
-          id: organizationEmployeeId,
-          title: employee.name || `Employee #${organizationEmployeeId}`,
-          subtitle: employee.email || '',
-        }),
-      )
+        name: employee.name || `Employee #${organizationEmployeeId}`,
+        email: employee.email || '',
+        image: employee.image || '',
+        isAttend: currentAttendance.get(organizationEmployeeId) ?? false,
+      })
     })
   })
 
-  employeeOptions.value = [...employees.values()].sort((a, b) =>
-    String(a.title).localeCompare(String(b.title)),
-  )
+  attendance.value = [...employees.values()].sort((a, b) => a.name.localeCompare(b.name))
 }
 
 const getEmployees = async () => {
-  if (!projectId.value) return
+  isEmployeesLoading.value = true
+  hasEmployeeError.value = false
   try {
-    const projectCustomLocationParams = new ProjectCustomLocationParams(projectId.value, [
-      ProjectCustomLocationEnum.HIERARCHY_EMPLOYEE,
-    ])
-    await projectCustomLocationController.getData(projectCustomLocationParams)
+    if (projectId.value) {
+      const projectCustomLocationParams = new ProjectCustomLocationParams(projectId.value, [
+        ProjectCustomLocationEnum.HIERARCHY_EMPLOYEE,
+      ])
+      await projectCustomLocationController.getData(projectCustomLocationParams)
+    } else {
+      const employees = await organizationEmployeeController.fetch(organizationEmployeeParams)
+      attendance.value = employees.map((employee) => ({
+        organizationEmployeeId: Number(employee.id),
+        name: employee.title || `Employee #${employee.id}`,
+        email: String(employee.subtitle || ''),
+        image: '',
+        isAttend: false,
+      }))
+    }
   } catch (error) {
+    hasEmployeeError.value = true
     console.error('Unable to refresh employees', error)
+  } finally {
+    isEmployeesLoading.value = false
   }
 }
 
-const setSelectedEmployees = (value: TitleInterface | TitleInterface[] | null) => {
-  selectedEmployees.value = Array.isArray(value) ? value : []
-  if (selectedEmployees.value.length) employeesError.value = ''
+const toggleAll = () => {
+  const nextValue = !allAttending.value
+  attendance.value.forEach((employee) => {
+    employee.isAttend = nextValue
+  })
 }
 
 const validate = () => {
   contentError.value = content.value.trim() ? '' : 'Talk content is required'
   dateError.value = date.value ? '' : 'Date is required'
   timeError.value = time.value ? '' : 'Time is required'
-  employeesError.value = selectedEmployees.value.length ? '' : 'Select at least one employee'
+  employeesError.value = attendance.value.length ? '' : 'No employees are available'
   return !contentError.value && !dateError.value && !timeError.value && !employeesError.value
 }
 
@@ -102,8 +141,9 @@ const saveTalk = async () => {
   const params = new CreateTodayTalkParams(
     projectId.value,
     content.value.trim(),
-    selectedEmployees.value.map((employee) => ({
-      organization_employee_id: Number(employee.id),
+    attendance.value.map((employee) => ({
+      organization_employee_id: employee.organizationEmployeeId,
+      is_attend: employee.isAttend,
     })),
     date.value,
     time.value,
@@ -191,28 +231,66 @@ onMounted(getEmployees)
       </section>
 
       <section class="attendance-card">
-        <div class="section-heading">
-          <span class="step-number">02</span>
-          <div>
-            <h2>Select employees</h2>
-            <p>Choose all employees included in today’s talk.</p>
+        <div class="section-heading attendance-heading">
+          <div class="heading-copy">
+            <span class="step-number">02</span>
+            <div>
+              <h2>Who attended?</h2>
+              <p>Switch attendance on for each employee who joined today’s talk.</p>
+            </div>
+          </div>
+          <div class="attendance-actions">
+            <span><strong>{{ attendingCount }}</strong> / {{ attendance.length }} attending</span>
+            <button v-if="attendance.length" type="button" class="select-all" @click="toggleAll">
+              {{ allAttending ? 'Clear all' : 'Mark all attending' }}
+            </button>
           </div>
         </div>
 
-        <UpdatedCustomInputSelect
-          id="today-talk-employees"
-          class="employees-multiselect"
-          :model-value="selectedEmployees"
-          :type="2"
-          :required="true"
-          :reload="!isProjectTalk"
-          :controller="isProjectTalk ? undefined : organizationEmployeeController"
-          :params="isProjectTalk ? undefined : organizationEmployeeParams"
-          :static-options="isProjectTalk ? employeeOptions : null"
-          label="Employees"
-          placeholder="Select employees"
-          @update:model-value="setSelectedEmployees"
-        />
+        <div v-if="isEmployeesLoading" class="employee-grid employee-loading" aria-live="polite">
+          <div v-for="index in 6" :key="index" class="employee-skeleton"></div>
+        </div>
+
+        <div v-else-if="attendance.length" class="employee-grid">
+          <label
+            v-for="employee in attendance"
+            :key="employee.organizationEmployeeId"
+            class="employee-card"
+            :class="{ attending: employee.isAttend }"
+            :for="`attendance-${employee.organizationEmployeeId}`"
+          >
+            <span class="avatar">
+              <img v-if="employee.image" :src="employee.image" :alt="employee.name" />
+              <span v-else>{{ initials(employee.name) }}</span>
+            </span>
+            <span class="employee-copy">
+              <strong>{{ employee.name }}</strong>
+              <small>{{ employee.email || `Employee #${employee.organizationEmployeeId}` }}</small>
+            </span>
+            <span class="attendance-control">
+              <ToggleSwitch
+                v-model="employee.isAttend"
+                :input-id="`attendance-${employee.organizationEmployeeId}`"
+              />
+              <small>{{ employee.isAttend ? 'Attending' : 'Absent' }}</small>
+            </span>
+          </label>
+        </div>
+
+        <div v-else class="employees-empty">
+          <span aria-hidden="true">!</span>
+          <div>
+            <h3>{{ hasEmployeeError ? 'Employees could not be loaded' : 'No employees found' }}</h3>
+            <p>
+              {{
+                isProjectTalk
+                  ? 'Add employees to this project or retry loading the project workforce.'
+                  : 'Add organization employees or retry loading the employee list.'
+              }}
+            </p>
+          </div>
+          <button type="button" class="retry" @click="getEmployees">Retry</button>
+        </div>
         <p v-if="employeesError" class="error-message employees-error">{{ employeesError }}</p>
       </section>
 
@@ -237,9 +315,6 @@ onMounted(getEmployees)
 </template>
 
 <style scoped lang="scss">
-.employees-multiselect {
-  margin-block: 25px;
-}
 .today-talk-page {
   // width: min(1180px, calc(100% - 24px));
   margin: 18px auto 40px;
