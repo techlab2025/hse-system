@@ -113,8 +113,8 @@ onMounted(() => {
     <div class="employee-dialog-intro">
       <span>01</span>
       <div>
-        <strong>{{ $t('Assign employees by hierarchy') }}</strong>
-        <p>{{ $t('Choose a position first, then select the employees to assign') }}</p>
+        <strong>{{ $t('Assign employees by Position') }}</strong>
+        <p>{{ $t('Choose a Position first, then select the employees to assign') }}</p>
       </div>
     </div>
     <div class="input-wrapper dialog-field">
@@ -122,9 +122,9 @@ onMounted(() => {
         :required="false"
         :modelValue="SelectedHierarchy"
         :static-options="AllLocationHerarchy"
-        label="Hierarchy"
+        label="Position"
         id="Hierarchy"
-        :placeholder="$t('Select Hierarchy')"
+        :placeholder="$t('Select Position')"
         @update:modelValue="setSelectedHierarchy"
       />
     </div>

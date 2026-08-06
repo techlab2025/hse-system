@@ -56,19 +56,19 @@ const OperationsRoutes = ref<Routes[]>([
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
     children: [
       {
-        link: `/organization/equipments?equipment_type=${EquipmentTypeEnum.Tool}`,
+        link: `/organization/equipments?equipment_type=${3}`,
         name: 'Tools',
         icon: 'wrench',
         permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
       },
       {
-        link: `/organization/equipments?equipment_type=${EquipmentTypeEnum.Device}`,
+        link: `/organization/equipments?equipment_type=${2}`,
         name: 'Devices',
         icon: 'desktop',
         permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
       },
       {
-        link: `/organization/equipments?equipment_type=${EquipmentTypeEnum.Machine}`,
+        link: `/organization/equipments?equipment_type=${1}`,
         name: 'Machines',
         icon: 'setting',
         permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
@@ -557,65 +557,65 @@ const flattenPermissions = (routes: Routes[]): PermissionsEnum[] =>
   ])
 
 const routeGroups = computed<RouteGroup[]>(() => {
- const groups: RouteGroup[] = [
-  {
-    key: 'overview',
-    label: t('overview'),
-    eyebrow: t('overview'),
-    icon: 'dashboard',
-    routes: GauideRoutes.value,
-    permissions: flattenPermissions(GauideRoutes.value),
-    adminOnly: true,
-  },
-  {
-    key: 'operations',
-    label: t('project managment'),
-    eyebrow: t('project managment'),
-    icon: 'briefcase-alt',
-    routes: OperationsRoutes.value,
-    permissions: flattenPermissions(OperationsRoutes.value),
-  },
-  {
-    key: 'reports',
-    label: t('reports'),
-    eyebrow: t('reports'),
-    icon: 'file-alt',
-    routes: ReportsRoutes.value,
-    permissions: flattenPermissions(ReportsRoutes.value),
-  },
-  {
-    key: 'organization',
-    label: t('organization_setting'),
-    eyebrow: t('organization_setting'),
-    icon: 'setting',
-    routes: OrganizationRoutes.value,
-    permissions: flattenPermissions(OrganizationRoutes.value),
-  },
-  {
-    key: 'locations',
-    label: t('location'),
-    eyebrow: t('location'),
-    icon: 'map-marker-alt',
-    routes: LocationRoutes.value,
-    permissions: [PermissionsEnum.LOCATION_ORG_ALL],
-  },
-  {
-    key: 'lockups',
-    label: t('Lockups'),
-    eyebrow: t('Lockups'),
-    icon: 'lock',
-    routes: LockUpsRoutes.value,
-    permissions: flattenPermissions(LockUpsRoutes.value),
-  },
-  {
-    key: 'support',
-    label: t('support'),
-    eyebrow: t('support'),
-    icon: 'ticket',
-    routes: TicketRoutes.value,
-    permissions: flattenPermissions(TicketRoutes.value),
-  },
-]
+  const groups: RouteGroup[] = [
+    {
+      key: 'overview',
+      label: t('overview'),
+      eyebrow: t('overview'),
+      icon: 'dashboard',
+      routes: GauideRoutes.value,
+      permissions: flattenPermissions(GauideRoutes.value),
+      adminOnly: true,
+    },
+    {
+      key: 'operations',
+      label: t('project managment'),
+      eyebrow: t('project managment'),
+      icon: 'briefcase-alt',
+      routes: OperationsRoutes.value,
+      permissions: flattenPermissions(OperationsRoutes.value),
+    },
+    {
+      key: 'reports',
+      label: t('reports'),
+      eyebrow: t('reports'),
+      icon: 'file-alt',
+      routes: ReportsRoutes.value,
+      permissions: flattenPermissions(ReportsRoutes.value),
+    },
+    {
+      key: 'organization',
+      label: t('organization_setting'),
+      eyebrow: t('organization_setting'),
+      icon: 'setting',
+      routes: OrganizationRoutes.value,
+      permissions: flattenPermissions(OrganizationRoutes.value),
+    },
+    {
+      key: 'locations',
+      label: t('location'),
+      eyebrow: t('location'),
+      icon: 'map-marker-alt',
+      routes: LocationRoutes.value,
+      permissions: [PermissionsEnum.LOCATION_ORG_ALL],
+    },
+    {
+      key: 'lockups',
+      label: t('Lockups'),
+      eyebrow: t('Lockups'),
+      icon: 'lock',
+      routes: LockUpsRoutes.value,
+      permissions: flattenPermissions(LockUpsRoutes.value),
+    },
+    {
+      key: 'support',
+      label: t('support'),
+      eyebrow: t('support'),
+      icon: 'ticket',
+      routes: TicketRoutes.value,
+      permissions: flattenPermissions(TicketRoutes.value),
+    },
+  ]
 
   return groups.filter((group) => group.key !== 'overview' || shouldShowOverviewGroup.value)
 })
@@ -645,8 +645,7 @@ const isParentLinkActive = (sidebarRoute: Routes) =>
 
 const groupHasActiveRoute = (group: RouteGroup) =>
   group.routes.some(
-    (item) =>
-      isLinkActive(item.link) || item.children?.some((child) => isLinkActive(child.link)),
+    (item) => isLinkActive(item.link) || item.children?.some((child) => isLinkActive(child.link)),
   )
 
 const activeGroup = computed(() => {
@@ -852,7 +851,10 @@ onBeforeUnmount(() => {
                     >
                       <router-link
                         :to="childRoute.link"
-                        :class="['side-btn side-btn--child', { active: isLinkActive(childRoute.link) }]"
+                        :class="[
+                          'side-btn side-btn--child',
+                          { active: isLinkActive(childRoute.link) },
+                        ]"
                         :title="$t(childRoute.name)"
                         @click="hidePane"
                       >

@@ -24,8 +24,8 @@ import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum
 import type SohwProjectZoonModel from '../../Data/models/ShowProjectZone'
 import IndexContractorController from '@/features/setting/contractor/Presentation/controllers/indexContractorController'
 import IndexContractorParams from '@/features/setting/contractor/Core/params/indexContractorParams'
-import ContructorSelectDialog from './SelectDialogs/ContructorSelectDialog.vue'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import AddContractor from '@/features/setting/contractor/Presentation/components/AddContractor.vue'
 import LocationSelectDialog from './SelectDialogs/LocationSelectDialog.vue'
 import AddProjectZoneDialog from './Dialogs/AddProjectZoneDialog.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
@@ -50,8 +50,8 @@ const SelectedArea = ref<TitleInterface[]>()
 const EvaluatingMethod = ref<TitleInterface[] | null>([])
 const ContractorIds = ref<TitleInterface[]>([])
 const location = ref<TitleInterface[]>([])
-const setContractorIds = (data: TitleInterface[]) => {
-  ContractorIds.value = data
+const setContractorIds = (data: TitleInterface | TitleInterface[] | null) => {
+  ContractorIds.value = Array.isArray(data) ? data : data ? [data] : []
   updateData()
 }
 
@@ -310,10 +310,7 @@ watch(
   },
 )
 
-const ContructorVisible = ref(false)
-const ShowContructorDialog = () => {
-  ContructorVisible.value = true
-}
+const ContractorDialog = ref(false)
 const LocationVisible = ref(false)
 const ShowLocationDialog = () => {
   LocationVisible.value = true
@@ -475,7 +472,7 @@ defineExpose({
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="location">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :required="false"
       :modelValue="ContractorIds"
       @update:modelValue="setContractorIds"
@@ -484,9 +481,17 @@ defineExpose({
       :params="indexContractorTypeParams"
       label="contractors"
       :placeholder="$t('sub_contractors')"
-      :onclick="ShowContructorDialog"
-      help-text="Select every contractor or subcontractor assigned to work on this project."
-    />
+      @close="ContractorDialog = false"
+      :isDialog="true"
+      v-model:dialogVisible="ContractorDialog"
+    >
+      <template #LabelHeader>
+        <span class="add-dialog" @click="ContractorDialog = true">{{ $t('New') }}</span>
+      </template>
+      <template #Dialog>
+        <AddContractor @update:data="ContractorDialog = false" />
+      </template>
+    </UpdatedCustomInputSelect>
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
@@ -541,7 +546,6 @@ defineExpose({
       help-text="Describe the project scope, main activities, and work boundaries in each available language."
     />
   </div>
-  <ContructorSelectDialog v-model:visible="ContructorVisible" />
   <LocationSelectDialog v-model:visible="LocationVisible" />
 </template>
 

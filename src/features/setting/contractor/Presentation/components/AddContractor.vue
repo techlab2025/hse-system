@@ -13,12 +13,26 @@ const params = ref<Params | null>(null)
 const formRef = ref<InstanceType<typeof ContractorForm> | null>(null)
 
 const addContractorController = AddContractorController.getInstance()
+const loading = ref(false)
 
 const addContractor = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
-  console.log(params.value, 'params')
-  await addContractorController.addContractor(params.value as AddContractorParams, router)
-  emit('update:data')
+  loading.value = true
+
+  try {
+    await addContractorController.addContractor(
+      params.value as AddContractorParams,
+      router,
+    )
+
+    // The parent dialog must stay open on API/validation failure so the user
+    // can correct the existing values without losing their work.
+    if (addContractorController.isDataSuccess()) {
+      emit('update:data')
+    }
+  } finally {
+    loading.value = false
+  }
 }
 const setParams = (data: Params) => {
   params.value = data
@@ -30,7 +44,7 @@ const setParams = (data: Params) => {
     <ContractorForm ref="formRef" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary w-full">
+      <button type="submit" class="btn btn-primary w-full" :disabled="loading">
         {{ $t('save') }}
       </button>
     </div>

@@ -61,7 +61,7 @@ watch(
     v-if="AllProjects && AllProjects.length > 1 && ProjectStore.showProjectsFilter()"
     class="idnex-header noborder"
   >
-    <div class="project-filter-heading">
+    <!-- <div class="project-filter-heading">
       <span class="project-filter-symbol" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none">
           <path
@@ -83,7 +83,7 @@ watch(
         <p>{{ $t('Projects') }}</p>
         <span>{{ $t('Select a project to filter the displayed records') }}</span>
       </div>
-    </div>
+    </div> -->
 
     <div class="project-filter-controls">
       <div class="categories-container">

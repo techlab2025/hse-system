@@ -46,7 +46,7 @@ const updateData = () => {
         contactPerson.value,
         contactPersonEmail.value,
         contactPersonPhone.value,
-        SelectedStatus.value ? SelectedStatus.value?.id : null,
+        SelectedStatus.value?.id,
         formatJoinDate(date.value),
         UploadedFiles.value[0],
       )
@@ -59,7 +59,7 @@ const updateData = () => {
         contactPerson.value ? contactPerson.value : ' ',
         contactPersonEmail.value ? contactPersonEmail.value : ' ',
         contactPersonPhone.value ? contactPersonPhone.value : ' ',
-        SelectedStatus.value ? SelectedStatus.value?.id : 0,
+        SelectedStatus.value?.id,
         formatJoinDate(date.value),
         SerialNumber.value,
         UploadedFiles.value[0],
@@ -270,11 +270,6 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   //   isMissing: () => !Scope.value?.length,
   // },
   {
-    key: 'SelectedStatus',
-    message: 'Contract Status Is Required',
-    isMissing: () => !SelectedStatus.value?.id,
-  },
-  {
     key: 'date',
     message: 'Contract Expiry Date Is Required',
     isMissing: () => !date.value,
@@ -459,7 +454,7 @@ defineExpose({
     </p>
   </div>
 
-  <div class="col-span-6 md:col-span-2 input-wrapper" data-required-field="SelectedStatus">
+  <div class="col-span-6 md:col-span-2 input-wrapper">
     <CustomSelectInput
       :modelValue="SelectedStatus"
       class="input"
@@ -470,9 +465,6 @@ defineExpose({
       placeholder="Select Status"
       @update:modelValue="setStatus"
     />
-    <p v-if="getFieldError('SelectedStatus')" class="required-field-message">
-      {{ getFieldError('SelectedStatus') }}
-    </p>
   </div>
 
   <div class="col-span-6 md:col-span-2 input-wrapper" data-required-field="date">

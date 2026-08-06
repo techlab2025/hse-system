@@ -1,11 +1,10 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
-import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import { useRoute, type Router } from 'vue-router'
+import type { Router } from 'vue-router'
 import AddContractorUseCase from '../../Domain/useCase/addContractorUseCase'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
@@ -30,6 +29,9 @@ export default class AddContractorController extends ControllerInterface<Contrac
 
   async addContractor(params: AddContractorParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
+    // Reset stale singleton state before validating/submitting. Consumers use
+    // the resulting state to decide whether an inline create dialog may close.
+    this.setLoading()
     try {
       params.validate()
       if (!params.validate().isValid) {
