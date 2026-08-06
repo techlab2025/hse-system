@@ -92,7 +92,7 @@ watch(
           :endDate="state.data?.endDate"
         />
 
-        <TodayTalkSummary />
+        <!-- <TodayTalkSummary /> -->
 
         <!-- <div class="inspections-sections">
           <InspectionsSections
