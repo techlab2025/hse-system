@@ -21,7 +21,7 @@ export default class CreateTodayTalkController extends ControllerInterface<Today
     return this.instance
   }
 
-  async createTodayTalk(params: Params, projectId: number, router: Router) {
+  async createTodayTalk(params: Params, projectId: number | undefined, router: Router) {
     this.setLoading()
     const dataState: DataState<TodayTalkModel> = await this.useCase.call(params)
     this.setState(dataState)
@@ -33,7 +33,9 @@ export default class CreateTodayTalkController extends ControllerInterface<Today
         imageElement: successImage,
         messageContent: null,
       })
-      await router.push(`/organization/project-details/${projectId}`)
+      await router.push(
+        projectId ? `/organization/project-details/${projectId}` : '/organization/today-talks',
+      )
     } else {
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog-error',

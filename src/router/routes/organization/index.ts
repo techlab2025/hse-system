@@ -32,6 +32,7 @@ import { DocumentRefrenceRoutes } from './document-refrence'
 import { ShiftsRoutes } from './shifts'
 import { notificationPlanRoutes } from './notificationPlan'
 import { taskReportRoutes } from './taskReports'
+import { todayTalkRoutes } from './todayTalk'
 
 export const organizationRoutes: RouteRecordRaw[] = [
   {
@@ -72,6 +73,7 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...ShiftsRoutes,
   ...notificationPlanRoutes,
   ...taskReportRoutes,
+  ...todayTalkRoutes,
   {
     path: 'permission/:id',
     name: 'Permission Organization',

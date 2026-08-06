@@ -3,7 +3,7 @@ import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import GetTodayTalkApiService from '../../../Data/apiServices/TodayTalk/GetTodayTalkApiService'
 import TodayTalkModel from '../../../Data/models/TodayTalk/TodayTalkModel'
 
-export default class GetTodayTalkRepo extends RepoInterface<TodayTalkModel> {
+export default class GetTodayTalkRepo extends RepoInterface<TodayTalkModel[]> {
   private static instance: GetTodayTalkRepo
 
   private constructor() {
@@ -15,8 +15,9 @@ export default class GetTodayTalkRepo extends RepoInterface<TodayTalkModel> {
     return this.instance
   }
 
-  onParse(data: Record<string, unknown>): TodayTalkModel {
-    return TodayTalkModel.fromMap(data)
+  onParse(data: Record<string, unknown> | Array<Record<string, unknown>>): TodayTalkModel[] {
+    const talks = Array.isArray(data) ? data : [data]
+    return talks.map((talk) => TodayTalkModel.fromMap(talk))
   }
 
   get serviceInstance(): ServicesInterface {

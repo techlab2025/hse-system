@@ -16,8 +16,11 @@ export default class CreateTodayTalkApiService extends ServicesInterface {
   }
 
   async applyService(params: Params): Promise<{ data: unknown; statusCode: number }> {
+    const isProjectAnswer = 'project_id' in params.toMap()
     return super.call({
-      url: ApiNames.instance.CreateTodayTalk,
+      url: isProjectAnswer
+        ? ApiNames.instance.CreateTodayTalkAnswer
+        : ApiNames.instance.CreateTodayTalk,
       type: CrudType.POST,
       auth: true,
       params,

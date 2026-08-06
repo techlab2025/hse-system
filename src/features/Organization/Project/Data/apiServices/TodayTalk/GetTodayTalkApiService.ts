@@ -23,8 +23,11 @@ export default class GetTodayTalkApiService extends ServicesInterface {
       params,
     })
 
-    const payload = response.data as Record<string, unknown>
-    if (payload && 'id' in payload && !('data' in payload)) {
+    const payload = response.data as Record<string, unknown> | unknown[]
+    if (
+      payload &&
+      (Array.isArray(payload) || (!('status' in payload) && !('data' in payload)))
+    ) {
       return {
         ...response,
         data: {

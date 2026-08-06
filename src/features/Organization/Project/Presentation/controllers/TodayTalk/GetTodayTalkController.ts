@@ -4,7 +4,7 @@ import { ControllerInterface } from '@/base/Presentation/Controller/controller_i
 import type TodayTalkModel from '../../../Data/models/TodayTalk/TodayTalkModel'
 import GetTodayTalkUseCase from '../../../Domain/useCase/TodayTalk/GetTodayTalkUseCase'
 
-export default class GetTodayTalkController extends ControllerInterface<TodayTalkModel> {
+export default class GetTodayTalkController extends ControllerInterface<TodayTalkModel[]> {
   private static instance: GetTodayTalkController
   private readonly useCase = new GetTodayTalkUseCase()
 
@@ -19,7 +19,7 @@ export default class GetTodayTalkController extends ControllerInterface<TodayTal
 
   async getTodayTalk(params: Params) {
     this.setLoading()
-    const dataState: DataState<TodayTalkModel> = await this.useCase.call(params)
+    const dataState: DataState<TodayTalkModel[]> = await this.useCase.call(params)
     this.setState(dataState)
     return this.state
   }

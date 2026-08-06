@@ -8,7 +8,9 @@ import GetTodayTalkController from '../../controllers/TodayTalk/GetTodayTalkCont
 const route = useRoute()
 const controller = GetTodayTalkController.getInstance()
 const state = computed(() => controller.state.value)
-const talk = computed(() => (state.value instanceof DataSuccess ? state.value.data : null))
+const talk = computed(() =>
+  state.value instanceof DataSuccess ? (state.value.data?.[0] ?? null) : null,
+)
 const isLoading = computed(() => state.value instanceof DataLoading)
 const attendingCount = computed(
   () => talk.value?.employees.filter((employee) => employee.isAttend).length ?? 0,
@@ -33,7 +35,7 @@ const formatDate = (date: string) => {
 
 const fetchTodayTalk = async () => {
   if (!Number.isFinite(projectId.value) || projectId.value <= 0) return
-  await controller.getTodayTalk(new GetTodayTalkParams(projectId.value))
+  await controller.getTodayTalk(new GetTodayTalkParams(projectId.value, true))
 }
 
 watch(projectId, fetchTodayTalk, { immediate: true })
