@@ -4,6 +4,7 @@ export class TodayTalkEmployeeModel {
     public readonly organizationEmployeeId: number,
     public readonly isAttend: boolean,
     public readonly title: string,
+    public readonly attendAt: string | null = null,
   ) {}
 
   static fromMap(data: Record<string, unknown>): TodayTalkEmployeeModel {
@@ -19,13 +20,9 @@ export class TodayTalkEmployeeModel {
       Number(data.organization_employee_id ?? employee?.id ?? 0),
       Boolean(data.is_attend),
       String(
-        data.title ??
-          data.name ??
-          data.employee_name ??
-          employee?.title ??
-          employee?.name ??
-          '',
+        data.title ?? data.name ?? data.employee_name ?? employee?.title ?? employee?.name ?? '',
       ),
+      data.attend_at ? String(data.attend_at) : null,
     )
   }
 
@@ -40,6 +37,10 @@ export default class TodayTalkModel {
     public readonly time: string,
     public readonly date: string,
     public readonly employees: TodayTalkEmployeeModel[],
+    public readonly serial: string = '',
+    public readonly serialNumber: string = '',
+    public readonly serialName: string = '',
+    public readonly createdAt: string = '',
   ) {}
 
   static fromMap(data: Record<string, unknown>): TodayTalkModel {
@@ -54,6 +55,10 @@ export default class TodayTalkModel {
       employees.map((employee) =>
         TodayTalkEmployeeModel.fromMap(employee as Record<string, unknown>),
       ),
+      String(data.serial ?? ''),
+      String(data.serial_number ?? ''),
+      String(data.serial_name ?? ''),
+      String(data.created_at ?? ''),
     )
   }
 

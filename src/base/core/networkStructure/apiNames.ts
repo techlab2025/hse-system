@@ -316,13 +316,13 @@ class ApiNames {
     return this.prefix + 'delete_project'
   }
   public get GetTodayTalk() {
-    return this.prefix + 'get_today_talks'
+    return this.prefix + 'fetch_today_talks'
   }
   public get CreateTodayTalk() {
     return this.prefix + 'create_today_talk'
   }
   public get CreateTodayTalkAnswer() {
-    return this.prefix + 'create_today_talk_answer'
+    return this.prefix + 'create_today_talk'
   }
 
   // AboutUsFeature

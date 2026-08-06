@@ -31,14 +31,14 @@ const props = defineProps<{
       <router-link
         :to="`/organization/Investigating-result-answer/${props.data?.id}`"
         class="show-details"
-        >{{ $t('show_investigation_result_answers') }}</router-link
+        >{{ $t('show_investigation_result') }}</router-link
       >
     </div>
     <div class="investigation-container-inprogress-content">
       <div class="investegation-team-hedaer">
         <InvestegationTeam />
         <div class="Team-members">
-          <p class="title">{{ $t('Team') }}</p>
+          <p class="title">{{ $t('Investigation team') }}</p>
           <div class="team-details">
             <p class="investegation-team-leader">
               {{ $t('Investigation team leader') }} :
@@ -48,7 +48,7 @@ const props = defineProps<{
               }}</span>
             </p>
             <p class="investegation-team-leader">
-              {{ $t('Num of team') }} :
+              {{ $t('Num of team members') }} :
               <span>{{ props.data?.investigationEmployees?.length }}</span>
             </p>
           </div>

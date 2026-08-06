@@ -235,6 +235,7 @@ const actionList = (id: number) => [
   line-height: 1.2;
   text-overflow: ellipsis;
   white-space: nowrap;
+  max-width: 650px;
 }
 
 .project-serial {

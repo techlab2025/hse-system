@@ -380,7 +380,7 @@ onMounted(() => fetchReport())
 
     <header class="report-board-header">
       <div>
-        <span class="report-eyebrow">{{ $t('report_action_register') }}</span>
+        <!-- <span class="report-eyebrow">{{ $t('report_action_register') }}</span> -->
         <h2>{{ content.title }}</h2>
         <p>{{ $t('report_register_description') }}</p>
       </div>

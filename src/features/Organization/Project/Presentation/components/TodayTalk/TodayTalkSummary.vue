@@ -1,24 +1,64 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { DataLoading, DataSuccess } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import GetTodayTalkParams from '../../../Core/params/TodayTalk/GetTodayTalkParams'
 import GetTodayTalkController from '../../controllers/TodayTalk/GetTodayTalkController'
+import type TodayTalkModel from '../../../Data/models/TodayTalk/TodayTalkModel'
+import TodayTalkDetailsDialog from './TodayTalkDetailsDialog.vue'
+import TodayTalkHistoryDialog from './TodayTalkHistoryDialog.vue'
+
+const props = defineProps<{
+  projectId?: number | null
+  projectName?: string | null
+}>()
 
 const route = useRoute()
 const controller = GetTodayTalkController.getInstance()
 const state = computed(() => controller.state.value)
-const talk = computed(() =>
-  state.value instanceof DataSuccess ? (state.value.data?.[0] ?? null) : null,
-)
+const talkDialogVisible = ref(false)
+const historyDialogVisible = ref(false)
+const selectedDetailsTalk = ref<TodayTalkModel | null>(null)
+const localDateKey = (date = new Date()) => {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+const todayDate = localDateKey()
+const talkTimestamp = (item: TodayTalkModel) => {
+  const createdAt = item.createdAt ? new Date(item.createdAt.replace(' ', 'T')).getTime() : NaN
+  if (Number.isFinite(createdAt)) return createdAt
+
+  const scheduledAt = new Date(`${item.date}T${item.time || '00:00'}`).getTime()
+  return Number.isFinite(scheduledAt) ? scheduledAt : item.id
+}
+
+const talk = computed(() => {
+  if (!(state.value instanceof DataSuccess) || !state.value.data?.length) return null
+
+  return [...state.value.data]
+    .filter((item) => item.date.slice(0, 10) === todayDate)
+    .sort((first, second) => {
+      const timestampDifference = talkTimestamp(second) - talkTimestamp(first)
+      return timestampDifference || second.id - first.id
+    })[0] ?? null
+})
+const historyTalks = computed(() => {
+  if (!(state.value instanceof DataSuccess) || !state.value.data?.length) return []
+
+  return [...state.value.data]
+    .filter((item) => item.id !== talk.value?.id)
+    .sort((first, second) => {
+      const timestampDifference = talkTimestamp(second) - talkTimestamp(first)
+      return timestampDifference || second.id - first.id
+    })
+})
 const isLoading = computed(() => state.value instanceof DataLoading)
 const attendingCount = computed(
   () => talk.value?.employees.filter((employee) => employee.isAttend).length ?? 0,
 )
-const employeeTitle = (title: string, organizationEmployeeId: number) =>
-  title || `Employee #${organizationEmployeeId}`
-
-const projectId = computed(() => Number(route.params.id))
+const projectId = computed(() => Number(props.projectId ?? route.params.id))
 const createRoute = computed(() => `/organization/project-details/${projectId.value}/today-talk/create`)
 
 const formatDate = (date: string) => {
@@ -38,12 +78,40 @@ const fetchTodayTalk = async () => {
   await controller.getTodayTalk(new GetTodayTalkParams(projectId.value, true))
 }
 
+const openTalkDetails = () => {
+  if (!talk.value) return
+  selectedDetailsTalk.value = talk.value
+  talkDialogVisible.value = true
+}
+
+const openHistoryTalk = (historyTalk: TodayTalkModel) => {
+  historyDialogVisible.value = false
+  selectedDetailsTalk.value = historyTalk
+  talkDialogVisible.value = true
+}
+
 watch(projectId, fetchTodayTalk, { immediate: true })
 </script>
 
 <template>
   <section class="today-talk-card" aria-labelledby="today-talk-title">
     <div class="talk-accent" aria-hidden="true"></div>
+
+    <button
+      v-if="historyTalks.length && !isLoading"
+      type="button"
+      class="history-button"
+      :aria-label="`Open ${historyTalks.length} previous talks`"
+      :title="`${historyTalks.length} previous talks`"
+      @click="historyDialogVisible = true"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 11v5M12 8h.01" />
+      </svg>
+      <span>History</span>
+      <small>{{ historyTalks.length }}</small>
+    </button>
 
     <div v-if="isLoading" class="talk-loading" aria-live="polite">
       <span class="loading-orb"></span>
@@ -53,7 +121,16 @@ watch(projectId, fetchTodayTalk, { immediate: true })
       </div>
     </div>
 
-    <template v-else-if="talk">
+    <div
+      v-else-if="talk"
+      class="talk-summary-body"
+      role="button"
+      tabindex="0"
+      aria-label="Open today's talk details"
+      @click="openTalkDetails"
+      @keydown.enter="openTalkDetails"
+      @keydown.space.prevent="openTalkDetails"
+    >
       <header class="talk-header">
         <div class="talk-heading">
           <span class="talk-icon" aria-hidden="true">
@@ -83,20 +160,12 @@ watch(projectId, fetchTodayTalk, { immediate: true })
             <span>Attendance captured for today’s briefing</span>
           </div>
         </div>
-        <div class="employee-pills" aria-label="Today talk attendance">
-          <span
-            v-for="employee in talk.employees.slice(0, 6)"
-            :key="employee.id || employee.organizationEmployeeId"
-            :class="{ attended: employee.isAttend }"
-            :title="`${employeeTitle(employee.title, employee.organizationEmployeeId)}: ${employee.isAttend ? 'Attended' : 'Absent'}`"
-          >
-            <i aria-hidden="true"></i>
-            {{ employeeTitle(employee.title, employee.organizationEmployeeId) }}
-          </span>
-          <small v-if="talk.employees.length > 6">+{{ talk.employees.length - 6 }}</small>
+        <div class="view-details">
+          <span>View all details and employees</span>
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6" /></svg>
         </div>
       </footer>
-    </template>
+    </div>
 
     <div v-else class="talk-empty">
       <div class="empty-copy">
@@ -107,11 +176,23 @@ watch(projectId, fetchTodayTalk, { immediate: true })
         </p>
       </div>
       <div class="empty-action">
-        <span aria-hidden="true">+</span>
+        <!-- <span aria-hidden="true">+</span> -->
         <RouterLink :to="createRoute" class="btn btn-primary">Create today’s talk</RouterLink>
-        <button type="button" class="retry-button" @click="fetchTodayTalk">Check again</button>
+        <!-- <button type="button" class="retry-button" @click="fetchTodayTalk">Check again</button> -->
       </div>
     </div>
+
+    <TodayTalkDetailsDialog
+      v-model:visible="talkDialogVisible"
+      :talk="selectedDetailsTalk"
+      :project-name="projectName"
+    />
+    <TodayTalkHistoryDialog
+      v-model:visible="historyDialogVisible"
+      :talks="historyTalks"
+      :project-name="projectName"
+      @select="openHistoryTalk"
+    />
   </section>
 </template>
 
@@ -129,6 +210,62 @@ watch(projectId, fetchTodayTalk, { immediate: true })
     radial-gradient(circle at 92% 8%, color-mix(in srgb, var(--PrimaryColor) 17%, transparent), transparent 34%),
     linear-gradient(135deg, var(--surface-1), color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-2)));
   box-shadow: 0 18px 42px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
+}
+
+.talk-summary-body {
+  padding-top: 8px;
+  border-radius: 16px;
+  outline: none;
+  cursor: pointer;
+}
+
+.history-button {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 14px;
+  inset-inline-end: 16px;
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 9px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 25%, var(--main-border));
+  border-radius: 999px;
+  color: var(--PrimaryColor);
+  background: color-mix(in srgb, var(--surface-1) 90%, transparent);
+  box-shadow: 0 7px 18px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
+  font-size: 0.68rem;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.history-button svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 1.8;
+}
+
+.history-button small {
+  display: grid;
+  min-width: 19px;
+  height: 19px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--text-on-brand);
+  background: var(--PrimaryColor);
+  font-size: 0.6rem;
+}
+
+.talk-summary-body:focus-visible {
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--PrimaryColor) 16%, transparent);
+}
+
+.history-button ~ .talk-summary-body,
+.history-button ~ .talk-empty {
+  padding-top: 34px;
 }
 
 .talk-accent {
@@ -237,43 +374,26 @@ h2 {
   flex-direction: column;
 }
 
-.employee-pills {
+.view-details {
   display: flex;
   align-items: center;
-}
-
-.employee-pills span,
-.employee-pills small {
-  display: inline-flex;
-  min-height: 32px;
-  align-items: center;
-  gap: 6px;
-  margin-inline-start: 6px;
-  padding: 5px 9px;
-  border: 1px solid var(--main-border);
-  border-radius: 999px;
-  color: var(--text-soft);
-  background: var(--surface-3);
-  font-size: 0.72rem;
-  font-weight: 800;
-}
-
-.employee-pills .attended {
+  gap: 7px;
   color: var(--PrimaryColor);
-  border-color: color-mix(in srgb, var(--PrimaryColor) 35%, var(--main-border));
-  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1));
+  font-size: 0.75rem;
+  font-weight: 900;
 }
 
-.employee-pills i {
-  width: 7px;
-  height: 7px;
-  flex: 0 0 7px;
-  border-radius: 50%;
-  background: var(--text-soft);
+.view-details svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  transition: transform 0.2s ease;
 }
 
-.employee-pills .attended i {
-  background: var(--PrimaryColor);
+.talk-summary-body:hover .view-details svg {
+  transform: translateX(3px);
 }
 
 .talk-empty {
@@ -341,6 +461,7 @@ h2 {
   .talk-empty { align-items: flex-start; flex-direction: column; }
   .talk-date { text-align: start; }
   .empty-action { align-items: flex-start; }
-  .employee-pills { flex-wrap: wrap; }
+  .view-details { align-self: flex-end; }
+  .history-button span { display: none; }
 }
 </style>

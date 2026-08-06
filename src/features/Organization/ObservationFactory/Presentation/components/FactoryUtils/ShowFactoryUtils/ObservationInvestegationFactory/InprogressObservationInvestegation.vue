@@ -49,7 +49,7 @@ const addResultRoute = computed(() =>
       <div class="investegation-team-hedaer">
         <InvestegationTeam />
         <div class="Team-members">
-          <p class="title">{{ $t('Team') }}</p>
+          <p class="title">{{ $t('Investigation team') }}</p>
           <div class="team-details">
             <p class="investegation-team-leader">
               {{ $t('Investigation team leader') }} :
@@ -59,7 +59,7 @@ const addResultRoute = computed(() =>
               }}</span>
             </p>
             <p class="investegation-team-leader">
-              {{ $t('Num of team') }}: <span>{{ props.data?.investigationEmployees?.length }}</span>
+              {{ $t('Num of team members') }}: <span>{{ props.data?.investigationEmployees?.length }}</span>
             </p>
           </div>
         </div>
