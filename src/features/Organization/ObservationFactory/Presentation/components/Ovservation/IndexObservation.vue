@@ -47,9 +47,11 @@ import CustomCheckboxToggle from '../../SubComponent/CustomCheckboxToggle.vue'
 import CardSkelaton from '@/features/Organization/Inspection/Presentation/components/SubComponent/CardSkelaton.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
 import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 const { isDarkMode } = useThemeMode()
+const ProjectSelect = useProjectSelectStore()
 
 // import DialogChangeStatusHazard from "@/features/setting/Hazard/Presentation/components/Hazard/DialogChangeStatusHazard.vue";
 // const route = useRoute()
@@ -121,9 +123,13 @@ const fetchHazard = async (
 }
 
 onMounted(() => {
-  // if (selectedProjctesFilters.value) {
-  fetchHazard()
-  // }
+  if (selectedProjctesFilters.value) {
+    fetchHazard('', 1, 10, 1, null, null, null, selectedProjctesFilters.value)
+    FetchMyZones()
+  } else {
+    fetchHazard()
+  }
+
   FetchMyProjects()
 })
 
@@ -269,7 +275,7 @@ const FetchMyProjects = async () => {
     isProjectsLoading.value = false
   }
 }
-const selectedProjctesFilters = ref<number>()
+const selectedProjctesFilters = ref<number | undefined>(ProjectSelect.project?.id)
 
 const Filters = ref<MyZonesModel[]>()
 const fetchMyZonesController = FetchMyZonesController.getInstance()
@@ -300,6 +306,15 @@ const setSelectedProjectFilter = (data?: number) => {
   fetchHazard('', 1, 10, 1, null, null, null, data)
   FetchMyZones()
 }
+
+watch(
+  () => ProjectSelect.project?.id,
+  (projectId) => {
+    if (projectId !== selectedProjctesFilters.value) {
+      setSelectedProjectFilter(projectId)
+    }
+  },
+)
 
 const GetRiskLevel = (riskLevel?: RiskLevelEnum) => {
   switch (riskLevel) {
@@ -455,6 +470,7 @@ const GetObservationType = (type: number) => {
                 ]"
               >
                 <IndexFilter
+                  :key="selectedProjctesFilters"
                   class="observation-zone-filter"
                   :filters="Filters"
                   @update:data="ApplayFilter"
