@@ -296,9 +296,9 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
             :link="`/${
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/factory-item/add`"
-            addText="Add Factor Item"
-            description="Sorry .. You have no Factor Item .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Factor Item"
+            addText="add_hazard_factor_item"
+            description="Sorry .. You have no Hazard Factor Item .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Hazard Factor Item"
           />
         </PermissionBuilder>
       </template>
@@ -315,9 +315,9 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
             :link="`/${
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/factory-item/add`"
-            addText="Add Factor Item"
-            description="Sorry .. You have no Factor Item .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Factor Item "
+            addText="add_hazard_factor_item"
+            description="Sorry .. You have no Hazard Factor Item .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Hazard Factor Item"
           />
         </PermissionBuilder>
       </template>

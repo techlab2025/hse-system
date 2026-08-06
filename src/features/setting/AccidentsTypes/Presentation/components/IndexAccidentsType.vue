@@ -338,7 +338,7 @@ const IndexIncidantTypeactionList = () => [
             :link="`/${
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/accidents-type/add`"
-            addText="Add AccidentType"
+            addText="add_incident_type"
             description="Sorry .. You have no AccidentType .. All your joined customers will appear here when you add your customer data"
             title="..ops! You have No AccidentType"
           />
@@ -352,7 +352,7 @@ const IndexIncidantTypeactionList = () => [
             :link="`/${
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/accidents-type/add`"
-            addText="Add AccidentType"
+            addText="add_incident_type"
             description="Sorry .. You have no AccidentType .. All your joined customers will appear here when you add your customer data"
             title="..ops! You have No AccidentType"
           />

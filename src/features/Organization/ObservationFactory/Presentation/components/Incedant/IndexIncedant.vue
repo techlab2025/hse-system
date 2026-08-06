@@ -470,7 +470,7 @@ const getObserverInitials = (name?: string) => {
             >
               <DataEmpty
                 :link="`/organization/equipment-mangement/incedant/add`"
-                addText="Add incedant"
+                addText="incedent Report"
                 description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
                 title="..ops! You have No incedant"
               />
@@ -482,7 +482,7 @@ const getObserverInitials = (name?: string) => {
             >
               <DataFailed
                 :link="`/organization/equipment-mangement/incedant/add`"
-                addText="Add incedant"
+                addText="incedent Report"
                 description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
                 title="..ops! You have No incedant"
               />

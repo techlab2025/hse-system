@@ -130,7 +130,9 @@ onMounted(getEmployees)
   <main class="today-talk-page">
     <header class="page-header">
       <RouterLink
-        :to="isProjectTalk ? `/organization/project-details/${projectId}` : '/organization/today-talks'"
+        :to="
+          isProjectTalk ? `/organization/project-details/${projectId}` : '/organization/today-talks'
+        "
         class="back-link"
       >
         <span aria-hidden="true">←</span>
@@ -143,7 +145,9 @@ onMounted(getEmployees)
           <p>Capture the safety conversation and confirm every team member’s attendance.</p>
         </div>
         <div class="today-badge">
-          <span>{{ new Intl.DateTimeFormat(undefined, { weekday: 'short' }).format(new Date()) }}</span>
+          <span>{{
+            new Intl.DateTimeFormat(undefined, { weekday: 'short' }).format(new Date())
+          }}</span>
           <strong>{{ new Date().getDate() }}</strong>
         </div>
       </div>
@@ -214,7 +218,11 @@ onMounted(getEmployees)
 
       <footer class="form-actions">
         <RouterLink
-          :to="isProjectTalk ? `/organization/project-details/${projectId}` : '/organization/today-talks'"
+          :to="
+            isProjectTalk
+              ? `/organization/project-details/${projectId}`
+              : '/organization/today-talks'
+          "
           class="cancel-button"
         >
           Cancel
@@ -229,8 +237,8 @@ onMounted(getEmployees)
 </template>
 
 <style scoped lang="scss">
-.employees-multiselect{
-  margin-block: 20px;
+.employees-multiselect {
+  margin-block: 25px;
 }
 .today-talk-page {
   // width: min(1180px, calc(100% - 24px));
@@ -250,7 +258,11 @@ onMounted(getEmployees)
   padding: clamp(20px, 3vw, 34px);
   border-radius: 26px;
   background:
-    radial-gradient(circle at 90% 0, color-mix(in srgb, var(--PrimaryColor) 20%, transparent), transparent 38%),
+    radial-gradient(
+      circle at 90% 0,
+      color-mix(in srgb, var(--PrimaryColor) 20%, transparent),
+      transparent 38%
+    ),
     var(--surface-1);
 }
 
@@ -266,12 +278,15 @@ onMounted(getEmployees)
 
 .heading-row,
 .section-heading,
-.form-actions {
+.heading-copy,
+.form-actions,
+.employees-empty {
   display: flex;
   align-items: center;
 }
 
 .heading-row,
+.attendance-heading,
 .form-actions {
   justify-content: space-between;
   gap: 20px;
@@ -285,9 +300,18 @@ onMounted(getEmployees)
   text-transform: uppercase;
 }
 
-h1 { margin: 5px 0 8px; color: var(--text-strong); font-size: clamp(1.6rem, 3vw, 2.35rem); }
+h1 {
+  margin: 5px 0 8px;
+  color: var(--text-strong);
+  font-size: clamp(1.6rem, 3vw, 2.35rem);
+}
 .heading-row p,
-.section-heading p { margin: 0; color: var(--text-soft); line-height: 1.55; }
+.section-heading p,
+.employees-empty p {
+  margin: 0;
+  color: var(--text-soft);
+  line-height: 1.55;
+}
 
 .today-badge {
   display: grid;
@@ -301,12 +325,31 @@ h1 { margin: 5px 0 8px; color: var(--text-strong); font-size: clamp(1.6rem, 3vw,
   box-shadow: 0 14px 28px color-mix(in srgb, var(--PrimaryColor) 26%, transparent);
 }
 
-.today-badge span { align-self: end; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; }
-.today-badge strong { align-self: start; font-size: 1.8rem; line-height: 1; }
-.talk-form { display: grid; gap: 18px; margin-top: 18px; }
+.today-badge span {
+  align-self: end;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.today-badge strong {
+  align-self: start;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+.talk-form {
+  display: grid;
+  gap: 18px;
+  margin-top: 18px;
+}
 .discussion-card,
-.attendance-card { padding: clamp(18px, 2.5vw, 28px); border-radius: 23px; }
-.section-heading { gap: 13px; }
+.attendance-card {
+  padding: clamp(18px, 2.5vw, 28px);
+  border-radius: 23px;
+}
+.section-heading,
+.heading-copy {
+  gap: 13px;
+}
 
 .step-number {
   display: grid;
@@ -320,9 +363,17 @@ h1 { margin: 5px 0 8px; color: var(--text-strong); font-size: clamp(1.6rem, 3vw,
   font-weight: 900;
 }
 
-h2 { margin: 0 0 3px; color: var(--text-strong); font-size: 1.12rem; }
-.section-heading p { font-size: 0.82rem; }
-.content-field { margin-top: 20px; }
+h2 {
+  margin: 0 0 3px;
+  color: var(--text-strong);
+  font-size: 1.12rem;
+}
+.section-heading p {
+  font-size: 0.82rem;
+}
+.content-field {
+  margin-top: 20px;
+}
 
 textarea {
   width: 100%;
@@ -335,19 +386,74 @@ textarea {
   color: var(--text-strong);
   background: var(--surface-2);
   line-height: 1.65;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
-textarea:focus { border-color: var(--PrimaryColor); box-shadow: 0 0 0 4px color-mix(in srgb, var(--PrimaryColor) 13%, transparent); }
-.invalid textarea { border-color: var(--status-danger); }
-.field-meta { display: flex; justify-content: space-between; min-height: 20px; margin-top: 6px; color: var(--text-soft); font-size: 0.75rem; }
-.schedule-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
-.schedule-grid label { display: grid; gap: 7px; color: var(--text-strong); font-size: 0.78rem; font-weight: 800; }
-.schedule-grid input { width: 100%; padding: 11px 13px; border: 1px solid var(--main-border); border-radius: 11px; outline: none; color: var(--text-strong); background: var(--surface-2); }
-.schedule-grid input:focus { border-color: var(--PrimaryColor); box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 12%, transparent); }
-.schedule-grid .invalid input { border-color: var(--status-danger); }
-.error-message { color: var(--status-danger); font-size: 0.78rem; font-weight: 700; }
-.employees-multiselect { margin-top: 20px; }
+textarea:focus {
+  border-color: var(--PrimaryColor);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--PrimaryColor) 13%, transparent);
+}
+.invalid textarea {
+  border-color: var(--status-danger);
+}
+.field-meta {
+  display: flex;
+  justify-content: space-between;
+  min-height: 20px;
+  margin-top: 6px;
+  color: var(--text-soft);
+  font-size: 0.75rem;
+}
+.schedule-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 14px;
+}
+.schedule-grid label {
+  display: grid;
+  gap: 7px;
+  color: var(--text-strong);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+.schedule-grid input {
+  width: 100%;
+  padding: 11px 13px;
+  border: 1px solid var(--main-border);
+  border-radius: 11px;
+  outline: none;
+  color: var(--text-strong);
+  background: var(--surface-2);
+}
+.schedule-grid input:focus {
+  border-color: var(--PrimaryColor);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 12%, transparent);
+}
+.schedule-grid .invalid input {
+  border-color: var(--status-danger);
+}
+.error-message {
+  color: var(--status-danger);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.attendance-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-soft);
+  font-size: 0.8rem;
+}
+.attendance-actions strong {
+  color: var(--PrimaryColor);
+  font-size: 1.05rem;
+}
+
+.select-all,
+.retry,
 .cancel-button {
   border: 1px solid var(--main-border);
   border-radius: 10px;
@@ -358,19 +464,200 @@ textarea:focus { border-color: var(--PrimaryColor); box-shadow: 0 0 0 4px color-
   cursor: pointer;
 }
 
-.employees-error { display: block; margin-top: 8px; }
-.form-actions { padding: 6px 2px 0; }
-.cancel-button { padding: 11px 18px; }
-.save-button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-width: 175px; }
-.save-button:disabled { cursor: wait; opacity: 0.7; }
-.button-spinner { width: 15px; height: 15px; border: 2px solid currentColor; border-top-color: transparent; border-radius: 50%; animation: spin 0.7s linear infinite; }
+.select-all {
+  padding: 9px 12px;
+}
+.employee-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 21px;
+}
 
-@keyframes spin { to { transform: rotate(360deg); } }
+.employee-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 13px;
+  border: 1px solid var(--main-border);
+  border-radius: 15px;
+  background: var(--surface-2);
+  cursor: pointer;
+  transition:
+    transform 0.18s,
+    border-color 0.18s,
+    background 0.18s;
+}
+
+.employee-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--PrimaryColor) 45%, var(--main-border));
+}
+.employee-card.attending {
+  border-color: color-mix(in srgb, var(--PrimaryColor) 50%, var(--main-border));
+  background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1));
+}
+.avatar {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 14px;
+  color: var(--PrimaryColor);
+  background: color-mix(in srgb, var(--PrimaryColor) 12%, var(--surface-1));
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.employee-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+}
+.employee-copy strong,
+.employee-copy small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.employee-copy strong {
+  color: var(--text-strong);
+  font-size: 0.88rem;
+}
+.employee-copy small,
+.attendance-control small {
+  color: var(--text-soft);
+  font-size: 0.7rem;
+}
+.attendance-control {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 4px;
+}
+.employee-skeleton {
+  height: 72px;
+  border-radius: 15px;
+  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-2));
+  animation: pulse 1.2s ease-in-out infinite alternate;
+}
+.employees-empty {
+  gap: 13px;
+  margin-top: 20px;
+  padding: 18px;
+  border: 1px dashed var(--main-border);
+  border-radius: 15px;
+  background: var(--surface-2);
+}
+.employees-empty > span {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--PrimaryColor);
+  background: color-mix(in srgb, var(--PrimaryColor) 12%, transparent);
+  font-weight: 900;
+}
+.employees-empty div {
+  flex: 1;
+}
+.employees-empty h3 {
+  margin: 0 0 3px;
+  color: var(--text-strong);
+  font-size: 0.95rem;
+}
+.employees-empty p {
+  font-size: 0.78rem;
+}
+.retry {
+  padding: 8px 13px;
+}
+.employees-error {
+  display: block;
+  margin-top: 8px;
+}
+.form-actions {
+  padding: 6px 2px 0;
+}
+.cancel-button {
+  padding: 11px 18px;
+}
+.save-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-width: 175px;
+}
+.save-button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+.button-spinner {
+  width: 15px;
+  height: 15px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes pulse {
+  to {
+    opacity: 0.45;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 760px) {
+  .employee-grid {
+    grid-template-columns: 1fr;
+  }
+  .attendance-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .attendance-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
 
 @media (max-width: 520px) {
-  .schedule-grid { grid-template-columns: 1fr; }
-  .heading-row { align-items: flex-start; }
-  .today-badge { width: 60px; height: 68px; flex-basis: 60px; }
-  .today-badge strong { font-size: 1.45rem; }
+  .schedule-grid {
+    grid-template-columns: 1fr;
+  }
+  .heading-row {
+    align-items: flex-start;
+  }
+  .today-badge {
+    width: 60px;
+    height: 68px;
+    flex-basis: 60px;
+  }
+  .today-badge strong {
+    font-size: 1.45rem;
+  }
+  .employee-card {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .attendance-control {
+    grid-column: 1 / -1;
+    align-items: center;
+    flex-direction: row;
+    justify-content: flex-end;
+  }
 }
 </style>

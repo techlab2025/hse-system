@@ -1836,5 +1836,6 @@
   "task_save_status": "Save status",
   "add_investigation_result": "Add Investigation Result",
   "Not_a_nermiss": "Not a nermiss",
-  "nermiss": "Nermiss"
+  "nermiss": "Nermiss",
+  "add_incident_type": "Add Incident Type"
 }

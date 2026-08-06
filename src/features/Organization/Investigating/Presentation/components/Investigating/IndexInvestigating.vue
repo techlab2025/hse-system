@@ -22,6 +22,7 @@ import { formatJoinDate } from '@/base/Presentation/utils/date_format.ts'
 import { formatTime } from '@/base/Presentation/utils/time_format.ts'
 import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
+import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 
 const word = ref('')
 const currentPage = ref(1)
@@ -486,14 +487,16 @@ const GerIncidantCount = (data: any): number => {
       <InvestigatingCardsLoader :rows="5" />
     </template>
     <template #empty>
-      <!-- <DataEmpty :link="`/organization/hazard/add`" addText="Add Hazard"
-        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Hazard" /> -->
+      <DataEmpty
+        description="Sorry .. You have no investigations .. All your joined customers will appear here when you add your customer data"
+        title="..ops! You have No investigations"
+      />
     </template>
     <template #failed>
-      <!-- <DataFailed :link="`/organization/hazard/add`" addText="Add Hazard"
-        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Hazard" /> -->
+       <DataEmpty
+        description="Sorry .. You have no investigations .. All your joined customers will appear here when you add your customer data"
+        title="..ops! You have No investigations"
+      />
     </template>
 
     <template #notPermitted>

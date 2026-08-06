@@ -236,9 +236,9 @@ watch(() => route.params.parent_id, (newVal) => {
           PermissionsEnum.ORG_HAZARD_ALL,
         ]">
           <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard/add`"
-            addText="Add Hazard"
-            description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Hazard" />
+            addText="add_risk"
+            description="Sorry .. You have no Risk .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Risk" />
         </PermissionBuilder>
       </template>
       <template #failed>
@@ -249,9 +249,9 @@ watch(() => route.params.parent_id, (newVal) => {
           PermissionsEnum.ORG_HAZARD_ALL,
         ]">
           <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard/add`"
-            addText="Add Hazard"
-            description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Hazard" />
+            addText="add_risk"
+            description="Sorry .. You have no Risk .. All your joined customers will appear here when you add your customer data"
+            title="..ops! You have No Risk" />
         </PermissionBuilder>
       </template>
     </DataStatus>
