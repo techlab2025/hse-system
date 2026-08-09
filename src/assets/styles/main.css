@@ -25917,4 +25917,9 @@ label {
 .export-actions .btns-filter .btn-primary {
   color: black !important;
   border: 1px solid rgba(128, 128, 128, 0.2117647059);
+}
+
+.side-pane-icon svg {
+  width: 37px !important;
+  height: 35px !important;
 }/*# sourceMappingURL=main.css.map */
