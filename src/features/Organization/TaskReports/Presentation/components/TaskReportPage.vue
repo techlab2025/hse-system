@@ -354,9 +354,10 @@ onMounted(() => fetchReport())
       <span class="report-orb report-orb-two" aria-hidden="true"></span>
 
       <div class="hero-copy">
-        <span class="report-eyebrow">{{ content.eyebrow }}</span>
+        <!-- <span class="report-eyebrow">{{ content.eyebrow }}</span> -->
         <h1>{{ content.title }}</h1>
-        <p>{{ content.description }}</p>
+        <p>{{ $t('report_register_description') }}</p>
+        <!-- <p>{{ content.description }}</p> -->
       </div>
 
       <div class="hero-mark" aria-hidden="true">
@@ -381,8 +382,7 @@ onMounted(() => fetchReport())
     <header class="report-board-header">
       <div>
         <!-- <span class="report-eyebrow">{{ $t('report_action_register') }}</span> -->
-        <h2>{{ content.title }}</h2>
-        <p>{{ $t('report_register_description') }}</p>
+        <!-- <h2>{{ content.title }}</h2> -->
       </div>
 
       <div class="report-actions">
@@ -967,7 +967,7 @@ onMounted(() => fetchReport())
   align-items: center;
   gap: 0.4rem;
   min-width: 0;
-  max-width: 190px;
+  max-width: 120px;
   padding: 0.45rem 0.55rem;
   border: 1px solid color-mix(in srgb, var(--report-tone) 18%, var(--main-border));
   border-radius: 11px;

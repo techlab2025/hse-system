@@ -307,7 +307,7 @@ const getEquipmentPlateNumber = (equipment: unknown) => {
 
           <div class="incident-control-header">
             <IndexHazardHeader
-              :title="'incedant'"
+              :title="'incident'"
               :length="state?.pagination?.total"
               :projects="Projects"
               :isProjectsLoading="isProjectsLoading"
@@ -327,7 +327,7 @@ const getEquipmentPlateNumber = (equipment: unknown) => {
                       <span class="create-icon" aria-hidden="true">+</span>
                       <span class="create-copy"
                         ><small>{{ $t('New report') }}</small
-                        ><strong>{{ $t('incedent Report') }}</strong></span
+                        ><strong>{{ $t('incident Report') }}</strong></span
                       >
                     </button>
                   </router-link>
@@ -470,11 +470,10 @@ const getEquipmentPlateNumber = (equipment: unknown) => {
                             <span class="incident-meta-label">{{ $t('Machine') }}</span>
                             <strong>{{ item.equipment?.title || '—' }}</strong>
                             <strong
-                              v-if="item.equipment.license_plate_number"
-                              class="incident-machine-plate"
+                              v-if="item.equipment?.license_plate_number"
+                              class="small-text"
+                              >{{ item.equipment?.license_plate_number || '—' }}</strong
                             >
-                              {{ item.equipment.license_plate_number }}
-                            </strong>
                           </div>
                         </div>
                       </div>

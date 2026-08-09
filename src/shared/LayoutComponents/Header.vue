@@ -245,7 +245,11 @@ const toggle = (event: Event) => {
 
       <div
         class="input-wrapper header-select"
-        v-if="!showProjectSelect && user?.type != OrganizationTypeEnum.ADMIN"
+        v-if="
+          !showProjectSelect &&
+          user?.type != OrganizationTypeEnum.ADMIN &&
+          route.fullPath !== `/organization/projects`
+        "
       >
         <!-- label="Project" -->
         <CustomSelectInput

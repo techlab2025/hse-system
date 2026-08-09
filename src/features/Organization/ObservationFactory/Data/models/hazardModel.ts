@@ -43,6 +43,8 @@ export default class HazardModel {
   public updatedAt: string
   public investigationId: number
   public investigationMeetingId: number
+  public investigationStatus: number
+  public license_plate_number: string
 
   constructor(
     id: number,
@@ -78,6 +80,8 @@ export default class HazardModel {
     updatedAt: string,
     investigationId: number,
     investigationMeetingId: number,
+    investigationStatus: number,
+    license_plate_number: string,
   ) {
     this.id = id
     this.title = title
@@ -112,6 +116,8 @@ export default class HazardModel {
     this.updatedAt = updatedAt
     this.investigationId = investigationId
     this.investigationMeetingId = investigationMeetingId
+    this.investigationStatus = investigationStatus
+    this.license_plate_number = license_plate_number
   }
 
   static fromMap(data: any): HazardModel {
@@ -149,6 +155,8 @@ export default class HazardModel {
       data?.updated_at,
       data?.investigation_id,
       data?.investigation_meeting_id,
+      data?.investigation_status,
+        data?.license_plate_number,
     )
   }
 

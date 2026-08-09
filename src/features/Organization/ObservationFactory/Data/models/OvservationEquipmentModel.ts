@@ -13,7 +13,7 @@ export default class OvservationEquipmentModel {
   public status: number
   public inspectionDuration: number
   public licenseNumber: number
-  public licensePlateNumber: number
+  public licensePlateNumber: string
 
   constructor(
     id: number,
@@ -28,7 +28,7 @@ export default class OvservationEquipmentModel {
     status: number,
     inspectionDuration: number,
     licenseNumber: number,
-    licensePlateNumber: number,
+    licensePlateNumber: string,
   ) {
     this.id = id
     this.title = title

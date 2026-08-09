@@ -533,6 +533,7 @@ const GetObservationType = (type: number) => {
                         <span>{{ $t('Investigation') }} #{{ item.investigationId }}</span>
                         <span class="investigation-badge-arrow" aria-hidden="true">→</span>
                       </router-link>
+                      <!-- <span>{{ item.investigationStatus }}</span> -->
                       <span
                         class="observation-type-chip"
                         :class="GetSaveStatus(item.saveStatus)?.toLowerCase()"
@@ -608,7 +609,7 @@ const GetObservationType = (type: number) => {
                               v-if="item.equipment?.license_plate_number"
                               class="small-text"
                               >{{ item.equipment?.license_plate_number || '—' }}</strong
-                          >
+                            >
                           </div>
                         </div>
 
