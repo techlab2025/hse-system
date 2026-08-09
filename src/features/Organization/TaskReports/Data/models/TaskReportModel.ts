@@ -51,6 +51,7 @@ export default class TaskReportModel extends CapaTaskDetailsModel {
   public observation: HazardDetailsModel
   public investigation: InvestigatingDetailsModel | null
   public project: TaskReportProjectReference
+  public reason: string
 
   constructor(data: {
     id: number
@@ -67,7 +68,8 @@ export default class TaskReportModel extends CapaTaskDetailsModel {
     serial_name?: string
     observation?: HazardDetailsModel
     project?: TaskReportProjectReference
-     investigation: InvestigatingDetailsModel | null
+    investigation: InvestigatingDetailsModel | null
+    reason?: string
   }) {
     super(data)
     this.description = data.description
@@ -78,6 +80,7 @@ export default class TaskReportModel extends CapaTaskDetailsModel {
     this.observation = data.observation ?? HazardDetailsModel.fromMap({})
     this.project = data.project ?? { id: 0, title: '', serial_name: '' }
     this.investigation = data.investigation ?? null
+    this.reason = data.reason ?? ''
   }
 
   static fromMap(value: unknown): TaskReportModel {
@@ -117,7 +120,9 @@ export default class TaskReportModel extends CapaTaskDetailsModel {
         serial_name: stringValue(project.serial_name),
       },
       investigation: InvestigatingDetailsModel.fromMap(data.investigation ?? {}),
-  })}
+      reason: stringValue(data.reason),
+    })
+  }
 
   // static examples: TaskReportModel[] = [
   //   new TaskReportModel({

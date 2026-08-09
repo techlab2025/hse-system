@@ -517,8 +517,12 @@ onMounted(() => fetchReport())
                         @keydown.esc="closeStatusReason"
                       >
                         {{ getTaskStatusLabel(task) }}
-                        <span v-if="getTaskReason(task)" class="task-reason-indicator" aria-hidden="true">
-                          i
+                        <span
+                          v-if="getTaskReason(task)"
+                          class="task-reason-indicator"
+                          aria-hidden="true"
+                        >
+                          !
                         </span>
                       </span>
                     </td>
@@ -988,7 +992,7 @@ onMounted(() => fetchReport())
 
 .task-status-pill.has-reason {
   gap: 0.45rem;
-  cursor: help;
+  cursor: pointer;
   outline: none;
   transition:
     transform 0.18s ease,
@@ -1018,7 +1022,7 @@ onMounted(() => fetchReport())
 
 .task-reason-popover {
   width: min(320px, calc(100vw - 48px));
-  padding: 0.15rem;
+  padding: 0.8rem;
 }
 
 .task-reason-popover-label {
