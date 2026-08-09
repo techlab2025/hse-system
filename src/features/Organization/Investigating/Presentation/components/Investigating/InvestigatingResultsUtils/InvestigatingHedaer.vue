@@ -8,6 +8,7 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 import { computed, ref } from 'vue'
 import ShiftModel from '../../../../../Shifts/Data/models/ShiftModel'
 import AddDocumentRefrence from '@/features/Organization/DocumentRefrence/Presentation/components/AddDocumentRefrence.vue'
+import { Observation } from '@/features/Organization/Investigating/Core/Enums/ObservationTypeEnum'
 
 const emit = defineEmits(['update:documentRefrences'])
 
@@ -28,6 +29,7 @@ const props = defineProps<{
   shift?: ShiftModel
   serialName?: string
   observationCreator?: string
+  observationType?: number
 }>()
 
 const DocumentRefrenceDialog = ref<boolean>(false)
@@ -45,6 +47,18 @@ const hasValue = (value: unknown) =>
 const dateTimeShift = computed(() =>
   [props.date, props.time, props.shift?.title].filter(hasValue).join(' & '),
 )
+const getObservationType = (type: number | undefined) => {
+  switch (type) {
+    case Observation.AccidentsType:
+      return 'Incident'
+    case Observation.HazardType:
+      return 'Observation'
+    case Observation.ObservationType:
+      return 'Observation'
+    default:
+      return ''
+  }
+}
 </script>
 <template>
   <div class="investigating-header-container">
@@ -63,6 +77,9 @@ const dateTimeShift = computed(() =>
 
     </div> -->
     <div class="meeting-info-container">
+      <h2 class="observation-container-content">
+        {{ getObservationType(observationType!) }} report
+      </h2>
       <div class="meeting-info">
         <p v-if="hasValue(serial)">
           Incident serial : <span class="meet-date">{{ serial }} </span>
@@ -87,7 +104,15 @@ const dateTimeShift = computed(() =>
           Work Area / Facility : <span class="team-number">{{ place }}</span>
         </p>
         <p v-if="hasValue(equipment?.serial_name)">
-          Equipment / Tag No : <span class="team-number">{{ equipment?.serial_name }}</span>
+          Equipment / Tag No :
+          <span class="team-number"
+            >{{ equipment?.title }}
+            {{
+              equipment?.licensePlateNumber || `-` + equipment?.license_plate_number
+                ? equipment?.licensePlateNumber || equipment?.license_plate_number
+                : ``
+            }}</span
+          >
         </p>
         <div class="input-wrapper col-span-2 w-full root-cause-panel">
           <UpdatedCustomInputSelect
@@ -161,6 +186,54 @@ const dateTimeShift = computed(() =>
 </template>
 
 <style scoped>
+.observation-container-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 72px;
+  margin: 0 0 18px;
+  padding: 16px 24px 16px 30px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--identity-primary) 30%, var(--main-border));
+  border-radius: 18px;
+  background: linear-gradient(
+    120deg,
+    color-mix(in srgb, var(--identity-primary) 14%, var(--surface-1)),
+    color-mix(in srgb, var(--identity-accent) 8%, var(--surface-1)) 68%,
+    var(--surface-1)
+  );
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--identity-primary) 12%, transparent);
+  color: var(--text-strong);
+  font-size: clamp(22px, 2.4vw, 32px);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+  isolation: isolate;
+}
+
+/* .observation-container-content::before {
+  width: 6px;
+  height: 40px;
+  margin-inline-end: 16px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--identity-primary), var(--identity-accent));
+  box-shadow: 0 0 18px color-mix(in srgb, var(--identity-primary) 38%, transparent);
+  content: '';
+  flex: 0 0 auto;
+} */
+
+.observation-container-content::after {
+  position: absolute;
+  z-index: -1;
+  inset-inline-end: -34px;
+  width: 130px;
+  height: 130px;
+  border: 24px solid color-mix(in srgb, var(--identity-accent) 12%, transparent);
+  border-radius: 50%;
+  content: '';
+}
 .meeting-info-container {
   width: 100% !important;
   grid-column: span 2 !important;
@@ -189,6 +262,19 @@ const dateTimeShift = computed(() =>
 }
 
 @media (max-width: 600px) {
+  .observation-container-content {
+    min-height: 62px;
+    margin-bottom: 12px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    font-size: 21px;
+  }
+
+  .observation-container-content::before {
+    height: 32px;
+    margin-inline-end: 12px;
+  }
+
   .investigating-header-container,
   .meeting-info-container,
   .meeting-info {

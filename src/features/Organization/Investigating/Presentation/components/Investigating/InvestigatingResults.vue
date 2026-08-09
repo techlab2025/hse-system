@@ -697,6 +697,7 @@ const validateRequiredFields = async () => {
                 :shift="state.data?.observation.work_shift"
                 :serialName="state.data?.serialName"
                 :observationCreator="state?.data?.observation?.observer?.name"
+                :observationType="state.data?.observation.type"
                 @update:documentRefrences="setDocumentRefrences"
               />
             </AccordionContent>
