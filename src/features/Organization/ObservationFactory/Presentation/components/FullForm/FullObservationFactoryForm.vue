@@ -76,7 +76,13 @@ import { useProjectSelectStore } from '@/stores/ProjectSelect.ts'
 const emit = defineEmits(['update:data'])
 const { isDarkMode } = useThemeMode()
 const { t } = useI18n()
+const selectedProject = useProjectSelectStore()
 //
+const RootCauses = ref<TitleInterface[]>([])
+const Accidents = ref()
+const Fatalities = ref()
+const witnesses = ref()
+
 const RootCausesDialog = ref<boolean>(false)
 const props = defineProps<{
   data?: HazardDetailsModel
@@ -130,151 +136,6 @@ const hasInjuryData = (item: any) =>
 const hasFatalityData = (item: any) =>
   hasEmployeePayload(item?.employee) || hasSectionValue(item?.text) || hasSectionFiles(item?.images)
 
-const updateData = () => {
-  const rootCausesIdParams = RootCauses.value?.map((item) => {
-    return new RootCausesIdParams({ root_cause_id: item.id })
-  })
-
-  const injuryRows =
-    Accidents?.value?.isAnotherMeeting === 1
-      ? (Accidents.value?.accidentsData ?? []).filter(hasInjuryData)
-      : []
-  const fatalityRows =
-    Fatalities?.value?.isAnotherMeeting === 1
-      ? (Fatalities.value?.DethsData ?? []).filter(hasFatalityData)
-      : []
-  const witnessRows =
-    witnesses?.value?.isAnotherMeeting === 1
-      ? (witnesses.value?.AllWitnessesData ?? []).filter(hasWitnessData)
-      : []
-
-  console.log(
-    Accidents.value?.accidentsData?.map((item: any) => item),
-    'loop',
-  )
-  const isThereanyDatainAccidents = Accidents.value?.accidentsData?.map((item: any) => {
-    console.log(item?.employee?.id)
-    if (
-      item?.employee?.id == 0 &&
-      item?.employee?.title.length == 0 &&
-      item?.employeeName.length > 0 &&
-      item?.images?.length > 0 &&
-      item?.infectionTypeId?.id == 0 &&
-      item?.text
-    ) {
-      return false
-    }
-    return true
-  })
-  console.log(Fatalities.value, 'Fatalities')
-  const params = props.data?.id
-    ? new EditHazardParams(
-        props.data?.id! ?? 0,
-        text.value,
-        descripe.value,
-        image.value?.map((el) => el?.file),
-        0,
-        ObservationFactoryType.value,
-        SelectedMachine.value?.id ?? null,
-        ZoneIds.value ?? 0,
-        SelectedProjectId.value,
-        0,
-        0,
-        0,
-        '',
-        0,
-        0,
-        date.value ?? '',
-        [],
-        0,
-      )
-    : new AddHazardParams({
-        title: ObservationTitle.value ?? '',
-        description: text.value ?? null,
-        image: image.value?.map((el) => el?.file) ?? null,
-        typeId:
-          ObservationFactoryType.value == Observation.ObservationType
-            ? SelectedObservationType.value?.id
-            : ObservationFactoryType.value == Observation.AccidentsType
-              ? AccidentsType.value?.id
-              : HazardType.value?.id,
-        type: ObservationFactoryType.value,
-        equipmentId: SelectedMachine.value?.id ?? null,
-        zoonId: ZoneIds.value ?? null,
-        projectId: SelectedProjectId.value ?? null,
-        isResult: 0,
-        riskLevel: riskLevel.value,
-        saveStatus: saveStatus.value,
-        action: preventive_action.value ?? null,
-        isNearMiss: riskLevel.value === RiskLevelEnum.Medium ? (isNearMiss.value ? 1 : 0) : 0,
-        capaStatus: 0,
-        date: date.value ?? null,
-        capa: [],
-        isAction: takeAction.value === 'yes' ? 1 : 0,
-        isThereInjuries: injuryRows.length ? true : null,
-        isThereDeath: fatalityRows.length ? true : null,
-        isThereWitnessStatement: witnessRows.length ? true : null,
-        Injury: injuryRows.length
-          ? injuryRows.map((item: any) => {
-              const employee = getEmployeePayload(item?.employee)
-              return new InjuryParams(
-                employee.id,
-                employee.name,
-                item?.text || null,
-                item?.infectionTypeId?.id || 0,
-                item?.incidentCategories
-                  ?.map((category: TitleInterface) => Number(category.id))
-                  .filter(Boolean) || [],
-                item?.images?.map((el: any) => el.file) || [],
-              )
-            })
-          : [],
-        deaths: fatalityRows.length
-          ? fatalityRows.map((item: any) => {
-              const employee = getEmployeePayload(item?.employee)
-              return new DethParams(
-                employee.name,
-                item?.text || null,
-                employee.id,
-                item?.images?.map((el: any) => el.file) || [],
-              )
-            })
-          : // ? [
-            //   new DethParams(
-            //     Fatalities?.value?.text || '',
-            //     Fatalities?.value?.SelectedEmployee || 0,
-            //     Fatalities?.value?.img || [],
-            //   ),
-            // ]
-            [],
-        witnesses: witnessRows.length
-          ? witnessRows.map((w: any) => {
-              const employee = getEmployeePayload(w?.employee)
-              return new WitnessParams(employee.name, w?.text || '', employee.id)
-            })
-          : [],
-
-        severity: SelectedSeverity.value?.id,
-        Likelihood: SelectedLikelihood.value?.id,
-        time: SelctedTime.value,
-        place: PlaceText.value,
-        isWorkStopped: isWorkStopped.value ? 1 : 0,
-        HazardTypeId: HazardType.value?.id,
-        HazardSubtypeId: SubHazardType.value.map((item) => item.id),
-        actionstatus: solved.value,
-        code: SerialNumber.value,
-        RootCausesId: rootCausesIdParams,
-        OpenNote: preventive_action_open.value,
-        OragnizationemployeeName: isSelectHasContent.value ? OragnizationemployeeName.value : null,
-        OragnizationemployeeIds: !isSelectHasContent.value
-          ? Oragnizationemployee.value.map((employee) => Number(employee.id))
-          : [],
-        workShiftId: Shifts.value?.id ?? null,
-      })
-  console.log(params, 'params')
-  emit('update:data', params)
-}
-
 watch([() => props.data], ([newData]) => {}, { immediate: true })
 const ZoneIds = ref<number>()
 
@@ -300,6 +161,12 @@ const setImages = async (data: string[]) => {
 
 const Projects = ref<MyProjectsModel[]>([])
 const isProjectsLoading = ref(false)
+const selectedProjectName = computed(
+  () =>
+    selectedProject.project?.title ||
+    Projects.value.find((project) => project.id === SelectedProjectId.value)?.title ||
+    '',
+)
 const FetchMyProjects = async () => {
   const fetchMyProjectsParams = new FetchMyProjectsParams()
   const fetchMyProjectsController = FetchMyProjectsController.getInstance()
@@ -322,7 +189,7 @@ onMounted(() => {
   FetchMyProjects()
 })
 
-const SelectedProjectId = ref<number>()
+const SelectedProjectId = ref<number | undefined>(selectedProject.project?.id)
 const GetProjectId = (id: number) => {
   if (SelectedProjectId.value !== id) {
     ZoneIds.value = undefined
@@ -332,19 +199,27 @@ const GetProjectId = (id: number) => {
   updateData()
 }
 
-const Accidents = ref()
+watch(
+  () => selectedProject.project?.id,
+  (projectId) => {
+    if (projectId) {
+      GetProjectId(projectId)
+    } else if (Projects.value.length) {
+      GetProjectId(Projects.value[0].id)
+    }
+  },
+)
+
 const UpdateAccidents = (data: any) => {
   Accidents.value = data
   console.log(Accidents.value, 'Accidents.value')
   updateData()
 }
-const witnesses = ref()
 const Updatewitnesses = (data: any) => {
   witnesses.value = data
   console.log(witnesses.value, 'witnesses.value')
   updateData()
 }
-const Fatalities = ref()
 const UpdateFatalities = (data: any) => {
   Fatalities.value = data
   console.log(Fatalities.value, 'Fatalities.value')
@@ -533,6 +408,150 @@ const observationTypeDialog = ref(false)
 const machineDialogRef = ref(false)
 const acedentDialogRef = ref(false)
 
+const updateData = () => {
+  const rootCausesIdParams = RootCauses.value?.map((item) => {
+    return new RootCausesIdParams({ root_cause_id: item.id })
+  })
+
+  const injuryRows =
+    Accidents?.value?.isAnotherMeeting === 1
+      ? (Accidents.value?.accidentsData ?? []).filter(hasInjuryData)
+      : []
+  const fatalityRows =
+    Fatalities?.value?.isAnotherMeeting === 1
+      ? (Fatalities.value?.DethsData ?? []).filter(hasFatalityData)
+      : []
+  const witnessRows =
+    witnesses?.value?.isAnotherMeeting === 1
+      ? (witnesses.value?.AllWitnessesData ?? []).filter(hasWitnessData)
+      : []
+
+  console.log(
+    Accidents.value?.accidentsData?.map((item: any) => item),
+    'loop',
+  )
+  const isThereanyDatainAccidents = Accidents.value?.accidentsData?.map((item: any) => {
+    console.log(item?.employee?.id)
+    if (
+      item?.employee?.id == 0 &&
+      item?.employee?.title.length == 0 &&
+      item?.employeeName.length > 0 &&
+      item?.images?.length > 0 &&
+      item?.infectionTypeId?.id == 0 &&
+      item?.text
+    ) {
+      return false
+    }
+    return true
+  })
+  console.log(Fatalities.value, 'Fatalities')
+  const params = props.data?.id
+    ? new EditHazardParams(
+        props.data?.id! ?? 0,
+        text.value,
+        descripe.value,
+        image.value?.map((el) => el?.file),
+        0,
+        ObservationFactoryType.value,
+        SelectedMachine.value?.id ?? null,
+        ZoneIds.value ?? 0,
+        SelectedProjectId.value,
+        0,
+        0,
+        0,
+        '',
+        0,
+        0,
+        date.value ?? '',
+        [],
+        0,
+      )
+    : new AddHazardParams({
+        title: ObservationTitle.value ?? '',
+        description: text.value ?? null,
+        image: image.value?.map((el) => el?.file) ?? null,
+        typeId:
+          ObservationFactoryType.value == Observation.ObservationType
+            ? SelectedObservationType.value?.id
+            : ObservationFactoryType.value == Observation.AccidentsType
+              ? AccidentsType.value?.id
+              : HazardType.value?.id,
+        type: ObservationFactoryType.value,
+        equipmentId: SelectedMachine.value?.id ?? null,
+        zoonId: ZoneIds.value ?? null,
+        projectId: SelectedProjectId.value ?? null,
+        isResult: 0,
+        riskLevel: riskLevel.value,
+        saveStatus: saveStatus.value,
+        action: preventive_action.value ?? null,
+        isNearMiss: riskLevel.value === RiskLevelEnum.Medium ? (isNearMiss.value ? 1 : 0) : 0,
+        capaStatus: 0,
+        date: date.value ?? null,
+        capa: [],
+        isAction: takeAction.value === 'yes' ? 1 : 0,
+        isThereInjuries: injuryRows.length ? true : null,
+        isThereDeath: fatalityRows.length ? true : null,
+        isThereWitnessStatement: witnessRows.length ? true : null,
+        Injury: injuryRows.length
+          ? injuryRows.map((item: any) => {
+              const employee = getEmployeePayload(item?.employee)
+              return new InjuryParams(
+                employee.id,
+                employee.name,
+                item?.text || null,
+                item?.infectionTypeId?.id || 0,
+                item?.incidentCategories
+                  ?.map((category: TitleInterface) => Number(category.id))
+                  .filter(Boolean) || [],
+                item?.images?.map((el: any) => el.file) || [],
+              )
+            })
+          : [],
+        deaths: fatalityRows.length
+          ? fatalityRows.map((item: any) => {
+              const employee = getEmployeePayload(item?.employee)
+              return new DethParams(
+                employee.name,
+                item?.text || null,
+                employee.id,
+                item?.images?.map((el: any) => el.file) || [],
+              )
+            })
+          : // ? [
+            //   new DethParams(
+            //     Fatalities?.value?.text || '',
+            //     Fatalities?.value?.SelectedEmployee || 0,
+            //     Fatalities?.value?.img || [],
+            //   ),
+            // ]
+            [],
+        witnesses: witnessRows.length
+          ? witnessRows.map((w: any) => {
+              const employee = getEmployeePayload(w?.employee)
+              return new WitnessParams(employee.name, w?.text || '', employee.id)
+            })
+          : [],
+
+        severity: SelectedSeverity.value?.id,
+        Likelihood: SelectedLikelihood.value?.id,
+        time: SelctedTime.value,
+        place: PlaceText.value,
+        isWorkStopped: isWorkStopped.value ? 1 : 0,
+        HazardTypeId: HazardType.value?.id,
+        HazardSubtypeId: SubHazardType.value.map((item) => item.id),
+        actionstatus: solved.value,
+        code: SerialNumber.value,
+        RootCausesId: rootCausesIdParams,
+        OpenNote: preventive_action_open.value,
+        OragnizationemployeeName: isSelectHasContent.value ? OragnizationemployeeName.value : null,
+        OragnizationemployeeIds: !isSelectHasContent.value
+          ? Oragnizationemployee.value.map((employee) => Number(employee.id))
+          : [],
+        workShiftId: Shifts.value?.id ?? null,
+      })
+  console.log(params, 'params')
+  emit('update:data', params)
+}
 const UpdateSaveStatus = (data: SaveStatusEnum) => {
   saveStatus.value = data
   updateData()
@@ -541,7 +560,6 @@ const UpdateSaveStatus = (data: SaveStatusEnum) => {
 const ObservationTitle = ref<string>()
 const indexRootCaueseController = IndexRootCausesController.getInstance()
 const indexRootCaueseParams = new IndexRootCausesParams('', 1, 10, 0)
-const RootCauses = ref<TitleInterface[]>([])
 const setRootCause = (data: TitleInterface[]) => {
   RootCauses.value = data
   updateData()
@@ -771,7 +789,6 @@ const validateRequiredFields = async () => {
 defineExpose({
   validateRequiredFields,
 })
-const selectedProject = useProjectSelectStore()
 </script>
 
 <template>
@@ -793,31 +810,35 @@ const selectedProject = useProjectSelectStore()
     <div
       class="form-filter-panel form-projects-panel col-span-6 md:col-span-6"
       data-required-field="SelectedProjectId"
-      v-if="!selectedProject.project?.id"
     >
       <div class="form-filter-panel-header">
         <span class="filter-marker"></span>
         <p>{{ $t('Projects') }}</p>
       </div>
-      <!-- <HeaderPage
-        :title="`New ${GetHeader(ObservationFactoryType)} Report`"
-        :subtitle="
-          ObservationFactoryType == Observation.ObservationType
-            ? $t('Proactively capturing unsafe acts and conditions to ensure a zero-harm workplace')
-            : 'Accurately document the accident details and immediate response actions taken'
-        "
-        :img="ObservationImage"
-      /> -->
-      <div v-if="isProjectsLoading" class="form-filter-skeleton" aria-hidden="true">
-        <span v-for="item in 4" :key="item"></span>
+      <div
+        v-if="selectedProject.project?.id"
+        class="locked-filter-selection selected-project-summary"
+      >
+        <span class="locked-selection-icon" aria-hidden="true">P</span>
+        <span class="locked-selection-copy">
+          <small>{{ $t('selected') }} {{ $t('project') }}</small>
+          <strong>{{ selectedProjectName || '—' }}</strong>
+        </span>
+        <span class="locked-selection-check" aria-hidden="true">✓</span>
       </div>
-      <HeaderProjectsFilter
-        v-show="!isProjectsLoading"
-        class="colored"
-        :projects="Projects"
-        :isForm="true"
-        @update:data="GetProjectId"
-      />
+
+      <template v-else>
+        <div v-if="isProjectsLoading" class="form-filter-skeleton" aria-hidden="true">
+          <span v-for="item in 4" :key="item"></span>
+        </div>
+        <HeaderProjectsFilter
+          v-show="!isProjectsLoading"
+          class="colored"
+          :projects="Projects"
+          :isForm="true"
+          @update:data="GetProjectId"
+        />
+      </template>
       <p v-if="getFieldError('SelectedProjectId')" class="required-field-message">
         {{ getFieldError('SelectedProjectId') }}
       </p>
@@ -1596,6 +1617,65 @@ const selectedProject = useProjectSelectStore()
   color: var(--status-danger);
   font-size: 0.82rem;
   font-weight: 700;
+}
+
+.locked-filter-selection {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-500) 30%, var(--main-border));
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--brand-primary-500) 8%, var(--surface-1));
+}
+
+.locked-selection-icon,
+.locked-selection-check {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 12px;
+  background: var(--brand-primary-500);
+  color: var(--text-on-brand);
+  font-weight: 900;
+}
+
+.locked-selection-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.locked-selection-check {
+  width: 28px;
+  height: 28px;
+  margin-inline-start: auto;
+  border-radius: 50%;
+  font-size: 13px;
+}
+
+.locked-selection-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.locked-selection-copy small {
+  color: var(--text-soft);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.locked-selection-copy strong {
+  overflow: hidden;
+  color: var(--text-strong);
+  font-size: 15px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .factory-people-section {

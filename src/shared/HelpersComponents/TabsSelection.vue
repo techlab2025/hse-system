@@ -12,8 +12,10 @@ const router = useRouter()
 const props = defineProps<{
   ProjectId: number
 }>()
-const updateData = (data) => {
-  emit('update:data', data.target.value)
+const updateData = (event: Event) => {
+  const zoneId = Number((event.target as HTMLInputElement).value)
+  SelectedLocation.value = zoneId
+  emit('update:data', zoneId)
 }
 const fetchMyZonesController = FetchMyZonesController.getInstance()
 const state = ref(fetchMyZonesController.state.value)
@@ -65,9 +67,18 @@ watch(
     <div v-if="isLoading" class="tabs-selection-skeleton" aria-hidden="true">
       <span v-for="item in 3" :key="item"></span>
     </div>
-    <div class="tabs-selction-container">
-      <div v-show="!isLoading" class="tabs-selction-content">
-        <div class="select-container">
+    <div v-show="!isLoading" class="tabs-selction-container">
+      <div class="tabs-selction-content">
+        <div v-if="state.data?.length === 1" class="single-zone-selection" aria-live="polite">
+          <span class="single-zone-icon" aria-hidden="true">Z</span>
+          <span class="single-zone-copy">
+            <small>{{ $t('selected') }} {{ $t('Zone') }}</small>
+            <strong>{{ state.data?.[0]?.title || '—' }}</strong>
+          </span>
+          <span class="single-zone-check" aria-hidden="true">✓</span>
+        </div>
+
+        <div v-else class="select-container">
           <div
             class="select-item"
             v-for="zoon in state.data"
@@ -116,7 +127,12 @@ watch(
   width: 150px;
   height: 58px;
   border-radius: 16px;
-  background: linear-gradient(90deg, var(--brand-primary-50) 25%, var(--brand-primary-50) 50%, var(--brand-primary-50) 75%);
+  background: linear-gradient(
+    90deg,
+    var(--brand-primary-50) 25%,
+    var(--brand-primary-50) 50%,
+    var(--brand-primary-50) 75%
+  );
   background-size: 220% 100%;
   animation: tabs-selection-shimmer 1.15s linear infinite;
 }
@@ -127,6 +143,63 @@ watch(
 
 .tabs-selection-skeleton span:nth-child(3) {
   width: 128px;
+}
+
+.single-zone-selection {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--status-success) 32%, var(--main-border));
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--status-success) 8%, var(--surface-1));
+}
+
+.single-zone-icon,
+.single-zone-check {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  background: var(--status-success);
+  color: var(--text-on-brand);
+  font-weight: 900;
+}
+
+.single-zone-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+}
+
+.single-zone-check {
+  width: 28px;
+  height: 28px;
+  margin-inline-start: auto;
+  border-radius: 50%;
+  font-size: 13px;
+}
+
+.single-zone-copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.single-zone-copy small {
+  color: var(--text-soft);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.single-zone-copy strong {
+  overflow: hidden;
+  color: var(--text-strong);
+  font-size: 15px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @keyframes tabs-selection-shimmer {
