@@ -15,7 +15,11 @@
 
     &.low-selected {
       border: 2px solid var(--status-success);
-      background-color: color-mix(in srgb, var(--status-success) 5%, transparent); // باكجراوند خفيف للـ Low
+      background-color: color-mix(
+        in srgb,
+        var(--status-success) 5%,
+        transparent
+      ); // باكجراوند خفيف للـ Low
       .circle {
         background-color: $LowColor;
       }
@@ -29,7 +33,11 @@
 
     &.medium-selected {
       border: 2px solid $MediumColor;
-      background-color: color-mix(in srgb, var(--status-warning) 5%, transparent); // باكجراوند خفيف للـ Medium
+      background-color: color-mix(
+        in srgb,
+        var(--status-warning) 5%,
+        transparent
+      ); // باكجراوند خفيف للـ Medium
       .circle {
         background-color: $MediumColor;
       }
@@ -43,7 +51,11 @@
 
     &.high-selected {
       border: 2px solid $HighColor;
-      background-color: color-mix(in srgb, var(--status-danger) 5%, transparent); // باكجراوند خفيف للـ High
+      background-color: color-mix(
+        in srgb,
+        var(--status-danger) 5%,
+        transparent
+      ); // باكجراوند خفيف للـ High
       .circle {
         background-color: $HighColor;
       }
@@ -89,10 +101,10 @@
       label {
         color: var(--brand-accent-500);
       }
-      border: 2px solid var(--brand-accent-500);
+      border: 2px solid #f59e0b;
       // background-color: color-mix(in srgb, var(--brand-accent-300) 10%, transparent);
       .circle {
-        background-color: var(--brand-accent-500);
+        background-color: #f59e0b;
       }
       .details-box {
         border-color: color-mix(in srgb, var(--brand-accent-500) 40%, transparent);
