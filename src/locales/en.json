@@ -1842,5 +1842,7 @@
   "nermiss": "Nermiss",
   "add_incident_type": "Add Incident Type",
   "show_investigation_result": "show investigation result",
-  "system_preferences": "System preferences"
+  "system_preferences": "System preferences",
+  "investigation_creation_notice_title": "Investigation required",
+  "investigation_creation_notice_description": "Submitting this observation will automatically create an investigation."
 }

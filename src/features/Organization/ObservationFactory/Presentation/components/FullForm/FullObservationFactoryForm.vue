@@ -103,6 +103,11 @@ const saveStatus = ref<SaveStatusEnum | null>(SaveStatusEnum.NotSaved)
 const riskLevel = ref<RiskLevelEnum | null>(RiskLevelEnum.Low)
 const isNearMiss = ref<boolean | number>(0)
 const type = ref<TypesEnum>(TypesEnum.ObservationType)
+const willCreateInvestigation = computed(
+  () =>
+    riskLevel.value === RiskLevelEnum.High ||
+    (riskLevel.value === RiskLevelEnum.Medium && Number(isNearMiss.value) === 1),
+)
 
 const getEmployeePayload = (employee: any) => {
   const id = Number(employee?.id) || 0
@@ -1098,7 +1103,7 @@ defineExpose({
         help-text="The equipment involved in the event, including its tag number when available."
         id="machine"
         :placeholder="$t('select Equipment')"
-        showOptionSerial
+        showOptionLicensePlate
         @update:modelValue="setMachine"
         @close="machineDialogRef = false"
         :isDialog="true"
@@ -1282,6 +1287,20 @@ defineExpose({
         :risk-level-readonly="true"
         @update:data="handleObservationLevel"
       />
+      <Transition name="investigation-notice">
+        <div
+          v-if="willCreateInvestigation"
+          class="investigation-creation-notice"
+          role="status"
+          aria-live="polite"
+        >
+          <span class="investigation-creation-notice-icon" aria-hidden="true">!</span>
+          <div>
+            <strong>{{ $t('investigation_creation_notice_title') }}</strong>
+            <p>{{ $t('investigation_creation_notice_description') }}</p>
+          </div>
+        </div>
+      </Transition>
     </div>
     <!-- Hazard Type -->
     <!-- {{
@@ -1579,6 +1598,66 @@ defineExpose({
 </template>
 
 <style scoped>
+.investigation-creation-notice {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  margin-top: 14px;
+  padding: 14px 16px;
+  border: 1px solid color-mix(in srgb, var(--status-warning) 42%, var(--main-border));
+  border-radius: 16px;
+  background:
+    radial-gradient(
+      circle at 100% 0,
+      color-mix(in srgb, var(--status-warning) 17%, transparent),
+      transparent 42%
+    ),
+    var(--status-warning-soft);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--status-warning) 11%, transparent);
+}
+
+.investigation-creation-notice-icon {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: var(--status-warning);
+  color: var(--text-on-brand);
+  font-size: 20px;
+  font-weight: 900;
+  box-shadow: 0 6px 14px color-mix(in srgb, var(--status-warning) 28%, transparent);
+}
+
+.investigation-creation-notice strong {
+  display: block;
+  color: var(--text-strong);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.investigation-creation-notice p {
+  margin: 3px 0 0;
+  color: var(--text-soft);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.investigation-notice-enter-active,
+.investigation-notice-leave-active {
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.investigation-notice-enter-from,
+.investigation-notice-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
 /* .add-dialog {
   width: 20px;
   height: 20px;

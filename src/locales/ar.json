@@ -1850,5 +1850,7 @@
   "task_reason": "السبب",
   "task_reason_placeholder": "أضف سبب اختيار هذه الحالة",
   "task_saving": "جارٍ الحفظ...",
-  "task_save_status": "حفظ الحالة"
+  "task_save_status": "حفظ الحالة",
+  "investigation_creation_notice_title": "التحقيق مطلوب",
+  "investigation_creation_notice_description": "سيؤدي إرسال هذه الملاحظة إلى إنشاء تحقيق تلقائيًا."
 }

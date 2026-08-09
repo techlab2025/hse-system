@@ -44,6 +44,7 @@ interface Props {
   hascontent?: boolean
   hasHeader?: boolean
   showOptionSerial?: boolean
+  showOptionLicensePlate?: boolean
 
   isDialog?: boolean
   dialogVisible?: boolean
@@ -304,6 +305,15 @@ function getOptionSerial(option: TitleInterface): string | number {
   )
 }
 
+function getOptionLicensePlate(option: TitleInterface): string | number {
+  const item = option as TitleInterface & {
+    licensePlateNumber?: string | number
+    license_plate_number?: string | number
+  }
+
+  return item.licensePlateNumber ?? item.license_plate_number ?? ''
+}
+
 // -----------------------------------------------------------------------------
 // Options methods
 // -----------------------------------------------------------------------------
@@ -476,13 +486,25 @@ function closeDialog(): void {
         filter
         v-bind="multiselectProps"
       >
-        <template v-if="showOptionSerial" #option="{ option }">
+        <template v-if="showOptionSerial || showOptionLicensePlate" #option="{ option }">
           <span class="equipment-option">
             <strong>{{ option?.title }}</strong>
-            <small v-if="getOptionSerial(option)">
+            <small v-if="showOptionSerial && getOptionSerial(option)">
               {{ $t('serial_number') }}: {{ getOptionSerial(option) }}
             </small>
+            <small v-else-if="showOptionLicensePlate && getOptionLicensePlate(option)">
+              {{ $t('License Plate Number') }}: {{ getOptionLicensePlate(option) }}
+            </small>
           </span>
+        </template>
+        <template v-if="showOptionLicensePlate && !isMultiselect" #value="{ value, placeholder }">
+          <span v-if="value" class="equipment-selected-value">
+            <strong>{{ value?.title }}</strong>
+            <small v-if="getOptionLicensePlate(value)">
+              {{ getOptionLicensePlate(value) }}
+            </small>
+          </span>
+          <span v-else>{{ placeholder }}</span>
         </template>
       </component>
 
@@ -541,6 +563,28 @@ function closeDialog(): void {
 }
 
 .equipment-option small {
+  color: var(--text-soft);
+  font-size: 0.75rem;
+}
+
+.equipment-selected-value {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+}
+
+.equipment-selected-value strong {
+  overflow: hidden;
+  color: var(--text-strong);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.equipment-selected-value small {
+  flex: 0 0 auto;
+  padding-inline-start: 8px;
+  border-inline-start: 1px solid var(--main-border);
   color: var(--text-soft);
   font-size: 0.75rem;
 }
