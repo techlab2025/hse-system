@@ -1964,4 +1964,10 @@ label {
     padding: 10px !important;
   }
 }
+.is-stopped .field-label {
+  width: fit-content !important;
+}
+.meeting-status {
+  margin-right: auto !important;
+}
 </style>
