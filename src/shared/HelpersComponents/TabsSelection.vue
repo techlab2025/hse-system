@@ -151,9 +151,13 @@ watch(
   gap: 12px;
   min-height: 64px;
   padding: 12px 14px;
-  border: 1px solid color-mix(in srgb, var(--status-success) 32%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--identity-primary) 34%, var(--main-border));
   border-radius: 16px;
-  background: color-mix(in srgb, var(--status-success) 8%, var(--surface-1));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--identity-primary) 10%, var(--surface-1)),
+    color-mix(in srgb, var(--identity-accent) 7%, var(--surface-1))
+  );
 }
 
 .single-zone-icon,
@@ -161,7 +165,6 @@ watch(
   display: inline-grid;
   place-items: center;
   flex: 0 0 auto;
-  background: var(--status-success);
   color: var(--text-on-brand);
   font-weight: 900;
 }
@@ -170,6 +173,7 @@ watch(
   width: 40px;
   height: 40px;
   border-radius: 12px;
+  background: linear-gradient(145deg, var(--identity-primary), var(--identity-accent));
 }
 
 .single-zone-check {
@@ -177,6 +181,8 @@ watch(
   height: 28px;
   margin-inline-start: auto;
   border-radius: 50%;
+  background: var(--identity-primary);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--identity-primary) 28%, transparent);
   font-size: 13px;
 }
 
