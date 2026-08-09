@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import Popover from 'primevue/popover'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import { DataSuccess } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -29,6 +30,7 @@ type TaskEmployee = {
 type TaskReportItem = {
   id?: number | string
   status?: number
+  reason?: string | null
   description?: string
   title?: string
   due_date?: string
@@ -92,6 +94,9 @@ const isFilterDialogVisible = ref(false)
 const selectedStatusFilter = ref<StatusFilterValue>('all')
 const selectedFromDate = ref('')
 const selectedToDate = ref('')
+const statusReasonPopover = ref<{ show: (event: Event) => void; hide: () => void } | null>(null)
+const selectedStatusReason = ref('')
+let statusReasonHideTimer: number | undefined
 
 const content = computed(() =>
   props.type === 'corrective'
@@ -288,6 +293,38 @@ const getTaskStatusLabel = (task: TaskReportItem) => {
   )
 }
 
+const getTaskReason = (task: TaskReportItem) => String(task.reason ?? '').trim()
+
+const clearStatusReasonHideTimer = () => {
+  if (statusReasonHideTimer === undefined) return
+  window.clearTimeout(statusReasonHideTimer)
+  statusReasonHideTimer = undefined
+}
+
+const openStatusReason = (event: Event, task: TaskReportItem) => {
+  const reason = getTaskReason(task)
+  if (!reason) return
+
+  clearStatusReasonHideTimer()
+  selectedStatusReason.value = reason
+  statusReasonPopover.value?.show(event)
+}
+
+const closeStatusReason = () => {
+  clearStatusReasonHideTimer()
+  statusReasonPopover.value?.hide()
+}
+
+const scheduleStatusReasonClose = () => {
+  clearStatusReasonHideTimer()
+  statusReasonHideTimer = window.setTimeout(() => {
+    statusReasonPopover.value?.hide()
+    statusReasonHideTimer = undefined
+  }, 180)
+}
+
+onBeforeUnmount(clearStatusReasonHideTimer)
+
 const getRowNumber = (index: number) => (currentPage.value - 1) * countPerPage.value + index + 1
 
 const observationTypeLabel = (observationType: number) => {
@@ -464,8 +501,25 @@ onMounted(() => fetchReport())
                     </td>
 
                     <td>
-                      <span class="task-status-pill" :class="`status-${getTaskStatus(task)}`">
+                      <span
+                        class="task-status-pill"
+                        :class="[
+                          `status-${getTaskStatus(task)}`,
+                          { 'has-reason': getTaskReason(task) },
+                        ]"
+                        :tabindex="getTaskReason(task) ? 0 : undefined"
+                        :aria-haspopup="getTaskReason(task) ? 'dialog' : undefined"
+                        @mouseenter="openStatusReason($event, task)"
+                        @mouseleave="scheduleStatusReasonClose"
+                        @focus="openStatusReason($event, task)"
+                        @blur="scheduleStatusReasonClose"
+                        @click="openStatusReason($event, task)"
+                        @keydown.esc="closeStatusReason"
+                      >
                         {{ getTaskStatusLabel(task) }}
+                        <span v-if="getTaskReason(task)" class="task-reason-indicator" aria-hidden="true">
+                          i
+                        </span>
                       </span>
                     </td>
 
@@ -519,6 +573,18 @@ onMounted(() => fetchReport())
             :description="content.emptyDescription"
             :withbtn="false"
           />
+
+          <Popover ref="statusReasonPopover">
+            <div
+              class="task-reason-popover"
+              role="tooltip"
+              @mouseenter="clearStatusReasonHideTimer"
+              @mouseleave="closeStatusReason"
+            >
+              <span class="task-reason-popover-label">{{ $t('task_reason') }}</span>
+              <p>{{ selectedStatusReason }}</p>
+            </div>
+          </Popover>
 
           <Pagination
             v-if="visibleTasks.length"
@@ -918,6 +984,60 @@ onMounted(() => fetchReport())
   font-size: 0.72rem;
   font-weight: 900;
   white-space: nowrap;
+}
+
+.task-status-pill.has-reason {
+  gap: 0.45rem;
+  cursor: help;
+  outline: none;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.task-status-pill.has-reason:hover,
+.task-status-pill.has-reason:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 7px 18px color-mix(in srgb, currentColor 13%, transparent);
+}
+
+.task-reason-indicator {
+  display: inline-grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  flex: 0 0 auto;
+  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, currentColor 9%, transparent);
+  font-family: serif;
+  font-size: 0.68rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.task-reason-popover {
+  width: min(320px, calc(100vw - 48px));
+  padding: 0.15rem;
+}
+
+.task-reason-popover-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--report-tone);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.task-reason-popover p {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
 }
 
 .task-status-pill.status-1 {

@@ -638,7 +638,8 @@ const routeGroups = computed<RouteGroup[]>(() => {
   return groups.filter((group) => group.key !== 'overview' || shouldShowOverviewGroup.value)
 })
 
-const activeGroupKey = ref('operations')
+const activeRouteGroupKey = ref('operations')
+const paneGroupKey = ref('operations')
 const searchTerm = ref('')
 const isPaneVisible = ref(false)
 const sidePaneRoutesRef = ref<HTMLElement | null>(null)
@@ -667,9 +668,7 @@ const groupHasActiveRoute = (group: RouteGroup) =>
   )
 
 const activeGroup = computed(() => {
-  return (
-    routeGroups.value.find((group) => group.key === activeGroupKey.value) || routeGroups.value[0]
-  )
+  return routeGroups.value.find((group) => group.key === paneGroupKey.value) || routeGroups.value[0]
 })
 
 const isSearching = computed(() => searchTerm.value.trim().length > 0)
@@ -702,8 +701,14 @@ const visibleRouteGroups = computed<RouteGroup[]>(() => {
 })
 
 const selectGroup = (groupKey: string) => {
-  activeGroupKey.value = groupKey
+  paneGroupKey.value = groupKey
   searchTerm.value = ''
+}
+
+const activateRouteGroup = (groupKey: string) => {
+  activeRouteGroupKey.value = groupKey
+  paneGroupKey.value = groupKey
+  hidePane()
 }
 
 const clearClosePaneTimer = () => {
@@ -753,10 +758,18 @@ watch(
 watch(
   () => route.fullPath,
   () => {
-    const routeGroup = routeGroups.value.find((group) => groupHasActiveRoute(group))
+    const currentRouteGroup = routeGroups.value.find(
+      (group) => group.key === activeRouteGroupKey.value && groupHasActiveRoute(group),
+    )
+    const routeGroup =
+      currentRouteGroup || routeGroups.value.find((group) => groupHasActiveRoute(group))
 
     if (routeGroup) {
-      activeGroupKey.value = routeGroup.key
+      activeRouteGroupKey.value = routeGroup.key
+
+      if (!isPaneVisible.value) {
+        paneGroupKey.value = routeGroup.key
+      }
     }
   },
   { immediate: true },
@@ -780,8 +793,8 @@ onBeforeUnmount(() => {
             :class="[
               'side-rail-btn',
               {
-                'is-selected': isPaneVisible && activeGroupKey === group.key,
-                'is-active': groupHasActiveRoute(group),
+                'is-selected': isPaneVisible && paneGroupKey === group.key,
+                'is-active': activeRouteGroupKey === group.key && groupHasActiveRoute(group),
               },
             ]"
             :title="group.label"
@@ -852,7 +865,7 @@ onBeforeUnmount(() => {
                     :to="sidebarRoute.link"
                     :class="['side-btn', { active: isParentLinkActive(sidebarRoute) }]"
                     :title="$t(sidebarRoute.name)"
-                    @click="hidePane"
+                    @click="activateRouteGroup(group.key)"
                   >
                     <SidebarUnicon :name="sidebarRoute.icon" class="side-icon" />
                     <span class="side-label-wrap">
@@ -874,7 +887,7 @@ onBeforeUnmount(() => {
                           { active: isLinkActive(childRoute.link) },
                         ]"
                         :title="$t(childRoute.name)"
-                        @click="hidePane"
+                        @click="activateRouteGroup(group.key)"
                       >
                         <SidebarUnicon :name="childRoute.icon" class="side-icon" />
                         <span class="side-label">{{ $t(childRoute.name) }}</span>

@@ -38,6 +38,8 @@ import CardSkelaton from '@/features/Organization/Inspection/Presentation/compon
 import { formatJoinDate } from '@/base/Presentation/utils/date_format.ts'
 import { formatTime } from '@/base/Presentation/utils/time_format.ts'
 import { useThemeMode } from '@/composables/useThemeMode'
+import { InvestegationStatusEnum } from '@/features/Organization/Investigating/Core/Enums/InvestegationStatusEnum'
+import ExportReportPdf from '@/features/Organization/TaskReports/Presentation/subComponents/ExportReportPdf.vue'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 const { isDarkMode } = useThemeMode()
@@ -285,6 +287,30 @@ const getEquipmentPlateNumber = (equipment: unknown) => {
     null
   )
 }
+
+const ReturnStatusTitle = (status: InvestegationStatusEnum): string => {
+  switch (status) {
+    case InvestegationStatusEnum.NEW:
+      return 'New'
+    case InvestegationStatusEnum.IN_PROGRESS:
+      return 'InProgress'
+    case InvestegationStatusEnum.CLOSED:
+      return 'Closed'
+    case InvestegationStatusEnum.COMPLETED:
+      return 'Completed'
+    case InvestegationStatusEnum.HOLD:
+      return 'Hold'
+    case InvestegationStatusEnum.OPEN:
+      return 'Open'
+    default:
+      return 'Unknown'
+  }
+}
+
+const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
+  ReturnStatusTitle(status)
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .toLowerCase()
 </script>
 
 <template>
@@ -316,6 +342,12 @@ const getEquipmentPlateNumber = (equipment: unknown) => {
               @update:data="setSelectedProjectFilter"
             >
               <template #actions>
+                <ExportReportPdf
+                  v-if="state.data?.length"
+                  target-selector=".report-board"
+                  file-name="incident-report"
+                  :data="state.data"
+                />
                 <PermissionBuilder
                   :code="[
                     PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -368,7 +400,7 @@ const getEquipmentPlateNumber = (equipment: unknown) => {
         </div>
         <DataStatus :controller="state">
           <template #success>
-            <div class="table-responsive incident-table-responsive">
+            <div class="table-responsive incident-table-responsive report-board">
               <div class="index-table-card-container incident-card-list">
                 <article
                   class="index-table-card incident-card"
@@ -399,6 +431,13 @@ const getEquipmentPlateNumber = (equipment: unknown) => {
                         <span>{{ $t('Investigation') }} #{{ item.investigationId }}</span>
                         <span class="incident-investigation-arrow" aria-hidden="true">→</span>
                       </router-link>
+                      <span
+                        class="investigation-status-badge"
+                        :class="`investigation-status-badge--${ReturnStatusClass(item.investigationStatus)}`"
+                      >
+                        <i aria-hidden="true"></i>
+                        <span>{{ ReturnStatusTitle(item.investigationStatus) }}</span>
+                      </span>
 
                       <span class="incident-status-chip">
                         <i aria-hidden="true"></i>
@@ -999,6 +1038,76 @@ const getEquipmentPlateNumber = (equipment: unknown) => {
 
 .incident-investigation-badge:hover .incident-investigation-arrow {
   transform: translateX(2px);
+}
+
+.investigation-status-badge {
+  --investigation-status-color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
+  padding: 6px 11px;
+  border: 1px solid color-mix(in srgb, var(--investigation-status-color) 28%, transparent);
+  border-radius: 999px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--investigation-status-color) 13%, var(--surface-1)),
+    color-mix(in srgb, var(--investigation-status-color) 5%, var(--surface-1))
+  );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--surface-1) 70%, transparent),
+    0 5px 14px color-mix(in srgb, var(--investigation-status-color) 10%, transparent);
+  color: var(--investigation-status-color);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.investigation-status-badge i {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border: 2px solid color-mix(in srgb, var(--surface-1) 70%, transparent);
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--investigation-status-color) 14%, transparent);
+}
+
+.investigation-status-badge--new,
+.investigation-status-badge--open {
+  --investigation-status-color: var(--status-info);
+}
+
+.investigation-status-badge--in-progress {
+  --investigation-status-color: var(--identity-primary);
+}
+
+.investigation-status-badge--in-progress i {
+  animation: incident-investigation-status-pulse 1.7s ease-in-out infinite;
+}
+
+.investigation-status-badge--hold {
+  --investigation-status-color: var(--status-warning);
+}
+
+.investigation-status-badge--closed {
+  --investigation-status-color: var(--text-soft);
+}
+
+.investigation-status-badge--completed {
+  --investigation-status-color: var(--status-success);
+}
+
+@keyframes incident-investigation-status-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--investigation-status-color) 12%, transparent);
+  }
+
+  50% {
+    box-shadow: 0 0 0 7px color-mix(in srgb, var(--investigation-status-color) 5%, transparent);
+  }
 }
 
 .incident-status-chip i {

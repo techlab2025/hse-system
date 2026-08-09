@@ -23,6 +23,7 @@ import { formatTime } from '@/base/Presentation/utils/time_format.ts'
 import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
+import ExportReportPdf from '@/features/Organization/TaskReports/Presentation/subComponents/ExportReportPdf.vue'
 
 const word = ref('')
 const currentPage = ref(1)
@@ -231,6 +232,12 @@ const GerIncidantCount = (data: any): number => {
           <div class="flex items-center justify-between mb-4">
             <!-- <IndexFilter :filters="Filters" /> -->
             <div class="btns-filter">
+              <ExportReportPdf
+                v-if="state.data?.length"
+                target-selector=".report-board"
+                file-name="investigation-report"
+                :data="state.data"
+              />
               <!-- <IndexFilterDialog
                 show-date
                 :fields="filterFields"
@@ -246,7 +253,7 @@ const GerIncidantCount = (data: any): number => {
           </div>
 
           <!-- CARDS -->
-          <div class="table-responsive">
+          <div class="table-responsive report-board">
             <div class="index-table-card-container">
               <!--  InvestigatingList-->
               <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
@@ -493,7 +500,7 @@ const GerIncidantCount = (data: any): number => {
       />
     </template>
     <template #failed>
-       <DataEmpty
+      <DataEmpty
         description="Sorry .. You have no investigations .. All your joined customers will appear here when you add your customer data"
         title="..ops! You have No investigations"
       />
@@ -515,6 +522,7 @@ const GerIncidantCount = (data: any): number => {
   > .col-span-9 {
     min-width: 0;
   }
+
 }
 
 .table-responsive {

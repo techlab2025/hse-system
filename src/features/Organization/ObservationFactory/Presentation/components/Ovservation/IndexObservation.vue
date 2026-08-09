@@ -24,6 +24,7 @@ import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 import DeleteHazardParams from '../../../Core/params/deleteHazardParams'
 import DeleteHazardController from '../../controllers/deleteHazardController'
 import IndexHazardHeader from '../Hazard/HazardUtils/IndexHazardHeader.vue'
+import ExportReportPdf from '@/features/Organization/TaskReports/Presentation/subComponents/ExportReportPdf.vue'
 import IndexFilter from '../Hazard/HazardUtils/IndexFilter.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import type MyProjectsModel from '../../../Data/models/MyProjectsModel'
@@ -48,6 +49,7 @@ import CardSkelaton from '@/features/Organization/Inspection/Presentation/compon
 import { useThemeMode } from '@/composables/useThemeMode'
 import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
+import { InvestegationStatusEnum } from '@/features/Organization/Investigating/Core/Enums/InvestegationStatusEnum.ts'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 const { isDarkMode } = useThemeMode()
@@ -402,6 +404,33 @@ const GetObservationType = (type: number) => {
       return 'Hazard'
   }
 }
+
+
+const ReturnStatusTitle = (status: InvestegationStatusEnum): string => {
+  switch (status) {
+    case InvestegationStatusEnum.NEW:
+      return 'New'
+    case InvestegationStatusEnum.IN_PROGRESS:
+      return 'InProgress'
+    case InvestegationStatusEnum.CLOSED:
+      return 'Closed'
+    case InvestegationStatusEnum.COMPLETED:
+      return 'Completed'
+    case InvestegationStatusEnum.HOLD:
+      return 'Hold'
+    case InvestegationStatusEnum.OPEN:
+      return 'Open'
+    default:
+      return 'Unknown'
+  }
+}
+
+const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
+  ReturnStatusTitle(status)
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .toLowerCase()
+
+
 </script>
 
 <template>
@@ -439,6 +468,12 @@ const GetObservationType = (type: number) => {
                   :initial-values="{ saveStatus: filterSaveStatus, riskLevel: filterRiskLevel }"
                   @apply="applyDialogFilters"
                   @reset="resetDialogFilters"
+                />
+                <ExportReportPdf
+                  v-if="state.data?.length"
+                  target-selector=".report-board"
+                  file-name="observation-report"
+                  :data="state.data"
                 />
                 <PermissionBuilder
                   :code="[
@@ -500,7 +535,7 @@ const GetObservationType = (type: number) => {
         </div>
         <DataStatus :controller="state">
           <template #success>
-            <div class="table-responsive">
+            <div class="table-responsive report-board">
               <div class="index-table-card-container">
                 <article
                   class="index-table-card observation-card"
@@ -533,7 +568,13 @@ const GetObservationType = (type: number) => {
                         <span>{{ $t('Investigation') }} #{{ item.investigationId }}</span>
                         <span class="investigation-badge-arrow" aria-hidden="true">→</span>
                       </router-link>
-                      <!-- <span>{{ item.investigationStatus }}</span> -->
+                      <span
+                        class="investigation-status-badge"
+                        :class="`investigation-status-badge--${ReturnStatusClass(item.investigationStatus)}`"
+                      >
+                        <i aria-hidden="true"></i>
+                        <span>{{ ReturnStatusTitle(item.investigationStatus) }}</span>
+                      </span>
                       <span
                         class="observation-type-chip"
                         :class="GetSaveStatus(item.saveStatus)?.toLowerCase()"
@@ -1149,6 +1190,76 @@ const GetObservationType = (type: number) => {
 
 .observation-investigation-badge:hover .investigation-badge-arrow {
   transform: translateX(2px);
+}
+
+.investigation-status-badge {
+  --investigation-status-color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 5px 11px;
+  border: 1px solid color-mix(in srgb, var(--investigation-status-color) 28%, transparent);
+  border-radius: 999px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--investigation-status-color) 13%, var(--surface-1)),
+    color-mix(in srgb, var(--investigation-status-color) 5%, var(--surface-1))
+  );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--surface-1) 70%, transparent),
+    0 5px 14px color-mix(in srgb, var(--investigation-status-color) 10%, transparent);
+  color: var(--investigation-status-color);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.investigation-status-badge i {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  border: 2px solid color-mix(in srgb, var(--surface-1) 70%, transparent);
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--investigation-status-color) 14%, transparent);
+}
+
+.investigation-status-badge--new,
+.investigation-status-badge--open {
+  --investigation-status-color: var(--status-info);
+}
+
+.investigation-status-badge--in-progress {
+  --investigation-status-color: var(--identity-primary);
+}
+
+.investigation-status-badge--in-progress i {
+  animation: investigation-status-pulse 1.7s ease-in-out infinite;
+}
+
+.investigation-status-badge--hold {
+  --investigation-status-color: var(--status-warning);
+}
+
+.investigation-status-badge--closed {
+  --investigation-status-color: var(--text-soft);
+}
+
+.investigation-status-badge--completed {
+  --investigation-status-color: var(--status-success);
+}
+
+@keyframes investigation-status-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--investigation-status-color) 12%, transparent);
+  }
+
+  50% {
+    box-shadow: 0 0 0 7px color-mix(in srgb, var(--investigation-status-color) 5%, transparent);
+  }
 }
 
 [dir='rtl'] .observation-investigation-badge:hover .investigation-badge-arrow {

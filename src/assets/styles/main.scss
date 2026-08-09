@@ -533,23 +533,23 @@ label {
   .investigation-result .p-accordionpanel {
     margin-block: 14px !important;
   }
-  .input-image{
-    overflow:hidden;
+  .input-image {
+    overflow: hidden;
   }
   .input-label-images {
     max-width: 50% !important;
   }
-  .input-wrapper{
-    grid-column: span 24 ;
+  .input-wrapper {
+    grid-column: span 24;
   }
-  header{
-    width:96% !important;
-    margin-inline:auto !important;
+  header {
+    width: 96% !important;
+    margin-inline: auto !important;
   }
 }
 
-.capa-index-page .project-filter-content{
-  display: none ;
+.capa-index-page .project-filter-content {
+  display: none;
 }
 .p-dialog-mask {
   position: fixed !important;
@@ -578,4 +578,13 @@ label {
 .p-dialog-content {
   max-height: calc(100dvh - 8rem);
   overflow-y: auto;
+}
+.export-actions {
+  .btn-secondary,
+  .btn,
+  .btns-filter .btn,
+  .btns-filter .btn-primary {
+    color: black !important;
+    border: 1px solid #80808036;
+  }
 }
