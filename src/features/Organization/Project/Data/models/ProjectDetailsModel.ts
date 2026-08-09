@@ -59,18 +59,32 @@ export default class ProjectDetailsModel {
   }
 
   static fromMap(data: any): ProjectDetailsModel {
+    const locations = Array.isArray(data.locations) ? data.locations : []
+    const getLocationsByType = (level: number, type: LocationEnum): TitleInterface[] => {
+      const uniqueLocations = new Map<number, TitleInterface>()
+
+      locations.forEach((item: any) => {
+        const location = this.getLocationsWithKeys(item, level, type)
+        if (location?.id !== null && location?.id !== undefined) {
+          uniqueLocations.set(location.id, location)
+        }
+      })
+
+      return [...uniqueLocations.values()]
+    }
+
     return new ProjectDetailsModel(
       data.id,
       TranslationsParams.fromMap(data.titles).titles,
       TranslationsParams.fromMap([], data.descriptions).descriptions,
       data.partner,
-      data.locations,
+      locations,
       data.serial_number,
       data.start_date,
-      data.locations.map((item: any) => this.getLocationsWithKeys(item, 4, LocationEnum.COUNTRY)), //
-      data.locations.map((item: any) => this.getLocationsWithKeys(item, 3, LocationEnum.STATE)), //
-      data.locations.map((item: any) => this.getLocationsWithKeys(item, 2, LocationEnum.CITY)), //
-      data.locations.map((item: any) => this.getLocationsWithKeys(item, 1, LocationEnum.AREA)), //
+      getLocationsByType(4, LocationEnum.COUNTRY),
+      getLocationsByType(3, LocationEnum.STATE),
+      getLocationsByType(2, LocationEnum.CITY),
+      getLocationsByType(1, LocationEnum.AREA),
       data.project_zoons?.map((item: any) => SohwProjectZoonModel.fromMap(item)) ?? [],
       data.methods?.map((item: any) => this.getTitle(item)) ?? [],
       data.contractors?.map((item: any) => this.getTitle(item)) ?? [],

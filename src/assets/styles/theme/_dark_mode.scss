@@ -185,7 +185,16 @@ body,
     color: var(--subtitle-color);
   }
 
-  :where(input, textarea, select, .p-inputtext, .p-select, .p-multiselect, .p-dropdown, .p-textarea) {
+  :where(
+    input,
+    textarea,
+    select,
+    .p-inputtext,
+    .p-select,
+    .p-multiselect,
+    .p-dropdown,
+    .p-textarea
+  ) {
     background-color: var(--text-on-brand) !important;
     color: var(--text-strong) !important;
     border-color: var(--text-muted) !important;
@@ -195,13 +204,27 @@ body,
     color: var(--text-muted) !important;
   }
 
-  :where(.p-select-overlay, .p-multiselect-overlay, .p-datepicker-panel, .p-menu, .p-tieredmenu, .p-drawer) {
+  :where(
+    .p-select-overlay,
+    .p-multiselect-overlay,
+    .p-datepicker-panel,
+    .p-menu,
+    .p-tieredmenu,
+    .p-drawer
+  ) {
     background-color: var(--text-on-brand) !important;
     color: var(--text-strong) !important;
     border-color: var(--text-muted) !important;
   }
 
-  :where(.p-select-option, .p-multiselect-option, .p-menu-item-content, .p-datepicker-day, .p-datepicker-month, .p-datepicker-year) {
+  :where(
+    .p-select-option,
+    .p-multiselect-option,
+    .p-menu-item-content,
+    .p-datepicker-day,
+    .p-datepicker-month,
+    .p-datepicker-year
+  ) {
     color: var(--text-strong) !important;
   }
 
@@ -209,7 +232,16 @@ body,
     background-color: var(--text-on-brand) !important;
   }
 
-  :where(table, thead, tbody, tr, th, td, .p-datatable-thead > tr > th, .p-datatable-tbody > tr > td) {
+  :where(
+    table,
+    thead,
+    tbody,
+    tr,
+    th,
+    td,
+    .p-datatable-thead > tr > th,
+    .p-datatable-tbody > tr > td
+  ) {
     background-color: var(--text-on-brand) !important;
     color: var(--text-strong) !important;
     border-color: var(--text-muted) !important;
@@ -251,8 +283,7 @@ body,
 
   .table-responsive table.main-table thead tr th {
     background:
-      linear-gradient(180deg, var(--surface-2), var(--surface-3)),
-      var(--surface-2) !important;
+      linear-gradient(180deg, var(--surface-2), var(--surface-3)), var(--surface-2) !important;
     border-color: var(--text-muted) !important;
     color: var(--text-soft) !important;
   }
@@ -261,8 +292,7 @@ body,
   .table-responsive table.main-table thead tr th:last-child,
   .table-responsive table.main-table thead tr th.empty {
     background:
-      linear-gradient(180deg, var(--surface-2), var(--surface-3)),
-      var(--surface-2) !important;
+      linear-gradient(180deg, var(--surface-2), var(--surface-3)), var(--surface-2) !important;
   }
 
   .table-responsive table.main-table tbody tr {
@@ -435,7 +465,11 @@ body,
       }
 
       .btn-primary {
-        background: linear-gradient(135deg, var(--brand-primary-500), var(--status-success)) !important;
+        background: linear-gradient(
+          135deg,
+          var(--brand-primary-500),
+          var(--status-success)
+        ) !important;
         border-color: transparent !important;
         color: var(--text-on-brand) !important;
         box-shadow: 0 14px 28px color-mix(in srgb, var(--brand-primary-500) 24%, transparent) !important;
@@ -633,11 +667,7 @@ body,
 
   .project-statistics .header {
     background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
-        transparent
-      ),
+      linear-gradient(180deg, color-mix(in srgb, var(--PrimaryColor) 7%, transparent), transparent),
       var(--surface-1) !important;
     border-color: var(--text-muted) !important;
   }
@@ -745,17 +775,17 @@ body,
   .full-observation-form.is-dark,
   .equipment-form.is-dark {
     :where(
-        .Hazard-form-header,
-        .form-filter-panel,
-        .hazard-type-container,
-        .not-colored,
-        .is-stopped,
-        .vehicle,
-        .card_Qr,
-        .machine_card,
-        .Qr_EQUIPMENt,
-        .radio-wrapper
-      ) {
+      .Hazard-form-header,
+      .form-filter-panel,
+      .hazard-type-container,
+      .not-colored,
+      .is-stopped,
+      .vehicle,
+      .card_Qr,
+      .machine_card,
+      .Qr_EQUIPMENt,
+      .radio-wrapper
+    ) {
       background: var(--surface-1) !important;
       border-color: var(--text-muted) !important;
       color: var(--text-strong) !important;
@@ -832,7 +862,12 @@ body,
     }
 
     .skeleton-block {
-      background: linear-gradient(90deg, var(--brand-primary-800) 25%, var(--brand-primary-700) 50%, var(--brand-primary-800) 75%) !important;
+      background: linear-gradient(
+        90deg,
+        var(--brand-primary-800) 25%,
+        var(--brand-primary-700) 50%,
+        var(--brand-primary-800) 75%
+      ) !important;
       background-size: 220% 100% !important;
     }
   }
@@ -968,12 +1003,11 @@ body,
     }
 
     .timeline-item.active {
-      background:
-        linear-gradient(
-          180deg,
-          color-mix(in srgb, var(--PrimaryColor) 13%, var(--surface-1)),
-          var(--surface-1)
-        ) !important;
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--PrimaryColor) 13%, var(--surface-1)),
+        var(--surface-1)
+      ) !important;
       border-color: color-mix(in srgb, var(--PrimaryColor) 48%, var(--main-border)) !important;
     }
 
@@ -1012,11 +1046,11 @@ body,
     }
 
     :where(
-        .first-item-description,
-        .time-line-description,
-        .content-header .description,
-        .lottie-header .text
-      ) {
+      .first-item-description,
+      .time-line-description,
+      .content-header .description,
+      .lottie-header .text
+    ) {
       color: var(--text-soft) !important;
     }
 
@@ -1172,47 +1206,47 @@ body,
   }
 
   :where(
-      .project-card-container .project-title,
-      .project-card-container .serial,
-      .project-card-container .popover-head h4,
-      .project-card-container .location-title,
-      .add-hierarchy .title h5,
-      .add-employee .title h5,
-      .add-employee .location h5,
-      .emoloyees-details .employee,
-      .emoloyees-details .employee-count,
-      .zone-form .title,
-      .zone-form .zone-title,
-      .zones .zone,
-      .zoon-title,
-      .add-employee-card .title
-    ) {
+    .project-card-container .project-title,
+    .project-card-container .serial,
+    .project-card-container .popover-head h4,
+    .project-card-container .location-title,
+    .add-hierarchy .title h5,
+    .add-employee .title h5,
+    .add-employee .location h5,
+    .emoloyees-details .employee,
+    .emoloyees-details .employee-count,
+    .zone-form .title,
+    .zone-form .zone-title,
+    .zones .zone,
+    .zoon-title,
+    .add-employee-card .title
+  ) {
     color: var(--text-strong) !important;
   }
 
   :where(
-      .project-card-container .project-employees,
-      .project-card-container .locations,
-      .project-card-container .info-title,
-      .project-card-container .popover-empty,
-      .project-card-container .popover-kicker,
-      .add-employee .location sub,
-      .emoloyees-details .subtitle,
-      .zone-form .empty-zone,
-      .employee-header .subtitle
-    ) {
+    .project-card-container .project-employees,
+    .project-card-container .locations,
+    .project-card-container .info-title,
+    .project-card-container .popover-empty,
+    .project-card-container .popover-kicker,
+    .add-employee .location sub,
+    .emoloyees-details .subtitle,
+    .zone-form .empty-zone,
+    .employee-header .subtitle
+  ) {
     color: var(--text-soft) !important;
   }
 
   :where(
-      .project-card-container .status,
-      .project-card-container .popover-trigger-count,
-      .project-card-container .popover-total,
-      .emoloyees-details .edit-btn,
-      .emoloyees-details .add-btn,
-      .zone-form .zone-content.active .zone-title,
-      .zone-form .confirm-btn
-    ) {
+    .project-card-container .status,
+    .project-card-container .popover-trigger-count,
+    .project-card-container .popover-total,
+    .emoloyees-details .edit-btn,
+    .emoloyees-details .add-btn,
+    .zone-form .zone-content.active .zone-title,
+    .zone-form .confirm-btn
+  ) {
     color: var(--PrimaryColor) !important;
   }
 
@@ -1246,13 +1280,25 @@ body,
     color: var(--PrimaryColor) !important;
   }
 
-  :where(.project-card-divider, .employee-hr, .dashed-line, .hr-dashed-line, .add-equipment-hr, .add-employee-hr) {
+  :where(
+    .project-card-divider,
+    .employee-hr,
+    .dashed-line,
+    .hr-dashed-line,
+    .add-equipment-hr,
+    .add-employee-hr
+  ) {
     background-color: var(--text-muted) !important;
     border-color: var(--text-muted) !important;
   }
 
   .project-card-container .skeleton-bar {
-    background: linear-gradient(90deg, var(--brand-primary-800) 25%, var(--brand-primary-700) 50%, var(--brand-primary-800) 75%) !important;
+    background: linear-gradient(
+      90deg,
+      var(--brand-primary-800) 25%,
+      var(--brand-primary-700) 50%,
+      var(--brand-primary-800) 75%
+    ) !important;
     background-size: 220% 100% !important;
   }
 
@@ -1352,8 +1398,7 @@ body,
   .emoloyees-details .member-card.employee-card,
   .emoloyees-details .team-card,
   .emoloyees-details .team-card.employee-card {
-    background:
-      linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
+    background: linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
     border: 1px solid var(--main-border) !important;
     color: var(--text-strong) !important;
     box-shadow: 0 10px 24px color-mix(in srgb, var(--text-strong) 20%, transparent) !important;
@@ -1625,81 +1670,81 @@ body,
     }
 
     :where(
-        .page-title,
-        .project-name,
-        .title,
-        .title-page,
-        .team-card-title,
-        .name,
-        .state,
-        .employee,
-        .employee-count,
-        .main-type,
-        .subtype-title,
-        .serial-number,
-        .equipment-card-header-text .title,
-        .location-header .title,
-        .location-title,
-        .inspection-data span,
-        .last-inspection-info .by span,
-        .last-inspection-info .date-time span,
-        .no-zoon,
-        .empty-text .title,
-        .content-title
-      ) {
+      .page-title,
+      .project-name,
+      .title,
+      .title-page,
+      .team-card-title,
+      .name,
+      .state,
+      .employee,
+      .employee-count,
+      .main-type,
+      .subtype-title,
+      .serial-number,
+      .equipment-card-header-text .title,
+      .location-header .title,
+      .location-title,
+      .inspection-data span,
+      .last-inspection-info .by span,
+      .last-inspection-info .date-time span,
+      .no-zoon,
+      .empty-text .title,
+      .content-title
+    ) {
       color: var(--text-strong) !important;
     }
 
     :where(
-        .description,
-        .subtitle,
-        .subtitle-page,
-        .serial,
-        .date,
-        .overview-label,
-        .zone,
-        .position,
-        .team-card-members,
-        .inspection-data,
-        .last-inspection,
-        .last-inspection-info .by,
-        .last-inspection-info .date-time,
-        .no-zoon-description,
-        .empty-text .subtitle,
-        .content-date,
-        .tool-subtitle .subtitle,
-        .meta-label,
-        .equipment-card-header-text .subtitle
-      ) {
+      .description,
+      .subtitle,
+      .subtitle-page,
+      .serial,
+      .date,
+      .overview-label,
+      .zone,
+      .position,
+      .team-card-members,
+      .inspection-data,
+      .last-inspection,
+      .last-inspection-info .by,
+      .last-inspection-info .date-time,
+      .no-zoon-description,
+      .empty-text .subtitle,
+      .content-date,
+      .tool-subtitle .subtitle,
+      .meta-label,
+      .equipment-card-header-text .subtitle
+    ) {
       color: var(--text-soft) !important;
     }
 
     :where(
-        .page-eyebrow,
-        .overview-value,
-        .contractor,
-        .location,
-        .add-zone,
-        .show-all,
-        .show-all-btn,
-        .all-employees-view,
-        .tasks-num,
-        .status,
-        .per,
-        .type,
-        .location-info-statics p,
-        .certificat-btn
-      ) {
+      .page-eyebrow,
+      .overview-value,
+      .contractor,
+      .location,
+      .add-zone,
+      .show-all,
+      .show-all-btn,
+      .all-employees-view,
+      .tasks-num,
+      .status,
+      .per,
+      .type,
+      .location-info-statics p,
+      .certificat-btn
+    ) {
       color: var(--PrimaryColor) !important;
     }
 
     :where(
-        .serial span,
-        .date span,
-        .zone span,
-        .location-info-statics span,
-        .equipment-card-header-text .subtitle span
-      ) {
+      .serial span,
+      .date span,
+      .zone span,
+      .location-info-statics span,
+      .equipment-card-header-text .subtitle span
+    ) {
       color: var(--text-strong) !important;
     }
 
@@ -1733,8 +1778,7 @@ body,
     }
 
     .p-accordionpanel {
-      background:
-        linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
+      background: linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
       border: 1px solid var(--main-border) !important;
       border-radius: 14px !important;
       overflow: hidden !important;
@@ -2045,6 +2089,18 @@ body,
       border-radius: 16px !important;
     }
 
+    .select-type.not-effective.active {
+      border: 2px solid var(--status-danger) !important;
+      background: color-mix(in srgb, var(--status-danger) 14%, var(--surface-1)) !important;
+      box-shadow: 0 14px 30px color-mix(in srgb, var(--status-danger) 20%, transparent) !important;
+    }
+
+    .select-type.effective.active {
+      border: 2px solid var(--status-success) !important;
+      background: color-mix(in srgb, var(--status-success) 14%, var(--surface-1)) !important;
+      box-shadow: 0 14px 30px color-mix(in srgb, var(--status-success) 20%, transparent) !important;
+    }
+
     .title-header,
     .section-header-page,
     .section-header-page-container,
@@ -2156,7 +2212,12 @@ body,
     .similar-observation-card.loading strong,
     .similar-observation-card.loading small,
     .p-skeleton {
-      background: linear-gradient(90deg, var(--brand-primary-800), var(--brand-primary-700), var(--brand-primary-800)) !important;
+      background: linear-gradient(
+        90deg,
+        var(--brand-primary-800),
+        var(--brand-primary-700),
+        var(--brand-primary-800)
+      ) !important;
       color: transparent !important;
     }
 
@@ -2184,7 +2245,12 @@ body,
     .mini-card,
     .member-row,
     .timeline-card {
-      background: linear-gradient(90deg, var(--brand-primary-800), var(--brand-primary-700), var(--brand-primary-800)) !important;
+      background: linear-gradient(
+        90deg,
+        var(--brand-primary-800),
+        var(--brand-primary-700),
+        var(--brand-primary-800)
+      ) !important;
     }
   }
 

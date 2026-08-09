@@ -1838,5 +1838,6 @@
   "Not_a_nermiss": "Not a nermiss",
   "nermiss": "Nermiss",
   "add_incident_type": "Add Incident Type",
-  "show_investigation_result": "show investigation result"
+  "show_investigation_result": "show investigation result",
+  "system_preferences": "System preferences"
 }

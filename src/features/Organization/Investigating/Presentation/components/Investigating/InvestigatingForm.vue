@@ -10,7 +10,7 @@ import DatePicker from 'primevue/datepicker'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
 import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import detectiveImage from '@/assets/images/detective.png'
+// import detectiveImage from '@/assets/images/detective.png'
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
 // import IndexInvestigatingTypeParams from '@/features/setting/InvestigatingType/Core/params/indexInvestigatingTypeParams'
 // import IndexInvestigatingTypeController from '@/features/setting/InvestigatingType/Presentation/controllers/indexInvestigatingTypeController'
@@ -36,7 +36,7 @@ import ShowInvestigatingResultController from '../../controllers/investegationRe
 import ShowInvestigationResultParams from '../../../Core/params/investegationResult/ShowInvestigationResultParams'
 import { InvestigationMeetingEnum } from '../../../Core/Enums/investigation_meeting_enum'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog.ts'
-
+import fingerprintInvestigation from '@/assets/images/fingerprintInvestigation.png'
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   data?: ShowInvestigatingTypeModel
@@ -321,7 +321,7 @@ watch(
       <HeaderPage
         :title="'start investigating'"
         :subtitle="'Document what you observe to improve workplace safety'"
-        :img="detectiveImage"
+        :img="fingerprintInvestigation"
       />
 
       <div class="investigation-reference">

@@ -248,6 +248,43 @@ const getObserverInitials = (name?: string) => {
     .join('')
     .toUpperCase()
 }
+
+const getInvestigationRoute = (item: {
+  investigationId?: number
+  investigationMeetingId?: number
+}) => {
+  if (item.investigationId && item.investigationMeetingId) {
+    return {
+      path: `/organization/Investigating-result/${item.investigationMeetingId}`,
+      query: { investigating_id: item.investigationId },
+    }
+  }
+
+  return {
+    path: '/organization/investigating/add',
+    query: { id: item.investigationId },
+  }
+}
+
+const getEquipmentPlateNumber = (equipment: unknown) => {
+  const value = equipment as
+    | {
+        license_plate_number?: string | number
+        licensePlateNumber?: string | number
+        license_number?: string | number
+        licenseNumber?: string | number
+      }
+    | null
+    | undefined
+
+  return (
+    value?.license_plate_number ??
+    value?.licensePlateNumber ??
+    value?.license_number ??
+    value?.licenseNumber ??
+    null
+  )
+}
 </script>
 
 <template>
@@ -351,10 +388,23 @@ const getObserverInitials = (name?: string) => {
                       </div>
                     </div>
 
-                    <span class="incident-status-chip">
-                      <i aria-hidden="true"></i>
-                      {{ $t('Reported Incident') }}
-                    </span>
+                    <div class="incident-card-statuses">
+                      <router-link
+                        v-if="item.investigationId"
+                        :to="getInvestigationRoute(item)"
+                        class="incident-investigation-badge"
+                        :title="$t('Investigation')"
+                      >
+                        <span class="incident-investigation-icon" aria-hidden="true">I</span>
+                        <span>{{ $t('Investigation') }} #{{ item.investigationId }}</span>
+                        <span class="incident-investigation-arrow" aria-hidden="true">→</span>
+                      </router-link>
+
+                      <span class="incident-status-chip">
+                        <i aria-hidden="true"></i>
+                        {{ $t('Reported Incident') }}
+                      </span>
+                    </div>
                   </header>
 
                   <div class="incident-card-body">
@@ -377,6 +427,17 @@ const getObserverInitials = (name?: string) => {
                             <strong>{{ item.observer?.name || '—' }}</strong>
                           </div>
                         </div>
+
+                        <router-link
+                          :to="`/organization/project-details/${item.project?.id}`"
+                          class="incident-meta-item incident-meta-item-link"
+                        >
+                          <span class="incident-meta-icon" aria-hidden="true">P</span>
+                          <div>
+                            <span class="incident-meta-label">{{ $t('project') }}</span>
+                            <strong>{{ item.project?.title || '—' }}</strong>
+                          </div>
+                        </router-link>
 
                         <div class="incident-meta-item">
                           <span
@@ -408,6 +469,12 @@ const getObserverInitials = (name?: string) => {
                           <div>
                             <span class="incident-meta-label">{{ $t('Machine') }}</span>
                             <strong>{{ item.equipment?.title || '—' }}</strong>
+                            <strong
+                              v-if="item.equipment.license_plate_number"
+                              class="incident-machine-plate"
+                            >
+                              {{ item.equipment.license_plate_number }}
+                            </strong>
                           </div>
                         </div>
                       </div>
@@ -879,6 +946,62 @@ const getObserverInitials = (name?: string) => {
   white-space: nowrap;
 }
 
+.incident-card-statuses {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+.incident-investigation-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
+  padding: 6px 11px;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-500) 30%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--brand-primary-500) 10%, var(--surface-1));
+  color: var(--brand-primary-600);
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.incident-investigation-badge:hover,
+.incident-investigation-badge:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--brand-primary-500);
+  background: color-mix(in srgb, var(--brand-primary-500) 16%, var(--surface-1));
+  outline: none;
+}
+
+.incident-investigation-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--brand-primary-500);
+  color: var(--text-on-brand);
+  font-size: 0.65rem;
+}
+
+.incident-investigation-arrow {
+  font-size: 0.86rem;
+  transition: transform 0.18s ease;
+}
+
+.incident-investigation-badge:hover .incident-investigation-arrow {
+  transform: translateX(2px);
+}
+
 .incident-status-chip i {
   width: 7px;
   height: 7px;
@@ -928,6 +1051,11 @@ const getObserverInitials = (name?: string) => {
   background: var(--incident-accent-soft);
 }
 
+.incident-meta-item-link {
+  color: inherit;
+  text-decoration: none;
+}
+
 .incident-meta-item > div {
   display: flex;
   min-width: 0;
@@ -954,6 +1082,13 @@ const getObserverInitials = (name?: string) => {
   line-height: 1.4;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.incident-meta-item .incident-machine-plate {
+  color: var(--text-soft);
+  font-family: inherit;
+  font-size: 0.72rem;
+  font-weight: 750;
 }
 
 .incident-meta-icon,
@@ -1185,6 +1320,14 @@ const getObserverInitials = (name?: string) => {
   transform: rotate(180deg);
 }
 
+[dir='rtl'] .incident-investigation-arrow {
+  transform: rotate(180deg);
+}
+
+[dir='rtl'] .incident-investigation-badge:hover .incident-investigation-arrow {
+  transform: translateX(-2px) rotate(180deg);
+}
+
 @media (max-width: 1050px) {
   .incident-meta-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1200,6 +1343,10 @@ const getObserverInitials = (name?: string) => {
 
   .incident-card-header {
     flex-direction: column;
+  }
+
+  .incident-card-statuses {
+    justify-content: flex-start;
   }
 
   .incident-card-body {

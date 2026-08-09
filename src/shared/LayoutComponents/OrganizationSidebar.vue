@@ -110,7 +110,7 @@ const OperationsRoutes = ref<Routes[]>([
 const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/system-identity',
-    name: 'system_identity',
+    name: 'system_preferences',
     icon: 'palette',
     permissions: [
       PermissionsEnum.ADMIN,
@@ -181,7 +181,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/contractor',
-    name: 'contractors',
+    name: 'sub contractors',
     icon: 'constructor',
     permissions: [
       PermissionsEnum.ORG_CONTRACTOR_ALL,
@@ -796,7 +796,7 @@ onBeforeUnmount(() => {
             </span>
             <div>
               <strong>{{ activeGroup.label }}</strong>
-              <span>{{ activeGroup.eyebrow }}</span>
+              <!-- <span>{{ activeGroup.eyebrow }}</span> -->
             </div>
           </div>
 

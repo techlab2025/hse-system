@@ -6,21 +6,21 @@ export default class EditProjectParams implements Params {
   id: number
   translation: TranslationsParams
   partnerId: number[]
-  startDate: string
+  startDate: string | Date | null
   locationIds: number[]
   zoonIds: number[]
   methodIds: number[]
-  endDate: string
+  endDate: string | Date | null
 
   constructor(data: {
     id: number
     translation: TranslationsParams
     partnerId: number[]
-    startDate: string
+    startDate: string | Date | null
     locationIds: number[]
     zoonIds: number[]
     methodIds: number[]
-    endDate: string
+    endDate: string | Date | null
   }) {
     this.id = data.id
     this.translation = data.translation

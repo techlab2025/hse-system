@@ -134,7 +134,8 @@
     }
 
     .details-box {
-      border: 1px solid color-mix(in srgb, var(--identity-primary) 40%, transparent);
+      // border: 1px solid color-mix(in srgb, var(--identity-primary) 40%, transparent);
+      border: none;
       padding: 12px 18px;
       border-radius: 12px;
       margin-top: 5px;

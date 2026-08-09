@@ -9,7 +9,7 @@ import DatePicker from 'primevue/datepicker'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
 import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import detectiveImage from '@/assets/images/detective.png'
+// import detectiveImage from '@/assets/images/detective.png'
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
 // import IndexInvestigatingTypeParams from '@/features/setting/InvestigatingType/Core/params/indexInvestigatingTypeParams'
 // import IndexInvestigatingTypeController from '@/features/setting/InvestigatingType/Presentation/controllers/indexInvestigatingTypeController'
@@ -23,6 +23,7 @@ import ObservationLevel from '../../../../ObservationFactory/Presentation/compon
 import HazerdType from '../../../../ObservationFactory/Presentation/components/Ovservation/HazerdType.vue'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import meetingImage from '../../../../../../assets/images/meeting.png'
+import fingerprintInvestigation from '@/assets/images/fingerprintInvestigation.png'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -144,7 +145,7 @@ watch([title, date, riskLevel, isNearMiss, saveStatus], () => {
     <HeaderPage
       :title="'create Investigating'"
       :subtitle="'Document what you observe to improve workplace safety'"
-      :img="detectiveImage"
+      :img="fingerprintInvestigation"
     />
   </div>
   <!-- <div class="col-span-6 md:col-span-6">

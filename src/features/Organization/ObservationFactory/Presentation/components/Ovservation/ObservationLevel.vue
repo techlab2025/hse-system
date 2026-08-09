@@ -1,18 +1,19 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
-import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum';
+import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 // import { RiskLevelEnum } from '../../Core/Enums/risk_level_enum'
 
 const props = defineProps<{
   modelRiskLevel?: RiskLevelEnum | null
-  modelIsNearMiss?: number | null
+  modelIsNearMiss?: number | boolean | null
   isHazard?: boolean
+  riskLevelReadonly?: boolean
 }>()
 
 const emit = defineEmits(['update:data'])
 
-const selectedIndustry = ref<RiskLevelEnum | null>(props.modelRiskLevel || null)
-const selectedStatus = ref<number | null>(props.modelIsNearMiss || 1)
+const selectedIndustry = ref<RiskLevelEnum | null>(props.modelRiskLevel ?? null)
+const selectedStatus = ref<number>(Number(props.modelIsNearMiss ?? 0))
 
 // Emit on change
 watch([selectedIndustry, selectedStatus], ([newIndustry, newStatus]) => {
@@ -23,32 +24,63 @@ watch([selectedIndustry, selectedStatus], ([newIndustry, newStatus]) => {
 })
 
 // Keep in sync if parent changes
-watch(() => props.modelRiskLevel, (val) => { selectedIndustry.value = val ?? null })
-watch(() => props.modelIsNearMiss, (val) => { selectedStatus.value = val ?? null })
+watch(
+  () => props.modelRiskLevel,
+  (val) => {
+    selectedIndustry.value = val ?? null
+  },
+)
+watch(
+  () => props.modelIsNearMiss,
+  (val) => {
+    selectedStatus.value = Number(val ?? 0)
+  },
+)
 </script>
-
 
 <template>
   <div class="observation-level lg:grid grid-cols-12 gap-4 mt-6">
     <!-- Low -->
-    <div class="col-span-4 select-container" :class="{
-      selected: selectedIndustry === RiskLevelEnum.Low,
-      'low-selected': selectedIndustry === RiskLevelEnum.Low,
-    }">
+    <div
+      class="col-span-4 select-container"
+      :class="{
+        selected: selectedIndustry === RiskLevelEnum.Low,
+        'low-selected': selectedIndustry === RiskLevelEnum.Low,
+        'risk-readonly': riskLevelReadonly,
+      }"
+      :aria-disabled="riskLevelReadonly"
+    >
       <label>
-        <input type="radio" v-model="selectedIndustry" :value="RiskLevelEnum.Low" class="radio-input" />
+        <input
+          type="radio"
+          v-model="selectedIndustry"
+          :value="RiskLevelEnum.Low"
+          class="radio-input"
+          :disabled="riskLevelReadonly"
+        />
         <span>{{ $t('low') }}</span>
       </label>
       <div class="circle" v-if="selectedIndustry === RiskLevelEnum.Low"></div>
     </div>
 
     <!-- Medium -->
-    <div class="col-span-4 select-container" :class="{
-      selected: selectedIndustry === RiskLevelEnum.Medium,
-      'medium-selected': selectedIndustry === RiskLevelEnum.Medium,
-    }">
+    <div
+      class="col-span-4 select-container"
+      :class="{
+        selected: selectedIndustry === RiskLevelEnum.Medium,
+        'medium-selected': selectedIndustry === RiskLevelEnum.Medium,
+        'risk-readonly': riskLevelReadonly,
+      }"
+      :aria-disabled="riskLevelReadonly"
+    >
       <label>
-        <input type="radio" v-model="selectedIndustry" :value="RiskLevelEnum.Medium" class="radio-input" />
+        <input
+          type="radio"
+          v-model="selectedIndustry"
+          :value="RiskLevelEnum.Medium"
+          class="radio-input"
+          :disabled="riskLevelReadonly"
+        />
         <span>{{ $t('Medium') }}</span>
       </label>
 
@@ -71,12 +103,23 @@ watch(() => props.modelIsNearMiss, (val) => { selectedStatus.value = val ?? null
     </div>
 
     <!-- High -->
-    <div class="col-span-4 select-container" :class="{
-      selected: selectedIndustry === RiskLevelEnum.High,
-      'high-selected': selectedIndustry === RiskLevelEnum.High,
-    }">
+    <div
+      class="col-span-4 select-container"
+      :class="{
+        selected: selectedIndustry === RiskLevelEnum.High,
+        'high-selected': selectedIndustry === RiskLevelEnum.High,
+        'risk-readonly': riskLevelReadonly,
+      }"
+      :aria-disabled="riskLevelReadonly"
+    >
       <label>
-        <input type="radio" v-model="selectedIndustry" :value="RiskLevelEnum.High" class="radio-input" />
+        <input
+          type="radio"
+          v-model="selectedIndustry"
+          :value="RiskLevelEnum.High"
+          class="radio-input"
+          :disabled="riskLevelReadonly"
+        />
         <span>{{ $t('High') }}</span>
       </label>
 
@@ -84,3 +127,17 @@ watch(() => props.modelIsNearMiss, (val) => { selectedStatus.value = val ?? null
     </div>
   </div>
 </template>
+
+<style scoped>
+.select-container.risk-readonly > label {
+  cursor: default !important;
+}
+
+.select-container.risk-readonly:not(.selected) > label {
+  opacity: 0.55;
+}
+
+.details-box .status-option {
+  cursor: pointer !important;
+}
+</style>

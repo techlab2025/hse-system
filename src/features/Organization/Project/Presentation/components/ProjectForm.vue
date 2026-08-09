@@ -9,7 +9,6 @@ import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
-import { useRoute } from 'vue-router'
 import DatePicker from 'primevue/datepicker'
 import { useUserStore } from '@/stores/user'
 import type ProjectDetailsModel from '../../Data/models/ProjectDetailsModel'
@@ -39,14 +38,10 @@ const SerialNumber = ref<string>('')
 const props = defineProps<{
   data?: ProjectDetailsModel
 }>()
-const indexLocationStatesParams = ref<IndexLocationParams | null>(null)
-const indexLocationCityParams = ref<IndexLocationParams | null>(null)
 const indexLocationAreasController = IndexLocationController.getInstance()
-const indexLocationAreasParams = ref<IndexLocationParams | null>(null)
-const SelectedCountry = ref<TitleInterface[]>()
-const SelectedState = ref<TitleInterface[]>()
-const SelectedCity = ref<TitleInterface[]>()
-const SelectedArea = ref<TitleInterface[]>()
+const indexLocationAreasParams = ref(
+  new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA),
+)
 const EvaluatingMethod = ref<TitleInterface[] | null>([])
 const ContractorIds = ref<TitleInterface[]>([])
 const location = ref<TitleInterface[]>([])
@@ -57,9 +52,6 @@ const setContractorIds = (data: TitleInterface | TitleInterface[] | null) => {
 
 const indexContractorController = IndexContractorController.getInstance()
 const indexContractorTypeParams = new IndexContractorParams('', 0, 0, 0)
-
-const route = useRoute()
-const id = route.params.parent_id
 
 const langs = ref<
   {
@@ -88,7 +80,7 @@ const langDefaultDescription = ref<
   {
     locale: string
     icon?: any
-    title: string
+    description: string
   }[]
 >([])
 
@@ -110,7 +102,7 @@ const fetchLang = async (
 
     langDefaultDescription.value = user?.user?.languages.map((item: any) => ({
       locale: item.code,
-      title: '',
+      description: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
     }))
 
@@ -139,8 +131,8 @@ const fetchLang = async (
       { locale: 'ar', icon: SA, title: '' },
     ]
     langDefaultDescription.value = [
-      { locale: 'en', icon: USA, title: '' },
-      { locale: 'ar', icon: SA, title: '' },
+      { locale: 'en', icon: USA, description: '' },
+      { locale: 'ar', icon: SA, description: '' },
     ]
   }
 }
@@ -148,7 +140,31 @@ const fetchLang = async (
 onMounted(async () => {
   await fetchLang()
 })
-const date = ref(new Date())
+const parseApiDate = (value?: string | Date | null): Date | null => {
+  if (!value) return null
+  if (value instanceof Date) return Number.isNaN(value.getTime()) ? null : value
+
+  const normalizedValue = /^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T00:00:00` : value
+  const parsedDate = new Date(normalizedValue)
+  return Number.isNaN(parsedDate.getTime()) ? null : parsedDate
+}
+
+const isTitle = (value: TitleInterface | null | undefined): value is TitleInterface =>
+  value?.id !== null && value?.id !== undefined
+
+const setLangTitles = (value: { locale: string; title?: string }[]) => {
+  langs.value = value.map((item) => ({ ...item, title: item.title ?? '' }))
+}
+
+const setLangDescriptions = (value: { locale: string; description?: string }[]) => {
+  langsDescription.value = value.map((item) => ({
+    ...item,
+    description: item.description ?? '',
+  }))
+}
+
+const date = ref<Date | null>(new Date())
+const endDate = ref<Date | null>(null)
 
 const updateData = () => {
   const translationsParams = new TranslationsParams()
@@ -159,23 +175,23 @@ const updateData = () => {
     translationsParams.setTranslation('description', lang.locale, lang.description)
   })
   const params = props.data?.id
-    ? new EditProjectParams(
-        props.data.id,
-        translationsParams,
-        ContractorIds.value?.map((p) => p.id),
-        date.value,
-        location.value.map((l) => l.id),
-        ZoneIds.value.filter((z): z is number => typeof z === 'number'),
-        EvaluatingMethod.value?.map((p) => p.id),
-        endDate.value,
-      )
+    ? new EditProjectParams({
+        id: props.data.id,
+        translation: translationsParams,
+        partnerId: ContractorIds.value.map((p) => p.id),
+        startDate: date.value,
+        locationIds: location.value.filter(isTitle).map((l) => l.id),
+        zoonIds: ZoneIds.value.filter((z): z is number => typeof z === 'number'),
+        methodIds: EvaluatingMethod.value?.map((p) => p.id) ?? [],
+        endDate: endDate.value,
+      })
     : new AddProjectParams({
         translation: translationsParams,
         ContractorIds: ContractorIds.value?.map((p) => p.id),
         startDate: date.value,
-        locationIds: location.value.map((l) => l.id),
+        locationIds: location.value.filter(isTitle).map((l) => l.id),
         zoonIds: ZoneIds.value.filter((z): z is number => typeof z === 'number'),
-        methodIds: EvaluatingMethod.value?.map((p) => p.id),
+        methodIds: EvaluatingMethod.value?.map((p) => p.id) ?? [],
         SerialNumber: SerialNumber.value,
         endDate: endDate.value,
         serial: !fields.value[0].enabled ? SerialNumber.value : undefined,
@@ -190,7 +206,7 @@ watch(
       if (newData?.titles?.length) {
         langs.value = newDefault.map((l) => {
           const existing = newData.titles.find((t) => t.locale === l.locale)
-          return existing ? existing : { locale: l.locale, title: '' }
+          return existing ? { ...existing } : { locale: l.locale, title: '' }
         })
       } else {
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
@@ -199,7 +215,7 @@ watch(
       if (newData?.descriptions?.length) {
         langsDescription.value = newDefaultDesc.map((l) => {
           const existing = newData.descriptions.find((t) => t.locale === l.locale)
-          return existing ? existing : { locale: l.locale, description: '' }
+          return existing ? { ...existing } : { locale: l.locale, description: '' }
         })
       } else {
         langsDescription.value = newDefaultDesc.map((l) => ({
@@ -208,50 +224,17 @@ watch(
         }))
       }
 
-      SerialNumber.value = newData?.SerialNumber
-      date.value = newData?.startDate || new Date()
-      SelectedCountry.value = newData?.country ?? []
-      indexLocationStatesParams.value = new IndexLocationParams(
-        '',
-        0,
-        0,
-        0,
-        LocationEnum.STATE,
-        null,
-        SelectedCountry.value?.map((c) => c?.id),
-      )
-      SelectedState.value = newData?.state ?? []
-      indexLocationCityParams.value = new IndexLocationParams(
-        '',
-        0,
-        0,
-        0,
-        LocationEnum.CITY,
-        null,
-        SelectedState.value?.map((c) => c?.id),
-      )
-      SelectedCity.value = newData?.city ?? []
-      indexLocationAreasParams.value = new IndexLocationParams(
-        '',
-        0,
-        0,
-        0,
-        LocationEnum.AREA,
-        null,
-        null,
-      )
-
-      console.log(newData?.area, 'newData?.area')
-      location.value = newData?.area ?? []
+      SerialNumber.value = newData?.SerialNumber ?? ''
+      date.value = parseApiDate(newData?.startDate) ?? new Date()
+      location.value = (newData?.area ?? []).filter(isTitle)
       EvaluatingMethod.value = newData?.methods ?? []
       ContractorIds.value = newData?.contractors ?? []
       SelectedZones.value = newData?.Zones ?? []
-      endDate.value = newData?.endDate
-      console.log('data', newData)
+      endDate.value = parseApiDate(newData?.endDate)
       updateData()
     }
   },
-  { immediate: true, deep: true },
+  { immediate: true },
 )
 
 const SelectedZones = ref<SohwProjectZoonModel[]>([])
@@ -280,19 +263,17 @@ watch(
 )
 const projtecStateus = useProjectAppStatusStore()
 
-const UpdateDate = (newDate) => {
-  date.value = newDate || new Date()
+const UpdateDate = (newDate: Date | null) => {
+  date.value = newDate
   updateData()
 }
 
-const endDate = ref()
-const UpdateEndDate = (date) => {
-  endDate.value = date
+const UpdateEndDate = (newDate: Date | null) => {
+  endDate.value = newDate
   updateData()
 }
 
 const SetAreaSelection = (data: TitleInterface[]) => {
-  SelectedArea.value = data
   location.value = data
   updateData()
 }
@@ -315,6 +296,9 @@ const LocationVisible = ref(false)
 const ShowLocationDialog = () => {
   LocationVisible.value = true
 }
+const reloadLocations = () => {
+  indexLocationAreasParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA)
+}
 
 const fields = ref([
   {
@@ -325,7 +309,7 @@ const fields = ref([
     enabled: props?.data?.id ? false : true,
   },
 ])
-const UpdateSerial = (data) => {
+const UpdateSerial = (data: { SerialNumber: string }) => {
   SerialNumber.value = data.SerialNumber
   console.log(SerialNumber.value, 'data')
   updateData()
@@ -409,7 +393,7 @@ defineExpose({
       :langs="langDefault"
       :modelValue="langs"
       help-text="Enter the project name in each available language so it is clear throughout the system."
-      @update:modelValue="(val) => (langs = val)"
+      @update:modelValue="setLangTitles"
     />
     <p v-if="getFieldError('langs')" class="required-field-message">
       {{ getFieldError('langs') }}
@@ -470,8 +454,7 @@ defineExpose({
       {{ getFieldError('endDate') }}
     </p>
   </div>
-
-  <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="location">
+  <div class="col-span-4 md:col-span-2 input-wrapper">
     <UpdatedCustomInputSelect
       :required="false"
       :modelValue="ContractorIds"
@@ -494,7 +477,7 @@ defineExpose({
     </UpdatedCustomInputSelect>
   </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="location">
     <CustomSelectInput
       :required="true"
       :modelValue="location"
@@ -538,7 +521,7 @@ defineExpose({
       label="project_scope_of_work"
       :langs="langDefault"
       :modelValue="langsDescription"
-      @update:modelValue="(val) => (langsDescription = val)"
+      @update:modelValue="setLangDescriptions"
       field-type="description"
       type="textarea"
       :placeholder="`What is the project scope of work?`"
@@ -546,7 +529,7 @@ defineExpose({
       help-text="Describe the project scope, main activities, and work boundaries in each available language."
     />
   </div>
-  <LocationSelectDialog v-model:visible="LocationVisible" />
+  <LocationSelectDialog v-model:visible="LocationVisible" @location-added="reloadLocations" />
 </template>
 
 <style scoped>

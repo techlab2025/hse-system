@@ -145,7 +145,7 @@ const hasHazardInfo = computed(
       <div class="action-container flex items-center gap-2">
         <TakeActionIcon />
         <div class="flex flex-col">
-          <p class="emp-text">{{ $t('Emp take an action') }}</p>
+          <p class="emp-text">{{ $t('Immidaita action taken') }}</p>
           <p class="action-text">{{ props?.data?.action }}</p>
         </div>
       </div>

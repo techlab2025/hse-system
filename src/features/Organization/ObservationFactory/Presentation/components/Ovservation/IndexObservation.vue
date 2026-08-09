@@ -359,6 +359,23 @@ const getObserverInitials = (name?: string) => {
     .toUpperCase()
 }
 
+const getInvestigationRoute = (item: {
+  investigationId?: number
+  investigationMeetingId?: number
+}) => {
+  if (item.investigationId && item.investigationMeetingId) {
+    return {
+      path: `/organization/Investigating-result/${item.investigationMeetingId}`,
+      query: { investigating_id: item.investigationId },
+    }
+  }
+
+  return {
+    path: '/organization/investigating/add',
+    query: { id: item.investigationId },
+  }
+}
+
 const toggleObservationWorkStopped = async (id: number) => {
   const toggleObservationWorkStoppedParams = new ToggleObservationWorkStoppedParams(id)
   await ToggleObservationWorkStoppedController.getInstance().toggleObservationWorkStopped(
@@ -506,6 +523,16 @@ const GetObservationType = (type: number) => {
                     </div>
 
                     <div class="observation-card-statuses">
+                      <router-link
+                        v-if="item.investigationId"
+                        :to="getInvestigationRoute(item)"
+                        class="observation-investigation-badge"
+                        :title="$t('Investigation')"
+                      >
+                        <span class="investigation-badge-icon" aria-hidden="true">I</span>
+                        <span>{{ $t('Investigation') }} #{{ item.investigationId }}</span>
+                        <span class="investigation-badge-arrow" aria-hidden="true">→</span>
+                      </router-link>
                       <span
                         class="observation-type-chip"
                         :class="GetSaveStatus(item.saveStatus)?.toLowerCase()"
@@ -527,13 +554,13 @@ const GetObservationType = (type: number) => {
                   <div class="observation-card-body">
                     <div class="observation-information">
                       <div class="observation-meta-grid">
-                        <div class="meta-item serial-meta">
+                        <!-- <div class="meta-item serial-meta">
                           <span class="meta-icon serial-icon" aria-hidden="true">#</span>
                           <div>
                             <span class="meta-label">{{ $t('Serial') }}</span>
                             <strong>{{ item.serialName || '—' }}</strong>
                           </div>
-                        </div>
+                        </div> -->
 
                         <div class="meta-item">
                           <span class="observer-avatar" aria-hidden="true">
@@ -544,6 +571,17 @@ const GetObservationType = (type: number) => {
                             <strong>{{ item.observer?.name || '—' }}</strong>
                           </div>
                         </div>
+
+                        <router-link
+                          :to="`/organization/project-details/${item.project?.id}`"
+                          class="meta-item"
+                        >
+                          <span class="observer-avatar" aria-hidden="true"> p </span>
+                          <div>
+                            <span class="meta-label">{{ $t('project') }}</span>
+                            <strong>{{ item.project?.title || '—' }}</strong>
+                          </div>
+                        </router-link>
 
                         <div class="meta-item">
                           <span class="meta-icon date-icon" aria-hidden="true"></span>
@@ -566,6 +604,11 @@ const GetObservationType = (type: number) => {
                           <div>
                             <span class="meta-label">{{ $t('Machine') }}</span>
                             <strong>{{ item.equipment?.title || '—' }}</strong>
+                            <strong
+                              v-if="item.equipment?.license_plate_number"
+                              class="small-text"
+                              >{{ item.equipment?.license_plate_number || '—' }}</strong
+                          >
                           </div>
                         </div>
 
@@ -688,6 +731,10 @@ const GetObservationType = (type: number) => {
 </template>
 
 <style scoped lang="scss">
+.small-text {
+  font-size: 12px !important;
+  color: #475569 !important;
+}
 .observation-control-center {
   position: relative;
   isolation: isolate;
@@ -1047,7 +1094,8 @@ const GetObservationType = (type: number) => {
 }
 
 .observation-type-chip,
-.observation-risk-level {
+.observation-risk-level,
+.observation-investigation-badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -1060,6 +1108,54 @@ const GetObservationType = (type: number) => {
   font-size: 0.72rem;
   font-weight: 900;
   white-space: nowrap;
+}
+
+.observation-investigation-badge {
+  border-color: color-mix(in srgb, var(--brand-primary-500) 30%, transparent);
+  background: color-mix(in srgb, var(--brand-primary-500) 10%, var(--surface-1));
+  color: var(--brand-primary-600);
+  text-decoration: none;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.observation-investigation-badge:hover,
+.observation-investigation-badge:focus-visible {
+  transform: translateY(-1px);
+  border-color: var(--brand-primary-500);
+  background: color-mix(in srgb, var(--brand-primary-500) 16%, var(--surface-1));
+  outline: none;
+}
+
+.investigation-badge-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--brand-primary-500);
+  color: var(--text-on-brand);
+  font-size: 0.65rem;
+  font-weight: 900;
+}
+
+.investigation-badge-arrow {
+  font-size: 0.86rem;
+  transition: transform 0.18s ease;
+}
+
+.observation-investigation-badge:hover .investigation-badge-arrow {
+  transform: translateX(2px);
+}
+
+[dir='rtl'] .observation-investigation-badge:hover .investigation-badge-arrow {
+  transform: translateX(-2px) rotate(180deg);
+}
+
+[dir='rtl'] .investigation-badge-arrow {
+  transform: rotate(180deg);
 }
 
 .observation-type-chip i {

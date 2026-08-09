@@ -5,22 +5,22 @@ import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 export default class AddProjectParams implements Params {
   translation: TranslationsParams
   ContractorIds: number[]
-  startDate: string
+  startDate: string | Date | null
   SerialNumber: string
   locationIds: number[]
   zoonIds: number[]
   methodIds: number[]
-  endDate: string
+  endDate: string | Date | null
   serial?: string
   constructor(data: {
     translation: TranslationsParams
     ContractorIds: number[]
-    startDate: string
+    startDate: string | Date | null
     SerialNumber: string
     locationIds: number[]
     zoonIds: number[]
     methodIds: number[]
-    endDate: string
+    endDate: string | Date | null
     serial?: string
   }) {
     this.translation = data.translation

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
@@ -11,30 +11,31 @@ import EditProjectController from '../controllers/editProjectController'
 
 const route = useRoute()
 const router = useRouter()
-const id = route.params.id
 const params = ref<Params | null>(null)
 const formRef = ref<InstanceType<typeof ProjectForm> | null>(null)
 
 const showProjectController = ShowProjectController.getInstance()
 const state = ref(showProjectController.state.value)
-const fetchProjectDetails = async () => {
-  const ProjectParams = new ShowProjectParams(Number(id))
+const fetchProjectDetails = async (id: string | string[]) => {
+  const projectId = Number(Array.isArray(id) ? id[0] : id)
+  if (!Number.isFinite(projectId)) return
+
+  const ProjectParams = new ShowProjectParams(projectId)
 
   await showProjectController.showProject(ProjectParams)
 }
 
-onMounted(() => {
-  fetchProjectDetails()
-})
-
-const EditProject = async (draft: boolean) => {
+const EditProject = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
-  if (draft) {
-    await EditProjectController.getInstance().editProject(params.value!, router)
-  } else {
-    await EditProjectController.getInstance().editProject(params.value!, router)
-  }
+  if (!params.value) return
+  await EditProjectController.getInstance().editProject(params.value, router)
 }
+
+watch(
+  () => route.params.id,
+  (newId) => fetchProjectDetails(newId),
+  { immediate: true },
+)
 
 watch(
   () => showProjectController.state.value,

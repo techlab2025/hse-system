@@ -10,7 +10,7 @@ const notes = ref<string>()
 
 const emit = defineEmits(['update:data'])
 
-const UpdateData = (data) => {
+const UpdateData = () => {
   emit('update:data', {
     notes: notes.value,
     actionRate: ActionRate.value,
@@ -27,15 +27,16 @@ const UpdateData = (data) => {
     />
 
     <div class="rate-of-actions-content">
-      <div class="actions-selections">
-        <div class="input-wrapper select-type" :class="ActionRate == 1 ? 'active' : ''">
-          <label for="wrong">
-            <span>{{ $t('Not Effective') }}</span>
-            <FieldHelpIcon
-              text="Choose this when the immediate action did not adequately control or remove the risk."
-            />
-            <img :src="wrongAction" alt="wrong" />
-          </label>
+      <div
+        class="actions-selections"
+        role="radiogroup"
+        :aria-label="$t('Immediate Action Effectiveness')"
+      >
+        <label
+          class="input-wrapper select-type action-choice not-effective"
+          :class="{ active: ActionRate === 1 }"
+          for="wrong"
+        >
           <input
             @change="UpdateData"
             type="radio"
@@ -43,16 +44,32 @@ const UpdateData = (data) => {
             v-model="ActionRate"
             name="rate"
             id="wrong"
+            class="action-choice-input"
           />
-        </div>
-        <div class="input-wrapper select-type" :class="ActionRate == 2 ? 'active' : ''">
-          <label for="correct">
-            <span>{{ $t('Effective') }}</span>
-            <FieldHelpIcon
-              text="Choose this when the immediate action successfully controlled the risk or made the situation safe."
-            />
-            <img :src="conrrectAction" alt="correct" />
-          </label>
+
+          <span class="action-choice-copy">
+            <span class="action-choice-heading">
+              <span class="action-choice-title">{{ $t('Not Effective') }}</span>
+              <FieldHelpIcon
+                text="Choose this when the immediate action did not adequately control or remove the risk."
+              />
+            </span>
+            <span class="action-choice-description">
+              {{ $t('The risk was not adequately controlled') }}
+            </span>
+          </span>
+
+          <span class="action-choice-visual">
+            <img :src="wrongAction" alt="" />
+            <span class="action-radio-indicator" aria-hidden="true"><i></i></span>
+          </span>
+        </label>
+
+        <label
+          class="input-wrapper select-type action-choice effective"
+          :class="{ active: ActionRate === 2 }"
+          for="correct"
+        >
           <input
             @change="UpdateData"
             type="radio"
@@ -60,12 +77,30 @@ const UpdateData = (data) => {
             v-model="ActionRate"
             name="rate"
             id="correct"
+            class="action-choice-input"
           />
-        </div>
+
+          <span class="action-choice-copy">
+            <span class="action-choice-heading">
+              <span class="action-choice-title">{{ $t('Effective') }}</span>
+              <FieldHelpIcon
+                text="Choose this when the immediate action successfully controlled the risk or made the situation safe."
+              />
+            </span>
+            <span class="action-choice-description">
+              {{ $t('The risk was successfully controlled') }}
+            </span>
+          </span>
+
+          <span class="action-choice-visual">
+            <img :src="conrrectAction" alt="" />
+            <span class="action-radio-indicator" aria-hidden="true"><i></i></span>
+          </span>
+        </label>
       </div>
 
-      <div class="input-wrapper">
-        <div class="flex items-center gap-2">
+      <div class="input-wrapper action-notes">
+        <div class="action-notes-header">
           <label for="notes">{{ $t('notes') }}</label>
           <FieldHelpIcon
             text="Explain why the immediate action was effective or ineffective and note any remaining concerns."
@@ -74,7 +109,7 @@ const UpdateData = (data) => {
         <textarea
           id="notes"
           class="input"
-          placeholder="add your notes on the taken action"
+          :placeholder="$t('add your notes on the taken action')"
           v-model="notes"
           @input="UpdateData"
         ></textarea>

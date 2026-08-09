@@ -1250,15 +1250,15 @@ const selectedProject = useProjectSelectStore()
     <!-- Observation Level -->
 
     <div
-      class="col-span-6 md:col-span-6 input-wrapper w-full overlay-container"
+      class="col-span-6 md:col-span-6 input-wrapper w-full"
       v-if="
         saveStatus == SaveStatusEnum.NotSaved && ObservationFactoryType != Observation.AccidentsType
       "
     >
-      <div class="section-overlay"></div>
       <ObservationLevel
         :modelRiskLevel="riskLevel"
         :modelIsNearMiss="isNearMiss"
+        :risk-level-readonly="true"
         @update:data="handleObservationLevel"
       />
     </div>
@@ -1589,19 +1589,6 @@ const selectedProject = useProjectSelectStore()
 .add-dialog svg {
   width: 18px;
   height: 18px;
-}
-
-.overlay-container {
-  position: relative;
-}
-
-.section-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 999;
 }
 
 .required-field-message {
