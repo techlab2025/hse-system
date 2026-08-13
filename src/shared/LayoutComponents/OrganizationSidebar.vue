@@ -43,12 +43,12 @@ const OperationsRoutes = ref<Routes[]>([
     icon: 'briefcase-alt',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
-  // {
-  //   link: '/organization/today-talks',
-  //   name: 'Today Talks',
-  //   icon: 'comment-alt-message',
-  //   permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
-  // },
+  {
+    link: '/organization/today-talks',
+    name: 'Today Talks',
+    icon: 'comment-alt-message',
+    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
   {
     link: '/organization/equipments',
     name: 'equipment',
