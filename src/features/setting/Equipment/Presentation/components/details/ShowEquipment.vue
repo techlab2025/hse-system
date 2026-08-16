@@ -15,6 +15,7 @@ import DemoCard from '../EquipmentUtils/DemoCard.vue'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
 import { usePrint } from '@/stores/PrintPart'
+import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum.ts'
 
 const route = useRoute()
 const controller = ShowEquipmentController.getInstance()
@@ -43,6 +44,16 @@ watch(
 const InspectionStatus = ref(EquipmentInspectionEnum.Inspection)
 const { user } = useUserStore()
 const { printArea, print } = usePrint()
+const GetEquipmentTypeInShow = (type: EquipmentTypesEnum) => {
+  switch (type) {
+    case EquipmentTypesEnum.TOOL:
+      return "tools"
+    case EquipmentTypesEnum.DEVICE:
+      return "devices"
+    case EquipmentTypesEnum.EQUIPMENT:
+      return "Equipment"
+  }
+}
 </script>
 
 <template>
@@ -56,51 +67,33 @@ const { printArea, print } = usePrint()
           </div>
           <div class="Qr_EQUIPMENt equipment-qr-panel printable-area" ref="printArea">
             <button class="print-icon" type="button" @click="print">{{ $t('Print') }}</button>
-            <DemoCard
-              v-if="user?.type === OrganizationTypeEnum.ORGANIZATION"
-              :equipmentName="state.data?.title"
-              :isForm="true"
-              :inspectionDuration="state.data?.inspectionDuration || $t('Determined')"
-              :image="state.data?.image"
-              :selctedequipment="state.data?.title"
-              :selectedequipmentType="state.data?.equipment_type"
-              :decommissioningDate="state.data?.date || ''"
-              :isBreadCramp="true"
-              :expiredate="state.data?.certificateExppiredDate"
-              :startDate="state.data?.checkinDate"
-              :EndDate="state.data?.checkout_date"
-              :typerent="user?.type === OrganizationTypeEnum.ORGANIZATION"
-              :deviceStatus="state.data?.status"
-            />
+
+            <DemoCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" :equipmentName="state.data?.title"
+              :isForm="true" :inspectionDuration="state.data?.inspectionDuration || $t('Determined')"
+              :image="state.data?.image" :selctedequipment="state.data?.title"
+              :selectedequipmentType="state.data?.equipment_type" :decommissioningDate="state.data?.date || ''"
+              :isBreadCramp="true" :expiredate="state.data?.certificateExppiredDate"
+              :startDate="state.data?.checkinDate" :EndDate="state.data?.checkout_date"
+              :typerent="user?.type === OrganizationTypeEnum.ORGANIZATION" :deviceStatus="state.data?.status"
+              :equipmentTypeInShow="GetEquipmentTypeInShow(state.data?.equipment_type.type!)" />
             <img :src="state.data?.qr_code_image" alt="qr" class="qr-scan" width="100" />
           </div>
         </div>
         <div class="inspection-btn inspection-switch w-full" role="tablist">
-          <button
-            type="button"
-            role="tab"
-            @click="InspectionStatus = EquipmentInspectionEnum.Inspection"
-            :class="InspectionStatus === EquipmentInspectionEnum.Inspection ? 'active' : ''"
-          >
+          <button type="button" role="tab" @click="InspectionStatus = EquipmentInspectionEnum.Inspection"
+            :class="InspectionStatus === EquipmentInspectionEnum.Inspection ? 'active' : ''">
             <span class="tab-dot"></span>
             <span>{{ $t('Inspection') }}</span>
           </button>
-          <button
-            type="button"
-            role="tab"
-            @click="InspectionStatus = EquipmentInspectionEnum.Results"
-            :class="InspectionStatus === EquipmentInspectionEnum.Results ? 'active' : ''"
-          >
+          <button type="button" role="tab" @click="InspectionStatus = EquipmentInspectionEnum.Results"
+            :class="InspectionStatus === EquipmentInspectionEnum.Results ? 'active' : ''">
             <span class="tab-dot"></span>
             <span>{{ $t('Results') }}</span>
           </button>
         </div>
         <div class="history-qr">
-          <HistoryLog
-            :show_tasks="state.data?.tasks_without_result"
-            :result_tasks="state.data?.tasks_with_result"
-            :inspectionType="InspectionStatus"
-          />
+          <HistoryLog :show_tasks="state.data?.tasks_without_result" :result_tasks="state.data?.tasks_with_result"
+            :inspectionType="InspectionStatus" />
           <!-- <QrCode /> -->
         </div>
       </div>
@@ -203,7 +196,7 @@ const { printArea, print } = usePrint()
   background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
 }
 
-.equipment-qr-panel > * {
+.equipment-qr-panel>* {
   position: relative;
   z-index: 1;
 }
@@ -409,6 +402,7 @@ const { printArea, print } = usePrint()
 }
 
 @media print {
+
   /* Hide everything */
   body * {
     visibility: hidden;

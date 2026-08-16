@@ -7,6 +7,7 @@ import { EquipmentStatus } from '../../../Core/enum/equipmentStatus'
 import Rent from '@/shared/icons/rent.vue'
 import { RentTypeEnum } from '../../../Core/enum/RentTypeEnum'
 import { formatTime } from '@/base/Presentation/utils/time_format'
+import { useI18n } from 'vue-i18n'
 
 type EquipmentTranslation = {
   locale: string
@@ -32,6 +33,7 @@ const props = withDefaults(
     rentType?: RentTypeEnum
     typerent?: boolean
     deviceStatus?: number
+    equipmentTypeInShow?:string
   }>(),
   {
     BreadCramps: () => [],
@@ -57,6 +59,7 @@ const props = withDefaults(
 // watch(() => props.selctedequipment, (Newval) => {
 //   getSelectedLang(Newval)
 // })
+
 </script>
 
 <template>
@@ -78,7 +81,7 @@ const props = withDefaults(
         <p v-if="!props.isBreadCramp" class="first-item">device</p>
         <div v-else class="sub-card-header">
           <BreadCrumb :isForm="isForm" :selctedequipment="selctedequipment || equipmentName"
-            :equipmentType="selectedequipmentType" :BreadCramps="props.BreadCramps" :cardType="cardType" />
+            :equipmentType="selectedequipmentType " :equipment="equipmentTypeInShow" :BreadCramps="props.BreadCramps" :cardType="cardType" />
           <!-- <CertificateImageDialog :certificateImage="props.certificateImage" /> -->
         </div>
 
