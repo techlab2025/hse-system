@@ -515,7 +515,7 @@ const LockUpsRoutes = ref<Routes[]>([
 ])
 const ReportsRoutes = ref<Routes[]>([
   {
-    link: '/organization/Investigating',
+    link: '/organization/Investigating?isAll=1',
     name: 'investigation_report',
     icon: 'search-alt',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],

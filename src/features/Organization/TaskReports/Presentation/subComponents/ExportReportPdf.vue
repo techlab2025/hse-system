@@ -120,6 +120,10 @@ const exportPDF = async () => {
 
         if (!clonedTarget) return
 
+        clonedTarget
+          .querySelectorAll<HTMLElement>('[data-pdf-exclude]')
+          .forEach((element) => element.remove())
+
         /*
          * The action area is ignored in the PDF.
          * Make the report header use the full available width.

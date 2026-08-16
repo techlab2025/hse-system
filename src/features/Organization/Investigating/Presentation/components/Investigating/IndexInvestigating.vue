@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, onMounted, watch } from 'vue'
+import { computed, ref, onMounted, watch } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import InvestigatingSidebar from './InvestigatingSidebar.vue'
 import InvestigatingCardsLoader from './InvestigatingCardsLoader.vue'
@@ -8,7 +8,7 @@ import { InvestegationStatusEnum } from '../../../Core/Enums/InvestegationStatus
 import LiveLink from '@/assets/images/LiveLink.png'
 import LiveIcon from '@/assets/images/LiveIcon.png'
 import IndexInvestigationResultParams from '../../../Core/params/investegationResult/indexInvestigationResultParams'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { DataFailed } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import IndexInvestigatingController from '../../controllers/indexInvestigatingController'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
@@ -24,6 +24,8 @@ import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import ExportReportPdf from '@/features/Organization/TaskReports/Presentation/subComponents/ExportReportPdf.vue'
+import InvestigatingTable from './InvestigatingTable.vue'
+import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 
 const word = ref('')
 const currentPage = ref(1)
@@ -33,6 +35,8 @@ const indexInvestigatingController = IndexInvestigatingController.getInstance()
 const state = ref(indexInvestigatingController.state.value)
 // const InvestigatingList = ref(InvestigatingData)
 const router = useRouter()
+const route = useRoute()
+const isReportTableView = computed(() => String(route.query.isAll ?? '') === '1')
 const ShowDetails = ref<boolean[]>([])
 const observationRiskLevel = ref<RiskLevelEnum | null>(null)
 const filterDate = ref('')
@@ -252,8 +256,14 @@ const GerIncidantCount = (data: any): number => {
             </div>
           </div>
 
-          <!-- CARDS -->
-          <div class="table-responsive report-board">
+          <!-- Reports use the table; Project Management keeps the existing cards. -->
+          <InvestigatingTable
+            v-if="isReportTableView"
+            :items="state.data"
+            :start-index="(currentPage - 1) * countPerPage"
+          />
+
+          <div v-else class="table-responsive report-board">
             <div class="index-table-card-container">
               <!--  InvestigatingList-->
               <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
@@ -488,10 +498,12 @@ const GerIncidantCount = (data: any): number => {
       />
     </template>
     <template #loader>
-      <InvestigatingCardsLoader :rows="5" />
+      <TableLoader v-if="isReportTableView" :cols="8" :rows="10" />
+      <InvestigatingCardsLoader v-else :rows="5" />
     </template>
     <template #initial>
-      <InvestigatingCardsLoader :rows="5" />
+      <TableLoader v-if="isReportTableView" :cols="8" :rows="10" />
+      <InvestigatingCardsLoader v-else :rows="5" />
     </template>
     <template #empty>
       <DataEmpty
