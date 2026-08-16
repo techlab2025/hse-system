@@ -407,11 +407,15 @@ const IndexEquipmentactionList = () => [
         <ActionsList
           :show-actions="true"
           :actionList="IndexEquipmentactionList()"
-          :actionsNumber="5"
+          :actionsNumber="5"<
         >
           <template #custom>
-            <ExportPdf :isDropList="true" />
-          </template>
+            <ExportPdf
+              :isDropList="true"
+              target-selector=".equipment-index-page .equipment-cards-grid"
+              filename="equipment.pdf"
+            />
+          </template>>
         </ActionsList>
       </div>
     </div>

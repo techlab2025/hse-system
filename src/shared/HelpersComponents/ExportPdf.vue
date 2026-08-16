@@ -1,43 +1,60 @@
 <script setup lang="ts">
 import jsPDF from 'jspdf'
 import html2canvas from 'html2canvas-pro'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import PdefActionIcon from '../icons/PdefActionIcon.vue'
 
-const props = defineProps<{ isDropList?: boolean }>()
-const exportPDF = async () => {
-  const tableElement = document.querySelector('.table-responsive')
+const props = withDefaults(
+  defineProps<{
+    isDropList?: boolean
+    targetSelector?: string
+    filename?: string
+  }>(),
+  {
+    targetSelector: '.table-responsive',
+    filename: 'export.pdf',
+  },
+)
 
-  if (!tableElement) {
-    console.error('Table element not found.')
+const exportPDF = async () => {
+  const exportElement = document.querySelector<HTMLElement>(props.targetSelector)
+
+  if (!exportElement) {
+    console.error(`PDF export element not found: ${props.targetSelector}`)
 
     return
   }
 
   try {
-    // Capture the table as an image
-    const canvas = await html2canvas(tableElement, {
-      scale: 2, // Higher scale for better resolution
+    const canvas = await html2canvas(exportElement, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: '#ffffff',
     })
 
     const imgData = canvas.toDataURL('image/png')
-
-    // Initialize jsPDF
     const pdf = new jsPDF({
       orientation: 'landscape',
       unit: 'mm',
       format: 'a4',
     })
 
-    // Calculate dimensions
+    const pageMargin = 5
     const pdfWidth = pdf.internal.pageSize.getWidth()
-    const pdfHeight = (canvas.height * pdfWidth) / canvas.width
+    const pdfPageHeight = pdf.internal.pageSize.getHeight()
+    const imageWidth = pdfWidth - pageMargin * 2
+    const imageHeight = (canvas.height * imageWidth) / canvas.width
+    const printablePageHeight = pdfPageHeight - pageMargin * 2
 
-    // Add image to PDF
-    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight)
+    let renderedHeight = 0
+    pdf.addImage(imgData, 'PNG', pageMargin, pageMargin, imageWidth, imageHeight)
 
-    // Save the PDF
-    pdf.save('table.pdf')
+    while (imageHeight - renderedHeight > printablePageHeight) {
+      renderedHeight += printablePageHeight
+      pdf.addPage()
+      pdf.addImage(imgData, 'PNG', pageMargin, pageMargin - renderedHeight, imageWidth, imageHeight)
+    }
+
+    pdf.save(props.filename)
   } catch (error) {
     console.error('Error generating PDF:', error)
   }
@@ -45,7 +62,11 @@ const exportPDF = async () => {
 </script>
 
 <template>
-  <button :class="isDropList ? 'export-pdf-btn ms-2' : 'btn btn-secondary'" type="button" @click="exportPDF">
+  <button
+    :class="isDropList ? 'export-pdf-btn ms-2' : 'btn btn-secondary'"
+    type="button"
+    @click="exportPDF"
+  >
     <PdefActionIcon v-if="isDropList" />
     Export PDF
   </button>
@@ -78,6 +99,5 @@ const exportPDF = async () => {
   &:hover {
     background-color: color-mix(in srgb, var(--status-danger) 5.88%, transparent);
   }
-
 }
 </style>
