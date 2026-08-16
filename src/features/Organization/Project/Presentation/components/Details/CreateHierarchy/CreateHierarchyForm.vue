@@ -66,7 +66,7 @@ watch(
             </template>
 
             <template #Dialog>
-              <AddHerikaly @update:data="HeirarchyVisable = false" />
+              <AddHerikaly show-certificate-select-all @update:data="HeirarchyVisable = false" />
             </template>
           </UpdatedCustomInputSelect>
         </div>

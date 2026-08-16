@@ -31,7 +31,7 @@ const equipments = ref<TitleInterface[]>([])
 
 // ================== CONTROLLERS ==================
 const indexEquipmentController = IndexEquipmentController.getInstance()
-const indexEquipmentParams = new IndexEquipmentParams('', 0, 0, 0, null, true)
+const indexEquipmentParams = new IndexEquipmentParams('', 1, 100, 0, null, true)
 // ================== HANDLERS ==================
 
 const setEquipments = (data: TitleInterface[]) => {

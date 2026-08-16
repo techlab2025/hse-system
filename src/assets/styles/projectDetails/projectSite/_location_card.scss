@@ -12,6 +12,7 @@
     background-color: var(--surface-1);
     margin-block: 10px;
   }
+
   .card-header {
     @include flex-column(nowrap, flex-start, flex-start);
     gap: 4px;
@@ -20,7 +21,7 @@
       width: 100%;
       gap: $XsSize4;
       .location-header {
-        width: 80%;
+        width: 70%;
         @include flex-row(nowrap, flex-start, center);
         gap: $XsSize4;
         .title {
@@ -38,6 +39,7 @@
           //   color: var(--text-strong);
           // }
         }
+
       }
 
       .add-zone {
@@ -106,6 +108,7 @@
     }
   }
 
+
   @media (max-width: 640px) {
     height: auto;
     min-height: 0;
@@ -157,3 +160,9 @@
     }
   }
 }
+  @media (max-width: 1000px) {
+    .location-header-container {
+      flex-wrap: wrap !important;
+      gap: 20px !important;
+    }
+  }

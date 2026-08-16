@@ -23,10 +23,16 @@ const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
   data?: HerikalyDetailsModel
+  showCertificateSelectAll?: boolean
 }>()
 
 const indexCertificateController = IndexCertificateController.getInstance()
-const indexCertificateParams = new IndexCertificateParams('', 1, 10, 1)
+const indexCertificateParams = new IndexCertificateParams(
+  '',
+  1,
+  10,
+  props.showCertificateSelectAll ? 0 : 1,
+)
 
 const route = useRoute()
 const ParentId = route.params.parent_id
@@ -229,6 +235,7 @@ defineExpose({
       id="Certificate"
       :placeholder="$t('Select certificate')"
       :type="2"
+      :showSelectAllOption="showCertificateSelectAll"
       @update:modelValue="setCertificate"
     />
     <p v-if="getFieldError('Certificate')" class="required-field-message">

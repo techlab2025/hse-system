@@ -6,6 +6,10 @@ import AddHerikalyController from '../controllers/addHerikalyController'
 import type AddHerikalyParams from '../../Core/params/addHerikalyParams'
 import HerikalyForm from './HerikalyForm.vue'
 
+defineProps<{
+  showCertificateSelectAll?: boolean
+}>()
+
 const emit = defineEmits(['update:data'])
 const router = useRouter()
 const route = useRoute()
@@ -42,7 +46,12 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addHerikaly">
-    <HerikalyForm ref="formRef" :key="formKey" @update:data="setParams" />
+    <HerikalyForm
+      ref="formRef"
+      :key="formKey"
+      :show-certificate-select-all="showCertificateSelectAll"
+      @update:data="setParams"
+    />
     <div class="col-span-4 button-wrapper">
       <button
         type="submit"
