@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
 const props = defineProps<{ initialFile?: File | null }>()
 const emit = defineEmits<{ (e: 'uploaded'): void }>()
@@ -292,6 +292,36 @@ const normalizeExcelHeader = (header: unknown): keyof EquipmentExcelRow | null =
   return EXCEL_HEADER_TO_API_KEY[normalizedHeader] ?? null
 }
 
+interface PreviewColumn {
+  index: number
+  header: string
+  apiKey: keyof EquipmentExcelRow | null
+}
+
+const previewColumns = computed(() => {
+  const headers = mappedData.value?.[0] ?? []
+
+  return headers
+    .map((header: unknown, index: number): PreviewColumn => ({
+      index,
+      header: String(header ?? ''),
+      apiKey: normalizeExcelHeader(header),
+    }))
+    .filter(({ apiKey }: PreviewColumn) => apiKey !== 'image' && apiKey !== 'certificate_image')
+})
+
+const formatPreviewValue = (apiKey: keyof EquipmentExcelRow | null, value: unknown) => {
+  if (apiKey === 'status') {
+    return EquipmentStatus[Number(value)] ?? value
+  }
+
+  if (apiKey === 'period_type') {
+    return RentTypeEnum[Number(value)] ?? value
+  }
+
+  return value
+}
+
 // ─── Submit ───────────────────────────────────────────────────────────────────
 const addEquipmentController = AddEquipmentController.getInstance()
 
@@ -524,20 +554,9 @@ onMounted(() => {
             <table class="main-table">
               <thead>
                 <tr>
-                  <th v-for="(item, i) in mappedData[0]" :key="i">
-                    <span v-if="item == 'checkin_date'"> Rent Start Date </span>
-                    <span v-else-if="item == 'checkout_date'"> Rent End Date </span>
-                    <span v-else-if="item == 'license_plate_number'"> License Plate Number </span>
-                    <span v-else-if="item == 'period_type'"> Period Type </span>
-                    <span
-                      v-else-if="
-                        String(item).toLocaleLowerCase() !==
-                          String('Equipment image').toLocaleLowerCase() &&
-                        String(item).toLocaleLowerCase() !==
-                          String('Certificate Image').toLocaleLowerCase()
-                      "
-                    >
-                      {{ item }}
+                  <th v-for="column in previewColumns" :key="column.index">
+                    <span>
+                      {{ column.apiKey ? (SendDataLabels[column.apiKey] ?? column.header) : column.header }}
                     </span>
                   </th>
                   <th>Image</th>
@@ -547,11 +566,8 @@ onMounted(() => {
               </thead>
               <tbody>
                 <tr v-for="(row, rowIndex) in mappedData.slice(1)" :key="rowIndex">
-                  <!-- {{ row[7] }} -->
-                  <td v-for="(value, colIndex) in row" :key="colIndex">
-                    <span v-if="colIndex === 9">{{ EquipmentStatus[value] }}</span>
-                    <span v-else-if="colIndex === 7">{{ RentTypeEnum[value] }}</span>
-                    <span v-if="value != '*' && colIndex != 7 && colIndex != 9">{{ value }}</span>
+                  <td v-for="column in previewColumns" :key="column.index">
+                    <span>{{ formatPreviewValue(column.apiKey, row[column.index]) }}</span>
                   </td>
 
                   <td>

@@ -82,7 +82,7 @@ const exportPDF = async () => {
   margin-bottom: 5px;
   margin-top: 5px;
   transition: linear all 0.3s;
-  font-size: 16px;
+  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
   border-radius: 5px;
