@@ -189,7 +189,7 @@ const DownloadExample = () => {
 
 const IndexInjuryactionList = () => [
   {
-    text: t('export_excel'),
+    text: t('export_to_excel'),
     icon: ExceIcon,
     action: () => exportExcel(),
     type: ActionItemsTypeEnum.Success,
@@ -210,7 +210,7 @@ const IndexInjuryactionList = () => [
     ],
   },
   {
-    text: t('import_injury'),
+    text: t('upload_complated_template'),
     type: ActionItemsTypeEnum.Warning,
     action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
@@ -220,7 +220,7 @@ const IndexInjuryactionList = () => [
     ],
   },
   {
-    text: t('download_form_example'),
+    text: t('download_excel_template'),
     icon: ExceIcon,
     action: () => DownloadExample(),
     type: ActionItemsTypeEnum.Success,

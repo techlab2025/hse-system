@@ -1368,7 +1368,7 @@
   "system_warehouse_types": "System Warehouse Types",
   "system_observation_types": "System Observation Types",
   "actions_list": "Actions List",
-  "export_excel": "Export Excel",
+  "export_to_excel": "Export To Excel",
   "system_data": "System Data",
   "system_root_causes_types": "System Root Causes Types",
   "system_hazard_types": "System Hazard Types",
@@ -1846,10 +1846,9 @@
   "investigation_creation_notice_title": "Investigation required",
   "investigation_creation_notice_description": "Submitting this observation will automatically create an investigation.",
   "certificate_actions": "Certificate actions",
-  "upload_complated_template": "Upload complated template",
-  "download_excel_template": "Download excel template",
+  "upload_complated_template": "Upload completed template",
+  "download_excel_template": "Download Excel template",
   "search certificates": "Search certificates",
-  "export_to_excel": "Export to excel",
   "expiry_date_required": "Expiry date required",
   "certtificate_title": "Certtificate title"
 }

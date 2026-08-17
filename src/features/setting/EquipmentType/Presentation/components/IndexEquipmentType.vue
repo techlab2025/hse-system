@@ -230,7 +230,7 @@ const DownloadExample = () => {
 
 const IndexEquipmentTypeactionList = () => [
   {
-    text: t('export_excel'),
+    text: t('export_to_excel'),
     icon: ExceIcon,
     action: () => exportExcel(),
     type: ActionItemsTypeEnum.Success,
@@ -251,7 +251,7 @@ const IndexEquipmentTypeactionList = () => [
     ],
   },
   {
-    text: t('upload_excel'),
+    text: t('upload_complated_template'),
     type: ActionItemsTypeEnum.Warning,
     action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
@@ -261,7 +261,7 @@ const IndexEquipmentTypeactionList = () => [
     ],
   },
   {
-    text: t('download_form_example'),
+    text: t('download_excel_template'),
     icon: ExceIcon,
     action: () => DownloadExample(),
     type: ActionItemsTypeEnum.Success,

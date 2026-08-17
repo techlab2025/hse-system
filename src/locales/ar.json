@@ -1493,7 +1493,7 @@
   "system_root_causes_types": "أنواع الأسباب الجذرية للنظام",
   "system_warehouse_types": "أنواع مستودعات النظام",
   "system_hazard_types": "أنواع مخاطر النظام",
-  "export_excel": "تصدير اكسل",
+  "export_to_excel": "تصدير اكسل",
   "system_equipment_types": "أنواع معدات النظام",
   "system_injury_types": "أنواع إصابات النظام",
   "capa date": "تاريخ كابا",
@@ -1852,5 +1852,7 @@
   "task_saving": "جارٍ الحفظ...",
   "task_save_status": "حفظ الحالة",
   "investigation_creation_notice_title": "التحقيق مطلوب",
-  "investigation_creation_notice_description": "سيؤدي إرسال هذه الملاحظة إلى إنشاء تحقيق تلقائيًا."
+  "investigation_creation_notice_description": "سيؤدي إرسال هذه الملاحظة إلى إنشاء تحقيق تلقائيًا.",
+  "upload_complated_template": "رفع النموذج المكتمل",
+  "download_excel_template": "تنزيل نموذج إكسل"
 }

@@ -79,14 +79,14 @@ const DownloadExample = () => {
 const actionList = () => [
 
   {
-    text: t('download_form_example'),
+    text: t('download_excel_template'),
     icon: ExceIcon,
     action: () => DownloadExample(),
     type: ActionItemsTypeEnum.Success,
     permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE],
   },
   {
-    text: t('import_position'),
+    text: t('upload_complated_template'),
     icon: UploadExcelIcon,
     action: () => fileInputRef.value?.click(),
     type: ActionItemsTypeEnum.Warning,

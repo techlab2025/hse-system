@@ -81,7 +81,7 @@ const DownloadExample = () => {
 
 const actionList = () => [
   {
-    text: t('export_excel'),
+    text: t('export_to_excel'),
     icon: ExceIcon,
     action: () => exportExcel(),
     type: ActionItemsTypeEnum.Success,
@@ -99,14 +99,14 @@ const actionList = () => [
     permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HAZARD_TYPE_CREATE],
   },
   {
-    text: t('import_hazard_type'),
+    text: t('upload_complated_template'),
     type: ActionItemsTypeEnum.Warning,
     action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
     permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HAZARD_TYPE_CREATE],
   },
   {
-    text: t('download_form_example'),
+    text: t('download_excel_template'),
     icon: ExceIcon,
     action: () => DownloadExample(),
     type: ActionItemsTypeEnum.Success,

@@ -84,14 +84,14 @@ const DownloadExample = () => {
 const actionList = () => [
 
   {
-    text: t('import_root_causes'),
+    text: t('upload_complated_template'),
     type: ActionItemsTypeEnum.Warning,
     action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
     permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ROOT_CAUSES_CREATE],
   },
   {
-    text: t('download_form_example'),
+    text: t('download_excel_template'),
     icon: ExceIcon,
     action: () => DownloadExample(),
     type: ActionItemsTypeEnum.Success,

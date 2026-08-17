@@ -62,14 +62,14 @@ const DownloadExample = () => {
 
 const actionList = () => [
   {
-    text: t('upload_certificate_sheet'),
+    text: t('upload_complated_template'),
     icon: ActionsListAddIcon,
     action: () => fileInputRef.value?.click(),
     type: ActionItemsTypeEnum.Info,
     permission: [PermissionsEnum?.ORG_EMPLOYEE_CREATE, PermissionsEnum?.ADMIN],
   },
   {
-    text: t('download_form_example'),
+    text: t('download_excel_template'),
     icon: ExceIcon,
     action: () => DownloadExample(),
     type: ActionItemsTypeEnum.Success,

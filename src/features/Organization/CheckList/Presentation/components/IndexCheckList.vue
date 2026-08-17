@@ -146,7 +146,7 @@ const exportExcel = () => {
 
 const IndexActionList = () => [
   {
-    text: t('export_excel'),
+    text: t('export_to_excel'),
     icon: ExceIcon,
     action: () => exportExcel(),
     type: ActionItemsTypeEnum.Success,
@@ -167,7 +167,7 @@ const IndexActionList = () => [
     ],
   },
   //{
-    // text: t('import_check_list'),
+    // text: t('upload_complated_template'),
     // type: ActionItemsTypeEnum.Warning,
     // link: '/organization/check-list/upload',
     // icon: UploadExcelIcon,
