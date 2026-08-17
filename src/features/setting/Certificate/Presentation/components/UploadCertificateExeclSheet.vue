@@ -164,14 +164,23 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 const addCertificateController = AddCertificateController.getInstance()
 
 const AddOrgEmployee = async () => {
-  // if (!mappedData.value) return;
+  if (!mappedData.value) return
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
 
-  const dataAsObjects = rows.map((row: any[], rowIndex: number) => {
+  const dataAsObjects = rows.map((row: any[]) => {
     const obj: Record<string, any> = {}
     headers.forEach((key, i) => {
-      if (key && key.trim() !== '') obj[key.trim().toLowerCase()] = row[i]
+      if (!key || key.trim() === '') return
+
+      const normalizedKey = key.trim().toLowerCase()
+      const payloadKey = ['certificate', 'certificate title', 'certificate_title'].includes(
+        normalizedKey,
+      )
+        ? 'title'
+        : normalizedKey
+
+      obj[payloadKey] = row[i]
     })
     obj.require_expired_date =
       String(obj.require_expired_date ?? '').toLowerCase() === 'yes' ? 1 : 0

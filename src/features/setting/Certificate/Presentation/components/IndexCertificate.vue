@@ -223,14 +223,27 @@ const DownloadExample = () => {
 
 const IndexOrganizationEmployeectionList = () => [
   {
-    text: t('download_form_example'),
+    text: t('export_to_excel'),
+    icon: ExceIcon,
+    action: () => exportExcel(),
+    type: ActionItemsTypeEnum.Success,
+  },
+  {
+    text: t('Add_Certificate'),
+    icon: ActionsListAddIcon,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`,
+    type: ActionItemsTypeEnum.Info,
+    permission: [PermissionsEnum.CERTIFICATE_CREATE],
+  },
+  {
+    text: t('download_excel_template'),
     icon: ExceIcon,
     action: () => DownloadExample(),
     type: ActionItemsTypeEnum.Success,
     permission: [PermissionsEnum.CERTIFICATE_FETCH, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
-    text: t('upload_certificate_sheet'),
+    text: t('upload_complated_template'),
     icon: ActionsListAddIcon,
     action: () => fileInputRef.value?.click(),
     type: ActionItemsTypeEnum.Info,
@@ -247,7 +260,7 @@ const IndexOrganizationEmployeectionList = () => [
       </span>
       <input
         v-model="word"
-        :placeholder="'search'"
+        :placeholder="'search certificates'"
         class="input"
         type="text"
         @input="searchCertificate"
@@ -260,17 +273,6 @@ const IndexOrganizationEmployeectionList = () => [
         @apply="applyFilters"
         @reset="resetFilters"
       />
-      <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
-
-      <ExportPdf />
-      <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
-        <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
-          class="btn btn-primary"
-        >
-          {{ $t('Add_Certificate') }}
-        </router-link>
-      </PermissionBuilder>
 
       <!-- <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
         <router-link
@@ -289,9 +291,13 @@ const IndexOrganizationEmployeectionList = () => [
       <ActionsList
         :show-actions="true"
         :actionList="IndexOrganizationEmployeectionList()"
-        :actionsNumber="2"
-        buttonTitle="certificate_sheet"
-      />
+        :actionsNumber="5"
+        buttonTitle="certificate_actions"
+      >
+        <template #custom>
+          <ExportPdf :isDropList="true" />
+        </template>
+      </ActionsList>
       <!-- <DropList :actionList="actionList"  /> -->
     </div>
   </div>

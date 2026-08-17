@@ -54,10 +54,10 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
           return
         }
 
-        if (el.status == EquipmentStatus.RENT && !el.period_type) {
-          new OpenWarningDilaog('Rent Type Is Required').openDialog()
-          return
-        }
+        // if (el.status == EquipmentStatus.RENT && !el.period_type) {
+        //   new OpenWarningDilaog('Rent Type Is Required').openDialog()
+        //   return
+        // }
 
         if (el.status == EquipmentStatus.RENT && !el.period) {
           new OpenWarningDilaog('Rent Period Is Required').openDialog()

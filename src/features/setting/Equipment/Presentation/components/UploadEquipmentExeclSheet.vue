@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import { onMounted, ref, watch } from 'vue'
 
 const props = defineProps<{ initialFile?: File | null }>()
@@ -9,7 +8,9 @@ import JSZip from 'jszip'
 import { useRouter } from 'vue-router'
 import EquipmentDetailsModel from '../../Data/models/equipmentDetailsModel'
 import AddEquipmentController from '../controllers/addEquipmentController'
-import AddEquipmentExcelParams from '../../Core/params/AddEquipmentExcelParams'
+import AddEquipmentExcelParams, {
+  type EquipmentExcelRow,
+} from '../../Core/params/AddEquipmentExcelParams'
 import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue'
 import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -26,8 +27,6 @@ import IndexContractorController from '@/features/setting/contractor/Presentatio
 import IndexContractorParams from '@/features/setting/contractor/Core/params/indexContractorParams'
 import IndexWhereHouseController from '@/features/Organization/WhereHouse/Presentation/controllers/indexWhereHouseController'
 import IndexWhereHouseParams from '@/features/Organization/WhereHouse/Core/params/indexWhereHouseParams'
-import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue'
-import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue'
 
 interface ExtractedImage {
   name: string
@@ -37,7 +36,6 @@ interface ExtractedImage {
 
 // ─── State ────────────────────────────────────────────────────────────────────
 const sheetData = ref<EquipmentDetailsModel[] | null>(null)
-const File = ref<string>('')
 const Data = ref<any[]>([])
 const mappedData = ref<any[] | null>(null)
 const extractedImages = ref<ExtractedImage[]>([])
@@ -121,7 +119,7 @@ const readExcelFile = (file: File): Promise<any[]> =>
   })
 
 // ─── Upload Handler ───────────────────────────────────────────────────────────
-const fileUpload = async (file: File) => {
+const fileUpload = async (file: File | null) => {
   errorMsg.value = null
   try {
     if (!file) {
@@ -133,7 +131,6 @@ const fileUpload = async (file: File) => {
     isLoading.value = true
     const [data, images] = await Promise.all([readExcelFile(file), extractImagesFromExcel(file)])
     sheetData.value = getBodyData(data)
-    File.value = await filesToBase64(file)
     mappedData.value = null
     extractedImages.value = images
   } catch (error) {
@@ -148,6 +145,8 @@ const fileUpload = async (file: File) => {
 const SendData = ref<string[]>([
   'name',
   'date',
+  'inspection_duration',
+  'license_number',
   'license_plate_number',
   'image',
   'certificate_image',
@@ -156,10 +155,15 @@ const SendData = ref<string[]>([
   'period',
   'period_type',
   'status',
+  'kilometer',
+  'serial_number',
+  'description',
 ])
 const SendDataLabels: Record<string, string> = {
   name: 'Equipment Name',
   date: 'Certificate Expire Date',
+  inspection_duration: 'Inspection Duration',
+  license_number: 'License Number',
   license_plate_number: 'License Plate',
   image: 'Equipment Image',
   certificate_image: 'Certificate Image',
@@ -168,6 +172,9 @@ const SendDataLabels: Record<string, string> = {
   period: 'Rental Period',
   period_type: 'Rent Type',
   status: 'Status',
+  kilometer: 'Vehicle Kilometer',
+  serial_number: 'Serial Number',
+  description: 'Description',
 }
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return
@@ -189,19 +196,11 @@ const UpdateActiveTap = (data: EquipmentTypesEnum) => {
   GetEquipmentType()
 }
 
-const deviceStatusOptions = ref<TitleInterface[]>([
-  new TitleInterface({ id: EquipmentStatus.RENT, title: t('Rent') }),
-  new TitleInterface({ id: EquipmentStatus.OWN, title: t('Owned') }),
-])
-
 const indexEquipmentTypeController = IndexEquipmentTypeController.getInstance()
 const AllEquipmentTypes = ref<EquipmentTypeModel[]>([])
-const indexEquipmentTypeParams = ref(
-  new IndexEquipmentTypeParams('', null, null, null, null, Number(activeTab.value)),
-)
 
 const GetEquipmentType = async () => {
-  const params = new IndexEquipmentTypeParams('', null, null, null, null, Number(activeTab.value))
+  const params = new IndexEquipmentTypeParams('', 0, 0, 0, undefined, activeTab.value)
   const response = await indexEquipmentTypeController.getData(params)
   if (response.value.data && response.value.data?.length > 0) {
     AllEquipmentTypes.value = response.value.data
@@ -224,87 +223,104 @@ const GetEquipmentTitle = (type: EquipmentTypesEnum) => {
 }
 
 const equipmentType = ref<TitleInterface | null>(null)
-const setEquipmentType = (data: TitleInterface) => {
-  equipmentType.value = data
-}
-
-const equipmentStatus = ref<TitleInterface>()
-const setEquipmentStataus = (data: TitleInterface) => {
-  equipmentStatus.value = data
-}
-
-const RentTypes = ref<TitleInterface[]>([
-  new TitleInterface({ id: RentTypeEnum.HOUR, title: 'Hour' }),
-  new TitleInterface({ id: RentTypeEnum.DAY, title: 'Day' }),
-  new TitleInterface({ id: RentTypeEnum.MONTH, title: 'Month' }),
-  new TitleInterface({ id: RentTypeEnum.YEAR, title: 'Year' }),
-])
-const SelectedRentType = ref<TitleInterface>(RentTypes.value[0])
-const setRentType = (data: TitleInterface) => {
-  SelectedRentType.value = data
+const setEquipmentType = (data: TitleInterface | TitleInterface[] | null) => {
+  equipmentType.value = Array.isArray(data) ? (data[0] ?? null) : data
 }
 
 const indexContractorController = IndexContractorController.getInstance()
-const indexContractorTypeParams = new IndexContractorParams('', 1, 10, 0, false)
+const indexContractorTypeParams = new IndexContractorParams('', 1, 10, 0, undefined, false)
 const SelectedContractor = ref<TitleInterface>()
-const setContructor = (data: TitleInterface) => {
-  SelectedContractor.value = data
+const setContructor = (data: TitleInterface | TitleInterface[] | null) => {
+  SelectedContractor.value = Array.isArray(data) ? data[0] : (data ?? undefined)
 }
 
 const indexWhereHouseController = IndexWhereHouseController.getInstance()
 const indexWhereHouseParams = new IndexWhereHouseParams('', 1, 10, 1, false)
 const SelectedWhereHosue = ref<TitleInterface>()
-const setSelectedWhereHouse = (data: TitleInterface) => {
-  SelectedWhereHosue.value = data
+const setSelectedWhereHouse = (data: TitleInterface | TitleInterface[] | null) => {
+  SelectedWhereHosue.value = Array.isArray(data) ? data[0] : (data ?? undefined)
 }
 
 // ─── Excel Header → API Key Mapping ───────────────────────────────────────────
-const EXCEL_HEADER_TO_API_KEY: Record<string, string> = {
-  'Equipment name': 'name',
-  'Certificate Expiry date': 'date',
-  'License plate number': 'license_plate_number',
-  'Equipment image': 'image',
-  'Certificate image': 'certificate_image',
-  'Rent Start date': 'checkin_date',
-  'Rent End date': 'checkout_date',
-  'Rent Period type': 'period_type',
-  'Rent Period': 'period',
-  'Status': 'status',
+const EXCEL_HEADER_TO_API_KEY: Record<string, keyof EquipmentExcelRow> = {
+  name: 'name',
+  title: 'name',
+  'equipment name': 'name',
+  date: 'date',
+  'certificate expiry date': 'date',
+  'certificate expire date': 'date',
+  certificateexpiredate: 'date',
+  inspection_duration: 'inspection_duration',
+  'inspection duration': 'inspection_duration',
+  license_number: 'license_number',
+  'license number': 'license_number',
+  licence_number: 'license_number',
+  license_plate_number: 'license_plate_number',
+  'license plate': 'license_plate_number',
+  'license plate number': 'license_plate_number',
+  licencenumber: 'license_plate_number',
+  image: 'image',
+  'equipment image': 'image',
+  certificate_image: 'certificate_image',
+  'certificate image': 'certificate_image',
+  checkin_date: 'checkin_date',
+  'rent start date': 'checkin_date',
+  startdate: 'checkin_date',
+  checkout_date: 'checkout_date',
+  'rent end date': 'checkout_date',
+  enddata: 'checkout_date',
+  period_type: 'period_type',
+  'rent period type': 'period_type',
+  renttype: 'period_type',
+  period: 'period',
+  'rent period': 'period',
+  rentperiod: 'period',
+  status: 'status',
+  kilometer: 'kilometer',
+  'vehicle kilometer': 'kilometer',
+  'vehicle km': 'kilometer',
+  serial_number: 'serial_number',
+  'serial number': 'serial_number',
+  serial: 'serial',
+  description: 'description',
+}
+
+const normalizeExcelHeader = (header: unknown): keyof EquipmentExcelRow | null => {
+  const normalizedHeader = String(header ?? '')
+    .trim()
+    .toLowerCase()
+  return EXCEL_HEADER_TO_API_KEY[normalizedHeader] ?? null
 }
 
 // ─── Submit ───────────────────────────────────────────────────────────────────
 const addEquipmentController = AddEquipmentController.getInstance()
 
 const AddOrgEmployee = async () => {
-  // if (!mappedData.value) return;
+  if (!mappedData.value) return
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
 
-  const dataAsObjects = rows.map((row: any[], rowIndex: number) => {
-    const obj: Record<string, any> = {}
+  const dataAsObjects = rows.map((row: unknown[], rowIndex: number) => {
+    const obj: Partial<EquipmentExcelRow> = {}
     headers.forEach((key, i) => {
-      if (key && key.trim() !== '') {
-        const apiKey = EXCEL_HEADER_TO_API_KEY[key.trim()] ?? key
-        obj[apiKey] = row[i]
-      }
+      const apiKey = normalizeExcelHeader(key)
+      if (apiKey) Object.assign(obj, { [apiKey]: row[i] })
     })
 
-    obj['equipment_type_id'] = equipmentType.value?.id
-    // obj['status'] = equipmentStatus.value?.id;
-    // obj['period_type'] = SelectedRentType.value?.id;
-    obj['contractor_id'] = SelectedContractor.value?.id
-    obj['warehouse_id'] = SelectedWhereHosue.value?.id
+    obj.equipment_type_id = Number(equipmentType.value?.id)
+    if (SelectedContractor.value?.id) obj.contractor_id = SelectedContractor.value.id
+    if (SelectedWhereHosue.value?.id) obj.warehouse_id = SelectedWhereHosue.value.id
 
     // Mapping images: row 0 uses index 0 & 1, row 1 uses index 2 & 3, etc.
     const baseImgIdx = rowIndex * 2
     if (extractedImages.value[baseImgIdx]) {
-      obj['image'] = extractedImages.value[baseImgIdx].base64
+      obj.image = extractedImages.value[baseImgIdx].base64
     }
     if (extractedImages.value[baseImgIdx + 1]) {
-      obj['certificate_image'] = extractedImages.value[baseImgIdx + 1].base64
+      obj.certificate_image = extractedImages.value[baseImgIdx + 1].base64
     }
 
-    return obj
+    return obj as EquipmentExcelRow
   })
 
   const orgData = new AddEquipmentExcelParams({ data: dataAsObjects })

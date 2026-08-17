@@ -27,10 +27,14 @@ const actions = ref()
 const ActionIconsToggle = ref(false)
 
 const toggle = (event: Event) => {
-  actions.value.toggle(event);
-};
+  actions.value.toggle(event)
+}
 
-const { actionList = [], showActions = true, actionsNumber = 0 } = defineProps<{
+const {
+  actionList = [],
+  showActions = true,
+  actionsNumber = 0,
+} = defineProps<{
   actionList: ActionItem[]
   showActions?: boolean
   actionsNumber?: number
@@ -41,19 +45,21 @@ const { actionList = [], showActions = true, actionsNumber = 0 } = defineProps<{
 const permittedActions = computed(() =>
   showActions
     ? actionList.filter((a) =>
-      a.permission ? PermissionHandler.Instance.handle(a.permission) : true,
-    )
+        a.permission ? PermissionHandler.Instance.handle(a.permission) : true,
+      )
     : [],
 )
 const isVisible = computed(() => {
-  return actions.value?.visible;
-});
-
+  return actions.value?.visible
+})
 </script>
 
 <template>
   <div class="action-list-trigger" @click.stop="toggle">
-    <button class="action-icon"><span>{{ actionsNumber }}</span>{{ buttonTitle ? $t(buttonTitle) : $t('actions_list') }}</button>
+    <button class="action-icon">
+      <span>{{ actionsNumber }}</span
+      >{{ buttonTitle ? $t(buttonTitle) : $t('actions_list') }}
+    </button>
     <ActionListArrow v-show="!isVisible" />
     <CloseArrowActios v-show="isVisible" />
   </div>
@@ -61,15 +67,22 @@ const isVisible = computed(() => {
   <Popover ref="actions">
     <div class="action-list-body">
       <ul class="border-none">
-        <li class="list-item cursor-pointer" :class="String(ActionItemsTypeEnum[action?.type]).toLowerCase()"
-          v-for="action in permittedActions" :key="action.text">
+        <li
+          class="list-item cursor-pointer"
+          :class="String(ActionItemsTypeEnum[action?.type]).toLowerCase()"
+          v-for="action in permittedActions"
+          :key="action.text"
+        >
           <router-link v-if="action.link" :to="action.link" class="flex items-center gap-[5px]">
             <component :is="action.icon" />
             <span>{{ action.text }}</span>
           </router-link>
 
-          <button v-else-if="action.action && action.text != $t('delete')" @click="action.action"
-            class="flex items-center gap-sm">
+          <button
+            v-else-if="action.action && action.text != $t('delete')"
+            @click="action.action"
+            class="flex items-center gap-sm"
+          >
             <component :is="action.icon" />
             <span>{{ action.text }}</span>
           </button>
@@ -82,4 +95,9 @@ const isVisible = computed(() => {
   </Popover>
 </template>
 
-<style scoped></style>
+<style scoped>
+.list-item {
+  text-align: start !important;
+  font-size: 15px !important;
+}
+</style>

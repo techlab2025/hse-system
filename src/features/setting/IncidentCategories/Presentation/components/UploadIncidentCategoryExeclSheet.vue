@@ -4,6 +4,10 @@ import { ref, watch } from 'vue'
 import * as XLSX from 'xlsx'
 import JSZip from 'jszip'
 import { useRouter } from 'vue-router'
+import TitleInterface from '@/base/Data/Models/title_interface'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import IndexAccidentsTypeParams from '@/features/setting/AccidentsTypes/Core/params/indexAccidentsTypeParams'
+import IndexAccidentsTypeController from '@/features/setting/AccidentsTypes/Presentation/controllers/indexAccidentsTypeController'
 
 const props = defineProps<{ initialFile?: File | null }>()
 const emit = defineEmits<{ (e: 'uploaded'): void }>()
@@ -33,6 +37,10 @@ const mappedData = ref<any[] | null>(null)
 const extractedImages = ref<ExtractedImage[]>([])
 const isLoading = ref(false)
 const errorMsg = ref<string | null>(null)
+const incidentType = ref<TitleInterface | null>(null)
+const incidentTypeError = ref<string | null>(null)
+const incidentTypeController = IndexAccidentsTypeController.getInstance()
+const incidentTypeParams = new IndexAccidentsTypeParams('', 1, 10, 0)
 
 const { t } = useI18n()
 const router = useRouter()
@@ -48,6 +56,11 @@ const MIME_MAP: Record<string, string> = {
 }
 
 const getBodyData = (data: any[]) => IncidentCategoryModel.transformData(data.slice(1))
+
+const setIncidentType = (value: TitleInterface | null) => {
+  incidentType.value = value
+  if (value?.id) incidentTypeError.value = null
+}
 
 // ─── Image Extraction ─────────────────────────────────────────────────────────
 const extractImagesFromExcel = async (file: File): Promise<ExtractedImage[]> => {
@@ -167,6 +180,12 @@ const addIncidentCategoryController = AddIncidentCategoryController.getInstance(
 
 const AddIncidentCategory = async () => {
   if (!mappedData.value) return
+  const incidentTypeId = Number(incidentType.value?.id)
+  if (!incidentTypeId) {
+    incidentTypeError.value = t('incident_type_required')
+    return
+  }
+
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
 
@@ -175,7 +194,10 @@ const AddIncidentCategory = async () => {
     headers.forEach((key, i) => {
       if (key && key.trim() !== '') obj[key.trim().toLowerCase()] = row[i]
     })
-    return obj
+    return {
+      ...obj,
+      accidents_type_id: incidentTypeId,
+    }
   })
 
   const orgData = new AddIncidentCategoryExcelParams({ data: dataAsObjects })
@@ -236,6 +258,22 @@ const onMappingClose = () => {
     </div> -->
 
     <div v-if="errorMsg" class="error-banner">{{ errorMsg }}</div>
+
+    <div class="input-wrapper field-required">
+      <UpdatedCustomInputSelect
+        id="accidents_type_id"
+        :modelValue="incidentType"
+        :controller="incidentTypeController"
+        :params="incidentTypeParams"
+        :label="$t('Incident Type')"
+        :placeholder="$t('Incident Type')"
+        :required="true"
+        @update:modelValue="setIncidentType"
+      />
+      <p v-if="incidentTypeError" class="required-field-message">
+        {{ incidentTypeError }}
+      </p>
+    </div>
 
     <div v-if="isLoading" class="loading-bar">
       <span class="loading-dot" />
@@ -308,6 +346,13 @@ const onMappingClose = () => {
 </template>
 
 <style scoped>
+.required-field-message {
+  margin-top: 0.35rem;
+  color: var(--status-danger);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
 .last {
   display: table-cell !important;
 }

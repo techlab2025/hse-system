@@ -144,7 +144,7 @@ onMounted(fetchLanguages)
   </div>
 
   <div
-    class="col-span-4 md:col-span-2 input-wrapper field-required"
+    class="col-span-4 md:col-span-2 input-wrapper "
     data-required-field="incidentTypeId"
   >
     <UpdatedCustomInputSelect

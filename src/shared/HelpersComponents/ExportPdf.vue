@@ -68,7 +68,7 @@ const exportPDF = async () => {
     @click="exportPDF"
   >
     <PdefActionIcon v-if="isDropList" />
-    Export PDF
+    Export to PDF
   </button>
 </template>
 

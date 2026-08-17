@@ -1844,5 +1844,10 @@
   "show_investigation_result": "show investigation result",
   "system_preferences": "System preferences",
   "investigation_creation_notice_title": "Investigation required",
-  "investigation_creation_notice_description": "Submitting this observation will automatically create an investigation."
+  "investigation_creation_notice_description": "Submitting this observation will automatically create an investigation.",
+  "certificate_actions": "Certificate actions",
+  "upload_complated_template": "Upload complated template",
+  "download_excel_template": "Download excel template",
+  "search certificates": "Search certificates",
+  "export_to_excel": "Export to excel"
 }
