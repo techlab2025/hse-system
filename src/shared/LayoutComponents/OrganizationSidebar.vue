@@ -521,7 +521,7 @@ const ReportsRoutes = ref<Routes[]>([
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
-    link: '/organization/equipment-mangement/incedant?isAll=1',
+    link: '/organization/equipment-mangement/incident-report',
     name: 'incident_report',
     icon: 'exclamation-triangle',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
