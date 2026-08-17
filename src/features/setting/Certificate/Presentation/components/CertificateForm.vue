@@ -385,7 +385,7 @@ defineExpose({
       :modelValue="langs"
       @update:modelValue="(val) => (langs = val)"
       :required="true"
-      :label="`name`"
+      :label="`certtificate_title`"
     />
     <p v-if="getFieldError('langs')" class="required-field-message">
       {{ getFieldError('langs') }}
@@ -399,7 +399,7 @@ defineExpose({
 
   <div class="input-wrapper col-span-2 mt-6">
     <CustomCheckbox
-      :title="`expire_date_required`"
+      :title="`expiry_date_required`"
       :checked="expiredate"
       @update:checked="updateExpireDate"
     />

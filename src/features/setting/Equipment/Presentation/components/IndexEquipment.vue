@@ -268,13 +268,13 @@ const exportExcel = () => {
     return {
       name: it.title || 'N/A',
       CertificateExpireDate: it.date || '--',
-      LicenceNumber: it.license_plate_number || '--',
+      LicenceNumber: it.licensePlateNumber ?? it.license_plate_number ?? '--',
       image: '*',
       'Certificate Image': '*',
-      StartDate: formatJoinDate(it.checkin_date) || '--',
+      StartDate: formatJoinDate(it.checkinDate ?? it.checkin_date) || '--',
       EndData: formatJoinDate(it.checkout_date) || '--',
-      RentPeriod: it.period || '--',
-      RentType: it.period_type || '--',
+      RentPeriod: it.RentTime ?? it.period ?? '--',
+      RentType: it.RentType ?? it.period_type ?? '--',
       status: it.status || '--',
     }
   })

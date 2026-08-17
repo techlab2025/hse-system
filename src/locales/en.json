@@ -1849,5 +1849,7 @@
   "upload_complated_template": "Upload complated template",
   "download_excel_template": "Download excel template",
   "search certificates": "Search certificates",
-  "export_to_excel": "Export to excel"
+  "export_to_excel": "Export to excel",
+  "expiry_date_required": "Expiry date required",
+  "certtificate_title": "Certtificate title"
 }

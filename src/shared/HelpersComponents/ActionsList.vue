@@ -98,6 +98,6 @@ const isVisible = computed(() => {
 <style scoped>
 .list-item {
   text-align: start !important;
-  font-size: 15px !important;
+  font-size: 13px !important;
 }
 </style>
