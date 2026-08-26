@@ -1852,5 +1852,6 @@
   "download_excel_template": "Download Excel template",
   "search certificates": "Search certificates",
   "expiry_date_required": "Expiry date required",
-  "certtificate_title": "Certtificate title"
+  "certtificate_title": "Certtificate title",
+  "certificate_title": "Certificate title"
 }

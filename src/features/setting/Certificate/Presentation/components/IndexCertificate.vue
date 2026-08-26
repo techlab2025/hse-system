@@ -318,14 +318,14 @@ const IndexOrganizationEmployeectionList = () => [
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
+                <th scope="col">{{ $t('certificate_title') }}</th>
                 <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{ $t('all_industries') }}
                 </th>
                 <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{ $t('industries') }}
                 </th>
-                <th scope="col">{{ $t('require_expired_date') }}</th>
+                <th scope="col">{{ $t('expiry_date_required') }}</th>
                 <th scope="col">{{ $t('image') }}</th>
 
                 <!-- <th scope="col">{{ $t('actions') }}</th> -->
