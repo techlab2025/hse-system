@@ -1856,6 +1856,7 @@
   "project_equipment_zone_empty_title": "لا توجد معدات مخصصة",
   "project_equipment_zone_empty_description": "هذه المنطقة جاهزة لإضافة المعدات إليها.",
   "project_equipment_no_zones": "لا توجد مناطق تشغيلية متاحة في هذا الموقع.",
+  "project_equipment_filter_type": "تصفية حسب النوع",
   "task_change_status": "تغيير الحالة",
   "task_status": "حالة المهمة",
   "task_reason": "السبب",

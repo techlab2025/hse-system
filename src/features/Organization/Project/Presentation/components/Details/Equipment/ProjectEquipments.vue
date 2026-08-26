@@ -13,12 +13,19 @@ import EmptyEquimentsProjectZones from '../PorjectUtils/EmptyEquimentsProjectZon
 import ProjectEquipmentCard from './ProjectEquipmentCard.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import SidebarUnicon from '@/shared/icons/SidebarUnicon.vue'
+import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 
 const route = useRoute()
 const id = route.params.project_id
 
 const projectCustomLocationController = ProjectCustomLocationController.getInstance()
 const state = ref(projectCustomLocationController.state.value)
+const selectedEquipmentType = ref<EquipmentTypesEnum>(EquipmentTypesEnum.EQUIPMENT)
+const equipmentTypeOptions = [
+  { value: EquipmentTypesEnum.EQUIPMENT, label: 'Equipment', icon: 'truck' },
+  { value: EquipmentTypesEnum.DEVICE, label: 'device', icon: 'desktop' },
+  { value: EquipmentTypesEnum.TOOL, label: 'tool', icon: 'wrench' },
+]
 const locations = computed(() => state.value.data ?? [])
 
 const totalZones = computed(() =>
@@ -37,12 +44,23 @@ const totalEquipments = computed(() =>
   ),
 )
 
-const GetProjectLocationsEqipments = async () => {
-  const projectCustomLocationParams = new ProjectCustomLocationParams(Number(id), [
-    ProjectCustomLocationEnum.ZOON,
-    ProjectCustomLocationEnum.ZOON_EQUIPMENT,
-  ])
+const GetProjectLocationsEqipments = async (
+  equipmentType: EquipmentTypesEnum = selectedEquipmentType.value,
+) => {
+  const projectCustomLocationParams = new ProjectCustomLocationParams(
+    Number(id),
+    [ProjectCustomLocationEnum.ZOON, ProjectCustomLocationEnum.ZOON_EQUIPMENT],
+    undefined,
+    equipmentType,
+  )
   await projectCustomLocationController.getData(projectCustomLocationParams)
+}
+
+const filterByEquipmentType = async (equipmentType: EquipmentTypesEnum) => {
+  if (selectedEquipmentType.value === equipmentType) return
+
+  selectedEquipmentType.value = equipmentType
+  await GetProjectLocationsEqipments(equipmentType)
 }
 
 onMounted(() => {
@@ -112,12 +130,40 @@ watch(
                 <small>{{ $t('project_equipment_assigned_assets') }}</small>
               </span>
             </div>
-            <div class="overview-stat equipment-stat">
+            <div class="overview-stat equipment-stat" data-html2canvas-ignore="true">
               <ExportPdf
                 target-selector=".project-equipments-pdf-content"
                 :filename="`project-${id}-equipment-by-area.pdf`"
                 class="export-pdf"
               />
+            </div>
+
+            <div
+              class="equipment-type-filter"
+              role="radiogroup"
+              :aria-label="$t('project_equipment_filter_type')"
+              data-html2canvas-ignore="true"
+            >
+              <span class="filter-label">
+                <SidebarUnicon name="filter" />
+                {{ $t('project_equipment_filter_type') }}
+              </span>
+
+              <div class="filter-options">
+                <button
+                  v-for="option in equipmentTypeOptions"
+                  :key="option.value"
+                  type="button"
+                  class="filter-option"
+                  :class="{ active: selectedEquipmentType === option.value }"
+                  role="radio"
+                  :aria-checked="selectedEquipmentType === option.value"
+                  @click="filterByEquipmentType(option.value)"
+                >
+                  <SidebarUnicon :name="option.icon" />
+                  <span>{{ $t(option.label) }}</span>
+                </button>
+              </div>
             </div>
           </div>
         </section>
@@ -327,6 +373,91 @@ watch(
   background: color-mix(in srgb, var(--surface-1) 91%, transparent);
   padding: 0.8rem;
   box-shadow: 0 9px 22px color-mix(in srgb, var(--shadow-color) 55%, transparent);
+}
+
+.equipment-type-filter {
+  display: flex;
+  grid-column: 1 / -1;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
+  border-radius: 15px;
+  background: color-mix(in srgb, var(--surface-1) 92%, transparent);
+  padding: 0.45rem;
+  box-shadow: 0 9px 22px color-mix(in srgb, var(--shadow-color) 42%, transparent);
+}
+
+.filter-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding-inline: 0.45rem;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.filter-label > :first-child {
+  color: var(--PrimaryColor);
+  font-size: 0.95rem;
+}
+
+.filter-options {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+  width: 100%;
+}
+
+.filter-option {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 900;
+  padding: 0.45rem 0.65rem;
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
+}
+
+.filter-option:hover {
+  border-color: color-mix(in srgb, var(--PrimaryColor) 18%, transparent);
+  background: var(--brand-primary-50);
+  color: var(--PrimaryColor);
+}
+
+.filter-option.active {
+  border-color: color-mix(in srgb, var(--PrimaryColor) 34%, transparent);
+  background: var(--brand-primary-100);
+  color: var(--PrimaryColor);
+  box-shadow: 0 6px 14px color-mix(in srgb, var(--PrimaryColor) 13%, transparent);
+}
+
+.filter-option:active {
+  transform: scale(0.98);
+}
+
+.filter-option:focus-visible {
+  outline: 2px solid var(--PrimaryColor);
+  outline-offset: 2px;
+}
+
+.filter-option > :first-child {
+  flex: 0 0 auto;
+  font-size: 0.95rem;
 }
 
 .zone-stat {
@@ -619,6 +750,15 @@ watch(
     grid-template-columns: 1fr;
   }
 
+  .equipment-type-filter {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .filter-label {
+    padding-block: 0.25rem;
+  }
+
   .location-header,
   .zone-header {
     align-items: flex-start;
@@ -637,6 +777,10 @@ watch(
 @media (max-width: 480px) {
   .overview-stats {
     gap: 0.5rem;
+  }
+
+  .filter-options {
+    grid-template-columns: 1fr;
   }
 
   .location-header,

@@ -1842,6 +1842,7 @@
   "project_equipment_zone_empty_title": "No equipment assigned",
   "project_equipment_zone_empty_description": "This zone is ready for equipment to be assigned.",
   "project_equipment_no_zones": "No operational zones are available in this location.",
+  "project_equipment_filter_type": "Filter by type",
   "task_change_status": "Change status",
   "task_status": "Task status",
   "task_reason": "Reason",
