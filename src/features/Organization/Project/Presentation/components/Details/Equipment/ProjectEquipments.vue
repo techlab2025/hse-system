@@ -12,6 +12,7 @@ import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/
 import EmptyEquimentsProjectZones from '../PorjectUtils/EmptyEquimentsProjectZones.vue'
 import ProjectEquipmentCard from './ProjectEquipmentCard.vue'
 import PinIcons from '@/shared/icons/PinIcons.vue'
+import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 
 const route = useRoute()
 const id = route.params.project_id
@@ -50,27 +51,39 @@ watch(
       <PagesHeader
         :title="$t('Equipment_tools_&_devices_by_zone')"
         :subtitle="$t('view_and_manage_all_equipment_assigned_to_each_operational_zone')"
-      />
-      <div class="equipments-sections" v-for="(zones, index) in state.data" :key="index">
-        <EmptyEquimentsProjectZones
-          v-if="EmptyZones && EmptyZones?.length > 0"
-          :zonesNumber="EmptyZones?.length"
-          :zones="EmptyZones"
-        />
-        <div v-else class="flex gap-2 items-center zoon-header">
-          <PinIcons />
-          <p class="zoon-title">{{ zones.title }}</p>
-        </div>
-        <div
-          class="project-equipment-card-container grid grid-cols-2 gap-4"
-          v-for="(zone, index) in zones.locationZones"
-          :key="index"
-        >
-          <ProjectEquipmentCard
-            v-for="(tool, index) in zone.projectZoonEquipments"
-            :key="index"
-            :tool="tool"
+        :actions="true"
+      >
+        <template #actions>
+          <ExportPdf
+            target-selector=".project-equipments-pdf-content"
+            :filename="`project-${id}-equipment-by-area.pdf`"
           />
+        </template>
+      </PagesHeader>
+
+      <EmptyEquimentsProjectZones
+        v-if="EmptyZones && EmptyZones.length > 0"
+        :zonesNumber="EmptyZones.length"
+        :zones="EmptyZones"
+      />
+
+      <div class="project-equipments-pdf-content">
+        <div class="equipments-sections" v-for="(zones, index) in state.data" :key="index">
+          <div class="flex gap-2 items-center zoon-header">
+            <PinIcons />
+            <p class="zoon-title">{{ zones.title }}</p>
+          </div>
+          <div
+            class="project-equipment-card-container grid grid-cols-2 gap-4"
+            v-for="(zone, index) in zones.locationZones"
+            :key="index"
+          >
+            <ProjectEquipmentCard
+              v-for="(tool, index) in zone.projectZoonEquipments"
+              :key="index"
+              :tool="tool"
+            />
+          </div>
         </div>
       </div>
     </template>
