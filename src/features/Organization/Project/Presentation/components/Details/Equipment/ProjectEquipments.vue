@@ -144,10 +144,10 @@ watch(
               :aria-label="$t('project_equipment_filter_type')"
               data-html2canvas-ignore="true"
             >
-              <span class="filter-label">
+              <!-- <span class="filter-label">
                 <SidebarUnicon name="filter" />
                 {{ $t('project_equipment_filter_type') }}
-              </span>
+              </span> -->
 
               <div class="filter-options">
                 <button
