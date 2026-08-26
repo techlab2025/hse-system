@@ -29,31 +29,37 @@ const taskStatusOptions = [
     value: InvestegationTaskEnum.NotStarted,
     label: 'Not Started',
     description: 'Work has not yet begun.',
+    color: 'var(--text-muted)',
   },
   {
     value: InvestegationTaskEnum.InProgress,
     label: 'In Progress',
     description: 'Active work is underway.',
+    color: 'var(--PrimaryColor)',
   },
   {
     value: InvestegationTaskEnum.PendingOnHold,
     label: 'Pending / On Hold',
     description: 'Work is temporarily suspended, for example awaiting resources.',
+    color: 'var(--status-warning)',
   },
   {
     value: InvestegationTaskEnum.Overdue,
     label: 'Overdue',
     description: 'Work is ongoing but past the target deadline.',
+    color: 'var(--status-danger)',
   },
   {
     value: InvestegationTaskEnum.Completed,
     label: 'Completed',
     description: 'Implementation is finished and ready for verification.',
+    color: 'var(--status-success)',
   },
   {
     value: InvestegationTaskEnum.Cancelled,
     label: 'Cancelled',
     description: 'The action will not be implemented due to process changes or redundancy.',
+    color: 'var(--identity-accent)',
   },
 ]
 
@@ -256,6 +262,7 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
           :key="option.value"
           class="status-radio-option"
           :class="{ selected: selectedStatus === option.value }"
+          :style="{ '--status-color': option.color }"
           :for="`capa-task-status-${option.value}`"
         >
           <RadioButton
@@ -305,7 +312,6 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
           <p>Document the methodology, findings, and final verification decision.</p>
         </div>
       </template>
-
 
       <VerificationOfEffectiveness
         v-if="selectedVerificationTask"
@@ -478,35 +484,39 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
   padding: 0.35rem 0.7rem;
 
   &.status-1 {
-    border: 1px solid var(--status-warning);
-    background: var(--brand-accent-50);
-    color: var(--brand-accent-600);
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--status-warning) 28%, transparent);
+    border: 1px solid color-mix(in srgb, var(--text-muted) 28%, transparent);
+    background: color-mix(in srgb, var(--text-muted) 10%, var(--surface-1));
+    color: var(--text-muted);
   }
 
   &.status-2 {
+    border: 1px solid color-mix(in srgb, var(--PrimaryColor) 28%, transparent);
     background: color-mix(in srgb, var(--PrimaryColor) 12%, var(--surface-1));
     color: var(--PrimaryColor);
   }
 
   &.status-3 {
-    background: var(--brand-accent-50);
-    color: var(--status-danger);
+    border: 1px solid color-mix(in srgb, var(--status-warning) 32%, transparent);
+    background: var(--status-warning-soft);
+    color: color-mix(in srgb, var(--status-warning) 72%, var(--text-strong));
   }
 
   &.status-4 {
+    border: 1px solid color-mix(in srgb, var(--status-danger) 28%, transparent);
     background: var(--status-danger-soft);
     color: var(--status-danger);
   }
 
   &.status-5 {
-    background: color-mix(in srgb, var(--green) 14%, var(--surface-1));
-    color: var(--green);
+    border: 1px solid color-mix(in srgb, var(--status-success) 28%, transparent);
+    background: var(--status-success-soft);
+    color: var(--status-success);
   }
 
   &.status-6 {
-    background: var(--brand-primary-100);
-    color: var(--brand-primary-700);
+    border: 1px solid color-mix(in srgb, var(--identity-accent) 28%, transparent);
+    background: color-mix(in srgb, var(--identity-accent) 10%, var(--surface-1));
+    color: var(--identity-accent);
   }
 }
 
@@ -700,11 +710,14 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
 }
 
 .status-radio-option {
+  --status-color: var(--PrimaryColor);
+
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
   gap: 0.75rem;
   align-items: center;
-  border: 1px solid var(--main-border);
+  border: 1px solid color-mix(in srgb, var(--status-color) 22%, var(--main-border));
+  border-inline-start: 4px solid var(--status-color);
   border-radius: 14px;
   background: var(--BgWhite);
   cursor: pointer;
@@ -717,14 +730,14 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
   &:hover,
   &.selected {
     transform: translateY(-1px);
-    border-color: color-mix(in srgb, var(--PrimaryColor) 32%, var(--main-border));
-    box-shadow: 0 12px 24px color-mix(in srgb, var(--text-strong) 7%, transparent);
+    border-color: color-mix(in srgb, var(--status-color) 48%, var(--main-border));
+    box-shadow: 0 12px 24px color-mix(in srgb, var(--status-color) 12%, transparent);
   }
 
   &.selected {
     background: linear-gradient(
       135deg,
-      color-mix(in srgb, var(--PrimaryColor) 8%, var(--surface-1)),
+      color-mix(in srgb, var(--status-color) 10%, var(--surface-1)),
       var(--BgWhite)
     );
   }
@@ -737,7 +750,7 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
   }
 
   strong {
-    color: var(--header-page-color);
+    color: var(--status-color);
     font-size: 0.95rem;
     font-weight: 900;
   }
