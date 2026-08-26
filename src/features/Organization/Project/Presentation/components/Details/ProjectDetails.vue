@@ -122,11 +122,11 @@ watch(
               <span class="operations-mark" aria-hidden="true"> <i></i><i></i><i></i> </span>
               <div>
                 <!-- <span class="operations-eyebrow">{{ $t('Operational workspace') }}</span> -->
-                <h2>{{ $t('Project resources and field structure') }}</h2>
+                <h2>{{ $t('Project Operational Structure & Resources') }}</h2>
                 <p>
                   {{
                     $t(
-                      'Manage locations, workforce assignments, and equipment from one connected view',
+                      'Manage locations, zones, workforce assignments, and equipment in one place.',
                     )
                   }}
                 </p>
