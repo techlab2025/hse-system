@@ -1845,6 +1845,8 @@
   "task_untitled": "مهمة بدون عنوان",
   "task_due_date": "تاريخ الاستحقاق",
   "task_responsible": "المسؤول",
+  "task_responsible_hint": "يشرف على عمل الموظف المكلّف ويتابع المهمة حتى اكتمالها.",
+  "task_assigned_to_hint": "ينفّذ المهمة ويُكمل العمل المطلوب.",
   "task_change_status": "تغيير الحالة",
   "task_status": "حالة المهمة",
   "task_reason": "السبب",

@@ -1831,6 +1831,8 @@
   "task_untitled": "Untitled task",
   "task_due_date": "Due date",
   "task_responsible": "Responsible",
+  "task_responsible_hint": "Oversees the assigned employee's work and follows up on the task through completion.",
+  "task_assigned_to_hint": "Carries out the task and completes the required work.",
   "task_change_status": "Change status",
   "task_status": "Task status",
   "task_reason": "Reason",

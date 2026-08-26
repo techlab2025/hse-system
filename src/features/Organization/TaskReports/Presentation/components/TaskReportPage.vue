@@ -96,7 +96,10 @@ const selectedFromDate = ref('')
 const selectedToDate = ref('')
 const statusReasonPopover = ref<{ show: (event: Event) => void; hide: () => void } | null>(null)
 const selectedStatusReason = ref('')
+const headerHintPopover = ref<{ show: (event: Event) => void; hide: () => void } | null>(null)
+const selectedHeaderHint = ref({ title: '', description: '' })
 let statusReasonHideTimer: number | undefined
+let headerHintHideTimer: number | undefined
 
 const content = computed(() =>
   props.type === 'corrective'
@@ -323,7 +326,35 @@ const scheduleStatusReasonClose = () => {
   }, 180)
 }
 
-onBeforeUnmount(clearStatusReasonHideTimer)
+const clearHeaderHintHideTimer = () => {
+  if (headerHintHideTimer === undefined) return
+  window.clearTimeout(headerHintHideTimer)
+  headerHintHideTimer = undefined
+}
+
+const openHeaderHint = (event: Event, title: string, description: string) => {
+  clearHeaderHintHideTimer()
+  selectedHeaderHint.value = { title, description }
+  headerHintPopover.value?.show(event)
+}
+
+const closeHeaderHint = () => {
+  clearHeaderHintHideTimer()
+  headerHintPopover.value?.hide()
+}
+
+const scheduleHeaderHintClose = () => {
+  clearHeaderHintHideTimer()
+  headerHintHideTimer = window.setTimeout(() => {
+    headerHintPopover.value?.hide()
+    headerHintHideTimer = undefined
+  }, 180)
+}
+
+onBeforeUnmount(() => {
+  clearStatusReasonHideTimer()
+  clearHeaderHintHideTimer()
+})
 
 const getRowNumber = (index: number) => (currentPage.value - 1) * countPerPage.value + index + 1
 
@@ -481,8 +512,62 @@ onMounted(() => fetchReport())
                     <th>{{ $t('task') }}</th>
                     <th>{{ $t('task_status') }}</th>
                     <th>{{ $t('task_due_date') }}</th>
-                    <th>{{ $t('task_responsible') }}</th>
-                    <th>{{ $t('assigned_to') }}</th>
+                    <th>
+                      <button
+                        type="button"
+                        class="header-hint-trigger"
+                        aria-describedby="task-report-header-hint"
+                        @mouseenter="
+                          openHeaderHint(
+                            $event,
+                            $t('task_responsible'),
+                            $t('task_responsible_hint'),
+                          )
+                        "
+                        @mouseleave="scheduleHeaderHintClose"
+                        @focus="
+                          openHeaderHint(
+                            $event,
+                            $t('task_responsible'),
+                            $t('task_responsible_hint'),
+                          )
+                        "
+                        @blur="scheduleHeaderHintClose"
+                        @click="
+                          openHeaderHint(
+                            $event,
+                            $t('task_responsible'),
+                            $t('task_responsible_hint'),
+                          )
+                        "
+                        @keydown.esc="closeHeaderHint"
+                      >
+                        {{ $t('task_responsible') }}
+                        <span class="header-hint-icon" aria-hidden="true">?</span>
+                      </button>
+                    </th>
+                    <th>
+                      <button
+                        type="button"
+                        class="header-hint-trigger"
+                        aria-describedby="task-report-header-hint"
+                        @mouseenter="
+                          openHeaderHint($event, $t('assigned_to'), $t('task_assigned_to_hint'))
+                        "
+                        @mouseleave="scheduleHeaderHintClose"
+                        @focus="
+                          openHeaderHint($event, $t('assigned_to'), $t('task_assigned_to_hint'))
+                        "
+                        @blur="scheduleHeaderHintClose"
+                        @click="
+                          openHeaderHint($event, $t('assigned_to'), $t('task_assigned_to_hint'))
+                        "
+                        @keydown.esc="closeHeaderHint"
+                      >
+                        {{ $t('assigned_to') }}
+                        <span class="header-hint-icon" aria-hidden="true">?</span>
+                      </button>
+                    </th>
                     <th>{{ $t('lessons_related_records') }}</th>
                   </tr>
                 </thead>
@@ -587,6 +672,19 @@ onMounted(() => fetchReport())
             >
               <span class="task-reason-popover-label">{{ $t('task_reason') }}</span>
               <p>{{ selectedStatusReason }}</p>
+            </div>
+          </Popover>
+
+          <Popover ref="headerHintPopover">
+            <div
+              id="task-report-header-hint"
+              class="task-header-hint-popover"
+              role="tooltip"
+              @mouseenter="clearHeaderHintHideTimer"
+              @mouseleave="closeHeaderHint"
+            >
+              <strong>{{ selectedHeaderHint.title }}</strong>
+              <p>{{ selectedHeaderHint.description }}</p>
             </div>
           </Popover>
 
@@ -891,6 +989,41 @@ onMounted(() => fetchReport())
   white-space: nowrap;
 }
 
+.header-hint-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  cursor: help;
+  font: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+
+.header-hint-trigger:focus-visible {
+  border-radius: 6px;
+  outline: 2px solid var(--report-tone);
+  outline-offset: 3px;
+}
+
+.header-hint-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  border: 1px solid color-mix(in srgb, var(--report-tone) 35%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--report-tone) 9%, transparent);
+  color: var(--report-tone);
+  font-size: 0.68rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
 .report-table tbody tr {
   background: var(--surface-1);
   transition:
@@ -1042,6 +1175,31 @@ onMounted(() => fetchReport())
   font-weight: 700;
   line-height: 1.55;
   overflow-wrap: anywhere;
+}
+
+.task-header-hint-popover {
+  width: min(320px, calc(100vw - 48px));
+  padding: 0.8rem;
+  background-color: white;
+  border: 1px solid lightgray;
+  box-shadow: 1px 1px 1px lightgray;
+}
+
+.task-header-hint-popover strong {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--report-tone);
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.task-header-hint-popover p {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.55;
+  white-space: normal;
 }
 
 .task-status-pill.status-1 {
