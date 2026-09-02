@@ -2,6 +2,10 @@
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { PpeItemEnum } from '../../../Core/Enums/ppe_enum'
+import {
+  ComplianceNotificationEnum,
+  PtwStatusEnum,
+} from '../../../Core/Enums/incident_compliance_enum'
 
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
@@ -286,6 +290,43 @@ const LikelihoodList = ref<TitleInterface[]>([
   new TitleInterface({ id: LikelihoodEnum.AlmostCertain, title: '5 - Almost Certain' }),
 ])
 
+const PtwStatusList = ref<TitleInterface[]>([
+  new TitleInterface({ id: PtwStatusEnum.NOT_APPLICABLE, title: 'Not Applicable' }),
+  new TitleInterface({ id: PtwStatusEnum.ISSUED_AND_VALID, title: 'PTW Issued and Valid' }),
+  new TitleInterface({ id: PtwStatusEnum.ISSUED_BUT_EXPIRED, title: 'PTW Issued but Expired' }),
+  new TitleInterface({
+    id: PtwStatusEnum.NOT_ISSUED_REQUIRED,
+    title: 'No PTW Issued (Required)',
+  }),
+])
+const ComplianceNotificationList = ref<TitleInterface[]>([
+  new TitleInterface({
+    id: ComplianceNotificationEnum.STATUTORY_AUTHORITY_INFORMED,
+    title: 'Statutory Authority Informed',
+  }),
+  new TitleInterface({
+    id: ComplianceNotificationEnum.INSURANCE_NOTIFIED,
+    title: 'Insurance Notified',
+  }),
+  new TitleInterface({
+    id: ComplianceNotificationEnum.CLIENT_CUSTOMER_NOTIFIED,
+    title: 'Client/Customer Notified',
+  }),
+])
+
+const SelectedPtwStatus = ref<TitleInterface | null>(null)
+const SelectedComplianceNotification = ref<TitleInterface[]>([])
+
+const setPtwStatus = (value: TitleInterface | TitleInterface[] | null) => {
+  SelectedPtwStatus.value = Array.isArray(value) ? null : value
+  updateData()
+}
+
+const setComplianceNotification = (value: TitleInterface | TitleInterface[] | null) => {
+  SelectedComplianceNotification.value = Array.isArray(value) ? value : []
+  updateData()
+}
+
 const setSeverity = (data: TitleInterface) => {
   SelectedSeverity.value = data
   updateData()
@@ -471,6 +512,8 @@ const updateData = () => {
         date.value ?? '',
         [],
         0,
+        SelectedPtwStatus.value?.id ?? null,
+        SelectedComplianceNotification.value.map((item) => item.id),
       )
     : new AddHazardParams({
         title: ObservationTitle.value ?? '',
@@ -510,10 +553,11 @@ const updateData = () => {
                   ?.map((category: TitleInterface) => Number(category.id))
                   .filter(Boolean) || [],
                 item?.images?.map((el: any) => el.file) || [],
+                item?.ppeItem?.id || 0,
+                item?.ppeItemCondition?.id || 0,
                 item?.ppeItem?.id === PpeItemEnum.OTHERS
                   ? item?.customPpeItem?.trim() || ''
-                  : item?.ppeItem?.id || '',
-                item?.ppeItemCondition?.id || '',
+                  : '',
               )
             })
           : [],
@@ -558,6 +602,8 @@ const updateData = () => {
           ? Oragnizationemployee.value.map((employee) => Number(employee.id))
           : [],
         workShiftId: Shifts.value?.id ?? null,
+        ptwStatus: SelectedPtwStatus.value?.id ?? null,
+        complianceNotification: SelectedComplianceNotification.value.map((item) => item.id),
       })
   console.log(params, 'params')
   emit('update:data', params)
@@ -1546,6 +1592,37 @@ defineExpose({
         @input="updateData"
         placeholder="add your descripe"
       ></textarea>
+    </div>
+
+    <div
+      v-if="ObservationFactoryType == Observation.AccidentsType"
+      class="col-span-3 md:col-span-3 input-wrapper"
+    >
+      <UpdatedCustomInputSelect
+        id="ptw-status"
+        :modelValue="SelectedPtwStatus"
+        :staticOptions="PtwStatusList"
+        :reload="false"
+        :label="$t('PTW Status')"
+        :placeholder="$t('Select PTW Status')"
+        @update:modelValue="setPtwStatus"
+      />
+    </div>
+
+    <div
+      v-if="ObservationFactoryType == Observation.AccidentsType"
+      class="col-span-3 md:col-span-3 input-wrapper"
+    >
+      <UpdatedCustomInputSelect
+        id="compliance-notification"
+        :modelValue="SelectedComplianceNotification"
+        :staticOptions="ComplianceNotificationList"
+        :reload="false"
+        :type="2"
+        :label="$t('Regulatory / Compliance Notification')"
+        :placeholder="$t('Select Compliance Notifications')"
+        @update:modelValue="setComplianceNotification"
+      />
     </div>
 
     <!-- Factorywitnesses -->

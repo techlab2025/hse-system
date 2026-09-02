@@ -165,10 +165,11 @@ const AddEnvestigatingResult = async () => {
           ?.map((category: TitleInterface) => Number(category.id))
           .filter(Boolean) || [],
         item?.images?.map((el: any) => el.file) || [],
+        item?.ppeItem?.id || 0,
+        item?.ppeItemCondition?.id || 0,
         item?.ppeItem?.id === PpeItemEnum.OTHERS
           ? item?.customPpeItem?.trim() || ''
-          : item?.ppeItem?.title || '',
-        item?.ppeItemCondition?.title || '',
+          : '',
       )
     }),
     correctiveTasks: actionPlan.corrective,

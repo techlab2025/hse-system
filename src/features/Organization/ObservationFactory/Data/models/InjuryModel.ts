@@ -17,8 +17,9 @@ export default class InjuryDetailsModel {
   public type: number
   public updated_at: string
   public injury_type?: TitleInterface
-  public ppe_item: string
-  public ppe_item_condition: string
+  public ppe_item: number
+  public ppe_item_condition: number
+  public ppe_item_text: string
 
   constructor(
     id: number,
@@ -35,8 +36,9 @@ export default class InjuryDetailsModel {
     updated_at: string,
     injury_type?: TitleInterface,
     incident_categories: TitleInterface[] = [],
-    ppe_item: string = '',
-    ppe_item_condition: string = '',
+    ppe_item: number = 0,
+    ppe_item_condition: number = 0,
+    ppe_item_text: string = '',
   ) {
     this.id = id
     this.title = title
@@ -54,6 +56,7 @@ export default class InjuryDetailsModel {
     this.incident_categories = incident_categories
     this.ppe_item = ppe_item
     this.ppe_item_condition = ppe_item_condition
+    this.ppe_item_text = ppe_item_text
   }
 
   static fromMap(data: any): InjuryDetailsModel {
@@ -82,8 +85,9 @@ export default class InjuryDetailsModel {
             '',
         })
       }),
-      data.ppe_item ?? '',
-      data.ppe_item_condition ?? '',
+      Number(data.ppe_item) || 0,
+      Number(data.ppe_item_condition) || 0,
+      data.ppe_item_text ?? '',
     )
   }
 

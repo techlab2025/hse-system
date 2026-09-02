@@ -23,6 +23,8 @@ export default class EditHazardParams implements Params {
   public date: string | null
   public capa: CapaParams[] | null
   public isAction: number | null
+  public ptwStatus: number | null
+  public complianceNotification: number[]
 
   public static readonly validation = new ClassValidation().setRules({
     title: { required: true, minLength: 2, maxLength: 100 },
@@ -47,6 +49,8 @@ export default class EditHazardParams implements Params {
     date: string | null,
     capa: CapaParams[] | null,
     isAction: number | null,
+    ptwStatus: number | null = null,
+    complianceNotification: number[] = [],
   ) {
     this.id = id
     this.title = title
@@ -66,6 +70,8 @@ export default class EditHazardParams implements Params {
     this.date = date
     this.capa = capa
     this.isAction = isAction
+    this.ptwStatus = ptwStatus
+    this.complianceNotification = complianceNotification
   }
 
   toMap(): Record<
@@ -93,6 +99,9 @@ export default class EditHazardParams implements Params {
     if (this.date) data['date'] = this.date
     if (this.capa) data['capa'] = this.capa
     if (this.isAction) data['is_action'] = this.isAction
+    if (this.ptwStatus != null) data['ptw_status'] = this.ptwStatus
+    if (this.complianceNotification.length > 0)
+      data['compliance_notification'] = this.complianceNotification
     return data
   }
 

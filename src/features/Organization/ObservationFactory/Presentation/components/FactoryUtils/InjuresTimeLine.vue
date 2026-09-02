@@ -213,13 +213,12 @@ const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
     ''
   const manualEmployeeName = item?.employee_name || (!employeeId ? employeeTitle : '')
   const incidentCategories = item?.incident_categories ?? (item as any)?.incidentCategories ?? []
-  const ppeItemValue = item?.ppe_item || ''
+  const ppeItemValue = Number(item?.ppe_item) || 0
   const selectedPpeItem = ppeItemOptions.value.find(
-    (option) => option.title?.toLowerCase() === ppeItemValue.toLowerCase(),
+    (option) => option.id === ppeItemValue,
   )
   const selectedPpeItemCondition = ppeItemConditionOptions.value.find(
-    (option) =>
-      option.title?.toLowerCase() === (item?.ppe_item_condition || '').toLowerCase(),
+    (option) => option.id === (Number(item?.ppe_item_condition) || 0),
   )
 
   return {
@@ -240,10 +239,8 @@ const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
     text: item?.note || '',
     ppeItem: selectedPpeItem
       ? new TitleInterface({ id: selectedPpeItem.id, title: selectedPpeItem.title })
-      : ppeItemValue
-        ? new TitleInterface({ id: PpeItemEnum.OTHERS, title: 'Others' })
-        : new TitleInterface({ id: 0, title: '' }),
-    customPpeItem: selectedPpeItem || !ppeItemValue ? '' : ppeItemValue,
+      : new TitleInterface({ id: 0, title: '' }),
+    customPpeItem: item?.ppe_item_text || '',
     ppeItemCondition: selectedPpeItemCondition
       ? new TitleInterface({
           id: selectedPpeItemCondition.id,
