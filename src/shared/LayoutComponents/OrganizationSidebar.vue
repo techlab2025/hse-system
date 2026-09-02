@@ -8,7 +8,7 @@ import { useUserStore } from '@/stores/user'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 import SidebarUnicon from '@/shared/icons/SidebarUnicon.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
-import { EquipmentTypeEnum } from '@/features/Home/core/enums/SettingEnum/EquipmentTypeEnum'
+// import { EquipmentTypeEnum } from '@/features/Home/core/enums/SettingEnum/EquipmentTypeEnum'
 
 const props = defineProps<{ open: boolean }>()
 

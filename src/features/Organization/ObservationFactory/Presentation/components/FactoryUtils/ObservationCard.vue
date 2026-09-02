@@ -8,6 +8,10 @@ import type HazardDetailsModel from '../../../Data/models/hazardDetailsModel'
 import ToggleObservationActionStatusController from '../../controllers/ToggleObservationActionStatusController'
 import CustomCheckboxToggle from '../../SubComponent/CustomCheckboxToggle.vue'
 import { watch } from 'vue'
+import {
+  ComplianceNotificationEnum,
+  PtwStatusEnum,
+} from '../../../Core/Enums/incident_compliance_enum'
 
 const props = defineProps<{
   data: HazardDetailsModel
@@ -44,6 +48,24 @@ const GetStatus = (status: ActionStatusEnum) => {
       return 'Unknown'
   }
 }
+
+const ptwStatusLabels: Record<number, string> = {
+  [PtwStatusEnum.NOT_APPLICABLE]: 'Not Applicable',
+  [PtwStatusEnum.ISSUED_AND_VALID]: 'PTW Issued and Valid',
+  [PtwStatusEnum.ISSUED_BUT_EXPIRED]: 'PTW Issued but Expired',
+  [PtwStatusEnum.NOT_ISSUED_REQUIRED]: 'No PTW Issued (Required)',
+}
+
+const complianceNotificationLabels: Record<number, string> = {
+  [ComplianceNotificationEnum.STATUTORY_AUTHORITY_INFORMED]:
+    'Statutory Authority Informed',
+  [ComplianceNotificationEnum.INSURANCE_NOTIFIED]: 'Insurance Notified',
+  [ComplianceNotificationEnum.CLIENT_CUSTOMER_NOTIFIED]: 'Client/Customer Notified',
+}
+
+const getPtwStatusLabel = (status: number) => ptwStatusLabels[status] || String(status)
+const getComplianceNotificationLabel = (notifications: number[]) =>
+  notifications.map((item) => complianceNotificationLabels[item] || String(item)).join(', ')
 const emit = defineEmits(['update:data'])
 const router = useRouter()
 const toggleObservationActionStatus = async (id: number) => {
@@ -98,6 +120,22 @@ const GoToShowPage = () => {
           <p class="label-item-primary">
             <span>{{ $t(`${GetHeader(data.type)} Type`) }} :</span>
             <span>{{ data?.typeModel?.title }}</span>
+          </p>
+          <p
+            v-if="data?.type === Observation.AccidentsType && data?.ptwStatus"
+            class="label-item-primary"
+          >
+            <span>{{ $t('PTW Status') }} :</span>
+            <span>{{ getPtwStatusLabel(data.ptwStatus) }}</span>
+          </p>
+          <p
+            v-if="
+              data?.type === Observation.AccidentsType && data?.complianceNotification?.length
+            "
+            class="label-item-primary"
+          >
+            <span>{{ $t('Regulatory / Compliance Notification') }} :</span>
+            <span>{{ getComplianceNotificationLabel(data.complianceNotification) }}</span>
           </p>
 
           <div

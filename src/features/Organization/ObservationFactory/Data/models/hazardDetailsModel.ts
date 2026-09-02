@@ -62,6 +62,8 @@ export default class HazardDetailsModel {
   public hazardSubType: TitleInterface
   public hazardType: TitleInterface
   public createdAt:string
+  public ptwStatus: number
+  public complianceNotification: number[]
   constructor(
     id: number,
     title: string,
@@ -106,7 +108,9 @@ export default class HazardDetailsModel {
     work_shift: ShiftModel,
     hazardSubType: TitleInterface,
     hazardType: TitleInterface,
-    createdAt:string
+    createdAt:string,
+    ptwStatus: number = 0,
+    complianceNotification: number[] = [],
   ) {
     this.id = id
     this.title = title
@@ -152,6 +156,8 @@ export default class HazardDetailsModel {
     this.hazardSubType = hazardSubType
     this.hazardType = hazardType
     this.createdAt=createdAt
+    this.ptwStatus = ptwStatus
+    this.complianceNotification = complianceNotification
   }
 
   static fromMap(data: any): HazardDetailsModel {
@@ -201,7 +207,16 @@ export default class HazardDetailsModel {
       data?.work_shift,
       data?.hazard_sub_type,
       data?.hazard_type,
-      data?.created_at
+      data?.created_at,
+      Number(data?.ptw_status) || 0,
+      (Array.isArray(data?.compliance_notification)
+        ? data.compliance_notification
+        : data?.compliance_notification
+          ? [data.compliance_notification]
+          : []
+      )
+        .map((item: any) => Number(item?.id ?? item))
+        .filter(Boolean),
     )
   }
 
