@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
+import { PpeItemEnum } from '../../../Core/Enums/ppe_enum'
 
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
@@ -101,6 +102,10 @@ const updateData = () => {
                     ?.map((category: TitleInterface) => Number(category.id))
                     .filter(Boolean) || [],
                   item?.images?.map((image: any) => image?.file ?? image) || [],
+                  item?.ppeItem?.id === PpeItemEnum.OTHERS
+                    ? item?.customPpeItem?.trim() || ''
+                    : item?.ppeItem?.title || '',
+                  item?.ppeItemCondition?.title || '',
                 )
               })
             : [],

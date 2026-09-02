@@ -19,6 +19,7 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 import IndexRootCausesController from '@/features/setting/RootCauses/Presentation/controllers/indexRootCausesController'
 import IndexRootCausesParams from '@/features/setting/RootCauses/Core/params/indexRootCausesParams'
 import TitleInterface from '@/base/Data/Models/title_interface'
+import { PpeItemEnum } from '@/features/Organization/ObservationFactory/Core/Enums/ppe_enum'
 import FiveWhyQuestions from './InvestegationResultParts/FiveWhyQuestions.vue'
 import RootCausesIdParams from '@/features/Organization/ObservationFactory/Core/params/RootCausesIdParams'
 import InvestigationCapaDialog from '../../SubComponents/InvestigationCapaDialog.vue'
@@ -164,6 +165,10 @@ const AddEnvestigatingResult = async () => {
           ?.map((category: TitleInterface) => Number(category.id))
           .filter(Boolean) || [],
         item?.images?.map((el: any) => el.file) || [],
+        item?.ppeItem?.id === PpeItemEnum.OTHERS
+          ? item?.customPpeItem?.trim() || ''
+          : item?.ppeItem?.title || '',
+        item?.ppeItemCondition?.title || '',
       )
     }),
     correctiveTasks: actionPlan.corrective,

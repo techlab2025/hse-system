@@ -8,6 +8,8 @@ export default class InjuryParams implements Params {
   public injuryTypeId: number
   public incidentCategoryIds: number[]
   public images: string[]
+  public ppeItem: string
+  public ppeItemCondition: string
   constructor(
     organizationEmployeeId: number,
     employeeName: string,
@@ -15,6 +17,8 @@ export default class InjuryParams implements Params {
     injuryTypeId: number,
     incidentCategoryIds: number[],
     images: string[],
+    ppeItem: string = '',
+    ppeItemCondition: string = '',
   ) {
     this.employeeName = employeeName
     this.organizationEmployeeId = organizationEmployeeId
@@ -22,6 +26,8 @@ export default class InjuryParams implements Params {
     this.injuryTypeId = injuryTypeId
     this.incidentCategoryIds = incidentCategoryIds
     this.images = images
+    this.ppeItem = ppeItem
+    this.ppeItemCondition = ppeItemCondition
   }
 
   toMap(): Record<string, number | string | string[]> {
@@ -32,6 +38,8 @@ export default class InjuryParams implements Params {
     if (this.injuryTypeId) data['injury_type_id'] = this.injuryTypeId
     if (this.incidentCategoryIds.length) data['incident_category_ids'] = this.incidentCategoryIds
     if (this.images?.length && !this.images.some((el) => !isBase64(el))) data['files'] = this.images
+    if (this.ppeItem) data['ppe_item'] = this.ppeItem
+    if (this.ppeItemCondition) data['ppe_item_condition'] = this.ppeItemCondition
     return data
   }
 }

@@ -15,6 +15,10 @@ import type InjuryDetailsModel from '../../../Data/models/InjuryModel'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 import IndexIncidentCategoryController from '@/features/setting/IncidentCategories/Presentation/controllers/indexIncidentCategoryController'
 import IndexIncidentCategoryParams from '@/features/setting/IncidentCategories/Core/params/indexIncidentCategoryParams'
+import {
+  PpeItemConditionEnum,
+  PpeItemEnum,
+} from '@/features/Organization/ObservationFactory/Core/Enums/ppe_enum'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -27,6 +31,19 @@ const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 
 const employeeOptions = ref<TitleInterface[]>([])
 const injuryOptions = ref<TitleInterface[]>([])
 const incidentCategoryOptions = ref<TitleInterface[]>([])
+const ppeItemOptions = ref<TitleInterface[]>([
+  new TitleInterface({ id: PpeItemEnum.SAFETY_GLOVES, title: 'Safety Gloves' }),
+  new TitleInterface({ id: PpeItemEnum.SAFETY_GOGGLES, title: 'Safety Goggles' }),
+  new TitleInterface({ id: PpeItemEnum.SAFETY_SHOES, title: 'Safety Shoes' }),
+  new TitleInterface({ id: PpeItemEnum.HELMET, title: 'Helmet' }),
+  new TitleInterface({ id: PpeItemEnum.OTHERS, title: 'Others' }),
+])
+const ppeItemConditionOptions = ref<TitleInterface[]>([
+  new TitleInterface({ id: PpeItemConditionEnum.GOOD, title: 'Good' }),
+  new TitleInterface({ id: PpeItemConditionEnum.DAMAGED, title: 'Damaged' }),
+  new TitleInterface({ id: PpeItemConditionEnum.DEFECTIVE, title: 'Defective' }),
+])
+
 type AnswerModel = {
   text: string
   employee: TitleInterface
@@ -34,6 +51,9 @@ type AnswerModel = {
   incidentCategories: TitleInterface[]
   images: any[]
   infectionTypeId: TitleInterface
+  ppeItem: TitleInterface
+  customPpeItem: string
+  ppeItemCondition: TitleInterface
 }
 const createEmptyAnswer = (): AnswerModel => ({
   text: ' ',
@@ -42,6 +62,9 @@ const createEmptyAnswer = (): AnswerModel => ({
   employeeName: '',
   incidentCategories: [],
   images: [],
+  ppeItem: new TitleInterface({ id: 0, title: '' }),
+  customPpeItem: '',
+  ppeItemCondition: new TitleInterface({ id: 0, title: '' }),
 })
 
 const Answers = ref<AnswerModel[]>([createEmptyAnswer()])
@@ -99,7 +122,8 @@ const getSelectedEmployeeIds = (currentIndex: number) =>
     .map((item) => item.employee?.id)
     .filter((id): id is number => !!id)
 
-const UpdateInjury = (item: TitleInterface | null, index: number) => {
+const UpdateInjury = (value: TitleInterface | TitleInterface[] | null, index: number) => {
+  const item = Array.isArray(value) ? null : value
   Answers.value[index].infectionTypeId = item
     ? new TitleInterface({ id: item.id, title: item.title })
     : new TitleInterface({ id: 0, title: '' })
@@ -114,6 +138,30 @@ const updateIncidentCategories = (
   Answers.value[index].incidentCategories = selections.map(
     (item) => new TitleInterface({ id: item.id, title: item.title }),
   )
+  UpdateData()
+}
+
+const updatePpeItem = (value: TitleInterface | TitleInterface[] | null, index: number) => {
+  const item = Array.isArray(value) ? null : value
+  Answers.value[index].ppeItem = item
+    ? new TitleInterface({ id: item.id, title: item.title })
+    : new TitleInterface({ id: 0, title: '' })
+
+  if (item?.id !== PpeItemEnum.OTHERS) {
+    Answers.value[index].customPpeItem = ''
+  }
+
+  UpdateData()
+}
+
+const updatePpeItemCondition = (
+  value: TitleInterface | TitleInterface[] | null,
+  index: number,
+) => {
+  const item = Array.isArray(value) ? null : value
+  Answers.value[index].ppeItemCondition = item
+    ? new TitleInterface({ id: item.id, title: item.title })
+    : new TitleInterface({ id: 0, title: '' })
   UpdateData()
 }
 
@@ -165,14 +213,23 @@ const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
     ''
   const manualEmployeeName = item?.employee_name || (!employeeId ? employeeTitle : '')
   const incidentCategories = item?.incident_categories ?? (item as any)?.incidentCategories ?? []
+  const ppeItemValue = item?.ppe_item || ''
+  const selectedPpeItem = ppeItemOptions.value.find(
+    (option) => option.title?.toLowerCase() === ppeItemValue.toLowerCase(),
+  )
+  const selectedPpeItemCondition = ppeItemConditionOptions.value.find(
+    (option) =>
+      option.title?.toLowerCase() === (item?.ppe_item_condition || '').toLowerCase(),
+  )
 
   return {
     employee: new TitleInterface({ id: employeeId, title: employeeTitle }),
     employeeName: manualEmployeeName,
     images: item?.media?.map((file: any) => file?.url || file).filter(Boolean) || [],
-    infectionTypeId:
-      new TitleInterface({ id: item?.injury_type?.id, title: item?.injury_type?.title }) ||
-      new TitleInterface({ id: 0, title: '' }),
+    infectionTypeId: new TitleInterface({
+      id: item?.injury_type?.id ?? 0,
+      title: item?.injury_type?.title ?? '',
+    }),
     incidentCategories: incidentCategories.map((category: any) => {
       const value = category?.incident_category ?? category
       return new TitleInterface({
@@ -181,6 +238,18 @@ const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
       })
     }),
     text: item?.note || '',
+    ppeItem: selectedPpeItem
+      ? new TitleInterface({ id: selectedPpeItem.id, title: selectedPpeItem.title })
+      : ppeItemValue
+        ? new TitleInterface({ id: PpeItemEnum.OTHERS, title: 'Others' })
+        : new TitleInterface({ id: 0, title: '' }),
+    customPpeItem: selectedPpeItem || !ppeItemValue ? '' : ppeItemValue,
+    ppeItemCondition: selectedPpeItemCondition
+      ? new TitleInterface({
+          id: selectedPpeItemCondition.id,
+          title: selectedPpeItemCondition.title,
+        })
+      : new TitleInterface({ id: 0, title: '' }),
   }
 }
 
@@ -400,6 +469,36 @@ onMounted(async () => {
                   :placeholder="$t('Select Incident Categories')"
                   help-text="Select all incident categories related to this injury. The list is filtered by the incident type selected above."
                   @update:modelValue="updateIncidentCategories($event, index)"
+                />
+              </div>
+              <div class="injury-field input-wrapper w-full">
+                <UpdatedCustomInputSelect
+                  :id="`ppe-item-${index}`"
+                  :modelValue="item.ppeItem"
+                  :staticOptions="ppeItemOptions"
+                  :reload="false"
+                  :label="$t('PPE Item')"
+                  :placeholder="$t('Select PPE Item')"
+                  @update:modelValue="updatePpeItem($event, index)"
+                />
+                <input
+                  v-if="item.ppeItem?.id === PpeItemEnum.OTHERS"
+                  v-model="item.customPpeItem"
+                  type="text"
+                  class="input mt-2"
+                  :placeholder="$t('Enter PPE Item')"
+                  @input="UpdateData"
+                />
+              </div>
+              <div class="injury-field input-wrapper w-full">
+                <UpdatedCustomInputSelect
+                  :id="`ppe-item-condition-${index}`"
+                  :modelValue="item.ppeItemCondition"
+                  :staticOptions="ppeItemConditionOptions"
+                  :reload="false"
+                  :label="$t('PPE Item Condition')"
+                  :placeholder="$t('Select PPE Item Condition')"
+                  @update:modelValue="updatePpeItemCondition($event, index)"
                 />
               </div>
             </div>
