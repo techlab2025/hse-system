@@ -11,6 +11,7 @@ import { useI18n } from 'vue-i18n'
 import SidebarUnicon from '@/shared/icons/SidebarUnicon.vue'
 
 const props = defineProps<{ open: boolean }>()
+const emit = defineEmits<{ logout: [] }>()
 
 const route = useRoute()
 
@@ -977,6 +978,11 @@ watch(LoackupsAccordion, (val) => {
         </AccordionPanel>
       </Accordion>
     </PermissionBuilder>
+
+    <button class="admin-sidebar-logout" type="button" @click="emit('logout')">
+      <SidebarUnicon name="signout" />
+      <span>{{ $t('logout') }}</span>
+    </button>
   </template>
 </template>
 
@@ -1079,5 +1085,45 @@ watch(LoackupsAccordion, (val) => {
   flex-shrink: 0;
   color: currentColor;
   opacity: 0.82;
+}
+
+.admin-sidebar-logout {
+  position: sticky;
+  bottom: 8px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  width: calc(100% - 8px);
+  min-height: 48px;
+  margin: 16px 4px 8px;
+  padding: 12px 16px;
+  border: 1px solid color-mix(in srgb, var(--status-danger) 35%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--status-danger) 18%, var(--brand-primary-700));
+  color: var(--text-on-brand);
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--shadow-color) 16%, transparent);
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-sidebar-logout:hover {
+  background: color-mix(in srgb, var(--status-danger) 32%, var(--brand-primary-700));
+  transform: translateY(-1px);
+}
+
+.admin-sidebar-logout :deep(svg),
+.admin-sidebar-logout :deep(.sidebar-unicon) {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.admin-sidebar-logout :deep(path) {
+  fill: currentColor !important;
 }
 </style>

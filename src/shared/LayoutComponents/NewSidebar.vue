@@ -116,7 +116,7 @@ const logout = () => {
 
       <div class="links">
         <template v-if="user?.user?.type === OrganizationTypeEnum?.ADMIN">
-          <AdminSidebar :open="open && !isMobileSidebar" />
+          <AdminSidebar :open="open && !isMobileSidebar" @logout="logout" />
         </template>
         <template v-if="isOrganizationSidebar">
           <OrganizationSidebar :open="open" />
