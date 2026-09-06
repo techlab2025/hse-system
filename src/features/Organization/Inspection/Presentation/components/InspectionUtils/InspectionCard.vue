@@ -457,7 +457,7 @@ const GetEquipmentType = (type: number) => {
 
 .inspection-info {
   display: grid !important;
-  grid-template-columns: minmax(0, 1fr) 34px minmax(0, 1fr) minmax(150px, auto);
+  grid-template-columns: minmax(0, 1fr) 34px minmax(0, 1fr);
   align-items: stretch !important;
   gap: 10px !important;
   width: 100%;
@@ -466,6 +466,10 @@ const GetEquipmentType = (type: number) => {
 
 .inspection-info > * {
   min-width: 0;
+}
+
+.inspection-info > :last-child {
+  grid-column: 1 / -1;
 }
 
 .inspection-info .info-box {
@@ -666,16 +670,6 @@ const GetEquipmentType = (type: number) => {
 
 .inspection-card.is-dark .inspection-symbol {
   box-shadow: none;
-}
-
-@media (max-width: 1180px) {
-  .inspection-info {
-    grid-template-columns: minmax(0, 1fr) 30px minmax(0, 1fr);
-  }
-
-  .inspection-info > :last-child {
-    grid-column: 1 / -1;
-  }
 }
 
 @media (max-width: 820px) {
