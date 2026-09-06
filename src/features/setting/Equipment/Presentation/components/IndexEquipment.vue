@@ -94,6 +94,13 @@ const routeEquipmentType = computed(() => {
     ? equipmentType
     : undefined
 })
+const addEquipmentLink = computed(() => {
+  const path = `/${
+    user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+  }/equipment/add`
+
+  return routeEquipmentType.value ? `${path}?equipment_type=${routeEquipmentType.value}` : path
+})
 // const type = ref<EquipmentTypeStatusEnum>(EquipmentTypeStatusEnum[route.params.type as keyof typeof EquipmentTypeStatusEnum])
 
 const fetchEquipment = async (
@@ -342,7 +349,7 @@ const IndexEquipmentactionList = () => [
   },
   {
     text: t('Add_Equipment'),
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/add`,
+    link: addEquipmentLink.value,
     icon: ActionsListAddIcon,
     type: ActionItemsTypeEnum.Info,
     permission: [
@@ -407,7 +414,7 @@ const IndexEquipmentactionList = () => [
         <ActionsList
           :show-actions="true"
           :actionList="IndexEquipmentactionList()"
-          :actionsNumber="5"<
+          :actionsNumber="5"
         >
           <template #custom>
             <ExportPdf
@@ -415,7 +422,7 @@ const IndexEquipmentactionList = () => [
               target-selector=".equipment-index-page .equipment-cards-grid"
               filename="equipment.pdf"
             />
-          </template>>
+          </template>
         </ActionsList>
       </div>
     </div>
@@ -468,9 +475,7 @@ const IndexEquipmentactionList = () => [
             ]"
           >
             <DataEmpty
-              :link="`/${
-                user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-              }/equipment/add`"
+              :link="addEquipmentLink"
               addText="Add Equipment"
               description="Sorry .. You have no Equipment .. All your joined customers will appear here when you add your customer data"
               title="..ops! You have No Equipment"
@@ -487,9 +492,7 @@ const IndexEquipmentactionList = () => [
             ]"
           >
             <DataFailed
-              :link="`/${
-                user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-              }/equipment/add`"
+              :link="addEquipmentLink"
               addText="Add Equipment"
               description="Sorry .. You have no Equipment .. All your joined customers will appear here when you add your customer data"
               title="..ops! You have No Equipment"

@@ -301,7 +301,7 @@ const handleCountPerPage = (count: number) => {
     </template>
     <template #failed>
       <DataFailed
-        link="/notification-plan/add"
+        :link="`/organization/notification-plan/add`"
         :addText="$t('add_notification_plan')"
         :description="$t('no_notification_plans_description')"
         :title="$t('no_notification_plans')"
@@ -312,7 +312,7 @@ const handleCountPerPage = (count: number) => {
     </template>
     <template #empty>
       <DataEmpty
-        link="/notification-plan/add"
+        :link="`/organization/notification-plan/add`"
         :addText="$t('add_notification_plan')"
         :description="$t('no_notification_plans_description')"
         :title="$t('no_notification_plans')"

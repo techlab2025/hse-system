@@ -69,7 +69,21 @@ const licenseNumber = ref<string | null>(null)
 const licensePlateNumber = ref<string | null>(null)
 const equipmentStatus = ref<TitleInterface | null>(null)
 const { t } = useI18n()
-const activeTab = ref<EquipmentTypesEnum>(EquipmentTypesEnum.EQUIPMENT)
+const routeEquipmentType = computed<EquipmentTypesEnum | undefined>(() => {
+  const queryValue = Array.isArray(route.query.equipment_type)
+    ? route.query.equipment_type[0]
+    : route.query.equipment_type
+  const equipmentType = Number(queryValue)
+
+  return [
+    EquipmentTypesEnum.EQUIPMENT,
+    EquipmentTypesEnum.DEVICE,
+    EquipmentTypesEnum.TOOL,
+  ].includes(equipmentType)
+    ? (equipmentType as EquipmentTypesEnum)
+    : undefined
+})
+const activeTab = ref<EquipmentTypesEnum>(routeEquipmentType.value ?? EquipmentTypesEnum.EQUIPMENT)
 const SerialNumber = ref()
 
 const equipmentStatusOptions = ref<TitleInterface[]>([
@@ -494,6 +508,13 @@ watch(
   },
 )
 
+watch(routeEquipmentType, (routeType) => {
+  if (!props.data?.id && routeType) {
+    activeTab.value = routeType
+    equipmentType.value = null
+  }
+})
+
 const RentTypes = ref<TitleInterface[]>([
   new TitleInterface({ id: RentTypeEnum.HOUR, title: 'Hour' }),
   new TitleInterface({ id: RentTypeEnum.DAY, title: 'Day' }),
@@ -618,7 +639,7 @@ watch(
 const EquipmentTypeDialog = ref(false)
 const ContractorDialog = ref(false)
 const wearHouseDialog = ref(false)
-const UpdateActiveTap = (data) => {
+const UpdateActiveTap = (data: EquipmentTypesEnum) => {
   activeTab.value = data
   updateData()
 }

@@ -37,6 +37,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/indexEquipmentTypeController'
 import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/indexEquipmentTypeParams'
 import { EquipmentStatus } from '@/features/setting/Equipment/Core/enum/equipmentStatus'
+import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 
 const { t } = useI18n()
 
@@ -62,6 +63,27 @@ const indexEquipmentController = IndexEquipmentController.getInstance()
 const state = ref(indexEquipmentController.state.value)
 const route = useRoute()
 let id = route.params.id
+const routeEquipmentType = computed(() => {
+  const queryValue = Array.isArray(route.query.equipment_type)
+    ? route.query.equipment_type[0]
+    : route.query.equipment_type
+  const equipmentType = Number(queryValue)
+
+  return [
+    EquipmentTypesEnum.EQUIPMENT,
+    EquipmentTypesEnum.DEVICE,
+    EquipmentTypesEnum.TOOL,
+  ].includes(equipmentType)
+    ? equipmentType
+    : undefined
+})
+const getAddEquipmentLink = (parentId?: number) => {
+  const path = `/${
+    user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+  }/equipment/add${parentId ? `/${parentId}` : ''}`
+
+  return routeEquipmentType.value ? `${path}?equipment_type=${routeEquipmentType.value}` : path
+}
 // const type = ref<EquipmentTypeStatusEnum>(EquipmentTypeStatusEnum[route.params.type as keyof typeof EquipmentTypeStatusEnum])
 
 const fetchEquipment = async (
@@ -164,7 +186,7 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
   {
     text: t('add_sub_equipment'),
     icon: IconEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/add/${id}`,
+    link: getAddEquipmentLink(id),
     permission: [
       PermissionsEnum.EQUIPMENT_UPDATE,
       PermissionsEnum.ADMIN,
@@ -238,10 +260,7 @@ watch(
           PermissionsEnum.EQUIPMENT_CREATE,
         ]"
       >
-        <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/add`"
-          class="btn btn-primary"
-        >
+        <router-link :to="getAddEquipmentLink()" class="btn btn-primary">
           {{ $t('Add_Equipment') }}
         </router-link>
       </permission-builder>

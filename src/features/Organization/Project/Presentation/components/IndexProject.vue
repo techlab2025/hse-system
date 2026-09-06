@@ -117,7 +117,7 @@ watch(
         @apply="applyFilters"
         @reset="resetFilters"
       /> -->
-      <ExportPdf />
+      <ExportPdf target-selector=".project-cards-grid" filename="projects.pdf" />
       <PermissionBuilder
         :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.PROJECT_CREATE]"
       >
