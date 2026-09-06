@@ -6,6 +6,10 @@
     "back_home": "Back to home"
   },
   "total": "Total",
+  "Unread": "Unread",
+  "Read": "Read",
+  "Unread notification": "Unread notification",
+  "Read notification": "Read notification",
   "In short, project progress and task statuses": "A quick overview of project progress and task statuses",
   "Total Incidents": "Total incidents",
   "per this month": "This month",

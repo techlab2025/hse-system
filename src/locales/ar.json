@@ -6,6 +6,10 @@
     "back_home": "العودة إلى الرئيسية"
   },
   "total": "الإجمالي",
+  "Unread": "غير مقروء",
+  "Read": "مقروء",
+  "Unread notification": "إشعار غير مقروء",
+  "Read notification": "إشعار مقروء",
   "In short, project progress and task statuses": "نظرة سريعة على تقدم المشاريع وحالات المهام",
   "Total Incidents": "إجمالي الحوادث",
   "per this month": "خلال هذا الشهر",
