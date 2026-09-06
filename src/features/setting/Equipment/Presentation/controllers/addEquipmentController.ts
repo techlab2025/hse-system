@@ -75,6 +75,12 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
         }
       }
     } else {
+      const vehicleKm = String(params.VehicleKm ?? '').trim()
+
+      if (!/^\d+$/.test(vehicleKm)) {
+        new OpenWarningDilaog('Kilometers should contain numbers only').openDialog()
+        return
+      }
       if (params?.status == EquipmentStatus.RENT && Number(params?.equipmentRentTime) < 1) {
         new OpenWarningDilaog('Rent Time Should Be More Than One').openDialog()
         return

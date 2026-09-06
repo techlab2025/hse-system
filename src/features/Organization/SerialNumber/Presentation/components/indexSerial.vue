@@ -9,9 +9,29 @@ import IndexProjectProgressController from '@/features/Organization/ProjectPrgor
 import IndexProjectProgressParams from '@/features/Organization/ProjectPrgoress/Core/params/indexProjectProgressParams'
 
 const projectStatus = useProjectAppStatusStore()
-const SerialType = ref<SertialNumberStatusEnum | null>(
+const emit = defineEmits(['update:data', 'close:dialog'])
+
+const SerialType = ref<SertialNumberStatusEnum>(
   projectStatus.getProjectAppStatus()?.codeSystemType ?? SertialNumberStatusEnum.AUTO,
 )
+
+const refreshSerialType = async () => {
+  const state = await IndexProjectProgressController.getInstance().getData(
+    new IndexProjectProgressParams('', 1, 10, 0),
+  )
+  const status = state.value.data
+
+  if (!status) return
+
+  projectStatus.setProjectAppStatus(status)
+  SerialType.value = status.codeSystemType
+}
+
+const handleSerialUpdated = async () => {
+  await refreshSerialType()
+  emit('update:data')
+}
+
 const updateSerialType = (type: boolean) => {
   if (type) {
     SerialType.value = SertialNumberStatusEnum.AUTO
@@ -29,18 +49,14 @@ const GetSerialTypeTitle = (type: SertialNumberStatusEnum) => {
       return ''
   }
 }
-// onMounted(async () => {
-//   const state = await IndexProjectProgressController.getInstance().getData(
-//     new IndexProjectProgressParams('', 1, 10, 0),
-//   )
-//   if (state.value.data) {
-//     SerialType.value = state.value.data.codeSystemType
-//   }
-// })
+onMounted(refreshSerialType)
 
-// watch(() => projectStatus.projectAppStatus?.codeSystemType, () => {
-//   SerialType.value = projectStatus.projectAppStatus?.codeSystemType ?? SertialNumberStatusEnum.AUTO
-// })
+watch(
+  () => projectStatus.projectAppStatus?.codeSystemType,
+  (status) => {
+    if (status) SerialType.value = status
+  },
+)
 </script>
 
 <template>
@@ -71,8 +87,8 @@ const GetSerialTypeTitle = (type: SertialNumberStatusEnum) => {
     </PagesHeader>
     <div>
       <AddSerialForm
-        @update:data="$emit('update:data')"
-        @close:dialog="$emit('close:dialog')"
+        @update:data="handleSerialUpdated"
+        @close:dialog="emit('close:dialog')"
         :serialType="SerialType"
       />
     </div>
@@ -90,5 +106,4 @@ const GetSerialTypeTitle = (type: SertialNumberStatusEnum) => {
   margin-top: 8px;
   display: block;
 }
-
 </style>

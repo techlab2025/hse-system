@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ImportantIcon from '@/shared/icons/ImportantIcon.vue'
 import { SerialNumberEnum } from '../../Core/Enums/serialNum'
 import AddSerialNumberParams from '../../Core/params/addSerialNumberParams'
 import { onMounted, ref } from 'vue'
@@ -13,8 +12,6 @@ import AccordionPanel from 'primevue/accordionpanel'
 import AccordionHeader from 'primevue/accordionheader'
 import AccordionContent from 'primevue/accordioncontent'
 import { SertialNumberStatusEnum } from '../../Core/Enums/SerialNumberStatusEnum'
-import IndexProjectProgressController from '../../../ProjectPrgoress/Presentation/controllers/indexProjectProgressController'
-import IndexProjectProgressParams from '@/features/Organization/ProjectPrgoress/Core/params/indexProjectProgressParams'
 import PathSerial from '@/shared/icons/pathSerial.vue'
 
 const showSerialNumController = ShowSerialNumController.getInstance()
@@ -40,8 +37,7 @@ const SERIAL_TITLES: Record<SerialNumberEnum, string> = {
   // [SerialNumberEnum.ZONE]: 'Zone',
   [SerialNumberEnum.INVESTIGATION]: 'Investigation',
   [SerialNumberEnum.CAPA]: 'CAPA',
-  [SerialNumberEnum.INCIDANT]: 'Incident'
-
+  [SerialNumberEnum.INCIDANT]: 'Incident',
 }
 const getTitle = (type: SerialNumberEnum) => SERIAL_TITLES[type]
 
@@ -138,15 +134,15 @@ const fields = ref([
   //   start: '',
   // },
 
-    // {
-    //   id: 12,
-    //   serialNumberType: SerialNumberEnum.TASK,
-    //   name: SerialNumberEnum.TASK,
-    //   title: getTitle(SerialNumberEnum.TASK),
-    //   prefix: '',
-    //   suffix: '',
-    //   start: '',
-    // },
+  // {
+  //   id: 12,
+  //   serialNumberType: SerialNumberEnum.TASK,
+  //   name: SerialNumberEnum.TASK,
+  //   title: getTitle(SerialNumberEnum.TASK),
+  //   prefix: '',
+  //   suffix: '',
+  //   start: '',
+  // },
   // {
   //   id: 13,
   //   serialNumberType: SerialNumberEnum.ZONE,
@@ -217,10 +213,6 @@ const sendData = async () => {
 
   if (!serialNumController.isDataSuccess()) return
 
-  await IndexProjectProgressController.getInstance().getData(
-    new IndexProjectProgressParams('', 1, 10, 0),
-  )
-
   emit('close:dialog')
   emit('update:data')
   // location.reload()
@@ -244,9 +236,6 @@ const ShowData = async () => {
 
 onMounted(async () => {
   await ShowData()
-  // await IndexProjectProgressController.getInstance().getData(
-  //   new IndexProjectProgressParams('', 1, 10, 0),
-  // )
 })
 const route = useRoute()
 </script>
