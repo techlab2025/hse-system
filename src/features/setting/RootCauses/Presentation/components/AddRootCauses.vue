@@ -15,14 +15,22 @@ const formKey = ref(0)
 const addRootCausesController = AddRootCausesController.getInstance()
 
 const addRootCauses = async () => {
+  addRootCausesController.setLoading()
   await addRootCausesController.addRootCauses(params.value as AddRootCausesParams, router)
-  emit('close:data')
-  emit('update:data')
+  if (addRootCausesController.isDataSuccess()) {
+    emit('close:data')
+    emit('update:data')
+  }
 }
 
 const saveAndAdd = async () => {
-  const state = await addRootCausesController.addRootCauses(params.value as AddRootCausesParams, router, true)
-  if (!state.value.error) {
+  addRootCausesController.setLoading()
+  await addRootCausesController.addRootCauses(
+    params.value as AddRootCausesParams,
+    router,
+    true,
+  )
+  if (addRootCausesController.isDataSuccess()) {
     params.value = null
     formKey.value++
   }

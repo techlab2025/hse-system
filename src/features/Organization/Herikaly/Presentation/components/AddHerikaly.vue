@@ -22,18 +22,20 @@ const addHerikalyController = AddHerikalyController.getInstance()
 const addHerikaly = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
   console.log(params.value, 'params')
+  addHerikalyController.setLoading()
   await addHerikalyController.addHerikaly(params.value as AddHerikalyParams, router)
-  emit('update:data')
+  if (addHerikalyController.isDataSuccess()) emit('update:data')
 }
 
 const saveAndAdd = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
-  const state = await addHerikalyController.addHerikaly(
+  addHerikalyController.setLoading()
+  await addHerikalyController.addHerikaly(
     params.value as AddHerikalyParams,
     router,
     true,
   )
-  if (!state.value.error) {
+  if (addHerikalyController.isDataSuccess()) {
     params.value = null
     formKey.value++
   }

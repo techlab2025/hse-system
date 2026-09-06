@@ -24,12 +24,14 @@ export default class AddProjectZoneController extends ControllerInterface<Projec
   }
 
   async addProjectZone(params: Params, router: Router, draft: boolean = false) {
+    let requestSucceeded = false
     // useLoaderStore().setLoadingWithDialog();
     try {
       // console.log("Ssssssss")
       const dataState: DataState<ProjectZoneModel> = await this.AddProjectZoneUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
+        requestSucceeded = true
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
           titleContent: 'Added was successful',
@@ -59,6 +61,6 @@ export default class AddProjectZoneController extends ControllerInterface<Projec
     }
 
     super.handleResponseDialogs()
-    return this.state
+    return requestSucceeded
   }
 }

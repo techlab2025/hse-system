@@ -14,13 +14,17 @@ const emit = defineEmits(['update:data'])
 const addLocationController = AddLocationController.getInstance()
 
 const addLocation = async () => {
-  await addLocationController.addLocation(params.value as AddLocationParams, router)
-  emit('update:data')
+  const isSuccess = await addLocationController.addLocation(params.value as AddLocationParams, router)
+  if (isSuccess) emit('update:data')
 }
 
 const saveAndAdd = async () => {
-  const state = await addLocationController.addLocation(params.value as AddLocationParams, router, true)
-  if (!state.value.error) {
+  const isSuccess = await addLocationController.addLocation(
+    params.value as AddLocationParams,
+    router,
+    true,
+  )
+  if (isSuccess) {
     params.value = null
     formKey.value++
   }

@@ -6,10 +6,9 @@ export const contractorsRoutes: RouteRecordRaw[] = [
     name: 'Contractor',
     component: () => import('@/views/Admin/Contractor/IndexContractors.vue'),
     meta: {
-      breadcrumb: 'Contractor',
+      breadcrumb: 'sub contractor',
       type: 'Shared',
       isSidebar: true,
-
     },
   },
   {
@@ -17,11 +16,10 @@ export const contractorsRoutes: RouteRecordRaw[] = [
     name: 'Add Contractor',
     component: () => import('@/views/Admin/Contractor/AddContractors.vue'),
     meta: {
-      breadcrumb: 'Add Contractor',
+      breadcrumb: 'Add sub contractor',
       parent: 'Contractor',
       type: 'Shared',
       isSidebar: true,
-
     },
   },
   {
@@ -29,11 +27,10 @@ export const contractorsRoutes: RouteRecordRaw[] = [
     name: 'Edit Contractor',
     component: () => import('@/views/Admin/Contractor/EditContractors.vue'),
     meta: {
-      breadcrumb: 'Edit Contractor',
+      breadcrumb: 'Edit sub contractor',
       parent: 'Contractor',
       type: 'Shared',
       isSidebar: true,
-
     },
   },
 ]

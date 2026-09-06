@@ -198,25 +198,27 @@ const resetForm = () => {
 
 const addTemplate = async (isInLibrary: number) => {
   const params = buildParams(isInLibrary)
+  addTemplateController.setLoading()
   const state = await addTemplateController.addTemplate(params as AddTemplateParams, router)
-  if (state?.value.data) {
+  if (addTemplateController.isDataSuccess() && state?.value.data) {
     emit('update:templateId', {
       templateId: state?.value.data.id,
       teamplateTitle: state?.value.data.title,
       isInLibrary: isInLibrary
     })
     emit('update:data')
+    visible.value = false
   }
-  visible.value = false
 }
 
 const saveAndAdd = async () => {
   const params = buildParams(1)
-  const state = await addTemplateController.addTemplate(params as AddTemplateParams, router, true)
-  if (!state?.value.error) {
+  addTemplateController.setLoading()
+  await addTemplateController.addTemplate(params as AddTemplateParams, router, true)
+  if (addTemplateController.isDataSuccess()) {
     resetForm()
+    visible.value = false
   }
-  visible.value = false
 }
 
 watch(

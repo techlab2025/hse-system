@@ -17,14 +17,16 @@ const addTeamController = AddTeamController.getInstance()
 const addTeam = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
   console.log(params.value, 'params')
+  addTeamController.setLoading()
   await addTeamController.addTeam(params.value as AddTeamParams, router)
-  emit('update:data')
+  if (addTeamController.isDataSuccess()) emit('update:data')
 }
 
 const saveAndAdd = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
-  const state = await addTeamController.addTeam(params.value as AddTeamParams, router, true)
-  if (!state.value.error) {
+  addTeamController.setLoading()
+  await addTeamController.addTeam(params.value as AddTeamParams, router, true)
+  if (addTeamController.isDataSuccess()) {
     params.value = null
     formKey.value++
   }

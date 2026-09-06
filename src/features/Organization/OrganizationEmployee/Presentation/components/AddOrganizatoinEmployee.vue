@@ -21,15 +21,21 @@ const addOrganizatoinEmployeeController = AddOrganizatoinEmployeeController.getI
 const addOrganizatoinEmployee = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
   console.log(params.value, 'params value')
-  await addOrganizatoinEmployeeController.addOrganizatoinEmployee(
+  addOrganizatoinEmployeeController.setLoading()
+  const state = await addOrganizatoinEmployeeController.addOrganizatoinEmployee(
     params.value as AddOrganizatoinEmployeeParams,
     router,
   )
-  emit('update:data')
+  const isSuccess =
+    state &&
+    (state.value.error?.title?.includes('successfully') ||
+      addOrganizatoinEmployeeController.isDataSuccess())
+  if (isSuccess) emit('update:data')
 }
 
 const saveAndAdd = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  addOrganizatoinEmployeeController.setLoading()
   const state = await addOrganizatoinEmployeeController.addOrganizatoinEmployee(
     params.value as AddOrganizatoinEmployeeParams,
     router,

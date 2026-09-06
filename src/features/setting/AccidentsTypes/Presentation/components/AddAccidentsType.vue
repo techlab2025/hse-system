@@ -14,13 +14,19 @@ const emit = defineEmits(['update:data'])
 const addAccidentsTypeController = AddAccidentsTypeController.getInstance()
 
 const addAccidentsType = async () => {
+  addAccidentsTypeController.setLoading()
   await addAccidentsTypeController.addAccidentsType(params.value as AddHazardTypeParams, router)
-  emit('update:data')
+  if (addAccidentsTypeController.isDataSuccess()) emit('update:data')
 }
 
 const saveAndAdd = async () => {
-  const state = await addAccidentsTypeController.addAccidentsType(params.value as AddHazardTypeParams, router, true)
-  if (!state.value.error) {
+  addAccidentsTypeController.setLoading()
+  await addAccidentsTypeController.addAccidentsType(
+    params.value as AddHazardTypeParams,
+    router,
+    true,
+  )
+  if (addAccidentsTypeController.isDataSuccess()) {
     params.value = null
     formKey.value++
   }

@@ -19,18 +19,20 @@ const emit = defineEmits(['update:data', 'close:dialog'])
 const addEquipment = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
   console.log(params.value, 'params')
+  addEquipmentController.setLoading()
   await addEquipmentController.addEquipment(params.value as AddEquipmentParams, router)
-  emit('update:data')
+  if (addEquipmentController.isDataSuccess()) emit('update:data')
 }
 
 const saveAndAdd = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
-  const state = await addEquipmentController.addEquipment(
+  addEquipmentController.setLoading()
+  await addEquipmentController.addEquipment(
     params.value as AddEquipmentParams,
     router,
     true,
   )
-  if (!state.value.error) {
+  if (addEquipmentController.isDataSuccess()) {
     params.value = null
     formKey.value++
   }

@@ -15,14 +15,20 @@ const emit = defineEmits(['update:data'])
 const addProjectZoneController = AddProjectZoneController.getInstance()
 
 const addProjectZone = async () => {
-  console.log(params.value, 'params')
-  await addProjectZoneController.addProjectZone(params.value as AddProjectZoneParams, router)
-  emit('update:data')
+  const isSuccess = await addProjectZoneController.addProjectZone(
+    params.value as AddProjectZoneParams,
+    router,
+  )
+  if (isSuccess) emit('update:data')
 }
 
 const saveAndAdd = async () => {
-  const state = await addProjectZoneController.addProjectZone(params.value as AddProjectZoneParams, router, true)
-  if (!state.value.error) {
+  const isSuccess = await addProjectZoneController.addProjectZone(
+    params.value as AddProjectZoneParams,
+    router,
+    true,
+  )
+  if (isSuccess) {
     params.value = null
     formKey.value++
   }

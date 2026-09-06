@@ -15,20 +15,22 @@ const addObserverationTypeController = AddObserverationTypeController.getInstanc
 
 const addObserverationType = async () => {
   console.log(params.value, 'params')
+  addObserverationTypeController.setLoading()
   await addObserverationTypeController.addObserverationType(
     params.value as AddObserverationTypeParams,
     router,
   )
-  emit('update:data')
+  if (addObserverationTypeController.isDataSuccess()) emit('update:data')
 }
 
 const saveAndAdd = async () => {
-  const state = await addObserverationTypeController.addObserverationType(
+  addObserverationTypeController.setLoading()
+  await addObserverationTypeController.addObserverationType(
     params.value as AddObserverationTypeParams,
     router,
     true,
   )
-  if (!state.value.error) {
+  if (addObserverationTypeController.isDataSuccess()) {
     params.value = null
     formKey.value++
   }

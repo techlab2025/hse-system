@@ -15,14 +15,22 @@ const formKey = ref(0)
 const addEquipmentTypeController = AddEquipmentTypeController.getInstance()
 
 const addEquipmentType = async () => {
+  addEquipmentTypeController.setLoading()
   await addEquipmentTypeController.addEquipmentType(params.value as AddEquipmentTypeParams, router)
-  emit('close:data')
-  emit('update:data')
+  if (addEquipmentTypeController.isDataSuccess()) {
+    emit('close:data')
+    emit('update:data')
+  }
 }
 
 const saveAndAdd = async () => {
-  const state = await addEquipmentTypeController.addEquipmentType(params.value as AddEquipmentTypeParams, router, true)
-  if (!state.value.error) {
+  addEquipmentTypeController.setLoading()
+  await addEquipmentTypeController.addEquipmentType(
+    params.value as AddEquipmentTypeParams,
+    router,
+    true,
+  )
+  if (addEquipmentTypeController.isDataSuccess()) {
     params.value = null
     formKey.value++
   }

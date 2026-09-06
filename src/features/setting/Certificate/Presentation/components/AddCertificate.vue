@@ -16,8 +16,9 @@ const addCertificateController = AddCertificateController.getInstance()
 
 const addCertificate = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  addCertificateController.setLoading()
   await addCertificateController.addCertificate(params.value as AddCertificateParams, router)
-  emit('update:data')
+  if (addCertificateController.isDataSuccess()) emit('update:data')
 }
 const setParams = (data: Params) => {
   params.value = data
@@ -25,12 +26,13 @@ const setParams = (data: Params) => {
 
 const addcertificate = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
-  const state = await addCertificateController.addCertificate(
+  addCertificateController.setLoading()
+  await addCertificateController.addCertificate(
     params.value as AddCertificateParams,
     router,
     true,
   )
-  if (!state.value.error) {
+  if (addCertificateController.isDataSuccess()) {
     params.value = null
     formKey.value++
   }
