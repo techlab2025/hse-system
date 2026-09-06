@@ -371,7 +371,7 @@ const showDefaultTicketImage = (event: Event) => {
             ]"
           >
             <DataEmpty
-              :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket-type/add`"
+              :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket/add`"
               addText="Add Ticket"
               description="Sorry .. You have no Tickets .. All your joined customers will appear here when you add your customer data"
               title="..ops! You have No Tickets"
@@ -387,7 +387,7 @@ const showDefaultTicketImage = (event: Event) => {
             ]"
           >
             <DataFailed
-              :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket-type/add`"
+              :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/ticket/add`"
               addText="Add Ticket"
               description="Sorry .. You have no Tickets .. All your joined customers will appear here when you add your customer data"
               title="..ops! You have No Tickets"
