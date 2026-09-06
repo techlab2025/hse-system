@@ -2,22 +2,16 @@
 import PagesHeader from '@/shared/HelpersComponents/PagesHeader.vue'
 import AddSerialForm from './AddSerialForm.vue'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { SertialNumberStatusEnum } from '../../Core/Enums/SerialNumberStatusEnum'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
-import IndexProjectProgressController from '@/features/Organization/ProjectPrgoress/Presentation/controllers/indexProjectProgressController'
-import IndexProjectProgressParams from '@/features/Organization/ProjectPrgoress/Core/params/indexProjectProgressParams'
 
 const projectStatus = useProjectAppStatusStore()
-const SerialType = ref<SertialNumberStatusEnum | null>(
+const SerialType = ref<SertialNumberStatusEnum>(
   projectStatus.getProjectAppStatus()?.codeSystemType ?? SertialNumberStatusEnum.AUTO,
 )
 const updateSerialType = (type: boolean) => {
-  if (type) {
-    SerialType.value = SertialNumberStatusEnum.AUTO
-  } else {
-    SerialType.value = SertialNumberStatusEnum.MANUAL
-  }
+  SerialType.value = type ? SertialNumberStatusEnum.AUTO : SertialNumberStatusEnum.MANUAL
 }
 const GetSerialTypeTitle = (type: SertialNumberStatusEnum) => {
   switch (type) {
@@ -29,18 +23,14 @@ const GetSerialTypeTitle = (type: SertialNumberStatusEnum) => {
       return ''
   }
 }
-// onMounted(async () => {
-//   const state = await IndexProjectProgressController.getInstance().getData(
-//     new IndexProjectProgressParams('', 1, 10, 0),
-//   )
-//   if (state.value.data) {
-//     SerialType.value = state.value.data.codeSystemType
-//   }
-// })
-
-// watch(() => projectStatus.projectAppStatus?.codeSystemType, () => {
-//   SerialType.value = projectStatus.projectAppStatus?.codeSystemType ?? SertialNumberStatusEnum.AUTO
-// })
+watch(
+  () => projectStatus.projectAppStatus?.codeSystemType,
+  (type) => {
+    if (type !== undefined && type !== SerialType.value) {
+      SerialType.value = type
+    }
+  },
+)
 </script>
 
 <template>
@@ -90,5 +80,4 @@ const GetSerialTypeTitle = (type: SertialNumberStatusEnum) => {
   margin-top: 8px;
   display: block;
 }
-
 </style>
