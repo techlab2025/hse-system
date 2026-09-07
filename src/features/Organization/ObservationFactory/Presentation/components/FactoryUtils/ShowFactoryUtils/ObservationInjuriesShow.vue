@@ -2,6 +2,7 @@
 import type InjuryDetailsModel from '@/features/Organization/ObservationFactory/Data/models/InjuryModel'
 import acc from '@/assets/images/acc.png'
 import Injured from '@/shared/icons/injured.vue'
+import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
 import wordSlice from '@/base/Presentation/utils/word_slice'
 import {
   PpeItemConditionEnum,
@@ -80,6 +81,12 @@ const getPpeConditionLabel = (condition: number) =>
             />
             <p>{{ injury?.organization_employee?.name || injury?.employee_name }}</p>
           </div>
+          <div v-if="injury.media?.length" class="injury-media">
+            <UploadMultiImage
+              class="image-upload"
+              :initialImages="injury.media.map((item) => item.url)"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -92,6 +99,10 @@ const getPpeConditionLabel = (condition: number) =>
   flex-wrap: wrap;
   gap: 8px 18px;
   margin-block: 10px;
+}
+
+.injury-media {
+  margin-top: 12px;
 }
 
 .ppe-details p {

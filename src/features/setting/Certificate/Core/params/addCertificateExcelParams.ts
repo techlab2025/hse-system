@@ -2,7 +2,9 @@ import type Params from '@/base/core/params/params'
 interface Data {
   title: string
   image: string
-  require_expired_date: boolean
+  require_expired_date: boolean | number
+  certificate_type: number
+  require_certificate: boolean | number
 }
 export default class AddCertificateExcelParams implements Params {
   data: Data[]

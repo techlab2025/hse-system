@@ -33,6 +33,7 @@ import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import UploadCertificateExeclSheet from './UploadCertificateExeclSheet.vue'
 import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
+import { CertificateTypeEnum } from '../../Core/Enums/CertificateTypeEnum'
 
 const { t } = useI18n()
 const word = ref('')
@@ -186,6 +187,16 @@ watch(
   },
 )
 
+const getCertificateTypeLabel = (certificateType: number) => {
+  const labels: Record<number, string> = {
+    [CertificateTypeEnum.SCALE]: t('certificate_type_skill'),
+    [CertificateTypeEnum.AWARENESS]: t('certificate_type_awareness'),
+    [CertificateTypeEnum.KNOWLEDGE]: t('certificate_type_knowledge'),
+  }
+
+  return labels[Number(certificateType)] ?? '---'
+}
+
 // Export To Excel Sheet
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
@@ -195,8 +206,10 @@ const exportExcel = () => {
   const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
     const it = item as any
     return {
-      'Certificate Title': it.title || 'N/A',
+      'Training Title': it.title || 'N/A',
+      'Training Type': getCertificateTypeLabel(it.certificateType),
       'Require Expired Date': it.requireExpiredDate ? 'Yes' : 'No',
+      'Certificate Required': it.requireCertificate ? 'Yes' : 'No',
       Image: '*',
     }
   })
@@ -210,8 +223,18 @@ const exportExcel = () => {
 
 const DownloadExample = () => {
   const worksheetData = [
-    { title: 'NEBOSH', require_expired_date: 'Yes' },
-    { title: 'OSHA', require_expired_date: 'Yes' },
+    {
+      title: 'NEBOSH',
+      certificate_type: 'Skill',
+      require_expired_date: 'Yes',
+      require_certificate: 'Yes',
+    },
+    {
+      title: 'OSHA',
+      certificate_type: 'Awareness',
+      require_expired_date: 'Yes',
+      require_certificate: 'No',
+    },
   ]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
@@ -325,7 +348,9 @@ const IndexOrganizationEmployeectionList = () => [
                 <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{ $t('industries') }}
                 </th>
+                <th scope="col">{{ $t('certificate_type') }}</th>
                 <th scope="col">{{ $t('expiry_date_required') }}</th>
+                <th scope="col">{{ $t('require_certificate') }}</th>
                 <th scope="col">{{ $t('image') }}</th>
 
                 <!-- <th scope="col">{{ $t('actions') }}</th> -->
@@ -351,8 +376,14 @@ const IndexOrganizationEmployeectionList = () => [
                       : $t('no')
                   }}
                 </td>
+                <td :data-label="$t('certificate_type')">
+                  {{ getCertificateTypeLabel(item.certificateType) }}
+                </td>
                 <td :data-label="$t('require_expired_date')">
                   {{ item.requireExpiredDate ? $t('yes') : $t('no') }}
+                </td>
+                <td :data-label="$t('require_certificate')">
+                  {{ item.requireCertificate ? $t('yes') : $t('no') }}
                 </td>
                 <td data-label="image">
                   <div class="image_certificate_container">

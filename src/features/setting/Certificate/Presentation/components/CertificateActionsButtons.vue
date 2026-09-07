@@ -49,8 +49,18 @@ const onFileSelected = (e: Event) => {
 
 const DownloadExample = () => {
   const worksheetData = [
-    { title: 'NEBOSH', require_expired_date: 'Yes' },
-    { title: 'OSHA', require_expired_date: 'Yes' },
+    {
+      title: 'NEBOSH',
+      certificate_type: 'Skill',
+      require_expired_date: 'Yes',
+      require_certificate: 'Yes',
+    },
+    {
+      title: 'OSHA',
+      certificate_type: 'Awareness',
+      require_expired_date: 'Yes',
+      require_certificate: 'No',
+    },
   ]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()

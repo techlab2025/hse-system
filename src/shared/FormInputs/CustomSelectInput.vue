@@ -253,6 +253,9 @@ const updateSlot = (data: unknown) => {
 </template>
 
 <style scoped lang="scss">
+// .text-red-500{
+//   color: red !important;
+// }
 .add-dialog {
   width: 20px;
   height: 20px;

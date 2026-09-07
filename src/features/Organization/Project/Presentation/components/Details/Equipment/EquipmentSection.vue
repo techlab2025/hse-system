@@ -8,7 +8,6 @@ import Accordion from 'primevue/accordion'
 import AccordionPanel from 'primevue/accordionpanel'
 import AccordionHeader from 'primevue/accordionheader'
 import AccordionContent from 'primevue/accordioncontent'
-import AccordArrowDown from '@/shared/icons/AccordArrowDown.vue'
 import AccordArrowRight from '@/shared/icons/AccordArrowRight.vue'
 import ProjectEquipmentCard from './ProjectEquipmentCard.vue'
 import AddNewEquipmentEmptyDialog from './AddNewEquipmentEmptyDialog.vue'
@@ -30,8 +29,9 @@ const totalEquipment = computed(
     0,
 )
 
-const updatetabValue = (value: any) => {
-  OpenAccordion.value = value
+const updatetabValue = (value: unknown) => {
+  const openedPanels = Array.isArray(value) ? value : value == null ? [] : [value]
+  OpenAccordion.value = openedPanels.map(String)
 }
 
 watch(
@@ -76,13 +76,15 @@ watch(
       <AccordionPanel
         v-for="(zone, index) in ProjectZones?.slice(0, 2)"
         :key="index"
-        :value="index"
+        :value="String(index)"
       >
         <AccordionHeader>
           <div class="location-container w-full flex items-center gap-2 justify-between">
             <div class="location flex items-start">
-              <AccordArrowDown v-if="OpenAccordion.includes(String(index))" class="arrow-accord" />
-              <AccordArrowRight v-else class="arrow-right" />
+              <AccordArrowRight
+                class="accordion-arrow"
+                :class="{ 'accordion-arrow--open': OpenAccordion.includes(String(index)) }"
+              />
               <div class="flex flex-col items-start gap-0">
                 <p class="location-title">{{ zone?.zoonTitle }}</p>
                 <div class="location-info-statics flex items-center gap-2">
@@ -229,6 +231,17 @@ watch(
 .location-container .location {
   align-items: center;
   gap: 10px;
+}
+
+.accordion-arrow {
+  flex: 0 0 auto;
+  transform: rotate(0deg);
+  transform-origin: center;
+  transition: transform 0.2s ease;
+}
+
+.accordion-arrow--open {
+  transform: rotate(90deg);
 }
 
 .location-title {

@@ -12,6 +12,8 @@ export default class CertificateModel extends TitleInterface {
   public titles: string
   public descriptions: string
   public requireExpiredDate: boolean
+  public certificateType: number
+  public requireCertificate: boolean
   public createdAt: string
 
   constructor(
@@ -26,6 +28,8 @@ export default class CertificateModel extends TitleInterface {
     titles: string,
     descriptions: string,
     requireExpiredDate: boolean,
+    certificateType: number,
+    requireCertificate: boolean,
     createdAt: string,
   ) {
     super({ id, title, subtitle })
@@ -39,6 +43,8 @@ export default class CertificateModel extends TitleInterface {
     this.titles = titles
     this.descriptions = descriptions
     this.requireExpiredDate = requireExpiredDate
+    this.certificateType = certificateType
+    this.requireCertificate = requireCertificate
     this.createdAt = createdAt
   }
 
@@ -56,8 +62,14 @@ export default class CertificateModel extends TitleInterface {
       data.image,
       data.titles,
       data.descriptions,
-      data.require_expired_date,
+      this.toBoolean(data.require_expired_date),
+      Number(data.certificate_type?.id ?? data.certificate_type ?? 0),
+      this.toBoolean(data.require_certificate),
       data.created_at,
     )
+  }
+
+  private static toBoolean(value: unknown): boolean {
+    return value === true || value === 1 || value === '1' || value === 'true'
   }
 }

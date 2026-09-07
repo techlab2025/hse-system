@@ -15,6 +15,7 @@ import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue'
 import AddCertificateExcelParams from '../../Core/params/addCertificateExcelParams'
 import AddCertificateController from '../controllers/addCertificateController'
 import CertificateDetailsModel from '../../Data/models/CertificateDetailsModel'
+import { CertificateTypeEnum } from '../../Core/Enums/CertificateTypeEnum'
 
 interface ExtractedImage {
   name: string
@@ -142,10 +143,17 @@ watch(
 )
 
 // ─── Column Mapping ───────────────────────────────────────────────────────────
-const SendData = ref<string[]>(['title', 'require_expired_date'])
+const SendData = ref<string[]>([
+  'title',
+  'certificate_type',
+  'require_expired_date',
+  'require_certificate',
+])
 const SendDataLabels: Record<string, string> = {
   title: t('title'),
+  certificate_type: t('certificate_type'),
   require_expired_date: t('require_expired_date'),
+  require_certificate: t('require_certificate'),
 }
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return
@@ -163,6 +171,24 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 // ─── Submit ───────────────────────────────────────────────────────────────────
 const addCertificateController = AddCertificateController.getInstance()
 
+const getBooleanValue = (value: unknown) =>
+  ['yes', 'true', '1'].includes(String(value ?? '').trim().toLowerCase()) ? 1 : 0
+
+const getCertificateTypeValue = (value: unknown) => {
+  const normalizedValue = String(value ?? '').trim().toLowerCase()
+  const certificateTypes: Record<string, CertificateTypeEnum> = {
+    '1': CertificateTypeEnum.SCALE,
+    skill: CertificateTypeEnum.SCALE,
+    scale: CertificateTypeEnum.SCALE,
+    '2': CertificateTypeEnum.AWARENESS,
+    awareness: CertificateTypeEnum.AWARENESS,
+    '3': CertificateTypeEnum.KNOWLEDGE,
+    knowledge: CertificateTypeEnum.KNOWLEDGE,
+  }
+
+  return certificateTypes[normalizedValue] ?? CertificateTypeEnum.SCALE
+}
+
 const AddOrgEmployee = async () => {
   if (!mappedData.value) return
   const headers = mappedData.value[0] as string[]
@@ -174,16 +200,22 @@ const AddOrgEmployee = async () => {
       if (!key || key.trim() === '') return
 
       const normalizedKey = key.trim().toLowerCase()
-      const payloadKey = ['certificate', 'certificate title', 'certificate_title'].includes(
-        normalizedKey,
-      )
+      const payloadKey = [
+        'certificate',
+        'certificate title',
+        'certificate_title',
+        'training',
+        'training title',
+        'training_title',
+      ].includes(normalizedKey)
         ? 'title'
         : normalizedKey
 
       obj[payloadKey] = row[i]
     })
-    obj.require_expired_date =
-      String(obj.require_expired_date ?? '').toLowerCase() === 'yes' ? 1 : 0
+    obj.certificate_type = getCertificateTypeValue(obj.certificate_type)
+    obj.require_expired_date = getBooleanValue(obj.require_expired_date)
+    obj.require_certificate = getBooleanValue(obj.require_certificate)
 
     return obj
   })

@@ -28,7 +28,6 @@ import AddContractor from '@/features/setting/contractor/Presentation/components
 import LocationSelectDialog from './SelectDialogs/LocationSelectDialog.vue'
 import AddProjectZoneDialog from './Dialogs/AddProjectZoneDialog.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
-import StarRequiredInput from '@/shared/icons/StarRequiredInput.vue'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
@@ -176,26 +175,26 @@ const updateData = () => {
   })
   const params = props.data?.id
     ? new EditProjectParams({
-        id: props.data.id,
-        translation: translationsParams,
-        partnerId: ContractorIds.value.map((p) => p.id),
-        startDate: date.value,
-        locationIds: location.value.filter(isTitle).map((l) => l.id),
-        zoonIds: ZoneIds.value.filter((z): z is number => typeof z === 'number'),
-        methodIds: EvaluatingMethod.value?.map((p) => p.id) ?? [],
-        endDate: endDate.value,
-      })
+      id: props.data.id,
+      translation: translationsParams,
+      partnerId: ContractorIds.value.map((p) => p.id),
+      startDate: date.value,
+      locationIds: location.value.filter(isTitle).map((l) => l.id),
+      zoonIds: ZoneIds.value.filter((z): z is number => typeof z === 'number'),
+      methodIds: EvaluatingMethod.value?.map((p) => p.id) ?? [],
+      endDate: endDate.value,
+    })
     : new AddProjectParams({
-        translation: translationsParams,
-        ContractorIds: ContractorIds.value?.map((p) => p.id),
-        startDate: date.value,
-        locationIds: location.value.filter(isTitle).map((l) => l.id),
-        zoonIds: ZoneIds.value.filter((z): z is number => typeof z === 'number'),
-        methodIds: EvaluatingMethod.value?.map((p) => p.id) ?? [],
-        SerialNumber: SerialNumber.value,
-        endDate: endDate.value,
-        serial: !fields.value[0].enabled ? SerialNumber.value : undefined,
-      })
+      translation: translationsParams,
+      ContractorIds: ContractorIds.value?.map((p) => p.id),
+      startDate: date.value,
+      locationIds: location.value.filter(isTitle).map((l) => l.id),
+      zoonIds: ZoneIds.value.filter((z): z is number => typeof z === 'number'),
+      methodIds: EvaluatingMethod.value?.map((p) => p.id) ?? [],
+      SerialNumber: SerialNumber.value,
+      endDate: endDate.value,
+      serial: !fields.value[0].enabled ? SerialNumber.value : undefined,
+    })
   emit('update:data', params)
 }
 
@@ -388,26 +387,17 @@ defineExpose({
     <PagesHeader :title="$t(`project_info`)" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="langs">
-    <LangTitleInput
-      :label="`Project Name`"
-      :langs="langDefault"
-      :modelValue="langs"
+    <LangTitleInput :label="`Project Name`" :langs="langDefault" :modelValue="langs"
       help-text="Enter the project name in each available language so it is clear throughout the system."
-      @update:modelValue="setLangTitles"
-    />
+      @update:modelValue="setLangTitles" />
     <p v-if="getFieldError('langs')" class="required-field-message">
       {{ getFieldError('langs') }}
     </p>
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :isAuto="true"
-      :switch_reverse="true"
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :isAuto="true" :switch_reverse="true"
       help-text="Enter a unique project serial number, or enable automatic generation to let the system create it."
-      @update:value="UpdateSerial"
-    />
+      @update:value="UpdateSerial" />
     <!-- <label for="serialNumber">{{ $t('serial_number') }}</label>
     <input
       type="text"
@@ -424,50 +414,35 @@ defineExpose({
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="date">
     <label for="date" class="flex gap-2 items-center">
-      {{ $t('start_date') }}
-      <StarRequiredInput />
+      <span class="required-label-text">
+        {{ $t('start_date') }}
+        <span class="required-star">*</span>
+      </span>
       <FieldHelpIcon text="Select the planned date when work on this project starts." />
     </label>
-    <DatePicker
-      v-model="date"
-      @date-select="UpdateDate"
-      id="date"
-      :placeholder="`select the date`"
-    />
+    <DatePicker v-model="date" @date-select="UpdateDate" id="date" :placeholder="`select the date`" />
     <p v-if="getFieldError('date')" class="required-field-message">
       {{ getFieldError('date') }}
     </p>
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="endDate">
     <label for="end-date" class="flex gap-2 items-center">
-      {{ $t('end_date') }}
-      <StarRequiredInput />
+      <span class="required-label-text">
+        {{ $t('end_date') }}
+        <span class="required-star">*</span>
+      </span>
       <FieldHelpIcon text="Select the planned completion date for this project." />
     </label>
-    <DatePicker
-      v-model="endDate"
-      @date-select="UpdateEndDate"
-      id="end-date"
-      :placeholder="`select the end date`"
-    />
+    <DatePicker v-model="endDate" @date-select="UpdateEndDate" id="end-date" :placeholder="`select the end date`" />
     <p v-if="getFieldError('endDate')" class="required-field-message">
       {{ getFieldError('endDate') }}
     </p>
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <UpdatedCustomInputSelect
-      :required="false"
-      :modelValue="ContractorIds"
-      @update:modelValue="setContractorIds"
-      :type="2"
-      :controller="indexContractorController"
-      :params="indexContractorTypeParams"
-      label="contractors"
-      :placeholder="$t('sub_contractors')"
-      @close="ContractorDialog = false"
-      :isDialog="true"
-      v-model:dialogVisible="ContractorDialog"
-    >
+    <UpdatedCustomInputSelect :required="false" :modelValue="ContractorIds" @update:modelValue="setContractorIds"
+      :type="2" :controller="indexContractorController" :params="indexContractorTypeParams" label="contractors"
+      :placeholder="$t('sub_contractors')" @close="ContractorDialog = false" :isDialog="true"
+      v-model:dialogVisible="ContractorDialog">
       <template #LabelHeader>
         <span class="add-dialog" @click="ContractorDialog = true">{{ $t('New') }}</span>
       </template>
@@ -476,20 +451,11 @@ defineExpose({
       </template>
     </UpdatedCustomInputSelect>
   </div>
-
   <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="location">
-    <CustomSelectInput
-      :required="true"
-      :modelValue="location"
-      @update:modelValue="SetAreaSelection"
-      :controller="indexLocationAreasController"
-      :params="indexLocationAreasParams"
-      label="location"
-      placeholder="location"
-      :type="2"
-      :onclick="ShowLocationDialog"
-      help-text="Select the project locations or work areas where project activities will take place."
-    />
+    <UpdatedCustomInputSelect :required="true" :modelValue="location" @update:modelValue="SetAreaSelection"
+      :controller="indexLocationAreasController" :params="indexLocationAreasParams" label="location"
+      placeholder="location" :type="2" :onclick="ShowLocationDialog"
+      help-text="Select the project locations or work areas where project activities will take place." />
     <p v-if="getFieldError('location')" class="required-field-message">
       {{ getFieldError('location') }}
     </p>
@@ -498,36 +464,26 @@ defineExpose({
   <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="ZoneIds">
     <label for="zone" class="flex flex-start item-center gap-2">
       <span class="flex items-center gap-2">
-        <span>{{ $t('zones') }}</span>
-        <StarRequiredInput />
+        <span class="required-label-text">
+          {{ $t('zones') }}
+          <span class="required-star">*</span>
+        </span>
         <FieldHelpIcon text="Select the specific zones within the chosen project locations." />
       </span>
       <AddProjectZoneDialog @update:data="UpdateZones" />
     </label>
 
-    <AddZoneDialog
-      id="zone"
-      class="input"
-      :locations="location"
-      @update:data="UpdateZones"
-      :selectedZones="SelectedZones"
-    />
+    <AddZoneDialog id="zone" class="input" :locations="location" @update:data="UpdateZones"
+      :selectedZones="SelectedZones" />
     <p v-if="getFieldError('ZoneIds')" class="required-field-message">
       {{ getFieldError('ZoneIds') }}
     </p>
   </div>
   <div class="col-span-4 md:col-span-4 input-wrapper">
-    <LangTitleInput
-      label="project_scope_of_work"
-      :langs="langDefault"
-      :modelValue="langsDescription"
-      @update:modelValue="setLangDescriptions"
-      field-type="description"
-      type="textarea"
-      :placeholder="`What is the project scope of work?`"
-      :required="false"
-      help-text="Describe the project scope, main activities, and work boundaries in each available language."
-    />
+    <LangTitleInput label="project_scope_of_work" :langs="langDefault" :modelValue="langsDescription"
+      @update:modelValue="setLangDescriptions" field-type="description" type="textarea"
+      :placeholder="`What is the project scope of work?`" :required="false"
+      help-text="Describe the project scope, main activities, and work boundaries in each available language." />
   </div>
   <LocationSelectDialog v-model:visible="LocationVisible" @location-added="reloadLocations" />
 </template>
@@ -538,5 +494,15 @@ defineExpose({
   color: var(--status-danger);
   font-size: 0.82rem;
   font-weight: 700;
+}
+
+.required-label-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.required-star {
+  color: var(--status-danger);
 }
 </style>
