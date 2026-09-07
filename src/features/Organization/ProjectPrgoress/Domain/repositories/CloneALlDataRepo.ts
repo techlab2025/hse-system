@@ -1,5 +1,6 @@
 // import LangModel from '@/features/setting/Partner/Data/models/langModel.ts'
 import RepoInterface from '@/base/Domain/Repositories/repo_interface'
+// import { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import { CloneAllAdminDataApiService } from '../../Data/apiServices/cloneAllAdminDataApiService'
 import PartnerModel from '../../Data/models/ProjectProgressDetailsModel'
@@ -16,6 +17,11 @@ class CloneAllDataRepo extends RepoInterface<PartnerModel> {
     }
     return this.instance
   }
+
+  // Enable when the preset-data step is active and the clone endpoint returns no data.
+  // override get responseType(): ResponseType {
+  //   return ResponseType.withoutData
+  // }
 
   onParse(data: any): PartnerModel {
     return PartnerModel.fromMap(data)

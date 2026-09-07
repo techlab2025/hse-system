@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import LikeIcon from '@/shared/icons/LikeIcon.vue';
-import AvtiveTimeLineIcon from '@/shared/icons/AvtiveTimeLineIcon.vue';
-import { nextTick, onMounted, ref, watch } from 'vue';
-import type ProjectProgressItemModel from '../../Data/models/ProjectProgressItemModel';
-import { ProjectProgressEnum } from '../../Core/Enum/ProjectProgressEnum';
-import LinkIcon from '@/shared/icons/LinkIcon.vue';
+import LikeIcon from '@/shared/icons/LikeIcon.vue'
+import AvtiveTimeLineIcon from '@/shared/icons/AvtiveTimeLineIcon.vue'
+import { nextTick, onMounted, ref, watch } from 'vue'
+import type ProjectProgressItemModel from '../../Data/models/ProjectProgressItemModel'
+import { ProjectProgressEnum } from '../../Core/Enum/ProjectProgressEnum'
+import LinkIcon from '@/shared/icons/LinkIcon.vue'
 
 const emit = defineEmits(['update:ActiveItem'])
 const props = defineProps<{
@@ -35,10 +35,14 @@ const scrollToActiveItem = async () => {
   })
 }
 
-watch(() => ActiveItem.value, (newVal) => {
-  emit("update:ActiveItem", newVal)
-  scrollToActiveItem()
-}, { immediate: true })
+watch(
+  () => ActiveItem.value,
+  (newVal) => {
+    emit('update:ActiveItem', newVal)
+    scrollToActiveItem()
+  },
+  { immediate: true },
+)
 
 watch(
   () => props.sidebarItems,
@@ -61,123 +65,127 @@ onMounted(scrollToActiveItem)
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,
-    behavior: "smooth",
-  });
-};
+    behavior: 'smooth',
+  })
+}
 
 const AllPagesToView = ref([
+  // Preset-data first step (temporarily disabled).
+  // {
+  //   id: ProjectProgressEnum.PresetData,
+  //   title: 'Preset Data',
+  //   description: 'Start quickly by copying all available preset data',
+  //   link: '',
+  // },
   {
     id: ProjectProgressEnum.codingSystem,
-    title: "Coding System",
-    description: "Define Coding System structure and assign serial Number",
-    link: "/organization/serial-number"
+    title: 'Coding System',
+    description: 'Define Coding System structure and assign serial Number',
+    link: '/organization/serial-number',
   },
   {
     id: ProjectProgressEnum.Certificate,
-    title: "Functional Training",
-    description: "Define training structure and assign related project roles",
-    link: "/organization/certificate?type=1"
+    title: 'Functional Training',
+    description: 'Define training structure and assign related project roles',
+    link: '/organization/certificate?type=1',
   },
   {
     id: ProjectProgressEnum.Tempalte,
-    title: "Functional Template",
-    description: "Define templates structure and assign related project roles",
-    link: "/organization/template?type=1"
+    title: 'Functional Template',
+    description: 'Define templates structure and assign related project roles',
+    link: '/organization/template?type=1',
   },
   {
     id: ProjectProgressEnum.Employee,
-    title: "Functional Employee",
-    description: "Define employees structure and assign roles within the organization",
-    link: "/organization/organization-employee?type=3"
+    title: 'Functional Employee',
+    description: 'Define employees structure and assign roles within the organization',
+    link: '/organization/organization-employee?type=3',
   },
   {
     id: ProjectProgressEnum.Heirarchy,
-    title: "Positions",
-    description: "Define positions structure and assign related project roles",
-    link: "/organization/herikaly?type=3"
+    title: 'Positions',
+    description: 'Define positions structure and assign related project roles',
+    link: '/organization/herikaly?type=3',
   },
   {
     id: ProjectProgressEnum.Country,
-    title: "Functional Country",
-    description: "Define country structure and assign roles across locations",
-    link: "/organization/countries?type=4"
+    title: 'Functional Country',
+    description: 'Define country structure and assign roles across locations',
+    link: '/organization/countries?type=4',
   },
   {
     id: ProjectProgressEnum.State,
-    title: "Functional State",
-    description: "Define state structure and assign roles within each country",
-    link: "/organization/states?type=4"
+    title: 'Functional State',
+    description: 'Define state structure and assign roles within each country',
+    link: '/organization/states?type=4',
   },
   {
     id: ProjectProgressEnum.City,
-    title: "Functional City",
-    description: "Define city structure and assign roles within each state",
-    link: "/organization/cities?type=4"
+    title: 'Functional City',
+    description: 'Define city structure and assign roles within each state',
+    link: '/organization/cities?type=4',
   },
   {
     id: ProjectProgressEnum.Locatio,
-    title: "Functional Location",
-    description: "Define location structure and assign roles within each city",
-    link: "/organization/areas?type=4"
+    title: 'Functional Location',
+    description: 'Define location structure and assign roles within each city',
+    link: '/organization/areas?type=4',
   },
   {
     id: ProjectProgressEnum.Zone,
-    title: "Functional Zone",
-    description: "Define zone structure and assign roles within each location",
-    link: "/organization/project-zone?type=4"
+    title: 'Functional Zone',
+    description: 'Define zone structure and assign roles within each location',
+    link: '/organization/project-zone?type=4',
   },
   {
     id: ProjectProgressEnum.ObservationType,
-    title: "Functional Observation Type",
-    description: "Define observation types and assign related project roles",
-    link: "/organization/observation-type?type=2"
+    title: 'Functional Observation Type',
+    description: 'Define observation types and assign related project roles',
+    link: '/organization/observation-type?type=2',
   },
   {
     id: ProjectProgressEnum.IncidantType,
-    title: "Functional Incident Type",
-    description: "Define incident types and assign related project roles",
-    link: "/organization/accidents-type?type=1"
+    title: 'Functional Incident Type',
+    description: 'Define incident types and assign related project roles',
+    link: '/organization/accidents-type?type=1',
   },
   {
     id: ProjectProgressEnum.HazardType,
-    title: "Functional Hazard Type",
-    description: "Define hazard types and assign related project roles",
-    link: "/organization/hazard-type?type=2"
+    title: 'Functional Hazard Type',
+    description: 'Define hazard types and assign related project roles',
+    link: '/organization/hazard-type?type=2',
   },
   {
     id: ProjectProgressEnum.Hazard,
-    title: "Functional Hazard",
-    description: "Define hazards and assign roles for risk management",
-    link: "/organization/hazard?type=2"
+    title: 'Functional Hazard',
+    description: 'Define hazards and assign roles for risk management',
+    link: '/organization/hazard?type=2',
   },
   {
     id: ProjectProgressEnum.EquipmentType,
-    title: "Functional Equipment Type",
-    description: "Define equipment types and assign roles for asset management",
-    link: "/organization/equipment-types"
+    title: 'Functional Equipment Type',
+    description: 'Define equipment types and assign roles for asset management',
+    link: '/organization/equipment-types',
   },
   {
     id: ProjectProgressEnum.Equipment,
-    title: "Functional Equipment",
-    description: "Define equipment and assign roles for asset management",
-    link: "/organization/equipments"
+    title: 'Functional Equipment',
+    description: 'Define equipment and assign roles for asset management',
+    link: '/organization/equipments',
   },
   {
     id: ProjectProgressEnum.Team,
-    title: "Functional Team",
-    description: "Define team and assign roles for asset management",
-    link: "/organization/team"
+    title: 'Functional Team',
+    description: 'Define team and assign roles for asset management',
+    link: '/organization/team',
   },
   {
     id: ProjectProgressEnum.RootCause,
-    title: "Functional Root Cause",
-    description: "Define root cause and assign roles for asset management",
-    link: "/organization/root-causes"
+    title: 'Functional Root Cause',
+    description: 'Define root cause and assign roles for asset management',
+    link: '/organization/root-causes',
   },
-]);
-
-
-
+])
 </script>
 <template>
   <!--  :class="ActiveItem == item?.id && !item.progress ? `` : `not-active`" -->
@@ -186,33 +194,33 @@ const AllPagesToView = ref([
     <div class="timeline-wrapper">
       <div class="timeline-line"></div>
 
-      <div class="timeline-item" v-for="(item, index) in sidebarItems" :key="index"
+      <div
+        class="timeline-item"
+        v-for="(item, index) in sidebarItems"
+        :key="index"
         :ref="(el) => setTimelineItemRef(el, index)"
-        :class="{ active: ActiveItem == item?.id || item.progress }" :style="{ animationDelay: `${index * 0.15}s` }"
-        @click="ActiveItem = item?.id">
+        :class="{ active: ActiveItem == item?.id || item.progress }"
+        :style="{ animationDelay: `${index * 0.15}s` }"
+        @click="ActiveItem = item?.id"
+      >
         <!-- <div class="timeline-item" v-for="(item, index) in sidebarItems" :key="index" :class="{
         'active': ActiveItem == item?.id || item.progress,
         'overlay-focus': showblure
       }"> -->
 
-
-
         <!-- active but not done  -->
         <div class="timeline-marker" v-if="ActiveItem == item?.id && !item.progress">
-
           <AvtiveTimeLineIcon />
         </div>
 
-
         <!-- not active and not done  -->
-        <div class="timeline-marker " v-if="ActiveItem != item?.id && !item.progress">
+        <div class="timeline-marker" v-if="ActiveItem != item?.id && !item.progress">
           <div class="timeline-dot">
             <div class="timeline-dot-inner"></div>
             <div class="timeline-pulse"></div>
           </div>
 
-          <div class="timeline-icon">
-          </div>
+          <div class="timeline-icon"></div>
         </div>
 
         <!-- done  -->
@@ -228,7 +236,7 @@ const AllPagesToView = ref([
         </div>
         <div class="timeline-content" v-if="!item.progress">
           <div class="timeline-content-header">
-            <p class="time-line-title" @click="scrollToTop()"> {{ item.title }}</p>
+            <p class="time-line-title" @click="scrollToTop()">{{ item.title }}</p>
             <router-link
               class="timeline-link"
               :to="AllPagesToView.find((el) => el.id == item.id)?.link"
@@ -237,12 +245,13 @@ const AllPagesToView = ref([
               <LinkIcon />
             </router-link>
           </div>
-          <p class="time-line-description" @click="scrollToTop()"> {{AllPagesToView.find((el) => el.id ==
-            item.id)?.description}}</p>
+          <p class="time-line-description" @click="scrollToTop()">
+            {{ AllPagesToView.find((el) => el.id == item.id)?.description }}
+          </p>
         </div>
         <div class="timeline-content" v-else>
           <div class="timeline-content-header">
-            <p class="first-item-title" @click="scrollToTop()"> {{ item.title }}</p>
+            <p class="first-item-title" @click="scrollToTop()">{{ item.title }}</p>
             <router-link
               class="timeline-link"
               :to="AllPagesToView.find((el) => el.id == item.id)?.link"
@@ -251,10 +260,10 @@ const AllPagesToView = ref([
               <LinkIcon />
             </router-link>
           </div>
-          <p class="first-item-description" @click="scrollToTop()"> {{AllPagesToView.find((el) => el.id ==
-            item.id)?.description}}</p>
+          <p class="first-item-description" @click="scrollToTop()">
+            {{ AllPagesToView.find((el) => el.id == item.id)?.description }}
+          </p>
         </div>
-
       </div>
     </div>
   </div>

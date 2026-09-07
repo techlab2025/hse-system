@@ -1,4 +1,5 @@
 export enum ProjectProgressEnum {
+  // PresetData = 0, // Enable with the preset-data first step.
   Certificate = 1,
   Tempalte = 2,
   Employee = 3,

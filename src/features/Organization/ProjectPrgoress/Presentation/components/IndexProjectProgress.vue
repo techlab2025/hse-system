@@ -15,6 +15,8 @@ import ProgressBackIcon from '@/shared/icons/ProgressBackIcon.vue'
 import ProgressPageHeaderIcon from '@/shared/icons/ProgressPageHeaderIcon.vue'
 import ProjectProgreesDialog from '../supcomponents/ProjectProgreesDialog.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+// import CloneAllDataController from '../controllers/CloneALlDataController'
+// import CloneAllAdminDataParams from '../../Core/params/cloneAllAdminDataParams'
 
 /* ---------------- Controller & State ---------------- */
 
@@ -135,10 +137,44 @@ watch(
 
 /* ---------------- Active Item Logic ---------------- */
 
+/* Preset-data first step (temporarily disabled).
+const presetStepStorageKey = 'ProjectProgressPresetStepHandled'
+const presetStepHandled = ref(localStorage.getItem(presetStepStorageKey) === 'true')
+const isCloningPresetData = ref(false)
+const cloneAllDataController = CloneAllDataController.getInstance()
+
+const ActiveItem = ref(
+  presetStepHandled.value ? ProjectProgressEnum.codingSystem : ProjectProgressEnum.PresetData,
+)
+*/
 const ActiveItem = ref(0)
 const GetActiveItem = (value: number) => (ActiveItem.value = value)
 
+/* Preset-data sidebar item (temporarily disabled).
+const sidebarItems = computed(() => {
+  const items = state.value.data?.progressItems ?? []
+
+  if (presetStepHandled.value || state.value.data?.progress !== 0) {
+    return items
+  }
+
+  return [
+    {
+      id: ProjectProgressEnum.PresetData,
+      title: 'Preset Data',
+      progress: false,
+    },
+    ...items,
+  ]
+})
+*/
+
 const AllPagesToView = [
+  // {
+  //   id: ProjectProgressEnum.PresetData,
+  //   title: 'Preset Data',
+  //   description: 'Start quickly by copying all available preset data',
+  // },
   {
     id: ProjectProgressEnum.codingSystem,
     component: IndexSerial,
@@ -263,6 +299,29 @@ const selectedPage = computed(() => AllPagesToView.find((item) => item.id === Ac
 const router = useRouter()
 const routerBack = () => router.back()
 
+/* Preset-data actions (temporarily disabled).
+const skipPresetDataStep = () => {
+  localStorage.setItem(presetStepStorageKey, 'true')
+  presetStepHandled.value = true
+  ActiveItem.value = ProjectProgressEnum.codingSystem
+}
+
+const clonePresetData = async () => {
+  if (isCloningPresetData.value) return
+
+  isCloningPresetData.value = true
+  await cloneAllDataController.CLoneData(new CloneAllAdminDataParams(), router)
+
+  if (cloneAllDataController.isDataSuccess()) {
+    localStorage.setItem(presetStepStorageKey, 'true')
+    window.location.reload()
+    return
+  }
+
+  isCloningPresetData.value = false
+}
+*/
+
 /* ---------------- Onboarding Logic ---------------- */
 
 const showOverlay = ref(false)
@@ -377,6 +436,48 @@ watch(
               <p class="description">{{ selectedPage.description }}</p>
             </div>
 
+            <!-- Preset-data first-step content (temporarily disabled).
+            <div v-if="selectedPage.id === ProjectProgressEnum.PresetData" class="preset-data-step">
+              <button
+                type="button"
+                class="preset-data-step-close"
+                :aria-label="$t('Skip preset data step')"
+                :disabled="isCloningPresetData"
+                @click="skipPresetDataStep"
+              >
+                &times;
+              </button>
+              <div class="preset-data-step-icon" aria-hidden="true">&#8635;</div>
+              <h3>{{ $t('Would you like to use the preset data?') }}</h3>
+              <p>
+                {{
+                  $t(
+                    'Copy all available preset data to configure the system quickly, or skip this step and configure it manually.',
+                  )
+                }}
+              </p>
+
+              <div class="preset-data-step-actions">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  :disabled="isCloningPresetData"
+                  @click="skipPresetDataStep"
+                >
+                  {{ $t('Skip') }}
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  :disabled="isCloningPresetData"
+                  @click="clonePresetData"
+                >
+                  {{ isCloningPresetData ? $t('Copying...') : $t('Yes, use preset data') }}
+                </button>
+              </div>
+            </div>
+            -->
+
             <component
               :is="selectedPage.component"
               :key="selectedPage.id"
@@ -479,6 +580,87 @@ watch(
   max-width: 100%;
   overflow-x: clip;
 }
+
+/* Preset-data first-step styles (temporarily disabled).
+.preset-data-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 360px;
+  padding: 32px;
+  border: 1px solid var(--brand-primary-100);
+  border-radius: 16px;
+  background: var(--surface-1);
+  text-align: center;
+}
+
+.preset-data-step-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--brand-primary-50);
+  color: var(--text-soft);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.preset-data-step-close:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.preset-data-step-icon {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  background: var(--brand-primary-50);
+  color: var(--brand-primary-500);
+  font-size: 38px;
+  font-weight: 800;
+}
+
+.preset-data-step h3 {
+  margin: 0;
+  color: var(--brand-primary-900);
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.preset-data-step p {
+  max-width: 620px;
+  margin: 12px 0 24px;
+  color: var(--text-soft);
+  line-height: 1.6;
+}
+
+.preset-data-step-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  width: min(100%, 440px);
+}
+
+.preset-data-step-actions .btn {
+  width: 100%;
+}
+
+.preset-data-step-actions .btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+*/
 
 .container-overlay {
   position: fixed;
