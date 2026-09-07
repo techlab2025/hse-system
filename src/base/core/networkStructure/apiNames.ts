@@ -192,10 +192,10 @@ class ApiNames {
     return this.prefix + 'fetch_teams'
   }
   public get FetchSystemTeam() {
-    return this.prefix + 'fetch_team'
+    return this.prefix + 'fetch_teams'
   }
   public get CloneTeam() {
-    return this.prefix + 'clone_team'
+    return this.prefix + 'clone_teams'
   }
   public get ShowTeam() {
     return this.prefix + 'fetch_team_details'

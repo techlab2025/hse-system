@@ -30,7 +30,7 @@ const props = defineProps<{
 
     </div>
     <div class="certificate-image">
-      <img :src="cerificate.image || `/assets/images/logo.svg`" alt="certificate-image" @error="setDefaultImage">
+      <img :src="cerificate.image || `/assets/images/logo.svg`" alt="training-image" @error="setDefaultImage">
     </div>
   </div>
 </template>

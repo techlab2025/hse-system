@@ -87,7 +87,7 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
     ],
   },
   {
-    text: t('Cerificate Image'),
+    text: t('training_image'),
     icon: IconEye,
     action: () => (DialogVisable.value = true),
     permission: [

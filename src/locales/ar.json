@@ -1229,6 +1229,9 @@
   "valid": "صالح",
   "expired": "منتهي الصلاحية",
   "Certificate": "تدريب",
+  "Certificates": "التدريبات",
+  "Import Certificate": "استيراد التدريبات",
+  "Employee Certificates ": "تدريبات الموظفين",
   "certifications": "التدريبات",
   "NotRequired": "غير مطلوب",
   "Where House Type": "حيث نوع المنزل",
@@ -1906,7 +1909,7 @@
   "training_expiry_date": "تاريخ انتهاء التدريب",
   "training_image": "صورة التدريب",
   "CertificateExpireDate": "تاريخ انتهاء التدريب",
-  "require_certificate": "الشهاده مطلوبه",
+  "require_certificate": "التدريب مطلوب",
   "Functional Training": "التدريب الوظيفي",
   "Taken Training": "تم الحصول على التدريب",
   "Not Taken Training": "لم يتم الحصول على التدريب"
