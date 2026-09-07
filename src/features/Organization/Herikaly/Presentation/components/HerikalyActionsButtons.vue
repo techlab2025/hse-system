@@ -101,9 +101,9 @@ const actionList = () => [
       :show-actions="true"
       :actionList="actionList()"
       :actionsNumber="2"
-      buttonTitle="position_sheet"
+      buttonTitle="import posions sheet"
     >
-   
+
     </ActionsList>
   </div>
 

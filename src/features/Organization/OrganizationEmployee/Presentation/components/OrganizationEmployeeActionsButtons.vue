@@ -114,7 +114,11 @@ const actionList = () => [
 
 <template>
   <div class="flex justify-end gap-2">
-    <ActionsList :show-actions="true" :actionList="actionList()" :actionsNumber="2">
+    <ActionsList :show-actions="true"
+     :actionList="actionList()"
+      :actionsNumber="2"
+      :button-title="`import employee sheet`"
+      >
 
     </ActionsList>
   </div>

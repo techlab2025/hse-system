@@ -69,7 +69,10 @@ const exportExcel = () => {
 }
 
 const DownloadExample = () => {
-  const worksheetData = [{ title: 'Example Incident Category' }, { title: 'Example Incident Category 2' }]
+  const worksheetData = [
+    { title: 'Example Incident Category' },
+    { title: 'Example Incident Category 2' },
+  ]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'IncidentCategories')
@@ -79,7 +82,6 @@ const DownloadExample = () => {
 }
 
 const actionList = () => [
-
   {
     text: t('upload_complated_template'),
     type: ActionItemsTypeEnum.Warning,
@@ -99,9 +101,7 @@ const actionList = () => [
 
 <template>
   <div class="flex justify-end gap-2">
-    <ActionsList :show-actions="true" :actionList="actionList()" :actionsNumber="2">
-
-    </ActionsList>
+    <ActionsList :show-actions="true" :actionList="actionList()" :actionsNumber="2"> </ActionsList>
   </div>
 
   <Dialog
@@ -114,8 +114,8 @@ const actionList = () => [
     <UploadIncidentCategoryExeclSheet
       :initial-file="pendingFile"
       @uploaded="
-        showUploadDialog = false;
-        pendingFile = null;
+        showUploadDialog = false
+        pendingFile = null
         fetchIncidentCategory()
       "
     />

@@ -1,11 +1,12 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
+import RolePermissionModel from './RolePermissionModel'
 
 export default class RoleModel extends TitleInterface {
   public id: number
-  public permissions: string[]
+  public permissions: RolePermissionModel[]
   public title: string
   public roleId: number
-  constructor(id: number, permissions: string[], title: string, roleId: number) {
+  constructor(id: number, permissions: RolePermissionModel[], title: string, roleId: number) {
     super({ id })
     this.id = id
     this.permissions = permissions
@@ -14,6 +15,11 @@ export default class RoleModel extends TitleInterface {
   }
 
   static fromMap(data: any): RoleModel {
-    return new RoleModel(data.id, data.permissions, data.role, data.role_id)
+    return new RoleModel(
+      data.id,
+      data.permissions?.map((permission: any) => RolePermissionModel.fromMap(permission)) ?? [],
+      data.role,
+      data.role_id,
+    )
   }
 }

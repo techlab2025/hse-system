@@ -61,8 +61,8 @@ const DownloadExample = () => {
       'Rent End date': '2026-06-30',
       'Rent Period type': '3',
       'Rent Period': '1',
-      'Status': '1',
-    }
+      Status: '1',
+    },
   ]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
@@ -100,7 +100,12 @@ const actionList = () => [
 
 <template>
   <div class="flex justify-end gap-2">
-    <ActionsList :show-actions="true" :actionList="actionList()" :actionsNumber="2" />
+    <ActionsList
+      :button-title="`import equipment sheet`"
+      :show-actions="true"
+      :actionList="actionList()"
+      :actionsNumber="2"
+    />
   </div>
 
   <Dialog

@@ -30,6 +30,7 @@ import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 import PhoneCountryCode from '@/shared/HelpersComponents/PhoneCountryCode.vue'
 import type RoleModel from '@/features/Organization/Role/Data/models/RoleModel'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
 const toast = useToast()
 
@@ -229,11 +230,23 @@ const setRole = (data: TitleInterface[]) => {
   updateData()
 }
 
+const permissionNameByCode = Object.entries(PermissionsEnum).reduce<Map<string, string>>(
+  (permissionMap, [name, code]) => {
+    if (!permissionMap.has(code)) permissionMap.set(code, name)
+    return permissionMap
+  },
+  new Map(),
+)
+
 const getRolePermissionsHint = (roleOption: RoleModel) => {
-  console.log(roleOption, 'roleOption')
   if (!roleOption.permissions?.length) return 'No permissions are assigned to this role.'
 
-  return `Permissions: ${roleOption.permissions.join(', ')}`
+  const permissionNames = roleOption.permissions.map((permission) => {
+    const code = permission.displayName || permission.permission || permission.name
+    return permissionNameByCode.get(code) ?? code
+  })
+
+  return `Permissions: ${permissionNames.join(', ')}`
 }
 
 const UpdateConfirmPassword = (data) => {

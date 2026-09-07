@@ -263,7 +263,7 @@ const IndexHerikalyactionList = () => [
                 :show-actions="true"
                 :actionList="IndexHerikalyactionList()"
                 :actionsNumber="2"
-                buttonTitle="position_sheet"
+                buttonTitle="import positions sheet "
               />
             </div>
           </div>

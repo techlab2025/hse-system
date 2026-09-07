@@ -79,7 +79,6 @@ const DownloadExample = () => {
 }
 
 const actionList = () => [
-
   {
     text: t('upload_complated_template'),
     type: ActionItemsTypeEnum.Warning,
@@ -99,8 +98,12 @@ const actionList = () => [
 
 <template>
   <div class="flex justify-end gap-2">
-    <ActionsList :show-actions="true" :actionList="actionList()" :actionsNumber="2">
-
+    <ActionsList
+      :button-title="`import incident type sheet `"
+      :show-actions="true"
+      :actionList="actionList()"
+      :actionsNumber="2"
+    >
     </ActionsList>
   </div>
 
