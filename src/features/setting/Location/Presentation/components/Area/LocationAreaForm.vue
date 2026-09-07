@@ -241,7 +241,7 @@ const fields = ref([
 
 <template>
   <div class="col-span-4 md:col-span-4">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+    <LangTitleInput :label="`${$t('location_name')}`" :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">

@@ -12,6 +12,7 @@ import InspectionModel from '@/features/Organization/Inspection/Data/models/Insp
 import TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
 import TemplateItemModel from '@/features/setting/TemplateItem/Data/models/TemplateItemModel'
 import LastInspectionModel from '@/features/Organization/Inspection/Data/models/LastInspectionModel'
+import type { EquipmentCondition } from '../../Core/enum/equipmentConditionEnum'
 
 export default class EquipmentDetailsModel {
   public id: number
@@ -47,6 +48,7 @@ export default class EquipmentDetailsModel {
   public serial_name: string
   public checkout_date: string
   public qr_code_image: string
+  public equipmentConditions: EquipmentCondition | null
 
   constructor(
     id: number,
@@ -81,7 +83,8 @@ export default class EquipmentDetailsModel {
     last_inspection: LastInspectionModel,
     serial_name: string,
     checkout_date: string,
-    qr_code_image: string
+    qr_code_image: string,
+    equipmentConditions: EquipmentCondition | null,
   ) {
     this.id = id
     this.allIndustries = allIndustries
@@ -116,6 +119,7 @@ export default class EquipmentDetailsModel {
     this.serial_name = serial_name
     this.checkout_date = checkout_date
     this.qr_code_image = qr_code_image
+    this.equipmentConditions = equipmentConditions
     // this.type = type
   }
 
@@ -160,7 +164,8 @@ export default class EquipmentDetailsModel {
         : null,
       data.serial_name,
       data.checkout_date,
-      data.qr_code_image
+      data.qr_code_image,
+      data.equipment_conditions ?? null,
     )
   }
 

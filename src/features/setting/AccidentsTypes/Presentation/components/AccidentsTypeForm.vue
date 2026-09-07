@@ -200,7 +200,8 @@ const updateAllIndustries = (data) => {
 
 <template>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+    <LangTitleInput :label="`${$t('incident_type_name')}`" :langs="langDefault"
+    :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum.ADMIN">

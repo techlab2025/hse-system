@@ -183,7 +183,7 @@ const fields = ref([
 
 <template>
   <div class="col-span-4 md:col-span-4">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+    <LangTitleInput :label="`${$t('state_name')}`" :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
   <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">

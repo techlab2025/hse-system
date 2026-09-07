@@ -250,7 +250,7 @@ defineExpose({
 
 <template>
   <div class="col-span-4 md:col-span-2" data-required-field="langs">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+    <LangTitleInput :label="`${$t('team_name')}`" :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
     <p v-if="getFieldError('langs')" class="required-field-message">
       {{ getFieldError('langs') }}
     </p>

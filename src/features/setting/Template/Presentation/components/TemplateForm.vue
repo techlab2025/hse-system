@@ -208,6 +208,8 @@ const TemplateTypes = ref<TitleInterface[]>([
   new TitleInterface({ id: TemplateType.Tool, title: 'Tool', subtitle: '' }),
   new TitleInterface({ id: TemplateType.Location, title: 'Location', subtitle: '' }),
   new TitleInterface({ id: TemplateType.PermitToWork, title: 'Permit To Work', subtitle: '' }),
+  new TitleInterface({ id: TemplateType.device, title: 'Device', subtitle: '' }),
+  new TitleInterface({ id: TemplateType.machine, title: 'Machine', subtitle: '' }),
 ])
 
 const setTemplateType = (data: TitleInterface) => {
@@ -225,7 +227,12 @@ const setTemplateType = (data: TitleInterface) => {
     />
   </div>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+    <LangTitleInput
+      :label="$t('template_name')"
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="setLangs"
+    />
   </div>
   <div class="col-span-4 md:col-span-2">
     <CustomSelectInput

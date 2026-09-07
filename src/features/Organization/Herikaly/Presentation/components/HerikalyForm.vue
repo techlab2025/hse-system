@@ -313,7 +313,7 @@ defineExpose({
       type="text"
       :langs="langDefault"
       :modelValue="langs"
-      :label="$t('title')"
+      :label="$t('position_name')"
       @update:modelValue="setLangs"
     />
     <p v-if="getFieldError('langs')" class="required-field-message">

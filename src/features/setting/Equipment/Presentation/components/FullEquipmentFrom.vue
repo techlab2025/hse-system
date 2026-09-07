@@ -49,6 +49,7 @@ import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import { useThemeMode } from '@/composables/useThemeMode'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
+import { EquipmentCondition } from '../../Core/enum/equipmentConditionEnum.ts'
 // import AddWhereHouse from '@/views/Organization/WhereHouse/AddWhereHouse.vue'
 
 const emit = defineEmits(['update:data'])
@@ -90,6 +91,17 @@ const equipmentStatusOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: EquipmentStatus.RENT, title: t('Rent') }),
   new TitleInterface({ id: EquipmentStatus.OWN, title: t('Owned') }),
 ])
+
+const EquipmentCOnditionOptions = ref<TitleInterface[]>([
+  new TitleInterface({ id: EquipmentCondition.new, title: 'new' }),
+  new TitleInterface({ id: EquipmentCondition.old, title: 'old' }),
+])
+const equipmentCondition = ref<TitleInterface | null>(null)
+
+const setEquipmentCondition = (data: TitleInterface) => {
+  equipmentCondition.value = data
+  updateData()
+}
 
 const setEquipmentStatus = (data: TitleInterface) => {
   equipmentStatus.value = data
@@ -337,6 +349,7 @@ const updateData = () => {
         inspectionDuration: inspectionDuration.value,
         licenseNumber: licenseNumber.value,
         licensePlateNumber: licensePlateNumber.value,
+        equipmentConditions: equipmentCondition.value?.id ?? null,
         image: imagePayload,
         certificateImage: certificateImagePayload,
         AllIndustry: AllIndustry,
@@ -363,6 +376,7 @@ const updateData = () => {
         inspectionDuration: inspectionDuration.value,
         licenseNumber: licenseNumber.value,
         licensePlateNumber: licensePlateNumber.value,
+        equipmentConditions: equipmentCondition.value?.id ?? null,
         image: imagePayload,
         certificateImage: certificateImagePayload,
         AllIndustry: AllIndustry,
@@ -457,6 +471,10 @@ watch(
       inspectionDuration.value = newData?.inspectionDuration || null
       licenseNumber.value = newData?.licenseNumber || null
       licensePlateNumber.value = newData?.licensePlateNumber || null
+      equipmentCondition.value =
+        EquipmentCOnditionOptions.value.find(
+          (option) => option.id === Number(newData?.equipmentConditions),
+        ) ?? null
       deviceStatus.value = newData?.status
       image.value = newData?.image
       decommissioningDate.value = newData?.date || null
@@ -858,6 +876,23 @@ defineExpose({
         </p>
       </div>
 
+      <div class="col-span-2 md:col-span-1">
+        <UpdatedCustomInputSelect
+          :model-value="equipmentCondition"
+          :static-options="EquipmentCOnditionOptions"
+          label="Equipment Condition"
+          id="equipment-condition"
+          placeholder="Select Equipment Condition"
+          @update:model-value="setEquipmentCondition"
+        >
+          <template #LabelHeader>
+            <FieldHelpIcon
+              text="Select whether this equipment is new or has been previously used."
+            />
+          </template>
+        </UpdatedCustomInputSelect>
+      </div>
+
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
         <label class="flex items-center gap-2">
           {{ $t('upload image') }}
@@ -878,9 +913,7 @@ defineExpose({
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
         <label class="flex items-center gap-2 flex-wrap">
           <p>{{ $t('Certification / Inspection Image upload') }}</p>
-          <FieldHelpIcon
-            :text="$t('equipment_training_upload_help')"
-          />
+          <FieldHelpIcon :text="$t('equipment_training_upload_help')" />
         </label>
         <SingleFileUpload
           :returnType="`base64`"
@@ -896,9 +929,7 @@ defineExpose({
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
         <label class="flex items-center gap-2">
           {{ $t('certification / Inspection expiry date') }}
-          <FieldHelpIcon
-            :text="$t('equipment_training_expiry_help')"
-          />
+          <FieldHelpIcon :text="$t('equipment_training_expiry_help')" />
         </label>
         <DatePicker
           :model-value="decommissioningDateObj"

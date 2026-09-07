@@ -19,6 +19,7 @@ import { EquipmentStatus } from '../../../Core/enum/equipmentStatus'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+import { EquipmentCondition } from '../../../Core/enum/equipmentConditionEnum'
 
 const { t } = useI18n()
 
@@ -88,6 +89,11 @@ const deleteEquipment = async (id: number) => {
 const GetEquipmentType = (type: number) => {
   return EquipmentTypesEnum[type]
 }
+
+const getEquipmentCondition = (condition: EquipmentCondition | null) => {
+  if (!condition) return '-'
+  return EquipmentCondition[condition]
+}
 </script>
 
 <template>
@@ -141,6 +147,10 @@ const GetEquipmentType = (type: number) => {
             <div class="item" v-if="equipmentData?.kilometer">
               <span>{{ $t('Vehicle Kilometer') }} : </span>
               <p>{{ equipmentData?.kilometer }}</p>
+            </div>
+            <div class="item">
+              <span>{{ $t('Equipment Condition') }} : </span>
+              <p>{{ $t(getEquipmentCondition(equipmentData?.equipmentConditions)) }}</p>
             </div>
           </div>
         </div>

@@ -3,4 +3,6 @@ export enum TemplateType {
   Tool = 2,
   Location = 3,
   PermitToWork = 4,
+  device = 5,
+  machine = 6,
 }

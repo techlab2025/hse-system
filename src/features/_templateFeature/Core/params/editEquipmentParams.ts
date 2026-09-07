@@ -7,11 +7,12 @@ export default class implements Params {
   id: number
   translation: TranslationsParams
   hasCertificate: number
-  allIndustries: number  | null
+  allIndustries: number | null
   industries: number[]
   parentId: number
   // image: string
   equipmentTypeId: number
+  equipmentConditions: number | null
 
   constructor(
     id: number,
@@ -22,6 +23,7 @@ export default class implements Params {
     parentId: number,
     // image: string,
     equipmentTypeId: number,
+    equipmentConditions: number | null = null,
   ) {
     this.id = id
     this.translation = translation
@@ -31,6 +33,7 @@ export default class implements Params {
     this.parentId = parentId
     // this.image = image
     this.equipmentTypeId = equipmentTypeId
+    this.equipmentConditions = equipmentConditions
   }
 
   toMap(): Record<
@@ -50,6 +53,7 @@ export default class implements Params {
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     data['industry_ids'] = this.industries
     data['equipment_type_id'] = this.equipmentTypeId
+    if (this.equipmentConditions != null) data['equipment_conditions'] = this.equipmentConditions
     if (this.parentId) data['parent_id'] = this.parentId
     // if (this.image) data['image'] = this.image
 

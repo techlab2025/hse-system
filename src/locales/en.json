@@ -1901,5 +1901,16 @@
   "Not Taken Training": "Not Taken Training",
   "employee_phone_number": "Employee Phone Number",
   "employee_email_address": "Employee Email Address",
-  "phone_country_code": "Phone Country Code"
+  "phone_country_code": "Phone Country Code",
+  "position_name": "Position Name",
+  "template_name": "Template Name",
+  "country_name": "Country Name",
+  "state_name": "State Name",
+  "city_name": "City Name",
+  "location_name": "location name",
+  "zone_name": "Zone Name",
+  "incident_type_name": "Incident type name",
+  "equipment_type_name": "Equipment type name",
+  "team_name": "Team Name",
+  "root_cause_name": "RootCause Name"
 }
