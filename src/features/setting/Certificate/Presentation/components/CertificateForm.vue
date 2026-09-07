@@ -226,7 +226,10 @@ watch(
       image.value = newData?.image ? newData?.image : ''
       firstImage.value = newData?.image ? newData?.image : ''
       expiredate.value = newData?.requireExpiredDate ?? false
-      certificateType.value = newData?.certificateType ?? ''
+      certificateType.value =
+        certificateTypes.value.find(
+          (type) => type.id === newData?.certificateType?.id,
+        ) ?? certificateTypes.value[0]
       requireCertificate.value = newData?.requireCertificate ?? false
     }
   },
@@ -310,10 +313,7 @@ const certificateTypes = ref<TitleInterface[]>([
   }),
 ])
 const certificateType = ref<TitleInterface>(
-  new TitleInterface({
-    id: CertificateTypeEnum.SCALE,
-    title: 'scale',
-  }),
+  certificateTypes.value[0],
 )
 const updateCertificateType = (data: TitleInterface) => {
   certificateType.value = data

@@ -72,8 +72,12 @@ export default class CertificateDetailsModel {
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
 
+    if (typeof data === 'number') {
+      return new TitleInterface({ id: data })
+    }
+
     return new TitleInterface({
-      id: data?.id ? data?.id : null,
+      id: data?.id ?? 0,
       title: data?.titles?.find((title: any) => title.locale === savedLocale)?.title,
     })
   }
