@@ -4,6 +4,7 @@ import Dialog from 'primevue/dialog'
 import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
 import DialogSystem from '@/assets/images/DialogSystem.png'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
+import SystemDialogEmptyState from '@/shared/DataStatues/SystemDialogEmptyState.vue'
 import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue'
 import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue'
 import IndexSystemTeamParams from '../../Core/params/indexSystemTeamParams'
@@ -85,7 +86,8 @@ const submitData = async () => {
 
     <DataStatus :controller="state">
       <template #success>
-        <div class="system-dialog-content-container">
+        <SystemDialogEmptyState v-if="!state.data?.length" />
+        <div v-else class="system-dialog-content-container">
           <div v-for="item in state.data" :key="item.id" class="system-dialog-content">
             <div class="row-content" :class="{ active: selectedIds.includes(item.id) }" @click="toggleTeam(item.id)">
               <label :for="`team-${item.id}`" class="title">
@@ -97,10 +99,13 @@ const submitData = async () => {
           </div>
         </div>
 
-        <button class="btn btn-primary w-full mt-5 confirm-btn" :disabled="selectedIds.length === 0"
+        <button v-if="state.data?.length" class="btn btn-primary w-full mt-5 confirm-btn" :disabled="selectedIds.length === 0"
           @click="submitData">
           {{ $t('confirm') }}
         </button>
+      </template>
+      <template #empty>
+        <SystemDialogEmptyState />
       </template>
       <template #failed>
         <DataFailedState :link="''" :withbtn="false" />

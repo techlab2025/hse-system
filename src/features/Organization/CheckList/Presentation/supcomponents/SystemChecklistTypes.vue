@@ -6,6 +6,7 @@
   import IndexWhereHouseTypeController from '../controllers/indexWhereHouseTypeController';
   import IndexWhereHouseTypeParams from '../../Core/params/indexWhereHouseTypeParams';
   import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
+  import SystemDialogEmptyState from '@/shared/DataStatues/SystemDialogEmptyState.vue'
   import TableLoader from '@/shared/DataStatues/TableLoader.vue'
   import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
   import wordSlice from '@/base/Presentation/utils/word_slice';
@@ -90,7 +91,8 @@
     </template>
     <DataStatus :controller="state">
       <template #success>
-        <div class="system-dialog-content-container">
+        <SystemDialogEmptyState v-if="!state.data?.length" />
+        <div v-else class="system-dialog-content-container">
 
           <div class="system-dialog-content" v-for="item in state.data" :key="item.id">
             <div class="row-content" :class="{ active: selectedIds.includes(item.id) }" @click="ChangeStatus(item.id)">
@@ -102,7 +104,10 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-primary w-full mt-5 confirm-btn" @click="SubmitData">{{ $t('confirm') }}</button>
+        <button v-if="state.data?.length" class="btn btn-primary w-full mt-5 confirm-btn" @click="SubmitData">{{ $t('confirm') }}</button>
+      </template>
+      <template #empty>
+        <SystemDialogEmptyState />
       </template>
       <template #loader>
       </template>
