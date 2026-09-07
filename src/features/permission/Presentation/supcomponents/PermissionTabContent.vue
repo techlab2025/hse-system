@@ -22,6 +22,11 @@ const { permissions } = defineProps<{
   permissions: PermissionDetailsModel[]
 }>()
 
+const getGroupAllPermission = (group: any) =>
+  group.permissions?.find(
+    (permission: any) => permission.code === group.code || permission.label === 'All',
+  )
+
 // ✅ Mark permissions as checked based on backend data
 const applyCheckedPermissions = () => {
   if (!permissions || !Array.isArray(permissions)) return
@@ -30,9 +35,18 @@ const applyCheckedPermissions = () => {
 
   permissionRoots.value.permissions.forEach((module: any) => {
     module.permissions.forEach((group: any) => {
+      const allPermission = getGroupAllPermission(group)
+      const hasAllPermission = allPermission && permissionCodes.includes(allPermission.code)
+
       group.permissions?.forEach((perm: any) => {
-        perm.checked = permissionCodes.includes(perm.code)
+        perm.checked = hasAllPermission || permissionCodes.includes(perm.code)
       })
+
+      if (allPermission && !hasAllPermission) {
+        allPermission.checked = group.permissions
+          .filter((permission: any) => permission !== allPermission)
+          .every((permission: any) => permission.checked)
+      }
     })
   })
 
@@ -67,9 +81,8 @@ const isModuleFullyChecked = (module: any) =>
 // ✅ Event handlers
 const toggleGroupSelectAll = (group: any, event: Event) => {
   // When clicking the label, determine the new state based on current state
-  const isChecked = event.target instanceof HTMLInputElement
-    ? event.target.checked
-    : !isGroupFullyChecked(group)
+  const isChecked =
+    event.target instanceof HTMLInputElement ? event.target.checked : !isGroupFullyChecked(group)
   group.permissions.forEach((perm: any) => {
     perm.checked = isChecked
   })
@@ -78,17 +91,32 @@ const toggleGroupSelectAll = (group: any, event: Event) => {
 
 const toggleModuleSelectAll = (module: any, event: Event) => {
   // When clicking the label, determine the new state based on current state
-  const isChecked = event.target instanceof HTMLInputElement
-    ? event.target.checked
-    : !isModuleFullyChecked(module)
+  const isChecked =
+    event.target instanceof HTMLInputElement ? event.target.checked : !isModuleFullyChecked(module)
   module.permissions.forEach((group: any) => {
     group.permissions?.forEach((perm: any) => (perm.checked = isChecked))
   })
   emit('update:permissions', getSelectedPermissions())
 }
 
-const togglePermission = (perm: any, event: Event) => {
-  perm.checked = (event.target as HTMLInputElement).checked
+const togglePermission = (group: any, perm: any, event: Event) => {
+  const isChecked = (event.target as HTMLInputElement).checked
+  const allPermission = getGroupAllPermission(group)
+
+  if (perm === allPermission) {
+    group.permissions?.forEach((permission: any) => {
+      permission.checked = isChecked
+    })
+  } else {
+    perm.checked = isChecked
+
+    if (allPermission) {
+      allPermission.checked = group.permissions
+        .filter((permission: any) => permission !== allPermission)
+        .every((permission: any) => permission.checked)
+    }
+  }
+
   emit('update:permissions', getSelectedPermissions())
 }
 
@@ -102,8 +130,12 @@ onMounted(() => {
     <div class="cards" v-for="item in permissionRoots.permissions" :key="item.code">
       <div class="header">
         <!-- ✅ Module Select All auto-sync -->
-        <label class="select_all"
-          @click.prevent="toggleModuleSelectAll(item, { target: { checked: !isModuleFullyChecked(item) } })">
+        <label
+          class="select_all"
+          @click.prevent="
+            toggleModuleSelectAll(item, { target: { checked: !isModuleFullyChecked(item) } })
+          "
+        >
           <input type="checkbox" :checked="isModuleFullyChecked(item)" tabindex="-1" />
           <span class="checkmark"></span>
           <span>{{ item.label }}</span>
@@ -127,8 +159,16 @@ onMounted(() => {
           <hr />
 
           <div class="card-body">
-            <label v-for="premAction in prem.permissions" :key="premAction.code" class="permission-item">
-              <input type="checkbox" v-model="premAction.checked" @change="togglePermission(premAction, $event)" />
+            <label
+              v-for="premAction in prem.permissions"
+              :key="premAction.code"
+              class="permission-item"
+            >
+              <input
+                type="checkbox"
+                v-model="premAction.checked"
+                @change="togglePermission(prem, premAction, $event)"
+              />
               <span>{{ premAction.label }}</span>
             </label>
           </div>

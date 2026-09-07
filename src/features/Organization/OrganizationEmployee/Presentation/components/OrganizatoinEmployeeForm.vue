@@ -31,6 +31,8 @@ import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 import PhoneCountryCode from '@/shared/HelpersComponents/PhoneCountryCode.vue'
 import type RoleModel from '@/features/Organization/Role/Data/models/RoleModel'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+import { adminPermissions, type PermissionItem } from '@/constant/adminPremission'
+import { OrgPermissions } from '@/constant/organizationPremission'
 
 const toast = useToast()
 
@@ -238,12 +240,27 @@ const permissionNameByCode = Object.entries(PermissionsEnum).reduce<Map<string, 
   new Map(),
 )
 
+const permissionLabelByCode = new Map<string, string>()
+
+const registerPermissionLabels = (root: PermissionItem) => {
+  root.permissions?.forEach((module) => {
+    module.permissions?.forEach((group) => {
+      group.permissions?.forEach((permission) => {
+        permissionLabelByCode.set(permission.code, `${group.label} — ${permission.label}`)
+      })
+    })
+  })
+}
+
+registerPermissionLabels(adminPermissions)
+registerPermissionLabels(OrgPermissions)
+
 const getRolePermissionsHint = (roleOption: RoleModel) => {
   if (!roleOption.permissions?.length) return 'No permissions are assigned to this role.'
 
   const permissionNames = roleOption.permissions.map((permission) => {
     const code = permission.displayName || permission.permission || permission.name
-    return permissionNameByCode.get(code) ?? code
+    return permissionLabelByCode.get(code) ?? permissionNameByCode.get(code) ?? code
   })
 
   return `Permissions: ${permissionNames.join(', ')}`
