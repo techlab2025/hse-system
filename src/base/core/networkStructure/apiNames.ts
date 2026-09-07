@@ -1743,6 +1743,10 @@ class ApiNames {
   public get RefreshNotification() {
     return this.baseUrl + this.organizationPrefix + 'register_notification_socket_user'
   }
+  public get CloneAllData(){
+    return this.baseUrl + this.organizationPrefix + 'clone_all_data'
+
+  }
 }
 
 export { ApiNames }

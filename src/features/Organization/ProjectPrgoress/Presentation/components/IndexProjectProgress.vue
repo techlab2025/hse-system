@@ -487,7 +487,11 @@ watch(
   width: 100vw;
   height: 100vh;
   background:
-    radial-gradient(circle at 50% 20%, color-mix(in srgb, var(--brand-primary-500) 22%, transparent), transparent 32%),
+    radial-gradient(
+      circle at 50% 20%,
+      color-mix(in srgb, var(--brand-primary-500) 22%, transparent),
+      transparent 32%
+    ),
     color-mix(in srgb, var(--brand-primary-900) 64%, transparent);
   backdrop-filter: blur(7px);
   z-index: 998;
@@ -512,7 +516,11 @@ watch(
   width: min(360px, calc(100vw - 32px));
   overflow: visible;
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 98%, transparent)),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--surface-1) 98%, transparent),
+      color-mix(in srgb, var(--brand-primary-50) 98%, transparent)
+    ),
     var(--surface-1);
   padding: 18px;
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
