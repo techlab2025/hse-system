@@ -170,7 +170,7 @@ watch(
 
       // langs.value = newData?.code
       hasCertificate.value = newData?.hasCertificate == 1 ? true : false
-      allIndustries.value = newData?.allIndustries == 1 ? true : false
+      allIndustries.value = newData?.allIndustries == 1 ? 1 : 0
       EquipmentType.value = EquipmentsTypes.value.find((item) => item.id === newData?.type) || null
       image.value = newData?.image
       industry.value = newData?.industries!
@@ -206,6 +206,11 @@ const setEquipmentType = (data) => {
 
 const UpdateHasCertificate = (data) => {
   hasCertificate.value = data
+  updateData()
+}
+
+const updateAllIndustries = (checked: boolean) => {
+  allIndustries.value = checked ? 1 : 0
   updateData()
 }
 
@@ -263,8 +268,8 @@ const UpdateActiveTap = (data) => {
     <CustomCheckbox
       :index="3"
       :title="`all_industries`"
-      :checked="allIndustries"
-      @update:checked="allIndustries = $event"
+      :checked="allIndustries === 1"
+      @update:checked="updateAllIndustries"
     />
   </div>
 
