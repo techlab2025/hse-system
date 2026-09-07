@@ -4,7 +4,6 @@
 
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
-import DropList from '@/shared/HelpersComponents/DropList.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
@@ -12,21 +11,14 @@ import wordSlice from '@/base/Presentation/utils/word_slice'
 
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
-import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 // import DeleteSubscriptionApplicationController from '@/features/setting/SubscriptionApplication/Presentation/controllers/deleteSubscriptionApplicationController'
 // import DeleteSubscriptionApplicationParams from '@/features/setting/SubscriptionApplication/Core/params/deleteSubscriptionApplicationParams'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
-import IconDelete from '@/shared/icons/IconDelete.vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 // import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import Search from '@/shared/icons/Search.vue'
 
-import { useUserStore } from '@/stores/user'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import IndexSubscriptionApplicationController from '../controllers/indexSubscriptionApplicationController'
 import IndexSubscriptionApplicationParams from '../../Core/params/indexSubscriptionApplicationParams'
@@ -36,8 +28,6 @@ import RejectSubscriptionApplicationController from '../controllers/RejectSubscr
 import RejectSubscriptionApplicationParams from '../../Core/params/RejectSubscriptionApplicationParams'
 import { SubscriptionStatusEnum } from '../../Core/Enum/SubscriptionStatusEnum'
 
-const { t } = useI18n()
-
 // import DialogChangeStatusSubscriptionApplication from "@/features/setting/SubscriptionApplications/Presentation/components/SubscriptionApplication/DialogChangeStatusSubscriptionApplication.vue";
 // const route = useRoute()
 
@@ -46,8 +36,6 @@ const currentPage = ref(1)
 const countPerPage = ref(10)
 const indexSubscriptionApplicationController = IndexSubscriptionApplicationController.getInstance()
 const state = ref(indexSubscriptionApplicationController.state.value)
-const route = useRoute()
-let id = route.params.id
 // const type = ref<SubscriptionApplicationStatusEnum>(SubscriptionApplicationStatusEnum[route.params.type as keyof typeof SubscriptionApplicationStatusEnum])
 
 const fetchSubscriptionApplication = async (
@@ -61,7 +49,6 @@ const fetchSubscriptionApplication = async (
     pageNumber,
     perPage,
     withPage,
-    id,
   )
   await indexSubscriptionApplicationController.getData(deleteSubscriptionApplicationParams)
 }
@@ -104,41 +91,6 @@ watch(
   },
 )
 
-const { user } = useUserStore()
-
-const actionList = (id: number, deleteSubscriptionApplication: (id: number) => void) => [
-  {
-    text: t('edit'),
-    icon: IconEdit,
-    link: `/admin/subscription-application/${id}`,
-    permission: [
-      PermissionsEnum.SUBSCRIPTION_APPLICATION_ALL,
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.SUBSCRIPTION_APPLICATION_UPDATE,
-    ],
-  },
-
-  {
-    text: t('delete'),
-    icon: IconDelete,
-    action: () => deleteSubscriptionApplication(id),
-    permission: [
-      PermissionsEnum.SUBSCRIPTION_APPLICATION_DELETE,
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.SUBSCRIPTION_APPLICATION_ALL,
-    ],
-  },
-]
-
-watch(
-  () => route?.params?.id,
-  (Newvalue) => {
-    id = Newvalue
-    fetchSubscriptionApplication()
-  },
-)
 const router = useRouter()
 const approveSubscriptionApplicationController =
   ApproveSubscriptionApplicationController.getInstance()
@@ -168,6 +120,12 @@ const rejectSubscriptionApplication = async (id: number) => {
 
 const GetProjectStatus = (status: number) => {
   return SubscriptionStatusEnum[status]
+}
+
+const displayValue = (value: unknown) => {
+  if (value === null || value === undefined || value === '') return '—'
+
+  return wordSlice(String(value))
 }
 </script>
 
@@ -217,38 +175,68 @@ const GetProjectStatus = (status: number) => {
           <table class="main-table">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('admin_name') }}</th>
+                <th scope="col">{{ $t('id') }}</th>
+                <!-- <th scope="col">{{ $t('subscription_application_id') }}</th> -->
+                <th scope="col">{{ $t('request_date') }}</th>
+                <th scope="col">{{ $t('request_status') }}</th>
                 <th scope="col">{{ $t('organization_name') }}</th>
+                <th scope="col">{{ $t('phone') }}</th>
+                <th scope="col">{{ $t('email') }}</th>
+                <th scope="col">{{ $t('address') }}</th>
+                <th scope="col">{{ $t('admin_name') }}</th>
+                <th scope="col">{{ $t('admin_phone') }}</th>
+                <th scope="col">{{ $t('admin_email') }}</th>
+                <th scope="col">{{ $t('industry') }}</th>
                 <th scope="col">{{ $t('status_name') }}</th>
-                <!-- <th scope="col">Actions</th> -->
-                <th class="empty"></th>
+                <th scope="col">{{ $t('actions') }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <span> {{ index + 1 }}</span>
+              <tr v-for="item in state.data" :key="item.id">
+                <td :data-label="$t('id')">{{ displayValue(item?.id) }}</td>
+                <!-- <td :data-label="$t('subscription_application_id')">
+                  {{ displayValue(item?.subscription_application_id) }}
+                </td> -->
+                <td :data-label="$t('request_date')">{{ displayValue(item?.request_date) }}</td>
+                <td :data-label="$t('request_status')">
+                  {{ displayValue(item?.request_status) }}
                 </td>
-                <td data-label="organization_name">{{ wordSlice(item?.admin_email) }}</td>
-                <td data-label="organization_name">{{ wordSlice(item?.name) }}</td>
+                <td :data-label="$t('organization_name')">{{ displayValue(item?.name) }}</td>
+                <td :data-label="$t('phone')">{{ displayValue(item?.phone) }}</td>
+                <td :data-label="$t('email')">{{ displayValue(item?.email) }}</td>
+                <td :data-label="$t('address')">{{ displayValue(item?.address) }}</td>
+                <td :data-label="$t('admin_name')">{{ displayValue(item?.admin_name) }}</td>
+                <td :data-label="$t('admin_phone')">{{ displayValue(item?.admin_phone) }}</td>
+                <td :data-label="$t('admin_email')">{{ displayValue(item?.admin_email) }}</td>
+                <td :data-label="$t('industry')">
+                  {{ displayValue(item?.industry?.title ?? item?.industry?.titile) }}
+                </td>
                 <td
                   class="status"
                   :class="GetProjectStatus(item?.request_status)"
-                  data-label="status_name"
+                  :data-label="$t('status_name')"
                 >
-                  {{ wordSlice(item?.status_name) }}
+                  {{ displayValue(item?.status_name) }}
                 </td>
-                <td
-                  class="flex gap-2"
-                  v-if="item?.request_status === SubscriptionStatusEnum.PENDING"
-                >
-                  <button class="btn btn-primary" @click="approveSubscriptionApplication(item.id)">
-                    {{ $t('approved') }}
-                  </button>
-                  <button class="btn btn-secondary" @click="rejectSubscriptionApplication(item.id)">
-                    {{ $t('reject') }}
-                  </button>
+                <td :data-label="$t('actions')">
+                  <div
+                    v-if="item?.request_status === SubscriptionStatusEnum.PENDING"
+                    class="flex gap-2"
+                  >
+                    <button
+                      class="btn btn-primary"
+                      @click="approveSubscriptionApplication(item.id)"
+                    >
+                      {{ $t('approved') }}
+                    </button>
+                    <button
+                      class="btn btn-secondary"
+                      @click="rejectSubscriptionApplication(item.id)"
+                    >
+                      {{ $t('reject') }}
+                    </button>
+                  </div>
+                  <span v-else>—</span>
                 </td>
               </tr>
             </tbody>
@@ -261,10 +249,10 @@ const GetProjectStatus = (status: number) => {
         />
       </template>
       <template #loader>
-        <TableLoader :cols="3" :rows="10" />
+        <TableLoader :cols="14" :rows="10" />
       </template>
       <template #initial>
-        <TableLoader :cols="3" :rows="10" />
+        <TableLoader :cols="14" :rows="10" />
       </template>
       <template #empty>
         <permission-builder

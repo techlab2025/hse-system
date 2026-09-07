@@ -103,8 +103,11 @@ const UploadCertificateImage = async () => {
   </button>
   <Dialog v-model:visible="visible" :dismissable-mask="true" modal :style="{ width: '50rem' }">
     <template #header>
-      <HeaderSection :img="Cert" title="Add certification"
-        subtitle="Upload and assign a certification to this employee" />
+      <HeaderSection
+        :img="Cert"
+        :title="$t('add_training_record')"
+        :subtitle="$t('assign_training_to_employee')"
+      />
     </template>
 
     <div class="certificate-dialog">
@@ -127,10 +130,17 @@ const UploadCertificateImage = async () => {
 
         <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1 mt-10">
           <label class="flex justify-between flex-wrap">
-            <p>{{ $t('Certification Image upload') }}</p>
+            <p>{{ $t('training_image_upload') }}</p>
           </label>
-          <SingleFileUpload :returnType="`base64`" v-model="certificateImage" @update:modelValue="setCertificateImage"
-            label="Certification upload" id="Certification upload" index="2" placeholder="Certification upload" />
+          <SingleFileUpload
+            :returnType="`base64`"
+            v-model="certificateImage"
+            @update:modelValue="setCertificateImage"
+            :label="$t('training_upload')"
+            id="Certification upload"
+            index="2"
+            :placeholder="$t('training_upload')"
+          />
         </div>
       </div>
       <button class="btn btn-primary w-full mt-10" @click="UploadCertificateImage">Confirm</button>

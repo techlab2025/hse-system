@@ -179,6 +179,7 @@ const updateData = () => {
         null,
         expiredate.value,
         certificateType.value.id,
+        requireCertificate.value,
       )
     : new AddCertificateParams(
         translationsParams,
@@ -187,6 +188,7 @@ const updateData = () => {
         isBase64(image.value) && image.value.length > 0 ? image.value : null,
         expiredate.value,
         certificateType.value.id,
+        requireCertificate.value,
       )
 
   console.log(params, 'params')
@@ -225,6 +227,7 @@ watch(
       firstImage.value = newData?.image ? newData?.image : ''
       expiredate.value = newData?.requireExpiredDate ?? false
       certificateType.value = newData?.certificateType ?? ''
+      requireCertificate.value = newData?.requireCertificate ?? false
     }
   },
   { immediate: true },
@@ -283,6 +286,12 @@ const expiredate = ref<boolean>(false)
 const updateExpireDate = (data: boolean) => {
   expiredate.value = data
   console.log(expiredate.value, 'expiredate')
+  updateData()
+}
+
+const requireCertificate = ref<boolean>(false)
+const updateRequireCertificate = (data: boolean) => {
+  requireCertificate.value = data
   updateData()
 }
 
@@ -399,24 +408,34 @@ defineExpose({
 
   <div class="input-wrapper col-span-2 mt-6">
     <CustomCheckbox
+      :index="1"
       :title="`expiry_date_required`"
       :checked="expiredate"
       @update:checked="updateExpireDate"
     />
   </div>
 
-  <!-- <div class="col-span-4 md:col-span-2">
+
+  <div class="col-span-4 md:col-span-2">
     <CustomSelectInput
       :modelValue="certificateType"
       :static-options="certificateTypes"
       :label="$t('certificate_type')"
       id="certificate_type"
-      placeholder="Select certificate type"
+      :placeholder="$t('select_training_type')"
       @update:modelValue="updateCertificateType"
     />
-  </div> -->
+  </div>
 
-  <div class="col-span-4 md:col-span-4">
+  <div class="input-wrapper col-span-2 mt-6">
+    <CustomCheckbox
+      :index="2"
+      :title="`require_certificate`"
+      :checked="requireCertificate"
+      @update:checked="updateRequireCertificate"
+    />
+  </div>
+  <!-- <div class="col-span-4 md:col-span-4">
     <LangTitleInput
       :label="$t('description')"
       :langs="langDefaultDescription"
@@ -426,7 +445,7 @@ defineExpose({
       type="textarea"
       :required="false"
     />
-  </div>
+  </div> -->
 
   <div
     class="col-span-4 md:col-span-2 input-wrapper check-box"
@@ -456,7 +475,7 @@ defineExpose({
     </p>
   </div>
 
-  <div class="col-span-4 md:col-span-4">
+  <!-- <div class="col-span-4 md:col-span-4">
     <SingleFileUpload
       :returnType="`base64`"
       v-model="image"
@@ -465,7 +484,7 @@ defineExpose({
       id="image"
       placeholder="Select image"
     />
-  </div>
+  </div> -->
 </template>
 
 <style scoped>

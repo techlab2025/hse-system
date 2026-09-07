@@ -260,7 +260,7 @@ const IndexOrganizationEmployeectionList = () => [
       </span>
       <input
         v-model="word"
-        :placeholder="'search certificates'"
+        :placeholder="$t('search certificates')"
         class="input"
         type="text"
         @input="searchCertificate"
@@ -391,9 +391,9 @@ const IndexOrganizationEmployeectionList = () => [
         <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
           <DataEmpty
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
-            addText="Add certificate"
-            description="Sorry .. You have no Certificate .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Certificate"
+            :addText="$t('add_certificate')"
+            :description="$t('training_empty_description')"
+            :title="$t('training_empty_title')"
           />
         </PermissionBuilder>
       </template>
@@ -401,9 +401,9 @@ const IndexOrganizationEmployeectionList = () => [
         <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
           <DataFailed
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
-            addText="Add Certificate"
-            description="Sorry .. You have no Certificate .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Certificate"
+            :addText="$t('add_certificate')"
+            :description="$t('training_empty_description')"
+            :title="$t('training_empty_title')"
           />
         </PermissionBuilder>
       </template>

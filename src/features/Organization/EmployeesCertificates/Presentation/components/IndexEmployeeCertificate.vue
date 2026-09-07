@@ -149,14 +149,14 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
   <section class="employee-certificates-page">
     <div class="certificate-matrix-toolbar">
       <div>
-        <span class="matrix-kicker">Certificate matrix</span>
-        <h1>Employee certification board</h1>
-        <p>Track validity, expiry, renewals, and missing certificates across employees.</p>
+        <span class="matrix-kicker">{{ $t('Certificate matrix') }}</span>
+        <h1>{{ $t('Employee certification board') }}</h1>
+        <p>{{ $t('Track validity, expiry, renewals, and missing certificates across employees.') }}</p>
       </div>
 
       <div class="matrix-stats">
         <span>{{ employeeCount }} employees</span>
-        <span>{{ certificateCount }} certificates</span>
+        <span>{{ certificateCount }} {{ $t('certificates') }}</span>
       </div>
     </div>
 

@@ -74,8 +74,8 @@ const AllPagesToView = ref([
   },
   {
     id: ProjectProgressEnum.Certificate,
-    title: "Functional Certificate",
-    description: "Define certificate structure and assign related project roles",
+    title: "Functional Training",
+    description: "Define training structure and assign related project roles",
     link: "/organization/certificate?type=1"
   },
   {
