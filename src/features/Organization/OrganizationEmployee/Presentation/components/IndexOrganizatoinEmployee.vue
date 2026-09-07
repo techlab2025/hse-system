@@ -316,15 +316,15 @@ watch(
 )
 
 const setCertificateStatus = () => {
-  if (value.value === 'Taken Certificates') {
+  if (value.value === 'Taken Training') {
     isEmployeeTakeCertificate.value = EmployeeCertificateStatus.Take
   } else {
     isEmployeeTakeCertificate.value = EmployeeCertificateStatus.NotTake
   }
 }
 
-const value = ref('Not Taken Certificates')
-const options = ref(['Taken Certificates', 'Not Taken Certificates'])
+const value = ref('Not Taken Training')
+const options = ref(['Taken Training', 'Not Taken Training'])
 
 const showUploadDialog = ref(false)
 const pendingFile = ref<File | null>(null)

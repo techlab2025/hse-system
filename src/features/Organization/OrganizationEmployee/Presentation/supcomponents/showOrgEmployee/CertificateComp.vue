@@ -25,8 +25,8 @@ const Certificates = computed(() => {
     <div class="section-header">
       <img class="icon" src="/src/assets/images/certificate.png" alt="cert" />
       <div class="section-header-text">
-        <h4>Certifications</h4>
-        <p class="hint">These are all the certificates related to the employee's specialization</p>
+        <h4>{{ $t('certifications') }}</h4>
+        <p class="hint">{{ $t('employee_training_hint') }}</p>
       </div>
     </div>
 
@@ -52,13 +52,13 @@ const Certificates = computed(() => {
             </div>
 
             <span class="cert-missing" v-if="cert.status == CertificateStatusEnum.Invalid"
-              >Missing Certificate</span
+              >{{ $t('missing_training') }}</span
             >
           </div>
         </div>
       </li>
     </ul>
-    <p class="side-empty" v-else>No certifications attached yet.</p>
+    <p class="side-empty" v-else>{{ $t('no_training_attached') }}</p>
   </div>
 </template>
 

@@ -149,8 +149,8 @@ const AllPagesToView = [
     id: ProjectProgressEnum.Certificate,
     component: AddCertificate,
     actionsComponent: CertificateActionsButtons,
-    title: ' Certificate',
-    description: 'Define certificate structure and assign related project roles',
+    title: 'Training',
+    description: 'Define training structure and assign related project roles',
   },
   {
     id: ProjectProgressEnum.Tempalte,

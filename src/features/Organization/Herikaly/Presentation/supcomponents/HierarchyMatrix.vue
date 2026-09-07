@@ -186,13 +186,13 @@ const ChangeCertificatioRequired = async (
     <div class="hierarchy-matrix-toolbar">
       <div>
         <span class="matrix-kicker">Requirement matrix</span>
-        <h1>Hierarchy certification board</h1>
-        <p>Choose which certificates are required for every organization position.</p>
+        <h1>{{ $t('hierarchy_training_board') }}</h1>
+        <p>{{ $t('choose_required_training') }}</p>
       </div>
 
       <div class="matrix-stats">
         <span>{{ hierarchyCount }} positions</span>
-        <span>{{ certificateCount }} certificates</span>
+        <span>{{ certificateCount }} {{ $t('certificates') }}</span>
       </div>
     </div>
 

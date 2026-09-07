@@ -161,12 +161,12 @@ const SendData = ref<string[]>([
 ])
 const SendDataLabels: Record<string, string> = {
   name: 'Equipment Name',
-  date: 'Certificate Expire Date',
+  date: 'Training Expiry Date',
   inspection_duration: 'Inspection Duration',
   license_number: 'License Number',
   license_plate_number: 'License Plate',
   image: 'Equipment Image',
-  certificate_image: 'Certificate Image',
+  certificate_image: 'Training Image',
   checkin_date: 'Rent Start Date',
   checkout_date: 'Rent End Date',
   period: 'Rental Period',
@@ -419,10 +419,10 @@ onMounted(() => {
       <div class="rule-group">
         <div class="field-tags">
           <span class="field-tag">Equipment name</span>
-          <span class="field-tag">Certificate Expiry date</span>
+          <span class="field-tag">Training Expiry date</span>
           <span class="field-tag">License plate number</span>
           <span class="field-tag">Equipment image</span>
-          <span class="field-tag">Certificate image</span>
+          <span class="field-tag">Training image</span>
           <span class="field-tag">Rent Start date</span>
           <span class="field-tag">Rent End date</span>
           <span class="field-tag">Rent Period type</span>
@@ -560,7 +560,7 @@ onMounted(() => {
                     </span>
                   </th>
                   <th>Image</th>
-                  <th>Certificate Image</th>
+                  <th>Training Image</th>
                   <th class="empty"></th>
                 </tr>
               </thead>

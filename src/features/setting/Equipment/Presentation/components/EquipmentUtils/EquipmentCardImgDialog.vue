@@ -21,7 +21,7 @@ watch(() => props.Visable, () => {
 <template>
   <div class="card flex justify-center">
     <Dialog @hide="emit('close')" v-model:visible="DialogVisable" modal :dismissable-mask="true"
-      :header="`Certificate Image `" :style="{ width: '40rem' }">
+      :header="$t('training_image')" :style="{ width: '40rem' }">
       <img class="img" :src="img" alt="img">
     </Dialog>
   </div>

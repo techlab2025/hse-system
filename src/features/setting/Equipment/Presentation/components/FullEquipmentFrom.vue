@@ -879,17 +879,17 @@ defineExpose({
         <label class="flex items-center gap-2 flex-wrap">
           <p>{{ $t('Certification / Inspection Image upload') }}</p>
           <FieldHelpIcon
-            text="Upload the current certificate or inspection evidence associated with this equipment."
+            :text="$t('equipment_training_upload_help')"
           />
         </label>
         <SingleFileUpload
           :returnType="`base64`"
           v-model="certificateImage"
           @update:modelValue="setCertificateImage"
-          label="Certification upload"
+          :label="$t('training_upload')"
           id="Certification upload"
           index="2"
-          placeholder="Certification upload"
+          :placeholder="$t('training_upload')"
         />
       </div>
 
@@ -897,13 +897,13 @@ defineExpose({
         <label class="flex items-center gap-2">
           {{ $t('certification / Inspection expiry date') }}
           <FieldHelpIcon
-            text="Select the expiry date printed on the certificate or inspection document."
+            :text="$t('equipment_training_expiry_help')"
           />
         </label>
         <DatePicker
           :model-value="decommissioningDateObj"
           id="Date of Decommissioning"
-          placeholder="certification expiry date"
+          :placeholder="$t('training_expiry_date')"
           @update:modelValue="setDecoDate"
         />
       </div>

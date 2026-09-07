@@ -319,7 +319,7 @@ const user = useUserStore()
                       <li>
                         <router-link to="/admin/certificate">
                           <SidebarVector />
-                          <span>{{ $t('Certificates') }}</span>
+                          <span>{{ $t('certificates') }}</span>
                         </router-link>
                       </li>
                     </PermissionBuilder> -->

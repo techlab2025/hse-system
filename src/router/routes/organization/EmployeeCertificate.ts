@@ -7,7 +7,7 @@ export const EmployeeCertificateRoutes: RouteRecordRaw[] = [
     component: () =>
       import('@/views/Organization/EmployeeCertificates/IndexEmployeeCertificates.vue'),
     meta: {
-      breadcrumb: 'Employee Certificates',
+      breadcrumb: 'Employee Training',
     },
   },
 ]

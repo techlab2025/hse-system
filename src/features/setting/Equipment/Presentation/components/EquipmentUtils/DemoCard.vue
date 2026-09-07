@@ -91,7 +91,7 @@ const props = withDefaults(
 
         <div class="rent_expire">
           <h2 class="expire_date" v-if="expiredate">
-            Certification expiry date : <span>{{ formatJoinDate(expiredate) }}</span>
+            {{ $t('CertificateExpireDate') }} : <span>{{ formatJoinDate(expiredate) }}</span>
           </h2>
         </div>
         <div class="rent_expire" v-if="deviceStatus === EquipmentStatus.RENT">

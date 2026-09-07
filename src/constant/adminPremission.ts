@@ -1824,7 +1824,7 @@ export const adminPermissions: PermissionItem = {
         {
           key: PermissionsEnum.CERTIFICATE_ALL,
           code: PermissionsEnum.CERTIFICATE_ALL,
-          label: 'Certificate List',
+          label: 'Training',
           permissions: [
             {
               key: PermissionsEnum.CERTIFICATE_ALL,
@@ -2345,7 +2345,7 @@ export const adminPermissions: PermissionItem = {
         {
           key: PermissionsEnum.CERTIFICATE_ALL,
           code: PermissionsEnum.CERTIFICATE_ALL,
-          label: 'Certificate',
+          label: 'Training',
           permissions: [
             {
               key: PermissionsEnum.CERTIFICATE_ALL,
@@ -2923,7 +2923,7 @@ export const adminPermissions: PermissionItem = {
         {
           key: PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
           code: PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
-          label: 'Employee Certificates',
+          label: 'Employee Training',
           permissions: [
             {
               key: PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
