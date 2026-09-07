@@ -94,7 +94,7 @@ const actionList = () => [
       :show-actions="true"
       :actionList="actionList()"
       :actionsNumber="2"
-      buttonTitle="import certificate sheet"
+      buttonTitle="import traning sheet"
     >
     </ActionsList>
   </div>

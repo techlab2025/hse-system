@@ -1915,5 +1915,6 @@
   "incident_type_name": "Incident type name",
   "equipment_type_name": "Equipment type name",
   "team_name": "Team Name",
-  "root_cause_name": "RootCause Name"
+  "root_cause_name": "RootCause Name",
+  "import traning sheet": "import traning sheet"
 }
