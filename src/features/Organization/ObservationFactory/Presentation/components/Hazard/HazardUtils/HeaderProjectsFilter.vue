@@ -58,7 +58,11 @@ watch(
 
 <template>
   <div
-    v-if="AllProjects && AllProjects.length > 1 && ProjectStore.showProjectsFilter()"
+    v-if="
+      AllProjects &&
+      (props.isForm ? AllProjects.length > 0 : AllProjects.length > 1) &&
+      ProjectStore.showProjectsFilter()
+    "
     class="idnex-header noborder"
   >
     <div class="project-filter-heading">
