@@ -13,7 +13,8 @@ export default class AddEquipmentParams implements Params {
   inspectionDuration: string | null = null
   licenseNumber: string | null = null
   licensePlateNumber: string | null = null
-  equipmentConditions: number | null = null
+  equipmentCondition: number | null = null
+  equipmentUsedStatus: number | null = null
   image: string | null = null
   certificateImage: string | null = null
   allIndustries: boolean | null = null
@@ -43,7 +44,8 @@ export default class AddEquipmentParams implements Params {
     inspectionDuration: string | null
     licenseNumber: string | null
     licensePlateNumber: string | null
-    equipmentConditions: number | null
+    equipmentCondition: number | null
+    equipmentUsedStatus: number | null
     image: string | null
     certificateImage: string | null
     allIndustries: boolean | null
@@ -79,7 +81,8 @@ export default class AddEquipmentParams implements Params {
 
     if (this.licensePlateNumber != null) data['license_plate_number'] = this.licensePlateNumber
 
-    if (this.equipmentConditions != null) data['equipment_conditions'] = this.equipmentConditions
+    data['equipment_condition'] = this.equipmentCondition
+    data['equipment_used_status'] = this.equipmentUsedStatus
 
     if (this.image != null) data['image'] = this.image
 

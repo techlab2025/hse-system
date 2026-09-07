@@ -5,6 +5,7 @@ import TitleModel from '@/base/Data/Models/title_model.ts'
 import type EmployeeTypeModel from './equipmentModel'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { EquipmentCondition } from '@/features/setting/Equipment/Core/enum/equipmentConditionEnum'
+import type { EquipmentUsed } from '@/features/setting/Equipment/Core/enum/EquipemntUsedENum'
 // import { LangEnum } from '../../Core/enums/langEnum'
 
 export default class EmployeeDetailsModel {
@@ -16,7 +17,8 @@ export default class EmployeeDetailsModel {
   public image: string
   public industries: TitleModel<string>[]
   public equipmentTypeId: EmployeeTypeModel
-  public equipmentConditions: EquipmentCondition | null
+  public equipmentCondition: EquipmentCondition | null
+  public equipmentUsedStatus: EquipmentUsed | null
 
   // public descriptions: DescriptionLocale[]
 
@@ -29,7 +31,8 @@ export default class EmployeeDetailsModel {
     parentId: number,
     image: string,
     equipmentTypeId: EmployeeTypeModel,
-    equipmentConditions: EquipmentCondition | null,
+    equipmentCondition: EquipmentCondition | null,
+    equipmentUsedStatus: EquipmentUsed | null,
   ) {
     this.id = id
     this.titles = titles
@@ -39,7 +42,8 @@ export default class EmployeeDetailsModel {
     this.parentId = parentId
     this.image = image
     this.equipmentTypeId = equipmentTypeId
-    this.equipmentConditions = equipmentConditions
+    this.equipmentCondition = equipmentCondition
+    this.equipmentUsedStatus = equipmentUsedStatus
   }
 
   static fromMap(data: any): EmployeeDetailsModel {
@@ -52,7 +56,8 @@ export default class EmployeeDetailsModel {
       data.parent_id,
       data.image,
       this.getTitle(data.equipment_type_id),
-      data.equipment_conditions ?? null,
+      data.equipment_condition ?? data.equipment_conditions ?? null,
+      data.eqipent_used_status ?? null,
     )
   }
 

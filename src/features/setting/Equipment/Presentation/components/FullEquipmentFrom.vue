@@ -50,6 +50,7 @@ import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import { useThemeMode } from '@/composables/useThemeMode'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 import { EquipmentCondition } from '../../Core/enum/equipmentConditionEnum.ts'
+import { EquipmentUsed } from '../../Core/enum/EquipemntUsedENum.ts'
 // import AddWhereHouse from '@/views/Organization/WhereHouse/AddWhereHouse.vue'
 
 const emit = defineEmits(['update:data'])
@@ -97,9 +98,16 @@ const EquipmentCOnditionOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: EquipmentCondition.old, title: 'old' }),
 ])
 const equipmentCondition = ref<TitleInterface | null>(null)
+const equipmentUsedStatus = ref<TitleInterface | null>(null)
 
 const setEquipmentCondition = (data: TitleInterface) => {
   equipmentCondition.value = data
+  updateData()
+}
+
+const setEquipmentUsedStatus = (data: TitleInterface) => {
+  equipmentUsedStatus.value = data
+  if (data?.id !== EquipmentUsed.used) equipmentCondition.value = null
   updateData()
 }
 
@@ -349,7 +357,15 @@ const updateData = () => {
         inspectionDuration: inspectionDuration.value,
         licenseNumber: licenseNumber.value,
         licensePlateNumber: licensePlateNumber.value,
-        equipmentConditions: equipmentCondition.value?.id ?? null,
+        equipmentCondition:
+          deviceStatus.value === EquipmentStatus.OWN &&
+          equipmentUsedStatus.value?.id === EquipmentUsed.used
+            ? (equipmentCondition.value?.id ?? null)
+            : null,
+        equipmentUsedStatus:
+          deviceStatus.value === EquipmentStatus.OWN
+            ? (equipmentUsedStatus.value?.id ?? null)
+            : null,
         image: imagePayload,
         certificateImage: certificateImagePayload,
         AllIndustry: AllIndustry,
@@ -376,7 +392,15 @@ const updateData = () => {
         inspectionDuration: inspectionDuration.value,
         licenseNumber: licenseNumber.value,
         licensePlateNumber: licensePlateNumber.value,
-        equipmentConditions: equipmentCondition.value?.id ?? null,
+        equipmentCondition:
+          deviceStatus.value === EquipmentStatus.OWN &&
+          equipmentUsedStatus.value?.id === EquipmentUsed.used
+            ? (equipmentCondition.value?.id ?? null)
+            : null,
+        equipmentUsedStatus:
+          deviceStatus.value === EquipmentStatus.OWN
+            ? (equipmentUsedStatus.value?.id ?? null)
+            : null,
         image: imagePayload,
         certificateImage: certificateImagePayload,
         AllIndustry: AllIndustry,
@@ -424,7 +448,10 @@ const deviceStatusOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: EquipmentStatus.RENT, title: t('Rent') }),
   new TitleInterface({ id: EquipmentStatus.OWN, title: t('Owned') }),
 ])
-
+const EquipmentUsedOptions = ref<TitleInterface[]>([
+  new TitleInterface({ id: EquipmentUsed.used, title: t('Used') }),
+  new TitleInterface({ id: EquipmentUsed.notUsed, title: t('Not Used') }),
+])
 const UpdateDeviceStatus = (data) => {
   deviceStatus.value = data.target.value
   updateData()
@@ -433,6 +460,10 @@ watch(
   () => deviceStatus.value,
   (newValue) => {
     deviceStatus.value = newValue
+    if (newValue !== EquipmentStatus.OWN) {
+      equipmentUsedStatus.value = null
+      equipmentCondition.value = null
+    }
     updateData()
 
     // console.log(newValue, "deviceStatus.value");
@@ -471,9 +502,13 @@ watch(
       inspectionDuration.value = newData?.inspectionDuration || null
       licenseNumber.value = newData?.licenseNumber || null
       licensePlateNumber.value = newData?.licensePlateNumber || null
+      equipmentUsedStatus.value =
+        EquipmentUsedOptions.value.find(
+          (option) => option.id === Number(newData?.equipmentUsedStatus),
+        ) ?? null
       equipmentCondition.value =
         EquipmentCOnditionOptions.value.find(
-          (option) => option.id === Number(newData?.equipmentConditions),
+          (option) => option.id === Number(newData?.equipmentCondition),
         ) ?? null
       deviceStatus.value = newData?.status
       image.value = newData?.image
@@ -876,23 +911,6 @@ defineExpose({
         </p>
       </div>
 
-      <div class="col-span-2 md:col-span-1">
-        <UpdatedCustomInputSelect
-          :model-value="equipmentCondition"
-          :static-options="EquipmentCOnditionOptions"
-          label="Equipment Condition"
-          id="equipment-condition"
-          placeholder="Select Equipment Condition"
-          @update:model-value="setEquipmentCondition"
-        >
-          <template #LabelHeader>
-            <FieldHelpIcon
-              text="Select whether this equipment is new or has been previously used."
-            />
-          </template>
-        </UpdatedCustomInputSelect>
-      </div>
-
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
         <label class="flex items-center gap-2">
           {{ $t('upload image') }}
@@ -1142,6 +1160,43 @@ defineExpose({
           @input="updateData"
           :placeholder="$t('License Plate Number')"
         />
+      </div>
+
+      <div v-if="deviceStatus === EquipmentStatus.OWN" class="col-span-2 md:col-span-1">
+        <UpdatedCustomInputSelect
+          :model-value="equipmentUsedStatus"
+          :static-options="EquipmentUsedOptions"
+          label="Equipment Used Status"
+          id="equipment-used-status"
+          placeholder="Select Equipment Used Status"
+          @update:model-value="setEquipmentUsedStatus"
+        >
+          <template #LabelHeader>
+            <FieldHelpIcon text="Select whether this owned equipment has been used before." />
+          </template>
+        </UpdatedCustomInputSelect>
+      </div>
+
+      <div
+        v-if="
+          deviceStatus === EquipmentStatus.OWN && equipmentUsedStatus?.id === EquipmentUsed.used
+        "
+        class="col-span-2 md:col-span-1"
+      >
+        <UpdatedCustomInputSelect
+          :model-value="equipmentCondition"
+          :static-options="EquipmentCOnditionOptions"
+          label="Equipment Condition"
+          id="equipment-condition"
+          placeholder="Select Equipment Condition"
+          @update:model-value="setEquipmentCondition"
+        >
+          <template #LabelHeader>
+            <FieldHelpIcon
+              text="Select whether this equipment is new or has been previously used."
+            />
+          </template>
+        </UpdatedCustomInputSelect>
       </div>
 
       <div

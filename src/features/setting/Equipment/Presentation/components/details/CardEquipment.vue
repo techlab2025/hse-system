@@ -20,6 +20,7 @@ import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { EquipmentCondition } from '../../../Core/enum/equipmentConditionEnum'
+import { EquipmentUsed } from '../../../Core/enum/EquipemntUsedENum'
 
 const { t } = useI18n()
 
@@ -94,6 +95,11 @@ const getEquipmentCondition = (condition: EquipmentCondition | null) => {
   if (!condition) return '-'
   return EquipmentCondition[condition]
 }
+
+const getEquipmentUsedStatus = (usedStatus: EquipmentUsed | null) => {
+  if (!usedStatus) return '-'
+  return EquipmentUsed[usedStatus]
+}
 </script>
 
 <template>
@@ -149,8 +155,12 @@ const getEquipmentCondition = (condition: EquipmentCondition | null) => {
               <p>{{ equipmentData?.kilometer }}</p>
             </div>
             <div class="item">
+              <span>{{ $t('Equipment Used Status') }} : </span>
+              <p>{{ $t(getEquipmentUsedStatus(equipmentData?.equipmentUsedStatus)) }}</p>
+            </div>
+            <div class="item" v-if="equipmentData?.equipmentUsedStatus === EquipmentUsed.used">
               <span>{{ $t('Equipment Condition') }} : </span>
-              <p>{{ $t(getEquipmentCondition(equipmentData?.equipmentConditions)) }}</p>
+              <p>{{ $t(getEquipmentCondition(equipmentData?.equipmentCondition)) }}</p>
             </div>
           </div>
         </div>
