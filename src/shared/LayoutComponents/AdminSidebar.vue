@@ -38,6 +38,19 @@ const SettingsRoutes = ref<Routes[]>([
       PermissionsEnum.ADMIN_FETCH,
     ],
   },
+    {
+    link: '/admin/team',
+    name: t('team'),
+    icon: 'team',
+    permissions: [
+    PermissionsEnum.TEAM_ALL,
+        PermissionsEnum.TEAM_FETCH,
+        PermissionsEnum.TEAM_DETAILS,
+      PermissionsEnum.TEAM_CREATE,
+         PermissionsEnum.TEAM_UPDATE,
+         PermissionsEnum.TEAM_DELETE,
+    ],
+  },
   {
     link: '/admin/languages',
     name: t('languages'),
@@ -882,6 +895,7 @@ watch(LoackupsAccordion, (val) => {
         </AccordionPanel>
       </Accordion>
     </PermissionBuilder>
+
 
     <PermissionBuilder
       :code="[
