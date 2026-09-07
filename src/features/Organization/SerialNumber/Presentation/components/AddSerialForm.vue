@@ -217,10 +217,13 @@ const sendData = async () => {
 
   if (!serialNumController.isDataSuccess()) return
 
-  await refreshSerialData()
+  if (route.path.includes('project-progress')) {
+    emit('update:data')
+  } else {
+    await refreshSerialData()
+  }
 
   emit('close:dialog')
-  emit('update:data')
   // location.reload()
 }
 
@@ -256,7 +259,7 @@ const refreshSerialData = async () => {
 }
 
 onMounted(async () => {
-  await refreshSerialData()
+  await ShowData()
 })
 const route = useRoute()
 </script>

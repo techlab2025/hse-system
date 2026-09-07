@@ -414,7 +414,7 @@ defineExpose({
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Phone">
     <label for="phone" class="flex items-center gap-2">
-      {{ $t('employee_phone_number') }}
+      {{ $t('phone_number') }}
       <FieldHelpIcon text="Enter the employee's phone number for work-related contact." />
     </label>
     <input
@@ -430,7 +430,7 @@ defineExpose({
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Email">
     <label for="email" class="flex items-center gap-2">
-      {{ $t('employee_email_address') }}
+      {{ $t('email_address') }}
       <FieldHelpIcon text="This email address is used to log in to the system." />
     </label>
     <input

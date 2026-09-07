@@ -7,14 +7,14 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type CloneAllAdminDataParams from '../../Core/params/cloneAllAdminDataParams'
 import type PartnerModel from '../../Data/models/ProjectProgressDetailsModel'
-import AddPartnerteUseCase from '../../Domain/useCase/addProjectProgressUseCase'
+import CloneAllDataUseCase from '../../Domain/useCase/CloneAllDataUseCase'
 
 export default class CloneAllDataController extends ControllerInterface<PartnerModel> {
   private static instance: CloneAllDataController
   private constructor() {
     super()
   }
-  private AddPartnerUseCase = new AddPartnerteUseCase()
+  private cloneAllDataUseCase = new CloneAllDataUseCase()
 
   static getInstance() {
     if (!this.instance) {
@@ -23,7 +23,7 @@ export default class CloneAllDataController extends ControllerInterface<PartnerM
     return this.instance
   }
 
-  async addPartner(params: CloneAllAdminDataParams, router: Router, draft: boolean = false) {
+  async CLoneData(params: CloneAllAdminDataParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       params.validate()
@@ -31,7 +31,7 @@ export default class CloneAllDataController extends ControllerInterface<PartnerM
         params.validateOrThrow()
         return
       }
-      const dataState: DataState<PartnerModel> = await this.AddPartnerUseCase.call(params)
+      const dataState: DataState<PartnerModel> = await this.cloneAllDataUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -40,7 +40,6 @@ export default class CloneAllDataController extends ControllerInterface<PartnerM
           imageElement: successImage,
           messageContent: null,
         })
-
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',
