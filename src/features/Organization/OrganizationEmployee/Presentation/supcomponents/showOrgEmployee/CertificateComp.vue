@@ -23,7 +23,7 @@ const Certificates = computed(() => {
 <template>
   <div class="section certifications-section">
     <div class="section-header">
-      <img class="icon" src="/src/assets/images/certificate.png" alt="cert" />
+      <img class="icon" src="/src/assets/images/certificate.png" alt="training" />
       <div class="section-header-text">
         <h4>{{ $t('certifications') }}</h4>
         <p class="hint">{{ $t('employee_training_hint') }}</p>

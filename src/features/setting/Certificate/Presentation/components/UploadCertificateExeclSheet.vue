@@ -200,16 +200,19 @@ const AddOrgEmployee = async () => {
       if (!key || key.trim() === '') return
 
       const normalizedKey = key.trim().toLowerCase()
-      const payloadKey = [
-        'certificate',
-        'certificate title',
-        'certificate_title',
-        'training',
-        'training title',
-        'training_title',
-      ].includes(normalizedKey)
-        ? 'title'
-        : normalizedKey
+      const payloadKeys: Record<string, string> = {
+        certificate: 'title',
+        'certificate title': 'title',
+        certificate_title: 'title',
+        training: 'title',
+        'training title': 'title',
+        training_title: 'title',
+        'training type': 'certificate_type',
+        training_type: 'certificate_type',
+        'training required': 'require_certificate',
+        training_required: 'require_certificate',
+      }
+      const payloadKey = payloadKeys[normalizedKey] ?? normalizedKey
 
       obj[payloadKey] = row[i]
     })

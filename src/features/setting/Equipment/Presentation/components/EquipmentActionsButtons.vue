@@ -53,10 +53,10 @@ const DownloadExample = () => {
   const worksheetData = [
     {
       'Equipment name': 'Example Equipment',
-      'Certificate Expiry date': '2026-12-31',
+      'Training Expiry Date': '2026-12-31',
       'License plate number': '1234 ABC',
       'Equipment image': '*',
-      'Certificate image': '*',
+      'Training Image': '*',
       'Rent Start date': '2026-06-01',
       'Rent End date': '2026-06-30',
       'Rent Period type': '3',
