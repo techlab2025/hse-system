@@ -38,7 +38,6 @@ import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
-import IndexSystemObserverationTypeController from '../controllers/indexSystemObserverationTypeController'
 import Dialog from 'primevue/dialog'
 import UploadObservationTypeExeclSheet from './UploadObservationTypeExeclSheet.vue'
 const { t } = useI18n()
@@ -102,19 +101,6 @@ watch(
     deep: true,
   },
 )
-const indexSystemObserverationTypeController = IndexSystemObserverationTypeController.getInstance()
-watch(
-  () => indexSystemObserverationTypeController.state.value,
-  (newState) => {
-    if (newState) {
-      state.value = newState
-    }
-  },
-  {
-    deep: true,
-  },
-)
-
 const { user } = useUserStore()
 const showUploadDialog = ref(false)
 const pendingFile = ref<File | null>(null)
@@ -303,7 +289,11 @@ const IndexObservationTypesactionList = () => [
         </template>
       </ActionsList>
     </div>
-    <SystemObservationTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
+    <SystemObservationTypes
+      v-if="user?.type != OrganizationTypeEnum.ADMIN"
+      :isHeaderTap="true"
+      @confirmed="fetchObserverationType('', currentPage, countPerPage)"
+    />
 
   </div>
 

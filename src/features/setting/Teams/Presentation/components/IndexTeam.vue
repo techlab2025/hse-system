@@ -32,6 +32,7 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
+import SystemTeams from '../supcomponents/SystemTeams.vue'
 
 const { t } = useI18n()
 
@@ -134,6 +135,10 @@ watch(
     fetchTeam()
   },
 )
+
+const handleSystemTeamsConfirmed = () => {
+  fetchTeam('', currentPage.value, countPerPage.value)
+}
 </script>
 
 <template>
@@ -161,6 +166,12 @@ watch(
         </router-link>
       </permission-builder>
     </div>
+
+    <SystemTeams
+      v-if="user?.type != OrganizationTypeEnum.ADMIN"
+      :isHeaderTap="true"
+      @confirmed="handleSystemTeamsConfirmed"
+    />
   </div>
 
   <permission-builder :code="[

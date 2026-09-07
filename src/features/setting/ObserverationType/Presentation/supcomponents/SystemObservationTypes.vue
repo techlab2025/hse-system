@@ -16,6 +16,9 @@ import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentatio
 const visible = ref(false);
 const route = useRoute()
 const props = defineProps<{ isHeaderTap?: boolean }>()
+const emit = defineEmits<{
+  confirmed: []
+}>()
 
 const indexSystemObserverationTypeController = IndexSystemObserverationTypeController.getInstance()
 const state = ref(indexSystemObserverationTypeController.state.value)
@@ -54,9 +57,11 @@ const ChangeStatus = (id: number) => {
   }
 }
 watch(() => visible.value, (newVal) => {
-  if (visible.value) {
-
+  if (newVal) {
+    selectedIds.value = []
     fetchObserverationType()
+  } else {
+    selectedIds.value = []
   }
 })
 
@@ -64,8 +69,12 @@ const router = useRouter()
 const SubmitData = async () => {
   const addSystemObserverationTypeController = AddSystemObserverationTypeController.getInstance()
   const addSystemObserverationTypeParams = new AddSystemObserverationTypeParams({ cloneIds: selectedIds.value })
-  const dataState = await addSystemObserverationTypeController.addSystemObserverationType(addSystemObserverationTypeParams, router)
-  visible.value = false
+  await addSystemObserverationTypeController.addSystemObserverationType(addSystemObserverationTypeParams, router)
+
+  if (addSystemObserverationTypeController.isDataSuccess()) {
+    emit('confirmed')
+    visible.value = false
+  }
 }
 </script>
 <template>
