@@ -19,7 +19,8 @@ interface SubscriptionApplicationMap {
   admin_name: string
   admin_phone: string
   admin_email: string
-  industry_id: IndustryReference
+  industry_id: number | IndustryReference | null
+  industry?: IndustryReference | null
 }
 
 export default class SubscriptionApplicationModel extends TitleInterface {
@@ -35,7 +36,8 @@ export default class SubscriptionApplicationModel extends TitleInterface {
   public admin_name: string
   public admin_phone: string
   public admin_email: string
-  public industry_id: IndustryReference
+  public industry_id: number | null
+  public industry: IndustryReference | null
 
   constructor(
     id: number,
@@ -50,7 +52,8 @@ export default class SubscriptionApplicationModel extends TitleInterface {
     admin_name: string,
     admin_phone: string,
     admin_email: string,
-    industry_id: IndustryReference,
+    industry_id: number | null,
+    industry: IndustryReference | null,
   ) {
     super({ id: id, title: name })
 
@@ -67,9 +70,16 @@ export default class SubscriptionApplicationModel extends TitleInterface {
     this.admin_phone = admin_phone
     this.admin_email = admin_email
     this.industry_id = industry_id
+    this.industry = industry
   }
 
   static fromMap(data: SubscriptionApplicationMap): SubscriptionApplicationModel {
+    const industryFromId =
+      typeof data.industry_id === 'object' && data.industry_id !== null ? data.industry_id : null
+    const industryId = industryFromId?.id ??
+      (typeof data.industry_id === 'number' ? data.industry_id : null)
+    const industry = data.industry ?? industryFromId
+
     return new SubscriptionApplicationModel(
       data.id,
       data.subscription_application_id,
@@ -83,7 +93,8 @@ export default class SubscriptionApplicationModel extends TitleInterface {
       data.admin_name,
       data.admin_phone,
       data.admin_email,
-      data.industry_id,
+      industryId,
+      industry,
     )
   }
 }

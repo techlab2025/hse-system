@@ -209,7 +209,7 @@ const displayValue = (value: unknown) => {
                 <td :data-label="$t('admin_phone')">{{ displayValue(item?.admin_phone) }}</td>
                 <td :data-label="$t('admin_email')">{{ displayValue(item?.admin_email) }}</td>
                 <td :data-label="$t('industry')">
-                  {{ displayValue(item?.industry_id?.titile ?? item?.industry_id?.title) }}
+                  {{ displayValue(item?.industry?.title ?? item?.industry?.titile) }}
                 </td>
                 <td
                   class="status"
