@@ -4,6 +4,7 @@ import TranslationsParams, { type TitleLocale } from '@/base/core/params/transla
 import TitleModel from '@/base/Data/Models/title_model.ts'
 import type EmployeeTypeModel from './equipmentModel'
 import TitleInterface from '@/base/Data/Models/title_interface'
+import type { EquipmentCondition } from '@/features/setting/Equipment/Core/enum/equipmentConditionEnum'
 // import { LangEnum } from '../../Core/enums/langEnum'
 
 export default class EmployeeDetailsModel {
@@ -15,6 +16,7 @@ export default class EmployeeDetailsModel {
   public image: string
   public industries: TitleModel<string>[]
   public equipmentTypeId: EmployeeTypeModel
+  public equipmentConditions: EquipmentCondition | null
 
   // public descriptions: DescriptionLocale[]
 
@@ -27,6 +29,7 @@ export default class EmployeeDetailsModel {
     parentId: number,
     image: string,
     equipmentTypeId: EmployeeTypeModel,
+    equipmentConditions: EquipmentCondition | null,
   ) {
     this.id = id
     this.titles = titles
@@ -36,6 +39,7 @@ export default class EmployeeDetailsModel {
     this.parentId = parentId
     this.image = image
     this.equipmentTypeId = equipmentTypeId
+    this.equipmentConditions = equipmentConditions
   }
 
   static fromMap(data: any): EmployeeDetailsModel {
@@ -44,12 +48,11 @@ export default class EmployeeDetailsModel {
       TranslationsParams.fromMap(data.titles).titles,
       data.has_certificate,
       data.all_industries,
-      data.industries.length > 0
-        ? data.industries.map((industry) => this.getTitle(industry))
-        : [],
+      data.industries.length > 0 ? data.industries.map((industry) => this.getTitle(industry)) : [],
       data.parent_id,
       data.image,
       this.getTitle(data.equipment_type_id),
+      data.equipment_conditions ?? null,
     )
   }
 
