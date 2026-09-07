@@ -1895,7 +1895,7 @@
   "training_expiry_date": "Training expiry date",
   "training_image": "Training image",
   "CertificateExpireDate": "Training expiry date",
-  "require_certificate": "Training required",
+  "require_certificate": "certificate required",
   "Functional Training": "Functional Training",
   "Taken Training": "Taken Training",
   "Not Taken Training": "Not Taken Training",
