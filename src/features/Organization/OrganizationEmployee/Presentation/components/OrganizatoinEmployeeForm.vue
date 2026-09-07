@@ -27,6 +27,8 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 import AddRole from '@/features/Organization/Role/Presentation/components/AddRole.vue'
 import AddHerikaly from '@/features/Organization/Herikaly/Presentation/components/AddHerikaly.vue'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
+import PhoneCountryCode from '@/shared/HelpersComponents/PhoneCountryCode.vue'
 
 const toast = useToast()
 
@@ -320,7 +322,10 @@ defineExpose({
 
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Name">
-    <label for="name">{{ $t('employee_name') }}</label>
+    <label for="name" class="flex items-center gap-2">
+      {{ $t('employee_name') }}
+      <FieldHelpIcon text="Enter the employee's full name as it should appear in the system." />
+    </label>
     <input
       id="name"
       type="text"
@@ -333,7 +338,12 @@ defineExpose({
     </p>
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <label for="serialNumber">{{ $t('serial_number') }}</label>
+    <label for="serialNumber" class="flex items-center gap-2">
+      {{ $t('serial_number') }}
+      <FieldHelpIcon
+        text="Enter a unique employee serial number, or leave it empty when automatic generation is enabled."
+      />
+    </label>
     <input
       type="text"
       v-model="SerialNumber"
@@ -347,8 +357,20 @@ defineExpose({
       "
     />
   </div>
+  <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
+    <label for="serialNumber" class="flex items-center gap-2">
+      {{ $t('phone_country_code') }}
+      <FieldHelpIcon
+        text="Enter a unique employee serial number, or leave it empty when automatic generation is enabled."
+      />
+    </label>
+    <PhoneCountryCode />
+  </div>
   <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Phone">
-    <label for="phone">{{ $t('employee_phone_number') }}</label>
+    <label for="phone" class="flex items-center gap-2">
+      {{ $t('employee_phone_number') }}
+      <FieldHelpIcon text="Enter the employee's phone number for work-related contact." />
+    </label>
     <input
       id="phone"
       type="tel"
@@ -361,7 +383,10 @@ defineExpose({
     </p>
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Email">
-    <label for="email">{{ $t('employee_email_address') }}</label>
+    <label for="email" class="flex items-center gap-2">
+      {{ $t('employee_email_address') }}
+      <FieldHelpIcon text="This email address is used to log in to the system." />
+    </label>
     <input
       id="email"
       type="email"
@@ -375,10 +400,13 @@ defineExpose({
   </div>
   <div
     v-if="booleandashAccessStatus"
-    class="col-span-4 md:col-span-2 input-wrapper "
+    class="col-span-4 md:col-span-2 input-wrapper"
     data-required-field="Password"
   >
-    <label for="password">{{ $t('Password') }}</label>
+    <label for="password" class="flex items-center gap-2">
+      {{ $t('Password') }}
+      <FieldHelpIcon text="Set the password the employee will use to log in to the system." />
+    </label>
     <input
       id="password"
       type="text"
@@ -413,6 +441,7 @@ defineExpose({
       v-model:dialogVisible="PositionDialog"
     >
       <template #LabelHeader>
+        <FieldHelpIcon text="Select the employee's position in the organization hierarchy." />
         <span class="add-dialog" @click="PositionDialog = true">New</span>
       </template>
       <template #Dialog>
@@ -423,13 +452,14 @@ defineExpose({
       {{ getFieldError('Heirarchy') }}
     </p>
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper checkbox-with-help">
     <CustomCheckbox
       :index="5"
       :title="`all_permissions`"
       :checked="AllPermissions"
       @update:checked="updaetAllPermissions"
     />
+    <FieldHelpIcon text="Enable this option to grant the employee all available permissions." />
   </div>
   <div
     v-if="!AllPermissions"
@@ -448,6 +478,7 @@ defineExpose({
       v-model:dialogVisible="RoleDialog"
     >
       <template #LabelHeader>
+        <FieldHelpIcon text="Select the roles that define what the employee can view and manage." />
         <span class="add-dialog" @click="RoleDialog = true">New</span>
       </template>
       <template #Dialog>
@@ -463,20 +494,24 @@ defineExpose({
       @update:checked="updaetAdminStatus" />
   </div> -->
 
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper checkbox-with-help">
     <CustomCheckbox
       :index="3"
       :title="`admin_permission`"
       :checked="booleanEmpStatus"
       @update:checked="updaetAdminStatus"
     />
+    <FieldHelpIcon text="Enable this option to give the employee administrator privileges." />
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper checkbox-with-help">
     <CustomCheckbox
       :index="4"
       :title="`dashboard_access`"
       :checked="booleandashAccessStatus"
       @update:checked="updaetdashAccessStatus"
+    />
+    <FieldHelpIcon
+      text="Enable this option to allow the employee to log in and use the dashboard."
     />
   </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
@@ -492,5 +527,11 @@ defineExpose({
   color: var(--status-danger);
   font-size: 0.82rem;
   font-weight: 700;
+}
+
+.checkbox-with-help {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 </style>
