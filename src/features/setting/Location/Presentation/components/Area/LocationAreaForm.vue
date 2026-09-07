@@ -94,18 +94,18 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditLocationParams(
-      id,
-      translationsParams,
-      Code.value,
-      LocationEnum.AREA,
-      ParentId?.value || SelectedCity.value?.id,
-    )
+        id,
+        translationsParams,
+        Code.value,
+        LocationEnum.AREA,
+        ParentId?.value || SelectedCity.value?.id,
+      )
     : new AddLocationParams(
-      translationsParams,
-      Code.value,
-      LocationEnum.AREA,
-      ParentId?.value || SelectedCity?.value?.id,
-    )
+        translationsParams,
+        Code.value,
+        LocationEnum.AREA,
+        ParentId?.value || SelectedCity?.value?.id,
+      )
 
   emit('update:data', params)
 }
@@ -133,32 +133,18 @@ watch(
       industry.value = newData?.industries!
 
       // SelectedCountry.value = newData?.country
-      SelectedCountry.value = newData?.country
-        ? [newData.country]
-        : []
+      SelectedCountry.value = newData?.country ? [newData.country] : []
 
-      indexLocationStatesParams.value = new IndexLocationParams(
-        '',
-        0,
-        0,
-        0,
-        LocationEnum.STATE,
-        [newData?.country?.id],
-      )
+      indexLocationStatesParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.STATE, [
+        newData?.country?.id,
+      ])
 
       // SelectedState.value = newData?.state
-      SelectedState.value = newData?.state
-        ? [newData.state]
-        : []
+      SelectedState.value = newData?.state ? [newData.state] : []
 
-      indexLocationAreasParams.value = new IndexLocationParams(
-        '',
-        0,
-        0,
-        0,
-        LocationEnum.CITY,
-        [newData?.state?.id],
-      )
+      indexLocationAreasParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.CITY, [
+        newData?.state?.id,
+      ])
 
       SelectedCity.value = newData?.city
     }
@@ -200,7 +186,15 @@ const SetCountrySelection = (data: TitleInterface[]) => {
 const SelectedState = ref<TitleInterface[]>()
 const SetStateSelection = (data: TitleInterface[]) => {
   SelectedState.value = data
-  indexLocationAreasParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.CITY, null, data.map((c) => c.id))
+  indexLocationAreasParams.value = new IndexLocationParams(
+    '',
+    0,
+    0,
+    0,
+    LocationEnum.CITY,
+    null,
+    data.map((c) => c.id),
+  )
   updateData()
 }
 
@@ -218,8 +212,6 @@ const indexLocationStatesParams = ref<IndexLocationParams | null>(null)
 
 const indexLocationAreasController = IndexLocationController.getInstance()
 const indexLocationAreasParams = ref<IndexLocationParams | null>(null)
-
-
 
 const UpdateSerial = (data) => {
   SerialNumber.value = data
@@ -241,18 +233,37 @@ const fields = ref([
 
 <template>
   <div class="col-span-4 md:col-span-4">
-    <LangTitleInput :label="`${$t('location_name')}`" :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+    <LangTitleInput
+      :label="`${$t('location_name')}`"
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="setLangs"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="code">Code</label>
-    <input type="text" id="code" v-model="Code" class="input" placeholder="Enter The Code" @input="UpdateCode" />
+    <input
+      type="text"
+      id="code"
+      v-model="Code"
+      class="input"
+      placeholder="Enter The Code"
+      @input="UpdateCode"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!ParentId">
-    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationCountriesController"
-      :params="indexLocationCountriesParams" label="Country " id="Location" placeholder="Select  Country" :type="2"
-      @update:modelValue="SetCountrySelection" />
+    <CustomSelectInput
+      :modelValue="SelectedCountry"
+      :controller="indexLocationCountriesController"
+      :params="indexLocationCountriesParams"
+      label="Country "
+      id="Location"
+      placeholder="Select Country"
+      :type="2"
+      @update:modelValue="SetCountrySelection"
+    />
   </div>
   <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
     <SwitchInput
@@ -264,13 +275,26 @@ const fields = ref([
     />
   </div> -->
   <div class="col-span-4 md:col-span-2" v-if="!ParentId && SelectedCountry?.length != 0">
-    <CustomSelectInput :modelValue="SelectedState" :controller="indexLocationStatesController"
-      :params="indexLocationStatesParams" label="State" id="Location" placeholder="Select State" :type="2"
-      @update:modelValue="SetStateSelection" />
+    <CustomSelectInput
+      :modelValue="SelectedState"
+      :controller="indexLocationStatesController"
+      :params="indexLocationStatesParams"
+      label="State"
+      id="Location"
+      placeholder="Select State"
+      :type="2"
+      @update:modelValue="SetStateSelection"
+    />
   </div>
   <div class="col-span-4 md:col-span-2" v-if="!ParentId && SelectedState?.length != 0">
-    <CustomSelectInput :modelValue="SelectedCity" :controller="indexLocationAreasController"
-      :params="indexLocationAreasParams" label="City" id="City" placeholder="Select City"
-      @update:modelValue="SetCitySelection" />
+    <CustomSelectInput
+      :modelValue="SelectedCity"
+      :controller="indexLocationAreasController"
+      :params="indexLocationAreasParams"
+      label="City"
+      id="City"
+      placeholder="Select City"
+      @update:modelValue="SetCitySelection"
+    />
   </div>
 </template>
