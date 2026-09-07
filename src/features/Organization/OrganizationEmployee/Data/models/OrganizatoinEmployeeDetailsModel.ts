@@ -16,6 +16,7 @@ export default class OrganizatoinEmployeeDetailsModel {
   public id: number
   public name: string
   public phone: string
+  public countryCode: string
   public email: string
   public is_master: number
   public image: string | null
@@ -44,6 +45,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     id: number,
     name: string,
     phone: string,
+    countryCode: string,
     email: string,
     is_master: number,
     image: string | null,
@@ -68,6 +70,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     this.id = id
     this.name = name
     this.phone = phone
+    this.countryCode = countryCode
     this.email = email
     this.is_master = is_master
     this.image = image
@@ -98,6 +101,7 @@ export default class OrganizatoinEmployeeDetailsModel {
       data.id,
       data.name,
       data.phone,
+      data.country_code,
       data.email,
       data.is_master,
       data.image,
@@ -146,6 +150,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     1,
     'Mohab',
     '01007599132',
+    '+20',
     'Mohab@gmail.com',
     1,
     acc,

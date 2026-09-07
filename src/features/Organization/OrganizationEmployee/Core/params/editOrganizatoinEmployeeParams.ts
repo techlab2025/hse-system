@@ -9,6 +9,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
   id: number
   name: string
   phone: string
+  countryCode: string
   email: string
   password: string
   passwordConfirmation: string
@@ -28,6 +29,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     id: number,
     name: string,
     phone: string,
+    countryCode: string,
     email: string,
     password: string,
     passwordConfirmation: string,
@@ -42,6 +44,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     this.id = id
     this.name = name
     this.phone = phone
+    this.countryCode = countryCode
     this.email = email
     this.password = password
     this.passwordConfirmation = passwordConfirmation
@@ -62,6 +65,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     data['organization_employee_id'] = this.id
     data['name'] = this.name
     data['phone'] = this.phone
+    data['country_code'] = this.countryCode
     data['email'] = this.email
     if (this.password?.length > 0) data['password'] = this.password
     data['password_confirmation'] = this.passwordConfirmation

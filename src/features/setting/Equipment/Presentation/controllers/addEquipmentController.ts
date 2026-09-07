@@ -77,7 +77,7 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
     } else {
       const vehicleKm = String(params.VehicleKm ?? '').trim()
 
-      if (!/^\d+$/.test(vehicleKm)) {
+      if (params.VehicleKm && params.VehicleKm.length > 0 && !/^\d+$/.test(vehicleKm)) {
         new OpenWarningDilaog('Kilometers should contain numbers only').openDialog()
         return
       }

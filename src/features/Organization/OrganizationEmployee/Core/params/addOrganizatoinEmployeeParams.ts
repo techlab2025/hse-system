@@ -9,6 +9,7 @@ import type { DashboardAccessEnum } from '../Enum/DashboardAccess'
 export default class AddOrganizatoinEmployeeParams implements Params {
   name: string
   phone: string
+  countryCode: string
   email: string
   password: string
   passwordConfirmation: string
@@ -33,6 +34,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
   constructor(
     name: string,
     phone: string,
+    countryCode: string,
     email: string,
     password: string,
     passwordConfirmation: string,
@@ -46,6 +48,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
   ) {
     this.name = name
     this.phone = phone
+    this.countryCode = countryCode
     this.email = email
     this.password = password
     this.passwordConfirmation = passwordConfirmation
@@ -77,6 +80,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
 
     data['name'] = this.name
     data['phone'] = this.phone
+    data['country_code'] = this.countryCode
     data['email'] = this.email
     data['password'] = this.password
     data['password_confirmation'] = this.passwordConfirmation

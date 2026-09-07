@@ -376,7 +376,7 @@ const updateData = () => {
         VehicleKm:
           activeTab.value === EquipmentTypesEnum.EQUIPMENT && isVehicle.value
             ? VehicleKm.value
-            : ' ',
+            : '',
         SelectedWhereHosue: SelectedWhereHosue.value?.id || ' ',
         equipmentRentEndDate:
           deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,

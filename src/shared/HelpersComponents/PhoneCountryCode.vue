@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import Select from 'primevue/select'
 
 type CountryCode = {
@@ -7,8 +7,6 @@ type CountryCode = {
   iso: string
   dialCode: string
 }
-
-const selectedCountry = ref<CountryCode | null>(null)
 
 const countries = ref<CountryCode[]>([
   { name: 'Egypt', iso: 'EG', dialCode: '+20' },
@@ -20,8 +18,33 @@ const countries = ref<CountryCode[]>([
   { name: 'United Kingdom', iso: 'GB', dialCode: '+44' },
 ])
 
-const updatePhoneCode = (value: any) => {
-  console.log(value, 'vall')
+const props = withDefaults(
+  defineProps<{
+    modelValue?: string
+  }>(),
+  {
+    modelValue: '',
+  },
+)
+
+const emit = defineEmits<{
+  (event: 'update:modelValue', value: string): void
+}>()
+
+const selectedCountry = ref<CountryCode | null>(
+  countries.value.find((country) => country.dialCode === props.modelValue) ?? null,
+)
+
+watch(
+  () => props.modelValue,
+  (countryCode) => {
+    selectedCountry.value =
+      countries.value.find((country) => country.dialCode === countryCode) ?? null
+  },
+)
+
+const updatePhoneCode = (value: CountryCode | null) => {
+  emit('update:modelValue', value?.dialCode ?? '')
 }
 </script>
 
@@ -31,6 +54,7 @@ const updatePhoneCode = (value: any) => {
     :options="countries"
     optionLabel="name"
     filter
+    input-id="phone-country-code"
     placeholder="Country code"
     class="w-full"
     @update:modelValue="updatePhoneCode"

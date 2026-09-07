@@ -27,11 +27,7 @@ const addEquipment = async () => {
 const saveAndAdd = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
   addEquipmentController.setLoading()
-  await addEquipmentController.addEquipment(
-    params.value as AddEquipmentParams,
-    router,
-    true,
-  )
+  await addEquipmentController.addEquipment(params.value as AddEquipmentParams, router, true)
   if (addEquipmentController.isDataSuccess()) {
     params.value = null
     formKey.value++
@@ -48,26 +44,23 @@ const setParams = (data: Params) => {
     <FullEquipmentFrom ref="formRef" :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper">
-      <div class="flex items-center gap-2 !mt-4">
+      <div class="equipment-form-actions">
         <router-link
-          v-if="route.path.includes('equipment/add')"
+          v-if="route.path.includes('equipment/add') && !route.path.includes('project-progress')"
           to="/organization/equipments"
           @click.prevent=""
-          class="btn btn-danger w-30"
+          class="btn btn-danger"
         >
           <span>Cancel</span>
         </router-link>
-        <button
-          type="submit"
-          class="btn btn-primary"
-          :class="route.path.includes('project-progress') ? 'w-1/2' : 'w-full'"
-        >
+        <button type="submit" class="btn btn-primary">
           <span>{{ $t('save') }}</span>
         </button>
         <button
           v-if="route.path.includes('project-progress')"
+          type="button"
           @click.prevent="saveAndAdd"
-          class="btn btn-primary w-1/2"
+          class="btn btn-primary"
         >
           {{ $t('save and add') }}
         </button>
@@ -76,19 +69,22 @@ const setParams = (data: Params) => {
   </form>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .button-wrapper {
+  width: 100%;
+}
+
+.equipment-form-actions {
   display: flex;
-  gap: 1rem;
-  flex-direction: row !important;
-  width: 100% !important;
-  button {
-    &.w-full {
-      width: 100%;
-    }
-    &.w-1\/2 {
-      width: 50%;
-    }
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 1rem;
+
+  > .btn {
+    flex: 0 0 calc(50% - 0.25rem);
+    width: calc(50% - 0.25rem);
+    min-width: 0;
   }
 }
 </style>

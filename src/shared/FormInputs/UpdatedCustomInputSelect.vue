@@ -486,16 +486,19 @@ function closeDialog(): void {
         filter
         v-bind="multiselectProps"
       >
-        <template v-if="showOptionSerial || showOptionLicensePlate" #option="{ option }">
-          <span class="equipment-option">
-            <strong>{{ option?.title }}</strong>
-            <small v-if="showOptionSerial && getOptionSerial(option)">
-              {{ $t('serial_number') }}: {{ getOptionSerial(option) }}
-            </small>
-            <small v-else-if="showOptionLicensePlate && getOptionLicensePlate(option)">
-              {{ $t('License Plate Number') }}: {{ getOptionLicensePlate(option) }}
-            </small>
-          </span>
+        <template #option="{ option }">
+          <slot name="option" :option="option">
+            <span v-if="showOptionSerial || showOptionLicensePlate" class="equipment-option">
+              <strong>{{ option?.title }}</strong>
+              <small v-if="showOptionSerial && getOptionSerial(option)">
+                {{ $t('serial_number') }}: {{ getOptionSerial(option) }}
+              </small>
+              <small v-else-if="showOptionLicensePlate && getOptionLicensePlate(option)">
+                {{ $t('License Plate Number') }}: {{ getOptionLicensePlate(option) }}
+              </small>
+            </span>
+            <span v-else>{{ option?.title }}</span>
+          </slot>
         </template>
         <template v-if="showOptionLicensePlate && !isMultiselect" #value="{ value, placeholder }">
           <span v-if="value" class="equipment-selected-value">

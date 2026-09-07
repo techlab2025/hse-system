@@ -29,6 +29,7 @@ import AddHerikaly from '@/features/Organization/Herikaly/Presentation/component
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 import PhoneCountryCode from '@/shared/HelpersComponents/PhoneCountryCode.vue'
+import type RoleModel from '@/features/Organization/Role/Data/models/RoleModel'
 
 const toast = useToast()
 
@@ -40,6 +41,7 @@ const props = defineProps<{
 }>()
 const Name = ref(props.data?.name)
 const Phone = ref(props.data?.phone)
+const CountryCode = ref(props.data?.countryCode ?? '')
 const Email = ref(props.data?.email)
 const Password = ref('')
 const ConfirmPassword = ref<string>()
@@ -133,6 +135,7 @@ const updateData = () => {
         props?.data?.id,
         Name.value,
         Phone.value,
+        CountryCode.value,
         Email.value,
         Password.value,
         ConfirmPassword.value,
@@ -147,6 +150,7 @@ const updateData = () => {
     : new AddOrganizatoinEmployeeParams(
         Name.value,
         Phone.value,
+        CountryCode.value,
         Email.value,
         Password.value,
         ConfirmPassword.value,
@@ -169,6 +173,7 @@ watch(
     if (newData) {
       Name.value = newData.name
       Phone.value = newData.phone
+      CountryCode.value = newData.countryCode ?? ''
       Email.value = newData.email
       Heirarchy.value = new TitleInterface({
         id: newData?.hierarchy?.[0]?.id,
@@ -196,6 +201,10 @@ const UpdatePhone = (data) => {
   Phone.value = data.target.value
   updateData()
 }
+const updateCountryCode = (value: string) => {
+  CountryCode.value = value
+  updateData()
+}
 const UpdateEmail = (data) => {
   Email.value = data.target.value
   updateData()
@@ -218,6 +227,13 @@ watch(
 const setRole = (data: TitleInterface[]) => {
   role.value = data
   updateData()
+}
+
+const getRolePermissionsHint = (roleOption: RoleModel) => {
+  console.log(roleOption, 'roleOption')
+  if (!roleOption.permissions?.length) return 'No permissions are assigned to this role.'
+
+  return `Permissions: ${roleOption.permissions.join(', ')}`
 }
 
 const UpdateConfirmPassword = (data) => {
@@ -357,14 +373,14 @@ defineExpose({
       "
     />
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <label for="serialNumber" class="flex items-center gap-2">
+  <div class="col-span-4 md:col-span-2 input-wrapper">
+    <label for="phone-country-code" class="flex items-center gap-2">
       {{ $t('phone_country_code') }}
       <FieldHelpIcon
-        text="Enter a unique employee serial number, or leave it empty when automatic generation is enabled."
+        text="Select the international dialing code for the employee's phone number."
       />
     </label>
-    <PhoneCountryCode />
+    <PhoneCountryCode :model-value="CountryCode" @update:model-value="updateCountryCode" />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Phone">
     <label for="phone" class="flex items-center gap-2">
@@ -459,7 +475,7 @@ defineExpose({
       :checked="AllPermissions"
       @update:checked="updaetAllPermissions"
     />
-    <FieldHelpIcon text="Enable this option to grant the employee all available permissions." />
+    <!-- <FieldHelpIcon text="Enable this option to grant the employee all available permissions." /> -->
   </div>
   <div
     v-if="!AllPermissions"
@@ -478,8 +494,16 @@ defineExpose({
       v-model:dialogVisible="RoleDialog"
     >
       <template #LabelHeader>
-        <FieldHelpIcon text="Select the roles that define what the employee can view and manage." />
+        <!-- <FieldHelpIcon text="Select the roles that define what the employee can view and manage." /> -->
         <span class="add-dialog" @click="RoleDialog = true">New</span>
+      </template>
+      <template #option="{ option }">
+        <div class="role-option">
+          <span>{{ option.title }}</span>
+          <span class="role-option__help" @mousedown.stop @click.stop>
+            <FieldHelpIcon :text="getRolePermissionsHint(option as RoleModel)" />
+          </span>
+        </div>
       </template>
       <template #Dialog>
         <AddRole @update:data="RoleDialog = false" />
@@ -501,7 +525,7 @@ defineExpose({
       :checked="booleanEmpStatus"
       @update:checked="updaetAdminStatus"
     />
-    <FieldHelpIcon text="Enable this option to give the employee administrator privileges." />
+    <!-- <FieldHelpIcon text="Enable this option to give the employee administrator privileges." /> -->
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper checkbox-with-help">
     <CustomCheckbox
@@ -510,9 +534,9 @@ defineExpose({
       :checked="booleandashAccessStatus"
       @update:checked="updaetdashAccessStatus"
     />
-    <FieldHelpIcon
+    <!-- <FieldHelpIcon
       text="Enable this option to allow the employee to log in and use the dashboard."
-    />
+    /> -->
   </div>
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomSelectInput :modelValue="Certificates" @update:modelValue="setCertificates"
@@ -533,5 +557,16 @@ defineExpose({
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.role-option {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.role-option__help {
+  margin-inline-start: auto;
 }
 </style>
