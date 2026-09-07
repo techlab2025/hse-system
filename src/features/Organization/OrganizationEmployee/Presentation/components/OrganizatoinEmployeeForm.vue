@@ -348,7 +348,7 @@ defineExpose({
     />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Phone">
-    <label for="phone">{{ $t('employee_phone') }}</label>
+    <label for="phone">{{ $t('employee_phone_number') }}</label>
     <input
       id="phone"
       type="tel"
@@ -361,7 +361,7 @@ defineExpose({
     </p>
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Email">
-    <label for="email">{{ $t('employee_email') }}</label>
+    <label for="email">{{ $t('employee_email_address') }}</label>
     <input
       id="email"
       type="email"

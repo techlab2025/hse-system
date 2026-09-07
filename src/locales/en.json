@@ -1867,5 +1867,7 @@
   "search certificates": "Search certificates",
   "expiry_date_required": "Expiry date required",
   "certtificate_title": "Certtificate title",
-  "certificate_title": "Certificate title"
+  "certificate_title": "Certificate title",
+  "employee_phone_number": "Employee Phone Number",
+  "employee_email_address": "Employee Email Address"
 }
