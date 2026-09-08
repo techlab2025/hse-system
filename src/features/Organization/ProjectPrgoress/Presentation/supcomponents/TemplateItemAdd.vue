@@ -270,18 +270,20 @@ watch(
     <!-- FOOTER FIXED -->
     <div class="dialog-footer button-wrapper">
       <button
-        class="btn btn-primary"
-        :class="route.path.includes('project-progress') ? 'w-1/2' : 'w-full'"
-        @click="addTemplate(1)"
-      >
-        {{ $t('confirm') }}
-      </button>
-      <button
         v-if="route.path.includes('project-progress')"
+        type="button"
         class="btn btn-primary w-1/2"
         @click="saveAndAdd"
       >
         {{ $t('save and add') }}
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary"
+        :class="route.path.includes('project-progress') ? 'w-1/2' : 'w-full'"
+        @click="addTemplate(1)"
+      >
+        {{ route.path.includes('project-progress') ? $t('save and next step') : $t('confirm') }}
       </button>
     </div>
   </div>

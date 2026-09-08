@@ -333,7 +333,7 @@ const route = useRoute()
         class="btn btn-primary"
         :style="!route.path.includes('project-progress') ? 'width: 85%' : 'width: 100%'"
       >
-        {{ $t('save') }}
+        {{ route.path.includes('project-progress') ? $t('save and next step') : $t('save') }}
       </button>
     </div>
   </form>

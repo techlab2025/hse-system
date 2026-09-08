@@ -61,8 +61,10 @@ const setParams = (data: Params) => {
         >
           {{ $t('save and add') }}
         </button>
-           <button type="submit" class="btn btn-primary">
-          <span>{{ $t('save and next step') }}</span>
+        <button type="submit" class="btn btn-primary">
+          <span>
+            {{ route.path.includes('project-progress') ? $t('save and next step') : $t('save') }}
+          </span>
         </button>
       </div>
     </div>
