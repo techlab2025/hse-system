@@ -1269,7 +1269,7 @@ defineExpose({
             $t(
               ObservationFactoryType == Observation.AccidentsType
                 ? 'description_of_incident'
-                : 'description',
+                : 'description_Observation',
             )
           }}
         </label>
