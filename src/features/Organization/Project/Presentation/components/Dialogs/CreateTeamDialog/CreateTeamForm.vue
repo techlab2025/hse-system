@@ -129,10 +129,10 @@ const canSubmit = computed(
             :controller="indexHierarchyEmployeeController"
             :params="indexLocationHierarchyEmployeeParams"
             class="input"
-            :label="$t('employee')"
+            :label="$t('team_member')"
             id="employee"
             :type="2"
-            :placeholder="$t('employee')"
+            :placeholder="$t('select_team_member')"
             @update:modelValue="setEmployees"
           />
         </div>

@@ -1925,6 +1925,8 @@
   "team_name": "Team Name",
   "root_cause_name": "RootCause Name",
   "import traning sheet": "import traning sheet",
-  "description_Observation":"description Observation",
-  "is_fatilty":"is fatilty"
+  "description_Observation": "description Observation",
+  "is_fatilty": "is fatilty",
+  "select_team_member": "select team member",
+  "team_member": "Team Member"
 }
