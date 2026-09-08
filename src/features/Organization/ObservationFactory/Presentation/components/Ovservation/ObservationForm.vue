@@ -343,7 +343,7 @@ const setSelectedObservationType = (data: TitleInterface) => {
 
     <p class="first-section-par">
       <component :is="FormPen" />
-      {{ $t('Observation ') }}
+      {{ $t('Observation') }}
       <!-- <span>(#001)</span> -->
     </p>
 

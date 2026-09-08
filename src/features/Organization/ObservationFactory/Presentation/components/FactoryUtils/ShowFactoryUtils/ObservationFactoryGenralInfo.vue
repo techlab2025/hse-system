@@ -135,7 +135,7 @@ const hasHazardInfo = computed(
         </div>
 
         <div class="severity-container flex flex-col" v-if="props.data?.hazardSubType?.title">
-          <span class="severity-title">{{ $t('Risk ') }}</span>
+          <span class="severity-title">{{ $t('Risk') }}</span>
           <p class="severity">{{ props.data?.hazardSubType?.title }}</p>
         </div>
       </div>

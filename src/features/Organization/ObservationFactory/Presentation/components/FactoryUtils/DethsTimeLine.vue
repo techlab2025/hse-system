@@ -122,7 +122,7 @@ const toggleMode = (index: number, isManual: boolean) => {
                   v-model="item.employee"
                   placeholder="Select Employee"
                   class="mt-4 mr-2 input"
-                  :label="$t('Employee  ')"
+                  :label="$t('Employee')"
                   help-text="Select the deceased employee, or enter the person's name manually if they are not an employee."
                   :excludedOptionIds="getSelectedEmployeeIds(index)"
                   @update:model-value="UpdateData"
