@@ -237,7 +237,7 @@ const AllPagesToView = ref([
         </div>
 
         <div class="count_Organization">
-          <div style="padding-left: 14px;">{{0}}{{ index }}</div>
+          <div style="padding-left: 14px; font-family: 'bold';">{{0}}{{ index }}</div>
           <div class="timeline-content" v-if="!item.progress">
             <div class="timeline-content-header">
               <p class="time-line-title" @click="scrollToTop()">{{ item.title }}</p>
