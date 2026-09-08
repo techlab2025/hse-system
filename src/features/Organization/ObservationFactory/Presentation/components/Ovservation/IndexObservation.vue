@@ -486,7 +486,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
                       <span class="create-icon" aria-hidden="true">+</span>
                       <span class="create-copy"
                         ><small>{{ $t('New report') }}</small
-                        ><strong>{{ $t('create_observation') }}</strong></span
+                        ><strong>{{ $t('report observation') }}</strong></span
                       >
                     </button>
                   </router-link>
@@ -552,7 +552,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
                       <div>
                         <span class="observation-eyebrow">{{ $t('Observation') }}</span>
                         <router-link :to="`observation/show/${item?.id}`">
-                          <h3>{{ item.title || '—' }}</h3>
+                          <h3>{{ item?.typeModel?.title || item.title|| '—' }}</h3>
                         </router-link>
                       </div>
                     </div>

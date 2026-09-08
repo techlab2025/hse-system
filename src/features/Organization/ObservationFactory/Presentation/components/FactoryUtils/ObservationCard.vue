@@ -99,7 +99,7 @@ const GoToShowPage = () => {
       <div class="card-content">
         <!-- @click="GoToShowPage" -->
         <div class="title_observation" >
-          <p class="observation-title">{{ data?.typeModel?.title }}</p>
+          <p class="observation-title">{{ data?.typeModel?.title || data?.title }}</p>
           <p class="Description">{{ data?.description }}</p>
         </div>
         <div class="card-header">
