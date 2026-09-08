@@ -307,7 +307,7 @@ defineExpose({
 
 <template>
   <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Name">
-    <label for="name">{{ $t('contractor_name') }}</label>
+    <label for="name">{{ $t('name') }}</label>
     <input
       type="text"
       id="name"
@@ -339,7 +339,7 @@ defineExpose({
     class="input-wrapper col-span-4 md:col-span-2 field-required"
     data-required-field="phoneNumber"
   >
-    <label for="company_number">{{ $t('contractor_phone_number') }}</label>
+    <label for="company_number">{{ $t('phone_number') }}</label>
     <input
       type="text"
       id="company_number"
@@ -347,68 +347,68 @@ defineExpose({
       class="input"
       v-model="phoneNumber"
       @input="setPhoneNumber"
-      placeholder="Enter contractor Phone "
+      placeholder="Enter  Phone "
     />
     <p v-if="getFieldError('phoneNumber')" class="required-field-message">
       {{ getFieldError('phoneNumber') }}
     </p>
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="company_email">{{ $t('contractor_email') }}</label>
+    <label for="company_email">{{ $t('email') }}</label>
     <input
       type="email"
       id="company_email"
       class="input"
       v-model="CompanyEmail"
       @input="setCompanyEmail"
-      placeholder="Enter contractor Email "
+      placeholder="Enter  Email "
     />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="company_address">{{ $t('contractor_address') }}</label>
+    <label for="company_address">{{ $t('address') }}</label>
     <input
       type="text"
       id="company_address"
       class="input"
       v-model="CompanyAddress"
       @input="setCompanyAddress"
-      placeholder="Enter contractor Adress "
+      placeholder="Enter  Adress "
     />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="contact_person">{{ $t('contact_person_name') }}</label>
+    <label for="contact_person">{{ $t('person_name') }}</label>
     <input
       type="text"
       id="contact_person"
       class="input"
       v-model="contactPerson"
       @input="setcontactPerson"
-      placeholder="Enter Contact Person "
+      placeholder="Enter  Person "
     />
   </div>
   <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="contact_person_email">{{ $t('contact_person_email') }}</label>
+    <label for="contact_person_email">{{ $t('person_email') }}</label>
     <input
       type="text"
       id="contact_person_email"
       class="input"
       v-model="contactPersonEmail"
       @input="setcontactPersonEmail"
-      placeholder="Enter Contact Person Email"
+      placeholder="Enter Person Email"
     />
   </div>
   <div
     class="col-span-4 md:col-span-2 input-wrapper field-required"
     data-required-field="contactPersonPhone"
   >
-    <label for="contact_person_phone">{{ $t('contact_person_phone') }}</label>
+    <label for="contact_person_phone">{{ $t('person_phone') }}</label>
     <input
       type="text"
       id="contact_person_phone"
       class="input"
       v-model="contactPersonPhone"
       @input="setcontactPersonPhone"
-      placeholder="Enter Contact Person Phone"
+      placeholder="Enter Person Phone"
     />
     <p v-if="getFieldError('contactPersonPhone')" class="required-field-message">
       {{ getFieldError('contactPersonPhone') }}
@@ -433,9 +433,9 @@ defineExpose({
       class="input"
       :controller="indexScopeController"
       :params="indexScopeParams"
-      :label="$t('scope_contractor')"
+      :label="$t('scope of service')"
       id="Scope"
-      placeholder="Select Scope"
+      placeholder="Select Scope service"
       @update:modelValue="setScope"
       :type="2"
       @close="scopeDialogRef = false"
@@ -459,7 +459,7 @@ defineExpose({
       :modelValue="SelectedStatus"
       class="input"
       :static-options="StatusList"
-      :label="$t('contract_status')"
+      :label="$t('status')"
       :reload="false"
       id="Status"
       placeholder="Select Status"
@@ -468,7 +468,7 @@ defineExpose({
   </div>
 
   <div class="col-span-6 md:col-span-2 input-wrapper" data-required-field="date">
-    <label for="expiry_date">{{ $t('contract_expiry_date') }}</label>
+    <label for="expiry_date">{{ $t('expiry_date') }}</label>
     <DatePicker
       :modelValue="date"
       class="input"
@@ -483,7 +483,7 @@ defineExpose({
   </div>
   <div class="col-span-6 md:col-span-2">
     <HandleFIlesUpload
-      :label="$t('contract')"
+      :label="$t('upload contract image')"
       accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
       :max-files="1"
       :multiple="false"

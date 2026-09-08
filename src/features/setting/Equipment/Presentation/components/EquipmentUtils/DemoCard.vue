@@ -125,7 +125,7 @@ const props = withDefaults(
         </div> -->
 
         <!-- <div class="date">
-          {{ $t(' Inspection expiry date') }}:
+          {{ $t('Inspection expiry date') }}:
           <span>
             {{
               props.decommissioningDate
