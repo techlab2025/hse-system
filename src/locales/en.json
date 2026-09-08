@@ -1924,5 +1924,6 @@
   "equipment_type_name": "Equipment type name",
   "team_name": "Team Name",
   "root_cause_name": "RootCause Name",
-  "import traning sheet": "import traning sheet"
+  "import traning sheet": "import traning sheet",
+  "description_Observation":"description Observation"
 }
