@@ -13,6 +13,8 @@ export default class AccidentsTypeDetailsModel {
   public parentId: number
   public image: string
   public industries: TitleModel<string>[]
+  public isLossTime: number
+  public isFalilty: number
   // public descriptions: DescriptionLocale[]
 
   constructor(
@@ -23,6 +25,8 @@ export default class AccidentsTypeDetailsModel {
     industries: TitleModel<string>[] = [],
     parentId: number,
     image: string,
+    isLossTime: number,
+    isFalilty: number,
   ) {
     this.id = id
     this.titles = titles
@@ -31,6 +35,8 @@ export default class AccidentsTypeDetailsModel {
     this.industries = industries
     this.parentId = parentId
     this.image = image
+    this.isLossTime = isLossTime
+    this.isFalilty = isFalilty
   }
 
   static fromMap(data: any): AccidentsTypeDetailsModel {
@@ -44,6 +50,8 @@ export default class AccidentsTypeDetailsModel {
         : [],
       data.parent_id,
       data.image,
+      data.is_loss_time ?? 0,
+      data.is_falilty ?? 0,
     )
   }
 

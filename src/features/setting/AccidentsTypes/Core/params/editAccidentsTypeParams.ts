@@ -7,6 +7,8 @@ export default class EditAccidentsTypeParams implements Params {
   translation: TranslationsParams
   allIndustries: boolean | null
   industries: number[]
+  isLossTime: boolean
+  isFalilty: boolean
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true },
   })
@@ -15,11 +17,15 @@ export default class EditAccidentsTypeParams implements Params {
     translation: TranslationsParams,
     allIndustries: boolean | null,
     industries: number[],
+    isLossTime: boolean,
+    isFalilty: boolean,
   ) {
     this.id = id
     this.translation = translation
     this.allIndustries = allIndustries
     this.industries = industries
+    this.isLossTime = isLossTime
+    this.isFalilty = isFalilty
   }
 
   toMap(): Record<
@@ -32,6 +38,8 @@ export default class EditAccidentsTypeParams implements Params {
     data['translations'] = this.translation.toMap()
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
+    data['is_loss_time'] = this.isLossTime ? 1 : 0
+    data['is_falilty'] = this.isFalilty ? 1 : 0
 
     return data
   }
