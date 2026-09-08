@@ -17,7 +17,6 @@ import { LangsMap } from '@/constant/langs.ts'
 // import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
 // import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
 // import FileUpload from '@/shared/FormInputs/FileUpload.vue'
-import { useRoute } from 'vue-router'
 import type AccidentsTypeDetailsModel from '../../Data/models/AccidentsTypeDetailsModel'
 import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams'
 import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController'
@@ -29,7 +28,7 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import ToggleSwitch from 'primevue/toggleswitch'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 const emit = defineEmits(['update:data'])
@@ -55,6 +54,8 @@ const langs = ref<{ locale: string; title: string }[]>([
 ])
 
 const allIndustries = ref<boolean>(false)
+const isLossTime = ref(false)
+const isFalilty = ref(false)
 // const hasCertificate = ref<number>(0)
 // const image = ref<string>('')
 
@@ -121,25 +122,26 @@ const updateData = () => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  console.log(allIndustries.value, 'industry')
-
   const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
   const params = props.data?.id
     ? new EditAccidentsTypeParams(
-        props.data?.id! ?? 0,
+        props.data.id,
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id) ?? [],
+        isLossTime.value,
+        isFalilty.value,
       )
     : new AddAccidentsTypeParams(
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id),
         SerialNumber.value,
+        isLossTime.value,
+        isFalilty.value,
         // id,
       )
 
-  console.log(params, 'params')
   emit('update:data', params)
 }
 
@@ -167,32 +169,24 @@ watch(
       }
 
       allIndustries.value = newData?.allIndustries == 1 ? true : false
-      industry.value = newData?.industries!
+      industry.value = newData?.industries ?? []
+      isLossTime.value = newData?.isLossTime == 1
+      isFalilty.value = newData?.isFalilty == 1
     }
   },
   { immediate: true },
 )
 
-const UpdateSerial = (data) => {
-  SerialNumber.value = data.target.value
+const UpdateSerial = (event: Event) => {
+  SerialNumber.value = (event.target as HTMLInputElement).value
   updateData()
 }
 
 const SerialNumber = ref()
 
-const fields = ref([
-  {
-    key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
-    value: SerialNumber.value,
-    enabled: props?.data?.id ? false : true,
-  },
-])
-
 const projtecStateus = useProjectAppStatusStore()
 
-const updateAllIndustries = (data) => {
+const updateAllIndustries = (data: boolean) => {
   allIndustries.value = data
   updateData()
 }
@@ -235,6 +229,24 @@ const updateAllIndustries = (data) => {
     />
   </div>
 
+  <div class="incident-type-toggle col-span-4 md:col-span-2">
+    <label for="is-loss-time">{{ $t('is_loss_time') }}</label>
+    <ToggleSwitch
+      v-model="isLossTime"
+      input-id="is-loss-time"
+      @update:model-value="updateData"
+    />
+  </div>
+
+  <div class="incident-type-toggle col-span-4 md:col-span-2">
+    <label for="is-falilty">{{ $t('is_falilty') }}</label>
+    <ToggleSwitch
+      v-model="isFalilty"
+      input-id="is-falilty"
+      @update:model-value="updateData"
+    />
+  </div>
+
   <div
     class="col-span-4 md:col-span-2"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
@@ -251,3 +263,16 @@ const updateAllIndustries = (data) => {
     />
   </div>
 </template>
+
+<style scoped>
+.incident-type-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  padding: var(--sm-size);
+  border: 1px solid var(--main-border);
+  border-radius: calc(var(--xl-size-base) + 2px);
+  background: var(--surface-1);
+}
+</style>

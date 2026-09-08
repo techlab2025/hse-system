@@ -1492,6 +1492,8 @@
   "add_permission": "Add Permission",
   "add_inspection": "Add Inspection",
   "is_active": "Is Active",
+  "is_loss_time": "Is Loss Time",
+  "is_falilty": "Is Falilty",
   "is_default": "Is Default",
   "is_free": "Is Free",
   "support_days": "Support Days",

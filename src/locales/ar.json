@@ -1566,6 +1566,8 @@
   "position_sheet": "ورقة الموقف",
   "warehouses": "المستودعات",
   "is_active": "نشط",
+  "is_loss_time": "هل تسبب في وقت عمل ضائع؟",
+  "is_falilty": "هل توجد حالة وفاة؟",
   "upload_certificate_sheet": "تحميل ورقة التدريبات",
   "certificate_type": "نوع التدريب",
   "certificate_type_skill": "مهارة",
