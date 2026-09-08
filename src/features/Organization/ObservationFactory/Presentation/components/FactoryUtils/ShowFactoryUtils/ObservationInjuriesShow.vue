@@ -27,12 +27,20 @@ const ppeConditionLabels: Record<number, string> = {
   [PpeItemConditionEnum.DEFECTIVE]: 'Defective',
 }
 
-const getPpeItemLabel = (injury: InjuryDetailsModel) => {
-  const label = ppeItemLabels[injury.ppe_item] || String(injury.ppe_item)
+const getPpeItemIds = (injury: InjuryDetailsModel) => {
+  if (injury.ppe_items?.length) return injury.ppe_items.map((item) => item.ppe_item)
+  return injury.ppe_item ? [injury.ppe_item] : []
+}
 
-  return injury.ppe_item === PpeItemEnum.OTHERS && injury.ppe_item_text
-    ? `${label}: ${injury.ppe_item_text}`
-    : label
+const getPpeItemLabel = (injury: InjuryDetailsModel) => {
+  return getPpeItemIds(injury)
+    .map((ppeItem) => {
+      const label = ppeItemLabels[ppeItem] || String(ppeItem)
+      return ppeItem === PpeItemEnum.OTHERS && injury.ppe_item_text
+        ? `${label}: ${injury.ppe_item_text}`
+        : label
+    })
+    .join(', ')
 }
 
 const getPpeConditionLabel = (condition: number) =>
@@ -56,13 +64,13 @@ const getPpeConditionLabel = (condition: number) =>
           <Injured />
           <div class="title">
             <p>{{ $t('infection type ') }}:</p>
-            <h6>{{ wordSlice(injury?.injury_type?.title, 20) }} </h6>
+            <h6>{{ wordSlice(injury?.injury_type?.title, 20) }}</h6>
           </div>
         </div>
         <div class="user_note">
           <p class="note">{{ wordSlice(injury?.note, 120) }}</p>
-          <div v-if="injury.ppe_item || injury.ppe_item_condition" class="ppe-details">
-            <p v-if="injury.ppe_item">
+          <div v-if="getPpeItemIds(injury).length || injury.ppe_item_condition" class="ppe-details">
+            <p v-if="getPpeItemIds(injury).length">
               <span>{{ $t('PPE Item') }}:</span>
               <strong>{{ getPpeItemLabel(injury) }}</strong>
             </p>
@@ -75,7 +83,7 @@ const getPpeConditionLabel = (condition: number) =>
             <img
               :src="
                 injury.organization_employee?.image ||
-               'https://cyber.comolho.com/static/img/avatar.png'
+                'https://cyber.comolho.com/static/img/avatar.png'
               "
               alt="user"
             />

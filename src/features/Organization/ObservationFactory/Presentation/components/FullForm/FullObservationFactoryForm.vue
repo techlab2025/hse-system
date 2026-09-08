@@ -517,6 +517,10 @@ const updateData = () => {
       )
     : new AddHazardParams({
         title: ObservationTitle.value ?? '',
+        propertyTitle:
+          ObservationFactoryType.value === Observation.AccidentsType
+            ? PropertyTitle.value
+            : null,
         description: text.value ?? null,
         image: image.value?.map((el) => el?.file) ?? null,
         typeId:
@@ -553,9 +557,11 @@ const updateData = () => {
                   ?.map((category: TitleInterface) => Number(category.id))
                   .filter(Boolean) || [],
                 item?.images?.map((el: any) => el.file) || [],
-                item?.ppeItem?.id || 0,
+                item?.ppeItems
+                  ?.map((ppeItem: TitleInterface) => Number(ppeItem.id))
+                  .filter(Boolean) || [],
                 item?.ppeItemCondition?.id || 0,
-                item?.ppeItem?.id === PpeItemEnum.OTHERS
+                item?.ppeItems?.some((ppeItem: TitleInterface) => ppeItem.id === PpeItemEnum.OTHERS)
                   ? item?.customPpeItem?.trim() || ''
                   : '',
               )
@@ -614,6 +620,7 @@ const UpdateSaveStatus = (data: SaveStatusEnum) => {
 }
 
 const ObservationTitle = ref<string>()
+const PropertyTitle = ref<string>('')
 const indexRootCaueseController = IndexRootCausesController.getInstance()
 const indexRootCaueseParams = new IndexRootCausesParams('', 1, 10, 0)
 const setRootCause = (data: TitleInterface[]) => {
@@ -730,11 +737,11 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     message: t('zone_required'),
     isMissing: () => !ZoneIds.value,
   },
-  {
-    key: 'ObservationTitle',
-    message: t('record_title_required'),
-    isMissing: () => !hasValue(ObservationTitle.value),
-  },
+  // {
+  //   key: 'ObservationTitle',
+  //   message: t('record_title_required'),
+  //   isMissing: () => !hasValue(ObservationTitle.value),
+  // },
   {
     key: 'date',
     message: t('date_required'),
@@ -926,7 +933,7 @@ defineExpose({
     </div>
 
     <!-- title -->
-    <div class="input-wrapper col-span-6 field-required" data-required-field="ObservationTitle">
+    <!-- <div class="input-wrapper col-span-6 field-required" data-required-field="ObservationTitle">
       <div class="field-label">
         <label for="title">{{ GetHeader(ObservationFactoryType) }} {{ $t('title') }}</label>
         <FieldHelpIcon
@@ -943,6 +950,23 @@ defineExpose({
       <p v-if="getFieldError('ObservationTitle')" class="required-field-message">
         {{ getFieldError('ObservationTitle') }}
       </p>
+    </div> -->
+
+    <!-- Property title (incident only) -->
+    <div
+      v-if="ObservationFactoryType === Observation.AccidentsType"
+      class="input-wrapper col-span-6"
+    >
+      <div class="field-label">
+        <label for="property-title">{{ $t('property') }}</label>
+      </div>
+      <input
+        id="property-title"
+        v-model="PropertyTitle"
+        type="text"
+        :placeholder="$t('enter_property_title')"
+        @input="updateData"
+      />
     </div>
 
     <!-- Date -->
@@ -1240,8 +1264,16 @@ defineExpose({
     <!-- description -->
     <div class="col-span-6 md:col-span-6 input-wrapper" data-required-field="text">
       <div class="field-label">
-        <label for="description">{{ $t('description') }}</label
-        ><FieldHelpIcon
+        <label for="description">
+          {{
+            $t(
+              ObservationFactoryType == Observation.AccidentsType
+                ? 'description_of_incident'
+                : 'description',
+            )
+          }}
+        </label>
+        <FieldHelpIcon
           text="Describe what happened, what was observed, and any important surrounding details."
         />
       </div>

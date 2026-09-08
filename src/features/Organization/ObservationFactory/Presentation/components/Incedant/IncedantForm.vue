@@ -102,9 +102,13 @@ const updateData = () => {
                     ?.map((category: TitleInterface) => Number(category.id))
                     .filter(Boolean) || [],
                   item?.images?.map((image: any) => image?.file ?? image) || [],
-                  item?.ppeItem?.id || 0,
+                  item?.ppeItems
+                    ?.map((ppeItem: TitleInterface) => Number(ppeItem.id))
+                    .filter(Boolean) || [],
                   item?.ppeItemCondition?.id || 0,
-                  item?.ppeItem?.id === PpeItemEnum.OTHERS
+                  item?.ppeItems?.some(
+                    (ppeItem: TitleInterface) => ppeItem.id === PpeItemEnum.OTHERS,
+                  )
                     ? item?.customPpeItem?.trim() || ''
                     : '',
                 )

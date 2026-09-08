@@ -2,6 +2,10 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import type FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
 import OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
 
+export type InjuryPpeItem = {
+  ppe_item: number
+}
+
 export default class InjuryDetailsModel {
   public id: number
   public title: string
@@ -18,6 +22,7 @@ export default class InjuryDetailsModel {
   public updated_at: string
   public injury_type?: TitleInterface
   public ppe_item: number
+  public ppe_items: InjuryPpeItem[]
   public ppe_item_condition: number
   public ppe_item_text: string
 
@@ -39,6 +44,7 @@ export default class InjuryDetailsModel {
     ppe_item: number = 0,
     ppe_item_condition: number = 0,
     ppe_item_text: string = '',
+    ppe_items: InjuryPpeItem[] = [],
   ) {
     this.id = id
     this.title = title
@@ -57,9 +63,12 @@ export default class InjuryDetailsModel {
     this.ppe_item = ppe_item
     this.ppe_item_condition = ppe_item_condition
     this.ppe_item_text = ppe_item_text
+    this.ppe_items = ppe_items
   }
 
   static fromMap(data: any): InjuryDetailsModel {
+    const ppeItems = this.getPpeItems(data)
+
     return new InjuryDetailsModel(
       data.id,
       data.title,
@@ -85,10 +94,25 @@ export default class InjuryDetailsModel {
             '',
         })
       }),
-      Number(data.ppe_item) || 0,
+      ppeItems[0]?.ppe_item ?? 0,
       Number(data.ppe_item_condition) || 0,
       data.ppe_item_text ?? '',
+      ppeItems,
     )
+  }
+
+  static getPpeItems(data: any): InjuryPpeItem[] {
+    const items = Array.isArray(data?.ppe_items)
+      ? data.ppe_items
+      : Array.isArray(data?.ppe_item)
+        ? data.ppe_item
+        : data?.ppe_item
+          ? [{ ppe_item: data.ppe_item }]
+          : []
+
+    return items
+      .map((item: any) => ({ ppe_item: Number(item?.ppe_item ?? item?.id ?? item) || 0 }))
+      .filter((item: InjuryPpeItem) => item.ppe_item > 0)
   }
 
   static example: InjuryDetailsModel = new InjuryDetailsModel(
