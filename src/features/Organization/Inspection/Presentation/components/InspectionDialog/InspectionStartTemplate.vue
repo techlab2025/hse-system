@@ -277,7 +277,7 @@ watch(
 
     <button class="show-button" v-if="autoObservation" style="z-index: 999" @click="GetData">
       <div class="button-text">
-        <h5 class="">{{ $t('View inspection logs ') }}</h5>
+        <h5 class="">{{ $t('View inspection logs') }}</h5>
       </div>
       <!-- <ShowResultIcon /> -->
     </button>
