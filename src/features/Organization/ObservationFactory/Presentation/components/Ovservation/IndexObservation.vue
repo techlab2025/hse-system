@@ -405,7 +405,6 @@ const GetObservationType = (type: number) => {
   }
 }
 
-
 const ReturnStatusTitle = (status: InvestegationStatusEnum): string => {
   switch (status) {
     case InvestegationStatusEnum.NEW:
@@ -429,8 +428,6 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
   ReturnStatusTitle(status)
     .replace(/([a-z])([A-Z])/g, '$1-$2')
     .toLowerCase()
-
-
 </script>
 
 <template>
@@ -552,7 +549,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
                       <div>
                         <span class="observation-eyebrow">{{ $t('Observation') }}</span>
                         <router-link :to="`observation/show/${item?.id}`">
-                          <h3>{{ item?.typeModel?.title || item.title|| '—' }}</h3>
+                          <h3>{{ item?.typeModel?.title || item.title || '—' }}</h3>
                         </router-link>
                       </div>
                     </div>
@@ -739,9 +736,9 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
             >
               <DataEmpty
                 :link="`/organization/equipment-mangement/observation/add`"
-                addText="Create Observation"
-                description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Observation"
+                addText="Report Observation"
+                description=" "
+                title="You have No Observation"
               />
             </PermissionBuilder>
           </template>
@@ -754,9 +751,9 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
             >
               <DataFailed
                 :link="`/organization/equipment-mangement/observation/add`"
-                addText="Create Observation"
-                description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Observation"
+                addText="Report Observation"
+                description=" "
+                title="You have No Observation"
               />
             </PermissionBuilder>
           </template>
