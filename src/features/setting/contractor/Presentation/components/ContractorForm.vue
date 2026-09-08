@@ -375,125 +375,134 @@ defineExpose({
       placeholder="Enter  Adress "
     />
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="contact_person">{{ $t('person_name') }}</label>
-    <input
-      type="text"
-      id="contact_person"
-      class="input"
-      v-model="contactPerson"
-      @input="setcontactPerson"
-      placeholder="Enter  Person "
-    />
-  </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="contact_person_email">{{ $t('person_email') }}</label>
-    <input
-      type="text"
-      id="contact_person_email"
-      class="input"
-      v-model="contactPersonEmail"
-      @input="setcontactPersonEmail"
-      placeholder="Enter Person Email"
-    />
-  </div>
-  <div
-    class="col-span-4 md:col-span-2 input-wrapper field-required"
-    data-required-field="contactPersonPhone"
-  >
-    <label for="contact_person_phone">{{ $t('person_phone') }}</label>
-    <input
-      type="text"
-      id="contact_person_phone"
-      class="input"
-      v-model="contactPersonPhone"
-      @input="setcontactPersonPhone"
-      placeholder="Enter Person Phone"
-    />
-    <p v-if="getFieldError('contactPersonPhone')" class="required-field-message">
-      {{ getFieldError('contactPersonPhone') }}
-    </p>
-  </div>
-  <div class="col-span-6 md:col-span-2 input-wrapper" data-required-field="Scope">
-    <!-- <CustomSelectInput
-    :modelValue="Scope"
+  <div class="col-span-4 md:col-span-4 input-wrapper border_line"></div>
+
+    <div class="col-span-4 md:col-span-2 input-wrapper">
+      <label for="contact_person">{{ $t('person_name') }}</label>
+      <input
+        type="text"
+        id="contact_person"
+        class="input"
+        v-model="contactPerson"
+        @input="setcontactPerson"
+        placeholder="Enter  Person "
+      />
+    </div>
+    <div class="col-span-4 md:col-span-2 input-wrapper">
+      <label for="contact_person_email">{{ $t('person_email') }}</label>
+      <input
+        type="text"
+        id="contact_person_email"
+        class="input"
+        v-model="contactPersonEmail"
+        @input="setcontactPersonEmail"
+        placeholder="Enter Person Email"
+      />
+    </div>
+    <div class="col-span-4 md:col-span-2 input-wrapper field-required"
+      data-required-field="contactPersonPhone"
+    >
+      <label for="contact_person_phone">{{ $t('person_phone') }}</label>
+      <input
+        type="text"
+        id="contact_person_phone"
+        class="input"
+        v-model="contactPersonPhone"
+        @input="setcontactPersonPhone"
+        placeholder="Enter Person Phone"
+      />
+      <p v-if="getFieldError('contactPersonPhone')" class="required-field-message">
+        {{ getFieldError('contactPersonPhone') }}
+      </p>
+    </div>
+    <div class="col-span-6 md:col-span-2 input-wrapper" data-required-field="Scope">
+      <!-- <CustomSelectInput
+      :modelValue="Scope"
+          class="input"
+          :controller="indexScopeController"
+          :params="indexScopeParams"
+          label="Scope"
+          id="Scope"
+          placeholder="Select Scope"
+          @update:modelValue="setScope"
+          :type="2"
+
+          /> -->
+
+      <UpdatedCustomInputSelect
+        :modelValue="Scope"
         class="input"
         :controller="indexScopeController"
         :params="indexScopeParams"
-        label="Scope"
+        :label="$t('scope of service')"
         id="Scope"
-        placeholder="Select Scope"
+        placeholder="Select Scope service"
         @update:modelValue="setScope"
         :type="2"
+        @close="scopeDialogRef = false"
+        :isDialog="true"
+        v-model:dialogVisible="scopeDialogRef"
+      >
+        <template #LabelHeader>
+          <span class="add-dialog" @click="scopeDialogRef = true">New</span>
+        </template>
+        <template #Dialog>
+          <AddScope @update:data="scopeDialogRef = false" />
+        </template>
+      </UpdatedCustomInputSelect>
+      <p v-if="getFieldError('Scope')" class="required-field-message">
+        {{ getFieldError('Scope') }}
+      </p>
+    </div>
 
-        /> -->
+    <div class="col-span-6 md:col-span-2 input-wrapper">
+      <CustomSelectInput
+        :modelValue="SelectedStatus"
+        class="input"
+        :static-options="StatusList"
+        :label="$t('status')"
+        :reload="false"
+        id="Status"
+        placeholder="Select Status"
+        @update:modelValue="setStatus"
+      />
+    </div>
 
-    <UpdatedCustomInputSelect
-      :modelValue="Scope"
-      class="input"
-      :controller="indexScopeController"
-      :params="indexScopeParams"
-      :label="$t('scope of service')"
-      id="Scope"
-      placeholder="Select Scope service"
-      @update:modelValue="setScope"
-      :type="2"
-      @close="scopeDialogRef = false"
-      :isDialog="true"
-      v-model:dialogVisible="scopeDialogRef"
-    >
-      <template #LabelHeader>
-        <span class="add-dialog" @click="scopeDialogRef = true">New</span>
-      </template>
-      <template #Dialog>
-        <AddScope @update:data="scopeDialogRef = false" />
-      </template>
-    </UpdatedCustomInputSelect>
-    <p v-if="getFieldError('Scope')" class="required-field-message">
-      {{ getFieldError('Scope') }}
-    </p>
-  </div>
+    <div class="col-span-6 md:col-span-2 input-wrapper" data-required-field="date">
+      <label for="expiry_date">{{ $t('expiry_date') }}</label>
+      <DatePicker
+        :modelValue="date"
+        class="input"
+        label="Date"
+        id="expiry_date"
+        placeholder="Contruct Expiry Date"
+        @update:modelValue="setExpiryDate"
+      />
+      <p v-if="getFieldError('date')" class="required-field-message">
+        {{ getFieldError('date') }}
+      </p>
+    </div>
+    <div class="col-span-6 md:col-span-2">
+      <HandleFIlesUpload
+        :label="$t('upload contract image')"
+        accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
+        :max-files="1"
+        :multiple="false"
+        @change="handleFilesChange"
+        className="input-file"
+      />
+    </div>
 
-  <div class="col-span-6 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="SelectedStatus"
-      class="input"
-      :static-options="StatusList"
-      :label="$t('status')"
-      :reload="false"
-      id="Status"
-      placeholder="Select Status"
-      @update:modelValue="setStatus"
-    />
-  </div>
-
-  <div class="col-span-6 md:col-span-2 input-wrapper" data-required-field="date">
-    <label for="expiry_date">{{ $t('expiry_date') }}</label>
-    <DatePicker
-      :modelValue="date"
-      class="input"
-      label="Date"
-      id="expiry_date"
-      placeholder="Contruct Expiry Date"
-      @update:modelValue="setExpiryDate"
-    />
-    <p v-if="getFieldError('date')" class="required-field-message">
-      {{ getFieldError('date') }}
-    </p>
-  </div>
-  <div class="col-span-6 md:col-span-2">
-    <HandleFIlesUpload
-      :label="$t('upload contract image')"
-      accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
-      :max-files="1"
-      :multiple="false"
-      @change="handleFilesChange"
-      className="input-file"
-    />
-  </div>
 </template>
 
 <style scoped>
+.border_line{
+  position: relative;
+  width: 100%;
+  background-color: black ;
+  height: 1.5px;
+  bottom: 0px;
+}
 :deep(.input-file) {
   border: 1px solid var(--brand-primary-100) !important;
   padding: 11px;
