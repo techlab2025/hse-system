@@ -239,7 +239,7 @@ const updateAllIndustries = (data: boolean) => {
   </div>
 
   <div class="incident-type-toggle col-span-4 md:col-span-2">
-    <label for="is-falilty">{{ $t('is_falilty') }}</label>
+    <label for="is-falilty">{{ $t('is_fatilty') }}</label>
     <ToggleSwitch
       v-model="isFalilty"
       input-id="is-falilty"
