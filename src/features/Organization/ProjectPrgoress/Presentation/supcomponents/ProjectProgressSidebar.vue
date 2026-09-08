@@ -11,9 +11,34 @@ const props = defineProps<{
   sidebarItems: ProjectProgressItemModel[]
   showblure?: boolean
   projectProgress: number
+  activeItem?: number
 }>()
 
-const ActiveItem = ref(props.sidebarItems.find((el) => !el.progress)?.id)
+const findNextIncompleteItemId = (items: ProjectProgressItemModel[], activeId?: number) => {
+  const progressItems = items.filter((item) => item.id !== ProjectProgressEnum.PresetData)
+  const activeIndex = progressItems.findIndex((item) => item.id === activeId)
+  const itemsAfterActive = activeIndex >= 0 ? progressItems.slice(activeIndex + 1) : progressItems
+
+  return (
+    itemsAfterActive.find((item) => !item.progress)?.id ??
+    progressItems.find((item) => !item.progress)?.id
+  )
+}
+
+const getInitialActiveItem = () => {
+  const requestedItem = props.sidebarItems.find((item) => item.id === props.activeItem)
+
+  if (
+    props.activeItem === ProjectProgressEnum.PresetData ||
+    (requestedItem && !requestedItem.progress)
+  ) {
+    return props.activeItem
+  }
+
+  return findNextIncompleteItemId(props.sidebarItems, props.activeItem) ?? props.activeItem
+}
+
+const ActiveItem = ref(getInitialActiveItem())
 const timelineItemRefs = ref<HTMLElement[]>([])
 
 const setTimelineItemRef = (el: Element | null, index: number) => {
@@ -45,13 +70,26 @@ watch(
 )
 
 watch(
+  () => props.activeItem,
+  (activeItem) => {
+    if (activeItem !== undefined && activeItem !== ActiveItem.value) {
+      ActiveItem.value = activeItem
+    }
+  },
+)
+
+watch(
   () => props.sidebarItems,
   (items) => {
     const activeItem = items.find((item) => item.id === ActiveItem.value)
-    const nextIncompleteItem = items.find((item) => !item.progress)
+    const nextIncompleteItemId = findNextIncompleteItemId(items, ActiveItem.value)
 
-    if (!activeItem || activeItem.progress) {
-      ActiveItem.value = nextIncompleteItem?.id ?? items[0]?.id
+    if (
+      activeItem?.id !== ProjectProgressEnum.PresetData &&
+      activeItem?.progress &&
+      nextIncompleteItemId !== undefined
+    ) {
+      ActiveItem.value = nextIncompleteItemId
       return
     }
 
@@ -70,13 +108,12 @@ const scrollToTop = () => {
 }
 
 const AllPagesToView = ref([
-  // Preset-data first step (temporarily disabled).
-  // {
-  //   id: ProjectProgressEnum.PresetData,
-  //   title: 'Preset Data',
-  //   description: 'Start quickly by copying all available preset data',
-  //   link: '',
-  // },
+  {
+    id: ProjectProgressEnum.PresetData,
+    title: 'Preset Data',
+    description: 'Start quickly by copying all available preset data',
+    link: '',
+  },
   {
     id: ProjectProgressEnum.codingSystem,
     title: 'Coding System',
@@ -194,10 +231,15 @@ const AllPagesToView = ref([
     <div class="timeline-wrapper">
       <div class="timeline-line"></div>
 
-      <div class="timeline-item" v-for="(item, index) in sidebarItems" :key="index"
-        :ref="(el) => setTimelineItemRef(el, index)" :class="{ active: ActiveItem == item?.id || item.progress }"
-        :style="{ animationDelay: `${index * 0.15}s` }" @click="ActiveItem = item?.id">
-
+      <div
+        class="timeline-item"
+        v-for="(item, index) in sidebarItems"
+        :key="index"
+        :ref="(el) => setTimelineItemRef(el, index)"
+        :class="{ active: ActiveItem == item?.id || item.progress }"
+        :style="{ animationDelay: `${index * 0.15}s` }"
+        @click="ActiveItem = item?.id"
+      >
         <!-- <div class="timeline-item" v-for="(item, index) in sidebarItems" :key="index" :class="{
         'active': ActiveItem == item?.id || item.progress,
         'overlay-focus': showblure
@@ -235,24 +277,34 @@ const AllPagesToView = ref([
           <div class="timeline-content" v-if="!item.progress">
             <div class="timeline-content-header">
               <p class="time-line-title" @click="scrollToTop()">{{ item.title }}</p>
-              <router-link class="timeline-link" :to="AllPagesToView.find((el) => el.id == item.id)?.link" @click.stop>
+              <router-link
+                v-if="AllPagesToView.find((el) => el.id == item.id)?.link"
+                class="timeline-link"
+                :to="AllPagesToView.find((el) => el.id == item.id)?.link"
+                @click.stop
+              >
                 <LinkIcon />
               </router-link>
             </div>
             <p class="time-line-description" @click="scrollToTop()">
-              {{AllPagesToView.find((el) => el.id == item.id)?.description}}
+              {{ AllPagesToView.find((el) => el.id == item.id)?.description }}
             </p>
           </div>
           <div class="timeline-content" v-else>
             <!-- <h2>{{0}}{{ index }}</h2> -->
             <div class="timeline-content-header">
               <p class="first-item-title" @click="scrollToTop()">{{ item.title }}</p>
-              <router-link class="timeline-link" :to="AllPagesToView.find((el) => el.id == item.id)?.link" @click.stop>
+              <router-link
+                v-if="AllPagesToView.find((el) => el.id == item.id)?.link"
+                class="timeline-link"
+                :to="AllPagesToView.find((el) => el.id == item.id)?.link"
+                @click.stop
+              >
                 <LinkIcon />
               </router-link>
             </div>
             <p class="first-item-description" @click="scrollToTop()">
-              {{AllPagesToView.find((el) => el.id == item.id)?.description}}
+              {{ AllPagesToView.find((el) => el.id == item.id)?.description }}
             </p>
           </div>
         </div>

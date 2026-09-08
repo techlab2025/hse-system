@@ -395,6 +395,7 @@ defineExpose({
       @update:modelValue="(val) => (langs = val)"
       :required="true"
       :label="`certtificate_title`"
+      :placeholder="$t('certtificate_title')"
     />
     <p v-if="getFieldError('langs')" class="required-field-message">
       {{ getFieldError('langs') }}

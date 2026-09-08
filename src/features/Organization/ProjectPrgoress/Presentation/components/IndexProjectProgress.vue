@@ -15,8 +15,8 @@ import ProgressBackIcon from '@/shared/icons/ProgressBackIcon.vue'
 import ProgressPageHeaderIcon from '@/shared/icons/ProgressPageHeaderIcon.vue'
 import ProjectProgreesDialog from '../supcomponents/ProjectProgreesDialog.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
-// import CloneAllDataController from '../controllers/CloneALlDataController'
-// import CloneAllAdminDataParams from '../../Core/params/cloneAllAdminDataParams'
+import CloneAllDataController from '../controllers/CloneALlDataController'
+import CloneAllAdminDataParams from '../../Core/params/cloneAllAdminDataParams'
 
 /* ---------------- Controller & State ---------------- */
 
@@ -137,26 +137,14 @@ watch(
 
 /* ---------------- Active Item Logic ---------------- */
 
-/* Preset-data first step (temporarily disabled).
-const presetStepStorageKey = 'ProjectProgressPresetStepHandled'
-const presetStepHandled = ref(localStorage.getItem(presetStepStorageKey) === 'true')
 const isCloningPresetData = ref(false)
 const cloneAllDataController = CloneAllDataController.getInstance()
 
-const ActiveItem = ref(
-  presetStepHandled.value ? ProjectProgressEnum.codingSystem : ProjectProgressEnum.PresetData,
-)
-*/
-const ActiveItem = ref(0)
+const ActiveItem = ref(ProjectProgressEnum.PresetData)
 const GetActiveItem = (value: number) => (ActiveItem.value = value)
 
-/* Preset-data sidebar item (temporarily disabled).
 const sidebarItems = computed(() => {
   const items = state.value.data?.progressItems ?? []
-
-  if (presetStepHandled.value || state.value.data?.progress !== 0) {
-    return items
-  }
 
   return [
     {
@@ -167,15 +155,14 @@ const sidebarItems = computed(() => {
     ...items,
   ]
 })
-*/
 
 const AllPagesToView = [
-  // {
-  //   id: ProjectProgressEnum.PresetData,
-  //   title: 'Preset Data',
-  //   description: 'Start quickly by copying all available preset data',
-  // },
-  { 
+  {
+    id: ProjectProgressEnum.PresetData,
+    title: 'Preset Data',
+    description: 'Start quickly by copying all available preset data',
+  },
+  {
     id: ProjectProgressEnum.codingSystem,
     component: IndexSerial,
     title: 'Coding System',
@@ -299,10 +286,7 @@ const selectedPage = computed(() => AllPagesToView.find((item) => item.id === Ac
 const router = useRouter()
 const routerBack = () => router.back()
 
-/* Preset-data actions (temporarily disabled).
 const skipPresetDataStep = () => {
-  localStorage.setItem(presetStepStorageKey, 'true')
-  presetStepHandled.value = true
   ActiveItem.value = ProjectProgressEnum.codingSystem
 }
 
@@ -313,14 +297,12 @@ const clonePresetData = async () => {
   await cloneAllDataController.CLoneData(new CloneAllAdminDataParams(), router)
 
   if (cloneAllDataController.isDataSuccess()) {
-    localStorage.setItem(presetStepStorageKey, 'true')
     window.location.reload()
     return
   }
 
   isCloningPresetData.value = false
 }
-*/
 
 /* ---------------- Onboarding Logic ---------------- */
 
@@ -373,7 +355,8 @@ watch(
           >
             <ProjectProgressSidebar
               @update:ActiveItem="GetActiveItem"
-              :sidebarItems="state.data?.progressItems"
+              :active-item="ActiveItem"
+              :sidebarItems="sidebarItems"
               :projectProgress="state.data?.progress"
             />
 
@@ -436,7 +419,6 @@ watch(
               <p class="description">{{ selectedPage.description }}</p>
             </div>
 
-            <!-- Preset-data first-step content (temporarily disabled).
             <div v-if="selectedPage.id === ProjectProgressEnum.PresetData" class="preset-data-step">
               <button
                 type="button"
@@ -476,14 +458,13 @@ watch(
                 </button>
               </div>
             </div>
-            -->
 
             <component
               :is="selectedPage.component"
               :key="selectedPage.id"
               class="full-content"
               @update:data="getProjectProgress"
-              v-if="state.data?.progress != 100"
+              v-if="state.data?.progress != 100 && selectedPage.component"
             />
             <!-- animationComplatedData2 -->
           </div>
@@ -581,7 +562,6 @@ watch(
   overflow-x: clip;
 }
 
-/* Preset-data first-step styles (temporarily disabled).
 .preset-data-step {
   position: relative;
   display: flex;
@@ -660,7 +640,6 @@ watch(
   cursor: not-allowed;
   opacity: 0.65;
 }
-*/
 
 .container-overlay {
   position: fixed;
