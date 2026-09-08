@@ -139,12 +139,20 @@ watch(
 
 const isCloningPresetData = ref(false)
 const cloneAllDataController = CloneAllDataController.getInstance()
+const presetDataClonedStorageKey = 'ProjectProgressPresetDataCloned'
+const presetDataCloned = ref(localStorage.getItem(presetDataClonedStorageKey) === 'true')
 
-const ActiveItem = ref(ProjectProgressEnum.PresetData)
+const ActiveItem = ref(
+  presetDataCloned.value ? ProjectProgressEnum.codingSystem : ProjectProgressEnum.PresetData,
+)
 const GetActiveItem = (value: number) => (ActiveItem.value = value)
 
 const sidebarItems = computed(() => {
   const items = state.value.data?.progressItems ?? []
+
+  if (presetDataCloned.value) {
+    return items
+  }
 
   return [
     {
@@ -297,6 +305,8 @@ const clonePresetData = async () => {
   await cloneAllDataController.CLoneData(new CloneAllAdminDataParams(), router)
 
   if (cloneAllDataController.isDataSuccess()) {
+    localStorage.setItem(presetDataClonedStorageKey, 'true')
+    presetDataCloned.value = true
     window.location.reload()
     return
   }
