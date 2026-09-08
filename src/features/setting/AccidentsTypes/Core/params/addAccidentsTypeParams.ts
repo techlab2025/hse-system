@@ -46,7 +46,7 @@ export default class AddAccidentsTypeParams implements Params {
     if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
     if (!this.allIndustries) data['industry_ids'] = this.industries
     data['is_loss_time'] = this.isLossTime ? 1 : 0
-    data['is_falilty'] = this.isFalilty ? 1 : 0
+    data['is_fatility'] = this.isFalilty ? 1 : 0
     if (useProjectAppStatusStore().isSerialNumberAuto()) {
       data['serial_number'] = this.serialNumber
     } else {
