@@ -62,6 +62,8 @@ type EventTimelinePayloadItem = {
   description: string
 }
 
+type IncidentComplianceValue = number | string | { id?: number | string }
+
 const route = useRoute()
 const id = route.params.id
 const investigatingId = route.query.investigating_id
@@ -75,6 +77,26 @@ const meetingPlatformLabels: Record<number, string> = {
   [InvestigationMeetingEnum.TEAM]: 'Teams',
   [InvestigationMeetingEnum.OTHER]: 'Other',
 }
+
+const observationPtwStatus = computed(() => {
+  const observation = state.value?.data?.observation as
+    | (HazardDetailsModel & { ptw_status?: number | string })
+    | undefined
+
+  return observation?.ptw_status ?? observation?.ptwStatus
+})
+
+const observationComplianceNotification = computed<
+  IncidentComplianceValue[] | IncidentComplianceValue | undefined
+>(() => {
+  const observation = state.value?.data?.observation as
+    | (HazardDetailsModel & {
+        compliance_notification?: IncidentComplianceValue[] | IncidentComplianceValue
+      })
+    | undefined
+
+  return observation?.compliance_notification ?? observation?.complianceNotification
+})
 
 const latestMeeting = computed(() => {
   const meetings = state.value?.data?.meeting ?? state.value?.data?.investigationMeetings ?? []
@@ -704,6 +726,8 @@ const validateRequiredFields = async () => {
                 :serialName="state.data?.serialName"
                 :observationCreator="state?.data?.observation?.observer?.name"
                 :observationType="state.data?.observation.type"
+                :ptwStatus="observationPtwStatus"
+                :complianceNotification="observationComplianceNotification"
                 @update:documentRefrences="setDocumentRefrences"
               />
             </AccordionContent>
