@@ -10,5 +10,9 @@
   &:hover {
     background-color: transparent;
     color: $PrimaryColor;
+
+    * {
+      color: $PrimaryColor !important;
+    }
   }
 }

@@ -51,7 +51,7 @@ type AnswerModel = {
   incidentCategories: TitleInterface[]
   images: any[]
   infectionTypeId: TitleInterface
-  ppeItem: TitleInterface
+  ppeItems: TitleInterface[]
   customPpeItem: string
   ppeItemCondition: TitleInterface
 }
@@ -62,7 +62,7 @@ const createEmptyAnswer = (): AnswerModel => ({
   employeeName: '',
   incidentCategories: [],
   images: [],
-  ppeItem: new TitleInterface({ id: 0, title: '' }),
+  ppeItems: [],
   customPpeItem: '',
   ppeItemCondition: new TitleInterface({ id: 0, title: '' }),
 })
@@ -141,23 +141,20 @@ const updateIncidentCategories = (
   UpdateData()
 }
 
-const updatePpeItem = (value: TitleInterface | TitleInterface[] | null, index: number) => {
-  const item = Array.isArray(value) ? null : value
-  Answers.value[index].ppeItem = item
-    ? new TitleInterface({ id: item.id, title: item.title })
-    : new TitleInterface({ id: 0, title: '' })
+const updatePpeItems = (value: TitleInterface | TitleInterface[] | null, index: number) => {
+  const items = Array.isArray(value) ? value : []
+  Answers.value[index].ppeItems = items.map(
+    (item) => new TitleInterface({ id: item.id, title: item.title }),
+  )
 
-  if (item?.id !== PpeItemEnum.OTHERS) {
+  if (!items.some((item) => item.id === PpeItemEnum.OTHERS)) {
     Answers.value[index].customPpeItem = ''
   }
 
   UpdateData()
 }
 
-const updatePpeItemCondition = (
-  value: TitleInterface | TitleInterface[] | null,
-  index: number,
-) => {
+const updatePpeItemCondition = (value: TitleInterface | TitleInterface[] | null, index: number) => {
   const item = Array.isArray(value) ? null : value
   Answers.value[index].ppeItemCondition = item
     ? new TitleInterface({ id: item.id, title: item.title })
@@ -213,10 +210,14 @@ const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
     ''
   const manualEmployeeName = item?.employee_name || (!employeeId ? employeeTitle : '')
   const incidentCategories = item?.incident_categories ?? (item as any)?.incidentCategories ?? []
-  const ppeItemValue = Number(item?.ppe_item) || 0
-  const selectedPpeItem = ppeItemOptions.value.find(
-    (option) => option.id === ppeItemValue,
+  const selectedPpeItems = (
+    item?.ppe_items?.length ? item.ppe_items : item?.ppe_item ? [{ ppe_item: item.ppe_item }] : []
   )
+    .map((ppeItem) => {
+      const ppeItemId = Number(ppeItem?.ppe_item) || 0
+      return ppeItemOptions.value.find((option) => option.id === ppeItemId)
+    })
+    .filter((ppeItem): ppeItem is TitleInterface => Boolean(ppeItem))
   const selectedPpeItemCondition = ppeItemConditionOptions.value.find(
     (option) => option.id === (Number(item?.ppe_item_condition) || 0),
   )
@@ -237,9 +238,9 @@ const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
       })
     }),
     text: item?.note || '',
-    ppeItem: selectedPpeItem
-      ? new TitleInterface({ id: selectedPpeItem.id, title: selectedPpeItem.title })
-      : new TitleInterface({ id: 0, title: '' }),
+    ppeItems: selectedPpeItems.map(
+      (ppeItem) => new TitleInterface({ id: ppeItem.id, title: ppeItem.title }),
+    ),
     customPpeItem: item?.ppe_item_text || '',
     ppeItemCondition: selectedPpeItemCondition
       ? new TitleInterface({
@@ -391,11 +392,11 @@ onMounted(async () => {
                   </template>
                 </UpdatedCustomInputSelect>
               </div>
-              <div class="injury-field input-wrapper w-full">
-                <!-- <CustomSelectInput :modelValue="item.infectionTypeId" class="input" :controller="indexInjuryController"
-                  :params="indexInjuryParams" :label="$t('injury Type')" id="injury"
-                  :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)" /> -->
-
+              <!--  -->
+              <!-- <CustomSelectInput :modelValue="item.infectionTypeId" class="input" :controller="indexInjuryController"
+                :params="indexInjuryParams" :label="$t('injury Type')" id="injury"
+                :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)" /> -->
+              <!-- <div class="injury-field input-wrapper w-full">
                 <UpdatedCustomInputSelect
                   :modelValue="item.infectionTypeId"
                   :staticOptions="injuryOptions"
@@ -422,11 +423,12 @@ onMounted(async () => {
                     />
                   </template>
                 </UpdatedCustomInputSelect>
-              </div>
+              </div> -->
+              <!--  -->
               <div class="injury-field input-wrapper w-full">
                 <div class="flex items-center gap-2">
                   <label :for="`injury-description-${index}`">{{
-                    $t('Description of Injury')
+                    $t('Description')
                   }}</label>
                   <FieldHelpIcon
                     text="Describe the injury, affected body part, and any relevant medical details."
@@ -444,7 +446,7 @@ onMounted(async () => {
 
               <div class="injury-field input-wrapper w-full">
                 <div class="flex items-center gap-2">
-                  <label>{{ $t('Evidence Retrieval (Photos)') }}</label>
+                  <label>{{ $t('attach photo') }}</label>
                   <FieldHelpIcon
                     text="Attach photos that document the injury or related evidence, where appropriate and permitted."
                   />
@@ -455,7 +457,7 @@ onMounted(async () => {
                   :index="index + 2000"
                 />
               </div>
-              <div class="injury-field input-wrapper w-full">
+              <!-- <div class="injury-field input-wrapper w-full">
                 <UpdatedCustomInputSelect
                   :id="`incident-categories-${index}`"
                   :modelValue="item.incidentCategories"
@@ -467,19 +469,20 @@ onMounted(async () => {
                   help-text="Select all incident categories related to this injury. The list is filtered by the incident type selected above."
                   @update:modelValue="updateIncidentCategories($event, index)"
                 />
-              </div>
+              </div> -->
               <div class="injury-field input-wrapper w-full">
                 <UpdatedCustomInputSelect
                   :id="`ppe-item-${index}`"
-                  :modelValue="item.ppeItem"
+                  :modelValue="item.ppeItems"
                   :staticOptions="ppeItemOptions"
+                  :type="2"
                   :reload="false"
                   :label="$t('PPE Item')"
                   :placeholder="$t('Select PPE Item')"
-                  @update:modelValue="updatePpeItem($event, index)"
+                  @update:modelValue="updatePpeItems($event, index)"
                 />
                 <input
-                  v-if="item.ppeItem?.id === PpeItemEnum.OTHERS"
+                  v-if="item.ppeItems.some((ppeItem) => ppeItem.id === PpeItemEnum.OTHERS)"
                   v-model="item.customPpeItem"
                   type="text"
                   class="input mt-2"
