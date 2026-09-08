@@ -484,9 +484,9 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
                   <router-link :to="`/organization/equipment-mangement/observation/add`">
                     <button class="btn btn-primary create-observation-btn">
                       <span class="create-icon" aria-hidden="true">+</span>
-                      <span class="create-copy"
-                        ><small>{{ $t('New report') }}</small
-                        ><strong>{{ $t('report observation') }}</strong></span
+                      <span class="create-copy">
+                        <!-- <small>{{ $t('New report') }}</small> -->
+                        <strong>{{ $t('report observation') }}</strong></span
                       >
                     </button>
                   </router-link>
