@@ -9,6 +9,12 @@ import { computed, ref } from 'vue'
 import ShiftModel from '../../../../../Shifts/Data/models/ShiftModel'
 import AddDocumentRefrence from '@/features/Organization/DocumentRefrence/Presentation/components/AddDocumentRefrence.vue'
 import { Observation } from '@/features/Organization/Investigating/Core/Enums/ObservationTypeEnum'
+import {
+  ComplianceNotificationEnum,
+  PtwStatusEnum,
+} from '@/features/Organization/ObservationFactory/Core/Enums/incident_compliance_enum'
+
+type ComplianceNotificationValue = number | string | { id?: number | string }
 
 const emit = defineEmits(['update:documentRefrences'])
 
@@ -30,6 +36,8 @@ const props = defineProps<{
   serialName?: string
   observationCreator?: string
   observationType?: number
+  ptwStatus?: number | string
+  complianceNotification?: ComplianceNotificationValue[] | ComplianceNotificationValue
 }>()
 
 const DocumentRefrenceDialog = ref<boolean>(false)
@@ -47,6 +55,41 @@ const hasValue = (value: unknown) =>
 const dateTimeShift = computed(() =>
   [props.date, props.time, props.shift?.title].filter(hasValue).join(' & '),
 )
+
+const ptwStatusLabels: Record<number, string> = {
+  [PtwStatusEnum.NOT_APPLICABLE]: 'Not Applicable',
+  [PtwStatusEnum.ISSUED_AND_VALID]: 'PTW Issued and Valid',
+  [PtwStatusEnum.ISSUED_BUT_EXPIRED]: 'PTW Issued but Expired',
+  [PtwStatusEnum.NOT_ISSUED_REQUIRED]: 'No PTW Issued (Required)',
+}
+
+const complianceNotificationLabels: Record<number, string> = {
+  [ComplianceNotificationEnum.STATUTORY_AUTHORITY_INFORMED]: 'Statutory Authority Informed',
+  [ComplianceNotificationEnum.INSURANCE_NOTIFIED]: 'Insurance Notified',
+  [ComplianceNotificationEnum.CLIENT_CUSTOMER_NOTIFIED]: 'Client/Customer Notified',
+}
+
+const ptwStatusLabel = computed(() => {
+  const status = Number(props.ptwStatus)
+  return status ? ptwStatusLabels[status] || String(status) : ''
+})
+
+const complianceNotificationLabel = computed(() => {
+  const notifications = Array.isArray(props.complianceNotification)
+    ? props.complianceNotification
+    : props.complianceNotification != null
+      ? [props.complianceNotification]
+      : []
+
+  return notifications
+    .map((notification) =>
+      Number(typeof notification === 'object' ? notification?.id : notification),
+    )
+    .filter(Boolean)
+    .map((notification) => complianceNotificationLabels[notification] || String(notification))
+    .join(', ')
+})
+
 const getObservationType = (type: number | undefined) => {
   switch (type) {
     case Observation.AccidentsType:
@@ -113,6 +156,19 @@ const getObservationType = (type: number | undefined) => {
                 : ``
             }}</span
           >
+        </p>
+        <p v-if="Number(observationType) === Observation.AccidentsType && hasValue(ptwStatusLabel)">
+          {{ $t('PTW Status') }} :
+          <span class="incidant-type">{{ ptwStatusLabel }}</span>
+        </p>
+        <p
+          v-if="
+            Number(observationType) === Observation.AccidentsType &&
+            hasValue(complianceNotificationLabel)
+          "
+        >
+          {{ $t('Regulatory / Compliance Notification') }} :
+          <span class="incidant-type">{{ complianceNotificationLabel }}</span>
         </p>
         <div class="input-wrapper col-span-2 w-full root-cause-panel">
           <UpdatedCustomInputSelect
