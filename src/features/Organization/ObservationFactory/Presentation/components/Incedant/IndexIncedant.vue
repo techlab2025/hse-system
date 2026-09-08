@@ -357,8 +357,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
                   <router-link :to="`/organization/equipment-mangement/incedant/add`">
                     <button class="btn btn-primary create-incident-btn">
                       <span class="create-icon" aria-hidden="true">+</span>
-                      <span class="create-copy"
-                        >
+                      <span class="create-copy">
                         <!-- <small>{{ $t('New report') }}</small> -->
                         <strong>{{ $t('Report incident') }}</strong></span
                       >
@@ -576,9 +575,9 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
             >
               <DataEmpty
                 :link="`/organization/equipment-mangement/incedant/add`"
-                addText="incedent Report"
-                description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No incedant"
+                addText="Report incident"
+                description=" "
+                title="You have No incident"
               />
             </PermissionBuilder>
           </template>
@@ -588,9 +587,9 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
             >
               <DataFailed
                 :link="`/organization/equipment-mangement/incedant/add`"
-                addText="incedent Report"
-                description="Sorry .. You have no incedant .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No incedant"
+                addText="Report incident "
+                description=" "
+                title="You have No incident"
               />
             </PermissionBuilder>
           </template>
