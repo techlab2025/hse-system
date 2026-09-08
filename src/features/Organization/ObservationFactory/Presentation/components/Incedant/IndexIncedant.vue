@@ -358,8 +358,9 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
                     <button class="btn btn-primary create-incident-btn">
                       <span class="create-icon" aria-hidden="true">+</span>
                       <span class="create-copy"
-                        ><small>{{ $t('New report') }}</small
-                        ><strong>{{ $t('Report incident') }}</strong></span
+                        >
+                        <!-- <small>{{ $t('New report') }}</small> -->
+                        <strong>{{ $t('Report incident') }}</strong></span
                       >
                     </button>
                   </router-link>

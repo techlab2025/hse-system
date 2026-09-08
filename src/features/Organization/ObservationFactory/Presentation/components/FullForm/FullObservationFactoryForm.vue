@@ -972,7 +972,7 @@ defineExpose({
     <!-- Date -->
     <div class="col-span-2 md:col-span-2 input-wrapper" data-required-field="date">
       <div class="field-label">
-        <label for="date">{{ $t('date') }}</label
+        <label for="date">{{ GetHeader(ObservationFactoryType) }} {{ $t('date') }}</label
         ><FieldHelpIcon text="The date when the event or observation occurred." />
       </div>
       <DatePicker input-id="date" v-model="date" :Lplaceholder="$t('Add your date')" />
@@ -984,7 +984,7 @@ defineExpose({
     <!-- Time -->
     <div class="input-wrapper col-span-2 md:grid-cols-12" data-required-field="SelctedTime">
       <div class="field-label">
-        <label for="time">{{ $t('time') }}</label
+        <label for="time">{{ GetHeader(ObservationFactoryType) }} {{ $t('time') }}</label
         ><FieldHelpIcon text="The approximate time when the event or observation occurred." />
       </div>
       <DatePicker
@@ -1208,7 +1208,7 @@ defineExpose({
               class="emp-name"
               @click.prevent="toggleMode(true)"
             >
-              {{ $t('not_stuff_member') }}
+              {{ $t('not_staff_member') }}
             </button>
 
             <button
@@ -1216,7 +1216,7 @@ defineExpose({
               class="emp-select"
               @click.prevent="toggleMode(false)"
             >
-              {{ $t('stuff_member') }}
+              {{ $t('staff_member') }}
             </button>
           </div>
         </template>
@@ -1612,7 +1612,7 @@ defineExpose({
       v-show="showObservationAndDescription"
     >
       <div class="field-label">
-        <label for="open-note">{{ $t('Open Note') }}</label
+        <label for="open-note">{{ $t('Reason for Keeping the Observation Open') }}</label
         ><FieldHelpIcon
           text="Explain what remains open and what follow-up action is still needed."
         />
