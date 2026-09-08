@@ -53,9 +53,6 @@ const setParams = (data: Params) => {
         >
           <span>Cancel</span>
         </router-link>
-        <button type="submit" class="btn btn-primary">
-          <span>{{ $t('save') }}</span>
-        </button>
         <button
           v-if="route.path.includes('project-progress')"
           type="button"
@@ -63,6 +60,9 @@ const setParams = (data: Params) => {
           class="btn btn-primary"
         >
           {{ $t('save and add') }}
+        </button>
+           <button type="submit" class="btn btn-primary">
+          <span>{{ $t('save and next step') }}</span>
         </button>
       </div>
     </div>

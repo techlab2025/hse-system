@@ -175,7 +175,7 @@ const AllPagesToView = [
   //   title: 'Preset Data',
   //   description: 'Start quickly by copying all available preset data',
   // },
-  {
+  { 
     id: ProjectProgressEnum.codingSystem,
     component: IndexSerial,
     title: 'Coding System',

@@ -31,56 +31,6 @@ const Certificate = ref<TitleInterface[]>([])
 const certificateOptions = ref<TitleInterface[]>([])
 const certificateSearch = ref('')
 const isLoadingCertificates = ref(false)
-const trainingOptionsRef = ref<HTMLElement | null>(null)
-const isDraggingCertificates = ref(false)
-let trainingDragStartX = 0
-let trainingDragStartScrollLeft = 0
-let didDragCertificates = false
-
-const startTrainingDrag = (event: PointerEvent) => {
-  if (event.pointerType !== 'mouse' || event.button !== 0 || !trainingOptionsRef.value) return
-
-  isDraggingCertificates.value = true
-  didDragCertificates = false
-  trainingDragStartX = event.clientX
-  trainingDragStartScrollLeft = trainingOptionsRef.value.scrollLeft
-}
-
-const moveTrainingDrag = (event: PointerEvent) => {
-  if (!isDraggingCertificates.value || !trainingOptionsRef.value) return
-
-  const distance = event.clientX - trainingDragStartX
-  if (Math.abs(distance) > 4 && !didDragCertificates) {
-    didDragCertificates = true
-    trainingOptionsRef.value.setPointerCapture(event.pointerId)
-  }
-  if (!didDragCertificates) return
-
-  event.preventDefault()
-  trainingOptionsRef.value.scrollLeft = trainingDragStartScrollLeft - distance
-}
-
-const stopTrainingDrag = (event: PointerEvent) => {
-  if (!isDraggingCertificates.value) return
-
-  isDraggingCertificates.value = false
-  if (trainingOptionsRef.value?.hasPointerCapture(event.pointerId)) {
-    trainingOptionsRef.value.releasePointerCapture(event.pointerId)
-  }
-
-  if (didDragCertificates) {
-    window.setTimeout(() => {
-      didDragCertificates = false
-    })
-  }
-}
-
-const preventCheckboxClickAfterDrag = (event: MouseEvent) => {
-  if (!didDragCertificates) return
-
-  event.preventDefault()
-  event.stopPropagation()
-}
 
 const fetchCertificates = async () => {
   isLoadingCertificates.value = true
@@ -338,18 +288,7 @@ defineExpose({
         />
       </div>
 
-      <div
-        ref="trainingOptionsRef"
-        class="training-options"
-        :class="{ dragging: isDraggingCertificates }"
-        role="group"
-        :aria-label="$t('certificate')"
-        @pointerdown="startTrainingDrag"
-        @pointermove="moveTrainingDrag"
-        @pointerup="stopTrainingDrag"
-        @pointercancel="stopTrainingDrag"
-        @click.capture="preventCheckboxClickAfterDrag"
-      >
+      <div class="training-options" role="group" :aria-label="$t('certificate')">
         <div v-if="isLoadingCertificates" class="training-options-message">
           {{ $t('loading') }}...
         </div>
@@ -470,29 +409,22 @@ defineExpose({
 
 .training-options {
   display: grid;
-  grid-auto-columns: calc((100% - 1.25rem) / 3);
-  grid-auto-flow: column;
-  grid-template-rows: repeat(2, minmax(48px, auto));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: minmax(48px, auto);
+  align-content: start;
   gap: 0.625rem;
   width: 100%;
-  padding-block-end: 0.5rem;
-  overflow-x: auto;
-  overflow-y: hidden;
+  max-height: calc(96px + 15.625rem);
+  padding-inline-end: 0.35rem;
+  overflow-x: hidden;
+  overflow-y: auto;
   overscroll-behavior: contain;
-  scroll-snap-type: inline proximity;
   scrollbar-width: thin;
   scrollbar-color: var(--brand-primary-300, #93b0ff) transparent;
-  cursor: grab;
-  user-select: none;
-}
-
-.training-options.dragging {
-  cursor: grabbing;
-  scroll-snap-type: none;
 }
 
 .training-options::-webkit-scrollbar {
-  height: 7px;
+  width: 7px;
 }
 
 .training-options::-webkit-scrollbar-thumb {
@@ -512,7 +444,6 @@ defineExpose({
   border-radius: 12px;
   background: var(--surface-1, #fff);
   cursor: pointer;
-  scroll-snap-align: start;
   transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
 }
 
@@ -581,13 +512,13 @@ defineExpose({
 
 @media (max-width: 900px) {
   .training-options {
-    grid-auto-columns: calc((100% - 0.625rem) / 2);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 640px) {
   .training-options {
-    grid-auto-columns: 88%;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 </style>
