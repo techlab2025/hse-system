@@ -340,10 +340,10 @@ onMounted(async () => {
                 <UpdatedCustomInputSelect
                   :staticOptions="employeeOptions"
                   v-model="item.employee"
-                  placeholder="Select Employee"
+                  placeholder="Select Incident"
                   class="mt-4 mr-2 input"
                   :label="$t('Injured Person')"
-                  help-text="Select the injured employee, or enter the person's name manually if they are not an employee."
+                  help-text="Select the injured Incident, or enter the person's name manually if they are not an Incident."
                   :reload="true"
                   :excludedOptionIds="getSelectedEmployeeIds(index)"
                   @update:model-value="UpdateData"
