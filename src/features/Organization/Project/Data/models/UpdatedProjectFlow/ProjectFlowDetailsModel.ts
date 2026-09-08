@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type {
-  CustomHolidayDay,
-  ProjectLocationHierarchy,
-  ProjectLocationTeam,
-  ProjectZoonEquipment,
-} from '../../../Core/params/UpdatedProjectFlow/ProjectFlowParams'
+import type { CustomHolidayDay } from '../../../Core/params/UpdatedProjectFlow/ProjectHolidaysParams'
+import type { ProjectLocationHierarchy } from '../../../Core/params/UpdatedProjectFlow/ProjectLocationPositionEmployeesParams'
+import type { ProjectLocationTeam } from '../../../Core/params/UpdatedProjectFlow/ProjectTeamsParams'
+import type { ProjectZoonEquipment } from '../../../Core/params/UpdatedProjectFlow/ProjectEquipmentsParams'
 import type { HolidayDaysEnum } from '../../../Core/Enums/UpdatedProjectFlow/HolidayDaysEnum'
 
 export default class ProjectFlowDetailsModel {

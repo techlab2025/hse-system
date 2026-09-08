@@ -37,18 +37,20 @@ import AddProjectZoneDialog from '../Dialogs/AddProjectZoneDialog.vue'
 import LocationSelectDialog from '../SelectDialogs/LocationSelectDialog.vue'
 import type SohwProjectZoonModel from '../../../Data/models/ShowProjectZone'
 import { HolidayDaysEnum } from '../../../Core/Enums/UpdatedProjectFlow/HolidayDaysEnum'
-import {
-  BasicProjectParams,
-  ProjectEquipmentsParams,
-  ProjectHolidaysParams,
-  ProjectLocationPositionEmployeesParams,
-  ProjectTeamsParams,
-  ProjectFlowDetailsParams,
-  type ProjectLocationHierarchy,
-  type ProjectLocationTeam,
-  type ProjectZoonEquipment,
+import BasicProjectParams from '../../../Core/params/UpdatedProjectFlow/BasicProjectParams'
+import ProjectFlowDetailsParams from '../../../Core/params/UpdatedProjectFlow/ProjectFlowDetailsParams'
+import ProjectHolidaysParams, {
   type CustomHolidayDay,
-} from '../../../Core/params/UpdatedProjectFlow/ProjectFlowParams'
+} from '../../../Core/params/UpdatedProjectFlow/ProjectHolidaysParams'
+import ProjectLocationPositionEmployeesParams, {
+  type ProjectLocationHierarchy,
+} from '../../../Core/params/UpdatedProjectFlow/ProjectLocationPositionEmployeesParams'
+import ProjectTeamsParams, {
+  type ProjectLocationTeam,
+} from '../../../Core/params/UpdatedProjectFlow/ProjectTeamsParams'
+import ProjectEquipmentsParams, {
+  type ProjectZoonEquipment,
+} from '../../../Core/params/UpdatedProjectFlow/ProjectEquipmentsParams'
 import {
   BasicProjectController,
   ProjectEquipmentsController,
@@ -300,7 +302,7 @@ onMounted(async () => {
         undefined,
         undefined,
         undefined,
-        routeProjectId.value ?? null,
+        // routeProjectId.value ?? null,
       ),
     })),
   }))
@@ -332,7 +334,7 @@ onMounted(async () => {
         undefined,
         undefined,
         undefined,
-        routeProjectId.value ?? null,
+        // routeProjectId.value ?? null,
       ),
     })),
   }))
@@ -412,7 +414,7 @@ const addHierarchy = (location: PositionLocationForm) =>
       undefined,
       undefined,
       undefined,
-      routeProjectId.value ?? null,
+      // routeProjectId.value ?? null,
     ),
   })
 const setPositionLocation = (
@@ -438,7 +440,7 @@ const setHierarchy = (
     undefined,
     undefined,
     undefined,
-    routeProjectId.value ?? null,
+    // routeProjectId.value ?? null,
   )
 }
 const setPositionEmployees = (
@@ -459,7 +461,7 @@ const projectEmployeeParams = () =>
     undefined,
     undefined,
     undefined,
-    routeProjectId.value ?? null,
+    // routeProjectId.value ?? null,
   )
 const addTeamLocation = () => teams.value.push({ projectLocation: null, projectTeams: [] })
 const addTeam = (location: TeamLocationForm) =>
@@ -586,6 +588,7 @@ const buildParams = () => {
       basic.value.cost,
       basic.value.hasZoon,
       updateProjectId.value,
+      editOnly.value,
     )
   }
   if (activeStep.value === 2) {
@@ -597,38 +600,39 @@ const buildParams = () => {
       holidays.value.basicDays,
       holidays.value.hasCustom,
       custom,
-      updateProjectId.value,
+      projectId.value!,
+      editOnly.value,
     )
   }
   if (activeStep.value === 3) {
     const payload: ProjectLocationHierarchy[] = positions.value.map((location) => ({
-      project_location_id: location.projectLocation!.id,
-      heirarchys: location.heirarchys.map((hierarchy) => ({
-        heirarchy_id: hierarchy.hierarchy!.id,
-        organizaion_employees: hierarchy.employees.map((employee) => ({
-          organizaion_employee_id: employee.id,
+      location_id: location.projectLocation!.id,
+      hierarchies: location.heirarchys.map((hierarchy) => ({
+        hierarchy_id: hierarchy.hierarchy!.id,
+        organization_employees: hierarchy.employees.map((employee) => ({
+          organization_employee_id: employee.id,
         })),
       })),
     }))
-    return new ProjectLocationPositionEmployeesParams(payload, updateProjectId.value)
+    return new ProjectLocationPositionEmployeesParams(payload, projectId.value!, editOnly.value)
   }
   if (activeStep.value === 4) {
     const payload: ProjectLocationTeam[] = teams.value.map((location) => ({
       project_location_id: location.projectLocation!.id,
       project_teams: location.projectTeams.map((team) => ({
         team_id: team.team!.id,
-        organizaion_employees: team.employees.map((employee) => ({
-          organizaion_employee_id: employee.id,
+        organization_employees: team.employees.map((employee) => ({
+          organization_employee_id: employee.id,
         })),
       })),
     }))
-    return new ProjectTeamsParams(payload, updateProjectId.value)
+    return new ProjectTeamsParams(payload, projectId.value!, editOnly.value)
   }
   const payload: ProjectZoonEquipment[] = equipments.value.map((zone) => ({
     project_zoon_id: zone.zone!.id,
     equipments: zone.equipments.map((equipment) => ({ equipment_id: equipment.id })),
   }))
-  return new ProjectEquipmentsParams(payload, updateProjectId.value)
+  return new ProjectEquipmentsParams(payload, projectId.value!, editOnly.value)
 }
 
 const controllerForStep = () => {
