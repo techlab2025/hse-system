@@ -52,7 +52,7 @@ const ProjectSelect = useProjectSelectStore()
         </span>
         <div class="index-title-copy">
           <div class="index-title-line">
-            <h1 class="title">{{ title }}</h1>
+            <h1 class="title"> {{ title }} {{ $t('Report') }}</h1>
             <span class="index-length"
               ><strong>{{ length || 0 }}</strong> Total</span
             >
