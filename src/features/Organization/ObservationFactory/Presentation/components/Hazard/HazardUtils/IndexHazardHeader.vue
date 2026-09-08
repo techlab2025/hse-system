@@ -183,6 +183,7 @@ const ProjectSelect = useProjectSelectStore()
   display: flex;
   align-items: center;
   flex: 0 0 auto;
+  gap: 3px;
 }
 
 .project-filter-content {

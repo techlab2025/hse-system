@@ -950,7 +950,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
   gap: 9px;
   min-height: 48px;
   padding-inline: 18px;
-  border-radius: 14px;
+  border-radius: 12px;
   box-shadow: 0 10px 24px color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
   transition:
     transform 0.18s ease,
