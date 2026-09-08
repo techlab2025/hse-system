@@ -48,18 +48,19 @@ const setParams = (data: Params) => {
 
     <div class="col-span-4 button-wrapper">
       <button
-        type="submit"
-        class="btn btn-primary"
-        :class="route.path.includes('project-progress') ? 'w-1/2' : 'w-full'"
-      >
-        {{ $t('save') }}
-      </button>
-      <button
         v-if="route.path.includes('project-progress')"
+        type="button"
         @click.prevent="saveAndAdd"
         class="btn btn-primary w-1/2"
       >
         {{ $t('save and add') }}
+      </button>
+      <button
+        type="submit"
+        class="btn btn-primary"
+        :class="route.path.includes('project-progress') ? 'w-1/2' : 'w-full'"
+      >
+        {{ route.path.includes('project-progress') ? $t('save and next step') : $t('save') }}
       </button>
     </div>
   </form>

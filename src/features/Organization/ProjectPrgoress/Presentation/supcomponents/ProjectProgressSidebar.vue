@@ -194,15 +194,9 @@ const AllPagesToView = ref([
     <div class="timeline-wrapper">
       <div class="timeline-line"></div>
 
-      <div
-        class="timeline-item"
-        v-for="(item, index) in sidebarItems"
-        :key="index"
-        :ref="(el) => setTimelineItemRef(el, index)"
-        :class="{ active: ActiveItem == item?.id || item.progress }"
-        :style="{ animationDelay: `${index * 0.15}s` }"
-        @click="ActiveItem = item?.id"
-      >
+      <div class="timeline-item" v-for="(item, index) in sidebarItems" :key="index"
+        :ref="(el) => setTimelineItemRef(el, index)" :class="{ active: ActiveItem == item?.id || item.progress }"
+        :style="{ animationDelay: `${index * 0.15}s` }" @click="ActiveItem = item?.id">
 
         <!-- <div class="timeline-item" v-for="(item, index) in sidebarItems" :key="index" :class="{
         'active': ActiveItem == item?.id || item.progress,
@@ -237,36 +231,28 @@ const AllPagesToView = ref([
         </div>
 
         <div class="count_Organization">
-          <div class="count" >{{0}}{{ index }}</div>
+          <div class="count">{{ index + 1 > 9 ? `` : 0 }}{{ index + 1 }}</div>
           <div class="timeline-content" v-if="!item.progress">
             <div class="timeline-content-header">
               <p class="time-line-title" @click="scrollToTop()">{{ item.title }}</p>
-              <router-link
-                class="timeline-link"
-                :to="AllPagesToView.find((el) => el.id == item.id)?.link"
-                @click.stop
-              >
+              <router-link class="timeline-link" :to="AllPagesToView.find((el) => el.id == item.id)?.link" @click.stop>
                 <LinkIcon />
               </router-link>
             </div>
             <p class="time-line-description" @click="scrollToTop()">
-              {{ AllPagesToView.find((el) => el.id == item.id)?.description }}
+              {{AllPagesToView.find((el) => el.id == item.id)?.description}}
             </p>
           </div>
           <div class="timeline-content" v-else>
             <!-- <h2>{{0}}{{ index }}</h2> -->
             <div class="timeline-content-header">
               <p class="first-item-title" @click="scrollToTop()">{{ item.title }}</p>
-              <router-link
-                class="timeline-link"
-                :to="AllPagesToView.find((el) => el.id == item.id)?.link"
-                @click.stop
-              >
+              <router-link class="timeline-link" :to="AllPagesToView.find((el) => el.id == item.id)?.link" @click.stop>
                 <LinkIcon />
               </router-link>
             </div>
             <p class="first-item-description" @click="scrollToTop()">
-              {{ AllPagesToView.find((el) => el.id == item.id)?.description }}
+              {{AllPagesToView.find((el) => el.id == item.id)?.description}}
             </p>
           </div>
         </div>
@@ -275,10 +261,11 @@ const AllPagesToView = ref([
   </div>
 </template>
 <style scoped>
-.count_Organization .count{
+.count_Organization .count {
   font-family: 'bold';
   padding-left: 14px;
 }
+
 .overlay-focus {
   /* background: var(--surface-1);
   border-radius: 8px;
@@ -292,6 +279,7 @@ const AllPagesToView = ref([
   width: 100%;
   z-index: 99999;
 }
+
 .opacity {
   opacity: 0.5;
 }
