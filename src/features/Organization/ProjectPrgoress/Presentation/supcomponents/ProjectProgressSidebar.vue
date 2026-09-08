@@ -237,7 +237,7 @@ const AllPagesToView = ref([
         </div>
 
         <div class="count_Organization">
-          <div style="padding-left: 14px; font-family: 'bold';">{{0}}{{ index }}</div>
+          <div class="count" >{{0}}{{ index }}</div>
           <div class="timeline-content" v-if="!item.progress">
             <div class="timeline-content-header">
               <p class="time-line-title" @click="scrollToTop()">{{ item.title }}</p>
@@ -275,6 +275,10 @@ const AllPagesToView = ref([
   </div>
 </template>
 <style scoped>
+.count_Organization .count{
+  font-family: 'bold';
+  padding-left: 14px;
+}
 .overlay-focus {
   /* background: var(--surface-1);
   border-radius: 8px;
