@@ -321,6 +321,36 @@ class ApiNames {
   public get DeleteProject() {
     return this.prefix + 'delete_project'
   }
+  public get CreateBasicProject() {
+    return this.prefix + 'create_basic_project'
+  }
+  public get UpdateBasicProject() {
+    return this.prefix + 'update_basic_project'
+  }
+  public get CreateProjectHolidays() {
+    return this.prefix + 'create_project_holidays'
+  }
+  public get UpdateProjectHolidays() {
+    return this.prefix + 'update_project_holidays'
+  }
+  public get CreateProjectLocationPositionEmployees() {
+    return this.prefix + 'create_project_location_position_employees'
+  }
+  public get UpdateProjectLocationPositionEmployees() {
+    return this.prefix + 'update_project_location_position_employees'
+  }
+  public get CreateProjectTeams() {
+    return this.prefix + 'create_project_teams'
+  }
+  public get UpdateProjectTeams() {
+    return this.prefix + 'update_project_teams'
+  }
+  public get CreateProjectEquipments() {
+    return this.prefix + 'create_project_equipments'
+  }
+  public get UpdateProjectEquipments() {
+    return this.prefix + 'update_project_equipments'
+  }
   public get GetTodayTalk() {
     return this.prefix + 'fetch_today_talks'
   }

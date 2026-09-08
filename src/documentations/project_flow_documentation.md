@@ -4,13 +4,21 @@
 
 ```ts
 export enum HolidayDaysEnum {
-  SUNDAY = 1,
-  MONDAY = 2,
-  TUESDAY = 3,
-  WEDNESDAY = 4,
-  THURSDAY = 5,
-  FRIDAY = 6,
-  SATURDAY = 7,
+  SUNDAY = 0,
+  MONDAY = 1,
+  TUESDAY = 2,
+  WEDNESDAY = 3,
+  THURSDAY = 4,
+  FRIDAY = 5,
+  SATURDAY = 6,
+}
+
+export enum projectProgressStatusEnum {
+  BASIC_DATA = 1,
+  BASIC_DATA_AND_HOLIDAYS = 2,
+  BASIC_DATA_AND_HOLIDAYS_AND_POSITIONS_AND_EMPLOYEES = 3,
+  BASIC_DATA_AND_HOLIDAYS_AND_POSITIONS_AND_EMPLOYEES_AND_TEAMS = 4,
+  BASIC_DATA_AND_HOLIDAYS_AND_POSITIONS_AND_EMPLOYEES_AND_TEAMS_AND_EQUIPMENT = 5,
 }
 ```
 
@@ -28,17 +36,17 @@ export enum HolidayDaysEnum {
     "description_en/ar/any":string,
     "title_en/ar/any":string
   },
-  "contractor_ids":[
+  "contractors":[
     {
         "contractor_id":number
     }
   ],
-  "location_ids":[
+  "locations":[
     {
         "location_id":number
     }
   ],
-  "zoon_ids":[
+  "zoons":[
     {
         "zoon_id":number
     }
@@ -56,7 +64,7 @@ export enum HolidayDaysEnum {
 
 ```ts
 {
-  "project_status":PrijectStutsEnum,
+  "project_status":projectProgressStatusEnum,
   "project_progress":number
 }
 ```
@@ -104,12 +112,12 @@ export enum HolidayDaysEnum {
 {
   [
     "project_location_id":number,
-    "heirarchys":[
+    "hierarchies":[
         {
-            "heirarchy_id":number,
-            "organizaion_employees":[
+            "hierarchy_id":number,
+            "organization_employees":[
                 {
-                    "organizaion_employee_id":number
+                    "organization_employee_id":number
                 }
             ]
         }
@@ -144,9 +152,9 @@ export enum HolidayDaysEnum {
     "project_teams":[
         {
             "team_id":number,
-            "organizaion_employees":[
+            "organization_employees":[
                 {
-                    "organizaion_employee_id":number
+                    "organization_employee_id":number
                 }
             ]
         }
@@ -199,7 +207,33 @@ export enum HolidayDaysEnum {
 ```
 
 ---
+
 #
 
-
 ## All Endpoinsts have update endpoint with "project_id" key
+
+
+# project details updates
+
+`POST - /fetch_project_details`
+
+## Request
+
+```ts
+{
+  "incident_type_matrix"
+
+
+}
+```
+
+## Response
+
+```ts
+{
+  "project_status":PrijectStutsEnum,
+  "project_progress":number
+}
+```
+
+---
