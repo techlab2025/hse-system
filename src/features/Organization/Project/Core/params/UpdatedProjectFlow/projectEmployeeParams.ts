@@ -9,7 +9,7 @@ export default class ProjectEmployeeParams implements Params {
 
   toMap(): Record<string, unknown> {
     return {
-      organizaion_employee_id: this.organizaion_employee_id,
+      organization_employee_id: this.organizaion_employee_id,
     }
   }
 }

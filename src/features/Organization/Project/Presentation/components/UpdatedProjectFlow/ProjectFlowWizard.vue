@@ -10,7 +10,6 @@ import { LangsMap } from '@/constant/langs'
 import { useUserStore } from '@/stores/user'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
-import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
 import type SohwProjectZoonModel from '../../../Data/models/ShowProjectZone'
@@ -19,7 +18,9 @@ import ProjectFlowDetailsParams from '../../../Core/params/UpdatedProjectFlow/Pr
 import ProjectHolidaysParams from '../../../Core/params/UpdatedProjectFlow/ProjectHolidaysParams'
 import type { CustomHolidayDay } from '../../../Core/params/UpdatedProjectFlow/CustomHolidayDayParams'
 import ProjectLocationPositionEmployeesParams from '../../../Core/params/UpdatedProjectFlow/ProjectLocationPositionEmployeesParams'
-import type { ProjectLocationHierarchy } from '../../../Core/params/UpdatedProjectFlow/ProjectLocationHierarchyParams'
+import ProjectLocationHierarchy from '../../../Core/params/UpdatedProjectFlow/ProjectLocationHierarchyParams'
+import ProjectHierarchyParams from '../../../Core/params/UpdatedProjectFlow/hierarchyParams'
+import ProjectEmployeeParams from '../../../Core/params/UpdatedProjectFlow/projectEmployeeParams'
 import ProjectTeamsParams from '../../../Core/params/UpdatedProjectFlow/ProjectTeamsParams'
 import type { ProjectLocationTeam } from '../../../Core/params/UpdatedProjectFlow/ProjectLocationTeamParams'
 import ProjectEquipmentsParams from '../../../Core/params/UpdatedProjectFlow/ProjectEquipmentsParams'
@@ -49,9 +50,16 @@ import type { EquipmentZoneForm } from '../../../Core/params/UpdatedProjectFlow/
 const route = useRoute()
 const router = useRouter()
 const projectId = ref<number | undefined>(route.params.id ? Number(route.params.id) : undefined)
-//
-const requestedStep = Number(route.params.step ?? route.query.resumeStep ?? 1)
-const activeStep = ref(Math.min(5, Math.max(1, requestedStep)))
+
+const parseStep = (value: unknown): number | null => {
+  const rawValue = Array.isArray(value) ? value[0] : value
+  if (rawValue === undefined || rawValue === null || rawValue === '') return null
+  const step = Number(rawValue)
+  return Number.isFinite(step) ? Math.min(5, Math.max(1, step)) : null
+}
+
+const requestedRouteStep = () => parseStep(route.params.step) ?? parseStep(route.query.resumeStep)
+const activeStep = ref(requestedRouteStep() ?? 1)
 const editOnly = computed(() => route.query.edit === '1')
 const updateProjectId = computed(() => (editOnly.value ? projectId.value : undefined))
 const loading = ref(false)
@@ -102,6 +110,20 @@ const routeProjectId = computed(
 const teams = ref<TeamLocationForm[]>([])
 const equipments = ref<EquipmentZoneForm[]>([])
 
+const resumeStepFromProject = (data: Record<string, any>) => {
+  const projectStatus = Number(data.project_status)
+  if (Number.isFinite(projectStatus) && projectStatus > 0) {
+    return Math.min(5, projectStatus + 1)
+  }
+
+  const projectProgress = Number(data.project_progress)
+  if (Number.isFinite(projectProgress) && projectProgress > 0) {
+    return Math.min(5, Math.floor(projectProgress / 20) + 1)
+  }
+
+  return 1
+}
+
 const fetchLanguages = async () => {
   const available = user.user?.languages?.length
     ? user.user.languages
@@ -149,6 +171,7 @@ onMounted(async () => {
   if (!state.value.data) return
   const details = state.value.data
   const data = details.data
+  activeStep.value = requestedRouteStep() ?? resumeStepFromProject(data)
   basic.value = {
     serial: data.serial ?? data.serial_number ?? '',
     startDate: data.start_date ? new Date(data.start_date) : null,
@@ -188,38 +211,6 @@ onMounted(async () => {
   holidays.value.custom = details.customHolidayDays.map((item: CustomHolidayDay) => ({
     holiday_title: item.holiday_title,
     holidays_dates: item.holidays_dates.map((date) => new Date(date)),
-  }))
-  teams.value = details.teams.map((location) => ({
-    projectLocation: new TitleInterface({
-      id: location.project_location_id,
-      title: (location as any).title ?? `#${location.project_location_id}`,
-    }),
-    projectTeams: location.project_teams.map((team) => ({
-      team: new TitleInterface({
-        id: team.team_id,
-        title: (team as any).title ?? `#${team.team_id}`,
-      }),
-      employees: team.organizaion_employees.map(
-        (employee) =>
-          new TitleInterface({
-            id: employee.organizaion_employee_id,
-            title: (employee as any).title ?? `#${employee.organizaion_employee_id}`,
-          }),
-      ),
-      employeeParams: new IndexOrganizatoinEmployeeParams(
-        '',
-        1,
-        30,
-        0,
-        null,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        // routeProjectId.value ?? null,
-      ),
-    })),
   }))
   equipments.value = details.equipments.map((zone) => ({
     zone: new TitleInterface({
@@ -345,15 +336,22 @@ const buildParams = () => {
     })
   }
   if (activeStep.value === 3) {
-    const payload: ProjectLocationHierarchy[] = positions.value.map((location) => ({
-      project_location_id: location.projectLocation!.id,
-      hierarchies: location.heirarchys.map((hierarchy) => ({
-        hierarchy_id: hierarchy.hierarchy!.id,
-        organization_employees: hierarchy.employees.map((employee) => ({
-          organization_employee_id: employee.id,
-        })),
-      })),
-    }))
+    const payload = positions.value.map(
+      (location) =>
+        new ProjectLocationHierarchy({
+          project_location_id: location.projectLocation!.id,
+          isUpdate: editOnly.value,
+          hierarchies: location.heirarchys.map(
+            (hierarchy) =>
+              new ProjectHierarchyParams({
+                hierarchy_id: hierarchy.hierarchy!.id,
+                organizaion_employees: hierarchy.employees.map(
+                  (employee) => new ProjectEmployeeParams({ organizaion_employee_id: employee.id }),
+                ),
+              }),
+          ),
+        }),
+    )
     return new ProjectLocationPositionEmployeesParams({
       locations: payload,
       projectId: projectId.value!,
@@ -365,8 +363,8 @@ const buildParams = () => {
       project_location_id: location.projectLocation!.id,
       project_teams: location.projectTeams.map((team) => ({
         team_id: team.team!.id,
-        organizaion_employees: team.employees.map((employee) => ({
-          organizaion_employee_id: employee.id,
+        organization_employees: team.employees.map((employee) => ({
+          organization_employee_id: employee.id,
         })),
       })),
     }))

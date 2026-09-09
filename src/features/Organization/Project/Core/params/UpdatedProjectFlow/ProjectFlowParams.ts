@@ -6,7 +6,7 @@ export { default as ProjectTeamsParams } from './ProjectTeamsParams'
 export { default as ProjectEquipmentsParams } from './ProjectEquipmentsParams'
 
 export type { CustomHolidayDay } from './CustomHolidayDayParams'
-export type { ProjectLocationHierarchy } from './ProjectLocationHierarchyParams'
+export { default as ProjectLocationHierarchy } from './ProjectLocationHierarchyParams'
 export type { ProjectLocationHierarchyDetails } from './ProjectLocationHierarchyDetailsParams'
 export type { ProjectLocationTeam } from './ProjectLocationTeamParams'
 export type { ProjectZoonEquipment } from './ProjectZoonEquipmentParams'
