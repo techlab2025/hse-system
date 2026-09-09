@@ -1,19 +1,27 @@
 import type Params from '@/base/core/params/params'
 import type { HolidayDaysEnum } from '../../Enums/UpdatedProjectFlow/HolidayDaysEnum'
-
-export type CustomHolidayDay = {
-  holiday_title: string
-  holidays_dates: string[]
-}
+import type { CustomHolidayDay } from './CustomHolidayDayParams'
 
 export default class ProjectHolidaysParams implements Params {
-  constructor(
-    public readonly basicHolidayDays: HolidayDaysEnum[],
-    public readonly hasCustomHolidayDays: boolean,
-    public readonly customHolidayDays: CustomHolidayDay[],
-    public readonly projectId: number,
-    public readonly isUpdate: boolean = false,
-  ) {}
+  public readonly basicHolidayDays: HolidayDaysEnum[]
+  public readonly hasCustomHolidayDays: boolean
+  public readonly customHolidayDays: CustomHolidayDay[]
+  public readonly projectId: number
+  public readonly isUpdate: boolean
+
+  constructor(data: {
+    basicHolidayDays: HolidayDaysEnum[]
+    hasCustomHolidayDays: boolean
+    customHolidayDays: CustomHolidayDay[]
+    projectId: number
+    isUpdate: boolean
+  }) {
+    this.basicHolidayDays = data.basicHolidayDays
+    this.hasCustomHolidayDays = data.hasCustomHolidayDays
+    this.customHolidayDays = data.customHolidayDays
+    this.projectId = data.projectId
+    this.isUpdate = data.isUpdate
+  }
 
   toMap(): Record<string, unknown> {
     return {

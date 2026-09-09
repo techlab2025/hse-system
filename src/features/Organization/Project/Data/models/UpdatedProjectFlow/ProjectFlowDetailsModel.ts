@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { CustomHolidayDay } from '../../../Core/params/UpdatedProjectFlow/ProjectHolidaysParams'
-import type { ProjectLocationHierarchy } from '../../../Core/params/UpdatedProjectFlow/ProjectLocationPositionEmployeesParams'
-import type { ProjectLocationTeam } from '../../../Core/params/UpdatedProjectFlow/ProjectTeamsParams'
-import type { ProjectZoonEquipment } from '../../../Core/params/UpdatedProjectFlow/ProjectEquipmentsParams'
+import type { CustomHolidayDay } from '../../../Core/params/UpdatedProjectFlow/CustomHolidayDayParams'
+import type { ProjectLocationHierarchyDetails } from '../../../Core/params/UpdatedProjectFlow/ProjectLocationHierarchyDetailsParams'
+import type { ProjectLocationTeam } from '../../../Core/params/UpdatedProjectFlow/ProjectLocationTeamParams'
+import type { ProjectZoonEquipment } from '../../../Core/params/UpdatedProjectFlow/ProjectZoonEquipmentParams'
 import type { HolidayDaysEnum } from '../../../Core/Enums/UpdatedProjectFlow/HolidayDaysEnum'
 
 export default class ProjectFlowDetailsModel {
@@ -11,7 +11,7 @@ export default class ProjectFlowDetailsModel {
     public readonly basicHolidayDays: HolidayDaysEnum[],
     public readonly hasCustomHolidayDays: boolean,
     public readonly customHolidayDays: CustomHolidayDay[],
-    public readonly positions: ProjectLocationHierarchy[],
+    public readonly positions: ProjectLocationHierarchyDetails[],
     public readonly teams: ProjectLocationTeam[],
     public readonly equipments: ProjectZoonEquipment[],
   ) {}

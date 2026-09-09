@@ -1,19 +1,20 @@
 import type Params from '@/base/core/params/params'
-
-export type ProjectLocationHierarchy = {
-  project_location_id: number
-  hierarchies: {
-    heirarchy_id: number
-    organizaion_employees: { organizaion_employee_id: number }[]
-  }[]
-}
+import type ProjectLocationHierarchy from './ProjectLocationHierarchyParams'
 
 export default class ProjectLocationPositionEmployeesParams implements Params {
-  constructor(
-    public readonly locations: ProjectLocationHierarchy[],
-    public readonly projectId: number,
-    public readonly isUpdate: boolean = false,
-  ) {}
+  public readonly locations: ProjectLocationHierarchy[]
+  public readonly projectId: number
+  public readonly isUpdate: boolean
+
+  constructor(data: {
+    locations: ProjectLocationHierarchy[]
+    projectId: number
+    isUpdate: boolean
+  }) {
+    this.locations = data.locations
+    this.projectId = data.projectId
+    this.isUpdate = data.isUpdate
+  }
 
   toMap(): Record<string, unknown> {
     return {

@@ -1,64 +1,50 @@
 <script setup lang="ts">
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { computed, markRaw, onMounted, ref, watch, type Component } from 'vue'
+import { computed, markRaw, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import TranslationsParams from '@/base/core/params/translations_params'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
-import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
-import DatePicker from 'primevue/datepicker'
-import ToggleSwitch from 'primevue/toggleswitch'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import { LangsMap } from '@/constant/langs'
 import { useUserStore } from '@/stores/user'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
-import IndexContractorController from '@/features/setting/contractor/Presentation/controllers/indexContractorController'
-import IndexContractorParams from '@/features/setting/contractor/Core/params/indexContractorParams'
-import IndexLocationController from '@/features/setting/Location/Presentation/controllers/indexLocationController'
-import IndexLocationParams from '@/features/setting/Location/Core/params/indexLocationParams'
-import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
-import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController'
-import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams'
-import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
-import IndexTeamController from '@/features/setting/Teams/Presentation/controllers/indexTeamController'
-import IndexTeamParams from '@/features/setting/Teams/Core/params/indexTeamParams'
-import IndexProjectZoneController from '@/features/Organization/ProjectZone/Presentation/controllers/indexProjectZoneController'
-import IndexProjectZoneParams from '@/features/Organization/ProjectZone/Core/params/indexProjectZoneParams'
-import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
-import AddContractor from '@/features/setting/contractor/Presentation/components/AddContractor.vue'
-import AddZoneDialog from '../Dialogs/ZoneDialog/AddZoneDialog.vue'
-import AddProjectZoneDialog from '../Dialogs/AddProjectZoneDialog.vue'
-import LocationSelectDialog from '../SelectDialogs/LocationSelectDialog.vue'
 import type SohwProjectZoonModel from '../../../Data/models/ShowProjectZone'
-import { HolidayDaysEnum } from '../../../Core/Enums/UpdatedProjectFlow/HolidayDaysEnum'
 import BasicProjectParams from '../../../Core/params/UpdatedProjectFlow/BasicProjectParams'
 import ProjectFlowDetailsParams from '../../../Core/params/UpdatedProjectFlow/ProjectFlowDetailsParams'
-import ProjectHolidaysParams, {
-  type CustomHolidayDay,
-} from '../../../Core/params/UpdatedProjectFlow/ProjectHolidaysParams'
-import ProjectLocationPositionEmployeesParams, {
-  type ProjectLocationHierarchy,
-} from '../../../Core/params/UpdatedProjectFlow/ProjectLocationPositionEmployeesParams'
-import ProjectTeamsParams, {
-  type ProjectLocationTeam,
-} from '../../../Core/params/UpdatedProjectFlow/ProjectTeamsParams'
-import ProjectEquipmentsParams, {
-  type ProjectZoonEquipment,
-} from '../../../Core/params/UpdatedProjectFlow/ProjectEquipmentsParams'
-import {
-  BasicProjectController,
-  ProjectEquipmentsController,
-  ProjectHolidaysController,
-  ProjectLocationPositionEmployeesController,
-  ProjectTeamsController,
-  ProjectFlowDetailsController,
-} from '../../controllers/UpdatedProjectFlow/ProjectFlowControllers'
+import ProjectHolidaysParams from '../../../Core/params/UpdatedProjectFlow/ProjectHolidaysParams'
+import type { CustomHolidayDay } from '../../../Core/params/UpdatedProjectFlow/CustomHolidayDayParams'
+import ProjectLocationPositionEmployeesParams from '../../../Core/params/UpdatedProjectFlow/ProjectLocationPositionEmployeesParams'
+import type { ProjectLocationHierarchy } from '../../../Core/params/UpdatedProjectFlow/ProjectLocationHierarchyParams'
+import ProjectTeamsParams from '../../../Core/params/UpdatedProjectFlow/ProjectTeamsParams'
+import type { ProjectLocationTeam } from '../../../Core/params/UpdatedProjectFlow/ProjectLocationTeamParams'
+import ProjectEquipmentsParams from '../../../Core/params/UpdatedProjectFlow/ProjectEquipmentsParams'
+import type { ProjectZoonEquipment } from '../../../Core/params/UpdatedProjectFlow/ProjectZoonEquipmentParams'
+import BasicProjectController from '../../controllers/UpdatedProjectFlow/BasicProjectController'
+import ProjectEquipmentsController from '../../controllers/UpdatedProjectFlow/ProjectEquipmentsController'
+import ProjectHolidaysController from '../../controllers/UpdatedProjectFlow/ProjectHolidaysController'
+import ProjectLocationPositionEmployeesController from '../../controllers/UpdatedProjectFlow/ProjectLocationPositionEmployeesController'
+import ProjectTeamsController from '../../controllers/UpdatedProjectFlow/ProjectTeamsController'
+import ProjectFlowDetailsController from '../../controllers/UpdatedProjectFlow/ProjectFlowDetailsController'
+import BasicProjectStep from './Steps/BasicProjectStep.vue'
+import ProjectHolidaysStep from './Steps/ProjectHolidaysStep.vue'
+import ProjectPositionsStep from './Steps/ProjectPositionsStep.vue'
+import ProjectTeamsStep from './Steps/ProjectTeamsStep.vue'
+import ProjectEquipmentsStep from './Steps/ProjectEquipmentsStep.vue'
+import type {
+  BasicProjectForm,
+  LangDescriptionValue,
+  LangTitleValue,
+  ProjectSerialField,
+} from '../../../Core/params/UpdatedProjectFlow/BasicProjectFormParams'
+import type { ProjectHolidaysForm } from '../../../Core/params/UpdatedProjectFlow/ProjectHolidaysFormParams'
+import type { PositionLocationForm } from '../../../Core/params/UpdatedProjectFlow/ProjectPositionFormParams'
+import type { TeamLocationForm } from '../../../Core/params/UpdatedProjectFlow/ProjectTeamFormParams'
+import type { EquipmentZoneForm } from '../../../Core/params/UpdatedProjectFlow/ProjectEquipmentFormParams'
 
 const route = useRoute()
 const router = useRouter()
@@ -79,14 +65,14 @@ const steps = [
   { number: 5, title: 'Equipment', caption: 'Equipment by zone' },
 ]
 
-const basic = ref({
+const basic = ref<BasicProjectForm>({
   serial: '',
   startDate: null as Date | null,
   endDate: null as Date | null,
   cost: '',
   hasZoon: true,
 })
-const serialFields = ref([
+const serialFields = ref<ProjectSerialField[]>([
   {
     key: 'SerialNumber',
     label: 'serial_number',
@@ -95,11 +81,6 @@ const serialFields = ref([
     enabled: !projectId.value,
   },
 ])
-const updateSerial = (data: { SerialNumber: string }) => {
-  basic.value.serial = data.SerialNumber
-}
-type LangTitleValue = { locale: string; icon?: string | Component; title: string }
-type LangDescriptionValue = { locale: string; icon?: string | Component; description: string }
 const langs = ref<LangTitleValue[]>([])
 const langsDescription = ref<LangDescriptionValue[]>([])
 const langDefault = ref<LangTitleValue[]>([])
@@ -108,69 +89,18 @@ const contractorIds = ref<TitleInterface[]>([])
 const locations = ref<TitleInterface[]>([])
 const zoneIds = ref<number[]>([])
 const selectedZones = ref<SohwProjectZoonModel[]>([])
-const contractorDialog = ref(false)
-const locationVisible = ref(false)
 const user = useUserStore()
-const contractorController = IndexContractorController.getInstance()
-const contractorParams = new IndexContractorParams('', 0, 0, 0)
-const locationController = IndexLocationController.getInstance()
-const locationParams = ref(new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA))
-const holidays = ref({
-  basicDays: [] as HolidayDaysEnum[],
+const holidays = ref<ProjectHolidaysForm>({
+  basicDays: [],
   hasCustom: false,
   custom: [] as { holiday_title: string; holidays_dates: Date[] }[],
 })
-type PositionHierarchyForm = {
-  hierarchy: TitleInterface | null
-  employees: TitleInterface[]
-  employeeParams: IndexOrganizatoinEmployeeParams
-}
-type PositionLocationForm = {
-  projectLocation: TitleInterface | null
-  heirarchys: PositionHierarchyForm[]
-}
 const positions = ref<PositionLocationForm[]>([])
-const projectLocationController = IndexLocationController.getInstance()
-const hierarchyController = IndexHerikalyController.getInstance()
-const employeeController = IndexOrganizatoinEmployeeController.getInstance()
 const routeProjectId = computed(
   () => projectId.value ?? (route.query.project_id ? Number(route.query.project_id) : undefined),
 )
-const projectLocationParams = ref<IndexLocationParams | null>(null)
-const hierarchyParams = computed(
-  () => new IndexHerikalyParams('', 1, 30, 0, false, routeProjectId.value ?? null),
-)
-type TeamForm = {
-  team: TitleInterface | null
-  employees: TitleInterface[]
-  employeeParams: IndexOrganizatoinEmployeeParams
-}
-type TeamLocationForm = { projectLocation: TitleInterface | null; projectTeams: TeamForm[] }
 const teams = ref<TeamLocationForm[]>([])
-const teamController = IndexTeamController.getInstance()
-const teamParams = computed(
-  () => new IndexTeamParams('', 1, 30, 0, undefined, routeProjectId.value ?? null),
-)
-
-type EquipmentZoneForm = {
-  zone: TitleInterface | null
-  equipments: TitleInterface[]
-  equipmentParams: IndexEquipmentParams
-}
 const equipments = ref<EquipmentZoneForm[]>([])
-const projectZoneController = IndexProjectZoneController.getInstance()
-const equipmentController = IndexEquipmentController.getInstance()
-const projectZoneParams = computed(
-  () =>
-    new IndexProjectZoneParams(
-      '',
-      1,
-      30,
-      0,
-      locations.value.map((item) => item.id),
-      routeProjectId.value ?? null,
-    ),
-)
 
 const fetchLanguages = async () => {
   const available = user.user?.languages?.length
@@ -196,23 +126,8 @@ const fetchLanguages = async () => {
   langsDescription.value = langDefaultDescription.value.map((item) => ({ ...item }))
 }
 
-const setLangTitles = (value: { locale: string; title?: string }[]) => {
-  langs.value = value.map((item) => ({ ...item, title: item.title ?? '' }))
-}
-const setLangDescriptions = (value: { locale: string; description?: string }[]) => {
-  langsDescription.value = value.map((item) => ({ ...item, description: item.description ?? '' }))
-}
-const setContractors = (value: TitleInterface | TitleInterface[] | null) => {
-  contractorIds.value = Array.isArray(value) ? value : value ? [value] : []
-}
-const setLocations = (value: TitleInterface | TitleInterface[] | null) => {
-  locations.value = Array.isArray(value) ? value : value ? [value] : []
-}
 const updateZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
   zoneIds.value = value.flatMap((item) => item.ZoneIds ?? [])
-}
-const reloadLocations = () => {
-  locationParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA)
 }
 
 watch(
@@ -228,11 +143,11 @@ watch(
 onMounted(async () => {
   await fetchLanguages()
   if (!projectId.value) return
-  const state = await new ProjectFlowDetailsController().show(
-    new ProjectFlowDetailsParams(projectId.value),
+  const state = await ProjectFlowDetailsController.getInstance().show(
+    new ProjectFlowDetailsParams({ projectId: projectId.value }),
   )
-  if (!state.data) return
-  const details = state.data
+  if (!state.value.data) return
+  const details = state.value.data
   const data = details.data
   basic.value = {
     serial: data.serial ?? data.serial_number ?? '',
@@ -273,38 +188,6 @@ onMounted(async () => {
   holidays.value.custom = details.customHolidayDays.map((item: CustomHolidayDay) => ({
     holiday_title: item.holiday_title,
     holidays_dates: item.holidays_dates.map((date) => new Date(date)),
-  }))
-  positions.value = details.positions.map((location) => ({
-    projectLocation: new TitleInterface({
-      id: location.project_location_id,
-      title: (location as any).title ?? `#${location.project_location_id}`,
-    }),
-    heirarchys: location.heirarchys.map((hierarchy) => ({
-      hierarchy: new TitleInterface({
-        id: hierarchy.heirarchy_id,
-        title: (hierarchy as any).title ?? `#${hierarchy.heirarchy_id}`,
-      }),
-      employees: hierarchy.organizaion_employees.map(
-        (employee) =>
-          new TitleInterface({
-            id: employee.organizaion_employee_id,
-            title: (employee as any).title ?? `#${employee.organizaion_employee_id}`,
-          }),
-      ),
-      employeeParams: new IndexOrganizatoinEmployeeParams(
-        '',
-        1,
-        30,
-        0,
-        hierarchy.heirarchy_id,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        undefined,
-        // routeProjectId.value ?? null,
-      ),
-    })),
   }))
   teams.value = details.teams.map((location) => ({
     projectLocation: new TitleInterface({
@@ -366,149 +249,6 @@ onMounted(async () => {
     ),
   }))
 })
-
-const dayOptions = [
-  ['Sunday', HolidayDaysEnum.SUNDAY],
-  ['Monday', HolidayDaysEnum.MONDAY],
-  ['Tuesday', HolidayDaysEnum.TUESDAY],
-  ['Wednesday', HolidayDaysEnum.WEDNESDAY],
-  ['Thursday', HolidayDaysEnum.THURSDAY],
-  ['Friday', HolidayDaysEnum.FRIDAY],
-  ['Saturday', HolidayDaysEnum.SATURDAY],
-] as const
-
-watch(
-  routeProjectId,
-  (id) => {
-    projectLocationParams.value = id
-      ? new IndexLocationParams(
-          '',
-          1,
-          30,
-          0,
-          LocationEnum.AREA,
-          undefined,
-          undefined,
-          undefined,
-          id,
-        )
-      : null
-  },
-  { immediate: true },
-)
-
-const addCustomHoliday = () => holidays.value.custom.push({ holiday_title: '', holidays_dates: [] })
-const addPositionLocation = () => positions.value.push({ projectLocation: null, heirarchys: [] })
-const addHierarchy = (location: PositionLocationForm) =>
-  location.heirarchys.push({
-    hierarchy: null,
-    employees: [],
-    employeeParams: new IndexOrganizatoinEmployeeParams(
-      '',
-      1,
-      30,
-      0,
-      null,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      // routeProjectId.value ?? null,
-    ),
-  })
-const setPositionLocation = (
-  location: PositionLocationForm,
-  value: TitleInterface | TitleInterface[] | null,
-) => {
-  location.projectLocation = Array.isArray(value) ? (value[0] ?? null) : value
-}
-const setHierarchy = (
-  hierarchy: PositionHierarchyForm,
-  value: TitleInterface | TitleInterface[] | null,
-) => {
-  hierarchy.hierarchy = Array.isArray(value) ? (value[0] ?? null) : value
-  hierarchy.employees = []
-  hierarchy.employeeParams = new IndexOrganizatoinEmployeeParams(
-    '',
-    1,
-    30,
-    0,
-    hierarchy.hierarchy?.id ?? null,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    // routeProjectId.value ?? null,
-  )
-}
-const setPositionEmployees = (
-  hierarchy: PositionHierarchyForm,
-  value: TitleInterface | TitleInterface[] | null,
-) => {
-  hierarchy.employees = Array.isArray(value) ? value : value ? [value] : []
-}
-const projectEmployeeParams = () =>
-  new IndexOrganizatoinEmployeeParams(
-    '',
-    1,
-    30,
-    0,
-    null,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    // routeProjectId.value ?? null,
-  )
-const addTeamLocation = () => teams.value.push({ projectLocation: null, projectTeams: [] })
-const addTeam = (location: TeamLocationForm) =>
-  location.projectTeams.push({ team: null, employees: [], employeeParams: projectEmployeeParams() })
-const setTeamLocation = (
-  location: TeamLocationForm,
-  value: TitleInterface | TitleInterface[] | null,
-) => {
-  location.projectLocation = Array.isArray(value) ? (value[0] ?? null) : value
-}
-const setTeam = (team: TeamForm, value: TitleInterface | TitleInterface[] | null) => {
-  team.team = Array.isArray(value) ? (value[0] ?? null) : value
-}
-const setTeamEmployees = (team: TeamForm, value: TitleInterface | TitleInterface[] | null) => {
-  team.employees = Array.isArray(value) ? value : value ? [value] : []
-}
-const equipmentParamsForZone = (zoneId?: number) =>
-  new IndexEquipmentParams(
-    '',
-    1,
-    30,
-    0,
-    undefined,
-    true,
-    zoneId,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    routeProjectId.value ?? null,
-  )
-const addEquipmentZoon = () =>
-  equipments.value.push({ zone: null, equipments: [], equipmentParams: equipmentParamsForZone() })
-const setEquipmentZone = (
-  zone: EquipmentZoneForm,
-  value: TitleInterface | TitleInterface[] | null,
-) => {
-  zone.zone = Array.isArray(value) ? (value[0] ?? null) : value
-  zone.equipments = []
-  zone.equipmentParams = equipmentParamsForZone(zone.zone?.id)
-}
-const setZoneEquipments = (
-  zone: EquipmentZoneForm,
-  value: TitleInterface | TitleInterface[] | null,
-) => {
-  zone.equipments = Array.isArray(value) ? value : value ? [value] : []
-}
 
 const validateStep = () => {
   if (activeStep.value === 1) {
@@ -577,36 +317,36 @@ const buildParams = () => {
     langsDescription.value.forEach((item) => {
       translation.setTranslation('description', item.locale, item.description)
     })
-    return new BasicProjectParams(
+    return new BasicProjectParams({
       translation,
-      contractorIds.value.map((item) => item.id),
-      locations.value.map((item) => item.id),
-      basic.value.hasZoon ? zoneIds.value : [],
-      basic.value.serial || undefined,
-      basic.value.startDate!,
-      basic.value.endDate!,
-      basic.value.cost,
-      basic.value.hasZoon,
-      updateProjectId.value,
-      editOnly.value,
-    )
+      contractorIds: contractorIds.value.map((item) => item.id),
+      locationIds: locations.value.map((item) => item.id),
+      zoonIds: basic.value.hasZoon ? zoneIds.value : [],
+      serial: basic.value.serial || undefined,
+      startDate: basic.value.startDate!,
+      endDate: basic.value.endDate!,
+      cost: basic.value.cost,
+      hasZoon: basic.value.hasZoon,
+      projectId: updateProjectId.value,
+      isUpdate: editOnly.value,
+    })
   }
   if (activeStep.value === 2) {
     const custom = holidays.value.custom.map((item) => ({
       holiday_title: item.holiday_title,
       holidays_dates: item.holidays_dates.map((date) => formatJoinDate(date)),
     }))
-    return new ProjectHolidaysParams(
-      holidays.value.basicDays,
-      holidays.value.hasCustom,
-      custom,
-      projectId.value!,
-      editOnly.value,
-    )
+    return new ProjectHolidaysParams({
+      basicHolidayDays: holidays.value.basicDays,
+      hasCustomHolidayDays: holidays.value.hasCustom,
+      customHolidayDays: custom,
+      projectId: projectId.value!,
+      isUpdate: editOnly.value,
+    })
   }
   if (activeStep.value === 3) {
     const payload: ProjectLocationHierarchy[] = positions.value.map((location) => ({
-      location_id: location.projectLocation!.id,
+      project_location_id: location.projectLocation!.id,
       hierarchies: location.heirarchys.map((hierarchy) => ({
         hierarchy_id: hierarchy.hierarchy!.id,
         organization_employees: hierarchy.employees.map((employee) => ({
@@ -614,33 +354,45 @@ const buildParams = () => {
         })),
       })),
     }))
-    return new ProjectLocationPositionEmployeesParams(payload, projectId.value!, editOnly.value)
+    return new ProjectLocationPositionEmployeesParams({
+      locations: payload,
+      projectId: projectId.value!,
+      isUpdate: editOnly.value,
+    })
   }
   if (activeStep.value === 4) {
     const payload: ProjectLocationTeam[] = teams.value.map((location) => ({
       project_location_id: location.projectLocation!.id,
       project_teams: location.projectTeams.map((team) => ({
         team_id: team.team!.id,
-        organization_employees: team.employees.map((employee) => ({
-          organization_employee_id: employee.id,
+        organizaion_employees: team.employees.map((employee) => ({
+          organizaion_employee_id: employee.id,
         })),
       })),
     }))
-    return new ProjectTeamsParams(payload, projectId.value!, editOnly.value)
+    return new ProjectTeamsParams({
+      locations: payload,
+      projectId: projectId.value!,
+      isUpdate: editOnly.value,
+    })
   }
   const payload: ProjectZoonEquipment[] = equipments.value.map((zone) => ({
     project_zoon_id: zone.zone!.id,
     equipments: zone.equipments.map((equipment) => ({ equipment_id: equipment.id })),
   }))
-  return new ProjectEquipmentsParams(payload, projectId.value!, editOnly.value)
+  return new ProjectEquipmentsParams({
+    zoons: payload,
+    projectId: projectId.value!,
+    isUpdate: editOnly.value,
+  })
 }
 
 const controllerForStep = () => {
-  if (activeStep.value === 1) return new BasicProjectController()
-  if (activeStep.value === 2) return new ProjectHolidaysController()
-  if (activeStep.value === 3) return new ProjectLocationPositionEmployeesController()
-  if (activeStep.value === 4) return new ProjectTeamsController()
-  return new ProjectEquipmentsController()
+  if (activeStep.value === 1) return BasicProjectController.getInstance()
+  if (activeStep.value === 2) return ProjectHolidaysController.getInstance()
+  if (activeStep.value === 3) return ProjectLocationPositionEmployeesController.getInstance()
+  if (activeStep.value === 4) return ProjectTeamsController.getInstance()
+  return ProjectEquipmentsController.getInstance()
 }
 
 const finishOrContinue = async () => {
@@ -666,11 +418,11 @@ const saveAndNext = async () => {
   loading.value = true
   try {
     const state = await controllerForStep().save(buildParams())
-    if (state.data) {
-      projectId.value = state.data.id ?? projectId.value
+    if (state.value.data) {
+      projectId.value = state.value.data.id ?? projectId.value
       await finishOrContinue()
     } else {
-      errorMessage.value = state.error?.title ?? 'The step could not be saved.'
+      errorMessage.value = state.value.error?.title ?? 'The step could not be saved.'
     }
   } finally {
     loading.value = false
@@ -713,346 +465,35 @@ const skipAndNext = async () => {
     </nav>
 
     <form class="flow-card" @submit.prevent="saveAndNext">
-      <div v-if="activeStep === 1" class="form-grid">
-        <div class="section-title full">
-          <span>01</span>
-          <div>
-            <h2>Basic project data</h2>
-            <p>Define the project, its scope, and timeline.</p>
-          </div>
-        </div>
-        <div class="input-wrapper">
-          <LangTitleInput
-            label="Project Name"
-            :langs="langDefault"
-            :model-value="langs"
-            help-text="Enter the project name in each available language."
-            @update:model-value="setLangTitles"
-          />
-        </div>
-        <div class="input-wrapper">
-          <SwitchInput
-            :fields="serialFields"
-            :switch-title="$t('auto')"
-            :is-auto="true"
-            :switch-reverse="true"
-            help-text="Enter a unique project serial number, or enable automatic generation to let the system create it."
-            @update:value="updateSerial"
-          />
-        </div>
-        <div class="input-wrapper">
-          <UpdatedCustomInputSelect
-            :required="false"
-            :model-value="contractorIds"
-            :type="2"
-            :controller="contractorController"
-            :params="contractorParams"
-            label="contractors"
-            placeholder="Select contractors"
-            :is-dialog="true"
-            v-model:dialog-visible="contractorDialog"
-            @update:model-value="setContractors"
-          >
-            <template #LabelHeader>
-              <span class="add-dialog" @click="contractorDialog = true">{{ $t('New') }}</span>
-            </template>
-            <template #Dialog><AddContractor @update:data="contractorDialog = false" /></template>
-          </UpdatedCustomInputSelect>
-        </div>
-        <div class="input-wrapper">
-          <UpdatedCustomInputSelect
-            :required="true"
-            :model-value="locations"
-            :controller="locationController"
-            :params="locationParams"
-            label="location"
-            placeholder="Select locations"
-            :type="2"
-            :onclick="() => (locationVisible = true)"
-            @update:model-value="setLocations"
-          />
-        </div>
-        <label
-          >Start date<DatePicker
-            v-model="basic.startDate"
-            date-format="yy-mm-dd"
-            placeholder="Select start date"
-        /></label>
-        <label
-          >End date<DatePicker
-            v-model="basic.endDate"
-            date-format="yy-mm-dd"
-            placeholder="Select end date"
-        /></label>
-        <label
-          >Cost<input v-model="basic.cost" inputmode="decimal" required placeholder="0.00"
-        /></label>
-        <div class="switch-row zone-switch">
-          <span
-            ><strong>Project has zones</strong
-            ><small>Turn this on to select zones for the chosen locations.</small></span
-          >
-          <ToggleSwitch v-model="basic.hasZoon" />
-        </div>
-        <div v-if="basic.hasZoon" class="input-wrapper full zone-selector">
-          <label class="zone-label">
-            <span>{{ $t('zones') }}</span>
-            <AddProjectZoneDialog @update:data="updateZones" />
-          </label>
-          <AddZoneDialog
-            :locations="locations"
-            :selected-zones="selectedZones"
-            @update:data="updateZones"
-          />
-        </div>
-        <div class="input-wrapper full">
-          <LangTitleInput
-            label="project_scope_of_work"
-            :langs="langDefault"
-            :model-value="langsDescription"
-            field-type="description"
-            type="textarea"
-            placeholder="What is the project scope of work?"
-            :required="false"
-            help-text="Describe the scope, main activities, and work boundaries in each language."
-            @update:model-value="setLangDescriptions"
-          />
-        </div>
-        <LocationSelectDialog v-model:visible="locationVisible" @location-added="reloadLocations" />
-      </div>
-
-      <div v-else-if="activeStep === 2" class="form-grid">
-        <div class="section-title full">
-          <span>02</span>
-          <div>
-            <h2>Project holidays</h2>
-            <p>Select weekly days off and add exceptional dates.</p>
-          </div>
-        </div>
-        <div class="full weekday-grid">
-          <label v-for="day in dayOptions" :key="day[1]" class="day-pill"
-            ><input v-model="holidays.basicDays" type="checkbox" :value="day[1]" /><span>{{
-              day[0].slice(0, 3)
-            }}</span></label
-          >
-        </div>
-        <label class="switch-row full"
-          ><input v-model="holidays.hasCustom" type="checkbox" /><span
-            ><strong>Custom holidays</strong
-            ><small>Add named holidays with one or more dates.</small></span
-          ></label
-        >
-        <template v-if="holidays.hasCustom">
-          <div v-for="(holiday, index) in holidays.custom" :key="index" class="repeat-card full">
-            <label>Holiday title<input v-model="holiday.holiday_title" /></label>
-            <label>
-              Holiday dates
-              <DatePicker
-                v-model="holiday.holidays_dates"
-                selection-mode="multiple"
-                date-format="yy-mm-dd"
-                show-icon
-                fluid
-                placeholder="Select one or more dates"
-              />
-            </label>
-            <button
-              type="button"
-              class="icon-button danger"
-              @click="holidays.custom.splice(index, 1)"
-            >
-              ×
-            </button>
-          </div>
-          <button type="button" class="add-row full" @click="addCustomHoliday">
-            + Add custom holiday
-          </button>
-        </template>
-      </div>
-
-      <div v-else-if="activeStep === 3" class="form-stack">
-        <div class="section-title">
-          <span>03</span>
-          <div>
-            <h2>Positions & employees</h2>
-            <p>Connect hierarchies and employees to every project location.</p>
-          </div>
-        </div>
-        <div v-for="(location, locationIndex) in positions" :key="locationIndex" class="group-card">
-          <div class="group-head">
-            <div class="input-wrapper group-select">
-              <UpdatedCustomInputSelect
-                :model-value="location.projectLocation"
-                :params="projectLocationParams"
-                :controller="projectLocationController"
-                label="Project location"
-                placeholder="Select project location"
-                :type="1"
-                :required="true"
-                @update:model-value="setPositionLocation(location, $event)"
-              />
-            </div>
-            <button
-              type="button"
-              class="icon-button danger"
-              @click="positions.splice(locationIndex, 1)"
-            >
-              ×
-            </button>
-          </div>
-          <div v-for="(hierarchy, index) in location.heirarchys" :key="index" class="nested-row">
-            <div class="input-wrapper">
-              <UpdatedCustomInputSelect
-                :model-value="hierarchy.hierarchy"
-                :params="hierarchyParams"
-                :controller="hierarchyController"
-                label="Functional position"
-                placeholder="Select hierarchy"
-                :type="1"
-                :required="true"
-                @update:model-value="setHierarchy(hierarchy, $event)"
-              />
-            </div>
-            <div class="input-wrapper">
-              <UpdatedCustomInputSelect
-                :model-value="hierarchy.employees"
-                :params="hierarchy.employeeParams"
-                :controller="employeeController"
-                label="Organization employees"
-                placeholder="Select employees"
-                :type="2"
-                :disabled="!hierarchy.hierarchy"
-                @update:model-value="setPositionEmployees(hierarchy, $event)"
-              />
-            </div>
-            <button
-              type="button"
-              class="icon-button danger"
-              @click="location.heirarchys.splice(index, 1)"
-            >
-              ×
-            </button>
-          </div>
-          <button type="button" class="add-row" @click="addHierarchy(location)">
-            + Add hierarchy
-          </button>
-        </div>
-        <button type="button" class="add-group" @click="addPositionLocation">
-          + Add project location
-        </button>
-      </div>
-
-      <div v-else-if="activeStep === 4" class="form-stack">
-        <div class="section-title">
-          <span>04</span>
-          <div>
-            <h2>Project teams</h2>
-            <p>Assign teams and their employees by location, or skip for now.</p>
-          </div>
-        </div>
-        <div v-for="(location, locationIndex) in teams" :key="locationIndex" class="group-card">
-          <div class="group-head">
-            <div class="input-wrapper group-select">
-              <UpdatedCustomInputSelect
-                :model-value="location.projectLocation"
-                :params="projectLocationParams"
-                :controller="projectLocationController"
-                label="Project location"
-                placeholder="Select project location"
-                :type="1"
-                @update:model-value="setTeamLocation(location, $event)"
-              />
-            </div>
-            <button
-              type="button"
-              class="icon-button danger"
-              @click="teams.splice(locationIndex, 1)"
-            >
-              ×
-            </button>
-          </div>
-          <div v-for="(team, index) in location.projectTeams" :key="index" class="nested-row">
-            <div class="input-wrapper">
-              <UpdatedCustomInputSelect
-                :model-value="team.team"
-                :params="teamParams"
-                :controller="teamController"
-                label="Team"
-                placeholder="Select team"
-                :type="1"
-                @update:model-value="setTeam(team, $event)"
-              />
-            </div>
-            <div class="input-wrapper">
-              <UpdatedCustomInputSelect
-                :model-value="team.employees"
-                :params="team.employeeParams"
-                :controller="employeeController"
-                label="Project employees"
-                placeholder="Select project employees"
-                :type="2"
-                @update:model-value="setTeamEmployees(team, $event)"
-              />
-            </div>
-            <button
-              type="button"
-              class="icon-button danger"
-              @click="location.projectTeams.splice(index, 1)"
-            >
-              ×
-            </button>
-          </div>
-          <button type="button" class="add-row" @click="addTeam(location)">+ Add team</button>
-        </div>
-        <button type="button" class="add-group" @click="addTeamLocation">
-          + Add project location
-        </button>
-      </div>
-
-      <div v-else class="form-stack">
-        <div class="section-title">
-          <span>05</span>
-          <div>
-            <h2>Project equipment</h2>
-            <p>Attach equipment to zones, or finish without equipment.</p>
-          </div>
-        </div>
-        <div
-          v-for="(zone, zoneIndex) in equipments"
-          :key="zoneIndex"
-          class="group-card equipment-row"
-        >
-          <div class="input-wrapper w-full">
-            <UpdatedCustomInputSelect
-              :model-value="zone.zone"
-              :params="projectZoneParams"
-              :controller="projectZoneController"
-              label="Project zone"
-              placeholder="Select project zone"
-              :type="1"
-              @update:model-value="setEquipmentZone(zone, $event)"
-            />
-          </div>
-          <div class="input-wrapper w-full">
-            <UpdatedCustomInputSelect
-              :model-value="zone.equipments"
-              :params="zone.equipmentParams"
-              :controller="equipmentController"
-              label="Equipment"
-              placeholder="Select equipment"
-              :type="2"
-              :disabled="!zone.zone"
-              @update:model-value="setZoneEquipments(zone, $event)"
-            />
-          </div>
-          <button type="button" class="icon-button danger" @click="equipments.splice(zoneIndex, 1)">
-            ×
-          </button>
-        </div>
-        <button type="button" class="add-group" @click="addEquipmentZoon">
-          + Add project zone
-        </button>
-      </div>
+      <BasicProjectStep
+        v-if="activeStep === 1"
+        v-model:basic="basic"
+        v-model:serial-fields="serialFields"
+        v-model:lang-default="langDefault"
+        v-model:langs="langs"
+        v-model:langs-description="langsDescription"
+        v-model:contractor-ids="contractorIds"
+        v-model:locations="locations"
+        :selected-zones="selectedZones"
+        @update-zones="updateZones"
+      />
+      <ProjectHolidaysStep v-else-if="activeStep === 2" v-model:holidays="holidays" />
+      <ProjectPositionsStep
+        v-else-if="activeStep === 3"
+        v-model:positions="positions"
+        :project-id="routeProjectId"
+      />
+      <ProjectTeamsStep
+        v-else-if="activeStep === 4"
+        v-model:teams="teams"
+        :project-id="routeProjectId"
+      />
+      <ProjectEquipmentsStep
+        v-else
+        v-model:equipments="equipments"
+        :locations="locations"
+        :project-id="routeProjectId"
+      />
 
       <p v-if="errorMessage" class="form-error">{{ errorMessage }}</p>
       <footer class="flow-actions">

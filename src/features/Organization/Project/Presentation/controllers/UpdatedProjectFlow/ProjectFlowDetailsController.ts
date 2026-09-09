@@ -1,48 +1,42 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
-// import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import type { Router } from 'vue-router'
-import type ProjectModel from '../../Data/models/ProjectModel'
-import AddProjectUseCase from '../../Domain/useCase/addProjectUseCase'
+import type ProjectFlowDetailsModel from '../../../Data/models/UpdatedProjectFlow/ProjectFlowDetailsModel'
+import ProjectFlowDetailsUseCase from '../../../Domain/useCase/UpdatedProjectFlow/ProjectFlowDetailsUseCase'
 
-export default class AddProjectController extends ControllerInterface<ProjectModel> {
-  private static instance: AddProjectController
+export default class ProjectFlowDetailsController extends ControllerInterface<ProjectFlowDetailsModel> {
+  private static instance: ProjectFlowDetailsController
+  private readonly projectFlowDetailsUseCase = new ProjectFlowDetailsUseCase()
+
   private constructor() {
     super()
   }
-  private AddProjectUseCase = new AddProjectUseCase()
 
   static getInstance() {
-    if (!this.instance) {
-      this.instance = new AddProjectController()
-    }
+    if (!this.instance) this.instance = new ProjectFlowDetailsController()
     return this.instance
   }
 
-  async addProject(params: Params, router: Router, draft: boolean = false) {
-    // useLoaderStore().setLoadingWithDialog();
+  async show(params: Params) {
+    this.setLoading()
     try {
-      const dataState: DataState<ProjectModel> = await this.AddProjectUseCase.call(params)
+      const dataState: DataState<ProjectFlowDetailsModel> =
+        await this.projectFlowDetailsUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: 'Loaded successfully',
           imageElement: successImage,
           messageContent: null,
         })
-        // if (!draft) await router.push('/organization/project-details')
-        // if (!draft) await router.push('/organization/projects')
-
-        // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',
-          titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
+          titleContent: this.state.value.error?.title ?? 'An Error Occurred',
           imageElement: errorImage,
           messageContent: null,
         })
@@ -60,4 +54,3 @@ export default class AddProjectController extends ControllerInterface<ProjectMod
     return this.state
   }
 }
- 

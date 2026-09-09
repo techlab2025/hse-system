@@ -1,19 +1,16 @@
 import type Params from '@/base/core/params/params'
-
-export type ProjectLocationTeam = {
-  project_location_id: number
-  project_teams: {
-    team_id: number
-    organizaion_employees: { organizaion_employee_id: number }[]
-  }[]
-}
+import type { ProjectLocationTeam } from './ProjectLocationTeamParams'
 
 export default class ProjectTeamsParams implements Params {
-  constructor(
-    public readonly locations: ProjectLocationTeam[],
-    public readonly projectId: number,
-    public readonly isUpdate: boolean = false,
-  ) {}
+  public readonly locations: ProjectLocationTeam[]
+  public readonly projectId: number
+  public readonly isUpdate: boolean
+
+  constructor(data: { locations: ProjectLocationTeam[]; projectId: number; isUpdate: boolean }) {
+    this.locations = data.locations
+    this.projectId = data.projectId
+    this.isUpdate = data.isUpdate
+  }
 
   toMap(): Record<string, unknown> {
     return {

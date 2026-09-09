@@ -1,16 +1,15 @@
 import type Params from '@/base/core/params/params'
-
-export type ProjectZoonEquipment = {
-  project_zoon_id: number
-  equipments: { equipment_id: number }[]
-}
+import type { ProjectZoonEquipment } from './ProjectZoonEquipmentParams'
 
 export default class ProjectEquipmentsParams implements Params {
-  constructor(
-    public readonly zoons: ProjectZoonEquipment[],
-    public readonly projectId: number,
-    public readonly isUpdate: boolean = false,
-  ) {}
+  public readonly zoons: ProjectZoonEquipment[]
+  public readonly projectId: number
+  public readonly isUpdate: boolean
+  constructor(data: { zoons: ProjectZoonEquipment[]; projectId: number; isUpdate: boolean }) {
+    this.zoons = data.zoons
+    this.projectId = data.projectId
+    this.isUpdate = data.isUpdate
+  }
 
   toMap(): Record<string, unknown> {
     return {

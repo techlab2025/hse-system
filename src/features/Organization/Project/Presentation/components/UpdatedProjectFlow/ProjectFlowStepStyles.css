@@ -1,0 +1,259 @@
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.full {
+  grid-column: 1/-1;
+}
+
+.form-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.section-title > span {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 15px;
+  background: color-mix(in srgb, var(--PrimaryColor) 12%, transparent);
+  color: var(--PrimaryColor);
+  font-weight: 900;
+}
+
+.section-title h2 {
+  margin: 0;
+  font-size: 21px;
+}
+
+.section-title p {
+  margin: 3px 0 0;
+  opacity: 0.65;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: 1px solid var(--main-border);
+  border-radius: 12px;
+  background: var(--BgWhite);
+  color: var(--GrayText-1);
+  padding: 12px 14px;
+  outline: none;
+  transition: 0.2s;
+}
+
+input:focus,
+textarea:focus {
+  border-color: var(--PrimaryColor);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 10%, transparent);
+}
+
+.switch-row {
+  flex-direction: row;
+  align-items: center;
+  padding: 13px 15px;
+  border: 1px solid var(--main-border);
+  border-radius: 14px;
+}
+
+.switch-row input,
+.day-pill input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--PrimaryColor);
+}
+
+.switch-row span {
+  display: flex;
+  flex-direction: column;
+}
+
+.switch-row small {
+  margin-top: 2px;
+  font-weight: 400;
+  opacity: 0.62;
+}
+
+.weekday-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 9px;
+}
+
+.day-pill {
+  align-items: center;
+  padding: 12px 6px;
+  border: 1px solid var(--main-border);
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.day-pill span {
+  font-size: 11px;
+}
+
+.repeat-card,
+.nested-row,
+.equipment-row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr auto;
+  align-items: end;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--main-border);
+  border-radius: 15px;
+  background: var(--Gray-1);
+}
+
+.group-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  border: 1px solid var(--main-border);
+  border-radius: 18px;
+}
+
+.group-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.group-select {
+  width: min(100%, 520px);
+  flex: 1;
+}
+
+.fixed-location {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
+  padding: 13px 15px;
+  border: 1px solid var(--main-border);
+  border-radius: 14px;
+  background: var(--Gray-1);
+}
+
+.fixed-location span {
+  color: var(--GrayText-1);
+  font-size: 11px;
+  opacity: 0.65;
+}
+
+.fixed-location strong {
+  color: var(--GrayText-1);
+  font-size: 14px;
+}
+
+.locations-status {
+  margin: 0;
+  padding: 16px;
+  border: 1px dashed var(--main-border);
+  border-radius: 14px;
+  color: var(--GrayText-1);
+  text-align: center;
+  opacity: 0.7;
+}
+
+.locations-error {
+  border-color: color-mix(in srgb, #e74c3c 35%, var(--main-border));
+  color: #c0392b;
+}
+
+.icon-button {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 12px;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.danger {
+  background: color-mix(in srgb, #e74c3c 10%, transparent);
+  color: #d43d2f;
+}
+
+.add-row,
+.add-group {
+  padding: 11px 14px;
+  border: 1px dashed color-mix(in srgb, var(--PrimaryColor) 40%, var(--main-border));
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--PrimaryColor) 5%, transparent);
+  color: var(--PrimaryColor);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.add-group {
+  padding: 15px;
+}
+
+.zone-switch {
+  justify-content: space-between;
+}
+
+.zone-selector {
+  padding: 16px;
+  border: 1px solid var(--main-border);
+  border-radius: 16px;
+  background: var(--Gray-1);
+}
+
+.zone-label {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 9px;
+}
+
+.add-dialog {
+  color: var(--PrimaryColor);
+  font-weight: 900;
+  cursor: pointer;
+}
+
+@media (max-width: 850px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full {
+    grid-column: auto;
+  }
+
+  .weekday-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .repeat-card,
+  .nested-row,
+  .equipment-row {
+    grid-template-columns: 1fr;
+  }
+}
