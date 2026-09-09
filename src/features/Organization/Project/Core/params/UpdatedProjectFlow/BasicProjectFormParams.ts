@@ -8,6 +8,13 @@ export type BasicProjectForm = {
   hasZoon: boolean
 }
 
+export type BasicProjectValidationErrors = Partial<
+  Record<
+    'projectName' | 'contractors' | 'locations' | 'startDate' | 'endDate' | 'cost' | 'zones',
+    string
+  >
+>
+
 export type ProjectSerialField = {
   key: string
   label: string

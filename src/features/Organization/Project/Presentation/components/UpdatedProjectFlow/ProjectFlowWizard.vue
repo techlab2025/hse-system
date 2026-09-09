@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { computed, markRaw, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import TranslationsParams from '@/base/core/params/translations_params'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import USA from '@/shared/icons/USA.vue'
@@ -37,6 +38,7 @@ import ProjectTeamsStep from './Steps/ProjectTeamsStep.vue'
 import ProjectEquipmentsStep from './Steps/ProjectEquipmentsStep.vue'
 import type {
   BasicProjectForm,
+  BasicProjectValidationErrors,
   LangDescriptionValue,
   LangTitleValue,
   ProjectSerialField,
@@ -48,6 +50,7 @@ import type { EquipmentZoneForm } from '../../../Core/params/UpdatedProjectFlow/
 
 const route = useRoute()
 const router = useRouter()
+const { locale } = useI18n()
 const projectId = ref<number | undefined>(route.params.id ? Number(route.params.id) : undefined)
 
 const parseStep = (value: unknown): number | null => {
@@ -69,6 +72,7 @@ const isCurrentStepUpdate = computed(
 const updateProjectId = computed(() => (isCurrentStepUpdate.value ? projectId.value : undefined))
 const loading = ref(false)
 const errorMessage = ref('')
+const basicValidationErrors = ref<BasicProjectValidationErrors>({})
 
 const steps = [
   { number: 1, title: 'Basic data', caption: 'Project identity and scope' },
@@ -162,6 +166,30 @@ const updateZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
   zoneIds.value = value.flatMap((item) => item.ZoneIds ?? [])
 }
 
+const getLocationTitle = (location: Record<string, any>) => {
+  const currentLocale = String(locale.value).split('-')[0]
+  const titles = Array.isArray(location.location_titles)
+    ? location.location_titles
+    : Array.isArray(location.titles)
+      ? location.titles
+      : Array.isArray(location.location?.titles)
+        ? location.location.titles
+        : []
+
+  return (
+    location.title ??
+    location.location_title ??
+    location.location?.title ??
+    titles.find((item: Record<string, any>) => item.locale === currentLocale)?.title ??
+    titles[0]?.title ??
+    ''
+  )
+}
+
+const clearBasicValidationError = (field: keyof BasicProjectValidationErrors) => {
+  delete basicValidationErrors.value[field]
+}
+
 watch(
   () => basic.value.hasZoon,
   (hasZoon) => {
@@ -209,9 +237,13 @@ onMounted(async () => {
   contractorIds.value = (data.contractors ?? []).map(
     (item: any) => new TitleInterface({ id: item.id, title: item.title ?? item.name ?? '' }),
   )
-  locations.value = (data.locations ?? []).map(
+  const projectLocations = data.locations?.length ? data.locations : (data.project_locations ?? [])
+  locations.value = projectLocations.map(
     (item: any) =>
-      new TitleInterface({ id: item.id, title: item.title ?? item.location_title ?? '' }),
+      new TitleInterface({
+        id: item.location_id ?? item.location?.id ?? item.id,
+        title: getLocationTitle(item),
+      }),
   )
   selectedZones.value = data.project_zoons ?? []
   zoneIds.value = (data.zoon_ids ?? data.project_zoons ?? [])
@@ -227,15 +259,37 @@ onMounted(async () => {
 
 const validateStep = () => {
   if (activeStep.value === 1) {
+    const normalizedCost = String(basic.value.cost ?? '').trim()
+    const hasValidCost =
+      normalizedCost !== '' &&
+      Number.isFinite(Number(normalizedCost)) &&
+      Number(normalizedCost) >= 0
+
+    basicValidationErrors.value = {
+      ...(!langs.value.some((item) => item.title.trim()) && {
+        projectName: 'Project name is required.',
+      }),
+      ...(!contractorIds.value.length && { contractors: 'Select at least one contractor.' }),
+      ...(!locations.value.length && { locations: 'Select at least one location.' }),
+      ...(!basic.value.startDate && { startDate: 'Start date is required.' }),
+      ...(!basic.value.endDate && { endDate: 'End date is required.' }),
+      ...(!hasValidCost && { cost: 'Enter a valid cost of zero or more.' }),
+      ...(basic.value.hasZoon &&
+        !zoneIds.value.length && {
+          zones: 'Select at least one zone.',
+        }),
+    }
+
     if (
-      !langs.value.some((item) => item.title.trim()) ||
-      !basic.value.startDate ||
-      !basic.value.endDate ||
-      !basic.value.cost ||
-      !locations.value.length ||
-      (basic.value.hasZoon && !zoneIds.value.length)
+      basic.value.startDate &&
+      basic.value.endDate &&
+      basic.value.endDate < basic.value.startDate
     ) {
-      errorMessage.value = 'Project name, dates, cost, location, and enabled zones are required.'
+      basicValidationErrors.value.endDate = 'End date must be on or after the start date.'
+    }
+
+    if (Object.keys(basicValidationErrors.value).length) {
+      errorMessage.value = ''
       return false
     }
   }
@@ -461,7 +515,7 @@ const goToPreviousStep = async () => {
       </button>
     </nav>
 
-    <form class="flow-card" @submit.prevent="saveAndNext">
+    <form class="flow-card" novalidate @submit.prevent="saveAndNext">
       <BasicProjectStep
         v-if="activeStep === 1"
         v-model:basic="basic"
@@ -472,7 +526,9 @@ const goToPreviousStep = async () => {
         v-model:contractor-ids="contractorIds"
         v-model:locations="locations"
         :selected-zones="selectedZones"
+        :validation-errors="basicValidationErrors"
         @update-zones="updateZones"
+        @clear-validation-error="clearBasicValidationError"
       />
       <ProjectHolidaysStep v-else-if="activeStep === 2" v-model:holidays="holidays" />
       <ProjectPositionsStep

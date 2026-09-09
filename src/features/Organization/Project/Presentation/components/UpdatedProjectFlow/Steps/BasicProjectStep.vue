@@ -18,15 +18,23 @@ import LocationSelectDialog from '../../SelectDialogs/LocationSelectDialog.vue'
 import type SohwProjectZoonModel from '../../../../Data/models/ShowProjectZone'
 import type {
   BasicProjectForm,
+  BasicProjectValidationErrors,
   LangDescriptionValue,
   LangTitleValue,
   ProjectSerialField,
 } from '../../../../Core/params/UpdatedProjectFlow/BasicProjectFormParams'
 
-defineProps<{ selectedZones: SohwProjectZoonModel[] }>()
+const props = withDefaults(
+  defineProps<{
+    selectedZones: SohwProjectZoonModel[]
+    validationErrors?: BasicProjectValidationErrors
+  }>(),
+  { validationErrors: () => ({}) },
+)
 
 const emit = defineEmits<{
   updateZones: [value: { locationId: number; ZoneIds: number[] }[]]
+  clearValidationError: [field: keyof BasicProjectValidationErrors]
 }>()
 
 const basic = defineModel<BasicProjectForm>('basic', { required: true })
@@ -51,18 +59,25 @@ const updateSerial = (data: { SerialNumber: string }) => {
 }
 const setLangTitles = (value: { locale: string; title?: string }[]) => {
   langs.value = value.map((item) => ({ ...item, title: item.title ?? '' }))
+  emit('clearValidationError', 'projectName')
 }
 const setLangDescriptions = (value: { locale: string; description?: string }[]) => {
   langsDescription.value = value.map((item) => ({ ...item, description: item.description ?? '' }))
 }
 const setContractors = (value: TitleInterface | TitleInterface[] | null) => {
   contractorIds.value = Array.isArray(value) ? value : value ? [value] : []
+  emit('clearValidationError', 'contractors')
 }
 const setLocations = (value: TitleInterface | TitleInterface[] | null) => {
   locations.value = Array.isArray(value) ? value : value ? [value] : []
+  emit('clearValidationError', 'locations')
 }
 const reloadLocations = () => {
   locationParams.value = new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA)
+}
+const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
+  emit('updateZones', value)
+  emit('clearValidationError', 'zones')
 }
 </script>
 
@@ -75,7 +90,7 @@ const reloadLocations = () => {
         <p>Define the project, its scope, and timeline.</p>
       </div>
     </div>
-    <div class="input-wrapper">
+    <div class="input-wrapper" :class="{ 'field-has-error': props.validationErrors.projectName }">
       <LangTitleInput
         label="Project Name"
         :langs="langDefault"
@@ -83,6 +98,9 @@ const reloadLocations = () => {
         help-text="Enter the project name in each available language."
         @update:model-value="setLangTitles"
       />
+      <small v-if="props.validationErrors.projectName" class="field-error">
+        {{ props.validationErrors.projectName }}
+      </small>
     </div>
     <div class="input-wrapper">
       <SwitchInput
@@ -94,9 +112,9 @@ const reloadLocations = () => {
         @update:value="updateSerial"
       />
     </div>
-    <div class="input-wrapper">
+    <div class="input-wrapper" :class="{ 'field-has-error': props.validationErrors.contractors }">
       <UpdatedCustomInputSelect
-        :required="false"
+        :required="true"
         :model-value="contractorIds"
         :type="2"
         :controller="contractorController"
@@ -112,8 +130,11 @@ const reloadLocations = () => {
         </template>
         <template #Dialog><AddContractor @update:data="contractorDialog = false" /></template>
       </UpdatedCustomInputSelect>
+      <small v-if="props.validationErrors.contractors" class="field-error">
+        {{ props.validationErrors.contractors }}
+      </small>
     </div>
-    <div class="input-wrapper">
+    <div class="input-wrapper" :class="{ 'field-has-error': props.validationErrors.locations }">
       <UpdatedCustomInputSelect
         :required="true"
         :model-value="locations"
@@ -125,22 +146,56 @@ const reloadLocations = () => {
         :onclick="() => (locationVisible = true)"
         @update:model-value="setLocations"
       />
+      <small v-if="props.validationErrors.locations" class="field-error">
+        {{ props.validationErrors.locations }}
+      </small>
     </div>
-    <label class="input-wrapper required-field">
-      Start date
+    <label class="input-wrapper">
+      <span class="required-label"> Start date <span aria-hidden="true">*</span> </span>
       <DatePicker
         v-model="basic.startDate"
         date-format="yy-mm-dd"
         placeholder="Select start date"
+        required
+        :invalid="Boolean(props.validationErrors.startDate)"
+        @update:model-value="emit('clearValidationError', 'startDate')"
       />
+      <small v-if="props.validationErrors.startDate" class="field-error">
+        {{ props.validationErrors.startDate }}
+      </small>
     </label>
-    <label>
-      End date
-      <DatePicker v-model="basic.endDate" date-format="yy-mm-dd" placeholder="Select end date" />
+    <label class="input-wrapper">
+      <span class="required-label">End date <span aria-hidden="true">*</span> </span>
+      <DatePicker
+        v-model="basic.endDate"
+        date-format="yy-mm-dd"
+        placeholder="Select end date"
+        :min-date="basic.startDate ?? undefined"
+        required
+        :invalid="Boolean(props.validationErrors.endDate)"
+        @update:model-value="emit('clearValidationError', 'endDate')"
+      />
+      <small v-if="props.validationErrors.endDate" class="field-error">
+        {{ props.validationErrors.endDate }}
+      </small>
     </label>
-    <label
-      >Cost<input v-model="basic.cost" inputmode="decimal" required placeholder="0.00"
-    /></label>
+    <label class="input-wrapper">
+      <span class="required-label"> Cost <span aria-hidden="true">*</span></span>
+      <input
+        v-model="basic.cost"
+        type="number"
+        inputmode="decimal"
+        min="0"
+        step="0.01"
+        required
+        placeholder="0.00"
+        :class="{ 'field-invalid': props.validationErrors.cost }"
+        @input="emit('clearValidationError', 'cost')"
+      />
+      <small v-if="props.validationErrors.cost" class="field-error">
+        {{ props.validationErrors.cost }}
+      </small>
+    </label>
     <div class="switch-row zone-switch">
       <span>
         <strong>Project has zones</strong>
@@ -150,14 +205,17 @@ const reloadLocations = () => {
     </div>
     <div v-if="basic.hasZoon" class="input-wrapper full zone-selector">
       <label class="zone-label">
-        <span>{{ $t('zones') }}</span>
-        <AddProjectZoneDialog @update:data="emit('updateZones', $event)" />
+        <span>{{ $t('zones') }} <span class="required-star" aria-hidden="true">*</span></span>
+        <AddProjectZoneDialog @update:data="setZones" />
       </label>
       <AddZoneDialog
         :locations="locations"
-        :selected-zones="selectedZones"
-        @update:data="emit('updateZones', $event)"
+        :selected-zones="props.selectedZones"
+        @update:data="setZones"
       />
+      <small v-if="props.validationErrors.zones" class="field-error">
+        {{ props.validationErrors.zones }}
+      </small>
     </div>
     <div class="input-wrapper full">
       <LangTitleInput
@@ -183,5 +241,30 @@ const reloadLocations = () => {
   span {
     width: fit-content !important;
   }
+}
+
+.required-label > span {
+  color: #ef4444;
+}
+
+.field-error {
+  display: block;
+  margin-top: 6px;
+  color: #c0392b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.field-invalid {
+  border-color: #ef4444;
+}
+
+.required-star {
+  color: #ef4444;
+}
+
+.field-has-error :deep(.p-select),
+.field-has-error :deep(.p-multiselect) {
+  border-color: #ef4444;
 }
 </style>

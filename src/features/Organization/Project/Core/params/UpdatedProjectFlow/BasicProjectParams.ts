@@ -23,7 +23,7 @@ export default class BasicProjectParams implements Params {
     serial: string | undefined
     startDate: string | Date
     endDate: string | Date
-    cost: string
+    cost: string | number
     hasZoon: boolean
     projectId?: number
     isUpdate: boolean
@@ -35,7 +35,7 @@ export default class BasicProjectParams implements Params {
     this.serial = data.serial
     this.startDate = data.startDate
     this.endDate = data.endDate
-    this.cost = data.cost
+    this.cost = String(data.cost ?? '')
     this.hasZoon = data.hasZoon
     this.projectId = data.projectId
     this.isUpdate = data.isUpdate

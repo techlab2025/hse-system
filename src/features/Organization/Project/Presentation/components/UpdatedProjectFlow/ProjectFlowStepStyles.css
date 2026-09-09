@@ -269,3 +269,19 @@ textarea:focus {
     grid-template-columns: 1fr;
   }
 }
+
+.required-label > span {
+  color: #ef4444 !important;
+}
+
+.field-error {
+  display: block;
+  margin-top: 6px;
+  color: #c0392b;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.field-invalid {
+  border-color: #ef4444;
+}
