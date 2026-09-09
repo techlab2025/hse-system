@@ -6,7 +6,7 @@ export const organizationEmployeeRoutes: RouteRecordRaw[] = [
     name: 'Organization Employee',
     component: () => import('@/views/Organization/OrganizationEmployee/IndexOrganization.vue'),
     meta: {
-      breadcrumb: 'Organization Employee',
+      breadcrumb: 'Employees',
       isSidebar: true,
     },
   },
@@ -15,7 +15,7 @@ export const organizationEmployeeRoutes: RouteRecordRaw[] = [
     name: 'Edit Organization Employee',
     component: () => import('@/views/Organization/OrganizationEmployee/EditOrganization.vue'),
     meta: {
-      breadcrumb: 'Edit Organization Employee',
+      breadcrumb: 'Edit Employee',
       parent: 'Organization Employee',
       isSidebar: true,
     },
@@ -25,7 +25,7 @@ export const organizationEmployeeRoutes: RouteRecordRaw[] = [
     name: 'Add Organization Employee',
     component: () => import('@/views/Organization/OrganizationEmployee/AddOrganization.vue'),
     meta: {
-      breadcrumb: 'Add Organization Employee',
+      breadcrumb: 'Add Employee',
       parent: 'Organization Employee',
       isSidebar: true,
     },
@@ -38,7 +38,7 @@ export const organizationEmployeeRoutes: RouteRecordRaw[] = [
         '@/features/Organization/OrganizationEmployee/Presentation/components/ShowOrgnizationEmployee.vue'
       ),
     meta: {
-      breadcrumb: 'Show Organization Employee',
+      breadcrumb: 'Show Employee',
       parent: 'Organization Employee',
       isSidebar: true,
     },
@@ -51,7 +51,7 @@ export const organizationEmployeeRoutes: RouteRecordRaw[] = [
         '@/features/Organization/OrganizationEmployee/Presentation/components/UploadOrganizationEmployee.vue'
       ),
     meta: {
-      breadcrumb: 'Upload Organization Employee',
+      breadcrumb: 'Upload Employee',
       parent: 'Organization Employee',
       isSidebar: true,
     },

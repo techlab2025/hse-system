@@ -20,10 +20,15 @@ import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const emit = defineEmits(['update:data'])
 
-const props = defineProps<{
-  data?: HerikalyDetailsModel
-  showCertificateSelectAll?: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    data?: HerikalyDetailsModel
+    showCertificateSelectAll?: boolean
+  }>(),
+  {
+    showCertificateSelectAll: true,
+  },
+)
 
 const indexCertificateController = IndexCertificateController.getInstance()
 const indexCertificateParams = new IndexCertificateParams('', 1, 10, 0)
@@ -75,17 +80,10 @@ const areAllCertificatesSelected = computed(
     certificateOptions.value.every((certificate) => isCertificateSelected(certificate.id)),
 )
 
-const toggleAllCertificates = () => {
-  if (areAllCertificatesSelected.value) {
-    const optionIds = new Set(certificateOptions.value.map((certificate) => certificate.id))
-    Certificate.value = Certificate.value.filter((certificate) => !optionIds.has(certificate.id))
-  } else {
-    const selectedIds = new Set(Certificate.value.map((certificate) => certificate.id))
-    Certificate.value = [
-      ...Certificate.value,
-      ...certificateOptions.value.filter((certificate) => !selectedIds.has(certificate.id)),
-    ]
-  }
+const toggleAllCertificates = (event: Event) => {
+  const shouldSelectAll = (event.target as HTMLInputElement).checked
+
+  Certificate.value = shouldSelectAll ? [...certificateOptions.value] : []
 
   updateData()
 }
@@ -274,9 +272,20 @@ defineExpose({
     <div class="training-selector">
       <div class="training-selector-header">
         <label class="training-selector-label">{{ $t('certificate') }}</label>
-        <span class="training-selected-count">
-          {{ Certificate.length }} {{ $t('selected') }}
-        </span>
+        <div class="training-selector-actions">
+          <label class="training-select-all">
+            <input
+              type="checkbox"
+              :checked="areAllCertificatesSelected"
+              :disabled="isLoadingCertificates || !certificateOptions.length"
+              @change="toggleAllCertificates"
+            />
+            <span>{{ $t('select_all') }}</span>
+          </label>
+          <span class="training-selected-count">
+            {{ Certificate.length }} {{ $t('selected') }}
+          </span>
+        </div>
       </div>
 
       <div class="training-search">
@@ -294,22 +303,6 @@ defineExpose({
         </div>
 
         <template v-else-if="filteredCertificateOptions.length">
-          <label
-            v-if="showCertificateSelectAll && !certificateSearch.trim()"
-            class="training-option training-option-all"
-            :class="{ selected: areAllCertificatesSelected }"
-          >
-            <input
-              type="checkbox"
-              :checked="areAllCertificatesSelected"
-              @change="toggleAllCertificates"
-            />
-            <span class="training-option-check" aria-hidden="true">
-              <span>✓</span>
-            </span>
-            <span class="training-option-title">{{ $t('select_all') }}</span>
-          </label>
-
           <label
             v-for="certificate in filteredCertificateOptions"
             :key="certificate.id"
@@ -378,6 +371,41 @@ defineExpose({
   color: var(--text-strong, #172554);
   font-size: 0.95rem;
   font-weight: 700;
+}
+
+.training-selector-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.training-select-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0;
+  color: var(--brand-primary-700, #1d4ed8) !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+}
+
+.training-select-all input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  padding: 0 !important;
+  accent-color: var(--brand-primary-500, #2553db);
+  cursor: pointer;
+}
+
+.training-select-all:has(input:disabled) {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.training-select-all input:disabled {
+  cursor: not-allowed;
 }
 
 .training-selected-count {
@@ -499,10 +527,6 @@ defineExpose({
   white-space: nowrap;
 }
 
-.training-option-all {
-  grid-column: auto;
-}
-
 .training-options-message {
   grid-column: 1 / -1;
   padding: 1.5rem 0.75rem;
@@ -517,6 +541,16 @@ defineExpose({
 }
 
 @media (max-width: 640px) {
+  .training-selector-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .training-selector-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
   .training-options {
     grid-template-columns: minmax(0, 1fr);
   }
