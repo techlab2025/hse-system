@@ -134,14 +134,14 @@ watch(
               {{ $t('add_position') }}
             </RouterLink>
 
+            <AddEmployeeDialog
+              :hierarchy="hierarchy"
+              :ProjectLocation="location?.projectLocationId!"
+            />
             <AddCreateTeam
               :ProjectLocationId="location?.projectLocationId!"
               :LocationId="location?.locationId!"
               @update:data="GetProjectLocationsEmployes"
-            />
-            <AddEmployeeDialog
-              :hierarchy="hierarchy"
-              :ProjectLocation="location?.projectLocationId!"
             />
           </div>
         </div>
