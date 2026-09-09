@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import ProjectFlowCustomHolidayModel from './ProjectFlowCustomHolidayModel'
+import type { HolidayDaysEnum } from '../../../Core/Enums/UpdatedProjectFlow/HolidayDaysEnum'
 
 export default class ProjectFlowHolidaysModel {
   constructor(
     public readonly projectId: number,
-    public readonly basicHolidayDays: number[],
+    public readonly basicHolidayDays: HolidayDaysEnum[],
     public readonly hasCustomHolidayDays: boolean,
     public readonly customHolidayDays: ProjectFlowCustomHolidayModel[],
   ) {}

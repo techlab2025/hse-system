@@ -4,10 +4,12 @@ import type { ProjectLocationHierarchyDetails } from '../../../Core/params/Updat
 import type { ProjectLocationTeam } from '../../../Core/params/UpdatedProjectFlow/ProjectLocationTeamParams'
 import type { ProjectZoonEquipment } from '../../../Core/params/UpdatedProjectFlow/ProjectZoonEquipmentParams'
 import type { HolidayDaysEnum } from '../../../Core/Enums/UpdatedProjectFlow/HolidayDaysEnum'
+import ProjectFlowHolidaysModel from './ProjectFlowHolidaysModel'
 
 export default class ProjectFlowDetailsModel {
   constructor(
     public readonly data: any,
+    public readonly holidays: ProjectFlowHolidaysModel,
     public readonly basicHolidayDays: HolidayDaysEnum[],
     public readonly hasCustomHolidayDays: boolean,
     public readonly customHolidayDays: CustomHolidayDay[],
@@ -18,11 +20,16 @@ export default class ProjectFlowDetailsModel {
 
   static fromMap(data: any): ProjectFlowDetailsModel {
     const locations = data.project_locations ?? []
+    const holidays = ProjectFlowHolidaysModel.fromMap(data.holidays ?? data)
     return new ProjectFlowDetailsModel(
       data,
-      data.basic_holiday_days ?? [],
-      data.has_custom_holiday_days ?? false,
-      data.custom_holiday_days ?? [],
+      holidays,
+      holidays.basicHolidayDays,
+      holidays.hasCustomHolidayDays,
+      holidays.customHolidayDays.map((holiday) => ({
+        holiday_title: holiday.holidayTitle,
+        holidays_dates: holiday.holidayDates,
+      })),
       data.project_location_position_employees ?? locations.filter((item: any) => item.heirarchys),
       data.project_teams ?? locations.filter((item: any) => item.project_teams),
       data.project_equipments ?? data.project_zoons ?? [],
