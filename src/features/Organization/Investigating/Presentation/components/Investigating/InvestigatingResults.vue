@@ -732,6 +732,27 @@ const validateRequiredFields = async () => {
               />
             </AccordionContent>
           </AccordionPanel>
+            <AccordionPanel value="6" data-investigation-panel="6">
+            <AccordionHeader>
+              <div class="investigation-title">
+                <img :src="investigationImg" alt="" />
+                <p>Immediate Action Evaluation</p>
+                <span class="arrow" :class="{ open: isPanelOpen('6') }"><DownArrow /></span>
+              </div>
+            </AccordionHeader>
+            <AccordionContent>
+              <section class="immediate-action-evaluation">
+                <div class="immediate-action-summary" v-if="state?.data?.observation?.action">
+                  <span class="immediate-action-summary-icon" aria-hidden="true">✓</span>
+                  <div>
+                    <p class="title">{{ $t('Immediate Action Retrieval') }}</p>
+                    <p class="description">{{ state?.data?.observation?.action }}</p>
+                  </div>
+                </div>
+                <RateActions @update:data="setRateAction" />
+              </section>
+            </AccordionContent>
+          </AccordionPanel>
           <AccordionPanel value="2" data-investigation-panel="2">
             <AccordionHeader>
               <div class="investigation-title">
@@ -803,7 +824,7 @@ const validateRequiredFields = async () => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>Events Timeline Builder</p>
+                <p>Events Timeline </p>
                 <span class="arrow" :class="{ open: isPanelOpen('3') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
@@ -950,27 +971,7 @@ const validateRequiredFields = async () => {
               </div>
             </AccordionContent>
           </AccordionPanel>
-          <AccordionPanel value="6" data-investigation-panel="6">
-            <AccordionHeader>
-              <div class="investigation-title">
-                <img :src="investigationImg" alt="" />
-                <p>Immediate Action Evaluation</p>
-                <span class="arrow" :class="{ open: isPanelOpen('6') }"><DownArrow /></span>
-              </div>
-            </AccordionHeader>
-            <AccordionContent>
-              <section class="immediate-action-evaluation">
-                <div class="immediate-action-summary" v-if="state?.data?.observation?.action">
-                  <span class="immediate-action-summary-icon" aria-hidden="true">✓</span>
-                  <div>
-                    <p class="title">{{ $t('Immediate Action Retrieval') }}</p>
-                    <p class="description">{{ state?.data?.observation?.action }}</p>
-                  </div>
-                </div>
-                <RateActions @update:data="setRateAction" />
-              </section>
-            </AccordionContent>
-          </AccordionPanel>
+
           <AccordionPanel value="7" data-investigation-panel="7">
             <AccordionHeader>
               <div class="investigation-title">

@@ -6,7 +6,7 @@ export const factoryRoutes: RouteRecordRaw[] = [
     name: 'Factories',
     component: () => import('@/views/Admin/Factory/IndexFactory.vue'),
     meta: {
-      breadcrumb: 'Hazard Factors',
+      breadcrumb: 'Factors',
       type: 'Shared',
       isSidebar: true,
     },
@@ -16,8 +16,8 @@ export const factoryRoutes: RouteRecordRaw[] = [
     name: 'Add Factory',
     component: () => import('@/views/Admin/Factory/AddFactory.vue'),
     meta: {
-      breadcrumb: 'Add Hazrad Factors',
-      parent: 'Hazard Factories',
+      breadcrumb: 'Add Factor',
+      parent: 'Factories',
       type: 'Shared',
       isSidebar: true,
     },
@@ -27,7 +27,7 @@ export const factoryRoutes: RouteRecordRaw[] = [
     name: 'Edit Factory',
     component: () => import('@/views/Admin/Factory/EditFactory.vue'),
     meta: {
-      breadcrumb: 'Edit Hazard Factors',
+      breadcrumb: 'Edit Factor',
       parent: 'Factories',
       type: 'Shared',
       isSidebar: true,
@@ -38,7 +38,7 @@ export const factoryRoutes: RouteRecordRaw[] = [
     name: 'Factories Items',
     component: () => import('@/views/Admin/FactoryItem/IndexFactoryItem.vue'),
     meta: {
-      breadcrumb: 'Hazard Factors Items',
+      breadcrumb: 'Factor Items',
       type: 'Shared',
       isSidebar: true,
     },
@@ -48,7 +48,7 @@ export const factoryRoutes: RouteRecordRaw[] = [
     name: 'Add Factory Item',
     component: () => import('@/views/Admin/FactoryItem/AddFactoryItem.vue'),
     meta: {
-      breadcrumb: 'Add Hazard Factor Item',
+      breadcrumb: 'Add Factor Item',
       parent: 'Factories Items',
       type: 'Shared',
       isSidebar: true,
@@ -59,7 +59,7 @@ export const factoryRoutes: RouteRecordRaw[] = [
     name: 'Edit Factory Item',
     component: () => import('@/views/Admin/FactoryItem/EditFactoryItem.vue'),
     meta: {
-      breadcrumb: 'Edit Hazard Factor Item',
+      breadcrumb: 'Edit Factor Item',
       parent: 'Factories Items',
       type: 'Shared',
       isSidebar: true,

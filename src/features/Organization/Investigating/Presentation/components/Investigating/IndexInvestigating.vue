@@ -291,25 +291,15 @@ const GerIncidantCount = (data: any): number => {
                   :class="{ show: isInvestigationExpanded(item, index) }"
                 >
                   <div class="first-container">
-                    <div class="first-card">
-                      <div class="first-card-header">
-                        <div class="header">
-                          <button
+                                              <button
                             type="button"
                             class="investigation-accordion-trigger"
                             :aria-expanded="isInvestigationExpanded(item, index)"
                             :aria-controls="`investigation-details-${getInvestigationKey(item, index)}`"
                             @click="toggleInvestigationDetails(item, index)"
                           >
-                            <span
-                              class="first-label-item-primary"
-                              :class="GetObservationRiskLevel(item?.observation?.riskLevel)"
-                            >
-                              {{ $t('Investigating Report') }}
-                              <span v-if="item?.observation?.serial">{{
-                                `_` + item?.observation?.serialName || '_OBS-2025-0112'
-                              }}</span>
-                            </span>
+                            <div class="show_details">
+                              <h6>show details</h6>
                             <svg
                               class="investigation-accordion-chevron"
                               :class="{ expanded: isInvestigationExpanded(item, index) }"
@@ -327,7 +317,20 @@ const GerIncidantCount = (data: any): number => {
                                 stroke-linejoin="round"
                               />
                             </svg>
+                            </div>
                           </button>
+                    <div class="first-card">
+                      <div class="first-card-header">
+                        <div class="header">
+                            <span
+                              class="first-label-item-primary"
+                              :class="GetObservationRiskLevel(item?.observation?.riskLevel)"
+                            >
+                              {{ $t('Investigating Report') }}
+                              <span v-if="item?.observation?.serial">{{
+                                `_` + item?.observation?.serialName || '_OBS-2025-0112'
+                              }}</span>
+                            </span>
                           <p :class="`status ${ReturnStatusTitle(item?.status)}`">
                             {{ ReturnStatusTitle(item?.status) }}
                           </p>
@@ -573,6 +576,15 @@ const GerIncidantCount = (data: any): number => {
 </template>
 
 <style lang="scss" scoped>
+.show_details{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border-bottom: 1px dashed #183a99;
+  h6{
+    color: #183a99;
+  }
+}
 .index-investigating {
   align-items: flex-start;
 

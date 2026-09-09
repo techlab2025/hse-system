@@ -274,9 +274,9 @@ const fields = ref([
       :modelValue="Factor"
       :controller="indexFactoryController"
       :params="indexFactoryParams"
-      label="Hazard Factor"
+      label="Factor"
       id="factor"
-      placeholder="Select Hazard Factor"
+      placeholder="Select Factor"
       :type="2"
       @update:modelValue="setFactor"
     />
