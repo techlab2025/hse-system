@@ -61,7 +61,12 @@ const requestedRouteStep = () => parseStep(route.params.step) ?? parseStep(route
 const activeStep = ref(requestedRouteStep() ?? 1)
 const projectProgress = ref(0)
 const editOnly = computed(() => route.query.edit === '1')
-const updateProjectId = computed(() => (editOnly.value ? projectId.value : undefined))
+const isCurrentStepUpdate = computed(
+  () =>
+    editOnly.value ||
+    (projectId.value !== undefined && projectProgress.value >= activeStep.value * 20),
+)
+const updateProjectId = computed(() => (isCurrentStepUpdate.value ? projectId.value : undefined))
 const loading = ref(false)
 const errorMessage = ref('')
 
@@ -282,7 +287,7 @@ const buildParams = () => {
       cost: basic.value.cost,
       hasZoon: basic.value.hasZoon,
       projectId: updateProjectId.value,
-      isUpdate: editOnly.value,
+      isUpdate: isCurrentStepUpdate.value,
     })
   }
   if (activeStep.value === 2) {
@@ -295,7 +300,7 @@ const buildParams = () => {
       hasCustomHolidayDays: holidays.value.hasCustom,
       customHolidayDays: custom,
       projectId: projectId.value!,
-      isUpdate: editOnly.value,
+      isUpdate: isCurrentStepUpdate.value,
     })
   }
   if (activeStep.value === 3) {
@@ -305,7 +310,7 @@ const buildParams = () => {
         (location) =>
           new ProjectLocationHierarchy({
             project_location_id: location.projectLocation!.id,
-            isUpdate: editOnly.value,
+            isUpdate: isCurrentStepUpdate.value,
             hierarchies: location.heirarchys.map(
               (hierarchy) =>
                 new ProjectHierarchyParams({
@@ -321,7 +326,7 @@ const buildParams = () => {
     return new ProjectLocationPositionEmployeesParams({
       locations: payload,
       projectId: projectId.value!,
-      isUpdate: editOnly.value,
+      isUpdate: isCurrentStepUpdate.value,
     })
   }
   if (activeStep.value === 4) {
@@ -339,7 +344,7 @@ const buildParams = () => {
     return new ProjectTeamsParams({
       locations: payload,
       projectId: projectId.value!,
-      isUpdate: editOnly.value,
+      isUpdate: isCurrentStepUpdate.value,
     })
   }
   const payload: ProjectZoonEquipment[] = equipments.value
@@ -351,7 +356,7 @@ const buildParams = () => {
   return new ProjectEquipmentsParams({
     zoons: payload,
     projectId: projectId.value!,
-    isUpdate: editOnly.value,
+    isUpdate: isCurrentStepUpdate.value,
   })
 }
 
@@ -399,8 +404,31 @@ const saveAndNext = async () => {
 }
 
 const skipAndNext = async () => {
-  if (![4, 5].includes(activeStep.value)) return
+  if (activeStep.value === 1 && !projectId.value) {
+    errorMessage.value = 'Save the basic project data first so the next steps have a project ID.'
+    return
+  }
+
+  errorMessage.value = ''
   await finishOrContinue()
+}
+
+const goToPreviousStep = async () => {
+  if (activeStep.value <= 1) return
+
+  activeStep.value -= 1
+  errorMessage.value = ''
+  await router.replace({
+    path: projectId.value
+      ? `/organization/project/flow/${projectId.value}`
+      : '/organization/project/flow',
+    query: {
+      ...route.query,
+      resumeStep: String(activeStep.value),
+      ...(projectId.value ? { project_id: String(projectId.value) } : {}),
+    },
+  })
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 </script>
 
@@ -470,12 +498,22 @@ const skipAndNext = async () => {
         </button>
         <div>
           <button
-            v-if="[4, 5].includes(activeStep) && !editOnly"
+            v-if="activeStep > 1"
+            type="button"
+            class="btn-secondary"
+            :disabled="loading"
+            @click="goToPreviousStep"
+          >
+            Back
+          </button>
+          <button
+            v-if="activeStep > 1 && !editOnly"
             type="button"
             class="btn-skip"
+            :disabled="loading"
             @click="skipAndNext"
           >
-            Skip & Next
+            {{ activeStep === 5 ? 'Skip & Finish' : 'Skip & Next' }}
           </button>
           <button type="submit" class="btn-primary" :disabled="loading">
             {{
@@ -668,7 +706,7 @@ textarea {
   resize: vertical;
 }
 .switch-row {
-  flex-direction: row;
+  flex-direction: row !important;
   align-items: center;
   padding: 13px 15px;
   border: 1px solid var(--main-border);
@@ -765,6 +803,9 @@ textarea {
 }
 .zone-switch {
   justify-content: space-between;
+}
+.zone-switch small {
+  width: fit-content !important;
 }
 .zone-selector {
   padding: 16px;

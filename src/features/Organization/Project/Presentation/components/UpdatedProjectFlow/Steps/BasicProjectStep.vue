@@ -176,4 +176,12 @@ const reloadLocations = () => {
   </div>
 </template>
 
-<style scoped src="../ProjectFlowStepStyles.css"></style>
+<style scoped src="../ProjectFlowStepStyles.css">
+.switch-row.zone-switch {
+  display: flex !important;
+  flex-direction: row !important;
+  span{
+    width: fit-content !important;
+  }
+}
+</style>

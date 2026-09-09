@@ -15,7 +15,9 @@ export default class ProjectTeamsParams implements Params {
   toMap(): Record<string, unknown> {
     return {
       project_id: this.projectId,
-      locations: this.locations,
+      ...(this.locations.length > 0 && {
+        locations: this.locations,
+      }),
     }
   }
 }

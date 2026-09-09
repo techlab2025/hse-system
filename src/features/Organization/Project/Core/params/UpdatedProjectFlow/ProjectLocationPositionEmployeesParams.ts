@@ -19,7 +19,9 @@ export default class ProjectLocationPositionEmployeesParams implements Params {
   toMap(): Record<string, unknown> {
     return {
       project_id: this.projectId,
-      locations: this.locations.map((location) => location.toMap()),
+      ...(this.locations.length > 0 && {
+        locations: this.locations.map((location) => location.toMap()),
+      }),
     }
   }
 }

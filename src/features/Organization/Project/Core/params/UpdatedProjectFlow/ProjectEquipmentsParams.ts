@@ -14,7 +14,9 @@ export default class ProjectEquipmentsParams implements Params {
   toMap(): Record<string, unknown> {
     return {
       project_id: this.projectId,
-      zoons: this.zoons,
+      ...(this.zoons.length > 0 && {
+        zoons: this.zoons,
+      }),
     }
   }
 }
