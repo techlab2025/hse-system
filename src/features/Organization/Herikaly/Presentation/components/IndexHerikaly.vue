@@ -260,10 +260,10 @@ const IndexHerikalyactionList = () => [
 
               <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
               <ActionsList
+                feature-name="action_feature_positions"
                 :show-actions="true"
                 :actionList="IndexHerikalyactionList()"
                 :actionsNumber="2"
-                buttonTitle="import positions sheet "
               />
             </div>
           </div>

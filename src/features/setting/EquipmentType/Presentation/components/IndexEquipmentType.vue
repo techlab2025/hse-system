@@ -244,6 +244,7 @@ const IndexEquipmentTypeactionList = () => [
     text: t('add_equipment_type'),
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization' }/equipment-type/add`,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -316,7 +317,12 @@ const IndexEquipmentTypeactionList = () => [
         <SystemEquipmentTypes />
       </PermissionBuilder> -->
 
-       <ActionsList :show-actions="true" :actionList="IndexEquipmentTypeactionList()" :actionsNumber="5">
+       <ActionsList
+        feature-name="action_feature_equipment_types"
+        :show-actions="true"
+        :actionList="IndexEquipmentTypeactionList()"
+        :actionsNumber="5"
+      >
         <template #custom>
           <!-- <SystemEquipmentTypes /> -->
           <ExportPdf :isDropList="true" />

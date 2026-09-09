@@ -203,6 +203,7 @@ const IndexInjuryactionList = () => [
     text: t('Add_Injury'),
     link: '/organization/injury/add',
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -261,7 +262,12 @@ const IndexInjuryactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
         <SysteminjuryTypes />
       </PermissionBuilder> -->
-      <ActionsList :show-actions="true" :actionList="IndexInjuryactionList()" :actionsNumber="5">
+      <ActionsList
+        feature-name="action_feature_injuries"
+        :show-actions="true"
+        :actionList="IndexInjuryactionList()"
+        :actionsNumber="5"
+      >
         <template #custom>
           <!-- <SysteminjuryTypes /> -->
           <ExportPdf :isDropList="true" />

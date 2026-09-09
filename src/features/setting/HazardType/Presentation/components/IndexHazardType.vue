@@ -287,6 +287,7 @@ const IndexHazardTypeactionList = () => [
       ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params?.parent_id}`
       : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HAZARD_TYPE_CREATE],
   },
@@ -355,6 +356,9 @@ const IndexHazardTypeactionList = () => [
       </PermissionBuilder> -->
 
       <ActionsList
+        :feature-name="
+          route.params?.parent_id ? 'action_feature_hazards' : 'action_feature_hazard_types'
+        "
         :show-actions="true"
         :actionList="IndexHazardTypeactionList()"
         :actionsNumber="5"

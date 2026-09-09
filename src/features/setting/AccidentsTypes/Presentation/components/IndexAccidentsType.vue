@@ -185,6 +185,7 @@ const IndexIncidantTypeactionList = () => [
       user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
     }/accidents-type/add`,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ACCIDENTS_TYPE_CREATE],
   },
@@ -240,6 +241,7 @@ const IndexIncidantTypeactionList = () => [
     </PermissionBuilder> -->
     <div class="col-span-2 flex justify-end gap-2">
       <ActionsList
+        feature-name="action_feature_incident_types"
         :show-actions="true"
         :actionList="IndexIncidantTypeactionList()"
         :actionsNumber="5"

@@ -213,6 +213,7 @@ const IndexObservationTypesactionList = () => [
     text: t('add_observeration_type'),
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type/add`,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -282,7 +283,12 @@ const IndexObservationTypesactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.OBSERVATION_TYPE_CREATE]">
         <SystemObservationTypes />
       </PermissionBuilder> -->
-      <ActionsList :show-actions="true" :actionList="IndexObservationTypesactionList()" :actionsNumber="5">
+      <ActionsList
+        feature-name="action_feature_observation_types"
+        :show-actions="true"
+        :actionList="IndexObservationTypesactionList()"
+        :actionsNumber="5"
+      >
         <template #custom>
           <!-- <SystemObservationTypes /> -->
           <ExportPdf :isDropList="true" />

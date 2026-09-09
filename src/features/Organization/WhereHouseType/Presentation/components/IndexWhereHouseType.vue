@@ -189,6 +189,7 @@ const IndexWhereHouseTypeactionList = () => [
     text: t('add_warehouse_type'),
     link: '/organization/where-house-type/add',
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -250,7 +251,12 @@ const IndexWhereHouseTypeactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
         <SystemWarehouseTypes />
       </PermissionBuilder> -->
-      <ActionsList :show-actions="true" :actionList="IndexWhereHouseTypeactionList()" :actionsNumber="5">
+      <ActionsList
+        feature-name="action_feature_warehouse_types"
+        :show-actions="true"
+        :actionList="IndexWhereHouseTypeactionList()"
+        :actionsNumber="5"
+      >
         <template #custom>
           <!-- <SystemWarehouseTypes :isHeaderTap="false" /> -->
           <ExportPdf :isDropList="true" />
