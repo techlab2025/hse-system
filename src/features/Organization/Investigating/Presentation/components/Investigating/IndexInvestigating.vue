@@ -291,46 +291,19 @@ const GerIncidantCount = (data: any): number => {
                   :class="{ show: isInvestigationExpanded(item, index) }"
                 >
                   <div class="first-container">
-                                              <button
-                            type="button"
-                            class="investigation-accordion-trigger"
-                            :aria-expanded="isInvestigationExpanded(item, index)"
-                            :aria-controls="`investigation-details-${getInvestigationKey(item, index)}`"
-                            @click="toggleInvestigationDetails(item, index)"
-                          >
-                            <div class="show_details">
-                              <h6>show details</h6>
-                            <svg
-                              class="investigation-accordion-chevron"
-                              :class="{ expanded: isInvestigationExpanded(item, index) }"
-                              width="18"
-                              height="18"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              aria-hidden="true"
-                            >
-                              <path
-                                d="m6 9 6 6 6-6"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                              />
-                            </svg>
-                            </div>
-                          </button>
                     <div class="first-card">
                       <div class="first-card-header">
                         <div class="header">
-                            <span
-                              class="first-label-item-primary"
-                              :class="GetObservationRiskLevel(item?.observation?.riskLevel)"
-                            >
-                              {{ $t('Investigating Report') }}
-                              <span v-if="item?.observation?.serial">{{
-                                `_` + item?.observation?.serialName || '_OBS-2025-0112'
-                              }}</span>
-                            </span>
+                          <span
+                            class="first-label-item-primary"
+                            :class="GetObservationRiskLevel(item?.observation?.riskLevel)"
+                          >
+                            {{ $t('Investigating Report') }}
+                            <span v-if="item?.observation?.serial">{{
+                              `_` + item?.observation?.serialName || '_OBS-2025-0112'
+                            }}</span>
+                          </span>
+
                           <p :class="`status ${ReturnStatusTitle(item?.status)}`">
                             {{ ReturnStatusTitle(item?.status) }}
                           </p>
@@ -390,6 +363,65 @@ const GerIncidantCount = (data: any): number => {
                             <span class="summary-value">{{ item?.observation?.zoon?.title }}</span>
                           </div>
                         </router-link>
+
+                        <div class="investigation-summary-footer">
+                          <button
+                            type="button"
+                            class="investigation-accordion-trigger"
+                            :aria-expanded="isInvestigationExpanded(item, index)"
+                            :aria-controls="`investigation-details-${getInvestigationKey(item, index)}`"
+                            @click="toggleInvestigationDetails(item, index)"
+                          >
+                            <span class="investigation-details-label">
+                              <svg
+                                class="investigation-details-icon"
+                                width="19"
+                                height="19"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"
+                                  stroke="currentColor"
+                                  stroke-width="1.8"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                                <circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8" />
+                              </svg>
+                              <span>
+                                {{
+                                  $t(
+                                    isInvestigationExpanded(item, index)
+                                      ? 'hide_details'
+                                      : 'show_details',
+                                  )
+                                }}
+                              </span>
+                            </span>
+
+                            <span class="investigation-chevron-shell">
+                              <svg
+                                class="investigation-accordion-chevron"
+                                :class="{ expanded: isInvestigationExpanded(item, index) }"
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  d="m6 9 6 6 6-6"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                            </span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -513,7 +545,7 @@ const GerIncidantCount = (data: any): number => {
                             :to="`/organization/Investigating-result-answer/${item?.Investegationid}`"
                           >
                             <button class="btn btn-primary w-full">
-                              <span>{{ $t('view_results') }}</span>
+                              <span>{{ $t('Investigating closed') }}</span>
                             </button>
                           </router-link>
                         </div>
@@ -576,15 +608,6 @@ const GerIncidantCount = (data: any): number => {
 </template>
 
 <style lang="scss" scoped>
-.show_details{
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  border-bottom: 1px dashed #183a99;
-  h6{
-    color: #183a99;
-  }
-}
 .index-investigating {
   align-items: flex-start;
 
@@ -679,20 +702,77 @@ const GerIncidantCount = (data: any): number => {
 .investigation-accordion-trigger {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
-  min-width: 0;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: max-content;
+  min-height: 34px;
   margin: 0;
-  padding: 0;
+  padding: 0.25rem 0.3rem 0.25rem 0.55rem;
   border: 0;
+  border-radius: 999px;
   background: transparent;
-  color: inherit;
+  color: var(--PrimaryColor);
   cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 800;
   text-align: start;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.investigation-accordion-trigger:hover {
+  background: color-mix(in srgb, var(--PrimaryColor) 8%, transparent);
+  transform: translateX(2px);
+}
+
+.investigation-accordion-trigger[aria-expanded='true'] {
+  background: color-mix(in srgb, var(--PrimaryColor) 10%, transparent);
+}
+
+.investigation-summary-footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.1rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid color-mix(in srgb, var(--main-border) 72%, transparent);
+}
+
+.investigation-details-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.investigation-details-icon {
+  flex-shrink: 0;
+  opacity: 0.72;
+}
+
+.investigation-chevron-shell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--PrimaryColor) 12%, var(--BgWhite));
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.investigation-accordion-trigger:hover .investigation-chevron-shell,
+.investigation-accordion-trigger[aria-expanded='true'] .investigation-chevron-shell {
+  background: var(--PrimaryColor);
+  color: var(--text-on-brand);
 }
 
 .investigation-accordion-chevron {
   flex-shrink: 0;
-  color: var(--PrimaryColor);
+  color: currentColor;
   transition: transform 0.22s ease;
 }
 
@@ -1114,6 +1194,30 @@ const GerIncidantCount = (data: any): number => {
     box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 22%, transparent) !important;
   }
 
+  .investigation-accordion-trigger {
+    background: transparent !important;
+    color: var(--PrimaryColor) !important;
+  }
+
+  .investigation-accordion-trigger:hover,
+  .investigation-accordion-trigger[aria-expanded='true'] {
+    background: color-mix(in srgb, var(--PrimaryColor) 15%, transparent) !important;
+  }
+
+  .investigation-summary-footer {
+    border-color: var(--main-border) !important;
+  }
+
+  .investigation-chevron-shell {
+    background: color-mix(in srgb, var(--PrimaryColor) 18%, var(--surface-2)) !important;
+  }
+
+  .investigation-accordion-trigger:hover .investigation-chevron-shell,
+  .investigation-accordion-trigger[aria-expanded='true'] .investigation-chevron-shell {
+    background: var(--PrimaryColor) !important;
+    color: var(--text-on-brand) !important;
+  }
+
   .index-table-card:hover {
     border-color: color-mix(in srgb, var(--PrimaryColor) 34%, var(--main-border)) !important;
     box-shadow: 0 18px 42px color-mix(in srgb, var(--text-strong) 30%, transparent) !important;
@@ -1246,6 +1350,11 @@ const GerIncidantCount = (data: any): number => {
   .solved-btn a,
   .solved-btn :deep(a) {
     width: 100% !important;
+  }
+
+  .investigation-summary-footer,
+  .investigation-accordion-trigger {
+    width: 100%;
   }
 }
 </style>

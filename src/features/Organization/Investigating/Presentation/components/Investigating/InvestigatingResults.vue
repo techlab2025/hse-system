@@ -693,6 +693,18 @@ const validateRequiredFields = async () => {
   await scrollToRequiredField(missedFields[0])
   return false
 }
+const getObservationType = (type: number | undefined) => {
+  switch (type) {
+    case Observation.AccidentsType:
+      return 'Incident'
+    case Observation.HazardType:
+      return 'Observation'
+    case Observation.ObservationType:
+      return 'Observation'
+    default:
+      return ''
+  }
+}
 </script>
 <template>
   <DataStatus :controller="state">
@@ -703,7 +715,7 @@ const validateRequiredFields = async () => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>General Identification</p>
+                <p>{{ getObservationType(state?.data?.observation.type )}} Identification</p>
                 <span class="arrow" :class="{ open: isPanelOpen('1') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
