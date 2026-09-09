@@ -229,8 +229,8 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
           <DataEmpty
             :link="`/add/HazardType`"
             addText="Add HazardType"
-            description="Sorry .. You have no HazardTypeuages .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No HazardTypeuages"
+            description="You have no HazardTypeuages .. All your joined customers will appear here when you add your customer data"
+            title="You have No HazardTypeuages"
           />
         </PermissionBuilder>
       </template>
@@ -239,8 +239,8 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
           <DataFailed
             :link="`/add/HazardType`"
             addText="Add HazardType"
-            description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No HazardTypeuages"
+            description="You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
+            title="You have No HazardTypeuages"
           />
         </PermissionBuilder>
       </template>
@@ -249,7 +249,7 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
+        description="You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </PermissionBuilder>

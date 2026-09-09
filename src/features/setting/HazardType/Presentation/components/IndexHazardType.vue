@@ -483,8 +483,8 @@ const IndexHazardTypeactionList = () => [
                 : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`
             "
             :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
-            description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No HazardType"
+            description="You have no HazardType .. All your joined customers will appear here when you add your customer data"
+            title="You have No HazardType"
           />
         </PermissionBuilder>
       </template>
@@ -504,8 +504,8 @@ const IndexHazardTypeactionList = () => [
                 : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`
             "
             :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
-            description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No HazardType"
+            description="You have no HazardType .. All your joined customers will appear here when you add your customer data"
+            title="You have No HazardType"
           />
         </PermissionBuilder>
       </template>
@@ -514,7 +514,7 @@ const IndexHazardTypeactionList = () => [
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
+        description="You have no HazardType .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </PermissionBuilder>

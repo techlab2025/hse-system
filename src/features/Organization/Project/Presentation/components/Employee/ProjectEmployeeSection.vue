@@ -258,10 +258,10 @@ watch(
         :link="`/add-project`"
         :description="
           $t(
-            'Sorry .. You have no project types .. All your joined customers will appear here when you add your customer data',
+            'You have no project types .. All your joined customers will appear here when you add your customer data',
           )
         "
-        :title="$t('..ops! You have No Projects')"
+        :title="$t('You have No Projects')"
         :addText="$t('Add Projects')"
       />
     </template>

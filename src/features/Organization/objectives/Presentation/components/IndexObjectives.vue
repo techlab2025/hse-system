@@ -194,19 +194,19 @@ watch(
       </template>
       <template #empty>
         <DataEmpty :link="`/organization/Objectives/add`" addText="Add Objectives"
-          description="Sorry .. You have no Objectives .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Objectives" />
+          description="You have no Objectives .. All your joined customers will appear here when you add your customer data"
+          title="You have No Objectives" />
       </template>
       <template #failed>
         <DataFailed :link="`/organization/objectives/add`" addText="Add Objectives"
-          description="Sorry .. You have no Objectives .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Objectives" />
+          description="You have no Objectives .. All your joined customers will appear here when you add your customer data"
+          title="You have No Objectives" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Objectives .. All your joined customers will appear here when you add your customer data" />
+        description="You have no Objectives .. All your joined customers will appear here when you add your customer data" />
     </template>
   </permission-builder>
 </template>

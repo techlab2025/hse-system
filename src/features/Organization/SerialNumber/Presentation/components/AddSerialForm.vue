@@ -16,11 +16,13 @@ import IndexProjectProgressController from '../../../ProjectPrgoress/Presentatio
 import IndexProjectProgressParams from '@/features/Organization/ProjectPrgoress/Core/params/indexProjectProgressParams'
 import PathSerial from '@/shared/icons/pathSerial.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 
 const showSerialNumController = ShowSerialNumController.getInstance()
 const projectStatus = useProjectAppStatusStore()
 const emit = defineEmits(['update:data', 'close:dialog'])
 const router = useRouter()
+const stayOnPageRouter = createStayOnPageRouter(router)
 const props = defineProps<{
   serialType: SertialNumberStatusEnum
 }>()
@@ -194,7 +196,7 @@ const fields = ref([
   },
 ])
 
-const sendData = async () => {
+const submitSerialData = async (saveAndNew: boolean) => {
   const codes = fields.value
     .filter((field) => field.prefix || field.suffix || field.start)
     .map(
@@ -213,9 +215,20 @@ const sendData = async () => {
     props.serialType,
   )
   const serialNumController = SerialNumController.getInstance()
-  await serialNumController.addSerialNumber(params, router)
+  serialNumController.setLoading()
+  await serialNumController.addSerialNumber(params, saveAndNew ? stayOnPageRouter : router)
 
   if (!serialNumController.isDataSuccess()) return
+
+  if (saveAndNew) {
+    fields.value = fields.value.map((field) => ({
+      ...field,
+      prefix: '',
+      suffix: '',
+      start: '',
+    }))
+    return
+  }
 
   if (route.path.includes('project-progress')) {
     emit('update:data')
@@ -226,6 +239,9 @@ const sendData = async () => {
   emit('close:dialog')
   // location.reload()
 }
+
+const sendData = () => submitSerialData(false)
+const saveAndNew = () => submitSerialData(true)
 
 const ShowData = async () => {
   const showSerialNumberParams = new ShowSerialNumberParams()
@@ -320,7 +336,7 @@ const route = useRoute()
       </div>
     </div>
 
-    <div class="form-sticky-button flex gap-2">
+    <div class="form-sticky-button flex gap-2 create-form-actions">
       <router-link
         v-if="!route.path.includes('project-progress')"
         to="/organization"
@@ -328,11 +344,10 @@ const route = useRoute()
         style="width: 15%"
         >{{ $t('cancel') }}</router-link
       >
-      <button
-        type="submit"
-        class="btn btn-primary"
-        :style="!route.path.includes('project-progress') ? 'width: 85%' : 'width: 100%'"
-      >
+      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+        {{ $t('save and new') }}
+      </button>
+      <button type="submit" class="btn btn-primary">
         {{ route.path.includes('project-progress') ? $t('save and next step') : $t('save') }}
       </button>
     </div>

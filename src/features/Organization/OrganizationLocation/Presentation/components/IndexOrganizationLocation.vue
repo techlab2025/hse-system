@@ -224,22 +224,22 @@ watch(
       <template #empty>
         <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.ORG_LOCATION_CREATE]">
           <DataEmpty :link="`/organization/organization-location/add`" addText="Add OrganizationLocation"
-            description="Sorry .. You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No OrganizationLocation" />
+            description="You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data"
+            title="You have No OrganizationLocation" />
         </PermissionBuilder>
       </template>
       <template #failed>
         <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.ORG_LOCATION_CREATE]">
           <DataFailed :link="`/organization/organization-location/add`" addText="Add OrganizationLocation"
-            description="Sorry .. You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No OrganizationLocation" />
+            description="You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data"
+            title="You have No OrganizationLocation" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data" />
+        description="You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

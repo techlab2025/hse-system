@@ -21,46 +21,59 @@ const props = defineProps<{
 }>()
 
 const Equipment = ref<TitleInterface[]>([])
+const formKey = ref(0)
 
 const EquipmentsData = ref<CreateProjectZoneEquipment>(
-  new CreateProjectZoneEquipment(id,
-    [
-      {
-        project_zoon_id: props.zoonId,
-        equipment_ids: []
-      }
-    ]
-  )
+  new CreateProjectZoneEquipment(id, [
+    {
+      project_zoon_id: props.zoonId,
+      equipment_ids: [],
+    },
+  ]),
 )
 
 const setEquipments = (data: TitleInterface[]) => {
+  Equipment.value = data
   const equipmentIds = data.map((item) => item.id)
 
-  console.log(equipmentIds, "equipmentIds");
+  console.log(equipmentIds, 'equipmentIds')
 
-  EquipmentsData.value = new CreateProjectZoneEquipment(id,
-    [
-      {
-        project_zoon_id: props.zoonId,
-        equipment_ids: equipmentIds
-      }
-    ]
-  )
+  EquipmentsData.value = new CreateProjectZoneEquipment(id, [
+    {
+      project_zoon_id: props.zoonId,
+      equipment_ids: equipmentIds,
+    },
+  ])
 }
 
 const indexEquipmentController = IndexEquipmentController.getInstance()
 const indexEquipmentParams = new IndexEquipmentParams('', 0, 0, 0, null, true)
 
-const AddEquipment = async () => {
+const submitEquipment = async (saveAndNew: boolean) => {
   try {
     const controller = CreateProjectZoneEquipmentsController.getInstance()
-    const res = await controller.CreateProjectZoneEquipment(EquipmentsData.value, router, id)
+    controller.setLoading()
+    await controller.CreateProjectZoneEquipment(EquipmentsData.value, router, id)
 
-    emit('update:data')
+    if (saveAndNew && controller.isDataSuccess()) {
+      Equipment.value = []
+      EquipmentsData.value = new CreateProjectZoneEquipment(id, [
+        {
+          project_zoon_id: props.zoonId,
+          equipment_ids: [],
+        },
+      ])
+      formKey.value++
+    } else if (!saveAndNew) {
+      emit('update:data')
+    }
   } catch (error) {
-    console.log(error);
+    console.log(error)
   }
-};
+}
+
+const AddEquipment = () => submitEquipment(false)
+const saveAndNew = () => submitEquipment(true)
 
 const AllEquipments = ref([])
 const getEquipment = async () => {
@@ -71,8 +84,6 @@ const getEquipment = async () => {
 onMounted(() => {
   getEquipment()
 })
-
-
 </script>
 
 <template>
@@ -80,19 +91,28 @@ onMounted(() => {
     <form @submit.prevent="AddEquipment">
       <div class="input-container">
         <div class="input-wrapper w-full">
-
           <!-- <CustomSelectInput :modelValue="Equipment" :controller="indexEquipmentController"
             :params="indexEquipmentParams" class="input" label="Equipment" id="Equipment" :type="2"
             placeholder="Select Your Equipment" @update:modelValue="setEquipments" /> -->
           <label for="equipment">{{ $t('Select Equipment') }}</label>
-          <MultiSelect :modelValue="Equipment" :options="AllEquipments" optionLabel="title" filter
-            :placeholder="$t('Select Your Equipment')" display="chip" class="w-full md:w-80"
-            @update:modelValue="setEquipments" />
-
+          <MultiSelect
+            :key="formKey"
+            :modelValue="Equipment"
+            :options="AllEquipments"
+            optionLabel="title"
+            filter
+            :placeholder="$t('Select Your Equipment')"
+            display="chip"
+            class="w-full md:w-80"
+            @update:modelValue="setEquipments"
+          />
         </div>
       </div>
 
-      <div class="submit-btn">
+      <div class="submit-btn create-form-actions">
+        <button class="btn btn-secondary" type="button" @click.prevent="saveAndNew">
+          {{ $t('save and new') }}
+        </button>
         <button class="btn btn-primary" type="submit">{{ $t('confirm') }}</button>
       </div>
     </form>

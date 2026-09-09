@@ -232,19 +232,19 @@ const actionList = (id: number, deleteServiceFeature: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty :link="`/admin/service-feature/add`" addText="Add ServiceFeature"
-          description="Sorry .. You have no ServiceFeature .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ServiceFeature" />
+          description="You have no ServiceFeature .. All your joined customers will appear here when you add your customer data"
+          title="You have No ServiceFeature" />
       </template>
       <template #failed>
         <DataFailed :link="`/admin/service-feature/add`" addText="Add ServiceFeature"
-          description="Sorry .. You have no ServiceFeature .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ServiceFeature" />
+          description="You have no ServiceFeature .. All your joined customers will appear here when you add your customer data"
+          title="You have No ServiceFeature" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no ServiceFeature .. All your joined customers will appear here when you add your customer data" />
+        description="You have no ServiceFeature .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

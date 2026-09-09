@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -11,12 +12,23 @@ import type AddAdminParams from '../../Core/Params/add_admin_params'
 import AdminForm from './AdminForm.vue'
 
 const router = useRouter()
+const stayOnPageRouter = createStayOnPageRouter(router)
 const params = ref<Params | null>(null)
+const formKey = ref(0)
 
 const addAdminController = AddAdminController.getInstance()
 
 const addAdmin = async () => {
   await addAdminController.addAdmin(params.value as AddAdminParams, router)
+}
+
+const saveAndNew = async () => {
+  addAdminController.setLoading()
+  await addAdminController.addAdmin(params.value as AddAdminParams, stayOnPageRouter)
+  if (addAdminController.isDataSuccess()) {
+    params.value = null
+    formKey.value++
+  }
 }
 const setParams = (data: Params) => {
   // console.log(data)
@@ -26,9 +38,12 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-2 gap-5" @submit.prevent="addAdmin">
-    <AdminForm @update:updateData="setParams" />
+    <AdminForm :key="formKey" @update:updateData="setParams" />
 
-    <div class="button-wrapper">
+    <div class="button-wrapper create-form-actions">
+      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+        {{ $t('save and new') }}
+      </button>
       <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </div>
   </form>

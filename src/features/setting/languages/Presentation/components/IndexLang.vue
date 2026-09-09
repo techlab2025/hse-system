@@ -194,16 +194,16 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
         <DataEmpty
           :link="`/add/Lang`"
           addText="Add Lang"
-          description="Sorry .. You have no languages .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No languages"
+          description="You have no languages .. All your joined customers will appear here when you add your customer data"
+          title="You have No languages"
         />
       </template>
       <template #failed>
         <DataFailed
           :link="`/add/Lang`"
           addText="Add Lang"
-          description="Sorry .. You have no language .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No languages"
+          description="You have no language .. All your joined customers will appear here when you add your customer data"
+          title="You have No languages"
         />
       </template>
     </DataStatus>
@@ -211,7 +211,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no language .. All your joined customers will appear here when you add your customer data"
+        description="You have no language .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </PermissionBuilder>

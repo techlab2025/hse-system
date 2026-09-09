@@ -337,8 +337,8 @@ const indexTeamActionList = () => [
         ]">
           <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
             addText="Add Team"
-            description="Sorry .. You have no Team .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Team" />
+            description="You have no Team .. All your joined customers will appear here when you add your customer data"
+            title="You have No Team" />
         </permission-builder>
       </template>
       <template #failed>
@@ -350,8 +350,8 @@ const indexTeamActionList = () => [
         ]">
           <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
             addText="Add Team"
-            description="Sorry .. You have no Team .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Team" />
+            description="You have no Team .. All your joined customers will appear here when you add your customer data"
+            title="You have No Team" />
         </permission-builder>
       </template>
     </DataStatus>
@@ -364,7 +364,7 @@ const indexTeamActionList = () => [
         PermissionsEnum.ORG_TEAM_CREATE,
       ]">
         <DataFailed addText="Have not  Permission"
-          description="Sorry .. You have no TeamType .. All your joined customers will appear here when you add your customer data" />
+          description="You have no TeamType .. All your joined customers will appear here when you add your customer data" />
       </permission-builder>
     </template>
   </permission-builder>

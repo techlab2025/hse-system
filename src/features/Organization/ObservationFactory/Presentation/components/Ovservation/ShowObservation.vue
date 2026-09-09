@@ -111,8 +111,8 @@ const GetHeader = (value: number) => {
         <DataEmpty
           :link="`/organization/equipment-mangement/observation/add`"
           addText="Add Observation"
-          description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Observation"
+          description="You have no Observation .. All your joined customers will appear here when you add your customer data"
+          title="You have No Observation"
         />
       </PermissionBuilder>
     </template>
@@ -123,8 +123,8 @@ const GetHeader = (value: number) => {
         <DataFailed
           :link="`/organization/equipment-mangement/observation/add`"
           addText="Add Observation"
-          description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Observation"
+          description="You have no Observation .. All your joined customers will appear here when you add your customer data"
+          title="You have No Observation"
         />
       </PermissionBuilder>
     </template>

@@ -217,19 +217,19 @@ const actionList = (id: number, deleteSystemRiskManagement: (id: number) => void
       </template>
       <template #empty>
         <DataEmpty :link="`/admin/about-us-features/add`" addText="Add SystemRiskManagement"
-          description="Sorry .. You have no SystemRiskManagement .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No SystemRiskManagement" />
+          description="You have no SystemRiskManagement .. All your joined customers will appear here when you add your customer data"
+          title="You have No SystemRiskManagement" />
       </template>
       <template #failed>
         <DataFailed :link="`/admin/about-us-features/add`" addText="Add SystemRiskManagement"
-          description="Sorry .. You have no SystemRiskManagement .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No SystemRiskManagement" />
+          description="You have no SystemRiskManagement .. All your joined customers will appear here when you add your customer data"
+          title="You have No SystemRiskManagement" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no SystemRiskManagement .. All your joined customers will appear here when you add your customer data" />
+        description="You have no SystemRiskManagement .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

@@ -357,9 +357,9 @@ watch(
               ]"
             >
               <DataEmpty
-                description="Sorry .. You have no CAPA .. All your joined customers will appear here when you add your customer data"
+                description="You have no CAPA .. All your joined customers will appear here when you add your customer data"
                 :link="`/organization`"
-                title="..ops! You have No CAPA"
+                title="You have No CAPA"
               />
             </PermissionBuilder>
           </template>
@@ -371,9 +371,9 @@ watch(
               ]"
             >
               <DataFailed
-                description="Sorry .. You have no CAPA .. All your joined customers will appear here when you add your customer data"
+                description="You have no CAPA .. All your joined customers will appear here when you add your customer data"
                 :link="`/organization`"
-                title="..ops! You have No CAPA"
+                title="You have No CAPA"
               />
             </PermissionBuilder>
           </template>
@@ -381,7 +381,7 @@ watch(
         <template #notPermitted>
           <DataFailed
             addText="Have not  Permission"
-            description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
+            description="You have no Observation .. All your joined customers will appear here when you add your customer data"
           />
         </template>
       </PermissionBuilder>

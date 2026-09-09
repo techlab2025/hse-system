@@ -257,16 +257,16 @@ const getEmployeeInitial = (name?: string) => name?.trim().charAt(0).toUpperCase
       <DataEmpty
         :link="`/organization/equipment-mangement/inspection/add`"
         addText="Add Inspection"
-        description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Inspection"
+        description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
+        title="You have No Inspection"
       />
     </template>
     <template #failed>
       <DataFailed
         :link="`/organization/equipment-mangement/inspection/add`"
         addText="Add Inspection"
-        description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Inspection"
+        description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
+        title="You have No Inspection"
       />
     </template>
   </DataStatus>

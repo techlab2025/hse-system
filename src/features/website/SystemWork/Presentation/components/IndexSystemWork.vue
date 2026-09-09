@@ -208,19 +208,19 @@ const actionList = (id: number, deleteSystemWork: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty :link="`/admin/system-work/add`" addText="Add SystemWork"
-          description="Sorry .. You have no SystemWork .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No SystemWork" />
+          description="You have no SystemWork .. All your joined customers will appear here when you add your customer data"
+          title="You have No SystemWork" />
       </template>
       <template #failed>
         <DataFailed :link="`/admin/system-work/add`" addText="Add SystemWork"
-          description="Sorry .. You have no SystemWork .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No SystemWork" />
+          description="You have no SystemWork .. All your joined customers will appear here when you add your customer data"
+          title="You have No SystemWork" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no SystemWork .. All your joined customers will appear here when you add your customer data" />
+        description="You have no SystemWork .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

@@ -17,8 +17,10 @@ import {
 import { NotificationPlanActionEnum } from '../../Core/enums/notification_plan_action_enum'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 
 const router = useRouter()
+const stayOnPageRouter = createStayOnPageRouter(router)
 const { t } = useI18n()
 
 const indexEmployeesController = IndexOrganizatoinEmployeeController.getInstance()
@@ -212,7 +214,7 @@ const updateAssignmentMode = (mode: AssignmentMode) => {
   selectedEmployees.value = []
 }
 
-const addNotificationPlan = async () => {
+const submitNotificationPlan = async (saveAndNew: boolean) => {
   if (!(await validateRequiredFields())) return
 
   const notificationPlanParams = new AddNotificationPlanParams(
@@ -224,11 +226,30 @@ const addNotificationPlan = async () => {
     assignmentMode.value === 'hierarchies' ? 1 : 0,
   )
 
-  await AddNotificationPlanController.getInstance().addNotificationPlan(
+  const addNotificationPlanController = AddNotificationPlanController.getInstance()
+  addNotificationPlanController.setLoading()
+  await addNotificationPlanController.addNotificationPlan(
     notificationPlanParams,
-    router,
+    saveAndNew ? stayOnPageRouter : router,
+    saveAndNew,
   )
+
+  if (saveAndNew && addNotificationPlanController.isDataSuccess()) {
+    title.value = ''
+    isActive.value = true
+    selectedActions.value = []
+    selectedSubActionByAction.value = {}
+    selectedEmployees.value = []
+    selectedHierarchies.value = []
+    assignmentMode.value = 'employees'
+    titleError.value = ''
+    actionValueError.value = ''
+    assignmentError.value = ''
+  }
 }
+
+const addNotificationPlan = () => submitNotificationPlan(false)
+const saveAndNew = () => submitNotificationPlan(true)
 </script>
 
 <template>
@@ -438,7 +459,10 @@ const addNotificationPlan = async () => {
       <p v-if="assignmentError" class="form-error">{{ assignmentError }}</p>
     </section>
 
-    <div class="full-width plan-button-wrapper">
+    <div class="full-width plan-button-wrapper create-form-actions">
+      <button class="btn btn-secondary" type="button" @click.prevent="saveAndNew">
+        {{ $t('save and new') }}
+      </button>
       <button class="btn btn-primary" type="submit">
         {{ $t('save') }}
       </button>
@@ -974,10 +998,6 @@ const addNotificationPlan = async () => {
 .form-error {
   color: var(--status-danger, #dc2626);
   font-size: 14px;
-}
-
-.plan-button-wrapper button {
-  width: 100%;
 }
 
 .full-width {

@@ -207,8 +207,8 @@ watch(
           PermissionsEnum.SUBSCRIPTION_CREATE,
         ]">
           <DataEmpty :link="`/admin/subscription/add`" addText="Add Subscription"
-            description="Sorry .. You have no Subscription .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Subscription" />
+            description="You have no Subscription .. All your joined customers will appear here when you add your customer data"
+            title="You have No Subscription" />
         </permission-builder>
       </template>
       <template #failed>
@@ -218,8 +218,8 @@ watch(
           PermissionsEnum.SUBSCRIPTION_CREATE,
         ]">
           <DataFailed :link="`/admin/subscription/add`" addText="Add Subscription"
-            description="Sorry .. You have no Subscription .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Subscription" />
+            description="You have no Subscription .. All your joined customers will appear here when you add your customer data"
+            title="You have No Subscription" />
         </permission-builder>
       </template>
     </DataStatus>
@@ -231,7 +231,7 @@ watch(
         PermissionsEnum.SUBSCRIPTION_CREATE,
       ]">
         <DataFailed addText="Have not  Permission"
-          description="Sorry .. You have no Subscription .. All your joined customers will appear here when you add your customer data" />
+          description="You have no Subscription .. All your joined customers will appear here when you add your customer data" />
       </permission-builder>
     </template>
   </permission-builder>
