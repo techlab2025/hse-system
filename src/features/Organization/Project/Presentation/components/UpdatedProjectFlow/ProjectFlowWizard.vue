@@ -412,7 +412,7 @@ const skipAndNext = async () => {
         <h1>{{ editOnly ? `Update ${steps[activeStep - 1].title}` : 'Build your project' }}</h1>
         <p>{{ steps[activeStep - 1].caption }} · Step {{ activeStep }} of 5</p>
       </div>
-      <div class="progress-orbit">
+      <div v-if="!editOnly" class="progress-orbit">
         <strong>{{ projectProgress }}%</strong><span>complete</span>
       </div>
     </header>
