@@ -125,6 +125,13 @@ textarea:focus {
   background: var(--Gray-1);
 }
 
+.fixed-equipment-row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  align-items: end;
+  gap: 12px;
+}
+
 .group-card {
   display: flex;
   flex-direction: column;
@@ -155,6 +162,7 @@ textarea:focus {
   border: 1px solid var(--main-border);
   border-radius: 14px;
   background: var(--Gray-1);
+  width: 100%;
 }
 
 .fixed-location span {
@@ -254,6 +262,10 @@ textarea:focus {
   .repeat-card,
   .nested-row,
   .equipment-row {
+    grid-template-columns: 1fr;
+  }
+
+  .fixed-equipment-row {
     grid-template-columns: 1fr;
   }
 }

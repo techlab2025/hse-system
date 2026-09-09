@@ -11,7 +11,6 @@ import { useUserStore } from '@/stores/user'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
-import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
 import type SohwProjectZoonModel from '../../../Data/models/ShowProjectZone'
 import BasicProjectParams from '../../../Core/params/UpdatedProjectFlow/BasicProjectParams'
 import ProjectFlowDetailsParams from '../../../Core/params/UpdatedProjectFlow/ProjectFlowDetailsParams'
@@ -212,33 +211,6 @@ onMounted(async () => {
     holiday_title: item.holiday_title,
     holidays_dates: item.holidays_dates.map((date) => new Date(date)),
   }))
-  equipments.value = details.equipments.map((zone) => ({
-    zone: new TitleInterface({
-      id: zone.project_zoon_id,
-      title: (zone as any).title ?? `#${zone.project_zoon_id}`,
-    }),
-    equipments: zone.equipments.map(
-      (equipment) =>
-        new TitleInterface({
-          id: equipment.equipment_id,
-          title: (equipment as any).title ?? `#${equipment.equipment_id}`,
-        }),
-    ),
-    equipmentParams: new IndexEquipmentParams(
-      '',
-      1,
-      30,
-      0,
-      undefined,
-      true,
-      zone.project_zoon_id,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      routeProjectId.value ?? null,
-    ),
-  }))
 })
 
 const validateStep = () => {
@@ -363,8 +335,8 @@ const buildParams = () => {
       project_location_id: location.projectLocation!.id,
       project_teams: location.projectTeams.map((team) => ({
         team_id: team.team!.id,
-        organization_employees: team.employees.map((employee) => ({
-          organization_employee_id: employee.id,
+        organizaion_employees: team.employees.map((employee) => ({
+          organizaion_employee_id: employee.id,
         })),
       })),
     }))
@@ -486,12 +458,7 @@ const skipAndNext = async () => {
         v-model:teams="teams"
         :project-id="routeProjectId"
       />
-      <ProjectEquipmentsStep
-        v-else
-        v-model:equipments="equipments"
-        :locations="locations"
-        :project-id="routeProjectId"
-      />
+      <ProjectEquipmentsStep v-else v-model:equipments="equipments" :project-id="routeProjectId" />
 
       <p v-if="errorMessage" class="form-error">{{ errorMessage }}</p>
       <footer class="flow-actions">

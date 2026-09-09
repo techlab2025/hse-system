@@ -1,29 +1,23 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
-import IndexProjectZoneController from '@/features/Organization/ProjectZone/Presentation/controllers/indexProjectZoneController'
-import IndexProjectZoneParams from '@/features/Organization/ProjectZone/Core/params/indexProjectZoneParams'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
+import ProjectCustomLocationController from '../../../controllers/ProjectCustomLocationController'
+import ProjectCustomLocationParams from '../../../../Core/params/ProjectCustomLocationParams'
+import { ProjectCustomLocationEnum } from '../../../../Core/Enums/ProjectCustomLocationEnum'
+import type SohwProjectZoonModel from '../../../../Data/models/ShowProjectZone'
 import type { EquipmentZoneForm } from '../../../../Core/params/UpdatedProjectFlow/ProjectEquipmentFormParams'
 
-const props = defineProps<{ locations: TitleInterface[]; projectId?: number }>()
+const props = defineProps<{ projectId?: number }>()
 const equipments = defineModel<EquipmentZoneForm[]>('equipments', { required: true })
 
-const projectZoneController = IndexProjectZoneController.getInstance()
 const equipmentController = IndexEquipmentController.getInstance()
-const projectZoneParams = computed(
-  () =>
-    new IndexProjectZoneParams(
-      '',
-      1,
-      30,
-      0,
-      props.locations.map((item) => item.id),
-      props.projectId ?? null,
-    ),
-)
+const projectCustomLocationController = ProjectCustomLocationController.getInstance()
+const isLoadingZones = ref(false)
+const zonesError = ref('')
+
 const equipmentParams = (zoneId?: number) =>
   new IndexEquipmentParams(
     '',
@@ -32,31 +26,55 @@ const equipmentParams = (zoneId?: number) =>
     0,
     undefined,
     true,
-    zoneId,
+    // zoneId,
     undefined,
     undefined,
     undefined,
     undefined,
-    props.projectId ?? null,
+    // props.projectId ?? null,
   )
 
-const addEquipmentZoon = () => {
-  equipments.value.push({ zone: null, equipments: [], equipmentParams: equipmentParams() })
-}
-const setEquipmentZone = (
-  zone: EquipmentZoneForm,
-  value: TitleInterface | TitleInterface[] | null,
-) => {
-  zone.zone = Array.isArray(value) ? (value[0] ?? null) : value
-  zone.equipments = []
-  zone.equipmentParams = equipmentParams(zone.zone?.id)
-}
 const setZoneEquipments = (
   zone: EquipmentZoneForm,
   value: TitleInterface | TitleInterface[] | null,
 ) => {
   zone.equipments = Array.isArray(value) ? value : value ? [value] : []
 }
+
+const mapProjectZone = (zone: SohwProjectZoonModel): EquipmentZoneForm => ({
+  zone: new TitleInterface({ id: zone.projectZoonId, title: zone.zoonTitle }),
+  equipments: (zone.projectZoonEquipments ?? []).map(
+    (equipment) => new TitleInterface({ id: equipment.id, title: equipment.title }),
+  ),
+  equipmentParams: equipmentParams(zone.projectZoonId),
+})
+
+const getProjectZonesEquipments = async () => {
+  if (!props.projectId) {
+    equipments.value = []
+    return
+  }
+
+  isLoadingZones.value = true
+  zonesError.value = ''
+  try {
+    const params = new ProjectCustomLocationParams(props.projectId, [
+      ProjectCustomLocationEnum.ZOON,
+      ProjectCustomLocationEnum.ZOON_EQUIPMENT,
+    ])
+    const state = await projectCustomLocationController.getData(params)
+    equipments.value = (state.value.data ?? [])
+      .flatMap((location) => location.locationZones ?? [])
+      .map(mapProjectZone)
+  } catch (error: unknown) {
+    equipments.value = []
+    zonesError.value = error instanceof Error ? error.message : 'Could not load project zones.'
+  } finally {
+    isLoadingZones.value = false
+  }
+}
+
+watch(() => props.projectId, getProjectZonesEquipments, { immediate: true })
 </script>
 
 <template>
@@ -68,17 +86,21 @@ const setZoneEquipments = (
         <p>Attach equipment to zones, or finish without equipment.</p>
       </div>
     </div>
-    <div v-for="(zone, zoneIndex) in equipments" :key="zoneIndex" class="group-card equipment-row">
-      <div class="input-wrapper w-full">
-        <UpdatedCustomInputSelect
-          :model-value="zone.zone"
-          :params="projectZoneParams"
-          :controller="projectZoneController"
-          label="Project zone"
-          placeholder="Select project zone"
-          :type="1"
-          @update:model-value="setEquipmentZone(zone, $event)"
-        />
+    <p v-if="isLoadingZones" class="locations-status">Loading project zones…</p>
+    <p v-else-if="zonesError" class="locations-status locations-error">
+      {{ zonesError }}
+    </p>
+    <p v-else-if="!equipments.length" class="locations-status">
+      No zones are assigned to this project.
+    </p>
+    <div
+      v-for="(zone, zoneIndex) in equipments"
+      :key="zoneIndex"
+      class="group-card fixed-equipment-row"
+    >
+      <div class="fixed-location">
+        <span>Project zone</span>
+        <strong>{{ zone.zone?.title }}</strong>
       </div>
       <div class="input-wrapper w-full">
         <UpdatedCustomInputSelect
@@ -92,11 +114,7 @@ const setZoneEquipments = (
           @update:model-value="setZoneEquipments(zone, $event)"
         />
       </div>
-      <button type="button" class="icon-button danger" @click="equipments.splice(zoneIndex, 1)">
-        ×
-      </button>
     </div>
-    <button type="button" class="add-group" @click="addEquipmentZoon">+ Add project zone</button>
   </div>
 </template>
 
