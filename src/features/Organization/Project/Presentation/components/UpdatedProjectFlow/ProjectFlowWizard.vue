@@ -589,7 +589,7 @@ const goToPreviousStep = async () => {
             Back
           </button>
           <button
-            v-if="activeStep > 1 && !hasCurrentStepData"
+            v-if="activeStep > 1"
             type="button"
             class="btn-skip"
             :disabled="loading"
