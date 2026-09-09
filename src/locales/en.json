@@ -880,6 +880,9 @@
   "Organization Employee": "Organization Employee",
   "Add Organization Employee": "Add Organization Employee",
   "Edit Organization Employee": "Edit Organization Employee",
+  "Edit Employee": "Edit Employee",
+  "Show Employee": "Show Employee",
+  "Upload Employee": "Upload Employee",
   "Herikaly": "Herikaly",
   "Accidents Type": "Accidents Type",
   "Template_Item": "Template Item",
@@ -2382,5 +2385,6 @@
   "project_name_ar": "Project Name in Arabic",
   "project_name_en": "Project Name in English",
   "project_start_date": "Project Start Date",
-  "stuff_member": "Staff Member"
+  "stuff_member": "Staff Member",
+  "un_certificated":"un certificated"
 }

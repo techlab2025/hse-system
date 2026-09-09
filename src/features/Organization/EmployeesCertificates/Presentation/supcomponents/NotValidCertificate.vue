@@ -17,7 +17,7 @@ const updateData = () => {
 <template>
   <div class="invalid-certificate invalid-certificate-container">
     <div class="invalid">
-      <span class="invalid-title">invalid</span>
+      <span class="invalid-title">{{ $t('un_certificated') }}</span>
     </div>
     <CertificateImageDialog
       @update:data="updateData"
