@@ -93,7 +93,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/factories-items',
-    name: t('hazard_factor_items'),
+    name: t('factor_items'),
     icon: 'circle-layer',
     permissions: [
       PermissionsEnum.FACTORY_ITEM_ALL,
@@ -105,7 +105,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/factory',
-    name: t('hazard_factors'),
+    name: t('factors'),
     icon: 'shield-exclamation',
     permissions: [
       PermissionsEnum.FACTORY_ALL,

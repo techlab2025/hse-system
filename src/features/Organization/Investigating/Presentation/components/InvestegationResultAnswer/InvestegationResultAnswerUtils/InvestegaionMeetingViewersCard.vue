@@ -33,7 +33,7 @@ const note = computed(
     <div class="investegaion-viewers-card">
       <div class="view">
         <div class="view-header">
-          <span>result</span>
+          <span>Witness statement</span>
           <hr class="hr" />
         </div>
         <p class="view-content">{{ note }}</p>
