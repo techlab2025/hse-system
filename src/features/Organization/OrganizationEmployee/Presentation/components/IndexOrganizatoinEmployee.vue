@@ -379,6 +379,7 @@ const IndexOrganizationEmployeectionList = () => [
     text: t('add_employee'),
     link: '/organization/organization-employee/add',
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [PermissionsEnum?.ORG_EMPLOYEE_CREATE, PermissionsEnum?.ADMIN],
   },
@@ -485,6 +486,7 @@ const IndexOrganizationEmployeectionList = () => [
         {{ $t('upload_excel') }}
       </router-link> -->
       <ActionsList
+        feature-name="action_feature_employees"
         :show-actions="true"
         :actionList="IndexOrganizationEmployeectionList()"
         :actionsNumber="5"

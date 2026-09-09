@@ -255,6 +255,7 @@ const IndexOrganizationEmployeectionList = () => [
     text: t('Add_Certificate'),
     icon: ActionsListAddIcon,
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [PermissionsEnum.CERTIFICATE_CREATE],
   },
@@ -312,10 +313,10 @@ const IndexOrganizationEmployeectionList = () => [
         <span class="download-title">Excel Sheet</span>
       </a> -->
       <ActionsList
+        feature-name="action_feature_training"
         :show-actions="true"
         :actionList="IndexOrganizationEmployeectionList()"
         :actionsNumber="5"
-        buttonTitle="certificate_actions"
       >
         <template #custom>
           <ExportPdf :isDropList="true" />

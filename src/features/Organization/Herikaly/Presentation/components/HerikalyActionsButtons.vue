@@ -98,10 +98,10 @@ const actionList = () => [
 <template>
   <div class="flex justify-end gap-2">
     <ActionsList
+      feature-name="action_feature_positions"
       :show-actions="true"
       :actionList="actionList()"
       :actionsNumber="2"
-      buttonTitle="import posions sheet"
     >
 
     </ActionsList>

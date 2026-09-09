@@ -185,6 +185,7 @@ const IndexIncidentCategoryactionList = () => [
       user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
     }/incident-category/add`,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ACCIDENTS_TYPE_CREATE],
   },
@@ -240,6 +241,7 @@ const IndexIncidentCategoryactionList = () => [
     </PermissionBuilder> -->
     <div class="col-span-2 flex justify-end gap-2">
       <ActionsList
+        feature-name="action_feature_incident_categories"
         :show-actions="true"
         :actionList="IndexIncidentCategoryactionList()"
         :actionsNumber="5"

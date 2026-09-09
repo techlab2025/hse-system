@@ -232,6 +232,7 @@ const IndexRootCausesactionList = () => [
     text: t('add_root_causes'),
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/root-causes/add`,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ROOT_CAUSES_CREATE],
   },
@@ -297,6 +298,7 @@ const IndexRootCausesactionList = () => [
         <SystemRootCausesTypes />
       </PermissionBuilder> -->
       <ActionsList
+        feature-name="action_feature_root_causes"
         :show-actions="true"
         :actionList="IndexRootCausesactionList()"
         :actionsNumber="5"

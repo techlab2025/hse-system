@@ -37,7 +37,7 @@ const state = ref(indexInvestigatingController.state.value)
 const router = useRouter()
 const route = useRoute()
 const isReportTableView = computed(() => String(route.query.isAll ?? '') === '1')
-const ShowDetails = ref<boolean[]>([])
+const expandedInvestigationKey = ref<string | null>(null)
 const observationRiskLevel = ref<RiskLevelEnum | null>(null)
 const filterDate = ref('')
 const filterStatus = ref<number | null>(null)
@@ -87,7 +87,6 @@ const GetInvsetegationResult = async (
 }
 
 onMounted(() => {
-  // ShowDetails.value = InvestigatingList.value.map(() => false)
   GetInvsetegationResult()
 })
 
@@ -193,6 +192,22 @@ const hasValue = (value: unknown) =>
 
 const getDateTime = (date?: string, time?: string) => [date, time].filter(hasValue).join(' , ')
 
+const getInvestigationKey = (item: any, index: number) =>
+  String(item?.Investegationid ?? item?.id ?? item?.observation?.id ?? index)
+
+const isInvestigationExpanded = (item: any, index: number) =>
+  expandedInvestigationKey.value === getInvestigationKey(item, index)
+
+const toggleInvestigationDetails = (item: any, index: number) => {
+  const key = getInvestigationKey(item, index)
+  expandedInvestigationKey.value = expandedInvestigationKey.value === key ? null : key
+}
+
+const getObservationDetailsLink = (item: any) =>
+  item?.observation?.type === Observation.AccidentsType
+    ? `/organization/equipment-mangement/incedant/show/${item?.observation?.id}`
+    : `/organization/equipment-mangement/observation/show/${item?.observation?.id}`
+
 const GethighObservationCount = (data: any): number => {
   console.log(
     data.filter((el) => el.observation.type),
@@ -266,53 +281,77 @@ const GerIncidantCount = (data: any): number => {
           <div v-else class="table-responsive report-board">
             <div class="index-table-card-container">
               <!--  InvestigatingList-->
-              <div class="index-table-card" v-for="(item, index) in state.data" :key="index">
-                <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
+              <div
+                class="index-table-card"
+                v-for="(item, index) in state.data"
+                :key="getInvestigationKey(item, index)"
+              >
+                <div
+                  class="card-header-container"
+                  :class="{ show: isInvestigationExpanded(item, index) }"
+                >
                   <div class="first-container">
-                    <router-link
-                      :to="
-                        item?.observation?.type === Observation.AccidentsType
-                          ? `/organization/equipment-mangement/incedant/show/${item?.observation?.id}`
-                          : `/organization/equipment-mangement/observation/show/${item?.observation?.id}`
-                      "
-                      class="first-card first-card-link"
-                    >
+                    <div class="first-card">
                       <div class="first-card-header">
                         <div class="header">
-                          <span
-                            class="first-label-item-primary"
-                            :class="GetObservationRiskLevel(item?.observation?.riskLevel)"
+                          <button
+                            type="button"
+                            class="investigation-accordion-trigger"
+                            :aria-expanded="isInvestigationExpanded(item, index)"
+                            :aria-controls="`investigation-details-${getInvestigationKey(item, index)}`"
+                            @click="toggleInvestigationDetails(item, index)"
                           >
-                            <!-- {{
-                              GetObservationRiskLevel(item?.observation?.riskLevel) +
-                              ' ' +
-                              GetInvestigationType(item?.observation?.type)
-                            }} -->
-                            {{ GetInvestigationType(item?.observation?.type) }} Report
-                            <span v-if="item?.observation?.serial">{{
-                              `_` + item?.observation?.serialName || '_OBS-2025-0112'
-                            }}</span>
-                          </span>
+                            <span
+                              class="first-label-item-primary"
+                              :class="GetObservationRiskLevel(item?.observation?.riskLevel)"
+                            >
+                              {{ $t('Investigating Report') }}
+                              <span v-if="item?.observation?.serial">{{
+                                `_` + item?.observation?.serialName || '_OBS-2025-0112'
+                              }}</span>
+                            </span>
+                            <svg
+                              class="investigation-accordion-chevron"
+                              :class="{ expanded: isInvestigationExpanded(item, index) }"
+                              width="18"
+                              height="18"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              aria-hidden="true"
+                            >
+                              <path
+                                d="m6 9 6 6 6-6"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </button>
                           <p :class="`status ${ReturnStatusTitle(item?.status)}`">
                             {{ ReturnStatusTitle(item?.status) }}
                           </p>
                         </div>
-                        <div class="investigation-summary-grid">
+                        <router-link
+                          :to="getObservationDetailsLink(item)"
+                          class="investigation-summary-grid investigation-summary-link"
+                          :aria-label="$t('View Details')"
+                        >
                           <div
                             v-if="hasValue(item?.observation?.title)"
                             class="investigation-summary-box summary-title"
                           >
                             <span class="summary-label">
-                              {{ GetInvestigationType(item?.observation?.type) }} {{ $t('title') }}
+                              {{ GetInvestigationType(item?.observation?.type) }} {{ $t('title') }} :
                             </span>
-                            <span class="summary-value">{{ item?.observation?.title }}</span>
+                            <span class="summary-value">{{ item?.observation?.typeModel?.title || item?.observation?.title  }}</span>
                           </div>
 
                           <div
                             v-if="getDateTime(item?.date, item?.observation?.time)"
                             class="investigation-summary-box"
                           >
-                            <span class="summary-label">{{ $t('Date & Time') }}</span>
+                            <span class="summary-label">{{ $t('Date & Time') }} : </span>
                             <span class="summary-value">
                               {{ getDateTime(item?.date, item?.observation?.time) }}
                             </span>
@@ -322,7 +361,7 @@ const GerIncidantCount = (data: any): number => {
                             v-if="hasValue(item?.observer?.name)"
                             class="investigation-summary-box"
                           >
-                            <span class="summary-label">{{ $t('the victim') }}</span>
+                            <span class="summary-label">{{ $t('the victim') }} : </span>
                             <span class="summary-value">
                               {{ item?.observer?.name }}
                               <small>({{ $t('observer') }})</small>
@@ -333,7 +372,7 @@ const GerIncidantCount = (data: any): number => {
                             v-if="hasValue(item?.location?.title)"
                             class="investigation-summary-box"
                           >
-                            <span class="summary-label">{{ $t('Location') }}</span>
+                            <span class="summary-label">{{ $t('Location') }} : </span>
                             <span class="summary-value">{{ item?.location?.title }}</span>
                           </div>
 
@@ -343,18 +382,23 @@ const GerIncidantCount = (data: any): number => {
                           >
                             <span class="summary-label summary-label-with-icon">
                               <img :src="mark" alt="zone" />
-                              {{ $t('Zone') }}
+                              {{ $t('Zone') }} :
                             </span>
                             <span class="summary-value">{{ item?.observation?.zoon?.title }}</span>
                           </div>
-                        </div>
+                        </router-link>
                       </div>
-                    </router-link>
+                    </div>
                   </div>
 
                   <!-- second container -->
-                  <div class="header-container">
-                    <div class="card-content">
+                  <Transition name="investigation-accordion">
+                    <div
+                      v-if="isInvestigationExpanded(item, index)"
+                      :id="`investigation-details-${getInvestigationKey(item, index)}`"
+                      class="header-container"
+                    >
+                      <div class="card-content">
                       <div class="card-header" v-if="item?.description">
                         <p class="label-item-secondary">{{ item?.description || 'N/A' }}</p>
                       </div>
@@ -483,8 +527,9 @@ const GerIncidantCount = (data: any): number => {
                           </router-link>
                         </div>
                       </div>
+                      </div>
                     </div>
-                  </div>
+                  </Transition>
                 </div>
               </div>
             </div>
@@ -577,7 +622,7 @@ const GerIncidantCount = (data: any): number => {
 
 .card-header-container {
   display: grid;
-  grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.5fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
   padding: 1rem;
 }
@@ -600,26 +645,61 @@ const GerIncidantCount = (data: any): number => {
   padding: 1rem;
 }
 
-.first-card-link {
-  display: block;
+.investigation-summary-link {
   color: inherit;
-  cursor: pointer;
   text-decoration: none;
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
+    opacity 0.2s ease,
     transform 0.2s ease;
 }
 
-.first-card-link:hover {
-  border-color: color-mix(in srgb, var(--PrimaryColor) 32%, var(--main-border));
-  box-shadow: 0 10px 24px color-mix(in srgb, var(--PrimaryColor) 9%, transparent);
+.investigation-summary-link:hover {
+  opacity: 0.92;
   transform: translateY(-1px);
 }
 
-.first-card-link:focus-visible {
+.investigation-summary-link:focus-visible,
+.investigation-accordion-trigger:focus-visible {
   outline: 2px solid var(--PrimaryColor);
   outline-offset: 3px;
+}
+
+.investigation-accordion-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  text-align: start;
+}
+
+.investigation-accordion-chevron {
+  flex-shrink: 0;
+  color: var(--PrimaryColor);
+  transition: transform 0.22s ease;
+}
+
+.investigation-accordion-chevron.expanded {
+  transform: rotate(180deg);
+}
+
+.investigation-accordion-enter-active,
+.investigation-accordion-leave-active {
+  overflow: hidden;
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+}
+
+.investigation-accordion-enter-from,
+.investigation-accordion-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
 }
 
 .first-card-header {
@@ -631,25 +711,26 @@ const GerIncidantCount = (data: any): number => {
 
 .investigation-summary-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.75rem;
 }
 
 .investigation-summary-box {
   display: flex;
   min-width: 0;
-  min-height: 76px;
-  flex-direction: column;
-  justify-content: center;
+  // min-height: 76px;
+  flex-direction: row;
+  // justify-content: center;
+  align-items: center;
   gap: 0.35rem;
-  padding: 0.8rem;
+  padding: 0.4rem .8rem;
   border: 1px solid var(--main-border);
   border-radius: 14px;
   background: var(--BgWhite);
 }
 
 .investigation-summary-box.summary-title {
-  grid-column: 1 / -1;
+  grid-column: 1 / 0;
 }
 
 .summary-label {
@@ -840,7 +921,7 @@ const GerIncidantCount = (data: any): number => {
 }
 
 .show-investigation-meeting-details {
-  padding: 1rem;
+  padding: .7rem;
 }
 
 .show-investigation-meeting-details .title {
@@ -883,7 +964,7 @@ const GerIncidantCount = (data: any): number => {
 .show-investigation-meeting-details .dome-info {
   display: grid;
   gap: 0.65rem;
-  margin-top: 0.85rem;
+  // margin-top: 0.85rem;
 }
 
 .show-investigation-meeting-details .dome-info p,

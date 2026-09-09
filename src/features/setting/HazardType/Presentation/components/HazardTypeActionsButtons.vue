@@ -95,6 +95,7 @@ const actionList = () => [
     text: t('Add_HazardType'),
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HAZARD_TYPE_CREATE],
   },
@@ -117,7 +118,12 @@ const actionList = () => [
 
 <template>
   <div class="flex justify-end gap-2">
-    <ActionsList :show-actions="true" :actionList="actionList()" :actionsNumber="4">
+    <ActionsList
+      feature-name="action_feature_hazard_types"
+      :show-actions="true"
+      :actionList="actionList()"
+      :actionsNumber="4"
+    >
       <template #custom>
         <ExportPdf :isDropList="true" />
       </template>

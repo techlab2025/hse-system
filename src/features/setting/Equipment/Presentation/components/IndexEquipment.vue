@@ -351,6 +351,7 @@ const IndexEquipmentactionList = () => [
     text: t('Add_Equipment'),
     link: addEquipmentLink.value,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [
       PermissionsEnum.EQUIPMENT_CREATE,
@@ -412,6 +413,7 @@ const IndexEquipmentactionList = () => [
           @reset="resetFilters"
         />
         <ActionsList
+          feature-name="action_feature_equipment"
           :show-actions="true"
           :actionList="IndexEquipmentactionList()"
           :actionsNumber="5"

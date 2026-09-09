@@ -219,6 +219,7 @@ const indexTeamActionList = () => [
     text: t('add_team'),
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: teamCreatePermissions,
   },
@@ -251,6 +252,7 @@ const indexTeamActionList = () => [
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ActionsList
+        feature-name="action_feature_teams"
         :show-actions="true"
         :actionList="indexTeamActionList()"
         :actionsNumber="5"
