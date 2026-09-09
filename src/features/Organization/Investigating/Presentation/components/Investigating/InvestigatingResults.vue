@@ -937,7 +937,7 @@ const validateRequiredFields = async () => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>Witness Management</p>
+                <p>Witnesses Management</p>
                 <span class="arrow" :class="{ open: isPanelOpen('5') }"><DownArrow /></span>
               </div>
             </AccordionHeader>

@@ -552,21 +552,21 @@ const GerIncidantCount = (data: any): number => {
     </template>
     <template #empty>
       <DataEmpty
-        description="Sorry .. You have no investigations .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No investigations"
+        description="You have no investigations .. All your joined customers will appear here when you add your customer data"
+        title="You have No investigations"
       />
     </template>
     <template #failed>
       <DataEmpty
-        description="Sorry .. You have no investigations .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No investigations"
+        description="You have no investigations .. All your joined customers will appear here when you add your customer data"
+        title="You have No investigations"
       />
     </template>
 
     <template #notPermitted>
       <DataFailed
         addText="Have not Permission"
-        description="Sorry .. You have no Investigating .. All your joined customers will appear here when you add your customer data"
+        description="You have no Investigating .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </DataStatus>
