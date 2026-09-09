@@ -4,6 +4,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
+
 import ProjectCustomLocationController from '../../../controllers/ProjectCustomLocationController'
 import ProjectCustomLocationParams from '../../../../Core/params/ProjectCustomLocationParams'
 import { ProjectCustomLocationEnum } from '../../../../Core/Enums/ProjectCustomLocationEnum'
@@ -31,6 +32,9 @@ const equipmentParams = (zoneId?: number) =>
     undefined,
     undefined,
     undefined,
+    undefined,
+    undefined,
+    
     // props.projectId ?? null,
   )
 
