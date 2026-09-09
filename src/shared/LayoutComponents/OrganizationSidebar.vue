@@ -75,36 +75,40 @@ const OperationsRoutes = ref<Routes[]>([
       },
     ],
   },
-  {
-    link: '/organization/Investigating',
-    name: 'investigations',
-    icon: 'search-alt',
-    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
-  },
-  {
-    link: '/organization/capa',
-    name: 'CAPA',
-    icon: 'shield-check',
-    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
-  },
-  {
+    {
     link: '/organization/equipment-mangement/incedant?isAll=1',
     name: 'Incidents',
     icon: 'exclamation-triangle',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
-  {
+
+    {
     link: '/organization/equipment-mangement/observation?isAll=1&type=2',
     name: 'observations',
     icon: 'eye',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
-  {
+    {
     link: '/organization/equipment-mangement/inspection?inspectionType=1',
     name: 'Inspection',
     icon: 'clipboard-notes',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
+
+
+    {
+    link: '/organization/Investigating',
+    name: 'investigations',
+    icon: 'search-alt',
+    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+    {
+    link: '/organization/capa',
+    name: 'CAPA',
+    icon: 'shield-check',
+    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+
 ])
 
 const OrganizationRoutes = ref<Routes[]>([
