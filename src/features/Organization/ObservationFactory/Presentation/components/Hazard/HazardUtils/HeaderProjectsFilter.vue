@@ -165,6 +165,8 @@ watch(
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+  width: 100%;
+  max-width: 100%;
   min-width: 0;
 }
 
@@ -172,7 +174,7 @@ watch(
   min-width: 0;
   width: 100%;
   max-width: 100%;
-  flex: 1;
+  flex: 1 1 0;
   flex-wrap: nowrap;
   overflow-x: auto !important;
   overflow-y: hidden;
