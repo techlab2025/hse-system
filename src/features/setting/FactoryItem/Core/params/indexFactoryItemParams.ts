@@ -8,6 +8,7 @@ export default class IndexFactoryItemParams implements Params {
   public perPage: number = 10
   public pageNumber: number = 10
   public id?: number
+  public isSystemOnly?: boolean
   // public code?: LangEnum
 
   constructor(
@@ -16,6 +17,7 @@ export default class IndexFactoryItemParams implements Params {
     perPage: number = 10,
     withPage: number = 1,
     id?: number,
+    isSystemOnly?: boolean,
     // code?: LangEnum,
   ) {
     this.word = word
@@ -23,16 +25,18 @@ export default class IndexFactoryItemParams implements Params {
     this.pageNumber = pageNumber
     this.perPage = perPage
     this.id = id
+    this.isSystemOnly = isSystemOnly
     // this.code = code
   }
 
-  toMap(): Record<string, string | number | number[] | null> {
-    const data: Record<string, string | number | number[] | null> = {}
+  toMap(): Record<string, string | number | number[] | boolean | null> {
+    const data: Record<string, string | number | number[] | boolean | null> = {}
     if (this.word) data['word'] = this.word
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.id) data['factory_id'] = this.id
+    if (typeof this.isSystemOnly === 'boolean') data['is_system_only'] = this.isSystemOnly
     // if (this.code) data['code'] = this.code
     return data
   }

@@ -899,6 +899,9 @@ class ApiNames {
   public get DisFactoryItem() {
     return this.prefix + 'disable_factory_item'
   }
+  public get CloneFactoryItems() {
+    return this.prefix + 'clone_factory_items'
+  }
 
   // Accidents
   public get CreateAccidentsType() {

@@ -29,6 +29,7 @@ import DeleteFactoryItemParams from '@/features/setting/FactoryItem/Core/params/
 import DeleteFactoryItemController from '@/features/setting/FactoryItem/Presentation/controllers/deleteFactoryItemController.ts'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
+import SystemFactoryItems from '../supcomponents/SystemFactoryItems.vue'
 
 const { t } = useI18n()
 
@@ -182,6 +183,16 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
         </router-link>
       </PermissionBuilder>
     </div>
+
+    <PermissionBuilder
+      v-if="user?.type !== OrganizationTypeEnum.ADMIN"
+      :code="[
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.ORG_FACTORY_ITEM_CREATE,
+      ]"
+    >
+      <SystemFactoryItems @confirmed="fetchFactory()" />
+    </PermissionBuilder>
   </div>
 
   <PermissionBuilder
