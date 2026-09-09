@@ -160,7 +160,7 @@ watch(() => props.projectId, getProjectLocationsHierarchiesEmployees, { immediat
           ×
         </button>
       </div>
-      <button type="button" class="add-row" @click="addHierarchy(location)">+ Add hierarchy</button>
+      <button type="button" class="add-row" @click="addHierarchy(location)">+ Add Position</button>
     </div>
   </div>
 </template>

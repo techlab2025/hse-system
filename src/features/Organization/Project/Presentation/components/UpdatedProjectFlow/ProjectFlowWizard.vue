@@ -118,6 +118,26 @@ const routeProjectId = computed(
 )
 const teams = ref<TeamLocationForm[]>([])
 const equipments = ref<EquipmentZoneForm[]>([])
+const hasCurrentStepData = computed(() => {
+  if (activeStep.value === 1) return true
+  if (activeStep.value === 2) {
+    return (
+      holidays.value.basicDays.length > 0 ||
+      holidays.value.custom.some(
+        (holiday) => holiday.holiday_title.trim() !== '' || holiday.holidays_dates.length > 0,
+      )
+    )
+  }
+  if (activeStep.value === 3) {
+    return positions.value.some((location) =>
+      location.heirarchys.some((hierarchy) => Boolean(hierarchy.hierarchy)),
+    )
+  }
+  if (activeStep.value === 4) {
+    return teams.value.some((location) => location.projectTeams.some((team) => Boolean(team.team)))
+  }
+  return equipments.value.some((zone) => zone.equipments.length > 0)
+})
 
 const setProjectProgress = (value: unknown) => {
   const progress = Number(value)
@@ -441,6 +461,7 @@ const finishOrContinue = async () => {
 }
 
 const saveAndNext = async () => {
+  if (!hasCurrentStepData.value) return
   if (!validateStep()) return
   loading.value = true
   try {
@@ -568,15 +589,15 @@ const goToPreviousStep = async () => {
             Back
           </button>
           <button
-            v-if="activeStep > 1 && !editOnly"
+            v-if="activeStep > 1 && !hasCurrentStepData"
             type="button"
             class="btn-skip"
             :disabled="loading"
             @click="skipAndNext"
           >
-            {{ activeStep === 5 ? 'Skip & Finish' : 'Skip & Next' }}
+            {{ editOnly || activeStep === 5 ? 'Skip & Finish' : 'Skip & Next' }}
           </button>
-          <button type="submit" class="btn-primary" :disabled="loading">
+          <button v-if="hasCurrentStepData" type="submit" class="btn-primary" :disabled="loading">
             {{
               loading
                 ? 'Saving…'
