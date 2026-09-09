@@ -42,7 +42,7 @@ const addCustomHoliday = () => holidays.value.custom.push({ holiday_title: '', h
     </label>
     <template v-if="holidays.hasCustom">
       <div v-for="(holiday, index) in holidays.custom" :key="index" class="repeat-card full">
-        <label>Holiday title<input v-model="holiday.holiday_title" /></label>
+        <label>Holiday name<input v-model="holiday.holiday_title" /></label>
         <label>
           Holiday dates
           <DatePicker

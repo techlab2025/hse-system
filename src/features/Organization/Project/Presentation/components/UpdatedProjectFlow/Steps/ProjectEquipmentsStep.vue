@@ -11,7 +11,9 @@ import { ProjectCustomLocationEnum } from '../../../../Core/Enums/ProjectCustomL
 import type SohwProjectZoonModel from '../../../../Data/models/ShowProjectZone'
 import type { EquipmentZoneForm } from '../../../../Core/params/UpdatedProjectFlow/ProjectEquipmentFormParams'
 
-const props = defineProps<{ projectId?: number }>()
+const props = withDefaults(defineProps<{ projectId?: number; isEdit?: boolean }>(), {
+  isEdit: false,
+})
 const equipments = defineModel<EquipmentZoneForm[]>('equipments', { required: true })
 
 const equipmentController = IndexEquipmentController.getInstance()
@@ -27,15 +29,13 @@ const equipmentParams = (zoneId?: number) =>
     0,
     undefined,
     true,
-    // zoneId,
+    zoneId,
     undefined,
     undefined,
     undefined,
     undefined,
-    undefined,
-    undefined,
-    
-    // props.projectId ?? null,
+    props.projectId ?? null,
+    props.isEdit ? true : undefined,
   )
 
 const setZoneEquipments = (
@@ -78,7 +78,7 @@ const getProjectZonesEquipments = async () => {
   }
 }
 
-watch(() => props.projectId, getProjectZonesEquipments, { immediate: true })
+watch([() => props.projectId, () => props.isEdit], getProjectZonesEquipments, { immediate: true })
 </script>
 
 <template>

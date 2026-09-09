@@ -7,7 +7,7 @@ import Dialog from 'primevue/dialog'
 
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import type Params from '@/base/core/Params/params'
+import type Params from '@/base/core/params/params'
 
 import ValidationService from '@/base/Presentation/utils/validationService'
 import IconBackStage from '@/shared/icons/IconBackStage.vue'
@@ -109,15 +109,32 @@ const mergedOptions = computed<TitleInterface[]>(() => {
    * 2. options
    * 3. fetched dynamic options
    */
-  if (props.staticOptions !== null) {
-    return props.staticOptions ?? []
-  }
+  const availableOptions =
+    props.staticOptions !== null
+      ? (props.staticOptions ?? [])
+      : props.options
+        ? props.options
+        : dynamicOptions.value
+  const selectedOptions = Array.isArray(props.modelValue)
+    ? props.modelValue
+    : props.modelValue
+      ? [props.modelValue]
+      : []
+  const optionKeys = new Set<string>()
 
-  if (props.options) {
-    return props.options
-  }
+  /*
+   * A filtered endpoint may intentionally omit already-assigned records. Keep
+   * the current value in the options so PrimeVue can still render its label.
+   */
+  return [...selectedOptions, ...availableOptions].filter((option) => {
+    const key = getOptionKey(option)
 
-  return dynamicOptions.value
+    if (!key) return true
+    if (optionKeys.has(key)) return false
+
+    optionKeys.add(key)
+    return true
+  })
 })
 
 const multiselectProps = computed(() => {

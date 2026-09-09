@@ -485,7 +485,12 @@ const goToPreviousStep = async () => {
         v-model:teams="teams"
         :project-id="routeProjectId"
       />
-      <ProjectEquipmentsStep v-else v-model:equipments="equipments" :project-id="routeProjectId" />
+      <ProjectEquipmentsStep
+        v-else
+        v-model:equipments="equipments"
+        :project-id="routeProjectId"
+        :is-edit="editOnly"
+      />
 
       <p v-if="errorMessage" class="form-error">{{ errorMessage }}</p>
       <footer class="flow-actions">
@@ -575,7 +580,7 @@ const goToPreviousStep = async () => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 7px solid rgba(255, 255, 255, 0.25);
+  /* border: 7px solid rgba(255, 255, 255, 0.25); */
   border-top-color: #fff;
   border-radius: 50%;
 }

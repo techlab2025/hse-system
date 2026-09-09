@@ -15,7 +15,7 @@ export default class IndexEquipmentParams implements Params {
   public equipmentTypeId?: number
   public equipmentType?: number
   public projectId?: number | null
-  public notIncludedAssgined?: boolean
+  public notIncludedAssigned?: boolean
   // public code?: LangEnum
 
   constructor(
@@ -32,7 +32,7 @@ export default class IndexEquipmentParams implements Params {
     equipmentTypeId?: number,
     equipmentType?: number,
     projectId?: number | null,
-    notIncludedAssgined?: boolean,
+    notIncludedAssigned?: boolean,
   ) {
     this.word = word
     this.withPage = withPage
@@ -46,12 +46,12 @@ export default class IndexEquipmentParams implements Params {
     this.equipmentTypeId = equipmentTypeId
     this.equipmentType = equipmentType
     this.projectId = projectId
-    this.notIncludedAssgined = notIncludedAssgined
+    this.notIncludedAssigned = notIncludedAssigned
     // this.code = code
   }
 
-  toMap(): Record<string, string | number | number[] | null> {
-    const data: Record<string, string | number | number[] | null> = {}
+  toMap(): Record<string, string | number | number[] | boolean | null> {
+    const data: Record<string, string | number | number[] | boolean | null> = {}
     if (this.word && this.isPaginate) data['word'] = this.word
     if (this.isPaginate) data['paginate'] = this.withPage
     if (this.isPaginate) data['page'] = this.pageNumber
@@ -63,7 +63,9 @@ export default class IndexEquipmentParams implements Params {
     if (this.equipmentTypeId != null) data['equipment_type_id'] = this.equipmentTypeId
     if (this.equipmentType != null) data['equipment_type'] = this.equipmentType
     if (this.projectId != null) data['project_id'] = this.projectId
-    if(this.notIncludedAssgined != null) data['not_include_assigned'] = this.notIncludedAssgined
+    if (this.notIncludedAssigned != null) {
+      data['not_include_assigned'] = this.notIncludedAssigned
+    }
     // if (this.code) data['code'] = this.code
     return data
   }

@@ -101,8 +101,8 @@ const reloadLocations = () => {
         :type="2"
         :controller="contractorController"
         :params="contractorParams"
-        label="contractors"
-        placeholder="Select contractors"
+        label="sub contractors"
+        placeholder="Select sub contractors"
         :is-dialog="true"
         v-model:dialog-visible="contractorDialog"
         @update:model-value="setContractors"
@@ -126,7 +126,7 @@ const reloadLocations = () => {
         @update:model-value="setLocations"
       />
     </div>
-    <label>
+    <label class="input-wrapper required-field">
       Start date
       <DatePicker
         v-model="basic.startDate"
@@ -180,7 +180,7 @@ const reloadLocations = () => {
 .switch-row.zone-switch {
   display: flex !important;
   flex-direction: row !important;
-  span{
+  span {
     width: fit-content !important;
   }
 }
