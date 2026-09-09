@@ -59,6 +59,7 @@ const parseStep = (value: unknown): number | null => {
 
 const requestedRouteStep = () => parseStep(route.params.step) ?? parseStep(route.query.resumeStep)
 const activeStep = ref(requestedRouteStep() ?? 1)
+const projectProgress = ref(0)
 const editOnly = computed(() => route.query.edit === '1')
 const updateProjectId = computed(() => (editOnly.value ? projectId.value : undefined))
 const loading = ref(false)
@@ -108,6 +109,11 @@ const routeProjectId = computed(
 )
 const teams = ref<TeamLocationForm[]>([])
 const equipments = ref<EquipmentZoneForm[]>([])
+
+const setProjectProgress = (value: unknown) => {
+  const progress = Number(value)
+  if (Number.isFinite(progress)) projectProgress.value = Math.min(100, Math.max(0, progress))
+}
 
 const resumeStepFromProject = (data: Record<string, any>) => {
   const projectStatus = Number(data.project_status)
@@ -170,6 +176,7 @@ onMounted(async () => {
   if (!state.value.data) return
   const details = state.value.data
   const data = details.data
+  setProjectProgress(data.project_progress)
   activeStep.value = requestedRouteStep() ?? resumeStepFromProject(data)
   basic.value = {
     serial: data.serial ?? data.serial_number ?? '',
@@ -335,8 +342,8 @@ const buildParams = () => {
       project_location_id: location.projectLocation!.id,
       project_teams: location.projectTeams.map((team) => ({
         team_id: team.team!.id,
-        organizaion_employees: team.employees.map((employee) => ({
-          organizaion_employee_id: employee.id,
+        organization_employees: team.employees.map((employee) => ({
+          organization_employee_id: employee.id,
         })),
       })),
     }))
@@ -390,6 +397,7 @@ const saveAndNext = async () => {
     const state = await controllerForStep().save(buildParams())
     if (state.value.data) {
       projectId.value = state.value.data.id ?? projectId.value
+      setProjectProgress(state.value.data.projectProgress)
       await finishOrContinue()
     } else {
       errorMessage.value = state.value.error?.title ?? 'The step could not be saved.'
@@ -414,7 +422,7 @@ const skipAndNext = async () => {
         <p>{{ steps[activeStep - 1].caption }} · Step {{ activeStep }} of 5</p>
       </div>
       <div class="progress-orbit">
-        <strong>{{ activeStep * 20 }}%</strong><span>complete</span>
+        <strong>{{ projectProgress }}%</strong><span>complete</span>
       </div>
     </header>
 
