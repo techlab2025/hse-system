@@ -244,34 +244,18 @@ const validateStep = () => {
   }
   if (
     activeStep.value === 3 &&
-    (!positions.value.length ||
-      positions.value.some(
-        (location) =>
-          !location.projectLocation ||
-          !location.heirarchys.length ||
-          location.heirarchys.some((hierarchy) => !hierarchy.hierarchy),
-      ))
+    positions.value.some((location) =>
+      location.heirarchys.some((hierarchy) => !hierarchy.hierarchy),
+    )
   ) {
-    errorMessage.value = 'Select a project location and at least one hierarchy for every location.'
+    errorMessage.value = 'Complete every hierarchy you added or remove the incomplete row.'
     return false
   }
   if (
     activeStep.value === 4 &&
-    teams.value.some(
-      (location) =>
-        !location.projectLocation ||
-        !location.projectTeams.length ||
-        location.projectTeams.some((team) => !team.team),
-    )
+    teams.value.some((location) => location.projectTeams.some((team) => !team.team))
   ) {
-    errorMessage.value = 'Complete every added location and team, or use Skip & Next.'
-    return false
-  }
-  if (
-    activeStep.value === 5 &&
-    equipments.value.some((zone) => !zone.zone || !zone.equipments.length)
-  ) {
-    errorMessage.value = 'Select a zone and equipment for every added row, or use Skip & Next.'
+    errorMessage.value = 'Complete every team you added or remove the incomplete row.'
     return false
   }
   errorMessage.value = ''
@@ -315,22 +299,25 @@ const buildParams = () => {
     })
   }
   if (activeStep.value === 3) {
-    const payload = positions.value.map(
-      (location) =>
-        new ProjectLocationHierarchy({
-          project_location_id: location.projectLocation!.id,
-          isUpdate: editOnly.value,
-          hierarchies: location.heirarchys.map(
-            (hierarchy) =>
-              new ProjectHierarchyParams({
-                hierarchy_id: hierarchy.hierarchy!.id,
-                organizaion_employees: hierarchy.employees.map(
-                  (employee) => new ProjectEmployeeParams({ organizaion_employee_id: employee.id }),
-                ),
-              }),
-          ),
-        }),
-    )
+    const payload = positions.value
+      .filter((location) => location.heirarchys.length > 0)
+      .map(
+        (location) =>
+          new ProjectLocationHierarchy({
+            project_location_id: location.projectLocation!.id,
+            isUpdate: editOnly.value,
+            hierarchies: location.heirarchys.map(
+              (hierarchy) =>
+                new ProjectHierarchyParams({
+                  hierarchy_id: hierarchy.hierarchy!.id,
+                  organizaion_employees: hierarchy.employees.map(
+                    (employee) =>
+                      new ProjectEmployeeParams({ organizaion_employee_id: employee.id }),
+                  ),
+                }),
+            ),
+          }),
+      )
     return new ProjectLocationPositionEmployeesParams({
       locations: payload,
       projectId: projectId.value!,
@@ -338,25 +325,29 @@ const buildParams = () => {
     })
   }
   if (activeStep.value === 4) {
-    const payload: ProjectLocationTeam[] = teams.value.map((location) => ({
-      project_location_id: location.projectLocation!.id,
-      project_teams: location.projectTeams.map((team) => ({
-        team_id: team.team!.id,
-        organization_employees: team.employees.map((employee) => ({
-          organization_employee_id: employee.id,
+    const payload: ProjectLocationTeam[] = teams.value
+      .filter((location) => location.projectTeams.length > 0)
+      .map((location) => ({
+        project_location_id: location.projectLocation!.id,
+        project_teams: location.projectTeams.map((team) => ({
+          team_id: team.team!.id,
+          organization_employees: team.employees.map((employee) => ({
+            organization_employee_id: employee.id,
+          })),
         })),
-      })),
-    }))
+      }))
     return new ProjectTeamsParams({
       locations: payload,
       projectId: projectId.value!,
       isUpdate: editOnly.value,
     })
   }
-  const payload: ProjectZoonEquipment[] = equipments.value.map((zone) => ({
-    project_zoon_id: zone.zone!.id,
-    equipments: zone.equipments.map((equipment) => ({ equipment_id: equipment.id })),
-  }))
+  const payload: ProjectZoonEquipment[] = equipments.value
+    .filter((zone) => zone.equipments.length > 0)
+    .map((zone) => ({
+      project_zoon_id: zone.zone!.id,
+      equipments: zone.equipments.map((equipment) => ({ equipment_id: equipment.id })),
+    }))
   return new ProjectEquipmentsParams({
     zoons: payload,
     projectId: projectId.value!,
