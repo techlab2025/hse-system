@@ -308,9 +308,21 @@ watch(
           </div>
         </section>
 
-        <section class="final-answer-section">
+          <section class="final-answer-section">
           <div class="final-section-heading">
             <span>03</span>
+            <h2>Witnesses Management</h2>
+          </div>
+          <InvestegationResultViewersAnswer
+            v-if="viewerResults.length > 0"
+            :viewers="viewerResults"
+          />
+          <p v-else class="answer-empty">No witnesses statements were added.</p>
+        </section>
+
+        <section class="final-answer-section">
+          <div class="final-section-heading">
+            <span>04</span>
             <h2>Events Timeline Builder</h2>
           </div>
           <div class="answer-timeline" v-if="eventTimelines.length">
@@ -329,7 +341,7 @@ watch(
 
         <section class="final-answer-section">
           <div class="final-section-heading">
-            <span>04</span>
+            <span>05</span>
             <h2>Health Impact Integration</h2>
           </div>
           <div v-if="healthImpactItems.length" class="answer-card-grid">
@@ -343,17 +355,7 @@ watch(
           <p v-else class="answer-empty">No health impact records were added.</p>
         </section>
 
-        <section class="final-answer-section">
-          <div class="final-section-heading">
-            <span>05</span>
-            <h2>Witness Management</h2>
-          </div>
-          <InvestegationResultViewersAnswer
-            v-if="viewerResults.length > 0"
-            :viewers="viewerResults"
-          />
-          <p v-else class="answer-empty">No witness statements were added.</p>
-        </section>
+
 
         <section class="final-answer-section">
           <div class="final-section-heading">

@@ -280,7 +280,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/factory',
-    name: 'Hazard factor',
+    name: 'factor',
     icon: 'exclamation-octagon',
     permissions: [
       PermissionsEnum.ORG_FACTORY_ALL,
@@ -292,7 +292,7 @@ const OrganizationRoutes = ref<Routes[]>([
   },
   {
     link: '/organization/factories-items',
-    name: 'Hazard factor item',
+    name: 'factor item',
     icon: 'circle-layer',
     permissions: [
       PermissionsEnum.ORG_FACTORY_ITEM_ALL,
