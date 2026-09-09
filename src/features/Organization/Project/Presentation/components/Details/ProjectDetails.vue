@@ -13,7 +13,7 @@ import ProjectPageSkeleton from './Skeletons/ProjectPageSkeleton.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import ProjectHeader from './PorjectUtils/ProjectHeader.vue'
-import TodayTalkSummary from '../TodayTalk/TodayTalkSummary.vue'
+import LossTimeMatrix from './LossTime/LossTimeMatrix.vue'
 // import zoneInspectionTasks from '@/assets/images/InspectionTaskbg.png'
 // import EmployeeInspectionTasks from '@/assets/images/employee Inspection Tasks.png'
 
@@ -63,7 +63,6 @@ watch(
   },
   { immediate: true },
 )
-
 </script>
 <template>
   <DataStatus :controller="state">
@@ -91,6 +90,8 @@ watch(
           :Contractors="state.data?.contractors?.length"
           :endDate="state.data?.endDate"
         />
+
+        <LossTimeMatrix v-if="state.data?.lossTimes?.length" :loss-times="state.data.lossTimes" />
 
         <!-- <TodayTalkSummary :project-id="state.data?.id" :project-name="state.data?.title" /> -->
 

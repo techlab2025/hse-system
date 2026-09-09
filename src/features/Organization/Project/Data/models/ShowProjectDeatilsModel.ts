@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import LocationDetailsModel from '@/features/setting/Location/Data/models/LocationModel'
 import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
@@ -7,6 +8,7 @@ import ContractorDetailsModel from '@/features/setting/contractor/Data/models/Co
 import OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
 import projectLocationModel from './ProjectLocationModel'
 import type { TitleLocale } from '@/base/core/params/translations_params'
+import ProjectLossTimeModel from './ProjectLossTimeModel'
 
 export default class ShowProjectDetailsModel {
   public id: number
@@ -30,6 +32,7 @@ export default class ShowProjectDetailsModel {
   public project_locations: projectLocationModel[] | null
   public serialName: string
   public endDate: string
+  public lossTimes: ProjectLossTimeModel[]
 
   constructor(
     id: number,
@@ -53,6 +56,7 @@ export default class ShowProjectDetailsModel {
     project_locations: projectLocationModel[] | null,
     serialName: string,
     endDate: string,
+    lossTimes: ProjectLossTimeModel[],
   ) {
     this.id = id
     this.title = title
@@ -75,9 +79,21 @@ export default class ShowProjectDetailsModel {
     this.project_locations = project_locations
     this.serialName = serialName
     this.endDate = endDate
+    this.lossTimes = lossTimes
   }
 
   static fromMap(data: any): ShowProjectDetailsModel {
+    const lossTimes =
+      [data.loss_times, data.project_loss_times, data.accidents_types_loss_times].find((value) =>
+        Array.isArray(value),
+      ) ??
+      Object.values(data).find(
+        (value) =>
+          Array.isArray(value) &&
+          value.some((item) => item && typeof item === 'object' && 'today_loss_time' in item),
+      ) ??
+      []
+
     return new ShowProjectDetailsModel(
       data.id,
       data.title,
@@ -89,10 +105,15 @@ export default class ShowProjectDetailsModel {
       data?.project_zoons?.map((item: any) => SohwProjectZoonModel.fromMap(item)) ?? [],
       data.serial_number,
       data.start_date,
-      data.locations?.map((item: any) => this.getLocationsWithKeys(item, 4, LocationEnum.COUNTRY)) ?? [], //
-      data.locations?.map((item: any) => this.getLocationsWithKeys(item, 3, LocationEnum.STATE)) ?? [], //
-      data.locations?.map((item: any) => this.getLocationsWithKeys(item, 2, LocationEnum.CITY)) ?? [], //
-      data.locations?.map((item: any) => this.getLocationsWithKeys(item, 1, LocationEnum.AREA)) ?? [], //
+      data.locations?.map((item: any) =>
+        this.getLocationsWithKeys(item, 4, LocationEnum.COUNTRY),
+      ) ?? [], //
+      data.locations?.map((item: any) => this.getLocationsWithKeys(item, 3, LocationEnum.STATE)) ??
+        [], //
+      data.locations?.map((item: any) => this.getLocationsWithKeys(item, 2, LocationEnum.CITY)) ??
+        [], //
+      data.locations?.map((item: any) => this.getLocationsWithKeys(item, 1, LocationEnum.AREA)) ??
+        [], //
       data.locations?.map((item: any) => SohwProjectZoonModel.fromMap(item)) ?? [],
       data.contractors?.map((item: any) => ContractorDetailsModel.fromMap(item)),
       data.hierarchies,
@@ -102,6 +123,7 @@ export default class ShowProjectDetailsModel {
       data.project_locations?.map((item: any) => projectLocationModel.fromMap(item)),
       data.serial_name,
       data.end_date,
+      lossTimes.map((item: Record<string, unknown>) => ProjectLossTimeModel.fromMap(item)),
     )
   }
 
@@ -165,6 +187,7 @@ export default class ShowProjectDetailsModel {
     [projectLocationModel.example], // Project Locations
     '15245', // Serial Name
     '2023-06-01', // End Date
+    [], // Loss Times
   )
 }
 
