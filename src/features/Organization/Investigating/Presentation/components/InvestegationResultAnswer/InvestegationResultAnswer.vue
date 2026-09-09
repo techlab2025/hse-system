@@ -509,23 +509,23 @@ watch(
       <DataEmpty
         :link="`/organization/hazard/add`"
         addText="Add Hazard"
-        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Hazard"
+        description="You have no Hazard .. All your joined customers will appear here when you add your customer data"
+        title="You have No Hazard"
       />
     </template>
     <template #failed>
       <DataFailed
         :link="`/organization/hazard/add`"
         addText="Add Hazard"
-        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Hazard"
+        description="You have no Hazard .. All your joined customers will appear here when you add your customer data"
+        title="You have No Hazard"
       />
     </template>
 
     <template #notPermitted>
       <DataFailed
         addText="Have not Permission"
-        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
+        description="You have no Hazard .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </DataStatus>

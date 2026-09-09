@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type Params from '@/base/core/params/params'
@@ -11,6 +12,7 @@ const props = defineProps<{
   heirarchyId?: number
 }>()
 const router = useRouter()
+const stayOnPageRouter = createStayOnPageRouter(router)
 const route = useRoute()
 const params = ref<Params | null>(null)
 const formKey = ref(0)
@@ -33,12 +35,12 @@ const addOrganizatoinEmployee = async () => {
   if (isSuccess) emit('update:data')
 }
 
-const saveAndAdd = async () => {
+const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
   addOrganizatoinEmployeeController.setLoading()
   const state = await addOrganizatoinEmployeeController.addOrganizatoinEmployee(
     params.value as AddOrganizatoinEmployeeParams,
-    router,
+    stayOnPageRouter,
     true,
   )
   const isSuccess =
@@ -65,20 +67,11 @@ const setParams = (data: Params) => {
       :heirarchy-id="props.heirarchyId"
       @update:data="setParams"
     />
-    <div class="col-span-4 button-wrapper">
-      <button
-        v-if="route.path.includes('project-progress')"
-        type="button"
-        @click.prevent="saveAndAdd"
-        class="btn btn-primary w-1/2"
-      >
-        {{ $t('save and add') }}
+    <div class="col-span-4 button-wrapper create-form-actions">
+      <button type="button" @click.prevent="saveAndNew" class="btn btn-secondary">
+        {{ $t('save and new') }}
       </button>
-      <button
-        type="submit"
-        class="btn btn-primary"
-        :class="route.path.includes('project-progress') ? 'w-1/2' : 'w-full'"
-      >
+      <button type="submit" class="btn btn-primary">
         {{ route.path.includes('project-progress') ? $t('save and next step') : $t('save') }}
       </button>
     </div>

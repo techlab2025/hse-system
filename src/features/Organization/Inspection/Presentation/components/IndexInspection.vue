@@ -549,8 +549,8 @@ const selectedProject = useProjectSelectStore()
               <DataFailed
                 :link="`/organization/equipment-mangement/inspection/add`"
                 addText="Add Inspection"
-                description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Inspection"
+                description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
+                title="You have No Inspection"
               />
             </PermissionBuilder>
           </template>
@@ -564,8 +564,8 @@ const selectedProject = useProjectSelectStore()
               <DataFailed
                 :link="`/organization/equipment-mangement/inspection/add`"
                 addText="Add Inspection"
-                description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Inspection"
+                description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
+                title="You have No Inspection"
               />
             </PermissionBuilder>
           </template>
@@ -606,8 +606,8 @@ const selectedProject = useProjectSelectStore()
               ]"
             >
               <DataEmpty
-                description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Inspection"
+                description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
+                title="You have No Inspection"
                 :link="`/organization`"
               />
             </PermissionBuilder>
@@ -620,8 +620,8 @@ const selectedProject = useProjectSelectStore()
               ]"
             >
               <DataFailed
-                description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Inspection"
+                description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
+                title="You have No Inspection"
                 :link="`/organization`"
               />
             </PermissionBuilder>
@@ -665,8 +665,8 @@ const selectedProject = useProjectSelectStore()
               <DataEmpty
                 :link="`/organization/equipment-mangement/inspection/add`"
                 addText="Create Inspection"
-                description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Inspection"
+                description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
+                title="You have No Inspection"
               />
             </PermissionBuilder>
           </template>
@@ -680,8 +680,8 @@ const selectedProject = useProjectSelectStore()
               <DataFailed
                 :link="`/organization/equipment-mangement/inspection/add`"
                 addText="Create Inspection"
-                description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-                title="..ops! You have No Inspection"
+                description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
+                title="You have No Inspection"
               />
             </PermissionBuilder>
           </template>
@@ -690,7 +690,7 @@ const selectedProject = useProjectSelectStore()
         <template #notPermitted>
           <DataFailed
             addText="Have not  Permission"
-            description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
+            description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
           />
         </template>
       </PermissionBuilder>

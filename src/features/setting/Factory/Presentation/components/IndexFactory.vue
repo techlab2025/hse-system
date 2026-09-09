@@ -254,8 +254,8 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
         ]">
           <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
             addText="add_hazard_factor"
-            description="Sorry .. You have no Hazard Factor .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Hazard Factor" />
+            description="You have no Hazard Factor .. All your joined customers will appear here when you add your customer data"
+            title="You have No Hazard Factor" />
         </PermissionBuilder>
       </template>
       <template #failed>
@@ -267,15 +267,15 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
         ]">
           <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory/add`"
             addText="add_hazard_factor"
-            description="Sorry .. You have no Hazard Factor .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Hazard Factor" />
+            description="You have no Hazard Factor .. All your joined customers will appear here when you add your customer data"
+            title="You have No Hazard Factor" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Factor .. All your joined customers will appear here when you add your customer data" />
+        description="You have no Factor .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

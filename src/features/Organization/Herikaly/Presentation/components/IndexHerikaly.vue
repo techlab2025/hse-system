@@ -289,8 +289,8 @@ const IndexHerikalyactionList = () => [
           <DataEmpty
             :link="`/organization/herikaly/add`"
             addText="Add Position   "
-            description="Sorry .. You have no Position .. All your Position will appear here when you add your Position data"
-            title="..ops! You have No Position"
+            description="You have no Position .. All your Position will appear here when you add your Position data"
+            title="You have No Position"
           />
         </PermissionBuilder>
       </template>
@@ -301,8 +301,8 @@ const IndexHerikalyactionList = () => [
           <DataFailed
             :link="`/organization/herikaly/add`"
             addText="Add Position   "
-            description="Sorry .. You have no Position .. All your Position will appear here when you add your Position data"
-            title="..ops! You have No Position"
+            description="You have no Position .. All your Position will appear here when you add your Position data"
+            title="You have No Position"
           />
         </PermissionBuilder>
       </template>
@@ -311,7 +311,7 @@ const IndexHerikalyactionList = () => [
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no Position .. All your Position will appear here when you add your Position data"
+        description="You have no Position .. All your Position will appear here when you add your Position data"
       />
     </template>
   </PermissionBuilder>

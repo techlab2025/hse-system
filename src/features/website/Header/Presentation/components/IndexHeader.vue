@@ -206,19 +206,19 @@ const actionList = (id: number, deleteHeader: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty :link="`/admin/header/add`" addText="Add Header"
-          description="Sorry .. You have no Header .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Header" />
+          description="You have no Header .. All your joined customers will appear here when you add your customer data"
+          title="You have No Header" />
       </template>
       <template #failed>
         <DataFailed :link="`/admin/header/add`" addText="Add Header"
-          description="Sorry .. You have no Header .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Header" />
+          description="You have no Header .. All your joined customers will appear here when you add your customer data"
+          title="You have No Header" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Header .. All your joined customers will appear here when you add your customer data" />
+        description="You have no Header .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

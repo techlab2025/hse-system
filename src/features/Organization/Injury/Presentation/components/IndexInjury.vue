@@ -337,22 +337,22 @@ const IndexInjuryactionList = () => [
       <template #empty>
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
           <DataEmpty :link="`/organization/Injury/add`" addText="Add Injury"
-            description="Sorry .. You have no Injury .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Injury" />
+            description="You have no Injury .. All your joined customers will appear here when you add your customer data"
+            title="You have No Injury" />
         </PermissionBuilder>
       </template>
       <template #failed>
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
           <DataFailed :link="`/organization/Injury/add`" addText="Add Injury"
-            description="Sorry .. You have no Injury .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Injury" />
+            description="You have no Injury .. All your joined customers will appear here when you add your customer data"
+            title="You have No Injury" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Injury .. All your joined customers will appear here when you add your customer data"
+        description="You have no Injury .. All your joined customers will appear here when you add your customer data"
         link="" />
     </template>
   </PermissionBuilder>

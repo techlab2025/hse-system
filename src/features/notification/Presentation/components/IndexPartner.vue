@@ -208,22 +208,22 @@ watch(
       <template #empty>
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.PARTNER_CREATE]">
           <DataEmpty :link="`/organization/partner/add`" addText="Add Partner"
-            description="Sorry .. You have no Partner .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Partner" />
+            description="You have no Partner .. All your joined customers will appear here when you add your customer data"
+            title="You have No Partner" />
         </PermissionBuilder>
       </template>
       <template #failed>
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.PARTNER_CREATE]">
           <DataFailed :link="`/organization/partner/add`" addText="Add Partner"
-            description="Sorry .. You have no Partner .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Partner" />
+            description="You have no Partner .. All your joined customers will appear here when you add your customer data"
+            title="You have No Partner" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Partner .. All your joined customers will appear here when you add your customer data"
+        description="You have no Partner .. All your joined customers will appear here when you add your customer data"
         link="" />
     </template>
   </PermissionBuilder>

@@ -246,8 +246,8 @@ watch(
           <DataEmpty
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-details/add`"
             addText="Add Catalog Details"
-            description="Sorry .. You have no Catalog Details .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Catalog Details"
+            description="You have no Catalog Details .. All your joined customers will appear here when you add your customer data"
+            title="You have No Catalog Details"
           />
         </permission-builder>
       </template>
@@ -262,8 +262,8 @@ watch(
           <DataFailed
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-details/add`"
             addText="Add Catalog Details"
-            description="Sorry .. You have no Catalog Details .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Catalog Details"
+            description="You have no Catalog Details .. All your joined customers will appear here when you add your customer data"
+            title="You have No Catalog Details"
           />
         </permission-builder>
       </template>
@@ -279,7 +279,7 @@ watch(
       >
         <DataFailed
           addText="Have not  Permission"
-          description="Sorry .. You have no Catalog Details .. All your joined customers will appear here when you add your customer data"
+          description="You have no Catalog Details .. All your joined customers will appear here when you add your customer data"
         />
       </permission-builder>
     </template>

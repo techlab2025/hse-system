@@ -185,8 +185,8 @@ watch(
 
           <DataEmpty :link="user?.type === OrganizationTypeEnum.ADMIN ? '/admin/scope/add' : '/organization/scope/add'"
             addText="Add Scope"
-            description="Sorry .. You have no Scope .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Scope" />
+            description="You have no Scope .. All your joined customers will appear here when you add your customer data"
+            title="You have No Scope" />
         </PermissionBuilder>
       </template>
       <template #failed>
@@ -194,15 +194,15 @@ watch(
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.SCOPE_CREATE]">
           <DataFailed :link="user?.type === OrganizationTypeEnum.ADMIN ? '/admin/scope/add' : '/organization/scope/add'"
             addText="Add Scope"
-            description="Sorry .. You have no Scope .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Scope" />
+            description="You have no Scope .. All your joined customers will appear here when you add your customer data"
+            title="You have No Scope" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Scope .. All your joined customers will appear here when you add your customer data"
+        description="You have no Scope .. All your joined customers will appear here when you add your customer data"
         link="" />
     </template>
   </PermissionBuilder>

@@ -172,8 +172,8 @@ watch(
           <DataEmpty
             :link="`/organization/document-refrence/add`"
             addText="Add Document Refrence"
-            description="Sorry .. You have no Document Refrence .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Document Refrence"
+            description="You have no Document Refrence .. All your joined customers will appear here when you add your customer data"
+            title="You have No Document Refrence"
           />
         </PermissionBuilder>
       </template>
@@ -182,8 +182,8 @@ watch(
           <DataFailed
             :link="`/organization/document-refrence/add`"
             addText="Add Document Refrence"
-            description="Sorry .. You have no Document Refrence .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Document Refrence"
+            description="You have no Document Refrence .. All your joined customers will appear here when you add your customer data"
+            title="You have No Document Refrence"
           />
         </PermissionBuilder>
       </template>
@@ -192,7 +192,7 @@ watch(
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no Injury .. All your joined customers will appear here when you add your customer data"
+        description="You have no Injury .. All your joined customers will appear here when you add your customer data"
         link=""
       />
     </template>

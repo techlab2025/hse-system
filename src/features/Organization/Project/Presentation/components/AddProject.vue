@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import ProjectForm from './ProjectForm.vue'
@@ -7,7 +8,9 @@ import type AddProjectParams from '../../Core/params/addProjectParams'
 import AddProjectController from '../controllers/addProjectController'
 
 const router = useRouter()
+const stayOnPageRouter = createStayOnPageRouter(router)
 const params = ref<Params | null>(null)
+const formKey = ref(0)
 const formRef = ref<InstanceType<typeof ProjectForm> | null>(null)
 
 const addProjectController = AddProjectController.getInstance()
@@ -21,6 +24,18 @@ const addProject = async () => {
   }
   loading.value = false
 }
+
+const saveAndNew = async () => {
+  if (!(await formRef.value?.validateRequiredFields())) return
+  loading.value = true
+  addProjectController.setLoading()
+  await addProjectController.addProject(params.value as AddProjectParams, stayOnPageRouter)
+  if (addProjectController.isDataSuccess()) {
+    params.value = null
+    formKey.value++
+  }
+  loading.value = false
+}
 const setParams = (data: Params) => {
   params.value = data
 }
@@ -28,12 +43,21 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addProject">
-    <ProjectForm ref="formRef" @update:data="setParams" />
+    <ProjectForm :key="formKey" ref="formRef" @update:data="setParams" />
 
-    <div class="col-span-4 btns button-wrapper flex w-full">
+    <div class="col-span-4 btns button-wrapper flex w-full create-form-actions">
       <router-link to="/organization/projects?type=1" @click.prevent class="btn btn-cancel">{{
         $t('cancel')
       }}</router-link>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        :disabled="loading"
+        :class="{ disabled: loading }"
+        @click.prevent="saveAndNew"
+      >
+        {{ $t('save and new') }}
+      </button>
       <button
         type="submit"
         class="btn btn-primary"

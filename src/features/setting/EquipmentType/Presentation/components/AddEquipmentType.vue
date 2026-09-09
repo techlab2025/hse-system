@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import EquipmentTypeForm from '@/features/setting/EquipmentType/Presentation/components/EquipmentTypeForm.vue'
@@ -7,6 +8,7 @@ import AddEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params
 import type Params from '@/base/core/params/params'
 
 const router = useRouter()
+const stayOnPageRouter = createStayOnPageRouter(router)
 const route = useRoute()
 const emit = defineEmits(['close:data', 'update:data'])
 const params = ref<Params | null>(null)
@@ -23,11 +25,11 @@ const addEquipmentType = async () => {
   }
 }
 
-const saveAndAdd = async () => {
+const saveAndNew = async () => {
   addEquipmentTypeController.setLoading()
   await addEquipmentTypeController.addEquipmentType(
     params.value as AddEquipmentTypeParams,
-    router,
+    stayOnPageRouter,
     true,
   )
   if (addEquipmentTypeController.isDataSuccess()) {
@@ -45,20 +47,11 @@ const setParams = (data: Params) => {
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addEquipmentType">
     <EquipmentTypeForm :key="formKey" @update:data="setParams" />
 
-    <div class="col-span-4 button-wrapper">
-      <button
-        v-if="route.path.includes('project-progress')"
-        type="button"
-        @click.prevent="saveAndAdd"
-        class="btn btn-primary w-1/2"
-      >
-        {{ $t('save and add') }}
+    <div class="col-span-4 button-wrapper create-form-actions">
+      <button type="button" @click.prevent="saveAndNew" class="btn btn-secondary">
+        {{ $t('save and new') }}
       </button>
-      <button
-        type="submit"
-        class="btn btn-primary"
-        :class="route.path.includes('project-progress') ? 'w-1/2' : 'w-full'"
-      >
+      <button type="submit" class="btn btn-primary">
         {{ route.path.includes('project-progress') ? $t('save and next step') : $t('save') }}
       </button>
     </div>
@@ -72,8 +65,12 @@ const setParams = (data: Params) => {
   flex-direction: row !important;
   width: 100% !important;
   button {
-    &.w-full { width: 100%; }
-    &.w-1\/2 { width: 50%; }
+    &.w-full {
+      width: 100%;
+    }
+    &.w-1\/2 {
+      width: 50%;
+    }
   }
 }
 </style>

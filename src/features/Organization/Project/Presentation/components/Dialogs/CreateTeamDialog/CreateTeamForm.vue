@@ -48,7 +48,7 @@ const setTeamLeader = (data: TitleInterface) => {
   TeamLeader.value = data
 }
 
-const CreateProjectLocationTeamEmployee = async () => {
+const submitProjectLocationTeamEmployee = async (saveAndNew: boolean) => {
   // if (!TeamType.value || Employees.value.length === 0) {
   //   return
   // }
@@ -72,12 +72,24 @@ const CreateProjectLocationTeamEmployee = async () => {
 
   try {
     loading.value = true
+    controller.setLoading()
     await controller.CreatePorjectLocationTeamEmployee(createParams, route)
-    emit('update:data')
+
+    if (saveAndNew && controller.isDataSuccess()) {
+      if (!teamId) TeamType.value = null
+      Employees.value = []
+      TeamLeader.value = null
+      TeamDialog.value = false
+    } else if (!saveAndNew) {
+      emit('update:data')
+    }
   } finally {
     loading.value = false
   }
 }
+
+const CreateProjectLocationTeamEmployee = () => submitProjectLocationTeamEmployee(false)
+const saveAndNew = () => submitProjectLocationTeamEmployee(true)
 
 const TeamDialog = ref(false)
 const canSubmit = computed(
@@ -154,7 +166,15 @@ const canSubmit = computed(
         </div>
       </div>
 
-      <div class="submit-btn">
+      <div class="submit-btn create-form-actions">
+        <button
+          class="btn btn-secondary"
+          type="button"
+          :disabled="loading || !canSubmit"
+          @click.prevent="saveAndNew"
+        >
+          {{ $t('save and new') }}
+        </button>
         <button class="btn btn-primary" type="submit" :disabled="loading || !canSubmit">
           {{ loading ? $t('loading') : $t('confirm') }}
           <span aria-hidden="true">→</span>

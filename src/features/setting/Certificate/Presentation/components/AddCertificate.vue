@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 // import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
@@ -8,6 +9,7 @@ import type AddCertificateParams from '../../Core/params/addCertificateParams'
 import AddCertificateController from '../controllers/addCertificateController'
 
 const router = useRouter()
+const stayOnPageRouter = createStayOnPageRouter(router)
 const params = ref<Params | null>(null)
 const formKey = ref(0)
 const formRef = ref<InstanceType<typeof CertificateForm> | null>(null)
@@ -24,12 +26,12 @@ const setParams = (data: Params) => {
   params.value = data
 }
 
-const addcertificate = async () => {
+const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
   addCertificateController.setLoading()
   await addCertificateController.addCertificate(
     params.value as AddCertificateParams,
-    router,
+    stayOnPageRouter,
     true,
   )
   if (addCertificateController.isDataSuccess()) {
@@ -44,20 +46,11 @@ const route = useRoute()
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addCertificate">
     <CertificateForm ref="formRef" :key="formKey" @update:data="setParams" />
 
-    <div class="col-span-4 button-wrapper">
-      <button
-        v-if="route.path.includes('project-progress')"
-        type="button"
-        @click.prevent="addcertificate"
-        class="btn btn-primary w-1/2"
-      >
-        {{ $t('save and add') }}
+    <div class="col-span-4 button-wrapper create-form-actions">
+      <button type="button" @click.prevent="saveAndNew" class="btn btn-secondary">
+        {{ $t('save and new') }}
       </button>
-      <button
-        type="submit"
-        class="btn btn-primary"
-        :class="route.path.includes('/project-progress') ? 'w-1/2' : 'w-full'"
-      >
+      <button type="submit" class="btn btn-primary">
         {{ route.path.includes('project-progress') ? $t('save and next step') : $t('save') }}
       </button>
     </div>

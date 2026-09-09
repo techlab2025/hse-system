@@ -341,8 +341,8 @@ const IndexIncidantTypeactionList = () => [
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/accidents-type/add`"
             addText="add_incident_type"
-            description="Sorry .. You have no AccidentType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No AccidentType"
+            description="You have no AccidentType .. All your joined customers will appear here when you add your customer data"
+            title="You have No AccidentType"
           />
         </PermissionBuilder>
       </template>
@@ -355,8 +355,8 @@ const IndexIncidantTypeactionList = () => [
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/accidents-type/add`"
             addText="add_incident_type"
-            description="Sorry .. You have no AccidentType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No AccidentType"
+            description="You have no AccidentType .. All your joined customers will appear here when you add your customer data"
+            title="You have No AccidentType"
           />
         </PermissionBuilder>
       </template>
@@ -365,7 +365,7 @@ const IndexIncidantTypeactionList = () => [
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no Permission .. All your joined customers will appear here when you add your customer data"
+        description="You have no Permission .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </PermissionBuilder>

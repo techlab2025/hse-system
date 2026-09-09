@@ -221,19 +221,19 @@ watch(
       </template>
       <template #empty>
         <DataEmpty :link="`/organization/organization-location/add`" addText="Add Permission"
-          description="Sorry .. You have no Permission .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Permission" />
+          description="You have no Permission .. All your joined customers will appear here when you add your customer data"
+          title="You have No Permission" />
       </template>
       <template #failed>
         <DataFailed :link="`/organization/organization-location/add`" addText="Add Permission"
-          description="Sorry .. You have no Permission .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Permission" />
+          description="You have no Permission .. All your joined customers will appear here when you add your customer data"
+          title="You have No Permission" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Permission .. All your joined customers will appear here when you add your customer data" />
+        description="You have no Permission .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

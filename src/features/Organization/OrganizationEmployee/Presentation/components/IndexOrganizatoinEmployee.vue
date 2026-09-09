@@ -569,8 +569,8 @@ const IndexOrganizationEmployeectionList = () => [
           <DataEmpty
             :link="`/organization/organization-employee/add`"
             addText="Add Employee"
-            description="Sorry .. You have no Employee .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Employee"
+            description="You have no Employee .. All your joined customers will appear here when you add your customer data"
+            title="You have No Employee"
           />
         </PermissionBuilder>
       </template>
@@ -579,8 +579,8 @@ const IndexOrganizationEmployeectionList = () => [
           <DataFailed
             :link="`/organization/organization-employee/add`"
             addText="Add Employee"
-            description="Sorry .. You have no Employee .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Employee"
+            description="You have no Employee .. All your joined customers will appear here when you add your customer data"
+            title="You have No Employee"
           />
         </PermissionBuilder>
       </template>
@@ -590,7 +590,7 @@ const IndexOrganizationEmployeectionList = () => [
       <DataFailed
         link="/organization"
         addText="Have not  Permission"
-        description="Sorry .. You have no Employee .. All your joined customers will appear here when you add your customer data"
+        description="You have no Employee .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </PermissionBuilder>

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type Params from '@/base/core/params/params'
@@ -8,6 +9,7 @@ import type AddEquipmentParams from '../../Core/params/addEquipmentParams'
 import EmployeeInterfaceCard from '@/features/EmployeeInterface/Presentation/supcomponents/Card/EmployeeInterfaceCard.vue'
 
 const router = useRouter()
+const stayOnPageRouter = createStayOnPageRouter(router)
 const route = useRoute()
 const params = ref<Params | null>(null)
 const formKey = ref(0)
@@ -24,10 +26,14 @@ const addEquipment = async () => {
   if (addEquipmentController.isDataSuccess()) emit('update:data')
 }
 
-const saveAndAdd = async () => {
+const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
   addEquipmentController.setLoading()
-  await addEquipmentController.addEquipment(params.value as AddEquipmentParams, router, true)
+  await addEquipmentController.addEquipment(
+    params.value as AddEquipmentParams,
+    stayOnPageRouter,
+    true,
+  )
   if (addEquipmentController.isDataSuccess()) {
     params.value = null
     formKey.value++
@@ -43,8 +49,8 @@ const setParams = (data: Params) => {
   <form class="grid grid-cols-1 md:grid-cols-4 gap-8" @submit.prevent="addEquipment">
     <FullEquipmentFrom ref="formRef" :key="formKey" @update:data="setParams" />
 
-    <div class="col-span-4 button-wrapper">
-      <div class="equipment-form-actions">
+    <div class="col-span-4 button-wrapper create-form-actions">
+      <div class="equipment-form-actions create-form-actions">
         <router-link
           v-if="route.path.includes('equipment/add') && !route.path.includes('project-progress')"
           to="/organization/equipments"
@@ -53,13 +59,8 @@ const setParams = (data: Params) => {
         >
           <span>Cancel</span>
         </router-link>
-        <button
-          v-if="route.path.includes('project-progress')"
-          type="button"
-          @click.prevent="saveAndAdd"
-          class="btn btn-primary"
-        >
-          {{ $t('save and add') }}
+        <button type="button" @click.prevent="saveAndNew" class="btn btn-secondary">
+          {{ $t('save and new') }}
         </button>
         <button type="submit" class="btn btn-primary">
           <span>
@@ -84,8 +85,8 @@ const setParams = (data: Params) => {
   margin-top: 1rem;
 
   > .btn {
-    flex: 0 0 calc(50% - 0.25rem);
-    width: calc(50% - 0.25rem);
+    flex: 1 1 0;
+    width: auto;
     min-width: 0;
   }
 }

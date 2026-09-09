@@ -276,17 +276,17 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
 
         <template #empty>
           <DataFailed
-            title="..ops! You have No Employee in this heirarchy"
+            title="You have No Employee in this heirarchy"
             link="/organization"
-            description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
+            description="You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
           />
         </template>
 
         <template #failed>
           <DataFailed
-            title="..ops! You have No Employee in this heirarchy"
+            title="You have No Employee in this heirarchy"
             link="/organization"
-            description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
+            description="You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
           />
         </template>
       </DataStatus>

@@ -253,8 +253,8 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
         ]">
           <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/add`"
             addText="Add Template"
-            description="Sorry .. You have no Template .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Template" />
+            description="You have no Template .. All your joined customers will appear here when you add your customer data"
+            title="You have No Template" />
         </PermissionBuilder>
       </template>
       <template #failed>
@@ -266,15 +266,15 @@ const actionList = (id: number, deleteTemplate: (id: number) => void) => [
         ]">
           <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/template/add`"
             addText="Add Template"
-            description="Sorry .. You have no Template .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Template" />
+            description="You have no Template .. All your joined customers will appear here when you add your customer data"
+            title="You have No Template" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Template .. All your joined customers will appear here when you add your customer data" />
+        description="You have no Template .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

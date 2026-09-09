@@ -10,6 +10,7 @@ import ProjectCustomLocationController from '../../controllers/ProjectCustomLoca
 import CreateTodayTalkController from '../../controllers/TodayTalk/CreateTodayTalkController'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
+import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 
 type AttendanceEmployee = {
   organizationEmployeeId: number
@@ -21,6 +22,7 @@ type AttendanceEmployee = {
 
 const route = useRoute()
 const router = useRouter()
+const stayOnPageRouter = createStayOnPageRouter(router)
 const projectId = computed(() => {
   const id = Number(route.params.id)
   return Number.isFinite(id) && id > 0 ? id : undefined
@@ -135,7 +137,21 @@ const validate = () => {
   return !contentError.value && !dateError.value && !timeError.value && !employeesError.value
 }
 
-const saveTalk = async () => {
+const resetTalkForm = () => {
+  const resetNow = new Date()
+  const resetLocalDate = new Date(resetNow.getTime() - resetNow.getTimezoneOffset() * 60_000)
+
+  content.value = ''
+  date.value = resetLocalDate.toISOString().slice(0, 10)
+  time.value = resetLocalDate.toISOString().slice(11, 16)
+  attendance.value = attendance.value.map((employee) => ({ ...employee, isAttend: false }))
+  contentError.value = ''
+  dateError.value = ''
+  timeError.value = ''
+  employeesError.value = ''
+}
+
+const submitTalk = async (saveAndNew: boolean) => {
   if (!validate() || isSaving.value) return
 
   const params = new CreateTodayTalkParams(
@@ -148,8 +164,17 @@ const saveTalk = async () => {
     date.value,
     time.value,
   )
-  await createController.createTodayTalk(params, projectId.value, router)
+  await createController.createTodayTalk(
+    params,
+    projectId.value,
+    saveAndNew ? stayOnPageRouter : router,
+  )
+
+  if (saveAndNew && createController.isDataSuccess()) resetTalkForm()
 }
+
+const saveTalk = () => submitTalk(false)
+const saveAndNew = () => submitTalk(true)
 
 watch(
   () => employeesState.value.data,
@@ -240,7 +265,9 @@ onMounted(getEmployees)
             </div>
           </div>
           <div class="attendance-actions">
-            <span><strong>{{ attendingCount }}</strong> / {{ attendance.length }} attending</span>
+            <span
+              ><strong>{{ attendingCount }}</strong> / {{ attendance.length }} attending</span
+            >
             <button v-if="attendance.length" type="button" class="select-all" @click="toggleAll">
               {{ allAttending ? 'Clear all' : 'Mark all attending' }}
             </button>
@@ -294,7 +321,7 @@ onMounted(getEmployees)
         <p v-if="employeesError" class="error-message employees-error">{{ employeesError }}</p>
       </section>
 
-      <footer class="form-actions">
+      <footer class="form-actions create-form-actions">
         <RouterLink
           :to="
             isProjectTalk
@@ -305,6 +332,15 @@ onMounted(getEmployees)
         >
           Cancel
         </RouterLink>
+        <button
+          type="button"
+          class="btn btn-secondary save-button"
+          :disabled="isSaving"
+          @click.prevent="saveAndNew"
+        >
+          <span v-if="isSaving" class="button-spinner" aria-hidden="true"></span>
+          {{ isSaving ? 'Saving talk…' : $t('save and new') }}
+        </button>
         <button type="submit" class="btn btn-primary save-button" :disabled="isSaving">
           <span v-if="isSaving" class="button-spinner" aria-hidden="true"></span>
           {{ isSaving ? 'Saving talk…' : 'Save today’s talk' }}

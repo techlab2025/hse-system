@@ -207,8 +207,8 @@ watch(
           PermissionsEnum.SUBSCRIPTION_TYPE_CREATE,
         ]">
           <DataEmpty :link="`/admin/subscription-type/add`" addText="Add SubscriptionType"
-            description="Sorry .. You have no SubscriptionType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No SubscriptionType" />
+            description="You have no SubscriptionType .. All your joined customers will appear here when you add your customer data"
+            title="You have No SubscriptionType" />
         </permission-builder>
       </template>
       <template #failed>
@@ -218,8 +218,8 @@ watch(
           PermissionsEnum.SUBSCRIPTION_TYPE_CREATE,
         ]">
           <DataFailed :link="`/admin/subscription-type/add`" addText="Add SubscriptionType"
-            description="Sorry .. You have no SubscriptionType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No SubscriptionType" />
+            description="You have no SubscriptionType .. All your joined customers will appear here when you add your customer data"
+            title="You have No SubscriptionType" />
         </permission-builder>
       </template>
     </DataStatus>
@@ -231,7 +231,7 @@ watch(
         PermissionsEnum.SUBSCRIPTION_TYPE_CREATE,
       ]">
         <DataFailed addText="Have not  Permission"
-          description="Sorry .. You have no SubscriptionTypeType .. All your joined customers will appear here when you add your customer data" />
+          description="You have no SubscriptionTypeType .. All your joined customers will appear here when you add your customer data" />
       </permission-builder>
     </template>
   </permission-builder>
