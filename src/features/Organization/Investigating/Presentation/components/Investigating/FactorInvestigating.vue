@@ -74,17 +74,15 @@ watch(
         :class="{ 'is-selected': isFactorSelected(factor.id) }"
       >
         <label class="radio-item" :for="`factor-${factor.id}`">
-          <Checkbox
-            v-model="selectedFactors"
-            :inputId="`factor-${factor.id}`"
-            :value="factor.id"
-            name="factors"
-            @change="handleFactorChange(factor.id)"
-          />
-
           <span class="radio-label">{{ factor.title }}</span>
           <span class="selection-state">
-            <span class="selection-mark" aria-hidden="true">✓</span>
+            <Checkbox
+              v-model="selectedFactors"
+              :inputId="`factor-${factor.id}`"
+              :value="factor.id"
+              name="factors"
+              @change="handleFactorChange(factor.id)"
+            />
             <span>{{ isFactorSelected(factor.id) ? 'Selected' : 'Select' }}</span>
           </span>
         </label>
@@ -154,6 +152,7 @@ watch(
 .factor-items-container .radio-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
   gap: 12px;
 }
 
@@ -215,27 +214,8 @@ watch(
   font-weight: 600;
 }
 
-.selection-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  border: 1px solid var(--main-border);
-  border-radius: 50%;
-  background: var(--surface-1);
-  color: transparent;
-  transition: all 0.2s ease;
-}
-
 .radio-column.is-selected .selection-state {
   color: var(--brand-primary-700);
-}
-
-.radio-column.is-selected .selection-mark {
-  border-color: var(--brand-primary-500);
-  background: var(--brand-primary-500);
-  color: var(--text-on-brand);
 }
 
 .factor-items-container .sub-radio-group {

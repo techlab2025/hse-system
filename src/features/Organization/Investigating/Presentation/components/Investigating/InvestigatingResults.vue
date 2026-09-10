@@ -994,7 +994,14 @@ const getObservationType = (type: number | undefined) => {
             </AccordionHeader>
             <AccordionContent>
               <FiveWhyQuestions @update:data="setFiveWhyQuestions" />
-              <!-- root causes -->
+
+              <div data-required-field="CauseOfAction">
+                <CauseOfAccidant @update:data="setCauseOfAction" />
+                <p v-if="getFieldError('CauseOfAction')" class="required-field-message">
+                  {{ getFieldError('CauseOfAction') }}
+                </p>
+              </div>
+               <!-- root causes -->
               <div class="input-wrapper w-full root-cause-panel" data-required-field="RootCauses">
                 <UpdatedCustomInputSelect
                   :modelValue="RootCauses"
@@ -1020,12 +1027,6 @@ const getObservationType = (type: number | undefined) => {
                 </UpdatedCustomInputSelect>
                 <p v-if="getFieldError('RootCauses')" class="required-field-message">
                   {{ getFieldError('RootCauses') }}
-                </p>
-              </div>
-              <div data-required-field="CauseOfAction">
-                <CauseOfAccidant @update:data="setCauseOfAction" />
-                <p v-if="getFieldError('CauseOfAction')" class="required-field-message">
-                  {{ getFieldError('CauseOfAction') }}
                 </p>
               </div>
             </AccordionContent>
