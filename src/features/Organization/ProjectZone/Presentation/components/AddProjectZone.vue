@@ -53,13 +53,6 @@ const setParams = (data: Params) => {
       <button type="submit" class="btn btn-primary">
         {{ route.path.includes('project-progress') ? $t('save and next step') : $t('save') }}
       </button>
-      <button
-        type="submit"
-        class="btn btn-primary"
-        :class="route.path.includes('project-progress') ? 'w-1/2' : 'w-full'"
-      >
-        {{ route.path.includes('project-progress') ? $t('save and next step') : $t('save') }}
-      </button>
     </div>
   </form>
 </template>

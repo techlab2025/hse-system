@@ -207,7 +207,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
 
       {
         route: '/organization/factory',
-        Name: 'Hazard factor',
+        Name: 'Factor',
         permissions: [
           PermissionsEnum.ORG_FACTORY_ALL,
           PermissionsEnum.ORG_FACTORY_CREATE,
@@ -218,7 +218,7 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       },
       {
         route: '/organization/factories-items',
-        Name: 'Hazard factor-item',
+        Name: 'Factor Item',
         permissions: [
           PermissionsEnum.ORG_FACTORY_ITEM_ALL,
           PermissionsEnum.ORG_FACTORY_ITEM_CREATE,

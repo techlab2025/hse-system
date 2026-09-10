@@ -37,6 +37,8 @@ import ShowInvestigationResultParams from '../../../Core/params/investegationRes
 import { InvestigationMeetingEnum } from '../../../Core/Enums/investigation_meeting_enum'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog.ts'
 import fingerprintInvestigation from '@/assets/images/fingerprintInvestigation.png'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import AddOrganizatoinEmployee from '@/features/Organization/OrganizationEmployee/Presentation/components/AddOrganizatoinEmployee.vue'
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   data?: ShowInvestigatingTypeModel
@@ -145,6 +147,7 @@ watch([title, date, riskLevel, isNearMiss, saveStatus, time], () => {
 })
 
 const SelectedTeam = ref<TitleInterface[]>([])
+const investigationTeamDialog = ref(false)
 const setTeams = (data: TitleInterface[]) => {
   SelectedTeam.value = data
 
@@ -381,7 +384,7 @@ watch(
           data-required-field="SelectedTeam"
         >
           <span class="field-number">01</span>
-          <CustomSelectInput
+          <UpdatedCustomInputSelect
             :modelValue="SelectedTeam"
             class="input"
             :controller="indexOrganizatoinEmployeeController"
@@ -391,7 +394,19 @@ watch(
             id="investigation-team"
             placeholder="select your team"
             @update:modelValue="setTeams"
-          />
+            :isDialog="true"
+            v-model:dialogVisible="investigationTeamDialog"
+            @close="investigationTeamDialog = false"
+          >
+            <template #LabelHeader>
+              <span class="add-dialog" @click="investigationTeamDialog = true">
+                {{ $t('New') }}
+              </span>
+            </template>
+            <template #Dialog>
+              <AddOrganizatoinEmployee @update:data="investigationTeamDialog = false" />
+            </template>
+          </UpdatedCustomInputSelect>
           <p v-if="getFieldError('SelectedTeam')" class="required-field-message">
             {{ getFieldError('SelectedTeam') }}
           </p>

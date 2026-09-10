@@ -29,6 +29,7 @@ import DeleteFactoryItemParams from '@/features/setting/FactoryItem/Core/params/
 import DeleteFactoryItemController from '@/features/setting/FactoryItem/Presentation/controllers/deleteFactoryItemController.ts'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
+import SystemFactoryItems from '../supcomponents/SystemFactoryItems.vue'
 
 const { t } = useI18n()
 
@@ -182,6 +183,16 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
         </router-link>
       </PermissionBuilder>
     </div>
+
+    <PermissionBuilder
+      v-if="user?.type !== OrganizationTypeEnum.ADMIN"
+      :code="[
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.ORG_FACTORY_ITEM_CREATE,
+      ]"
+    >
+      <SystemFactoryItems @confirmed="fetchFactory()" />
+    </PermissionBuilder>
   </div>
 
   <PermissionBuilder
@@ -297,8 +308,8 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/factory-item/add`"
             addText="add_hazard_factor_item"
-            description="You have no Hazard Factor Item .. All your joined customers will appear here when you add your customer data"
-            title="You have No Hazard Factor Item"
+            description="You have no Factor Item .. All your joined customers will appear here when you add your customer data"
+            title="You have No Factor Item"
           />
         </PermissionBuilder>
       </template>
@@ -316,8 +327,8 @@ const actionList = (id: number, deleteFactory: (id: number) => void) => [
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/factory-item/add`"
             addText="add_hazard_factor_item"
-            description="You have no Hazard Factor Item .. All your joined customers will appear here when you add your customer data"
-            title="You have No Hazard Factor Item"
+            description="You have no Factor Item .. All your joined customers will appear here when you add your customer data"
+            title="You have No Factor Item"
           />
         </PermissionBuilder>
       </template>
