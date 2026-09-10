@@ -259,6 +259,19 @@ const LocationRoutes = ref<Routes[]>([
 
 const LockUpsRoutes = ref<Routes[]>([
   {
+    link: '/admin/ppe-items',
+    name: t('ppe_items'),
+    icon: 'shield-check',
+    permissions: [
+      PermissionsEnum.PPE_ITEM_ALL,
+      PermissionsEnum.PPE_ITEM_FETCH,
+      PermissionsEnum.PPE_ITEM_DETAILS,
+      PermissionsEnum.PPE_ITEM_CREATE,
+      PermissionsEnum.PPE_ITEM_UPDATE,
+      PermissionsEnum.PPE_ITEM_DELETE,
+    ],
+  },
+  {
     link: '/admin/drill-types',
     name: t('drill_types'),
     icon: 'clipboard-notes',

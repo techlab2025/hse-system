@@ -2467,5 +2467,15 @@
   "Action recorded": "Action recorded",
   "Planned": "Planned",
   "New": "New",
-  "Saving...": "Saving..."
+  "Saving...": "Saving...",
+  "ppe_items": "PPE Items",
+  "add_ppe_item": "Add PPE Item",
+  "ppe_item_title": "PPE Item Title",
+  "enter_ppe_item_title": "Enter PPE item title",
+  "no_ppe_items": "No PPE Items",
+  "no_ppe_items_description": "You have not added any PPE items yet.",
+  "import_ppe_items": "Import PPE Items",
+  "add_system_ppe_items": "Add PPE Items from the System",
+  "select_system_ppe_items": "Select the PPE items you need and add them to your organization.",
+  "action_feature_ppe_items": "PPE Item Actions"
 }

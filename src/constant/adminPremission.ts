@@ -3104,6 +3104,44 @@ export const adminPermissions: PermissionItem = {
             },
           ],
         },
+        // PPE Item
+        {
+          key: PermissionsEnum.PPE_ITEM_ALL,
+          code: PermissionsEnum.PPE_ITEM_ALL,
+          label: 'PPE Item',
+          permissions: [
+            {
+              key: PermissionsEnum.PPE_ITEM_ALL,
+              code: PermissionsEnum.PPE_ITEM_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.PPE_ITEM_FETCH,
+              code: PermissionsEnum.PPE_ITEM_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.PPE_ITEM_DETAILS,
+              code: PermissionsEnum.PPE_ITEM_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.PPE_ITEM_CREATE,
+              code: PermissionsEnum.PPE_ITEM_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.PPE_ITEM_UPDATE,
+              code: PermissionsEnum.PPE_ITEM_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.PPE_ITEM_DELETE,
+              code: PermissionsEnum.PPE_ITEM_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
         // Injury
         {
           key: PermissionsEnum.INJURY_ALL,

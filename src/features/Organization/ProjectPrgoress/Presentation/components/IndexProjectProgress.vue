@@ -69,6 +69,9 @@ const AddRootCauses = defineAsyncComponent(
 const AddDrillType = defineAsyncComponent(
   () => import('@/features/Organization/DrillType/Presentation/components/AddDrillType.vue'),
 )
+const AddPpeItem = defineAsyncComponent(
+  () => import('@/features/Organization/ppeItem/Presentation/components/AddPpeItem.vue'),
+)
 const CertificateActionsButtons = defineAsyncComponent(
   () =>
     import('@/features/setting/Certificate/Presentation/components/CertificateActionsButtons.vue'),
@@ -297,6 +300,12 @@ const AllPagesToView = [
     component: AddDrillType,
     title: 'Drill Type',
     description: 'Define drill types used for emergency preparedness exercises',
+  },
+  {
+    id: ProjectProgressEnum.PpeItem,
+    component: AddPpeItem,
+    title: 'PPE Item',
+    description: 'Define personal protective equipment items used across the organization',
   },
 ]
 

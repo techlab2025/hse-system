@@ -1465,6 +1465,23 @@ class ApiNames {
     return this.prefix + 'delete_drill_type'
   }
 
+  // PPE Item
+  public get CreatePpeItem() {
+    return this.prefix + 'create_ppe_item'
+  }
+  public get IndexPpeItem() {
+    return this.prefix + 'fetch_ppe_items'
+  }
+  public get ShowPpeItem() {
+    return this.prefix + 'fetch_ppe_item_details'
+  }
+  public get EditPpeItem() {
+    return this.prefix + 'update_ppe_item'
+  }
+  public get DeletePpeItem() {
+    return this.prefix + 'delete_ppe_item'
+  }
+
   // WhereHosue
   public get CreateWhereHouse() {
     return this.prefix + 'create_warehouse'
@@ -1707,6 +1724,9 @@ class ApiNames {
   }
   public get CloneDrillTypes() {
     return this.prefix + 'clone_drill_types'
+  }
+  public get ClonePpeItems() {
+    return this.prefix + 'clone_ppe_items'
   }
   public get CreateSystemHazardType() {
     return this.prefix + 'clone_hazard_types'

@@ -1226,6 +1226,44 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
+        // PPE Item
+        {
+          key: PermissionsEnum.ORG_PPE_ITEM_ALL,
+          code: PermissionsEnum.ORG_PPE_ITEM_ALL,
+          label: 'PPE Item',
+          permissions: [
+            {
+              key: PermissionsEnum.ORG_PPE_ITEM_ALL,
+              code: PermissionsEnum.ORG_PPE_ITEM_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.ORG_PPE_ITEM_FETCH,
+              code: PermissionsEnum.ORG_PPE_ITEM_FETCH,
+              label: 'Table',
+            },
+            {
+              key: PermissionsEnum.ORG_PPE_ITEM_DETAILS,
+              code: PermissionsEnum.ORG_PPE_ITEM_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.ORG_PPE_ITEM_CREATE,
+              code: PermissionsEnum.ORG_PPE_ITEM_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.ORG_PPE_ITEM_UPDATE,
+              code: PermissionsEnum.ORG_PPE_ITEM_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.ORG_PPE_ITEM_DELETE,
+              code: PermissionsEnum.ORG_PPE_ITEM_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
         // Injury
         {
           key: PermissionsEnum.INJURY_ALL,

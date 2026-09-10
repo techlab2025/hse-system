@@ -50,5 +50,6 @@ export default class ProjectProgressItemModel {
     new ProjectProgressItemModel(ProjectProgressEnum.Team, 'Team', false),
     new ProjectProgressItemModel(ProjectProgressEnum.RootCause, 'Root Cause', false),
     new ProjectProgressItemModel(ProjectProgressEnum.DrillType, 'Drill Type', false),
+    new ProjectProgressItemModel(ProjectProgressEnum.PpeItem, 'PPE Item', false),
   ]
 }

@@ -23,11 +23,13 @@ import { WhereHouseTypeRoutes } from '../organization/whereHouseType'
 import { InjuryRoutes } from '../organization/Injury'
 import { incidentCategoryRoutes } from './incidentCategories'
 import { drillTypeRoutes } from './drillType'
+import { ppeItemRoutes } from './ppeItem'
 
 export const sharedRoutes: RouteRecordRaw[] = [
   ...accidentsRoutes,
   ...incidentCategoryRoutes,
   ...drillTypeRoutes,
+  ...ppeItemRoutes,
   ...certificateRoutes,
   ...equipmentRoutes,
   ...factoryRoutes,

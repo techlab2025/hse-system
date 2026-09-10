@@ -229,6 +229,12 @@ const AllPagesToView = ref([
     description: 'Define drill types used for emergency preparedness exercises',
     link: '/organization/drill-types',
   },
+  {
+    id: ProjectProgressEnum.PpeItem,
+    title: 'PPE Item',
+    description: 'Define personal protective equipment items used across the organization',
+    link: '/organization/ppe-items',
+  },
 ])
 </script>
 <template>
