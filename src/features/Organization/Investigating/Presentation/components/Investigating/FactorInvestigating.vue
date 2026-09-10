@@ -13,8 +13,24 @@ const { factors, subfactors } = defineProps<{
 
 const selectedFactors = ref<number[]>([])
 const selectedSubs = ref<Record<number, number[]>>({})
+const isOtherSelected = ref(false)
+const otherFactorText = ref('')
 
-const emit = defineEmits(['update:data', 'update:sub-factors'])
+type SelectedFactor =
+  | {
+      factor: number
+      subs: number[]
+      isOther?: false
+    }
+  | {
+      isOther: true
+      factorText: string
+    }
+
+const emit = defineEmits<{
+  'update:data': [data: SelectedFactor[]]
+  'update:sub-factors': [factorId: number]
+}>()
 
 const isFactorSelected = (factorId: number) => selectedFactors.value.includes(factorId)
 
@@ -33,13 +49,30 @@ const handleFactorChange = async (factorId: number) => {
   delete selectedSubs.value[factorId]
 }
 
+const handleOtherChange = async () => {
+  await nextTick()
+
+  if (!isOtherSelected.value) {
+    otherFactorText.value = ''
+  }
+}
+
+const selectedCount = () => selectedFactors.value.length + (isOtherSelected.value ? 1 : 0)
+
 watch(
-  [selectedFactors, selectedSubs],
+  [selectedFactors, selectedSubs, isOtherSelected, otherFactorText],
   () => {
-    const result = selectedFactors.value.map((factor) => ({
+    const result: SelectedFactor[] = selectedFactors.value.map((factor) => ({
       factor,
       subs: selectedSubs.value[factor] || [],
     }))
+
+    if (isOtherSelected.value) {
+      result.push({
+        isOther: true,
+        factorText: otherFactorText.value,
+      })
+    }
 
     emit('update:data', result)
   },
@@ -61,8 +94,8 @@ watch(
         />
       </label>
 
-      <span v-if="selectedFactors.length" class="selected-summary" aria-live="polite">
-        {{ selectedFactors.length }} Selected
+      <span v-if="selectedCount()" class="selected-summary" aria-live="polite">
+        {{ selectedCount() }} Selected
       </span>
     </div>
 
@@ -106,6 +139,37 @@ watch(
             />
             <span class="sub-radio-label">{{ subfactor.title }}</span>
           </label>
+        </div>
+      </div>
+
+      <div class="radio-column other-factor" :class="{ 'is-selected': isOtherSelected }">
+        <label class="radio-item" for="factor-other">
+          <span class="radio-label">Other</span>
+          <span class="selection-state">
+            <Checkbox
+              v-model="isOtherSelected"
+              inputId="factor-other"
+              binary
+              name="factors"
+              @change="handleOtherChange"
+            />
+            <span>{{ isOtherSelected ? 'Selected' : 'Select' }}</span>
+          </span>
+        </label>
+
+        <div v-if="isOtherSelected" class="other-factor-field">
+          <label for="other-factor-text">Other factor</label>
+          <input
+            id="other-factor-text"
+            v-model="otherFactorText"
+            class="input"
+            type="text"
+            placeholder="Enter another factor"
+            autocomplete="off"
+          />
+          <p v-if="!otherFactorText.trim()" class="required-field-message">
+            Other factor is required
+          </p>
         </div>
       </div>
     </div>
@@ -227,6 +291,28 @@ watch(
   padding: 12px 14px 14px;
   border-top: 1px solid color-mix(in srgb, var(--brand-primary-500) 16%, var(--main-border));
   background: color-mix(in srgb, var(--surface-2) 50%, transparent);
+}
+
+.factor-items-container .other-factor-field {
+  padding: 12px 14px 14px;
+  border-top: 1px solid color-mix(in srgb, var(--brand-primary-500) 16%, var(--main-border));
+  background: color-mix(in srgb, var(--surface-2) 50%, transparent);
+}
+
+.factor-items-container .other-factor-field label {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--text-soft);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.factor-items-container .other-factor-field .input {
+  width: 100%;
+}
+
+.factor-items-container .other-factor-field .required-field-message {
+  margin: 6px 0 0;
 }
 
 .subfactor-heading {

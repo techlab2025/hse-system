@@ -64,6 +64,21 @@ type EventTimelinePayloadItem = {
 
 type IncidentComplianceValue = number | string | { id?: number | string }
 
+type InvestigationFactorPayload =
+  | {
+      factory_id: number
+      items: Array<{ factory_item_id: number }>
+    }
+  | {
+      factor_text: string
+    }
+
+type CauseOfActionPayload = {
+  description: string
+  factors: InvestigationFactorPayload[]
+  hasEmptyOtherFactor: boolean
+}
+
 const route = useRoute()
 const id = route.params.id
 const investigatingId = route.query.investigating_id
@@ -199,7 +214,7 @@ const AddEnvestigatingResult = async () => {
     lessonLearnt: lessonLearnt.value,
     documentReferenceIds: DocumentReferenceIds,
   })
-  console.log(anotherMeeting.value, 'anotherMeeting')
+  console.log(addInvestigationResultParams, 'addInvestigationResultParams')
   const addInvestigatingResultController = AddInvestigatingResultController.getInstance()
   const res = await addInvestigatingResultController.addInvestigatingResult(
     addInvestigationResultParams,
@@ -224,8 +239,8 @@ watch(
   },
 )
 
-const CauseOfAction = ref()
-const setCauseOfAction = (data) => {
+const CauseOfAction = ref<CauseOfActionPayload>()
+const setCauseOfAction = (data: CauseOfActionPayload) => {
   CauseOfAction.value = data
 }
 
@@ -276,13 +291,6 @@ const uniqueByIdOrName = (items: any[]) => {
   })
 }
 
-const initialViewers = computed(() =>
-  uniqueByIdOrName([
-    ...(state.value?.data?.observation?.witness_statements ?? []),
-    ...(state.value?.data?.observation?.accident_witness ?? []),
-    ...(state.value?.data?.witness_statements ?? []),
-  ]),
-)
 const initialInjuries = computed(() =>
   uniqueByIdOrName([
     ...(state.value?.data?.observation?.injuries ?? []),
@@ -493,7 +501,6 @@ const isInjuryStarted = (item: any) =>
   hasInjuryEmployee(item) ||
   hasInjuryType(item) ||
   hasInjuryDescription(item) ||
-  hasFiles(item?.incidentCategories) ||
   hasFiles(item?.images) ||
   hasFiles(item?.files)
 const isAddedInjuryRow = (index: number) => index >= Math.max(initialInjuries.value?.length ?? 0, 1)
@@ -504,10 +511,7 @@ const isViewerStarted = (item: any) =>
   hasValue(item?.witnessesStatements) ||
   hasValue(item?.employeeName) ||
   Boolean(Number(item?.organizationEmployeeId))
-const isAddedViewerRow = (index: number) => index >= Math.max(initialViewers.value?.length ?? 0, 1)
-const hasInitialViewerRows = () => Boolean(initialViewers.value?.length)
-const shouldValidateViewer = (item: any, index: number) =>
-  isViewerStarted(item) || hasInitialViewerRows() || isAddedViewerRow(index)
+const shouldValidateViewer = (item: any) => isViewerStarted(item)
 const getTaskEmployee = (task: any) => task?.employee ?? task?.investigation_task_employees?.[0]
 const getTaskResponsible = (task: any) =>
   task?.ResponablePerson ?? {
@@ -547,12 +551,6 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
       isMissing: () => shouldValidateInjury(item, index) && !hasInjuryEmployee(item),
     },
     {
-      key: `Accidents.${index}.infectionTypeId`,
-      message: `Injury ${index + 1} Type Is Required`,
-      panel: '4',
-      isMissing: () => shouldValidateInjury(item, index) && !hasInjuryType(item),
-    },
-    {
       key: `Accidents.${index}.text`,
       message: `Injury ${index + 1} Description Is Required`,
       panel: '4',
@@ -571,7 +569,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
       message: `Witness ${index + 1} Employee Is Required`,
       panel: '5',
       isMissing: () =>
-        shouldValidateViewer(item, index) &&
+        shouldValidateViewer(item) &&
         !item?.organizationEmployeeId &&
         !hasValue(item?.employeeName),
     },
@@ -579,7 +577,7 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
       key: viewerFieldKey('statement', index),
       message: `Witness ${index + 1} Statement Is Required`,
       panel: '5',
-      isMissing: () => shouldValidateViewer(item, index) && !hasValue(item?.witnessesStatements),
+      isMissing: () => shouldValidateViewer(item) && !hasValue(item?.witnessesStatements),
     },
   ]),
 
@@ -617,12 +615,12 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
   //   panel: '7',
   //   isMissing: () => !RootCauses.value?.length,
   // },
-  // {
-  //   key: 'CauseOfAction',
-  //   message: 'Root Cause Factors Is Required',
-  //   panel: '7',
-  //   isMissing: () => !CauseOfAction.value?.factors?.length,
-  // },
+  {
+    key: 'CauseOfAction',
+    message: 'Other Factor Is Required',
+    panel: '7',
+    isMissing: () => CauseOfAction.value?.hasEmptyOtherFactor === true,
+  },
   // {
   //   key: 'lessonLearnt',
   //   message: 'Lesson Learnt Is Required',
@@ -653,6 +651,7 @@ const clearResolvedRequiredErrors = () => {
 }
 
 watch(capaActionPlan, clearResolvedRequiredErrors, { deep: true })
+watch(viewersResults, clearResolvedRequiredErrors, { deep: true })
 
 const scrollToRequiredField = async (field: RequiredFieldRule) => {
   ActivePanel.value = field.panel

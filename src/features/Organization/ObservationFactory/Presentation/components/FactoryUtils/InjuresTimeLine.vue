@@ -396,7 +396,7 @@ onMounted(async () => {
               <!-- <CustomSelectInput :modelValue="item.infectionTypeId" class="input" :controller="indexInjuryController"
                 :params="indexInjuryParams" :label="$t('injury Type')" id="injury"
                 :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)" /> -->
-              <!-- <div class="injury-field input-wrapper w-full">
+              <div class="injury-field input-wrapper w-full">
                 <UpdatedCustomInputSelect
                   :modelValue="item.infectionTypeId"
                   :staticOptions="injuryOptions"
@@ -423,7 +423,7 @@ onMounted(async () => {
                     />
                   </template>
                 </UpdatedCustomInputSelect>
-              </div> -->
+              </div>
               <!--  -->
               <div class="injury-field input-wrapper w-full">
                 <div class="flex items-center gap-2">

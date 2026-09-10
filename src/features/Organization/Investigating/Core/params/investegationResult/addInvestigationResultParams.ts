@@ -1,7 +1,6 @@
 import type Params from '@/base/core/params/params'
 import type InvestigationEmployeesParams from '../InvestigationEmployeesParams'
 import type InvestegationTasksParams from './InvestegationTasksParams'
-import type InvestigationFactorParams from './InvestegationFactorParams'
 import type InvestigationAttachmentsParams from './InvestegationAttachmentParams'
 import type InvestegationWitnessesParams from './InvestegationWitnessesParams'
 import type InvestegationAnotherMeetingParams from './InvestegationAnotherMeetingParams'
@@ -14,6 +13,15 @@ export type InvestigationEventTimeLineParams = {
   description: string
 }
 
+export type InvestigationFactorPayload =
+  | {
+      factory_id: number
+      items: Array<{ factory_item_id: number }>
+    }
+  | {
+      factor_text: string
+    }
+
 export default class AddInvestigationResultParams implements Params {
   public investigationMeetingId: number
   public isInvestigationClosed: number
@@ -21,7 +29,7 @@ export default class AddInvestigationResultParams implements Params {
   // public date: string
   // public hasEmployee: boolean
   public tasks?: InvestegationTasksParams[] | Record<string, any>[]
-  public factors?: InvestigationFactorParams
+  public factors?: InvestigationFactorPayload[]
   public documentation?: InvestigationAttachmentsParams[]
   public witnesses?: InvestegationWitnessesParams[]
   public isActionCorrect?: number
@@ -49,7 +57,7 @@ export default class AddInvestigationResultParams implements Params {
     // date: string,
     // hasEmployee: boolean,
     tasks?: InvestegationTasksParams[] | Record<string, any>[]
-    factors?: InvestigationFactorParams
+    factors?: InvestigationFactorPayload[]
     documentation?: InvestigationAttachmentsParams[]
     witnesses?: InvestegationWitnessesParams[]
     isActionCorrect?: number
