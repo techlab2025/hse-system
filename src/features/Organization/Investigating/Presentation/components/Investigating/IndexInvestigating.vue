@@ -314,13 +314,15 @@ const GerIncidantCount = (data: any): number => {
                           :aria-label="$t('View Details')"
                         >
                           <div
-                            v-if="hasValue(item?.observation?.title)"
+                            v-if="hasValue(item?.observation?.typeModel)"
                             class="investigation-summary-box summary-title"
                           >
                             <span class="summary-label">
-                              {{ GetInvestigationType(item?.observation?.type) }} {{ $t('title') }} :
+                              {{ GetInvestigationType(item?.observation?.type) }} {{ $t('type') }} :
                             </span>
-                            <span class="summary-value">{{ item?.observation?.typeModel?.title || item?.observation?.title  }}</span>
+                            <span class="summary-value">{{
+                              item?.observation?.typeModel?.title || item?.observation?.title
+                            }}</span>
                           </div>
 
                           <div
@@ -388,7 +390,13 @@ const GerIncidantCount = (data: any): number => {
                                   stroke-linecap="round"
                                   stroke-linejoin="round"
                                 />
-                                <circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.8" />
+                                <circle
+                                  cx="12"
+                                  cy="12"
+                                  r="2.6"
+                                  stroke="currentColor"
+                                  stroke-width="1.8"
+                                />
                               </svg>
                               <span>
                                 {{
@@ -434,134 +442,134 @@ const GerIncidantCount = (data: any): number => {
                       class="header-container"
                     >
                       <div class="card-content">
-                      <div class="card-header" v-if="item?.description">
-                        <p class="label-item-secondary">{{ item?.description || 'N/A' }}</p>
-                      </div>
-                      <!-- {{ $t('take action') }} -->
-                      <div class="card-details">
-                        <div class="project-details">
-                          <!-- <pre>{{ item?.observation }}</pre> -->
-                          <p class="label-item-primary" v-if="item?.observation?.createdAt">
-                            {{ $t('investigation date & time') }}:
-                            <span
-                              >{{ formatJoinDate(item?.observation?.createdAt) || 'N/A' }} &
-                              {{ formatTime(item?.observation?.createdAt) }}</span
-                            >
-                          </p>
+                        <div class="card-header" v-if="item?.description">
+                          <p class="label-item-secondary">{{ item?.description || 'N/A' }}</p>
+                        </div>
+                        <!-- {{ $t('take action') }} -->
+                        <div class="card-details">
+                          <div class="project-details">
+                            <!-- <pre>{{ item?.observation }}</pre> -->
+                            <p class="label-item-primary" v-if="item?.observation?.createdAt">
+                              {{ $t('investigation date & time') }}:
+                              <span
+                                >{{ formatJoinDate(item?.observation?.createdAt) || 'N/A' }} &
+                                {{ formatTime(item?.observation?.createdAt) }}</span
+                              >
+                            </p>
 
-                          <!-- <p class="label-item-primary">
+                            <!-- <p class="label-item-primary">
                             {{ $t('Status') }}:
                             <span>{{
                               item?.observation?.saveStatus == 1 ? 'Solved' : 'Unsolved'
                             }}</span>
                           </p> -->
-                          <!-- <p class="label-item-primary" v-if="item?.observation?.isAction">
+                            <!-- <p class="label-item-primary" v-if="item?.observation?.isAction">
                             {{ $t('take action') }}:
                             <span>{{ item?.observation?.isAction == 1 ? 'true' : 'false' }}</span>
                           </p> -->
-                        </div>
-                        <div class="" v-if="item?.status == InvestegationStatusEnum.IN_PROGRESS">
-                          <div class="show-investigation-meeting-details">
-                            <div class="title">
-                              <h6>{{ $t('Investigation Meeting') }}</h6>
-                              <!-- <div class="imge"> -->
-                              <!-- <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="meeting" loading="lazy" /> -->
-                              <!-- <Meeting /> -->
-                              <!-- <p>{{ $t('Meeting Overview') }}</p> -->
-                              <!-- </div> -->
-                            </div>
+                          </div>
+                          <div class="" v-if="item?.status == InvestegationStatusEnum.IN_PROGRESS">
+                            <div class="show-investigation-meeting-details">
+                              <div class="title">
+                                <h6>{{ $t('Investigation Meeting') }}</h6>
+                                <!-- <div class="imge"> -->
+                                <!-- <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="meeting" loading="lazy" /> -->
+                                <!-- <Meeting /> -->
+                                <!-- <p>{{ $t('Meeting Overview') }}</p> -->
+                                <!-- </div> -->
+                              </div>
 
-                            <div class="dome-info">
-                              <p>
-                                {{ $t('Date & Time') }} :
-                                <span>
-                                  {{ item.investigation_meeting_date }}
-                                  {{ item.investigation_meeting_time }}</span
-                                >
-                              </p>
-                              <h6>
-                                {{ $t('Investigation team leader') }} :
-                                <span> {{ item.investigationTeamLeader?.Name }}</span>
-                              </h6>
-                              <h6>
-                                {{ $t('Num of team') }} :
-                                <span> {{ item.teamNumebr || '--' }} </span>
-                              </h6>
+                              <div class="dome-info">
+                                <p>
+                                  {{ $t('Date & Time') }} :
+                                  <span>
+                                    {{ item.investigation_meeting_date }}
+                                    {{ item.investigation_meeting_time }}</span
+                                  >
+                                </p>
+                                <h6>
+                                  {{ $t('Investigation team leader') }} :
+                                  <span> {{ item.investigationTeamLeader?.Name }}</span>
+                                </h6>
+                                <h6>
+                                  {{ $t('Num of team') }} :
+                                  <span> {{ item.teamNumebr || '--' }} </span>
+                                </h6>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
 
-                      <div class="btns-container" style="margin-top: 20px">
-                        <div
-                          class="unsolved-btns gap-2"
-                          v-if="item?.status == InvestegationStatusEnum.NEW"
-                        >
-                          <!-- <ShowInvestegationDetailsDialog :item="item" class="first-btn" /> -->
-
-                          <router-link
-                            :to="`/organization/investigating/add?id=${item?.Investegationid}`"
+                        <div class="btns-container" style="margin-top: 20px">
+                          <div
+                            class="unsolved-btns gap-2"
+                            v-if="item?.status == InvestegationStatusEnum.NEW"
                           >
-                            <button class="btn second-btn">
-                              <span>{{ $t('assign_investigation_team') }}</span>
-                            </button>
-                          </router-link>
-                        </div>
+                            <!-- <ShowInvestegationDetailsDialog :item="item" class="first-btn" /> -->
 
-                        <div
-                          class="btn-inprogress"
-                          v-if="item?.status === InvestegationStatusEnum.COMPLETED"
-                        >
-                          <router-link :to="`/organization/investigating/view`">
-                            <button class="btn view-btn">
-                              <div>
-                                <img :src="LiveLink" class="icon" />
-                                <span class="live-link">{{ item?.link }}</span>
-                              </div>
-                              <div>
-                                <span class="join">{{ $t('join_now') }}</span>
-                                <img :src="LiveIcon" alt="" />
-                              </div>
-                            </button>
-                          </router-link>
-                        </div>
+                            <router-link
+                              :to="`/organization/investigating/add?id=${item?.Investegationid}`"
+                            >
+                              <button class="btn second-btn">
+                                <span>{{ $t('assign_investigation_team') }}</span>
+                              </button>
+                            </router-link>
+                          </div>
 
-                        <div
-                          class="solved-btn flex gap-2"
-                          v-if="item?.status === InvestegationStatusEnum.IN_PROGRESS"
-                        >
-                          <router-link
-                            :style="{ width: item?.hasResults ? '50%' : '100%' }"
-                            :to="`/organization/Investigating-result/${item?.LatestInvestigatingMeetingId}?investigating_id=${item?.Investegationid}`"
+                          <div
+                            class="btn-inprogress"
+                            v-if="item?.status === InvestegationStatusEnum.COMPLETED"
                           >
-                            <button class="btn btn-primary w-full">
-                              <span>{{ $t('add_investigation_result') }}</span>
-                            </button>
-                          </router-link>
+                            <router-link :to="`/organization/investigating/view`">
+                              <button class="btn view-btn">
+                                <div>
+                                  <img :src="LiveLink" class="icon" />
+                                  <span class="live-link">{{ item?.link }}</span>
+                                </div>
+                                <div>
+                                  <span class="join">{{ $t('join_now') }}</span>
+                                  <img :src="LiveIcon" alt="" />
+                                </div>
+                              </button>
+                            </router-link>
+                          </div>
 
-                          <router-link
-                            v-if="item?.hasResults"
-                            style="width: 50%"
-                            :to="`/organization/Investigating-result-answer/${item?.Investegationid}`"
+                          <div
+                            class="solved-btn flex gap-2"
+                            v-if="item?.status === InvestegationStatusEnum.IN_PROGRESS"
                           >
-                            <button class="btn btn-primary w-full">
-                              <span>{{ $t('Investigating closed') }}</span>
-                            </button>
-                          </router-link>
-                        </div>
-                        <div
-                          class="solved-btn"
-                          v-if="item?.status == InvestegationStatusEnum.CLOSED"
-                        >
-                          <router-link
-                            :to="`/organization/Investigating-result-answer/${item?.Investegationid}`"
+                            <router-link
+                              :style="{ width: item?.hasResults ? '50%' : '100%' }"
+                              :to="`/organization/Investigating-result/${item?.LatestInvestigatingMeetingId}?investigating_id=${item?.Investegationid}`"
+                            >
+                              <button class="btn btn-primary w-full">
+                                <span>{{ $t('add_investigation_result') }}</span>
+                              </button>
+                            </router-link>
+
+                            <router-link
+                              v-if="item?.hasResults"
+                              style="width: 50%"
+                              :to="`/organization/Investigating-result-answer/${item?.Investegationid}`"
+                            >
+                              <button class="btn btn-primary w-full">
+                                <span>{{ $t('Investigating closed') }}</span>
+                              </button>
+                            </router-link>
+                          </div>
+                          <div
+                            class="solved-btn"
+                            v-if="item?.status == InvestegationStatusEnum.CLOSED"
                           >
-                            <button class="btn btn-primary w-full">
-                              <span>{{ $t('Investigating closed') }}</span>
-                            </button>
-                          </router-link>
+                            <router-link
+                              :to="`/organization/Investigating-result-answer/${item?.Investegationid}`"
+                            >
+                              <button class="btn btn-primary w-full">
+                                <span>{{ $t('Investigating closed') }}</span>
+                              </button>
+                            </router-link>
+                          </div>
                         </div>
-                      </div>
                       </div>
                     </div>
                   </Transition>
@@ -614,7 +622,6 @@ const GerIncidantCount = (data: any): number => {
   > .col-span-9 {
     min-width: 0;
   }
-
 }
 
 .table-responsive {
@@ -815,7 +822,7 @@ const GerIncidantCount = (data: any): number => {
   // justify-content: center;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.4rem .8rem;
+  padding: 0.4rem 0.8rem;
   border: 1px solid var(--main-border);
   border-radius: 14px;
   background: var(--BgWhite);
@@ -1013,7 +1020,7 @@ const GerIncidantCount = (data: any): number => {
 }
 
 .show-investigation-meeting-details {
-  padding: .7rem;
+  padding: 0.7rem;
 }
 
 .show-investigation-meeting-details .title {

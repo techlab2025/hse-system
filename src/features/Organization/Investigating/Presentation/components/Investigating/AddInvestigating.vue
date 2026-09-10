@@ -54,9 +54,9 @@ const setParams = (data: Params) => {
         style="width: 30%"
         >{{ $t('Cancel') }}</router-link
       >
-      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+      <!-- <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
-      </button>
+      </button> -->
       <button type="submit" class="btn btn-primary" style="width: 70%">{{ $t('Confirm') }}</button>
     </div>
   </form>

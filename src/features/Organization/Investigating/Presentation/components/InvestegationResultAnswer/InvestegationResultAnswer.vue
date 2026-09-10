@@ -245,7 +245,7 @@ watch(
               <strong>{{ getTitle(observation?.type_model) }}</strong>
             </article>
             <article>
-              <span>Place</span>
+              <span>Work Area / Facility</span>
               <strong>{{ observation?.place || '-' }}</strong>
             </article>
             <article>

@@ -9,6 +9,7 @@ import RadioButton from 'primevue/radiobutton'
 import { InvestegationTaskEnum } from '@/features/Organization/Capa/Core/Core/InvestegationTaskEnum'
 import UpdateInvestigationTaskController from '@/features/Organization/Capa/Presentation/controllers/investigationTask/UpdateInvestigationTaskController'
 import UpdateInvestigationTaskParams from '@/features/Organization/Capa/Core/params/InvestigationTask/UpdateInvestigationTaskParams'
+import { useRoute } from 'vue-router'
 
 interface TaskCardEmployee {
   name?: string
@@ -160,6 +161,7 @@ const saveTaskStatus = async () => {
     isSavingStatus.value = false
   }
 }
+const route = useRoute()
 </script>
 <template>
   <!-- <pre>{{ task }}</pre> -->
@@ -197,14 +199,21 @@ const saveTaskStatus = async () => {
           </div>
         </div>
 
-        <div class="task-actions" v-if="!isChangeStatus">
+        <div
+          class="task-actions"
+          v-if="!isChangeStatus && !route.path.includes('investegation-tasks')"
+        >
           <button class="change-status-btn" @click="openStatusDialog">
             {{ $t('task_change_status') }}
           </button>
         </div>
       </div>
 
-      <div v-if="relatedLinks?.length" class="task-reference-grid" :aria-label="$t('lessons_related_records')">
+      <div
+        v-if="relatedLinks?.length"
+        class="task-reference-grid"
+        :aria-label="$t('lessons_related_records')"
+      >
         <RouterLink
           v-for="link in relatedLinks"
           :key="`${link.to}-${link.mark}`"
