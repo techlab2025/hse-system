@@ -66,6 +66,9 @@ const AddTeam = defineAsyncComponent(
 const AddRootCauses = defineAsyncComponent(
   () => import('@/features/setting/RootCauses/Presentation/components/AddRootCauses.vue'),
 )
+const AddDrillType = defineAsyncComponent(
+  () => import('@/features/Organization/DrillType/Presentation/components/AddDrillType.vue'),
+)
 const CertificateActionsButtons = defineAsyncComponent(
   () =>
     import('@/features/setting/Certificate/Presentation/components/CertificateActionsButtons.vue'),
@@ -159,6 +162,8 @@ const sidebarItems = computed(() => {
       id: ProjectProgressEnum.PresetData,
       title: 'Preset Data',
       progress: false,
+      count: 0,
+      required: false,
     },
     ...items,
   ]
@@ -287,6 +292,12 @@ const AllPagesToView = [
     title: 'Root Cause',
     description: 'Define root cause and assign roles for asset management',
   },
+  {
+    id: ProjectProgressEnum.DrillType,
+    component: AddDrillType,
+    title: 'Drill Type',
+    description: 'Define drill types used for emergency preparedness exercises',
+  },
 ]
 
 const selectedPage = computed(() => AllPagesToView.find((item) => item.id === ActiveItem.value))
@@ -356,7 +367,7 @@ watch(
 
     <DataStatus :controller="state">
       <template #success>
-        <ProjectProgressHeader :progressValue="state.data?.progress" />
+        <ProjectProgressHeader :progressValue="state.data?.progress ?? 0" />
 
         <div class="project-progress-body-container">
           <div
@@ -367,7 +378,7 @@ watch(
               @update:ActiveItem="GetActiveItem"
               :active-item="ActiveItem"
               :sidebarItems="sidebarItems"
-              :projectProgress="state.data?.progress"
+              :projectProgress="state.data?.progress ?? 0"
             />
 
             <div v-if="showOverlay && !startNextNote" class="overlay-note sidebar-note">

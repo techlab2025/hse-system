@@ -1437,6 +1437,23 @@ class ApiNames {
     return this.prefix + 'delete_warehouse_type'
   }
 
+  // Drill Type
+  public get CreateDrillType() {
+    return this.prefix + 'create_drill_type'
+  }
+  public get IndexDrillType() {
+    return this.prefix + 'fetch_drill_types'
+  }
+  public get ShowDrillType() {
+    return this.prefix + 'fetch_drill_type_details'
+  }
+  public get EditDrillType() {
+    return this.prefix + 'update_drill_type'
+  }
+  public get DeleteDrillType() {
+    return this.prefix + 'delete_drill_type'
+  }
+
   // WhereHosue
   public get CreateWhereHouse() {
     return this.prefix + 'create_warehouse'
@@ -1676,6 +1693,9 @@ class ApiNames {
   }
   public get AddWarehouseClones() {
     return this.prefix + 'clone_warehouse_types'
+  }
+  public get CloneDrillTypes() {
+    return this.prefix + 'clone_drill_types'
   }
   public get CreateSystemHazardType() {
     return this.prefix + 'clone_hazard_types'

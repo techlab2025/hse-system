@@ -2406,5 +2406,18 @@
   "project_start_date": "Project Start Date",
   "stuff_member": "Staff Member",
   "un_certificated": "un certificated",
-  "assigned to this location": "assigned to this location"
+  "assigned to this location": "assigned to this location",
+  "Drill Type": "Drill Type",
+  "drill_types": "Drill Types",
+  "add_drill_type": "Add Drill Type",
+  "drill_type_title": "Drill Type Title",
+  "enter_drill_type_title": "Enter drill type title",
+  "drill_type_description": "Drill Type Description",
+  "enter_drill_type_description": "Enter drill type description",
+  "no_drill_types": "No Drill Types",
+  "no_drill_types_description": "You have not added any drill types yet.",
+  "import_drill_types": "Import Drill Types",
+  "add_system_drill_types": "Add Drill Types from the System",
+  "select_system_drill_types": "Select the drill types you need and add them to your organization.",
+  "action_feature_drill_types": "Drill Type Actions"
 }

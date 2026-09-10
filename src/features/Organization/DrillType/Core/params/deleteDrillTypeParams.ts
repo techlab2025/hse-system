@@ -1,6 +1,6 @@
 import type Params from "@/base/core/params/params";
 
-export default class DeleteWhereHouseTypeParams implements Params {
+export default class DeleteDrillTypeParams implements Params {
 
   constructor(public id: number) {
     this.id = id;
@@ -8,7 +8,7 @@ export default class DeleteWhereHouseTypeParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {};
-    data["warehouse_type_id"] = this.id;
+    data["drill_type_id"] = this.id;
     return data;
   }
 }

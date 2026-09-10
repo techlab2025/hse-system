@@ -3066,6 +3066,44 @@ export const adminPermissions: PermissionItem = {
             },
           ],
         },
+        // Drill Type
+        {
+          key: PermissionsEnum.DRILL_TYPE_ALL,
+          code: PermissionsEnum.DRILL_TYPE_ALL,
+          label: 'Drill Type',
+          permissions: [
+            {
+              key: PermissionsEnum.DRILL_TYPE_ALL,
+              code: PermissionsEnum.DRILL_TYPE_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.DRILL_TYPE_FETCH,
+              code: PermissionsEnum.DRILL_TYPE_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.DRILL_TYPE_DETAILS,
+              code: PermissionsEnum.DRILL_TYPE_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.DRILL_TYPE_CREATE,
+              code: PermissionsEnum.DRILL_TYPE_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.DRILL_TYPE_UPDATE,
+              code: PermissionsEnum.DRILL_TYPE_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.DRILL_TYPE_DELETE,
+              code: PermissionsEnum.DRILL_TYPE_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
         // Injury
         {
           key: PermissionsEnum.INJURY_ALL,

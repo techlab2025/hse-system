@@ -4,17 +4,30 @@ export default class ProjectProgressItemModel {
   public id: number
   public title: string
   public progress: boolean
-  constructor(id: number, title: string, progress: boolean) {
+  public count: number
+  public required: boolean
+
+  constructor(
+    id: number,
+    title: string,
+    progress: boolean,
+    count: number = 0,
+    required: boolean = false,
+  ) {
     this.id = id
     this.title = title
     this.progress = progress
+    this.count = count
+    this.required = required
   }
 
   static fromMap(data: any): ProjectProgressItemModel {
     return new ProjectProgressItemModel(
       data.id,
       data.title,
-      data.id == ProjectProgressEnum.codingSystem ? true : data.progress,
+      Boolean(data.progress),
+      Number(data.count ?? 0),
+      Boolean(data.required),
     )
   }
 
@@ -33,5 +46,9 @@ export default class ProjectProgressItemModel {
     new ProjectProgressItemModel(ProjectProgressEnum.HazardType, 'HazardType', false),
     new ProjectProgressItemModel(ProjectProgressEnum.Hazard, 'Hazard', false),
     new ProjectProgressItemModel(ProjectProgressEnum.EquipmentType, 'EquipmentType', false),
+    new ProjectProgressItemModel(ProjectProgressEnum.Equipment, 'Equipment', false),
+    new ProjectProgressItemModel(ProjectProgressEnum.Team, 'Team', false),
+    new ProjectProgressItemModel(ProjectProgressEnum.RootCause, 'Root Cause', false),
+    new ProjectProgressItemModel(ProjectProgressEnum.DrillType, 'Drill Type', false),
   ]
 }

@@ -1188,6 +1188,44 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
+        // Drill Type
+        {
+          key: PermissionsEnum.ORG_DRILL_TYPE_ALL,
+          code: PermissionsEnum.ORG_DRILL_TYPE_ALL,
+          label: 'Drill Type',
+          permissions: [
+            {
+              key: PermissionsEnum.ORG_DRILL_TYPE_ALL,
+              code: PermissionsEnum.ORG_DRILL_TYPE_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.ORG_DRILL_TYPE_FETCH,
+              code: PermissionsEnum.ORG_DRILL_TYPE_FETCH,
+              label: 'Table',
+            },
+            {
+              key: PermissionsEnum.ORG_DRILL_TYPE_DETAILS,
+              code: PermissionsEnum.ORG_DRILL_TYPE_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.ORG_DRILL_TYPE_CREATE,
+              code: PermissionsEnum.ORG_DRILL_TYPE_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.ORG_DRILL_TYPE_UPDATE,
+              code: PermissionsEnum.ORG_DRILL_TYPE_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.ORG_DRILL_TYPE_DELETE,
+              code: PermissionsEnum.ORG_DRILL_TYPE_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
         // Injury
         {
           key: PermissionsEnum.INJURY_ALL,

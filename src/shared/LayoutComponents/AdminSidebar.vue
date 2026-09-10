@@ -259,6 +259,19 @@ const LocationRoutes = ref<Routes[]>([
 
 const LockUpsRoutes = ref<Routes[]>([
   {
+    link: '/admin/drill-types',
+    name: t('drill_types'),
+    icon: 'clipboard-notes',
+    permissions: [
+      PermissionsEnum.DRILL_TYPE_ALL,
+      PermissionsEnum.DRILL_TYPE_FETCH,
+      PermissionsEnum.DRILL_TYPE_DETAILS,
+      PermissionsEnum.DRILL_TYPE_CREATE,
+      PermissionsEnum.DRILL_TYPE_UPDATE,
+      PermissionsEnum.DRILL_TYPE_DELETE,
+    ],
+  },
+  {
     link: '/admin/where-house-type',
     name: t('warehouse_types'),
     icon: 'store-alt',

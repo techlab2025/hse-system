@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import LikeIcon from '@/shared/icons/LikeIcon.vue'
 import AvtiveTimeLineIcon from '@/shared/icons/AvtiveTimeLineIcon.vue'
-import { nextTick, onMounted, ref, watch } from 'vue'
+import { nextTick, onMounted, ref, watch, type ComponentPublicInstance } from 'vue'
 import type ProjectProgressItemModel from '../../Data/models/ProjectProgressItemModel'
 import { ProjectProgressEnum } from '../../Core/Enum/ProjectProgressEnum'
 import LinkIcon from '@/shared/icons/LinkIcon.vue'
@@ -41,9 +41,10 @@ const getInitialActiveItem = () => {
 const ActiveItem = ref(getInitialActiveItem())
 const timelineItemRefs = ref<HTMLElement[]>([])
 
-const setTimelineItemRef = (el: Element | null, index: number) => {
-  if (el) {
-    timelineItemRefs.value[index] = el as HTMLElement
+const setTimelineItemRef = (el: Element | ComponentPublicInstance | null, index: number) => {
+  const element = el instanceof Element ? el : (el?.$el as Element | undefined)
+  if (element instanceof HTMLElement) {
+    timelineItemRefs.value[index] = element
   }
 }
 
@@ -222,6 +223,12 @@ const AllPagesToView = ref([
     description: 'Define root cause and assign roles for asset management',
     link: '/organization/root-causes',
   },
+  {
+    id: ProjectProgressEnum.DrillType,
+    title: 'Drill Type',
+    description: 'Define drill types used for emergency preparedness exercises',
+    link: '/organization/drill-types',
+  },
 ])
 </script>
 <template>
@@ -280,7 +287,7 @@ const AllPagesToView = ref([
               <router-link
                 v-if="AllPagesToView.find((el) => el.id == item.id)?.link"
                 class="timeline-link"
-                :to="AllPagesToView.find((el) => el.id == item.id)?.link"
+                :to="AllPagesToView.find((el) => el.id == item.id)?.link ?? ''"
                 @click.stop
               >
                 <LinkIcon />
@@ -297,7 +304,7 @@ const AllPagesToView = ref([
               <router-link
                 v-if="AllPagesToView.find((el) => el.id == item.id)?.link"
                 class="timeline-link"
-                :to="AllPagesToView.find((el) => el.id == item.id)?.link"
+                :to="AllPagesToView.find((el) => el.id == item.id)?.link ?? ''"
                 @click.stop
               >
                 <LinkIcon />

@@ -2402,5 +2402,18 @@
   "zone_name": "اسم المنطقة",
   "description_Observation": "وصف الملاحظة",
   "import traning sheet": "استيراد ملف التدريب",
-  "system_preferences": "تفضيلات النظام"
+  "system_preferences": "تفضيلات النظام",
+  "Drill Type": "نوع التدريب العملي",
+  "drill_types": "أنواع التدريبات العملية",
+  "add_drill_type": "إضافة نوع تدريب عملي",
+  "drill_type_title": "عنوان نوع التدريب العملي",
+  "enter_drill_type_title": "أدخل عنوان نوع التدريب العملي",
+  "drill_type_description": "وصف نوع التدريب العملي",
+  "enter_drill_type_description": "أدخل وصف نوع التدريب العملي",
+  "no_drill_types": "لا توجد أنواع تدريبات عملية",
+  "no_drill_types_description": "لم تتم إضافة أي أنواع تدريبات عملية بعد.",
+  "import_drill_types": "استيراد أنواع التدريبات العملية",
+  "add_system_drill_types": "إضافة أنواع تدريبات عملية من النظام",
+  "select_system_drill_types": "اختر أنواع التدريبات العملية المطلوبة وأضفها إلى مؤسستك.",
+  "action_feature_drill_types": "إجراءات أنواع التدريبات العملية"
 }

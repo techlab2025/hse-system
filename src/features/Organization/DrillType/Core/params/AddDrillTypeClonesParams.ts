@@ -1,7 +1,7 @@
 import type Params from '@/base/core/params/params'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
-export default class AddWarehouseTypeClonesParams implements Params {
+export default class AddDrillTypeClonesParams implements Params {
   clonesIds: number[]
 
   public static readonly validation = new ClassValidation().setRules({
@@ -30,10 +30,10 @@ export default class AddWarehouseTypeClonesParams implements Params {
   }
 
   validate() {
-    return AddWarehouseTypeClonesParams.validation.validate(this)
+    return AddDrillTypeClonesParams.validation.validate(this)
   }
 
   validateOrThrow() {
-    return AddWarehouseTypeClonesParams.validation.validateOrThrow(this)
+    return AddDrillTypeClonesParams.validation.validateOrThrow(this)
   }
 }

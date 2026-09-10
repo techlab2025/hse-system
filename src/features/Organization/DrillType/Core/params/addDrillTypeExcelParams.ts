@@ -3,8 +3,9 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 interface Data {
   title: string
+  description: string
 }
-export default class AddWhereHouseTypeExcelParams implements Params {
+export default class AddDrillTypeExcelParams implements Params {
   public data: Data[]
 
   public static readonly validation = new ClassValidation().setRules({
@@ -21,10 +22,10 @@ export default class AddWhereHouseTypeExcelParams implements Params {
   }
 
   // validate() {
-  //   return AddWhereHouseTypeParams.validation.validate(this)
+  //   return AddDrillTypeParams.validation.validate(this)
   // }
 
   // validateOrThrow() {
-  //   return AddWhereHouseTypeParams.validation.validateOrThrow(this)
+  //   return AddDrillTypeParams.validation.validateOrThrow(this)
   // }
 }
