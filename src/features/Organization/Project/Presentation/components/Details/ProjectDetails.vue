@@ -14,6 +14,7 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import ProjectHeader from './PorjectUtils/ProjectHeader.vue'
 import LossTimeMatrix from './LossTime/LossTimeMatrix.vue'
+import DrillSection from './Drill/DrillSection.vue'
 // import zoneInspectionTasks from '@/assets/images/InspectionTaskbg.png'
 // import EmployeeInspectionTasks from '@/assets/images/employee Inspection Tasks.png'
 
@@ -155,6 +156,12 @@ watch(
             <EquipmentSection :project_zoons="state.data?.projectZoons" />
           </div>
         </section>
+
+        <DrillSection
+          :project-id="state.data?.id ?? Number(route.params.id)"
+          :drills="state.data?.drills ?? []"
+          @updated="GetProjectDetails"
+        />
       </div>
     </template>
     <template #loader>

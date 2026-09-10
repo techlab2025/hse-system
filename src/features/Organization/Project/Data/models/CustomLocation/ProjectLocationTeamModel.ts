@@ -23,13 +23,15 @@ export default class ProjectLocationTeamModel extends TitleModel {
   }
 
   static fromMap(data: any): ProjectLocationTeamModel {
+    const projectTeamId =
+      data.project_location_team_id ?? data.project_team_id ?? data.location_id ?? 0
     return new ProjectLocationTeamModel(
-      data.project_location_id,
-      data.location_title,
+      projectTeamId,
+      data.team_title || data.title || data.location_title,
       (data.project_location_team_employees || data.project_location_employees)?.map((item) =>
         ProjectLocationEmployeeModel.fromMap(item),
-      ),
-      data.location_id,
+      ) ?? [],
+      projectTeamId,
       data.team_id,
       data.team_title || data.title,
     )

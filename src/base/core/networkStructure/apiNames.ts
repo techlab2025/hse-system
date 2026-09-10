@@ -1266,6 +1266,17 @@ class ApiNames {
     return this.prefix + 'fetch_full_project_locations'
   }
 
+  // Project drills
+  public get CreateDrill() {
+    return this.prefix + 'create_drill'
+  }
+  public get CreateDrillPlanning() {
+    return this.prefix + 'create_drill_planing'
+  }
+  public get CreateDrillAction() {
+    return this.prefix + 'create_drill_action'
+  }
+
   // observation
   public get CreateObservation() {
     return this.prefix + 'create_observation'

@@ -9,6 +9,7 @@ import OrganizatoinEmployeeDetailsModel from '@/features/Organization/Organizati
 import projectLocationModel from './ProjectLocationModel'
 import type { TitleLocale } from '@/base/core/params/translations_params'
 import ProjectLossTimeModel from './ProjectLossTimeModel'
+import DrillModel from './Drill/DrillModel'
 
 export default class ShowProjectDetailsModel {
   public id: number
@@ -33,6 +34,7 @@ export default class ShowProjectDetailsModel {
   public serialName: string
   public endDate: string
   public lossTimes: ProjectLossTimeModel[]
+  public drills: DrillModel[]
 
   constructor(
     id: number,
@@ -57,6 +59,7 @@ export default class ShowProjectDetailsModel {
     serialName: string,
     endDate: string,
     lossTimes: ProjectLossTimeModel[],
+    drills: DrillModel[] = [],
   ) {
     this.id = id
     this.title = title
@@ -80,6 +83,7 @@ export default class ShowProjectDetailsModel {
     this.serialName = serialName
     this.endDate = endDate
     this.lossTimes = lossTimes
+    this.drills = drills
   }
 
   static fromMap(data: any): ShowProjectDetailsModel {
@@ -93,6 +97,17 @@ export default class ShowProjectDetailsModel {
           value.some((item) => item && typeof item === 'object' && 'today_loss_time' in item),
       ) ??
       []
+    const directDrills = data.drills ?? data.project_drills
+    const teamDrills = (data.team_locations ?? []).flatMap((team: any) =>
+      (team.drills ?? team.project_drills ?? []).map((drill: any) => ({
+        ...drill,
+        project_team: drill.project_team ?? {
+          id: team.id ?? team.project_team_id ?? team.location_id,
+          title: team.title ?? team.team_title ?? team.location_title,
+        },
+      })),
+    )
+    const drills = Array.isArray(directDrills) ? directDrills : teamDrills
 
     return new ShowProjectDetailsModel(
       data.id,
@@ -124,6 +139,7 @@ export default class ShowProjectDetailsModel {
       data.serial_name,
       data.end_date,
       lossTimes.map((item: Record<string, unknown>) => ProjectLossTimeModel.fromMap(item)),
+      drills.map((item: Record<string, any>) => DrillModel.fromMap(item)),
     )
   }
 
@@ -188,6 +204,7 @@ export default class ShowProjectDetailsModel {
     '15245', // Serial Name
     '2023-06-01', // End Date
     [], // Loss Times
+    [DrillModel.example], // Drills
   )
 }
 
