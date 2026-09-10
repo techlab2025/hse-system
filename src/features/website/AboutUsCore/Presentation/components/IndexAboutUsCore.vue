@@ -228,19 +228,19 @@ const actionList = (id: number, deleteAboutUsCore: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty :link="`/admin/about-us-core/add`" addText="Add AboutUsCore"
-          description="Sorry .. You have no AboutUsCore .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No AboutUsCore" />
+          description="You have no AboutUsCore .. All your joined customers will appear here when you add your customer data"
+          title="You have No AboutUsCore" />
       </template>
       <template #failed>
         <DataFailed :link="`/admin/about-us-core/add`" addText="Add AboutUsCore"
-          description="Sorry .. You have no AboutUsCore .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No AboutUsCore" />
+          description="You have no AboutUsCore .. All your joined customers will appear here when you add your customer data"
+          title="You have No AboutUsCore" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no AboutUsCore .. All your joined customers will appear here when you add your customer data" />
+        description="You have no AboutUsCore .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

@@ -8,6 +8,7 @@ export default class IndexTeamParams implements Params {
   public perPage: number = 10
   public pageNumber: number = 10
   public id?: number
+  public projectId?: number | null
   // public code?: LangEnum
 
   constructor(
@@ -16,6 +17,7 @@ export default class IndexTeamParams implements Params {
     perPage: number = 10,
     withPage: number = 1,
     id?: number,
+    projectId?: number | null,
     // code?: LangEnum,
   ) {
     this.word = word
@@ -23,6 +25,7 @@ export default class IndexTeamParams implements Params {
     this.pageNumber = pageNumber
     this.perPage = perPage
     this.id = id
+    this.projectId = projectId
     // this.code = code
   }
 
@@ -33,6 +36,7 @@ export default class IndexTeamParams implements Params {
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.id) data['parent_id'] = this.id
+    if (this.projectId != null) data['project_id'] = this.projectId
     // if (this.code) data['code'] = this.code
     return data
   }

@@ -160,6 +160,7 @@ const IndexActionList = () => [
     text: t('add_check_list'),
     link: '/organization/check-list/add',
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -211,7 +212,12 @@ const IndexActionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
         <SystemWarehouseTypes />
       </PermissionBuilder> -->
-      <ActionsList :show-actions="true" :actionList="IndexActionList()" :actionsNumber="3">
+      <ActionsList
+        feature-name="action_feature_checklists"
+        :show-actions="true"
+        :actionList="IndexActionList()"
+        :actionsNumber="3"
+      >
         <template #custom>
           <!-- <SystemWarehouseTypes :isHeaderTap="false" /> -->
           <ExportPdf :isDropList="true" />
@@ -270,23 +276,23 @@ const IndexActionList = () => [
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
 
           <DataEmpty :link="`/organization/check-list/add`" addText="Add CheckList"
-            description="Sorry .. You have no CheckList .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No CheckList" />
+            description="You have no CheckList .. All your joined customers will appear here when you add your customer data"
+            title="You have No CheckList" />
         </PermissionBuilder>
       </template>
       <template #failed>
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
 
           <DataFailed :link="`/organization/check-list/add`" addText="Add CheckList"
-            description="Sorry .. You have no CheckList .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No CheckList" />
+            description="You have no CheckList .. All your joined customers will appear here when you add your customer data"
+            title="You have No CheckList" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no CheckList .. All your joined customers will appear here when you add your customer data"
+        description="You have no CheckList .. All your joined customers will appear here when you add your customer data"
         link="" />
     </template>
   </PermissionBuilder>

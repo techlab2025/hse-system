@@ -259,16 +259,16 @@ watch(
       <DataEmpty
         :link="`/organization/project/add`"
         addText="Add Project"
-        description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Project"
+        description="You have no Project .. All your joined customers will appear here when you add your customer data"
+        title="You have No Project"
       />
     </template>
     <template #failed>
       <DataFailed
         :link="`/organization/project/add`"
         addText="Add Project"
-        description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Project"
+        description="You have no Project .. All your joined customers will appear here when you add your customer data"
+        title="You have No Project"
       />
     </template>
   </DataStatus>

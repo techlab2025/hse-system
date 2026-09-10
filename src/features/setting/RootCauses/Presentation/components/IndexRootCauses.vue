@@ -232,6 +232,7 @@ const IndexRootCausesactionList = () => [
     text: t('add_root_causes'),
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/root-causes/add`,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ROOT_CAUSES_CREATE],
   },
@@ -297,6 +298,7 @@ const IndexRootCausesactionList = () => [
         <SystemRootCausesTypes />
       </PermissionBuilder> -->
       <ActionsList
+        feature-name="action_feature_root_causes"
         :show-actions="true"
         :actionList="IndexRootCausesactionList()"
         :actionsNumber="5"
@@ -399,8 +401,8 @@ const IndexRootCausesactionList = () => [
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/root-causes/add`"
             addText="Add RootCauses"
-            description="Sorry .. You have no RootCausess .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No RootCausess"
+            description="You have no RootCausess .. All your joined customers will appear here when you add your customer data"
+            title="You have No RootCausess"
           />
         </PermissionBuilder>
       </template>
@@ -417,8 +419,8 @@ const IndexRootCausesactionList = () => [
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/root-causes/add`"
             addText="Add RootCauses"
-            description="Sorry .. You have no RootCauses .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No RootCausess"
+            description="You have no RootCauses .. All your joined customers will appear here when you add your customer data"
+            title="You have No RootCausess"
           />
         </PermissionBuilder>
       </template>
@@ -427,7 +429,7 @@ const IndexRootCausesactionList = () => [
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no RootCauses .. All your joined customers will appear here when you add your customer data"
+        description="You have no RootCauses .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </PermissionBuilder>

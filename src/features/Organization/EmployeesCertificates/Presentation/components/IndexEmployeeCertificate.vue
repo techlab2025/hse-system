@@ -150,7 +150,7 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
     <div class="certificate-matrix-toolbar">
       <div>
         <span class="matrix-kicker">{{ $t('Certificate matrix') }}</span>
-        <h1>{{ $t('Employee certification board') }}</h1>
+        <h1>{{ $t('Employee certification') }}</h1>
         <p>{{ $t('Track validity, expiry, renewals, and missing certificates across employees.') }}</p>
       </div>
 
@@ -276,17 +276,17 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
 
         <template #empty>
           <DataFailed
-            title="..ops! You have No Employee in this heirarchy"
+            title="You have No Employee in this heirarchy"
             link="/organization"
-            description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
+            description="You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
           />
         </template>
 
         <template #failed>
           <DataFailed
-            title="..ops! You have No Employee in this heirarchy"
+            title="You have No Employee in this heirarchy"
             link="/organization"
-            description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
+            description="You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
           />
         </template>
       </DataStatus>

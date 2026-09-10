@@ -187,8 +187,8 @@ watch(
       <template #empty>
         <DataEmpty
           :link="`/add-project`"
-          description="Sorry .. You have no project types .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Projects"
+          description="You have no project types .. All your joined customers will appear here when you add your customer data"
+          title="You have No Projects"
           addText="Add Projects"
         />
       </template>

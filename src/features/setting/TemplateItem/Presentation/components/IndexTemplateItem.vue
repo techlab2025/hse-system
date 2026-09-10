@@ -251,21 +251,21 @@ watch(
         <DataEmpty
           :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/TemplateItemType`"
           addText="Add TemplateItemType"
-          description="Sorry .. You have no TemplateItemTypes .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No TemplateItemTypes" />
+          description="You have no TemplateItemTypes .. All your joined customers will appear here when you add your customer data"
+          title="You have No TemplateItemTypes" />
       </template>
       <template #failed>
         <DataFailed
           :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/TemplateItemType`"
           addText="Add TemplateItemType"
-          description="Sorry .. You have no TemplateItemType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No TemplateItemTypes" />
+          description="You have no TemplateItemType .. All your joined customers will appear here when you add your customer data"
+          title="You have No TemplateItemTypes" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no TemplateItemType .. All your joined customers will appear here when you add your customer data" />
+        description="You have no TemplateItemType .. All your joined customers will appear here when you add your customer data" />
     </template>
   </permission-builder>
 </template>

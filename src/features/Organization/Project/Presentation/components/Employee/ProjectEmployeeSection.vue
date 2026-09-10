@@ -150,6 +150,14 @@ watch(
                 </svg>
                 {{ $t('Add Position') }}
               </RouterLink>
+              <RouterLink
+                :to="`/organization/project-employee/project/${id}?locationId=${locationTeam.id}`"
+                class="add-btn btn"
+                v-if="locationTeam?.locationHierarchies?.length! > 0"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+                {{ $t('Add Employee') }}
+              </RouterLink>
               <AddCreateTeam
                 :ProjectLocationId="locationTeam.projectLocationId"
                 :LocationId="locationTeam.id"
@@ -159,14 +167,6 @@ watch(
                   locationTeam.locationEmplyees?.length! > 0
                 "
               />
-              <RouterLink
-                :to="`/organization/project-employee/project/${id}?locationId=${locationTeam.id}`"
-                class="add-btn btn"
-                v-if="locationTeam?.locationHierarchies?.length! > 0"
-              >
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
-                {{ $t('Add Employee') }}
-              </RouterLink>
             </div>
           </div>
 
@@ -258,10 +258,10 @@ watch(
         :link="`/add-project`"
         :description="
           $t(
-            'Sorry .. You have no project types .. All your joined customers will appear here when you add your customer data',
+            'You have no project types .. All your joined customers will appear here when you add your customer data',
           )
         "
-        :title="$t('..ops! You have No Projects')"
+        :title="$t('You have No Projects')"
         :addText="$t('Add Projects')"
       />
     </template>

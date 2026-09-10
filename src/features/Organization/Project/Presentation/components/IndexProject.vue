@@ -121,7 +121,7 @@ watch(
       <PermissionBuilder
         :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.PROJECT_CREATE]"
       >
-        <router-link to="/organization/project/add" class="btn btn-primary">
+        <router-link to="/organization/project/flow" class="btn btn-primary">
           {{ $t('Add_Project') }}
         </router-link>
       </PermissionBuilder>
@@ -163,10 +163,10 @@ watch(
           :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.PROJECT_CREATE]"
         >
           <DataEmpty
-            :link="`/organization/project/add`"
+            :link="`/organization/project/flow`"
             addText="Add Project"
-            description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Project"
+            description="You have no Project .. All your joined customers will appear here when you add your customer data"
+            title="You have No Project"
           />
         </PermissionBuilder>
       </template>
@@ -175,10 +175,10 @@ watch(
           :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.PROJECT_CREATE]"
         >
           <DataFailed
-            :link="`/organization/project/add`"
+            :link="`/organization/project/flow`"
             addText="Add Project"
-            description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Project"
+            description="You have no Project .. All your joined customers will appear here when you add your customer data"
+            title="You have No Project"
           />
         </PermissionBuilder>
       </template>
@@ -187,7 +187,7 @@ watch(
     <template #notPermitted>
       <DataFailed
         addText="Have not Permission"
-        description="Sorry .. You have no Project .. All your joined customers will appear here when you add your customer data"
+        description="You have no Project .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </PermissionBuilder>

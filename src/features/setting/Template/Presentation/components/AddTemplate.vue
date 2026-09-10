@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 // import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
@@ -12,8 +13,10 @@ import AddNewTemplateDialog from '@/features/Organization/Inspection/Presentatio
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const router = useRouter()
+const stayOnPageRouter = createStayOnPageRouter(router)
 const emit = defineEmits(['update:data'])
 const params = ref<Params | null>(null)
+const formKey = ref(0)
 
 const addTemplateController = AddTemplateController.getInstance()
 
@@ -29,20 +32,30 @@ const addTemplate = async () => {
     )
   }
 }
+
+const saveAndNew = async () => {
+  console.log(params.value, 'Add params')
+  addTemplateController.setLoading()
+  await addTemplateController.addTemplate(params.value as AddTemplateParams, stayOnPageRouter)
+  if (addTemplateController.isDataSuccess()) {
+    params.value = null
+    formKey.value++
+  }
+}
 const setParams = (data: Params) => {
   params.value = data
 }
-
-
 </script>
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addTemplate">
-    <TemplateForm @update:data="setParams" />
-    <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary w-full"">{{ $t('save') }}</button>
+    <TemplateForm :key="formKey" @update:data="setParams" />
+    <div class="col-span-4 button-wrapper create-form-actions">
+      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+        {{ $t('save and new') }}
+      </button>
+      <button type="submit" class="btn btn-primary w-full">{{ $t('save') }}</button>
     </div>
-
   </form>
 </template>
 

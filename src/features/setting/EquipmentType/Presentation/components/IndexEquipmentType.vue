@@ -244,6 +244,7 @@ const IndexEquipmentTypeactionList = () => [
     text: t('add_equipment_type'),
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization' }/equipment-type/add`,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -316,7 +317,12 @@ const IndexEquipmentTypeactionList = () => [
         <SystemEquipmentTypes />
       </PermissionBuilder> -->
 
-       <ActionsList :show-actions="true" :actionList="IndexEquipmentTypeactionList()" :actionsNumber="5">
+       <ActionsList
+        feature-name="action_feature_equipment_types"
+        :show-actions="true"
+        :actionList="IndexEquipmentTypeactionList()"
+        :actionsNumber="5"
+      >
         <template #custom>
           <!-- <SystemEquipmentTypes /> -->
           <ExportPdf :isDropList="true" />
@@ -410,8 +416,8 @@ const IndexEquipmentTypeactionList = () => [
         ]">
           <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/equipment-type/add`" addText="Add EquipmentType"
-            description="Sorry .. You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No EquipmentTypes" />
+            description="You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
+            title="You have No EquipmentTypes" />
         </PermissionBuilder>
       </template>
       <template #failed>
@@ -423,15 +429,15 @@ const IndexEquipmentTypeactionList = () => [
         ]">
           <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/add/EquipmentType`" addText="Add EquipmentType"
-            description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No EquipmentTypes" />
+            description="You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
+            title="You have No EquipmentTypes" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data" />
+        description="You have no EquipmentType .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 

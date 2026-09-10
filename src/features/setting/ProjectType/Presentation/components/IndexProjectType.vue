@@ -220,19 +220,19 @@ const actionList = (id: number, deleteProjectType: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty :link="`/add/ProjectType`" addText="Add ProjectType"
-          description="Sorry .. You have no ProjectTypeuages .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ProjectTypeuages" />
+          description="You have no ProjectTypeuages .. All your joined customers will appear here when you add your customer data"
+          title="You have No ProjectTypeuages" />
       </template>
       <template #failed>
         <DataFailed :link="`/add/ProjectType`" addText="Add ProjectType"
-          description="Sorry .. You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ProjectTypeuages" />
+          description="You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data"
+          title="You have No ProjectTypeuages" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data" />
+        description="You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

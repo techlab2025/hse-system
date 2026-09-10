@@ -21,6 +21,16 @@ export const projectRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: 'project/flow/:id?/:step?',
+    name: 'Project Setup Flow',
+    component: () => import('@/views/Organization/Project/ProjectFlow.vue'),
+    meta: {
+      breadcrumb: 'Project Setup',
+      parent: 'Projects',
+      isSidebar: false,
+    },
+  },
+  {
     path: 'project/:id',
     name: 'Edit Project',
     component: () => import('@/views/Organization/Project/EditProject.vue'),

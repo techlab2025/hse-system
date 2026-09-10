@@ -99,7 +99,7 @@ const actionList = () => [
 <template>
   <div class="flex justify-end gap-2">
     <ActionsList
-      :button-title="`import incident type sheet `"
+      feature-name="action_feature_incident_types"
       :show-actions="true"
       :actionList="actionList()"
       :actionsNumber="2"

@@ -134,14 +134,14 @@ watch(
               {{ $t('add_position') }}
             </RouterLink>
 
+            <AddEmployeeDialog
+              :hierarchy="hierarchy"
+              :ProjectLocation="location?.projectLocationId!"
+            />
             <AddCreateTeam
               :ProjectLocationId="location?.projectLocationId!"
               :LocationId="location?.locationId!"
               @update:data="GetProjectLocationsEmployes"
-            />
-            <AddEmployeeDialog
-              :hierarchy="hierarchy"
-              :ProjectLocation="location?.projectLocationId!"
             />
           </div>
         </div>
@@ -189,7 +189,7 @@ watch(
                 <div class="all-employees-header flex flex-col">
                   <span class="section-kicker">{{ $t('People') }}</span>
                   <p class="employee">{{ $t('Employees') }}</p>
-                  <p class="employee-count">{{ $t('People assigned to this location') }}</p>
+                  <p class="employee-count">{{ $t('assigned to this location') }}</p>
                 </div>
               </div>
               <router-link :to="`/organization/employee-details/${id}`" class="all-employees-view"

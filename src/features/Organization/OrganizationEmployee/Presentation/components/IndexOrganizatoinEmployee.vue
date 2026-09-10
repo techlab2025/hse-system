@@ -379,6 +379,7 @@ const IndexOrganizationEmployeectionList = () => [
     text: t('add_employee'),
     link: '/organization/organization-employee/add',
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [PermissionsEnum?.ORG_EMPLOYEE_CREATE, PermissionsEnum?.ADMIN],
   },
@@ -485,6 +486,7 @@ const IndexOrganizationEmployeectionList = () => [
         {{ $t('upload_excel') }}
       </router-link> -->
       <ActionsList
+        feature-name="action_feature_employees"
         :show-actions="true"
         :actionList="IndexOrganizationEmployeectionList()"
         :actionsNumber="5"
@@ -566,9 +568,9 @@ const IndexOrganizationEmployeectionList = () => [
         <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
           <DataEmpty
             :link="`/organization/organization-employee/add`"
-            addText="Add OrganizatoinEmployee"
-            description="Sorry .. You have no OrganizatoinEmployee .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No OrganizatoinEmployee"
+            addText="Add Employee"
+            description="You have no Employee .. All your joined customers will appear here when you add your customer data"
+            title="You have No Employee"
           />
         </PermissionBuilder>
       </template>
@@ -576,9 +578,9 @@ const IndexOrganizationEmployeectionList = () => [
         <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
           <DataFailed
             :link="`/organization/organization-employee/add`"
-            addText="Add OrganizatoinEmployee"
-            description="Sorry .. You have no OrganizatoinEmployee .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No OrganizatoinEmployee"
+            addText="Add Employee"
+            description="You have no Employee .. All your joined customers will appear here when you add your customer data"
+            title="You have No Employee"
           />
         </PermissionBuilder>
       </template>
@@ -588,7 +590,7 @@ const IndexOrganizationEmployeectionList = () => [
       <DataFailed
         link="/organization"
         addText="Have not  Permission"
-        description="Sorry .. You have no OrganizatoinEmployee .. All your joined customers will appear here when you add your customer data"
+        description="You have no Employee .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </PermissionBuilder>

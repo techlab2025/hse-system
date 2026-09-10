@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 // import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
@@ -8,13 +9,31 @@ import AddHealthConditionsParams from '@/features/setting/HealthConditions/Core/
 import type Params from '@/base/core/params/params'
 
 const router = useRouter()
+const stayOnPageRouter = createStayOnPageRouter(router)
 const params = ref<Params | null>(null)
+const formKey = ref(0)
 
 const addHealthConditionsController = AddHealthConditionsController.getInstance()
 
 const addHealthConditions = async () => {
   console.log(params.value, 'params')
-  await addHealthConditionsController.addHealthConditions(params.value as AddHealthConditionsParams, router)
+  await addHealthConditionsController.addHealthConditions(
+    params.value as AddHealthConditionsParams,
+    router,
+  )
+}
+
+const saveAndNew = async () => {
+  console.log(params.value, 'params')
+  addHealthConditionsController.setLoading()
+  await addHealthConditionsController.addHealthConditions(
+    params.value as AddHealthConditionsParams,
+    stayOnPageRouter,
+  )
+  if (addHealthConditionsController.isDataSuccess()) {
+    params.value = null
+    formKey.value++
+  }
 }
 const setParams = (data: Params) => {
   // console.log(data, 'data')
@@ -24,10 +43,12 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addHealthConditions">
+    <HealthConditionsForm :key="formKey" @update:data="setParams" />
 
-    <HealthConditionsForm @update:data="setParams" />
-
-    <div class="col-span-4 button-wrapper">
+    <div class="col-span-4 button-wrapper create-form-actions">
+      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+        {{ $t('save and new') }}
+      </button>
       <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </div>
   </form>

@@ -182,23 +182,23 @@ watch(
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_CREATE]">
 
           <DataEmpty :link="`/organization/where-house/add`" addText="Add WhereHouse"
-            description="Sorry .. You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No WhereHouse" />
+            description="You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
+            title="You have No WhereHouse" />
         </PermissionBuilder>
       </template>
       <template #failed>
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_CREATE]">
 
           <DataFailed :link="`/organization/where-house/add`" addText="Add WhereHouse"
-            description="Sorry .. You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No WhereHouse" />
+            description="You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
+            title="You have No WhereHouse" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
+        description="You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
         link="" />
     </template>
   </PermissionBuilder>

@@ -287,6 +287,7 @@ const IndexHazardTypeactionList = () => [
       ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params?.parent_id}`
       : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HAZARD_TYPE_CREATE],
   },
@@ -355,6 +356,9 @@ const IndexHazardTypeactionList = () => [
       </PermissionBuilder> -->
 
       <ActionsList
+        :feature-name="
+          route.params?.parent_id ? 'action_feature_hazards' : 'action_feature_hazard_types'
+        "
         :show-actions="true"
         :actionList="IndexHazardTypeactionList()"
         :actionsNumber="5"
@@ -479,8 +483,8 @@ const IndexHazardTypeactionList = () => [
                 : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`
             "
             :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
-            description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No HazardType"
+            description="You have no HazardType .. All your joined customers will appear here when you add your customer data"
+            title="You have No HazardType"
           />
         </PermissionBuilder>
       </template>
@@ -500,8 +504,8 @@ const IndexHazardTypeactionList = () => [
                 : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`
             "
             :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
-            description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No HazardType"
+            description="You have no HazardType .. All your joined customers will appear here when you add your customer data"
+            title="You have No HazardType"
           />
         </PermissionBuilder>
       </template>
@@ -510,7 +514,7 @@ const IndexHazardTypeactionList = () => [
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
+        description="You have no HazardType .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </PermissionBuilder>

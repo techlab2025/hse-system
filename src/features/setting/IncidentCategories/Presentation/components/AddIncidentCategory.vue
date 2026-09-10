@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type Params from '@/base/core/params/params'
@@ -7,6 +8,7 @@ import AddIncidentCategoryController from '../controllers/addIncidentCategoryCon
 import IncidentCategoryForm from './IncidentCategoryForm.vue'
 
 const router = useRouter()
+const stayOnPageRouter = createStayOnPageRouter(router)
 const route = useRoute()
 const params = ref<Params | null>(null)
 const formKey = ref(0)
@@ -23,11 +25,12 @@ const addIncidentCategory = async () => {
   emit('update:data')
 }
 
-const saveAndAdd = async () => {
+const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
-  const state = await addIncidentCategoryController.addIncidentCategory(
+  const state = addIncidentCategoryController.setLoading()
+  await addIncidentCategoryController.addIncidentCategory(
     params.value as AddIncidentCategoryParams,
-    router,
+    stayOnPageRouter,
     true,
   )
   if (!state.value.error) {
@@ -45,20 +48,12 @@ const setParams = (data: Params) => {
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addIncidentCategory">
     <IncidentCategoryForm ref="formRef" :key="formKey" @update:data="setParams" />
 
-    <div class="col-span-4 button-wrapper">
-      <button
-        type="submit"
-        class="btn btn-primary"
-        :class="route.path.includes('project-progress') ? 'w-1/2' : 'w-full'"
-      >
-        {{ $t('save') }}
+    <div class="col-span-4 button-wrapper create-form-actions">
+      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+        {{ $t('save and new') }}
       </button>
-      <button
-        v-if="route.path.includes('project-progress')"
-        @click.prevent="saveAndAdd"
-        class="btn btn-primary w-1/2"
-      >
-        {{ $t('save and add') }}
+      <button type="submit" class="btn btn-primary">
+        {{ $t('save') }}
       </button>
     </div>
   </form>

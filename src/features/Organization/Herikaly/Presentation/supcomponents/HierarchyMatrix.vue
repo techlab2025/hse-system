@@ -295,17 +295,17 @@ const ChangeCertificatioRequired = async (
 
         <template #empty>
           <DataEmpty
-            title="..ops! You have No Employee in this heirarchy"
+            title="You have No Employee in this heirarchy"
             link="/organization"
-            description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
+            description="You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
           />
         </template>
 
         <template #failed>
           <DataFailed
-            title="..ops! You have No Employee in this heirarchy"
+            title="You have No Employee in this heirarchy"
             link="/organization"
-            description="Sorry .. You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
+            description="You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
           />
         </template>
       </DataStatus>
@@ -426,15 +426,24 @@ const ChangeCertificatioRequired = async (
 }
 
 .employee-certificates-matrix {
+  position: relative;
   max-width: 100%;
+  max-height: clamp(360px, 68dvh, 760px);
   padding: 12px;
-  overflow-x: auto;
+  overflow: auto;
+  overscroll-behavior: contain;
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 78%, transparent);
   border-radius: 24px;
   background:
     radial-gradient(circle at 0 0, color-mix(in srgb, var(--brand-primary-500) 10%, transparent), transparent 28%),
     linear-gradient(135deg, var(--surface-1), var(--brand-primary-50));
   box-shadow: 0 20px 48px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
+}
+
+.employee-certificates-matrix .main-table thead {
+  position: sticky;
+  z-index: 10;
+  top: 0;
 }
 
 .employee-certificates-matrix .main-table {
@@ -445,6 +454,9 @@ const ChangeCertificatioRequired = async (
 }
 
 .employee-certificates-matrix .main-table th {
+  position: sticky !important;
+  z-index: 10 !important;
+  top: 0 !important;
   min-width: 168px;
   max-width: 220px;
   padding: 14px 16px !important;
@@ -458,11 +470,13 @@ const ChangeCertificatioRequired = async (
   white-space: normal !important;
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--brand-primary-500) 8%, transparent), color-mix(in srgb, var(--status-success) 6%, transparent)), var(--brand-primary-50) !important;
+  box-shadow: 0 10px 18px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
 }
 
 .employee-certificates-matrix .main-table th:first-child {
   position: sticky !important;
-  z-index: 8 !important;
+  z-index: 12 !important;
+  top: 0 !important;
   inset-inline-start: 0 !important;
   min-width: 240px;
   border-inline-start: 1px solid color-mix(in srgb, var(--brand-primary-100) 92%, transparent) !important;

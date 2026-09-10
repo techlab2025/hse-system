@@ -213,6 +213,7 @@ const IndexObservationTypesactionList = () => [
     text: t('add_observeration_type'),
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type/add`,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -282,7 +283,12 @@ const IndexObservationTypesactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.OBSERVATION_TYPE_CREATE]">
         <SystemObservationTypes />
       </PermissionBuilder> -->
-      <ActionsList :show-actions="true" :actionList="IndexObservationTypesactionList()" :actionsNumber="5">
+      <ActionsList
+        feature-name="action_feature_observation_types"
+        :show-actions="true"
+        :actionList="IndexObservationTypesactionList()"
+        :actionsNumber="5"
+      >
         <template #custom>
           <!-- <SystemObservationTypes /> -->
           <ExportPdf :isDropList="true" />
@@ -382,8 +388,8 @@ const IndexObservationTypesactionList = () => [
           <DataEmpty
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type/add`"
             addText="Add ObserverationType"
-            description="Sorry .. You have no ObserverationType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No ObserverationType" />
+            description="You have no ObserverationType .. All your joined customers will appear here when you add your customer data"
+            title="You have No ObserverationType" />
         </PermissionBuilder>
       </template>
       <template #failed>
@@ -396,15 +402,15 @@ const IndexObservationTypesactionList = () => [
           <DataFailed
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type/add`"
             addText="Add ObserverationType"
-            description="Sorry .. You have no ObserverationType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No ObserverationType" />
+            description="You have no ObserverationType .. All your joined customers will appear here when you add your customer data"
+            title="You have No ObserverationType" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no ObserverationType .. All your joined customers will appear here when you add your customer data" />
+        description="You have no ObserverationType .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 

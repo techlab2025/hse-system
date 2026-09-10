@@ -351,6 +351,7 @@ const IndexEquipmentactionList = () => [
     text: t('Add_Equipment'),
     link: addEquipmentLink.value,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [
       PermissionsEnum.EQUIPMENT_CREATE,
@@ -412,6 +413,7 @@ const IndexEquipmentactionList = () => [
           @reset="resetFilters"
         />
         <ActionsList
+          feature-name="action_feature_equipment"
           :show-actions="true"
           :actionList="IndexEquipmentactionList()"
           :actionsNumber="5"
@@ -477,8 +479,8 @@ const IndexEquipmentactionList = () => [
             <DataEmpty
               :link="addEquipmentLink"
               addText="Add Equipment"
-              description="Sorry .. You have no Equipment .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Equipment"
+              description="You have no Equipment .. All your joined customers will appear here when you add your customer data"
+              title="You have No Equipment"
             />
           </PermissionBuilder>
         </template>
@@ -494,8 +496,8 @@ const IndexEquipmentactionList = () => [
             <DataFailed
               :link="addEquipmentLink"
               addText="Add Equipment"
-              description="Sorry .. You have no Equipment .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Equipment"
+              description="You have no Equipment .. All your joined customers will appear here when you add your customer data"
+              title="You have No Equipment"
             />
           </PermissionBuilder>
         </template>
@@ -504,7 +506,7 @@ const IndexEquipmentactionList = () => [
       <template #notPermitted>
         <DataFailed
           addText="Have not  Permission"
-          description="Sorry .. You have no Equipment .. All your joined customers will appear here when you add your customer data"
+          description="You have no Equipment .. All your joined customers will appear here when you add your customer data"
         />
       </template>
     </PermissionBuilder>

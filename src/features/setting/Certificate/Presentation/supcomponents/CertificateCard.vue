@@ -20,11 +20,11 @@ const props = defineProps<{
       <div class="certificate-data">
         <div class="issue-date">
           <span>{{ $t('issue_date') }}</span>
-          <span>{{ $t('10-2-2001') }}</span>
+          <span>10-2-2001</span>
         </div>
         <div class="issue-date">
           <span>{{ $t('expire_date') }}</span>
-          <span>{{ $t('10-2-2001') }}</span>
+          <span>10-2-2001</span>
         </div>
       </div>
 

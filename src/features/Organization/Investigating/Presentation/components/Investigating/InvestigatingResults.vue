@@ -937,7 +937,7 @@ const validateRequiredFields = async () => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>Witness Management</p>
+                <p>Witnesses Management</p>
                 <span class="arrow" :class="{ open: isPanelOpen('5') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
@@ -1214,21 +1214,21 @@ const validateRequiredFields = async () => {
     </template>
     <template #empty>
       <DataEmpty
-        description="Sorry .. You have no Investegation Result .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Investegation Result"
+        description="You have no Investegation Result .. All your joined customers will appear here when you add your customer data"
+        title="You have No Investegation Result"
       />
     </template>
     <template #failed>
       <DataFailed
-        description="Sorry .. You have no Investegation Result Data .. All your joined customers will appear here when you add your customer data"
-        title="..ops! You have No Investegation Result Data"
+        description="You have no Investegation Result Data .. All your joined customers will appear here when you add your customer data"
+        title="You have No Investegation Result Data"
       />
     </template>
 
     <template #notPermitted>
       <DataFailed
         addText="Have not Permission"
-        description="Sorry .. You have no Hazard .. All your joined customers will appear here when you add your customer data"
+        description="You have no Hazard .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </DataStatus>

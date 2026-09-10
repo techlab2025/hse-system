@@ -761,7 +761,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
         <template #notPermitted>
           <DataFailed
             addText="Have not  Permission"
-            description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data"
+            description="You have no Observation .. All your joined customers will appear here when you add your customer data"
           />
         </template>
       </PermissionBuilder>

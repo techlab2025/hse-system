@@ -165,12 +165,42 @@ watch(
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+  width: 100%;
+  max-width: 100%;
   min-width: 0;
 }
 
 .categories-container {
   min-width: 0;
-  flex: 1;
+  width: 100%;
+  max-width: 100%;
+  flex: 1 1 0;
+  flex-wrap: nowrap;
+  overflow-x: auto !important;
+  overflow-y: hidden;
+  padding-bottom: 8px;
+  scroll-behavior: smooth;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--PrimaryColor) 45%, transparent) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.categories-container > .category {
+  flex: 0 0 auto;
+}
+
+.categories-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.categories-container::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--PrimaryColor) 45%, transparent);
+}
+
+.categories-container::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .project-filter-actions {

@@ -219,6 +219,7 @@ const indexTeamActionList = () => [
     text: t('add_team'),
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: teamCreatePermissions,
   },
@@ -251,6 +252,7 @@ const indexTeamActionList = () => [
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ActionsList
+        feature-name="action_feature_teams"
         :show-actions="true"
         :actionList="indexTeamActionList()"
         :actionsNumber="5"
@@ -335,8 +337,8 @@ const indexTeamActionList = () => [
         ]">
           <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
             addText="Add Team"
-            description="Sorry .. You have no Team .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Team" />
+            description="You have no Team .. All your joined customers will appear here when you add your customer data"
+            title="You have No Team" />
         </permission-builder>
       </template>
       <template #failed>
@@ -348,8 +350,8 @@ const indexTeamActionList = () => [
         ]">
           <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
             addText="Add Team"
-            description="Sorry .. You have no Team .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Team" />
+            description="You have no Team .. All your joined customers will appear here when you add your customer data"
+            title="You have No Team" />
         </permission-builder>
       </template>
     </DataStatus>
@@ -362,7 +364,7 @@ const indexTeamActionList = () => [
         PermissionsEnum.ORG_TEAM_CREATE,
       ]">
         <DataFailed addText="Have not  Permission"
-          description="Sorry .. You have no TeamType .. All your joined customers will appear here when you add your customer data" />
+          description="You have no TeamType .. All your joined customers will appear here when you add your customer data" />
       </permission-builder>
     </template>
   </permission-builder>

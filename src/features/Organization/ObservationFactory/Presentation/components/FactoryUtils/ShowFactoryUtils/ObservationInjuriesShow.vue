@@ -63,7 +63,7 @@ const getPpeConditionLabel = (condition: number) =>
         <div class="Injured_title">
           <Injured />
           <div class="title">
-            <p>{{ $t('infection type ') }}:</p>
+            <p>{{ $t('infection type') }}:</p>
             <h6>{{ wordSlice(injury?.injury_type?.title, 20) }}</h6>
           </div>
         </div>

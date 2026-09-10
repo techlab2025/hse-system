@@ -11,6 +11,7 @@ export default class IndexOrganizatoinEmployeeParams implements Params {
   public CertificateId?: number
   public shouldHaveThisCertificate?: boolean
   public shouldNotHaveThisHierarchy?: boolean
+  public projectId?: number | null
 
   constructor(
     word: string,
@@ -23,6 +24,7 @@ export default class IndexOrganizatoinEmployeeParams implements Params {
     CertificateId?: number,
     shouldHaveThisCertificate?: boolean,
     shouldNotHaveThisHierarchy?: boolean,
+    projectId?: number | null,
     // code?: LangEnum,
   ) {
     this.word = word
@@ -35,11 +37,12 @@ export default class IndexOrganizatoinEmployeeParams implements Params {
     this.CertificateId = CertificateId
     this.shouldHaveThisCertificate = shouldHaveThisCertificate
     this.shouldNotHaveThisHierarchy = shouldNotHaveThisHierarchy
+    this.projectId = projectId
     // this.code = code
   }
 
-  toMap(): Record<string, string | number | number[] | null> {
-    const data: Record<string, string | number | number[] | null | any> = {}
+  toMap(): Record<string, string | number | number[] | boolean | null> {
+    const data: Record<string, string | number | number[] | boolean | null> = {}
     if (this.word) data['word'] = this.word
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
@@ -55,6 +58,7 @@ export default class IndexOrganizatoinEmployeeParams implements Params {
 
     if (this.shouldNotHaveThisHierarchy != null || this.shouldNotHaveThisHierarchy == false)
       data['should_not_have_this_hierarchy'] = this.shouldNotHaveThisHierarchy
+    if (this.projectId != null) data['project_id'] = this.projectId
 
     // if (this.code) data['code'] = this.code
     return data
