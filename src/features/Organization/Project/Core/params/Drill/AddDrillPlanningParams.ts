@@ -5,7 +5,7 @@ import { formatTime } from '@/base/Presentation/utils/time_format'
 export interface DrillPlanningInput {
   date: Date | string
   time: Date | string
-  description: string
+  notes: string
 }
 
 export default class AddDrillPlanningParams implements Params {
@@ -22,7 +22,7 @@ export default class AddDrillPlanningParams implements Params {
       planning: this.planning.map((item) => ({
         date: formatJoinDate(item.date),
         time: formatTime(item.time),
-        description: item.description,
+        notes: item.notes,
       })),
     }
   }

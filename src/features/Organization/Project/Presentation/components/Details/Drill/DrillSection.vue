@@ -1,6 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import type DrillModel from '@/features/Organization/Project/Data/models/Drill/DrillModel'
+import type DrillTimelineItemModel from '@/features/Organization/Project/Data/models/Drill/DrillTimelineItemModel'
+import FetchDrillPlansParams from '@/features/Organization/Project/Core/params/Drill/FetchDrillPlansParams'
+import FetchDrillPlansController from '@/features/Organization/Project/Presentation/controllers/Drill/FetchDrillPlansController'
 import AddDrillDialog from '../../Dialogs/Drill/AddDrillDialog.vue'
 import DrillDetailsDialog from '../../Dialogs/Drill/DrillDetailsDialog.vue'
 
@@ -8,6 +11,27 @@ const props = withDefaults(defineProps<{ projectId: number; drills?: DrillModel[
   drills: () => [],
 })
 const emit = defineEmits<{ (event: 'updated'): void }>()
+const plansByDrillId = ref<Record<number, DrillTimelineItemModel[]>>({})
+const loadingPlansByDrillId = ref<Record<number, boolean>>({})
+
+const fetchDrillPlans = async (drillId: number) => {
+  if (!drillId) return
+
+  loadingPlansByDrillId.value[drillId] = true
+  const controller = FetchDrillPlansController.getInstance()
+  await controller.fetchPlans(new FetchDrillPlansParams(drillId))
+
+  if (controller.isDataSuccess()) {
+    plansByDrillId.value[drillId] = controller.state.value.data ?? []
+  }
+
+  loadingPlansByDrillId.value[drillId] = false
+}
+
+const handleDrillSaved = async (drillId: number) => {
+  await fetchDrillPlans(drillId)
+  emit('updated')
+}
 
 const teamGroups = computed(() => {
   const groups = new Map<string, { title: string; drills: DrillModel[] }>()
@@ -63,7 +87,10 @@ const teamGroups = computed(() => {
             :key="drill.id"
             :drill="drill"
             :project-id="projectId"
-            @saved="emit('updated')"
+            :plans="plansByDrillId[drill.id]"
+            :plans-loading="loadingPlansByDrillId[drill.id] ?? false"
+            @opened="fetchDrillPlans(drill.id)"
+            @saved="handleDrillSaved(drill.id)"
           />
         </div>
       </article>

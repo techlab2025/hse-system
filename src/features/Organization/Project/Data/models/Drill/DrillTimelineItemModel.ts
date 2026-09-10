@@ -15,7 +15,7 @@ export default class DrillTimelineItemModel {
       data?.id ?? index + 1,
       data?.date ?? '',
       data?.time ?? '',
-      data?.description ?? '',
+      data?.description ?? data?.notes ?? '',
       data?.notes ?? '',
       data?.photographer_name ?? data?.photographerName ?? '',
       data?.images ?? [],

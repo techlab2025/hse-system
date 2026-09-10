@@ -1271,7 +1271,10 @@ class ApiNames {
     return this.prefix + 'create_drill'
   }
   public get CreateDrillPlanning() {
-    return this.prefix + 'create_drill_planing'
+    return this.prefix + 'create_drill_plan'
+  }
+  public get FetchDrillPlans() {
+    return this.prefix + 'fetch_drill_plans'
   }
   public get CreateDrillAction() {
     return this.prefix + 'create_drill_action'

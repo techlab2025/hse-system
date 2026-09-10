@@ -40,8 +40,15 @@ const setImages = async (files: File[], index: number) => {
 
 const submit = async () => {
   error.value = ''
-  if (items.value.some((item) => !item.date || !item.time || !item.description.trim())) {
-    error.value = 'Date, time and description are required for every timeline item.'
+  if (
+    items.value.some(
+      (item) =>
+        !item.date ||
+        !item.time ||
+        !(props.mode === 'planning' ? item.notes : item.description).trim(),
+    )
+  ) {
+    error.value = `Date, time and ${props.mode === 'planning' ? 'notes' : 'description'} are required for every timeline item.`
     return
   }
 
@@ -50,7 +57,8 @@ const submit = async () => {
     await controller.addPlanning(new AddDrillPlanningParams(
       props.drillId,
       props.projectId,
-      items.value.map((item) => ({ date: item.date!, time: item.time!, description: item.description.trim() })),
+      items.value.map((item) => ({
+        date: item.date!, time: item.time!, notes: item.notes.trim() })),
     ))
     if (controller.isDataSuccess()) emit('saved')
     else error.value = controller.state.value.error?.title ?? 'Unable to save drill planning.'
@@ -100,7 +108,11 @@ const submit = async () => {
               <div class="field-label"><label :for="`drill_timeline_time_${index}`">{{ $t('time') }}</label><FieldHelpIcon text="Select the time for this timeline entry." /></div>
               <DatePicker :id="`drill_timeline_time_${index}`" v-model="item.time" time-only hour-format="12" fluid />
             </div>
-            <div class="input-wrapper full-field">
+            <div v-if="mode === 'planning'" class="input-wrapper full-field">
+              <div class="field-label"><label :for="`drill_timeline_notes_${index}`">{{ $t('notes') }}</label><FieldHelpIcon text="Describe what is planned at this point." /></div>
+              <textarea :id="`drill_timeline_notes_${index}`" v-model="item.notes" class="input" :placeholder="$t('Enter planning notes')"></textarea>
+            </div>
+            <div v-else class="input-wrapper full-field">
               <div class="field-label"><label :for="`drill_timeline_description_${index}`">{{ $t('description') }}</label><FieldHelpIcon text="Describe what is planned or what happened at this point." /></div>
               <textarea :id="`drill_timeline_description_${index}`" v-model="item.description" class="input" :placeholder="$t('What happened? (in detail)')"></textarea>
             </div>
