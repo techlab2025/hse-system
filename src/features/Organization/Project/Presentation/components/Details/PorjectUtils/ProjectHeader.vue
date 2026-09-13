@@ -99,7 +99,8 @@ const actionList = (id: number) => [
         </span>
       </div>
     </div>
-<!-- 
+    
+<!--
     <div class="project-actions" :aria-label="t('Project actions')">
       <DropList :actionList="actionList(Number(route.params.id))" />
     </div> -->
