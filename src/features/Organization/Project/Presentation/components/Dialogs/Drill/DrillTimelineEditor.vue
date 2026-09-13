@@ -8,8 +8,20 @@ import AddDrillPlanningParams from '@/features/Organization/Project/Core/params/
 import AddDrillActionParams from '@/features/Organization/Project/Core/params/Drill/AddDrillActionParams'
 import AddDrillPlanningController from '@/features/Organization/Project/Presentation/controllers/Drill/AddDrillPlanningController'
 import AddDrillActionController from '@/features/Organization/Project/Presentation/controllers/Drill/AddDrillActionController'
+import type DrillTimelineItemModel from '@/features/Organization/Project/Data/models/Drill/DrillTimelineItemModel'
 
-const props = defineProps<{ mode: 'planning' | 'action'; drillId: number; projectId: number }>()
+const props = withDefaults(defineProps<{
+  mode: 'planning' | 'action'
+  drillId: number
+  projectId: number
+  actions?: DrillTimelineItemModel[]
+  actionsLoading?: boolean
+  actionsError?: string
+}>(), {
+  actions: () => [],
+  actionsLoading: false,
+  actionsError: '',
+})
 const emit = defineEmits<{ (event: 'saved'): void }>()
 
 interface TimelineDraft {
@@ -32,6 +44,7 @@ const createItem = (): TimelineDraft => ({
 
 const items = ref<TimelineDraft[]>([createItem()])
 const error = ref('')
+const savedActions = computed(() => props.actions)
 const title = computed(() => props.mode === 'planning' ? 'Drill Planning Timeline' : 'Drill Action Timeline')
 
 const setImages = async (files: File[], index: number) => {
@@ -88,6 +101,35 @@ const submit = async () => {
     <div class="timeline-heading">
       <div><span>{{ mode === 'planning' ? 'PLAN' : 'ACT' }}</span></div>
       <div><h3>{{ $t(title) }}</h3><p>{{ $t('Build a clear sequence using scheduled dates and times.') }}</p></div>
+    </div>
+
+    <div v-if="mode === 'action'" class="existing-actions">
+      <p v-if="actionsLoading" class="existing-actions-status">{{ $t('Loading drill actions...') }}</p>
+      <p v-else-if="actionsError" class="timeline-error">{{ actionsError }}</p>
+      <template v-else-if="savedActions.length">
+        <div class="existing-actions-title">
+          <h4>{{ $t('Recorded actions') }}</h4>
+          <span>{{ savedActions.length }} {{ $t('entries') }}</span>
+        </div>
+        <article
+          v-for="(action, index) in savedActions"
+          :key="`saved-action-${action.id}-${index}`"
+          class="existing-action"
+        >
+          <span>{{ index + 1 }}</span>
+          <div>
+            <small>
+              {{ action.date }} · {{ action.time }}
+              <template v-if="action.photographerName"> · {{ action.photographerName }}</template>
+            </small>
+            <p>{{ action.description }}</p>
+            <em v-if="action.notes">{{ action.notes }}</em>
+            <div v-if="action.images.length" class="existing-action-images">
+              <img v-for="image in action.images" :key="image" :src="image" alt="Drill evidence" />
+            </div>
+          </div>
+        </article>
+      </template>
     </div>
 
     <div class="drill-timeline-list">
@@ -147,6 +189,7 @@ const submit = async () => {
 .timeline-heading { display: flex; align-items: center; gap: 11px; padding: 13px; border-radius: 15px; background: color-mix(in srgb, var(--PrimaryColor) 6%, var(--surface-2)); }
 .timeline-heading > div:first-child span { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 13px; color: white; background: var(--PrimaryColor); font: .65rem 'Bold'; }
 .timeline-heading h3 { margin: 0; color: var(--text-strong); font-size: .95rem; }.timeline-heading p { margin: 2px 0 0; color: var(--text-soft); font-size: .68rem; }
+.existing-actions { display: grid; gap: 9px; }.existing-actions-status { margin: 0; color: var(--text-soft); }.existing-actions-title { display: flex; align-items: center; justify-content: space-between; }.existing-actions-title h4 { margin: 0; color: var(--text-strong); }.existing-actions-title span { color: var(--text-soft); font-size: .7rem; }.existing-action { display: grid; grid-template-columns: 30px 1fr; gap: 10px; padding: 12px; border: 1px solid var(--main-border); border-radius: 13px; background: var(--surface-2); }.existing-action > span { display: grid; width: 28px; height: 28px; place-items: center; border-radius: 50%; color: white; background: var(--PrimaryColor); font-family: 'Bold'; }.existing-action small { color: var(--text-soft); }.existing-action p { margin: 4px 0; color: var(--text-strong); }.existing-action em { color: var(--text-soft); font-size: .75rem; }.existing-action-images { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 8px; }.existing-action-images img { width: 68px; height: 68px; border-radius: 9px; object-fit: cover; }
 .drill-timeline-list { display: flex; flex-direction: column; gap: 14px; }.drill-timeline-item { display: grid; grid-template-columns: 38px 1fr; gap: 10px; }.drill-timeline-marker { position: relative; display: flex; justify-content: center; }.drill-timeline-marker::after { content: ''; position: absolute; top: 34px; bottom: -22px; width: 2px; background: color-mix(in srgb, var(--PrimaryColor) 25%, var(--main-border)); }.drill-timeline-item:last-child .drill-timeline-marker::after { display: none; }.drill-timeline-marker span { display: grid; width: 32px; height: 32px; z-index: 1; place-items: center; border-radius: 50%; color: white; background: var(--PrimaryColor); font-family: 'Bold'; }
 .drill-timeline-card { padding: 15px; border: 1px solid var(--main-border); border-radius: 17px; background: var(--surface-2); }.drill-timeline-card-header { display: flex; justify-content: space-between; margin-bottom: 13px; }.drill-timeline-card-header span { color: var(--PrimaryColor); font-size: .63rem; font-weight: 900; text-transform: uppercase; }.drill-timeline-card-header h4 { margin: 2px 0 0; color: var(--text-strong); }.timeline-delete { color: var(--status-danger); cursor: pointer; }.timeline-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }.full-field { grid-column: 1 / -1; }.timeline-fields textarea { min-height: 72px; resize: vertical; }.timeline-fields .compact-textarea { min-height: 42px; }.add-timeline-item { align-self: flex-start; padding: 9px 13px; border: 1px dashed var(--PrimaryColor); border-radius: 11px; color: var(--PrimaryColor); cursor: pointer; background: color-mix(in srgb, var(--PrimaryColor) 5%, transparent); }.timeline-error { margin: 0; color: var(--status-danger); }.timeline-submit { display: flex; justify-content: flex-end; }
 @media (max-width: 650px) { .timeline-fields { grid-template-columns: 1fr; }.full-field { grid-column: auto; }.drill-timeline-item { grid-template-columns: 30px 1fr; } }

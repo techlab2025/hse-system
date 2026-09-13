@@ -3,6 +3,8 @@ import { computed, ref } from 'vue'
 import Dialog from 'primevue/dialog'
 import type DrillModel from '@/features/Organization/Project/Data/models/Drill/DrillModel'
 import type DrillTimelineItemModel from '@/features/Organization/Project/Data/models/Drill/DrillTimelineItemModel'
+import FetchDrillActionsParams from '@/features/Organization/Project/Core/params/Drill/FetchDrillActionsParams'
+import FetchDrillActionsController from '@/features/Organization/Project/Presentation/controllers/Drill/FetchDrillActionsController'
 import DrillTimelineEditor from './DrillTimelineEditor.vue'
 
 const props = withDefaults(
@@ -23,16 +25,38 @@ const emit = defineEmits<{
 }>()
 const visible = ref(false)
 const editorMode = ref<'planning' | 'action' | null>(null)
+const fetchedActions = ref<DrillTimelineItemModel[] | null>(null)
+const actionsLoading = ref(false)
+const actionsError = ref('')
 const displayedPlans = computed(() => props.plans ?? props.drill.planning)
+const displayedActions = computed(() => fetchedActions.value ?? props.drill.actions)
+
+const fetchDrillActions = async () => {
+  if (!props.drill.id) return
+
+  actionsLoading.value = true
+  actionsError.value = ''
+  const controller = FetchDrillActionsController.getInstance()
+  await controller.fetchActions(new FetchDrillActionsParams(props.drill.id))
+
+  if (controller.isDataSuccess()) {
+    fetchedActions.value = controller.state.value.data ?? []
+  } else {
+    actionsError.value = controller.state.value.error?.title ?? 'Unable to load drill actions.'
+  }
+  actionsLoading.value = false
+}
 
 const openDialog = () => {
   visible.value = true
   editorMode.value = null
+  void fetchDrillActions()
   emit('opened')
 }
 
 const saved = () => {
   editorMode.value = null
+  void fetchDrillActions()
   emit('saved')
 }
 </script>
@@ -42,13 +66,13 @@ const saved = () => {
     <span class="drill-card-accent"></span>
     <span class="drill-card-main">
       <span class="drill-card-kicker">{{ drill.drillType.title || $t('Drill') }}</span>
-      <strong>{{ drill.serialNumber || `Drill #${drill.id}` }}</strong>
+      <strong>{{ drill.serialNumber  || `Drill #${drill.id}` }}</strong>
       <small>{{ drill.date || '—' }} · {{ drill.time || '—' }}</small>
     </span>
     <span class="drill-card-status"
       ><i></i
       >{{
-        drill.actions.length
+        displayedActions.length
           ? $t('Action recorded')
           : displayedPlans.length
             ? $t('Planned')
@@ -141,15 +165,22 @@ const saved = () => {
       :mode="editorMode"
       :drill-id="drill.id"
       :project-id="projectId"
+      :actions="displayedActions"
+      :actions-loading="actionsLoading"
+      :actions-error="actionsError"
       @saved="saved"
     />
 
-    <div v-else-if="plansLoading && !displayedPlans.length" class="loading-plans">
-      {{ $t('Loading planning timeline...') }}
+    <div v-else-if="(plansLoading && !displayedPlans.length) || (actionsLoading && !displayedActions.length)" class="loading-plans">
+      {{ $t('Loading drill timeline...') }}
     </div>
 
+    <p v-else-if="actionsError && !displayedPlans.length && !displayedActions.length" class="timeline-error">
+      {{ actionsError }}
+    </p>
+
     <section
-      v-else-if="displayedPlans.length || drill.actions.length"
+      v-else-if="displayedPlans.length || displayedActions.length"
       class="saved-timelines"
     >
       <div v-if="displayedPlans.length" class="saved-timeline-group">
@@ -172,16 +203,16 @@ const saved = () => {
           </div>
         </article>
       </div>
-      <div v-if="drill.actions.length" class="saved-timeline-group">
+      <div v-if="displayedActions.length" class="saved-timeline-group">
         <div class="saved-title">
           <span>02</span>
           <div>
             <h3>{{ $t('Action timeline') }}</h3>
-            <p>{{ drill.actions.length }} {{ $t('entries') }}</p>
+            <p>{{ displayedActions.length }} {{ $t('entries') }}</p>
           </div>
         </div>
         <article
-          v-for="(item, index) in drill.actions"
+          v-for="(item, index) in displayedActions"
           :key="`action-${item.id}-${index}`"
           class="saved-entry"
         >
@@ -471,6 +502,12 @@ const saved = () => {
 .loading-plans {
   padding: 24px;
   color: var(--text-soft);
+  text-align: center;
+}
+.timeline-error {
+  margin: 0;
+  padding: 16px;
+  color: var(--status-danger);
   text-align: center;
 }
 .empty-workflow {

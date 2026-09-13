@@ -352,7 +352,7 @@ const IndexOrganizationEmployeectionList = () => [
                 <th scope="col">{{ $t('certificate_type') }}</th>
                 <th scope="col">{{ $t('expiry_date_required') }}</th>
                 <th scope="col">{{ $t('require_certificate') }}</th>
-                <th scope="col">{{ $t('image') }}</th>
+                <!-- <th scope="col">{{ $t('image') }}</th> -->
 
                 <!-- <th scope="col">{{ $t('actions') }}</th> -->
                 <th class="empty"></th>
@@ -386,13 +386,12 @@ const IndexOrganizationEmployeectionList = () => [
                 <td :data-label="$t('require_certificate')">
                   {{ item.requireCertificate ? $t('yes') : $t('no') }}
                 </td>
-                <td data-label="image">
+                <!-- <td data-label="image">
                   <div class="image_certificate_container">
                     <Image v-if="item.image" :src="item.image" alt="Image" preview />
-                    <!-- <img v-if="item.image" :src="item.image" alt="" /> -->
                     <span v-else>---</span>
                   </div>
-                </td>
+                </td> -->
 
                 <td data-label="Actions">
                   <DropList

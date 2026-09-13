@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import TitleInterface from '@/base/Data/Models/title_interface'
 import DrillTimelineItemModel from './DrillTimelineItemModel'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 export default class DrillModel {
   constructor(
@@ -25,7 +26,12 @@ export default class DrillModel {
 
     return new DrillModel(
       Number(data.id ?? 0),
-      String(data.serial_name ?? data.serial_number ?? data.serial ?? ''),
+      useProjectAppStatusStore().isSerialNumberAuto()
+        ? data.serial_name != 0
+          ? data.serial_name
+          : data.serial
+        : data.serial,
+      // String(data.serial_name ?? data.serial_number ?? data.serial ?? ''),
       String(data.date ?? ''),
       String(data.time ?? ''),
       String(data.evaluation ?? ''),

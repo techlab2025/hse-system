@@ -150,7 +150,7 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
     <div class="certificate-matrix-toolbar">
       <div>
         <span class="matrix-kicker">{{ $t('Certificate matrix') }}</span>
-        <h1>{{ $t('Employee certification') }}</h1>
+        <h1>{{ $t('Employee traning') }}</h1>
         <p>{{ $t('Track validity, expiry, renewals, and missing certificates across employees.') }}</p>
       </div>
 

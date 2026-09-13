@@ -29,7 +29,7 @@ export default class AddDrillActionParams implements Params {
         description: item.description,
         notes: item.notes,
         photographer_name: item.photographerName,
-        images: item.images,
+        attachments: item.images,
       })),
     }
   }
