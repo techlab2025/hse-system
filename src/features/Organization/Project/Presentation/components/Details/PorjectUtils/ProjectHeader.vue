@@ -1,16 +1,10 @@
 <script setup lang="ts">
-// import DeleteProjectParams from '@/features/Organization/Project/Core/params/deleteProjectParams'
-import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import DropList from '@/shared/HelpersComponents/DropList.vue'
 import ContractorIcon from '@/shared/icons/ContractorIcon.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
 import { useI18n } from 'vue-i18n'
-// import DeleteProjectController from '../../../controllers/deleteProjectController'
-import { useRoute } from 'vue-router'
 
-const route = useRoute()
 const { t } = useI18n()
 const props = defineProps<{
+  projectId: number | undefined
   projectName: string | undefined
   SerialNumber: string | undefined
   Projectdate: string | undefined
@@ -18,25 +12,6 @@ const props = defineProps<{
   serialName: string | undefined
   endDate: string | undefined
 }>()
-
-const actionList = (id: number) => [
-  {
-    text: t('edit'),
-    icon: IconEdit,
-    link: `/organization/project/${id}`,
-    permission: [
-      PermissionsEnum.PROJECT_UPDATE,
-      PermissionsEnum.PROJECT_DETAILS,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.PROJECT_ALL,
-    ],
-  },
-]
-
-// const deleteProject = async (id: number) => {
-//   const deleteProjectParams = new DeleteProjectParams(id)
-//   await DeleteProjectController.getInstance().deleteProject(deleteProjectParams)
-// }
 </script>
 <template>
   <header class="project-header-container">
@@ -99,11 +74,21 @@ const actionList = (id: number) => [
         </span>
       </div>
     </div>
-    
-<!--
-    <div class="project-actions" :aria-label="t('Project actions')">
-      <DropList :actionList="actionList(Number(route.params.id))" />
-    </div> -->
+    <router-link
+      v-if="projectId"
+      class="project-audits-link"
+      :to="{
+        name: 'Audits',
+        query: { project_id: projectId, inspectionType: 1 },
+      }"
+    >
+      <span aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M5 4h10l4 4v12H5zM15 4v5h4M8 13h8M8 17h5" />
+        </svg>
+      </span>
+      {{ t('Audits') }}
+    </router-link>
   </header>
 </template>
 
@@ -167,7 +152,7 @@ const actionList = (id: number) => [
 
 .project-identity,
 .project-meta,
-.project-actions {
+.project-audits-link {
   position: relative;
   z-index: 1;
 }
@@ -358,29 +343,37 @@ const actionList = (id: number) => [
   background: var(--status-success);
 }
 
-.project-actions {
+.project-audits-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
+  min-width: 44px;
   height: 44px;
+  gap: 7px;
+  padding: 0 13px;
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
   border-radius: 13px;
+  color: var(--PrimaryColor);
   background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1));
+  font-family: 'Bold';
+  font-size: 0.7rem;
+  text-decoration: none;
+  transition: 0.2s ease;
 }
 
-.project-actions :deep(.list-trigger) {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
+.project-audits-link:hover {
+  color: var(--text-on-brand);
+  background: var(--PrimaryColor);
+  transform: translateY(-1px);
 }
 
-.project-actions :deep(svg) {
-  width: 28px;
-  height: 28px;
+.project-audits-link svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
 }
 
 @media (max-width: 1100px) {
@@ -394,7 +387,7 @@ const actionList = (id: number) => [
     width: 100%;
   }
 
-  .project-actions {
+  .project-audits-link {
     grid-column: 2;
     grid-row: 1;
   }

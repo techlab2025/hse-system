@@ -62,7 +62,13 @@ const route = useRoute()
 const router = useRouter()
 const id = route.params.parent_id
 const inspectionType = computed(() => route.query.inspectionType)
-const selectedProjctesFilters = ref<number>()
+const isAuditPage = computed(() => route.name === 'Audits')
+const auditProjectId = computed(() => Number(route.query.project_id) || undefined)
+const auditCreateRoute = computed(() => ({
+  name: 'Add Audit',
+  query: { project_id: auditProjectId.value },
+}))
+const selectedProjctesFilters = ref<number | undefined>(auditProjectId.value)
 const SelectedZonesFilter = ref<number[]>([])
 const filterDate = ref('')
 const filterInspectionType = ref<number | null>(null)
@@ -167,8 +173,11 @@ const fetchCurrentInspectionData = (
 }
 
 watch(
-  () => [route.query.typeId, route.query.inspectionType],
+  () => [route.query.typeId, route.query.inspectionType, route.query.project_id],
   () => {
+    if (isAuditPage.value) {
+      selectedProjctesFilters.value = auditProjectId.value
+    }
     currentPage.value = 1
     fetchCurrentInspectionData('', 1, countPerPage.value)
   },
@@ -176,7 +185,7 @@ watch(
 )
 
 onMounted(() => {
-  FetchMyProjects()
+  if (!isAuditPage.value) FetchMyProjects()
 })
 
 const searchInspection = debounce(() => {
@@ -393,10 +402,14 @@ const selectedProject = useProjectSelectStore()
 </script>
 
 <template>
-  <!-- {{ selectedProjctesFilters }} -->
-  <div :class="['inspection-index-page grid grid-cols-12 gap-4', { 'is-dark': isDarkMode }]">
-    <IndexEquipmentMangement class="col-span-2" />
-    <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
+  <div
+    :class="[
+      'inspection-index-page grid grid-cols-12 gap-4',
+      { 'is-dark': isDarkMode, 'is-audit-page': isAuditPage },
+    ]"
+  >
+    <IndexEquipmentMangement v-if="!isAuditPage" class="col-span-2" />
+    <div class="col-span-12">
       <PermissionBuilder
         :code="[
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -409,7 +422,7 @@ const selectedProject = useProjectSelectStore()
           PermissionsEnum?.ORG_INSPECTION_FETCH,
         ]"
       >
-        <div class="inspection-controls-panel">
+        <div v-if="!isAuditPage" class="inspection-controls-panel">
           <IndexInspectionHeader
             :title="`Inspection`"
             :length="
@@ -510,6 +523,17 @@ const selectedProject = useProjectSelectStore()
               />
             </PermissionBuilder>
           </div>
+        </div>
+        <div v-else class="audit-create-action">
+          <PermissionBuilder
+            :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]"
+          >
+            <router-link :to="auditCreateRoute">
+              <button class="btn btn-primary create-inspection-btn">
+                {{ $t('Create Inspection') }}
+              </button>
+            </router-link>
+          </PermissionBuilder>
         </div>
         <DataStatus
           v-if="String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)"
@@ -715,6 +739,12 @@ const selectedProject = useProjectSelectStore()
     ),
     var(--BgWhite);
   box-shadow: 0 18px 45px color-mix(in srgb, var(--text-strong) 9%, transparent);
+}
+
+.audit-create-action {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
 }
 
 .inspection-controls-panel :deep(.idnex-header) {

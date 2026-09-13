@@ -84,6 +84,7 @@ watch(
         </div> -->
 
         <ProjectHeader
+          :projectId="state.data?.id"
           :projectName="state.data?.title"
           :SerialNumber="state.data?.SerialNumber"
           :serialName="state.data?.serialName"

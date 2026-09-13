@@ -38,12 +38,17 @@ import AddFullEquipment from '@/features/setting/Equipment/Presentation/componen
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import ProjectCustomLocationController from '@/features/Organization/Project/Presentation/controllers/ProjectCustomLocationController'
+import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
+import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
 
 /* =========================
  * Route & Props
  * ========================= */
 const route = useRoute()
 const id = route.params?.equipment_id
+const routeProjectId = computed(() => Number(route.query.project_id) || null)
+const isAuditCreation = computed(() => !id && route.name === 'Add Audit')
 
 const props = defineProps<{
   data?: InspectionDetailsModel
@@ -80,6 +85,8 @@ const AssignToOptions = ref<TitleInterface[]>([
 ])
 
 const SelectedAssigned = ref<TitleInterface>(AssignToTypeEnum.MACHINE)
+const selectedAuditTeam = ref<TitleInterface | null>(null)
+const auditTeamOptions = ref<TitleInterface[]>([])
 
 // Data coming from sub forms
 const DataParams = ref<InspectionForm>()
@@ -90,6 +97,32 @@ const TempalteIds = ref<number>()
 const SelectedEquipment = ref<TitleInterface>()
 const indexEquipmentController = IndexEquipmentController.getInstance()
 const indexEquipmentParams = new IndexEquipmentParams('', 1, 10, 1, null, false)
+
+const projectCustomLocationController = ProjectCustomLocationController.getInstance()
+const loadAuditTeams = async () => {
+  if (!isAuditCreation.value || !routeProjectId.value) return
+
+  const params = new ProjectCustomLocationParams(routeProjectId.value, [
+    ProjectCustomLocationEnum.TEAM,
+  ])
+  await projectCustomLocationController.getData(params)
+
+  const teamIds = new Set<number>()
+  auditTeamOptions.value = (projectCustomLocationController.state.value.data ?? []).flatMap(
+    (location) =>
+      (location.locationTeams ?? []).flatMap((team) => {
+        const teamId = Number(team.projectLocationTeamId || team.id)
+        if (!teamId || teamIds.has(teamId)) return []
+        teamIds.add(teamId)
+        return [
+          new TitleInterface({
+            id: teamId,
+            title: team.teamTitle || team.title || `Team #${teamId}`,
+          }),
+        ]
+      }),
+  )
+}
 
 /**
  * Build period tasks based on selected period type
@@ -144,12 +177,18 @@ const updateData = () => {
         periodTasks,
       )
     : new AddInspectionParams(
-        id ? AssignToTypeEnum.MACHINE : SelectedAssigned.value,
-        DataParams.value?.morph?.id || id || SelectedEquipment.value?.id,
+        isAuditCreation.value
+          ? AssignToTypeEnum.PROJECT
+          : id
+            ? AssignToTypeEnum.MACHINE
+            : SelectedAssigned.value,
+        isAuditCreation.value
+          ? selectedAuditTeam.value?.id
+          : DataParams.value?.morph?.id || id || SelectedEquipment.value?.id,
         DataParams.value?.TempalteIds || TempalteIds.value,
         data.inspectionType || InspectionTypeEnum?.DAY,
         data.periodType || PeriodTypeEnum?.DAILY,
-        DataParams.value?.ProjectId || null,
+        isAuditCreation.value ? routeProjectId.value : DataParams.value?.ProjectId || null,
         periodTasks,
         data.onceday,
         data.fromDate,
@@ -193,9 +232,24 @@ const setEquipment = (data: TitleInterface) => {
   updateData()
 }
 
+const setAuditTeam = (team: TitleInterface | TitleInterface[] | null) => {
+  selectedAuditTeam.value = Array.isArray(team) ? (team[0] ?? null) : team
+  updateData()
+}
+
 watch(
   () => props.data,
   () => {},
+  { immediate: true },
+)
+
+watch(
+  () => [isAuditCreation.value, routeProjectId.value],
+  () => {
+    selectedAuditTeam.value = null
+    auditTeamOptions.value = []
+    loadAuditTeams()
+  },
   { immediate: true },
 )
 const IsInLibrary = ref()
@@ -239,6 +293,11 @@ const isPeriodType = (periodType: unknown, type: PeriodTypeEnum) =>
 const hasArrayItems = (value: unknown) => Array.isArray(value) && value.length > 0
 
 const requiredFields = computed<RequiredFieldRule[]>(() => [
+  {
+    key: 'AuditTeam',
+    message: 'Please select the project team that will receive this audit.',
+    isMissing: () => isAuditCreation.value && !hasSelectedId(selectedAuditTeam.value),
+  },
   {
     key: 'SelectedProject',
     message: 'Please select the Project where this inspection will be conducted before continuing.',
@@ -383,7 +442,7 @@ defineExpose({
     </div>
 
     <!-- Assignment setup (only in create mode) -->
-    <section v-if="!id" class="form-stage assignment-stage">
+    <section v-if="!id && !isAuditCreation" class="form-stage assignment-stage">
       <div class="stage-heading">
         <span class="stage-number">01</span>
         <div>
@@ -441,7 +500,7 @@ defineExpose({
 
     <section class="form-stage details-stage">
       <div class="stage-heading">
-        <span class="stage-number">{{ id ? '01' : '02' }}</span>
+        <span class="stage-number">{{ id || isAuditCreation ? '01' : '02' }}</span>
         <div>
           <h2>{{ $t('Configure inspection') }}</h2>
           <p>{{ $t('Complete the target, checklist and schedule details') }}</p>
@@ -459,6 +518,7 @@ defineExpose({
           :class="
             SelectedAssigned === AssignToTypeEnum.ZONE ||
             id ||
+            isAuditCreation ||
             SelectedAssigned === AssignToTypeEnum.MACHINE
               ? 'full-width'
               : ''
@@ -506,6 +566,25 @@ defineExpose({
             </UpdatedCustomInputSelect>
             <p v-if="getFieldError('SelectedEquipment')" class="required-field-message">
               {{ getFieldError('SelectedEquipment') }}
+            </p>
+          </div>
+
+          <!-- Audit team -->
+          <div
+            v-if="isAuditCreation"
+            class="input-wrapper field-panel col-span-6 pt-15 md:col-span-3"
+            data-required-field="AuditTeam"
+          >
+            <UpdatedCustomInputSelect
+              :modelValue="selectedAuditTeam"
+              :label="$t('Project Team')"
+              :placeholder="$t('Select project team')"
+              :static-options="auditTeamOptions"
+              required
+              @update:modelValue="setAuditTeam"
+            />
+            <p v-if="getFieldError('AuditTeam')" class="required-field-message">
+              {{ getFieldError('AuditTeam') }}
             </p>
           </div>
 
@@ -583,7 +662,7 @@ defineExpose({
           <div
             class="input-wrapper field-panel col-span-6 md:col-span-3"
             data-required-field="InspectionTemplate"
-            v-if="id || SelectedAssigned === AssignToTypeEnum.MACHINE"
+            v-if="id || isAuditCreation || SelectedAssigned === AssignToTypeEnum.MACHINE"
           >
             <InspectionTemplateDialog
               @update:isInLibrary="IsInLibrary = $event"
@@ -598,7 +677,7 @@ defineExpose({
           <div
             class="input-wrapper schedule-panel col-span-6"
             data-required-field="InspectionGeneralForm"
-            v-if="id || SelectedAssigned === AssignToTypeEnum.MACHINE"
+            v-if="id || isAuditCreation || SelectedAssigned === AssignToTypeEnum.MACHINE"
           >
             <InspectionGeneralForm @update:data="GetGeneralData" />
             <p v-if="getFieldError('InspectionGeneralForm')" class="required-field-message">

@@ -2,6 +2,7 @@ import type { RouteRecordRaw } from '@/router/types'
 import { observationRoutes } from './observation'
 import { hazardRoutes } from './hazard'
 import { InspectionRoutes } from './inspection'
+import { AuditRoutes } from './audits'
 import { IncedantRoutes } from './Incedant'
 // import IndexEquipmentMangement from '@/features/Organization/ObservationFactory/Presentation/components/indexEquipmentMangement.vue'
 // import IndexObservation from '@/views/Organization/ObservationFactory/Observation/IndexObservation.vue'
@@ -15,6 +16,7 @@ export const EquipmentMangementRoutes: RouteRecordRaw[] = [
     children: [
       ...IncedantRoutes,
       ...InspectionRoutes,
+      ...AuditRoutes,
       ...hazardRoutes,
       ...observationRoutes,
       // ...addSuffix(sharedRoutes, 'Organization'),
