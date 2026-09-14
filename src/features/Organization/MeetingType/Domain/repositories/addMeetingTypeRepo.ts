@@ -1,8 +1,8 @@
-// import LangModel from '@/features/setting/PpeItem/Data/models/langModel.ts'
+// import LangModel from '@/features/setting/MeetingType/Data/models/langModel.ts'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import MeetingTypeModel from '../../Data/models/MeetingTypeModel'
 import { AddMeetingTypeApiService } from '../../Data/apiServices/addMeetingTypeApiService'
+import MeetingTypeModel from '../../Data/models/MeetingTypeModel'
 
 class AddMeetingTypeRepo extends RepoInterface<MeetingTypeModel> {
   private static instance: AddMeetingTypeRepo

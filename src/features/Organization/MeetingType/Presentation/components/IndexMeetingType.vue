@@ -27,7 +27,9 @@ import IndexMeetingTypeController from '../controllers/indexMeetingTypeControlle
 import IndexMeetingTypeParams from '../../Core/params/indexMeetingTypeParams'
 import DeleteMeetingTypeParams from '../../Core/params/deleteMeetingTypeParams'
 import DeleteMeetingTypeController from '../controllers/deleteMeetingTypeController'
-
+import SystemMeetingTypes from '../supcomponents/SystemMeetingTypes.vue'
+import UploadMeetingTypeExcelSheet from './UploadMeetingTypeExcelSheet.vue'
+import { getPeriodicTypeLabel, PeriodicTypeEnum } from '../../Core/Enum/periodic_type_enum'
 
 const { t } = useI18n()
 const { user } = useUserStore()
@@ -43,37 +45,33 @@ const basePath = computed(() =>
 const featurePermissions = [
   PermissionsEnum.ADMIN,
   PermissionsEnum.ORGANIZATION_EMPLOYEE,
-  PermissionsEnum.PPE_ITEM_ALL,
-  PermissionsEnum.PPE_ITEM_FETCH,
-  PermissionsEnum.PPE_ITEM_DETAILS,
-  PermissionsEnum.PPE_ITEM_CREATE,
-  PermissionsEnum.PPE_ITEM_UPDATE,
-  PermissionsEnum.PPE_ITEM_DELETE,
-  PermissionsEnum.ORG_PPE_ITEM_ALL,
-  PermissionsEnum.ORG_PPE_ITEM_FETCH,
-  PermissionsEnum.ORG_PPE_ITEM_DETAILS,
-  PermissionsEnum.ORG_PPE_ITEM_CREATE,
-  PermissionsEnum.ORG_PPE_ITEM_UPDATE,
-  PermissionsEnum.ORG_PPE_ITEM_DELETE,
+  PermissionsEnum.MEETING_TYPE_ALL,
+  PermissionsEnum.MEETING_TYPE_FETCH,
+  PermissionsEnum.MEETING_TYPE_DETAILS,
+  PermissionsEnum.MEETING_TYPE_CREATE,
+  PermissionsEnum.MEETING_TYPE_UPDATE,
+  PermissionsEnum.MEETING_TYPE_DELETE,
+  PermissionsEnum.ORG_MEETING_TYPE_ALL,
+  PermissionsEnum.ORG_MEETING_TYPE_FETCH,
+  PermissionsEnum.ORG_MEETING_TYPE_DETAILS,
+  PermissionsEnum.ORG_MEETING_TYPE_CREATE,
+  PermissionsEnum.ORG_MEETING_TYPE_UPDATE,
+  PermissionsEnum.ORG_MEETING_TYPE_DELETE,
 ]
 const createPermissions = [
   PermissionsEnum.ADMIN,
   PermissionsEnum.ORGANIZATION_EMPLOYEE,
-  PermissionsEnum.PPE_ITEM_ALL,
-  PermissionsEnum.PPE_ITEM_CREATE,
-  PermissionsEnum.ORG_PPE_ITEM_ALL,
-  PermissionsEnum.ORG_PPE_ITEM_CREATE,
+  PermissionsEnum.MEETING_TYPE_ALL,
+  PermissionsEnum.MEETING_TYPE_CREATE,
+  PermissionsEnum.ORG_MEETING_TYPE_ALL,
+  PermissionsEnum.ORG_MEETING_TYPE_CREATE,
 ]
 
-const fetchPpeItems = async (
-  query: string = '',
-  page: number = 1,
-  limit: number = 10,
-) => {
+const fetchMeetingTypes = async (query: string = '', page: number = 1, limit: number = 10) => {
   await controller.getData(new IndexMeetingTypeParams(query, page, limit, 1))
 }
 
-onMounted(() => fetchPpeItems())
+onMounted(() => fetchMeetingTypes())
 watch(
   () => controller.state.value,
   (value) => {
@@ -82,18 +80,18 @@ watch(
   { deep: true },
 )
 
-const searchPpeItems = debounce(() => fetchPpeItems(word.value))
+const searchMeetingTypes = debounce(() => fetchMeetingTypes(word.value))
 const changePage = (page: number) => {
   currentPage.value = page
-  fetchPpeItems(word.value, page, countPerPage.value)
+  fetchMeetingTypes(word.value, page, countPerPage.value)
 }
 const changePageSize = (limit: number) => {
   countPerPage.value = limit
-  fetchPpeItems(word.value, currentPage.value, limit)
+  fetchMeetingTypes(word.value, currentPage.value, limit)
 }
-const deletePpeItem = async (id: number) => {
+const deleteMeetingType = async (id: number) => {
   await DeleteMeetingTypeController.getInstance().deleteMeetingType(new DeleteMeetingTypeParams(id))
-  await fetchPpeItems(word.value, currentPage.value, countPerPage.value)
+  await fetchMeetingTypes(word.value, currentPage.value, countPerPage.value)
 }
 
 const rowActions = (id: number) => [
@@ -104,44 +102,67 @@ const rowActions = (id: number) => [
     permission: [
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.PPE_ITEM_ALL,
-      PermissionsEnum.PPE_ITEM_UPDATE,
-      PermissionsEnum.ORG_PPE_ITEM_ALL,
-      PermissionsEnum.ORG_PPE_ITEM_UPDATE,
+      PermissionsEnum.MEETING_TYPE_ALL,
+      PermissionsEnum.MEETING_TYPE_UPDATE,
+      PermissionsEnum.ORG_MEETING_TYPE_ALL,
+      PermissionsEnum.ORG_MEETING_TYPE_UPDATE,
     ],
   },
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deletePpeItem(id),
+    action: () => deleteMeetingType(id),
     permission: [
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.PPE_ITEM_ALL,
-      PermissionsEnum.PPE_ITEM_DELETE,
-      PermissionsEnum.ORG_PPE_ITEM_ALL,
-      PermissionsEnum.ORG_PPE_ITEM_DELETE,
+      PermissionsEnum.MEETING_TYPE_ALL,
+      PermissionsEnum.MEETING_TYPE_DELETE,
+      PermissionsEnum.ORG_MEETING_TYPE_ALL,
+      PermissionsEnum.ORG_MEETING_TYPE_DELETE,
     ],
   },
 ]
 
+const periodLabel = (type: number) => {
+  const key = getPeriodicTypeLabel(type)
+  return key ? t(key) : String(type ?? '')
+}
+
 const saveWorkbook = (rows: Record<string, unknown>[], filename: string) => {
   const worksheet = XLSX.utils.json_to_sheet(rows)
   const workbook = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'PPE Items')
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Meeting Types')
   XLSX.writeFile(workbook, filename)
 }
+
 const exportExcel = () =>
   saveWorkbook(
     (state.value.data ?? []).map((item: any) => ({
       title: item.title ?? '',
+      description: item.description ?? '',
+      periodic_type: item.periodicType ?? '',
+      number_of_days: item.periodicType === PeriodicTypeEnum.DAILY ? '' : (item.numberOfDays ?? ''),
     })),
-    'ppe_items.xlsx',
+    'meeting_types.xlsx',
   )
+
 const downloadExample = () =>
   saveWorkbook(
-    [{ title: 'Safety helmet' }],
-    'ppe_item_template.xlsx',
+    [
+      {
+        title: 'Daily operations meeting',
+        description: 'Daily operations follow-up',
+        periodic_type: PeriodicTypeEnum.DAILY,
+        number_of_days: '',
+      },
+      {
+        title: 'Weekly safety meeting',
+        description: 'Weekly safety review',
+        periodic_type: PeriodicTypeEnum.WEEKLY,
+        number_of_days: 6,
+      },
+    ],
+    'meeting_type_template.xlsx',
   )
 
 const showUploadDialog = ref(false)
@@ -158,7 +179,7 @@ const onFileSelected = (event: Event) => {
 const onUploaded = () => {
   showUploadDialog.value = false
   pendingFile.value = null
-  fetchPpeItems()
+  fetchMeetingTypes()
 }
 
 const headerActions = () => [
@@ -170,8 +191,8 @@ const headerActions = () => [
     permission: featurePermissions,
   },
   {
-    text: t('add_ppe_item'),
-    link: `${basePath.value}/meeting-types/add`,
+    text: t('add_meeting_type'),
+    link: `${basePath.value}/meeting-type/add`,
     icon: ActionsListAddIcon,
     primary: true,
     type: ActionItemsTypeEnum.Info,
@@ -197,12 +218,12 @@ const headerActions = () => [
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchPpeItems())"><Search /></span>
-      <input v-model="word" :placeholder="$t('search')" class="input" @input="searchPpeItems" />
+      <span class="icon-remove" @click="((word = ''), searchMeetingTypes())"><Search /></span>
+      <input v-model="word" :placeholder="$t('search')" class="input" @input="searchMeetingTypes" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ActionsList
-        feature-name="action_feature_ppe_items"
+        feature-name="action_feature_meeting_types"
         :show-actions="true"
         :action-list="headerActions()"
         :actions-number="5"
@@ -210,10 +231,7 @@ const headerActions = () => [
         <template #custom><ExportPdf :is-drop-list="true" /></template>
       </ActionsList>
     </div>
-    <SystemPpeItems
-      v-if="user?.type !== OrganizationTypeEnum.ADMIN"
-      :is-header-tap="true"
-    />
+    <SystemMeetingTypes v-if="user?.type !== OrganizationTypeEnum.ADMIN" :is-header-tap="true" />
   </div>
 
   <PermissionBuilder :code="featurePermissions">
@@ -225,6 +243,9 @@ const headerActions = () => [
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
+                <th scope="col">{{ $t('description') }}</th>
+                <th scope="col">{{ $t('periodic_type') }}</th>
+                <th scope="col">{{ $t('number_of_days') }}</th>
                 <th class="empty"></th>
               </tr>
             </thead>
@@ -232,6 +253,11 @@ const headerActions = () => [
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
                 <td>{{ item.title }}</td>
+                <td>{{ item.description }}</td>
+                <td>{{ periodLabel(item.periodicType) }}</td>
+                <td>
+                  {{ item.periodicType === PeriodicTypeEnum.DAILY ? '-' : (item.numberOfDays ?? '-') }}
+                </td>
                 <td><DropList :action-list="rowActions(item.id)" /></td>
               </tr>
             </tbody>
@@ -243,22 +269,22 @@ const headerActions = () => [
           @count-per-page="changePageSize"
         />
       </template>
-      <template #loader><TableLoader :cols="3" :rows="10" /></template>
-      <template #initial><TableLoader :cols="3" :rows="10" /></template>
+      <template #loader><TableLoader :cols="6" :rows="10" /></template>
+      <template #initial><TableLoader :cols="6" :rows="10" /></template>
       <template #empty>
         <DataEmpty
-          :link="`${basePath}/ppe-item/add`"
-          :add-text="$t('add_ppe_item')"
-          :description="$t('no_ppe_items_description')"
-          :title="$t('no_ppe_items')"
+          :link="`${basePath}/meeting-type/add`"
+          :add-text="$t('add_meeting_type')"
+          :description="$t('no_meeting_types_description')"
+          :title="$t('no_meeting_types')"
         />
       </template>
       <template #failed>
         <DataFailed
-          :link="`${basePath}/ppe-item/add`"
-          :add-text="$t('add_ppe_item')"
-          :description="$t('no_ppe_items_description')"
-          :title="$t('no_ppe_items')"
+          :link="`${basePath}/meeting-type/add`"
+          :add-text="$t('add_meeting_type')"
+          :description="$t('no_meeting_types_description')"
+          :title="$t('no_meeting_types')"
         />
       </template>
     </DataStatus>
@@ -271,13 +297,10 @@ const headerActions = () => [
     v-model:visible="showUploadDialog"
     modal
     :dismissable-mask="true"
-    :header="$t('import_ppe_items')"
+    :header="$t('import_meeting_types')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <UploadPpeItemExcelSheet
-      :initial-file="pendingFile"
-      @uploaded="onUploaded"
-    />
+    <UploadMeetingTypeExcelSheet :initial-file="pendingFile" @uploaded="onUploaded" />
   </Dialog>
   <input
     ref="fileInputRef"

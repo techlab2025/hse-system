@@ -12,13 +12,17 @@ import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import AddMeetingTypeParams from '../../Core/params/addMeetingTypeParams'
 import EditMeetingTypeParams from '../../Core/params/editMeetingTypeParams'
 import type MeetingTypeDetailsModel from '../../Data/models/MeetingTypeDetailsModel'
-import TitleInterface from '@/base/Data/Models/title_interface'
+import {
+  PeriodicTypeEnum,
+  PeriodicTypeOptions,
+  getPeriodicTypeMaxDays,
+} from '../../Core/Enum/periodic_type_enum'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
-import { MeetingTypePeriodicEnum } from '../../Core/constant/MeetingTypesEnum'
-// import type PpeItemDetailsModel from '../../Data/models/PpeItemDetailsModel'
+import TitleInterface from '@/base/Data/Models/title_interface'
 
 type LanguageOption = { locale: string; title: string; icon?: any }
 type LocalizedTitle = { locale: string; title: string }
+type LocalizedDescription = { locale: string; description: string }
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddMeetingTypeParams | EditMeetingTypeParams): void
@@ -28,6 +32,12 @@ const props = defineProps<{ data?: MeetingTypeDetailsModel }>()
 const user = useUserStore()
 const languages = ref<LanguageOption[]>([])
 const titles = ref<LocalizedTitle[]>([])
+const descriptions = ref<LocalizedDescription[]>([])
+const periodicType = ref<TitleInterface>(new TitleInterface({id:PeriodicTypeEnum.DAILY , title:'daily'}))
+const numberOfDays = ref<number | null>(null)
+
+const showNumberOfDays = computed(() => periodicType.value.id !== PeriodicTypeEnum.DAILY)
+const maxNumberOfDays = computed(() => getPeriodicTypeMaxDays(periodicType.value.id))
 
 const fetchLanguages = async () => {
   if (user.user?.languages?.length) {
@@ -44,47 +54,36 @@ const fetchLanguages = async () => {
   )
   languages.value = response.value?.data?.length
     ? response.value.data.map((item: any) => ({
-        locale: item.code,
-        title: '',
-        icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-      }))
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
     : [
-        { locale: 'en', title: '', icon: USA },
-        { locale: 'ar', title: '', icon: SA },
-      ]
+      { locale: 'en', title: '', icon: USA },
+      { locale: 'ar', title: '', icon: SA },
+    ]
 }
-
-const NumberOfDays = ref<number>()
-const SelectedType = ref<TitleInterface>(
-  new TitleInterface({ id: MeetingTypePeriodicEnum.Daily, title: 'daily' }),
-)
 
 const updateData = () => {
   const translations = new TranslationsParams(languages.value.map((item) => item.locale))
   titles.value.forEach((item) => translations.setTranslation('title', item.locale, item.title))
+  descriptions.value.forEach((item) =>
+    translations.setTranslation('description', item.locale, item.description),
+  )
+
+  const normalizedNumberOfDays =
+    periodicType.value.id === PeriodicTypeEnum.DAILY ? null : numberOfDays.value
 
   emit(
     'update:data',
     props.data?.id
-      ? new EditMeetingTypeParams({
-          id: props.data.id,
-          translation: translations,
-          type: SelectedType.value?.id!,
-          number_of_days: NumberOfDays.value!,
-        })
-      : new AddMeetingTypeParams({
-          translation: translations,
-          type: SelectedType.value?.id!,
-          number_of_days: NumberOfDays.value!,
-        }),
-  )
-  console.log(
-    'data=>',
-    new AddMeetingTypeParams({
-      translation: translations,
-      type: SelectedType.value?.id!,
-      number_of_days: NumberOfDays.value!,
-    }),
+      ? new EditMeetingTypeParams(
+        props.data.id,
+        translations,
+        periodicType.value.id,
+        normalizedNumberOfDays,
+      )
+      : new AddMeetingTypeParams(translations, periodicType.value.id, normalizedNumberOfDays),
   )
 }
 
@@ -93,29 +92,77 @@ const setTitles = (value: any[]) => {
   updateData()
 }
 
+
+
+const onPeriodicTypeChange = (data) => {
+  if (periodicType.value.id === PeriodicTypeEnum.DAILY) {
+    numberOfDays.value = null
+  }
+  periodicType.value = data
+  updateData()
+}
+
 watch(
   [() => props.data, languages],
   ([data, availableLanguages]) => {
     if (!availableLanguages.length) return
 
-    titles.value = availableLanguages.map(
-      (language) =>
-        data?.titles?.find((item) => item.locale === language.locale) ?? {
-          locale: language.locale,
-          title: '',
-        },
+    titles.value = availableLanguages.map((language) =>
+      data?.titles?.find((item) => item.locale === language.locale) ?? {
+        locale: language.locale,
+        title: '',
+      },
     )
+ 
+
+    periodicType.value.id = data?.periodicType ?? PeriodicTypeEnum.DAILY
+    numberOfDays.value = data?.numberOfDays ?? null
     updateData()
   },
   { immediate: true },
 )
 
 const hasText = (value: unknown) => String(value ?? '').trim().length > 0
+const getNumberOfDaysError = () => {
+  if (!showNumberOfDays.value) return ''
+
+  const value = Number(numberOfDays.value)
+  if (!Number.isInteger(value) || value <= 0) {
+    return 'Number Of Days Must Be A Positive Integer'
+  }
+
+  const max = maxNumberOfDays.value
+  if (max !== null && value > max) {
+    if (periodicType.value.id === PeriodicTypeEnum.WEEKLY) {
+      return 'Weekly Number Of Days Must Be Less Than 7'
+    }
+    if (periodicType.value.id === PeriodicTypeEnum.MONTHLY) {
+      return 'Monthly Number Of Days Must Be Less Than 30'
+    }
+    if (periodicType.value.id === PeriodicTypeEnum.YEARLY) {
+      return 'Yearly Number Of Days Must Be Less Than 365'
+    }
+  }
+
+  return ''
+}
+
 const requiredFields = computed(() => [
   {
     key: 'title',
     message: 'Meeting Type Title Is Required',
     isMissing: () => !titles.value.some((item) => hasText(item.title)),
+  },
+
+  {
+    key: 'periodic_type',
+    message: 'Periodic Type Is Required',
+    isMissing: () => !Object.values(PeriodicTypeEnum).includes(periodicType.value.id),
+  },
+  {
+    key: 'number_of_days',
+    message: getNumberOfDaysError(),
+    isMissing: () => Boolean(getNumberOfDaysError()),
   },
 ])
 const requiredFieldErrors = ref<Record<string, string>>({})
@@ -137,61 +184,49 @@ const validateRequiredFields = async () => {
 
 defineExpose({ validateRequiredFields })
 onMounted(fetchLanguages)
-
-const MeetingTYpesOptions = ref<TitleInterface[]>([
-  new TitleInterface({ id: MeetingTypePeriodicEnum.Daily, title: 'daily' }),
-  new TitleInterface({ id: MeetingTypePeriodicEnum.Weekly, title: 'Weekly' }),
-  new TitleInterface({ id: MeetingTypePeriodicEnum.Monthly, title: 'Monthly' }),
-  new TitleInterface({ id: MeetingTypePeriodicEnum.yearly, title: 'yearly' }),
-  new TitleInterface({ id: MeetingTypePeriodicEnum.dates, title: 'dates' }),
-])
-const updateDays = (data) => {
-  // NumberOfDays.value = data
-  console.log(NumberOfDays.value, 'NumberOfDays.value')
-  updateData()
-}
 </script>
 
 <template>
   <div class="col-span-4 md:col-span-2" data-required-field="title">
-    <LangTitleInput
-      :langs="languages"
-      :model-value="titles"
-      :label="$t('meeting_type_title')"
-      :placeholder="$t('enter_meeting_type_title')"
-      @update:model-value="setTitles"
-    />
+    <LangTitleInput :langs="languages" :model-value="titles" :label="$t('meeting_type_title')"
+      :placeholder="$t('enter_meeting_type_title')" @update:model-value="setTitles" />
     <p v-if="requiredFieldErrors.title" class="required-field-message">
       {{ requiredFieldErrors.title }}
     </p>
   </div>
-  <div class="col-span-4 md:col-span-2">
-    <UpdatedCustomInputSelect
-      id="meeting type"
-      v-model="SelectedType"
-      :label="$t('Periodic Type')"
-      :placeholder="$t('Select Periodic Type')"
-      :static-options="MeetingTYpesOptions"
-      required
-    />
+
+
+
+  <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="periodic_type">
+
+    <UpdatedCustomInputSelect :required="true" :modelValue="periodicType" class="input"
+      :static-options="PeriodicTypeOptions" :label="$t('periodic_type')" id="project-meetign type"
+      :placeholder="$t('select type')" @update:modelValue="onPeriodicTypeChange" />
+
+    <p v-if="requiredFieldErrors.periodic_type" class="required-field-message">
+      {{ requiredFieldErrors.periodic_type }}
+    </p>
   </div>
-  <div
-    class="col-span-4 md:col-span-2 input-wrapper"
-    v-if="SelectedType?.id != MeetingTypePeriodicEnum.Daily"
-  >
-    <label for="number-of-days">number of days</label>
-    <input
-      id="number-of-days"
-      class="input"
-      type="number"
-      v-model="NumberOfDays"
-      @input="updateDays"
-      placeholder="enter dayes number"
-    />
+
+  <div v-if="showNumberOfDays" class="col-span-4 md:col-span-2 input-wrapper" data-required-field="number_of_days">
+    <label class="input-label">{{ $t('number_of_days') }}</label>
+    <input v-model.number="numberOfDays" class="input w-full" type="number" min="1" :max="maxNumberOfDays ?? undefined"
+      :placeholder="$t('enter_number_of_days')" @input="updateData" />
+    <p v-if="requiredFieldErrors.number_of_days" class="required-field-message">
+      {{ requiredFieldErrors.number_of_days }}
+    </p>
   </div>
 </template>
 
 <style scoped>
+.input-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-strong);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
 .required-field-message {
   margin-top: 0.35rem;
   color: var(--status-danger);

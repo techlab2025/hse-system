@@ -4,11 +4,13 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type MeetingTypeModel from '../../Data/models/MeetingTypeModel'
-import type AddMeetingTypeClonesParams from '../../Core/params/AddMeetingTypeClonesParams'
 import AddMeetingTypeCloneUseCase from '../../Domain/useCase/addMeetingTypeCloneUseCase'
+import IndexMeetingTypeController from './indexMeetingTypeController'
+import IndexMeetingTypeParams from '../../Core/params/indexMeetingTypeParams'
+import AddMeetingTypeClonesParams from '../../Core/params/AddMeetingTypeClonesParams'
 
-export default class MeetingTypeCloneController extends ControllerInterface<MeetingTypeModel> {
-  private static instance: MeetingTypeCloneController
+export default class AddMeetingTypeCloneController extends ControllerInterface<MeetingTypeModel> {
+  private static instance: AddMeetingTypeCloneController
   private constructor() {
     super()
   }
@@ -16,7 +18,7 @@ export default class MeetingTypeCloneController extends ControllerInterface<Meet
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new MeetingTypeCloneController()
+      this.instance = new AddMeetingTypeCloneController()
     }
     return this.instance
   }
@@ -40,6 +42,14 @@ export default class MeetingTypeCloneController extends ControllerInterface<Meet
           imageElement: successImage,
           messageContent: null,
         })
+        // if (router.currentRoute.value.path.includes('meeting-type')) {
+        //   if (!draft) await router.push('/organization/meeting-type')
+        // }
+
+        // useLoaderStore().endLoadingWithDialog();
+        await IndexMeetingTypeController.getInstance().getData(
+          new IndexMeetingTypeParams('', 1, 10, 1),
+        )
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',

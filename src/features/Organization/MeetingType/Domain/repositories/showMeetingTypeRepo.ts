@@ -1,7 +1,7 @@
 import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import MeetingTypeDetailsModel from '../../Data/models/MeetingTypeDetailsModel'
 import { ShowMeetingTypeApiService } from '../../Data/apiServices/showMeetingTypeApiService'
+import MeetingTypeDetailsModel from '../../Data/models/MeetingTypeDetailsModel'
 
 class ShowMeetingTypeRepo extends RepoInterface<MeetingTypeDetailsModel> {
   private static instance: ShowMeetingTypeRepo

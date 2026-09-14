@@ -11,7 +11,7 @@ export default class DeleteMeetingTypeController extends ControllerInterface<Mee
   private constructor() {
     super()
   }
-  private deleteMeetingTypeUseCase = new DeleteMeetingTypeUseCase()
+  private DeleteMeetingTypeUseCase = new DeleteMeetingTypeUseCase()
 
   static getInstance() {
     if (!this.instance) {
@@ -25,7 +25,7 @@ export default class DeleteMeetingTypeController extends ControllerInterface<Mee
     // console.log(params)
     try {
       const dataState: DataState<MeetingTypeModel> =
-        await this.deleteMeetingTypeUseCase.call(params)
+        await this.DeleteMeetingTypeUseCase.call(params)
       this.setLoading()
 
       this.setState(dataState)

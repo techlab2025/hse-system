@@ -15,7 +15,7 @@ export const MeetingTypeRoutes: RouteRecordRaw[] = [
       import('@/views/Organization/MeetingType/AddMeetingType.vue'),
     meta: {
       breadcrumb: 'Add Meeting Type',
-      parent: 'Meeting Types',
+      parent: 'meeting Types',
       type: 'Shared',
       isSidebar: true,
     },

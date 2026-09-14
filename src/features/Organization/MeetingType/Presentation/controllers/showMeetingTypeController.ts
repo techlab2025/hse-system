@@ -11,7 +11,7 @@ export default class ShowMeetingTypeController extends ControllerInterface<Meeti
     super()
   }
 
-  private showMeetingTypeUseCase = new ShowMeetingTypeUseCase()
+  private ShowMeetingTypeUseCase = new ShowMeetingTypeUseCase()
 
   static getInstance() {
     if (!this.instance) {
@@ -26,7 +26,7 @@ export default class ShowMeetingTypeController extends ControllerInterface<Meeti
     this.setLoading()
 
     const dataState: DataState<MeetingTypeDetailsModel> =
-      await this.showMeetingTypeUseCase.call(params)
+      await this.ShowMeetingTypeUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

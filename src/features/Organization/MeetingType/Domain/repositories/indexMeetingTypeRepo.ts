@@ -1,9 +1,7 @@
 import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import type MeetingTypeModel from '../../Data/models/MeetingTypeModel'
-import PpeItemModel from '@/features/Organization/ppeItem/Data/models/PpeItemModel'
 import { IndexMeetingTypeApiService } from '../../Data/apiServices/indexMeetingTypeApiService'
-
+import MeetingTypeModel from '../../Data/models/MeetingTypeModel'
 
 class IndexMeetingTypeRepo extends RepoInterface<MeetingTypeModel[]> {
   private static instance: IndexMeetingTypeRepo
@@ -25,7 +23,7 @@ class IndexMeetingTypeRepo extends RepoInterface<MeetingTypeModel[]> {
   }
 
   onParse(data: any): MeetingTypeModel[] {
-    return data.map((item: any) => PpeItemModel.fromMap(item))
+    return data.map((item: any) => MeetingTypeModel.fromMap(item))
   }
 
   get serviceInstance(): ServicesInterface {

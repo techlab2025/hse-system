@@ -7,8 +7,8 @@ import AddSystemHeaderData from '@/shared/icons/AddSystemHeaderData.vue';
   <button class="system-data-add col-span-3">
     <AddSystemHeaderData class="icon" />
     <div class="system-data-content">
-      <h2>{{ $t('add_system_ppe_items') }}</h2>
-      <p>{{ $t('select_system_ppe_items') }}</p>
+      <h2>{{ $t('add_system_meeting_types') }}</h2>
+      <p>{{ $t('select_system_meeting_types') }}</p>
     </div>
   </button>
 </template>

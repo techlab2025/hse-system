@@ -3,31 +3,32 @@ import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
-import type Params from '@/base/core/params/params'
-import MeetingTypeForm from './MeetingTypeForm.vue'
-import ShowMeetingTypeController from '../controllers/showMeetingTypeController.ts'
-import ShowMeetingTypeParams from '../../Core/params/showMeetingTypeParams.ts'
-import EditMeetingTypeController from '../controllers/editMeetingTypeController.ts'
+import MeetingTypeForm from '@/features/Organization/MeetingType/Presentation/components/MeetingTypeForm.vue'
+import AddMeetingTypeParams from '../../Core/params/addMeetingTypeParams'
+import EditMeetingTypeParams from '../../Core/params/editMeetingTypeParams'
+import ShowMeetingTypeController from '../controllers/showMeetingTypeController'
+import ShowMeetingTypeParams from '../../Core/params/showMeetingTypeParams'
+import EditMeetingTypeController from '../controllers/editMeetingTypeController'
 
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
-const params = ref<Params | null>(null)
+const params = ref<EditMeetingTypeParams | null>(null)
 const formRef = ref<InstanceType<typeof MeetingTypeForm> | null>(null)
 
 const showMeetingTypeController = ShowMeetingTypeController.getInstance()
 const state = ref(showMeetingTypeController.state.value)
-const fetchPpeItemDetails = async () => {
-  const showMeetingTypeParams = new ShowMeetingTypeParams(Number(id))
+const fetchMeetingTypeDetails = async () => {
+  const MeetingTypeParams = new ShowMeetingTypeParams(Number(id))
 
-  await showMeetingTypeController.showMeetingType(showMeetingTypeParams)
+  await showMeetingTypeController.showMeetingType(MeetingTypeParams)
 }
 
 onMounted(() => {
-  fetchPpeItemDetails()
+  fetchMeetingTypeDetails()
 })
 
-const editPpeItem = async () => {
+const editMeetingType = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
   await EditMeetingTypeController.getInstance().editMeetingType(params.value!, router)
 }
@@ -41,15 +42,19 @@ watch(
   },
 )
 
-const setParams = (data: Params) => {
-  params.value = data
+const setParams = (data: AddMeetingTypeParams | EditMeetingTypeParams) => {
+  if (data instanceof EditMeetingTypeParams) params.value = data
 }
 </script>
 
 <template>
   <DataStatus :controller="state">
     <template #success>
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="editPpeItem">
+      <!--      <pre>-->
+      <!--              {{ state.data?.titles }}-->
+
+      <!--      </pre>-->
+      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="editMeetingType">
         <MeetingTypeForm ref="formRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>

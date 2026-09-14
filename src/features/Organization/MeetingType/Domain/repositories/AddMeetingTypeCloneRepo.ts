@@ -1,7 +1,8 @@
+// import LangModel from '@/features/setting/MeetingType/Data/models/langModel.ts'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
-import { AddMeetingTypeApiService } from '../../Data/apiServices/addMeetingTypeApiService'
 import MeetingTypeModel from '../../Data/models/MeetingTypeModel'
+import { AddMeetingTypeClonesApiService } from '../../Data/apiServices/AddMeetingTypeClonesApiService'
 
 class AddMeetingTypeCloneRepo extends RepoInterface<MeetingTypeModel> {
   private static instance: AddMeetingTypeCloneRepo
@@ -25,7 +26,7 @@ class AddMeetingTypeCloneRepo extends RepoInterface<MeetingTypeModel> {
   }
 
   get serviceInstance(): ServicesInterface {
-    return AddMeetingTypeApiService.getInstance()
+    return AddMeetingTypeClonesApiService.getInstance()
   }
 }
 

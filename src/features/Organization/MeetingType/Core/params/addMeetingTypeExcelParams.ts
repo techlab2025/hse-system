@@ -1,33 +1,21 @@
 import type Params from '@/base/core/params/params'
-import { ClassValidation } from '@/base/Presentation/utils/class_validation'
-import type { MeetingTypePeriodicEnum } from '../constant/MeetingTypesEnum'
+import type { PeriodicTypeEnum } from '../Enum/periodic_type_enum'
 
-interface Data {
+export interface MeetingTypeExcelRow {
   title: string
   description: string
-  type: MeetingTypePeriodicEnum
+  periodic_type: PeriodicTypeEnum
+  number_of_days: number | null
 }
-export default class AddMeetingTypeExcelParams implements Params {
-  public data: Data[]
 
-  public static readonly validation = new ClassValidation().setRules({
-    // translation: { required: true, minLength: 2, maxLength: 100 },
-  })
-  constructor(data: { data: Data[] }) {
+export default class AddMeetingTypeExcelParams implements Params {
+  public data: MeetingTypeExcelRow[]
+
+  constructor(data: { data: MeetingTypeExcelRow[] }) {
     this.data = data.data
   }
 
   toMap(): Record<string, any> {
-    const data: Record<string, any> = {}
-    data['data'] = this.data
-    return data
+    return { data: this.data }
   }
-
-  // validate() {
-  //   return AddPpeItemParams.validation.validate(this)
-  // }
-
-  // validateOrThrow() {
-  //   return AddPpeItemParams.validation.validateOrThrow(this)
-  // }
 }

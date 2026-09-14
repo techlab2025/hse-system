@@ -13,7 +13,7 @@ export default class IndexMeetingTypeController extends SelectControllerInterfac
   private constructor() {
     super()
   }
-  private indexMeetingTypeUseCase = new IndexMeetingTypeUseCase()
+  private IndexMeetingTypeUseCase = new IndexMeetingTypeUseCase()
 
   static getInstance() {
     if (!this.instance) {
@@ -27,7 +27,7 @@ export default class IndexMeetingTypeController extends SelectControllerInterfac
     // console.log(params)
     this.setLoading()
     const dataState: DataState<MeetingTypeModel[]> =
-      await this.indexMeetingTypeUseCase.call(params)
+      await this.IndexMeetingTypeUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
