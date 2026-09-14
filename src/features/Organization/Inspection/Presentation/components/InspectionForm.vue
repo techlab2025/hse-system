@@ -303,15 +303,15 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     message: 'Please select the Project where this inspection will be conducted before continuing.',
     isMissing: () => (isEmployeeAssignment() || isZoneAssignment()) && !DataParams.value?.ProjectId,
   },
-  {
-    key: 'SelectedEquipment',
-    message:
-      'Please select the Equipment for this inspection, or create a new one using the New button before continuing.',
-    isMissing: () =>
-      !id &&
-      SelectedAssigned.value === AssignToTypeEnum.MACHINE &&
-      !hasSelectedId(SelectedEquipment.value),
-  },
+  // {
+  //   key: 'SelectedEquipment',
+  //   message:
+  //     'Please select the Equipment for this inspection, or create a new one using the New button before continuing.',
+  //   isMissing: () =>
+  //     !id &&
+  //     SelectedAssigned.value === AssignToTypeEnum.MACHINE &&
+  //     !hasSelectedId(SelectedEquipment.value),
+  // },
 
   {
     key: 'ProjectZoneId',
@@ -533,17 +533,8 @@ defineExpose({
           <div
             class="input-wrapper field-panel col-span-6 pt-15 md:col-span-3"
             data-required-field="SelectedEquipment"
-            v-if="!id && SelectedAssigned === AssignToTypeEnum.MACHINE"
+            v-if="!id && SelectedAssigned === AssignToTypeEnum.MACHINE && !route.query.project_id"
           >
-            <!-- <CustomSelectInput
-        v-if="SelectedAssigned === AssignToTypeEnum.MACHINE"
-        class="input"
-          :modelValue="SelectedEquipment"
-          :controller="indexEquipmentController"
-           :params="indexEquipmentParams"
-          :label="$t('Equipment')"
-           placeholder="select your Machine"
-            @update:modelValue="setEquipment" /> -->
 
             <UpdatedCustomInputSelect
               class="input"
