@@ -930,4 +930,10 @@ const getEmployeeInitial = (name?: string) => name?.trim().charAt(0).toUpperCase
     min-height: 92px;
   }
 }
+
+
+
+
+
+
 </style>

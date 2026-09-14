@@ -1,87 +1,149 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
+
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
+
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { useUserStore } from '@/stores/user'
+
 import IndexInspectionController from '../controllers/indexInspectionController'
 import IndexInspectionParams from '../../Core/params/indexInspectionParams'
+
 import DeleteInspectionParams from '../../Core/params/deleteInspectionParams'
 import DeleteInspectionController from '../controllers/deleteInspectionController'
+
 import IndexFilter from './InspectionUtils/IndexFilter.vue'
 import IndexInspectionHeader from './InspectionUtils/IndexInspectionHeader.vue'
 
 import FetchMyProjectsController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyProjectsController'
 import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Core/params/fetchMyProjectsParams'
+
 import FetchMyZonesController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController'
 import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/params/FetchMyZonesParams'
+
 import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
-// import MyProjectsModel from '../../../ObservationFactory/Data/models/MyProjectsModel'
+
 import IndexEquipmentMangement from '@/features/Organization/ObservationFactory/Presentation/components/indexEquipmentMangement.vue'
+
 import InspectionFormPage from './InspectionPages/InspectionFormPage.vue'
+import InspectionDragPage from './InspectionPages/InspectionDragPage.vue'
+import InspectionsResultsPage from './InspectionPages/InspectionsResultsPage.vue'
+
 import { InspectionTypeEnum } from '../../Core/Enum/InspectionTypeEnum'
 import { InspectionPageType } from '@/features/Organization/ObservationFactory/Core/Enums/InspectionTypeEnum'
-import InspectionDragPage from './InspectionPages/InspectionDragPage.vue'
+
 import FetchAllTasksController from '../controllers/FetchAllTasksController'
 import FetchAllTasksParams from '../../Core/params/FetchAllTasksParams'
+
 import FetchInspectionsResultsController from '../controllers/FetchInspectionsResultsController'
 import FetchInspectionsResultsParams from '../../Core/params/FetchInspectionsResultsParams'
-import InspectionsResultsPage from './InspectionPages/InspectionsResultsPage.vue'
+
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
+
 import CardSkelaton from './SubComponent/CardSkelaton.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
+
 import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 const { t } = useI18n()
+
 const { isDarkMode } = useThemeMode()
-
-const word = ref('')
-const currentPage = ref(1)
-const countPerPage = ref(10)
-const indexInspectionController = IndexInspectionController.getInstance()
-const state = ref(indexInspectionController.state.value)
-
-const fetchAllTasksController = FetchAllTasksController.getInstance()
-const AllTasksState = ref(fetchAllTasksController.state.value)
-
-const fetchInspectionsResultsController = FetchInspectionsResultsController.getInstance()
-const InspectionsResultsState = ref(fetchInspectionsResultsController.state.value)
 
 const route = useRoute()
 const router = useRouter()
-const id = route.params.parent_id
+
+const word = ref('')
+
+const currentPage = ref(1)
+
+const countPerPage = ref(10)
+
+/**
+ * Controllers
+ */
+
+const indexInspectionController = IndexInspectionController.getInstance()
+
+const state = ref(indexInspectionController.state.value)
+
+const fetchAllTasksController = FetchAllTasksController.getInstance()
+
+const AllTasksState = ref(fetchAllTasksController.state.value)
+
+const fetchInspectionsResultsController = FetchInspectionsResultsController.getInstance()
+
+const InspectionsResultsState = ref(fetchInspectionsResultsController.state.value)
+
+/**
+ * Audit page
+ */
+
 const inspectionType = computed(() => route.query.inspectionType)
+
 const isAuditPage = computed(() => route.name === 'Audits')
+
 const auditProjectId = computed(() => Number(route.query.project_id) || undefined)
+
 const auditCreateRoute = computed(() => ({
   name: 'Add Audit',
-  query: { project_id: auditProjectId.value },
+  query: {
+    project_id: auditProjectId.value,
+  },
 }))
+
+/**
+ * NEW
+ * Audit tabs:
+ *
+ * all  => All Audits
+ * mine => My Audits
+ */
+
+const activeAuditTab = ref<'all' | 'mine'>('all')
+
 const selectedProjctesFilters = ref<number | undefined>(auditProjectId.value)
+
 const SelectedZonesFilter = ref<number[]>([])
+
 const filterDate = ref('')
+
 const filterInspectionType = ref<number | null>(null)
+
 const filterFields = [
   {
     key: 'inspectionType',
     label: 'Inspection Type',
+
     options: [
-      new TitleInterface({ id: InspectionTypeEnum.DAY, title: 'Daily' }),
-      new TitleInterface({ id: InspectionTypeEnum.PERIOD, title: 'Periodic' }),
+      new TitleInterface({
+        id: InspectionTypeEnum.DAY,
+        title: 'Daily',
+      }),
+
+      new TitleInterface({
+        id: InspectionTypeEnum.PERIOD,
+        title: 'Periodic',
+      }),
     ],
   },
 ]
+
+/**
+ * Fetch My Audits
+ * Existing IndexInspection API
+ */
 
 const fetchInspection = async (
   query: string = '',
@@ -91,23 +153,35 @@ const fetchInspection = async (
   employeeId?: number[],
   zoneId?: number[],
 ) => {
-  const deleteInspectionParams = new IndexInspectionParams(
+  const params = new IndexInspectionParams(
     query,
     pageNumber,
     perPage,
     withPage,
+
     employeeId || null,
+
     zoneId || null,
+
     null,
+
     selectedProjctesFilters.value || null,
+
     route.query.typeId ? Number(route.query.typeId) : null,
+
     filterInspectionType.value ?? undefined,
+
     filterDate.value,
+
     isAuditPage.value ? true : false,
   )
-  const res = await indexInspectionController.getData(deleteInspectionParams)
-  console.log(res, 'res')
+
+  await indexInspectionController.getData(params)
 }
+/**
+ * Fetch All Audits
+ * Existing FetchAllTasks API
+ */
 
 const InspectionFormTasks = async (
   query: string = '',
@@ -116,19 +190,33 @@ const InspectionFormTasks = async (
   withPage: number = 1,
   filter?: number[],
 ) => {
-  const fetchAllTasksParams = new FetchAllTasksParams(
+  const params = new FetchAllTasksParams(
     query,
+
     pageNumber,
+
     perPage,
+
     withPage,
-    filter?.length > 0 ? filter : null,
+
+    filter?.length ? filter : null,
+
     selectedProjctesFilters.value || null,
+
     filterInspectionType.value ?? undefined,
+
     filterDate.value,
+
     isAuditPage.value ? true : false,
   )
-  const res = await fetchAllTasksController.getData(fetchAllTasksParams)
+
+  await fetchAllTasksController.getData(params)
 }
+
+/**
+ * Fetch Inspection Results
+ */
+
 const InspectionsResultsTasks = async (
   query: string = '',
   pageNumber: number = 1,
@@ -136,22 +224,39 @@ const InspectionsResultsTasks = async (
   withPage: number = 1,
   filter?: number[],
 ) => {
-  const fetchInspectionsResultsParams = new FetchInspectionsResultsParams(
+  const params = new FetchInspectionsResultsParams(
     query,
+
     pageNumber,
+
     perPage,
+
     withPage,
-    filter?.length > 0 ? filter : null,
+
+    filter?.length ? filter : null,
+
     selectedProjctesFilters.value || null,
+
     filterInspectionType.value ?? undefined,
+
     filterDate.value,
+
     isAuditPage.value ? true : false,
   )
-  const res = await fetchInspectionsResultsController.getData(fetchInspectionsResultsParams)
+
+  await fetchInspectionsResultsController.getData(params)
 }
 
+/**
+ * Zones helper
+ */
+
 const getSelectedZonesFilter = () =>
-  SelectedZonesFilter.value.length > 0 ? SelectedZonesFilter.value : undefined
+  SelectedZonesFilter.value.length ? SelectedZonesFilter.value : undefined
+
+/**
+ * Existing Inspection Flow
+ */
 
 const fetchCurrentInspectionData = (
   query: string = '',
@@ -159,7 +264,7 @@ const fetchCurrentInspectionData = (
   perPage: number = countPerPage.value,
   withPage: number = 1,
 ) => {
-  if (String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)) {
+  if (String(route?.query?.inspectionType) === String(InspectionPageType.DragInspection)) {
     return fetchInspection(
       query,
       pageNumber,
@@ -168,33 +273,110 @@ const fetchCurrentInspectionData = (
       undefined,
       getSelectedZonesFilter(),
     )
-  } else if (String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)) {
+  } else if (String(route?.query?.inspectionType) === String(InspectionPageType.InspectionForm)) {
     return InspectionFormTasks(query, pageNumber, perPage, withPage, getSelectedZonesFilter())
   } else {
     return InspectionsResultsTasks(query, pageNumber, perPage, withPage, getSelectedZonesFilter())
   }
 }
 
+/**
+ * NEW Audit dispatcher
+ *
+ * All Audits:
+ *     FetchAllTasksController
+ *
+ * My Audits:
+ *     IndexInspectionController
+ */
+
+const fetchAuditData = () => {
+  if (!isAuditPage.value) {
+    return fetchCurrentInspectionData()
+  }
+
+  if (activeAuditTab.value === 'all') {
+    return InspectionFormTasks(
+      word.value,
+
+      currentPage.value,
+
+      countPerPage.value,
+
+      1,
+
+      getSelectedZonesFilter(),
+    )
+  }
+
+  return fetchInspection(
+    word.value,
+
+    currentPage.value,
+
+    countPerPage.value,
+
+    1,
+
+    undefined,
+
+    getSelectedZonesFilter(),
+  )
+}
+
+/**
+ * Change Audit Tab
+ */
+
+const changeAuditTab = (tab: 'all' | 'mine') => {
+  activeAuditTab.value = tab
+
+  currentPage.value = 1
+
+  fetchAuditData()
+}
+
+/**
+ * Route watcher
+ */
+
 watch(
   () => [route.query.typeId, route.query.inspectionType, route.query.project_id],
+
   () => {
     if (isAuditPage.value) {
       selectedProjctesFilters.value = auditProjectId.value
     }
+
     currentPage.value = 1
-    fetchCurrentInspectionData('', 1, countPerPage.value)
+
+    fetchAuditData()
   },
-  { immediate: true },
+
+  {
+    immediate: true,
+  },
 )
 
 onMounted(() => {
-  if (!isAuditPage.value) FetchMyProjects()
+  if (!isAuditPage.value) {
+    FetchMyProjects()
+  }
 })
+
+/**
+ * Search
+ */
 
 const searchInspection = debounce(() => {
   currentPage.value = 1
-  fetchCurrentInspectionData(word.value, 1, countPerPage.value)
+
+  fetchAuditData()
 })
+
+/**
+ * Filters
+ */
 
 const applyFilters = ({
   date,
@@ -204,137 +386,248 @@ const applyFilters = ({
   values: Record<string, number | null>
 }) => {
   filterDate.value = date
+
   filterInspectionType.value = values.inspectionType ?? null
+
   currentPage.value = 1
-  fetchCurrentInspectionData(word.value, 1, countPerPage.value)
+
+  fetchAuditData()
 }
 
 const resetFilters = () => {
   filterDate.value = ''
+
   filterInspectionType.value = null
+
   currentPage.value = 1
-  fetchCurrentInspectionData(word.value, 1, countPerPage.value)
+
+  fetchAuditData()
 }
+
+/**
+ * Delete
+ */
 
 const deleteInspection = async (id: number) => {
-  const deleteInspectionParams = new DeleteInspectionParams(id)
-  await DeleteInspectionController.getInstance().deleteInspection(deleteInspectionParams)
-  await fetchCurrentInspectionData()
+  const params = new DeleteInspectionParams(id)
+
+  await DeleteInspectionController.getInstance().deleteInspection(params)
+
+  await fetchAuditData()
 }
 
-// Inspection Form
+/**
+ * ============================
+ * Pagination - Inspection Form
+ * ============================
+ */
+
 const handleInspectionFormChangePage = (page: number) => {
   currentPage.value = page
+
+  if (isAuditPage.value) {
+    fetchAuditData()
+
+    return
+  }
+
   InspectionFormTasks(
     word.value,
+
     currentPage.value,
+
     countPerPage.value,
+
     1,
+
     getSelectedZonesFilter(),
   )
 }
+
 const handleInspectionFormCountPerPage = (count: number) => {
   countPerPage.value = count
+
+  if (isAuditPage.value) {
+    fetchAuditData()
+
+    return
+  }
+
   InspectionFormTasks(
     word.value,
+
     currentPage.value,
+
     countPerPage.value,
+
     1,
+
     getSelectedZonesFilter(),
   )
 }
 
-// Drag Inspection Form
+/**
+ * ============================
+ * Pagination - Drag Inspection
+ * ============================
+ */
+
 const handleDragInspectionChangePage = (page: number) => {
   currentPage.value = page
+
   fetchInspection(
     word.value,
+
     currentPage.value,
+
     countPerPage.value,
+
     1,
+
     undefined,
-    getSelectedZonesFilter(),
-  )
-}
-const handleDragInspectionCountPerPage = (count: number) => {
-  countPerPage.value = count
-  fetchInspection(
-    word.value,
-    currentPage.value,
-    countPerPage.value,
-    1,
-    undefined,
+
     getSelectedZonesFilter(),
   )
 }
 
-// Inspection Results Form
+const handleDragInspectionCountPerPage = (count: number) => {
+  countPerPage.value = count
+
+  fetchInspection(
+    word.value,
+
+    currentPage.value,
+
+    countPerPage.value,
+
+    1,
+
+    undefined,
+
+    getSelectedZonesFilter(),
+  )
+}
+
+/**
+ * ============================
+ * Pagination - Results
+ * ============================
+ */
+
 const handleInspectionResultsChangePage = (page: number) => {
   currentPage.value = page
+
   InspectionsResultsTasks(
     word.value,
+
     currentPage.value,
+
     countPerPage.value,
+
     1,
+
     getSelectedZonesFilter(),
   )
 }
+
 const handleInspectionResultsCountPerPage = (count: number) => {
   countPerPage.value = count
+
   InspectionsResultsTasks(
     word.value,
+
     currentPage.value,
+
     countPerPage.value,
+
     1,
+
     getSelectedZonesFilter(),
   )
 }
+
+/**
+ * ============================
+ * Permissions
+ * ============================
+ */
 
 const { user } = useUserStore()
 
 const actionList = (id: number, deleteInspection: (id: number) => void) => [
   {
     text: t('edit'),
+
     icon: IconEdit,
+
     link: `/organization/Inspection/${id}`,
+
     permission: [
       PermissionsEnum.ORG_INSPECTION_UPDATE,
+
       PermissionsEnum.ORG_INSPECTION_DETAILS,
+
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
+
       PermissionsEnum.ORG_INSPECTION_ALL,
     ],
   },
+
   {
     text: t('delete'),
+
     icon: IconDelete,
+
     action: () => deleteInspection(id),
+
     permission: [
       PermissionsEnum.ORG_INSPECTION_DELETE,
+
       PermissionsEnum.ADMIN,
+
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
+
       PermissionsEnum.ORG_INSPECTION_ALL,
     ],
   },
 ]
 
+/**
+ * ============================
+ * Projects
+ * ============================
+ */
+
 const Projects = ref<any[]>([])
+
 const FetchMyProjects = async () => {
-  const fetchMyProjectsParams = new FetchMyProjectsParams()
-  const fetchMyProjectsController = FetchMyProjectsController.getInstance()
-  const res = await fetchMyProjectsController.getData(fetchMyProjectsParams)
+  const params = new FetchMyProjectsParams()
+
+  const controller = FetchMyProjectsController.getInstance()
+
+  const res = await controller.getData(params)
+
   if (res.value.data) {
     Projects.value = res.value.data
   }
 }
 
-const ShowDetails = ref<number[]>([])
+/**
+ * ============================
+ * Zones
+ * ============================
+ */
 
 const Filters = ref<MyZonesModel[]>()
+
 const fetchMyZonesController = FetchMyZonesController.getInstance()
+
 const FetchMyZones = async () => {
-  const fetchMyZonesParams = new FetchMyZonesParams(selectedProjctesFilters.value)
+  const params = new FetchMyZonesParams(selectedProjctesFilters.value)
+
   if (selectedProjctesFilters.value) {
-    const response = await fetchMyZonesController.FetchMyZones(fetchMyZonesParams, router)
+    const response = await fetchMyZonesController.FetchMyZones(params, router)
+
     if (response.value.data) {
       Filters.value = response.value.data
     }
@@ -346,44 +639,52 @@ const FetchMyZones = async () => {
 const ApplayFilter = (data: number[]) => {
   SelectedZonesFilter.value = data
 
-  if (data) {
-    currentPage.value = 1
-    fetchCurrentInspectionData('', 1, countPerPage.value)
-  }
+  currentPage.value = 1
+
+  fetchAuditData()
 }
 
 const setSelectedProjectFilter = (data?: number) => {
   selectedProjctesFilters.value = data
+
   SelectedZonesFilter.value = []
+
   Filters.value = []
+
   currentPage.value = 1
 
-  fetchCurrentInspectionData('', 1, countPerPage.value)
+  fetchAuditData()
 
   if (data) {
     FetchMyZones()
   }
 }
 
+/**
+ * ============================
+ * Controller State Sync
+ * ============================
+ */
+
 watch(
   () => fetchAllTasksController.state.value,
+
   (newState) => {
     if (newState) {
-      console.log(newState)
       AllTasksState.value = newState
-      // SelectedController()
     }
   },
 )
 
 watch(
   () => indexInspectionController.state.value,
+
   (newState) => {
     if (newState) {
-      console.log(newState)
       state.value = newState
     }
   },
+
   {
     deep: true,
   },
@@ -391,40 +692,55 @@ watch(
 
 watch(
   () => fetchInspectionsResultsController.state.value,
+
   (newState) => {
     if (newState) {
-      console.log(newState)
       InspectionsResultsState.value = newState
     }
   },
+
   {
     deep: true,
   },
 )
+
 const selectedProject = useProjectSelectStore()
 </script>
-
 <template>
   <div
     :class="[
       'inspection-index-page grid grid-cols-12 gap-4',
-      { 'is-dark': isDarkMode, 'is-audit-page': isAuditPage },
+      {
+        'is-dark': isDarkMode,
+        'is-audit-page': isAuditPage,
+      },
     ]"
   >
+    <!-- Equipment sidebar -->
     <IndexEquipmentMangement v-if="!isAuditPage" class="col-span-2" />
+
     <div class="col-span-12">
       <PermissionBuilder
         :code="[
           PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+
           PermissionsEnum?.ORG_INSPECTION_ALL,
+
           PermissionsEnum?.ORG_INSPECTION_CREATE,
+
           PermissionsEnum?.ORG_INSPECTION_UPDATE,
+
           PermissionsEnum?.ORG_INSPECTION_DETAILS,
+
           PermissionsEnum?.ORG_INSPECTION_DELETE,
+
           PermissionsEnum?.ORG_INSPECTION_FETCH,
         ]"
       >
+        <!-- ========================= -->
+        <!-- NORMAL INSPECTION HEADER -->
+        <!-- ========================= -->
+
         <div v-if="!isAuditPage" class="inspection-controls-panel">
           <IndexInspectionHeader
             :title="`Inspection`"
@@ -443,13 +759,17 @@ const selectedProject = useProjectSelectStore()
                 show-date
                 :fields="filterFields"
                 :initial-date="filterDate"
-                :initial-values="{ inspectionType: filterInspectionType }"
+                :initial-values="{
+                  inspectionType: filterInspectionType,
+                }"
                 @apply="applyFilters"
                 @reset="resetFilters"
               />
+
               <PermissionBuilder
                 :code="[
                   PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+
                   PermissionsEnum?.ORG_INSPECTION_CREATE,
                 ]"
               >
@@ -461,7 +781,7 @@ const selectedProject = useProjectSelectStore()
                   to="/organization/equipment-mangement/inspection/add"
                 >
                   <button class="btn btn-primary create-inspection-btn">
-                    <span class="create-icon" aria-hidden="true">
+                    <span class="create-icon">
                       <svg viewBox="0 0 24 24" fill="none">
                         <path
                           d="M12 5v14M5 12h14"
@@ -471,11 +791,18 @@ const selectedProject = useProjectSelectStore()
                         />
                       </svg>
                     </span>
+
                     <span class="create-copy">
-                      <small>{{ $t('New inspection') }}</small>
-                      <strong>{{ $t('Create Inspection') }}</strong>
+                      <small>
+                        {{ $t('New inspection') }}
+                      </small>
+
+                      <strong>
+                        {{ $t('Create Inspection') }}
+                      </strong>
                     </span>
-                    <span class="create-arrow" aria-hidden="true">
+
+                    <span class="create-arrow">
                       <svg viewBox="0 0 24 24" fill="none">
                         <path
                           d="m9 18 6-6-6-6"
@@ -492,9 +819,11 @@ const selectedProject = useProjectSelectStore()
             </template>
           </IndexInspectionHeader>
 
+          <!-- Zones -->
+
           <div v-if="Filters?.length" class="inspection-zone-section">
             <div class="inspection-filter-heading">
-              <span class="filter-symbol" aria-hidden="true">
+              <span class="filter-symbol">
                 <svg viewBox="0 0 24 24" fill="none">
                   <path
                     d="M4 6h16M7 12h10M10 18h4"
@@ -504,15 +833,22 @@ const selectedProject = useProjectSelectStore()
                   />
                 </svg>
               </span>
+
               <div>
-                <p>{{ $t('Zone') }}</p>
-                <span>{{ $t('Select zones to refine the inspection list') }}</span>
+                <p>
+                  {{ $t('Zone') }}
+                </p>
+
+                <span>
+                  {{ $t('Select zones to refine the inspection list') }}
+                </span>
               </div>
             </div>
 
             <PermissionBuilder
               :code="[
                 PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+
                 PermissionsEnum?.ORG_INSPECTION_CREATE,
               ]"
             >
@@ -527,202 +863,238 @@ const selectedProject = useProjectSelectStore()
             </PermissionBuilder>
           </div>
         </div>
-        <div v-else class="audit-create-action">
-          <PermissionBuilder
-            :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INSPECTION_CREATE]"
-          >
-            <router-link :to="auditCreateRoute">
-              <button class="btn btn-primary create-inspection-btn">
-                {{ $t('Create Audit') }}
-              </button>
-            </router-link>
-          </PermissionBuilder>
+
+        <!-- ========================= -->
+        <!-- AUDIT HEADER -->
+        <!-- ========================= -->
+
+        <div v-else class="audit-wrapper">
+          <div class="audit-tabs">
+            <button
+              :class="{
+                active: activeAuditTab === 'all',
+              }"
+              @click="changeAuditTab('all')"
+            >
+              {{ $t('All Audits') }}
+            </button>
+
+            <button
+              :class="{
+                active: activeAuditTab === 'mine',
+              }"
+              @click="changeAuditTab('mine')"
+            >
+              {{ $t('My Audits') }}
+            </button>
+          </div>
+
+          <div class="audit-create-action">
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+
+                PermissionsEnum?.ORG_INSPECTION_CREATE,
+              ]"
+            >
+              <router-link :to="auditCreateRoute">
+                <button class="btn btn-primary create-inspection-btn">
+                  {{ $t('Create Audit') }}
+                </button>
+              </router-link>
+            </PermissionBuilder>
+          </div>
         </div>
-        <DataStatus
-          v-if="String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)"
-          :controller="AllTasksState"
-        >
+        <!-- ========================= -->
+        <!-- AUDIT: ALL AUDITS -->
+        <!-- ========================= -->
+
+        <DataStatus v-if="isAuditPage && activeAuditTab === 'all'" :controller="AllTasksState">
           <template #success>
             <div class="table-responsive inspection-table-responsive">
               <div class="index-table-card-container-inspection inspection-list-panel">
                 <div class="header-container w-full">
-                  <InspectionFormPage
-                    v-if="String(inspectionType) == String(InspectionPageType.InspectionForm)"
-                    class="w-full"
-                    :data="AllTasksState?.data"
-                  />
+                  <InspectionFormPage class="w-full" :data="AllTasksState?.data" />
                 </div>
               </div>
             </div>
+
             <Pagination
               :pagination="AllTasksState.pagination"
               @changePage="handleInspectionFormChangePage"
               @countPerPage="handleInspectionFormCountPerPage"
             />
           </template>
+
           <template #loader>
             <CardSkelaton />
           </template>
+
           <template #initial>
             <CardSkelaton />
           </template>
+
           <template #empty>
             <PermissionBuilder
               :code="[
                 PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+
                 PermissionsEnum?.ORG_INSPECTION_CREATE,
               ]"
             >
               <DataFailed
-                :link="isAuditPage ? auditCreateRoute : `/organization/equipment-mangement/inspection/add`"
-                :addText="isAuditPage ? `Create Audit`: `Add Inspection`"
-                :description="
-                  isAuditPage
-                    ? ` `
-                    : `You have no Inspection .. All your joined customers will appear here when you add your customer data`
-                "
-                title="You have No Inspection"
+                :link="auditCreateRoute"
+                addText="Create Audit"
+                title="You have No Audit"
+                description=""
               />
             </PermissionBuilder>
           </template>
+
           <template #failed>
             <PermissionBuilder
               :code="[
                 PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+
                 PermissionsEnum?.ORG_INSPECTION_CREATE,
               ]"
             >
               <DataFailed
-                :link="`/organization/equipment-mangement/inspection/add`"
-                addText="Add Inspection"
-                description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
-                title="You have No Inspection"
+                :link="auditCreateRoute"
+                addText="Create Audit"
+                title="You have No Audit"
+                description=""
               />
             </PermissionBuilder>
           </template>
         </DataStatus>
-        <DataStatus
-          v-if="String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)"
-          :controller="state"
-        >
+
+        <!-- ========================= -->
+        <!-- AUDIT: MY AUDITS -->
+        <!-- ========================= -->
+
+        <DataStatus v-if="isAuditPage && activeAuditTab === 'mine'" :controller="state">
           <template #success>
             <div class="table-responsive inspection-table-responsive">
               <div class="index-table-card-container-inspection inspection-list-panel">
                 <div class="header-container w-full">
-                  <InspectionDragPage
-                    v-if="String(inspectionType) == String(InspectionPageType.DragInspection)"
-                    class="w-full"
-                    :data="state?.data"
-                  />
+                  <InspectionDragPage class="w-full" :data="state?.data" />
                 </div>
               </div>
             </div>
+
             <Pagination
               :pagination="state.pagination"
               @changePage="handleDragInspectionChangePage"
               @countPerPage="handleDragInspectionCountPerPage"
             />
           </template>
+
           <template #loader>
             <CardSkelaton />
           </template>
+
           <template #initial>
             <CardSkelaton />
           </template>
+
           <template #empty>
-            <PermissionBuilder
-              :code="[
-                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-                PermissionsEnum?.ORG_INSPECTION_CREATE,
-              ]"
-            >
-              <DataEmpty
-                description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
-                title="You have No Inspection"
-                :link="`/organization`"
-              />
-            </PermissionBuilder>
+            <DataEmpty
+              title="You have No Audit"
+              description="You have no Audit"
+              :link="`/organization`"
+            />
           </template>
+
           <template #failed>
-            <PermissionBuilder
-              :code="[
-                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-                PermissionsEnum?.ORG_INSPECTION_CREATE,
-              ]"
-            >
-              <DataFailed
-                description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
-                title="You have No Inspection"
-                :link="`/organization`"
-              />
-            </PermissionBuilder>
+            <DataFailed
+              title="You have No Audit"
+              description="You have no Audit"
+              :link="`/organization`"
+            />
           </template>
         </DataStatus>
+
+        <!-- ========================= -->
+        <!-- NORMAL INSPECTION FORM -->
+        <!-- ========================= -->
+
         <DataStatus
-          v-if="String(route?.query?.inspectionType) == String(InspectionPageType.Result)"
+          v-if="
+            !isAuditPage &&
+            String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)
+          "
+          :controller="AllTasksState"
+        >
+          <template #success>
+            <InspectionFormPage class="w-full" :data="AllTasksState?.data" />
+
+            <Pagination
+              :pagination="AllTasksState.pagination"
+              @changePage="handleInspectionFormChangePage"
+              @countPerPage="handleInspectionFormCountPerPage"
+            />
+          </template>
+
+          <template #loader>
+            <CardSkelaton />
+          </template>
+        </DataStatus>
+
+        <!-- ========================= -->
+        <!-- NORMAL DRAG INSPECTION -->
+        <!-- ========================= -->
+
+        <DataStatus
+          v-if="
+            !isAuditPage &&
+            String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)
+          "
+          :controller="state"
+        >
+          <template #success>
+            <InspectionDragPage class="w-full" :data="state?.data" />
+
+            <Pagination
+              :pagination="state.pagination"
+              @changePage="handleDragInspectionChangePage"
+              @countPerPage="handleDragInspectionCountPerPage"
+            />
+          </template>
+
+          <template #loader>
+            <CardSkelaton />
+          </template>
+        </DataStatus>
+
+        <!-- ========================= -->
+        <!-- NORMAL RESULTS -->
+        <!-- ========================= -->
+
+        <DataStatus
+          v-if="
+            !isAuditPage &&
+            String(route?.query?.inspectionType) == String(InspectionPageType.Result)
+          "
           :controller="InspectionsResultsState"
         >
           <template #success>
-            <div class="table-responsive inspection-table-responsive">
-              <div class="index-table-card-container-inspection inspection-list-panel">
-                <div class="header-container w-full">
-                  <InspectionsResultsPage
-                    v-if="String(inspectionType) == String(InspectionPageType.Result)"
-                    class="w-full"
-                    :data="InspectionsResultsState?.data"
-                  />
-                </div>
-              </div>
-            </div>
+            <InspectionsResultsPage class="w-full" :data="InspectionsResultsState?.data" />
+
             <Pagination
-              :pagination="InspectionsResultsState?.pagination"
+              :pagination="InspectionsResultsState.pagination"
               @changePage="handleInspectionResultsChangePage"
               @countPerPage="handleInspectionResultsCountPerPage"
             />
           </template>
+
           <template #loader>
             <CardSkelaton />
-          </template>
-          <template #initial>
-            <CardSkelaton />
-          </template>
-          <template #empty>
-            <PermissionBuilder
-              :code="[
-                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-                PermissionsEnum?.ORG_INSPECTION_CREATE,
-              ]"
-            >
-              <DataEmpty
-                :link="`/organization/equipment-mangement/inspection/add`"
-                addText="Create Inspection"
-                description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
-                title="You have No Inspection"
-              />
-            </PermissionBuilder>
-          </template>
-          <template #failed>
-            <PermissionBuilder
-              :code="[
-                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-                PermissionsEnum?.ORG_INSPECTION_CREATE,
-              ]"
-            >
-              <DataFailed
-                :link="`/organization/equipment-mangement/inspection/add`"
-                addText="Create Inspection"
-                description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
-                title="You have No Inspection"
-              />
-            </PermissionBuilder>
           </template>
         </DataStatus>
 
         <template #notPermitted>
-          <DataFailed
-            addText="Have not  Permission"
-            description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
-          />
+          <DataFailed addText="Have not Permission" description="You don't have permission" />
         </template>
       </PermissionBuilder>
     </div>
@@ -730,6 +1102,110 @@ const selectedProject = useProjectSelectStore()
 </template>
 
 <style scoped>
+/* =========================
+   Audit Tabs
+========================= */
+
+.audit-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 16px 20px;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+      transparent 50%
+    ),
+    var(--BgWhite);
+}
+
+.audit-tabs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.audit-tabs button {
+  min-width: 140px;
+
+  padding: 10px 20px;
+
+  border-radius: 12px;
+
+  border: 1px solid var(--main-border);
+
+  background: transparent;
+
+  color: var(--header-page-color);
+
+  font-family: 'Bold';
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.audit-tabs button:hover {
+  transform: translateY(-1px);
+
+  border-color: var(--PrimaryColor);
+}
+
+.audit-tabs button.active {
+  background: var(--PrimaryColor);
+
+  color: white;
+
+  border-color: var(--PrimaryColor);
+
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--PrimaryColor) 25%, transparent);
+}
+
+/* Dark mode */
+
+.is-dark .audit-wrapper {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--PrimaryColor) 12%, transparent),
+      transparent 55%
+    ),
+    var(--BgWhite);
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .audit-wrapper {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .audit-tabs {
+    width: 100%;
+  }
+
+  .audit-tabs button {
+    flex: 1;
+
+    min-width: auto;
+  }
+}
+
 .inspection-controls-panel {
   position: relative;
   isolation: isolate;

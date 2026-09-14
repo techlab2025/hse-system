@@ -9,19 +9,21 @@ import IndexLangParams from '@/features/setting/languages/Core/params/indexLangP
 import { LangsMap } from '@/constant/langs'
 import { useUserStore } from '@/stores/user'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
-// import AddPpeItemParams from '../../Core/params/addPpeItemParams'
-import EditPpeItemParams from '../../Core/params/editMeetingTypeParams'
-import AddPpeItemParams from '@/features/Organization/ppeItem/Core/params/addPpeItemParams'
-import type PpeItemDetailsModel from '@/features/Organization/ppeItem/Data/models/PpeItemDetailsModel'
+import AddMeetingTypeParams from '../../Core/params/addMeetingTypeParams'
+import EditMeetingTypeParams from '../../Core/params/editMeetingTypeParams'
+import type MeetingTypeDetailsModel from '../../Data/models/MeetingTypeDetailsModel'
+import TitleInterface from '@/base/Data/Models/title_interface'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import { MeetingTypePeriodicEnum } from '../../Core/constant/MeetingTypesEnum'
 // import type PpeItemDetailsModel from '../../Data/models/PpeItemDetailsModel'
 
 type LanguageOption = { locale: string; title: string; icon?: any }
 type LocalizedTitle = { locale: string; title: string }
 
 const emit = defineEmits<{
-  (event: 'update:data', value: AddPpeItemParams | EditPpeItemParams): void
+  (event: 'update:data', value: AddMeetingTypeParams | EditMeetingTypeParams): void
 }>()
-const props = defineProps<{ data?: PpeItemDetailsModel }>()
+const props = defineProps<{ data?: MeetingTypeDetailsModel }>()
 
 const user = useUserStore()
 const languages = ref<LanguageOption[]>([])
@@ -52,6 +54,11 @@ const fetchLanguages = async () => {
       ]
 }
 
+const NumberOfDays = ref<number>()
+const SelectedType = ref<TitleInterface>(
+  new TitleInterface({ id: MeetingTypePeriodicEnum.Daily, title: 'daily' }),
+)
+
 const updateData = () => {
   const translations = new TranslationsParams(languages.value.map((item) => item.locale))
   titles.value.forEach((item) => translations.setTranslation('title', item.locale, item.title))
@@ -59,8 +66,25 @@ const updateData = () => {
   emit(
     'update:data',
     props.data?.id
-      ? new EditPpeItemParams(props.data.id, translations)
-      : new AddPpeItemParams(translations),
+      ? new EditMeetingTypeParams({
+          id: props.data.id,
+          translation: translations,
+          type: SelectedType.value?.id!,
+          number_of_days: NumberOfDays.value!,
+        })
+      : new AddMeetingTypeParams({
+          translation: translations,
+          type: SelectedType.value?.id!,
+          number_of_days: NumberOfDays.value!,
+        }),
+  )
+  console.log(
+    'data=>',
+    new AddMeetingTypeParams({
+      translation: translations,
+      type: SelectedType.value?.id!,
+      number_of_days: NumberOfDays.value!,
+    }),
   )
 }
 
@@ -74,11 +98,12 @@ watch(
   ([data, availableLanguages]) => {
     if (!availableLanguages.length) return
 
-    titles.value = availableLanguages.map((language) =>
-      data?.titles?.find((item) => item.locale === language.locale) ?? {
-        locale: language.locale,
-        title: '',
-      },
+    titles.value = availableLanguages.map(
+      (language) =>
+        data?.titles?.find((item) => item.locale === language.locale) ?? {
+          locale: language.locale,
+          title: '',
+        },
     )
     updateData()
   },
@@ -89,7 +114,7 @@ const hasText = (value: unknown) => String(value ?? '').trim().length > 0
 const requiredFields = computed(() => [
   {
     key: 'title',
-    message: 'PPE Item Title Is Required',
+    message: 'Meeting Type Title Is Required',
     isMissing: () => !titles.value.some((item) => hasText(item.title)),
   },
 ])
@@ -112,6 +137,19 @@ const validateRequiredFields = async () => {
 
 defineExpose({ validateRequiredFields })
 onMounted(fetchLanguages)
+
+const MeetingTYpesOptions = ref<TitleInterface[]>([
+  new TitleInterface({ id: MeetingTypePeriodicEnum.Daily, title: 'daily' }),
+  new TitleInterface({ id: MeetingTypePeriodicEnum.Weekly, title: 'Weekly' }),
+  new TitleInterface({ id: MeetingTypePeriodicEnum.Monthly, title: 'Monthly' }),
+  new TitleInterface({ id: MeetingTypePeriodicEnum.yearly, title: 'yearly' }),
+  new TitleInterface({ id: MeetingTypePeriodicEnum.dates, title: 'dates' }),
+])
+const updateDays = (data) => {
+  // NumberOfDays.value = data
+  console.log(NumberOfDays.value, 'NumberOfDays.value')
+  updateData()
+}
 </script>
 
 <template>
@@ -119,15 +157,38 @@ onMounted(fetchLanguages)
     <LangTitleInput
       :langs="languages"
       :model-value="titles"
-      :label="$t('ppe_item_title')"
-      :placeholder="$t('enter_ppe_item_title')"
+      :label="$t('meeting_type_title')"
+      :placeholder="$t('enter_meeting_type_title')"
       @update:model-value="setTitles"
     />
     <p v-if="requiredFieldErrors.title" class="required-field-message">
       {{ requiredFieldErrors.title }}
     </p>
   </div>
-
+  <div class="col-span-4 md:col-span-2">
+    <UpdatedCustomInputSelect
+      id="meeting type"
+      v-model="SelectedType"
+      :label="$t('Periodic Type')"
+      :placeholder="$t('Select Periodic Type')"
+      :static-options="MeetingTYpesOptions"
+      required
+    />
+  </div>
+  <div
+    class="col-span-4 md:col-span-2 input-wrapper"
+    v-if="SelectedType?.id != MeetingTypePeriodicEnum.Daily"
+  >
+    <label for="number-of-days">number of days</label>
+    <input
+      id="number-of-days"
+      class="input"
+      type="number"
+      v-model="NumberOfDays"
+      @input="updateDays"
+      placeholder="enter dayes number"
+    />
+  </div>
 </template>
 
 <style scoped>

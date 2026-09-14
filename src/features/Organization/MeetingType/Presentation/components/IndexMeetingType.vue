@@ -171,7 +171,7 @@ const headerActions = () => [
   },
   {
     text: t('add_ppe_item'),
-    link: `${basePath.value}/ppe-item/add`,
+    link: `${basePath.value}/meeting-types/add`,
     icon: ActionsListAddIcon,
     primary: true,
     type: ActionItemsTypeEnum.Info,
