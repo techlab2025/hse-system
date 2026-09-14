@@ -9,8 +9,8 @@ const emit = defineEmits<{ (e: 'uploaded'): void }>()
 import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue'
 import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue'
 import PpeItemModel from '../../Data/models/MangementChangeTopicTypeModel'
-import AddPpeItemController from '../controllers/addMangementChangeTopicTypeController'
-import AddPpeItemExcelParams from '../../Core/params/addMangementChangeTopicTypeExcelParams'
+import AddMangementChangeTopicTypeController from '../controllers/addMangementChangeTopicTypeController';
+import AddMangementChangeTopicTypeExcelParams from '../../Core/params/addMangementChangeTopicTypeExcelParams';
 
 // ─── State ────────────────────────────────────────────────────────────────────
 const sheetData = ref<PpeItemModel[] | null>(null)
@@ -84,7 +84,7 @@ watch(
 // ─── Column Mapping ───────────────────────────────────────────────────────────
 const SendData = ref<string[]>(['title'])
 const SendDataLabels: Record<string, string> = {
-  title: 'PPE Item Title',
+  title: 'Mangement Change Item Title',
 }
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return
@@ -100,9 +100,9 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 }
 
 // ─── Submit ───────────────────────────────────────────────────────────────────
-const addPpeItemController = AddPpeItemController.getInstance()
+const addMangementChangeTopicTypeController = AddMangementChangeTopicTypeController.getInstance()
 
-const addPpeItems = async () => {
+const addMangementChangeTopicTypes = async () => {
   if (!mappedData.value) return
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
@@ -117,9 +117,9 @@ const addPpeItems = async () => {
     }
   })
 
-  const orgData = new AddPpeItemExcelParams({ data: dataAsObjects })
-  await addPpeItemController.addPpeItem(orgData, router)
-  if (addPpeItemController.isDataSuccess()) {
+  const orgData = new AddMangementChangeTopicTypeExcelParams({ data: dataAsObjects })
+  await addMangementChangeTopicTypeController.addMangementChangeTopicType(orgData, router)
+  if (addMangementChangeTopicTypeController.isDataSuccess()) {
     emit('uploaded')
   }
 }
@@ -212,7 +212,7 @@ const onMappingClose = () => {
           </div>
         </div>
 
-        <button class="btn-confirm" @click="addPpeItems">Confirm & Submit</button>
+        <button class="btn-confirm" @click="addMangementChangeTopicTypes">Confirm & Submit</button>
       </template>
     </template>
   </div>

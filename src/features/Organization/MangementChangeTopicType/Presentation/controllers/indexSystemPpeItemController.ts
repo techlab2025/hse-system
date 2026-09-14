@@ -2,13 +2,13 @@
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import type MangementChangeTopicTypeDetailsModel from '../../Data/models/MangementChangeTopicTypeDetailsModel'
+import type MangementChangeTopicTypeModel from '../../Data/models/MangementChangeTopicTypeModel'
 import IndexMangementChangeTopicTypeUseCase from '../../Domain/useCase/indexMangementChangeTopicTypeUseCase'
 
-export default class IndexSystemMamgementChangeTopicController extends SelectControllerInterface<
-  MangementChangeTopicTypeDetailsModel[]
+export default class IndexSystemMangementChangeTopicTypeController extends SelectControllerInterface<
+  MangementChangeTopicTypeModel[]
 > {
-  private static instance: IndexSystemMamgementChangeTopicController
+  private static instance: IndexSystemMangementChangeTopicTypeController
   private constructor() {
     super()
   }
@@ -16,7 +16,7 @@ export default class IndexSystemMamgementChangeTopicController extends SelectCon
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new IndexSystemMamgementChangeTopicController()
+      this.instance = new IndexSystemMangementChangeTopicTypeController()
     }
     return this.instance
   }
@@ -25,7 +25,7 @@ export default class IndexSystemMamgementChangeTopicController extends SelectCon
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<MangementChangeTopicTypeDetailsModel[]> =
+    const dataState: DataState<MangementChangeTopicTypeModel[]> =
       await this.IndexMangementChangeTopicTypeUseCase.call(params)
 
     this.setState(dataState)

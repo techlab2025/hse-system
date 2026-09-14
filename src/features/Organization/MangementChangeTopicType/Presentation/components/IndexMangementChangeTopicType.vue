@@ -28,6 +28,7 @@ import IndexMangementChangeTopicTypeParams from '../../Core/params/indexMangemen
 import DeleteMangementChangeTopicTypeParams from '../../Core/params/deleteMangementChangeTopicTypeParams.ts'
 import DeleteMangementChangeTopicTypeController from '../controllers/deleteMangementChangeTopicTypeController.ts'
 import SystemMangementChangeTopicType from '../supcomponents/SystemMangementChangeTopicType.vue'
+import UploadMangementChangeTopicTypeExcelSheet from './UploadMangementChangeTopicTypeExcelSheet.vue'
 
 const { t } = useI18n()
 const { user } = useUserStore()
@@ -170,7 +171,7 @@ const headerActions = () => [
     permission: featurePermissions,
   },
   {
-    text: t('add management change topic type'),
+    text: t('add management  topic'),
     link: `${basePath.value}/management-change-topic-type/add`,
     icon: ActionsListAddIcon,
     primary: true,
@@ -202,7 +203,7 @@ const headerActions = () => [
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ActionsList
-        feature-name="action_feature_management_change_topic_types"
+        feature-name="action management types"
         :show-actions="true"
         :action-list="headerActions()"
         :actions-number="5"
@@ -274,7 +275,7 @@ const headerActions = () => [
     :header="$t('import management change topic types')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <UploadManagementChangeTopicTypeExcelSheet
+    <UploadMangementChangeTopicTypeExcelSheet
       :initial-file="pendingFile"
       @uploaded="onUploaded"
     />
