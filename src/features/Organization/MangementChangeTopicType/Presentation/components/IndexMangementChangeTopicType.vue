@@ -23,19 +23,18 @@ import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enu
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import IndexPpeItemController from '../controllers/indexPpeItemController'
-import IndexPpeItemParams from '../../Core/params/indexPpeItemParams'
-import DeletePpeItemParams from '../../Core/params/deletePpeItemParams'
-import DeletePpeItemController from '../controllers/deletePpeItemController'
-import SystemPpeItems from '../supcomponents/SystemPpeItems.vue'
-import UploadPpeItemExcelSheet from './UploadPpeItemExcelSheet.vue'
+import IndexMangementChangeTopicTypeController from '../controllers/indexMangementChangeTopicTypeController.ts'
+import IndexMangementChangeTopicTypeParams from '../../Core/params/indexMangementChangeTopicTypeParams.ts'
+import DeleteMangementChangeTopicTypeParams from '../../Core/params/deleteMangementChangeTopicTypeParams.ts'
+import DeleteMangementChangeTopicTypeController from '../controllers/deleteMangementChangeTopicTypeController.ts'
+import SystemMangementChangeTopicType from '../supcomponents/SystemMangementChangeTopicType.vue'
 
 const { t } = useI18n()
 const { user } = useUserStore()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
-const controller = IndexPpeItemController.getInstance()
+const controller = IndexMangementChangeTopicTypeController.getInstance()
 const state = ref(controller.state.value)
 const basePath = computed(() =>
   user?.type === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization',
@@ -44,37 +43,37 @@ const basePath = computed(() =>
 const featurePermissions = [
   PermissionsEnum.ADMIN,
   PermissionsEnum.ORGANIZATION_EMPLOYEE,
-  PermissionsEnum.PPE_ITEM_ALL,
-  PermissionsEnum.PPE_ITEM_FETCH,
-  PermissionsEnum.PPE_ITEM_DETAILS,
-  PermissionsEnum.PPE_ITEM_CREATE,
-  PermissionsEnum.PPE_ITEM_UPDATE,
-  PermissionsEnum.PPE_ITEM_DELETE,
-  PermissionsEnum.ORG_PPE_ITEM_ALL,
-  PermissionsEnum.ORG_PPE_ITEM_FETCH,
-  PermissionsEnum.ORG_PPE_ITEM_DETAILS,
-  PermissionsEnum.ORG_PPE_ITEM_CREATE,
-  PermissionsEnum.ORG_PPE_ITEM_UPDATE,
-  PermissionsEnum.ORG_PPE_ITEM_DELETE,
+  PermissionsEnum.MANAGEMENT_CHANGE_TOPIC_TYPE_ALL,
+  PermissionsEnum.MANAGEMENT_CHANGE_TOPIC_TYPE_FETCH,
+  PermissionsEnum.MANAGEMENT_CHANGE_TOPIC_TYPE_DETAILS,
+  PermissionsEnum.MANAGEMENT_CHANGE_TOPIC_TYPE_CREATE,
+  PermissionsEnum.MANAGEMENT_CHANGE_TOPIC_TYPE_UPDATE,
+  PermissionsEnum.MANAGEMENT_CHANGE_TOPIC_TYPE_DELETE,
+  PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL,
+  PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_FETCH,
+  PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_DETAILS,
+  PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_CREATE,
+  PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_UPDATE,
+  PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_DELETE,
 ]
 const createPermissions = [
   PermissionsEnum.ADMIN,
   PermissionsEnum.ORGANIZATION_EMPLOYEE,
-  PermissionsEnum.PPE_ITEM_ALL,
-  PermissionsEnum.PPE_ITEM_CREATE,
-  PermissionsEnum.ORG_PPE_ITEM_ALL,
-  PermissionsEnum.ORG_PPE_ITEM_CREATE,
+  PermissionsEnum.MANAGEMENT_CHANGE_TOPIC_TYPE_ALL,
+  PermissionsEnum.MANAGEMENT_CHANGE_TOPIC_TYPE_CREATE,
+  PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL,
+  PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_CREATE,
 ]
 
-const fetchPpeItems = async (
+const fetchmanagementChangeTopicTypes = async (
   query: string = '',
   page: number = 1,
   limit: number = 10,
 ) => {
-  await controller.getData(new IndexPpeItemParams(query, page, limit, 1))
+  await controller.getData(new IndexMangementChangeTopicTypeParams(query, page, limit, 1))
 }
 
-onMounted(() => fetchPpeItems())
+onMounted(() => fetchmanagementChangeTopicTypes())
 watch(
   () => controller.state.value,
   (value) => {
@@ -83,53 +82,53 @@ watch(
   { deep: true },
 )
 
-const searchPpeItems = debounce(() => fetchPpeItems(word.value))
+const searchmanagementChangeTopicTypes = debounce(() => fetchmanagementChangeTopicTypes(word.value))
 const changePage = (page: number) => {
   currentPage.value = page
-  fetchPpeItems(word.value, page, countPerPage.value)
+  fetchmanagementChangeTopicTypes(word.value, page, countPerPage.value)
 }
 const changePageSize = (limit: number) => {
   countPerPage.value = limit
-  fetchPpeItems(word.value, currentPage.value, limit)
+  fetchmanagementChangeTopicTypes(word.value, currentPage.value, limit)
 }
-const deletePpeItem = async (id: number) => {
-  await DeletePpeItemController.getInstance().deletePpeItem(new DeletePpeItemParams(id))
-  await fetchPpeItems(word.value, currentPage.value, countPerPage.value)
+const deleteManagementChangeTopicType = async (id: number) => {
+  await DeleteMangementChangeTopicTypeController.getInstance().deleteMangementChangeTopicType(new DeleteMangementChangeTopicTypeParams(id))
+  await fetchmanagementChangeTopicTypes(word.value, currentPage.value, countPerPage.value)
 }
 
 const rowActions = (id: number) => [
   {
     text: t('edit'),
     icon: ActionsTableEdit,
-    link: `${basePath.value}/ppe-item/${id}`,
+    link: `${basePath.value}/management-change-topic-type/${id}`,
     permission: [
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.PPE_ITEM_ALL,
-      PermissionsEnum.PPE_ITEM_UPDATE,
-      PermissionsEnum.ORG_PPE_ITEM_ALL,
-      PermissionsEnum.ORG_PPE_ITEM_UPDATE,
+      PermissionsEnum.MANAGEMENT_CHANGE_TOPIC_TYPE_ALL,
+      PermissionsEnum.MANAGEMENT_CHANGE_TOPIC_TYPE_UPDATE,
+      PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL,
+      PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_UPDATE,
     ],
   },
   {
     text: t('delete'),
     icon: IconDelete,
-    action: () => deletePpeItem(id),
+    action: () => deleteManagementChangeTopicType(id),
     permission: [
       PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE, 
-      PermissionsEnum.PPE_ITEM_ALL,
-      PermissionsEnum.PPE_ITEM_DELETE,
-      PermissionsEnum.ORG_PPE_ITEM_ALL,
-      PermissionsEnum.ORG_PPE_ITEM_DELETE,
-    ], 
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.MANAGEMENT_CHANGE_TOPIC_TYPE_ALL,
+      PermissionsEnum.MANAGEMENT_CHANGE_TOPIC_TYPE_DELETE,
+      PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL,
+      PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_DELETE,
+    ],
   },
 ]
 
 const saveWorkbook = (rows: Record<string, unknown>[], filename: string) => {
   const worksheet = XLSX.utils.json_to_sheet(rows)
   const workbook = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'PPE Items')
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Management Change Topic Types')
   XLSX.writeFile(workbook, filename)
 }
 const exportExcel = () =>
@@ -137,12 +136,12 @@ const exportExcel = () =>
     (state.value.data ?? []).map((item: any) => ({
       title: item.title ?? '',
     })),
-    'ppe_items.xlsx',
+    'management_change_topic_types.xlsx',
   )
 const downloadExample = () =>
   saveWorkbook(
     [{ title: 'Safety helmet' }],
-    'ppe_item_template.xlsx',
+    'management_change_topic_type_template.xlsx',
   )
 
 const showUploadDialog = ref(false)
@@ -159,7 +158,7 @@ const onFileSelected = (event: Event) => {
 const onUploaded = () => {
   showUploadDialog.value = false
   pendingFile.value = null
-  fetchPpeItems()
+  fetchmanagementChangeTopicTypes()
 }
 
 const headerActions = () => [
@@ -171,8 +170,8 @@ const headerActions = () => [
     permission: featurePermissions,
   },
   {
-    text: t('add_ppe_item'),
-    link: `${basePath.value}/ppe-item/add`,
+    text: t('add management change topic type'),
+    link: `${basePath.value}/management-change-topic-type/add`,
     icon: ActionsListAddIcon,
     primary: true,
     type: ActionItemsTypeEnum.Info,
@@ -198,12 +197,12 @@ const headerActions = () => [
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchPpeItems())"><Search /></span>
-      <input v-model="word" :placeholder="$t('search')" class="input" @input="searchPpeItems" />
+      <span class="icon-remove" @click="((word = ''), searchmanagementChangeTopicTypes())"><Search /></span>
+      <input v-model="word" :placeholder="$t('search')" class="input" @input="searchmanagementChangeTopicTypes" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ActionsList
-        feature-name="action_feature_ppe_items"
+        feature-name="action_feature_management_change_topic_types"
         :show-actions="true"
         :action-list="headerActions()"
         :actions-number="5"
@@ -211,7 +210,7 @@ const headerActions = () => [
         <template #custom><ExportPdf :is-drop-list="true" /></template>
       </ActionsList>
     </div>
-    <SystemPpeItems
+  <SystemMangementChangeTopicType
       v-if="user?.type !== OrganizationTypeEnum.ADMIN"
       :is-header-tap="true"
     />
@@ -248,18 +247,18 @@ const headerActions = () => [
       <template #initial><TableLoader :cols="3" :rows="10" /></template>
       <template #empty>
         <DataEmpty
-          :link="`${basePath}/ppe-item/add`"
-          :add-text="$t('add_ppe_item')"
-          :description="$t('no_ppe_items_description')"
-          :title="$t('no_ppe_items')"
-        />
+          :link="`${basePath}/management-change-topic-type/add`"
+          :add-text="$t('add_management_change_topic_type')"
+          :description="$t('no_management_change_topic_types_description')"
+          :title="$t('no_management_change_topic_types')"
+        /> 
       </template>
       <template #failed>
         <DataFailed
-          :link="`${basePath}/ppe-item/add`"
-          :add-text="$t('add_ppe_item')"
-          :description="$t('no_ppe_items_description')"
-          :title="$t('no_ppe_items')"
+          :link="`${basePath}/management-change-topic-type/add`"
+          :add-text="$t('add_management_change_topic_type')"
+          :description="$t('no_management_change_topic_types_description')"
+          :title="$t('no_management_change_topic_types')"
         />
       </template>
     </DataStatus>
@@ -272,10 +271,10 @@ const headerActions = () => [
     v-model:visible="showUploadDialog"
     modal
     :dismissable-mask="true"
-    :header="$t('import_ppe_items')"
+    :header="$t('import management change topic types')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <UploadPpeItemExcelSheet
+    <UploadManagementChangeTopicTypeExcelSheet
       :initial-file="pendingFile"
       @uploaded="onUploaded"
     />

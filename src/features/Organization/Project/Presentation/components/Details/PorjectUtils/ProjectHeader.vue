@@ -14,7 +14,7 @@ const props = defineProps<{
 }>()
 </script>
 <template>
-  <header class="project-header-container">
+  <header class="project-header-container"> 
     <span class="header-orbit orbit-one" aria-hidden="true"></span>
     <span class="header-orbit orbit-two" aria-hidden="true"></span>
 
