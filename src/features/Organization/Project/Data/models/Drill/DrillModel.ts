@@ -36,7 +36,7 @@ export default class DrillModel {
       String(data.time ?? ''),
       String(data.evaluation ?? ''),
       String(data.improvement ?? ''),
-      String(data.notes ?? ''),
+      String(data.notes ?? data.note),
       new TitleInterface({
         id: Number(drillType.id ?? data.drill_type_id ?? 0),
         title: String(drillType.title ?? data.drill_type_title ?? ''),

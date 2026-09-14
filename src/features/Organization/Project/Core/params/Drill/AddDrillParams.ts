@@ -25,7 +25,7 @@ export default class AddDrillParams implements Params {
       time: formatTime(this.time),
       evaluation: this.evaluation,
       improvement: this.improvement,
-      notes: this.notes,
+      note: this.notes,
     }
 
     if (useProjectAppStatusStore().isSerialNumberAuto()) data.serial_number = this.serial

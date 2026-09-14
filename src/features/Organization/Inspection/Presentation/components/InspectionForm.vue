@@ -197,6 +197,7 @@ const updateData = () => {
         IsInLibrary.value,
         DataParams.value?.SelectedEquipment,
         SerialNumber.value,
+        isAuditCreation.value ? true : false,
       )
 
   emit('update:data', params)
@@ -535,7 +536,6 @@ defineExpose({
             data-required-field="SelectedEquipment"
             v-if="!id && SelectedAssigned === AssignToTypeEnum.MACHINE && !route.query.project_id"
           >
-
             <UpdatedCustomInputSelect
               class="input"
               :modelValue="SelectedEquipment"

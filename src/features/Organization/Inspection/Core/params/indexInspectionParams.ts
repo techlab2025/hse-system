@@ -15,6 +15,7 @@ export default class IndexInspectionParams implements Params {
   public taskId?: number
   public inspectionType?: number
   public date?: string
+  public isAudit?: boolean
 
   constructor(
     word: string,
@@ -28,6 +29,7 @@ export default class IndexInspectionParams implements Params {
     taskId?: number,
     inspectionType?: number,
     date?: string,
+    isAudit?: boolean,
     // code?: LangEnum,
   ) {
     this.word = word
@@ -41,6 +43,7 @@ export default class IndexInspectionParams implements Params {
     this.taskId = taskId
     this.inspectionType = inspectionType
     this.date = date
+    this.isAudit = isAudit
     // this.code = code
   }
 
@@ -70,6 +73,7 @@ export default class IndexInspectionParams implements Params {
     if (this.taskId) data['task_id'] = this.taskId
     if (this.inspectionType != null) data['inspection_type'] = this.inspectionType
     if (this.date) data['date'] = this.date
+    if (this.isAudit) data['is_audit'] = this.isAudit
     // if (this.code) data['code'] = this.code
     return data
   }

@@ -103,6 +103,7 @@ const fetchInspection = async (
     route.query.typeId ? Number(route.query.typeId) : null,
     filterInspectionType.value ?? undefined,
     filterDate.value,
+    isAuditPage.value ? true : false,
   )
   const res = await indexInspectionController.getData(deleteInspectionParams)
   console.log(res, 'res')
@@ -124,6 +125,7 @@ const InspectionFormTasks = async (
     selectedProjctesFilters.value || null,
     filterInspectionType.value ?? undefined,
     filterDate.value,
+    isAuditPage.value ? true : false,
   )
   const res = await fetchAllTasksController.getData(fetchAllTasksParams)
 }
@@ -143,6 +145,7 @@ const InspectionsResultsTasks = async (
     selectedProjctesFilters.value || null,
     filterInspectionType.value ?? undefined,
     filterDate.value,
+    isAuditPage.value ? true : false,
   )
   const res = await fetchInspectionsResultsController.getData(fetchInspectionsResultsParams)
 }
@@ -530,7 +533,7 @@ const selectedProject = useProjectSelectStore()
           >
             <router-link :to="auditCreateRoute">
               <button class="btn btn-primary create-inspection-btn">
-                {{ $t('Create Inspection') }}
+                {{ $t('Create Audit') }}
               </button>
             </router-link>
           </PermissionBuilder>
@@ -571,9 +574,13 @@ const selectedProject = useProjectSelectStore()
               ]"
             >
               <DataFailed
-                :link="`/organization/equipment-mangement/inspection/add`"
-                addText="Add Inspection"
-                description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
+                :link="isAuditPage ? auditCreateRoute : `/organization/equipment-mangement/inspection/add`"
+                :addText="isAuditPage ? `Create Audit`: `Add Inspection`"
+                :description="
+                  isAuditPage
+                    ? ` `
+                    : `You have no Inspection .. All your joined customers will appear here when you add your customer data`
+                "
                 title="You have No Inspection"
               />
             </PermissionBuilder>

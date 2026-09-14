@@ -10,6 +10,8 @@ export default class FetchInspectionsResultsParams implements Params {
   public projectIds?: number | number[]
   public inspectionType?: number
   public date?: string
+  public isAudit?: boolean
+
   // public id: number
 
   constructor(
@@ -21,6 +23,8 @@ export default class FetchInspectionsResultsParams implements Params {
     projectIds?: number | number[],
     inspectionType?: number,
     date?: string,
+    isAudit?: boolean,
+
     // id: number,
   ) {
     this.word = word
@@ -31,11 +35,12 @@ export default class FetchInspectionsResultsParams implements Params {
     this.projectIds = projectIds
     this.inspectionType = inspectionType
     this.date = date
+    this.isAudit = isAudit
     // this.id = id
   }
 
-  toMap(): Record<string, number | string | number[]> {
-    const data: Record<string, number | string | number[]> = {}
+  toMap(): Record<string, number | string | number[] |any> {
+    const data: Record<string, number | string | number[]  |any> = {}
     const headerProjectId = Number(useProjectSelectStore().getProjectId())
     const explicitProjectIds = Array.isArray(this.projectIds)
       ? this.projectIds
@@ -57,6 +62,7 @@ export default class FetchInspectionsResultsParams implements Params {
     if (projectIds.length > 0) data['project_ids'] = projectIds
     if (this.inspectionType != null) data['inspection_type'] = this.inspectionType
     if (this.date) data['date'] = this.date
+    if (this.isAudit) data['is_audit'] = this.isAudit
 
     // data['task_id'] = this.id
     return data

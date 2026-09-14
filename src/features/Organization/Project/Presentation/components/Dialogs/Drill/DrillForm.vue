@@ -129,14 +129,14 @@ onMounted(loadTeams)
         <small v-if="serialIsAuto">{{ $t('Automatic serial numbering is enabled') }}</small>
       </div>
 
-      <div class="input-wrapper full-field">
+      <!-- <div class="input-wrapper full-field">
         <div class="field-label"><label for="drill_evaluation">{{ $t('Evaluation') }}</label><FieldHelpIcon text="Record the initial drill evaluation." /></div>
         <textarea id="drill_evaluation" v-model="evaluation" class="input" :placeholder="$t('Enter evaluation')"></textarea>
       </div>
       <div class="input-wrapper full-field">
         <div class="field-label"><label for="drill_improvement">{{ $t('Improvement') }}</label><FieldHelpIcon text="Describe opportunities for improvement." /></div>
         <textarea id="drill_improvement" v-model="improvement" class="input" :placeholder="$t('Enter improvement opportunities')"></textarea>
-      </div>
+      </div> -->
       <div class="input-wrapper full-field">
         <div class="field-label"><label for="drill_notes">{{ $t('notes') }}</label><FieldHelpIcon text="Add any supporting notes for this drill." /></div>
         <textarea id="drill_notes" v-model="notes" class="input" :placeholder="$t('Enter notes')"></textarea>

@@ -10,6 +10,9 @@ export interface DrillActionInput {
   notes: string
   photographerName: string
   images: Array<string | FileBase64>
+  projectLocationEmployee: number
+  evaluation: string
+  improvement: string
 }
 
 export default class AddDrillActionParams implements Params {
@@ -30,6 +33,9 @@ export default class AddDrillActionParams implements Params {
         notes: item.notes,
         photographer_name: item.photographerName,
         attachments: item.images,
+        plh_employee_id: item.projectLocationEmployee,
+        evaluation: item.evaluation,
+        improvement: item.improvement,
       })),
     }
   }

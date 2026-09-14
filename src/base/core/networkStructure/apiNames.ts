@@ -1833,10 +1833,29 @@ class ApiNames {
   public get RefreshNotification() {
     return this.baseUrl + this.organizationPrefix + 'register_notification_socket_user'
   }
-  public get CloneAllData(){
+  public get CloneAllData() {
     return this.baseUrl + this.organizationPrefix + 'clone_all_data'
-
   }
+
+  public get ShowMeetingType() {
+    return this.baseUrl + this.organizationPrefix + 'show_meeting_type'
+  }
+  public get CreateMeetingType() {
+    return this.baseUrl + this.organizationPrefix + 'craete_meeting_type'
+  }
+  public get DeleteMeetingType() {
+    return this.baseUrl + this.organizationPrefix + 'delete_meeting_type'
+  }
+  public get EditMeetingType() {
+    return this.baseUrl + this.organizationPrefix + 'edit_meeting_type'
+  }
+  public get IndexMeetingType() {
+    return this.baseUrl + this.organizationPrefix + 'index_meeting_type'
+  }
+  public get CloneMeetingType() {
+    return this.baseUrl + this.organizationPrefix + 'clone_meeting_type'
+  }
+  // CloneMeetingType
 }
 
 export { ApiNames }

@@ -66,7 +66,7 @@ const saved = () => {
     <span class="drill-card-accent"></span>
     <span class="drill-card-main">
       <span class="drill-card-kicker">{{ drill.drillType.title || $t('Drill') }}</span>
-      <strong>{{ drill.serialNumber  || `Drill #${drill.id}` }}</strong>
+      <strong>{{ drill.serialNumber || `Drill #${drill.id}` }}</strong>
       <small>{{ drill.date || '—' }} · {{ drill.time || '—' }}</small>
     </span>
     <span class="drill-card-status"
@@ -101,34 +101,34 @@ const saved = () => {
     </template>
 
     <div class="drill-detail-summary">
-      <div>
+      <div v-if="drill.date">
         <span>{{ $t('date') }}</span
         ><strong>{{ drill.date || '—' }}</strong>
       </div>
-      <div>
+      <div v-if="drill.time">
         <span>{{ $t('time') }}</span
         ><strong>{{ drill.time || '—' }}</strong>
       </div>
-      <div>
+      <div v-if="drill.projectTeam.title">
         <span>{{ $t('Project Team') }}</span
         ><strong>{{ drill.projectTeam.title || '—' }}</strong>
       </div>
-      <div>
+      <div v-if="drill.drillType.title">
         <span>{{ $t('Drill Type') }}</span
         ><strong>{{ drill.drillType.title || '—' }}</strong>
       </div>
     </div>
 
     <div class="drill-detail-copy">
-      <article>
+      <article v-if="drill.evaluation">
         <span>{{ $t('Evaluation') }}</span>
         <p>{{ drill.evaluation || '—' }}</p>
       </article>
-      <article>
+      <article v-if="drill.improvement">
         <span>{{ $t('Improvement') }}</span>
         <p>{{ drill.improvement || '—' }}</p>
       </article>
-      <article>
+      <article v-if="drill.notes">
         <span>{{ $t('notes') }}</span>
         <p>{{ drill.notes || '—' }}</p>
       </article>
@@ -171,18 +171,23 @@ const saved = () => {
       @saved="saved"
     />
 
-    <div v-else-if="(plansLoading && !displayedPlans.length) || (actionsLoading && !displayedActions.length)" class="loading-plans">
+    <div
+      v-else-if="
+        (plansLoading && !displayedPlans.length) || (actionsLoading && !displayedActions.length)
+      "
+      class="loading-plans"
+    >
       {{ $t('Loading drill timeline...') }}
     </div>
 
-    <p v-else-if="actionsError && !displayedPlans.length && !displayedActions.length" class="timeline-error">
+    <p
+      v-else-if="actionsError && !displayedPlans.length && !displayedActions.length"
+      class="timeline-error"
+    >
       {{ actionsError }}
     </p>
 
-    <section
-      v-else-if="displayedPlans.length || displayedActions.length"
-      class="saved-timelines"
-    >
+    <section v-else-if="displayedPlans.length || displayedActions.length" class="saved-timelines">
       <div v-if="displayedPlans.length" class="saved-timeline-group">
         <div class="saved-title">
           <span>01</span>
@@ -227,7 +232,12 @@ const saved = () => {
             <p>{{ item.description }}</p>
             <em v-if="item.notes">{{ item.notes }}</em>
             <div v-if="item.images.length" class="saved-images">
-              <img v-for="image in item.images" :key="image" :src="image" alt="Drill evidence" />
+              <img
+                v-for="image in item.images"
+                :key="image"
+                :src="image.url"
+                alt="Drill evidence"
+              />
             </div>
           </div>
         </article>

@@ -24,6 +24,7 @@ import { InjuryRoutes } from '../organization/Injury'
 import { incidentCategoryRoutes } from './incidentCategories'
 import { drillTypeRoutes } from './drillType'
 import { ppeItemRoutes } from './ppeItem'
+import { MeetingTypeRoutes } from './meeting_type'
 
 export const sharedRoutes: RouteRecordRaw[] = [
   ...accidentsRoutes,
@@ -51,4 +52,5 @@ export const sharedRoutes: RouteRecordRaw[] = [
   ...ticketRoutes,
   ...WhereHouseTypeRoutes,
   ...InjuryRoutes,
+  ...MeetingTypeRoutes
 ]
