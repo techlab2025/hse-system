@@ -210,6 +210,9 @@ const headerActions = () => [
       >
         <template #custom><ExportPdf :is-drop-list="true" /></template>
       </ActionsList>
+       <router-link to="/organization/management-of-change">
+          dddddddd
+      </router-link>
     </div>
   <SystemMangementChangeTopicType
       v-if="user?.type !== OrganizationTypeEnum.ADMIN"

@@ -18,6 +18,7 @@ const props = defineProps<{
     <span class="header-orbit orbit-one" aria-hidden="true"></span>
     <span class="header-orbit orbit-two" aria-hidden="true"></span>
 
+
     <div class="project-identity">
       <div class="project-heading">
         <span class="project-mark" aria-hidden="true">
@@ -31,6 +32,7 @@ const props = defineProps<{
           <h1 class="project-name">{{ projectName || t('Project') }}</h1>
         </div>
       </div>
+
 
       <div class="project-serial">
         <span>{{ t('serial') }}</span>
