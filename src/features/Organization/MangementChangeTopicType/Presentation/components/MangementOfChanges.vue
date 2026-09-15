@@ -1,71 +1,141 @@
-```vue
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
+
 import AddMangementChangeParams from '../../Core/params/addMangementChangeParams'
 import AddMangementChangeController from '../controllers/addMangementChangeController'
+
 import { MangementChangeTopicTypeEnum } from '../../Core/Core/MangementChangeTopicTypeEnum'
 import { ChangeTypeMangementEnum } from '../../Core/Core/ChangeTypeEnum'
 import { ChangeApprovalMangementEnum } from '../../Core/Core/ChangeApprovalEnum'
+
 import IndexMangementChangeTopicTypeParams from '../../Core/params/indexMangementChangeTopicTypeParams'
 import IndexMangementChangeTopicTypeController from '../controllers/indexMangementChangeTopicTypeController'
+
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
+
 import DatePicker from 'primevue/datepicker'
 import { useRoute } from 'vue-router'
+
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
 
+import HandleFIlesUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
+
 const riskAssismentFile = ref<File | null>(null)
 const images = ref<File[]>([])
+
 const changerRequestId = ref<number | null>(null)
+
 const facilty = ref('')
 const area = ref('')
+
 const date = ref<Date | null>(new Date())
+
 const changeType = ref(ChangeTypeMangementEnum.temp)
-const topicType = ref(MangementChangeTopicTypeEnum.employee)
+
+const topicType = ref<MangementChangeTopicTypeEnum>(
+  MangementChangeTopicTypeEnum.employee,
+)
+
+const selectedTopicType = ref<number | null>(null)
+
 const status = ref(ChangeApprovalMangementEnum.approve)
+
 const approvalBy = ref<number | null>(null)
 const employeeId = ref<number | null>(null)
 const equipmentId = ref<number | null>(null)
+
 const topicText = ref('')
+
 const errorMessage = ref('')
 const successMessage = ref('')
+
 const Selectedmangement = ref<TitleInterface | null>(null)
 const Selectedemployee = ref<TitleInterface | null>(null)
 const Selectedemployeeid = ref<TitleInterface | null>(null)
 const Selectedequipment = ref<TitleInterface | null>(null)
 
-const selectedTopicType = computed(
-  () => Selectedmangement.value?.type ?? null,
-)
-
 const route = useRoute()
+
 const projectId = Number(route.query.project_id)
 
-const indexMangementChangeTopicTypeController = IndexMangementChangeTopicTypeController.getInstance()
-const indexMangementChangeTopicTypeParams = new IndexMangementChangeTopicTypeParams('', 1, 10000, 1)
+/*
+|--------------------------------------------------------------------------
+| Management / Topic Type
+|--------------------------------------------------------------------------
+*/
 
-const indexequipmentController = IndexEquipmentController.getInstance()
-const indexequipmentParams = new IndexEquipmentParams('', 1, 10000, 1)
+const indexMangementChangeTopicTypeController =
+  IndexMangementChangeTopicTypeController.getInstance()
 
-const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
-const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 1)
-const indexOrganizatoinEmployeeidParams = new IndexOrganizatoinEmployeeParams(
-  '',
-  1,
-  10,
-  1,
-  null,
-  null,
-  false,
-  null,
-  null,
-  false,
-  Number.isInteger(projectId) && projectId > 0 ? projectId : null,
-)
+const indexMangementChangeTopicTypeParams =
+  new IndexMangementChangeTopicTypeParams(
+    '',
+    1,
+    10000,
+    1,
+  )
+
+/*
+|--------------------------------------------------------------------------
+| Equipment
+|--------------------------------------------------------------------------
+*/
+
+const indexEquipmentController =
+  IndexEquipmentController.getInstance()
+
+const indexEquipmentParams =
+  new IndexEquipmentParams(
+    '',
+    1,
+    10000,
+    1,
+  )
+
+/*
+|--------------------------------------------------------------------------
+| Employees
+|--------------------------------------------------------------------------
+*/
+
+const indexOrganizatoinEmployeeController =
+  IndexOrganizatoinEmployeeController.getInstance()
+
+const indexOrganizatoinEmployeeParams =
+  new IndexOrganizatoinEmployeeParams(
+    '',
+    1,
+    10,
+    1,
+  )
+
+const indexOrganizatoinEmployeeidParams =
+  new IndexOrganizatoinEmployeeParams(
+    '',
+    1,
+    10,
+    1,
+    null,
+    null,
+    false,
+    null,
+    null,
+    false,
+    Number.isInteger(projectId) && projectId > 0
+      ? projectId
+      : null,
+  )
+
+/*
+|--------------------------------------------------------------------------
+| Change Type
+|--------------------------------------------------------------------------
+*/
 
 const ChangeTypeMangementList = ref<TitleInterface[]>([
   new TitleInterface({
@@ -86,6 +156,11 @@ const selectedChangeTypeMangement = computed(
     ) ?? ChangeTypeMangementList.value[0],
 )
 
+/*
+|--------------------------------------------------------------------------
+| Change Approval
+|--------------------------------------------------------------------------
+*/
 
 const ChangeApprovalMangementList = ref<TitleInterface[]>([
   new TitleInterface({
@@ -106,30 +181,141 @@ const selectedChangeApprovalMangement = computed(
     ) ?? ChangeApprovalMangementList.value[0],
 )
 
+/*
+|--------------------------------------------------------------------------
+| Images
+|--------------------------------------------------------------------------
+*/
 
 const setImages = (files: File[]) => {
   images.value = files
 }
 
-const setRiskAssismentFile = (event: Event) => {
-  const input = event.target as HTMLInputElement
+/*
+|--------------------------------------------------------------------------
+| Risk Assessment File
+|--------------------------------------------------------------------------
+*/
 
-  riskAssismentFile.value = input.files?.[0] ?? null
+const handleFilesChange = (files: any) => {
+  console.log('FILES FROM UPLOADER:', files)
+  console.log('IS ARRAY:', Array.isArray(files))
+  console.log('FIRST FILE:', Array.isArray(files) ? files[0] : files)
+
+  const file = Array.isArray(files) ? files[0] : files
+
+  console.log('SELECTED FILE:', file)
+
+  if (!file) {
+    riskAssismentFile.value = null
+    return
+  }
+
+  if (file instanceof File) {
+    riskAssismentFile.value = file
+    return
+  }
+
+  riskAssismentFile.value =
+    file.file ??
+    file.rawFile ??
+    file.originalFile ??
+    null
+
+  console.log('RISK FILE:', riskAssismentFile.value)
+}
+/*
+|--------------------------------------------------------------------------
+| Management
+|--------------------------------------------------------------------------
+*/
+
+const setManagement = (data: TitleInterface | null) => {
+  Selectedmangement.value = data
+
+  if (!data) {
+    selectedTopicType.value = null
+    topicType.value = MangementChangeTopicTypeEnum.employee
+
+    Selectedemployee.value = null
+    Selectedequipment.value = null
+
+    approvalBy.value = null
+    equipmentId.value = null
+    topicText.value = ''
+
+    return
+  }
+
+  /*
+   * Important:
+   * Convert type to Number because API may return "1", "2", "3"
+   */
+  selectedTopicType.value =
+    data.type !== null && data.type !== undefined
+      ? Number(data.type)
+      : null
+
+  topicType.value =
+    selectedTopicType.value as MangementChangeTopicTypeEnum
+
+  /*
+   * Clear fields that belong to other topic types
+   */
+
+  Selectedemployee.value = null
+  Selectedequipment.value = null
+
+  approvalBy.value = null
+  equipmentId.value = null
+  topicText.value = ''
 }
 
+/*
+|--------------------------------------------------------------------------
+| Project Employee
+|--------------------------------------------------------------------------
+*/
+
+const setEmployee = (data: TitleInterface | null) => {
+  Selectedemployeeid.value = data
+
+  employeeId.value = data?.id ?? null
+}
+
+/*
+|--------------------------------------------------------------------------
+| Approval By
+|--------------------------------------------------------------------------
+*/
+
+const setApprovalBy = (data: TitleInterface | null) => {
+  Selectedemployee.value = data
+
+  approvalBy.value = data?.id ?? null
+}
+
+/*
+|--------------------------------------------------------------------------
+| Equipment
+|--------------------------------------------------------------------------
+*/
+
+const setequipment = (data: TitleInterface | null) => {
+  Selectedequipment.value = data
+
+  equipmentId.value = data?.id ?? null
+}
+
+/*
+|--------------------------------------------------------------------------
+| Submit
+|--------------------------------------------------------------------------
+*/
 
 const submit = async () => {
   errorMessage.value = ''
   successMessage.value = ''
-
-  if (
-    !riskAssismentFile.value ||
-    changerRequestId.value === null ||
-    approvalBy.value === null
-  ) {
-    errorMessage.value = 'Please complete the required fields.'
-    return
-  }
 
   const params = new AddMangementChangeParams(
     riskAssismentFile.value,
@@ -143,55 +329,38 @@ const submit = async () => {
     status.value,
     approvalBy.value,
 
-    topicType.value === MangementChangeTopicTypeEnum.employee
-      ? employeeId.value ?? undefined
-      : undefined,
+    /*
+     * Employee
+     */
+    employeeId.value ?? undefined,
 
+    /*
+     * Equipment
+     */
     topicType.value === MangementChangeTopicTypeEnum.equipment
       ? equipmentId.value ?? undefined
       : undefined,
 
+    /*
+     * Other
+     */
     topicType.value === MangementChangeTopicTypeEnum.other
       ? topicText.value || undefined
       : undefined,
   )
 
-  const controller = AddMangementChangeController.getInstance()
+  const controller =
+    AddMangementChangeController.getInstance()
 
   await controller.addMangementChange(params)
 
   if (controller.isDataSuccess()) {
-    successMessage.value = 'Management change created successfully.'
+    successMessage.value =
+      'Management change created successfully.'
   } else {
-    errorMessage.value = 'Unable to create management change.'
+    errorMessage.value =
+      'Unable to create management change.'
   }
-}
-const setManagement = (data: TitleInterface | null) => {
-  Selectedmangement.value = data
-  topicType.value = data?.type ?? MangementChangeTopicTypeEnum.employee
-  Selectedemployee.value = null
-  Selectedemployeeid.value = null
-  Selectedequipment.value = null
-  employeeId.value = null
-  equipmentId.value = null
-  topicText.value = ''
-  approvalBy.value = null
-  updateData()
-}
-const setEmployee = (data: TitleInterface | null) => {
-  Selectedemployeeid.value = data
-  employeeId.value = data?.id ?? null
-  updateData()
-}
-const setequipment = (data: TitleInterface | null) => {
-  Selectedequipment.value = data
-  equipmentId.value = data?.id ?? null
-  updateData()
-}
-const setApprovalBy = (data: TitleInterface | null) => {
-  Selectedemployee.value = data
-  approvalBy.value = data?.id ?? null
-  updateData()
 }
 </script>
 
@@ -200,18 +369,16 @@ const setApprovalBy = (data: TitleInterface | null) => {
     class="grid grid-cols-1 gap-4 md:grid-cols-4"
     @submit.prevent="submit"
   >
-    <!-- Risk Assessment File -->
-    <div class="input-wrapper col-span-4 md:col-span-2">
-      <label for="risk-assisment-file">
-        Risk assessment file
-      </label>
 
-      <input
-        id="risk-assisment-file"
-        class="input"
-        type="file"
-        required
-        @change="setRiskAssismentFile"
+    <!-- Risk Assessment File -->
+    <div class="col-span-4 md:col-span-2">
+      <HandleFIlesUpload
+        :label="$t('Risk assessment file')"
+        accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
+        :max-files="1"
+        :multiple="false"
+        className="input-file"
+        @change="handleFilesChange"
       />
     </div>
 
@@ -227,22 +394,6 @@ const setApprovalBy = (data: TitleInterface | null) => {
         @update:images="setImages"
       />
     </div>
-
-    <!-- Change Request ID -->
-    <!-- <div class="input-wrapper col-span-4 md:col-span-2">
-      <label for="changer-request-id">
-        Change request ID
-      </label>
-
-      <input
-        id="changer-request-id"
-        v-model.number="changerRequestId"
-        class="input"
-        type="number"
-        min="1"
-        required
-      />
-    </div> -->
 
     <!-- Facility -->
     <div class="input-wrapper col-span-4 md:col-span-2">
@@ -273,11 +424,16 @@ const setApprovalBy = (data: TitleInterface | null) => {
     </div>
 
     <!-- Date -->
-       <!-- Date -->
-  <div class="col-span-2 md:col-span-2 input-wrapper">
-    <label for="date">Date</label>
-    <DatePicker v-model="date" placeholder="Add your date" />
-  </div>
+    <div class="input-wrapper col-span-4 md:col-span-2">
+      <label for="date">
+        Date
+      </label>
+
+      <DatePicker
+        v-model="date"
+        placeholder="Add your date"
+      />
+    </div>
 
     <!-- Change Type -->
     <div class="input-wrapper col-span-4 md:col-span-2">
@@ -303,88 +459,98 @@ const setApprovalBy = (data: TitleInterface | null) => {
       />
     </div>
 
-   
-     <!-- Management -->
-  <div class="col-span-3 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="Selectedmangement"
-      class="input"
-      :controller="indexMangementChangeTopicTypeController"
-      :params="indexMangementChangeTopicTypeParams"
-      label="select management (optional)"
-      id="management"
-      placeholder="select your management"
-      @update:modelValue="setManagement"
-    />
-  </div>
-      <!-- equipment -->
-    <div v-if="selectedTopicType === MangementChangeTopicTypeEnum.equipment" class="col-span-3 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="Selectedequipment"
-      class="input"
-      :controller="indexequipmentController"
-      :params="indexequipmentParams"
-      label="select equipment (optional)"
-      id="equipment"
-      placeholder="select your equipment"
-      @update:modelValue="setequipment"
-    />
-  </div>
-  <!-- approval by -->
-  <div v-if="selectedTopicType === MangementChangeTopicTypeEnum.employee" class="col-span-3 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="Selectedemployee"
-      class="input"
-      :controller="indexOrganizatoinEmployeeController"
-      :params="indexOrganizatoinEmployeeParams"
-      label="select approvel by (optional)"
-      id="employee"
-      placeholder="select your employee"
-      @update:modelValue="setApprovalBy"
-    />
-  </div>
+    <!-- Project Employee -->
+    <div
+      class="col-span-4 md:col-span-2 input-wrapper"
+    >
+      <CustomSelectInput
+        :modelValue="Selectedemployeeid"
+        class="input"
+        :controller="indexOrganizatoinEmployeeController"
+        :params="indexOrganizatoinEmployeeidParams"
+        label="select employee (optional)"
+        id="project-employee"
+        placeholder="select your employee"
+        @update:modelValue="setEmployee"
+      />
+    </div>
 
-      <!-- employee filtered by project -->
-    <div v-if="selectedTopicType === MangementChangeTopicTypeEnum.employee" class="col-span-3 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="Selectedemployeeid"
-      class="input"
-      :controller="indexOrganizatoinEmployeeController"
-      :params="indexOrganizatoinEmployeeidParams"
-      label="select employee (optional)"
-      id="project-employee"
-      placeholder="select your employee"
-      @update:modelValue="setEmployee"
-    />
-  </div>
+    <!-- Management -->
+    <div
+      class="col-span-4 md:col-span-2 input-wrapper"
+    >
+      <CustomSelectInput
+        :modelValue="Selectedmangement"
+        class="input"
+        :controller="indexMangementChangeTopicTypeController"
+        :params="indexMangementChangeTopicTypeParams"
+        label="select management (optional)"
+        id="management"
+        placeholder="select your management"
+        @update:modelValue="setManagement"
+      />
+    </div>
 
-  <!-- other topic text -->
-  <div v-if="selectedTopicType === MangementChangeTopicTypeEnum.other" class="col-span-3 md:col-span-2 input-wrapper">
-    <label for="topic-text">Topic</label>
-    <input
-      id="topic-text"
-      v-model="topicText"
-      class="input"
-      type="text"
-      placeholder="Enter topic"
-    />
-  </div>
+    <!--
+      TYPE 1
+      Approval By
+    -->
+    <div
+      v-if="selectedTopicType === 1"
+      class="col-span-4 md:col-span-2 input-wrapper"
+    >
+      <CustomSelectInput
+        :modelValue="Selectedemployee"
+        class="input"
+        :controller="indexOrganizatoinEmployeeController"
+        :params="indexOrganizatoinEmployeeParams"
+        label="select approval by (optional)"
+        id="approval-by"
+        placeholder="select your employee"
+        @update:modelValue="setApprovalBy"
+      />
+    </div>
 
-    <!-- Approval By -->
-    <!-- <div class="input-wrapper col-span-4 md:col-span-2">
-      <label for="approval-by">
-        Approval by
+    <!--
+      TYPE 2
+      Equipment
+    -->
+    <div
+      v-if="selectedTopicType === 2"
+      class="col-span-4 md:col-span-2 input-wrapper"
+    >
+      <CustomSelectInput
+        :modelValue="Selectedequipment"
+        class="input"
+        :controller="indexEquipmentController"
+        :params="indexEquipmentParams"
+        label="select equipment (optional)"
+        id="equipment"
+        placeholder="select your equipment"
+        @update:modelValue="setequipment"
+      />
+    </div>
+
+    <!--
+      TYPE 3
+      Other / Text
+    -->
+    <div
+      v-if="selectedTopicType === 3"
+      class="col-span-4 md:col-span-2 input-wrapper"
+    >
+      <label for="topic-text">
+        Topic
       </label>
 
       <input
-        id="approval-by"
-        v-model.number="approvalBy"
+        id="topic-text"
+        v-model="topicText"
         class="input"
-        type="number"
-        min="1"
-        required
+        type="text"
+        placeholder="Enter topic"
       />
-    </div> -->
+    </div>
 
     <!-- Error -->
     <p
@@ -411,5 +577,17 @@ const setApprovalBy = (data: TitleInterface | null) => {
         Create management change
       </button>
     </div>
+
   </form>
 </template>
+
+<style scoped>
+:deep(.input-file) {
+  border: 1px solid var(--brand-primary-100) !important;
+  padding: 11px;
+  border-radius: 20px !important;
+  cursor: pointer;
+  color: var(--text-strong);
+  font-family: 'Light';
+}
+</style>

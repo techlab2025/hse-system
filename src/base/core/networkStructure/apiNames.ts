@@ -1493,7 +1493,7 @@ class ApiNames {
     return this.prefix + 'create_changement_topic'
   }
   public get CreateMangementChange() {
-    return this.prefix + 'create_mangement_change'
+    return this.prefix + 'create_management_of_change'
   }
   public get IndexMangementChangeTopicType() {
     return this.prefix + 'fetch_changement_topics'

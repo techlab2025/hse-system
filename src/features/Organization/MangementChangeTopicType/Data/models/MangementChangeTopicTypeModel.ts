@@ -2,12 +2,16 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import { MangementChangeTopicTypeEnum } from '../../Core/Core/MangementChangeTopicTypeEnum'
 
 export default class MangementChangeTopicTypeModel extends TitleInterface {
-  constructor(id: number, title: string , public status: MangementChangeTopicTypeEnum ) {
-    super({ id, title })
+  constructor(id: number, title: string, public type: MangementChangeTopicTypeEnum) {
+    super({ id, title, type })
   }
 
-  static fromMap(data: any): MangementChangeTopicTypeModel {
-    return new MangementChangeTopicTypeModel(data.id, data.title , data.status)
+  static fromMap(data: {
+    id: number
+    title: string
+    type: MangementChangeTopicTypeEnum
+  }): MangementChangeTopicTypeModel {
+    return new MangementChangeTopicTypeModel(data.id, data.title, data.type)
   }
 
   static example: MangementChangeTopicTypeModel[] = [
