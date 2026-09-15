@@ -50,7 +50,8 @@ export default class NetworkService {
           formData.append(key, value); // Append the file directly
         } else if (Array.isArray(value)) {
           value.forEach((item, index) => {
-            formData.append(`${key}[${index}]`, item as string | Blob);
+            const fieldName = key === "image" ? `${key}[]` : `${key}[${index}]`;
+            formData.append(fieldName, item as string | Blob);
           });
         } else {
           formData.append(key, value as string | Blob);
@@ -61,7 +62,6 @@ export default class NetworkService {
     return this.axiosInstance.post(url, formData, {
       headers: {
         ...headers ? headers : HeaderHandler.Instance.getHeader(isAuth),
-        "Content-Type": "multipart/form-data",
       },
       params: queryParams,
     });

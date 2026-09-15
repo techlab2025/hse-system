@@ -3,71 +3,48 @@ import { computed, ref } from 'vue'
 import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
-
 import AddMangementChangeParams from '../../Core/params/addMangementChangeParams'
 import AddMangementChangeController from '../controllers/addMangementChangeController'
-
 import { MangementChangeTopicTypeEnum } from '../../Core/Core/MangementChangeTopicTypeEnum'
 import { ChangeTypeMangementEnum } from '../../Core/Core/ChangeTypeEnum'
 import { ChangeApprovalMangementEnum } from '../../Core/Core/ChangeApprovalEnum'
-
 import IndexMangementChangeTopicTypeParams from '../../Core/params/indexMangementChangeTopicTypeParams'
 import IndexMangementChangeTopicTypeController from '../controllers/indexMangementChangeTopicTypeController'
-
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
-
 import DatePicker from 'primevue/datepicker'
 import { useRoute } from 'vue-router'
-
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
+import HandleFIlesUpload, {
+  type UploadedFile,
+} from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
+import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 
-import HandleFIlesUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
-
-const riskAssismentFile = ref<File | null>(null)
-const images = ref<File[]>([])
-
+const riskAssismentFile = ref<string | null>(null)
+const images = ref<{alt:string,file:string}[]>([])
 const changerRequestId = ref<number | null>(null)
-
 const facilty = ref('')
 const area = ref('')
-
 const date = ref<Date | null>(new Date())
-
 const changeType = ref(ChangeTypeMangementEnum.temp)
-
 const topicType = ref<MangementChangeTopicTypeEnum>(
   MangementChangeTopicTypeEnum.employee,
 )
-
 const selectedTopicType = ref<number | null>(null)
-
 const status = ref(ChangeApprovalMangementEnum.approve)
-
 const approvalBy = ref<number | null>(null)
 const employeeId = ref<number | null>(null)
 const equipmentId = ref<number | null>(null)
-
 const topicText = ref('')
-
 const errorMessage = ref('')
 const successMessage = ref('')
-
 const Selectedmangement = ref<TitleInterface | null>(null)
 const Selectedemployee = ref<TitleInterface | null>(null)
 const Selectedemployeeid = ref<TitleInterface | null>(null)
 const Selectedequipment = ref<TitleInterface | null>(null)
-
 const route = useRoute()
-
 const projectId = Number(route.query.project_id)
-
-/*
-|--------------------------------------------------------------------------
-| Management / Topic Type
-|--------------------------------------------------------------------------
-*/
 
 const indexMangementChangeTopicTypeController =
   IndexMangementChangeTopicTypeController.getInstance()
@@ -80,11 +57,6 @@ const indexMangementChangeTopicTypeParams =
     1,
   )
 
-/*
-|--------------------------------------------------------------------------
-| Equipment
-|--------------------------------------------------------------------------
-*/
 
 const indexEquipmentController =
   IndexEquipmentController.getInstance()
@@ -97,11 +69,6 @@ const indexEquipmentParams =
     1,
   )
 
-/*
-|--------------------------------------------------------------------------
-| Employees
-|--------------------------------------------------------------------------
-*/
 
 const indexOrganizatoinEmployeeController =
   IndexOrganizatoinEmployeeController.getInstance()
@@ -130,12 +97,39 @@ const indexOrganizatoinEmployeeidParams =
       ? projectId
       : null,
   )
+const formKey = ref(0)
+const resetForm = () => {
+  riskAssismentFile.value = null
+  images.value = []
 
-/*
-|--------------------------------------------------------------------------
-| Change Type
-|--------------------------------------------------------------------------
-*/
+  changerRequestId.value = null
+
+  facilty.value = ''
+  area.value = ''
+
+  date.value = new Date()
+
+  changeType.value = ChangeTypeMangementEnum.temp
+
+  topicType.value = MangementChangeTopicTypeEnum.employee
+  selectedTopicType.value = null
+
+  status.value = ChangeApprovalMangementEnum.approve
+
+  approvalBy.value = null
+  employeeId.value = null
+  equipmentId.value = null
+
+  topicText.value = ''
+
+  Selectedmangement.value = null
+  Selectedemployee.value = null
+  Selectedemployeeid.value = null
+  Selectedequipment.value = null
+
+  // Clear file inputs/components
+  formKey.value++
+}
 
 const ChangeTypeMangementList = ref<TitleInterface[]>([
   new TitleInterface({
@@ -156,11 +150,6 @@ const selectedChangeTypeMangement = computed(
     ) ?? ChangeTypeMangementList.value[0],
 )
 
-/*
-|--------------------------------------------------------------------------
-| Change Approval
-|--------------------------------------------------------------------------
-*/
 
 const ChangeApprovalMangementList = ref<TitleInterface[]>([
   new TitleInterface({
@@ -181,54 +170,26 @@ const selectedChangeApprovalMangement = computed(
     ) ?? ChangeApprovalMangementList.value[0],
 )
 
-/*
-|--------------------------------------------------------------------------
-| Images
-|--------------------------------------------------------------------------
-*/
 
-const setImages = (files: File[]) => {
-  images.value = files
+const setImages = async(files: File[]) => {
+  const base64Files = await Promise.all(files.map(filesToBase64));
+  // console.log(base64Files , "base64Files");
+  images.value = base64Files
 }
 
-/*
-|--------------------------------------------------------------------------
-| Risk Assessment File
-|--------------------------------------------------------------------------
-*/
 
-const handleFilesChange = (files: any) => {
-  console.log('FILES FROM UPLOADER:', files)
-  console.log('IS ARRAY:', Array.isArray(files))
-  console.log('FIRST FILE:', Array.isArray(files) ? files[0] : files)
+const handleFilesChange = (files: UploadedFile[]) => {
+  console.log('FILES:', files)
 
-  const file = Array.isArray(files) ? files[0] : files
+  const file = files?.[0]
 
-  console.log('SELECTED FILE:', file)
-
-  if (!file) {
+  if (!file?.file) {
     riskAssismentFile.value = null
     return
   }
 
-  if (file instanceof File) {
-    riskAssismentFile.value = file
-    return
-  }
-
-  riskAssismentFile.value =
-    file.file ??
-    file.rawFile ??
-    file.originalFile ??
-    null
-
-  console.log('RISK FILE:', riskAssismentFile.value)
+  riskAssismentFile.value = file.base64 
 }
-/*
-|--------------------------------------------------------------------------
-| Management
-|--------------------------------------------------------------------------
-*/
 
 const setManagement = (data: TitleInterface | null) => {
   Selectedmangement.value = data
@@ -247,10 +208,6 @@ const setManagement = (data: TitleInterface | null) => {
     return
   }
 
-  /*
-   * Important:
-   * Convert type to Number because API may return "1", "2", "3"
-   */
   selectedTopicType.value =
     data.type !== null && data.type !== undefined
       ? Number(data.type)
@@ -258,10 +215,6 @@ const setManagement = (data: TitleInterface | null) => {
 
   topicType.value =
     selectedTopicType.value as MangementChangeTopicTypeEnum
-
-  /*
-   * Clear fields that belong to other topic types
-   */
 
   Selectedemployee.value = null
   Selectedequipment.value = null
@@ -271,23 +224,11 @@ const setManagement = (data: TitleInterface | null) => {
   topicText.value = ''
 }
 
-/*
-|--------------------------------------------------------------------------
-| Project Employee
-|--------------------------------------------------------------------------
-*/
-
 const setEmployee = (data: TitleInterface | null) => {
   Selectedemployeeid.value = data
 
   employeeId.value = data?.id ?? null
 }
-
-/*
-|--------------------------------------------------------------------------
-| Approval By
-|--------------------------------------------------------------------------
-*/
 
 const setApprovalBy = (data: TitleInterface | null) => {
   Selectedemployee.value = data
@@ -295,23 +236,11 @@ const setApprovalBy = (data: TitleInterface | null) => {
   approvalBy.value = data?.id ?? null
 }
 
-/*
-|--------------------------------------------------------------------------
-| Equipment
-|--------------------------------------------------------------------------
-*/
-
 const setequipment = (data: TitleInterface | null) => {
   Selectedequipment.value = data
 
   equipmentId.value = data?.id ?? null
 }
-
-/*
-|--------------------------------------------------------------------------
-| Submit
-|--------------------------------------------------------------------------
-*/
 
 const submit = async () => {
   errorMessage.value = ''
@@ -319,7 +248,7 @@ const submit = async () => {
 
   const params = new AddMangementChangeParams(
     riskAssismentFile.value,
-    images.value,
+    images.value.map((image) => image.file),
     changerRequestId.value,
     facilty.value,
     area.value,
@@ -328,22 +257,10 @@ const submit = async () => {
     topicType.value,
     status.value,
     approvalBy.value,
-
-    /*
-     * Employee
-     */
     employeeId.value ?? undefined,
-
-    /*
-     * Equipment
-     */
     topicType.value === MangementChangeTopicTypeEnum.equipment
       ? equipmentId.value ?? undefined
       : undefined,
-
-    /*
-     * Other
-     */
     topicType.value === MangementChangeTopicTypeEnum.other
       ? topicText.value || undefined
       : undefined,
@@ -357,6 +274,8 @@ const submit = async () => {
   if (controller.isDataSuccess()) {
     successMessage.value =
       'Management change created successfully.'
+
+    resetForm()
   } else {
     errorMessage.value =
       'Unable to create management change.'
@@ -366,9 +285,10 @@ const submit = async () => {
 
 <template>
   <form
-    class="grid grid-cols-1 gap-4 md:grid-cols-4"
-    @submit.prevent="submit"
-  >
+  :key="formKey"
+  class="grid grid-cols-1 gap-4 md:grid-cols-4"
+  @submit.prevent="submit"
+>
 
     <!-- Risk Assessment File -->
     <div class="col-span-4 md:col-span-2">
@@ -464,15 +384,16 @@ const submit = async () => {
       class="col-span-4 md:col-span-2 input-wrapper"
     >
       <CustomSelectInput
-        :modelValue="Selectedemployeeid"
+        :modelValue="Selectedemployee"
         class="input"
         :controller="indexOrganizatoinEmployeeController"
-        :params="indexOrganizatoinEmployeeidParams"
-        label="select employee (optional)"
-        id="project-employee"
+        :params="indexOrganizatoinEmployeeParams"
+        label="select approval by (optional)"
+        id="approval-by"
         placeholder="select your employee"
-        @update:modelValue="setEmployee"
+        @update:modelValue="setApprovalBy"
       />
+    
     </div>
 
     <!-- Management -->
@@ -499,15 +420,15 @@ const submit = async () => {
       v-if="selectedTopicType === 1"
       class="col-span-4 md:col-span-2 input-wrapper"
     >
-      <CustomSelectInput
-        :modelValue="Selectedemployee"
+       <CustomSelectInput
+        :modelValue="Selectedemployeeid"
         class="input"
         :controller="indexOrganizatoinEmployeeController"
-        :params="indexOrganizatoinEmployeeParams"
-        label="select approval by (optional)"
-        id="approval-by"
+        :params="indexOrganizatoinEmployeeidParams"
+        label="select employee (optional)"
+        id="project-employee"
         placeholder="select your employee"
-        @update:modelValue="setApprovalBy"
+        @update:modelValue="setEmployee"
       />
     </div>
 

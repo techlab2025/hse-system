@@ -12,7 +12,7 @@ export default class AddMangementChangeParams implements Params {
   constructor(
     public risk_assisment_file: File | string | null,
 
-    public image: File[],
+    public image: string[],
 
     public changer_request_id: number | null,
 
