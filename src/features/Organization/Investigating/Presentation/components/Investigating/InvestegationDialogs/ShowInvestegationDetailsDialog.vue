@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Dialog from 'primevue/dialog'
-import mark from '@/assets/images/mark.png'
 import type InvestigatingModel from '@/features/Organization/Investigating/Data/models/investigatingModel'
-import Galleria from 'primevue/galleria'
 import { InvestegationStatusEnum } from '@/features/Organization/Investigating/Core/Enums/InvestegationStatusEnum'
 import ShowObservation from '@/features/Organization/ObservationFactory/Presentation/components/Ovservation/ShowObservation.vue'
 

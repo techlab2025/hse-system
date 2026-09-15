@@ -8,7 +8,7 @@ import { IndexHeaderApiService } from '../../Data/apiServices/indexHeaderApiServ
 class IndexHeaderRepo extends RepoInterface<HeaderModel[]> {
   private static instance: IndexHeaderRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

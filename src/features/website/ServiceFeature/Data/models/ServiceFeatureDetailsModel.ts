@@ -1,9 +1,7 @@
 // import type TitleModel from "@/base/core/Models/title_model";
-import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
+import { type TitleLocale } from '@/base/core/params/translations_params.ts'
 // import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
-import type ServiceDetailsModel from '@/features/website/Service/Data/models/ServiceDetailsModel'
-import ServiceModel from '@/features/website/Service/Data/models/ServiceModel'
 
 export default class ServiceFeatureDetailsModel {
   public id: number

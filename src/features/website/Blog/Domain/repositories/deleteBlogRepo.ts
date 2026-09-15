@@ -8,7 +8,7 @@ import { DeleteBlogApiService } from '../../Data/apiServices/deleteBlogApiServic
 class DeleteBlogRepo extends RepoInterface<BlogModel> {
   private static instance: DeleteBlogRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

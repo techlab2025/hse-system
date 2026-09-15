@@ -5,7 +5,6 @@ import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
 import { ref, watch } from 'vue';
 import RadioButton from 'primevue/radiobutton'
 import wordSlice from '@/base/Presentation/utils/word_slice';
-import IconArrowDownNav from '@/shared/icons/IconArrowDownNav.vue';
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{

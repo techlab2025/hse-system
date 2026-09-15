@@ -5,7 +5,7 @@ import { AddAdminApiService } from '../../Data/apiServices/add_admin_api_service
 
 class AddAdminRepo extends RepoInterface<AdminModel> {
   private static instance: AddAdminRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -6,7 +6,7 @@ import { IndexShiftApiService } from '../../Data/apiServices/IndexShiftApiServic
 class IndexShiftRepo extends RepoInterface<ShiftModel[]> {
   private static instance: IndexShiftRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

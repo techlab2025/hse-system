@@ -9,7 +9,7 @@ import { CreateProjectLocationTeamEmployeeApiService } from '../../Data/apiServi
 class CreateProjectLocationTeamEmployeeRepo extends RepoInterface<ProjectModel> {
   private static instance: CreateProjectLocationTeamEmployeeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

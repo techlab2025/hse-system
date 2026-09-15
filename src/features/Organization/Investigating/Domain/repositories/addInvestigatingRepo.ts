@@ -5,7 +5,7 @@ import { AddInvestigatingApiService } from '../../Data/apiServices/addInvestigat
 
 class AddInvestigatingRepo extends RepoInterface<InvestigatingModel> {
   private static instance: AddInvestigatingRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -8,7 +8,7 @@ import TeamModel from '../../Data/models/TeamModel'
 class DeleteTeamRepo extends RepoInterface<TeamModel> {
   private static instance: DeleteTeamRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -1,6 +1,5 @@
-import TranslationsParams, { type DescriptionLocale, type TitleLocale } from '@/base/core/params/translations_params'
+import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import type ServiceDetailsModel from '@/features/website/Service/Data/models/ServiceDetailsModel'
 export default class ServiceSectionDetailsModel {
   public id: number
   public titles: TitleLocale[]

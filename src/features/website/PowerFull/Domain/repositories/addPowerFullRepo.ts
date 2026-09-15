@@ -6,7 +6,7 @@ import { AddPowerFullApiService } from '../../Data/apiServices/addPowerFullApiSe
 
 class AddPowerFullRepo extends RepoInterface<PowerFullModel> {
   private static instance: AddPowerFullRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

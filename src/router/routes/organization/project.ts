@@ -50,6 +50,16 @@ export const projectRoutes: RouteRecordRaw[] = [
       isSidebar: false,
     },
   },
+     {
+    path: 'project-details/:id/management-of-change',
+    name: 'management-of-change',
+    component: () => import('@/views/Organization/MangementChangeTopicType/MangementOfChange.vue'),
+    meta: {
+      breadcrumb: 'management-of-change',
+      parent: 'Project Details',
+      isSidebar: true,
+    },
+  },
   {
     path: 'project-details/:id/today-talk/create',
     name: 'Create Today Talk',
@@ -100,4 +110,5 @@ export const projectRoutes: RouteRecordRaw[] = [
       isSidebar: false,
     },
   },
+
 ]

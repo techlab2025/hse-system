@@ -8,7 +8,7 @@ import { DeletePartnerApiService } from '../../Data/apiServices/deletePartnerApi
 class DeletePartnerRepo extends RepoInterface<PartnerModel> {
   private static instance: DeletePartnerRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

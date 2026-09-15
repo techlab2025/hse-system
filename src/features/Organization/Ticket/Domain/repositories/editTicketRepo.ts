@@ -7,7 +7,7 @@ import { EditTicketApiService } from '../../Data/apiServices/editTicketApiServic
 class EditTicketRepo extends RepoInterface<TicketModel> {
   private static instance: EditTicketRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

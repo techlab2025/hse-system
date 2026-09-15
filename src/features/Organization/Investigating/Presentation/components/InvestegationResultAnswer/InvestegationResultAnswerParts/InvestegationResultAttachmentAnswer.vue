@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
 import AttachmentAnswer from '@/assets/images/AttachmentAnswer.png'
-import { ref } from 'vue'
 import InvestegaionResultAttachmentCard from '../InvestegationResultAnswerUtils/InvestegaionResultAttachmentCard.vue'
 import type InvestigatingDocumentModel from '@/features/Organization/Investigating/Data/models/InvestegationDocumentModel'
 

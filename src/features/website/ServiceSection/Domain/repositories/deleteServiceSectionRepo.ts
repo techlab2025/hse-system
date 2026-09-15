@@ -8,7 +8,7 @@ import { DeleteServiceSectionApiService } from '../../Data/apiServices/deleteSer
 class DeleteServiceSectionRepo extends RepoInterface<ServiceSectionModel> {
   private static instance: DeleteServiceSectionRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

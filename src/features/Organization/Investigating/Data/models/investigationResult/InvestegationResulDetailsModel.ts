@@ -1,8 +1,6 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
-import HazardModel from '@/features/Organization/ObservationFactory/Data/models/hazardModel'
 import InvestegationEmployeeModel from './InvestegationEmployeeModel'
 import MeetingModel from '../Meetings/MeetingModel'
-import type InjuryModel from '@/features/Organization/Injury/Data/models/InjuryModel'
 import type HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel'
 import type InjuryDetailsModel from '@/features/Organization/ObservationFactory/Data/models/InjuryModel'
 import type { InvestigationMeetingEnum } from '../../../Core/Enums/investigation_meeting_enum'

@@ -5,7 +5,7 @@ import { ToggleObservationActionStatusApiService } from '../../Data/apiServices/
 
 class ToggleObservationActionStatusRepo extends RepoInterface<HazardModel> {
   private static instance: ToggleObservationActionStatusRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

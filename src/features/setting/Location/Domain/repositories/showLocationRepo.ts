@@ -7,7 +7,7 @@ import { ShowLocationApiService } from '../../Data/apiServices/showLocationApiSe
 class ShowLocationRepo extends RepoInterface<LocationDetailsModel> {
   private static instance: ShowLocationRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -7,7 +7,7 @@ import { EditWhereHouseTypeApiService } from '../../Data/apiServices/editWhereHo
 class EditWhereHouseTypeRepo extends RepoInterface<WhereHouseTypeModel> {
   private static instance: EditWhereHouseTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

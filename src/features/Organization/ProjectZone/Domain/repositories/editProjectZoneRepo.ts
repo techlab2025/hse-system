@@ -10,7 +10,7 @@ import { EditProjectZoneApiService } from '../../Data/apiServices/editProjectZon
 class EditProjectZoneRepo extends RepoInterface<ProjectZoneModel> {
   private static instance: EditProjectZoneRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

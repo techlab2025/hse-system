@@ -7,7 +7,7 @@ import { IndexOrganizationApiService } from '../../Data/apiServices/indexOrganiz
 class IndexOrganizationRepo extends RepoInterface<OrganizationModel[]> {
   private static instance: IndexOrganizationRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

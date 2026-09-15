@@ -6,7 +6,7 @@ import { DisOrganizationApiService } from '../../Data/apiServices/disOrganizatio
 
 class DisActiveOrganizationRepo extends RepoInterface<OrganizationModel> {
   private static instance: DisActiveOrganizationRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

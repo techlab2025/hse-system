@@ -8,7 +8,7 @@ import { IndexPermissionApiService } from '../../Data/apiServices/indexPermissio
 class IndexPermissionRepo extends RepoInterface<PermissionModel[]> {
   private static instance: IndexPermissionRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

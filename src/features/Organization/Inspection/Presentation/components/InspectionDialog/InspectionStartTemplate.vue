@@ -3,7 +3,7 @@ import ShowTemplateParams from '@/features/setting/Template/Core/params/showTemp
 import type TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
 import ShowTemplateController from '@/features/setting/Template/Presentation/controllers/showTemplateController'
 import Dialog from 'primevue/dialog'
-import { watch, onMounted, ref } from 'vue'
+import { watch, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import TemplateDocument from './TemplateDocument.vue'
 import { useI18n } from 'vue-i18n'
@@ -14,9 +14,7 @@ import FetchTaskResultParams from '../../../Core/params/FetchTaskResultParams'
 import FetchTaskResultController from '../../controllers/FetchTaskResultController'
 import type TaskFullResponseModel from '../../../Data/models/FetchTaskResultModels/FullTaskResultModel'
 import { InspectionStatus } from '../../../Core/Enum/InspectionStatusEnum'
-import ArrowDetails from '@/shared/icons/ArrowDetails.vue'
 import { InspectionPageType } from '@/features/Organization/ObservationFactory/Core/Enums/InspectionTypeEnum'
-import ShowResultIcon from '@/shared/icons/ShowResultIcon.vue'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const visible = ref(false)

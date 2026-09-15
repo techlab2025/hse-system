@@ -2,7 +2,6 @@
 import InvestegationResultDetailsModel from '@/features/Organization/Investigating/Data/models/investigationResult/InvestegationResulDetailsModel'
 import InvestegationIcon from '@/shared/icons/InvestegationIcon.vue'
 import LastMeetingIcon from '@/shared/icons/LastMeetingIcon.vue'
-import NextMeetingIcon from '@/shared/icons/NextMeetingIcon.vue'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { formatTime } from '@/base/Presentation/utils/time_format'
 import InvestegationTeam from '@/shared/icons/InvestegationTeam.vue'

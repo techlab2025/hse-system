@@ -7,7 +7,7 @@ import { EditSystemComponentApiService } from '../../Data/apiServices/editSystem
 class EditSystemComponentRepo extends RepoInterface<SystemComponentModel> {
   private static instance: EditSystemComponentRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

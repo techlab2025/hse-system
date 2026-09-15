@@ -12,7 +12,6 @@ import IndexLangParams from '@/features/setting/languages/Core/params/indexLangP
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
 import { useUserStore } from '@/stores/user'
 import TranslationsParams from '@/base/core/params/translations_params'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const route = useRoute()

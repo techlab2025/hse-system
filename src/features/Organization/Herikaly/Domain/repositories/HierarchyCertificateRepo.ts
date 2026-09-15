@@ -1,5 +1,5 @@
 // import LangModel from '@/features/setting/Herikaly/Data/models/langModel.ts'
-import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
+import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import HierarchyCertificateModel from '../../Data/models/HeirarchyCertificateModel'
 import { FetchHirarchyCertificatesApiService } from '../../Data/apiServices/FetchHierarchyCertificatesApiService'

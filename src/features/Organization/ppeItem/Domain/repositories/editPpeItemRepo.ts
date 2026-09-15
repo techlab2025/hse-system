@@ -7,7 +7,7 @@ import { EditPpeItemApiService } from '../../Data/apiServices/editPpeItemApiServ
 class EditPpeItemRepo extends RepoInterface<PpeItemModel> {
   private static instance: EditPpeItemRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

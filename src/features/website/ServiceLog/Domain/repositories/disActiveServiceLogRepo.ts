@@ -6,7 +6,7 @@ import { DisServiceLogApiService } from '../../Data/apiServices/disServiceLogApi
 
 class DisActiveServiceLogRepo extends RepoInterface<ServiceLogModel> {
   private static instance: DisActiveServiceLogRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

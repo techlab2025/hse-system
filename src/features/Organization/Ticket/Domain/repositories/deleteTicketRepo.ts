@@ -6,7 +6,7 @@ import { DeleteTicketApiService } from '../../Data/apiServices/deleteTicketApiSe
 class DeleteTicketRepo extends RepoInterface<TicketModel> {
   private static instance: DeleteTicketRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -7,7 +7,7 @@ import { IndexEmployeeApiService } from '../../Data/apiServices/indexEmployeeApi
 class IndexEmployeeRepo extends RepoInterface<EmployeeModel[]> {
   private static instance: IndexEmployeeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

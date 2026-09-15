@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import MultiSelect from 'primevue/multiselect'
-import type TitleInterface from '@/base/Data/Models/title_interface'
 import EquipmentCard from '@/features/setting/Equipment/Presentation/components/EquipmentUtils/EquipmentCard.vue'
 
 const props = defineProps<{

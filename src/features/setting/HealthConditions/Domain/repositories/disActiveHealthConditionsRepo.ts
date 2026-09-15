@@ -6,7 +6,7 @@ import HealthConditionsModel from '@/features/setting/HealthConditions/Data/mode
 
 class DisActiveHealthConditionsRepo extends RepoInterface<HealthConditionsModel> {
   private static instance: DisActiveHealthConditionsRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

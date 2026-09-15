@@ -1,7 +1,7 @@
 export default class CapaModel {
   public preventive: string
   public corrective: string
-  public serial_name: Number
+  public serial_name: number
   public date: string
   public time: string
   public capa_status: string
@@ -11,7 +11,7 @@ export default class CapaModel {
   constructor(
     preventive: string,
     corrective: string,
-    serial_name: Number,
+    serial_name: number,
     date: string,
     time: string,
     capa_status: string,

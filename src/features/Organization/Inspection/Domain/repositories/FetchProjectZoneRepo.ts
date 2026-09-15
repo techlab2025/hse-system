@@ -6,7 +6,7 @@ import ProjectZoneModel from '../../Data/models/ProjectZonesModel'
 class FetchProjectZoneRepo extends RepoInterface<ProjectZoneModel[]> {
   private static instance: FetchProjectZoneRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

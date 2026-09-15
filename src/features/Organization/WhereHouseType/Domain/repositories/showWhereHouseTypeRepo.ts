@@ -6,7 +6,7 @@ import WhereHouseTypeDetailsModel from '../../Data/models/WhereHouseTypeDetailsM
 class ShowWhereHouseTypeRepo extends RepoInterface<WhereHouseTypeDetailsModel> {
   private static instance: ShowWhereHouseTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

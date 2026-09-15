@@ -6,7 +6,7 @@ import { AddAccidentsTypeApiService } from '../../Data/apiServices/addAccidentsT
 
 class AddAccidentsTypeRepo extends RepoInterface<AccidentsTypeModel> {
   private static instance: AddAccidentsTypeRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

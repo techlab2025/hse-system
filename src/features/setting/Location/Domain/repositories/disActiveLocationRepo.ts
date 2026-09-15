@@ -6,7 +6,7 @@ import { DisLocationApiService } from '../../Data/apiServices/disLocationApiServ
 
 class DisActiveLocationRepo extends RepoInterface<LocationModel> {
   private static instance: DisActiveLocationRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

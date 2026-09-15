@@ -5,7 +5,6 @@ import {
   type DataState,
 } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import { FetchInspectionResultRepo } from '../repositories/FetchInspectionResultRepo'
-import FetchInspectionResultModel from '../../Data/models/FetchInspectionResultModel'
 import { UseCaseHandler } from '@/base/Domain/UseCase/use_case'
 import TaskResultModel from '../../Data/models/FetchTaskResultModels/TasksResultModel'
 

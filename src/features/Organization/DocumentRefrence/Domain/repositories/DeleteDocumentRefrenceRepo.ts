@@ -6,7 +6,7 @@ import { DeleteDocumentRefrenceApiService } from '../../Data/apiServices/DeleteD
 class DeleteDocumentRefrenceRepo extends RepoInterface<DocumentRefrenceModel> {
   private static instance: DeleteDocumentRefrenceRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -21,9 +21,7 @@ import PagesHeader from '@/shared/HelpersComponents/PagesHeader.vue'
 import Setting from '@/assets/images/Setting.png'
 import Geer from '@/assets/images/Geer.png'
 import hand from '@/assets/images/hand.png'
-import MultiSelect from 'primevue/multiselect'
 import { TemplateType } from '../../Core/Enum/TemplateTypeEnum'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
 

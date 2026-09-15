@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import wordSlice from '@/base/Presentation/utils/word_slice';
-import { EquipmentTypeEnum } from '@/features/Home/core/enums/SettingEnum/EquipmentTypeEnum';
 import type StatisticsMachineModel from '@/features/Home/data/Model/StatisticsMachineModel';
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';

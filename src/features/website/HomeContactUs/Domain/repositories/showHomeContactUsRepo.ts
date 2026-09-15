@@ -8,7 +8,7 @@ import { ShowHomeContactUsApiService } from '../../Data/apiServices/showHomeCont
 class ShowHomeContactUsRepo extends RepoInterface<HomeContactUsDetailsModel> {
   private static instance: ShowHomeContactUsRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

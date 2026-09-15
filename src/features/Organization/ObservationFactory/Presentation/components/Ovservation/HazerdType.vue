@@ -7,7 +7,6 @@ import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/indexHazardTypeController.ts'
 import IndexHazardTypeParams from '@/features/setting/HazardType/Core/params/indexHazardTypeParams'
 import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
-import { label } from '@primeuix/themes/aura/metergroup'
 
 // Props from parent
 const props = defineProps<{

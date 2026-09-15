@@ -7,7 +7,7 @@ import TicketTypeModel from '../../Data/models/TicketTypeModel'
 class IndexTicketTypeRepo extends RepoInterface<TicketTypeModel[]> {
   private static instance: IndexTicketTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

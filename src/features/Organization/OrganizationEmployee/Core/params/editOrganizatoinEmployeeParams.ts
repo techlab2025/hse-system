@@ -3,7 +3,6 @@ import type HirarachyEmployeeParams from './HirarchyParams'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 import type RolesOrganizationEmployeeParams from './RolesOrganizationEmployeeParams'
 import type { EmployeeStatusEnum } from '../Enum/EmployeeStatus'
-import type { DashboardAccessEnum } from '../Enum/DashboardAccess'
 
 export default class EditOrganizatoinEmployeeParams implements Params {
   id: number

@@ -11,7 +11,6 @@ import wordSlice from '@/base/Presentation/utils/word_slice'
 
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import DeleteLangController from '@/features/setting/languages/Presentation/controllers/deleteLangController'
 import DeleteLangParams from '@/features/setting/languages/Core/params/deleteLangParams'
@@ -22,9 +21,6 @@ import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 
 const { t } = useI18n()

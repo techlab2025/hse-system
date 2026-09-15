@@ -2,7 +2,6 @@
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
-import type LocationHierarchyModel from '@/features/Organization/Project/Data/models/LocationHierarchyModel'
 import type ProjectLocationHierarchyModel from '@/features/Organization/Project/Data/models/ProjectLocationHierarchyModel'
 import IndexLocationHierarchyUseCase from '@/features/Organization/Project/Domain/useCase/Hierarchy/LocationHierarchy/indexLocationHierarchiesUseCase'
 

@@ -6,7 +6,7 @@ import { AddSystemWorkApiService } from '../../Data/apiServices/addSystemWorkApi
 
 class AddSystemWorkRepo extends RepoInterface<SystemWorkModel> {
   private static instance: AddSystemWorkRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -6,7 +6,7 @@ import EquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/equ
 
 class AddEquipmentTypeRepo extends RepoInterface<EquipmentTypeModel> {
   private static instance: AddEquipmentTypeRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

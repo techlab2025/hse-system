@@ -6,7 +6,7 @@ import { DisHashtagApiService } from '../../Data/apiServices/disActiveHashtagApi
 
 class DisActiveHashtagRepo extends RepoInterface<HashtagModel> {
   private static instance: DisActiveHashtagRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

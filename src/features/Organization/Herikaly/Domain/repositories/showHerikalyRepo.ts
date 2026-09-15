@@ -9,7 +9,7 @@ import { ShowHerikalyApiService } from '../../Data/apiServices/showHerikalyApiSe
 class ShowHerikalyRepo extends RepoInterface<HerikalyDetailsModel> {
   private static instance: ShowHerikalyRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

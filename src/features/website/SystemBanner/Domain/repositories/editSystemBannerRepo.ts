@@ -7,7 +7,7 @@ import SystemBannerModel from '../../Data/models/SystemBannerModel'
 class EditSystemBannerRepo extends RepoInterface<SystemBannerModel> {
   private static instance: EditSystemBannerRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -15,7 +15,6 @@ import { useRoute } from 'vue-router'
 import IndexCertificateController from '@/features/setting/Certificate/Presentation/controllers/indexCertificateController'
 import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const emit = defineEmits(['update:data'])

@@ -6,7 +6,7 @@ import { IndexScopeApiService } from '../../Data/apiServices/indexScopeApiServic
 class IndexScopeRepo extends RepoInterface<ScopeModel[]> {
   private static instance: IndexScopeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

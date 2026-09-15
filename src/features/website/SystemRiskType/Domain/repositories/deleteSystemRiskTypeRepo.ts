@@ -8,7 +8,7 @@ import { DeleteSystemRiskTypeApiService } from '../../Data/apiServices/deleteSys
 class DeleteSystemRiskTypeRepo extends RepoInterface<SystemRiskTypeModel> {
   private static instance: DeleteSystemRiskTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

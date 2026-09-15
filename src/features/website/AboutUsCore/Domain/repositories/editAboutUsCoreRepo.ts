@@ -9,7 +9,7 @@ import { EditAboutUsCoreApiService } from '../../Data/apiServices/editAboutUsCor
 class EditAboutUsCoreRepo extends RepoInterface<AboutUsCoreModel> {
   private static instance: EditAboutUsCoreRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

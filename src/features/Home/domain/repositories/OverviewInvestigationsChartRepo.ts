@@ -6,7 +6,7 @@ import { OverviewInvestigationsChartApiService } from '../../data/ApiService/Ove
 class OverviewInvestigationsChartRepo extends RepoInterface<OverviewInvestigationsChartModel[]> {
   private static instance: OverviewInvestigationsChartRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

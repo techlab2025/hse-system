@@ -2,8 +2,6 @@
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
 import investigationImg from '@/assets/images/investigationImg.png'
 import InvestegaionMeetingResultAnswerCard from '../InvestegationResultAnswerUtils/InvestegaionMeetingResultAnswerCard.vue'
-import GoogleMeetIcon from '@/shared/icons/GoogleMeetIcon.vue'
-import { ref } from 'vue'
 import type InvestigationMeetingsModel from '@/features/Organization/Investigating/Data/models/InvestigationMeetingsModel'
 import { useRoute } from 'vue-router'
 

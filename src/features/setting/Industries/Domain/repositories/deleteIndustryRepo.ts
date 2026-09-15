@@ -5,7 +5,7 @@ import { DeleteIndustryApiService } from '../../Data/apiServices/deleteIndustryA
 
 class DeleteIndustryRepo extends RepoInterface<IndustryModel> {
   private static instance: DeleteIndustryRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

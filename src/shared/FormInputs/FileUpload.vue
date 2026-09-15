@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { ref, watch, onUnmounted } from 'vue'
 import ExcelIcon from '@/assets/images/excel.png'
-import IconUploadFile from '@/shared/icons/IconFileUpload.vue'
 import PdfIcon from '@/assets/images/pdf.png'
 import WordIcon from '@/assets/images/word.png'
 import IconVideo from '@/shared/icons/IconVideo.vue'
 import IconAudio from '@/shared/icons/IconAudio.vue'
-import IconDeleteAttachment from '@/shared/icons/IconDeleteAttachment.vue'
 import DwgIcon from '@/assets/images/dwg-file.png'
 import RarIcon from '@/assets/images/rar-file.png'
 import CloudIcon from '../icons/CloudIcon.vue'

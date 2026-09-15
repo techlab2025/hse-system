@@ -4,7 +4,6 @@ import EquipmentImg from '@/assets/images/Equipment.png';
 import { ref } from "vue";
 import HeaderSection from '../../Details/DetailsHeader/HeaderSection.vue';
 import EquipmentForm from './EquipmentForm.vue';
-import AddTollIcon from '@/shared/icons/AddTollIcon.vue';
 const visible = ref(false);
 const props = defineProps<{
   zoonId: number

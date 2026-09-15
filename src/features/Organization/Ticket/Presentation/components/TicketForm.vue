@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
@@ -14,10 +13,6 @@ import IndexIndustryController from '@/features/setting/Industries/Presentation/
 import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
-import type ProjectTypeDetailsModel from '@/features/setting/ProjectType/Data/models/projectTypeDetailsModel'
-import AddRootCausesParams from '../../Core/params/addTicketParams'
-import EditRootCausesParams from '../../Core/params/editTicketParams'
 import type TicketDetailsModel from '../../Data/models/TicketDetailsModel'
 import EditTicketParams from '../../Core/params/editTicketParams'
 import IndexTicketTypeController from '@/features/Organization/TicketType/Presentation/controllers/indexTicketTypeController'

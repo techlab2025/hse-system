@@ -8,7 +8,7 @@ import { ShowSystemBannerApiService } from '../../Data/apiServices/showSystemBan
 class ShowSystemBannerRepo extends RepoInterface<SystemBannerDetailsModel> {
   private static instance: ShowSystemBannerRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

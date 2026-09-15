@@ -117,12 +117,12 @@ const rowActions = (id: number) => [
     action: () => deletePpeItem(id),
     permission: [
       PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE, 
       PermissionsEnum.PPE_ITEM_ALL,
       PermissionsEnum.PPE_ITEM_DELETE,
       PermissionsEnum.ORG_PPE_ITEM_ALL,
       PermissionsEnum.ORG_PPE_ITEM_DELETE,
-    ],
+    ], 
   },
 ]
 

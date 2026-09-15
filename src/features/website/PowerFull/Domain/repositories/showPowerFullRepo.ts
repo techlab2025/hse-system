@@ -8,7 +8,7 @@ import { ShowPowerFullApiService } from '../../Data/apiServices/showPowerFullApi
 class ShowPowerFullRepo extends RepoInterface<PowerFullDetailsModel> {
   private static instance: ShowPowerFullRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

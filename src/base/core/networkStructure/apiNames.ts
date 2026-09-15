@@ -1488,6 +1488,26 @@ class ApiNames {
     return this.prefix + 'delete_ppe_item'
   }
 
+  // MangementChange Topic Type
+  public get CreateMangementChangeTopicType() {
+    return this.prefix + 'create_changement_topic'
+  }
+  public get CreateMangementChange() {
+    return this.prefix + 'create_management_of_change'
+  }
+  public get IndexMangementChangeTopicType() {
+    return this.prefix + 'fetch_changement_topics'
+  }
+  public get ShowMangementChangeTopicType() {
+    return this.prefix + 'fetch_changement_topic_details'
+  }
+  public get EditMangementChangeTopicType() {
+    return this.prefix + 'update_changement_topic'
+  }
+  public get DeleteMangementChangeTopicType() {
+    return this.prefix + 'delete_changement_topic'
+  }
+
   // WhereHosue
   public get CreateWhereHouse() {
     return this.prefix + 'create_warehouse'

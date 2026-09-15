@@ -1,13 +1,9 @@
 <script setup lang="ts">
-import type TitleInterface from '@/base/Data/Models/title_interface'
 import type ProjectLocationEmployeeModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationEmployeeModel'
-import MemberDeleteIcon from '@/shared/icons/MemberDeleteIcon.vue'
-import person from '@/assets/images/person.png'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
 import wordSlice from '@/base/Presentation/utils/word_slice'
 import DeleteEmployeeDialog from './DeleteEmployeeDialog.vue'
 import type OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
-import { computed } from 'vue'
 
 const emit = defineEmits(['update:data'])
 

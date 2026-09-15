@@ -6,7 +6,7 @@ import { DisTemplateApiService } from '../../Data/apiServices/disActiveTemplateA
 
 class DisActiveTemplateRepo extends RepoInterface<TemplateModel> {
   private static instance: DisActiveTemplateRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

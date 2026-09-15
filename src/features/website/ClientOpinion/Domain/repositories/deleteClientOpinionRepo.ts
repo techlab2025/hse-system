@@ -8,7 +8,7 @@ import { DeleteClientOpinionApiService } from '../../Data/apiServices/deleteClie
 class DeleteClientOpinionRepo extends RepoInterface<ClientOpinionModel> {
   private static instance: DeleteClientOpinionRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

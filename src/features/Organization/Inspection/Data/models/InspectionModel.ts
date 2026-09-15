@@ -3,7 +3,6 @@ import MorphModel from './MorphModel'
 import LastInspectionModel from './LastInspectionModel'
 import TaskPeriodModel from './TaskPeriodModel'
 // import EquipmentDetailsModel from '@/features/_templateFeature/Data/models/equipmentDetailsModel'
-import EquipmentModel from '@/features/_templateFeature/Data/models/equipmentModel'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import EquipmentDetailsModel from '@/features/setting/Equipment/Data/models/equipmentDetailsModel'
 

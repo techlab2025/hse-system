@@ -1,12 +1,9 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
-import HierarchyEmployeeModel from '@/features/Organization/Project/Data/models/LocationHierarchyEmployeeModel'
 import RoleDetailsModel from '@/features/Organization/Role/Data/models/RoleDetailsModel'
 import acc from '@/assets/images/acc.png'
 import type CertificateModel from '@/features/setting/Certificate/Data/models/CertificateModel'
-import ProjectDetailsModel from '@/features/Organization/Project/Data/models/ProjectDetailsModel'
 import ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 import { EmployeeStatusEnum } from '../../Core/Enum/EmployeeStatus'
-import type TasksModel from '@/features/Organization/Investigating/Data/models/Tasks/TasksModel'
 import type InspectionModel from '@/features/Organization/Inspection/Data/models/InspectionModel'
 
 export default class OrganizatoinEmployeeDetailsModel {

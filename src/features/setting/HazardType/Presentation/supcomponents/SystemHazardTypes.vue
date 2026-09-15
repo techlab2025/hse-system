@@ -2,7 +2,7 @@
 import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
 import Dialog from 'primevue/dialog'
 import DialogSystem from '@/assets/images/DialogSystem.png'
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import SystemDialogEmptyState from '@/shared/DataStatues/SystemDialogEmptyState.vue'
 import { useRoute, useRouter } from 'vue-router'

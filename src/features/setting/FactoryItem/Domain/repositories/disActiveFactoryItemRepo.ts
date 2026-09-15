@@ -6,7 +6,7 @@ import { DisActiveFactoryItemApiService } from '@/features/setting/FactoryItem/D
 
 class DisActiveFactoryItemRepo extends RepoInterface<FactoryItemModel> {
   private static instance: DisActiveFactoryItemRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

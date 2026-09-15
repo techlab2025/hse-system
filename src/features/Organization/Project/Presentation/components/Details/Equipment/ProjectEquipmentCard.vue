@@ -2,12 +2,10 @@
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 import RentIcon from '@/shared/icons/RentIcon.vue'
-import WareHouseIcon from '@/assets/images/WareHouseIcon.png'
 import { useI18n } from 'vue-i18n'
 import { ref } from 'vue'
 import { EquipmentStatus } from '@/features/setting/Equipment/Core/enum/equipmentStatus'
 import EquipmentCardImgDialog from '@/features/setting/Equipment/Presentation/components/EquipmentUtils/EquipmentCardImgDialog.vue'
-import type EquipmentDetailsModel from '@/features/setting/Equipment/Data/models/equipmentDetailsModel'
 import EquipmentLastInspectionResultDialog from './EquipmentLastInspectionResultDialog.vue'
 import type ProjectLocationEquipmentModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationEquipmentModel'
 

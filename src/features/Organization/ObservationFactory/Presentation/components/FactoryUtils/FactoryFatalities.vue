@@ -3,7 +3,6 @@ import HeaderPage from '@/features/Organization/Project/Presentation/components/
 import { ref, watch } from 'vue'
 import RIP from '@/assets/images/RIP.png'
 import DethsTimeLine from './DethsTimeLine.vue'
-import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
 const isAnotherMeeting = ref(0)

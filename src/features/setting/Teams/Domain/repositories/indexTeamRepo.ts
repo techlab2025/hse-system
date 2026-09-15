@@ -7,7 +7,7 @@ import TeamModel from '../../Data/models/TeamModel'
 class IndexTeamRepo extends RepoInterface<TeamModel[]> {
   private static instance: IndexTeamRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

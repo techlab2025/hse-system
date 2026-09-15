@@ -7,7 +7,7 @@ import { EditIncidentCategoryApiService } from '../../Data/apiServices/editIncid
 class EditIncidentCategoryRepo extends RepoInterface<IncidentCategoryModel> {
   private static instance: EditIncidentCategoryRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

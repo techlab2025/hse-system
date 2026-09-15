@@ -8,7 +8,7 @@ import { RefreshNotificationApiService } from '../../Data/apiServices/RefreshNot
 class NotificationRefreshTokenRepo extends RepoInterface<NotificationTokenModel> {
   private static instance: NotificationRefreshTokenRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

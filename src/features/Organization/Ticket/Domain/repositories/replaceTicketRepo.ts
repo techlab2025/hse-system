@@ -5,7 +5,7 @@ import TicketModel from '../../Data/models/TicketModel'
 
 class ReplaceTicketRepo extends RepoInterface<TicketModel> {
   private static instance: ReplaceTicketRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

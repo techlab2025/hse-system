@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import WitnessesTimeLine from './WitnessesTimeLine.vue'
 import people from '@/assets/images/people.png'
-import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
 

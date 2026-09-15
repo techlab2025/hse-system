@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import AddSystemHeaderData from '@/shared/icons/AddSystemHeaderData.vue';
 import Handemployee from '@/shared/icons/handemployee.vue';
 
 </script>

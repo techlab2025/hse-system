@@ -1,5 +1,4 @@
 import type Params from '@/base/core/params/params'
-import type InvestigationEmployeesParams from '../InvestigationEmployeesParams'
 import type InvestegationTasksParams from './InvestegationTasksParams'
 import type InvestigationAttachmentsParams from './InvestegationAttachmentParams'
 import type InvestegationWitnessesParams from './InvestegationWitnessesParams'

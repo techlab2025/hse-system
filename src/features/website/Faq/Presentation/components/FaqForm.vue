@@ -5,15 +5,10 @@ import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
-import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
-import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
 import { useRoute } from 'vue-router'
-import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
-import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import type FaqDetailsModel from '../../Data/models/FaqDetailsModel'
 import EditFaqParams from '../../Core/params/editFaqParams'
 import AddFaqParams from '../../Core/params/addFaqParams'
@@ -21,7 +16,6 @@ import IndexHashtagController from '@/features/website/Term/Presentation/control
 import IndexHashtagParams from '@/features/website/Term/Core/params/indexHashtagParams'
 import IndexCategoryController from '@/features/website/Category/Presentation/controllers/indexCategoryController'
 import IndexCategoryParams from '@/features/website/Category/Core/params/indexCategoryParams'
-import { log } from 'console'
 
 const emit = defineEmits(['update:data'])
 

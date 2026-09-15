@@ -6,7 +6,7 @@ import ProjectModel from '../../../Data/models/ProjectModel'
 
 class CreateProjectZoneEquipmentRepo extends RepoInterface<ProjectModel> {
   private static instance: CreateProjectZoneEquipmentRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

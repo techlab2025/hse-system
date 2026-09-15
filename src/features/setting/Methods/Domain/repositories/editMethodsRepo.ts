@@ -7,7 +7,7 @@ import { EditMethodsApiService } from '../../Data/apiServices/editMetodsApiServi
 class EditMethodsRepo extends RepoInterface<MethodsModel> {
   private static instance: EditMethodsRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

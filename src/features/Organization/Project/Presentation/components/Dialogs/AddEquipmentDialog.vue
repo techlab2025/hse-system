@@ -14,7 +14,6 @@ import CreateProjectZoneEquipment from "../../../Core/params/ProjectEquipments/C
 import type TitleInterface from "@/base/Data/Models/title_interface";
 import { useRoute, useRouter } from "vue-router";
 import CreateProjectZoneEquipmentsController from "../../controllers/Equipments/CreateProjectZoneEquipmentsController";
-import AddEquipmentIcon from "@/shared/icons/AddEquipmentIcon.vue";
 
 const props = defineProps<{
   project_zoons: SohwProjectZoonModel[]

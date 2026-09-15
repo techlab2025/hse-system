@@ -7,7 +7,7 @@ import { IndexIncidentCategoryApiService } from '../../Data/apiServices/indexInc
 class IndexIncidentCategoryRepo extends RepoInterface<IncidentCategoryModel[]> {
   private static instance: IndexIncidentCategoryRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

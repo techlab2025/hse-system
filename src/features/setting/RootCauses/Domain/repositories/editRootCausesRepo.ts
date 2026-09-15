@@ -7,7 +7,7 @@ import { EditRootCausesApiService } from '../../Data/apiServices/editRootCausesA
 class EditRootCausesRepo extends RepoInterface<RootCausesModel> {
   private static instance: EditRootCausesRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

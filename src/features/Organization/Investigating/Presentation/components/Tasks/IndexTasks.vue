@@ -20,7 +20,6 @@ import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 // import ExportIcon from '@/shared/icons/ExportIcon.vue'
 
-import Search from '@/shared/icons/Search.vue'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import IconEye from '@/shared/icons/IconEye.vue'

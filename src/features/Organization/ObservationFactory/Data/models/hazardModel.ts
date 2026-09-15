@@ -1,12 +1,10 @@
 import LocationModel from '@/features/setting/Location/Data/models/LocationModel'
-import TitleInterface from '@/base/Data/Models/title_interface'
 import OvservationEquipmentModel from './OvservationEquipmentModel'
 import SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
 import ShowProjectDetailsModel from '@/features/Organization/Project/Data/models/ShowProjectDeatilsModel'
 import OvserverModel from './OvserverModel'
 import type CapaModel from './CapaModel'
 import FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
-import acc from '@/assets/images/acc.png'
 import type { ActionStatusEnum } from '../../Core/Enums/ActionStatusEnum'
 
 export default class HazardModel {

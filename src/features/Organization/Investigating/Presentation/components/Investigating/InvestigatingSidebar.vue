@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import booksImage from '@/assets/images/books.png'
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { RiskLevelEnum } from '../../../Core/Enums/risk_level_enum'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 

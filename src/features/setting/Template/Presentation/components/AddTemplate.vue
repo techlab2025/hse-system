@@ -9,8 +9,6 @@ import AddTemplateController from '../controllers/addTemplateController'
 import type AddTemplateParams from '../../Core/params/addTemplateParams'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import AddNewTemplateDialog from '@/features/Organization/Inspection/Presentation/components/InspectionDialog/AddNewTemplateDialog.vue'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)

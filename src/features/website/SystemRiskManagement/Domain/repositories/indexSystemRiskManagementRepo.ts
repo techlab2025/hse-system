@@ -10,7 +10,7 @@ import { IndexSystemRiskManagementApiService } from '../../Data/apiServices/inde
 class IndexSystemRiskManagementRepo extends RepoInterface<SystemRiskManagementModel[]> {
   private static instance: IndexSystemRiskManagementRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

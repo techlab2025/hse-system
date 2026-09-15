@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import IndexRootCausesParams from '@/features/setting/RootCauses/Core/params/indexRootCausesParams'
-import IndexRootCausesController from '@/features/setting/RootCauses/Presentation/controllers/indexRootCausesController'
 
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'

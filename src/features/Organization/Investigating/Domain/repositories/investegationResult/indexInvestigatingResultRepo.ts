@@ -1,11 +1,11 @@
-import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
+import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import InvestegationResultModel from '../../../Data/models/investigationResult/InvestegationResulModel'
 import { IndexInvestigatingResultApiService } from '../../../Data/apiServices/investigationResult/indexInvestigatingResultApiService'
 
 class IndexInvestigatingResultRepo extends RepoInterface<InvestegationResultModel[]> {
   private static instance: IndexInvestigatingResultRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

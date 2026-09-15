@@ -7,7 +7,7 @@ import { EditTemplateApiService } from '../../Data/apiServices/editTemplateApiSe
 class EditTemplateRepo extends RepoInterface<TemplateModel> {
   private static instance: EditTemplateRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

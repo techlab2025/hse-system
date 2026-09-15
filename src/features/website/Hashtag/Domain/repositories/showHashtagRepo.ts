@@ -7,7 +7,7 @@ import { ShowHashtagApiService } from '../../Data/apiServices/showHashtagApiServ
 class ShowHashtagRepo extends RepoInterface<HashtagDetailsModel> {
   private static instance: ShowHashtagRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

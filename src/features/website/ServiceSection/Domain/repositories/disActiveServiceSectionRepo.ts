@@ -6,7 +6,7 @@ import { DisServiceSectionApiService } from '../../Data/apiServices/disServiceSe
 
 class DisActiveServiceSectionRepo extends RepoInterface<ServiceSectionModel> {
   private static instance: DisActiveServiceSectionRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

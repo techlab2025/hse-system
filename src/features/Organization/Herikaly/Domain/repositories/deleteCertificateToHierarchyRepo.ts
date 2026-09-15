@@ -6,7 +6,7 @@ import { DeletecertificateToHieararcyApiService } from '../../Data/apiServices/D
 
 class DeleteCertificateToHierarchyRepo extends RepoInterface<HerikalyModel> {
   private static instance: DeleteCertificateToHierarchyRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

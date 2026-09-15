@@ -1,16 +1,12 @@
 <script setup lang="ts">
 import Breadcrumb from 'primevue/breadcrumb'
-import { computed, ref, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import BackIcon from '../icons/BackIcon.vue'
-import FastRoutes from './FastrRoutes/FastRoutes.vue'
 import { buildBreadcrumb } from './Helper/RouteHelper'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
-import HomeInfoIcon from '../icons/HomeInfoIcon.vue'
-import HomeDialogInfo from './HomeDialogInfo.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
 
 const route = useRoute()

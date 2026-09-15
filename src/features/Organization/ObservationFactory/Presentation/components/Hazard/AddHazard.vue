@@ -2,7 +2,6 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type Params from '@/base/core/params/params'
-import HazardForm from './HazardForm.vue'
 import AddHazardController from '../../controllers/addHazardController'
 import type AddHazardParams from '../../../Core/params/addHazardParams'
 import FullObservationFactoryForm from '../FullForm/FullObservationFactoryForm.vue'

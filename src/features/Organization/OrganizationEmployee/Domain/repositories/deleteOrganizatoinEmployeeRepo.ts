@@ -7,7 +7,7 @@ import { DeleteOrganizatoinEmployeeApiService } from '../../Data/apiServices/del
 class DeleteOrganizationEmployeeRepo extends RepoInterface<OrganizatoinEmployeeModel> {
   private static instance: DeleteOrganizationEmployeeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

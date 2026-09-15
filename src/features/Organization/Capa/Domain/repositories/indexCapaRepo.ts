@@ -6,7 +6,7 @@ import IndexCapaModel from '../../Data/models/IndexCapaModel'
 class IndexCapaRepo extends RepoInterface<IndexCapaModel[]> {
   private static instance: IndexCapaRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

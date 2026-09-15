@@ -11,7 +11,7 @@ import { DeleteSystemWorkApiService } from '../../Data/apiServices/deleteSystemW
 class DeleteSystemWorkRepo extends RepoInterface<SystemWorkModel> {
   private static instance: DeleteSystemWorkRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

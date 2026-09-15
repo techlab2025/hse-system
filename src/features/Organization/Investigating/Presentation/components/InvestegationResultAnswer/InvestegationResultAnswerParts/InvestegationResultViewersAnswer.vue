@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
-import AnswersViewers from '@/assets/images/AnswersViewers.png'
 import InvestegaionMeetingViewersCard from '../InvestegationResultAnswerUtils/InvestegaionMeetingViewersCard.vue'
 import type witnessStatementsModel from '@/features/Organization/Investigating/Data/models/InvestegationwitnessStatementsModel'
 

@@ -5,8 +5,6 @@ import IndexProjectLocationZonesController from '../../../controllers/fetchLocat
 import IndexProjectLocationZonesParams from '@/features/Organization/Project/Core/params/fetchProjectLocationsZonesParams'
 import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import TableLoader from '@/shared/DataStatues/TableLoader.vue'
-import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import loading from "@/assets/images/loading.gif"
 const controller = IndexProjectLocationZonesController.getInstance()
 const state = ref(controller?.state?.value)

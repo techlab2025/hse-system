@@ -6,7 +6,7 @@ import { AddPermissionApiService } from '../../Data/apiServices/addPermissionApi
 
 class AddPermissionRepo extends RepoInterface<PermissionModel> {
   private static instance: AddPermissionRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

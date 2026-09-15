@@ -6,7 +6,7 @@ import SubscriptionModel from '@/features/setting/Subscription/Data/models/Subsc
 class RejectSubscriptionApplicationRepo extends RepoInterface<SubscriptionModel> {
   private static instance: RejectSubscriptionApplicationRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

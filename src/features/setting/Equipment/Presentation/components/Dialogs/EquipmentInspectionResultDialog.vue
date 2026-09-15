@@ -2,7 +2,7 @@
 import type TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
 import ShowTemplateController from '@/features/setting/Template/Presentation/controllers/showTemplateController'
 import Dialog from 'primevue/dialog'
-import { watch, onMounted, ref, computed } from 'vue'
+import { watch, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import ItemResultParams from '@/features/Organization/Inspection/Core/params/ItemResultParams'
@@ -11,11 +11,8 @@ import CreateTaskAnswerController from '@/features/Organization/Inspection/Prese
 import FetchTaskResultController from '@/features/Organization/Inspection/Presentation/controllers/FetchTaskResultController'
 import type TaskFullResponseModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FullTaskResultModel'
 import FetchTaskResultParams from '@/features/Organization/Inspection/Core/params/FetchTaskResultParams'
-import { InspectionStatus } from '@/features/Organization/Inspection/Core/Enum/InspectionStatusEnum'
 import ViewInspectionArrow from '@/shared/icons/ViewInspectionArrow.vue'
-import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
 import TemplateDocument from '@/features/Organization/Inspection/Presentation/components/InspectionDialog/TemplateDocument.vue'
-import ActionsIcon from '@/shared/icons/ActionsIcon.vue'
 
 const visible = ref(false)
 

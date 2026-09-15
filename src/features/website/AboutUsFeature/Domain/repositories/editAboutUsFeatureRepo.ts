@@ -10,7 +10,7 @@ import { EditAboutUsFeatureApiService } from '../../Data/apiServices/editAboutUs
 class EditAboutUsFeatureRepo extends RepoInterface<AboutUsFeatureModel> {
   private static instance: EditAboutUsFeatureRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

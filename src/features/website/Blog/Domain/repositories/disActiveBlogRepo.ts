@@ -6,7 +6,7 @@ import { DisBlogApiService } from '../../Data/apiServices/disActiveBlogApiServic
 
 class DisActiveBlogRepo extends RepoInterface<BlogModel> {
   private static instance: DisActiveBlogRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

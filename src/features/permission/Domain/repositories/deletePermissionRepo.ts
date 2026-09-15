@@ -9,7 +9,7 @@ import { DeletePermissionApiService } from '../../Data/apiServices/deletePermiss
 class DeletePermissionRepo extends RepoInterface<PermissionModel> {
   private static instance: DeletePermissionRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

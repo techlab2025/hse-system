@@ -12,8 +12,6 @@ import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmploye
 import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue'
 import { useI18n } from 'vue-i18n'
 
-import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue'
-import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue'
 import WhereHouseTypeModel from '../../Data/models/WhereHouseTypeModel'
 import AddWhereHouseTypeController from '../controllers/addWhereHouseTypeController'
 import AddWhereHouseTypeExcelParams from '../../Core/params/addWhereHouseTypeExcelParams'

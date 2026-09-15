@@ -7,7 +7,7 @@ import { EditCertificateApiService } from '../../Data/apiServices/editCertificat
 class EditCertificateRepo extends RepoInterface<CertificateModel> {
   private static instance: EditCertificateRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

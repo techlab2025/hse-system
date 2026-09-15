@@ -6,7 +6,7 @@ import IndustryDetailsModel from '@/features/setting/Industries/Data/Models/Indu
 
 class ShowIndustryRepo extends RepoInterface<IndustryDetailsModel> {
   private static instance: ShowIndustryRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -10,7 +10,7 @@ import { EditSystemRiskManagementApiService } from '../../Data/apiServices/editS
 class EditSystemRiskManagementRepo extends RepoInterface<SystemRiskManagementModel> {
   private static instance: EditSystemRiskManagementRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

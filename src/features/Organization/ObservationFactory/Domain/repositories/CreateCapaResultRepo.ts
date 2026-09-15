@@ -5,7 +5,7 @@ import CapaModel from '../../Data/models/CapaModel'
 
 class CreateCapaResultRepo extends RepoInterface<CapaModel> {
   private static instance: CreateCapaResultRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

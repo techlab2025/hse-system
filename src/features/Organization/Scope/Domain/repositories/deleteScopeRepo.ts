@@ -6,7 +6,7 @@ import { DeleteScopeApiService } from '../../Data/apiServices/deleteScopeApiServ
 class DeleteScopeRepo extends RepoInterface<ScopeModel> {
   private static instance: DeleteScopeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

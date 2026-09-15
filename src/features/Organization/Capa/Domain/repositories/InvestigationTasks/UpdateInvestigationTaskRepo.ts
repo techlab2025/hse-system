@@ -5,7 +5,7 @@ import { UpdateInvestigationTaskApiService } from '../../../Data/apiServices/Inv
 class UpdateInvestigationTaskRepo extends RepoInterface<void> {
   private static instance: UpdateInvestigationTaskRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

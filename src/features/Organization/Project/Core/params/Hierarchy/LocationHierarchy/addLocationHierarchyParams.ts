@@ -1,5 +1,4 @@
 import type Params from '@/base/core/params/params'
-import type TranslationsParams from '@/base/core/params/translations_params'
 import type LocationHierarchyParams from './locationHierarchyParams'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
 

@@ -11,7 +11,7 @@ import { DeleteSystemRiskManagementApiService } from '../../Data/apiServices/del
 class DeleteSystemRiskManagementRepo extends RepoInterface<SystemRiskManagementModel> {
   private static instance: DeleteSystemRiskManagementRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

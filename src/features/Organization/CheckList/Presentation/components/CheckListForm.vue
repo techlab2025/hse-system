@@ -18,7 +18,6 @@ import IndexIndustryController from '@/features/setting/Industries/Presentation/
 import EditCheckListParams from '../../Core/params/editCheckListParams'
 import AddCheckListParams from '../../Core/params/addCheckListParams'
 import type CheckListDetailsModel from '../../Data/models/CheckListModel'
-import { title } from 'process'
 
 const emit = defineEmits(['update:data'])
 

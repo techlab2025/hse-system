@@ -8,7 +8,7 @@ import { ShowPartnerApiService } from '../../Data/apiServices/showPartnerApiServ
 class ShowPartnerRepo extends RepoInterface<PartnerDetailsModel> {
   private static instance: ShowPartnerRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

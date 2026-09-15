@@ -6,7 +6,7 @@ import { AddHomeViewPricingApiService } from '../../Data/apiServices/addHomeView
 
 class AddHomeViewPricingRepo extends RepoInterface<HomeViewPricingModel> {
   private static instance: AddHomeViewPricingRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

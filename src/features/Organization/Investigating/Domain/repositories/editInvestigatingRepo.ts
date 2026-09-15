@@ -6,7 +6,7 @@ import InvestigatingModel from '../../Data/models/investigatingModel'
 class EditInvestigatingRepo extends RepoInterface<InvestigatingModel> {
   private static instance: EditInvestigatingRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

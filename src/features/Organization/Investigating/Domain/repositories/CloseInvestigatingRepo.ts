@@ -6,7 +6,7 @@ import { CloseInvestigatingApiService } from '../../Data/apiServices/CloseInvest
 class CloseInvestigatingRepo extends RepoInterface<InvestigatingModel> {
   private static instance: CloseInvestigatingRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

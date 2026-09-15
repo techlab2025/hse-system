@@ -6,7 +6,7 @@ import { AddPartnerApiService } from '../../Data/apiServices/addPartnerApiServic
 
 class AddPartnerRepo extends RepoInterface<PartnerModel> {
   private static instance: AddPartnerRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

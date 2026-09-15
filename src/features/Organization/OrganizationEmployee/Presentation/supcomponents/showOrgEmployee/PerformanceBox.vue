@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import EmployeeBg from '@/assets/images/topleft.png'
-import Yellowback from '@/assets/images/botleft.png'
 
 import type OrganizatoinEmployeeDetailsModel from '../../../Data/models/OrganizatoinEmployeeDetailsModel'
 

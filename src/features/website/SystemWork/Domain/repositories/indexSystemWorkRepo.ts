@@ -9,7 +9,7 @@ import { IndexSystemWorkApiService } from '../../Data/apiServices/indexSystemWor
 class IndexSystemWorkRepo extends RepoInterface<SystemWorkModel[]> {
   private static instance: IndexSystemWorkRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

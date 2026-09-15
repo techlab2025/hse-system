@@ -7,7 +7,7 @@ import { ShowTemplateApiService } from '../../Data/apiServices/showTemplateApiSe
 class ShowTemplateRepo extends RepoInterface<TemplateDetailsModel> {
   private static instance: ShowTemplateRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

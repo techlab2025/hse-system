@@ -6,7 +6,7 @@ import { CreateProjectZoonApiService } from '../../Data/apiServices/CreateProjec
 
 class CreateProjectZoneRepo extends RepoInterface<ProjectModel> {
   private static instance: CreateProjectZoneRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

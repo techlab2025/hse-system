@@ -6,7 +6,7 @@ import { DisOurSystemStepApiService } from '../../Data/apiServices/disActiveOurS
 
 class DisActiveOurSystemStepRepo extends RepoInterface<OurSystemStepModel> {
   private static instance: DisActiveOurSystemStepRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

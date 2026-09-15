@@ -9,7 +9,7 @@ import { DeleteHomeAboutUsApiService } from '../../Data/apiServices/deleteHomeAb
 class DeleteHomeAboutUsRepo extends RepoInterface<HomeAboutUsModel> {
   private static instance: DeleteHomeAboutUsRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

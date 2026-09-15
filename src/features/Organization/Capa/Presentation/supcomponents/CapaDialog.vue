@@ -1,12 +1,8 @@
 <script setup lang="ts">
 import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
 import Dialog from 'primevue/dialog'
-import { onMounted, ref, watch } from 'vue'
-import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
+import { ref } from 'vue'
 import ObservationCapaDestails from '@/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/ShowFactoryUtils/ObservationCapaDestails.vue'
-import ShowHazardController from '@/features/Organization/ObservationFactory/Presentation/controllers/showHazardController'
-import ShowHazardParams from '@/features/Organization/ObservationFactory/Core/params/showHazardParams'
-import { Observation } from '@/features/Organization/ObservationFactory/Core/Enums/ObservationTypeEnum'
 import type CapaModel from '@/features/Organization/ObservationFactory/Data/models/CapaModel'
 
 const props = defineProps<{

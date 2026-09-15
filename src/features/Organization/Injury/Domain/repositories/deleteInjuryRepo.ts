@@ -6,7 +6,7 @@ import { DeleteInjuryApiService } from '../../Data/apiServices/deleteInjuryApiSe
 class DeleteInjuryRepo extends RepoInterface<InjuryModel> {
   private static instance: DeleteInjuryRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -7,7 +7,7 @@ import { EditFaqApiService } from '../../Data/apiServices/editFaqApiService'
 class EditFaqRepo extends RepoInterface<FaqModel> {
   private static instance: EditFaqRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

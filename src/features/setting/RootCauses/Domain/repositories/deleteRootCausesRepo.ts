@@ -9,7 +9,7 @@ import RootCausesModel from '../../Data/models/RootCausesModel'
 class DeleteRootCausesRepo extends RepoInterface<RootCausesModel> {
   private static instance: DeleteRootCausesRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -6,7 +6,7 @@ import { ShowHazardApiService } from '../../Data/apiServices/showHazardApiServic
 class ShowHazardRepo extends RepoInterface<HazardDetailsModel> {
   private static instance: ShowHazardRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

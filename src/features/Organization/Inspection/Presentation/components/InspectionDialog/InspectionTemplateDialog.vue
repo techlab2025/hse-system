@@ -32,7 +32,7 @@ const fetchTemplateItem = async () => {
 }
 
 onMounted(() => {
-  if (visible) fetchTemplateItem()
+  if (visible.value) fetchTemplateItem()
 })
 
 watch(

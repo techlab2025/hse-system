@@ -6,7 +6,7 @@ import ProjectStatisticsModel from '../../data/Model/ProjectStatisticsModel'
 class FetchProjectStatisticsRepo extends RepoInterface<ProjectStatisticsModel> {
   private static instance: FetchProjectStatisticsRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

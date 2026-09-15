@@ -6,7 +6,7 @@ import { AddDrillTypeClonesApiService } from '../../Data/apiServices/AddDrillTyp
 
 class AddDrillTypeCloneRepo extends RepoInterface<DrillTypeModel> {
   private static instance: AddDrillTypeCloneRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

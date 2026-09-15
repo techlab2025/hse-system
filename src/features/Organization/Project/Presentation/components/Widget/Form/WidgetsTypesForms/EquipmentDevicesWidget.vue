@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import ColorSelection from '../WidgetUtils/ColorSelection.vue'
 import RadioSection from '@/shared/HelpersComponents/RadioSection.vue'
 import Pogress2 from "@/assets/images/Pogress2.png";

@@ -1,7 +1,6 @@
 import LangModel from '@/features/setting/languages/Data/models/langModel'
 import { OrganizationTypeEnum } from '../../Core/Enum/organization_type'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
-import type ProjectDetailsModel from '@/features/Organization/Project/Data/models/ProjectDetailsModel'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class UserModel {

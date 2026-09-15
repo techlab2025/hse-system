@@ -14,7 +14,6 @@ import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import ScopeIdParams from '../../Core/params/AddscopesParams'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import AddScope from '@/features/Organization/Scope/Presentation/components/AddScope.vue'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import HandleFIlesUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
@@ -491,7 +490,7 @@ defineExpose({
         @change="handleFilesChange"
         className="input-file"
       />
-    </div>
+    </div> 
 
 </template>
 

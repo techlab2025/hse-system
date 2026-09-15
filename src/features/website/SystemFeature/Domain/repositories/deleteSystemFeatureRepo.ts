@@ -8,7 +8,7 @@ import { DeleteSystemFeatureApiService } from '../../Data/apiServices/deleteSyst
 class DeleteSystemFeatureRepo extends RepoInterface<SystemFeatureModel> {
   private static instance: DeleteSystemFeatureRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

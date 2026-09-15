@@ -7,7 +7,7 @@ import { IndexSubscriptionApiService } from '../../Data/apiServices/indexSubscri
 class IndexSubscriptionApplicationRepo extends RepoInterface<SubscriptionApplicationModel[]> {
   private static instance: IndexSubscriptionApplicationRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

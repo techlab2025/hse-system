@@ -12,8 +12,6 @@ import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmploye
 import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue'
 import { useI18n } from 'vue-i18n'
 
-import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue'
-import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue'
 
 import RootCausesModel from '../../Data/models/RootCausesModel'
 import AddRootCausesController from '../controllers/addRootCausesController'

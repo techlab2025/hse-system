@@ -6,7 +6,7 @@ import { DeleteShiftApiService } from '../../Data/apiServices/DeleteShiftApiServ
 class DeleteShiftRepo extends RepoInterface<ShiftModel> {
   private static instance: DeleteShiftRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -5,7 +5,7 @@ import { CreateInvestigationTaskResultApiService } from '../../../Data/apiServic
 
 class CreateInvestigationTaskResultRepo extends RepoInterface<InvestegationResultModel> {
   private static instance: CreateInvestigationTaskResultRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -5,7 +5,7 @@ import { AddRoleApiService } from '../../Data/apiServices/addRoleApiService'
 
 class AddRoleRepo extends RepoInterface<RoleModel> {
   private static instance: AddRoleRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -7,7 +7,7 @@ import ObserverationTypeModel from '@/features/setting/ObserverationType/Data/mo
 class IndexObserverationTypeRepo extends RepoInterface<ObserverationTypeModel[]> {
   private static instance: IndexObserverationTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

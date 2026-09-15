@@ -8,7 +8,7 @@ import { EditOrganizationLocationApiService } from '../../Data/apiServices/editO
 class EditOrganizationLocationRepo extends RepoInterface<OrganizationLocationModel> {
   private static instance: EditOrganizationLocationRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -2,10 +2,6 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
-import FilesOrganization from '@/assets/images/FilesOrganization.png'
-import OrganizationSettingIcon from '@/assets/images/OrganizationSettingIcon.png'
-import PersonalData from '@/assets/images/PersonalData.png'
-import SettingLocation from '@/assets/images/SettingLocation.png'
 
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'

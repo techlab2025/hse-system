@@ -6,7 +6,6 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type InjuryModel from '../../Data/models/InjuryModel'
 import AddInjuryteUseCase from '../../Domain/useCase/addInjuryUseCase'
-import type AddInjuryParams from '../../Core/params/addInjuryParams'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class AddInjuryController extends ControllerInterface<InjuryModel> {

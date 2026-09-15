@@ -1,12 +1,8 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
-import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
-import ViewIcon from '@/shared/icons/ViewIcon.vue'
-import Image from 'primevue/image'
 
 import IndexFilter from './InvestigationMeetingUtils/IndexFilter.vue'
 import FilterDialog from './InvestigationMeetingUtils/FilterDialog.vue'
-import TitleInterface from '@/base/Data/Models/title_interface'
 import InvestigatingSidebar from '../Investigating/InvestigatingSidebar.vue'
 import google from '../../../../../../assets/images/google-meet.png'
 import link from '../../../../../../assets/images/link.png'

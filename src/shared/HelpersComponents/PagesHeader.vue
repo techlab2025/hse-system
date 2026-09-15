@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import EmployeeBg from '@/assets/images/EmployeeBg.png'
-import Yellowback from '@/assets/images/Yellowback.png'
 const props = defineProps<{
   title: string,
   subtitle?: string

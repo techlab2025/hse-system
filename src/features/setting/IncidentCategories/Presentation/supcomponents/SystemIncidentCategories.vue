@@ -2,14 +2,13 @@
 import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue';
 import Dialog from 'primevue/dialog';
 import DialogSystem from '@/assets/images/DialogSystem.png'
-import { onMounted, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import SystemDialogEmptyState from '@/shared/DataStatues/SystemDialogEmptyState.vue'
 import { useRoute, useRouter } from 'vue-router';
 import IndexIncidentCategoryParams from '../../Core/params/indexIncidentCategoryParams'
 import AddSystemIncidentCategoryController from '../controllers/addSystemIncidentCategoryController';
 import AddSystemIncidentCategoryParams from '../../Core/params/addSystemIncidentCategoryParams';
-import IndexIncidentCategoryController from '../controllers/indexIncidentCategoryController';
 import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
 import IndexSystemIncidentCategoryController from '../controllers/indexSystemIncidentCategoryController';
 import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue';

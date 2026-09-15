@@ -6,7 +6,7 @@ import { EditAdminApiService } from '../../Data/apiServices/edit_admin_api_servi
 class EditAdminRepo extends RepoInterface<AdminModel> {
   private static instance: EditAdminRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }
