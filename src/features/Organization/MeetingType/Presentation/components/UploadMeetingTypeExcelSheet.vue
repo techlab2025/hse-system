@@ -75,10 +75,9 @@ watch(
   { immediate: true },
 )
 
-const SendData = ref<string[]>(['title', 'description', 'periodic_type', 'number_of_days'])
+const SendData = ref<string[]>(['title', 'periodic_type', 'number_of_days'])
 const SendDataLabels: Record<string, string> = {
   title: 'Meeting Type Title',
-  description: 'Meeting Type Description',
   periodic_type: 'Periodic Type (1 Daily, 2 Weekly, 3 Monthly, 4 Yearly, 5 Dates)',
   number_of_days: 'Number Of Days',
 }
@@ -130,7 +129,7 @@ const validateRows = (rows: ReturnType<typeof buildRows>) => {
     const row = rows[index]
     const excelRow = index + 2
 
-    if (!row.title || !row.description) {
+    if (!row.title) {
       return `Title and description are required in Excel row ${excelRow}`
     }
 
@@ -182,9 +181,9 @@ const onMappingClose = () => {
         <span class="title">Meeting Type Excel Rules</span>
       </div>
       <div class="rule-description">
-        periodic_type: 1 = Daily, 2 = Weekly, 3 = Monthly, 4 = Yearly, 5 = Dates.
-        number_of_days is empty for Daily, required for all other types. Weekly must be less
-        than 7, Monthly less than 30, and Yearly less than 365.
+        periodic_type: 1 = Daily, 2 = Weekly, 3 = Monthly, 4 = Yearly, 5 = Dates. number_of_days is
+        empty for Daily, required for all other types. Weekly must be less than 7, Monthly less than
+        30, and Yearly less than 365.
       </div>
     </div>
 
@@ -194,11 +193,7 @@ const onMappingClose = () => {
       <span class="loading-label">Processing file…</span>
     </div>
 
-    <FileUpload
-      v-if="!Data.length"
-      accept=".xls,.xlsx"
-      @update:fileData="fileUpload"
-    />
+    <FileUpload v-if="!Data.length" accept=".xls,.xlsx" @update:fileData="fileUpload" />
 
     <template v-else>
       <ExcelSheetColumnsHandle
@@ -245,9 +240,7 @@ const onMappingClose = () => {
           </div>
         </div>
 
-        <button class="btn-confirm" type="button" @click="addMeetingTypes">
-          Confirm & Submit
-        </button>
+        <button class="btn-confirm" type="button" @click="addMeetingTypes">Confirm & Submit</button>
       </template>
     </template>
   </div>

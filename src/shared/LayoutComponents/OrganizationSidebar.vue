@@ -75,40 +75,38 @@ const OperationsRoutes = ref<Routes[]>([
       },
     ],
   },
-    {
+  {
     link: '/organization/equipment-mangement/incedant?isAll=1',
     name: 'Incidents',
     icon: 'exclamation-triangle',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
 
-    {
+  {
     link: '/organization/equipment-mangement/observation?isAll=1&type=2',
     name: 'observations',
     icon: 'eye',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
-    {
+  {
     link: '/organization/equipment-mangement/inspection?inspectionType=1',
     name: 'Inspection',
     icon: 'clipboard-notes',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
 
-
-    {
+  {
     link: '/organization/Investigating',
     name: 'investigations',
     icon: 'search-alt',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
-    {
+  {
     link: '/organization/capa',
     name: 'CAPA',
     icon: 'shield-check',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
-
 ])
 
 const OrganizationRoutes = ref<Routes[]>([
@@ -540,6 +538,18 @@ const LockUpsRoutes = ref<Routes[]>([
       PermissionsEnum.INJURY_DELETE,
       PermissionsEnum.INJURY_FETCH,
       PermissionsEnum.INJURY_UPDATE,
+    ],
+  },
+  {
+    link: '/organization/meeting-types',
+    name: 'meeting-types',
+    icon: 'medical-square',
+    permissions: [
+      PermissionsEnum.ORG_MEETING_TYPE_ALL,
+      PermissionsEnum.ORG_MEETING_TYPE_CREATE,
+      PermissionsEnum.ORG_MEETING_TYPE_DELETE,
+      PermissionsEnum.ORG_MEETING_TYPE_FETCH,
+      PermissionsEnum.ORG_MEETING_TYPE_UPDATE,
     ],
   },
 ])

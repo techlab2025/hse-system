@@ -2480,5 +2480,14 @@
   "import_ppe_items": "Import PPE Items",
   "add_system_ppe_items": "Add PPE Items from the System",
   "select_system_ppe_items": "Select the PPE items you need and add them to your organization.",
-  "action_feature_ppe_items": "PPE Item Actions"
+  "action_feature_ppe_items": "PPE Item Actions",
+  "periodic_type": "periodic type",
+  "number_of_days": "Number of days",
+  "enter_meeting_type_title": "enter meeting type title",
+  "meeting_type_title": "meeting type title",
+  "enter_number_of_days": "enter number of days",
+  "add_meeting_type": "add meeting type",
+  "action_feature_meeting_types": "action feature meeting types",
+  "add_system_meeting_types": "add system meeting types",
+  "select_system_meeting_types": "select system meeting types"
 }

@@ -38,17 +38,17 @@ const SettingsRoutes = ref<Routes[]>([
       PermissionsEnum.ADMIN_FETCH,
     ],
   },
-    {
+  {
     link: '/admin/team',
     name: t('team'),
     icon: 'team',
     permissions: [
-    PermissionsEnum.TEAM_ALL,
-        PermissionsEnum.TEAM_FETCH,
-        PermissionsEnum.TEAM_DETAILS,
+      PermissionsEnum.TEAM_ALL,
+      PermissionsEnum.TEAM_FETCH,
+      PermissionsEnum.TEAM_DETAILS,
       PermissionsEnum.TEAM_CREATE,
-         PermissionsEnum.TEAM_UPDATE,
-         PermissionsEnum.TEAM_DELETE,
+      PermissionsEnum.TEAM_UPDATE,
+      PermissionsEnum.TEAM_DELETE,
     ],
   },
   {
@@ -384,6 +384,20 @@ const LockUpsRoutes = ref<Routes[]>([
       PermissionsEnum.INJURY_DELETE,
       PermissionsEnum.INJURY_FETCH,
       PermissionsEnum.INJURY_UPDATE,
+    ],
+  },
+  {
+    link: '/admin/meeting-types',
+    name: t('meeting types'),
+    icon: 'receipt',
+    permissions: [
+      PermissionsEnum?.ADMIN,
+      PermissionsEnum?.MEETING_TYPE_ALL,
+      PermissionsEnum.MEETING_TYPE_CREATE,
+      PermissionsEnum.MEETING_TYPE_UPDATE,
+      PermissionsEnum.MEETING_TYPE_DETAILS,
+      PermissionsEnum.MEETING_TYPE_DELETE,
+      PermissionsEnum.MEETING_TYPE_FETCH,
     ],
   },
 ])
@@ -921,7 +935,6 @@ watch(LoackupsAccordion, (val) => {
         </AccordionPanel>
       </Accordion>
     </PermissionBuilder>
-
 
     <PermissionBuilder
       :code="[

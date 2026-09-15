@@ -82,6 +82,7 @@
   <MeetingTypeSystemDataHeader v-if="isHeaderTap" @click="visible = true" />
   <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
     <template #header>
+      
       <HeaderSection :img="DialogSystem" :title="$t('add_system_meeting_types')"
         :subtitle="$t('select_system_meeting_types')" />
     </template>

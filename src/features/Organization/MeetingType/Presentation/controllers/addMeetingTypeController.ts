@@ -9,10 +9,7 @@ import type MeetingTypeModel from '../../Data/models/MeetingTypeModel'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import AddMeetingTypeExcelParams from '../../Core/params/addMeetingTypeExcelParams'
 import AddMeetingTypeParams from '../../Core/params/addMeetingTypeParams'
-import {
-  PeriodicTypeEnum,
-  validatePeriodicNumberOfDays,
-} from '../../Core/Enum/periodic_type_enum'
+import { PeriodicTypeEnum, validatePeriodicNumberOfDays } from '../../Core/Enum/periodic_type_enum'
 
 export default class AddMeetingTypeController extends ControllerInterface<MeetingTypeModel> {
   private static instance: AddMeetingTypeController
@@ -46,13 +43,6 @@ export default class AddMeetingTypeController extends ControllerInterface<Meetin
           const row = params.data[index]
           const rowNumber = index + 2
 
-          if (!row.title?.trim() || !row.description?.trim()) {
-            new OpenWarningDilaog(
-              `Title and description are required in Excel row ${rowNumber}`,
-            ).openDialog()
-            return
-          }
-
           if (![1, 2, 3, 4, 5].includes(Number(row.periodic_type))) {
             new OpenWarningDilaog(
               `Periodic type must be 1, 2, 3, 4 or 5 in Excel row ${rowNumber}`,
@@ -76,10 +66,7 @@ export default class AddMeetingTypeController extends ControllerInterface<Meetin
           return
         }
 
-        const periodError = validatePeriodicNumberOfDays(
-          params.periodicType,
-          params.numberOfDays,
-        )
+        const periodError = validatePeriodicNumberOfDays(params.periodicType, params.numberOfDays)
         if (periodError) {
           new OpenWarningDilaog(periodError).openDialog()
           return

@@ -151,13 +151,11 @@ const downloadExample = () =>
     [
       {
         title: 'Daily operations meeting',
-        description: 'Daily operations follow-up',
         periodic_type: PeriodicTypeEnum.DAILY,
         number_of_days: '',
       },
       {
         title: 'Weekly safety meeting',
-        description: 'Weekly safety review',
         periodic_type: PeriodicTypeEnum.WEEKLY,
         number_of_days: 6,
       },
@@ -192,7 +190,7 @@ const headerActions = () => [
   },
   {
     text: t('add_meeting_type'),
-    link: `${basePath.value}/meeting-type/add`,
+    link: `${basePath.value}/meeting-types/add`,
     icon: ActionsListAddIcon,
     primary: true,
     type: ActionItemsTypeEnum.Info,
@@ -223,7 +221,7 @@ const headerActions = () => [
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ActionsList
-        feature-name="action_feature_meeting_types"
+        :feature-name="`${$t('action_feature_meeting_types')}`"
         :show-actions="true"
         :action-list="headerActions()"
         :actions-number="5"
@@ -243,7 +241,6 @@ const headerActions = () => [
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
-                <th scope="col">{{ $t('description') }}</th>
                 <th scope="col">{{ $t('periodic_type') }}</th>
                 <th scope="col">{{ $t('number_of_days') }}</th>
                 <th class="empty"></th>
@@ -253,7 +250,6 @@ const headerActions = () => [
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
                 <td>{{ item.title }}</td>
-                <td>{{ item.description }}</td>
                 <td>{{ periodLabel(item.periodicType) }}</td>
                 <td>
                   {{ item.periodicType === PeriodicTypeEnum.DAILY ? '-' : (item.numberOfDays ?? '-') }}
@@ -273,7 +269,7 @@ const headerActions = () => [
       <template #initial><TableLoader :cols="6" :rows="10" /></template>
       <template #empty>
         <DataEmpty
-          :link="`${basePath}/meeting-type/add`"
+          :link="`${basePath}/meeting-types/add`"
           :add-text="$t('add_meeting_type')"
           :description="$t('no_meeting_types_description')"
           :title="$t('no_meeting_types')"
@@ -281,7 +277,7 @@ const headerActions = () => [
       </template>
       <template #failed>
         <DataFailed
-          :link="`${basePath}/meeting-type/add`"
+          :link="`${basePath}/meeting-types/add`"
           :add-text="$t('add_meeting_type')"
           :description="$t('no_meeting_types_description')"
           :title="$t('no_meeting_types')"

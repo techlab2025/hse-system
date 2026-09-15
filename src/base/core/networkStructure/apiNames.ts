@@ -1838,22 +1838,26 @@ class ApiNames {
   }
 
   public get ShowMeetingType() {
-    return this.baseUrl + this.organizationPrefix + 'show_meeting_type'
+    return this.prefix + 'fetch_meeting_type_details'
   }
   public get CreateMeetingType() {
-    return this.baseUrl + this.organizationPrefix + 'craete_meeting_type'
+    return this.prefix + 'create_meeting_type'
   }
   public get DeleteMeetingType() {
-    return this.baseUrl + this.organizationPrefix + 'delete_meeting_type'
+    return this.prefix + 'delete_meeting_type'
   }
   public get EditMeetingType() {
-    return this.baseUrl + this.organizationPrefix + 'edit_meeting_type'
+    return this.prefix + 'edit_meeting_type'
   }
   public get IndexMeetingType() {
-    return this.baseUrl + this.organizationPrefix + 'index_meeting_type'
+    return this.prefix + 'fetch_meeting_types'
   }
-  public get CloneMeetingType() {
-    return this.baseUrl + this.organizationPrefix + 'clone_meeting_type'
+  // public get CloneMeetingType() {
+  //   return this.prefix + 'clone_meeting_type'
+  // }
+  public get CloneMeetingTypes(){
+    return this.prefix + 'clone_meeting_types'
+
   }
   // CloneMeetingType
 }
