@@ -46,7 +46,7 @@ export default class AddInspectionController extends ControllerInterface<Inspect
         if (currentRoute.name === 'Add Audit') {
           await router.push({
             name: 'Audits',
-            query: { project_id: currentRoute.query.project_id, inspectionType: 1 },
+            query: { project_id: currentRoute.query.project_id },
           })
         } else {
           await router.push(`/organization/equipment-mangement/inspection?inspectionType=1`)

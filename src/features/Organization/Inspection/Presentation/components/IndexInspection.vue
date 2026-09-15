@@ -295,6 +295,7 @@ const fetchAuditData = () => {
     return fetchCurrentInspectionData()
   }
 
+  console.log('activeAuditTab', activeAuditTab)
   if (activeAuditTab.value === 'all') {
     return InspectionFormTasks(
       word.value,
