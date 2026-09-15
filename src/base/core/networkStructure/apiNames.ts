@@ -1855,9 +1855,15 @@ class ApiNames {
   // public get CloneMeetingType() {
   //   return this.prefix + 'clone_meeting_type'
   // }
-  public get CloneMeetingTypes(){
+  public get CloneMeetingTypes() {
     return this.prefix + 'clone_meeting_types'
+  }
 
+  public get CreateProjectMeeting() {
+    return this.baseUrl + this.organizationPrefix + 'create_project_meeting'
+  }
+  public get CreateProjectMeetingResult() {
+    return this.baseUrl + this.organizationPrefix + 'create_project_meeting_result'
   }
   // CloneMeetingType
 }

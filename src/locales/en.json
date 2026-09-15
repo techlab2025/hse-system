@@ -2489,5 +2489,7 @@
   "add_meeting_type": "add meeting type",
   "action_feature_meeting_types": "action feature meeting types",
   "add_system_meeting_types": "add system meeting types",
-  "select_system_meeting_types": "select system meeting types"
+  "select_system_meeting_types": "select system meeting types",
+  "project meetings": "project meetings",
+  "Plan, schedule and manage project meetings with your teams and track meeting outcomes.": "Plan, schedule and manage project meetings with your teams and track meeting outcomes."
 }

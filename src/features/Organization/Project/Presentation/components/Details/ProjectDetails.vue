@@ -15,6 +15,7 @@ import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import ProjectHeader from './PorjectUtils/ProjectHeader.vue'
 import LossTimeMatrix from './LossTime/LossTimeMatrix.vue'
 import DrillSection from './Drill/DrillSection.vue'
+import ProjectMeetingSection from './ProjectMeeting/ProjectMeetingSection.vue'
 // import zoneInspectionTasks from '@/assets/images/InspectionTaskbg.png'
 // import EmployeeInspectionTasks from '@/assets/images/employee Inspection Tasks.png'
 
@@ -161,6 +162,12 @@ watch(
         <DrillSection
           :project-id="state.data?.id ?? Number(route.params.id)"
           :drills="state.data?.drills ?? []"
+          @updated="GetProjectDetails"
+        />
+
+        <ProjectMeetingSection
+          :project-id="state.data?.id ?? Number(route.params.id)"
+          :meetings="[]"
           @updated="GetProjectDetails"
         />
       </div>

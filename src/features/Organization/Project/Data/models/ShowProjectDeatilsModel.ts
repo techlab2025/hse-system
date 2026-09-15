@@ -10,6 +10,7 @@ import projectLocationModel from './ProjectLocationModel'
 import type { TitleLocale } from '@/base/core/params/translations_params'
 import ProjectLossTimeModel from './ProjectLossTimeModel'
 import DrillModel from './Drill/DrillModel'
+import ProjectMeetingModel from './ProjectMeeting/ProjectMeetingModel'
 
 export default class ShowProjectDetailsModel {
   public id: number
@@ -35,6 +36,7 @@ export default class ShowProjectDetailsModel {
   public endDate: string
   public lossTimes: ProjectLossTimeModel[]
   public drills: DrillModel[]
+  public ProjectMeeting: ProjectMeetingModel[]
 
   constructor(
     id: number,
@@ -60,6 +62,7 @@ export default class ShowProjectDetailsModel {
     endDate: string,
     lossTimes: ProjectLossTimeModel[],
     drills: DrillModel[] = [],
+    ProjectMeeting: ProjectMeetingModel[],
   ) {
     this.id = id
     this.title = title
@@ -84,6 +87,7 @@ export default class ShowProjectDetailsModel {
     this.endDate = endDate
     this.lossTimes = lossTimes
     this.drills = drills
+    this.ProjectMeeting = ProjectMeeting
   }
 
   static fromMap(data: any): ShowProjectDetailsModel {
@@ -140,6 +144,9 @@ export default class ShowProjectDetailsModel {
       data.end_date,
       lossTimes.map((item: Record<string, unknown>) => ProjectLossTimeModel.fromMap(item)),
       drills.map((item: Record<string, any>) => DrillModel.fromMap(item)),
+      Array.isArray(data.project_meeting)
+        ? data.project_meeting.map((el) => ProjectMeetingModel.fromMap(el))
+        : [],
     )
   }
 

@@ -250,9 +250,13 @@ const headerActions = () => [
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
                 <td>{{ item.title }}</td>
-                <td>{{ periodLabel(item.periodicType) }}</td>
+                <td>{{ periodLabel(Number(JSON.parse(item.subtitle).periodicType)) }}</td>
                 <td>
-                  {{ item.periodicType === PeriodicTypeEnum.DAILY ? '-' : (item.numberOfDays ?? '-') }}
+                  {{
+                    Number(JSON.parse(item.subtitle).numberOfDays) === PeriodicTypeEnum.DAILY
+                      ? '-'
+                      : (JSON.parse(item.subtitle).numberOfDays ?? '-')
+                  }}
                 </td>
                 <td><DropList :action-list="rowActions(item.id)" /></td>
               </tr>
