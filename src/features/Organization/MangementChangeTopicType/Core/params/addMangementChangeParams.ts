@@ -44,7 +44,7 @@ export default class AddMangementChangeParams implements Params {
     return {
       risk_assisment_file: this.risk_assisment_file,
 
-      image: this.image,
+      attachments: this.image,
 
       changer_request_id: this.changer_request_id,
 
