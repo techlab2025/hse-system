@@ -7,7 +7,7 @@ import { IndexCertificateApiService } from '../../Data/apiServices/indexCertific
 class IndexCertificateRepo extends RepoInterface<CertificateModel[]> {
   private static instance: IndexCertificateRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

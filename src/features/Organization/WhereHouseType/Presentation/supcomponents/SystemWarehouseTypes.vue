@@ -2,20 +2,15 @@
   import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue';
   import Dialog from 'primevue/dialog';
   import DialogSystem from '@/assets/images/DialogSystem.png'
-  import { onMounted, ref, watch } from "vue";
-  import IndexWhereHouseTypeController from '../controllers/indexWhereHouseTypeController';
+  import { ref, watch } from "vue";
   import IndexWhereHouseTypeParams from '../../Core/params/indexWhereHouseTypeParams';
   import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
   import SystemDialogEmptyState from '@/shared/DataStatues/SystemDialogEmptyState.vue'
-  import TableLoader from '@/shared/DataStatues/TableLoader.vue'
-  import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-  import wordSlice from '@/base/Presentation/utils/word_slice';
   import IndexSystemWhereHouseTypeController from '../controllers/indexSystemWhereHouseTypeController';
   import AddWhereHouseTypeCloneController from '../controllers/addWhereHouseTypeCloneController';
   import AddWarehouseTypeClonesParams from '../../Core/params/AddWarehouseTypeClonesParams';
   import { useRouter } from 'vue-router';
   import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
-  import AddSystemHeaderData from '@/shared/icons/AddSystemHeaderData.vue';
   import SystemDataHeader from './SystemDataHeader.vue';
 
   const props = defineProps<{

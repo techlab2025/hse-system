@@ -6,7 +6,7 @@ import { DeleteWhereHouseApiService } from '../../Data/apiServices/deleteWhereHo
 class DeleteWhereHouseRepo extends RepoInterface<WhereHouseModel> {
   private static instance: DeleteWhereHouseRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

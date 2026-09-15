@@ -7,7 +7,7 @@ import { IndexPartnerApiService } from '../../Data/apiServices/indexPartnerApiSe
 class IndexPartnerRepo extends RepoInterface<PartnerModel[]> {
   private static instance: IndexPartnerRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

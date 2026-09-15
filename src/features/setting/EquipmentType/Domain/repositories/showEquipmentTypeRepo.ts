@@ -7,7 +7,7 @@ import EquipmentTypeDetailsModel from '@/features/setting/EquipmentType/Data/mod
 class ShowEquipmentTypeRepo extends RepoInterface<EquipmentTypeDetailsModel> {
   private static instance: ShowEquipmentTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

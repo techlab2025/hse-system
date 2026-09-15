@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import type InvestigatingDocumentModel from '@/features/Organization/Investigating/Data/models/InvestegationDocumentModel'
-import AssignedToicon from '@/shared/icons/AssignedToicon.vue'
-import { ref, watch } from 'vue'
 
 const props = defineProps<{
   attachment: InvestigatingDocumentModel

@@ -1,8 +1,7 @@
-import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
+import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 // import { AddCodingSystemApiService } from '../../Data/apiServices/addSerialNumApiService'
 import SerialNumberModel from '../../Data/models/serialNumberModel'
-import { ShowServiceApiService } from '@/features/website/Service/Data/apiServices/showServiceApiService'
 import { ShowSerialNumberApiService } from '../../Data/apiServices/ShowSerialNumberApiServuce'
 
 class ShowSerialNumberRepo extends RepoInterface<SerialNumberModel[]> {

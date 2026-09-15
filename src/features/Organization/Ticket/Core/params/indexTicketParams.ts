@@ -1,5 +1,4 @@
 import type Params from '@/base/core/params/params'
-import type { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 // import { ClientStatusEnum } from '@/features/users/clients/clients/Core/enums/clientStatusEnum.ts'
 // import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
 

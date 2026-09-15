@@ -5,7 +5,6 @@ import type Params from '@/base/core/params/params'
 import type AddLocationParams from '../../../Core/params/addLocationParams'
 import AddLocationController from '../../controllers/addLocationController'
 import LocationAreaForm from './LocationAreaForm.vue'
-import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 
 const router = useRouter()

@@ -1,7 +1,6 @@
 import type AttachmentModel from '@/base/Data/Models/attachment_model'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { UserTypeEnum } from '../../../../../../../orbit-client/src/features/Organization/Tickets/Core/Enum/userTypeEnum'
-import type { StatusEnum } from '../../../../../../../orbit-client/src/features/Organization/Tickets/Core/Enum/statusEnum'
 
 export default class TicketHistoryModel extends TitleInterface {
   public id: number

@@ -1,19 +1,8 @@
 <script setup lang="ts">
-import HistoryLog from '@/shared/icons/HistoryLog.vue'
-import Filter from './filter.vue'
-import PendingHistoryCard from './PendingHistoryCard.vue'
 import type InspectionModel from '@/features/Organization/Inspection/Data/models/InspectionModel'
-import Warn from '@/assets/images/Warn.png'
-import InspectionTaskbg from '@/assets/images/InspectionTaskbg.png'
-import ViewInspectionArrow from '@/shared/icons/ViewInspectionArrow.vue'
 import { ref } from 'vue'
-import EquipmentInspectionShowDialog from '../Dialogs/EquipmentInspectionShowDialog.vue'
-import EquipmentInspectionResultDialog from '../Dialogs/EquipmentInspectionResultDialog.vue'
 import { EquipmentInspectionEnum } from '../../../Core/enum/EquipmentInspectionEnum'
-import { PeriodTypeEnum } from '@/features/Organization/Inspection/Core/Enum/PeriodTypeEnum'
-import InspectionCard from '@/features/Organization/Inspection/Presentation/components/InspectionUtils/InspectionCard.vue'
 import EquipmentInspectionCard from './EquipmentInspectionCard.vue'
-import EmptyInspection from "@/assets/images/EmptyInspection.png"
 import NoData from "@/assets/images/no-data.png"
 
 const props = defineProps<{

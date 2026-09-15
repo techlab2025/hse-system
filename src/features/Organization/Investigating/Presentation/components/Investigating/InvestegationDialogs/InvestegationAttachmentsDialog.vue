@@ -1,11 +1,10 @@
 <script lang="ts" setup>
-import { markRaw, onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import Dialog from 'primevue/dialog'
 
 import AddAttach from '@/assets/images/AddAttach.png'
 import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
 import FileUpload from '@/shared/FormInputs/FileUpload.vue'
-import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 

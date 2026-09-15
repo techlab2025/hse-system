@@ -6,7 +6,7 @@ import { AddShiftApiService } from '../../Data/apiServices/AddShiftApiService'
 
 class AddShiftRepo extends RepoInterface<ShiftModel> {
   private static instance: AddShiftRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

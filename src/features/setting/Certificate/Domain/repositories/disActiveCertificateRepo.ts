@@ -6,7 +6,7 @@ import { DisCertificateApiService } from '../../Data/apiServices/disActiveCertif
 
 class DisActiveCertificateRepo extends RepoInterface<CertificateModel> {
   private static instance: DisActiveCertificateRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

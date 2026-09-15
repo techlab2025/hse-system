@@ -1,24 +1,17 @@
 <script lang="ts" setup>
-import { computed, markRaw, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 // import IconFullScreen from '@/shared/icons/IconFullScreen.vue'
 import IconMenu from '@/shared/icons/IconMenu.vue'
-import IconLogout from '@/shared/icons/IconLogout.vue'
-import IconArrowDownNav from '@/shared/icons/IconArrowDownNav.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
 // import { setDefaultImage } from "@/base/Presentation/utils/set_default_image";
 // import { useUserStore } from "@/stores/user";
 // import defaultImage from "@/assets/images/user.png";
 import ChangeLanguage from './ChangeLanguage.vue'
-import Notification from '../icons/Notification.vue'
-import SearchIcon from '../icons/SearchIcon.vue'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import defaultLogo from '@/assets/images/logo.svg'
 import { useSystemIdentity } from '@/composables/useSystemIdentity'
 import CustomSelectInput from '../FormInputs/CustomSelectInput.vue'
-import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
-import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
 import OrganizationEmployeeDefaultProjectRepoController from '@/features/auth/presentation/controllers/OrganizationEmployeeDefaultProjectRepoController'
@@ -26,14 +19,9 @@ import OrganizationEmployeeDefaultProjectParams from '@/features/auth/Core/Param
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 import FetchMyProjectsController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyProjectsController'
 import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Core/params/fetchMyProjectsParams'
-import { useIntegratedNotifications } from '@/composables/useIntegratedNotifications'
 import { useToast } from 'primevue/usetoast'
-import wordSlice from '@/base/Presentation/utils/word_slice'
 import Notifications from './Notifications.vue'
-import Ring from '@/assets/Ring/Ring.txt'
 import { useThemeMode } from '@/composables/useThemeMode'
-import RefreshNotificationParams from '@/features/notification/Core/params/RefreshNotificationParams.ts'
-import RefreshNotificationTokenController from '@/features/notification/Presentation/controllers/RefreshNotificationTokenController.ts'
 // import { NOTIFICATION_SOUND_BASE64 } from '@/base/Presentation/utils/notification_ring.ts'
 
 const route = useRoute()

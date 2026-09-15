@@ -16,7 +16,6 @@ import IndexProjectController from '../controllers/indexProjectController'
 import IndexProjectParams from '../../Core/params/indexProjectParams'
 import ProjectCard from './ProjectUtils/ProjectCard.vue'
 import ProjectCardSkelaton from './ProjectUtils/ProjectCardSkelaton.vue'
-import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
 
 const { t } = useI18n()
 

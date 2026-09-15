@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import ImportantIcon from '@/shared/icons/ImportantIcon.vue'
-import AssignTo from '@/assets/images/AssignTo.png'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import { ref, watch } from 'vue'
 import type { InspectionTypeEnum } from '../../../Core/Enum/InspectionTypeEnum'

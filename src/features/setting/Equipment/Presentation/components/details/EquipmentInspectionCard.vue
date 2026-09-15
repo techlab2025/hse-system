@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import InspectionTaskbg from '@/assets/images/InspectionTaskbg.png'
-import { ref } from 'vue'
 import EquipmentInspectionShowDialog from '@/features/setting/Equipment/Presentation/components/Dialogs/EquipmentInspectionShowDialog.vue'
-import ButtonArrow from '../../../../../../shared/icons/ButtonArrow.vue'
 import ChevronRight from '../../../../../../shared/icons/ChevronRight.vue'
 import image from '@/assets/images/onceimg.png'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
@@ -13,8 +11,6 @@ import { InspectionTypeEnum } from '@/features/Organization/Inspection/Core/Enum
 import LastInspectionCard from '@/features/Organization/Inspection/Presentation/components/InspectionUtils/LastInspectionCard.vue'
 import InspectionStartTemplate from '@/features/Organization/Inspection/Presentation/components/InspectionDialog/InspectionStartTemplate.vue'
 import { AssignToTypeEnum } from '@/features/Organization/Inspection/Core/Enum/AssignToTypesEnum'
-import ShowInspectionDialog from '@/features/Organization/Inspection/Presentation/components/InspectionDialog/ShowInspectionDialog.vue'
-import TemplateDocument from '@/features/setting/TemplateItem/Presentation/components/TemplateDocument.vue'
 
 const props = defineProps<{
   tasks: InspectionModel[]

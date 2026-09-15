@@ -6,7 +6,7 @@ import { IndexAdminApiService } from "../../Data/apiServices/index_admin_api_ser
 class IndexAdminRepo extends RepoInterface<AdminModel[]> {
   private static instance: IndexAdminRepo;
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super();
   }

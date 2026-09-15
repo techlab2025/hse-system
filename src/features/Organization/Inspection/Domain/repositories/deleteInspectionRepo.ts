@@ -6,7 +6,7 @@ import { DeleteInspectionApiService } from '../../Data/apiServices/deleteInspect
 class DeleteInspectionRepo extends RepoInterface<InspectionModel> {
   private static instance: DeleteInspectionRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

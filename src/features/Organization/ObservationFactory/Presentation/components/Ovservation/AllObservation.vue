@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import ObservationCard from './cards/ObservationCard.vue'
 import Political from '@/assets/images/Political.png'
-import ALERT from '@/assets/images/ALERT.png'
 import PoliceLine from '@/assets/images/PoliceLine.png'
 import ToDoLogo from '@/assets/images/ToDoLogo.png'
 import { InspectionPageType } from '../../../Core/Enums/InspectionTypeEnum'

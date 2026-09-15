@@ -8,8 +8,6 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import { ref } from 'vue'
 import DatePicker from 'primevue/datepicker'
 import { watch } from 'vue'
-import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
-import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
 import { PeriodicDaysEnum } from '../../../Core/Enum/PeriodicDaysEnum'
 import { WithDayEnum } from '../../../Core/Enum/WithDayEnum'
 

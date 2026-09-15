@@ -3,7 +3,6 @@ import { onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams'
 import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController'
-import type ProjectLocationHierarchyModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationHierarchyModel'
 import AddHerikaly from '@/features/Organization/Herikaly/Presentation/components/AddHerikaly.vue'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 

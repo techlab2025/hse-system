@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import { EquipmentInspectionEnum } from '@/features/setting/Equipment/Core/enum/EquipmentInspectionEnum'
 import type InspectionModel from '../../../Data/models/InspectionModel'
-import InspectionTaskbg from '@/assets/images/InspectionTaskbg.png'
-import { ref } from 'vue'
-import EquipmentInspectionShowDialog from '@/features/setting/Equipment/Presentation/components/Dialogs/EquipmentInspectionShowDialog.vue'
 import type LastInspectionModel from '../../../Data/models/LastInspectionModel'
 import InspectionStartTemplate from '../InspectionDialog/InspectionStartTemplate.vue'
 

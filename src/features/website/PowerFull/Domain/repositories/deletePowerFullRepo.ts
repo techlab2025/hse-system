@@ -10,7 +10,7 @@ import { DeletePowerFullApiService } from '../../Data/apiServices/deletePowerFul
 class DeletePowerFullRepo extends RepoInterface<PowerFullModel> {
   private static instance: DeletePowerFullRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

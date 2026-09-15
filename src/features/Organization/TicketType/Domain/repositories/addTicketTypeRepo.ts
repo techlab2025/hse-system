@@ -5,7 +5,7 @@ import { AddTicketTypeApiService } from '../../Data/apiServices/addTicketTypeApi
 
 class AddTicketTypeRepo extends RepoInterface<TicketTypeModel> {
   private static instance: AddTicketTypeRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

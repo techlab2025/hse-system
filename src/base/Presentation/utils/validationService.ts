@@ -12,7 +12,7 @@ class ValidationService {
     clearError(fieldName: string) {
         const inputField = document.getElementById(fieldName);
         if (inputField) {
-            let errorSpan = inputField.nextElementSibling;
+            const errorSpan = inputField.nextElementSibling;
             if (errorSpan && errorSpan.classList.contains("error-text")) {
                 errorSpan.remove();
             }

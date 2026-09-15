@@ -9,7 +9,7 @@ import { DeleteHeaderApiService } from '../../Data/apiServices/deleteHeaderApiSe
 class DeleteHeaderRepo extends RepoInterface<HeaderModel> {
   private static instance: DeleteHeaderRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

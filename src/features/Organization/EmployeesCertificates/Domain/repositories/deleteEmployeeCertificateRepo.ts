@@ -6,7 +6,7 @@ import { DeleteEmployeeCertificateApiService } from '../../Data/apiServices/dele
 class DeleteEmployeeCertificateRepo extends RepoInterface<EmployeeCertificateModel> {
   private static instance: DeleteEmployeeCertificateRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

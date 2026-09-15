@@ -7,7 +7,7 @@ import { DeleteSystemComponentApiService } from '../../Data/apiServices/deleteSy
 class DeleteSystemComponentRepo extends RepoInterface<SystemComponentModel> {
   private static instance: DeleteSystemComponentRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

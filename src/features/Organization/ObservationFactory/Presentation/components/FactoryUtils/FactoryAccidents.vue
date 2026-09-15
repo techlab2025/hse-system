@@ -4,7 +4,6 @@ import { ref, watch } from 'vue'
 import acc from '@/assets/images/acc.png'
 import InjuresTimeLine from './InjuresTimeLine.vue'
 import type InjuryDetailsModel from '../../../Data/models/InjuryModel.ts'
-import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits(['update:data'])
 const { isOpen, injuries, incidentTypeId } = defineProps<{

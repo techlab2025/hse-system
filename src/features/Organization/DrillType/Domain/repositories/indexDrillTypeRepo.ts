@@ -6,7 +6,7 @@ import DrillTypeModel from '../../Data/models/DrillTypeModel'
 class IndexDrillTypeRepo extends RepoInterface<DrillTypeModel[]> {
   private static instance: IndexDrillTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

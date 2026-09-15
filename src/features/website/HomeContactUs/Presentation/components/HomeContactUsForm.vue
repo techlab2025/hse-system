@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
-import TitleInterface from '@/base/Data/Models/title_interface'
 
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
@@ -16,7 +15,6 @@ import { LangsMap } from '@/constant/langs.ts'
 // import { useRoute } from 'vue-router'
 
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import type HomeContactUsDetailsModel from '../../Data/models/HomeContactUsDetailsModel'
 import EditHomeContactUsParams from '../../Core/params/editHomeContactUsParams'

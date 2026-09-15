@@ -1,6 +1,4 @@
 import type Params from '@/base/core/params/params'
-import type TranslationsParams from '@/base/core/params/translations_params'
-import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddTicketParams implements Params {
   images: string[]

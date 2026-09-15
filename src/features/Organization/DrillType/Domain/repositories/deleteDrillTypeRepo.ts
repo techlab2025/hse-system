@@ -6,7 +6,7 @@ import { DeleteDrillTypeApiService } from '../../Data/apiServices/deleteDrillTyp
 class DeleteDrillTypeRepo extends RepoInterface<DrillTypeModel> {
   private static instance: DeleteDrillTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -6,7 +6,7 @@ import ShowLangModel from '@/features/setting/languages/Data/models/langDetailsM
 class ShowLangRepo extends RepoInterface<ShowLangModel> {
   private static instance: ShowLangRepo;
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super();
   }

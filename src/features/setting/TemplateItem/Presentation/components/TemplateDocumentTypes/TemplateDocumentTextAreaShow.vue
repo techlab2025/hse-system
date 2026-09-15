@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import type TitleInterface from '@/base/Data/Models/title_interface';
-import UploadImage from '@/shared/icons/UploadImage.vue';
-import type { TitleLocale } from '@/base/core/params/translations_params';
 const { title } = defineProps<{
   title: string
   require_image: boolean

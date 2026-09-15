@@ -6,7 +6,7 @@ import { UpdateCapaApiService } from '../../Data/apiServices/UpdateCapaApiServic
 class UpdateCapaRepo extends RepoInterface<ShowCapaDetailsModel> {
   private static instance: UpdateCapaRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

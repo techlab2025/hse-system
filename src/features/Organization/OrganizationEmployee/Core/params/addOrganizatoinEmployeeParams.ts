@@ -4,7 +4,6 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 import type RolesOrganizationEmployeeParams from './RolesOrganizationEmployeeParams'
 import type { EmployeeStatusEnum } from '../Enum/EmployeeStatus'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
-import type { DashboardAccessEnum } from '../Enum/DashboardAccess'
 
 export default class AddOrganizatoinEmployeeParams implements Params {
   name: string

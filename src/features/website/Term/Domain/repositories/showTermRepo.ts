@@ -7,7 +7,7 @@ import { ShowTermApiService } from '../../Data/apiServices/showTermApiService'
 class ShowTermRepo extends RepoInterface<TermDetailsModel> {
   private static instance: ShowTermRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

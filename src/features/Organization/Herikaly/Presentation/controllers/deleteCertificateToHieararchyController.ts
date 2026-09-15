@@ -3,7 +3,6 @@ import type { DataState } from '@/base/core/networkStructure/Resources/dataState
 import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
-import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type HerikalyModel from '../../Data/models/HerikalyModel'
 import DeleteCertificateToHierarchyUseCase from '../../Domain/useCase/deleteCertificateToHierarchyUseCase'

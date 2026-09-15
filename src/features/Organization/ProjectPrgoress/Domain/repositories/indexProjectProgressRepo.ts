@@ -6,7 +6,7 @@ import { IndexProjectProgressApiService } from '../../Data/apiServices/indexProj
 class IndexProjectProgressRepo extends RepoInterface<ProjectProgressModel> {
   private static instance: IndexProjectProgressRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

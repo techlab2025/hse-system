@@ -1,11 +1,6 @@
 <script setup lang="ts">
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
-import type EquipmentDetailsModel from '@/features/_templateFeature/Data/models/equipmentDetailsModel'
-import type ProjectLocationEquipmentModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationEquipmentModel'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
-import ToolIcon from '@/shared/icons/ToolIcon.vue'
 import type EquipmentModel from '../../../Data/models/equipmentModel'
-import Rent from '@/assets/images/Rent.png'
 import RentIcon from '@/shared/icons/RentIcon.vue'
 import { EquipmentStatus } from '../../../Core/enum/equipmentStatus'
 import Helmet from '@/assets/images/Helmet.png'
@@ -15,12 +10,11 @@ import EquipmentCardImgDialog from './EquipmentCardImgDialog.vue'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import IconEye from '@/shared/icons/IconEye.vue'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
 import { useI18n } from 'vue-i18n'
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 
 const { t } = useI18n()
 

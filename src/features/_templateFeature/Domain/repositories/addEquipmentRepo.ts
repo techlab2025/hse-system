@@ -6,7 +6,7 @@ import { AddEquipmentApiService } from '../../Data/apiServices/addEquipmentApiSe
 
 class AddEquipmentRepo extends RepoInterface<EquipmentModel> {
   private static instance: AddEquipmentRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

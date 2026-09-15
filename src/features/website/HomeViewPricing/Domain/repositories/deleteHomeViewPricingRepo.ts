@@ -12,7 +12,7 @@ import { DeleteHomeViewPricingApiService } from '../../Data/apiServices/deleteHo
 class DeleteHomeViewPricingRepo extends RepoInterface<HomeViewPricingModel> {
   private static instance: DeleteHomeViewPricingRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

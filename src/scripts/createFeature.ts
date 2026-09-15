@@ -32,7 +32,7 @@ function copyDir(src: string, dest: string) {
 
   for (const entry of entries) {
     const srcPath = path.join(src, entry.name);
-    let destName = entry.name.replace(/_templateFeature/g, featureNameCapitalized);
+    const destName = entry.name.replace(/_templateFeature/g, featureNameCapitalized);
     const destPath = path.join(dest, destName);
 
     if (entry.isDirectory()) {

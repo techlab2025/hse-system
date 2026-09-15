@@ -6,7 +6,7 @@ import { AddWarehouseTypeClonesApiService } from '../../Data/apiServices/AddWare
 
 class AddWarehouseTypeCloneRepo extends RepoInterface<WhereHouseTypeModel> {
   private static instance: AddWarehouseTypeCloneRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

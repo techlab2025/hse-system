@@ -10,7 +10,6 @@ import IndexLangParams from '@/features/setting/languages/Core/params/indexLangP
 import { LangsMap } from '@/constant/langs.ts'
 import type TermDetailsModel from '../../Data/models/TermDetailsModel'
 import AddTermParams from '../../Core/params/addTermParams'
-import ShowTermController from '../controllers/showTermController'
 // import ShowTermParams from '../../Core/params/showTermParams'
 
 const emit = defineEmits(['update:data'])

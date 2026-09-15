@@ -8,7 +8,7 @@ import SubscriptionTypeModel from '../../Data/models/SubscriptionTypeModel'
 class DeleteSubscriptionTypeRepo extends RepoInterface<SubscriptionTypeModel> {
   private static instance: DeleteSubscriptionTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

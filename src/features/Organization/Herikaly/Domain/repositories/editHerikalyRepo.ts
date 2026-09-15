@@ -10,7 +10,7 @@ import { EditHerikalyApiService } from '../../Data/apiServices/editHerikalyApiSe
 class EditHerikalyRepo extends RepoInterface<HerikalyModel> {
   private static instance: EditHerikalyRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

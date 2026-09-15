@@ -1,4 +1,3 @@
-import TitleInterface from '@/base/Data/Models/title_interface'
 import WhereHouseTypeDetailsModel from '@/features/Organization/WhereHouseType/Data/models/WhereHouseTypeDetailsModel'
 
 export default class WhereHouseDetailsModel {

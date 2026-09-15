@@ -1,7 +1,4 @@
 import TranslationsParams, {
-  type DescriptionLocale,
-  type TitleLocale,
-  type SubtitlesLocale,
   type AnswerLocale,
   type QuestionLocale
 } from '@/base/core/params/translations_params.ts'

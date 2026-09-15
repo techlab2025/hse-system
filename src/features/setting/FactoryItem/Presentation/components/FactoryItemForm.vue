@@ -25,7 +25,6 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 
 const emit = defineEmits(['update:data'])

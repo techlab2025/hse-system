@@ -7,7 +7,7 @@ import { ShowFactoryApiService } from '../../Data/apiServices/showFactoryApiServ
 class ShowFactoryRepo extends RepoInterface<FactoryDetailsModel> {
   private static instance: ShowFactoryRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

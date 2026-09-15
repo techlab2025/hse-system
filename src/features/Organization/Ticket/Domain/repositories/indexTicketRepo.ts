@@ -7,7 +7,7 @@ import { IndexTicketApiService } from '../../Data/apiServices/indexTicketApiServ
 class IndexTicketRepo extends RepoInterface<TicketModel[]> {
   private static instance: IndexTicketRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

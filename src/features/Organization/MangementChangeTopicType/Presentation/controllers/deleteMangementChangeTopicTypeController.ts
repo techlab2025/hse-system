@@ -3,8 +3,6 @@ import type { DataState } from '@/base/core/networkStructure/Resources/dataState
 import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import errorImage from '@/assets/images/error.png'
-import type PpeItemModel from '../../Data/models/MangementChangeTopicTypeModel'
-import DeletePpeItemUseCase from '../../Domain/useCase/deleteMangementChangeTopicTypeUseCase'
 import type MangementChangeTopicTypeModel from '../../Data/models/MangementChangeTopicTypeModel'
 import DeleteMangementChangeTopicTypeUseCase from '../../Domain/useCase/deleteMangementChangeTopicTypeUseCase'
 

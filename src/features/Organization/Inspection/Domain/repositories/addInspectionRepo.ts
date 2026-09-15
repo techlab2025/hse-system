@@ -5,7 +5,7 @@ import { AddInspectionApiService } from '../../Data/apiServices/addInspectionApi
 
 class AddInspectionRepo extends RepoInterface<InspectionModel> {
   private static instance: AddInspectionRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

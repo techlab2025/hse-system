@@ -3,12 +3,10 @@ import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 // import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
-import AddEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/addEquipmentTypeParams.ts'
 import type Params from '@/base/core/params/params'
 import EquipmentForm from './EquipmentForm.vue'
 import AddEquipmentController from '../controllers/addEquipmentController'
 import type AddEquipmentParams from '../../Core/params/addEquipmentParams'
-import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)

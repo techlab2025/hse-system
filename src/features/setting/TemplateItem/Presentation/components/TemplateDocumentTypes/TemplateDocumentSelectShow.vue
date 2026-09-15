@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { TitleLocale } from '@/base/core/params/translations_params';
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import UploadImage from '@/shared/icons/UploadImage.vue'

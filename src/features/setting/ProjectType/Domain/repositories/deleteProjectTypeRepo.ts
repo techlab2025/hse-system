@@ -8,7 +8,7 @@ import ProjectTypeModel from '@/features/setting/ProjectType/Data/models/project
 class DeleteProjectTypeRepo extends RepoInterface<ProjectTypeModel> {
   private static instance: DeleteProjectTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

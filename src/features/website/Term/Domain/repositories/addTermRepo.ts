@@ -6,7 +6,7 @@ import { AddTermApiService } from '../../Data/apiServices/addTermApiService'
 
 class AddTermRepo extends RepoInterface<TermModel> {
   private static instance: AddTermRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

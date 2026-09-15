@@ -6,7 +6,7 @@ import EquipmentStaticsModel from '../../data/Model/EquipmentStaticsModel'
 class FetchEquipmentStaticsRepo extends RepoInterface<EquipmentStaticsModel> {
   private static instance: FetchEquipmentStaticsRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

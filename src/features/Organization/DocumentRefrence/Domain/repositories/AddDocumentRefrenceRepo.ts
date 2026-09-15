@@ -6,7 +6,7 @@ import { AddDocumentRefrenceApiService } from '../../Data/apiServices/AddDocumen
 
 class AddDocumentRefrenceRepo extends RepoInterface<DocumentRefrenceModel> {
   private static instance: AddDocumentRefrenceRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -7,7 +7,7 @@ import { IndexMethodsApiService } from '../../Data/apiServices/indexMethodsApiSe
 class IndexMethodsRepo extends RepoInterface<MethodsModel[]> {
   private static instance: IndexMethodsRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

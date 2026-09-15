@@ -8,7 +8,7 @@ import { DeleteLocationApiService } from '../../Data/apiServices/deleteLocationA
 class DeleteLocationRepo extends RepoInterface<LocationModel> {
   private static instance: DeleteLocationRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

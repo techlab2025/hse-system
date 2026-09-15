@@ -9,7 +9,7 @@ import { ShowSystemRiskManagementApiService } from '../../Data/apiServices/showS
 class ShowSystemRiskManagementRepo extends RepoInterface<SystemRiskManagementDetailsModel> {
   private static instance: ShowSystemRiskManagementRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

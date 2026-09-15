@@ -6,7 +6,7 @@ import ProjectTypeModel from '@/features/setting/ProjectType/Data/models/project
 
 class DisActiveProjectTypeRepo extends RepoInterface<ProjectTypeModel> {
   private static instance: DisActiveProjectTypeRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -8,7 +8,7 @@ import { DeleteCategoryApiService } from '../../Data/apiServices/deleteCategoryA
 class DeleteCategoryRepo extends RepoInterface<CategoryModel> {
   private static instance: DeleteCategoryRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

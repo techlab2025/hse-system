@@ -6,7 +6,7 @@ import { AddPpeItemClonesApiService } from '../../Data/apiServices/AddPpeItemClo
 
 class AddPpeItemCloneRepo extends RepoInterface<PpeItemModel> {
   private static instance: AddPpeItemCloneRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

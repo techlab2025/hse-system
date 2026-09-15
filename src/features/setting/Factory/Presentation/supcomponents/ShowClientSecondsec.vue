@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import AddItemButton from "@/components/HelpersComponents/AddItemButton.vue";
 import IndexProjectParams from "@/features/dashboard/projects/project/Core/params/index_projects_params";
 import ProjectModel from "@/features/dashboard/projects/project/Data/models/index_projects_model";
 import IndexProjectController from "@/features/dashboard/projects/project/Presentation/controllers/index_projects_controller";

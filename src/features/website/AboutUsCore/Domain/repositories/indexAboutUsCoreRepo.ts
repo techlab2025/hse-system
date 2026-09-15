@@ -8,7 +8,7 @@ import { IndexAboutUsCoreApiService } from '../../Data/apiServices/indexAboutUsC
 class IndexAboutUsCoreRepo extends RepoInterface<AboutUsCoreModel[]> {
   private static instance: IndexAboutUsCoreRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

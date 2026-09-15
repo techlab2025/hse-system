@@ -1,6 +1,5 @@
 import type Params from '@/base/core/params/params.ts'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
-import type ItemParams from './ItemParams'
 
 export default class EditServiceSectionParams implements Params {
   id: number

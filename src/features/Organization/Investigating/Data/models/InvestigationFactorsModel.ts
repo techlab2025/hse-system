@@ -1,4 +1,4 @@
-import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
+import { type TitleLocale } from '@/base/core/params/translations_params.ts'
 import FactoryModel from '@/features/setting/Factory/Data/models/FactoryModel'
 
 export default class InvestegationFactorModel {

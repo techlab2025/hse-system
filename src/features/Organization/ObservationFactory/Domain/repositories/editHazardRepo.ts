@@ -6,7 +6,7 @@ import HazardModel from '../../Data/models/hazardModel'
 class EditHazardRepo extends RepoInterface<HazardModel> {
   private static instance: EditHazardRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

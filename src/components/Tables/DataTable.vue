@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import DropList from '@/shared/HelpersComponents/DropList.vue'
-import ActionsIcon from '@/shared/icons/ActionsIcon.vue'
 import EditIcon from '@/shared/icons/EditIcon.vue'
 import SortIcon from '@/shared/icons/SortIcon.vue'
 import TrashIcon from '@/shared/icons/TrashIcon.vue'
 import wordSlice from '@/base/Presentation/utils/word_slice'
 
 
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 
 const actionList = (id: number, deleteStudents: (id: number) => void) => [
   {

@@ -3,7 +3,6 @@ import type { DataState } from '@/base/core/networkStructure/Resources/dataState
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import FetchInspectionResultUseCase from '../../Domain/useCase/FetchInspectionResultUseCase'
-import type FetchInspectionResultModel from '../../Data/models/FetchInspectionResultModel'
 import type TaskResultModel from '../../Data/models/FetchTaskResultModels/TasksResultModel'
 
 export default class FetchInspectionResultController extends SelectControllerInterface<

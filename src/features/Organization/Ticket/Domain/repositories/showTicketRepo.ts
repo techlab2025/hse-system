@@ -6,7 +6,7 @@ import { ShowTicketApiService } from '../../Data/apiServices/showTicketApiServic
 class ShowTicketRepo extends RepoInterface<TicketDetailsModel> {
   private static instance: ShowTicketRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

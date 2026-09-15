@@ -1,4 +1,3 @@
-import type { TitleLocale } from '@/base/core/params/translations_params.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import TranslationsModel from '@/base/core/Models/translations_model'
 

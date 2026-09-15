@@ -1,14 +1,12 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
-import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type OrganizationModel from '../../Data/models/OrganizationModel'
 import AddOrganizationUseCase from '../../Domain/useCase/addOrganizationUseCase'
-import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 import type AddOrganizationParams from '../../Core/params/addOrganizationParams'
 
 export default class AddOrganizationController extends ControllerInterface<OrganizationModel> {

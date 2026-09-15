@@ -6,12 +6,8 @@ import { Observation } from '@/features/Organization/ObservationFactory/Core/Enu
 import { SeverityEnum } from '@/features/Organization/ObservationFactory/Core/Enums/SeverityEnum'
 import type HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel'
 import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
-import ActionClosed from '@/shared/icons/ActionClosed.vue'
-import ActionOpen from '@/shared/icons/ActionOpen.vue'
-import RootCase from '@/shared/icons/RootCase.vue'
 import TakeActionIcon from '@/shared/icons/TakeActionIcon.vue'
 import WarningIcon from '@/shared/icons/WarningIcon.vue'
-import Image from 'primevue/image'
 import { computed, ref, watch } from 'vue'
 
 const props = defineProps<{

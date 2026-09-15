@@ -8,7 +8,7 @@ import { DeleteIncidentCategoryApiService } from '../../Data/apiServices/deleteI
 class DeleteIncidentCategoryRepo extends RepoInterface<IncidentCategoryModel> {
   private static instance: DeleteIncidentCategoryRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

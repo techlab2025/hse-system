@@ -6,7 +6,7 @@ import TaskFullResponseModel from '../../Data/models/FetchTaskResultModels/FullT
 class FetchTaskResultRepo extends RepoInterface<TaskFullResponseModel> {
   private static instance: FetchTaskResultRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

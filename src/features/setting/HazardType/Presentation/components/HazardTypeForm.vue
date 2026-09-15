@@ -21,7 +21,6 @@ import IndexFactoryController from '@/features/setting/Factory/Presentation/cont
 import IndexFactoryParams from '@/features/setting/Factory/Core/params/indexFactoryParams'
 import HazardFactorParams from '../../Core/params/FactorParams'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 const emit = defineEmits(['update:data'])

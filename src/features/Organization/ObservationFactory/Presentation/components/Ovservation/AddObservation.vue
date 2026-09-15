@@ -5,7 +5,6 @@ import { useRouter } from 'vue-router'
 import type Params from '@/base/core/params/params'
 import AddHazardController from '../../controllers/addHazardController'
 import type AddHazardParams from '../../../Core/params/addHazardParams'
-import ObservationForm from './ObservationForm.vue'
 import FullObservationFactoryForm from '../FullForm/FullObservationFactoryForm.vue'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 

@@ -1,6 +1,5 @@
 import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
-import LocationModel from '@/features/setting/Location/Data/models/LocationModel'
 
 export default class OrganizationLocationDetailsModel {
   public id: number

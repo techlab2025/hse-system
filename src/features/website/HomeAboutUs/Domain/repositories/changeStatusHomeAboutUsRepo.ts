@@ -7,7 +7,7 @@ import { ChangeStatusHomeAboutUsApiService } from '../../Data/apiServices/change
 
 class ChangeStatusHomeAboutUsRepo extends RepoInterface<HomeAboutUsModel> {
   private static instance: ChangeStatusHomeAboutUsRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

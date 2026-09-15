@@ -6,7 +6,6 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
 import { onMounted, ref } from 'vue'
-import DatePicker from 'primevue/datepicker'
 import type InjuryDetailsModel from '@/features/Organization/ObservationFactory/Data/models/InjuryModel'
 import { watch } from 'vue'
 

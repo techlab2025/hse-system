@@ -1,7 +1,6 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
-import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
@@ -10,7 +9,6 @@ import type AccidentsTypeModel from '../../Data/models/AccidentsTypeModel'
 import AddAccidentsTypeUseCase from '../../Domain/useCase/addAccidentsTypeUseCase'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
-import type AddAccidentsTypeParams from '../../Core/params/addAccidentsTypeParams'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class AddAccidentsTypeController extends ControllerInterface<AccidentsTypeModel> {

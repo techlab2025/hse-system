@@ -4,7 +4,6 @@ import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import type ProjectModel from '../../Data/models/ProjectModel'
 import IndexProjectUseCase from '../../Domain/useCase/indexProjectUseCase'
-import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class IndexProjectController extends SelectControllerInterface<ProjectModel[]> {
   private static instance: IndexProjectController

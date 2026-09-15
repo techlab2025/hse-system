@@ -4,13 +4,9 @@ import ShowProjectDetailsModel from '@/features/Organization/Project/Data/models
 import CapaModel from './CapaModel'
 import OvservationEquipmentModel from '@/features/Organization/ObservationFactory/Data/models/OvservationEquipmentModel'
 import OvserverModel from '@/features/Organization/ObservationFactory/Data/models/OvserverModel'
-import InvestegationObservationModel from './InvestigationHelperModels/InvestegationObservationModel'
-import acc from '@/assets/images/acc.png'
-import { InvestegationStatusEnum } from '../../Core/Enums/InvestegationStatusEnum'
 import HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel'
 import TeamLeaderModel from './TeamLeaderModel'
 import { CapaTaskDetailsModel } from '@/features/Organization/Capa/Data/models/CapaTasksModel'
-import type TitleInterface from '@/base/Data/Models/title_interface'
 export default class InvestigatingModel {
   public Investegationid: number
   public title: string

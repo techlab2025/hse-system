@@ -6,7 +6,7 @@ import PartnerModel from '../../Data/models/ProjectProgressDetailsModel'
 
 class CloneAllDataRepo extends RepoInterface<PartnerModel> {
   private static instance: CloneAllDataRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -6,7 +6,7 @@ import { IndexSystemRiskTypeApiService } from '../../Data/apiServices/indexSyste
 class IndexSystemRiskTypeRepo extends RepoInterface<SystemRiskTypeModel[]> {
   private static instance: IndexSystemRiskTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -3,7 +3,6 @@ import HeaderPage from '@/features/Organization/Project/Presentation/components/
 import Investegationattachment from '@/assets/images/Investegationattachment.png'
 import InvestegationAttachmentsDialog from '../InvestegationDialogs/InvestegationAttachmentsDialog.vue'
 import InvestigationAttachmentsParams from '@/features/Organization/Investigating/Core/params/investegationResult/InvestegationAttachmentParams'
-import TranslationsParams from '@/base/core/params/translations_params'
 import { ref } from 'vue'
 
 const emit = defineEmits(['update:data'])

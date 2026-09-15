@@ -5,7 +5,7 @@ import type ServicesInterface from '@/base/Data/ApiService/api_service_interface
 
 class LoginRepo extends RepoInterface<UserModel> {
   private static instance: LoginRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

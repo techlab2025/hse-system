@@ -5,7 +5,7 @@ import { LoginOrganizationApiService } from '../../Data/api_services/login_organ
 
 class LoginOrganizationRepo extends RepoInterface<UserModel> {
   private static instance: LoginOrganizationRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -8,7 +8,7 @@ import { DeleteObjectivesApiService } from '../../Data/apiServices/deleteObjecti
 class DeleteObjectivesRepo extends RepoInterface<ObjectivesModel> {
   private static instance: DeleteObjectivesRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

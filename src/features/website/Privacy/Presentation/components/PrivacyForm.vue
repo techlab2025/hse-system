@@ -10,7 +10,6 @@ import IndexLangParams from '@/features/setting/languages/Core/params/indexLangP
 import { LangsMap } from '@/constant/langs.ts'
 import type PrivacyDetailsModel from '../../Data/models/PrivacyDetailsModel'
 import AddPrivacyParams from '../../Core/params/addPrivacyParams'
-import ShowPrivacyController from '../controllers/showPrivacyController'
 // import ShowPrivacyParams from '../../Core/params/showPrivacyParams'
 
 const emit = defineEmits(['update:data'])

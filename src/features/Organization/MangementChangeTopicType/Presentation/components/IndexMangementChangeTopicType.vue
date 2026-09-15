@@ -202,9 +202,7 @@ const headerActions = () => [
       <input v-model="word" :placeholder="$t('search')" class="input" @input="searchmanagementChangeTopicTypes" />
     </div>
     <div class="col-span-2 flex justify-end gap-2 items-center">
-         <router-link to="/organization/management-of-change" class="btn btn-primary primary-action-button">
-          management of change
-      </router-link>
+       
       <ActionsList
         feature-name="action management types"
         :show-actions="true"

@@ -7,7 +7,7 @@ import { IndexOurSystemStepApiService } from '../../Data/apiServices/indexOurSys
 class IndexOurSystemStepRepo extends RepoInterface<OurSystemStepModel[]> {
   private static instance: IndexOurSystemStepRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

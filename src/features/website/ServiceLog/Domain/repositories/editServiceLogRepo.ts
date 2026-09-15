@@ -7,7 +7,7 @@ import { EditServiceLogApiService } from '../../Data/apiServices/editServiceLogA
 class EditServiceLogRepo extends RepoInterface<ServiceLogModel> {
   private static instance: EditServiceLogRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

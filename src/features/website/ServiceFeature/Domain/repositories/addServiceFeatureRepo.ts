@@ -10,7 +10,7 @@ import { AddServiceFeatureApiService } from '../../Data/apiServices/addServiceFe
 
 class AddServiceFeatureRepo extends RepoInterface<ServiceFeatureModel> {
   private static instance: AddServiceFeatureRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

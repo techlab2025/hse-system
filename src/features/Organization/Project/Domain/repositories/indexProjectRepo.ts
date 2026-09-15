@@ -7,7 +7,7 @@ import { IndexProjectApiService } from '../../Data/apiServices/indexProjectApiSe
 class IndexProjectRepo extends RepoInterface<ProjectModel[]> {
   private static instance: IndexProjectRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

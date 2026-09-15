@@ -1,11 +1,11 @@
-import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
+import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import { SimilarObservationApiService } from '../../../Data/apiServices/SimilarObservation/SimilarObservationApiService'
 import HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel'
 
 class SimilarObservationRepo extends RepoInterface<HazardDetailsModel[]> {
   private static instance: SimilarObservationRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

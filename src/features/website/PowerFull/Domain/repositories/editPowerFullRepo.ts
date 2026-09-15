@@ -9,7 +9,7 @@ import { EditPowerFullApiService } from '../../Data/apiServices/editPowerFullApi
 class EditPowerFullRepo extends RepoInterface<PowerFullModel> {
   private static instance: EditPowerFullRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

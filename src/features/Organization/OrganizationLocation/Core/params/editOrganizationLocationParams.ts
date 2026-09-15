@@ -2,7 +2,6 @@ import type Params from '@/base/core/params/params'
 // import AttentionParams from "@/features/users/clients/Core/params/attention_params";
 // import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
-import type LocationModel from '@/features/setting/Location/Data/models/LocationModel'
 
 export default class EditOrganizationLocationParams implements Params {
   id: number

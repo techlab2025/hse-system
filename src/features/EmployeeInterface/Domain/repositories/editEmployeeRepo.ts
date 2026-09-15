@@ -7,7 +7,7 @@ import { EditEmployeeApiService } from '../../Data/apiServices/editEmployeeApiSe
 class EditEmployeeRepo extends RepoInterface<EmployeeModel> {
   private static instance: EditEmployeeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

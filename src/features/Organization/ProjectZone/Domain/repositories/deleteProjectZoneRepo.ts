@@ -12,7 +12,7 @@ import { DeleteProjectZoneApiService } from '../../Data/apiServices/deleteProjec
 class DeleteProjectZoneRepo extends RepoInterface<ProjectZoneDetailsModel> {
   private static instance: DeleteProjectZoneRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

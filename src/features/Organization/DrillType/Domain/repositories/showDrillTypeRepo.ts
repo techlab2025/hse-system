@@ -6,7 +6,7 @@ import DrillTypeDetailsModel from '../../Data/models/DrillTypeDetailsModel'
 class ShowDrillTypeRepo extends RepoInterface<DrillTypeDetailsModel> {
   private static instance: ShowDrillTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

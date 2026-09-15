@@ -6,7 +6,6 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import { useUserStore } from '@/stores/user'
 import type ScopeModel from '../../Data/models/ScopeModel'
 import AddScopeteUseCase from '../../Domain/useCase/addScopeUseCase'
 

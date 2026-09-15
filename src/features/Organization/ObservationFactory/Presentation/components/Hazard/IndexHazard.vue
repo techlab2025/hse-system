@@ -29,8 +29,6 @@ import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enu
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
-import TitleInterface from '@/base/Data/Models/title_interface'
-import FilterDialog from './HazardUtils/FilterDialog.vue'
 import IndexEquipmentMangement from '../indexEquipmentMangement.vue'
 import type MyZonesModel from '../../../Data/models/MyZonesModel'
 import FetchMyZonesController from '../../controllers/FetchMyZonesController'
@@ -38,7 +36,6 @@ import FetchMyZonesParams from '../../../Core/params/FetchMyZonesParams'
 import type MyProjectsModel from '../../../Data/models/MyProjectsModel'
 import FetchMyProjectsParams from '../../../Core/params/fetchMyProjectsParams'
 import FetchMyProjectsController from '../../controllers/FetchMyProjectsController'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 // import FilterDialog from './HazardUtils/filterDialog.vue'
 
 // i18n

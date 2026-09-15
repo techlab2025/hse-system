@@ -6,7 +6,7 @@ import MangementChangeTopicTypeModel from '../../Data/models/MangementChangeTopi
 
 class AddMangementChangeTopicTypeCloneRepo extends RepoInterface<MangementChangeTopicTypeModel> {
   private static instance: AddMangementChangeTopicTypeCloneRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

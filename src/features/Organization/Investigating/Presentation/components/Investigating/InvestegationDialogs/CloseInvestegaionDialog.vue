@@ -1,11 +1,9 @@
   <script setup lang="ts">
   import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue';
   import Dialog from 'primevue/dialog';
-  import DialogSystem from '@/assets/images/DialogSystem.png'
   import { ref, watch } from "vue";
   import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
   import { useRouter } from 'vue-router';
-  import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
   import IndexCheckListController from '@/features/Organization/CheckList/Presentation/controllers/indexCheckListController';
   import IndexCheckListParams from '@/features/Organization/CheckList/Core/params/indexCheckListParams';
   import { useI18n } from 'vue-i18n';

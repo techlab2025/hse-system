@@ -1,4 +1,3 @@
-import type TitleInterface from '@/base/Data/Models/title_interface'
 import type FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
 import type ItemModel from '@/features/setting/TemplateItem/Data/models/ItemMode'
 

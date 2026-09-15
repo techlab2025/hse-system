@@ -7,7 +7,7 @@ import { EditDrillTypeApiService } from '../../Data/apiServices/editDrillTypeApi
 class EditDrillTypeRepo extends RepoInterface<DrillTypeModel> {
   private static instance: EditDrillTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

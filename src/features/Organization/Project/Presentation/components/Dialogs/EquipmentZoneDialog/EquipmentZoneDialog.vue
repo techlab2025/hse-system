@@ -2,7 +2,6 @@
 import { onMounted, ref } from "vue";
 import Dialog from 'primevue/dialog';
 import EquipmentImg from "@/assets/images/Equipment.png";
-import CustomSelectInput from "@/shared/FormInputs/CustomSelectInput.vue";
 import type TitleInterface from "@/base/Data/Models/title_interface";
 import { useRoute, useRouter } from "vue-router";
 import HeaderSection from "../../Details/DetailsHeader/HeaderSection.vue";

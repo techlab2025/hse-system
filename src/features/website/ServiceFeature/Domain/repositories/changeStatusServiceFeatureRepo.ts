@@ -8,7 +8,7 @@ import { ChangeStatusServiceFeatureApiService } from '../../Data/apiServices/cha
 
 class ChangeStatusServiceFeatureRepo extends RepoInterface<ServiceFeatureModel> {
   private static instance: ChangeStatusServiceFeatureRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

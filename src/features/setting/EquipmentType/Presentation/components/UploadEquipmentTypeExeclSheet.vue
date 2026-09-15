@@ -11,8 +11,6 @@ const emit = defineEmits<{ (e: 'uploaded'): void }>()
 import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue'
 import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue'
 import { useI18n } from 'vue-i18n'
-import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue'
-import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue'
 import EquipmentTypeModel from '../../Data/models/equipmentTypeModel'
 import AddEquipmentTypeController from '../controllers/addEquipmentTypeController'
 import AddEquipmentTypeExcelParams from '../../Core/params/AddEquipmentTypeExcelParams'

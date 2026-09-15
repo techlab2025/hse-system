@@ -7,7 +7,7 @@ import { ShowAccidentsTypeApiService } from '../../Data/apiServices/showAccident
 class ShowAccidentsTypeRepo extends RepoInterface<AccidentsTypeDetailsModel> {
   private static instance: ShowAccidentsTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

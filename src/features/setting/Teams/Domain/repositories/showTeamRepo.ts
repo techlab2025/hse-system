@@ -7,7 +7,7 @@ import TeamDetailsModel from '../../Data/models/TeamDetailsModel'
 class ShowTeamRepo extends RepoInterface<TeamDetailsModel> {
   private static instance: ShowTeamRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

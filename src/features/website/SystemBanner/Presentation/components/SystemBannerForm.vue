@@ -1,7 +1,5 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
-import TitleInterface from '@/base/Data/Models/title_interface'
-import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'

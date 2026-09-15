@@ -30,14 +30,5 @@ export const managementChangeTopicRoutes: RouteRecordRaw[] = [
       isSidebar: true,
     },
   },
-   {
-    path: 'management-of-change',
-    name: 'management-of-change',
-    component: () => import('@/views/Organization/MangementChangeTopicType/MangementOfChange.vue'),
-    meta: {
-      breadcrumb: 'management-of-change',
-      parent: 'Management Change Topic Type',
-      isSidebar: true,
-    },
-  },
+  
 ]

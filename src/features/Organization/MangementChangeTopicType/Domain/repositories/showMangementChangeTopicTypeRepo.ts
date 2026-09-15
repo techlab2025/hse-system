@@ -6,7 +6,7 @@ import PpeItemDetailsModel from '../../Data/models/MangementChangeTopicTypeDetai
 class ShowMangementChangeTopicTypeRepo extends RepoInterface<PpeItemDetailsModel> {
   private static instance: ShowMangementChangeTopicTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

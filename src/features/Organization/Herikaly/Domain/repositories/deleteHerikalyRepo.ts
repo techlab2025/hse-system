@@ -11,7 +11,7 @@ import { DeleteHerikalyApiService } from '../../Data/apiServices/deleteHerikalyA
 class DeleteHerikalyRepo extends RepoInterface<HerikalyModel> {
   private static instance: DeleteHerikalyRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

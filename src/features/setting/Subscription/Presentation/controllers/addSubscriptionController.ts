@@ -8,7 +8,6 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import AddSubscriptionUseCase from '../../Domain/useCase/addSubscriptionUseCase'
 import { useUserStore } from '@/stores/user'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import type SubscriptionModel from '../../Data/models/SubscriptionModel'
 
 export default class AddSubscriptionController extends ControllerInterface<SubscriptionModel> {

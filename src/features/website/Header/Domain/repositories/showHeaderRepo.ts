@@ -7,7 +7,7 @@ import { ShowHeaderApiService } from '../../Data/apiServices/showHeaderApiServic
 class ShowHeaderRepo extends RepoInterface<HeaderDetailsModel> {
   private static instance: ShowHeaderRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

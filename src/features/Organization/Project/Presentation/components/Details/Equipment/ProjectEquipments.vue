@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import PagesHeader from '@/shared/HelpersComponents/PagesHeader.vue'
 import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
 import ProjectCustomLocationController from '../../../controllers/ProjectCustomLocationController'
 import { computed, onMounted, ref, watch } from 'vue'

@@ -6,7 +6,7 @@ import { addcertificateToHieararcyApiService } from '../../Data/apiServices/addc
 
 class AddCertificateToHierarchyRepo extends RepoInterface<HerikalyModel> {
   private static instance: AddCertificateToHierarchyRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

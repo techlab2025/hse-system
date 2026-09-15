@@ -6,8 +6,6 @@ import HomeEmployeeIcon from '@/shared/icons/HomeEmployeeIcon.vue'
 import HomeSettingIcon from '@/shared/icons/HomeSettingIcon.vue'
 import HomeRoutesCard from './HomeRoutesCard.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import CapaIcon from '@/shared/icons/CapaIcon.vue'
-import InvisttigationIcon from '@/shared/icons/InvisttigationIcon.vue'
 import { RouterEnum } from '@/features/Home/core/enums/SettingEnum/SettingEnum'
 
 const {ProgressValue} = defineProps<{

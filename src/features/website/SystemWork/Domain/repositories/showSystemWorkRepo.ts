@@ -9,7 +9,7 @@ import { ShowSystemWorkApiService } from '../../Data/apiServices/showSystemWorkA
 class ShowSystemWorkRepo extends RepoInterface<SystemWorkDetailsModel> {
   private static instance: ShowSystemWorkRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

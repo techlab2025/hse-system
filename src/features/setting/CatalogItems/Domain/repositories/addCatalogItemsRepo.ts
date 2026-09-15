@@ -7,7 +7,7 @@ import CatalogItemsModel from '../../Data/models/CatalogItemsModel'
 
 class AddCatalogItemsRepo extends RepoInterface<CatalogItemsModel> {
   private static instance: AddCatalogItemsRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

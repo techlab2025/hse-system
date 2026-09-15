@@ -7,7 +7,7 @@ import ObjectivesModel from '../../Data/models/objectivesModel'
 class IndexObjectivesRepo extends RepoInterface<ObjectivesModel[]> {
   private static instance: IndexObjectivesRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

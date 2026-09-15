@@ -1,8 +1,6 @@
 import TitleModel from '@/base/core/Models/title_model'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import EquipmentTypeDetailsModel from './EquipmentTypeDetails'
-import acc from '@/assets/images/acc.png'
-import EquipmentImg from '@/assets/images/EquipmentImg.jpg'
 import type { EquipmentStatus } from '../../Core/enum/equipmentStatus'
 import WhereHouseDetailsModel from '@/features/Organization/WhereHouse/Data/models/WhereHouseDetailsModel'
 import ContractorDetailsModel from '@/features/setting/contractor/Data/models/ContractorDetailsModel'

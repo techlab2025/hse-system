@@ -5,7 +5,7 @@ import { ToggleObservationWorkStoppedApiService } from '../../Data/apiServices/T
 
 class ToggleObservationWorkStoppedRepo extends RepoInterface<HazardModel> {
   private static instance: ToggleObservationWorkStoppedRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

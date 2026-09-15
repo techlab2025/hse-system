@@ -8,7 +8,7 @@ import { ShowServiceSectionApiService } from '../../Data/apiServices/showService
 class ShowServiceSectionRepo extends RepoInterface<ServiceSectionDetailsModel> {
   private static instance: ShowServiceSectionRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

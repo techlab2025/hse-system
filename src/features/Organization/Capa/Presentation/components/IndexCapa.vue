@@ -17,8 +17,6 @@ import FetchMyZonesController from '@/features/Organization/ObservationFactory/P
 import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/params/FetchMyZonesParams'
 import { Observation } from '@/features/Organization/ObservationFactory/Core/Enums/ObservationTypeEnum'
 import IndexHazardHeader from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexHazardHeader.vue'
-import IndexFilter from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexFilter.vue'
-import Observdetails from '@/shared/icons/observdetails.vue'
 import type CapaModel from '@/features/Organization/ObservationFactory/Data/models/CapaModel'
 import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel.ts'
 

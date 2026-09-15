@@ -7,7 +7,7 @@ import { IndexServiceLogApiService } from '../../Data/apiServices/indexServiceLo
 class IndexServiceLogRepo extends RepoInterface<ServiceLogModel[]> {
   private static instance: IndexServiceLogRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -3,12 +3,10 @@ import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 // import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
-import AddEmployeeTypeParams from '@/features/setting/EmployeeType/Core/params/addEmployeeTypeParams.ts'
 import type Params from '@/base/core/params/params'
 import EmployeeForm from './EmployeeForm.vue'
 import AddEmployeeController from '../controllers/addEmployeeController'
 import type AddEmployeeParams from '../../Core/params/addEmployeeParams'
-import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)

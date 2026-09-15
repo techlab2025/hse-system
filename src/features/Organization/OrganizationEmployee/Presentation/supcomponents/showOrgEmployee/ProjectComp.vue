@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import ProjTeam from '@/shared/icons/ProjTeam.vue'
-import RedPinMark from '@/shared/icons/RedPinMark.vue'
-import { ref } from 'vue'
 import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
-import type OrganizatoinEmployeeDetailsModel from '../../../Data/models/OrganizatoinEmployeeDetailsModel'
 
 const { state } = defineProps<{
   state?: ProjectModel[]

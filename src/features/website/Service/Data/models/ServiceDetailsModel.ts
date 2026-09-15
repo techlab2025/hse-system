@@ -1,8 +1,6 @@
 import TranslationsParams, {
-  type DescriptionLocale,
   type TitleLocale,
 } from '@/base/core/params/translations_params.ts'
-import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
 // import { LangEnum } from '../../Core/enums/langEnum'
 

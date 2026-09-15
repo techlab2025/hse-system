@@ -3,10 +3,8 @@
 import ToolCard from './ToolCard.vue';
 import LocationPin from "@/assets/images/LocationPin.png"
 import AddEquipmentDialog from '../../Dialogs/EquipmentDialog/AddEquipmentDialog.vue';
-import { computed, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone';
-import EmptyData from '../LocationsTeams/EmptyData.vue';
-import EquimentFolderEmpty from "@/assets/images/EquimentFolderEmpty.png"
 import { useRoute } from 'vue-router';
 
 

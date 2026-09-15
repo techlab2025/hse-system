@@ -9,7 +9,6 @@ import IndexLangParams from '@/features/setting/languages/Core/params/indexLangP
 import { LangsMap } from '@/constant/langs.ts'
 
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import IconMinus from '@/shared/icons/IconMinus.vue'
 import IconAdd from '@/shared/icons/IconAdd.vue'
 import type HomeAboutUsDetailsModel from '../../Data/models/HomeAboutUsDetailsModel'

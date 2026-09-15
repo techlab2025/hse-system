@@ -6,7 +6,7 @@ import { AddMangementChangeTopicTypeApiService } from '../../Data/apiServices/ad
 
 class AddMangementChangeTopicTypeRepo extends RepoInterface<PpeItemModel> {
   private static instance: AddMangementChangeTopicTypeRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

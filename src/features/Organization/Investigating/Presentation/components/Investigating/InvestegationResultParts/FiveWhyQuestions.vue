@@ -1,9 +1,6 @@
 <script lang="ts" setup>
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
-import ViewrResults from '@/assets/images/ViewrResults.png'
 import why from '@/assets/images/why.png'
-import ViewerResultsTree from '../InvestigatingResultsUtils/ViewerResultsTree.vue'
-import InvestegationWitnessesParams from '@/features/Organization/Investigating/Core/params/investegationResult/InvestegationWitnessesParams'
 import InvestigationFiveQuestionParams from '@/features/Organization/Investigating/Core/params/investegationResult/InvestegationFiveQuestoinsParams'
 import FiveWhyQuestionTree from '../InvestigatingResultsUtils/FiveWhyQuestionTree.vue'
 

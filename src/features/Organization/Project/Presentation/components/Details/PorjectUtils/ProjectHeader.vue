@@ -32,6 +32,7 @@ const props = defineProps<{
           <h1 class="project-name">{{ projectName || t('Project') }}</h1>
         </div>
       </div>
+      
 
 
       <div class="project-serial">
@@ -76,6 +77,12 @@ const props = defineProps<{
         </span>
       </div>
     </div>
+      <router-link  :to="{
+        name: 'management-of-change',
+        query: { project_id: projectId },
+      }" class="btn btn-primary primary-action-button">
+          management of change
+      </router-link>
     <router-link
       v-if="projectId"
       class="project-audits-link"

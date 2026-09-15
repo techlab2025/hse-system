@@ -33,7 +33,7 @@ import IndexFactoryParams from '@/features/setting/Factory/Core/params/indexFact
 import IndexHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/indexHazardTypeController'
 import IndexHazardTypeParams from '@/features/setting/HazardType/Core/params/indexHazardTypeParams'
 import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum'
-import { routeLocationKey, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 

@@ -6,7 +6,7 @@ import { AddCheckListApiService } from '../../Data/apiServices/AddCheckListApiSe
 
 class AddCheckListRepo extends RepoInterface<CheckListDetailsModel> {
   private static instance: AddCheckListRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

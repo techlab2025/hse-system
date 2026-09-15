@@ -6,11 +6,9 @@ import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import DatePicker from 'primevue/datepicker'
-import QrCard from './EquipmentUtils/QrCard.vue'
 import DemoCard from './EquipmentUtils/DemoCard.vue'
 import Car from '@/shared/icons/car.vue'
 import Tabs from './tabs.vue'
-import Dialog from 'primevue/dialog'
 import TranslationsParams from '@/base/core/params/translations_params'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
@@ -33,12 +31,10 @@ import IndexContractorParams from '@/features/setting/contractor/Core/params/ind
 import type EquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/equipmentTypeModel'
 import { RentTypeEnum } from '../../Core/enum/RentTypeEnum'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import IndexWhereHouseController from '@/features/Organization/WhereHouse/Presentation/controllers/indexWhereHouseController'
 import IndexWhereHouseParams from '@/features/Organization/WhereHouse/Core/params/indexWhereHouseParams'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
-import EquipmentTypeForm from '@/features/setting/EquipmentType/Presentation/components/EquipmentTypeForm.vue'
 import { formatTime } from '@/base/Presentation/utils/time_format'
 import AddEquipmentType from '@/features/setting/EquipmentType/Presentation/components/AddEquipmentType.vue'
 import AddContractor from '@/features/setting/contractor/Presentation/components/AddContractor.vue'
@@ -709,8 +705,6 @@ const GetEquipmentTitle = (equipmenttype: EquipmentTypesEnum) => {
 }
 
 const WarehouseDialog = ref(false)
-import Checkbox from 'primevue/checkbox'
-import CheckboxGroup from 'primevue/checkboxgroup'
 
 type RequiredFieldRule = {
   key: string

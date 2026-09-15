@@ -6,7 +6,7 @@ import { DisObjectivesApiService } from '../../Data/apiServices/disObjectivesApi
 
 class DisActiveObjectivesRepo extends RepoInterface<ObjectivesModel> {
   private static instance: DisActiveObjectivesRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

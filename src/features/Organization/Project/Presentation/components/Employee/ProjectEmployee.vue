@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import PagesHeader from '../../../../../../shared/HelpersComponents/PagesHeader.vue'
 import ProjectEmployeeSection from './ProjectEmployeeSection.vue'
 
 const route = useRoute()

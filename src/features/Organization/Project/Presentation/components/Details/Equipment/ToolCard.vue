@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image';
-import type EquipmentDetailsModel from '@/features/_templateFeature/Data/models/equipmentDetailsModel';
 import type ProjectLocationEquipmentModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationEquipmentModel';
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum';
-import ToolIcon from '@/shared/icons/ToolIcon.vue';
 import { useI18n } from 'vue-i18n';
 
 

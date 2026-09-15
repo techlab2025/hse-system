@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
-import ImportantIcon from '@/shared/icons/ImportantIcon.vue'
 import Dialog from 'primevue/dialog'
-import InspectionTemplateImage from '@/assets/images/check-list.png'
 
 import { markRaw, nextTick, onMounted, ref, watch } from 'vue'
 
@@ -11,8 +8,6 @@ import NewTemplateArrowIcon from '@/shared/icons/NewTemplateArrowIcon.vue'
 import { TemplateType } from '@/features/setting/Template/Core/Enum/TemplateTypeEnum'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import AddTemplateParams from '@/features/setting/Template/Core/params/addTemplateParams'
-import EditTemplateParams from '@/features/setting/Template/Core/params/editTemplateParams'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import TranslationsParams from '@/base/core/params/translations_params'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
@@ -26,7 +21,6 @@ import TemplateTimeLine from '../InspectionUtils/TemplateTimeLine.vue'
 import AddTemplateItemParams from '@/features/setting/TemplateItem/Core/params/addTemplateItemParams'
 import AddTemplateController from '@/features/setting/Template/Presentation/controllers/addTemplateController'
 import { useRouter } from 'vue-router'
-import TemplateImage from '@/features/setting/TemplateItem/Presentation/components/TemplateTypes/TemplateImage.vue'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import { useI18n } from 'vue-i18n'
 // import TemplateTimeLine from '../../InspectionUtils/TemplateTimeLine.vue

@@ -7,7 +7,7 @@ import { AddHierarchyEmployeeApiService } from '@/features/Organization/Project/
 
 class AddHierarchyEmployeeRepo extends RepoInterface<HierarchyEmployeeModel> {
   private static instance: AddHierarchyEmployeeRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

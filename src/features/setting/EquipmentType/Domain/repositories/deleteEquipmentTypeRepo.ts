@@ -8,7 +8,7 @@ import EquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/equ
 class DeleteEquipmentTypeRepo extends RepoInterface<EquipmentTypeModel> {
   private static instance: DeleteEquipmentTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

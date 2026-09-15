@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted, watch, computed } from 'vue'
-import { adminPermissions, type PermissionItem } from '@/constant/adminPremission'
+import { ref, onMounted, watch } from 'vue'
+import { type PermissionItem } from '@/constant/adminPremission'
 import type PermissionDetailsModel from '../../Data/models/PermissionDetailsModel'
-import { getOrganizationType } from '../Helpers/organization_type'
 import { useRoute } from 'vue-router'
 import { getOrganizationPermissionLabel } from '../Helpers/organization_permission'
 

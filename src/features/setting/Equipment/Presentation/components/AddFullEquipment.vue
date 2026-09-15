@@ -6,7 +6,6 @@ import type Params from '@/base/core/params/params'
 import FullEquipmentFrom from './FullEquipmentFrom.vue'
 import AddEquipmentController from '../controllers/addEquipmentController'
 import type AddEquipmentParams from '../../Core/params/addEquipmentParams'
-import EmployeeInterfaceCard from '@/features/EmployeeInterface/Presentation/supcomponents/Card/EmployeeInterfaceCard.vue'
 
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)

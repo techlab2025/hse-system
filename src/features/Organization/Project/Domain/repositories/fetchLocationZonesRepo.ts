@@ -8,7 +8,7 @@ import SohwProjectZoonModel from '../../Data/models/ShowProjectZone'
 class IndexProjectLocationZonesRepo extends RepoInterface<SohwProjectZoonModel[]> {
   private static instance: IndexProjectLocationZonesRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -6,7 +6,7 @@ import { EditDocumentRefrenceApiService } from '../../Data/apiServices/EditDocum
 class EditDocumentRefrenceRepo extends RepoInterface<DocumentRefrenceModel> {
   private static instance: EditDocumentRefrenceRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

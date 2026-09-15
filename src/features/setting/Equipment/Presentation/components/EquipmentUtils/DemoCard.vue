@@ -7,7 +7,6 @@ import { EquipmentStatus } from '../../../Core/enum/equipmentStatus'
 import Rent from '@/shared/icons/rent.vue'
 import { RentTypeEnum } from '../../../Core/enum/RentTypeEnum'
 import { formatTime } from '@/base/Presentation/utils/time_format'
-import { useI18n } from 'vue-i18n'
 
 type EquipmentTranslation = {
   locale: string

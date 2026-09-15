@@ -6,7 +6,7 @@ import { ShowAdminApiService } from "../../Data/apiServices/show_admin_api_servi
 class ShowAdminRepo extends RepoInterface<ShowAdminModel> {
   private static instance: ShowAdminRepo;
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super();
   }

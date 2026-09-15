@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
 import HeaderProjectsFilter from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/HeaderProjectsFilter.vue'
-import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
 import { onMounted, ref, watch } from 'vue'
 import { useThemeMode } from '@/composables/useThemeMode'

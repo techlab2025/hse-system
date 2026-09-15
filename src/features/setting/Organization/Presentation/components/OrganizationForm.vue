@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
@@ -20,8 +19,6 @@ import { useRoute } from 'vue-router'
 import IndexLocationController from '@/features/setting/Location/Presentation/controllers/indexLocationController'
 import IndexLocationParams from '@/features/setting/Location/Core/params/indexLocationParams'
 import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
-import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
-import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 
 const emit = defineEmits(['update:data'])
 const route = useRoute()

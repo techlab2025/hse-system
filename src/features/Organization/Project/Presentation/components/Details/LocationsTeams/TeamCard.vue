@@ -6,7 +6,7 @@ import DeleteProjectlocationTeamEmployeeParams from '@/features/Organization/Pro
 import DeleteProjectLocationTeamEmployeeController from '../../../controllers/DeleteProjectLocationTeamEmployeeController'
 import ProjectCustomLocationController from '../../../controllers/ProjectCustomLocationController'
 import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
 import TeamIcon from '@/shared/icons/TeamIcon.vue'
 import AddCreateTeam from '../../Dialogs/CreateTeamDialog/AddCreateTeam.vue'

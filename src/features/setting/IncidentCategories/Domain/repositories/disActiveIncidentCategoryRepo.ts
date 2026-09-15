@@ -6,7 +6,7 @@ import { DisIncidentCategoryApiService } from '../../Data/apiServices/disInciden
 
 class DisActiveIncidentCategoryRepo extends RepoInterface<IncidentCategoryModel> {
   private static instance: DisActiveIncidentCategoryRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

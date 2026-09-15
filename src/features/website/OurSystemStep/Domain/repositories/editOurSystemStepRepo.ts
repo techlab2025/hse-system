@@ -7,7 +7,7 @@ import { EditOurSystemStepApiService } from '../../Data/apiServices/editOurSyste
 class EditOurSystemStepRepo extends RepoInterface<OurSystemStepModel> {
   private static instance: EditOurSystemStepRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

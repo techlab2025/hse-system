@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import Dialog from 'primevue/dialog'
-import DatePicker from 'primevue/datepicker'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type Params from '@/base/core/params/params'
 import type { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'

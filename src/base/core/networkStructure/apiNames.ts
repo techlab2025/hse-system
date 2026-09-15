@@ -1492,6 +1492,9 @@ class ApiNames {
   public get CreateMangementChangeTopicType() {
     return this.prefix + 'create_changement_topic'
   }
+  public get CreateMangementChange() {
+    return this.prefix + 'create_mangement_change'
+  }
   public get IndexMangementChangeTopicType() {
     return this.prefix + 'fetch_changement_topics'
   }

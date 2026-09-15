@@ -7,7 +7,7 @@ import HazardTypeDetailsModel from '@/features/setting/HazardType/Data/models/ha
 class ShowHazardTypeRepo extends RepoInterface<HazardTypeDetailsModel> {
   private static instance: ShowHazardTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

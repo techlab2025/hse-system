@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 
 const props = defineProps<{ initialFile?: File | null }>()
 const emit = defineEmits<{ (e: 'uploaded'): void }>()
@@ -10,8 +10,6 @@ import { useRouter } from 'vue-router'
 import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue'
 import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue'
 import { useI18n } from 'vue-i18n'
-import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue'
-import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue'
 import AddCertificateExcelParams from '../../Core/params/addCertificateExcelParams'
 import AddCertificateController from '../controllers/addCertificateController'
 import CertificateDetailsModel from '../../Data/models/CertificateDetailsModel'

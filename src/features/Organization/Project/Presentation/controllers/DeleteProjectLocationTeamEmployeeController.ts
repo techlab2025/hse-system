@@ -7,8 +7,6 @@ import type ProjectModel from '../../Data/models/ProjectModel'
 import DeleteProjectLocationTeamEmployeeUseCase from '../../Domain/useCase/DeleteProjectLocationTeamEmployeeUseCase'
 import ShowProjectDetailsParams from '../../Core/params/ShowProjectDetailsParams'
 import ShowProjectDetailsController from './ShowProjectDetailsController'
-import { useRoute } from 'vue-router'
-import successImage from '@/assets/images/Success.png'
 
 export default class DeleteProjectLocationTeamEmployeeController extends ControllerInterface<ProjectModel> {
   private static instance: DeleteProjectLocationTeamEmployeeController

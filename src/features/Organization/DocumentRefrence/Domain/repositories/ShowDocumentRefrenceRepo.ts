@@ -8,7 +8,7 @@ import { ShowDocumentRefrenceApiService } from '../../Data/apiServices/ShowDocum
 class ShowDocumentRefrenceRepo extends RepoInterface<DocumentRefrenceDetailsModel> {
   private static instance: ShowDocumentRefrenceRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

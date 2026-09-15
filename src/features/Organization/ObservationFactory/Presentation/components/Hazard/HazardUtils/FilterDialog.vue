@@ -4,7 +4,6 @@ import Dialog from 'primevue/dialog'
 import DatePicker from 'primevue/datepicker'
 import FilterWithProject from './FilterWithProject.vue'
 
-import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController'
 import IndexEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/indexEquipmentTypeParams'
 import TitleInterface from '@/base/Data/Models/title_interface'
 

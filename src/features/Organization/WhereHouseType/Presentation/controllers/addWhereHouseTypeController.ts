@@ -5,7 +5,6 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import AddWhereHouseTypeteUseCase from '../../Domain/useCase/addWhereHouseTypeUseCase'
-import type AddWhereHouseTypeParams from '../../Core/params/addWhereHouseTypeParams'
 import type WhereHouseTypeModel from '../../Data/models/WhereHouseTypeModel'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 

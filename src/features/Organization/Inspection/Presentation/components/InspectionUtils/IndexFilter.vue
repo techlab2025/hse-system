@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
-import IndexFilterIcon from '@/shared/icons/IndexFilterIcon.vue'
 import { ref } from 'vue'
 import { useThemeMode } from '@/composables/useThemeMode'
 const emit = defineEmits(['update:data'])
