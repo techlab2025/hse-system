@@ -1882,9 +1882,11 @@ class ApiNames {
   public get IndexPTWType() {
     return this.prefix + 'fetch_permit_types'
   }
-  public get ClonePTWTypes(){
+  public get ClonePTWTypes() {
     return this.prefix + 'clone_permit_types'
-
+  }
+  public get CreatePermitToWork() {
+    return this.baseUrl + this.organizationPrefix + 'create_permit_to_work'
   }
 }
 

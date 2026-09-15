@@ -2496,5 +2496,6 @@
   "add_system_ptw_types":"add system ptw types",
   "select_system_ptw_types":"select system ptw types",
   "action_feature_ptw_types":"action feature ptw types",
-  "ptw_type_title":"ptw type title"
+  "ptw_type_title":"ptw type title",
+  "permit_to_work_type":"permit to work type"
 }

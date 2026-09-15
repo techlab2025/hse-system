@@ -100,4 +100,14 @@ export const projectRoutes: RouteRecordRaw[] = [
       isSidebar: false,
     },
   },
+  {
+    path: 'project-permit/project/:project_id',
+    name: 'Project Permit',
+    component: () => import('@/views/Organization/Project/PermitToWork/PermitToWorkPAge.vue'),
+    meta: {
+      breadcrumb: 'Project Permit To Work',
+      parent: 'Project Details',
+      isSidebar: false,
+    },
+  },
 ]
