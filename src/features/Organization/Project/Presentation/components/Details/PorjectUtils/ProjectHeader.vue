@@ -79,7 +79,7 @@ const props = defineProps<{
       class="project-audits-link"
       :to="{
         name: 'Audits',
-        query: { project_id: projectId, inspectionType: 1 },
+        query: { project_id: projectId},
       }"
     >
       <span aria-hidden="true">

@@ -1866,6 +1866,26 @@ class ApiNames {
     return this.baseUrl + this.organizationPrefix + 'create_project_meeting_result'
   }
   // CloneMeetingType
+
+  public get ShowPTWType() {
+    return this.prefix + 'fetch_permit_type_details'
+  }
+  public get CreatePTWType() {
+    return this.prefix + 'create_permit_type'
+  }
+  public get DeletePTWType() {
+    return this.prefix + 'delete_permit_type'
+  }
+  public get EditPTWType() {
+    return this.prefix + 'update_permit_type'
+  }
+  public get IndexPTWType() {
+    return this.prefix + 'fetch_permit_types'
+  }
+  public get ClonePTWTypes(){
+    return this.prefix + 'clone_permit_types'
+
+  }
 }
 
 export { ApiNames }

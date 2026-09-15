@@ -552,6 +552,18 @@ const LockUpsRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_MEETING_TYPE_UPDATE,
     ],
   },
+    {
+    link: '/organization/ptw-types',
+    name: 'ptw-types',
+    icon: 'medical-square',
+    permissions: [
+      PermissionsEnum.ORG_PTW_TYPE_ALL,
+      PermissionsEnum.ORG_PTW_TYPE_CREATE,
+      PermissionsEnum.ORG_PTW_TYPE_DELETE,
+      PermissionsEnum.ORG_PTW_TYPE_FETCH,
+      PermissionsEnum.ORG_PTW_TYPE_UPDATE,
+    ],
+  },
 ])
 const ReportsRoutes = ref<Routes[]>([
   {

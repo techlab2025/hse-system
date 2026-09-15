@@ -2491,5 +2491,10 @@
   "add_system_meeting_types": "add system meeting types",
   "select_system_meeting_types": "select system meeting types",
   "project meetings": "project meetings",
-  "Plan, schedule and manage project meetings with your teams and track meeting outcomes.": "Plan, schedule and manage project meetings with your teams and track meeting outcomes."
+  "Plan, schedule and manage project meetings with your teams and track meeting outcomes.": "Plan, schedule and manage project meetings with your teams and track meeting outcomes.",
+  "add_ptw_type":"add ptw type",
+  "add_system_ptw_types":"add system ptw types",
+  "select_system_ptw_types":"select system ptw types",
+  "action_feature_ptw_types":"action feature ptw types",
+  "ptw_type_title":"ptw type title"
 }
