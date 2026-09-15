@@ -15,6 +15,8 @@ import IndexOrganizatoinEmployeeController from '@/features/Organization/Organiz
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 import DatePicker from 'primevue/datepicker'
 import { useRoute } from 'vue-router'
+import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
+import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
 
 const riskAssismentFile = ref<File | null>(null)
 const images = ref<File[]>([])
@@ -34,12 +36,20 @@ const successMessage = ref('')
 const Selectedmangement = ref<TitleInterface | null>(null)
 const Selectedemployee = ref<TitleInterface | null>(null)
 const Selectedemployeeid = ref<TitleInterface | null>(null)
+const Selectedequipment = ref<TitleInterface | null>(null)
+
+const selectedTopicType = computed(
+  () => Selectedmangement.value?.type ?? null,
+)
 
 const route = useRoute()
 const projectId = Number(route.query.project_id)
 
 const indexMangementChangeTopicTypeController = IndexMangementChangeTopicTypeController.getInstance()
 const indexMangementChangeTopicTypeParams = new IndexMangementChangeTopicTypeParams('', 1, 10000, 1)
+
+const indexequipmentController = IndexEquipmentController.getInstance()
+const indexequipmentParams = new IndexEquipmentParams('', 1, 10000, 1)
 
 const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 1)
@@ -158,10 +168,29 @@ const submit = async () => {
 }
 const setManagement = (data: TitleInterface | null) => {
   Selectedmangement.value = data
+  topicType.value = data?.type ?? MangementChangeTopicTypeEnum.employee
+  Selectedemployee.value = null
+  Selectedemployeeid.value = null
+  Selectedequipment.value = null
+  employeeId.value = null
+  equipmentId.value = null
+  topicText.value = ''
+  approvalBy.value = null
   updateData()
 }
 const setEmployee = (data: TitleInterface | null) => {
+  Selectedemployeeid.value = data
+  employeeId.value = data?.id ?? null
+  updateData()
+}
+const setequipment = (data: TitleInterface | null) => {
+  Selectedequipment.value = data
+  equipmentId.value = data?.id ?? null
+  updateData()
+}
+const setApprovalBy = (data: TitleInterface | null) => {
   Selectedemployee.value = data
+  approvalBy.value = data?.id ?? null
   updateData()
 }
 </script>
@@ -288,31 +317,56 @@ const setEmployee = (data: TitleInterface | null) => {
       @update:modelValue="setManagement"
     />
   </div>
-   <!-- employee  -->
-  <div class="col-span-3 md:col-span-2 input-wrapper">
+      <!-- equipment -->
+    <div v-if="selectedTopicType === MangementChangeTopicTypeEnum.equipment" class="col-span-3 md:col-span-2 input-wrapper">
+    <CustomSelectInput
+      :modelValue="Selectedequipment"
+      class="input"
+      :controller="indexequipmentController"
+      :params="indexequipmentParams"
+      label="select equipment (optional)"
+      id="equipment"
+      placeholder="select your equipment"
+      @update:modelValue="setequipment"
+    />
+  </div>
+  <!-- approval by -->
+  <div v-if="selectedTopicType === MangementChangeTopicTypeEnum.employee" class="col-span-3 md:col-span-2 input-wrapper">
     <CustomSelectInput
       :modelValue="Selectedemployee"
       class="input"
       :controller="indexOrganizatoinEmployeeController"
       :params="indexOrganizatoinEmployeeParams"
-      label="select employee (optional)"
+      label="select approvel by (optional)"
       id="employee"
       placeholder="select your employee"
-      @update:modelValue="setEmployee"
+      @update:modelValue="setApprovalBy"
     />
   </div>
 
-     <!-- employee id from route  -->
-  <div class="col-span-3 md:col-span-2 input-wrapper">
+      <!-- employee filtered by project -->
+    <div v-if="selectedTopicType === MangementChangeTopicTypeEnum.employee" class="col-span-3 md:col-span-2 input-wrapper">
     <CustomSelectInput
       :modelValue="Selectedemployeeid"
       class="input"
       :controller="indexOrganizatoinEmployeeController"
       :params="indexOrganizatoinEmployeeidParams"
       label="select employee (optional)"
-      id="employee"
+      id="project-employee"
       placeholder="select your employee"
       @update:modelValue="setEmployee"
+    />
+  </div>
+
+  <!-- other topic text -->
+  <div v-if="selectedTopicType === MangementChangeTopicTypeEnum.other" class="col-span-3 md:col-span-2 input-wrapper">
+    <label for="topic-text">Topic</label>
+    <input
+      id="topic-text"
+      v-model="topicText"
+      class="input"
+      type="text"
+      placeholder="Enter topic"
     />
   </div>
 
