@@ -201,7 +201,10 @@ const headerActions = () => [
       <span class="icon-remove" @click="((word = ''), searchmanagementChangeTopicTypes())"><Search /></span>
       <input v-model="word" :placeholder="$t('search')" class="input" @input="searchmanagementChangeTopicTypes" />
     </div>
-    <div class="col-span-2 flex justify-end gap-2">
+    <div class="col-span-2 flex justify-end gap-2 items-center">
+         <router-link to="/organization/management-of-change" class="btn btn-primary primary-action-button">
+          management of change
+      </router-link>
       <ActionsList
         feature-name="action management types"
         :show-actions="true"
@@ -210,9 +213,7 @@ const headerActions = () => [
       >
         <template #custom><ExportPdf :is-drop-list="true" /></template>
       </ActionsList>
-       <router-link to="/organization/management-of-change">
-          dddddddd
-      </router-link>
+
     </div>
   <SystemMangementChangeTopicType
       v-if="user?.type !== OrganizationTypeEnum.ADMIN"
