@@ -167,7 +167,7 @@ watch(
 
         <ProjectMeetingSection
           :project-id="state.data?.id ?? Number(route.params.id)"
-          :meetings="[]"
+          :meetings="state.data?.ProjectMeeting!"
           @updated="GetProjectDetails"
         />
       </div>

@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import AddDrillDialog from '../../Dialogs/Drill/AddDrillDialog.vue'
-import DrillDetailsDialog from '../../Dialogs/Drill/DrillDetailsDialog.vue'
 import type ProjectMeetingModel from '@/features/Organization/Project/Data/models/ProjectMeeting/ProjectMeetingModel.ts'
-import AddProjectMeetingDialog from './AddProjectMeetingDialog.vue';
+import AddProjectMeetingDialog from './AddProjectMeetingDialog.vue'
+import MeetingResultDialog from './MeetingResultDialog.vue'
 
 const { projectId, meetings } = defineProps<{
   projectId: number
@@ -31,16 +30,12 @@ const emit = defineEmits(['updated'])
           </p>
         </div>
       </div>
-      <AddProjectMeetingDialog
-        :project-id="projectId"
-        :compact="true"
-        @saved="emit('updated')"
-      />
+      <AddProjectMeetingDialog :project-id="projectId" :compact="true" @saved="emit('updated')" />
     </header>
 
-    <!-- <div v-if="teamGroups.length" class="drill-team-groups"> -->
-    <!-- <article v-for="group in teamGroups" :key="group.title" class="drill-team-group">
-        <div class="drill-team-header">
+    <div v-if="meetings.length" class="drill-team-groups">
+      <article v-for="group in meetings" :key="group.title" class="drill-team-group">
+        <!-- <div class="drill-team-header">
           <div>
             <span>{{ $t('Responsible team') }}</span>
           </div>
@@ -48,22 +43,22 @@ const emit = defineEmits(['updated'])
             >{{ group.drills.length
             }}<small>{{ group.drills.length === 1 ? $t('drill') : $t('drills') }}</small></strong
           >
-        </div>
+        </div> -->
         <div class="drill-cards">
-          <DrillDetailsDialog
-            v-for="drill in group.drills"
-            :key="drill.id"
-            :drill="drill"
+          <MeetingResultDialog
+            v-for="meeting in meetings"
+            :key="meeting.id"
+            :meeting="meeting"
             :project-id="projectId"
-            :plans="plansByDrillId[drill.id]"
+          />
+          <!-- :plans="plansByDrillId[drill.id]"
             :plans-loading="loadingPlansByDrillId[drill.id] ?? false"
             @opened="fetchDrillPlans(drill.id)"
-            @saved="handleDrillSaved(drill.id)"
-          />
+            @saved="handleDrillSaved(drill.id)" -->
         </div>
-      </article> -->
-    <!-- </div> -->
-    <div class="drill-empty-state">
+      </article>
+    </div>
+    <div class="drill-empty-state" v-else>
       <span>M</span>
       <div>
         <h3>{{ $t('No Meetings have been added') }}</h3>

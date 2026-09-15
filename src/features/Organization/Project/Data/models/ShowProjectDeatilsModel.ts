@@ -212,6 +212,7 @@ export default class ShowProjectDetailsModel {
     '2023-06-01', // End Date
     [], // Loss Times
     [DrillModel.example], // Drills
+    [ProjectMeetingModel.example, ProjectMeetingModel.example],
   )
 }
 
