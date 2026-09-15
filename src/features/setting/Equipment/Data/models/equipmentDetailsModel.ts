@@ -165,7 +165,7 @@ export default class EquipmentDetailsModel {
       data.checkout_date,
       data.qr_code_image,
       data.equipment_condition ?? data.equipment_conditions ?? null,
-      data.eqipent_used_status ?? null,
+      data.equipment_used_status ?? null,
     )
   }
 

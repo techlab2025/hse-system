@@ -51,7 +51,7 @@ export default class AccidentsTypeDetailsModel {
       data.parent_id,
       data.image,
       data.is_loss_time ?? 0,
-      data.is_falilty ?? 0,
+      data.is_fatility ?? 0,
     )
   }
 
