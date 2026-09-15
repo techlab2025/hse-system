@@ -27,6 +27,10 @@ export const notificationPlanActionOptions: TitleInterface[] = [
     id: NotificationPlanActionEnum.INVESTIGATION_TEAM_ADDED,
     title: 'Investigation team added',
   }),
+  new TitleInterface({
+    id: NotificationPlanActionEnum.PERMIT_TO_WORK_ASSIGN,
+    title: 'Permit To Work Assigned',
+  }),
 ]
 
 export const notificationPlanSubActionOptions: TitleInterface[] = [

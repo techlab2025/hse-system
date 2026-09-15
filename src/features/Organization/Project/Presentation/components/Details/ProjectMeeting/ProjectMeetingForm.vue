@@ -35,6 +35,7 @@ const NumebrOdDays = ref<number>()
 const PeriodicType = ref<number>()
 
 const dates = ref<Date[] | null>(null)
+const Customdates = ref<Date[] | null>(null)
 
 const error = ref('')
 
@@ -110,6 +111,15 @@ const submit = async () => {
         dates.value?.map(
           (date) =>
             new ProjectMeetingDatesParams({
+              dates: formatJoinDate(date, true),
+            }),
+        ) ?? []
+      break
+    case MeetingTypePeriodicEnum.dates:
+      periods =
+        Customdates.value?.map(
+          (date) =>
+            new ProjectMeetingDatesParams({
               dates: formatJoinDate(date),
             }),
         ) ?? []
@@ -144,9 +154,7 @@ const submit = async () => {
   if (controller.isDataSuccess()) {
     emit('saved')
   } else {
-    error.value =
-      controller.state.value.error?.title ??
-      'Unable to add the meeting.'
+    error.value = controller.state.value.error?.title ?? 'Unable to add the meeting.'
   }
 }
 
@@ -280,6 +288,24 @@ const UpdateEmployee = (employee: TitleInterface) => {
         <DatePicker
           id="drill_date"
           v-model="dates"
+          date-format="yy-mm-dd"
+          show-icon
+          fluid
+          selectionMode="multiple"
+          :manualInput="false"
+          :maxDateCount="NumebrOdDays"
+        />
+      </div>
+
+      <!-- dates -->
+      <div class="input-wrapper" v-if="PeriodicType == MeetingTypePeriodicEnum.dates">
+        <div class="field-label">
+          <label for="drill_date">{{ $t('dates') }}</label
+          ><FieldHelpIcon text="Select the dates." />
+        </div>
+        <DatePicker
+          id="drill_date"
+          v-model="Customdates"
           date-format="yy-mm-dd"
           show-icon
           fluid

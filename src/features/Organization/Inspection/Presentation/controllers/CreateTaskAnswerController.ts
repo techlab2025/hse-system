@@ -43,9 +43,15 @@ export default class CreateTaskAnswerController extends ControllerInterface<Crea
 
         const { user } = useUserStore()
 
-        await IndexInspectionController.getInstance().getData(
-          new IndexInspectionParams('', 1, 10, 1),
-        )
+        if (router.currentRoute.value.fullPath.includes('audits')) {
+          await IndexInspectionController.getInstance().getData(
+            new IndexInspectionParams('', 1, 10, 1, null, null, null, null, null, null, null, true),
+          )
+        } else {
+          await IndexInspectionController.getInstance().getData(
+            new IndexInspectionParams('', 1, 10, 1),
+          )
+        }
 
         // if (!draft) await router.push(`/organization/inspection`)
 

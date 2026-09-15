@@ -400,6 +400,20 @@ const LockUpsRoutes = ref<Routes[]>([
       PermissionsEnum.MEETING_TYPE_FETCH,
     ],
   },
+    {
+    link: '/admin/ptw-types',
+    name: t('ptw types'),
+    icon: 'receipt',
+    permissions: [
+      PermissionsEnum?.ADMIN,
+      PermissionsEnum.PTW_TYPE_ALL,
+      PermissionsEnum.PTW_TYPE_CREATE,
+      PermissionsEnum.PTW_TYPE_UPDATE,
+      PermissionsEnum.PTW_TYPE_DETAILS,
+      PermissionsEnum.PTW_TYPE_DELETE,
+      PermissionsEnum.PTW_TYPE_FETCH,
+    ],
+  },
 ])
 
 const SubscriptionTypeRoutes = ref<Routes[]>([

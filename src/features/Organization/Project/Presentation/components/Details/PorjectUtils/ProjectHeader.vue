@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import ContractorIcon from '@/shared/icons/ContractorIcon.vue'
 import { useI18n } from 'vue-i18n'
-
 const { t } = useI18n()
 const props = defineProps<{
   projectId: number | undefined
@@ -14,14 +13,13 @@ const props = defineProps<{
 }>()
 </script>
 <template>
-  
 
-    <header class="project-header-container"> 
-      
+    <header class="project-header-container">
+
       <span class="header-orbit orbit-one" aria-hidden="true"></span>
       <span class="header-orbit orbit-two" aria-hidden="true"></span>
-  
-  
+
+
       <div class="project-identity">
         <div class="project-heading">
           <span class="project-mark" aria-hidden="true">
@@ -35,15 +33,15 @@ const props = defineProps<{
             <h1 class="project-name">{{ projectName || t('Project') }}</h1>
           </div>
         </div>
-        
-  
-  
+
+
+
         <div class="project-serial">
           <span>{{ t('serial') }}</span>
           <strong>{{ serialName || SerialNumber || '—' }}</strong>
         </div>
       </div>
-  
+
       <div class="project-meta">
         <div class="meta-item start-date">
           <span class="meta-icon" aria-hidden="true">
@@ -56,9 +54,9 @@ const props = defineProps<{
             <strong>{{ Projectdate || '—' }}</strong>
           </span>
         </div>
-  
+
         <span class="schedule-line" aria-hidden="true"><i></i></span>
-  
+
         <div class="meta-item end-date">
           <span class="meta-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24">
@@ -71,7 +69,7 @@ const props = defineProps<{
             <strong>{{ endDate || '—' }}</strong>
           </span>
         </div>
-  
+
         <div class="meta-item contractors-item">
           <span class="meta-icon" aria-hidden="true"><ContractorIcon class="contractor-icon" /></span>
           <span class="meta-copy">
@@ -80,10 +78,9 @@ const props = defineProps<{
           </span>
         </div>
       </div>
-  
+
       <div></div>
       <div class="btn-route">
-
         <router-link
           v-if="projectId"
           class="project-audits-link"
@@ -99,7 +96,7 @@ const props = defineProps<{
           </span>
           {{ t('Audits') }}
         </router-link>
-  
+
               <router-link  :to="{
             name: 'management-of-change',
             query: { project_id: projectId },
@@ -107,11 +104,8 @@ const props = defineProps<{
               management of change
           </router-link>
       </div>
-
     </header>
-
 </template>
-
 <style scoped lang="scss">
 .btn-route{
   display: flex;
@@ -146,7 +140,6 @@ const props = defineProps<{
   box-shadow: 0 16px 38px color-mix(in srgb, var(--brand-primary-900) 8%, transparent) !important;
   font-family: 'Regular';
 }
-
 .project-header-container::before {
   position: absolute;
   inset-block: 0;
@@ -155,49 +148,42 @@ const props = defineProps<{
   background: linear-gradient(180deg, var(--PrimaryColor), var(--status-success));
   content: '';
 }
-
 .header-orbit {
   position: absolute;
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 8%, transparent);
   border-radius: 50%;
   pointer-events: none;
 }
-
 .orbit-one {
   inset-inline-end: -62px;
   top: -105px;
   width: 230px;
   height: 230px;
 }
-
 .orbit-two {
   inset-inline-end: 26%;
   bottom: -96px;
   width: 150px;
   height: 150px;
 }
-
 .project-identity,
 .project-meta,
 .project-audits-link {
   position: relative;
   z-index: 1;
 }
-
 .project-identity {
   display: flex;
   min-width: 0;
   flex-direction: column;
   gap: 15px;
 }
-
 .project-heading {
   display: flex;
   align-items: center;
   min-width: 0;
   gap: 13px;
 }
-
 .project-mark {
   display: inline-flex;
   align-items: center;
@@ -210,7 +196,6 @@ const props = defineProps<{
   background: linear-gradient(135deg, var(--PrimaryColor), var(--brand-secondary-500));
   box-shadow: 0 10px 22px color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
 }
-
 .project-mark svg {
   width: 25px;
   fill: none;
@@ -219,7 +204,6 @@ const props = defineProps<{
   stroke-linejoin: round;
   stroke-width: 1.7;
 }
-
 .project-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -230,7 +214,6 @@ const props = defineProps<{
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-
 .project-eyebrow i {
   width: 6px;
   height: 6px;
@@ -238,7 +221,6 @@ const props = defineProps<{
   background: var(--status-success);
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--status-success) 10%, transparent);
 }
-
 .project-name {
   overflow: hidden;
   margin: 4px 0 0;
@@ -250,7 +232,6 @@ const props = defineProps<{
   white-space: nowrap;
   max-width: 650px;
 }
-
 .project-serial {
   display: flex;
   min-width: 0;
@@ -259,7 +240,6 @@ const props = defineProps<{
   gap: 3px;
   padding-inline-start: 65px;
 }
-
 .project-serial span {
   color: var(--text-soft);
   font-size: 0.58rem;
@@ -267,7 +247,6 @@ const props = defineProps<{
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
-
 .project-serial strong {
   overflow: hidden;
   color: var(--text-strong);
@@ -276,7 +255,6 @@ const props = defineProps<{
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .project-meta {
   display: grid;
   grid-template-columns: auto 24px auto auto;
@@ -288,7 +266,6 @@ const props = defineProps<{
   background: color-mix(in srgb, var(--surface-1) 82%, transparent);
   backdrop-filter: blur(8px);
 }
-
 .meta-item {
   display: flex;
   align-items: center;
@@ -296,7 +273,6 @@ const props = defineProps<{
   gap: 9px;
   padding: 7px;
 }
-
 .meta-icon {
   display: inline-flex;
   align-items: center;
@@ -308,17 +284,14 @@ const props = defineProps<{
   color: var(--PrimaryColor);
   background: color-mix(in srgb, var(--PrimaryColor) 9%, transparent);
 }
-
 .end-date .meta-icon {
   color: var(--status-success);
   background: color-mix(in srgb, var(--status-success) 9%, transparent);
 }
-
 .contractors-item .meta-icon {
   color: var(--brand-accent-500);
   background: color-mix(in srgb, var(--brand-accent-500) 9%, transparent);
 }
-
 .meta-icon svg,
 .meta-icon :deep(svg) {
   width: 18px;
@@ -329,37 +302,31 @@ const props = defineProps<{
   stroke-linejoin: round;
   stroke-width: 1.7;
 }
-
 .meta-copy {
   display: flex;
   min-width: 0;
   flex-direction: column;
 }
-
 .meta-copy small {
   color: var(--text-soft);
   font-size: 0.55rem;
 }
-
 .meta-copy strong {
   color: var(--text-strong);
   font-family: 'Bold';
   font-size: 0.69rem;
   white-space: nowrap;
 }
-
 .contractors-item .meta-copy strong {
   color: var(--brand-accent-500);
   font-size: 0.9rem;
 }
-
 .schedule-line {
   position: relative;
   width: 24px;
   height: 1px;
   background: var(--main-border);
 }
-
 .schedule-line i {
   position: absolute;
   top: -2px;
@@ -369,7 +336,6 @@ const props = defineProps<{
   border-radius: 50%;
   background: var(--status-success);
 }
-
 .project-audits-link {
   display: inline-flex;
   align-items: center;
@@ -387,13 +353,11 @@ const props = defineProps<{
   text-decoration: none;
   transition: 0.2s ease;
 }
-
 .project-audits-link:hover {
   color: var(--text-on-brand);
   background: var(--PrimaryColor);
   transform: translateY(-1px);
 }
-
 .project-audits-link svg {
   width: 18px;
   height: 18px;
@@ -402,57 +366,46 @@ const props = defineProps<{
   stroke-linejoin: round;
   stroke-width: 1.8;
 }
-
 @media (max-width: 1100px) {
   .project-header-container {
     grid-template-columns: minmax(0, 1fr) auto;
   }
-
   .project-meta {
     grid-column: 1 / -1;
     grid-row: 2;
     width: 100%;
   }
-
   .project-audits-link {
     grid-column: 2;
     grid-row: 1;
   }
 }
-
 @media (max-width: 680px) {
   .project-header-container {
     gap: 16px;
     padding: 17px !important;
     border-radius: 19px !important;
   }
-
   .project-meta {
     grid-template-columns: 1fr 1fr;
   }
-
   .schedule-line {
     display: none;
   }
-
   .contractors-item {
     grid-column: 1 / -1;
   }
-
   .project-serial {
     padding-inline-start: 0;
   }
 }
-
 @media (max-width: 460px) {
   .project-name {
     white-space: normal;
   }
-
   .project-meta {
     grid-template-columns: 1fr;
   }
-
   .contractors-item {
     grid-column: auto;
   }
