@@ -7,7 +7,7 @@ export default class IndexTemplateParams implements Params {
   public withPage: number = 1
   public perPage: number = 10
   public pageNumber: number = 10
-  public id?: number
+  public id?: number| null
   public isPaginate?: boolean = false
   public isSystemOnly?: boolean = false
   public templateType?: number
@@ -19,7 +19,7 @@ export default class IndexTemplateParams implements Params {
     pageNumber: number = 1,
     perPage: number = 10,
     withPage: number = 1,
-    id?: number,
+    id?: number | null,
     isPaginate?: boolean,
     isSystemOnly?: boolean,
     templateType?: number,
