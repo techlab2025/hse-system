@@ -12,7 +12,7 @@ export default class AddDrillPlanningController extends ControllerInterface<Dril
     return this.instance
   }
   async addPlanning(params: Params) {
-    this.setLoading()
+    // this.setLoading()
     this.setState(await this.useCase.call(params))
     super.handleResponseDialogs()
     return this.state

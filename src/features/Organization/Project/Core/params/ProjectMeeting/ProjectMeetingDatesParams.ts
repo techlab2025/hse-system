@@ -23,7 +23,7 @@ export default class ProjectMeetingDatesParams implements Params {
     > = {}
 
     data['days'] = this.days
-    data['dates'] = this.dates
+    data['date'] = this.dates
 
 
     return data

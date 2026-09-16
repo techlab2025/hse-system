@@ -30,7 +30,7 @@ const fetchDrillPlans = async (drillId: number) => {
 
 const handleDrillSaved = async (drillId: number) => {
   await fetchDrillPlans(drillId)
-  emit('updated')
+  // emit('updated')
 }
 
 const teamGroups = computed(() => {
@@ -70,30 +70,30 @@ const teamGroups = computed(() => {
     </header>
 
     <div v-if="teamGroups.length" class="drill-team-groups">
-      <article v-for="group in teamGroups" :key="group.title" class="drill-team-group">
-        <div class="drill-team-header">
-          <div>
-            <span>{{ $t('Responsible team') }}</span>
-            <!-- <h3>{{ group.title }}</h3> -->
-          </div>
-          <strong
+      <!-- <article v-for="group in teamGroups" :key="group.title" class="drill-team-group"> -->
+      <div class="drill-team-header">
+        <div>
+          <!-- <span>{{ $t('Responsible team') }}</span> -->
+          <!-- <h3>{{ group.title }}</h3> -->
+        </div>
+        <!-- <strong
             >{{ group.drills.length
             }}<small>{{ group.drills.length === 1 ? $t('drill') : $t('drills') }}</small></strong
-          >
-        </div>
-        <div class="drill-cards">
-          <DrillDetailsDialog
-            v-for="drill in group.drills"
-            :key="drill.id"
-            :drill="drill"
-            :project-id="projectId"
-            :plans="plansByDrillId[drill.id]"
-            :plans-loading="loadingPlansByDrillId[drill.id] ?? false"
-            @opened="fetchDrillPlans(drill.id)"
-            @saved="handleDrillSaved(drill.id)"
-          />
-        </div>
-      </article>
+          > -->
+      </div>
+      <div class="drill-cards">
+        <DrillDetailsDialog
+          v-for="drill in drills"
+          :key="drill.id"
+          :drill="drill"
+          :project-id="projectId"
+          :plans="plansByDrillId[drill.id]"
+          :plans-loading="loadingPlansByDrillId[drill.id] ?? false"
+          @opened="fetchDrillPlans(drill.id)"
+          @saved="handleDrillSaved(drill.id)"
+        />
+      </div>
+      <!-- </article> -->
     </div>
     <div v-else class="drill-empty-state">
       <span>DR</span>

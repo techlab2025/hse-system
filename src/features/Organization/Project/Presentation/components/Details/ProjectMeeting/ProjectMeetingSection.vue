@@ -34,7 +34,7 @@ const emit = defineEmits(['updated'])
     </header>
 
     <div v-if="meetings.length" class="drill-team-groups">
-      <article v-for="group in meetings" :key="group.title" class="drill-team-group">
+      <!-- <article v-for="group in meetings" :key="group.title" class="drill-team-group"> -->
         <!-- <div class="drill-team-header">
           <div>
             <span>{{ $t('Responsible team') }}</span>
@@ -56,7 +56,7 @@ const emit = defineEmits(['updated'])
             @opened="fetchDrillPlans(drill.id)"
             @saved="handleDrillSaved(drill.id)" -->
         </div>
-      </article>
+      <!-- </article> -->
     </div>
     <div class="drill-empty-state" v-else>
       <span>M</span>

@@ -29,6 +29,7 @@ export default class EditEquipmentParams implements Params {
   equipmentRentStartDate: string
   VehicleKm: string
   SelectedWhereHosue: number
+  WorkedHours?: number
 
   // hasCertificate: number
   public static readonly validation = new ClassValidation().setRules({
@@ -60,6 +61,7 @@ export default class EditEquipmentParams implements Params {
     equipmentRentStartDate: string
     VehicleKm: string
     SelectedWhereHosue: number
+    WorkedHours?: number
   }) {
     Object.assign(this, data)
 
@@ -133,6 +135,7 @@ export default class EditEquipmentParams implements Params {
       data['checkin_date'] = formatJoinDate(this.equipmentRentStartDate)
     if (this.VehicleKm) data['kilometer'] = this.VehicleKm
     if (this.SelectedWhereHosue) data['warehouse_id'] = this.SelectedWhereHosue
+    if (this.WorkedHours) data['worked_hours'] = this.WorkedHours
 
     return data
   }

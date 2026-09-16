@@ -17,6 +17,7 @@ import ProjectProgreesDialog from '../supcomponents/ProjectProgreesDialog.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import CloneAllDataController from '../controllers/CloneALlDataController'
 import CloneAllAdminDataParams from '../../Core/params/cloneAllAdminDataParams'
+import AddFactory from '@/features/setting/Factory/Presentation/components/AddFactory.vue'
 
 /* ---------------- Controller & State ---------------- */
 
@@ -294,6 +295,12 @@ const AllPagesToView = [
     actionsComponent: RootCausesActionsButtons,
     title: 'Root Cause',
     description: 'Define root cause and assign roles for asset management',
+  },
+  {
+    id: ProjectProgressEnum.Factor,
+    component: AddFactory,
+    title: 'Factor',
+    description: 'Define Factor types used ',
   },
   {
     id: ProjectProgressEnum.DrillType,

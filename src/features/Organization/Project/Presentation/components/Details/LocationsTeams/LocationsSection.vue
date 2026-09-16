@@ -187,7 +187,7 @@ watch(
               <div class="section-title">
                 <span class="section-icon"><ProjectEmployeeIcon class="icon" /></span>
                 <div class="all-employees-header flex flex-col">
-                  <span class="section-kicker">{{ $t('People') }}</span>
+                  <!-- <span class="section-kicker">{{ $t('People') }}</span> -->
                   <p class="employee">{{ $t('Employees') }}</p>
                   <p class="employee-count">{{ $t('assigned to this location') }}</p>
                 </div>

@@ -432,7 +432,7 @@ defineExpose({
     <!-- Page Header -->
     <div class="inspection-page-header">
       <PagesHeader
-        :title="$t('Task Assignment Center')"
+        :title="isAuditCreation ? $t('Audit Assignment Center') : $t('Task Assignment Center')"
         :subtitle="
           $t('Distribute responsibilities across users and zones to streamline project workflows')
         "
@@ -668,7 +668,10 @@ defineExpose({
             data-required-field="InspectionGeneralForm"
             v-if="id || isAuditCreation || SelectedAssigned === AssignToTypeEnum.MACHINE"
           >
-            <InspectionGeneralForm :isAuditCreation="isAuditCreation" @update:data="GetGeneralData" />
+            <InspectionGeneralForm
+              :isAuditCreation="isAuditCreation"
+              @update:data="GetGeneralData"
+            />
             <p v-if="getFieldError('InspectionGeneralForm')" class="required-field-message">
               {{ getFieldError('InspectionGeneralForm') }}
             </p>

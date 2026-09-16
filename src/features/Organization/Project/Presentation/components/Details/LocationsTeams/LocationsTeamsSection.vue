@@ -84,7 +84,9 @@ const totalTeams = computed(
           </div>
           <RouterLink :to="`/organization/employee-details/${id}`" class="show-all">
             <span class="cta-copy">
-              <strong>{{ $t('Manage workforce') }}</strong>
+              <!-- <strong>{{ $t('Manage workforce') }}</strong> -->
+              <strong>{{ $t('Manage Location') }}</strong>
+
               <small>{{ $t('Employees and teams') }}</small>
             </span>
             <i aria-hidden="true">→</i>

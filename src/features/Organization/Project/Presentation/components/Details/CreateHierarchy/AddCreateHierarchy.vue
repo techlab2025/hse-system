@@ -46,11 +46,26 @@ const handleHierarchyUpdate = (projectLocationId: number, value: TitleInterface[
   hierarchies.value[projectLocationId] = value || []
 }
 
+const validationMessage = ref<string | null>('')
+
 const handleAddAllHierarchies = async () => {
   if (isSubmitting.value) return
 
+  validationMessage.value = ''
+
+  const hasEmptyHierarchy = Object.values(hierarchies.value).some(
+    (selected) => !Array.isArray(selected) || selected.length === 0,
+  )
+
+  if (hasEmptyHierarchy) {
+    validationMessage.value = 'You should select at least one position'
+    return
+  }
+
   isSubmitting.value = true
+
   try {
+    validationMessage.value = null
     const hierarchyList = Object.entries(hierarchies.value).map(
       ([projectLocationId, selected]) =>
         new LocationHierarchyParams(
@@ -60,6 +75,7 @@ const handleAddAllHierarchies = async () => {
     )
 
     const params = new AddLocationHierarchyParams(+route.params.project_id, hierarchyList)
+
     await addHierarchyController.addLocationHierarchy(params, router, id, LocatioId)
   } catch (error) {
     console.error('Error adding hierarchies:', error)
@@ -177,6 +193,9 @@ watch(
                   }}
                 </span>
               </div> -->
+              <p v-if="validationMessage != null" class="validation-message">
+                {{ validationMessage }}
+              </p>
             </article>
           </template>
 
@@ -250,6 +269,11 @@ watch(
 </template>
 
 <style scoped lang="scss">
+.validation-message {
+  color: red;
+  font-size: 12px;
+  padding: 10px;
+}
 .add-hierarchy {
   width: 100%;
   padding-bottom: 20px;

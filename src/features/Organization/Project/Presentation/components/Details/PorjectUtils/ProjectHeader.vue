@@ -13,101 +13,120 @@ const props = defineProps<{
 }>()
 </script>
 <template>
+  <header class="project-header-container">
+    <span class="header-orbit orbit-one" aria-hidden="true"></span>
+    <span class="header-orbit orbit-two" aria-hidden="true"></span>
 
-    <header class="project-header-container">
-
-      <span class="header-orbit orbit-one" aria-hidden="true"></span>
-      <span class="header-orbit orbit-two" aria-hidden="true"></span>
-
-
-      <div class="project-identity">
-        <div class="project-heading">
-          <span class="project-mark" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z" />
-              <path d="m4 7.5 8 4.5 8-4.5M12 12v9" />
-            </svg>
-          </span>
-          <div>
-            <!-- <span class="project-eyebrow"><i></i>{{ t('Project overview') }}</span> -->
-            <h1 class="project-name">{{ projectName || t('Project') }}</h1>
-          </div>
-        </div>
-
-
-
-        <div class="project-serial">
-          <span>{{ t('serial') }}</span>
-          <strong>{{ serialName || SerialNumber || '—' }}</strong>
+    <div class="project-identity">
+      <div class="project-heading">
+        <span class="project-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z" />
+            <path d="m4 7.5 8 4.5 8-4.5M12 12v9" />
+          </svg>
+        </span>
+        <div>
+          <!-- <span class="project-eyebrow"><i></i>{{ t('Project overview') }}</span> -->
+          <h1 class="project-name">{{ projectName || t('Project') }}</h1>
         </div>
       </div>
 
-      <div class="project-meta">
-        <div class="meta-item start-date">
-          <span class="meta-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path d="M7 3v3M17 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Z" />
-            </svg>
-          </span>
-          <span class="meta-copy">
-            <small>{{ t('start in') }}</small>
-            <strong>{{ Projectdate || '—' }}</strong>
-          </span>
-        </div>
+      <div class="project-serial">
+        <span>{{ t('serial') }}</span>
+        <strong>{{ serialName || SerialNumber || '—' }}</strong>
+      </div>
+    </div>
 
-        <span class="schedule-line" aria-hidden="true"><i></i></span>
-
-        <div class="meta-item end-date">
-          <span class="meta-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24">
-              <path d="M7 3v3M17 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Z" />
-              <path d="m9 15 2 2 4-4" />
-            </svg>
-          </span>
-          <span class="meta-copy">
-            <small>{{ t('end in') }}</small>
-            <strong>{{ endDate || '—' }}</strong>
-          </span>
-        </div>
-
-        <div class="meta-item contractors-item">
-          <span class="meta-icon" aria-hidden="true"><ContractorIcon class="contractor-icon" /></span>
-          <span class="meta-copy">
-            <small>{{ t('sub_contractors') }}</small>
-            <strong>{{ Contractors || 0 }}</strong>
-          </span>
-        </div>
+    <div class="project-meta">
+      <div class="meta-item start-date">
+        <span class="meta-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M7 3v3M17 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Z" />
+          </svg>
+        </span>
+        <span class="meta-copy">
+          <small>{{ t('start in') }}</small>
+          <strong>{{ Projectdate || '—' }}</strong>
+        </span>
       </div>
 
-      <div></div>
-      <div class="btn-route">
-        <router-link
-          v-if="projectId"
-          class="project-audits-link"
-          :to="{
-            name: 'Audits',
-            query: { project_id: projectId, inspectionType: 1 },
-          }"
-        >
-          <span aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none">
-              <path d="M5 4h10l4 4v12H5zM15 4v5h4M8 13h8M8 17h5" />
-            </svg>
-          </span>
-          {{ t('Audits') }}
-        </router-link>
+      <span class="schedule-line" aria-hidden="true"><i></i></span>
 
-              <router-link  :to="{
-            name: 'management-of-change',
-            query: { project_id: projectId },
-          }" class="project-audits-link">
-              management of change
-          </router-link>
+      <div class="meta-item end-date">
+        <span class="meta-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M7 3v3M17 3v3M4 9h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Z" />
+            <path d="m9 15 2 2 4-4" />
+          </svg>
+        </span>
+        <span class="meta-copy">
+          <small>{{ t('end in') }}</small>
+          <strong>{{ endDate || '—' }}</strong>
+        </span>
       </div>
-    </header>
+
+      <div class="meta-item contractors-item">
+        <span class="meta-icon" aria-hidden="true"><ContractorIcon class="contractor-icon" /></span>
+        <span class="meta-copy">
+          <small>{{ t('sub_contractors') }}</small>
+          <strong>{{ Contractors || 0 }}</strong>
+        </span>
+      </div>
+    </div>
+
+    <div></div>
+    <div class="btn-route">
+      <router-link
+        v-if="projectId"
+        class="project-audits-link"
+        :to="{
+          name: 'Audits',
+          query: { project_id: projectId, inspectionType: 1 },
+          params: { id: projectId },
+        }"
+      >
+        <span aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M5 4h10l4 4v12H5zM15 4v5h4M8 13h8M8 17h5" />
+          </svg>
+        </span>
+        {{ t('Audits') }}
+      </router-link>
+
+      <router-link
+        :to="{
+          name: 'management-of-change',
+          query: { project_id: projectId },
+        }"
+        class="project-audits-link"
+      >
+        management of change
+      </router-link>
+
+      <!-- <router-link
+        :to="{
+          path: '/organization/herikaly/matrix',
+          query: { project_id: projectId },
+        }"
+        class="project-audits-link"
+      >
+        Poistions Matrix
+      </router-link>
+
+      <router-link
+        :to="{
+          path: '/organization/employee-certificate',
+          query: { project_id: projectId },
+        }"
+        class="project-audits-link"
+      >
+        Employee Traning Matrix
+      </router-link> -->
+    </div>
+  </header>
 </template>
 <style scoped lang="scss">
-.btn-route{
+.btn-route {
   display: flex;
   gap: 10px;
   align-items: center;
@@ -116,7 +135,7 @@ const props = defineProps<{
 .project-header-container {
   position: relative;
   display: grid;
- // grid-template-columns: minmax(240px, 1fr) auto auto;
+  // grid-template-columns: minmax(240px, 1fr) auto auto;
   grid-template-columns: minmax(240px, 1fr) auto;
   align-items: center;
   overflow: hidden;

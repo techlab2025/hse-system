@@ -26,6 +26,7 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
 
   async addOrganizatoinEmployee(params: any, router: Router, draft: boolean = false) {
     console.log(params, 'paraaamsss controller')
+
     // useLoaderStore().setLoadingWithDialog();
     if (params.data != undefined && params?.data?.length > 0) {
       for (const el of params.data) {
@@ -40,6 +41,10 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
         //
         if (el.password && el.password?.length < 8) {
           new OpenWarningDilaog('Password Must Be At Least 8 Characters').openDialog()
+          return
+        }
+        if (el.hierarchies.map((el) => el.hierarchy_id == undefined).find((el) => el == true)) {
+          new OpenWarningDilaog('You Should select At Least One Position').openDialog()
           return
         }
       }
