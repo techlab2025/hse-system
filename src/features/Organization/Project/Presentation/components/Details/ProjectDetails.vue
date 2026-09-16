@@ -36,6 +36,9 @@ const GetProjectDetails = async () => {
   }
 }
 
+
+
+
 // const projectOverview = computed(() => [
 //   {
 //     label: 'locations',

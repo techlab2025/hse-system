@@ -144,8 +144,8 @@ export default class ShowProjectDetailsModel {
       data.end_date,
       lossTimes.map((item: Record<string, unknown>) => ProjectLossTimeModel.fromMap(item)),
       drills.map((item: Record<string, any>) => DrillModel.fromMap(item)),
-      Array.isArray(data.project_meeting)
-        ? data.project_meeting.map((el) => ProjectMeetingModel.fromMap(el))
+      Array.isArray(data.meetings)
+        ? data.meetings.map((el) => ProjectMeetingModel.fromMap(el))
         : [],
     )
   }

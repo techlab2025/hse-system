@@ -34,8 +34,8 @@ const equipmentParams = (zoneId?: number) =>
     undefined,
     undefined,
     undefined,
-    props.projectId ?? null,
-    props.isEdit ? true : undefined,
+    // props.projectId ?? null,
+    // props.isEdit ? true : undefined,
   )
 
 const setZoneEquipments = (

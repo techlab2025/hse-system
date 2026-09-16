@@ -56,6 +56,7 @@ const openDialog = () => {
 
 const saved = () => {
   editorMode.value = null
+
   void fetchDrillActions()
   emit('saved')
 }
@@ -69,7 +70,7 @@ const saved = () => {
       <strong>{{ drill.serialNumber || `Drill #${drill.id}` }}</strong>
       <small>{{ drill.date || '—' }} · {{ drill.time || '—' }}</small>
     </span>
-    <span class="drill-card-status"
+    <!-- <span class="drill-card-status"
       ><i></i
       >{{
         displayedActions.length
@@ -78,7 +79,7 @@ const saved = () => {
             ? $t('Planned')
             : $t('New')
       }}</span
-    >
+    > -->
     <span class="drill-card-arrow">→</span>
   </button>
 

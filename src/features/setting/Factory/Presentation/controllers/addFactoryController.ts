@@ -40,7 +40,7 @@ export default class AddFactoryController extends ControllerInterface<FactoryMod
 
         const { user } = useUserStore()
 
-        if (!draft)
+        if (!draft && router.currentRoute.value.fullPath.includes('factory'))
           await router.push(
             `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/factory`,
           )

@@ -425,16 +425,14 @@ const resetForm = () => {
     <span class="meeting-card-accent" />
 
     <span class="meeting-card-main">
-      <span class="meeting-card-kicker">
-        {{ meeting.title || $t('Meeting') }}
-      </span>
+      <span class="meeting-card-kicker"> date : {{ meeting.date || $t('Meeting') }} </span>
 
       <strong>
-        {{ meeting.id }}
+        {{ meeting.serialName }}
       </strong>
 
-      <small>
-        {{ meeting.date || '—' }}
+      <small v-if="meeting.teamLeader.name">
+        Team Leader : {{ meeting.teamLeader.name || '—' }}
       </small>
     </span>
 

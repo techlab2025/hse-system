@@ -1916,7 +1916,7 @@
   "select_training_type": "Select training type",
   "training_empty_description": "You have no training records yet.",
   "training_empty_title": "No training records",
-  "hierarchy_training_board": "Hierarchy training board",
+  "hierarchy_training_board": "Positions training board",
   "choose_required_training": "Choose which training is required for every organization position.",
   "employee_training_hint": "These are all the training items related to the employee's specialization.",
   "missing_training": "Missing training",
@@ -2492,10 +2492,10 @@
   "select_system_meeting_types": "select system meeting types",
   "project meetings": "project meetings",
   "Plan, schedule and manage project meetings with your teams and track meeting outcomes.": "Plan, schedule and manage project meetings with your teams and track meeting outcomes.",
-  "add_ptw_type":"add ptw type",
-  "add_system_ptw_types":"add system ptw types",
-  "select_system_ptw_types":"select system ptw types",
-  "action_feature_ptw_types":"action feature ptw types",
-  "ptw_type_title":"ptw type title",
-  "permit_to_work_type":"permit to work type"
+  "add_ptw_type": "add ptw type",
+  "add_system_ptw_types": "add system ptw types",
+  "select_system_ptw_types": "select system ptw types",
+  "action_feature_ptw_types": "action feature ptw types",
+  "ptw_type_title": "ptw type title",
+  "permit_to_work_type": "permit to work type"
 }

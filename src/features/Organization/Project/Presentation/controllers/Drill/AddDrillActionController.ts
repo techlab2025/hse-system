@@ -6,13 +6,15 @@ import AddDrillActionUseCase from '../../../Domain/useCase/Drill/AddDrillActionU
 export default class AddDrillActionController extends ControllerInterface<DrillModel> {
   private static instance: AddDrillActionController
   private readonly useCase = new AddDrillActionUseCase()
-  private constructor() { super() }
+  private constructor() {
+    super()
+  }
   static getInstance() {
     if (!this.instance) this.instance = new AddDrillActionController()
     return this.instance
   }
   async addAction(params: Params) {
-    this.setLoading()
+    // this.setLoading()
     this.setState(await this.useCase.call(params))
     super.handleResponseDialogs()
     return this.state

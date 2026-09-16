@@ -263,6 +263,27 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
     ),
   ]
 
+  static exampl2: OrganizatoinEmployeeModel = new OrganizatoinEmployeeModel(
+    1,
+    'Mohab',
+    'Mohab',
+    '01007599123',
+    'mohab@gmail.com',
+    1,
+    null,
+    [
+      new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Valid, '10-20-30'),
+      new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid, '10-20-30'),
+      new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired, '10-20-30'),
+      new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired, '10-20-30'),
+    ],
+    [new TitleInterface({ id: 1, title: 'SEO' })],
+    [],
+    1,
+    '',
+    [],
+  )
+
   static transformData(data: string[][]): OrganizatoinEmployeeModel[] {
     return data.map(
       (row, index) =>

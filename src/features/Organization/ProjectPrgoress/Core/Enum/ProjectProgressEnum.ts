@@ -18,6 +18,7 @@ export enum ProjectProgressEnum {
   Equipment = 19,
   Team = 20,
   RootCause = 21,
-  DrillType = 22,
-  PpeItem = 23,
+  Factor=22,
+  DrillType = 23,
+  PpeItem = 24,
 }

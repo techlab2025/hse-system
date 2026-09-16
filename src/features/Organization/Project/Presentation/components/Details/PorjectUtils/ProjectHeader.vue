@@ -102,6 +102,26 @@ const props = defineProps<{
       >
         management of change
       </router-link>
+
+      <!-- <router-link
+        :to="{
+          path: '/organization/herikaly/matrix',
+          query: { project_id: projectId },
+        }"
+        class="project-audits-link"
+      >
+        Poistions Matrix
+      </router-link>
+
+      <router-link
+        :to="{
+          path: '/organization/employee-certificate',
+          query: { project_id: projectId },
+        }"
+        class="project-audits-link"
+      >
+        Employee Traning Matrix
+      </router-link> -->
     </div>
   </header>
 </template>

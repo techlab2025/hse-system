@@ -30,7 +30,7 @@ const fetchDrillPlans = async (drillId: number) => {
 
 const handleDrillSaved = async (drillId: number) => {
   await fetchDrillPlans(drillId)
-  emit('updated')
+  // emit('updated')
 }
 
 const teamGroups = computed(() => {
