@@ -18,6 +18,9 @@ import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import CloneAllDataController from '../controllers/CloneALlDataController'
 import CloneAllAdminDataParams from '../../Core/params/cloneAllAdminDataParams'
 import AddFactory from '@/features/setting/Factory/Presentation/components/AddFactory.vue'
+import FactorActionsButtons from '@/features/setting/Factory/Presentation/components/FactorActionsButtons.vue'
+import DrillTypeActionsButtons from '@/features/Organization/DrillType/Presentation/components/DrillTypeActionsButtons.vue'
+import PPEItemActionsButtons from '@/features/Organization/ppeItem/Presentation/components/PPEItemActionsButtons.vue'
 
 /* ---------------- Controller & State ---------------- */
 
@@ -299,18 +302,21 @@ const AllPagesToView = [
   {
     id: ProjectProgressEnum.Factor,
     component: AddFactory,
+    actionsComponent:FactorActionsButtons,
     title: 'Factor',
     description: 'Define Factor types used ',
   },
   {
     id: ProjectProgressEnum.DrillType,
     component: AddDrillType,
+    actionsComponent:DrillTypeActionsButtons,
     title: 'Drill Type',
     description: 'Define drill types used for emergency preparedness exercises',
   },
   {
     id: ProjectProgressEnum.PpeItem,
     component: AddPpeItem,
+    actionsComponent:PPEItemActionsButtons,
     title: 'PPE Item',
     description: 'Define personal protective equipment items used across the organization',
   },

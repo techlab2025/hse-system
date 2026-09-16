@@ -2,13 +2,65 @@
 import { onMounted, ref, watch } from 'vue'
 import IndexTemplateController from '@/features/setting/Template/Presentation/controllers/indexTemplateController'
 import IndexTemplateParams from '@/features/setting/Template/Core/params/indexTemplateParams'
-import TemplateSelector from '@/features/Organization/Inspection/Presentation/components/InspectionUtils/TemplateSelector.vue'
 import SelectTemplatesOfPermits from './SelectTemplatesOfPermits.vue'
 import { useRoute } from 'vue-router'
 
-const visible = ref(false)
-const isConfirmed = ref(false)
+// const isConfirmed = ref(false)
 
+// const sendTemplatesId = () => {
+//   isConfirmed.value = true
+//   emit('update:data', selectedTemplates.value)
+//   emit('update:isInLibrary', isInLibrary.value)
+//   visible.value = false
+// }
+
+// const clearSelectedTemplate = () => {
+//   selectedTemplates.value = undefined
+//   TemplateId.value = undefined
+//   emit('update:data', selectedTemplates.value || TemplateId.value)
+//   emit('update:isInLibrary', isInLibrary.value)
+//   // ShowTemplate.value = false
+//   visible.value = false
+//   TemplateTitle.value = ''
+// }
+
+// const GetTemplateInfo = (data: {
+//   templateId: number
+//   isInLibrary: number
+//   teamplateTitle: string
+// }) => {
+//   TemplateId.value = data.templateId
+//   isInLibrary.value = data.isInLibrary
+//   TemplateTitle.value = data.teamplateTitle
+//   emit('update:data', data.templateId)
+//   emit('update:isInLibrary', data.isInLibrary)
+//   isConfirmed.value = true
+//   visible.value = false
+//   // ShowTemplate.value = true
+//   fetchTemplateItem()
+// }
+
+// const ShowTemplate = ref(true)
+
+// const handleDialogHide = () => {
+//   if (!isConfirmed.value) {
+//     removeItem()
+//   }
+//   isConfirmed.value = false
+// }
+// remove item if colse dialog
+// const removeItem = () => {
+//   selectedTemplates.value = undefined
+//   TemplateId.value = undefined
+//   emit('update:data', selectedTemplates.value || TemplateId.value)
+//   emit('update:isInLibrary', isInLibrary.value)
+//   visible.value = false
+//   TemplateTitle.value = ''
+// }
+
+// const visible = ref(false)
+// const TemplateTitle = ref()
+//
 const indexTemplateController = IndexTemplateController.getInstance()
 const state = ref(indexTemplateController.state.value)
 
@@ -16,7 +68,7 @@ const SelctedType = ref<number>(0)
 const selectedTemplates = ref<number>()
 
 const fetchTemplateItem = async (type?: number) => {
-  const deleteTemplateItemTypeParams = new IndexTemplateParams('', 1, 30, 1, null, true, type, '4')
+  const deleteTemplateItemTypeParams = new IndexTemplateParams('', 1, 30, 1, null, true, type!, '4')
   await indexTemplateController.getData(deleteTemplateItemTypeParams)
 }
 
@@ -35,12 +87,6 @@ watch(
 )
 
 const emit = defineEmits(['update:data', 'update:isInLibrary'])
-const sendTemplatesId = () => {
-  isConfirmed.value = true
-  emit('update:data', selectedTemplates.value)
-  emit('update:isInLibrary', isInLibrary.value)
-  visible.value = false
-}
 
 const selectedTemplateHeader = ref()
 const GetTemplateId = (data: number) => {
@@ -52,54 +98,9 @@ const GetTemplateId = (data: number) => {
   // ShowTemplate.value = true
 }
 
-const TemplateTitle = ref()
 const isInLibrary = ref()
 
-const clearSelectedTemplate = () => {
-  selectedTemplates.value = undefined
-  TemplateId.value = undefined
-  emit('update:data', selectedTemplates.value || TemplateId.value)
-  emit('update:isInLibrary', isInLibrary.value)
-  // ShowTemplate.value = false
-  visible.value = false
-  TemplateTitle.value = ''
-}
-
 const TemplateId = ref()
-
-const GetTemplateInfo = (data: {
-  templateId: number
-  isInLibrary: number
-  teamplateTitle: string
-}) => {
-  TemplateId.value = data.templateId
-  isInLibrary.value = data.isInLibrary
-  TemplateTitle.value = data.teamplateTitle
-  emit('update:data', data.templateId)
-  emit('update:isInLibrary', data.isInLibrary)
-  isConfirmed.value = true
-  visible.value = false
-  // ShowTemplate.value = true
-  fetchTemplateItem()
-}
-
-const ShowTemplate = ref(true)
-// remove item if colse dialog
-const removeItem = () => {
-  selectedTemplates.value = undefined
-  TemplateId.value = undefined
-  emit('update:data', selectedTemplates.value || TemplateId.value)
-  emit('update:isInLibrary', isInLibrary.value)
-  visible.value = false
-  TemplateTitle.value = ''
-}
-
-const handleDialogHide = () => {
-  if (!isConfirmed.value) {
-    removeItem()
-  }
-  isConfirmed.value = false
-}
 
 // 1 my template
 // 2 system template
@@ -139,7 +140,7 @@ const route = useRoute()
     </button>
   </div>
   <SelectTemplatesOfPermits
-    :data="state.data"
+    :data="state.data!"
     @update:data="GetTemplateId"
     :selectedTemplates="selectedTemplates"
   />
