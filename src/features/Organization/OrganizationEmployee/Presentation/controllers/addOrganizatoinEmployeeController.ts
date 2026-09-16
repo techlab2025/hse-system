@@ -26,6 +26,7 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
 
   async addOrganizatoinEmployee(params: any, router: Router, draft: boolean = false) {
     console.log(params, 'paraaamsss controller')
+
     // useLoaderStore().setLoadingWithDialog();
     if (params.data != undefined && params?.data?.length > 0) {
       for (const el of params.data) {
