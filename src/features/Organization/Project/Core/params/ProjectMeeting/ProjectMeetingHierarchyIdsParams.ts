@@ -19,7 +19,7 @@ export default class CreateProjectMeetingHierarchyIdParams implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
-    data['hirarchy_id'] = this.hirarchy_id
+    data['hierarchy_id'] = this.hirarchy_id
 
     return data
   }

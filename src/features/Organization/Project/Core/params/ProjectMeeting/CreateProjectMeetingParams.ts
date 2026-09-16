@@ -42,9 +42,10 @@ export default class CreateProjectMeetingParams implements Params {
     data['project_id'] = this.projectId
     data['meeting_type_id'] = this.MeetingTypeId
     data['title'] = this.title
-    data['periods'] = this.dates
-    data['hierarchies'] = this.hierarchies
+    if (this.dates.length > 0) data['periods'] = this.dates
+    data['hierarchies'] = this.hierarchies.map((el) => el.toMap())
     data['team_leader_id'] = this.TeamLeadrId
+    console.log(data, 'datatapara')
 
     return data
   }

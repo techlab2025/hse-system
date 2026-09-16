@@ -4,11 +4,12 @@ import InspectionCard from '../InspectionUtils/InspectionCard.vue';
 
 const props = defineProps<{
   data: InspectionModel[]
+  isAuditPage?:boolean
 }>()
 
 </script>
 <template>
   <div class="inspection-form-page  ">
-    <InspectionCard :tasks="data" :isDrag="false" />
+    <InspectionCard :isAuditPage="isAuditPage" :tasks="data" :isDrag="false" />
   </div>
 </template>

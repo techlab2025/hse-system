@@ -915,7 +915,7 @@ const selectedProject = useProjectSelectStore()
             <div class="table-responsive inspection-table-responsive">
               <div class="index-table-card-container-inspection inspection-list-panel">
                 <div class="header-container w-full">
-                  <InspectionFormPage class="w-full" :data="AllTasksState?.data" />
+                  <InspectionFormPage :isAuditPage="isAuditPage" class="w-full" :data="AllTasksState?.data" />
                 </div>
               </div>
             </div>

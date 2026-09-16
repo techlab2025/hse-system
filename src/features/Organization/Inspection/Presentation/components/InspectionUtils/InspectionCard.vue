@@ -22,6 +22,7 @@ defineProps<{
   isDrag?: boolean
   showresult?: boolean
   isEquipment?: boolean
+  isAuditPage?: boolean
 }>()
 
 const { isDarkMode } = useThemeMode()
@@ -67,7 +68,11 @@ const GetEquipmentType = (type: number) => {
                     </svg>
                   </span>
                   <div>
-                    <small>{{ $t('Inspection') }} #{{ task?.id || index + 1 }}</small>
+                    <small
+                      >{{ isAuditPage ? $t('Audit') : $t('Inspection') }} #{{
+                        task?.id || index + 1
+                      }}</small
+                    >
                     <h3 class="title" v-if="task?.template?.title">{{ task?.template?.title }}</h3>
                     <h3 class="title" v-else>{{ $t('Inspection') }}</h3>
                   </div>

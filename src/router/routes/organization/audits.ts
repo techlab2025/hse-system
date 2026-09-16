@@ -7,6 +7,7 @@ export const AuditRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Organization/Inspection/IndexInspection.vue'),
     meta: {
       breadcrumb: 'Audits',
+      parent: 'Project Details',
     },
   },
   {

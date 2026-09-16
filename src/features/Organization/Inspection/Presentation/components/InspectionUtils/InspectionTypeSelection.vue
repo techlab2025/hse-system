@@ -7,6 +7,7 @@ const props = defineProps<{
   title: string
   options: TitleInterface[]
   selectedtype: InspectionTypeEnum
+  
 }>()
 
 const SelectedOption = ref<InspectionTypeEnum>(props.selectedtype)

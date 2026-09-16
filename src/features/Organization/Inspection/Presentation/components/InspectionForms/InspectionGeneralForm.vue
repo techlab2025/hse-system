@@ -12,6 +12,9 @@ import { PeriodicDaysEnum } from '../../../Core/Enum/PeriodicDaysEnum'
 import { WithDayEnum } from '../../../Core/Enum/WithDayEnum'
 
 const emit = defineEmits(['update:data', 'change:btn'])
+const props = defineProps<{
+  isAuditCreation?: boolean
+}>()
 
 const UpdateData = () => {
   emit('update:data', {
@@ -172,7 +175,7 @@ const setWithDayesType = (data: TitleInterface) => {
         </svg>
       </span>
       <div>
-        <h3>{{ $t('Inspection schedule') }}</h3>
+        <h3>{{ isAuditCreation ? $t('Audit schedule') : $t('Inspection schedule') }}</h3>
         <p>{{ $t('Choose when this inspection should run and how often it repeats') }}</p>
       </div>
     </div>
@@ -181,7 +184,7 @@ const setWithDayesType = (data: TitleInterface) => {
       class="frequency-selector"
       :selectedtype="SelectedInspectionType"
       :options="inspectionType"
-      :title="$t('inspection frequency')"
+      :title="isAuditCreation ? $t('Audit frequency') : $t('inspection frequency')"
       @update:data="GetInspectionType"
     />
 
@@ -190,8 +193,14 @@ const setWithDayesType = (data: TitleInterface) => {
       class="schedule-mode-panel schedule-once"
     >
       <div class="mode-copy">
-        <span>{{ $t('One-time inspection') }}</span>
-        <p>{{ $t('Choose the exact date for this inspection') }}</p>
+        <span>{{ isAuditCreation ? $t('One-time Audit') : $t('One-time inspection') }}</span>
+        <p>
+          {{
+            isAuditCreation
+              ? $t('Choose the exact date for this Audit')
+              : $t('Choose the exact date for this inspection')
+          }}
+        </p>
       </div>
       <div class="input-wrapper date-field">
         <label for="inspection-day">{{ $t('select_day') }}</label>
@@ -454,7 +463,7 @@ const setWithDayesType = (data: TitleInterface) => {
 
 .schedule-once {
   display: grid;
-  grid-template-columns:1fr;
+  grid-template-columns: 1fr;
   align-items: center;
   gap: 1rem;
 }

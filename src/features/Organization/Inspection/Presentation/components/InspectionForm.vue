@@ -467,7 +467,7 @@ defineExpose({
           </svg>
         </span>
         <div>
-          <h2>{{ $t('Inspection reference') }}</h2>
+          <h2>{{ isAuditCreation ? $t('Audit reference') : $t('Inspection reference') }}</h2>
           <p>
             {{
               $t(
@@ -500,7 +500,7 @@ defineExpose({
       <div class="stage-heading">
         <span class="stage-number">{{ id || isAuditCreation ? '01' : '02' }}</span>
         <div>
-          <h2>{{ $t('Configure inspection') }}</h2>
+          <h2>{{ isAuditCreation ? $t('Configure Audit') : $t('Configure inspection') }}</h2>
           <p>{{ $t('Complete the target, checklist and schedule details') }}</p>
         </div>
         <span class="stage-status">
@@ -655,6 +655,7 @@ defineExpose({
             <InspectionTemplateDialog
               @update:isInLibrary="IsInLibrary = $event"
               @update:data="GetTemplateId"
+              :isAuditCreation="isAuditCreation"
             />
             <p v-if="getFieldError('InspectionTemplate')" class="required-field-message">
               {{ getFieldError('InspectionTemplate') }}
@@ -667,7 +668,7 @@ defineExpose({
             data-required-field="InspectionGeneralForm"
             v-if="id || isAuditCreation || SelectedAssigned === AssignToTypeEnum.MACHINE"
           >
-            <InspectionGeneralForm @update:data="GetGeneralData" />
+            <InspectionGeneralForm :isAuditCreation="isAuditCreation" @update:data="GetGeneralData" />
             <p v-if="getFieldError('InspectionGeneralForm')" class="required-field-message">
               {{ getFieldError('InspectionGeneralForm') }}
             </p>

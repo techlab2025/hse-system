@@ -12,6 +12,9 @@ import { TemplateTypeEnum } from '../../../Core/Enum/TemplateTypeEnum'
 
 const visible = ref(false)
 const isConfirmed = ref(false)
+const props = defineProps<{
+  isAuditCreation?: boolean
+}>()
 
 const indexTemplateController = IndexTemplateController.getInstance()
 const state = ref(indexTemplateController.state.value)
@@ -127,7 +130,7 @@ watch(
   <div class="inspection-template-dialog-container">
     <div class="input-wrapper template-picker-field field-required">
       <div class="title">
-        <span>{{ $t('inspection template') }}</span>
+        <span>{{ isAuditCreation ? $t('Audit template') : $t('inspection template') }}</span>
         <span class="required">*</span>
       </div>
 
@@ -139,7 +142,9 @@ watch(
           </svg>
         </span>
         <span class="picker-button-copy">
-          <strong>{{ $t('select inspection template') }}</strong>
+          <strong>{{
+            isAuditCreation ? $t('select Audit template') : $t('select inspection template')
+          }}</strong>
           <small>{{ $t('Choose a checklist from your library or the system collection') }}</small>
         </span>
         <span class="picker-button-arrow" aria-hidden="true">→</span>
@@ -188,7 +193,7 @@ watch(
       <div class="inspection-template-dialog-data">
         <div class="template-dialog-toolbar">
           <!-- <div class="toolbar-copy"> -->
-            <!-- <span>{{ $t('Template library') }}</span>
+          <!-- <span>{{ $t('Template library') }}</span>
             <p>{{ $t('Select the checklist that best matches this inspection') }}</p> -->
           <!-- </div> -->
           <div class="add-new-template">
@@ -452,7 +457,7 @@ watch(
   border-radius: 1rem;
   background: var(--surface-1);
   /* padding: 0.85rem; */
-  width:100%;
+  width: 100%;
 }
 
 .toolbar-copy span {
