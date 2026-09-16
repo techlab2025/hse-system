@@ -43,7 +43,7 @@ const UpdateData = (id: number) => {
 
     <div class="member-data">
       <p class="name">{{ wordSlice(member?.name, 18) }}</p>
-          <!-- <p> {{ member.hierarchyposition?.map((p) => p.title).join(', ') }}</p> -->
+          <!-- <p>  {{ member.hierarchy?.map((p) => p.title).join(', ') }}</p> -->
       <p class="position" v-if="member.hierarchy?.length > 0">
         <span>
           {{ member.hierarchy?.map((p) => p.title).join(', ') }}
