@@ -116,6 +116,7 @@ const setEquipmentStatus = (data: TitleInterface) => {
 const image = ref<string | null>(null)
 const decommissioningDate = ref<string | null>(null)
 const decommissioningDateObj = ref<Date | null>(null)
+  const mainfacturyDate = ref<string | null>(null)
 const mainfacturyDateObj = ref<Date | null>(null)
 const certificateImage = ref<string | null>(null)
 const langTitleValid = ref(false)
@@ -153,14 +154,14 @@ const fetchLang = async () => {
 
   langDefault.value = response?.data?.length
     ? response.data.map((item: any) => ({
-        locale: item.code,
-        title: '',
-        icon: markRaw(LangsMap[item.code]?.icon),
-      }))
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code]?.icon),
+    }))
     : [
-        { locale: 'en', icon: LangsMap.en.icon, title: '' },
-        { locale: 'ar', icon: LangsMap.ar.icon, title: '' },
-      ]
+      { locale: 'en', icon: LangsMap.en.icon, title: '' },
+      { locale: 'ar', icon: LangsMap.ar.icon, title: '' },
+    ]
 }
 
 const AllEquipmentTypes = ref<EquipmentTypeModel[]>()
@@ -348,81 +349,85 @@ const updateData = () => {
   // deviceStatus.value == EquipmentStatus.OWN ? null :
   const params = props.data?.id
     ? new EditEquipmentParams({
-        id: +route.params.id,
-        translation: translationsParams,
-        equipmentTypeId: equipmentType.value?.id,
-        date: decommissioningDate.value,
-        status: deviceStatus.value,
-        inspectionDuration: inspectionDuration.value,
-        licenseNumber: licenseNumber.value,
-        licensePlateNumber: licensePlateNumber.value,
-        equipmentCondition:
-          deviceStatus.value === EquipmentStatus.OWN &&
+      id: +route.params.id,
+      translation: translationsParams,
+      equipmentTypeId: equipmentType.value?.id,
+      date: decommissioningDate.value,
+      status: deviceStatus.value,
+      inspectionDuration: inspectionDuration.value,
+      licenseNumber: licenseNumber.value,
+      licensePlateNumber: licensePlateNumber.value,
+      equipmentCondition:
+        deviceStatus.value === EquipmentStatus.OWN &&
           equipmentUsedStatus.value?.id === EquipmentUsed.used
-            ? (equipmentCondition.value?.id ?? null)
-            : null,
-        equipmentUsedStatus:
-          deviceStatus.value === EquipmentStatus.OWN
-            ? (equipmentUsedStatus.value?.id ?? null)
-            : null,
-        image: imagePayload,
-        certificateImage: certificateImagePayload,
-        AllIndustry: AllIndustry,
-        industry: industry.value?.map((item) => item.id),
-        parentId: +route.params.parent_id,
-        constructorId: SelectedContractor.value?.id || ' ',
-        equipmentRentType:
-          deviceStatus.value == EquipmentStatus.RENT ? SelectedRentType?.value?.id : null,
-        equipmentRentTime: deviceStatus.value == EquipmentStatus.RENT ? Rent.value : null,
-        equipmentRentStartDate: deviceStatus.value == EquipmentStatus.OWN ? null : StartDateFormat,
-        VehicleKm:
-          activeTab.value === EquipmentTypesEnum.EQUIPMENT && isVehicle.value
-            ? VehicleKm.value
-            : ' ',
-        SelectedWhereHosue: SelectedWhereHosue.value?.id || ' ',
-        equipmentRentEndDate:
-          deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
-        WorkedHours: WorkedHoure.value,
-        ivhm: ivhm.value,
-      })
+          ? (equipmentCondition.value?.id ?? null)
+          : null,
+      equipmentUsedStatus:
+        deviceStatus.value === EquipmentStatus.OWN
+          ? (equipmentUsedStatus.value?.id ?? null)
+          : null,
+      image: imagePayload,
+      certificateImage: certificateImagePayload,
+      AllIndustry: AllIndustry,
+      industry: industry.value?.map((item) => item.id),
+      parentId: +route.params.parent_id,
+      constructorId: SelectedContractor.value?.id || ' ',
+      equipmentRentType:
+        deviceStatus.value == EquipmentStatus.RENT ? SelectedRentType?.value?.id : null,
+      equipmentRentTime: deviceStatus.value == EquipmentStatus.RENT ? Rent.value : null,
+      equipmentRentStartDate: deviceStatus.value == EquipmentStatus.OWN ? null : StartDateFormat,
+      VehicleKm:
+        activeTab.value === EquipmentTypesEnum.EQUIPMENT && isVehicle.value
+          ? VehicleKm.value
+          : ' ',
+      SelectedWhereHosue: SelectedWhereHosue.value?.id || ' ',
+      equipmentRentEndDate:
+        deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
+      WorkedHours: WorkedHoure.value,
+      equipmentOfHavyStatus: equipmentOfHavyStatus.value,
+      mainfacturyDate: mainfacturyDate.value,
+      ivhm: ivhm.value,
+    })
     : new AddEquipmentParams({
-        translation: translationsParams,
-        equipmentTypeId: equipmentType.value?.id,
-        date: decommissioningDate.value,
-        status: deviceStatus.value,
-        inspectionDuration: inspectionDuration.value,
-        licenseNumber: licenseNumber.value,
-        licensePlateNumber: licensePlateNumber.value,
-        equipmentCondition:
-          deviceStatus.value === EquipmentStatus.OWN &&
+      translation: translationsParams,
+      equipmentTypeId: equipmentType.value?.id,
+      date: decommissioningDate.value,
+      status: deviceStatus.value,
+      inspectionDuration: inspectionDuration.value,
+      licenseNumber: licenseNumber.value,
+      licensePlateNumber: licensePlateNumber.value,
+      equipmentCondition:
+        deviceStatus.value === EquipmentStatus.OWN &&
           equipmentUsedStatus.value?.id === EquipmentUsed.used
-            ? (equipmentCondition.value?.id ?? null)
-            : null,
-        equipmentUsedStatus:
-          deviceStatus.value === EquipmentStatus.OWN
-            ? (equipmentUsedStatus.value?.id ?? null)
-            : null,
-        image: imagePayload,
-        certificateImage: certificateImagePayload,
-        AllIndustry: AllIndustry,
-        industry: industry.value?.map((item) => item.id),
-        parentId: +route.params.parent_id,
-        constructorId: SelectedContractor.value?.id || ' ',
-        equipmentRentType:
-          deviceStatus.value == EquipmentStatus.RENT ? SelectedRentType?.value?.id : null,
-        equipmentRentTime: deviceStatus.value == EquipmentStatus.RENT ? Rent.value : null,
-        equipmentRentStartDate: deviceStatus.value == EquipmentStatus.RENT ? StartDateFormat : null,
-        VehicleKm:
-          activeTab.value === EquipmentTypesEnum.EQUIPMENT && isVehicle.value
-            ? VehicleKm.value
-            : '',
-        SelectedWhereHosue: SelectedWhereHosue.value?.id || ' ',
-        equipmentRentEndDate:
-          deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
-        serialNumber: SerialNumber.value,
-        WorkedHours: WorkedHoure.value,
-        ivhm: ivhm.value,
-      })
+          ? (equipmentCondition.value?.id ?? null)
+          : null,
+      equipmentUsedStatus:
+        deviceStatus.value === EquipmentStatus.OWN
+          ? (equipmentUsedStatus.value?.id ?? null)
+          : null,
+      image: imagePayload,
+      certificateImage: certificateImagePayload,
+      AllIndustry: AllIndustry,
+      industry: industry.value?.map((item) => item.id),
+      parentId: +route.params.parent_id,
+      constructorId: SelectedContractor.value?.id || ' ',
+      equipmentRentType:
+        deviceStatus.value == EquipmentStatus.RENT ? SelectedRentType?.value?.id : null,
+      equipmentRentTime: deviceStatus.value == EquipmentStatus.RENT ? Rent.value : null,
+      equipmentRentStartDate: deviceStatus.value == EquipmentStatus.RENT ? StartDateFormat : null,
+      VehicleKm:
+        activeTab.value === EquipmentTypesEnum.EQUIPMENT && isVehicle.value
+          ? VehicleKm.value
+          : '',
+      SelectedWhereHosue: SelectedWhereHosue.value?.id || ' ',
+      equipmentRentEndDate:
+        deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
+      serialNumber: SerialNumber.value,
+      WorkedHours: WorkedHoure.value,
+      equipmentOfHavyStatus: equipmentOfHavyStatus.value,
+      mainfacturyDate: mainfacturyDate.value,
+      ivhm: ivhm.value,
+    })
 
   emit('update:data', params)
 }
@@ -557,6 +562,7 @@ watch(
       originalImage.value = newData?.image
       WorkedHoure.value = newData?.workedHoures
       ivhm.value = newData?.ivhm || false
+      mainfacturyDateObj.value = newData?.date ? new Date(newData.date) : null
     }
   },
   { immediate: true },
@@ -869,93 +875,57 @@ defineExpose({
         />
       </div>
     </div> -->
-       <div class="equipment-status-options"  v-if="activeTab === EquipmentTypesEnum.EQUIPMENT">
-          <div
-            class="radio-wrapper"
-            :class="equipmentOfHavyStatus == option?.id ? 'active' : ''"
-            v-for="(option, index) in EquipmentOfHavyOptions"
-            :key="index"
-            @click="
-                equipmentOfHavyStatus = option?.id;
-            updateData()"
-          >
-            <div class="flex items-center justify-center gap-1 w-full h-full">
-              <label
-                class="text-lg w-full flex justify-center"
-                :for="`${option?.id}-${option?.title}`"
-              >
-                {{ option?.title }}
-              </label>
-              <!-- <RentIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.RENT" />
+    <div class="equipment-status-options" v-if="activeTab === EquipmentTypesEnum.EQUIPMENT">
+      <div class="radio-wrapper" :class="equipmentOfHavyStatus == option?.id ? 'active' : ''"
+        v-for="(option, index) in EquipmentOfHavyOptions" :key="index" @click="
+          equipmentOfHavyStatus = option?.id;
+        updateData()">
+        <div class="flex items-center justify-center gap-1 w-full h-full">
+          <label class="text-lg w-full flex justify-center" :for="`${option?.id}-${option?.title}`">
+            {{ option?.title }}
+          </label>
+          <!-- <RentIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.RENT" />
               <OwnedIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.OWN" /> -->
-            </div>
-            <input
-              :id="`${option?.id}-${option?.title}`"
-              type="radio"
-              v-model="equipmentOfHavyStatus"
-              :value="option?.id"
-              name="radio"
-              @change="UpdateequipmentOfHavyStatus"
-            />
-          </div>
         </div>
-       <div
-  v-if="
-    equipmentOfHavyStatus == EquipmentOfHavyStatus.havy &&
-    user?.type === OrganizationTypeEnum.ORGANIZATION
-  "
-  class="col-span-2 md:col-span-1"
->
-  <div class="input-wrapper w-full">
-    <label for="heavy-hours" class="flex items-center gap-2">
-      Heavy Hours
-      <FieldHelpIcon text="Enter heavy equipment working hours." />
-    </label>
-
-    <input
-      class="input"
-      placeholder="Enter Heavy Hours"
-      type="number"
-      id="heavy-hours"
-      v-model="WorkedHoure"
-      @input="updateData"
-    />
-  </div>
-       </div>
-
-         <div
-  v-if="
-    equipmentOfHavyStatus == EquipmentOfHavyStatus.light &&
-    user?.type === OrganizationTypeEnum.ORGANIZATION
-  "
-  class="col-span-2 md:col-span-1"
->
-  <div class="input-wrapper w-full">
-    <label for="light-hours" class="flex items-center gap-2">
-      Light Hours
-      <FieldHelpIcon text="Enter light equipment working hours." />
-    </label>
-
-    <input
-      class="input"
-      placeholder="Enter Light Hours"
-      type="number"
-      id="light-hours"
-      v-model="WorkedHoure"
-      @input="updateData"
-    />
-  </div>
-        </div>
-
+        <input :id="`${option?.id}-${option?.title}`" type="radio" v-model="equipmentOfHavyStatus" :value="option?.id"
+          name="radio" @change="UpdateequipmentOfHavyStatus" />
+      </div>
+    </div>
+    
     <div class="grid grid-cols-2 gap-6 mt-8">
+      <div v-if="
+        equipmentOfHavyStatus == EquipmentOfHavyStatus.havy &&
+        user?.type === OrganizationTypeEnum.ORGANIZATION && activeTab === EquipmentTypesEnum.EQUIPMENT
+      " class="col-span-2 md:col-span-1">
+        <div class="input-wrapper w-full">
+          <label for="heavy-hours" class="flex items-center gap-2">
+            Heavy Hours
+            <FieldHelpIcon text="Enter heavy equipment working hours." />
+          </label>
+  
+          <input class="input" placeholder="Enter Heavy Hours" type="number" id="heavy-hours" v-model="WorkedHoure"
+            @input="updateData" />
+        </div>
+      </div>
+  
+      <div v-if="
+        equipmentOfHavyStatus == EquipmentOfHavyStatus.light &&
+        user?.type === OrganizationTypeEnum.ORGANIZATION && activeTab === EquipmentTypesEnum.EQUIPMENT
+      " class="col-span-2 md:col-span-1">
+        <div class="input-wrapper w-full">
+          <label for="light-hours" class="flex items-center gap-2">
+            Light Hours
+            <FieldHelpIcon text="Enter light equipment working hours." />
+          </label>
+  
+          <input class="input" placeholder="Enter Light Hours" type="number" id="light-hours" v-model="WorkedHoure"
+            @input="updateData" />
+        </div>
+      </div>
       <div class="col-span-2 md:col-span-1" data-required-field="langs">
-        <LangTitleInput
-          :label="`${GetEquipmentTitle(activeTab)} model`"
-          :langs="langDefault"
-          :modelValue="langs"
+        <LangTitleInput :label="`${GetEquipmentTitle(activeTab)} model`" :langs="langDefault" :modelValue="langs"
           help-text="Enter the equipment name in each available language so users can identify it easily."
-          @update:modelValue="setLangs"
-        />
+          @update:modelValue="setLangs" />
         <p v-if="getFieldError('langs')" class="required-field-message">
           {{ getFieldError('langs') }}
         </p>
@@ -964,38 +934,22 @@ defineExpose({
       <div class="col-span-2 md:col-span-1 flex flex-col gap-2 input-wrapper" v-if="!data?.id">
         <label for="serialNumber" class="flex items-center gap-2">
           {{ $t('serial_number') }}
-          <FieldHelpIcon
-            text="Enter a unique serial number, or leave it empty when automatic generation is enabled."
-          />
+          <FieldHelpIcon text="Enter a unique serial number, or leave it empty when automatic generation is enabled." />
         </label>
-        <input
-          type="text"
-          v-model="SerialNumber"
-          @input="UpdateSerial"
-          id="serialNumber"
-          :disabled="projtecStateus.isSerialNumberAuto()"
-          :placeholder="
-            projtecStateus.isSerialNumberAuto()
+        <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
+          :disabled="projtecStateus.isSerialNumberAuto()" :placeholder="projtecStateus.isSerialNumberAuto()
               ? 'You can leave it (auto-generated)'
               : 'Enter Your Serial Number'
-          "
-        />
+            " />
       </div>
 
       <div class="col-span-2 md:col-span-1" data-required-field="equipmentType">
-        <UpdatedCustomInputSelect
-          @update:reload="GetEquipmentType"
-          :modelValue="equipmentType"
-          :controller="indexEquipmentTypeController"
-          :params="indexEquipmentTypeParams"
-          :label="`${GetEquipmentTitle(activeTab)} brand`"
-          :id="`${GetEquipmentTitle(activeTab)} Type`"
+        <UpdatedCustomInputSelect @update:reload="GetEquipmentType" :modelValue="equipmentType"
+          :controller="indexEquipmentTypeController" :params="indexEquipmentTypeParams"
+          :label="`${GetEquipmentTitle(activeTab)} brand`" :id="`${GetEquipmentTitle(activeTab)} Type`"
           :placeholder="`Select ${GetEquipmentTitle(activeTab)} brand`"
           help-text="Select the type that best classifies this equipment, device, or tool."
-          @update:modelValue="setEquipmentType"
-          :isDialog="true"
-          v-model:dialogVisible="EquipmentTypeDialog"
-        >
+          @update:modelValue="setEquipmentType" :isDialog="true" v-model:dialogVisible="EquipmentTypeDialog">
           <template #LabelHeader>
             <span class="add-dialog" @click="EquipmentTypeDialog = true">New</span>
           </template>
@@ -1013,15 +967,8 @@ defineExpose({
           {{ $t('upload image') }}
           <FieldHelpIcon text="Upload a clear image that helps users identify this equipment." />
         </label>
-        <SingleFileUpload
-          :returnType="`base64`"
-          v-model="image"
-          @update:modelValue="setImage"
-          label="Image"
-          id="image"
-          index="1"
-          placeholder="upload image"
-        />
+        <SingleFileUpload :returnType="`base64`" v-model="image" @update:modelValue="setImage" label="Image" id="image"
+          index="1" placeholder="upload image" />
       </div>
 
       <!-- {{ certificateImage }} -->
@@ -1030,15 +977,8 @@ defineExpose({
           <p>{{ $t('Certification / Inspection Image upload') }}</p>
           <FieldHelpIcon :text="$t('equipment_training_upload_help')" />
         </label>
-        <SingleFileUpload
-          :returnType="`base64`"
-          v-model="certificateImage"
-          @update:modelValue="setCertificateImage"
-          :label="$t('training_upload')"
-          id="Certification upload"
-          index="2"
-          :placeholder="$t('training_upload')"
-        />
+        <SingleFileUpload :returnType="`base64`" v-model="certificateImage" @update:modelValue="setCertificateImage"
+          :label="$t('training_upload')" id="Certification upload" index="2" :placeholder="$t('training_upload')" />
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
@@ -1046,77 +986,50 @@ defineExpose({
           {{ $t('third party Inspection expir date') }}
           <FieldHelpIcon :text="$t('equipment_training_expiry_help')" />
         </label>
-        <DatePicker
-          :model-value="decommissioningDateObj"
-          id="Date of Decommissioning"
-          :placeholder="$t('training_expiry_date')"
-          @update:modelValue="setDecoDate"
-        />
+        <DatePicker :model-value="decommissioningDateObj" id="Date of Decommissioning"
+          :placeholder="$t('training_expiry_date')" @update:modelValue="setDecoDate" />
       </div>
 
-        <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
+      <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
         <label class="flex items-center gap-2">
           {{ $t('mainfactury year') }}
           <FieldHelpIcon :text="$t('mainfactury year')" />
         </label>
-        <DatePicker
-          :model-value="mainfacturyDateObj"
-          id="Date of mainfactury"
-          :placeholder="$t('training mainfactury date')"
-          @update:modelValue="setMainfacturyDate"
-          view="year"
-          dateFormat="yy"
-        />
+        <DatePicker :model-value="mainfacturyDateObj" id="Date of mainfactury"
+          :placeholder="$t('training mainfactury date')" @update:modelValue="setMainfacturyDate" view="year"
+          dateFormat="yy" />
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1 ivhm-checkbox">
         <label class="flex items-center gap-2">
-          {{ $t('ivhm') }} 
+          {{ $t('ivhm') }}
         </label>
-         <input v-model="ivhm" @change="updateData" type="checkbox" id="ivhm" />
+        <input v-model="ivhm" @change="updateData" type="checkbox" id="ivhm" />
       </div>
-      
 
 
-     
 
-      <div
-        v-if="user?.type === OrganizationTypeEnum.ORGANIZATION"
-        class="col-span-2 flex flex-wrap item-center justify-start gap-4"
-        data-required-field="deviceStatus"
-      >
+
+
+      <div v-if="user?.type === OrganizationTypeEnum.ORGANIZATION"
+        class="col-span-2 flex flex-wrap item-center justify-start gap-4" data-required-field="deviceStatus">
         <div class="equipment-status-guide flex basis-full items-center gap-2">
           <span>{{ $t('status') }}</span>
           <FieldHelpIcon
-            text="Choose Owned when the organization owns the asset, or Rent when it is supplied temporarily."
-          />
+            text="Choose Owned when the organization owns the asset, or Rent when it is supplied temporarily." />
         </div>
         <div class="equipment-status-options">
-          <div
-            class="radio-wrapper"
-            :class="deviceStatus == option?.id ? 'active' : ''"
-            v-for="(option, index) in deviceStatusOptions"
-            :key="index"
-            @click="deviceStatus = option?.id"
-          >
+          <div class="radio-wrapper" :class="deviceStatus == option?.id ? 'active' : ''"
+            v-for="(option, index) in deviceStatusOptions" :key="index" @click="deviceStatus = option?.id">
             <div class="flex items-center justify-center gap-1 w-full h-full">
-              <label
-                class="text-lg w-full flex justify-center"
-                :for="`${option?.id}-${option?.title}`"
-              >
+              <label class="text-lg w-full flex justify-center" :for="`${option?.id}-${option?.title}`">
                 {{ option?.title }}
               </label>
               <RentIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.RENT" />
               <OwnedIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.OWN" />
             </div>
-            <input
-              :id="`${option?.id}-${option?.title}`"
-              type="radio"
-              v-model="deviceStatus"
-              :value="option?.id"
-              name="radio"
-              @change="UpdateDeviceStatus"
-            />
+            <input :id="`${option?.id}-${option?.title}`" type="radio" v-model="deviceStatus" :value="option?.id"
+              name="radio" @change="UpdateDeviceStatus" />
           </div>
         </div>
         <p v-if="getFieldError('deviceStatus')" class="required-field-message">
@@ -1124,25 +1037,13 @@ defineExpose({
         </p>
       </div>
 
-      <div
-        v-if="
-          deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
-        "
-        class="col-span-2 md:col-span-1"
-        data-required-field="SelectedContractor"
-      >
-        <UpdatedCustomInputSelect
-          :modelValue="SelectedContractor"
-          :controller="indexContractorController"
-          :params="indexContractorTypeParams"
-          :label="`Contructor`"
-          id="Contructor"
-          :placeholder="`Select Contructor`"
+      <div v-if="
+        deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
+      " class="col-span-2 md:col-span-1" data-required-field="SelectedContractor">
+        <UpdatedCustomInputSelect :modelValue="SelectedContractor" :controller="indexContractorController"
+          :params="indexContractorTypeParams" :label="`Contructor`" id="Contructor" :placeholder="`Select Contructor`"
           help-text="Select the contractor or supplier providing this rented equipment."
-          @update:modelValue="setContructor"
-          :isDialog="true"
-          v-model:dialogVisible="ContractorDialog"
-        >
+          @update:modelValue="setContructor" :isDialog="true" v-model:dialogVisible="ContractorDialog">
           <template #LabelHeader>
             <span class="add-dialog" @click="ContractorDialog = true">New</span>
           </template>
@@ -1155,22 +1056,12 @@ defineExpose({
         </p>
       </div>
 
-      <div
-        v-if="
-          deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
-        "
-        class="col-span-2 md:col-span-1"
-        data-required-field="SelectedRentType"
-      >
-        <CustomSelectInput
-          :staticOptions="RentTypes"
-          :modelValue="SelectedRentType"
-          label="Rent Type"
-          id="Rent Type"
-          placeholder="Selected Rent Type.."
-          help-text="Choose the time unit used to calculate the rental period."
-          @update:modelValue="setRentType"
-        />
+      <div v-if="
+        deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
+      " class="col-span-2 md:col-span-1" data-required-field="SelectedRentType">
+        <CustomSelectInput :staticOptions="RentTypes" :modelValue="SelectedRentType" label="Rent Type" id="Rent Type"
+          placeholder="Selected Rent Type.." help-text="Choose the time unit used to calculate the rental period."
+          @update:modelValue="setRentType" />
         <p v-if="getFieldError('SelectedRentType')" class="required-field-message">
           {{ getFieldError('SelectedRentType') }}
         </p>
@@ -1180,18 +1071,10 @@ defineExpose({
           :modelValue="SelectedWhereHosue" label="Warehouse" id="Warehouse" placeholder="Select Warehouse.."
           @update:modelValue="setSelectedWhereHouse" /> -->
 
-        <UpdatedCustomInputSelect
-          :controller="indexWhereHouseController"
-          :params="indexWhereHouseParams"
-          :modelValue="SelectedWhereHosue"
-          label="Warehouse"
-          id="Warehouse"
-          placeholder="Select Warehouse.."
+        <UpdatedCustomInputSelect :controller="indexWhereHouseController" :params="indexWhereHouseParams"
+          :modelValue="SelectedWhereHosue" label="Warehouse" id="Warehouse" placeholder="Select Warehouse.."
           help-text="Select the warehouse where this equipment will initially be stored."
-          @update:modelValue="setSelectedWhereHouse"
-          :isDialog="true"
-          v-model:dialogVisible="WarehouseDialog"
-        >
+          @update:modelValue="setSelectedWhereHouse" :isDialog="true" v-model:dialogVisible="WarehouseDialog">
           <template #LabelHeader>
             <span class="add-dialog" @click="WarehouseDialog = true">New</span>
           </template>
@@ -1201,99 +1084,57 @@ defineExpose({
         </UpdatedCustomInputSelect>
       </div>
 
-      <div
-        class="input-wrapper col-span-2 md:col-span-1"
-        v-if="
-          deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
-        "
-        data-required-field="Rent"
-      >
+      <div class="input-wrapper col-span-2 md:col-span-1" v-if="
+        deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
+      " data-required-field="Rent">
         <label for="rent-time" class="flex items-center gap-2">
-          Rent {{ RentTypes.find((el) => el.id == SelectedRentType?.id)?.title }}
+          Rent {{RentTypes.find((el) => el.id == SelectedRentType?.id)?.title}}
           <FieldHelpIcon text="Enter the rental duration using the selected rent time unit." />
         </label>
-        <input
-          class="input"
-          placeholder="Enter Rent Time"
-          type="text"
-          id="rent-time"
-          v-model="Rent"
-          @input="setRentTime"
-        />
+        <input class="input" placeholder="Enter Rent Time" type="text" id="rent-time" v-model="Rent"
+          @input="setRentTime" />
         <p v-if="getFieldError('Rent')" class="required-field-message">
           {{ getFieldError('Rent') }}
         </p>
       </div>
 
-      <div
-        class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1"
-        v-if="
-          deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
-        "
-        data-required-field="StartDate"
-      >
+      <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1" v-if="
+        deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
+      " data-required-field="StartDate">
         <label class="flex items-center gap-2">
           {{ $t('start_date') }}
           <FieldHelpIcon text="Select the date and time when the equipment rental begins." />
         </label>
-        <DatePicker
-          v-model="StartDate"
-          id="start_date"
-          placeholder="Enter Start Date"
-          :showTime="true"
-          @update:modelValue="setStartDate"
-        />
+        <DatePicker v-model="StartDate" id="start_date" placeholder="Enter Start Date" :showTime="true"
+          @update:modelValue="setStartDate" />
         <p v-if="getFieldError('StartDate')" class="required-field-message">
           {{ getFieldError('StartDate') }}
         </p>
       </div>
 
-      <div
-        class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1"
-        v-if="
-          deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
-        "
-      >
+      <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1" v-if="
+        deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
+      ">
         <label class="flex items-center gap-2">
           {{ $t('end_date') }}
-          <FieldHelpIcon
-            text="This date is calculated automatically from the start date, duration, and rent type."
-          />
+          <FieldHelpIcon text="This date is calculated automatically from the start date, duration, and rent type." />
         </label>
-        <DatePicker
-          :showTime="true"
-          v-model="EndDate"
-          id="end_date"
-          placeholder="Auto-calculated end date"
-          disabled
-        />
+        <DatePicker :showTime="true" v-model="EndDate" id="end_date" placeholder="Auto-calculated end date" disabled />
       </div>
 
       <div class="input-wrapper col-span-2 md:col-span-1">
         <label for="License Plate Number" class="flex items-center gap-2">
           {{ $t(' Plate No.') }}
-          <FieldHelpIcon
-            text="Enter the official registration plate number when this equipment is a vehicle."
-          />
+          <FieldHelpIcon text="Enter the official registration plate number when this equipment is a vehicle." />
         </label>
-        <input
-          type="text"
-          id="License Plate Number"
-          v-model="licensePlateNumber"
-          @input="updateData"
-          :placeholder="$t('License Plate Number')"
-        />
+        <input type="text" id="License Plate Number" v-model="licensePlateNumber" @input="updateData"
+          :placeholder="$t('License Plate Number')" />
       </div>
 
       <div v-if="deviceStatus === EquipmentStatus.OWN" class="col-span-2 md:col-span-1">
-        <UpdatedCustomInputSelect
-          :model-value="equipmentUsedStatus"
-          :static-options="EquipmentUsedOptions"
-          label="Equipment Used Status"
-          id="equipment-used-status"
-          placeholder="Select Equipment Used Status"
-          @update:model-value="setEquipmentUsedStatus"
-        >
+        <UpdatedCustomInputSelect :model-value="equipmentUsedStatus" :static-options="EquipmentUsedOptions"
+          label="Equipment Used Status" id="equipment-used-status" placeholder="Select Equipment Used Status"
+          @update:model-value="setEquipmentUsedStatus">
           <template #LabelHeader>
             <FieldHelpIcon text="Select whether this owned equipment has been used before." />
           </template>
@@ -1338,39 +1179,20 @@ defineExpose({
         </UpdatedCustomInputSelect>
       </div> -->
 
-      <div
-        class="input-wrapper col-span-2 md:col-span-1"
-        v-if="user?.type == OrganizationTypeEnum?.ADMIN"
-      >
+      <div class="input-wrapper col-span-2 md:col-span-1" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
         <div class="flex items-center gap-2">
-          <CustomCheckbox
-            :title="'all_industries'"
-            :checked="allIndustries"
-            @update:checked="allIndustries = $event"
-            :index="2"
-          />
+          <CustomCheckbox :title="'all_industries'" :checked="allIndustries" @update:checked="allIndustries = $event"
+            :index="2" />
           <FieldHelpIcon
-            text="Enable this when the equipment is available to every industry instead of selected industries only."
-          />
+            text="Enable this when the equipment is available to every industry instead of selected industries only." />
         </div>
       </div>
       <div class="input-wrapper" v-if="deviceStatus == EquipmentStatus.RENT"></div>
 
-      <div
-        class="col-span-2 md:col-span-1"
-        v-if="!allIndustries && user?.type == OrganizationTypeEnum?.ADMIN"
-      >
-        <CustomSelectInput
-          :modelValue="industry"
-          :controller="industryController"
-          :params="industryParams"
-          label="Industry"
-          id="EquipmentType"
-          placeholder="Select industry"
-          :type="2"
-          help-text="Select the industries allowed to use or view this equipment."
-          @update:modelValue="setIndustry"
-        />
+      <div class="col-span-2 md:col-span-1" v-if="!allIndustries && user?.type == OrganizationTypeEnum?.ADMIN">
+        <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams"
+          label="Industry" id="EquipmentType" placeholder="Select industry" :type="2"
+          help-text="Select the industries allowed to use or view this equipment." @update:modelValue="setIndustry" />
       </div>
 
       <div class="col-span-2 md:col-span-2 card_Qr">
@@ -1379,26 +1201,14 @@ defineExpose({
           <p>Preview only — data shown is illustrative. Confirm to add the equipment</p>
         </div>
         <div class="Qr_EQUIPMENt">
-          <DemoCard
-            v-if="user?.type === OrganizationTypeEnum.ORGANIZATION"
-            :equipmentName="equipmentName"
-            :isForm="true"
-            :inspectionDuration="inspectionDuration || $t('Determined')"
-            :image="image || ''"
-            :selctedequipment="langs"
-            :selectedequipmentType="equipmentType"
-            :decommissioningDate="decommissioningDate || ''"
-            :isBreadCramp="true"
-            :BreadCramps="breadcrumbs || []"
-            :langDefault="langDefault"
-            :cardType="EquipmentTypesEnum[activeTab]"
-            :expiredate="decommissioningDate"
-            :startDate="StartDate"
-            :EndDate="EndDate"
+          <DemoCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" :equipmentName="equipmentName"
+            :isForm="true" :inspectionDuration="inspectionDuration || $t('Determined')" :image="image || ''"
+            :selctedequipment="langs" :selectedequipmentType="equipmentType"
+            :decommissioningDate="decommissioningDate || ''" :isBreadCramp="true" :BreadCramps="breadcrumbs || []"
+            :langDefault="langDefault" :cardType="EquipmentTypesEnum[activeTab]" :expiredate="decommissioningDate"
+            :startDate="StartDate" :EndDate="EndDate"
             :rentType="RentTypes.find((el) => el.id == SelectedRentType?.id)?.id"
-            :typerent="user?.type === OrganizationTypeEnum.ORGANIZATION"
-            :deviceStatus="deviceStatus"
-          />
+            :typerent="user?.type === OrganizationTypeEnum.ORGANIZATION" :deviceStatus="deviceStatus" />
           <!-- <img src="@/assets/images/qr.png" alt="qr" class="qr-scan" /> -->
         </div>
       </div>
@@ -1408,12 +1218,13 @@ defineExpose({
 </template>
 
 <style scoped lang="scss">
-.ivhm-checkbox{
+.ivhm-checkbox {
   display: flex;
   align-items: center;
   gap: 15px;
   flex-direction: row;
 }
+
 .check-box {
   width: 100%;
   display: flex !important;
@@ -1541,13 +1352,13 @@ defineExpose({
     width: 100%;
     min-width: 0;
 
-    > .grid {
+    >.grid {
       grid-template-columns: minmax(0, 1fr) !important;
       gap: 16px;
       margin-top: 20px;
     }
 
-    > .grid > * {
+    >.grid>* {
       grid-column: 1 / -1 !important;
       min-width: 0;
     }
@@ -1557,7 +1368,7 @@ defineExpose({
     align-items: stretch;
     flex-direction: column !important;
 
-    > div,
+    >div,
     .input-wrapper,
     .w-1\/2 {
       width: 100% !important;
@@ -1576,7 +1387,7 @@ defineExpose({
 }
 
 @media (max-width: 480px) {
-  .equipment-form > .grid {
+  .equipment-form>.grid {
     gap: 12px;
     margin-top: 14px;
   }
