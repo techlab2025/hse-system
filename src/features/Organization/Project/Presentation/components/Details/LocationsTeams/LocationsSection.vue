@@ -103,7 +103,7 @@ watch(
             <AccordArrowRight v-else class="arrow-right" />
             <span class="location-pin" aria-hidden="true"><i></i></span>
             <div class="location-copy">
-              <span class="location-eyebrow">{{ $t('Operational location') }}</span>
+              <span class="location-eyebrow">{{ $t('location Operational') }}</span>
               <p class="location-title">
                 {{ selectedLocation?.locationTitle || $t('Location') }}
               </p>
@@ -230,7 +230,7 @@ watch(
                 <svg viewBox="0 0 20 20" aria-hidden="true"><path d="m7 4 6 6-6 6" /></svg>
               </router-link>
             </div>
-            <div class="teams">
+            <div class="teams teams-grid">
               <TeamCard
                 :isShow="true"
                 v-for="(team, index) in visibleTeams"
@@ -712,7 +712,7 @@ watch(
 
 .team-members,
 .teams {
-  display: grid;
+  display: grid !important;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 9px;
   padding: 2px 1px 7px;
