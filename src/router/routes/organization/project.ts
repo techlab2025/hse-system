@@ -120,4 +120,23 @@ export const projectRoutes: RouteRecordRaw[] = [
       isSidebar: false,
     },
   },
+  {
+    path: 'project-permit/project/templates/:project_id',
+    name: 'Project Permit Templates',
+    component: () => import('@/views/Organization/Project/PermitToWork/PermitToWorkAnswerPage.vue'),
+    meta: {
+      breadcrumb: 'Project Permit To Work Templates',
+      isSidebar: false,
+    },
+  },
+  {
+    path: 'project-permit/project/templates/answer/:project_id',
+    name: 'Project Permit Answer',
+    component: () =>
+      import('@/views/Organization/Project/PermitToWork/AnswerTheTemplateOfPermitPage.vue'),
+    meta: {
+      breadcrumb: 'Project Permit To Work Answer',
+      isSidebar: false,
+    },
+  },
 ]
