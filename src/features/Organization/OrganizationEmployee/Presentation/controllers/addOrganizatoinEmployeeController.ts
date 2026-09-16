@@ -43,6 +43,10 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
           new OpenWarningDilaog('Password Must Be At Least 8 Characters').openDialog()
           return
         }
+        if (el.hierarchies.map((el) => el.hierarchy_id == undefined).find((el) => el == true)) {
+          new OpenWarningDilaog('You Should select At Least One Position').openDialog()
+          return
+        }
       }
     } else {
       if (params.positions.map((item: any) => item.hierarchy_id).includes(undefined)) {

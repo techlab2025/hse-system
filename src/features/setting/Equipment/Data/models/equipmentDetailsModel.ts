@@ -46,6 +46,7 @@ export default class EquipmentDetailsModel {
   public qr_code_image: string
   public equipmentCondition: EquipmentCondition | null
   public equipmentUsedStatus: EquipmentUsed | null
+  public workedHoures: string
 
   constructor(
     id: number,
@@ -83,6 +84,7 @@ export default class EquipmentDetailsModel {
     qr_code_image: string,
     equipmentCondition: EquipmentCondition | null,
     equipmentUsedStatus: EquipmentUsed | null,
+    workedHoures: string,
   ) {
     this.id = id
     this.allIndustries = allIndustries
@@ -119,6 +121,7 @@ export default class EquipmentDetailsModel {
     this.qr_code_image = qr_code_image
     this.equipmentCondition = equipmentCondition
     this.equipmentUsedStatus = equipmentUsedStatus
+    this.workedHoures = workedHoures
     // this.type = type
   }
 
@@ -166,6 +169,7 @@ export default class EquipmentDetailsModel {
       data.qr_code_image,
       data.equipment_condition ?? data.equipment_conditions ?? null,
       data.equipment_used_status ?? null,
+      data?.worked_hours ? data?.worked_hours : '',
     )
   }
 

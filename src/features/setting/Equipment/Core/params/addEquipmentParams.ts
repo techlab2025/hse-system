@@ -29,6 +29,7 @@ export default class AddEquipmentParams implements Params {
   VehicleKm: string
   serialNumber: string
   SelectedWhereHosue: number
+  WorkedHours?: number
 
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
@@ -60,6 +61,7 @@ export default class AddEquipmentParams implements Params {
     VehicleKm: string
     SelectedWhereHosue: number
     serialNumber: string
+    WorkedHours?: number
   }) {
     Object.assign(this, data)
   }
@@ -108,6 +110,7 @@ export default class AddEquipmentParams implements Params {
     } else {
       data['serial'] = this.serialNumber
     }
+    data['worked_hours'] = this.WorkedHours
 
     return data
   }

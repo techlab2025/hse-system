@@ -312,6 +312,7 @@ function isBase64(str: any): boolean {
   return base64Regex.test(base64)
 }
 
+const WorkedHoure = ref<string>()
 const updateData = () => {
   const translationsParams = new TranslationsParams()
   langs.value.forEach((lang) => translationsParams.setTranslation('title', lang.locale, lang.title))
@@ -379,6 +380,7 @@ const updateData = () => {
         SelectedWhereHosue: SelectedWhereHosue.value?.id || ' ',
         equipmentRentEndDate:
           deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
+        WorkedHours: WorkedHoure.value,
       })
     : new AddEquipmentParams({
         translation: translationsParams,
@@ -415,6 +417,7 @@ const updateData = () => {
         equipmentRentEndDate:
           deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
         serialNumber: SerialNumber.value,
+        WorkedHours: WorkedHoure.value,
       })
 
   emit('update:data', params)
@@ -538,6 +541,7 @@ watch(
       //  certificateImage.value = newData?.certificateImage
       originalCertificateImage.value = newData?.certificateImage
       originalImage.value = newData?.image
+      WorkedHoure.value = newData?.workedHoures
     }
   },
   { immediate: true },
@@ -1169,6 +1173,22 @@ defineExpose({
             <FieldHelpIcon text="Select whether this owned equipment has been used before." />
           </template>
         </UpdatedCustomInputSelect>
+      </div>
+
+      <div
+        v-if="
+          deviceStatus === EquipmentStatus.OWN && equipmentUsedStatus?.id === EquipmentUsed.used
+        "
+        class="col-span-2 md:col-span-1 input-wrapper"
+      >
+        <label for="worked-hours">{{ $t('worked hours') }}</label>
+        <input
+          type="text"
+          id="worked-hours"
+          placeholder="enter worked hourse"
+          v-model="WorkedHoure"
+          class="input"
+        />
       </div>
 
       <div
