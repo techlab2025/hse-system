@@ -52,9 +52,9 @@ const indexMangementChangeTopicTypeController =
 const indexMangementChangeTopicTypeParams =
   new IndexMangementChangeTopicTypeParams(
     '',
-    1,
-    10000,
-    1,
+    0,
+    0,
+    0,
   )
 
 
@@ -64,9 +64,9 @@ const indexEquipmentController =
 const indexEquipmentParams =
   new IndexEquipmentParams(
     '',
-    1,
-    10000,
-    1,
+    0,
+    0,
+    0,
   )
 
 
@@ -76,17 +76,17 @@ const indexOrganizatoinEmployeeController =
 const indexOrganizatoinEmployeeParams =
   new IndexOrganizatoinEmployeeParams(
     '',
-    1,
-    10,
-    1,
+    0,
+    0,
+    0,
   )
 
 const indexOrganizatoinEmployeeidParams =
   new IndexOrganizatoinEmployeeParams(
     '',
-    1,
-    10,
-    1,
+    0,
+    0,
+    0,
     null,
     null,
     false,

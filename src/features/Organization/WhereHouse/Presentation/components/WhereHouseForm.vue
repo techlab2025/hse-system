@@ -11,6 +11,7 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 import AddWhereHouseType from '@/features/Organization/WhereHouseType/Presentation/components/AddWhereHouseType.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -47,7 +48,7 @@ const UpdateSerial = (data) => {
   SerialNumber.value = data.target.value
   updateData()
 }
-const SelectedWhereHouseType = ref<TitleInterface>()
+const SelectedWhereHouseType = ref<TitleInterface | null>(null)
 
 watch(
   [() => props.data],
@@ -56,9 +57,15 @@ watch(
     Name.value = newData?.name
     const savedLocale = localStorage.getItem('lang')
     SelectedWhereHouseType.value = new TitleInterface({
-      id: newData?.warehouse_type?.id,
-      title: newData?.warehouse_type?.titles,
-    })
+  id: newData?.warehouse_type?.id,
+  title: newData?.warehouse_type?.titles?.find(
+    item => item.locale === savedLocale
+  )?.title ?? ''
+})
+    // SelectedWhereHouseType.value = new TitleInterface({
+    //   id: newData?.warehouse_type?.id,
+    //   title: newData?.warehouse_type?.titles,
+    // })
   },
   { immediate: true },
 )
@@ -85,7 +92,7 @@ type RequiredFieldRule = {
 
 const requiredFieldErrors = ref<Record<string, string>>({})
 const hasValue = (value: unknown) =>
-  value !== null && value !== undefined && String(value).trim().length > 0
+  value !== null && value !== undefined && String(value)?.trim()?.length > 0
 
 const requiredFields = computed<RequiredFieldRule[]>(() => [
   {
@@ -117,7 +124,7 @@ const validateRequiredFields = async () => {
     return errors
   }, {})
 
-  if (!missedFields.length) return true
+  if (!missedFields?.length) return true
 
   new OpenWarningDilaog(missedFields[0].message).openDialog()
   await scrollToRequiredField(missedFields[0].key)
@@ -162,20 +169,29 @@ defineExpose({
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="SelectedWhereHouseType">
-    <!-- <CustomSelectInput :required="false" :modelValue="SelectedWhereHouseType"
-      :controller="indexWhereHouseTypeController" :params="indexWhereHouseTypeParams" :label="$t('Where House Type')"
-      id="Equipment" placeholder="Select Where House Type" @update:modelValue="setSelectedWhereHouseType" /> -->
-    <UpdatedCustomInputSelect
-      :required="true"
-      :modelValue="SelectedWhereHouseType"
+    <!-- <CustomSelectInput
+     :required="true"
+      :model-value="SelectedWhereHouseType"
       :controller="indexWhereHouseTypeController"
       :params="indexWhereHouseTypeParams"
       :label="$t('warehouse_type')"
-      id="Equipment"
+      :id="`where houese type`"
       placeholder="Select Warehouse Type"
       @update:modelValue="setSelectedWhereHouseType"
-      :isDialog="true"
-      v-model:dialogVisible="WarehouseTypeDialog"
+       /> -->
+
+   
+    <UpdatedCustomInputSelect
+    :model-value="SelectedWhereHouseType"
+    :controller="indexWhereHouseTypeController"
+    :params="indexWhereHouseTypeParams"
+    :label="$t('warehouse_type')"
+    :id="`where houese type`"
+    :placeholder="$t('Select Warehouse Type')"
+    @update:model-value="setSelectedWhereHouseType"
+    :isDialog="true"
+    v-model:dialogVisible="WarehouseTypeDialog"
+    :required="true"
     >
       <template #LabelHeader>
         <span class="add-dialog" @click="WarehouseTypeDialog = true">New</span>

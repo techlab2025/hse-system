@@ -101,7 +101,7 @@ onMounted(() => {
           :preventive-tasks="state.data?.investigation?.preventiveTask ?? []"
           @answered="ShowCapaDetails"
         />
-        <section class="lesson-section">
+        <!-- <section class="lesson-section">
           <div class="saved-lesson">
             <span> lesson learnt</span>
             <div
@@ -111,7 +111,7 @@ onMounted(() => {
             ></div>
             <p v-else>No lesson learnt has been added yet.</p>
           </div>
-        </section>
+        </section> -->
       </main>
     </template>
 

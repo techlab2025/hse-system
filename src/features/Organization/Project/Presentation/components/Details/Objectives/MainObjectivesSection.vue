@@ -21,7 +21,7 @@ const props = defineProps<{
         </span>
         <div class="objective-copy">
           <!-- <span class="objective-eyebrow"><i></i>{{ $t('Project direction') }}</span> -->
-          <h2>{{ $t('project_scope_of_work') }}</h2>
+          <h2>{{ $t('Project Summary') }}</h2>
           <p>{{ $t('defining_the_main_objectives_and_expected_outcomes_of_the_project') }}</p>
         </div>
       </div>

@@ -16,6 +16,7 @@ import { useRoute, useRouter } from 'vue-router'
 import SimilarObservationController from '../../controllers/similarObservation/SimilarObservationController.ts'
 import type HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel.ts'
 import SimilarObservatioParams from '../../../Core/params/SimilarObservation/SimilarObservatioParams.ts'
+import { Observation } from '../../../Core/Enums/ObservationTypeEnum.ts'
 
 const route = useRoute()
 const id = route.params.id
@@ -198,6 +199,18 @@ watch(
     fetchSimilarObservations()
   },
 )
+const getObservationType = (type: number | undefined) => {
+  switch (type) {
+    case Observation.AccidentsType:
+      return 'Incident'
+    case Observation.HazardType:
+      return 'Observation'
+    case Observation.ObservationType:
+      return 'Observation'
+    default:
+      return ''
+  }
+}
 </script>
 <template>
   <DataStatus :controller="state">
@@ -219,7 +232,7 @@ watch(
         <section class="final-answer-section">
           <div class="final-section-heading">
             <span>01</span>
-            <h2>General Identification</h2>
+            <h2>{{ getObservationType(observation?.type) }} Identification</h2>
           </div>
           <div class="answer-info-grid">
             <article>
@@ -307,58 +320,9 @@ watch(
           </div>
         </section>
 
-          <section class="final-answer-section">
+        <section class="final-answer-section">
           <div class="final-section-heading">
             <span>03</span>
-            <h2>Witnesses Management</h2>
-          </div>
-          <InvestegationResultViewersAnswer
-            v-if="viewerResults.length > 0"
-            :viewers="viewerResults"
-          />
-          <p v-else class="answer-empty">No witnesses statements were added.</p>
-        </section>
-
-        <section class="final-answer-section">
-          <div class="final-section-heading">
-            <span>04</span>
-            <h2>Events Timeline Builder</h2>
-          </div>
-          <div class="answer-timeline" v-if="eventTimelines.length">
-            <article v-for="(event, index) in eventTimelines" :key="index">
-              <span>{{ index + 1 }}</span>
-              <div>
-                <strong>{{ event.time || event.event_time || '-' }}</strong>
-                <p>{{ event.description || event.event_description || '-' }}</p>
-              </div>
-            </article>
-          </div>
-          <!-- <p v-else class="answer-empty">
-            {{ incidentDescription || 'No timeline events were added.' }}
-          </p> -->
-        </section>
-
-        <section class="final-answer-section">
-          <div class="final-section-heading">
-            <span>05</span>
-            <h2>Health Impact Integration</h2>
-          </div>
-          <div v-if="healthImpactItems.length" class="answer-card-grid">
-            <article v-for="item in healthImpactItems" :key="`${item.impactType}-${item.id}`">
-              <span> {{ item.impactType }}</span>
-              <strong>name : {{ getEmployeeName(item) }}</strong>
-              <p>description : {{ item.note || '-' }}</p>
-              <small>injury type : {{ getTitle(item.injury_type, '') }}</small>
-            </article>
-          </div>
-          <p v-else class="answer-empty">No health impact records were added.</p>
-        </section>
-
-
-
-        <section class="final-answer-section">
-          <div class="final-section-heading">
-            <span>06</span>
             <h2>Immediate Action Evaluation</h2>
           </div>
           <div class="answer-info-grid">
@@ -381,6 +345,57 @@ watch(
             :isCorrect="investigationData?.isActionCorrect"
           />
         </section>
+
+          <section class="final-answer-section">
+          <div class="final-section-heading">
+            <span>04</span>
+            <h2>Witnesses Management</h2>
+          </div>
+          <InvestegationResultViewersAnswer
+            v-if="viewerResults.length > 0"
+            :viewers="viewerResults"
+          />
+          <p v-else class="answer-empty">No witnesses statements were added.</p>
+        </section>
+
+        <section class="final-answer-section">
+          <div class="final-section-heading">
+            <span>05</span>
+            <h2>Events Timeline Builder</h2>
+          </div>
+          <div class="answer-timeline" v-if="eventTimelines.length">
+            <article v-for="(event, index) in eventTimelines" :key="index">
+              <span>{{ index + 1 }}</span>
+              <div>
+                <strong>{{ event.time || event.event_time || '-' }}</strong>
+                <p>{{ event.description || event.event_description || '-' }}</p>
+              </div>
+            </article>
+          </div>
+          <!-- <p v-else class="answer-empty">
+            {{ incidentDescription || 'No timeline events were added.' }}
+          </p> -->
+        </section>
+
+        <section class="final-answer-section">
+          <div class="final-section-heading">
+            <span>06</span>
+            <h2>Health Impact Integration</h2>
+          </div>
+          <div v-if="healthImpactItems.length" class="answer-card-grid">
+            <article v-for="item in healthImpactItems" :key="`${item.impactType}-${item.id}`">
+              <span> {{ item.impactType }}</span>
+              <strong>name : {{ getEmployeeName(item) }}</strong>
+              <p>description : {{ item.note || '-' }}</p>
+              <small>injury type : {{ getTitle(item.injury_type, '') }}</small>
+            </article>
+          </div>
+          <p v-else class="answer-empty">No health impact records were added.</p>
+        </section>
+
+
+
+        
 
         <section class="final-answer-section">
           <div class="final-section-heading">

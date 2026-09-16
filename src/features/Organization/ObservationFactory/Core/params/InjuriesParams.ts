@@ -2,7 +2,7 @@ import type Params from '@/base/core/params/params'
 import isBase64 from '@/base/Presentation/utils/isBase64'
 
 type PpeItemPayload = {
-  ppe_item: number
+  ppe_item_id: number
 }
 
 export default class InjuryParams implements Params {
@@ -46,7 +46,7 @@ export default class InjuryParams implements Params {
     if (this.incidentCategoryIds.length) data['incident_category_ids'] = this.incidentCategoryIds
     if (this.images?.length && !this.images.some((el) => !isBase64(el))) data['files'] = this.images
     if (this.ppeItems.length) {
-      data['ppe_items'] = this.ppeItems.map((ppeItem) => ({ ppe_item: ppeItem }))
+      data['ppe_items'] = this.ppeItems.map((ppeItem) => ({ ppe_item_id: ppeItem }))
     }
     if (this.ppeItemCondition) data['ppe_item_condition'] = this.ppeItemCondition
     if (this.ppeItemText) data['ppe_item_text'] = this.ppeItemText

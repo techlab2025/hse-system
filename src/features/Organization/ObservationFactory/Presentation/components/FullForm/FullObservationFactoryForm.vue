@@ -65,6 +65,8 @@ import { useThemeMode } from '@/composables/useThemeMode'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 import { useI18n } from 'vue-i18n'
 import { useProjectSelectStore } from '@/stores/ProjectSelect.ts'
+import IndexPpeItemController from '@/features/Organization/ppeItem/Presentation/controllers/indexPpeItemController.ts'
+import IndexPpeItemParams from '@/features/Organization/ppeItem/Core/params/indexPpeItemParams.ts'
 
 const emit = defineEmits(['update:data'])
 const { isDarkMode } = useThemeMode()
@@ -840,6 +842,9 @@ const validateRequiredFields = async () => {
 defineExpose({
   validateRequiredFields,
 })
+
+
+
 </script>
 
 <template>
@@ -924,7 +929,7 @@ defineExpose({
     <!-- <div class="input-wrapper col-span-6 field-required" data-required-field="ObservationTitle">
       <div class="field-label">
         <label for="title">{{ GetHeader(ObservationFactoryType) }} {{ $t('title') }}</label>
-        <FieldHelpIcon
+        <FieldHelpIconppe_item_id
           text="A short, clear name that summarizes the reported event or observation."
         />
       </div>

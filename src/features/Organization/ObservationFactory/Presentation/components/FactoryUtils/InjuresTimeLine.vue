@@ -19,6 +19,8 @@ import {
   PpeItemConditionEnum,
   PpeItemEnum,
 } from '@/features/Organization/ObservationFactory/Core/Enums/ppe_enum'
+import IndexPpeItemController from '@/features/Organization/ppeItem/Presentation/controllers/indexPpeItemController'
+import IndexPpeItemParams from '@/features/Organization/ppeItem/Core/params/indexPpeItemParams'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -38,6 +40,8 @@ const ppeItemOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: PpeItemEnum.HELMET, title: 'Helmet' }),
   new TitleInterface({ id: PpeItemEnum.OTHERS, title: 'Others' }),
 ])
+const ppeItemContoller = IndexPpeItemController.getInstance();
+const ppeItemParams = new IndexPpeItemParams('' , 1 , 10 , 0)
 const ppeItemConditionOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: PpeItemConditionEnum.GOOD, title: 'Good' }),
   new TitleInterface({ id: PpeItemConditionEnum.DAMAGED, title: 'Damaged' }),
@@ -397,9 +401,11 @@ onMounted(async () => {
                 :params="indexInjuryParams" :label="$t('injury Type')" id="injury"
                 :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)" /> -->
               <div class="injury-field input-wrapper w-full">
+                  <!-- :staticOptions="injuryOptions" -->
                 <UpdatedCustomInputSelect
                   :modelValue="item.infectionTypeId"
-                  :staticOptions="injuryOptions"
+                  :controller="ppeItemContoller"
+                  :params="ppeItemParams"
                   class="input"
                   :label="$t('Type and Nature of Injury')"
                   help-text="Choose the classification that best describes the injury sustained."
