@@ -167,6 +167,14 @@ const navigateToNotification = (notificationType: number, typeId?: number) => {
       )
 
       break
+    case NotificationEnum.PERMIT: // PDSP
+      router.push(
+        typeId
+          ? { path: '/organization/project-permit/project/templates', query: { permit_id: typeId } }
+          : '/organization/project-permit/project/templates',
+      )
+
+      break
       // case NotificationEnum.INVESTEGATION: // PDSP
       // router.push(
       //   typeId

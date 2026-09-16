@@ -121,7 +121,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     },
   },
   {
-    path: 'project-permit/project/templates/:project_id',
+    path: 'project-permit/project/templates',
     name: 'Project Permit Templates',
     component: () => import('@/views/Organization/Project/PermitToWork/PermitToWorkAnswerPage.vue'),
     meta: {
@@ -130,7 +130,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     },
   },
   {
-    path: 'project-permit/project/templates/answer/:project_id',
+    path: 'project-permit/project/templates/answer',
     name: 'Project Permit Answer',
     component: () =>
       import('@/views/Organization/Project/PermitToWork/AnswerTheTemplateOfPermitPage.vue'),

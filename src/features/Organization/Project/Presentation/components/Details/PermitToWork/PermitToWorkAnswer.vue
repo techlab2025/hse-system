@@ -12,7 +12,7 @@ const isConfirmed = ref(false)
 const indexTemplateController = IndexTemplateController.getInstance()
 const state = ref(indexTemplateController.state.value)
 
-const SelctedType = ref<number>(1)
+const SelctedType = ref<number>(0)
 const selectedTemplates = ref<number>()
 
 const fetchTemplateItem = async (type?: number) => {
@@ -21,7 +21,7 @@ const fetchTemplateItem = async (type?: number) => {
 }
 
 onMounted(() => {
-  fetchTemplateItem()
+  fetchTemplateItem(0)
 })
 
 watch(
@@ -147,9 +147,10 @@ const route = useRoute()
     <router-link
       class="btn btn-primary"
       :to="{
-        path: `/organization/project-permit/project/templates/answer/${route.params.project_id}`,
+        path: `/organization/project-permit/project/templates/answer`,
         query: {
           template_id: selectedTemplates,
+          permit_id: route.query.permit_id,
         },
       }"
       >Submit</router-link

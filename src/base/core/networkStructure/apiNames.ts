@@ -1908,6 +1908,10 @@ class ApiNames {
   public get CreatePermitToWork() {
     return this.baseUrl + this.organizationPrefix + 'create_permit_to_work'
   }
+  public get CreatePermitToWorkResult(){
+    return this.baseUrl + this.organizationPrefix + 'create_permit_to_work_result'
+
+  }
 }
 
 export { ApiNames }
