@@ -183,7 +183,11 @@ const DeleteTeamMember = async (id: number) => {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 9px;
 }
-
+@media (max-width: 1400px) {
+  .members-section {
+    grid-template-columns: 1fr;
+  }
+}
 @media (max-width: 620px) {
   .members-section {
     grid-template-columns: 1fr;

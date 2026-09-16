@@ -72,7 +72,7 @@ const DeleteEmployee = () => {
   width: min(390px, calc(100vw - 32px));
   flex-direction: column;
   padding: 24px;
-  border: 1px solid var(--main-border);
+  // border: 1px solid var(--main-border);
   border-radius: 22px;
   background: var(--surface-1);
   text-align: center;

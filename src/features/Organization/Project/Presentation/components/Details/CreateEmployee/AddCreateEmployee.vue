@@ -55,6 +55,7 @@ const handleEmployeesUpdate = (hierarchyId: number, employees: TitleInterface[])
   employeesByHierarchy.value[hierarchyId] = employees || []
 }
 
+const validationMessage = ref<string | null>('')
 const handleAddAllEmployees = async () => {
   if (isSubmitting.value) return
 
@@ -68,13 +69,23 @@ const handleAddAllEmployees = async () => {
         ),
     )
 
-    if (hierarchies.length === 0) return
-    const params = new AddHierarchyEmployeeParams(
-      projectId,
-      hierarchies.filter((el) => el.employee_ids.length > 0),
-    )
-    await addHierarchyEmployeeController.addHierarchyEmployee(params, router, route)
+    const haveAnyEmployee = hierarchies.filter((el)=>el.employee_ids.length > 0)
+    if(haveAnyEmployee.length  > 0){
+      validationMessage.value = null
+      if (hierarchies.length === 0) return
+      const params = new AddHierarchyEmployeeParams(
+        projectId,
+        hierarchies.filter((el) => el.employee_ids.length > 0),
+      )
+      await addHierarchyEmployeeController.addHierarchyEmployee(params, router, route)
+
+    }
+    else{
+      validationMessage.value = 'Please select at least one employee for each position.'
+    }
   } catch (error) {
+      validationMessage.value = 'Please select at least one employee for each position.'
+
     console.error('Error adding employees:', error)
   } finally {
     isSubmitting.value = false
@@ -205,8 +216,14 @@ const assignedEmployeesCount = computed(() =>
                     (value) => handleEmployeesUpdate(hierarchy.projectLocationHierarchyId, value)
                   "
                 />
+                
               </article>
+              
             </div>
+            <p class="validation-message" v-if="validationMessage!=null">
+              {{ validationMessage }}
+            </p>
+
           </section>
 
           <footer class="submit-btn">
@@ -282,6 +299,11 @@ const assignedEmployeesCount = computed(() =>
 </template>
 
 <style scoped lang="scss">
+.validation-message{
+  color: red;
+  padding:10px;
+  font-size: 12px;
+}
 .add-employee {
   width: 100%;
   padding-bottom: 20px;
