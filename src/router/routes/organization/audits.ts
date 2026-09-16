@@ -2,7 +2,7 @@ import type { RouteRecordRaw } from '@/router/types'
 
 export const AuditRoutes: RouteRecordRaw[] = [
   {
-    path: 'audits',
+    path: 'audits/:id',
     name: 'Audits',
     component: () => import('@/views/Organization/Inspection/IndexInspection.vue'),
     meta: {
@@ -11,7 +11,7 @@ export const AuditRoutes: RouteRecordRaw[] = [
     },
   },
   {
-    path: 'audits/add/:equipment_id?',
+    path: 'audits/add/:id?',
     name: 'Add Audit',
     component: () => import('@/views/Organization/Inspection/AddInspection.vue'),
     meta: {
