@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
 import Dialog from 'primevue/dialog'
@@ -50,17 +50,29 @@ const submitting = computed(() => createProjectMeetingResultController.isDataLoa
 // Dialog
 // -----------------------------------------------------------------------------
 
-const visible = ref(false)
+const AddResultDialogvisible = ref(false)
+const ShowResultDialogvisible = ref(false)
 
-const openDialog = () => {
-  visible.value = true
+const openAddResultDialog = () => {
+  AddResultDialogvisible.value = true
   error.value = ''
 
   emit('opened')
 }
 
-const closeDialog = () => {
-  visible.value = false
+const closeAddResultDialog = () => {
+  AddResultDialogvisible.value = false
+}
+
+const openShowResultDialog = () => {
+  ShowResultDialogvisible.value = true
+  error.value = ''
+
+  emit('opened')
+}
+
+const closeShowResultDialog = () => {
+  ShowResultDialogvisible.value = false
 }
 
 // -----------------------------------------------------------------------------
@@ -392,7 +404,7 @@ const submit = async () => {
   await createProjectMeetingResultController.CreateProjectMeetingResult(params, router)
 
   if (createProjectMeetingResultController.isDataSuccess()) {
-    visible.value = false
+    AddResultDialogvisible.value = false
 
     resetForm()
 
@@ -417,11 +429,27 @@ const resetForm = () => {
 
   error.value = ''
 }
+
+const MeetingDetailsState = computed(() => true)
+const FetchMeetingDetails = () => {}
+
+watch(
+  () => AddResultDialogvisible.value,
+  (newval) => {
+    if (newval) {
+      FetchMeetingDetails()
+    }
+  },
+)
 </script>
 
 <template>
   <!-- Meeting Card -->
-  <button class="meeting-card" type="button" @click="openDialog">
+  <button
+    class="meeting-card"
+    type="button"
+    @click="meeting.hasResult ? openShowResultDialog() : openAddResultDialog()"
+  >
     <span class="meeting-card-accent" />
 
     <span class="meeting-card-main">
@@ -441,7 +469,7 @@ const resetForm = () => {
 
   <!-- Meeting Result Dialog -->
   <Dialog
-    v-model:visible="visible"
+    v-model:visible="AddResultDialogvisible"
     modal
     dismissable-mask
     :style="{
@@ -660,7 +688,249 @@ const resetForm = () => {
 
       <!-- Actions -->
       <div class="form-actions">
-        <button type="button" class="btn-secondary" :disabled="submitting" @click="closeDialog">
+        <button
+          type="button"
+          class="btn-secondary"
+          :disabled="submitting"
+          @click="closeAddResultDialog"
+        >
+          {{ $t('Cancel') }}
+        </button>
+
+        <button type="submit" class="btn-primary" :disabled="submitting">
+          {{ submitting ? $t('Saving...') : $t('Save Meeting Result') }}
+        </button>
+      </div>
+    </form>
+  </Dialog>
+
+  <!-- Meeting show Result Dialog -->
+  <Dialog
+    v-model:visible="ShowResultDialogvisible"
+    modal
+    dismissable-mask
+    :style="{
+      width: 'min(70rem, calc(100vw - 24px))',
+    }"
+    @hide="error = ''"
+  >
+    <!-- Header -->
+    <template #header>
+      <div class="meeting-result-header">
+        <div class="meeting-result-header-icon">MR</div>
+        ggggggggggggggggggg
+        <!-- <div>
+          <small>
+            {{ $t('Meeting Result') }}
+          </small>
+
+          <h2>
+            {{ meeting.title || `Meeting #${meeting.id}` }}
+          </h2>
+
+          <p>
+            {{ meeting.date || '—' }}
+          </p> -->
+        <!-- </div> -->
+      </div>
+    </template>
+
+    <form class="meeting-result-form" @submit.prevent="submit">
+      <!-- ============================================================= -->
+      <!-- Agenda -->
+      <!-- ============================================================= -->
+
+      <section class="form-section">
+        <div class="section-header">
+          <div>
+            <h3>
+              {{ $t('Agenda') }}
+            </h3>
+
+            <p>
+              {{ $t('Add meeting agenda items') }}
+            </p>
+          </div>
+
+          <button type="button" class="add-button" @click="addAgenda">
+            + {{ $t('Add Agenda') }}
+          </button>
+        </div>
+
+        <div class="agenda-list">
+          <div v-for="(item, index) in agenda" :key="`agenda-${index}`" class="agenda-item">
+            <span class="item-number">
+              {{ index + 1 }}
+            </span>
+
+            <input
+              v-model="agenda[index]"
+              type="text"
+              class="input"
+              :placeholder="$t('Enter agenda item')"
+            />
+
+            <button
+              v-if="agenda.length > 1"
+              type="button"
+              class="remove-button"
+              @click="removeAgenda(index)"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================= -->
+      <!-- Meeting Actions -->
+      <!-- ============================================================= -->
+
+      <section class="form-section">
+        <div class="section-header">
+          <div>
+            <h3>
+              {{ $t('Meeting Actions') }}
+            </h3>
+
+            <p>
+              {{ $t('Add meeting actions and tasks') }}
+            </p>
+          </div>
+
+          <!-- <button type="button" class="add-button" @click="addAction">
+            + {{ $t('Add Action') }}
+          </button> -->
+        </div>
+
+        <div class="actions-list">
+          <article
+            v-for="(action, index) in meetingActions"
+            :key="`action-${index}`"
+            class="action-card"
+          >
+            <!-- Action heading -->
+            <div class="action-card-header">
+              <div>
+                <span class="action-number">
+                  {{ index + 1 }}
+                </span>
+
+                <strong>
+                  {{ $t('Action') }}
+                  {{ index + 1 }}
+                </strong>
+              </div>
+
+              <button
+                v-if="meetingActions.length > 1"
+                type="button"
+                class="remove-action"
+                @click="removeAction(index)"
+              >
+                {{ $t('Remove') }}
+              </button>
+            </div>
+
+            <div class="action-form-grid">
+              <!-- Action Type -->
+              <UpdatedCustomInputSelect
+                :id="`action_type_${index}`"
+                v-model="action.type"
+                :label="$t('Action Type')"
+                :placeholder="$t('Select Action Type')"
+                :static-options="ActionTypeSelectionOptions"
+                required
+                @update:model-value="UpdateActionType(index, $event)"
+              />
+
+              <!-- Title -->
+              <div v-if="showTitle(action)" class="input-wrapper">
+                <label :for="`action_title_${index}`" class="field-label">
+                  {{ $t('title') }}
+
+                  <span class="required-star"> * </span>
+                </label>
+
+                <input
+                  :id="`action_title_${index}`"
+                  v-model="action.title"
+                  type="text"
+                  class="input"
+                  :placeholder="$t('Enter action title')"
+                />
+              </div>
+
+              <!-- Task Due Date -->
+              <div v-if="isTask(action)" class="input-wrapper">
+                <label :for="`due_date_${index}`" class="field-label">
+                  {{ $t('Due Date') }}
+
+                  <span class="required-star"> * </span>
+                </label>
+
+                <DatePicker
+                  :id="`due_date_${index}`"
+                  v-model="action.dueDate"
+                  date-format="yy-mm-dd"
+                  show-icon
+                  fluid
+                  :manual-input="false"
+                  :placeholder="$t('Select Due Date')"
+                />
+              </div>
+
+              <!-- Task Due Time -->
+              <div v-if="isTask(action)" class="input-wrapper">
+                <label :for="`due_time_${index}`" class="field-label">
+                  {{ $t('Due Time') }}
+
+                  <span class="required-star"> * </span>
+                </label>
+
+                <input
+                  :id="`due_time_${index}`"
+                  v-model="action.dueTime"
+                  type="time"
+                  class="input"
+                />
+              </div>
+
+              <!-- Task Employee -->
+              <UpdatedCustomInputSelect
+                v-if="isTask(action)"
+                :id="`employee_${index}`"
+                v-model="action.employee"
+                :label="$t('Assigned Employee')"
+                :placeholder="$t('Select Employee')"
+                :controller="indexOrganizationEmployeeController"
+                :params="indexOrganizationEmployeeParams"
+                required
+                @update:model-value="UpdateEmployee(index, $event)"
+              />
+
+              <!-- INFO note -->
+              <!-- <div v-if="isInfo(action)" class="info-message">
+                {{ $t('Information action does not require additional details.') }}
+              </div> -->
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Error -->
+      <p v-if="error" class="form-error">
+        {{ error }}
+      </p>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button
+          type="button"
+          class="btn-secondary"
+          :disabled="submitting"
+          @click="closeShowResultDialog"
+        >
           {{ $t('Cancel') }}
         </button>
 
