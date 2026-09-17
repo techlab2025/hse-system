@@ -46,6 +46,9 @@ const hiddenTasksCount = computed(() => Math.max(tasks.value.length - 1, 0))
         <h1> employee details</h1>
       </div>
       <!-- <button class="print-page-btn" type="button" @click="printPage">Print</button> -->
+        <router-link :to="`/organization/organization-employee-tasks/${route.params.id}`" >
+         <button class="print-page-btn" type="button">show tasks</button>
+      </router-link>
     </div>
 
     <div class="employee-layout">

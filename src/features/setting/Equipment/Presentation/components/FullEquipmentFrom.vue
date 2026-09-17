@@ -916,7 +916,7 @@ const startYear = new Date(
       " class="col-span-2 md:col-span-1">
         <div class="input-wrapper w-full">
           <label for="heavy-hours" class="flex items-center gap-2">
-            Heavy Equipment Hrs (h)
+            Heavy Equipment Hrs
             <FieldHelpIcon text="Enter heavy equipment working hours." />
           </label>
   
@@ -931,7 +931,7 @@ const startYear = new Date(
       " class="col-span-2 md:col-span-1">
         <div class="input-wrapper w-full">
           <label for="light-hours" class="flex items-center gap-2">
-            Light Equipment Mileage (km)
+            Light Equipment Mileage 
             <FieldHelpIcon text="Enter light equipment working hours." />
           </label>
   
