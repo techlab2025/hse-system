@@ -1,5 +1,4 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
-import type TicketTypeModel from '../../Data/models/TicketTypeModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import ShowTicketTypeUseCase from '../../Domain/useCase/showTicketTypeUseCase'

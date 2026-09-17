@@ -1,12 +1,26 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
-import HazardModel from '@/features/Organization/ObservationFactory/Data/models/hazardModel'
 import InvestegationEmployeeModel from './InvestegationEmployeeModel'
 import MeetingModel from '../Meetings/MeetingModel'
+import type HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel'
+import type InjuryDetailsModel from '@/features/Organization/ObservationFactory/Data/models/InjuryModel'
+import type { InvestigationMeetingEnum } from '../../../Core/Enums/investigation_meeting_enum'
 
+type investigationMeeting = {
+  corrective: string
+  date: string
+  has_result: number
+  id: number
+  investigation_category: number
+  meeting_link: string
+  status: number
+  time: string
+  type: InvestigationMeetingEnum
+}
 export default class InvestegationResultDetailsModel {
   public id: number
   public date: string
-  public observation: HazardModel
+  // public observation: HazardModel
+  public observation: HazardDetailsModel
   public status: number
   public type: number
   public title: string
@@ -20,13 +34,33 @@ export default class InvestegationResultDetailsModel {
   public investigationMeetings: MeetingModel[]
   public TeamLeader: { id: number; name: string }
   public CreatedAt: string
+  public investigationMeetingDate: string
+  public investigationMeetingTime: string
+  public witness_statements: InjuryDetailsModel[]
+  public serialName: string
+  public meeting: investigationMeeting[]
+  public createdAt: string
+  public isActionCorrect: boolean | number
+  public explainWhyText: string
+  public incidentDescription: string
+  public recommendation: string
+  public lessonLearnt: string
+  public injuries: any[]
+  public deaths: any[]
+  public rootCauses: any[]
+  public questions: any[]
+  public eventTimelines: any[]
+  public correctiveTasks: any[]
+  public preventiveTasks: any[]
+  public investigationDocumentations: any[]
+  public latest_investigation_meeting_id: number
 
   constructor(
     id: number,
     title: string,
     serialNumber: string,
     date: string,
-    observation: HazardModel,
+    observation: HazardDetailsModel,
     status: number,
     type: number,
     investigationTeamLeader: TitleInterface,
@@ -38,6 +72,26 @@ export default class InvestegationResultDetailsModel {
     investigationMeetings: MeetingModel[],
     TeamLeader: { id: number; name: string },
     CreatedAt: string,
+    investigationMeetingDate: string,
+    investigationMeetingTime: string,
+    witness_statements: InjuryDetailsModel[],
+    serialName: string,
+    meeting: investigationMeeting[],
+    createdAt: string = '',
+    isActionCorrect: boolean | number = false,
+    explainWhyText: string = '',
+    incidentDescription: string = '',
+    recommendation: string = '',
+    lessonLearnt: string = '',
+    injuries: any[] = [],
+    deaths: any[] = [],
+    rootCauses: any[] = [],
+    questions: any[] = [],
+    eventTimelines: any[] = [],
+    correctiveTasks: any[] = [],
+    preventiveTasks: any[] = [],
+    investigationDocumentations: any[] = [],
+    latest_investigation_meeting_id: number = 0,
   ) {
     this.id = id
     this.title = title
@@ -55,6 +109,26 @@ export default class InvestegationResultDetailsModel {
     this.investigationMeetings = investigationMeetings
     this.TeamLeader = TeamLeader
     this.CreatedAt = CreatedAt
+    this.investigationMeetingDate = investigationMeetingDate
+    this.investigationMeetingTime = investigationMeetingTime
+    this.witness_statements = witness_statements
+    this.serialName = serialName
+    this.meeting = meeting
+    this.createdAt = createdAt
+    this.isActionCorrect = isActionCorrect
+    this.explainWhyText = explainWhyText
+    this.incidentDescription = incidentDescription
+    this.recommendation = recommendation
+    this.lessonLearnt = lessonLearnt
+    this.injuries = injuries
+    this.deaths = deaths
+    this.rootCauses = rootCauses
+    this.questions = questions
+    this.eventTimelines = eventTimelines
+    this.correctiveTasks = correctiveTasks
+    this.preventiveTasks = preventiveTasks
+    this.investigationDocumentations = investigationDocumentations
+    this.latest_investigation_meeting_id = latest_investigation_meeting_id
   }
 
   static fromMap(data: any): InvestegationResultDetailsModel {
@@ -68,28 +142,66 @@ export default class InvestegationResultDetailsModel {
       data.type,
       data.investigation_team_leader,
       data.investigation_employees?.map((i: any) => InvestegationEmployeeModel.fromMap(i)) ?? [],
-      data.next_meeting_date,
-      data.next_meeting_time,
       data.last_meeting_date,
       data.last_meeting_time,
+      data.next_meeting_date,
+      data.next_meeting_time,
       data.investigation_meetings?.map((i: any) => MeetingModel.fromMap(i)),
       data.investigation_team_leader,
       data.created_at,
+      data.investigation_meeting_date,
+      data.investigation_meeting_time,
+      data.witness_statements,
+      data.serial_name,
+      data.investigation_meetings,
+      data.created_at ?? data.createdAt ?? '',
+      data.is_action_correct ?? data.isActionCorrect ?? false,
+      data.explain_why_text ?? data.explainWhyText ?? '',
+      data.incidant_description ?? data.incident_description ?? data.incidentDescription ?? '',
+      data.recommendation ?? '',
+      data.lesson_learnt ?? data.lessonLearnt ?? '',
+      data.injuries ?? data.observation?.injuries ?? [],
+      data.deaths ?? data.observation?.deaths ?? [],
+      data.root_causes ?? data.rootCauses ?? data.observation?.root_causes ?? [],
+      data.questions ?? data.five_why_questions ?? data.fiveWhyQuestions ?? [],
+      data.event_timelines ?? data.eventTimelines ?? [],
+      data.corrective_tasks ?? data.correctiveTasks ?? [],
+      data.preventive_tasks ?? data.preventiveTasks ?? [],
+      data.investigation_documentations ?? data.investigationDocumentations ?? [],
+      data.latest_investigation_meeting_id ?? 0,
     )
   }
-  static example: InvestegationResultDetailsModel = new InvestegationResultDetailsModel(
-    3,
-    'Title',
-    '_0b5512547_5432',
-    '2025-03-15 09:45 AM',
-    HazardModel.example,
-    1,
-    2,
-    new TitleInterface({ id: 1, title: 'Mohab Mohamed' }),
-    [
-      InvestegationEmployeeModel.example,
-      InvestegationEmployeeModel.example,
-      InvestegationEmployeeModel.example,
-    ],
-  )
+  // static example: InvestegationResultDetailsModel = new InvestegationResultDetailsModel(
+  //   3,
+  //   'Title',
+  //   '_0b5512547_5432',
+  //   '2025-03-15 09:45 AM',
+  //   HazardModel.example,
+  //   1,
+  //   2,
+  //   new TitleInterface({ id: 1, title: 'Mohab Mohamed' }),
+  //   [
+  //     InvestegationEmployeeModel.example,
+  //     InvestegationEmployeeModel.example,
+  //     InvestegationEmployeeModel.example,
+  //   ],
+  //   "2025-03-15 09:45 AM",
+  //   "2025-03-15 09:45 AM",
+  //   "2025-03-15 09:45 AM",
+  //   "2025-03-15 09:45 AM",
+  //   [
+  //     MeetingModel.example,
+  //     MeetingModel.example,
+  //     MeetingModel.example,
+  //   ],
+  //   new TitleInterface({ id: 1, title: 'Mohab Mohamed' }),
+  //   "2025-03-15 09:45 AM",
+  //   "2025-03-15 09:45 AM",
+  //   "2025-03-15 09:45 AM",
+  //   [
+  //     InjuryDetailsModel.example,
+  //     InjuryDetailsModel.example,
+  //     InjuryDetailsModel.example,
+  //   ],
+  // )
 }

@@ -5,10 +5,7 @@ import { SelectControllerInterface } from '@/base/Presentation/Controller/select
 import type RoleModel from '../../Data/models/RoleModel'
 import IndexRoleUseCase from '../../Domain/useCase/indexRoleUseCase'
 
-
-export default class IndexRoleController extends SelectControllerInterface<
-  RoleModel[]
-> {
+export default class IndexRoleController extends SelectControllerInterface<RoleModel[]> {
   private static instance: IndexRoleController
   private constructor() {
     super()
@@ -26,8 +23,7 @@ export default class IndexRoleController extends SelectControllerInterface<
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<RoleModel[]> =
-      await this.IndexRoleUseCase.call(params)
+    const dataState: DataState<RoleModel[]> = await this.IndexRoleUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
@@ -37,5 +33,11 @@ export default class IndexRoleController extends SelectControllerInterface<
     }
     super.handleResponseDialogs()
     return this.state
+  }
+
+  override async fetch(params: Params): Promise<RoleModel[]> {
+    const data = await this.getData(params)
+
+    return this.isDataSuccess() ? (data.value.data ?? []) : []
   }
 }

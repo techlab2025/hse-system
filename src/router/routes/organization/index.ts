@@ -28,6 +28,12 @@ import { ticketRoutes } from '../shared/ticket'
 import { CapaRoutes } from './Capa'
 import { ForgetPasswordRoutes } from './ForgetPassword'
 import { CheckListRoutes } from './CheckList'
+import { DocumentRefrenceRoutes } from './document-refrence'
+import { ShiftsRoutes } from './shifts'
+import { notificationPlanRoutes } from './notificationPlan'
+import { taskReportRoutes } from './taskReports'
+import { todayTalkRoutes } from './todayTalk'
+import { managementChangeTopicRoutes } from './MangementChangeTopicType'
 
 export const organizationRoutes: RouteRecordRaw[] = [
   {
@@ -64,7 +70,12 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...CapaRoutes,
   ...ForgetPasswordRoutes,
   ...CheckListRoutes,
-
+  ...DocumentRefrenceRoutes,
+  ...ShiftsRoutes,
+  ...notificationPlanRoutes,
+  ...taskReportRoutes,
+  ...todayTalkRoutes,
+  ...managementChangeTopicRoutes,
   {
     path: 'permission/:id',
     name: 'Permission Organization',

@@ -1,5 +1,3 @@
-import TitleInterface from '@/base/Data/Models/title_interface'
-import HazardModel from '@/features/Organization/ObservationFactory/Data/models/hazardModel'
 import OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
 
 export default class InvestegationEmployeeModel {

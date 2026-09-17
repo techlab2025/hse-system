@@ -2,15 +2,76 @@
 @use '../../mixins/flex' as *;
 
 .main-objective {
-  @include flex-column(nowrap, flex-start, flex-start);
-  gap: $XlSize;
+  @include flex-column(nowrap, flex-start, stretch);
+  gap: $SmSize;
   padding: $MdSize;
   font-family: 'Regular';
-  background-color: #fafafacc;
-  border-radius: $XlSize;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--brand-primary-50) 78%, transparent) 0%, transparent 56%), var(--surface-1);
+  border: 1px solid var(--brand-primary-100);
+  border-radius: $BorderRadiusSm;
   width: 100%;
+  position: relative;
+  overflow: hidden;
+
+  // &::before {
+  //   content: '';
+  //   position: absolute;
+  //   inset-inline-start: 0;
+  //   top: 0;
+  //   width: 4px;
+  //   height: 100%;
+  //   background-color: $PrimaryColor;
+  //   opacity: 0.85;
+  // }
+
+  .section-header {
+    position: relative;
+    z-index: 1;
+    padding-bottom: $SmSize;
+    border-bottom: 1px solid var(--brand-primary-50);
+
+    .section-img {
+      width: 46px;
+      height: 46px;
+      border: 1px solid color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
+    }
+
+    .header-text {
+      gap: 2px;
+
+      .title {
+        color: var(--brand-primary-900);
+        font-size: $XlSize;
+        line-height: 1.25;
+      }
+
+      .subtitle {
+        color: var(--text-soft);
+        line-height: 1.35;
+      }
+    }
+  }
 
   .objective-details {
+    position: relative;
+    z-index: 1;
     width: 100%;
+    padding: $MdSize;
+    border: 1px solid var(--brand-primary-50);
+    border-radius: $BorderRadiusSm;
+    background-color: var(--brand-primary-50);
+  }
+
+  @media (max-width: 640px) {
+    padding: $SmSize;
+
+    .section-header {
+      align-items: flex-start;
+    }
+
+    .objective-details {
+      padding: $SmSize;
+    }
   }
 }

@@ -5,7 +5,6 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import EditSubscriptionTypeUseCase from '../../Domain/useCase/editSubscriptionTypeUseCase'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
 import type SubscriptionTypeModel from '../../Data/models/SubscriptionTypeModel'
 

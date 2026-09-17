@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import ValidIcon from '@/shared/icons/ValidIcon.vue'
 
 const props = defineProps<{
   expiry_date: string

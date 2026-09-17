@@ -16,7 +16,7 @@
       <div class="skeleton-bar w-20 h-4"></div>
     </div>
 
-    <hr style="height:1px;width:100%;border-width:1px;color:#b7beca2c ;background-color:#F5F6F7">
+    <hr class="project-card-divider" />
 
     <div class="project-card-data">
       <div v-for="i in 5" :key="i" class="data-info">
@@ -30,7 +30,7 @@
 <style scoped>
 /* The Base Skeleton Look */
 .skeleton-bar {
-  background-color: #e2e8f0;
+  background-color: var(--brand-primary-100);
   /* Light gray */
   border-radius: 4px;
   display: inline-block;

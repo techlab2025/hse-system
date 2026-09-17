@@ -5,7 +5,6 @@ import type Params from '@/base/core/params/params'
 import LoginUseCase from '@/features/auth/Domain/use_case/login_use_case'
 import { useUserStore } from '@/stores/user'
 import errorImage from '@/assets/images/error.png'
-import successImage from '@/assets/images/success-dialog.png'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import { OrganizationTypeEnum } from '../../Core/Enum/organization_type'
 import LoginOrganizationUseCase from '../../Domain/use_case/login_organization_use_case'
@@ -28,7 +27,12 @@ export default class LoginController extends ControllerInterface<UserModel> {
     return this.instance
   }
 
-  async login(params: Params, router: any, activeType: number) {
+  async login(
+    params: Params,
+    router: any,
+    activeType: number,
+    options?: { onSuccessBeforeNavigate?: () => void },
+  ): Promise<boolean> {
     try {
       this.setLoading()
       let dataState: DataState<UserModel>
@@ -45,13 +49,6 @@ export default class LoginController extends ControllerInterface<UserModel> {
 
       console.log(this.isDataSuccess(), 'this.isDataSuccess()')
       if (this.isDataSuccess()) {
-        DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog-success',
-          titleContent: 'Login Success',
-          imageElement: successImage,
-          messageContent: null,
-        })
-
         const userStore = useUserStore()
         const ProjectSelector = useProjectSelectStore()
 
@@ -62,6 +59,7 @@ export default class LoginController extends ControllerInterface<UserModel> {
           localStorage.setItem('user', JSON.stringify(this.state.value.data))
           axios.defaults.headers.common['Authorization'] = `Bearer ${apiToken}`
           ProjectSelector.setProjectId(this.state?.value?.data?.Defaultproject)
+          options?.onSuccessBeforeNavigate?.()
           if (!ConditionHandler.getInstance().isOrganizationEmployee()) {
             await router.push({
               path: activeType === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization',
@@ -74,6 +72,7 @@ export default class LoginController extends ControllerInterface<UserModel> {
               path: '/organization/employee-interface',
             })
           }
+          return true
         }
       } else {
         DialogSelector.instance.failedDialog.openDialog({
@@ -93,5 +92,6 @@ export default class LoginController extends ControllerInterface<UserModel> {
         messageContent: null,
       })
     }
+    return false
   }
 }

@@ -26,4 +26,31 @@
       font-size: $SmSize;
     }
   }
+
+  @media (max-width: 640px) {
+    align-items: flex-start;
+    min-width: 0;
+
+    .section-img {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+    }
+
+    .header-text {
+      min-width: 0;
+
+      .title {
+        font-size: $MdSize2;
+        line-height: 1.3;
+        overflow-wrap: anywhere;
+      }
+
+      .subtitle {
+        font-size: $XsSize;
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+      }
+    }
+  }
 }

@@ -16,15 +16,11 @@ import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import DeleteEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/deleteEquipmentTypeController'
 import DeleteEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/deleteEquipmentTypeParams'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { useUserStore } from '@/stores/user'
@@ -38,6 +34,8 @@ import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
+import Dialog from 'primevue/dialog'
+import UploadEquipmentTypeExeclSheet from './UploadEquipmentTypeExeclSheet.vue'
 
 const { t } = useI18n()
 
@@ -110,6 +108,17 @@ watch(
 )
 
 const { user } = useUserStore()
+const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+const onFileSelected = (e: Event) => {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  ;(e.target as HTMLInputElement).value = ''
+}
 
 const actionList = (id: number, deleteEquipmentType: (id: number) => void) => [
   {
@@ -202,9 +211,22 @@ const exportExcel = () => {
   saveAs(data, "Equipment-type.xlsx");
 };
 
+const DownloadExample = () => {
+  const worksheetData = [
+    { title: 'Example Equipment Type' },
+    { title: 'Example Equipment Type 2' },
+  ]
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'EquipmentTypes')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(blob, 'equipment_type_form.xlsx')
+}
+
 const IndexEquipmentTypeactionList = () => [
   {
-    text: t('export_excel'),
+    text: t('export_to_excel'),
     icon: ExceIcon,
     action: () => exportExcel(),
     type: ActionItemsTypeEnum.Success,
@@ -218,6 +240,7 @@ const IndexEquipmentTypeactionList = () => [
     text: t('add_equipment_type'),
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization' }/equipment-type/add`,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -225,16 +248,27 @@ const IndexEquipmentTypeactionList = () => [
     ],
   },
   {
-    text: t('upload_excel'),
+    text: t('upload_complated_template'),
     type: ActionItemsTypeEnum.Warning,
-    link: `/organization/equipment-type/upload-excel`,
+    action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.EQUIPMENT_TYPE_CREATE
     ],
   },
+  {
+    text: t('download_excel_template'),
+    icon: ExceIcon,
+    action: () => DownloadExample(),
+    type: ActionItemsTypeEnum.Success,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.EQUIPMENT_TYPE_CREATE
+    ],
+  },
 ]
+
 </script>
 
 <template>
@@ -279,14 +313,19 @@ const IndexEquipmentTypeactionList = () => [
         <SystemEquipmentTypes />
       </PermissionBuilder> -->
 
-       <ActionsList :show-actions="true" :actionList="IndexEquipmentTypeactionList()" :actionsNumber="4">
+       <ActionsList
+        feature-name="action_feature_equipment_types"
+        :show-actions="true"
+        :actionList="IndexEquipmentTypeactionList()"
+        :actionsNumber="5"
+      >
         <template #custom>
           <!-- <SystemEquipmentTypes /> -->
           <ExportPdf :isDropList="true" />
         </template>
       </ActionsList>
     </div>
-    <SystemEquipmentTypes :isHeaderTap="true" />
+    <SystemEquipmentTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
   </div>
 
   <PermissionBuilder :code="[
@@ -311,7 +350,7 @@ const IndexEquipmentTypeactionList = () => [
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
-                <th scope="col">{{ $t('has_certificate') }}</th>
+                <!-- <th scope="col">{{ $t('has_certificate') }}</th> -->
                 <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('all_industries') }}</th>
                 <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{ $t('industries') }}
@@ -328,7 +367,7 @@ const IndexEquipmentTypeactionList = () => [
                   {{ index + 1 }}
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="certificate">{{ item.hasCertificate ? $t('yes') : $t('no') }}</td>
+                <!-- <td data-label="certificate">{{ item.hasCertificate ? $t('yes') : $t('no') }}</td> -->
                 <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ item.allIndustries
                   ? $t('yes') : $t('no') }}</td>
                 <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
@@ -373,8 +412,8 @@ const IndexEquipmentTypeactionList = () => [
         ]">
           <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/equipment-type/add`" addText="Add EquipmentType"
-            description="Sorry .. You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No EquipmentTypes" />
+            description="You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
+            title="You have No EquipmentTypes" />
         </PermissionBuilder>
       </template>
       <template #failed>
@@ -386,17 +425,42 @@ const IndexEquipmentTypeactionList = () => [
         ]">
           <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/add/EquipmentType`" addText="Add EquipmentType"
-            description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No EquipmentTypes" />
+            description="You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
+            title="You have No EquipmentTypes" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data" />
+        description="You have no EquipmentType .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
+
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('upload_excel')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <UploadEquipmentTypeExeclSheet
+      :initial-file="pendingFile"
+      @uploaded="
+        showUploadDialog = false;
+        pendingFile = null;
+        fetchEquipmentType()
+      "
+    />
+  </Dialog>
+
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>
 
 <style scoped></style>

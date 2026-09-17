@@ -2,159 +2,287 @@
 @use '../../mixins/flex' as *;
 
 .show-equipment {
+  &.show-equipment-page {
+    position: relative;
+    padding: clamp(14px, 2vw, 24px);
+    border-radius: 22px;
+    background: var(--brand-primary-50);
+  }
+
+  .show-equ-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(360px, 0.75fr);
+    gap: 16px;
+    align-items: stretch;
+    margin-bottom: 16px;
+
+    @media screen and (max-width: 1180px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .show-equipment-card-shell {
+    min-width: 0;
+  }
+
   .card-equipment {
-    @include flex(row, nowrap, flex-start, center);
-    background-color: #fbfbfb;
-    border-radius: $XsSize;
-    padding: $XsSize;
-    gap: $XsSize2;
-    margin-bottom: $MdSize;
+    display: grid;
+    grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+    gap: 18px;
+    height: 100%;
+    min-height: 282px;
+    margin-bottom: 0;
+    padding: 16px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--brand-primary-100) 95%, transparent);
+    border-radius: 22px;
+    background: var(--surface-1);
+    box-shadow: 0 18px 44px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
+
+    // &::before {
+    //   content: '';
+    //   position: absolute;
+    //   inset: 0 auto 0 0;
+    //   width: 5px;
+    //   background: linear-gradient(180deg, var(--brand-primary-500), var(--status-success));
+    // }
 
     @media screen and (max-width: 900px) {
-      @include flex(row, wrap, flex-start, center);
+      grid-template-columns: 1fr;
+    }
+
+    .img-equipment {
+      width: 100%;
+      height: 100%;
+      min-height: 250px;
+      max-height: 320px;
+      padding: 16px;
+      border: 1px solid color-mix(in srgb, var(--brand-primary-100) 95%, transparent);
+      border-radius: 18px;
+      background:
+        linear-gradient(180deg, var(--brand-primary-50), var(--surface-1)),
+        repeating-linear-gradient(
+          45deg,
+          color-mix(in srgb, var(--brand-primary-400) 8%, transparent) 0 1px,
+          transparent 1px 12px
+        );
+      object-fit: contain;
+
+      @media screen and (max-width: 900px) {
+        height: 240px;
+        min-height: 240px;
+      }
     }
 
     .card-body {
-      @include flex(row, nowrap, space-between, end);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(138px, 180px);
+      gap: 16px;
       width: 100%;
-      gap: $XsSize3;
-      @media screen and (max-width: 900px) {
-        @include flex(row, wrap, space-between, end);
+      min-width: 0;
+      padding-inline-end: 40px;
+
+      @media screen and (max-width: 720px) {
+        grid-template-columns: 1fr;
+        padding-inline-end: 0;
       }
-      .card-body-content-right {
-        @include flex(column, wrap, flex-start, flex-end);
-        gap: $SmSize;
-        width: 200px;
+    }
 
-        // @media screen and (max-width: 900px) {
-        //   width: 100%;
-        // }
+    .card-body-content-left {
+      @include flex(column, nowrap, flex-start, flex-start);
+      gap: 14px;
+      min-width: 0;
 
-        .image-content {
-          width: 100%;
-          max-height: 160px;
-
-          position: relative;
-          overflow: hidden;
-          .texts {
-            position: absolute;
-            left: -14rem;
-            width: 100%;
-            height: 100%;
-            color: $White;
-            border-radius: $SmSize;
-            transition: all 0.5s ease-in-out;
-            padding-inline: $XsSize;
-            font-size: $XsSize;
-            @include flex(column, wrap, center, flex-start);
-            gap: $XsSize2;
-            span {
-              color: var(--Red);
-            }
-          }
-
-          &:hover {
-            .texts {
-              left: 0;
-              background-color: rgba($color: #000000, $alpha: 0.3);
-              backdrop-filter: blur(3px);
-            }
-          }
-
-          img {
-            width: 100%;
-            height: 100%;
-            border-radius: $SmSize;
-          }
-        }
-      }
-      .card-body-content-left {
+      .info-container {
         width: 100%;
-        @include flex(column, wrap, flex-start, flex-start);
-        gap: $XsSize4;
-        height: 100%;
-        .info-container {
-          margin-bottom: auto;
-          height: 100%;
+        min-height: auto;
+        margin-bottom: 0;
+      }
+
+      .card-body-title {
+        @include flex(row, wrap, flex-start, center);
+        gap: 10px;
+        width: 100%;
+
+        .title {
+          max-width: 100%;
+          margin: 0;
+          color: var(--brand-primary-900);
+          font-size: clamp(22px, 2vw, 30px);
+          font-weight: 800;
+          line-height: 1.15;
+        }
+      }
+
+      .inspection,
+      .date-of-decommissioning {
+        @include flex(row, wrap, flex-start, center);
+        gap: 8px;
+        width: fit-content;
+        max-width: 100%;
+        padding: 8px 12px;
+        border: 1px solid color-mix(in srgb, var(--brand-primary-500) 14%, transparent);
+        border-radius: 999px;
+        background: var(--brand-primary-50);
+
+        span {
+          color: var(--brand-primary-500);
+          font-size: 13px;
+          font-weight: 700;
         }
 
-        .card-body-title {
-          @include flex(row, nowrap, flex-start, center);
-          gap: $XsSize2;
-          .title {
-            font-size: $XlSize2;
-            font-weight: $BaseFontWeightBold;
-            color: var(--header-page-color);
-          }
-        }
+        p {
+          color: var(--brand-primary-800);
+          font-weight: 800;
 
-        .inspection {
-          @include flex(row, nowrap, flex-start, center);
-          gap: $XsSize4;
           span {
-            color: var(--subtitle-color);
-            font-weight: $BaseFontMediumWeight;
-          }
-          p {
-            font-weight: $BaseFontSemiBoldWeight;
-            color: #4b5563;
-            span {
-              color: $PrimaryColor;
-            }
+            color: var(--brand-primary-500);
           }
         }
+      }
 
-        .date-of-decommissioning {
-          @include flex(row, nowrap, flex-start, center);
-          gap: $XsSize4;
+      .date-of-decommissioning {
+        border-color: color-mix(in srgb, var(--status-danger) 16%, transparent);
+        background: var(--status-danger-soft);
 
-          span {
-            color: var(--subtitle-color);
-            font-weight: $BaseFontMediumWeight;
-          }
-          p {
-            color: var(--Red);
-            font-weight: $BaseFontWeightBold;
-          }
+        p {
+          color: var(--status-danger);
         }
+      }
 
-        .vehicle {
-          @include flex-row(nowrap, flex-start, center);
-          @media screen and (max-width: 900px) {
-            @include flex(row, wrap, flex-start, center);
-          }
-          gap: $SmSize;
-          background-color: #f1f3f5;
-          padding: $XsSize $SmSize;
-          border-radius: $SmSize;
+      .vehicle {
+        width: 100%;
+        margin-top: auto;
+        padding: 12px;
+        border: 1px solid color-mix(in srgb, var(--brand-primary-100) 95%, transparent);
+        border-radius: 18px;
+        background: var(--brand-primary-50);
+
+        .items {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 10px;
           width: 100%;
-          .items {
-            width: 100%;
-            @include flex-row(wrap, flex-start, flex-start);
-            gap: $MdSize;
-            .item {
-              @include flex-row(wrap, flex-start, flex-start);
-              gap: $XsSize3;
-              span {
-                color: var(--subtitle-color);
-                font-weight: $BaseFontMediumWeight;
-              }
-              p {
-                color: #4b5563;
-                font-weight: $BaseFontWeightBold;
-              }
-            }
+
+          @media screen and (max-width: 620px) {
+            grid-template-columns: 1fr;
+          }
+        }
+
+        .item {
+          display: grid;
+          grid-template-columns: max-content minmax(0, 1fr);
+          align-items: center;
+          gap: 6px 10px;
+          min-height: 48px;
+          padding: 11px 12px;
+          border: 1px solid color-mix(in srgb, var(--brand-primary-100) 95%, transparent);
+          border-radius: 14px;
+          background: var(--surface-1);
+
+          &:first-child {
+            grid-column: 1 / -1;
+          }
+
+          br {
+            display: block;
+            grid-column: 1 / -1;
+            content: '';
+          }
+
+          span {
+            color: var(--brand-primary-500);
+            font-size: 13px;
+            font-weight: 700;
+            white-space: nowrap;
+          }
+
+          p {
+            min-width: 0;
+            color: var(--brand-primary-900);
+            font-weight: 800;
+            overflow-wrap: anywhere;
           }
         }
       }
     }
-    .img-equipment {
-      width: 175px;
-      height: 175px;
-      border-radius: $SmSize;
-      @media screen and (max-width: 900px) {
+
+    .card-body-content-right {
+      @include flex(column, nowrap, flex-start, flex-end);
+      gap: 12px;
+      min-width: 0;
+      margin-right: auto;
+
+      &:not(:has(.image-content)) {
+        width: 0;
+      }
+
+      @media screen and (max-width: 720px) {
         width: 100%;
-        height: 200px;
+        align-items: stretch;
+      }
+
+      .image-content {
+        position: relative;
+        width: 100%;
+        max-width: 180px;
+        height: 180px;
+        align-self: flex-end;
+        overflow: hidden;
+        border: 1px solid color-mix(in srgb, var(--brand-primary-100) 95%, transparent);
+        border-radius: 16px;
+        background: var(--brand-primary-50);
+
+        img {
+          display: block;
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+        }
+
+        @media screen and (max-width: 720px) {
+          align-self: center;
+        }
+
+        .texts {
+          position: absolute;
+          inset: auto 8px 8px 8px;
+          width: auto;
+          height: auto;
+          padding: 7px 9px;
+          border-radius: 999px;
+          color: var(--text-on-brand);
+          background: color-mix(in srgb, var(--brand-primary-900) 78%, transparent);
+          backdrop-filter: blur(8px);
+          font-size: 12px;
+
+          span {
+            color: var(--status-danger-soft);
+            font-weight: 800;
+          }
+        }
+      }
+
+      .drop-down-btn {
+        @include flex(row, nowrap, center, center);
+        width: 38px;
+        height: 38px;
+        border: 1px solid color-mix(in srgb, var(--brand-primary-100) 95%, transparent);
+        border-radius: 12px;
+        background: var(--surface-1);
+        color: var(--brand-primary-500);
+        box-shadow: 0 12px 26px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          border-color 0.2s ease;
+
+        &:hover {
+          transform: translateY(-1px);
+          border-color: color-mix(in srgb, var(--brand-primary-500) 20%, transparent);
+          box-shadow: 0 16px 30px color-mix(in srgb, var(--brand-primary-500) 13%, transparent);
+        }
       }
     }
   }

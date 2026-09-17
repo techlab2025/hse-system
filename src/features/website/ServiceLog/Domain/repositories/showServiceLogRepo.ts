@@ -8,7 +8,7 @@ import { ShowServiceLogApiService } from '../../Data/apiServices/showServiceLogA
 class ShowServiceLogRepo extends RepoInterface<ServiceLogDetailsModel> {
   private static instance: ShowServiceLogRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

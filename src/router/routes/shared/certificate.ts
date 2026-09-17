@@ -6,7 +6,7 @@ export const certificateRoutes: RouteRecordRaw[] = [
     name: 'Certificates',
     component: () => import('@/views/Admin/Certificate/IndexCertificate.vue'),
     meta: {
-      breadcrumb: 'Certificates',
+      breadcrumb: 'Training',
       type: 'Shared',
       isSidebar: true,
     },
@@ -16,7 +16,7 @@ export const certificateRoutes: RouteRecordRaw[] = [
     name: 'Add Certificate',
     component: () => import('@/views/Admin/Certificate/AddCertificate.vue'),
     meta: {
-      breadcrumb: 'Add certificate',
+      breadcrumb: 'Add Training',
       parent: 'Certificates',
       type: 'Shared',
       isSidebar: true,
@@ -27,7 +27,7 @@ export const certificateRoutes: RouteRecordRaw[] = [
     name: 'Edit Certificate',
     component: () => import('@/views/Admin/Certificate/EditCertificate.vue'),
     meta: {
-      breadcrumb: 'Edit certificate',
+      breadcrumb: 'Edit Training',
       parent: 'Certificates',
       type: 'Shared',
       isSidebar: true,
@@ -38,7 +38,7 @@ export const certificateRoutes: RouteRecordRaw[] = [
     name: 'Import Certificate',
     component: () => import('@/views/Admin/Certificate/UploadCertificate.vue'),
     meta: {
-      breadcrumb: 'Import certificate',
+      breadcrumb: 'Import Training',
       parent: 'Certificates',
       type: 'Shared',
       isSidebar: true,

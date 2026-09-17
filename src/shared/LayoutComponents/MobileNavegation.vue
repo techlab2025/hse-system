@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
@@ -145,10 +145,10 @@ const otherLocale = computed(() => locales.value.find((l) => l.code !== locale.v
 .menu-content {
   position: absolute;
   bottom: 120%;
-  background: white;
+  background: var(--surface-1);
   padding: 10px;
   border-radius: 8px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 3px 12px color-mix(in srgb, var(--text-strong) 15%, transparent);
   z-index: 99;
   width: 150px;
 }
@@ -164,12 +164,12 @@ const otherLocale = computed(() => locales.value.find((l) => l.code !== locale.v
 }
 
 .lang-item a {
-  color: #333;
+  color: var(--text-strong);
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .lang-item a:hover {
-  color: #00c3f7;
+  color: var(--status-info);
 }
 </style>

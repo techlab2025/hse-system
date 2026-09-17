@@ -22,14 +22,12 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 // import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import Search from '@/shared/icons/Search.vue'
 import IndexSubscriptionTypeController from '../controllers/indexSubscriptionTypeController'
 import IndexSubscriptionTypeParams from '../../Core/params/indexSubscriptionTypeParams'
 import DeleteSubscriptionTypeParams from '../../Core/params/deleteSubscriptionTypeParams'
 import DeleteSubscriptionTypeController from '../controllers/deleteSubscriptionTypeController'
 import { useUserStore } from '@/stores/user'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
 const { t } = useI18n()
@@ -181,7 +179,7 @@ watch(
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/admin/subscription-type/edit/${item.id}`">{{ index + 1 }}</router-link>
+                  <span :to="`/admin/subscription-type/edit/${item.id}`">{{ index + 1 }}</span>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
                 <td data-label="Actions">
@@ -207,8 +205,8 @@ watch(
           PermissionsEnum.SUBSCRIPTION_TYPE_CREATE,
         ]">
           <DataEmpty :link="`/admin/subscription-type/add`" addText="Add SubscriptionType"
-            description="Sorry .. You have no SubscriptionType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No SubscriptionType" />
+            description="You have no SubscriptionType .. All your joined customers will appear here when you add your customer data"
+            title="You have No SubscriptionType" />
         </permission-builder>
       </template>
       <template #failed>
@@ -218,8 +216,8 @@ watch(
           PermissionsEnum.SUBSCRIPTION_TYPE_CREATE,
         ]">
           <DataFailed :link="`/admin/subscription-type/add`" addText="Add SubscriptionType"
-            description="Sorry .. You have no SubscriptionType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No SubscriptionType" />
+            description="You have no SubscriptionType .. All your joined customers will appear here when you add your customer data"
+            title="You have No SubscriptionType" />
         </permission-builder>
       </template>
     </DataStatus>
@@ -231,7 +229,7 @@ watch(
         PermissionsEnum.SUBSCRIPTION_TYPE_CREATE,
       ]">
         <DataFailed addText="Have not  Permission"
-          description="Sorry .. You have no SubscriptionTypeType .. All your joined customers will appear here when you add your customer data" />
+          description="You have no SubscriptionTypeType .. All your joined customers will appear here when you add your customer data" />
       </permission-builder>
     </template>
   </permission-builder>

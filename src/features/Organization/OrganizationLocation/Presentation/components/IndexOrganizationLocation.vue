@@ -8,7 +8,6 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
-import ToggleSwitch from 'primevue/toggleswitch'
 
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import wordSlice from '@/base/Presentation/utils/word_slice'
@@ -19,11 +18,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import IndexOrganizationLocationController from '../controllers/indexOrganizationLocationController'
 import IndexOrganizationLocationParams from '../../Core/params/indexOrganizationLocationParams'
 import DeleteOrganizationLocationParams from '../../Core/params/deleteOrganizationLocationParams'
@@ -224,22 +219,22 @@ watch(
       <template #empty>
         <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.ORG_LOCATION_CREATE]">
           <DataEmpty :link="`/organization/organization-location/add`" addText="Add OrganizationLocation"
-            description="Sorry .. You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No OrganizationLocation" />
+            description="You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data"
+            title="You have No OrganizationLocation" />
         </PermissionBuilder>
       </template>
       <template #failed>
         <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.ORG_LOCATION_CREATE]">
           <DataFailed :link="`/organization/organization-location/add`" addText="Add OrganizationLocation"
-            description="Sorry .. You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No OrganizationLocation" />
+            description="You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data"
+            title="You have No OrganizationLocation" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data" />
+        description="You have no OrganizationLocation .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

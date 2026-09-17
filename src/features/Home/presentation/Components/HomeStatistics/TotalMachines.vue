@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import wordSlice from '@/base/Presentation/utils/word_slice';
-import { EquipmentTypeEnum } from '@/features/Home/core/enums/SettingEnum/EquipmentTypeEnum';
 import type StatisticsMachineModel from '@/features/Home/data/Model/StatisticsMachineModel';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const props = defineProps<{
   totalMachines: StatisticsMachineModel[]
 }>()
+const { t } = useI18n()
 
 const chartData = computed(() => {
   return props.totalMachines?.map(machine => {
@@ -30,11 +31,11 @@ const chartData = computed(() => {
 const GetEquipmentTypeTitle = (type: number) => {
   switch (type) {
     case 1:
-      return 'equipment'
+      return t('equipment')
     case 2:
-      return 'device'
+      return t('device')
     case 3:
-      return 'tool'
+      return t('tool')
   }
 }
 </script>
@@ -42,13 +43,13 @@ const GetEquipmentTypeTitle = (type: number) => {
   <div class="total-machines-container ">
     <div class="total-machines-header-container">
       <div class="total-machines-header">
-        <span class="static">static</span>
-        <p class="static-title">most used Equipments </p>
+        <span class="static">{{ $t('statistics') }}</span>
+        <p class="static-title">{{ $t('most_used_equipment') }}</p>
       </div>
       <div class="static-data">
-        <p>tool</p>
-        <p>equipment</p>
-        <p>device</p>
+        <p>{{ $t('tool') }}</p>
+        <p>{{ $t('equipment') }}</p>
+        <p>{{ $t('device') }}</p>
       </div>
     </div>
     <div class="chart-container flex items-end gap-4 p-8 bg-white rounded-xl font-sans">
@@ -67,7 +68,7 @@ const GetEquipmentTypeTitle = (type: number) => {
                 }}</span>
               <span class="value">{{ segment.number }}</span>
             </div>
-            <p class="total-value"><span>total:</span> <span class="value">{{month.segments.reduce((sum, segment) => sum
+            <p class="total-value"><span>{{ $t('total') }}:</span> <span class="value">{{month.segments.reduce((sum, segment) => sum
               + segment.number, 0)}}</span>
             </p>
           </div>
@@ -98,6 +99,7 @@ const GetEquipmentTypeTitle = (type: number) => {
   width: 100%;
   max-width: 100%;
   padding-inline: 10px;
+  justify-content: flex-start;
 
   .month {
     max-width: 45px;
@@ -125,10 +127,10 @@ const GetEquipmentTypeTitle = (type: number) => {
     align-items: center;
     justify-content: center;
     gap: 20px;
-    /* background-color: rgba(255, 255, 255, 0.836); */
-    background-color: #e9ebeebb;
+    /* background-color: color-mix(in srgb, var(--surface-1) 83.6%, transparent); */
+    background-color: color-mix(in srgb, var(--surface-2) 73.33%, transparent);
     backdrop-filter: blur(5px);
-    color: #727B99;
+    color: var(--brand-primary-500);
     font-weight: 500;
     font-size: 12px;
     border-radius: 4px;
@@ -152,19 +154,19 @@ const GetEquipmentTypeTitle = (type: number) => {
 
         &.tool {
           &::before {
-            background-color: #3b82f6;
+            background-color: var(--brand-primary-400);
           }
         }
 
         &.equipment {
           &::before {
-            background-color: #60a5fa;
+            background-color: var(--brand-primary-300);
           }
         }
 
         &.device {
           &::before {
-            background-color: #93c5fd;
+            background-color: var(--brand-primary-200);
           }
         }
 
@@ -200,7 +202,7 @@ const GetEquipmentTypeTitle = (type: number) => {
   justify-content: space-between;
   align-items: center;
   gap: 30px;
-  color: black;
+  color: var(--text-strong);
   margin-top: 8px;
 }
 
@@ -215,8 +217,9 @@ const GetEquipmentTypeTitle = (type: number) => {
   max-width: 100%;
   overflow-x: auto;
   overflow-y: visible;
+  overscroll-behavior-inline: contain;
   scrollbar-width: thin;
-  scrollbar-color: #e2e8f0 transparent;
+  scrollbar-color: var(--brand-primary-100) transparent;
   -webkit-overflow-scrolling: touch;
 
   &::-webkit-scrollbar {
@@ -228,47 +231,55 @@ const GetEquipmentTypeTitle = (type: number) => {
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #e2e8f0;
+    background-color: var(--brand-primary-100);
     border-radius: 4px;
   }
 
   .month {
-    max-width: 45px;
-    min-width: 36px;
+    width: 48px;
+    min-width: 48px;
+    max-width: 48px;
     flex-shrink: 0;
+    scroll-snap-align: start;
   }
 
   @media (max-width: 768px) {
-    padding: 1rem !important;
-    gap: 0.5rem !important;
+    padding: 12px 4px 10px !important;
+    gap: 12px !important;
+    scroll-snap-type: x proximity;
 
     .month {
-      max-width: 36px;
-      min-width: 28px;
+      width: 42px;
+      min-width: 42px;
+      max-width: 42px;
     }
 
     .precentage-container {
-      width: 2rem !important;
+      width: 2.25rem !important;
       height: 9rem !important;
     }
 
     .col-name {
+      width: 100%;
       font-size: 10px !important;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 
   @media (max-width: 480px) {
-    padding: 0.75rem !important;
-    gap: 0.35rem !important;
+    padding: 10px 2px 8px !important;
+    gap: 10px !important;
 
     .month {
-      max-width: 28px;
-      min-width: 22px;
+      width: 38px;
+      min-width: 38px;
+      max-width: 38px;
     }
 
     .precentage-container {
-      width: 1.5rem !important;
-      height: 7rem !important;
+      width: 2rem !important;
+      height: 8rem !important;
     }
 
     .col-name {
@@ -298,8 +309,8 @@ const GetEquipmentTypeTitle = (type: number) => {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: white;
-    color: #3b82f6;
+    background-color: var(--surface-1);
+    color: var(--brand-primary-400);
     font-size: 12px;
     border-radius: 4px;
     padding: 3px;
@@ -318,8 +329,8 @@ const GetEquipmentTypeTitle = (type: number) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white;
-  color: #3b82f6;
+  background-color: var(--surface-1);
+  color: var(--brand-primary-400);
   font-size: 12px;
   border-radius: 4px;
   padding: 3px;

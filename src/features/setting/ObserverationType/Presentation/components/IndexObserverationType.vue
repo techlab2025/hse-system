@@ -16,17 +16,12 @@ import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import DeleteObserverationTypeController from '@/features/setting/ObserverationType/Presentation/controllers/deleteObserverationTypeController'
 import DeleteObserverationTypeParams from '@/features/setting/ObserverationType/Core/params/deleteObserverationTypeParams'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
@@ -38,7 +33,8 @@ import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
-import IndexSystemObserverationTypeController from '../controllers/indexSystemObserverationTypeController'
+import Dialog from 'primevue/dialog'
+import UploadObservationTypeExeclSheet from './UploadObservationTypeExeclSheet.vue'
 const { t } = useI18n()
 
 // import DialogChangeStatusObserverationType from "@/features/setting/ObserverationType/Presentation/components/ObserverationType/DialogChangeStatusObserverationType.vue";
@@ -100,20 +96,18 @@ watch(
     deep: true,
   },
 )
-const indexSystemObserverationTypeController = IndexSystemObserverationTypeController.getInstance()
-watch(
-  () => indexSystemObserverationTypeController.state.value,
-  (newState) => {
-    if (newState) {
-      state.value = newState
-    }
-  },
-  {
-    deep: true,
-  },
-)
-
 const { user } = useUserStore()
+const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+const onFileSelected = (e: Event) => {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  ;(e.target as HTMLInputElement).value = ''
+}
 
 const actionList = (id: number, deleteObserverationType: (id: number) => void) => [
   {
@@ -185,9 +179,22 @@ const exportExcel = () => {
   saveAs(data, "observeration-type.xlsx");
 };
 
+const DownloadExample = () => {
+  const worksheetData = [
+    { title: 'Example Observation Type' },
+    { title: 'Example Observation Type 2' },
+  ]
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'ObservationTypes')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(blob, 'observation_type_form.xlsx')
+}
+
 const IndexObservationTypesactionList = () => [
   {
-    text: t('export_excel'),
+    text: t('export_to_excel'),
     icon: ExceIcon,
     action: () => exportExcel(),
     type: ActionItemsTypeEnum.Success,
@@ -201,6 +208,7 @@ const IndexObservationTypesactionList = () => [
     text: t('add_observeration_type'),
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type/add`,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -208,10 +216,20 @@ const IndexObservationTypesactionList = () => [
     ],
   },
   {
-    text: t('import_observeration_type'),
+    text: t('upload_complated_template'),
     type: ActionItemsTypeEnum.Warning,
-    link: `/organization/observation-type/upload-excel`,
+    action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.OBSERVATION_TYPE_CREATE
+    ],
+  },
+  {
+    text: t('download_excel_template'),
+    icon: ExceIcon,
+    action: () => DownloadExample(),
+    type: ActionItemsTypeEnum.Success,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.OBSERVATION_TYPE_CREATE
@@ -260,14 +278,23 @@ const IndexObservationTypesactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.OBSERVATION_TYPE_CREATE]">
         <SystemObservationTypes />
       </PermissionBuilder> -->
-      <ActionsList :show-actions="true" :actionList="IndexObservationTypesactionList()" :actionsNumber="4">
+      <ActionsList
+        feature-name="action_feature_observation_types"
+        :show-actions="true"
+        :actionList="IndexObservationTypesactionList()"
+        :actionsNumber="5"
+      >
         <template #custom>
           <!-- <SystemObservationTypes /> -->
           <ExportPdf :isDropList="true" />
         </template>
       </ActionsList>
     </div>
-    <SystemObservationTypes :isHeaderTap="true" />
+    <SystemObservationTypes
+      v-if="user?.type != OrganizationTypeEnum.ADMIN"
+      :isHeaderTap="true"
+      @confirmed="fetchObserverationType('', currentPage, countPerPage)"
+    />
 
   </div>
 
@@ -356,8 +383,8 @@ const IndexObservationTypesactionList = () => [
           <DataEmpty
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type/add`"
             addText="Add ObserverationType"
-            description="Sorry .. You have no ObserverationType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No ObserverationType" />
+            description="You have no ObserverationType .. All your joined customers will appear here when you add your customer data"
+            title="You have No ObserverationType" />
         </PermissionBuilder>
       </template>
       <template #failed>
@@ -370,17 +397,42 @@ const IndexObservationTypesactionList = () => [
           <DataFailed
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/observation-type/add`"
             addText="Add ObserverationType"
-            description="Sorry .. You have no ObserverationType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No ObserverationType" />
+            description="You have no ObserverationType .. All your joined customers will appear here when you add your customer data"
+            title="You have No ObserverationType" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no ObserverationType .. All your joined customers will appear here when you add your customer data" />
+        description="You have no ObserverationType .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
+
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('import_observeration_type')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <UploadObservationTypeExeclSheet
+      :initial-file="pendingFile"
+      @uploaded="
+        showUploadDialog = false;
+        pendingFile = null;
+        fetchObserverationType()
+      "
+    />
+  </Dialog>
+
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>
 
 <style scoped></style>

@@ -6,7 +6,7 @@ import { DisSystemBannerApiService } from '../../Data/apiServices/disSystemBanne
 
 class DisActiveSystemBannerRepo extends RepoInterface<SystemBannerModel> {
   private static instance: DisActiveSystemBannerRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

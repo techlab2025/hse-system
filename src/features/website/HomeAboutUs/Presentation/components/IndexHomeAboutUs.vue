@@ -19,9 +19,6 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import IndexHomeAboutUsController from '../controllers/indexHomeAboutUsController'
 import IndexHomeAboutUsParams from '../../Core/params/indexHomeAboutUsParams'
@@ -228,19 +225,19 @@ const actionList = (id: number, deleteHomeAboutUs: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty :link="`/admin/home-about-us/add`" addText="Add HomeAboutUs"
-          description="Sorry .. You have no HomeAboutUs .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HomeAboutUs" />
+          description="You have no HomeAboutUs .. All your joined customers will appear here when you add your customer data"
+          title="You have No HomeAboutUs" />
       </template>
       <template #failed>
         <DataFailed :link="`/admin/home-about-us/add`" addText="Add HomeAboutUs"
-          description="Sorry .. You have no HomeAboutUs .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No HomeAboutUs" />
+          description="You have no HomeAboutUs .. All your joined customers will appear here when you add your customer data"
+          title="You have No HomeAboutUs" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no HomeAboutUs .. All your joined customers will appear here when you add your customer data" />
+        description="You have no HomeAboutUs .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

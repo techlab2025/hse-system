@@ -1,19 +1,44 @@
 import type Params from '@/base/core/params/params'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
+export interface EquipmentExcelRow {
+  name: string
+  equipment_type_id: number
+  date?: string | null
+  status?: number | null
+  inspection_duration?: string | null
+  license_number?: string | null
+  license_plate_number?: string | null
+  image?: string | null
+  certificate_image?: string | null
+  all_industries?: number | null
+  industry_ids?: number[]
+  parent_id?: number | null
+  contractor_id?: number | null
+  description?: string | null
+  period_type?: number | null
+  period?: string | null
+  checkin_date?: string | null
+  checkout_date?: string | null
+  kilometer?: string | null
+  warehouse_id?: number | null
+  serial_number?: string | null
+  serial?: string | null
+}
+
 export default class AddEquipmentExcelParams implements Params {
-  data: any[] = []
+  data: EquipmentExcelRow[] = []
 
   public static readonly validation = new ClassValidation().setRules({})
 
-  constructor(data: { data: any[] }) {
-    Object.assign(this, data)
+  constructor({ data }: { data: EquipmentExcelRow[] }) {
+    this.data = data
   }
 
   // ─── Helpers ──────────────────────────────────────────────────────────────
 
   /** Parse a date string into YYYY-MM-DD, returns null if invalid */
-  private static parseDate(value: any): string | null {
+  private static parseDate(value: unknown): string | null {
     if (!value || String(value).trim() === '' || value === '--') return null
 
     const str = String(value).trim()
@@ -31,12 +56,6 @@ export default class AddEquipmentExcelParams implements Params {
       }
     }
 
-    // Try native parsing (handles DD/MM/YYYY, MM/DD/YYYY, etc.)
-    const parsed = new Date(str)
-    if (!isNaN(parsed.getTime())) {
-      return parsed.toISOString().split('T')[0]
-    }
-
     // Handle DD/MM/YYYY explicitly
     const ddmmyyyy = str.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/)
     if (ddmmyyyy) {
@@ -47,22 +66,36 @@ export default class AddEquipmentExcelParams implements Params {
       }
     }
 
+    const parsed = new Date(str)
+    if (!isNaN(parsed.getTime())) {
+      return parsed.toISOString().split('T')[0]
+    }
+
     return null
   }
 
   /** Parse to integer, returns null if invalid/empty */
-  private static parseInteger(value: any): number | null {
+  private static parseInteger(value: unknown): number | null {
     if (value === null || value === undefined || value === '' || value === '--') return null
     const num = parseInt(String(value), 10)
     return isNaN(num) ? null : num
   }
 
   /** Clean a single row — strips invalid fields so the backend won't reject them */
-  private static sanitizeRow(row: Record<string, any>): Record<string, any> {
-    const cleaned: Record<string, any> = { ...row }
+  private static sanitizeRow(row: EquipmentExcelRow): EquipmentExcelRow {
+    const cleaned: EquipmentExcelRow = { ...row }
+
+    for (const key of Object.keys(cleaned) as (keyof EquipmentExcelRow)[]) {
+      if (cleaned[key] === null || cleaned[key] === undefined || cleaned[key] === '') {
+        delete cleaned[key]
+      }
+    }
 
     // ── Date fields ──────────────────────────────────────────────────────────
-    const dateFields = ['date', 'checkin_date', 'checkout_date']
+    const dateFields: (keyof Pick<
+      EquipmentExcelRow,
+      'date' | 'checkin_date' | 'checkout_date'
+    >)[] = ['date', 'checkin_date', 'checkout_date']
     for (const field of dateFields) {
       if (field in cleaned) {
         const parsed = AddEquipmentExcelParams.parseDate(cleaned[field])
@@ -75,12 +108,20 @@ export default class AddEquipmentExcelParams implements Params {
     }
 
     // ── Integer fields ───────────────────────────────────────────────────────
-    const intFields = ['status', 'period_type', 'period']
+    const intFields: (keyof EquipmentExcelRow)[] = [
+      'equipment_type_id',
+      'status',
+      'period_type',
+      'parent_id',
+      'contractor_id',
+      'warehouse_id',
+      'all_industries',
+    ]
     for (const field of intFields) {
       if (field in cleaned) {
         const parsed = AddEquipmentExcelParams.parseInteger(cleaned[field])
         if (parsed !== null) {
-          cleaned[field] = parsed
+          ;(cleaned[field] as number | null) = parsed
         } else {
           delete cleaned[field]
         }
@@ -90,7 +131,7 @@ export default class AddEquipmentExcelParams implements Params {
     return cleaned
   }
 
-  toMap(): Record<string, any> {
+  toMap(): { equipments_data: EquipmentExcelRow[] } {
     return {
       equipments_data: this.data.map(AddEquipmentExcelParams.sanitizeRow),
     }

@@ -16,13 +16,11 @@ import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 // import DeleteTeamTypeController from '@/features/setting/TeamType/Presentation/controllers/deleteTeamTypeController'
 // import DeleteTeamTypeParams from '@/features/setting/TeamType/Core/params/deleteTeamTypeParams'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 // import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import Search from '@/shared/icons/Search.vue'
 import IndexTeamController from '../controllers/indexTeamController'
 import IndexTeamParams from '../../Core/params/indexTeamParams'
@@ -32,6 +30,16 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
+import SystemTeams from '../supcomponents/SystemTeams.vue'
+import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
+import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
+import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
+import ExceIcon from '@/shared/icons/ExceIcon.vue'
+import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
+import Dialog from 'primevue/dialog'
+import * as XLSX from 'xlsx'
+import { saveAs } from 'file-saver'
+import UploadTeamExcelSheet from './UploadTeamExcelSheet.vue'
 
 const { t } = useI18n()
 
@@ -134,6 +142,101 @@ watch(
     fetchTeam()
   },
 )
+
+const handleSystemTeamsConfirmed = () => {
+  fetchTeam('', currentPage.value, countPerPage.value)
+}
+
+const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+const onFileSelected = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+
+  pendingFile.value = file
+  showUploadDialog.value = true
+  input.value = ''
+}
+
+const exportExcel = () => {
+  if (!state.value.data?.length) {
+    alert('No data available to export')
+    return
+  }
+
+  const worksheetData = state.value.data.map((item) => ({
+    title: item.title || 'N/A',
+  }))
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Teams')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  saveAs(new Blob([excelBuffer], { type: 'application/octet-stream' }), 'teams.xlsx')
+}
+
+const downloadExcelTemplate = () => {
+  const worksheet = XLSX.utils.json_to_sheet([
+    { title: 'Example Team' },
+    { title: 'Example Team 2' },
+  ])
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Teams')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  saveAs(new Blob([excelBuffer], { type: 'application/octet-stream' }), 'team_form.xlsx')
+}
+
+const teamFetchPermissions = [
+  PermissionsEnum.ADMIN,
+  PermissionsEnum.ORGANIZATION_EMPLOYEE,
+  PermissionsEnum.TEAM_FETCH,
+  PermissionsEnum.ORG_TEAM_FETCH,
+  PermissionsEnum.TEAM_ALL,
+  PermissionsEnum.ORG_TEAM_ALL,
+]
+
+const teamCreatePermissions = [
+  PermissionsEnum.ADMIN,
+  PermissionsEnum.ORGANIZATION_EMPLOYEE,
+  PermissionsEnum.TEAM_CREATE,
+  PermissionsEnum.ORG_TEAM_CREATE,
+  PermissionsEnum.TEAM_ALL,
+  PermissionsEnum.ORG_TEAM_ALL,
+]
+
+const indexTeamActionList = () => [
+  {
+    text: t('export_to_excel'),
+    icon: ExceIcon,
+    action: exportExcel,
+    type: ActionItemsTypeEnum.Success,
+    permission: teamFetchPermissions,
+  },
+  {
+    text: t('add_team'),
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`,
+    icon: ActionsListAddIcon,
+    primary: true,
+    type: ActionItemsTypeEnum.Info,
+    permission: teamCreatePermissions,
+  },
+  {
+    text: t('upload_complated_template'),
+    icon: UploadExcelIcon,
+    action: () => fileInputRef.value?.click(),
+    type: ActionItemsTypeEnum.Warning,
+    permission: teamCreatePermissions,
+  },
+  {
+    text: t('download_excel_template'),
+    icon: ExceIcon,
+    action: downloadExcelTemplate,
+    type: ActionItemsTypeEnum.Success,
+    permission: teamCreatePermissions,
+  },
+]
 </script>
 
 <template>
@@ -147,20 +250,23 @@ watch(
       <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchTeamType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> -->
-      <ExportPdf />
-      <permission-builder :code="[
-        PermissionsEnum.ADMIN,
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.TEAM_CREATE,
-        PermissionsEnum.ORG_TEAM_CREATE,
-      ]">
-        <router-link :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
-          class="btn btn-primary">
-          {{ $t('add_team') }}
-        </router-link>
-      </permission-builder>
+      <ActionsList
+        feature-name="action_feature_teams"
+        :show-actions="true"
+        :actionList="indexTeamActionList()"
+        :actionsNumber="5"
+      >
+        <template #custom>
+          <ExportPdf :isDropList="true" />
+        </template>
+      </ActionsList>
     </div>
+
+    <SystemTeams
+      v-if="user?.type != OrganizationTypeEnum.ADMIN"
+      :isHeaderTap="true"
+      @confirmed="handleSystemTeamsConfirmed"
+    />
   </div>
 
   <permission-builder :code="[
@@ -230,8 +336,8 @@ watch(
         ]">
           <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
             addText="Add Team"
-            description="Sorry .. You have no Team .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Team" />
+            description="You have no Team .. All your joined customers will appear here when you add your customer data"
+            title="You have No Team" />
         </permission-builder>
       </template>
       <template #failed>
@@ -243,8 +349,8 @@ watch(
         ]">
           <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/add`"
             addText="Add Team"
-            description="Sorry .. You have no Team .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Team" />
+            description="You have no Team .. All your joined customers will appear here when you add your customer data"
+            title="You have No Team" />
         </permission-builder>
       </template>
     </DataStatus>
@@ -257,10 +363,36 @@ watch(
         PermissionsEnum.ORG_TEAM_CREATE,
       ]">
         <DataFailed addText="Have not  Permission"
-          description="Sorry .. You have no TeamType .. All your joined customers will appear here when you add your customer data" />
+          description="You have no TeamType .. All your joined customers will appear here when you add your customer data" />
       </permission-builder>
     </template>
   </permission-builder>
+
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('upload_complated_template')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+    @hide="pendingFile = null"
+  >
+    <UploadTeamExcelSheet
+      :initial-file="pendingFile"
+      @uploaded="
+        showUploadDialog = false;
+        pendingFile = null;
+        fetchTeam()
+      "
+    />
+  </Dialog>
+
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>
 
 <style scoped></style>

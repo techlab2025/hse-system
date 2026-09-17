@@ -41,17 +41,17 @@ export default class ContractorDetailsModel {
 
   static fromMap(data: any): ContractorDetailsModel {
     return new ContractorDetailsModel(
-      data.id,
-      data.name,
-      data.phone,
-      (data.scopes ?? []).map((scope: any) => ContractorScopeModel.fromMap(scope)),
-      data.company_email,
-      data.company_address,
-      data.contact_person,
-      data.contact_person_email,
-      data.contact_person_phone,
-      data.status,
-      data.expiry_date,
+      data?.id,
+      data?.name,
+      data?.phone,
+      (data?.scopes ?? []).map((scope: any) => ContractorScopeModel.fromMap(scope)),
+      data?.company_email,
+      data?.company_address,
+      data?.contact_person,
+      data?.contact_person_email,
+      data?.contact_person_phone,
+      data?.status,
+      data?.expiry_date,
     )
   }
 

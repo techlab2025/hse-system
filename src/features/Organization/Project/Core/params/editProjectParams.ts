@@ -1,38 +1,35 @@
 import type Params from '@/base/core/params/params'
-// import AttentionParams from "@/features/users/clients/Core/params/attention_params";
-// import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
-import { useProjectSelectStore } from '@/stores/ProjectSelect'
 
 export default class EditProjectParams implements Params {
   id: number
   translation: TranslationsParams
   partnerId: number[]
-  startDate: string
+  startDate: string | Date | null
   locationIds: number[]
   zoonIds: number[]
   methodIds: number[]
-  endDate: string
+  endDate: string | Date | null
 
-  constructor(
-    id: number,
-    translation: TranslationsParams,
-    partnerId: number[],
-    startDate: string,
-    locationIds: number[],
-    zoonIds: number[],
-    methodIds: number[],
-    endDate: string,
-  ) {
-    this.id = id
-    this.translation = translation
-    this.partnerId = partnerId
-    this.startDate = startDate
-    this.locationIds = locationIds
-    this.zoonIds = zoonIds
-    this.methodIds = methodIds
-    this.endDate = endDate
+  constructor(data: {
+    id: number
+    translation: TranslationsParams
+    partnerId: number[]
+    startDate: string | Date | null
+    locationIds: number[]
+    zoonIds: number[]
+    methodIds: number[]
+    endDate: string | Date | null
+  }) {
+    this.id = data.id
+    this.translation = data.translation
+    this.partnerId = data.partnerId
+    this.startDate = data.startDate
+    this.locationIds = data.locationIds
+    this.zoonIds = data.zoonIds
+    this.methodIds = data.methodIds
+    this.endDate = data.endDate
   }
 
   toMap(): Record<
@@ -47,8 +44,6 @@ export default class EditProjectParams implements Params {
       | Record<string, string | number[] | number | Record<string, string>>
     > = {}
 
-    // if (this.id || useProjectSelectStore().getProjectId())
-    //   data['project_id'] = useProjectSelectStore().SelectedProjectId(this.id)
     data['project_id'] = this.id
     data['translations'] = this.translation.toMap()
     if (this.partnerId?.length > 0) data['contractor_ids'] = this.partnerId

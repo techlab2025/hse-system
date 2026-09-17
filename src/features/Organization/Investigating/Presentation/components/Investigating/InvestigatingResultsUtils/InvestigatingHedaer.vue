@@ -1,4 +1,23 @@
 <script lang="ts" setup>
+import type TitleInterface from '@/base/Data/Models/title_interface'
+import IndexDocumentRefrenceParams from '@/features/Organization/DocumentRefrence/Core/params/IndexADocumentRefrenceParams'
+import IndexDocumentRefrenceController from '@/features/Organization/DocumentRefrence/Presentation/controllers/IndexDocumentRefrenceController'
+import type InvestegationEmployeeModel from '@/features/Organization/Investigating/Data/models/investigationResult/InvestegationEmployeeModel'
+import type EquipmentDetailsModel from '@/features/setting/Equipment/Data/models/equipmentDetailsModel'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import { computed, ref } from 'vue'
+import ShiftModel from '../../../../../Shifts/Data/models/ShiftModel'
+import AddDocumentRefrence from '@/features/Organization/DocumentRefrence/Presentation/components/AddDocumentRefrence.vue'
+import { Observation } from '@/features/Organization/Investigating/Core/Enums/ObservationTypeEnum'
+import {
+  ComplianceNotificationEnum,
+  PtwStatusEnum,
+} from '@/features/Organization/ObservationFactory/Core/Enums/incident_compliance_enum'
+
+type ComplianceNotificationValue = number | string | { id?: number | string }
+
+const emit = defineEmits(['update:documentRefrences'])
+
 const props = defineProps<{
   title?: string
   serial?: string
@@ -7,30 +26,181 @@ const props = defineProps<{
   meetingDate?: string
   TeamLeader?: string
   TeamNumbers?: number
+  incidantType?: TitleInterface
+  place?: string
+  equipment?: EquipmentDetailsModel
+  incidantDescription?: string
+  team?: InvestegationEmployeeModel[]
+  time?: string
+  shift?: ShiftModel
+  serialName?: string
+  observationCreator?: string
+  observationType?: number
+  ptwStatus?: number | string
+  complianceNotification?: ComplianceNotificationValue[] | ComplianceNotificationValue
 }>()
+
+const DocumentRefrenceDialog = ref<boolean>(false)
+const DocumentRefrences = ref<TitleInterface[]>([])
+const setDocumentRefrences = (data: TitleInterface[]) => {
+  DocumentRefrences.value = data
+  emit('update:documentRefrences', data)
+}
+const indexDocumentRefrencesController = IndexDocumentRefrenceController.getInstance()
+const indexDocumentRefrencesParams = new IndexDocumentRefrenceParams('', 1, 10, 0)
+
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+
+const dateTimeShift = computed(() =>
+  [props.date, props.time, props.shift?.title].filter(hasValue).join(' & '),
+)
+
+const ptwStatusLabels: Record<number, string> = {
+  [PtwStatusEnum.NOT_APPLICABLE]: 'Not Applicable',
+  [PtwStatusEnum.ISSUED_AND_VALID]: 'PTW Issued and Valid',
+  [PtwStatusEnum.ISSUED_BUT_EXPIRED]: 'PTW Issued but Expired',
+  [PtwStatusEnum.NOT_ISSUED_REQUIRED]: 'No PTW Issued (Required)',
+}
+
+const complianceNotificationLabels: Record<number, string> = {
+  [ComplianceNotificationEnum.STATUTORY_AUTHORITY_INFORMED]: 'Statutory Authority Informed',
+  [ComplianceNotificationEnum.INSURANCE_NOTIFIED]: 'Insurance Notified',
+  [ComplianceNotificationEnum.CLIENT_CUSTOMER_NOTIFIED]: 'Client/Customer Notified',
+}
+
+const ptwStatusLabel = computed(() => {
+  const status = Number(props.ptwStatus)
+  return status ? ptwStatusLabels[status] || String(status) : ''
+})
+
+const complianceNotificationLabel = computed(() => {
+  const notifications = Array.isArray(props.complianceNotification)
+    ? props.complianceNotification
+    : props.complianceNotification != null
+      ? [props.complianceNotification]
+      : []
+
+  return notifications
+    .map((notification) =>
+      Number(typeof notification === 'object' ? notification?.id : notification),
+    )
+    .filter(Boolean)
+    .map((notification) => complianceNotificationLabels[notification] || String(notification))
+    .join(', ')
+})
+
+const getObservationType = (type: number | undefined) => {
+  switch (type) {
+    case Observation.AccidentsType:
+      return 'Incident'
+    case Observation.HazardType:
+      return 'Observation'
+    case Observation.ObservationType:
+      return 'Observation'
+    default:
+      return ''
+  }
+}
 </script>
 <template>
   <div class="investigating-header-container">
-    <div class="investigating-header">
-      <p class="title">{{ title }}</p>
-      <span>{{ serial }}</span>
-    </div>
-    <div class="investigating-info">
-      <p>
-        the victim : <span>{{ victim }}</span>
+    <!-- <div class="investigating-header">
+      <p class="small-title serial">
+        serial : <span class="place">{{ serial }}</span>
       </p>
-      <p>
-        Date & Time : <span>{{ date }}</span>
+      <p class="small-title">
+        title : <span class="place title">{{ title }}</span>
       </p>
-    </div>
+      <p class="small-title">
+        Place : <span class="place">{{ place }}</span>
+      </p>
+
+
+
+    </div> -->
     <div class="meeting-info-container">
-      <div class="metting-info-header-container">
-        <p class="metting-info-header">{{ $t('investigation_meeting') }}</p>
-        <hr class="meeting-hr">
+      <h2 class="observation-container-content">
+        {{ getObservationType(observationType!) }} report
+      </h2>
+      <div class="meeting-info">
+        <p v-if="hasValue(serial)">
+          Incident serial : <span class="meet-date">{{ serial }} </span>
+        </p>
+        <p v-if="hasValue(serialName)">
+          Investigation serial : <span class="meet-date">{{ serialName }} </span>
+        </p>
+        <p v-if="hasValue(title)">
+          Incident title : <span class="team-leader">{{ title }}</span>
+        </p>
+        <p v-if="hasValue(incidantType?.title)">
+          Incident Classification : <span class="incidant-type">{{ incidantType?.title }}</span>
+        </p>
+        <p v-if="hasValue(observationCreator)">
+          Created By : <span class="incidant-type">{{ observationCreator }}</span>
+        </p>
+        <p v-if="hasValue(dateTimeShift)">
+          date & time & shift :
+          <span class="incidant-type">{{ dateTimeShift }}</span>
+        </p>
+        <p v-if="hasValue(place)">
+          Work Area / Facility : <span class="team-number">{{ place }}</span>
+        </p>
+        <p v-if="hasValue(equipment?.serial_name)">
+          Equipment / Tag No :
+          <span class="team-number"
+            >{{ equipment?.title }}
+            {{
+              equipment?.licensePlateNumber || `-` + equipment?.license_plate_number
+                ? equipment?.licensePlateNumber || equipment?.license_plate_number
+                : ``
+            }}</span
+          >
+        </p>
+        <p v-if="Number(observationType) === Observation.AccidentsType && hasValue(ptwStatusLabel)">
+          {{ $t('PTW Status') }} :
+          <span class="incidant-type">{{ ptwStatusLabel }}</span>
+        </p>
+        <p
+          v-if="
+            Number(observationType) === Observation.AccidentsType &&
+            hasValue(complianceNotificationLabel)
+          "
+        >
+          {{ $t('Regulatory / Compliance Notification') }} :
+          <span class="incidant-type">{{ complianceNotificationLabel }}</span>
+        </p>
+        <div class="input-wrapper col-span-2 w-full root-cause-panel">
+          <UpdatedCustomInputSelect
+            :modelValue="DocumentRefrences"
+            class="input"
+            :controller="indexDocumentRefrencesController"
+            :params="indexDocumentRefrencesParams"
+            :label="$t('Regulatory/Legal Compliance Reference')"
+            help-text="Select any regulation, standard, procedure, or legal reference relevant to this investigation."
+            id="DocumentRefrence"
+            :placeholder="$t('select your Regulatory/Legal Compliance Reference')"
+            @update:modelValue="setDocumentRefrences"
+            :type="2"
+            @close="DocumentRefrenceDialog = false"
+            :isDialog="true"
+            v-model:dialogVisible="DocumentRefrenceDialog"
+          >
+            <template #LabelHeader>
+              <span class="add-dialog" @click="DocumentRefrenceDialog = true">{{ $t('New') }}</span>
+            </template>
+            <template #Dialog>
+              <AddDocumentRefrence @close:dialog="DocumentRefrenceDialog = false" />
+            </template>
+          </UpdatedCustomInputSelect>
+        </div>
       </div>
+    </div>
+    <!-- <div class="meeting-info-container">
+
       <div class="meeting-info">
         <p>
-          Date & Time : <span class="meet-date">{{ meetingDate }}</span>
+          Date & Time : <span class="meet-date">{{ date }} &{{ time }}</span>
         </p>
         <p>
           Investigation team leader : <span class="team-leader">{{ TeamLeader }}</span>
@@ -39,6 +209,200 @@ const props = defineProps<{
           Num of team : <span class="team-number">{{ TeamNumbers }}</span>
         </p>
       </div>
-    </div>
+    </div> -->
+    <!-- <div class="equipment-card" v-if="equipment">
+      <img :src="equipment?.image" alt="image" class="equipemtn-card-image" />
+      <div class="equipment-text">
+        <p class="name">{{ equipment?.title }}</p>
+        <p class="serial">{{ equipment?.serial_name }}</p>
+      </div> -->
+    <!-- <EquipmentCard :tool="equipment" /> -->
+    <!-- </div> -->
+
+    <!-- <div class="team-container">
+      <p class="title">{{ $t('team') }}</p>
+      <div class="team">
+        <div class="team-member" v-for="member in team" :key="member.id">
+          <img
+            :src="
+              member?.organizationEmployee?.image ||
+              'https://cyber.comolho.com/static/img/avatar.png'
+            "
+            alt=""
+            class="equipemtn-card-image"
+          />
+          <div class="employee-text">
+            <p class="name">{{ member.organizationEmployee?.name }}</p>
+            <p class="serial">{{ member.organizationEmployee?.serialName }}</p>
+          </div>
+        </div>
+      </div>
+    </div> -->
   </div>
 </template>
+
+<style scoped>
+.observation-container-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 72px;
+  margin: 0 0 18px;
+  padding: 16px 24px 16px 30px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--identity-primary) 30%, var(--main-border));
+  border-radius: 18px;
+  background: linear-gradient(
+    120deg,
+    color-mix(in srgb, var(--identity-primary) 14%, var(--surface-1)),
+    color-mix(in srgb, var(--identity-accent) 8%, var(--surface-1)) 68%,
+    var(--surface-1)
+  );
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--identity-primary) 12%, transparent);
+  color: var(--text-strong);
+  font-size: clamp(22px, 2.4vw, 32px);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+  isolation: isolate;
+}
+
+/* .observation-container-content::before {
+  width: 6px;
+  height: 40px;
+  margin-inline-end: 16px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, var(--identity-primary), var(--identity-accent));
+  box-shadow: 0 0 18px color-mix(in srgb, var(--identity-primary) 38%, transparent);
+  content: '';
+  flex: 0 0 auto;
+} */
+
+.observation-container-content::after {
+  position: absolute;
+  z-index: -1;
+  inset-inline-end: -34px;
+  width: 130px;
+  height: 130px;
+  border: 24px solid color-mix(in srgb, var(--identity-accent) 12%, transparent);
+  border-radius: 50%;
+  content: '';
+}
+.meeting-info-container {
+  width: 100% !important;
+  grid-column: span 2 !important;
+}
+.investigating-header {
+  display: flex;
+  flex-direction: row !important;
+}
+.place.title {
+  color: var(--text-strong) !important;
+}
+.small-title {
+  width: 33% !important;
+  height: 100%;
+  flex-wrap: wrap;
+}
+.small-title.serial {
+  background: var(--brand-primary-50) !important;
+  display: flex;
+  flex-direction: row !important;
+  width: 100%;
+  .place {
+    color: var(--brand-primary-500) !important;
+    max-width: 80%;
+  }
+}
+
+@media (max-width: 600px) {
+  .observation-container-content {
+    min-height: 62px;
+    margin-bottom: 12px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    font-size: 21px;
+  }
+
+  .observation-container-content::before {
+    height: 32px;
+    margin-inline-end: 12px;
+  }
+
+  .investigating-header-container,
+  .meeting-info-container,
+  .meeting-info {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .meeting-info-container {
+    padding: 8px !important;
+  }
+
+  .meeting-info {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .meeting-info > p {
+    display: flex !important;
+    align-items: flex-start;
+    flex-direction: column !important;
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 11px 12px !important;
+    line-height: 1.45 !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+  }
+
+  .meeting-info > p > span {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-top: 5px !important;
+    white-space: normal !important;
+    word-break: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .root-cause-panel {
+    display: block !important;
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-top: 2px;
+  }
+
+  .root-cause-panel :deep(.updated-select-header) {
+    align-items: flex-start !important;
+    flex-direction: column-reverse !important;
+    gap: 8px;
+  }
+
+  .root-cause-panel :deep(.updated-select-label),
+  .root-cause-panel :deep(.p-multiselect) {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .root-cause-panel :deep(.p-multiselect-label) {
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+  }
+}
+</style>

@@ -8,7 +8,7 @@ import { EditHomeContactUsApiService } from '../../Data/apiServices/editHomeCont
 class EditHomeContactUsRepo extends RepoInterface<HomeContactUsModel> {
   private static instance: EditHomeContactUsRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

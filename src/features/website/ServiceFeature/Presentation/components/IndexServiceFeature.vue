@@ -15,12 +15,10 @@ import wordSlice from '@/base/Presentation/utils/word_slice'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
-import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 // import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 // import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import IndexServiceFeatureController from '../controllers/indexServiceFeatureController'
@@ -232,19 +230,19 @@ const actionList = (id: number, deleteServiceFeature: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty :link="`/admin/service-feature/add`" addText="Add ServiceFeature"
-          description="Sorry .. You have no ServiceFeature .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ServiceFeature" />
+          description="You have no ServiceFeature .. All your joined customers will appear here when you add your customer data"
+          title="You have No ServiceFeature" />
       </template>
       <template #failed>
         <DataFailed :link="`/admin/service-feature/add`" addText="Add ServiceFeature"
-          description="Sorry .. You have no ServiceFeature .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ServiceFeature" />
+          description="You have no ServiceFeature .. All your joined customers will appear here when you add your customer data"
+          title="You have No ServiceFeature" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no ServiceFeature .. All your joined customers will appear here when you add your customer data" />
+        description="You have no ServiceFeature .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

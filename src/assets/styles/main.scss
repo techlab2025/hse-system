@@ -172,23 +172,19 @@
 @use './Certificates/certificate_import';
 @use './ExcelSheet/excel_imports';
 @use './SystemDialogs/system_dialog';
+@use './responsive';
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
 
   @media (prefers-reduced-motion: reduce) {
     scroll-behavior: auto;
-  }
-
-  > section {
-    scroll-snap-align: start;
   }
 }
 
 body {
   font-family: 'Regular', sans-serif;
-  color: black;
+  color: var(--text-strong);
   // overflow-x: hidden;
 
   p,
@@ -196,6 +192,40 @@ body {
   div {
     text-transform: capitalize;
   }
+}
+
+.create-form-actions {
+  display: flex;
+  flex-direction: row !important;
+  align-items: stretch;
+  gap: 12px;
+  width: 100%;
+
+  > .btn,
+  > button,
+  > a {
+    flex: 1 1 0;
+    width: auto !important;
+    min-width: 0;
+  }
+
+  @media (max-width: 480px) {
+    flex-wrap: wrap;
+
+    > .btn,
+    > button,
+    > a {
+      flex-basis: 100%;
+    }
+  }
+}
+
+// RTL changes reading direction only. Keep the application viewport upright.
+html,
+body,
+#app {
+  rotate: none !important;
+  transform: none !important;
 }
 
 .p-accordionheader {
@@ -230,7 +260,7 @@ body {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: black;
+  color: var(--text-strong);
 }
 
 // for garrery
@@ -256,7 +286,7 @@ body {
   }
 }
 .p-radiobutton-box {
-  border: 1px solid #8c8c8c59 !important;
+  border: 1px solid color-mix(in srgb, var(--text-soft) 34.9%, transparent) !important;
 }
 
 .factor-item .p-radiobutton-checked .p-radiobutton-box {
@@ -271,8 +301,8 @@ body {
   font-family: 'Regular';
   // padding: 5px;
   margin-left: auto;
-  background-color: red;
-  color: white;
+  background-color: var(--status-danger);
+  color: var(--text-on-brand);
   border-radius: 4px;
   width: 20px;
   height: 20px;
@@ -290,7 +320,7 @@ body {
   height: 20px;
   margin-right: 6px;
   cursor: pointer;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   text-decoration: underline;
   font-family: 'Regular';
 }
@@ -310,7 +340,7 @@ body {
   right: 20px;
   width: 60px;
   height: 60px;
-  z-index: 99999;
+  z-index: 999999;
 
   cursor: pointer;
   transition: 0.3s all linear;
@@ -373,10 +403,14 @@ input {
   border-radius: calc($XlSize + 2px) !important;
 }
 .highlight-active .description {
-  color: white !important;
+  color: var(--text-on-brand) !important;
 }
 .highlight-active .project-progress-header-container {
-  background-image: linear-gradient(to right, #a7a2a256, #b8b3b3a2);
+  background-image: linear-gradient(
+    to right,
+    color-mix(in srgb, var(--text-soft) 33.73%, transparent),
+    color-mix(in srgb, var(--main-border) 63.53%, transparent)
+  );
 }
 
 .image_certificate_container .p-image-preview-mask {
@@ -390,14 +424,14 @@ input {
 }
 
 // .p-panel-content{
-//   background-color: #f5f6f7 !important;
+//   background-color: var(--text-on-brand) !important;
 // }
 // .p-panel-header{
-//   background-color: #f5f6f7 !important;
+//   background-color: var(--text-on-brand) !important;
 // }
 .p-panel.p-component {
-  // background-color: #f5f6f7 !important;
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1) !important;
+  // background-color: var(--text-on-brand) !important;
+  box-shadow: 0px 1px 3px color-mix(in srgb, var(--text-strong) 10%, transparent) !important;
 }
 .p-selectbutton {
   width: 100% !important;
@@ -405,7 +439,7 @@ input {
   // background-color: $PrimaryColor !important;
 }
 .p-togglebutton {
-  background-color: #1d4ed80f !important;
+  background-color: color-mix(in srgb, var(--brand-primary-500) 5.88%, transparent) !important;
   width: 50% !important;
 }
 
@@ -420,9 +454,9 @@ input {
 }
 
 .template-selector .panel-acc {
-  border: 2px dashed #e6e8ea !important;
+  border: 2px dashed var(--surface-2) !important;
   border-radius: 22px;
-  background-color: #fafafa66;
+  background-color: color-mix(in srgb, var(--surface-1) 40%, transparent);
   padding: 1rem;
 }
 
@@ -442,4 +476,147 @@ input {
 // }
 .table-responsive table.main-table thead tr th:last-of-type.empty {
   display: table-cell !important;
+}
+
+.table-responsive table.main-table thead tr th:last-of-type {
+  justify-content: center !important;
+}
+
+html[dir='ltr'] :deep(.actions-switch) {
+  margin-left: auto;
+}
+
+html[dir='rtl'] .actions-container {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+html[dir='ltr'] .actions-container {
+  margin-right: 0 !important;
+  margin-left: auto !important;
+}
+
+.field-required {
+  label::after {
+    content: '*';
+    color: var(--status-danger);
+    margin-left: 4px;
+    margin-top: 4px;
+  }
+}
+
+.w-1\/2 {
+  width: 50% !important;
+}
+
+.project-progress-body-content {
+  @media (max-width: 768px) {
+    padding: 10px !important;
+  }
+}
+.input-label label {
+  margin-inline-end: auto;
+  width: fit-content;
+  text-align: start;
+  font-weight: 600;
+  font-size: var(--md-size);
+  color: var(--text-strong);
+  font-family: 'Light';
+  margin-inline-start: auto;
+}
+
+label {
+  font-weight: 600 !important;
+  font-size: var(--md-size) !important;
+  color: var(--text-strong) !important;
+  font-family: 'Light' !important;
+}
+
+.header-select {
+  .input-label {
+    display: none !important;
+  }
+}
+
+.header-select :deep(label) {
+  display: none !important;
+}
+
+[data-theme='dark'] label,
+[data-theme='dark'] .input-label label {
+  color: var(--text-strong) !important;
+}
+
+.system-data-add {
+  background-color: color-mix(in srgb, var(--brand-primary-500) 5.1%, transparent) !important;
+  color: var(--text-on-brand);
+}
+
+@media (max-width: 768px) {
+  .investigation-result .p-accordioncontent-content {
+    margin: 0 !important;
+  }
+  .investigation-result .p-accordionpanel {
+    margin-block: 14px !important;
+  }
+  .input-image {
+    overflow: hidden;
+  }
+  .input-label-images {
+    max-width: 50% !important;
+  }
+  .input-wrapper {
+    grid-column: span 24;
+  }
+  header {
+    width: 96% !important;
+    margin-inline: auto !important;
+  }
+}
+
+.capa-index-page .project-filter-content {
+  display: none;
+}
+.p-dialog-mask {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 1rem !important;
+  overflow-y: auto !important;
+}
+
+.p-dialog {
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100dvh - 2rem);
+  margin: auto !important;
+  transform: none !important;
+}
+
+.p-dialog-content {
+  max-height: calc(100dvh - 8rem);
+  overflow-y: auto;
+}
+.export-actions {
+  .btn-secondary,
+  .btn,
+  .btns-filter .btn,
+  .btns-filter .btn-primary {
+    color: black !important;
+    border: 1px solid #80808036;
+  }
+}
+.side-pane-icon {
+  svg {
+    width: 37px !important;
+    height: 35px !important;
+  }
 }

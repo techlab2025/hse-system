@@ -6,18 +6,18 @@
   @include flex-column(nowrap, flex-start, flex-start);
   gap: $XsSize;
   font-family: 'Regular';
-  border: 3px solid #5571b927;
+  border: 3px solid color-mix(in srgb, var(--brand-primary-500) 15.29%, transparent);
   border-radius: calc($XlSize + 2px);
   padding: $MdSize;
-  background-color: #fcfcfc;
+  background-color: var(--text-on-brand);
 
   .title {
-    color: #170f49;
+    color: var(--brand-primary-800);
     font-size: calc($XlSize + 2px);
     font-weight: $BaseFontWeightBold;
   }
   .index-length {
-    color: #c0c0c5;
+    color: var(--text-muted);
     font-size: $SmSize;
     font-weight: $BaseFontMediumWeight;
     span {
@@ -32,15 +32,15 @@
       height: 4px;
     }
     &::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.2);
+      background-color: color-mix(in srgb, var(--text-strong) 20%, transparent);
       border-radius: 4px;
     }
     &::-webkit-scrollbar-track {
       background-color: transparent;
     }
     .category {
-      color: #b7beca;
-      border: 1px solid #f3f3f3;
+      color: var(--brand-primary-300);
+      border: 1px solid var(--surface-2);
       border-radius: $MdSize2;
       padding: $XsSize2 calc($XlSize3 + 4px);
       font-size: $MdSize;
@@ -48,7 +48,7 @@
       transition: 0.3s all linear;
       cursor: pointer;
       &.active {
-        color: white;
+        color: var(--text-on-brand);
         background-color: $PrimaryColor;
       }
     }

@@ -11,7 +11,7 @@ export default class IndexHazardParams implements Params {
   public perPage: number = 10
   public pageNumber: number = 10
   public type: Observation[]
-  public projectId: number | null = null
+  public projectId: number[] = []
   // public code?: LangEnum
   public projectZoonIds?: number[]
   public projectLocationIds?: number[]
@@ -31,7 +31,7 @@ export default class IndexHazardParams implements Params {
     perPage: number = 10,
     withPage: number = 1,
     type: Observation[],
-    projectId: number | null = null,
+    projectId: number[] = [],
     projectZoonIds?: number[],
     projectLocationIds?: number[],
     zoonIds?: number[],
@@ -68,13 +68,20 @@ export default class IndexHazardParams implements Params {
 
   toMap(): Record<string, string | number | number[] | null> {
     const data: Record<string, string | number | number[] | null> = {}
+    const selectedHeaderProjectId = Number(useProjectSelectStore().getProjectId())
+    const projectIds =
+      this.projectId.length > 0
+        ? this.projectId.filter((id) => Number(id) > 0)
+        : selectedHeaderProjectId > 0
+          ? [selectedHeaderProjectId]
+          : []
+
     if (this.word) data['word'] = this.word
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.type) data['type'] = this.type
-    if (this.projectId || useProjectSelectStore().getProjectId())
-      data['project_ids'] = useProjectSelectStore().SelectedProjectId(this.projectId)
+    if (projectIds.length > 0) data['project_ids'] = projectIds
     if (this.projectZoonIds) data['project_zoon_ids'] = this.projectZoonIds
     if (this.projectLocationIds) data['location_ids'] = this.projectLocationIds
     if (this.zoonIds) data['zoon_ids'] = this.zoonIds

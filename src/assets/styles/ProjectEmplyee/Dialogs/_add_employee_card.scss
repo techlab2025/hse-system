@@ -13,7 +13,7 @@
     .add-employee-card {
       padding: $SmSize;
       border-radius: $XlSize;
-      background-color: #fbfbfb;
+      background-color: var(--text-on-brand);
       @include flex-column(nowrap, flex-start, flex-start);
       gap: 10px;
       width: 100%;
@@ -25,7 +25,7 @@
         gap: 4px;
         width: 100%;
         .title {
-          color: #121212;
+          color: var(--text-strong);
           font-size: $XlSize;
           font-weight: $BaseFontWeightBold;
         }
@@ -37,7 +37,7 @@
     button {
       padding: $MdSize;
       width: 100%;
-      color: white;
+      color: var(--text-on-brand);
       background-color: $PrimaryColor;
     }
   }

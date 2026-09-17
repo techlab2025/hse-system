@@ -7,7 +7,7 @@ import { IndexSystemComponentApiService } from '../../Data/apiServices/indexSyst
 class IndexSystemComponentRepo extends RepoInterface<SystemComponentModel[]> {
   private static instance: IndexSystemComponentRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

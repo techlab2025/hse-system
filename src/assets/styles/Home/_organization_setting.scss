@@ -22,7 +22,7 @@
     .organization-setting-card {
       cursor: pointer;
       width: 100%;
-      background-color: #fcfcfc;
+      background-color: var(--text-on-brand);
       padding: $SmSize;
       border-radius: calc($SmSize + 1px);
       @include flex-row(nowrap, flex-start, center);
@@ -33,12 +33,12 @@
       .card-content {
         @include flex-column(nowrap, flex-start, flex-start);
         .title {
-          color: #000039;
+          color: var(--brand-primary-900);
           font-size: $MdSize2;
           font-weight: $BaseFontWeightBold;
         }
         .description {
-          color: #cbcbcb;
+          color: var(--text-muted);
           font-size: $SmSize;
           font-weight: $BaseFontSemiBoldWeight;
           font-family: 'Light';
@@ -74,14 +74,14 @@
     .btn-route {
       text-align: center;
       width: 100%;
-      background-color: #fcfcfc;
-      color: #14146b;
+      background-color: var(--text-on-brand);
+      color: var(--brand-primary-800);
       border-radius: calc($SmSize + 1px);
       padding: $SmSize;
       transition: 0.3s all linear;
       &:hover {
-        background-color: #14146b;
-        color: white;
+        background-color: var(--brand-primary-800);
+        color: var(--text-on-brand);
       }
     }
   }

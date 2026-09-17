@@ -1,5 +1,4 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
-import TitleModel from '@/base/Data/Models/title_model.ts'
 // import ClientPartnerModel from "@/features/dashboard/settings/clientPartner/Data/models/index_client_Partner_model";
 
 export default class PartnerModel extends TitleInterface {

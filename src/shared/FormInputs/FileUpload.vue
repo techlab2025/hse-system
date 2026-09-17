@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { ref, watch, onUnmounted } from 'vue'
 import ExcelIcon from '@/assets/images/excel.png'
-import IconUploadFile from '@/shared/icons/IconFileUpload.vue'
 import PdfIcon from '@/assets/images/pdf.png'
 import WordIcon from '@/assets/images/word.png'
 import IconVideo from '@/shared/icons/IconVideo.vue'
 import IconAudio from '@/shared/icons/IconAudio.vue'
-import IconDeleteAttachment from '@/shared/icons/IconDeleteAttachment.vue'
 import DwgIcon from '@/assets/images/dwg-file.png'
 import RarIcon from '@/assets/images/rar-file.png'
 import CloudIcon from '../icons/CloudIcon.vue'
@@ -231,7 +229,7 @@ onUnmounted(() => {
   position: relative;
   width: 100px;
   height: 100px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--brand-primary-100);
   border-radius: 0.5rem;
   overflow: hidden;
 }
@@ -248,12 +246,12 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: color-mix(in srgb, var(--text-strong) 70%, transparent);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--text-on-brand);
   opacity: 0;
   transition: opacity 0.3s;
   cursor: pointer;
@@ -273,8 +271,8 @@ onUnmounted(() => {
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: #ef4444;
-  color: white;
+  background: var(--status-danger);
+  color: var(--text-on-brand);
   border: none;
   border-radius: 0.375rem;
   cursor: pointer;
@@ -282,7 +280,7 @@ onUnmounted(() => {
 }
 
 .clear-all-btn:hover {
-  background: #dc2626;
+  background: var(--status-danger);
 }
 
 .input {
@@ -295,13 +293,13 @@ onUnmounted(() => {
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  /* border: 2px dashed #d1d5db; */
+  /* border: 2px dashed var(--main-border); */
   border-radius: 0.5rem;
   cursor: pointer;
   transition: border-color 0.3s;
 }
 
 .input-label-images:hover {
-  border-color: #3b82f6;
+  border-color: var(--brand-primary-400);
 }
 </style>

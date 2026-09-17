@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import IndexRootCausesParams from '@/features/setting/RootCauses/Core/params/indexRootCausesParams'
-import IndexRootCausesController from '@/features/setting/RootCauses/Presentation/controllers/indexRootCausesController'
 
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
@@ -13,8 +11,6 @@ import wordSlice from '@/base/Presentation/utils/word_slice'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
-import DeleteRootCausesController from '@/features/setting/RootCauses/Presentation/controllers/deleteRootCausesController'
-import DeleteRootCausesParams from '@/features/setting/RootCauses/Core/params/deleteRootCausesParams'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
@@ -22,11 +18,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import IndexTicketTypeController from '../controllers/indexTicketTypeController'
@@ -207,9 +199,7 @@ watch(
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/organization/ticket-type/${item.id}`"
-                    >{{ index + 1 }}
-                  </router-link>
+                  <span :to="`/organization/ticket-type/${item.id}`">{{ index + 1 }} </span>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
                 <td data-label="Actions">
@@ -247,8 +237,8 @@ watch(
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/ticket-type/add`"
             addText="Add TicketType"
-            description="Sorry .. You have no TicketTypes .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No TicketTypes"
+            description="You have no TicketTypes .. All your joined customers will appear here when you add your customer data"
+            title="You have No TicketTypes"
           />
         </PermissionBuilder>
       </template>
@@ -265,8 +255,8 @@ watch(
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/ticket-type/add`"
             addText="Add TicketType"
-            description="Sorry .. You have no TicketTypes .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No TicketTypes"
+            description="You have no TicketTypes .. All your joined customers will appear here when you add your customer data"
+            title="You have No TicketTypes"
           />
         </PermissionBuilder>
       </template>
@@ -275,7 +265,7 @@ watch(
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no RootCauses .. All your joined customers will appear here when you add your customer data"
+        description="You have no RootCauses .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </PermissionBuilder>

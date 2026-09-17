@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import Checkbox from 'primevue/checkbox'
 import type ItemModel from '@/features/setting/TemplateItem/Data/models/ItemMode'
 import { TextAreaStatusEnum } from '@/features/setting/TemplateItem/Core/Enum/TextAreaStatusEnum'
 import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
-import { ref, watch, computed } from 'vue'
+import { ref, watch } from 'vue'
 import type TaskResultItemModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/ItemTasksResultModel'
 
 const emit = defineEmits(['update:data', 'update:images'])

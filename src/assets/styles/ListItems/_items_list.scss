@@ -3,24 +3,24 @@
 
 .items-list-container {
   border-radius: $XlSize;
-  background-color: #f8f8f8;
+  background-color: var(--text-on-brand);
   font-family: 'Regular';
   margin-top: $XsSize2;
   border: none;
   .items-list-header {
     padding: $XsSize $MdSize;
-    border-bottom: 1px solid #f2f2f2;
+    border-bottom: 1px solid var(--surface-2);
     .add-item {
-      background-color: #1d4ed8;
+      background-color: var(--brand-primary-500);
       border-radius: 50%;
       width: 30px !important;
       height: 30px !important;
       @include flex-row(nowrap, center, center);
       .icon {
-        color: white !important;
+        color: var(--text-on-brand) !important;
         svg {
           path {
-            fill: white !important;
+            fill: var(--text-on-brand) !important;
           }
         }
       }
@@ -30,11 +30,11 @@
   .input-item {
     width: 90%;
     .item-title {
-      background-color: white !important;
-      border: 1px solid #d9dbe9 !important;
+      background-color: var(--text-on-brand) !important;
+      border: 1px solid var(--brand-primary-100) !important;
 
       &::placeholder {
-        color: #9ca3af;
+        color: var(--text-soft);
         font-size: $SmSize;
         font-weight: $BaseFontMediumWeight;
       }
@@ -42,27 +42,27 @@
   }
 
   .items-actions {
-    background-color: white !important;
+    background-color: var(--text-on-brand) !important;
     width: 60px !important;
     height: 60px !important;
     border-radius: 50%;
     margin-top: calc($XlSize2 + 4px);
-    border: 1px solid #d9dbe9;
+    border: 1px solid var(--brand-primary-100);
 
     @include flex-row(nowrap, center, center);
     gap: $XsSize2;
 
     .remove-item {
-      background-color: #1d4ed8;
+      background-color: var(--brand-primary-500);
       border-radius: 50%;
       width: 30px !important;
       height: 30px !important;
       @include flex-row(nowrap, center, center);
       .icon {
-        color: white !important;
+        color: var(--text-on-brand) !important;
         svg {
           path {
-            fill: white !important;
+            fill: var(--text-on-brand) !important;
           }
         }
       }

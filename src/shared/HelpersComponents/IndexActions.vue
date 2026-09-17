@@ -165,8 +165,8 @@ const handleExportExcel = () => {
   display: flex;
   align-items: center;
   gap: 8px;
-  /* background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); */
-  color: rgba(0, 0, 0, 0.733);
+  /* background: linear-gradient(135deg, var(--brand-primary-800) 0%, var(--brand-primary-600) 100%); */
+  color: color-mix(in srgb, var(--text-strong) 73.3%, transparent);
   border: none;
   border-radius: 14px;
   padding: 10px 18px;
@@ -174,15 +174,15 @@ const handleExportExcel = () => {
   font-weight: 600;
   cursor: pointer;
   letter-spacing: 0.01em;
-  /* box-shadow: 0 4px 16px rgba(49, 46, 129, 0.35); */
+  /* box-shadow: 0 4px 16px color-mix(in srgb, var(--brand-primary-600) 35%, transparent); */
   transition: all 0.2s ease;
   user-select: none;
-  border: 1px solid rgba(167, 164, 164, 0.596);
+  border: 1px solid color-mix(in srgb, var(--text-soft) 59.6%, transparent);
 }
 
 .trigger-btn:hover {
   transform: translateY(-1px);
-  /* box-shadow: 0 6px 24px rgba(49, 46, 129, 0.45); */
+  /* box-shadow: 0 6px 24px color-mix(in srgb, var(--brand-primary-600) 45%, transparent); */
 }
 
 .trigger-btn:active {
@@ -198,7 +198,7 @@ const handleExportExcel = () => {
 }
 
 .trigger-badge {
-  background: rgba(255, 255, 255, 0.2);
+  background: color-mix(in srgb, var(--surface-1) 20%, transparent);
   border-radius: 6px;
   padding: 1px 7px;
   font-size: 12px;
@@ -211,12 +211,12 @@ const handleExportExcel = () => {
   top: calc(100% + 10px);
   right: 0;
   width: 230px;
-  background: #fff;
+  background: var(--surface-1);
   border-radius: 18px;
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.13),
-    0 4px 16px rgba(0, 0, 0, 0.06),
-    0 0 0 1px rgba(0, 0, 0, 0.04);
+    0 20px 60px color-mix(in srgb, var(--shadow-color) 13%, transparent),
+    0 4px 16px color-mix(in srgb, var(--shadow-color) 6%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--shadow-color) 4%, transparent);
   padding: 8px;
   z-index: 999;
   transform-origin: top right;
@@ -249,7 +249,7 @@ const handleExportExcel = () => {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #9ca3af;
+  color: var(--text-soft);
   padding: 6px 10px 4px;
 }
 
@@ -263,7 +263,7 @@ const handleExportExcel = () => {
   cursor: pointer;
   text-decoration: none;
   transition: background 0.15s ease, transform 0.15s ease;
-  color: #374151;
+  color: var(--brand-primary-700);
   border: none;
   background: transparent;
   width: 100%;
@@ -273,7 +273,7 @@ const handleExportExcel = () => {
 }
 
 .action-item:hover {
-  background: #f5f6fa;
+  background: var(--brand-primary-50);
   transform: translateX(3px);
 }
 
@@ -283,13 +283,13 @@ const handleExportExcel = () => {
 
 /* Highlighted CTA row */
 .action-item.highlight {
-  background: linear-gradient(135deg, #eef2ff, #f5f3ff);
-  border: 1px solid #c7d2fe;
+  background: linear-gradient(135deg, var(--brand-primary-50), var(--brand-primary-50));
+  border: 1px solid var(--brand-primary-100);
   margin-top: 2px;
 }
 
 .action-item.highlight:hover {
-  background: linear-gradient(135deg, #e0e7ff, #ede9fe);
+  background: linear-gradient(135deg, var(--brand-primary-100), var(--brand-primary-50));
   transform: translateX(3px);
 }
 
@@ -305,23 +305,23 @@ const handleExportExcel = () => {
 }
 
 .icon-pdf {
-  background: #fef2f2;
-  color: #ef4444;
+  background: var(--status-danger-soft);
+  color: var(--status-danger);
 }
 
 .icon-xls {
-  background: #f0fdf4;
-  color: #16a34a;
+  background: var(--status-success-soft);
+  color: var(--status-success);
 }
 
 .icon-up {
-  background: #eff6ff;
-  color: #3b82f6;
+  background: var(--brand-primary-50);
+  color: var(--brand-primary-400);
 }
 
 .icon-add {
-  background: #eef2ff;
-  color: #4f46e5;
+  background: var(--brand-primary-50);
+  color: var(--brand-primary-400);
 }
 
 /* ── Meta text ────────────────────────────────────────── */
@@ -333,20 +333,20 @@ const handleExportExcel = () => {
 .action-name {
   font-size: 13.5px;
   font-weight: 600;
-  color: #111827;
+  color: var(--brand-primary-900);
   line-height: 1.3;
 }
 
 .action-desc {
   font-size: 11px;
-  color: #9ca3af;
+  color: var(--text-soft);
   margin-top: 1px;
 }
 
 /* ── Divider ──────────────────────────────────────────── */
 .panel-divider {
   height: 1px;
-  background: #f3f4f6;
+  background: var(--brand-primary-50);
   margin: 5px 4px;
 }
 

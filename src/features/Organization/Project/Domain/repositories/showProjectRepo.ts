@@ -8,7 +8,7 @@ import { ShowProjectApiService } from '../../Data/apiServices/showProjectApiServ
 class ShowProjectRepo extends RepoInterface<ProjectDetailsModel> {
   private static instance: ShowProjectRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

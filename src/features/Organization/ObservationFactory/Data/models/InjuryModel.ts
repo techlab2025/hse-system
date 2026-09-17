@@ -1,6 +1,10 @@
-import type TitleInterface from '@/base/Data/Models/title_interface'
+import TitleInterface from '@/base/Data/Models/title_interface'
 import type FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
 import OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
+
+export type InjuryPpeItem = {
+  ppe_item: number
+}
 
 export default class InjuryDetailsModel {
   public id: number
@@ -9,6 +13,7 @@ export default class InjuryDetailsModel {
   public created_at: string
   public employee_name: string
   public is_work_stopped: boolean
+  public incident_categories: TitleInterface[]
   public media: FilesModel[]
   public note: string
   public organization_employee: OrganizatoinEmployeeModel
@@ -16,6 +21,10 @@ export default class InjuryDetailsModel {
   public type: number
   public updated_at: string
   public injury_type?: TitleInterface
+  public ppe_item: number
+  public ppe_items: InjuryPpeItem[]
+  public ppe_item_condition: number
+  public ppe_item_text: string
 
   constructor(
     id: number,
@@ -30,7 +39,12 @@ export default class InjuryDetailsModel {
     status: number,
     type: number,
     updated_at: string,
-    injury_type?: TitleInterface
+    injury_type?: TitleInterface,
+    incident_categories: TitleInterface[] = [],
+    ppe_item: number = 0,
+    ppe_item_condition: number = 0,
+    ppe_item_text: string = '',
+    ppe_items: InjuryPpeItem[] = [],
   ) {
     this.id = id
     this.title = title
@@ -45,9 +59,16 @@ export default class InjuryDetailsModel {
     this.type = type
     this.updated_at = updated_at
     this.injury_type = injury_type
+    this.incident_categories = incident_categories
+    this.ppe_item = ppe_item
+    this.ppe_item_condition = ppe_item_condition
+    this.ppe_item_text = ppe_item_text
+    this.ppe_items = ppe_items
   }
 
   static fromMap(data: any): InjuryDetailsModel {
+    const ppeItems = this.getPpeItems(data)
+
     return new InjuryDetailsModel(
       data.id,
       data.title,
@@ -61,8 +82,37 @@ export default class InjuryDetailsModel {
       data.status,
       data.type,
       data.updated_at,
-      data.injury_type
+      data.injury_type,
+      (data.incident_categories ?? []).map((item: any) => {
+        const category = item?.incident_category ?? item
+        const locale = localStorage.getItem('lang')
+        return new TitleInterface({
+          id: Number(item?.incident_category_id ?? category?.id ?? item) || 0,
+          title:
+            category?.title ??
+            category?.titles?.find((title: any) => title.locale === locale)?.title ??
+            '',
+        })
+      }),
+      ppeItems[0]?.ppe_item ?? 0,
+      Number(data.ppe_item_condition) || 0,
+      data.ppe_item_text ?? '',
+      ppeItems,
     )
+  }
+
+  static getPpeItems(data: any): InjuryPpeItem[] {
+    const items = Array.isArray(data?.ppe_items)
+      ? data.ppe_items
+      : Array.isArray(data?.ppe_item)
+        ? data.ppe_item
+        : data?.ppe_item
+          ? [{ ppe_item: data.ppe_item }]
+          : []
+
+    return items
+      .map((item: any) => ({ ppe_item: Number(item?.ppe_item ?? item?.id ?? item) || 0 }))
+      .filter((item: InjuryPpeItem) => item.ppe_item > 0)
   }
 
   static example: InjuryDetailsModel = new InjuryDetailsModel(

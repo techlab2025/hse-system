@@ -3,10 +3,9 @@ import type { DataState } from '@/base/core/networkStructure/Resources/dataState
 import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import IndexCapaUseCase from '../../Domain/useCase/indexCapaUseCase'
-import type CapaModel from '../../Data/models/CapaModel'
-import type HazardModel from '@/features/Organization/ObservationFactory/Data/models/hazardModel'
+import type IndexCapaModel from '../../Data/models/IndexCapaModel'
 
-export default class IndexCapaController extends SelectControllerInterface<HazardModel[]> {
+export default class IndexCapaController extends SelectControllerInterface<IndexCapaModel[]> {
   private static instance: IndexCapaController
   private constructor() {
     super()
@@ -21,14 +20,11 @@ export default class IndexCapaController extends SelectControllerInterface<Hazar
   }
 
   async getData(params: Params) {
-    // useLoaderStore().setLoadingWithDialog();
-    // console.log(params)
     this.setLoading()
-    const dataState: DataState<HazardModel[]> = await this.indexCapaUseCase.call(params)
+    const dataState: DataState<IndexCapaModel[]> = await this.indexCapaUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
-      // useLoaderStore().endLoadingWithDialog();
     } else {
       throw new Error('Error while addServices')
     }

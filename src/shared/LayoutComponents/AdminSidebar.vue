@@ -6,9 +6,12 @@ import AccordionContent from 'primevue/accordioncontent'
 import { ref, watch } from 'vue'
 import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import IconSetting from '@/shared/icons/IconSetting.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import SidebarUnicon from '@/shared/icons/SidebarUnicon.vue'
+
+const props = defineProps<{ open: boolean }>()
+const emit = defineEmits<{ logout: [] }>()
 
 const route = useRoute()
 
@@ -16,6 +19,7 @@ interface Routes {
   link: string
   name: string
   permissions: PermissionsEnum[]
+  icon: string
 }
 const { t } = useI18n()
 
@@ -23,6 +27,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/admins',
     name: t('admins'),
+    icon: 'user-circle',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum?.ADMIN_ALL,
@@ -34,8 +39,22 @@ const SettingsRoutes = ref<Routes[]>([
     ],
   },
   {
+    link: '/admin/team',
+    name: t('team'),
+    icon: 'team',
+    permissions: [
+      PermissionsEnum.TEAM_ALL,
+      PermissionsEnum.TEAM_FETCH,
+      PermissionsEnum.TEAM_DETAILS,
+      PermissionsEnum.TEAM_CREATE,
+      PermissionsEnum.TEAM_UPDATE,
+      PermissionsEnum.TEAM_DELETE,
+    ],
+  },
+  {
     link: '/admin/languages',
     name: t('languages'),
+    icon: 'language',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum?.LANGUAGE_ALL,
@@ -49,6 +68,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/industry',
     name: t('industry'),
+    icon: 'building',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.INDUSTRY_ALL,
@@ -58,21 +78,10 @@ const SettingsRoutes = ref<Routes[]>([
       PermissionsEnum.INDUSTRY_UPDATE,
     ],
   },
-  // {
-  //   link: '/admin/equipment-types',
-  //   name: t('equipment_types'),
-  //   permissions: [
-  //     PermissionsEnum?.ADMIN,
-  //     PermissionsEnum.EQUIPMENT_TYPE_ALL,
-  //     PermissionsEnum.EQUIPMENT_TYPE_CREATE,
-  //     PermissionsEnum.EQUIPMENT_TYPE_DELETE,
-  //     PermissionsEnum.EQUIPMENT_TYPE_FETCH,
-  //     PermissionsEnum.EQUIPMENT_TYPE_UPDATE,
-  //   ],
-  // },
   {
     link: '/admin/equipments',
     name: t('equipments'),
+    icon: 'wrench',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.EQUIPMENT_ALL,
@@ -82,55 +91,10 @@ const SettingsRoutes = ref<Routes[]>([
       PermissionsEnum.EQUIPMENT_UPDATE,
     ],
   },
-  // {
-  //   link: '/admin/hazard-type',
-  //   name: t('hazard_types'),
-  //   permissions: [
-  //     PermissionsEnum.HAZARD_TYPE_ALL,
-  //     PermissionsEnum.HAZARD_TYPE_CREATE,
-  //     PermissionsEnum.HAZARD_TYPE_DELETE,
-  //     PermissionsEnum.HAZARD_TYPE_FETCH,
-  //     PermissionsEnum.HAZARD_TYPE_UPDATE,
-  //   ],
-  // },
-  // {
-  //   link: '/admin/observation-type',
-  //   name: t('observation_types'),
-  //   permissions: [
-  //     PermissionsEnum.OBSERVATION_TYPE_ALL,
-  //     PermissionsEnum.OBSERVATION_TYPE_CREATE,
-  //     PermissionsEnum.OBSERVATION_TYPE_DELETE,
-  //     PermissionsEnum.OBSERVATION_TYPE_FETCH,
-  //     PermissionsEnum.OBSERVATION_TYPE_UPDATE,
-  //     PermissionsEnum.ADMIN,
-  //   ],
-  // },
-  // {
-  //   link: '/admin/health-conditions',
-  //   name: 'health_conditions',
-  //   permissions: [
-  //     PermissionsEnum.HEALTH_CONDITION_ALL,
-  //     PermissionsEnum.HEALTH_CONDITION_CREATE,
-  //     PermissionsEnum.HEALTH_CONDITION_DELETE,
-  //     PermissionsEnum.HEALTH_CONDITION_FETCH,
-  //     PermissionsEnum.HEALTH_CONDITION_UPDATE,
-  //     PermissionsEnum.ADMIN,
-  //   ],
-  // },
-  // {
-  //   link: '/admin/accidents-type',
-  //   name: t('incidant_types'),
-  //   permissions: [
-  //     PermissionsEnum.ACCIDENTS_TYPE_ALL,
-  //     PermissionsEnum.ACCIDENTS_TYPE_CREATE,
-  //     PermissionsEnum.ACCIDENTS_TYPE_DELETE,
-  //     PermissionsEnum.ACCIDENTS_TYPE_FETCH,
-  //     PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
-  //   ],
-  // },
   {
     link: '/admin/factories-items',
-    name: t('hazard_factor_items'),
+    name: t('factor_items'),
+    icon: 'circle-layer',
     permissions: [
       PermissionsEnum.FACTORY_ITEM_ALL,
       PermissionsEnum.FACTORY_ITEM_CREATE,
@@ -141,7 +105,8 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/factory',
-    name: t('hazard_factors'),
+    name: t('factors'),
+    icon: 'shield-exclamation',
     permissions: [
       PermissionsEnum.FACTORY_ALL,
       PermissionsEnum.FACTORY_CREATE,
@@ -153,6 +118,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/template',
     name: t('templates'),
+    icon: 'book-open',
     permissions: [
       PermissionsEnum.TEMPLATE_ALL,
       PermissionsEnum.TEMPLATE_CREATE,
@@ -161,20 +127,10 @@ const SettingsRoutes = ref<Routes[]>([
       PermissionsEnum.TEMPLATE_UPDATE,
     ],
   },
-  // {
-  //   link: '/admin/project-types',
-  //   name: t('project_types'),
-  //   permissions: [
-  //     PermissionsEnum.PROJECT_TYPE_ALL,
-  //     PermissionsEnum.PROJECT_TYPE_CREATE,
-  //     PermissionsEnum.PROJECT_TYPE_DELETE,
-  //     PermissionsEnum.PROJECT_TYPE_FETCH,
-  //     PermissionsEnum.PROJECT_TYPE_UPDATE,
-  //   ],
-  // },
   {
     link: '/admin/organization',
     name: t('organization'),
+    icon: 'building',
     permissions: [
       PermissionsEnum.ORGANIZATION_ALL,
       PermissionsEnum.ORGANIZATION_CREATE,
@@ -186,6 +142,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/role',
     name: t('roles'),
+    icon: 'shield-check',
     permissions: [
       PermissionsEnum.ROLE_ALL,
       PermissionsEnum.ROLE_CREATE,
@@ -197,6 +154,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/ticket-type',
     name: t('ticket_types'),
+    icon: 'ticket',
     permissions: [
       PermissionsEnum.TICKET_TYPE_ALL,
       PermissionsEnum.TICKET_TYPE_CREATE,
@@ -208,6 +166,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/ticket',
     name: t('ticket'),
+    icon: 'ticket',
     permissions: [
       PermissionsEnum.TICKET_ALL,
       PermissionsEnum.TICKET_CREATE,
@@ -219,6 +178,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/catalog',
     name: t('catalog'),
+    icon: 'books',
     permissions: [
       PermissionsEnum.CATALOG_ALL,
       PermissionsEnum.CATALOG_CREATE,
@@ -230,6 +190,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/catalog-items',
     name: t('catalog_items'),
+    icon: 'list-ui-alt',
     permissions: [
       PermissionsEnum.CATALOG_ALL,
       PermissionsEnum.CATALOG_CREATE,
@@ -238,23 +199,13 @@ const SettingsRoutes = ref<Routes[]>([
       PermissionsEnum.CATALOG_UPDATE,
     ],
   },
-  //  {
-  //   link: '/admin/catalog-items-details',
-  //   name: 'catalog_items_details',
-  //   permissions: [
-  //     PermissionsEnum.CATALOG_DETAILS_ALL,
-  //     PermissionsEnum.CATALOG_DETAILS_CREATE,
-  //     PermissionsEnum.CATALOG_DETAILS_DELETE,
-  //     PermissionsEnum.CATALOG_DETAILS_FETCH,
-  //     PermissionsEnum.CATALOG_DETAILS_UPDATE,
-  //   ],
-  // },
 ])
 
 const LocationRoutes = ref<Routes[]>([
   {
     link: '/admin/countries',
     name: t('country'),
+    icon: 'globe',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum?.LOCATION_ALL,
@@ -268,6 +219,7 @@ const LocationRoutes = ref<Routes[]>([
   {
     link: '/admin/states',
     name: t('state'),
+    icon: 'map-marker-alt',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.LOCATION_ALL,
@@ -280,6 +232,7 @@ const LocationRoutes = ref<Routes[]>([
   {
     link: '/admin/cities',
     name: t('city'),
+    icon: 'map',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.LOCATION_ALL,
@@ -292,6 +245,7 @@ const LocationRoutes = ref<Routes[]>([
   {
     link: '/admin/areas',
     name: t('locations'),
+    icon: 'location-point',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum.LOCATION_ALL,
@@ -302,10 +256,38 @@ const LocationRoutes = ref<Routes[]>([
     ],
   },
 ])
+
 const LockUpsRoutes = ref<Routes[]>([
+  {
+    link: '/admin/ppe-items',
+    name: t('ppe_items'),
+    icon: 'shield-check',
+    permissions: [
+      PermissionsEnum.PPE_ITEM_ALL,
+      PermissionsEnum.PPE_ITEM_FETCH,
+      PermissionsEnum.PPE_ITEM_DETAILS,
+      PermissionsEnum.PPE_ITEM_CREATE,
+      PermissionsEnum.PPE_ITEM_UPDATE,
+      PermissionsEnum.PPE_ITEM_DELETE,
+    ],
+  },
+  {
+    link: '/admin/drill-types',
+    name: t('drill_types'),
+    icon: 'clipboard-notes',
+    permissions: [
+      PermissionsEnum.DRILL_TYPE_ALL,
+      PermissionsEnum.DRILL_TYPE_FETCH,
+      PermissionsEnum.DRILL_TYPE_DETAILS,
+      PermissionsEnum.DRILL_TYPE_CREATE,
+      PermissionsEnum.DRILL_TYPE_UPDATE,
+      PermissionsEnum.DRILL_TYPE_DELETE,
+    ],
+  },
   {
     link: '/admin/where-house-type',
     name: t('warehouse_types'),
+    icon: 'store-alt',
     permissions: [
       PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
       PermissionsEnum.WHIERE_HOUSE_TYPE_FETCH,
@@ -318,6 +300,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/admin/hazard-type',
     name: t('hazard_type'),
+    icon: 'shield-exclamation',
     permissions: [
       PermissionsEnum.HAZARD_TYPE_ALL,
       PermissionsEnum.HAZARD_TYPE_FETCH,
@@ -330,6 +313,20 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/admin/accidents-type',
     name: t('incident_types'),
+    icon: 'exclamation-octagon',
+    permissions: [
+      PermissionsEnum.ACCIDENTS_TYPE_ALL,
+      PermissionsEnum.ACCIDENTS_TYPE_FETCH,
+      PermissionsEnum.ACCIDENTS_TYPE_DETAILS,
+      PermissionsEnum.ACCIDENTS_TYPE_CREATE,
+      PermissionsEnum.ACCIDENTS_TYPE_UPDATE,
+      PermissionsEnum.ACCIDENTS_TYPE_DELETE,
+    ],
+  },
+  {
+    link: '/admin/incident-category',
+    name: t('incident_categories'),
+    icon: 'list-ui-alt',
     permissions: [
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
       PermissionsEnum.ACCIDENTS_TYPE_FETCH,
@@ -342,6 +339,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/admin/observation-type',
     name: t('observation_type'),
+    icon: 'eye',
     permissions: [
       PermissionsEnum.OBSERVATION_TYPE_ALL,
       PermissionsEnum.OBSERVATION_TYPE_FETCH,
@@ -349,12 +347,12 @@ const LockUpsRoutes = ref<Routes[]>([
       PermissionsEnum.OBSERVATION_TYPE_CREATE,
       PermissionsEnum.OBSERVATION_TYPE_UPDATE,
       PermissionsEnum.OBSERVATION_TYPE_DELETE,
-
     ],
   },
   {
     link: '/admin/equipment-types',
     name: t('equipment_types'),
+    icon: 'hard-hat',
     permissions: [
       PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
       PermissionsEnum.ORG_EQUIPMENT_TYPE_FETCH,
@@ -367,6 +365,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/admin/root-causes',
     name: t('root_causes'),
+    icon: 'sitemap',
     permissions: [
       PermissionsEnum.ROOT_CAUSES_ALL,
       PermissionsEnum.ROOT_CAUSES_CREATE,
@@ -378,6 +377,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/admin/injury',
     name: t('injury'),
+    icon: 'medical-square',
     permissions: [
       PermissionsEnum.INJURY_ALL,
       PermissionsEnum.INJURY_CREATE,
@@ -386,12 +386,41 @@ const LockUpsRoutes = ref<Routes[]>([
       PermissionsEnum.INJURY_UPDATE,
     ],
   },
+  {
+    link: '/admin/meeting-types',
+    name: t('meeting types'),
+    icon: 'receipt',
+    permissions: [
+      PermissionsEnum?.ADMIN,
+      PermissionsEnum?.MEETING_TYPE_ALL,
+      PermissionsEnum.MEETING_TYPE_CREATE,
+      PermissionsEnum.MEETING_TYPE_UPDATE,
+      PermissionsEnum.MEETING_TYPE_DETAILS,
+      PermissionsEnum.MEETING_TYPE_DELETE,
+      PermissionsEnum.MEETING_TYPE_FETCH,
+    ],
+  },
+    {
+    link: '/admin/ptw-types',
+    name: t('ptw types'),
+    icon: 'receipt',
+    permissions: [
+      PermissionsEnum?.ADMIN,
+      PermissionsEnum.PTW_TYPE_ALL,
+      PermissionsEnum.PTW_TYPE_CREATE,
+      PermissionsEnum.PTW_TYPE_UPDATE,
+      PermissionsEnum.PTW_TYPE_DETAILS,
+      PermissionsEnum.PTW_TYPE_DELETE,
+      PermissionsEnum.PTW_TYPE_FETCH,
+    ],
+  },
 ])
 
 const SubscriptionTypeRoutes = ref<Routes[]>([
   {
     link: '/admin/subscription-types',
     name: t('subscription_type'),
+    icon: 'money-bill',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum?.SUBSCRIPTION_TYPE_ALL,
@@ -402,22 +431,10 @@ const SubscriptionTypeRoutes = ref<Routes[]>([
       PermissionsEnum.SUBSCRIPTION_TYPE_FETCH,
     ],
   },
-  // {
-  //   link: '/admin/subscriptions',
-  //   name: 'subscriptions',
-  //   permissions: [
-  //     PermissionsEnum?.ADMIN,
-  //     PermissionsEnum?.SUBSCRIPTION_ALL,
-  //     PermissionsEnum.SUBSCRIPTION_CREATE,
-  //     PermissionsEnum.SUBSCRIPTION_UPDATE,
-  //     PermissionsEnum.SUBSCRIPTION_DETAILS,
-  //     PermissionsEnum.SUBSCRIPTION_DELETE,
-  //     PermissionsEnum.SUBSCRIPTION_FETCH,
-  //   ],
-  // },
   {
     link: '/admin/subscription-application',
     name: t('subscriptions_request'),
+    icon: 'receipt',
     permissions: [
       PermissionsEnum?.ADMIN,
       PermissionsEnum?.SUBSCRIPTION_APPLICATION_ALL,
@@ -430,13 +447,11 @@ const SubscriptionTypeRoutes = ref<Routes[]>([
   },
 ])
 
-
-
-
 const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/client-opinions',
     name: t('client_opinion'),
+    icon: 'feedback',
     permissions: [
       PermissionsEnum?.WEBSITE,
       PermissionsEnum?.CLIENT_OPINION_ALL,
@@ -450,6 +465,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/home-contact-us',
     name: t('home_contact_us'),
+    icon: 'comment-message',
     permissions: [
       PermissionsEnum?.WEBSITE,
       PermissionsEnum?.HOME_CONTACT_US_ALL,
@@ -463,6 +479,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/categories',
     name: t('categories'),
+    icon: 'list-ui-alt',
     permissions: [
       PermissionsEnum.CATEGORY_ALL,
       PermissionsEnum.CATEGORY_CREATE,
@@ -474,6 +491,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/services',
     name: t('services'),
+    icon: 'setting',
     permissions: [
       PermissionsEnum.SERVICE_ALL,
       PermissionsEnum.SERVICE_CREATE,
@@ -485,6 +503,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/hashtags',
     name: t('hashtags'),
+    icon: 'tag-alt',
     permissions: [
       PermissionsEnum.HASHTAG_ALL,
       PermissionsEnum.HASHTAG_CREATE,
@@ -496,6 +515,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/term/add',
     name: t('terms'),
+    icon: 'file-contract',
     permissions: [
       PermissionsEnum.TERM_ALL,
       PermissionsEnum.TERM_CREATE_OR_UPDATE,
@@ -505,6 +525,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/headers',
     name: t('headers'),
+    icon: 'window',
     permissions: [
       PermissionsEnum.HEADER_ALL,
       PermissionsEnum.HEADER_CREATE,
@@ -516,6 +537,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/service-features',
     name: t('service_features'),
+    icon: 'bolt',
     permissions: [
       PermissionsEnum.SERVICE_FEATURE_ALL,
       PermissionsEnum.SERVICE_FEATURE_CREATE,
@@ -527,6 +549,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/service_section',
     name: t('service_section'),
+    icon: 'web-section',
     permissions: [
       PermissionsEnum.SERVICE_SECTION_ALL,
       PermissionsEnum.SERVICE_SECTION_CREATE,
@@ -538,6 +561,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/powerfull-features',
     name: t('powerful_features'),
+    icon: 'star',
     permissions: [
       PermissionsEnum.POWERFUL_FEATURE_ALL,
       PermissionsEnum.POWERFUL_FEATURE_CREATE,
@@ -549,6 +573,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/system-works',
     name: t('system_works'),
+    icon: 'sync',
     permissions: [
       PermissionsEnum.SYSTEM_WORK_ALL,
       PermissionsEnum.SYSTEM_WORK_CREATE,
@@ -560,6 +585,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/privacy/add',
     name: t('privacy'),
+    icon: 'lock',
     permissions: [
       PermissionsEnum.PRIVACY_ALL,
       PermissionsEnum.PRIVACY_CREATE_OR_UPDATE,
@@ -569,6 +595,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/home-view-pricing',
     name: t('homeViewPricing'),
+    icon: 'wallet',
     permissions: [
       PermissionsEnum.HOME_VIEW_PRICING_ALL,
       PermissionsEnum.HOME_VIEW_PRICING_CREATE,
@@ -580,6 +607,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/service_logs',
     name: t('service_logs'),
+    icon: 'history',
     permissions: [
       PermissionsEnum.SERVICE_LOG_ALL,
       PermissionsEnum.SERVICE_LOG_CREATE,
@@ -591,6 +619,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/blog',
     name: t('blogs'),
+    icon: 'book',
     permissions: [
       PermissionsEnum.BLOG_ALL,
       PermissionsEnum.BLOG_CREATE,
@@ -602,6 +631,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/home-about-us',
     name: t('home_about_us'),
+    icon: 'estate',
     permissions: [
       PermissionsEnum.HOME_ABOUT_US_ALL,
       PermissionsEnum.HOME_ABOUT_US_CREATE,
@@ -613,6 +643,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/about-us-features',
     name: t('about_us_features'),
+    icon: 'question-circle',
     permissions: [
       PermissionsEnum.ABOUT_US_FEATURE_ALL,
       PermissionsEnum.ABOUT_US_FEATURE_CREATE,
@@ -624,6 +655,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/about-us-core',
     name: t('about_us_core'),
+    icon: 'bullseye',
     permissions: [
       PermissionsEnum.ABOUT_US_CORE_ALL,
       PermissionsEnum.ABOUT_US_CORE_CREATE,
@@ -635,6 +667,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/faq',
     name: t('faqs'),
+    icon: 'comment-question',
     permissions: [
       PermissionsEnum.FAQ_ALL,
       PermissionsEnum.FAQ_CREATE,
@@ -646,6 +679,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/system-risk-management',
     name: t('systemRiskManagement'),
+    icon: 'shield-exclamation',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_ALL,
       PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_CREATE,
@@ -657,6 +691,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/our-system-step',
     name: t('ourSystemStep'),
+    icon: 'directions',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_STEP_ALL,
       PermissionsEnum.OUR_SYSTEM_STEP_CREATE,
@@ -668,6 +703,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/system_banner',
     name: t('systemBanner'),
+    icon: 'image',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_BANNER_ALL,
       PermissionsEnum.OUR_SYSTEM_BANNER_CREATE,
@@ -679,6 +715,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/system_feature',
     name: t('systemFeature'),
+    icon: 'grid',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_FEATURE_ALL,
       PermissionsEnum.OUR_SYSTEM_FEATURE_CREATE,
@@ -690,6 +727,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/system_risk_type',
     name: t('systemRiskType'),
+    icon: 'exclamation-triangle',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_RISK_TYPE_ALL,
       PermissionsEnum.OUR_SYSTEM_RISK_TYPE_CREATE,
@@ -701,6 +739,7 @@ const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/system_components',
     name: t('systemComponents'),
+    icon: 'layers',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_COMPONENT_ALL,
       PermissionsEnum.OUR_SYSTEM_COMPONENT_CREATE,
@@ -720,12 +759,17 @@ const SelectedLockupsRoute = ref<string>('')
 watch(
   () => route.path,
   (newPath) => {
-    SelectedSettingsRoute.value = SettingsRoutes.value.find(item => item.link === newPath)?.name || ''
-    SelectedLocationRoute.value = LocationRoutes.value.find(item => item.link === newPath)?.name || ''
-    SelectedWebsiteRoute.value = WebsiteRoutes.value.find(item => item.link === newPath)?.name || ''
-    SelectedSubscriptionTypeRoute.value = SubscriptionTypeRoutes.value.find(item => item.link === newPath)?.name || ''
-    SelectedLockupsRoute.value = LockUpsRoutes.value.find(item => item.link === newPath)?.name || ''
-  }
+    SelectedSettingsRoute.value =
+      SettingsRoutes.value.find((item) => item.link === newPath)?.name || ''
+    SelectedLocationRoute.value =
+      LocationRoutes.value.find((item) => item.link === newPath)?.name || ''
+    SelectedWebsiteRoute.value =
+      WebsiteRoutes.value.find((item) => item.link === newPath)?.name || ''
+    SelectedSubscriptionTypeRoute.value =
+      SubscriptionTypeRoutes.value.find((item) => item.link === newPath)?.name || ''
+    SelectedLockupsRoute.value =
+      LockUpsRoutes.value.find((item) => item.link === newPath)?.name || ''
+  },
 )
 
 const settingsAccordion = ref<string | null>('0')
@@ -739,187 +783,414 @@ watch(LoackupsAccordion, (val) => {
 </script>
 
 <template>
-  <PermissionBuilder :code="[
-    PermissionsEnum?.ADMIN_ALL,
-    PermissionsEnum?.LANGUAGE_ALL,
-    PermissionsEnum?.INDUSTRY_ALL,
-    PermissionsEnum?.EQUIPMENT_TYPE_ALL,
-    PermissionsEnum?.EQUIPMENT_ALL,
-    PermissionsEnum?.HAZARD_TYPE_ALL,
-    PermissionsEnum?.ACCIDENTS_TYPE_ALL,
-    PermissionsEnum?.FACTORY_ITEM_ALL,
-    PermissionsEnum?.FACTORY_ALL,
-    PermissionsEnum?.CERTIFICATE_ALL,
-    PermissionsEnum?.TEMPLATE_ALL,
-    PermissionsEnum?.PROJECT_TYPE_ALL,
-    PermissionsEnum?.ORGANIZATION_ALL,
-  ]">
-    <Accordion v-model:value="settingsAccordion">
-      <AccordionPanel value="0">
-        <AccordionHeader>
-          <div class="links-header">
-            <IconSetting />
-            {{ $t('settings') }}
-          </div>
-        </AccordionHeader>
+  <!-- Icon strip shown when sidebar is closed -->
+  <template v-if="!open">
+    <div class="icon-strip">
+      <PermissionBuilder v-for="r in SettingsRoutes" :key="r.link" :code="r.permissions">
+        <router-link :to="r.link" class="icon-item" :data-title="r.name">
+          <SidebarUnicon :name="r.icon" class="strip-icon" />
+          <span class="icon-label">{{ $t(r.name) }}</span>
+        </router-link>
+      </PermissionBuilder>
 
-        <AccordionContent>
-          <ul>
-            <PermissionBuilder v-for="(route, index) in SettingsRoutes" :key="index" :code="route.permissions">
-              <li>
-                <router-link :to="route.link" :class="route?.fullPath?.includes(route.link) ? '' : ''">
-                  <span>{{ $t(route.name) }}</span>
-                </router-link>
-              </li>
-            </PermissionBuilder>
-          </ul>
-        </AccordionContent>
-      </AccordionPanel>
-      <AccordionPanel class="active-panel-out" v-if="SelectedSettingsRoute && !settingsAccordion">
-        <span>{{ SelectedSettingsRoute }}</span>
-      </AccordionPanel>
-    </Accordion>
-  </PermissionBuilder>
+      <PermissionBuilder v-for="r in LocationRoutes" :key="r.link" :code="r.permissions">
+        <router-link :to="r.link" class="icon-item" :data-title="r.name">
+          <SidebarUnicon :name="r.icon" class="strip-icon" />
+          <span class="icon-label">{{ $t(r.name) }}</span>
+        </router-link>
+      </PermissionBuilder>
 
-  <PermissionBuilder :code="[PermissionsEnum?.LOCATION_ALL]">
-    <Accordion v-model:value="locationAccordion">
-      <AccordionPanel value="1">
-        <AccordionHeader>
-          <div class="links-header">
-            <IconSetting />
-            {{ $t('location') }}
-          </div>
-        </AccordionHeader>
-        <AccordionContent>
-          <ul>
-            <PermissionBuilder v-for="(route, index) in LocationRoutes" :key="index" :code="route.permissions">
-              <li>
-                <router-link :to="route.link">
-                  <span>{{ $t(route.name) }}</span>
-                </router-link>
-              </li>
-            </PermissionBuilder>
-          </ul>
-        </AccordionContent>
-      </AccordionPanel>
-      <AccordionPanel class="active-panel-out" v-if="SelectedLocationRoute && !locationAccordion">
-        <span>{{ SelectedLocationRoute }}</span>
-      </AccordionPanel>
-    </Accordion>
-  </PermissionBuilder>
+      <PermissionBuilder v-for="r in SubscriptionTypeRoutes" :key="r.link" :code="r.permissions">
+        <router-link :to="r.link" class="icon-item" :data-title="r.name">
+          <SidebarUnicon :name="r.icon" class="strip-icon" />
+          <span class="icon-label">{{ $t(r.name) }}</span>
+        </router-link>
+      </PermissionBuilder>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum?.SUBSCRIPTION_TYPE_ALL,
-    PermissionsEnum?.SUBSCRIPTION_TYPE_CREATE,
-    PermissionsEnum?.SUBSCRIPTION_TYPE_UPDATE,
-    PermissionsEnum?.SUBSCRIPTION_TYPE_DETAILS,
-    PermissionsEnum?.SUBSCRIPTION_TYPE_DELETE,
-    PermissionsEnum?.SUBSCRIPTION_TYPE_FETCH,
-  ]">
-    <Accordion v-model:value="subscriptionTypeAccordion">
-      <AccordionPanel value="3">
-        <AccordionHeader>
-          <div class="links-header">
-            <IconSetting />
-            {{ $t('subscription_type') }}
-          </div>
-        </AccordionHeader>
-        <AccordionContent>
-          <ul>
-            <PermissionBuilder v-for="(route, index) in SubscriptionTypeRoutes" :key="index" :code="route.permissions">
-              <li>
-                <router-link :to="route.link">
-                  <span>{{ $t(route.name) }}</span>
-                </router-link>
-              </li>
-            </PermissionBuilder>
-          </ul>
-        </AccordionContent>
-      </AccordionPanel>
-      <AccordionPanel class="active-panel-out" v-if="SelectedSubscriptionTypeRoute && !subscriptionTypeAccordion">
-        <span>{{ SelectedSubscriptionTypeRoute }}</span>
-      </AccordionPanel>
-    </Accordion>
-  </PermissionBuilder>
+      <PermissionBuilder v-for="r in WebsiteRoutes" :key="r.link" :code="r.permissions">
+        <router-link :to="r.link" class="icon-item" :data-title="r.name">
+          <SidebarUnicon :name="r.icon" class="strip-icon" />
+          <span class="icon-label">{{ $t(r.name) }}</span>
+        </router-link>
+      </PermissionBuilder>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum?.WEBSITE,
-    PermissionsEnum?.CLIENT_OPINION_ALL,
-    PermissionsEnum?.HOME_CONTACT_US_ALL,
-    PermissionsEnum?.CATEGORY_ALL,
-    PermissionsEnum?.SERVICE_ALL,
-    PermissionsEnum?.HASHTAG_ALL,
-    PermissionsEnum?.TERM_ALL,
-    PermissionsEnum?.HEADER_ALL,
-    PermissionsEnum?.SERVICE_FEATURE_ALL,
-    PermissionsEnum?.SERVICE_SECTION_ALL,
-    PermissionsEnum?.POWERFUL_FEATURE_ALL,
-    PermissionsEnum?.SYSTEM_WORK_ALL,
-    PermissionsEnum?.PRIVACY_ALL,
-    PermissionsEnum?.HOME_VIEW_PRICING_ALL,
-    PermissionsEnum?.SERVICE_LOG_ALL,
-    PermissionsEnum?.BLOG_ALL,
-    PermissionsEnum?.HOME_ABOUT_US_ALL,
-    PermissionsEnum?.ABOUT_US_FEATURE_ALL,
-    PermissionsEnum?.ABOUT_US_CORE_ALL,
-    PermissionsEnum?.FAQ_ALL,
-    PermissionsEnum?.OUR_SYSTEM_RISK_MANAGEMENT_ALL,
-    PermissionsEnum?.OUR_SYSTEM_STEP_ALL,
-    PermissionsEnum?.OUR_SYSTEM_FEATURE_ALL,
-    PermissionsEnum?.OUR_SYSTEM_RISK_TYPE_ALL,
-    PermissionsEnum?.OUR_SYSTEM_COMPONENT_ALL,
-  ]">
-    <Accordion v-model:value="websiteAccordion">
-      <AccordionPanel value="2">
-        <AccordionHeader>
-          <div class="links-header">
-            <IconSetting />
-            {{ $t('website') }}
-          </div>
-        </AccordionHeader>
+      <PermissionBuilder v-for="r in LockUpsRoutes" :key="r.link" :code="r.permissions">
+        <router-link :to="r.link" class="icon-item" :data-title="r.name">
+          <SidebarUnicon :name="r.icon" class="strip-icon" />
+          <span class="icon-label">{{ $t(r.name) }}</span>
+        </router-link>
+      </PermissionBuilder>
+    </div>
+  </template>
 
-        <AccordionContent>
-          <ul>
-            <PermissionBuilder v-for="(route, index) in WebsiteRoutes" :key="index" :code="route.permissions">
-              <li>
-                <router-link :to="route.link">
-                  <span>{{ $t(route.name) }}</span>
-                </router-link>
-              </li>
-            </PermissionBuilder>
-          </ul>
-        </AccordionContent>
-      </AccordionPanel>
-      <AccordionPanel class="active-panel-out" v-if="SelectedWebsiteRoute && !websiteAccordion">
-        <span>{{ SelectedWebsiteRoute }}</span>
-      </AccordionPanel>
-    </Accordion>
-  </PermissionBuilder>
-  <PermissionBuilder :code="LockUpsRoutes?.map((item) => item.permissions.map((item) => item)).flat()">
-    <Accordion v-model:value="LoackupsAccordion">
-      <AccordionPanel value="4">
-        <AccordionHeader>
-          <div class="links-header">
-            <GeerIcon />
-            {{ $t('Lockups') }}
-          </div>
-        </AccordionHeader>
+  <!-- Full accordion view when sidebar is open -->
+  <template v-else>
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum?.ADMIN_ALL,
+        PermissionsEnum?.LANGUAGE_ALL,
+        PermissionsEnum?.INDUSTRY_ALL,
+        PermissionsEnum?.EQUIPMENT_TYPE_ALL,
+        PermissionsEnum?.EQUIPMENT_ALL,
+        PermissionsEnum?.HAZARD_TYPE_ALL,
+        PermissionsEnum?.ACCIDENTS_TYPE_ALL,
+        PermissionsEnum?.FACTORY_ITEM_ALL,
+        PermissionsEnum?.FACTORY_ALL,
+        PermissionsEnum?.CERTIFICATE_ALL,
+        PermissionsEnum?.TEMPLATE_ALL,
+        PermissionsEnum?.PROJECT_TYPE_ALL,
+        PermissionsEnum?.ORGANIZATION_ALL,
+      ]"
+    >
+      <Accordion v-model:value="settingsAccordion">
+        <AccordionPanel value="0">
+          <AccordionHeader>
+            <div class="links-header">
+              <SidebarUnicon name="setting" />
+              {{ $t('settings') }}
+            </div>
+          </AccordionHeader>
 
-        <AccordionContent>
-          <ul>
-            <PermissionBuilder v-for="(orgroute, index) in LockUpsRoutes" :key="index" :code="orgroute?.permissions">
-              <li>
-                <router-link :to="orgroute.link" :class="route?.fullPath?.includes(orgroute.link) ? '' : ''">
-                  <span>{{ $t(orgroute.name) }}</span>
-                </router-link>
-              </li>
-            </PermissionBuilder>
-          </ul>
-        </AccordionContent>
-      </AccordionPanel>
-      <AccordionPanel class="active-panel-out" v-if="SelectedLockupsRoute && !LoackupsAccordion">
-        <span>{{ SelectedLockupsRoute }}</span>
-      </AccordionPanel>
-    </Accordion>
-  </PermissionBuilder>
+          <AccordionContent>
+            <ul>
+              <PermissionBuilder
+                v-for="(r, index) in SettingsRoutes"
+                :key="index"
+                :code="r.permissions"
+              >
+                <li>
+                  <router-link :to="r.link">
+                    <SidebarUnicon :name="r.icon" class="route-icon" />
+                    <span>{{ $t(r.name) }}</span>
+                  </router-link>
+                </li>
+              </PermissionBuilder>
+            </ul>
+          </AccordionContent>
+        </AccordionPanel>
+        <AccordionPanel class="active-panel-out" v-if="SelectedSettingsRoute && !settingsAccordion">
+          <span>{{ SelectedSettingsRoute }}</span>
+        </AccordionPanel>
+      </Accordion>
+    </PermissionBuilder>
+
+    <PermissionBuilder :code="[PermissionsEnum?.LOCATION_ALL]">
+      <Accordion v-model:value="locationAccordion">
+        <AccordionPanel value="1">
+          <AccordionHeader>
+            <div class="links-header">
+              <SidebarUnicon name="map-marker-alt" />
+              {{ $t('location') }}
+            </div>
+          </AccordionHeader>
+          <AccordionContent>
+            <ul>
+              <PermissionBuilder
+                v-for="(r, index) in LocationRoutes"
+                :key="index"
+                :code="r.permissions"
+              >
+                <li>
+                  <router-link :to="r.link">
+                    <SidebarUnicon :name="r.icon" class="route-icon" />
+                    <span>{{ $t(r.name) }}</span>
+                  </router-link>
+                </li>
+              </PermissionBuilder>
+            </ul>
+          </AccordionContent>
+        </AccordionPanel>
+        <AccordionPanel class="active-panel-out" v-if="SelectedLocationRoute && !locationAccordion">
+          <span>{{ SelectedLocationRoute }}</span>
+        </AccordionPanel>
+      </Accordion>
+    </PermissionBuilder>
+
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum?.SUBSCRIPTION_TYPE_ALL,
+        PermissionsEnum?.SUBSCRIPTION_TYPE_CREATE,
+        PermissionsEnum?.SUBSCRIPTION_TYPE_UPDATE,
+        PermissionsEnum?.SUBSCRIPTION_TYPE_DETAILS,
+        PermissionsEnum?.SUBSCRIPTION_TYPE_DELETE,
+        PermissionsEnum?.SUBSCRIPTION_TYPE_FETCH,
+      ]"
+    >
+      <Accordion v-model:value="subscriptionTypeAccordion">
+        <AccordionPanel value="3">
+          <AccordionHeader>
+            <div class="links-header">
+              <SidebarUnicon name="money-bill" />
+              {{ $t('subscription_type') }}
+            </div>
+          </AccordionHeader>
+          <AccordionContent>
+            <ul>
+              <PermissionBuilder
+                v-for="(r, index) in SubscriptionTypeRoutes"
+                :key="index"
+                :code="r.permissions"
+              >
+                <li>
+                  <router-link :to="r.link">
+                    <SidebarUnicon :name="r.icon" class="route-icon" />
+                    <span>{{ $t(r.name) }}</span>
+                  </router-link>
+                </li>
+              </PermissionBuilder>
+            </ul>
+          </AccordionContent>
+        </AccordionPanel>
+        <AccordionPanel
+          class="active-panel-out"
+          v-if="SelectedSubscriptionTypeRoute && !subscriptionTypeAccordion"
+        >
+          <span>{{ SelectedSubscriptionTypeRoute }}</span>
+        </AccordionPanel>
+      </Accordion>
+    </PermissionBuilder>
+
+    <PermissionBuilder
+      :code="[
+        PermissionsEnum?.WEBSITE,
+        PermissionsEnum?.CLIENT_OPINION_ALL,
+        PermissionsEnum?.HOME_CONTACT_US_ALL,
+        PermissionsEnum?.CATEGORY_ALL,
+        PermissionsEnum?.SERVICE_ALL,
+        PermissionsEnum?.HASHTAG_ALL,
+        PermissionsEnum?.TERM_ALL,
+        PermissionsEnum?.HEADER_ALL,
+        PermissionsEnum?.SERVICE_FEATURE_ALL,
+        PermissionsEnum?.SERVICE_SECTION_ALL,
+        PermissionsEnum?.POWERFUL_FEATURE_ALL,
+        PermissionsEnum?.SYSTEM_WORK_ALL,
+        PermissionsEnum?.PRIVACY_ALL,
+        PermissionsEnum?.HOME_VIEW_PRICING_ALL,
+        PermissionsEnum?.SERVICE_LOG_ALL,
+        PermissionsEnum?.BLOG_ALL,
+        PermissionsEnum?.HOME_ABOUT_US_ALL,
+        PermissionsEnum?.ABOUT_US_FEATURE_ALL,
+        PermissionsEnum?.ABOUT_US_CORE_ALL,
+        PermissionsEnum?.FAQ_ALL,
+        PermissionsEnum?.OUR_SYSTEM_RISK_MANAGEMENT_ALL,
+        PermissionsEnum?.OUR_SYSTEM_STEP_ALL,
+        PermissionsEnum?.OUR_SYSTEM_FEATURE_ALL,
+        PermissionsEnum?.OUR_SYSTEM_RISK_TYPE_ALL,
+        PermissionsEnum?.OUR_SYSTEM_COMPONENT_ALL,
+      ]"
+    >
+      <Accordion v-model:value="websiteAccordion">
+        <AccordionPanel value="2">
+          <AccordionHeader>
+            <div class="links-header">
+              <SidebarUnicon name="globe" />
+              {{ $t('website') }}
+            </div>
+          </AccordionHeader>
+
+          <AccordionContent>
+            <ul>
+              <PermissionBuilder
+                v-for="(r, index) in WebsiteRoutes"
+                :key="index"
+                :code="r.permissions"
+              >
+                <li>
+                  <router-link :to="r.link">
+                    <SidebarUnicon :name="r.icon" class="route-icon" />
+                    <span>{{ $t(r.name) }}</span>
+                  </router-link>
+                </li>
+              </PermissionBuilder>
+            </ul>
+          </AccordionContent>
+        </AccordionPanel>
+        <AccordionPanel class="active-panel-out" v-if="SelectedWebsiteRoute && !websiteAccordion">
+          <span>{{ SelectedWebsiteRoute }}</span>
+        </AccordionPanel>
+      </Accordion>
+    </PermissionBuilder>
+
+    <PermissionBuilder
+      :code="LockUpsRoutes?.map((item) => item.permissions.map((item) => item)).flat()"
+    >
+      <Accordion v-model:value="LoackupsAccordion">
+        <AccordionPanel value="4">
+          <AccordionHeader>
+            <div class="links-header">
+              <SidebarUnicon name="lock" />
+              {{ $t('Lockups') }}
+            </div>
+          </AccordionHeader>
+
+          <AccordionContent>
+            <ul>
+              <PermissionBuilder
+                v-for="(r, index) in LockUpsRoutes"
+                :key="index"
+                :code="r?.permissions"
+              >
+                <li>
+                  <router-link :to="r.link" :class="route?.fullPath?.includes(r.link) ? '' : ''">
+                    <SidebarUnicon :name="r.icon" class="route-icon" />
+                    <span>{{ $t(r.name) }}</span>
+                  </router-link>
+                </li>
+              </PermissionBuilder>
+            </ul>
+          </AccordionContent>
+        </AccordionPanel>
+        <AccordionPanel class="active-panel-out" v-if="SelectedLockupsRoute && !LoackupsAccordion">
+          <span>{{ SelectedLockupsRoute }}</span>
+        </AccordionPanel>
+      </Accordion>
+    </PermissionBuilder>
+
+    <button class="admin-sidebar-logout" type="button" @click="emit('logout')">
+      <SidebarUnicon name="signout" />
+      <span>{{ $t('logout') }}</span>
+    </button>
+  </template>
 </template>
+
+<style scoped>
+.icon-strip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0 16px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior-x: none;
+  flex: 1;
+  scrollbar-width: none;
+}
+
+.icon-strip::-webkit-scrollbar {
+  display: none;
+}
+
+.icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 72px;
+  min-height: 68px;
+  padding: 8px 4px;
+  border-radius: 16px;
+  color: var(--brand-primary-100);
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+  position: relative;
+  text-decoration: none;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.icon-item:hover,
+.icon-item.router-link-active {
+  background: color-mix(in srgb, var(--surface-1) 14%, transparent);
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, var(--shadow-color) 12%, transparent),
+    0 12px 24px color-mix(in srgb, var(--brand-primary-700) 18%, transparent);
+  color: var(--text-on-brand);
+  transform: translateY(-1px);
+}
+
+.icon-item::after {
+  content: attr(data-title);
+  position: absolute;
+  inset-inline-start: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--brand-secondary-900);
+  color: var(--text-on-brand);
+  padding: 5px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  font-size: 12px;
+  font-family: 'Regular', sans-serif;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  z-index: 9999;
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--text-strong) 15%, transparent);
+}
+
+.icon-item:hover::after {
+  opacity: 1;
+}
+
+.strip-icon {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: currentColor;
+}
+
+.icon-label {
+  max-width: 64px;
+  font-size: 10px;
+  line-height: 1.15;
+  font-weight: 700;
+  text-align: center;
+  color: inherit;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.route-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: currentColor;
+  opacity: 0.82;
+}
+
+.admin-sidebar-logout {
+  position: sticky;
+  bottom: 8px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  width: calc(100% - 8px);
+  min-height: 48px;
+  margin: 16px 4px 8px;
+  padding: 12px 16px;
+  border: 1px solid color-mix(in srgb, var(--status-danger) 35%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--status-danger) 18%, var(--brand-primary-700));
+  color: var(--text-on-brand);
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--shadow-color) 16%, transparent);
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.admin-sidebar-logout:hover {
+  background: color-mix(in srgb, var(--status-danger) 32%, var(--brand-primary-700));
+  transform: translateY(-1px);
+}
+
+.admin-sidebar-logout :deep(svg),
+.admin-sidebar-logout :deep(.sidebar-unicon) {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.admin-sidebar-logout :deep(path) {
+  fill: currentColor !important;
+}
+</style>

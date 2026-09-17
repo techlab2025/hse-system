@@ -1,11 +1,11 @@
-import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
+import RepoInterface from '@/base/Domain/Repositories/repo_interface'
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import OrganizatoinEmployeeModel from '../../Data/models/OrganizatoinEmployeeModel'
 import { AddOrganizatoinEmployeeApiService } from '../../Data/apiServices/addOrganizatoinEmployeeApiService'
 
-class AddOrganizationEmployeeRepo extends RepoInterface<OrganizatoinEmployeeModel> {
+class AddOrganizationEmployeeRepo extends RepoInterface<OrganizatoinEmployeeModel[]> {
   private static instance: AddOrganizationEmployeeRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }
@@ -16,12 +16,13 @@ class AddOrganizationEmployeeRepo extends RepoInterface<OrganizatoinEmployeeMode
     return this.instance
   }
 
-  override get responseType(): ResponseType {
-    return ResponseType.withoutData
-  }
+  // override get responseType(): ResponseType {
+  //   return ResponseType.withoutData
+  // }
 
-  onParse(data: any): OrganizatoinEmployeeModel {
-    return OrganizatoinEmployeeModel.fromMap(data)
+  onParse(data: any): OrganizatoinEmployeeModel[] {
+    
+    return data.map((item: any) => OrganizatoinEmployeeModel.fromMap(item))
   }
 
   get serviceInstance(): ServicesInterface {

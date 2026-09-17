@@ -8,7 +8,7 @@ import { DeleteHashtagApiService } from '../../Data/apiServices/deleteHashtagApi
 class DeleteHashtagRepo extends RepoInterface<HashtagModel> {
   private static instance: DeleteHashtagRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

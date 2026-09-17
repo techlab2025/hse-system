@@ -8,7 +8,7 @@ import { DeleteCertificateApiService } from '../../Data/apiServices/deleteCertif
 class DeleteCertificateRepo extends RepoInterface<CertificateModel> {
   private static instance: DeleteCertificateRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

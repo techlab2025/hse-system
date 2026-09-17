@@ -10,20 +10,20 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: black;
+  color: var(--text-strong);
 }
 .action-list-trigger {
-  background-color: #1d4ed80d;
+  background-color: color-mix(in srgb, var(--brand-primary-500) 5.1%, transparent);
   padding: $MdSize;
   border-radius: calc($XlSize2 + 4px);
   width: 250px;
   @include flex-row(nowrap, space-between, center);
   .action-icon {
-    color: #1f41bb;
+    color: var(--brand-primary-600);
     font-size: $MdSize;
     font-weight: $BaseFontWeightBold;
     span {
-      background-color: #1f41bb33;
+      background-color: color-mix(in srgb, var(--brand-primary-600) 20%, transparent);
       margin-inline: $XsSize4;
       padding: 2px 4px;
       border-radius: 4px;
@@ -46,11 +46,11 @@
 }
 
 .list-body {
-  background-color: #ffffff;
+  background-color: var(--surface-1);
   font-family: 'medium', sans-serif;
   /*padding: var(--space-sm) var(--space-md);*/
   border-radius: var(--radius-sm);
-  color: black;
+  color: var(--text-strong);
   border: none;
   .p-popover {
     border: none;
@@ -73,7 +73,7 @@
     a {
       padding: $XsSize2 $XsSize;
 
-      //color: black;
+      //color: var(--text-strong);
       width: 100%;
     }
     // padding: 0 var(--space-sm);
@@ -86,7 +86,7 @@
       border-bottom: 1px solid $Gray-2;
     }
     &:hover {
-      background-color: #1d4ed80f;
+      background-color: color-mix(in srgb, var(--brand-primary-500) 5.88%, transparent);
     }
     button {
       display: flex;

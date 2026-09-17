@@ -13,11 +13,10 @@ import EditLocationParams from '../../../Core/params/editLocationParams'
 import AddLocationParams from '../../../Core/params/addLocationParams'
 import { LocationEnum } from '../../../Core/Enum/LocationEnum'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import IndexLocationController from '../../controllers/indexLocationController'
 import IndexLocationParams from '../../../Core/params/indexLocationParams'
 import { useUserStore } from '@/stores/user'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -87,18 +86,18 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditLocationParams(
-      id,
-      translationsParams,
-      Code.value,
-      LocationEnum.STATE,
-      ParentId.value || SelectedCountry?.value?.id,
-    )
+        id,
+        translationsParams,
+        Code.value,
+        LocationEnum.STATE,
+        ParentId.value || SelectedCountry?.value?.id,
+      )
     : new AddLocationParams(
-      translationsParams,
-      Code.value,
-      LocationEnum.STATE,
-      ParentId.value || SelectedCountry?.value?.id,
-    )
+        translationsParams,
+        Code.value,
+        LocationEnum.STATE,
+        ParentId.value || SelectedCountry?.value?.id,
+      )
 
   emit('update:data', params)
 }
@@ -153,7 +152,7 @@ const SetCountrySelection = (data: TitleInterface) => {
 }
 
 const indexLocationController = IndexLocationController.getInstance()
-const indexLocationParams = new IndexLocationParams('', 0, 0, 0, LocationEnum.COUNTRY)
+const indexLocationParams = new IndexLocationParams('', 0, 0, 1, LocationEnum.COUNTRY)
 
 watch(
   () => route.params.parent_id,
@@ -161,7 +160,6 @@ watch(
     ParentId.value = newParentId
   },
 )
-
 
 const UpdateSerial = (data) => {
   SerialNumber.value = data
@@ -183,7 +181,12 @@ const fields = ref([
 
 <template>
   <div class="col-span-4 md:col-span-4">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+    <LangTitleInput
+      :label="`${$t('state_name')}`"
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="setLangs"
+    />
   </div>
 
   <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
@@ -198,11 +201,25 @@ const fields = ref([
 
   <div class="col-span-4 md:col-span-2 input-wrapper">
     <label for="code">Code</label>
-    <input type="text" id="code" v-model="Code" class="input" placeholder="Enter The Code" @input="UpdateCode" />
+    <input
+      type="text"
+      id="code"
+      v-model="Code"
+      class="input"
+      placeholder="Enter The Code"
+      @input="UpdateCode"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2" v-if="!ParentId">
-    <CustomSelectInput :modelValue="SelectedCountry" :controller="indexLocationController" :params="indexLocationParams"
-      label="Country" id="Location" placeholder="Selected Country" @update:modelValue="SetCountrySelection" />
+    <CustomSelectInput
+      :modelValue="SelectedCountry"
+      :controller="indexLocationController"
+      :params="indexLocationParams"
+      label="Country"
+      id="Location"
+      placeholder="Selected Country"
+      @update:modelValue="SetCountrySelection"
+    />
   </div>
 </template>

@@ -10,8 +10,8 @@
   padding: $XsSize;
 
   &.not-required-container {
-    background: #fcfcfc;
-    border: 1px solid #dadcdf1a;
+    background: var(--surface-1);
+    border: 1px solid color-mix(in srgb, var(--surface-2) 10.2%, transparent);
     padding: $XsSize3;
     border-radius: $XsSize2;
     @include flex-row(nowrap, space-between, center);
@@ -22,19 +22,19 @@
     @include flex-row(nowrap, flex-start, flex-start);
     gap: $XsSize4;
     .invalid-title {
-      color: #f65a5a;
+      color: var(--status-danger);
       font-size: $MdSize;
       font-weight: $BaseFontSemiBoldWeight;
       margin-left: auto;
     }
     .not-req-span {
-      color: #161716bf;
+      color: color-mix(in srgb, var(--text-strong) 74.9%, transparent);
       font-size: $MdSize;
       font-family: 'Bold';
     }
   }
   .invalid-date {
-    color: #2f2d2d;
+    color: var(--text-strong);
     font-size: $MdSize;
     font-weight: $BaseFontSemiBoldWeight;
     text-decoration: underline;
@@ -43,7 +43,7 @@
   }
   .certificate-dialog {
     hr {
-      border-color: #f1f3f5;
+      border-color: var(--brand-primary-50);
     }
     .dialog-content {
       margin-top: $XsSize2;

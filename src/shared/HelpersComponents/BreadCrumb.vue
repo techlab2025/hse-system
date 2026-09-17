@@ -1,27 +1,28 @@
 <script setup lang="ts">
-import type TitleInterface from '@/base/Data/Models/title_interface';
+import type TitleInterface from '@/base/Data/Models/title_interface'
 import ArrowIcons from '../icons/ArrowIcons.vue'
-import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum';
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   BreadCramps: { title: string; link: string }[]
-  cardType: string
-  equipmentType: string
-  equipment: string
-  selctedequipment: TitleInterface
+  cardType?: string
+  equipmentType?: TitleInterface | string | null
+  equipment?: string
+  selctedequipment?: TitleInterface | TitleInterface[] | string
   isForm?: boolean
-}>()
+}>(), {
+  BreadCramps: () => [],
+  cardType: '',
+  equipmentType: null,
+  equipment: '',
+  selctedequipment: '',
+  isForm: false,
+})
 
-const getEquipmentTyep = (equipmentType: number) => {
-  switch (equipmentType) {
-    case EquipmentTypesEnum.DEVICE:
-      return 'Device'
-    case EquipmentTypesEnum.TOOL:
-      return 'Tool'
-    case EquipmentTypesEnum.EQUIPMENT:
-      return 'Equipment'
-  }
+const equipmentTypeTitle = () => {
+  if (typeof props.equipmentType === 'string') return props.equipmentType
+  return props.equipmentType?.title ?? ''
 }
+
 </script>
 
 <template>
@@ -31,11 +32,10 @@ const getEquipmentTyep = (equipmentType: number) => {
   <div class="breadcrumbs">
     <ul>
       <li>
-        <span>{{ equipment || cardType || getEquipmentTyep(equipmentType.type) }} </span>
+        <span>{{ equipment || cardType }} </span>
         <ArrowIcons />
       </li>
-      <p v-if="isForm">{{ equipmentType?.title }}</p>
-      <p v-else>{{ equipmentType }}</p>
+      <p>{{ equipmentTypeTitle() }}</p>
     </ul>
   </div>
 </template>

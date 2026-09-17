@@ -11,6 +11,7 @@ export default class InvestegationTasksModel {
   investigation_meeting_id: number
   description: string
   investigationTaskEmployees: InvestigationTaskEmployeesModel[]
+  answerNotes: string
 
   constructor(
     id: number,
@@ -22,6 +23,7 @@ export default class InvestegationTasksModel {
     investigation_meeting_id: number,
     description: string,
     investigationTaskEmployees: InvestigationTaskEmployeesModel[],
+    answerNotes: string = '',
   ) {
     this.id = id
     this.title = title
@@ -32,6 +34,7 @@ export default class InvestegationTasksModel {
     this.investigation_meeting_id = investigation_meeting_id
     this.description = description
     this.investigationTaskEmployees = investigationTaskEmployees
+    this.answerNotes = answerNotes
   }
 
   static fromMap(data: any): InvestegationTasksModel {
@@ -45,6 +48,14 @@ export default class InvestegationTasksModel {
       data.investigation_meeting_id,
       data.description,
       data.investigation_task_employees,
+      data?.investigation_task_results?.[0]?.notes ||
+        data?.investigationTaskResults?.[0]?.notes ||
+        data?.task_results?.[0]?.notes ||
+        data?.taskResults?.[0]?.notes ||
+        data?.task_result?.notes ||
+        data?.taskResult?.notes ||
+        data?.notes ||
+        '',
     )
   }
 
@@ -57,6 +68,6 @@ export default class InvestegationTasksModel {
     'Mohab',
     12,
     'Thickening the electrical wires and reinforcing them with an insulating material',
-    []
+    [],
   )
 }

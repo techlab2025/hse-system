@@ -7,7 +7,7 @@ import RoleModel from '../../Data/models/RoleModel'
 class IndexRoleRepo extends RepoInterface<RoleModel[]> {
   private static instance: IndexRoleRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

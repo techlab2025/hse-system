@@ -7,7 +7,6 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import { useUserStore } from '@/stores/user'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import type InspectionModel from '../../Data/models/InspectionModel'
 import AddInspectionUseCase from '../../Domain/useCase/addInspectionUseCase'
 
@@ -42,8 +41,15 @@ export default class AddInspectionController extends ControllerInterface<Inspect
 
         const { user } = useUserStore()
 
-        // if (!draft) await router.push(`/organization/equipment-mangement/inspection`)
-        await router.push(`/organization/equipment-mangement/inspection?inspectionType=1`)
+        const currentRoute = router.currentRoute.value
+        if (currentRoute.name === 'Add Audit') {
+          await router.push({
+            name: 'Audits',
+            query: { project_id: currentRoute.query.project_id },
+          })
+        } else {
+          await router.push(`/organization/equipment-mangement/inspection?inspectionType=1`)
+        }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

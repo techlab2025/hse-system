@@ -6,7 +6,7 @@ import WhereHouseTypeModel from '../../Data/models/WhereHouseTypeModel'
 class IndexWhereHouseTypeRepo extends RepoInterface<WhereHouseTypeModel[]> {
   private static instance: IndexWhereHouseTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

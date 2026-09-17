@@ -13,11 +13,10 @@ import EditLocationParams from '../../../Core/params/editLocationParams'
 import AddLocationParams from '../../../Core/params/addLocationParams'
 import { LocationEnum } from '../../../Core/Enum/LocationEnum'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import IndexLocationController from '../../controllers/indexLocationController'
 import IndexLocationParams from '../../../Core/params/indexLocationParams'
 import { useUserStore } from '@/stores/user'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
 const route = useRoute()
@@ -227,7 +226,7 @@ const fields = ref([
 
 <template>
   <div class="col-span-4 md:col-span-4">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+    <LangTitleInput :label="`${$t('city_name')}`" :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
 
     <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">

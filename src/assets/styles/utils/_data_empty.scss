@@ -15,7 +15,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: linear-gradient(to bottom right, #ecf0f9, #ffffff);
+    background-image: linear-gradient(to bottom right, var(--brand-primary-50), var(--surface-1));
   }
   .data-empty-content {
     width: 100%;
@@ -27,6 +27,7 @@
     }
     .data-empty-content-text {
       width: 100%;
+      margin-top: 25px;
 
       @include flex-column(nowrap, flex-start, flex-start);
       gap: $SmSize;
@@ -35,6 +36,7 @@
       }
       .oops-message {
         width: 100%;
+        margin-top: 25px;
 
         font-size: $XlSize4;
         font-weight: $BaseFontWeightBold;

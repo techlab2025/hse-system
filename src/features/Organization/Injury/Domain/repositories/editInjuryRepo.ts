@@ -7,7 +7,7 @@ import { EditInjuryApiService } from '../../Data/apiServices/editInjuryApiServic
 class EditInjuryRepo extends RepoInterface<InjuryModel> {
   private static instance: EditInjuryRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

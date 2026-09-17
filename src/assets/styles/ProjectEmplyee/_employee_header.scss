@@ -4,7 +4,7 @@
 .employee-header {
   @include flex-column(nowrap, flex-start, flex-start);
   padding: $MdSize;
-  background: #f7f9fc33;
+  background: color-mix(in srgb, var(--brand-primary-50) 20%, transparent);
   font-family: 'Regular';
   gap: $XsSize4;
   position: relative;
@@ -109,7 +109,7 @@
       }
 
       .subtitle {
-        color: #9ca3af;
+        color: var(--text-soft);
         font-size: $SmSize;
         font-weight: $BaseFontMediumWeight;
         z-index: 999;

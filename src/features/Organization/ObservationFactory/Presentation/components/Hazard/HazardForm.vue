@@ -8,7 +8,6 @@ import HazardIcon from '@/shared/icons/HazardIcon.vue'
 import DatePicker from 'primevue/datepicker'
 
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
-import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import hazardImage from '@/assets/images/alert 1.png'
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
@@ -18,7 +17,6 @@ import EditHazardParams from '../../../Core/params/editHazardParams'
 import AddHazardParams from '../../../Core/params/addHazardParams'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 import type { RiskLevelEnum } from '@/features/Organization/ObservationFactory/Core/Enums/risk_level_enum'
-import { TypesEnum } from '@/features/Organization/ObservationFactory/Core/Enums/types_enum'
 import { SaveStatusEnum } from '@/features/Organization/ObservationFactory/Core/Enums/save_status_enum'
 import ObservationLevel from '../Ovservation/ObservationLevel.vue'
 import HazerdType from '../Ovservation/HazerdType.vue'
@@ -295,7 +293,7 @@ const UpdateSerial = (data) => {
       :params="indexHazardTypeParams"
       label="HazardType"
       id="HazardType"
-      placeholder="Select Hazard Type"
+      placeholder="Select Hazard Classification"
       @update:modelValue="setHazardType"
     />
   </div>

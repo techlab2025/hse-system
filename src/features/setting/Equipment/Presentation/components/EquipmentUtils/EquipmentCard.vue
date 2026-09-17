@@ -1,26 +1,20 @@
 <script setup lang="ts">
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image';
-import type EquipmentDetailsModel from '@/features/_templateFeature/Data/models/equipmentDetailsModel';
-import type ProjectLocationEquipmentModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationEquipmentModel';
-import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum';
-import ToolIcon from '@/shared/icons/ToolIcon.vue';
-import type EquipmentModel from '../../../Data/models/equipmentModel';
-import Rent from "@/assets/images/Rent.png";
-import RentIcon from '@/shared/icons/RentIcon.vue';
-import { EquipmentStatus } from '../../../Core/enum/equipmentStatus';
-import Helmet from "@/assets/images/Helmet.png";
-import WareHouseIcon from "@/assets/images/WareHouseIcon.png";
-import mark from "@/assets/images/mark.png";
-import EquipmentCardImgDialog from './EquipmentCardImgDialog.vue';
-import { useUserStore } from '@/stores/user';
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type';
-import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum';
-import IconEdit from '@/shared/icons/IconEdit.vue'
+import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
+import type EquipmentModel from '../../../Data/models/equipmentModel'
+import RentIcon from '@/shared/icons/RentIcon.vue'
+import { EquipmentStatus } from '../../../Core/enum/equipmentStatus'
+import Helmet from '@/assets/images/Helmet.png'
+import WareHouseIcon from '@/assets/images/WareHouseIcon.png'
+import mark from '@/assets/images/mark.png'
+import EquipmentCardImgDialog from './EquipmentCardImgDialog.vue'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import IconEye from '@/shared/icons/IconEye.vue'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
-import { useI18n } from 'vue-i18n';
-import { ref, watch } from 'vue';
+import { useI18n } from 'vue-i18n'
+import { ref, watch } from 'vue'
 
 const { t } = useI18n()
 
@@ -31,6 +25,10 @@ const props = defineProps<{
 
 const GetEquipmentType = (type: number) => {
   return EquipmentTypesEnum[type]
+}
+
+const GetEquipmentStatus = (status: EquipmentStatus) => {
+  return status === EquipmentStatus.RENT ? 'Rent' : 'Owned'
 }
 
 const { user } = useUserStore()
@@ -49,11 +47,13 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
       PermissionsEnum.ORG_EQUIPMENT_ALL,
     ],
   },
+
   {
     text: t('add_inspection'),
     icon: ActionsTableShild,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-      }/equipment-mangement/inspection/add/${props?.tool?.id}`,
+    link: `/${
+      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+    }/equipment-mangement/inspection/add/${props?.tool?.id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_UPDATE,
       PermissionsEnum.ORG_EQUIPMENT_UPDATE,
@@ -62,12 +62,15 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
       PermissionsEnum.EQUIPMENT_ALL,
       PermissionsEnum.ORG_EQUIPMENT_ALL,
     ],
+    class: user?.type == OrganizationTypeEnum.ADMIN ? 'hidden' : 'block',
   },
+
   {
     text: t('show'),
     icon: ActionsTableView,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-      }/equipment-show/${props?.tool?.id}`,
+    link: `/${
+      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+    }/equipment-show/${props?.tool?.id}`,
     permission: [
       PermissionsEnum.EQUIPMENT_DETAILS,
       PermissionsEnum.ORG_EQUIPMENT_DETAILS,
@@ -78,9 +81,9 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
     ],
   },
   {
-    text: t('Cerificate Image'),
+    text: t('training_image'),
     icon: IconEye,
-    action: () => DialogVisable.value = true,
+    action: () => (DialogVisable.value = true),
     permission: [
       PermissionsEnum.EQUIPMENT_DELETE,
       PermissionsEnum.ORG_EQUIPMENT_DELETE,
@@ -103,7 +106,6 @@ const actionList = (id: number, deleteEquipment: (id: number) => void) => [
       PermissionsEnum.ORG_EQUIPMENT_ALL,
     ],
   },
-
 ]
 
 const DialogVisable = ref()
@@ -112,34 +114,49 @@ const deleteEquipment = async (id: number) => {
   emit('delete:data', id)
 }
 
-
 import EmptyEquipment from '@/assets/images/EmptyEquipment.png'
-import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue';
-import ActionsTableShild from '@/shared/icons/ActionsTableShild.vue';
-import ActionsTableView from '@/shared/icons/ActionsTableView.vue';
+import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
+import ActionsTableShild from '@/shared/icons/ActionsTableShild.vue'
+import ActionsTableView from '@/shared/icons/ActionsTableView.vue'
+import { useThemeMode } from '@/composables/useThemeMode'
 
+const { isDarkMode } = useThemeMode()
 function setEquipmentDefaultImage(event: Event) {
   const img = event.target as HTMLImageElement
   img.src = EmptyEquipment
 }
 
-watch(() => DialogVisable.value, (val) => {
-  console.log(val, "val");
-  DialogVisable.value = val
-})
-
+watch(
+  () => DialogVisable.value,
+  (val) => {
+    console.log(val, 'val')
+    DialogVisable.value = val
+  },
+)
 </script>
 
 <template>
-
   <!-- <pre>{{ tool }}</pre> -->
 
-  <div class="tool-card equipment-card w-full" :class="isSelect ? 'is-select' : ''">
+  <div
+    class="tool-card equipment-card w-full"
+    :class="[
+      isSelect ? 'is-select' : '',
+      tool?.status == EquipmentStatus.RENT ? 'is-rent' : 'is-own',
+      { 'is-dark': isDarkMode },
+    ]"
+  >
     <div class="tool-card-header w-full">
-
-
-      <img :src="tool?.image || '/src/assets/images/EmptyEquipment.png'" alt="tool" @error="setEquipmentDefaultImage">
-
+      <div class="tool-card-media">
+        <img
+          :src="tool?.image || '/src/assets/images/EmptyEquipment.png'"
+          alt="tool"
+          @error="setEquipmentDefaultImage"
+        />
+        <span class="equipment-status">
+          {{ $t(GetEquipmentStatus(tool?.status)) }}
+        </span>
+      </div>
 
       <div class="tool-card-header-text w-full">
         <div class="flex gap-2 w-full items-center justify-between card-type">
@@ -153,14 +170,17 @@ watch(() => DialogVisable.value, (val) => {
             <p class="title" v-if="tool?.equipmentType?.title">{{ tool?.equipmentType?.title }}</p>
           </div>
 
-          <EquipmentCardImgDialog @close="DialogVisable = $event" :Visable="DialogVisable"
-            :img="tool?.certificateImage" />
+          <EquipmentCardImgDialog
+            @close="DialogVisable = $event"
+            :Visable="DialogVisable"
+            :img="tool?.certificateImage"
+          />
 
-
-
-          <DropList v-if="!isSelect" :actionList="actionList(tool.id, deleteEquipment)"
-            @delete="deleteEquipment(tool.id)" />
-
+          <DropList
+            v-if="!isSelect"
+            :actionList="actionList(tool.id, deleteEquipment)"
+            @delete="deleteEquipment(tool.id)"
+          />
         </div>
         <p class="type flex gap-2">
           <span class="main-type">{{ tool?.title }}</span>
@@ -168,30 +188,53 @@ watch(() => DialogVisable.value, (val) => {
           <RentIcon v-if="tool?.status == EquipmentStatus.RENT" class="icon" />
         </p>
 
+        <div class="equipment-meta">
+          <div class="meta-item" v-if="tool?.license_plate_number">
+            <span class="meta-label">{{ $t('LicenceNumber') }}</span>
+            <strong>{{ tool?.license_plate_number }}</strong>
+          </div>
+          <div class="meta-item" v-if="tool?.date">
+            <span class="meta-label">{{ $t('CertificateExpireDate') }}</span>
+            <strong>{{ tool?.date }}</strong>
+          </div>
+          <div class="meta-item" v-if="tool?.status == EquipmentStatus.RENT && tool?.period">
+            <span class="meta-label">{{ $t('RentPeriod') }}</span>
+            <strong>{{ tool?.period }}</strong>
+          </div>
+        </div>
+
+        <!-- <div
+          class="equipment-rent-window"
+          v-if="tool?.status == EquipmentStatus.RENT"
+        >
+          <span>{{ tool.inService ? t('In_service') : t('Out_of_service') }}</span>
+        </div> -->
+
         <div class="equipment-project-info" v-if="tool?.project?.title">
-          <img :src="Helmet" alt="helmet">
+          <img :src="Helmet" alt="helmet" />
           <div class="project-data">
-            <p class="project-name"><span class="project-name-title">{{ tool?.project?.title }}</span></p>
+            <p class="project-name">
+              <span class="project-name-title">{{ tool?.project?.title }}</span>
+            </p>
             <div class="project-zone-name">
               <div class="project-zone-name" v-if="tool?.projectZoon?.zoon_title">
-                <img :src="mark" alt="">
-                <p> <span class="project-name-title">{{ tool?.projectZoon?.zoon_title }}</span></p>
+                <img :src="mark" alt="" />
+                <p>
+                  <span class="project-name-title">{{ tool?.projectZoon?.zoon_title }}</span>
+                </p>
               </div>
             </div>
           </div>
         </div>
         <div class="equipment-project-info" v-if="tool?.warehouse && !tool?.project?.title">
-          <img :src="WareHouseIcon" alt="helmet">
+          <img :src="WareHouseIcon" alt="helmet" />
           <div class="project-data">
-            <p class="project-name"><span class="project-name-title">{{ tool?.warehouse?.name }}</span></p>
+            <p class="project-name">
+              <span class="project-name-title">{{ tool?.warehouse?.name }}</span>
+            </p>
           </div>
         </div>
-
       </div>
-
     </div>
-
-
-
   </div>
 </template>

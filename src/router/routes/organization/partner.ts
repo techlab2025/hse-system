@@ -1,5 +1,4 @@
 import type { RouteRecordRaw } from '@/router/types'
-import IconSetting from '@/shared/icons/IconSetting.vue'
 
 export const partnerRoutes: RouteRecordRaw[] = [
   {

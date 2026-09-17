@@ -6,7 +6,7 @@
   .vehicle {
     @include flex-row(nowrap, flex-start, center);
     gap: $SmSize;
-    background-color: rgba(241, 243, 245, 0.4);
+    background-color: color-mix(in srgb, var(--brand-primary-50) 40%, transparent);
     padding: $SmSize;
     border-radius: $SmSize;
     margin-block: $MdSize;
@@ -23,7 +23,7 @@
     }
   }
   .card_Qr {
-    background-color: #fafbfc;
+    background-color: var(--brand-primary-50);
     padding: $XlSize $XlSize3;
     border-radius: $XlSize;
     // @include flex-row(nowrap, space-around, center);
@@ -48,7 +48,7 @@
       p {
         font-size: $SmSize;
         font-weight: $BaseFontMediumWeight;
-        color: #6b7280;
+        color: var(--text-soft);
       }
     }
   }
@@ -56,14 +56,14 @@
 
 .Qr_EQUIPMENt {
   @include flex(row, nowrap, space-between, center);
-  background-color: white;
+  background-color: var(--surface-1);
   border-radius: $XlSize;
   padding: $MdSize;
   @media screen and (max-width: 500px) {
     flex-wrap: wrap;
   }
   .demo-card {
-    background-color: white;
+    background-color: var(--surface-1);
   }
   .rent_expire {
     .expire_date {
@@ -87,9 +87,9 @@
         gap: $XsSize4;
         font-size: $SmSize;
         font-weight: $BaseFontSemiBoldWeight;
-        color: #ced5e1;
+        color: var(--brand-primary-200);
         span {
-          color: #3898d7;
+          color: var(--brand-primary-500);
         }
       }
       .start_date {
@@ -97,7 +97,7 @@
         font-size: $SmSize;
         font-weight: $BaseFontMediumWeight;
         span {
-          color: #1f41bb;
+          color: var(--brand-primary-600);
         }
       }
       .end_date {
@@ -114,7 +114,7 @@
     margin-bottom: $XsSize2;
     font-size: $MdSize2;
     font-weight: $BaseFontWeightBold;
-    color: #0f1927;
+    color: var(--brand-primary-900);
   }
 }
 .show-equ-head {

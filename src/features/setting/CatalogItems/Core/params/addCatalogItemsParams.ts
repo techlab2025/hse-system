@@ -3,7 +3,6 @@ import type TranslationsParams from '@/base/core/params/translations_params.ts'
 import type { ParentTypeEnum } from '../enums/parenttypeenum'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 import type CatalogItemsParams from './CatalogGuideItemParams'
-import type AddCatalogItemsDetailsParams from '@/features/setting/CatalogItemsDetails/Core/params/addCatalogItemsDetailsParams'
 
 export default class AddCatalogItemsParams implements Params {
   translation: TranslationsParams

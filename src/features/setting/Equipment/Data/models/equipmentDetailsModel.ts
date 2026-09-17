@@ -1,17 +1,14 @@
 import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
 import TitleModel from '@/base/Data/Models/title_model.ts'
-import EquipmentTypeModel from './equipmentModel'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { EquipmentStatus } from '../../Core/enum/equipmentStatus'
 import EquipmentTypeDetailsModel from './EquipmentTypeDetails'
 import ContractorDetailsModel from '@/features/setting/contractor/Data/models/ContractorDetailsModel'
 import WhereHouseDetailsModel from '@/features/Organization/WhereHouse/Data/models/WhereHouseDetailsModel'
-import acc from '@/assets/images/acc.png'
-import TaskResultModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/TasksResultModel'
 import InspectionModel from '@/features/Organization/Inspection/Data/models/InspectionModel'
-import TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
-import TemplateItemModel from '@/features/setting/TemplateItem/Data/models/TemplateItemModel'
 import LastInspectionModel from '@/features/Organization/Inspection/Data/models/LastInspectionModel'
+import type { EquipmentCondition } from '../../Core/enum/equipmentConditionEnum'
+import type { EquipmentUsed } from '../../Core/enum/EquipemntUsedENum'
 
 export default class EquipmentDetailsModel {
   public id: number
@@ -46,6 +43,10 @@ export default class EquipmentDetailsModel {
   public last_inspection: LastInspectionModel
   public serial_name: string
   public checkout_date: string
+  public qr_code_image: string
+  public equipmentCondition: EquipmentCondition | null
+  public equipmentUsedStatus: EquipmentUsed | null
+  public workedHoures: string
 
   constructor(
     id: number,
@@ -80,6 +81,10 @@ export default class EquipmentDetailsModel {
     last_inspection: LastInspectionModel,
     serial_name: string,
     checkout_date: string,
+    qr_code_image: string,
+    equipmentCondition: EquipmentCondition | null,
+    equipmentUsedStatus: EquipmentUsed | null,
+    workedHoures: string,
   ) {
     this.id = id
     this.allIndustries = allIndustries
@@ -113,6 +118,10 @@ export default class EquipmentDetailsModel {
     this.last_inspection = last_inspection
     this.serial_name = serial_name
     this.checkout_date = checkout_date
+    this.qr_code_image = qr_code_image
+    this.equipmentCondition = equipmentCondition
+    this.equipmentUsedStatus = equipmentUsedStatus
+    this.workedHoures = workedHoures
     // this.type = type
   }
 
@@ -157,6 +166,10 @@ export default class EquipmentDetailsModel {
         : null,
       data.serial_name,
       data.checkout_date,
+      data.qr_code_image,
+      data.equipment_condition ?? data.equipment_conditions ?? null,
+      data.equipment_used_status ?? null,
+      data?.worked_hours ? data?.worked_hours : '',
     )
   }
 
@@ -298,40 +311,40 @@ export default class EquipmentDetailsModel {
   //     ),
   //   ],
   // )
-  static example: EquipmentDetailsModel = new EquipmentDetailsModel(
-    1, // id
-    1, // allIndustries
-    acc, // certificateImage
-    '2026-03-10', // date
-    '30', // inspectionDuration
-    'LIC-77821', // licenseNumber
-    'PLATE-4455', // licensePlateNumber
-    EquipmentStatus.RENT, // status
-    [{ locale: 'en', title: 'CAT 320 Excavator' }], // titles
-    1, // hasCertificate
-    0, // parentId
-    acc, // image
-    [], // industries
-    5, // equipmentTypeId
-    EquipmentTypeDetailsModel.example,
-    '15000', // kilometer
-    '2026-03-01', // checkinDate
-    'daily', // RentType
-    '8', // RentTime
-    1, // wareHouse
-    ContractorDetailsModel.example,
-    new WhereHouseDetailsModel(1, 'Central Warehouse', 'WH-001', null),
-    '2026-03-15', // lastInspectoinDate
-    [InspectionModel.example, InspectionModel.example],
-    [InspectionModel.example, InspectionModel.example],
-    '2027-03-01', // certificateExppiredDate
-    'CAT 320 Excavator', // title
-    4, // inspections_count
-    2, // inspections_with_result_count
-    LastInspectionModel.example,
-    'CAT320-EX-2026', // serial_name
-    '2026-03-20', // checkout_date
-  )
+  // static example: EquipmentDetailsModel = new EquipmentDetailsModel(
+  //   1, // id
+  //   1, // allIndustries
+  //   acc, // certificateImage
+  //   '2026-03-10', // date
+  //   '30', // inspectionDuration
+  //   'LIC-77821', // licenseNumber
+  //   'PLATE-4455', // licensePlateNumber
+  //   EquipmentStatus.RENT, // status
+  //   [{ locale: 'en', title: 'CAT 320 Excavator' }], // titles
+  //   1, // hasCertificate
+  //   0, // parentId
+  //   acc, // image
+  //   [], // industries
+  //   5, // equipmentTypeId
+  //   EquipmentTypeDetailsModel.example,
+  //   '15000', // kilometer
+  //   '2026-03-01', // checkinDate
+  //   'daily', // RentType
+  //   '8', // RentTime
+  //   1, // wareHouse
+  //   ContractorDetailsModel.example,
+  //   new WhereHouseDetailsModel(1, 'Central Warehouse', 'WH-001', null),
+  //   '2026-03-15', // lastInspectoinDate
+  //   [InspectionModel.example, InspectionModel.example],
+  //   [InspectionModel.example, InspectionModel.example],
+  //   '2027-03-01', // certificateExppiredDate
+  //   'CAT 320 Excavator', // title
+  //   4, // inspections_count
+  //   2, // inspections_with_result_count
+  //   LastInspectionModel.example,
+  //   'CAT320-EX-2026', // serial_name
+  //   '2026-03-20', // checkout_date
+  // )
   static transformData(data: string[][]): EquipmentDetailsModel[] {
     return data.map(
       (row, index) =>

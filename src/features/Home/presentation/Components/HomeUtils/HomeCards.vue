@@ -6,8 +6,6 @@ import HomeEmployeeIcon from '@/shared/icons/HomeEmployeeIcon.vue'
 import HomeSettingIcon from '@/shared/icons/HomeSettingIcon.vue'
 import HomeRoutesCard from './HomeRoutesCard.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import CapaIcon from '@/shared/icons/CapaIcon.vue'
-import InvisttigationIcon from '@/shared/icons/InvisttigationIcon.vue'
 import { RouterEnum } from '@/features/Home/core/enums/SettingEnum/SettingEnum'
 
 const {ProgressValue} = defineProps<{
@@ -31,7 +29,7 @@ const {ProgressValue} = defineProps<{
         <HomeRoutesCard
           :icon="HomeProjectIcon"
           :title="`${$t('project')}`"
-          :description="`${$t('plan')} . ${$t('tasks')} . ${$t('hierarchy')}`"
+          :description="`${$t('plan')} . ${$t('tasks')} . ${$t('positions')}`"
         />
       </router-link>
     </PermissionBuilder>
@@ -51,7 +49,7 @@ const {ProgressValue} = defineProps<{
         <HomeRoutesCard
           :icon="HomeOperationIcon"
           :title="`${$t('operations')}`"
-          :description="`${$t('inspection')} . ${$t('Observations ')} . ${$t('hazerd')} . ${$t('incedant')} `"
+          :description="`${$t('inspection')} · ${$t('Observations')} · ${$t('hazerd')} · ${$t('incedant')}`"
         />
       </router-link>
     </PermissionBuilder>
@@ -113,12 +111,12 @@ const {ProgressValue} = defineProps<{
         <HomeRoutesCard
           :icon="HomeSettingIcon"
           :title="`${$t('settings')}`"
-          :description="`${$t('hierarchy')} . ${$t('theme')} . ${$t('charts')} `"
+          :description="`${$t('position')} . ${$t('theme')} . ${$t('charts')} `"
         />
       </router-link>
     </PermissionBuilder>
 
-    <PermissionBuilder
+    <!-- <PermissionBuilder
       :code="[
         PermissionsEnum.ORG_EMPLOYEE_ALL,
         PermissionsEnum.ORG_EMPLOYEE_CREATE,
@@ -135,9 +133,9 @@ const {ProgressValue} = defineProps<{
           :description="`${$t('meetings')} . ${$t('tasks')} . ${$t('create')} `"
         />
       </router-link>
-    </PermissionBuilder>
+    </PermissionBuilder> -->
 
-    <PermissionBuilder
+    <!-- <PermissionBuilder
       :code="[
         PermissionsEnum.ORG_EMPLOYEE_ALL,
         PermissionsEnum.ORG_EMPLOYEE_CREATE,
@@ -154,6 +152,6 @@ const {ProgressValue} = defineProps<{
           :description="`${$t('incidents')} . ${$t('hazard')} . ${$t('capa')} `"
         />
       </router-link>
-    </PermissionBuilder>
+    </PermissionBuilder> -->
   </div>
 </template>

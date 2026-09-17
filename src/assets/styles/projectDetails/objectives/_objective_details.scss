@@ -3,19 +3,68 @@
 @use '../../mixins/grid' as *;
 
 .objectives {
-  @include grid(
-    3,
-    $XlSize,
-    (
-      1440px: 3,
-      1000px: 3,
-      768px: 2,
-    )
-  );
   width: 100%;
   font-family: 'Regular';
-  padding-inline: calc($XlSize3 + 2px);
-  // column-gap: $XlSize;
+  color: var(--brand-primary-700);
+  font-size: $MdSize;
+  line-height: 1.8;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+
+  p {
+    margin: 0;
+    color: var(--brand-primary-700);
+  }
+
+  p + p {
+    margin-top: $XsSize;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 0 0 $XsSize3;
+    color: var(--brand-primary-900);
+    font-family: 'bold';
+    line-height: 1.35;
+  }
+
+  ul,
+  ol {
+    display: grid;
+    gap: $XsSize3;
+    margin: $XsSize 0 0;
+    padding-inline-start: $XlSize;
+  }
+
+  li {
+    padding-inline-start: $XsSize4;
+  }
+
+  a {
+    color: $PrimaryColor;
+    font-family: 'bold';
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  strong,
+  b {
+    color: var(--brand-primary-900);
+    font-family: 'bold';
+  }
+
+  blockquote {
+    margin: $XsSize 0 0;
+    padding: $XsSize $SmSize;
+    border-inline-start: 3px solid $PrimaryColor;
+    border-radius: $BorderRadiusSm;
+    background-color: color-mix(in srgb, var(--brand-primary-500) 5%, transparent);
+    color: var(--brand-primary-600);
+  }
 
   .object {
     width: 100%;
@@ -33,6 +82,32 @@
       height: 5px;
       border-radius: 50%;
       background-color: $PrimaryColor;
+    }
+  }
+
+  &.is-empty {
+    @include flex-row(nowrap, center, center);
+    min-height: 110px;
+    border: 1px dashed var(--brand-primary-100);
+    border-radius: $BorderRadiusSm;
+    background-color: var(--brand-primary-50);
+    color: var(--text-soft);
+    text-align: center;
+
+    p {
+      color: var(--text-soft);
+      font-size: $SmSize;
+      font-weight: $BaseFontSemiBoldWeight;
+    }
+  }
+
+  @media (max-width: 640px) {
+    font-size: $SmSize;
+    line-height: 1.7;
+
+    ul,
+    ol {
+      padding-inline-start: $MdSize;
     }
   }
 }

@@ -1,5 +1,4 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
-import TitleModel from '@/base/Data/Models/title_model.ts'
 import type LocationModel from '@/features/setting/Location/Data/models/LocationModel'
 // import ClientPermissionModel from "@/features/dashboard/settings/clientPermission/Data/models/index_client_Permission_model";
 

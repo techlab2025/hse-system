@@ -5,7 +5,7 @@ import CreateTaskAmswerModel from '../../Data/models/CreateTaskResultModel'
 
 class CreateTaskAnswerRepo extends RepoInterface<CreateTaskAmswerModel> {
   private static instance: CreateTaskAnswerRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

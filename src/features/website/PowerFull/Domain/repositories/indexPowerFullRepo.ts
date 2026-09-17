@@ -9,7 +9,7 @@ import { IndexPowerFullApiService } from '../../Data/apiServices/indexPowerFullA
 class IndexPowerFullRepo extends RepoInterface<PowerFullModel[]> {
   private static instance: IndexPowerFullRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -4,7 +4,6 @@ import Dialog from 'primevue/dialog'
 import Cert from '@/assets/images/Cert.png'
 import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
 import DatePicker from 'primevue/datepicker'
-import isBase64 from '@/base/Presentation/utils/isBase64'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import AddEmployeeCertificateController from '../controllers/addEmployeeCertificateController'
@@ -16,14 +15,19 @@ import Addcertificates from '@/shared/icons/Addcertificates.vue'
 import Repeaticon from '@/shared/icons/Repeaticon.vue'
 // import { CertificateStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/CertificateStatusEnum'
 
-const props = defineProps<{
-  certificateId: number
-  organizationEmployeeId: number
-  title: string
-  is_expire_date: boolean
-  status: CertificateStatusEnum
-  notRequired: boolean
-}>()
+const props = withDefaults(
+  defineProps<{
+    certificateId: number
+    organizationEmployeeId: number
+    is_expire_date: boolean
+    status?: CertificateStatusEnum
+    notRequired?: boolean
+  }>(),
+  {
+    status: undefined,
+    notRequired: false,
+  },
+)
 const visible = ref(false)
 const Notes = ref()
 const SelectedData = ref(new Date())
@@ -39,35 +43,17 @@ const UpdateIssueDate = (date) => {
 }
 const certificateImage = ref<string | null>(null)
 
-const originalCertificateImage = ref<string | null>(null)
-const resolveCertificateImage = () => {
-  // EDIT
-  // 1) not changed
-  if (certificateImage.value === originalCertificateImage.value) {
-    return undefined // <-- key مش هيتبعت
-  }
-
-  // 2) deleted
-  if (!certificateImage.value) {
-    return '*'
-  }
-
-  // 3) updated
-  if (isBase64(certificateImage.value)) {
-    return certificateImage.value
-  }
-
-  return undefined
-}
-
-const setCertificateImage = async (value: any) => {
+const setCertificateImage = async (value: string | File) => {
   if (!value) {
     // user deleted image
     certificateImage.value = ''
   } else if (typeof value === 'string') {
     certificateImage.value = value
   } else {
-    certificateImage.value = await filesToBase64(value)
+    const convertedFile = await filesToBase64(value)
+    certificateImage.value = Array.isArray(convertedFile)
+      ? convertedFile[0]?.file || ''
+      : convertedFile.file
   }
   // UpdateData()
 }
@@ -92,7 +78,7 @@ const UploadCertificateImage = async () => {
     certificateImage.value,
     SelectedIssueData.value,
   )
-  const state = await addEmployeeCertificateController.addEmployeeCertificate(
+  await addEmployeeCertificateController.addEmployeeCertificate(
     addEmployeeCertificateParams,
     router,
   )
@@ -117,8 +103,11 @@ const UploadCertificateImage = async () => {
   </button>
   <Dialog v-model:visible="visible" :dismissable-mask="true" modal :style="{ width: '50rem' }">
     <template #header>
-      <HeaderSection :img="Cert" title="Add certification"
-        subtitle="Upload and assign a certification to this employee" />
+      <HeaderSection
+        :img="Cert"
+        :title="$t('add_training_record')"
+        :subtitle="$t('assign_training_to_employee')"
+      />
     </template>
 
     <div class="certificate-dialog">
@@ -141,10 +130,17 @@ const UploadCertificateImage = async () => {
 
         <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1 mt-10">
           <label class="flex justify-between flex-wrap">
-            <p>{{ $t('Certification Image upload') }}</p>
+            <p>{{ $t('training_image_upload') }}</p>
           </label>
-          <SingleFileUpload :returnType="`base64`" v-model="certificateImage" @update:modelValue="setCertificateImage"
-            label="Certification upload" id="Certification upload" index="2" placeholder="Certification upload" />
+          <SingleFileUpload
+            :returnType="`base64`"
+            v-model="certificateImage"
+            @update:modelValue="setCertificateImage"
+            :label="$t('training_upload')"
+            id="Certification upload"
+            index="2"
+            :placeholder="$t('training_upload')"
+          />
         </div>
       </div>
       <button class="btn btn-primary w-full mt-10" @click="UploadCertificateImage">Confirm</button>

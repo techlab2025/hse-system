@@ -4,19 +4,22 @@ import type FilesModel from '@/features/Organization/Inspection/Data/models/Fetc
 
 export default class TaskResultItemModel {
   public id: number
+  public templateItemId: number
   public result: string
   public answers: TaskResultItemAnswerModel[]
   public templateItemAction: number
-  public files: FilesModel
+  public files: FilesModel[]
 
   constructor(
     id: number,
+    templateItemId: number,
     result: string,
     answers: TaskResultItemAnswerModel[],
     templateItemAction: number,
-    files: FilesModel,
+    files: FilesModel[],
   ) {
     this.id = id
+    this.templateItemId = templateItemId
     this.result = result
     this.answers = answers
     this.templateItemAction = templateItemAction
@@ -26,10 +29,11 @@ export default class TaskResultItemModel {
   static fromMap(data: any): TaskResultItemModel {
     return new TaskResultItemModel(
       data.id,
+      data.template_item_id,
       data.result,
       data.task_result_item_answers?.map((a: any) => TaskResultItemAnswerModel.fromMap(a)) ?? [],
       data.template_item_action,
-      data.media,
+      data.media ?? [],
     )
   }
 }

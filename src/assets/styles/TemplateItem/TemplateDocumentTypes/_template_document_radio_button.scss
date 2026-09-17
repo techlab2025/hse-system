@@ -7,14 +7,14 @@
   font-family: 'Regular';
   width: 100%;
   .title {
-    color: #5e5e5e;
+    color: var(--text-soft);
     font-size: calc($MdSize + 1px);
     font-weight: $BaseFontMediumWeight;
   }
   .options-container {
     width: 100%;
     @include flex-row(wrap, space-between, center);
-    border-bottom: 1px dashed #ebebeb;
+    border-bottom: 1px dashed var(--surface-2);
     width: 100%;
     padding-bottom: 12px;
     .options {
@@ -26,24 +26,24 @@
         .label {
           font-family: 'Light';
 
-          color: #9ea5b3;
+          color: var(--text-soft);
           font-size: $MdSize;
           font-weight: $BaseFontSemiBoldWeight;
         }
 
         &:first-child {
           label {
-            color: #4caf50;
+            color: var(--status-success);
           }
         }
         &:nth-child(2) {
           label {
-            color: #e23535;
+            color: var(--status-danger);
           }
         }
         &:last-child {
           label {
-            color: #969eff;
+            color: var(--brand-primary-200);
           }
         }
       }

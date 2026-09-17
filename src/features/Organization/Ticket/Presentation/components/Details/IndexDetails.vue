@@ -1,27 +1,15 @@
 <script setup lang="ts">
-import Breadcrumb from '@/shared/LayoutComponents/BreadCrumb.vue'
 import DetailsHeader from './DetailsHeader.vue'
 
 // import CloseTicketDialog from './Dialog/CloseTicketDialog.vue'
 import { useRoute } from 'vue-router'
-import { onMounted, ref, watch } from 'vue'
-import MultiImagesDialog from '@/shared/HelpersComponents/dialog/MultiImagesDialog.vue'
-import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 // import { UserTypeEnum } from '../../../Core/Enum/userTypeEnum'
 import ClientReply from './ClientReply.vue'
 import EmployeeReply from './EmployeeReply.vue'
-import ShowTicketController from '@/features/Organization/Ticket/Presentation/controllers/showTicketController'
-import ShowTicketParams from '../../../Core/params/showTicketParams'
 import type TicketDetailsModel from '../../../Data/models/TicketDetailsModel'
 import CloseTicketDialog from '../Dialog/CloseTicketDialog.vue'
 import { StatusEnum } from '../../../Core/Enums/statusEnum'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import IconDelete from '@/shared/icons/IconDelete.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
 import { useUserStore } from '@/stores/user'
 const { user } = useUserStore()
 

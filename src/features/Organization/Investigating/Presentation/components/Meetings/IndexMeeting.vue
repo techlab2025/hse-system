@@ -194,7 +194,7 @@ watch(
   <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE]">
     <DataStatus :controller="state">
       <template #success>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+        <div class="mt-2 meetings-grid grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
           <InvestegaionMeetingResultAnswerCard
             class="meetings-page"
             v-for="(meeting, index) in state.data"
@@ -220,8 +220,8 @@ watch(
             user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
           }/add/EquipmentType`"
           addText="Add EquipmentType"
-          description="Sorry .. You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EquipmentTypes"
+          description="You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
+          title="You have No EquipmentTypes"
         />
       </template>
       <template #failed>
@@ -230,8 +230,8 @@ watch(
             user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
           }/add/EquipmentType`"
           addText="Add EquipmentType"
-          description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No EquipmentTypes"
+          description="You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
+          title="You have No EquipmentTypes"
         />
       </template>
     </DataStatus>
@@ -239,7 +239,7 @@ watch(
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
+        description="You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </PermissionBuilder>

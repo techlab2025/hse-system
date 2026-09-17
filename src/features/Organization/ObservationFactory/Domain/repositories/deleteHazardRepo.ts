@@ -6,7 +6,7 @@ import { DeleteHazardApiService } from '../../Data/apiServices/deleteHazardApiSe
 class DeleteHazardRepo extends RepoInterface<HazardModel> {
   private static instance: DeleteHazardRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

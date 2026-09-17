@@ -42,7 +42,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: color-mix(in srgb, var(--text-strong) 50%, transparent);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -50,7 +50,7 @@ export default {
 }
 
 .dialog-content {
-  background: #fff;
+  background: var(--surface-1);
   padding: 20px;
   border-radius: 8px;
   text-align: center;
@@ -61,12 +61,12 @@ export default {
 .dialog-message {
   margin-bottom: 20px;
   font-size: 16px;
-  color: black !important;
+  color: var(--text-strong) !important;
 }
 
 .dialog-close-btn {
-  background: #007bff;
-  color: #fff;
+  background: var(--brand-primary-500);
+  color: var(--text-on-brand);
   padding: 10px 20px;
   border: none;
   border-radius: 4px;
@@ -75,6 +75,6 @@ export default {
 }
 
 .dialog-close-btn:hover {
-  background: #0056b3;
+  background: var(--brand-primary-600);
 }
 </style>

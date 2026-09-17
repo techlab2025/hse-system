@@ -3,12 +3,12 @@ import type HirarachyEmployeeParams from './HirarchyParams'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 import type RolesOrganizationEmployeeParams from './RolesOrganizationEmployeeParams'
 import type { EmployeeStatusEnum } from '../Enum/EmployeeStatus'
-import type { DashboardAccessEnum } from '../Enum/DashboardAccess'
 
 export default class EditOrganizatoinEmployeeParams implements Params {
   id: number
   name: string
   phone: string
+  countryCode: string
   email: string
   password: string
   passwordConfirmation: string
@@ -18,6 +18,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
   EmployeeStatus: EmployeeStatusEnum
   dashAccessStatus: boolean
   // certificateId: number[]
+  allPermissions: boolean
   public static readonly validation = new ClassValidation().setRules({
     name: { required: true, minLength: 2, maxLength: 100 },
     phone: { required: true, pattern: /^\+?[\d\s-()]+$/ },
@@ -27,6 +28,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     id: number,
     name: string,
     phone: string,
+    countryCode: string,
     email: string,
     password: string,
     passwordConfirmation: string,
@@ -34,12 +36,14 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     roles: RolesOrganizationEmployeeParams[],
     EmployeeStatus: EmployeeStatusEnum,
     dashAccessStatus: boolean,
+    allPermissions: boolean,
 
     // certificateId: number[],
   ) {
     this.id = id
     this.name = name
     this.phone = phone
+    this.countryCode = countryCode
     this.email = email
     this.password = password
     this.passwordConfirmation = passwordConfirmation
@@ -47,7 +51,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     this.roles = roles
     this.EmployeeStatus = EmployeeStatus
     this.dashAccessStatus = dashAccessStatus
-
+    this.allPermissions = allPermissions
     // this.certificateId = certificateId
   }
 
@@ -60,15 +64,17 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     data['organization_employee_id'] = this.id
     data['name'] = this.name
     data['phone'] = this.phone
+    data['country_code'] = this.countryCode
     data['email'] = this.email
     if (this.password?.length > 0) data['password'] = this.password
     data['password_confirmation'] = this.passwordConfirmation
     data['hierarchies'] = this.hierarchies
     data['roles'] = this.roles.map((item) => item.toMap())
     data['employee_type'] = Number(this.EmployeeStatus)
-    if (this.dashAccessStatus || this.dashAccessStatus == false)
-      data['can_access_dashboard'] = this.dashAccessStatus
+
+    data['can_access_dashboard'] = Number(this.dashAccessStatus)
     // data['certificate_id'] = this.certificateId.map((id) => id)
+    data['allow_all_permissions'] = this.allPermissions
 
     return data
   }

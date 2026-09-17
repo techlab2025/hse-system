@@ -2,7 +2,6 @@
 import UploadImage from '@/shared/icons/UploadImage.vue';
 import RadioButton from 'primevue/radiobutton';
 import type ItemModel from '../../../Data/models/ItemMode';
-import type { TitleLocale } from '@/base/core/params/translations_params';
 const props = defineProps<{
   title: string
   options: ItemModel[]
@@ -31,6 +30,6 @@ const props = defineProps<{
 .tag {
   font-size: 12px;
   font-weight: 500;
-  color: gray;
+  color: var(--text-muted);
 }
 </style>

@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx sass *)",
+      "Bash(not exist *)",
+      "Bash(git rm *)",
+      "Bash(echo \"\")",
+      "Bash(echo \"# Windows reserved device name \\(created accidentally\\)\")",
+      "Bash(echo \"nul\")",
+      "Bash(xargs ls -la)",
+      "Bash(docker --version)",
+      "Bash(systemctl status *)",
+      "Read(//run/**)",
+      "Bash(sudo docker ps)",
+      "Bash(sudo -n docker ps)",
+      "Bash(awk '{print $1}')",
+      "Bash(npx vue-tsc *)",
+      "Bash(grep -i \"\\\\.vue$\")",
+      "Bash(git -C /home/techlab/projects/hse-system/.claude/worktrees/agent-a2db261cf3994f430 diff --stat)",
+      "Bash(git checkout *)",
+      "Bash(git -C .claude/worktrees/agent-a2db261cf3994f430 status --porcelain)",
+      "Bash(git commit -m ' *)",
+      "Bash(git merge *)",
+      "Bash(sed -n '201,225p' \"features/Organization/Herikaly/Presentation/components/IndexHerikaly.vue\")",
+      "Bash(sed -n '202,225p' \"features/setting/Certificate/Presentation/components/IndexCertificate.vue\")",
+      "Bash(sed -n '272,310p' \"features/setting/HazardType/Presentation/components/IndexHazardType.vue\")"
+    ]
+  }
+}

@@ -33,7 +33,7 @@ const updateData = () => {
   height: 20px;
   margin-right: 6px;
   cursor: pointer;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   text-decoration: underline;
   font-family: 'Regular';
 

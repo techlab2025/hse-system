@@ -1,6 +1,5 @@
 // import type TitleModel from "@/base/core/Models/title_model";
 import TranslationsParams, {
-  type DescriptionLocale,
   type TitleLocale,
 } from '@/base/core/params/translations_params.ts'
 // import TitleInterface from '@/base/Data/Models/title_interface.ts'
@@ -18,6 +17,8 @@ export default class CertificateDetailsModel {
   public image: string
   public industries: TitleModel<string>[]
   public requireExpiredDate: boolean
+  public certificateType: TitleInterface
+  public requireCertificate: boolean
 
   constructor(
     id: number,
@@ -29,6 +30,8 @@ export default class CertificateDetailsModel {
     parentId: number,
     image: string,
     requireExpiredDate: boolean,
+    certificateType: TitleInterface,
+    requireCertificate: boolean,
   ) {
     this.id = id
     this.titles = titles
@@ -39,6 +42,8 @@ export default class CertificateDetailsModel {
     this.parentId = parentId
     this.image = image
     this.requireExpiredDate = requireExpiredDate
+    this.certificateType = certificateType
+    this.requireCertificate = requireCertificate
   }
 
   static fromMap(data: any): CertificateDetailsModel {
@@ -54,6 +59,8 @@ export default class CertificateDetailsModel {
       data.parent_id,
       data.image,
       data.require_expired_date,
+      this.getTitle(data.certificate_type),
+      Boolean(data.require_certificate),
     )
   }
 
@@ -64,9 +71,13 @@ export default class CertificateDetailsModel {
   static getTitle(data: any) {
     const savedLocale = localStorage.getItem('lang')
 
+    if (typeof data === 'number') {
+      return new TitleInterface({ id: data })
+    }
+
     return new TitleInterface({
-      id: data.id,
-      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
+      id: data?.id ?? 0,
+      title: data?.titles?.find((title: any) => title.locale === savedLocale)?.title,
     })
   }
 }

@@ -13,6 +13,7 @@ interface ActionItem {
   link?: string
   action?: () => void
   permission?: PermissionsEnum[]
+  class?: string
 }
 
 const emit = defineEmits(['delete'])
@@ -52,7 +53,12 @@ const permittedActions = computed(() =>
   <Popover ref="op">
     <div class="list-body">
       <ul class="border-none">
-        <li class="list-item cursor-pointer" v-for="action in permittedActions" :key="action.text">
+        <li
+          :class="action.class"
+          class="list-item cursor-pointer"
+          v-for="action in permittedActions"
+          :key="action.text"
+        >
           <router-link v-if="action.link" :to="action.link" class="flex items-center gap-[5px]">
             <component :is="action.icon" />
             <span @click="op.hide()">{{ action.text }}</span>

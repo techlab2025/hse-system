@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import MultiImagesDialog from '@/shared/HelpersComponents/dialog/MultiImagesDialog.vue'
 import type TicketDetailsModel from '../../../Data/models/TicketDetailsModel'
 import { StatusEnum } from '../../../Core/Enums/statusEnum'
 

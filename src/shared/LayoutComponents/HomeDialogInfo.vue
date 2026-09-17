@@ -112,19 +112,19 @@ const modules = ref([
 
 .hse-container {
   font-family: 'Inter', sans-serif;
-  color: #334155;
+  color: var(--brand-primary-700);
   line-height: 1.6;
 }
 
 .overview-header p {
   font-size: 1.1rem;
-  color: #64748b;
+  color: var(--brand-primary-500);
   margin-bottom: 20px;
 }
 
 .divider {
   border: 0;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--brand-primary-100);
   margin: 24px 0;
 }
 
@@ -135,17 +135,17 @@ const modules = ref([
 }
 
 .module-card {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--brand-primary-50);
+  border: 1px solid var(--brand-primary-100);
   border-radius: 12px;
   padding: 20px;
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .module-card:hover {
-  border-color: #3b82f6;
-  background: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-color: var(--brand-primary-400);
+  background: var(--surface-1);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--text-strong) 5%, transparent);
 }
 
 .card-header {
@@ -156,8 +156,8 @@ const modules = ref([
 }
 
 .badge {
-  background: #3b82f6;
-  color: white;
+  background: var(--brand-primary-400);
+  color: var(--text-on-brand);
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -171,13 +171,13 @@ const modules = ref([
 .module-card h3 {
   margin: 0;
   font-size: 1.25rem;
-  color: #1e293b;
+  color: var(--brand-primary-800);
   font-weight: 700;
 }
 
 .subtitle {
   font-weight: 600;
-  color: #3b82f6;
+  color: var(--brand-primary-400);
   font-size: 0.9rem;
   margin-bottom: 12px;
   text-transform: uppercase;
@@ -193,7 +193,7 @@ const modules = ref([
   padding-left: 20px;
   margin: 0;
   font-size: 0.9rem;
-  color: #475569;
+  color: var(--brand-primary-600);
 }
 
 .info-list li {

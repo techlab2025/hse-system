@@ -8,7 +8,7 @@ import { ShowPermissionApiService } from '../../Data/apiServices/showPermissionA
 class ShowPermissionRepo extends RepoInterface<PermissionDetailsModel> {
   private static instance: ShowPermissionRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

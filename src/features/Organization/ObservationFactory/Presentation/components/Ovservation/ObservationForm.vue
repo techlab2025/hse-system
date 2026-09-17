@@ -12,7 +12,6 @@ import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
 import ToDoList from '@/assets/images/to-do-list.png'
@@ -343,7 +342,7 @@ const setSelectedObservationType = (data: TitleInterface) => {
 
     <p class="first-section-par">
       <component :is="FormPen" />
-      {{ $t('Observation ') }}
+      {{ $t('Observation') }}
       <!-- <span>(#001)</span> -->
     </p>
 

@@ -11,7 +11,6 @@ import wordSlice from '@/base/Presentation/utils/word_slice'
 
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import DeleteLangController from '@/features/setting/languages/Presentation/controllers/deleteLangController'
 import DeleteLangParams from '@/features/setting/languages/Core/params/deleteLangParams'
@@ -22,9 +21,6 @@ import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 
 const { t } = useI18n()
@@ -131,13 +127,15 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.LANGUAGE_ALL,
-    PermissionsEnum.LANGUAGE_FETCH,
-    PermissionsEnum.LANGUAGE_UPDATE,
-    PermissionsEnum.LANGUAGE_DELETE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.LANGUAGE_ALL,
+      PermissionsEnum.LANGUAGE_FETCH,
+      PermissionsEnum.LANGUAGE_UPDATE,
+      PermissionsEnum.LANGUAGE_DELETE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -155,7 +153,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/users/Lang/edit/${item.id}`">{{ index + 1 }} </router-link>
+                  <span :to="`/users/Lang/edit/${item.id}`">{{ index + 1 }} </span>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
                 <td data-label="Code">{{ item.code ?? '--' }}</td>
@@ -167,13 +165,20 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
                   <!--                  @LangChangeStatus="fetchLang"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteLang)" @delete="deleteLang(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteLang)"
+                    @delete="deleteLang(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -182,20 +187,28 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/add/Lang`" addText="Add Lang"
-          description="Sorry .. You have no languages .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No languages" />
+        <DataEmpty
+          :link="`/add/Lang`"
+          addText="Add Lang"
+          description="You have no languages .. All your joined customers will appear here when you add your customer data"
+          title="You have No languages"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="`/add/Lang`" addText="Add Lang"
-          description="Sorry .. You have no language .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No languages" />
+        <DataFailed
+          :link="`/add/Lang`"
+          addText="Add Lang"
+          description="You have no language .. All your joined customers will appear here when you add your customer data"
+          title="You have No languages"
+        />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no language .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        addText="Have not  Permission"
+        description="You have no language .. All your joined customers will appear here when you add your customer data"
+      />
     </template>
   </PermissionBuilder>
 </template>

@@ -7,7 +7,7 @@ import { EditClientOpinionApiService } from '../../Data/apiServices/editClientOp
 class EditClientOpinionRepo extends RepoInterface<ClientOpinionModel> {
   private static instance: EditClientOpinionRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -134,4 +134,70 @@ function removeImage(index: number) {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.multi-image-uploader,
+.input-image,
+.input-label-images,
+.input-label-images > span,
+.image-gallery {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.input-label-images > span {
+  overflow-wrap: anywhere;
+}
+
+.input-label-images small {
+  display: block;
+}
+
+.image-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.image-item img {
+  width: 100%;
+  height: 100px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+@media (max-width: 640px) {
+  .multi-image-uploader {
+    gap: 12px;
+  }
+
+  .input-image,
+  .image-gallery {
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .input-label-images {
+    align-items: flex-start;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .input-label-images > img {
+    width: 30px;
+    height: 30px;
+    flex: 0 0 auto;
+    object-fit: contain;
+  }
+
+  .input-label-images > span {
+    flex: 1;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .image-item {
+    width: min(100px, calc(50% - 5px));
+  }
+}
+</style>

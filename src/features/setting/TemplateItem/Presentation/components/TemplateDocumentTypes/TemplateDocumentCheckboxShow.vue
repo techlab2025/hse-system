@@ -2,7 +2,6 @@
 import Checkbox from 'primevue/checkbox';
 import type ItemModel from '../../../Data/models/ItemMode';
 import UploadImage from '@/shared/icons/UploadImage.vue';
-import type { TitleLocale } from '@/base/core/params/translations_params';
 const { title, options } = defineProps<{
   title: string
   options: ItemModel[]
@@ -37,6 +36,6 @@ const { title, options } = defineProps<{
 .tag {
   font-size: 12px;
   font-weight: 500;
-  color: gray;
+  color: var(--text-muted);
 }
 </style>

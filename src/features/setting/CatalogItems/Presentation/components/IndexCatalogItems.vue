@@ -16,13 +16,11 @@ import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 // import DeleteTeamTypeController from '@/features/setting/TeamType/Presentation/controllers/deleteTeamTypeController'
 // import DeleteTeamTypeParams from '@/features/setting/TeamType/Core/params/deleteTeamTypeParams'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 // import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import Search from '@/shared/icons/Search.vue'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
@@ -238,10 +236,10 @@ watch(
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link
+                  <span
                     :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/edit/${item.id}`"
                     >{{ index + 1 }}
-                  </router-link>
+                  </span>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
 
@@ -290,8 +288,8 @@ watch(
           <DataEmpty
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/add`"
             addText="Add Catalog Item"
-            description="Sorry .. You have no Catalog .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Catalog"
+            description="You have no Catalog .. All your joined customers will appear here when you add your customer data"
+            title="You have No Catalog"
           />
         </permission-builder>
       </template>
@@ -306,8 +304,8 @@ watch(
           <DataFailed
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/add`"
             addText="Add Catalog Item"
-            description="Sorry .. You have no Catalog .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Catalog"
+            description="You have no Catalog .. All your joined customers will appear here when you add your customer data"
+            title="You have No Catalog"
           />
         </permission-builder>
       </template>
@@ -323,7 +321,7 @@ watch(
       >
         <DataFailed
           addText="Have not  Permission"
-          description="Sorry .. You have no Catalog .. All your joined customers will appear here when you add your customer data"
+          description="You have no Catalog .. All your joined customers will appear here when you add your customer data"
         />
       </permission-builder>
     </template>

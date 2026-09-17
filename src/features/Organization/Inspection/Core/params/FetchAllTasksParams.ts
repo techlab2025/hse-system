@@ -1,4 +1,5 @@
 import type Params from '@/base/core/params/params'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
 
 export default class FetchAllTasksParams implements Params {
   public word: string
@@ -6,7 +7,10 @@ export default class FetchAllTasksParams implements Params {
   public perPage: number = 10
   public pageNumber: number = 10
   public zoneIds?: number[]
-  public projectIds?: number[]
+  public projectIds?: number | number[]
+  public inspectionType?: number
+  public date?: string
+  public isAudit?: boolean
 
   constructor(
     word: string,
@@ -14,7 +18,10 @@ export default class FetchAllTasksParams implements Params {
     perPage: number = 10,
     withPage: number = 1,
     zoneIds?: number[],
-    projectIds?: number[],
+    projectIds?: number | number[],
+    inspectionType?: number,
+    date?: string,
+    isAudit?: boolean,
   ) {
     this.word = word
     this.withPage = withPage
@@ -22,16 +29,36 @@ export default class FetchAllTasksParams implements Params {
     this.perPage = perPage
     this.zoneIds = zoneIds
     this.projectIds = projectIds
+    this.inspectionType = inspectionType
+    this.date = date
+    this.isAudit = isAudit
   }
 
   toMap(): Record<string, string | number | number[] | null | any> {
     const data: Record<string, string | number | number[] | null | any> = {}
+    const headerProjectId = Number(useProjectSelectStore().getProjectId())
+    const explicitProjectIds = Array.isArray(this.projectIds)
+      ? this.projectIds
+      : this.projectIds
+        ? [this.projectIds]
+        : []
+    const projectIds =
+      explicitProjectIds.length > 0
+        ? explicitProjectIds.filter((id) => Number(id) > 0)
+        : headerProjectId > 0
+          ? [headerProjectId]
+          : []
+
     if (this.word) data['word'] = this.word
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.zoneIds) data['zone_ids'] = this.zoneIds
-    if (this.projectIds) data['project_ids'] = [this.projectIds]
+    if (projectIds.length > 0) data['project_ids'] = projectIds
+    if (this.inspectionType != null) data['inspection_type'] = this.inspectionType
+    if (this.date) data['date'] = this.date
+    if (this.isAudit) data['is_audit'] = this.isAudit
+
     return data
   }
 }

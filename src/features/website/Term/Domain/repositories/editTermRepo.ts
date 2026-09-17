@@ -7,7 +7,7 @@ import { EditTermApiService } from '../../Data/apiServices/editTermApiService'
 class EditTermRepo extends RepoInterface<TermModel> {
   private static instance: EditTermRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

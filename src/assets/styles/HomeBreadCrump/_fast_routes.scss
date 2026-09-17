@@ -13,8 +13,8 @@
     padding-block: 12px;
 
     .route {
-      background-color: #fcfcfc;
-      color: #14146b;
+      background-color: var(--text-on-brand);
+      color: var(--brand-primary-800);
       padding: $XsSize2;
       border-radius: $XlSize2;
       cursor: pointer;
@@ -22,8 +22,8 @@
       text-transform: capitalize;
 
       &:hover {
-        background-color: #14146b;
-        color: #fcfcfc;
+        background-color: var(--brand-primary-800);
+        color: var(--text-on-brand);
       }
 
       &.active {

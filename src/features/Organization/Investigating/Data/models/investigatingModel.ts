@@ -4,10 +4,9 @@ import ShowProjectDetailsModel from '@/features/Organization/Project/Data/models
 import CapaModel from './CapaModel'
 import OvservationEquipmentModel from '@/features/Organization/ObservationFactory/Data/models/OvservationEquipmentModel'
 import OvserverModel from '@/features/Organization/ObservationFactory/Data/models/OvserverModel'
-import InvestegationObservationModel from './InvestigationHelperModels/InvestegationObservationModel'
-import acc from '@/assets/images/acc.png'
-import { InvestegationStatusEnum } from '../../Core/Enums/InvestegationStatusEnum'
 import HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel'
+import TeamLeaderModel from './TeamLeaderModel'
+import { CapaTaskDetailsModel } from '@/features/Organization/Capa/Data/models/CapaTasksModel'
 export default class InvestigatingModel {
   public Investegationid: number
   public title: string
@@ -34,9 +33,17 @@ export default class InvestigatingModel {
   public creator: OvserverModel
   public capa: CapaModel
   public status: number
-  public observation: HazardDetailsModel
+  public observation: HazardDetailsModel | undefined
   public LatestInvestigatingMeetingId: number
   public hasResults: boolean
+  public investigationTeamLeader: TeamLeaderModel | undefined
+  public teamNumebr: number
+  public investigation_meeting_date?: string
+  public investigation_meeting_time?: string
+  public lessonLearnt?: string
+  public correctiveTask?: CapaTaskDetailsModel[]
+  public preventiveTask?: CapaTaskDetailsModel[]
+  public SerialName?: string
 
   constructor(
     Investegationid: number,
@@ -64,9 +71,17 @@ export default class InvestigatingModel {
     creator: OvserverModel,
     capa: CapaModel,
     status: number,
-    observation: HazardDetailsModel,
+    observation: HazardDetailsModel | undefined,
     LatestInvestigatingMeetingId: number,
     hasResults: boolean,
+    investigationTeamLeader: TeamLeaderModel | undefined,
+    teamNumebr: number,
+    investigation_meeting_date?: string,
+    investigation_meeting_time?: string,
+    lessonLearnt?: string,
+    correctiveTask?: CapaTaskDetailsModel[],
+    preventiveTask?: CapaTaskDetailsModel[],
+    SerialName?: string,
   ) {
     this.Investegationid = Investegationid
     this.title = title
@@ -96,11 +111,24 @@ export default class InvestigatingModel {
     this.observation = observation
     this.LatestInvestigatingMeetingId = LatestInvestigatingMeetingId
     this.hasResults = hasResults
+    this.investigationTeamLeader = investigationTeamLeader
+    this.teamNumebr = teamNumebr
+    this.investigation_meeting_date = investigation_meeting_date
+    this.investigation_meeting_time = investigation_meeting_time
+    this.lessonLearnt = lessonLearnt
+    this.correctiveTask = correctiveTask
+    this.preventiveTask = preventiveTask
+    this.SerialName = SerialName
+    this.location = location
   }
 
   static fromMap(data: any): InvestigatingModel {
+    const correctiveTask =
+      data.corrective_tasks ?? data.correctiveTasks ?? data.coorevtive_tasks ?? []
+    const preventiveTask =
+      data.preventive_tasks ?? data.preventiveTasks ?? data.previtive_tasks ?? []
     return new InvestigatingModel(
-      data.id,
+      data.id || data.investigation_id,
       data.title,
       data.description,
       data.image,
@@ -119,7 +147,7 @@ export default class InvestigatingModel {
       data.action,
       data.is_near_miss,
       data.capa_status,
-      data.date,
+      data.investigation_date,
       data.serial,
       // OvserverModel.fromMap(data.observer),
       // OvserverModel.fromMap(data.creator),
@@ -127,128 +155,138 @@ export default class InvestigatingModel {
       data.creator,
       data.capa,
       data.status,
-      HazardDetailsModel?.fromMap(data.observation),
+      data.observation ? HazardDetailsModel?.fromMap(data.observation) : undefined,
       data.latest_investigation_meeting_id,
       data.has_results,
+      data.investigation_team_leader
+        ? TeamLeaderModel?.fromMap(data.investigation_team_leader)
+        : undefined,
+      data.investigation_team_members_count,
+      data.investigation_meeting_date,
+      data.investigation_meeting_time,
+      data.lesson_learnt ?? data.lessonLearnt ?? '',
+      correctiveTask.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
+      preventiveTask.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
+      data.serial_name,
     )
   }
 
-  static example: InvestigatingModel = [
-    new InvestigatingModel(
-      10,
-      'First Investegation',
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
-      acc,
-      1,
-      1,
-      2,
-      20,
-      1,
-      OvservationEquipmentModel.example,
-      LocationModel.example,
-      SohwProjectZoonModel.example,
-      ShowProjectDetailsModel.example,
-      1,
-      1,
-      1,
-      'Action',
-      '1',
-      '1',
-      '1-9-2001',
-      123,
-      OvserverModel.example,
-      OvserverModel.example,
-      CapaModel.example,
-      InvestegationStatusEnum.NEW,
-      InvestegationObservationModel.example,
-      0,
-    ),
-    new InvestigatingModel(
-      10,
-      'First Investegation',
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
-      acc,
-      1,
-      1,
-      2,
-      20,
-      1,
-      OvservationEquipmentModel.example,
-      LocationModel.example,
-      SohwProjectZoonModel.example,
-      ShowProjectDetailsModel.example,
-      1,
-      1,
-      0,
-      'Action',
-      '1',
-      '1',
-      '1-9-2001',
-      123,
-      OvserverModel.example,
-      OvserverModel.example,
-      CapaModel.example,
-      InvestegationStatusEnum.COMPLETED,
-      InvestegationObservationModel.example,
-      0,
-    ),
-    new InvestigatingModel(
-      10,
-      'First Investegation',
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
-      acc,
-      1,
-      1,
-      3,
-      20,
-      1,
-      OvservationEquipmentModel.example,
-      LocationModel.example,
-      SohwProjectZoonModel.example,
-      ShowProjectDetailsModel.example,
-      1,
-      1,
-      1,
-      'Action',
-      '1',
-      '1',
-      '1-9-2001',
-      123,
-      OvserverModel.example,
-      OvserverModel.example,
-      CapaModel.example,
-      InvestegationStatusEnum.HOLD,
-      InvestegationObservationModel.example,
-      0,
-    ),
-    new InvestigatingModel(
-      10,
-      'First Investegation',
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
-      acc,
-      1,
-      1,
-      3,
-      20,
-      1,
-      OvservationEquipmentModel.example,
-      LocationModel.example,
-      SohwProjectZoonModel.example,
-      ShowProjectDetailsModel.example,
-      1,
-      1,
-      1,
-      'Action',
-      '1',
-      '1',
-      '1-9-2001',
-      123,
-      OvserverModel.example,
-      OvserverModel.example,
-      CapaModel.example,
-      InvestegationStatusEnum.IN_PROGRESS,
-      InvestegationObservationModel.example,
-      0,
-    ),
-  ]
+  // static example: InvestigatingModel = [
+  //   new InvestigatingModel(
+  //     10,
+  //     'First Investegation',
+  //     'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
+  //     acc,
+  //     1,
+  //     1,
+  //     2,
+  //     20,
+  //     1,
+  //     OvservationEquipmentModel.example,
+  //     LocationModel.example,
+  //     SohwProjectZoonModel.example,
+  //     ShowProjectDetailsModel.example,
+  //     1,
+  //     1,
+  //     1,
+  //     'Action',
+  //     '1',
+  //     '1',
+  //     '1-9-2001',
+  //     123,
+  //     OvserverModel.example,
+  //     OvserverModel.example,
+  //     CapaModel.example,
+  //     InvestegationStatusEnum.NEW,
+  //     InvestegationObservationModel.example,
+  //     0,
+  //   ),
+  //   new InvestigatingModel(
+  //     10,
+  //     'First Investegation',
+  //     'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
+  //     acc,
+  //     1,
+  //     1,
+  //     2,
+  //     20,
+  //     1,
+  //     OvservationEquipmentModel.example,
+  //     LocationModel.example,
+  //     SohwProjectZoonModel.example,
+  //     ShowProjectDetailsModel.example,
+  //     1,
+  //     1,
+  //     0,
+  //     'Action',
+  //     '1',
+  //     '1',
+  //     '1-9-2001',
+  //     123,
+  //     OvserverModel.example,
+  //     OvserverModel.example,
+  //     CapaModel.example,
+  //     InvestegationStatusEnum.COMPLETED,
+  //     InvestegationObservationModel.example,
+  //     0,
+  //   ),
+  //   new InvestigatingModel(
+  //     10,
+  //     'First Investegation',
+  //     'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
+  //     acc,
+  //     1,
+  //     1,
+  //     3,
+  //     20,
+  //     1,
+  //     OvservationEquipmentModel.example,
+  //     LocationModel.example,
+  //     SohwProjectZoonModel.example,
+  //     ShowProjectDetailsModel.example,
+  //     1,
+  //     1,
+  //     1,
+  //     'Action',
+  //     '1',
+  //     '1',
+  //     '1-9-2001',
+  //     123,
+  //     OvserverModel.example,
+  //     OvserverModel.example,
+  //     CapaModel.example,
+  //     InvestegationStatusEnum.HOLD,
+  //     InvestegationObservationModel.example,
+  //     0,
+  //   ),
+  //   new InvestigatingModel(
+  //     10,
+  //     'First Investegation',
+  //     'Lorem Ipsum is simply dummy text of the printing and typesetting industry printing and',
+  //     acc,
+  //     1,
+  //     1,
+  //     3,
+  //     20,
+  //     1,
+  //     OvservationEquipmentModel.example,
+  //     LocationModel.example,
+  //     SohwProjectZoonModel.example,
+  //     ShowProjectDetailsModel.example,
+  //     1,
+  //     1,
+  //     1,
+  //     'Action',
+  //     '1',
+  //     '1',
+  //     '1-9-2001',
+  //     123,
+  //     OvserverModel.example,
+  //     OvserverModel.example,
+  //     CapaModel.example,
+  //     InvestegationStatusEnum.IN_PROGRESS,
+  //     InvestegationObservationModel.example,
+  //     0,
+  //   ),
+  // ]
 }

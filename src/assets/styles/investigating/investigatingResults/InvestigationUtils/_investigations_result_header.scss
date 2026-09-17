@@ -1,93 +1,470 @@
 @use '../../../variables' as *;
 @use '../../../mixins/flex' as *;
-@use '../../../mixins/grid' as *;
 
-.investigating-header-container {
-  @include flex-column(nowrap, flex-start, flex-start);
-  gap: $MdSize2;
-  font-family: 'Regular';
-  background-color: #f7f9fc;
-  padding: $MdSize;
-  border-radius: calc($XlSize + 2px);
+.investigation-result .investigating-header-container {
+  --case-surface: color-mix(in srgb, var(--surface-1) 84%, transparent);
+  --case-line: color-mix(in srgb, var(--brand-primary-100) 92%, transparent);
+  --case-muted: var(--brand-primary-500);
+  --case-ink: var(--brand-primary-900);
+  --case-blue: var(--brand-primary-500);
+  --case-teal: var(--status-info);
+  --case-amber: var(--status-warning);
+
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+  gap: 14px;
   width: 100%;
+  padding: 16px;
+  border: 1px solid var(--case-line);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--brand-primary-50) 96%, transparent) 0%, color-mix(in srgb, var(--brand-primary-50) 78%, transparent) 100%), var(--surface-1);
+  box-shadow: 0 18px 44px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
+  font-family: 'Regular';
+  overflow: hidden;
+  position: relative;
+
+  // &::before {
+  //   content: '';
+  //   position: absolute;
+  //   inset-inline: 16px;
+  //   top: 0;
+  //   height: 4px;
+  //   border-radius: 0 0 999px 999px;
+  //   background: linear-gradient(90deg, var(--case-blue), var(--status-success), var(--status-warning), var(--status-danger));
+  // }
+
+  // &::after {
+  //   content: '';
+  //   position: absolute;
+  //   inset-inline-end: -72px;
+  //   top: -92px;
+  //   width: 220px;
+  //   height: 220px;
+  //   border-radius: 50%;
+  //   background: radial-gradient(circle, color-mix(in srgb, var(--brand-primary-500) 14%, transparent), transparent 68%);
+  //   pointer-events: none;
+  // }
+
+  .investigating-header,
+  .meeting-info-container,
+  .incidant-description,
+  .team-container,
+  .equipment-card {
+    position: relative;
+    z-index: 1;
+    border: 1px solid color-mix(in srgb, var(--brand-primary-100) 86%, transparent);
+    border-radius: 8px;
+    background: var(--case-surface);
+    box-shadow: 0 10px 26px color-mix(in srgb, var(--brand-primary-900) 5%, transparent);
+    backdrop-filter: blur(14px);
+  }
 
   .investigating-header {
-    @include flex-row(nowrap, flex-start, center);
-    gap: $XsSize4;
-    .title {
-      font-size: $MdSize2;
-      font-weight: $BaseFontWeightBold;
-      font-family: 'Bold';
-      color: $PrimaryColor;
-    }
-    span {
-      color: #cacddb;
-      font-size: $XsSize;
-      font-weight: $XsSize;
-    }
-  }
-
-  .investigating-info {
-    @include flex-row(nowrap, flex-start, center);
-    gap: $XlSize4;
-    @media (max-width: 768px) {
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    p {
-      color: #aeaeb2;
-      font-size: $SmSize;
-      font-weight: $BaseFontMediumWeight;
-      span {
-        color: #202020;
-        font-weight: $BaseFontWeightBold;
-        font-family: 'Bold';
-      }
-    }
-  }
-  .meeting-info-container {
     @include flex-column(nowrap, flex-start, flex-start);
-    gap: $XsSize3;
+    grid-column: 1 / -1;
+    gap: 12px;
+    min-height: 132px;
+    padding: 18px;
+    overflow: hidden;
 
-    width: 100%;
-    .metting-info-header-container {
-      @include flex-row(nowrap, flex-start, center);
-      width: 100%;
-      .metting-info-header {
-        color: #202020;
-        font-size: $MdSize;
-        font-weight: $BaseFontSemiBoldWeight;
+    // &::before {
+      //   content: 'CASE';
+      //   position: absolute;
+      //   inset-inline-end: 18px;
+      //   bottom: -12px;
+      //   color: color-mix(in srgb, var(--brand-primary-500) 6%, transparent);
+      //   font-family: 'Bold';
+      //   font-size: 72px;
+      //   font-weight: 700;
+      //   line-height: 1;
+      //   letter-spacing: 0;
+      //   pointer-events: none;
+      // }
+
+      .title {
+        max-width: min(780px, 100%);
+        color: var(--case-ink);
         font-family: 'Bold';
+        font-size: 28px;
+        font-weight: $BaseFontWeightBold;
+        line-height: 1.16;
+        letter-spacing: 0;
+        text-transform: none;
       }
-      .meeting-hr {
-        // flex-grow: 1;
-        border: none;
-        height: 1px;
-        width: 100%;
-        background-color: #1f41bb33;
-        margin-left: $XsSize4;
+
+      .serial-badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 30px;
+        padding: 5px 12px;
+        border: 1px solid color-mix(in srgb, var(--brand-primary-500) 16%, transparent);
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
+        color: var(--case-blue);
+        font-family: 'Bold';
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0;
+      }
+
+      .small-title {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        max-width: 100%;
+        padding: 8px 10px;
+        border: 1px solid color-mix(in srgb, var(--status-info) 14%, transparent);
+        border-radius: 8px;
+        background: color-mix(in srgb, var(--status-success-soft) 80%, transparent);
+        color: var(--case-muted);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.4;
+
+        .place {
+          color: var(--case-teal);
+          font-family: 'Bold';
+          font-size: 13px !important;
+          font-weight: 700;
+        }
       }
     }
-    .meeting-info {
-      @include flex-row(nowrap, flex-start, center);
-      gap: $XlSize4;
-      @media (max-width: 768px) {
-        flex-wrap: wrap;
-        gap: 10px;
-      }
+
+    .investigating-info {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-column: 1 / -1;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      width: 100%;
+
       p {
-        color: #aeaeb2;
-        font-size: $SmSize;
+        min-height: 72px;
+        padding: 14px;
+        border: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
+        border-radius: 8px;
+        background: var(--surface-1);
+        color: var(--case-muted);
+        font-size: 12px;
         font-weight: $BaseFontMediumWeight;
+        line-height: 1.4;
+        box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
+        text-transform: none;
+
+        &::before {
+          content: '';
+          display: block;
+          width: 28px;
+          height: 3px;
+          margin-bottom: 10px;
+          border-radius: 999px;
+          background: linear-gradient(90deg, var(--case-blue), var(--status-success));
+        }
+
         span {
-          color: #202020;
-          font-weight: $BaseFontWeightBold;
+          display: block;
+          margin-top: 4px;
+          color: var(--case-ink);
           font-family: 'Bold';
-          &.meet-date {
-            color: #1f41bb;
+          font-size: 15px;
+          font-weight: $BaseFontWeightBold;
+          line-height: 1.35;
+        }
+      }
+    }
+
+    .meeting-info-container {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: 12px;
+      padding: 16px;
+
+      .metting-info-header-container {
+        @include flex-row(nowrap, flex-start, center);
+        width: 100%;
+        gap: 12px;
+
+        .metting-info-header {
+          flex-shrink: 0;
+          color: var(--case-ink);
+          font-family: 'Bold';
+          font-size: 16px;
+          font-weight: $BaseFontWeightBold;
+          letter-spacing: 0;
+        }
+
+        .meeting-hr {
+          width: 100%;
+          height: 1px;
+          border: 0;
+          background: linear-gradient(90deg, color-mix(in srgb, var(--brand-primary-500) 22%, transparent), transparent);
+        }
+      }
+
+      .meeting-info {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        width: 100%;
+
+        p {
+          min-height: 74px;
+          padding: 12px;
+          border: 1px solid color-mix(in srgb, var(--brand-primary-100) 92%, transparent);
+          border-radius: 8px;
+          background: color-mix(in srgb, var(--brand-primary-50) 96%, transparent);
+          color: var(--case-muted);
+          font-size: 12px;
+          font-weight: 600;
+          line-height: 1.42;
+          text-transform: none;
+
+          span {
+            display: block;
+            margin-top: 4px;
+            color: var(--case-ink);
+            font-family: 'Bold';
+            font-size: 14px;
+            font-weight: 700;
+          }
+
+          .meet-date {
+            color: var(--case-teal);
+          }
+
+          .team-number,
+          .incidant-type {
+            color: var(--case-blue);
           }
         }
       }
     }
+
+    .incidant-description {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: 8px;
+      min-height: 100%;
+      padding: 16px;
+
+      .title {
+        color: var(--case-muted);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0;
+      }
+
+      .description {
+        width: 100%;
+        max-height: 160px;
+        overflow: auto;
+        color: var(--case-ink);
+        font-family: 'Bold';
+        font-size: 15px !important;
+        font-weight: 700;
+        line-height: 1.7;
+        text-transform: none;
+      }
+    }
+
+    .team-container {
+      @include flex-column(nowrap, flex-start, flex-start);
+      grid-column: 1 / -1;
+      gap: 12px;
+      padding: 16px;
+
+      > .title {
+        color: var(--case-ink);
+        font-family: 'Bold';
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .team {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+        gap: 10px;
+        width: 100%;
+      }
+
+      .team-member {
+        @include flex-row(nowrap, flex-start, center);
+        gap: 10px;
+        min-width: 0;
+        padding: 10px;
+        border: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
+        border-radius: 8px;
+        background: var(--surface-1) !important;
+        box-shadow: 0 8px 18px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+
+        &:hover {
+          transform: translateY(-2px);
+          border-color: color-mix(in srgb, var(--brand-primary-500) 24%, transparent);
+          box-shadow: 0 14px 26px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
+        }
+
+        img {
+          width: 42px;
+          height: 42px;
+          flex: 0 0 42px;
+          border: 2px solid var(--surface-1);
+          border-radius: 50%;
+          object-fit: cover;
+          box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
+        }
+
+        .employee-text {
+          min-width: 0;
+        }
+
+        .name,
+        .serial {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .name {
+          color: var(--case-ink);
+          font-family: 'Bold';
+          font-size: 13px;
+          font-weight: 700;
+        }
+
+        .serial {
+          margin-top: 2px;
+          color: var(--case-muted);
+          font-size: 12px;
+          font-weight: 600;
+        }
+      }
+    }
+
+    .equipment-card {
+      @include flex-row(nowrap, flex-start, center);
+      grid-column: 1 / -1;
+      gap: 12px;
+      padding: 12px;
+      border-color: color-mix(in srgb, var(--status-info) 18%, transparent);
+      background:
+        linear-gradient(135deg, color-mix(in srgb, var(--status-success-soft) 78%, transparent), color-mix(in srgb, var(--surface-1) 92%, transparent)), var(--surface-1);
+
+      .equipemtn-card-image {
+        width: 76px;
+        height: 76px;
+        flex: 0 0 76px;
+        border-radius: 8px;
+        object-fit: cover;
+        background: var(--brand-primary-50);
+        box-shadow: 0 10px 22px color-mix(in srgb, var(--brand-primary-900) 9%, transparent);
+      }
+
+      .equipment-text {
+        @include flex-column(nowrap, center, flex-start);
+        min-width: 0;
+        gap: 4px;
+      }
+
+      .name,
+      .serial {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .name {
+        color: var(--case-ink);
+        font-family: 'Bold';
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .serial {
+        color: var(--case-teal);
+        font-size: 12px;
+        font-weight: 700;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      grid-template-columns: 1fr;
+
+      .meeting-info-container,
+      .incidant-description {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      padding: 12px;
+
+      .investigating-header {
+        min-height: auto;
+        padding: 14px;
+
+        &::before {
+          display: none;
+        }
+
+        .title {
+          font-size: 22px;
+        }
+      }
+
+      .investigating-info,
+      .meeting-info-container .meeting-info,
+      .team-container .team {
+        grid-template-columns: 1fr;
+      }
+
+      .meeting-info-container,
+      .team-container,
+      .incidant-description {
+        padding: 12px;
+      }
+
+      .meeting-info-container .meeting-info p,
+      .investigating-info p {
+        min-height: auto;
+        overflow-wrap: anywhere;
+      }
+
+      .input-label,
+      .label-container {
+        min-width: 0;
+        flex-wrap: wrap;
+      }
+
+      .equipment-card {
+        align-items: flex-start;
+
+        .equipemtn-card-image {
+          width: 58px;
+          height: 58px;
+          flex-basis: 58px;
+        }
+      }
+    }
+
+    @media (max-width: 480px) {
+      gap: 10px;
+      padding: 8px;
+
+      .investigating-header,
+      .meeting-info-container,
+      .team-container,
+      .incidant-description,
+      .equipment-card {
+        border-radius: 10px;
+        padding: 10px;
+      }
+
+      .team-container .team-member {
+        width: 100%;
+      }
+    }
   }
-}

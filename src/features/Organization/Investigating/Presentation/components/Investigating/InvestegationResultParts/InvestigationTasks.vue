@@ -33,8 +33,8 @@ const UpdateData = (data) => {
 </script>
 <template>
   <div class="cause-of-accidant">
-    <HeaderPage :title="`tasks`"
-      :subtitle="` Add the tasks is measures that will be taken to prevent a recurrence of this incident.`" :img="tasks"
+    <HeaderPage :title="`Actions`"
+      :subtitle="` Add the actions is measures that will be taken to prevent a recurrence of this incident.`" :img="tasks"
       class="title-header" />
 
     <TimeLineTasks @update:data="UpdateData" />

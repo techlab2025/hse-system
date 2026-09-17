@@ -11,7 +11,7 @@ import { DeleteAboutUsFeatureApiService } from '../../Data/apiServices/deleteAbo
 class DeleteAboutUsFeatureRepo extends RepoInterface<AboutUsFeatureModel> {
   private static instance: DeleteAboutUsFeatureRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

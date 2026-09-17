@@ -11,18 +11,18 @@
     padding-left: 25px;
 
     .static {
-      color: #9ca3af;
+      color: var(--text-soft);
       font-size: $SmSize;
       font-weight: $BaseFontWeightBold;
     }
 
     .static-title {
-      color: #0c2058;
+      color: var(--brand-primary-800);
       font-size: $XlSize;
       font-family: 'bold';
       font-weight: $BaseFontWeightBold;
       span {
-        color: #bcbcbc;
+        color: var(--text-muted);
         font-size: $XsSize;
         font-weight: $BaseFontMediumWeight;
       }
@@ -89,21 +89,21 @@
         border-radius: 50%;
       }
       &:first-child {
-        color: #1d4ed8;
+        color: var(--brand-primary-500);
         &::before {
-          background-color: #1d4ed8;
+          background-color: var(--brand-primary-500);
         }
       }
       &:nth-child(2) {
-        color: #8bbefb;
+        color: var(--brand-primary-200);
         &::before {
-          background-color: #8bbefb;
+          background-color: var(--brand-primary-200);
         }
       }
       &:last-child {
-        color: #4e9fff;
+        color: var(--brand-primary-400);
         &::before {
-          background-color: #4e9fff;
+          background-color: var(--brand-primary-400);
         }
       }
     }

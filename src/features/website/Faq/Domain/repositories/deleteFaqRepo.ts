@@ -8,7 +8,7 @@ import { DeleteFaqApiService } from '../../Data/apiServices/deleteFaqApiService'
 class DeleteFaqRepo extends RepoInterface<FaqModel> {
   private static instance: DeleteFaqRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

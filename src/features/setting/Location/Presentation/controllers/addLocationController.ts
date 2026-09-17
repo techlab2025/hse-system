@@ -1,7 +1,6 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
-import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
@@ -29,27 +28,29 @@ export default class AddLocationController extends ControllerInterface<LocationM
   }
 
   async addLocation(params: AddLocationParams, router: Router, draft: boolean = false) {
+    let requestSucceeded = false
     // useLoaderStore().setLoadingWithDialog();
     try {
       params.validate()
       if (!params.validate().isValid) {
         params.validateOrThrow()
-        return
+        return false
       }
       if (!params?.ParentId && params?.type === LocationEnum.AREA) {
         new OpenWarningDilaog('Please Select City').openDialog()
-        return
+        return false
       } else if (!params?.ParentId && params?.type === LocationEnum.STATE) {
         new OpenWarningDilaog('Please Select Country').openDialog()
-        return
+        return false
       } else if (!params?.ParentId && params?.type === LocationEnum.CITY) {
         new OpenWarningDilaog('Please Select State').openDialog()
-        return
+        return false
       }
       const dataState: DataState<LocationModel> = await this.addLocationUseCase.call(params)
       this.setLoading()
       this.setState(dataState)
       if (this.isDataSuccess()) {
+        requestSucceeded = true
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
           titleContent: 'Added was successful',
@@ -87,6 +88,6 @@ export default class AddLocationController extends ControllerInterface<LocationM
     }
 
     super.handleResponseDialogs()
-    return this.state
+    return requestSucceeded
   }
 }

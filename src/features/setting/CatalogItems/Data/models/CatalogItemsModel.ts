@@ -1,5 +1,4 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
-import CatalogItemsDetailsModel from './CatalogItemsDetailsModel'
 
 export default class CatalogItemsModel extends TitleInterface {
   public id: number

@@ -10,7 +10,7 @@
     @include flex-column(nowrap, flex-start, flex-start);
     gap: $XsSize;
     .title {
-      color: #202020;
+      color: var(--text-strong);
       font-size: $MdSize;
       font-weight: $BaseFontSemiBoldWeight;
     }
@@ -48,7 +48,7 @@
         }
 
         &.selected {
-          border: 3px solid #e5e5e5;
+          border: 3px solid var(--surface-2);
           border-radius: 50%;
           .selected-icon {
             display: block;
@@ -66,7 +66,7 @@
     @include flex-row(nowrap, flex-start, center);
     gap: 4px;
     label {
-      color: #6b7280;
+      color: var(--text-soft);
       font-size: $SmSize;
       font-weight: $BaseFontMediumWeight;
     }
@@ -74,11 +74,11 @@
     .p-checkbox-box {
       border-radius: 5px !important;
       svg {
-        fill: white !important;
+        fill: var(--text-on-brand) !important;
       }
     }
     .p-checkbox-checked .p-checkbox-box svg {
-      fill: white !important;
+      fill: var(--text-on-brand) !important;
       display: block !important;
     }
   }

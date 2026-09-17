@@ -4,7 +4,7 @@
 .widget-btn {
   @include flex-row(nowrap, flex-start, center);
   gap: 4px;
-  background-color: #1d4ed80f;
+  background-color: color-mix(in srgb, var(--brand-primary-500) 5.88%, transparent);
   padding: $XsSize2 $XlSize3;
   border-radius: $XlSize4;
   font-family: 'Regular';
@@ -25,7 +25,7 @@
     .add-widget-hr {
       width: 100%;
       border: none;
-      background-color: #f1f3f5;
+      background-color: var(--brand-primary-50);
       height: 1px;
     }
   }

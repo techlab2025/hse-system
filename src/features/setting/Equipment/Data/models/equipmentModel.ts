@@ -1,8 +1,6 @@
 import TitleModel from '@/base/core/Models/title_model'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import EquipmentTypeDetailsModel from './EquipmentTypeDetails'
-import acc from '@/assets/images/acc.png'
-import EquipmentImg from '@/assets/images/EquipmentImg.jpg'
 import type { EquipmentStatus } from '../../Core/enum/equipmentStatus'
 import WhereHouseDetailsModel from '@/features/Organization/WhereHouse/Data/models/WhereHouseDetailsModel'
 import ContractorDetailsModel from '@/features/setting/contractor/Data/models/ContractorDetailsModel'
@@ -29,6 +27,8 @@ export default class EquipmentModel extends TitleInterface {
   public checkout_date: string
   public license_plate_number: number
   public date: string
+  public inService: boolean
+  public serialName: string
 
   constructor(
     id: number,
@@ -53,6 +53,8 @@ export default class EquipmentModel extends TitleInterface {
     checkout_date: string,
     license_plate_number: number,
     date: string,
+    inService: boolean,
+    serialName: string,
   ) {
     super({ id, title, subtitle })
 
@@ -75,6 +77,8 @@ export default class EquipmentModel extends TitleInterface {
     this.checkout_date = checkout_date
     this.license_plate_number = license_plate_number
     this.date = date
+    this.inService = inService
+    this.serialName = serialName
   }
 
   static fromMap(data: any): EquipmentModel {
@@ -104,96 +108,98 @@ export default class EquipmentModel extends TitleInterface {
       data.checkout_date,
       data.license_plate_number,
       data.date,
+      data.in_service,
+      data.serial_name ?? data.serial_number ?? data.serial ?? data.subtitle ?? '',
     )
   }
 
-  static example: EquipmentModel[] = [
-    new EquipmentModel(
-      10,
-      'Drilling Rig',
-      'New Equipment Subtitle 1',
-      1,
-      0,
-      { id: 1, title: 'New Industry 1' },
-      0,
-      EquipmentImg,
-      [],
-      1,
-      new EquipmentTypeDetailsModel(
-        10,
-        'hand tool',
-        'New Equipment Type Subtitle 1',
-        1,
-        0,
-        [],
-        0,
-        EquipmentImg,
-        [],
-        3,
-        1,
-      ),
-      new TitleInterface({ id: 1, title: 'Eco-friendly / Sustainability-oriented Names' }),
-      new TitleInterface({ id: 1, title: 'Obour City' }),
-      acc,
-    ),
-    new EquipmentModel(
-      20,
-      'Drilling Rig',
-      'New Equipment Subtitle 2',
-      1,
-      0,
-      { id: 1, title: 'New Industry 2' },
-      0,
-      EquipmentImg,
-      [],
-      2,
-      new EquipmentTypeDetailsModel(
-        10,
-        'hand tool',
-        'New Equipment Type Subtitle 1',
-        1,
-        0,
-        [],
-        0,
-        EquipmentImg,
-        [],
-        1,
-        1,
-      ),
-      new TitleInterface({ id: 1, title: 'Eco-friendly / Sustainability-oriented Names' }),
-      new TitleInterface({ id: 1, title: 'Obour City' }),
-      acc,
-    ),
-    new EquipmentModel(
-      30,
-      'Drilling Rig',
-      'New Equipment Subtitle 3',
-      1,
-      0,
-      { id: 1, title: 'New Industry 3' },
-      0,
-      EquipmentImg,
-      [],
-      1,
-      new EquipmentTypeDetailsModel(
-        10,
-        'hand tool',
-        'New Equipment Type Subtitle 1',
-        1,
-        0,
-        [],
-        0,
-        EquipmentImg,
-        [],
-        2,
-        1,
-      ),
-      new TitleInterface({ id: 1, title: 'Eco-friendly / Sustainability-oriented Names' }),
-      new TitleInterface({ id: 1, title: 'Obour City' }),
-      acc,
-      new WhereHouseDetailsModel(1, 'hand tool', '102030'),
-    ),
-  ]
+  // static example: EquipmentModel[] = [
+  //   new EquipmentModel(
+  //     10,
+  //     'Drilling Rig',
+  //     'New Equipment Subtitle 1',
+  //     1,
+  //     0,
+  //     { id: 1, title: 'New Industry 1' },
+  //     0,
+  //     EquipmentImg,
+  //     [],
+  //     1,
+  //     new EquipmentTypeDetailsModel(
+  //       10,
+  //       'hand tool',
+  //       'New Equipment Type Subtitle 1',
+  //       1,
+  //       0,
+  //       [],
+  //       0,
+  //       EquipmentImg,
+  //       [],
+  //       3,
+  //       1,
+  //     ),
+  //     new TitleInterface({ id: 1, title: 'Eco-friendly / Sustainability-oriented Names' }),
+  //     new TitleInterface({ id: 1, title: 'Obour City' }),
+  //     acc,
+  //   ),
+  //   new EquipmentModel(
+  //     20,
+  //     'Drilling Rig',
+  //     'New Equipment Subtitle 2',
+  //     1,
+  //     0,
+  //     { id: 1, title: 'New Industry 2' },
+  //     0,
+  //     EquipmentImg,
+  //     [],
+  //     2,
+  //     new EquipmentTypeDetailsModel(
+  //       10,
+  //       'hand tool',
+  //       'New Equipment Type Subtitle 1',
+  //       1,
+  //       0,
+  //       [],
+  //       0,
+  //       EquipmentImg,
+  //       [],
+  //       1,
+  //       1,
+  //     ),
+  //     new TitleInterface({ id: 1, title: 'Eco-friendly / Sustainability-oriented Names' }),
+  //     new TitleInterface({ id: 1, title: 'Obour City' }),
+  //     acc,
+  //   ),
+  //   new EquipmentModel(
+  //     30,
+  //     'Drilling Rig',
+  //     'New Equipment Subtitle 3',
+  //     1,
+  //     0,
+  //     { id: 1, title: 'New Industry 3' },
+  //     0,
+  //     EquipmentImg,
+  //     [],
+  //     1,
+  //     new EquipmentTypeDetailsModel(
+  //       10,
+  //       'hand tool',
+  //       'New Equipment Type Subtitle 1',
+  //       1,
+  //       0,
+  //       [],
+  //       0,
+  //       EquipmentImg,
+  //       [],
+  //       2,
+  //       1,
+  //     ),
+  //     new TitleInterface({ id: 1, title: 'Eco-friendly / Sustainability-oriented Names' }),
+  //     new TitleInterface({ id: 1, title: 'Obour City' }),
+  //     acc,
+  //     new WhereHouseDetailsModel(1, 'hand tool', '102030'),
+  //   ),
+  // ]
 }
 
 interface ProjectZoon {

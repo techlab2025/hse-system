@@ -5,7 +5,7 @@ import { CreateIndustryApiService } from '../../Data/apiServices/createIndustryA
 
 class CreateIndustryRepo extends RepoInterface<IndustryModel> {
   private static instance: CreateIndustryRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

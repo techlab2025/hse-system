@@ -7,31 +7,46 @@ import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 export default class AddEquipmentParams implements Params {
   translation!: TranslationsParams
+
   equipmentTypeId: number | null = null
   date: string | null = null
   status!: EquipmentStatus
+
   inspectionDuration: string | null = null
   licenseNumber: string | null = null
   licensePlateNumber: string | null = null
+
+  equipmentCondition: number | null = null
+  equipmentUsedStatus: number | null = null
+  equipmentOfHavyStatus?: number | null = null
+
   image: string | null = null
   certificateImage: string | null = null
+
+  mainfacturyDate?: string | null = null
+
   allIndustries: boolean | null = null
   industries: number[] = []
+
   parentId!: number
   constructorId?: number
   description?: string
+
   equipmentRentType: number
   equipmentRentTime: string
   equipmentRentStartDate: string
   equipmentRentEndDate: string
+
   VehicleKm: string
   serialNumber: string
   SelectedWhereHosue: number
 
+  WorkedHours?: number
+  ivhm?: boolean
+
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
     equipmentTypeId: { required: true },
-    // equipmentRentStartDate: { required: true },
   })
 
   constructor(data: {
@@ -42,8 +57,12 @@ export default class AddEquipmentParams implements Params {
     inspectionDuration: string | null
     licenseNumber: string | null
     licensePlateNumber: string | null
+    equipmentCondition: number | null
+    equipmentUsedStatus: number | null
+    equipmentOfHavyStatus?: number | null
     image: string | null
     certificateImage: string | null
+    mainfacturyDate?: string | null
     allIndustries: boolean | null
     industries: number[]
     parentId: number
@@ -56,6 +75,8 @@ export default class AddEquipmentParams implements Params {
     VehicleKm: string
     SelectedWhereHosue: number
     serialNumber: string
+    WorkedHours?: number
+    ivhm?: boolean
   }) {
     Object.assign(this, data)
   }
@@ -65,42 +86,82 @@ export default class AddEquipmentParams implements Params {
 
     data['translations'] = this.translation.toMap()
 
-    if (this.equipmentTypeId != null) data['equipment_type_id'] = this.equipmentTypeId
+    if (this.equipmentTypeId != null)
+      data['equipment_type_id'] = this.equipmentTypeId
 
-    if (this.date != null) data['date'] = formatJoinDate(this.date)
+    if (this.date != null)
+      data['date'] = formatJoinDate(this.date)
 
-    if (this.status != null) data['status'] = this.status
+    if (this.status != null)
+      data['status'] = this.status
 
-    if (this.inspectionDuration != null) data['inspection_duration'] = this.inspectionDuration
+    if (this.inspectionDuration != null)
+      data['inspection_duration'] = this.inspectionDuration
 
-    if (this.licenseNumber != null) data['license_number'] = this.licenseNumber
+    if (this.licenseNumber != null)
+      data['license_number'] = this.licenseNumber
 
-    if (this.licensePlateNumber != null) data['license_plate_number'] = this.licensePlateNumber
+    if (this.licensePlateNumber != null)
+      data['license_plate_number'] = this.licensePlateNumber
 
-    if (this.image != null) data['image'] = this.image
+    data['equipment_condition'] = this.equipmentCondition
+    data['equipment_used_status'] = this.equipmentUsedStatus
+    data['equipment_of_havy_status'] = this.equipmentOfHavyStatus ?? null
 
-    if (this.certificateImage != null) data['certificate_image'] = this.certificateImage
+    if (this.image != null)
+      data['image'] = this.image
 
-    if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
+    if (this.certificateImage != null)
+      data['certificate_image'] = this.certificateImage
 
-    if (this.industries.length > 0) data['industry_ids'] = this.industries
+    if (this.mainfacturyDate != null)
+      data['manufacturing_year'] = formatJoinDate(this.mainfacturyDate)
 
-    if (this.parentId != null) data['parent_id'] = this.parentId
+    if (this.allIndustries != null)
+      data['all_industries'] = this.allIndustries ? 1 : 0
 
-    if (this.constructorId != null) data['contractor_id'] = this.constructorId
+    if (this.industries.length > 0)
+      data['industry_ids'] = this.industries
 
-    if (this.description) data['description'] = this.description
-    if (this.equipmentRentType) data['period_type'] = this.equipmentRentType
-    if (this.equipmentRentTime) data['period'] = this.equipmentRentTime
-    if (this.equipmentRentStartDate) data['checkin_date'] = this.equipmentRentStartDate
-    if (this.equipmentRentEndDate) data['checkout_date'] = this.equipmentRentEndDate
-    if (this.VehicleKm) data['kilometer'] = this.VehicleKm
-    if (this.SelectedWhereHosue) data['warehouse_id'] = this.SelectedWhereHosue
+    if (this.parentId != null)
+      data['parent_id'] = this.parentId
+
+    if (this.constructorId != null)
+      data['contractor_id'] = this.constructorId
+
+    if (this.description)
+      data['description'] = this.description
+
+    if (this.equipmentRentType)
+      data['period_type'] = this.equipmentRentType
+
+    if (this.equipmentRentTime)
+      data['period'] = this.equipmentRentTime
+
+    if (this.equipmentRentStartDate)
+      data['checkin_date'] = this.equipmentRentStartDate
+
+    if (this.equipmentRentEndDate)
+      data['checkout_date'] = this.equipmentRentEndDate
+
+    if (this.VehicleKm)
+      data['kilometer'] = this.VehicleKm
+
+    if (this.SelectedWhereHosue)
+      data['warehouse_id'] = this.SelectedWhereHosue
+
     if (useProjectAppStatusStore().isSerialNumberAuto()) {
       data['serial_number'] = this.serialNumber
     } else {
       data['serial'] = this.serialNumber
     }
+
+    if (this.WorkedHours != null)
+      data['worked_hours'] = this.WorkedHours
+
+    // send false also
+    if (this.ivhm !== undefined)
+      data['ivhm'] = this.ivhm
 
     return data
   }

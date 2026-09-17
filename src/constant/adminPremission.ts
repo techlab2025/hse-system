@@ -1824,7 +1824,7 @@ export const adminPermissions: PermissionItem = {
         {
           key: PermissionsEnum.CERTIFICATE_ALL,
           code: PermissionsEnum.CERTIFICATE_ALL,
-          label: 'Certificate',
+          label: 'Training',
           permissions: [
             {
               key: PermissionsEnum.CERTIFICATE_ALL,
@@ -2345,7 +2345,7 @@ export const adminPermissions: PermissionItem = {
         {
           key: PermissionsEnum.CERTIFICATE_ALL,
           code: PermissionsEnum.CERTIFICATE_ALL,
-          label: 'Certificate',
+          label: 'Training',
           permissions: [
             {
               key: PermissionsEnum.CERTIFICATE_ALL,
@@ -2923,7 +2923,7 @@ export const adminPermissions: PermissionItem = {
         {
           key: PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
           code: PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
-          label: 'Employee Certificates',
+          label: 'Employee Training',
           permissions: [
             {
               key: PermissionsEnum.EMPLOYEE_CERTIFICATE_ALL,
@@ -3063,6 +3063,82 @@ export const adminPermissions: PermissionItem = {
               key: PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
               code: PermissionsEnum.WHIERE_HOUSE_TYPE_UPDATE,
               label: 'update',
+            },
+          ],
+        },
+        // Drill Type
+        {
+          key: PermissionsEnum.DRILL_TYPE_ALL,
+          code: PermissionsEnum.DRILL_TYPE_ALL,
+          label: 'Drill Type',
+          permissions: [
+            {
+              key: PermissionsEnum.DRILL_TYPE_ALL,
+              code: PermissionsEnum.DRILL_TYPE_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.DRILL_TYPE_FETCH,
+              code: PermissionsEnum.DRILL_TYPE_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.DRILL_TYPE_DETAILS,
+              code: PermissionsEnum.DRILL_TYPE_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.DRILL_TYPE_CREATE,
+              code: PermissionsEnum.DRILL_TYPE_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.DRILL_TYPE_UPDATE,
+              code: PermissionsEnum.DRILL_TYPE_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.DRILL_TYPE_DELETE,
+              code: PermissionsEnum.DRILL_TYPE_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
+        // PPE Item
+        {
+          key: PermissionsEnum.PPE_ITEM_ALL,
+          code: PermissionsEnum.PPE_ITEM_ALL,
+          label: 'PPE Item',
+          permissions: [
+            {
+              key: PermissionsEnum.PPE_ITEM_ALL,
+              code: PermissionsEnum.PPE_ITEM_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.PPE_ITEM_FETCH,
+              code: PermissionsEnum.PPE_ITEM_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.PPE_ITEM_DETAILS,
+              code: PermissionsEnum.PPE_ITEM_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.PPE_ITEM_CREATE,
+              code: PermissionsEnum.PPE_ITEM_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.PPE_ITEM_UPDATE,
+              code: PermissionsEnum.PPE_ITEM_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.PPE_ITEM_DELETE,
+              code: PermissionsEnum.PPE_ITEM_DELETE,
+              label: 'Delete',
             },
           ],
         },

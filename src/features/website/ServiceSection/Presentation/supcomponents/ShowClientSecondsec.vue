@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import AddItemButton from '@/components/HelpersComponents/AddItemButton.vue'
 import IndexProjectParams from '@/features/dashboard/projects/project/Core/params/index_projects_params'
 import ProjectModel from '@/features/dashboard/projects/project/Data/models/index_projects_model'
 import IndexProjectController from '@/features/dashboard/projects/project/Presentation/controllers/index_projects_controller'
@@ -175,8 +174,8 @@ watch(
       <template #empty>
         <DataEmpty
           :link="`/add-project`"
-          description="Sorry .. You have no project types .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Projects"
+          description="You have no project types .. All your joined customers will appear here when you add your customer data"
+          title="You have No Projects"
           addText="Add Projects"
         />
       </template>

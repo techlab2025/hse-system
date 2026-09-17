@@ -1,6 +1,6 @@
 <script setup lang="ts">
-
 import { markRaw, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { TemplateType } from '@/features/setting/Template/Core/Enum/TemplateTypeEnum'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import AddTemplateParams from '@/features/setting/Template/Core/params/addTemplateParams'
@@ -14,19 +14,15 @@ import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import AddTemplateItemParams from '@/features/setting/TemplateItem/Core/params/addTemplateItemParams'
 import AddTemplateController from '@/features/setting/Template/Presentation/controllers/addTemplateController'
-import { useRouter } from 'vue-router'
 import TemplateTimeLine from '@/features/Organization/Inspection/Presentation/components/InspectionUtils/TemplateTimeLine.vue'
-// import TemplateTimeLine from '../../InspectionUtils/TemplateTimeLine.vue
-
-
 
 const visible = ref(false)
+const formKey = ref(0)
 const emit = defineEmits(['update:data', 'update:templateId'])
 
 // Translations
 const langs = ref<{ locale: string; title: string }[]>([])
 const langDefault = ref<{ locale: string; icon?: string; title: string }[]>([])
-
 
 const ActionsSelection = ref<TitleInterface[]>([
   new TitleInterface({ id: ActionsEnum.CheckBox, title: 'Checkbox', subtitle: '' }),
@@ -73,11 +69,9 @@ const fetchLang = async () => {
   }
 }
 
-onMounted(
-  () => {
-    fetchLang();
-  }
-)
+onMounted(() => {
+  fetchLang()
+})
 interface items {
   title: string
   isDanger: boolean
@@ -93,7 +87,7 @@ const buildOptions = (templateItems: any[]): items[] => {
     isTextAreaRequired: item.isTextarea,
     textarea_type: item.textareaType ?? 0,
     has_auto_observation: item.isObservation,
-    normal_textarea: true
+    normal_textarea: true,
   }))
 }
 const updateData = () => {
@@ -111,7 +105,7 @@ const updateData = () => {
       buildOptions(item.TemplateItems),
       item.isUpdloadImage || 0,
       item.ImageStatus || 0,
-      item.itemTag
+      item.itemTag,
     )
   })
 
@@ -123,7 +117,7 @@ const updateData = () => {
     null,
     items,
     SelectedTemplateType?.value?.id,
-    null
+    null,
   )
   emit('update:data', params)
 }
@@ -133,12 +127,14 @@ const setLangs = (data: { locale: string; title: string }[]) => {
   // updateData()
 }
 
-
 const SelectedTemplateType = ref<TitleInterface | null>(null)
 const TemplateTypes = ref<TitleInterface[]>([
   new TitleInterface({ id: TemplateType.Equipment, title: 'Equipment', subtitle: '' }),
   new TitleInterface({ id: TemplateType.Tool, title: 'Tool', subtitle: '' }),
   new TitleInterface({ id: TemplateType.Location, title: 'Location', subtitle: '' }),
+  new TitleInterface({ id: TemplateType.PermitToWork, title: 'Permit To Work', subtitle: '' }),
+  new TitleInterface({ id: TemplateType.device, title: 'Device', subtitle: '' }),
+  new TitleInterface({ id: TemplateType.machine, title: 'Machine', subtitle: '' }),
 ])
 
 const setTemplateType = (data: TitleInterface) => {
@@ -149,22 +145,21 @@ const setTemplateType = (data: TitleInterface) => {
 const TemplateData = ref()
 const GetTemplateData = (data) => {
   TemplateData.value = data
-  console.log(TemplateData.value, "TemplateData.value")
+  console.log(TemplateData.value, 'TemplateData.value')
 }
-
 
 const addTemplateController = AddTemplateController.getInstance()
 
 const router = useRouter()
+const route = useRoute()
 
-const addTemplate = async (isInLibrary: number) => {
-
+const buildParams = (isInLibrary: number): AddTemplateParams => {
   const translationsParams = new TranslationsParams()
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
   })
 
-  const items = TemplateData.value.map((item) => {
+  const templateItems = TemplateData.value.map((item) => {
     return new AddTemplateItemParams(
       null,
       item.itemTitle,
@@ -172,29 +167,52 @@ const addTemplate = async (isInLibrary: number) => {
       buildOptions(item.TemplateItems),
       item.isUpdloadImage || 0,
       item.ImageStatus || 0,
-      item.itemTag
+      item.itemTag,
     )
   })
-  const params = new AddTemplateParams(
+
+  return new AddTemplateParams(
     translationsParams,
     null,
     null ?? [],
     image.value || null,
     null,
-    items,
+    templateItems,
     SelectedTemplateType?.value?.id,
-    isInLibrary
+    isInLibrary,
   )
+}
+
+const resetForm = () => {
+  langs.value = []
+  SelectedTemplateType.value = null
+  TemplateData.value = undefined
+  formKey.value++
+}
+
+const addTemplate = async (isInLibrary: number) => {
+  const params = buildParams(isInLibrary)
+  addTemplateController.setLoading()
   const state = await addTemplateController.addTemplate(params as AddTemplateParams, router)
-  if (state?.value.data) {
+  if (addTemplateController.isDataSuccess() && state?.value.data) {
     emit('update:templateId', {
       templateId: state?.value.data.id,
       teamplateTitle: state?.value.data.title,
-      isInLibrary: isInLibrary
+      isInLibrary: isInLibrary,
     })
     emit('update:data')
+    visible.value = false
   }
-  visible.value = false
+}
+
+const saveAndAdd = async () => {
+  const params = buildParams(1)
+  addTemplateController.setLoading()
+  await addTemplateController.addTemplate(params as AddTemplateParams, router, true)
+  if (addTemplateController.isDataSuccess()) {
+    resetForm()
+    visible.value = false
+  }
 }
 
 watch(
@@ -210,44 +228,83 @@ watch(
       fetchLang()
     }
   },
-  { immediate: true }
+  { immediate: true },
 )
-
 </script>
 
 <template>
-
-
-
   <div class="add-new-template-dialog-container">
     <!-- BODY -->
     <div class="dialog-body">
-      <div class="inspection-template-dialog-data grid grid-cols-4 gap-4">
+      <!-- grid-cols-4 gap-4   -->
+      <div class="inspection-template-dialog-data grid">
         <hr class="inspection-template-dialog-divider col-span-4" />
 
         <div class="col-span-4 md:col-span-2">
-          <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+          <LangTitleInput
+          :label="$t('template_name')"
+            :key="formKey"
+            :langs="langDefault"
+            :modelValue="langs"
+            @update:modelValue="setLangs"
+          />
         </div>
 
         <div class="col-span-4 md:col-span-2">
-          <CustomSelectInput :modelValue="SelectedTemplateType" :staticOptions="TemplateTypes" :required="true"
-            :label="$t('Template Type')" id="TemplateType" :placeholder="$t('Select Template Type')"
-            @update:modelValue="setTemplateType" />
+          <CustomSelectInput
+            :key="formKey"
+            :modelValue="SelectedTemplateType"
+            :staticOptions="TemplateTypes"
+            :required="true"
+            :label="$t('Template Type')"
+            id="TemplateType"
+            :placeholder="$t('Select Template Type')"
+            @update:modelValue="setTemplateType"
+          />
         </div>
 
-        <TemplateTimeLine :visable="visible" @update:data="GetTemplateData" />
+        <TemplateTimeLine :key="formKey" :visable="visible" @update:data="GetTemplateData" />
       </div>
     </div>
 
     <!-- FOOTER FIXED -->
-    <div class="dialog-footer">
-      <button class="btn btn-primary w-full" @click="addTemplate(1)">
-        {{ $t('confirm') }}
+    <div class="dialog-footer button-wrapper">
+      <button
+        v-if="route.path.includes('project-progress')"
+        type="button"
+        class="btn btn-primary w-1/2"
+        @click="saveAndAdd"
+      >
+        {{ $t('save and add') }}
       </button>
-      <!-- <button class="btn btn-secondary" @click="addTemplate(0)">
-        {{ $t('use only this time') }}
-      </button> -->
+      <button
+        type="button"
+        class="btn btn-primary"
+        :class="route.path.includes('project-progress') ? 'w-1/2' : 'w-full'"
+        @click="addTemplate(1)"
+      >
+        {{ route.path.includes('project-progress') ? $t('save and next step') : $t('confirm') }}
+      </button>
     </div>
   </div>
-
 </template>
+
+<style scoped>
+.button-wrapper {
+  display: flex;
+  gap: 1rem;
+  flex-direction: row !important;
+  width: 100% !important;
+  button {
+    &.w-full {
+      width: 100%;
+    }
+    &.w-1\/2 {
+      width: 50%;
+    }
+  }
+}
+.inspection-template-dialog-data > div {
+  padding: 10px;
+}
+</style>

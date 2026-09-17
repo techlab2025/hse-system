@@ -1,65 +1,36 @@
 <script lang="ts" setup>
 import { onMounted, ref, watch } from 'vue'
-import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
-import Image from 'primevue/image'
-// import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
-import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import { useUserStore } from '@/stores/user'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import TitleInterface from '@/base/Data/Models/title_interface'
-import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
-import ViewIcon from '@/shared/icons/ViewIcon.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import CardSkelaton from '@/features/Organization/Inspection/Presentation/components/SubComponent/CardSkelaton.vue'
 import IndexCapaParams from '../../Core/params/indexCapaParams'
 import IndexCapaController from '../controllers/indexCapaController'
-import DeleteCapaParams from '../../Core/params/deleteCapaParams'
-import DeleteCapaController from '../controllers/deleteCapaController'
 import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Core/params/fetchMyProjectsParams'
 import FetchMyProjectsController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyProjectsController'
 import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
 import FetchMyZonesController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController'
 import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/params/FetchMyZonesParams'
-import { RiskLevelEnum } from '@/features/Organization/Investigating/Core/Enums/risk_level_enum'
-import { ActionStatusEnum } from '@/features/Organization/ObservationFactory/Core/Enums/ActionStatusEnum'
-import { SaveStatusEnum } from '@/features/Organization/ObservationFactory/Core/Enums/save_status_enum'
 import { Observation } from '@/features/Organization/ObservationFactory/Core/Enums/ObservationTypeEnum'
-import IndexEquipmentMangement from '@/features/Organization/ObservationFactory/Presentation/components/indexEquipmentMangement.vue'
 import IndexHazardHeader from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexHazardHeader.vue'
-import IndexFilter from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexFilter.vue'
-import * as XLSX from 'xlsx'
-import { saveAs } from 'file-saver'
-import PinIcons from '@/shared/icons/PinIcons.vue'
-// import HighLevel from '@/shared/icons/HighLevel.vue'
-import { CapaStatusEnum } from '../../Core/Core/CapaStatusEnum'
-import { formatJoinDate } from '@/base/Presentation/utils/date_format'
-import { formatTime } from '@/base/Presentation/utils/time_format'
-import Observdetails from '@/shared/icons/observdetails.vue'
-import Capa from '@/views/Organization/Capa/Capa.vue'
 import type CapaModel from '@/features/Organization/ObservationFactory/Data/models/CapaModel'
-import CapaDialog from '../supcomponents/CapaDialog.vue'
-// import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
-const { t } = useI18n()
+import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel.ts'
 
-// import DialogChangeStatusHazard from "@/features/setting/Hazard/Presentation/components/Hazard/DialogChangeStatusHazard.vue";
-// const route = useRoute()
-// ActionStatusEnum
-const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
 const indexCapaController = IndexCapaController.getInstance()
 const state = ref(indexCapaController.state.value)
 const route = useRoute()
-const id = route.params.parent_id
-// const type = ref<HazardStatusEnum>(HazardStatusEnum[route.params.type as keyof typeof HazardStatusEnum])
+const router = useRouter()
+const Projects = ref<ProjectModel[]>([])
+const selectedProjctesFilters = ref<number>()
+const Filters = ref<MyZonesModel[]>()
+const SelectedZonesFilter = ref<number[]>([])
+const fetchMyZonesController = FetchMyZonesController.getInstance()
 
 const fetchCapa = async (
   query = '',
@@ -71,104 +42,53 @@ const fetchCapa = async (
   zoonIds?: number[],
   projectIds?: number,
 ) => {
-  const params = new IndexCapaParams(
-    query,
-    pageNumber,
-    perPage,
-    withPage,
-    [Observation.ObservationType, Observation.HazardType],
-    route.query.hazard || route.query.risk_level ? null : projectIds ? [projectIds] : [],
-    zoonIds,
-    projectLocationIds || null,
-    projectZoneLozationId,
-    null,
-    route.query.hazard ? route.query.hazard : null,
-    route.query.risk_level ? [route.query.risk_level] : null,
-    capaStatus?.value?.id,
-  )
+  const params = new IndexCapaParams({
+    word: query,
+    pageNumber: pageNumber,
+    perPage: perPage,
+    withPage: withPage,
+    type: [Observation.ObservationType, Observation.HazardType],
+    projectId:
+      route.query.hazard || route.query.risk_level
+        ? undefined
+        : projectIds !== undefined
+          ? [projectIds!]
+          : [],
+    zoonIds: zoonIds,
+    projectLocationIds: projectLocationIds?.length ? projectLocationIds : undefined,
+    projectZoonIds: projectZoneLozationId,
+    rootCauseId: undefined,
+    hazardTypeId: route.query.hazard ? Number(route.query.hazard) : undefined,
+    riskLevel: route.query.risk_level ? [Number(route.query.risk_level)] : undefined,
+    capaStatus: 2,
+  })
   await indexCapaController.getData(params)
 }
 
 onMounted(() => {
-  // if (selectedProjctesFilters.value) {
   fetchCapa()
-  // }
   FetchMyProjects()
 })
-
-const searchHazard = debounce(() => {
-  fetchCapa(word.value)
-})
-
-// const deleteHazard = async (id: number) => {
-//   const deleteCapaParams = new DeleteCapaParams(id)
-//   await DeleteCapaController.getInstance().deleteCapa(deleteCapaParams)
-//   await fetchCapa()
-// }
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
   fetchCapa('', currentPage.value, countPerPage.value)
 }
 
-// Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
   fetchCapa('', currentPage.value, countPerPage.value)
 }
 
-watch(
-  () => indexCapaController.state.value,
-  (newState) => {
-    if (newState) {
-      console.log(newState)
-      state.value = newState
-    }
-  },
-  {
-    deep: true,
-  },
-)
-
-const { user } = useUserStore()
-
-// const actionList = (id: number, deleteHazard: (id: number) => void) => [
-//   {
-//     text: t('edit'),
-//     icon: IconEdit,
-//     link: `/organization/equipment-mangement/observation/${id}`,
-//     permission: [
-//       PermissionsEnum.ORG_OBSERVATION_UPDATE,
-//       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-//       PermissionsEnum.ORG_OBSERVATION_ALL,
-//       PermissionsEnum.ORG_OBSERVATION_DETAILS,
-//     ],
-//   },
-//   {
-//     text: t('delete'),
-//     icon: IconDelete,
-//     action: () => deleteHazard(id),
-//     permission: [
-//       PermissionsEnum.ORG_OBSERVATION_DELETE,
-//       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-//       PermissionsEnum.ORG_OBSERVATION_ALL,
-//     ],
-//   },
-// ]
-const router = useRouter()
-const Projects = ref<MyProjectsModel[]>([])
 const FetchMyProjects = async () => {
-  const fetchMyProjectsParams = new FetchMyProjectsParams()
+  const fetchMyProjectsParams = new FetchMyProjectsParams(true)
   const fetchMyProjectsController = FetchMyProjectsController.getInstance()
-  const res = await fetchMyProjectsController.getData(fetchMyProjectsParams, router, true)
+  const res = await fetchMyProjectsController.getData(fetchMyProjectsParams)
   if (res.value.data) {
     Projects.value = res.value.data
   }
 }
-const selectedProjctesFilters = ref<number>()
 
-const Filters = ref<MyZonesModel[]>()
-const fetchMyZonesController = FetchMyZonesController.getInstance()
 const FetchMyZones = async () => {
   const fetchMyZonesParams = new FetchMyZonesParams(selectedProjctesFilters.value)
   const response = await fetchMyZonesController.FetchMyZones(fetchMyZonesParams, router)
@@ -177,113 +97,27 @@ const FetchMyZones = async () => {
   }
 }
 
-const SelectedZonesFilter = ref<number[]>([])
 const ApplayFilter = (data: number[]) => {
   SelectedZonesFilter.value = data
-  fetchCapa('', 1, 10, 1, null, null, SelectedZonesFilter.value, selectedProjctesFilters.value)
+  fetchCapa('', 1, 10, 1, [], [], SelectedZonesFilter.value, selectedProjctesFilters.value)
 }
 
-const setSelectedProjectFilter = (data) => {
+const setSelectedProjectFilter = (data: any) => {
   selectedProjctesFilters.value = data
   if (data) {
-    fetchCapa('', 1, 10, 1, null, null, null, data)
+    fetchCapa('', 1, 10, 1, [], [], [], data)
     FetchMyZones()
   }
 }
-
-const ShowDetails = ref<number[]>([])
-
-const GetRiskLevel = (riskLevel: RiskLevelEnum) => {
-  switch (riskLevel) {
-    case RiskLevelEnum.Low:
-      return 'Low'
-    case RiskLevelEnum.Medium:
-      return 'Medium'
-    case RiskLevelEnum.High:
-      return 'High'
-    default:
-      return 'Unknown'
-  }
-}
-
-const GetAcionStatus = (actionStatus: ActionStatusEnum) => {
-  switch (actionStatus) {
-    case ActionStatusEnum.OPEN:
-      return 'Open'
-    case ActionStatusEnum.CLOSED:
-      return 'Closed'
-  }
-}
-
-const GetSaveStatus = (saveStatus: SaveStatusEnum) => {
-  switch (saveStatus) {
-    case SaveStatusEnum.Saved:
-      return 'Positive'
-    case SaveStatusEnum.NotSaved:
-      return 'Negative'
-  }
-}
-
-// capa status filter
-const capaStatus = ref<TitleInterface | null>(null)
-const setCapaStatus = (data: TitleInterface | null) => {
-  capaStatus.value = data
-  fetchCapa('', 1, 10, 1, null, null, null, selectedProjctesFilters.value)
-}
-const ActionStatusList = ref<TitleInterface[]>([
-  new TitleInterface({
-    id: ActionStatusEnum.OPEN,
-    title: 'Open',
-    subtitle: '',
-  }),
-  new TitleInterface({
-    id: ActionStatusEnum.CLOSED,
-    title: 'Closed',
-    subtitle: '',
-  }),
-])
 
 const GetObservationType = (type: number) => {
   switch (type) {
     case Observation.ObservationType:
       return 'Observation'
+      case Observation.AccidentsType:
+        return 'incident'
     case Observation.HazardType:
-      return 'Hazard'
-  }
-}
-// export excel
-const exportExcel = () => {
-  if (!state.value.data || state.value.data.length === 0) {
-    alert('No data available to export')
-    return
-  }
-  const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
-    const it = item as any
-    return {
-      title: it.title || 'N/A',
-      serial: it.serial || 'N/A',
-      date: it.date || 'N/A',
-      description: it.description || 'N/A',
-      machine: it.equipment.title || 'N/A',
-      zone: it.zoon.title || 'N/A',
-    }
-  })
-  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
-  const workbook = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Invoices')
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
-  const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
-  saveAs(data, 'capa.xlsx')
-}
-
-const SelectCapaStatus = (data: number) => {
-  switch (data) {
-    case CapaStatusEnum.PreventiveandCorrective:
-      return 'Preventive And Corrective'
-    case CapaStatusEnum.onlyCorrective:
-      return ' Corrective'
-    case CapaStatusEnum.onlyPreventive:
-      return 'Preventive'
+      return 'Observation'
   }
 }
 
@@ -298,258 +132,255 @@ const GetCapaStataus = (capa: CapaModel) => {
     return 'Preventive'
   }
 }
+
+const getPlainText = (value?: string) => {
+  if (!value) return 'Not added yet'
+
+  return (
+    value
+      .replace(/<[^>]*>/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim() || 'Not added yet'
+  )
+}
+watch(
+  () => indexCapaController.state.value,
+  (newState) => {
+    if (newState) {
+      console.log(newState)
+      state.value = newState
+    }
+  },
+  {
+    deep: true,
+  },
+)
 </script>
 
 <template>
-  <div class="grid grid-cols-12 gap-4">
-    <!-- <IndexEquipmentMangement class="col-span-2" /> -->
+  <div class="capa-index-page grid grid-cols-12 gap-4">
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
-      <PermissionBuilder :code="[
-        PermissionsEnum.ORGANIZATION_EMPLOYEE,
-        PermissionsEnum.ORG_OBSERVATION_ALL,
-        PermissionsEnum.ORG_OBSERVATION_DELETE,
-        PermissionsEnum.ORG_OBSERVATION_FETCH,
-        PermissionsEnum.ORG_OBSERVATION_UPDATE,
-        PermissionsEnum.ORG_OBSERVATION_CREATE,
-      ]">
+      <PermissionBuilder
+        :code="[
+          PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          PermissionsEnum.ORG_OBSERVATION_ALL,
+          PermissionsEnum.ORG_OBSERVATION_DELETE,
+          PermissionsEnum.ORG_OBSERVATION_FETCH,
+          PermissionsEnum.ORG_OBSERVATION_UPDATE,
+          PermissionsEnum.ORG_OBSERVATION_CREATE,
+        ]"
+      >
         <div>
-          <IndexHazardHeader :title="`CAPA`" :length="state?.data?.length || 0" :projects="Projects"
-            @update:data="setSelectedProjectFilter" />
+          <!-- <IndexHazardHeader
+            :title="`CAPA`"
+            :length="state?.data?.length || 0"
+            :projects="Projects"
+            @update:data="setSelectedProjectFilter"
+          /> -->
+          <IndexHazardHeader
+            :title="`CAPA`"
+            :length="state?.pagination?.total || 0"
+            @update:data="setSelectedProjectFilter"
+          />
 
-          <div class="flex items-center justify-between">
-            <PermissionBuilder :code="[
-              PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-              PermissionsEnum?.ORG_OBSERVATION_CREATE,
-            ]">
-              <IndexFilter :filters="Filters" @update:data="ApplayFilter"
-                :link="'/organization/equipment-mangement/observation/add'" :linkText="'Create Observation'" />
-            </PermissionBuilder>
-
-            <!-- <div class="btns-filter"> -->
-            <!-- <FilterDialog @confirmFilters="confirmFilters" /> -->
-
-            <!-- <PermissionBuilder :code="[
+          <div class="flex items-center justify-between" v-if="Filters && Filters?.length > 0">
+            <PermissionBuilder
+              :code="[
                 PermissionsEnum?.ORGANIZATION_EMPLOYEE,
                 PermissionsEnum?.ORG_OBSERVATION_CREATE,
-              ]">
-                <router-link :to="`/organization/equipment-mangement/observation/add`">
-                  <button class="btn btn-primary">{{ $t('Create observation') }}</button>
-                </router-link>
-              </PermissionBuilder> -->
-            <!-- </div> -->
-            <!-- capaStatus -->
-            <div class="export-fillter">
-              <div class="fillter-radio-btn">
-                <div class="radio-btn" v-for="status in ActionStatusList" :key="status.id">
-                  <input type="radio" name="capaStatus" :id="`status-${status.id}`" :value="status" v-model="capaStatus"
-                    @change="setCapaStatus(status)" />
-                  <label :for="`status-${status.id}`" :class="status.id == capaStatus?.id ? 'active' : ''">{{
-                    status.title }}</label>
-                </div>
-                <div class="radio-btn">
-                  <input type="radio" name="capaStatus" id="status-all" :value="null" v-model="capaStatus"
-                    @change="setCapaStatus(null)" />
-                  <label for="status-all" :class="capaStatus == null ? 'active' : ''">All</label>
-                </div>
-              </div>
-              <div class="">
-                <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
-              </div>
-            </div>
+              ]"
+            >
+              <!-- <IndexFilter :filters="Filters!" @update:data="ApplayFilter" /> -->
+            </PermissionBuilder>
           </div>
         </div>
         <DataStatus :controller="state">
           <template #success>
             <div class="table-responsive">
-              <div class="index-table-card-container">
-                <div class="index-table-card" style="box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1)"
-                  v-for="(item, index) in state.data" :key="index">
-                  <!-- :to="`observation/show/${item?.id}`" -->
-                  <div class="w-full">
-                    <div class="card-header-container" :class="ShowDetails[index] ? '' : 'show'">
-                      <div class="header-container">
-                        <div class="card-content" style="flex: 1">
-                          <div class="card-header">
-                            <p class="label-item-primary">
-                              {{ $t('Serial') }} :
-                              <span>{{ item?.capa?.serial_name || 'N/A' }}</span>
-                            </p>
-                            <p class="label-item-secondary">
-                              {{ $t('capa date') }} :
-                              <span>{{ formatJoinDate(item.createdAt) }} &
-                                {{ formatTime(item.createdAt) }}
-                              </span>
-                            </p>
-                            <!-- <p class="label-item-secondary flex items-center gap-1">
-                              {{ SelectCapaStatus(1) }}
-                            </p> -->
-                            <!-- <p class="label-item-secondary Negative flex items-center gap-1"
-                              v-if="item.isWorkStopped == 1">
-                              {{ item.isWorkStopped == 1 ? 'Work Stoped' : '' }}
-                              <CustomCheckboxToggle :index="item.id + 100" title="" :checked="item.isWorkStopped == 1"
-                                @update:checked="toggleObservationWorkStopped(item?.id)" />
-                            </p> -->
-                          </div>
-                          <div class="sup-title">
-                            <p class="subtitle">{{ item.title }}</p>
-                            <p class="description">{{ item.description }}</p>
-                          </div>
-
-                          <div class="card-details">
-                            <div class="name">
-                              <p class="title">
-                                {{ item.observer.name }} <span>{{ '(observer)' }}</span>
-                              </p>
-                            </div>
-
-                            <div class="location-observation">
-                              <div class="location">
-                                <p class="label-item-primary flex items-center gap-1" v-if="item.zoon?.title">
-                                  <PinIcons /> {{ $t('Zone') }} :
-                                  <span>{{ item.zoon?.title }}</span>
-                                </p>
-                                <p class="label-item-primary" v-if="item.equipment?.title">
-                                  {{ $t('Machine') }} : <span>{{ item.equipment?.title }}</span>
-                                </p>
-                                <p class="label-item-secondary">
-                                  {{ $t('observation Date & Time') }} :
-                                  <span>{{ item.date }} & {{ item.time }}</span>
-                                </p>
-                                <p class="label-item-secondary flex items-center gap-1">
-                                  {{ $t('operation type') }} :
-                                  <span>{{ GetObservationType(item.type) }}</span>
-                                </p>
-                                <div class="label-item-secondary">
-                                  <p>
-                                    capa status <span>{{ GetCapaStataus(item.capa) }}</span>
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="btn-investegation-observation">
-                              <!-- <router-link :to="`equipment-mangement/observation/show/${item?.id}`">
-                              <div class="observation-details">
-                                <p>observation <span>details
-                                    <Observdetails />
-                                  </span></p>
-                              </div>
-                              </router-link> -->
-                              <CapaDialog :observationId="item?.id" />
-                              <router-link :to="`equipment-mangement/observation/show/${item?.id}`">
-                                <div class="observation-details">
-                                  <p>
-                                    {{ GetObservationType(item.type) }} details
-                                    <Observdetails />
-                                  </p>
-                                </div>
-                              </router-link>
-                              <!-- investegation -->
-                              <!-- <router-link to="">
-                                <div class="observation-details">
-                                  <p>investegation details<Observdetails /></p>
-                                </div>
-                              </router-link> -->
-                            </div>
-
-                            <!-- <p class="label-item-secondary flex items-center gap-1">
-                              {{ $t('operation type') }} :
-                              <span>{{ GetObservationType(item.type) }}</span>
-                            </p> -->
-                            <!-- <p class="label-item-secondary flex items-center gap-1" v-if="item.actionStatus">
-                              {{ $t('status') }} : <span>{{ GetAcionStatus(item.actionStatus) }}</span>
-                              <CustomCheckboxToggle :index="item.id" title="" :checked="item.actionStatus == 1"
-                                @update:checked="toggleObservationActionStatus(item?.id)" />
-                            </p> -->
-                            <!-- <p class="label-item-secondary flex items-center gap-1"
-                              :class="`${GetSaveStatus(item.saveStatus)}`" v-if="item.saveStatus">
-                              {{ GetSaveStatus(item.saveStatus) }}
-                            </p> -->
-                            <!-- <p class="subtitle">{{ item.description }}</p> -->
-                            <!-- <div class="project-details"> -->
-
-                            <!-- <p class="label-item-primary" v-if="item.status">
-                                Status : <span>{{ item?.status }}</span>
-                              </p> -->
-                            <!-- </div> -->
-                          </div>
-                        </div>
-
-                        <!-- imge and level -->
-                        <!-- <div class="card-info">
-                          <span v-if="item.riskLevel && item.saveStatus == SaveStatusEnum.NotSaved"
-                            class="observation-risk-level flex items-center gap-1"
-                            :class="GetRiskLevel(item.riskLevel)">
-                            {{ GetRiskLevel(item.riskLevel) }} {{ '(Level)' }}
-                            <HighLevel v-if="GetRiskLevel(item.riskLevel) === 'High'" />
-                          </span>
-
-                          <Image v-if="item.media[0]?.url" :src="item.media[0]?.url" alt="Image" preview>
-                            <template #previewicon>
-                              <div class="perview">
-                                <span>{{ $t('View') }}</span>
-                                <ViewIcon />
-                              </div>
-                            </template>
-</Image>
-
-</div> -->
+              <div class="index-table-card-container capa-card-list">
+                <article
+                  class="index-table-card capa-card"
+                  v-for="(item, index) in state.data"
+                  :key="item?.capa?.capaId || index"
+                >
+                  <header class="capa-card-header">
+                    <div class="capa-title-group">
+                      <span class="capa-mark" aria-hidden="true">C</span>
+                      <div>
+                        <!-- <span class="capa-eyebrow">{{ $t('Action plan') }}</span> -->
+                        <h3>{{ item.title || $t('Corrective and preventive action') }}</h3>
                       </div>
                     </div>
+
+                    <div class="capa-header-badges">
+                      <!-- <span class="capa-type-badge">{{
+                        GetObservationType(item.type) || 'CAPA'
+                      }}</span> -->
+                      <!-- <span class="capa-status-badge">
+                        <i aria-hidden="true"></i>
+                        {{ GetCapaStataus(item.capa) || $t('Action required') }}
+                      </span> -->
+                    </div>
+                  </header>
+
+                  <div class="capa-card-body">
+                    <div class="capa-meta-grid">
+                      <div class="capa-meta-item">
+                        <span class="capa-meta-icon" aria-hidden="true">#</span>
+                        <div>
+                          <span>{{ $t('CAPA Serial') }}</span>
+                          <strong>{{ item?.capa?.serial_name || '—' }}</strong>
+                        </div>
+                      </div>
+
+                      <div class="capa-meta-item">
+                        <span class="capa-meta-icon date-symbol" aria-hidden="true"></span>
+                        <div>
+                          <span>{{ $t('CAPA Date & Time') }}</span>
+                          <strong
+                            >{{ item.capa?.date || '—' }} · {{ item.capa?.time || '—' }}</strong
+                          >
+                        </div>
+                      </div>
+
+                      <div class="capa-meta-item">
+                        <span class="capa-meta-icon" aria-hidden="true">S</span>
+                        <div>
+                          <span>{{ $t(`${GetObservationType(item.type)} Serial`) }}</span>
+                          <strong>{{ item?.serialName || '—' }}</strong>
+                        </div>
+                      </div>
+
+                      <!-- <div class="capa-meta-item">
+                        <span class="capa-meta-icon person-symbol" aria-hidden="true"></span>
+                        <div>
+                          <span>{{ $t('Observer') }}</span>
+                          <strong>{{ item?.observer?.name || '—' }}</strong>
+                        </div>
+                      </div> -->
+<!--
+                      <div class="capa-meta-item">
+                        <span class="capa-meta-icon zone-symbol" aria-hidden="true"></span>
+                        <div>
+                          <span>{{ $t('Zone') }}</span>
+                          <strong>{{ item.zoon?.title || '—' }}</strong>
+                        </div>
+                      </div> -->
+
+                      <!-- <div class="capa-meta-item">
+                        <span class="capa-meta-icon" aria-hidden="true">M</span>
+                        <div>
+                          <span>{{ $t('Machine') }}</span>
+                          <strong>{{ item.equipment?.title || '—' }}</strong>
+                        </div>
+                      </div> -->
+                    </div>
+
+                    <!-- <section class="capa-context">
+                      <span>{{ $t('Source description') }}</span>
+                      <p>{{ item.description || '—' }}</p>
+                    </section> -->
+
+                    <!-- <div class="capa-actions-preview">
+                      <article class="action-preview corrective-preview">
+                        <div class="preview-heading">
+                          <span class="preview-symbol" aria-hidden="true">✓</span>
+                          <div>
+                            <small>{{ $t('Response') }}</small>
+                            <strong>{{ $t('Corrective Action') }}</strong>
+                          </div>
+                        </div>
+                        <p>{{ getPlainText(item.capa?.corrective) }}</p>
+                      </article>
+
+                      <article class="action-preview preventive-preview">
+                        <div class="preview-heading">
+                          <span class="preview-symbol" aria-hidden="true">◇</span>
+                          <div>
+                            <small>{{ $t('Prevention') }}</small>
+                            <strong>{{ $t('Preventive Action') }}</strong>
+                          </div>
+                        </div>
+                        <p>{{ getPlainText(item.capa?.preventive) }}</p>
+                      </article>
+                    </div> -->
                   </div>
 
-                  <!-- description -->
-                  <!-- <div class="observation-dwspcription-more">
-                    <p class="show-more" @click="ShowDetails[index] = !ShowDetails[index]">
-                      <span v-if="ShowDetails[index]">{{ $t('Show Less') }}</span>
-                      <span v-else>{{ $t('Show More') }}</span>
-                      <ShowMoreIcon />
-                    </p>
+                  <footer class="capa-card-footer">
+                    <span class="capa-footer-note">
+                      <!-- <i aria-hidden="true"></i>
+                      {{ $t('CAPA record ready for review') }} -->
+                    </span>
 
-                    <div v-if="ShowDetails[index]" class="card-description">
-                      <p class="title">{{ $t('description') }} :</p>
-                      <p class="description">
-                        {{ item.description }}
-                      </p>
+                    <div class="capa-card-actions">
+                      <router-link
+                        :to="`/organization/equipment-mangement/incedant/show/${item.capa?.observationId}`"
+                        class="source-details-btn"
+                      >
+                      <!-- observation type -->
+                        <span>{{ $t(`${GetObservationType(item.type)} Details`) }}</span>
+                        <span class="button-arrow" aria-hidden="true">↗</span>
+                      </router-link>
+
+                      <router-link
+                        :to="`/organization/capa/${item?.capa?.capaId}`"
+                        class="capa-details-btn"
+                      >
+                        <!-- <Observdetails /> -->
+                        <span>{{ $t('View CAPA Details') }}</span>
+                        <span class="button-arrow" aria-hidden="true">→</span>
+                      </router-link>
                     </div>
-                  </div> -->
-                </div>
+                  </footer>
+                </article>
               </div>
             </div>
-            <Pagination :pagination="state.pagination" @changePage="handleChangePage"
-              @countPerPage="handleCountPerPage" />
+            <Pagination
+              :pagination="state.pagination"
+              @changePage="handleChangePage"
+              @countPerPage="handleCountPerPage"
+            />
           </template>
           <template #loader>
             <CardSkelaton />
-            <!-- <TableLoader :cols="3" :rows="10" /> -->
           </template>
           <template #initial>
             <CardSkelaton />
-            <!-- <TableLoader :cols="3" :rows="10" /> -->
           </template>
           <template #empty>
-            <PermissionBuilder :code="[
-              PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-              PermissionsEnum?.ORG_OBSERVATION_CREATE,
-            ]">
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_OBSERVATION_CREATE,
+              ]"
+            >
               <DataEmpty
-                description="Sorry .. You have no CAPA .. All your joined customers will appear here when you add your customer data"
-                :link="`/organization`" title="..ops! You have No CAPA" />
+                description="You have no CAPA .. All your joined customers will appear here when you add your customer data"
+                :link="`/organization`"
+                title="You have No CAPA"
+              />
             </PermissionBuilder>
           </template>
           <template #failed>
-            <PermissionBuilder :code="[
-              PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-              PermissionsEnum?.ORG_OBSERVATION_CREATE,
-            ]">
+            <PermissionBuilder
+              :code="[
+                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+                PermissionsEnum?.ORG_OBSERVATION_CREATE,
+              ]"
+            >
               <DataFailed
-                description="Sorry .. You have no CAPA .. All your joined customers will appear here when you add your customer data"
-                :link="`/organization`" title="..ops! You have No CAPA" />
+                description="You have no CAPA .. All your joined customers will appear here when you add your customer data"
+                :link="`/organization`"
+                title="You have No CAPA"
+              />
             </PermissionBuilder>
           </template>
         </DataStatus>
         <template #notPermitted>
-          <DataFailed addText="Have not  Permission"
-            description="Sorry .. You have no Observation .. All your joined customers will appear here when you add your customer data" />
+          <DataFailed
+            addText="Have not  Permission"
+            description="You have no Observation .. All your joined customers will appear here when you add your customer data"
+          />
         </template>
       </PermissionBuilder>
     </div>
@@ -566,6 +397,11 @@ const GetCapaStataus = (capa: CapaModel) => {
 }
 
 .card-content {
+  &.new-btn {
+    margin-left: auto !important;
+    justify-content: start !important;
+    align-items: end !important;
+  }
   .sup-title {
     margin-bottom: 1rem;
 
@@ -573,7 +409,7 @@ const GetCapaStataus = (capa: CapaModel) => {
       font-family: 'Regular';
       font-weight: 600;
       font-size: 15px;
-      color: #6a717d;
+      color: var(--text-soft);
 
       &.description {
         font-family: 'Light';
@@ -584,7 +420,7 @@ const GetCapaStataus = (capa: CapaModel) => {
   }
 
   .card-details {
-    background-color: #1f41bb0a;
+    background-color: color-mix(in srgb, var(--brand-primary-600) 3.92%, transparent);
     padding: 0.7rem;
     border-radius: 20px;
     width: 100%;
@@ -605,23 +441,23 @@ const GetCapaStataus = (capa: CapaModel) => {
       margin: 0.5rem 0;
 
       p {
-        color: #9ca3af;
+        color: var(--text-soft);
         font-weight: 600;
         font-size: 14px;
 
         span {
-          color: #505050;
+          color: var(--text-soft);
         }
       }
     }
   }
 
   .observation-details {
-    background-color: rgba(72, 110, 246, 0.1);
+    background-color: color-mix(in srgb, var(--brand-primary-400) 10%, transparent);
     padding: 0.6rem 0.8rem;
     border-radius: 20px;
 
-    border-bottom: 2px solid #1f41bb;
+    border-bottom: 2px solid var(--brand-primary-600);
 
     &:hover {
       cursor: pointer;
@@ -635,7 +471,7 @@ const GetCapaStataus = (capa: CapaModel) => {
       font-family: 'bold';
       font-weight: 700;
       font-size: 16px;
-      color: #1f41bb;
+      color: var(--brand-primary-600);
     }
   }
 
@@ -648,7 +484,7 @@ const GetCapaStataus = (capa: CapaModel) => {
   //     font-family: 'bold';
   //     font-weight: 700;
   //     font-size: 16px;
-  //     color: #1F41BB;
+  //     color: var(--brand-primary-600);
 
   //     span {
   //       display: flex;
@@ -662,6 +498,11 @@ const GetCapaStataus = (capa: CapaModel) => {
 
 .label-item-secondary {
   font-family: 'regular';
+  &.incidant {
+    span {
+      font-size: 10px;
+    }
+  }
 
   span {
     font-family: 'bold';
@@ -693,15 +534,15 @@ const GetCapaStataus = (capa: CapaModel) => {
   display: flex;
   align-items: center;
   gap: 15px;
-  background-color: #f5f5f5;
+  background-color: var(--surface-1);
   padding: 0.4rem 1rem;
   border-radius: 40px;
 
   .active {
-    background-color: #f4f6ff;
-    border: 1px solid #1f41bb33;
+    background-color: var(--brand-primary-50);
+    border: 1px solid color-mix(in srgb, var(--brand-primary-600) 20%, transparent);
     padding: 0.5rem 1rem;
-    color: #1f41bb;
+    color: var(--brand-primary-600);
     font-weight: 700;
     border-radius: 40px;
     font-family: 'bold';
@@ -723,6 +564,541 @@ const GetCapaStataus = (capa: CapaModel) => {
       width: 16px;
       height: 16px;
     }
+  }
+}
+
+.capa-card-list {
+  gap: 20px;
+  padding-block: 8px 16px;
+}
+
+.capa-card {
+  --capa-accent: var(--PrimaryColor);
+  --capa-accent-soft: color-mix(in srgb, var(--PrimaryColor) 8%, transparent);
+  position: relative;
+  isolation: isolate;
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--capa-accent) 20%, var(--main-border));
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 100% 0%, var(--capa-accent-soft), transparent 30%), var(--surface-1);
+  box-shadow: 0 16px 42px color-mix(in srgb, var(--brand-primary-900) 9%, transparent);
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.capa-card::before {
+  content: '';
+  position: absolute;
+  z-index: 3;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 5px;
+  background: linear-gradient(180deg, var(--capa-accent), var(--status-success));
+}
+
+.capa-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--capa-accent) 38%, var(--main-border));
+  box-shadow: 0 22px 50px color-mix(in srgb, var(--brand-primary-900) 13%, transparent);
+}
+
+.capa-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 22px 22px 18px 26px;
+  border-bottom: 1px solid var(--main-border);
+  background: color-mix(in srgb, var(--surface-2) 70%, transparent);
+}
+
+.capa-title-group {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 14px;
+}
+
+.capa-title-group > div {
+  min-width: 0;
+}
+
+.capa-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  flex: 0 0 50px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, var(--capa-accent), var(--brand-primary-700));
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--capa-accent) 25%, transparent);
+  color: white;
+  font-family: 'Bold';
+  font-size: 1.05rem;
+  font-weight: 900;
+}
+
+.capa-eyebrow {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--capa-accent);
+  font-size: 0.66rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.capa-title-group h3 {
+  overflow: hidden;
+  margin: 0;
+  color: var(--text-strong);
+  font-family: 'Bold';
+  font-size: clamp(1.08rem, 1.7vw, 1.32rem);
+  font-weight: 900;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+}
+
+.capa-header-badges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.capa-type-badge,
+.capa-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
+  padding: 6px 11px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.capa-type-badge {
+  border: 1px solid var(--main-border);
+  background: var(--surface-1);
+  color: var(--text-soft);
+}
+
+.capa-status-badge {
+  border: 1px solid color-mix(in srgb, var(--status-success) 25%, transparent);
+  background: color-mix(in srgb, var(--status-success) 9%, transparent);
+  color: var(--status-success);
+}
+
+.capa-status-badge i,
+.capa-footer-note i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 12%, transparent);
+}
+
+.capa-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 22px 22px 26px;
+}
+
+.capa-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.capa-meta-item {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 70px;
+  gap: 10px;
+  padding: 11px 12px;
+  border: 1px solid var(--main-border);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface-2) 74%, transparent);
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease;
+}
+
+.capa-meta-item:hover {
+  border-color: color-mix(in srgb, var(--capa-accent) 25%, var(--main-border));
+  background: var(--capa-accent-soft);
+}
+
+.capa-meta-item > div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.capa-meta-item div > span,
+.capa-context > span {
+  color: var(--text-soft);
+  font-size: 0.64rem;
+  font-weight: 850;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.capa-meta-item strong {
+  overflow: hidden;
+  color: var(--text-strong);
+  font-family: 'Bold';
+  font-size: 0.8rem;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.capa-meta-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border: 1px solid color-mix(in srgb, var(--capa-accent) 18%, transparent);
+  border-radius: 12px;
+  background: var(--capa-accent-soft);
+  color: var(--capa-accent);
+  font-family: 'Bold';
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.date-symbol::before {
+  content: '';
+  width: 17px;
+  height: 15px;
+  border: 2px solid currentColor;
+  border-radius: 4px;
+}
+
+.date-symbol::after {
+  content: '';
+  position: absolute;
+  top: 12px;
+  width: 11px;
+  border-top: 2px solid currentColor;
+}
+
+.person-symbol::before {
+  content: '';
+  width: 9px;
+  height: 9px;
+  margin-bottom: 8px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+.person-symbol::after {
+  content: '';
+  position: absolute;
+  bottom: 7px;
+  width: 17px;
+  height: 8px;
+  border: 2px solid currentColor;
+  border-bottom: 0;
+  border-radius: 10px 10px 0 0;
+}
+
+.zone-symbol::before {
+  content: '';
+  width: 13px;
+  height: 13px;
+  border: 2px solid currentColor;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+}
+
+.zone-symbol::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.capa-context {
+  position: relative;
+  padding: 14px 16px 14px 20px;
+  border: 1px solid color-mix(in srgb, var(--capa-accent) 14%, var(--main-border));
+  border-radius: 14px;
+  background: var(--capa-accent-soft);
+}
+
+.capa-context::before {
+  content: '';
+  position: absolute;
+  inset-block: 14px;
+  inset-inline-start: 0;
+  width: 3px;
+  border-radius: 999px;
+  background: var(--capa-accent);
+}
+
+.capa-context p {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 6px 0 0;
+  color: var(--text-strong);
+  font-size: 0.82rem;
+  font-weight: 650;
+  line-height: 1.65;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.capa-actions-preview {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.action-preview {
+  position: relative;
+  overflow: hidden;
+  min-height: 130px;
+  padding: 14px;
+  border: 1px solid var(--main-border);
+  border-radius: 16px;
+  background: var(--surface-1);
+}
+
+.action-preview::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 3px;
+}
+
+.corrective-preview::before {
+  background: linear-gradient(90deg, var(--brand-accent-500), var(--status-danger));
+}
+
+.preventive-preview::before {
+  background: linear-gradient(90deg, var(--status-success), var(--PrimaryColor));
+}
+
+.preview-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.preview-symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  border-radius: 11px;
+  font-family: 'Bold';
+  font-size: 0.85rem;
+}
+
+.corrective-preview .preview-symbol {
+  background: color-mix(in srgb, var(--brand-accent-500) 11%, transparent);
+  color: var(--brand-accent-600);
+}
+
+.preventive-preview .preview-symbol {
+  background: color-mix(in srgb, var(--status-success) 10%, transparent);
+  color: var(--status-success);
+}
+
+.preview-heading > div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.preview-heading small {
+  color: var(--text-soft);
+  font-size: 0.61rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.preview-heading strong {
+  color: var(--text-strong);
+  font-family: 'Bold';
+  font-size: 0.82rem;
+}
+
+.action-preview > p {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 11px 0 0;
+  color: var(--text-soft);
+  font-size: 0.76rem;
+  line-height: 1.6;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.capa-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 68px;
+  padding: 12px 22px 12px 26px;
+  border-top: 1px solid var(--main-border);
+  background: color-mix(in srgb, var(--surface-2) 72%, transparent);
+}
+
+.capa-footer-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--status-success);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.capa-card-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 9px;
+}
+
+.source-details-btn,
+.capa-details-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  gap: 8px;
+  padding: 8px 10px 8px 14px;
+  border-radius: 12px;
+  font-size: 0.74rem;
+  font-weight: 900;
+  text-decoration: none;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.source-details-btn {
+  border: 1px solid color-mix(in srgb, var(--capa-accent) 22%, var(--main-border));
+  background: var(--surface-1);
+  color: var(--capa-accent);
+}
+
+.capa-details-btn {
+  border: 1px solid var(--capa-accent);
+  background: var(--capa-accent);
+  box-shadow: 0 9px 20px color-mix(in srgb, var(--capa-accent) 23%, transparent);
+  color: white;
+}
+
+.capa-details-btn :deep(svg) {
+  width: 17px;
+  height: 17px;
+}
+
+.source-details-btn:hover,
+.capa-details-btn:hover {
+  transform: translateY(-2px);
+}
+
+.source-details-btn:hover {
+  border-color: var(--capa-accent);
+}
+
+.capa-details-btn:hover {
+  box-shadow: 0 12px 25px color-mix(in srgb, var(--capa-accent) 30%, transparent);
+}
+
+.button-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 8px;
+  background: color-mix(in srgb, currentColor 10%, transparent);
+  font-size: 0.9rem;
+}
+
+.capa-details-btn .button-arrow {
+  background: color-mix(in srgb, white 18%, transparent);
+}
+
+[dir='rtl'] .capa-details-btn .button-arrow {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 900px) {
+  .capa-meta-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .capa-card-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .capa-card-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 620px) {
+  .capa-card {
+    border-radius: 18px;
+  }
+
+  .capa-card-header,
+  .capa-card-body,
+  .capa-card-footer {
+    padding-inline: 19px 15px;
+  }
+
+  .capa-card-header {
+    flex-direction: column;
+  }
+
+  .capa-header-badges {
+    justify-content: flex-start;
+  }
+
+  .capa-meta-grid,
+  .capa-actions-preview {
+    grid-template-columns: 1fr;
+  }
+
+  .capa-card-actions,
+  .source-details-btn,
+  .capa-details-btn {
+    width: 100%;
   }
 }
 </style>

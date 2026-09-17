@@ -12,7 +12,7 @@ export default class ProjectCustomLocationModel extends TitleModel {
   public locationEmplyees: ProjectLocationEmployeeModel[]
   public locationTeams: ProjectLocationTeamModel[]
   public locationEquipments: ProjectLocationEquipmentModel[]
-
+  public locationHierarchies?: any[]
   constructor(
     projectLocationId: number,
     id: number,
@@ -22,6 +22,7 @@ export default class ProjectCustomLocationModel extends TitleModel {
     locationEmplyees: ProjectLocationEmployeeModel[],
     locationTeams: ProjectLocationTeamModel[],
     locationEquipments: ProjectLocationEquipmentModel[],
+    locationHierarchies?: any[],
   ) {
     super(title, id)
     this.projectLocationId = projectLocationId
@@ -30,6 +31,7 @@ export default class ProjectCustomLocationModel extends TitleModel {
     this.locationEmplyees = locationEmplyees
     this.locationTeams = locationTeams
     this.locationEquipments = locationEquipments
+    this.locationHierarchies = locationHierarchies
   }
 
   static fromMap(data: any): ProjectCustomLocationModel {
@@ -44,6 +46,7 @@ export default class ProjectCustomLocationModel extends TitleModel {
       ),
       data.project_location_teams?.map((item: any) => ProjectLocationTeamModel.fromMap(item)),
       data.project_location_equipments,
+      data?.project_location_hierarchies,
     )
   }
 

@@ -4,6 +4,7 @@ import Dialog from 'primevue/dialog'
 
 const props = defineProps<{
   visible: boolean
+  heirarchyId?: number
 }>()
 
 const emit = defineEmits<{
@@ -12,8 +13,17 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <Dialog :visible="props.visible" modal :header="$t('Add Employee')" dismissable-mask :style="{ width: '50rem' }"
-    @update:visible="emit('update:visible', $event)">
-    <AddOrganizatoinEmployee @update:data="emit('update:visible', false)" />
+  <Dialog
+    :visible="props.visible"
+    modal
+    :header="$t('Add Employee')"
+    dismissable-mask
+    :style="{ width: '50rem' }"
+    @update:visible="emit('update:visible', $event)"
+  >
+    <AddOrganizatoinEmployee
+      :heirarchy-id="props.heirarchyId"
+      @update:data="emit('update:visible', false)"
+    />
   </Dialog>
 </template>

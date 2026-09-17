@@ -5,7 +5,7 @@ import type ServicesInterface from "@/base/Data/ApiService/api_service_interface
 
 class AddLangRepo extends RepoInterface<LangModel> {
   private static instance: AddLangRepo;
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super();
   }

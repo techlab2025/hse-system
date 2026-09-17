@@ -1,14 +1,11 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
-import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import { useUserStore } from '@/stores/user'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import { Observation } from '../../Core/Enums/ObservationTypeEnum'
 import CreateCapaResultUseCase from '../../Domain/useCase/CreateCapaResultUseCase'
 import type CapaParams from '../../Core/params/CapaParam'
 import type CapaModel from '../../Data/models/CapaModel'
@@ -29,7 +26,7 @@ export default class CreateCapaResultController extends ControllerInterface<Capa
     return this.instance
   }
 
-  async createCapaResult(params: CapaParams, route: any, draft: boolean = false) {
+  async createCapaResult(params: CapaParams, route: any, draft: boolean = false, router?: Router) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       // params.validate()
@@ -58,7 +55,11 @@ export default class CreateCapaResultController extends ControllerInterface<Capa
         //   await router.push(`/organization/equipment-mangement/incedant`)
         // }
 
-        ShowHazardController.getInstance().showHazard(new ShowHazardParams(route.params?.id, true))
+        if (!router!.currentRoute?.value.fullPath.includes('organization/capa')) {
+          ShowHazardController.getInstance().showHazard(
+            new ShowHazardParams(route.params?.id, true),
+          )
+        }
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

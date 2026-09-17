@@ -9,7 +9,7 @@
   .input-image {
     @include flex-row(nowrap, center, center);
     width: 100%;
-    border: 1px solid #d9dbe9;
+    border: 1px solid var(--brand-primary-100);
     border-radius: $XlSize2;
     padding: $XlSize;
     cursor: pointer;
@@ -35,7 +35,7 @@
 
   .image-gallery {
     width: 100%;
-    border: 1px solid #d9dbe9;
+    border: 1px solid var(--brand-primary-100);
     border-radius: $XlSize2;
     padding: $XlSize;
 
@@ -51,7 +51,7 @@
       }
 
       .preview-img {
-        border: 1px solid #f4f4f4;
+        border: 1px solid var(--surface-2);
         border-radius: $XsSize;
         cursor: pointer;
       }
@@ -65,13 +65,13 @@
         height: 100%;
         border-radius: $XsSize;
         z-index: 10000;
-        background-color: rgba(0, 0, 0, 0.418);
+        background-color: color-mix(in srgb, var(--text-strong) 41.8%, transparent);
         backdrop-filter: blur(2px);
         transition: all 0.3s ease;
         cursor: pointer;
         @include flex-column(nowrap, center, center);
         span {
-          color: #e23535;
+          color: var(--status-danger);
           font-size: $MdSize;
           font-weight: $BaseFontSemiBoldWeight;
         }

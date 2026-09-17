@@ -8,7 +8,6 @@ import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
-import ToggleSwitch from 'primevue/toggleswitch'
 
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import wordSlice from '@/base/Presentation/utils/word_slice'
@@ -19,11 +18,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import IndexPermissionController from '../controllers/indexPermissionController'
 import IndexPermissionParams from '../../Core/params/indexPermissionParams'
 import DeletePermissionParams from '../../Core/params/deletePermissionParams'
@@ -221,19 +216,19 @@ watch(
       </template>
       <template #empty>
         <DataEmpty :link="`/organization/organization-location/add`" addText="Add Permission"
-          description="Sorry .. You have no Permission .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Permission" />
+          description="You have no Permission .. All your joined customers will appear here when you add your customer data"
+          title="You have No Permission" />
       </template>
       <template #failed>
         <DataFailed :link="`/organization/organization-location/add`" addText="Add Permission"
-          description="Sorry .. You have no Permission .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Permission" />
+          description="You have no Permission .. All your joined customers will appear here when you add your customer data"
+          title="You have No Permission" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Permission .. All your joined customers will appear here when you add your customer data" />
+        description="You have no Permission .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

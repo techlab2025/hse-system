@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import { onMounted, ref } from 'vue'
+import { ref, watch } from 'vue'
+
+const props = defineProps<{ initialFile?: File | null }>()
+const emit = defineEmits<{ (e: 'uploaded'): void }>()
 import * as XLSX from 'xlsx'
 import JSZip from 'jszip'
 import { useRouter } from 'vue-router'
 import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue'
 import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue'
 import { useI18n } from 'vue-i18n'
-import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue'
-import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue'
 import AddCertificateExcelParams from '../../Core/params/addCertificateExcelParams'
 import AddCertificateController from '../controllers/addCertificateController'
 import CertificateDetailsModel from '../../Data/models/CertificateDetailsModel'
+import { CertificateTypeEnum } from '../../Core/Enums/CertificateTypeEnum'
 
 interface ExtractedImage {
   name: string
@@ -128,12 +130,28 @@ const fileUpload = async (file: File) => {
   }
 }
 
+watch(
+  () => props.initialFile,
+  async (file) => {
+    if (!file) return
+    await fileUpload(file)
+    mappedData.value = Data.value
+  },
+  { immediate: true },
+)
+
 // ─── Column Mapping ───────────────────────────────────────────────────────────
-const SendData = ref<string[]>(['title', 'require_expired_date', 'image'])
+const SendData = ref<string[]>([
+  'title',
+  'certificate_type',
+  'require_expired_date',
+  'require_certificate',
+])
 const SendDataLabels: Record<string, string> = {
-  title: 'Title',
-  image: 'Image',
-  require_expired_date: 'Require Expired Date',
+  title: t('title'),
+  certificate_type: t('certificate_type'),
+  require_expired_date: t('require_expired_date'),
+  require_certificate: t('require_certificate'),
 }
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return
@@ -151,24 +169,63 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 // ─── Submit ───────────────────────────────────────────────────────────────────
 const addCertificateController = AddCertificateController.getInstance()
 
+const getBooleanValue = (value: unknown) =>
+  ['yes', 'true', '1'].includes(String(value ?? '').trim().toLowerCase()) ? 1 : 0
+
+const getCertificateTypeValue = (value: unknown) => {
+  const normalizedValue = String(value ?? '').trim().toLowerCase()
+  const certificateTypes: Record<string, CertificateTypeEnum> = {
+    '1': CertificateTypeEnum.SCALE,
+    skill: CertificateTypeEnum.SCALE,
+    scale: CertificateTypeEnum.SCALE,
+    '2': CertificateTypeEnum.AWARENESS,
+    awareness: CertificateTypeEnum.AWARENESS,
+    '3': CertificateTypeEnum.KNOWLEDGE,
+    knowledge: CertificateTypeEnum.KNOWLEDGE,
+  }
+
+  return certificateTypes[normalizedValue] ?? CertificateTypeEnum.SCALE
+}
+
 const AddOrgEmployee = async () => {
-  // if (!mappedData.value) return;
+  if (!mappedData.value) return
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
 
-  const dataAsObjects = rows.map((row: any[], rowIndex: number) => {
+  const dataAsObjects = rows.map((row: any[]) => {
     const obj: Record<string, any> = {}
     headers.forEach((key, i) => {
-      if (key && key.trim() !== '') obj[key] = row[i]
+      if (!key || key.trim() === '') return
+
+      const normalizedKey = key.trim().toLowerCase()
+      const payloadKeys: Record<string, string> = {
+        certificate: 'title',
+        'certificate title': 'title',
+        certificate_title: 'title',
+        training: 'title',
+        'training title': 'title',
+        training_title: 'title',
+        'training type': 'certificate_type',
+        training_type: 'certificate_type',
+        'training required': 'require_certificate',
+        training_required: 'require_certificate',
+      }
+      const payloadKey = payloadKeys[normalizedKey] ?? normalizedKey
+
+      obj[payloadKey] = row[i]
     })
-    console.log(obj.require_expired_date, 'obj.require_expired_date')
-    obj.require_expired_date = obj.require_expired_date == 'Yes' ? 1 : 0
+    obj.certificate_type = getCertificateTypeValue(obj.certificate_type)
+    obj.require_expired_date = getBooleanValue(obj.require_expired_date)
+    obj.require_certificate = getBooleanValue(obj.require_certificate)
 
     return obj
   })
 
   const orgData = new AddCertificateExcelParams({ data: dataAsObjects })
   await addCertificateController.addCertificate(orgData, router)
+  if (addCertificateController.isDataSuccess()) {
+    emit('uploaded')
+  }
 }
 
 const deleteRow = (rowIndex: number) => {
@@ -197,34 +254,27 @@ const onMappingClose = () => {
 
 <template>
   <div class="page-wrapper">
-    <div class="excel-warning">
-      <div class="warning-header flex item-center gap-2 justify-between w-full">
-        <!-- <span class="icon">📝</span> -->
+    <!-- <div class="excel-warning"> -->
+    <!-- <div class="warning-header flex item-center gap-2 justify-between w-full">
         <div class="flex item-center gap-2">
           <ExcelSheetHeaderIcon />
           <div class="title-container flex flex-col">
             <span class="title">excel instuctions</span>
             <span class="sub-title">A Step-by-Step Guide to Using the Spreadsheet</span>
           </div>
-        </div>
+        </div> -->
 
-        <a href="/ExcelForm.xlsx" class="flex item-center gap-2" download>
-          <ExcelSheetIcon class="icon" />
-          <span class="download-title">Download Excel Sheet</span>
-        </a>
-      </div>
+    <!-- </div> -->
 
-      <div class="rule-group">
-        <!-- <p class="rule-label">Required Excel Columns (Exact Names):</p> -->
+    <!-- <div class="rule-group">
         <div class="field-tags">
           <span class="field-tag">Certificate title</span>
           <span class="field-tag">has Expiry date</span>
-          <span class="field-tag">Certificate image</span>
         </div>
-      </div>
+      </div> -->
 
-      <hr class="separator" />
-    </div>
+    <!-- <hr class="separator" /> -->
+    <!-- </div> -->
 
     <div v-if="errorMsg" class="error-banner">{{ errorMsg }}</div>
 
@@ -263,10 +313,9 @@ const onMappingClose = () => {
               <thead>
                 <tr>
                   <th v-for="(item, i) in mappedData[0]" :key="i">
-                    <span>
-                      {{ item }}
-                    </span>
+                    <span>{{ SendDataLabels[item] ?? item }}</span>
                   </th>
+                  <th class="last"></th>
                 </tr>
               </thead>
               <tbody>
@@ -292,18 +341,22 @@ const onMappingClose = () => {
       </template>
     </template>
   </div>
+  
 </template>
 
 <style scoped>
+.last {
+  display: table-cell !important;
+}
 .title-container {
   .title {
-    color: #1f41bb;
+    color: var(--brand-primary-600);
     font-size: 20px;
     font-weight: 600;
   }
 
   .sub-title {
-    color: #1e293b;
+    color: var(--brand-primary-800);
     font-size: 16px;
     font-weight: 500;
   }
@@ -315,19 +368,19 @@ const onMappingClose = () => {
 }
 
 a {
-  background-color: white;
+  background-color: var(--text-on-brand);
   display: flex;
   align-items: center;
   padding: 12px;
   border-radius: 6px;
   width: fit-content;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--brand-primary-100);
   cursor: pointer;
   transition: 0.3s all linear;
 }
 
 a:hover {
-  background-color: #e5e7eb;
+  background-color: var(--brand-primary-100);
 }
 
 .download-title {
@@ -337,15 +390,15 @@ a:hover {
 }
 
 .excel-warning {
-  /* background-color: #fffaf0; */
+  /* background-color: var(--brand-accent-50); */
   /* Light cream/amber */
-  /* border: 1px solid #fbd38d; */
+  /* border: 1px solid var(--brand-accent-200); */
   /* Amber border */
   border-radius: 12px;
   padding: 20px;
   max-width: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 6px -1px color-mix(in srgb, var(--text-strong) 5%, transparent);
 }
 
 .warning-header {
@@ -353,12 +406,12 @@ a:hover {
   align-items: center;
   gap: 10px;
   margin-bottom: 15px;
-  /* border-bottom: 1px ridge #fbd38d; */
+  /* border-bottom: 1px ridge var(--brand-accent-200); */
   padding-bottom: 10px;
 }
 
 .warning-header .title {
-  color: #1f41bb;
+  color: var(--brand-primary-600);
   /* Deep amber/brown */
   font-weight: 700;
   font-size: 1.1rem;
@@ -375,14 +428,14 @@ a:hover {
 .rule-label {
   font-size: 22px;
   font-weight: 700;
-  color: #00057f;
+  color: var(--brand-primary-800);
   font-family: 'Regular';
   /* margin-bottom: 8px; */
 }
 
 .rule-description {
   font-size: 0.8rem;
-  color: #6b7280;
+  color: var(--text-soft);
 }
 
 .chips {
@@ -393,13 +446,13 @@ a:hover {
 }
 
 .chip {
-  background: #f4f6f9;
-  border: 1px solid #e2e8f0;
+  background: var(--brand-primary-50);
+  border: 1px solid var(--brand-primary-100);
   padding: 10px 38px;
   border-radius: 12px;
   font-size: 18px;
   font-weight: 600;
-  color: #4a5568;
+  color: var(--brand-primary-600);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -408,16 +461,16 @@ a:hover {
 
 .chip:hover {
   transform: translateY(-2px);
-  border-color: #cbd5e0;
+  border-color: var(--brand-primary-200);
 }
 
 /* The "Key" look for numbers */
 kbd {
-  background-color: #1d4ed81a;
+  background-color: color-mix(in srgb, var(--brand-primary-500) 10.2%, transparent);
   border-radius: 6px;
-  /* border: 1px solid #cbd5e0; */
-  /* box-shadow: 0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset; */
-  color: #1f41bb;
+  /* border: 1px solid var(--brand-primary-200); */
+  /* box-shadow: 0 1px 1px color-mix(in srgb, var(--text-strong) 20%, transparent), 0 2px 0 0 color-mix(in srgb, var(--surface-1) 70%, transparent) inset; */
+  color: var(--brand-primary-600);
   display: inline-block;
   font-size: 1rem;
   font-weight: 700;
@@ -430,28 +483,28 @@ kbd {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.5);
+  background: color-mix(in srgb, var(--surface-1) 50%, transparent);
   padding: 10px;
   border-radius: 8px;
-  /* border: 1px dashed #fbd38d; */
+  /* border: 1px dashed var(--brand-accent-200); */
 }
 
 .field-tag {
-  background: #f4f6f9;
-  color: #000000;
+  background: var(--brand-primary-50);
+  color: var(--text-strong);
   font-family: 'Light';
   /* Makes it look like code/field names */
   font-size: 18px;
   font-weight: 600;
   padding: 10px 24px;
   border-radius: 12px;
-  /* border: 1px solid #e2e8f0; */
+  /* border: 1px solid var(--brand-primary-100); */
 }
 
 /* A subtle line to separate headers from values */
 .separator {
   border: 0;
-  border-top: 1px solid #f1f3f5;
+  border-top: 1px solid var(--brand-primary-50);
   margin: 15px 0;
 }
 
@@ -464,9 +517,9 @@ kbd {
 }
 
 .btn-delete-row {
-  background: #fef2f2;
-  color: #b91c1c;
-  border: 1px solid #fecaca;
+  background: var(--status-danger-soft);
+  color: var(--status-danger);
+  border: 1px solid var(--status-danger-soft);
   border-radius: 8px;
   padding: 6px 10px;
   cursor: pointer;
@@ -477,7 +530,7 @@ kbd {
 }
 
 .btn-delete-row:hover {
-  background: #fee2e2;
+  background: var(--status-danger-soft);
   transform: scale(1.1);
 }
 
@@ -488,9 +541,9 @@ kbd {
 }
 
 .error-banner {
-  background: #fef2f2;
-  color: #b91c1c;
-  border: 1px solid #fecaca;
+  background: var(--status-danger-soft);
+  color: var(--status-danger);
+  border: 1px solid var(--status-danger-soft);
   border-radius: 10px;
   padding: 12px 16px;
 }
@@ -500,7 +553,7 @@ kbd {
   align-items: center;
   gap: 8px;
   padding: 12px 16px;
-  background: #eff6ff;
+  background: var(--brand-primary-50);
   border-radius: 10px;
 }
 
@@ -508,7 +561,7 @@ kbd {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #3b82f6;
+  background: var(--brand-primary-400);
   animation: bounce 1s infinite alternate;
 }
 
@@ -527,8 +580,8 @@ kbd {
 .table-container {
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-  background: #fff;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--text-strong) 6%, transparent);
+  background: var(--surface-1);
 }
 
 .table-header {
@@ -544,13 +597,13 @@ kbd {
 .main-table th {
   padding: 12px 16px;
   text-align: left;
-  color: #1d4ed8;
-  border-bottom: 2px solid #e5e7eb;
+  color: var(--brand-primary-500);
+  border-bottom: 2px solid var(--brand-primary-100);
 }
 
 .main-table td {
   padding: 12px 16px;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--brand-primary-50);
 }
 
 .row-thumb {
@@ -558,14 +611,14 @@ kbd {
   height: 40px;
   object-fit: cover;
   border-radius: 6px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--brand-primary-100);
 }
 
 .btn-confirm {
   width: 100%;
   padding: 14px;
-  background: #1d4ed8;
-  color: #fff;
+  background: var(--brand-primary-500);
+  color: var(--text-on-brand);
   border-radius: 12px;
   cursor: pointer;
   border: none;
@@ -573,6 +626,6 @@ kbd {
 }
 
 .no-img-text {
-  color: #9ca3af;
+  color: var(--text-soft);
 }
 </style>

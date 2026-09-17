@@ -8,7 +8,7 @@ import ShowProjectDetailsModel from '../../Data/models/ShowProjectDeatilsModel'
 class ShowProjectDetailsRepo extends RepoInterface<ShowProjectDetailsModel> {
   private static instance: ShowProjectDetailsRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

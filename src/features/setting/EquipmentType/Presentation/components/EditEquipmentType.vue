@@ -10,7 +10,7 @@ import EquipmentTypeForm from '@/features/setting/EquipmentType/Presentation/com
 import type Params from '@/base/core/params/params'
 
 const route = useRoute()
-const router = useRouter() 
+const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
 
@@ -59,7 +59,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditEquipmentType">
         <EquipmentTypeForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">Edit</button>
+          <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>
       </form>
     </template>

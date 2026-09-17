@@ -8,7 +8,7 @@
   font-family: 'Regular';
   padding: $MdSize $XsSize;
   border-radius: $MdSize;
-  background-color: #fbfbfb;
+  background-color: var(--surface-1);
   position: relative;
   overflow: hidden;
   .bg-yellow {
@@ -35,29 +35,29 @@
       z-index: 999;
 
       .serial {
-        color: #9ca3af;
+        color: var(--text-soft);
         font-size: $XsSize;
         font-weight: $BaseFontMediumWeight;
         span {
           font-family: 'Regular';
-          color: #4b5563;
+          color: var(--brand-primary-600);
         }
       }
 
       .date {
-        color: #9ca3af;
+        color: var(--text-soft);
         font-size: $XsSize;
         font-weight: $BaseFontMediumWeight;
 
         span {
           font-family: 'Regular';
-          color: #4b5563;
+          color: var(--brand-primary-600);
           font-size: $XsSize;
         }
       }
     }
     .project-name {
-      color: #121212;
+      color: var(--text-strong);
       font-size: calc($XlSize2 + 2px);
       font-weight: $BaseFontWeightBold;
       z-index: 999;
@@ -76,6 +76,49 @@
         font-size: $MdSize;
         font-weight: $BaseFontSemiBoldWeight;
       }
+    }
+  }
+
+  @media (max-width: 768px) {
+    gap: $XsSize;
+    padding: $SmSize;
+
+    .project-header {
+      min-width: 0;
+
+      .project-info {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        row-gap: $XsSize2;
+      }
+
+      .project-name {
+        max-width: 100%;
+        font-size: $XlSize;
+        line-height: 1.3;
+        overflow-wrap: anywhere;
+      }
+
+      .project-statics {
+        flex-wrap: wrap;
+
+        .contractor {
+          font-size: $SmSize;
+        }
+      }
+    }
+
+    > :last-child {
+      flex: 0 0 auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .bg-yellow,
+    .bg-blue {
+      width: 70%;
+      height: 100%;
+      object-fit: cover;
     }
   }
 }

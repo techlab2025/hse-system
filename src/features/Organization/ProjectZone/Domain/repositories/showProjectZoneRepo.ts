@@ -9,7 +9,7 @@ import { ShowProjectZoneApiService } from '../../Data/apiServices/showProjectZon
 class ShowProjectZoneRepo extends RepoInterface<ProjectZoneDetailsModel> {
   private static instance: ShowProjectZoneRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

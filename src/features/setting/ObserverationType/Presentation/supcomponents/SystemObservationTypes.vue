@@ -2,8 +2,9 @@
 import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue';
 import Dialog from 'primevue/dialog';
 import DialogSystem from '@/assets/images/DialogSystem.png'
-import { onMounted, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
+import SystemDialogEmptyState from '@/shared/DataStatues/SystemDialogEmptyState.vue'
 import { useRoute, useRouter } from 'vue-router';
 
 import IndexObserverationTypeParams from '../../Core/params/indexObserverationTypeParams';
@@ -16,6 +17,9 @@ import SystemDataHeader from '@/features/Organization/WhereHouseType/Presentatio
 const visible = ref(false);
 const route = useRoute()
 const props = defineProps<{ isHeaderTap?: boolean }>()
+const emit = defineEmits<{
+  confirmed: []
+}>()
 
 const indexSystemObserverationTypeController = IndexSystemObserverationTypeController.getInstance()
 const state = ref(indexSystemObserverationTypeController.state.value)
@@ -54,9 +58,11 @@ const ChangeStatus = (id: number) => {
   }
 }
 watch(() => visible.value, (newVal) => {
-  if (visible.value) {
-
+  if (newVal) {
+    selectedIds.value = []
     fetchObserverationType()
+  } else {
+    selectedIds.value = []
   }
 })
 
@@ -64,8 +70,12 @@ const router = useRouter()
 const SubmitData = async () => {
   const addSystemObserverationTypeController = AddSystemObserverationTypeController.getInstance()
   const addSystemObserverationTypeParams = new AddSystemObserverationTypeParams({ cloneIds: selectedIds.value })
-  const dataState = await addSystemObserverationTypeController.addSystemObserverationType(addSystemObserverationTypeParams, router)
-  visible.value = false
+  await addSystemObserverationTypeController.addSystemObserverationType(addSystemObserverationTypeParams, router)
+
+  if (addSystemObserverationTypeController.isDataSuccess()) {
+    emit('confirmed')
+    visible.value = false
+  }
 }
 </script>
 <template>
@@ -86,7 +96,8 @@ const SubmitData = async () => {
     </template>
     <DataStatus :controller="state">
       <template #success>
-        <div class="system-dialog-content-container">
+        <SystemDialogEmptyState v-if="!state.data?.length" />
+        <div v-else class="system-dialog-content-container">
 
           <div class="system-dialog-content" v-for="item in state.data" :key="item.id">
             <div class="row-content" :class="{ active: selectedIds.includes(item.id) }" @click="ChangeStatus(item.id)">
@@ -98,7 +109,10 @@ const SubmitData = async () => {
             </div>
           </div>
         </div>
-        <button class="btn btn-primary w-full mt-5 confirm-btn" @click="SubmitData">{{ $t('confirm') }}</button>
+        <button v-if="state.data?.length" class="btn btn-primary w-full mt-5 confirm-btn" @click="SubmitData">{{ $t('confirm') }}</button>
+      </template>
+      <template #empty>
+        <SystemDialogEmptyState />
       </template>
       <template #loader>
       </template>

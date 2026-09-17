@@ -1,35 +1,25 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import Editor from 'primevue/editor'
-import StarRequiredInput from '../icons/StarRequiredInput.vue';
+import { computed, ref, watch, type Component } from 'vue'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
+
+type LocalizedField = {
+  locale: string
+  title?: string
+  subtitle?: string
+  description?: string
+  button_title?: string
+  answer?: string
+  question?: string
+  feature?: string
+  old?: string
+  new?: string
+}
 
 const props = withDefaults(
   defineProps<{
-    langs: { title: string; locale: string; icon?: any }[]
-    modelValue?: {
-      locale: string
-      title?: string
-      subtitle?: string
-      description?: string
-      button_title?: string
-      answer?: string
-      question?: string
-      feature?: string
-      old?: string
-      new?: string
-    }[]
-    defaultLang?: {
-      locale: string
-      title?: string
-      subtitle?: string
-      description?: string
-      button_title?: string
-      answer?: string
-      question?: string
-      feature?: string
-      old?: string
-      new?: string
-    }
+    langs: { title: string; locale: string; icon?: Component | string }[]
+    modelValue?: LocalizedField[]
+    defaultLang?: LocalizedField
     label?: string
     type?: 'text' | 'textarea' | 'email' | 'password' | 'number' | 'url'
     placeholder?: string
@@ -38,15 +28,16 @@ const props = withDefaults(
     required?: boolean
     disabled?: boolean
     fieldType?:
-    | 'title'
-    | 'subtitle'
-    | 'description'
-    | 'button_title'
-    | 'answer'
-    | 'question'
-    | 'old'
-    | 'new'
-    | 'feature'
+      | 'title'
+      | 'subtitle'
+      | 'description'
+      | 'button_title'
+      | 'answer'
+      | 'question'
+      | 'old'
+      | 'new'
+      | 'feature'
+    helpText?: string
   }>(),
   {
     langs: () => [],
@@ -119,7 +110,9 @@ const titles = ref<
 )
 
 // Get the current field value based on fieldType
-const getFieldValue = (item: any) => {
+const getFieldValue = (item?: LocalizedField) => {
+  if (!item) return undefined
+
   switch (props.fieldType) {
     case 'subtitle':
       return item.subtitle
@@ -143,7 +136,7 @@ const getFieldValue = (item: any) => {
 }
 
 // Set the current field value based on fieldType
-const setFieldValue = (item: any, value: string) => {
+const setFieldValue = (item: LocalizedField, value: string) => {
   switch (props.fieldType) {
     case 'subtitle':
       item.subtitle = value
@@ -304,20 +297,31 @@ watch(hasAtLeastOneValue, (isValid) => {
         {{ $t(label) }}
         <!-- <span class="text-red-500" v-if="required">*</span> -->
         <span class="text-red-500" v-if="required">
-          <StarRequiredInput />
+          <!-- <StarRequiredInput /> -->
+          *
         </span>
+        <FieldHelpIcon v-if="helpText" :text="helpText" />
       </label>
 
       <!-- Dynamic Languages -->
       <div class="languages">
         <div class="input-lang" v-for="(l, index) in langs" :key="index">
-          <input type="radio" :id="`${label}-${l.locale}`" :name="label" :value="l.locale" v-model="lang"
-            :required="props.required" />
+          <input
+            type="radio"
+            :id="`${label}-${l.locale}`"
+            :name="label"
+            :value="l.locale"
+            v-model="lang"
+            :required="props.required"
+          />
           <label class="icon-lng" :for="`${label}-${l.locale}`">
             <component :is="l.icon" />
             <!-- Visual indicator if this language has content for the current field type -->
-            <span v-if="getFieldValue(titles.find((t) => t.locale === l.locale))" class="lang-indicator"
-              :title="`${l.locale.toUpperCase()} has content`">
+            <span
+              v-if="getFieldValue(titles.find((t) => t.locale === l.locale))"
+              class="lang-indicator"
+              :title="`${l.locale.toUpperCase()} has content`"
+            >
               ✓
             </span>
           </label>
@@ -326,10 +330,24 @@ watch(hasAtLeastOneValue, (isValid) => {
     </div>
 
     <!-- Title Input -->
-    <Editor v-if="isTextarea" v-model="fieldValue" :rows="rows" v-bind="inputAttrs" editorStyle="height: 320px" />
+    <textarea
+      v-if="isTextarea"
+      v-model="fieldValue"
+      :rows="rows"
+      v-bind="inputAttrs"
+      editorStyle="max-height: 320px"
+      style="max-height: 180px"
+    ></textarea>
 
     <!-- Regular Input -->
-    <input class="lang-input" v-else :type="type" v-model="fieldValue" v-bind="inputAttrs" :required="props.required" />
+    <input
+      class="lang-input"
+      v-else
+      :type="type"
+      v-model="fieldValue"
+      v-bind="inputAttrs"
+      :required="props.required"
+    />
 
     <!-- Selected Language Info -->
     <span class="select-lang">
@@ -352,8 +370,8 @@ html[lang='ar'] .lang-input {
   position: absolute;
   top: -2px;
   right: -2px;
-  background: #10b981;
-  color: white;
+  background: var(--status-success);
+  color: var(--text-on-brand);
   border-radius: 50%;
   width: 16px;
   height: 16px;
@@ -370,7 +388,7 @@ html[lang='ar'] .lang-input {
 }
 
 .validation-error {
-  color: #ef4444;
+  color: var(--status-danger);
   font-size: 0.875rem;
   margin-top: 0.25rem;
 }

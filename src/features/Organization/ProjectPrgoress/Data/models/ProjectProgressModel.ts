@@ -16,7 +16,24 @@ export default class ProjectProgressModel {
   }
 
   static fromMap(data: any): ProjectProgressModel {
-    return new ProjectProgressModel(data.progressItems, data.progress, data.code_system_type)
+    const rawItems = Array.isArray(data) ? data : (data.progressItems ?? data.progress_items ?? [])
+    const progressItems: ProjectProgressItemModel[] = rawItems.map((item: any) =>
+      ProjectProgressItemModel.fromMap(item),
+    )
+    const requiredItems = progressItems.filter((item) => item.required)
+    const calculatedProgress = requiredItems.length
+      ? Math.round(
+          (requiredItems.filter((item) => item.progress).length / requiredItems.length) * 100,
+        )
+      : 0
+
+    return new ProjectProgressModel(
+      progressItems,
+      Number(Array.isArray(data) ? calculatedProgress : (data.progress ?? calculatedProgress)),
+      Array.isArray(data)
+        ? SertialNumberStatusEnum.AUTO
+        : (data.code_system_type ?? SertialNumberStatusEnum.AUTO),
+    )
   }
 
   static example: ProjectProgressModel = new ProjectProgressModel(

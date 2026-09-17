@@ -16,28 +16,25 @@ import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import DeleteRootCausesController from '@/features/setting/RootCauses/Presentation/controllers/deleteRootCausesController'
 import DeleteRootCausesParams from '@/features/setting/RootCauses/Core/params/deleteRootCausesParams'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
-import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
+import * as XLSX from 'xlsx'
+import { saveAs } from 'file-saver'
 import SystemRootCausesTypes from '../supcomponents/SystemRootCausesTypes.vue'
 import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
+import Dialog from 'primevue/dialog'
+import UploadRootCausesExeclSheet from './UploadRootCausesExeclSheet.vue'
 const { t } = useI18n()
 
 // import DialogChangeStatusRootCauses from "@/features/setting/RootCausess/Presentation/components/RootCauses/DialogChangeStatusRootCauses.vue";
@@ -109,13 +106,25 @@ watch(
 )
 
 const { user } = useUserStore()
+const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+const onFileSelected = (e: Event) => {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  ;(e.target as HTMLInputElement).value = ''
+}
 
 const actionList = (id: number, deleteRootCauses: (id: number) => void) => [
   {
     text: t('edit'),
     icon: ActionsTableEdit,
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-      }/root-causes/${id}`,
+    link: `/${
+      user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+    }/root-causes/${id}`,
     permission: [
       PermissionsEnum.ROOT_CAUSES_UPDATE,
       PermissionsEnum.ADMIN,
@@ -175,27 +184,36 @@ watch(
 )
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert("No data available to export");
-    return;
+    alert('No data available to export')
+    return
   }
-  const worksheetData = state.value.data.map(
-    (item: Record<string, unknown>) => {
-      const it = item as any;
-      return {
-        "title": it.title || "N/A",
-      };
-    },
-  );
-  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
-  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
-  saveAs(data, "root-causes.xlsx");
-};
+  const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
+    const it = item as any
+    return {
+      title: it.title || 'N/A',
+    }
+  })
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Invoices')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(data, 'root-causes.xlsx')
+}
+
+const DownloadExample = () => {
+  const worksheetData = [{ title: 'Example Root Cause' }, { title: 'Example Root Cause 2' }]
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'RootCauses')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(blob, 'root_causes_form.xlsx')
+}
+
 const IndexRootCausesactionList = () => [
   {
-    text: t('export_excel'),
+    text: t('export_to_excel'),
     icon: ExceIcon,
     action: () => exportExcel(),
     type: ActionItemsTypeEnum.Success,
@@ -209,21 +227,23 @@ const IndexRootCausesactionList = () => [
     text: t('add_root_causes'),
     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/root-causes/add`,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
-    permission: [
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.ROOT_CAUSES_CREATE
-    ],
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ROOT_CAUSES_CREATE],
   },
   {
-    text: t('import_root_causes'),
+    text: t('upload_complated_template'),
     type: ActionItemsTypeEnum.Warning,
-    link: '/organization/root-causes/upload-excel',
+    action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
-    permission: [
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.ROOT_CAUSES_CREATE
-    ],
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ROOT_CAUSES_CREATE],
+  },
+  {
+    text: t('download_excel_template'),
+    icon: ExceIcon,
+    action: () => DownloadExample(),
+    type: ActionItemsTypeEnum.Success,
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ROOT_CAUSES_CREATE],
   },
 ]
 </script>
@@ -232,10 +252,16 @@ const IndexRootCausesactionList = () => [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="; ((word = ''), searchRootCauses())">
+      <span class="icon-remove" @click=";((word = ''), searchRootCauses())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchRootCauses" />
+      <input
+        v-model="word"
+        :placeholder="'search'"
+        class="input"
+        type="text"
+        @input="searchRootCauses"
+      />
     </div>
 
     <div class="col-span-2 flex justify-end gap-2">
@@ -266,25 +292,32 @@ const IndexRootCausesactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
         <SystemRootCausesTypes />
       </PermissionBuilder> -->
-        <ActionsList :show-actions="true" :actionList="IndexRootCausesactionList()" :actionsNumber="4">
+      <ActionsList
+        feature-name="action_feature_root_causes"
+        :show-actions="true"
+        :actionList="IndexRootCausesactionList()"
+        :actionsNumber="5"
+      >
         <template #custom>
           <!-- <SystemRootCausesTypes /> -->
           <ExportPdf :isDropList="true" />
         </template>
       </ActionsList>
     </div>
-    <SystemRootCausesTypes :isHeaderTap="true" />
+    <SystemRootCausesTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.ROOT_CAUSES_ALL,
-    PermissionsEnum.ROOT_CAUSES_DELETE,
-    PermissionsEnum.ROOT_CAUSES_FETCH,
-    PermissionsEnum.ROOT_CAUSES_UPDATE,
-    PermissionsEnum.ROOT_CAUSES_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ROOT_CAUSES_ALL,
+      PermissionsEnum.ROOT_CAUSES_DELETE,
+      PermissionsEnum.ROOT_CAUSES_FETCH,
+      PermissionsEnum.ROOT_CAUSES_UPDATE,
+      PermissionsEnum.ROOT_CAUSES_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -329,13 +362,20 @@ const IndexRootCausesactionList = () => [
                   <!--                  @RootCausesChangeStatus="fetchRootCauses"-->
                   <!--                />-->
 
-                  <DropList :actionList="actionList(item.id, deleteRootCauses)" @delete="deleteRootCauses(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteRootCauses)"
+                    @delete="deleteRootCauses(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -344,36 +384,75 @@ const IndexRootCausesactionList = () => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <PermissionBuilder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.ROOT_CAUSES_CREATE,
-        ]">
-          <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/root-causes/add`" addText="Add RootCauses"
-            description="Sorry .. You have no RootCausess .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No RootCausess" />
+        <PermissionBuilder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.ROOT_CAUSES_CREATE,
+          ]"
+        >
+          <DataEmpty
+            :link="`/${
+              user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+            }/root-causes/add`"
+            addText="Add RootCauses"
+            description="You have no RootCausess .. All your joined customers will appear here when you add your customer data"
+            title="You have No RootCausess"
+          />
         </PermissionBuilder>
       </template>
       <template #failed>
-        <PermissionBuilder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.ROOT_CAUSES_CREATE,
-        ]">
-          <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-            }/root-causes/add`" addText="Add RootCauses"
-            description="Sorry .. You have no RootCauses .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No RootCausess" />
+        <PermissionBuilder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.ROOT_CAUSES_CREATE,
+          ]"
+        >
+          <DataFailed
+            :link="`/${
+              user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
+            }/root-causes/add`"
+            addText="Add RootCauses"
+            description="You have no RootCauses .. All your joined customers will appear here when you add your customer data"
+            title="You have No RootCausess"
+          />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no RootCauses .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        addText="Have not  Permission"
+        description="You have no RootCauses .. All your joined customers will appear here when you add your customer data"
+      />
     </template>
   </PermissionBuilder>
+
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('import_root_causes')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <UploadRootCausesExeclSheet
+      :initial-file="pendingFile"
+      @uploaded="
+        showUploadDialog = false;
+        pendingFile = null;
+        fetchRootCauses();
+      "
+    />
+  </Dialog>
+
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>
 
 <style scoped></style>

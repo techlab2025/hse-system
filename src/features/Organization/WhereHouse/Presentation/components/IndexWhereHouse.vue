@@ -9,13 +9,11 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import wordSlice from '@/base/Presentation/utils/word_slice'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import Search from '@/shared/icons/Search.vue'
 import IndexWhereHouseController from '../controllers/indexWhereHouseController'
 import IndexWhereHouseParams from '../../Core/params/indexWhereHouseParams'
@@ -182,23 +180,23 @@ watch(
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_CREATE]">
 
           <DataEmpty :link="`/organization/where-house/add`" addText="Add WhereHouse"
-            description="Sorry .. You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No WhereHouse" />
+            description="You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
+            title="You have No WhereHouse" />
         </PermissionBuilder>
       </template>
       <template #failed>
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_CREATE]">
 
           <DataFailed :link="`/organization/where-house/add`" addText="Add WhereHouse"
-            description="Sorry .. You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No WhereHouse" />
+            description="You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
+            title="You have No WhereHouse" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
+        description="You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
         link="" />
     </template>
   </PermissionBuilder>

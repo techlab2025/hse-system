@@ -7,7 +7,7 @@ import ContractorModel from '../../Data/models/ContractorModel'
 class IndexContractorRepo extends RepoInterface<ContractorModel[]> {
   private static instance: IndexContractorRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

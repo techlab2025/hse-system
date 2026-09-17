@@ -1,0 +1,49 @@
+import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
+import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
+import type Params from '@/base/core/params/params'
+import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
+import errorImage from '@/assets/images/error.png'
+import type PTWTypeModel from '../../Data/models/PTWTypeModel'
+import DeletePTWTypeUseCase from '../../Domain/useCase/deletePTWTypeUseCase'
+
+export default class DeletePTWTypeController extends ControllerInterface<PTWTypeModel> {
+  private static instance: DeletePTWTypeController
+  private constructor() {
+    super()
+  }
+  private DeletePTWTypeUseCase = new DeletePTWTypeUseCase()
+
+  static getInstance() {
+    if (!this.instance) {
+      this.instance = new DeletePTWTypeController()
+    }
+    return this.instance
+  }
+
+  async deletePTWType(params: Params) {
+    // useLoaderStore().setLoadingWithDialog();
+    // console.log(params)
+    try {
+      const dataState: DataState<PTWTypeModel> =
+        await this.DeletePTWTypeUseCase.call(params)
+      this.setLoading()
+
+      this.setState(dataState)
+      if (this.isDataSuccess()) {
+        // useLoaderStore().endLoadingWithDialog();
+      } else {
+        throw new Error('Error while addServices')
+      }
+    } catch (error: any) {
+      console.log(error)
+      DialogSelector.instance.failedDialog.openDialog({
+        dialogName: 'dialog-error',
+        titleContent: this.state.value.message,
+        imageElement: errorImage,
+        messageContent: null,
+      })
+    }
+    super.handleResponseDialogs()
+    return this.state
+  }
+}

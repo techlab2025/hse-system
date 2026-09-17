@@ -1,12 +1,10 @@
 import LocationModel from '@/features/setting/Location/Data/models/LocationModel'
-import TitleInterface from '@/base/Data/Models/title_interface'
 import OvservationEquipmentModel from './OvservationEquipmentModel'
 import SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
 import ShowProjectDetailsModel from '@/features/Organization/Project/Data/models/ShowProjectDeatilsModel'
 import OvserverModel from './OvserverModel'
 import type CapaModel from './CapaModel'
 import FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
-import acc from '@/assets/images/acc.png'
 import type { ActionStatusEnum } from '../../Core/Enums/ActionStatusEnum'
 
 export default class HazardModel {
@@ -31,8 +29,8 @@ export default class HazardModel {
   public capaStatus: string
   public date: string
   public serial: number
-  public observer: OvserverModel
-  public creator: OvserverModel
+  public observer: OvserverModel | undefined
+  public creator: OvserverModel | undefined
   public capa: CapaModel
   public media: FilesModel[]
   public serialName: string
@@ -40,6 +38,11 @@ export default class HazardModel {
   public actionStatus: ActionStatusEnum
   public isWorkStopped: number
   public createdAt: string
+  public updatedAt: string
+  public investigationId: number
+  public investigationMeetingId: number
+  public investigationStatus: number
+  public license_plate_number: string
 
   constructor(
     id: number,
@@ -63,8 +66,8 @@ export default class HazardModel {
     capaStatus: string,
     date: string,
     serial: number,
-    observer: OvserverModel,
-    creator: OvserverModel,
+    observer: OvserverModel | undefined,
+    creator: OvserverModel | undefined,
     capa: CapaModel,
     media: FilesModel[],
     serialName: string,
@@ -72,6 +75,11 @@ export default class HazardModel {
     actionStatus: ActionStatusEnum,
     isWorkStopped: number,
     createdAt: string,
+    updatedAt: string,
+    investigationId: number,
+    investigationMeetingId: number,
+    investigationStatus: number,
+    license_plate_number: string,
   ) {
     this.id = id
     this.title = title
@@ -103,6 +111,11 @@ export default class HazardModel {
     this.actionStatus = actionStatus
     this.isWorkStopped = isWorkStopped
     this.createdAt = createdAt
+    this.updatedAt = updatedAt
+    this.investigationId = investigationId
+    this.investigationMeetingId = investigationMeetingId
+    this.investigationStatus = investigationStatus
+    this.license_plate_number = license_plate_number
   }
 
   static fromMap(data: any): HazardModel {
@@ -128,8 +141,8 @@ export default class HazardModel {
       data.capa_status,
       data.date,
       data.serial,
-      data.observer ? OvserverModel?.fromMap(data.observer) : null,
-      data.creator ? OvserverModel?.fromMap(data.creator) : null,
+      data.observer ? OvserverModel?.fromMap(data.observer) : undefined,
+      data.creator ? OvserverModel?.fromMap(data.creator) : undefined,
       data.capa,
       data.media.map((item: any) => FilesModel.fromMap(item)),
       data.serial_name,
@@ -137,34 +150,39 @@ export default class HazardModel {
       data.action_status,
       data?.is_work_stopped,
       data?.created_at,
+      data?.updated_at,
+      data?.investigation_id,
+      data?.investigation_meeting_id,
+      data?.investigation_status,
+        data?.license_plate_number,
     )
   }
 
-  static example: HazardModel = new HazardModel(
-    1,
-    'New Observation',
-    'New Observation Details Description',
-    acc,
-    1,
-    1,
-    1,
-    1,
-    1,
-    OvservationEquipmentModel.example,
-    LocationModel.example,
-    SohwProjectZoonModel.example,
-    ShowProjectDetailsModel.example,
-    1,
-    1,
-    1,
-    'New Action',
-    'yes',
-    'capa',
-    '10-12-2000',
-    '_0b5512547_5432',
-    OvserverModel.example,
-    OvserverModel.example,
-    null,
-    [],
-  )
+  // static example: HazardModel = new HazardModel(
+  //   1,
+  //   'New Observation',
+  //   'New Observation Details Description',
+  //   acc,
+  //   1,
+  //   1,
+  //   1,
+  //   1,
+  //   1,
+  //   OvservationEquipmentModel.example,
+  //   LocationModel.example,
+  //   SohwProjectZoonModel.example,
+  //   ShowProjectDetailsModel.example,
+  //   1,
+  //   1,
+  //   1,
+  //   'New Action',
+  //   'yes',
+  //   'capa',
+  //   '10-12-2000',
+  //   '_0b5512547_5432',
+  //   OvserverModel.example,
+  //   OvserverModel.example,
+  //   null,
+  //   [],
+  // )
 }

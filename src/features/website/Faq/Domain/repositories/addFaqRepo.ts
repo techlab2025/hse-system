@@ -6,7 +6,7 @@ import { AddFaqApiService } from '../../Data/apiServices/addFaqApiService'
 
 class AddFaqRepo extends RepoInterface<FaqModel> {
   private static instance: AddFaqRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

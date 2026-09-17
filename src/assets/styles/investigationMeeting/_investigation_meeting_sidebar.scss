@@ -3,7 +3,7 @@
 @use '../mixins/grid' as *;
 .index-investigationMeeting {
   .sidebar-container {
-    background-color: #f5f5f5;
+    background-color: var(--text-on-brand);
     border-radius: 20px;
     padding: $XsSize;
   }
@@ -16,12 +16,12 @@
 
   .sidebar-header {
     @include flex-row(nowrap, space-between, center);
-    background-color: #f5f5f5 !important;
+    background-color: var(--text-on-brand) !important;
   }
 
   .sidebar-label-item-primary {
     font-weight: $BaseFontWeightBold;
-    color: rgba(0, 0, 97, 1);
+    color: var(--brand-primary-800);
     font-size: $XlSize;
   }
 
@@ -41,13 +41,13 @@
       margin-bottom: 6px;
       font-family: 'regular';
       font-size: $MdSize;
-      color: rgba(174, 177, 188, 1);
+      color: var(--text-muted);
       font-weight: $BaseFontMediumWeight;
 
       span {
         font-weight: $BaseFontMediumWeight;
         font-size: $MdSize;
-        color: rgba(32, 32, 32, 1);
+        color: var(--text-strong);
       }
 
       &::before {
@@ -57,7 +57,7 @@
         top: 12px;
         width: 6px;
         height: 6px;
-        background-color: #000;
+        background-color: var(--brand-secondary-900);
         border-radius: 50%;
       }
     }

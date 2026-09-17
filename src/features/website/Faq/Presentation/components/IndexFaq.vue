@@ -17,11 +17,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import IndexFaqController from '../controllers/indexFaqController'
 import IndexFaqParams from '../../Core/params/indexFaqParams'
 import DeleteFaqParams from '../../Core/params/deleteFaqParams'
@@ -218,19 +214,19 @@ watch(
       </template>
       <template #empty>
         <DataEmpty :link="`/admin/faq/add`" addText="Add faq"
-          description="Sorry .. You have no Faq .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Faq" />
+          description="You have no Faq .. All your joined customers will appear here when you add your customer data"
+          title="You have No Faq" />
       </template>
       <template #failed>
         <DataFailed :link="`/admin/faq/add`" addText="Add Faq"
-          description="Sorry .. You have no Faq .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Faq" />
+          description="You have no Faq .. All your joined customers will appear here when you add your customer data"
+          title="You have No Faq" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Faq .. All your joined customers will appear here when you add your customer data" />
+        description="You have no Faq .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

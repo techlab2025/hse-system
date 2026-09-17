@@ -6,7 +6,7 @@
   @include flex(column, nowrap, center, center);
   gap: $XsSize4;
   width: 100%;
-  background-color: #fffdfd;
+  background-color: var(--status-danger-soft);
   padding: $XsSize3;
   // max-width: 150px;
 
@@ -14,29 +14,29 @@
     @include flex-column(nowrap, center, center);
     gap: $XsSize4;
     width: 100%;
-    background: #fffdfd;
-    border: 1px solid #f2f2f233;
+    background: var(--status-danger-soft);
+    border: 1px solid color-mix(in srgb, var(--surface-2) 20%, transparent);
     border-radius: $XsSize2;
   }
   .invalid {
     @include flex-center();
     gap: $XsSize4;
     .invalid-title {
-      color: #f65a5a;
+      color: var(--status-danger);
       font-size: $MdSize;
       font-weight: $BaseFontSemiBoldWeight;
       font-family: 'Bold';
     }
   }
   .invalid-date {
-    color: #2f2d2d;
+    color: var(--text-strong);
     font-size: $MdSize;
     font-weight: $BaseFontSemiBoldWeight;
     text-decoration: underline;
   }
   .certificate-dialog {
     hr {
-      border-color: #f1f3f5;
+      border-color: var(--brand-primary-50);
     }
     .dialog-content {
       margin-top: $XsSize2;

@@ -8,7 +8,7 @@ import { DeleteOurSystemStepApiService } from '../../Data/apiServices/deleteOurS
 class DeleteOurSystemStepRepo extends RepoInterface<OurSystemStepModel> {
   private static instance: DeleteOurSystemStepRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

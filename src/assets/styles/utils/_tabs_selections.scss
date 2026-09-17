@@ -13,12 +13,12 @@
     @include flex-row(nowrap, space-between, center);
 
     .title {
-      color: #170f49;
+      color: var(--brand-primary-800);
       font-size: $XlSize;
       font-weight: $BaseFontWeightBold;
     }
     .subtitle {
-      color: #afb2bb;
+      color: var(--text-muted);
       font-size: $MdSize;
       font-weight: $BaseFontMediumWeight;
       span {
@@ -34,7 +34,7 @@
       gap: $XlSize;
       .select-item {
         border-radius: $XlSize;
-        background-color: #fafbfc;
+        background-color: var(--brand-primary-50);
         position: relative;
         border-radius: $XlSize;
         overflow: hidden;
@@ -88,7 +88,7 @@
         .item {
           @include flex-row(nowrap, flex-start, center);
           gap: $XsSize;
-          color: #9ca3af;
+          color: var(--text-soft);
           font-size: $MdSize;
           font-weight: $BaseFontSemiBoldWeight;
           transition: 0.3s all linear;

@@ -1,12 +1,16 @@
 <script setup lang="ts">
-import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+
+const props = defineProps<{ initialFile?: File | null }>()
+const emit = defineEmits<{ (e: 'uploaded'): void }>()
 import * as XLSX from 'xlsx'
 import JSZip from 'jszip'
 import { useRouter } from 'vue-router'
 import EquipmentDetailsModel from '../../Data/models/equipmentDetailsModel'
 import AddEquipmentController from '../controllers/addEquipmentController'
-import AddEquipmentExcelParams from '../../Core/params/AddEquipmentExcelParams'
+import AddEquipmentExcelParams, {
+  type EquipmentExcelRow,
+} from '../../Core/params/AddEquipmentExcelParams'
 import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue'
 import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -23,8 +27,6 @@ import IndexContractorController from '@/features/setting/contractor/Presentatio
 import IndexContractorParams from '@/features/setting/contractor/Core/params/indexContractorParams'
 import IndexWhereHouseController from '@/features/Organization/WhereHouse/Presentation/controllers/indexWhereHouseController'
 import IndexWhereHouseParams from '@/features/Organization/WhereHouse/Core/params/indexWhereHouseParams'
-import ExcelSheetIcon from '@/shared/icons/ExcelSheetIcon.vue'
-import ExcelSheetHeaderIcon from '@/shared/icons/ExcelSheetHeaderIcon.vue'
 
 interface ExtractedImage {
   name: string
@@ -34,7 +36,6 @@ interface ExtractedImage {
 
 // ─── State ────────────────────────────────────────────────────────────────────
 const sheetData = ref<EquipmentDetailsModel[] | null>(null)
-const File = ref<string>('')
 const Data = ref<any[]>([])
 const mappedData = ref<any[] | null>(null)
 const extractedImages = ref<ExtractedImage[]>([])
@@ -118,7 +119,7 @@ const readExcelFile = (file: File): Promise<any[]> =>
   })
 
 // ─── Upload Handler ───────────────────────────────────────────────────────────
-const fileUpload = async (file: File) => {
+const fileUpload = async (file: File | null) => {
   errorMsg.value = null
   try {
     if (!file) {
@@ -130,7 +131,6 @@ const fileUpload = async (file: File) => {
     isLoading.value = true
     const [data, images] = await Promise.all([readExcelFile(file), extractImagesFromExcel(file)])
     sheetData.value = getBodyData(data)
-    File.value = await filesToBase64(file)
     mappedData.value = null
     extractedImages.value = images
   } catch (error) {
@@ -145,6 +145,8 @@ const fileUpload = async (file: File) => {
 const SendData = ref<string[]>([
   'name',
   'date',
+  'inspection_duration',
+  'license_number',
   'license_plate_number',
   'image',
   'certificate_image',
@@ -153,18 +155,26 @@ const SendData = ref<string[]>([
   'period',
   'period_type',
   'status',
+  'kilometer',
+  'serial_number',
+  'description',
 ])
 const SendDataLabels: Record<string, string> = {
   name: 'Equipment Name',
-  date: 'Certificate Expire Date',
+  date: 'Training Expiry Date',
+  inspection_duration: 'Inspection Duration',
+  license_number: 'License Number',
   license_plate_number: 'License Plate',
   image: 'Equipment Image',
-  certificate_image: 'Certificate Image',
+  certificate_image: 'Training Image',
   checkin_date: 'Rent Start Date',
   checkout_date: 'Rent End Date',
   period: 'Rental Period',
   period_type: 'Rent Type',
   status: 'Status',
+  kilometer: 'Vehicle Kilometer',
+  serial_number: 'Serial Number',
+  description: 'Description',
 }
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return
@@ -186,19 +196,11 @@ const UpdateActiveTap = (data: EquipmentTypesEnum) => {
   GetEquipmentType()
 }
 
-const deviceStatusOptions = ref<TitleInterface[]>([
-  new TitleInterface({ id: EquipmentStatus.RENT, title: t('Rent') }),
-  new TitleInterface({ id: EquipmentStatus.OWN, title: t('Owned') }),
-])
-
 const indexEquipmentTypeController = IndexEquipmentTypeController.getInstance()
 const AllEquipmentTypes = ref<EquipmentTypeModel[]>([])
-const indexEquipmentTypeParams = ref(
-  new IndexEquipmentTypeParams('', null, null, null, null, Number(activeTab.value)),
-)
 
 const GetEquipmentType = async () => {
-  const params = new IndexEquipmentTypeParams('', null, null, null, null, Number(activeTab.value))
+  const params = new IndexEquipmentTypeParams('', 0, 0, 0, undefined, activeTab.value)
   const response = await indexEquipmentTypeController.getData(params)
   if (response.value.data && response.value.data?.length > 0) {
     AllEquipmentTypes.value = response.value.data
@@ -221,74 +223,146 @@ const GetEquipmentTitle = (type: EquipmentTypesEnum) => {
 }
 
 const equipmentType = ref<TitleInterface | null>(null)
-const setEquipmentType = (data: TitleInterface) => {
-  equipmentType.value = data
-}
-
-const equipmentStatus = ref<TitleInterface>()
-const setEquipmentStataus = (data: TitleInterface) => {
-  equipmentStatus.value = data
-}
-
-const RentTypes = ref<TitleInterface[]>([
-  new TitleInterface({ id: RentTypeEnum.HOUR, title: 'Hour' }),
-  new TitleInterface({ id: RentTypeEnum.DAY, title: 'Day' }),
-  new TitleInterface({ id: RentTypeEnum.MONTH, title: 'Month' }),
-  new TitleInterface({ id: RentTypeEnum.YEAR, title: 'Year' }),
-])
-const SelectedRentType = ref<TitleInterface>(RentTypes.value[0])
-const setRentType = (data: TitleInterface) => {
-  SelectedRentType.value = data
+const setEquipmentType = (data: TitleInterface | TitleInterface[] | null) => {
+  equipmentType.value = Array.isArray(data) ? (data[0] ?? null) : data
 }
 
 const indexContractorController = IndexContractorController.getInstance()
-const indexContractorTypeParams = new IndexContractorParams('', 1, 10, 0, false)
+const indexContractorTypeParams = new IndexContractorParams('', 1, 10, 0, undefined, false)
 const SelectedContractor = ref<TitleInterface>()
-const setContructor = (data: TitleInterface) => {
-  SelectedContractor.value = data
+const setContructor = (data: TitleInterface | TitleInterface[] | null) => {
+  SelectedContractor.value = Array.isArray(data) ? data[0] : (data ?? undefined)
 }
 
 const indexWhereHouseController = IndexWhereHouseController.getInstance()
 const indexWhereHouseParams = new IndexWhereHouseParams('', 1, 10, 1, false)
 const SelectedWhereHosue = ref<TitleInterface>()
-const setSelectedWhereHouse = (data: TitleInterface) => {
-  SelectedWhereHosue.value = data
+const setSelectedWhereHouse = (data: TitleInterface | TitleInterface[] | null) => {
+  SelectedWhereHosue.value = Array.isArray(data) ? data[0] : (data ?? undefined)
+}
+
+// ─── Excel Header → API Key Mapping ───────────────────────────────────────────
+const EXCEL_HEADER_TO_API_KEY: Record<string, keyof EquipmentExcelRow> = {
+  name: 'name',
+  title: 'name',
+  'equipment name': 'name',
+  date: 'date',
+  'certificate expiry date': 'date',
+  'certificate expire date': 'date',
+  certificateexpiredate: 'date',
+  'training expiry date': 'date',
+  'training expire date': 'date',
+  trainingexpirydate: 'date',
+  inspection_duration: 'inspection_duration',
+  'inspection duration': 'inspection_duration',
+  license_number: 'license_number',
+  'license number': 'license_number',
+  licence_number: 'license_number',
+  license_plate_number: 'license_plate_number',
+  'license plate': 'license_plate_number',
+  'license plate number': 'license_plate_number',
+  licencenumber: 'license_plate_number',
+  image: 'image',
+  'equipment image': 'image',
+  certificate_image: 'certificate_image',
+  'certificate image': 'certificate_image',
+  training_image: 'certificate_image',
+  'training image': 'certificate_image',
+  checkin_date: 'checkin_date',
+  'rent start date': 'checkin_date',
+  startdate: 'checkin_date',
+  checkout_date: 'checkout_date',
+  'rent end date': 'checkout_date',
+  enddata: 'checkout_date',
+  period_type: 'period_type',
+  'rent period type': 'period_type',
+  renttype: 'period_type',
+  period: 'period',
+  'rent period': 'period',
+  rentperiod: 'period',
+  status: 'status',
+  kilometer: 'kilometer',
+  'vehicle kilometer': 'kilometer',
+  'vehicle km': 'kilometer',
+  serial_number: 'serial_number',
+  'serial number': 'serial_number',
+  serial: 'serial',
+  description: 'description',
+}
+
+const normalizeExcelHeader = (header: unknown): keyof EquipmentExcelRow | null => {
+  const normalizedHeader = String(header ?? '')
+    .trim()
+    .toLowerCase()
+  return EXCEL_HEADER_TO_API_KEY[normalizedHeader] ?? null
+}
+
+interface PreviewColumn {
+  index: number
+  header: string
+  apiKey: keyof EquipmentExcelRow | null
+}
+
+const previewColumns = computed(() => {
+  const headers = mappedData.value?.[0] ?? []
+
+  return headers
+    .map((header: unknown, index: number): PreviewColumn => ({
+      index,
+      header: String(header ?? ''),
+      apiKey: normalizeExcelHeader(header),
+    }))
+    .filter(({ apiKey }: PreviewColumn) => apiKey !== 'image' && apiKey !== 'certificate_image')
+})
+
+const formatPreviewValue = (apiKey: keyof EquipmentExcelRow | null, value: unknown) => {
+  if (apiKey === 'status') {
+    return EquipmentStatus[Number(value)] ?? value
+  }
+
+  if (apiKey === 'period_type') {
+    return RentTypeEnum[Number(value)] ?? value
+  }
+
+  return value
 }
 
 // ─── Submit ───────────────────────────────────────────────────────────────────
 const addEquipmentController = AddEquipmentController.getInstance()
 
 const AddOrgEmployee = async () => {
-  // if (!mappedData.value) return;
+  if (!mappedData.value) return
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
 
-  const dataAsObjects = rows.map((row: any[], rowIndex: number) => {
-    const obj: Record<string, any> = {}
+  const dataAsObjects = rows.map((row: unknown[], rowIndex: number) => {
+    const obj: Partial<EquipmentExcelRow> = {}
     headers.forEach((key, i) => {
-      if (key && key.trim() !== '') obj[key] = row[i]
+      const apiKey = normalizeExcelHeader(key)
+      if (apiKey) Object.assign(obj, { [apiKey]: row[i] })
     })
 
-    obj['equipment_type_id'] = equipmentType.value?.id
-    // obj['status'] = equipmentStatus.value?.id;
-    // obj['period_type'] = SelectedRentType.value?.id;
-    obj['contractor_id'] = SelectedContractor.value?.id
-    obj['warehouse_id'] = SelectedWhereHosue.value?.id
+    obj.equipment_type_id = Number(equipmentType.value?.id)
+    if (SelectedContractor.value?.id) obj.contractor_id = SelectedContractor.value.id
+    if (SelectedWhereHosue.value?.id) obj.warehouse_id = SelectedWhereHosue.value.id
 
     // Mapping images: row 0 uses index 0 & 1, row 1 uses index 2 & 3, etc.
     const baseImgIdx = rowIndex * 2
     if (extractedImages.value[baseImgIdx]) {
-      obj['image'] = extractedImages.value[baseImgIdx].base64
+      obj.image = extractedImages.value[baseImgIdx].base64
     }
     if (extractedImages.value[baseImgIdx + 1]) {
-      obj['certificate_image'] = extractedImages.value[baseImgIdx + 1].base64
+      obj.certificate_image = extractedImages.value[baseImgIdx + 1].base64
     }
 
-    return obj
+    return obj as EquipmentExcelRow
   })
 
   const orgData = new AddEquipmentExcelParams({ data: dataAsObjects })
   await addEquipmentController.addEquipment(orgData, router)
+  if (addEquipmentController.isDataSuccess()) {
+    emit('uploaded')
+  }
 }
 
 const deleteRow = (rowIndex: number) => {
@@ -313,6 +387,17 @@ const onMappingClose = () => {
     extractedImages.value = []
   }
 }
+
+watch(
+  () => props.initialFile,
+  async (file) => {
+    if (!file) return
+    await fileUpload(file)
+    mappedData.value = Data.value
+  },
+  { immediate: true },
+)
+
 onMounted(() => {
   GetEquipmentType()
 })
@@ -320,9 +405,8 @@ onMounted(() => {
 
 <template>
   <div class="page-wrapper">
-    <div class="excel-warning">
+    <!-- <div class="excel-warning">
       <div class="warning-header flex item-center gap-2 justify-between w-full">
-        <!-- <span class="icon">📝</span> -->
         <div class="flex item-center gap-2">
           <ExcelSheetHeaderIcon />
           <div class="title-container flex flex-col">
@@ -338,13 +422,12 @@ onMounted(() => {
       </div>
 
       <div class="rule-group">
-        <!-- <p class="rule-label">Required Excel Columns (Exact Names):</p> -->
         <div class="field-tags">
           <span class="field-tag">Equipment name</span>
-          <span class="field-tag">Certificate Expiry date</span>
+          <span class="field-tag">Training Expiry date</span>
           <span class="field-tag">License plate number</span>
           <span class="field-tag">Equipment image</span>
-          <span class="field-tag">Certificate image</span>
+          <span class="field-tag">Training image</span>
           <span class="field-tag">Rent Start date</span>
           <span class="field-tag">Rent End date</span>
           <span class="field-tag">Rent Period type</span>
@@ -382,7 +465,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="grid grid-cols-6 gap-4 w-full mb-4 equipment-form">
       <Tabs
@@ -476,27 +559,20 @@ onMounted(() => {
             <table class="main-table">
               <thead>
                 <tr>
-                  <th v-for="(item, i) in mappedData[0]" :key="i">
-                    <span v-if="item == 'checkin_date'"> Rent Start Date </span>
-                    <span v-else-if="item == 'checkout_date'"> Rent End Date </span>
-                    <span v-else-if="item == 'license_plate_number'"> License Plate Number </span>
-                    <span v-else-if="item == 'period_type'"> Period Type </span>
-                    <span v-else-if="item !== 'image' && item !== 'certificate_image'">
-                      {{ item }}
+                  <th v-for="column in previewColumns" :key="column.index">
+                    <span>
+                      {{ column.apiKey ? (SendDataLabels[column.apiKey] ?? column.header) : column.header }}
                     </span>
                   </th>
                   <th>Image</th>
-                  <th>Certificate Image</th>
+                  <th>Training Image</th>
                   <th class="empty"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="(row, rowIndex) in mappedData.slice(1)" :key="rowIndex">
-                  <!-- {{ row[7] }} -->
-                  <td v-for="(value, colIndex) in row" :key="colIndex">
-                    <span v-if="colIndex === 7">{{ EquipmentStatus[value] }}</span>
-                    <span v-else-if="colIndex === 8">{{ RentTypeEnum[value] }}</span>
-                    <span v-if="value != '*' && colIndex != 7 && colIndex != 8">{{ value }}</span>
+                  <td v-for="column in previewColumns" :key="column.index">
+                    <span>{{ formatPreviewValue(column.apiKey, row[column.index]) }}</span>
                   </td>
 
                   <td>
@@ -536,13 +612,13 @@ onMounted(() => {
 <style scoped>
 .title-container {
   .title {
-    color: #1f41bb;
+    color: var(--brand-primary-600);
     font-size: 20px;
     font-weight: 600;
   }
 
   .sub-title {
-    color: #1e293b;
+    color: var(--brand-primary-800);
     font-size: 16px;
     font-weight: 500;
   }
@@ -554,19 +630,19 @@ onMounted(() => {
 }
 
 a {
-  background-color: white;
+  background-color: var(--text-on-brand);
   display: flex;
   align-items: center;
   padding: 12px;
   border-radius: 6px;
   width: fit-content;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--brand-primary-100);
   cursor: pointer;
   transition: 0.3s all linear;
 }
 
 a:hover {
-  background-color: #e5e7eb;
+  background-color: var(--brand-primary-100);
 }
 
 .download-title {
@@ -576,15 +652,15 @@ a:hover {
 }
 
 .excel-warning {
-  /* background-color: #fffaf0; */
+  /* background-color: var(--brand-accent-50); */
   /* Light cream/amber */
-  /* border: 1px solid #fbd38d; */
+  /* border: 1px solid var(--brand-accent-200); */
   /* Amber border */
   border-radius: 12px;
   padding: 20px;
   max-width: 100%;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 6px -1px color-mix(in srgb, var(--text-strong) 5%, transparent);
 }
 
 .warning-header {
@@ -592,12 +668,12 @@ a:hover {
   align-items: center;
   gap: 10px;
   margin-bottom: 15px;
-  /* border-bottom: 1px ridge #fbd38d; */
+  /* border-bottom: 1px ridge var(--brand-accent-200); */
   padding-bottom: 10px;
 }
 
 .warning-header .title {
-  color: #1f41bb;
+  color: var(--brand-primary-600);
   /* Deep amber/brown */
   font-weight: 700;
   font-size: 1.1rem;
@@ -614,14 +690,14 @@ a:hover {
 .rule-label {
   font-size: 22px;
   font-weight: 700;
-  color: #00057f;
+  color: var(--brand-primary-800);
   font-family: 'Regular';
   /* margin-bottom: 8px; */
 }
 
 .rule-description {
   font-size: 0.8rem;
-  color: #6b7280;
+  color: var(--text-soft);
 }
 
 .chips {
@@ -632,13 +708,13 @@ a:hover {
 }
 
 .chip {
-  background: #f4f6f9;
-  border: 1px solid #e2e8f0;
+  background: var(--brand-primary-50);
+  border: 1px solid var(--brand-primary-100);
   padding: 10px 38px;
   border-radius: 12px;
   font-size: 18px;
   font-weight: 600;
-  color: #4a5568;
+  color: var(--brand-primary-600);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -647,16 +723,16 @@ a:hover {
 
 .chip:hover {
   transform: translateY(-2px);
-  border-color: #cbd5e0;
+  border-color: var(--brand-primary-200);
 }
 
 /* The "Key" look for numbers */
 kbd {
-  background-color: #1d4ed81a;
+  background-color: color-mix(in srgb, var(--brand-primary-500) 10.2%, transparent);
   border-radius: 6px;
-  /* border: 1px solid #cbd5e0; */
-  /* box-shadow: 0 1px 1px rgba(0, 0, 0, .2), 0 2px 0 0 rgba(255, 255, 255, .7) inset; */
-  color: #1f41bb;
+  /* border: 1px solid var(--brand-primary-200); */
+  /* box-shadow: 0 1px 1px color-mix(in srgb, var(--text-strong) 20%, transparent), 0 2px 0 0 color-mix(in srgb, var(--surface-1) 70%, transparent) inset; */
+  color: var(--brand-primary-600);
   display: inline-block;
   font-size: 1rem;
   font-weight: 700;
@@ -669,28 +745,28 @@ kbd {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.5);
+  background: color-mix(in srgb, var(--surface-1) 50%, transparent);
   padding: 10px;
   border-radius: 8px;
-  /* border: 1px dashed #fbd38d; */
+  /* border: 1px dashed var(--brand-accent-200); */
 }
 
 .field-tag {
-  background: #f4f6f9;
-  color: #000000;
+  background: var(--brand-primary-50);
+  color: var(--text-strong);
   font-family: 'Light';
   /* Makes it look like code/field names */
   font-size: 18px;
   font-weight: 600;
   padding: 10px 24px;
   border-radius: 12px;
-  /* border: 1px solid #e2e8f0; */
+  /* border: 1px solid var(--brand-primary-100); */
 }
 
 /* A subtle line to separate headers from values */
 .separator {
   border: 0;
-  border-top: 1px solid #f1f3f5;
+  border-top: 1px solid var(--brand-primary-50);
   margin: 15px 0;
 }
 
@@ -703,9 +779,9 @@ kbd {
 }
 
 .btn-delete-row {
-  background: #fef2f2;
-  color: #b91c1c;
-  border: 1px solid #fecaca;
+  background: var(--status-danger-soft);
+  color: var(--status-danger);
+  border: 1px solid var(--status-danger-soft);
   border-radius: 8px;
   padding: 6px 10px;
   cursor: pointer;
@@ -716,7 +792,7 @@ kbd {
 }
 
 .btn-delete-row:hover {
-  background: #fee2e2;
+  background: var(--status-danger-soft);
   transform: scale(1.1);
 }
 
@@ -727,9 +803,9 @@ kbd {
 }
 
 .error-banner {
-  background: #fef2f2;
-  color: #b91c1c;
-  border: 1px solid #fecaca;
+  background: var(--status-danger-soft);
+  color: var(--status-danger);
+  border: 1px solid var(--status-danger-soft);
   border-radius: 10px;
   padding: 12px 16px;
 }
@@ -739,7 +815,7 @@ kbd {
   align-items: center;
   gap: 8px;
   padding: 12px 16px;
-  background: #eff6ff;
+  background: var(--brand-primary-50);
   border-radius: 10px;
 }
 
@@ -747,7 +823,7 @@ kbd {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: #3b82f6;
+  background: var(--brand-primary-400);
   animation: bounce 1s infinite alternate;
 }
 
@@ -766,8 +842,8 @@ kbd {
 .table-container {
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-  background: #fff;
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--text-strong) 6%, transparent);
+  background: var(--surface-1);
 }
 
 .table-header {
@@ -783,13 +859,13 @@ kbd {
 .main-table th {
   padding: 12px 16px;
   text-align: left;
-  color: #1d4ed8;
-  border-bottom: 2px solid #e5e7eb;
+  color: var(--brand-primary-500);
+  border-bottom: 2px solid var(--brand-primary-100);
 }
 
 .main-table td {
   padding: 12px 16px;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--brand-primary-50);
 }
 
 .row-thumb {
@@ -797,14 +873,14 @@ kbd {
   height: 40px;
   object-fit: cover;
   border-radius: 6px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--brand-primary-100);
 }
 
 .btn-confirm {
   width: 100%;
   padding: 14px;
-  background: #1d4ed8;
-  color: #fff;
+  background: var(--brand-primary-500);
+  color: var(--text-on-brand);
   border-radius: 12px;
   cursor: pointer;
   border: none;
@@ -812,6 +888,6 @@ kbd {
 }
 
 .no-img-text {
-  color: #9ca3af;
+  color: var(--text-soft);
 }
 </style>

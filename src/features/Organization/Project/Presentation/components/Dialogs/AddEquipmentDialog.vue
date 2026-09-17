@@ -10,11 +10,10 @@ import ProjectZoneSelection from "../Details/PorjectUtils/ProjectZoneSelection.v
 import CustomSelectInput from "@/shared/FormInputs/CustomSelectInput.vue";
 import IndexEquipmentController from "@/features/_templateFeature/Presentation/controllers/indexEquipmentController";
 import IndexEquipmentParams from "@/features/_templateFeature/Core/params/indexEquipmentParams";
-import CreateProjectZoneEquipment from "../../../Core/params/Equipments/CreateProjectZoneEquipment";
+import CreateProjectZoneEquipment from "../../../Core/params/ProjectEquipments/CreateProjectZoneEquipment.ts";
 import type TitleInterface from "@/base/Data/Models/title_interface";
 import { useRoute, useRouter } from "vue-router";
 import CreateProjectZoneEquipmentsController from "../../controllers/Equipments/CreateProjectZoneEquipmentsController";
-import AddEquipmentIcon from "@/shared/icons/AddEquipmentIcon.vue";
 
 const props = defineProps<{
   project_zoons: SohwProjectZoonModel[]

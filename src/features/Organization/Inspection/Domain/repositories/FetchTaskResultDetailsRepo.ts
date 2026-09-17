@@ -6,7 +6,7 @@ import FetchTaskResultDetailsModel from '../../Data/models/FetchTaskResultDetail
 class FetchTaskResultDetailsRepo extends RepoInterface<FetchTaskResultDetailsModel> {
   private static instance: FetchTaskResultDetailsRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

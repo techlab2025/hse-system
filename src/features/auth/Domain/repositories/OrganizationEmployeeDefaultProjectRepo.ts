@@ -5,7 +5,7 @@ import { OrganizationEmployeeDefaultProjectApiService } from '../../Data/api_ser
 
 class OrganizationEmployeeDefaultProjectRepo extends RepoInterface<UserModel> {
   private static instance: OrganizationEmployeeDefaultProjectRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

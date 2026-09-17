@@ -22,11 +22,7 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 
 const { t } = useI18n()
 
@@ -220,19 +216,19 @@ const actionList = (id: number, deleteProjectType: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty :link="`/add/ProjectType`" addText="Add ProjectType"
-          description="Sorry .. You have no ProjectTypeuages .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ProjectTypeuages" />
+          description="You have no ProjectTypeuages .. All your joined customers will appear here when you add your customer data"
+          title="You have No ProjectTypeuages" />
       </template>
       <template #failed>
         <DataFailed :link="`/add/ProjectType`" addText="Add ProjectType"
-          description="Sorry .. You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No ProjectTypeuages" />
+          description="You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data"
+          title="You have No ProjectTypeuages" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data" />
+        description="You have no ProjectTypeuage .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

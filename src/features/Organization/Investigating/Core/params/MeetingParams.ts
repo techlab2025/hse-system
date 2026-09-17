@@ -8,6 +8,7 @@ export default class MeetingParams implements Params {
   type?: number
   meeting_link?: string
   corrective?: string
+  place?: string
 
   constructor(
     date: string,
@@ -15,12 +16,14 @@ export default class MeetingParams implements Params {
     type?: number,
     meeting_link?: string,
     corrective?: string,
+    place?: string,
   ) {
     this.date = date
     this.time = time
     this.type = type
     this.meeting_link = meeting_link
     this.corrective = corrective
+    this.place = place
   }
 
   toMap(): Record<string, number | any> {
@@ -30,6 +33,7 @@ export default class MeetingParams implements Params {
     data['type'] = this.type
     data['meeting_link'] = this.meeting_link
     data['corrective'] = this.corrective
+    if (this.place) data['place'] = this.place
     return data
   }
 }

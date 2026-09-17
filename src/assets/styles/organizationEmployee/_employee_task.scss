@@ -2,8 +2,8 @@
 @use '../mixins/flex' as *;
 @use '../mixins/grid' as *;
 .employee-tasks-card {
-  background-color: #ffffff;
-  border: 1px solid #eef3fe;
+  background-color: var(--text-on-brand);
+  border: 1px solid var(--brand-primary-50);
   padding: $MdSize;
   border-radius: 16px;
   margin-top: 1rem;
@@ -38,7 +38,7 @@
       span {
         font-size: $XsSize;
         font-weight: $BaseFontMediumWeight;
-        color: #6b7280;
+        color: var(--text-soft);
         font-family: 'regular';
       }
     }
@@ -58,13 +58,13 @@
     }
   }
   .info-employee-task {
-    border: 1px solid #f9f9f9;
+    border: 1px solid var(--surface-1);
     padding: $XsSize3;
-    background-color: #f9f9f9;
+    background-color: var(--text-on-brand);
     margin: 0 0 0 auto;
     border-radius: 8px;
     .back-ground {
-      background-color: white;
+      background-color: var(--text-on-brand);
       padding: $XsSize3;
       border-radius: 8px;
       @include flex(row, nowrap, end, center);
@@ -80,7 +80,7 @@
         h6 {
           font-size: $MdSize;
           font-weight: $BaseFontSemiBoldWeight;
-          color: #0f1927;
+          color: var(--brand-primary-900);
           font-family: 'regular';
         }
         p {
@@ -94,8 +94,8 @@
   }
 }
 .view-all-tasks {
-  background-color: #1d4ed80d;
-  color: #041953;
+  background-color: color-mix(in srgb, var(--brand-primary-500) 5.1%, transparent);
+  color: var(--brand-primary-800);
   padding: $XsSize3;
   border-radius: 8px;
   font-size: $MdSize;
@@ -111,12 +111,12 @@
   @include flex(row, nowrap, center, center);
   gap: 10px;
   &:hover {
-    background-color: #041953;
-    color: white;
+    background-color: var(--brand-primary-800);
+    color: var(--text-on-brand);
     transform: scale(1.02);
     svg {
       path {
-        fill: white;
+        fill: var(--text-on-brand);
       }
     }
   }

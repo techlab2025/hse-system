@@ -21,6 +21,16 @@ export const projectRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: 'project/flow/:id?/:step?',
+    name: 'Project Setup Flow',
+    component: () => import('@/views/Organization/Project/ProjectFlow.vue'),
+    meta: {
+      breadcrumb: 'Project Setup',
+      parent: 'Projects',
+      isSidebar: false,
+    },
+  },
+  {
     path: 'project/:id',
     name: 'Edit Project',
     component: () => import('@/views/Organization/Project/EditProject.vue'),
@@ -41,6 +51,26 @@ export const projectRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: 'project-details/:id/management-of-change',
+    name: 'management-of-change',
+    component: () => import('@/views/Organization/MangementChangeTopicType/MangementOfChange.vue'),
+    meta: {
+      breadcrumb: 'management-of-change',
+      parent: 'Project Details',
+      isSidebar: true,
+    },
+  },
+  {
+    path: 'project-details/:id/today-talk/create',
+    name: 'Create Today Talk',
+    component: () => import('@/views/Organization/Project/TodayTalk/CreateTodayTalk.vue'),
+    meta: {
+      breadcrumb: 'Create Today Talk',
+      parent: 'Project Details',
+      isSidebar: false,
+    },
+  },
+  {
     path: 'employee-details/:project_id',
     name: 'Employee Details',
     component: () => import('@/views/Organization/Project/EmployeeDetails.vue'),
@@ -55,7 +85,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     name: 'Project Hierarchy',
     component: () => import('@/views/Organization/Project/Hierarchy/addHierarchy.vue'),
     meta: {
-      breadcrumb: 'Project Hierarchy',
+      breadcrumb: 'Project Position',
       parent: 'Project Details',
       isSidebar: false,
     },
@@ -77,6 +107,35 @@ export const projectRoutes: RouteRecordRaw[] = [
     meta: {
       breadcrumb: 'Project Equipment',
       parent: 'Project Details',
+      isSidebar: false,
+    },
+  },
+  {
+    path: 'project-permit/project/:project_id',
+    name: 'Project Permit',
+    component: () => import('@/views/Organization/Project/PermitToWork/PermitToWorkPAge.vue'),
+    meta: {
+      breadcrumb: 'Project Permit To Work',
+      parent: 'Project Details',
+      isSidebar: false,
+    },
+  },
+  {
+    path: 'project-permit/project/templates',
+    name: 'Project Permit Templates',
+    component: () => import('@/views/Organization/Project/PermitToWork/PermitToWorkAnswerPage.vue'),
+    meta: {
+      breadcrumb: 'Project Permit To Work Templates',
+      isSidebar: false,
+    },
+  },
+  {
+    path: 'project-permit/project/templates/answer',
+    name: 'Project Permit Answer',
+    component: () =>
+      import('@/views/Organization/Project/PermitToWork/AnswerTheTemplateOfPermitPage.vue'),
+    meta: {
+      breadcrumb: 'Project Permit To Work Answer',
       isSidebar: false,
     },
   },

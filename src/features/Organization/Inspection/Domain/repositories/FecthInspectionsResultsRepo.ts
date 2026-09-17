@@ -6,7 +6,7 @@ import { FetchInspectionsResultsApiService } from '../../Data/apiServices/FetchI
 class FetchInspectionsResultsRepo extends RepoInterface<InspectionModel[]> {
   private static instance: FetchInspectionsResultsRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

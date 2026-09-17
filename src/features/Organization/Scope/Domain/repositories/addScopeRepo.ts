@@ -5,7 +5,7 @@ import ScopeModel from '../../Data/models/ScopeModel'
 
 class AddScopeRepo extends RepoInterface<ScopeModel> {
   private static instance: AddScopeRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

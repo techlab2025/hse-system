@@ -7,7 +7,7 @@
   gap: $MdSize;
   font-family: 'Light';
   width: 100%;
-  background-color: #fbfbfb;
+  background-color: var(--text-on-brand);
   border-radius: calc($MdSize2 + 1px);
   padding: $XsSize $SmSize;
   .period-header {
@@ -15,7 +15,7 @@
     @include flex-row(nowrap, center, center);
     gap: $XsSize2;
     width: 100%;
-    border-bottom: 1px solid #d9dbe9;
+    border-bottom: 1px solid var(--brand-primary-100);
     padding-bottom: 12px;
     .title-container {
       width: 100%;
@@ -23,7 +23,7 @@
       gap: $XsSize4;
       .title {
         font-family: 'Regular';
-        color: #170f49;
+        color: var(--brand-primary-800);
         font-size: $MdSize2;
         font-weight: $BaseFontSemiBoldWeight;
       }
@@ -42,18 +42,18 @@
       border-radius: calc($XlSize + 2px);
       transition: 0.2s all linear;
       cursor: pointer;
-      border: 1px solid #d9dbe9;
+      border: 1px solid var(--brand-primary-100);
       &.active {
         background-color: $PrimaryColor;
         border: 1px solid $PrimaryColor;
         label {
-          color: white;
+          color: var(--text-on-brand);
         }
       }
       label {
         width: 100%;
         text-align: center;
-        color: #9ca3af;
+        color: var(--text-soft);
         font-size: $MdSize2;
         font-weight: $BaseFontWeightBold;
         transition: 0.2s all linear;

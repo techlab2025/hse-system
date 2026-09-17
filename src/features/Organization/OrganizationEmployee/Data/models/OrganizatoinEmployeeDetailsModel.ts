@@ -1,12 +1,9 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
-import HierarchyEmployeeModel from '@/features/Organization/Project/Data/models/LocationHierarchyEmployeeModel'
 import RoleDetailsModel from '@/features/Organization/Role/Data/models/RoleDetailsModel'
 import acc from '@/assets/images/acc.png'
 import type CertificateModel from '@/features/setting/Certificate/Data/models/CertificateModel'
-import ProjectDetailsModel from '@/features/Organization/Project/Data/models/ProjectDetailsModel'
 import ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 import { EmployeeStatusEnum } from '../../Core/Enum/EmployeeStatus'
-import type TasksModel from '@/features/Organization/Investigating/Data/models/Tasks/TasksModel'
 import type InspectionModel from '@/features/Organization/Inspection/Data/models/InspectionModel'
 
 export default class OrganizatoinEmployeeDetailsModel {
@@ -16,6 +13,7 @@ export default class OrganizatoinEmployeeDetailsModel {
   public id: number
   public name: string
   public phone: string
+  public countryCode: string
   public email: string
   public is_master: number
   public image: string | null
@@ -35,6 +33,7 @@ export default class OrganizatoinEmployeeDetailsModel {
   public projectLocationTeamEmployeeId: number
   public canAccessDashboard: boolean
   public is_leader: number
+  public allPermissions: boolean
 
   // =====================
   // Constructor
@@ -43,6 +42,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     id: number,
     name: string,
     phone: string,
+    countryCode: string,
     email: string,
     is_master: number,
     image: string | null,
@@ -62,10 +62,12 @@ export default class OrganizatoinEmployeeDetailsModel {
     projectLocationTeamEmployeeId: number,
     canAccessDashboard: boolean,
     is_leader: number,
+    allPermissions: boolean,
   ) {
     this.id = id
     this.name = name
     this.phone = phone
+    this.countryCode = countryCode
     this.email = email
     this.is_master = is_master
     this.image = image
@@ -85,6 +87,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     this.projectLocationTeamEmployeeId = projectLocationTeamEmployeeId
     this.canAccessDashboard = canAccessDashboard
     this.is_leader = is_leader
+    this.allPermissions = allPermissions
   }
 
   // =====================
@@ -95,6 +98,7 @@ export default class OrganizatoinEmployeeDetailsModel {
       data.id,
       data.name,
       data.phone,
+      data.country_code,
       data.email,
       data.is_master,
       data.image,
@@ -115,6 +119,7 @@ export default class OrganizatoinEmployeeDetailsModel {
       data.project_location_team_employee_id,
       data.can_access_dashboard,
       data.is_leader,
+      data.allow_all_permissions,
       // data.employee_performance,
     )
   }
@@ -142,6 +147,7 @@ export default class OrganizatoinEmployeeDetailsModel {
     1,
     'Mohab',
     '01007599132',
+    '+20',
     'Mohab@gmail.com',
     1,
     acc,

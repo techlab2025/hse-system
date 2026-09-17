@@ -6,7 +6,7 @@ import { AddHerikalyApiService } from '../../Data/apiServices/addHerikalyApiServ
 
 class AddHerikalyRepo extends RepoInterface<HerikalyModel> {
   private static instance: AddHerikalyRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -35,9 +35,11 @@ export default class DialogService {
         }
       if (message) message.textContent = messageContent
       if (title) title.textContent = titleContent
-      setTimeout(() => {
-        dialog.close()
-      }, 1000)
+      if (dialogName == 'dialog-success') {
+        setTimeout(() => {
+          dialog.close()
+        }, 1000)
+      }
     }
   }
 

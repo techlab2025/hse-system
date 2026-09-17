@@ -8,7 +8,7 @@ import { EditScopeApiService } from '../../Data/apiServices/editScopeApiService'
 class EditScopeRepo extends RepoInterface<ScopeModel> {
   private static instance: EditScopeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

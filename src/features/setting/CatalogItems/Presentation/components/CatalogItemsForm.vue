@@ -24,7 +24,6 @@ import IndexCatalogController from '@/features/setting/Catalog/Presentation/cont
 import IndexCatalogParams from '@/features/setting/Catalog/Core/params/indexCatalogParams'
 import { ParentTypeEnum } from '../../Core/enums/parenttypeenum'
 import CatalogItemsParams from '../../Core/params/CatalogGuideItemParams'
-import AddCatalogItemsDetailsParams from '@/features/setting/CatalogItemsDetails/Core/params/addCatalogItemsDetailsParams'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 
 const emit = defineEmits(['update:data'])

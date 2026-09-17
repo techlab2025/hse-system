@@ -3,16 +3,64 @@
 
 .tool-card {
   width: 100%;
-  background-color: #fafafa;
-  padding: $XsSize;
-  border-radius: $SmSize;
+  background-color: var(--surface-1);
+  padding: $MdSize;
+  border: 1px solid var(--brand-primary-100);
+  border-radius: 18px;
   font-family: 'Light';
   overflow: hidden;
+  position: relative;
+  isolation: isolate;
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--brand-primary-900) 4%, transparent),
+    0 18px 38px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+
+  // &::before {
+  //   content: '';
+  //   position: absolute;
+  //   inset: 0 auto 0 0;
+  //   width: 5px;
+  //   background: var(--equipment-accent, var(--brand-primary-500));
+  //   z-index: -1;
+  // }
+
+  &::after {
+    content: '';
+    position: absolute;
+    right: -54px;
+    top: -70px;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--equipment-accent, var(--brand-primary-500)) 10%, transparent);
+    z-index: -1;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--equipment-accent, var(--brand-primary-500)) 34%, var(--brand-primary-100));
+    box-shadow:
+      0 10px 22px color-mix(in srgb, var(--brand-primary-900) 8%, transparent),
+      0 28px 52px color-mix(in srgb, var(--brand-primary-900) 12%, transparent);
+  }
+
+  &.is-rent {
+    --equipment-accent: var(--status-warning);
+    --equipment-soft: var(--brand-accent-50);
+  }
+
+  &.is-own {
+    --equipment-accent: var(--brand-primary-500);
+    --equipment-soft: var(--brand-primary-50);
+  }
 
   &.equipment-card {
-    background-color: #ffffff;
+    background-color: var(--surface-1);
     width: 100%;
-    // height: 15vh;
   }
 
   &.is-select {
@@ -21,34 +69,64 @@
     margin: 0 !important;
   }
 
-  img {
+  > img,
+  .tool-card-media > img {
     width: 100px;
-    height: calc($XlSize4 + $XsSize3);
-    max-height: calc($XlSize4 + $XsSize3);
-    border-radius: $XsSize3;
+    height: 118px;
+    max-height: 118px;
+    border-radius: 16px;
     object-fit: contain;
+    background: linear-gradient(145deg, var(--equipment-soft, var(--brand-primary-50)), var(--surface-1)), var(--brand-primary-50);
+    padding: $XsSize3;
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--surface-1) 76%, transparent);
+  }
+
+  .tool-card-media {
+    width: 120px;
+    min-width: 120px;
+    @include flex(column, nowrap, flex-start, center);
+    gap: $XsSize3;
+  }
+
+  .equipment-status {
+    width: fit-content;
+    max-width: 100%;
+    border-radius: 999px;
+    padding: 6px 10px;
+    background: var(--equipment-soft, var(--brand-primary-50));
+    color: var(--equipment-accent, var(--brand-primary-500));
+    font-size: $XsSize;
+    font-weight: $BaseFontSemiBoldWeight;
+    line-height: 1;
   }
 
   .tool-card-header {
-    @include flex-row(nowrap, flex-start, center);
+    @include flex-row(nowrap, flex-start, stretch);
     width: 100%;
-    gap: $XsSize2;
+    gap: $MdSize;
     height: 100%;
 
     .tool-card-header-text {
-      @include flex-column(nowrap, flex-start, flex-start);
-      gap: $BorderRadiusXs;
+      @include flex-column(nowrap, flex-start, stretch);
+      gap: $XsSize3;
       height: 100%;
+      min-width: 0;
 
       .certificat-btn {
-        color: #4b5563;
+        color: var(--brand-primary-600);
       }
       .type {
-        @include flex-row(nowrap, center, center);
+        @include flex-row(nowrap, flex-start, center);
+        margin: 0;
+        min-width: 0;
         .main-type {
-          color: #0f1927;
+          color: var(--brand-primary-900);
           font-weight: $BaseFontWeightBold;
           font-size: $MdSize2;
+          line-height: 1.35;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         .icon {
           width: $XlSize;
@@ -56,29 +134,28 @@
         }
       }
 
-      color: #9ca3af;
+      color: var(--text-soft);
       // @include flex-row(nowrap, flex-start, center);
       .main-type {
-        color: $PrimaryColor;
+        color: var(--brand-primary-900);
         font-weight: $BaseFontSemiBoldWeight;
         font-size: $SmSize;
         font-family: 'Regular';
       }
 
       .subtype {
-        // color: #9ca3af;
         font-weight: $BaseFontWeightBold;
         font-size: $MdSize2;
         @include flex-row(nowrap, flex-start, center);
         gap: 6px;
-        color: #0f1927;
+        color: var(--brand-primary-900);
         // padding-top: 3px;
 
         .subtype-title {
-          color: $PrimaryColor;
+          color: var(--equipment-accent, var(--brand-primary-500));
           font-size: $SmSize;
           font-weight: $BaseFontSemiBoldWeight;
-           font-family: 'Regular';
+          font-family: 'Regular';
         }
         .arrow {
           color: $SubtitleColor;
@@ -91,6 +168,9 @@
         color: $SubtitleColor;
         font-weight: $BaseFontSemiBoldWeight;
         font-size: $SmSize;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .inspection {
@@ -99,7 +179,7 @@
         font-size: $SmSize;
 
         .date {
-          color: #4b5563;
+          color: var(--brand-primary-600);
         }
         .per {
           color: $PrimaryColor;
@@ -108,19 +188,89 @@
     }
   }
 
+  .card-type {
+    min-width: 0;
+  }
+
+  .equipment-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $XsSize3;
+    width: 100%;
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    .meta-item {
+      min-width: 0;
+      padding: $XsSize3;
+      border: 1px solid var(--brand-primary-50);
+      border-radius: 12px;
+      background: var(--surface-1);
+
+      .meta-label {
+        display: block;
+        margin-bottom: 4px;
+        color: var(--brand-primary-400);
+        font-size: 11px;
+        font-weight: $BaseFontSemiBoldWeight;
+        line-height: 1.25;
+      }
+
+      strong {
+        display: block;
+        color: var(--brand-primary-700);
+        font-size: $XsSize;
+        font-weight: $BaseFontWeightBold;
+        line-height: 1.35;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .equipment-rent-window {
+    @include flex-row(nowrap, flex-start, center);
+    gap: $XsSize3;
+    width: fit-content;
+    max-width: 100%;
+    border: 1px solid color-mix(in srgb, var(--brand-accent-500) 18%, transparent);
+    border-radius: 999px;
+    padding: 7px 10px;
+    background: color-mix(in srgb, var(--brand-accent-500) 8%, transparent);
+    color: var(--brand-accent-700);
+    font-size: $XsSize;
+    font-weight: $BaseFontSemiBoldWeight;
+
+    span {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    i {
+      width: 18px;
+      height: 1px;
+      background: color-mix(in srgb, var(--brand-accent-700) 45%, transparent);
+      flex: 0 0 auto;
+    }
+  }
+
   .tool-hr {
     width: 100%;
     height: 1px;
     border: none;
     margin-block: $XsSize;
-    background-color: #f1f3f5;
+    background-color: var(--brand-primary-50);
   }
 
   .tool-subtitle {
     @include flex-row(nowrap, flex-start, center);
     gap: $XsSize2;
     .subtitle {
-      color: #121212;
+      color: var(--text-strong);
       font-weight: $BaseFontSemiBoldWeight;
       font-size: $SmSize;
     }
@@ -132,14 +282,14 @@
     margin-top: $XsSize;
 
     p {
-      color: #6b7280;
+      color: var(--text-soft);
       font-weight: $BaseFontMediumWeight;
       font-size: $XsSize;
 
       &.date,
       &.added-by {
         span {
-          color: #121212;
+          color: var(--text-strong);
           font-weight: $BaseFontSemiBoldWeight;
         }
       }
@@ -155,28 +305,38 @@
   .equipment-project-info {
     @include flex-row(nowrap, flex-start, center);
     gap: $XsSize2;
-    background-color: #fefcfa;
+    background:
+      linear-gradient(135deg, var(--equipment-soft, var(--brand-primary-50)), color-mix(in srgb, var(--surface-1) 86%, transparent)), var(--surface-1);
+    border: 1px solid color-mix(in srgb, var(--equipment-accent, var(--brand-primary-500)) 14%, var(--brand-primary-50));
     padding: $XsSize2;
-    border-radius: $SmSize;
+    border-radius: 14px;
     width: 100%;
+    min-width: 0;
 
     img {
       width: $XlSize3;
       height: $XlSize3;
+      object-fit: contain;
+      flex: 0 0 auto;
     }
     .project-data {
       @include flex-column(nowrap, flex-start, flex-start);
       gap: $BorderRadiusXs;
+      min-width: 0;
       .project-name {
         padding-left: 6px;
-        color: #d36816;
+        color: var(--brand-primary-700);
         font-size: $SmSize;
         font-weight: $BaseFontSemiBoldWeight;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .project-zone-name {
         @include flex-row(nowrap, flex-start, flex-start);
         gap: 4px;
-        color: #9ca3af;
+        color: var(--text-soft);
         font-size: $XsSize;
         font-weight: $BaseFontSemiBoldWeight;
         img {
@@ -186,5 +346,88 @@
         }
       }
     }
+  }
+
+  @media (max-width: 640px) {
+    padding: $SmSize;
+
+    .tool-card-header {
+      flex-direction: column;
+    }
+
+    .tool-card-media {
+      width: 100%;
+      min-width: 0;
+
+      > img {
+        width: 100%;
+        height: 150px;
+        max-height: 150px;
+      }
+    }
+
+    .equipment-meta {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    padding: $SmSize;
+
+    .tool-card-header {
+      align-items: stretch;
+      flex-direction: column;
+      gap: $SmSize;
+
+      .tool-card-media {
+        align-items: center;
+        width: 100%;
+        min-width: 0;
+
+        > img {
+          width: min(100%, 180px);
+          height: 130px;
+        }
+      }
+
+      .tool-card-header-text {
+        width: 100%;
+
+        .type .main-type,
+        .title {
+          white-space: normal;
+          overflow-wrap: anywhere;
+        }
+
+        .subtype {
+          flex-wrap: wrap;
+        }
+      }
+    }
+
+    .equipment-meta {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tool-card-footer,
+    .last-inspection-info-container,
+    .equipment-inspections-info {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+}
+
+.equipment-cards-grid {
+  align-items: stretch;
+
+  .tool-card {
+    height: 100%;
+  }
+}
+
+.p-popover {
+  .hidden {
+    display: none !important;
   }
 }

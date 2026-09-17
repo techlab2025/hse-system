@@ -6,7 +6,7 @@ import TicketTypeDetailsModel from '../../Data/models/TicketTypeDetailsModel'
 class ShowTicketTypeRepo extends RepoInterface<TicketTypeDetailsModel> {
   private static instance: ShowTicketTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

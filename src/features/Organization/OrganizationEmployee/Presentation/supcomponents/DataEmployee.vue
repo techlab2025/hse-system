@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import AddSystemHeaderData from '@/shared/icons/AddSystemHeaderData.vue';
 import Handemployee from '@/shared/icons/handemployee.vue';
 
 </script>
@@ -8,7 +7,7 @@ import Handemployee from '@/shared/icons/handemployee.vue';
   <button class="system-data-add col-span-3">
     <Handemployee class="icon" />
     <div class="system-data-content">
-      <h2>Add Employee to the Hierarchy</h2>
+      <h2>Add Employee to the Position</h2>
       <p>Assign the employee to the UI team and define their role in the organizational structure.</p>
     </div>
   </button>
@@ -21,7 +20,7 @@ import Handemployee from '@/shared/icons/handemployee.vue';
   justify-content: flex-start;
   gap: 5px;
   width: 100%;
-  background-color: #F7F9FC;
+  background-color: var(--brand-primary-50);
   padding: 16px;
   margin: 12px 0;
   border-radius: 12px;
@@ -46,7 +45,7 @@ import Handemployee from '@/shared/icons/handemployee.vue';
     h2 {
       text-align: start;
       width: 100%;
-      color: #202020;
+      color: var(--text-strong);
       font-weight: 700;
       font-size: 14px;
       font-family: "Regular";
@@ -55,9 +54,9 @@ import Handemployee from '@/shared/icons/handemployee.vue';
 
     p {
       width: 100%;
-      color: gray;
+      color: var(--text-muted);
       text-align: start;
-      color: #3D4C5E;
+      color: var(--brand-primary-700);
       font-size: 500;
       font-size: 12px;
 

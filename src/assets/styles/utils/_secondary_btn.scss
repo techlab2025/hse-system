@@ -1,12 +1,12 @@
 @use '../variables' as *;
 
 .btn-secondary {
-  // background-color: #1d4ed80f;
-  background-color: #ffffff;
+  // background-color: color-mix(in srgb, var(--brand-primary-500) 5.88%, transparent);
+  background-color: var(--text-on-brand);
   // border: 1px solid $PrimaryColor;
-  border: 1px solid #dde2ed;
+  border: 1px solid var(--brand-primary-100);
   // color: $PrimaryColor;
-  color: #3d4c5e;
+  color: var(--brand-primary-700);
   font-weight: $BaseFontSemiBoldWeight;
   font-size: $XsSize;
   //padding: 0 10px;
@@ -14,9 +14,9 @@
   // padding: 0;
   &:hover {
     // background-color: $PrimaryColor;
-    background-color: #3d4c5e;
-    color: white;
+    background-color: var(--brand-primary-700);
+    color: var(--text-on-brand);
     // border-color: $PrimaryColor;
-    border-color: #3d4c5e;
+    border-color: var(--brand-primary-700);
   }
 }

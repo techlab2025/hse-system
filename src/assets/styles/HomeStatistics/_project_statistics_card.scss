@@ -5,7 +5,7 @@
   @include flex-column(nowrap, flex-start, flex-start);
   gap: 4px;
   min-width: 550px;
-  border: 1px solid #1f41bb0a;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-600) 3.92%, transparent);
   padding: 10px 12px;
   border-radius: 12px;
 
@@ -15,21 +15,21 @@
     .status-InActive {
       font-size: $MdSize;
       font-weight: $BaseFontWeightBold;
-      color: #f4971e;
+      color: var(--brand-accent-500);
     }
     .status-Active {
       font-size: $MdSize;
       font-weight: $BaseFontWeightBold;
-      color: #4caf50;
+      color: var(--status-success);
     }
     .status-Complate {
       font-size: $MdSize;
       font-weight: $BaseFontWeightBold;
-      color: #4caf50;
+      color: var(--status-success);
     }
 
     .project-name {
-      color: #121212;
+      color: var(--text-strong);
       font-size: $XlSize;
       font-weight: $BaseFontWeightBold;
     }
@@ -40,21 +40,21 @@
     .counter {
       @include flex-column(nowrap, flex-start, flex-start);
       .static-info {
-        color: #b7beca;
+        color: var(--brand-primary-300);
         font-size: $MdSize;
         font-weight: $BaseFontMediumWeight;
       }
       .total {
-        color: black;
+        color: var(--text-strong);
       }
       .complated {
-        color: #00ac47;
+        color: var(--status-success);
       }
       .inprogress {
-        color: #6563ff;
+        color: var(--brand-primary-300);
       }
       .hold {
-        color: #ffbf52;
+        color: var(--status-warning);
       }
     }
   }

@@ -24,12 +24,20 @@ import DeleteCertificateController from '../controllers/deleteCertificateControl
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
-import Image from 'primevue/image'
+import Dialog from 'primevue/dialog'
+import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
+import ExceIcon from '@/shared/icons/ExceIcon.vue'
+import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
+import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
+import UploadCertificateExeclSheet from './UploadCertificateExeclSheet.vue'
+import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
+import { CertificateTypeEnum } from '../../Core/Enums/CertificateTypeEnum'
 
 const { t } = useI18n()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
+const filterDate = ref('')
 const indexCertificateController = IndexCertificateController.getInstance()
 const state = ref(indexCertificateController.state.value)
 const route = useRoute()
@@ -44,9 +52,11 @@ const fetchCertificate = async (
 ) => {
   const deleteCertificateParams = new IndexCertificateParams(
     query,
-    route.query.page ? Number(route.query.page) : pageNumber,
+    pageNumber,
     perPage,
     withPage,
+    undefined,
+    filterDate.value,
     // id.value?? '',
   )
   await indexCertificateController.getData(deleteCertificateParams)
@@ -81,7 +91,7 @@ const deleteCertificate = async (id: number) => {
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchCertificate('', currentPage.value, countPerPage.value)
+  fetchCertificate(word.value, currentPage.value, countPerPage.value)
   router.push({
     query: {
       ...route.query,
@@ -94,7 +104,19 @@ const handleChangePage = (page: number) => {
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchCertificate('', currentPage.value, countPerPage.value)
+  fetchCertificate(word.value, currentPage.value, countPerPage.value)
+}
+
+const applyFilters = ({ date }: { date: string }) => {
+  filterDate.value = date
+  currentPage.value = 1
+  fetchCertificate(word.value, 1, countPerPage.value)
+}
+
+const resetFilters = () => {
+  filterDate.value = ''
+  currentPage.value = 1
+  fetchCertificate(word.value, 1, countPerPage.value)
 }
 
 watch(
@@ -111,6 +133,23 @@ watch(
 )
 
 const { user } = useUserStore()
+const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+const onFileSelected = (e: Event) => {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  ;(e.target as HTMLInputElement).value = ''
+}
+
+const handleUploadComplete = () => {
+  showUploadDialog.value = false
+  pendingFile.value = null
+  fetchCertificate()
+}
 
 const actionList = (id: number, deleteCertificate: (id: number) => void) => [
   {
@@ -146,6 +185,16 @@ watch(
   },
 )
 
+const getCertificateTypeLabel = (certificateType: number) => {
+  const labels: Record<number, string> = {
+    [CertificateTypeEnum.SCALE]: t('certificate_type_skill'),
+    [CertificateTypeEnum.AWARENESS]: t('certificate_type_awareness'),
+    [CertificateTypeEnum.KNOWLEDGE]: t('certificate_type_knowledge'),
+  }
+
+  return labels[Number(certificateType)] ?? '---'
+}
+
 // Export To Excel Sheet
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
@@ -155,8 +204,10 @@ const exportExcel = () => {
   const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
     const it = item as any
     return {
-      'Certificate Title': it.title || 'N/A',
+      'Training Title': it.title || 'N/A',
+      'Training Type': getCertificateTypeLabel(it.certificateType),
       'Require Expired Date': it.requireExpiredDate ? 'Yes' : 'No',
+      'Training Required': it.requireCertificate ? 'Yes' : 'No',
       Image: '*',
     }
   })
@@ -165,66 +216,87 @@ const exportExcel = () => {
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Invoices')
   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
   const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
-  saveAs(data, 'certificate.xlsx')
+  saveAs(data, 'training.xlsx')
 }
 
-// const IndexAction = () => [
-//   {
-//     text: t('edit'),
-//     icon: ActionsTableEdit,
-//     link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/${id}`,
-//     permission: [
-//       PermissionsEnum.CERTIFICATE_UPDATE,
-//       PermissionsEnum.ADMIN,
-//       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-//       PermissionsEnum.CERTIFICATE_ALL,
-//     ],
-//   },
+const DownloadExample = () => {
+  const worksheetData = [
+    {
+      title: 'NEBOSH',
+      'Training Type': 'Skill',
+      require_expired_date: 'Yes',
+      'Training Required': 'Yes',
+    },
+    {
+      title: 'OSHA',
+      'Training Type': 'Awareness',
+      require_expired_date: 'Yes',
+      'Training Required': 'No',
+    },
+  ]
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Training')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(blob, 'training_form.xlsx')
+}
 
-//   {
-//     text: t('delete'),
-//     icon: IconDelete,
-//     action: () => deleteCertificate(id),
-//     permission: [
-//       PermissionsEnum.CERTIFICATE_DELETE,
-//       PermissionsEnum.ADMIN,
-//       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-//       PermissionsEnum.CERTIFICATE_ALL,
-//     ],
-//   },
-// ]
+const IndexOrganizationEmployeectionList = () => [
+  {
+    text: t('export_to_excel'),
+    icon: ExceIcon,
+    action: () => exportExcel(),
+    type: ActionItemsTypeEnum.Success,
+  },
+  {
+    text: t('Add_Certificate'),
+    icon: ActionsListAddIcon,
+    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`,
+    primary: true,
+    type: ActionItemsTypeEnum.Info,
+    permission: [PermissionsEnum.CERTIFICATE_CREATE],
+  },
+  {
+    text: t('download_excel_template'),
+    icon: ExceIcon,
+    action: () => DownloadExample(),
+    type: ActionItemsTypeEnum.Success,
+    permission: [PermissionsEnum.CERTIFICATE_FETCH, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+  {
+    text: t('upload_complated_template'),
+    icon: ActionsListAddIcon,
+    action: () => fileInputRef.value?.click(),
+    type: ActionItemsTypeEnum.Info,
+    permission: [PermissionsEnum?.ORG_EMPLOYEE_CREATE, PermissionsEnum?.ADMIN],
+  },
+]
 </script>
 
 <template>
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
       <span class="icon-remove" @click="((word = ''), searchCertificate())">
         <Search />
       </span>
       <input
         v-model="word"
-        :placeholder="'search'"
+        :placeholder="$t('search certificates')"
         class="input"
         type="text"
         @input="searchCertificate"
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> -->
-      <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
+      <IndexFilterDialog
+        show-date
+        :initial-date="filterDate"
+        @apply="applyFilters"
+        @reset="resetFilters"
+      />
 
-      <ExportPdf />
-      <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
-        <router-link
-          :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
-          class="btn btn-primary"
-        >
-          {{ $t('Add_Certificate') }}
-        </router-link>
-      </PermissionBuilder>
-
-      <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
+      <!-- <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
         <router-link
           :to="`/${
             user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
@@ -233,7 +305,21 @@ const exportExcel = () => {
         >
           {{ $t('import_certificate') }}
         </router-link>
-      </PermissionBuilder>
+      </PermissionBuilder> -->
+      <!-- <a href="/ExcelForm.xlsx" class="btn btn-secondary" download>
+        <ExcelSheetIcon class="icon" />
+        <span class="download-title">Excel Sheet</span>
+      </a> -->
+      <ActionsList
+        feature-name="action_feature_training"
+        :show-actions="true"
+        :actionList="IndexOrganizationEmployeectionList()"
+        :actionsNumber="5"
+      >
+        <template #custom>
+          <ExportPdf :isDropList="true" />
+        </template>
+      </ActionsList>
       <!-- <DropList :actionList="actionList"  /> -->
     </div>
   </div>
@@ -254,15 +340,17 @@ const exportExcel = () => {
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
+                <th scope="col">{{ $t('certificate_title') }}</th>
                 <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{ $t('all_industries') }}
                 </th>
                 <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{ $t('industries') }}
                 </th>
-                <th scope="col">{{ $t('requireExpiredDate') }}</th>
-                <th scope="col">{{ $t('image') }}</th>
+                <th scope="col">{{ $t('certificate_type') }}</th>
+                <th scope="col">{{ $t('expiry_date_required') }}</th>
+                <th scope="col">{{ $t('require_certificate') }}</th>
+                <!-- <th scope="col">{{ $t('image') }}</th> -->
 
                 <!-- <th scope="col">{{ $t('actions') }}</th> -->
                 <th class="empty"></th>
@@ -287,16 +375,21 @@ const exportExcel = () => {
                       : $t('no')
                   }}
                 </td>
-                <td>
+                <td :data-label="$t('certificate_type')">
+                  {{ getCertificateTypeLabel(item.certificateType) }}
+                </td>
+                <td :data-label="$t('require_expired_date')">
                   {{ item.requireExpiredDate ? $t('yes') : $t('no') }}
                 </td>
-                <td data-label="image">
+                <td :data-label="$t('require_certificate')">
+                  {{ item.requireCertificate ? $t('yes') : $t('no') }}
+                </td>
+                <!-- <td data-label="image">
                   <div class="image_certificate_container">
                     <Image v-if="item.image" :src="item.image" alt="Image" preview />
-                    <!-- <img v-if="item.image" :src="item.image" alt="" /> -->
                     <span v-else>---</span>
                   </div>
-                </td>
+                </td> -->
 
                 <td data-label="Actions">
                   <DropList
@@ -327,9 +420,9 @@ const exportExcel = () => {
         <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
           <DataEmpty
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
-            addText="Add certificate"
-            description="Sorry .. You have no Certificate .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Certificate"
+            :addText="$t('add_certificate')"
+            :description="$t('training_empty_description')"
+            :title="$t('training_empty_title')"
           />
         </PermissionBuilder>
       </template>
@@ -337,9 +430,9 @@ const exportExcel = () => {
         <PermissionBuilder :code="[PermissionsEnum.CERTIFICATE_CREATE]">
           <DataFailed
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/certificate/add`"
-            addText="Add Certificate"
-            description="Sorry .. You have no Certificate .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Certificate"
+            :addText="$t('add_certificate')"
+            :description="$t('training_empty_description')"
+            :title="$t('training_empty_title')"
           />
         </PermissionBuilder>
       </template>
@@ -348,8 +441,26 @@ const exportExcel = () => {
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data"
+        description="You have no AccidentTypeuage .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </PermissionBuilder>
+
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('upload_certificate_sheet')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <UploadCertificateExeclSheet :initial-file="pendingFile" @uploaded="handleUploadComplete" />
+  </Dialog>
+
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>

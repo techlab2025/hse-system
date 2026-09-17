@@ -8,7 +8,7 @@ import { EditPartnerApiService } from '../../Data/apiServices/editPartnerApiServ
 class EditPartnerRepo extends RepoInterface<PartnerModel> {
   private static instance: EditPartnerRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

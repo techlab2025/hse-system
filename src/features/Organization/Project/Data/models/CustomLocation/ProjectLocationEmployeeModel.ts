@@ -11,6 +11,7 @@ export default class ProjectLocationEmployeeModel {
   public hierarchy: TitleInterface[]
   public organization_employee_id: number
   public is_leader: boolean
+  public hierarchyposition: TitleInterface[]
   constructor(
     projectLocationHierarchyEmployeeId: number,
     projectLocationId: number,
@@ -22,6 +23,7 @@ export default class ProjectLocationEmployeeModel {
     hierarchy: TitleInterface[],
     organization_employee_id: number,
     is_leader: boolean,
+    hierarchyposition: TitleInterface[],
   ) {
     this.projectLocationHierarchyEmployeeId = projectLocationHierarchyEmployeeId
     this.projectLocationId = projectLocationId
@@ -33,6 +35,7 @@ export default class ProjectLocationEmployeeModel {
     this.hierarchy = hierarchy
     this.organization_employee_id = organization_employee_id
     this.is_leader = is_leader
+    this.hierarchyposition = hierarchyposition
   }
 
   static fromMap(data: any): ProjectLocationEmployeeModel {
@@ -47,6 +50,7 @@ export default class ProjectLocationEmployeeModel {
       data.hierarchy,
       data.organization_employee_id,
       data.is_leader,
+      data.hierarchyposition,
     )
   }
 
@@ -61,5 +65,6 @@ export default class ProjectLocationEmployeeModel {
     [],
     1,
     true,
+    [],
   )
 }

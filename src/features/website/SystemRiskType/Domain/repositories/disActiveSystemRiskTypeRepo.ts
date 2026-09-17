@@ -6,7 +6,7 @@ import { DisSystemRiskTypeApiService } from '../../Data/apiServices/disSystemRis
 
 class DisActiveSystemRiskTypeRepo extends RepoInterface<SystemRiskTypeModel> {
   private static instance: DisActiveSystemRiskTypeRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

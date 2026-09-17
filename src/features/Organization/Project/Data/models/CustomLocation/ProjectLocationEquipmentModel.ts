@@ -28,9 +28,9 @@ export default class ProjectLocationEquipmentModel extends TitleModel {
 
   static fromMap(data: any): ProjectLocationEquipmentModel {
     return new ProjectLocationEquipmentModel(
-      data.equipment_id || data.id,
-      data.equipment_title || data.title,
-      data.equipment_description,
+      data.equipment_id || data.equipment?.id || data.id,
+      data.equipment_title || data.equipment?.title || data.title,
+      data.equipment_description || data.equipment?.description,
       data.project_zoon_equipment_id,
       data.equipment_type,
       data.project_zoon_equipments?.map((item: any) => EquipmentDetailsModel.fromMap(item)),

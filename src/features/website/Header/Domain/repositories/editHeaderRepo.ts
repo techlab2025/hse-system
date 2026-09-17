@@ -8,7 +8,7 @@ import { EditHeaderApiService } from '../../Data/apiServices/editHeaderApiServic
 class EditHeaderRepo extends RepoInterface<HeaderModel> {
   private static instance: EditHeaderRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

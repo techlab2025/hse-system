@@ -7,7 +7,7 @@ import RootCausesModel from '../../Data/models/RootCausesModel'
 class IndexRootCausesRepo extends RepoInterface<RootCausesModel[]> {
   private static instance: IndexRootCausesRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

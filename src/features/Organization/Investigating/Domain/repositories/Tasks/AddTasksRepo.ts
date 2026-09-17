@@ -5,7 +5,7 @@ import MeetingModel from '../../../Data/models/Meetings/MeetingModel'
 
 class AddMeetingRepo extends RepoInterface<MeetingModel> {
   private static instance: AddMeetingRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

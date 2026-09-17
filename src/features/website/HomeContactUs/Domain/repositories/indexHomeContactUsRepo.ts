@@ -8,7 +8,7 @@ import { IndexHomeContactUsApiService } from '../../Data/apiServices/indexHomeCo
 class IndexHomeContactUsRepo extends RepoInterface<HomeContactUsModel[]> {
   private static instance: IndexHomeContactUsRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

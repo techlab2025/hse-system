@@ -25,7 +25,7 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -232,7 +232,7 @@ const fields = ref([
     class="input-wrapper col-span-4 md:col-span-2"
     v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
   >
-    <CustomCheckbox  :index="3" :title="`all_industries`" @update:checked="allIndustries = $event" />
+    <CustomCheckbox :index="3" :title="`all_industries`" @update:checked="allIndustries = $event" />
   </div>
   <div
     class="input-wrapper col-span-4 md:col-span-2"
@@ -251,17 +251,19 @@ const fields = ref([
   </div>
 
   <div class="input-wrapper col-span-4 md:col-span-2">
-    <CustomSelectInput
+    <UpdatedCustomInputSelect
       :modelValue="factory"
+      :required="true"
       :controller="factoryController"
       :params="factoryParams"
-      label="factory"
-      id="Factory"
-      placeholder="Select factory"
+      label="factor"
+      id="Factor"
+      placeholder="Select factor"
       @update:modelValue="setFactory"
+      :type="1"
     />
   </div>
-  <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
+  <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
     <SwitchInput
       :fields="fields"
       :switch_title="$t('auto')"
@@ -269,7 +271,7 @@ const fields = ref([
       :is-auto="true"
       @update:value="UpdateSerial"
     />
-  </div>
+  </div> -->
 
   <!--  <div class="col-span-4 md:col-span-4">-->
   <!--    <FileUpload-->

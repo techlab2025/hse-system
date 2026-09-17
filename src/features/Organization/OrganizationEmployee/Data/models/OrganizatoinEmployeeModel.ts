@@ -1,6 +1,8 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import CertificateItemsModel from './CertificateItemsModel'
 import { CertificateStatusEnum } from '../../Core/Enum/CertificateStatusEnum'
+import type { ValidationStatusEnum } from '../../Core/Enum/ValidationStatusEnum'
+import HierarchyIdModel from './HiererchyIdModel'
 
 export default class OrganizatoinEmployeeModel extends TitleInterface {
   public id: number
@@ -12,6 +14,10 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
   public certificates: CertificateItemsModel[]
   public hierarchy: TitleInterface[]
   public employee_certificates: CertificateItemsModel[]
+  public status: ValidationStatusEnum
+  public password: string
+
+  public hierarchies: HierarchyIdModel[]
 
   constructor(
     id: number,
@@ -24,6 +30,9 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
     certificates: CertificateItemsModel[],
     hierarchy: TitleInterface[],
     employee_certificates: CertificateItemsModel[],
+    status: ValidationStatusEnum,
+    password: string,
+    hierarchies: HierarchyIdModel[],
   ) {
     super({ id, title })
 
@@ -36,6 +45,9 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
     this.certificates = certificates
     this.hierarchy = hierarchy
     this.employee_certificates = employee_certificates
+    this.status = status
+    this.password = password
+    this.hierarchies = hierarchies
   }
 
   static fromMap(data: any): OrganizatoinEmployeeModel {
@@ -50,6 +62,9 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
       data.certificates,
       data.hierarchy,
       data.employee_certificates,
+      data.validation_status,
+      data.password,
+      data?.hierarchies?.map((item: any) => HierarchyIdModel.fromMap(item)),
     )
   }
 
@@ -248,21 +263,42 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
     ),
   ]
 
-   static transformData(data: string[][]): OrganizatoinEmployeeModel[] {
+  static exampl2: OrganizatoinEmployeeModel = new OrganizatoinEmployeeModel(
+    1,
+    'Mohab',
+    'Mohab',
+    '01007599123',
+    'mohab@gmail.com',
+    1,
+    null,
+    [
+      new CertificateItemsModel(157, 'cer1', CertificateStatusEnum.Valid, '10-20-30'),
+      new CertificateItemsModel(156, 'cer2', CertificateStatusEnum.Valid, '10-20-30'),
+      new CertificateItemsModel(155, 'cer3', CertificateStatusEnum.Expired, '10-20-30'),
+      new CertificateItemsModel(139, 'cer4', CertificateStatusEnum.NotRequired, '10-20-30'),
+    ],
+    [new TitleInterface({ id: 1, title: 'SEO' })],
+    [],
+    1,
+    '',
+    [],
+  )
+
+  static transformData(data: string[][]): OrganizatoinEmployeeModel[] {
     return data.map(
       (row, index) =>
         new OrganizatoinEmployeeModel(
           index + 1, // Generate unique ID (or use 0 if not needed)
-          row[0] || "", // Employee Name
-          row[1] || "", // Employee Code
-          row[2] || "", // Employee Phone
-          row[3] || "", // Employee Email
+          row[0] || '', // Employee Name
+          row[1] || '', // Employee Code
+          row[2] || '', // Employee Phone
+          row[3] || '', // Employee Email
           row[4] || 0, // Employee Is Master
-          row[5] || "", // Employee Image
+          row[5] || '', // Employee Image
           row[6] || [], // Employee Certificates
           row[7] || [], // Employee Hierarchy
           row[8] || [], // Employee Employee Certificates
         ),
-    );
+    )
   }
 }

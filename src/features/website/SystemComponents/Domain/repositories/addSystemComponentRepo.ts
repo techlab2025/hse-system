@@ -6,7 +6,7 @@ import { AddSystemComponentApiService } from '../../Data/apiServices/addSystemCo
 
 class AddSystemComponentRepo extends RepoInterface<SystemComponentModel> {
   private static instance: AddSystemComponentRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

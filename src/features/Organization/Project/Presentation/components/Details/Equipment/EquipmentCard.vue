@@ -3,10 +3,8 @@
 import ToolCard from './ToolCard.vue';
 import LocationPin from "@/assets/images/LocationPin.png"
 import AddEquipmentDialog from '../../Dialogs/EquipmentDialog/AddEquipmentDialog.vue';
-import { computed, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone';
-import EmptyData from '../LocationsTeams/EmptyData.vue';
-import EquimentFolderEmpty from "@/assets/images/EquimentFolderEmpty.png"
 import { useRoute } from 'vue-router';
 
 
@@ -26,10 +24,10 @@ watch(() => props.zones, (newValue) => {
   <div class="equipment-card" v-if="Zones?.projectZoonEquipments?.length > 0">
     <div class="equipment-card-header-container">
       <div class="equipment-card-header">
-        <img :src="LocationPin" alt="equipment logo">
+        <img :src="LocationPin" :alt="$t('Equipment')">
         <div class="equipment-card-header-text">
           <p class="title">{{ Zones?.zoonTitle }}</p>
-          <p class="subtitle"><span>{{ Zones?.projectZoonEquipments?.length }} </span> Equipment & Devices</p>
+          <p class="subtitle"><span>{{ Zones?.projectZoonEquipments?.length }} </span> {{ $t('Equipment & Devices') }}</p>
         </div>
       </div>
       <div class="equipment-card-actions">

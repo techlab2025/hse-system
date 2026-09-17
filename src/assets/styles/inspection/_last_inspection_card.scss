@@ -3,7 +3,7 @@
 @use '../mixins/grid' as *;
 .last-inspection-card {
   width: 100%;
-  border: 1px solid #f6f6f6;
+  border: 1px solid var(--surface-1);
   border-radius: 12px;
   padding: 10px;
 
@@ -16,13 +16,13 @@
       @include flex-row(nowrap, flex-start, center);
       gap: $XsSize4;
       .title {
-        color: #00006b;
+        color: var(--brand-primary-800);
         font-size: $MdSize2;
         font-weight: $BaseFontWeightBold;
         border: none;
       }
       .date {
-        color: #6b7280;
+        color: var(--text-soft);
         font-size: $XsSize;
         font-weight: $BaseFontMediumWeight;
         font-family: 'Bold';
@@ -39,11 +39,11 @@
         gap: $MdSize2;
 
         p {
-          color: #9ca3af;
+          color: var(--text-soft);
           font-size: $SmSize;
           font-weight: $BaseFontMediumWeight;
           span {
-            color: #5a627e;
+            color: var(--brand-primary-600);
             font-size: $SmSize;
             font-weight: $BaseFontWeightBold;
             font-family: 'Regular';

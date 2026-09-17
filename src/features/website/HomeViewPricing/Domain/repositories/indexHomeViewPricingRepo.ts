@@ -10,7 +10,7 @@ import { IndexHomeViewPricingApiService } from '../../Data/apiServices/indexHome
 class IndexHomeViewPricingRepo extends RepoInterface<HomeViewPricingModel[]> {
   private static instance: IndexHomeViewPricingRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

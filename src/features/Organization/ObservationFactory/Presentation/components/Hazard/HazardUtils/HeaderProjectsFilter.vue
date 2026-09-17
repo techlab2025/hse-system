@@ -1,51 +1,224 @@
 <script setup lang="ts">
-import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
-import { useProjectSelectStore } from '@/stores/ProjectSelect';
-import { onMounted, watch } from 'vue';
-import { ref } from 'vue'
-const emit = defineEmits(['update:data'])
+import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
+import { ref, watch } from 'vue'
+
+const emit = defineEmits<{
+  (e: 'update:data', value?: number): void
+}>()
 const props = defineProps<{
-  projects: MyProjectsModel[]
+  projects: ProjectModel[]
   isForm?: boolean
 }>()
-const ActiveTap = ref(props.projects?.[0]?.id)
+
+const ProjectStore = useProjectSelectStore()
+const selectedProjectId = ProjectStore.getProjectId()
+const ActiveTap = ref<number | undefined>(
+  selectedProjectId !== -1 && selectedProjectId != null
+    ? selectedProjectId
+    : props.isForm
+      ? props.projects?.[0]?.id
+      : undefined,
+)
 const AllProjects = ref(props.projects)
 
-const UpdateData = (Id: number) => {
+const UpdateData = (Id?: number) => {
+  if (!props.isForm && ActiveTap.value === Id) {
+    ActiveTap.value = undefined
+    emit('update:data', undefined)
+    return
+  }
+
   ActiveTap.value = Id
   emit('update:data', ActiveTap.value)
 }
 watch(
   () => props.projects,
   (newVal) => {
-    if (newVal && newVal.length > 0) {
-      if(props.isForm){
+    AllProjects.value = newVal
 
+    if (newVal && newVal.length > 0) {
+      if (props.isForm) {
         ActiveTap.value = newVal[0].id
         emit('update:data', ActiveTap.value)
+      } else if (ProjectStore.getProjectId() === -1 || ProjectStore.getProjectId() == null) {
+        ActiveTap.value = undefined
       }
     }
   },
-  // { immediate: true }
 )
 
-watch(() => props.projects, (newVal) => {
-  AllProjects.value = newVal
-})
-onMounted(() => {
-
-})
-
-
-const ProjectStore = useProjectSelectStore()
+watch(
+  () => ProjectStore.getProjectId(),
+  (projectId) => {
+    ActiveTap.value = projectId === -1 || projectId == null ? undefined : projectId
+  },
+)
 </script>
+
 <template>
-  <div class="idnex-header noborder" v-if="AllProjects && AllProjects.length > 1 && ProjectStore.showProjectsFilter()">
-    <div class="categories-container">
-      <button class="category" :class="ActiveTap === item.id ? 'active' : ''" v-for="(item, index) in AllProjects"
-        :key="index" @click.prevent="UpdateData(item.id)">
-        {{ item.title }}
-      </button>
+  <div
+    v-if="
+      AllProjects &&
+      (props.isForm ? AllProjects.length > 0 : AllProjects.length > 1) &&
+      ProjectStore.showProjectsFilter()
+    "
+    class="idnex-header noborder"
+  >
+    <div class="project-filter-heading">
+      <span class="project-filter-symbol" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path
+            d="M4 7.5 12 3l8 4.5-8 4.5-8-4.5Z"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linejoin="round"
+          />
+          <path
+            d="m4 12 8 4.5 8-4.5M4 16.5 12 21l8-4.5"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </span>
+      <div>
+        <p>{{ $t('Projects') }}</p>
+        <span>{{ $t('Select a project to filter the displayed records') }}</span>
+      </div>
+    </div>
+
+    <div class="project-filter-controls">
+      <div class="categories-container">
+        <button
+          v-if="!props.isForm"
+          type="button"
+          class="category"
+          :class="{ active: ActiveTap === undefined }"
+          @click.prevent="UpdateData(undefined)"
+        >
+          {{ $t('all') }}
+        </button>
+        <button
+          v-for="(item, index) in AllProjects"
+          :key="index"
+          type="button"
+          class="category"
+          :class="ActiveTap === item.id ? 'active' : ''"
+          @click.prevent="UpdateData(item.id)"
+        >
+          {{ item.title }}
+        </button>
+      </div>
+
+      <div class="project-filter-actions">
+        <slot name="actions"></slot>
+      </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.project-filter-heading{
+
+}
+.project-filter-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.project-filter-symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--PrimaryColor) 10%, transparent);
+  color: var(--PrimaryColor);
+}
+
+.project-filter-symbol svg {
+  width: 18px;
+  height: 18px;
+}
+
+.project-filter-heading p {
+  margin: 0;
+  color: var(--header-page-color);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.project-filter-heading div > span {
+  color: var(--GrayText-1);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.project-filter-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.categories-container {
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  flex: 1 1 0;
+  flex-wrap: nowrap;
+  overflow-x: auto !important;
+  overflow-y: hidden;
+  padding-bottom: 8px;
+  scroll-behavior: smooth;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--PrimaryColor) 45%, transparent) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.categories-container > .category {
+  flex: 0 0 auto;
+}
+
+.categories-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.categories-container::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--PrimaryColor) 45%, transparent);
+}
+
+.categories-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.project-filter-actions {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+@media (max-width: 768px) {
+  .project-filter-controls {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .project-filter-actions,
+  .project-filter-actions :deep(a),
+  .project-filter-actions :deep(button) {
+    width: 100%;
+  }
+}
+</style>

@@ -3,18 +3,66 @@
 @use '../../mixins/grid' as *;
 
 .show-equipment {
-  .history-qr {
-    @include flex(row, nowrap, flex-start, flex-start);
-    gap: $MdSize;
-    width: 100%;
-    @media screen and (max-width: 900px) {
-      @include flex(row, wrap, flex-start, flex-start);
+  .equipment-qr-panel {
+    position: relative;
+    @include flex(row, nowrap, space-between, center);
+    gap: 18px;
+    min-height: 292px;
+    padding: 18px 18px 18px 22px;
+    border: 1px solid color-mix(in srgb, var(--brand-primary-400) 20%, transparent);
+    border-radius: 24px;
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 97%, transparent), color-mix(in srgb, var(--brand-primary-50) 93%, transparent)),
+      radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--brand-primary-500) 12%, transparent), transparent 34%);
+    box-shadow: 0 22px 55px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
+
+    @media screen and (max-width: 700px) {
+      @include flex(column, nowrap, center, stretch);
+      padding: 18px;
     }
+
+    .demo-card {
+      flex: 1 1 auto;
+      min-width: 0;
+      border: 1px dashed color-mix(in srgb, var(--brand-primary-400) 36%, transparent);
+      border-radius: 18px;
+      background: color-mix(in srgb, var(--surface-1) 78%, transparent);
+
+      .sub-card {
+        align-items: center;
+      }
+    }
+
+    .qr-scan {
+      flex: 0 0 136px;
+      width: 136px;
+      height: 136px;
+      align-self: center;
+      padding: 10px;
+      border: 1px solid color-mix(in srgb, var(--brand-primary-500) 14%, transparent);
+      border-radius: 20px;
+      background: var(--surface-1);
+      object-fit: contain;
+      box-shadow: 0 16px 35px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
+
+      @media screen and (max-width: 700px) {
+        flex-basis: auto;
+        width: 150px;
+        height: 150px;
+      }
+    }
+  }
+
+  .history-qr {
+    @include flex(column, nowrap, flex-start, stretch);
+    gap: 18px;
+    width: 100%;
+
     .qr-code-card {
       @include flex(column, nowrap, center, center);
       width: 30%;
       height: 218px;
-      background-color: #f1f3f5;
+      background-color: var(--brand-primary-50);
       padding: $XsSize $MdSize;
       border-radius: $SmSize;
       @media screen and (max-width: 900px) {

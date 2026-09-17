@@ -24,3 +24,14 @@ const props = defineProps<{
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.empty-zones-equipment{
+
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
+
+.content{
+  justify-content: end;
+}
+}
+</style>

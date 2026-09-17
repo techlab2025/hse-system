@@ -8,7 +8,6 @@ import {
 import ProjectModel from '../../Data/models/ProjectModel'
 import { IndexProjectRepo } from '../repositories/indexProjectRepo'
 import { UseCaseHandler } from '@/base/Domain/UseCase/use_case'
-import EquipmentStaticsModel from '@/features/Home/data/Model/EquipmentStaticsModel'
 
 export default class IndexProjectUseCase implements UseCase<ProjectModel[], Params> {
   async call(params: Params): Promise<DataState<ProjectModel[]>> {

@@ -21,7 +21,6 @@ import IndexFactoryController from '@/features/setting/Factory/Presentation/cont
 import IndexFactoryParams from '@/features/setting/Factory/Core/params/indexFactoryParams'
 import HazardFactorParams from '../../Core/params/FactorParams'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 const emit = defineEmits(['update:data'])
@@ -213,7 +212,7 @@ const updateAllIndustries = (data) => {
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
   <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
-    <label for="serialNumber">{{ $t('refrence_number') }}</label>
+    <label for="serialNumber">{{ $t('serial_number') }}</label>
     <input
       type="text"
       v-model="SerialNumber"

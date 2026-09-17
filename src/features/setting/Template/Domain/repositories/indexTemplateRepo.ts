@@ -7,7 +7,7 @@ import { IndexTemplateApiService } from '../../Data/apiServices/indexTemplateApi
 class IndexTemplateRepo extends RepoInterface<TemplateModel[]> {
   private static instance: IndexTemplateRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

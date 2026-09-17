@@ -1,7 +1,6 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
-import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
@@ -38,6 +37,7 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
       }
 
       for (const el of params.data) {
+        console.log(params.data, ' params.data')
         if (!el.name) {
           new OpenWarningDilaog('Name Is Required').openDialog()
           return
@@ -53,10 +53,10 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
           return
         }
 
-        if (el.status == EquipmentStatus.RENT && !el.period_type) {
-          new OpenWarningDilaog('Rent Type Is Required').openDialog()
-          return
-        }
+        // if (el.status == EquipmentStatus.RENT && !el.period_type) {
+        //   new OpenWarningDilaog('Rent Type Is Required').openDialog()
+        //   return
+        // }
 
         if (el.status == EquipmentStatus.RENT && !el.period) {
           new OpenWarningDilaog('Rent Period Is Required').openDialog()
@@ -74,6 +74,12 @@ export default class AddEquipmentController extends ControllerInterface<Equipmen
         }
       }
     } else {
+      const vehicleKm = String(params.VehicleKm ?? '').trim()
+
+      if (params.VehicleKm && params.VehicleKm.length > 0 && !/^\d+$/.test(vehicleKm)) {
+        new OpenWarningDilaog('Kilometers should contain numbers only').openDialog()
+        return
+      }
       if (params?.status == EquipmentStatus.RENT && Number(params?.equipmentRentTime) < 1) {
         new OpenWarningDilaog('Rent Time Should Be More Than One').openDialog()
         return

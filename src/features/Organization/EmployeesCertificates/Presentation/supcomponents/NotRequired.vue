@@ -1,11 +1,9 @@
 <script lang="ts" setup>
-import NotValidIcon from '@/shared/icons/NotValidIcon.vue'
 import CertificateImageDialog from './CertificateImageDialog.vue'
 
-const props = defineProps<{
+defineProps<{
   certificateId: number
   organizationEmployeeId: number
-  notRequired: boolean
   is_expire_date: boolean
 }>()
 
@@ -20,7 +18,12 @@ const updateData = () => {
       <!-- <NotValidIcon /> -->
       <span class="not-req-span">Not Required</span>
     </div>
-    <CertificateImageDialog @update:data="updateData" :certificateId="certificateId"
-      :organizationEmployeeId="organizationEmployeeId" :notRequired="is_expire_date" :is_expire_date="is_expire_date" />
+    <CertificateImageDialog
+      @update:data="updateData"
+      :certificateId="certificateId"
+      :organizationEmployeeId="organizationEmployeeId"
+      :notRequired="true"
+      :is_expire_date="is_expire_date"
+    />
   </div>
 </template>

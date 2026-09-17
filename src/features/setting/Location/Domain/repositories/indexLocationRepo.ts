@@ -7,7 +7,7 @@ import { IndexLocationApiService } from '../../Data/apiServices/indexLocationApi
 class IndexLocationRepo extends RepoInterface<LocationModel[]> {
   private static instance: IndexLocationRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

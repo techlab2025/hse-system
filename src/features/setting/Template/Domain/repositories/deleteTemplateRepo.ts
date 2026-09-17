@@ -8,7 +8,7 @@ import { DeleteTemplateApiService } from '../../Data/apiServices/deleteTemplateA
 class DeleteTemplateRepo extends RepoInterface<TemplateModel> {
   private static instance: DeleteTemplateRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -8,7 +8,7 @@ import HazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTyp
 class DeleteHazardTypeRepo extends RepoInterface<HazardTypeModel> {
   private static instance: DeleteHazardTypeRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

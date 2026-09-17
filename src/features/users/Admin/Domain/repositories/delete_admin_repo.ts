@@ -8,7 +8,7 @@ import { DeleteAdminApiService } from "../../Data/apiServices/delete_admin_api_s
 class DeleteAdminRepo extends RepoInterface<AdminModel> {
   private static instance: DeleteAdminRepo;
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super();
   }

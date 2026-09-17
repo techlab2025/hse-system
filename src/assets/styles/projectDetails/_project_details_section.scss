@@ -2,10 +2,184 @@
 @use '../mixins/flex' as *;
 
 .project-details-section {
-  @include flex-column(nowrap, flex-start, flex-start);
-  gap: $XlSize3;
+  @include flex-column(nowrap, flex-start, stretch);
+  gap: $XlSize;
   width: 100%;
+  // max-width: 1440px;
+  margin-inline: auto;
+  padding: $XsSize3;
+
+  .project-details-page-header {
+    @include flex-row(wrap, space-between, flex-end);
+    gap: $SmSize;
+    width: 100%;
+    padding: $MdSize;
+    border: 1px solid var(--brand-primary-100);
+    border-radius: $BorderRadiusSm;
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--brand-primary-50) 78%, transparent) 0%, transparent 56%), var(--surface-1);
+    box-shadow: 0 10px 30px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
+
+    .page-title-content {
+      @include flex-column(nowrap, flex-start, flex-start);
+      gap: $XsSize4;
+      min-width: 220px;
+
+      .page-eyebrow {
+        min-height: 26px;
+        @include flex-row(nowrap, center, center);
+        padding: 5px 10px;
+        border-radius: 999px;
+        border: 1px solid color-mix(in srgb, var(--brand-primary-500) 16%, transparent);
+        background-color: color-mix(in srgb, var(--brand-primary-500) 7%, transparent);
+        color: $PrimaryColor;
+        font-size: $XsSize;
+        font-family: 'bold';
+        line-height: 1;
+
+        &:empty {
+          display: none;
+        }
+      }
+
+      .page-title {
+        margin: 0;
+        color: var(--brand-primary-900);
+        font-size: $XlSize2;
+        font-weight: $BaseFontWeightBold;
+        font-family: 'bold';
+        line-height: 1.25;
+      }
+    }
+
+    .project-overview-cards {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(110px, 1fr));
+      gap: $XsSize3;
+      width: min(100%, 620px);
+
+      .project-overview-card {
+        @include flex-column(nowrap, flex-start, flex-start);
+        gap: $XsSize4;
+        min-height: 76px;
+        padding: $XsSize;
+        border: 1px solid var(--brand-primary-50);
+        border-radius: $BorderRadiusSm;
+        background-color: var(--brand-primary-50);
+
+        .overview-label {
+          color: var(--text-soft);
+          font-size: $XsSize;
+          font-weight: $BaseFontSemiBoldWeight;
+          line-height: 1.2;
+        }
+
+        .overview-value {
+          color: $PrimaryColor;
+          font-size: $XlSize;
+          font-family: 'bold';
+          font-weight: 800;
+          line-height: 1;
+        }
+      }
+    }
+  }
+
+  > .project-header-container,
+  > .main-objective,
+  > .project-location,
+  > .locations-teams,
+  > .equipment-section,
+  > .inspections-sections {
+    border: 1px solid var(--brand-primary-100);
+    border-radius: $BorderRadiusSm;
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--brand-primary-50) 68%, transparent) 0%, transparent 52%), var(--surface-1);
+    box-shadow: 0 10px 30px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
+  }
+
+  > .project-header-container {
+    padding: $MdSize;
+  }
+
+  > .main-objective,
+  > .project-location,
+  > .locations-teams,
+  > .equipment-section,
+  > .inspections-sections {
+    padding: $MdSize;
+  }
+
   .p-accordion {
     width: 100%;
+  }
+
+  .p-accordion,
+  .p-accordionpanel,
+  .p-accordionheader,
+  .p-accordioncontent-content {
+    border-color: var(--brand-primary-50) !important;
+  }
+
+  .section-header {
+    width: 100%;
+
+    .section-img {
+      border-radius: $BorderRadiusSm;
+      background-color: color-mix(in srgb, var(--brand-primary-500) 6%, transparent);
+      padding: $XsSize3;
+      object-fit: contain;
+    }
+  }
+
+  .inspections-sections {
+    margin-block: 0;
+
+    .inspections-cards {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+  }
+
+  @media (max-width: 900px) {
+    .project-details-page-header {
+      align-items: flex-start;
+
+      .project-overview-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        width: 100%;
+      }
+    }
+  }
+
+  @media (max-width: 640px) {
+    padding: 0;
+    gap: $SmSize;
+    overflow-x: hidden;
+
+    .project-details-page-header {
+      padding: $SmSize;
+
+      .project-overview-cards {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    > .project-header-container,
+    > .main-objective,
+    > .project-location,
+    > .locations-teams,
+    > .equipment-section,
+    > .inspections-sections {
+      padding: $SmSize;
+    }
+
+    .p-accordion,
+    .p-accordionpanel,
+    .p-accordionheader,
+    .p-accordioncontent,
+    .p-accordioncontent-content {
+      min-width: 0;
+      max-width: 100%;
+    }
   }
 }

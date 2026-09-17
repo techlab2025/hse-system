@@ -11,13 +11,13 @@
     button {
       padding: $MdSize;
       width: 100%;
-      color: white;
+      color: var(--text-on-brand);
       background-color: $PrimaryColor;
     }
     .btn-cancel {
       border-radius: 36px;
-      border: 1px solid rgba(226, 53, 53, 0.4);
-      background: rgba(226, 53, 53, 0.1);
+      border: 1px solid color-mix(in srgb, var(--status-danger) 40%, transparent);
+      background: color-mix(in srgb, var(--status-danger) 10%, transparent);
       color: var(--danger-color);
       width: 25%;
     }
@@ -25,7 +25,7 @@
 
   .hierarchy-form {
     margin-top: $XlSize4;
-    background-color: #fbfbfb;
+    background-color: var(--text-on-brand);
     padding: $SmSize $XsSize;
     border-radius: $XlSize;
     .dashed-line {

@@ -8,6 +8,7 @@ export default class IndexProjectZoneParams implements Params {
   public perPage: number = 10
   public pageNumber: number = 10
   public LocationId: number[]
+  public projectId?: number | null
   // public id?: number
   // public code?: LangEnum
 
@@ -16,7 +17,8 @@ export default class IndexProjectZoneParams implements Params {
     pageNumber: number = 1,
     perPage: number = 10,
     withPage: number = 1,
-    LocationId: number[],
+    LocationId: number[] = [],
+    projectId?: number | null,
     // id?: number,
     // code?: LangEnum,
   ) {
@@ -25,6 +27,7 @@ export default class IndexProjectZoneParams implements Params {
     this.pageNumber = pageNumber
     this.perPage = perPage
     this.LocationId = LocationId
+    this.projectId = projectId
     // this.id = id
     // this.code = code
   }
@@ -35,7 +38,8 @@ export default class IndexProjectZoneParams implements Params {
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
-    data['location_id'] = this.LocationId
+    if (this.LocationId.length) data['location_id'] = this.LocationId
+    if (this.projectId != null) data['project_id'] = this.projectId
     // if (this.id) data['parent_id'] = this.id
     // if (this.code) data['code'] = this.code
     return data

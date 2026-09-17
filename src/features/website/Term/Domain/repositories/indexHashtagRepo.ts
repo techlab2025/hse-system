@@ -7,7 +7,7 @@ import { IndexHashtagApiService } from '../../Data/apiServices/indexHashtagApiSe
 class IndexHashtagRepo extends RepoInterface<HashtagModel[]> {
   private static instance: IndexHashtagRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

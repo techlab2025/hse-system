@@ -1,7 +1,6 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
-import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
@@ -10,6 +9,8 @@ import type RoleModel from '../../Data/models/RoleModel'
 import AddRoleteUseCase from '../../Domain/useCase/addRoleUseCase'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import type AddRoleParams from '../../Core/params/addRoleParams'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class AddRoleController extends ControllerInterface<RoleModel> {
   private static instance: AddRoleController
@@ -25,9 +26,17 @@ export default class AddRoleController extends ControllerInterface<RoleModel> {
     return this.instance
   }
 
-  async addRole(params: Params, router: Router, draft: boolean = false) {
+  async addRole(params: AddRoleParams, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+      if (params.role.length < 1) {
+        new OpenWarningDilaog('You Should Add Role ').openDialog()
+        return
+      }
+      // if (params.roleName.length < 1) {
+      //   new OpenWarningDilaog('You Should Add Role Name').openDialog()
+      //   return
+      // }
       const dataState: DataState<RoleModel> = await this.AddRoleUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -39,10 +48,17 @@ export default class AddRoleController extends ControllerInterface<RoleModel> {
         })
 
         const { user } = useUserStore()
-        if (user?.type === OrganizationTypeEnum.ADMIN) {
-          router.push('/admin/role')
-        } else {
-          router.push('/organization/role')
+        if (
+          !router.currentRoute.value.fullPath.includes('organization-employee') &&
+          !router.currentRoute.value.fullPath.includes('project-progress')&&
+          !router.currentRoute.value.fullPath.includes('project-employee')
+
+        ) {
+          if (user?.type === OrganizationTypeEnum.ADMIN) {
+            router.push('/admin/role')
+          } else {
+            router.push('/organization/role')
+          }
         }
 
         // useLoaderStore().endLoadingWithDialog();

@@ -5,7 +5,7 @@ import { AddOrganizatoinEmployeeToHierarchyApiService } from '../../Data/apiServ
 
 class AddOrganizationEmployeeToHierarchyRepo extends RepoInterface<OrganizatoinEmployeeModel> {
   private static instance: AddOrganizationEmployeeToHierarchyRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

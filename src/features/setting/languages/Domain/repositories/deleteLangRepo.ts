@@ -7,7 +7,7 @@ import LangModel from '@/features/setting/languages/Data/models/langModel.ts'
 class DeleteLangRepo extends RepoInterface<LangModel> {
   private static instance: DeleteLangRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

@@ -6,7 +6,7 @@ import { IndexHazardApiService } from '../../Data/apiServices/indexHazardApiServ
 class IndexHazardRepo extends RepoInterface<HazardModel[]> {
   private static instance: IndexHazardRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

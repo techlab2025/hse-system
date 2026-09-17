@@ -8,7 +8,7 @@ import { DeleteMethodsApiService } from '../../Data/apiServices/deleteMethodsApi
 class DeleteMethodsRepo extends RepoInterface<MethodsModel> {
   private static instance: DeleteMethodsRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

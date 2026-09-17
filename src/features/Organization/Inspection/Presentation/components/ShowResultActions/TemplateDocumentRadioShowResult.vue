@@ -3,7 +3,6 @@ import type TaskResultItemModel from '@/features/Organization/Inspection/Data/mo
 import type ItemModel from '@/features/setting/TemplateItem/Data/models/ItemMode'
 import { TextAreaStatusEnum } from '@/features/setting/TemplateItem/Core/Enum/TextAreaStatusEnum'
 import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
-import RadioButton from 'primevue/radiobutton'
 import { ref, watch } from 'vue'
 
 const emit = defineEmits(['update:data'])

@@ -20,17 +20,17 @@ const props = defineProps<{
       <div class="certificate-data">
         <div class="issue-date">
           <span>{{ $t('issue_date') }}</span>
-          <span>{{ $t('10-2-2001') }}</span>
+          <span>10-2-2001</span>
         </div>
         <div class="issue-date">
           <span>{{ $t('expire_date') }}</span>
-          <span>{{ $t('10-2-2001') }}</span>
+          <span>10-2-2001</span>
         </div>
       </div>
 
     </div>
     <div class="certificate-image">
-      <img :src="cerificate.image || `/assets/images/logo.svg`" alt="certificate-image" @error="setDefaultImage">
+      <img :src="cerificate.image || `/assets/images/logo.svg`" alt="training-image" @error="setDefaultImage">
     </div>
   </div>
 </template>

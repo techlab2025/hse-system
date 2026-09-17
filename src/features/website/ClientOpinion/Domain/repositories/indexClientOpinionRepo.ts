@@ -7,7 +7,7 @@ import { IndexClientOpinionApiService } from '../../Data/apiServices/indexClient
 class IndexClientOpinionRepo extends RepoInterface<ClientOpinionModel[]> {
   private static instance: IndexClientOpinionRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

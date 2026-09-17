@@ -17,12 +17,10 @@ import { LangsMap } from '@/constant/langs.ts'
 import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
 import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
 // import FileUpload from '@/shared/FormInputs/FileUpload.vue'
-import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 // import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 const emit = defineEmits(['update:data'])
@@ -204,7 +202,7 @@ const updateAllIndustries = (data) => {
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
   </div>
   <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
-    <label for="serialNumber">{{ $t('refrence_number') }}</label>
+    <label for="serialNumber">{{ $t('serial_number') }}</label>
     <input
       type="text"
       v-model="SerialNumber"

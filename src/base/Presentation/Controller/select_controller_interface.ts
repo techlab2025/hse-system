@@ -13,6 +13,7 @@ abstract class SelectControllerInterface<T> extends ControllerInterface<T> {
         id: el?.id,
         title: el?.title || '',
         subtitle: el?.subtitle || '',
+        type: el?.type,
       })));
     }
     return adaptData;

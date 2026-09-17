@@ -1,13 +1,13 @@
 // import { useUserStore } from '@/stores/user'
 
-import { useUserStore } from "@/stores/user"
+import { useUserStore } from '@/stores/user'
 
 class HeaderHandler {
   private static _instance: HeaderHandler
 
   private userStore = useUserStore()
 
-  private constructor() { }
+  private constructor() {}
 
   static get Instance(): HeaderHandler {
     if (!this._instance) {
@@ -30,9 +30,6 @@ class HeaderHandler {
 
     // const organizationToken = '8|7JyOHkVkkOnMDeZ6WaiM9bRrZiI7kmhwLgHdBnEp199e1c72'
     // const adminToken = '1|uGaOEtBqrL718B1lZlllkayaOaxKT91cMcuoHfSa4583ca2b'
-
-
-
 
     if (includeLanguage) {
       const savedLocale = localStorage.getItem('lang')

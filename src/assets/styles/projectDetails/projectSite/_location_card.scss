@@ -2,16 +2,17 @@
 @use '../../mixins/flex' as *;
 
 .location-card {
-  background-color: white;
+  background-color: var(--surface-1);
   padding: $XsSize;
   border-radius: $XlSize;
   width: 100%;
   font-family: 'Regular';
-  height: 11rem;
+  min-height: 11rem;
   &.dialog {
-    background-color: #fcfcfc;
+    background-color: var(--surface-1);
     margin-block: 10px;
   }
+
   .card-header {
     @include flex-column(nowrap, flex-start, flex-start);
     gap: 4px;
@@ -20,28 +21,29 @@
       width: 100%;
       gap: $XsSize4;
       .location-header {
-        width: 80%;
+        width: 70%;
         @include flex-row(nowrap, flex-start, center);
         gap: $XsSize4;
         .title {
           font-weight: $BaseFontWeightBold;
-          color: #121212;
+          color: var(--text-strong);
           font-size: $MdSize2;
         }
 
         .zone {
           font-size: $SmSize;
           font-weight: $BaseFontMediumWeight;
-          color: #9ca3af;
+          color: var(--text-soft);
 
           // span {
-          //   color: #121212;
+          //   color: var(--text-strong);
           // }
         }
+
       }
 
       .add-zone {
-        color: #3d4c5e;
+        color: var(--brand-primary-700);
         font-size: $MdSize;
         font-weight: $BaseFontWeightBold;
         text-decoration: underline;
@@ -60,7 +62,7 @@
     width: 100%;
     border: none;
     height: 1px;
-    background-color: #f1f3f5;
+    background-color: var(--brand-primary-50);
     margin-block: $MdSize;
   }
 
@@ -69,12 +71,12 @@
     gap: $XsSize;
 
     .location-title {
-      color: #6b7280;
-      background-color: #fcfcfc;
+      color: var(--text-soft);
+      background-color: var(--surface-1);
       font-size: $SmSize;
       font-weight: $BaseFontSemiBoldWeight;
       padding: $XsSize2 $MdSize2;
-      border: 1px solid #f1f3f5;
+      border: 1px solid var(--brand-primary-50);
       border-radius: $SmSize;
     }
 
@@ -87,13 +89,13 @@
         @include flex-column(nowrap, flex-start, flex-start);
         gap: $XsSize4;
         .no-zoon {
-          color: #656667;
+          color: var(--text-soft);
           font-size: $MdSize;
           font-weight: $BaseFontSemiBoldWeight;
         }
 
         .no-zoon-description {
-          color: #9ca3af;
+          color: var(--text-soft);
           font-size: $SmSize;
           font-weight: $BaseFontMediumWeight;
         }
@@ -105,4 +107,62 @@
       }
     }
   }
+
+
+  @media (max-width: 640px) {
+    height: auto;
+    min-height: 0;
+    padding: $XsSize3;
+
+    .card-header {
+      .location-header-container {
+        align-items: flex-start;
+
+        .location-header {
+          align-items: flex-start;
+          flex-direction: column;
+          width: auto;
+          min-width: 0;
+
+          .title {
+            max-width: 100%;
+            font-size: $MdSize;
+            overflow-wrap: anywhere;
+          }
+        }
+      }
+    }
+
+    .card-hr {
+      margin-block: $SmSize;
+    }
+
+    .locations {
+      align-items: stretch;
+
+      .location-title {
+        max-width: 100%;
+        padding: $XsSize2 $XsSize;
+        overflow-wrap: anywhere;
+      }
+
+      .empty-zoon {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: $XsSize;
+
+        img {
+          align-self: center;
+          width: 80px;
+          height: 80px;
+        }
+      }
+    }
+  }
 }
+  @media (max-width: 1000px) {
+    .location-header-container {
+      flex-wrap: wrap !important;
+      gap: 20px !important;
+    }
+  }

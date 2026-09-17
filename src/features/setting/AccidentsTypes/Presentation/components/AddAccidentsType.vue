@@ -1,22 +1,39 @@
 <script lang="ts" setup>
+import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-// import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
-import HazardTypeForm from '@/features/setting/HazardType/Presentation/components/HazardTypeForm.vue'
+import { useRoute, useRouter } from 'vue-router'
 import AddHazardTypeParams from '@/features/setting/HazardType/Core/params/addHazardTypeParams.ts'
 import type Params from '@/base/core/params/params'
 import AddAccidentsTypeController from '../controllers/addAccidentsTypeController'
 import AccidentsTypeForm from './AccidentsTypeForm.vue'
 
 const router = useRouter()
+const stayOnPageRouter = createStayOnPageRouter(router)
+const route = useRoute()
 const params = ref<Params | null>(null)
+const formKey = ref(0)
 const emit = defineEmits(['update:data'])
 const addAccidentsTypeController = AddAccidentsTypeController.getInstance()
 
 const addAccidentsType = async () => {
+  addAccidentsTypeController.setLoading()
   await addAccidentsTypeController.addAccidentsType(params.value as AddHazardTypeParams, router)
-  emit(`update:data`)
+  if (addAccidentsTypeController.isDataSuccess()) emit('update:data')
 }
+
+const saveAndNew = async () => {
+  addAccidentsTypeController.setLoading()
+  await addAccidentsTypeController.addAccidentsType(
+    params.value as AddHazardTypeParams,
+    stayOnPageRouter,
+    true,
+  )
+  if (addAccidentsTypeController.isDataSuccess()) {
+    params.value = null
+    formKey.value++
+  }
+}
+
 const setParams = (data: Params) => {
   params.value = data
 }
@@ -24,12 +41,32 @@ const setParams = (data: Params) => {
 
 <template>
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addAccidentsType">
-    <AccidentsTypeForm @update:data="setParams" />
+    <AccidentsTypeForm :key="formKey" @update:data="setParams" />
 
-    <div class="col-span-4 button-wrapper">
-      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+    <div class="col-span-4 button-wrapper create-form-actions">
+      <button type="button" @click.prevent="saveAndNew" class="btn btn-secondary">
+        {{ $t('save and new') }}
+      </button>
+      <button type="submit" class="btn btn-primary">
+        {{ route.path.includes('project-progress') ? $t('save and next step') : $t('save') }}
+      </button>
     </div>
   </form>
 </template>
 
-<style scoped></style>
+<style scoped>
+.button-wrapper {
+  display: flex;
+  gap: 1rem;
+  flex-direction: row !important;
+  width: 100% !important;
+  button {
+    &.w-full {
+      width: 100%;
+    }
+    &.w-1\/2 {
+      width: 50%;
+    }
+  }
+}
+</style>

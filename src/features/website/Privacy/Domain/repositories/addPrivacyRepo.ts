@@ -6,7 +6,7 @@ import { AddPrivacyApiService } from '../../Data/apiServices/addPrivacyApiServic
 
 class AddPrivacyRepo extends RepoInterface<PrivacyModel> {
   private static instance: AddPrivacyRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

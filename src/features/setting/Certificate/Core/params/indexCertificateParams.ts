@@ -8,6 +8,7 @@ export default class IndexCertificateParams implements Params {
   public perPage: number = 10
   public pageNumber: number = 10
   public id?: number
+  public date?: string
   // public code?: LangEnum
 
   constructor(
@@ -16,6 +17,7 @@ export default class IndexCertificateParams implements Params {
     perPage: number = 10,
     withPage: number = 1,
     id?: number,
+    date?: string,
     // code?: LangEnum,
   ) {
     this.word = word
@@ -23,6 +25,7 @@ export default class IndexCertificateParams implements Params {
     this.pageNumber = pageNumber
     this.perPage = perPage
     this.id = id
+    this.date = date
     // this.code = code
   }
 
@@ -33,6 +36,7 @@ export default class IndexCertificateParams implements Params {
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.id) data['parent_id'] = this.id
+    if (this.date) data['date'] = this.date
     // if (this.code) data['code'] = this.code
     return data
   }

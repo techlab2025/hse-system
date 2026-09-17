@@ -7,7 +7,7 @@ import { IndexSystemFeatureApiService } from '../../Data/apiServices/indexSystem
 class IndexSystemFeatureRepo extends RepoInterface<SystemFeatureModel[]> {
   private static instance: IndexSystemFeatureRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

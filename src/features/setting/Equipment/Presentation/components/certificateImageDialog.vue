@@ -17,17 +17,17 @@ const props = withDefaults(
 <template>
   <div class="card flex justify-center">
     <button @click="visible = true" type="button" :disabled="!props.certificateImage">
-      <span class="link">{{ $t('Certification') }}</span>
+      <span class="link">{{ $t('certificate') }}</span>
     </button>
     <Dialog
       v-model:visible="visible"
       maximizable
       modal
-      :header="$t('Certification')"
+      :header="$t('certificate')"
       :style="{ width: '50rem' }"
       :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
     >
-      <img :src="props.certificateImage" alt="demo card certificate image " class="demo-img" />
+      <img :src="props.certificateImage" alt="demo card training image" class="demo-img" />
     </Dialog>
   </div>
 </template>

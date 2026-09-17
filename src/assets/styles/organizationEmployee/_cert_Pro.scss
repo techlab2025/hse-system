@@ -5,7 +5,7 @@
 .side-card {
   max-width: 340px;
   width: 100%;
-  background: #ffffff;
+  background: var(--surface-1);
   border-radius: $XsSize;
   padding: $XlSize;
 }
@@ -25,7 +25,7 @@
   gap: $XsSize3;
   margin-bottom: $XsSize3;
   padding: 0 0 $XsSize 0;
-  // border-bottom: 1px dashed #eeeeee;
+  // border-bottom: 1px dashed var(--surface-2);
 
   .icon {
     width: calc($XlSize4 + 2px);

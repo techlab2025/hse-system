@@ -17,7 +17,7 @@ export const templateItemRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Admin/TemplateItem/AddTemplateItem.vue'),
     meta: {
       breadcrumb: 'Add Template Item',
-      parent: 'Template Item',
+      parent: 'Templates',
       type: 'Shared',
       isSidebar: true,
     },
@@ -28,7 +28,7 @@ export const templateItemRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Admin/TemplateItem/EditTemplateItem.vue'),
     meta: {
       breadcrumb: 'Edit Template Item',
-      parent: 'Template Item',
+      parent: 'Templates',
       type: 'Shared',
       isSidebar: true,
     },

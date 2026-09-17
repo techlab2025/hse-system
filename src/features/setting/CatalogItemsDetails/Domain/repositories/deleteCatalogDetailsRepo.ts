@@ -9,7 +9,7 @@ import CatalogItemsModel from '../../Data/models/CatalogItemsModel'
 class DeleteCatalogItemsDetailsRepo extends RepoInterface<CatalogItemsModel> {
   private static instance: DeleteCatalogItemsDetailsRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

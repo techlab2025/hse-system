@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
-import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
@@ -10,9 +9,7 @@ import IndexLangParams from '@/features/setting/languages/Core/params/indexLangP
 import { LangsMap } from '@/constant/langs.ts'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
-import IndexServiceController from '@/features/website/Service/Presentation/controllers/indexServiceController'
 import type SystemRiskTypeDetailsModel from '../../Data/models/SystemRiskTypeDetailsModel'
-import IndexServiceParams from '@/features/website/Service/Core/params/indexServiceParams'
 import EditSystemRiskTypeParams from '../../Core/params/editSystemRiskTypeParams'
 import AddSystemRiskTypeParams from '../../Core/params/addSystemRiskTypeParams'
 

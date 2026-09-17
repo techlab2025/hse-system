@@ -1,57 +1,88 @@
 @use '../../../variables' as *;
 @use '../../../mixins/flex' as *;
 
-.investegaion-meeting-card {
-  font-family: 'Regular';
+.investegation-result-answer-container .investegaion-meeting-card {
   @include flex-column(nowrap, flex-start, flex-start);
-  gap: $XsSize4;
-  background-color: #fdfdfd;
-  padding: $XsSize2;
-  border-radius: $XsSize;
-  border: 1px solid #f6f6f6;
-  margin-block: 6px;
+  gap: 12px;
+  min-height: 152px;
+  width: 100%;
+  padding: 14px;
+  border: 1px solid var(--brand-primary-100);
+  border-radius: 8px;
+  background: var(--brand-primary-50);
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
+  font-family: 'Regular';
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--brand-primary-500) 22%, transparent);
+    box-shadow: 0 14px 28px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
+  }
 
   &.active {
-    background-color: #1f41bb05;
-    border: 1px solid #1f41bb33;
+    border-color: color-mix(in srgb, var(--brand-primary-500) 28%, transparent);
+    background: linear-gradient(180deg, color-mix(in srgb, var(--brand-primary-50) 95%, transparent), var(--surface-1));
   }
 
   .card-header {
     @include flex-row(nowrap, space-between, center);
+    gap: 10px;
     width: 100%;
 
     .plateform {
       @include flex-row(nowrap, flex-start, center);
-      gap: 4px;
+      gap: 8px;
+      min-width: 0;
+      color: var(--brand-primary-900);
+      font-family: 'Bold';
+      font-size: 13px;
+      font-weight: 700;
+
+      svg {
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
+      }
     }
+
+    [class^='status-'] {
+      flex-shrink: 0;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-family: 'Bold';
+      font-size: 12px;
+      font-weight: 700;
+    }
+
     .status-Ended {
-      color: #d3d3d3;
-      font-size: $SmSize;
-      font-weight: $BaseFontWeightBold;
+      background: var(--brand-primary-50);
+      color: var(--brand-primary-400);
     }
+
     .status-Coming {
-      color: $PrimaryColor;
-      font-size: $SmSize;
-      font-weight: $BaseFontWeightBold;
+      background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
+      color: var(--brand-primary-500);
     }
   }
 
-  .meeting-date {
-    color: #aeaeb2;
-    font-size: $SmSize;
-    font-weight: $BaseFontMediumWeight;
-    span {
-      color: $PrimaryColor;
-      font-weight: $BaseFontSemiBoldWeight;
-    }
-  }
+  .meeting-date,
   .meeting-time {
-    color: #aeaeb2;
-    font-size: $SmSize;
-    font-weight: $BaseFontMediumWeight;
+    color: var(--brand-primary-500);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.45;
+    text-transform: none;
+
     span {
-      color: #202020;
-      font-weight: $BaseFontSemiBoldWeight;
+      display: block;
+      margin-top: 3px;
+      color: var(--brand-primary-900);
+      font-family: 'Bold';
+      font-weight: 700;
     }
   }
 }

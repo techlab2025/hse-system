@@ -12,9 +12,12 @@ interface Data {
 }
 export default class AddOrganizationEmployeeExcelParams implements Params {
   public data: Data[] = []
+  public isValid: boolean
+
   public static readonly validation = new ClassValidation().setRules({})
-  constructor(data: { data: Data[] }) {
+  constructor(data: { data: Data[]; isValid: boolean }) {
     this.data = data.data
+    this.isValid = data.isValid
   }
 
   toMap(): Record<

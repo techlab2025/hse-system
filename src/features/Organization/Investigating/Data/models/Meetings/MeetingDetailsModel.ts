@@ -7,6 +7,7 @@ export default class MeetingDetailsModel {
   public type: number
   public meeting_link: string
   public corrective: string
+  public place: string
 
   constructor(
     id: number,
@@ -17,6 +18,7 @@ export default class MeetingDetailsModel {
     type: number,
     meeting_link: string,
     corrective: string,
+    place: string,
   ) {
     this.id = id
     this.investigation = investigation
@@ -26,6 +28,7 @@ export default class MeetingDetailsModel {
     this.type = type
     this.meeting_link = meeting_link
     this.corrective = corrective
+    this.place = place
   }
 
   static fromMap(data: any): MeetingDetailsModel {
@@ -38,6 +41,7 @@ export default class MeetingDetailsModel {
       data.type,
       data.meeting_link,
       data.corrective,
+      data.place,
     )
   }
 
@@ -50,6 +54,7 @@ export default class MeetingDetailsModel {
     0,
     'meeting_link',
     'corrective',
+    '',
   )
 }
 

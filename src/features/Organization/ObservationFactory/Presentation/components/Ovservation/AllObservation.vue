@@ -1,21 +1,22 @@
 <script setup lang="ts">
-
 import ObservationCard from './cards/ObservationCard.vue'
-import Political from "@/assets/images/Political.png"
-import ALERT from "@/assets/images/ALERT.png"
-import PoliceLine from "@/assets/images/PoliceLine.png"
-import ToDoLogo from "@/assets/images/ToDoLogo.png"
+import Political from '@/assets/images/Political.png'
+import PoliceLine from '@/assets/images/PoliceLine.png'
+import ToDoLogo from '@/assets/images/ToDoLogo.png'
 import { InspectionPageType } from '../../../Core/Enums/InspectionTypeEnum'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
+import CapaIcon from '@/assets/images/Capa.png'
+import Investigation from '@/assets/images/Investigation.png'
+import { useThemeMode } from '@/composables/useThemeMode'
+
+const { isDarkMode } = useThemeMode()
 
 const items = [
   {
     title: 'Inspection',
     image: ToDoLogo,
     addRoute: '/organization/equipment-mangement/inspection/add',
-    // indexRoute: '/organization/equipment-mangement/inspection?isAll=1',
-    // overdueRoute: '/organization/equipment-mangement/inspection/overdue?isAll=1',
     inspectionFormRoute: `/organization/equipment-mangement/inspection?inspectionType=${InspectionPageType.InspectionForm}`,
     dragInspectionRoute: `/organization/equipment-mangement/inspection?inspectionType=${InspectionPageType.DragInspection}`,
     resultInspectionRoute: `/organization/equipment-mangement/inspection?inspectionType=${InspectionPageType.Result}`,
@@ -47,7 +48,6 @@ const items = [
       PermissionsEnum.INSPECTION_RESULTS_FETCH,
       PermissionsEnum.ORG_INSPECTION_ALL,
     ],
-
   },
   {
     title: 'Observation',
@@ -66,7 +66,7 @@ const items = [
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ORG_OBSERVATION_FETCH,
       PermissionsEnum.ORG_OBSERVATION_ALL,
-    ]
+    ],
   },
   {
     title: 'Incident',
@@ -85,7 +85,35 @@ const items = [
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
       PermissionsEnum.ORG_INCEDANT_FETCH,
       PermissionsEnum.ORG_INCEDANT_ALL,
-    ]
+    ],
+  },
+  {
+    title: 'investigation',
+    image: Investigation,
+    indexRoute: '/organization/Investigating',
+    description: 'show',
+    indexPermissions: [
+      PermissionsEnum.ORG_EMPLOYEE_ALL,
+      PermissionsEnum.ORG_EMPLOYEE_CREATE,
+      PermissionsEnum.ORG_EMPLOYEE_DELETE,
+      PermissionsEnum.ORG_EMPLOYEE_FETCH,
+      PermissionsEnum.ORG_EMPLOYEE_UPDATE,
+      PermissionsEnum.ORG_EMPLOYEE_DETAILS,
+    ],
+  },
+  {
+    title: 'capa',
+    image: CapaIcon,
+    indexRoute: '/organization/capa',
+    description: 'show',
+    indexPermissions: [
+      PermissionsEnum.ORG_EMPLOYEE_ALL,
+      PermissionsEnum.ORG_EMPLOYEE_CREATE,
+      PermissionsEnum.ORG_EMPLOYEE_DELETE,
+      PermissionsEnum.ORG_EMPLOYEE_FETCH,
+      PermissionsEnum.ORG_EMPLOYEE_UPDATE,
+      PermissionsEnum.ORG_EMPLOYEE_DETAILS,
+    ],
   },
   // {
   //   title: 'Hazard',
@@ -94,17 +122,19 @@ const items = [
   //   indexRoute: '/organization/equipment-mangement/hazard?isAll=1',
   //   description: 'Add . show'
   // },
-
-
 ]
 </script>
 
 <template>
-  <div class="all-observation">
+  <div class="all-observation" :class="{ 'is-dark': isDarkMode }">
     <!-- <HeaderPage :title="'all you need in one page'" subtitle="select what you want to do" :img="allObservationImage" /> -->
 
     <div class="cards">
-      <permission-builder v-for="i in items" :key="i" :code="i.indexPermissions || i.AddPermissions">
+      <permission-builder
+        v-for="i in items"
+        :key="i.title"
+        :code="i.indexPermissions || i.AddPermissions"
+      >
         <ObservationCard :item="i" />
       </permission-builder>
     </div>

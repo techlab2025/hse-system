@@ -17,7 +17,7 @@
 
   label {
     font-size: $MdSize;
-    color: #202020;
+    color: var(--text-strong);
     font-weight: $BaseFontSemiBoldWeight;
     text-transform: capitalize;
     white-space: nowrap;
@@ -47,17 +47,17 @@
         opacity: 1;
         border: 1px solid $PrimaryColor;
         border-radius: 50%;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 0 5px color-mix(in srgb, var(--text-strong) 20%, transparent);
       }
     }
   }
 
   input:not([type='checkbox']),
   textarea {
-    @include border($BaseBorderWidth, rgba(217, 219, 233, 1), solid, $XsSize2);
+    @include border($BaseBorderWidth, var(--brand-primary-100), solid, $XsSize2);
     padding: $MdSize2 $MdSize;
     font-size: $SmSize;
-    color: $Black;
+    color: var(--text-strong);
     font-weight: $BaseFontMediumWeight;
     // text-transform: capitalize;
     white-space: nowrap;
@@ -69,7 +69,7 @@
     background-color: transparent;
 
     &:focus-visible:valid {
-      border-color: rgba(217, 219, 233, 1);
+      border-color: var(--brand-primary-100);
     }
     &:focus-visible:invalid {
       border-color: $Red;
@@ -88,7 +88,7 @@
     }
 
     &:disabled {
-      background-color: rgba(217, 219, 233, 1);
+      background-color: var(--brand-primary-100);
     }
 
     caret-color: $PrimaryColor;

@@ -10,7 +10,7 @@
     }
     gap: $XsSize;
     padding: $XlSize $XlSize4;
-    background-color: #fafbfc;
+    background-color: var(--brand-primary-50);
 
     .texts {
       @include flex-column(nowrap, flex-start, flex-start);

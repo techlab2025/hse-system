@@ -1,6 +1,5 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
-import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
@@ -9,7 +8,6 @@ import EditEquipmentUseCase from '../../Domain/useCase/editEquipmentUseCase'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
 import type EditEquipmentParams from '../../Core/params/editEquipmentParams'
-import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class EditEquipmentController extends ControllerInterface<EquipmentModel> {
   private static instance: EditEquipmentController

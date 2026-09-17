@@ -20,28 +20,28 @@
     gap: $SmSize;
     padding-bottom: $SmSize;
     border-radius: $XlSize2;
-    // background: #FCFCFC66;
-    background: #fcfcfc99;
-    border: 2px solid #fbfbfb;
+    // background: color-mix(in srgb, var(--surface-1) 40%, transparent);
+    background: color-mix(in srgb, var(--surface-1) 60%, transparent);
+    border: 2px solid var(--surface-1);
     width: 100%;
 
     transition: all 0.5s ease-in-out;
 
     &:hover {
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 8px color-mix(in srgb, var(--text-strong) 10%, transparent);
       transform: translateY(-5px);
     }
 
     .card-header {
       @include flex(row, nowrap, center, center);
-      background-image: linear-gradient(90deg, #fef9f3 0%, #ffffff29 50%, #eeffee 100%);
+      background-image: linear-gradient(90deg, var(--brand-accent-50) 0%, color-mix(in srgb, var(--surface-1) 16.08%, transparent) 50%, var(--status-success-soft) 100%);
       padding: $XsSize2 $XsSize;
       text-transform: capitalize;
       border-top-left-radius: $XlSize2;
       border-top-right-radius: $XlSize2;
       button {
         all: unset;
-        color: red;
+        color: var(--status-danger);
         text-decoration: underline;
         cursor: pointer;
       }
@@ -51,42 +51,42 @@
 
       // Status-based gradient colors
       &[data-status='solved'] {
-        color: #34c759;
-        background: linear-gradient(90.5deg, #34c7590d -3.82%, #34c75921 52.88%, #eeffee49 98.9%);
+        color: var(--status-success);
+        background: linear-gradient(90.5deg, color-mix(in srgb, var(--status-success) 5.1%, transparent) -3.82%, color-mix(in srgb, var(--status-success) 12.94%, transparent) 52.88%, color-mix(in srgb, var(--status-success-soft) 28.63%, transparent) 98.9%);
       }
 
       &[data-status='pending'] {
-        color: #ffcc00;
-        background: linear-gradient(90.5deg, #fef9f3 -3.82%, #ffcc000d 52.88%, #ffcc000d 98.9%);
+        color: var(--brand-accent-500);
+        background: linear-gradient(90.5deg, var(--brand-accent-50) -3.82%, color-mix(in srgb, var(--brand-accent-500) 5.1%, transparent) 52.88%, color-mix(in srgb, var(--brand-accent-500) 5.1%, transparent) 98.9%);
       }
 
       &[data-status='resolved'] {
-        color: #ef3826;
+        color: var(--status-danger);
         background-image: linear-gradient(
           90deg,
-          #fef9f3 0%,
-          #ffffff29 50%,
-          rgba(239, 56, 38, 0.2) 100%
+          var(--brand-accent-50) 0%,
+          color-mix(in srgb, var(--surface-1) 16.08%, transparent) 50%,
+          color-mix(in srgb, var(--status-danger) 20%, transparent) 100%
         );
       }
 
       &[data-status='opened'] {
-        color: #6155f5;
-        background: linear-gradient(90.5deg, #6e67b92b -3.82%, #6255f520 98.9%);
+        color: var(--brand-primary-400);
+        background: linear-gradient(90.5deg, color-mix(in srgb, var(--brand-primary-400) 16.86%, transparent) -3.82%, color-mix(in srgb, var(--brand-primary-400) 12.55%, transparent) 98.9%);
       }
 
       &[data-status='closed'] {
-        color: #212a43;
+        color: var(--brand-primary-800);
         background-image: linear-gradient(
           90deg,
-          #fef9f3 0%,
-          #ffffff29 50%,
-          rgba(33, 42, 67, 0.2) 100%
+          var(--brand-accent-50) 0%,
+          color-mix(in srgb, var(--surface-1) 16.08%, transparent) 50%,
+          color-mix(in srgb, var(--brand-primary-800) 20%, transparent) 100%
         );
       }
 
       .code {
-        color: red;
+        color: var(--status-danger);
         font-size: $MdSize;
         font-family: 'Regular';
       }
@@ -98,8 +98,8 @@
       border-bottom: 1px solid transparent;
       border-image: repeating-linear-gradient(
           to right,
-          #e9ebf4 0,
-          #e9ebf4 5px,
+          var(--brand-primary-100) 0,
+          var(--brand-primary-100) 5px,
           transparent 10px,
           transparent 20px
         )
@@ -112,7 +112,7 @@
         p {
           font-size: 16px;
           font-family: 'Bold';
-          color: #1f41bb;
+          color: var(--brand-primary-600);
           span {
             font-size: 12px;
             font-family: 'Regular';
@@ -120,7 +120,7 @@
         }
 
         h2 {
-          color: #1d242d;
+          color: var(--brand-primary-900);
           font-size: $XlSize;
           font-family: 'Bold';
           text-wrap: inherit;
@@ -145,8 +145,8 @@
           height: 100%;
           border-radius: $XsSize2;
           object-fit: cover;
-          border: 2px solid #99999959;
-          background-color: white;
+          border: 2px solid color-mix(in srgb, var(--text-soft) 34.9%, transparent);
+          background-color: var(--surface-1);
 
           position: relative;
           margin-left: -10px;
@@ -172,7 +172,7 @@
         text-transform: capitalize;
 
         p {
-          color: #909dad;
+          color: var(--brand-primary-400);
           font-family: 'Regular';
           font-weight: 500;
           font-size: $MdSize;

@@ -5,7 +5,7 @@ import { DisHazardApiService } from '../../Data/apiServices/disHazardApiService'
 
 class DisActiveHazardRepo extends RepoInterface<HazardModel> {
   private static instance: DisActiveHazardRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

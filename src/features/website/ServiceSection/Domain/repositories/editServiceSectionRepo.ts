@@ -7,7 +7,7 @@ import { EditServiceSectionApiService } from '../../Data/apiServices/editService
 class EditServiceSectionRepo extends RepoInterface<ServiceSectionModel> {
   private static instance: EditServiceSectionRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

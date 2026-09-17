@@ -19,9 +19,6 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import IndexPowerFullController from '../controllers/indexPowerFullController'
@@ -208,19 +205,19 @@ const actionList = (id: number, deletePowerFull: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty :link="`/admin/power-full/add`" addText="Add PowerFull"
-          description="Sorry .. You have no PowerFull .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No PowerFull" />
+          description="You have no PowerFull .. All your joined customers will appear here when you add your customer data"
+          title="You have No PowerFull" />
       </template>
       <template #failed>
         <DataFailed :link="`/admin/power-full/add`" addText="Add PowerFull"
-          description="Sorry .. You have no PowerFull .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No PowerFull" />
+          description="You have no PowerFull .. All your joined customers will appear here when you add your customer data"
+          title="You have No PowerFull" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no PowerFull .. All your joined customers will appear here when you add your customer data" />
+        description="You have no PowerFull .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

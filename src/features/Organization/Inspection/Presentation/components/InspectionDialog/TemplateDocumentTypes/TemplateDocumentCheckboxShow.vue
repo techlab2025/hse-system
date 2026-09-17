@@ -1,73 +1,78 @@
 <script setup lang="ts">
-import Checkbox from 'primevue/checkbox'
 import type ItemModel from '@/features/setting/TemplateItem/Data/models/ItemMode'
-import { TextAreaStatusEnum } from '@/features/setting/TemplateItem/Core/Enum/TextAreaStatusEnum'
-import UploadMultiImage from '@/shared/HelpersComponents/UploadMultiImage.vue'
-import { ref, watch, computed, nextTick } from 'vue'
+import EvidenceImageUpload from './EvidenceImageUpload.vue'
+import AnswerTextField from './AnswerTextField.vue'
+import QuestionChoiceCard from './QuestionChoiceCard.vue'
+import QuestionHeader from './QuestionHeader.vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import type TaskResultItemModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/ItemTasksResultModel'
 
-const emit = defineEmits(['update:data', 'update:images'])
+type ValidationErrors = {
+  questionImage?: string
+  answerImages?: Record<number, string>
+  notes?: string
+}
+
+const emit = defineEmits(['update:data'])
 
 const props = defineProps<{
   title: string
   item_id: number
   options: ItemModel[]
   require_image: boolean
+  required_type?: number
+  validation_errors?: ValidationErrors
   selected_data?: TaskResultItemModel
 }>()
 
-/* ================= state ================= */
-const Img = ref<string | null>(null)
+const questionImages = ref<string[]>([])
+const answerImages = ref<Record<number, string[]>>({})
 const textArea = ref('')
 const SelectedValues = ref<number[]>([])
 
-/* ================= computed ================= */
-const showTextArea = computed(() => {
-  return props.options.some(option => {
-    if (!SelectedValues.value.includes(option.id)) return false
+const selectedOptions = computed(() =>
+  props.options.filter((option) => SelectedValues.value.includes(option.id)),
+)
 
-    const status = option.TextAreaType || option.kpi
-    return (
-      String(status) === String(TextAreaStatusEnum.required) ||
-      String(status) === String(TextAreaStatusEnum.optional)
-    )
-  })
-})
+const selectedUploadOptions = computed(() =>
+  selectedOptions.value.filter((option) => Boolean(option.is_upload)),
+)
 
-const UpdateImg = (data: string) => {
-  Img.value = data
+const showTextArea = computed(() =>
+  selectedOptions.value.some((option) => ['1', '2'].includes(String(option.kpi))),
+)
+
+const isTextAreaRequired = computed(() =>
+  selectedOptions.value.some((option) => String(option.kpi) === '2'),
+)
+
+const UpdateQuestionImages = (data: string[]) => {
+  questionImages.value = data ?? []
+  UpdateData()
+}
+
+const UpdateAnswerImages = (optionId: number, data: string[]) => {
+  answerImages.value = { ...answerImages.value, [optionId]: data ?? [] }
   UpdateData()
 }
 
 const UpdateOptions = (value: number) => {
-  let newValues: number[]
+  SelectedValues.value = SelectedValues.value.includes(value)
+    ? SelectedValues.value.filter((selected) => selected !== value)
+    : [...SelectedValues.value, value]
 
-  if (SelectedValues.value.includes(value)) {
-    newValues = SelectedValues.value.filter(v => v !== value)
-  } else {
-    newValues = [...SelectedValues.value, value]
-  }
-
-  SelectedValues.value = newValues
-
-  // Use nextTick to ensure the ref has updated
-  nextTick(() => {
-    UpdateData()
-  })
+  nextTick(UpdateData)
 }
 
 const UpdateData = () => {
-  const dataToEmit = {
+  emit('update:data', {
     itemid: props.item_id,
     selected: [...SelectedValues.value],
-    img: Img.value,
-    notes: showTextArea.value ? textArea.value : ''
-  }
-
-  // Debug log to verify correct data
-  console.log('Emitting data:', dataToEmit)
-
-  emit('update:data', dataToEmit)
+    img: [...questionImages.value, ...Object.values(answerImages.value).flat()],
+    questionImg: [...questionImages.value],
+    answerImages: { ...answerImages.value },
+    notes: showTextArea.value ? textArea.value : '',
+  })
 }
 
 watch(showTextArea, (visible) => {
@@ -77,10 +82,22 @@ watch(showTextArea, (visible) => {
   }
 })
 
-watch(textArea, () => {
-  if (showTextArea.value) {
+watch(selectedUploadOptions, (options) => {
+  const visibleOptionIds = new Set(options.map((option) => option.id))
+  const nextImages = Object.fromEntries(
+    Object.entries(answerImages.value).filter(([optionId]) =>
+      visibleOptionIds.has(Number(optionId)),
+    ),
+  )
+
+  if (Object.keys(nextImages).length !== Object.keys(answerImages.value).length) {
+    answerImages.value = nextImages
     UpdateData()
   }
+})
+
+watch(textArea, () => {
+  if (showTextArea.value) UpdateData()
 })
 
 watch(
@@ -88,72 +105,89 @@ watch(
   (newVal) => {
     if (!newVal) return
 
-    // options
     SelectedValues.value =
       newVal.answers
-        ?.map((a: any) => a.templateItemOption?.id)
+        ?.map((answer: any) => answer.templateItemOption?.id)
         .filter((id: number | undefined): id is number => id !== undefined) || []
 
-    // notes
-    const note = newVal.answers?.find((a: any) => a.answer)?.answer
-    textArea.value = note || ''
-
-    // images
-    Img.value = newVal.files?.length ? newVal.files[0].url : null
-
+    textArea.value = newVal.answers?.find((answer: any) => answer.answer)?.answer || ''
+    questionImages.value = newVal.files?.map((file) => file.url) ?? []
     UpdateData()
   },
-  { immediate: true }
+  { immediate: true },
 )
+
+onMounted(UpdateData)
 </script>
 
 <template>
-  <div class="show-template-document-checkbox flex flex-col gap-4">
-    <p class="title font-bold">{{ title }}</p>
+  <div class="show-template-document-checkbox question-response">
+    <QuestionHeader
+      type="multiple"
+      :title="title"
+      :status="SelectedValues.length ? `${SelectedValues.length} ${$t('selected')}` : undefined"
+    />
 
-    <div class="options-container">
-      <div class="options flex flex-col gap-2">
-        <div class="options-box flex items-center justify-between pb-2" v-for="option in options" :key="option.id">
-          <label :for="`checkbox-${item_id}-${option.id}`" class="label cursor-pointer flex-grow">
-            {{ option.title }}
-          </label>
-
-          <Checkbox binary :modelValue="SelectedValues.includes(option.id)"
-            @update:modelValue="UpdateOptions(option.id)" :inputId="`checkbox-${item_id}-${option.id}`" />
-        </div>
-      </div>
-
-
-      <div v-if="require_image" class="mt-4">
-        <UploadMultiImage @update:images="UpdateImg" :initialImages="selected_data?.files?.map(el => el.url) || []" />
-      </div>
+    <div class="answer-options-grid">
+      <QuestionChoiceCard
+        v-for="option in options"
+        :key="option.id"
+        type="checkbox"
+        :item-id="item_id"
+        :option="option"
+        :selected="SelectedValues.includes(option.id)"
+        @select="UpdateOptions(option.id)"
+      />
     </div>
-  </div>
 
-  <div v-if="showTextArea" class="input-wrapper w-full animate-fade-in mt-4">
-    <label for="notes" class="block mb-1 text-sm font-medium">
-      {{ $t('Notes') }}
-    </label>
-    <textarea id="notes" class="input w-full border rounded-md p-2 min-h-[80px]" v-model="textArea"
-      :placeholder="$t('Please enter details...')" />
+    <EvidenceImageUpload
+      v-if="require_image && selectedUploadOptions.length === 0"
+      :label="$t('question_photo')"
+      :required="Number(required_type) === 2"
+      :error="validation_errors?.questionImage"
+      :initial-images="
+        questionImages.length ? questionImages : selected_data?.files?.map((file) => file.url) || []
+      "
+      @update:images="UpdateQuestionImages"
+    />
+
+    <EvidenceImageUpload
+      v-for="option in selectedUploadOptions"
+      :key="`answer-image-${option.id}`"
+      :label="$t('answer_photo') + ': ' + option.title"
+      :required="true"
+      :error="validation_errors?.answerImages?.[option.id]"
+      @update:images="UpdateAnswerImages(option.id, $event)"
+    />
+
+    <AnswerTextField
+      v-if="showTextArea"
+      v-model="textArea"
+      :label="$t('Notes')"
+      :required="isTextAreaRequired"
+      :error="validation_errors?.notes"
+    />
   </div>
 </template>
 
 <style scoped>
-.animate-fade-in {
-  margin-top: 10px;
-  animation: fadeIn 0.3s ease-in;
+.question-response {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
+.answer-options-grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 9px;
+}
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
+@media (max-width: 640px) {
+  .answer-options-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>

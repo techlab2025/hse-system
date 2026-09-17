@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, markRaw, onMounted, ref, watch } from 'vue'
+import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 
@@ -14,16 +14,14 @@ import IndexIndustryParams from '@/features/setting/Industries/Core/Params/index
 import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
 import { useRoute } from 'vue-router'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
-import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import type CertificateDetailsModel from '../../Data/models/CertificateDetailsModel'
 import EditCertificateParams from '../../Core/params/editCertificateParams'
 import AddCertificateParams from '../../Core/params/addCertificateParams'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import { isNull } from 'util'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
-import RadioButton from 'primevue/radiobutton'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
+import { CertificateTypeEnum } from '../../Core/Enums/CertificateTypeEnum'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const emit = defineEmits(['update:data'])
 
@@ -161,25 +159,33 @@ const updateData = () => {
   console.log(expiredate.value, 'expiredate.value')
   const params = props.data?.id
     ? new EditCertificateParams(
-      props.data.id,
-      translationsParams,
-      AllIndustry,
-      industry.value?.map((item) => item.id),
-      // ImageCahnge.value ? isBase64(image.value) ? image.value : ' ' : isBase64(image.value) && image.value.length > 0 ? image.value : '*',
-      // isBase64(image.value) && image.value.length > 0 ? image.value : null,
-      // ImageCahnge.value && isBase64(image.value) && image.value.length > 0 ? image.value :
-      // firstImage.value == image.value ? isBase64(firstImage.value) ? firstImage.value : '*' : image.value,
-      ImageCahnge.value && isBase64(image.value) && image.value.length > 0 ? image.value : firstImage.value == image.value ? null : '*',
-      null,
-      expiredate.value,
-    )
+        props.data.id,
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id),
+        // ImageCahnge.value ? isBase64(image.value) ? image.value : ' ' : isBase64(image.value) && image.value.length > 0 ? image.value : '*',
+        // isBase64(image.value) && image.value.length > 0 ? image.value : null,
+        // ImageCahnge.value && isBase64(image.value) && image.value.length > 0 ? image.value :
+        // firstImage.value == image.value ? isBase64(firstImage.value) ? firstImage.value : '*' : image.value,
+        ImageCahnge.value && isBase64(image.value) && image.value.length > 0
+          ? image.value
+          : firstImage.value == image.value
+            ? null
+            : '*',
+        null,
+        expiredate.value,
+        certificateType.value.id,
+        requireCertificate.value,
+      )
     : new AddCertificateParams(
-      translationsParams,
-      AllIndustry,
-      industry.value?.map((item) => item.id),
-      isBase64(image.value) && image.value.length > 0 ? image.value : null,
-      expiredate.value,
-    )
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id),
+        isBase64(image.value) && image.value.length > 0 ? image.value : null,
+        expiredate.value,
+        certificateType.value.id,
+        requireCertificate.value,
+      )
 
   console.log(params, 'params')
 
@@ -198,17 +204,17 @@ watch(
 
       langs.value = newData?.titles?.length
         ? newDefault.map((l) => {
-          const existing = newData.titles.find((t) => t.locale === l.locale)
-          return existing ?? { locale: l.locale, title: '' }
-        })
+            const existing = newData.titles.find((t) => t.locale === l.locale)
+            return existing ?? { locale: l.locale, title: '' }
+          })
         : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
       // descriptions
       langsDescription.value = newData?.descriptions?.length
         ? newDefault.map((l) => {
-          const existing = newData.descriptions.find((t) => t.locale === l.locale)
-          return existing ?? { locale: l.locale, title: '' }
-        })
+            const existing = newData.descriptions.find((t) => t.locale === l.locale)
+            return existing ?? { locale: l.locale, title: '' }
+          })
         : newDefault.map((l) => ({ locale: l.locale, title: '' }))
 
       allIndustries.value = newData?.allIndustries ?? 0
@@ -216,18 +222,26 @@ watch(
       image.value = newData?.image ? newData?.image : ''
       firstImage.value = newData?.image ? newData?.image : ''
       expiredate.value = newData?.requireExpiredDate ?? false
+      certificateType.value =
+        certificateTypes.value.find(
+          (type) => type.id === newData?.certificateType?.id,
+        ) ?? certificateTypes.value[0]
+      requireCertificate.value = newData?.requireCertificate ?? false
     }
   },
   { immediate: true },
 )
 
-watch(() => image.value, (newValue) => {
-  if (newValue == props?.data?.image) {
-    ImageCahnge.value = false
-  } else {
-    ImageCahnge.value = true
-  }
-})
+watch(
+  () => image.value,
+  (newValue) => {
+    if (newValue == props?.data?.image) {
+      ImageCahnge.value = false
+    } else {
+      ImageCahnge.value = true
+    }
+  },
+)
 
 // Auto-update emit whenever key data changes
 watch(
@@ -273,12 +287,115 @@ const updateExpireDate = (data: boolean) => {
   console.log(expiredate.value, 'expiredate')
   updateData()
 }
+
+const requireCertificate = ref<boolean>(false)
+const updateRequireCertificate = (data: boolean) => {
+  requireCertificate.value = data
+  updateData()
+}
+
+const certificateTypes = ref<TitleInterface[]>([
+  new TitleInterface({
+    id: CertificateTypeEnum.SCALE,
+    title: 'skill',
+  }),
+  new TitleInterface({
+    id: CertificateTypeEnum.AWARENESS,
+    title: 'awareness',
+  }),
+  new TitleInterface({
+    id: CertificateTypeEnum.KNOWLEDGE,
+    title: 'knowledge',
+  }),
+])
+const certificateType = ref<TitleInterface>(
+  certificateTypes.value[0],
+)
+const updateCertificateType = (data: TitleInterface) => {
+  certificateType.value = data
+  console.log(certificateType.value, 'certificateType')
+  updateData()
+}
+
+type RequiredFieldRule = {
+  key: string
+  message: string
+  isMissing: () => boolean
+}
+
+const requiredFieldErrors = ref<Record<string, string>>({})
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+const hasLangValue = () => langs.value.some((lang) => hasValue(lang.title))
+
+const requiredFields = computed<RequiredFieldRule[]>(() => [
+  {
+    key: 'langs',
+    message: 'Name Is Required',
+    isMissing: () => !hasLangValue(),
+  },
+  {
+    key: 'industry',
+    message: 'Industry Is Required',
+    isMissing: () =>
+      user.user?.type === OrganizationTypeEnum.ADMIN &&
+      !allIndustries.value &&
+      !industry.value?.length,
+  },
+])
+
+const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
+
+const clearResolvedRequiredErrors = () => {
+  requiredFields.value.forEach((field) => {
+    if (requiredFieldErrors.value[field.key] && !field.isMissing()) {
+      const { [field.key]: _removed, ...rest } = requiredFieldErrors.value
+      requiredFieldErrors.value = rest
+    }
+  })
+}
+
+const scrollToRequiredField = async (key: string) => {
+  await nextTick()
+  document.querySelector<HTMLElement>(`[data-required-field="${key}"]`)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
+}
+
+const validateRequiredFields = async () => {
+  clearResolvedRequiredErrors()
+  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
+    errors[field.key] = field.message
+    return errors
+  }, {})
+
+  if (!missedFields.length) return true
+
+  new OpenWarningDilaog(missedFields[0].message).openDialog()
+  await scrollToRequiredField(missedFields[0].key)
+  return false
+}
+
+defineExpose({
+  validateRequiredFields,
+})
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="(val) => (langs = val)"
-      :required="true" />
+  <div class="col-span-4 md:col-span-2" data-required-field="langs">
+    <LangTitleInput
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="(val) => (langs = val)"
+      :required="true"
+      :label="`certtificate_title`"
+      :placeholder="$t('certtificate_title')"
+    />
+    <p v-if="getFieldError('langs')" class="required-field-message">
+      {{ getFieldError('langs') }}
+    </p>
   </div>
 
   <!-- <div class="input-wrapper col-span-4">
@@ -287,28 +404,91 @@ const updateExpireDate = (data: boolean) => {
   </div> -->
 
   <div class="input-wrapper col-span-2 mt-6">
-    <CustomCheckbox :title="`expire_date_required`" :checked="expiredate" @update:checked="updateExpireDate" />
+    <CustomCheckbox
+      :index="1"
+      :title="`expiry_date_required`"
+      :checked="expiredate"
+      @update:checked="updateExpireDate"
+    />
   </div>
 
-  <div class="col-span-4 md:col-span-4">
-    <LangTitleInput :label="$t('description')" :langs="langDefaultDescription" :modelValue="langsDescription"
-      field-type="description" @update:modelValue="(val) => (langsDescription = val)" type="textarea"
-      :required="false" />
+
+  <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput
+      :modelValue="certificateType"
+      :static-options="certificateTypes"
+      :label="$t('certificate_type')"
+      id="certificate_type"
+      :placeholder="$t('select_training_type')"
+      @update:modelValue="updateCertificateType"
+    />
   </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum?.ADMIN">
+  <div class="input-wrapper col-span-2 mt-6">
+    <CustomCheckbox
+      :index="2"
+      :title="`require_certificate`"
+      :checked="requireCertificate"
+      @update:checked="updateRequireCertificate"
+    />
+  </div>
+  <!-- <div class="col-span-4 md:col-span-4">
+    <LangTitleInput
+      :label="$t('description')"
+      :langs="langDefaultDescription"
+      :modelValue="langsDescription"
+      field-type="description"
+      @update:modelValue="(val) => (langsDescription = val)"
+      type="textarea"
+      :required="false"
+    />
+  </div> -->
+
+  <div
+    class="col-span-4 md:col-span-2 input-wrapper check-box"
+    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="1" v-model="allIndustries" :checked="allIndustries == 1" />
   </div>
 
-  <div class="col-span-4 md:col-span-2" v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN">
-    <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams"
-      :label="$t('all_industries')" id="all_industries" placeholder="Select industry" :type="2"
-      @update:modelValue="(val) => (industry = val)" />
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
+    data-required-field="industry"
+  >
+    <CustomSelectInput
+      :modelValue="industry"
+      :controller="industryController"
+      :params="industryParams"
+      :label="$t('all_industries')"
+      id="all_industries"
+      placeholder="Select industry"
+      :type="2"
+      @update:modelValue="(val) => (industry = val)"
+    />
+    <p v-if="getFieldError('industry')" class="required-field-message">
+      {{ getFieldError('industry') }}
+    </p>
   </div>
 
-  <div class="col-span-4 md:col-span-4">
-    <SingleFileUpload :returnType="`base64`" v-model="image" @update:modelValue="setImage" label="Image" id="image"
-      placeholder="Select image" />
-  </div>
+  <!-- <div class="col-span-4 md:col-span-4">
+    <SingleFileUpload
+      :returnType="`base64`"
+      v-model="image"
+      @update:modelValue="setImage"
+      label="Image"
+      id="image"
+      placeholder="Select image"
+    />
+  </div> -->
 </template>
+
+<style scoped>
+.required-field-message {
+  margin-top: 0.35rem;
+  color: var(--status-danger);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+</style>

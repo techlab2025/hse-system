@@ -6,13 +6,13 @@
   width: 100%;
   font-family: 'Light';
   // height: 50vh;
-  border: 1px solid #f8f8f8;
+  border: 1px solid var(--surface-1);
   // margin-top: $XlSize2;
   border-radius: $XlSize;
 
   .template-document-header {
-    // background-color: #f8f8f8;
-    background-color: #e6e8ea;
+    // background-color: var(--surface-1);
+    background-color: var(--surface-2);
     border-top-left-radius: $XlSize;
     border-top-right-radius: $XlSize;
     width: 100%;
@@ -29,7 +29,7 @@
       gap: $XsSize2;
       .header-title {
         font-family: 'Regular';
-        color: #041953;
+        color: var(--brand-primary-800);
         font-size: calc($XlSize + 2px);
         font-weight: $BaseFontWeightBold;
       }
@@ -41,9 +41,9 @@
         p {
           font-size: $XsSize;
           font-weight: $BaseFontMediumWeight;
-          color: #6b7280;
+          color: var(--text-soft);
           span {
-            color: #121212;
+            color: var(--text-strong);
           }
         }
       }
@@ -60,7 +60,7 @@
       margin-top: $XsSize4;
       @include flex-column(nowrap, flex-start, flex-start);
       gap: 20px;
-      background-color: white;
+      background-color: var(--surface-1);
       z-index: 999;
       position: relative;
       border-radius: 0 0 15px 15px;

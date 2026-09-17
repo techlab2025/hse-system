@@ -9,8 +9,6 @@ import type { Router } from 'vue-router'
 // import { useUserStore } from '@/stores/user'
 import SerialNumUseCase from '../../Domain/useCase/createSerialNumUseCase'
 import type SerialNumberModel from '../../Data/models/serialNumberModel'
-import IndexProjectProgressController from '@/features/Organization/ProjectPrgoress/Presentation/controllers/indexProjectProgressController'
-import IndexProjectProgressParams from '@/features/Organization/ProjectPrgoress/Core/params/indexProjectProgressParams'
 
 export default class SerialNumController extends ControllerInterface<SerialNumberModel> {
   private static instance: SerialNumController
@@ -27,7 +25,7 @@ export default class SerialNumController extends ControllerInterface<SerialNumbe
   }
 
   async addSerialNumber(params: Params, router: Router) {
-    // useLoaderStore().setLoadingWithDialog();
+    this.setLoading()
     try {
       const dataState: DataState<SerialNumberModel> = await this.AddSerialNumberUseCase.call(params)
       this.setState(dataState)
@@ -42,9 +40,6 @@ export default class SerialNumController extends ControllerInterface<SerialNumbe
         if (router.currentRoute?.value?.path.includes('serial-number')) {
           router.push('/organization/serial-number')
         }
-        await IndexProjectProgressController.getInstance().getData(
-          new IndexProjectProgressParams('', 1, 10, 0),
-        )
         // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({

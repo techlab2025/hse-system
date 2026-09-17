@@ -16,11 +16,11 @@
   // overflow-x: auto;
   max-width: 100%;
   // min-height: 300vh;
-  // color: rgba(29, 79, 216, 0.253);
-  // color: rgba(242, 178, 178, 0.466);
+  // color: color-mix(in srgb, var(--brand-primary-500) 25.3%, transparent);
+  // color: color-mix(in srgb, var(--status-danger-soft) 46.6%, transparent);
   // background-image: linear-gradient(
   //   to bottom ,
-  //   rgb(29, 78, 216),
-  //   rgba(29, 79, 178, 0.322)
+  //   var(--brand-primary-500),
+  //   color-mix(in srgb, var(--brand-primary-600) 32.2%, transparent)
   // );
 }

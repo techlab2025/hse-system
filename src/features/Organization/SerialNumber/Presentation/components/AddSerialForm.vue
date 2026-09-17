@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import ImportantIcon from '@/shared/icons/ImportantIcon.vue'
 import { SerialNumberEnum } from '../../Core/Enums/serialNum'
 import AddSerialNumberParams from '../../Core/params/addSerialNumberParams'
 import { onMounted, ref } from 'vue'
@@ -15,10 +14,15 @@ import AccordionContent from 'primevue/accordioncontent'
 import { SertialNumberStatusEnum } from '../../Core/Enums/SerialNumberStatusEnum'
 import IndexProjectProgressController from '../../../ProjectPrgoress/Presentation/controllers/indexProjectProgressController'
 import IndexProjectProgressParams from '@/features/Organization/ProjectPrgoress/Core/params/indexProjectProgressParams'
+import PathSerial from '@/shared/icons/pathSerial.vue'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 
 const showSerialNumController = ShowSerialNumController.getInstance()
+const projectStatus = useProjectAppStatusStore()
 const emit = defineEmits(['update:data', 'close:dialog'])
 const router = useRouter()
+const stayOnPageRouter = createStayOnPageRouter(router)
 const props = defineProps<{
   serialType: SertialNumberStatusEnum
 }>()
@@ -27,16 +31,19 @@ const SERIAL_TITLES: Record<SerialNumberEnum, string> = {
   [SerialNumberEnum.EQUIPMENT]: 'Equipment',
   [SerialNumberEnum.PROJECT]: 'Project',
   [SerialNumberEnum.EMPLOYEE]: 'Employee',
-  [SerialNumberEnum.AccidentsType]: 'Accidents Type',
+  [SerialNumberEnum.AccidentsType]: 'Incident Type',
   [SerialNumberEnum.CONTRACTOR]: 'Contractor',
-  [SerialNumberEnum.HazardType]: 'Hazard Type',
+  // [SerialNumberEnum.HazardType]: 'Hazard Type',
   [SerialNumberEnum.OBSERVATION]: 'Observation',
-  [SerialNumberEnum.ObservationType]: 'Observation Type',
+  // [SerialNumberEnum.ObservationType]: 'Observation Type',
   // [SerialNumberEnum.PROJECTLOCATION]: 'Project Location',
   // [SerialNumberEnum.PROJECTZONE]: 'Project Zone',
-  [SerialNumberEnum.TASK]: 'Task',
+  // [SerialNumberEnum.TASK]: 'Task',
   [SerialNumberEnum.WAREHOUSE]: 'Warehouse',
   // [SerialNumberEnum.ZONE]: 'Zone',
+  [SerialNumberEnum.INVESTIGATION]: 'Investigation',
+  [SerialNumberEnum.CAPA]: 'CAPA',
+  [SerialNumberEnum.INCIDANT]: 'Incident',
 }
 const getTitle = (type: SerialNumberEnum) => SERIAL_TITLES[type]
 
@@ -68,15 +75,15 @@ const fields = ref([
     suffix: '',
     start: '',
   },
-  {
-    id: 4,
-    serialNumberType: SerialNumberEnum.AccidentsType,
-    name: SerialNumberEnum.AccidentsType,
-    title: getTitle(SerialNumberEnum.AccidentsType),
-    prefix: '',
-    suffix: '',
-    start: '',
-  },
+  // {
+  //   id: 4,
+  //   serialNumberType: SerialNumberEnum.AccidentsType,
+  //   name: SerialNumberEnum.AccidentsType,
+  //   title: getTitle(SerialNumberEnum.AccidentsType),
+  //   prefix: '',
+  //   suffix: '',
+  //   start: '',
+  // },
   {
     id: 5,
     serialNumberType: SerialNumberEnum.CONTRACTOR,
@@ -86,15 +93,15 @@ const fields = ref([
     suffix: '',
     start: '',
   },
-  {
-    id: 6,
-    serialNumberType: SerialNumberEnum.HazardType,
-    name: SerialNumberEnum.HazardType,
-    title: getTitle(SerialNumberEnum.HazardType),
-    prefix: '',
-    suffix: '',
-    start: '',
-  },
+  // {
+  //   id: 6,
+  //   serialNumberType: SerialNumberEnum.HazardType,
+  //   name: SerialNumberEnum.HazardType,
+  //   title: getTitle(SerialNumberEnum.HazardType),
+  //   prefix: '',
+  //   suffix: '',
+  //   start: '',
+  // },
 
   {
     id: 8,
@@ -105,15 +112,15 @@ const fields = ref([
     suffix: '',
     start: '',
   },
-  {
-    id: 9,
-    serialNumberType: SerialNumberEnum.ObservationType,
-    name: SerialNumberEnum.ObservationType,
-    title: getTitle(SerialNumberEnum.ObservationType),
-    prefix: '',
-    suffix: '',
-    start: '',
-  },
+  // {
+  //   id: 9,
+  //   serialNumberType: SerialNumberEnum.ObservationType,
+  //   name: SerialNumberEnum.ObservationType,
+  //   title: getTitle(SerialNumberEnum.ObservationType),
+  //   prefix: '',
+  //   suffix: '',
+  //   start: '',
+  // },
   // {
   //   id: 10,
   //   serialNumberType: SerialNumberEnum.PROJECTLOCATION,
@@ -133,15 +140,15 @@ const fields = ref([
   //   start: '',
   // },
 
-  {
-    id: 12,
-    serialNumberType: SerialNumberEnum.TASK,
-    name: SerialNumberEnum.TASK,
-    title: getTitle(SerialNumberEnum.TASK),
-    prefix: '',
-    suffix: '',
-    start: '',
-  },
+  // {
+  //   id: 12,
+  //   serialNumberType: SerialNumberEnum.TASK,
+  //   name: SerialNumberEnum.TASK,
+  //   title: getTitle(SerialNumberEnum.TASK),
+  //   prefix: '',
+  //   suffix: '',
+  //   start: '',
+  // },
   // {
   //   id: 13,
   //   serialNumberType: SerialNumberEnum.ZONE,
@@ -160,27 +167,81 @@ const fields = ref([
     suffix: '',
     start: '',
   },
+  {
+    id: 15,
+    serialNumberType: SerialNumberEnum.INVESTIGATION,
+    name: SerialNumberEnum.INVESTIGATION,
+    title: getTitle(SerialNumberEnum.INVESTIGATION),
+    prefix: '',
+    suffix: '',
+    start: '',
+  },
+  {
+    id: 16,
+    serialNumberType: SerialNumberEnum.CAPA,
+    name: SerialNumberEnum.CAPA,
+    title: getTitle(SerialNumberEnum.CAPA),
+    prefix: '',
+    suffix: '',
+    start: '',
+  },
+  {
+    id: 17,
+    serialNumberType: SerialNumberEnum.INCIDANT,
+    name: SerialNumberEnum.INCIDANT,
+    title: getTitle(SerialNumberEnum.INCIDANT),
+    prefix: '',
+    suffix: '',
+    start: '',
+  },
 ])
 
-const sendData = async () => {
-  fields.value.map((el) => {
-    if (!el.prefix && !el.suffix && !el.start) {
-      el.name = 0
-    }
-  })
-
-  const params = new CreateCodingSystemParams(props.serialType == SertialNumberStatusEnum.AUTO ? fields.value.filter((el) => el.name != 0) : [], props.serialType)
-  const state = await SerialNumController.getInstance().addSerialNumber(params, router)
-  if (state.value.data) {
-    await IndexProjectProgressController.getInstance().getData(
-      new IndexProjectProgressParams('', 1, 10, 0),
+const submitSerialData = async (saveAndNew: boolean) => {
+  const codes = fields.value
+    .filter((field) => field.prefix || field.suffix || field.start)
+    .map(
+      (field) =>
+        new AddSerialNumberParams(
+          field.serialNumberType,
+          field.prefix,
+          field.suffix,
+          field.start,
+          field.title,
+        ),
     )
-  }
-  emit('close:dialog')
-  emit('update:data')
-  // location.reload()
 
+  const params = new CreateCodingSystemParams(
+    props.serialType == SertialNumberStatusEnum.AUTO ? codes : [],
+    props.serialType,
+  )
+  const serialNumController = SerialNumController.getInstance()
+  serialNumController.setLoading()
+  await serialNumController.addSerialNumber(params, saveAndNew ? stayOnPageRouter : router)
+
+  if (!serialNumController.isDataSuccess()) return
+
+  if (saveAndNew) {
+    fields.value = fields.value.map((field) => ({
+      ...field,
+      prefix: '',
+      suffix: '',
+      start: '',
+    }))
+    return
+  }
+
+  if (route.path.includes('project-progress')) {
+    emit('update:data')
+  } else {
+    await refreshSerialData()
+  }
+
+  emit('close:dialog')
+  // location.reload()
 }
+
+const sendData = () => submitSerialData(false)
+const saveAndNew = () => submitSerialData(true)
 
 const ShowData = async () => {
   const showSerialNumberParams = new ShowSerialNumberParams()
@@ -198,11 +259,23 @@ const ShowData = async () => {
   }
 }
 
+const refreshAppStatus = async () => {
+  const state = await IndexProjectProgressController.getInstance().getData(
+    new IndexProjectProgressParams('', 1, 10, 0),
+  )
+
+  if (state.value.data) {
+    projectStatus.setProjectAppStatus(state.value.data)
+  }
+}
+
+const refreshSerialData = async () => {
+  await ShowData()
+  await refreshAppStatus()
+}
+
 onMounted(async () => {
   await ShowData()
-  // await IndexProjectProgressController.getInstance().getData(
-  //   new IndexProjectProgressParams('', 1, 10, 0),
-  // )
 })
 const route = useRoute()
 </script>
@@ -210,8 +283,12 @@ const route = useRoute()
 <template>
   <form @submit.prevent="sendData" class="serial-form container">
     <div v-if="serialType == SertialNumberStatusEnum.MANUAL" class="serial-overlay"></div>
-    <div v-for="field in fields" :key="field.id" class="serial-form-section"
-      :class="serialType == SertialNumberStatusEnum.MANUAL ? 'opacity' : ''">
+    <div
+      v-for="field in fields"
+      :key="field.id"
+      class="serial-form-section"
+      :class="serialType == SertialNumberStatusEnum.MANUAL ? 'opacity' : ''"
+    >
       <div class="serial-number-input-fields flex flex-col gap-5 w-full">
         <Accordion :value="field.id" class="w-full" expandIcon="null" collapseIcon="null" lazy>
           <AccordionPanel :value="1" :header="field.title" class="w-full">
@@ -222,23 +299,35 @@ const route = useRoute()
             </AccordionHeader>
             <AccordionContent>
               <div class="grid lg:grid-cols-3 sm:grid-cols-1 gap-4">
-                <div class="input-wrapper star">
-                  <label>{{ $t('prefix') }}
-                    <ImportantIcon />
+                <div class="input-wrapper star field-required">
+                  <label
+                    >{{ $t('prefix') }}
+                    <!-- <ImportantIcon /> -->
                   </label>
                   <input type="text" v-model="field.prefix" placeholder="Enter your prefix" />
                 </div>
-                <div class="input-wrapper star">
-                  <label>{{ $t('suffix') }}
-                    <ImportantIcon />
+                <div class="input-wrapper star field-required">
+                  <label
+                    >{{ $t('suffix') }}
+                    <!-- <ImportantIcon /> -->
                   </label>
                   <input type="text" v-model="field.suffix" placeholder="Enter your suffix" />
                 </div>
-                <div class="input-wrapper star">
-                  <label>{{ $t('start') }}
-                    <ImportantIcon />
+                <div class="input-wrapper star field-required">
+                  <label
+                    >{{ $t('start number') }}
+                    <!-- <ImportantIcon /> -->
                   </label>
                   <input type="text" v-model="field.start" placeholder="Enter your start" />
+                </div>
+                <div class="generated-serial">
+                  <div class="icon-text">
+                    <PathSerial />
+                    <p>Generated Serial number Example:</p>
+                  </div>
+                  <div class="cards">
+                    <p>{{ field.prefix }}-{{ field.start }}-{{ field.suffix }}</p>
+                  </div>
                 </div>
               </div>
             </AccordionContent>
@@ -247,13 +336,79 @@ const route = useRoute()
       </div>
     </div>
 
-    <div class="form-sticky-button flex gap-2">
-      <router-link v-if="!route.path.includes('project-progress')" to="/organization" class="btn btn-cancel"
-        style="width: 15%">{{
-          $t('cancel')
-        }}</router-link>
-      <button type="submit" class="btn btn-primary"
-        :style="!route.path.includes('project-progress') ? 'width: 85%' : 'width: 100%'">{{ $t('save') }}</button>
+    <div class="form-sticky-button flex gap-2 create-form-actions">
+      <router-link
+        v-if="!route.path.includes('project-progress')"
+        to="/organization"
+        class="btn btn-cancel"
+        style="width: 15%"
+        >{{ $t('cancel') }}</router-link
+      >
+      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+        {{ $t('save and new') }}
+      </button>
+      <button type="submit" class="btn btn-primary">
+        {{ route.path.includes('project-progress') ? $t('save and next step') : $t('save') }}
+      </button>
     </div>
   </form>
 </template>
+
+<style lang="scss" scoped>
+.generated-serial {
+  background-color: var(--brand-primary-50);
+  border-radius: 24px;
+  padding: 1rem;
+  width: 100%;
+  grid-column: span 3;
+
+  display: flex;
+  align-items: end;
+  gap: 0.5rem;
+  // justify-content: space-between;
+  // display: grid;
+  // grid-template-columns: 1fr 1fr;
+  margin: 0 1.1rem;
+
+  .icon-text {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    p {
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: 'regular';
+      color: var(--text-strong);
+    }
+  }
+
+  .cards {
+    // display: flex;
+    // gap: 1rem;
+    // flex-wrap: wrap;
+    // justify-content: space-between;
+    // display: grid;
+    // grid-template-columns: 1fr 1fr 1fr 1fr;
+
+    // @media (max-width: 1100px) {
+    //   grid-template-columns: 1fr 1fr 1fr;
+    // }
+
+    // @media (max-width: 768px) {
+    //   grid-template-columns: 1fr 1fr;
+    // }
+
+    p {
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: 'regular';
+      color: var(--text-soft);
+
+      span {
+        color: var(--text-strong);
+      }
+    }
+  }
+}
+</style>

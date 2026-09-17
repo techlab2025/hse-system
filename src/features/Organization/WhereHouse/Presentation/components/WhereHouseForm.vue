@@ -1,17 +1,17 @@
 <script lang="ts" setup>
-import { ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import EditWhereHouseParams from '../../Core/params/editWhereHouseParams'
 import AddWhereHouseParams from '../../Core/params/addWhereHouseParams'
 import type WhereHouseDetailsModel from '../../Data/models/WhereHouseDetailsModel'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { useRoute } from 'vue-router'
 import IndexWhereHouseTypeController from '@/features/Organization/WhereHouseType/Presentation/controllers/indexWhereHouseTypeController'
 import IndexWhereHouseTypeParams from '@/features/Organization/WhereHouseType/Core/params/indexWhereHouseTypeParams'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import AddWhereHouseType from '@/features/Organization/WhereHouseType/Presentation/components/AddWhereHouseType.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -48,7 +48,7 @@ const UpdateSerial = (data) => {
   SerialNumber.value = data.target.value
   updateData()
 }
-const SelectedWhereHouseType = ref<TitleInterface>()
+const SelectedWhereHouseType = ref<TitleInterface | null>(null)
 
 watch(
   [() => props.data],
@@ -57,9 +57,15 @@ watch(
     Name.value = newData?.name
     const savedLocale = localStorage.getItem('lang')
     SelectedWhereHouseType.value = new TitleInterface({
-      id: newData?.warehouse_type?.id,
-      title: newData?.warehouse_type?.titles,
-    })
+  id: newData?.warehouse_type?.id,
+  title: newData?.warehouse_type?.titles?.find(
+    item => item.locale === savedLocale
+  )?.title ?? ''
+})
+    // SelectedWhereHouseType.value = new TitleInterface({
+    //   id: newData?.warehouse_type?.id,
+    //   title: newData?.warehouse_type?.titles,
+    // })
   },
   { immediate: true },
 )
@@ -77,10 +83,61 @@ const setName = (data) => {
   updateData()
 }
 const WarehouseTypeDialog = ref<boolean>(false)
+
+type RequiredFieldRule = {
+  key: string
+  message: string
+  isMissing: () => boolean
+}
+
+const requiredFieldErrors = ref<Record<string, string>>({})
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value)?.trim()?.length > 0
+
+const requiredFields = computed<RequiredFieldRule[]>(() => [
+  {
+    key: 'Name',
+    message: 'Name Is Required',
+    isMissing: () => !hasValue(Name.value),
+  },
+  {
+    key: 'SelectedWhereHouseType',
+    message: 'Warehouse Type Is Required',
+    isMissing: () => !SelectedWhereHouseType.value?.id,
+  },
+])
+
+const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
+
+const scrollToRequiredField = async (key: string) => {
+  await nextTick()
+  document.querySelector<HTMLElement>(`[data-required-field="${key}"]`)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
+}
+
+const validateRequiredFields = async () => {
+  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
+    errors[field.key] = field.message
+    return errors
+  }, {})
+
+  if (!missedFields?.length) return true
+
+  new OpenWarningDilaog(missedFields[0].message).openDialog()
+  await scrollToRequiredField(missedFields[0].key)
+  return false
+}
+
+defineExpose({
+  validateRequiredFields,
+})
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Name">
     <label for="name">{{ $t('name') }}</label>
     <input
       type="text"
@@ -90,10 +147,13 @@ const WarehouseTypeDialog = ref<boolean>(false)
       @input="setName"
       :placeholder="$t('Enter Name')"
     />
+    <p v-if="getFieldError('Name')" class="required-field-message">
+      {{ getFieldError('Name') }}
+    </p>
   </div>
 
   <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
-    <label for="serialNumber">{{ $t('refrence_number') }}</label>
+    <label for="serialNumber">{{ $t('serial_number') }}</label>
     <input
       type="text"
       v-model="SerialNumber"
@@ -108,21 +168,30 @@ const WarehouseTypeDialog = ref<boolean>(false)
     />
   </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <!-- <CustomSelectInput :required="false" :modelValue="SelectedWhereHouseType"
-      :controller="indexWhereHouseTypeController" :params="indexWhereHouseTypeParams" :label="$t('Where House Type')"
-      id="Equipment" placeholder="Select Where House Type" @update:modelValue="setSelectedWhereHouseType" /> -->
-    <UpdatedCustomInputSelect
-      :required="false"
-      :modelValue="SelectedWhereHouseType"
+  <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="SelectedWhereHouseType">
+    <!-- <CustomSelectInput
+     :required="true"
+      :model-value="SelectedWhereHouseType"
       :controller="indexWhereHouseTypeController"
       :params="indexWhereHouseTypeParams"
       :label="$t('warehouse_type')"
-      id="Equipment"
+      :id="`where houese type`"
       placeholder="Select Warehouse Type"
       @update:modelValue="setSelectedWhereHouseType"
-      :isDialog="true"
-      :dialogVisible="WarehouseTypeDialog"
+       /> -->
+
+   
+    <UpdatedCustomInputSelect
+    :model-value="SelectedWhereHouseType"
+    :controller="indexWhereHouseTypeController"
+    :params="indexWhereHouseTypeParams"
+    :label="$t('warehouse_type')"
+    :id="`where houese type`"
+    :placeholder="$t('Select Warehouse Type')"
+    @update:model-value="setSelectedWhereHouseType"
+    :isDialog="true"
+    v-model:dialogVisible="WarehouseTypeDialog"
+    :required="true"
     >
       <template #LabelHeader>
         <span class="add-dialog" @click="WarehouseTypeDialog = true">New</span>
@@ -131,5 +200,17 @@ const WarehouseTypeDialog = ref<boolean>(false)
         <AddWhereHouseType @update:data="WarehouseTypeDialog = false" />
       </template>
     </UpdatedCustomInputSelect>
+    <p v-if="getFieldError('SelectedWhereHouseType')" class="required-field-message">
+      {{ getFieldError('SelectedWhereHouseType') }}
+    </p>
   </div>
 </template>
+
+<style scoped>
+.required-field-message {
+  margin-top: 0.35rem;
+  color: var(--status-danger);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+</style>

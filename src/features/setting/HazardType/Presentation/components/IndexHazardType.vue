@@ -22,25 +22,21 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import ShowProjectIcon from '@/shared/icons/ShowProjectIcon.vue'
 import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
-import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
+import * as XLSX from 'xlsx'
+import { saveAs } from 'file-saver'
 import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
-import SystemWarehouseTypes from '@/features/Organization/WhereHouseType/Presentation/supcomponents/SystemWarehouseTypes.vue'
 import SystemHazardTypes from '../supcomponents/SystemHazardTypes.vue'
+import Dialog from 'primevue/dialog'
+import UploadHazardTypeExeclSheet from './UploadHazardTypeExeclSheet.vue'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -65,9 +61,18 @@ const fetchHazardType = async (
   perPage: number = 10,
   withPage: number = 1,
   parent_id?: number = route.params.parent_id ? Number(route.params.parent_id) : null,
-  parent_type?: HazardTypeParentEnum = route.params.parent_id ? HazardTypeParentEnum.Child : HazardTypeParentEnum.Parent,
+  parent_type?: HazardTypeParentEnum = route.params.parent_id
+    ? HazardTypeParentEnum.Child
+    : HazardTypeParentEnum.Parent,
 ) => {
-  const deleteHazardTypeParams = new IndexHazardTypeParams(query, pageNumber, perPage, withPage, Number(parent_id), parent_type)
+  const deleteHazardTypeParams = new IndexHazardTypeParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    Number(parent_id),
+    parent_type,
+  )
   await indexHazardTypeController.getData(deleteHazardTypeParams)
 }
 
@@ -76,7 +81,14 @@ onMounted(() => {
 })
 
 const searchHazardType = debounce(() => {
-  fetchHazardType(word.value, currentPage.value, countPerPage.value, 1, route.params.parent_id ? route.params.parent_id : null, route.params.parent_id ? HazardTypeParentEnum.Child : HazardTypeParentEnum.Parent)
+  fetchHazardType(
+    word.value,
+    currentPage.value,
+    countPerPage.value,
+    1,
+    route.params.parent_id ? route.params.parent_id : null,
+    route.params.parent_id ? HazardTypeParentEnum.Child : HazardTypeParentEnum.Parent,
+  )
 })
 
 const deleteHazardType = async (id: number) => {
@@ -110,12 +122,25 @@ watch(
 )
 
 const { user } = useUserStore()
+const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+const onFileSelected = (e: Event) => {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  ;(e.target as HTMLInputElement).value = ''
+}
 
 const HazardTypeactionList = (id: number, deleteHazardType: (id: number) => void) => [
   {
     text: t('edit'),
     icon: ActionsTableEdit,
-    link: route.params?.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}?hazard=1&parent_id=${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}`,
+    link: route.params?.parent_id
+      ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}?hazard=1&parent_id=${route.params.parent_id}`
+      : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}`,
     permission: [
       PermissionsEnum.HAZARD_TYPE_UPDATE,
       PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
@@ -167,7 +192,9 @@ const HazardactionList = (id: number, deleteHazardType: (id: number) => void) =>
   {
     text: t('edit'),
     icon: IconEdit,
-    link: route.params?.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}?hazard=1&parent_id=${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}`,
+    link: route.params?.parent_id
+      ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}?hazard=1&parent_id=${route.params.parent_id}`
+      : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${id}`,
     permission: [
       PermissionsEnum.HAZARD_TYPE_UPDATE,
       PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
@@ -193,34 +220,52 @@ const HazardactionList = (id: number, deleteHazardType: (id: number) => void) =>
   },
 ]
 
-watch(() => route.params.parent_id, (newVal) => {
-  // ParentId = newVal
-  fetchHazardType('', currentPage.value, countPerPage.value, 1, route.params.parent_id, route.params.parent_id ? HazardTypeParentEnum?.Child : HazardTypeParentEnum?.Parent)
-})
+watch(
+  () => route.params.parent_id,
+  (newVal) => {
+    // ParentId = newVal
+    fetchHazardType(
+      '',
+      currentPage.value,
+      countPerPage.value,
+      1,
+      route.params.parent_id,
+      route.params.parent_id ? HazardTypeParentEnum?.Child : HazardTypeParentEnum?.Parent,
+    )
+  },
+)
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
-    alert("No data available to export");
-    return;
+    alert('No data available to export')
+    return
   }
-  const worksheetData = state.value.data.map(
-    (item: Record<string, unknown>) => {
-      const it = item as any;
-      return {
-        "title": it.title || "N/A",
-      };
-    },
-  );
-  const worksheet = XLSX.utils.json_to_sheet(worksheetData);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
-  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
-  saveAs(data, "Hazard-type.xlsx");
-};
+  const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
+    const it = item as any
+    return {
+      title: it.title || 'N/A',
+    }
+  })
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Invoices')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(data, 'Hazard-type.xlsx')
+}
+
+const DownloadExample = () => {
+  const worksheetData = [{ title: 'Example Hazard Type' }, { title: 'Example Hazard Type 2' }]
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'HazardTypes')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(blob, 'hazard_type_form.xlsx')
+}
 
 const IndexHazardTypeactionList = () => [
   {
-    text: t('export_excel'),
+    text: t('export_to_excel'),
     icon: ExceIcon,
     action: () => exportExcel(),
     type: ActionItemsTypeEnum.Success,
@@ -232,23 +277,27 @@ const IndexHazardTypeactionList = () => [
   },
   {
     text: t(`${route.params?.parent_id ? t('Add_Hazard') : t('Add_HazardType')}`),
-    link: route.params?.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params?.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`,
+    link: route.params?.parent_id
+      ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params?.parent_id}`
+      : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`,
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
-    permission: [
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.HAZARD_TYPE_CREATE
-    ],
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HAZARD_TYPE_CREATE],
   },
   {
-    text: t('import_hazard_type'),
+    text: t('upload_complated_template'),
     type: ActionItemsTypeEnum.Warning,
-    link: `/organization/hazard-type/upload-excel`,
+    action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
-    permission: [
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.HAZARD_TYPE_CREATE
-    ],
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HAZARD_TYPE_CREATE],
+  },
+  {
+    text: t('download_excel_template'),
+    icon: ExceIcon,
+    action: () => DownloadExample(),
+    type: ActionItemsTypeEnum.Success,
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HAZARD_TYPE_CREATE],
   },
 ]
 </script>
@@ -259,7 +308,13 @@ const IndexHazardTypeactionList = () => [
       <span class="icon-remove" @click="((word = ''), searchHazardType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchHazardType" />
+      <input
+        v-model="word"
+        :placeholder="'search'"
+        class="input"
+        type="text"
+        @input="searchHazardType"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
@@ -294,32 +349,40 @@ const IndexHazardTypeactionList = () => [
         <SystemHazardTypes />
       </PermissionBuilder> -->
 
-      <ActionsList :show-actions="true" :actionList="IndexHazardTypeactionList()" :actionsNumber="4">
+      <ActionsList
+        :feature-name="
+          route.params?.parent_id ? 'action_feature_hazards' : 'action_feature_hazard_types'
+        "
+        :show-actions="true"
+        :actionList="IndexHazardTypeactionList()"
+        :actionsNumber="5"
+      >
         <template #custom>
           <!-- <SystemHazardTypes /> -->
           <ExportPdf :isDropList="true" />
         </template>
       </ActionsList>
     </div>
-    
-    <SystemHazardTypes :isHeaderTap="true" />
 
+    <SystemHazardTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ADMIN,
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.HAZARD_TYPE_ALL,
-    PermissionsEnum.HAZARD_TYPE_DELETE,
-    PermissionsEnum.HAZARD_TYPE_FETCH,
-    PermissionsEnum.HAZARD_TYPE_UPDATE,
-    PermissionsEnum.HAZARD_TYPE_CREATE,
-    PermissionsEnum.ORG_HAZARD_TYPE_ALL,
-    PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
-    PermissionsEnum.ORG_HAZARD_TYPE_FETCH,
-    PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
-    PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.HAZARD_TYPE_ALL,
+      PermissionsEnum.HAZARD_TYPE_DELETE,
+      PermissionsEnum.HAZARD_TYPE_FETCH,
+      PermissionsEnum.HAZARD_TYPE_UPDATE,
+      PermissionsEnum.HAZARD_TYPE_CREATE,
+      PermissionsEnum.ORG_HAZARD_TYPE_ALL,
+      PermissionsEnum.ORG_HAZARD_TYPE_DELETE,
+      PermissionsEnum.ORG_HAZARD_TYPE_FETCH,
+      PermissionsEnum.ORG_HAZARD_TYPE_UPDATE,
+      PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -329,8 +392,12 @@ const IndexHazardTypeactionList = () => [
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
                 <!--                <th scope="col">{{ $t('has_certificate') }}</th>-->
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('all_industries') }}</th>
-                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ $t('industries') }}</th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                  {{ $t('all_industries') }}
+                </th>
+                <th scope="col" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                  {{ $t('industries') }}
+                </th>
                 <!-- <th scope="col">{{ $t('image') }}</th> -->
 
                 <!-- <th scope="col">{{ $t('actions') }}</th> -->
@@ -340,14 +407,15 @@ const IndexHazardTypeactionList = () => [
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link
-                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${item.id}`">{{
-                      index + 1 }}
-                  </router-link>
+                  <span
+                    :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/${item.id}`"
+                    >{{ index + 1 }}
+                  </span>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
-                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">{{ item.allIndustries
-                  ? $t('yes') : $t('no') }}</td>
+                <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
+                  {{ item.allIndustries ? $t('yes') : $t('no') }}
+                </td>
                 <td data-label="all_industries" v-if="user?.type === OrganizationTypeEnum?.ADMIN">
                   {{
                     item.industries.length > 0
@@ -366,16 +434,26 @@ const IndexHazardTypeactionList = () => [
                   <!--                  @HazardTypeChangeStatus="fetchHazardType"-->
                   <!--                />-->
 
-                  <DropList v-if="!route.params.parent_id" :actionList="HazardTypeactionList(item.id, deleteHazardType)"
-                    @delete="deleteHazardType(item.id)" />
-                  <DropList v-else :actionList="HazardactionList(item.id, deleteHazardType)"
-                    @delete="deleteHazardType(item.id)" />
+                  <DropList
+                    v-if="!route.params.parent_id"
+                    :actionList="HazardTypeactionList(item.id, deleteHazardType)"
+                    @delete="deleteHazardType(item.id)"
+                  />
+                  <DropList
+                    v-else
+                    :actionList="HazardactionList(item.id, deleteHazardType)"
+                    @delete="deleteHazardType(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -384,40 +462,81 @@ const IndexHazardTypeactionList = () => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <PermissionBuilder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.HAZARD_TYPE_CREATE,
-          PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
-        ]">
+        <PermissionBuilder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.HAZARD_TYPE_CREATE,
+            PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
+          ]"
+        >
           <DataEmpty
-            :link="route.params.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`"
+            :link="
+              route.params.parent_id
+                ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params.parent_id}`
+                : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`
+            "
             :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
-            description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No HazardType" />
+            description="You have no HazardType .. All your joined customers will appear here when you add your customer data"
+            title="You have No HazardType"
+          />
         </PermissionBuilder>
       </template>
       <template #failed>
-        <PermissionBuilder :code="[
-          PermissionsEnum.ADMIN,
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.HAZARD_TYPE_CREATE,
-          PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
-        ]">
+        <PermissionBuilder
+          :code="[
+            PermissionsEnum.ADMIN,
+            PermissionsEnum.ORGANIZATION_EMPLOYEE,
+            PermissionsEnum.HAZARD_TYPE_CREATE,
+            PermissionsEnum.ORG_HAZARD_TYPE_CREATE,
+          ]"
+        >
           <DataFailed
-            :link="route.params.parent_id ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}hazard-type/add/${route.params.parent_id}` : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`"
+            :link="
+              route.params.parent_id
+                ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}hazard-type/add/${route.params.parent_id}`
+                : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`
+            "
             :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
-            description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No HazardType" />
+            description="You have no HazardType .. All your joined customers will appear here when you add your customer data"
+            title="You have No HazardType"
+          />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no HazardType .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed
+        addText="Have not  Permission"
+        description="You have no HazardType .. All your joined customers will appear here when you add your customer data"
+      />
     </template>
   </PermissionBuilder>
+
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('import_hazard_type')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <UploadHazardTypeExeclSheet
+      :initial-file="pendingFile"
+      @uploaded="
+        showUploadDialog = false;
+        pendingFile = null;
+        fetchHazardType()
+      "
+    />
+  </Dialog>
+
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>
 
 <style scoped></style>

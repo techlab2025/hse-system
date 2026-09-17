@@ -52,7 +52,7 @@
     gap: 4px;
     .title {
       font-family: 'Regular';
-      color: #041953;
+      color: var(--brand-primary-800);
       font-size: $XlSize2;
       font-weight: $BaseFontWeightBold;
     }

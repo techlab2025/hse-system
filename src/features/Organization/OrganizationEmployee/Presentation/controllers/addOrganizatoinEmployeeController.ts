@@ -1,17 +1,16 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
-// import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
-import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import AddOrganizatoinEmployeeUseCase from '../../Domain/useCase/addOrganizatoinEmployeeUseCase'
 import type OrganizatoinEmployeeModel from '../../Data/models/OrganizatoinEmployeeModel'
-import type AddOrganizatoinEmployeeParams from '../../Core/params/addOrganizatoinEmployeeParams'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
-export default class AddOrganizatoinEmployeeController extends ControllerInterface<OrganizatoinEmployeeModel> {
+export default class AddOrganizatoinEmployeeController extends ControllerInterface<
+  OrganizatoinEmployeeModel[]
+> {
   private static instance: AddOrganizatoinEmployeeController
   private constructor() {
     super()
@@ -27,23 +26,33 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
 
   async addOrganizatoinEmployee(params: any, router: Router, draft: boolean = false) {
     console.log(params, 'paraaamsss controller')
+
     // useLoaderStore().setLoadingWithDialog();
-    if (params?.data?.length > 0) {
+    if (params.data != undefined && params?.data?.length > 0) {
       for (const el of params.data) {
         if (!el.name) {
           new OpenWarningDilaog('Name Is Required').openDialog()
           return
         }
-        if (el.password != el.password_confirmation) {
+        if (el.password_confirmation && el.password != el.password_confirmation) {
           new OpenWarningDilaog('Password And Password Confirmation Not Matching').openDialog()
           return
         }
-        if (el.password.length < 8) {
+        //
+        if (el.password && el.password?.length < 8) {
           new OpenWarningDilaog('Password Must Be At Least 8 Characters').openDialog()
+          return
+        }
+        if (el.hierarchies.map((el) => el.hierarchy_id == undefined).find((el) => el == true)) {
+          new OpenWarningDilaog('You Should select At Least One Position').openDialog()
           return
         }
       }
     } else {
+      if (params.positions.map((item: any) => item.hierarchy_id).includes(undefined)) {
+        new OpenWarningDilaog('Please Select Position For All Employees').openDialog()
+        return
+      }
       params.validate()
       if (!params.validate().isValid) {
         params.validateOrThrow()
@@ -51,23 +60,27 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
       }
     }
     try {
-      const dataState: DataState<OrganizatoinEmployeeModel> =
+      const dataState: DataState<OrganizatoinEmployeeModel[]> =
         await this.AddOrganizatoinEmployeeUseCase.call(params)
       this.setState(dataState)
-      if (this.isDataSuccess()) {
-        DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
-          imageElement: successImage,
-          messageContent: null,
-        })
-        if (
-          router.currentRoute.value.fullPath.includes('organization-employee') &&
-          !router.currentRoute.value.fullPath.includes('project-progress')
-        ) {
-          if (!draft) await router.push('/organization/organization-employee')
-        }
 
+      const isExcelValidation = 'isValid' in params && !params.isValid
+
+      if (this.state.value.error?.title.includes('successfully') || this.isDataSuccess()) {
+        if (!isExcelValidation) {
+          DialogSelector.instance.successDialog.openDialog({
+            dialogName: 'dialog-success',
+            titleContent: 'Added was successful',
+            imageElement: successImage,
+            messageContent: null,
+          })
+          if (
+            router.currentRoute.value.fullPath.includes('organization-employee') &&
+            !router.currentRoute.value.fullPath.includes('project-progress')
+          ) {
+            if (!draft) await router.push('/organization/organization-employee')
+          }
+        }
         // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
@@ -87,6 +100,7 @@ export default class AddOrganizatoinEmployeeController extends ControllerInterfa
     }
 
     super.handleResponseDialogs()
+    console.log(this.state.value, 'this.stat')
     return this.state
   }
 }

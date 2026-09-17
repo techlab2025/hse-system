@@ -6,7 +6,6 @@ import ShowTicketParams from '@/features/Organization/Ticket/Core/params/showTic
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 import type Params from '@/base/core/params/params'
-import TicketForm from './TicketForm.vue'
 import ShowTicketController from '../controllers/showTicketController'
 import IndexDetails from './Details/IndexDetails.vue'
 

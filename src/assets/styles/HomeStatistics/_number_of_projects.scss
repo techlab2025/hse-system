@@ -13,12 +13,12 @@
     .subtitle {
       font-size: $SmSize;
       font-weight: $BaseFontWeight;
-      color: #9ca3af;
+      color: var(--text-soft);
     }
     .title {
       font-size: $MdSize;
       font-weight: $BaseFontWeightBold;
-      color: $Black;
+      color: var(--text-strong);
     }
   }
   .number-of-projects-body {
@@ -33,7 +33,7 @@
     .label {
       font-size: $MdSize;
       font-weight: $BaseFontMediumWeight;
-      color: #9ca3af;
+      color: var(--text-soft);
     }
   }
   .number-of-projects-footer {
@@ -46,7 +46,7 @@
     .footer-label {
       font-size: $XsSize;
       font-weight: $BaseFontMediumWeight;
-      color: #1d4ed880;
+      color: color-mix(in srgb, var(--brand-primary-500) 50.2%, transparent);
     }
   }
 }

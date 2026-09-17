@@ -10,7 +10,7 @@ import { EditSystemWorkApiService } from '../../Data/apiServices/editSystemWorkA
 class EditSystemWorkRepo extends RepoInterface<SystemWorkModel> {
   private static instance: EditSystemWorkRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

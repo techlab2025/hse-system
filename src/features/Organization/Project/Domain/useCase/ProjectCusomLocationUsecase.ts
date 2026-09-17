@@ -8,7 +8,6 @@ import {
 import ProjectCustomLocationModel from '../../Data/models/CustomLocation/ProjectCustomLocationModel'
 import { ProjectCustomLocationRepo } from '../repositories/ProjectCustomLocationRepo'
 import { UseCaseHandler } from '@/base/Domain/UseCase/use_case'
-import EquipmentStaticsModel from '@/features/Home/data/Model/EquipmentStaticsModel'
 
 export default class ProjectCustomLocationUseCase
   implements UseCase<ProjectCustomLocationModel[], Params>

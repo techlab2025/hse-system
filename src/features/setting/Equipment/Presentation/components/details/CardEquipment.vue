@@ -2,11 +2,9 @@
 import BreadCrumb from '@/shared/HelpersComponents/BreadCrumb.vue'
 import { useI18n } from 'vue-i18n'
 import RentIcons from '@/shared/icons/RentIcons.vue'
-import Car from '@/shared/icons/car.vue'
 import DropdownIcons from '@/shared/icons/DropdownIcons.vue'
 import Popover from 'primevue/popover'
 import { computed, ref } from 'vue'
-import IconEye from '@/shared/icons/IconEye.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import type EquipmentDetailsModel from '../../../Data/models/equipmentDetailsModel'
@@ -19,6 +17,8 @@ import { EquipmentStatus } from '../../../Core/enum/equipmentStatus'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+import { EquipmentCondition } from '../../../Core/enum/equipmentConditionEnum'
+import { EquipmentUsed } from '../../../Core/enum/EquipemntUsedENum'
 
 const { t } = useI18n()
 
@@ -88,28 +88,41 @@ const deleteEquipment = async (id: number) => {
 const GetEquipmentType = (type: number) => {
   return EquipmentTypesEnum[type]
 }
+
+const getEquipmentCondition = (condition: EquipmentCondition | null) => {
+  if (!condition) return '-'
+  return EquipmentCondition[condition]
+}
+
+const getEquipmentUsedStatus = (usedStatus: EquipmentUsed | null) => {
+  if (!usedStatus) return '-'
+  return EquipmentUsed[usedStatus]
+}
 </script>
 
 <template>
-  <div class="card-equipment ">
-    <img :src="equipmentData.image || `/src/assets/images/logo.svg`" @error="setDefaultImage($event)" alt=""
-      class="img-equipment" />
+  <div class="card-equipment">
+    <img
+      :src="equipmentData.image || `/src/assets/images/logo.svg`"
+      @error="setDefaultImage($event)"
+      alt=""
+      class="img-equipment"
+    />
 
     <div class="card-body flex-nowrap">
-
-
-
       <div class="card-body-content-left">
         <!-- {{ GetEquipmentType(equipmentData?.equipment_type?.type) }} -->
-        <div class="info-container flex flex-col  gap-2">
-          <BreadCrumb :BreadCramps="breadcrumbs" :equipment="GetEquipmentType(equipmentData?.equipment_type?.type)"
-            :equipmentType="equipmentData.equipment_type?.title" />
+        <div class="info-container flex flex-col gap-2">
+          <BreadCrumb
+            :BreadCramps="breadcrumbs"
+            :equipment="GetEquipmentType(equipmentData?.equipment_type?.type)"
+            :equipmentType="equipmentData.equipment_type?.title"
+          />
           <!-- :equipmentType="equipmentData?.equipment_type?.title"  -->
           <div class="card-body-title">
             <!-- <h3 class="title">{{ tTitle }}</h3> -->
 
-            <h3 class="title">{{ equipmentData?.title }}
-            </h3>
+            <h3 class="title">{{ equipmentData?.title }}</h3>
             <RentIcons v-if="equipmentData.status == EquipmentStatus.RENT" />
           </div>
         </div>
@@ -131,7 +144,7 @@ const GetEquipmentType = (type: number) => {
             <div class="item">
               <span>{{ $t('License number') }} : </span>
               <p>{{ equipmentData?.licensePlateNumber }}</p>
-              <br>
+              <!-- <br> -->
               <span>{{ $t('serial name') }}</span>
               <p>{{ equipmentData.serial_name }}</p>
             </div>
@@ -139,27 +152,44 @@ const GetEquipmentType = (type: number) => {
               <span>{{ $t('Vehicle Kilometer') }} : </span>
               <p>{{ equipmentData?.kilometer }}</p>
             </div>
+            <div class="item">
+              <span>{{ $t('Equipment Used Status') }} : </span>
+              <p>{{ $t(getEquipmentUsedStatus(equipmentData?.equipmentUsedStatus)) }}</p>
+            </div>
+            <div class="item" v-if="equipmentData?.equipmentUsedStatus === EquipmentUsed.used">
+              <span>{{ $t('Equipment Condition') }} : </span>
+              <p>{{ $t(getEquipmentCondition(equipmentData?.equipmentCondition)) }}</p>
+            </div>
           </div>
         </div>
       </div>
       <div class="card-body-content-right">
         <div class="card flex justify-center">
-
-
           <Popover ref="op">
             <div class="flex flex-col gap-4">
               <div>
                 <ul class="list-none !px-3 !py-1 flex-col m-0 flex gap-3">
-                  <li v-for="action in actions" :key="action.id"
-                    class="flex flex-col items-start justify-start gap-2 px-2 py-1 hover:bg-emphasis cursor-pointer rounded-border">
-                    <RouterLink :to="action.link" class="flex items-center gap-3" v-if="action.id == 1">
+                  <li
+                    v-for="action in actions"
+                    :key="action.id"
+                    class="flex flex-col items-start justify-start gap-2 px-2 py-1 hover:bg-emphasis cursor-pointer rounded-border"
+                  >
+                    <RouterLink
+                      :to="action.link"
+                      class="flex items-center gap-3"
+                      v-if="action.id == 1"
+                    >
                       <component :is="action.icon" />
                       <div class="text-sm text-surface-500 dark:text-surface-400">
                         {{ action.title }}
                       </div>
                     </RouterLink>
 
-                    <button v-else-if="action.id == 2" @click="deleteEquipment" class="flex items-center gap-3 w-full">
+                    <button
+                      v-else-if="action.id == 2"
+                      @click="deleteEquipment"
+                      class="flex items-center gap-3 w-full"
+                    >
                       <component :is="action.icon" />
                       <div class="text-sm text-surface-500 dark:text-surface-400">
                         {{ action.title }}
@@ -179,7 +209,6 @@ const GetEquipmentType = (type: number) => {
           <img :src="equipmentData.certificateImage" alt="" class="" />
         </div>
 
-
         <button @click="toggle" class="drop-down-btn" type="button">
           <DropdownIcons />
         </button>
@@ -194,8 +223,19 @@ const GetEquipmentType = (type: number) => {
 
   .drop-down-btn {
     position: absolute;
-    top: 5px;
-    right: 3px;
+    top: 16px;
+    right: 16px;
+    z-index: 2;
   }
+}
+.vehicle {
+  width: 100% !important;
+}
+.items {
+  width: 100% !important;
+}
+.card-body-content-left {
+  width: 100% !important;
+  grid-column: span 2;
 }
 </style>

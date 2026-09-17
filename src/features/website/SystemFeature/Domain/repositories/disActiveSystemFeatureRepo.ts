@@ -6,7 +6,7 @@ import { DisSystemFeatureApiService } from '../../Data/apiServices/disSystemFeat
 
 class DisActiveSystemFeatureRepo extends RepoInterface<SystemFeatureModel> {
   private static instance: DisActiveSystemFeatureRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

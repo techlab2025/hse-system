@@ -8,7 +8,7 @@ import { ShowSystemComponentApiService } from '../../Data/apiServices/showSystem
 class ShowSystemComponentRepo extends RepoInterface<SystemComponentDetailsModel> {
   private static instance: ShowSystemComponentRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

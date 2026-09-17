@@ -6,7 +6,7 @@ import { AddCategoryApiService } from '../../Data/apiServices/addCategoryApiServ
 
 class AddCategoryRepo extends RepoInterface<CategoryModel> {
   private static instance: AddCategoryRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

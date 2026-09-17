@@ -7,7 +7,7 @@ import { EditBlogApiService } from '../../Data/apiServices/editBlogApiService'
 class EditBlogRepo extends RepoInterface<BlogModel> {
   private static instance: EditBlogRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

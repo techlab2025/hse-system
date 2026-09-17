@@ -11,6 +11,16 @@ export const IncedantRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: 'incident-report',
+    name: 'Incident Report',
+    component: () =>
+      import('@/views/Organization/ObservationFactory/Incedant/IncidentReport.vue'),
+    meta: {
+      breadcrumb: 'incident_report',
+      isSidebar: false,
+    },
+  },
+  {
     path: 'incedant/add',
     name: 'Add Incedant ',
     component: () => import('@/views/Organization/ObservationFactory/Incedant/AddIncedant.vue'),

@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
+import { PpeItemEnum } from '../../../Core/Enums/ppe_enum'
 
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TabsSelection from '@/shared/HelpersComponents/TabsSelection.vue'
@@ -8,15 +9,11 @@ import DatePicker from 'primevue/datepicker'
 import HazardImage from '@/assets/images/alert 2.png'
 
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
-import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue'
-import { title } from 'process'
 import type HazardDetailsModel from '../../../Data/models/hazardDetailsModel'
 import EditHazardParams from '../../../Core/params/editHazardParams'
 import AddHazardParams from '../../../Core/params/addHazardParams'
-import IndexHazardParams from '../../../Core/params/indexHazardParams'
-import IndexHazardController from '../../controllers/indexHazardController'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
@@ -31,8 +28,6 @@ import InjuryParams from '../../../Core/params/InjuriesParams'
 import DethParams from '../../../Core/params/DethParams'
 import WitnessParams from '../../../Core/params/WitnessesParams'
 import RadioButton from 'primevue/radiobutton'
-import IndexObserverationTypeController from '@/features/setting/ObserverationType/Presentation/controllers/indexObserverationTypeController'
-import IndexObserverationTypeParams from '@/features/setting/ObserverationType/Core/params/indexObserverationTypeParams'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
@@ -90,14 +85,28 @@ const updateData = () => {
         isThereWitnessStatement: witnesses?.value?.isAnotherMeeting === 1 ? true : false,
         Injury:
           Accidents?.value?.isAnotherMeeting === 1
-            ? [
-                new InjuryParams(
-                  Accidents?.value?.employeeId || [],
-                  Accidents?.value?.employeeName || '',
-                  Accidents?.value?.text || null,
-                  Accidents?.value?.infectionTypeId || 0,
-                ),
-              ]
+            ? (Accidents.value?.accidentsData ?? []).map((item: any) => {
+                const employeeId = Number(item?.employee?.id) || 0
+                return new InjuryParams(
+                  employeeId,
+                  employeeId ? '' : item?.employee?.title || '',
+                  item?.text || '',
+                  item?.infectionTypeId?.id || 0,
+                  item?.incidentCategories
+                    ?.map((category: TitleInterface) => Number(category.id))
+                    .filter(Boolean) || [],
+                  item?.images?.map((image: any) => image?.file ?? image) || [],
+                  item?.ppeItems
+                    ?.map((ppeItem: TitleInterface) => Number(ppeItem.id))
+                    .filter(Boolean) || [],
+                  item?.ppeItemCondition?.id || 0,
+                  item?.ppeItems?.some(
+                    (ppeItem: TitleInterface) => ppeItem.id === PpeItemEnum.OTHERS,
+                  )
+                    ? item?.customPpeItem?.trim() || ''
+                    : '',
+                )
+              })
             : [],
         deaths:
           Fatalities?.value?.isAnotherMeeting === 1

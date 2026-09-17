@@ -8,7 +8,7 @@ import { DeleteFactoryItemApiService } from '@/features/setting/FactoryItem/Data
 class DeleteFactoryItemRepo extends RepoInterface<FactoryItemModel> {
   private static instance: DeleteFactoryItemRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

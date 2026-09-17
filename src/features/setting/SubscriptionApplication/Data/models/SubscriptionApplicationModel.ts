@@ -1,36 +1,64 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 
+interface IndustryReference {
+  id: number
+  title?: string | null
+  titile?: string | null
+}
+
+interface SubscriptionApplicationMap {
+  id: number
+  subscription_application_id: number
+  request_date: string
+  request_status: number
+  status_name: string
+  name: string
+  phone: string
+  email: string
+  address: string | null
+  admin_name: string
+  admin_phone: string
+  admin_email: string
+  industry_id: number | IndustryReference | null
+  industry?: IndustryReference | null
+}
+
 export default class SubscriptionApplicationModel extends TitleInterface {
   public id: number
+  public subscription_application_id: number
   public request_date: string
   public request_status: number
   public status_name: string
   public name: string
   public phone: string
   public email: string
-  public address: string
+  public address: string | null
   public admin_name: string
   public admin_phone: string
   public admin_email: string
-  public industry_id: number
+  public industry_id: number | null
+  public industry: IndustryReference | null
 
   constructor(
     id: number,
+    subscription_application_id: number,
     request_date: string,
     request_status: number,
     status_name: string,
     name: string,
     phone: string,
     email: string,
-    address: string,
+    address: string | null,
     admin_name: string,
     admin_phone: string,
     admin_email: string,
-    industry_id: number,
+    industry_id: number | null,
+    industry: IndustryReference | null,
   ) {
     super({ id: id, title: name })
 
     this.id = id
+    this.subscription_application_id = subscription_application_id
     this.request_date = request_date
     this.request_status = request_status
     this.status_name = status_name
@@ -42,11 +70,19 @@ export default class SubscriptionApplicationModel extends TitleInterface {
     this.admin_phone = admin_phone
     this.admin_email = admin_email
     this.industry_id = industry_id
+    this.industry = industry
   }
 
-  static fromMap(data: any): SubscriptionApplicationModel {
+  static fromMap(data: SubscriptionApplicationMap): SubscriptionApplicationModel {
+    const industryFromId =
+      typeof data.industry_id === 'object' && data.industry_id !== null ? data.industry_id : null
+    const industryId = industryFromId?.id ??
+      (typeof data.industry_id === 'number' ? data.industry_id : null)
+    const industry = data.industry ?? industryFromId
+
     return new SubscriptionApplicationModel(
       data.id,
+      data.subscription_application_id,
       data.request_date,
       data.request_status,
       data.status_name,
@@ -57,8 +93,8 @@ export default class SubscriptionApplicationModel extends TitleInterface {
       data.admin_name,
       data.admin_phone,
       data.admin_email,
-      data.industry_id,
+      industryId,
+      industry,
     )
   }
 }
-

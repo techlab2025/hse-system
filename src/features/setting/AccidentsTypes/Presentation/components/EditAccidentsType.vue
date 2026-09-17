@@ -3,7 +3,6 @@ import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
-import HazardTypeForm from '@/features/setting/HazardType/Presentation/components/HazardTypeForm.vue'
 import type Params from '@/base/core/params/params'
 import ShowAccidentsTypeController from '../controllers/showAccidentsTypeController'
 import ShowAccidentsTypeParams from '../../Core/params/showAccidentsTypeParams'
@@ -60,7 +59,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditAccidentsType">
         <AccidentsTypeForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">{{ $t('edit') }}</button>
+          <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>
       </form>
     </template>

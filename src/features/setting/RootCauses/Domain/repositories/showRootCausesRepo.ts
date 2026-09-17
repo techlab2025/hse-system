@@ -7,7 +7,7 @@ import RootCausesDetailsModel from '../../Data/models/RootCausesDetailsModel'
 class ShowRootCausesRepo extends RepoInterface<RootCausesDetailsModel> {
   private static instance: ShowRootCausesRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

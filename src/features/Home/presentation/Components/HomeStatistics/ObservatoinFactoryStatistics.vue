@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import type OverviewHazardChartModel from "@/features/Home/data/Model/OverviewHazardChartModel";
 import { ref, onMounted, onBeforeUnmount, watch } from "vue";
+import { useI18n } from "vue-i18n";
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const chartData = ref<any>(null);
 let resizeObserver: ResizeObserver | null = null;
+let themeObserver: MutationObserver | null = null;
 
 const props = defineProps<{
   OverviewHazardChartstate: OverviewHazardChartModel[];
   chartHeight?: string;
   chartWidth?: string;
 }>();
+const { t, locale } = useI18n();
 
 const HazardValues = ref<number[]>([]);
 const Accidentsvalues = ref<number[]>([]);
@@ -52,20 +55,20 @@ const setChartData = () => {
     labels:
       Zonetitle.value.length > 0
         ? Zonetitle.value.map((z) => z)
-        : ["Zone A", "Zone B", "Zone C", "Zone D", "Zone E", "Zone F", "Zone G"],
+        : Array.from({ length: 7 }, (_, index) => t("zone_number", { number: index + 1 })),
     datasets: [
       {
-        label: "Hazard",
+        label: t("Hazard"),
         backgroundColor: hazardColor,
         data: HazardValues.value.length > 0 ? HazardValues.value : [0, 0, 0, 0, 0, 0, 0],
       },
       {
-        label: "Observation",
+        label: t("Observation"),
         backgroundColor: observationColor,
         data: Observationsvalues.value.length > 0 ? Observationsvalues.value : [0, 0, 0, 0, 0, 0, 0],
       },
       {
-        label: "Incident",
+        label: t("Incident"),
         backgroundColor: incidentColor,
         data: Accidentsvalues.value.length > 0 ? Accidentsvalues.value : [0, 0, 0, 0, 0, 0, 0],
       },
@@ -78,6 +81,13 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
 
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
+  const documentStyle = getComputedStyle(document.documentElement);
+  const isDark = document.documentElement.dataset.theme === "dark";
+  const canvasBg = documentStyle.getPropertyValue("--surface-1").trim() || (isDark ? "#111827" : "#ffffff");
+  const gridColor = isDark ? "rgba(148, 163, 184, 0.24)" : "rgba(209, 213, 219, 0.5)";
+  const axisColor = documentStyle.getPropertyValue("--main-border").trim() || (isDark ? "#334155" : "#e5e7eb");
+  const labelColor = documentStyle.getPropertyValue("--text-soft").trim() || (isDark ? "#cbd5e1" : "#6b7280");
+  const emptyColor = documentStyle.getPropertyValue("--text-muted").trim() || "#9ca3af";
 
   // const width = canvas.clientWidth;
   const width = canvas.width / (window.devicePixelRatio || 1);
@@ -107,11 +117,11 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
   const maxValue = Math.max(...allValues);
 
   if (!isFinite(maxValue) || maxValue <= 0) {
-    ctx.fillStyle = "#9ca3af";
+    ctx.fillStyle = emptyColor;
     ctx.font = `${Math.max(11, 14 * scale)}px sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.fillText("No data available", width / 2, height / 2);
+    ctx.fillText(t("No data available"), width / 2, height / 2);
     return;
   }
 
@@ -139,7 +149,7 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
   const axisFontSize = Math.max(10, Math.round(12 * scale));
 
   // ── Background ─────────────────────────────────────────────────────────
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = canvasBg;
   ctx.fillRect(0, 0, width, height);
 
   // ── Gridlines ──────────────────────────────────────────────────────────
@@ -151,7 +161,7 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
     const gridValue = Math.round((maxValue / numGridLines) * i);
 
     // Horizontal grid line
-    ctx.strokeStyle = "rgba(209, 213, 219, 0.5)";
+    ctx.strokeStyle = gridColor;
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(paddingLeft, gridY);
@@ -159,7 +169,7 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
     ctx.stroke();
 
     // Y-axis labels
-    ctx.fillStyle = "#9ca3af";
+    ctx.fillStyle = emptyColor;
     ctx.font = `${axisFontSize}px sans-serif`;
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
@@ -235,7 +245,7 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
 
     // X-axis label
     ctx.shadowColor = "transparent";
-    ctx.fillStyle = "#6b7280";
+    ctx.fillStyle = labelColor;
     ctx.font = `${axisFontSize}px sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
@@ -244,7 +254,7 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
 
   // ── Axes ───────────────────────────────────────────────────────────────
   ctx.shadowColor = "transparent";
-  ctx.strokeStyle = "#e5e7eb";
+  ctx.strokeStyle = axisColor;
   ctx.lineWidth = 1;
 
   // Y axis
@@ -312,6 +322,11 @@ watch(chartData, () => {
   if (canvasRef.value) resizeCanvas();
 });
 
+watch(locale, () => {
+  chartData.value = setChartData();
+  if (canvasRef.value) resizeCanvas();
+});
+
 onMounted(() => {
   if (!canvasRef.value) return;
   const container = canvasRef.value.closest(".chart-wrapper") as HTMLElement;
@@ -319,11 +334,20 @@ onMounted(() => {
 
   resizeObserver = new ResizeObserver(() => resizeCanvas());
   resizeObserver.observe(container);
+  themeObserver = new MutationObserver(() => {
+    chartData.value = setChartData();
+    resizeCanvas();
+  });
+  themeObserver.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
   resizeCanvas();
 });
 
 onBeforeUnmount(() => {
   resizeObserver?.disconnect();
+  themeObserver?.disconnect();
 });
 </script>
 
@@ -331,7 +355,7 @@ onBeforeUnmount(() => {
   <div class="total-observation-container">
     <!-- ✅ Header: عنوان يسار + legend يمين (مطابق للديزاين) -->
     <div class="total-observation-header-container">
-      <p class="static-title">Hazard & Observation & Incident Overview</p>
+      <p class="static-title">{{ $t('hazard_observation_incident_overview') }}</p>
 
       <div class="legend-container">
         <div
@@ -357,9 +381,9 @@ onBeforeUnmount(() => {
 <style scoped>
 .total-observation-container {
   width: 100%;
-  background: white;
+  background: var(--surface-1);
   border-radius: 12px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--text-strong) 8%, transparent);
   padding-bottom: 8px;
 }
 
@@ -377,7 +401,7 @@ onBeforeUnmount(() => {
   font-size: 17px;
   font-weight: 700;
   font-family: "bold";
-  color: #0C2058;
+  color: var(--brand-primary-800);
   margin: 0;
 }
 
@@ -404,7 +428,7 @@ onBeforeUnmount(() => {
 .legend-label {
   font-size: 13px;
   font-weight: 500;
-  color: #374151;
+  color: var(--brand-primary-700);
 }
 
 /* ✅ Chart scroll wrapper */
@@ -413,7 +437,7 @@ onBeforeUnmount(() => {
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: thin;
-  scrollbar-color: #d1d5db transparent;
+  scrollbar-color: var(--main-border) transparent;
 }
 
 .chart-scroll-wrapper::-webkit-scrollbar {
@@ -425,7 +449,7 @@ onBeforeUnmount(() => {
 }
 
 .chart-scroll-wrapper::-webkit-scrollbar-thumb {
-  background-color: #d1d5db;
+  background-color: var(--main-border);
   border-radius: 4px;
 }
 

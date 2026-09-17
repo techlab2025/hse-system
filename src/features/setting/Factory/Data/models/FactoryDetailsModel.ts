@@ -55,4 +55,7 @@ export default class FactoryDetailsModel {
       title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
     })
   }
+   static transformData(data: any[]): FactoryDetailsModel[] {
+    return data.map((item: any) => FactoryDetailsModel.fromMap(item))
+  }
 }

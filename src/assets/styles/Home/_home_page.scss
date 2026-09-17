@@ -34,43 +34,151 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(6px);
+    background:
+      radial-gradient(circle at 50% 18%, color-mix(in srgb, var(--brand-primary-500) 22%, transparent), transparent 34%),
+      color-mix(in srgb, var(--brand-primary-900) 64%, transparent);
+    backdrop-filter: blur(7px);
     z-index: 998;
     pointer-events: all;
   }
 
   .highlight-active {
     position: relative !important;
-    z-index: 999 !important;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.11);
+    z-index: 9999 !important;
+    background: var(--surface-1);
+    border-radius: 16px;
+    outline: 2px solid color-mix(in srgb, var(--brand-primary-500) 42%, transparent);
+    outline-offset: 6px;
+    box-shadow:
+      0 0 0 10px color-mix(in srgb, var(--brand-primary-500) 8%, transparent),
+      0 24px 70px color-mix(in srgb, var(--shadow-color) 24%, transparent);
+    overflow: visible;
     pointer-events: all;
   }
 
   .overlay-note {
     position: absolute;
-    width: 320px;
-    background: white;
-    padding: 24px;
-    border-radius: 16px;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-    z-index: 1000;
-    animation: fadeIn 0.4s ease-out;
+    top: calc(100% + 22px);
+    left: clamp(16px, 4vw, 56px);
+    width: min(360px, calc(100vw - 32px));
+    background:
+      linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 98%, transparent)),
+      var(--surface-1);
+    padding: 18px;
+    border: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
+    border-radius: 18px;
+    box-shadow:
+      0 24px 60px color-mix(in srgb, var(--shadow-color) 34%, transparent),
+      inset 0 1px 0 color-mix(in srgb, var(--shadow-color) 95%, transparent);
+    z-index: 10000;
+    animation: tipPop 0.32s ease-out;
+  }
+
+  .overlay-note::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 56px;
+    width: 18px;
+    height: 18px;
+    background: var(--surface-1);
+    border-top: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
+    border-left: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
+    transform: rotate(45deg);
+  }
+
+  .tip-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 26px;
+    padding: 5px 10px;
+    border: 1px solid color-mix(in srgb, var(--brand-primary-500) 16%, transparent);
+    border-radius: 999px;
+    background: var(--brand-primary-50);
+    color: var(--brand-primary-500);
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  .tip-kicker::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--brand-primary-500);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
   }
 
   .overlay-note h3 {
-    color: #1d4ed8;
-    font-weight: 700;
+    color: var(--brand-primary-900);
+    font-weight: 900;
     font-size: 20px;
-    margin-bottom: 8px;
+    margin: 8px 0;
   }
 
   .overlay-note p {
-    color: #4b5563;
-    font-size: 15px;
+    color: var(--brand-primary-600);
+    font-size: 14px;
+    font-weight: 600;
     line-height: 1.5;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
+  }
+
+  .tip-progress {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .tip-progress span {
+    width: 22px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--brand-primary-100);
+  }
+
+  .tip-progress .active {
+    width: 34px;
+    background: var(--brand-primary-500);
+  }
+
+  .tip-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 10px 18px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--brand-primary-500), var(--brand-primary-600));
+    color: var(--text-on-brand);
+    font-size: 14px;
+    font-weight: 900;
+    box-shadow: 0 12px 22px color-mix(in srgb, var(--brand-primary-500) 24%, transparent);
+  }
+
+  @media (max-width: 768px) {
+    .overlay-note {
+      top: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .overlay-note::before {
+      left: 50%;
+    }
+  }
+
+  @keyframes tipPop {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.98);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
   }
 }

@@ -5,18 +5,8 @@ const props = defineProps<{
 </script>
 
 <template>
-  <div class="objectives">
-    <p v-html="object_details"></p>
+  <div class="objectives" :class="{ 'is-empty': !object_details }">
+    <p v-if="object_details" v-html="object_details"></p>
+    <p v-else>{{ $t('No data available') }}</p>
   </div>
 </template>
-
-<style scoped>
-.objectives {
-  word-break: break-word;
-  overflow-wrap: anywhere;
-  grid-column: span 3;
-  p {
-    grid-column: span 3;
-  }
-}
-</style>

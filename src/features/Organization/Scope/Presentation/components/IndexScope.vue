@@ -9,13 +9,11 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import wordSlice from '@/base/Presentation/utils/word_slice'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import Search from '@/shared/icons/Search.vue'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
@@ -185,8 +183,8 @@ watch(
 
           <DataEmpty :link="user?.type === OrganizationTypeEnum.ADMIN ? '/admin/scope/add' : '/organization/scope/add'"
             addText="Add Scope"
-            description="Sorry .. You have no Scope .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Scope" />
+            description="You have no Scope .. All your joined customers will appear here when you add your customer data"
+            title="You have No Scope" />
         </PermissionBuilder>
       </template>
       <template #failed>
@@ -194,15 +192,15 @@ watch(
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.SCOPE_CREATE]">
           <DataFailed :link="user?.type === OrganizationTypeEnum.ADMIN ? '/admin/scope/add' : '/organization/scope/add'"
             addText="Add Scope"
-            description="Sorry .. You have no Scope .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Scope" />
+            description="You have no Scope .. All your joined customers will appear here when you add your customer data"
+            title="You have No Scope" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Scope .. All your joined customers will appear here when you add your customer data"
+        description="You have no Scope .. All your joined customers will appear here when you add your customer data"
         link="" />
     </template>
   </PermissionBuilder>

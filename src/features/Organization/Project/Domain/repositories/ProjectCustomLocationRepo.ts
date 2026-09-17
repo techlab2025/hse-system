@@ -8,7 +8,7 @@ import ProjectCustomLocationModel from '../../Data/models/CustomLocation/Project
 class ProjectCustomLocationRepo extends RepoInterface<ProjectCustomLocationModel[]> {
   private static instance: ProjectCustomLocationRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

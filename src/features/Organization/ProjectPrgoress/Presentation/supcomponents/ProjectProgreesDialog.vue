@@ -47,7 +47,7 @@ const Gotit = () => {
       <button class="info-btn" @click.stop="openHelp">?</button>
     </div> -->
 
-    <Dialog v-model:visible="visible" :dismissable-mask="true" modal header="Project Progress Guide"
+    <Dialog v-model:visible="visible" :dismissable-mask="true" modal :header="$t('Project Progress Guide')"
       :style="{ width: '60rem', height: 'fit-content' }" :breakpoints="{ '960px': '75vw', '641px': '90vw' }">
       <div class="dialog-content">
         <div class="gif-container">
@@ -55,18 +55,18 @@ const Gotit = () => {
         </div>
 
         <div class="text-section">
-          <h3>Track Your Milestones</h3>
-          <p>This is the <strong>Projects Progress Page</strong>. To use the system effectively, ensure you:</p>
+          <h3>{{ $t('Track Your Milestones') }}</h3>
+          <p>{{ $t('This is the Projects Progress Page. To use the system effectively, ensure you:') }}</p>
 
           <ul class="guide-list">
-            <li><span>1</span> Fill in All Data You Want To Track.</li>
-            <li><span>2</span> Link your Employees to the project.</li>
-            <li><span>3</span> Toggle the status switch to "Active" to start tracking.</li>
+            <li><span>1</span> {{ $t('Fill in All Data You Want To Track.') }}</li>
+            <li><span>2</span> {{ $t('Link your Employees to the project.') }}</li>
+            <li><span>3</span> {{ $t('Toggle the status switch to "Active" to start tracking.') }}</li>
           </ul>
         </div>
 
         <div class="dialog-footer">
-          <button class="close-btn" @click="Gotit">Got it!</button>
+          <button class="close-btn" @click="Gotit">{{ $t('Got it!') }}</button>
         </div>
       </div>
     </Dialog>
@@ -96,21 +96,21 @@ const Gotit = () => {
 .switch-track {
   width: calc(44px * var(--switch-scale));
   height: calc(24px * var(--switch-scale));
-  background-color: #cbd5e1;
+  background-color: var(--brand-primary-200);
   border-radius: 999px;
   position: relative;
   transition: 0.3s;
 }
 
 .hidden-input:checked+.switch-label .switch-track {
-  background-color: #10b981;
+  background-color: var(--status-success);
   /* Success Green */
 }
 
 .switch-thumb {
   width: calc(18px * var(--switch-scale));
   height: calc(18px * var(--switch-scale));
-  background: white;
+  background: var(--surface-1);
   border-radius: 50%;
   position: absolute;
   top: calc(3px * var(--switch-scale));
@@ -128,13 +128,13 @@ const Gotit = () => {
 .icon {
   width: 70%;
   height: 70%;
-  color: #94a3b8;
+  color: var(--brand-primary-400);
 }
 
 .info-btn {
   border: none;
-  background: #f1f5f9;
-  color: #64748b;
+  background: var(--brand-primary-50);
+  color: var(--brand-primary-500);
   width: 18px;
   height: 18px;
   border-radius: 50%;
@@ -147,8 +147,8 @@ const Gotit = () => {
 }
 
 .info-btn:hover {
-  background: #e2e8f0;
-  color: #0f172a;
+  background: var(--brand-primary-100);
+  color: var(--brand-primary-900);
 }
 
 /* --- Dialog Styles --- */
@@ -164,7 +164,7 @@ const Gotit = () => {
   height: 230px;
   border-radius: 12px;
   overflow: hidden;
-  background: #f8fafc;
+  background: var(--brand-primary-50);
 }
 
 .gif-container img {
@@ -176,12 +176,12 @@ const Gotit = () => {
 .text-section h3 {
   margin: 0 0 8px 0;
   font-size: 1.1rem;
-  color: #1e293b;
+  color: var(--brand-primary-800);
 }
 
 .text-section p {
   font-size: 0.9rem;
-  color: #64748b;
+  color: var(--brand-primary-500);
   line-height: 1.5;
 }
 
@@ -197,12 +197,12 @@ const Gotit = () => {
   gap: 12px;
   margin-bottom: 8px;
   font-size: 0.85rem;
-  color: #334155;
+  color: var(--brand-primary-700);
 }
 
 .guide-list span {
-  background: #3b82f6;
-  color: white;
+  background: var(--brand-primary-400);
+  color: var(--text-on-brand);
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -219,8 +219,8 @@ const Gotit = () => {
 }
 
 .close-btn {
-  background: #0f172a;
-  color: white;
+  background: var(--brand-primary-900);
+  color: var(--text-on-brand);
   border: none;
   padding: 8px 20px;
   border-radius: 6px;

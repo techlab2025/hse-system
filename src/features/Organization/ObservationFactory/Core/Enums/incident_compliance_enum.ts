@@ -1,0 +1,12 @@
+export enum PtwStatusEnum {
+  NOT_APPLICABLE = 1,
+  ISSUED_AND_VALID = 2,
+  ISSUED_BUT_EXPIRED = 3,
+  NOT_ISSUED_REQUIRED = 4,
+}
+
+export enum ComplianceNotificationEnum {
+  STATUTORY_AUTHORITY_INFORMED = 1,
+  INSURANCE_NOTIFIED = 2,
+  CLIENT_CUSTOMER_NOTIFIED = 3,
+}

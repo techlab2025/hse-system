@@ -6,7 +6,7 @@ import { AddEmployeeApiService } from '../../Data/apiServices/addEmployeeApiServ
 
 class AddEmployeeRepo extends RepoInterface<EmployeeModel> {
   private static instance: AddEmployeeRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

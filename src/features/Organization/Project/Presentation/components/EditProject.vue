@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
@@ -11,28 +11,31 @@ import EditProjectController from '../controllers/editProjectController'
 
 const route = useRoute()
 const router = useRouter()
-const id = route.params.id
 const params = ref<Params | null>(null)
+const formRef = ref<InstanceType<typeof ProjectForm> | null>(null)
 
 const showProjectController = ShowProjectController.getInstance()
 const state = ref(showProjectController.state.value)
-const fetchProjectDetails = async () => {
-  const ProjectParams = new ShowProjectParams(Number(id))
+const fetchProjectDetails = async (id: string | string[]) => {
+  const projectId = Number(Array.isArray(id) ? id[0] : id)
+  if (!Number.isFinite(projectId)) return
+
+  const ProjectParams = new ShowProjectParams(projectId)
 
   await showProjectController.showProject(ProjectParams)
 }
 
-onMounted(() => {
-  fetchProjectDetails()
-})
-
-const EditProject = async (draft: boolean) => {
-  if (draft) {
-    await EditProjectController.getInstance().editProject(params.value!, router)
-  } else {
-    await EditProjectController.getInstance().editProject(params.value!, router)
-  }
+const EditProject = async () => {
+  if (!(await formRef.value?.validateRequiredFields())) return
+  if (!params.value) return
+  await EditProjectController.getInstance().editProject(params.value, router)
 }
+
+watch(
+  () => route.params.id,
+  (newId) => fetchProjectDetails(newId),
+  { immediate: true },
+)
 
 watch(
   () => showProjectController.state.value,
@@ -51,14 +54,10 @@ const setParams = (data: Params) => {
 <template>
   <DataStatus :controller="state">
     <template #success>
-      <!--      <pre>-->
-      <!--              {{ state.data?.titles }}-->
-
-      <!--      </pre>-->
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditProject">
-        <ProjectForm @update:data="setParams" :data="state.data!" />
+        <ProjectForm ref="formRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper w-full">
-          <button type="submit" class="btn btn-primary w-full">{{ $t('edit') }}</button>
+          <button type="submit" class="btn btn-primary w-full">{{ $t('save') }}</button>
         </div>
       </form>
     </template>

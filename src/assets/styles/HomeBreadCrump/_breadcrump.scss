@@ -2,11 +2,53 @@
 @use '../mixins/flex' as *;
 .breadcrump-container {
   @include flex-column(nowrap, flex-start, center);
-  background-color: #f8f9fb;
+  background-color: var(--brand-primary-50);
   border-radius: $XlSize;
   font-family: 'Regular';
   width: 100%;
   margin-bottom: 12px;
+
+  &.is-dark {
+    background-color: var(--surface-1) !important;
+    border: 1px solid var(--main-border);
+
+    .breadcrump {
+      background-color: transparent !important;
+    }
+
+    .sidebar-back {
+      background-color: transparent !important;
+      color: var(--text-strong) !important;
+      // border: 1px solid var(--main-border);
+
+      &:hover {
+        background-color: var(--surface-3) !important;
+        color: var(--PrimaryColor) !important;
+      }
+
+      .icon path {
+        fill: currentColor !important;
+      }
+    }
+
+    .p-breadcrumb,
+    .p-breadcrumb-list {
+      background-color: transparent !important;
+      color: var(--text-strong) !important;
+    }
+
+    .p-breadcrumb-item-label {
+      color: var(--PrimaryColor) !important;
+    }
+
+    .p-breadcrumb-item:last-child .p-breadcrumb-item-label {
+      color: var(--subtitle-color) !important;
+    }
+
+    .p-breadcrumb-separator {
+      color: var(--text-muted) !important;
+    }
+  }
 
   .breadcrump {
     width: 100%;
@@ -20,8 +62,8 @@
     .sidebar-back {
       @include flex-row(nowrap, flex-start, center);
       gap: $XsSize3;
-      background-color: #f8f9fb;
-      color: #5e5e5e;
+      background-color: var(--brand-primary-50);
+      color: var(--text-soft);
       font-size: $SmSize;
       font-weight: $BaseFontSemiBoldWeight;
       border-radius: $XlSize2;
@@ -35,13 +77,13 @@
     }
     .p-breadcrumb {
       width: 100%;
-      background-color: #f8f9fb;
+      background-color: var(--brand-primary-50);
       text-transform: capitalize;
 
       .p-breadcrumb-list {
         @include flex-row(nowrap, center, center);
         width: 100%;
-        background-color: #f8f9fb;
+        background-color: var(--brand-primary-50);
         @media (max-width: 468px) {
           flex-wrap: wrap;
         }
@@ -57,13 +99,13 @@
           &:last-child {
             .p-breadcrumb-item-link {
               .p-breadcrumb-item-label {
-                color: #1f41bb66 !important;
+                color: color-mix(in srgb, var(--brand-primary-600) 40%, transparent) !important;
               }
             }
           }
         }
         .p-breadcrumb-separator {
-          color: #1f41bb4d !important;
+          color: color-mix(in srgb, var(--brand-primary-600) 30.2%, transparent) !important;
         }
       }
     }

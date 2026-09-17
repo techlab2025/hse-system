@@ -3,12 +3,18 @@ import type { StatusEnum } from '../../Core/Enums/statusEnum'
 import type TitleModel from '@/base/Data/Models/title_model'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
 
+export interface TicketMedia {
+  id: number
+  file_name: string
+  url: string
+}
+
 export default class TicketModel extends TitleInterface {
   public id: number
   public title: string
   public description: string
   public type: string
-  public media: string[]
+  public media: TicketMedia[]
   public status: StatusEnum
   public created_at: string
   public ticketType: TitleModel<string | number | null>
@@ -17,8 +23,8 @@ export default class TicketModel extends TitleInterface {
     id: number,
     title: string,
     description: string,
-    type: string, 
-    media: string[],
+    type: string,
+    media: TicketMedia[],
     status: StatusEnum,
     created_at: string,
     ticketType: TitleModel<string | number | null>,

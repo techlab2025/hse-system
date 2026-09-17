@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
 import TranslationsParams from '@/base/core/params/translations_params.ts'
@@ -20,8 +19,6 @@ import { useRoute } from 'vue-router'
 import IndexLocationController from '@/features/setting/Location/Presentation/controllers/indexLocationController'
 import IndexLocationParams from '@/features/setting/Location/Core/params/indexLocationParams'
 import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
-import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
-import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 
 const emit = defineEmits(['update:data'])
 const route = useRoute()
@@ -106,7 +103,7 @@ const updateData = () => {
         industry.value?.id,
         lang.value?.map((l) => l.id),
         SelectedCountry.value?.map((l) => l.id),
-        booleanAdminData.value
+        booleanAdminData.value,
       )
     : new AddOrganizationParams(
         name.value,
@@ -117,7 +114,7 @@ const updateData = () => {
         industry.value?.id,
         lang.value?.map((l) => l.id),
         SelectedCountry.value?.map((l) => l.id),
-        booleanAdminData.value
+        booleanAdminData.value,
       )
 
   emit('update:data', params)
@@ -285,14 +282,14 @@ const updateAdminData = (status: boolean) => {
       placeholder="Enter Your Url"
     />
   </div> -->
-  <div class="col-span-4 md:col-span-2 input-wrapper">
+  <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
     <CustomCheckbox
       :index="4"
       :title="`dashboard_access`"
       :checked="booleanAdminData"
       @update:checked="updateAdminData"
     />
-  </div>
+  </div> -->
   <div class="col-span-4 md:col-span-4 input-wrapper">
     <SingleFileUpload
       :modelValue="image"

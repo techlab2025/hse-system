@@ -7,7 +7,7 @@ import { ShowPrivacyApiService } from '../../Data/apiServices/showPrivacyApiServ
 class ShowPrivacyRepo extends RepoInterface<PrivacyDetailsModel> {
   private static instance: ShowPrivacyRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

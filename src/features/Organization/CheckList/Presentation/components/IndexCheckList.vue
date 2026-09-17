@@ -9,13 +9,11 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import wordSlice from '@/base/Presentation/utils/word_slice'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import Search from '@/shared/icons/Search.vue'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from "xlsx";
@@ -23,7 +21,6 @@ import { saveAs } from "file-saver";
 import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
-import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import IndexCheckListController from '../controllers/indexCheckListController'
 import IndexCheckListParams from '../../Core/params/indexCheckListParams'
@@ -146,7 +143,7 @@ const exportExcel = () => {
 
 const IndexActionList = () => [
   {
-    text: t('export_excel'),
+    text: t('export_to_excel'),
     icon: ExceIcon,
     action: () => exportExcel(),
     type: ActionItemsTypeEnum.Success,
@@ -160,6 +157,7 @@ const IndexActionList = () => [
     text: t('add_check_list'),
     link: '/organization/check-list/add',
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -167,7 +165,7 @@ const IndexActionList = () => [
     ],
   },
   //{
-    // text: t('import_check_list'),
+    // text: t('upload_complated_template'),
     // type: ActionItemsTypeEnum.Warning,
     // link: '/organization/check-list/upload',
     // icon: UploadExcelIcon,
@@ -211,7 +209,12 @@ const IndexActionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
         <SystemWarehouseTypes />
       </PermissionBuilder> -->
-      <ActionsList :show-actions="true" :actionList="IndexActionList()" :actionsNumber="3">
+      <ActionsList
+        feature-name="action_feature_checklists"
+        :show-actions="true"
+        :actionList="IndexActionList()"
+        :actionsNumber="3"
+      >
         <template #custom>
           <!-- <SystemWarehouseTypes :isHeaderTap="false" /> -->
           <ExportPdf :isDropList="true" />
@@ -270,23 +273,23 @@ const IndexActionList = () => [
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
 
           <DataEmpty :link="`/organization/check-list/add`" addText="Add CheckList"
-            description="Sorry .. You have no CheckList .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No CheckList" />
+            description="You have no CheckList .. All your joined customers will appear here when you add your customer data"
+            title="You have No CheckList" />
         </PermissionBuilder>
       </template>
       <template #failed>
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_TYPE_CREATE]">
 
           <DataFailed :link="`/organization/check-list/add`" addText="Add CheckList"
-            description="Sorry .. You have no CheckList .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No CheckList" />
+            description="You have no CheckList .. All your joined customers will appear here when you add your customer data"
+            title="You have No CheckList" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no CheckList .. All your joined customers will appear here when you add your customer data"
+        description="You have no CheckList .. All your joined customers will appear here when you add your customer data"
         link="" />
     </template>
   </PermissionBuilder>

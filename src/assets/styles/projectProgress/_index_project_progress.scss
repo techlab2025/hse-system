@@ -2,12 +2,18 @@
 @use '../mixins/flex' as *;
 @use '../mixins/grid' as *;
 .project-progress-container {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
+
   .project-progress-actions {
+    box-sizing: border-box;
     padding: $XsSize2 $XlSize2;
     margin-bottom: $XsSize;
     border-radius: $XlSize2 $XlSize2 0 0;
     width: 100%;
-    background-color: #fbfbfb;
+    background-color: var(--surface-1);
     @include flex-row(nowrap, space-between, center);
     .skip {
       @include flex-row(nowrap, flex-end, center);
@@ -23,7 +29,7 @@
       gap: $XsSize;
       cursor: pointer;
       span {
-        color: #c3c3d1;
+        color: var(--brand-primary-200);
         font-size: $MdSize;
         font-weight: $BaseFontSemiBoldWeight;
       }
@@ -32,56 +38,135 @@
   .project-progress-body-container {
     margin-block: $XsSize;
     width: 100%;
-    @include grid(
-      12,
-      $XsSize2,
-      (
-        900px: 1,
-      )
-    );
+    display: flex;
+    flex-direction: column;
+    gap: $MdSize;
+    min-width: 0;
     .project-progress-body-sidebar {
-      grid-column: span 3;
-      background-color: #fdfdfd;
-      padding: $XsSize;
+      width: 100%;
+      min-width: 0;
+      background: linear-gradient(180deg, var(--surface-1) 0%, var(--brand-primary-50) 100%);
+      border: 1px solid var(--brand-primary-100);
+      box-shadow: 0 12px 30px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
+      padding: $MdSize;
       border-radius: 12px;
+      overflow: hidden;
 
       .timeline-marker {
+        left: -9px !important;
+        top: -11px !important;
         &.not-active {
           .timeline-icon {
-            background-color: white;
+            background-color: var(--surface-1);
           }
           .timeline-dot {
-            background-color: white;
+            background-color: var(--surface-1);
           }
         }
       }
       .timeline-container {
         cursor: pointer;
+        width: 100%;
+        min-width: 0;
+        overflow: hidden;
+
+        .timeline-wrapper {
+          display: flex;
+          align-items: stretch;
+          gap: $SmSize;
+          width: 100%;
+          overflow-x: auto;
+          overflow-y: hidden;
+          padding: $XsSize3 $XsSize3 $SmSize;
+          scroll-snap-type: x proximity;
+          scrollbar-width: thin;
+          overscroll-behavior-inline: contain;
+          -webkit-overflow-scrolling: touch;
+
+          &::-webkit-scrollbar {
+            height: 6px;
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background: var(--brand-primary-100);
+            border-radius: 999px;
+          }
+        }
+
+        .timeline-line {
+          display: none;
+        }
+
         .timeline-icon {
           svg {
             width: 20px;
             height: 20px;
           }
         }
+        .timeline-marker {
+          position: relative;
+          flex: 0 0 auto;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          margin-top: 0;
+        }
+        .timeline-marker > svg,
+        .timeline-dot {
+          width: 40px;
+          height: 40px;
+          flex: 0 0 auto;
+        }
         .timeline-content {
+          flex: 1;
+          min-width: 0;
           .timeline-content-header {
-            @include flex-row(nowrap, flex-start, center);
+            @include flex-row(nowrap, space-between, center);
             gap: 10px;
 
             .first-item-title {
-              color: #000060;
+              color: var(--brand-primary-800);
               font-size: $MdSize2;
               font-weight: $BaseFontWeightBold;
             }
           }
           .first-item-description {
-            color: #96aac3;
+            color: var(--brand-primary-300);
             font-size: $SmSize;
             font-weight: $BaseFontMediumWeight;
+            display: -webkit-box;
+            overflow: hidden;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
           }
         }
         .timeline-item {
+          position: relative;
+          flex: 0 0 clamp(260px, 24vw, 340px);
+          display: flex;
+          align-items: flex-start;
+          gap: $XsSize;
+          min-height: 116px;
+          padding: $SmSize;
+          border: 1px solid var(--brand-primary-50);
+          border-radius: 12px;
+          background-color: var(--surface-1);
+          box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
+          scroll-snap-align: start;
+          transition:
+            border-color 0.25s ease,
+            box-shadow 0.25s ease,
+            transform 0.25s ease;
           cursor: pointer;
+
+          &:hover {
+            transform: translateY(-2px);
+            border-color: color-mix(in srgb, var(--brand-primary-500) 22%, transparent);
+            box-shadow: 0 14px 28px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
+          }
+
           .time-line-title {
             transition: 0.3s all linear;
           }
@@ -94,24 +179,30 @@
           // }
           .timeline-content {
             .timeline-content-header {
-              @include flex-row(nowrap, flex-start, center);
+              @include flex-row(nowrap, space-between, center);
               gap: 10px;
               .time-line-title {
-                color: #9ca3af;
+                color: var(--text-soft);
                 font-size: $MdSize2;
                 font-weight: $BaseFontWeightBold;
               }
             }
             .time-line-description {
-              color: #96aac3;
+              color: var(--brand-primary-300);
               font-size: $SmSize;
               font-weight: $BaseFontMediumWeight;
+              display: -webkit-box;
+              overflow: hidden;
+              -webkit-line-clamp: 2;
+              -webkit-box-orient: vertical;
             }
           }
           &.active {
+            border-color: color-mix(in srgb, var(--brand-primary-500) 28%, transparent);
+            background: linear-gradient(180deg, var(--surface-1) 0%, var(--brand-primary-50) 100%);
             .timeline-content {
               .timeline-content-header {
-                @include flex-row(nowrap, flex-start, center);
+                @include flex-row(nowrap, space-between, center);
                 gap: 10px;
                 .time-line-title {
                   color: $PrimaryColor;
@@ -120,7 +211,7 @@
                 }
               }
               .time-line-description {
-                color: #96aac3;
+                color: var(--brand-primary-300);
                 font-size: $SmSize;
                 font-weight: $BaseFontMediumWeight;
               }
@@ -131,29 +222,170 @@
     }
 
     .project-progress-body-content {
-      grid-column: span 9;
       width: 100%;
+      min-width: 0;
       .content-header {
         width: 100%;
-        @include flex-column(nowrap, center, center);
+        @include flex-column(nowrap, center, flex-start);
         gap: $XsSize3;
-        margin-block: $XlSize2;
+        margin-block: $MdSize;
         .title {
-          color: #202020;
+          color: var(--text-strong);
           font-size: calc($XlSize3 + 2px);
           font-weight: $BaseFontWeightBold;
         }
         .description {
-          color: #6b7280;
+          color: var(--text-soft);
           font-size: $MdSize2;
           font-weight: $BaseFontMediumWeight;
         }
       }
       .full-content {
-        background-color: #fdfdfd;
-        border: 1px solid #e6e8ea4d;
+        background-color: var(--surface-1);
+        border: 1px solid color-mix(in srgb, var(--surface-2) 30.2%, transparent);
         border-radius: $XlSize3;
         padding: $MdSize;
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+        box-sizing: border-box;
+        overflow-x: auto;
+
+        > * {
+          min-width: 0;
+          max-width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .project-progress-container {
+    .project-progress-actions {
+      margin-bottom: 8px;
+      padding: 10px 14px;
+      border-radius: 14px 14px 0 0;
+
+      .back {
+        gap: 8px;
+
+        svg {
+          width: 30px;
+          height: 30px;
+        }
+
+        span {
+          font-size: $SmSize;
+        }
+      }
+    }
+
+    .project-progress-body-container {
+      gap: 12px;
+      margin-block: 10px;
+
+      .project-progress-body-sidebar {
+        padding: 10px;
+        border-radius: 14px;
+
+        .timeline-container {
+          .timeline-wrapper {
+            gap: 10px;
+            padding: 4px 4px 10px;
+            scroll-padding-inline: 4px;
+            scroll-snap-type: x mandatory;
+          }
+
+          .timeline-item {
+            flex-basis: min(280px, calc(100vw - 68px));
+            min-height: 104px;
+            gap: 10px;
+            padding: 12px;
+            scroll-snap-stop: always;
+          }
+
+          .timeline-marker,
+          .timeline-marker > svg,
+          .timeline-dot {
+            width: 36px;
+            height: 36px;
+          }
+
+          .timeline-marker {
+            left: 0 !important;
+            top: 0 !important;
+          }
+
+          .timeline-content {
+            .timeline-content-header {
+              gap: 6px;
+
+              .first-item-title,
+              .time-line-title {
+                font-size: $MdSize;
+                line-height: 1.35;
+              }
+            }
+
+            .first-item-description,
+            .time-line-description {
+              margin-top: 4px;
+              font-size: 12px;
+              line-height: 1.4;
+            }
+          }
+        }
+      }
+
+      .project-progress-body-content {
+        .content-header {
+          gap: 6px;
+          margin-block: 12px;
+
+          > div:first-child {
+            width: 100%;
+            min-width: 0;
+            flex-wrap: wrap;
+          }
+
+          .title {
+            min-width: 0;
+            font-size: $XlSize;
+            line-height: 1.3;
+            overflow-wrap: anywhere;
+          }
+
+          .description {
+            font-size: $SmSize;
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+          }
+        }
+
+        .full-content {
+          padding: 12px;
+          border-radius: 14px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 420px) {
+  .project-progress-container {
+    .project-progress-body-container {
+      .project-progress-body-sidebar {
+        padding: 8px;
+
+        .timeline-container .timeline-item {
+          flex-basis: calc(100vw - 54px);
+          padding: 10px;
+        }
+      }
+
+      .project-progress-body-content .full-content {
+        padding: 10px;
       }
     }
   }

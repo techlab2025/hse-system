@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
-import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
 
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
@@ -11,10 +9,7 @@ import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
-import DeleteLangController from '@/features/setting/languages/Presentation/controllers/deleteLangController'
-import DeleteLangParams from '@/features/setting/languages/Core/params/deleteLangParams'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
@@ -25,9 +20,6 @@ import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enu
 import IndexIndustryParams from '../../Core/Params/indexIndustryParams'
 import IndexIndustryController from '../controllers/indexIndustryController'
 import { useRouter } from 'vue-router'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
-import SaveIcon from '@/shared/icons/SaveIcon.vue'
-import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 import DeleteIndustryParams from '../../Core/Params/deleteIndustryParams'
 import DeleteIndustryController from '../controllers/deleteIndustryController'
@@ -157,7 +149,7 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/users/Lang/edit/${item.id}`">{{ index + 1 }} </router-link>
+                  <span :to="`/users/Lang/edit/${item.id}`">{{ index + 1 }} </span>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
 
@@ -184,19 +176,19 @@ const actionList = (id: number, deleteLang: (id: number) => void) => [
       </template>
       <template #empty>
         <DataEmpty :link="`/industry/add`" addText="Add Lang"
-          description="Sorry .. You have no languages .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No languages" />
+          description="You have no languages .. All your joined customers will appear here when you add your customer data"
+          title="You have No languages" />
       </template>
       <template #failed>
         <DataFailed :link="`/industry/add`" addText="Add Lang"
-          description="Sorry .. You have no language .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No languages" />
+          description="You have no language .. All your joined customers will appear here when you add your customer data"
+          title="You have No languages" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no language .. All your joined customers will appear here when you add your customer data" />
+        description="You have no language .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

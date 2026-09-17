@@ -1,19 +1,17 @@
 <script setup lang="ts">
 import Breadcrumb from 'primevue/breadcrumb'
-import { computed, ref, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import BackIcon from '../icons/BackIcon.vue'
-import FastRoutes from './FastrRoutes/FastRoutes.vue'
 import { buildBreadcrumb } from './Helper/RouteHelper'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
-import HomeInfoIcon from '../icons/HomeInfoIcon.vue'
-import HomeDialogInfo from './HomeDialogInfo.vue'
+import { useThemeMode } from '@/composables/useThemeMode'
 
 const route = useRoute()
 const router = useRouter()
+const { isDarkMode } = useThemeMode()
 
 const RouterBack = () => {
   router.back()
@@ -71,6 +69,15 @@ const items = computed(() => {
           label: parentRoute.meta?.breadcrumb as string,
           url: parentRoute.path.replace(/\/:[^/]+(\?)?/g, `/${String(getUrlWithParams())}`),
         })
+      }
+    }
+    if (route.name?.toString().includes('WarehouseType')) {
+      const warehouseItems = breadcrumb.filter((b) => b.label === 'WarehouseType')
+
+      if (warehouseItems.length > 1) {
+        const firstIndex = breadcrumb.findIndex((b) => b.label === 'WarehouseType')
+
+        breadcrumb.splice(firstIndex, 1)
       }
     }
 
@@ -138,7 +145,7 @@ const ShowBackBtn = computed(() => {
 </script>
 
 <template>
-  <div class="breadcrump-container">
+  <div :class="['breadcrump-container', { 'is-dark': isDarkMode }]">
     <div class="breadcrump">
       <button
         class="sidebar-back"
@@ -154,6 +161,65 @@ const ShowBackBtn = computed(() => {
     </div>
 
     <!-- v-if="!IsHomeSetting" -->
-    <FastRoutes />
+    <!-- <FastRoutes /> -->
   </div>
 </template>
+
+<style scoped lang="scss">
+@media (max-width: 400px) {
+  .breadcrump-container,
+  .breadcrump {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .breadcrump {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow: hidden;
+  }
+
+  .sidebar-back {
+    flex: 0 0 auto;
+    min-width: 42px;
+    min-height: 42px;
+    padding: 8px;
+  }
+
+  .sidebar-back span {
+    display: none;
+  }
+
+  :deep(.p-breadcrumb) {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 8px !important;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  :deep(.p-breadcrumb::-webkit-scrollbar) {
+    display: none;
+  }
+
+  :deep(.p-breadcrumb-list) {
+    flex-wrap: nowrap;
+    width: max-content;
+    min-width: 100%;
+  }
+
+  :deep(.p-breadcrumb-item-link) {
+    min-height: 36px;
+    padding-inline: 4px;
+  }
+
+  :deep(.p-breadcrumb-item-label) {
+    max-width: 130px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+</style>

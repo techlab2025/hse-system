@@ -17,10 +17,10 @@
         span {
           font-weight: $BaseFontMediumWeight;
           font-size: $MdSize;
-          color: #afb2bb;
+          color: var(--text-muted);
         }
         p {
-          color: #1f41bb;
+          color: var(--brand-primary-600);
           font-family: var(--font-family);
           font-weight: $BaseFontWeightBold;
           font-size: $XlSize;
@@ -37,9 +37,9 @@
     .tab {
       text-align: center;
       width: 100%;
-      background-color: rgba(252, 252, 252, 1);
+      background-color: var(--text-on-brand);
       border-radius: $XlSize;
-      color: rgba(156, 163, 175, 1);
+      color: var(--text-soft);
       font-weight: $BaseFontSemiBoldWeight;
       text-transform: capitalize;
       cursor: pointer;
@@ -48,8 +48,8 @@
     }
 
     .activeTab {
-      background-color: rgba(240, 244, 255, 1);
-      border: 2px rgba(29, 78, 216, 1);
+      background-color: var(--brand-primary-50);
+      border: 2px var(--brand-primary-500);
       color: var(--PrimaryColor);
     }
 

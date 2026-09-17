@@ -6,7 +6,7 @@ import { OverviewHazardChartApiService } from '../../data/ApiService/OverviewHaz
 class OverviewHazardChartRepo extends RepoInterface<OverviewHazardChartModel[]> {
   private static instance: OverviewHazardChartRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

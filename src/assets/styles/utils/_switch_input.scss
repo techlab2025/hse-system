@@ -5,7 +5,7 @@
   gap: 6px;
   font-family: 'Light';
   .title {
-    color: #202020;
+    color: var(--text-strong);
     font-size: $MdSize;
     font-weight: $BaseFontSemiBoldWeight;
   }

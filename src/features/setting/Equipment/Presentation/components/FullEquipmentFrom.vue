@@ -1,16 +1,14 @@
 <script lang="ts" setup>
-import { computed, markRaw, onMounted, ref, watch } from 'vue'
+import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import DatePicker from 'primevue/datepicker'
-import QrCard from './EquipmentUtils/QrCard.vue'
 import DemoCard from './EquipmentUtils/DemoCard.vue'
 import Car from '@/shared/icons/car.vue'
 import Tabs from './tabs.vue'
-import Dialog from 'primevue/dialog'
 import TranslationsParams from '@/base/core/params/translations_params'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
@@ -33,12 +31,10 @@ import IndexContractorParams from '@/features/setting/contractor/Core/params/ind
 import type EquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/equipmentTypeModel'
 import { RentTypeEnum } from '../../Core/enum/RentTypeEnum'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 import IndexWhereHouseController from '@/features/Organization/WhereHouse/Presentation/controllers/indexWhereHouseController'
 import IndexWhereHouseParams from '@/features/Organization/WhereHouse/Core/params/indexWhereHouseParams'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
-import EquipmentTypeForm from '@/features/setting/EquipmentType/Presentation/components/EquipmentTypeForm.vue'
 import { formatTime } from '@/base/Presentation/utils/time_format'
 import AddEquipmentType from '@/features/setting/EquipmentType/Presentation/components/AddEquipmentType.vue'
 import AddContractor from '@/features/setting/contractor/Presentation/components/AddContractor.vue'
@@ -46,10 +42,17 @@ import OwnedIcon from '@/shared/icons/OwnedIcon.vue'
 import RentIcon from '@/shared/icons/RentIcon.vue'
 import AddWhereHouse from '@/features/Organization/WhereHouse/Presentation/components/AddWhereHouse.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import { useThemeMode } from '@/composables/useThemeMode'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
+import { EquipmentCondition } from '../../Core/enum/equipmentConditionEnum.ts'
+import { EquipmentUsed } from '../../Core/enum/EquipemntUsedENum.ts'
+import { EquipmentOfHavyStatus } from '../../Core/enum/equipmentOfHavyEnum.ts'
 // import AddWhereHouse from '@/views/Organization/WhereHouse/AddWhereHouse.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{ data?: EquipmentDetailsModel }>()
+const { isDarkMode } = useThemeMode()
 
 const route = useRoute()
 const router = useRouter()
@@ -65,13 +68,45 @@ const licenseNumber = ref<string | null>(null)
 const licensePlateNumber = ref<string | null>(null)
 const equipmentStatus = ref<TitleInterface | null>(null)
 const { t } = useI18n()
-const activeTab = ref<EquipmentTypesEnum>(EquipmentTypesEnum.EQUIPMENT)
+const routeEquipmentType = computed<EquipmentTypesEnum | undefined>(() => {
+  const queryValue = Array.isArray(route.query.equipment_type)
+    ? route.query.equipment_type[0]
+    : route.query.equipment_type
+  const equipmentType = Number(queryValue)
+
+  return [
+    EquipmentTypesEnum.EQUIPMENT,
+    EquipmentTypesEnum.DEVICE,
+    EquipmentTypesEnum.TOOL,
+  ].includes(equipmentType)
+    ? (equipmentType as EquipmentTypesEnum)
+    : undefined
+})
+const activeTab = ref<EquipmentTypesEnum>(routeEquipmentType.value ?? EquipmentTypesEnum.EQUIPMENT)
 const SerialNumber = ref()
 
 const equipmentStatusOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: EquipmentStatus.RENT, title: t('Rent') }),
   new TitleInterface({ id: EquipmentStatus.OWN, title: t('Owned') }),
 ])
+
+const EquipmentCOnditionOptions = ref<TitleInterface[]>([
+  new TitleInterface({ id: EquipmentCondition.new, title: 'new' }),
+  new TitleInterface({ id: EquipmentCondition.old, title: 'old' }),
+])
+const equipmentCondition = ref<TitleInterface | null>(null)
+const equipmentUsedStatus = ref<TitleInterface | null>(null)
+
+const setEquipmentCondition = (data: TitleInterface) => {
+  equipmentCondition.value = data
+  updateData()
+}
+
+const setEquipmentUsedStatus = (data: TitleInterface) => {
+  equipmentUsedStatus.value = data
+  if (data?.id !== EquipmentUsed.used) equipmentCondition.value = null
+  updateData()
+}
 
 const setEquipmentStatus = (data: TitleInterface) => {
   equipmentStatus.value = data
@@ -80,6 +115,9 @@ const setEquipmentStatus = (data: TitleInterface) => {
 
 const image = ref<string | null>(null)
 const decommissioningDate = ref<string | null>(null)
+const decommissioningDateObj = ref<Date | null>(null)
+  const mainfacturyDate = ref<string | null>(null)
+const mainfacturyDateObj = ref<Date | null>(null)
 const certificateImage = ref<string | null>(null)
 const langTitleValid = ref(false)
 
@@ -277,6 +315,7 @@ function isBase64(str: any): boolean {
   return base64Regex.test(base64)
 }
 
+const WorkedHoure = ref<string>()
 const updateData = () => {
   const translationsParams = new TranslationsParams()
   langs.value.forEach((lang) => translationsParams.setTranslation('title', lang.locale, lang.title))
@@ -285,7 +324,9 @@ const updateData = () => {
   const StartDateFormat = StartDate.value
     ? formatJoinDate(StartDate.value) + ' ' + formatTime(StartDate.value)
     : null
-  const EndDateFormat = formatJoinDate(EndDate.value) + ' ' + formatTime(EndDate.value)
+  const EndDateFormat = EndDate.value
+    ? formatJoinDate(EndDate.value) + ' ' + formatTime(EndDate.value)
+    : null
 
   console.log(certificateImage.value, 'certificateImage.value')
   // if (certificateImage.value?.length < 1) {
@@ -305,7 +346,7 @@ const updateData = () => {
   // })
   const certificateImagePayload = resolveCertificateImage()
   const imagePayload = resolveImage()
-// deviceStatus.value == EquipmentStatus.OWN ? null :
+  // deviceStatus.value == EquipmentStatus.OWN ? null :
   const params = props.data?.id
     ? new EditEquipmentParams({
       id: +route.params.id,
@@ -316,6 +357,15 @@ const updateData = () => {
       inspectionDuration: inspectionDuration.value,
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
+      equipmentCondition:
+        deviceStatus.value === EquipmentStatus.OWN &&
+          equipmentUsedStatus.value?.id === EquipmentUsed.used
+          ? (equipmentCondition.value?.id ?? null)
+          : null,
+      equipmentUsedStatus:
+        deviceStatus.value === EquipmentStatus.OWN
+          ? (equipmentUsedStatus.value?.id ?? null)
+          : null,
       image: imagePayload,
       certificateImage: certificateImagePayload,
       AllIndustry: AllIndustry,
@@ -333,6 +383,10 @@ const updateData = () => {
       SelectedWhereHosue: SelectedWhereHosue.value?.id || ' ',
       equipmentRentEndDate:
         deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
+      WorkedHours: WorkedHoure.value,
+      equipmentOfHavyStatus: equipmentOfHavyStatus.value,
+      mainfacturyDate: mainfacturyDate.value,
+      ivhm: ivhm.value,
     })
     : new AddEquipmentParams({
       translation: translationsParams,
@@ -342,6 +396,15 @@ const updateData = () => {
       inspectionDuration: inspectionDuration.value,
       licenseNumber: licenseNumber.value,
       licensePlateNumber: licensePlateNumber.value,
+      equipmentCondition:
+        deviceStatus.value === EquipmentStatus.OWN &&
+          equipmentUsedStatus.value?.id === EquipmentUsed.used
+          ? (equipmentCondition.value?.id ?? null)
+          : null,
+      equipmentUsedStatus:
+        deviceStatus.value === EquipmentStatus.OWN
+          ? (equipmentUsedStatus.value?.id ?? null)
+          : null,
       image: imagePayload,
       certificateImage: certificateImagePayload,
       AllIndustry: AllIndustry,
@@ -355,11 +418,15 @@ const updateData = () => {
       VehicleKm:
         activeTab.value === EquipmentTypesEnum.EQUIPMENT && isVehicle.value
           ? VehicleKm.value
-          : ' ',
+          : '',
       SelectedWhereHosue: SelectedWhereHosue.value?.id || ' ',
       equipmentRentEndDate:
         deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
       serialNumber: SerialNumber.value,
+      WorkedHours: WorkedHoure.value,
+      equipmentOfHavyStatus: equipmentOfHavyStatus.value,
+      mainfacturyDate: mainfacturyDate.value,
+      ivhm: ivhm.value,
     })
 
   emit('update:data', params)
@@ -378,7 +445,7 @@ const breadcrumbs = [
 
 const indexContractorController = IndexContractorController.getInstance()
 const indexContractorTypeParams = new IndexContractorParams('', 1, 10, 0, false)
-const SelectedContractor = ref<TitleInterface>()
+const SelectedContractor = ref<TitleInterface | null>(null)
 const setContructor = (data: TitleInterface) => {
   SelectedContractor.value = data
   updateData()
@@ -389,17 +456,36 @@ const deviceStatusOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: EquipmentStatus.RENT, title: t('Rent') }),
   new TitleInterface({ id: EquipmentStatus.OWN, title: t('Owned') }),
 ])
-
+const equipmentOfHavyStatus = ref<number>(EquipmentStatus.RENT)
+const EquipmentOfHavyOptions = ref<TitleInterface[]>([
+  new TitleInterface({ id: EquipmentOfHavyStatus.havy, title: t('Heavy') }),
+  new TitleInterface({ id: EquipmentOfHavyStatus.light, title: t('Light') }),
+])
+const EquipmentUsedOptions = ref<TitleInterface[]>([
+  new TitleInterface({ id: EquipmentUsed.used, title: t('Used') }),
+  new TitleInterface({ id: EquipmentUsed.notUsed, title: t('Not Used') }),
+])
 const UpdateDeviceStatus = (data) => {
   deviceStatus.value = data.target.value
   updateData()
 }
-watch(() => deviceStatus.value, (newValue) => {
-  deviceStatus.value = newValue
+const UpdateequipmentOfHavyStatus = (data) => {
+  equipmentOfHavyStatus.value = data.target.value
   updateData()
+}
+watch(
+  () => deviceStatus.value,
+  (newValue) => {
+    deviceStatus.value = newValue
+    if (newValue !== EquipmentStatus.OWN) {
+      equipmentUsedStatus.value = null
+      equipmentCondition.value = null
+    }
+    updateData()
 
-  // console.log(newValue, "deviceStatus.value");
-})
+    // console.log(newValue, "deviceStatus.value");
+  },
+)
 
 const getLocalizedTitleInterface = (titles: any[]) => {
   const locale = localStorage.getItem('lang') || 'en'
@@ -433,9 +519,19 @@ watch(
       inspectionDuration.value = newData?.inspectionDuration || null
       licenseNumber.value = newData?.licenseNumber || null
       licensePlateNumber.value = newData?.licensePlateNumber || null
+      equipmentUsedStatus.value =
+        EquipmentUsedOptions.value.find(
+          (option) => option.id === Number(newData?.equipmentUsedStatus),
+        ) ?? null
+      equipmentCondition.value =
+        EquipmentCOnditionOptions.value.find(
+          (option) => option.id === Number(newData?.equipmentCondition),
+        ) ?? null
       deviceStatus.value = newData?.status
       image.value = newData?.image
       decommissioningDate.value = newData?.date || null
+      decommissioningDateObj.value = newData?.date ? new Date(newData.date) : null
+      mainfacturyDateObj.value = newData?.date ? new Date(newData.date) : null
       certificateImage.value = newData?.certificateImage
       langTitleValid.value = langs.value.some((l) => l.title?.trim()?.length > 0)
       activeTab.value = newData?.equipment_type?.type
@@ -464,6 +560,9 @@ watch(
       //  certificateImage.value = newData?.certificateImage
       originalCertificateImage.value = newData?.certificateImage
       originalImage.value = newData?.image
+      WorkedHoure.value = newData?.workedHoures
+      ivhm.value = newData?.ivhm || false
+      mainfacturyDateObj.value = newData?.date ? new Date(newData.date) : null
     }
   },
   { immediate: true },
@@ -482,6 +581,13 @@ watch(
     )
   },
 )
+
+watch(routeEquipmentType, (routeType) => {
+  if (!props.data?.id && routeType) {
+    activeTab.value = routeType
+    equipmentType.value = null
+  }
+})
 
 const RentTypes = ref<TitleInterface[]>([
   new TitleInterface({ id: RentTypeEnum.HOUR, title: 'Hour' }),
@@ -508,8 +614,15 @@ const setRentTime = (time: string) => {
   updateData()
 }
 
-const setDecoDate = (date) => {
-  decommissioningDate.value = formatJoinDate(date)
+const setDecoDate = (date: Date | null) => {
+  decommissioningDateObj.value = date
+  decommissioningDate.value = date ? formatJoinDate(date) : null
+  updateData()
+}
+
+const setMainfacturyDate = (date: Date | null) => {
+  mainfacturyDateObj.value = date
+  mainfacturyDate.value = date ? formatJoinDate(date) : null
   updateData()
 }
 
@@ -529,6 +642,7 @@ const setVehicleKm = (data) => {
 }
 
 const isVehicle = ref(false)
+const ivhm = ref(false)
 
 const fields = ref([
   {
@@ -548,14 +662,14 @@ const UpdateSerial = (data) => {
 
 const indexWhereHouseController = IndexWhereHouseController.getInstance()
 const indexWhereHouseParams = new IndexWhereHouseParams('', 1, 10, 1, false)
-const SelectedWhereHosue = ref<TitleInterface>()
+const SelectedWhereHosue = ref<TitleInterface | null>(null)
 
 const setSelectedWhereHouse = (data: TitleInterface) => {
   SelectedWhereHosue.value = data
   updateData()
 }
 
-const EndDate = ref<Date>()
+const EndDate = ref<Date | null>(null)
 
 const setEndDate = (data) => {
   EndDate.value = data
@@ -606,7 +720,7 @@ watch(
 const EquipmentTypeDialog = ref(false)
 const ContractorDialog = ref(false)
 const wearHouseDialog = ref(false)
-const UpdateActiveTap = (data) => {
+const UpdateActiveTap = (data: EquipmentTypesEnum) => {
   activeTab.value = data
   updateData()
 }
@@ -619,56 +733,223 @@ const GetEquipmentTitle = (equipmenttype: EquipmentTypesEnum) => {
       return t('Device')
     case EquipmentTypesEnum.TOOL:
       return t('Tool')
-
   }
 }
 
 const WarehouseDialog = ref(false)
-import Checkbox from 'primevue/checkbox';
-import CheckboxGroup from 'primevue/checkboxgroup';
+
+type RequiredFieldRule = {
+  key: string
+  message: string
+  isMissing: () => boolean
+}
+
+const requiredFieldErrors = ref<Record<string, string>>({})
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+const hasLangValue = () => langs.value.some((lang) => hasValue(lang.title))
+const hasSelectedId = (value?: TitleInterface | null) => Boolean(value?.id)
+
+const requiredFields = computed<RequiredFieldRule[]>(() => [
+  {
+    key: 'langs',
+    message: `${GetEquipmentTitle(activeTab.value)} Name Is Required`,
+    isMissing: () => !hasLangValue(),
+  },
+  {
+    key: 'equipmentType',
+    message: `${GetEquipmentTitle(activeTab.value)} Type Is Required`,
+    isMissing: () => !hasSelectedId(equipmentType.value),
+  },
+  {
+    key: 'deviceStatus',
+    message: 'Status Is Required',
+    isMissing: () =>
+      user?.type === OrganizationTypeEnum.ORGANIZATION &&
+      (deviceStatus.value === null || deviceStatus.value === undefined),
+  },
+  {
+    key: 'SelectedContractor',
+    message: 'Contractor Is Required',
+    isMissing: () =>
+      user?.type === OrganizationTypeEnum.ORGANIZATION &&
+      deviceStatus.value === EquipmentStatus.RENT &&
+      !hasSelectedId(SelectedContractor.value),
+  },
+  {
+    key: 'SelectedRentType',
+    message: 'Rent Type Is Required',
+    isMissing: () =>
+      user?.type === OrganizationTypeEnum.ORGANIZATION &&
+      deviceStatus.value === EquipmentStatus.RENT &&
+      !hasSelectedId(SelectedRentType.value),
+  },
+  {
+    key: 'Rent',
+    message: 'Rent Period Is Required',
+    isMissing: () =>
+      user?.type === OrganizationTypeEnum.ORGANIZATION &&
+      deviceStatus.value === EquipmentStatus.RENT &&
+      (!hasValue(Rent.value) || Number(Rent.value) < 1),
+  },
+  {
+    key: 'StartDate',
+    message: 'Rent Start Date Is Required',
+    isMissing: () =>
+      user?.type === OrganizationTypeEnum.ORGANIZATION &&
+      deviceStatus.value === EquipmentStatus.RENT &&
+      !StartDate.value,
+  },
+])
+
+const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
+
+const clearResolvedRequiredErrors = () => {
+  requiredFields.value.forEach((field) => {
+    if (requiredFieldErrors.value[field.key] && !field.isMissing()) {
+      const { [field.key]: _removed, ...rest } = requiredFieldErrors.value
+      requiredFieldErrors.value = rest
+    }
+  })
+}
+
+const scrollToRequiredField = async (key: string) => {
+  await nextTick()
+  document.querySelector<HTMLElement>(`[data-required-field="${key}"]`)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
+}
+
+const validateRequiredFields = async () => {
+  clearResolvedRequiredErrors()
+  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
+    errors[field.key] = field.message
+    return errors
+  }, {})
+
+  if (!missedFields.length) return true
+
+  new OpenWarningDilaog(missedFields[0].message).openDialog()
+  await scrollToRequiredField(missedFields[0].key)
+  return false
+}
+
+defineExpose({
+  validateRequiredFields,
+})
 </script>
 
 <template>
-  <div class="w-full col-span-6 equipment-form">
+  <div :class="['w-full col-span-6 equipment-form', { 'is-dark': isDarkMode }]">
     <Tabs @update:activeTab="UpdateActiveTap" :activeTabData="activeTab" />
 
-    <div class="vehicle flex w-full col-span-6" v-if="activeTab === EquipmentTypesEnum.EQUIPMENT">
+    <!-- <div class="vehicle flex w-full col-span-6" v-if="activeTab === EquipmentTypesEnum.EQUIPMENT">
       <div class="flex gap-2 w-full col-span-6">
         <Car />
         <div class="input-wrapper check-box">
-          <label for="vehicle">
+          <label for="vehicle" class="flex items-center gap-2">
             <p>Mark if this equipment is a <b>vehicle</b></p>
+            <FieldHelpIcon
+              text="Enable this when the equipment is a road vehicle so its mileage can be recorded."
+            />
           </label>
-          <!-- <Checkbox v-model="isVehicle" @change="updateData" type="checkbox" id="vehicle" binary /> -->
+          <Checkbox v-model="isVehicle" @change="updateData" type="checkbox" id="vehicle" binary />
 
           <input v-model="isVehicle" @change="updateData" type="checkbox" id="vehicle" />
         </div>
       </div>
       <div class="input-wrapper w-1/2" v-if="isVehicle">
-        <input class="input" placeholder="Enter Vehicle Km" type="text" id="inspection_duration" v-model="VehicleKm"
-          @input="setVehicleKm" />
+        <label for="inspection_duration" class="flex items-center gap-2">
+          Current vehicle mileage
+          <FieldHelpIcon text="Enter the vehicle's current odometer reading in kilometres." />
+        </label>
+        <input
+          class="input"
+          placeholder="Enter Vehicle Km"
+          type="text"
+          id="inspection_duration"
+          v-model="VehicleKm"
+          @input="setVehicleKm"
+        />
+      </div>
+    </div> -->
+    <div class="equipment-status-options" v-if="activeTab === EquipmentTypesEnum.EQUIPMENT">
+      <div class="radio-wrapper" :class="equipmentOfHavyStatus == option?.id ? 'active' : ''"
+        v-for="(option, index) in EquipmentOfHavyOptions" :key="index" @click="
+          equipmentOfHavyStatus = option?.id;
+        updateData()">
+        <div class="flex items-center justify-center gap-1 w-full h-full">
+          <label class="text-lg w-full flex justify-center" :for="`${option?.id}-${option?.title}`">
+            {{ option?.title }}
+          </label>
+          <!-- <RentIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.RENT" />
+              <OwnedIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.OWN" /> -->
+        </div>
+        <input :id="`${option?.id}-${option?.title}`" type="radio" v-model="equipmentOfHavyStatus" :value="option?.id"
+          name="radio" @change="UpdateequipmentOfHavyStatus" />
       </div>
     </div>
-
+    
     <div class="grid grid-cols-2 gap-6 mt-8">
-      <div class="col-span-2 md:col-span-1">
-        <LangTitleInput :label="`${GetEquipmentTitle(activeTab)} Name`" :langs="langDefault" :modelValue="langs"
+      <div v-if="
+        equipmentOfHavyStatus == EquipmentOfHavyStatus.havy &&
+        user?.type === OrganizationTypeEnum.ORGANIZATION && activeTab === EquipmentTypesEnum.EQUIPMENT
+      " class="col-span-2 md:col-span-1">
+        <div class="input-wrapper w-full">
+          <label for="heavy-hours" class="flex items-center gap-2">
+            Heavy Hours
+            <FieldHelpIcon text="Enter heavy equipment working hours." />
+          </label>
+  
+          <input class="input" placeholder="Enter Heavy Hours" type="number" id="heavy-hours" v-model="WorkedHoure"
+            @input="updateData" />
+        </div>
+      </div>
+  
+      <div v-if="
+        equipmentOfHavyStatus == EquipmentOfHavyStatus.light &&
+        user?.type === OrganizationTypeEnum.ORGANIZATION && activeTab === EquipmentTypesEnum.EQUIPMENT
+      " class="col-span-2 md:col-span-1">
+        <div class="input-wrapper w-full">
+          <label for="light-hours" class="flex items-center gap-2">
+            Light Hours
+            <FieldHelpIcon text="Enter light equipment working hours." />
+          </label>
+  
+          <input class="input" placeholder="Enter Light Hours" type="number" id="light-hours" v-model="WorkedHoure"
+            @input="updateData" />
+        </div>
+      </div>
+      <div class="col-span-2 md:col-span-1" data-required-field="langs">
+        <LangTitleInput :label="`${GetEquipmentTitle(activeTab)} model`" :langs="langDefault" :modelValue="langs"
+          help-text="Enter the equipment name in each available language so users can identify it easily."
           @update:modelValue="setLangs" />
+        <p v-if="getFieldError('langs')" class="required-field-message">
+          {{ getFieldError('langs') }}
+        </p>
       </div>
 
       <div class="col-span-2 md:col-span-1 flex flex-col gap-2 input-wrapper" v-if="!data?.id">
-        <label for="serialNumber">{{ $t('refrence_number') }}</label>
+        <label for="serialNumber" class="flex items-center gap-2">
+          {{ $t('serial_number') }}
+          <FieldHelpIcon text="Enter a unique serial number, or leave it empty when automatic generation is enabled." />
+        </label>
         <input type="text" v-model="SerialNumber" @input="UpdateSerial" id="serialNumber"
-          :disabled="projtecStateus.isSerialNumberAuto()"
-          :placeholder="projtecStateus.isSerialNumberAuto() ? 'You can leave it (auto-generated)' : 'Enter Your Serial Number'" />
+          :disabled="projtecStateus.isSerialNumberAuto()" :placeholder="projtecStateus.isSerialNumberAuto()
+              ? 'You can leave it (auto-generated)'
+              : 'Enter Your Serial Number'
+            " />
       </div>
 
-      <div class="col-span-2 md:col-span-1">
+      <div class="col-span-2 md:col-span-1" data-required-field="equipmentType">
         <UpdatedCustomInputSelect @update:reload="GetEquipmentType" :modelValue="equipmentType"
           :controller="indexEquipmentTypeController" :params="indexEquipmentTypeParams"
-          :label="`${GetEquipmentTitle(activeTab)} Type`" :id="`${GetEquipmentTitle(activeTab)} Type`"
-          :placeholder="`Select ${GetEquipmentTitle(activeTab)} Type`" @update:modelValue="setEquipmentType"
-          :isDialog="true" :dialogVisible="EquipmentTypeDialog">
+          :label="`${GetEquipmentTitle(activeTab)} brand`" :id="`${GetEquipmentTitle(activeTab)} Type`"
+          :placeholder="`Select ${GetEquipmentTitle(activeTab)} brand`"
+          help-text="Select the type that best classifies this equipment, device, or tool."
+          @update:modelValue="setEquipmentType" :isDialog="true" v-model:dialogVisible="EquipmentTypeDialog">
           <template #LabelHeader>
             <span class="add-dialog" @click="EquipmentTypeDialog = true">New</span>
           </template>
@@ -676,51 +957,93 @@ import CheckboxGroup from 'primevue/checkboxgroup';
             <AddEquipmentType @close:data="EquipmentTypeDialog = false" />
           </template>
         </UpdatedCustomInputSelect>
+        <p v-if="getFieldError('equipmentType')" class="required-field-message">
+          {{ getFieldError('equipmentType') }}
+        </p>
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
-        <label>{{ $t('upload image') }}</label>
+        <label class="flex items-center gap-2">
+          {{ $t('upload image') }}
+          <FieldHelpIcon text="Upload a clear image that helps users identify this equipment." />
+        </label>
         <SingleFileUpload :returnType="`base64`" v-model="image" @update:modelValue="setImage" label="Image" id="image"
           index="1" placeholder="upload image" />
       </div>
 
       <!-- {{ certificateImage }} -->
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
-        <label class="flex justify-between flex-wrap">
+        <label class="flex items-center gap-2 flex-wrap">
           <p>{{ $t('Certification / Inspection Image upload') }}</p>
+          <FieldHelpIcon :text="$t('equipment_training_upload_help')" />
         </label>
         <SingleFileUpload :returnType="`base64`" v-model="certificateImage" @update:modelValue="setCertificateImage"
-          label="Certification upload" id="Certification upload" index="2" placeholder="Certification upload" />
+          :label="$t('training_upload')" id="Certification upload" index="2" :placeholder="$t('training_upload')" />
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
-        <label>{{ $t('certification / Inspection expiry date') }}</label>
-        <DatePicker v-model="decommissioningDate" id="Date of Decommissioning" placeholder="certification expiry date"
-          @update:modelValue="setDecoDate" />
+        <label class="flex items-center gap-2">
+          {{ $t('third party Inspection expir date') }}
+          <FieldHelpIcon :text="$t('equipment_training_expiry_help')" />
+        </label>
+        <DatePicker :model-value="decommissioningDateObj" id="Date of Decommissioning"
+          :placeholder="$t('training_expiry_date')" @update:modelValue="setDecoDate" />
       </div>
 
+      <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
+        <label class="flex items-center gap-2">
+          {{ $t('mainfactury year') }}
+          <FieldHelpIcon :text="$t('mainfactury year')" />
+        </label>
+        <DatePicker :model-value="mainfacturyDateObj" id="Date of mainfactury"
+          :placeholder="$t('training mainfactury date')" @update:modelValue="setMainfacturyDate" view="year"
+          dateFormat="yy" />
+      </div>
+
+      <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1 ivhm-checkbox">
+        <label class="flex items-center gap-2">
+          {{ $t('ivhm') }}
+        </label>
+        <input v-model="ivhm" @change="updateData" type="checkbox" id="ivhm" />
+      </div>
+
+
+
+
+
       <div v-if="user?.type === OrganizationTypeEnum.ORGANIZATION"
-        class="col-span-2 flex item-center justify-start gap-4">
-        <div class="radio-wrapper" :class="deviceStatus == option?.id ? 'active' : ''"
-          v-for="(option, index) in deviceStatusOptions" :key="index" @click="deviceStatus = option?.id">
-          <div class="flex items-center justify-center gap-1 w-full h-full">
-            <label class="text-lg w-full flex justify-center" :for="`${option?.id}-${option?.title}`">
-              {{ option?.title }}
-            </label>
-            <RentIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.RENT" />
-            <OwnedIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.OWN" />
-          </div>
-          <input :id="`${option?.id}-${option?.title}`" type="radio" v-model="deviceStatus" :value="option?.id"
-            name="radio" @change="UpdateDeviceStatus" />
+        class="col-span-2 flex flex-wrap item-center justify-start gap-4" data-required-field="deviceStatus">
+        <div class="equipment-status-guide flex basis-full items-center gap-2">
+          <span>{{ $t('status') }}</span>
+          <FieldHelpIcon
+            text="Choose Owned when the organization owns the asset, or Rent when it is supplied temporarily." />
         </div>
+        <div class="equipment-status-options">
+          <div class="radio-wrapper" :class="deviceStatus == option?.id ? 'active' : ''"
+            v-for="(option, index) in deviceStatusOptions" :key="index" @click="deviceStatus = option?.id">
+            <div class="flex items-center justify-center gap-1 w-full h-full">
+              <label class="text-lg w-full flex justify-center" :for="`${option?.id}-${option?.title}`">
+                {{ option?.title }}
+              </label>
+              <RentIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.RENT" />
+              <OwnedIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.OWN" />
+            </div>
+            <input :id="`${option?.id}-${option?.title}`" type="radio" v-model="deviceStatus" :value="option?.id"
+              name="radio" @change="UpdateDeviceStatus" />
+          </div>
+        </div>
+        <p v-if="getFieldError('deviceStatus')" class="required-field-message">
+          {{ getFieldError('deviceStatus') }}
+        </p>
       </div>
 
       <div v-if="
         deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
-      " class="col-span-2 md:col-span-1">
+      " class="col-span-2 md:col-span-1" data-required-field="SelectedContractor">
         <UpdatedCustomInputSelect :modelValue="SelectedContractor" :controller="indexContractorController"
           :params="indexContractorTypeParams" :label="`Contructor`" id="Contructor" :placeholder="`Select Contructor`"
-          @update:modelValue="setContructor" :isDialog="true" :dialogVisible="ContractorDialog">
+          help-text="Select the contractor or supplier providing this rented equipment."
+          @update:modelValue="setContructor" :isDialog="true" v-model:dialogVisible="ContractorDialog">
           <template #LabelHeader>
             <span class="add-dialog" @click="ContractorDialog = true">New</span>
           </template>
@@ -728,23 +1051,30 @@ import CheckboxGroup from 'primevue/checkboxgroup';
             <AddContractor @update:data="ContractorDialog = false" />
           </template>
         </UpdatedCustomInputSelect>
+        <p v-if="getFieldError('SelectedContractor')" class="required-field-message">
+          {{ getFieldError('SelectedContractor') }}
+        </p>
       </div>
 
       <div v-if="
         deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
-      " class="col-span-2 md:col-span-1">
+      " class="col-span-2 md:col-span-1" data-required-field="SelectedRentType">
         <CustomSelectInput :staticOptions="RentTypes" :modelValue="SelectedRentType" label="Rent Type" id="Rent Type"
-          placeholder="Selected Rent Type.." @update:modelValue="setRentType" />
+          placeholder="Selected Rent Type.." help-text="Choose the time unit used to calculate the rental period."
+          @update:modelValue="setRentType" />
+        <p v-if="getFieldError('SelectedRentType')" class="required-field-message">
+          {{ getFieldError('SelectedRentType') }}
+        </p>
       </div>
       <div class="col-span-2 md:col-span-1" v-if="!data?.id">
         <!-- <CustomSelectInput :controller="indexWhereHouseController" :params="indexWhereHouseParams"
           :modelValue="SelectedWhereHosue" label="Warehouse" id="Warehouse" placeholder="Select Warehouse.."
           @update:modelValue="setSelectedWhereHouse" /> -->
 
-
         <UpdatedCustomInputSelect :controller="indexWhereHouseController" :params="indexWhereHouseParams"
           :modelValue="SelectedWhereHosue" label="Warehouse" id="Warehouse" placeholder="Select Warehouse.."
-          @update:modelValue="setSelectedWhereHouse" :isDialog="true" :dialogVisible="WarehouseDialog">
+          help-text="Select the warehouse where this equipment will initially be stored."
+          @update:modelValue="setSelectedWhereHouse" :isDialog="true" v-model:dialogVisible="WarehouseDialog">
           <template #LabelHeader>
             <span class="add-dialog" @click="WarehouseDialog = true">New</span>
           </template>
@@ -756,48 +1086,116 @@ import CheckboxGroup from 'primevue/checkboxgroup';
 
       <div class="input-wrapper col-span-2 md:col-span-1" v-if="
         deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
-      ">
-        <label for="rent-time">Rent {{RentTypes.find((el) => el.id == SelectedRentType?.id)?.title}}</label>
+      " data-required-field="Rent">
+        <label for="rent-time" class="flex items-center gap-2">
+          Rent {{RentTypes.find((el) => el.id == SelectedRentType?.id)?.title}}
+          <FieldHelpIcon text="Enter the rental duration using the selected rent time unit." />
+        </label>
         <input class="input" placeholder="Enter Rent Time" type="text" id="rent-time" v-model="Rent"
           @input="setRentTime" />
+        <p v-if="getFieldError('Rent')" class="required-field-message">
+          {{ getFieldError('Rent') }}
+        </p>
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1" v-if="
         deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
-      ">
-        <label>{{ $t('start_date') }}</label>
+      " data-required-field="StartDate">
+        <label class="flex items-center gap-2">
+          {{ $t('start_date') }}
+          <FieldHelpIcon text="Select the date and time when the equipment rental begins." />
+        </label>
         <DatePicker v-model="StartDate" id="start_date" placeholder="Enter Start Date" :showTime="true"
           @update:modelValue="setStartDate" />
+        <p v-if="getFieldError('StartDate')" class="required-field-message">
+          {{ getFieldError('StartDate') }}
+        </p>
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1" v-if="
         deviceStatus == EquipmentStatus.RENT && user?.type === OrganizationTypeEnum.ORGANIZATION
       ">
-        <label>{{ $t('end_date') }}</label>
+        <label class="flex items-center gap-2">
+          {{ $t('end_date') }}
+          <FieldHelpIcon text="This date is calculated automatically from the start date, duration, and rent type." />
+        </label>
         <DatePicker :showTime="true" v-model="EndDate" id="end_date" placeholder="Auto-calculated end date" disabled />
       </div>
 
       <div class="input-wrapper col-span-2 md:col-span-1">
-        <label for="License Plate Number">
-          {{ $t('License Plate No.') }}
+        <label for="License Plate Number" class="flex items-center gap-2">
+          {{ $t(' Plate No.') }}
+          <FieldHelpIcon text="Enter the official registration plate number when this equipment is a vehicle." />
         </label>
         <input type="text" id="License Plate Number" v-model="licensePlateNumber" @input="updateData"
           :placeholder="$t('License Plate Number')" />
       </div>
 
+      <div v-if="deviceStatus === EquipmentStatus.OWN" class="col-span-2 md:col-span-1">
+        <UpdatedCustomInputSelect :model-value="equipmentUsedStatus" :static-options="EquipmentUsedOptions"
+          label="Equipment Used Status" id="equipment-used-status" placeholder="Select Equipment Used Status"
+          @update:model-value="setEquipmentUsedStatus">
+          <template #LabelHeader>
+            <FieldHelpIcon text="Select whether this owned equipment has been used before." />
+          </template>
+        </UpdatedCustomInputSelect>
+      </div>
+
+      <!-- <div
+        v-if="
+          deviceStatus === EquipmentStatus.OWN && equipmentUsedStatus?.id === EquipmentUsed.used
+        "
+        class="col-span-2 md:col-span-1 input-wrapper"
+      >
+        <label for="worked-hours">{{ $t('worked hours') }}</label>
+        <input
+          type="text"
+          id="worked-hours"
+          placeholder="enter worked hourse"
+          v-model="WorkedHoure"
+          class="input"
+        />
+      </div> -->
+
+      <!-- <div
+        v-if="
+          deviceStatus === EquipmentStatus.OWN && equipmentUsedStatus?.id === EquipmentUsed.used
+        "
+        class="col-span-2 md:col-span-1"
+      >
+        <UpdatedCustomInputSelect
+          :model-value="equipmentCondition"
+          :static-options="EquipmentCOnditionOptions"
+          label="Equipment Condition"
+          id="equipment-condition"
+          placeholder="Select Equipment Condition"
+          @update:model-value="setEquipmentCondition"
+        >
+          <template #LabelHeader>
+            <FieldHelpIcon
+              text="Select whether this equipment is new or has been previously used."
+            />
+          </template>
+        </UpdatedCustomInputSelect>
+      </div> -->
+
       <div class="input-wrapper col-span-2 md:col-span-1" v-if="user?.type == OrganizationTypeEnum?.ADMIN">
-        <CustomCheckbox :title="'all_industries'" :checked="allIndustries" @update:checked="allIndustries = $event"
-          :index="2" />
+        <div class="flex items-center gap-2">
+          <CustomCheckbox :title="'all_industries'" :checked="allIndustries" @update:checked="allIndustries = $event"
+            :index="2" />
+          <FieldHelpIcon
+            text="Enable this when the equipment is available to every industry instead of selected industries only." />
+        </div>
       </div>
       <div class="input-wrapper" v-if="deviceStatus == EquipmentStatus.RENT"></div>
 
       <div class="col-span-2 md:col-span-1" v-if="!allIndustries && user?.type == OrganizationTypeEnum?.ADMIN">
         <CustomSelectInput :modelValue="industry" :controller="industryController" :params="industryParams"
           label="Industry" id="EquipmentType" placeholder="Select industry" :type="2"
-          @update:modelValue="setIndustry" />
+          help-text="Select the industries allowed to use or view this equipment." @update:modelValue="setIndustry" />
       </div>
 
-      <div class=" col-span-2 md:col-span-2 card_Qr">
+      <div class="col-span-2 md:col-span-2 card_Qr">
         <div class="machine_card">
           <h6>{{ EquipmentTypesEnum[activeTab] }} card</h6>
           <p>Preview only — data shown is illustrative. Confirm to add the equipment</p>
@@ -811,7 +1209,7 @@ import CheckboxGroup from 'primevue/checkboxgroup';
             :startDate="StartDate" :EndDate="EndDate"
             :rentType="RentTypes.find((el) => el.id == SelectedRentType?.id)?.id"
             :typerent="user?.type === OrganizationTypeEnum.ORGANIZATION" :deviceStatus="deviceStatus" />
-          <img src="@/assets/images/qr.png" alt="qr" class="qr-scan" />
+          <!-- <img src="@/assets/images/qr.png" alt="qr" class="qr-scan" /> -->
         </div>
       </div>
       <!-- <QrCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" /> -->
@@ -819,7 +1217,21 @@ import CheckboxGroup from 'primevue/checkboxgroup';
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.ivhm-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-direction: row;
+}
+
+.check-box {
+  width: 100%;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
 .Qr_EQUIPMENt {
   display: flex;
   align-items: center;
@@ -830,7 +1242,7 @@ import CheckboxGroup from 'primevue/checkboxgroup';
   height: 20px;
   margin-right: 6px;
   cursor: pointer;
-  color: #1d4ed8;
+  color: var(--brand-primary-500);
   text-decoration: underline;
   font-family: 'Regular';
 }
@@ -844,6 +1256,20 @@ import CheckboxGroup from 'primevue/checkboxgroup';
   padding: 0;
 }
 
+.equipment-status-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+  margin-bottom: 1rem;
+}
+
+.equipment-status-options .radio-wrapper {
+  width: 100%;
+  min-width: 0;
+}
+
 .h-full {
   height: 100%;
   padding: 12px;
@@ -851,7 +1277,6 @@ import CheckboxGroup from 'primevue/checkboxgroup';
 
 .check-box {
   input {
-
     width: 15px !important;
     height: 15px !important;
     transform: translateY(8px);
@@ -871,6 +1296,121 @@ import CheckboxGroup from 'primevue/checkboxgroup';
       align-items: center;
       justify-content: center;
     } */
+  }
+}
+
+.required-field-message {
+  margin-top: 0.35rem;
+  color: var(--status-danger);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.equipment-form.is-dark {
+  color: var(--text-strong);
+}
+
+.equipment-form.is-dark .vehicle,
+.equipment-form.is-dark .card_Qr,
+.equipment-form.is-dark .machine_card,
+.equipment-form.is-dark .Qr_EQUIPMENt,
+.equipment-form.is-dark .radio-wrapper {
+  background: var(--surface-1) !important;
+  border-color: var(--main-border) !important;
+  color: var(--text-strong) !important;
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 20%, transparent) !important;
+}
+
+.equipment-form.is-dark .machine_card p,
+.equipment-form.is-dark .radio-wrapper label,
+.equipment-form.is-dark label,
+.equipment-form.is-dark .input-wrapper label {
+  color: var(--text-soft) !important;
+}
+
+.equipment-form.is-dark .machine_card h6 {
+  color: var(--text-strong) !important;
+}
+
+.equipment-form.is-dark .radio-wrapper.active {
+  background: color-mix(in srgb, var(--PrimaryColor) 18%, var(--surface-1)) !important;
+  border-color: color-mix(in srgb, var(--PrimaryColor) 48%, var(--main-border)) !important;
+}
+
+.equipment-form.is-dark input {
+  background-color: var(--surface-2) !important;
+  border-color: var(--main-border) !important;
+  color: var(--text-strong) !important;
+}
+
+.equipment-form.is-dark input::placeholder {
+  color: var(--text-muted) !important;
+}
+
+@media (max-width: 768px) {
+  .equipment-form {
+    width: 100%;
+    min-width: 0;
+
+    >.grid {
+      grid-template-columns: minmax(0, 1fr) !important;
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    >.grid>* {
+      grid-column: 1 / -1 !important;
+      min-width: 0;
+    }
+  }
+
+  .vehicle {
+    align-items: stretch;
+    flex-direction: column !important;
+
+    >div,
+    .input-wrapper,
+    .w-1\/2 {
+      width: 100% !important;
+    }
+  }
+
+  .card_Qr {
+    grid-template-columns: minmax(0, 1fr) !important;
+    padding: 16px !important;
+  }
+
+  .Qr_EQUIPMENt {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .equipment-form>.grid {
+    gap: 12px;
+    margin-top: 14px;
+  }
+
+  .equipment-form .col-span-2.flex.item-center {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 8px;
+
+    .radio-wrapper {
+      width: 100%;
+    }
+  }
+
+  .card_Qr {
+    border-radius: 14px !important;
+    padding: 12px !important;
+  }
+
+  .Qr_EQUIPMENt {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 10px;
   }
 }
 </style>

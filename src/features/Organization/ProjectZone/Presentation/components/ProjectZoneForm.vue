@@ -8,7 +8,6 @@ import IndexLangController from '@/features/setting/languages/Presentation/contr
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
 import { LangsMap } from '@/constant/langs.ts'
 import { useUserStore } from '@/stores/user'
-import { useRoute } from 'vue-router'
 import EditProjectZoneParams from '../../Core/params/editProjectZoneParams'
 import AddProjectZoneParams from '../../Core/params/addProjectZoneParams'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
@@ -17,7 +16,6 @@ import type ProjectZoneDetailsModel from '../../Data/models/ProjectZoneDetailsMo
 import IndexLocationController from '@/features/setting/Location/Presentation/controllers/indexLocationController'
 import IndexLocationParams from '@/features/setting/Location/Core/params/indexLocationParams'
 import { LocationEnum } from '@/features/setting/Location/Core/Enum/LocationEnum'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -195,7 +193,7 @@ const fields = ref([
 
 <template>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput type="text" :langs="langDefault" :modelValue="langs" :label="$t('title')"
+    <LangTitleInput :label="`${$t('zone_name')}`" type="text" :langs="langDefault" :modelValue="langs"
       @update:modelValue="setLangs" />
   </div>
 

@@ -2,19 +2,15 @@
   import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue';
   import Dialog from 'primevue/dialog';
   import DialogSystem from '@/assets/images/DialogSystem.png'
-  import { onMounted, ref, watch } from "vue";
-  import IndexWhereHouseTypeController from '../controllers/indexWhereHouseTypeController';
+  import { ref, watch } from "vue";
   import IndexWhereHouseTypeParams from '../../Core/params/indexWhereHouseTypeParams';
   import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-  import TableLoader from '@/shared/DataStatues/TableLoader.vue'
-  import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-  import wordSlice from '@/base/Presentation/utils/word_slice';
+  import SystemDialogEmptyState from '@/shared/DataStatues/SystemDialogEmptyState.vue'
   import IndexSystemWhereHouseTypeController from '../controllers/indexSystemWhereHouseTypeController';
   import AddWhereHouseTypeCloneController from '../controllers/addWhereHouseTypeCloneController';
   import AddWarehouseTypeClonesParams from '../../Core/params/AddWarehouseTypeClonesParams';
   import { useRouter } from 'vue-router';
   import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue';
-  import AddSystemHeaderData from '@/shared/icons/AddSystemHeaderData.vue';
   import SystemDataHeader from './SystemDataHeader.vue';
 
   const props = defineProps<{
@@ -90,7 +86,8 @@
     </template>
     <DataStatus :controller="state">
       <template #success>
-        <div class="system-dialog-content-container">
+        <SystemDialogEmptyState v-if="!state.data?.length" />
+        <div v-else class="system-dialog-content-container">
 
           <div class="system-dialog-content" v-for="item in state.data" :key="item.id">
             <div class="row-content" :class="{ active: selectedIds.includes(item.id) }" @click="ChangeStatus(item.id)">
@@ -102,7 +99,10 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-primary w-full mt-5 confirm-btn" @click="SubmitData">{{ $t('confirm') }}</button>
+        <button v-if="state.data?.length" class="btn btn-primary w-full mt-5 confirm-btn" @click="SubmitData">{{ $t('confirm') }}</button>
+      </template>
+      <template #empty>
+        <SystemDialogEmptyState />
       </template>
       <template #loader>
       </template>
@@ -127,8 +127,8 @@
   font-weight: 500;
   cursor: pointer;
   border-radius: 5px;
-  background-color: #c4c4c40f;
-  counter-reset: #575b71;
+  background-color: color-mix(in srgb, var(--main-border) 5.88%, transparent);
+  counter-reset: var(--text-soft);
   border: none !important;
   display: flex;
   align-items: center;
@@ -138,7 +138,7 @@
   border-radius: 8px;
 
   &:hover {
-    background-color: #1d4ed80f;
+    background-color: color-mix(in srgb, var(--brand-primary-500) 5.88%, transparent);
   }
 
 }

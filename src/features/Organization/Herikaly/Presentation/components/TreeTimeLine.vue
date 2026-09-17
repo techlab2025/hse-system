@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import EmployeeIcon from '@/shared/icons/EmployeeIcon.vue'
 import EmployeeLinkIcon from '../../../../../shared/icons/EmployeeLinkIcon.vue'
 import type HerikalyModel from '../../Data/models/HerikalyModel'
@@ -141,7 +141,7 @@ const deleteHierarchy = async (Id: number) => {
                     <router-link
                       :to="`/organization/employee-certificate/${item.id}`"
                       class="btn add-btn"
-                      >{{ $t('certificates') }}</router-link
+                      >{{ $t('training_matrix') }}</router-link
                     >
                   </PermissionBuilder>
                   <PermissionBuilder

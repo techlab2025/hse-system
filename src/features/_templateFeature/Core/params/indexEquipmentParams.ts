@@ -9,6 +9,9 @@ export default class IndexEquipmentParams implements Params {
   public pageNumber: number = 10
   public id?: number
   public notIncludeAssigned?: boolean
+  public date?: string
+  public status?: number
+  public equipmentTypeId?: number
 
   // public code?: LangEnum
 
@@ -19,6 +22,9 @@ export default class IndexEquipmentParams implements Params {
     withPage: number = 1,
     id?: number,
     notIncludeAssigned?: boolean,
+    date?: string,
+    status?: number,
+    equipmentTypeId?: number,
     // code?: LangEnum,
   ) {
     this.word = word
@@ -27,6 +33,9 @@ export default class IndexEquipmentParams implements Params {
     this.perPage = perPage
     this.id = id
     this.notIncludeAssigned = notIncludeAssigned
+    this.date = date
+    this.status = status
+    this.equipmentTypeId = equipmentTypeId
     // this.code = code
   }
 
@@ -38,6 +47,9 @@ export default class IndexEquipmentParams implements Params {
     data['limit'] = this.perPage
     if (this.id) data['parent_id'] = this.id
     data['not_include_assigned'] = this.notIncludeAssigned
+    if (this.date) data['date'] = this.date
+    if (this.status != null) data['status'] = this.status
+    if (this.equipmentTypeId != null) data['equipment_type_id'] = this.equipmentTypeId
     // if (this.code) data['code'] = this.code
     return data
   }

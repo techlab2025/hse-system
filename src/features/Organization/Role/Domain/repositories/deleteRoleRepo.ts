@@ -8,7 +8,7 @@ import { DeleteRoleApiService } from '../../Data/apiServices/deleteRoleApiServic
 class DeleteRoleRepo extends RepoInterface<RoleModel> {
   private static instance: DeleteRoleRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

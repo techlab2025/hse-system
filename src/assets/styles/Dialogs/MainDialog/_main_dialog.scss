@@ -7,7 +7,7 @@
   border-radius: 16px;
   text-align: center;
   margin: auto;
-  background-color: $White;
+  background-color: var(--surface-1);
 
   img {
     max-width: 250px;
@@ -20,13 +20,13 @@
 
   h4 {
     font-weight: bold;
-    color: black;
+    color: var(--text-strong);
     font-family: 'Regular';
     margin-block: 1rem;
   }
   p {
     // color: $Gray-3;
-    color: black;
+    color: var(--text-strong);
   }
   .dialog-container {
     display: flex;
@@ -41,9 +41,9 @@
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
-    color: #212529;
+    color: var(--text-strong);
     background-clip: padding-box;
-    border: 1px solid #ced4da;
+    border: 1px solid var(--brand-primary-200);
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;

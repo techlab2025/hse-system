@@ -7,7 +7,7 @@ import CheckListDetailsModel from '../../Data/models/CheckListModel'
 class EditCheckListRepo extends RepoInterface<CheckListDetailsModel> {
   private static instance: EditCheckListRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

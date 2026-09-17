@@ -191,6 +191,12 @@ class ApiNames {
   public get IndexTeam() {
     return this.prefix + 'fetch_teams'
   }
+  public get FetchSystemTeam() {
+    return this.prefix + 'fetch_teams'
+  }
+  public get CloneTeam() {
+    return this.prefix + 'clone_teams'
+  }
   public get ShowTeam() {
     return this.prefix + 'fetch_team_details'
   }
@@ -314,6 +320,45 @@ class ApiNames {
   }
   public get DeleteProject() {
     return this.prefix + 'delete_project'
+  }
+  public get CreateBasicProject() {
+    return this.prefix + 'create_basic_project'
+  }
+  public get UpdateBasicProject() {
+    return this.prefix + 'update_basic_project'
+  }
+  public get CreateProjectHolidays() {
+    return this.prefix + 'create_project_holidays'
+  }
+  public get UpdateProjectHolidays() {
+    return this.prefix + 'update_project_holidays'
+  }
+  public get CreateProjectLocationPositionEmployees() {
+    return this.prefix + 'create_project_location_position_employees'
+  }
+  public get UpdateProjectLocationPositionEmployees() {
+    return this.prefix + 'update_project_location_position_employees'
+  }
+  public get CreateProjectTeams() {
+    return this.prefix + 'create_project_teams'
+  }
+  public get UpdateProjectTeams() {
+    return this.prefix + 'update_project_teams'
+  }
+  public get CreateProjectEquipments() {
+    return this.prefix + 'create_project_equipments'
+  }
+  public get UpdateProjectEquipments() {
+    return this.prefix + 'update_project_equipments'
+  }
+  public get GetTodayTalk() {
+    return this.prefix + 'fetch_today_talks'
+  }
+  public get CreateTodayTalk() {
+    return this.prefix + 'create_today_talk'
+  }
+  public get CreateTodayTalkAnswer() {
+    return this.prefix + 'create_today_talk'
   }
 
   // AboutUsFeature
@@ -578,7 +623,7 @@ class ApiNames {
     return this.prefix + 'create_equipment_type'
   }
   public get AddSystemEquipmentType() {
-    return this.prefix + 'add_system_equipment_type'
+    return this.prefix + 'clone_equipment_types'
   }
   public get IndexEquipmentType() {
     return this.prefix + 'fetch_equipment_types'
@@ -884,6 +929,9 @@ class ApiNames {
   public get DisFactoryItem() {
     return this.prefix + 'disable_factory_item'
   }
+  public get CloneFactoryItems() {
+    return this.prefix + 'clone_factory_items'
+  }
 
   // Accidents
   public get CreateAccidentsType() {
@@ -903,6 +951,26 @@ class ApiNames {
   }
   public get DisAccidentsType() {
     return this.prefix + 'disable_accidents_type'
+  }
+
+  // Incident Categories
+  public get CreateIncidentCategory() {
+    return this.prefix + 'create_incident_category'
+  }
+  public get IndexIncidentCategory() {
+    return this.prefix + 'fetch_incident_categories'
+  }
+  public get ShowIncidentCategory() {
+    return this.prefix + 'fetch_incident_category_details'
+  }
+  public get EditIncidentCategory() {
+    return this.prefix + 'update_incident_category'
+  }
+  public get DeleteIncidentCategory() {
+    return this.prefix + 'delete_incident_category'
+  }
+  public get DisIncidentCategory() {
+    return this.prefix + 'disable_incident_category'
   }
 
   // Organization
@@ -1103,6 +1171,9 @@ class ApiNames {
   public get CreateOrganizatoinEmployee() {
     return this.prefix + 'create_organization_employee'
   }
+  public get CreateOrganizatoinEmployeeExcel() {
+    return this.prefix + 'validate_bulk_employees'
+  }
   public get IndexOrganizatoinEmployee() {
     return this.prefix + 'fetch_organization_employees'
   }
@@ -1193,6 +1264,23 @@ class ApiNames {
   }
   public get ProjectCustomLocation() {
     return this.prefix + 'fetch_full_project_locations'
+  }
+
+  // Project drills
+  public get CreateDrill() {
+    return this.prefix + 'create_drill'
+  }
+  public get CreateDrillPlanning() {
+    return this.prefix + 'create_drill_plan'
+  }
+  public get FetchDrillPlans() {
+    return this.prefix + 'fetch_drill_plans'
+  }
+  public get FetchDrillActions() {
+    return this.prefix + 'fetch_drill_actions'
+  }
+  public get CreateDrillAction() {
+    return this.prefix + 'create_drill_action'
   }
 
   // observation
@@ -1311,7 +1399,7 @@ class ApiNames {
     return this.prefix + 'create_injury_type'
   }
   public get CreateInjuryClones() {
-    return this.prefix + 'create_injury_type_clones'
+    return this.prefix + 'clone_injury_types'
   }
   public get IndexInjury() {
     return this.prefix + 'fetch_injury_types'
@@ -1366,6 +1454,60 @@ class ApiNames {
     return this.prefix + 'delete_warehouse_type'
   }
 
+  // Drill Type
+  public get CreateDrillType() {
+    return this.prefix + 'create_drill_type'
+  }
+  public get IndexDrillType() {
+    return this.prefix + 'fetch_drill_types'
+  }
+  public get ShowDrillType() {
+    return this.prefix + 'fetch_drill_type_details'
+  }
+  public get EditDrillType() {
+    return this.prefix + 'update_drill_type'
+  }
+  public get DeleteDrillType() {
+    return this.prefix + 'delete_drill_type'
+  }
+
+  // PPE Item
+  public get CreatePpeItem() {
+    return this.prefix + 'create_ppe_item'
+  }
+  public get IndexPpeItem() {
+    return this.prefix + 'fetch_ppe_items'
+  }
+  public get ShowPpeItem() {
+    return this.prefix + 'fetch_ppe_item_details'
+  }
+  public get EditPpeItem() {
+    return this.prefix + 'update_ppe_item'
+  }
+  public get DeletePpeItem() {
+    return this.prefix + 'delete_ppe_item'
+  }
+
+  // MangementChange Topic Type
+  public get CreateMangementChangeTopicType() {
+    return this.prefix + 'create_changement_topic'
+  }
+  public get CreateMangementChange() {
+    return this.prefix + 'create_management_of_change'
+  }
+  public get IndexMangementChangeTopicType() {
+    return this.prefix + 'fetch_changement_topics'
+  }
+  public get ShowMangementChangeTopicType() {
+    return this.prefix + 'fetch_changement_topic_details'
+  }
+  public get EditMangementChangeTopicType() {
+    return this.prefix + 'update_changement_topic'
+  }
+  public get DeleteMangementChangeTopicType() {
+    return this.prefix + 'delete_changement_topic'
+  }
+
   // WhereHosue
   public get CreateWhereHouse() {
     return this.prefix + 'create_warehouse'
@@ -1393,8 +1535,20 @@ class ApiNames {
   public get AddTasks() {
     return this.prefix + 'create_investigation_tasks'
   }
+  public get UpdateTasks() {
+    return this.prefix + 'update_investigation_task'
+  }
   public get IndexTasks() {
     return this.prefix + 'fetch_investigation_tasks'
+  }
+  public get FetchCorrectiveTasks() {
+    return this.prefix + 'fetch_corrective_action_plan'
+  }
+  public get FetchPreventiveTasks() {
+    return this.prefix + 'fetch_preventive_action_plan'
+  }
+  public get FetchLessonsLearnt() {
+    return this.prefix + 'fetch_investigations_lesson_learnt'
   }
   public get FetchProjectStatistics() {
     return this.prefix + 'fetch_project_statistics'
@@ -1567,7 +1721,20 @@ class ApiNames {
     return this.prefix + 'fetch_home_equipments_statices'
   }
   public get IndexCapa() {
-    return this.prefix + 'fetch_capa_observations'
+    // return this.prefix + 'fetch_capa_observations'
+    return this.prefix + 'fetch_capas'
+  }
+  public get ShowCapaDetails() {
+    return this.prefix + 'fetch_capa_details'
+  }
+  public get UpdateCapa() {
+    return this.prefix + 'update_capa'
+  }
+  public get SetInvestigationTaskVerification() {
+    return this.prefix + 'set_investigation_task_verification'
+  }
+  public get FetchInvestigationTaskVerification() {
+    return this.prefix + 'fetch_investigation_task_verifications'
   }
   public get DeleteCapa() {
     return this.prefix + 'delete_capa'
@@ -1581,11 +1748,20 @@ class ApiNames {
   public get AddWarehouseClones() {
     return this.prefix + 'clone_warehouse_types'
   }
+  public get CloneDrillTypes() {
+    return this.prefix + 'clone_drill_types'
+  }
+  public get ClonePpeItems() {
+    return this.prefix + 'clone_ppe_items'
+  }
   public get CreateSystemHazardType() {
     return this.prefix + 'clone_hazard_types'
   }
   public get CreateSystemAccidentsType() {
-    return this.prefix + 'clone_accidant_type_types'
+    return this.prefix + 'clone_accidents_types'
+  }
+  public get CreateSystemIncidentCategory() {
+    return this.prefix + 'clone_incident_categories'
   }
   public get CreateSystemObserverationType() {
     return this.prefix + 'clone_observation_types'
@@ -1608,6 +1784,133 @@ class ApiNames {
   }
   public get CloseInvestigating() {
     return this.prefix + 'close_investigation'
+  }
+
+  public get addCertificateToHierarchy() {
+    return this.prefix + 'create_certificate_hierarchy'
+  }
+  public get deleteCertificateToHierarchy() {
+    return this.prefix + 'delete_hierarchy_certificate'
+  }
+
+  // document refrence
+  public get CreateDocumentRefrence() {
+    return this.prefix + 'create_document_reference'
+  }
+  public get IndexDocumentRefrence() {
+    return this.prefix + 'fetch_document_references'
+  }
+  public get ShowDocumentRefrence() {
+    return this.prefix + 'fetch_document_reference_details'
+  }
+  public get EditDocumentRefrence() {
+    return this.prefix + 'update_document_reference'
+  }
+  public get DeleteDocumentRefrence() {
+    return this.prefix + 'delete_document_reference'
+  }
+
+  // shifts
+  public get CreateShift() {
+    return this.prefix + 'create_work_shift'
+  }
+  public get IndexShift() {
+    return this.prefix + 'fetch_work_shifts'
+  }
+  public get ShowShift() {
+    return this.prefix + 'fetch_work_shift_details'
+  }
+  public get EditShift() {
+    return this.prefix + 'update_work_shift'
+  }
+  public get DeleteShift() {
+    return this.prefix + 'delete_work_shift'
+  }
+
+  public get FetchSimilarObservation() {
+    return this.prefix + 'fetch_similar_observations'
+  }
+
+  // notifications plan
+  public get CreateNotificationPlan() {
+    return this.baseUrl + this.organizationPrefix + 'create_notification_plan'
+  }
+  public get IndexNotificationPlan() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_notification_plans'
+  }
+  public get ShowNotificationPlan() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_notification_plan_details'
+  }
+  public get EditNotificationPlan() {
+    return this.baseUrl + this.organizationPrefix + 'update_notification_plan'
+  }
+  public get ActiveNotificationPlan() {
+    return this.baseUrl + this.organizationPrefix + 'change_notification_active_status'
+  }
+  public get DeleteNotificationPlan() {
+    return this.baseUrl + this.organizationPrefix + 'delete_notification_plan'
+  }
+  public get RefreshNotification() {
+    return this.baseUrl + this.organizationPrefix + 'register_notification_socket_user'
+  }
+  public get CloneAllData() {
+    return this.baseUrl + this.organizationPrefix + 'clone_all_data'
+  }
+
+  public get ShowMeetingType() {
+    return this.prefix + 'fetch_meeting_type_details'
+  }
+  public get CreateMeetingType() {
+    return this.prefix + 'create_meeting_type'
+  }
+  public get DeleteMeetingType() {
+    return this.prefix + 'delete_meeting_type'
+  }
+  public get EditMeetingType() {
+    return this.prefix + 'edit_meeting_type'
+  }
+  public get IndexMeetingType() {
+    return this.prefix + 'fetch_meeting_types'
+  }
+  // public get CloneMeetingType() {
+  //   return this.prefix + 'clone_meeting_type'
+  // }
+  public get CloneMeetingTypes() {
+    return this.prefix + 'clone_meeting_types'
+  }
+
+  public get CreateProjectMeeting() {
+    return this.baseUrl + this.organizationPrefix + 'create_project_meeting'
+  }
+  public get CreateProjectMeetingResult() {
+    return this.baseUrl + this.organizationPrefix + 'create_project_meeting_result'
+  }
+  // CloneMeetingType
+
+  public get ShowPTWType() {
+    return this.prefix + 'fetch_permit_type_details'
+  }
+  public get CreatePTWType() {
+    return this.prefix + 'create_permit_type'
+  }
+  public get DeletePTWType() {
+    return this.prefix + 'delete_permit_type'
+  }
+  public get EditPTWType() {
+    return this.prefix + 'update_permit_type'
+  }
+  public get IndexPTWType() {
+    return this.prefix + 'fetch_permit_types'
+  }
+  public get ClonePTWTypes() {
+    return this.prefix + 'clone_permit_types'
+  }
+  public get CreatePermitToWork() {
+    return this.baseUrl + this.organizationPrefix + 'create_permit_to_work'
+  }
+  public get CreatePermitToWorkResult(){
+    return this.baseUrl + this.organizationPrefix + 'create_permit_to_work_result'
+
   }
 }
 

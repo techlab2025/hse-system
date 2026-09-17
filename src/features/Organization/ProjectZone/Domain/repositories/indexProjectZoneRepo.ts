@@ -10,7 +10,7 @@ import { IndexProjectZoneApiService } from '../../Data/apiServices/indexProjectZ
 class IndexProjectZoneRepo extends RepoInterface<ProjectZoneModel[]> {
   private static instance: IndexProjectZoneRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

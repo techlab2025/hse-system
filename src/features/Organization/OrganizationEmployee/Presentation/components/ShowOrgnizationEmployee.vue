@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import ShowOrganizatoinEmployeeParams from '../../Core/params/showOrganizatoinEmployeeParams'
 import ShowOrganizatoinEmployeeController from '../controllers/showOrganizatoinEmployeeController'
 import CertificateComp from '../supcomponents/showOrgEmployee/CertificateComp.vue'
 import EmployeeProfileBox from '../supcomponents/showOrgEmployee/EmployeeProfileBox.vue'
-// import EmpTasks from '../supcomponents/showOrgEmployee/EmpTasks.vue';
-import PerformanceBox from '../supcomponents/showOrgEmployee/PerformanceBox.vue'
 import ProjectComp from '../supcomponents/showOrgEmployee/ProjectComp.vue'
 import { useRoute } from 'vue-router'
 import type OrganizatoinEmployeeDetailsModel from '../../Data/models/OrganizatoinEmployeeDetailsModel'
@@ -36,43 +34,284 @@ const viewLessTasks = () => {
 const printPage = () => {
   window.print()
 }
+const tasks = computed(() => empDetastate.value?.tasks ?? [])
+const visibleTasks = computed(() => (isShowAllTasks.value ? tasks.value : tasks.value.slice(0, 1)))
+const hiddenTasksCount = computed(() => Math.max(tasks.value.length - 1, 0))
 </script>
 <template>
-  <button class="print-btn" @click="printPage">Print Page</button>
-  <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-    <div class="lg:col-span-3 space-y-6">
-      <EmployeeProfileBox :state="empDetastate" />
-      <!-- Pass Data to PerformanceBox -->
-      <!-- <PerformanceBox :state="empDetastate" /> -->
-      <div class="all-emp-tasks" v-for="task in empDetastate?.tasks.slice(0, 1)" :key="task.id">
-        <Employeetasks :tasks="task" />
+  <section class="employee-show-page">
+    <div class="employee-page-topbar">
+      <div>
+        <span class="page-kicker">Employee profile</span>
+        <h1> employee details</h1>
       </div>
-
-      <button
-        class="view-all-tasks"
-        @click="viewAllTasks()"
-        v-if="!isShowAllTasks && empDetastate?.tasks?.length! > 1"
-      >
-        View All Tasks <Emptask />
-      </button>
-
-      <template v-if="isShowAllTasks && empDetastate?.tasks?.length! > 1">
-        <div class="all-emp-tasks" v-for="task in empDetastate?.tasks.slice(1)" :key="task.id">
-          <Employeetasks :tasks="task" />
-        </div>
-
-        <button class="view-all-tasks" @click="viewLessTasks()" v-if="isShowAllTasks">
-          View Less Tasks
-          <Emptask />
-        </button>
-      </template>
+      <!-- <button class="print-page-btn" type="button" @click="printPage">Print</button> -->
     </div>
 
-    <div class="lg:col-span-1 space-y-6">
-      <CertificateComp :state="empDetastate?.certificates" />
-      <ProjectComp :state="empDetastate?.projects" />
+    <div class="employee-layout">
+      <main class="employee-main-panel">
+        <EmployeeProfileBox :state="empDetastate" />
+
+        <section class="tasks-panel">
+          <div class="tasks-panel-header">
+            <div>
+              <span class="panel-kicker">Assigned work</span>
+              <h2>Employee tasks</h2>
+            </div>
+            <span class="tasks-count">{{ tasks.length }} tasks</span>
+          </div>
+
+          <div class="tasks-empty" v-if="!tasks.length">
+            No tasks assigned to this employee yet.
+          </div>
+
+          <div class="all-emp-tasks" v-for="task in visibleTasks" :key="task.id">
+            <Employeetasks :tasks="task" />
+          </div>
+
+          <button
+            class="view-all-tasks"
+            type="button"
+            @click="isShowAllTasks ? viewLessTasks() : viewAllTasks()"
+            v-if="tasks.length > 1"
+          >
+            <span>{{
+              isShowAllTasks ? 'View Less Tasks' : `View All Tasks (${hiddenTasksCount} more)`
+            }}</span>
+            <Emptask />
+          </button>
+        </section>
+      </main>
+
+      <aside class="employee-side-panel">
+        <CertificateComp
+          :state="empDetastate?.certificates"
+          :employeeCertificates="empDetastate?.employee_certificates"
+        />
+        <ProjectComp :state="empDetastate?.projects" />
+      </aside>
     </div>
-  </div>
+  </section>
 </template>
 
+<style scoped>
+.employee-show-page {
+  position: relative;
+  min-width: 0;
+  padding: 4px 0 24px;
+}
 
+.employee-page-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding: 18px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 76%, transparent);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 0 0, color-mix(in srgb, var(--brand-primary-500) 13%, transparent), transparent 30%),
+    radial-gradient(circle at 100% 20%, color-mix(in srgb, var(--status-success) 13%, transparent), transparent 32%),
+    linear-gradient(135deg, var(--surface-1), var(--brand-primary-50));
+  box-shadow: 0 18px 42px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
+}
+
+.page-kicker,
+.panel-kicker {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 10px;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
+  border-radius: 999px;
+  color: var(--brand-primary-500);
+  font-size: 11px;
+  font-weight: 900;
+  background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
+}
+
+.employee-page-topbar h1,
+.tasks-panel-header h2 {
+  margin: 8px 0 0;
+  color: var(--brand-primary-800);
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 1.12;
+}
+
+.employee-page-topbar h1 {
+  font-size: clamp(24px, 3vw, 34px);
+}
+
+.print-page-btn,
+.view-all-tasks {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  border: 0;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.print-page-btn {
+  padding: 0 18px;
+  color: var(--text-on-brand);
+  background: linear-gradient(135deg, var(--brand-primary-500), var(--brand-primary-800));
+  box-shadow: 0 14px 26px color-mix(in srgb, var(--brand-primary-500) 18%, transparent);
+}
+
+.employee-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  gap: 22px;
+  align-items: start;
+}
+
+.employee-main-panel,
+.employee-side-panel {
+  min-width: 0;
+}
+
+.employee-main-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.employee-side-panel {
+  position: sticky;
+  top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.tasks-panel {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-100) 78%, transparent);
+  border-radius: 24px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--surface-1) 98%, transparent), color-mix(in srgb, var(--brand-primary-50) 96%, transparent));
+  box-shadow: 0 18px 42px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
+}
+
+.tasks-panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.tasks-panel-header h2 {
+  font-size: 22px;
+}
+
+.tasks-count {
+  display: inline-flex;
+  min-height: 30px;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 999px;
+  color: var(--status-success);
+  font-size: 12px;
+  font-weight: 900;
+  background: color-mix(in srgb, var(--status-success) 10%, transparent);
+}
+
+.all-emp-tasks + .all-emp-tasks {
+  margin-top: 10px;
+}
+
+.tasks-empty {
+  padding: 18px;
+  border: 1px dashed color-mix(in srgb, var(--brand-primary-500) 24%, transparent);
+  border-radius: 18px;
+  color: var(--brand-primary-500);
+  font-size: 13px;
+  font-weight: 800;
+  background: color-mix(in srgb, var(--brand-primary-500) 4%, transparent);
+}
+
+.view-all-tasks {
+  width: 100%;
+  margin-top: 14px;
+  padding: 0 16px;
+  color: var(--brand-primary-500);
+  background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
+}
+
+.view-all-tasks:hover,
+.print-page-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 26px color-mix(in srgb, var(--brand-primary-900) 12%, transparent);
+}
+
+.view-all-tasks:hover {
+  color: var(--text-on-brand);
+  background: var(--brand-primary-800);
+}
+
+.view-all-tasks :deep(svg) {
+  width: 20px;
+  height: 20px;
+}
+
+.view-all-tasks:hover :deep(svg path) {
+  fill: var(--text-on-brand);
+}
+
+@media (max-width: 1024px) {
+  .employee-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .employee-side-panel {
+    position: static;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .employee-page-topbar,
+  .tasks-panel-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .print-page-btn {
+    width: 100%;
+  }
+
+  .employee-side-panel {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media print {
+  .employee-page-topbar,
+  .view-all-tasks {
+    display: none !important;
+  }
+
+  .employee-layout {
+    display: block;
+  }
+
+  .employee-side-panel {
+    position: static;
+  }
+}
+</style>

@@ -10,9 +10,7 @@ import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 import AddEmployeeCertificateController from '../controllers/addEmployeeCertificateController'
 import AddEmployeeCertificateParams from '../../Core/params/AddEmplyeeCertificateParams'
 import { useRouter } from 'vue-router'
-import InVaildIcon from '@/shared/icons/inVaildIcon.vue'
 import { CertificateStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/CertificateStatusEnum'
-import Addcertificates from '@/shared/icons/Addcertificates.vue'
 import Repeaticon from '@/shared/icons/Repeaticon.vue'
 // import { CertificateStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/CertificateStatusEnum'
 
@@ -117,8 +115,8 @@ const UploadCertificateImage = async () => {
     <template #header>
       <HeaderSection
         :img="Cert"
-        title="Add certification"
-        subtitle="Upload and assign a certification to this employee"
+        :title="$t('add_training_record')"
+        :subtitle="$t('assign_training_to_employee')"
       />
     </template>
 
@@ -154,16 +152,16 @@ const UploadCertificateImage = async () => {
 
         <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1 mt-10">
           <label class="flex justify-between flex-wrap">
-            <p>{{ $t('Certification Image upload') }}</p>
+            <p>{{ $t('training_image_upload') }}</p>
           </label>
           <SingleFileUpload
             :returnType="`base64`"
             v-model="certificateImage"
             @update:modelValue="setCertificateImage"
-            label="Certification upload"
+            :label="$t('training_upload')"
             id="Certification upload"
             index="2"
-            placeholder="Certification upload"
+            :placeholder="$t('training_upload')"
           />
         </div>
       </div>

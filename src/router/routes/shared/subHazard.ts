@@ -3,32 +3,32 @@ import type { RouteRecordRaw } from '@/router/types'
 export const SubHazardRoutes: RouteRecordRaw[] = [
   {
     path: 'hazard',
-    name: 'Hazard',
+    name: 'Risk',
     component: () => import('@/views/Admin/Hazard/IndexHazard.vue'),
     meta: {
-      breadcrumb: 'Hazard',
+      breadcrumb: 'Risk',
       type: 'Shared',
       isSidebar: true,
     },
   },
   {
     path: 'hazard/add/:parent_id?',
-    name: 'Add Hazard',
+    name: 'Add Risk',
     component: () => import('@/views/Admin/Hazard/AddHazard.vue'),
     meta: {
-      breadcrumb: 'Add Hazard',
-      parent: 'Hazard',
+      breadcrumb: 'Add Risk',
+      parent: 'Risk',
       type: 'Shared',
       isSidebar: true,
     },
   },
   {
     path: 'hazard/:id',
-    name: 'Edit Hazard',
+    name: 'Edit Risk',
     component: () => import('@/views/Admin/Hazard/EditHazard.vue'),
     meta: {
-      breadcrumb: 'Edit Hazard',
-      parent: 'Hazard',
+      breadcrumb: 'Edit Risk',
+      parent: 'Risk',
       type: 'Shared',
       isSidebar: true,
     },

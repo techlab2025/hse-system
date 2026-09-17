@@ -20,7 +20,7 @@ import AddSystemHeaderData from '@/shared/icons/AddSystemHeaderData.vue';
   justify-content: flex-start;
   gap: 10px;
   width: 100%;
-  background-color: #F5F5F5;
+  background-color: var(--surface-1);
   padding: 10px;
   margin-top: 12px;
   border-radius: 12px;
@@ -45,7 +45,7 @@ import AddSystemHeaderData from '@/shared/icons/AddSystemHeaderData.vue';
     h2 {
       text-align: start;
       width: 100%;
-      color: #202020;
+      color: var(--text-strong);
       font-weight: 700;
       font-size: 14px;
       font-family: "Regular";
@@ -54,9 +54,9 @@ import AddSystemHeaderData from '@/shared/icons/AddSystemHeaderData.vue';
 
     p {
       width: 100%;
-      color: gray;
+      color: var(--text-muted);
       text-align: start;
-      color: #3D4C5E;
+      color: var(--brand-primary-700);
       font-size: 500;
       font-size: 12px;
 

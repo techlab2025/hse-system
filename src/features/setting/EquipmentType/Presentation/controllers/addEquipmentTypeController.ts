@@ -1,7 +1,6 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
-import type Params from '@/base/core/params/params'
 import AddEquipmentTypeUseCase from '@/features/setting/EquipmentType/Domain/useCase/addEquipmentTypeUseCase'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
@@ -10,7 +9,6 @@ import type { Router } from 'vue-router'
 import type EquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/equipmentTypeModel'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
-import type AddEquipmentTypeParams from '../../Core/params/addEquipmentTypeParams'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class AddEquipmentTypeController extends ControllerInterface<EquipmentTypeModel> {

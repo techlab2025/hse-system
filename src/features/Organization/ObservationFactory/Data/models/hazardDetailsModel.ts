@@ -15,6 +15,7 @@ import InvestegationResultDetailsModel from '@/features/Organization/Investigati
 import acc from '@/assets/images/acc.png'
 import { Observation } from '../../Core/Enums/ObservationTypeEnum'
 import type { ActionStatusEnum } from '../../Core/Enums/ActionStatusEnum'
+import type ShiftModel from '@/features/Organization/Shifts/Data/models/ShiftModel'
 
 export default class HazardDetailsModel {
   public id: number
@@ -55,7 +56,14 @@ export default class HazardDetailsModel {
   public actionStatus: ActionStatusEnum
   public serialName: string
   public time: string
-
+  public lastest_inspection_result: InspectionObservatioModel
+  public task: any
+  public work_shift: ShiftModel
+  public hazardSubType: TitleInterface
+  public hazardType: TitleInterface
+  public createdAt:string
+  public ptwStatus: number
+  public complianceNotification: number[]
   constructor(
     id: number,
     title: string,
@@ -95,6 +103,14 @@ export default class HazardDetailsModel {
     actionStatus: ActionStatusEnum,
     serialName: string,
     time: string,
+    lastest_inspection_result: InspectionObservatioModel,
+    task: any,
+    work_shift: ShiftModel,
+    hazardSubType: TitleInterface,
+    hazardType: TitleInterface,
+    createdAt:string,
+    ptwStatus: number = 0,
+    complianceNotification: number[] = [],
   ) {
     this.id = id
     this.title = title
@@ -134,6 +150,14 @@ export default class HazardDetailsModel {
     this.actionStatus = actionStatus
     this.serialName = serialName
     this.time = time
+    this.lastest_inspection_result = lastest_inspection_result
+    this.task = task
+    this.work_shift = work_shift
+    this.hazardSubType = hazardSubType
+    this.hazardType = hazardType
+    this.createdAt=createdAt
+    this.ptwStatus = ptwStatus
+    this.complianceNotification = complianceNotification
   }
 
   static fromMap(data: any): HazardDetailsModel {
@@ -176,6 +200,23 @@ export default class HazardDetailsModel {
       data?.action_status,
       data?.serial_name,
       data?.time,
+      data?.lastest_inspection_result
+        ? InspectionObservatioModel.fromMap(data?.lastest_inspection_result)
+        : null,
+      data?.task,
+      data?.work_shift,
+      data?.hazard_sub_type,
+      data?.hazard_type,
+      data?.created_at,
+      Number(data?.ptw_status) || 0,
+      (Array.isArray(data?.compliance_notification)
+        ? data.compliance_notification
+        : data?.compliance_notification
+          ? [data.compliance_notification]
+          : []
+      )
+        .map((item: any) => Number(item?.id ?? item))
+        .filter(Boolean),
     )
   }
 
@@ -214,6 +255,5 @@ export default class HazardDetailsModel {
     InspectionObservatioModel.example,
     [{ id: 1, title: 'title' }],
     InvestegationResultDetailsModel.example,
-    
   )
 }

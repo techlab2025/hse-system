@@ -1,5 +1,11 @@
+<script setup lang="ts">
+import { useThemeMode } from '@/composables/useThemeMode'
+
+const { isDarkMode } = useThemeMode()
+</script>
+
 <template>
-  <div class="skeleton-card">
+  <div :class="['skeleton-card', { 'is-dark': isDarkMode }]">
     <div class="index-table-card-container">
       <div class="index-table-card skeleton-item" v-for="i in 3" :key="i">
 
@@ -56,8 +62,10 @@
   }
 }
 
-$shimmer-base: #ebebeb;
-$shimmer-highlight: #f5f5f5;
+$shimmer-base: var(--surface-2);
+$shimmer-highlight: var(--surface-1);
+$shimmer-dark-base: var(--brand-primary-800);
+$shimmer-dark-highlight: var(--brand-primary-700);
 
 @mixin shimmer {
   background: linear-gradient(90deg,
@@ -85,7 +93,7 @@ $shimmer-highlight: #f5f5f5;
 }
 
 .index-table-card {
-  border: 1px solid #f6f6f6;
+  border: 1px solid var(--surface-1);
   padding: 12px;
   border-radius: 20px;
   width: 100%;
@@ -98,7 +106,7 @@ $shimmer-highlight: #f5f5f5;
   flex-direction: column;
   align-items: flex-end;
   padding-bottom: 12px;
-  border-bottom: 2px dashed #e1e4ed;
+  border-bottom: 2px dashed var(--brand-primary-100);
   width: 100%;
   gap: 10px;
 
@@ -155,6 +163,29 @@ $shimmer-highlight: #f5f5f5;
 /* ── Skeleton placeholder elements ── */
 .sk {
   @include shimmer;
+}
+
+.skeleton-card.is-dark {
+  .index-table-card {
+    background: var(--surface-1);
+    border-color: var(--main-border);
+    box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 22%, transparent);
+  }
+
+  .card-header-container {
+    border-color: var(--main-border);
+  }
+
+  .sk {
+    background: linear-gradient(
+      90deg,
+      $shimmer-dark-base 25%,
+      $shimmer-dark-highlight 50%,
+      $shimmer-dark-base 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite linear;
+  }
 }
 
 /* label-item-primary row chip */

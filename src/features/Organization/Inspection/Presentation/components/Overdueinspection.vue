@@ -11,15 +11,12 @@ import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import Image from 'primevue/image'
 
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
 import { useUserStore } from '@/stores/user'
 
-import TitleInterface from '@/base/Data/Models/title_interface'
-import HazardType from '@/assets/images/HazardType.jpg'
 
 // import ShowMoreIcon from '@/shared/icons/ShowMoreIcon.vue'
 // import ViewIcon from '@/shared/icons/ViewIcon.vue'
@@ -29,12 +26,9 @@ import DeleteInspectionParams from '../../Core/params/deleteInspectionParams'
 import DeleteInspectionController from '../controllers/deleteInspectionController'
 import IndexFilter from './InspectionUtils/IndexFilter.vue'
 import IndexInspectionHeader from './InspectionUtils/IndexInspectionHeader.vue'
-import ArrowDetails from '@/shared/icons/ArrowDetails.vue'
-import { InspectionStatus } from '../../Core/Enum/InspectionStatusEnum'
 import InspectionStartTemplate from './InspectionDialog/InspectionStartTemplate.vue'
 import FetchMyProjectsController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyProjectsController'
 import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Core/params/fetchMyProjectsParams'
-import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 import FetchMyZonesController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController'
 import FetchMyZonesParams from '@/features/Organization/ObservationFactory/Core/params/FetchMyZonesParams'
 import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
@@ -247,7 +241,7 @@ const setSelectedProjectFilter = (data) => {
                   </div>
 
                   <!-- <div v-if="ShowDetails[index]" class="card-description">
-                    <p class="title">Description</p>
+                    <p class="title">{{ $t('Description') }}</p>
                     <p class="description">
                       {{ item.description || '__' }}
                     </p>
@@ -271,16 +265,16 @@ const setSelectedProjectFilter = (data) => {
             <DataEmpty
               :link="`/organization/equipment-mangement/inspection/add`"
               addText="Add Inspection"
-              description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Inspection"
+              description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
+              title="You have No Inspection"
             />
           </template>
           <template #failed>
             <DataFailed
               :link="`/organization/equipment-mangement/inspection/add`"
               addText="Add Inspection"
-              description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
-              title="..ops! You have No Inspection"
+              description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
+              title="You have No Inspection"
             />
           </template>
         </DataStatus>
@@ -288,7 +282,7 @@ const setSelectedProjectFilter = (data) => {
         <template #notPermitted>
           <DataFailed
             addText="Have not  Permission"
-            description="Sorry .. You have no Inspection .. All your joined customers will appear here when you add your customer data"
+            description="You have no Inspection .. All your joined customers will appear here when you add your customer data"
           />
         </template>
       </PermissionBuilder>

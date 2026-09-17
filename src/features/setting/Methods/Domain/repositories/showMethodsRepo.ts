@@ -7,7 +7,7 @@ import { ShowMethodsApiService } from '../../Data/apiServices/showMethodsApiServ
 class ShowMethodsRepo extends RepoInterface<MethodsDetailsModel> {
   private static instance: ShowMethodsRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

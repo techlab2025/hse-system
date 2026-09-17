@@ -1,15 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Dashboard from '@/views/Dashboard.vue'
 import { adminRoutes } from './routes/admin'
 import { organizationRoutes } from './routes/organization'
 import { sharedRoutes } from './routes/shared'
 import { addSuffix } from './helpers'
 import { authGuard } from './guards'
-import NotFountPage from '@/views/NotFountPage.vue'
-import { ForgetPasswordRoutes } from './routes/organization/ForgetPassword'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
+  scrollBehavior(to, _from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    }
+
+    if (to.hash) {
+      return {
+        el: to.hash,
+        behavior: 'smooth',
+      }
+    }
+
+    return {
+      left: 0,
+      top: 0,
+    }
+  },
   routes: [
     {
       path: '/login/admin',
@@ -24,19 +38,19 @@ const router = createRouter({
     {
       path: '/admin',
       name: 'dashboard',
-      component: Dashboard,
+      component: () => import('@/views/Dashboard.vue'),
       children: [...adminRoutes, ...addSuffix(sharedRoutes, 'Admin')],
     },
     {
       path: '/organization',
       name: 'Organization App',
-      component: Dashboard,
+      component: () => import('@/views/Dashboard.vue'),
       children: [...organizationRoutes, ...addSuffix(sharedRoutes, 'Organization')],
     },
     {
       path: '/:pathMatch(.*)*',
       name: 'Not Found',
-      component: NotFountPage,
+      component: () => import('@/views/NotFountPage.vue'),
     },
     {
       path: '/forget-password',

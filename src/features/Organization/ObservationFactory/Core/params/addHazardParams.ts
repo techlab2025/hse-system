@@ -13,6 +13,7 @@ import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 export default class AddHazardParams implements Params {
   public title: string | null
+  public propertyTitle: string | null
   public description: string | null
   public image: string[] | null
   public typeId: number | null
@@ -41,14 +42,17 @@ export default class AddHazardParams implements Params {
   public place: string
   public isWorkStopped: number
   public HazardTypeId: number
-  public HazardSubtypeId: number
+  public HazardSubtypeId: number[]
   public RootCausesId: number[]
   public actionstatus: ActionStatusEnum
   public OpenNote: string
 
   public code: string
   public OragnizationemployeeName: string
-  public OragnizationemployeeId: number
+  public OragnizationemployeeIds: number[]
+  public workShiftId: number
+  public ptwStatus: number | null
+  public complianceNotification: number[]
 
   public static readonly validation = new ClassValidation().setRules({
     // title: { required: true, minLength: 2, maxLength: 100 },
@@ -57,6 +61,7 @@ export default class AddHazardParams implements Params {
 
   constructor(data: {
     title: string | null
+    propertyTitle?: string | null
     description: string | null
     image: string[] | null
     typeId: number | null
@@ -85,15 +90,19 @@ export default class AddHazardParams implements Params {
     place: string
     isWorkStopped: number
     HazardTypeId: number
-    HazardSubtypeId: number
+    HazardSubtypeId: number[]
     RootCausesId: number[]
     actionstatus: ActionStatusEnum
     code: string
     OpenNote: string
     OragnizationemployeeName: string
-    OragnizationemployeeId: number
+    OragnizationemployeeIds: number[]
+    workShiftId: number
+    ptwStatus?: number | null
+    complianceNotification?: number[]
   }) {
     this.title = data.title
+    this.propertyTitle = data.propertyTitle ?? null
     this.description = data.description
     this.image = data.image
     this.typeId = data.typeId
@@ -128,7 +137,10 @@ export default class AddHazardParams implements Params {
     this.code = data.code
     this.OpenNote = data.OpenNote
     this.OragnizationemployeeName = data.OragnizationemployeeName
-    this.OragnizationemployeeId = data.OragnizationemployeeId
+    this.OragnizationemployeeIds = data.OragnizationemployeeIds
+    this.workShiftId = data.workShiftId
+    this.ptwStatus = data.ptwStatus ?? null
+    this.complianceNotification = data.complianceNotification ?? []
   }
 
   toMap(): Record<
@@ -149,6 +161,7 @@ export default class AddHazardParams implements Params {
     > = {}
 
     if (this.title) data['title'] = this.title
+    if (this.propertyTitle) data['property_title'] = this.propertyTitle
     if (this.description) data['description'] = this.description
     if (this.image) data['files'] = this.image
     if (this.typeId) data['type_id'] = this.typeId
@@ -185,7 +198,7 @@ export default class AddHazardParams implements Params {
     if (this.place) data['place'] = this.place
     if (this.isWorkStopped) data['is_work_stopped'] = this.isWorkStopped
     if (this.HazardTypeId) data['hazard_type_id'] = this.HazardTypeId
-    if (this.HazardSubtypeId) data['hazard_sub_type_id'] = this.HazardSubtypeId
+    if (this.HazardSubtypeId.length > 0) data['hazard_sub_type_id'] = this.HazardSubtypeId[0]
     if (this.RootCausesId) data['root_causes'] = this.RootCausesId
     if (this.actionstatus) data['action_status'] = this.actionstatus
     if (useProjectAppStatusStore().isSerialNumberAuto()) {
@@ -195,8 +208,12 @@ export default class AddHazardParams implements Params {
     }
     if (this.OpenNote) data['open_note'] = this.OpenNote
     if (this.OragnizationemployeeName != null) data['employee_name'] = this.OragnizationemployeeName
-    if (this.OragnizationemployeeId != null)
-      data['organization_employee_id'] = this.OragnizationemployeeId
+    if (this.OragnizationemployeeIds.length > 0)
+      data['organization_employee_ids'] = this.OragnizationemployeeIds
+    if (this.workShiftId != null) data['work_shift_id'] = this.workShiftId
+    if (this.ptwStatus != null) data['ptw_status'] = this.ptwStatus
+    if (this.complianceNotification.length > 0)
+      data['compliance_notification'] = this.complianceNotification
     return data
   }
 

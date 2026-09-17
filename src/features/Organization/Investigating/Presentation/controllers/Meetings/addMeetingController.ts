@@ -6,8 +6,6 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import { useUserStore } from '@/stores/user'
-import { Observation } from '../../Core/Enums/ObservationTypeEnum'
 import AddMeetingUseCase from '../../../Domain/useCase/Meetings/addMeetingUseCase'
 import type MeetingModel from '../../../Data/models/Meetings/MeetingModel'
 

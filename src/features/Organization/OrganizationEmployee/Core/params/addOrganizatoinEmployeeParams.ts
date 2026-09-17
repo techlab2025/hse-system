@@ -4,23 +4,26 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 import type RolesOrganizationEmployeeParams from './RolesOrganizationEmployeeParams'
 import type { EmployeeStatusEnum } from '../Enum/EmployeeStatus'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
-import type { DashboardAccessEnum } from '../Enum/DashboardAccess'
 
 export default class AddOrganizatoinEmployeeParams implements Params {
   name: string
   phone: string
+  countryCode: string
   email: string
   password: string
   passwordConfirmation: string
-  hierarchies: HirarachyEmployeeParams[]
+  positions: HirarachyEmployeeParams[]
   roles: RolesOrganizationEmployeeParams[]
   EmployeeStatus: EmployeeStatusEnum
   serialNumber: string
   dashAccessStatus: boolean
+  allPermissions: boolean
+
   // certificateId: number[]
 
   public static readonly validation = new ClassValidation().setRules({
     name: { required: true, minLength: 2, maxLength: 100 },
+    positions: { required: true },
     phone: { required: true, pattern: /^\+?[\d\s-()]+$/ },
     email: { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },
     password: { required: true, minLength: 2, maxLength: 100 },
@@ -30,26 +33,30 @@ export default class AddOrganizatoinEmployeeParams implements Params {
   constructor(
     name: string,
     phone: string,
+    countryCode: string,
     email: string,
     password: string,
     passwordConfirmation: string,
-    hierarchies: HirarachyEmployeeParams[],
+    positions: HirarachyEmployeeParams[],
     roles: RolesOrganizationEmployeeParams[],
     EmployeeStatus: EmployeeStatusEnum,
     serialNumber: string,
     dashAccessStatus: boolean,
+    allPermissions: boolean,
     // certificateId: number[],
   ) {
     this.name = name
     this.phone = phone
+    this.countryCode = countryCode
     this.email = email
     this.password = password
     this.passwordConfirmation = passwordConfirmation
-    this.hierarchies = hierarchies
+    this.positions = positions
     this.roles = roles
     this.EmployeeStatus = EmployeeStatus
     this.serialNumber = serialNumber
     this.dashAccessStatus = dashAccessStatus
+    this.allPermissions = allPermissions
     // this.certificateId = certificateId
   }
 
@@ -72,10 +79,11 @@ export default class AddOrganizatoinEmployeeParams implements Params {
 
     data['name'] = this.name
     data['phone'] = this.phone
+    data['country_code'] = this.countryCode
     data['email'] = this.email
     data['password'] = this.password
     data['password_confirmation'] = this.passwordConfirmation
-    data['hierarchies'] = this.hierarchies
+    data['hierarchies'] = this.positions
     data['roles'] = this.roles?.map((item) => item.toMap()) || []
     data['employee_type'] = Number(this.EmployeeStatus)
     if (useProjectAppStatusStore().isSerialNumberAuto()) {
@@ -83,8 +91,10 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     } else {
       data['serial'] = this.serialNumber
     }
-    if (this.dashAccessStatus || this.dashAccessStatus == false) data['can_access_dashboard'] = this.dashAccessStatus
+
+    data['can_access_dashboard'] = Number(this.dashAccessStatus)
     // data['certificate_id'] = this.certificateId.map((id) => id)
+    data['allow_all_permissions'] = this.allPermissions
 
     return data
   }

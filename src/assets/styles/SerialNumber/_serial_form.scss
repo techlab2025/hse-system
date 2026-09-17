@@ -8,6 +8,8 @@
   // &:last-child {
   //   padding-bottom: 120px;
   // }
+  width: 100% !important;
+  max-width: 100% !important;
   .serial-overlay {
     position: absolute;
     width: 100%;
@@ -26,7 +28,7 @@
     // padding: calc($XlSize3 + 4px) 0;
 
     .serial-form-title {
-      background: #f0f4ff;
+      background: var(--brand-primary-50);
       border-radius: calc($XlSize2 + 2px);
       h2 {
         color: $PrimaryColor;
@@ -43,7 +45,7 @@
     bottom: 0;
     width: 100%;
     padding: $XlSize2;
-    background: #fff;
+    background: var(--surface-1);
     z-index: 5;
     @media (max-width: 768px) {
       padding: $SmSize $MdSize;

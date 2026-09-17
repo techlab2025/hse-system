@@ -1,12 +1,12 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
-import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import EditOrganizatoinEmployeeUseCase from '../../Domain/useCase/editOrganizatoinEmployeeUseCase'
 import type OrganizatoinEmployeeModel from '../../Data/models/OrganizatoinEmployeeModel'
 import type EditOrganizatoinEmployeeParams from '../../Core/params/editOrganizatoinEmployeeParams'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 export default class EditOrganizatoinEmployeeController extends ControllerInterface<OrganizatoinEmployeeModel> {
   private static instance: EditOrganizatoinEmployeeController
@@ -27,6 +27,13 @@ export default class EditOrganizatoinEmployeeController extends ControllerInterf
   async editOrganizatoinEmployee(params: EditOrganizatoinEmployeeParams, router: any) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
+
+    const isThereHeirarchys = params.hierarchies.some((el) => el.hierarchy_id)
+    if (!isThereHeirarchys) {
+      new OpenWarningDilaog('You Should Add Position ').openDialog()
+      return
+    }
+
     try {
       params.validate()
       if (!params.validate().isValid) {

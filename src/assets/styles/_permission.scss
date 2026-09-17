@@ -11,7 +11,7 @@
 
     .tab {
       padding: 10px;
-      background-color: #f6f9ff;
+      background-color: var(--brand-primary-50);
       width: 100%;
       position: relative;
 
@@ -32,14 +32,14 @@
           gap: 5px;
 
           h4 {
-            color: #121212;
+            color: var(--text-strong);
             font-size: 22px;
             font-weight: 600;
           }
 
           p {
             font-size: 14px;
-            color: #6b7280;
+            color: var(--text-soft);
             font-weight: 600;
           }
         }
@@ -49,7 +49,7 @@
   .premission-cards {
     .header {
       width: 100%;
-      background-color: #f6f8fb;
+      background-color: var(--brand-primary-50);
       padding: 20px 15px;
       margin-block: 1rem;
       font-size: var(--md-size-2);
@@ -74,7 +74,7 @@
         .checkmark {
           width: 18px;
           height: 18px;
-          border: 1px solid #ccc;
+          border: 1px solid var(--main-border);
           border-radius: 4px;
           display: inline-block;
           position: relative;
@@ -88,7 +88,7 @@
             top: 2px;
             width: 5px;
             height: 10px;
-            border: solid white;
+            border: solid var(--surface-1);
             border-width: 0 2px 2px 0;
             transform: rotate(45deg);
           }
@@ -123,7 +123,7 @@
 
       .card {
         border-radius: 24px;
-        background: #f8f9fb;
+        background: var(--brand-primary-50);
         padding: 12px;
         @include flex(column, wrap, start, start);
         width: 100%;
@@ -132,10 +132,10 @@
         .card-header {
           width: 100%;
           @include flex(row, wrap, space-between, center);
-          border-bottom: 1px solid #e2e8f7;
+          border-bottom: 1px solid var(--brand-primary-100);
 
           h5 {
-            color: #121212;
+            color: var(--text-strong);
             font-family: 'Bold';
             font-size: var(--xl-size-base);
           }
@@ -145,7 +145,7 @@
             gap: 8px;
 
             span {
-              color: #9ca3af;
+              color: var(--text-soft);
               font-family: 'Bold';
               font-size: var(--xs-size);
             }
@@ -163,7 +163,7 @@
             .checkmark {
               width: 18px;
               height: 18px;
-              border: 1px solid #ccc;
+              border: 1px solid var(--main-border);
               border-radius: 4px;
               display: inline-block;
               position: relative;
@@ -177,7 +177,7 @@
                 top: 2px;
                 width: 5px;
                 height: 10px;
-                border: solid white;
+                border: solid var(--surface-1);
                 border-width: 0 2px 2px 0;
                 transform: rotate(45deg);
               }

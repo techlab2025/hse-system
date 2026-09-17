@@ -7,7 +7,7 @@ import { IndexFactoryApiService } from '../../Data/apiServices/indexFactoryApiSe
 class IndexFactoryRepo extends RepoInterface<FactoryModel[]> {
   private static instance: IndexFactoryRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

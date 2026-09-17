@@ -12,7 +12,7 @@ const props = defineProps<{
   <div class="section-header-page-container">
 
     <div class="section-header-page" :class="Nobg ? 'no-bg' : ''">
-      <img class="section-img-page" :src="img" alt="objective logo" v-if="img" />
+      <img class="section-img-page" :src="img" :alt="$t('section_illustration')" v-if="img" />
       <div class="section-number-page" v-if="number">
         <span>{{ number }}</span>
       </div>

@@ -18,7 +18,6 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import Search from '@/shared/icons/Search.vue'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
@@ -209,20 +208,20 @@ const actionList = (id: number, deleteMethods: (id: number) => void) => [
       <template #empty>
         <DataEmpty :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/methods/add`"
           addText="Add Methods"
-          description="Sorry .. You have no Methods .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Methods" />
+          description="You have no Methods .. All your joined customers will appear here when you add your customer data"
+          title="You have No Methods" />
       </template>
       <template #failed>
         <DataFailed :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/methods/add`"
           addText="Add Methods"
-          description="Sorry .. You have no Methods .. All your joined customers will appear here when you add your customer data"
-          title="..ops! You have No Methods" />
+          description="You have no Methods .. All your joined customers will appear here when you add your customer data"
+          title="You have No Methods" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Methods .. All your joined customers will appear here when you add your customer data" />
+        description="You have no Methods .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

@@ -9,6 +9,8 @@ export default class AddCertificateParams implements Params {
   // parentId: number
   image: string
   require_expired_date: boolean
+  certificate_type: number
+  require_certificate: boolean
 
   constructor(
     translation: TranslationsParams,
@@ -18,6 +20,8 @@ export default class AddCertificateParams implements Params {
     // parentId: number,
     image: string,
     require_expired_date: boolean,
+    certificate_type: number,
+    require_certificate: boolean,
   ) {
     this.translation = translation
     // this.hasCertificate = hasCertificate
@@ -26,18 +30,25 @@ export default class AddCertificateParams implements Params {
     // this.parentId = parentId
     this.image = image
     this.require_expired_date = require_expired_date
+    this.certificate_type = certificate_type
+    this.require_certificate = require_certificate
   }
 
   toMap(): Record<
     string,
-    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
+    | number
+    | string
+    | boolean
+    | number[]
+    | Record<string, string | number[] | number | boolean | Record<string, string>>
   > {
     const data: Record<
       string,
       | number
       | string
+      | boolean
       | number[]
-      | Record<string, string | number[] | number | Record<string, string>>
+      | Record<string, string | number[] | number | boolean | Record<string, string>>
     > = {}
 
     if (this.translation) data['translations'] = this.translation.toMap()
@@ -48,6 +59,8 @@ export default class AddCertificateParams implements Params {
     // if (this.parentId) data['parent_id'] = this.parentId
     if (this.image) data['image'] = this.image
     data['require_expired_date'] = this.require_expired_date
+    data['certificate_type'] = this.certificate_type
+    data['require_certificate'] = this.require_certificate
     return data
   }
 }

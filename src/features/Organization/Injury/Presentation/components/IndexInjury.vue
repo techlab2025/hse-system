@@ -13,14 +13,12 @@ import wordSlice from '@/base/Presentation/utils/word_slice'
 // import ToggleSwitch from 'primevue/toggleswitch'
 
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 // import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 // import SaveIcon from '@/shared/icons/SaveIcon.vue'
 import Search from '@/shared/icons/Search.vue'
 // import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
@@ -40,6 +38,8 @@ import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
+import Dialog from 'primevue/dialog'
+import UploadInjuryExeclSheet from './UploadInjuryExeclSheet.vue'
 
 const { t } = useI18n()
 
@@ -160,10 +160,34 @@ const exportExcel = () => {
 };
 
 const { user } = useUserStore()
+const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+const onFileSelected = (e: Event) => {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  ;(e.target as HTMLInputElement).value = ''
+}
+
+const DownloadExample = () => {
+  const worksheetData = [
+    { title: 'Example Injury' },
+    { title: 'Example Injury 2' },
+  ]
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Injuries')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(blob, 'injury_form.xlsx')
+}
 
 const IndexInjuryactionList = () => [
   {
-    text: t('export_excel'),
+    text: t('export_to_excel'),
     icon: ExceIcon,
     action: () => exportExcel(),
     type: ActionItemsTypeEnum.Success,
@@ -177,6 +201,7 @@ const IndexInjuryactionList = () => [
     text: t('Add_Injury'),
     link: '/organization/injury/add',
     icon: ActionsListAddIcon,
+    primary: true,
     type: ActionItemsTypeEnum.Info,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
@@ -184,10 +209,20 @@ const IndexInjuryactionList = () => [
     ],
   },
   {
-    text: t('import_injury'),
+    text: t('upload_complated_template'),
     type: ActionItemsTypeEnum.Warning,
-    link: '/organization/injury/upload-excel',
+    action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.INJURY_CREATE
+    ],
+  },
+  {
+    text: t('download_excel_template'),
+    icon: ExceIcon,
+    action: () => DownloadExample(),
+    type: ActionItemsTypeEnum.Success,
     permission: [
       PermissionsEnum?.ORGANIZATION_EMPLOYEE,
       PermissionsEnum?.INJURY_CREATE
@@ -225,14 +260,19 @@ const IndexInjuryactionList = () => [
         :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
         <SysteminjuryTypes />
       </PermissionBuilder> -->
-      <ActionsList :show-actions="true" :actionList="IndexInjuryactionList()" :actionsNumber="4">
+      <ActionsList
+        feature-name="action_feature_injuries"
+        :show-actions="true"
+        :actionList="IndexInjuryactionList()"
+        :actionsNumber="5"
+      >
         <template #custom>
           <!-- <SysteminjuryTypes /> -->
           <ExportPdf :isDropList="true" />
         </template>
       </ActionsList>
     </div>
-    <SysteminjuryTypes :isHeaderTap="true" />
+    <SysteminjuryTypes v-if="user?.type != OrganizationTypeEnum.ADMIN" :isHeaderTap="true" />
   </div>
 
   <PermissionBuilder :code="[
@@ -295,25 +335,50 @@ const IndexInjuryactionList = () => [
       <template #empty>
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
           <DataEmpty :link="`/organization/Injury/add`" addText="Add Injury"
-            description="Sorry .. You have no Injury .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Injury" />
+            description="You have no Injury .. All your joined customers will appear here when you add your customer data"
+            title="You have No Injury" />
         </PermissionBuilder>
       </template>
       <template #failed>
         <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.INJURY_CREATE]">
           <DataFailed :link="`/organization/Injury/add`" addText="Add Injury"
-            description="Sorry .. You have no Injury .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Injury" />
+            description="You have no Injury .. All your joined customers will appear here when you add your customer data"
+            title="You have No Injury" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="Sorry .. You have no Injury .. All your joined customers will appear here when you add your customer data"
+        description="You have no Injury .. All your joined customers will appear here when you add your customer data"
         link="" />
     </template>
   </PermissionBuilder>
+
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('import_injury')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <UploadInjuryExeclSheet
+      :initial-file="pendingFile"
+      @uploaded="
+        showUploadDialog = false;
+        pendingFile = null;
+        fetchInjury()
+      "
+    />
+  </Dialog>
+
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>
 
 <style scoped></style>

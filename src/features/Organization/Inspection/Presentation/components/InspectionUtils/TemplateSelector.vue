@@ -5,7 +5,6 @@ import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
 import { ref, watch } from 'vue';
 import RadioButton from 'primevue/radiobutton'
 import wordSlice from '@/base/Presentation/utils/word_slice';
-import IconArrowDownNav from '@/shared/icons/IconArrowDownNav.vue';
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -75,7 +74,7 @@ const showMore = ref(false)
 
 <style lang="scss" scoped>
 .template-selector-container-AccordionPanel .active.panel-acc{
-  border: 2px dashed rgba(52,67,198,.6) !important;
-  background-color: rgba(165, 174, 253, 0.06);
+  border: 2px dashed color-mix(in srgb, var(--brand-primary-500) 60%, transparent) !important;
+  background-color: color-mix(in srgb, var(--brand-primary-200) 6%, transparent);
 }
 </style>

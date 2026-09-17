@@ -5,17 +5,17 @@
 .investigation-show-result-btn {
   font-size: $MdSize;
   font-weight: $BaseFontWeightBold;
-  color: #1f41bbcc;
-  background-color: #1f41bb12;
-  border: 0.5px solid #1f41bb99;
+  color: color-mix(in srgb, var(--brand-primary-600) 80%, transparent);
+  background-color: color-mix(in srgb, var(--brand-primary-600) 7.06%, transparent);
+  border: 0.5px solid color-mix(in srgb, var(--brand-primary-600) 60%, transparent);
   padding: 8px 14px;
   border-radius: $XlSize2;
   cursor: pointer;
   transition: 0.6s ease;
   width: fit-content;
   &:hover {
-    background-color: #1d4ed8;
-    color: $White;
+    background-color: var(--brand-primary-500);
+    color: var(--text-on-brand);
   }
 }
 
@@ -27,17 +27,17 @@
   h3 {
     font-size: $XlSize;
     font-weight: $BaseFontWeightBold;
-    color: #111;
+    color: var(--text-strong);
   }
 
   p {
     font-size: $SmSize;
-    color: #6b7280;
+    color: var(--text-soft);
   }
 }
 
 .investigation-show-result {
-  border-top: 2px solid#F1F3F5;
+  border-top: 2px solidvar(--brand-primary-50);
   .dialog-content {
     @include flex-row(nowrap, start, start);
     gap: $XlSize2;
@@ -63,7 +63,7 @@
     h3.main-title {
       font-size: $MdSize;
       font-weight: $BaseFontSemiBoldWeight;
-      color: #0f1927;
+      color: var(--brand-primary-900);
     }
 
     .info-row {
@@ -84,7 +84,7 @@
         span {
           font-size: $SmSize;
           font-weight: $BaseFontSemiBoldWeight;
-          color: #1f41bb;
+          color: var(--brand-primary-600);
         }
       }
     }
@@ -93,28 +93,28 @@
   /* ========== DESCRIPTION ========== */
   .notes {
     padding-top: $XsSize;
-    background: #fbfbfb;
+    background: var(--surface-1);
     border-radius: $XlSize2;
     padding: 10px 10px 18px 10px;
 
     h4 {
       font-size: $SmSize;
       font-weight: $BaseFontSemiBoldWeight;
-      color: #111;
+      color: var(--text-strong);
       text-transform: capitalize;
       margin-bottom: 6px;
     }
 
     p {
       font-size: $SmSize;
-      color: #8e8e93;
+      color: var(--text-soft);
       line-height: 1.7;
     }
   }
   a {
     font-size: $MdSize;
     font-weight: $BaseFontWeightBold;
-    color: #1f41bb;
+    color: var(--brand-primary-600);
     text-decoration: underline;
     transition: 0.6s ease;
     &:hover {
@@ -144,7 +144,7 @@
     p {
       font-size: $SmSize;
       font-weight: $BaseFontSemiBoldWeight;
-      color: #1f41bb;
+      color: var(--brand-primary-600);
     }
   }
 }

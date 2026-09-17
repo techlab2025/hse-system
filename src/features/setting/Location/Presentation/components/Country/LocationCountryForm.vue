@@ -12,10 +12,8 @@ import type LocationDetailsModel from '../../../Data/models/LocationDetailsModel
 import EditLocationParams from '../../../Core/params/editLocationParams'
 import AddLocationParams from '../../../Core/params/addLocationParams'
 import { LocationEnum } from '../../../Core/Enum/LocationEnum'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useUserStore } from '@/stores/user'
-import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -90,11 +88,7 @@ const updateData = async () => {
 
   const params = props.data?.id
     ? new EditLocationParams(id, translationsParams, Code.value, LocationEnum.COUNTRY)
-    : new AddLocationParams(
-        translationsParams,
-        Code.value,
-        LocationEnum.COUNTRY,
-      )
+    : new AddLocationParams(translationsParams, Code.value, LocationEnum.COUNTRY)
 
   console.log(params, 'Locatio nparams')
   emit('update:data', params)
@@ -167,7 +161,12 @@ const fields = ref([
 
 <template>
   <div class="col-span-4 md:col-span-4">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+    <LangTitleInput
+      :label="`${$t('country_name')}`"
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="setLangs"
+    />
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper">

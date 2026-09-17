@@ -18,6 +18,7 @@ import FetchEquipmentStaticsController from '../Controllers/FetchEquipmentStatic
 import FetchEquipmentStaticsParams from '../../core/params/FetchEquipmentStaticsParams'
 import OverviewInvestigationsChartParams from '../../core/params/OverviewInvestigationsChartParams'
 import HomeSkelaton from '../subComponent/HomeSkelaton.vue'
+import { useThemeMode } from '@/composables/useThemeMode'
 
 const InvestegationStatics = defineAsyncComponent(
   () => import('./HomeUtils/InvestegationStatics.vue'),
@@ -30,6 +31,7 @@ const StaticsCardPerMonth = defineAsyncComponent(
   () => import('./HomeUtils/StaticsCardPerMonth.vue'),
 )
 const HomeCards = defineAsyncComponent(() => import('./HomeUtils/HomeCards.vue'))
+const { isDarkMode } = useThemeMode()
 
 const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
 const state = computed(() => fetchPorjectStatisticsController.state.value)
@@ -114,7 +116,7 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
 })
 </script>
 <template>
-  <div class="home-page">
+  <div :class="['home-page organization-home-page', { 'is-dark': isDarkMode }]">
     <router-link
       @click="setVisited"
       to="/organization/project-progress"
@@ -124,8 +126,15 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
     >
       <ProjectProgressHeader :progressValue="ProgressValue" style="margin-block: 20px" />
       <div v-if="showOverlay && !visited" class="overlay-note sidebar-note">
-        <h3>Step 1: Click Here To Start Adding Your Data</h3>
-        <p>Fill All Data From this page</p>
+        <span class="tip-kicker">{{ $t('step_1_of_3') }}</span>
+        <h3>{{ $t('Step_1_Click_Here_To_Start_Adding_Your_Data') }}</h3>
+        <p>{{ $t('Fill_All_Data_From_this_page') }}</p>
+        <div class="tip-progress" aria-hidden="true">
+          <span class="active"></span>
+          <span></span>
+          <span></span>
+        </div>
+        <span class="tip-action">{{ $t('click_setup_card_to_continue') }}</span>
       </div>
     </router-link>
 
@@ -134,17 +143,170 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
     <HomeCards :ProgressValue="Number(ProgressValue)" />
 
     <template v-if="ProjectStatics?.data">
-      <div class="statics">
-        <ProjectsStatistics :projectStatistics="ProjectStatics?.data" />
-        <StaticsCardPerMonth :homeInspectionState="homeInspectionState" />
-        <StaticCardsFullDetails :homeInspectionState="homeInspectionState" />
-      </div>
-      <EquipmentStaticss :EquipmentStatics="EquipmentStatics" />
-      <InvestegationStatics
-        :OverviewHazardChartstate="OverviewHazardChartstate"
-        :overviewInvestigationsChartstate="overviewInvestigationsChartstate"
-      />
+      <section class="home-analytics-shell">
+        <!-- <div class="home-analytics-heading">
+          <span>{{ $t('dashboard') }}</span>
+          <h2>{{ $t('overview') }}</h2>
+        </div> -->
+
+        <div class="home-overview-grid">
+          <div class="home-panel home-panel-projects">
+            <ProjectsStatistics :projectStatistics="ProjectStatics?.data" />
+          </div>
+
+          <div class="home-panel home-panel-kpis">
+            <StaticsCardPerMonth :homeInspectionState="homeInspectionState" />
+          </div>
+
+          <div class="home-panel home-panel-details">
+            <StaticCardsFullDetails :homeInspectionState="homeInspectionState" />
+          </div>
+        </div>
+
+        <EquipmentStaticss :EquipmentStatics="EquipmentStatics" />
+        <InvestegationStatics
+          :OverviewHazardChartstate="OverviewHazardChartstate"
+          :overviewInvestigationsChartstate="overviewInvestigationsChartstate"
+        />
+      </section>
     </template>
     <HomeSkelaton v-if="!ProjectStatics?.data" />
   </div>
 </template>
+
+<style scoped lang="scss">
+.home-analytics-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+  margin-top: 24px;
+}
+
+.home-analytics-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  span {
+    width: fit-content;
+    padding: 6px 12px;
+    border: 1px solid color-mix(in srgb, var(--PrimaryColor) 16%, transparent);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--PrimaryColor) 8%, transparent);
+    color: var(--PrimaryColor);
+    font-size: 12px;
+    font-weight: 900;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--header-page-color);
+    font-family: 'bold';
+    font-size: clamp(22px, 2vw, 30px);
+    font-weight: 900;
+  }
+}
+
+.home-overview-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.home-panel {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--main-border) 78%, transparent);
+  border-radius: 24px;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--PrimaryColor) 8%, transparent),
+      transparent 38%
+    ),
+    linear-gradient(180deg, var(--BgWhite), var(--Gray-1));
+  box-shadow:
+    0 1px 2px color-mix(in srgb, var(--brand-primary-900) 4%, transparent),
+    0 18px 42px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
+}
+
+.organization-home-page.is-dark {
+  .home-panel {
+    border-color: var(--main-border);
+    background:
+      radial-gradient(
+        circle at 100% 0%,
+        color-mix(in srgb, var(--PrimaryColor) 12%, transparent),
+        transparent 40%
+      ),
+      linear-gradient(180deg, var(--surface-1), var(--surface-2));
+    box-shadow: 0 18px 42px color-mix(in srgb, var(--text-strong) 22%, transparent);
+  }
+
+  .home-analytics-heading h2 {
+    color: var(--text-strong);
+  }
+
+  :deep(.project-statistics .header) {
+    border-color: var(--main-border) !important;
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+        transparent
+      ),
+      var(--surface-1) !important;
+  }
+
+  :deep(.project-statistics .header-img) {
+    background-color: color-mix(in srgb, var(--PrimaryColor) 14%, var(--surface-2)) !important;
+    border: 1px solid var(--main-border);
+  }
+
+  :deep(.project-statistics .title-content .title) {
+    color: var(--text-strong) !important;
+  }
+
+  :deep(.project-statistics .title-content .description) {
+    color: var(--text-soft) !important;
+  }
+
+  :deep(.project-statistics .title-content .count) {
+    background-color: var(--surface-2) !important;
+    border-color: var(--main-border) !important;
+    color: var(--text-soft) !important;
+  }
+
+  :deep(.project-statistics .title-content .counter) {
+    color: var(--PrimaryColor) !important;
+  }
+}
+
+.home-panel-projects {
+  grid-row: auto;
+}
+
+.home-panel-kpis,
+.home-panel-details {
+  padding: 14px;
+}
+
+@media (max-width: 640px) {
+  .home-analytics-shell {
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .home-panel {
+    border-radius: 18px;
+  }
+
+  .home-panel-kpis,
+  .home-panel-details {
+    padding: 10px;
+  }
+}
+</style>

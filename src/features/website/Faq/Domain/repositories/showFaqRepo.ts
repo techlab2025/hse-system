@@ -7,7 +7,7 @@ import { ShowFaqApiService } from '../../Data/apiServices/showFaqApiService'
 class ShowFaqRepo extends RepoInterface<FaqDetailsModel> {
   private static instance: ShowFaqRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

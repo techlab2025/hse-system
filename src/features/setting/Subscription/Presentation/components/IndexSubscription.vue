@@ -22,14 +22,12 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 // import ExportIcon from '@/shared/icons/ExportIcon.vue'
-import ExportExcel from '@/shared/HelpersComponents/ExportExcel.vue'
 import Search from '@/shared/icons/Search.vue'
 import IndexSubscriptionController from '../controllers/indexSubscriptionController'
 import IndexSubscriptionParams from '../../Core/params/indexSubscriptionParams'
 import DeleteSubscriptionParams from '../../Core/params/deleteSubscriptionParams'
 import DeleteSubscriptionController from '../controllers/deleteSubscriptionController'
 import { useUserStore } from '@/stores/user'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
 const { t } = useI18n()
@@ -207,8 +205,8 @@ watch(
           PermissionsEnum.SUBSCRIPTION_CREATE,
         ]">
           <DataEmpty :link="`/admin/subscription/add`" addText="Add Subscription"
-            description="Sorry .. You have no Subscription .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Subscription" />
+            description="You have no Subscription .. All your joined customers will appear here when you add your customer data"
+            title="You have No Subscription" />
         </permission-builder>
       </template>
       <template #failed>
@@ -218,8 +216,8 @@ watch(
           PermissionsEnum.SUBSCRIPTION_CREATE,
         ]">
           <DataFailed :link="`/admin/subscription/add`" addText="Add Subscription"
-            description="Sorry .. You have no Subscription .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Subscription" />
+            description="You have no Subscription .. All your joined customers will appear here when you add your customer data"
+            title="You have No Subscription" />
         </permission-builder>
       </template>
     </DataStatus>
@@ -231,7 +229,7 @@ watch(
         PermissionsEnum.SUBSCRIPTION_CREATE,
       ]">
         <DataFailed addText="Have not  Permission"
-          description="Sorry .. You have no Subscription .. All your joined customers will appear here when you add your customer data" />
+          description="You have no Subscription .. All your joined customers will appear here when you add your customer data" />
       </permission-builder>
     </template>
   </permission-builder>

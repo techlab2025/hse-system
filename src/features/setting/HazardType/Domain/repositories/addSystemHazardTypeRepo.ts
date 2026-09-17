@@ -5,7 +5,7 @@ import { AddSystemHazardTypeApiService } from '../../Data/apiServices/addSystemH
 
 class AddSystemHazardTypeRepo extends RepoInterface<HazardTypeModel> {
   private static instance: AddSystemHazardTypeRepo
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

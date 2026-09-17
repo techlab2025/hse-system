@@ -1,6 +1,10 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { useThemeMode } from '@/composables/useThemeMode'
+
+const { isDarkMode } = useThemeMode()
+</script>
 <template>
-  <div class="skeleton-wrapper">
+  <div :class="['skeleton-wrapper', { 'is-dark': isDarkMode }]">
     <!-- Progress bar skeleton -->
     <div class="sk" style="height: 120px; margin-bottom: 20px; border-radius: 12px"></div>
 
@@ -86,9 +90,9 @@
 .sk {
   background: linear-gradient(
     90deg,
-    var(--color-bg-secondary, #f0f0f0) 25%,
-    var(--color-bg-tertiary, #e0e0e0) 50%,
-    var(--color-bg-secondary, #f0f0f0) 75%
+    var(--color-bg-secondary, var(--surface-2)) 25%,
+    var(--color-bg-tertiary, var(--surface-3)) 50%,
+    var(--color-bg-secondary, var(--surface-2)) 75%
   );
   background-size: 600px 100%;
   animation: shimmer 1.6s infinite;
@@ -96,10 +100,23 @@
 }
 
 .sk-card {
-  background: #fff;
-  border: 0.5px solid rgba(0, 0, 0, 0.1);
+  background: var(--surface-1);
+  border: 0.5px solid color-mix(in srgb, var(--text-strong) 10%, transparent);
   border-radius: 12px;
   padding: 1rem 1.25rem;
+}
+
+.skeleton-wrapper.is-dark {
+  .sk {
+    background: linear-gradient(90deg, var(--brand-primary-800) 25%, var(--brand-primary-700) 50%, var(--brand-primary-800) 75%);
+    background-size: 600px 100%;
+  }
+
+  .sk-card {
+    background: var(--surface-1);
+    border-color: var(--main-border);
+    box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 22%, transparent);
+  }
 }
 
 .projects-stats-sk {

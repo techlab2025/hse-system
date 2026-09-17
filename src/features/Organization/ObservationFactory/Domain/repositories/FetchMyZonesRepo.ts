@@ -6,7 +6,7 @@ import { FetchMyZonesApiService } from '../../Data/apiServices/fetchMyZonesApiSe
 class FetchMyZonesRepo extends RepoInterface<MyZonesModel[]> {
   private static instance: FetchMyZonesRepo
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   private constructor() {
     super()
   }

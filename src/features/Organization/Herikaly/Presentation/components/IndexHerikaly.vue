@@ -23,10 +23,15 @@ import Heirarchy from '@/assets/images/Heirarchy.png'
 import TreeTimeLine from './TreeTimeLine.vue'
 import AddMatrix from '@/shared/icons/AddMatrix.vue'
 import AddHerikly from '@/shared/icons/AddHerikly.vue'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
+import Dialog from 'primevue/dialog'
+import UploadHierarachyExeclSheet from './UploadHierarachyExeclSheet.vue'
+import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
+import ExceIcon from '@/shared/icons/ExceIcon.vue'
+import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
+import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 
 const { t } = useI18n()
 const word = ref('')
@@ -148,6 +153,17 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
   },
 ]
 const { user } = useUserStore()
+const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+
+const onFileSelected = (e: Event) => {
+  const file = (e.target as HTMLInputElement).files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  ;(e.target as HTMLInputElement).value = ''
+}
 
 const exportExcel = () => {
   if (!state.value.data || state.value.data.length === 0) {
@@ -167,6 +183,42 @@ const exportExcel = () => {
   const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
   saveAs(data, 'hierarchy.xlsx')
 }
+
+const DownloadExample = () => {
+  const worksheetData = [
+    { title: 'Example Position' },
+    { title: 'Example Position 2' },
+  ]
+  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Positions')
+  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
+  saveAs(blob, 'position_form.xlsx')
+}
+
+const IndexHerikalyactionList = () => [
+  {
+    text: t('download_excel_template'),
+    icon: ExceIcon,
+    action: () => DownloadExample(),
+    type: ActionItemsTypeEnum.Success,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.HERIKALY_CREATE,
+    ],
+  },
+  {
+    text: t('upload_complated_template'),
+    icon: UploadExcelIcon,
+    action: () => fileInputRef.value?.click(),
+    type: ActionItemsTypeEnum.Warning,
+    permission: [
+      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum?.HERIKALY_CREATE,
+    ],
+  },
+]
 </script>
 
 <template>
@@ -205,15 +257,13 @@ const exportExcel = () => {
                 <AddMatrix /> {{ $t('competency_matrix') }}</router-link
               >
 
-              <router-link
-                :to="`/${
-                  user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
-                }/herikaly/upload-excel`"
-                class="btn btn-primary"
-              >
-                {{ $t('import_position') }}
-              </router-link>
               <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
+              <ActionsList
+                feature-name="action_feature_positions"
+                :show-actions="true"
+                :actionList="IndexHerikalyactionList()"
+                :actionsNumber="2"
+              />
             </div>
           </div>
           <div class="btn-container flex"></div>
@@ -237,9 +287,9 @@ const exportExcel = () => {
         >
           <DataEmpty
             :link="`/organization/herikaly/add`"
-            addText="Add Herikaly"
-            description="Sorry .. You have no Herikaly .. All your j   <AddHerikaly />oined customers will appear here when you add your customer data"
-            title="..ops! You have No Herikaly"
+            addText="Add Position   "
+            description="You have no Position .. All your Position will appear here when you add your Position data"
+            title="You have No Position"
           />
         </PermissionBuilder>
       </template>
@@ -249,9 +299,9 @@ const exportExcel = () => {
         >
           <DataFailed
             :link="`/organization/herikaly/add`"
-            addText="Add Herikaly"
-            description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data"
-            title="..ops! You have No Herikaly"
+            addText="Add Position   "
+            description="You have no Position .. All your Position will appear here when you add your Position data"
+            title="You have No Position"
           />
         </PermissionBuilder>
       </template>
@@ -260,10 +310,35 @@ const exportExcel = () => {
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="Sorry .. You have no Herikaly .. All your joined customers will appear here when you add your customer data"
+        description="You have no Position .. All your Position will appear here when you add your Position data"
       />
     </template>
   </PermissionBuilder>
+
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('import_position')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <UploadHierarachyExeclSheet
+      :initial-file="pendingFile"
+      @uploaded="
+        showUploadDialog = false;
+        pendingFile = null;
+        fetchHerikaly()
+      "
+    />
+  </Dialog>
+
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>
 
 <style scoped lang="scss">
