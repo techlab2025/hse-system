@@ -1742,6 +1742,16 @@ class ApiNames {
   public get AddOrganizationEmployeeToHierarchy() {
     return this.prefix + 'sync_herikaly_employees'
   }
+  // employee tasks
+  public get FetchEmployeeTasks() {
+    return this.prefix + 'fetch_own_actual_tasks'
+  }
+  public get changeTaskStatus() {
+    return this.prefix + 'change_task_status'
+  }
+    public get fetchTaskhistory() {
+    return this.prefix + 'fetch_task_history'
+  }
   public get FetchHierarchyCertificates() {
     return this.prefix + 'fetch_hierarchies_certificates'
   }
