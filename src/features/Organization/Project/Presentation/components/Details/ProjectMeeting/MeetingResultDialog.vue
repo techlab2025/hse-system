@@ -21,6 +21,8 @@ import CreateProjectMeetingResultController from '@/features/Organization/Projec
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
+import FetchProjectMeetingResultController from '../../../controllers/ProjectMeeting/FetchProjectMeetingResultController'
+import FetchMeetingDetailsParams from '@/features/Organization/Project/Core/params/ProjectMeeting/FetchMeetingDetailsParams'
 
 // -----------------------------------------------------------------------------
 // Props / Emits
@@ -430,21 +432,78 @@ const resetForm = () => {
   error.value = ''
 }
 
-const MeetingDetailsState = computed(() => true)
-const FetchMeetingDetails = () => {}
+const fetchProjectMeetingResultController = FetchProjectMeetingResultController.getInstance()
+const MeetingDetailsState = computed(() => fetchProjectMeetingResultController.state.value)
+
+const FetchMeetingDetails = async () => {
+  const fetchProjectMeetingResultParams = new FetchMeetingDetailsParams({
+    id: props.meeting.id,
+  })
+  await fetchProjectMeetingResultController.FetchProjectMeetingResult(
+    fetchProjectMeetingResultParams,
+    router,
+  )
+}
 
 watch(
-  () => AddResultDialogvisible.value,
+  () => ShowResultDialogvisible.value,
   (newval) => {
     if (newval) {
       FetchMeetingDetails()
     }
   },
 )
+
+const meetingResult = computed(() => MeetingDetailsState.value?.data ?? null)
+
+const getActionTypeLabel = (type: number) => {
+  switch (Number(type)) {
+    case ProjectMeetingActionsTypeEnum.ONGOING:
+      return 'Ongoing'
+
+    case ProjectMeetingActionsTypeEnum.INFO:
+      return 'Info'
+
+    case ProjectMeetingActionsTypeEnum.TASK:
+      return 'Task'
+
+    default:
+      return 'Unknown'
+  }
+}
+
+const getActionTypeClass = (type: number) => {
+  switch (Number(type)) {
+    case ProjectMeetingActionsTypeEnum.ONGOING:
+      return 'action-type-ongoing'
+
+    case ProjectMeetingActionsTypeEnum.INFO:
+      return 'action-type-info'
+
+    case ProjectMeetingActionsTypeEnum.TASK:
+      return 'action-type-task'
+
+    default:
+      return ''
+  }
+}
+
+const formatMeetingTime = (time?: string | null) => {
+  if (!time) return '—'
+
+  return time.substring(0, 5)
+}
+
+const getEmployeeName = (employee: any) => {
+  if (!employee) return '—'
+
+  return employee.name || employee.title || '—'
+}
 </script>
 
 <template>
   <!-- Meeting Card -->
+  <!-- {{ MeetingDetailsState }} -->
   <button
     class="meeting-card"
     type="button"
@@ -462,6 +521,7 @@ watch(
       <small v-if="meeting.teamLeader.name">
         Team Leader : {{ meeting.teamLeader.name || '—' }}
       </small>
+      <small v-if="meeting.hasResult"> show meeting result </small>
     </span>
 
     <span class="meeting-card-arrow"> → </span>
@@ -704,81 +764,183 @@ watch(
     </form>
   </Dialog>
 
-  <!-- Meeting show Result Dialog -->
+  <!-- Meeting Show Result Dialog -->
   <Dialog
     v-model:visible="ShowResultDialogvisible"
     modal
     dismissable-mask
+    class="meeting-show-dialog"
     :style="{
       width: 'min(70rem, calc(100vw - 24px))',
     }"
-    @hide="error = ''"
   >
     <!-- Header -->
     <template #header>
-      <div class="meeting-result-header">
-        <div class="meeting-result-header-icon">MR</div>
-        ggggggggggggggggggg
-        <!-- <div>
+      <div class="meeting-show-header">
+        <div class="meeting-show-header-icon">MR</div>
+
+        <div class="meeting-show-header-content">
           <small>
             {{ $t('Meeting Result') }}
           </small>
 
           <h2>
-            {{ meeting.title || `Meeting #${meeting.id}` }}
+            {{ meetingResult?.serialName || `Meeting #${meetingResult?.meetingId || meeting.id}` }}
           </h2>
 
           <p>
-            {{ meeting.date || '—' }}
-          </p> -->
-        <!-- </div> -->
+            {{ meetingResult?.date || meeting.date || '—' }}
+          </p>
+        </div>
       </div>
     </template>
 
-    <form class="meeting-result-form" @submit.prevent="submit">
+    <!-- ============================================================= -->
+    <!-- Result -->
+    <!-- ============================================================= -->
+
+    <div v-if="meetingResult" class="meeting-show-content">
+      <!-- ============================================================= -->
+      <!-- Meeting Information -->
+      <!-- ============================================================= -->
+
+      <section class="meeting-show-section">
+        <div class="meeting-show-section-header">
+          <div>
+            <h3>
+              {{ $t('Meeting Information') }}
+            </h3>
+
+            <p>
+              {{ $t('General meeting details') }}
+            </p>
+          </div>
+        </div>
+
+        <div class="meeting-info-grid">
+          <!-- Date -->
+          <div class="meeting-info-card">
+            <span class="meeting-info-label">
+              {{ $t('Date') }}
+            </span>
+
+            <strong>
+              {{ meetingResult.date || '—' }}
+            </strong>
+          </div>
+
+          <!-- Time -->
+          <div class="meeting-info-card">
+            <span class="meeting-info-label">
+              {{ $t('Time') }}
+            </span>
+
+            <strong>
+              {{ formatMeetingTime(meetingResult.time) }}
+            </strong>
+          </div>
+
+          <!-- Team Leader -->
+          <div class="meeting-info-card">
+            <span class="meeting-info-label">
+              {{ $t('Team Leader') }}
+            </span>
+
+            <strong>
+              {{ meetingResult.teamLeader?.name || meetingResult.teamLeader?.title || '—' }}
+            </strong>
+          </div>
+
+          <!-- Serial -->
+          <div class="meeting-info-card">
+            <span class="meeting-info-label">
+              {{ $t('Serial') }}
+            </span>
+
+            <strong>
+              {{ meetingResult.serialName || '—' }}
+            </strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================= -->
+      <!-- Hierarchies -->
+      <!-- ============================================================= -->
+
+      <section class="meeting-show-section">
+        <div class="meeting-show-section-header">
+          <div>
+            <h3>
+              {{ $t('Hierarchies') }}
+            </h3>
+
+            <p>
+              {{ $t('Meeting related positions') }}
+            </p>
+          </div>
+
+          <span class="meeting-count-badge">
+            {{ meetingResult.hierarchies?.length || 0 }}
+          </span>
+        </div>
+
+        <div v-if="meetingResult.hierarchies?.length" class="meeting-hierarchy-list">
+          <div
+            v-for="hierarchy in meetingResult.hierarchies"
+            :key="hierarchy.id"
+            class="meeting-hierarchy-chip"
+          >
+            <span class="hierarchy-dot" />
+
+            {{ hierarchy.title }}
+          </div>
+        </div>
+
+        <div v-else class="meeting-empty-state">
+          {{ $t('No hierarchies available') }}
+        </div>
+      </section>
+
       <!-- ============================================================= -->
       <!-- Agenda -->
       <!-- ============================================================= -->
 
-      <section class="form-section">
-        <div class="section-header">
+      <section class="meeting-show-section">
+        <div class="meeting-show-section-header">
           <div>
             <h3>
               {{ $t('Agenda') }}
             </h3>
 
             <p>
-              {{ $t('Add meeting agenda items') }}
+              {{ $t('Meeting agenda items') }}
             </p>
           </div>
 
-          <button type="button" class="add-button" @click="addAgenda">
-            + {{ $t('Add Agenda') }}
-          </button>
+          <span class="meeting-count-badge">
+            {{ meetingResult.meetingAgenda?.length || 0 }}
+          </span>
         </div>
 
-        <div class="agenda-list">
-          <div v-for="(item, index) in agenda" :key="`agenda-${index}`" class="agenda-item">
-            <span class="item-number">
+        <div v-if="meetingResult.meetingAgenda?.length" class="meeting-show-agenda-list">
+          <div
+            v-for="(agendaItem, index) in meetingResult.meetingAgenda"
+            :key="agendaItem.id"
+            class="meeting-show-agenda-item"
+          >
+            <span class="meeting-show-number">
               {{ index + 1 }}
             </span>
 
-            <input
-              v-model="agenda[index]"
-              type="text"
-              class="input"
-              :placeholder="$t('Enter agenda item')"
-            />
-
-            <button
-              v-if="agenda.length > 1"
-              type="button"
-              class="remove-button"
-              @click="removeAgenda(index)"
-            >
-              ×
-            </button>
+            <div class="meeting-show-agenda-text">
+              {{ agendaItem.text || '—' }}
+            </div>
           </div>
+        </div>
+
+        <div v-else class="meeting-empty-state">
+          {{ $t('No agenda available') }}
         </div>
       </section>
 
@@ -786,159 +948,161 @@ watch(
       <!-- Meeting Actions -->
       <!-- ============================================================= -->
 
-      <section class="form-section">
-        <div class="section-header">
+      <section class="meeting-show-section">
+        <div class="meeting-show-section-header">
           <div>
             <h3>
               {{ $t('Meeting Actions') }}
             </h3>
 
             <p>
-              {{ $t('Add meeting actions and tasks') }}
+              {{ $t('Actions created from this meeting') }}
             </p>
           </div>
 
-          <!-- <button type="button" class="add-button" @click="addAction">
-            + {{ $t('Add Action') }}
-          </button> -->
+          <span class="meeting-count-badge">
+            {{ meetingResult.MeetingActions?.length || 0 }}
+          </span>
         </div>
 
-        <div class="actions-list">
+        <div v-if="meetingResult.MeetingActions?.length" class="meeting-show-actions-list">
           <article
-            v-for="(action, index) in meetingActions"
-            :key="`action-${index}`"
-            class="action-card"
+            v-for="(action, index) in meetingResult.MeetingActions"
+            :key="action.id"
+            class="meeting-show-action-card"
           >
-            <!-- Action heading -->
-            <div class="action-card-header">
-              <div>
-                <span class="action-number">
+            <!-- Action Header -->
+            <div class="meeting-show-action-header">
+              <div class="meeting-show-action-title">
+                <span class="meeting-show-action-number">
                   {{ index + 1 }}
                 </span>
 
+                <div>
+                  <small> {{ $t('Action') }} {{ index + 1 }} </small>
+
+                  <h4>
+                    {{ action.title || getActionTypeLabel(action.type) }}
+                  </h4>
+                </div>
+              </div>
+
+              <span class="meeting-action-type" :class="getActionTypeClass(action.type)">
+                {{ getActionTypeLabel(action.type) }}
+              </span>
+            </div>
+
+            <!-- Action Details -->
+            <div class="meeting-show-action-details">
+              <!-- Title -->
+              <div v-if="action.title" class="meeting-action-detail">
+                <span>
+                  {{ $t('Title') }}
+                </span>
+
                 <strong>
-                  {{ $t('Action') }}
-                  {{ index + 1 }}
+                  {{ action.title }}
                 </strong>
               </div>
 
-              <button
-                v-if="meetingActions.length > 1"
-                type="button"
-                class="remove-action"
-                @click="removeAction(index)"
+              <!-- Due Date -->
+              <div
+                v-if="Number(action.type) === ProjectMeetingActionsTypeEnum.TASK"
+                class="meeting-action-detail"
               >
-                {{ $t('Remove') }}
-              </button>
-            </div>
-
-            <div class="action-form-grid">
-              <!-- Action Type -->
-              <UpdatedCustomInputSelect
-                :id="`action_type_${index}`"
-                v-model="action.type"
-                :label="$t('Action Type')"
-                :placeholder="$t('Select Action Type')"
-                :static-options="ActionTypeSelectionOptions"
-                required
-                @update:model-value="UpdateActionType(index, $event)"
-              />
-
-              <!-- Title -->
-              <div v-if="showTitle(action)" class="input-wrapper">
-                <label :for="`action_title_${index}`" class="field-label">
-                  {{ $t('title') }}
-
-                  <span class="required-star"> * </span>
-                </label>
-
-                <input
-                  :id="`action_title_${index}`"
-                  v-model="action.title"
-                  type="text"
-                  class="input"
-                  :placeholder="$t('Enter action title')"
-                />
-              </div>
-
-              <!-- Task Due Date -->
-              <div v-if="isTask(action)" class="input-wrapper">
-                <label :for="`due_date_${index}`" class="field-label">
+                <span>
                   {{ $t('Due Date') }}
+                </span>
 
-                  <span class="required-star"> * </span>
-                </label>
-
-                <DatePicker
-                  :id="`due_date_${index}`"
-                  v-model="action.dueDate"
-                  date-format="yy-mm-dd"
-                  show-icon
-                  fluid
-                  :manual-input="false"
-                  :placeholder="$t('Select Due Date')"
-                />
+                <strong>
+                  {{ action.dueDate || '—' }}
+                </strong>
               </div>
 
-              <!-- Task Due Time -->
-              <div v-if="isTask(action)" class="input-wrapper">
-                <label :for="`due_time_${index}`" class="field-label">
+              <!-- Due Time -->
+              <div
+                v-if="Number(action.type) === ProjectMeetingActionsTypeEnum.TASK"
+                class="meeting-action-detail"
+              >
+                <span>
                   {{ $t('Due Time') }}
+                </span>
 
-                  <span class="required-star"> * </span>
-                </label>
-
-                <input
-                  :id="`due_time_${index}`"
-                  v-model="action.dueTime"
-                  type="time"
-                  class="input"
-                />
+                <strong>
+                  {{ formatMeetingTime(action.dueTime) }}
+                </strong>
               </div>
 
-              <!-- Task Employee -->
-              <UpdatedCustomInputSelect
-                v-if="isTask(action)"
-                :id="`employee_${index}`"
-                v-model="action.employee"
-                :label="$t('Assigned Employee')"
-                :placeholder="$t('Select Employee')"
-                :controller="indexOrganizationEmployeeController"
-                :params="indexOrganizationEmployeeParams"
-                required
-                @update:model-value="UpdateEmployee(index, $event)"
-              />
+              <!-- Employee -->
+              <div
+                v-if="Number(action.type) === ProjectMeetingActionsTypeEnum.TASK"
+                class="meeting-action-detail"
+              >
+                <span>
+                  {{ $t('Assigned Employee') }}
+                </span>
 
-              <!-- INFO note -->
-              <!-- <div v-if="isInfo(action)" class="info-message">
-                {{ $t('Information action does not require additional details.') }}
-              </div> -->
+                <strong>
+                  {{ getEmployeeName(action.assignedEmployee) }}
+                </strong>
+              </div>
+
+              <!-- Created At -->
+              <div v-if="action.createdAt" class="meeting-action-detail">
+                <span>
+                  {{ $t('Created At') }}
+                </span>
+
+                <strong>
+                  {{ action.createdAt }}
+                </strong>
+              </div>
             </div>
           </article>
         </div>
+
+        <div v-else class="meeting-empty-state">
+          {{ $t('No meeting actions available') }}
+        </div>
       </section>
 
-      <!-- Error -->
-      <p v-if="error" class="form-error">
-        {{ error }}
-      </p>
+      <!-- ============================================================= -->
+      <!-- Content -->
+      <!-- ============================================================= -->
 
-      <!-- Actions -->
-      <div class="form-actions">
-        <button
-          type="button"
-          class="btn-secondary"
-          :disabled="submitting"
-          @click="closeShowResultDialog"
-        >
-          {{ $t('Cancel') }}
-        </button>
+      <section v-if="meetingResult.content" class="meeting-show-section">
+        <div class="meeting-show-section-header">
+          <div>
+            <h3>
+              {{ $t('Meeting Content') }}
+            </h3>
+          </div>
+        </div>
 
-        <button type="submit" class="btn-primary" :disabled="submitting">
-          {{ submitting ? $t('Saving...') : $t('Save Meeting Result') }}
+        <div class="meeting-content-box">
+          {{ meetingResult.content }}
+        </div>
+      </section>
+
+      <!-- ============================================================= -->
+      <!-- Footer -->
+      <!-- ============================================================= -->
+
+      <div class="meeting-show-footer">
+        <button type="button" class="meeting-show-close-button" @click="closeShowResultDialog">
+          {{ $t('Close') }}
         </button>
       </div>
-    </form>
+    </div>
+
+    <!-- No Data -->
+    <div v-else class="meeting-show-no-data">
+      <div class="meeting-show-no-data-icon">MR</div>
+
+      <strong>
+        {{ $t('Meeting result not available') }}
+      </strong>
+    </div>
   </Dialog>
 </template>
 

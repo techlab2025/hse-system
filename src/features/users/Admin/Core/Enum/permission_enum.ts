@@ -20,7 +20,7 @@ export enum PermissionsEnum {
   ORG_EMPLOYEE_CHANGE_PASSWORD = 'O02',
 
   // Management Change Topic Type
-  
+
 
   // HASHTAG
   HASHTAG_ALL = 'H00',
@@ -1110,4 +1110,7 @@ export enum PermissionsEnum {
   PTW_TYPE_DELETE = 'PTWT02',
   PTW_TYPE_FETCH = 'PTWT03',
   PTW_TYPE_UPDATE = 'PTWT04',
+
+  PROJECT_PERMIT = 'PP01',
+
 }

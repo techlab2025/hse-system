@@ -1,10 +1,10 @@
 import type Params from '@/base/core/params/params'
 
-export default class FetchMeetingDetailsParams implements Params {
-  public id: number
+export default class FetchPermitsParams implements Params {
+  public projectId: number
 
-  constructor(data: { id: number }) {
-    this.id = data.id
+  constructor(data: { projectId: number }) {
+    this.projectId = data.projectId
   }
 
   toMap(): Record<
@@ -20,7 +20,7 @@ export default class FetchMeetingDetailsParams implements Params {
       | any
     > = {}
 
-    data['meeting_id'] = this.id
+    data['project_id'] = this.projectId
 
     return data
   }

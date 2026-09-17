@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import ContractorIcon from '@/shared/icons/ContractorIcon.vue'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
@@ -110,8 +112,19 @@ const props = defineProps<{
         }"
         class="project-audits-link"
       >
-        permit To Work
+        Create permit To Work
       </router-link>
+
+      <PermissionBuilder :code="[PermissionsEnum.PROJECT_PERMIT]">
+        <router-link
+          :to="{
+            path: `/organization/project-permits/${projectId}`,
+          }"
+          class="project-audits-link"
+        >
+          Show permits
+        </router-link>
+      </PermissionBuilder>
       <!-- <router-link
         :to="{
           path: '/organization/herikaly/matrix',
