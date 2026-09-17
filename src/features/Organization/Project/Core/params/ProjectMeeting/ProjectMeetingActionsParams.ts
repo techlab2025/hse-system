@@ -36,9 +36,10 @@ export default class CreateProjectMeetingActionsParams implements Params {
 
     data['type'] = this.type
     data['title'] = this.title
-    data['due_date'] = this.dueDate
-    data['due_time'] = this.dueTime
-    data['assigned_employee_id'] = this.assignedOrganizationEmployeeId
+    if (this.dueDate.length > 0) data['due_date'] = this.dueDate
+    if (this.dueTime.length > 0) data['due_time'] = this.dueTime
+    if (this.assignedOrganizationEmployeeId != 0 && this.assignedOrganizationEmployeeId != null)
+      data['assigned_employee_id'] = this.assignedOrganizationEmployeeId
 
     return data
   }

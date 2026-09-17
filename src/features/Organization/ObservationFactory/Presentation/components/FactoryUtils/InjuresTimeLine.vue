@@ -404,8 +404,7 @@ onMounted(async () => {
                   <!-- :staticOptions="injuryOptions" -->
                 <UpdatedCustomInputSelect
                   :modelValue="item.infectionTypeId"
-                  :controller="ppeItemContoller"
-                  :params="ppeItemParams"
+                  :staticOptions="injuryOptions" 
                   class="input"
                   :label="$t('Type and Nature of Injury')"
                   help-text="Choose the classification that best describes the injury sustained."
