@@ -1,32 +1,32 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
-// import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import type ProjectModel from '../../../Data/models/ProjectModel'
-import PermitToWorkResultUseCase from '../../../Domain/useCase/PermitToWork/PermitToWorkResultUseCase'
+import FetchProjectMeetingResultUseCase from '../../../Domain/useCase/ProjectMeeting/FetchProjectMeetingResultUseCase'
+import type ProjectMeetingDetails from '../../../Data/models/ProjectMeeting/ProjectMeetingDetailsModel'
 
-export default class PermitToWorkResultController extends ControllerInterface<ProjectModel> {
-  private static instance: PermitToWorkResultController
+export default class FetchProjectMeetingResultController extends ControllerInterface<ProjectMeetingDetails> {
+  private static instance: FetchProjectMeetingResultController
   private constructor() {
     super()
   }
-  private permitToWorkResultUseCase = new PermitToWorkResultUseCase()
+  private fetchProjectMeetingResultUseCase = new FetchProjectMeetingResultUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new PermitToWorkResultController()
+      this.instance = new FetchProjectMeetingResultController()
     }
     return this.instance
   }
 
-  async PermitToWorkResult(params: Params, router: Router, draft: boolean = false) {
+  async FetchProjectMeetingResult(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<ProjectModel> = await this.permitToWorkResultUseCase.call(params)
+      const dataState: DataState<ProjectMeetingDetails> =
+        await this.fetchProjectMeetingResultUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
@@ -35,12 +35,6 @@ export default class PermitToWorkResultController extends ControllerInterface<Pr
           imageElement: successImage,
           messageContent: null,
         })
-        // if (!draft) await router.push('/organization/project-details')
-        await router.push(
-          `/organization/project-details/${router.currentRoute.value.query.project_id}`,
-        )
-
-        // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',

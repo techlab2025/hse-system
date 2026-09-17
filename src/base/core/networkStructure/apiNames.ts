@@ -1908,9 +1908,15 @@ class ApiNames {
   public get CreatePermitToWork() {
     return this.baseUrl + this.organizationPrefix + 'create_permit_to_work'
   }
-  public get CreatePermitToWorkResult(){
+  public get CreatePermitToWorkResult() {
     return this.baseUrl + this.organizationPrefix + 'create_permit_to_work_result'
+  }
 
+  public get FetchMeetingDetails() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_meeting_details'
+  }
+  public get FetchPermits() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_permit_to_works'
   }
 }
 

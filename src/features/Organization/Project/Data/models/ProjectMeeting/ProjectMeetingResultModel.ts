@@ -1,7 +1,7 @@
 import OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
 import ProjectMeetingHierarchyModel from './ProjectMeetingHierarchyModel'
 
-export default class ProjectMeetingModel {
+export default class ProjectMeetingDetailsProjectMeetingResultModel {
   public id: number
   public date: string
   public hierarchies: ProjectMeetingHierarchyModel[]
@@ -25,8 +25,8 @@ export default class ProjectMeetingModel {
     this.hasResult = data.hasResult
   }
 
-  static fromMap(data: any): ProjectMeetingModel {
-    return new ProjectMeetingModel({
+  static fromMap(data: any): ProjectMeetingResultModel {
+    return new ProjectMeetingResultModel({
       id: data.id,
       date: data.date,
       hierarchies:
@@ -39,7 +39,7 @@ export default class ProjectMeetingModel {
     })
   }
 
-  static example: ProjectMeetingModel = new ProjectMeetingModel({
+  static example: ProjectMeetingResultModel = new ProjectMeetingResultModel({
     id: 11,
     date: '1-9-2001',
     hierarchies: [ProjectMeetingHierarchyModel.example],

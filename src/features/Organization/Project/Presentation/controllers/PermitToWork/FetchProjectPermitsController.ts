@@ -6,40 +6,40 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import type ProjectModel from '../../../Data/models/ProjectModel'
-import PermitToWorkResultUseCase from '../../../Domain/useCase/PermitToWork/PermitToWorkResultUseCase'
+import FetchProjectPermitsUseCase from '../../../Domain/useCase/PermitToWork/FetchProjectPermitsUseCase'
+import type ProjectPermitsModel from '../../../Data/models/PermitToWork/ProjectPermitsModel'
 
-export default class PermitToWorkResultController extends ControllerInterface<ProjectModel> {
-  private static instance: PermitToWorkResultController
+export default class FetchProjectPermitsController extends ControllerInterface<
+  ProjectPermitsModel[]
+> {
+  private static instance: FetchProjectPermitsController
   private constructor() {
     super()
   }
-  private permitToWorkResultUseCase = new PermitToWorkResultUseCase()
+  private fetchProjectPermitsUseCase = new FetchProjectPermitsUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new PermitToWorkResultController()
+      this.instance = new FetchProjectPermitsController()
     }
     return this.instance
   }
 
-  async PermitToWorkResult(params: Params, router: Router, draft: boolean = false) {
+  async FetchProjectPermits(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<ProjectModel> = await this.permitToWorkResultUseCase.call(params)
+      const dataState: DataState<ProjectPermitsModel[]> =
+        await this.fetchProjectPermitsUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
-        DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
-          imageElement: successImage,
-          messageContent: null,
-        })
+        // DialogSelector.instance.successDialog.openDialog({
+        //   dialogName: 'dialog-success',
+        //   titleContent: 'Added was successful',
+        //   imageElement: successImage,
+        //   messageContent: null,
+        // })
         // if (!draft) await router.push('/organization/project-details')
-        await router.push(
-          `/organization/project-details/${router.currentRoute.value.query.project_id}`,
-        )
-
+        // router.push(`/organization/project-details/${router.currentRoute.value.params.project_id}`)
         // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({

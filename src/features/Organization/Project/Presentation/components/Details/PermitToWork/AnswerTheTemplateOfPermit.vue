@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import type TemplateModel from '@/features/setting/Template/Data/models/TemplateModel'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import ShowTemplateController from '@/features/setting/Template/Presentation/controllers/showTemplateController'
 import ShowTemplateParams from '@/features/setting/Template/Core/params/showTemplateParams'
 import TemplateDocument from '@/features/Organization/Inspection/Presentation/components/InspectionDialog/TemplateDocument.vue'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import ItemResultParams from '@/features/Organization/Inspection/Core/params/ItemResultParams'
-import CreateTaskResultParams from '@/features/Organization/Inspection/Core/params/CreateTaskResultParams'
-import CreateTaskAnswerController from '@/features/Organization/Inspection/Presentation/controllers/CreateTaskAnswerController'
 import PermitToWorkResultController from '../../../controllers/PermitToWork/PermitToWorkResultController'
 import CreatePermitToWorkResultParams from '@/features/Organization/Project/Core/params/PermitToWork/PermitToWorkResultParams'
 
