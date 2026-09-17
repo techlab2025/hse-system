@@ -315,7 +315,7 @@ function isBase64(str: any): boolean {
   return base64Regex.test(base64)
 }
 
-const WorkedHoure = ref<string>()
+const WorkedHoure = ref<string | null>(null)
 const updateData = () => {
   const translationsParams = new TranslationsParams()
   langs.value.forEach((lang) => translationsParams.setTranslation('title', lang.locale, lang.title))
@@ -383,7 +383,8 @@ const updateData = () => {
       SelectedWhereHosue: SelectedWhereHosue.value?.id || ' ',
       equipmentRentEndDate:
         deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
-      WorkedHours: WorkedHoure.value,
+      // WorkedHours: WorkedHoure.value,
+      WorkedHours: WorkedHoure.value ? String(WorkedHoure.value) : undefined,
       equipmentOfHavyStatus: equipmentOfHavyStatus.value,
       mainfacturyDate: mainfacturyDate.value,
       ivhm: ivhm.value,
@@ -423,7 +424,8 @@ const updateData = () => {
       equipmentRentEndDate:
         deviceStatus.value == EquipmentStatus.RENT && Rent.value ? EndDateFormat : null,
       serialNumber: SerialNumber.value,
-      WorkedHours: WorkedHoure.value,
+      // WorkedHours: WorkedHoure.value,
+      WorkedHours: WorkedHoure.value ? String(WorkedHoure.value) : undefined,
       equipmentOfHavyStatus: equipmentOfHavyStatus.value,
       mainfacturyDate: mainfacturyDate.value,
       ivhm: ivhm.value,
@@ -560,9 +562,17 @@ watch(
       //  certificateImage.value = newData?.certificateImage
       originalCertificateImage.value = newData?.certificateImage
       originalImage.value = newData?.image
-      WorkedHoure.value = newData?.workedHoures
       ivhm.value = newData?.ivhm || false
-      mainfacturyDateObj.value = newData?.date ? new Date(newData.date) : null
+
+WorkedHoure.value = newData?.workedHoures
+
+equipmentOfHavyStatus.value = newData?.equipmentOfHavyStatus
+
+mainfacturyDateObj.value = newData?.mainfacturyDate
+  ? new Date(newData.mainfacturyDate)
+  : null
+
+mainfacturyDate.value = newData?.mainfacturyDate || null
     }
   },
   { immediate: true },
@@ -839,6 +849,13 @@ const validateRequiredFields = async () => {
 defineExpose({
   validateRequiredFields,
 })
+const today = new Date()
+
+const startYear = new Date(
+  today.getFullYear() - 1,
+  0,
+  1
+)
 </script>
 
 <template>
@@ -899,7 +916,7 @@ defineExpose({
       " class="col-span-2 md:col-span-1">
         <div class="input-wrapper w-full">
           <label for="heavy-hours" class="flex items-center gap-2">
-            Heavy Hours
+            Heavy Equipment Hrs (h)
             <FieldHelpIcon text="Enter heavy equipment working hours." />
           </label>
   
@@ -914,7 +931,7 @@ defineExpose({
       " class="col-span-2 md:col-span-1">
         <div class="input-wrapper w-full">
           <label for="light-hours" class="flex items-center gap-2">
-            Light Hours
+            Light Equipment Mileage (km)
             <FieldHelpIcon text="Enter light equipment working hours." />
           </label>
   
@@ -992,17 +1009,17 @@ defineExpose({
 
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
         <label class="flex items-center gap-2">
-          {{ $t('mainfactury year') }}
-          <FieldHelpIcon :text="$t('mainfactury year')" />
+          {{ $t('Manufacturing Year') }}
+          <FieldHelpIcon :text="$t('manufacturing year')" />
         </label>
-        <DatePicker :model-value="mainfacturyDateObj" id="Date of mainfactury"
-          :placeholder="$t('training mainfactury date')" @update:modelValue="setMainfacturyDate" view="year"
+        <DatePicker :model-value="mainfacturyDateObj" id="Date of mainfactury" :max-date="today"
+          :placeholder="$t('training Manufacturing date')" @update:modelValue="setMainfacturyDate" view="year"
           dateFormat="yy" />
       </div>
 
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1 ivhm-checkbox">
         <label class="flex items-center gap-2">
-          {{ $t('ivhm') }}
+          {{ $t('IVMS') }}
         </label>
         <input v-model="ivhm" @change="updateData" type="checkbox" id="ivhm" />
       </div>
@@ -1131,7 +1148,7 @@ defineExpose({
           :placeholder="$t('License Plate Number')" />
       </div>
 
-      <div v-if="deviceStatus === EquipmentStatus.OWN" class="col-span-2 md:col-span-1">
+      <div v-if="deviceStatus === EquipmentStatus.OWN && activeTab === EquipmentTypesEnum.EQUIPMENT" class="col-span-2 md:col-span-1">
         <UpdatedCustomInputSelect :model-value="equipmentUsedStatus" :static-options="EquipmentUsedOptions"
           label="Equipment Used Status" id="equipment-used-status" placeholder="Select Equipment Used Status"
           @update:model-value="setEquipmentUsedStatus">
