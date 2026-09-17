@@ -9,6 +9,7 @@ import InspectionModel from '@/features/Organization/Inspection/Data/models/Insp
 import LastInspectionModel from '@/features/Organization/Inspection/Data/models/LastInspectionModel'
 import type { EquipmentCondition } from '../../Core/enum/equipmentConditionEnum'
 import type { EquipmentUsed } from '../../Core/enum/EquipemntUsedENum'
+import type { EquipmentOfHavyStatus } from '../../Core/enum/equipmentOfHavyEnum'
 
 export default class EquipmentDetailsModel {
   public id: number
@@ -47,6 +48,11 @@ export default class EquipmentDetailsModel {
   public equipmentCondition: EquipmentCondition | null
   public equipmentUsedStatus: EquipmentUsed | null
   public workedHoures: string
+  public ivhm?: boolean
+  public WorkedHours ?: string
+  public equipmentOfHavyStatus ?: EquipmentOfHavyStatus
+  public mainfacturyDate ?: string
+  
 
   constructor(
     id: number,
@@ -85,6 +91,10 @@ export default class EquipmentDetailsModel {
     equipmentCondition: EquipmentCondition | null,
     equipmentUsedStatus: EquipmentUsed | null,
     workedHoures: string,
+    ivhm?: boolean,
+    WorkedHours ?: string,
+    equipmentOfHavyStatus ?: EquipmentOfHavyStatus,
+    mainfacturyDate ?: string
   ) {
     this.id = id
     this.allIndustries = allIndustries
@@ -122,6 +132,10 @@ export default class EquipmentDetailsModel {
     this.equipmentCondition = equipmentCondition
     this.equipmentUsedStatus = equipmentUsedStatus
     this.workedHoures = workedHoures
+    this.ivhm = ivhm
+    this.WorkedHours = WorkedHours
+    this.equipmentOfHavyStatus = equipmentOfHavyStatus
+    this.mainfacturyDate = mainfacturyDate
     // this.type = type
   }
 
@@ -170,6 +184,10 @@ export default class EquipmentDetailsModel {
       data.equipment_condition ?? data.equipment_conditions ?? null,
       data.equipment_used_status ?? null,
       data?.worked_hours ? data?.worked_hours : '',
+      data?.ivms,
+      data?.equipment_worked_heavy,
+      data?.equipment_of_havy_status,
+      data?.manufacturing_year
     )
   }
 

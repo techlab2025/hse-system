@@ -56,4 +56,17 @@ export const organizationEmployeeRoutes: RouteRecordRaw[] = [
       isSidebar: true,
     },
   },
+  {
+    path: 'organization-employee-tasks/:id',
+    name: 'Organization Employee Tasks',
+    component: () =>
+      import(
+        '@/features/Organization/OrganizationEmployee/Presentation/components/employeeTask/indexOwnTask.vue'
+      ),
+    meta: {
+      breadcrumb: 'Organization Employee Tasks',
+      parent: 'Show Organization Employee',
+      isSidebar: true,
+    },
+  },
 ]

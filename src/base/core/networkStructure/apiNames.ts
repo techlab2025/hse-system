@@ -1742,6 +1742,16 @@ class ApiNames {
   public get AddOrganizationEmployeeToHierarchy() {
     return this.prefix + 'sync_herikaly_employees'
   }
+  // employee tasks
+  public get FetchEmployeeTasks() {
+    return this.prefix + 'fetch_own_actual_tasks'
+  }
+  public get changeTaskStatus() {
+    return this.prefix + 'change_task_status'
+  }
+    public get fetchTaskhistory() {
+    return this.prefix + 'fetch_task_history'
+  }
   public get FetchHierarchyCertificates() {
     return this.prefix + 'fetch_hierarchies_certificates'
   }
@@ -1908,9 +1918,15 @@ class ApiNames {
   public get CreatePermitToWork() {
     return this.baseUrl + this.organizationPrefix + 'create_permit_to_work'
   }
-  public get CreatePermitToWorkResult(){
+  public get CreatePermitToWorkResult() {
     return this.baseUrl + this.organizationPrefix + 'create_permit_to_work_result'
+  }
 
+  public get FetchMeetingDetails() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_meeting_details'
+  }
+  public get FetchPermits() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_permit_to_works'
   }
 }
 

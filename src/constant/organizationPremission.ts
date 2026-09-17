@@ -1491,6 +1491,18 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
+        {
+          key: PermissionsEnum.PROJECT_PERMIT,
+          code: PermissionsEnum.PROJECT_PERMIT,
+          label: 'Project Permit',
+          permissions: [
+            {
+              key: PermissionsEnum.PROJECT_PERMIT,
+              code: PermissionsEnum.PROJECT_PERMIT,
+              label: 'Allow',
+            },
+          ],
+        },
         // {
         //   key: PermissionsEnum.PROJECT_PROGRESS_ALL,
         //   code: PermissionsEnum.PROJECT_PROGRESS_ALL,

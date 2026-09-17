@@ -12,3 +12,4 @@ export default class AddOrganizatoinEmployeeToHierarchyUseCase
     return AddOrganizationEmployeeToHierarchyRepo.getInstance().call(params)
   }
 }
+ 
