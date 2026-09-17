@@ -102,7 +102,16 @@ const props = defineProps<{
       >
         management of change
       </router-link>
+      <!--  -->
 
+      <router-link
+        :to="{
+          path: `/organization/project-permit/project/${projectId}`,
+        }"
+        class="project-audits-link"
+      >
+        permit To Work
+      </router-link>
       <!-- <router-link
         :to="{
           path: '/organization/herikaly/matrix',
