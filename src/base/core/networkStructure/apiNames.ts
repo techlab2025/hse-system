@@ -1916,7 +1916,7 @@ class ApiNames {
     return this.baseUrl + this.organizationPrefix + 'fetch_meeting_details'
   }
   public get FetchPermits() {
-    return this.baseUrl + this.organizationPrefix + 'fetch_permits'
+    return this.baseUrl + this.organizationPrefix + 'fetch_permit_to_works'
   }
 }
 

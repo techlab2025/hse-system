@@ -1577,4 +1577,582 @@ const getEmployeeName = (employee: any) => {
     width: 100%;
   }
 }
+
+// new dilaog styles
+
+/* ==========================================================================
+   Show Meeting Result Dialog
+   ========================================================================== */
+
+.meeting-show-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.meeting-show-header-icon {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 auto;
+  place-items: center;
+
+  border-radius: 15px;
+
+  color: #fff;
+
+  background: linear-gradient(
+    145deg,
+    var(--PrimaryColor),
+    var(--brand-primary-700)
+  );
+
+  font-family: 'Bold';
+  font-size: 0.85rem;
+}
+
+.meeting-show-header-content {
+  min-width: 0;
+}
+
+.meeting-show-header-content small {
+  display: block;
+
+  color: var(--PrimaryColor);
+
+  font-size: 0.68rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.meeting-show-header-content h2 {
+  overflow: hidden;
+
+  margin: 2px 0;
+
+  color: var(--text-strong);
+
+  font-size: 1rem;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meeting-show-header-content p {
+  margin: 0;
+
+  color: var(--text-soft);
+
+  font-size: 0.75rem;
+}
+
+/* ==========================================================================
+   Content
+   ========================================================================== */
+
+.meeting-show-content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.meeting-show-section {
+  padding: 16px;
+
+  border: 1px solid var(--main-border);
+  border-radius: 16px;
+
+  background: var(--surface-2);
+}
+
+.meeting-show-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+
+  margin-bottom: 15px;
+}
+
+.meeting-show-section-header h3 {
+  margin: 0;
+
+  color: var(--text-strong);
+
+  font-size: 0.9rem;
+}
+
+.meeting-show-section-header p {
+  margin: 4px 0 0;
+
+  color: var(--text-soft);
+
+  font-size: 0.7rem;
+}
+
+.meeting-count-badge {
+  display: grid;
+  min-width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  place-items: center;
+
+  padding: 0 8px;
+
+  border-radius: 9px;
+
+  color: var(--PrimaryColor);
+
+  background: color-mix(
+    in srgb,
+    var(--PrimaryColor) 10%,
+    transparent
+  );
+
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+/* ==========================================================================
+   Meeting Info
+   ========================================================================== */
+
+.meeting-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.meeting-info-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 6px;
+
+  padding: 13px;
+
+  border: 1px solid var(--main-border);
+  border-radius: 12px;
+
+  background: var(--surface-1);
+}
+
+.meeting-info-label {
+  color: var(--text-soft);
+
+  font-size: 0.68rem;
+}
+
+.meeting-info-card strong {
+  overflow: hidden;
+
+  color: var(--text-strong);
+
+  font-size: 0.78rem;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   Hierarchies
+   ========================================================================== */
+
+.meeting-hierarchy-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.meeting-hierarchy-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 8px 11px;
+
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--PrimaryColor) 22%,
+      var(--main-border)
+    );
+
+  border-radius: 10px;
+
+  color: var(--text-strong);
+
+  background: color-mix(
+    in srgb,
+    var(--PrimaryColor) 5%,
+    var(--surface-1)
+  );
+
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.hierarchy-dot {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+
+  border-radius: 50%;
+
+  background: var(--PrimaryColor);
+}
+
+/* ==========================================================================
+   Agenda
+   ========================================================================== */
+
+.meeting-show-agenda-list {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.meeting-show-agenda-item {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 12px;
+
+  border: 1px solid var(--main-border);
+  border-radius: 12px;
+
+  background: var(--surface-1);
+}
+
+.meeting-show-number {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+
+  border-radius: 9px;
+
+  color: var(--PrimaryColor);
+
+  background: color-mix(
+    in srgb,
+    var(--PrimaryColor) 10%,
+    transparent
+  );
+
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.meeting-show-agenda-text {
+  min-width: 0;
+
+  color: var(--text-strong);
+
+  font-size: 0.78rem;
+  line-height: 1.5;
+
+  word-break: break-word;
+}
+
+/* ==========================================================================
+   Actions
+   ========================================================================== */
+
+.meeting-show-actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.meeting-show-action-card {
+  overflow: hidden;
+
+  border: 1px solid var(--main-border);
+  border-radius: 14px;
+
+  background: var(--surface-1);
+}
+
+.meeting-show-action-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  padding: 13px 14px;
+
+  border-bottom: 1px solid var(--main-border);
+}
+
+.meeting-show-action-title {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+}
+
+.meeting-show-action-number {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  place-items: center;
+
+  border-radius: 9px;
+
+  color: #fff;
+
+  background: var(--PrimaryColor);
+
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+.meeting-show-action-title small {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: var(--text-soft);
+
+  font-size: 0.64rem;
+}
+
+.meeting-show-action-title h4 {
+  overflow: hidden;
+
+  margin: 0;
+
+  color: var(--text-strong);
+
+  font-size: 0.8rem;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meeting-action-type {
+  flex: 0 0 auto;
+
+  padding: 6px 10px;
+
+  border-radius: 20px;
+
+  font-size: 0.66rem;
+  font-weight: 800;
+}
+
+.action-type-ongoing {
+  color: var(--PrimaryColor);
+
+  background: color-mix(
+    in srgb,
+    var(--PrimaryColor) 10%,
+    transparent
+  );
+}
+
+.action-type-info {
+  color: var(--text-soft);
+
+  background: color-mix(
+    in srgb,
+    var(--text-soft) 10%,
+    transparent
+  );
+}
+
+.action-type-task {
+  color: var(--status-success, var(--PrimaryColor));
+
+  background: color-mix(
+    in srgb,
+    var(--status-success, var(--PrimaryColor)) 10%,
+    transparent
+  );
+}
+
+.meeting-show-action-details {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+}
+
+.meeting-action-detail {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 5px;
+
+  padding: 13px 14px;
+
+  border-inline-end: 1px solid var(--main-border);
+  border-bottom: 1px solid var(--main-border);
+}
+
+.meeting-action-detail span {
+  color: var(--text-soft);
+
+  font-size: 0.65rem;
+}
+
+.meeting-action-detail strong {
+  overflow: hidden;
+
+  color: var(--text-strong);
+
+  font-size: 0.74rem;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   Content / Empty
+   ========================================================================== */
+
+.meeting-content-box {
+  padding: 12px 14px;
+
+  border: 1px solid var(--main-border);
+  border-radius: 12px;
+
+  color: var(--text-strong);
+
+  background: var(--surface-1);
+
+  font-size: 0.78rem;
+  line-height: 1.6;
+
+  white-space: pre-wrap;
+}
+
+.meeting-empty-state {
+  padding: 20px;
+
+  border: 1px dashed var(--main-border);
+  border-radius: 12px;
+
+  color: var(--text-soft);
+
+  text-align: center;
+
+  font-size: 0.75rem;
+}
+
+.meeting-show-no-data {
+  display: flex;
+  min-height: 200px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 12px;
+
+  color: var(--text-soft);
+}
+
+.meeting-show-no-data-icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+
+  border-radius: 15px;
+
+  color: var(--PrimaryColor);
+
+  background: color-mix(
+    in srgb,
+    var(--PrimaryColor) 10%,
+    transparent
+  );
+
+  font-weight: 900;
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.meeting-show-footer {
+  display: flex;
+  justify-content: flex-end;
+
+  padding-top: 2px;
+}
+
+.meeting-show-close-button {
+  min-width: 110px;
+
+  padding: 10px 18px;
+
+  border: 1px solid var(--PrimaryColor);
+  border-radius: 11px;
+
+  color: #fff;
+
+  cursor: pointer;
+
+  background: var(--PrimaryColor);
+
+  font-weight: 700;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.meeting-show-close-button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .meeting-info-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .meeting-show-action-details {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .meeting-show-section {
+    padding: 12px;
+  }
+
+  .meeting-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .meeting-show-action-details {
+    grid-template-columns: 1fr;
+  }
+
+  .meeting-show-action-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .meeting-action-type {
+    margin-inline-start: 42px;
+  }
+
+  .meeting-show-footer {
+    display: block;
+  }
+
+  .meeting-show-close-button {
+    width: 100%;
+  }
+}
 </style>

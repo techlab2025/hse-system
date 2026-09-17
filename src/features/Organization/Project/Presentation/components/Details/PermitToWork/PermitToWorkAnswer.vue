@@ -152,6 +152,7 @@ const route = useRoute()
         query: {
           template_id: selectedTemplates,
           permit_id: route.query.permit_id,
+          project_id: route.query.project_id,
         },
       }"
       >Submit</router-link

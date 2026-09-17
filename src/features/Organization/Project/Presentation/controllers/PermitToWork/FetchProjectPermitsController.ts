@@ -9,7 +9,9 @@ import type { Router } from 'vue-router'
 import FetchProjectPermitsUseCase from '../../../Domain/useCase/PermitToWork/FetchProjectPermitsUseCase'
 import type ProjectPermitsModel from '../../../Data/models/PermitToWork/ProjectPermitsModel'
 
-export default class FetchProjectPermitsController extends ControllerInterface<ProjectPermitsModel[]> {
+export default class FetchProjectPermitsController extends ControllerInterface<
+  ProjectPermitsModel[]
+> {
   private static instance: FetchProjectPermitsController
   private constructor() {
     super()
@@ -26,18 +28,18 @@ export default class FetchProjectPermitsController extends ControllerInterface<P
   async FetchProjectPermits(params: Params, router: Router, draft: boolean = false) {
     // useLoaderStore().setLoadingWithDialog();
     try {
-      const dataState: DataState<ProjectPermitsModel[]> = await this.fetchProjectPermitsUseCase.call(params)
+      const dataState: DataState<ProjectPermitsModel[]> =
+        await this.fetchProjectPermitsUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
-        DialogSelector.instance.successDialog.openDialog({
-          dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
-          imageElement: successImage,
-          messageContent: null,
-        })
+        // DialogSelector.instance.successDialog.openDialog({
+        //   dialogName: 'dialog-success',
+        //   titleContent: 'Added was successful',
+        //   imageElement: successImage,
+        //   messageContent: null,
+        // })
         // if (!draft) await router.push('/organization/project-details')
         // router.push(`/organization/project-details/${router.currentRoute.value.params.project_id}`)
-
         // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
