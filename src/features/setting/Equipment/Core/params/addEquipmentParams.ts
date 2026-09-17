@@ -41,7 +41,7 @@ export default class AddEquipmentParams implements Params {
   serialNumber: string
   SelectedWhereHosue: number
 
-  WorkedHours?: number
+  WorkedHours?: string
   ivhm?: boolean
 
   public static readonly validation = new ClassValidation().setRules({
@@ -75,7 +75,7 @@ export default class AddEquipmentParams implements Params {
     VehicleKm: string
     SelectedWhereHosue: number
     serialNumber: string
-    WorkedHours?: number
+    WorkedHours?: string
     ivhm?: boolean
   }) {
     Object.assign(this, data)
@@ -115,7 +115,7 @@ export default class AddEquipmentParams implements Params {
       data['certificate_image'] = this.certificateImage
 
     if (this.mainfacturyDate != null)
-      data['manufacturing_year'] = formatJoinDate(this.mainfacturyDate)
+      data['manufacturing_year'] = formatJoinDate(this.mainfacturyDate , false , true) 
 
     if (this.allIndustries != null)
       data['all_industries'] = this.allIndustries ? 1 : 0
@@ -157,11 +157,11 @@ export default class AddEquipmentParams implements Params {
     }
 
     if (this.WorkedHours != null)
-      data['worked_hours'] = this.WorkedHours
+      data['equipment_worked_heavy'] = this.WorkedHours
 
     // send false also
     if (this.ivhm !== undefined)
-      data['ivhm'] = this.ivhm
+      data['ivms'] = this.ivhm
 
     return data
   }

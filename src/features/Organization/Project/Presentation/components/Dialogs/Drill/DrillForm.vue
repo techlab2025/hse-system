@@ -115,11 +115,11 @@ onMounted(loadTeams)
       />
 
       <div class="input-wrapper">
-        <div class="field-label"><label for="drill_date">{{ $t('date') }}</label><FieldHelpIcon text="Select the drill date." /></div>
+        <div class="field-label"><label for="drill_date">{{ $t('Drill date') }}</label><FieldHelpIcon text="Select the drill date." /></div>
         <DatePicker id="drill_date" v-model="date" date-format="yy-mm-dd" show-icon fluid />
       </div>
       <div class="input-wrapper">
-        <div class="field-label"><label for="drill_time">{{ $t('time') }}</label><FieldHelpIcon text="Select the drill start time." /></div>
+        <div class="field-label"><label for="drill_time">{{ $t('Drill time') }}</label><FieldHelpIcon text="Select the drill start time." /></div>
         <DatePicker id="drill_time" v-model="time" time-only hour-format="12" fluid />
       </div>
 
@@ -138,8 +138,8 @@ onMounted(loadTeams)
         <textarea id="drill_improvement" v-model="improvement" class="input" :placeholder="$t('Enter improvement opportunities')"></textarea>
       </div> -->
       <div class="input-wrapper full-field">
-        <div class="field-label"><label for="drill_notes">{{ $t('notes') }}</label><FieldHelpIcon text="Add any supporting notes for this drill." /></div>
-        <textarea id="drill_notes" v-model="notes" class="input" :placeholder="$t('Enter notes')"></textarea>
+        <div class="field-label"><label for="drill_notes">{{ $t('scenario') }}</label><FieldHelpIcon text="Add any supporting scenario for this drill." /></div>
+        <textarea id="drill_notes" v-model="notes" class="input" :placeholder="$t('Enter scenario')"></textarea>
       </div>
     </div>
 
