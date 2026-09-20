@@ -621,9 +621,9 @@ const getEmployeeName = (employee: any) => {
             </p>
           </div>
 
-          <!-- <button type="button" class="add-button" @click="addAction">
+          <button type="button" class="add-button" @click="addAction">
             + {{ $t('Add Action') }}
-          </button> -->
+          </button>
         </div>
 
         <div class="actions-list">

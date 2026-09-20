@@ -15,6 +15,7 @@ import image from '@/assets/images/onceimg.png'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
 import { useThemeMode } from '@/composables/useThemeMode'
+import InspectionTemplatePreviewDialog from '../InspectionDialog/InspectionTemplatePreviewDialog.vue'
 
 defineProps<{
   tasks: InspectionModel[]
@@ -33,6 +34,9 @@ const GetMorohType = (type: number) => {
 const GetEquipmentType = (type: number) => {
   return EquipmentTypesEnum[type]
 }
+
+const hasTaskResults = (task: InspectionModel) =>
+  Boolean(task.hasResults || task.numberOfResults > 0 || task.task_results?.length)
 // if all (inspection form) 1  => !isDrag && !showresult
 // if all (Drag inspection form) 2  => isDrag
 // if all (Show inspection form) 3  => showresult
@@ -212,6 +216,13 @@ const GetEquipmentType = (type: number) => {
           :fulltask="task"
         />
 
+        <div v-if="isAuditPage && !isDrag && !hasTaskResults(task)" class="mt w-full">
+          <InspectionTemplatePreviewDialog
+            :template-id="task.template?.id"
+            :template="task.template"
+          />
+        </div>
+
         <!-- <ShowInspectionDialog class="mt" v-if="isDrag" :taskId="task.id" /> -->
 
         <div class="mt w-full" v-if="isDrag">
@@ -233,7 +244,7 @@ const GetEquipmentType = (type: number) => {
         </div>
 
         <router-link
-          v-if="!isDrag && !showresult && !isEquipment"
+          v-if="!isDrag && !showresult && !isEquipment && (!isAuditPage || hasTaskResults(task))"
           class="show-button w-full mt"
           :to="`/organization/equipment-mangement/inspection/result/${task.id}`"
         >

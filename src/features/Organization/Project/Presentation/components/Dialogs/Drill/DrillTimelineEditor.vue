@@ -76,8 +76,7 @@ const submit = async () => {
     items.value.some(
       (item) =>
         // !item.date ||
-        !item.time ||
-        !(props.mode === 'planning' ? item.notes : item.description).trim(),
+        !item.time || !(props.mode === 'planning' ? item.notes : item.description).trim(),
     )
   ) {
     error.value = ` time and ${props.mode === 'planning' ? 'notes' : 'description'} are required for every timeline item.`
@@ -160,6 +159,7 @@ onMounted(fetchProjectEmployees)
 </script>
 
 <template>
+
   <section class="drill-timeline-builder">
     <div class="timeline-heading">
       <div>
@@ -297,7 +297,7 @@ onMounted(fetchProjectEmployees)
                   :placeholder="$t('Enter photographer name')"
                 />
               </div> -->
-               <div class="input-wrapper">
+              <div class="input-wrapper">
                 <div class="field-label">
                   <label :for="`drill_photographer_${index}`">{{ $t('Photographer place') }}</label
                   ><FieldHelpIcon text="Enter the place of the person who captured the evidence." />

@@ -1282,6 +1282,12 @@ class ApiNames {
   public get CreateDrillAction() {
     return this.prefix + 'create_drill_action'
   }
+  public get DeleteDrillAction() {
+    return this.prefix + 'delete_drill_action'
+  }
+  public get DeleteDrillPlan() {
+    return this.prefix + 'delete_drill_plan'
+  }
 
   // observation
   public get CreateObservation() {
@@ -1749,7 +1755,7 @@ class ApiNames {
   public get changeTaskStatus() {
     return this.prefix + 'change_meeting_task_status'
   }
-    public get fetchTaskhistory() {
+  public get fetchTaskhistory() {
     return this.prefix + 'fetch_task_history'
   }
   public get FetchHierarchyCertificates() {
@@ -1895,6 +1901,9 @@ class ApiNames {
   public get CreateProjectMeetingResult() {
     return this.baseUrl + this.organizationPrefix + 'create_project_meeting_result'
   }
+  public get FetchProjectMeetings() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_meetings'
+  }
   // CloneMeetingType
 
   public get ShowPTWType() {
@@ -1928,7 +1937,7 @@ class ApiNames {
   public get FetchPermits() {
     return this.baseUrl + this.organizationPrefix + 'fetch_permit_to_works'
   }
-   public get FetchMyPermits() {
+  public get FetchMyPermits() {
     return this.baseUrl + this.organizationPrefix + 'fetch_my_permit_to_works'
   }
   public get FetchPermitsAudits() {

@@ -1,6 +1,7 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import DataTable from '@/components/Tables/DataTable.vue'
 import { PermitToWorkStatusEnum } from '../../../Core/Enums/PermitToWorkStatusEnum'
+import type OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
 
 export default class ProjectPermitsModel {
   public id: number
@@ -16,6 +17,7 @@ export default class ProjectPermitsModel {
   public endTime: string
   public status: PermitToWorkStatusEnum
   public hasResult: boolean
+  public createdBy: OrganizatoinEmployeeModel
 
   constructor(data: {
     id: number
@@ -31,6 +33,7 @@ export default class ProjectPermitsModel {
     endTime: string
     status: PermitToWorkStatusEnum
     hasResult: boolean
+    createdBy: OrganizatoinEmployeeModel
   }) {
     this.id = data.id
     this.permitType = data.permitType
@@ -45,6 +48,7 @@ export default class ProjectPermitsModel {
     this.endTime = data.endTime
     this.status = data.status
     this.hasResult = data.hasResult
+    this.createdBy = data.createdBy
   }
 
   static fromMap(data: any): ProjectPermitsModel {
@@ -65,6 +69,7 @@ export default class ProjectPermitsModel {
       endTime: data.end_time,
       status: data.status,
       hasResult: data.has_result,
+      createdBy: data.created_by,
     })
   }
 
