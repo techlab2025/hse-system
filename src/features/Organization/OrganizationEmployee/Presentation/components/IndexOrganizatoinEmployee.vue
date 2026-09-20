@@ -185,13 +185,13 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
     text: t('show'),
     icon: ActionsTableView,
     link: `/organization/organization-employee/show/${id}`,
-    permission: [PermissionsEnum.CREATE_PERMISSION, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+    permission: [PermissionsEnum.ORG_EMPLOYEE_CREATE, PermissionsEnum.ORG_EMPLOYEE_DETAILS],
   },
   {
     text: t('add_permission'),
     icon: ActionsTableShild,
     link: `/organization/permission/${id}`,
-    permission: [PermissionsEnum.CREATE_PERMISSION, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+    permission: [PermissionsEnum.ORG_EMPLOYEE_DELETE, PermissionsEnum.ORG_EMPLOYEE_ALL],
   },
 
   {

@@ -44,7 +44,7 @@ export default class IndexOwnTaskModel {
     return new IndexOwnTaskModel({
       id: data?.id,
       title: data?.title ?? '',
-      status: data?.status??1,
+      status: data?.status?data.status: 1,
       created_at: data?.created_at,
       actual_task_id: data?.actual_task_id,
       investigation_task_id: data?.investigation_task_id,

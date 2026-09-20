@@ -140,7 +140,7 @@ watch(
 <style scoped>
 .tasks_wrapper {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: 18px;
   width: 100%;
 }

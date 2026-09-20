@@ -1,5 +1,5 @@
 export enum ChangeTaskStatusEnum {
-  NOT_STARTED= 0 | 1,
+  NOT_STARTED=  1,
   IN_PROGRESS = 2,
   PENDING_ON_HOLD = 3,//hold
   OVERDUE=4,
