@@ -114,6 +114,12 @@ const OperationsRoutes = ref<Routes[]>([
     icon: 'sitemap',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
+  {
+    link: '/organization/management-of-change',
+    name: 'Management Of Change',
+    icon: 'file-contract',
+    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
 ])
 
 const OrganizationRoutes = ref<Routes[]>([

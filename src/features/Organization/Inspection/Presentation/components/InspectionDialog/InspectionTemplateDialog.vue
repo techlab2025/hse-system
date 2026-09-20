@@ -51,7 +51,7 @@ watch(
 const emit = defineEmits(['update:data', 'update:isInLibrary'])
 const sendTemplatesId = () => {
   isConfirmed.value = true
-  emit('update:data', selectedTemplates.value)
+  emit('update:data', selectedTemplates.value || TemplateId.value)
   emit('update:isInLibrary', isInLibrary.value)
   visible.value = false
 }
@@ -60,6 +60,8 @@ const selectedTemplateHeader = ref()
 const GetTemplateId = (data: number) => {
   selectedTemplates.value = data
   selectedTemplateHeader.value = state.value.data?.find((item) => item.id === data)
+  TemplateId.value = undefined
+  TemplateTitle.value = ''
   emit('update:data', selectedTemplates.value || TemplateId.value)
   emit('update:isInLibrary', isInLibrary.value)
   // visible.value = false
@@ -98,20 +100,7 @@ const GetTemplateInfo = (data: {
 }
 
 const ShowTemplate = ref(true)
-// remove item if colse dialog
-const removeItem = () => {
-  selectedTemplates.value = undefined
-  TemplateId.value = undefined
-  emit('update:data', selectedTemplates.value || TemplateId.value)
-  emit('update:isInLibrary', isInLibrary.value)
-  visible.value = false
-  TemplateTitle.value = ''
-}
-
 const handleDialogHide = () => {
-  if (!isConfirmed.value) {
-    removeItem()
-  }
   isConfirmed.value = false
 }
 

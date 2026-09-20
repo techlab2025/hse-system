@@ -1495,6 +1495,18 @@ class ApiNames {
   public get CreateMangementChange() {
     return this.prefix + 'create_management_of_change'
   }
+  public get IndexMangementChange() {
+    return this.prefix + 'fetch_management_of_changes'
+  }
+  public get ShowMangementChange() {
+    return this.prefix + 'fetch_management_of_change_details'
+  }
+  public get EditMangementChange() {
+    return this.prefix + 'update_management_of_change'
+  }
+  public get DeleteMangementChange() {
+    return this.prefix + 'delete_management_of_change'
+  }
   public get IndexMangementChangeTopicType() {
     return this.prefix + 'fetch_changement_topics'
   }

@@ -53,7 +53,7 @@ export const projectRoutes: RouteRecordRaw[] = [
   {
     path: 'project-details/:id/management-of-change',
     name: 'management-of-change',
-    component: () => import('@/views/Organization/MangementChangeTopicType/MangementOfChange.vue'),
+    component: () => import('@/views/Organization/MangementOfChange/MangementOfChange.vue'),
     meta: {
       breadcrumb: 'management-of-change',
       parent: 'Project Details',
