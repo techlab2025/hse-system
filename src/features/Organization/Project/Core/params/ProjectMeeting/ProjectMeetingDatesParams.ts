@@ -3,10 +3,9 @@ export default class ProjectMeetingDatesParams implements Params {
   public days?: number
   public dates?: string
 
-  constructor(data: { days?: number; dates?: string}) {
+  constructor(data: { days?: number; dates?: string }) {
     this.days = data.days
     this.dates = data.dates
-
   }
 
   toMap(): Record<
@@ -22,9 +21,8 @@ export default class ProjectMeetingDatesParams implements Params {
       | any
     > = {}
 
-    data['days'] = this.days
+    data['day'] = this.days
     data['date'] = this.dates
-
 
     return data
   }

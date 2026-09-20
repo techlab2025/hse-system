@@ -150,6 +150,8 @@ const saved = () => {
       <button
         type="button"
         :class="{ active: editorMode === 'action' }"
+        :disabled="!displayedPlans.length"
+        :title="!displayedPlans.length ? $t('Add planning first') : undefined"
         @click="editorMode = editorMode === 'action' ? null : 'action'"
       >
         <span>02</span>
@@ -408,6 +410,10 @@ const saved = () => {
 .drill-workflow-actions button.active {
   border-color: var(--PrimaryColor);
   background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-2));
+}
+.drill-workflow-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 .drill-workflow-actions button > span {
   display: grid;

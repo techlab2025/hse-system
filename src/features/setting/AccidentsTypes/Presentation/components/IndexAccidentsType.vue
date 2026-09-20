@@ -339,8 +339,8 @@ const IndexIncidantTypeactionList = () => [
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/accidents-type/add`"
             addText="add_incident_type"
-            description="You have no AccidentType .. All your joined customers will appear here when you add your customer data"
-            title="You have No AccidentType"
+            description="You have no Incident Type .. All your joined customers will appear here when you add your customer data"
+            title="You have No Incident Type"
           />
         </PermissionBuilder>
       </template>
@@ -353,8 +353,8 @@ const IndexIncidantTypeactionList = () => [
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/accidents-type/add`"
             addText="add_incident_type"
-            description="You have no AccidentType .. All your joined customers will appear here when you add your customer data"
-            title="You have No AccidentType"
+            description="You have no Incident Type .. All your joined customers will appear here when you add your customer data"
+            title="You have No Incident Type"
           />
         </PermissionBuilder>
       </template>
