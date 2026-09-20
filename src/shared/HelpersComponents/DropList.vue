@@ -14,6 +14,7 @@ interface ActionItem {
   action?: () => void
   permission?: PermissionsEnum[]
   class?: string
+  isDelete?: boolean
 }
 
 const emit = defineEmits(['delete'])
@@ -65,7 +66,7 @@ const permittedActions = computed(() =>
           </router-link>
 
           <button
-            v-else-if="action.action && action.text != $t('delete')"
+            v-else-if="action.action && !action.isDelete && action.text != $t('delete')"
             @click="action.action"
             class="flex items-center gap-sm"
           >
@@ -74,7 +75,10 @@ const permittedActions = computed(() =>
             <span @click="op.hide()">{{ action.text }}</span>
           </button>
 
-          <DeleteDialog v-else-if="action.text == $t('delete')" @delete="action.action" />
+          <DeleteDialog
+            v-else-if="action.isDelete || action.text == $t('delete')"
+            @delete="action.action"
+          />
         </li>
         <slot name="custom"></slot>
       </ul>
