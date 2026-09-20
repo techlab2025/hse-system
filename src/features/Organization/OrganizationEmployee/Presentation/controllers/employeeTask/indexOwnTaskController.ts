@@ -32,6 +32,7 @@ export default class IndexOwnTaskController extends SelectControllerInterface<
     this.setState(dataState)
     if (this.isDataSuccess()) {
       // useLoaderStore().endLoadingWithDialog();
+      console.log("dataState",dataState)
     } else {
       throw new Error('Error while addServices')
     }

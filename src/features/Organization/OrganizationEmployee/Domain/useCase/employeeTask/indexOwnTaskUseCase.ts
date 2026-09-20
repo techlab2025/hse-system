@@ -9,12 +9,12 @@ import IndexOwnTaskModel from '../../../Data/models/IndexOwnTaskModel'
 import { indexOwnTaskRepo } from '../../repositories/employeeTask/indexOwnTaskRepo'
 
 export default class indexOwnTaskUseCase
-  implements UseCase<IndexOwnTaskModel, Params>
+  implements UseCase<IndexOwnTaskModel[], Params>
 {
-  async call(params: Params): Promise<DataState<IndexOwnTaskModel>> {
+  async call(params: Params): Promise<DataState<IndexOwnTaskModel[]>> {
     return UseCaseHandler.instance().handle({
       onTest: () => {
-        return new DataSuccess({ data: IndexOwnTaskModel.example })
+        return new DataSuccess({ data: [IndexOwnTaskModel.example] })
       },
       onDev: () => {
         return indexOwnTaskRepo.getInstance().call(params)

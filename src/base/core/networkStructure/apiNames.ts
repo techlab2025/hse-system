@@ -1744,10 +1744,10 @@ class ApiNames {
   }
   // employee tasks
   public get FetchEmployeeTasks() {
-    return this.prefix + 'fetch_own_actual_tasks'
+    return this.prefix + 'fetch_owned_actual_tasks'
   }
   public get changeTaskStatus() {
-    return this.prefix + 'change_task_status'
+    return this.prefix + 'change_meeting_task_status'
   }
     public get fetchTaskhistory() {
     return this.prefix + 'fetch_task_history'

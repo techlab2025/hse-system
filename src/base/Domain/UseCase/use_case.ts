@@ -6,6 +6,8 @@ export default interface UseCase<T, P> {
   call(params: P): Promise<DataState<T>>
 }
 
+type UseCaseHandlerCallback<T> = () => DataState<T> | Promise<DataState<T>>
+
 class UseCaseHandler {
   private static _instance: UseCaseHandler
 
@@ -23,9 +25,9 @@ class UseCaseHandler {
     onDev,
     onProduction,
   }: {
-    onTest?: () => DataState<T>
-    onDev?: () => DataState<T>
-    onProduction?: () => DataState<T>
+    onTest?: UseCaseHandlerCallback<T>
+    onDev?: UseCaseHandlerCallback<T>
+    onProduction?: UseCaseHandlerCallback<T>
   }): Promise<DataState<T>> {
     // const Key = import.meta.env
     
