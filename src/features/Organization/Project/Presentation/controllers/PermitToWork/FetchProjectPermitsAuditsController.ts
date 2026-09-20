@@ -24,7 +24,8 @@ export default class FetchProjectPermitsAuditsController extends ControllerInter
     return this.instance
   }
 
-  async FetchProjectPermitsAudits(params: Params, router: Router, draft: boolean = false) {
+  // , router: Router, draft: boolean = false
+  async FetchProjectPermitsAudits(params: Params) {
     this.setLoading()
     try {
       const dataState: DataState<PermitAuditResultModel[]> =

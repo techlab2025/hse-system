@@ -22,7 +22,8 @@ export default class FetchProjectMeetingResultController extends ControllerInter
     return this.instance
   }
 
-  async FetchProjectMeetingResult(params: Params, router: Router, draft: boolean = false) {
+  // router: Router, draft: boolean = false
+  async FetchProjectMeetingResult(params: Params) {
     // useLoaderStore().setLoadingWithDialog();
     try {
       const dataState: DataState<ProjectMeetingDetails> =
