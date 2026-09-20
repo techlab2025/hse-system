@@ -128,7 +128,7 @@ const SubmitFrom = async () => {
         :params="indexPTWTypeParams"
         :label="$t('permit_to_work_type')"
         id="permit_to_work_type"
-        placeholder="Select permit_to_work_type"
+        :placeholder="`${$t('Select_permit_to_work_type')}`"
         @update:modelValue="updatePermitToWorkType"
       />
 
