@@ -7,7 +7,7 @@ export default class ProjectPermitsModel {
   public permitType: TitleInterface
   public serial: string
   public serialName: string
-  public permitToWork: string
+  public permitToWork: TitleInterface
   public description: string
   public location: string
   public startDate: string
@@ -22,7 +22,7 @@ export default class ProjectPermitsModel {
     permitType: TitleInterface
     serial: string
     serialName: string
-    permitToWork: string
+    permitToWork: TitleInterface
     description: string
     location: string
     startDate: string
@@ -53,7 +53,10 @@ export default class ProjectPermitsModel {
       permitType: data.permit_type,
       serial: data.serial,
       serialName: data.serial_name,
-      permitToWork: data.permit_to_work,
+      permitToWork: new TitleInterface({
+        id: data.permit_to_work?.id ?? 0,
+        title: data.permit_to_work?.title ?? '',
+      }),
       description: data.description,
       location: data.location,
       startDate: data.start_date,
@@ -70,7 +73,7 @@ export default class ProjectPermitsModel {
     permitType: new TitleInterface({ id: 1, title: '' }),
     serial: '',
     serialName: '',
-    permitToWork: '',
+    permitToWork: new TitleInterface({ id: 0, title: '' }),
     description: '',
     location: '',
     startDate: '',

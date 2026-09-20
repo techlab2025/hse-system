@@ -1,32 +1,34 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
+// import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
-import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import FetchProjectMeetingResultUseCase from '../../../Domain/useCase/ProjectMeeting/FetchProjectMeetingResultUseCase'
-import type ProjectMeetingDetails from '../../../Data/models/ProjectMeeting/ProjectMeetingDetailsModel'
+import type PermitAuditResultModel from '../../../Data/models/PermitToWork/PermitAuditResultModel'
+import FetchProjectPermitsAuditsUseCase from '../../../Domain/useCase/PermitToWork/FetchProjectPermitsAuditsUseCase'
 
-export default class FetchProjectMeetingResultController extends ControllerInterface<ProjectMeetingDetails> {
-  private static instance: FetchProjectMeetingResultController
+export default class FetchProjectPermitsAuditsController extends ControllerInterface<
+  PermitAuditResultModel[]
+> {
+  private static instance: FetchProjectPermitsAuditsController
   private constructor() {
     super()
   }
-  private fetchProjectMeetingResultUseCase = new FetchProjectMeetingResultUseCase()
+  private fetchProjectPermitsAuditsUseCase = new FetchProjectPermitsAuditsUseCase()
 
   static getInstance() {
     if (!this.instance) {
-      this.instance = new FetchProjectMeetingResultController()
+      this.instance = new FetchProjectPermitsAuditsController()
     }
     return this.instance
   }
 
-  async FetchProjectMeetingResult(params: Params, router: Router, draft: boolean = false) {
-    // useLoaderStore().setLoadingWithDialog();
+  async FetchProjectPermitsAudits(params: Params, router: Router, draft: boolean = false) {
+    this.setLoading()
     try {
-      const dataState: DataState<ProjectMeetingDetails> =
-        await this.fetchProjectMeetingResultUseCase.call(params)
+      const dataState: DataState<PermitAuditResultModel[]> =
+        await this.fetchProjectPermitsAuditsUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
         // DialogSelector.instance.successDialog.openDialog({
@@ -35,6 +37,9 @@ export default class FetchProjectMeetingResultController extends ControllerInter
         //   imageElement: successImage,
         //   messageContent: null,
         // })
+        // if (!draft) await router.push('/organization/project-details')
+        // router.push(`/organization/project-details/${router.currentRoute.value.params.project_id}`)
+        // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',

@@ -1931,6 +1931,9 @@ class ApiNames {
    public get FetchMyPermits() {
     return this.baseUrl + this.organizationPrefix + 'fetch_my_permit_to_works'
   }
+  public get FetchPermitsAudits() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_permit_to_work_results'
+  }
 }
 
 export { ApiNames }

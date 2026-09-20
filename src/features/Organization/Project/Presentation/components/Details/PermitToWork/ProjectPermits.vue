@@ -5,6 +5,9 @@ import { computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { PermitToWorkStatusEnum } from '@/features/Organization/Project/Core/Enums/PermitToWorkStatusEnum'
 import { ref } from 'vue'
+import FetchProjectPermitsAuditsController from '../../../controllers/PermitToWork/FetchProjectPermitsAuditsController'
+import FetchPermitsAuditsParams from '@/features/Organization/Project/Core/params/PermitToWork/FetchPermitAuditParams'
+import PermitToWorkResultDialog from './PermitToWorkResultDialog.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -66,6 +69,25 @@ const SetStatus = (status: number) => {
     FetchProjectPermits(2)
   }
 }
+const fetchProjectPermitsAuditsController = FetchProjectPermitsAuditsController.getInstance()
+const PermitResult = computed(() => fetchProjectPermitsAuditsController.state.value)
+const resultDialogVisible = ref(false)
+const loadingAuditPermitId = ref<number | null>(null)
+
+const FetchPermitsAuidtResult = async (permitId: number) => {
+  loadingAuditPermitId.value = permitId
+  const fetchProjectPermitsParams = new FetchPermitsAuditsParams({ permitToWorkId: permitId })
+  await fetchProjectPermitsAuditsController.FetchProjectPermitsAudits(
+    fetchProjectPermitsParams,
+    router,
+  )
+
+  if (fetchProjectPermitsAuditsController.isDataSuccess()) {
+    resultDialogVisible.value = true
+  }
+
+  loadingAuditPermitId.value = null
+}
 </script>
 
 <template>
@@ -73,17 +95,9 @@ const SetStatus = (status: number) => {
     <!-- Header -->
     <div class="permits-page-header">
       <div>
-        <!-- <span class="permits-page-kicker">
-          {{ $t('Permit To Work') }}
-        </span> -->
-
         <h2>
           {{ $t('Project Permits') }}
         </h2>
-
-        <!-- <p>
-          {{ $t('View all permits created for this project') }}
-        </p> -->
       </div>
 
       <div class="permits-count">
@@ -234,17 +248,21 @@ const SetStatus = (status: number) => {
             }"
             >Create Audit</router-link
           >
-          <router-link
-            v-if="permit.hasResult"
-            :to="{
+          <!-- :to="{
               path: `/organization/project-permit/project/templates-result`,
               query: {
                 permit_id: permit.id,
                 project_id: route.params.project_id,
               },
-            }"
-            >Show Audit</router-link
+            }" -->
+          <button
+            v-if="permit.hasResult"
+            type="button"
+            :disabled="loadingAuditPermitId === permit.id"
+            @click="FetchPermitsAuidtResult(permit.id)"
           >
+            {{ loadingAuditPermitId === permit.id ? $t('Loading') : $t('Show Audit') }}
+          </button>
         </div>
       </article>
     </div>
@@ -261,6 +279,11 @@ const SetStatus = (status: number) => {
         {{ $t('There are no permits created for this project yet') }}
       </p>
     </div>
+
+    <PermitToWorkResultDialog
+      v-model:visible="resultDialogVisible"
+      :audits="PermitResult.data ?? []"
+    />
   </div>
 </template>
 
