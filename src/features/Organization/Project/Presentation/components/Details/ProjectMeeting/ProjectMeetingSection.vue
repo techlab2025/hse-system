@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import type ProjectMeetingModel from '@/features/Organization/Project/Data/models/ProjectMeeting/ProjectMeetingModel.ts'
 import AddProjectMeetingDialog from './AddProjectMeetingDialog.vue'
 import MeetingResultDialog from './MeetingResultDialog.vue'
@@ -10,23 +9,6 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits(['updated'])
-
-const getMeetingTimestamp = (date: string) => {
-  const timestamp = new Date(`${date}T00:00:00`).getTime()
-  return timestamp
-}
-
-const upcomingMeetings = computed(() => {
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-
-  return [...(props.meetings ?? [])]
-    .filter((meeting) => {
-      const timestamp = getMeetingTimestamp(meeting.date)
-      return Number.isFinite(timestamp) && timestamp >= today.getTime()
-    })
-    .sort((first, second) => getMeetingTimestamp(first.date) - getMeetingTimestamp(second.date))
-})
 </script>
 
 <template>
@@ -65,11 +47,11 @@ const upcomingMeetings = computed(() => {
       </div>
     </header>
 
-    <div v-if="upcomingMeetings.length" class="drill-team-groups">
+    <div v-if="props.meetings.length" class="drill-team-groups">
       <div class="upcoming-label">
         <span></span>
         {{ $t('Today and upcoming meetings') }}
-        <strong>{{ upcomingMeetings.length }}</strong>
+        <strong>{{ props.meetings.length }}</strong>
       </div>
       <!-- <article v-for="group in meetings" :key="group.title" class="drill-team-group"> -->
       <!-- <div class="drill-team-header">
@@ -83,7 +65,7 @@ const upcomingMeetings = computed(() => {
         </div> -->
       <div class="drill-cards">
         <MeetingResultDialog
-          v-for="meeting in upcomingMeetings"
+          v-for="meeting in props.meetings"
           :key="meeting.id"
           :meeting="meeting"
           :project-id="props.projectId"
