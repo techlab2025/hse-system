@@ -183,6 +183,21 @@ const FetchPermitsAuidtResult = async (permitId: number) => {
               </strong>
             </div>
           </div>
+
+          <!-- Permit Type -->
+          <div class="permit-info-item">
+            <span class="permit-info-icon"> CB </span>
+
+            <div>
+              <span class="permit-detail-label">
+                {{ $t('Created By ') }}
+              </span>
+
+              <strong>
+                {{ permit.createdBy.name || '-' }}
+              </strong>
+            </div>
+          </div>
         </div>
 
         <!-- Duration -->
