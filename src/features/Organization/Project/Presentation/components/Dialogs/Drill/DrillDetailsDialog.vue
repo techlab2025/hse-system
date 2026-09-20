@@ -5,6 +5,10 @@ import type DrillModel from '@/features/Organization/Project/Data/models/Drill/D
 import type DrillTimelineItemModel from '@/features/Organization/Project/Data/models/Drill/DrillTimelineItemModel'
 import FetchDrillActionsParams from '@/features/Organization/Project/Core/params/Drill/FetchDrillActionsParams'
 import FetchDrillActionsController from '@/features/Organization/Project/Presentation/controllers/Drill/FetchDrillActionsController'
+import DeleteDrillActionParams from '@/features/Organization/Project/Core/params/Drill/DeleteDrillActionParams'
+import DeleteDrillPlanParams from '@/features/Organization/Project/Core/params/Drill/DeleteDrillPlanParams'
+import DeleteDrillActionController from '@/features/Organization/Project/Presentation/controllers/Drill/DeleteDrillActionController'
+import DeleteDrillPlanController from '@/features/Organization/Project/Presentation/controllers/Drill/DeleteDrillPlanController'
 import DrillTimelineEditor from './DrillTimelineEditor.vue'
 
 const props = withDefaults(
@@ -28,7 +32,13 @@ const editorMode = ref<'planning' | 'action' | null>(null)
 const fetchedActions = ref<DrillTimelineItemModel[] | null>(null)
 const actionsLoading = ref(false)
 const actionsError = ref('')
-const displayedPlans = computed(() => props.plans ?? props.drill.planning)
+const deletedPlanIds = ref<number[]>([])
+const pendingDelete = ref<{ type: 'plan' | 'action'; id: number } | null>(null)
+const deleteDialogVisible = ref(false)
+const deleting = ref(false)
+const displayedPlans = computed(() =>
+  (props.plans ?? props.drill.planning).filter((item) => !deletedPlanIds.value.includes(item.id)),
+)
 const displayedActions = computed(() => fetchedActions.value ?? props.drill.actions)
 
 const fetchDrillActions = async () => {
@@ -59,6 +69,42 @@ const saved = () => {
 
   void fetchDrillActions()
   emit('saved')
+}
+
+const requestDelete = (type: 'plan' | 'action', id: number) => {
+  pendingDelete.value = { type, id }
+  deleteDialogVisible.value = true
+}
+
+const confirmDelete = async () => {
+  if (!pendingDelete.value || deleting.value) return
+
+  deleting.value = true
+  const target = pendingDelete.value
+
+  try {
+    if (target.type === 'action') {
+      const controller = DeleteDrillActionController.getInstance()
+      await controller.deleteAction(new DeleteDrillActionParams(target.id))
+
+      if (!controller.isDataSuccess()) return
+
+      await fetchDrillActions()
+    } else {
+      const controller = DeleteDrillPlanController.getInstance()
+      await controller.deletePlan(new DeleteDrillPlanParams(target.id))
+
+      if (!controller.isDataSuccess()) return
+
+      deletedPlanIds.value.push(target.id)
+      emit('saved')
+    }
+
+    deleteDialogVisible.value = false
+    pendingDelete.value = null
+  } finally {
+    deleting.value = false
+  }
 }
 </script>
 
@@ -209,6 +255,17 @@ const saved = () => {
             <small>{{ item.date }} · {{ item.time }}</small>
             <p>{{ item.description }}</p>
           </div>
+          <button
+            class="saved-entry-delete"
+            type="button"
+            :aria-label="$t('Delete')"
+            @click.stop="requestDelete('plan', item.id)"
+          >
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13" stroke="currentColor" />
+              <path d="M10 11v5M14 11v5" stroke="currentColor" />
+            </svg>
+          </button>
         </article>
       </div>
       <div v-if="displayedActions.length" class="saved-timeline-group">
@@ -243,6 +300,17 @@ const saved = () => {
               />
             </div>
           </div>
+          <button
+            class="saved-entry-delete"
+            type="button"
+            :aria-label="$t('Delete')"
+            @click.stop="requestDelete('action', item.id)"
+          >
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13" stroke="currentColor" />
+              <path d="M10 11v5M14 11v5" stroke="currentColor" />
+            </svg>
+          </button>
         </article>
       </div>
     </section>
@@ -250,6 +318,45 @@ const saved = () => {
       <strong>{{ $t('No planning or actions yet') }}</strong>
       <p>{{ $t('Use the buttons above to build the drill workflow.') }}</p>
     </div>
+  </Dialog>
+
+  <Dialog
+    v-model:visible="deleteDialogVisible"
+    modal
+    :closable="!deleting"
+    :dismissable-mask="!deleting"
+    :draggable="false"
+    class="drill-delete-dialog"
+  >
+    <template #container>
+      <div class="delete-dialog-content">
+        <span class="delete-visual">
+          <img src="@/assets/images/delete-bin-full.png" :alt="$t('Delete')" />
+        </span>
+        <span class="delete-kicker">{{ $t('Confirmation required') }}</span>
+        <h4>
+          {{
+            pendingDelete?.type === 'plan'
+              ? $t('Are you sure you want to delete this plan?')
+              : $t('Are you sure you want to delete this action?')
+          }}
+        </h4>
+        <p>{{ $t('This operation cannot be undone.') }}</p>
+        <div class="delete-dialog-actions">
+          <button class="confirm-delete" type="button" :disabled="deleting" @click="confirmDelete">
+            {{ deleting ? $t('Deleting...') : $t('Delete') }}
+          </button>
+          <button
+            class="cancel-delete"
+            type="button"
+            :disabled="deleting"
+            @click="deleteDialogVisible = false"
+          >
+            {{ $t('Cancel') }}
+          </button>
+        </div>
+      </div>
+    </template>
   </Dialog>
 </template>
 
@@ -476,10 +583,36 @@ const saved = () => {
 }
 .saved-entry {
   display: grid;
-  grid-template-columns: 28px 1fr;
+  grid-template-columns: 28px minmax(0, 1fr) auto;
   gap: 9px;
   padding: 9px 0;
   border-top: 1px solid var(--main-border);
+}
+.saved-entry-delete {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  padding: 6px;
+  border: 1px solid color-mix(in srgb, var(--status-danger) 22%, transparent);
+  border-radius: 9px;
+  color: var(--status-danger);
+  background: color-mix(in srgb, var(--status-danger) 7%, var(--surface-1));
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+.saved-entry-delete:hover {
+  border-color: var(--status-danger);
+  background: color-mix(in srgb, var(--status-danger) 12%, var(--surface-1));
+}
+.saved-entry-delete svg {
+  width: 17px;
+  height: 17px;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 .saved-entry > span {
   display: grid;
@@ -540,6 +673,72 @@ const saved = () => {
 .empty-workflow p {
   margin: 4px 0 0;
   color: var(--text-soft);
+}
+.delete-dialog-content {
+  display: flex;
+  align-items: center;
+  width: min(390px, calc(100vw - 32px));
+  flex-direction: column;
+  padding: 26px;
+  border-radius: 22px;
+  background: var(--surface-1);
+  text-align: center;
+}
+.delete-visual {
+  display: grid;
+  width: 84px;
+  height: 84px;
+  margin-bottom: 12px;
+  place-items: center;
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--status-danger) 7%, var(--surface-2));
+}
+.delete-visual img {
+  width: 62px;
+  height: 62px;
+  object-fit: contain;
+}
+.delete-kicker {
+  color: var(--status-danger);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.delete-dialog-content h4 {
+  margin: 7px 0 5px;
+  color: var(--text-strong);
+}
+.delete-dialog-content p {
+  margin: 0 0 18px;
+  color: var(--text-soft);
+  font-size: 0.75rem;
+}
+.delete-dialog-actions {
+  display: grid;
+  width: 100%;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+.delete-dialog-actions button {
+  min-height: 42px;
+  border-radius: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.delete-dialog-actions button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+.confirm-delete {
+  border: 1px solid var(--status-danger);
+  color: white;
+  background: var(--status-danger);
+}
+.cancel-delete {
+  border: 1px solid var(--main-border);
+  color: var(--text-strong);
+  background: var(--surface-2);
 }
 @media (max-width: 760px) {
   .drill-detail-summary,
