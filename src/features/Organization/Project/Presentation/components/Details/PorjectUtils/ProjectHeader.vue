@@ -125,16 +125,17 @@ const props = defineProps<{
           Show permits
         </router-link>
       </PermissionBuilder>
-      <!-- <router-link
+
+      <router-link
         :to="{
-          path: '/organization/herikaly/matrix',
-          query: { project_id: projectId },
+          path: `/organization/project-my-permits/${projectId}`,
         }"
         class="project-audits-link"
       >
-        Poistions Matrix
+        My Permits
       </router-link>
 
+      <!--
       <router-link
         :to="{
           path: '/organization/employee-certificate',

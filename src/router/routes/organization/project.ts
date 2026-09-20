@@ -153,7 +153,16 @@ export const projectRoutes: RouteRecordRaw[] = [
     name: 'Project Template Result',
     component: () => import('@/views/Organization/Project/PermitToWork/ProjectPermitsPage.vue'),
     meta: {
-      breadcrumb: 'Project Audit Result',
+      breadcrumb: 'Project Audits',
+      isSidebar: false,
+    },
+  },
+    {
+    path: 'project-my-permits/:project_id',
+    name: 'Project My Permits',
+    component: () => import('@/views/Organization/Project/PermitToWork/ProjectMyPermitsPage.vue'),
+    meta: {
+      breadcrumb: 'Project My Permits',
       isSidebar: false,
     },
   },

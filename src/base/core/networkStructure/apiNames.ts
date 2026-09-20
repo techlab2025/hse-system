@@ -1928,6 +1928,9 @@ class ApiNames {
   public get FetchPermits() {
     return this.baseUrl + this.organizationPrefix + 'fetch_permit_to_works'
   }
+   public get FetchMyPermits() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_my_permit_to_works'
+  }
 }
 
 export { ApiNames }

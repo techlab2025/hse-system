@@ -1,26 +1,26 @@
 <script lang="ts" setup>
-import FetchPermitsParams from '@/features/Organization/Project/Core/params/PermitToWork/fetchPermitsParams'
-import FetchProjectPermitsController from '../../../controllers/PermitToWork/FetchProjectPermitsController'
 import { computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { PermitToWorkStatusEnum } from '@/features/Organization/Project/Core/Enums/PermitToWorkStatusEnum'
 import { ref } from 'vue'
+import FetchMyProjectPermitsController from '../../../controllers/PermitToWork/FetchMyProjectPermitsController'
+import FetchMyPermitsParams from '@/features/Organization/Project/Core/params/PermitToWork/fetchMyPermitToWorkParams'
 
 const route = useRoute()
 const router = useRouter()
 
-const fetchProjectPermitsController = FetchProjectPermitsController.getInstance()
+const fetchMyProjectPermitsController = FetchMyProjectPermitsController.getInstance()
 
-const state = computed(() => fetchProjectPermitsController.state.value)
+const state = computed(() => fetchMyProjectPermitsController.state.value)
 
 const permits = computed(() => state.value?.data ?? [])
 
-const FetchProjectPermits = async (status?: number) => {
-  const fetchProjectPermitsParams = new FetchPermitsParams({
+const FetchMyProjectPermits = async (status?: number) => {
+  const fetchMyPermitsParams = new FetchMyPermitsParams({
     projectId: Number(route.params.project_id),
     hasResult: status == 1 ? true : false,
   })
-  await fetchProjectPermitsController.FetchProjectPermits(fetchProjectPermitsParams, router)
+  await fetchMyProjectPermitsController.FetchMyProjectPermits(fetchMyPermitsParams, router)
 }
 
 const formatTime = (time?: string | null) => {
@@ -56,54 +56,34 @@ const GetStatus = (status: PermitToWorkStatusEnum) => {
   }
 }
 
-onMounted(FetchProjectPermits)
-const SelectedStatus = ref<number>(2)
-const SetStatus = (status: number) => {
-  SelectedStatus.value = status
-  if (status == 1) {
-    FetchProjectPermits(1)
-  } else {
-    FetchProjectPermits(2)
-  }
-}
+onMounted(FetchMyProjectPermits)
+// const SelectedStatus = ref<number>(2)
+// const SetStatus = (status: number) => {
+//   SelectedStatus.value = status
+//   if (status == 1) {
+//     FetchMyProjectPermits(1)
+//   } else {
+//     FetchProjectPermits(2)
+//   }
+// }
 </script>
 
 <template>
   <div class="permits-page">
-    <!-- Header -->
     <div class="permits-page-header">
       <div>
-        <!-- <span class="permits-page-kicker">
-          {{ $t('Permit To Work') }}
-        </span> -->
-
         <h2>
           {{ $t('Project Permits') }}
         </h2>
-
-        <!-- <p>
-          {{ $t('View all permits created for this project') }}
-        </p> -->
       </div>
-
       <div class="permits-count">
         <span>
           {{ permits.length }}
         </span>
-
         {{ $t('Permits') }}
       </div>
     </div>
 
-    <div class="filter-btns">
-      <button :class="SelectedStatus == 1 ? `active` : ``" @click="SetStatus(1)">
-        Submited Permits
-      </button>
-      <button :class="SelectedStatus == 2 ? `active` : ``" @click="SetStatus(2)">
-        Not Submited Permits
-      </button>
-    </div>
-    <!-- Permits -->
     <div v-if="permits.length" class="permits-grid">
       <article v-for="permit in permits" :key="permit.id" class="permit-card">
         <!-- Top -->
@@ -223,28 +203,6 @@ const SetStatus = (status: number) => {
 
             <strong> #{{ permit.serialName }} </strong>
           </div>
-          <router-link
-            v-if="!permit.hasResult"
-            :to="{
-              path: `/organization/project-permit/project/templates`,
-              query: {
-                permit_id: permit.id,
-                project_id: route.params.project_id,
-              },
-            }"
-            >Create Audit</router-link
-          >
-          <router-link
-            v-if="permit.hasResult"
-            :to="{
-              path: `/organization/project-permit/project/templates-result`,
-              query: {
-                permit_id: permit.id,
-                project_id: route.params.project_id,
-              },
-            }"
-            >Show Audit</router-link
-          >
         </div>
       </article>
     </div>
