@@ -51,6 +51,16 @@ export const projectRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: 'project-meetings/:project_id',
+    name: 'Project Meetings',
+    component: () => import('@/views/Organization/Project/ProjectMeeting/ProjectMeetingsPage.vue'),
+    meta: {
+      breadcrumb: 'Project Meetings',
+      parent: 'Project Details',
+      isSidebar: false,
+    },
+  },
+  {
     path: 'project-details/:id/management-of-change',
     name: 'management-of-change',
     component: () => import('@/views/Organization/MangementChangeTopicType/MangementOfChange.vue'),
@@ -157,7 +167,7 @@ export const projectRoutes: RouteRecordRaw[] = [
       isSidebar: false,
     },
   },
-    {
+  {
     path: 'project-my-permits/:project_id',
     name: 'Project My Permits',
     component: () => import('@/views/Organization/Project/PermitToWork/ProjectMyPermitsPage.vue'),

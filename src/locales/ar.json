@@ -2486,5 +2486,15 @@
   "add_system_ppe_items": "إضافة عناصر معدات وقاية شخصية من النظام",
   "select_system_ppe_items": "اختر عناصر معدات الوقاية الشخصية المطلوبة وأضفها إلى مؤسستك.",
   "action_feature_ppe_items": "إجراءات عناصر معدات الوقاية الشخصية",
-  "Name Is Required": "الاسم مطلوب"
+  "Name Is Required": "الاسم مطلوب",
+  "View all meetings": "عرض جميع الاجتماعات",
+  "Today and upcoming meetings": "اجتماعات اليوم والاجتماعات القادمة",
+  "No upcoming meetings": "لا توجد اجتماعات قادمة",
+  "Past meetings remain available on the full meetings page.": "تظل الاجتماعات السابقة متاحة في صفحة الاجتماعات الكاملة.",
+  "Meeting workspace": "مساحة عمل الاجتماعات",
+  "All project meetings": "جميع اجتماعات المشروع",
+  "Review past meetings and manage upcoming schedules.": "راجع الاجتماعات السابقة وأدر الجداول القادمة.",
+  "Meeting history": "سجل الاجتماعات",
+  "All scheduled meetings for this project.": "جميع الاجتماعات المجدولة لهذا المشروع.",
+  "Back to project": "العودة إلى المشروع"
 }

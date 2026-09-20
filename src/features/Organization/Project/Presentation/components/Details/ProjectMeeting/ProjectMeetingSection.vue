@@ -1,15 +1,32 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type ProjectMeetingModel from '@/features/Organization/Project/Data/models/ProjectMeeting/ProjectMeetingModel.ts'
 import AddProjectMeetingDialog from './AddProjectMeetingDialog.vue'
 import MeetingResultDialog from './MeetingResultDialog.vue'
 
-const { projectId, meetings } = defineProps<{
+const props = defineProps<{
   projectId: number
   meetings: ProjectMeetingModel[]
 }>()
 
 const emit = defineEmits(['updated'])
-// const emit = defineEmits<{ (event: 'updated'): void }>()
+
+const getMeetingTimestamp = (date: string) => {
+  const timestamp = new Date(`${date}T00:00:00`).getTime()
+  return timestamp
+}
+
+const upcomingMeetings = computed(() => {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  return [...(props.meetings ?? [])]
+    .filter((meeting) => {
+      const timestamp = getMeetingTimestamp(meeting.date)
+      return Number.isFinite(timestamp) && timestamp >= today.getTime()
+    })
+    .sort((first, second) => getMeetingTimestamp(first.date) - getMeetingTimestamp(second.date))
+})
 </script>
 
 <template>
@@ -30,12 +47,32 @@ const emit = defineEmits(['updated'])
           </p>
         </div>
       </div>
-      <AddProjectMeetingDialog :project-id="projectId" :compact="true" @saved="emit('updated')" />
+      <div class="meeting-header-actions">
+        <router-link
+          class="all-meetings-link"
+          :to="{ name: 'Project Meetings', params: { project_id: props.projectId } }"
+        >
+          <span>{{ $t('View all meetings') }}</span>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 12h14M14 7l5 5-5 5" stroke="currentColor" />
+          </svg>
+        </router-link>
+        <AddProjectMeetingDialog
+          :project-id="props.projectId"
+          :compact="true"
+          @saved="emit('updated')"
+        />
+      </div>
     </header>
 
-    <div v-if="meetings.length" class="drill-team-groups">
+    <div v-if="upcomingMeetings.length" class="drill-team-groups">
+      <div class="upcoming-label">
+        <span></span>
+        {{ $t('Today and upcoming meetings') }}
+        <strong>{{ upcomingMeetings.length }}</strong>
+      </div>
       <!-- <article v-for="group in meetings" :key="group.title" class="drill-team-group"> -->
-        <!-- <div class="drill-team-header">
+      <!-- <div class="drill-team-header">
           <div>
             <span>{{ $t('Responsible team') }}</span>
           </div>
@@ -44,26 +81,27 @@ const emit = defineEmits(['updated'])
             }}<small>{{ group.drills.length === 1 ? $t('drill') : $t('drills') }}</small></strong
           >
         </div> -->
-        <div class="drill-cards">
-          <MeetingResultDialog
-            v-for="meeting in meetings"
-            :key="meeting.id"
-            :meeting="meeting"
-            :project-id="projectId"
-          />
-          <!-- :plans="plansByDrillId[drill.id]"
+      <div class="drill-cards">
+        <MeetingResultDialog
+          v-for="meeting in upcomingMeetings"
+          :key="meeting.id"
+          :meeting="meeting"
+          :project-id="props.projectId"
+          @saved="emit('updated')"
+        />
+        <!-- :plans="plansByDrillId[drill.id]"
             :plans-loading="loadingPlansByDrillId[drill.id] ?? false"
             @opened="fetchDrillPlans(drill.id)"
             @saved="handleDrillSaved(drill.id)" -->
-        </div>
+      </div>
       <!-- </article> -->
     </div>
     <div class="drill-empty-state" v-else>
       <span>M</span>
       <div>
-        <h3>{{ $t('No Meetings have been added') }}</h3>
+        <h3>{{ $t('No upcoming meetings') }}</h3>
         <p>
-          {{ $t('Create the first Meeting to start planning and tracking your teams.') }}
+          {{ $t('Past meetings remain available on the full meetings page.') }}
         </p>
       </div>
     </div>
@@ -104,6 +142,42 @@ const emit = defineEmits(['updated'])
   align-items: center;
   justify-content: space-between;
   gap: 16px;
+}
+.meeting-header-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 9px;
+}
+.all-meetings-link {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 14px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 25%, var(--main-border));
+  border-radius: 14px;
+  color: var(--PrimaryColor);
+  background: var(--surface-1);
+  font-size: 0.7rem;
+  font-weight: 900;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+.all-meetings-link:hover {
+  transform: translateY(-2px);
+  border-color: var(--PrimaryColor);
+}
+.all-meetings-link svg {
+  width: 17px;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+[dir='rtl'] .all-meetings-link svg {
+  transform: rotate(180deg);
 }
 .drill-section-title {
   display: flex;
@@ -159,6 +233,31 @@ const emit = defineEmits(['updated'])
   display: grid;
   gap: 13px;
   margin-top: 17px;
+}
+.upcoming-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-soft);
+  font-size: 0.64rem;
+  font-weight: 800;
+}
+.upcoming-label > span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--status-success);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--status-success) 12%, transparent);
+}
+.upcoming-label strong {
+  display: grid;
+  min-width: 22px;
+  height: 22px;
+  place-items: center;
+  padding: 0 5px;
+  border-radius: 7px;
+  color: var(--PrimaryColor);
+  background: color-mix(in srgb, var(--PrimaryColor) 8%, transparent);
 }
 .drill-team-group {
   padding: 14px;
@@ -234,6 +333,12 @@ const emit = defineEmits(['updated'])
   .drill-section-header {
     align-items: flex-start;
     flex-direction: column;
+  }
+  .meeting-header-actions {
+    width: 100%;
+  }
+  .all-meetings-link {
+    flex: 1;
   }
   .drill-cards {
     grid-template-columns: 1fr;

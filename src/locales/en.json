@@ -2514,5 +2514,15 @@
   "action_feature_ptw_types": "action feature ptw types",
   "ptw_type_title": "ptw type title",
   "permit_to_work_type": "permit to work type",
-  "Select_permit_to_work_type": "Select permit to work type"
+  "Select_permit_to_work_type": "Select permit to work type",
+  "View all meetings": "View all meetings",
+  "Today and upcoming meetings": "Today and upcoming meetings",
+  "No upcoming meetings": "No upcoming meetings",
+  "Past meetings remain available on the full meetings page.": "Past meetings remain available on the full meetings page.",
+  "Meeting workspace": "Meeting workspace",
+  "All project meetings": "All project meetings",
+  "Review past meetings and manage upcoming schedules.": "Review past meetings and manage upcoming schedules.",
+  "Meeting history": "Meeting history",
+  "All scheduled meetings for this project.": "All scheduled meetings for this project.",
+  "Back to project": "Back to project"
 }
