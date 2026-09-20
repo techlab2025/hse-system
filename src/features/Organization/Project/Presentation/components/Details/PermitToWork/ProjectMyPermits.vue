@@ -2,7 +2,6 @@
 import { computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { PermitToWorkStatusEnum } from '@/features/Organization/Project/Core/Enums/PermitToWorkStatusEnum'
-import { ref } from 'vue'
 import FetchMyProjectPermitsController from '../../../controllers/PermitToWork/FetchMyProjectPermitsController'
 import FetchMyPermitsParams from '@/features/Organization/Project/Core/params/PermitToWork/fetchMyPermitToWorkParams'
 
@@ -57,15 +56,6 @@ const GetStatus = (status: PermitToWorkStatusEnum) => {
 }
 
 onMounted(FetchMyProjectPermits)
-// const SelectedStatus = ref<number>(2)
-// const SetStatus = (status: number) => {
-//   SelectedStatus.value = status
-//   if (status == 1) {
-//     FetchMyProjectPermits(1)
-//   } else {
-//     FetchProjectPermits(2)
-//   }
-// }
 </script>
 
 <template>
@@ -223,23 +213,6 @@ onMounted(FetchMyProjectPermits)
 </template>
 
 <style scoped lang="scss">
-.filter-btns {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  gap: 6px;
-  padding: 12px;
-  button {
-    width: 50%;
-    border: 1px solid lightgray;
-    padding: 5px;
-    border-radius: 5px;
-    transition: 0.3s all linear;
-    &.active {
-      background-color: color-mix(in srgb, #1d4ed8 6%, #ffffff);
-    }
-  }
-}
 .permits-page {
   width: 100%;
 }
@@ -249,15 +222,34 @@ onMounted(FetchMyProjectPermits)
    ========================================================================== */
 
 .permits-page-header {
+  position: relative;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: 20px;
-
+  overflow: hidden;
   margin-bottom: 20px;
-  padding-bottom: 16px;
+  padding: 18px 20px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 17%, var(--main-border));
+  border-radius: 16px;
+  background:
+    radial-gradient(
+      circle at top right,
+      color-mix(in srgb, var(--PrimaryColor) 12%, transparent),
+      transparent 42%
+    ),
+    linear-gradient(135deg, var(--surface-1), var(--surface-2));
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
+}
 
-  border-bottom: 1px solid var(--main-border);
+.permits-page-header::before {
+  position: absolute;
+  inset-block: 12px;
+  inset-inline-start: 0;
+  width: 4px;
+  border-radius: 999px;
+  content: '';
+  background: linear-gradient(180deg, var(--PrimaryColor), var(--brand-primary-700));
 }
 
 .permits-page-kicker {
@@ -274,10 +266,11 @@ onMounted(FetchMyProjectPermits)
 
 .permits-page-header h2 {
   margin: 0;
-
   color: var(--text-strong);
-
-  font-size: 1.15rem;
+  font-size: 1.2rem;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 .permits-page-header p {
@@ -293,18 +286,14 @@ onMounted(FetchMyProjectPermits)
   align-items: center;
   gap: 7px;
 
-  padding: 7px 11px;
-
+  padding: 6px 10px 6px 6px;
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 25%, var(--main-border));
-
-  border-radius: 10px;
-
+  border-radius: 999px;
   color: var(--text-soft);
-
-  background: color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-2));
-
+  background: color-mix(in srgb, var(--PrimaryColor) 6%, var(--surface-1));
   font-size: 0.68rem;
-  font-weight: 700;
+  font-weight: 800;
+  white-space: nowrap;
 }
 
 .permits-count span {
@@ -315,14 +304,12 @@ onMounted(FetchMyProjectPermits)
 
   padding: 0 6px;
 
-  border-radius: 7px;
-
+  border-radius: 50%;
   color: #fff;
-
-  background: var(--PrimaryColor);
-
+  background: linear-gradient(145deg, var(--PrimaryColor), var(--brand-primary-700));
   font-size: 0.7rem;
   font-weight: 900;
+  box-shadow: 0 3px 8px color-mix(in srgb, var(--PrimaryColor) 26%, transparent);
 }
 
 /* ==========================================================================
@@ -756,8 +743,12 @@ onMounted(FetchMyProjectPermits)
 
 @media (max-width: 600px) {
   .permits-page-header {
-    align-items: flex-start;
-    flex-direction: column;
+    gap: 12px;
+    padding: 15px 16px;
+  }
+
+  .permits-page-header h2 {
+    font-size: 1rem;
   }
 
   .permit-information-grid {
