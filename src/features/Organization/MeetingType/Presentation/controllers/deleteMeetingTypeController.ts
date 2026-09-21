@@ -5,6 +5,7 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import errorImage from '@/assets/images/error.png'
 import type MeetingTypeModel from '../../Data/models/MeetingTypeModel'
 import DeleteMeetingTypeUseCase from '../../Domain/useCase/deleteMeetingTypeUseCase'
+import successImage from '@/assets/images/Success.png'
 
 export default class DeleteMeetingTypeController extends ControllerInterface<MeetingTypeModel> {
   private static instance: DeleteMeetingTypeController
@@ -31,14 +32,22 @@ export default class DeleteMeetingTypeController extends ControllerInterface<Mee
       this.setState(dataState)
       if (this.isDataSuccess()) {
         // useLoaderStore().endLoadingWithDialog();
-      } else {
+          // this.
+        //  DistatealogSelector.instance.successDialog.openDialog({
+        //   dialogName: 'dialog-success',
+        //   titleContent: 'deleted was successful',
+        //   imageElement: successImage,
+        //   messageContent: null,
+        // })
+      }
+       else {
         throw new Error('Error while addServices')
       }
     } catch (error: any) {
-      console.log(error)
+      console.log( this.state.value.error?.title, "this.state")
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog-error',
-        titleContent: this.state.value.message,
+        titleContent: this.state.value.error?.title ?? 'An Error Occurred',
         imageElement: errorImage,
         messageContent: null,
       })

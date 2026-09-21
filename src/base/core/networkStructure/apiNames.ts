@@ -1895,7 +1895,7 @@ class ApiNames {
     return this.prefix + 'delete_meeting_type'
   }
   public get EditMeetingType() {
-    return this.prefix + 'edit_meeting_type'
+    return this.prefix + 'update_meeting_type'
   }
   public get IndexMeetingType() {
     return this.prefix + 'fetch_meeting_types'
