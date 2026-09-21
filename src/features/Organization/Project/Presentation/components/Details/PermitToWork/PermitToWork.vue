@@ -156,7 +156,7 @@ const SubmitFrom = async () => {
           </div>
 
           <div class="ptw-grid ptw-grid--two">
-            <div class="ptw-field " data-required-field="Name">
+            <div class="ptw-field" data-required-field="Name">
               <label for="name">
                 {{ $t('Permit number') }}
                 <span>*</span>
@@ -429,7 +429,7 @@ const SubmitFrom = async () => {
 
 .ptw-form {
   display: grid;
-  grid-template-columns: 220px minmax(1, 1fr);
+  grid-template-columns: 1fr;
   gap: 16px;
   padding: 18px;
 }
