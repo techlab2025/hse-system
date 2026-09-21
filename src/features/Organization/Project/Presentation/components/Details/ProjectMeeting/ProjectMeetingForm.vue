@@ -4,7 +4,6 @@ import DatePicker from 'primevue/datepicker'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
-import AddDrillController from '@/features/Organization/Project/Presentation/controllers/Drill/AddDrillController'
 import IndexMeetingTypeController from '@/features/Organization/MeetingType/Presentation/controllers/indexMeetingTypeController'
 import IndexMeetingTypeParams from '@/features/Organization/MeetingType/Core/params/indexMeetingTypeParams'
 import CreateProjectMeetingParams from '@/features/Organization/Project/Core/params/ProjectMeeting/CreateProjectMeetingParams'
@@ -28,7 +27,8 @@ const MeetingType = ref<TitleInterface | null>(null)
 const WeeklyDays = ref<TitleInterface[] | null>(null)
 const MonthlyDays = ref<TitleInterface[] | null>(null)
 const selectedHieararchy = ref<TitleInterface[] | null>(null)
-const selectedEmployee = ref<TitleInterface | null>(null)
+const selectedEmployees = ref<TitleInterface[]>([])
+const selectedTeamLeaderId = ref<number | null>(null)
 
 const title = ref('')
 const NumebrOdDays = ref<number>()
@@ -39,7 +39,7 @@ const Customdates = ref<Date[] | null>(null)
 
 const error = ref('') 
 
-const submitting = computed(() => AddDrillController.getInstance().isDataLoading())
+const submitting = computed(() => CreateProjectMeetingController.getInstance().isDataLoading())
 
 // const submit = async () => {
 //   error.value = ''
@@ -80,6 +80,18 @@ const submit = async () => {
 
   if (!MeetingType.value?.id) {
     error.value = 'Meeting type is Required.'
+    return
+  }
+  // if (!selectedHieararchy.value?.length) {
+  //   error.value = 'Select at least one position.'
+  //   return
+  // }
+  if (!selectedEmployees.value.length) {
+    error.value = 'Select at least one employee.'
+    return
+  }
+  if (!selectedTeamLeaderId.value || !selectedEmployees.value.some((employee) => employee.id === selectedTeamLeaderId.value)) {
+    error.value = 'Select a team leader from the chosen employees.'
     return
   }
 
@@ -142,10 +154,9 @@ const submit = async () => {
         )
       : [],
 
-    TeamLeadrId: selectedEmployee.value?.id!,
+    TeamLeadrId: selectedTeamLeaderId.value,
+    employees: selectedEmployees.value.map((employee) => ({ employee_id: employee.id })),
   })
-
-  console.log(params.toMap(), 'REQUEST DATA')
 
   const controller = CreateProjectMeetingController.getInstance()
 
@@ -161,10 +172,18 @@ const submit = async () => {
 const indexMeetingTypeController = IndexMeetingTypeController.getInstance()
 const indexMetingTypeParams = new IndexMeetingTypeParams('', 1, 10, 0)
 
-const UpdateMeetingType = (data: TitleInterface) => {
+const UpdateMeetingType = (value: TitleInterface | TitleInterface[] | null) => {
+  const data = Array.isArray(value) ? value[0] : value
+  if (!data) {
+    MeetingType.value = null
+    NumebrOdDays.value = undefined
+    PeriodicType.value = undefined
+    return
+  }
   MeetingType.value = data
-  NumebrOdDays.value = JSON.parse(data?.subtitle!).numberOfDays
-  PeriodicType.value = JSON.parse(data.subtitle).periodicType
+  const periodicSettings = data.subtitle ? JSON.parse(String(data.subtitle)) : {}
+  NumebrOdDays.value = periodicSettings.numberOfDays
+  PeriodicType.value = periodicSettings.periodicType
 }
 
 const DayesSelectionOptions = ref<TitleInterface[]>([
@@ -182,24 +201,24 @@ const WithDateDayesSelectionOptions = ref<TitleInterface[]>(
     { length: 31 },
     (_, i) =>
       new TitleInterface({
-        id: `${i + 1}`,
+        id: i + 1,
         title: String(i + 1),
       }),
   ),
 )
 
-const UpdateWeeklyDays = (data: TitleInterface[]) => {
-  WeeklyDays.value = data
+const UpdateWeeklyDays = (data: TitleInterface | TitleInterface[] | null) => {
+  WeeklyDays.value = Array.isArray(data) ? data : data ? [data] : []
 }
-const UpdateMonthlyDays = (data: TitleInterface[]) => {
-  MonthlyDays.value = data
+const UpdateMonthlyDays = (data: TitleInterface | TitleInterface[] | null) => {
+  MonthlyDays.value = Array.isArray(data) ? data : data ? [data] : []
 }
 
-const indexHierarchyParams = new IndexHerikalyParams('', 1, 10, 0, undefined, props.projectId)
+const indexHierarchyParams = new IndexHerikalyParams('', 1, 10, 0, false, props.projectId)
 const indexHerikalyController = IndexHerikalyController.getInstance()
 
-const UpdatePositions = (positions: TitleInterface[]) => {
-  selectedHieararchy.value = positions
+const UpdatePositions = (positions: TitleInterface | TitleInterface[] | null) => {
+  selectedHieararchy.value = Array.isArray(positions) ? positions : positions ? [positions] : []
 }
 
 const indexOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams(
@@ -216,9 +235,21 @@ const indexOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams(
   props.projectId,
 )
 const indexOrganizationEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
-const UpdateEmployee = (employee: TitleInterface) => {
-  selectedEmployee.value = employee
+const UpdateEmployee = (employees: TitleInterface | TitleInterface[] | null) => {
+  selectedEmployees.value = Array.isArray(employees) ? employees : employees ? [employees] : []
+  if (!selectedEmployees.value.some((employee) => employee.id === selectedTeamLeaderId.value)) {
+    selectedTeamLeaderId.value = null
+  }
 }
+
+const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
+  const employee = Array.isArray(value) ? value[0] : value
+  selectedTeamLeaderId.value = selectedEmployees.value.some((item) => item.id === employee?.id)
+    ? employee!.id
+    : null
+}
+
+
 </script>
 
 <template>
@@ -315,29 +346,40 @@ const UpdateEmployee = (employee: TitleInterface) => {
         />
       </div>
 
-      <!-- hierarchys  -->
-      <UpdatedCustomInputSelect
+      <!-- Positions -->
+      <!-- <UpdatedCustomInputSelect
         id="hieararchy_id"
         v-model="selectedHieararchy"
-        :label="$t('posiotions')"
+        :label="$t('positions')"
         :placeholder="$t('Select position')"
         :controller="indexHerikalyController"
         :params="indexHierarchyParams"
         required
         :type="2"
         @update:model-value="UpdatePositions"
-      />
+      /> -->
 
       <!-- Employees  -->
       <UpdatedCustomInputSelect
         id="employees_id"
-        v-model="selectedEmployee"
-        :label="$t('Team Leader')"
-        :placeholder="$t('Select Team Leader')"
+        v-model="selectedEmployees"
+        :label="$t('Employees')"
+        :placeholder="$t('Select employees')"
         :controller="indexOrganizationEmployeeController"
         :params="indexOrganizationEmployeeParams"
         required
+        :type="2"
         @update:model-value="UpdateEmployee"
+      />
+      <UpdatedCustomInputSelect
+        id="meeting-team-leader"
+        :model-value="selectedEmployees.find((employee) => employee.id === selectedTeamLeaderId) ?? null"
+        :static-options="selectedEmployees"
+        :label="$t('Team Leader')"
+        :placeholder="$t('Select Team Leader')"
+        :reload="false"
+        required
+        @update:model-value="UpdateTeamLeader"
       />
     </div>
 
