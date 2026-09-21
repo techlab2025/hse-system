@@ -20,7 +20,7 @@ export default class AddDrillPlanningParams implements Params {
       drill_id: this.drillId,
       project_id: this.projectId,
       planning: this.planning.map((item) => ({
-        date: formatJoinDate(item.date),
+        ...(item.date && { date: formatJoinDate(item.date) }),
         time: formatTime(item.time),
         notes: item.notes,
       })),

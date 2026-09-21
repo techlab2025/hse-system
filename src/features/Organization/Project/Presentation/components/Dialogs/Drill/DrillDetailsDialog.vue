@@ -252,7 +252,8 @@ const confirmDelete = async () => {
         >
           <span>{{ index + 1 }}</span>
           <div>
-            <small>{{ item.date }} · {{ item.time }}</small>
+            <!-- {{ item.date }} · -->
+            <small> {{ item.time }}</small>
             <p>{{ item.description }}</p>
           </div>
           <button

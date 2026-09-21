@@ -90,7 +90,7 @@ const submit = async () => {
         props.drillId,
         props.projectId,
         items.value.map((item) => ({
-          date: item.date!,
+          date: null,
           time: item.time!,
           notes: item.notes.trim(),
         })),

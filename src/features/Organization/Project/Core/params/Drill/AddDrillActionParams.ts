@@ -28,7 +28,7 @@ export default class AddDrillActionParams implements Params {
       drill_id: this.drillId,
       project_id: this.projectId,
       actions: this.actions.map((item) => ({
-        date: formatJoinDate(item.date),
+        date: item.date ? formatJoinDate(item.date) : null,
         time: formatTime(item.time),
         description: item.description,
         notes: item.notes,
