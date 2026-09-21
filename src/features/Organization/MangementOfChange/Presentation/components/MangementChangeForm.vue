@@ -26,6 +26,7 @@ import { ChangeApprovalMangementEnum } from '../../Core/Core/ChangeApprovalEnum'
 import AddMangementChangeParams from '../../Core/params/addMangementChangeParams'
 import EditMangementChangeParams from '../../Core/params/editMangementChangeParams'
 import type MangementChangeModel from '../../Data/models/MangementChangeModel'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddMangementChangeParams | EditMangementChangeParams): void
@@ -70,6 +71,7 @@ const indexOrganizatoinEmployeeController =
   IndexOrganizatoinEmployeeController.getInstance()
 const indexOrganizatoinEmployeeParams =
   new IndexOrganizatoinEmployeeParams('', 0, 0, 0)
+  
 const indexOrganizatoinEmployeeidParams =
   new IndexOrganizatoinEmployeeParams(
     '',
@@ -511,7 +513,7 @@ onMounted(updateData)
         v-if="selectedTopicType === 1"
         class="management-change-field input-wrapper"
       >
-        <CustomSelectInput
+        <UpdatedCustomInputSelect
           :model-value="Selectedemployeeid"
           :controller="indexOrganizatoinEmployeeController"
           :params="indexOrganizatoinEmployeeidParams"
@@ -527,7 +529,7 @@ onMounted(updateData)
         v-if="selectedTopicType === 2"
         class="management-change-field input-wrapper"
       >
-        <CustomSelectInput
+        <UpdatedCustomInputSelect
           :model-value="Selectedequipment"
           :controller="indexEquipmentController"
           :params="indexEquipmentParams"
