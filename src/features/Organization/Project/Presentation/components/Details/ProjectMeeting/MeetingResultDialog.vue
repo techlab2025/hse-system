@@ -548,7 +548,7 @@ const getEmployeeName = (employee: any) => {
           </small>
 
           <h2>
-            {{ meeting.title || `Meeting #${meeting.id}` }}
+            {{ meeting.title || `Meeting #${meeting.serialName}` }}
           </h2>
 
           <p>
