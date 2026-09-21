@@ -100,7 +100,7 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
   {
     text: t('edit'),
     icon: ActionsTableEdit,
-    link: `/organization/management-of-change/${id}`,
+    link: `/organization/management-of-change/${id}?project_id=${projectId}`,
     permission: featurePermissions,
   },
   {
