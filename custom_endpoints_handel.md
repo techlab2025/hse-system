@@ -45,7 +45,8 @@ Presentation/components/<FeatureName>.vue
 If there are 2 endpoints:
 
 ```text
-2 Params
+2 primary Params
++ nested relation ID Params when needed
 2 ApiServices
 2 Repositories
 2 UseCases
@@ -56,7 +57,8 @@ If there are 2 endpoints:
 If there are 3 endpoints:
 
 ```text
-3 Params
+3 primary Params
++ nested relation ID Params when needed
 3 ApiServices
 3 Repositories
 3 UseCases
@@ -66,7 +68,9 @@ If there are 3 endpoints:
 
 The important rule is:
 
-> **Number of endpoint pipeline files = number of endpoints.**
+> **Number of primary endpoint pipeline files = number of endpoints.**
+>
+> A relation-list request may create extra nested ID Params helper files. Those helpers do not create extra API services/repos/use cases/controllers.
 >
 > **Number of main Vue components = one, unless the user explicitly asks for more.**
 
@@ -344,7 +348,8 @@ For one endpoint:
 src/features/Organization/<FeatureName>/
 ├── Core/
 │   ├── params/
-│   │   └── <EndpointAction>Params.ts
+│   │   ├── <EndpointAction>Params.ts
+│   │   └── <EndpointAction><Relation>IdParams.ts   # only for multiple relation fields
 │   └── enums/
 │       └── <OnlyIfRequired>.ts
 │
@@ -374,7 +379,8 @@ src/features/Organization/<FeatureName>/
 ├── Core/
 │   ├── params/
 │   │   ├── <Endpoint1>Params.ts
-│   │   └── <Endpoint2>Params.ts
+│   │   ├── <Endpoint2>Params.ts
+│   │   └── <NestedRelationIdParams.ts files only when required>
 │   └── enums/
 │
 ├── Data/
@@ -403,7 +409,8 @@ src/features/Organization/<FeatureName>/
 For three endpoints:
 
 ```text
-3 params
+3 primary params
++ nested relation ID params when required
 3 api services
 3 repos
 3 use cases
@@ -417,7 +424,19 @@ Do not generate empty files for operations that do not exist.
 
 # 8. Core / Params Rules
 
-Every endpoint gets exactly one Params class.
+Every endpoint gets exactly one **primary** Params class.
+
+A primary Params class may additionally depend on one or more nested relation-ID Params helper classes when the request contains multiple entity/relation selections.
+
+Example:
+
+```text
+CreateMeetingParams.ts
+CreateMeetingEmployeeIdParams.ts
+CreateMeetingHierarchyIdParams.ts
+```
+
+Only `CreateMeetingParams.ts` has its own ApiService/Repo/UseCase/Controller pipeline. The nested ID Params files are serialization helpers only.
 
 Example:
 
@@ -1766,7 +1785,8 @@ Correct:
 ```text
 1 endpoint
 =
-1 params
+1 primary params
++ nested relation ID params if needed
 1 api service
 1 repo
 1 use case
@@ -1778,7 +1798,8 @@ Correct:
 For two endpoints:
 
 ```text
-2 params
+2 primary params
++ nested relation ID params if needed
 2 api services
 2 repos
 2 use cases
@@ -1790,7 +1811,8 @@ For two endpoints:
 For three endpoints:
 
 ```text
-3 params
+3 primary params
++ nested relation ID params if needed
 3 api services
 3 repos
 3 use cases
@@ -1803,7 +1825,7 @@ For three endpoints:
 
 # 36. File Count Examples
 
-## One endpoint, no enum, default model
+## One endpoint, no enum, default model, no multiple relations
 
 ```text
 Core/params                       1
@@ -1817,7 +1839,7 @@ Presentation/components           1
 Total                             7 files
 ```
 
-## Two endpoints, one shared model, one enum
+## Two endpoints, one shared model, one enum, no multiple relations
 
 ```text
 Core/params                       2
@@ -1832,7 +1854,7 @@ Presentation/components           1
 Total                            13 files
 ```
 
-## Three endpoints, one shared model, two enums
+## Three endpoints, one shared model, two enums, no multiple relations
 
 ```text
 Core/params                       3
@@ -1848,6 +1870,8 @@ Total                            19 files
 ```
 
 Additional models/views/routes are added only when actually required.
+
+Multiple entity/relation fields may increase only the `Core/params` count because each such field gets its own nested ID Params helper. They do **not** add another ApiService, Repository, UseCase, Controller, or Component.
 
 ---
 
@@ -2299,7 +2323,8 @@ In Codex mode:
 
 Before finishing a one-endpoint feature:
 
-- [ ] 1 Params file.
+- [ ] 1 primary Params file.
+- [ ] Nested relation ID Params helper file(s) when the endpoint contains multiple entity relations.
 - [ ] 1 API Service.
 - [ ] 1 Repository.
 - [ ] 1 UseCase.
@@ -2321,7 +2346,8 @@ Before finishing a one-endpoint feature:
 
 Before finishing a two-endpoint feature:
 
-- [ ] 2 Params.
+- [ ] 2 primary Params.
+- [ ] Nested relation ID Params helper file(s) when required.
 - [ ] 2 API Services.
 - [ ] 2 Repositories.
 - [ ] 2 UseCases.
@@ -2332,7 +2358,8 @@ Before finishing a two-endpoint feature:
 
 Before finishing a three-endpoint feature:
 
-- [ ] 3 Params.
+- [ ] 3 primary Params.
+- [ ] Nested relation ID Params helper file(s) when required.
 - [ ] 3 API Services.
 - [ ] 3 Repositories.
 - [ ] 3 UseCases.
@@ -3027,23 +3054,351 @@ In that case use the route/context id directly.
 
 ---
 
-## 6. `_ids` / multiple relation fields
+## 6. Multiple relation IDs must use nested Params objects
 
-Do not automatically apply the singular `_id` rule to an `_ids` array without checking the user's contract.
+A multiple relation must **not** be sent as a flat array of numbers.
 
-If the user says a relation is multiple and provides a controller + Params, use `UpdatedCustomInputSelect` in multiselect mode according to the existing component API, then map selected objects to ids.
+This project convention is mandatory for relation/entity IDs.
 
-Conceptual example:
+### Wrong
+
+Do not generate:
 
 ```ts
-selectedEmployees.value.map((item) => item.id)
+employee_ids: [1, 2, 3]
 ```
 
-Only do this when the field is explicitly a multiple relation such as:
+Do not generate:
+
+```ts
+organization_ids: [1, 2]
+```
+
+Do not generate:
+
+```ts
+hierarchy_ids: [4, 5]
+```
+
+Do not generate:
+
+```ts
+data['employee_ids'] = this.employeeIds
+```
+
+### Required backend shape
+
+A collection of relation IDs must be sent as an array of objects.
+
+Example for employees:
+
+```ts
+employees: [
+  {
+    employee_id: 1,
+  },
+  {
+    employee_id: 2,
+  },
+  {
+    employee_id: 3,
+  },
+]
+```
+
+Example for hierarchies:
+
+```ts
+hierarchies: [
+  {
+    hierarchy_id: 4,
+  },
+  {
+    hierarchy_id: 5,
+  },
+]
+```
+
+Example for organizations:
+
+```ts
+organizations: [
+  {
+    organization_id: 1,
+  },
+  {
+    organization_id: 2,
+  },
+]
+```
+
+### Create one dedicated nested Params class
+
+For every multiple relation field, create an additional Params file whose only responsibility is serializing one relation id.
+
+Example:
+
+```ts
+import type Params from '@/base/core/params/params'
+
+export default class CreateProjectMeetingHierarchyIdParams implements Params {
+  hirarchy_id: number
+
+  constructor(data: { hirarchy_id: number }) {
+    this.hirarchy_id = data.hirarchy_id
+  }
+
+  toMap(): Record<
+    string,
+    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
+  > {
+    const data: Record<
+      string,
+      | number
+      | string
+      | number[]
+      | Record<string, string | number[] | number | Record<string, string>>
+    > = {}
+
+    data['hierarchy_id'] = this.hirarchy_id
+
+    return data
+  }
+}
+```
+
+Keep the user's/project's exact spelling for constructor properties and backend keys. Do not silently rename a backend key.
+
+### Parent Params class
+
+The main endpoint/CRUD Params must store an array of the nested Params class:
+
+```ts
+public hierarchies: CreateProjectMeetingHierarchyIdParams[]
+```
+
+and serialize it with:
+
+```ts
+data['hierarchies'] = this.hierarchies.map((el) => el.toMap())
+```
+
+Example constructor:
+
+```ts
+constructor(
+  public hierarchies: CreateProjectMeetingHierarchyIdParams[],
+) {}
+```
+
+Example complete mapping concept:
+
+```ts
+toMap(): Record<string, unknown> {
+  const data: Record<string, unknown> = {}
+
+  data['hierarchies'] = this.hierarchies.map((el) => el.toMap())
+
+  return data
+}
+```
+
+### Component mapping
+
+Use `UpdatedCustomInputSelect` in multiselect mode for a user-selectable relation list.
+
+The component state contains selected objects, not raw ids:
+
+```ts
+const selectedHieararchy = ref<TitleInterface[]>([])
+```
+
+When constructing the main Params:
+
+```ts
+hierarchies: Array.isArray(selectedHieararchy.value)
+  ? selectedHieararchy.value.map(
+      (el) =>
+        new CreateProjectMeetingHierarchyIdParams({
+          hirarchy_id: el.id!,
+        }),
+    )
+  : [],
+```
+
+For employees, use the same structure:
+
+```ts
+employees: Array.isArray(selectedEmployees.value)
+  ? selectedEmployees.value.map(
+      (el) =>
+        new CreateMeetingEmployeeIdParams({
+          employee_id: el.id!,
+        }),
+    )
+  : [],
+```
+
+Then the main Params sends:
+
+```ts
+data['employees'] = this.employees.map((el) => el.toMap())
+```
+
+which produces:
+
+```ts
+employees: [
+  { employee_id: 1 },
+  { employee_id: 2 },
+]
+```
+
+### Nested Params naming
+
+Create a descriptive nested Params class based on:
+
+```text
+<Action><Feature><Relation>IdParams
+```
+
+Examples:
+
+```text
+CreateProjectMeetingHierarchyIdParams
+CreateMeetingEmployeeIdParams
+UpdateMeetingEmployeeIdParams
+CreateInspectionOrganizationIdParams
+```
+
+If the same nested relation Params is safely reusable by create/update in the existing project style, reuse it. Otherwise keep action-specific naming.
+
+### Outer collection key
+
+The outer request key is normally the plural relation name:
+
+```text
+employee_id     -> employees
+organization_id -> organizations
+hierarchy_id    -> hierarchies
+equipment_id    -> equipments
+```
+
+But the backend contract supplied by the user is always the source of truth.
+
+If the user explicitly gives:
+
+```text
+employees
+hierarchies
+participants
+assigned_employees
+```
+
+use that exact outer key.
+
+If only a singular relation key is supplied and the correct outer collection key cannot be derived unambiguously, ask for the outer key rather than inventing one.
+
+### Multiselect UI
+
+Use:
+
+```vue
+<UpdatedCustomInputSelect
+  :model-value="selectedEmployees"
+  :controller="indexOrganizatoinEmployeeController"
+  :params="indexOrganizatoinEmployeeParams"
+  type="multiselect"
+  label="employees"
+  id="employees"
+  :placeholder="$t('Select employees')"
+  @update:model-value="setEmployees"
+/>
+```
+
+The project's component also supports numeric multi-select type values. Prefer the convention used by the nearest existing feature.
+
+Setter example:
+
+```ts
+const setEmployees = (value: TitleInterface | TitleInterface[] | null) => {
+  selectedEmployees.value = Array.isArray(value) ? value : []
+  updateData()
+}
+```
+
+### Validation
+
+If the relation list is required:
+
+- require at least one selected item;
+- show the normal project warning/error;
+- do not call the API with an empty array.
+
+If it is optional:
+
+- an empty selection maps to:
+
+```ts
+employees: []
+```
+
+unless the backend contract requires omitting the key.
+
+### Important scope rule
+
+This nested Params rule applies to **relation/entity ID arrays**.
+
+Examples:
+
+```text
+employees
+organizations
+hierarchies
+equipments
+projects
+locations
+teams
+users
+```
+
+It does **not** apply to upload/image/file data.
+
+Do not wrap these in nested id Params:
+
+```text
+images: string[]
+attachments: string[]
+files: string[]
+documents: string[]
+photos: string[]
+```
+
+Those continue to follow the Base64 upload rules.
+
+It also does not apply to ordinary primitive arrays that are not entity IDs unless the backend explicitly requires object wrapping.
+
+### Critical project rule
+
+```text
+single relation:
+employee_id: number
+
+multiple relation:
+employees: [
+  { employee_id: number },
+  { employee_id: number },
+]
+```
+
+Never default to:
 
 ```text
 employee_ids: number[]
 ```
+
+for a relation collection in generated code.
+
 
 ---
 
@@ -3065,6 +3420,8 @@ Use this table before creating form controls:
 | `title: string` | normal string input, no translations |
 | `description: string` | normal string/textarea, no translations |
 | selectable `employee_id` | `UpdatedCustomInputSelect` + supplied/found controller/Params |
+| multiple employee relation | `UpdatedCustomInputSelect` multiselect -> nested `EmployeeIdParams[]` -> `employees: [{ employee_id }]` |
+| multiple hierarchy relation | multiselect -> nested `HierarchyIdParams[]` -> `hierarchies: [{ hierarchy_id }]` |
 | route/context `project_id` | use route/context id directly; no select |
 
 ---
