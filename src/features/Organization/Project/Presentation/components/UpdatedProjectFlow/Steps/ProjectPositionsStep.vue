@@ -24,7 +24,7 @@ const projectCustomLocationController = ProjectCustomLocationController.getInsta
 const isLoadingLocations = ref(false)
 const locationsError = ref('')
 const hierarchyParams = computed(
-  () => new IndexHerikalyParams('', 1, 30, 0, false, props.projectId ?? null),
+  () => new IndexHerikalyParams('', 1, 30, 0, false, undefined),
 )
 
 const employeeParams = (hierarchyId: number | null = null) =>
