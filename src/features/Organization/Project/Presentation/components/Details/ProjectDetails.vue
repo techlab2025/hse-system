@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
 import ShowProjectDetailsParams from '../../../Core/params/ShowProjectDetailsParams'
 import ShowProjectDetailsController from '../../controllers/ShowProjectDetailsController'
 import EquipmentSection from './Equipment/EquipmentSection.vue'
@@ -186,6 +186,21 @@ watch(
           :meetings="todayAndUpcomingMeetings"
           @updated="GetProjectDetails"
         />
+
+        <section class="risk-entry">
+          <div class="risk-entry-icon" aria-hidden="true">◇</div>
+          <div class="risk-entry-copy">
+            <span class="risk-entry-eyebrow">PROJECT SAFETY</span>
+            <h2>Risk assessments</h2>
+            <p>Review work activities, areas and approvals for this project.</p>
+          </div>
+          <RouterLink
+            class="risk-entry-link"
+            :to="`/organization/project-details/${state.data?.id ?? route.params.id}/risk-assessments`"
+          >
+            Open assessments <span aria-hidden="true">→</span>
+          </RouterLink>
+        </section>
       </div>
     </template>
     <template #loader>
@@ -214,6 +229,24 @@ watch(
 </template>
 
 <style scoped lang="scss">
+.risk-entry {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 22px;
+  padding: 24px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
+  border-radius: 24px;
+  background: radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--PrimaryColor) 13%, transparent), transparent 38%), var(--surface-2);
+  box-shadow: 0 16px 40px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
+}
+.risk-entry-icon { display: grid; place-items: center; width: 58px; height: 58px; flex: none; border-radius: 18px; background: color-mix(in srgb, var(--PrimaryColor) 14%, transparent); color: var(--PrimaryColor); font-size: 2rem; }
+.risk-entry-copy { flex: 1; }
+.risk-entry-eyebrow { color: var(--PrimaryColor); font-size: .7rem; font-weight: 800; letter-spacing: .14em; }
+.risk-entry-copy h2 { margin: 5px 0; font-size: 1.35rem; }
+.risk-entry-copy p { margin: 0; color: var(--text-secondary); }
+.risk-entry-link { display: inline-flex; gap: 8px; align-items: center; padding: 12px 18px; border-radius: 12px; background: var(--PrimaryColor); color: #fff; font-weight: 750; text-decoration: none; white-space: nowrap; }
+@media (max-width: 700px) { .risk-entry { flex-wrap: wrap; } .risk-entry-link { width: 100%; justify-content: center; } }
 .main-objective {
   margin-block: 12px;
 }

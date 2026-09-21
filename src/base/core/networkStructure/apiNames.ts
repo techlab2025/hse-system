@@ -1983,6 +1983,10 @@ class ApiNames {
   public get update_ppe_tool() { return this.prefix + 'update_ppe_tool' }
   public get delete_ppe_tool() { return this.prefix + 'delete_ppe_tool' }
   public get clone_ppe_tool() { return this.prefix + 'clone_ppe_tool' }
+  // Risk Assessment
+  public get CreateRiskAssessment() { return this.baseUrl + this.organizationPrefix +  'create_risk_assessment' }
+  public get FetchRiskAssessments() { return this.baseUrl + this.organizationPrefix + 'fetch_risk_assessments' }
+  public get FetchRiskAssessmentDetails() { return this.baseUrl + this.organizationPrefix + 'fetch_risk_assessment_details' }
 }
 
 export { ApiNames }
