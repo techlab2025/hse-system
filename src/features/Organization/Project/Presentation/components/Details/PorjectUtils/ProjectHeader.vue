@@ -299,7 +299,7 @@ const props = defineProps<{
   font-size: clamp(1.15rem, 2vw, 1.55rem);
   line-height: 1.2;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: pre-wrap;
   max-width: 650px;
 }
 .project-serial {
