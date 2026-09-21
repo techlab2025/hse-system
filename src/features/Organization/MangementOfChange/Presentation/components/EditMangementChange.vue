@@ -58,7 +58,7 @@ const setParams = (data: Params) => {
   <DataStatus :controller="state">
     <template #success>
       <form
-        class="grid grid-cols-1 md:grid-cols-4 gap-4"
+        class="management-change-form"
         @submit.prevent="editMangementChange"
       >
         <MangementChangeForm
@@ -66,7 +66,7 @@ const setParams = (data: Params) => {
           :data="state.data!"
           @update:data="setParams"
         />
-        <div class="col-span-4 button-wrapper">
+        <div class="management-change-actions">
           <button type="submit" class="btn btn-primary">
             {{ $t('save') }}
           </button>

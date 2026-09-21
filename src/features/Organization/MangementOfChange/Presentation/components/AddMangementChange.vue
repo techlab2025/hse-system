@@ -43,7 +43,7 @@ const setParams = (data: Params) => {
 
 <template>
   <form
-    class="grid grid-cols-1 md:grid-cols-4 gap-4"
+    class="management-change-form"
     @submit.prevent="addMangementChange"
   >
     <MangementChangeForm
@@ -52,7 +52,7 @@ const setParams = (data: Params) => {
       @update:data="setParams"
     />
 
-    <div class="col-span-4 button-wrapper create-form-actions">
+    <div class="management-change-actions create-form-actions">
       <button
         type="button"
         class="btn btn-secondary"

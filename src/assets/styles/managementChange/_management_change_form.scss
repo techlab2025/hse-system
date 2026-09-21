@@ -1,0 +1,390 @@
+@use '../variables' as *;
+
+.management-change-form {
+  --management-change-border: color-mix(
+    in srgb,
+    var(--identity-primary) 16%,
+    var(--main-border)
+  );
+  --management-change-border-strong: color-mix(
+    in srgb,
+    var(--identity-primary) 34%,
+    var(--main-border)
+  );
+  --management-change-soft: color-mix(
+    in srgb,
+    var(--identity-primary) 5%,
+    var(--surface-1)
+  );
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  // max-width: 1120px;
+  margin-inline: auto;
+  padding: clamp(14px, 2.2vw, 28px);
+  border: 1px solid var(--management-change-border);
+  border-radius: 24px;
+  background: var(--surface-2);
+  box-shadow: 0 18px 48px color-mix(in srgb, var(--shadow-color) 55%, transparent);
+}
+
+.management-change-form__hero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: clamp(20px, 3vw, 30px);
+  border-radius: 18px;
+  background: #183a98;
+  color: var(--text-on-brand);
+}
+
+.management-change-form__hero-copy {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  min-width: 0;
+}
+
+.management-change-form__hero-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border: 1px solid color-mix(in srgb, var(--text-on-brand) 26%, transparent);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--text-on-brand) 12%, transparent);
+  font-size: 25px;
+}
+
+.management-change-form__eyebrow {
+  margin: 0 0 6px;
+  color: color-mix(in srgb, var(--text-on-brand) 72%, transparent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.management-change-form__hero h1 {
+  margin: 0;
+  color: var(--text-on-brand);
+  font-size: clamp(1.35rem, 2.4vw, 2rem);
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.management-change-form__subtitle {
+  max-width: 680px;
+  margin: 8px 0 0;
+  color: color-mix(in srgb, var(--text-on-brand) 72%, transparent);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.management-change-form__required-note {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border: 1px solid color-mix(in srgb, var(--text-on-brand) 20%, transparent);
+  border-radius: 10px;
+  color: color-mix(in srgb, var(--text-on-brand) 82%, transparent);
+  font-size: 0.76rem;
+  white-space: nowrap;
+}
+
+.management-change-form__required-dot,
+.management-change-required-mark {
+  color: var(--status-danger);
+  font-weight: 800;
+}
+
+.management-change-section {
+  min-width: 0;
+  padding: clamp(18px, 2.2vw, 26px);
+  border: 1px solid var(--management-change-border);
+  border-radius: 16px;
+  background: var(--surface-1);
+}
+
+.management-change-section__heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-block-end: 22px;
+}
+
+.management-change-section__number {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--brand-primary-50);
+  color: var(--brand-primary-600);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.management-change-section__heading h2 {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.management-change-section__heading p {
+  margin: 4px 0 0;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.management-change-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px 18px;
+}
+
+.management-change-field,
+.management-change-upload-field {
+  min-width: 0;
+}
+
+.management-change-field--full {
+  grid-column: 1 / -1;
+}
+
+.management-change-form .management-change-field {
+  gap: 8px;
+}
+
+.management-change-form .management-change-field > label,
+.management-change-form .management-change-upload-field > .file-upload-wrapper > .upload-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 20px;
+  color: var(--text-strong);
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.management-change-form .management-change-field input:not([type='checkbox']),
+.management-change-form .management-change-field .p-datepicker,
+.management-change-form .management-change-field .p-select,
+.management-change-form .management-change-field .p-multiselect,
+.management-change-form .management-change-field .input-select {
+  width: 100%;
+  min-width: 0;
+}
+
+.management-change-form .management-change-field input:not([type='checkbox']),
+.management-change-form .management-change-field .p-inputtext,
+.management-change-form .management-change-field .p-datepicker-input,
+.management-change-form .management-change-field .p-select,
+.management-change-form .management-change-field .p-multiselect {
+  min-height: 48px;
+  border: 1px solid var(--management-change-border) !important;
+  border-radius: 12px !important;
+  background: var(--management-change-soft) !important;
+  color: var(--text-strong) !important;
+  box-shadow: none !important;
+}
+
+.management-change-form .management-change-field input:not([type='checkbox']):focus,
+.management-change-form .management-change-field .p-inputtext:focus,
+.management-change-form .management-change-field .p-datepicker-input:focus,
+.management-change-form .management-change-field .p-select:focus-within,
+.management-change-form .management-change-field .p-multiselect:focus-within {
+  border-color: var(--management-change-border-strong) !important;
+  background: var(--surface-1) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--identity-primary) 12%, transparent) !important;
+}
+
+.management-change-form .management-change-field .p-datepicker {
+  display: flex;
+}
+
+.management-change-form .management-change-field .p-datepicker-input {
+  flex: 1 1 auto;
+}
+
+.management-change-form .management-change-field .p-datepicker-dropdown {
+  border-color: transparent !important;
+  background: transparent !important;
+  color: var(--brand-primary-500) !important;
+}
+
+
+.management-change-form .management-change-field .input-label {
+  min-height: 20px;
+}
+
+.management-change-form .management-change-field .input-label > .reload-icon {
+  width: auto;
+}
+
+.management-change-form .management-change-field .input-label .label-container {
+  justify-content: flex-start;
+}
+
+.management-change-form .management-change-field .input-label .input-label {
+  color: var(--text-strong) !important;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.management-change-form .management-change-field .input-label .optional-text,
+.management-change-optional-mark {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.management-change-field__hint {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.management-change-form .management-change-upload-field .file-upload-wrapper {
+  gap: 8px;
+}
+
+.management-change-form .management-change-upload-field .upload-label {
+  color: var(--text-strong);
+}
+
+.management-change-form .management-change-file-input {
+  min-height: 118px;
+  border: 1px dashed var(--management-change-border-strong) !important;
+  border-radius: 14px !important;
+  background: var(--management-change-soft);
+  color: var(--brand-primary-600);
+}
+
+.management-change-form .management-change-file-input:hover {
+  border-color: var(--brand-primary-500) !important;
+  background: var(--brand-primary-50);
+}
+
+.management-change-form .management-change-file-input .upload-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--brand-primary-50);
+  color: var(--brand-primary-500);
+  font-size: 20px;
+}
+
+.management-change-form .management-change-file-input .upload-text {
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
+.management-change-form .management-change-upload-field .multi-image-uploader {
+  align-items: stretch;
+  gap: 10px;
+}
+
+.management-change-form .management-change-upload-field .multi-image-uploader .input-image {
+  min-height: 118px;
+  border: 1px dashed var(--management-change-border-strong);
+  border-radius: 14px;
+  background: var(--management-change-soft);
+}
+
+.management-change-form .management-change-upload-field .multi-image-uploader .input-label-images {
+  max-width: 100%;
+}
+
+.management-change-form .management-change-upload-field .multi-image-uploader .input-label-images > img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.management-change-form .management-change-upload-field .multi-image-uploader .input-label-images span {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.management-change-form .management-change-upload-field .multi-image-uploader .image-gallery {
+  padding: 10px;
+  border: 1px solid var(--management-change-border);
+  border-radius: 12px;
+}
+
+.management-change-actions {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.8fr) minmax(220px, 1.2fr);
+  gap: 12px;
+  padding-block-start: 2px;
+}
+
+.management-change-actions .btn {
+  width: 100%;
+  min-height: 48px;
+  border-radius: 12px;
+}
+
+@media (max-width: 720px) {
+  .management-change-form {
+    padding: 12px;
+    border-radius: 18px;
+  }
+
+  .management-change-form__hero {
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  .management-change-form__required-note {
+    align-self: flex-start;
+  }
+
+  .management-change-fields,
+  .management-change-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .management-change-field--full {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 420px) {
+  .management-change-form__hero-copy {
+    gap: 10px;
+  }
+
+  .management-change-form__hero-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 21px;
+  }
+
+  .management-change-form__hero h1 {
+    font-size: 1.25rem;
+  }
+
+  .management-change-section {
+    padding: 16px 14px;
+  }
+}

@@ -5,6 +5,7 @@ import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import DatePicker from 'primevue/datepicker'
+import { Icon } from '@iconify/vue'
 import { useRoute } from 'vue-router'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
@@ -353,183 +354,252 @@ onMounted(updateData)
 </script>
 
 <template>
-
-
-  <div
-    class="input-wrapper col-span-4 md:col-span-2"
-    data-required-field="facilty"
-  >
-    <label for="facilty">Facility</label>
-    <input
-      id="facilty"
-      placeholder="Enter The Facilty"
-      v-model="facilty"
-      class="input"
-      required
-    />
-    <p v-if="requiredFieldErrors.facilty" class="required-field-message">
-      {{ requiredFieldErrors.facilty }}
-    </p>
+  <div class="management-change-form__hero">
+    <div class="management-change-form__hero-copy">
+      <span class="management-change-form__hero-icon" aria-hidden="true">
+        <Icon icon="uil:exchange" />
+      </span>
+      <div>
+        <p class="management-change-form__eyebrow">
+          {{ $t('Management of change') }}
+        </p>
+        <h1>{{ $t('create management of change') }}</h1>
+        <p class="management-change-form__subtitle">
+          {{ $t('Record the change, its scope, and the approvals needed before work starts.') }}
+        </p>
+      </div>
+    </div>
+    <div class="management-change-form__required-note">
+      <span class="management-change-form__required-dot">*</span>
+      {{ $t('required fields') }}
+    </div>
   </div>
 
-  <div
-    class="input-wrapper col-span-4 md:col-span-2"
-    data-required-field="area"
-  >
-    <label for="area">Area</label>
-    <input
-      id="area"
-      placeholder="Enter The Area"
-      v-model="area"
-      class="input"
-      required
-    />
-    <p v-if="requiredFieldErrors.area" class="required-field-message">
-      {{ requiredFieldErrors.area }}
-    </p>
-  </div>
+  <section class="management-change-section">
+    <div class="management-change-section__heading">
+      <span class="management-change-section__number">01</span>
+      <div>
+        <h2>{{ $t('change request details') }}</h2>
+        <p>{{ $t('Capture where and when the change will happen.') }}</p>
+      </div>
+    </div>
 
-  <div
-    class="input-wrapper col-span-4 md:col-span-2"
-    data-required-field="date"
-  >
-    <label for="date">Date</label>
-    <DatePicker
-      v-model="date"
-      placeholder="Add your date"
-    />
-    <p v-if="requiredFieldErrors.date" class="required-field-message">
-      {{ requiredFieldErrors.date }}
-    </p>
-  </div>
+    <div class="management-change-fields">
+      <div
+        class="management-change-field input-wrapper"
+        data-required-field="facilty"
+      >
+        <label for="facilty">
+          {{ $t('facility') }}
+          <span class="management-change-required-mark">*</span>
+        </label>
+        <input
+          id="facilty"
+          v-model="facilty"
+          :placeholder="$t('Enter the facility')"
+          class="input"
+          required
+        />
+        <p v-if="requiredFieldErrors.facilty" class="required-field-message">
+          {{ requiredFieldErrors.facilty }}
+        </p>
+      </div>
 
-  <div class="input-wrapper col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :model-value="selectedChangeTypeMangement"
-      :static-options="ChangeTypeMangementList"
-      label="Change type"
-      id="change-type"
-      placeholder="Select change type"
-      @update:model-value="changeType = $event.id"
-    />
-  </div>
+      <div
+        class="management-change-field input-wrapper"
+        data-required-field="area"
+      >
+        <label for="area">
+          {{ $t('area') }}
+          <span class="management-change-required-mark">*</span>
+        </label>
+        <input
+          id="area"
+          v-model="area"
+          :placeholder="$t('Enter the area')"
+          class="input"
+          required
+        />
+        <p v-if="requiredFieldErrors.area" class="required-field-message">
+          {{ requiredFieldErrors.area }}
+        </p>
+      </div>
 
-  <div class="input-wrapper col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :model-value="selectedChangeApprovalMangement"
-      :static-options="ChangeApprovalMangementList"
-      label="Change approval"
-      id="change-approval"
-      placeholder="Select approval"
-      @update:model-value="status = $event.id"
-    />
-  </div>
+      <div
+        class="management-change-field input-wrapper"
+        data-required-field="date"
+      >
+        <label for="date">
+          {{ $t('date') }}
+          <span class="management-change-required-mark">*</span>
+        </label>
+        <DatePicker
+          v-model="date"
+          input-id="date"
+          :placeholder="$t('Select the date')"
+          show-icon
+        />
+        <p v-if="requiredFieldErrors.date" class="required-field-message">
+          {{ requiredFieldErrors.date }}
+        </p>
+      </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="Selectedemployee"
-      class="input"
-      :controller="indexOrganizatoinEmployeeController"
-      :params="indexOrganizatoinEmployeeParams"
-      label="approval by (optional)"
-      id="approval-by"
-      placeholder="select your employee"
-      @update:modelValue="setApprovalBy"
-    />
-  </div>
+      <div class="management-change-field input-wrapper">
+        <CustomSelectInput
+          :model-value="selectedChangeTypeMangement"
+          :static-options="ChangeTypeMangementList"
+          label="change type"
+          id="change-type"
+          :placeholder="$t('Select change type')"
+          @update:model-value="changeType = $event.id"
+        />
+      </div>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput
-      :modelValue="Selectedmangement"
-      class="input"
-      :controller="indexMangementChangeTopicTypeController"
-      :params="indexMangementChangeTopicTypeParams"
-      label="management (optional)"
-      id="management"
-      placeholder="select your management"
-      @update:modelValue="setManagement"
-    />
-  </div>
+      <div class="management-change-field input-wrapper">
+        <CustomSelectInput
+          :model-value="selectedChangeApprovalMangement"
+          :static-options="ChangeApprovalMangementList"
+          label="change approval"
+          id="change-approval"
+          :placeholder="$t('Select approval status')"
+          @update:model-value="status = $event.id"
+        />
+      </div>
 
-  <div
-    v-if="selectedTopicType === 1"
-    class="col-span-4 md:col-span-2 input-wrapper"
-  >
-    <CustomSelectInput
-      :modelValue="Selectedemployeeid"
-      class="input"
-      :controller="indexOrganizatoinEmployeeController"
-      :params="indexOrganizatoinEmployeeidParams"
-      label="employee (optional)"
-      id="project-employee"
-      placeholder="select your employee"
-      @update:modelValue="setEmployee"
-    />
-  </div>
+      <div class="management-change-field input-wrapper">
+        <CustomSelectInput
+          :model-value="Selectedemployee"
+          :controller="indexOrganizatoinEmployeeController"
+          :params="indexOrganizatoinEmployeeParams"
+          label="approval by"
+          id="approval-by"
+          :placeholder="$t('Select an employee')"
+          optional
+          @update:model-value="setApprovalBy"
+        />
+      </div>
+    </div>
+  </section>
 
-  <div
-    v-if="selectedTopicType === 2"
-    class="col-span-4 md:col-span-2 input-wrapper"
-  >
-    <CustomSelectInput
-      :modelValue="Selectedequipment"
-      class="input"
-      :controller="indexEquipmentController"
-      :params="indexEquipmentParams"
-      label="select equipment (optional)"
-      id="equipment"
-      placeholder="select your equipment"
-      @update:modelValue="setequipment"
-    />
-  </div>
+  <section class="management-change-section">
+    <div class="management-change-section__heading">
+      <span class="management-change-section__number">02</span>
+      <div>
+        <h2>{{ $t('change scope') }}</h2>
+        <p>{{ $t('Define what is affected by this change.') }}</p>
+      </div>
+    </div>
 
-  <div
-    v-if="selectedTopicType === 3"
-    class="col-span-4 md:col-span-2 input-wrapper"
-  >
-    <label for="topic-text">Topic</label>
-    <input
-      id="topic-text"
-      v-model="topicText"
-      class="input"
-      type="text"
-      placeholder="Enter topic"
-    />
-  </div>
-    <div
-    :key="formKey"
-    class="col-span-4 md:col-span-2"
-  >
-    <HandleFIlesUpload
-      :label="$t('Risk assessment file')"
-      accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
-      :max-files="1"
-      :multiple="false"
-      className="input-file"
-      @change="handleFilesChange"
-    />
-  </div>
+    <div class="management-change-fields">
+      <div class="management-change-field input-wrapper management-change-field--full">
+        <CustomSelectInput
+          :model-value="Selectedmangement"
+          :controller="indexMangementChangeTopicTypeController"
+          :params="indexMangementChangeTopicTypeParams"
+          label="management"
+          id="management"
+          :placeholder="$t('Select a management area')"
+          optional
+          @update:model-value="setManagement"
+        />
+        <p class="management-change-field__hint">
+          {{ $t('Choose a management topic to show the related field.') }}
+        </p>
+      </div>
 
-  <div class="input-wrapper col-span-4 md:col-span-2">
-    <label>Images</label>
-    <MultiImagesInput
-      accept="image/*"
-      :initial-images="images.map((image) => image.file)"
-      @update:images="setImages"
-    />
-  </div>
+      <div
+        v-if="selectedTopicType === 1"
+        class="management-change-field input-wrapper"
+      >
+        <CustomSelectInput
+          :model-value="Selectedemployeeid"
+          :controller="indexOrganizatoinEmployeeController"
+          :params="indexOrganizatoinEmployeeidParams"
+          label="employee"
+          id="project-employee"
+          :placeholder="$t('Select an employee')"
+          optional
+          @update:model-value="setEmployee"
+        />
+      </div>
+
+      <div
+        v-if="selectedTopicType === 2"
+        class="management-change-field input-wrapper"
+      >
+        <CustomSelectInput
+          :model-value="Selectedequipment"
+          :controller="indexEquipmentController"
+          :params="indexEquipmentParams"
+          label="equipment"
+          id="equipment"
+          :placeholder="$t('Select equipment')"
+          optional
+          @update:model-value="setequipment"
+        />
+      </div>
+
+      <div
+        v-if="selectedTopicType === 3"
+        class="management-change-field input-wrapper"
+      >
+        <label for="topic-text">
+          {{ $t('topic') }}
+          <span class="management-change-optional-mark">({{ $t('optional') }})</span>
+        </label>
+        <input
+          id="topic-text"
+          v-model="topicText"
+          class="input"
+          type="text"
+          :placeholder="$t('Enter the topic')"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="management-change-section">
+    <div class="management-change-section__heading">
+      <span class="management-change-section__number">03</span>
+      <div>
+        <h2>{{ $t('supporting documents') }}</h2>
+        <p>{{ $t('Attach the risk assessment and any supporting images.') }}</p>
+      </div>
+    </div>
+
+    <div class="management-change-fields management-change-fields--attachments">
+      <div :key="formKey" class="management-change-upload-field">
+        <HandleFIlesUpload
+          :label="$t('risk assessment file')"
+          accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
+          :max-files="1"
+          :multiple="false"
+          class-name="input-file management-change-file-input"
+          @change="handleFilesChange"
+        />
+      </div>
+
+      <div class="management-change-upload-field input-wrapper">
+        <label>{{ $t('images') }}</label>
+        <MultiImagesInput
+          accept="image/*"
+          :initial-images="images.map((image) => image.file)"
+          @update:images="setImages"
+        />
+      </div>
+    </div>
+  </section>
 </template>
 
 <style scoped>
-:deep(.input-file) {
-  border: 1px solid var(--brand-primary-100) !important;
-  padding: 11px;
-  border-radius: 20px !important;
-  cursor: pointer;
-  color: var(--text-strong);
-  font-family: 'Light';
+/* :deep(.p-datepicker-dropdown) {
+   border-color: var(--management-change-border) !important;
 }
-
+.management-change-form .management-change-field .p-datepicker-dropdown {
+  border-color: var(--management-change-border) !important;
+  background: transparent !important;
+  color: var(--brand-primary-500) !important;
+} */
 .required-field-message {
   margin-top: 0.35rem;
   color: var(--status-danger);
