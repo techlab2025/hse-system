@@ -5,7 +5,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 class ApiNames {
   private static _instance: ApiNames
 
-  private constructor() {}
+  private constructor() { }
 
   public static get instance(): ApiNames {
     if (!this._instance) {
@@ -1955,6 +1955,34 @@ class ApiNames {
   public get FetchPermitsAudits() {
     return this.baseUrl + this.organizationPrefix + 'fetch_permit_to_work_results'
   }
+
+  // Drill Type
+  public get create_ppe_activity() {
+    return this.prefix + 'create_ppe_activity'
+  }
+  public get clone_ppe_activity() {
+    return this.prefix + 'clone_ppe_activity'
+  }
+  public get delete_ppe_activity() {
+    return this.prefix + 'delete_ppe_activity'
+  }
+  public get update_ppe_activity() {
+    return this.prefix + 'update_ppe_activity'
+  }
+  public get fetch_ppe_activities() {
+    return this.prefix + 'fetch_ppe_activities'
+  }
+  public get fetch_ppe_activity_details() {
+    return this.prefix + 'fetch_ppe_activity_details'
+  }
+
+  // PPE Tool
+  public get fetch_ppe_tools() { return this.prefix + 'fetch_ppe_tools' }
+  public get fetch_ppe_toll_deails() { return this.prefix + 'fetch_ppe_toll_deails' }
+  public get create_ppe_toll() { return this.prefix + 'create_ppe_toll' }
+  public get update_ppe_tool() { return this.prefix + 'update_ppe_tool' }
+  public get delete_ppe_tool() { return this.prefix + 'delete_ppe_tool' }
+  public get clone_ppe_tool() { return this.prefix + 'clone_ppe_tool' }
 }
 
 export { ApiNames }
