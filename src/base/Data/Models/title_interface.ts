@@ -5,6 +5,7 @@ export default class TitleInterface {
   kpi?: string;
   decodedData?: string = "";
    type?: number
+   name?: string
 
   constructor({
     id,
@@ -13,13 +14,15 @@ export default class TitleInterface {
     kpi,
     decodedData = "",
     type,
+    name,
   }: {
     id: number;
     title?: string;
     subtitle?: string | number;
     kpi?: string;
     decodedData?: string;
-    type?: number
+    type?: number;
+    name?: string
   }) {
     this.id = id;
     this.title = title;
@@ -27,5 +30,6 @@ export default class TitleInterface {
     this.kpi = kpi;
     this.decodedData = decodedData;
     this.type = type
+    this.name = name
   }
 }
