@@ -1282,6 +1282,12 @@ class ApiNames {
   public get CreateDrillAction() {
     return this.prefix + 'create_drill_action'
   }
+  public get DeleteDrillAction() {
+    return this.prefix + 'delete_drill_action'
+  }
+  public get DeleteDrillPlan() {
+    return this.prefix + 'delete_drill_plan'
+  }
 
   // observation
   public get CreateObservation() {
@@ -1494,6 +1500,18 @@ class ApiNames {
   }
   public get CreateMangementChange() {
     return this.prefix + 'create_management_of_change'
+  }
+  public get IndexMangementChange() {
+    return this.prefix + 'fetch_management_of_changes'
+  }
+  public get ShowMangementChange() {
+    return this.prefix + 'fetch_management_of_change_details'
+  }
+  public get EditMangementChange() {
+    return this.prefix + 'update_management_of_change'
+  }
+  public get DeleteMangementChange() {
+    return this.prefix + 'delete_management_of_change'
   }
   public get IndexMangementChangeTopicType() {
     return this.prefix + 'fetch_changement_topics'
@@ -1742,6 +1760,16 @@ class ApiNames {
   public get AddOrganizationEmployeeToHierarchy() {
     return this.prefix + 'sync_herikaly_employees'
   }
+  // employee tasks
+  public get FetchEmployeeTasks() {
+    return this.prefix + 'fetch_owned_actual_tasks'
+  }
+  public get changeTaskStatus() {
+    return this.prefix + 'change_meeting_task_status'
+  }
+  public get fetchTaskhistory() {
+    return this.prefix + 'fetch_task_history'
+  }
   public get FetchHierarchyCertificates() {
     return this.prefix + 'fetch_hierarchies_certificates'
   }
@@ -1867,7 +1895,7 @@ class ApiNames {
     return this.prefix + 'delete_meeting_type'
   }
   public get EditMeetingType() {
-    return this.prefix + 'edit_meeting_type'
+    return this.prefix + 'update_meeting_type'
   }
   public get IndexMeetingType() {
     return this.prefix + 'fetch_meeting_types'
@@ -1884,6 +1912,9 @@ class ApiNames {
   }
   public get CreateProjectMeetingResult() {
     return this.baseUrl + this.organizationPrefix + 'create_project_meeting_result'
+  }
+  public get FetchProjectMeetings() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_meetings'
   }
   // CloneMeetingType
 
@@ -1908,9 +1939,21 @@ class ApiNames {
   public get CreatePermitToWork() {
     return this.baseUrl + this.organizationPrefix + 'create_permit_to_work'
   }
-  public get CreatePermitToWorkResult(){
+  public get CreatePermitToWorkResult() {
     return this.baseUrl + this.organizationPrefix + 'create_permit_to_work_result'
+  }
 
+  public get FetchMeetingDetails() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_meeting_details'
+  }
+  public get FetchPermits() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_permit_to_works'
+  }
+  public get FetchMyPermits() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_my_permit_to_works'
+  }
+  public get FetchPermitsAudits() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_permit_to_work_results'
   }
 }
 

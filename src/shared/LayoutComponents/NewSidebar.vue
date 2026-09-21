@@ -81,11 +81,14 @@ const logout = () => {
     localStorage.removeItem('user')
     localStorage.removeItem('token')
     localStorage.removeItem('ProjectSelect')
+    localStorage.clear()
+
     window.location.href = '/login/admin'
   } else if (user.user?.type == OrganizationTypeEnum.ORGANIZATION) {
     localStorage.removeItem('user')
     localStorage.removeItem('token')
     localStorage.removeItem('ProjectSelect')
+    localStorage.clear()
     window.location.href = '/login/organization'
   }
 }
@@ -136,9 +139,22 @@ const logout = () => {
   padding-top: 20px;
   overscroll-behavior-x: none;
   background:
-    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%, transparent 34%),
-    linear-gradient(155deg, var(--brand-primary-600) 0%, var(--brand-primary-700) 44%, var(--brand-primary-800) 100%) !important;
+    radial-gradient(
+      circle at 18% 0%,
+      color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%,
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 82% 18%,
+      color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%,
+      transparent 34%
+    ),
+    linear-gradient(
+      155deg,
+      var(--brand-primary-600) 0%,
+      var(--brand-primary-700) 44%,
+      var(--brand-primary-800) 100%
+    ) !important;
   box-shadow:
     18px 0 38px color-mix(in srgb, var(--brand-primary-600) 22%, transparent),
     inset -1px 0 0 color-mix(in srgb, var(--shadow-color) 12%, transparent);
@@ -148,16 +164,38 @@ const logout = () => {
 }
 .sidebar.open {
   background:
-    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%, transparent 34%),
-    linear-gradient(155deg, var(--brand-primary-600) 0%, var(--brand-primary-700) 44%, var(--brand-primary-800) 100%) !important;
+    radial-gradient(
+      circle at 18% 0%,
+      color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%,
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 82% 18%,
+      color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%,
+      transparent 34%
+    ),
+    linear-gradient(
+      155deg,
+      var(--brand-primary-600) 0%,
+      var(--brand-primary-700) 44%,
+      var(--brand-primary-800) 100%
+    ) !important;
 }
 
 .sidebar.is-dark,
 .sidebar.is-dark.open {
   background:
-    radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--brand-primary-300) 16%, transparent), transparent 34%),
-    linear-gradient(155deg, var(--brand-primary-900) 0%, var(--brand-primary-900) 54%, var(--brand-primary-900) 100%) !important;
+    radial-gradient(
+      circle at 0% 0%,
+      color-mix(in srgb, var(--brand-primary-300) 16%, transparent),
+      transparent 34%
+    ),
+    linear-gradient(
+      155deg,
+      var(--brand-primary-900) 0%,
+      var(--brand-primary-900) 54%,
+      var(--brand-primary-900) 100%
+    ) !important;
   box-shadow:
     18px 0 38px color-mix(in srgb, var(--shadow-color) 32%, transparent),
     inset -1px 0 0 color-mix(in srgb, var(--brand-primary-400) 14%, transparent);
@@ -536,9 +574,22 @@ const logout = () => {
   overflow: visible;
   border-radius: 0;
   background:
-    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%, transparent 34%),
-    linear-gradient(155deg, var(--brand-primary-600) 0%, var(--brand-primary-700) 44%, var(--brand-primary-800) 100%) !important;
+    radial-gradient(
+      circle at 18% 0%,
+      color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%,
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 82% 18%,
+      color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%,
+      transparent 34%
+    ),
+    linear-gradient(
+      155deg,
+      var(--brand-primary-600) 0%,
+      var(--brand-primary-700) 44%,
+      var(--brand-primary-800) 100%
+    ) !important;
   box-shadow:
     14px 0 32px color-mix(in srgb, var(--brand-primary-600) 22%, transparent),
     inset -1px 0 0 color-mix(in srgb, var(--shadow-color) 12%, transparent);
@@ -551,9 +602,22 @@ const logout = () => {
 .sidebar.organization-modern.open {
   width: 90px;
   background:
-    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%, transparent 34%),
-    radial-gradient(circle at 82% 18%, color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%, transparent 34%),
-    linear-gradient(155deg, var(--brand-primary-600) 0%, var(--brand-primary-700) 44%, var(--brand-primary-800) 100%) !important;
+    radial-gradient(
+      circle at 18% 0%,
+      color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%,
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 82% 18%,
+      color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%,
+      transparent 34%
+    ),
+    linear-gradient(
+      155deg,
+      var(--brand-primary-600) 0%,
+      var(--brand-primary-700) 44%,
+      var(--brand-primary-800) 100%
+    ) !important;
 }
 
 .sidebar.organization-modern.close {

@@ -29,7 +29,7 @@ export default class EditEquipmentParams implements Params {
   equipmentRentStartDate: string
   VehicleKm: string
   SelectedWhereHosue: number
-  WorkedHours?: number
+  WorkedHours?: string
   ivhm?: boolean
   public static readonly validation = new ClassValidation().setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
@@ -61,7 +61,7 @@ export default class EditEquipmentParams implements Params {
     equipmentRentStartDate: string
     VehicleKm: string
     SelectedWhereHosue: number
-    WorkedHours?: number
+    WorkedHours?: string
     ivhm?: boolean
   }) {
 
@@ -93,7 +93,7 @@ export default class EditEquipmentParams implements Params {
     if (this.equipmentOfHavyStatus != null)  data['equipment_of_havy_status'] = this.equipmentOfHavyStatus
     if (this.image != null)      data['image'] = this.image
     if (this.certificateImage != null)      data['certificate_image'] = this.certificateImage
-    if (this.mainfacturyDate != null)   data['manufacturing_year'] = formatJoinDate(this.mainfacturyDate)
+    if (this.mainfacturyDate != null)   data['manufacturing_year'] = formatJoinDate(this.mainfacturyDate , false , true)
     if (this.allIndustries != null)      data['all_industries'] = this.allIndustries ? 1 : 0
     if (this.industries.length > 0)     data['industry_ids'] = this.industries
     if (this.parentId != null)     data['parent_id'] = this.parentId
@@ -104,8 +104,8 @@ export default class EditEquipmentParams implements Params {
     if (this.equipmentRentStartDate)      data['checkin_date'] = formatJoinDate(this.equipmentRentStartDate)
     if (this.VehicleKm)     data['kilometer'] = this.VehicleKm
     if (this.SelectedWhereHosue)    data['warehouse_id'] = this.SelectedWhereHosue
-    if (this.WorkedHours)     data['worked_hours'] = this.WorkedHours
-    if (this.ivhm !== undefined)  data['ivhm'] = this.ivhm
+    if (this.WorkedHours)     data['equipment_worked_heavy'] = this.WorkedHours
+    if (this.ivhm !== undefined)  data['ivms'] = this.ivhm
     return data
   }
 

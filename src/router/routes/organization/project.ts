@@ -51,9 +51,19 @@ export const projectRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: 'project-meetings/:project_id',
+    name: 'Project Meetings',
+    component: () => import('@/views/Organization/Project/ProjectMeeting/ProjectMeetingsPage.vue'),
+    meta: {
+      breadcrumb: 'Project Meetings',
+      parent: 'Project Details',
+      isSidebar: false,
+    },
+  },
+  {
     path: 'project-details/:id/management-of-change',
     name: 'management-of-change',
-    component: () => import('@/views/Organization/MangementChangeTopicType/MangementOfChange.vue'),
+    component: () => import('@/views/Organization/MangementOfChange/MangementOfChange.vue'),
     meta: {
       breadcrumb: 'management-of-change',
       parent: 'Project Details',
@@ -136,6 +146,33 @@ export const projectRoutes: RouteRecordRaw[] = [
       import('@/views/Organization/Project/PermitToWork/AnswerTheTemplateOfPermitPage.vue'),
     meta: {
       breadcrumb: 'Project Permit To Work Answer',
+      isSidebar: false,
+    },
+  },
+  {
+    path: 'project-permits/:project_id',
+    name: 'Project Permits',
+    component: () => import('@/views/Organization/Project/PermitToWork/ProjectPermitsPage.vue'),
+    meta: {
+      breadcrumb: 'Project Permits',
+      isSidebar: false,
+    },
+  },
+  {
+    path: 'project-permit/project/templates-result',
+    name: 'Project Template Result',
+    component: () => import('@/views/Organization/Project/PermitToWork/ProjectPermitsPage.vue'),
+    meta: {
+      breadcrumb: 'Project Audits',
+      isSidebar: false,
+    },
+  },
+  {
+    path: 'project-my-permits/:project_id',
+    name: 'Project My Permits',
+    component: () => import('@/views/Organization/Project/PermitToWork/ProjectMyPermitsPage.vue'),
+    meta: {
+      breadcrumb: 'Project My Permits',
       isSidebar: false,
     },
   },

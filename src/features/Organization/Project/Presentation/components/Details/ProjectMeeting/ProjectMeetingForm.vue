@@ -37,7 +37,7 @@ const PeriodicType = ref<number>()
 const dates = ref<Date[] | null>(null)
 const Customdates = ref<Date[] | null>(null)
 
-const error = ref('')
+const error = ref('') 
 
 const submitting = computed(() => AddDrillController.getInstance().isDataLoading())
 

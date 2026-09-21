@@ -404,7 +404,7 @@ onMounted(async () => {
                   <!-- :staticOptions="injuryOptions" -->
                 <UpdatedCustomInputSelect
                   :modelValue="item.infectionTypeId"
-                  :staticOptions="injuryOptions" 
+                  :staticOptions="injuryOptions"
                   class="input"
                   :label="$t('Type and Nature of Injury')"
                   help-text="Choose the classification that best describes the injury sustained."
@@ -479,7 +479,8 @@ onMounted(async () => {
                 <UpdatedCustomInputSelect
                   :id="`ppe-item-${index}`"
                   :modelValue="item.ppeItems"
-                  :staticOptions="ppeItemOptions"
+                  :controller="ppeItemContoller"
+                  :params="ppeItemParams"
                   :type="2"
                   :reload="false"
                   :label="$t('PPE Item')"

@@ -13,6 +13,7 @@ export interface DrillActionInput {
   projectLocationEmployee: number
   evaluation: string
   improvement: string
+   photographerPlace: string
 }
 
 export default class AddDrillActionParams implements Params {
@@ -27,7 +28,7 @@ export default class AddDrillActionParams implements Params {
       drill_id: this.drillId,
       project_id: this.projectId,
       actions: this.actions.map((item) => ({
-        date: formatJoinDate(item.date),
+        date: item.date ? formatJoinDate(item.date) : null,
         time: formatTime(item.time),
         description: item.description,
         notes: item.notes,
@@ -36,6 +37,7 @@ export default class AddDrillActionParams implements Params {
         plh_employee_id: item.projectLocationEmployee,
         evaluation: item.evaluation,
         improvement: item.improvement,
+        photographer_place: item.photographerPlace,
       })),
     }
   }

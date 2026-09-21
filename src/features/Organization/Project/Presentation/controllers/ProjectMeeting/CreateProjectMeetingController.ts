@@ -35,6 +35,8 @@ export default class CreateProjectMeetingController extends ControllerInterface<
           messageContent: null,
         })
       } else {
+      console.log(this.state.value.error , "this.state.value.error");
+
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',
           titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
@@ -43,6 +45,7 @@ export default class CreateProjectMeetingController extends ControllerInterface<
         })
       }
     } catch (error: unknown) {
+      console.log(this.state.value.error , "this.state.value.error");
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog-error',
         titleContent: this.state.value.error?.title ?? (error as string),

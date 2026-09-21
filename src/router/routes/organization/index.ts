@@ -34,6 +34,7 @@ import { notificationPlanRoutes } from './notificationPlan'
 import { taskReportRoutes } from './taskReports'
 import { todayTalkRoutes } from './todayTalk'
 import { managementChangeTopicRoutes } from './MangementChangeTopicType'
+import { managementChangeRoutes } from './MangementOfChange'
 
 export const organizationRoutes: RouteRecordRaw[] = [
   {
@@ -76,6 +77,7 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...taskReportRoutes,
   ...todayTalkRoutes,
   ...managementChangeTopicRoutes,
+  ...managementChangeRoutes,
   {
     path: 'permission/:id',
     name: 'Permission Organization',

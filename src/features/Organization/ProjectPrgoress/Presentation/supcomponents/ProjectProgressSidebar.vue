@@ -224,11 +224,11 @@ const AllPagesToView = ref([
     link: '/organization/root-causes',
   },
   {
-  id: ProjectProgressEnum.Factor,
-  title: 'Factor',
-  description: 'Define factors used across the organization',
-  link: '/organization/factory',
-},
+    id: ProjectProgressEnum.Factor,
+    title: 'Factor',
+    description: 'Define factors used across the organization',
+    link: '/organization/factory',
+  },
   {
     id: ProjectProgressEnum.DrillType,
     title: 'Drill Type',

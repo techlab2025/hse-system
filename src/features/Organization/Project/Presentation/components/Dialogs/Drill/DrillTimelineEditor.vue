@@ -43,6 +43,7 @@ interface TimelineDraft {
   projectLocationEmployee: TitleInterface
   evaluation: string
   improvement: string
+  photographerplace: string
 }
 
 const createItem = (): TimelineDraft => ({
@@ -55,6 +56,7 @@ const createItem = (): TimelineDraft => ({
   projectLocationEmployee: new TitleInterface({ id: 0, title: '' }),
   evaluation: '',
   improvement: '',
+  photographerplace: '',
 })
 
 const items = ref<TimelineDraft[]>([createItem()])
@@ -73,12 +75,11 @@ const submit = async () => {
   if (
     items.value.some(
       (item) =>
-        !item.date ||
-        !item.time ||
-        !(props.mode === 'planning' ? item.notes : item.description).trim(),
+        // !item.date ||
+        !item.time || !(props.mode === 'planning' ? item.notes : item.description).trim(),
     )
   ) {
-    error.value = `Date, time and ${props.mode === 'planning' ? 'notes' : 'description'} are required for every timeline item.`
+    error.value = ` time and ${props.mode === 'planning' ? 'notes' : 'description'} are required for every timeline item.`
     return
   }
 
@@ -89,7 +90,7 @@ const submit = async () => {
         props.drillId,
         props.projectId,
         items.value.map((item) => ({
-          date: item.date!,
+          date: null,
           time: item.time!,
           notes: item.notes.trim(),
         })),
@@ -115,6 +116,7 @@ const submit = async () => {
         evaluation: item.evaluation,
         improvement: item.improvement,
         projectLocationEmployee: item.projectLocationEmployee.id,
+        photographerPlace: item.photographerplace.trim(),
       })),
     ),
   )
@@ -157,6 +159,7 @@ onMounted(fetchProjectEmployees)
 </script>
 
 <template>
+
   <section class="drill-timeline-builder">
     <div class="timeline-heading">
       <div>
@@ -216,7 +219,7 @@ onMounted(fetchProjectEmployees)
                 >{{ mode === 'planning' ? $t('Planning step') : $t('Action') }}
                 {{ index + 1 }}</span
               >
-              <h4>{{ $t('Timeline entry') }}</h4>
+              <!-- <h4>{{ $t('Timeline entry') }}</h4> -->
             </div>
             <button
               v-if="items.length > 1"
@@ -229,9 +232,9 @@ onMounted(fetchProjectEmployees)
           </div>
 
           <div class="timeline-fields">
-            <div class="input-wrapper">
+            <div class="input-wrapper" v-if="mode === 'action'">
               <div class="field-label">
-                <label :for="`drill_timeline_date_${index}`">{{ $t('date') }}</label
+                <label :for="`drill_timeline_date_${index}`">{{ $t('Photographer date') }}</label
                 ><FieldHelpIcon text="Select the date for this timeline entry." />
               </div>
               <DatePicker
@@ -269,7 +272,7 @@ onMounted(fetchProjectEmployees)
             </div>
             <div v-else class="input-wrapper full-field">
               <div class="field-label">
-                <label :for="`drill_timeline_description_${index}`">{{ $t('description') }}</label
+                <label :for="`drill_timeline_description_${index}`">{{ $t('Explanation') }}</label
                 ><FieldHelpIcon text="Describe what is planned or what happened at this point." />
               </div>
               <textarea
@@ -281,7 +284,7 @@ onMounted(fetchProjectEmployees)
             </div>
 
             <template v-if="mode === 'action'">
-              <div class="input-wrapper">
+              <!-- <div class="input-wrapper">
                 <div class="field-label">
                   <label :for="`drill_photographer_${index}`">{{ $t('Photographer name') }}</label
                   ><FieldHelpIcon text="Enter the name of the person who captured the evidence." />
@@ -292,6 +295,19 @@ onMounted(fetchProjectEmployees)
                   class="input"
                   type="text"
                   :placeholder="$t('Enter photographer name')"
+                />
+              </div> -->
+              <div class="input-wrapper">
+                <div class="field-label">
+                  <label :for="`drill_photographer_${index}`">{{ $t('Photographer place') }}</label
+                  ><FieldHelpIcon text="Enter the place of the person who captured the evidence." />
+                </div>
+                <input
+                  :id="`drill_photographer_${index}`"
+                  v-model="item.photographerplace"
+                  class="input"
+                  type="text"
+                  :placeholder="$t('Enter photographer place')"
                 />
               </div>
               <div class="input-wrapper">
@@ -309,7 +325,7 @@ onMounted(fetchProjectEmployees)
               </div>
               <div class="input-wrapper">
                 <div class="field-label">
-                  <label :for="`improvement_${index}`">{{ $t('improvement') }}</label
+                  <label :for="`improvement_${index}`">{{ $t('Suggested Improvement') }}</label
                   ><FieldHelpIcon text="Enter the improvement" />
                 </div>
                 <input
@@ -361,7 +377,7 @@ onMounted(fetchProjectEmployees)
     </div>
 
     <button class="add-timeline-item" type="button" @click="items.push(createItem())">
-      + {{ $t('Add new timeline') }}
+      + {{ $t('Add Scenario') }}
     </button>
     <p v-if="error" class="timeline-error">{{ error }}</p>
     <div class="timeline-submit">

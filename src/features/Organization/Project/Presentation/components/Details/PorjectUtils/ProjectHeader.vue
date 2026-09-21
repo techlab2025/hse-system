@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import ContractorIcon from '@/shared/icons/ContractorIcon.vue'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
@@ -74,63 +76,111 @@ const props = defineProps<{
       </div>
     </div>
 
-    <div></div>
-    <div class="btn-route">
-      <router-link
-        v-if="projectId"
-        class="project-audits-link"
-        :to="{
-          name: 'Audits',
-          query: { project_id: projectId, inspectionType: 1 },
-          params: { id: projectId },
-        }"
-      >
-        <span aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M5 4h10l4 4v12H5zM15 4v5h4M8 13h8M8 17h5" />
-          </svg>
-        </span>
-        {{ t('Audits') }}
-      </router-link>
+    <div v-if="projectId" class="project-actions-dock">
+      <div class="project-actions-heading">
+        <span>{{ t('Project actions') }}</span>
+        <small>{{ t('Quick access to project workflows') }}</small>
+      </div>
 
-      <router-link
-        :to="{
-          name: 'management-of-change',
-          query: { project_id: projectId },
-        }"
-        class="project-audits-link"
-      >
-        management of change
-      </router-link>
+      <div class="btn-route">
+        <router-link
+          class="project-action-link action-audits"
+          :to="{
+            name: 'Audits',
+            query: { project_id: projectId, inspectionType: 1 },
+            params: { id: projectId },
+          }"
+        >
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M5 4h10l4 4v12H5zM15 4v5h4M8 13h8M8 17h5" />
+            </svg>
+          </span>
+          <span class="action-copy">
+            <strong>{{ t('Audits') }}</strong>
+            <small>{{ t('Review project audits') }}</small>
+          </span>
+          <span class="action-arrow" aria-hidden="true">→</span>
+        </router-link>
 
-      <!-- <router-link
-        :to="{
-          path: '/organization/herikaly/matrix',
-          query: { project_id: projectId },
-        }"
-        class="project-audits-link"
-      >
-        Poistions Matrix
-      </router-link>
+        <router-link
+          :to="{
+            name: 'management-of-change',
+            query: { project_id: projectId },
+          }"
+          class="project-action-link action-change"
+        >
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M4 7h11M4 17h16M15 4l3 3-3 3M9 14l-3 3 3 3" />
+            </svg>
+          </span>
+          <span class="action-copy">
+            <strong>{{ t('Management of change') }}</strong>
+            <small>{{ t('Track project changes') }}</small>
+          </span>
+          <span class="action-arrow" aria-hidden="true">→</span>
+        </router-link>
 
-      <router-link
-        :to="{
-          path: '/organization/employee-certificate',
-          query: { project_id: projectId },
-        }"
-        class="project-audits-link"
-      >
-        Employee Traning Matrix
-      </router-link> -->
+        <router-link
+          :to="{ path: `/organization/project-permit/project/${projectId}` }"
+          class="project-action-link action-create-permit"
+        >
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M6 3.75h9l3 3V20H6zM15 3.75V7h3M9 12h6M12 9v6" />
+            </svg>
+          </span>
+          <span class="action-copy">
+            <strong>{{ t('Create permit to work') }}</strong>
+            <small>{{ t('Start a new work permit') }}</small>
+          </span>
+          <span class="action-arrow" aria-hidden="true">→</span>
+        </router-link>
+
+        <PermissionBuilder :code="[PermissionsEnum.PROJECT_PERMIT]">
+          <router-link
+            :to="{ path: `/organization/project-permits/${projectId}` }"
+            class="project-action-link action-permits"
+          >
+            <span class="action-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M5 5h14v15H5zM8 3h8v4H8zM8 11h8M8 15h8" />
+              </svg>
+            </span>
+            <span class="action-copy">
+              <strong>{{ t('Show permits') }}</strong>
+              <small>{{ t('Browse project permits') }}</small>
+            </span>
+            <span class="action-arrow" aria-hidden="true">→</span>
+          </router-link>
+        </PermissionBuilder>
+
+        <router-link
+          :to="{ path: `/organization/project-my-permits/${projectId}` }"
+          class="project-action-link action-my-permits"
+        >
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="8" r="3.25" />
+              <path d="M5.5 20a6.5 6.5 0 0 1 13 0M17 11.5l1.5 1.5 2.5-3" />
+            </svg>
+          </span>
+          <span class="action-copy">
+            <strong>{{ t('My Permits') }}</strong>
+            <small>{{ t('View permits assigned to me') }}</small>
+          </span>
+          <span class="action-arrow" aria-hidden="true">→</span>
+        </router-link>
+      </div>
     </div>
   </header>
 </template>
 <style scoped lang="scss">
 .btn-route {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  justify-content: end;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 9px;
 }
 .project-header-container {
   position: relative;
@@ -187,7 +237,8 @@ const props = defineProps<{
 }
 .project-identity,
 .project-meta,
-.project-audits-link {
+.project-actions-dock,
+.project-action-link {
   position: relative;
   z-index: 1;
 }
@@ -248,7 +299,7 @@ const props = defineProps<{
   font-size: clamp(1.15rem, 2vw, 1.55rem);
   line-height: 1.2;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: pre-wrap;
   max-width: 650px;
 }
 .project-serial {
@@ -355,35 +406,127 @@ const props = defineProps<{
   border-radius: 50%;
   background: var(--status-success);
 }
-.project-audits-link {
-  display: inline-flex;
+.project-actions-dock {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: 165px minmax(0, 1fr);
   align-items: center;
-  justify-content: center;
-  min-width: 44px;
-  height: 44px;
-  gap: 7px;
-  padding: 0 13px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
-  border-radius: 13px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1));
+  gap: 14px;
+  padding: 12px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--surface-1) 88%, transparent);
+  backdrop-filter: blur(9px);
+}
+.project-actions-heading {
+  padding-inline: 5px;
+}
+.project-actions-heading span,
+.project-actions-heading small {
+  display: block;
+}
+.project-actions-heading span {
+  color: var(--text-strong);
   font-family: 'Bold';
-  font-size: 0.7rem;
+  font-size: 0.74rem;
+}
+.project-actions-heading small {
+  margin-top: 3px;
+  color: var(--text-soft);
+  font-size: 0.58rem;
+  line-height: 1.45;
+}
+.project-action-link {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  min-height: 60px;
+  padding: 9px;
+  border: 1px solid var(--main-border);
+  border-radius: 14px;
+  color: var(--text-strong);
+  background: var(--surface-2);
   text-decoration: none;
-  transition: 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
-.project-audits-link:hover {
-  color: var(--text-on-brand);
-  background: var(--PrimaryColor);
-  transform: translateY(-1px);
+.project-action-link:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(
+    in srgb,
+    var(--action-color, var(--PrimaryColor)) 42%,
+    var(--main-border)
+  );
+  box-shadow: 0 10px 20px color-mix(in srgb, var(--text-strong) 7%, transparent);
 }
-.project-audits-link svg {
-  width: 18px;
-  height: 18px;
+.action-icon {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border-radius: 11px;
+  color: var(--action-color, var(--PrimaryColor));
+  background: color-mix(in srgb, var(--action-color, var(--PrimaryColor)) 10%, transparent);
+}
+.action-icon svg {
+  width: 19px;
+  height: 19px;
   stroke: currentColor;
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 1.8;
+  stroke-width: 1.7;
+}
+.action-copy {
+  min-width: 0;
+}
+.action-copy strong,
+.action-copy small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.action-copy strong {
+  color: var(--text-strong);
+  font-size: 0.65rem;
+}
+.action-copy small {
+  margin-top: 3px;
+  color: var(--text-soft);
+  font-size: 0.52rem;
+}
+.action-arrow {
+  color: var(--action-color, var(--PrimaryColor));
+  font-size: 0.85rem;
+  transition: transform 0.2s ease;
+}
+.project-action-link:hover .action-arrow {
+  transform: translateX(2px);
+}
+[dir='rtl'] .action-arrow {
+  transform: rotate(180deg);
+}
+[dir='rtl'] .project-action-link:hover .action-arrow {
+  transform: rotate(180deg) translateX(2px);
+}
+.action-audits {
+  --action-color: var(--PrimaryColor);
+}
+.action-change {
+  --action-color: var(--brand-accent-500);
+}
+.action-create-permit {
+  --action-color: var(--status-success);
+}
+.action-permits {
+  --action-color: #7c5ce7;
+}
+.action-my-permits {
+  --action-color: #d97706;
 }
 @media (max-width: 1100px) {
   .project-header-container {
@@ -394,9 +537,11 @@ const props = defineProps<{
     grid-row: 2;
     width: 100%;
   }
-  .project-audits-link {
-    grid-column: 2;
-    grid-row: 1;
+  .project-actions-dock {
+    grid-template-columns: 1fr;
+  }
+  .btn-route {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 @media (max-width: 680px) {
@@ -417,6 +562,9 @@ const props = defineProps<{
   .project-serial {
     padding-inline-start: 0;
   }
+  .btn-route {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 @media (max-width: 460px) {
   .project-name {
@@ -427,6 +575,9 @@ const props = defineProps<{
   }
   .contractors-item {
     grid-column: auto;
+  }
+  .btn-route {
+    grid-template-columns: 1fr;
   }
 }
 </style>

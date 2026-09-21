@@ -7,7 +7,7 @@ import EquipmentSection from './Equipment/EquipmentSection.vue'
 import LocationsTeamsSection from './LocationsTeams/LocationsTeamsSection.vue'
 import MainObjectivesSection from './Objectives/MainObjectivesSection.vue'
 import ProjectSiteSection from './ProjectSite/ProjectSiteSection.vue'
-import { watch } from 'vue'
+import { computed, watch } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import ProjectPageSkeleton from './Skeletons/ProjectPageSkeleton.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
@@ -23,6 +23,22 @@ const showProjectDetailsController = ShowProjectDetailsController.getInstance()
 const state = showProjectDetailsController.state
 
 const route = useRoute()
+
+const getMeetingTimestamp = (date: string) => new Date(`${date}T00:00:00`).getTime()
+
+const todayAndUpcomingMeetings = computed(() => {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+
+  return [...(state.value.data?.ProjectMeeting ?? [])]
+    .filter((meeting) => {
+      const timestamp = getMeetingTimestamp(meeting.date)
+      return Number.isFinite(timestamp) && timestamp >= today.getTime()
+    })
+    .sort((first, second) => getMeetingTimestamp(first.date) - getMeetingTimestamp(second.date))
+    .slice(0, 2)
+})
+
 const GetProjectDetails = async () => {
   const projectId = Number(route.params.id)
   if (!Number.isFinite(projectId) || projectId <= 0) return
@@ -35,9 +51,6 @@ const GetProjectDetails = async () => {
     console.error('Unable to refresh project details', error)
   }
 }
-
-
-
 
 // const projectOverview = computed(() => [
 //   {
@@ -170,7 +183,7 @@ watch(
 
         <ProjectMeetingSection
           :project-id="state.data?.id ?? Number(route.params.id)"
-          :meetings="state.data?.ProjectMeeting!"
+          :meetings="todayAndUpcomingMeetings"
           @updated="GetProjectDetails"
         />
       </div>

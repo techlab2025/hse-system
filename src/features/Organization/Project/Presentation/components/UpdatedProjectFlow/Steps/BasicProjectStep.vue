@@ -114,7 +114,7 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
     </div>
     <div class="input-wrapper" :class="{ 'field-has-error': props.validationErrors.contractors }">
       <UpdatedCustomInputSelect
-        :required="true"
+        
         :model-value="contractorIds"
         :type="2"
         :controller="contractorController"
@@ -180,7 +180,8 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
       </small>
     </label>
     <label class="input-wrapper">
-      <span class="required-label"> Cost <span aria-hidden="true">*</span></span>
+      <!--  <span aria-hidden="true">*</span> -->
+      <span class="required-label"> Cost</span>
       <input
         v-model="basic.cost"
         type="number"

@@ -346,8 +346,8 @@ watch(
         <DataEmpty
           :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EquipmentType`"
           addText="Add EquipmentType"
-          description="You have no EquipmentTypes .. All your joined customers will appear here when you add your customer data"
-          title="You have No EquipmentTypes"
+          description="You have no Equipment Types .. All your joined customers will appear here when you add your customer data"
+          title="You have No Equipment Types"
         />
       </template>
       <template #failed>
@@ -355,7 +355,7 @@ watch(
           :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/add/EquipmentType`"
           addText="Add EquipmentType"
           description="You have no EquipmentType .. All your joined customers will appear here when you add your customer data"
-          title="You have No EquipmentTypes"
+          title="You have No Equipment Types"
         />
       </template>
     </DataStatus>

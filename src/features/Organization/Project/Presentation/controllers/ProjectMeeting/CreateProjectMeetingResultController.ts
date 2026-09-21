@@ -7,6 +7,8 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import type ProjectModel from '../../../Data/models/ProjectModel'
 import CreateProjectMeetingResultUseCase from '../../../Domain/useCase/ProjectMeeting/CreateProjectMeetingResultUseCase'
+import ShowProjectDetailsController from '../ShowProjectDetailsController'
+import ShowProjectDetailsParams from '../../../Core/params/ShowProjectDetailsParams'
 
 export default class CreateProjectMeetingResultController extends ControllerInterface<ProjectModel> {
   private static instance: CreateProjectMeetingResultController
@@ -35,6 +37,10 @@ export default class CreateProjectMeetingResultController extends ControllerInte
           imageElement: successImage,
           messageContent: null,
         })
+
+        ShowProjectDetailsController.getInstance().showProjectDetails(
+          new ShowProjectDetailsParams(Number(router.currentRoute.value.params.id)),
+        )
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',
