@@ -1504,3 +1504,660 @@ Once this file exists in the repository, whenever the user asks for a new CRUD:
 11. Verify every `ApiNames.instance.<Getter>` used by the generated API services exists and points to the user-provided backend endpoint.
 12. In Codex mode, write the files into the project.
 13. In ChatGPT mode, return the generated CRUD as a ZIP.
+
+---
+
+# Mandatory Global Form Field Overrides
+
+> These rules are mandatory and override any earlier generic form/input guidance in this file when there is a conflict.
+>
+> They apply to every generated feature form, whether the feature is a full CRUD or a custom endpoint feature.
+
+## 1. Date and time fields: always use PrimeVue `DatePicker`
+
+Every field that represents a date, time, or date-time must use PrimeVue `DatePicker`.
+
+Import:
+
+```ts
+import DatePicker from 'primevue/datepicker'
+```
+
+Never generate native controls such as:
+
+```html
+<input type="date" />
+<input type="time" />
+<input type="datetime-local" />
+```
+
+### Date-only fields
+
+Examples:
+
+```text
+date
+start_date
+end_date
+due_date
+meeting_date
+inspection_date
+```
+
+Use:
+
+```vue
+<DatePicker
+  v-model="startDate"
+  dateFormat="yy-mm-dd"
+  showIcon
+  fluid
+/>
+```
+
+### Time-only fields
+
+Examples:
+
+```text
+time
+start_time
+end_time
+meeting_time
+```
+
+Use:
+
+```vue
+<DatePicker
+  v-model="startTime"
+  timeOnly
+  hourFormat="24"
+  fluid
+/>
+```
+
+### Date-time fields
+
+Use:
+
+```vue
+<DatePicker
+  v-model="scheduledAt"
+  showTime
+  hourFormat="24"
+  dateFormat="yy-mm-dd"
+  showIcon
+  fluid
+/>
+```
+
+### Date/time request serialization
+
+PrimeVue may keep the form value as `Date | null`, but Params must send the exact backend format.
+
+Rules:
+
+1. First inspect the closest existing project feature for the same field type.
+2. If the user provides a date/time format, use it exactly.
+3. Do not automatically call `toISOString()` unless the backend/reference feature uses ISO UTC.
+4. Do not invent timezone conversion.
+5. A date-only backend field must not accidentally receive an unwanted time part.
+6. A time-only backend field must not accidentally receive an unwanted date part.
+7. Keep formatting in one clear helper when several date/time fields use the same format.
+
+---
+
+## 2. General attachments/files: always use `HandleFIlesUpload`
+
+Any normal attachment/document/file field must use the existing project component:
+
+```text
+HandleFIlesUpload
+```
+
+Do not generate a raw `<input type="file">` for normal attachment fields when this shared component exists.
+
+In Codex/repository mode, search the repository for the exact import path and exact filename casing. Do not guess the import path.
+
+Use the project pattern:
+
+```vue
+<div :key="formKey" class="management-change-upload-field">
+  <HandleFIlesUpload
+    :label="$t('risk assessment file')"
+    accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
+    :max-files="1"
+    :multiple="false"
+    class-name="input-file management-change-file-input"
+    @change="handleFilesChange"
+  />
+</div>
+```
+
+The shared uploader emits uploaded-file objects that contain Base64 data.
+
+Use a compatible type such as:
+
+```ts
+interface UploadedFile {
+  id: string
+  name: string
+  type: string
+  size: string
+  url: string
+  base64: string
+  file?: File
+}
+```
+
+Handle the emitted values like:
+
+```ts
+const attachments = ref<string[]>([])
+
+const handleFilesChange = (files: UploadedFile[]) => {
+  attachments.value = files
+    .map((file) => file.base64)
+    .filter((value): value is string => Boolean(value))
+
+  updateData()
+}
+```
+
+### Mandatory Base64 rule for attachment keys
+
+If the user declares an uploaded attachment/file key as:
+
+```text
+attachments: string[]
+attachment: string[]
+files: string[]
+documents: string[]
+```
+
+or another attachment key typed as `string[]`, the request must send the Base64 strings produced by `HandleFIlesUpload`.
+
+Example Params value:
+
+```ts
+public attachments: string[]
+```
+
+Example request map:
+
+```ts
+return {
+  attachments: this.attachments,
+}
+```
+
+The array must contain values such as:
+
+```text
+data:application/pdf;base64,...
+data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,...
+```
+
+Do not send:
+
+```text
+File objects
+blob:http://... preview URLs
+filenames only
+local object URLs
+```
+
+unless the user explicitly states that the backend requires one of those formats.
+
+### Single attachment string
+
+If the backend field is explicitly:
+
+```text
+attachment: string
+```
+
+send the first Base64 value:
+
+```ts
+attachment: attachments.value[0] ?? ''
+```
+
+Do not turn a single-string backend key into an array.
+
+---
+
+## 3. Image fields: always use `MultiImagesInput`
+
+Any form field representing uploaded images must use the existing project component:
+
+```text
+MultiImagesInput
+```
+
+Do not generate a raw file input for images when this shared component exists.
+
+In Codex/repository mode, search for the exact import path and exact filename casing.
+
+Use the project pattern:
+
+```vue
+<div class="management-change-upload-field input-wrapper">
+  <label>{{ $t('images') }}</label>
+
+  <MultiImagesInput
+    accept="image/*"
+    :initial-images="images.map((image) => image.file)"
+    @update:images="setImages"
+  />
+</div>
+```
+
+The component emits selected `File[]` values for new uploads.
+
+### Mandatory Base64 rule for image keys
+
+If the user declares an uploaded image key as:
+
+```text
+images: string[]
+image: string[]
+photos: string[]
+attachments_images: string[]
+```
+
+or another image field typed as `string[]`, convert the selected images to Base64 before creating Params.
+
+Use a helper:
+
+```ts
+const fileToBase64 = (file: File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader()
+
+    reader.onload = () => resolve(reader.result as string)
+    reader.onerror = reject
+    reader.readAsDataURL(file)
+  })
+```
+
+Example state and setter:
+
+```ts
+const imageValues = ref<string[]>([])
+
+const setImages = async (files: File[]) => {
+  imageValues.value = await Promise.all(files.map(fileToBase64))
+  updateData()
+}
+```
+
+Then Params sends:
+
+```ts
+return {
+  images: this.images,
+}
+```
+
+where `this.images` is already `string[]` containing Base64 data.
+
+Do not send:
+
+```text
+raw File objects
+blob preview URLs
+object URLs
+```
+
+for a backend key declared as `string[]`.
+
+### Single image string
+
+If the backend key is explicitly:
+
+```text
+image: string
+```
+
+send one Base64 string, normally the first selected image.
+
+### Edit/preloaded image behavior
+
+For edit forms:
+
+1. Use the component's initial-image support to display existing server images.
+2. Do not download existing remote URLs and convert them to Base64 unless the backend explicitly requires that.
+3. Convert newly selected `File` objects to Base64 according to the request contract.
+4. Preserve existing server values according to the feature's existing update API behavior.
+
+---
+
+## 4. `title` / `description`: translation only when the user says translation
+
+The field name alone does not decide whether it is translated.
+
+### Translated fields
+
+If the user says:
+
+```text
+title: translation
+```
+
+or:
+
+```text
+title translation
+```
+
+then use `TranslationsParams` for title.
+
+If the user says:
+
+```text
+description: translation
+```
+
+then use `TranslationsParams` for description.
+
+If both are translated, build both through the same `TranslationsParams` object.
+
+The request must keep the complete translation map:
+
+```ts
+const translations = this.translation.toMap() as Record<string, unknown>
+
+return {
+  translations: translations,
+}
+```
+
+Do not reduce it to only `translations.titles` or `translations.descriptions`.
+
+### Plain string fields
+
+If the user says:
+
+```text
+title: string
+```
+
+then it is a normal string field:
+
+```ts
+public title: string
+```
+
+and Params sends:
+
+```ts
+title: this.title
+```
+
+Do not use `TranslationsParams`.
+
+If the user says:
+
+```text
+description: string
+```
+
+then it is a normal string field:
+
+```ts
+public description: string
+```
+
+and Params sends:
+
+```ts
+description: this.description
+```
+
+Do not use `TranslationsParams`.
+
+### Mixed example
+
+If the user says:
+
+```text
+title: translation
+description: string
+```
+
+then only title is translated. `description` remains a normal request key.
+
+The generated Params may look conceptually like:
+
+```ts
+const translations = this.translation.toMap() as Record<string, unknown>
+
+return {
+  translations: translations,
+  description: this.description,
+}
+```
+
+### Critical interpretation rule
+
+```text
+`title` does NOT automatically mean translation.
+`description` does NOT automatically mean translation.
+Only the explicit field type/contract decides.
+```
+
+---
+
+## 5. Any user-selectable key ending in `_id` uses `UpdatedCustomInputSelect`
+
+For relation fields whose backend key ends with:
+
+```text
+_id
+```
+
+and whose value must be selected by the user, use the existing project component:
+
+```text
+UpdatedCustomInputSelect
+```
+
+Examples:
+
+```text
+organization_id
+employee_id
+equipment_id
+project_id
+stage_id
+subject_id
+location_id
+```
+
+### The user should provide the controller and Params
+
+For each selectable `_id`, the user may provide information such as:
+
+```text
+employee_id
+controller: IndexOrganizatoinEmployeeController
+params: IndexOrganizatoinEmployeeParams('', 0, 0, 0)
+```
+
+Use those exact classes.
+
+Example setup:
+
+```ts
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import type TitleInterface from '@/base/Data/Models/title_interface'
+
+const selectedEmployee = ref<TitleInterface | null>(null)
+
+const indexOrganizatoinEmployeeController =
+  IndexOrganizatoinEmployeeController.getInstance()
+
+const indexOrganizatoinEmployeeParams =
+  new IndexOrganizatoinEmployeeParams('', 0, 0, 0)
+```
+
+Use the shared component:
+
+```vue
+<UpdatedCustomInputSelect
+  :model-value="selectedEmployee"
+  :controller="indexOrganizatoinEmployeeController"
+  :params="indexOrganizatoinEmployeeParams"
+  label="employee"
+  id="employee"
+  :placeholder="$t('Select employee')"
+  optional
+  @update:model-value="setEmployee"
+/>
+```
+
+Setter:
+
+```ts
+const setEmployee = (value: TitleInterface | null) => {
+  selectedEmployee.value = value
+  updateData()
+}
+```
+
+When constructing Params, send the selected object's id:
+
+```ts
+selectedEmployee.value?.id
+```
+
+The Params `toMap()` must use the backend key:
+
+```ts
+employee_id: this.employeeId
+```
+
+### Required `_id`
+
+If the user marks the relation as required:
+
+1. Do not use the `optional` prop.
+2. Include it in component required-field validation.
+3. Do not call the endpoint until a selection exists.
+4. Send only the selected object's `id`, not the whole object.
+
+### Optional `_id`
+
+If it is optional:
+
+1. Use the `optional` UI behavior when appropriate.
+2. Preserve the backend's expected null/undefined/omitted behavior.
+3. Still send only the selected id when a value exists.
+
+### If controller/Params are not provided
+
+In Codex/repository mode:
+
+1. Search the repository for the matching index/select controller and Params.
+2. Prefer an existing controller whose model is suitable for `UpdatedCustomInputSelect`.
+3. If one unambiguous controller/Params pair exists, use it.
+4. If no matching pair exists or several choices are ambiguous, ask the user for the controller and Params for that `_id`.
+5. Do not substitute a numeric/text input just to avoid asking.
+
+In ChatGPT/no-repository mode, if the user did not provide enough information to identify the controller + Params, ask only for that missing pair.
+
+### Route/context `_id` exception
+
+An `_id` field does not need a select when it is not user-selectable and is explicitly supplied by route/context.
+
+Example:
+
+```ts
+const projectId = Number(route.params.project_id)
+```
+
+In that case use the route/context id directly.
+
+---
+
+## 6. `_ids` / multiple relation fields
+
+Do not automatically apply the singular `_id` rule to an `_ids` array without checking the user's contract.
+
+If the user says a relation is multiple and provides a controller + Params, use `UpdatedCustomInputSelect` in multiselect mode according to the existing component API, then map selected objects to ids.
+
+Conceptual example:
+
+```ts
+selectedEmployees.value.map((item) => item.id)
+```
+
+Only do this when the field is explicitly a multiple relation such as:
+
+```text
+employee_ids: number[]
+```
+
+---
+
+## 7. Form-field generation decision table
+
+Use this table before creating form controls:
+
+| User field contract | Required UI / handling |
+|---|---|
+| `start_date: string` described as date | PrimeVue `DatePicker` |
+| `start_time: string` described as time | PrimeVue `DatePicker` with `timeOnly` |
+| date-time field | PrimeVue `DatePicker` with `showTime` |
+| `attachments: string[]` uploaded files | `HandleFIlesUpload` -> Base64 `string[]` |
+| `attachment: string` uploaded file | `HandleFIlesUpload` -> first Base64 string |
+| `images: string[]` | `MultiImagesInput` -> Base64 `string[]` |
+| `image: string` | `MultiImagesInput` -> first Base64 string |
+| `title: translation` | `TranslationsParams` |
+| `description: translation` | `TranslationsParams` |
+| `title: string` | normal string input, no translations |
+| `description: string` | normal string/textarea, no translations |
+| selectable `employee_id` | `UpdatedCustomInputSelect` + supplied/found controller/Params |
+| route/context `project_id` | use route/context id directly; no select |
+
+---
+
+## 8. Mandatory verification for these rules
+
+Before finishing generated code, verify all of the following:
+
+- [ ] No generated form uses native `type="date"`, `type="time"`, or `type="datetime-local"` for project date/time fields.
+- [ ] All date/time/date-time controls use PrimeVue `DatePicker`.
+- [ ] General file/attachment inputs use `HandleFIlesUpload`.
+- [ ] Image inputs use `MultiImagesInput`.
+- [ ] Uploaded image/file keys declared as `string[]` send Base64 strings.
+- [ ] Uploaded image/file keys declared as `string` send one Base64 string.
+- [ ] No Base64 request key accidentally receives a `File` object or blob preview URL.
+- [ ] `title: string` remains a plain string field.
+- [ ] `description: string` remains a plain string field.
+- [ ] Only fields explicitly marked as translation use `TranslationsParams`.
+- [ ] Every selectable `_id` uses `UpdatedCustomInputSelect` with its correct controller + Params.
+- [ ] Select Params use the exact classes/constructor arguments supplied by the user or verified in the repository.
+- [ ] Only selected `.id` values are sent to `_id` backend keys.
+- [ ] Route/context ids are not incorrectly rendered as selectable fields.
+
+
+## CRUD-specific application of the global field overrides
+
+For a full CRUD, apply the rules above consistently in all relevant files:
+
+1. `add<CrudName>Params.ts`
+2. `edit<CrudName>Params.ts`
+3. `<CrudName>Form.vue`
+4. `<CrudName>DetailsModel.ts` where existing upload URLs/details are represented
+5. `<CrudName>Model.ts` where list values are represented
+6. Excel params/import only if the user explicitly says those fields are part of Excel import
+
+The Add and Edit forms must share the same field/component decisions.
+
+Do not use `LangTitleInput` for `title: string` or `description: string`; use normal project text/textarea controls.
+
+Do use the normal translation form architecture only when the field is explicitly declared as translation.
+
