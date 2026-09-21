@@ -102,7 +102,7 @@ async function create() {
 
 <style scoped>
 .create-page {
-  max-width: 1020px;
+  /* max-width: 1020px; */
   margin: auto;
   padding: 26px;
   color: var(--text-primary, #172334)
