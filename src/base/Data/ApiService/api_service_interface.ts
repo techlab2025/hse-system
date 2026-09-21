@@ -138,6 +138,9 @@ export default abstract class ServicesInterface {
           case 409:
             console.error(`ConflictException >> ${statusCode}`)
             throw new ConflictException(error.response?.data.message ?? 'Conflict')
+            case 429:
+            console.error(`ConflictException >> ${statusCode}`)
+            throw new ConflictException(error.response?.data.message ?? 'Conflict')
           case 422: {
             console.error(`ConflictException >> ${statusCode}`)
             const errors = error.response?.data?.errors

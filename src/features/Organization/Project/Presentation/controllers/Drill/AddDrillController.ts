@@ -37,6 +37,7 @@ export default class AddDrillController extends ControllerInterface<DrillModel> 
         // if (!draft) await router.push('/organization/projects')
 
         // useLoaderStore().endLoadingWithDialog();
+        console.log(this.state.value.error?.title, "error title")
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',
@@ -44,6 +45,7 @@ export default class AddDrillController extends ControllerInterface<DrillModel> 
           imageElement: errorImage,
           messageContent: null,
         })
+        console.log(this.state.value, "error title")
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
@@ -52,6 +54,7 @@ export default class AddDrillController extends ControllerInterface<DrillModel> 
         imageElement: errorImage,
         messageContent: null,
       })
+      console.log(this.state.value, "error title")
     }
 
     super.handleResponseDialogs()
