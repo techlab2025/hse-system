@@ -123,7 +123,7 @@ const route = useRoute()
 </script>
 
 <template>
-  <div class="buttons">
+  <!-- <div class="buttons">
     <button
       class="temp-btn"
       :class="SelctedType == 1 ? `active` : ``"
@@ -138,7 +138,40 @@ const route = useRoute()
     >
       Organization Templates
     </button>
+  </div> -->
+
+  <div class="template-switcher">
+    <button
+      class="template-btn"
+      :class="{ active: SelctedType === 1 }"
+      @click.prevent="SelectTemplatesType(1)"
+    >
+      <!-- <span class="icon">
+        <i class="pi pi-th-large"></i>
+      </span> -->
+
+      <span class="content">
+        <span class="title">System Templates</span>
+        <span class="description">Default templates provided by the system</span>
+      </span>
+    </button>
+
+    <button
+      class="template-btn"
+      :class="{ active: SelctedType === 0 }"
+      @click.prevent="SelectTemplatesType(0)"
+    >
+      <!-- <span class="icon">
+        <i class="pi pi-building"></i>
+      </span> -->
+
+      <span class="content">
+        <span class="title">Organization Templates</span>
+        <span class="description">Templates created by your organization</span>
+      </span>
+    </button>
   </div>
+
   <SelectTemplatesOfPermits
     :data="state.data!"
     @update:data="GetTemplateId"
@@ -532,6 +565,197 @@ const route = useRoute()
   .confirm-btn {
     width: calc(100% - 1.5rem);
     margin-inline: 0.75rem;
+  }
+}
+
+/*new btn styles */
+.template-switcher {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+  padding: 6px;
+}
+
+.template-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  width: 100%;
+  min-height: 110px;
+  padding: 18px;
+
+  border: 1px solid #e8ebf0;
+  border-radius: 18px;
+
+  background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(248, 250, 252, 1) 100%);
+
+  cursor: pointer;
+  overflow: hidden;
+
+  text-align: start;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background 0.25s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 4px;
+    height: 100%;
+
+    background: #6366f1;
+
+    opacity: 0;
+    transform: scaleY(0.4);
+
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+
+    width: 130px;
+    height: 130px;
+
+    border-radius: 50%;
+    background: rgba(99, 102, 241, 0.08);
+
+    transform: scale(0);
+    transition: transform 0.35s ease;
+
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-3px);
+
+    border-color: rgba(99, 102, 241, 0.3);
+
+    box-shadow:
+      0 12px 30px rgba(15, 23, 42, 0.08),
+      0 4px 12px rgba(15, 23, 42, 0.04);
+
+    &::after {
+      transform: scale(1);
+    }
+
+    .icon {
+      transform: scale(1.07);
+      background: rgba(99, 102, 241, 0.12);
+    }
+  }
+
+  &.active {
+    border-color: rgba(99, 102, 241, 0.45);
+
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(255, 255, 255, 1) 65%);
+
+    box-shadow:
+      0 12px 30px rgba(99, 102, 241, 0.1),
+      inset 0 0 0 1px rgba(99, 102, 241, 0.04);
+
+    &::before {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+
+    .icon {
+      color: #ffffff;
+
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.28);
+    }
+
+    .title {
+      color: #4338ca;
+    }
+  }
+
+  .icon {
+    position: relative;
+    z-index: 1;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 54px;
+    height: 54px;
+
+    border-radius: 15px;
+
+    color: #6366f1;
+    background: #f1f3ff;
+
+    transition:
+      transform 0.25s ease,
+      background 0.25s ease,
+      color 0.25s ease,
+      box-shadow 0.25s ease;
+
+    i {
+      font-size: 22px;
+    }
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    min-width: 0;
+  }
+
+  .title {
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.4;
+
+    color: #111827;
+
+    transition: color 0.25s ease;
+  }
+
+  .description {
+    max-width: 320px;
+
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.6;
+
+    color: #6b7280;
+  }
+}
+
+@media (max-width: 768px) {
+  .template-switcher {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .template-btn {
+    min-height: 96px;
+    padding: 15px;
   }
 }
 </style>
