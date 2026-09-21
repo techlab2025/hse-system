@@ -214,7 +214,7 @@ const headerActions = () => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 Meeting_Types_index">
     <div class="input-search col-span-1">
       <span class="icon-remove" @click="((word = ''), searchMeetingTypes())"><Search /></span>
       <input v-model="word" :placeholder="$t('search')" class="input" @input="searchMeetingTypes" />
@@ -311,4 +311,8 @@ const headerActions = () => [
   />
 </template>
 
-<style scoped></style>
+<style scoped>
+.Meeting_Types_index{
+  align-items: center;
+}
+</style>

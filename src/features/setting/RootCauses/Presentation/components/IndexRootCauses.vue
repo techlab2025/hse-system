@@ -396,8 +396,8 @@ const IndexRootCausesactionList = () => [
               user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
             }/root-causes/add`"
             addText="Add RootCauses"
-            description="You have no RootCausess .. All your joined customers will appear here when you add your customer data"
-            title="You have No RootCausess"
+            description="You have no Root Causess .. All your joined customers will appear here when you add your customer data"
+            title="You have No Root Causess"
           />
         </PermissionBuilder>
       </template>
@@ -415,7 +415,7 @@ const IndexRootCausesactionList = () => [
             }/root-causes/add`"
             addText="Add RootCauses"
             description="You have no RootCauses .. All your joined customers will appear here when you add your customer data"
-            title="You have No RootCausess"
+            title="You have No Root Causess"
           />
         </PermissionBuilder>
       </template>
