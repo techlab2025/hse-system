@@ -259,6 +259,32 @@ const LocationRoutes = ref<Routes[]>([
 
 const LockUpsRoutes = ref<Routes[]>([
   {
+    link: '/admin/ppe-activities',
+    name: 'PPE Activity',
+    icon: 'shield-check',
+    permissions: [
+      PermissionsEnum.PPE_ACTIVITY_ALL,
+      PermissionsEnum.PPE_ACTIVITY_FETCH,
+      PermissionsEnum.PPE_ACTIVITY_DETAILS,
+      PermissionsEnum.PPE_ACTIVITY_CREATE,
+      PermissionsEnum.PPE_ACTIVITY_UPDATE,
+      PermissionsEnum.PPE_ACTIVITY_DELETE,
+    ],
+  },
+  {
+    link: '/admin/ppe-tools',
+    name: 'PPE Tools',
+    icon: 'shield-check',
+    permissions: [
+      PermissionsEnum.PPE_TOOLS_ALL,
+      PermissionsEnum.PPE_TOOLS_FETCH,
+      PermissionsEnum.PPE_TOOLS_DETAILS,
+      PermissionsEnum.PPE_TOOLS_CREATE,
+      PermissionsEnum.PPE_TOOLS_UPDATE,
+      PermissionsEnum.PPE_TOOLS_DELETE,
+    ],
+  },
+  {
     link: '/admin/ppe-items',
     name: t('ppe_items'),
     icon: 'shield-check',
@@ -414,6 +440,20 @@ const LockUpsRoutes = ref<Routes[]>([
       PermissionsEnum.PTW_TYPE_FETCH,
     ],
   },
+  {
+  link: '/admin/traning-topics',
+  name: t('traning_topics'),
+  icon: 'medical-square',
+  permissions: [
+    PermissionsEnum.TRANING_TOPIC_ALL,
+    PermissionsEnum.TRANING_TOPIC_FETCH,
+    PermissionsEnum.TRANING_TOPIC_DETAILS,
+    PermissionsEnum.TRANING_TOPIC_CREATE,
+    PermissionsEnum.TRANING_TOPIC_UPDATE,
+    PermissionsEnum.TRANING_TOPIC_DELETE,
+  ],
+},
+
 ])
 
 const SubscriptionTypeRoutes = ref<Routes[]>([

@@ -43,18 +43,20 @@ const basePath = computed(() =>
 
 const featurePermissions = [
   PermissionsEnum.ADMIN,
-  PermissionsEnum.ORGANIZATION_EMPLOYEE,
+  PermissionsEnum.PPE_TOOLS_ALL,
+  PermissionsEnum.PPE_TOOLS_FETCH,
+  PermissionsEnum.ORG_PPE_TOOLS_ALL,
+  PermissionsEnum.ORG_PPE_TOOLS_FETCH,
 ]
 const createPermissions = [
   PermissionsEnum.ADMIN,
-  PermissionsEnum.ORGANIZATION_EMPLOYEE,
+  PermissionsEnum.PPE_TOOLS_ALL,
+  PermissionsEnum.PPE_TOOLS_CREATE,
+  PermissionsEnum.ORG_PPE_TOOLS_ALL,
+  PermissionsEnum.ORG_PPE_TOOLS_CREATE,
 ]
 
-const fetchPPETools = async (
-  query: string = '',
-  page: number = 1,
-  limit: number = 10,
-) => {
+const fetchPPETools = async (query: string = '', page: number = 1, limit: number = 10) => {
   await controller.getData(new IndexPPEToolParams(query, page, limit, 1))
 }
 
@@ -86,13 +88,25 @@ const rowActions = (id: number) => [
     text: t('edit'),
     icon: ActionsTableEdit,
     link: `${basePath.value}/ppe-tool/${id}`,
-    permission: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+    permission: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.PPE_TOOLS_ALL,
+      PermissionsEnum.PPE_TOOLS_UPDATE,
+      PermissionsEnum.ORG_PPE_TOOLS_ALL,
+      PermissionsEnum.ORG_PPE_TOOLS_UPDATE,
+    ],
   },
   {
     text: t('delete'),
     icon: IconDelete,
     action: () => deletePPETool(id),
-    permission: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+    permission: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.PPE_TOOLS_ALL,
+      PermissionsEnum.PPE_TOOLS_DELETE,
+      PermissionsEnum.ORG_PPE_TOOLS_ALL,
+      PermissionsEnum.ORG_PPE_TOOLS_DELETE,
+    ],
   },
 ]
 
@@ -109,11 +123,7 @@ const exportExcel = () =>
     })),
     'ppe_tools.xlsx',
   )
-const downloadExample = () =>
-  saveWorkbook(
-    [{ title: 'PPE Tool 1' }],
-    'ppe_tool_template.xlsx',
-  )
+const downloadExample = () => saveWorkbook([{ title: 'PPE Tool 1' }], 'ppe_tool_template.xlsx')
 
 const showUploadDialog = ref(false)
 const pendingFile = ref<File | null>(null)
@@ -181,10 +191,7 @@ const headerActions = () => [
         <template #custom><ExportPdf :is-drop-list="true" /></template>
       </ActionsList>
     </div>
-    <SystemPPETools
-      v-if="user?.type !== OrganizationTypeEnum.ADMIN"
-      :is-header-tap="true"
-    />
+    <SystemPPETools v-if="user?.type !== OrganizationTypeEnum.ADMIN" :is-header-tap="true" />
   </div>
 
   <PermissionBuilder :code="featurePermissions">
@@ -245,10 +252,7 @@ const headerActions = () => [
     :header="$t('import_ppe_tools')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <UploadPPEToolExcelSheet
-      :initial-file="pendingFile"
-      @uploaded="onUploaded"
-    />
+    <UploadPPEToolExcelSheet :initial-file="pendingFile" @uploaded="onUploaded" />
   </Dialog>
   <input
     ref="fileInputRef"

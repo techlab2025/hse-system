@@ -1984,9 +1984,34 @@ class ApiNames {
   public get delete_ppe_tool() { return this.prefix + 'delete_ppe_tool' }
   public get clone_ppe_tool() { return this.prefix + 'clone_ppe_tool' }
   // Risk Assessment
-  public get CreateRiskAssessment() { return this.baseUrl + this.organizationPrefix +  'create_risk_assessment' }
+  public get CreateRiskAssessment() { return this.baseUrl + this.organizationPrefix + 'create_risk_assessment' }
   public get FetchRiskAssessments() { return this.baseUrl + this.organizationPrefix + 'fetch_risk_assessments' }
   public get FetchRiskAssessmentDetails() { return this.baseUrl + this.organizationPrefix + 'fetch_risk_assessment_details' }
+
+  // Traning Topic
+  public get fetch_tranning_topic() {
+    return this.prefix + 'fetch_tranning_topic'
+  }
+
+  public get fetch_traning_topic_details() {
+    return this.prefix + 'fetch_traning_topic_details'
+  }
+
+  public get create_traning_topic() {
+    return this.prefix + 'create_traning_topic'
+  }
+
+  public get update_traning_topic() {
+    return this.prefix + 'update_traning_topic'
+  }
+
+  public get delete_traning_topic() {
+    return this.prefix + 'delete_traning_topic'
+  }
+
+  public get clone_traning_topic() {
+    return this.prefix + 'clone_traning_topic'
+  }
 }
 
 export { ApiNames }

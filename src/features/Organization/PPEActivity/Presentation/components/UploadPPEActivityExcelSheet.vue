@@ -132,7 +132,6 @@ const deleteRow = (rowIndex: number) => {
     mappedData.value[0],
     ...mappedData.value.slice(1).filter((_, i) => i !== rowIndex),
   ]
-
 }
 
 const onMappingClose = () => {
@@ -142,74 +141,87 @@ const onMappingClose = () => {
     sheetData.value = null
   }
 }
+const createPermissions = [
+  PermissionsEnum.ADMIN,
+  PermissionsEnum.PPE_ACTIVITY_ALL,
+  PermissionsEnum.PPE_ACTIVITY_CREATE,
+  PermissionsEnum.ORG_PPE_ACTIVITY_ALL,
+  PermissionsEnum.ORG_PPE_ACTIVITY_CREATE,
+]
 </script>
 
 <template>
-  <div class="page-wrapper">
-    <div v-if="errorMsg" class="error-banner">{{ errorMsg }}</div>
+  <PermissionBuilder :code="createPermissions">
+    <div class="page-wrapper">
+      <div v-if="errorMsg" class="error-banner">{{ errorMsg }}</div>
 
-    <div v-if="isLoading" class="loading-bar">
-      <span class="loading-dot" />
-      <span class="loading-dot" />
-      <span class="loading-dot" />
-      <span class="loading-label">Processing file…</span>
-    </div>
+      <div v-if="isLoading" class="loading-bar">
+        <span class="loading-dot" />
+        <span class="loading-dot" />
+        <span class="loading-dot" />
+        <span class="loading-label">Processing file…</span>
+      </div>
 
-    <FileUpload
-      v-if="!Data || Data.length === 0"
-      accept=".xls,.xlsx"
-      @update:fileData="fileUpload"
-    />
-
-    <template v-else>
-      <ExcelSheetColumnsHandle
-        v-if="!mappedData"
-        :visable="true"
-        :columns="Data[0]"
-        :sentData="SendData"
-        @update:columnMapping="onColumnMapping"
-        :sentDataLabels="SendDataLabels"
-        @close="onMappingClose"
+      <FileUpload
+        v-if="!Data || Data.length === 0"
+        accept=".xls,.xlsx"
+        @update:fileData="fileUpload"
       />
 
-      <template v-if="mappedData && mappedData.length > 0">
-        <div class="table-container">
-          <div class="table-header">
-            <h3 class="table-title">Mapped Data Preview</h3>
-            <span class="table-badge">{{ mappedData.length - 1 }} rows</span>
-          </div>
-          <div class="table-responsive">
-            <table class="main-table">
-              <thead>
-                <tr>
-                  <th v-for="(item, i) in mappedData[0]" :key="i">
-                    <span>{{ item }}</span>
-                  </th>
+      <template v-else>
+        <ExcelSheetColumnsHandle
+          v-if="!mappedData"
+          :visable="true"
+          :columns="Data[0]"
+          :sentData="SendData"
+          @update:columnMapping="onColumnMapping"
+          :sentDataLabels="SendDataLabels"
+          @close="onMappingClose"
+        />
 
-                  <th class="last"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(row, rowIndex) in mappedData.slice(1)" :key="rowIndex">
-                  <!-- {{ row[7] }} -->
-                  <td v-for="(value, colIndex) in row" :key="colIndex">
-                    <span>{{ value }}</span>
-                  </td>
-                  <td>
-                    <button class="btn-delete-row" @click="deleteRow(rowIndex)" title="Delete row">
-                      🗑
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <template v-if="mappedData && mappedData.length > 0">
+          <div class="table-container">
+            <div class="table-header">
+              <h3 class="table-title">Mapped Data Preview</h3>
+              <span class="table-badge">{{ mappedData.length - 1 }} rows</span>
+            </div>
+            <div class="table-responsive">
+              <table class="main-table">
+                <thead>
+                  <tr>
+                    <th v-for="(item, i) in mappedData[0]" :key="i">
+                      <span>{{ item }}</span>
+                    </th>
 
-        <button class="btn-confirm" @click="addPPEActivities">Confirm & Submit</button>
+                    <th class="last"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(row, rowIndex) in mappedData.slice(1)" :key="rowIndex">
+                    <!-- {{ row[7] }} -->
+                    <td v-for="(value, colIndex) in row" :key="colIndex">
+                      <span>{{ value }}</span>
+                    </td>
+                    <td>
+                      <button
+                        class="btn-delete-row"
+                        @click="deleteRow(rowIndex)"
+                        title="Delete row"
+                      >
+                        🗑
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <button class="btn-confirm" @click="addPPEActivities">Confirm & Submit</button>
+        </template>
       </template>
-    </template>
-  </div>
+    </div>
+  </PermissionBuilder>
 </template>
 
 <style scoped>
@@ -300,7 +312,6 @@ a:hover {
   font-family: 'Regular';
   /* margin-bottom: 8px; */
 }
-
 
 .chips {
   display: flex;

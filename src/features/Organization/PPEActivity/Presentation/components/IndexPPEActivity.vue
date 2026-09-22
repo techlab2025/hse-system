@@ -43,18 +43,20 @@ const basePath = computed(() =>
 
 const featurePermissions = [
   PermissionsEnum.ADMIN,
-  PermissionsEnum.ORGANIZATION_EMPLOYEE,
+  PermissionsEnum.PPE_ACTIVITY_ALL,
+  PermissionsEnum.PPE_ACTIVITY_FETCH,
+  PermissionsEnum.ORG_PPE_ACTIVITY_ALL,
+  PermissionsEnum.ORG_PPE_ACTIVITY_FETCH,
 ]
 const createPermissions = [
   PermissionsEnum.ADMIN,
-  PermissionsEnum.ORGANIZATION_EMPLOYEE,
+  PermissionsEnum.PPE_ACTIVITY_ALL,
+  PermissionsEnum.PPE_ACTIVITY_CREATE,
+  PermissionsEnum.ORG_PPE_ACTIVITY_ALL,
+  PermissionsEnum.ORG_PPE_ACTIVITY_CREATE,
 ]
 
-const fetchPPEActivities = async (
-  query: string = '',
-  page: number = 1,
-  limit: number = 10,
-) => {
+const fetchPPEActivities = async (query: string = '', page: number = 1, limit: number = 10) => {
   await controller.getData(new IndexPPEActivityParams(query, page, limit, 1))
 }
 
@@ -86,13 +88,25 @@ const rowActions = (id: number) => [
     text: t('edit'),
     icon: ActionsTableEdit,
     link: `${basePath.value}/ppe-activity/${id}`,
-    permission: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+    permission: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.PPE_ACTIVITY_ALL,
+      PermissionsEnum.PPE_ACTIVITY_UPDATE,
+      PermissionsEnum.ORG_PPE_ACTIVITY_ALL,
+      PermissionsEnum.ORG_PPE_ACTIVITY_UPDATE,
+    ],
   },
   {
     text: t('delete'),
     icon: IconDelete,
     action: () => deletePPEActivity(id),
-    permission: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+    permission: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.PPE_ACTIVITY_ALL,
+      PermissionsEnum.PPE_ACTIVITY_DELETE,
+      PermissionsEnum.ORG_PPE_ACTIVITY_ALL,
+      PermissionsEnum.ORG_PPE_ACTIVITY_DELETE,
+    ],
   },
 ]
 
@@ -110,10 +124,7 @@ const exportExcel = () =>
     'ppe_activities.xlsx',
   )
 const downloadExample = () =>
-  saveWorkbook(
-    [{ title: 'PPE Activity 1' }],
-    'ppe_activity_template.xlsx',
-  )
+  saveWorkbook([{ title: 'PPE Activity 1' }], 'ppe_activity_template.xlsx')
 
 const showUploadDialog = ref(false)
 const pendingFile = ref<File | null>(null)
@@ -169,7 +180,12 @@ const headerActions = () => [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <span class="icon-remove" @click="((word = ''), searchPPEActivities())"><Search /></span>
-      <input v-model="word" :placeholder="$t('search')" class="input" @input="searchPPEActivities" />
+      <input
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        @input="searchPPEActivities"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ActionsList
@@ -181,10 +197,7 @@ const headerActions = () => [
         <template #custom><ExportPdf :is-drop-list="true" /></template>
       </ActionsList>
     </div>
-    <SystemPPEActivities
-      v-if="user?.type !== OrganizationTypeEnum.ADMIN"
-      :is-header-tap="true"
-    />
+    <SystemPPEActivities v-if="user?.type !== OrganizationTypeEnum.ADMIN" :is-header-tap="true" />
   </div>
 
   <PermissionBuilder :code="featurePermissions">
@@ -245,10 +258,7 @@ const headerActions = () => [
     :header="$t('import_ppe_activities')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <UploadPPEActivityExcelSheet
-      :initial-file="pendingFile"
-      @uploaded="onUploaded"
-    />
+    <UploadPPEActivityExcelSheet :initial-file="pendingFile" @uploaded="onUploaded" />
   </Dialog>
   <input
     ref="fileInputRef"

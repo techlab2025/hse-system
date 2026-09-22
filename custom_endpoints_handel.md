@@ -114,7 +114,9 @@ When running inside Codex or another repository agent:
 7. Do not modify unrelated files.
 8. Add enum files only when required.
 9. Add custom models only when required by the user or response structure.
-10. Run the existing TypeScript/type-check command.
+10. Add/update `PermissionsEnum` and the correct admin/organization permission handler(s).
+11. Create/use a feature skeleton and `DataStatus` for data-rendering endpoints.
+12. Run the existing TypeScript/type-check command.
 11. Fix errors introduced by the generated feature.
 12. Search generated files for copied feature names before finishing.
 
@@ -218,6 +220,7 @@ Interpret the request into an internal structure like:
 
 ```yaml
 feature_name: PermitApproval
+endpoint_scope: admin | organization | shared
 
 endpoints:
   - action_name: ApprovePermit
@@ -369,7 +372,8 @@ src/features/Organization/<FeatureName>/
     ├── controllers/
     │   └── <EndpointAction>Controller.ts
     └── components/
-        └── <FeatureName>.vue
+        ├── <FeatureName>.vue
+        └── <FeatureName>Skeleton.vue   # when endpoint data is rendered asynchronously
 ```
 
 For two endpoints:
@@ -403,7 +407,8 @@ src/features/Organization/<FeatureName>/
     │   ├── <Endpoint1>Controller.ts
     │   └── <Endpoint2>Controller.ts
     └── components/
-        └── <FeatureName>.vue
+        ├── <FeatureName>.vue
+        └── <FeatureName>Skeleton.vue   # when endpoint data is rendered asynchronously
 ```
 
 For three endpoints:
@@ -1604,6 +1609,207 @@ Three endpoints mean three matching getters.
 
 The number of generated `ApiNames` getters must match the number of custom endpoints unless two operations intentionally use the same existing getter and the user explicitly says so.
 
+
+## Endpoint scope/type: `admin`, `organization`, or `shared`
+
+Every generated CRUD/custom endpoint belongs to one of three API scopes:
+
+```text
+admin
+organization
+shared
+```
+
+The user may say, for example:
+
+```text
+admin CRUD
+organization endpoint
+org endpoint
+shared CRUD
+shared endpoint
+```
+
+The selected scope controls **how the getter is named and how its URL is built inside `ApiNames`**.
+
+### 1. Admin endpoint
+
+For an `admin` CRUD/endpoint, use the normal action/feature getter naming convention unless the user explicitly supplies another getter name.
+
+Examples:
+
+```ts
+public get IndexSubscriptionApplication() {
+  return this.prefix + 'fetch_subscription_applications'
+}
+
+public get ApproveSubscriptionApplication() {
+  return this.prefix + 'approve_subscription_application'
+}
+
+public get RejectSubscriptionApplication() {
+  return this.prefix + 'reject_subscription_application'
+}
+```
+
+Admin rule:
+
+```text
+Getter style: PascalCase action/feature name
+URL base: this.prefix
+```
+
+Example service usage:
+
+```ts
+url: ApiNames.instance.IndexSubscriptionApplication
+```
+
+Do not change the admin getter to a snake_case getter unless the user explicitly provides that getter name.
+
+### 2. Organization / org endpoint
+
+For an `organization` or `org` CRUD/endpoint, use the organization URL explicitly:
+
+```ts
+this.baseUrl + this.organizationPrefix + '<backend_endpoint>'
+```
+
+Examples:
+
+```ts
+public get DeleteNotificationPlan() {
+  return this.baseUrl + this.organizationPrefix + 'delete_notification_plan'
+}
+
+public get RefreshNotification() {
+  return this.baseUrl + this.organizationPrefix + 'register_notification_socket_user'
+}
+
+public get CloneAllData() {
+  return this.baseUrl + this.organizationPrefix + 'clone_all_data'
+}
+```
+
+Organization rule:
+
+```text
+Getter style: PascalCase action/feature name unless the user supplies an exact getter name
+URL base: this.baseUrl + this.organizationPrefix
+```
+
+Example service usage:
+
+```ts
+url: ApiNames.instance.DeleteNotificationPlan
+```
+
+Do **not** replace the organization URL with `this.prefix` when the user says the endpoint is organization/org scoped.
+
+### 3. Shared endpoint
+
+For a `shared` CRUD/endpoint, preserve the endpoint getter name exactly as supplied by the user. Shared endpoint getters are commonly snake_case and may intentionally match the backend endpoint name.
+
+Example:
+
+```ts
+// PPE Tool
+
+public get fetch_ppe_tools() {
+  return this.prefix + 'fetch_ppe_tools'
+}
+
+public get fetch_ppe_toll_deails() {
+  return this.prefix + 'fetch_ppe_toll_deails'
+}
+
+public get create_ppe_toll() {
+  return this.prefix + 'create_ppe_toll'
+}
+
+public get update_ppe_tool() {
+  return this.prefix + 'update_ppe_tool'
+}
+
+public get delete_ppe_tool() {
+  return this.prefix + 'delete_ppe_tool'
+}
+
+public get clone_ppe_tool() {
+  return this.prefix + 'clone_ppe_tool'
+}
+```
+
+Shared rule:
+
+```text
+Getter style: preserve the exact user-provided endpoint/getter identifier
+URL base: this.prefix
+```
+
+The API service must use the exact same getter name:
+
+```ts
+url: ApiNames.instance.fetch_ppe_tools
+```
+
+Do not automatically convert a shared getter like:
+
+```text
+fetch_ppe_tools
+```
+
+into:
+
+```text
+IndexPpeTool
+FetchPpeTools
+```
+
+unless the user explicitly asks for that naming.
+
+Also do not silently correct spelling in a user-provided shared endpoint identifier. For example, if the backend/getter is supplied as:
+
+```text
+fetch_ppe_toll_deails
+```
+
+keep it exactly unless the user asks to rename/fix it.
+
+### Scope decision rules
+
+1. If the user explicitly says `admin`, use the admin rule.
+2. If the user explicitly says `organization` or `org`, use the organization rule.
+3. If the user explicitly says `shared`, use the shared rule.
+4. If the scope is not supplied, inspect the closest existing feature/API pattern.
+5. If the scope still cannot be determined unambiguously, ask only:
+
+```text
+Is this endpoint/CRUD admin, organization, or shared?
+```
+
+Do not guess when the scope changes the URL construction or getter naming.
+
+### Backend path is still authoritative
+
+Scope controls the prefix/naming convention, but the backend endpoint path supplied by the user remains the source of truth.
+
+Examples:
+
+```text
+admin + fetch_subscription_applications
+=> this.prefix + 'fetch_subscription_applications'
+
+organization + delete_notification_plan
+=> this.baseUrl + this.organizationPrefix + 'delete_notification_plan'
+
+shared + fetch_ppe_tools
+=> this.prefix + 'fetch_ppe_tools'
+```
+
+Never derive a different backend path merely from the feature/class name.
+
+
 ## Mandatory rules
 
 1. Search `apiNames.ts` before adding anything.
@@ -1642,15 +1848,19 @@ return this.prefix + '<backend_endpoint>'
 
 8. Do not infer or rename the backend path when the user supplied it.
 
-9. If the user supplies a backend endpoint path but no getter name, use the endpoint/action name as the getter name unless the nearby project convention clearly requires another name.
+9. If the user supplies a backend endpoint path but no getter name, use the scope rule: admin/organization use the normal PascalCase action/feature getter convention; shared uses the exact endpoint identifier itself (commonly snake_case) as the getter name unless the user provides another exact name.
 
 10. If the user supplies a getter name but no endpoint path, first search `apiNames.ts`. If it does not exist and the path cannot be determined from the repository, ask only for the missing backend endpoint path.
 
-11. Use another prefix only when the user/reference endpoint requires it. The normal project default is:
+11. Use the endpoint scope rules for URL construction:
 
-```ts
-this.prefix
+```text
+admin        -> this.prefix
+organization -> this.baseUrl + this.organizationPrefix
+shared       -> this.prefix
 ```
+
+For `shared`, preserve the exact getter identifier supplied by the user, including snake_case. Do not normalize it to PascalCase unless requested.
 
 ## Codex
 
@@ -1715,18 +1925,192 @@ Do not automatically modify central route indexes unless the user asks.
 
 ---
 
-# 32. Optional Permissions
+# 32. Permissions are mandatory for custom endpoint features
 
-Do not invent permissions.
+Every generated custom endpoint feature must be connected to the project permission system.
 
-If the component needs permissions:
+Use the endpoint scope:
 
-1. search `PermissionsEnum`;
-2. use existing matching permissions;
-3. if no permission exists, do not invent enum members;
-4. mention the missing permission integration.
+```text
+admin
+organization / org
+shared
+```
 
-If no permission requirement is provided, do not add `PermissionBuilder` automatically unless the nearest matching feature requires it.
+Search the canonical enum first:
+
+```ts
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+```
+
+## 32.1 Reuse an existing feature permission family when possible
+
+If the custom endpoints belong to an existing feature, extend that existing permission family instead of creating a duplicate feature family.
+
+Example:
+
+```text
+Subscription Application already has:
+SUBSCRIPTION_APPLICATION_ALL
+SUBSCRIPTION_APPLICATION_FETCH
+SUBSCRIPTION_APPLICATION_DETAILS
+...
+```
+
+For new custom actions such as approve/reject, add missing action permissions under the same family, for example:
+
+```ts
+SUBSCRIPTION_APPLICATION_APPROVE = '<next unused code>',
+SUBSCRIPTION_APPLICATION_REJECT = '<next unused code>',
+```
+
+Never duplicate an existing enum name or code.
+
+## 32.2 New custom endpoint feature
+
+If there is no existing feature permission family, create:
+
+```text
+<FEATURE>_ALL
++ one permission for every endpoint action
+```
+
+Example with three endpoints:
+
+```ts
+PERMIT_DECISION_ALL = 'PD00',
+PERMIT_DECISION_APPROVE = 'PD01',
+PERMIT_DECISION_REJECT = 'PD02',
+PERMIT_DECISION_CANCEL = 'PD03',
+```
+
+For standard semantic actions, use standard names when appropriate:
+
+```text
+fetch/list   -> FETCH
+details/show -> DETAILS
+create/add   -> CREATE
+update/edit  -> UPDATE
+delete       -> DELETE
+```
+
+For non-standard actions preserve the action meaning:
+
+```text
+APPROVE
+REJECT
+CLOSE
+START
+SUBMIT
+VERIFY
+CLONE
+REFRESH
+```
+
+Codes must use the next available unique suffix inside that feature prefix. Search the enum before assigning a number.
+
+## 32.3 Scope behavior
+
+Admin feature:
+
+```text
+<FEATURE>_ALL
+<FEATURE>_<ACTION>
+```
+
+Organization feature:
+
+```text
+ORG_<FEATURE>_ALL
+ORG_<FEATURE>_<ACTION>
+```
+
+Shared feature:
+
+```text
+create BOTH admin and ORG_ variants
+```
+
+Organization permission codes normally use `O` before the base feature code, following the existing project convention. If the feature already has an established prefix, preserve it.
+
+## 32.4 Permission handler integration
+
+Find the handler files by the exports:
+
+```ts
+export const adminPermissions: PermissionItem = { ... }
+export const OrgPermissions: PermissionItem = { ... }
+```
+
+Then:
+
+```text
+admin endpoint feature        -> adminPermissions
+organization endpoint feature -> OrgPermissions
+shared endpoint feature       -> both
+```
+
+Create/update one feature group whose children are the permissions used by the endpoint actions.
+
+Example admin custom group:
+
+```ts
+{
+  key: PermissionsEnum.PERMIT_DECISION_ALL,
+  code: PermissionsEnum.PERMIT_DECISION_ALL,
+  label: 'Permit Decision',
+  permissions: [
+    { key: PermissionsEnum.PERMIT_DECISION_ALL, code: PermissionsEnum.PERMIT_DECISION_ALL, label: 'All' },
+    { key: PermissionsEnum.PERMIT_DECISION_APPROVE, code: PermissionsEnum.PERMIT_DECISION_APPROVE, label: 'Approve' },
+    { key: PermissionsEnum.PERMIT_DECISION_REJECT, code: PermissionsEnum.PERMIT_DECISION_REJECT, label: 'Reject' },
+    { key: PermissionsEnum.PERMIT_DECISION_CANCEL, code: PermissionsEnum.PERMIT_DECISION_CANCEL, label: 'Cancel' },
+  ],
+}
+```
+
+For organization use `ORG_` keys and preserve the local organization-handler label conventions.
+
+## 32.5 Component/action permission rules
+
+Each endpoint action gets its own permission array.
+
+Admin example:
+
+```ts
+const approvePermissions = [
+  PermissionsEnum.ADMIN,
+  PermissionsEnum.PERMIT_DECISION_ALL,
+  PermissionsEnum.PERMIT_DECISION_APPROVE,
+]
+```
+
+Organization:
+
+```ts
+const approvePermissions = [
+  PermissionsEnum.ORGANIZATION_EMPLOYEE,
+  PermissionsEnum.ORG_PERMIT_DECISION_ALL,
+  PermissionsEnum.ORG_PERMIT_DECISION_APPROVE,
+]
+```
+
+Shared combines the admin and organization variants so the component can work under both scopes.
+
+Apply permissions to:
+
+- endpoint buttons;
+- action menu items;
+- forms that trigger the endpoint;
+- fetch/result sections;
+- dialogs that expose the action.
+
+Do not expose an action button with only a generic role permission when a feature/action permission exists.
+
+## 32.6 No automatic sidebar for custom endpoint-only features
+
+Custom endpoint-only features do **not** get sidebar entries by default.
+
+Only CRUD features are automatically integrated into sidebars. Add a custom-endpoint feature to a sidebar only when the user explicitly asks for a standalone navigation item.
 
 ---
 
@@ -2127,11 +2511,11 @@ unless existing surrounding code explicitly uses them and the user requests cons
 
 ---
 
-# 43. Component Result Handling
+# 43. Component State, DataStatus, and Skeleton Handling
 
-For a data-returning endpoint, expose controller state to the component.
+Every generated custom endpoint must have its controller state handled by the component.
 
-Example:
+For a data-returning/read endpoint, expose controller state:
 
 ```ts
 const controller = FetchPermitResultController.getInstance()
@@ -2146,9 +2530,67 @@ watch(
 )
 ```
 
-Use `DataStatus` when the UI is rendering asynchronous endpoint data.
+If the feature renders asynchronous endpoint data, create one feature-specific skeleton component:
 
-Do not force `DataStatus` for a simple mutation-only button if it adds no value.
+```text
+Presentation/components/<FeatureName>Skeleton.vue
+```
+
+or place it in `Presentation/supcomponents/` when that is the local feature convention.
+
+The skeleton may reuse shared loaders such as:
+
+```text
+TableLoader
+FormLoader
+```
+
+but it must match the generated UI shape.
+
+Use `DataStatus` for the rendered result and handle all applicable states:
+
+```vue
+<PermissionBuilder :code="fetchPermissions">
+  <DataStatus :controller="state">
+    <template #success>
+      <!-- real result UI -->
+    </template>
+
+    <template #loader>
+      <FeatureSkeleton />
+    </template>
+
+    <template #initial>
+      <FeatureSkeleton />
+    </template>
+
+    <template #empty>
+      <DataEmpty ... />
+    </template>
+
+    <template #failed>
+      <DataFailed ... />
+    </template>
+  </DataStatus>
+
+  <template #notPermitted>
+    <DataFailed add-text="Have not Permission" description="" link="" />
+  </template>
+</PermissionBuilder>
+```
+
+For a fetch/read endpoint, do not ignore `initial`, `loader`, `empty`, or `failed` state.
+
+For mutation-only endpoints:
+
+- keep the controller state;
+- validate before calling;
+- disable/prevent duplicate action while loading when appropriate;
+- show success/error using the project dialogs;
+- protect the button/form with that endpoint's permission;
+- if the mutation response itself is rendered as content, render that result through `DataStatus` and the feature skeleton.
+
+One feature with 2-3 endpoints normally uses one shared skeleton component unless their result layouts are materially different.
 
 ---
 
@@ -2333,6 +2775,10 @@ Before finishing a one-endpoint feature:
 - [ ] 1 Vue component.
 - [ ] Enum file(s) only when required.
 - [ ] Exact endpoint name.
+- [ ] Endpoint scope (`admin`, `organization`/`org`, or `shared`) is respected.
+- [ ] Admin getter URL uses `this.prefix`.
+- [ ] Organization getter URL uses `this.baseUrl + this.organizationPrefix`.
+- [ ] Shared getter URL uses `this.prefix` and the getter name preserves the exact user-provided identifier, including snake_case.
 - [ ] One matching `ApiNames` getter per endpoint.
 - [ ] API service getter names match `ApiNames` exactly.
 - [ ] `ApiNames` uses the exact user-provided backend endpoint path.
@@ -2341,6 +2787,13 @@ Before finishing a one-endpoint feature:
 - [ ] Correct response parsing.
 - [ ] Every endpoint Params using `TranslationsParams` preserves the complete `translation.toMap()` result.
 - [ ] No endpoint Params manually reduces translations to only `titles`, `descriptions`, or another subset unless explicitly required.
+- [ ] Permission enum contains the feature/action permissions required by the endpoint scope.
+- [ ] Admin permission handler updated for admin/shared endpoint features.
+- [ ] Organization permission handler updated for organization/shared endpoint features.
+- [ ] Every endpoint UI action uses its matching action permission.
+- [ ] Data-returning endpoint UI handles initial/loading/success/empty/failed/not-permitted states through `DataStatus` where applicable.
+- [ ] Feature skeleton exists when asynchronous data is rendered.
+- [ ] No sidebar item was added for an endpoint-only feature unless explicitly requested.
 - [ ] No unrelated CRUD files.
 - [ ] No copied old names.
 
@@ -2457,7 +2910,9 @@ The architecture does not need to be repeated by the user.
 When this file is used:
 
 1. Read the requested feature name.
-2. Count requested endpoints.
+2. Read/resolve the endpoint scope: `admin`, `organization`/`org`, or `shared`.
+3. Apply the matching ApiNames getter naming and URL-prefix rule before generating services.
+4. Count requested endpoints.
 3. Create exactly that many Params files.
 4. Create exactly that many API Services.
 5. Create exactly that many Repositories.

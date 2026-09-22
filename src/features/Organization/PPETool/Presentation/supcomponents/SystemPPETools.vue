@@ -1,4 +1,6 @@
   <script setup lang="ts">
+  import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue';
+  import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum';
   import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue';
   import Dialog from 'primevue/dialog';
   import DialogSystem from '@/assets/images/DialogSystem.png'
@@ -16,6 +18,7 @@
     isHeaderTap?: boolean
   }>()
 
+  const createPermissions = [PermissionsEnum.ORG_PPE_TOOLS_ALL, PermissionsEnum.ORG_PPE_TOOLS_CREATE]
   const visible = ref(false);
 
   const indexPPEToolController = IndexSystemPPEToolController.getInstance()
@@ -72,6 +75,7 @@
   }
 </script>
 <template>
+  <PermissionBuilder :code="createPermissions">
   <li v-if="!isHeaderTap" class="list-item cursor-pointer" @click="visible = true">
     <button>
       <SystemAddIcon />
@@ -113,6 +117,7 @@
 
 
   </Dialog>
+  </PermissionBuilder>
 </template>
 <style scoped>
 .export-pdf-btn {
