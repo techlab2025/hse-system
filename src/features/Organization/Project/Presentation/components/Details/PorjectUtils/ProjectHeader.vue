@@ -4,7 +4,7 @@ import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import ContractorIcon from '@/shared/icons/ContractorIcon.vue'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
-const props = defineProps<{
+defineProps<{
   projectId: number | undefined
   projectName: string | undefined
   SerialNumber: string | undefined
@@ -172,6 +172,54 @@ const props = defineProps<{
           </span>
           <span class="action-arrow" aria-hidden="true">→</span>
         </router-link>
+
+        <router-link
+          :to="{ name: 'Project Leadership', params: { id: projectId } }"
+          class="project-action-link action-leadership"
+        >
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 3v18M3 12h18M5 5l14 14M19 5 5 19" />
+            </svg>
+          </span>
+          <span class="action-copy">
+            <strong>Leadership visits</strong>
+            <small>Plan visits and submit reports</small>
+          </span>
+          <span class="action-arrow" aria-hidden="true">→</span>
+        </router-link>
+
+        <router-link
+          :to="{ name: 'Project PPE Matrix', params: { id: projectId } }"
+          class="project-action-link action-ppe-matrix"
+        >
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M4 4h16v16H4zM4 10h16M4 15h16M10 4v16" />
+            </svg>
+          </span>
+          <span class="action-copy">
+            <strong>Activity and tool matrix</strong>
+            <small>Set required PPE tools</small>
+          </span>
+          <span class="action-arrow" aria-hidden="true">→</span>
+        </router-link>
+
+        <router-link
+          :to="{ name: 'Project Risk Assessments', params: { id: projectId } }"
+          class="project-action-link action-risk-assessments"
+        >
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 3 2.5 20h19L12 3ZM12 9v5M12 17h.01" />
+            </svg>
+          </span>
+          <span class="action-copy">
+            <strong>Risk assessments</strong>
+            <small>Review project safety</small>
+          </span>
+          <span class="action-arrow" aria-hidden="true">→</span>
+        </router-link>
       </div>
     </div>
   </header>
@@ -179,7 +227,7 @@ const props = defineProps<{
 <style scoped lang="scss">
 .btn-route {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 9px;
 }
 .project-header-container {
@@ -527,6 +575,15 @@ const props = defineProps<{
 }
 .action-my-permits {
   --action-color: #d97706;
+}
+.action-leadership {
+  --action-color: #138b83;
+}
+.action-ppe-matrix {
+  --action-color: #5375cf;
+}
+.action-risk-assessments {
+  --action-color: #bf6b36;
 }
 @media (max-width: 1100px) {
   .project-header-container {

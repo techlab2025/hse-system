@@ -14,11 +14,13 @@ import ShowProjectDetailsController from '@/features/Organization/Project/Presen
 import ShowProjectDetailsParams from '@/features/Organization/Project/Core/params/ShowProjectDetailsParams'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
-import CreateLeadershipPlanParams, { type LeadershipVisitInput } from '../../Core/params/CreateLeadershipPlanParams'
-import FetchAllLeadershipVisitsParams from '../../Core/params/FetchAllLeadershipVisitsParams'
-import CreateLeadershipPlanController from '../controllers/CreateLeadershipPlanController'
-import FetchAllLeadershipVisitsController from '../controllers/FetchAllLeadershipVisitsController'
-import type LeadershipVisitModel from '../../Data/models/LeadershipVisitModel'
+import IndexVisitActivityController from '@/features/Organization/VisitActivity/Presentation/controllers/indexVisitActivityController'
+import IndexVisitActivityParams from '@/features/Organization/VisitActivity/Core/params/indexVisitActivityParams'
+import CreateLeadershipPlanParams, { type LeadershipVisitInput } from '../../../Core/params/Leadership/CreateLeadershipPlanParams'
+import FetchAllLeadershipVisitsParams from '../../../Core/params/Leadership/FetchAllLeadershipVisitsParams'
+import CreateLeadershipPlanController from '../../controllers/Leadership/CreateLeadershipPlanController'
+import FetchAllLeadershipVisitsController from '../../controllers/Leadership/FetchAllLeadershipVisitsController'
+import type LeadershipVisitModel from '../../../Data/models/Leadership/LeadershipVisitModel'
 import ReportVisit from './ReportVisit.vue'
 
 defineOptions({ name: 'ProjectLeadership' })
@@ -30,6 +32,9 @@ const projectController = ShowProjectDetailsController.getInstance()
 const projectState = projectController.state
 const employeeController = IndexOrganizatoinEmployeeController.getInstance()
 const employeeState = employeeController.state
+const visitActivityController = IndexVisitActivityController.getInstance()
+const visitActivityParams = new IndexVisitActivityParams('', 1, 10, 0)
+const activityOptions = computed(() => visitActivityController.state.value.data ?? [])
 const planController = CreateLeadershipPlanController.getInstance()
 const visitsController = FetchAllLeadershipVisitsController.getInstance()
 const visitsState = visitsController.state
@@ -54,10 +59,6 @@ const selectedOption = (options: TitleInterface[], id: number): TitleInterface |
   options.find((option) => option.id === id) ?? null
 const selectedId = (value: TitleInterface | TitleInterface[] | null): number =>
   value && !Array.isArray(value) ? value.id : 0
-const temporaryActivityOptions = Array.from(
-  { length: 100 },
-  (_, index) => new TitleInterface({ id: index + 1, title: `Activity ${index + 1}` }),
-)
 const months = computed<ProjectMonth[]>(() => {
   const startText = projectState.value.data?.startDate?.slice(0, 10)
   const endText = projectState.value.data?.endDate?.slice(0, 10)
@@ -223,9 +224,9 @@ onMounted(async () => {
                           :model-value="selectedOption(employeeOptions, visit.orgnizationEmployeeId)"
                           @update:model-value="(value) => { visit.orgnizationEmployeeId = selectedId(value) }" />
                         <UpdatedCustomInputSelect :id="`visit-activity-${month.key}-${index}`" label="Visit activity"
-                          placeholder="Select activity ID" :required="true" :reload="false"
-                          :static-options="temporaryActivityOptions"
-                          :model-value="selectedOption(temporaryActivityOptions, visit.visitActivityId)"
+                          placeholder="Select activity" :required="true" :reload="false"
+                          :controller="visitActivityController" :params="visitActivityParams"
+                          :model-value="selectedOption(activityOptions, visit.visitActivityId)"
                           @update:model-value="(value) => { visit.visitActivityId = selectedId(value) }" />
                       </div>
                     </article>

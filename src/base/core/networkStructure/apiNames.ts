@@ -1952,6 +1952,15 @@ class ApiNames {
   public get FetchAllLeadershipVisits() {
     return this.baseUrl + this.organizationPrefix + 'fetch_all_visitis'
   }
+  public get CreatePPEActivityTool() {
+    return this.baseUrl + this.organizationPrefix + 'create_ppe_activity_tool'
+  }
+  public get FetchPPEActivityTools() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_ppe_activity_tools'
+  }
+  public get CreatePPEMatrixDelivery() {
+    return this.baseUrl + this.organizationPrefix + 'create_ppe_matrix_delevery'
+  }
   public get CreateLeadershipVisitReport() {
     return this.baseUrl + this.organizationPrefix + 'create_visite_report'
   }

@@ -61,6 +61,26 @@ export const projectRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: 'project-details/:id/ppe-matrix',
+    name: 'Project PPE Matrix',
+    component: () => import('@/views/Organization/Project/ppematrix/PPEActivityToolMatrixPage.vue'),
+    meta: {
+      breadcrumb: 'PPE Matrix',
+      parent: 'Project Details',
+      isSidebar: false,
+    },
+  },
+  {
+    path: 'project-details/:id/ppe-delivery',
+    name: 'Project PPE Delivery',
+    component: () => import('@/views/Organization/Project/ppematrix/PPEMatrixDeliveryPage.vue'),
+    meta: {
+      breadcrumb: 'PPE Delivery',
+      parent: 'Project Details',
+      isSidebar: false,
+    },
+  },
+  {
     path: 'project-details/:id/risk-assessments',
     name: 'Project Risk Assessments',
     component: () => import('@/views/Organization/Project/RiskAssessment/RiskAssessmentsPage.vue'),

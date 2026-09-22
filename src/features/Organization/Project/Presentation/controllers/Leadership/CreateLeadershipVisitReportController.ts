@@ -1,7 +1,7 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type Params from '@/base/core/params/params'
-import type LeadershipVisitModel from '../../Data/models/LeadershipVisitModel'
-import CreateLeadershipVisitReportUseCase from '../../Domain/useCase/CreateLeadershipVisitReportUseCase'
+import type LeadershipVisitModel from '../../../Data/models/Leadership/LeadershipVisitModel'
+import CreateLeadershipVisitReportUseCase from '../../../Domain/useCase/Leadership/CreateLeadershipVisitReportUseCase'
 
 export default class CreateLeadershipVisitReportController extends ControllerInterface<LeadershipVisitModel> {
   private static instance: CreateLeadershipVisitReportController
