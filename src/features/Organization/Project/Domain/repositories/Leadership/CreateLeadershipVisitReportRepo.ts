@@ -1,7 +1,7 @@
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import RepoInterface, { ResponseType } from '@/base/Domain/Repositories/repo_interface'
-import CreateLeadershipVisitReportApiService from '../../Data/apiServices/CreateLeadershipVisitReportApiService'
-import LeadershipVisitModel from '../../Data/models/LeadershipVisitModel'
+import CreateLeadershipVisitReportApiService from '../../../Data/apiServices/Leadership/CreateLeadershipVisitReportApiService'
+import LeadershipVisitModel from '../../../Data/models/Leadership/LeadershipVisitModel'
 
 export default class CreateLeadershipVisitReportRepo extends RepoInterface<LeadershipVisitModel> {
   private static instance: CreateLeadershipVisitReportRepo

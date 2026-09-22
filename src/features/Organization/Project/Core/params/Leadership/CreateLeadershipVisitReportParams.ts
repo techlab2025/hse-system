@@ -1,5 +1,5 @@
 import type Params from '@/base/core/params/params'
-import type { UnsafeVisitTypeEnum } from '../enums/UnsafeVisitTypeEnum'
+import type { UnsafeVisitTypeEnum } from '../../Enums/Leadership/UnsafeVisitTypeEnum'
 
 export interface VisitImprovementInput {
   areas: string

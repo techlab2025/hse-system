@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Leadership from '@/features/Organization/Project/Leadership/Presentation/components/Leadership.vue'
+import Leadership from '@/features/Organization/Project/Presentation/components/Leadership/Leadership.vue'
 </script>
 
 <template>

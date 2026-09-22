@@ -16,11 +16,11 @@ import IndexOrganizatoinEmployeeController from '@/features/Organization/Organiz
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 import IndexVisitActivityController from '@/features/Organization/VisitActivity/Presentation/controllers/indexVisitActivityController'
 import IndexVisitActivityParams from '@/features/Organization/VisitActivity/Core/params/indexVisitActivityParams'
-import CreateLeadershipPlanParams, { type LeadershipVisitInput } from '../../Core/params/CreateLeadershipPlanParams'
-import FetchAllLeadershipVisitsParams from '../../Core/params/FetchAllLeadershipVisitsParams'
-import CreateLeadershipPlanController from '../controllers/CreateLeadershipPlanController'
-import FetchAllLeadershipVisitsController from '../controllers/FetchAllLeadershipVisitsController'
-import type LeadershipVisitModel from '../../Data/models/LeadershipVisitModel'
+import CreateLeadershipPlanParams, { type LeadershipVisitInput } from '../../../Core/params/Leadership/CreateLeadershipPlanParams'
+import FetchAllLeadershipVisitsParams from '../../../Core/params/Leadership/FetchAllLeadershipVisitsParams'
+import CreateLeadershipPlanController from '../../controllers/Leadership/CreateLeadershipPlanController'
+import FetchAllLeadershipVisitsController from '../../controllers/Leadership/FetchAllLeadershipVisitsController'
+import type LeadershipVisitModel from '../../../Data/models/Leadership/LeadershipVisitModel'
 import ReportVisit from './ReportVisit.vue'
 
 defineOptions({ name: 'ProjectLeadership' })

@@ -1,7 +1,7 @@
 import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import RepoInterface from '@/base/Domain/Repositories/repo_interface'
-import FetchAllLeadershipVisitsApiService from '../../Data/apiServices/FetchAllLeadershipVisitsApiService'
-import LeadershipVisitModel from '../../Data/models/LeadershipVisitModel'
+import FetchAllLeadershipVisitsApiService from '../../../Data/apiServices/Leadership/FetchAllLeadershipVisitsApiService'
+import LeadershipVisitModel from '../../../Data/models/Leadership/LeadershipVisitModel'
 
 export default class FetchAllLeadershipVisitsRepo extends RepoInterface<LeadershipVisitModel[]> {
   private static instance: FetchAllLeadershipVisitsRepo
