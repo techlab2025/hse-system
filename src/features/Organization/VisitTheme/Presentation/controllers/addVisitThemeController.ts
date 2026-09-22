@@ -94,4 +94,48 @@ export default class AddVisitThemeController extends ControllerInterface<VisitTh
     super.handleResponseDialogs()
     return this.state
   }
+
+  async addSystemVisitThemes(items: VisitThemeModel[]) {
+  try {
+    for (const item of items) {
+      const translations = new TranslationsParams(['en', 'ar'])
+
+      translations.setTranslation('title', 'en', item.title)
+      translations.setTranslation('title', 'ar', item.title)
+
+      const dataState: DataState<VisitThemeModel> = await this.useCase.call(
+        new AddVisitThemeParams(translations),
+      )
+
+      this.setLoading()
+      this.setState(dataState)
+
+      if (!this.isDataSuccess()) {
+        throw new Error(
+          this.state.value.error?.title ?? 'Import failed',
+        )
+      }
+    }
+
+    DialogSelector.instance.successDialog.openDialog({
+      dialogName: 'dialog-success',
+      titleContent: 'Added was successful',
+      imageElement: successImage,
+      messageContent: null,
+    })
+
+    return true
+  } catch (error: unknown) {
+    DialogSelector.instance.failedDialog.openDialog({
+      dialogName: 'dialog-error',
+      titleContent: this.state.value.error?.title ?? String(error),
+      imageElement: errorImage,
+      messageContent: null,
+    })
+
+    return false
+  } finally {
+    super.handleResponseDialogs()
+  }
+}
 }

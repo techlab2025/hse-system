@@ -100,4 +100,62 @@ export default class AddVisitActivityController extends ControllerInterface<Visi
     super.handleResponseDialogs()
     return this.state
   }
+
+  async addSystemVisitActivities(items: VisitActivityModel[]) {
+  try {
+    for (const item of items) {
+      if (!item.title) {
+        throw new Error('Visit Activity title is missing')
+      }
+
+      const translations = new TranslationsParams(['en', 'ar'])
+
+      translations.setTranslation('title', 'en', item.title)
+      translations.setTranslation('title', 'ar', item.title)
+
+      const params = new AddVisitActivityParams(translations)
+
+      const validation = params.validate()
+
+      if (!validation.isValid) {
+        params.validateOrThrow()
+      }
+
+      const dataState: DataState<VisitActivityModel> =
+        await this.addVisitActivityUseCase.call(params)
+
+      this.setState(dataState)
+
+      if (!this.isDataSuccess()) {
+        throw new Error(
+          this.state.value.error?.title ?? 'Failed to add visit activity',
+        )
+      }
+    }
+
+    DialogSelector.instance.successDialog.openDialog({
+      dialogName: 'dialog-success',
+      titleContent: 'Added was successful',
+      imageElement: successImage,
+      messageContent: null,
+    })
+
+    return true
+  } catch (error: unknown) {
+    console.error('addSystemVisitActivities error:', error)
+
+    DialogSelector.instance.failedDialog.openDialog({
+      dialogName: 'dialog-error',
+      titleContent:
+        this.state.value.error?.title ??
+        (error instanceof Error ? error.message : String(error)),
+      imageElement: errorImage,
+      messageContent: null,
+    })
+
+    return false
+  } finally {
+    super.handleResponseDialogs()
+  }
+}
 }

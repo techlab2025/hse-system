@@ -11,6 +11,7 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import Search from '@/shared/icons/Search.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
@@ -29,6 +30,7 @@ import IndexVisitThemeParams from '../../Core/params/indexVisitThemeParams'
 import DeleteVisitThemeController from '../controllers/deleteVisitThemeController'
 import DeleteVisitThemeParams from '../../Core/params/deleteVisitThemeParams'
 import AddVisitThemeController from '../controllers/addVisitThemeController'
+import SystemVisitThemes from '../supcomponents/SystemVisitThemes.vue'
 const { t } = useI18n()
 const router = useRouter()
 const { user } = useUserStore()
@@ -153,9 +155,16 @@ const headerActions = () => [
         :feature-name="$t('action_feature_visit_themes')"
         :show-actions="true"
         :action-list="headerActions()"
-        :actions-number="4"
-      />
+        :actions-number="5"
+      >
+        <template #custom><ExportPdf :is-drop-list="true" /></template>
+      </ActionsList>
     </div>
+    <SystemVisitThemes
+      v-if="user?.type !== OrganizationTypeEnum.ADMIN"
+      :is-header-tap="true"
+      @added="fetchVisitThemes(word, currentPage, countPerPage)"
+    />
   </div>
   <PermissionBuilder :code="permissions">
     <DataStatus :controller="state">

@@ -11,6 +11,7 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import Search from '@/shared/icons/Search.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
@@ -29,6 +30,7 @@ import IndexVisitCategoryParams from '../../Core/params/indexVisitCategoryParams
 import DeleteVisitCategoryController from '../controllers/deleteVisitCategoryController'
 import DeleteVisitCategoryParams from '../../Core/params/deleteVisitCategoryParams'
 import AddVisitCategoryController from '../controllers/addVisitCategoryController'
+import SystemVisitCategories from '../supcomponents/SystemVisitCategories.vue'
 const { t } = useI18n()
 const router = useRouter()
 const { user } = useUserStore()
@@ -153,9 +155,16 @@ const headerActions = () => [
         :feature-name="$t('action_feature_visit_categories')"
         :show-actions="true"
         :action-list="headerActions()"
-        :actions-number="4"
-      />
+        :actions-number="5"
+      >
+        <template #custom><ExportPdf :is-drop-list="true" /></template>
+      </ActionsList>
     </div>
+    <SystemVisitCategories
+      v-if="user?.type !== OrganizationTypeEnum.ADMIN"
+      :is-header-tap="true"
+      @added="fetchVisitCategories(word, currentPage, countPerPage)"
+    />
   </div>
   <PermissionBuilder :code="permissions">
     <DataStatus :controller="state">

@@ -11,6 +11,7 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import Search from '@/shared/icons/Search.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
@@ -29,6 +30,7 @@ import IndexVisitActivityParams from '../../Core/params/indexVisitActivityParams
 import DeleteVisitActivityController from '../controllers/deleteVisitActivityController'
 import DeleteVisitActivityParams from '../../Core/params/deleteVisitActivityParams'
 import AddVisitActivityController from '../controllers/addVisitActivityController'
+import SystemVisitActivities from '../supcomponents/SystemVisitActivities.vue'
 
 const { t } = useI18n()
 const router = useRouter()
@@ -162,9 +164,16 @@ const headerActions = () => [
         :feature-name="$t('action_feature_visit_activities')"
         :show-actions="true"
         :action-list="headerActions()"
-        :actions-number="4"
-      />
+        :actions-number="5"
+      >
+        <template #custom><ExportPdf :is-drop-list="true" /></template>
+      </ActionsList>
     </div>
+    <SystemVisitActivities
+      v-if="user?.type !== OrganizationTypeEnum.ADMIN"
+      :is-header-tap="true"
+      @added="fetchVisitActivities(word, currentPage, countPerPage)"
+    />
   </div>
 
   <PermissionBuilder :code="permissions">
