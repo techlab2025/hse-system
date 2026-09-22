@@ -1,3 +1,4 @@
+import { featureTranslation } from '../../../featureTranslation'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
@@ -33,12 +34,12 @@ export default class AddPPEToolController extends ControllerInterface<PPEToolMod
     try {
       if (params instanceof AddPPEToolExcelParams) {
         if (!params.data.length) {
-          new OpenWarningDilaog('At least one row is required').openDialog()
+          new OpenWarningDilaog(featureTranslation('excel_row_required')).openDialog()
           return
         }
         for (const el of params.data) {
           if (!el.title) {
-            new OpenWarningDilaog('Title is required').openDialog()
+            new OpenWarningDilaog(featureTranslation('title_required')).openDialog()
             return
           }
         }
@@ -56,7 +57,7 @@ export default class AddPPEToolController extends ControllerInterface<PPEToolMod
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
-          titleContent: 'Added was successful',
+          titleContent: featureTranslation('added_successfully'),
           imageElement: successImage,
           messageContent: null,
         })
@@ -69,7 +70,7 @@ export default class AddPPEToolController extends ControllerInterface<PPEToolMod
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',
-          titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
+          titleContent: this.state.value.error?.title ?? featureTranslation('error_occurred'),
           imageElement: errorImage,
           messageContent: null,
         })

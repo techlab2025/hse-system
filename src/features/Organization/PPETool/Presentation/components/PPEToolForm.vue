@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
@@ -21,6 +22,7 @@ const emit = defineEmits<{
 }>()
 const props = defineProps<{ data?: PPEToolDetailsModel }>()
 
+const { t } = useI18n()
 const user = useUserStore()
 const languages = ref<LanguageOption[]>([])
 const titles = ref<LocalizedTitle[]>([])
@@ -87,7 +89,7 @@ const hasText = (value: unknown) => String(value ?? '').trim().length > 0
 const requiredFields = computed(() => [
   {
     key: 'title',
-    message: 'PPE Tool Title Is Required',
+    message: t('ppe_tool_title_required'),
     isMissing: () => !titles.value.some((item) => hasText(item.title)),
   },
 ])

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { markRaw, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
 import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
@@ -25,6 +26,7 @@ const emit = defineEmits<{
   'update:data': [AddTraningTopicParams | EditTraningTopicParams]
 }>()
 
+const { t } = useI18n()
 const user = useUserStore()
 const langs = ref<LangTitleValue[]>([])
 const langDefault = ref<LangTitleValue[]>([])
@@ -86,8 +88,8 @@ const validateRequiredFields = () => {
 
   const firstMissing = langs.value.find((lang) => !lang.title?.trim())
   if (firstMissing) {
-    requiredFields.value.title = 'Title is required for all selected languages'
-    new OpenWarningDilaog('Title Is Required').openDialog()
+    requiredFields.value.title = t('title_required_all_languages')
+    new OpenWarningDilaog(t('title_required')).openDialog()
 
     requestAnimationFrame(() => {
       document.querySelector('[data-field="traning-topic-title"]')?.scrollIntoView({

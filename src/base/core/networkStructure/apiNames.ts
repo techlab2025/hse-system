@@ -1978,8 +1978,8 @@ class ApiNames {
 
   // PPE Tool
   public get fetch_ppe_tools() { return this.prefix + 'fetch_ppe_tools' }
-  public get fetch_ppe_toll_deails() { return this.prefix + 'fetch_ppe_toll_deails' }
-  public get create_ppe_toll() { return this.prefix + 'create_ppe_toll' }
+  public get fetch_ppe_toll_deails() { return this.prefix + 'fetch_ppe_tool_details' }
+  public get create_ppe_toll() { return this.prefix + 'create_ppe_tool' }
   public get update_ppe_tool() { return this.prefix + 'update_ppe_tool' }
   public get delete_ppe_tool() { return this.prefix + 'delete_ppe_tool' }
   public get clone_ppe_tool() { return this.prefix + 'clone_ppe_tool' }

@@ -1,3 +1,4 @@
+import { featureTranslation } from '../../../featureTranslation'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
@@ -46,7 +47,7 @@ export default class EditPPEActivityController extends ControllerInterface<PPEAc
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',
-          titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
+          titleContent: this.state.value.error?.title ?? featureTranslation('error_occurred'),
           imageElement: errorImage,
           messageContent: null,
         })

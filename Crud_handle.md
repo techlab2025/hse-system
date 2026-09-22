@@ -52,8 +52,7 @@ When running inside Codex or another agent that has access to the repository:
 6. Create the shared route file for the new CRUD.
 7. **Do not add the route file to `src/router/routes/shared/index.ts` unless the user explicitly asks.**
 8. Add every endpoint used by the generated CRUD to `src/base/core/networkStructure/apiNames.ts` when the user provides the endpoint path. Do not leave CRUD API getters for the user to add manually.
-9. Add/update `PermissionsEnum`, the scope-specific permission handler(s), and the CRUD sidebar item(s).
-10. Run the project type-check/lint command that already exists in `package.json`.
+9. Run the project type-check/lint command that already exists in `package.json`.
 10. Fix errors caused by the generated CRUD before finishing.
 11. Return a concise summary of created/modified files and any manual step still required.
 
@@ -81,7 +80,6 @@ The user may provide input in normal language. Convert it internally into this s
 
 ```yaml
 crud_name: MeetingType
-endpoint_scope: admin | organization | shared
 
 location:
   feature_root: src/features/Organization
@@ -128,7 +126,6 @@ The user does not need to use YAML. This is only the internal interpretation.
 Normally the AI needs:
 
 - CRUD name.
-- Endpoint scope when known: `admin`, `organization`/`org`, or `shared`.
 - Create/edit fields.
 - Backend key names when they differ from frontend names.
 - API endpoint property names.
@@ -189,8 +186,7 @@ src/features/Organization/<CrudName>/
 │   │   ├── delete<CrudName>Params.ts
 │   │   ├── edit<CrudName>Params.ts
 │   │   ├── index<CrudName>Params.ts
-│   │   ├── show<CrudName>Params.ts
-│   │   └── <AdditionalRelationIdParams.ts when a request contains multiple entity IDs>
+│   │   └── show<CrudName>Params.ts
 │   └── enums/
 │       └── <enum files only when required>
 │
@@ -240,15 +236,12 @@ src/features/Organization/<CrudName>/
     │   └── show<CrudName>Controller.ts
     └── supcomponents/
         ├── System<CrudPlural>.vue
-        ├── <CrudName>SystemDataHeader.vue
-        └── <CrudName>TableSkeleton.vue
+        └── <CrudName>SystemDataHeader.vue
 ```
 
 If the reference feature uses a slightly different filename casing, follow the current repository convention consistently.
 
 Do not delete a standard layer merely because it looks repetitive.
-
-The standard CRUD has 7 primary Params files, but relation-list fields may require additional nested ID Params helper files. These extra Params files are mandatory when the request contains multiple entity/relation IDs.
 
 ---
 
@@ -468,17 +461,7 @@ clones_ids
 
 Use validation requiring at least the field itself. If the project validation utility supports minimum array length, follow the current repository pattern.
 
-## 6.7 Multiple relation helper Params
-
-When any create/edit/custom CRUD request contains multiple selected entity IDs, create one nested helper Params class per relation and serialize the parent collection with:
-
-```ts
-data['<outer_collection_key>'] = this.<collectionProperty>.map((el) => el.toMap())
-```
-
-Never send a flat `<relation>_ids: number[]` array for entity relations. See the mandatory multiple-relation rule later in this file.
-
-## 6.8 Excel params
+## 6.7 Excel params
 
 `add<CrudName>ExcelParams.ts` contains:
 
@@ -654,207 +637,6 @@ public get CloneDrillTypes() {
 }
 ```
 
-
-## Endpoint scope/type: `admin`, `organization`, or `shared`
-
-Every generated CRUD/custom endpoint belongs to one of three API scopes:
-
-```text
-admin
-organization
-shared
-```
-
-The user may say, for example:
-
-```text
-admin CRUD
-organization endpoint
-org endpoint
-shared CRUD
-shared endpoint
-```
-
-The selected scope controls **how the getter is named and how its URL is built inside `ApiNames`**.
-
-### 1. Admin endpoint
-
-For an `admin` CRUD/endpoint, use the normal action/feature getter naming convention unless the user explicitly supplies another getter name.
-
-Examples:
-
-```ts
-public get IndexSubscriptionApplication() {
-  return this.prefix + 'fetch_subscription_applications'
-}
-
-public get ApproveSubscriptionApplication() {
-  return this.prefix + 'approve_subscription_application'
-}
-
-public get RejectSubscriptionApplication() {
-  return this.prefix + 'reject_subscription_application'
-}
-```
-
-Admin rule:
-
-```text
-Getter style: PascalCase action/feature name
-URL base: this.prefix
-```
-
-Example service usage:
-
-```ts
-url: ApiNames.instance.IndexSubscriptionApplication
-```
-
-Do not change the admin getter to a snake_case getter unless the user explicitly provides that getter name.
-
-### 2. Organization / org endpoint
-
-For an `organization` or `org` CRUD/endpoint, use the organization URL explicitly:
-
-```ts
-this.baseUrl + this.organizationPrefix + '<backend_endpoint>'
-```
-
-Examples:
-
-```ts
-public get DeleteNotificationPlan() {
-  return this.baseUrl + this.organizationPrefix + 'delete_notification_plan'
-}
-
-public get RefreshNotification() {
-  return this.baseUrl + this.organizationPrefix + 'register_notification_socket_user'
-}
-
-public get CloneAllData() {
-  return this.baseUrl + this.organizationPrefix + 'clone_all_data'
-}
-```
-
-Organization rule:
-
-```text
-Getter style: PascalCase action/feature name unless the user supplies an exact getter name
-URL base: this.baseUrl + this.organizationPrefix
-```
-
-Example service usage:
-
-```ts
-url: ApiNames.instance.DeleteNotificationPlan
-```
-
-Do **not** replace the organization URL with `this.prefix` when the user says the endpoint is organization/org scoped.
-
-### 3. Shared endpoint
-
-For a `shared` CRUD/endpoint, preserve the endpoint getter name exactly as supplied by the user. Shared endpoint getters are commonly snake_case and may intentionally match the backend endpoint name.
-
-Example:
-
-```ts
-// PPE Tool
-
-public get fetch_ppe_tools() {
-  return this.prefix + 'fetch_ppe_tools'
-}
-
-public get fetch_ppe_toll_deails() {
-  return this.prefix + 'fetch_ppe_toll_deails'
-}
-
-public get create_ppe_toll() {
-  return this.prefix + 'create_ppe_toll'
-}
-
-public get update_ppe_tool() {
-  return this.prefix + 'update_ppe_tool'
-}
-
-public get delete_ppe_tool() {
-  return this.prefix + 'delete_ppe_tool'
-}
-
-public get clone_ppe_tool() {
-  return this.prefix + 'clone_ppe_tool'
-}
-```
-
-Shared rule:
-
-```text
-Getter style: preserve the exact user-provided endpoint/getter identifier
-URL base: this.prefix
-```
-
-The API service must use the exact same getter name:
-
-```ts
-url: ApiNames.instance.fetch_ppe_tools
-```
-
-Do not automatically convert a shared getter like:
-
-```text
-fetch_ppe_tools
-```
-
-into:
-
-```text
-IndexPpeTool
-FetchPpeTools
-```
-
-unless the user explicitly asks for that naming.
-
-Also do not silently correct spelling in a user-provided shared endpoint identifier. For example, if the backend/getter is supplied as:
-
-```text
-fetch_ppe_toll_deails
-```
-
-keep it exactly unless the user asks to rename/fix it.
-
-### Scope decision rules
-
-1. If the user explicitly says `admin`, use the admin rule.
-2. If the user explicitly says `organization` or `org`, use the organization rule.
-3. If the user explicitly says `shared`, use the shared rule.
-4. If the scope is not supplied, inspect the closest existing feature/API pattern.
-5. If the scope still cannot be determined unambiguously, ask only:
-
-```text
-Is this endpoint/CRUD admin, organization, or shared?
-```
-
-Do not guess when the scope changes the URL construction or getter naming.
-
-### Backend path is still authoritative
-
-Scope controls the prefix/naming convention, but the backend endpoint path supplied by the user remains the source of truth.
-
-Examples:
-
-```text
-admin + fetch_subscription_applications
-=> this.prefix + 'fetch_subscription_applications'
-
-organization + delete_notification_plan
-=> this.baseUrl + this.organizationPrefix + 'delete_notification_plan'
-
-shared + fetch_ppe_tools
-=> this.prefix + 'fetch_ppe_tools'
-```
-
-Never derive a different backend path merely from the feature/class name.
-
-
 ### Mandatory rules
 
 1. The API service and `ApiNames` getter name must match exactly.
@@ -885,31 +667,25 @@ public get CreateMeetingType() {
 // Meeting Type
 ```
 
-6. Build the getter URL according to the endpoint scope rules above:
+6. Use the project's current format:
 
-```text
-admin       -> this.prefix + '<backend_endpoint>'
-organization -> this.baseUrl + this.organizationPrefix + '<backend_endpoint>'
-shared      -> this.prefix + '<backend_endpoint>'
+```ts
+return this.prefix + '<backend_endpoint>'
 ```
 
-For shared endpoints, preserve the exact getter identifier supplied by the user, including snake_case. For admin/organization endpoints, use the normal PascalCase action/feature getter style unless an exact getter name is supplied.
+unless the user explicitly says the endpoint must use `baseUrl`, `dashboardPrefix`, `organizationPrefix`, or another prefix.
 
 7. Do not derive a backend URL string from the getter name when the user has supplied an explicit path. The user's endpoint path is the source of truth.
 
-8. If the user gives only the backend path but not the getter name, derive it according to scope:
+8. If the user gives only the backend path but not the getter name, derive the getter name from the operation and feature using the project convention:
 
 ```text
-admin / organization:
 create -> Create<CrudName>
 index/fetch list -> Index<CrudName>
 details/show -> Show<CrudName>
 update -> Edit<CrudName>
 delete -> Delete<CrudName>
 clone -> Clone<CrudPlural>
-
-shared:
-preserve/use the endpoint identifier itself as the getter name, for example fetch_ppe_tools or create_ppe_toll.
 ```
 
 9. If the user gives the getter name but not the backend endpoint path and it cannot be found in the repository, ask only for the missing backend endpoint path. Do not invent it.
@@ -1220,380 +996,22 @@ const basePath = computed(() =>
 )
 ```
 
-### Permissions are mandatory for every CRUD
+### Permissions
 
-Every generated CRUD must integrate its permissions into the project. This is not optional.
+Search `PermissionsEnum` for existing permissions matching the requested feature.
 
-The canonical enum import used by the project is:
+Do not invent permission enum members.
 
-```ts
-import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-```
+If feature-specific permissions exist, use them in:
 
-Before generating permissions, read the existing permission enum and search for the feature. Reuse existing entries when they already exist. Add only missing entries.
+- full feature access,
+- create actions,
+- edit action,
+- delete action.
 
-#### Permission scope
+Keep `ADMIN` and/or `ORGANIZATION_EMPLOYEE` according to the reference feature.
 
-Use the CRUD scope supplied by the user:
-
-```text
-admin
-organization / org
-shared
-```
-
-The permission sets are:
-
-```text
-admin CRUD        -> admin permission set only
-organization CRUD -> ORG_ permission set only
-shared CRUD       -> BOTH admin and ORG_ permission sets
-```
-
-#### Standard CRUD permission names
-
-For feature `MeetingType`, the normal admin set is:
-
-```ts
-// Meeting Type (Admin)
-MEETING_TYPE_ALL = 'MTI00',
-MEETING_TYPE_FETCH = 'MTI01',
-MEETING_TYPE_DETAILS = 'MTI02',
-MEETING_TYPE_CREATE = 'MTI03',
-MEETING_TYPE_UPDATE = 'MTI04',
-MEETING_TYPE_DELETE = 'MTI05',
-```
-
-Organization:
-
-```ts
-// Meeting Type (Organization)
-ORG_MEETING_TYPE_ALL = 'OMTI00',
-ORG_MEETING_TYPE_FETCH = 'OMTI01',
-ORG_MEETING_TYPE_DETAILS = 'OMTI02',
-ORG_MEETING_TYPE_CREATE = 'OMTI03',
-ORG_MEETING_TYPE_UPDATE = 'OMTI04',
-ORG_MEETING_TYPE_DELETE = 'OMTI05',
-```
-
-The standard operation suffixes are:
-
-```text
-00 = ALL
-01 = FETCH
-02 = DETAILS
-03 = CREATE
-04 = UPDATE
-05 = DELETE
-```
-
-Use all six for a normal generated CRUD unless the user explicitly says the backend/permission model omits one.
-
-#### Permission code prefix
-
-If the user provides a permission code prefix, use it exactly.
-
-If no prefix is supplied:
-
-1. derive a short uppercase mnemonic from the feature name;
-2. inspect every existing `PermissionsEnum` value;
-3. ensure the new prefix does not collide with an existing feature code;
-4. if it collides, extend/change the mnemonic until it is unique;
-5. for the organization variant normally prefix the code with `O`.
-
-Examples from the project:
-
-```text
-DRILL_TYPE               -> DT00 ... DT05
-ORG_DRILL_TYPE           -> ODT00 ... ODT05
-PPE_ITEM                  -> PPEI00 ... PPEI05
-ORG_PPE_ITEM              -> OPPEI00 ... OPPEI05
-MANAGEMENT_CHANGE_TOPIC   -> MCTT00 ... MCTT05
-ORG_MANAGEMENT_CHANGE...  -> OMCTT00 ... OMCTT05
-```
-
-Never reuse an existing permission code for a different feature.
-
-#### Permission handler integration
-
-The project has separate admin and organization permission trees.
-
-Find the files by their exported objects if paths differ:
-
-```ts
-export const adminPermissions: PermissionItem = { ... }
-export const OrgPermissions: PermissionItem = { ... }
-```
-
-Scope rules:
-
-```text
-admin CRUD        -> add the feature group to adminPermissions only
-organization CRUD -> add the feature group to OrgPermissions only
-shared CRUD       -> add the admin group to adminPermissions AND the ORG_ group to OrgPermissions
-```
-
-Admin handler example:
-
-```ts
-{
-  key: PermissionsEnum.MEETING_TYPE_ALL,
-  code: PermissionsEnum.MEETING_TYPE_ALL,
-  label: 'Meeting Type',
-  permissions: [
-    { key: PermissionsEnum.MEETING_TYPE_ALL, code: PermissionsEnum.MEETING_TYPE_ALL, label: 'All' },
-    { key: PermissionsEnum.MEETING_TYPE_FETCH, code: PermissionsEnum.MEETING_TYPE_FETCH, label: 'Fetch' },
-    { key: PermissionsEnum.MEETING_TYPE_DETAILS, code: PermissionsEnum.MEETING_TYPE_DETAILS, label: 'Details' },
-    { key: PermissionsEnum.MEETING_TYPE_CREATE, code: PermissionsEnum.MEETING_TYPE_CREATE, label: 'Create' },
-    { key: PermissionsEnum.MEETING_TYPE_UPDATE, code: PermissionsEnum.MEETING_TYPE_UPDATE, label: 'Update' },
-    { key: PermissionsEnum.MEETING_TYPE_DELETE, code: PermissionsEnum.MEETING_TYPE_DELETE, label: 'Delete' },
-  ],
-}
-```
-
-Organization handler follows the local convention where fetch is commonly labelled `Table`:
-
-```ts
-{
-  key: PermissionsEnum.ORG_MEETING_TYPE_ALL,
-  code: PermissionsEnum.ORG_MEETING_TYPE_ALL,
-  label: 'Meeting Type',
-  permissions: [
-    { key: PermissionsEnum.ORG_MEETING_TYPE_ALL, code: PermissionsEnum.ORG_MEETING_TYPE_ALL, label: 'All' },
-    { key: PermissionsEnum.ORG_MEETING_TYPE_FETCH, code: PermissionsEnum.ORG_MEETING_TYPE_FETCH, label: 'Table' },
-    { key: PermissionsEnum.ORG_MEETING_TYPE_DETAILS, code: PermissionsEnum.ORG_MEETING_TYPE_DETAILS, label: 'Details' },
-    { key: PermissionsEnum.ORG_MEETING_TYPE_CREATE, code: PermissionsEnum.ORG_MEETING_TYPE_CREATE, label: 'Create' },
-    { key: PermissionsEnum.ORG_MEETING_TYPE_UPDATE, code: PermissionsEnum.ORG_MEETING_TYPE_UPDATE, label: 'Update' },
-    { key: PermissionsEnum.ORG_MEETING_TYPE_DELETE, code: PermissionsEnum.ORG_MEETING_TYPE_DELETE, label: 'Delete' },
-  ],
-}
-```
-
-Preserve the formatting/parent group used by nearby features in each permission-handler file.
-
-#### Component permission mapping
-
-Every CRUD action must use its matching permission. Do not protect the whole CRUD only with generic `ADMIN` or `ORGANIZATION_EMPLOYEE`.
-
-Admin permission arrays:
-
-```ts
-const fetchPermissions = [
-  PermissionsEnum.ADMIN,
-  PermissionsEnum.<FEATURE>_ALL,
-  PermissionsEnum.<FEATURE>_FETCH,
-]
-
-const createPermissions = [
-  PermissionsEnum.ADMIN,
-  PermissionsEnum.<FEATURE>_ALL,
-  PermissionsEnum.<FEATURE>_CREATE,
-]
-
-const detailsPermissions = [
-  PermissionsEnum.ADMIN,
-  PermissionsEnum.<FEATURE>_ALL,
-  PermissionsEnum.<FEATURE>_DETAILS,
-]
-
-const updatePermissions = [
-  PermissionsEnum.ADMIN,
-  PermissionsEnum.<FEATURE>_ALL,
-  PermissionsEnum.<FEATURE>_UPDATE,
-]
-
-const deletePermissions = [
-  PermissionsEnum.ADMIN,
-  PermissionsEnum.<FEATURE>_ALL,
-  PermissionsEnum.<FEATURE>_DELETE,
-]
-```
-
-Organization permission arrays use:
-
-```ts
-PermissionsEnum.ORGANIZATION_EMPLOYEE
-PermissionsEnum.ORG_<FEATURE>_ALL
-PermissionsEnum.ORG_<FEATURE>_<ACTION>
-```
-
-Shared CRUD components may include both sets so the same component works under both route roots:
-
-```ts
-const createPermissions = [
-  PermissionsEnum.ADMIN,
-  PermissionsEnum.ORGANIZATION_EMPLOYEE,
-  PermissionsEnum.<FEATURE>_ALL,
-  PermissionsEnum.<FEATURE>_CREATE,
-  PermissionsEnum.ORG_<FEATURE>_ALL,
-  PermissionsEnum.ORG_<FEATURE>_CREATE,
-]
-```
-
-Apply permissions to all relevant UI actions:
-
-```text
-index/table access       -> ALL + FETCH
-add button               -> ALL + CREATE
-Save/Create form         -> ALL + CREATE
-Excel upload             -> ALL + CREATE
-system clone             -> ALL + CREATE
-edit row action          -> ALL + UPDATE
-delete row action        -> ALL + DELETE
-details/show link        -> ALL + DETAILS
-export/read-only actions -> ALL + FETCH (or DETAILS when the action depends on details)
-```
-
-`PermissionBuilder`, `ActionsList.permission`, and `DropList` row action permissions must all use the generated feature permissions consistently.
-
-
-### CRUD sidebar integration is mandatory
-
-Sidebar integration is performed for CRUD features only. Custom endpoint-only features follow `custom_endpoints_handel.md` and do not get a sidebar item unless explicitly requested.
-
-Search the existing admin and organization sidebar files instead of assuming their paths. They can be identified by route arrays such as:
-
-```text
-SettingsRoutes
-OrganizationRoutes
-LockUpsRoutes
-```
-
-#### Shared CRUD
-
-A shared CRUD must be added to `LockUpsRoutes` in **both** sidebars:
-
-```text
-admin sidebar        -> /admin/<crud-plural-path>
-organization sidebar -> /organization/<crud-plural-path>
-```
-
-Admin example:
-
-```ts
-{
-  link: '/admin/meeting-types',
-  name: t('meeting_types'),
-  icon: 'medical-square',
-  permissions: [
-    PermissionsEnum.MEETING_TYPE_ALL,
-    PermissionsEnum.MEETING_TYPE_FETCH,
-    PermissionsEnum.MEETING_TYPE_DETAILS,
-    PermissionsEnum.MEETING_TYPE_CREATE,
-    PermissionsEnum.MEETING_TYPE_UPDATE,
-    PermissionsEnum.MEETING_TYPE_DELETE,
-  ],
-}
-```
-
-Organization example:
-
-```ts
-{
-  link: '/organization/meeting-types',
-  name: 'meeting-types',
-  icon: 'medical-square',
-  permissions: [
-    PermissionsEnum.ORG_MEETING_TYPE_ALL,
-    PermissionsEnum.ORG_MEETING_TYPE_FETCH,
-    PermissionsEnum.ORG_MEETING_TYPE_DETAILS,
-    PermissionsEnum.ORG_MEETING_TYPE_CREATE,
-    PermissionsEnum.ORG_MEETING_TYPE_UPDATE,
-    PermissionsEnum.ORG_MEETING_TYPE_DELETE,
-  ],
-}
-```
-
-#### Admin-only CRUD
-
-Add it only to the admin sidebar. For a lookup CRUD, default to the admin `LockUpsRoutes` group unless the user names another group or the nearest project feature clearly belongs elsewhere.
-
-#### Organization-only CRUD
-
-Add it only to the organization sidebar. For a lookup CRUD, default to the organization `LockUpsRoutes` group unless the user names another group or the nearest project feature clearly belongs elsewhere.
-
-#### Sidebar rules
-
-1. Use the route path generated for the CRUD.
-2. Use the correct scope-specific permission set.
-3. Never put admin permissions on an organization-only sidebar item or ORG permissions on an admin-only item.
-4. Shared CRUD gets two sidebar entries, one per sidebar, with the matching permission family.
-5. Do not invent a new icon component. If the user does not specify an icon, reuse an existing icon string already used by a nearby lookup item.
-6. Do not add a custom-endpoint-only feature to the sidebar unless explicitly requested.
-
-### DataStatus + loading skeleton are mandatory for CRUD data views
-
-Every CRUD index/table must handle the controller state through `DataStatus`.
-
-Create a feature-specific skeleton component:
-
-```text
-Presentation/supcomponents/<CrudName>TableSkeleton.vue
-```
-
-It may wrap the shared `TableLoader`, but the column count must match the generated table.
-
-Example:
-
-```vue
-<script setup lang="ts">
-import TableLoader from '@/shared/DataStatues/TableLoader.vue'
-</script>
-
-<template>
-  <TableLoader :cols="4" :rows="10" />
-</template>
-```
-
-Use it for both initial and loading states:
-
-```vue
-<PermissionBuilder :code="fetchPermissions">
-  <DataStatus :controller="state">
-    <template #success>
-      <!-- real table -->
-    </template>
-
-    <template #loader>
-      <CrudNameTableSkeleton />
-    </template>
-
-    <template #initial>
-      <CrudNameTableSkeleton />
-    </template>
-
-    <template #empty>
-      <DataEmpty ... />
-    </template>
-
-    <template #failed>
-      <DataFailed ... />
-    </template>
-  </DataStatus>
-
-  <template #notPermitted>
-    <DataFailed add-text="Have not Permission" description="" link="" />
-  </template>
-</PermissionBuilder>
-```
-
-The generated index must explicitly handle:
-
-```text
-initial
-loading
-success
-data empty
-failed
-not permitted
-```
-
-Do not render an empty table while loading or after failure.
-
-For edit/details screens that fetch data before rendering the form, keep `DataStatus` around the result. Use the project `FormLoader` or create a feature-specific form skeleton only when the layout needs a custom skeleton.
-
-The add screen does not require `DataStatus` when no initial endpoint is fetched, but it must still be protected by its CREATE permission.
-
+If no feature-specific permissions exist, use only existing generic permissions and mention the missing permission integration in the completion summary.
 
 ## 12.5 `Upload<CrudName>ExcelSheet.vue`
 
@@ -2003,8 +1421,7 @@ Also verify:
 
 A standard CRUD is not complete until these are present:
 
-- [ ] 7 primary Core params files.
-- [ ] Additional nested relation ID Params files for every multiple relation field, when required.
+- [ ] 7 Core params files.
 - [ ] Enum file(s) when required.
 - [ ] 6 API service files.
 - [ ] 2 model files.
@@ -2022,22 +1439,11 @@ A standard CRUD is not complete until these are present:
 - [ ] 4 view wrapper files.
 - [ ] 1 shared route file.
 - [ ] Correct endpoint references.
-- [ ] Endpoint scope (`admin`, `organization`/`org`, or `shared`) is respected.
-- [ ] Admin ApiNames getters use `this.prefix`.
-- [ ] Organization ApiNames getters use `this.baseUrl + this.organizationPrefix`.
-- [ ] Shared ApiNames getters use `this.prefix` and preserve exact user-provided getter identifiers, including snake_case.
 - [ ] All required getters exist in `src/base/core/networkStructure/apiNames.ts`.
 - [ ] Every API service getter name matches `ApiNames` exactly.
 - [ ] Every `ApiNames` getter uses the user-provided backend endpoint path.
 - [ ] Correct backend keys.
-- [ ] Correct permissions are present in `PermissionsEnum`; missing feature permissions were added.
-- [ ] Admin permission handler updated for admin/shared CRUDs.
-- [ ] Organization permission handler updated for organization/shared CRUDs.
-- [ ] Shared CRUD has both admin and ORG_ permission families.
-- [ ] CRUD sidebar item added to the correct sidebar(s); shared CRUD added to both `LockUpsRoutes`.
-- [ ] Add/Edit/Delete/Details/Fetch/Excel/Clone actions use their matching permissions.
-- [ ] Feature-specific table skeleton component created and used in `DataStatus` loader + initial slots.
-- [ ] Index handles success, loader, initial, empty, failed, and not-permitted states.
+- [ ] Correct permissions using existing enum members.
 - [ ] Correct Excel mappings.
 - [ ] Correct validation.
 - [ ] Every Params class using `TranslationsParams` sends the complete `translation.toMap()` result.
@@ -2087,9 +1493,8 @@ Once this file exists in the repository, whenever the user asks for a new CRUD:
 
 1. Read this file first.
 2. Inspect `DrillType` or the closest current reference CRUD.
-3. Read the user's CRUD name, endpoint scope (`admin`, `organization`/`org`, or `shared`), fields, params keys, endpoints, enum rules, and special requirements.
-4. Resolve the ApiNames getter naming/prefix from that scope before generating API services.
-5. Build the complete feature.
+3. Read the user's CRUD name, fields, params keys, endpoints, enum rules, and special requirements.
+4. Build the complete feature.
 5. Do not reuse example names.
 6. Do not skip layers.
 7. Do not invent backend values.
@@ -2677,351 +2082,23 @@ In that case use the route/context id directly.
 
 ---
 
-## 6. Multiple relation IDs must use nested Params objects
+## 6. `_ids` / multiple relation fields
 
-A multiple relation must **not** be sent as a flat array of numbers.
+Do not automatically apply the singular `_id` rule to an `_ids` array without checking the user's contract.
 
-This project convention is mandatory for relation/entity IDs.
+If the user says a relation is multiple and provides a controller + Params, use `UpdatedCustomInputSelect` in multiselect mode according to the existing component API, then map selected objects to ids.
 
-### Wrong
-
-Do not generate:
+Conceptual example:
 
 ```ts
-employee_ids: [1, 2, 3]
+selectedEmployees.value.map((item) => item.id)
 ```
 
-Do not generate:
-
-```ts
-organization_ids: [1, 2]
-```
-
-Do not generate:
-
-```ts
-hierarchy_ids: [4, 5]
-```
-
-Do not generate:
-
-```ts
-data['employee_ids'] = this.employeeIds
-```
-
-### Required backend shape
-
-A collection of relation IDs must be sent as an array of objects.
-
-Example for employees:
-
-```ts
-employees: [
-  {
-    employee_id: 1,
-  },
-  {
-    employee_id: 2,
-  },
-  {
-    employee_id: 3,
-  },
-]
-```
-
-Example for hierarchies:
-
-```ts
-hierarchies: [
-  {
-    hierarchy_id: 4,
-  },
-  {
-    hierarchy_id: 5,
-  },
-]
-```
-
-Example for organizations:
-
-```ts
-organizations: [
-  {
-    organization_id: 1,
-  },
-  {
-    organization_id: 2,
-  },
-]
-```
-
-### Create one dedicated nested Params class
-
-For every multiple relation field, create an additional Params file whose only responsibility is serializing one relation id.
-
-Example:
-
-```ts
-import type Params from '@/base/core/params/params'
-
-export default class CreateProjectMeetingHierarchyIdParams implements Params {
-  hirarchy_id: number
-
-  constructor(data: { hirarchy_id: number }) {
-    this.hirarchy_id = data.hirarchy_id
-  }
-
-  toMap(): Record<
-    string,
-    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
-  > {
-    const data: Record<
-      string,
-      | number
-      | string
-      | number[]
-      | Record<string, string | number[] | number | Record<string, string>>
-    > = {}
-
-    data['hierarchy_id'] = this.hirarchy_id
-
-    return data
-  }
-}
-```
-
-Keep the user's/project's exact spelling for constructor properties and backend keys. Do not silently rename a backend key.
-
-### Parent Params class
-
-The main endpoint/CRUD Params must store an array of the nested Params class:
-
-```ts
-public hierarchies: CreateProjectMeetingHierarchyIdParams[]
-```
-
-and serialize it with:
-
-```ts
-data['hierarchies'] = this.hierarchies.map((el) => el.toMap())
-```
-
-Example constructor:
-
-```ts
-constructor(
-  public hierarchies: CreateProjectMeetingHierarchyIdParams[],
-) {}
-```
-
-Example complete mapping concept:
-
-```ts
-toMap(): Record<string, unknown> {
-  const data: Record<string, unknown> = {}
-
-  data['hierarchies'] = this.hierarchies.map((el) => el.toMap())
-
-  return data
-}
-```
-
-### Component mapping
-
-Use `UpdatedCustomInputSelect` in multiselect mode for a user-selectable relation list.
-
-The component state contains selected objects, not raw ids:
-
-```ts
-const selectedHieararchy = ref<TitleInterface[]>([])
-```
-
-When constructing the main Params:
-
-```ts
-hierarchies: Array.isArray(selectedHieararchy.value)
-  ? selectedHieararchy.value.map(
-      (el) =>
-        new CreateProjectMeetingHierarchyIdParams({
-          hirarchy_id: el.id!,
-        }),
-    )
-  : [],
-```
-
-For employees, use the same structure:
-
-```ts
-employees: Array.isArray(selectedEmployees.value)
-  ? selectedEmployees.value.map(
-      (el) =>
-        new CreateMeetingEmployeeIdParams({
-          employee_id: el.id!,
-        }),
-    )
-  : [],
-```
-
-Then the main Params sends:
-
-```ts
-data['employees'] = this.employees.map((el) => el.toMap())
-```
-
-which produces:
-
-```ts
-employees: [
-  { employee_id: 1 },
-  { employee_id: 2 },
-]
-```
-
-### Nested Params naming
-
-Create a descriptive nested Params class based on:
-
-```text
-<Action><Feature><Relation>IdParams
-```
-
-Examples:
-
-```text
-CreateProjectMeetingHierarchyIdParams
-CreateMeetingEmployeeIdParams
-UpdateMeetingEmployeeIdParams
-CreateInspectionOrganizationIdParams
-```
-
-If the same nested relation Params is safely reusable by create/update in the existing project style, reuse it. Otherwise keep action-specific naming.
-
-### Outer collection key
-
-The outer request key is normally the plural relation name:
-
-```text
-employee_id     -> employees
-organization_id -> organizations
-hierarchy_id    -> hierarchies
-equipment_id    -> equipments
-```
-
-But the backend contract supplied by the user is always the source of truth.
-
-If the user explicitly gives:
-
-```text
-employees
-hierarchies
-participants
-assigned_employees
-```
-
-use that exact outer key.
-
-If only a singular relation key is supplied and the correct outer collection key cannot be derived unambiguously, ask for the outer key rather than inventing one.
-
-### Multiselect UI
-
-Use:
-
-```vue
-<UpdatedCustomInputSelect
-  :model-value="selectedEmployees"
-  :controller="indexOrganizatoinEmployeeController"
-  :params="indexOrganizatoinEmployeeParams"
-  type="multiselect"
-  label="employees"
-  id="employees"
-  :placeholder="$t('Select employees')"
-  @update:model-value="setEmployees"
-/>
-```
-
-The project's component also supports numeric multi-select type values. Prefer the convention used by the nearest existing feature.
-
-Setter example:
-
-```ts
-const setEmployees = (value: TitleInterface | TitleInterface[] | null) => {
-  selectedEmployees.value = Array.isArray(value) ? value : []
-  updateData()
-}
-```
-
-### Validation
-
-If the relation list is required:
-
-- require at least one selected item;
-- show the normal project warning/error;
-- do not call the API with an empty array.
-
-If it is optional:
-
-- an empty selection maps to:
-
-```ts
-employees: []
-```
-
-unless the backend contract requires omitting the key.
-
-### Important scope rule
-
-This nested Params rule applies to **relation/entity ID arrays**.
-
-Examples:
-
-```text
-employees
-organizations
-hierarchies
-equipments
-projects
-locations
-teams
-users
-```
-
-It does **not** apply to upload/image/file data.
-
-Do not wrap these in nested id Params:
-
-```text
-images: string[]
-attachments: string[]
-files: string[]
-documents: string[]
-photos: string[]
-```
-
-Those continue to follow the Base64 upload rules.
-
-It also does not apply to ordinary primitive arrays that are not entity IDs unless the backend explicitly requires object wrapping.
-
-### Critical project rule
-
-```text
-single relation:
-employee_id: number
-
-multiple relation:
-employees: [
-  { employee_id: number },
-  { employee_id: number },
-]
-```
-
-Never default to:
+Only do this when the field is explicitly a multiple relation such as:
 
 ```text
 employee_ids: number[]
 ```
-
-for a relation collection in generated code.
-
 
 ---
 
@@ -3043,8 +2120,6 @@ Use this table before creating form controls:
 | `title: string` | normal string input, no translations |
 | `description: string` | normal string/textarea, no translations |
 | selectable `employee_id` | `UpdatedCustomInputSelect` + supplied/found controller/Params |
-| multiple employee relation | `UpdatedCustomInputSelect` multiselect -> nested `EmployeeIdParams[]` -> `employees: [{ employee_id }]` |
-| multiple hierarchy relation | multiselect -> nested `HierarchyIdParams[]` -> `hierarchies: [{ hierarchy_id }]` |
 | route/context `project_id` | use route/context id directly; no select |
 
 ---

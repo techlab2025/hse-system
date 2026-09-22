@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import * as XLSX from 'xlsx'
 import { useRouter } from 'vue-router'
 import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue'
@@ -12,6 +13,7 @@ import AddTraningTopicExcelParams, { type Data } from '../../Core/params/addTran
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
 const emit = defineEmits<{ uploaded: [] }>()
+const { t } = useI18n()
 const router = useRouter()
 const addController = AddTraningTopicController.getInstance()
 
@@ -19,9 +21,7 @@ const Data = ref<any[][]>([])
 const mappedData = ref<any[][] | null>(null)
 const sheetData = ref<any[][]>([])
 const SendData = ref<string[]>(['title'])
-const SendDataLabels: Record<string, string> = {
-  title: 'Title',
-}
+const SendDataLabels = computed(() => ({ title: t('title') }))
 
 const createPermissions = [
   PermissionsEnum.ADMIN,
@@ -69,7 +69,7 @@ const deleteRow = (index: number) => {
 
 const upload = async () => {
   if (!mappedData.value?.length) {
-    new OpenWarningDilaog('At Least One Excel Row Is Required').openDialog()
+    new OpenWarningDilaog(t('excel_row_required')).openDialog()
     return
   }
 
@@ -88,12 +88,12 @@ const upload = async () => {
   })
 
   if (!dataAsObjects.length) {
-    new OpenWarningDilaog('At Least One Excel Row Is Required').openDialog()
+    new OpenWarningDilaog(t('excel_row_required')).openDialog()
     return
   }
 
   if (dataAsObjects.some((row) => !row.title)) {
-    new OpenWarningDilaog('Title Is Required For Every Excel Row').openDialog()
+    new OpenWarningDilaog(t('excel_row_title_required')).openDialog()
     return
   }
 
@@ -149,7 +149,7 @@ const upload = async () => {
     </div>
 
     <template #notPermitted>
-      <DataFailed add-text="Have not Permission" description="" link="" />
+      <DataFailed :add-text="$t('permission_denied')" description="" link="" />
     </template>
   </PermissionBuilder>
 </template>

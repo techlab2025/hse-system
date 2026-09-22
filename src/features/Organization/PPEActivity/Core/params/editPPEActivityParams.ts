@@ -11,7 +11,7 @@ export default class EditPPEActivityParams implements Params {
     const translations = this.translation.toMap() as Record<string, unknown>
 
     return {
-      ppe_activity_id: this.id,
+      ppe_activity_id: Number(this.id),
       translations: translations,
     }
   }

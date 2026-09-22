@@ -96,16 +96,16 @@ const editTraningTopic = async () => {
       </template>
 
       <template #empty>
-        <DataFailed title="No Data Found" description="" link="" />
+        <DataFailed :title="$t('no_data_found')" description="" link="" />
       </template>
 
       <template #failed>
-        <DataFailed title="Failed To Load Traning Topic" description="" link="" />
+        <DataFailed :title="$t('failed_to_load_traning_topic')" description="" link="" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed add-text="Have not Permission" description="" link="" />
+      <DataFailed :add-text="$t('permission_denied')" description="" link="" />
     </template>
   </PermissionBuilder>
 </template>

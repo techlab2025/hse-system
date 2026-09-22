@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
 import * as XLSX from 'xlsx'
 import { useRouter } from 'vue-router'
+import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
 const props = defineProps<{ initialFile?: File | null }>()
 const emit = defineEmits<{ (e: 'uploaded'): void }>()
@@ -19,6 +22,7 @@ const mappedData = ref<any[] | null>(null)
 const isLoading = ref(false)
 const errorMsg = ref<string | null>(null)
 
+const { t } = useI18n()
 const router = useRouter()
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -65,7 +69,7 @@ const fileUpload = async (file: File | null) => {
     mappedData.value = null
   } catch (error) {
     console.error('Error processing file:', error)
-    errorMsg.value = 'Failed to process the file.'
+    errorMsg.value = t('failed_to_process_file')
   } finally {
     isLoading.value = false
   }
@@ -83,9 +87,7 @@ watch(
 
 // ─── Column Mapping ───────────────────────────────────────────────────────────
 const SendData = ref<string[]>(['title'])
-const SendDataLabels: Record<string, string> = {
-  title: 'PPE Tool Title',
-}
+const SendDataLabels = computed(() => ({ title: t('ppe_tool_title') }))
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return
   const reverseMapping: Record<string, string> = {}
@@ -159,7 +161,7 @@ const createPermissions = [
         <span class="loading-dot" />
         <span class="loading-dot" />
         <span class="loading-dot" />
-        <span class="loading-label">Processing file…</span>
+        <span class="loading-label">{{ $t('processing_file') }}</span>
       </div>
 
       <FileUpload
@@ -182,8 +184,8 @@ const createPermissions = [
         <template v-if="mappedData && mappedData.length > 0">
           <div class="table-container">
             <div class="table-header">
-              <h3 class="table-title">Mapped Data Preview</h3>
-              <span class="table-badge">{{ mappedData.length - 1 }} rows</span>
+              <h3 class="table-title">{{ $t('mapped_data_preview') }}</h3>
+              <span class="table-badge">{{ $t('row_count', { count: mappedData.length - 1 }) }}</span>
             </div>
             <div class="table-responsive">
               <table class="main-table">
@@ -206,7 +208,7 @@ const createPermissions = [
                       <button
                         class="btn-delete-row"
                         @click="deleteRow(rowIndex)"
-                        title="Delete row"
+                        :title="$t('delete_row')"
                       >
                         🗑
                       </button>
@@ -217,7 +219,7 @@ const createPermissions = [
             </div>
           </div>
 
-          <button class="btn-confirm" @click="addPPETools">Confirm & Submit</button>
+          <button class="btn-confirm" @click="addPPETools">{{ $t('confirm_and_submit') }}</button>
         </template>
       </template>
     </div>

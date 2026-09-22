@@ -1,3 +1,4 @@
+import { featureTranslation } from '../../../featureTranslation'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
@@ -42,12 +43,12 @@ export default class AddTraningTopicController extends ControllerInterface<Trani
 
     if (params instanceof AddTraningTopicExcelParams) {
       if (!params.data.length) {
-        new OpenWarningDilaog('At Least One Row Is Required').openDialog()
+        new OpenWarningDilaog(featureTranslation('excel_row_required')).openDialog()
         return
       }
 
       if (params.data.some((row) => !row.title?.trim())) {
-        new OpenWarningDilaog('Title Is Required For Every Excel Row').openDialog()
+        new OpenWarningDilaog(featureTranslation('excel_row_title_required')).openDialog()
         return
       }
     }
@@ -60,7 +61,7 @@ export default class AddTraningTopicController extends ControllerInterface<Trani
     if (this.isDataSuccess()) {
       DialogSelector.instance.successDialog.openDialog({
         dialogName: 'dialog-success',
-        titleContent: this.state.value.message ?? 'Success',
+        titleContent: this.state.value.message ?? featureTranslation('success'),
         imageElement: successImage,
         messageContent: null,
       })
@@ -74,7 +75,7 @@ export default class AddTraningTopicController extends ControllerInterface<Trani
     } else {
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog-error',
-        titleContent: this.state.value.error?.title ?? 'An Error Occurred',
+        titleContent: this.state.value.error?.title ?? featureTranslation('error_occurred'),
         imageElement: errorImage,
         messageContent: null,
       })

@@ -236,7 +236,7 @@ const downloadTemplate = () => {
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed add-text="Have not Permission" description="" link="" />
+      <DataFailed :add-text="$t('permission_denied')" description="" link="" />
     </template>
   </PermissionBuilder>
 </template>

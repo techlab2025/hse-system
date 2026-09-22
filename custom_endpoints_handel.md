@@ -45,8 +45,7 @@ Presentation/components/<FeatureName>.vue
 If there are 2 endpoints:
 
 ```text
-2 primary Params
-+ nested relation ID Params when needed
+2 Params
 2 ApiServices
 2 Repositories
 2 UseCases
@@ -57,8 +56,7 @@ If there are 2 endpoints:
 If there are 3 endpoints:
 
 ```text
-3 primary Params
-+ nested relation ID Params when needed
+3 Params
 3 ApiServices
 3 Repositories
 3 UseCases
@@ -68,9 +66,7 @@ If there are 3 endpoints:
 
 The important rule is:
 
-> **Number of primary endpoint pipeline files = number of endpoints.**
->
-> A relation-list request may create extra nested ID Params helper files. Those helpers do not create extra API services/repos/use cases/controllers.
+> **Number of endpoint pipeline files = number of endpoints.**
 >
 > **Number of main Vue components = one, unless the user explicitly asks for more.**
 
@@ -114,9 +110,7 @@ When running inside Codex or another repository agent:
 7. Do not modify unrelated files.
 8. Add enum files only when required.
 9. Add custom models only when required by the user or response structure.
-10. Add/update `PermissionsEnum` and the correct admin/organization permission handler(s).
-11. Create/use a feature skeleton and `DataStatus` for data-rendering endpoints.
-12. Run the existing TypeScript/type-check command.
+10. Run the existing TypeScript/type-check command.
 11. Fix errors introduced by the generated feature.
 12. Search generated files for copied feature names before finishing.
 
@@ -220,7 +214,6 @@ Interpret the request into an internal structure like:
 
 ```yaml
 feature_name: PermitApproval
-endpoint_scope: admin | organization | shared
 
 endpoints:
   - action_name: ApprovePermit
@@ -351,8 +344,7 @@ For one endpoint:
 src/features/Organization/<FeatureName>/
 ├── Core/
 │   ├── params/
-│   │   ├── <EndpointAction>Params.ts
-│   │   └── <EndpointAction><Relation>IdParams.ts   # only for multiple relation fields
+│   │   └── <EndpointAction>Params.ts
 │   └── enums/
 │       └── <OnlyIfRequired>.ts
 │
@@ -372,8 +364,7 @@ src/features/Organization/<FeatureName>/
     ├── controllers/
     │   └── <EndpointAction>Controller.ts
     └── components/
-        ├── <FeatureName>.vue
-        └── <FeatureName>Skeleton.vue   # when endpoint data is rendered asynchronously
+        └── <FeatureName>.vue
 ```
 
 For two endpoints:
@@ -383,8 +374,7 @@ src/features/Organization/<FeatureName>/
 ├── Core/
 │   ├── params/
 │   │   ├── <Endpoint1>Params.ts
-│   │   ├── <Endpoint2>Params.ts
-│   │   └── <NestedRelationIdParams.ts files only when required>
+│   │   └── <Endpoint2>Params.ts
 │   └── enums/
 │
 ├── Data/
@@ -407,15 +397,13 @@ src/features/Organization/<FeatureName>/
     │   ├── <Endpoint1>Controller.ts
     │   └── <Endpoint2>Controller.ts
     └── components/
-        ├── <FeatureName>.vue
-        └── <FeatureName>Skeleton.vue   # when endpoint data is rendered asynchronously
+        └── <FeatureName>.vue
 ```
 
 For three endpoints:
 
 ```text
-3 primary params
-+ nested relation ID params when required
+3 params
 3 api services
 3 repos
 3 use cases
@@ -429,19 +417,7 @@ Do not generate empty files for operations that do not exist.
 
 # 8. Core / Params Rules
 
-Every endpoint gets exactly one **primary** Params class.
-
-A primary Params class may additionally depend on one or more nested relation-ID Params helper classes when the request contains multiple entity/relation selections.
-
-Example:
-
-```text
-CreateMeetingParams.ts
-CreateMeetingEmployeeIdParams.ts
-CreateMeetingHierarchyIdParams.ts
-```
-
-Only `CreateMeetingParams.ts` has its own ApiService/Repo/UseCase/Controller pipeline. The nested ID Params files are serialization helpers only.
+Every endpoint gets exactly one Params class.
 
 Example:
 
@@ -1609,207 +1585,6 @@ Three endpoints mean three matching getters.
 
 The number of generated `ApiNames` getters must match the number of custom endpoints unless two operations intentionally use the same existing getter and the user explicitly says so.
 
-
-## Endpoint scope/type: `admin`, `organization`, or `shared`
-
-Every generated CRUD/custom endpoint belongs to one of three API scopes:
-
-```text
-admin
-organization
-shared
-```
-
-The user may say, for example:
-
-```text
-admin CRUD
-organization endpoint
-org endpoint
-shared CRUD
-shared endpoint
-```
-
-The selected scope controls **how the getter is named and how its URL is built inside `ApiNames`**.
-
-### 1. Admin endpoint
-
-For an `admin` CRUD/endpoint, use the normal action/feature getter naming convention unless the user explicitly supplies another getter name.
-
-Examples:
-
-```ts
-public get IndexSubscriptionApplication() {
-  return this.prefix + 'fetch_subscription_applications'
-}
-
-public get ApproveSubscriptionApplication() {
-  return this.prefix + 'approve_subscription_application'
-}
-
-public get RejectSubscriptionApplication() {
-  return this.prefix + 'reject_subscription_application'
-}
-```
-
-Admin rule:
-
-```text
-Getter style: PascalCase action/feature name
-URL base: this.prefix
-```
-
-Example service usage:
-
-```ts
-url: ApiNames.instance.IndexSubscriptionApplication
-```
-
-Do not change the admin getter to a snake_case getter unless the user explicitly provides that getter name.
-
-### 2. Organization / org endpoint
-
-For an `organization` or `org` CRUD/endpoint, use the organization URL explicitly:
-
-```ts
-this.baseUrl + this.organizationPrefix + '<backend_endpoint>'
-```
-
-Examples:
-
-```ts
-public get DeleteNotificationPlan() {
-  return this.baseUrl + this.organizationPrefix + 'delete_notification_plan'
-}
-
-public get RefreshNotification() {
-  return this.baseUrl + this.organizationPrefix + 'register_notification_socket_user'
-}
-
-public get CloneAllData() {
-  return this.baseUrl + this.organizationPrefix + 'clone_all_data'
-}
-```
-
-Organization rule:
-
-```text
-Getter style: PascalCase action/feature name unless the user supplies an exact getter name
-URL base: this.baseUrl + this.organizationPrefix
-```
-
-Example service usage:
-
-```ts
-url: ApiNames.instance.DeleteNotificationPlan
-```
-
-Do **not** replace the organization URL with `this.prefix` when the user says the endpoint is organization/org scoped.
-
-### 3. Shared endpoint
-
-For a `shared` CRUD/endpoint, preserve the endpoint getter name exactly as supplied by the user. Shared endpoint getters are commonly snake_case and may intentionally match the backend endpoint name.
-
-Example:
-
-```ts
-// PPE Tool
-
-public get fetch_ppe_tools() {
-  return this.prefix + 'fetch_ppe_tools'
-}
-
-public get fetch_ppe_toll_deails() {
-  return this.prefix + 'fetch_ppe_toll_deails'
-}
-
-public get create_ppe_toll() {
-  return this.prefix + 'create_ppe_toll'
-}
-
-public get update_ppe_tool() {
-  return this.prefix + 'update_ppe_tool'
-}
-
-public get delete_ppe_tool() {
-  return this.prefix + 'delete_ppe_tool'
-}
-
-public get clone_ppe_tool() {
-  return this.prefix + 'clone_ppe_tool'
-}
-```
-
-Shared rule:
-
-```text
-Getter style: preserve the exact user-provided endpoint/getter identifier
-URL base: this.prefix
-```
-
-The API service must use the exact same getter name:
-
-```ts
-url: ApiNames.instance.fetch_ppe_tools
-```
-
-Do not automatically convert a shared getter like:
-
-```text
-fetch_ppe_tools
-```
-
-into:
-
-```text
-IndexPpeTool
-FetchPpeTools
-```
-
-unless the user explicitly asks for that naming.
-
-Also do not silently correct spelling in a user-provided shared endpoint identifier. For example, if the backend/getter is supplied as:
-
-```text
-fetch_ppe_toll_deails
-```
-
-keep it exactly unless the user asks to rename/fix it.
-
-### Scope decision rules
-
-1. If the user explicitly says `admin`, use the admin rule.
-2. If the user explicitly says `organization` or `org`, use the organization rule.
-3. If the user explicitly says `shared`, use the shared rule.
-4. If the scope is not supplied, inspect the closest existing feature/API pattern.
-5. If the scope still cannot be determined unambiguously, ask only:
-
-```text
-Is this endpoint/CRUD admin, organization, or shared?
-```
-
-Do not guess when the scope changes the URL construction or getter naming.
-
-### Backend path is still authoritative
-
-Scope controls the prefix/naming convention, but the backend endpoint path supplied by the user remains the source of truth.
-
-Examples:
-
-```text
-admin + fetch_subscription_applications
-=> this.prefix + 'fetch_subscription_applications'
-
-organization + delete_notification_plan
-=> this.baseUrl + this.organizationPrefix + 'delete_notification_plan'
-
-shared + fetch_ppe_tools
-=> this.prefix + 'fetch_ppe_tools'
-```
-
-Never derive a different backend path merely from the feature/class name.
-
-
 ## Mandatory rules
 
 1. Search `apiNames.ts` before adding anything.
@@ -1848,19 +1623,15 @@ return this.prefix + '<backend_endpoint>'
 
 8. Do not infer or rename the backend path when the user supplied it.
 
-9. If the user supplies a backend endpoint path but no getter name, use the scope rule: admin/organization use the normal PascalCase action/feature getter convention; shared uses the exact endpoint identifier itself (commonly snake_case) as the getter name unless the user provides another exact name.
+9. If the user supplies a backend endpoint path but no getter name, use the endpoint/action name as the getter name unless the nearby project convention clearly requires another name.
 
 10. If the user supplies a getter name but no endpoint path, first search `apiNames.ts`. If it does not exist and the path cannot be determined from the repository, ask only for the missing backend endpoint path.
 
-11. Use the endpoint scope rules for URL construction:
+11. Use another prefix only when the user/reference endpoint requires it. The normal project default is:
 
-```text
-admin        -> this.prefix
-organization -> this.baseUrl + this.organizationPrefix
-shared       -> this.prefix
+```ts
+this.prefix
 ```
-
-For `shared`, preserve the exact getter identifier supplied by the user, including snake_case. Do not normalize it to PascalCase unless requested.
 
 ## Codex
 
@@ -1925,192 +1696,18 @@ Do not automatically modify central route indexes unless the user asks.
 
 ---
 
-# 32. Permissions are mandatory for custom endpoint features
+# 32. Optional Permissions
 
-Every generated custom endpoint feature must be connected to the project permission system.
+Do not invent permissions.
 
-Use the endpoint scope:
+If the component needs permissions:
 
-```text
-admin
-organization / org
-shared
-```
+1. search `PermissionsEnum`;
+2. use existing matching permissions;
+3. if no permission exists, do not invent enum members;
+4. mention the missing permission integration.
 
-Search the canonical enum first:
-
-```ts
-import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-```
-
-## 32.1 Reuse an existing feature permission family when possible
-
-If the custom endpoints belong to an existing feature, extend that existing permission family instead of creating a duplicate feature family.
-
-Example:
-
-```text
-Subscription Application already has:
-SUBSCRIPTION_APPLICATION_ALL
-SUBSCRIPTION_APPLICATION_FETCH
-SUBSCRIPTION_APPLICATION_DETAILS
-...
-```
-
-For new custom actions such as approve/reject, add missing action permissions under the same family, for example:
-
-```ts
-SUBSCRIPTION_APPLICATION_APPROVE = '<next unused code>',
-SUBSCRIPTION_APPLICATION_REJECT = '<next unused code>',
-```
-
-Never duplicate an existing enum name or code.
-
-## 32.2 New custom endpoint feature
-
-If there is no existing feature permission family, create:
-
-```text
-<FEATURE>_ALL
-+ one permission for every endpoint action
-```
-
-Example with three endpoints:
-
-```ts
-PERMIT_DECISION_ALL = 'PD00',
-PERMIT_DECISION_APPROVE = 'PD01',
-PERMIT_DECISION_REJECT = 'PD02',
-PERMIT_DECISION_CANCEL = 'PD03',
-```
-
-For standard semantic actions, use standard names when appropriate:
-
-```text
-fetch/list   -> FETCH
-details/show -> DETAILS
-create/add   -> CREATE
-update/edit  -> UPDATE
-delete       -> DELETE
-```
-
-For non-standard actions preserve the action meaning:
-
-```text
-APPROVE
-REJECT
-CLOSE
-START
-SUBMIT
-VERIFY
-CLONE
-REFRESH
-```
-
-Codes must use the next available unique suffix inside that feature prefix. Search the enum before assigning a number.
-
-## 32.3 Scope behavior
-
-Admin feature:
-
-```text
-<FEATURE>_ALL
-<FEATURE>_<ACTION>
-```
-
-Organization feature:
-
-```text
-ORG_<FEATURE>_ALL
-ORG_<FEATURE>_<ACTION>
-```
-
-Shared feature:
-
-```text
-create BOTH admin and ORG_ variants
-```
-
-Organization permission codes normally use `O` before the base feature code, following the existing project convention. If the feature already has an established prefix, preserve it.
-
-## 32.4 Permission handler integration
-
-Find the handler files by the exports:
-
-```ts
-export const adminPermissions: PermissionItem = { ... }
-export const OrgPermissions: PermissionItem = { ... }
-```
-
-Then:
-
-```text
-admin endpoint feature        -> adminPermissions
-organization endpoint feature -> OrgPermissions
-shared endpoint feature       -> both
-```
-
-Create/update one feature group whose children are the permissions used by the endpoint actions.
-
-Example admin custom group:
-
-```ts
-{
-  key: PermissionsEnum.PERMIT_DECISION_ALL,
-  code: PermissionsEnum.PERMIT_DECISION_ALL,
-  label: 'Permit Decision',
-  permissions: [
-    { key: PermissionsEnum.PERMIT_DECISION_ALL, code: PermissionsEnum.PERMIT_DECISION_ALL, label: 'All' },
-    { key: PermissionsEnum.PERMIT_DECISION_APPROVE, code: PermissionsEnum.PERMIT_DECISION_APPROVE, label: 'Approve' },
-    { key: PermissionsEnum.PERMIT_DECISION_REJECT, code: PermissionsEnum.PERMIT_DECISION_REJECT, label: 'Reject' },
-    { key: PermissionsEnum.PERMIT_DECISION_CANCEL, code: PermissionsEnum.PERMIT_DECISION_CANCEL, label: 'Cancel' },
-  ],
-}
-```
-
-For organization use `ORG_` keys and preserve the local organization-handler label conventions.
-
-## 32.5 Component/action permission rules
-
-Each endpoint action gets its own permission array.
-
-Admin example:
-
-```ts
-const approvePermissions = [
-  PermissionsEnum.ADMIN,
-  PermissionsEnum.PERMIT_DECISION_ALL,
-  PermissionsEnum.PERMIT_DECISION_APPROVE,
-]
-```
-
-Organization:
-
-```ts
-const approvePermissions = [
-  PermissionsEnum.ORGANIZATION_EMPLOYEE,
-  PermissionsEnum.ORG_PERMIT_DECISION_ALL,
-  PermissionsEnum.ORG_PERMIT_DECISION_APPROVE,
-]
-```
-
-Shared combines the admin and organization variants so the component can work under both scopes.
-
-Apply permissions to:
-
-- endpoint buttons;
-- action menu items;
-- forms that trigger the endpoint;
-- fetch/result sections;
-- dialogs that expose the action.
-
-Do not expose an action button with only a generic role permission when a feature/action permission exists.
-
-## 32.6 No automatic sidebar for custom endpoint-only features
-
-Custom endpoint-only features do **not** get sidebar entries by default.
-
-Only CRUD features are automatically integrated into sidebars. Add a custom-endpoint feature to a sidebar only when the user explicitly asks for a standalone navigation item.
+If no permission requirement is provided, do not add `PermissionBuilder` automatically unless the nearest matching feature requires it.
 
 ---
 
@@ -2169,8 +1766,7 @@ Correct:
 ```text
 1 endpoint
 =
-1 primary params
-+ nested relation ID params if needed
+1 params
 1 api service
 1 repo
 1 use case
@@ -2182,8 +1778,7 @@ Correct:
 For two endpoints:
 
 ```text
-2 primary params
-+ nested relation ID params if needed
+2 params
 2 api services
 2 repos
 2 use cases
@@ -2195,8 +1790,7 @@ For two endpoints:
 For three endpoints:
 
 ```text
-3 primary params
-+ nested relation ID params if needed
+3 params
 3 api services
 3 repos
 3 use cases
@@ -2209,7 +1803,7 @@ For three endpoints:
 
 # 36. File Count Examples
 
-## One endpoint, no enum, default model, no multiple relations
+## One endpoint, no enum, default model
 
 ```text
 Core/params                       1
@@ -2223,7 +1817,7 @@ Presentation/components           1
 Total                             7 files
 ```
 
-## Two endpoints, one shared model, one enum, no multiple relations
+## Two endpoints, one shared model, one enum
 
 ```text
 Core/params                       2
@@ -2238,7 +1832,7 @@ Presentation/components           1
 Total                            13 files
 ```
 
-## Three endpoints, one shared model, two enums, no multiple relations
+## Three endpoints, one shared model, two enums
 
 ```text
 Core/params                       3
@@ -2254,8 +1848,6 @@ Total                            19 files
 ```
 
 Additional models/views/routes are added only when actually required.
-
-Multiple entity/relation fields may increase only the `Core/params` count because each such field gets its own nested ID Params helper. They do **not** add another ApiService, Repository, UseCase, Controller, or Component.
 
 ---
 
@@ -2511,11 +2103,11 @@ unless existing surrounding code explicitly uses them and the user requests cons
 
 ---
 
-# 43. Component State, DataStatus, and Skeleton Handling
+# 43. Component Result Handling
 
-Every generated custom endpoint must have its controller state handled by the component.
+For a data-returning endpoint, expose controller state to the component.
 
-For a data-returning/read endpoint, expose controller state:
+Example:
 
 ```ts
 const controller = FetchPermitResultController.getInstance()
@@ -2530,67 +2122,9 @@ watch(
 )
 ```
 
-If the feature renders asynchronous endpoint data, create one feature-specific skeleton component:
+Use `DataStatus` when the UI is rendering asynchronous endpoint data.
 
-```text
-Presentation/components/<FeatureName>Skeleton.vue
-```
-
-or place it in `Presentation/supcomponents/` when that is the local feature convention.
-
-The skeleton may reuse shared loaders such as:
-
-```text
-TableLoader
-FormLoader
-```
-
-but it must match the generated UI shape.
-
-Use `DataStatus` for the rendered result and handle all applicable states:
-
-```vue
-<PermissionBuilder :code="fetchPermissions">
-  <DataStatus :controller="state">
-    <template #success>
-      <!-- real result UI -->
-    </template>
-
-    <template #loader>
-      <FeatureSkeleton />
-    </template>
-
-    <template #initial>
-      <FeatureSkeleton />
-    </template>
-
-    <template #empty>
-      <DataEmpty ... />
-    </template>
-
-    <template #failed>
-      <DataFailed ... />
-    </template>
-  </DataStatus>
-
-  <template #notPermitted>
-    <DataFailed add-text="Have not Permission" description="" link="" />
-  </template>
-</PermissionBuilder>
-```
-
-For a fetch/read endpoint, do not ignore `initial`, `loader`, `empty`, or `failed` state.
-
-For mutation-only endpoints:
-
-- keep the controller state;
-- validate before calling;
-- disable/prevent duplicate action while loading when appropriate;
-- show success/error using the project dialogs;
-- protect the button/form with that endpoint's permission;
-- if the mutation response itself is rendered as content, render that result through `DataStatus` and the feature skeleton.
-
-One feature with 2-3 endpoints normally uses one shared skeleton component unless their result layouts are materially different.
+Do not force `DataStatus` for a simple mutation-only button if it adds no value.
 
 ---
 
@@ -2765,8 +2299,7 @@ In Codex mode:
 
 Before finishing a one-endpoint feature:
 
-- [ ] 1 primary Params file.
-- [ ] Nested relation ID Params helper file(s) when the endpoint contains multiple entity relations.
+- [ ] 1 Params file.
 - [ ] 1 API Service.
 - [ ] 1 Repository.
 - [ ] 1 UseCase.
@@ -2775,10 +2308,6 @@ Before finishing a one-endpoint feature:
 - [ ] 1 Vue component.
 - [ ] Enum file(s) only when required.
 - [ ] Exact endpoint name.
-- [ ] Endpoint scope (`admin`, `organization`/`org`, or `shared`) is respected.
-- [ ] Admin getter URL uses `this.prefix`.
-- [ ] Organization getter URL uses `this.baseUrl + this.organizationPrefix`.
-- [ ] Shared getter URL uses `this.prefix` and the getter name preserves the exact user-provided identifier, including snake_case.
 - [ ] One matching `ApiNames` getter per endpoint.
 - [ ] API service getter names match `ApiNames` exactly.
 - [ ] `ApiNames` uses the exact user-provided backend endpoint path.
@@ -2787,20 +2316,12 @@ Before finishing a one-endpoint feature:
 - [ ] Correct response parsing.
 - [ ] Every endpoint Params using `TranslationsParams` preserves the complete `translation.toMap()` result.
 - [ ] No endpoint Params manually reduces translations to only `titles`, `descriptions`, or another subset unless explicitly required.
-- [ ] Permission enum contains the feature/action permissions required by the endpoint scope.
-- [ ] Admin permission handler updated for admin/shared endpoint features.
-- [ ] Organization permission handler updated for organization/shared endpoint features.
-- [ ] Every endpoint UI action uses its matching action permission.
-- [ ] Data-returning endpoint UI handles initial/loading/success/empty/failed/not-permitted states through `DataStatus` where applicable.
-- [ ] Feature skeleton exists when asynchronous data is rendered.
-- [ ] No sidebar item was added for an endpoint-only feature unless explicitly requested.
 - [ ] No unrelated CRUD files.
 - [ ] No copied old names.
 
 Before finishing a two-endpoint feature:
 
-- [ ] 2 primary Params.
-- [ ] Nested relation ID Params helper file(s) when required.
+- [ ] 2 Params.
 - [ ] 2 API Services.
 - [ ] 2 Repositories.
 - [ ] 2 UseCases.
@@ -2811,8 +2332,7 @@ Before finishing a two-endpoint feature:
 
 Before finishing a three-endpoint feature:
 
-- [ ] 3 primary Params.
-- [ ] Nested relation ID Params helper file(s) when required.
+- [ ] 3 Params.
 - [ ] 3 API Services.
 - [ ] 3 Repositories.
 - [ ] 3 UseCases.
@@ -2910,9 +2430,7 @@ The architecture does not need to be repeated by the user.
 When this file is used:
 
 1. Read the requested feature name.
-2. Read/resolve the endpoint scope: `admin`, `organization`/`org`, or `shared`.
-3. Apply the matching ApiNames getter naming and URL-prefix rule before generating services.
-4. Count requested endpoints.
+2. Count requested endpoints.
 3. Create exactly that many Params files.
 4. Create exactly that many API Services.
 5. Create exactly that many Repositories.
@@ -3509,351 +3027,23 @@ In that case use the route/context id directly.
 
 ---
 
-## 6. Multiple relation IDs must use nested Params objects
+## 6. `_ids` / multiple relation fields
 
-A multiple relation must **not** be sent as a flat array of numbers.
+Do not automatically apply the singular `_id` rule to an `_ids` array without checking the user's contract.
 
-This project convention is mandatory for relation/entity IDs.
+If the user says a relation is multiple and provides a controller + Params, use `UpdatedCustomInputSelect` in multiselect mode according to the existing component API, then map selected objects to ids.
 
-### Wrong
-
-Do not generate:
+Conceptual example:
 
 ```ts
-employee_ids: [1, 2, 3]
+selectedEmployees.value.map((item) => item.id)
 ```
 
-Do not generate:
-
-```ts
-organization_ids: [1, 2]
-```
-
-Do not generate:
-
-```ts
-hierarchy_ids: [4, 5]
-```
-
-Do not generate:
-
-```ts
-data['employee_ids'] = this.employeeIds
-```
-
-### Required backend shape
-
-A collection of relation IDs must be sent as an array of objects.
-
-Example for employees:
-
-```ts
-employees: [
-  {
-    employee_id: 1,
-  },
-  {
-    employee_id: 2,
-  },
-  {
-    employee_id: 3,
-  },
-]
-```
-
-Example for hierarchies:
-
-```ts
-hierarchies: [
-  {
-    hierarchy_id: 4,
-  },
-  {
-    hierarchy_id: 5,
-  },
-]
-```
-
-Example for organizations:
-
-```ts
-organizations: [
-  {
-    organization_id: 1,
-  },
-  {
-    organization_id: 2,
-  },
-]
-```
-
-### Create one dedicated nested Params class
-
-For every multiple relation field, create an additional Params file whose only responsibility is serializing one relation id.
-
-Example:
-
-```ts
-import type Params from '@/base/core/params/params'
-
-export default class CreateProjectMeetingHierarchyIdParams implements Params {
-  hirarchy_id: number
-
-  constructor(data: { hirarchy_id: number }) {
-    this.hirarchy_id = data.hirarchy_id
-  }
-
-  toMap(): Record<
-    string,
-    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
-  > {
-    const data: Record<
-      string,
-      | number
-      | string
-      | number[]
-      | Record<string, string | number[] | number | Record<string, string>>
-    > = {}
-
-    data['hierarchy_id'] = this.hirarchy_id
-
-    return data
-  }
-}
-```
-
-Keep the user's/project's exact spelling for constructor properties and backend keys. Do not silently rename a backend key.
-
-### Parent Params class
-
-The main endpoint/CRUD Params must store an array of the nested Params class:
-
-```ts
-public hierarchies: CreateProjectMeetingHierarchyIdParams[]
-```
-
-and serialize it with:
-
-```ts
-data['hierarchies'] = this.hierarchies.map((el) => el.toMap())
-```
-
-Example constructor:
-
-```ts
-constructor(
-  public hierarchies: CreateProjectMeetingHierarchyIdParams[],
-) {}
-```
-
-Example complete mapping concept:
-
-```ts
-toMap(): Record<string, unknown> {
-  const data: Record<string, unknown> = {}
-
-  data['hierarchies'] = this.hierarchies.map((el) => el.toMap())
-
-  return data
-}
-```
-
-### Component mapping
-
-Use `UpdatedCustomInputSelect` in multiselect mode for a user-selectable relation list.
-
-The component state contains selected objects, not raw ids:
-
-```ts
-const selectedHieararchy = ref<TitleInterface[]>([])
-```
-
-When constructing the main Params:
-
-```ts
-hierarchies: Array.isArray(selectedHieararchy.value)
-  ? selectedHieararchy.value.map(
-      (el) =>
-        new CreateProjectMeetingHierarchyIdParams({
-          hirarchy_id: el.id!,
-        }),
-    )
-  : [],
-```
-
-For employees, use the same structure:
-
-```ts
-employees: Array.isArray(selectedEmployees.value)
-  ? selectedEmployees.value.map(
-      (el) =>
-        new CreateMeetingEmployeeIdParams({
-          employee_id: el.id!,
-        }),
-    )
-  : [],
-```
-
-Then the main Params sends:
-
-```ts
-data['employees'] = this.employees.map((el) => el.toMap())
-```
-
-which produces:
-
-```ts
-employees: [
-  { employee_id: 1 },
-  { employee_id: 2 },
-]
-```
-
-### Nested Params naming
-
-Create a descriptive nested Params class based on:
-
-```text
-<Action><Feature><Relation>IdParams
-```
-
-Examples:
-
-```text
-CreateProjectMeetingHierarchyIdParams
-CreateMeetingEmployeeIdParams
-UpdateMeetingEmployeeIdParams
-CreateInspectionOrganizationIdParams
-```
-
-If the same nested relation Params is safely reusable by create/update in the existing project style, reuse it. Otherwise keep action-specific naming.
-
-### Outer collection key
-
-The outer request key is normally the plural relation name:
-
-```text
-employee_id     -> employees
-organization_id -> organizations
-hierarchy_id    -> hierarchies
-equipment_id    -> equipments
-```
-
-But the backend contract supplied by the user is always the source of truth.
-
-If the user explicitly gives:
-
-```text
-employees
-hierarchies
-participants
-assigned_employees
-```
-
-use that exact outer key.
-
-If only a singular relation key is supplied and the correct outer collection key cannot be derived unambiguously, ask for the outer key rather than inventing one.
-
-### Multiselect UI
-
-Use:
-
-```vue
-<UpdatedCustomInputSelect
-  :model-value="selectedEmployees"
-  :controller="indexOrganizatoinEmployeeController"
-  :params="indexOrganizatoinEmployeeParams"
-  type="multiselect"
-  label="employees"
-  id="employees"
-  :placeholder="$t('Select employees')"
-  @update:model-value="setEmployees"
-/>
-```
-
-The project's component also supports numeric multi-select type values. Prefer the convention used by the nearest existing feature.
-
-Setter example:
-
-```ts
-const setEmployees = (value: TitleInterface | TitleInterface[] | null) => {
-  selectedEmployees.value = Array.isArray(value) ? value : []
-  updateData()
-}
-```
-
-### Validation
-
-If the relation list is required:
-
-- require at least one selected item;
-- show the normal project warning/error;
-- do not call the API with an empty array.
-
-If it is optional:
-
-- an empty selection maps to:
-
-```ts
-employees: []
-```
-
-unless the backend contract requires omitting the key.
-
-### Important scope rule
-
-This nested Params rule applies to **relation/entity ID arrays**.
-
-Examples:
-
-```text
-employees
-organizations
-hierarchies
-equipments
-projects
-locations
-teams
-users
-```
-
-It does **not** apply to upload/image/file data.
-
-Do not wrap these in nested id Params:
-
-```text
-images: string[]
-attachments: string[]
-files: string[]
-documents: string[]
-photos: string[]
-```
-
-Those continue to follow the Base64 upload rules.
-
-It also does not apply to ordinary primitive arrays that are not entity IDs unless the backend explicitly requires object wrapping.
-
-### Critical project rule
-
-```text
-single relation:
-employee_id: number
-
-multiple relation:
-employees: [
-  { employee_id: number },
-  { employee_id: number },
-]
-```
-
-Never default to:
+Only do this when the field is explicitly a multiple relation such as:
 
 ```text
 employee_ids: number[]
 ```
-
-for a relation collection in generated code.
-
 
 ---
 
@@ -3875,8 +3065,6 @@ Use this table before creating form controls:
 | `title: string` | normal string input, no translations |
 | `description: string` | normal string/textarea, no translations |
 | selectable `employee_id` | `UpdatedCustomInputSelect` + supplied/found controller/Params |
-| multiple employee relation | `UpdatedCustomInputSelect` multiselect -> nested `EmployeeIdParams[]` -> `employees: [{ employee_id }]` |
-| multiple hierarchy relation | multiselect -> nested `HierarchyIdParams[]` -> `hierarchies: [{ hierarchy_id }]` |
 | route/context `project_id` | use route/context id directly; no select |
 
 ---

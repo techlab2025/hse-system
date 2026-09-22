@@ -13,9 +13,8 @@ export default class AddPPEActivityParams implements Params {
     const translations = this.translation.toMap() as Record<string, unknown>
 
     return {
-      translations: {
-        titles: translations.titles,
-      },
+      translations: translations
+       
     }
   }
 
