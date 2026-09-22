@@ -1919,6 +1919,9 @@ class ApiNames {
   public get FetchAllLeadershipVisits() {
     return this.baseUrl + this.organizationPrefix + 'fetch_all_visitis'
   }
+  public get CreateLeadershipVisitReport() {
+    return this.baseUrl + this.organizationPrefix + 'create_visite_report'
+  }
   // CloneMeetingType
 
   public get ShowPTWType() {
@@ -1964,7 +1967,7 @@ class ApiNames {
     return this.prefix + 'create_ppe_activity'
   }
   public get clone_ppe_activity() {
-    return this.prefix + 'clone_ppe_activity'
+    return this.prefix + 'clone_ppe_activities'
   }
   public get delete_ppe_activity() {
     return this.prefix + 'delete_ppe_activity'
@@ -1985,7 +1988,7 @@ class ApiNames {
   public get create_ppe_toll() { return this.prefix + 'create_ppe_tool' }
   public get update_ppe_tool() { return this.prefix + 'update_ppe_tool' }
   public get delete_ppe_tool() { return this.prefix + 'delete_ppe_tool' }
-  public get clone_ppe_tool() { return this.prefix + 'clone_ppe_tool' }
+  public get clone_ppe_tool() { return this.prefix + 'clone_ppe_tools' }
   // Risk Assessment
   public get CreateRiskAssessment() { return this.baseUrl + this.organizationPrefix + 'create_risk_assessment' }
   public get FetchRiskAssessments() { return this.baseUrl + this.organizationPrefix + 'fetch_risk_assessments' }
