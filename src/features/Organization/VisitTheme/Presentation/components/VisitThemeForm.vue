@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, markRaw, nextTick, onMounted, ref, watch, type Component } from 'vue'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
@@ -9,11 +9,17 @@ import IndexLangParams from '@/features/setting/languages/Core/params/indexLangP
 import { LangsMap } from '@/constant/langs'
 import { useUserStore } from '@/stores/user'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import TitleInterface from '@/base/Data/Models/title_interface'
+import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams'
+import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import AddVisitThemeParams from '../../Core/params/addVisitThemeParams'
 import EditVisitThemeParams from '../../Core/params/editVisitThemeParams'
 import type VisitThemeDetailsModel from '../../Data/models/VisitThemeDetailsModel'
 
-type LanguageOption = { locale: string; title: string; icon?: any }
+type LanguageOption = { locale: string; title: string; icon?: Component | string }
 type LocalizedTitle = { locale: string; title: string }
 const emit = defineEmits<{
   (event: 'update:data', value: AddVisitThemeParams | EditVisitThemeParams): void
@@ -22,11 +28,15 @@ const props = defineProps<{ data?: VisitThemeDetailsModel }>()
 const user = useUserStore()
 const languages = ref<LanguageOption[]>([])
 const titles = ref<LocalizedTitle[]>([])
+const allIndustries = ref(false)
+const industry = ref<TitleInterface[]>([])
+const industryController = IndexIndustryController.getInstance()
+const industryParams = new IndexIndustryParams('', 0, 10, 1)
 const requiredFieldErrors = ref<Record<string, string>>({})
 
 const fetchLanguages = async () => {
   if (user.user?.languages?.length) {
-    languages.value = user.user.languages.map((item: any) => ({
+    languages.value = user.user.languages.map((item: { code: string }) => ({
       locale: item.code,
       title: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
@@ -37,7 +47,7 @@ const fetchLanguages = async () => {
     new IndexLangParams('', 1, 10, 0),
   )
   languages.value = response.value?.data?.length
-    ? response.value.data.map((item: any) => ({
+    ? response.value.data.map((item: { code: string }) => ({
         locale: item.code,
         title: '',
         icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
@@ -51,20 +61,32 @@ const fetchLanguages = async () => {
 const updateData = () => {
   const translations = new TranslationsParams(languages.value.map((item) => item.locale))
   titles.value.forEach((item) => translations.setTranslation('title', item.locale, item.title))
+  const adminScope = user.user?.type === OrganizationTypeEnum.ADMIN ? allIndustries.value : null
+  const industryIds = industry.value.map((item) => item.id)
   emit(
     'update:data',
     props.data?.id
-      ? new EditVisitThemeParams(props.data.id, translations)
-      : new AddVisitThemeParams(translations),
+      ? new EditVisitThemeParams(props.data.id, translations, adminScope, industryIds)
+      : new AddVisitThemeParams(translations, adminScope, industryIds),
   )
 }
-const setTitles = (value: any[]) => {
+const setTitles = (value: { locale: string; title?: string }[]) => {
   titles.value = value.map((item) => ({ locale: item.locale, title: item.title ?? '' }))
+  updateData()
+}
+const updateAllIndustries = (value: boolean) => {
+  allIndustries.value = value
+  updateData()
+}
+const setIndustry = (value: TitleInterface[]) => {
+  industry.value = value
   updateData()
 }
 watch(
   [() => props.data, languages],
   ([data, availableLanguages]) => {
+    allIndustries.value = data?.allIndustries ?? false
+    industry.value = data?.industries ?? []
     if (!availableLanguages.length) return
     titles.value = availableLanguages.map(
       (language) =>
@@ -115,6 +137,14 @@ onMounted(fetchLanguages)
     <p v-if="requiredFieldErrors.title" class="required-field-message">
       {{ requiredFieldErrors.title }}
     </p>
+  </div>
+  <div v-if="user.user?.type === OrganizationTypeEnum.ADMIN" class="input-wrapper col-span-4 md:col-span-2">
+    <CustomCheckbox :index="3" title="all_industries" :checked="allIndustries" @update:checked="updateAllIndustries" />
+  </div>
+  <div v-if="!allIndustries && user.user?.type === OrganizationTypeEnum.ADMIN" class="col-span-4 md:col-span-2">
+    <CustomSelectInput :model-value="industry" :controller="industryController" :params="industryParams"
+      label="industry" id="visittheme-industry" placeholder="Select industry" :type="2"
+      @update:model-value="setIndustry" />
   </div>
 </template>
 

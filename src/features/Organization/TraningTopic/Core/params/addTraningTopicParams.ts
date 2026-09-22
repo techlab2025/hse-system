@@ -9,14 +9,23 @@ export default class AddTraningTopicParams implements Params {
     },
   })
 
-  constructor(public translation: TranslationsParams) {}
+  constructor(
+    public translation: TranslationsParams,
+    public allIndustries: boolean | null = null,
+    public industries: number[] = [],
+  ) {}
 
   toMap(): Record<string, unknown> {
     const translations = this.translation.toMap() as Record<string, unknown>
 
-    return {
+    const data: Record<string, unknown> = {
       translations: translations,
     }
+    if (this.allIndustries != null) {
+      data.all_industries = this.allIndustries ? 1 : 0
+      if (!this.allIndustries) data.industry_ids = this.industries
+    }
+    return data
   }
 
   validate() {
