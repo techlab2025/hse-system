@@ -1,12 +1,12 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 export default class PTWTypeModel extends TitleInterface {
-  constructor(id: number, title: string) {
-    super({ id, title })
+  constructor(id: number, title: string, color?: string) {
+    super({ id, title, color })
   }
 
   static fromMap(data: any): PTWTypeModel {
-    return new PTWTypeModel(data.id, data.title)
+    return new PTWTypeModel(data.id, data.title, data.ptw_color ?? data.color)
   }
 
   static example: PTWTypeModel[] = [
