@@ -2564,5 +2564,15 @@
   "enter_visit_activity_title": "أدخل عنوان نشاط الزيارة",
   "no_visit_activities": "لا توجد أنشطة زيارات",
   "no_visit_activities_description": "لم تتم إضافة أي أنشطة زيارات بعد.",
-  "action_feature_visit_activities": "إجراءات أنشطة الزيارات"
+  "action_feature_visit_activities": "إجراءات أنشطة الزيارات",
+  "Visit Themes": "موضوعات الزيارات",
+  "Add Visit Theme": "إضافة موضوع زيارة",
+  "Edit Visit Theme": "تعديل موضوع زيارة",
+  "visit_themes": "موضوعات الزيارات",
+  "add_visit_theme": "إضافة موضوع زيارة",
+  "visit_theme_title": "عنوان موضوع الزيارة",
+  "enter_visit_theme_title": "أدخل عنوان موضوع الزيارة",
+  "no_visit_themes": "لا توجد موضوعات زيارات",
+  "no_visit_themes_description": "لم تتم إضافة أي موضوعات زيارات بعد.",
+  "action_feature_visit_themes": "إجراءات موضوعات الزيارات"
 }

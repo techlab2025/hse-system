@@ -480,6 +480,20 @@ onMounted(updateData)
           @update:model-value="setApprovalBy"
         />
       </div>
+            <div
+        class="management-change-field input-wrapper"
+      >
+        <UpdatedCustomInputSelect
+          :model-value="Selectedemployeeid"
+          :controller="indexOrganizatoinEmployeeController"
+          :params="indexOrganizatoinEmployeeidParams"
+          label="employee"
+          id="project-employee"
+          :placeholder="$t('Select an employee')"
+          optional
+          @update:model-value="setEmployee"
+        />
+      </div>
     </div>
   </section>
 

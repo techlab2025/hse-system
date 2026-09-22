@@ -1493,7 +1493,7 @@ class ApiNames {
   public get DeletePpeItem() {
     return this.prefix + 'delete_ppe_item'
   }
-    // VisitThem
+  // Visit Theme
   public get CreateVisitTheme() {
     return this.prefix + 'create_visit_theme'
   }

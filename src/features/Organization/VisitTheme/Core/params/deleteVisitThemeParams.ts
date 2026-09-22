@@ -1,14 +1,9 @@
-import type Params from "@/base/core/params/params";
+import type Params from '@/base/core/params/params'
 
 export default class DeleteVisitThemeParams implements Params {
-
-  constructor(public id: number) {
-    this.id = id;
-  }
+  constructor(public id: number) {}
 
   toMap(): Record<string, number> {
-    const data: Record<string, number> = {};
-    data["visit_Theme_id"] = this.id;
-    return data;
+    return { visit_theme_id: this.id }
   }
 }

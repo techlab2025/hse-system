@@ -1,5 +1,5 @@
 import type Params from '@/base/core/params/params'
-import type TranslationsParams from '@/base/core/params/translations_params.ts'
+import type TranslationsParams from '@/base/core/params/translations_params'
 
 export default class EditVisitThemeParams implements Params {
   constructor(
@@ -7,21 +7,10 @@ export default class EditVisitThemeParams implements Params {
     public translation: TranslationsParams,
   ) {}
 
-  toMap(): Record<
-    string,
-    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
-  > {
-    const data: Record<
-      string,
-      | number
-      | string
-      | number[]
-      | Record<string, string | number[] | number | Record<string, string>>
-    > = {}
-
-    data['visit_theme_id'] = this.id
-    data['translations'] = this.translation.toMap()
-
-    return data
+  toMap(): Record<string, unknown> {
+    return {
+      visit_theme_id: this.id,
+      translations: this.translation.toMap(),
+    }
   }
 }

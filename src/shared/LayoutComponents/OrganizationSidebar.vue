@@ -440,6 +440,12 @@ const LockUpsRoutes = ref<Routes[]>([
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
+    link: '/organization/visit-themes',
+    name: 'visit_themes',
+    icon: 'clipboard-notes',
+    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+  {
     link: '/organization/drill-types',
     name: 'drill_types',
     icon: 'clipboard-notes',
