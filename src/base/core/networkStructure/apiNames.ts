@@ -1493,6 +1493,39 @@ class ApiNames {
   public get DeletePpeItem() {
     return this.prefix + 'delete_ppe_item'
   }
+  // Visit Theme
+  public get CreateVisitTheme() {
+    return this.prefix + 'create_leadership_theme'
+  }
+  public get IndexVisitTheme() {
+    return this.prefix + 'fetch_leadership_themes'
+  }
+  public get ShowVisitTheme() {
+    return this.prefix + 'fetch_leadership_theme_details'
+  }
+  public get EditVisitTheme() {
+    return this.prefix + 'update_leadership_theme'
+  }
+  public get DeleteVisitTheme() {
+    return this.prefix + 'delete_leadership_theme'
+  }
+
+  // Visit Category
+  public get CreateVisitCategory() {
+    return this.prefix + 'create_leadership_category'
+  }
+  public get IndexVisitCategory() {
+    return this.prefix + 'fetch_leadership_categories'
+  }
+  public get ShowVisitCategory() {
+    return this.prefix + 'fetch_leadership_category_details'
+  }
+  public get EditVisitCategory() {
+    return this.prefix + 'update_leadership_category'
+  }
+  public get DeleteVisitCategory() {
+    return this.prefix + 'delete_leadership_category'
+  }
 
   // MangementChange Topic Type
   public get CreateMangementChangeTopicType() {
@@ -1980,6 +2013,23 @@ class ApiNames {
   }
   public get fetch_ppe_activity_details() {
     return this.prefix + 'fetch_ppe_activity_details'
+  }
+
+  // Visit Activity
+  public get CreateVisitActivity() {
+    return this.prefix + 'create_visit_activity'
+  }
+  public get IndexVisitActivity() {
+    return this.prefix + 'fetch_visit_activities'
+  }
+  public get ShowVisitActivity() {
+    return this.prefix + 'fetch_visit_activity_details'
+  }
+  public get EditVisitActivity() {
+    return this.prefix + 'update_visit_activity'
+  }
+  public get DeleteVisitActivity() {
+    return this.prefix + 'delete_visit_activity'
   }
 
   // PPE Tool

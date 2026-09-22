@@ -51,11 +51,13 @@ const selectedTopicType = ref<number | null>(null)
 const status = ref(ChangeApprovalMangementEnum.approve)
 const approvalBy = ref<number | null>(null)
 const employeeId = ref<number | null>(null)
+const initiatorEmployeeId = ref<number | null>(null)
 const equipmentId = ref<number | null>(null)
 const topicText = ref('')
 const Selectedmangement = ref<TitleInterface | null>(null)
 const Selectedemployee = ref<TitleInterface | null>(null)
 const Selectedemployeeid = ref<TitleInterface | null>(null)
+const Selectedinitiatoremployeeid = ref<TitleInterface | null>(null)
 const Selectedequipment = ref<TitleInterface | null>(null)
 const requiredFieldErrors = ref<Record<string, string>>({})
 
@@ -143,6 +145,7 @@ const formParams = computed(() => [
   topicType.value === MangementChangeTopicTypeEnum.other
     ? topicText.value || undefined
     : undefined,
+  initiatorEmployeeId.value ?? undefined,
 ] as const)
 
 const updateData = () => {
@@ -194,9 +197,15 @@ const setManagement = (data: TitleInterface | null) => {
   topicText.value = ''
 }
 
-const setEmployee = (data: TitleInterface | null) => {
-  Selectedemployeeid.value = data
-  employeeId.value = data?.id ?? null
+const setinitiatorEmployee = (data: TitleInterface | TitleInterface[] | null) => {
+  const employee = Array.isArray(data) ? data[0] ?? null : data
+  Selectedinitiatoremployeeid.value = employee
+  initiatorEmployeeId.value = employee?.id ?? null
+}
+const setEmployee = (data: TitleInterface | TitleInterface[] | null) => {
+  const employee = Array.isArray(data) ? data[0] ?? null : data
+  Selectedemployeeid.value = employee
+  employeeId.value = employee?.id ?? null
 }
 
 const setApprovalBy = (data: TitleInterface | null) => {
@@ -204,9 +213,10 @@ const setApprovalBy = (data: TitleInterface | null) => {
   approvalBy.value = data?.id ?? null
 }
 
-const setequipment = (data: TitleInterface | null) => {
-  Selectedequipment.value = data
-  equipmentId.value = data?.id ?? null
+const setequipment = (data: TitleInterface | TitleInterface[] | null) => {
+  const equipment = Array.isArray(data) ? data[0] ?? null : data
+  Selectedequipment.value = equipment
+  equipmentId.value = equipment?.id ?? null
 }
 
 const setFormData = (change?: MangementChangeModel) => {
@@ -250,6 +260,7 @@ const setFormData = (change?: MangementChangeModel) => {
   ) as ChangeApprovalMangementEnum
   approvalBy.value = change.approval_by
   employeeId.value = change.management_change_topic_employee_id
+  initiatorEmployeeId.value = change.initiatore_employee_id
   equipmentId.value = change.management_change_topic_equipment_id
   topicText.value = change.management_change_topic_text ?? ''
 
@@ -270,8 +281,7 @@ const setFormData = (change?: MangementChangeModel) => {
         `Employee #${change.approval_by}`,
     })
     : null
-  Selectedemployeeid.value = change.management_change_topic_employee_id
-    ? new TitleInterface({
+  Selectedemployeeid.value = change.management_change_topic_employee_id  ? new TitleInterface({
       id: change.management_change_topic_employee_id,
       title:
         change.employeeName ??
@@ -284,6 +294,14 @@ const setFormData = (change?: MangementChangeModel) => {
       title:
         change.equipmentTitle ??
         `Equipment #${change.management_change_topic_equipment_id}`,
+    })
+    : null
+
+      Selectedinitiatoremployeeid.value = change.initiatore_employee_id  ? new TitleInterface({
+      id: change.initiatore_employee_id,
+      title:
+        change.employeeName ??
+        `Employee #${change.initiatore_employee_id}`,
     })
     : null
 
@@ -304,6 +322,7 @@ watch(
     status,
     approvalBy,
     employeeId,
+    initiatorEmployeeId,
     equipmentId,
     topicText,
   ],
@@ -478,6 +497,20 @@ onMounted(updateData)
           :placeholder="$t('Select an employee')"
           optional
           @update:model-value="setApprovalBy"
+        />
+      </div>
+            <div
+        class="management-change-field input-wrapper"
+      >
+        <UpdatedCustomInputSelect
+          :model-value="Selectedinitiatoremployeeid"
+          :controller="indexOrganizatoinEmployeeController"
+          :params="indexOrganizatoinEmployeeidParams"
+          label="initiator employee"
+          id="initiator-employee"
+          :placeholder="$t('Select an initiator employee')"
+          optional
+          @update:model-value="setinitiatorEmployee"
         />
       </div>
     </div>

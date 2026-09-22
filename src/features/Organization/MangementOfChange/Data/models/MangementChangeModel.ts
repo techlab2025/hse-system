@@ -72,6 +72,7 @@ export default class MangementChangeModel {
     public employeeName?: string,
     public equipmentTitle?: string,
     public approvalByName?: string,
+    public initiatore_employee_id:number | null = null,
   ) {}
 
   static fromMap(data: MapData): MangementChangeModel {
@@ -115,6 +116,7 @@ export default class MangementChangeModel {
       recordTitle(employeeRecord),
       recordTitle(equipmentRecord),
       recordTitle(approvalByRecord),
+       toNullableNumber(data.initiatore_employee_id),
     )
   }
 }
