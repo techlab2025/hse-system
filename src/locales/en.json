@@ -2582,5 +2582,15 @@
   "Enter work location": "Enter work location",
   "Describe the work activity and safety requirements": "Describe the work activity and safety requirements",
   "Review all information before creating the permit.": "Review all information before creating the permit.",
-  "Create permit": "Create permit"
+  "Create permit": "Create permit",
+  "Visit Activities": "Visit Activities",
+  "Add Visit Activity": "Add Visit Activity",
+  "Edit Visit Activity": "Edit Visit Activity",
+  "visit_activities": "Visit Activities",
+  "add_visit_activity": "Add Visit Activity",
+  "visit_activity_title": "Visit Activity Title",
+  "enter_visit_activity_title": "Enter visit activity title",
+  "no_visit_activities": "No Visit Activities",
+  "no_visit_activities_description": "You have not added any visit activities yet.",
+  "action_feature_visit_activities": "Visit Activity Actions"
 }

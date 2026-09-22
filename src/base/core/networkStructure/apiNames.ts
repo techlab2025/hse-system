@@ -1493,6 +1493,22 @@ class ApiNames {
   public get DeletePpeItem() {
     return this.prefix + 'delete_ppe_item'
   }
+    // VisitThem
+  public get CreateVisitTheme() {
+    return this.prefix + 'create_visit_theme'
+  }
+  public get IndexVisitTheme() {
+    return this.prefix + 'fetch_visit_theme'
+  }
+  public get ShowVisitTheme() {
+    return this.prefix + 'fetch_visit_theme_details'
+  }
+  public get EditVisitTheme() {
+    return this.prefix + 'update_visit_theme'
+  }
+  public get DeleteVisitTheme() {
+    return this.prefix + 'delete_visit_theme'
+  }
 
   // MangementChange Topic Type
   public get CreateMangementChangeTopicType() {
@@ -1974,6 +1990,23 @@ class ApiNames {
   }
   public get fetch_ppe_activity_details() {
     return this.prefix + 'fetch_ppe_activity_details'
+  }
+
+  // Visit Activity
+  public get CreateVisitActivity() {
+    return this.prefix + 'create_visit_activiity'
+  }
+  public get IndexVisitActivity() {
+    return this.prefix + 'fetch_visit_activiity'
+  }
+  public get ShowVisitActivity() {
+    return this.prefix + 'fetch_visit_activiity_details'
+  }
+  public get EditVisitActivity() {
+    return this.prefix + 'update_visit_activiity'
+  }
+  public get DeleteVisitActivity() {
+    return this.prefix + 'delete_visit_activiity'
   }
 
   // PPE Tool

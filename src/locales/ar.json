@@ -2554,5 +2554,15 @@
   "Enter work location": "أدخل موقع العمل",
   "Describe the work activity and safety requirements": "صف نشاط العمل ومتطلبات السلامة",
   "Review all information before creating the permit.": "راجع جميع المعلومات قبل إنشاء التصريح.",
-  "Create permit": "إنشاء التصريح"
+  "Create permit": "إنشاء التصريح",
+  "Visit Activities": "أنشطة الزيارات",
+  "Add Visit Activity": "إضافة نشاط زيارة",
+  "Edit Visit Activity": "تعديل نشاط زيارة",
+  "visit_activities": "أنشطة الزيارات",
+  "add_visit_activity": "إضافة نشاط زيارة",
+  "visit_activity_title": "عنوان نشاط الزيارة",
+  "enter_visit_activity_title": "أدخل عنوان نشاط الزيارة",
+  "no_visit_activities": "لا توجد أنشطة زيارات",
+  "no_visit_activities_description": "لم تتم إضافة أي أنشطة زيارات بعد.",
+  "action_feature_visit_activities": "إجراءات أنشطة الزيارات"
 }
