@@ -24,6 +24,7 @@ const props = defineProps<{ data?: PTWTypeDetailsModel }>()
 const user = useUserStore()
 const languages = ref<LanguageOption[]>([])
 const titles = ref<LocalizedTitle[]>([])
+const ptwColor = ref('#ff0000')
 
 const fetchLanguages = async () => {
   if (user.user?.languages?.length) {
@@ -57,8 +58,8 @@ const updateData = () => {
   emit(
     'update:data',
     props.data?.id
-      ? new EditPTWTypeParams(props.data.id, translations)
-      : new AddPTWTypeParams(translations),
+      ? new EditPTWTypeParams(props.data.id, translations, ptwColor.value)
+      : new AddPTWTypeParams(translations, ptwColor.value),
   )
 }
 
@@ -71,6 +72,8 @@ watch(
   [() => props.data, languages],
   ([data, availableLanguages]) => {
     if (!availableLanguages.length) return
+
+    ptwColor.value = data?.ptw_color ?? data?.color ?? '#ff0000'
 
     titles.value = availableLanguages.map((language) =>
       data?.titles?.find((item) => item.locale === language.locale) ?? {
@@ -125,9 +128,22 @@ onMounted(fetchLanguages)
       {{ requiredFieldErrors.title }}
     </p>
   </div>
+    <div class="col-span-4 md:col-span-2 input_color">
+    <label for="ptw_color">Select your favorite color:</label>
+    <input type="color" v-model="ptwColor" id="ptw_color" name="ptw_color" />
+  </div>
 </template>
 
 <style scoped>
+.input_color{
+  display: flex;
+  align-items: center;
+
+}
+.input_color input{
+  width: 70px;
+  height:70px;
+}
 .required-field-message {
   margin-top: 0.35rem;
   color: var(--status-danger);

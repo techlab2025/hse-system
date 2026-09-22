@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import DatePicker from 'primevue/datepicker'
@@ -57,8 +57,17 @@ const indexPTWTypeController = IndexPTWTypeController.getInstance()
 
 const indexPTWTypeParams = new IndexPTWTypeParams('', 1, 10, 0)
 
-const updatePermitToWorkType = (data: TitleInterface) => {
-  PermitToWorkType.value = data
+const ptwHeroStyles = computed(() => {
+  const color = PermitToWorkType.value?.color || 'var(--PrimaryColor)'
+
+  return {
+    background: `radial-gradient(circle at 92% 5%, rgba(255,255,255,0.16), transparent 27%), linear-gradient(125deg, ${color}, var(--brand-primary-900))`,
+  }
+})
+
+const updatePermitToWorkType = (data: TitleInterface | TitleInterface[] | null) => {
+  const selectedValue = Array.isArray(data) ? data[0] : data
+  PermitToWorkType.value = selectedValue ?? undefined
 }
 
 /* =========================
@@ -91,7 +100,7 @@ const SubmitFrom = async () => {
 
 <template>
   <section class="ptw-builder">
-    <header class="ptw-hero">
+    <header class="ptw-hero" :style="ptwHeroStyles">
       <div class="ptw-hero-copy">
         <span class="ptw-hero-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none">

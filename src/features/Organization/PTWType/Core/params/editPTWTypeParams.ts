@@ -5,6 +5,7 @@ export default class EditPTWTypeParams implements Params {
   constructor(
     public id: number,
     public translation: TranslationsParams,
+    public ptw_color: string = '#ff0000',
   ) {}
 
   toMap(): Record<string, unknown> {
@@ -12,7 +13,8 @@ export default class EditPTWTypeParams implements Params {
 
     return {
       permit_type_id: this.id,
-      translations:translations
+      translations: translations,
+      ptw_color: this.ptw_color,
     }
   }
 }
