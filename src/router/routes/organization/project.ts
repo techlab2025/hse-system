@@ -51,6 +51,16 @@ export const projectRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: 'project-details/:id/leadership',
+    name: 'Project Leadership',
+    component: () => import('@/views/Organization/Project/LeadershipPage.vue'),
+    meta: {
+      breadcrumb: 'Leadership',
+      parent: 'Project Details',
+      isSidebar: false,
+    },
+  },
+  {
     path: 'project-details/:id/risk-assessments',
     name: 'Project Risk Assessments',
     component: () => import('@/views/Organization/Project/RiskAssessment/RiskAssessmentsPage.vue'),

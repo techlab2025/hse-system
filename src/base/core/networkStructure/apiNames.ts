@@ -1916,6 +1916,9 @@ class ApiNames {
   public get FetchProjectMeetings() {
     return this.baseUrl + this.organizationPrefix + 'fetch_meetings'
   }
+  public get FetchAllLeadershipVisits() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_all_visitis'
+  }
   // CloneMeetingType
 
   public get ShowPTWType() {

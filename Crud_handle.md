@@ -36,6 +36,118 @@ Never keep an example feature name in generated code unless the requested CRUD a
 
 Every class name, filename, component name, import path, route name, variable name, API name, dialog text, Excel filename, translation key, model name, controller name, repository name, use case name, and system clone name must be generated from the CRUD name supplied by the user.
 
+
+
+# 1.1 STRICT REFERENCE-FIDELITY MODE — MANDATORY
+
+This is the most important rule in this file.
+
+When a reference feature/file is supplied by the user or exists in the repository, **do not re-implement an equivalent architecture**. Copy the reference structure and code shape as closely as possible and change only what the new feature requires.
+
+The goal is not merely “same behavior”. The goal is:
+
+```text
+same imports style
+same base classes
+same generic types
+same singleton constructor pattern
+same method names
+same DataState handling
+same exports
+same component structure
+same DataStatus usage
+same loaders
+same ActionsList/DropList structure
+same permissions pattern
+same routing pattern
+same save/save-and-new behavior
+same table/state handling
+```
+
+Only these things should normally change:
+
+```text
+feature name
+class/file names
+model type
+params fields
+backend keys
+API getter/endpoints
+permissions for the new feature
+translation keys
+route paths
+field-specific UI controls
+model-specific table columns
+```
+
+## Forbidden “equivalent rewrites”
+
+Do **not** replace the project pattern with a shorter or cleaner alternative.
+
+Examples of forbidden rewrites:
+
+```ts
+async call(params: Params) {
+  return this.useCase.call(params)
+}
+```
+
+when the reference controller uses:
+
+```ts
+async getData(params: Params) {
+  this.setLoading()
+  const dataState = await this.IndexFeatureUseCase.call(params)
+  this.setState(dataState)
+  ...
+  super.handleResponseDialogs()
+  return this.state
+}
+```
+
+Do not replace state-driven components with local arrays such as:
+
+```ts
+const items = ref<Model[]>([])
+```
+
+when the reference component uses:
+
+```ts
+const state = ref(indexController.state.value)
+```
+
+Do not replace project components such as:
+
+```text
+DataStatus
+TableLoader
+DataEmpty
+DataFailed
+PermissionBuilder
+DropList
+ActionsList
+Pagination
+```
+
+with raw HTML or custom local logic.
+
+Do not replace the reference `Add`/`Edit` component with a new design using `isSubmitting`, a custom `formRef`, or a generic `save()` function unless that exact pattern exists in the chosen reference feature.
+
+## Copy-first workflow
+
+Before generating each file:
+
+1. Open the corresponding reference file.
+2. Copy its structure.
+3. Replace only source-feature names with target-feature names.
+4. Change Params/model/fields only where required.
+5. Preserve project imports and base classes exactly.
+6. Preserve method names and state handling used by that file category.
+7. Run a diff mentally/programmatically and confirm no unnecessary structural rewrite was introduced.
+
+If the user provides an exact desired code sample, that sample overrides a looser example elsewhere in this document.
+
 ---
 
 # 2. AI Execution Modes
@@ -805,6 +917,193 @@ Do not move validation or UI navigation into repositories/use cases.
 
 ---
 
+
+
+# 10.1 Canonical Layer Templates — DO NOT SIMPLIFY
+
+The following signatures are the canonical project pattern for CRUD endpoint pipelines. Do not substitute alternate imports/classes just because they compile.
+
+## API Service canonical template
+
+Use these imports and this class shape:
+
+```ts
+import { ApiNames } from '@/base/core/networkStructure/apiNames'
+import ServicesInterface from '@/base/Data/ApiService/api_service_interface'
+import { CrudType } from '@/base/core/params/call_params_interface'
+import type Params from '@/base/core/params/params'
+
+class Index<CrudName>ApiService extends ServicesInterface {
+  private static instance: Index<CrudName>ApiService
+
+  private constructor() {
+    super()
+  }
+
+  static getInstance() {
+    if (!this.instance) {
+      this.instance = new Index<CrudName>ApiService()
+    }
+    return this.instance
+  }
+
+  async applyService(
+    params: Params,
+  ): Promise<{ data: any; statusCode: number }> {
+    return await super.call({
+      url: ApiNames.instance.Index<CrudName>,
+      type: CrudType.POST,
+      auth: true,
+      params: params,
+    })
+  }
+}
+
+export { Index<CrudName>ApiService }
+```
+
+Mandatory details:
+
+- `ApiNames` is a **named import**.
+- `ServicesInterface` comes from `@/base/Data/ApiService/api_service_interface`.
+- `CrudType` comes from `@/base/core/params/call_params_interface`.
+- endpoint services implement `async applyService(...)`.
+- do not create a public `call()` wrapper in the service.
+- singleton constructor is private and calls `super()`.
+- export style is the named export used by the reference.
+
+Use the same template for create/show/update/delete/clone, changing only the class name, API getter, request type, headers/loading options required by that operation.
+
+## Repository canonical template for index/list
+
+```ts
+import { Index<CrudName>ApiService } from '@/features/Organization/<CrudName>/Data/apiServices/index<CrudName>ApiService.ts'
+import RepoInterface from '@/base/Domain/Repositories/repo_interface'
+import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
+import <CrudName>Model from '@/features/Organization/<CrudName>/Data/models/<CrudName>Model'
+
+class Index<CrudName>Repo extends RepoInterface<<CrudName>Model[]> {
+  private static instance: Index<CrudName>Repo
+
+  private constructor() {
+    super()
+  }
+
+  static getInstance() {
+    if (!this.instance) {
+      this.instance = new Index<CrudName>Repo()
+    }
+    return this.instance
+  }
+
+  override get hasPagination(): boolean {
+    return true
+  }
+
+  onParse(data: any): <CrudName>Model[] {
+    return data.map((item: any) => <CrudName>Model.fromMap(item))
+  }
+
+  get serviceInstance(): ServicesInterface {
+    return Index<CrudName>ApiService.getInstance()
+  }
+}
+
+export { Index<CrudName>Repo }
+```
+
+Mandatory details:
+
+- use `@/base/Domain/Repositories/repo_interface` exactly;
+- keep the generic `RepoInterface<Model[]>`;
+- keep private constructor + `super()`;
+- keep typed `onParse`;
+- keep typed `serviceInstance: ServicesInterface`;
+- keep `hasPagination` for paginated index;
+- do not use an untyped `extends RepoInterface` shortcut;
+- do not default-export the repo when the reference uses a named export.
+
+## UseCase canonical template
+
+```ts
+import type Params from '@/base/core/params/params'
+import type UseCase from '@/base/Domain/UseCase/use_case'
+import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
+import { Index<CrudName>Repo } from '@/features/Organization/<CrudName>/Domain/repositories/index<CrudName>Repo'
+import type <CrudName>Model from '@/features/Organization/<CrudName>/Data/models/<CrudName>Model'
+
+export default class Index<CrudName>UseCase
+  implements UseCase<<CrudName>Model[], Params>
+{
+  async call(params: Params): Promise<DataState<<CrudName>Model[]>> {
+    return Index<CrudName>Repo.getInstance().call(params)
+  }
+}
+```
+
+Do not reduce this to an untyped class with an inferred return type.
+
+## Index Controller canonical template
+
+```ts
+import <CrudName>Model from '@/features/Organization/<CrudName>/Data/models/<CrudName>Model'
+import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
+import type Params from '@/base/core/params/params'
+import Index<CrudName>UseCase from '@/features/Organization/<CrudName>/Domain/useCase/index<CrudName>UseCase'
+import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
+
+export default class Index<CrudName>Controller extends SelectControllerInterface<
+  <CrudName>Model[]
+> {
+  private static instance: Index<CrudName>Controller
+
+  private constructor() {
+    super()
+  }
+
+  private Index<CrudName>UseCase = new Index<CrudName>UseCase()
+
+  static getInstance() {
+    if (!this.instance) {
+      this.instance = new Index<CrudName>Controller()
+    }
+    return this.instance
+  }
+
+  async getData(params: Params) {
+    this.setLoading()
+
+    const dataState: DataState<<CrudName>Model[]> =
+      await this.Index<CrudName>UseCase.call(params)
+
+    this.setState(dataState)
+
+    if (this.isDataSuccess()) {
+      // success state is already stored
+    } else {
+      throw new Error('Error while addServices')
+    }
+
+    super.handleResponseDialogs()
+    return this.state
+  }
+}
+```
+
+Mandatory details:
+
+- method name for the CRUD index controller is `getData`, not generic `call`;
+- call `this.setLoading()`;
+- create a typed `DataState<Model[]>`;
+- call `this.setState(dataState)`;
+- preserve `isDataSuccess()` handling;
+- call `super.handleResponseDialogs()`;
+- return `this.state`;
+- keep private constructor + `super()`.
+
+Other CRUD controllers (`add`, `edit`, `delete`, `show`, `clone`) must be copied from the matching reference controller, including dialog behavior, state handling, router arguments and method names. Do not collapse them into generic `call()` methods.
+
+
 # 11. Presentation Controllers
 
 Create:
@@ -861,6 +1160,8 @@ Must extend:
 SelectControllerInterface<<CrudName>Model[]>
 ```
 
+It must use the canonical `getData(params)` implementation in section 10.1. Do not expose only a generic `call(params)` method.
+
 ## System index controller
 
 Use the same index use case with `is_system_only = true` supplied by `Index<CrudName>Params`.
@@ -880,6 +1181,146 @@ Returns `<CrudName>DetailsModel`.
 ---
 
 # 12. Main Vue Components
+
+
+## 12.0 Component fidelity rule — copy the reference component, do not redesign it
+
+CRUD Vue components must be produced by copying the corresponding reference component and replacing only feature-specific names/fields.
+
+### Add component canonical structure
+
+Use the same structure as the project reference:
+
+```ts
+import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
+import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import <CrudName>Form from '@/features/Organization/<CrudName>/Presentation/components/<CrudName>Form.vue'
+import Add<CrudName>Controller from '@/features/Organization/<CrudName>/Presentation/controllers/add<CrudName>Controller.ts'
+import Add<CrudName>Params from '@/features/Organization/<CrudName>/Core/params/add<CrudName>Params.ts'
+import type Params from '@/base/core/params/params'
+
+const router = useRouter()
+const stayOnPageRouter = createStayOnPageRouter(router)
+const route = useRoute()
+const params = ref<Params | null>(null)
+const formKey = ref(0)
+const emit = defineEmits(['update:data'])
+const add<CrudName>Controller = Add<CrudName>Controller.getInstance()
+```
+
+The submit functions must follow the reference pattern:
+
+```ts
+const add<CrudName> = async () => {
+  add<CrudName>Controller.setLoading()
+  await add<CrudName>Controller.add<CrudName>(
+    params.value as Add<CrudName>Params,
+    router,
+  )
+  if (add<CrudName>Controller.isDataSuccess()) emit('update:data')
+}
+
+const saveAndNew = async () => {
+  add<CrudName>Controller.setLoading()
+  await add<CrudName>Controller.add<CrudName>(
+    params.value as Add<CrudName>Params,
+    stayOnPageRouter,
+    true,
+  )
+  if (add<CrudName>Controller.isDataSuccess()) {
+    params.value = null
+    formKey.value++
+  }
+}
+```
+
+Use the reference form/template structure:
+
+```vue
+<form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="add<CrudName>">
+  <<CrudName>Form :key="formKey" @update:data="setParams" />
+
+  <div class="col-span-4 button-wrapper create-form-actions">
+    <button type="button" @click.prevent="saveAndNew" class="btn btn-secondary">
+      {{ $t('save and new') }}
+    </button>
+    <button type="submit" class="btn btn-primary">
+      {{ route.path.includes('project-progress') ? $t('save and next step') : $t('save') }}
+    </button>
+  </div>
+</form>
+```
+
+Do **not** replace this with a new `formRef + validateRequiredFields + isSubmitting + save(stay)` architecture unless the chosen reference feature itself uses that pattern.
+
+### Edit component canonical structure
+
+The edit component must retain:
+
+```text
+useRoute/useRouter
+show controller instance
+state = ref(showController.state.value)
+show params created from route id
+fetch on mounted
+watch controller.state.value
+DataStatus
+success slot with form
+FormLoader in loader slot
+shared form receiving :data="state.data!"
+```
+
+Do not replace `DataStatus` with manual booleans or local loading state.
+
+### Index component canonical structure
+
+The index component must be copied from the closest CRUD reference rather than recreated from scratch.
+
+For lookup-style CRUDs, preserve the project structure containing:
+
+```text
+ref state from indexController.state.value
+fetch function using IndexParams
+indexController.getData(...)
+onMounted fetch
+debounced search
+page + perPage handlers
+watch on controller.state.value
+delete controller then refetch
+useUserStore + OrganizationTypeEnum
+actionList() with per-action permissions
+ActionsList for header actions
+PermissionBuilder around feature/table access
+DataStatus
+main-table markup
+DropList per row
+Pagination using state.pagination
+loader slot
+initial slot
+empty slot
+failed slot
+notPermitted handling
+Excel export/template/upload dialog
+system clone component for organization/shared CRUDs when enabled
+```
+
+The reference index component uses controller state directly. Do not manually transform the repository response again inside the component.
+
+### Absolutely forbidden simplified index pattern
+
+Do not generate patterns like:
+
+```ts
+const items = ref<Model[]>([])
+const response: any = await IndexController.getInstance().call(...)
+items.value = Array.isArray(response) ? response.map(Model.fromMap) : []
+```
+
+That bypasses the project controller/DataState architecture.
+
+Do not output a bare HTML `<table v-if="items.length">` with ad-hoc buttons when the reference uses `DataStatus`, `DropList`, `ActionsList`, `PermissionBuilder`, `Pagination`, `DataEmpty`, `DataFailed`, and loaders.
+
 
 ## 12.1 `Add<CrudName>.vue`
 
@@ -1432,6 +1873,11 @@ A standard CRUD is not complete until these are present:
 - [ ] Edit Vue component.
 - [ ] Shared Form Vue component.
 - [ ] Index/table Vue component.
+- [ ] API services use canonical `applyService()` and project import paths; no alternate service architecture.
+- [ ] Repositories preserve generic typing, typed `serviceInstance`, private constructor, and named-export pattern.
+- [ ] UseCases implement `UseCase<..., Params>` and return typed `DataState`.
+- [ ] Index controller uses `getData`, `setLoading`, typed `DataState`, `setState`, `handleResponseDialogs`, and returns `state`.
+- [ ] Add/Edit/Index components are copied from the reference structure, not redesigned or simplified.
 - [ ] Excel upload Vue component.
 - [ ] Actions buttons Vue component when reference CRUD uses it.
 - [ ] System clone dialog component.
