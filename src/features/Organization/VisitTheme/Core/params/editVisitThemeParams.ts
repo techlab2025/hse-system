@@ -9,7 +9,7 @@ export default class EditVisitThemeParams implements Params {
 
   toMap(): Record<string, unknown> {
     return {
-      visit_theme_id: this.id,
+      leadership_theme_id: this.id,
       translations: this.translation.toMap(),
     }
   }

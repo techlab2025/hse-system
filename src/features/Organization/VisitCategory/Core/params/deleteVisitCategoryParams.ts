@@ -4,6 +4,6 @@ export default class DeleteVisitCategoryParams implements Params {
   constructor(public id: number) {}
 
   toMap(): Record<string, number> {
-    return { visit_category_id: this.id }
+    return { leadership_category_id: this.id }
   }
 }

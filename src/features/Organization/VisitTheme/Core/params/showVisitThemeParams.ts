@@ -4,6 +4,6 @@ export default class ShowVisitThemeParams implements Params {
   constructor(public id: number) {}
 
   toMap(): Record<string, number> {
-    return { visit_theme_id: this.id }
+    return { leadership_theme_id: this.id }
   }
 }

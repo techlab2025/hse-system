@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
+import * as XLSX from 'xlsx'
+import Dialog from 'primevue/dialog'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
@@ -14,6 +17,10 @@ import IconDelete from '@/shared/icons/IconDelete.vue'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
+import ExceIcon from '@/shared/icons/ExceIcon.vue'
+import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
+import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
+import TitleExcelImport from '@/shared/HelpersComponents/TitleExcelImport.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
@@ -21,7 +28,9 @@ import IndexVisitThemeController from '../controllers/indexVisitThemeController'
 import IndexVisitThemeParams from '../../Core/params/indexVisitThemeParams'
 import DeleteVisitThemeController from '../controllers/deleteVisitThemeController'
 import DeleteVisitThemeParams from '../../Core/params/deleteVisitThemeParams'
+import AddVisitThemeController from '../controllers/addVisitThemeController'
 const { t } = useI18n()
+const router = useRouter()
 const { user } = useUserStore()
 const word = ref('')
 const currentPage = ref(1)
@@ -32,6 +41,9 @@ const basePath = computed(() =>
   user?.type === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization',
 )
 const permissions = [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE]
+const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
 const fetchVisitThemes = async (query = '', page = 1, limit = 10) => {
   await controller.getData(new IndexVisitThemeParams(query, page, limit, 1))
 }
@@ -56,6 +68,35 @@ const deleteVisitTheme = async (id: number) => {
   await DeleteVisitThemeController.getInstance().deleteVisitTheme(new DeleteVisitThemeParams(id))
   await fetchVisitThemes(word.value, currentPage.value, countPerPage.value)
 }
+const saveWorkbook = (rows: Record<string, unknown>[], filename: string) => {
+  const worksheet = XLSX.utils.json_to_sheet(rows)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Visit Themes')
+  XLSX.writeFile(workbook, filename)
+}
+const exportExcel = () =>
+  saveWorkbook(
+    (state.value.data ?? []).map((item: any) => ({ title: item.title ?? '' })),
+    'visit_themes.xlsx',
+  )
+const downloadExample = () => saveWorkbook([{ title: 'Visit Theme 1' }], 'visit_theme_template.xlsx')
+const onFileSelected = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  input.value = ''
+}
+const onImported = async (titles: string[]) => {
+  const controller = AddVisitThemeController.getInstance()
+  await controller.importVisitThemes(titles, router)
+  if (controller.isDataSuccess()) {
+    showUploadDialog.value = false
+    pendingFile.value = null
+    await fetchVisitThemes(word.value, currentPage.value, countPerPage.value)
+  }
+}
 const rowActions = (id: number) => [
   {
     text: t('edit'),
@@ -72,10 +113,31 @@ const rowActions = (id: number) => [
 ]
 const headerActions = () => [
   {
+    text: t('export_to_excel'),
+    icon: ExceIcon,
+    action: exportExcel,
+    type: ActionItemsTypeEnum.Success,
+    permission: permissions,
+  },
+  {
     text: t('add_visit_theme'),
     link: `${basePath.value}/visit-theme/add`,
     icon: ActionsListAddIcon,
     primary: true,
+    permission: permissions,
+  },
+  {
+    text: t('upload_complated_template'),
+    action: () => fileInputRef.value?.click(),
+    icon: UploadExcelIcon,
+    type: ActionItemsTypeEnum.Warning,
+    permission: permissions,
+  },
+  {
+    text: t('download_excel_template'),
+    action: downloadExample,
+    icon: ExceIcon,
+    type: ActionItemsTypeEnum.Success,
     permission: permissions,
   },
 ]
@@ -91,7 +153,7 @@ const headerActions = () => [
         :feature-name="$t('action_feature_visit_themes')"
         :show-actions="true"
         :action-list="headerActions()"
-        :actions-number="1"
+        :actions-number="4"
       />
     </div>
   </div>
@@ -143,4 +205,21 @@ const headerActions = () => [
       ><DataFailed add-text="Have not Permission" description="" link=""
     /></template>
   </PermissionBuilder>
+
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('import_visit_themes')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <TitleExcelImport :initial-file="pendingFile" @imported="onImported" />
+  </Dialog>
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>

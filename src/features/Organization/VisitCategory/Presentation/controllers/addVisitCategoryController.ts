@@ -7,6 +7,7 @@ import type { Router } from 'vue-router'
 import AddVisitCategoryUseCase from '../../Domain/useCase/addVisitCategoryUseCase'
 import type VisitCategoryModel from '../../Data/models/VisitCategoryModel'
 import AddVisitCategoryParams from '../../Core/params/addVisitCategoryParams'
+import TranslationsParams from '@/base/core/params/translations_params'
 
 export default class AddVisitCategoryController extends ControllerInterface<VisitCategoryModel> {
   private static instance: AddVisitCategoryController
@@ -48,6 +49,40 @@ export default class AddVisitCategoryController extends ControllerInterface<Visi
           messageContent: null,
         })
       }
+    } catch (error: unknown) {
+      DialogSelector.instance.failedDialog.openDialog({
+        dialogName: 'dialog-error',
+        titleContent: this.state.value.error?.title ?? String(error),
+        imageElement: errorImage,
+        messageContent: null,
+      })
+    }
+    super.handleResponseDialogs()
+    return this.state
+  }
+
+  async importVisitCategories(titles: string[], router: Router) {
+    try {
+      for (const title of titles) {
+        const translations = new TranslationsParams(['en', 'ar'])
+        translations.setTranslation('title', 'en', title)
+        translations.setTranslation('title', 'ar', title)
+        const dataState: DataState<VisitCategoryModel> = await this.useCase.call(
+          new AddVisitCategoryParams(translations),
+        )
+        this.setLoading()
+        this.setState(dataState)
+        if (!this.isDataSuccess()) throw new Error(this.state.value.error?.title ?? 'Import failed')
+      }
+
+      DialogSelector.instance.successDialog.openDialog({
+        dialogName: 'dialog-success',
+        titleContent: 'Imported was successful',
+        imageElement: successImage,
+        messageContent: null,
+      })
+      const root = router.currentRoute.value.path.startsWith('/admin') ? '/admin' : '/organization'
+      await router.push(`${root}/visit-categories`)
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog-error',

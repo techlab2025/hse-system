@@ -9,7 +9,7 @@ export default class EditVisitCategoryParams implements Params {
 
   toMap(): Record<string, unknown> {
     return {
-      visit_category_id: this.id,
+      leadership_category_id: this.id,
       translations: this.translation.toMap(),
     }
   }

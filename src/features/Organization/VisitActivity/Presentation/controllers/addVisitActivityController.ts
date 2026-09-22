@@ -7,6 +7,7 @@ import type { Router } from 'vue-router'
 import AddVisitActivityUseCase from '../../Domain/useCase/addVisitActivityUseCase'
 import type VisitActivityModel from '../../Data/models/VisitActivityModel'
 import AddVisitActivityParams from '../../Core/params/addVisitActivityParams'
+import TranslationsParams from '@/base/core/params/translations_params'
 
 export default class AddVisitActivityController extends ControllerInterface<VisitActivityModel> {
   private static instance: AddVisitActivityController
@@ -62,6 +63,40 @@ export default class AddVisitActivityController extends ControllerInterface<Visi
       })
     }
 
+    super.handleResponseDialogs()
+    return this.state
+  }
+
+  async importVisitActivities(titles: string[], router: Router) {
+    try {
+      for (const title of titles) {
+        const translations = new TranslationsParams(['en', 'ar'])
+        translations.setTranslation('title', 'en', title)
+        translations.setTranslation('title', 'ar', title)
+        const dataState: DataState<VisitActivityModel> = await this.addVisitActivityUseCase.call(
+          new AddVisitActivityParams(translations),
+        )
+        this.setLoading()
+        this.setState(dataState)
+        if (!this.isDataSuccess()) throw new Error(this.state.value.error?.title ?? 'Import failed')
+      }
+
+      DialogSelector.instance.successDialog.openDialog({
+        dialogName: 'dialog-success',
+        titleContent: 'Imported was successful',
+        imageElement: successImage,
+        messageContent: null,
+      })
+      const root = router.currentRoute.value.path.startsWith('/admin') ? '/admin' : '/organization'
+      await router.push(`${root}/visit-activities`)
+    } catch (error: unknown) {
+      DialogSelector.instance.failedDialog.openDialog({
+        dialogName: 'dialog-error',
+        titleContent: this.state.value.error?.title ?? String(error),
+        imageElement: errorImage,
+        messageContent: null,
+      })
+    }
     super.handleResponseDialogs()
     return this.state
   }
