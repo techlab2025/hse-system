@@ -78,6 +78,55 @@ Do not create add/edit/delete/index/show/clone files automatically.
 
 Only create the exact custom endpoint pipelines requested by the user.
 
+
+
+# 1.1 STRICT REFERENCE-FIDELITY MODE — MANDATORY
+
+For custom endpoints, “same architecture” means **same concrete code pattern**, not merely equivalent behavior.
+
+If a matching project endpoint/reference file exists, copy that file structure first and change only:
+
+```text
+feature/action names
+Params/model types
+backend keys
+API getter
+scope/permissions
+field-specific component controls
+```
+
+Do not shorten, modernize, or redesign base-layer code.
+
+Mandatory project conventions include:
+
+```text
+ApiService -> ServicesInterface from @/base/Data/ApiService/api_service_interface
+ApiService -> named ApiNames import
+ApiService -> CrudType from @/base/core/params/call_params_interface
+ApiService -> private constructor + super()
+ApiService -> async applyService(params)
+Repo -> @/base/Domain/Repositories/repo_interface
+Repo -> explicit generic type
+Repo -> private constructor + super()
+Repo -> typed serviceInstance: ServicesInterface
+UseCase -> implements UseCase<Model, Params>
+UseCase -> typed Promise<DataState<Model>>
+Controller -> private constructor + super()
+Controller -> setLoading/setState/isDataSuccess/handleResponseDialogs where reference uses state
+```
+
+A generic shortcut such as this is forbidden:
+
+```ts
+async call(params: Params) {
+  return this.useCase.call(params)
+}
+```
+
+when the corresponding reference endpoint controller owns `DataState` handling.
+
+The single Vue component must also copy the closest matching project component instead of being invented from scratch.
+
 ---
 
 # 2. Relationship to `AI_Crud.md`
@@ -930,6 +979,158 @@ If the enum already exists in the project, import it rather than duplicating it.
 
 ---
 
+
+
+# 16.0 Canonical base-layer implementation — do not use alternate imports or shortcuts
+
+The following project imports and class shapes are mandatory unless the user provides a newer exact reference file.
+
+## API Service
+
+```ts
+import { ApiNames } from '@/base/core/networkStructure/apiNames'
+import ServicesInterface from '@/base/Data/ApiService/api_service_interface'
+import { CrudType } from '@/base/core/params/call_params_interface'
+import type Params from '@/base/core/params/params'
+
+class <ActionName>ApiService extends ServicesInterface {
+  private static instance: <ActionName>ApiService
+
+  private constructor() {
+    super()
+  }
+
+  static getInstance() {
+    if (!this.instance) {
+      this.instance = new <ActionName>ApiService()
+    }
+    return this.instance
+  }
+
+  async applyService(
+    params: Params,
+  ): Promise<{ data: any; statusCode: number }> {
+    return await super.call({
+      url: ApiNames.instance.<ApiGetter>,
+      type: CrudType.POST,
+      auth: true,
+      params: params,
+    })
+  }
+}
+
+export { <ActionName>ApiService }
+```
+
+Do not generate:
+
+```ts
+import ServicesInterface from '@/base/Data/apiServices/ServicesInterface'
+import ApiNames from '@/base/core/networkStructure/apiNames'
+import CrudType from '@/base/core/networkStructure/CrudType'
+```
+
+and do not expose a service-level `call(params)` method when the reference uses `applyService(params)`.
+
+## Repository
+
+```ts
+import { <ActionName>ApiService } from '<exact feature api service path>'
+import RepoInterface from '@/base/Domain/Repositories/repo_interface'
+import type ServicesInterface from '@/base/Data/ApiService/api_service_interface'
+import FeatureModel from '<exact model path>'
+
+class <ActionName>Repo extends RepoInterface<FeatureModel> {
+  private static instance: <ActionName>Repo
+
+  private constructor() {
+    super()
+  }
+
+  static getInstance() {
+    if (!this.instance) {
+      this.instance = new <ActionName>Repo()
+    }
+    return this.instance
+  }
+
+  onParse(data: any): FeatureModel {
+    return FeatureModel.fromMap(data)
+  }
+
+  get serviceInstance(): ServicesInterface {
+    return <ActionName>ApiService.getInstance()
+  }
+}
+
+export { <ActionName>Repo }
+```
+
+For list endpoints use `RepoInterface<FeatureModel[]>`, typed array parsing, and `hasPagination` when the reference endpoint is paginated.
+
+## UseCase
+
+```ts
+import type Params from '@/base/core/params/params'
+import type UseCase from '@/base/Domain/UseCase/use_case'
+import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
+import { <ActionName>Repo } from '<exact repo path>'
+import type FeatureModel from '<exact model path>'
+
+export default class <ActionName>UseCase
+  implements UseCase<FeatureModel, Params>
+{
+  async call(params: Params): Promise<DataState<FeatureModel>> {
+    return <ActionName>Repo.getInstance().call(params)
+  }
+}
+```
+
+For list endpoints, use `FeatureModel[]` consistently in the generic and return type.
+
+## Controller
+
+A controller must keep the same state lifecycle as the closest matching project controller.
+
+For fetch/list-style endpoints, the canonical shape is:
+
+```ts
+export default class <ActionName>Controller extends SelectControllerInterface<FeatureModel[]> {
+  private static instance: <ActionName>Controller
+
+  private constructor() {
+    super()
+  }
+
+  private <ActionName>UseCase = new <ActionName>UseCase()
+
+  static getInstance() {
+    if (!this.instance) {
+      this.instance = new <ActionName>Controller()
+    }
+    return this.instance
+  }
+
+  async getData(params: Params) {
+    this.setLoading()
+    const dataState: DataState<FeatureModel[]> =
+      await this.<ActionName>UseCase.call(params)
+
+    this.setState(dataState)
+
+    if (!this.isDataSuccess()) {
+      throw new Error('Error while addServices')
+    }
+
+    super.handleResponseDialogs()
+    return this.state
+  }
+}
+```
+
+If the reference custom endpoint uses another public method name such as `fetchResult`, `approve`, `reject`, `close`, or `submit`, preserve that named method while keeping the same state lifecycle. Do not reduce the controller to a one-line `call()` pass-through.
+
+
 # 16. API Service Rules
 
 Every endpoint gets exactly one API service.
@@ -1215,6 +1416,35 @@ export default class ApprovePermitController
 This is a pattern, not a requirement to show a success dialog for every fetch endpoint.
 
 ---
+
+
+
+# 20.1 Component fidelity rule
+
+The generated custom-endpoint component must be copied from the closest matching real project component when one exists.
+
+Do not create a minimal component merely because it can call the endpoint.
+
+Preserve all applicable reference elements such as:
+
+```text
+controller state refs
+watch(controller.state.value)
+DataStatus
+loader / initial / empty / failed / notPermitted slots
+FormLoader/TableLoader/custom skeleton
+PermissionBuilder
+ActionsList/DropList
+Pagination
+project grid/form classes
+router handling
+existing success/refetch flow
+```
+
+If the user supplies an exact component example, reproduce its structure and only substitute feature/action-specific names and fields.
+
+Do not introduce a new `isSubmitting`, direct response parsing, raw table, or direct `router.push()` architecture unless the supplied/closest reference already uses it.
+
 
 # 20. Controller Behavior by Endpoint Type
 
@@ -2773,6 +3003,11 @@ Before finishing a one-endpoint feature:
 - [ ] 1 Controller.
 - [ ] 1 Model, unless a truly no-model existing pattern is explicitly required.
 - [ ] 1 Vue component.
+- [ ] API service uses canonical `applyService()` and exact project imports.
+- [ ] Repository uses the exact project RepoInterface path, generic typing, typed serviceInstance, private constructor and correct export style.
+- [ ] UseCase implements `UseCase` with typed `DataState`.
+- [ ] Controller preserves state lifecycle and endpoint-specific public method name; no one-line `call()` shortcut when reference handles state.
+- [ ] Component is copied from the closest reference structure instead of simplified.
 - [ ] Enum file(s) only when required.
 - [ ] Exact endpoint name.
 - [ ] Endpoint scope (`admin`, `organization`/`org`, or `shared`) is respected.

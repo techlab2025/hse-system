@@ -190,6 +190,21 @@ watch(
         <section class="risk-entry">
           <div class="risk-entry-icon" aria-hidden="true">◇</div>
           <div class="risk-entry-copy">
+            <span class="risk-entry-eyebrow">PROJECT VISITS</span>
+            <h2>Leadership visits</h2>
+            <p>Plan monthly visits and submit visit reports.</p>
+          </div>
+          <RouterLink
+            class="risk-entry-link"
+            :to="`/organization/project-details/${state.data?.id ?? route.params.id}/leadership`"
+          >
+            Open leadership <span aria-hidden="true">→</span>
+          </RouterLink>
+        </section>
+
+        <section class="risk-entry">
+          <div class="risk-entry-icon" aria-hidden="true">◇</div>
+          <div class="risk-entry-copy">
             <span class="risk-entry-eyebrow">PROJECT SAFETY</span>
             <h2>Risk assessments</h2>
             <p>Review work activities, areas and approvals for this project.</p>
