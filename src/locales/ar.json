@@ -2574,5 +2574,15 @@
   "enter_visit_theme_title": "أدخل عنوان موضوع الزيارة",
   "no_visit_themes": "لا توجد موضوعات زيارات",
   "no_visit_themes_description": "لم تتم إضافة أي موضوعات زيارات بعد.",
-  "action_feature_visit_themes": "إجراءات موضوعات الزيارات"
+  "action_feature_visit_themes": "إجراءات موضوعات الزيارات",
+  "Visit Categories": "فئات الزيارات",
+  "Add Visit Category": "إضافة فئة زيارة",
+  "Edit Visit Category": "تعديل فئة زيارة",
+  "visit_categories": "فئات الزيارات",
+  "add_visit_category": "إضافة فئة زيارة",
+  "visit_category_title": "عنوان فئة الزيارة",
+  "enter_visit_category_title": "أدخل عنوان فئة الزيارة",
+  "no_visit_categories": "لا توجد فئات زيارات",
+  "no_visit_categories_description": "لم تتم إضافة أي فئات زيارات بعد.",
+  "action_feature_visit_categories": "إجراءات فئات الزيارات"
 }

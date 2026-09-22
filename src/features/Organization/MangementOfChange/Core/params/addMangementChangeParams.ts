@@ -35,6 +35,7 @@ export default class AddMangementChangeParams implements Params {
     public management_change_topic_equipment_id?: number,
 
     public management_change_topic_text?: string,
+     public initiatore_employee_id?: number,
   ) {}
 
   public static readonly validation =
@@ -73,6 +74,8 @@ export default class AddMangementChangeParams implements Params {
 
       management_change_topic_text:
         this.management_change_topic_text,
+
+        initiatore_employee_id:this.initiatore_employee_id
     }
   }
 

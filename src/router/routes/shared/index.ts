@@ -30,6 +30,7 @@ import { PPEActivityRoutes } from './ppe_activity'
 import { PPEToolRoutes } from './ppe_tool'
 import { visitActivityRoutes } from './visitActivity'
 import { visitThemeRoutes } from './visitTheme'
+import { visitCategoryRoutes } from './visitCategory'
 
 export const sharedRoutes: RouteRecordRaw[] = [
   ...accidentsRoutes,
@@ -62,5 +63,6 @@ export const sharedRoutes: RouteRecordRaw[] = [
   ...PPEActivityRoutes,
   ...PPEToolRoutes,
   ...visitActivityRoutes,
-  ...visitThemeRoutes
+  ...visitThemeRoutes,
+  ...visitCategoryRoutes
 ]

@@ -2602,5 +2602,15 @@
   "enter_visit_theme_title": "Enter visit theme title",
   "no_visit_themes": "No Visit Themes",
   "no_visit_themes_description": "You have not added any visit themes yet.",
-  "action_feature_visit_themes": "Visit Theme Actions"
+  "action_feature_visit_themes": "Visit Theme Actions",
+  "Visit Categories": "Visit Categories",
+  "Add Visit Category": "Add Visit Category",
+  "Edit Visit Category": "Edit Visit Category",
+  "visit_categories": "Visit Categories",
+  "add_visit_category": "Add Visit Category",
+  "visit_category_title": "Visit Category Title",
+  "enter_visit_category_title": "Enter visit category title",
+  "no_visit_categories": "No Visit Categories",
+  "no_visit_categories_description": "You have not added any visit categories yet.",
+  "action_feature_visit_categories": "Visit Category Actions"
 }
