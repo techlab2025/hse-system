@@ -21,6 +21,7 @@ import {
 } from '@/features/Organization/ObservationFactory/Core/Enums/ppe_enum'
 import IndexPpeItemController from '@/features/Organization/ppeItem/Presentation/controllers/indexPpeItemController'
 import IndexPpeItemParams from '@/features/Organization/ppeItem/Core/params/indexPpeItemParams'
+import InjuryBodySlection from '../../SubComponent/InjuryBodySlection.vue'
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
@@ -40,8 +41,8 @@ const ppeItemOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: PpeItemEnum.HELMET, title: 'Helmet' }),
   new TitleInterface({ id: PpeItemEnum.OTHERS, title: 'Others' }),
 ])
-const ppeItemContoller = IndexPpeItemController.getInstance();
-const ppeItemParams = new IndexPpeItemParams('' , 1 , 10 , 0)
+const ppeItemContoller = IndexPpeItemController.getInstance()
+const ppeItemParams = new IndexPpeItemParams('', 1, 10, 0)
 const ppeItemConditionOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: PpeItemConditionEnum.GOOD, title: 'Good' }),
   new TitleInterface({ id: PpeItemConditionEnum.DAMAGED, title: 'Damaged' }),
@@ -58,6 +59,7 @@ type AnswerModel = {
   ppeItems: TitleInterface[]
   customPpeItem: string
   ppeItemCondition: TitleInterface
+  locations: string[]
 }
 const createEmptyAnswer = (): AnswerModel => ({
   text: ' ',
@@ -69,6 +71,7 @@ const createEmptyAnswer = (): AnswerModel => ({
   ppeItems: [],
   customPpeItem: '',
   ppeItemCondition: new TitleInterface({ id: 0, title: '' }),
+  locations: [],
 })
 
 const Answers = ref<AnswerModel[]>([createEmptyAnswer()])
@@ -118,6 +121,11 @@ const UpdateData = () => {
   Answers.value.forEach(ensureEmployee)
 
   emit('update:data', Answers.value)
+}
+
+const updateBodyLocations = (locations: string[], index: number) => {
+  Answers.value[index].locations = [...locations]
+  UpdateData()
 }
 
 const getSelectedEmployeeIds = (currentIndex: number) =>
@@ -252,6 +260,11 @@ const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
           title: selectedPpeItemCondition.title,
         })
       : new TitleInterface({ id: 0, title: '' }),
+    locations: Array.isArray(item?.locations)
+      ? item.locations
+      : Array.isArray((item as any)?.body_regions)
+        ? (item as any).body_regions
+        : [],
   }
 }
 
@@ -401,7 +414,7 @@ onMounted(async () => {
                 :params="indexInjuryParams" :label="$t('injury Type')" id="injury"
                 :placeholder="$t('select your injury')" @update:modelValue="UpdateInjury($event, index)" /> -->
               <div class="injury-field input-wrapper w-full">
-                  <!-- :staticOptions="injuryOptions" -->
+                <!-- :staticOptions="injuryOptions" -->
                 <UpdatedCustomInputSelect
                   :modelValue="item.infectionTypeId"
                   :staticOptions="injuryOptions"
@@ -430,11 +443,16 @@ onMounted(async () => {
                 </UpdatedCustomInputSelect>
               </div>
               <!--  -->
+              <div class="injury-field injury-body-map-field w-full">
+                <InjuryBodySlection
+                  :model-value="item.locations"
+                  :id-prefix="`injury-body-${index}`"
+                  @update:model-value="(locations) => updateBodyLocations(locations, index)"
+                />
+              </div>
               <div class="injury-field input-wrapper w-full">
                 <div class="flex items-center gap-2">
-                  <label :for="`injury-description-${index}`">{{
-                    $t('Description')
-                  }}</label>
+                  <label :for="`injury-description-${index}`">{{ $t('Description') }}</label>
                   <FieldHelpIcon
                     text="Describe the injury, affected body part, and any relevant medical details."
                   />

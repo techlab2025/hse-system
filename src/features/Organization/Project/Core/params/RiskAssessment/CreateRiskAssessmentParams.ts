@@ -22,14 +22,18 @@ export default class CreateRiskAssessmentParams implements Params {
   toMap(): Record<string, unknown> {
     return {
       activity: this.activity,
-      desctiprion: this.desctiprion,
-      work_area_strign: this.workAreaStrign,
+      activity_description: this.desctiprion,
+      work_area: this.workAreaStrign,
       date: this.date,
       employee_approver_id: this.employeeApproverId,
-      attachents: this.attachents,
+      attachments: this.attachents,
     }
   }
 
-  validate() { return CreateRiskAssessmentParams.validation.validate(this) }
-  validateOrThrow() { return CreateRiskAssessmentParams.validation.validateOrThrow(this) }
+  validate() {
+    return CreateRiskAssessmentParams.validation.validate(this)
+  }
+  validateOrThrow() {
+    return CreateRiskAssessmentParams.validation.validateOrThrow(this)
+  }
 }
