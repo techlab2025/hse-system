@@ -1,22 +1,29 @@
+import OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
+import RiskAssessmentMediaModel from './RiskAssessmentMediaModel'
+
 export default class RiskAssessmentModel {
   constructor(
     public activity: string,
     public desctiprion: string,
     public workAreaStrign: string,
     public date: string,
-    public employeeApproverId: number,
-    public attachents: string[],
+    public employeeApproverId: OrganizatoinEmployeeDetailsModel,
+    public media: RiskAssessmentMediaModel[],
     public id?: number,
   ) {}
 
-  static fromMap(data: Record<string, any>): RiskAssessmentModel {
+  static fromMap(data: Record<string, unknown>): RiskAssessmentModel {
     return new RiskAssessmentModel(
-      data.activity ?? '',
-      data.desctiprion ?? '',
-      data.work_area_strign ?? '',
-      data.date ?? '',
-      Number(data.employee_approver_id ?? 0),
-      Array.isArray(data.attachents) ? data.attachents : [],
+      String(data.activity ?? ''),
+      String(data.activity_description ?? data.description ?? ''),
+      String(data.work_area ?? data.work_area_strign ?? ''),
+      String(data.date ?? ''),
+      OrganizatoinEmployeeDetailsModel.fromMap(
+        data.creatable ?? data.employee_approver ?? data.employee ?? {},
+      ),
+      Array.isArray(data.media)
+        ? data.media.map((item: unknown) => RiskAssessmentMediaModel.fromMap(item))
+        : [],
       data.id == null ? undefined : Number(data.id),
     )
   }
