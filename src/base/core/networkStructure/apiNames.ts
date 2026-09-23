@@ -1959,7 +1959,10 @@ class ApiNames {
     return this.baseUrl + this.organizationPrefix + 'fetch_ppe_active_tool_matrix'
   }
   public get CreatePPEMatrixDelivery() {
-    return this.baseUrl + this.organizationPrefix + 'create_ppe_matrix_delevery'
+    return this.baseUrl + this.organizationPrefix + 'create_ppe_matrix_delivery'
+  }
+  public get FetchPPEMatrixDeliveries() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_ppe_matrix_delivery'
   }
   public get CreateLeadershipVisitReport() {
     return this.baseUrl + this.organizationPrefix + 'create_visite_report'
