@@ -69,24 +69,26 @@ const setParams = (data: AddObjectivesParams) => {
 <style scoped>
 .objective-editor-form {
   display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
   gap: 14px;
   width: 100%;
 }
 
 .objective-action-bar {
-  /* position: sticky;
-  z-index: 5;
-  bottom: 14px;
   grid-column: 1 / -1;
-  max-width: 760px; */
-  margin-inline: auto 0;
+  justify-self: stretch;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  box-sizing: border-box;
+  margin-inline: 0;
   padding: 10px;
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
   border-radius: 16px;
   background: color-mix(in srgb, var(--surface-1) 92%, transparent);
   box-shadow: 0 16px 32px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
   backdrop-filter: blur(12px);
-  width: 100%;
 }
 
 .objective-action-bar .btn {
@@ -96,9 +98,12 @@ const setParams = (data: AddObjectivesParams) => {
 }
 
 @media (max-width: 768px) {
+  .objective-editor-form {
+    grid-template-columns: 1fr;
+  }
+
   .objective-action-bar {
-    max-width: none;
-    margin-inline: 0;
+    grid-column: 1 / -1;
   }
 }
 </style>

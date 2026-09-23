@@ -54,7 +54,7 @@ const setParams = (data: AddObjectivesParams | EditObjectivesParams) => {
     <template #success>
       <form class="objective-editor-form" @submit.prevent="editObjectives">
         <ObjectivesForm ref="formRef" @update:data="setParams" :data="state.data!" />
-        <div class="objective-action-bar">
+        <div class="objective-action-bar create-form-actions">
           <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>
       </form>
@@ -68,6 +68,8 @@ const setParams = (data: AddObjectivesParams | EditObjectivesParams) => {
 <style scoped>
 .objective-editor-form {
   display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
   gap: 14px;
   width: 100%;
 }
@@ -76,9 +78,12 @@ const setParams = (data: AddObjectivesParams | EditObjectivesParams) => {
   position: sticky;
   z-index: 5;
   bottom: 14px;
-  display: flex;
-  justify-content: flex-end;
   grid-column: 1 / -1;
+  justify-self: stretch;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  box-sizing: border-box;
   padding: 10px;
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
   border-radius: 16px;
@@ -88,16 +93,18 @@ const setParams = (data: AddObjectivesParams | EditObjectivesParams) => {
 }
 
 .objective-action-bar .btn {
-  min-width: 280px;
   min-height: 42px;
   border-radius: 12px !important;
   font-weight: 800;
 }
 
 @media (max-width: 768px) {
-  .objective-action-bar .btn {
-    width: 100%;
-    min-width: 0;
+  .objective-editor-form {
+    grid-template-columns: 1fr;
+  }
+
+  .objective-action-bar {
+    grid-column: 1 / -1;
   }
 }
 </style>

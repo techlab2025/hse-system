@@ -401,18 +401,20 @@ defineExpose({ validateRequiredFields })
             <label class="input-label required" for="objective-year">
               <span class="text-red-500">*</span>
               {{ $t('Year') }}
-            </label>
-            <DatePicker
-              id="objective-year"
-              v-model="year"
-              view="year"
-              date-format="yy"
-              show-icon
-              fluid
-              :manual-input="false"
-              :max-date="maxYearDate"
-              @update:model-value="updateData"
-            />
+            </label> 
+           
+              <DatePicker
+                id="objective-year"
+                v-model="year"
+                view="year"
+                date-format="yy"
+                show-icon
+                fluid
+                :manual-input="false"
+                :max-date="maxYearDate"
+                @update:model-value="updateData"
+              />
+           
             <p v-if="requiredFieldErrors.year" class="required-field-message">
               {{ requiredFieldErrors.year }}
             </p>
@@ -990,4 +992,10 @@ defineExpose({ validateRequiredFields })
     grid-column: 1 / -1;
   }
 }
+ /* .p-datepicker-dropdown,  .induction-date-button {
+  display: none !important;
+}
+.p-datepicker-fluid{
+   display: none !important;
+} */
 </style>

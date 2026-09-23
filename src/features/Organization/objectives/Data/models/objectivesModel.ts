@@ -1,21 +1,8 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
-import {
-  getObjectiveDirectionTitle,
-  getObjectiveFrequencyTitle,
-  getObjectiveTargetTypeTitle,
+import type {
   ObjectiveDirectionEnum,
   ObjectiveTargetTypeEnum,
 } from '../../Core/enums/objectivesEnums'
-
-const toNullableNumber = (value: unknown): number | null => {
-  if (value === null || value === undefined || value === '') return null
-  return Number(value)
-}
-
-const toRecord = (value: unknown): Record<string, unknown> | null =>
-  value && typeof value === 'object' ? (value as Record<string, unknown>) : null
-
-const toText = (value: unknown): string => (value === null || value === undefined ? '' : String(value))
 
 export default class ObjectivesModel extends TitleInterface {
   public id: number
@@ -39,6 +26,9 @@ export default class ObjectivesModel extends TitleInterface {
     direction: ObjectiveDirectionEnum | null,
     target: number | null,
     frequency: number | null,
+    targetTypeTitle: string,
+    directionTitle: string,
+    frequencyTitle: string,
   ) {
     super({ id, title: objective })
 
@@ -50,27 +40,24 @@ export default class ObjectivesModel extends TitleInterface {
     this.direction = direction
     this.target = target
     this.frequency = frequency
-    this.targetTypeTitle = getObjectiveTargetTypeTitle(targetType)
-    this.directionTitle = getObjectiveDirectionTitle(direction)
-    this.frequencyTitle = getObjectiveFrequencyTitle(frequency)
+    this.targetTypeTitle = targetTypeTitle
+    this.directionTitle = directionTitle
+    this.frequencyTitle = frequencyTitle
   }
 
   static fromMap(data: Record<string, unknown>): ObjectivesModel {
-    const project = toRecord(data.project)
-    const targetType = toNullableNumber(data.target_type ?? data.targetType) as
-      | ObjectiveTargetTypeEnum
-      | null
-    const direction = toNullableNumber(data.direction) as ObjectiveDirectionEnum | null
-
     return new ObjectivesModel(
-      Number(data.id),
-      toText(data.year),
-      toText(data.objective ?? data.title),
-      toText(project?.title ?? project?.name ?? data.project_title),
-      targetType,
-      direction,
-      toNullableNumber(data.target),
-      toNullableNumber(data.frequency),
+      data.id as number,
+      data.year as string,
+      data.objective as string,
+      data.project_title as string,
+      data.target_type as ObjectiveTargetTypeEnum | null,
+      data.direction as ObjectiveDirectionEnum | null,
+      data.target as number | null,
+      data.frequency as number | null,
+      data.target_type_title as string,
+      data.direction_title as string,
+      data.frequency_title as string,
     )
   }
 }
