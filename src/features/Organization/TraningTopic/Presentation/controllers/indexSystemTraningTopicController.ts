@@ -28,10 +28,6 @@ export default class IndexSystemTraningTopicController extends SelectControllerI
       await this.IndexTraningTopicUseCase.call(params)
     this.setState(dataState)
 
-    if (!this.isDataSuccess()) {
-      throw new Error('Error while addServices')
-    }
-
     super.handleResponseDialogs()
     return this.state
   }

@@ -20,6 +20,7 @@ import IndexTraningTopicController from '../controllers/indexTraningTopicControl
 import DeleteTraningTopicController from '../controllers/deleteTraningTopicController'
 import IndexTraningTopicParams from '../../Core/params/indexTraningTopicParams'
 import DeleteTraningTopicParams from '../../Core/params/deleteTraningTopicParams'
+import type TraningTopicModel from '../../Data/models/TraningTopicModel'
 import TraningTopicActionsButtons from './TraningTopicActionsButtons.vue'
 import SystemTraningTopics from '../supcomponents/SystemTraningTopics.vue'
 import TraningTopicTableSkeleton from '../supcomponents/TraningTopicTableSkeleton.vue'
@@ -67,7 +68,7 @@ const fetchTraningTopics = async (
   withPage: number = 1,
 ) => {
   await indexController.getData(
-    new IndexTraningTopicParams(query, withPage, perPage, pageNumber, true),
+    new IndexTraningTopicParams(query, pageNumber, perPage, withPage),
   )
 }
 
@@ -123,7 +124,7 @@ const exportExcel = () => {
   const data = state.value.data ?? []
   if (!data.length) return
 
-  const worksheetData = data.map((item: any) => ({
+  const worksheetData = data.map((item: TraningTopicModel) => ({
     title: item.title ?? '',
   }))
 

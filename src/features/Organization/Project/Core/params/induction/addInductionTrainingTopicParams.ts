@@ -1,7 +1,7 @@
 import type Params from '@/base/core/params/params'
 
 export default class InductionTrainingTopicParams implements Params {
-  constructor(public  training_Topic_id: number) {}
+  constructor(public training_Topic_id: number) {}
 
   toMap(): Record<string, number> {
     return {

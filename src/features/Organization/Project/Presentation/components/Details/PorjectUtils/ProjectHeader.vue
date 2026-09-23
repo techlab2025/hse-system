@@ -174,6 +174,23 @@ defineProps<{
         </router-link>
 
         <router-link
+          :to="{ name: 'Inductions', query: { project_id: projectId } }"
+          class="project-action-link action-induction"
+        >
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4" />
+              <path d="M17 5.5h2.5V18H17" />
+            </svg>
+          </span>
+          <span class="action-copy">
+            <strong>{{ t('Induction') }}</strong>
+            <small>{{ t('Manage project inductions') }}</small>
+          </span>
+          <span class="action-arrow" aria-hidden="true">→</span>
+        </router-link>
+
+        <router-link
           :to="{ name: 'Project Leadership', params: { id: projectId } }"
           class="project-action-link action-leadership"
         >
@@ -575,6 +592,9 @@ defineProps<{
 }
 .action-my-permits {
   --action-color: #d97706;
+}
+.action-induction {
+  --action-color: #0f9f6e;
 }
 .action-leadership {
   --action-color: #138b83;

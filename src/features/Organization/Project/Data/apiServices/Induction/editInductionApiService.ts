@@ -18,9 +18,9 @@ class EditInductionApiService extends ServicesInterface {
     return this.instance
   }
 
-  async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
+  async applyService(params: Params): Promise<{ data: unknown; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.update_ppe_tool,
+      url: ApiNames.instance.update_induction,
       type: CrudType.POST,
       auth: true,
       params: params,

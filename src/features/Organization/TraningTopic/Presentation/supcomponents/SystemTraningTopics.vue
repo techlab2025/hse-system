@@ -1,10 +1,12 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue'
 import Dialog from 'primevue/dialog'
+import DialogSystem from '@/assets/images/DialogSystem.png'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+import SystemDialogEmptyState from '@/shared/DataStatues/SystemDialogEmptyState.vue'
+import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
+import SystemAddIcon from '@/shared/icons/SystemAddIcon.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import IndexSystemTraningTopicController from '../controllers/indexSystemTraningTopicController'
 import AddTraningTopicCloneController from '../controllers/addTraningTopicCloneController'
@@ -54,9 +56,7 @@ watch(internalVisible, async (visible) => {
   emit('update:visible', visible)
 
   if (visible) {
-    await indexController.getData(
-      new IndexTraningTopicParams('', 1, 10, 1, false, true),
-    )
+    await indexController.getData(new IndexTraningTopicParams('', 1, 10, 1, false, true))
   }
 })
 
@@ -82,39 +82,53 @@ const cloneSelected = async () => {
 
 <template>
   <PermissionBuilder :code="createPermissions">
-    <button v-if="isHeaderTap" class="btn btn-primary" @click="internalVisible = true">
-      {{ $t('add_system_traning_topics') }}
-    </button>
+    <li v-if="!isHeaderTap" class="list-item cursor-pointer" @click="internalVisible = true">
+      <button>
+        <SystemAddIcon />
+        {{ $t('system_data') }}
+      </button>
+    </li>
+    <TraningTopicSystemDataHeader v-if="isHeaderTap" @click="internalVisible = true" />
 
-    <Dialog
-      v-model:visible="internalVisible"
-      modal
-      :header="$t('add_system_traning_topics')"
-    >
-      <TraningTopicSystemDataHeader />
+    <Dialog v-model:visible="internalVisible" modal :style="{ width: '60rem' }" @click.stop>
+      <template #header>
+        <HeaderSection
+          :img="DialogSystem"
+          :title="$t('add_system_traning_topics')"
+          :subtitle="$t('select_system_traning_topics')"
+        />
+      </template>
 
       <DataStatus :controller="state">
         <template #success>
-          <div
-            v-for="item in state.data"
-            :key="item.id"
-            class="flex cursor-pointer items-center gap-2 py-2"
-            @click="toggle(item.id)"
-          >
-            <input
-              type="checkbox"
-              :checked="selectedIds.includes(item.id)"
-              @click.stop="toggle(item.id)"
-            />
-            <span>{{ item.title }}</span>
+          <SystemDialogEmptyState v-if="!state.data?.length" />
+          <div v-else class="system-dialog-content-container">
+            <div v-for="item in state.data" :key="item.id" class="system-dialog-content">
+              <div
+                class="row-content"
+                :class="{ active: selectedIds.includes(item.id) }"
+                @click="toggle(item.id)"
+              >
+                <label :for="`${item.title}-${item.id}`" class="title">
+                  {{ item.title }}
+                </label>
+                <input
+                  :id="`${item.title}-${item.id}`"
+                  type="checkbox"
+                  :checked="selectedIds.includes(item.id)"
+                  @click.stop="toggle(item.id)"
+                />
+              </div>
+            </div>
           </div>
 
           <button
-            class="btn btn-primary mt-4"
+            v-if="state.data?.length"
+            class="btn btn-primary w-full mt-5 confirm-btn"
             :disabled="!selectedIds.length"
             @click="cloneSelected"
           >
-            {{ $t('clone') }}
+            {{ $t('confirm') }}
           </button>
         </template>
 
@@ -127,18 +141,11 @@ const cloneSelected = async () => {
         </template>
 
         <template #empty>
-          <DataEmpty
-            :title="$t('no_traning_topics')"
-            :description="$t('no_traning_topics_description')"
-          />
+          <SystemDialogEmptyState />
         </template>
 
         <template #failed>
-          <DataFailed
-            :title="$t('no_traning_topics')"
-            :description="$t('no_traning_topics_description')"
-            link=""
-          />
+          <SystemDialogEmptyState />
         </template>
       </DataStatus>
     </Dialog>
