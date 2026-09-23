@@ -70,7 +70,7 @@ onMounted(async () => {
       <div>
         <span class="eyebrow">Project PPE</span>
         <h1>Activity and tool matrix</h1>
-        <p>Choose the PPE tools required for each activity.</p>
+        <!-- <p>Choose the PPE tools required for each activity.</p> -->
       </div>
       <nav class="header-actions" aria-label="PPE navigation">
         <!-- <RouterLink :to="`/organization/project-details/${projectId}`">Project details</RouterLink> -->

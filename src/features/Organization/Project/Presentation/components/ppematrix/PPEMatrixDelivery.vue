@@ -14,6 +14,9 @@ import CreatePPEMatrixDeliveryParams, {
 } from '../../../Core/params/ppematrix/CreatePPEMatrixDeliveryParams'
 import FetchPPEActivityToolsController from '../../controllers/ppematrix/FetchPPEActivityToolsController'
 import CreatePPEMatrixDeliveryController from '../../controllers/ppematrix/CreatePPEMatrixDeliveryController'
+import ProjectCustomLocationParams from '../../../Core/params/ProjectCustomLocationParams'
+import ProjectCustomLocationController from '../../controllers/ProjectCustomLocationController'
+import { ProjectCustomLocationEnum } from '../../../Core/Enums/ProjectCustomLocationEnum'
 
 interface DeliveryRow extends PPEMatrixDeliveryEmployee {
   key: number
@@ -24,16 +27,23 @@ const activityController = IndexPPEActivityController.getInstance()
 const employeeController = IndexOrganizatoinEmployeeController.getInstance()
 const toolsController = FetchPPEActivityToolsController.getInstance()
 const deliveryController = CreatePPEMatrixDeliveryController.getInstance()
+const locationController = ProjectCustomLocationController.getInstance()
 const employeeParams = new IndexOrganizatoinEmployeeParams('', 0, 0, 0)
+const locationParams = new ProjectCustomLocationParams(
+  projectId.value,
+  [ProjectCustomLocationEnum.ZOON],
+  [],
+)
 const activities = computed(() => activityController.state.value.data ?? [])
-const employeeOptions = computed(() =>
-  (employeeController.state.value.data ?? []).map(
-    (employee) => new TitleInterface({ id: employee.id, title: employee.name }),
-  ),
+const locations = computed(() => locationController.state.value.data ?? [])
+const locationOptions = computed(() =>
+  locations.value.map((location) => new TitleInterface({ id: location.id, title: location.title })),
 )
 const selectedActivityId = ref<number | null>(null)
+const selectedLocation = ref<TitleInterface | null>(null)
+const selectedZone = ref<TitleInterface | null>(null)
+const selectedEmployees = ref<TitleInterface[]>([])
 const rows = ref<DeliveryRow[]>([])
-const nextKey = ref(1)
 const errorMessage = ref('')
 const successMessage = ref('')
 const availableTools = computed(
@@ -41,13 +51,41 @@ const availableTools = computed(
     toolsController.state.value.data?.find((row) => row.activityId === selectedActivityId.value)
       ?.ppeTools ?? [],
 )
-const selectedEmployee = (id: number) =>
-  employeeOptions.value.find((option) => option.id === id) ?? null
-const selectedId = (value: TitleInterface | TitleInterface[] | null) =>
-  value && !Array.isArray(value) ? value.id : 0
-const addEmployee = () => rows.value.push({ key: nextKey.value++, employeeId: 0, ppeToolIds: [] })
-const setEmployee = (row: DeliveryRow, value: TitleInterface | TitleInterface[] | null) => {
-  row.employeeId = selectedId(value)
+const zoneOptions = computed(() => {
+  const location = locations.value.find((item) => item.id === selectedLocation.value?.id)
+
+  return (location?.locationZones ?? []).map(
+    (zone) =>
+      new TitleInterface({
+        id: zone.zoonId,
+        title: zone.zoonTitle || zone.title,
+      }),
+  )
+})
+const setLocation = (value: TitleInterface | TitleInterface[] | null) => {
+  selectedLocation.value = Array.isArray(value) ? (value[0] ?? null) : value
+  selectedZone.value = null
+}
+const setZone = (value: TitleInterface | TitleInterface[] | null) => {
+  selectedZone.value = Array.isArray(value) ? (value[0] ?? null) : value
+}
+const fetchLocations = () => locationController.getData(locationParams)
+const setEmployees = (value: TitleInterface | TitleInterface[] | null) => {
+  const employees = Array.isArray(value) ? value : value ? [value] : []
+  const existingRows = new Map(rows.value.map((row) => [row.employeeId, row]))
+
+  selectedEmployees.value = employees
+  rows.value = employees.map(
+    (employee) =>
+      existingRows.get(employee.id) ?? {
+        key: employee.id,
+        employeeId: employee.id,
+        ppeToolIds: [],
+      },
+  )
+}
+const removeEmployee = (employeeId: number) => {
+  setEmployees(selectedEmployees.value.filter((employee) => employee.id !== employeeId))
 }
 const hasTool = (row: DeliveryRow, toolId: number) => row.ppeToolIds.includes(toolId)
 const setTool = (row: DeliveryRow, toolId: number, checked: boolean) => {
@@ -57,6 +95,7 @@ const setTool = (row: DeliveryRow, toolId: number, checked: boolean) => {
 }
 
 watch(selectedActivityId, async (activityId) => {
+  selectedEmployees.value = []
   rows.value = []
   errorMessage.value = ''
   successMessage.value = ''
@@ -67,14 +106,18 @@ watch(selectedActivityId, async (activityId) => {
 const submit = async () => {
   errorMessage.value = ''
   successMessage.value = ''
+  // if (!selectedLocation.value || !selectedZone.value) {
+  //   errorMessage.value = 'Select a project location and zone first.'
+  //   return
+  // }
   if (!Number.isInteger(projectId.value) || projectId.value <= 0 || !selectedActivityId.value) {
     errorMessage.value = 'Select a project activity first.'
     return
   }
-  if (!rows.value.length || rows.value.some((row) => !row.employeeId || !row.ppeToolIds.length)) {
-    errorMessage.value = 'Choose at least one employee and one PPE tool for each employee.'
-    return
-  }
+  // if (!rows.value.length || rows.value.some((row) => !row.employeeId || !row.ppeToolIds.length)) {
+  //   errorMessage.value = 'Choose at least one employee and one PPE tool for each employee.'
+  //   return
+  // }
   if (new Set(rows.value.map((row) => row.employeeId)).size !== rows.value.length) {
     errorMessage.value = 'Select each employee only once.'
     return
@@ -85,9 +128,12 @@ const submit = async () => {
         projectId.value,
         selectedActivityId.value,
         rows.value.map((row) => ({ employeeId: row.employeeId, ppeToolIds: row.ppeToolIds })),
+        // selectedLocation.value.id,
+        // selectedZone.value.id,
       ),
     )
     if (!deliveryController.isDataSuccess()) throw new Error('Delivery failed')
+    selectedEmployees.value = []
     rows.value = []
     successMessage.value = 'PPE delivery saved.'
   } catch {
@@ -99,6 +145,7 @@ onMounted(async () => {
   await Promise.allSettled([
     activityController.getData(new IndexPPEActivityParams('', 1, 10, 0)),
     employeeController.getData(employeeParams),
+    fetchLocations(),
   ])
 })
 </script>
@@ -109,17 +156,52 @@ onMounted(async () => {
       <div>
         <span class="eyebrow">Project PPE</span>
         <h1>PPE delivery</h1>
-        <p>Select one activity, then choose the tools delivered to each employee.</p>
+        <!-- <p>Select one activity, then choose the tools delivered to each employee.</p> -->
       </div>
       <RouterLink :to="`/organization/project-details/${projectId}/ppe-matrix`"
         >← Activity and tool matrix</RouterLink
       >
     </header>
     <p v-if="errorMessage" class="notice notice--error" role="alert">{{ errorMessage }}</p>
-    <p v-if="successMessage" class="notice notice--success" role="status">{{ successMessage }}</p>
+    <!-- <p v-if="successMessage" class="notice notice--success" role="status">{{ successMessage }}</p> -->
+
+    <!-- <section class="card">
+      <h2>1. Select project location and zone</h2>
+      <div class="location-fields">
+        <UpdatedCustomInputSelect
+          id="delivery-location"
+          label="Project location"
+          placeholder="Select location"
+          :required="true"
+          :reload="false"
+          :static-options="locationOptions"
+          :model-value="selectedLocation"
+          @update:model-value="setLocation"
+        />
+        <UpdatedCustomInputSelect
+          v-if="selectedLocation"
+          id="delivery-zone"
+          label="Project zone"
+          placeholder="Select zone"
+          :required="true"
+          :reload="false"
+          :static-options="zoneOptions"
+          :model-value="selectedZone"
+          @update:model-value="setZone"
+        />
+      </div>
+      <p v-if="locationController.isDataLoading()" class="muted">Loading project locations…</p>
+      <p v-else-if="locationController.isDataFailed()" class="notice notice--error">
+        Unable to load project locations and zones.
+      </p>
+      <p v-else-if="!locationOptions.length" class="muted">No project locations available.</p>
+      <p v-else-if="selectedLocation && !zoneOptions.length" class="muted">
+        This location has no zones.
+      </p>
+    </section> -->
 
     <section class="card">
-      <h2>1. Select one PPE activity</h2>
+      <h2>2. Select one PPE activity</h2>
       <div class="activity-list">
         <label v-for="activity in activities" :key="activity.id" class="activity-option">
           <Checkbox
@@ -138,20 +220,12 @@ onMounted(async () => {
       <p v-if="!activities.length" class="muted">No PPE activities available.</p>
     </section>
 
-    <section v-if="selectedActivityId" class="card">
+    <section v-if="selectedActivityId && availableTools.length > 0" class="card">
       <div class="section-heading">
         <div>
-          <h2>2. Assign PPE tools to employees</h2>
+          <h2>3. Assign PPE tools to employees</h2>
           <p>Only tools linked to the selected activity are listed.</p>
         </div>
-        <button
-          type="button"
-          class="button-secondary"
-          :disabled="!availableTools.length"
-          @click="addEmployee"
-        >
-          + Add employee
-        </button>
       </div>
       <p v-if="toolsController.isDataLoading()" class="muted">Loading activity tools…</p>
       <p v-else-if="toolsController.isDataFailed()" class="notice notice--error">
@@ -160,23 +234,28 @@ onMounted(async () => {
       <p v-else-if="!availableTools.length" class="muted">
         This activity has no PPE tools. Add them in the matrix first.
       </p>
+
+      <UpdatedCustomInputSelect
+        id="delivery-employees"
+        label="Organization employees"
+        placeholder="Select employees"
+        type="multiselect"
+        :required="true"
+        :reload="false"
+        :controller="employeeController"
+        :params="employeeParams"
+        :model-value="selectedEmployees"
+        @update:model-value="setEmployees"
+      />
+
       <div v-for="(row, index) in rows" :key="row.key" class="employee-card">
         <div class="section-heading">
-          <h3>Employee {{ index + 1 }}</h3>
-          <button type="button" class="remove-button" @click="rows.splice(index, 1)">Remove</button>
+          <h3>{{ selectedEmployees[index]?.title ?? `Employee ${index + 1}` }}</h3>
+          <button type="button" class="remove-button" @click="removeEmployee(row.employeeId)">
+            Remove
+          </button>
         </div>
-        <UpdatedCustomInputSelect
-          :id="`delivery-employee-${row.key}`"
-          label="Organization employee"
-          placeholder="Select employee"
-          :required="true"
-          :reload="false"
-          :controller="employeeController"
-          :params="employeeParams"
-          :model-value="selectedEmployee(row.employeeId)"
-          @update:model-value="(value) => setEmployee(row, value)"
-        />
-        <div v-if="row.employeeId" class="tool-table-wrap">
+        <div class="tool-table-wrap">
           <table class="main-table tool-table">
             <thead>
               <tr>
@@ -209,6 +288,12 @@ onMounted(async () => {
       >
         {{ deliveryController.isDataLoading() ? 'Saving…' : 'Save PPE delivery' }}
       </button>
+    </section>
+
+    <section v-else class="card empty">
+      <div class="section-heading">
+        <h2>No Tools Assigned To This Activity</h2>
+      </div>
     </section>
   </main>
 </template>
@@ -439,6 +524,9 @@ p {
   box-shadow:
     0 1px 2px rgba(15, 23, 42, 0.02),
     0 8px 28px rgba(15, 23, 42, 0.035);
+  &.empty {
+    padding: 20px !important;
+  }
 }
 
 .card::before {
@@ -482,6 +570,18 @@ p {
 
 .section-heading p {
   font-size: 0.86rem;
+}
+
+/* =========================================================
+   Location and zone selection
+========================================================= */
+
+.location-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+
+  margin-top: 20px;
 }
 
 /* =========================================================
@@ -1050,6 +1150,10 @@ button:disabled {
 }
 
 @media (max-width: 720px) {
+  .location-fields {
+    grid-template-columns: 1fr;
+  }
+
   .delivery-page {
     gap: 18px;
 
