@@ -19,9 +19,9 @@ class DeleteInductionApiService extends ServicesInterface {
 
   async applyService(
     params: Params,
-  ): Promise<{ data: any; statusCode: number }> {
+  ): Promise<{ data: unknown; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.delete_ppe_tool,
+      url: ApiNames.instance.delete_induction,
       type: CrudType.FormData,
       auth: true,
       params: params,

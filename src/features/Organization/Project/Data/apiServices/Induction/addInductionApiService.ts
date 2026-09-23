@@ -19,7 +19,7 @@ class AddInductionApiService extends ServicesInterface {
 
   async applyService(
     params: Params,
-  ): Promise<{ data: any; statusCode: number }> {
+  ): Promise<{ data: unknown; statusCode: number }> {
     return await super.call({
       url: ApiNames.instance.create_induction,
       type: CrudType.POST,

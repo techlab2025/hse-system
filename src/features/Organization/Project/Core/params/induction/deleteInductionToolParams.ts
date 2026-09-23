@@ -1,14 +1,11 @@
-import type Params from "@/base/core/params/params";
+import type Params from '@/base/core/params/params'
 
 export default class DeleteInductionParams implements Params {
-
-  constructor(public id: number) {
-    this.id = id;
-  }
+  constructor(public id: number) {}
 
   toMap(): Record<string, number> {
-    const data: Record<string, number> = {};
-    data["Induction_id"] = this.id;
-    return data;
+    return {
+      Induction_id: this.id,
+    }
   }
 }

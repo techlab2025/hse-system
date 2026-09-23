@@ -48,7 +48,7 @@ export default class AddTraningTopicCloneController extends ControllerInterface<
       })
 
       await IndexTraningTopicController.getInstance().getData(
-        new IndexTraningTopicParams('', 1, 10, 1, true),
+        new IndexTraningTopicParams('', 1, 10, 1),
       )
     } else {
       DialogSelector.instance.failedDialog.openDialog({

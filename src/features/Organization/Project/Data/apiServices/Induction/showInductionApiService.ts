@@ -18,9 +18,9 @@ class ShowInductionApiService extends ServicesInterface {
     return this.instance
   }
 
-  async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
+  async applyService(params: Params): Promise<{ data: unknown; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.fetch_ppe_toll_deails,
+      url: ApiNames.instance.fetch_induction_details,
       type: CrudType.FormData,
       auth: true,
       params: params,

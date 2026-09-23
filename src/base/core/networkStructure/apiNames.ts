@@ -2053,25 +2053,32 @@ class ApiNames {
   public get FetchRiskAssessments() { return this.baseUrl + this.organizationPrefix + 'fetch_risk_assessments' }
   public get FetchRiskAssessmentDetails() { return this.baseUrl + this.organizationPrefix + 'fetch_risk_assessment_details' }
 
+  // Induction
+  public get create_induction() { return this.prefix + 'create_induction' }
+  public get fetch_inductions() { return this.prefix + 'fetch_inductions' }
+  public get fetch_induction_details() { return this.prefix + 'fetch_induction_details' }
+  public get update_induction() { return this.prefix + 'update_induction' }
+  public get delete_induction() { return this.prefix + 'delete_induction' }
+
   // Traning Topic
   public get fetch_tranning_topic() {
-    return this.prefix + 'fetch_tranning_topic'
+    return this.prefix + 'fetch_training_topics'
   }
 
   public get fetch_traning_topic_details() {
-    return this.prefix + 'fetch_traning_topic_details'
+    return this.prefix + 'fetch_training_topic_details'
   }
 
   public get create_traning_topic() {
-    return this.prefix + 'create_traning_topic'
+    return this.prefix + 'create_training_topic'
   }
 
   public get update_traning_topic() {
-    return this.prefix + 'update_traning_topic'
+    return this.prefix + 'update_training_topic'
   }
 
   public get delete_traning_topic() {
-    return this.prefix + 'delete_traning_topic'
+    return this.prefix + 'delete_training_topic'
   }
 
   public get clone_traning_topic() {

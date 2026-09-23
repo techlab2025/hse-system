@@ -19,9 +19,9 @@ class IndexInductionApiService extends ServicesInterface {
 
   async applyService(
     params: Params,
-  ): Promise<{ data: any; statusCode: number }> {
+  ): Promise<{ data: unknown; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.fetch_ppe_tools,
+      url: ApiNames.instance.fetch_inductions,
       type: CrudType.POST,
       auth: true,
       params: params,
