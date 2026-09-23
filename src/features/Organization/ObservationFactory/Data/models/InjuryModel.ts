@@ -25,6 +25,7 @@ export default class InjuryDetailsModel {
   public ppe_items: InjuryPpeItem[]
   public ppe_item_condition: number
   public ppe_item_text: string
+  public locations: string[]
 
   constructor(
     id: number,
@@ -45,6 +46,7 @@ export default class InjuryDetailsModel {
     ppe_item_condition: number = 0,
     ppe_item_text: string = '',
     ppe_items: InjuryPpeItem[] = [],
+    locations: string[] = [],
   ) {
     this.id = id
     this.title = title
@@ -64,6 +66,7 @@ export default class InjuryDetailsModel {
     this.ppe_item_condition = ppe_item_condition
     this.ppe_item_text = ppe_item_text
     this.ppe_items = ppe_items
+    this.locations = locations
   }
 
   static fromMap(data: any): InjuryDetailsModel {
@@ -98,7 +101,17 @@ export default class InjuryDetailsModel {
       Number(data.ppe_item_condition) || 0,
       data.ppe_item_text ?? '',
       ppeItems,
+      this.getLocations(data),
     )
+  }
+
+  static getLocations(data: any): string[] {
+    const locations = data?.locations ?? data?.body_regions ?? data?.injury_locations ?? []
+    if (!Array.isArray(locations)) return []
+
+    return locations
+      .map((item: any) => String(item?.location ?? item?.region ?? item?.id ?? item ?? ''))
+      .filter(Boolean)
   }
 
   static getPpeItems(data: any): InjuryPpeItem[] {

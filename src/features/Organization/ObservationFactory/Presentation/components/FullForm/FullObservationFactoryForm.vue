@@ -68,6 +68,7 @@ import { useProjectSelectStore } from '@/stores/ProjectSelect.ts'
 import IndexPpeItemController from '@/features/Organization/ppeItem/Presentation/controllers/indexPpeItemController.ts'
 import IndexPpeItemParams from '@/features/Organization/ppeItem/Core/params/indexPpeItemParams.ts'
 import { ObservationTypeStaticOptions } from '@/features/setting/ObserverationType/Core/Enum/ObservationTypeEnum.ts'
+import InjuryBodySlection from '../../SubComponent/InjuryBodySlection.vue'
 
 const emit = defineEmits(['update:data'])
 const { isDarkMode } = useThemeMode()
@@ -557,6 +558,7 @@ const updateData = () => {
                 item?.ppeItems?.some((ppeItem: TitleInterface) => ppeItem.id === PpeItemEnum.OTHERS)
                   ? item?.customPpeItem?.trim() || ''
                   : '',
+                item?.locations ?? [],
               )
             })
           : [],
@@ -848,6 +850,7 @@ defineExpose({
 </script>
 
 <template>
+  <!--  -->
   <div
     :class="[
       'full-observation-form col-span-6 grid items-start grid-cols-1 md:grid-cols-6 gap-4',
