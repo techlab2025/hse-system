@@ -81,6 +81,16 @@ export const projectRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: 'project-details/:id/ppe-deliveries',
+    name: 'Project PPE Deliveries',
+    component: () => import('@/views/Organization/Project/ppematrix/PPEMatrixDeliveriesPage.vue'),
+    meta: {
+      breadcrumb: 'PPE Deliveries',
+      parent: 'Project Details',
+      isSidebar: false,
+    },
+  },
+  {
     path: 'project-details/:id/risk-assessments',
     name: 'Project Risk Assessments',
     component: () => import('@/views/Organization/Project/RiskAssessment/RiskAssessmentsPage.vue'),
@@ -93,7 +103,8 @@ export const projectRoutes: RouteRecordRaw[] = [
   {
     path: 'project-details/:id/risk-assessments/create',
     name: 'Create Risk Assessment',
-    component: () => import('@/views/Organization/Project/RiskAssessment/CreateRiskAssessmentPage.vue'),
+    component: () =>
+      import('@/views/Organization/Project/RiskAssessment/CreateRiskAssessmentPage.vue'),
     meta: {
       breadcrumb: 'Create Risk Assessment',
       parent: 'Project Risk Assessments',

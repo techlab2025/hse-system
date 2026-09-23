@@ -14,7 +14,6 @@ import CreatePPEMatrixDeliveryParams, {
 } from '../../../Core/params/ppematrix/CreatePPEMatrixDeliveryParams'
 import FetchPPEActivityToolsController from '../../controllers/ppematrix/FetchPPEActivityToolsController'
 import CreatePPEMatrixDeliveryController from '../../controllers/ppematrix/CreatePPEMatrixDeliveryController'
-import PPEMatrixDeliveriesTable from './PPEMatrixDeliveriesTable.vue'
 
 interface DeliveryRow extends PPEMatrixDeliveryEmployee {
   key: number
@@ -30,7 +29,6 @@ const activities = computed(() => activityController.state.value.data ?? [])
 const selectedActivityId = ref<number | null>(null)
 const selectedEmployees = ref<TitleInterface[]>([])
 const rows = ref<DeliveryRow[]>([])
-const deliveriesTable = ref<InstanceType<typeof PPEMatrixDeliveriesTable> | null>(null)
 const errorMessage = ref('')
 const successMessage = ref('')
 const availableTools = computed(
@@ -98,7 +96,6 @@ const submit = async () => {
     selectedEmployees.value = []
     rows.value = []
     successMessage.value = 'PPE delivery saved.'
-    await deliveriesTable.value?.refresh()
   } catch {
     errorMessage.value = 'Unable to save PPE delivery. Please try again.'
   }
@@ -222,8 +219,6 @@ onMounted(async () => {
         <h2>No Tools Assigned To This Activity</h2>
       </div>
     </section>
-
-    <PPEMatrixDeliveriesTable ref="deliveriesTable" :project-id="projectId" />
   </main>
 </template>
 

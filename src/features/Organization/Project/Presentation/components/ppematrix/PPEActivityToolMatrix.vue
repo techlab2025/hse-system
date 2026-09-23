@@ -74,6 +74,9 @@ onMounted(async () => {
       </div>
       <nav class="header-actions" aria-label="PPE navigation">
         <!-- <RouterLink :to="`/organization/project-details/${projectId}`">Project details</RouterLink> -->
+        <RouterLink :to="`/organization/project-details/${projectId}/ppe-deliveries`">
+          All deliveries
+        </RouterLink>
         <RouterLink
           class="primary-link"
           :to="`/organization/project-details/${projectId}/ppe-delivery`"
