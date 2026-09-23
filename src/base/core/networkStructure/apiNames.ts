@@ -5,7 +5,7 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 class ApiNames {
   private static _instance: ApiNames
 
-  private constructor() { }
+  private constructor() {}
 
   public static get instance(): ApiNames {
     if (!this._instance) {
@@ -1953,10 +1953,10 @@ class ApiNames {
     return this.baseUrl + this.organizationPrefix + 'fetch_all_visitis'
   }
   public get CreatePPEActivityTool() {
-    return this.baseUrl + this.organizationPrefix + 'create_ppe_activity_tool'
+    return this.baseUrl + this.organizationPrefix + 'change_ppe_active_tool_matrix'
   }
   public get FetchPPEActivityTools() {
-    return this.baseUrl + this.organizationPrefix + 'fetch_ppe_activity_tools'
+    return this.baseUrl + this.organizationPrefix + 'fetch_ppe_active_tool_matrix'
   }
   public get CreatePPEMatrixDelivery() {
     return this.baseUrl + this.organizationPrefix + 'create_ppe_matrix_delevery'
@@ -2042,16 +2042,34 @@ class ApiNames {
   }
 
   // PPE Tool
-  public get fetch_ppe_tools() { return this.prefix + 'fetch_ppe_tools' }
-  public get fetch_ppe_toll_deails() { return this.prefix + 'fetch_ppe_tool_details' }
-  public get create_ppe_toll() { return this.prefix + 'create_ppe_tool' }
-  public get update_ppe_tool() { return this.prefix + 'update_ppe_tool' }
-  public get delete_ppe_tool() { return this.prefix + 'delete_ppe_tool' }
-  public get clone_ppe_tool() { return this.prefix + 'clone_ppe_tools' }
+  public get fetch_ppe_tools() {
+    return this.prefix + 'fetch_ppe_tools'
+  }
+  public get fetch_ppe_toll_deails() {
+    return this.prefix + 'fetch_ppe_tool_details'
+  }
+  public get create_ppe_toll() {
+    return this.prefix + 'create_ppe_tool'
+  }
+  public get update_ppe_tool() {
+    return this.prefix + 'update_ppe_tool'
+  }
+  public get delete_ppe_tool() {
+    return this.prefix + 'delete_ppe_tool'
+  }
+  public get clone_ppe_tool() {
+    return this.prefix + 'clone_ppe_tools'
+  }
   // Risk Assessment
-  public get CreateRiskAssessment() { return this.baseUrl + this.organizationPrefix + 'create_risk_assessment' }
-  public get FetchRiskAssessments() { return this.baseUrl + this.organizationPrefix + 'fetch_risk_assessments' }
-  public get FetchRiskAssessmentDetails() { return this.baseUrl + this.organizationPrefix + 'fetch_risk_assessment_details' }
+  public get CreateRiskAssessment() {
+    return this.baseUrl + this.organizationPrefix + 'create_risk_assessment'
+  }
+  public get FetchRiskAssessments() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_risk_assessments'
+  }
+  public get FetchRiskAssessmentDetails() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_risk_assessment_details'
+  }
 
   // Traning Topic
   public get fetch_tranning_topic() {

@@ -67,6 +67,7 @@ import { useI18n } from 'vue-i18n'
 import { useProjectSelectStore } from '@/stores/ProjectSelect.ts'
 import IndexPpeItemController from '@/features/Organization/ppeItem/Presentation/controllers/indexPpeItemController.ts'
 import IndexPpeItemParams from '@/features/Organization/ppeItem/Core/params/indexPpeItemParams.ts'
+import { ObservationTypeStaticOptions } from '@/features/setting/ObserverationType/Core/Enum/ObservationTypeEnum.ts'
 
 const emit = defineEmits(['update:data'])
 const { isDarkMode } = useThemeMode()
@@ -508,17 +509,19 @@ const updateData = () => {
     : new AddHazardParams({
         title: ObservationTitle.value ?? '',
         propertyTitle:
-          ObservationFactoryType.value === Observation.AccidentsType
-            ? PropertyTitle.value
-            : null,
+          ObservationFactoryType.value === Observation.AccidentsType ? PropertyTitle.value : null,
         description: text.value ?? null,
         image: image.value?.map((el) => el?.file) ?? null,
         typeId:
           ObservationFactoryType.value == Observation.ObservationType
-            ? SelectedObservationType.value?.id
+            ? undefined
             : ObservationFactoryType.value == Observation.AccidentsType
               ? AccidentsType.value?.id
               : HazardType.value?.id,
+        uauc:
+          ObservationFactoryType.value == Observation.ObservationType
+            ? SelectedObservationType.value?.id
+            : 0,
         type: ObservationFactoryType.value,
         equipmentId: SelectedMachine.value?.id ?? null,
         zoonId: ZoneIds.value ?? null,
@@ -842,9 +845,6 @@ const validateRequiredFields = async () => {
 defineExpose({
   validateRequiredFields,
 })
-
-
-
 </script>
 
 <template>
@@ -1052,11 +1052,12 @@ defineExpose({
                  New Update => Custom input Select inspection Observisoon Form
         /> -->
 
+      <!-- :controller="indexObservatioTyepController"
+        :params="indexObservationTypeParams" -->
       <UpdatedCustomInputSelect
         :required="true"
+        :static-options="ObservationTypeStaticOptions"
         :modelValue="SelectedObservationType"
-        :controller="indexObservatioTyepController"
-        :params="indexObservationTypeParams"
         :label="$t('Observation Type')"
         help-text="The category that best describes this observation."
         id="Equipment"
@@ -1228,7 +1229,7 @@ defineExpose({
       </p>
     </div>
 
-    <!-- Shifts --> 
+    <!-- Shifts -->
     <div class="col-span-3 md:col-span-3 input-wrapper">
       <UpdatedCustomInputSelect
         :controller="shiftsContrller"

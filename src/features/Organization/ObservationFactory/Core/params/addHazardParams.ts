@@ -53,10 +53,11 @@ export default class AddHazardParams implements Params {
   public workShiftId: number
   public ptwStatus: number | null
   public complianceNotification: number[]
+  public uauc?: number
 
   public static readonly validation = new ClassValidation().setRules({
     // title: { required: true, minLength: 2, maxLength: 100 },
-    typeId: { required: true },
+    // typeId: { required: true },
   })
 
   constructor(data: {
@@ -100,6 +101,7 @@ export default class AddHazardParams implements Params {
     workShiftId: number
     ptwStatus?: number | null
     complianceNotification?: number[]
+    uauc?: number
   }) {
     this.title = data.title
     this.propertyTitle = data.propertyTitle ?? null
@@ -141,6 +143,7 @@ export default class AddHazardParams implements Params {
     this.workShiftId = data.workShiftId
     this.ptwStatus = data.ptwStatus ?? null
     this.complianceNotification = data.complianceNotification ?? []
+    this.uauc = data.uauc ?? 0
   }
 
   toMap(): Record<
@@ -214,6 +217,8 @@ export default class AddHazardParams implements Params {
     if (this.ptwStatus != null) data['ptw_status'] = this.ptwStatus
     if (this.complianceNotification.length > 0)
       data['compliance_notification'] = this.complianceNotification
+    data['uauc'] = this.uauc
+
     return data
   }
 
