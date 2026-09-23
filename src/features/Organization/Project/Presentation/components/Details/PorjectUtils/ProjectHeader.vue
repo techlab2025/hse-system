@@ -237,6 +237,28 @@ defineProps<{
           </span>
           <span class="action-arrow" aria-hidden="true">→</span>
         </router-link>
+
+        <PermissionBuilder
+          :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.OBJECTIVE_ORG_CREATE]"
+        >
+          <router-link
+            :to="{ name: 'Project Objectives', params: { project_id: projectId } }"
+            class="project-action-link action-objectives"
+          >
+            <span class="action-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="8" />
+                <circle cx="12" cy="12" r="3.25" />
+                <path d="m15 9 4-4M16 5h3v3" />
+              </svg>
+            </span>
+            <span class="action-copy">
+              <strong>{{ t('Objectives') }}</strong>
+              <small>{{ t('Create project objectives') }}</small>
+            </span>
+            <span class="action-arrow" aria-hidden="true">→</span>
+          </router-link>
+        </PermissionBuilder>
       </div>
     </div>
   </header>
@@ -604,6 +626,9 @@ defineProps<{
 }
 .action-risk-assessments {
   --action-color: #bf6b36;
+}
+.action-objectives {
+  --action-color: #1f8f6a;
 }
 @media (max-width: 1100px) {
   .project-header-container {

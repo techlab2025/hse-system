@@ -1,11 +1,12 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
-import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import EditObjectivesUseCase from '../../Domain/useCase/editObjectivesUseCase'
 import type ObjectivesModel from '../../Data/models/objectivesModel'
+import EditObjectivesParams from '../../Core/params/editObjectivesParams'
+import type { Router } from 'vue-router'
 
 export default class EditObjectivesController extends ControllerInterface<ObjectivesModel> {
   private static instance: EditObjectivesController
@@ -23,10 +24,16 @@ export default class EditObjectivesController extends ControllerInterface<Object
     return this.instance
   }
 
-  async editObjectives(params: Params, router: any) {
+  async editObjectives(params: EditObjectivesParams, router: Router) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
+      const validation = params.validate()
+      if (!validation.isValid) {
+        params.validateOrThrow()
+        return this.state
+      }
+
       const dataState: DataState<ObjectivesModel> = await this.editObjectivesUseCase.call(params)
 
       this.setState(dataState)
@@ -48,7 +55,7 @@ export default class EditObjectivesController extends ControllerInterface<Object
           messageContent: null,
         })
       }
-    } catch (error: any) {
+    } catch {
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog-error',
         titleContent: this.state.value.message,

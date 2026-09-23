@@ -17,9 +17,9 @@ class AddObjectivesApiService extends ServicesInterface {
     return this.instance
   }
 
-  async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
+  async applyService(params: Params): Promise<{ data: unknown; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.CreateObjective,
+      url: ApiNames.instance.CreateObjectives,
       type: CrudType.POST,
       auth: true,
       params: params,
