@@ -1998,7 +1998,7 @@ class ApiNames {
     return this.baseUrl + this.organizationPrefix + 'fetch_meeting_details'
   }
   public get FetchPermits() {
-    return this.baseUrl + this.organizationPrefix + 'fetch_permit_to_works'
+    return this.baseUrl + this.organizationPrefix + 'fetch_asigned_permit_to_works'
   }
   public get FetchMyPermits() {
     return this.baseUrl + this.organizationPrefix + 'fetch_my_permit_to_works'

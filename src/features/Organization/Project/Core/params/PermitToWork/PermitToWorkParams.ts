@@ -40,7 +40,7 @@ export default class PermitToWorkParams implements Params {
     const data: Record<string, unknown> = {}
 
     data['project_id'] = this.project_id
-    data['organization_employee_id'] = this.organization_employee_id
+    data['asigned_employee_id'] = this.organization_employee_id
     data['ptw_number'] = this.ptw_number
     data['permit_type_id'] = this.ptw_type_id
     data['start_date'] = this.start_date

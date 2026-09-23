@@ -22,7 +22,7 @@ const fetchDeliveries = async (page = currentPage.value, limit = countPerPage.va
   currentPage.value = page
   countPerPage.value = limit
   await controller.fetchPPEMatrixDeliveries(
-    new FetchPPEMatrixDeliveriesParams(props.projectId, page, limit),
+    new FetchPPEMatrixDeliveriesParams(props.projectId, page,limit),
   )
 }
 
@@ -65,9 +65,9 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
   <section class="deliveries-card">
     <div class="deliveries-heading">
       <div>
-        <span class="eyebrow">Delivery history</span>
-        <h2>PPE deliveries</h2>
-        <p>Employees and the PPE tools delivered for each activity.</p>
+        <!-- <span class="eyebrow">Delivery history</span> -->
+        <!-- <h2>PPE deliveries</h2> -->
+        <!-- <p>Employees and the PPE tools delivered for each activity.</p> -->
       </div>
     </div>
 
@@ -75,22 +75,22 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
       <template #success>
         <article class="+">
           <dl class="delivery-meta">
-            <div>
+            <!-- <div>
               <dt>Delivery date</dt>
               <dd>{{ firstDelivery?.deliveryDate || '—' }}</dd>
-            </div>
-            <div>
+            </div> -->
+            <!-- <div>
               <dt>Project</dt>
               <dd>{{ firstDelivery?.project.title || '—' }}</dd>
-            </div>
+            </div> -->
             <div>
               <dt>Activity</dt>
               <dd>{{ activityTitles || '—' }}</dd>
             </div>
-            <div>
+            <!-- <div>
               <dt>Prepared by</dt>
               <dd>{{ firstDelivery?.preparedBy.title || '—' }}</dd>
-            </div>
+            </div> -->
           </dl>
 
           <div class="delivery-table-wrap">
