@@ -20,7 +20,7 @@ export default class FetchPPEMatrixDeliveriesRepo extends RepoInterface<PPEMatri
   }
 
   onParse(data: Record<string, unknown> | Record<string, unknown>[]): PPEMatrixDeliveryModel[] {
-    if (!Array.isArray(data)) return []
+    if (!Array.isArray(data)) return [PPEMatrixDeliveryModel.fromMap(data)]
 
     return data.flatMap((item) => {
       const employees = item.employees ?? item.recipients

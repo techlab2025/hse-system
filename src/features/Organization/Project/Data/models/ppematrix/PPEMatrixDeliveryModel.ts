@@ -1,10 +1,11 @@
 import PPEMatrixDeliveryActivityModel from './PPEMatrixDeliveryActivityModel'
+import PPEMatrixDeliveryEmployeeModel from './PPEMatrixDeliveryEmployeeModel'
 import PPEMatrixDeliveryReferenceModel from './PPEMatrixDeliveryReferenceModel'
 
 export default class PPEMatrixDeliveryModel {
   constructor(
-    public id: number,
-    public title: string,
+    public employeeId: number,
+    public employee: PPEMatrixDeliveryEmployeeModel,
     public type: string,
     public deliveryDate: string,
     public project: PPEMatrixDeliveryReferenceModel,
@@ -13,22 +14,12 @@ export default class PPEMatrixDeliveryModel {
   ) {}
 
   static fromMap(data: Record<string, unknown>): PPEMatrixDeliveryModel {
-    const employee =
-      data.employee && typeof data.employee === 'object'
-        ? (data.employee as Record<string, unknown>)
-        : data
+    const employee = PPEMatrixDeliveryEmployeeModel.fromMap(data.employee ?? data)
 
     return new PPEMatrixDeliveryModel(
-      Number(employee.id ?? data.employee_id ?? data.id ?? 0),
-      String(
-        employee.title ??
-          employee.name ??
-          data.employee_title ??
-          data.employee_name ??
-          data.title ??
-          '',
-      ),
-      String(data.type ?? employee.type ?? 'Employee'),
+      Number(data.employee_id ?? employee.id),
+      employee,
+      String(data.type ?? 'Employee'),
       String(data.delivery_date ?? data.created_at ?? data.date ?? ''),
       PPEMatrixDeliveryReferenceModel.fromMap(
         data.project ?? { id: data.project_id, title: data.project_title },

@@ -73,7 +73,7 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
 
     <DataStatus :controller="state">
       <template #success>
-        <article class="delivery-record">
+        <article class="+">
           <dl class="delivery-meta">
             <div>
               <dt>Delivery date</dt>
@@ -98,7 +98,7 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
               <thead>
                 <tr>
                   <th scope="col">Recipient</th>
-                  <th scope="col">Type</th>
+                  <!-- <th scope="col">Type</th> -->
                   <th v-for="tool in tools" :key="tool.id" scope="col">
                     {{ tool.title }}
                   </th>
@@ -107,10 +107,10 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
               <tbody>
                 <tr
                   v-for="(delivery, deliveryIndex) in state.data"
-                  :key="delivery.id || deliveryIndex"
+                  :key="delivery.employeeId || deliveryIndex"
                 >
-                  <th scope="row">{{ delivery.title || '—' }}</th>
-                  <td>{{ delivery.type || 'Employee' }}</td>
+                  <th scope="row">{{ delivery.employee.name || '—' }}</th>
+                  <!-- <td>{{ delivery.type || 'Employee' }}</td> -->
                   <td v-for="tool in tools" :key="tool.id">
                     <span
                       class="delivery-status"
