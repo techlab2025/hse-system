@@ -18,9 +18,9 @@ class ShowObjectivesApiService extends ServicesInterface {
     return this.instance
   }
 
-  async applyService(params: Params): Promise<{ data: any; statusCode: number }> {
+  async applyService(params: Params): Promise<{ data: unknown; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.ShowObjective,
+      url: ApiNames.instance.ShowObjectives,
       type: CrudType.FormData,
       auth: true,
       params: params,

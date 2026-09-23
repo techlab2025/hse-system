@@ -134,20 +134,35 @@ class ApiNames {
   }
 
   // objectives
-  public get CreateObjective() {
-    return this.prefix + 'create_objective'
+  public get CreateObjectives() {
+    return this.prefix + 'create_objectives'
   }
   public get IndexObjectives() {
     return this.prefix + 'fetch_objectives'
   }
+  public get ShowObjectives() {
+    return this.prefix + 'fetch_objectives_details'
+  }
+  public get EditObjectives() {
+    return this.prefix + 'update_objectives'
+  }
+  public get DeleteObjectives() {
+    return this.prefix + 'delete_objectives'
+  }
+  public get DisObjectives() {
+    return this.prefix + 'change_objectives_active_status'
+  }
+  public get CreateObjective() {
+    return this.CreateObjectives
+  }
   public get ShowObjective() {
-    return this.prefix + 'fetch_objective_details'
+    return this.ShowObjectives
   }
   public get EditObjective() {
-    return this.prefix + 'update_objective'
+    return this.EditObjectives
   }
   public get DeleteObjective() {
-    return this.prefix + 'delete_objective'
+    return this.DeleteObjectives
   }
 
   // admin

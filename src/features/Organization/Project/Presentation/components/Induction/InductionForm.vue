@@ -44,6 +44,8 @@ const date = ref<Date | null>(null)
 const image = ref<string[]>([])
 const selectedTrainingTopicIds = ref<Set<number>>(new Set())
 const selectedOrganisationEmployees = ref<TitleInterface[]>([])
+const manualOrganisationEmployeeName = ref('')
+const manualOrganisationEmployeeNames = ref<string[]>([])
 const requiredFieldErrors = ref<Record<string, string>>({})
 
 const employeeOptions = computed(() =>
@@ -57,6 +59,9 @@ const employeeOptions = computed(() =>
   ),
 )
 const selectedTrainingTopicsCount = computed(() => selectedTrainingTopicIds.value.size)
+const organisationEmployeeCount = computed(
+  () => selectedOrganisationEmployees.value.length + collectManualOrganisationEmployeeNames().length,
+)
 const allTrainingTopicsSelected = computed(
   () =>
     Boolean(trainingTopics.value.length) &&
@@ -76,7 +81,7 @@ const completionItems = computed(() => [
   {
     key: 'organisationEmployee',
     icon: 'uil:users-alt',
-    done: Boolean(selectedOrganisationEmployees.value.length),
+    done: Boolean(organisationEmployeeCount.value),
   },
   {
     key: 'trainingTopic',
@@ -92,14 +97,42 @@ const completionPercent = computed(() =>
 const employeeName = (employee: OrganizatoinEmployeeModel) =>
   employee.title || employee.name || `Employee #${employee.id}`
 
-const buildSelectedEmployees = () =>
-  selectedOrganisationEmployees.value.map((employee) => {
-    const id = Number(employee.id)
-    return new InductionOrganisationEmployeeParams(
-      Number(id),
-      employee.title || undefined,
-    )
-  })
+function normalizeEmployeeName(value?: string | null) {
+  return value?.trim().toLowerCase() ?? ''
+}
+
+function collectManualOrganisationEmployeeNames() {
+  const selectedNames = new Set(
+    selectedOrganisationEmployees.value
+      .map((employee) => normalizeEmployeeName(employee.title ?? employee.name))
+      .filter(Boolean),
+  )
+  const names = [...manualOrganisationEmployeeNames.value, manualOrganisationEmployeeName.value]
+  const uniqueNames = new Set<string>()
+
+  return names
+    .map((name) => name.trim())
+    .filter((name) => {
+      const normalizedName = normalizeEmployeeName(name)
+      if (!normalizedName || selectedNames.has(normalizedName) || uniqueNames.has(normalizedName)) {
+        return false
+      }
+      uniqueNames.add(normalizedName)
+      return true
+    })
+}
+
+const buildSelectedEmployees = () => {
+  const selectedEmployees = selectedOrganisationEmployees.value
+    .map((employee) => Number(employee.id))
+    .filter((id) => Number.isFinite(id) && id > 0)
+    .map((id) => new InductionOrganisationEmployeeParams(id))
+
+  const manualEmployees = collectManualOrganisationEmployeeNames()
+    .map((name) => new InductionOrganisationEmployeeParams(null, name))
+
+  return [...selectedEmployees, ...manualEmployees]
+}
 
 const buildSelectedTrainingTopics = () =>
   [...selectedTrainingTopicIds.value].map((id) => new InductionTrainingTopicParams(Number(id)))
@@ -158,6 +191,41 @@ const setInstructor = (value: TitleInterface | TitleInterface[] | null) => {
 
 const setOrganisationEmployees = (value: TitleInterface | TitleInterface[] | null) => {
   selectedOrganisationEmployees.value = Array.isArray(value) ? value : value ? [value] : []
+  const selectedNames = new Set(
+    selectedOrganisationEmployees.value
+      .map((employee) => normalizeEmployeeName(employee.title ?? employee.name))
+      .filter(Boolean),
+  )
+  manualOrganisationEmployeeNames.value = manualOrganisationEmployeeNames.value.filter(
+    (name) => !selectedNames.has(normalizeEmployeeName(name)),
+  )
+  if (selectedNames.has(normalizeEmployeeName(manualOrganisationEmployeeName.value))) {
+    manualOrganisationEmployeeName.value = ''
+  }
+  updateData()
+}
+
+const addManualOrganisationEmployee = () => {
+  const employeeName = manualOrganisationEmployeeName.value.trim()
+  if (!employeeName) return
+
+  const normalizedName = normalizeEmployeeName(employeeName)
+  const isDuplicate = [
+    ...manualOrganisationEmployeeNames.value,
+    ...selectedOrganisationEmployees.value.map((employee) => employee.title ?? employee.name ?? ''),
+  ].some((name) => normalizeEmployeeName(name) === normalizedName)
+
+  manualOrganisationEmployeeName.value = ''
+  if (isDuplicate) return
+
+  manualOrganisationEmployeeNames.value = [...manualOrganisationEmployeeNames.value, employeeName]
+  updateData()
+}
+
+const removeManualOrganisationEmployee = (index: number) => {
+  manualOrganisationEmployeeNames.value = manualOrganisationEmployeeNames.value.filter(
+    (_, itemIndex) => itemIndex !== index,
+  )
   updateData()
 }
 
@@ -206,14 +274,19 @@ const syncData = () => {
   date.value = parseDate(data.date)
   image.value = data.image ?? []
   selectedTrainingTopicIds.value = new Set(data.trainingTopic.map((topic) => Number(topic.id)))
-  selectedOrganisationEmployees.value = data.organisationEmployee.map(
-    (employee) =>
+  selectedOrganisationEmployees.value = data.organisationEmployee
+    .filter((employee) => Number(employee.id) > 0)
+    .map((employee) =>
       new TitleInterface({
         id: Number(employee.id),
         title: employeeName(employee),
         subtitle: employee.email,
       }),
-  )
+    )
+  manualOrganisationEmployeeNames.value = data.organisationEmployee
+    .filter((employee) => !(Number(employee.id) > 0))
+    .map((employee) => (employee.title || employee.name || '').trim())
+    .filter((name): name is string => Boolean(name))
 
   const instructorOption = employeeOptions.value.find(
     (employee) => Number(employee.id) === Number(data.instractor_id),
@@ -277,7 +350,7 @@ const requiredFields = computed(() => [
   {
     key: 'organisationEmployee',
     message: 'At least one employee is required',
-    isMissing: () => !selectedOrganisationEmployees.value.length,
+    isMissing: () => !organisationEmployeeCount.value,
   },
 ])
 
@@ -351,8 +424,6 @@ onMounted(() => {
       </header>
 
       <div class="induction-fields">
-    
-
         <div class="induction-field" data-required-field="instractor">
           <UpdatedCustomInputSelect
             :model-value="instractor"
@@ -368,7 +439,8 @@ onMounted(() => {
             {{ requiredFieldErrors.instractor }}
           </p>
         </div>
-            <div class="update_data_picker  input-wrapper" data-required-field="date">
+
+        <div class="update_data_picker input-wrapper" data-required-field="date">
           <label class="input-label required" for="induction-date">{{ $t('date') }}</label>
           <div class="induction-date-control">
             <DatePicker
@@ -403,6 +475,50 @@ onMounted(() => {
             required
             @update:model-value="setOrganisationEmployees"
           />
+          <div class="manual-employee-entry">
+            <label class="input-label" for="induction-manual-organisation-employee">
+              {{ $t('employee_name') }}
+            </label>
+            <div class="manual-employee-entry__control">
+              <input
+                id="induction-manual-organisation-employee"
+                v-model="manualOrganisationEmployeeName"
+                class="manual-employee-entry__input"
+                type="text"
+                :placeholder="$t('employee_name')"
+                @input="updateData()"
+                @keydown.enter.prevent="addManualOrganisationEmployee"
+              >
+              <button
+                type="button"
+                class="manual-employee-entry__add"
+                :disabled="!manualOrganisationEmployeeName.trim()"
+                @click.prevent="addManualOrganisationEmployee"
+              >
+                <Icon icon="uil:plus-circle" />
+                {{ $t('add_name') }}
+              </button>
+            </div>
+            <div
+              v-if="manualOrganisationEmployeeNames.length"
+              class="manual-employee-entry__chips"
+            >
+              <span
+                v-for="(name, index) in manualOrganisationEmployeeNames"
+                :key="`${name}-${index}`"
+                class="manual-employee-chip"
+              >
+                {{ name }}
+                <button
+                  type="button"
+                  :aria-label="`Remove ${name}`"
+                  @click.prevent="removeManualOrganisationEmployee(index)"
+                >
+                  <Icon icon="uil:times" />
+                </button>
+              </span>
+            </div>
+          </div>
           <p v-if="requiredFieldErrors.organisationEmployee" class="required-field-message">
             {{ requiredFieldErrors.organisationEmployee }}
           </p>
@@ -730,6 +846,116 @@ background: transparent;
   background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1));
 }
 
+.manual-employee-entry {
+  display: grid;
+  gap: 9px;
+  margin-top: 4px;
+  padding: 12px;
+  border: 1px dashed color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--PrimaryColor) 3%, var(--surface-1));
+}
+
+.manual-employee-entry__control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.manual-employee-entry__input {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid color-mix(in srgb, var(--main-border) 88%, var(--PrimaryColor));
+  border-radius: 12px;
+  color: var(--text-strong);
+  background: color-mix(in srgb, var(--surface-2) 50%, var(--surface-1));
+  font-size: 0.86rem;
+  font-weight: 700;
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--text-primary) 4%, transparent);
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.manual-employee-entry__input::placeholder {
+  color: var(--text-soft);
+  font-weight: 600;
+}
+
+.manual-employee-entry__input:focus {
+  outline: none;
+  border-color: color-mix(in srgb, var(--PrimaryColor) 55%, var(--main-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 12%, transparent);
+}
+
+.manual-employee-entry__add,
+.manual-employee-chip,
+.manual-employee-chip button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.manual-employee-entry__add {
+  gap: 7px;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 24%, var(--main-border));
+  border-radius: 12px;
+  color: var(--PrimaryColor);
+  background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1));
+  font-size: 0.78rem;
+  font-weight: 800;
+  white-space: nowrap;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.manual-employee-entry__add:not(:disabled):hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--PrimaryColor) 44%, var(--main-border));
+  background: color-mix(in srgb, var(--PrimaryColor) 11%, var(--surface-1));
+}
+
+.manual-employee-entry__add:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+}
+
+.manual-employee-entry__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.manual-employee-chip {
+  gap: 7px;
+  max-width: 100%;
+  min-height: 30px;
+  padding: 5px 7px 5px 10px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 20%, var(--main-border));
+  border-radius: 999px;
+  color: color-mix(in srgb, var(--PrimaryColor) 82%, var(--text-strong));
+  background: color-mix(in srgb, var(--PrimaryColor) 8%, var(--surface-1));
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.manual-employee-chip button {
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 50%;
+  color: inherit;
+  background: color-mix(in srgb, var(--PrimaryColor) 10%, transparent);
+}
+
 .required-field-message {
   margin-top: 0.35rem;
   color: var(--status-danger);
@@ -935,6 +1161,14 @@ background: transparent;
 
   .topic-selection__toggle {
     grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .manual-employee-entry__control {
+    grid-template-columns: 1fr;
+  }
+
+  .manual-employee-entry__add {
     width: 100%;
   }
 }

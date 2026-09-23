@@ -1,38 +1,41 @@
-// import type TitleModel from "@/base/core/Models/title_model";
-import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
-// import TitleInterface from '@/base/Data/Models/title_interface.ts'
-import TitleInterface from '@/base/Data/Models/title_interface'
-// import { LangEnum } from '../../Core/enums/langEnum'
+import type TitleInterface from '@/base/Data/Models/title_interface'
+import type {
+  ObjectiveDirectionEnum,
+  ObjectiveTargetTypeEnum,
+} from '../../Core/enums/objectivesEnums'
 
 export default class ObjectivesDetailsModel {
-  public id: number
-  public titles: TitleLocale[]
-
-
   constructor(
-    id: number,
-    titles: TitleLocale[],
+    public id: number,
+    public year: string,
+    public objective: string,
+    public project: TitleInterface | null,
+    public targetType: ObjectiveTargetTypeEnum,
+    public direction: ObjectiveDirectionEnum | null,
+    public department: TitleInterface | null,
+    public followUpEmployee: TitleInterface | null,
+    public target: number | null,
+    public baseline: number | null,
+    public unit: string | null,
+    public frequency: number | null,
+    public annualOccurrences: number | null,
+  ) {}
 
-  ) {
-    this.id = id
-    this.titles = titles
-
-  }
-
-  static fromMap(data: any): ObjectivesDetailsModel {
+  static fromMap(data: Record<string, unknown>): ObjectivesDetailsModel {
     return new ObjectivesDetailsModel(
-      data.id,
-      TranslationsParams.fromMap(data.titles).titles,
-
+      data.id as number,
+      data.year as string,
+      data.objective as string,
+      data.project as TitleInterface | null,
+      data.target_type as ObjectiveTargetTypeEnum,
+      data.direction as ObjectiveDirectionEnum | null,
+      data.department as TitleInterface | null,
+      data.follow_up_employee as TitleInterface | null,
+      data.target as number | null,
+      data.baseline as number | null,
+      data.unit as string | null,
+      data.frequency as number | null,
+      data.annual_occurrences as number | null,
     )
-  }
-
-  static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
-
-    return new TitleInterface({
-      id: data.id,
-      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
-    })
   }
 }
