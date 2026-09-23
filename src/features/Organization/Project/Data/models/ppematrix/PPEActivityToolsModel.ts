@@ -10,7 +10,7 @@ export default class PPEActivityToolsModel {
   static fromMap(data: Record<string, unknown>): PPEActivityToolsModel {
     const tools = data.ppe_toole ?? data.ppe_tools ?? []
     return new PPEActivityToolsModel(
-      Number(data.activity_id ?? data.actitivty_id ?? data.ppe_activity_id ?? 0),
+      Number(data.activity_id ?? data.actitivty_id ?? data.ppe_activity_id ?? data.id ?? 0),
       String(data.activity_title ?? data.title ?? ''),
       Array.isArray(tools)
         ? tools.map((tool) => new TitleInterface({

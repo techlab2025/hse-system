@@ -2,6 +2,7 @@ import type Params from '@/base/core/params/params'
 
 export default class PermitToWorkParams implements Params {
   public project_id: number
+  public organization_employee_id: number
   public ptw_number: string
   public ptw_type_id: number
   public start_date: string | null
@@ -13,6 +14,7 @@ export default class PermitToWorkParams implements Params {
 
   constructor(data: {
     project_id: number
+    organization_employee_id: number
     ptw_number: string
     ptw_type_id: number
     start_date: string | null
@@ -23,6 +25,7 @@ export default class PermitToWorkParams implements Params {
     description: string
   }) {
     this.project_id = data.project_id
+    this.organization_employee_id = data.organization_employee_id
     this.ptw_number = data.ptw_number
     this.ptw_type_id = data.ptw_type_id
     this.start_date = data.start_date
@@ -33,20 +36,11 @@ export default class PermitToWorkParams implements Params {
     this.description = data.description
   }
 
-  toMap(): Record<
-    string,
-    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
-  > {
-    const data: Record<
-      string,
-      | number
-      | string
-      | number[]
-      | Record<string, string | number[] | number | Record<string, string>>
-      |any
-    > = {}
+  toMap(): Record<string, unknown> {
+    const data: Record<string, unknown> = {}
 
     data['project_id'] = this.project_id
+    data['asigned_employee_id'] = this.organization_employee_id
     data['ptw_number'] = this.ptw_number
     data['permit_type_id'] = this.ptw_type_id
     data['start_date'] = this.start_date

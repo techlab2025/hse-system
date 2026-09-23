@@ -12,6 +12,8 @@ import PermitToWorkParams from '@/features/Organization/Project/Core/params/Perm
 
 import IndexPTWTypeController from '@/features/Organization/PTWType/Presentation/controllers/indexPTWTypeController'
 import IndexPTWTypeParams from '@/features/Organization/PTWType/Core/params/indexPTWTypeParams'
+import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
+import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
@@ -27,6 +29,7 @@ const router = useRouter()
 const ptwNum = ref<string>('')
 
 const PermitToWorkType = ref<TitleInterface>()
+const organizationEmployee = ref<TitleInterface>()
 
 const startDate = ref<Date | null>(null)
 const endDate = ref<Date | null>(null)
@@ -71,18 +74,49 @@ const updatePermitToWorkType = (data: TitleInterface | TitleInterface[] | null) 
 }
 
 /* =========================
+   Organization Employee
+========================= */
+
+const indexOrganizationEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
+const indexOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams(
+  '',
+  1,
+  10,
+  0,
+  null,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  false,
+  Number(route.params.project_id),
+)
+
+const updateOrganizationEmployee = (data: TitleInterface | TitleInterface[] | null) => {
+  const selectedValue = Array.isArray(data) ? data[0] : data
+  organizationEmployee.value = selectedValue ?? undefined
+  delete requiredFieldErrors.value.OrganizationEmployee
+}
+
+/* =========================
    Submit
 ========================= */
 
 const permitToWorkController = PermitToWorkController.getInstance()
 
 const SubmitFrom = async () => {
+  if (!organizationEmployee.value) {
+    requiredFieldErrors.value.OrganizationEmployee = 'Select an organization employee.'
+    return
+  }
+
   const permitToWorkParams = new PermitToWorkParams({
     project_id: Number(route.params.project_id!),
+    organization_employee_id: organizationEmployee.value.id,
 
     ptw_number: ptwNum.value,
 
-    ptw_type_id: PermitToWorkType.value?.id!,
+    ptw_type_id: Number(PermitToWorkType.value?.id ?? 0),
 
     start_date: formatJoinDate(startDate.value!),
     end_date: formatJoinDate(endDate.value!),
@@ -197,8 +231,28 @@ const SubmitFrom = async () => {
                 :placeholder="$t('Select_permit_to_work_type')"
                 @update:model-value="updatePermitToWorkType"
               />
-              <p v-if="getFieldError('SelectedWhereHouseType')" class="required-field-message">
+              <!-- <p v-if="getFieldError('SelectedWhereHouseType')" class="required-field-message">
                 {{ getFieldError('SelectedWhereHouseType') }}
+              </p> -->
+            </div>
+
+            <div class="ptw-field" data-required-field="OrganizationEmployee">
+              <label for="organization_employee">
+                {{ $t('organization_employee') }}
+                <span>*</span>
+              </label>
+              <UpdatedCustomInputSelect
+                id="organization_employee"
+                :required="true"
+                :has-header="true"
+                :model-value="organizationEmployee"
+                :controller="indexOrganizationEmployeeController"
+                :params="indexOrganizationEmployeeParams"
+                :placeholder="$t('select_organization_employee')"
+                @update:model-value="updateOrganizationEmployee"
+              />
+              <p v-if="getFieldError('OrganizationEmployee')" class="required-field-message">
+                {{ getFieldError('OrganizationEmployee') }}
               </p>
             </div>
           </div>

@@ -10,6 +10,8 @@ export default class CreatePPEMatrixDeliveryParams implements Params {
     public projectId: number,
     public ppeActivityId: number,
     public employees: PPEMatrixDeliveryEmployee[],
+    public projectLocationId?: number,
+    public projectLocationZoneId?: number,
   ) {}
 
   toMap(): Record<string, unknown> {
@@ -20,6 +22,8 @@ export default class CreatePPEMatrixDeliveryParams implements Params {
         employee_id: employee.employeeId,
         ppe_tools: employee.ppeToolIds.map((ppeToolId) => ({ ppe_tool_id: ppeToolId })),
       })),
+      project_location_id: this.projectLocationId,
+      project_location_zone_id: this.projectLocationZoneId,
     }
   }
 }

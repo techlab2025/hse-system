@@ -12,6 +12,7 @@ defineProps<{
   Contractors: number | undefined
   serialName: string | undefined
   endDate: string | undefined
+  has_assigned_permit?: boolean
 }>()
 </script>
 <template>
@@ -138,7 +139,7 @@ defineProps<{
           <span class="action-arrow" aria-hidden="true">→</span>
         </router-link>
 
-        <PermissionBuilder :code="[PermissionsEnum.PROJECT_PERMIT]">
+        <PermissionBuilder v-if="has_assigned_permit" :code="[PermissionsEnum.PROJECT_PERMIT]">
           <router-link
             :to="{ path: `/organization/project-permits/${projectId}` }"
             class="project-action-link action-permits"
