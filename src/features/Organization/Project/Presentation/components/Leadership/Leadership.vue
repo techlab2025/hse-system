@@ -1155,20 +1155,11 @@ onMounted(async () => {
   min-width: 0;
 }
 
-.visit-fields :deep(.p-datepicker-input),
 .visit-fields :deep(.p-select) {
   min-height: 46px;
   border-color: color-mix(in srgb, var(--PrimaryColor) 10%, var(--main-border));
   border-radius: 11px;
   background: color-mix(in srgb, var(--surface-2) 52%, var(--surface-1));
-}
-
-.visit-fields :deep(.p-datepicker-dropdown) {
-  width: 46px;
-  border-start-end-radius: 11px;
-  border-end-end-radius: 11px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 8%, var(--surface-1));
 }
 
 .visit-field--select.updated-custom-input-select {

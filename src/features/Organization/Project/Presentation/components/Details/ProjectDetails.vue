@@ -102,6 +102,7 @@ watch(
   },
   { immediate: true },
 )
+// const selected = ref<string[]>()
 </script>
 <template>
   <DataStatus :controller="state">
@@ -120,6 +121,9 @@ watch(
             </div>
           </div>
         </div> -->
+        <!-- <InjuryBodySlection
+        :modelValue="selected"
+        /> -->
 
         <ProjectHeader
           :projectId="state.data?.id"

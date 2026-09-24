@@ -18,6 +18,8 @@ import IndexOrganizatoinEmployeeParams from '@/features/Organization/Organizatio
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { formatTime } from '@/base/Presentation/utils/time_format'
+import type { UploadedFile } from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
+import HandleFIlesUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -126,9 +128,15 @@ const SubmitFrom = async () => {
 
     location: location.value,
     description: description.value,
+    attachments: riskAssismentFile.value!,
   })
 
   await permitToWorkController.PermitToWork(permitToWorkParams, router)
+}
+const riskAssismentFile = ref<string[] | null>(null)
+
+const handleFilesChange = (files: UploadedFile[]) => {
+  riskAssismentFile.value = files.map((el) => el.base64 || '')
 }
 </script>
 
@@ -357,6 +365,16 @@ const SubmitFrom = async () => {
                 rows="4"
                 :placeholder="$t('Describe the work activity and safety requirements')"
               ></textarea>
+            </div>
+            <div class="ptw-field ptw-control management-change-upload-field">
+              <HandleFIlesUpload
+                :label="$t('attachments')"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
+                :max-files="1"
+                :multiple="false"
+                class-name="input-file management-change-file-input"
+                @change="handleFilesChange"
+              />
             </div>
           </div>
         </section>

@@ -3,13 +3,14 @@ export default class LeadershipVisitModel {
     public id: number,
     public date: string,
     public location: string,
-    public monthNumber: number,
     public organizationEmployeeName: string,
     public visitActivityName: string,
   ) {}
 
   static fromMap(data: Record<string, unknown>): LeadershipVisitModel {
-    const employee = (data.organization_employee ?? data.orgnization_employee) as Record<string, unknown> | undefined
+    const employee = (data.organization_employee ?? data.orgnization_employee) as
+      | Record<string, unknown>
+      | undefined
     const activity = data.visit_activity as Record<string, unknown> | undefined
     return new LeadershipVisitModel(
       Number(data.id ?? data.visit_id),
@@ -20,4 +21,12 @@ export default class LeadershipVisitModel {
       String(activity?.title ?? data.visit_activity_name ?? ''),
     )
   }
+
+  static example: LeadershipVisitModel = new LeadershipVisitModel(
+    1,
+    '10-12-2025',
+    'location',
+    'heeeee',
+    'activity',
+  )
 }

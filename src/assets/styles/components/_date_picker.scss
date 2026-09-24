@@ -1,0 +1,191 @@
+/*
+ * PrimeVue DatePicker
+ *
+ * Keep the border and focus treatment on the component shell. PrimeVue renders
+ * the text input and icon trigger as siblings, so styling both as standalone
+ * controls creates doubled borders and mismatched rounded corners.
+ */
+body .p-datepicker.p-component:not(.p-datepicker-inline) {
+  display: inline-flex !important;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border)) !important;
+  border-radius: 12px !important;
+  outline: 0;
+  background: color-mix(in srgb, var(--surface-2) 52%, var(--surface-1)) !important;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--text-strong) 4%, transparent) !important;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+body .p-datepicker.p-component:not(.p-datepicker-inline):not(.p-disabled):hover {
+  border-color: color-mix(in srgb, var(--PrimaryColor) 36%, var(--main-border)) !important;
+  background: var(--surface-1) !important;
+}
+
+body .p-datepicker.p-component:not(.p-datepicker-inline):not(.p-disabled):focus-within,
+body .p-datepicker.p-component:not(.p-datepicker-inline).p-focus {
+  border-color: var(--PrimaryColor) !important;
+  background: var(--surface-1) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 14%, transparent) !important;
+}
+
+body .p-datepicker.p-component:not(.p-datepicker-inline) > .p-datepicker-input.p-inputtext {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 13px !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  outline: 0 !important;
+  color: var(--text-strong) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  font: inherit;
+  font-weight: 500;
+}
+
+body
+  .p-datepicker.p-component:not(.p-datepicker-inline)
+  > .p-datepicker-input.p-inputtext::placeholder {
+  color: var(--text-soft) !important;
+  opacity: 0.82;
+}
+
+body .p-datepicker.p-component:not(.p-datepicker-inline) > .p-datepicker-dropdown {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 44px;
+  width: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0 !important;
+  border: 0 !important;
+  border-inline-start: 1px solid
+    color-mix(in srgb, var(--PrimaryColor) 15%, var(--main-border)) !important;
+  border-radius: 0 !important;
+  outline: 0;
+  color: var(--PrimaryColor) !important;
+  background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1)) !important;
+  box-shadow: none !important;
+  transition:
+    color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+body
+  .p-datepicker.p-component:not(.p-datepicker-inline):not(.p-disabled)
+  > .p-datepicker-dropdown:hover {
+  color: var(--text-on-brand) !important;
+  background: var(--PrimaryColor) !important;
+}
+
+body
+  .p-datepicker.p-component:not(.p-datepicker-inline)
+  > .p-datepicker-dropdown:focus-visible {
+  outline: 2px solid var(--PrimaryColor);
+  outline-offset: -3px;
+}
+
+body .p-datepicker.p-component:not(.p-datepicker-inline) > .p-datepicker-dropdown .p-icon {
+  width: 16px;
+  height: 16px;
+}
+
+body .p-datepicker.p-component.p-disabled:not(.p-datepicker-inline) {
+  cursor: not-allowed;
+  opacity: 0.62;
+  background: var(--surface-2) !important;
+  box-shadow: none !important;
+}
+
+body .p-datepicker.p-component.p-disabled:not(.p-datepicker-inline) > * {
+  cursor: not-allowed;
+}
+
+body .p-datepicker.p-component:not(.p-datepicker-inline):has(> .p-invalid) {
+  border-color: var(--status-danger) !important;
+}
+
+/* Calendar/time overlay */
+.p-datepicker-panel {
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border)) !important;
+  border-radius: 16px !important;
+  color: var(--text-strong) !important;
+  background: var(--surface-1) !important;
+  box-shadow: 0 18px 45px color-mix(in srgb, var(--text-strong) 16%, transparent) !important;
+}
+
+.p-datepicker-panel .p-datepicker-header {
+  padding: 12px !important;
+  border-block-end: 1px solid var(--main-border) !important;
+  color: var(--text-strong) !important;
+  background: var(--surface-1) !important;
+}
+
+.p-datepicker-panel :is(.p-datepicker-prev-button, .p-datepicker-next-button) {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px !important;
+  color: var(--PrimaryColor) !important;
+}
+
+.p-datepicker-panel :is(.p-datepicker-prev-button, .p-datepicker-next-button):hover {
+  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1)) !important;
+}
+
+.p-datepicker-panel :is(.p-datepicker-select-month, .p-datepicker-select-year) {
+  border-radius: 8px;
+  color: var(--text-strong) !important;
+  font-weight: 750;
+}
+
+.p-datepicker-panel .p-datepicker-weekday {
+  color: var(--text-soft) !important;
+  font-size: 0.75rem;
+  font-weight: 750;
+}
+
+.p-datepicker-panel .p-datepicker-day {
+  border-radius: 10px !important;
+  color: var(--text-strong);
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.p-datepicker-panel .p-datepicker-day:not(.p-datepicker-day-selected):hover {
+  color: var(--PrimaryColor) !important;
+  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1)) !important;
+}
+
+.p-datepicker-panel .p-datepicker-day.p-datepicker-day-selected,
+.p-datepicker-panel .p-datepicker-month.p-datepicker-month-selected,
+.p-datepicker-panel .p-datepicker-year.p-datepicker-year-selected {
+  color: var(--text-on-brand) !important;
+  background: var(--PrimaryColor) !important;
+}
+
+.p-datepicker-panel .p-datepicker-today > .p-datepicker-day:not(.p-datepicker-day-selected) {
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 45%, transparent);
+  color: var(--PrimaryColor) !important;
+  background: color-mix(in srgb, var(--PrimaryColor) 8%, var(--surface-1)) !important;
+}
+
+.p-datepicker-panel .p-datepicker-time-picker {
+  border-block-start-color: var(--main-border) !important;
+}
+
+@media (max-width: 480px) {
+  .p-datepicker-panel:not(.p-datepicker-panel-inline) {
+    max-width: calc(100vw - 16px) !important;
+  }
+}

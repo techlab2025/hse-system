@@ -11,6 +11,7 @@ export default class PermitToWorkParams implements Params {
   public end_time: string | null
   public location: string
   public description: string
+  public attachments:string[]
 
   constructor(data: {
     project_id: number
@@ -23,6 +24,7 @@ export default class PermitToWorkParams implements Params {
     end_time: string | null
     location: string
     description: string
+    attachments:string[]
   }) {
     this.project_id = data.project_id
     this.organization_employee_id = data.organization_employee_id
@@ -34,6 +36,8 @@ export default class PermitToWorkParams implements Params {
     this.end_time = data.end_time
     this.location = data.location
     this.description = data.description
+    this.attachments = data.attachments
+
   }
 
   toMap(): Record<string, unknown> {
@@ -49,6 +53,7 @@ export default class PermitToWorkParams implements Params {
     data['end_time'] = this.end_time
     data['location'] = this.location
     data['description'] = this.description
+    data['attachments'] = this.attachments
 
     return data
   }
