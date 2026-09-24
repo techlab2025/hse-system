@@ -555,7 +555,7 @@ onMounted(() => {
           <UpdatedCustomInputSelect
             :model-value="instractor"
             :static-options="employeeOptions"
-            label="instractor"
+            label="Instructor Name "
             id="induction-instractor"
             :placeholder="$t('Select instructor')"
             :reload="false"
@@ -636,17 +636,17 @@ onMounted(() => {
           <UpdatedCustomInputSelect
             :model-value="selectedOrganisationEmployees"
             :static-options="employeeOptions"
-            label="organisationEmployee"
+            label="Employee Name"
             id="induction-organisation-employee"
-            :placeholder="$t('Select organisation employees')"
+            :placeholder="$t('Select employees')"
             :type="2"
             show-select-all-option
             required
             @update:model-value="setOrganisationEmployees"
           />
           <div class="manual-employee-entry">
-            <label class="input-label" for="induction-manual-organisation-employee">
-              {{ $t('employee_name') }}
+            <label class="input-label employee_name_lable" for="induction-manual-organisation-employee">
+              {{ $t('Visitor Name') }}
             </label>
             <div class="manual-employee-entry__control">
               <input
@@ -654,7 +654,7 @@ onMounted(() => {
                 v-model="manualOrganisationEmployeeName"
                 class="manual-employee-entry__input"
                 type="text"
-                :placeholder="$t('employee_name')"
+                :placeholder="$t(' Add Visitor')"
                 @input="updateData()"
                 @keydown.enter.prevent="addManualOrganisationEmployee"
               >
@@ -665,7 +665,7 @@ onMounted(() => {
                 @click.prevent="addManualOrganisationEmployee"
               >
                 <Icon icon="uil:plus-circle" />
-                {{ $t('add_name') }}
+                {{ $t('Add Visitor') }}
               </button>
             </div>
             <div
@@ -763,7 +763,7 @@ onMounted(() => {
           <Icon icon="uil:image-upload" />
         </span>
         <div>
-          <h3>{{ $t('evidence') }}</h3>
+          <h3>{{ $t('Attachments') }}</h3>
           <p>{{ image.length }} {{ $t('images') }}</p>
         </div>
       </header>
@@ -775,6 +775,9 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.employee_name_lable{
+  justify-content: start;
+}
 .update_data_picker label{
 justify-content: start;
 }

@@ -44,7 +44,7 @@ export const objectivesRoutes: RouteRecordRaw[] = [
     path: 'objectives/add/:project_id',
     redirect: (to) => ({
       name: 'Add Project Objective',
-      params: { project_id: to.params.project_id },
+      params: { project_id: to.params.project_id }, 
     }),
   },
   {

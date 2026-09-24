@@ -125,7 +125,7 @@ onMounted(async () => {
     <!-- <p v-if="successMessage" class="notice notice--success" role="status">{{ successMessage }}</p> -->
 
     <section class="card">
-      <h2>1. Select one PPE activity</h2>
+      <h2>1.  Activities</h2>
       <div class="activity-list">
         <label v-for="activity in activities" :key="activity.id" class="activity-option">
           <Checkbox
@@ -161,7 +161,7 @@ onMounted(async () => {
 
       <UpdatedCustomInputSelect
         id="delivery-employees"
-        label="Organization employees"
+        label=" employees"
         placeholder="Select employees"
         type="multiselect"
         :required="true"

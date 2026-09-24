@@ -218,8 +218,8 @@ defineProps<{
             </svg>
           </span>
           <span class="action-copy">
-            <strong>Activity and tool matrix</strong>
-            <small>Set required PPE tools</small>
+            <strong>PPE Matrix & Log</strong>
+            <small>Set required PPE Matrix</small>
           </span>
           <span class="action-arrow" aria-hidden="true">→</span>
         </router-link>

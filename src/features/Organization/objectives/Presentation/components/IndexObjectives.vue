@@ -120,8 +120,8 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
     text: t('edit'),
     icon: IconEdit,
     link: routeProjectId.value
-      ? `organization/objectives/project/${routeProjectId.value}/${id}`
-      : `organization/objectives/${id}`,
+  ? `/organization/objectives/project/${routeProjectId.value}/${id}`
+  : `/organization/objectives/${id}`,
     permission: [
       PermissionsEnum.OBJECTIVE_ORG_UPDATE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -184,9 +184,9 @@ watch(
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">{{ $t('Year') }}</th>
                 <th scope="col">{{ $t('Objective') }}</th>
                 <th scope="col">{{ $t('Project') }}</th>
+                <th scope="col">{{ $t('Year') }}</th>
                 <th scope="col">{{ $t('Target Type') }}</th>
                 <th scope="col">{{ $t('Direction') }}</th>
 
@@ -200,9 +200,9 @@ watch(
                   <router-link :to="`/organization/objectives/${item.id}`">{{ index + 1 }}
                   </router-link>
                 </td>
-                <td :data-label="$t('Year')">{{ item.year }}</td>
                 <td :data-label="$t('Objective')">{{ wordSlice(item.objective) }}</td>
                 <td :data-label="$t('Project')">{{ item.projectTitle || $t('Company-wide') }}</td>
+                <td :data-label="$t('Year')">{{ item.year }}</td>
                 <td :data-label="$t('Target Type')">{{ $t(item.targetTypeTitle || '-') }}</td>
                 <td :data-label="$t('Direction')">
                   {{ item.directionTitle || item.frequencyTitle ? $t(item.directionTitle || item.frequencyTitle) : '-' }}

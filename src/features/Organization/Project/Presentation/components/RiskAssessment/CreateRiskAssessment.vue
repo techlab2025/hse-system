@@ -140,7 +140,7 @@ async function create() {
               :controller="indexOrganizatoinEmployeeController"
               :params="indexOrganizatoinEmployeeParams"
               id="risk-assessment-approver"
-              placeholder="Select an employee"
+              placeholder="Select an approver"
               required
               :has-header="true"
               @update:model-value="setEmployee"
@@ -148,7 +148,7 @@ async function create() {
               <template #Header>
                 <span class="field-label"
                   ><span class="field-icon" aria-hidden="true">✓</span
-                  ><span>Approver employee <b>*</b></span></span
+                  ><span>Prepared By <b>*</b></span></span
                 >
               </template>
             </UpdatedCustomInputSelect>
@@ -179,7 +179,7 @@ async function create() {
           <div class="evidence-layout">
             <div class="field upload-field">
               <HandleFIlesUpload
-                label="Risk assessment file"
+                label=" Attachments "
                 accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
                 :max-files="6"
                 :multiple="true"

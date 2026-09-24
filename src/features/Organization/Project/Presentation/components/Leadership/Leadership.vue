@@ -356,7 +356,7 @@ onMounted(async () => {
                           :id="`visit-employee-${month.key}-${index}`"
                           class="visit-field visit-field--select"
                           label="Organization employee"
-                          placeholder="Select employee"
+                          placeholder="Select Visiting Managers"
                           :required="true"
                           :reload="false"
                           :has-header="true"
@@ -378,7 +378,7 @@ onMounted(async () => {
                                   <path d="M5.5 20c.7-3.8 3-5.7 6.5-5.7s5.8 1.9 6.5 5.7" />
                                 </svg>
                               </span>
-                              <span>Organization employee <b>*</b></span>
+                              <span>Visiting Managers <b>*</b></span>
                             </label>
                           </template>
                         </UpdatedCustomInputSelect>
@@ -386,7 +386,7 @@ onMounted(async () => {
                           :id="`visit-activity-${month.key}-${index}`"
                           class="visit-field visit-field--select"
                           label="Visit activity"
-                          placeholder="Select activity"
+                          placeholder="Select Activities"
                           :required="true"
                           :reload="false"
                           :has-header="true"
@@ -409,7 +409,7 @@ onMounted(async () => {
                                   />
                                 </svg>
                               </span>
-                              <span>Visit activity <b>*</b></span>
+                              <span>Visit Activities <b>*</b></span>
                             </label>
                           </template>
                         </UpdatedCustomInputSelect>

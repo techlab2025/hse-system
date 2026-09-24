@@ -1,4 +1,5 @@
-import type TitleInterface from '@/base/Data/Models/title_interface'
+import TitleInterface from '@/base/Data/Models/title_interface'
+
 import type {
   ObjectiveDirectionEnum,
   ObjectiveTargetTypeEnum,
@@ -21,21 +22,58 @@ export default class ObjectivesDetailsModel {
     public annualOccurrences: number | null,
   ) {}
 
-  static fromMap(data: Record<string, unknown>): ObjectivesDetailsModel {
+  static fromMap(data: Record<string, any>): ObjectivesDetailsModel {
     return new ObjectivesDetailsModel(
-      data.id as number,
-      data.year as string,
-      data.objective as string,
-      data.project as TitleInterface | null,
-      data.target_type as ObjectiveTargetTypeEnum,
-      data.direction as ObjectiveDirectionEnum | null,
-      data.department as TitleInterface | null,
-      data.follow_up_employee as TitleInterface | null,
-      data.target as number | null,
-      data.baseline as number | null,
-      data.unit as string | null,
-      data.frequency as number | null,
-      data.annual_occurrences as number | null,
+      data.id,
+
+      data.year,
+
+      data.objective,
+
+      data.project
+        ? new TitleInterface({
+            id: data.project.id,
+            title:
+              data.project.titles?.find(
+                (item: any) => item.locale === 'en',
+              )?.title ??
+              data.project.titles?.[0]?.title ??
+              '',
+          })
+        : null,
+
+      data.target_type,
+
+      data.direction,
+
+      data.department
+        ? new TitleInterface({
+            id: data.department.id,
+            title:
+              data.department.titles?.find(
+                (item: any) => item.locale === 'en',
+              )?.title ??
+              data.department.titles?.[0]?.title ??
+              '',
+          })
+        : null,
+
+      data.follow_up_employee
+        ? new TitleInterface({
+            id: data.follow_up_employee.id,
+            title: data.follow_up_employee.name ?? '',
+          })
+        : null,
+
+      data.target,
+
+      data.baseline,
+
+      data.unit,
+
+      data.frequency,
+
+      data.annual_occurrences,
     )
   }
 }
