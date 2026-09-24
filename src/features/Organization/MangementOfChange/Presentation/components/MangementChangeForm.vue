@@ -492,7 +492,7 @@ onMounted(updateData)
           :model-value="Selectedemployee"
           :controller="indexOrganizatoinEmployeeController"
           :params="indexOrganizatoinEmployeeParams"
-          label="approval by"
+          label="Approved / Rejected By "
           id="approval-by"
           :placeholder="$t('Select an employee')"
           optional
@@ -506,7 +506,7 @@ onMounted(updateData)
           :model-value="Selectedinitiatoremployeeid"
           :controller="indexOrganizatoinEmployeeController"
           :params="indexOrganizatoinEmployeeidParams"
-          label="initiator employee"
+          label="Change Initiator"
           id="initiator-employee"
           :placeholder="$t('Select an initiator employee')"
           optional
@@ -531,9 +531,9 @@ onMounted(updateData)
           :model-value="Selectedmangement"
           :controller="indexMangementChangeTopicTypeController"
           :params="indexMangementChangeTopicTypeParams"
-          label="management"
+          label="Description of Proposed Change/Modification"
           id="management"
-          :placeholder="$t('Select a management area')"
+          :placeholder="$t('Select Proposed Change/Modification')"
           optional
           @update:model-value="setManagement"
         />
@@ -605,7 +605,7 @@ onMounted(updateData)
     <div class="management-change-fields management-change-fields--attachments">
       <div :key="formKey" class="management-change-upload-field">
         <HandleFIlesUpload
-          :label="$t('risk assessment file')"
+          :label="$t('Risk Assessment Document ')"
           accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
           :max-files="1"
           :multiple="false"
@@ -615,7 +615,7 @@ onMounted(updateData)
       </div>
 
       <div class="management-change-upload-field input-wrapper">
-        <label>{{ $t('images') }}</label>
+        <label>{{ $t('Additional Documents') }}</label>
         <MultiImagesInput
           accept="image/*"
           :initial-images="images.map((image) => image.file)"

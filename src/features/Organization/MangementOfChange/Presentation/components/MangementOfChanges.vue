@@ -20,6 +20,7 @@ import DeleteMangementChangeParams from '../../Core/params/deleteMangementChange
 import DeleteMangementChangeController from '../controllers/deleteMangementChangeController'
 import { ChangeTypeMangementEnum } from '../../Core/Core/ChangeTypeEnum'
 import { ChangeApprovalMangementEnum } from '../../Core/Core/ChangeApprovalEnum'
+import TitleInterface from '@/base/Data/Models/title_interface'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -146,8 +147,8 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
                 <!-- <th scope="col">Facility</th> -->
                 <th scope="col">Area</th>
                 <th scope="col">Date</th>
-                <!-- <th scope="col">Change Type</th> -->
-                <th scope="col">Status</th>
+                <th scope="col">Change Type</th>
+                <th scope="col">change approval</th>
                 <th class="empty"></th>
               </tr>
             </thead>
@@ -159,13 +160,13 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
                 <!-- <td data-label="Facility">{{ item.facilty || '-' }}</td> -->
                 <td data-label="Area">{{ item.area || '-' }}</td>
                 <td data-label="Date">{{ item.date || '-' }}</td>
-                <!-- <td data-label="Change Type">
+                <td data-label="Change Type">
                   {{
                     item.change_type
                       ? changeTypeLabels[item.change_type] ?? item.change_type
                       : '-'
                   }}
-                </td> -->
+                </td>
                 <td data-label="Status">
                   {{
                     item.status
