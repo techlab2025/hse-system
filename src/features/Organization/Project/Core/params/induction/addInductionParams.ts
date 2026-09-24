@@ -6,6 +6,9 @@ import type InductionOrganisationEmployee from './InductionOrganisationEmployeeP
 export default class AddInductionParams implements Params {
   constructor(
     public instractor_id: number,
+    public projectId: number | null,
+    public projectLocationId: number | null,
+    public projectZoonId: number | null,
     public date: string | null,
     public image: string[] | null,
     public trainingTopic: InductionTrainingTopicParams[],
@@ -20,13 +23,25 @@ export default class AddInductionParams implements Params {
   })
 
   toMap(): Record<string, unknown> {
-    return {
+    const data: Record<string, unknown> = {
       date: this.date,
-      image: this.image,
-      training_topic_ids: this.trainingTopic.map((item) => item.toMap()),
+      attachments: this.image ?? [],
+      training_topic_ids: this.trainingTopic.map((item) => item.training_Topic_id),
       attendees: this.organisationEmployee.map((item) => item.toMap()),
       instructor_employee_id: this.instractor_id,
     }
+
+    if (this.projectId !== null) {
+      data.project_id = this.projectId
+    }
+    if (this.projectLocationId !== null) {
+      data.project_location_id = this.projectLocationId
+    }
+    if (this.projectZoonId !== null) {
+      data.project_location_zone_id = this.projectZoonId
+    }
+
+    return data
   }
 
   validate() {

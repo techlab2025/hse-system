@@ -7,6 +7,7 @@ import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import DatePicker from 'primevue/datepicker'
 import { Icon } from '@iconify/vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
@@ -34,6 +35,7 @@ const emit = defineEmits<{
 const props = defineProps<{ data?: MangementChangeModel }>()
 
 const route = useRoute()
+const { t } = useI18n()
 const projectId = Number(route.query.project_id || route.params.id)
 const formKey = ref(0)
 
@@ -91,14 +93,14 @@ const indexOrganizatoinEmployeeidParams =
       : null,
   )
 
-const ChangeTypeMangementList = ref<TitleInterface[]>([
+const ChangeTypeMangementList = computed<TitleInterface[]>(() => [
   new TitleInterface({
     id: ChangeTypeMangementEnum.temp,
-    title: 'temporary',
+    title: t('temporary'),
   }),
   new TitleInterface({
     id: ChangeTypeMangementEnum.permenent,
-    title: 'permanent',
+    title: t('permanent'),
   }),
 ])
 
@@ -109,14 +111,14 @@ const selectedChangeTypeMangement = computed(
     ) ?? ChangeTypeMangementList.value[0],
 )
 
-const ChangeApprovalMangementList = ref<TitleInterface[]>([
+const ChangeApprovalMangementList = computed<TitleInterface[]>(() => [
   new TitleInterface({
     id: ChangeApprovalMangementEnum.approve,
-    title: 'approve',
+    title: t('approve'),
   }),
   new TitleInterface({
     id: ChangeApprovalMangementEnum.reject,
-    title: 'reject',
+    title: t('reject'),
   }),
 ])
 
@@ -340,17 +342,17 @@ const hasText = (value: unknown) => String(value ?? '').trim().length > 0
 const requiredFields = computed(() => [
   {
     key: 'facilty',
-    message: 'Facility Is Required',
+    message: t('Facility Is Required'),
     isMissing: () => !hasText(facilty.value),
   },
   {
     key: 'area',
-    message: 'Area Is Required',
+    message: t('Area Is Required'),
     isMissing: () => !hasText(area.value),
   },
   {
     key: 'date',
-    message: 'Date Is Required',
+    message: t('Date Is Required'),
     isMissing: () => !date.value,
   },
 ])

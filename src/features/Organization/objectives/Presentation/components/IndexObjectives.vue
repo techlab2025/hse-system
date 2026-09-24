@@ -156,7 +156,7 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchObjectivesType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchObjectivesType" />
+      <input v-model="word" :placeholder="$t('search')" class="input" type="text" @input="searchObjectivesType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
@@ -200,15 +200,15 @@ watch(
                   <router-link :to="`/organization/objectives/${item.id}`">{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Year">{{ item.year }}</td>
-                <td data-label="Objective">{{ wordSlice(item.objective) }}</td>
-                <td data-label="Project">{{ item.projectTitle || $t('Company-wide') }}</td>
-                <td data-label="Target Type">{{ item.targetTypeTitle }}</td>
-                <td data-label="Direction">
-                  {{ item.directionTitle || item.frequencyTitle || '-' }}
+                <td :data-label="$t('Year')">{{ item.year }}</td>
+                <td :data-label="$t('Objective')">{{ wordSlice(item.objective) }}</td>
+                <td :data-label="$t('Project')">{{ item.projectTitle || $t('Company-wide') }}</td>
+                <td :data-label="$t('Target Type')">{{ $t(item.targetTypeTitle || '-') }}</td>
+                <td :data-label="$t('Direction')">
+                  {{ item.directionTitle || item.frequencyTitle ? $t(item.directionTitle || item.frequencyTitle) : '-' }}
                 </td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('actions')">
                   <DropList :actionList="actionList(item.id, deleteObjectives)" @delete="deleteObjectives(item.id)" />
                 </td>
               </tr>
@@ -224,20 +224,20 @@ watch(
         <TableLoader :cols="7" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="createObjectiveLink" addText="Add Objectives"
-          description="You have no Objectives .. All your joined customers will appear here when you add your customer data"
-          title="You have No Objectives" />
+        <DataEmpty :link="createObjectiveLink" :add-text="$t('Add_Objectives')"
+          :description="$t('no_objectives_description')"
+          :title="$t('no_objectives')" />
       </template>
       <template #failed>
-        <DataFailed :link="createObjectiveLink" addText="Add Objectives"
-          description="You have no Objectives .. All your joined customers will appear here when you add your customer data"
-          title="You have No Objectives" />
+        <DataFailed :link="createObjectiveLink" :add-text="$t('Add_Objectives')"
+          :description="$t('unable_to_load_objectives')"
+          :title="$t('no_objectives')" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no Objectives .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed :add-text="$t('have_not_permission')"
+        :description="$t('no_objectives_description')" />
     </template>
   </permission-builder>
 </template>

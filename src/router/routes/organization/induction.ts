@@ -22,6 +22,16 @@ export const inductionRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: 'induction/show/:id',
+    name: 'Show Induction',
+    component: () => import('@/views/Organization/Project/Induction/ShowInduction.vue'),
+    meta: {
+      breadcrumb: 'Show Induction',
+      parent: 'Inductions',
+      isSidebar: false,
+    },
+  },
+  {
     path: 'induction/:id',
     name: 'Edit Induction',
     component: () => import('@/views/Organization/Project/Induction/EditInduction.vue'),
