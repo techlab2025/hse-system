@@ -1965,7 +1965,7 @@ class ApiNames {
     return this.baseUrl + this.organizationPrefix + 'fetch_meetings'
   }
   public get FetchAllLeadershipVisits() {
-    return this.baseUrl + this.organizationPrefix + 'fetch_all_visitis'
+    return this.baseUrl + this.organizationPrefix + 'fetch_visits'
   }
   public get CreatePPEActivityTool() {
     return this.baseUrl + this.organizationPrefix + 'change_ppe_active_tool_matrix'
@@ -1980,7 +1980,7 @@ class ApiNames {
     return this.baseUrl + this.organizationPrefix + 'fetch_ppe_matrix_delivery'
   }
   public get CreateLeadershipVisitReport() {
-    return this.baseUrl + this.organizationPrefix + 'create_visite_report'
+    return this.baseUrl + this.organizationPrefix + 'create_visit_report'
   }
   // CloneMeetingType
 
@@ -2090,11 +2090,29 @@ class ApiNames {
   }
 
   // Induction
+
   public get create_induction() { return this.prefix + 'create_induction' }
   public get fetch_inductions() { return this.prefix + 'fetch_induction' }
   public get fetch_induction_details() { return this.prefix + 'fetch_induction_detail' }
   public get update_induction() { return this.prefix + 'update_induction' }
   public get delete_induction() { return this.prefix + 'delete_induction' }
+
+  // public get create_induction() {
+  //   return this.prefix + 'create_induction'
+  // }
+  // public get fetch_inductions() {
+  //   return this.prefix + 'fetch_inductions'
+  // }
+  // public get fetch_induction_details() {
+  //   return this.prefix + 'fetch_induction_details'
+  // }
+  // public get update_induction() {
+  //   return this.prefix + 'update_induction'
+  // }
+  // public get delete_induction() {
+  //   return this.prefix + 'delete_induction'
+  // }
+
 
   // Traning Topic
   public get fetch_tranning_topic() {
@@ -2119,6 +2137,9 @@ class ApiNames {
 
   public get clone_traning_topic() {
     return this.prefix + 'clone_traning_topic'
+  }
+  public get CreateLeadershipPlan() {
+    return this.baseUrl + this.organizationPrefix + 'create_leadership_engagement'
   }
 }
 
