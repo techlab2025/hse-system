@@ -2092,7 +2092,7 @@ class ApiNames {
   // Induction
   public get create_induction() { return this.prefix + 'create_induction' }
   public get fetch_inductions() { return this.prefix + 'fetch_induction' }
-  public get fetch_induction_details() { return this.prefix + 'fetch_induction_details' }
+  public get fetch_induction_details() { return this.prefix + 'fetch_induction_detail' }
   public get update_induction() { return this.prefix + 'update_induction' }
   public get delete_induction() { return this.prefix + 'delete_induction' }
 

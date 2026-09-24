@@ -71,12 +71,12 @@ const rowActions = (id: number) => [
     link: `${basePath}/induction/show/${id}${projectQuery.value}`,
     permission: featurePermissions,
   },
-  {
-    text: t('edit'),
-    icon: ActionsTableEdit,
-    link: `${basePath}/induction/${id}${projectQuery.value}`,
-    permission: featurePermissions,
-  },
+  // {
+  //   text: t('edit'),
+  //   icon: ActionsTableEdit,
+  //   link: `${basePath}/induction/${id}${projectQuery.value}`,
+  //   permission: featurePermissions,
+  // },
   {
     text: t('delete'),
     icon: IconDelete,

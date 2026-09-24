@@ -5,7 +5,7 @@ export default class DeleteInductionParams implements Params {
 
   toMap(): Record<string, number> {
     return {
-      Induction_id: this.id,
+      induction_id: this.id,
     }
   }
 }

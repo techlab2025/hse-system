@@ -66,10 +66,10 @@ onMounted(fetchInductionDetails)
             </div>
           </div>
 
-          <router-link :to="editLink" class="btn btn-primary induction-show__edit">
+          <!-- <router-link :to="editLink" class="btn btn-primary induction-show__edit">
             <Icon icon="uil:edit" />
             {{ $t('edit') }}
-          </router-link>
+          </router-link> -->
         </header>
 
         <div class="induction-show__summary">

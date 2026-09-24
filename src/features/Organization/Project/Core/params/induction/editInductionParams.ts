@@ -26,7 +26,7 @@ export default class EditInductionParams implements Params {
 
   toMap(): Record<string, unknown> {
     const data: Record<string, unknown> = {
-      Induction_id: this.id,
+      induction_id: this.id,
       date: this.date,
       attachments: this.image ?? [],
       training_topic_ids: this.trainingTopic.map((item) => item.training_Topic_id),
