@@ -3105,16 +3105,179 @@ export const adminPermissions: PermissionItem = {
           ],
         },
         {
+          key: PermissionsEnum.PTW_TYPE_ALL,
+          code: PermissionsEnum.PTW_TYPE_ALL,
+          label: 'PTW Type',
+          permissions: [
+            { key: PermissionsEnum.PTW_TYPE_ALL, code: PermissionsEnum.PTW_TYPE_ALL, label: 'All' },
+            {
+              key: PermissionsEnum.PTW_TYPE_FETCH,
+              code: PermissionsEnum.PTW_TYPE_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.PTW_TYPE_CREATE,
+              code: PermissionsEnum.PTW_TYPE_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.PTW_TYPE_UPDATE,
+              code: PermissionsEnum.PTW_TYPE_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.PTW_TYPE_DELETE,
+              code: PermissionsEnum.PTW_TYPE_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
+        {
+          key: PermissionsEnum.VISIT_ACTIVITIES_ALL,
+          code: PermissionsEnum.VISIT_ACTIVITIES_ALL,
+          label: 'Visit Activities',
+          permissions: [
+            {
+              key: PermissionsEnum.VISIT_ACTIVITIES_ALL,
+              code: PermissionsEnum.VISIT_ACTIVITIES_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.VISIT_ACTIVITIES_FETCH,
+              code: PermissionsEnum.VISIT_ACTIVITIES_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.VISIT_ACTIVITIES_DETAILS,
+              code: PermissionsEnum.VISIT_ACTIVITIES_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.VISIT_ACTIVITIES_CREATE,
+              code: PermissionsEnum.VISIT_ACTIVITIES_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.VISIT_ACTIVITIES_UPDATE,
+              code: PermissionsEnum.VISIT_ACTIVITIES_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.VISIT_ACTIVITIES_DELETE,
+              code: PermissionsEnum.VISIT_ACTIVITIES_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
+        {
+          key: PermissionsEnum.VISIT_THEME_ALL,
+          code: PermissionsEnum.VISIT_THEME_ALL,
+          label: 'Visit Theme',
+          permissions: [
+            {
+              key: PermissionsEnum.VISIT_THEME_ALL,
+              code: PermissionsEnum.VISIT_THEME_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.VISIT_THEME_FETCH,
+              code: PermissionsEnum.VISIT_THEME_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.VISIT_THEME_DETAILS,
+              code: PermissionsEnum.VISIT_THEME_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.VISIT_THEME_CREATE,
+              code: PermissionsEnum.VISIT_THEME_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.VISIT_THEME_UPDATE,
+              code: PermissionsEnum.VISIT_THEME_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.VISIT_THEME_DELETE,
+              code: PermissionsEnum.VISIT_THEME_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
+        {
+          key: PermissionsEnum.VISIT_CATEGORY_ALL,
+          code: PermissionsEnum.VISIT_CATEGORY_ALL,
+          label: 'Visit Category',
+          permissions: [
+            {
+              key: PermissionsEnum.VISIT_CATEGORY_ALL,
+              code: PermissionsEnum.VISIT_CATEGORY_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.VISIT_CATEGORY_FETCH,
+              code: PermissionsEnum.VISIT_CATEGORY_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.VISIT_CATEGORY_DETAILS,
+              code: PermissionsEnum.VISIT_CATEGORY_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.VISIT_CATEGORY_CREATE,
+              code: PermissionsEnum.VISIT_CATEGORY_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.VISIT_CATEGORY_UPDATE,
+              code: PermissionsEnum.VISIT_CATEGORY_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.VISIT_CATEGORY_DELETE,
+              code: PermissionsEnum.VISIT_CATEGORY_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
+        {
           key: PermissionsEnum.PPE_ACTIVITY_ALL,
           code: PermissionsEnum.PPE_ACTIVITY_ALL,
           label: 'PPE Activity',
           permissions: [
-            { key: PermissionsEnum.PPE_ACTIVITY_ALL, code: PermissionsEnum.PPE_ACTIVITY_ALL, label: 'All' },
-            { key: PermissionsEnum.PPE_ACTIVITY_FETCH, code: PermissionsEnum.PPE_ACTIVITY_FETCH, label: 'Fetch' },
-            { key: PermissionsEnum.PPE_ACTIVITY_DETAILS, code: PermissionsEnum.PPE_ACTIVITY_DETAILS, label: 'Details' },
-            { key: PermissionsEnum.PPE_ACTIVITY_CREATE, code: PermissionsEnum.PPE_ACTIVITY_CREATE, label: 'Create' },
-            { key: PermissionsEnum.PPE_ACTIVITY_UPDATE, code: PermissionsEnum.PPE_ACTIVITY_UPDATE, label: 'Update' },
-            { key: PermissionsEnum.PPE_ACTIVITY_DELETE, code: PermissionsEnum.PPE_ACTIVITY_DELETE, label: 'Delete' },
+            {
+              key: PermissionsEnum.PPE_ACTIVITY_ALL,
+              code: PermissionsEnum.PPE_ACTIVITY_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.PPE_ACTIVITY_FETCH,
+              code: PermissionsEnum.PPE_ACTIVITY_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.PPE_ACTIVITY_DETAILS,
+              code: PermissionsEnum.PPE_ACTIVITY_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.PPE_ACTIVITY_CREATE,
+              code: PermissionsEnum.PPE_ACTIVITY_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.PPE_ACTIVITY_UPDATE,
+              code: PermissionsEnum.PPE_ACTIVITY_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.PPE_ACTIVITY_DELETE,
+              code: PermissionsEnum.PPE_ACTIVITY_DELETE,
+              label: 'Delete',
+            },
           ],
         },
         {
@@ -3122,12 +3285,36 @@ export const adminPermissions: PermissionItem = {
           code: PermissionsEnum.PPE_TOOLS_ALL,
           label: 'PPE Tools',
           permissions: [
-            { key: PermissionsEnum.PPE_TOOLS_ALL, code: PermissionsEnum.PPE_TOOLS_ALL, label: 'All' },
-            { key: PermissionsEnum.PPE_TOOLS_FETCH, code: PermissionsEnum.PPE_TOOLS_FETCH, label: 'Fetch' },
-            { key: PermissionsEnum.PPE_TOOLS_DETAILS, code: PermissionsEnum.PPE_TOOLS_DETAILS, label: 'Details' },
-            { key: PermissionsEnum.PPE_TOOLS_CREATE, code: PermissionsEnum.PPE_TOOLS_CREATE, label: 'Create' },
-            { key: PermissionsEnum.PPE_TOOLS_UPDATE, code: PermissionsEnum.PPE_TOOLS_UPDATE, label: 'Update' },
-            { key: PermissionsEnum.PPE_TOOLS_DELETE, code: PermissionsEnum.PPE_TOOLS_DELETE, label: 'Delete' },
+            {
+              key: PermissionsEnum.PPE_TOOLS_ALL,
+              code: PermissionsEnum.PPE_TOOLS_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.PPE_TOOLS_FETCH,
+              code: PermissionsEnum.PPE_TOOLS_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.PPE_TOOLS_DETAILS,
+              code: PermissionsEnum.PPE_TOOLS_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.PPE_TOOLS_CREATE,
+              code: PermissionsEnum.PPE_TOOLS_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.PPE_TOOLS_UPDATE,
+              code: PermissionsEnum.PPE_TOOLS_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.PPE_TOOLS_DELETE,
+              code: PermissionsEnum.PPE_TOOLS_DELETE,
+              label: 'Delete',
+            },
           ],
         },
         // PPE Item
@@ -3326,16 +3513,38 @@ export const adminPermissions: PermissionItem = {
           code: PermissionsEnum.TRANING_TOPIC_ALL,
           label: 'Traning Topic',
           permissions: [
-            { key: PermissionsEnum.TRANING_TOPIC_ALL, code: PermissionsEnum.TRANING_TOPIC_ALL, label: 'All' },
-            { key: PermissionsEnum.TRANING_TOPIC_FETCH, code: PermissionsEnum.TRANING_TOPIC_FETCH, label: 'Fetch' },
-            { key: PermissionsEnum.TRANING_TOPIC_DETAILS, code: PermissionsEnum.TRANING_TOPIC_DETAILS, label: 'Details' },
-            { key: PermissionsEnum.TRANING_TOPIC_CREATE, code: PermissionsEnum.TRANING_TOPIC_CREATE, label: 'Create' },
-            { key: PermissionsEnum.TRANING_TOPIC_UPDATE, code: PermissionsEnum.TRANING_TOPIC_UPDATE, label: 'Update' },
-            { key: PermissionsEnum.TRANING_TOPIC_DELETE, code: PermissionsEnum.TRANING_TOPIC_DELETE, label: 'Delete' },
+            {
+              key: PermissionsEnum.TRANING_TOPIC_ALL,
+              code: PermissionsEnum.TRANING_TOPIC_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.TRANING_TOPIC_FETCH,
+              code: PermissionsEnum.TRANING_TOPIC_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.TRANING_TOPIC_DETAILS,
+              code: PermissionsEnum.TRANING_TOPIC_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.TRANING_TOPIC_CREATE,
+              code: PermissionsEnum.TRANING_TOPIC_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.TRANING_TOPIC_UPDATE,
+              code: PermissionsEnum.TRANING_TOPIC_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.TRANING_TOPIC_DELETE,
+              code: PermissionsEnum.TRANING_TOPIC_DELETE,
+              label: 'Delete',
+            },
           ],
         },
-
-
       ],
     },
   ],
