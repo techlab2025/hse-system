@@ -53,7 +53,7 @@ const addSystemVisitActivities = async () => {
       v-if="isHeaderTap"
       :title="$t('add_system_visit_activities')"
       :subtitle="$t('select_system_visit_activities')"
-      @click="visible = true"
+      @click="visible = true" 
     />
     <Dialog v-model:visible="visible" modal :style="{ width: '60rem' }" @click.stop>
       <template #header>

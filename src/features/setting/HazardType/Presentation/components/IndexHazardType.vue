@@ -476,9 +476,9 @@ const IndexHazardTypeactionList = () => [
                 ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params.parent_id}`
                 : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`
             "
-            :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
-            description="You have no HazardType .. All your joined customers will appear here when you add your customer data"
-            title="You have No HazardType"
+            :addText="route.params.parent_id ? 'Add Hazard' : 'Add Hazard classfication'"
+            description="You have no Hazard classfication .. All your joined customers will appear here when you add your customer data"
+            title="You have No Hazard classfication"
           />
         </PermissionBuilder>
       </template>
@@ -498,8 +498,8 @@ const IndexHazardTypeactionList = () => [
                 : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`
             "
             :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
-            description="You have no HazardType .. All your joined customers will appear here when you add your customer data"
-            title="You have No HazardType"
+            description="You have no Hazard classfication .. All your joined customers will appear here when you add your customer data"
+            title="You have No Hazard classfication"
           />
         </PermissionBuilder>
       </template>
@@ -508,7 +508,7 @@ const IndexHazardTypeactionList = () => [
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="You have no HazardType .. All your joined customers will appear here when you add your customer data"
+        description="You have no Hazard classfication .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </PermissionBuilder>
