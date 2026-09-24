@@ -132,9 +132,8 @@ const saveMonth = async (month: ProjectMonth) => {
     return
   }
   try {
-    await planController.createPlan(
-      new CreateLeadershipPlanParams(projectId.value, month.monthNumber, rows),
-    )
+    // , month.monthNumber
+    await planController.createPlan(new CreateLeadershipPlanParams(projectId.value, rows))
     if (planController.isDataSuccess()) {
       monthVisits[month.key] = []
       successMessage.value = `${month.label} visits saved.`
@@ -465,15 +464,15 @@ onMounted(async () => {
   position: relative;
   display: grid;
   gap: 22px;
-  padding: clamp(14px, 2vw, 28px);
+  /* padding: clamp(14px, 2vw, 28px); */
   min-height: 100%;
-  background:
+  /* background:
     radial-gradient(
       circle at 8% 4%,
       color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
       transparent 24rem
     ),
-    var(--surface-2);
+    var(--surface-2); */
 }
 
 .hero {
