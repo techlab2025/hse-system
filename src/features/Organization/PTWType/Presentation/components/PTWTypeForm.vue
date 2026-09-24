@@ -68,6 +68,11 @@ const setTitles = (value: any[]) => {
   updateData()
 }
 
+const setPtwColor = (event: Event) => {
+  ptwColor.value = (event.target as HTMLInputElement).value
+  updateData()
+}
+
 watch(
   [() => props.data, languages],
   ([data, availableLanguages]) => {
@@ -128,22 +133,86 @@ onMounted(fetchLanguages)
       {{ requiredFieldErrors.title }}
     </p>
   </div>
-    <div class="col-span-4 md:col-span-2 input_color">
-    <label for="ptw_color">Select your favorite color:</label>
-    <input type="color" v-model="ptwColor" id="ptw_color" name="ptw_color" />
+  <div class="col-span-4 md:col-span-2 ptw-color-field">
+    <label class="ptw-color-field__label" for="ptw_color">
+      {{ $t('main_color') }}
+    </label>
+
+    <div class="ptw-color-field__control">
+      <input
+        id="ptw_color"
+        class="ptw-color-field__picker"
+        name="ptw_color"
+        type="color"
+        :value="ptwColor"
+        :aria-label="$t('main_color')"
+        @input="setPtwColor"
+      />
+      <output class="ptw-color-field__value" for="ptw_color">
+        {{ ptwColor.toUpperCase() }}
+      </output>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.input_color{
+.ptw-color-field {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+}
 
+.ptw-color-field__label {
+  color: var(--GrayText-1);
+  font-size: 0.875rem;
+  font-weight: 600;
 }
-.input_color input{
-  width: 70px;
-  height:70px;
+
+.ptw-color-field__control {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--main-border);
+  border-radius: 0.5rem;
+  background: var(--BgWhite);
 }
+
+.ptw-color-field__picker {
+  width: 42px;
+  height: 34px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0.375rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+.ptw-color-field__picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.ptw-color-field__picker::-webkit-color-swatch,
+.ptw-color-field__picker::-moz-color-swatch {
+  border: 0;
+  border-radius: 0.375rem;
+}
+
+.ptw-color-field__picker:focus-visible {
+  outline: 2px solid var(--PrimaryColor);
+  outline-offset: 2px;
+}
+
+.ptw-color-field__value {
+  color: var(--GrayText-1);
+  font-family: monospace;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
 .required-field-message {
   margin-top: 0.35rem;
   color: var(--status-danger);
