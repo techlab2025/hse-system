@@ -7,6 +7,7 @@ export const inductionRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Organization/Project/Induction/IndexInduction.vue'),
     meta: {
       breadcrumb: 'Inductions',
+      projectParent: 'Project Details',
       isSidebar: false,
     },
   },
