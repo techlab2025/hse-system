@@ -1,5 +1,6 @@
 import type Params from '@/base/core/params/params'
 import type { UnsafeVisitTypeEnum } from '../../Enums/Leadership/UnsafeVisitTypeEnum'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 
 export interface VisitImprovementInput {
   areas: string
@@ -25,14 +26,15 @@ export default class CreateLeadershipVisitReportParams implements Params {
       topic: this.topic,
       discussion: this.discussion,
       observations: this.observations,
-      improvements: this.improvements.map((improvement) => ({
-        areas: improvement.areas,
+      areas_of_improvement: this.improvements.map((improvement) => ({
+        areas_of_improvement: improvement.areas,
         intervention_carried_out: improvement.interventionCarriedOut,
         ua_uc: improvement.uaUc,
-        visit_them_id: improvement.visitThemId,
-        visit_category_id: improvement.visitCategoryId,
+        leadership_theme_id: improvement.visitThemId,
+        leadership_category_id: improvement.visitCategoryId,
       })),
       attachments: this.attachments,
+      date: formatJoinDate(Date.now()),
     }
   }
 }

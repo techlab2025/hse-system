@@ -22,6 +22,7 @@ import CreateLeadershipPlanParams, {
 import FetchAllLeadershipVisitsParams from '../../../Core/params/Leadership/FetchAllLeadershipVisitsParams'
 import CreateLeadershipPlanController from '../../controllers/Leadership/CreateLeadershipPlanController'
 import FetchAllLeadershipVisitsController from '../../controllers/Leadership/FetchAllLeadershipVisitsController'
+import LeadershipPlanVisitParams from '../../../Core/params/Leadership/LeadershipPlanVisitParams'
 
 defineOptions({ name: 'ProjectLeadership' })
 
@@ -102,6 +103,9 @@ const employeeOptions = computed(() =>
   ),
 )
 const rowsForMonth = (key: string) => monthVisits[key] ?? []
+const savedVisitsForMonth = (key: string) => {
+  return visits.value.filter((visit: any) => visit.date.slice(0, 7) === key)
+}
 const addVisit = (key: string) => {
   if (!monthVisits[key]) monthVisits[key] = []
   monthVisits[key].push(newVisit())
@@ -133,7 +137,16 @@ const saveMonth = async (month: ProjectMonth) => {
   }
   try {
     // , month.monthNumber
-    await planController.createPlan(new CreateLeadershipPlanParams(projectId.value, rows))
+    const AllVitis = rows.map(
+      (el) =>
+        new LeadershipPlanVisitParams(
+          el.date,
+          el.location,
+          el.orgnizationEmployeeId,
+          el.visitActivityId,
+        ),
+    )
+    await planController.createPlan(new CreateLeadershipPlanParams(projectId.value, AllVitis))
     if (planController.isDataSuccess()) {
       monthVisits[month.key] = []
       successMessage.value = `${month.label} visits saved.`
@@ -266,8 +279,12 @@ onMounted(async () => {
               </AccordionHeader>
               <AccordionContent>
                 <div class="month-body">
-                  <div v-if="!rowsForMonth(month.key).length" class="month-empty">
-                    <span class="month-empty__symbol">＋</span>
+                  <!-- <div v-if="!rowsForMonth(month.key).length" class="month-empty">
+                    <span class="month-empty__symbol">＋</span> -->
+                  <div
+                    v-if="!rowsForMonth(month.key).length && !savedVisitsForMonth(month.key).length"
+                    class="month-empty"
+                  >
                     <div>
                       <strong>Start this month’s plan</strong>
                       <p>Add a visit with its date, location, employee, and activity.</p>
@@ -280,8 +297,61 @@ onMounted(async () => {
                       Add first visit
                     </button>
                   </div>
+                  <div v-if="savedVisitsForMonth(month.key).length" class="month-actions">
+                    <button
+                      type="button"
+                      class="button button--outline"
+                      @click="addVisit(month.key)"
+                    >
+                      ＋ Add another visit
+                    </button>
+                  </div>
 
-                  <div v-else class="draft-list">
+                  <div v-if="savedVisitsForMonth(month.key).length" class="saved-visits-table">
+                    <h3>Planned Visits</h3>
+
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Date</th>
+                          <th>Location</th>
+                          <th>Employee</th>
+                          <th>Activity</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        <tr
+                          v-for="(visit, index) in savedVisitsForMonth(month.key)"
+                          :key="visit.id"
+                        >
+                          <td>
+                            {{ index + 1 }}
+                          </td>
+
+                          <td>
+                            {{ visit.date }}
+                          </td>
+
+                          <td>
+                            {{ visit.location }}
+                          </td>
+
+                          <td>
+                            {{ visit.employees?.[0]?.employeeName ?? '-' }}
+                          </td>
+
+                          <td>
+                            {{ visit.activities?.[0]?.title ?? '-' }}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <!-- <div v-else class="draft-list"> -->
+                  <div v-if="rowsForMonth(month.key).length" class="draft-list">
                     <article
                       v-for="(visit, index) in rowsForMonth(month.key)"
                       :key="index"
@@ -414,7 +484,7 @@ onMounted(async () => {
                         </UpdatedCustomInputSelect>
                       </div>
                     </article>
-                    <div class="month-actions">
+                    <!-- <div class="month-actions">
                       <button
                         type="button"
                         class="button button--outline"
@@ -433,6 +503,23 @@ onMounted(async () => {
                             : `Save ${month.label}
                         visits`
                         }}
+                      </button>
+                    </div> -->
+                    <div class="month-actions">
+                      <button
+                        type="button"
+                        class="button button--outline"
+                        @click="addVisit(month.key)"
+                      >
+                        ＋ Add another visit
+                      </button>
+
+                      <button
+                        type="button"
+                        class="button button--primary"
+                        @click="saveMonth(month)"
+                      >
+                        Save
                       </button>
                     </div>
                   </div>
@@ -1136,9 +1223,9 @@ onMounted(async () => {
 
 .month-actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 10px;
-  margin-top: 3px;
+  margin-block: 20px;
 }
 
 .button {
@@ -1266,5 +1353,41 @@ select:focus-visible {
 }
 .input-label label {
   width: 100% !important;
+}
+.saved-visits-table {
+  margin-bottom: 18px;
+  overflow-x: auto;
+}
+
+.saved-visits-table h3 {
+  margin-bottom: 12px;
+  color: var(--text-strong);
+  font-size: 1rem;
+}
+
+.saved-visits-table table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--main-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.saved-visits-table th {
+  padding: 12px;
+  text-align: start;
+  background: var(--surface-2);
+  color: var(--text-strong);
+  font-weight: 800;
+}
+
+.saved-visits-table td {
+  padding: 12px;
+  border-top: 1px solid var(--main-border);
+  color: var(--text-soft);
+}
+
+.saved-visits-table tbody tr:hover {
+  background: color-mix(in srgb, var(--PrimaryColor) 5%, transparent);
 }
 </style>

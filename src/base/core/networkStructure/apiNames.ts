@@ -1965,7 +1965,7 @@ class ApiNames {
     return this.baseUrl + this.organizationPrefix + 'fetch_meetings'
   }
   public get FetchAllLeadershipVisits() {
-    return this.baseUrl + this.organizationPrefix + 'fetch_all_visitis'
+    return this.baseUrl + this.organizationPrefix + 'fetch_visits'
   }
   public get CreatePPEActivityTool() {
     return this.baseUrl + this.organizationPrefix + 'change_ppe_active_tool_matrix'
@@ -1980,7 +1980,7 @@ class ApiNames {
     return this.baseUrl + this.organizationPrefix + 'fetch_ppe_matrix_delivery'
   }
   public get CreateLeadershipVisitReport() {
-    return this.baseUrl + this.organizationPrefix + 'create_visite_report'
+    return this.baseUrl + this.organizationPrefix + 'create_visit_report'
   }
   // CloneMeetingType
 

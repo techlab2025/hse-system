@@ -19,7 +19,7 @@ const selectedVisit = ref<LeadershipVisitModel | null>(null)
 const reportCreated = computed(() => route.query.report === 'created')
 
 const employeeInitial = (visit: LeadershipVisitModel) =>
-  visit.organizationEmployeeName?.name?.charAt(0)?.toUpperCase() || 'E'
+  visit.employees?.[0]?.employeeName?.charAt(0)?.toUpperCase() || 'E'
 
 onMounted(async () => {
   if (Number.isInteger(projectId.value) && projectId.value > 0) {
@@ -87,12 +87,13 @@ onMounted(async () => {
                         :alt="visit.organizationEmployeeName.name"
                         class="avatar avatar--image"
                       /> -->
-                      <!-- <span v-else class="avatar">{{ employeeInitial(visit) }}</span> -->
-                      <span>{{ visit.organizationEmployeeName?.name || '—' }}</span>
+                      <!-- <span v-else class=/"avatar">{{ employeeInitial(visit) }}</span> -->
+                      <!-- {{ visit }} -->
+                      <span>{{ visit.employees[0]?.employeeName || '—' }}</span>
                     </span>
                   </td>
                   <td data-label="Activity">
-                    <span class="activity-pill">{{ visit.visitActivityName?.title || '—' }}</span>
+                    <span class="activity-pill">{{ visit.activities?.[0]?.title || '—' }}</span>
                   </td>
                   <!-- <td data-label="Status">
                     <span :class="['status-pill', { 'status-pill--complete': visit.reportAdded }]">
@@ -102,7 +103,7 @@ onMounted(async () => {
                   </td> -->
                   <td data-label="Action">
                     <button
-                      v-if="visit.reportAdded"
+                      v-if="visit.report"
                       type="button"
                       class="report-link report-link--details"
                       @click="selectedVisit = visit"
@@ -362,7 +363,7 @@ onMounted(async () => {
 }
 
 .report-link--details {
-  color: var(--PrimaryColor);
+  color: var(--PrimaryColor) !important;
   background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1));
 }
 
