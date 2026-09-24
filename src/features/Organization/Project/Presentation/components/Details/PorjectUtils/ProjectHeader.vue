@@ -4,7 +4,7 @@ import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import ContractorIcon from '@/shared/icons/ContractorIcon.vue'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
-const props = defineProps<{
+defineProps<{
   projectId: number | undefined
   projectName: string | undefined
   SerialNumber: string | undefined
@@ -12,6 +12,7 @@ const props = defineProps<{
   Contractors: number | undefined
   serialName: string | undefined
   endDate: string | undefined
+  has_assigned_permit?: boolean
 }>()
 </script>
 <template>
@@ -106,6 +107,7 @@ const props = defineProps<{
         <router-link
           :to="{
             name: 'management-of-change',
+            params: { id: projectId },
             query: { project_id: projectId },
           }"
           class="project-action-link action-change"
@@ -138,7 +140,7 @@ const props = defineProps<{
           <span class="action-arrow" aria-hidden="true">→</span>
         </router-link>
 
-        <PermissionBuilder :code="[PermissionsEnum.PROJECT_PERMIT]">
+        <PermissionBuilder v-if="has_assigned_permit" :code="[PermissionsEnum.PROJECT_PERMIT]">
           <router-link
             :to="{ path: `/organization/project-permits/${projectId}` }"
             class="project-action-link action-permits"
@@ -172,6 +174,93 @@ const props = defineProps<{
           </span>
           <span class="action-arrow" aria-hidden="true">→</span>
         </router-link>
+
+        <router-link
+          :to="{ name: 'Inductions', query: { project_id: projectId } }"
+          class="project-action-link action-induction"
+        >
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M6 4h12v16H6zM9 8h6M9 12h6M9 16h4" />
+              <path d="M17 5.5h2.5V18H17" />
+            </svg>
+          </span>
+          <span class="action-copy">
+            <strong>{{ t('Induction') }}</strong>
+            <small>{{ t('Manage project inductions') }}</small>
+          </span>
+          <span class="action-arrow" aria-hidden="true">→</span>
+        </router-link>
+
+        <router-link
+          :to="{ name: 'Project Leadership', params: { id: projectId } }"
+          class="project-action-link action-leadership"
+        >
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 3v18M3 12h18M5 5l14 14M19 5 5 19" />
+            </svg>
+          </span>
+          <span class="action-copy">
+            <strong>Leadership visits</strong>
+            <small>Plan visits and submit reports</small>
+          </span>
+          <span class="action-arrow" aria-hidden="true">→</span>
+        </router-link>
+
+        <router-link
+          :to="{ name: 'Project PPE Matrix', params: { id: projectId } }"
+          class="project-action-link action-ppe-matrix"
+        >
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M4 4h16v16H4zM4 10h16M4 15h16M10 4v16" />
+            </svg>
+          </span>
+          <span class="action-copy">
+            <strong>PPE Matrix & Log</strong>
+            <small>Set required PPE Matrix</small>
+          </span>
+          <span class="action-arrow" aria-hidden="true">→</span>
+        </router-link>
+
+        <router-link
+          :to="{ name: 'Project Risk Assessments', params: { id: projectId } }"
+          class="project-action-link action-risk-assessments"
+        >
+          <span class="action-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M12 3 2.5 20h19L12 3ZM12 9v5M12 17h.01" />
+            </svg>
+          </span>
+          <span class="action-copy">
+            <strong>Risk assessments</strong>
+            <small>Review project safety</small>
+          </span>
+          <span class="action-arrow" aria-hidden="true">→</span>
+        </router-link>
+
+        <PermissionBuilder
+          :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.OBJECTIVE_ORG_CREATE]"
+        >
+          <router-link
+            :to="{ name: 'Project Objectives', params: { project_id: projectId } }"
+            class="project-action-link action-objectives"
+          >
+            <span class="action-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="8" />
+                <circle cx="12" cy="12" r="3.25" />
+                <path d="m15 9 4-4M16 5h3v3" />
+              </svg>
+            </span>
+            <span class="action-copy">
+              <strong>{{ t('Objectives') }}</strong>
+              <small>{{ t('Create project objectives') }}</small>
+            </span>
+            <span class="action-arrow" aria-hidden="true">→</span>
+          </router-link>
+        </PermissionBuilder>
       </div>
     </div>
   </header>
@@ -179,7 +268,7 @@ const props = defineProps<{
 <style scoped lang="scss">
 .btn-route {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 9px;
 }
 .project-header-container {
@@ -527,6 +616,21 @@ const props = defineProps<{
 }
 .action-my-permits {
   --action-color: #d97706;
+}
+.action-induction {
+  --action-color: #0f9f6e;
+}
+.action-leadership {
+  --action-color: #138b83;
+}
+.action-ppe-matrix {
+  --action-color: #5375cf;
+}
+.action-risk-assessments {
+  --action-color: #bf6b36;
+}
+.action-objectives {
+  --action-color: #1f8f6a;
 }
 @media (max-width: 1100px) {
   .project-header-container {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import ShowProjectDetailsParams from '../../../Core/params/ShowProjectDetailsParams'
 import ShowProjectDetailsController from '../../controllers/ShowProjectDetailsController'
 import EquipmentSection from './Equipment/EquipmentSection.vue'
@@ -7,7 +7,7 @@ import EquipmentSection from './Equipment/EquipmentSection.vue'
 import LocationsTeamsSection from './LocationsTeams/LocationsTeamsSection.vue'
 import MainObjectivesSection from './Objectives/MainObjectivesSection.vue'
 import ProjectSiteSection from './ProjectSite/ProjectSiteSection.vue'
-import { computed, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import ProjectPageSkeleton from './Skeletons/ProjectPageSkeleton.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
@@ -16,6 +16,9 @@ import ProjectHeader from './PorjectUtils/ProjectHeader.vue'
 import LossTimeMatrix from './LossTime/LossTimeMatrix.vue'
 import DrillSection from './Drill/DrillSection.vue'
 import ProjectMeetingSection from './ProjectMeeting/ProjectMeetingSection.vue'
+import FetchProjectPermitsController from '../../controllers/PermitToWork/FetchProjectPermitsController.ts'
+import FetchPermitsParams from '../../../Core/params/PermitToWork/fetchPermitsParams.ts'
+import InjuryBodySlection from '@/features/Organization/ObservationFactory/Presentation/SubComponent/InjuryBodySlection.vue'
 // import zoneInspectionTasks from '@/assets/images/InspectionTaskbg.png'
 // import EmployeeInspectionTasks from '@/assets/images/employee Inspection Tasks.png'
 
@@ -23,6 +26,7 @@ const showProjectDetailsController = ShowProjectDetailsController.getInstance()
 const state = showProjectDetailsController.state
 
 const route = useRoute()
+const router = useRouter()
 
 const getMeetingTimestamp = (date: string) => new Date(`${date}T00:00:00`).getTime()
 
@@ -52,6 +56,23 @@ const GetProjectDetails = async () => {
   }
 }
 
+const fetchProjectPermitsController = FetchProjectPermitsController.getInstance()
+
+const Permitsstate = computed(() => fetchProjectPermitsController.state.value)
+
+const FetchProjectPermits = async (status?: number) => {
+  const fetchProjectPermitsParams = new FetchPermitsParams({
+    projectId: Number(route.params.project_id) || Number(route.params.id),
+    // hasResult: status == 1 ? true : false,
+  })
+  await fetchProjectPermitsController.FetchProjectPermits(fetchProjectPermitsParams, router)
+}
+
+onMounted(async () => {
+  await FetchProjectPermits()
+
+  // emit('has_data', state.value.data?.length! > 0)
+})
 // const projectOverview = computed(() => [
 //   {
 //     label: 'locations',
@@ -81,6 +102,7 @@ watch(
   },
   { immediate: true },
 )
+// const selected = ref<string[]>()
 </script>
 <template>
   <DataStatus :controller="state">
@@ -99,6 +121,9 @@ watch(
             </div>
           </div>
         </div> -->
+        <!-- <InjuryBodySlection
+        :modelValue="selected"
+        /> -->
 
         <ProjectHeader
           :projectId="state.data?.id"
@@ -108,6 +133,7 @@ watch(
           :Projectdate="state.data?.startDate"
           :Contractors="state.data?.contractors?.length"
           :endDate="state.data?.endDate"
+          :has_assigned_permit="Permitsstate.data?.length > 0"
         />
 
         <LossTimeMatrix v-if="state.data?.lossTimes?.length" :loss-times="state.data.lossTimes" />

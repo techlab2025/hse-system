@@ -105,6 +105,7 @@ const updateData = () => {
                   )
                     ? item?.customPpeItem?.trim() || ''
                     : '',
+                  item?.locations ?? [],
                 )
               })
             : [],

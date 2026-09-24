@@ -15,6 +15,7 @@ export default class InjuryParams implements Params {
   public ppeItems: number[]
   public ppeItemCondition: number
   public ppeItemText: string
+  public locations: string[]
   constructor(
     organizationEmployeeId: number,
     employeeName: string,
@@ -25,6 +26,7 @@ export default class InjuryParams implements Params {
     ppeItems: number[] = [],
     ppeItemCondition: number = 0,
     ppeItemText: string = '',
+    locations: string[] = [],
   ) {
     this.employeeName = employeeName
     this.organizationEmployeeId = organizationEmployeeId
@@ -35,6 +37,7 @@ export default class InjuryParams implements Params {
     this.ppeItems = ppeItems.filter(Boolean)
     this.ppeItemCondition = ppeItemCondition
     this.ppeItemText = ppeItemText
+    this.locations = locations
   }
 
   toMap(): Record<string, number | string | string[] | number[] | PpeItemPayload[]> {
@@ -50,6 +53,7 @@ export default class InjuryParams implements Params {
     }
     if (this.ppeItemCondition) data['ppe_item_condition'] = this.ppeItemCondition
     if (this.ppeItemText) data['ppe_item_text'] = this.ppeItemText
+    if (this.locations.length) data['locations'] = this.locations
     return data
   }
 }

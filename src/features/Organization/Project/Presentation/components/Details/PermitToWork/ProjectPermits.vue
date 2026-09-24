@@ -11,7 +11,7 @@ import PermitToWorkResultDialog from './PermitToWorkResultDialog.vue'
 
 const route = useRoute()
 const router = useRouter()
-
+const emit = defineEmits(['has_data'])
 const fetchProjectPermitsController = FetchProjectPermitsController.getInstance()
 
 const state = computed(() => fetchProjectPermitsController.state.value)
@@ -59,7 +59,11 @@ const GetStatus = (status: PermitToWorkStatusEnum) => {
   }
 }
 
-onMounted(FetchProjectPermits)
+onMounted(async () => {
+  await FetchProjectPermits()
+
+  // emit('has_data', state.value.data?.length! > 0)
+})
 const SelectedStatus = ref<number>(2)
 const SetStatus = (status: number) => {
   SelectedStatus.value = status

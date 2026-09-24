@@ -51,6 +51,87 @@ export const projectRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: 'project-details/:id/leadership',
+    name: 'Project Leadership',
+    component: () => import('@/views/Organization/Project/LeadershipPage.vue'),
+    meta: {
+      breadcrumb: 'Leadership',
+      parent: 'Project Details',
+      isSidebar: false,
+    },
+  },
+  {
+    path: 'project-details/:id/leadership/visits',
+    name: 'Project Leadership Visits',
+    component: () => import('@/views/Organization/Project/LeadershipVisitsPage.vue'),
+    meta: {
+      breadcrumb: 'Leadership Visits',
+      parent: 'Project Leadership',
+      isSidebar: false,
+    },
+  },
+  {
+    path: 'project-details/:id/leadership/visits/:visitId/report',
+    name: 'Project Leadership Visit Report',
+    component: () => import('@/views/Organization/Project/LeadershipVisitReportPage.vue'),
+    meta: {
+      breadcrumb: 'Report Leadership Visit',
+      parent: 'Project Leadership Visits',
+      isSidebar: false,
+    },
+  },
+  {
+    path: 'project-details/:id/ppe-matrix',
+    name: 'Project PPE Matrix',
+    component: () => import('@/views/Organization/Project/ppematrix/PPEActivityToolMatrixPage.vue'),
+    meta: {
+      breadcrumb: 'PPE Matrix',
+      parent: 'Project Details',
+      isSidebar: false,
+    },
+  },
+  {
+    path: 'project-details/:id/ppe-delivery',
+    name: 'Project PPE Delivery',
+    component: () => import('@/views/Organization/Project/ppematrix/PPEMatrixDeliveryPage.vue'),
+    meta: {
+      breadcrumb: 'PPE Delivery',
+      parent: 'Project Details',
+      isSidebar: false,
+    },
+  },
+  {
+    path: 'project-details/:id/ppe-deliveries',
+    name: 'Project PPE Deliveries',
+    component: () => import('@/views/Organization/Project/ppematrix/PPEMatrixDeliveriesPage.vue'),
+    meta: {
+      breadcrumb: 'PPE Deliveries',
+      parent: 'Project Details',
+      isSidebar: false,
+    },
+  },
+  {
+    path: 'project-details/:id/risk-assessments',
+    name: 'Project Risk Assessments',
+    component: () => import('@/views/Organization/Project/RiskAssessment/RiskAssessmentsPage.vue'),
+    meta: {
+      breadcrumb: 'Risk Assessments',
+      parent: 'Project Details',
+      isSidebar: false,
+    },
+  },
+  {
+    path: 'project-details/:id/risk-assessments/create',
+    name: 'Create Risk Assessment',
+    component: () =>
+      import('@/views/Organization/Project/RiskAssessment/CreateRiskAssessmentPage.vue'),
+    meta: {
+      breadcrumb: 'Create Risk Assessment',
+      parent: 'Project Risk Assessments',
+      isSidebar: false,
+    },
+  },
+  {
     path: 'project-meetings/:project_id',
     name: 'Project Meetings',
     component: () => import('@/views/Organization/Project/ProjectMeeting/ProjectMeetingsPage.vue'),
@@ -65,7 +146,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     name: 'management-of-change',
     component: () => import('@/views/Organization/MangementOfChange/MangementOfChange.vue'),
     meta: {
-      breadcrumb: 'management-of-change',
+      breadcrumb: 'Management Of Change',
       parent: 'Project Details',
       isSidebar: true,
     },
@@ -155,6 +236,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Organization/Project/PermitToWork/ProjectPermitsPage.vue'),
     meta: {
       breadcrumb: 'Project Permits',
+      parent: 'Project Details',
       isSidebar: false,
     },
   },
@@ -173,6 +255,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Organization/Project/PermitToWork/ProjectMyPermitsPage.vue'),
     meta: {
       breadcrumb: 'Project My Permits',
+      parent: 'Project Details',
       isSidebar: false,
     },
   },

@@ -108,7 +108,6 @@ const OperationsRoutes = ref<Routes[]>([
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
 
-
   // {
   //   link: '/organization/management-of-change',
   //   name: 'Management Of Change',
@@ -421,6 +420,32 @@ const LocationRoutes = ref<Routes[]>([
 
 const LockUpsRoutes = ref<Routes[]>([
   {
+    link: '/organization/ppe-activities',
+    name: 'PPE Activity',
+    icon: 'shield-check',
+    permissions: [
+      PermissionsEnum.ORG_PPE_ACTIVITY_ALL,
+      PermissionsEnum.ORG_PPE_ACTIVITY_FETCH,
+      PermissionsEnum.ORG_PPE_ACTIVITY_DETAILS,
+      PermissionsEnum.ORG_PPE_ACTIVITY_CREATE,
+      PermissionsEnum.ORG_PPE_ACTIVITY_UPDATE,
+      PermissionsEnum.ORG_PPE_ACTIVITY_DELETE,
+    ],
+  },
+  {
+    link: '/organization/ppe-tools',
+    name: 'PPE Tools',
+    icon: 'shield-check',
+    permissions: [
+      PermissionsEnum.ORG_PPE_TOOLS_ALL,
+      PermissionsEnum.ORG_PPE_TOOLS_FETCH,
+      PermissionsEnum.ORG_PPE_TOOLS_DETAILS,
+      PermissionsEnum.ORG_PPE_TOOLS_CREATE,
+      PermissionsEnum.ORG_PPE_TOOLS_UPDATE,
+      PermissionsEnum.ORG_PPE_TOOLS_DELETE,
+    ],
+  },
+  {
     link: '/organization/ppe-items',
     name: 'ppe_items',
     icon: 'shield-check',
@@ -431,6 +456,45 @@ const LockUpsRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_PPE_ITEM_CREATE,
       PermissionsEnum.ORG_PPE_ITEM_UPDATE,
       PermissionsEnum.ORG_PPE_ITEM_DELETE,
+    ],
+  },
+  {
+    link: '/organization/visit-activities',
+    name: 'visit_activities',
+    icon: 'clipboard-notes',
+    permissions: [
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_ALL,
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_FETCH,
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_DETAILS,
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_CREATE,
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_UPDATE,
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_DELETE,
+    ],
+  },
+  {
+    link: '/organization/visit-themes',
+    name: 'visit_themes',
+    icon: 'clipboard-notes',
+    permissions: [
+      PermissionsEnum.ORG_VISIT_THEME_ALL,
+      PermissionsEnum.ORG_VISIT_THEME_FETCH,
+      PermissionsEnum.ORG_VISIT_THEME_DETAILS,
+      PermissionsEnum.ORG_VISIT_THEME_CREATE,
+      PermissionsEnum.ORG_VISIT_THEME_UPDATE,
+      PermissionsEnum.ORG_VISIT_THEME_DELETE,
+    ],
+  },
+  {
+    link: '/organization/visit-categories',
+    name: 'visit_categories',
+    icon: 'clipboard-notes',
+    permissions: [
+      PermissionsEnum.ORG_VISIT_CATEGORY_ALL,
+      PermissionsEnum.ORG_VISIT_CATEGORY_FETCH,
+      PermissionsEnum.ORG_VISIT_CATEGORY_DETAILS,
+      PermissionsEnum.ORG_VISIT_CATEGORY_CREATE,
+      PermissionsEnum.ORG_VISIT_CATEGORY_UPDATE,
+      PermissionsEnum.ORG_VISIT_CATEGORY_DELETE,
     ],
   },
   {
@@ -560,7 +624,7 @@ const LockUpsRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_MEETING_TYPE_UPDATE,
     ],
   },
-    {
+  {
     link: '/organization/ptw-types',
     name: 'ptw-types',
     icon: 'medical-square',
@@ -572,11 +636,24 @@ const LockUpsRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_PTW_TYPE_UPDATE,
     ],
   },
-    {
+  {
     link: '/organization/management-change-topic-type',
     name: 'Management Change Topic Type',
     icon: 'sitemap',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+  {
+    link: '/organization/traning-topics',
+    name: 'traning_topics',
+    icon: 'medical-square',
+    permissions: [
+      PermissionsEnum.ORG_TRANING_TOPIC_ALL,
+      PermissionsEnum.ORG_TRANING_TOPIC_FETCH,
+      PermissionsEnum.ORG_TRANING_TOPIC_DETAILS,
+      PermissionsEnum.ORG_TRANING_TOPIC_CREATE,
+      PermissionsEnum.ORG_TRANING_TOPIC_UPDATE,
+      PermissionsEnum.ORG_TRANING_TOPIC_DELETE,
+    ],
   },
 ])
 const ReportsRoutes = ref<Routes[]>([
@@ -979,6 +1056,7 @@ onBeforeUnmount(() => {
   width: 37px !important;
   height: 35px !important;
 }
+
 .modern-sidebar {
   display: flex;
   height: 100dvh;

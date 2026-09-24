@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import DatePicker from 'primevue/datepicker'
@@ -12,10 +12,14 @@ import PermitToWorkParams from '@/features/Organization/Project/Core/params/Perm
 
 import IndexPTWTypeController from '@/features/Organization/PTWType/Presentation/controllers/indexPTWTypeController'
 import IndexPTWTypeParams from '@/features/Organization/PTWType/Core/params/indexPTWTypeParams'
+import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
+import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { formatTime } from '@/base/Presentation/utils/time_format'
+import type { UploadedFile } from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
+import HandleFIlesUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -27,6 +31,7 @@ const router = useRouter()
 const ptwNum = ref<string>('')
 
 const PermitToWorkType = ref<TitleInterface>()
+const organizationEmployee = ref<TitleInterface>()
 
 const startDate = ref<Date | null>(null)
 const endDate = ref<Date | null>(null)
@@ -57,8 +62,42 @@ const indexPTWTypeController = IndexPTWTypeController.getInstance()
 
 const indexPTWTypeParams = new IndexPTWTypeParams('', 1, 10, 0)
 
-const updatePermitToWorkType = (data: TitleInterface) => {
-  PermitToWorkType.value = data
+const ptwHeroStyles = computed(() => {
+  const color = PermitToWorkType.value?.color || 'var(--PrimaryColor)'
+
+  return {
+    background: `radial-gradient(circle at 92% 5%, rgba(255,255,255,0.16), transparent 27%), linear-gradient(125deg, ${color}, var(--brand-primary-900))`,
+  }
+})
+
+const updatePermitToWorkType = (data: TitleInterface | TitleInterface[] | null) => {
+  const selectedValue = Array.isArray(data) ? data[0] : data
+  PermitToWorkType.value = selectedValue ?? undefined
+}
+
+/* =========================
+   Organization Employee
+========================= */
+
+const indexOrganizationEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
+const indexOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams(
+  '',
+  1,
+  10,
+  0,
+  null,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  false,
+  Number(route.params.project_id),
+)
+
+const updateOrganizationEmployee = (data: TitleInterface | TitleInterface[] | null) => {
+  const selectedValue = Array.isArray(data) ? data[0] : data
+  organizationEmployee.value = selectedValue ?? undefined
+  delete requiredFieldErrors.value.OrganizationEmployee
 }
 
 /* =========================
@@ -68,12 +107,18 @@ const updatePermitToWorkType = (data: TitleInterface) => {
 const permitToWorkController = PermitToWorkController.getInstance()
 
 const SubmitFrom = async () => {
+  if (!organizationEmployee.value) {
+    requiredFieldErrors.value.OrganizationEmployee = 'Select an organization employee.'
+    return
+  }
+
   const permitToWorkParams = new PermitToWorkParams({
     project_id: Number(route.params.project_id!),
+    organization_employee_id: organizationEmployee.value.id,
 
     ptw_number: ptwNum.value,
 
-    ptw_type_id: PermitToWorkType.value?.id!,
+    ptw_type_id: Number(PermitToWorkType.value?.id ?? 0),
 
     start_date: formatJoinDate(startDate.value!),
     end_date: formatJoinDate(endDate.value!),
@@ -83,15 +128,21 @@ const SubmitFrom = async () => {
 
     location: location.value,
     description: description.value,
+    attachments: riskAssismentFile.value!,
   })
 
   await permitToWorkController.PermitToWork(permitToWorkParams, router)
+}
+const riskAssismentFile = ref<string[] | null>(null)
+
+const handleFilesChange = (files: UploadedFile[]) => {
+  riskAssismentFile.value = files.map((el) => el.base64 || '')
 }
 </script>
 
 <template>
   <section class="ptw-builder">
-    <header class="ptw-hero">
+    <header class="ptw-hero" :style="ptwHeroStyles">
       <div class="ptw-hero-copy">
         <span class="ptw-hero-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none">
@@ -158,14 +209,14 @@ const SubmitFrom = async () => {
           <div class="ptw-grid ptw-grid--two">
             <div class="ptw-field" data-required-field="Name">
               <label for="name">
-                {{ $t('Permit number') }}
+                {{ $t('Permit Code') }}
                 <span>*</span>
               </label>
               <InputText
                 id="name"
                 v-model="ptwNum"
                 class="ptw-control"
-                :placeholder="$t('Enter permit number')"
+                :placeholder="$t('Enter permit Code')"
                 @input="setptwNo"
               />
               <p v-if="getFieldError('Name')" class="required-field-message">
@@ -175,7 +226,7 @@ const SubmitFrom = async () => {
 
             <div class="ptw-field" data-required-field="SelectedWhereHouseType">
               <label for="permit_to_work_type">
-                {{ $t('permit_to_work_type') }}
+                {{ $t('Permit Type ') }}
                 <span>*</span>
               </label>
               <UpdatedCustomInputSelect
@@ -188,8 +239,28 @@ const SubmitFrom = async () => {
                 :placeholder="$t('Select_permit_to_work_type')"
                 @update:model-value="updatePermitToWorkType"
               />
-              <p v-if="getFieldError('SelectedWhereHouseType')" class="required-field-message">
+              <!-- <p v-if="getFieldError('SelectedWhereHouseType')" class="required-field-message">
                 {{ getFieldError('SelectedWhereHouseType') }}
+              </p> -->
+            </div>
+
+            <div class="ptw-field" data-required-field="OrganizationEmployee">
+              <label for="organization_employee">
+                {{ $t('Permit Applicant') }}
+                <span>*</span>
+              </label>
+              <UpdatedCustomInputSelect
+                id="organization_employee"
+                :required="true"
+                :has-header="true"
+                :model-value="organizationEmployee"
+                :controller="indexOrganizationEmployeeController"
+                :params="indexOrganizationEmployeeParams"
+                :placeholder="$t('Permit Applicant')"
+                @update:model-value="updateOrganizationEmployee"
+              />
+              <p v-if="getFieldError('OrganizationEmployee')" class="required-field-message">
+                {{ getFieldError('OrganizationEmployee') }}
               </p>
             </div>
           </div>
@@ -277,16 +348,16 @@ const SubmitFrom = async () => {
 
           <div class="ptw-grid">
             <div class="ptw-field">
-              <label for="location">{{ $t('location') }}</label>
+              <label for="location">{{ $t('Area') }}</label>
               <InputText
                 id="location"
                 v-model="location"
                 class="ptw-control"
-                :placeholder="$t('Enter work location')"
+                :placeholder="$t('Enter work Area')"
               />
             </div>
             <div class="ptw-field">
-              <label for="description">{{ $t('description') }}</label>
+              <label for="description">{{ $t('Description of Work Optional') }}</label>
               <textarea
                 id="description"
                 v-model="description"
@@ -294,6 +365,16 @@ const SubmitFrom = async () => {
                 rows="4"
                 :placeholder="$t('Describe the work activity and safety requirements')"
               ></textarea>
+            </div>
+            <div class="ptw-field ptw-control management-change-upload-field">
+              <HandleFIlesUpload
+                :label="$t('attachments')"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
+                :max-files="1"
+                :multiple="false"
+                class-name="input-file management-change-file-input"
+                @change="handleFilesChange"
+              />
             </div>
           </div>
         </section>

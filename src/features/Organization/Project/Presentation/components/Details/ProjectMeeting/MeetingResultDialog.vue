@@ -286,83 +286,83 @@ const formatDate = (date: Date): string => {
 
 const error = ref('')
 
-const validate = (): boolean => {
-  error.value = ''
+// const validate = (): boolean => {
+//   error.value = ''
 
-  /*
-   * Remove empty agenda items before checking.
-   */
-  const validAgenda = agenda.value.filter((item) => item.trim().length > 0)
+//   /*
+//    * Remove empty agenda items before checking.
+//    */
+//   const validAgenda = agenda.value.filter((item) => item.trim().length > 0)
 
-  if (!validAgenda.length) {
-    error.value = 'Please add at least one agenda item.'
+//   if (!validAgenda.length) {
+//     error.value = 'Please add at least one agenda item.'
 
-    return false
-  }
+//     return false
+//   }
 
-  for (let index = 0; index < meetingActions.value.length; index++) {
-    const action = meetingActions.value[index]
+//   for (let index = 0; index < meetingActions.value.length; index++) {
+//     const action = meetingActions.value[index]
 
-    if (!action) {
-      continue
-    }
+//     if (!action) {
+//       continue
+//     }
 
-    const type = getActionType(action)
+//     const type = getActionType(action)
 
-    if (!type) {
-      error.value = `Please select action type for action ${index + 1}.`
+//     if (!type) {
+//       error.value = `Please select action type for action ${index + 1}.`
 
-      return false
-    }
+//       return false
+//     }
 
-    /*
-     * Ongoing and Task require title.
-     */
-    if (
-      (type === ProjectMeetingActionsTypeEnum.ONGOING ||
-        type === ProjectMeetingActionsTypeEnum.TASK) &&
-      !action.title.trim()
-    ) {
-      error.value = `Please enter title for action ${index + 1}.`
+//     /*
+//      * Ongoing and Task require title.
+//      */
+//     if (
+//       (type === ProjectMeetingActionsTypeEnum.ONGOING ||
+//         type === ProjectMeetingActionsTypeEnum.TASK) &&
+//       !action.title.trim()
+//     ) {
+//       error.value = `Please enter title for action ${index + 1}.`
 
-      return false
-    }
+//       return false
+//     }
 
-    /*
-     * Task requires additional fields.
-     */
-    if (type === ProjectMeetingActionsTypeEnum.TASK) {
-      if (!action.dueDate) {
-        error.value = `Please select due date for task ${index + 1}.`
+//     /*
+//      * Task requires additional fields.
+//      */
+//     if (type === ProjectMeetingActionsTypeEnum.TASK) {
+//       if (!action.dueDate) {
+//         error.value = `Please select due date for task ${index + 1}.`
 
-        return false
-      }
+//         return false
+//       }
 
-      if (!action.dueTime) {
-        error.value = `Please select due time for task ${index + 1}.`
+//       if (!action.dueTime) {
+//         error.value = `Please select due time for task ${index + 1}.`
 
-        return false
-      }
+//         return false
+//       }
 
-      if (!action.employee?.id) {
-        error.value = `Please select employee for task ${index + 1}.`
+//       if (!action.employee?.id) {
+//         error.value = `Please select employee for task ${index + 1}.`
 
-        return false
-      }
-    }
-  }
+//         return false
+//       }
+//     }
+//   }
 
-  return true
-}
+//   return true
+// }
 
 // -----------------------------------------------------------------------------
 // Submit
 // -----------------------------------------------------------------------------
 
 const submit = async () => {
-  if (!validate()) {
-    return
-  }
+  // if (!validate()) {
+  //   return
+  // }
 
   error.value = ''
 
@@ -663,7 +663,7 @@ const getEmployeeName = (employee: any) => {
                 :label="$t('Action Type')"
                 :placeholder="$t('Select Action Type')"
                 :static-options="ActionTypeSelectionOptions"
-                required
+                
                 @update:model-value="UpdateActionType(index, $event)"
               />
 
@@ -672,7 +672,7 @@ const getEmployeeName = (employee: any) => {
                 <label :for="`action_title_${index}`" class="field-label">
                   {{ $t('title') }}
 
-                  <span class="required-star"> * </span>
+                  <!-- <span class="required-star"> * </span> -->
                 </label>
 
                 <input

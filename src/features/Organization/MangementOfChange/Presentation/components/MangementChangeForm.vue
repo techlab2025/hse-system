@@ -7,6 +7,7 @@ import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import DatePicker from 'primevue/datepicker'
 import { Icon } from '@iconify/vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
@@ -26,6 +27,7 @@ import { ChangeApprovalMangementEnum } from '../../Core/Core/ChangeApprovalEnum'
 import AddMangementChangeParams from '../../Core/params/addMangementChangeParams'
 import EditMangementChangeParams from '../../Core/params/editMangementChangeParams'
 import type MangementChangeModel from '../../Data/models/MangementChangeModel'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddMangementChangeParams | EditMangementChangeParams): void
@@ -33,6 +35,7 @@ const emit = defineEmits<{
 const props = defineProps<{ data?: MangementChangeModel }>()
 
 const route = useRoute()
+const { t } = useI18n()
 const projectId = Number(route.query.project_id || route.params.id)
 const formKey = ref(0)
 
@@ -50,11 +53,13 @@ const selectedTopicType = ref<number | null>(null)
 const status = ref(ChangeApprovalMangementEnum.approve)
 const approvalBy = ref<number | null>(null)
 const employeeId = ref<number | null>(null)
+const initiatorEmployeeId = ref<number | null>(null)
 const equipmentId = ref<number | null>(null)
 const topicText = ref('')
 const Selectedmangement = ref<TitleInterface | null>(null)
 const Selectedemployee = ref<TitleInterface | null>(null)
 const Selectedemployeeid = ref<TitleInterface | null>(null)
+const Selectedinitiatoremployeeid = ref<TitleInterface | null>(null)
 const Selectedequipment = ref<TitleInterface | null>(null)
 const requiredFieldErrors = ref<Record<string, string>>({})
 
@@ -70,6 +75,7 @@ const indexOrganizatoinEmployeeController =
   IndexOrganizatoinEmployeeController.getInstance()
 const indexOrganizatoinEmployeeParams =
   new IndexOrganizatoinEmployeeParams('', 0, 0, 0)
+  
 const indexOrganizatoinEmployeeidParams =
   new IndexOrganizatoinEmployeeParams(
     '',
@@ -87,14 +93,14 @@ const indexOrganizatoinEmployeeidParams =
       : null,
   )
 
-const ChangeTypeMangementList = ref<TitleInterface[]>([
+const ChangeTypeMangementList = computed<TitleInterface[]>(() => [
   new TitleInterface({
     id: ChangeTypeMangementEnum.temp,
-    title: 'temporary',
+    title: t('temporary'),
   }),
   new TitleInterface({
     id: ChangeTypeMangementEnum.permenent,
-    title: 'permanent',
+    title: t('permanent'),
   }),
 ])
 
@@ -105,14 +111,14 @@ const selectedChangeTypeMangement = computed(
     ) ?? ChangeTypeMangementList.value[0],
 )
 
-const ChangeApprovalMangementList = ref<TitleInterface[]>([
+const ChangeApprovalMangementList = computed<TitleInterface[]>(() => [
   new TitleInterface({
     id: ChangeApprovalMangementEnum.approve,
-    title: 'approve',
+    title: t('approve'),
   }),
   new TitleInterface({
     id: ChangeApprovalMangementEnum.reject,
-    title: 'reject',
+    title: t('reject'),
   }),
 ])
 
@@ -141,6 +147,7 @@ const formParams = computed(() => [
   topicType.value === MangementChangeTopicTypeEnum.other
     ? topicText.value || undefined
     : undefined,
+  initiatorEmployeeId.value ?? undefined,
 ] as const)
 
 const updateData = () => {
@@ -192,9 +199,15 @@ const setManagement = (data: TitleInterface | null) => {
   topicText.value = ''
 }
 
-const setEmployee = (data: TitleInterface | null) => {
-  Selectedemployeeid.value = data
-  employeeId.value = data?.id ?? null
+const setinitiatorEmployee = (data: TitleInterface | TitleInterface[] | null) => {
+  const employee = Array.isArray(data) ? data[0] ?? null : data
+  Selectedinitiatoremployeeid.value = employee
+  initiatorEmployeeId.value = employee?.id ?? null
+}
+const setEmployee = (data: TitleInterface | TitleInterface[] | null) => {
+  const employee = Array.isArray(data) ? data[0] ?? null : data
+  Selectedemployeeid.value = employee
+  employeeId.value = employee?.id ?? null
 }
 
 const setApprovalBy = (data: TitleInterface | null) => {
@@ -202,9 +215,10 @@ const setApprovalBy = (data: TitleInterface | null) => {
   approvalBy.value = data?.id ?? null
 }
 
-const setequipment = (data: TitleInterface | null) => {
-  Selectedequipment.value = data
-  equipmentId.value = data?.id ?? null
+const setequipment = (data: TitleInterface | TitleInterface[] | null) => {
+  const equipment = Array.isArray(data) ? data[0] ?? null : data
+  Selectedequipment.value = equipment
+  equipmentId.value = equipment?.id ?? null
 }
 
 const setFormData = (change?: MangementChangeModel) => {
@@ -248,6 +262,7 @@ const setFormData = (change?: MangementChangeModel) => {
   ) as ChangeApprovalMangementEnum
   approvalBy.value = change.approval_by
   employeeId.value = change.management_change_topic_employee_id
+  initiatorEmployeeId.value = change.initiatore_employee_id
   equipmentId.value = change.management_change_topic_equipment_id
   topicText.value = change.management_change_topic_text ?? ''
 
@@ -268,8 +283,7 @@ const setFormData = (change?: MangementChangeModel) => {
         `Employee #${change.approval_by}`,
     })
     : null
-  Selectedemployeeid.value = change.management_change_topic_employee_id
-    ? new TitleInterface({
+  Selectedemployeeid.value = change.management_change_topic_employee_id  ? new TitleInterface({
       id: change.management_change_topic_employee_id,
       title:
         change.employeeName ??
@@ -282,6 +296,14 @@ const setFormData = (change?: MangementChangeModel) => {
       title:
         change.equipmentTitle ??
         `Equipment #${change.management_change_topic_equipment_id}`,
+    })
+    : null
+
+      Selectedinitiatoremployeeid.value = change.initiatore_employee_id  ? new TitleInterface({
+      id: change.initiatore_employee_id,
+      title:
+        change.employeeName ??
+        `Employee #${change.initiatore_employee_id}`,
     })
     : null
 
@@ -302,6 +324,7 @@ watch(
     status,
     approvalBy,
     employeeId,
+    initiatorEmployeeId,
     equipmentId,
     topicText,
   ],
@@ -319,17 +342,17 @@ const hasText = (value: unknown) => String(value ?? '').trim().length > 0
 const requiredFields = computed(() => [
   {
     key: 'facilty',
-    message: 'Facility Is Required',
+    message: t('Facility Is Required'),
     isMissing: () => !hasText(facilty.value),
   },
   {
     key: 'area',
-    message: 'Area Is Required',
+    message: t('Area Is Required'),
     isMissing: () => !hasText(area.value),
   },
   {
     key: 'date',
-    message: 'Date Is Required',
+    message: t('Date Is Required'),
     isMissing: () => !date.value,
   },
 ])
@@ -471,11 +494,25 @@ onMounted(updateData)
           :model-value="Selectedemployee"
           :controller="indexOrganizatoinEmployeeController"
           :params="indexOrganizatoinEmployeeParams"
-          label="approval by"
+          label="Approved / Rejected By "
           id="approval-by"
           :placeholder="$t('Select an employee')"
           optional
           @update:model-value="setApprovalBy"
+        />
+      </div>
+            <div
+        class="management-change-field input-wrapper"
+      >
+        <UpdatedCustomInputSelect
+          :model-value="Selectedinitiatoremployeeid"
+          :controller="indexOrganizatoinEmployeeController"
+          :params="indexOrganizatoinEmployeeidParams"
+          label="Change Initiator"
+          id="initiator-employee"
+          :placeholder="$t('Select an initiator employee')"
+          optional
+          @update:model-value="setinitiatorEmployee"
         />
       </div>
     </div>
@@ -496,9 +533,9 @@ onMounted(updateData)
           :model-value="Selectedmangement"
           :controller="indexMangementChangeTopicTypeController"
           :params="indexMangementChangeTopicTypeParams"
-          label="management"
+          label="Description of Proposed Change/Modification"
           id="management"
-          :placeholder="$t('Select a management area')"
+          :placeholder="$t('Select Proposed Change/Modification')"
           optional
           @update:model-value="setManagement"
         />
@@ -511,7 +548,7 @@ onMounted(updateData)
         v-if="selectedTopicType === 1"
         class="management-change-field input-wrapper"
       >
-        <CustomSelectInput
+        <UpdatedCustomInputSelect
           :model-value="Selectedemployeeid"
           :controller="indexOrganizatoinEmployeeController"
           :params="indexOrganizatoinEmployeeidParams"
@@ -527,7 +564,7 @@ onMounted(updateData)
         v-if="selectedTopicType === 2"
         class="management-change-field input-wrapper"
       >
-        <CustomSelectInput
+        <UpdatedCustomInputSelect
           :model-value="Selectedequipment"
           :controller="indexEquipmentController"
           :params="indexEquipmentParams"
@@ -570,7 +607,7 @@ onMounted(updateData)
     <div class="management-change-fields management-change-fields--attachments">
       <div :key="formKey" class="management-change-upload-field">
         <HandleFIlesUpload
-          :label="$t('risk assessment file')"
+          :label="$t('Risk Assessment Document ')"
           accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
           :max-files="1"
           :multiple="false"
@@ -580,7 +617,7 @@ onMounted(updateData)
       </div>
 
       <div class="management-change-upload-field input-wrapper">
-        <label>{{ $t('images') }}</label>
+        <label>{{ $t('Additional Documents') }}</label>
         <MultiImagesInput
           accept="image/*"
           :initial-images="images.map((image) => image.file)"

@@ -33,6 +33,7 @@ import { ShiftsRoutes } from './shifts'
 import { notificationPlanRoutes } from './notificationPlan'
 import { taskReportRoutes } from './taskReports'
 import { todayTalkRoutes } from './todayTalk'
+import { inductionRoutes } from './induction'
 import { managementChangeTopicRoutes } from './MangementChangeTopicType'
 import { managementChangeRoutes } from './MangementOfChange'
 
@@ -76,6 +77,7 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...notificationPlanRoutes,
   ...taskReportRoutes,
   ...todayTalkRoutes,
+  ...inductionRoutes,
   ...managementChangeTopicRoutes,
   ...managementChangeRoutes,
   {

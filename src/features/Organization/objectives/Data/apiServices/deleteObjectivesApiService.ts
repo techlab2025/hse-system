@@ -17,11 +17,9 @@ class DeleteObjectivesApiService extends ServicesInterface {
     return this.instance;
   }
 
-  async applyService(
-    params: Params,
-  ): Promise<{ data: any; statusCode: number }> {
+  async applyService(params: Params): Promise<{ data: unknown; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.DeleteObjective,
+      url: ApiNames.instance.DeleteObjectives,
       type: CrudType.FormData,
       auth: true,
       params: params,

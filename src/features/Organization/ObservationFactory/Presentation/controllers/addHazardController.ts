@@ -30,13 +30,15 @@ export default class AddHazardController extends ControllerInterface<HazardModel
     if (params.type == Observation.AccidentsType && !params.typeId) {
       new OpenWarningDilaog('Incidant Type Is Required').openDialog()
       return
-    } else if (params.type == Observation.HazardType && !params.typeId) {
-      new OpenWarningDilaog('Observation Type Is Required').openDialog()
-      return
-    } else if (params.type == Observation.ObservationType && !params.typeId) {
-      new OpenWarningDilaog('Observation Type Is Required').openDialog()
-      return
     }
+    // else if (params.type == Observation.HazardType && !params.typeId) {
+    //   new OpenWarningDilaog('Observation Type Is Required').openDialog()
+    //   return
+    // }
+    // else if (params.type == Observation.ObservationType && !params.typeId) {
+    //   new OpenWarningDilaog('Observation Type Is Required').openDialog()
+    //   return
+    // }
     try {
       this.setLoading()
       params.validate()
