@@ -299,9 +299,16 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/visit-activities',
-    name: t('visit_activities'),
+    name: 'visit_activities',
     icon: 'clipboard-notes',
-    permissions: [PermissionsEnum.ADMIN],
+    permissions: [
+      PermissionsEnum.VISIT_ACTIVITIES_ALL,
+      PermissionsEnum.VISIT_ACTIVITIES_FETCH,
+      PermissionsEnum.VISIT_ACTIVITIES_DETAILS,
+      PermissionsEnum.VISIT_ACTIVITIES_CREATE,
+      PermissionsEnum.VISIT_ACTIVITIES_UPDATE,
+      PermissionsEnum.VISIT_ACTIVITIES_DELETE,
+    ],
   },
   {
     link: '/admin/visit-themes',
@@ -444,7 +451,7 @@ const LockUpsRoutes = ref<Routes[]>([
       PermissionsEnum.MEETING_TYPE_FETCH,
     ],
   },
-    {
+  {
     link: '/admin/ptw-types',
     name: t('ptw types'),
     icon: 'receipt',
@@ -459,19 +466,18 @@ const LockUpsRoutes = ref<Routes[]>([
     ],
   },
   {
-  link: '/admin/traning-topics',
-  name: t('traning_topics'),
-  icon: 'medical-square',
-  permissions: [
-    PermissionsEnum.TRANING_TOPIC_ALL,
-    PermissionsEnum.TRANING_TOPIC_FETCH,
-    PermissionsEnum.TRANING_TOPIC_DETAILS,
-    PermissionsEnum.TRANING_TOPIC_CREATE,
-    PermissionsEnum.TRANING_TOPIC_UPDATE,
-    PermissionsEnum.TRANING_TOPIC_DELETE,
-  ],
-},
-
+    link: '/admin/traning-topics',
+    name: t('traning_topics'),
+    icon: 'medical-square',
+    permissions: [
+      PermissionsEnum.TRANING_TOPIC_ALL,
+      PermissionsEnum.TRANING_TOPIC_FETCH,
+      PermissionsEnum.TRANING_TOPIC_DETAILS,
+      PermissionsEnum.TRANING_TOPIC_CREATE,
+      PermissionsEnum.TRANING_TOPIC_UPDATE,
+      PermissionsEnum.TRANING_TOPIC_DELETE,
+    ],
+  },
 ])
 
 const SubscriptionTypeRoutes = ref<Routes[]>([

@@ -108,7 +108,6 @@ const OperationsRoutes = ref<Routes[]>([
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
 
-
   // {
   //   link: '/organization/management-of-change',
   //   name: 'Management Of Change',
@@ -463,7 +462,14 @@ const LockUpsRoutes = ref<Routes[]>([
     link: '/organization/visit-activities',
     name: 'visit_activities',
     icon: 'clipboard-notes',
-    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+    permissions: [
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_ALL,
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_FETCH,
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_DETAILS,
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_CREATE,
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_UPDATE,
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_DELETE,
+    ],
   },
   {
     link: '/organization/visit-themes',
@@ -805,14 +811,14 @@ const visibleRouteGroups = computed<RouteGroup[]>(() => {
     .map((group) => {
       const routes = query
         ? group.routes.filter((item) => {
-          const routeName = t(item.name).toLocaleLowerCase()
-          const groupName = group.label.toLocaleLowerCase()
-          const hasMatchingChild = item.children?.some((child) =>
-            t(child.name).toLocaleLowerCase().includes(query),
-          )
+            const routeName = t(item.name).toLocaleLowerCase()
+            const groupName = group.label.toLocaleLowerCase()
+            const hasMatchingChild = item.children?.some((child) =>
+              t(child.name).toLocaleLowerCase().includes(query),
+            )
 
-          return routeName.includes(query) || groupName.includes(query) || hasMatchingChild
-        })
+            return routeName.includes(query) || groupName.includes(query) || hasMatchingChild
+          })
         : group.routes
 
       return {
@@ -907,16 +913,26 @@ onBeforeUnmount(() => {
   <div class="modern-sidebar">
     <nav class="side-rail-nav" :aria-label="$t('main_sidebar_groups')">
       <template v-for="group in routeGroups" :key="group.key">
-        <PermissionBuilder v-if="!group.adminOnly || user?.employeeType == EmployeeStatusEnum.Admin"
-          :code="group.permissions">
-          <button type="button" :class="[
-            'side-rail-btn',
-            {
-              'is-selected': isPaneVisible && paneGroupKey === group.key,
-              'is-active': activeRouteGroupKey === group.key && groupHasActiveRoute(group),
-            },
-          ]" :title="group.label" @click="openGroup(group.key)" @mouseenter="openGroup(group.key)"
-            @mouseleave="scheduleClosePane" @focus="openGroup(group.key)" @blur="scheduleClosePane">
+        <PermissionBuilder
+          v-if="!group.adminOnly || user?.employeeType == EmployeeStatusEnum.Admin"
+          :code="group.permissions"
+        >
+          <button
+            type="button"
+            :class="[
+              'side-rail-btn',
+              {
+                'is-selected': isPaneVisible && paneGroupKey === group.key,
+                'is-active': activeRouteGroupKey === group.key && groupHasActiveRoute(group),
+              },
+            ]"
+            :title="group.label"
+            @click="openGroup(group.key)"
+            @mouseenter="openGroup(group.key)"
+            @mouseleave="scheduleClosePane"
+            @focus="openGroup(group.key)"
+            @blur="scheduleClosePane"
+          >
             <SidebarUnicon :name="group.icon" class="strip-icon" />
             <span>{{ group.label }}</span>
           </button>
@@ -925,8 +941,14 @@ onBeforeUnmount(() => {
     </nav>
 
     <Transition name="side-pane">
-      <aside v-if="isPaneVisible && activeGroup" class="side-pane" @mouseenter="keepPaneOpen"
-        @mouseleave="scheduleClosePane" @focusin="keepPaneOpen" @focusout="scheduleClosePane">
+      <aside
+        v-if="isPaneVisible && activeGroup"
+        class="side-pane"
+        @mouseenter="keepPaneOpen"
+        @mouseleave="scheduleClosePane"
+        @focusin="keepPaneOpen"
+        @focusout="scheduleClosePane"
+      >
         <header class="side-pane-header">
           <div class="side-pane-heading">
             <span class="side-pane-icon">
@@ -940,25 +962,40 @@ onBeforeUnmount(() => {
 
           <label class="sidebar-search">
             <SidebarUnicon name="search" class="sidebar-search__icon" />
-            <input v-model="searchTerm" type="search" class="sidebar-search__input" :placeholder="$t('search')"
-              :aria-label="$t('search_all_sidebar_routes')" @keydown.esc="hidePane" />
+            <input
+              v-model="searchTerm"
+              type="search"
+              class="sidebar-search__input"
+              :placeholder="$t('search')"
+              :aria-label="$t('search_all_sidebar_routes')"
+              @keydown.esc="hidePane"
+            />
           </label>
         </header>
 
-        <nav ref="sidePaneRoutesRef" class="side-pane-routes"
-          :aria-label="$t('sidebar_group_routes', { group: activeGroup.label })">
+        <nav
+          ref="sidePaneRoutesRef"
+          class="side-pane-routes"
+          :aria-label="$t('sidebar_group_routes', { group: activeGroup.label })"
+        >
           <div class="side-pane-routes__inner">
             <template v-for="group in visibleRouteGroups" :key="group.key">
               <PermissionBuilder v-if="isSearching" :code="group.permissions">
                 <p class="side-route-group-title">{{ group.label }}</p>
               </PermissionBuilder>
 
-              <PermissionBuilder v-for="sidebarRoute in group.routes" :key="`${group.key}-${String(sidebarRoute.link)}`"
-                :code="sidebarRoute.permissions">
+              <PermissionBuilder
+                v-for="sidebarRoute in group.routes"
+                :key="`${group.key}-${String(sidebarRoute.link)}`"
+                :code="sidebarRoute.permissions"
+              >
                 <div class="side-route-entry">
-                  <router-link :to="sidebarRoute.link"
-                    :class="['side-btn', { active: isParentLinkActive(sidebarRoute) }]" :title="$t(sidebarRoute.name)"
-                    @click="activateRouteGroup(group.key)">
+                  <router-link
+                    :to="sidebarRoute.link"
+                    :class="['side-btn', { active: isParentLinkActive(sidebarRoute) }]"
+                    :title="$t(sidebarRoute.name)"
+                    @click="activateRouteGroup(group.key)"
+                  >
                     <SidebarUnicon :name="sidebarRoute.icon" class="side-icon" />
                     <span class="side-label-wrap">
                       <span class="side-label">{{ $t(sidebarRoute.name) }}</span>
@@ -967,12 +1004,20 @@ onBeforeUnmount(() => {
                   </router-link>
 
                   <div v-if="sidebarRoute.children?.length" class="side-route-children">
-                    <PermissionBuilder v-for="childRoute in sidebarRoute.children" :key="String(childRoute.link)"
-                      :code="childRoute.permissions">
-                      <router-link :to="childRoute.link" :class="[
-                        'side-btn side-btn--child',
-                        { active: isLinkActive(childRoute.link) },
-                      ]" :title="$t(childRoute.name)" @click="activateRouteGroup(group.key)">
+                    <PermissionBuilder
+                      v-for="childRoute in sidebarRoute.children"
+                      :key="String(childRoute.link)"
+                      :code="childRoute.permissions"
+                    >
+                      <router-link
+                        :to="childRoute.link"
+                        :class="[
+                          'side-btn side-btn--child',
+                          { active: isLinkActive(childRoute.link) },
+                        ]"
+                        :title="$t(childRoute.name)"
+                        @click="activateRouteGroup(group.key)"
+                      >
                         <SidebarUnicon :name="childRoute.icon" class="side-icon" />
                         <span class="side-label">{{ $t(childRoute.name) }}</span>
                       </router-link>
@@ -1100,16 +1145,22 @@ onBeforeUnmount(() => {
   overscroll-behavior-x: none;
   padding: 22px 16px 14px;
   background:
-    radial-gradient(circle at 18% 0%,
+    radial-gradient(
+      circle at 18% 0%,
       color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%,
-      transparent 34%),
-    radial-gradient(circle at 82% 18%,
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 82% 18%,
       color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%,
-      transparent 34%),
-    linear-gradient(155deg,
+      transparent 34%
+    ),
+    linear-gradient(
+      155deg,
       var(--brand-primary-600) 0%,
       var(--brand-primary-700) 44%,
-      var(--brand-primary-800) 100%);
+      var(--brand-primary-800) 100%
+    );
   border-inline-end: 1px solid color-mix(in srgb, var(--surface-1) 12%, transparent);
   box-shadow:
     18px 0 42px color-mix(in srgb, var(--brand-primary-700) 28%, transparent),
@@ -1142,7 +1193,7 @@ onBeforeUnmount(() => {
   line-height: 1.15;
 }
 
-.side-pane-heading div>span {
+.side-pane-heading div > span {
   margin-top: 3px;
   color: color-mix(in srgb, var(--brand-primary-100) 62%, transparent);
   font-size: 12px;
