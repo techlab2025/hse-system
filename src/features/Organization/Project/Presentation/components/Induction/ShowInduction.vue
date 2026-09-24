@@ -8,6 +8,8 @@ import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import ShowInductionController from '../../controllers/Induction/showInductionController'
 import ShowInductionParams from '../../../Core/params/induction/showInductionParams'
 
+import Image from 'primevue/image';
+
 const route = useRoute()
 const id = computed(() => Number(route.params.id))
 const controller = ShowInductionController.getInstance()
@@ -120,7 +122,10 @@ onMounted(fetchInductionDetails)
           <section class="induction-show-card induction-show-card--full">
             <h2>{{ $t('Evidence') }}</h2>
             <div v-if="attachments.length" class="attachment-grid">
-              <a
+              <div v-for="(file, index) in attachments"  :key="`${file}-${index}`" class="attachment-item">
+              <Image :src="file" alt="Image" width="250"  preview/>
+              </div>
+              <!-- <a
                 v-for="(file, index) in attachments"
                 :key="`${file}-${index}`"
                 :href="file"
@@ -129,7 +134,7 @@ onMounted(fetchInductionDetails)
                 class="attachment-item"
               >
                 <img :src="file" :alt="`${$t('Evidence')} ${index + 1}`" />
-              </a>
+              </a> -->
             </div>
             <p v-else class="empty-text">{{ $t('No attachments') }}</p>
           </section>
