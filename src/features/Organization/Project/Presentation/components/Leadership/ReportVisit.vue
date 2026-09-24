@@ -19,6 +19,9 @@ import IndexVisitThemeController from '@/features/Organization/VisitTheme/Presen
 import IndexVisitThemeParams from '@/features/Organization/VisitTheme/Core/params/indexVisitThemeParams'
 import IndexVisitCategoryController from '@/features/Organization/VisitCategory/Presentation/controllers/indexVisitCategoryController'
 import IndexVisitCategoryParams from '@/features/Organization/VisitCategory/Core/params/indexVisitCategoryParams'
+import HandleFIlesUpload, {
+  type UploadedFile,
+} from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
 
 defineOptions({ name: 'LeadershipVisitReportPage' })
 
@@ -65,6 +68,9 @@ const selectedUnsafeType = (
 const visitsPath = computed(
   () => `/organization/project-details/${projectId.value}/leadership/visits`,
 )
+const handleFilesChange = (files: UploadedFile[]) => {
+  attachments.value = files.map((file) => file.base64).filter(Boolean)
+}
 
 const submit = async () => {
   if (!visit.value || visit.value.reportAdded || controller.isDataLoading()) return
@@ -288,37 +294,25 @@ onMounted(async () => {
           </section>
 
           <section class="form-section">
-            <div class="section-title section-title--with-action">
+            <div class="section-title">
               <div class="section-title__copy">
                 <span>03</span>
                 <div>
                   <h2>Attachments</h2>
-                  <p>Add supporting URLs or file paths when available.</p>
+                  <p>Upload supporting evidence for this leadership visit.</p>
                 </div>
               </div>
-              <button type="button" class="add-button" @click="attachments.push('')">
-                <span aria-hidden="true">＋</span> Add attachment
-              </button>
             </div>
-            <div v-if="attachments.length" class="attachment-list">
-              <div v-for="(_, index) in attachments" :key="index" class="attachment-row">
-                <span aria-hidden="true">↗</span>
-                <input
-                  v-model="attachments[index]"
-                  type="text"
-                  placeholder="Attachment URL or path"
-                />
-                <button
-                  type="button"
-                  aria-label="Remove attachment"
-                  @click="attachments.splice(index, 1)"
-                >
-                  ×
-                </button>
-              </div>
-            </div>
-            <div v-else class="attachment-empty">
-              No attachments added. This section is optional.
+            <div class="report-upload-field">
+              <HandleFIlesUpload
+                label="Visit report attachment"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
+                :max-files="1"
+                :multiple="false"
+                class-name="report-file-input"
+                @change="handleFilesChange"
+              />
+              <small>PDF, Word, Excel, or image · One file maximum</small>
             </div>
           </section>
 
@@ -607,8 +601,7 @@ onMounted(async () => {
   color: var(--status-danger);
 }
 .field input,
-.field textarea,
-.attachment-row input {
+.field textarea {
   width: 100%;
   min-width: 0;
   padding: 12px 14px !important;
@@ -625,8 +618,7 @@ onMounted(async () => {
     background 0.2s ease;
 }
 .field input:focus,
-.field textarea:focus,
-.attachment-row input:focus {
+.field textarea:focus {
   border-color: var(--PrimaryColor);
   background: var(--surface-1);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 13%, transparent);
@@ -643,8 +635,7 @@ onMounted(async () => {
   width: 100%;
   min-height: 46px;
 }
-.improvement-list,
-.attachment-list {
+.improvement-list {
   display: grid;
   gap: 13px;
 }
@@ -724,41 +715,69 @@ onMounted(async () => {
   font: inherit;
   font-weight: 800;
 }
-.attachment-row {
+.report-upload-field {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 10px;
-  border: 1px solid var(--main-border);
-  border-radius: 13px;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
+  border-radius: 15px;
   background: color-mix(in srgb, var(--surface-2) 55%, var(--surface-1));
 }
-.attachment-row > span {
-  color: var(--PrimaryColor);
-  font-weight: 900;
-}
-.attachment-row input {
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-}
-.attachment-row button {
-  width: 36px;
-  height: 36px;
-  border: 0;
-  border-radius: 10px;
-  color: var(--status-danger);
-  background: var(--status-danger-soft);
-  cursor: pointer;
-  font-size: 1.15rem;
-}
-.attachment-empty {
-  padding: 16px;
-  border: 1px dashed var(--main-border);
-  border-radius: 13px;
+
+.report-upload-field > small {
   color: var(--text-soft);
-  text-align: center;
+  font-size: 0.75rem;
+}
+
+.report-upload-field :deep(.file-upload-wrapper) {
+  gap: 10px;
+}
+
+.report-upload-field :deep(.upload-label) {
+  color: var(--text-strong);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.report-upload-field :deep(.report-file-input) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 92px;
+  padding: 18px;
+  border: 1px dashed color-mix(in srgb, var(--PrimaryColor) 42%, var(--main-border));
+  border-radius: 13px;
+  color: var(--PrimaryColor);
+  background: color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-1));
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.report-upload-field :deep(.report-file-input:hover:not(.disabled)) {
+  border-color: var(--PrimaryColor);
+  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1));
+  transform: translateY(-1px);
+}
+
+.report-upload-field :deep(.report-file-input.disabled) {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.report-upload-field :deep(.preview-grid) {
+  margin-top: 2px;
+}
+
+.report-upload-field :deep(.preview-item) {
+  width: 112px;
+  height: 112px;
+  border-color: color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
+  border-radius: 13px;
+  background: var(--surface-1);
 }
 .form-footer {
   position: sticky;
