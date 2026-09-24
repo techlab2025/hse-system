@@ -102,7 +102,7 @@ export default class InductionDetailsModel {
       asEmployeeRecords(organisationEmployees).map((item) => OrganizatoinEmployeeModel.fromMap(item)),
       asPositiveNumber(data.projectLocationId ?? data.project_location_id ?? location.project_location_id),
       asPositiveNumber(
-        data.projectZoonId ?? data.project_zoon_id ?? data.project_zone_id ?? zoon.project_zoon_id,
+        data.projectZoonId ?? data.project_location_zone_id ?? data.project_location_zone_id ?? zoon.project_location_zone_id,
       ),
     )
   }

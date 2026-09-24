@@ -41,7 +41,7 @@ export default class EditInductionParams implements Params {
       data.project_location_id = this.projectLocationId
     }
     if (this.projectZoonId !== null) {
-      data.project_zoon_id = this.projectZoonId
+      data.project_location_zone_id = this.projectZoonId
     }
 
     return data
