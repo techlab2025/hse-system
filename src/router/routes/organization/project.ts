@@ -61,6 +61,26 @@ export const projectRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: 'project-details/:id/leadership/visits',
+    name: 'Project Leadership Visits',
+    component: () => import('@/views/Organization/Project/LeadershipVisitsPage.vue'),
+    meta: {
+      breadcrumb: 'Leadership Visits',
+      parent: 'Project Leadership',
+      isSidebar: false,
+    },
+  },
+  {
+    path: 'project-details/:id/leadership/visits/:visitId/report',
+    name: 'Project Leadership Visit Report',
+    component: () => import('@/views/Organization/Project/LeadershipVisitReportPage.vue'),
+    meta: {
+      breadcrumb: 'Report Leadership Visit',
+      parent: 'Project Leadership Visits',
+      isSidebar: false,
+    },
+  },
+  {
     path: 'project-details/:id/ppe-matrix',
     name: 'Project PPE Matrix',
     component: () => import('@/views/Organization/Project/ppematrix/PPEActivityToolMatrixPage.vue'),

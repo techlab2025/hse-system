@@ -22,8 +22,6 @@ import CreateLeadershipPlanParams, {
 import FetchAllLeadershipVisitsParams from '../../../Core/params/Leadership/FetchAllLeadershipVisitsParams'
 import CreateLeadershipPlanController from '../../controllers/Leadership/CreateLeadershipPlanController'
 import FetchAllLeadershipVisitsController from '../../controllers/Leadership/FetchAllLeadershipVisitsController'
-import type LeadershipVisitModel from '../../../Data/models/Leadership/LeadershipVisitModel'
-import ReportVisit from './ReportVisit.vue'
 
 defineOptions({ name: 'ProjectLeadership' })
 
@@ -48,7 +46,6 @@ const planController = CreateLeadershipPlanController.getInstance()
 const visitsController = FetchAllLeadershipVisitsController.getInstance()
 const visitsState = visitsController.state
 const monthVisits = reactive<Record<string, LeadershipVisitInput[]>>({})
-const selectedVisit = ref<LeadershipVisitModel | null>(null)
 const errorMessage = ref('')
 const successMessage = ref('')
 
@@ -147,11 +144,6 @@ const saveMonth = async (month: ProjectMonth) => {
     errorMessage.value = 'Unable to save visits.'
   }
 }
-const reportSubmitted = async () => {
-  selectedVisit.value = null
-  successMessage.value = 'Visit report submitted.'
-  await refreshVisits()
-}
 onMounted(async () => {
   if (!Number.isInteger(projectId.value) || projectId.value <= 0) return
   await Promise.allSettled([
@@ -196,9 +188,17 @@ onMounted(async () => {
           </p>
         </div>
       </div>
-      <RouterLink :to="`/organization/project-details/${projectId}`" class="back-link"
-        >← <span>Back to project</span>
-      </RouterLink>
+      <div class="hero__actions">
+        <RouterLink
+          :to="`/organization/project-details/${projectId}/leadership/visits`"
+          class="back-link back-link--primary"
+        >
+          <span>View leadership visits</span> →
+        </RouterLink>
+        <RouterLink :to="`/organization/project-details/${projectId}`" class="back-link">
+          ← <span>Back to project</span>
+        </RouterLink>
+      </div>
     </header>
 
     <div v-if="errorMessage" class="notice notice--error" role="alert">
@@ -457,80 +457,6 @@ onMounted(async () => {
         <div class="notice notice--error">Unable to load project dates.</div>
       </template>
     </DataStatus>
-
-    <section class="workspace-card">
-      <div class="section-intro">
-        <div>
-          <span class="eyebrow">From plan to action</span>
-          <h2>Saved visits</h2>
-          <p>Review every visit and submit its report after the visit.</p>
-        </div>
-        <span class="total-pill">{{ visits.length }} total</span>
-      </div>
-      <DataStatus :controller="visitsState">
-        <template #success>
-          <div v-if="visits.length" class="table-responsive visits-table">
-            <table class="main-table">
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Location</th>
-                  <th>Employee</th>
-                  <th>Activity</th>
-                  <th>Report</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="visit in visits" :key="visit.id">
-                  <td>
-                    <strong>{{ visit.date }}</strong>
-                  </td>
-                  <td>{{ visit.location }}</td>
-                  <td>
-                    <span class="employee-cell"
-                      ><span class="avatar">{{
-                        visit.organizationEmployeeName?.charAt(0)?.toUpperCase() || 'E'
-                      }}</span
-                      >{{ visit.organizationEmployeeName || '—' }}</span
-                    >
-                  </td>
-                  <td>
-                    <span class="activity-pill">{{ visit.visitActivityName || '—' }}</span>
-                  </td>
-                  <td>
-                    <button type="button" class="report-link" @click="selectedVisit = visit">
-                      Report visit <span aria-hidden="true">↗</span>
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div v-else class="empty-state">
-            <span>◎</span><strong>No leadership visits yet</strong>
-            <p>Start with a monthly plan above. Your saved visits will appear here.</p>
-          </div>
-        </template>
-        <template #loader>
-          <TableLoader :cols="5" :rows="4" />
-        </template>
-        <template #initial>
-          <TableLoader :cols="5" :rows="4" />
-        </template>
-        <template #empty>
-          <div class="empty-state"><strong>No visits have been planned yet.</strong></div>
-        </template>
-        <template #failed>
-          <div class="notice notice--error">Unable to load visits.</div>
-        </template>
-      </DataStatus>
-    </section>
-
-    <ReportVisit
-      :visit="selectedVisit"
-      @close="selectedVisit = null"
-      @submitted="reportSubmitted"
-    />
   </main>
 </template>
 
@@ -699,6 +625,26 @@ onMounted(async () => {
   color: white;
   background: color-mix(in srgb, white 17%, transparent);
   transform: translateY(-1px);
+}
+
+.hero__actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 9px;
+}
+
+.back-link--primary {
+  border-color: color-mix(in srgb, white 55%, transparent);
+  color: var(--brand-primary-900);
+  background: white;
+}
+
+.back-link--primary:hover {
+  color: var(--brand-primary-900);
+  background: color-mix(in srgb, white 90%, var(--PrimaryColor));
 }
 
 .notice {
@@ -1234,99 +1180,6 @@ onMounted(async () => {
   cursor: wait;
 }
 
-.total-pill {
-  padding: 8px 12px;
-  border-radius: 999px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 10%, var(--surface-1));
-  font-size: 0.78rem;
-  font-weight: 850;
-  white-space: nowrap;
-}
-
-.visits-table {
-  overflow: hidden;
-  border: 1px solid var(--main-border);
-  border-radius: 16px;
-  box-shadow: 0 8px 24px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
-}
-
-.visits-table .main-table {
-  width: 100%;
-}
-
-.visits-table th {
-  color: var(--text-soft);
-  background: var(--surface-2);
-  text-transform: uppercase;
-  font-size: 0.69rem;
-  letter-spacing: 0.07em;
-}
-
-.visits-table td {
-  color: var(--text-strong);
-}
-
-.visits-table tbody tr {
-  transition: background 0.2s ease;
-}
-
-.visits-table tbody tr:hover {
-  background: color-mix(in srgb, var(--PrimaryColor) 4%, var(--surface-1));
-}
-
-.employee-cell {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.avatar {
-  display: grid;
-  place-items: center;
-  width: 31px;
-  height: 31px;
-  flex: none;
-  border-radius: 50%;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 10%, var(--surface-1));
-  font-weight: 800;
-}
-
-.activity-pill {
-  display: inline-block;
-  padding: 6px 9px;
-  border-radius: 8px;
-  background: var(--surface-2);
-  font-size: 0.75rem;
-}
-
-.report-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 11px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 35%, var(--main-border));
-  border-radius: 9px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-1));
-  cursor: pointer;
-  font-weight: 800;
-  white-space: nowrap;
-  transition:
-    transform 0.2s ease,
-    color 0.2s ease,
-    background 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.report-link:hover {
-  color: var(--text-on-brand);
-  background: var(--PrimaryColor);
-  transform: translateY(-1px);
-  box-shadow: 0 8px 18px color-mix(in srgb, var(--PrimaryColor) 20%, transparent);
-}
-
 :deep(.p-accordionheader) {
   padding: 12px 15px;
   background: var(--surface-1);
@@ -1349,9 +1202,7 @@ select:focus-visible {
   .back-link,
   .overview__item,
   .month-panel,
-  .button,
-  .report-link,
-  .visits-table tbody tr {
+  .button {
     transition: none;
   }
 }
@@ -1385,6 +1236,15 @@ select:focus-visible {
 
   .month-empty .button {
     width: 100%;
+  }
+
+  .hero__actions,
+  .hero__actions .back-link {
+    width: 100%;
+  }
+
+  .hero__actions .back-link {
+    justify-content: center;
   }
 }
 
