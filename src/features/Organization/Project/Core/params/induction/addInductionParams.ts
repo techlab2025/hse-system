@@ -23,9 +23,9 @@ export default class AddInductionParams implements Params {
     return {
       date: this.date,
       image: this.image,
-      trainingTopic: this.trainingTopic.map((item) => item.toMap()),
-      organisationEmployee: this.organisationEmployee.map((item) => item.toMap()),
-      instractor_id: this.instractor_id,
+      training_topic_ids: this.trainingTopic.map((item) => item.toMap()),
+      attendees: this.organisationEmployee.map((item) => item.toMap()),
+      instructor_employee_id: this.instractor_id,
     }
   }
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
@@ -22,12 +23,23 @@ import IndexInductionParams from '../../../Core/params/induction/indexInductionP
 import DeleteInductionParams from '../../../Core/params/induction/deleteInductionToolParams'
 
 const { t } = useI18n()
+const route = useRoute()
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
 const controller = IndexInductionController.getInstance()
 const state = ref(controller.state.value)
 const basePath = '/organization'
+const routeProjectId = computed(() => {
+  const routeValue = route.query.project_id ?? route.params.project_id
+  const rawValue = Array.isArray(routeValue) ? routeValue[0] : routeValue
+  const parsedValue = Number(rawValue)
+
+  return Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : null
+})
+const projectQuery = computed(() =>
+  routeProjectId.value ? `?project_id=${routeProjectId.value}` : '',
+)
 
 const featurePermissions = [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE]
 const createPermissions = [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE]
@@ -57,7 +69,7 @@ const rowActions = (id: number) => [
   {
     text: t('edit'),
     icon: ActionsTableEdit,
-    link: `${basePath}/induction/${id}`,
+    link: `${basePath}/induction/${id}${projectQuery.value}`,
     permission: featurePermissions,
   },
   {
@@ -71,7 +83,7 @@ const rowActions = (id: number) => [
 const headerActions = () => [
   {
     text: t('add_induction'),
-    link: `${basePath}/induction/add`,
+    link: `${basePath}/induction/add${projectQuery.value}`,
     icon: ActionsListAddIcon,
     primary: true,
     type: ActionItemsTypeEnum.Info,
@@ -142,7 +154,7 @@ watch(
       <template #initial><TableLoader :cols="6" :rows="10" /></template>
       <template #empty>
         <DataEmpty
-          :link="`${basePath}/induction/add`"
+          :link="`${basePath}/induction/add${projectQuery}`"
           :add-text="$t('add_induction')"
           description="No inductions have been added yet"
           title="No inductions"
@@ -150,7 +162,7 @@ watch(
       </template>
       <template #failed>
         <DataFailed
-          :link="`${basePath}/induction/add`"
+          :link="`${basePath}/induction/add${projectQuery}`"
           :add-text="$t('add_induction')"
           description="Unable to load inductions"
           title="No inductions"

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
@@ -14,6 +14,18 @@ const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
+const projectId = computed(() => {
+  const routeValue = route.query.project_id
+  const rawValue = Array.isArray(routeValue) ? routeValue[0] : routeValue
+  const parsedValue = Number(rawValue)
+
+  return Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : null
+})
+const listPath = computed(() =>
+  projectId.value
+    ? `/organization/management-of-change?project_id=${projectId.value}`
+    : '/organization/management-of-change',
+)
 const formRef = ref<InstanceType<typeof MangementChangeForm> | null>(null)
 
 const showMangementChangeController = ShowMangementChangeController.getInstance()
@@ -36,7 +48,7 @@ const editMangementChange = async () => {
   )
 
   if (EditMangementChangeController.getInstance().isDataSuccess()) {
-    router.push('/organization/management-of-change')
+    router.push(listPath.value)
   }
 }
 
