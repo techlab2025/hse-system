@@ -209,14 +209,14 @@ const handleFilesChange = (files: UploadedFile[]) => {
           <div class="ptw-grid ptw-grid--two">
             <div class="ptw-field" data-required-field="Name">
               <label for="name">
-                {{ $t('Permit number') }}
+                {{ $t('Permit Code') }}
                 <span>*</span>
               </label>
               <InputText
                 id="name"
                 v-model="ptwNum"
                 class="ptw-control"
-                :placeholder="$t('Enter permit number')"
+                :placeholder="$t('Enter permit Code')"
                 @input="setptwNo"
               />
               <p v-if="getFieldError('Name')" class="required-field-message">
@@ -226,7 +226,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
 
             <div class="ptw-field" data-required-field="SelectedWhereHouseType">
               <label for="permit_to_work_type">
-                {{ $t('permit_to_work_type') }}
+                {{ $t('Permit Type ') }}
                 <span>*</span>
               </label>
               <UpdatedCustomInputSelect
@@ -246,7 +246,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
 
             <div class="ptw-field" data-required-field="OrganizationEmployee">
               <label for="organization_employee">
-                {{ $t('organization_employee') }}
+                {{ $t('Permit Applicant') }}
                 <span>*</span>
               </label>
               <UpdatedCustomInputSelect
@@ -256,7 +256,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
                 :model-value="organizationEmployee"
                 :controller="indexOrganizationEmployeeController"
                 :params="indexOrganizationEmployeeParams"
-                :placeholder="$t('select_organization_employee')"
+                :placeholder="$t('Permit Applicant')"
                 @update:model-value="updateOrganizationEmployee"
               />
               <p v-if="getFieldError('OrganizationEmployee')" class="required-field-message">
@@ -348,16 +348,16 @@ const handleFilesChange = (files: UploadedFile[]) => {
 
           <div class="ptw-grid">
             <div class="ptw-field">
-              <label for="location">{{ $t('location') }}</label>
+              <label for="location">{{ $t('Area') }}</label>
               <InputText
                 id="location"
                 v-model="location"
                 class="ptw-control"
-                :placeholder="$t('Enter work location')"
+                :placeholder="$t('Enter work Area')"
               />
             </div>
             <div class="ptw-field">
-              <label for="description">{{ $t('description') }}</label>
+              <label for="description">{{ $t('Description of Work Optional') }}</label>
               <textarea
                 id="description"
                 v-model="description"

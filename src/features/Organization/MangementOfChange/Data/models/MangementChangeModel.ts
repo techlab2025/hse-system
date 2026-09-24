@@ -102,7 +102,7 @@ export default class MangementChangeModel {
       toStringValue(data.facilty) ?? '',
       toStringValue(data.area) ?? '',
       toNullableString(data.date),
-      toNumber(data.change_type),
+      toNumber(data.changement_type),
       toNumber(data.management_change_topic_type_id),
       toNumber(data.status),
       toNullableNumber(data.approval_by),

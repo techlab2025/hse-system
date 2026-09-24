@@ -107,6 +107,7 @@ defineProps<{
         <router-link
           :to="{
             name: 'management-of-change',
+            params: { id: projectId },
             query: { project_id: projectId },
           }"
           class="project-action-link action-change"

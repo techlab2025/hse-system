@@ -12,7 +12,7 @@ export default class InductionOrganisationEmployee implements Params {
     const employeeName = this.name?.trim()
 
     if (Number.isFinite(employeeId) && employeeId > 0) {
-      data.organisation_employee_id = employeeId
+      data.organization_employee_id = employeeId
       return data
     }
 

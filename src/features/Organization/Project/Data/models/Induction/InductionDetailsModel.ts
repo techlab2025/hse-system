@@ -1,17 +1,6 @@
 import OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
 import TraningTopicModel from '@/features/Organization/TraningTopic/Data/models/TraningTopicModel'
 
-const asRecords = (value: unknown): Record<string, unknown>[] =>
-  Array.isArray(value)
-    ? value.filter(
-        (item): item is Record<string, unknown> =>
-          Boolean(item) && typeof item === 'object' && !Array.isArray(item),
-      )
-    : []
-
-const asStringArray = (value: unknown): string[] | null =>
-  Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : null
-
 export default class InductionDetailsModel {
   public id: number
   public title: string
@@ -20,6 +9,8 @@ export default class InductionDetailsModel {
   public image: string[] | null
   public trainingTopic: TraningTopicModel[]
   public organisationEmployee: OrganizatoinEmployeeModel[]
+  public projectLocationId: number | null
+  public projectZoonId: number | null
 
   constructor(
     id: number,
@@ -29,6 +20,8 @@ export default class InductionDetailsModel {
     image: string[] | null,
     trainingTopic: TraningTopicModel[],
     organisationEmployee: OrganizatoinEmployeeModel[],
+    projectLocationId: number | null = null,
+    projectZoonId: number | null = null,
   ) {
     this.id = id
     this.title = title
@@ -37,22 +30,40 @@ export default class InductionDetailsModel {
     this.image = image
     this.trainingTopic = trainingTopic
     this.organisationEmployee = organisationEmployee
+    this.projectLocationId = projectLocationId
+    this.projectZoonId = projectZoonId
   }
 
-  static fromMap(data: Record<string, unknown>): InductionDetailsModel {
-    const id = Number(data.id ?? 0)
-    const trainingTopics = data.trainingTopic ?? data.training_topic ?? data.training_topics ?? []
-    const organisationEmployees =
-      data.organisationEmployee ?? data.organisation_employee ?? data.organisation_employees ?? []
-
+  static fromMap(data: any): InductionDetailsModel {
     return new InductionDetailsModel(
-      id,
-      String(data.title ?? data.name ?? `Induction #${id}`),
-      Number(data.instractor_id ?? data.instructor_id ?? 0),
-      typeof data.date === 'string' ? data.date : null,
-      asStringArray(data.image),
-      asRecords(trainingTopics).map((item) => TraningTopicModel.fromMap(item)),
-      asRecords(organisationEmployees).map((item) => OrganizatoinEmployeeModel.fromMap(item)),
+      data.induction_id ?? data.id,
+      data.title ?? data.name ?? `Induction #${data.induction_id ?? data.id}`,
+      data.instructor_employee_id ?? data.instractor_id,
+      data.date,
+      data.media?.map((item: any) => item.url) ?? data.attachments ?? data.image ?? [],
+      data.induction_training_topics?.map((item: any) =>
+        TraningTopicModel.fromMap({
+          id: item.training_topic_id,
+          title: item.training_topic?.title ?? item.title ?? `Training Topic #${item.training_topic_id}`,
+        }),
+      ) ?? data.trainingTopic ?? [],
+      data.attendees?.map((item: any) =>
+        OrganizatoinEmployeeModel.fromMap({
+          ...item,
+          id: item.organization_employee_id ?? 0,
+          name: item.name ?? item.organization_employee?.name ?? '',
+          phone: item.phone ?? '',
+          email: item.email ?? '',
+          certificates: item.certificates ?? [],
+          hierarchy: item.hierarchy ?? [],
+          employee_certificates: item.employee_certificates ?? [],
+          validation_status: item.validation_status ?? 0,
+          password: item.password ?? '',
+          hierarchies: item.hierarchies ?? [],
+        }),
+      ) ?? data.organisationEmployee ?? [],
+      data.project_location_id ?? data.projectLocationId ?? null,
+      data.project_location_zone_id ?? data.projectZoonId ?? null,
     )
   }
 

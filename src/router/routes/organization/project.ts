@@ -146,7 +146,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     name: 'management-of-change',
     component: () => import('@/views/Organization/MangementOfChange/MangementOfChange.vue'),
     meta: {
-      breadcrumb: 'management-of-change',
+      breadcrumb: 'Management Of Change',
       parent: 'Project Details',
       isSidebar: true,
     },
@@ -236,6 +236,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Organization/Project/PermitToWork/ProjectPermitsPage.vue'),
     meta: {
       breadcrumb: 'Project Permits',
+      parent: 'Project Details',
       isSidebar: false,
     },
   },
@@ -254,6 +255,7 @@ export const projectRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Organization/Project/PermitToWork/ProjectMyPermitsPage.vue'),
     meta: {
       breadcrumb: 'Project My Permits',
+      parent: 'Project Details',
       isSidebar: false,
     },
   },

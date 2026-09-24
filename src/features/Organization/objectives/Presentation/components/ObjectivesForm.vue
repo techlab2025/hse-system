@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import DatePicker from 'primevue/datepicker'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
@@ -26,6 +27,7 @@ const emit = defineEmits<{
 const props = defineProps<{ data?: ObjectivesDetailsModel }>()
 
 const route = useRoute()
+const { t } = useI18n()
 const maxYearDate = new Date(new Date().getFullYear(), 11, 31)
 
 const year = ref<Date | null>(new Date(new Date().getFullYear(), 0, 1))
@@ -80,6 +82,28 @@ const employeeParams = computed(
     ),
 )
 
+const translateOption = (option: TitleInterface): TitleInterface =>
+  new TitleInterface({
+    id: option.id,
+    title: t(option.title ?? ''),
+    subtitle: option.subtitle,
+  })
+
+const objectiveTargetTypeOptions = computed(() => ObjectiveTargetTypeOptions.map(translateOption))
+const objectiveDirectionOptions = computed(() => ObjectiveDirectionOptions.map(translateOption))
+const objectiveFrequencyOptions = computed(() => ObjectiveFrequencyOptions.map(translateOption))
+const selectedTargetTypeOption = computed(
+  () => objectiveTargetTypeOptions.value.find((option) => option.id === targetType.value?.id) ?? null,
+)
+const selectedDirectionOption = computed(
+  () => objectiveDirectionOptions.value.find((option) => option.id === direction.value?.id) ?? null,
+)
+const selectedFrequencyOption = computed(
+  () => objectiveFrequencyOptions.value.find((option) => option.id === frequency.value?.id) ?? null,
+)
+const translatedOptionTitle = (option?: TitleInterface | null): string =>
+  option?.title ? t(option.title) : ''
+
 const isPeriodicFrequency = computed(
   () => Number(targetType.value?.id) === ObjectiveTargetTypeEnum.PeriodicFrequency,
 )
@@ -112,18 +136,18 @@ const targetHelp = computed(() => {
 const selectedYearLabel = computed(() => year.value?.getFullYear().toString() ?? '-')
 const scopeLabel = computed(() => {
   if (project.value?.title) return project.value.title
-  if (routeProjectId.value) return `Project #${routeProjectId.value}`
-  return 'Company-wide'
+  if (routeProjectId.value) return t('project_number', { number: routeProjectId.value })
+  return t('Company-wide')
 })
 const objectivePreview = computed(
-  () => objective.value.trim() || 'Train 80% of company employees in HSE.',
+  () => objective.value.trim() || t('Train 80% of company employees in HSE.'),
 )
 const measurementLabel = computed(() => {
-  if (isPeriodicFrequency.value) return frequency.value?.title ?? 'Periodic frequency'
-  return `${targetType.value?.title ?? ''} ${direction.value?.title ?? ''}`.trim()
+  if (isPeriodicFrequency.value) return translatedOptionTitle(frequency.value) || t('Periodic frequency')
+  return `${translatedOptionTitle(targetType.value)} ${translatedOptionTitle(direction.value)}`.trim()
 })
 const targetPreview = computed(() => {
-  if (isPeriodicFrequency.value) return `${annualOccurrences.value ?? '-'} times per year`
+  if (isPeriodicFrequency.value) return t('times_per_year', { count: annualOccurrences.value ?? '-' })
   if (!hasNumber(target.value)) return '-'
 
   const suffix = isPercentage.value ? '%' : unit.value.trim() ? ` ${unit.value.trim()}` : ''
@@ -273,52 +297,52 @@ watch(
 const requiredFields = computed(() => [
   {
     key: 'year',
-    message: 'Year Is Required',
+    message: t('Year Is Required'),
     isMissing: () => !year.value,
   },
   {
     key: 'objective',
-    message: 'Objective Is Required',
+    message: t('Objective Is Required'),
     isMissing: () => !hasText(objective.value),
   },
   {
     key: 'target_type',
-    message: 'Target Type Is Required',
+    message: t('Target Type Is Required'),
     isMissing: () => !targetType.value?.id,
   },
   {
     key: 'direction',
-    message: 'Direction Is Required',
+    message: t('Direction Is Required'),
     isMissing: () => showDirection.value && !direction.value?.id,
   },
   {
     key: 'target',
-    message: 'Target Is Required',
+    message: t('Target Is Required'),
     isMissing: () => showTarget.value && !hasNumber(target.value),
   },
   {
     key: 'baseline',
-    message: 'Baseline Is Required',
+    message: t('Baseline Is Required'),
     isMissing: () => showBaseline.value && !hasNumber(baseline.value),
   },
   {
     key: 'unit',
-    message: 'Unit Is Required',
+    message: t('Unit Is Required'),
     isMissing: () => showUnit.value && !hasText(unit.value),
   },
   {
     key: 'frequency',
-    message: 'Frequency Is Required',
+    message: t('Frequency Is Required'),
     isMissing: () => isPeriodicFrequency.value && !frequency.value?.id,
   },
   {
     key: 'department',
-    message: 'Department Is Required',
+    message: t('Department Is Required'),
     isMissing: () => !department.value?.id,
   },
   {
     key: 'follow_up_employee',
-    message: 'Follow-up Employee Is Required',
+    message: t('Follow-up Employee Is Required'),
     isMissing: () => !followUpEmployee.value?.id,
   },
 ])
@@ -470,10 +494,10 @@ defineExpose({ validateRequiredFields })
           <div class="objective-field input-wrapper" data-required-field="target_type">
             <UpdatedCustomInputSelect
               id="objective-target-type"
-              :model-value="targetType"
+              :model-value="selectedTargetTypeOption"
               :label="$t('Target Type')"
               :placeholder="$t('Select target type')"
-              :static-options="ObjectiveTargetTypeOptions"
+              :static-options="objectiveTargetTypeOptions"
               required
               :reload="false"
               @update:model-value="onTargetTypeChange"
@@ -486,10 +510,10 @@ defineExpose({ validateRequiredFields })
           <div v-if="showDirection" class="objective-field input-wrapper" data-required-field="direction">
             <UpdatedCustomInputSelect
               id="objective-direction"
-              :model-value="direction"
+              :model-value="selectedDirectionOption"
               :label="$t('Direction')"
               :placeholder="$t('Select direction')"
-              :static-options="ObjectiveDirectionOptions"
+              :static-options="objectiveDirectionOptions"
               required
               :reload="false"
               @update:model-value="onDirectionChange"
@@ -502,10 +526,10 @@ defineExpose({ validateRequiredFields })
           <div v-if="isPeriodicFrequency" class="objective-field input-wrapper" data-required-field="frequency">
             <UpdatedCustomInputSelect
               id="objective-frequency"
-              :model-value="frequency"
+              :model-value="selectedFrequencyOption"
               :label="$t('Frequency')"
               :placeholder="$t('Select frequency')"
-              :static-options="ObjectiveFrequencyOptions"
+              :static-options="objectiveFrequencyOptions"
               required
               :reload="false"
               @update:model-value="onFrequencyChange"

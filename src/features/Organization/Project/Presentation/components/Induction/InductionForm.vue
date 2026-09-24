@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import Checkbox from 'primevue/checkbox'
 import DatePicker from 'primevue/datepicker'
 import { Icon } from '@iconify/vue'
@@ -22,16 +24,23 @@ import InductionTrainingTopicParams from '../../../Core/params/induction/addIndu
 import InductionOrganisationEmployeeParams from '../../../Core/params/induction/InductionOrganisationEmployeeParams'
 import type InductionDetailsModel from '../../../Data/models/Induction/InductionDetailsModel'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import ProjectCustomLocationController from '@/features/Organization/Project/Presentation/controllers/ProjectCustomLocationController'
+import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
+import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
+import type ProjectCustomLocationModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectCustomLocationModel'
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddInductionParams | EditInductionParams): void
 }>()
 const props = defineProps<{ data?: InductionDetailsModel }>()
 
+const route = useRoute()
+const { t } = useI18n()
 const employeeController = IndexOrganizatoinEmployeeController.getInstance()
 const employeeParams = new IndexOrganizatoinEmployeeParams('', 1, 1000, 1)
 const trainingTopicController = IndexTraningTopicController.getInstance()
 const trainingTopicParams = new IndexTraningTopicParams('', 1, 1000, 1)
+const projectCustomLocationController = ProjectCustomLocationController.getInstance()
 
 const employees = ref<OrganizatoinEmployeeModel[]>([])
 const employeesLoading = ref(false)
@@ -39,6 +48,11 @@ const employeesFailed = ref(false)
 const trainingTopics = ref<TraningTopicModel[]>([])
 const trainingTopicsLoading = ref(false)
 const trainingTopicsFailed = ref(false)
+const projectLocations = ref<ProjectCustomLocationModel[]>([])
+const projectLocationsLoading = ref(false)
+const projectLocationsFailed = ref(false)
+const selectedProjectLocation = ref<TitleInterface | null>(null)
+const selectedProjectZone = ref<TitleInterface | null>(null)
 const instractor = ref<TitleInterface | null>(null)
 const date = ref<Date | null>(null)
 const image = ref<string[]>([])
@@ -47,6 +61,15 @@ const selectedOrganisationEmployees = ref<TitleInterface[]>([])
 const manualOrganisationEmployeeName = ref('')
 const manualOrganisationEmployeeNames = ref<string[]>([])
 const requiredFieldErrors = ref<Record<string, string>>({})
+
+const projectId = computed(() => {
+  const routeValue = route.query.project_id ?? route.params.project_id
+  const rawValue = Array.isArray(routeValue) ? routeValue[0] : routeValue
+  const parsedValue = Number(rawValue)
+
+  return Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : null
+})
+const shouldUseProjectLocation = computed(() => Boolean(projectId.value))
 
 const employeeOptions = computed(() =>
   employees.value.map(
@@ -58,6 +81,39 @@ const employeeOptions = computed(() =>
       }),
   ),
 )
+const projectLocationOptions = computed(() =>
+  projectLocations.value.flatMap((location) => {
+    const locationId = Number(location.projectLocationId || location.id)
+    if (!Number.isFinite(locationId) || locationId <= 0) return []
+
+    return [
+      new TitleInterface({
+        id: locationId,
+        title: location.title || `Location #${locationId}`,
+      }),
+    ]
+  }),
+)
+const selectedProjectLocationData = computed(() => {
+  const locationId = Number(selectedProjectLocation.value?.id ?? 0)
+
+  return projectLocations.value.find(
+    (location) => Number(location.projectLocationId || location.id) === locationId,
+  )
+})
+const projectZoneOptions = computed(() =>
+  (selectedProjectLocationData.value?.locationZones ?? []).flatMap((zone) => {
+    const zoneId = Number(zone.projectZoonId || zone.zoonId)
+    if (!Number.isFinite(zoneId) || zoneId <= 0) return []
+
+    return [
+      new TitleInterface({
+        id: zoneId,
+        title: zone.zoonTitle || zone.title || `ZOON #${zoneId}`,
+      }),
+    ]
+  }),
+)
 const selectedTrainingTopicsCount = computed(() => selectedTrainingTopicIds.value.size)
 const organisationEmployeeCount = computed(
   () => selectedOrganisationEmployees.value.length + collectManualOrganisationEmployeeNames().length,
@@ -67,28 +123,31 @@ const allTrainingTopicsSelected = computed(
     Boolean(trainingTopics.value.length) &&
     selectedTrainingTopicsCount.value === trainingTopics.value.length,
 )
-const completionItems = computed(() => [
-  {
-    key: 'instractor',
-    icon: 'uil:user-check',
-    done: Boolean(instractor.value?.id),
-  },
-  {
-    key: 'date',
-    icon: 'uil:calendar-alt',
-    done: Boolean(date.value),
-  },
-  {
-    key: 'organisationEmployee',
-    icon: 'uil:users-alt',
-    done: Boolean(organisationEmployeeCount.value),
-  },
-  {
-    key: 'trainingTopic',
-    icon: 'uil:book-open',
-    done: Boolean(selectedTrainingTopicIds.value.size),
-  },
-])
+const completionItems = computed(() => {
+  const items = [
+    {
+      key: 'instractor',
+      icon: 'uil:user-check',
+      done: Boolean(instractor.value?.id),
+    },
+    {
+      key: 'date',
+      icon: 'uil:calendar-alt',
+      done: Boolean(date.value),
+    },
+    {
+      key: 'organisationEmployee',
+      icon: 'uil:users-alt',
+      done: Boolean(organisationEmployeeCount.value),
+    },
+    {
+      key: 'trainingTopic',
+      icon: 'uil:book-open',
+      done: Boolean(selectedTrainingTopicIds.value.size),
+    },
+  ]
+  return items
+})
 const completionCount = computed(() => completionItems.value.filter((item) => item.done).length)
 const completionPercent = computed(() =>
   `${Math.round((completionCount.value / completionItems.value.length) * 100)}%`,
@@ -162,6 +221,8 @@ const updateData = () => {
   const selectedTrainingTopics = buildSelectedTrainingTopics()
   const selectedEmployees = buildSelectedEmployees()
   const selectedImage = image.value.length ? image.value : null
+  const projectLocationId = Number(selectedProjectLocation.value?.id ?? 0)
+  const projectZoonId = Number(selectedProjectZone.value?.id ?? 0)
 
   emit(
     'update:data',
@@ -169,6 +230,9 @@ const updateData = () => {
       ? new EditInductionParams(
           props.data.id,
           instructorId,
+          projectId.value,
+          projectLocationId || null,
+          projectZoonId || null,
           formatDate(date.value),
           selectedImage,
           selectedTrainingTopics,
@@ -176,6 +240,9 @@ const updateData = () => {
         )
       : new AddInductionParams(
           instructorId,
+          projectId.value,
+          projectLocationId || null,
+          projectZoonId || null,
           formatDate(date.value),
           selectedImage,
           selectedTrainingTopics,
@@ -186,6 +253,17 @@ const updateData = () => {
 
 const setInstructor = (value: TitleInterface | TitleInterface[] | null) => {
   instractor.value = Array.isArray(value) ? null : value
+  updateData()
+}
+
+const setProjectLocation = (value: TitleInterface | TitleInterface[] | null) => {
+  selectedProjectLocation.value = Array.isArray(value) ? null : value
+  selectedProjectZone.value = null
+  updateData()
+}
+
+const setProjectZone = (value: TitleInterface | TitleInterface[] | null) => {
+  selectedProjectZone.value = Array.isArray(value) ? null : value
   updateData()
 }
 
@@ -288,6 +366,24 @@ const syncData = () => {
     .map((employee) => (employee.title || employee.name || '').trim())
     .filter((name): name is string => Boolean(name))
 
+  selectedProjectLocation.value = data.projectLocationId
+    ? (projectLocationOptions.value.find(
+        (location) => Number(location.id) === Number(data.projectLocationId),
+      ) ??
+      new TitleInterface({
+        id: data.projectLocationId,
+        title: `Location #${data.projectLocationId}`,
+      }))
+    : null
+
+  selectedProjectZone.value = data.projectZoonId
+    ? (projectZoneOptions.value.find((zone) => Number(zone.id) === Number(data.projectZoonId)) ??
+      new TitleInterface({
+        id: data.projectZoonId,
+        title: `ZOON #${data.projectZoonId}`,
+      }))
+    : null
+
   const instructorOption = employeeOptions.value.find(
     (employee) => Number(employee.id) === Number(data.instractor_id),
   )
@@ -331,28 +427,55 @@ const fetchTrainingTopics = async () => {
   }
 }
 
-const requiredFields = computed(() => [
-  {
-    key: 'instractor',
-    message: 'Instructor is required',
-    isMissing: () => !instractor.value?.id,
-  },
-  {
-    key: 'date',
-    message: 'Date is required',
-    isMissing: () => !date.value,
-  },
-  {
-    key: 'trainingTopic',
-    message: 'Training topic is required',
-    isMissing: () => !selectedTrainingTopicIds.value.size,
-  },
-  {
-    key: 'organisationEmployee',
-    message: 'At least one employee is required',
-    isMissing: () => !organisationEmployeeCount.value,
-  },
-])
+const fetchProjectLocations = async () => {
+  if (!projectId.value) {
+    projectLocations.value = []
+    selectedProjectLocation.value = null
+    selectedProjectZone.value = null
+    updateData()
+    return
+  }
+
+  projectLocationsLoading.value = true
+  projectLocationsFailed.value = false
+  try {
+    await projectCustomLocationController.getData(
+      new ProjectCustomLocationParams(projectId.value, [ProjectCustomLocationEnum.ZOON]),
+    )
+    projectLocations.value = projectCustomLocationController.state.value.data ?? []
+    syncData()
+  } catch {
+    projectLocationsFailed.value = true
+  } finally {
+    projectLocationsLoading.value = false
+  }
+}
+
+const requiredFields = computed(() => {
+  const fields = [
+    {
+      key: 'instractor',
+      message: t('Instructor is required'),
+      isMissing: () => !instractor.value?.id,
+    },
+    {
+      key: 'date',
+      message: t('Date is required'),
+      isMissing: () => !date.value,
+    },
+    {
+      key: 'trainingTopic',
+      message: t('Training topic is required'),
+      isMissing: () => !selectedTrainingTopicIds.value.size,
+    },
+    {
+      key: 'organisationEmployee',
+      message: t('At least one employee is required'),
+      isMissing: () => !organisationEmployeeCount.value,
+    },
+  ]
+  return fields
+})
 
 const validateRequiredFields = async () => {
   const missedFields = requiredFields.value.filter((field) => field.isMissing())
@@ -381,6 +504,7 @@ defineExpose({ validateRequiredFields })
 onMounted(() => {
   void fetchEmployees()
   void fetchTrainingTopics()
+  void fetchProjectLocations()
 })
 </script>
 
@@ -419,7 +543,10 @@ onMounted(() => {
         </span>
         <div>
           <h3>{{ $t('Induction') }}</h3>
-          <p>{{ $t('instractor') }} · {{ $t('date') }} · {{ $t('organisationEmployee') }}</p>
+          <p v-if="shouldUseProjectLocation">
+            {{ $t('instractor') }} · {{ $t('date') }} · {{ $t('location') }} · {{ $t('ZOON') }} · {{ $t('organisationEmployee') }}
+          </p>
+          <p v-else>{{ $t('instractor') }} · {{ $t('date') }} · {{ $t('organisationEmployee') }}</p>
         </div>
       </header>
 
@@ -430,7 +557,7 @@ onMounted(() => {
             :static-options="employeeOptions"
             label="instractor"
             id="induction-instractor"
-            placeholder="Select instructor"
+            :placeholder="$t('Select instructor')"
             :reload="false"
             required
             @update:model-value="setInstructor"
@@ -463,13 +590,55 @@ onMounted(() => {
           </p>
         </div>
 
+        <template v-if="shouldUseProjectLocation">
+          <div class="induction-field" data-required-field="projectLocation">
+            <UpdatedCustomInputSelect
+              :model-value="selectedProjectLocation"
+              :static-options="projectLocationOptions"
+              label="location"
+              id="induction-project-location"
+              :placeholder="$t('Select location')"
+              :reload="false"
+              @update:model-value="setProjectLocation"
+            />
+            <p v-if="projectLocationsLoading" class="field-helper">
+              {{ $t('loading_locations') }}
+            </p>
+            <p v-else-if="projectLocationsFailed" class="field-helper field-helper--error">
+              {{ $t('locations_could_not_be_loaded') }}
+              <button type="button" class="field-retry" @click.prevent="fetchProjectLocations">
+                <Icon icon="uil:redo" />
+                {{ $t('retry') }}
+              </button>
+            </p>
+          </div>
+
+          <div class="induction-field" data-required-field="projectZone">
+            <UpdatedCustomInputSelect
+              :model-value="selectedProjectZone"
+              :static-options="projectZoneOptions"
+              label="ZOON"
+              id="induction-project-zone"
+              :placeholder="$t('Select ZOON')"
+              :reload="false"
+              @update:model-value="setProjectZone"
+            />
+            <p
+              v-if="selectedProjectLocation && !projectZoneOptions.length && !projectLocationsLoading"
+              class="field-helper"
+            >
+              {{ $t('no_zoon_found') }}
+            </p>
+          </div>
+        </template>
+
         <div class="induction-field induction-field--wide" data-required-field="organisationEmployee">
           <UpdatedCustomInputSelect
             :model-value="selectedOrganisationEmployees"
             :static-options="employeeOptions"
             label="organisationEmployee"
             id="induction-organisation-employee"
-            placeholder="Select organisation employees"
+            :placeholder="$t('Select organisation employees')"
             :type="2"
             show-select-all-option
             required
@@ -533,7 +702,7 @@ onMounted(() => {
         </span>
         <div>
           <label class="input-label required">{{ $t('trainingTopic') }}</label>
-          <p>{{ selectedTrainingTopicsCount }} / {{ trainingTopics.length }} selected</p>
+          <p>{{ selectedTrainingTopicsCount }} / {{ trainingTopics.length }} {{ $t('selected') }}</p>
         </div>
         <button
           v-if="trainingTopics.length"
@@ -548,14 +717,14 @@ onMounted(() => {
 
       <div v-if="trainingTopicsLoading" class="topic-selection__empty">
         <Icon icon="uil:spinner-alt" />
-        Loading training topics...
+        {{ $t('loading_training_topics') }}
       </div>
       <div v-else-if="trainingTopicsFailed" class="topic-selection__empty">
         <Icon icon="uil:exclamation-triangle" />
-        Training topics could not be loaded.
+        {{ $t('training_topics_could_not_be_loaded') }}
         <button type="button" class="retry-button" @click.prevent="fetchTrainingTopics">
           <Icon icon="uil:redo" />
-          Retry
+          {{ $t('retry') }}
         </button>
       </div>
       <div v-else-if="trainingTopics.length" class="topic-selection__grid">
@@ -574,13 +743,13 @@ onMounted(() => {
           />
           <span>
             <strong>{{ topic.title }}</strong>
-            <small>{{ `Training Topic #${topic.id}` }}</small>
+            <small>{{ $t('training_topic_number', { number: topic.id }) }}</small>
           </span>
         </label>
       </div>
       <div v-else class="topic-selection__empty">
         <Icon icon="uil:file-search-alt" />
-        No training topics found.
+        {{ $t('no_training_topics_found') }}
       </div>
 
       <p v-if="requiredFieldErrors.trainingTopic" class="required-field-message">
@@ -961,6 +1130,29 @@ background: transparent;
   color: var(--status-danger);
   font-size: 0.82rem;
   font-weight: 700;
+}
+
+.field-helper,
+.field-retry {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.field-helper {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.field-helper--error {
+  color: var(--status-danger);
+}
+
+.field-retry {
+  color: var(--PrimaryColor);
+  font-weight: 800;
 }
 
 .topic-selection {

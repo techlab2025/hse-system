@@ -42,7 +42,12 @@ export default class AddInductionController extends ControllerInterface<Inductio
         })
 
         const root = router.currentRoute.value.path.startsWith('/admin') ? '/admin' : '/organization'
-        if (!draft) await router.push(`${root}/inductions`)
+        const routeProjectId = router.currentRoute.value.query.project_id
+        const projectId = Array.isArray(routeProjectId) ? routeProjectId[0] : routeProjectId
+        const inductionRoute = projectId
+          ? { path: `${root}/inductions`, query: { project_id: projectId } }
+          : `${root}/inductions`
+        if (!draft) await router.push(inductionRoute)
       } else {
         DialogSelector.instance.failedDialog.openDialog({
           dialogName: 'dialog-error',

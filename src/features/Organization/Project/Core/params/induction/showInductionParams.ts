@@ -9,7 +9,7 @@ export default class ShowInductionParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {}
-    data['Induction_id'] = this.id
+    data['induction_id'] = this.id
     return data
   }
 }

@@ -144,10 +144,10 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
               <tr>
                 <th scope="col">#</th>
                 <!-- <th scope="col">Facility</th> -->
-                <th scope="col">Area</th>
-                <th scope="col">Date</th>
-                <!-- <th scope="col">Change Type</th> -->
-                <th scope="col">Status</th>
+                <th scope="col">{{ $t('area') }}</th>
+                <th scope="col">{{ $t('date') }}</th>
+                <th scope="col">{{ $t('change type') }}</th>
+                <th scope="col">{{ $t('change approval') }}</th>
                 <th class="empty"></th>
               </tr>
             </thead>
@@ -157,23 +157,23 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
                   {{ (currentPage - 1) * countPerPage + index + 1 }}
                 </td>
                 <!-- <td data-label="Facility">{{ item.facilty || '-' }}</td> -->
-                <td data-label="Area">{{ item.area || '-' }}</td>
-                <td data-label="Date">{{ item.date || '-' }}</td>
-                <!-- <td data-label="Change Type">
+                <td :data-label="$t('area')">{{ item.area || '-' }}</td>
+                <td :data-label="$t('date')">{{ item.date || '-' }}</td>
+                <td :data-label="$t('change type')">
                   {{
                     item.change_type
-                      ? changeTypeLabels[item.change_type] ?? item.change_type
-                      : '-'
-                  }}
-                </td> -->
-                <td data-label="Status">
-                  {{
-                    item.status
-                      ? statusLabels[item.status] ?? item.status
+                      ? $t(changeTypeLabels[item.change_type] ?? String(item.change_type))
                       : '-'
                   }}
                 </td>
-                <td data-label="Actions">
+                <td :data-label="$t('status')">
+                  {{
+                    item.status
+                      ? $t(statusLabels[item.status] ?? String(item.status))
+                      : '-'
+                  }}
+                </td>
+                <td :data-label="$t('actions')">
                   <DropList
                     v-if="item.id"
                     :actionList="actionList(item.id, deleteMangementChange)"
@@ -197,7 +197,7 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
           :link="addLink"
           :add-text="$t('add')"
           description=""
-          title="No management changes"
+          :title="$t('no_management_changes')"
         />
       </template>
       <template #failed>
@@ -205,12 +205,12 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
           :link="addLink"
           :add-text="$t('add')"
           description=""
-          title="No management changes"
+          :title="$t('no_management_changes')"
         />
       </template>
     </DataStatus>
     <template #notPermitted>
-      <DataFailed add-text="Have not Permission" description="" link="" />
+      <DataFailed :add-text="$t('have_not_permission')" description="" link="" />
     </template>
   </PermissionBuilder>
 </template>
