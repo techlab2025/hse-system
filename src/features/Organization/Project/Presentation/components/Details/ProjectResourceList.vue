@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed, nextTick, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import ProjectCustomLocationParams from '../../../Core/params/ProjectCustomLocationParams'
 import { ProjectCustomLocationEnum } from '../../../Core/Enums/ProjectCustomLocationEnum'
@@ -15,6 +15,13 @@ import AddCreateTeam from '../Dialogs/CreateTeamDialog/AddCreateTeam.vue'
 import AddEquipmentDialog from '../Dialogs/AddEquipmentDialog.vue'
 import FetchProjectMeetingsController from '../../controllers/ProjectMeeting/FetchProjectMeetingsController'
 import FetchProjectMeetingsParams from '../../../Core/params/ProjectMeeting/FetchProjectMeetingsParams'
+import type DrillModel from '../../../Data/models/Drill/DrillModel'
+import type DrillTimelineItemModel from '../../../Data/models/Drill/DrillTimelineItemModel'
+import type ProjectMeetingModel from '../../../Data/models/ProjectMeeting/ProjectMeetingModel'
+import FetchDrillPlansParams from '../../../Core/params/Drill/FetchDrillPlansParams'
+import FetchDrillPlansController from '../../controllers/Drill/FetchDrillPlansController'
+import DrillDetailsDialog from '../Dialogs/Drill/DrillDetailsDialog.vue'
+import MeetingResultDialog from './ProjectMeeting/MeetingResultDialog.vue'
 
 type ResourceKey =
   | 'locations'
@@ -35,9 +42,18 @@ type ResourceItem = {
   detail?: string
   image?: string
   badge?: string
+  employeeId?: number
+  equipmentId?: number
+  drill?: DrillModel
+  meeting?: ProjectMeetingModel
+}
+
+type ResourceDialogHandle = {
+  openDialog: () => void
 }
 
 const route = useRoute()
+const router = useRouter()
 const customLocationController = ProjectCustomLocationController.getInstance()
 const detailsController = ShowProjectDetailsController.getInstance()
 const meetingsController = FetchProjectMeetingsController.getInstance()
@@ -47,6 +63,12 @@ const meetingsState = meetingsController.state
 const isLoading = ref(false)
 const errorMessage = ref('')
 const showAddOptions = ref(false)
+const selectedDrill = ref<DrillModel | null>(null)
+const selectedDrillPlans = ref<DrillTimelineItemModel[]>([])
+const selectedDrillPlansLoading = ref(false)
+const selectedMeeting = ref<ProjectMeetingModel | null>(null)
+const drillDialog = ref<ResourceDialogHandle | null>(null)
+const meetingDialog = ref<ResourceDialogHandle | null>(null)
 
 const projectId = computed(() => Number(route.params.id))
 const resource = computed<ResourceKey>(() => {
@@ -144,10 +166,11 @@ const addActionLabel = computed(
 )
 
 const locationId = (location: ProjectCustomLocationModel) => Number(location.id)
+
 const projectLabel = computed(() =>
   definition.value.types.length
-    ? `Project #${projectId.value}`
-    : detailsState.value.data?.title || `Project #${projectId.value}`,
+    ? detailsState.value.data?.title
+    : `Project #${projectId.value}` || `Project #${projectId.value}`,
 )
 
 const uniqueItems = (items: ResourceItem[]) =>
@@ -173,6 +196,7 @@ const resourceItems = computed<ResourceItem[]>(() => {
       location: drill.projectTeam?.title || detailsState.value.data?.title || 'Project',
       detail: [drill.date, drill.time].filter(Boolean).join(' · '),
       badge: 'Drill',
+      drill,
     }))
   }
 
@@ -184,6 +208,7 @@ const resourceItems = computed<ResourceItem[]>(() => {
       location: meeting.teamLeader?.name || `Project #${projectId.value}`,
       detail: meeting.date || '',
       badge: 'Meeting',
+      meeting,
     }))
   }
 
@@ -224,6 +249,7 @@ const resourceItems = computed<ResourceItem[]>(() => {
             location: `${location.title || 'Location'} · ${zone.zoonTitle || zone.title || 'Zone'}`,
             detail: equipment.equipment?.licensePlateNumber || equipment.equipmentDescription || '',
             badge: 'Equipment',
+            equipmentId: Number(equipment.equipment?.id || equipment.id),
           })),
         ),
       ),
@@ -284,11 +310,58 @@ const resourceItems = computed<ResourceItem[]>(() => {
           detail: employee.email || '',
           image: employee.image,
           badge: employee.is_leader ? 'Team leader' : 'Employee',
+          employeeId: Number(employee.organization_employee_id || employee.employeeId),
         }),
       )
     }),
   )
 })
+
+const isActionableItem = (item: ResourceItem) =>
+  Boolean(item.employeeId || item.equipmentId || item.drill || item.meeting)
+
+const fetchSelectedDrillPlans = async () => {
+  const drillId = selectedDrill.value?.id
+  if (!drillId) return
+
+  selectedDrillPlansLoading.value = true
+  const controller = FetchDrillPlansController.getInstance()
+
+  try {
+    await controller.fetchPlans(new FetchDrillPlansParams(drillId))
+    if (controller.isDataSuccess()) {
+      selectedDrillPlans.value = controller.state.value.data ?? []
+    }
+  } finally {
+    selectedDrillPlansLoading.value = false
+  }
+}
+
+const openResourceItem = async (item: ResourceItem) => {
+  if (item.employeeId) {
+    await router.push(`/organization/organization-employee/show/${item.employeeId}`)
+    return
+  }
+
+  if (item.equipmentId) {
+    await router.push(`/organization/equipment-show/${item.equipmentId}`)
+    return
+  }
+
+  if (item.drill) {
+    selectedDrill.value = item.drill
+    selectedDrillPlans.value = item.drill.planning ?? []
+    await nextTick()
+    drillDialog.value?.openDialog()
+    return
+  }
+
+  if (item.meeting) {
+    selectedMeeting.value = item.meeting
+    await nextTick()
+    meetingDialog.value?.openDialog()
+  }
+}
 
 const fetchResource = async () => {
   if (!Number.isFinite(projectId.value) || projectId.value <= 0) return
@@ -330,6 +403,8 @@ watch(
 
 watch(resource, () => {
   showAddOptions.value = false
+  selectedDrill.value = null
+  selectedMeeting.value = null
 })
 </script>
 
@@ -389,7 +464,9 @@ watch(resource, () => {
           <h2>{{ addActionLabel }}</h2>
           <p>Select the location or zone where the new assignment belongs.</p>
         </div>
-        <button type="button" aria-label="Close add options" @click="showAddOptions = false">×</button>
+        <button type="button" aria-label="Close add options" @click="showAddOptions = false">
+          ×
+        </button>
       </header>
 
       <div v-if="resource === 'equipment' && zones.length" class="resource-add-panel__single">
@@ -439,9 +516,7 @@ watch(resource, () => {
 
       <div v-else class="resource-add-panel__empty">
         <p>Add a project location before assigning {{ resource }}.</p>
-        <RouterLink
-          :to="`/organization/project/flow/${projectId}/1?edit=1&return_to=summary`"
-        >
+        <RouterLink :to="`/organization/project/flow/${projectId}/1?edit=1&return_to=summary`">
           Add project location
         </RouterLink>
       </div>
@@ -464,6 +539,18 @@ watch(resource, () => {
         v-for="(item, index) in resourceItems"
         :key="item.key"
         class="resource-card"
+        :class="{ 'resource-card--actionable': isActionableItem(item) }"
+        :role="
+          isActionableItem(item)
+            ? item.employeeId || item.equipmentId
+              ? 'link'
+              : 'button'
+            : undefined
+        "
+        :tabindex="isActionableItem(item) ? 0 : undefined"
+        @click="openResourceItem(item)"
+        @keydown.enter="openResourceItem(item)"
+        @keydown.space.prevent="openResourceItem(item)"
       >
         <span class="resource-card__glow" aria-hidden="true"></span>
         <header class="resource-card__header">
@@ -509,6 +596,29 @@ watch(resource, () => {
       <p>This project does not currently have matching {{ resource }} assignments.</p>
       <RouterLink :to="`/organization/project-details/${projectId}`">Open full details</RouterLink>
     </section>
+
+    <DrillDetailsDialog
+      v-if="selectedDrill"
+      ref="drillDialog"
+      triggerless
+      :key="selectedDrill.id"
+      :drill="selectedDrill"
+      :project-id="projectId"
+      :plans="selectedDrillPlans"
+      :plans-loading="selectedDrillPlansLoading"
+      @opened="fetchSelectedDrillPlans"
+      @saved="fetchSelectedDrillPlans"
+    />
+
+    <MeetingResultDialog
+      v-if="selectedMeeting"
+      ref="meetingDialog"
+      triggerless
+      :key="selectedMeeting.id"
+      :meeting="selectedMeeting"
+      :project-id="projectId"
+      @saved="fetchResource"
+    />
   </main>
 </template>
 
@@ -602,7 +712,9 @@ watch(resource, () => {
   font: 0.76rem 'Bold';
   cursor: pointer;
   backdrop-filter: blur(8px);
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
 }
 .resource-add-button:hover {
   transform: translateY(-2px);
@@ -779,12 +891,11 @@ watch(resource, () => {
   padding: 20px;
   border: 1px solid color-mix(in srgb, var(--resource-card-accent) 15%, var(--main-border));
   border-radius: 24px;
-  background:
-    linear-gradient(
-      145deg,
-      color-mix(in srgb, var(--resource-card-accent) 4%, var(--surface-1)),
-      var(--surface-1) 58%
-    );
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--resource-card-accent) 4%, var(--surface-1)),
+    var(--surface-1) 58%
+  );
   box-shadow:
     0 18px 44px color-mix(in srgb, var(--text-strong) 7%, transparent),
     inset 0 1px 0 color-mix(in srgb, var(--surface-1) 72%, transparent);
@@ -805,7 +916,9 @@ watch(resource, () => {
   opacity: 0.78;
   transform: scaleX(0.45);
   transform-origin: center;
-  transition: transform 0.28s ease, opacity 0.28s ease;
+  transition:
+    transform 0.28s ease,
+    opacity 0.28s ease;
 }
 .resource-card:hover {
   transform: translateY(-6px);
@@ -813,6 +926,14 @@ watch(resource, () => {
   box-shadow:
     0 24px 54px color-mix(in srgb, var(--resource-card-accent) 14%, transparent),
     inset 0 1px 0 color-mix(in srgb, var(--surface-1) 78%, transparent);
+}
+.resource-card--actionable {
+  cursor: pointer;
+}
+.resource-card--actionable:focus-visible {
+  border-color: var(--resource-card-accent);
+  outline: 3px solid color-mix(in srgb, var(--resource-card-accent) 24%, transparent);
+  outline-offset: 3px;
 }
 .resource-card:hover::before {
   opacity: 1;
@@ -828,7 +949,9 @@ watch(resource, () => {
   border-radius: 50%;
   background: color-mix(in srgb, var(--resource-card-accent) 11%, transparent);
   filter: blur(2px);
-  transition: transform 0.35s ease, background 0.35s ease;
+  transition:
+    transform 0.35s ease,
+    background 0.35s ease;
 }
 .resource-card:hover .resource-card__glow {
   background: color-mix(in srgb, var(--resource-card-accent) 17%, transparent);
@@ -850,8 +973,11 @@ watch(resource, () => {
   place-items: center;
   border: 1px solid color-mix(in srgb, var(--resource-card-accent) 26%, transparent);
   border-radius: 19px;
-  background:
-    linear-gradient(145deg, var(--resource-card-accent), var(--resource-card-accent-soft));
+  background: linear-gradient(
+    145deg,
+    var(--resource-card-accent),
+    var(--resource-card-accent-soft)
+  );
   color: var(--text-on-brand);
   box-shadow: 0 11px 24px color-mix(in srgb, var(--resource-card-accent) 22%, transparent);
   font-size: 1.12rem;

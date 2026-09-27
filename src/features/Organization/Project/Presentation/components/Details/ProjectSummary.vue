@@ -281,7 +281,11 @@ watch(
             >
               <span class="safety-stat-card__icon" aria-hidden="true">{{ stat.icon }}</span>
               <div>
-                <strong>{{ stat.value }}</strong>
+                <strong
+                  >{{ String(stat.value).split('/')[0] }}
+                  <span class="tot-num">{{ String(stat.value).split('/')[1] ? '/' : '' }}</span>
+                  <span class="tot-num">{{ String(stat.value).split('/')[1] }}</span>
+                </strong>
                 <h3>{{ stat.label }}</h3>
                 <p>{{ stat.note }}</p>
               </div>
@@ -374,6 +378,9 @@ watch(
 </template>
 
 <style scoped lang="scss">
+.tot-num {
+  font-size: 14px;
+}
 .project-summary-page {
   display: flex;
   flex-direction: column;
