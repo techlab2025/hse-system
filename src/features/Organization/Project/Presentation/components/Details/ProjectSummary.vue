@@ -248,8 +248,8 @@ watch(
 
         <section class="operations-panel">
           <div class="operations-panel__intro">
-            <span>Operational footprint</span>
-            <h2>Resources at a glance</h2>
+            <!-- <span>Operational footprint</span> -->
+            <h2>Project Statics</h2>
             <p>People, places and assets currently connected to this project.</p>
           </div>
 
