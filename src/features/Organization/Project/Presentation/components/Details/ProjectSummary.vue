@@ -174,7 +174,7 @@ const safetyStatistics = computed(() => [
     note: 'Completed and active checks',
     tone: 'blue',
     icon: '✓',
-    to: `/organization/equipment-mangement/inspection?project_id=${projectId.value}`,
+    to: `/organization/equipment-mangement/inspection?inspectionType=1&project_id=${projectId.value}`,
   },
   {
     label: 'Emergency drills',

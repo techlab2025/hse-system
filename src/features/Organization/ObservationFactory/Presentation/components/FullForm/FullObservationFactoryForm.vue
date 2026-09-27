@@ -89,6 +89,7 @@ const date = ref<Date>(new Date())
 const descripe = ref<string>('')
 const image = ref([])
 const route = useRoute()
+const routeProjectId = computed(() => Number(route.query.project_id) || undefined)
 const ObservationFactoryType = ref(
   route?.path?.includes('incedant')
     ? Observation.AccidentsType
@@ -165,8 +166,8 @@ const Projects = ref<MyProjectsModel[]>([])
 const isProjectsLoading = ref(false)
 const selectedProjectName = computed(
   () =>
-    selectedProject.project?.title ||
     Projects.value.find((project) => project.id === SelectedProjectId.value)?.title ||
+    selectedProject.project?.title ||
     '',
 )
 const FetchMyProjects = async () => {
@@ -191,7 +192,7 @@ onMounted(() => {
   FetchMyProjects()
 })
 
-const SelectedProjectId = ref<number | undefined>(selectedProject.project?.id)
+const SelectedProjectId = ref<number | undefined>(routeProjectId.value || selectedProject.project?.id)
 const GetProjectId = (id: number) => {
   if (SelectedProjectId.value !== id) {
     ZoneIds.value = undefined
@@ -875,7 +876,7 @@ defineExpose({
         <p>{{ $t('Projects') }}</p>
       </div>
       <div
-        v-if="selectedProject.project?.id"
+        v-if="selectedProject.project?.id || routeProjectId"
         class="locked-filter-selection selected-project-summary"
       >
         <span class="locked-selection-icon" aria-hidden="true">P</span>

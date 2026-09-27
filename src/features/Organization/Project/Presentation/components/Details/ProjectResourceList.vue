@@ -117,13 +117,13 @@ const workflowAction = computed(() => {
   if (resource.value === 'locations') {
     return {
       label: 'Add project location',
-      to: `/organization/project/flow/${projectId.value}/1?edit=1`,
+      to: `/organization/project/flow/${projectId.value}/1?edit=1&return_to=summary`,
     }
   }
   if (resource.value === 'contractors') {
     return {
       label: 'Add contractor',
-      to: `/organization/project/flow/${projectId.value}/1?edit=1`,
+      to: `/organization/project/flow/${projectId.value}/1?edit=1&return_to=summary`,
     }
   }
   return null
@@ -396,14 +396,14 @@ watch(resource, () => {
 
           <RouterLink
             v-if="resource === 'employees'"
-            :to="`/organization/project-employee/project/${projectId}?locationId=${locationId(location)}`"
+            :to="`/organization/project-employee/project/${projectId}?locationId=${locationId(location)}&return_to=summary`"
             class="scope-action"
           >
             Add employee <span aria-hidden="true">→</span>
           </RouterLink>
           <RouterLink
             v-else-if="resource === 'hierarchies'"
-            :to="`/organization/project-hierarchy/project/${projectId}?locationId=${locationId(location)}`"
+            :to="`/organization/project-hierarchy/project/${projectId}?locationId=${locationId(location)}&return_to=summary`"
             class="scope-action"
           >
             Add position <span aria-hidden="true">→</span>
@@ -425,7 +425,9 @@ watch(resource, () => {
 
       <div v-else class="resource-add-panel__empty">
         <p>Add a project location before assigning {{ resource }}.</p>
-        <RouterLink :to="`/organization/project/flow/${projectId}/1?edit=1`">
+        <RouterLink
+          :to="`/organization/project/flow/${projectId}/1?edit=1&return_to=summary`"
+        >
           Add project location
         </RouterLink>
       </div>
@@ -443,19 +445,47 @@ watch(resource, () => {
       add-text="Back to project summary"
     />
 
-    <section v-else-if="resourceItems.length" class="resource-grid">
-      <article v-for="item in resourceItems" :key="item.key" class="resource-card">
-        <span class="resource-card__avatar" :class="{ 'has-image': item.image }">
-          <img v-if="item.image" :src="item.image" :alt="item.title" />
-          <b v-else>{{ item.title.charAt(0).toUpperCase() }}</b>
-        </span>
-        <div class="resource-card__content">
-          <span class="resource-card__badge">{{ item.badge }}</span>
-          <h2>{{ item.title }}</h2>
-          <p>{{ item.subtitle }}</p>
-          <small>{{ item.location }}</small>
-          <small v-if="item.detail">{{ item.detail }}</small>
-        </div>
+    <section v-else-if="resourceItems.length" class="resource-grid" :data-resource="resource">
+      <article
+        v-for="(item, index) in resourceItems"
+        :key="item.key"
+        class="resource-card"
+      >
+        <span class="resource-card__glow" aria-hidden="true"></span>
+        <header class="resource-card__header">
+          <span class="resource-card__avatar" :class="{ 'has-image': item.image }">
+            <img v-if="item.image" :src="item.image" :alt="item.title" />
+            <b v-else>{{ item.title.charAt(0).toUpperCase() }}</b>
+            <i aria-hidden="true"></i>
+          </span>
+
+          <div class="resource-card__heading">
+            <div class="resource-card__meta">
+              <span class="resource-card__badge"><i></i>{{ item.badge }}</span>
+              <span class="resource-card__number">{{ String(index + 1).padStart(2, '0') }}</span>
+            </div>
+            <h2 :title="item.title">{{ item.title }}</h2>
+          </div>
+        </header>
+
+        <p class="resource-card__description">{{ item.subtitle }}</p>
+
+        <footer class="resource-card__footer">
+          <span class="resource-card__info" :title="item.location">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 21s6-5.15 6-11a6 6 0 1 0-12 0c0 5.85 6 11 6 11Z" />
+              <circle cx="12" cy="10" r="2.2" />
+            </svg>
+            <small>{{ item.location }}</small>
+          </span>
+          <span v-if="item.detail" class="resource-card__info" :title="item.detail">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 11v5M12 8h.01" />
+            </svg>
+            <small>{{ item.detail }}</small>
+          </span>
+        </footer>
       </article>
     </section>
 
@@ -695,66 +725,219 @@ watch(resource, () => {
 .resource-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  gap: 18px;
+  --resource-card-accent: var(--identity-primary);
+  --resource-card-accent-soft: var(--identity-accent);
+}
+.resource-grid[data-resource='employees'],
+.resource-grid[data-resource='teams'] {
+  --resource-card-accent: var(--identity-primary);
+  --resource-card-accent-soft: var(--identity-accent);
+}
+.resource-grid[data-resource='equipment'],
+.resource-grid[data-resource='zones'] {
+  --resource-card-accent: var(--identity-secondary);
+  --resource-card-accent-soft: var(--identity-primary);
+}
+.resource-grid[data-resource='meetings'],
+.resource-grid[data-resource='drills'] {
+  --resource-card-accent: var(--identity-accent);
+  --resource-card-accent-soft: var(--identity-primary);
 }
 .resource-card {
+  position: relative;
+  isolation: isolate;
   display: flex;
   min-width: 0;
-  align-items: flex-start;
-  gap: 14px;
-  padding: 18px;
-  border: 1px solid var(--main-border);
-  border-radius: 20px;
-  background: var(--BgWhite);
-  box-shadow: 0 12px 28px color-mix(in srgb, var(--text-strong) 6%, transparent);
+  min-height: 218px;
+  overflow: hidden;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid color-mix(in srgb, var(--resource-card-accent) 15%, var(--main-border));
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--resource-card-accent) 4%, var(--surface-1)),
+      var(--surface-1) 58%
+    );
+  box-shadow:
+    0 18px 44px color-mix(in srgb, var(--text-strong) 7%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 72%, transparent);
+  transition:
+    transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.28s ease,
+    box-shadow 0.28s ease;
+}
+.resource-card::before {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  inset-inline: 22px;
+  height: 3px;
+  border-radius: 0 0 8px 8px;
+  background: linear-gradient(90deg, var(--resource-card-accent), var(--resource-card-accent-soft));
+  content: '';
+  opacity: 0.78;
+  transform: scaleX(0.45);
+  transform-origin: center;
+  transition: transform 0.28s ease, opacity 0.28s ease;
+}
+.resource-card:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--resource-card-accent) 38%, var(--main-border));
+  box-shadow:
+    0 24px 54px color-mix(in srgb, var(--resource-card-accent) 14%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 78%, transparent);
+}
+.resource-card:hover::before {
+  opacity: 1;
+  transform: scaleX(1);
+}
+.resource-card__glow {
+  position: absolute;
+  z-index: -1;
+  top: -78px;
+  inset-inline-end: -62px;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--resource-card-accent) 11%, transparent);
+  filter: blur(2px);
+  transition: transform 0.35s ease, background 0.35s ease;
+}
+.resource-card:hover .resource-card__glow {
+  background: color-mix(in srgb, var(--resource-card-accent) 17%, transparent);
+  transform: scale(1.14);
+}
+.resource-card__header {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 13px;
 }
 .resource-card__avatar {
+  position: relative;
   display: grid;
-  width: 48px;
-  height: 48px;
-  flex: 0 0 48px;
+  width: 58px;
+  height: 58px;
+  flex: 0 0 58px;
   overflow: hidden;
   place-items: center;
-  border-radius: 15px;
-  background: linear-gradient(145deg, var(--identity-primary), var(--identity-accent));
+  border: 1px solid color-mix(in srgb, var(--resource-card-accent) 26%, transparent);
+  border-radius: 19px;
+  background:
+    linear-gradient(145deg, var(--resource-card-accent), var(--resource-card-accent-soft));
   color: white;
+  box-shadow: 0 11px 24px color-mix(in srgb, var(--resource-card-accent) 22%, transparent);
+  font-size: 1.12rem;
+  transition: transform 0.28s ease;
+}
+.resource-card:hover .resource-card__avatar {
+  transform: rotate(-3deg) scale(1.04);
 }
 .resource-card__avatar img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.resource-card__content {
+.resource-card__avatar i {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  width: 7px;
+  height: 7px;
+  border: 2px solid white;
+  border-radius: 50%;
+  background: #2ecc71;
+  box-sizing: content-box;
+}
+.resource-card__heading {
+  flex: 1;
   min-width: 0;
 }
+.resource-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
 .resource-card__badge {
-  display: inline-block;
-  margin-bottom: 5px;
-  color: var(--identity-primary);
-  font-size: 0.61rem;
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border: 1px solid color-mix(in srgb, var(--resource-card-accent) 16%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--resource-card-accent) 8%, var(--surface-1));
+  color: var(--resource-card-accent);
+  font-size: 0.58rem;
   font-weight: 900;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
+}
+.resource-card__badge i {
+  width: 5px;
+  height: 5px;
+  flex: 0 0 5px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 13%, transparent);
+}
+.resource-card__number {
+  color: color-mix(in srgb, var(--text-muted) 60%, transparent);
+  font: 0.68rem 'Bold';
+  letter-spacing: 0.08em;
 }
 .resource-card h2 {
   margin: 0;
   overflow: hidden;
   color: var(--text-strong);
-  font-size: 0.95rem;
+  font: 1rem 'Bold';
+  line-height: 1.3;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.resource-card p {
-  margin: 5px 0;
-  color: var(--text-soft);
-  font-size: 0.76rem;
-}
-.resource-card small {
-  display: block;
+.resource-card__description {
+  display: -webkit-box;
+  min-height: 42px;
   overflow: hidden;
-  margin-top: 3px;
+  margin: 18px 0;
+  color: var(--text-soft);
+  font-size: 0.73rem;
+  line-height: 1.6;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.resource-card__footer {
+  display: grid;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 13px;
+  border-top: 1px solid color-mix(in srgb, var(--main-border) 78%, transparent);
+}
+.resource-card__info {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 7px;
+}
+.resource-card__info svg {
+  width: 15px;
+  height: 15px;
+  flex: 0 0 15px;
+  color: var(--resource-card-accent);
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.resource-card__info small {
+  overflow: hidden;
   color: var(--text-muted);
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
