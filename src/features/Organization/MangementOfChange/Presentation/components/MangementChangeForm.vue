@@ -386,7 +386,7 @@ onMounted(updateData)
         <p class="management-change-form__eyebrow">
           {{ $t('Management of change') }}
         </p>
-        <h1>{{ $t('create management of change') }}</h1>
+        <h1>{{ $t('management of change') }}</h1>
         <p class="management-change-form__subtitle">
           {{ $t('Record the change, its scope, and the approvals needed before work starts.') }}
         </p>
