@@ -16,11 +16,7 @@ export default class FetchLeadershipVisitDetailsRepo extends RepoInterface<Leade
   }
 
   onParse(data: Record<string, unknown> | Record<string, unknown>[]): LeadershipVisitDetailsModel {
-    const response = Array.isArray(data) ? (data[0] ?? {}) : data
-    const visit = response.visit
-    return LeadershipVisitDetailsModel.fromMap(
-      visit && typeof visit === 'object' ? (visit as Record<string, unknown>) : response,
-    )
+    return LeadershipVisitDetailsModel.fromMap(Array.isArray(data) ? (data[0] ?? {}) : data)
   }
 
   get serviceInstance(): ServicesInterface {

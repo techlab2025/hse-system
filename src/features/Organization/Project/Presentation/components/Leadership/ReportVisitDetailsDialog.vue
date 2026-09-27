@@ -10,10 +10,10 @@ defineProps<{
 }>()
 const emit = defineEmits<{ close: [] }>()
 
-const unsafeTypeLabel = (value: string) => {
-  if (value === '1') return 'Unsafe act'
-  if (value === '2') return 'Unsafe condition'
-  return value || '—'
+const unsafeTypeLabel = (value: number | null) => {
+  if (value === 1) return 'Unsafe act'
+  if (value === 2) return 'Unsafe condition'
+  return '—'
 }
 </script>
 
@@ -32,7 +32,7 @@ const unsafeTypeLabel = (value: string) => {
         <div>
           <!-- <span>Leadership visit</span> -->
           <h2>Report details</h2>
-          <p v-if="visit">{{ visit.location || '—' }} · {{ visit.date || '—' }}</p>
+          <p v-if="visit">Report #{{ visit.id }} · {{ visit.date || '—' }}</p>
           <p v-else>{{ loading ? 'Loading selected visit…' : 'Selected visit report' }}</p>
         </div>
       </div>
@@ -54,19 +54,19 @@ const unsafeTypeLabel = (value: string) => {
       </div>
     </div>
 
-    <div v-else-if="visit?.report" class="details-content">
+    <div v-else-if="visit" class="details-content">
       <section class="summary-grid">
         <article>
           <span>Topic</span>
-          <p>{{ visit.report.topic || '—' }}</p>
+          <p>{{ visit.engagementTopic || '—' }}</p>
         </article>
         <article>
           <span>Discussion</span>
-          <p>{{ visit.report.discussion || '—' }}</p>
+          <p>{{ visit.engagementDiscussion || '—' }}</p>
         </article>
         <article class="summary-grid__wide">
           <span>Observations</span>
-          <p>{{ visit.report.observations || '—' }}</p>
+          <p>{{ visit.positiveObservations || '—' }}</p>
         </article>
       </section>
 
@@ -76,48 +76,27 @@ const unsafeTypeLabel = (value: string) => {
             <span>Actions</span>
             <h3>Improvements</h3>
           </div>
-          <strong>{{ visit.report.improvements.length }}</strong>
+          <strong>{{ visit.areasOfImprovement.length }}</strong>
         </div>
-        <div v-if="visit.report.improvements.length" class="improvement-grid">
+        <div v-if="visit.areasOfImprovement.length" class="improvement-grid">
           <article
-            v-for="(improvement, index) in visit.report.improvements"
+            v-for="(improvement, index) in visit.areasOfImprovement"
             :key="improvement.id || index"
             class="improvement-detail"
           >
             <div class="improvement-detail__top">
               <span>{{ String(index + 1).padStart(2, '0') }}</span>
-              <strong>{{ improvement.areas || 'Improvement' }}</strong>
+              <strong>{{ improvement.areaForImprovement || 'Improvement' }}</strong>
               <small>{{ unsafeTypeLabel(improvement.uaUc) }}</small>
             </div>
             <p>{{ improvement.interventionCarriedOut || '—' }}</p>
             <div class="detail-tags">
-              <span>{{ improvement.visitTheme?.title || 'No theme' }}</span>
-              <span>{{ improvement.visitCategory?.title || 'No category' }}</span>
+              <span>{{ improvement.leadershipTheme?.title || 'No theme' }}</span>
+              <span>{{ improvement.leadershipCategory?.title || 'No category' }}</span>
             </div>
           </article>
         </div>
         <p v-else class="empty-copy">No improvement details were returned.</p>
-      </section>
-
-      <section v-if="visit.report.attachments.length" class="details-section">
-        <div class="details-section__heading">
-          <div>
-            <span>Evidence</span>
-            <h3>Attachments</h3>
-          </div>
-          <strong>{{ visit.report.attachments.length }}</strong>
-        </div>
-        <div class="attachment-grid">
-          <a
-            v-for="(attachment, index) in visit.report.attachments"
-            :key="`${attachment}-${index}`"
-            :href="attachment"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span aria-hidden="true">↗</span> Attachment {{ index + 1 }}
-          </a>
-        </div>
       </section>
     </div>
 

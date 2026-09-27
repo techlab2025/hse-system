@@ -5,9 +5,8 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
-import CreateLeadershipVisitReportParams, {
-  type VisitImprovementInput,
-} from '../../../Core/params/Leadership/CreateLeadershipVisitReportParams'
+import CreateLeadershipVisitReportParams from '../../../Core/params/Leadership/CreateLeadershipVisitReportParams'
+import LeadershipVisitImprovementParams from '../../../Core/params/Leadership/LeadershipVisitImprovementParams'
 import FetchAllLeadershipVisitsParams from '../../../Core/params/Leadership/FetchAllLeadershipVisitsParams'
 import {
   UnsafeVisitTypeEnum,
@@ -47,14 +46,9 @@ const observations = ref('')
 const attachments = ref<string[]>([])
 const errorMessage = ref('')
 const unsafeTypeOptions = unsafeVisitTypes.map((option) => new TitleInterface(option))
-const newImprovement = (): VisitImprovementInput => ({
-  areas: '',
-  interventionCarriedOut: '',
-  uaUc: UnsafeVisitTypeEnum.UnsafeAct,
-  visitThemId: 0,
-  visitCategoryId: 0,
-})
-const improvements = ref<VisitImprovementInput[]>([newImprovement()])
+const newImprovement = () =>
+  new LeadershipVisitImprovementParams('', '', UnsafeVisitTypeEnum.UnsafeAct, 0, 0)
+const improvements = ref<LeadershipVisitImprovementParams[]>([newImprovement()])
 const selectedOption = (options: TitleInterface[], id: number): TitleInterface | null =>
   options.find((option) => option.id === id) ?? null
 const selectedId = (value: TitleInterface | TitleInterface[] | null): number =>

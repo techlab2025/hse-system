@@ -1,52 +1,39 @@
-import LeadershipVisitActivityModel from './LeadershipVisitActivityModel'
-import LeadershipVisitCreatableModel from './LeadershipVisitCreatableModel'
-import LeadershipVisitEmployeeModel from './LeadershipVisitEmployeeModel'
-import LeadershipVisitReportModel from './LeadershipVisitReportModel'
+import LeadershipVisitReportImprovementModel from './LeadershipVisitReportImprovementModel'
 
 export default class LeadershipVisitDetailsModel {
   constructor(
     public id: number,
-    public leadershipEngagementId: number,
+    public visitId: number,
+    public serial: string | null,
+    public serialNumber: string | null,
     public date: string,
-    public location: string,
-    public status: number,
-    public creatable: LeadershipVisitCreatableModel | null,
-    public activities: LeadershipVisitActivityModel[],
-    public employees: LeadershipVisitEmployeeModel[],
-    public report: LeadershipVisitReportModel | null,
+    public status: number | null,
+    public engagementTopic: string | null,
+    public engagementDiscussion: string | null,
+    public positiveObservations: string | null,
+    public areasOfImprovement: LeadershipVisitReportImprovementModel[],
+    public createdAt: string,
+    public updatedAt: string,
   ) {}
 
   static fromMap(data: Record<string, unknown>): LeadershipVisitDetailsModel {
-    const report =
-      data.report ??
-      data.visit_report ??
-      (data.topic || data.discussion || data.observations ? data : null)
-    const activities = data.activities
-    const employees = data.employees
-    const creatable = data.creatable
-
     return new LeadershipVisitDetailsModel(
-      Number(data.id ?? data.visit_id ?? 0),
-      Number(data.leadership_engagement_id ?? 0),
+      Number(data.id ?? 0),
+      Number(data.visit_id ?? 0),
+      typeof data.serial === 'string' ? data.serial : null,
+      typeof data.serial_number === 'string' ? data.serial_number : null,
       String(data.date ?? ''),
-      String(data.location ?? ''),
-      Number(data.status ?? 0),
-      creatable && typeof creatable === 'object'
-        ? LeadershipVisitCreatableModel.fromMap(creatable as Record<string, unknown>)
-        : null,
-      Array.isArray(activities)
-        ? activities.map((item) =>
-            LeadershipVisitActivityModel.fromMap(item as Record<string, unknown>),
+      data.status === null || data.status === undefined ? null : Number(data.status),
+      typeof data.engagement_topic === 'string' ? data.engagement_topic : null,
+      typeof data.engagement_discussion === 'string' ? data.engagement_discussion : null,
+      typeof data.positive_observations === 'string' ? data.positive_observations : null,
+      Array.isArray(data.areas_of_improvement)
+        ? data.areas_of_improvement.map((item) =>
+            LeadershipVisitReportImprovementModel.fromMap(item as Record<string, unknown>),
           )
         : [],
-      Array.isArray(employees)
-        ? employees.map((item) =>
-            LeadershipVisitEmployeeModel.fromMap(item as Record<string, unknown>),
-          )
-        : [],
-      report && typeof report === 'object' ? LeadershipVisitReportModel.fromMap(report) : null,
+      String(data.created_at ?? ''),
+      String(data.updated_at ?? ''),
     )
   }
 }
-
-
