@@ -8,10 +8,7 @@ import { Icon } from '@iconify/vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
-import {
-  filesToBase64,
-  type FileBase64,
-} from '@/base/Presentation/utils/file_to_base_64'
+import { filesToBase64, type FileBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 import type OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
@@ -116,7 +113,8 @@ const projectZoneOptions = computed(() =>
 )
 const selectedTrainingTopicsCount = computed(() => selectedTrainingTopicIds.value.size)
 const organisationEmployeeCount = computed(
-  () => selectedOrganisationEmployees.value.length + collectManualOrganisationEmployeeNames().length,
+  () =>
+    selectedOrganisationEmployees.value.length + collectManualOrganisationEmployeeNames().length,
 )
 const allTrainingTopicsSelected = computed(
   () =>
@@ -149,11 +147,11 @@ const completionItems = computed(() => {
   return items
 })
 const completionCount = computed(() => completionItems.value.filter((item) => item.done).length)
-const completionPercent = computed(() =>
-  `${Math.round((completionCount.value / completionItems.value.length) * 100)}%`,
+const completionPercent = computed(
+  () => `${Math.round((completionCount.value / completionItems.value.length) * 100)}%`,
 )
 
-const employeeName = (employee: OrganizatoinEmployeeModel) =>
+const employeeName = (employee: { id: number; title?: string; name?: string }) =>
   employee.title || employee.name || `Employee #${employee.id}`
 
 function normalizeEmployeeName(value?: string | null) {
@@ -187,8 +185,9 @@ const buildSelectedEmployees = () => {
     .filter((id) => Number.isFinite(id) && id > 0)
     .map((id) => new InductionOrganisationEmployeeParams(id))
 
-  const manualEmployees = collectManualOrganisationEmployeeNames()
-    .map((name) => new InductionOrganisationEmployeeParams(null, name))
+  const manualEmployees = collectManualOrganisationEmployeeNames().map(
+    (name) => new InductionOrganisationEmployeeParams(null, name),
+  )
 
   return [...selectedEmployees, ...manualEmployees]
 }
@@ -354,12 +353,13 @@ const syncData = () => {
   selectedTrainingTopicIds.value = new Set(data.trainingTopic.map((topic) => Number(topic.id)))
   selectedOrganisationEmployees.value = data.organisationEmployee
     .filter((employee) => Number(employee.id) > 0)
-    .map((employee) =>
-      new TitleInterface({
-        id: Number(employee.id),
-        title: employeeName(employee),
-        subtitle: employee.email,
-      }),
+    .map(
+      (employee) =>
+        new TitleInterface({
+          id: Number(employee.id),
+          title: employeeName(employee),
+          subtitle: employee.email,
+        }),
     )
   manualOrganisationEmployeeNames.value = data.organisationEmployee
     .filter((employee) => !(Number(employee.id) > 0))
@@ -372,7 +372,7 @@ const syncData = () => {
       ) ??
       new TitleInterface({
         id: data.projectLocationId,
-        title: `Location #${data.projectLocationId}`,
+        title: data.projectLocationTitle || `Location #${data.projectLocationId}`,
       }))
     : null
 
@@ -380,7 +380,7 @@ const syncData = () => {
     ? (projectZoneOptions.value.find((zone) => Number(zone.id) === Number(data.projectZoonId)) ??
       new TitleInterface({
         id: data.projectZoonId,
-        title: `ZOON #${data.projectZoonId}`,
+        title: data.projectZoneTitle || `ZOON #${data.projectZoonId}`,
       }))
     : null
 
@@ -392,7 +392,7 @@ const syncData = () => {
     (data.instractor_id
       ? new TitleInterface({
           id: data.instractor_id,
-          title: `Employee #${data.instractor_id}`,
+          title: data.instructorName || `Employee #${data.instractor_id}`,
         })
       : null)
 
@@ -544,7 +544,8 @@ onMounted(() => {
         <div>
           <h3>{{ $t('Induction') }}</h3>
           <p v-if="shouldUseProjectLocation">
-            {{ $t('instractor') }} · {{ $t('date') }} · {{ $t('location') }} · {{ $t('ZOON') }} · {{ $t('organisationEmployee') }}
+            {{ $t('instractor') }} · {{ $t('date') }} · {{ $t('location') }} · {{ $t('ZOON') }} ·
+            {{ $t('organisationEmployee') }}
           </p>
           <p v-else>{{ $t('instractor') }} · {{ $t('date') }} · {{ $t('organisationEmployee') }}</p>
         </div>
@@ -624,7 +625,9 @@ onMounted(() => {
               @update:model-value="setProjectZone"
             />
             <p
-              v-if="selectedProjectLocation && !projectZoneOptions.length && !projectLocationsLoading"
+              v-if="
+                selectedProjectLocation && !projectZoneOptions.length && !projectLocationsLoading
+              "
               class="field-helper"
             >
               {{ $t('no_zoon_found') }}
@@ -632,7 +635,10 @@ onMounted(() => {
           </div>
         </template>
 
-        <div class="induction-field induction-field--wide" data-required-field="organisationEmployee">
+        <div
+          class="induction-field induction-field--wide"
+          data-required-field="organisationEmployee"
+        >
           <UpdatedCustomInputSelect
             :model-value="selectedOrganisationEmployees"
             :static-options="employeeOptions"
@@ -645,7 +651,10 @@ onMounted(() => {
             @update:model-value="setOrganisationEmployees"
           />
           <div class="manual-employee-entry">
-            <label class="input-label employee_name_lable" for="induction-manual-organisation-employee">
+            <label
+              class="input-label employee_name_lable"
+              for="induction-manual-organisation-employee"
+            >
               {{ $t('Visitor Name') }}
             </label>
             <div class="manual-employee-entry__control">
@@ -657,7 +666,7 @@ onMounted(() => {
                 :placeholder="$t(' Add Visitor')"
                 @input="updateData()"
                 @keydown.enter.prevent="addManualOrganisationEmployee"
-              >
+              />
               <button
                 type="button"
                 class="manual-employee-entry__add"
@@ -668,10 +677,7 @@ onMounted(() => {
                 {{ $t('Add Visitor') }}
               </button>
             </div>
-            <div
-              v-if="manualOrganisationEmployeeNames.length"
-              class="manual-employee-entry__chips"
-            >
+            <div v-if="manualOrganisationEmployeeNames.length" class="manual-employee-entry__chips">
               <span
                 v-for="(name, index) in manualOrganisationEmployeeNames"
                 :key="`${name}-${index}`"
@@ -702,7 +708,9 @@ onMounted(() => {
         </span>
         <div>
           <label class="input-label required">{{ $t('trainingTopic') }}</label>
-          <p>{{ selectedTrainingTopicsCount }} / {{ trainingTopics.length }} {{ $t('selected') }}</p>
+          <p>
+            {{ selectedTrainingTopicsCount }} / {{ trainingTopics.length }} {{ $t('selected') }}
+          </p>
         </div>
         <button
           v-if="trainingTopics.length"
@@ -775,14 +783,14 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.employee_name_lable{
+.employee_name_lable {
   justify-content: start;
 }
-.update_data_picker label{
-justify-content: start;
+.update_data_picker label {
+  justify-content: start;
 }
-.update_data_picker :deep(.p-datepicker-input){
-background: transparent;
+.update_data_picker :deep(.p-datepicker-input) {
+  background: transparent;
 }
 .induction-form-shell {
   display: grid;
@@ -1159,12 +1167,11 @@ background: transparent;
 }
 
 .topic-selection {
-  background:
-    linear-gradient(
-      180deg,
-      color-mix(in srgb, var(--PrimaryColor) 3%, var(--surface-1)),
-      var(--surface-1)
-    );
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--PrimaryColor) 3%, var(--surface-1)),
+    var(--surface-1)
+  );
 }
 
 .topic-selection__header {

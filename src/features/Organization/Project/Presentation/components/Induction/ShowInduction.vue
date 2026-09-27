@@ -8,29 +8,22 @@ import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import ShowInductionController from '../../controllers/Induction/showInductionController'
 import ShowInductionParams from '../../../Core/params/induction/showInductionParams'
 
-import Image from 'primevue/image';
+import Image from 'primevue/image'
 
 const route = useRoute()
 const id = computed(() => Number(route.params.id))
 const controller = ShowInductionController.getInstance()
 const state = ref(controller.state.value)
 
-const projectQuery = computed(() => {
-  const routeValue = route.query.project_id
-  const rawValue = Array.isArray(routeValue) ? routeValue[0] : routeValue
-  const parsedValue = Number(rawValue)
-
-  return Number.isFinite(parsedValue) && parsedValue > 0 ? `?project_id=${parsedValue}` : ''
-})
-
-const editLink = computed(() => `/organization/induction/${id.value}${projectQuery.value}`)
 const induction = computed(() => state.value.data)
 
 const fetchInductionDetails = async () => {
   await controller.showInduction(new ShowInductionParams(id.value))
 }
 
-const personName = (item: { id?: number | null; title?: string; name?: string } | null | undefined) => {
+const personName = (
+  item: { id?: number | null; title?: string; name?: string } | null | undefined,
+) => {
   if (!item) return '-'
   return item.title || item.name || (item.id ? `#${item.id}` : '-')
 }
@@ -64,6 +57,7 @@ onMounted(fetchInductionDetails)
             </span>
             <div>
               <p>{{ $t('Induction') }}</p>
+
               <h1>{{ induction.title }}</h1>
             </div>
           </div>
@@ -76,20 +70,33 @@ onMounted(fetchInductionDetails)
 
         <div class="induction-show__summary">
           <div class="summary-item">
-            <span>{{ $t('Instructor ID') }}</span>
-            <strong>#{{ induction.instractor_id || '-' }}</strong>
+            <span>{{ $t('instractor') }}</span>
+            <strong>{{
+              induction.instructorName ||
+              (induction.instractor_id ? '#' + induction.instractor_id : '-')
+            }}</strong>
+          </div>
+          <div class="summary-item">
+            <span>{{ $t('project') }}</span>
+            <strong>{{ induction.projectTitle || '-' }}</strong>
           </div>
           <div class="summary-item">
             <span>{{ $t('date') }}</span>
             <strong>{{ induction.date || '-' }}</strong>
           </div>
           <div class="summary-item">
-            <span>{{ $t('Location ID') }}</span>
-            <strong>{{ induction.projectLocationId ? `#${induction.projectLocationId}` : '-' }}</strong>
+            <span>{{ $t('location') }}</span>
+            <strong>{{
+              induction.projectLocationTitle ||
+              (induction.projectLocationId ? '#' + induction.projectLocationId : '-')
+            }}</strong>
           </div>
           <div class="summary-item">
-            <span>{{ $t('Zone ID') }}</span>
-            <strong>{{ induction.projectZoonId ? `#${induction.projectZoonId}` : '-' }}</strong>
+            <span>{{ $t('zone') }}</span>
+            <strong>{{
+              induction.projectZoneTitle ||
+              (induction.projectZoonId ? '#' + induction.projectZoonId : '-')
+            }}</strong>
           </div>
         </div>
 
@@ -97,7 +104,11 @@ onMounted(fetchInductionDetails)
           <section class="induction-show-card">
             <h2>{{ $t('trainingTopic') }}</h2>
             <div v-if="induction.trainingTopic.length" class="chip-list">
-              <span v-for="topic in induction.trainingTopic" :key="topic.id || topic.title" class="show-chip">
+              <span
+                v-for="topic in induction.trainingTopic"
+                :key="topic.id || topic.title"
+                class="show-chip"
+              >
                 {{ topicName(topic) }}
               </span>
             </div>
@@ -122,8 +133,12 @@ onMounted(fetchInductionDetails)
           <section class="induction-show-card induction-show-card--full">
             <h2>{{ $t('Evidence') }}</h2>
             <div v-if="attachments.length" class="attachment-grid">
-              <div v-for="(file, index) in attachments"  :key="`${file}-${index}`" class="attachment-item">
-              <Image :src="file" alt="Image" width="250"  preview/>
+              <div
+                v-for="(file, index) in attachments"
+                :key="`${file}-${index}`"
+                class="attachment-item"
+              >
+                <Image :src="file" alt="Image" width="250" preview />
               </div>
               <!-- <a
                 v-for="(file, index) in attachments"

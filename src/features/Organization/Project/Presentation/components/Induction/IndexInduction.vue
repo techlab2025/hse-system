@@ -12,7 +12,6 @@ import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import Search from '@/shared/icons/Search.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
-import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import ActionsTableView from '@/shared/icons/ActionsTableView.vue'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
@@ -20,6 +19,7 @@ import IndexInductionController from '../../controllers/Induction/indexInduction
 import DeleteInductionController from '../../controllers/Induction/deleteInductionController'
 import IndexInductionParams from '../../../Core/params/induction/indexInductionParams'
 import DeleteInductionParams from '../../../Core/params/induction/deleteInductionToolParams'
+import wordSlice from '@/base/Presentation/utils/word_slice'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -61,9 +61,6 @@ const deleteInduction = async (id: number) => {
   await fetchInductions(word.value, currentPage.value, countPerPage.value)
 }
 
-const formatList = (items: { title?: string }[]) =>
-  items.map((item) => item.title).filter(Boolean).join(', ') || '-'
-
 const rowActions = (id: number) => [
   {
     text: t('show'),
@@ -103,7 +100,10 @@ watch(
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <PermissionBuilder :code="createPermissions">
-        <router-link :to="`${basePath}/induction/add${projectQuery}`" class="btn btn-primary induction-add-button">
+        <router-link
+          :to="`${basePath}/induction/add${projectQuery}`"
+          class="btn btn-primary induction-add-button"
+        >
           <ActionsListAddIcon />
           <span>{{ $t('add_induction') }}</span>
         </router-link>
@@ -119,20 +119,24 @@ watch(
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">{{ $t('instractor id') }}</th>
+                <th scope="col">{{ $t('instractor') }}</th>
+                <th scope="col">{{ $t('project') }}</th>
+                <th scope="col">{{ $t('location') }}</th>
+                <th scope="col">{{ $t('zone') }}</th>
                 <th scope="col">{{ $t('date') }}</th>
-                <!-- <th scope="col">{{ $t('trainingTopic') }}</th> -->
-                <!-- <th scope="col">{{ $t('organisationEmployee') }}</th> -->
+                <th scope="col">{{ $t('created_at') }}</th>
                 <th class="empty"></th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
-                <td>#{{ item.instractor_id }}</td>
+                <td>{{ wordSlice(item.instructorName, 20) || '-' }}</td>
+                <td>{{ item.projectTitle || '-' }}</td>
+                <td>{{ wordSlice(item.projectLocationTitle, 20)  || '-' }}</td>
+                <td>{{ wordSlice(item.projectZoneTitle, 20) || '-' }}</td>
                 <td>{{ item.date || '-' }}</td>
-                <!-- <td>{{ formatList(item.trainingTopic) }}</td> -->
-                <!-- <td>{{ item.organisationEmployee.length }}</td> -->
+                <td>{{ item.createdAt || '-' }}</td>
                 <td><DropList :action-list="rowActions(item.id)" /></td>
               </tr>
             </tbody>
@@ -180,7 +184,7 @@ watch(
   flex-shrink: 0;
 }
 
-.input_search_btn{
+.input_search_btn {
   align-items: center;
 }
 </style>
