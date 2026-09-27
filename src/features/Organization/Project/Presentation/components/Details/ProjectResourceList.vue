@@ -97,7 +97,7 @@ const resourceDefinitions: Record<
   contractors: {
     title: 'Project contractors',
     description: 'Contractors currently connected to this project.',
-    types: [],
+    types: [ProjectCustomLocationEnum.CONTRUCTOR],
   },
   drills: {
     title: 'Project emergency drills',
@@ -155,11 +155,11 @@ const uniqueItems = (items: ResourceItem[]) =>
 
 const resourceItems = computed<ResourceItem[]>(() => {
   if (resource.value === 'contractors') {
-    return (detailsState.value.data?.contractors ?? []).map((contractor, index) => ({
+    return (locations.value[0]?.contractors ?? []).map((contractor, index) => ({
       key: `contractor-${contractor.id || index}`,
       title: contractor.name || 'Contractor',
       subtitle: 'Project contractor',
-      location: detailsState.value.data?.title || 'Project',
+      location: `Project #${projectId.value}`,
       detail: contractor.companyEmail || contractor.phone || '',
       badge: 'Contractor',
     }))
