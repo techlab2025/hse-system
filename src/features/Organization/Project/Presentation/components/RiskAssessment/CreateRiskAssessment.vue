@@ -669,8 +669,8 @@ textarea:focus {
 }
 
 .evidence-layout {
-  display: grid;
-  grid-template-columns: 1;
+  /* display: grid;
+  grid-template-columns: 1fr; */
   gap: 14px;
   align-items: stretch;
 }

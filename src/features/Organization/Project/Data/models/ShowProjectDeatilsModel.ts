@@ -125,9 +125,11 @@ export default class ShowProjectDetailsModel {
 
   static fromMap(data: any): ShowProjectDetailsModel {
     const lossTimes =
-      [data.loss_times, data.project_loss_times, data.accidents_types_loss_times].find((value) =>
-        Array.isArray(value),
-      ) ??
+      [
+        data.total_loss_time_rates_stats,
+        data.project_loss_times,
+        data.accidents_types_loss_times,
+      ].find((value) => Array.isArray(value)) ??
       Object.values(data).find(
         (value) =>
           Array.isArray(value) &&
