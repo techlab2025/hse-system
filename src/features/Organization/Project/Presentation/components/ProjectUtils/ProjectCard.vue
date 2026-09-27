@@ -58,7 +58,7 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
 }
 </script>
 <template>
-  <router-link class="project-card-link" :to="`/organization/project-details/${data?.id}?type=1`">
+  <router-link class="project-card-link" :to="`/organization/project-summary/${data?.id}`">
     <div class="project-card-container" :class="getProjectStatusClass(data?.status)">
       <div class="project-card-header-container">
         <div class="project-card-header">

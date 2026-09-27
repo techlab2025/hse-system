@@ -37,6 +37,17 @@ export default class ShowProjectDetailsModel {
   public lossTimes: ProjectLossTimeModel[]
   public drills: DrillModel[]
   public ProjectMeeting: ProjectMeetingModel[]
+  public observationsCount: number
+  public observationHazardsCount: number
+  public observationAccidentsCount: number
+  public investigationCount: number
+  public inspectionsCount: number
+  public equipmentCount: number
+  public assignedLocationsCount: number
+  public assignedZonesCount: number
+  public assignedEmployeesCount: number
+  public status: number | null
+  public projectProgress: number
 
   constructor(
     id: number,
@@ -63,6 +74,17 @@ export default class ShowProjectDetailsModel {
     lossTimes: ProjectLossTimeModel[],
     drills: DrillModel[] = [],
     ProjectMeeting: ProjectMeetingModel[],
+    observationsCount = 0,
+    observationHazardsCount = 0,
+    observationAccidentsCount = 0,
+    investigationCount = 0,
+    inspectionsCount = 0,
+    equipmentCount = 0,
+    assignedLocationsCount = 0,
+    assignedZonesCount = 0,
+    assignedEmployeesCount = 0,
+    status: number | null = null,
+    projectProgress = 0,
   ) {
     this.id = id
     this.title = title
@@ -88,6 +110,17 @@ export default class ShowProjectDetailsModel {
     this.lossTimes = lossTimes
     this.drills = drills
     this.ProjectMeeting = ProjectMeeting
+    this.observationsCount = observationsCount
+    this.observationHazardsCount = observationHazardsCount
+    this.observationAccidentsCount = observationAccidentsCount
+    this.investigationCount = investigationCount
+    this.inspectionsCount = inspectionsCount
+    this.equipmentCount = equipmentCount
+    this.assignedLocationsCount = assignedLocationsCount
+    this.assignedZonesCount = assignedZonesCount
+    this.assignedEmployeesCount = assignedEmployeesCount
+    this.status = status
+    this.projectProgress = projectProgress
   }
 
   static fromMap(data: any): ShowProjectDetailsModel {
@@ -147,6 +180,17 @@ export default class ShowProjectDetailsModel {
       Array.isArray(data.meetings)
         ? data.meetings.map((el) => ProjectMeetingModel.fromMap(el))
         : [],
+      Number(data.observations_count ?? 0),
+      Number(data.observation_hazards_count ?? 0),
+      Number(data.observation_accidents_count ?? 0),
+      Number(data.investigation_count ?? 0),
+      Number(data.inspections_count ?? 0),
+      Number(data.equipment_count ?? 0),
+      Number(data.assigned_locations_count ?? 0),
+      Number(data.assigned_zones_count ?? 0),
+      Number(data.assigned_employees_count ?? 0),
+      data.status ?? null,
+      Number(data.project_progress ?? 0),
     )
   }
 
@@ -213,6 +257,17 @@ export default class ShowProjectDetailsModel {
     [], // Loss Times
     [DrillModel.example], // Drills
     [ProjectMeetingModel.example, ProjectMeetingModel.example],
+    100,
+    40,
+    20,
+    4,
+    10,
+    4,
+    25,
+    15,
+    20,
+    1,
+    100,
   )
 }
 

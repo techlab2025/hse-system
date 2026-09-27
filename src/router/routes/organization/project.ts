@@ -41,6 +41,16 @@ export const projectRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: 'project-summary/:id',
+    name: 'Project Summary',
+    component: () => import('@/views/Organization/Project/ProjectSummary.vue'),
+    meta: {
+      breadcrumb: 'Project Summary',
+      parent: 'Projects',
+      isSidebar: false,
+    },
+  },
+  {
     path: 'project-details/:id',
     name: 'Project Details',
     component: () => import('@/views/Organization/Project/projectDetails.vue'),
