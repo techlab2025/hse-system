@@ -104,7 +104,7 @@ const employeeOptions = computed(() =>
 )
 const rowsForMonth = (key: string) => monthVisits[key] ?? []
 const savedVisitsForMonth = (key: string) => {
-  return visits.value.filter((visit: any) => visit.date.slice(0, 7) === key)
+  return visits.value.filter((visit) => visit.date.slice(0, 7) === key)
 }
 const addVisit = (key: string) => {
   if (!monthVisits[key]) monthVisits[key] = []
@@ -225,7 +225,7 @@ onMounted(async () => {
         <section class="workspace-card">
           <div class="section-intro">
             <div>
-              <span class="eyebrow">Plan the journey</span>
+              <!-- <span class="eyebrow">Plan the journey</span> -->
               <h2>Monthly visit plan</h2>
               <p>Choose a project month, add one or more visits, and save them together.</p>
             </div>
@@ -251,13 +251,13 @@ onMounted(async () => {
                 <small>Planned visits</small><strong>{{ visits.length }}</strong>
               </div>
             </div>
-            <div class="overview__item">
+            <!-- <div class="overview__item">
               <span class="overview__icon">✦</span>
               <div>
                 <small>Planning status</small
                 ><strong>{{ months.length ? 'Active' : 'Pending' }}</strong>
               </div>
-            </div>
+            </div> -->
           </div>
 
           <Accordion v-if="months.length" :value="months[0]?.key" class="month-accordion">
@@ -269,14 +269,33 @@ onMounted(async () => {
             >
               <AccordionHeader>
                 <div class="month-heading">
-                  <span class="month-heading__badge">{{ month.shortLabel }}</span>
-                  <div>
-                    <strong>{{ month.label }}</strong
-                    ><small>{{ month.firstDate }} → {{ month.lastDate }}</small>
+                  <span class="month-heading__badge" aria-hidden="true">
+                    <small>{{ month.shortLabel }}</small>
+                    <strong>{{ String(month.monthNumber).padStart(2, '0') }}</strong>
+                  </span>
+                  <div class="month-heading__details">
+                    <span class="month-heading__kicker">Monthly plan</span>
+                    <strong>{{ month.label }}</strong>
+                    <small>
+                      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M7 3v3M17 3v3M4 9h16M6 5h12a2 2 0 0 1 2 2v12H4V7a2 2 0 0 1 2-2Z" />
+                      </svg>
+                      {{ month.firstDate }} <i>→</i> {{ month.lastDate }}
+                    </small>
                   </div>
-                  <span class="draft-count"
-                    >{{ savedVisitsForMonth(month.key).length }} draft visits</span
+                  <span
+                    class="visit-count"
+                    :class="{ 'visit-count--empty': !savedVisitsForMonth(month.key).length }"
                   >
+                    <b>{{ savedVisitsForMonth(month.key).length }}</b>
+                    <span>
+                      {{
+                        savedVisitsForMonth(month.key).length === 1
+                          ? 'planned visit'
+                          : 'planned visits'
+                      }}
+                    </span>
+                  </span>
                 </div>
               </AccordionHeader>
               <AccordionContent>
@@ -839,7 +858,7 @@ onMounted(async () => {
 
 .overview {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 12px;
   margin-bottom: 24px;
 }
@@ -910,75 +929,194 @@ onMounted(async () => {
 
 .month-accordion {
   display: grid;
-  gap: 10px;
+  gap: 14px;
 }
 
 .month-panel {
+  position: relative;
   overflow: hidden;
-  border: 1px solid var(--main-border);
-  border-radius: 16px;
-  background: var(--surface-1);
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
+  border-radius: 20px;
+  background: linear-gradient(
+    130deg,
+    color-mix(in srgb, var(--surface-2) 42%, var(--surface-1)),
+    var(--surface-1) 54%
+  );
+  box-shadow: 0 7px 20px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
   transition:
+    transform 0.25s ease,
     border-color 0.2s ease,
     box-shadow 0.2s ease;
 }
 
+.month-panel::before {
+  content: '';
+  position: absolute;
+  inset-block: 18px;
+  inset-inline-start: 0;
+  z-index: 2;
+  width: 4px;
+  border-radius: 0 8px 8px 0;
+  background: linear-gradient(180deg, var(--PrimaryColor), var(--brand-primary-700));
+  opacity: 0;
+  transform: scaleY(0.35);
+  transition:
+    opacity 0.2s ease,
+    transform 0.25s ease;
+}
+
 .month-panel:hover {
-  border-color: color-mix(in srgb, var(--PrimaryColor) 25%, var(--main-border));
-  box-shadow: 0 8px 24px color-mix(in srgb, var(--brand-primary-900) 5%, transparent);
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--PrimaryColor) 32%, var(--main-border));
+  box-shadow: 0 14px 32px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
+}
+
+.month-panel.p-accordionpanel-active {
+  border-color: color-mix(in srgb, var(--PrimaryColor) 36%, var(--main-border));
+  background: var(--surface-1);
+  box-shadow: 0 18px 38px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
+}
+
+.month-panel.p-accordionpanel-active::before {
+  opacity: 1;
+  transform: scaleY(1);
 }
 
 .month-heading {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   width: 100%;
+  min-width: 0;
   text-align: start;
 }
 
 .month-heading__badge {
-  display: grid;
-  place-items: center;
-  width: 54px;
-  height: 48px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 66px;
+  height: 66px;
   flex: none;
-  border-radius: 11px;
+  border: 1px solid color-mix(in srgb, white 20%, transparent);
+  border-radius: 18px;
   color: var(--text-on-brand);
-  background: linear-gradient(145deg, var(--PrimaryColor), var(--brand-primary-700));
-  box-shadow: 0 7px 16px color-mix(in srgb, var(--PrimaryColor) 20%, transparent);
-  font-size: 0.79rem;
+  background:
+    radial-gradient(circle at 80% 12%, color-mix(in srgb, white 24%, transparent), transparent 32%),
+    linear-gradient(145deg, var(--PrimaryColor), var(--brand-primary-700));
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+}
+
+.month-heading__badge::after {
+  content: '';
+  position: absolute;
+  inset: 25px 9px auto;
+  height: 1px;
+  background: color-mix(in srgb, white 24%, transparent);
+}
+
+.month-heading__badge small {
+  color: color-mix(in srgb, white 82%, transparent);
+  font-size: 0.62rem;
+  font-weight: 850;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.month-heading__badge strong {
+  margin-top: 8px;
+  color: white;
+  font-size: 1.22rem;
+  line-height: 1;
+}
+
+.month-heading__details {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.month-heading__kicker {
+  color: var(--PrimaryColor);
+  font-size: 0.61rem;
   font-weight: 850;
   text-transform: uppercase;
+  letter-spacing: 0.13em;
 }
 
-.month-heading div {
-  display: grid;
-  gap: 3px;
-}
-
-.month-heading strong {
+.month-heading__details > strong {
   color: var(--text-strong);
-  font-size: 0.94rem;
+  font-size: 1rem;
+  line-height: 1.25;
 }
 
-.month-heading small {
+.month-heading__details > small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
   color: var(--text-soft);
   font-size: 0.75rem;
 }
 
-.draft-count {
+.month-heading__details > small svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  stroke: var(--PrimaryColor);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.month-heading__details > small i {
+  color: var(--PrimaryColor);
+  font-style: normal;
+}
+
+.visit-count {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-inline-start: auto;
-  padding: 6px 10px;
+  padding: 7px 12px 7px 7px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 16%, var(--main-border));
   border-radius: 999px;
   color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1));
-  font-size: 0.7rem;
+  background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1));
+  font-size: 0.68rem;
   font-weight: 800;
   white-space: nowrap;
 }
 
+.visit-count b {
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  color: var(--text-on-brand);
+  background: var(--PrimaryColor);
+  box-shadow: 0 5px 12px color-mix(in srgb, var(--PrimaryColor) 22%, transparent);
+  font-size: 0.74rem;
+}
+
+.visit-count--empty {
+  color: var(--text-soft);
+  background: color-mix(in srgb, var(--surface-2) 70%, var(--surface-1));
+}
+
+.visit-count--empty b {
+  color: var(--text-soft);
+  background: color-mix(in srgb, var(--text-soft) 10%, var(--surface-1));
+  box-shadow: none;
+}
+
 .month-body {
-  padding: 4px 2px 10px;
+  padding: 8px 4px 12px;
 }
 
 .month-empty,
@@ -1269,13 +1407,53 @@ onMounted(async () => {
 }
 
 :deep(.p-accordionheader) {
-  padding: 12px 15px;
-  background: var(--surface-1);
+  position: relative;
+  z-index: 1;
+  min-height: 92px;
+  padding: 13px 18px;
+  border: 0;
+  background: transparent !important;
+  transition: background 0.2s ease;
+}
+
+:deep(.p-accordionheader:hover) {
+  background: color-mix(in srgb, var(--PrimaryColor) 3%, transparent) !important;
+}
+
+.month-panel.p-accordionpanel-active :deep(.p-accordionheader) {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+    transparent 48%
+  ) !important;
+}
+
+:deep(.p-accordionheader-toggle-icon) {
+  width: 18px;
+  height: 18px;
+  margin-inline-start: 12px;
+  padding: 5px;
+  box-sizing: content-box;
+  border-radius: 50%;
+  color: var(--PrimaryColor);
+  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1));
+  transition:
+    transform 0.25s ease,
+    background 0.2s ease;
+}
+
+.month-panel.p-accordionpanel-active :deep(.p-accordionheader-toggle-icon) {
+  background: color-mix(in srgb, var(--PrimaryColor) 15%, var(--surface-1));
 }
 
 :deep(.p-accordioncontent-content) {
-  padding: 12px 16px 16px;
-  background: var(--surface-1);
+  padding: 14px 20px 20px;
+  border-top: 1px solid color-mix(in srgb, var(--PrimaryColor) 10%, var(--main-border));
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--PrimaryColor) 2%, var(--surface-1)),
+    var(--surface-1) 80px
+  ) !important;
 }
 
 button:focus-visible,
@@ -1342,11 +1520,45 @@ select:focus-visible {
   }
 
   .month-heading__badge {
+    width: 52px;
+    height: 56px;
+    border-radius: 14px;
+  }
+
+  .month-heading__badge::after {
+    inset-block-start: 22px;
+  }
+
+  .month-heading__badge strong {
+    margin-top: 7px;
+    font-size: 1rem;
+  }
+
+  .month-heading {
+    gap: 10px;
+  }
+
+  .month-heading__details > small svg,
+  .month-heading__details > small i,
+  .visit-count span {
     display: none;
   }
 
-  .draft-count {
-    display: none;
+  .visit-count {
+    padding: 4px;
+  }
+
+  :deep(.p-accordionheader) {
+    min-height: 78px;
+    padding: 10px 12px;
+  }
+
+  :deep(.p-accordionheader-toggle-icon) {
+    margin-inline-start: 5px;
+  }
+
+  :deep(.p-accordioncontent-content) {
+    padding: 12px;
   }
 
   .month-actions {
