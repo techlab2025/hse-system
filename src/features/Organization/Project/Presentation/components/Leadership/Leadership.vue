@@ -192,7 +192,6 @@ onMounted(async () => {
           </svg>
         </div>
         <div>
-          <!-- <span class="eyebrow">Project leadership</span>-->
           <h1>Leadership visits</h1>
           <p>
             Plan visits month by month, then turn each visit into a clear record of actions and
@@ -225,7 +224,6 @@ onMounted(async () => {
         <section class="workspace-card">
           <div class="section-intro">
             <div>
-              <!-- <span class="eyebrow">Plan the journey</span> -->
               <h2>Monthly visit plan</h2>
               <p>Choose a project month, add one or more visits, and save them together.</p>
             </div>

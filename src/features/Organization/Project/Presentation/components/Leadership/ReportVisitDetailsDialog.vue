@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import Dialog from 'primevue/dialog'
-import type LeadershipVisitModel from '../../../Data/models/Leadership/LeadershipVisitModel'
+import type LeadershipVisitDetailsModel from '../../../Data/models/Leadership/LeadershipVisitDetailsModel'
 
-defineProps<{ visit: LeadershipVisitModel | null }>()
+defineProps<{
+  visible: boolean
+  visit: LeadershipVisitDetailsModel | null
+  loading: boolean
+  error?: string
+}>()
 const emit = defineEmits<{ close: [] }>()
 
 const unsafeTypeLabel = (value: string) => {
@@ -14,7 +19,7 @@ const unsafeTypeLabel = (value: string) => {
 
 <template>
   <Dialog
-    :visible="Boolean(visit)"
+    :visible="visible"
     modal
     dismissable-mask
     :style="{ width: 'min(920px, 96vw)' }"
@@ -23,16 +28,33 @@ const unsafeTypeLabel = (value: string) => {
   >
     <template #header>
       <div class="details-heading">
-        <span class="details-heading__icon" aria-hidden="true">✓</span>
+        <!-- <span class="details-heading__icon" aria-hidden="true">✓</span> -->
         <div>
-          <span>Leadership visit</span>
+          <!-- <span>Leadership visit</span> -->
           <h2>Report details</h2>
-          <p>{{ visit?.location }} · {{ visit?.date }}</p>
+          <p v-if="visit">{{ visit.location || '—' }} · {{ visit.date || '—' }}</p>
+          <p v-else>{{ loading ? 'Loading selected visit…' : 'Selected visit report' }}</p>
         </div>
       </div>
     </template>
 
-    <div v-if="visit?.report" class="details-content">
+    <div v-if="loading" class="details-feedback" role="status">
+      <span class="loading-spinner" aria-hidden="true"></span>
+      <div>
+        <strong>Loading report details</strong>
+        <p>Retrieving the latest leadership visit report…</p>
+      </div>
+    </div>
+
+    <div v-else-if="error" class="details-feedback details-feedback--error" role="alert">
+      <span aria-hidden="true">!</span>
+      <div>
+        <strong>Unable to load report</strong>
+        <p>{{ error }}</p>
+      </div>
+    </div>
+
+    <div v-else-if="visit?.report" class="details-content">
       <section class="summary-grid">
         <article>
           <span>Topic</span>
@@ -171,6 +193,7 @@ const unsafeTypeLabel = (value: string) => {
 .details-heading p,
 .summary-grid p,
 .improvement-detail p,
+.details-feedback p,
 .details-unavailable p,
 .empty-copy {
   margin: 0;
@@ -181,6 +204,54 @@ const unsafeTypeLabel = (value: string) => {
 .details-content {
   display: grid;
   gap: 18px;
+}
+
+.details-feedback {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 120px;
+  padding: 20px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
+  border-radius: 15px;
+  background: var(--surface-1);
+}
+
+.details-feedback > span {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex: none;
+  border-radius: 50%;
+  color: var(--text-on-brand);
+  background: var(--PrimaryColor);
+  font-weight: 900;
+}
+
+.details-feedback strong {
+  color: var(--text-strong);
+}
+
+.details-feedback--error {
+  border-color: color-mix(in srgb, var(--status-danger) 28%, var(--main-border));
+  background: var(--status-danger-soft);
+}
+
+.details-feedback--error > span {
+  background: var(--status-danger);
+}
+
+.loading-spinner {
+  border: 3px solid color-mix(in srgb, white 35%, transparent);
+  border-top-color: white;
+  animation: report-details-spin 0.8s linear infinite;
+}
+
+@keyframes report-details-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .summary-grid {

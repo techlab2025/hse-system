@@ -130,7 +130,7 @@ onMounted(async () => {
 
 <template>
   <main class="report-page">
-    <header class="report-hero">
+    <!-- <header class="report-hero">
       <div class="report-hero__content">
         <span class="report-hero__icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none">
@@ -141,13 +141,12 @@ onMounted(async () => {
           </svg>
         </span>
         <div>
-          <!-- <span class="eyebrow">Leadership visits</span> -->
           <h1>Report visit</h1>
           <p>Record the discussion, observations, and improvement actions from this visit.</p>
         </div>
       </div>
       <RouterLink :to="visitsPath" class="back-link">← Back to visits</RouterLink>
-    </header>
+    </header> -->
 
     <DataStatus :controller="visitsState">
       <template #success>
@@ -364,14 +363,14 @@ onMounted(async () => {
   display: grid;
   gap: 22px;
   min-height: 100%;
-  padding: clamp(14px, 2vw, 28px);
-  background:
+  /* padding: clamp(14px, 2vw, 28px); */
+  /* background:
     radial-gradient(
       circle at 8% 4%,
       color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
       transparent 24rem
     ),
-    var(--surface-2);
+    var(--surface-2); */
 }
 .report-hero {
   display: flex;

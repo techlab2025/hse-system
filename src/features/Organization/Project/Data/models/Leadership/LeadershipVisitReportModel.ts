@@ -10,14 +10,30 @@ export default class LeadershipVisitReportModel {
     public attachments: string[],
   ) {}
 
-  static fromMap(data: any): LeadershipVisitReportModel {
+  static fromMap(data: unknown): LeadershipVisitReportModel {
+    const source: Record<string, unknown> =
+      data && typeof data === 'object' ? (data as Record<string, unknown>) : {}
+    const improvements = source.improvements ?? source.areas_of_improvement
+    const attachments = source.attachments ?? source.media
+
     return new LeadershipVisitReportModel(
-      Number(data?.id ?? data?.report_id ?? 0),
-      data?.topic ?? '',
-      data?.discussion ?? '',
-      data?.observations ?? '',
-      data?.improvements?.map((item: any) => LeadershipVisitImprovementModel.fromMap(item)) ?? [],
-      data?.attachments ?? [],
+      Number(source.id ?? source.report_id ?? 0),
+      String(source.topic ?? ''),
+      String(source.discussion ?? ''),
+      String(source.observations ?? ''),
+      Array.isArray(improvements)
+        ? improvements.map((item) => LeadershipVisitImprovementModel.fromMap(item))
+        : [],
+      Array.isArray(attachments)
+        ? attachments
+            .map((attachment) => {
+              if (typeof attachment === 'string') return attachment
+              if (!attachment || typeof attachment !== 'object') return ''
+              const item = attachment as Record<string, unknown>
+              return String(item.url ?? item.file ?? item.path ?? '')
+            })
+            .filter(Boolean)
+        : [],
     )
   }
 }

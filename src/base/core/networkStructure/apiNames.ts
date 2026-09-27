@@ -1967,6 +1967,9 @@ class ApiNames {
   public get FetchAllLeadershipVisits() {
     return this.baseUrl + this.organizationPrefix + 'fetch_visits'
   }
+  public get FetchLeadershipVisitDetails() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_visit_report'
+  }
   public get CreatePPEActivityTool() {
     return this.baseUrl + this.organizationPrefix + 'change_ppe_active_tool_matrix'
   }
@@ -2091,11 +2094,21 @@ class ApiNames {
 
   // Induction
 
-  public get create_induction() { return this.prefix + 'create_induction' }
-  public get fetch_inductions() { return this.prefix + 'fetch_induction' }
-  public get fetch_induction_details() { return this.prefix + 'fetch_induction_detail' }
-  public get update_induction() { return this.prefix + 'update_induction' }
-  public get delete_induction() { return this.prefix + 'delete_induction' }
+  public get create_induction() {
+    return this.prefix + 'create_induction'
+  }
+  public get fetch_inductions() {
+    return this.prefix + 'fetch_induction'
+  }
+  public get fetch_induction_details() {
+    return this.prefix + 'fetch_induction_detail'
+  }
+  public get update_induction() {
+    return this.prefix + 'update_induction'
+  }
+  public get delete_induction() {
+    return this.prefix + 'delete_induction'
+  }
 
   // public get create_induction() {
   //   return this.prefix + 'create_induction'
@@ -2112,7 +2125,6 @@ class ApiNames {
   // public get delete_induction() {
   //   return this.prefix + 'delete_induction'
   // }
-
 
   // Traning Topic
   public get fetch_tranning_topic() {

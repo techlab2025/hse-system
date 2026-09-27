@@ -4,8 +4,10 @@ import { RouterLink, useRoute } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import FetchAllLeadershipVisitsParams from '../../../Core/params/Leadership/FetchAllLeadershipVisitsParams'
+import FetchLeadershipVisitDetailsParams from '../../../Core/params/Leadership/FetchLeadershipVisitDetailsParams'
 import FetchAllLeadershipVisitsController from '../../controllers/Leadership/FetchAllLeadershipVisitsController'
-import type LeadershipVisitModel from '../../../Data/models/Leadership/LeadershipVisitModel'
+import FetchLeadershipVisitDetailsController from '../../controllers/Leadership/FetchLeadershipVisitDetailsController'
+import type LeadershipVisitDetailsModel from '../../../Data/models/Leadership/LeadershipVisitDetailsModel'
 import ReportVisitDetailsDialog from './ReportVisitDetailsDialog.vue'
 
 defineOptions({ name: 'ProjectLeadershipVisits' })
@@ -15,11 +17,56 @@ const projectId = computed(() => Number(route.params.id))
 const controller = FetchAllLeadershipVisitsController.getInstance()
 const state = controller.state
 const visits = computed(() => state.value.data ?? [])
-const selectedVisit = ref<LeadershipVisitModel | null>(null)
+const detailsController = FetchLeadershipVisitDetailsController.getInstance()
+const selectedVisit = ref<LeadershipVisitDetailsModel | null>(null)
+const detailsDialogVisible = ref(false)
+const detailsLoading = ref(false)
+const detailsError = ref('')
+const loadingVisitId = ref<number | null>(null)
+let detailsRequestSequence = 0
 const reportCreated = computed(() => route.query.report === 'created')
 
-const employeeInitial = (visit: LeadershipVisitModel) =>
-  visit.employees?.[0]?.employeeName?.charAt(0)?.toUpperCase() || 'E'
+const fetchReportDetails = async (visitId: number) => {
+  const requestSequence = ++detailsRequestSequence
+  detailsDialogVisible.value = true
+  detailsLoading.value = true
+  detailsError.value = ''
+  selectedVisit.value = null
+  loadingVisitId.value = visitId
+
+  try {
+    const detailsState = await detailsController.fetchDetails(
+      new FetchLeadershipVisitDetailsParams(visitId),
+    )
+
+    if (requestSequence !== detailsRequestSequence) return
+
+    if (detailsController.isDataSuccess()) {
+      selectedVisit.value = detailsState.value.data ?? null
+    } else {
+      detailsError.value =
+        detailsState.value.error?.title ?? 'Unable to load the leadership visit report.'
+    }
+  } catch {
+    if (requestSequence === detailsRequestSequence) {
+      detailsError.value = 'Unable to load the leadership visit report.'
+    }
+  } finally {
+    if (requestSequence === detailsRequestSequence) {
+      detailsLoading.value = false
+      loadingVisitId.value = null
+    }
+  }
+}
+
+const closeDetailsDialog = () => {
+  detailsRequestSequence += 1
+  detailsDialogVisible.value = false
+  selectedVisit.value = null
+  detailsError.value = ''
+  detailsLoading.value = false
+  loadingVisitId.value = null
+}
 
 onMounted(async () => {
   if (Number.isInteger(projectId.value) && projectId.value > 0) {
@@ -30,11 +77,10 @@ onMounted(async () => {
 
 <template>
   <main class="visits-page">
-    <header class="visits-hero">
+    <!-- <header class="visits-hero">
       <div class="visits-hero__content">
         <span class="visits-hero__icon" aria-hidden="true">◎</span>
         <div>
-          <!-- <span class="eyebrow">Project leadership</span> -->
           <h1>Leadership visits</h1>
           <p>Review planned visits, create reports, and revisit completed report details.</p>
         </div>
@@ -42,17 +88,16 @@ onMounted(async () => {
       <RouterLink :to="`/organization/project-details/${projectId}/leadership`" class="hero-link">
         ← Back to visit plan
       </RouterLink>
-    </header>
+    </header> -->
 
-    <div v-if="reportCreated" class="notice notice--success" role="status">
+    <!-- <div v-if="reportCreated" class="notice notice--success" role="status">
       <span aria-hidden="true">✓</span>
       Visit report submitted successfully.
-    </div>
+    </div> -->
 
     <section class="visits-card">
       <div class="section-heading">
         <div>
-          <!-- <span class="eyebrow">Visit register</span> -->
           <h2>All visits</h2>
           <p>Reports can be added once and reviewed here afterward.</p>
         </div>
@@ -103,20 +148,22 @@ onMounted(async () => {
                   </td> -->
                   <td data-label="Action">
                     <button
-                      v-if="visit.report"
+                      v-if="visit.hasReport || visit.report"
                       type="button"
                       class="report-link report-link--details"
-                      @click="selectedVisit = visit"
+                      :disabled="detailsLoading"
+                      @click="fetchReportDetails(visit.id)"
                     >
-                      Report details <span aria-hidden="true">⌕</span>
+                      {{ loadingVisitId === visit.id ? 'Loading…' : 'Report details' }}
+                      <span v-if="loadingVisitId !== visit.id" aria-hidden="true">⌕</span>
                     </button>
-                    <RouterLink
+                    <a
                       v-else
-                      :to="`/organization/project-details/${projectId}/leadership/visits/${visit.id}/report`"
+                      :href="`/organization/project-details/${projectId}/leadership/visits/${visit.id}/report`"
                       class="report-link"
                     >
                       Report visit <span aria-hidden="true">↗</span>
-                    </RouterLink>
+                    </a>
                   </td>
                 </tr>
               </tbody>
@@ -142,7 +189,13 @@ onMounted(async () => {
       </DataStatus>
     </section>
 
-    <ReportVisitDetailsDialog :visit="selectedVisit" @close="selectedVisit = null" />
+    <ReportVisitDetailsDialog
+      :visible="detailsDialogVisible"
+      :visit="selectedVisit"
+      :loading="detailsLoading"
+      :error="detailsError"
+      @close="closeDetailsDialog"
+    />
   </main>
 </template>
 
@@ -151,14 +204,14 @@ onMounted(async () => {
   display: grid;
   gap: 22px;
   min-height: 100%;
-  padding: clamp(14px, 2vw, 28px);
-  background:
+  /* padding: clamp(14px, 2vw, 28px); */
+  /* background:
     radial-gradient(
       circle at 8% 4%,
       color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
       transparent 24rem
     ),
-    var(--surface-2);
+    var(--surface-2); */
 }
 
 .visits-hero {
@@ -370,6 +423,13 @@ onMounted(async () => {
 .report-link:hover {
   transform: translateY(-1px);
   box-shadow: 0 9px 20px color-mix(in srgb, var(--PrimaryColor) 22%, transparent);
+}
+
+.report-link:disabled {
+  opacity: 0.58;
+  cursor: wait;
+  transform: none;
+  box-shadow: none;
 }
 
 .empty-state {
