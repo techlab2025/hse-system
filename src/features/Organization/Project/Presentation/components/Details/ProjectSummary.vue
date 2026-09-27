@@ -60,7 +60,7 @@ const safetyStatistics = computed(() => [
     note: 'Reported project incidents',
     tone: 'red',
     icon: '!',
-    to: `/organization/equipment-mangement/incident-report?project_id=${projectId.value}`,
+    to: `/organization/equipment-mangement/incedant?isAll=1&project_id=${projectId.value}`,
   },
   {
     label: 'Investigations',
@@ -68,7 +68,7 @@ const safetyStatistics = computed(() => [
     note: 'Investigation records',
     tone: 'amber',
     icon: 'I',
-    to: `/organization/Investigating?isAll=1&project_id=${projectId.value}`,
+    to: `/organization/Investigating?project_id=${projectId.value}`,
   },
   {
     label: 'Inspections',

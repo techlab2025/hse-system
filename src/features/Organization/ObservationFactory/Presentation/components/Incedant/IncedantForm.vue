@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { PpeItemEnum } from '../../../Core/Enums/ppe_enum'
 
@@ -31,6 +32,11 @@ import RadioButton from 'primevue/radiobutton'
 import SwitchInput from '@/shared/FormInputs/SwitchInput.vue'
 
 const emit = defineEmits(['update:data'])
+const route = useRoute()
+const routeProjectId = computed(() => {
+  const projectId = Number(route.query.project_id)
+  return projectId > 0 ? projectId : undefined
+})
 const props = defineProps<{
   data?: HazardDetailsModel
 }>()
@@ -180,7 +186,7 @@ onMounted(() => {
   FetchMyProjects()
 })
 
-const SelectedProjectId = ref<number>()
+const SelectedProjectId = ref<number | undefined>(routeProjectId.value)
 const GetProjectId = (id: number) => {
   SelectedProjectId.value = id
   updateData()
@@ -235,7 +241,12 @@ const UpdateSerial = (data) => {
       :subtitle="'Identify and report potential Incedants before they cause harm'"
       :img="HazardImage"
     />
-    <HeaderProjectsFilter class="colored" :projects="Projects" @update:data="GetProjectId" />
+    <HeaderProjectsFilter
+      v-if="!routeProjectId"
+      class="colored"
+      :projects="Projects"
+      @update:data="GetProjectId"
+    />
   </div>
 
   <div class="col-span-6 md:col-span-6">
