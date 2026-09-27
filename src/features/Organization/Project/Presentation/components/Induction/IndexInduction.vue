@@ -57,8 +57,11 @@ const changePageSize = (limit: number) => {
   fetchInductions(word.value, currentPage.value, limit)
 }
 const deleteInduction = async (id: number) => {
-  await DeleteInductionController.getInstance().deleteInduction(new DeleteInductionParams(id))
-  await fetchInductions(word.value, currentPage.value, countPerPage.value)
+  const deleteController = DeleteInductionController.getInstance()
+  await deleteController.deleteInduction(new DeleteInductionParams(id))
+  if (deleteController.isDataSuccess()) {
+    await fetchInductions(word.value, currentPage.value, countPerPage.value)
+  }
 }
 
 const rowActions = (id: number) => [

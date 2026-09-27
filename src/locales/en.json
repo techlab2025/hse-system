@@ -2950,5 +2950,8 @@
   "Topic Is Required": "Topic is required",
   "Risk Assessment Document Is Required": "Risk assessment document is required",
   "Change Approval Is Required": "Change approval is required",
-  "Approved / Rejected By Is Required": "Approved / rejected by is required"
+  "Approved / Rejected By Is Required": "Approved / rejected by is required",
+  "Location is required": "Location is required",
+  "Zone is required": "Zone is required",
+  "Attachments are required": "Attachments are required"
 }

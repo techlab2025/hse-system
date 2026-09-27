@@ -2949,5 +2949,8 @@
   "Topic Is Required": "الموضوع مطلوب",
   "Risk Assessment Document Is Required": "مستند تقييم المخاطر مطلوب",
   "Change Approval Is Required": "حالة اعتماد التغيير مطلوبة",
-  "Approved / Rejected By Is Required": "المعتمد / الرافض مطلوب"
+  "Approved / Rejected By Is Required": "المعتمد / الرافض مطلوب",
+  "Location is required": "الموقع مطلوب",
+  "Zone is required": "المنطقة مطلوبة",
+  "Attachments are required": "المرفقات مطلوبة"
 }

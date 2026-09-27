@@ -25,12 +25,12 @@ export default class DeleteInductionController extends ControllerInterface<Induc
       const dataState: DataState<InductionModel> = await this.useCase.call(params)
       this.setState(dataState)
 
-      if (!this.isDataSuccess()) throw new Error('Error while addServices')
+      if (!this.isDataSuccess()) throw new Error(this.getErrorMessage())
     } catch (error: unknown) {
       console.log(error)
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog-error',
-        titleContent: this.state.value.message,
+        titleContent: this.getErrorMessage(),
         imageElement: errorImage,
         messageContent: null,
       })
@@ -38,5 +38,13 @@ export default class DeleteInductionController extends ControllerInterface<Induc
 
     super.handleResponseDialogs()
     return this.state
+  }
+
+  private getErrorMessage(): string {
+    return (
+      this.state.value.message ||
+      this.state.value.error?.title ||
+      'Unable to delete induction'
+    )
   }
 }
