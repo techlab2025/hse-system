@@ -133,6 +133,20 @@ const completionItems = computed(() => {
       icon: 'uil:calendar-alt',
       done: Boolean(date.value),
     },
+    ...(shouldUseProjectLocation.value
+      ? [
+          {
+            key: 'location',
+            icon: 'uil:map-marker',
+            done: Boolean(selectedProjectLocation.value?.id),
+          },
+          {
+            key: 'ZOON',
+            icon: 'uil:map-pin',
+            done: Boolean(selectedProjectZone.value?.id),
+          },
+        ]
+      : []),
     {
       key: 'organisationEmployee',
       icon: 'uil:users-alt',
@@ -142,6 +156,11 @@ const completionItems = computed(() => {
       key: 'trainingTopic',
       icon: 'uil:book-open',
       done: Boolean(selectedTrainingTopicIds.value.size),
+    },
+    {
+      key: 'Attachments',
+      icon: 'uil:image-upload',
+      done: Boolean(image.value.length),
     },
   ]
   return items
@@ -464,6 +483,16 @@ const requiredFields = computed(() => {
       isMissing: () => !date.value,
     },
     {
+      key: 'projectLocation',
+      message: t('Location is required'),
+      isMissing: () => shouldUseProjectLocation.value && !selectedProjectLocation.value?.id,
+    },
+    {
+      key: 'projectZone',
+      message: t('Zone is required'),
+      isMissing: () => shouldUseProjectLocation.value && !selectedProjectZone.value?.id,
+    },
+    {
       key: 'trainingTopic',
       message: t('Training topic is required'),
       isMissing: () => !selectedTrainingTopicIds.value.size,
@@ -472,6 +501,11 @@ const requiredFields = computed(() => {
       key: 'organisationEmployee',
       message: t('At least one employee is required'),
       isMissing: () => !organisationEmployeeCount.value,
+    },
+    {
+      key: 'image',
+      message: t('Attachments are required'),
+      isMissing: () => !image.value.length,
     },
   ]
   return fields
@@ -569,7 +603,10 @@ onMounted(() => {
         </div>
 
         <div class="update_data_picker input-wrapper" data-required-field="date">
-          <label class="input-label required" for="induction-date">{{ $t('date') }}</label>
+          <label class="input-label required" for="induction-date">
+            <span class="required-mark" aria-hidden="true">*</span>
+            {{ $t('date') }}
+          </label>
           <div class="induction-date-control">
             <DatePicker
               v-model="date"
@@ -600,6 +637,7 @@ onMounted(() => {
               id="induction-project-location"
               :placeholder="$t('Select location')"
               :reload="false"
+              required
               @update:model-value="setProjectLocation"
             />
             <p v-if="projectLocationsLoading" class="field-helper">
@@ -612,6 +650,9 @@ onMounted(() => {
                 {{ $t('retry') }}
               </button>
             </p>
+            <p v-if="requiredFieldErrors.projectLocation" class="required-field-message">
+              {{ requiredFieldErrors.projectLocation }}
+            </p>
           </div>
 
           <div class="induction-field" data-required-field="projectZone">
@@ -622,6 +663,7 @@ onMounted(() => {
               id="induction-project-zone"
               :placeholder="$t('Select ZOON')"
               :reload="false"
+              required
               @update:model-value="setProjectZone"
             />
             <p
@@ -631,6 +673,9 @@ onMounted(() => {
               class="field-helper"
             >
               {{ $t('no_zoon_found') }}
+            </p>
+            <p v-if="requiredFieldErrors.projectZone" class="required-field-message">
+              {{ requiredFieldErrors.projectZone }}
             </p>
           </div>
         </template>
@@ -707,7 +752,10 @@ onMounted(() => {
           <Icon icon="uil:book-reader" />
         </span>
         <div>
-          <label class="input-label required">{{ $t('trainingTopic') }}</label>
+          <label class="input-label required">
+            <span class="required-mark" aria-hidden="true">*</span>
+            {{ $t('trainingTopic') }}
+          </label>
           <p>
             {{ selectedTrainingTopicsCount }} / {{ trainingTopics.length }} {{ $t('selected') }}
           </p>
@@ -765,19 +813,28 @@ onMounted(() => {
       </p>
     </section>
 
-    <section class="induction-section induction-section--evidence">
+    <section
+      class="induction-section induction-section--evidence"
+      data-required-field="image"
+    >
       <header class="induction-section__header">
         <span class="induction-section__icon" aria-hidden="true">
           <Icon icon="uil:image-upload" />
         </span>
         <div>
-          <h3>{{ $t('Attachments') }}</h3>
+          <h3>
+            <span class="required-mark" aria-hidden="true">*</span>
+            {{ $t('Attachments') }}
+          </h3>
           <p>{{ image.length }} {{ $t('images') }}</p>
         </div>
       </header>
       <div class="induction-upload input-wrapper w-full">
         <MultiImagesInput :initial-images="image" @update:images="setImages" />
       </div>
+      <p v-if="requiredFieldErrors.image" class="required-field-message">
+        {{ requiredFieldErrors.image }}
+      </p>
     </section>
   </div>
 </template>
@@ -1141,6 +1198,10 @@ onMounted(() => {
   color: var(--status-danger);
   font-size: 0.82rem;
   font-weight: 700;
+}
+
+.required-mark {
+  color: var(--status-danger);
 }
 
 .field-helper,

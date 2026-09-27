@@ -3,6 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { debounce } from '@/base/Presentation/utils/debouced'
+import wordSlice from '@/base/Presentation/utils/word_slice'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -143,12 +144,13 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <!-- <th scope="col">Facility</th> -->
-                <th scope="col">{{ $t('area') }}</th>
                 <th scope="col">{{ $t('date') }}</th>
                 <th scope="col">{{ $t('change type') }}</th>
+                <th scope="col">{{ $t('Description of Proposed Change/Modification') }}</th>
+                <th scope="col">{{ $t('area') }}</th>
                 <th scope="col">{{ $t('change approval') }}</th>
-                <th class="empty"></th>
+                <th scope="col">{{ $t('created_by') }}</th>
+                <th scope="col">{{ $t('actions') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -156,8 +158,6 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
                 <td data-label="#">
                   {{ (currentPage - 1) * countPerPage + index + 1 }}
                 </td>
-                <!-- <td data-label="Facility">{{ item.facilty || '-' }}</td> -->
-                <td :data-label="$t('area')">{{ item.area || '-' }}</td>
                 <td :data-label="$t('date')">{{ item.date || '-' }}</td>
                 <td :data-label="$t('change type')">
                   {{
@@ -166,12 +166,19 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
                       : '-'
                   }}
                 </td>
-                <td :data-label="$t('status')">
+                <td :data-label="$t('Description of Proposed Change/Modification')">
+                  {{ wordSlice(item.descriptionOfProposedChange || item.topicTitle || '-', 45) }}
+                </td>
+                <td :data-label="$t('area')">{{ wordSlice(item.area || '-', 30) }}</td>
+                <td :data-label="$t('change approval')">
                   {{
                     item.status
                       ? $t(statusLabels[item.status] ?? String(item.status))
                       : '-'
                   }}
+                </td>
+                <td :data-label="$t('created_by')">
+                  {{ wordSlice(item.createdByName || item.initiatorEmployeeName || '-', 30) }}
                 </td>
                 <td :data-label="$t('actions')">
                   <DropList
@@ -190,8 +197,8 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
           @countPerPage="changePageSize"
         />
       </template>
-      <template #loader><TableLoader :cols="7" :rows="10" /></template>
-      <template #initial><TableLoader :cols="7" :rows="10" /></template>
+      <template #loader><TableLoader :cols="8" :rows="10" /></template>
+      <template #initial><TableLoader :cols="8" :rows="10" /></template>
       <template #empty>
         <DataEmpty
           :link="addLink"

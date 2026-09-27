@@ -22,6 +22,7 @@ interface Props {
   file?: string | string[]
   base64File?: string | string[]
   hidepreview?: boolean
+  required?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -54,6 +55,7 @@ const props = withDefaults(defineProps<Props>(), {
   ].join(','),
   maxFiles: Infinity,
   multiple: false,
+  required: false,
 })
 
 const emit = defineEmits<{
@@ -236,7 +238,10 @@ const inputId = `file-upload-${props.index ?? Math.random().toString(36).substri
 
 <template>
   <div class="file-upload-wrapper">
-    <label class="upload-label">{{ label }}</label>
+    <label class="upload-label">
+      {{ label }}
+      <span v-if="required" class="upload-required-mark">*</span>
+    </label>
 
     <label
       v-if="!haveContent"
@@ -319,6 +324,10 @@ const inputId = `file-upload-${props.index ?? Math.random().toString(36).substri
   color: var(--gray-5);
   font-size: 16px;
   font-weight: 600;
+}
+
+.upload-required-mark {
+  color: var(--status-danger);
 }
 
 .upload-area {
