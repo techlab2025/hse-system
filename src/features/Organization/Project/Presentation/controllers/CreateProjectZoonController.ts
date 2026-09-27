@@ -7,8 +7,9 @@ import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type ProjectModel from '../../Data/models/ProjectModel'
 import CreateProjectZoonUseCase from '../../Domain/useCase/CraeteProjectZoonUseCase'
-import ShowProjectDetailsController from './ShowProjectDetailsController'
-import ShowProjectDetailsParams from '../../Core/params/ShowProjectDetailsParams'
+import ProjectCustomLocationController from './ProjectCustomLocationController'
+import ProjectCustomLocationParams from '../../Core/params/ProjectCustomLocationParams'
+import { ProjectCustomLocationEnum } from '../../Core/Enums/ProjectCustomLocationEnum'
 
 export default class CreateProjectZoonController extends ControllerInterface<ProjectModel> {
   private static instance: CreateProjectZoonController
@@ -40,8 +41,8 @@ export default class CreateProjectZoonController extends ControllerInterface<Pro
         // if (!draft) await router.push('/organization/projects')
 
         // useLoaderStore().endLoadingWithDialog();
-        await ShowProjectDetailsController.getInstance().showProjectDetails(
-          new ShowProjectDetailsParams(projectId),
+        await ProjectCustomLocationController.getInstance().getData(
+          new ProjectCustomLocationParams(projectId, [ProjectCustomLocationEnum.ZOON]),
         )
       } else {
         DialogSelector.instance.failedDialog.openDialog({

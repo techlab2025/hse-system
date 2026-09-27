@@ -8,8 +8,9 @@ import errorImage from '@/assets/images/error.png'
 import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
 import type HierarchyEmployeeModel from '@/features/Organization/Project/Data/models/LocationHierarchyEmployeeModel'
 import AddHierarchyEmployeeUseCase from '@/features/Organization/Project/Domain/useCase/Hierarchy/HierarchyEmployee/addHierarchyEmployeeUserCase'
-import ShowProjectDetailsController from '../../ShowProjectDetailsController'
-import ShowProjectDetailsParams from '@/features/Organization/Project/Core/params/ShowProjectDetailsParams'
+import ProjectCustomLocationController from '../../ProjectCustomLocationController'
+import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
+import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
 
 export default class AddHierarchyEmployeeController extends ControllerInterface<HierarchyEmployeeModel> {
   private static instance: AddHierarchyEmployeeController
@@ -50,8 +51,15 @@ export default class AddHierarchyEmployeeController extends ControllerInterface<
               : `/organization/employee-details/${projectId}`,
           )
         }
-        await ShowProjectDetailsController.getInstance().showProjectDetails(
-          new ShowProjectDetailsParams(Number(route.params?.project_id || route.params?.id)),
+        await ProjectCustomLocationController.getInstance().getData(
+          new ProjectCustomLocationParams(
+            Number(route.params?.project_id || route.params?.id),
+            [
+              ProjectCustomLocationEnum.EMPLOYEE,
+              ProjectCustomLocationEnum.HIERARCHY,
+              ProjectCustomLocationEnum.HIERARCHY_EMPLOYEE,
+            ],
+          ),
         )
 
         // useLoaderStore().endLoadingWithDialog();

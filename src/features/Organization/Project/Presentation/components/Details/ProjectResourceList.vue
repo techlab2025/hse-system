@@ -13,6 +13,8 @@ import AddProjectMeetingDialog from './ProjectMeeting/AddProjectMeetingDialog.vu
 import ProjectLocationZoonDialog from './ProjectSite/ProjectLocationZoonDialog.vue'
 import AddCreateTeam from '../Dialogs/CreateTeamDialog/AddCreateTeam.vue'
 import AddEquipmentDialog from '../Dialogs/AddEquipmentDialog.vue'
+import FetchProjectMeetingsController from '../../controllers/ProjectMeeting/FetchProjectMeetingsController'
+import FetchProjectMeetingsParams from '../../../Core/params/ProjectMeeting/FetchProjectMeetingsParams'
 
 type ResourceKey =
   | 'locations'
@@ -38,8 +40,10 @@ type ResourceItem = {
 const route = useRoute()
 const customLocationController = ProjectCustomLocationController.getInstance()
 const detailsController = ShowProjectDetailsController.getInstance()
+const meetingsController = FetchProjectMeetingsController.getInstance()
 const customState = ref(customLocationController.state.value)
 const detailsState = detailsController.state
+const meetingsState = meetingsController.state
 const isLoading = ref(false)
 const errorMessage = ref('')
 const showAddOptions = ref(false)
@@ -140,6 +144,11 @@ const addActionLabel = computed(
 )
 
 const locationId = (location: ProjectCustomLocationModel) => Number(location.id)
+const projectLabel = computed(() =>
+  definition.value.types.length
+    ? `Project #${projectId.value}`
+    : detailsState.value.data?.title || `Project #${projectId.value}`,
+)
 
 const uniqueItems = (items: ResourceItem[]) =>
   Array.from(new Map(items.map((item) => [item.key, item])).values())
@@ -168,11 +177,11 @@ const resourceItems = computed<ResourceItem[]>(() => {
   }
 
   if (resource.value === 'meetings') {
-    return (detailsState.value.data?.ProjectMeeting ?? []).map((meeting, index) => ({
+    return (meetingsState.value.data ?? []).map((meeting, index) => ({
       key: `meeting-${meeting.id || index}`,
       title: meeting.serialName || `Safety meeting ${index + 1}`,
       subtitle: `${meeting.hierarchies?.length ?? 0} participating positions`,
-      location: meeting.teamLeader?.name || detailsState.value.data?.title || 'Project',
+      location: meeting.teamLeader?.name || `Project #${projectId.value}`,
       detail: meeting.date || '',
       badge: 'Meeting',
     }))
@@ -287,12 +296,17 @@ const fetchResource = async () => {
   isLoading.value = true
   errorMessage.value = ''
   try {
-    await detailsController.showProjectDetails(new ShowProjectDetailsParams(projectId.value))
     if (definition.value.types.length) {
       await customLocationController.getData(
         new ProjectCustomLocationParams(projectId.value, definition.value.types, []),
       )
       customState.value = customLocationController.state.value
+    } else if (resource.value === 'meetings') {
+      await meetingsController.fetchMeetings(
+        new FetchProjectMeetingsParams(projectId.value, 1, 100, 0),
+      )
+    } else {
+      await detailsController.showProjectDetails(new ShowProjectDetailsParams(projectId.value))
     }
   } catch (error) {
     errorMessage.value = error instanceof Error ? error.message : 'Unable to load project data.'
@@ -326,7 +340,7 @@ watch(resource, () => {
         <RouterLink :to="`/organization/project-summary/${projectId}`" class="back-link">
           <span aria-hidden="true">←</span> Project summary
         </RouterLink>
-        <span class="resource-eyebrow">{{ detailsState.data?.title || 'Project' }}</span>
+        <span class="resource-eyebrow">{{ projectLabel }}</span>
         <h1>{{ definition.title }}</h1>
         <p>{{ definition.description }}</p>
       </div>
