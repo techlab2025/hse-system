@@ -536,7 +536,7 @@ watch(resource, () => {
   align-items: center;
   gap: 7px;
   margin-bottom: 22px;
-  color: color-mix(in srgb, var(--identity-primary) 42%, white);
+  color: color-mix(in srgb, var(--identity-primary) 42%, var(--text-on-brand));
   font-size: 0.78rem;
   font-weight: 850;
 }
@@ -546,7 +546,7 @@ watch(resource, () => {
 .resource-eyebrow {
   display: block;
   margin-bottom: 6px;
-  color: color-mix(in srgb, var(--identity-accent) 35%, white);
+  color: color-mix(in srgb, var(--identity-accent) 35%, var(--text-on-brand));
   font-size: 0.68rem;
   font-weight: 900;
   letter-spacing: 0.12em;
@@ -559,7 +559,7 @@ watch(resource, () => {
 .resource-hero p {
   max-width: 680px;
   margin: 9px 0 0;
-  color: rgb(255 255 255 / 72%);
+  color: color-mix(in srgb, var(--text-on-brand) 72%, transparent);
 }
 .resource-total {
   display: flex;
@@ -567,9 +567,9 @@ watch(resource, () => {
   align-items: center;
   flex-direction: column;
   padding: 16px 22px;
-  border: 1px solid rgb(255 255 255 / 20%);
+  border: 1px solid color-mix(in srgb, var(--text-on-brand) 20%, transparent);
   border-radius: 18px;
-  background: rgb(255 255 255 / 10%);
+  background: color-mix(in srgb, var(--text-on-brand) 10%, transparent);
   backdrop-filter: blur(8px);
 }
 .resource-total strong {
@@ -595,10 +595,10 @@ watch(resource, () => {
   justify-content: center;
   gap: 8px;
   padding: 0 18px;
-  border: 1px solid rgb(255 255 255 / 24%);
+  border: 1px solid color-mix(in srgb, var(--text-on-brand) 24%, transparent);
   border-radius: 18px;
-  background: rgb(255 255 255 / 14%);
-  color: white;
+  background: color-mix(in srgb, var(--text-on-brand) 14%, transparent);
+  color: var(--text-on-brand);
   font: 0.76rem 'Bold';
   cursor: pointer;
   backdrop-filter: blur(8px);
@@ -606,7 +606,7 @@ watch(resource, () => {
 }
 .resource-add-button:hover {
   transform: translateY(-2px);
-  background: rgb(255 255 255 / 22%);
+  background: color-mix(in srgb, var(--text-on-brand) 22%, transparent);
 }
 .resource-add-button > span {
   font-size: 1.2rem;
@@ -742,21 +742,31 @@ watch(resource, () => {
   gap: 18px;
   --resource-card-accent: var(--identity-primary);
   --resource-card-accent-soft: var(--identity-accent);
+  --resource-card-status: var(--identity-accent);
 }
 .resource-grid[data-resource='employees'],
 .resource-grid[data-resource='teams'] {
   --resource-card-accent: var(--identity-primary);
   --resource-card-accent-soft: var(--identity-accent);
+  --resource-card-status: var(--identity-secondary);
 }
 .resource-grid[data-resource='equipment'],
 .resource-grid[data-resource='zones'] {
   --resource-card-accent: var(--identity-secondary);
   --resource-card-accent-soft: var(--identity-primary);
+  --resource-card-status: var(--identity-accent);
 }
 .resource-grid[data-resource='meetings'],
 .resource-grid[data-resource='drills'] {
   --resource-card-accent: var(--identity-accent);
   --resource-card-accent-soft: var(--identity-primary);
+  --resource-card-status: var(--identity-secondary);
+}
+.resource-grid[data-resource='contractors'],
+.resource-grid[data-resource='locations'] {
+  --resource-card-accent: var(--identity-secondary);
+  --resource-card-accent-soft: var(--identity-accent);
+  --resource-card-status: var(--identity-primary);
 }
 .resource-card {
   position: relative;
@@ -777,7 +787,7 @@ watch(resource, () => {
     );
   box-shadow:
     0 18px 44px color-mix(in srgb, var(--text-strong) 7%, transparent),
-    inset 0 1px 0 color-mix(in srgb, white 72%, transparent);
+    inset 0 1px 0 color-mix(in srgb, var(--surface-1) 72%, transparent);
   transition:
     transform 0.28s cubic-bezier(0.2, 0.8, 0.2, 1),
     border-color 0.28s ease,
@@ -802,7 +812,7 @@ watch(resource, () => {
   border-color: color-mix(in srgb, var(--resource-card-accent) 38%, var(--main-border));
   box-shadow:
     0 24px 54px color-mix(in srgb, var(--resource-card-accent) 14%, transparent),
-    inset 0 1px 0 color-mix(in srgb, white 78%, transparent);
+    inset 0 1px 0 color-mix(in srgb, var(--surface-1) 78%, transparent);
 }
 .resource-card:hover::before {
   opacity: 1;
@@ -842,7 +852,7 @@ watch(resource, () => {
   border-radius: 19px;
   background:
     linear-gradient(145deg, var(--resource-card-accent), var(--resource-card-accent-soft));
-  color: white;
+  color: var(--text-on-brand);
   box-shadow: 0 11px 24px color-mix(in srgb, var(--resource-card-accent) 22%, transparent);
   font-size: 1.12rem;
   transition: transform 0.28s ease;
@@ -861,9 +871,9 @@ watch(resource, () => {
   bottom: 5px;
   width: 7px;
   height: 7px;
-  border: 2px solid white;
+  border: 2px solid var(--surface-1);
   border-radius: 50%;
-  background: #2ecc71;
+  background: var(--resource-card-status);
   box-sizing: content-box;
 }
 .resource-card__heading {

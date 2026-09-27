@@ -22,7 +22,7 @@ const activeIdentity = computed(() =>
 )
 const brandName = computed(() => activeIdentity.value.name || 'HSE.Cloud.Ai')
 const brandLogo = computed(() => activeIdentity.value.logo || defaultLogo)
-const heroIdentityStyle = computed(() => ({
+const summaryIdentityStyle = computed(() => ({
   '--summary-primary': activeIdentity.value.primaryColor,
   '--summary-secondary': activeIdentity.value.secondaryColor,
   '--summary-accent': activeIdentity.value.accentColor,
@@ -177,6 +177,12 @@ const quickLinks = computed(() => [
     to: `/organization/project-details/${projectId.value}/management-of-change?project_id=${projectId.value}`,
     mark: 'M',
   },
+  {
+    title: 'Audits',
+    description: 'all Audits',
+    to: `/organization/equipment-mangement/audits/${projectId.value}?project_id=${projectId.value}&inspectionType=1`,
+    mark: 'A',
+  },
 ])
 
 watch(
@@ -191,8 +197,8 @@ watch(
 <template>
   <DataStatus :controller="state">
     <template #success>
-      <main class="project-summary-page">
-        <section class="summary-hero" :style="heroIdentityStyle">
+      <main class="project-summary-page" :style="summaryIdentityStyle">
+        <section class="summary-hero">
           <span class="summary-hero__orb summary-hero__orb--one" aria-hidden="true"></span>
           <span class="summary-hero__orb summary-hero__orb--two" aria-hidden="true"></span>
 
@@ -387,12 +393,12 @@ watch(
   background:
     linear-gradient(
       120deg,
-      color-mix(in srgb, var(--summary-secondary) 62%, #071820),
+      color-mix(in srgb, var(--summary-secondary) 82%, var(--summary-primary)),
       color-mix(in srgb, var(--summary-primary) 72%, var(--summary-secondary))
     ),
     var(--summary-secondary);
   box-shadow: 0 24px 60px color-mix(in srgb, var(--summary-secondary) 24%, transparent);
-  color: white;
+  color: var(--text-on-brand);
 }
 
 .summary-hero__orb {
@@ -442,10 +448,10 @@ watch(
   height: 58px;
   flex: 0 0 58px;
   place-items: center;
-  border: 1px solid rgb(255 255 255 / 26%);
+  border: 1px solid color-mix(in srgb, var(--text-on-brand) 26%, transparent);
   border-radius: 18px;
-  background: rgb(255 255 255 / 94%);
-  box-shadow: 0 14px 30px rgb(0 0 0 / 18%);
+  background: color-mix(in srgb, var(--surface-1) 94%, transparent);
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--summary-secondary) 28%, transparent);
 }
 
 .summary-identity__mark img {
@@ -459,7 +465,7 @@ watch(
 .operations-panel__intro > span {
   display: block;
   margin-bottom: 5px;
-  color: color-mix(in srgb, var(--summary-primary) 52%, white);
+  color: color-mix(in srgb, var(--summary-primary) 52%, var(--text-on-brand));
   font-size: 0.68rem;
   font-weight: 900;
   letter-spacing: 0.12em;
@@ -474,7 +480,7 @@ watch(
 }
 
 .summary-eyebrow b {
-  color: white;
+  color: var(--text-on-brand);
   font: inherit;
 }
 
@@ -494,7 +500,7 @@ watch(
 .summary-identity p {
   max-width: 690px;
   margin: 10px 0 0;
-  color: rgb(229 245 246 / 78%);
+  color: color-mix(in srgb, var(--text-on-brand) 78%, transparent);
   line-height: 1.65;
 }
 
@@ -507,7 +513,7 @@ watch(
 }
 
 .project-reference {
-  color: color-mix(in srgb, var(--summary-primary) 42%, white);
+  color: color-mix(in srgb, var(--summary-primary) 42%, var(--text-on-brand));
   font-size: 0.76rem;
   font-weight: 850;
   letter-spacing: 0.08em;
@@ -519,10 +525,10 @@ watch(
   align-items: center;
   gap: 11px;
   padding: 0 17px;
-  border: 1px solid rgb(255 255 255 / 26%);
+  border: 1px solid color-mix(in srgb, var(--text-on-brand) 26%, transparent);
   border-radius: 14px;
-  background: rgb(255 255 255 / 12%);
-  color: white;
+  background: color-mix(in srgb, var(--text-on-brand) 12%, transparent);
+  color: var(--text-on-brand);
   font-size: 0.82rem;
   font-weight: 850;
   backdrop-filter: blur(8px);
@@ -531,8 +537,8 @@ watch(
 
 .full-details-link:hover {
   transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--summary-primary) 56%, white);
-  background: rgb(255 255 255 / 18%);
+  border-color: color-mix(in srgb, var(--summary-primary) 56%, var(--text-on-brand));
+  background: color-mix(in srgb, var(--text-on-brand) 18%, transparent);
 }
 
 .full-details-link svg {
@@ -547,7 +553,7 @@ watch(
 .summary-hero__meta {
   margin-top: 26px;
   padding-top: 20px;
-  border-top: 1px solid rgb(255 255 255 / 15%);
+  border-top: 1px solid color-mix(in srgb, var(--text-on-brand) 15%, transparent);
 }
 
 .summary-hero__meta > div {
@@ -558,7 +564,7 @@ watch(
 .summary-hero__meta span {
   display: block;
   margin-bottom: 5px;
-  color: rgb(221 241 242 / 64%);
+  color: color-mix(in srgb, var(--text-on-brand) 64%, transparent);
   font-size: 0.68rem;
   text-transform: uppercase;
 }
@@ -586,7 +592,7 @@ watch(
 
 .section-heading span,
 .operations-panel__intro > span {
-  color: var(--PrimaryColor);
+  color: var(--summary-primary);
 }
 
 .section-heading h2,
@@ -610,7 +616,7 @@ watch(
 }
 
 .safety-stat-card {
-  --stat-color: #00897b;
+  --stat-color: var(--summary-primary);
   position: relative;
   display: flex;
   min-width: 0;
@@ -649,19 +655,19 @@ watch(
 }
 
 .safety-stat-card--red {
-  --stat-color: #dc4c5d;
+  --stat-color: var(--summary-accent);
 }
 .safety-stat-card--amber {
-  --stat-color: #d78c16;
+  --stat-color: color-mix(in srgb, var(--summary-accent) 68%, var(--summary-primary));
 }
 .safety-stat-card--blue {
-  --stat-color: #277dc4;
+  --stat-color: var(--summary-primary);
 }
 .safety-stat-card--violet {
-  --stat-color: #7666d9;
+  --stat-color: color-mix(in srgb, var(--summary-primary) 42%, var(--summary-accent));
 }
 .safety-stat-card--navy {
-  --stat-color: #24485d;
+  --stat-color: var(--summary-secondary);
 }
 
 .safety-stat-card__icon {
@@ -673,7 +679,7 @@ watch(
   border-radius: 14px;
   background: var(--stat-color);
   box-shadow: 0 10px 20px color-mix(in srgb, var(--stat-color) 25%, transparent);
-  color: white;
+  color: var(--text-on-brand);
   font-size: 1rem;
   font-weight: 900;
 }
@@ -700,7 +706,7 @@ watch(
   background:
     radial-gradient(
       circle at 100% 0,
-      color-mix(in srgb, var(--PrimaryColor) 10%, transparent),
+      color-mix(in srgb, var(--summary-primary) 10%, transparent),
       transparent 34%
     ),
     var(--surface-2);
@@ -736,7 +742,7 @@ watch(
 
 .operational-stat:hover {
   transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--PrimaryColor) 42%, var(--main-border));
+  border-color: color-mix(in srgb, var(--summary-primary) 42%, var(--main-border));
 }
 
 .operational-stat strong,
@@ -748,7 +754,7 @@ watch(
   position: absolute;
   inset-block-start: 7px;
   inset-inline-end: 8px;
-  color: var(--PrimaryColor);
+  color: var(--summary-primary);
   font-size: 0.72rem;
 }
 
@@ -757,7 +763,7 @@ watch(
 }
 
 .operational-stat strong {
-  color: var(--PrimaryColor);
+  color: var(--summary-primary);
   font-size: 1.25rem;
 }
 
@@ -789,8 +795,8 @@ watch(
 
 .quick-link:hover {
   transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--PrimaryColor) 45%, var(--main-border));
-  box-shadow: 0 12px 24px color-mix(in srgb, var(--PrimaryColor) 9%, transparent);
+  border-color: color-mix(in srgb, var(--summary-primary) 45%, var(--main-border));
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--summary-primary) 9%, transparent);
 }
 
 .quick-link__mark {
@@ -800,8 +806,8 @@ watch(
   flex: 0 0 38px;
   place-items: center;
   border-radius: 12px;
-  background: color-mix(in srgb, var(--PrimaryColor) 12%, transparent);
-  color: var(--PrimaryColor);
+  background: color-mix(in srgb, var(--summary-primary) 12%, transparent);
+  color: var(--summary-primary);
   font-weight: 900;
 }
 
@@ -826,7 +832,7 @@ watch(
 }
 
 .quick-link__arrow {
-  color: var(--PrimaryColor);
+  color: var(--summary-primary);
   font-size: 1.2rem;
 }
 
