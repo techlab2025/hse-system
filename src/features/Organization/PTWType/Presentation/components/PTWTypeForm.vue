@@ -102,7 +102,7 @@ watch(
     industry.value = data?.industries ?? []
     if (!availableLanguages.length) return
 
-    ptwColor.value = data?.ptw_color ?? data?.color ?? '#ff0000'
+    ptwColor.value = data?.ptw_color ?? data?.ptw_color ?? '#ff0000'
 
     titles.value = availableLanguages.map(
       (language) =>

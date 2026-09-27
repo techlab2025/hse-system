@@ -340,11 +340,11 @@ watch(
 
 const hasText = (value: unknown) => String(value ?? '').trim().length > 0
 const requiredFields = computed(() => [
-  {
-    key: 'facilty',
-    message: t('Facility Is Required'),
-    isMissing: () => !hasText(facilty.value),
-  },
+  // {
+  //   key: 'facilty',
+  //   message: t('Facility Is Required'),
+  //   isMissing: () => !hasText(facilty.value),
+  // },
   {
     key: 'area',
     message: t('Area Is Required'),
@@ -414,14 +414,14 @@ onMounted(updateData)
       >
         <label for="facilty">
           {{ $t('facility') }}
-          <span class="management-change-required-mark">*</span>
+          <!-- <span class="management-change-required-mark">*</span> -->
         </label>
         <input
           id="facilty"
           v-model="facilty"
           :placeholder="$t('Enter the facility')"
           class="input"
-          required
+          
         />
         <p v-if="requiredFieldErrors.facilty" class="required-field-message">
           {{ requiredFieldErrors.facilty }}

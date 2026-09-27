@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import TitleInterface from '@/base/Data/Models/title_interface'
 import FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
 import InductionEmployeeModel from './InductionEmployeeModel'
@@ -5,33 +6,6 @@ import InductionProjectLocationModel from './InductionProjectLocationModel'
 import InductionProjectModel from './InductionProjectModel'
 import InductionProjectZoneModel from './InductionProjectZoneModel'
 import InductionTrainingTopicModel from './InductionTrainingTopicModel'
-
-type InductionResponse = {
-  id?: number
-  induction_id?: number
-  title?: string
-  name?: string
-  date?: string | null
-  created_at?: string | null
-  instructor_employee_id?: Record<string, unknown> | number
-  instractor_id?: number
-  instructor_id?: number
-  project_id?: Record<string, unknown> | number
-  project_location_id?: Record<string, unknown> | number
-  project_location_zone_id?: Record<string, unknown> | number
-  media?: Record<string, unknown>[]
-  image?: string[] | null
-  attachments?: string[] | null
-  induction_training_topics?: Record<string, unknown>[]
-  trainingTopic?: Record<string, unknown>[]
-  training_topic?: Record<string, unknown>[]
-  training_topics?: Record<string, unknown>[]
-  training_topic_ids?: Record<string, unknown>[]
-  attendees?: Record<string, unknown>[]
-  organisationEmployee?: Record<string, unknown>[]
-  organisation_employee?: Record<string, unknown>[]
-  organisation_employees?: Record<string, unknown>[]
-}
 
 export default class InductionModel extends TitleInterface {
   public id: number
@@ -95,42 +69,28 @@ export default class InductionModel extends TitleInterface {
     this.organisationEmployee = organisationEmployee
   }
 
-  static fromMap(data: Record<string, unknown>): InductionModel {
-    const induction = data as InductionResponse
-    const id = Number(induction.induction_id ?? induction.id ?? 0)
-    const instructorEmployee = typeof induction.instructor_employee_id === 'object'
-      ? InductionEmployeeModel.fromMap(induction.instructor_employee_id)
+  static fromMap(data: any): InductionModel {
+    const id = data.induction_id ?? data.id
+    const instructorEmployee = data.instructor_employee_id
+      ? InductionEmployeeModel.fromMap(data.instructor_employee_id)
       : null
 
     return new InductionModel(
       id,
-      induction.title ?? induction.name ?? 'Induction #' + id,
-      Number(instructorEmployee?.id ?? induction.instractor_id ?? induction.instructor_id ?? 0),
+      data.title ?? data.name ?? 'Induction #' + id,
+      instructorEmployee?.id ?? data.instractor_id ?? data.instructor_id ?? 0,
       instructorEmployee,
-      typeof induction.project_id === 'object' ? InductionProjectModel.fromMap(induction.project_id) : null,
-      typeof induction.project_location_id === 'object'
-        ? InductionProjectLocationModel.fromMap(induction.project_location_id)
+      data.project_id ? InductionProjectModel.fromMap(data.project_id) : null,
+      data.project_location_id ? InductionProjectLocationModel.fromMap(data.project_location_id) : null,
+      data.project_location_zone_id
+        ? InductionProjectZoneModel.fromMap(data.project_location_zone_id)
         : null,
-      typeof induction.project_location_zone_id === 'object'
-        ? InductionProjectZoneModel.fromMap(induction.project_location_zone_id)
-        : null,
-      induction.date ?? null,
-      induction.created_at ?? null,
-      (induction.media ?? []).map((item) => FilesModel.fromMap(item)),
-      induction.image ?? induction.attachments ?? null,
-      (induction.induction_training_topics ??
-        induction.trainingTopic ??
-        induction.training_topic ??
-        induction.training_topics ??
-        induction.training_topic_ids ??
-        []
-      ).map((item) => InductionTrainingTopicModel.fromMap(item)),
-      (induction.attendees ??
-        induction.organisationEmployee ??
-        induction.organisation_employee ??
-        induction.organisation_employees ??
-        []
-      ).map((item) => InductionEmployeeModel.fromMap(item)),
+      data.date,
+      data.created_at,
+      data.media?.map((item: any) => FilesModel.fromMap(item)) ?? [],
+      data.image ?? data.attachments ?? null,
+      data.induction_training_topics?.map((item: any) => InductionTrainingTopicModel.fromMap(item)) ?? [],
+      data.attendees?.map((item: any) => InductionEmployeeModel.fromMap(item)) ?? [],
     )
   }
 
