@@ -22,15 +22,40 @@ const toNullableString = (value: unknown): string | null =>
 const asRecord = (value: unknown): MapData | null =>
   value && typeof value === 'object' && !Array.isArray(value) ? (value as MapData) : null
 
-const recordTitle = (value: unknown): string | undefined => {
+const recordId = (value: unknown): number | undefined => {
+  const directId = toNumber(value)
+  if (directId !== undefined) return directId
+
   const record = asRecord(value)
   if (!record) return undefined
+
+  return toNumber(
+    record.id ??
+      record.employee_id ??
+      record.organization_employee_id ??
+      record.equipment_id ??
+      record.changement_topic_id ??
+      record.management_change_topic_type_id,
+  )
+}
+
+const recordTitle = (value: unknown): string | undefined => {
+  if (typeof value === 'string') return value
+
+  const record = asRecord(value)
+  if (!record) return undefined
+
+  const titles = Array.isArray(record.titles) ? record.titles : []
+  const localizedTitle = titles
+    .map((item) => asRecord(item))
+    .find((item) => item?.locale === 'en' || item?.title)
 
   return (
     toStringValue(record.title) ??
     toStringValue(record.name) ??
     toStringValue(record.full_name) ??
-    toStringValue(record.serial_name)
+    toStringValue(record.serial_name) ??
+    toStringValue(localizedTitle?.title)
   )
 }
 
@@ -72,51 +97,63 @@ export default class MangementChangeModel {
     public employeeName?: string,
     public equipmentTitle?: string,
     public approvalByName?: string,
-    public initiatore_employee_id:number | null = null,
+    public initiatorEmployeeName?: string,
+    public initiatore_employee_id: number | null = null,
   ) {}
 
   static fromMap(data: MapData): MangementChangeModel {
     const topicRecord =
+      data.changement_topic ??
       data.management_change_topic_type ??
       data.management_change_topic ??
       data.topic_type ??
       data.topic
     const employeeRecord =
       data.management_change_topic_employee ??
+      data.changer_request_employee_id ??
       data.employee ??
       data.organization_employee
     const equipmentRecord =
-      data.management_change_topic_equipment ??
-      data.equipment
+      data.management_change_topic_equipment ?? data.management_change_topic_equipment_id ?? data.equipment
     const approvalByRecord =
+      data.approver_by ??
       data.approval_by_employee ??
       data.approval_by_data ??
       data.approval_employee ??
       data.approval_by
+    const initiatorRecord =
+      data.initiator_employee_id ??
+      data.initiatore_employee_id ??
+      data.initiator_employee ??
+      data.initiatore_employee
+
+    const topicText = data.management_change_topic_text ?? data.topic_text ?? data.changement_topic_other
+    const topicType = toNumber(asRecord(topicRecord)?.type ?? asRecord(topicRecord)?.topic_type)
 
     return new MangementChangeModel(
       toNumber(data.id),
       toNullableString(data.risk_assisment_file),
-      attachmentsFrom(data.attachments ?? data.image ?? data.images),
+      attachmentsFrom(data.media ?? data.attachments ?? data.image ?? data.images),
       toNullableNumber(data.changer_request_id),
-      toStringValue(data.facilty) ?? '',
+      toStringValue(data.facilty ?? data.facility) ?? '',
       toStringValue(data.area) ?? '',
       toNullableString(data.date),
-      toNumber(data.changement_type),
-      toNumber(data.management_change_topic_type_id),
+      toNumber(data.changement_type ?? data.change_type),
+      recordId(data.management_change_topic_type_id ?? data.changement_topic_id ?? topicRecord),
       toNumber(data.status),
-      toNullableNumber(data.approval_by),
-      toNullableNumber(data.management_change_topic_employee_id),
-      toNullableNumber(data.management_change_topic_equipment_id),
-      toNullableString(data.management_change_topic_text),
+      recordId(data.approval_by ?? data.approver_by ?? approvalByRecord) ?? null,
+      recordId(data.management_change_topic_employee_id ?? data.changer_request_employee_id ?? employeeRecord) ?? null,
+      recordId(data.management_change_topic_equipment_id ?? equipmentRecord) ?? null,
+      toNullableString(topicText),
       toStringValue(data.created_at),
       toStringValue(data.updated_at),
       recordTitle(topicRecord),
-      toNumber(asRecord(topicRecord)?.type),
+      topicType,
       recordTitle(employeeRecord),
       recordTitle(equipmentRecord),
       recordTitle(approvalByRecord),
-       toNullableNumber(data.initiatore_employee_id),
+      recordTitle(initiatorRecord),
+      recordId(data.initiatore_employee_id ?? data.initiator_employee_id ?? initiatorRecord) ?? null,
     )
   }
 }

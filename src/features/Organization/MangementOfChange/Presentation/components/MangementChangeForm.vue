@@ -136,7 +136,7 @@ const formParams = computed(() => [
   area.value,
   date.value,
   changeType.value,
-  topicType.value,
+  Number(Selectedmangement.value?.id ?? 0),
   status.value,
   approvalBy.value,
   employeeId.value ?? undefined,
@@ -248,14 +248,13 @@ const setFormData = (change?: MangementChangeModel) => {
     change.change_type ?? ChangeTypeMangementEnum.temp
   ) as ChangeTypeMangementEnum
 
-  const topicValue = (
-    change.topicType ??
-    change.management_change_topic_type_id ??
-    MangementChangeTopicTypeEnum.employee
-  ) as MangementChangeTopicTypeEnum
+  const hasManagementTopic = Boolean(change.management_change_topic_type_id)
+  const topicValue = hasManagementTopic
+    ? ((change.topicType ?? MangementChangeTopicTypeEnum.employee) as MangementChangeTopicTypeEnum)
+    : null
 
-  topicType.value = topicValue
-  selectedTopicType.value = Number(topicValue)
+  topicType.value = topicValue ?? MangementChangeTopicTypeEnum.employee
+  selectedTopicType.value = topicValue ? Number(topicValue) : null
   status.value = (
     change.status ?? ChangeApprovalMangementEnum.approve
   ) as ChangeApprovalMangementEnum
@@ -271,7 +270,7 @@ const setFormData = (change?: MangementChangeModel) => {
       title:
         change.topicTitle ??
         `Management #${change.management_change_topic_type_id}`,
-      type: Number(topicValue),
+      type: Number(topicValue ?? MangementChangeTopicTypeEnum.employee),
     })
     : null
   Selectedemployee.value = change.approval_by
@@ -301,7 +300,7 @@ const setFormData = (change?: MangementChangeModel) => {
       Selectedinitiatoremployeeid.value = change.initiatore_employee_id  ? new TitleInterface({
       id: change.initiatore_employee_id,
       title:
-        change.employeeName ??
+        change.initiatorEmployeeName ??
         `Employee #${change.initiatore_employee_id}`,
     })
     : null
@@ -534,6 +533,7 @@ onMounted(updateData)
           required
           @update:model-value="status = $event.id"
         />
+        
         <p v-if="requiredFieldErrors.changeApproval" class="required-field-message">
           {{ requiredFieldErrors.changeApproval }}
         </p>
@@ -550,6 +550,7 @@ onMounted(updateData)
           required
           @update:model-value="setApprovalBy"
         />
+        {{ Selectedemployee?.id }} - {{ Selectedemployee?.title}}
         <p v-if="requiredFieldErrors.approvalBy" class="required-field-message">
           {{ requiredFieldErrors.approvalBy }}
         </p>
@@ -568,6 +569,7 @@ onMounted(updateData)
           required
           @update:model-value="setinitiatorEmployee"
         />
+       
         <p v-if="requiredFieldErrors.initiatorEmployee" class="required-field-message">
           {{ requiredFieldErrors.initiatorEmployee }}
         </p>
@@ -622,6 +624,7 @@ onMounted(updateData)
           required
           @update:model-value="setEmployee"
         />
+        {{ Selectedemployeeid?.id }} - {{ Selectedemployeeid?.title}}
         <p v-if="requiredFieldErrors.topicEmployee" class="required-field-message">
           {{ requiredFieldErrors.topicEmployee }}
         </p>
@@ -691,6 +694,7 @@ onMounted(updateData)
           accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
           :max-files="1"
           :multiple="false"
+          :file="riskAssismentFile ?? undefined"
           required
           class-name="input-file management-change-file-input"
           @change="handleFilesChange"

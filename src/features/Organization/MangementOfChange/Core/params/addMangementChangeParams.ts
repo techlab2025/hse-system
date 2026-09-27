@@ -41,17 +41,17 @@ export default class AddMangementChangeParams implements Params {
       risk_assisment_file: this.risk_assisment_file,
       attachments: this.image,
       changer_request_id: this.changer_request_id,
-      facilty: this.facilty,
+      facility: this.facilty,
       area: this.area,
       date: this.date ? formatJoinDate(this.date) : undefined,
       change_type: this.change_type,
-      management_change_topic_type_id: this.management_change_topic_type_id,
+      changement_topic_id: this.management_change_topic_type_id,
       status: this.status,
-      approval_by: this.approval_by,
-      management_change_topic_employee_id: this.management_change_topic_employee_id,
+      approver_by: this.approval_by,
+      changer_request_employee_id: this.management_change_topic_employee_id,
       management_change_topic_equipment_id: this.management_change_topic_equipment_id,
-      management_change_topic_text: this.management_change_topic_text,
-      initiatore_employee_id: this.initiatore_employee_id,
+      topic_text: this.management_change_topic_text,
+      initiator_employee_id: this.initiatore_employee_id,
     }
   }
 
