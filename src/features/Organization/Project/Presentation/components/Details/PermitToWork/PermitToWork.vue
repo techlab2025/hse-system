@@ -644,7 +644,8 @@ const handleFilesChange = (files: UploadedFile[]) => {
   padding: 19px;
   border: 1px solid color-mix(in srgb, var(--ptw-accent) 18%, var(--main-border));
   border-radius: 19px;
-  background: color-mix(in srgb, var(--ptw-accent) 1.8%, var(--surface-1));
+  background: transparent;
+  // background: color-mix(in srgb, var(--ptw-accent) 1.8%, var(--surface-1));
   box-shadow: 0 8px 22px color-mix(in srgb, var(--ptw-accent) 5%, transparent);
 }
 
