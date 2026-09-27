@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { formatTime } from '@/base/Presentation/utils/time_format'
@@ -17,14 +18,23 @@ import IndexHazardParams from '../../../Core/params/indexHazardParams'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 
 const word = ref('')
+const route = useRoute()
 const currentPage = ref(1)
 const countPerPage = ref(10)
 const indexHazardController = IndexHazardController.getInstance()
 const state = ref(indexHazardController.state.value)
 
 const fetchIncidents = async (query = '', page = 1, limit = 10) => {
+  const projectId = Number(route.query.project_id)
   await indexHazardController.getData(
-    new IndexHazardParams(query, page, limit, 1, [Observation.AccidentsType], []),
+    new IndexHazardParams(
+      query,
+      page,
+      limit,
+      1,
+      [Observation.AccidentsType],
+      projectId > 0 ? [projectId] : [],
+    ),
   )
 }
 
@@ -63,7 +73,8 @@ const getStatusTitle = (status?: number) => {
   }
 }
 
-const getStatusClass = (status?: number) => getStatusTitle(status).toLowerCase().replace(/\s+/g, '-')
+const getStatusClass = (status?: number) =>
+  getStatusTitle(status).toLowerCase().replace(/\s+/g, '-')
 
 const getDateTime = (date?: string, time?: string) => {
   if (!date) return '--'

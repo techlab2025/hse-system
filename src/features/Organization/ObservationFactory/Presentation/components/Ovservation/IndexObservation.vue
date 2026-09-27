@@ -272,7 +272,9 @@ const FetchMyProjects = async () => {
     isProjectsLoading.value = false
   }
 }
-const selectedProjctesFilters = ref<number | undefined>(ProjectSelect.project?.id)
+const selectedProjctesFilters = ref<number | undefined>(
+  Number(route.query.project_id) || ProjectSelect.project?.id,
+)
 
 const Filters = ref<MyZonesModel[]>()
 const fetchMyZonesController = FetchMyZonesController.getInstance()

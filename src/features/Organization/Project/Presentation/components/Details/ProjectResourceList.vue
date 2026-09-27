@@ -1,0 +1,839 @@
+<script setup lang="ts">
+import { computed, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+import ProjectCustomLocationParams from '../../../Core/params/ProjectCustomLocationParams'
+import { ProjectCustomLocationEnum } from '../../../Core/Enums/ProjectCustomLocationEnum'
+import ProjectCustomLocationController from '../../controllers/ProjectCustomLocationController'
+import ShowProjectDetailsController from '../../controllers/ShowProjectDetailsController'
+import ShowProjectDetailsParams from '../../../Core/params/ShowProjectDetailsParams'
+import type ProjectCustomLocationModel from '../../../Data/models/CustomLocation/ProjectCustomLocationModel'
+import AddDrillDialog from '../Dialogs/Drill/AddDrillDialog.vue'
+import AddProjectMeetingDialog from './ProjectMeeting/AddProjectMeetingDialog.vue'
+import ProjectLocationZoonDialog from './ProjectSite/ProjectLocationZoonDialog.vue'
+import AddCreateTeam from '../Dialogs/CreateTeamDialog/AddCreateTeam.vue'
+import AddEquipmentDialog from '../Dialogs/AddEquipmentDialog.vue'
+
+type ResourceKey =
+  | 'locations'
+  | 'zones'
+  | 'equipment'
+  | 'employees'
+  | 'teams'
+  | 'hierarchies'
+  | 'contractors'
+  | 'drills'
+  | 'meetings'
+
+type ResourceItem = {
+  key: string
+  title: string
+  subtitle: string
+  location: string
+  detail?: string
+  image?: string
+  badge?: string
+}
+
+const route = useRoute()
+const customLocationController = ProjectCustomLocationController.getInstance()
+const detailsController = ShowProjectDetailsController.getInstance()
+const customState = ref(customLocationController.state.value)
+const detailsState = detailsController.state
+const isLoading = ref(false)
+const errorMessage = ref('')
+const showAddOptions = ref(false)
+
+const projectId = computed(() => Number(route.params.id))
+const resource = computed<ResourceKey>(() => {
+  const value = String(route.params.resource || 'locations') as ResourceKey
+  return resourceDefinitions[value] ? value : 'locations'
+})
+
+const resourceDefinitions: Record<
+  ResourceKey,
+  { title: string; description: string; types: ProjectCustomLocationEnum[] }
+> = {
+  locations: {
+    title: 'Project locations',
+    description: 'Operational locations assigned to this project.',
+    types: [ProjectCustomLocationEnum.ZOON],
+  },
+  zones: {
+    title: 'Project zones',
+    description: 'Work zones grouped by their assigned project location.',
+    types: [ProjectCustomLocationEnum.ZOON],
+  },
+  equipment: {
+    title: 'Project equipment',
+    description: 'Equipment, tools and devices assigned across project zones.',
+    types: [ProjectCustomLocationEnum.ZOON, ProjectCustomLocationEnum.ZOON_EQUIPMENT],
+  },
+  employees: {
+    title: 'Project employees',
+    description: 'Employees assigned directly, through teams, or through project positions.',
+    types: [
+      ProjectCustomLocationEnum.EMPLOYEE,
+      ProjectCustomLocationEnum.TEAM,
+      ProjectCustomLocationEnum.TEAM_EMPLOYEE,
+      ProjectCustomLocationEnum.HIERARCHY,
+      ProjectCustomLocationEnum.HIERARCHY_EMPLOYEE,
+    ],
+  },
+  teams: {
+    title: 'Project teams',
+    description: 'Teams and team members grouped by project location.',
+    types: [ProjectCustomLocationEnum.TEAM, ProjectCustomLocationEnum.TEAM_EMPLOYEE],
+  },
+  hierarchies: {
+    title: 'Project positions',
+    description: 'Hierarchy positions and their assigned employees.',
+    types: [ProjectCustomLocationEnum.HIERARCHY, ProjectCustomLocationEnum.HIERARCHY_EMPLOYEE],
+  },
+  contractors: {
+    title: 'Project contractors',
+    description: 'Contractors currently connected to this project.',
+    types: [],
+  },
+  drills: {
+    title: 'Project emergency drills',
+    description: 'Emergency preparedness drills recorded for this project.',
+    types: [],
+  },
+  meetings: {
+    title: 'Project safety meetings',
+    description: 'Safety meetings and engagement sessions for this project.',
+    types: [],
+  },
+}
+
+const definition = computed(() => resourceDefinitions[resource.value])
+const locations = computed<ProjectCustomLocationModel[]>(() => customState.value.data ?? [])
+const zones = computed(() => locations.value.flatMap((location) => location.locationZones ?? []))
+const hasScopedAddAction = computed(() =>
+  ['zones', 'equipment', 'employees', 'teams', 'hierarchies'].includes(resource.value),
+)
+const workflowAction = computed(() => {
+  if (resource.value === 'locations') {
+    return {
+      label: 'Add project location',
+      to: `/organization/project/flow/${projectId.value}/1?edit=1`,
+    }
+  }
+  if (resource.value === 'contractors') {
+    return {
+      label: 'Add contractor',
+      to: `/organization/project/flow/${projectId.value}/1?edit=1`,
+    }
+  }
+  return null
+})
+const addActionLabel = computed(
+  () =>
+    ({
+      zones: 'Add zone',
+      equipment: 'Add equipment',
+      employees: 'Add employee',
+      teams: 'Add team',
+      hierarchies: 'Add position',
+    })[resource.value] ?? 'Add',
+)
+
+const locationId = (location: ProjectCustomLocationModel) => Number(location.id)
+
+const uniqueItems = (items: ResourceItem[]) =>
+  Array.from(new Map(items.map((item) => [item.key, item])).values())
+
+const resourceItems = computed<ResourceItem[]>(() => {
+  if (resource.value === 'contractors') {
+    return (detailsState.value.data?.contractors ?? []).map((contractor, index) => ({
+      key: `contractor-${contractor.id || index}`,
+      title: contractor.name || 'Contractor',
+      subtitle: 'Project contractor',
+      location: detailsState.value.data?.title || 'Project',
+      detail: contractor.companyEmail || contractor.phone || '',
+      badge: 'Contractor',
+    }))
+  }
+
+  if (resource.value === 'drills') {
+    return (detailsState.value.data?.drills ?? []).map((drill, index) => ({
+      key: `drill-${drill.id || index}`,
+      title: drill.drillType?.title || `Emergency drill ${index + 1}`,
+      subtitle: drill.serialNumber || 'Emergency preparedness drill',
+      location: drill.projectTeam?.title || detailsState.value.data?.title || 'Project',
+      detail: [drill.date, drill.time].filter(Boolean).join(' · '),
+      badge: 'Drill',
+    }))
+  }
+
+  if (resource.value === 'meetings') {
+    return (detailsState.value.data?.ProjectMeeting ?? []).map((meeting, index) => ({
+      key: `meeting-${meeting.id || index}`,
+      title: meeting.serialName || `Safety meeting ${index + 1}`,
+      subtitle: `${meeting.hierarchies?.length ?? 0} participating positions`,
+      location: meeting.teamLeader?.name || detailsState.value.data?.title || 'Project',
+      detail: meeting.date || '',
+      badge: 'Meeting',
+    }))
+  }
+
+  if (resource.value === 'locations') {
+    return locations.value.map((location, index) => ({
+      key: `location-${location.projectLocationId || location.id || index}`,
+      title: location.title || `Location ${index + 1}`,
+      subtitle: `${location.locationZones?.length ?? 0} zones`,
+      location: 'Project location',
+      detail: `${location.locationTeams?.length ?? 0} teams · ${location.locationEmplyees?.length ?? 0} employees`,
+      badge: 'Location',
+    }))
+  }
+
+  if (resource.value === 'zones') {
+    return locations.value.flatMap((location) =>
+      (location.locationZones ?? []).map((zone, index) => ({
+        key: `zone-${zone.projectZoonId || zone.zoonId || index}-${location.projectLocationId}`,
+        title: zone.zoonTitle || zone.title || `Zone ${index + 1}`,
+        subtitle: `${zone.projectZoonEquipments?.length ?? 0} assigned equipment`,
+        location: location.title || 'Project location',
+        badge: 'Zone',
+      })),
+    )
+  }
+
+  if (resource.value === 'equipment') {
+    return uniqueItems(
+      locations.value.flatMap((location) =>
+        (location.locationZones ?? []).flatMap((zone) =>
+          (zone.projectZoonEquipments ?? []).map((equipment, index) => ({
+            key: `equipment-${equipment.id || equipment.projectZoonEquipmentId || index}`,
+            title: equipment.title || equipment.equipment?.title || 'Equipment',
+            subtitle:
+              equipment.equipmenType?.title ||
+              equipment.equipment?.equipment_type?.title ||
+              'Asset',
+            location: `${location.title || 'Location'} · ${zone.zoonTitle || zone.title || 'Zone'}`,
+            detail: equipment.equipment?.licensePlateNumber || equipment.equipmentDescription || '',
+            badge: 'Equipment',
+          })),
+        ),
+      ),
+    )
+  }
+
+  if (resource.value === 'teams') {
+    return uniqueItems(
+      locations.value.flatMap((location) =>
+        (location.locationTeams ?? []).map((team, index) => ({
+          key: `team-${team.projectLocationTeamId || team.teamId || index}`,
+          title: team.teamTitle || team.title || 'Team',
+          subtitle: `${team.Employees?.length ?? 0} team members`,
+          location: location.title || 'Project location',
+          badge: 'Team',
+        })),
+      ),
+    )
+  }
+
+  if (resource.value === 'hierarchies') {
+    return uniqueItems(
+      locations.value.flatMap((location) =>
+        (location.locationHierarchy ?? []).map((hierarchy, index) => ({
+          key: `hierarchy-${hierarchy.projectLocationHierarchyId || hierarchy.id || index}`,
+          title: hierarchy.title || 'Project position',
+          subtitle: `${hierarchy.Employees?.length ?? 0} assigned employees`,
+          location: location.title || 'Project location',
+          badge: 'Position',
+        })),
+      ),
+    )
+  }
+
+  return uniqueItems(
+    locations.value.flatMap((location) => {
+      const directEmployees = location.locationEmplyees ?? []
+      const teamEmployees = (location.locationTeams ?? []).flatMap((team) => team.Employees ?? [])
+      const hierarchyEmployees = (location.locationHierarchy ?? []).flatMap(
+        (hierarchy) => hierarchy.Employees ?? [],
+      )
+
+      return [...directEmployees, ...teamEmployees, ...hierarchyEmployees].map(
+        (employee, index) => ({
+          key: `employee-${employee.organization_employee_id || employee.employeeId || index}`,
+          title: employee.name || 'Employee',
+          subtitle:
+            employee.hierarchyposition
+              ?.map((position) => position.title)
+              .filter(Boolean)
+              .join(', ') ||
+            employee.hierarchy
+              ?.map((position) => position.title)
+              .filter(Boolean)
+              .join(', ') ||
+            'Project employee',
+          location: location.title || 'Project location',
+          detail: employee.email || '',
+          image: employee.image,
+          badge: employee.is_leader ? 'Team leader' : 'Employee',
+        }),
+      )
+    }),
+  )
+})
+
+const fetchResource = async () => {
+  if (!Number.isFinite(projectId.value) || projectId.value <= 0) return
+
+  isLoading.value = true
+  errorMessage.value = ''
+  try {
+    await detailsController.showProjectDetails(new ShowProjectDetailsParams(projectId.value))
+    if (definition.value.types.length) {
+      await customLocationController.getData(
+        new ProjectCustomLocationParams(projectId.value, definition.value.types, []),
+      )
+      customState.value = customLocationController.state.value
+    }
+  } catch (error) {
+    errorMessage.value = error instanceof Error ? error.message : 'Unable to load project data.'
+  } finally {
+    isLoading.value = false
+  }
+}
+
+watch(
+  () => [route.params.id, route.params.resource],
+  () => fetchResource(),
+  { immediate: true },
+)
+
+watch(
+  () => customLocationController.state.value,
+  (newState) => {
+    customState.value = newState
+  },
+)
+
+watch(resource, () => {
+  showAddOptions.value = false
+})
+</script>
+
+<template>
+  <main class="resource-page">
+    <header class="resource-hero">
+      <div>
+        <RouterLink :to="`/organization/project-summary/${projectId}`" class="back-link">
+          <span aria-hidden="true">←</span> Project summary
+        </RouterLink>
+        <span class="resource-eyebrow">{{ detailsState.data?.title || 'Project' }}</span>
+        <h1>{{ definition.title }}</h1>
+        <p>{{ definition.description }}</p>
+      </div>
+      <div class="resource-hero__actions">
+        <div class="resource-total">
+          <strong>{{ resourceItems.length }}</strong>
+          <span>{{ resource }}</span>
+        </div>
+
+        <AddDrillDialog
+          v-if="resource === 'drills'"
+          :project-id="projectId"
+          compact
+          @saved="fetchResource"
+        />
+        <AddProjectMeetingDialog
+          v-else-if="resource === 'meetings'"
+          :project-id="projectId"
+          compact
+          @saved="fetchResource"
+        />
+        <RouterLink v-else-if="workflowAction" :to="workflowAction.to" class="resource-add-button">
+          <span aria-hidden="true">+</span>{{ workflowAction.label }}
+        </RouterLink>
+        <button
+          v-else-if="hasScopedAddAction"
+          type="button"
+          class="resource-add-button"
+          :aria-expanded="showAddOptions"
+          aria-controls="resource-add-options"
+          @click="showAddOptions = !showAddOptions"
+        >
+          <span aria-hidden="true">+</span>{{ addActionLabel }}
+        </button>
+      </div>
+    </header>
+
+    <section
+      v-if="showAddOptions && hasScopedAddAction"
+      id="resource-add-options"
+      class="resource-add-panel"
+    >
+      <header>
+        <div>
+          <span>Choose assignment scope</span>
+          <h2>{{ addActionLabel }}</h2>
+          <p>Select the location or zone where the new assignment belongs.</p>
+        </div>
+        <button type="button" aria-label="Close add options" @click="showAddOptions = false">×</button>
+      </header>
+
+      <div v-if="resource === 'equipment' && zones.length" class="resource-add-panel__single">
+        <div>
+          <strong>Project equipment</strong>
+          <small>{{ zones.length }} zones available</small>
+        </div>
+        <AddEquipmentDialog :project_zoons="zones" />
+      </div>
+
+      <div v-else-if="locations.length" class="resource-add-scopes">
+        <article v-for="location in locations" :key="location.projectLocationId || location.id">
+          <span class="resource-add-scopes__icon">{{ location.title?.charAt(0) || 'L' }}</span>
+          <div>
+            <strong>{{ location.title || 'Project location' }}</strong>
+            <small>{{ location.locationZones?.length ?? 0 }} zones</small>
+          </div>
+
+          <RouterLink
+            v-if="resource === 'employees'"
+            :to="`/organization/project-employee/project/${projectId}?locationId=${locationId(location)}`"
+            class="scope-action"
+          >
+            Add employee <span aria-hidden="true">→</span>
+          </RouterLink>
+          <RouterLink
+            v-else-if="resource === 'hierarchies'"
+            :to="`/organization/project-hierarchy/project/${projectId}?locationId=${locationId(location)}`"
+            class="scope-action"
+          >
+            Add position <span aria-hidden="true">→</span>
+          </RouterLink>
+          <ProjectLocationZoonDialog
+            v-else-if="resource === 'zones'"
+            :LocationId="locationId(location)"
+            :projectId="projectId"
+            @update:data="fetchResource"
+          />
+          <AddCreateTeam
+            v-else-if="resource === 'teams'"
+            :ProjectLocationId="location.projectLocationId"
+            :LocationId="locationId(location)"
+            @update:data="fetchResource"
+          />
+        </article>
+      </div>
+
+      <div v-else class="resource-add-panel__empty">
+        <p>Add a project location before assigning {{ resource }}.</p>
+        <RouterLink :to="`/organization/project/flow/${projectId}/1?edit=1`">
+          Add project location
+        </RouterLink>
+      </div>
+    </section>
+
+    <section v-if="isLoading" class="resource-grid" aria-label="Loading project data">
+      <span v-for="index in 6" :key="index" class="resource-skeleton"></span>
+    </section>
+
+    <DataFailed
+      v-else-if="errorMessage"
+      :title="`Unable to load ${resource}`"
+      :description="errorMessage"
+      :link="`/organization/project-summary/${projectId}`"
+      add-text="Back to project summary"
+    />
+
+    <section v-else-if="resourceItems.length" class="resource-grid">
+      <article v-for="item in resourceItems" :key="item.key" class="resource-card">
+        <span class="resource-card__avatar" :class="{ 'has-image': item.image }">
+          <img v-if="item.image" :src="item.image" :alt="item.title" />
+          <b v-else>{{ item.title.charAt(0).toUpperCase() }}</b>
+        </span>
+        <div class="resource-card__content">
+          <span class="resource-card__badge">{{ item.badge }}</span>
+          <h2>{{ item.title }}</h2>
+          <p>{{ item.subtitle }}</p>
+          <small>{{ item.location }}</small>
+          <small v-if="item.detail">{{ item.detail }}</small>
+        </div>
+      </article>
+    </section>
+
+    <section v-else class="resource-empty">
+      <span aria-hidden="true">0</span>
+      <h2>No {{ resource }} found</h2>
+      <p>This project does not currently have matching {{ resource }} assignments.</p>
+      <RouterLink :to="`/organization/project-details/${projectId}`">Open full details</RouterLink>
+    </section>
+  </main>
+</template>
+
+<style scoped lang="scss">
+.resource-page {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 12px;
+}
+.resource-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  overflow: hidden;
+  padding: 28px;
+  border-radius: 26px;
+  background: linear-gradient(130deg, var(--brand-secondary-900), var(--brand-primary-700));
+  color: var(--text-on-brand);
+  box-shadow: 0 22px 52px color-mix(in srgb, var(--identity-secondary) 20%, transparent);
+}
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 22px;
+  color: color-mix(in srgb, var(--identity-primary) 42%, white);
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+[dir='rtl'] .back-link span {
+  transform: rotate(180deg);
+}
+.resource-eyebrow {
+  display: block;
+  margin-bottom: 6px;
+  color: color-mix(in srgb, var(--identity-accent) 35%, white);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.resource-hero h1 {
+  margin: 0;
+  font-size: clamp(1.7rem, 3vw, 2.45rem);
+}
+.resource-hero p {
+  max-width: 680px;
+  margin: 9px 0 0;
+  color: rgb(255 255 255 / 72%);
+}
+.resource-total {
+  display: flex;
+  min-width: 120px;
+  align-items: center;
+  flex-direction: column;
+  padding: 16px 22px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 18px;
+  background: rgb(255 255 255 / 10%);
+  backdrop-filter: blur(8px);
+}
+.resource-total strong {
+  font-size: 2rem;
+  line-height: 1;
+}
+.resource-total span {
+  margin-top: 6px;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.resource-hero__actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: stretch;
+  gap: 10px;
+}
+.resource-add-button {
+  display: inline-flex;
+  min-height: 58px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 18px;
+  border: 1px solid rgb(255 255 255 / 24%);
+  border-radius: 18px;
+  background: rgb(255 255 255 / 14%);
+  color: white;
+  font: 0.76rem 'Bold';
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.resource-add-button:hover {
+  transform: translateY(-2px);
+  background: rgb(255 255 255 / 22%);
+}
+.resource-add-button > span {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+.resource-add-panel {
+  padding: 18px;
+  border: 1px solid color-mix(in srgb, var(--identity-primary) 20%, var(--main-border));
+  border-radius: 22px;
+  background: var(--surface-1);
+  box-shadow: 0 18px 38px color-mix(in srgb, var(--text-strong) 7%, transparent);
+}
+.resource-add-panel > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+.resource-add-panel > header span {
+  color: var(--identity-primary);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.resource-add-panel > header h2 {
+  margin: 3px 0;
+  color: var(--text-strong);
+  font-size: 1.1rem;
+}
+.resource-add-panel > header p {
+  margin: 0;
+  color: var(--text-soft);
+  font-size: 0.72rem;
+}
+.resource-add-panel > header > button {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border: 1px solid var(--main-border);
+  border-radius: 11px;
+  background: var(--surface-2);
+  color: var(--text-soft);
+  font-size: 1.15rem;
+  cursor: pointer;
+}
+.resource-add-scopes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.resource-add-scopes article,
+.resource-add-panel__single {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 11px;
+  padding: 12px;
+  border: 1px solid var(--main-border);
+  border-radius: 15px;
+  background: var(--surface-2);
+}
+.resource-add-scopes__icon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  place-items: center;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--identity-primary) 12%, var(--surface-1));
+  color: var(--identity-primary);
+  font-weight: 900;
+}
+.resource-add-scopes article > div,
+.resource-add-panel__single > div {
+  min-width: 0;
+  margin-inline-end: auto;
+}
+.resource-add-scopes strong,
+.resource-add-scopes small,
+.resource-add-panel__single strong,
+.resource-add-panel__single small {
+  display: block;
+}
+.resource-add-scopes strong,
+.resource-add-panel__single strong {
+  overflow: hidden;
+  color: var(--text-strong);
+  font-size: 0.77rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.resource-add-scopes small,
+.resource-add-panel__single small {
+  margin-top: 2px;
+  color: var(--text-muted);
+  font-size: 0.65rem;
+}
+.scope-action,
+.resource-add-panel__empty a {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--identity-primary);
+  color: var(--text-on-brand);
+  font-size: 0.67rem;
+  font-weight: 850;
+}
+.resource-add-panel__empty {
+  padding: 20px;
+  border: 1px dashed var(--main-border);
+  border-radius: 15px;
+  text-align: center;
+}
+.resource-add-panel__empty p {
+  margin: 0 0 10px;
+  color: var(--text-soft);
+}
+.resource-add-panel :deep(.add-zone),
+.resource-add-panel :deep(.create-team-trigger),
+.resource-add-panel :deep(.add-equipment-icon) {
+  flex: 0 0 auto;
+  margin: 0;
+}
+.resource-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.resource-card {
+  display: flex;
+  min-width: 0;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid var(--main-border);
+  border-radius: 20px;
+  background: var(--BgWhite);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--text-strong) 6%, transparent);
+}
+.resource-card__avatar {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  flex: 0 0 48px;
+  overflow: hidden;
+  place-items: center;
+  border-radius: 15px;
+  background: linear-gradient(145deg, var(--identity-primary), var(--identity-accent));
+  color: white;
+}
+.resource-card__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.resource-card__content {
+  min-width: 0;
+}
+.resource-card__badge {
+  display: inline-block;
+  margin-bottom: 5px;
+  color: var(--identity-primary);
+  font-size: 0.61rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.resource-card h2 {
+  margin: 0;
+  overflow: hidden;
+  color: var(--text-strong);
+  font-size: 0.95rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.resource-card p {
+  margin: 5px 0;
+  color: var(--text-soft);
+  font-size: 0.76rem;
+}
+.resource-card small {
+  display: block;
+  overflow: hidden;
+  margin-top: 3px;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.resource-skeleton {
+  min-height: 132px;
+  border-radius: 20px;
+  background: linear-gradient(90deg, var(--surface-2), var(--main-border), var(--surface-2));
+  background-size: 220% 100%;
+  animation: resource-pulse 1.3s ease infinite;
+}
+.resource-empty {
+  padding: 56px 24px;
+  border: 1px dashed color-mix(in srgb, var(--identity-primary) 35%, var(--main-border));
+  border-radius: 24px;
+  background: var(--surface-2);
+  text-align: center;
+}
+.resource-empty > span {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 14px;
+  place-items: center;
+  border-radius: 18px;
+  background: var(--brand-primary-100);
+  color: var(--identity-primary);
+  font-size: 1.3rem;
+  font-weight: 900;
+}
+.resource-empty h2 {
+  margin: 0;
+  color: var(--text-strong);
+}
+.resource-empty p {
+  color: var(--text-soft);
+}
+.resource-empty a {
+  display: inline-flex;
+  margin-top: 7px;
+  padding: 10px 15px;
+  border-radius: 12px;
+  background: var(--identity-primary);
+  color: var(--text-on-brand);
+  font-weight: 800;
+}
+@keyframes resource-pulse {
+  to {
+    background-position: -120% 0;
+  }
+}
+@media (max-width: 980px) {
+  .resource-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 620px) {
+  .resource-page {
+    padding: 4px;
+  }
+  .resource-hero {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 22px 18px;
+  }
+  .resource-hero__actions {
+    width: 100%;
+  }
+  .resource-total {
+    min-width: 0;
+    flex: 1;
+  }
+  .resource-add-button {
+    flex: 1;
+  }
+  .resource-add-scopes {
+    grid-template-columns: 1fr;
+  }
+  .resource-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

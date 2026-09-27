@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
@@ -9,6 +9,16 @@ import { useSystemIdentity } from '@/composables/useSystemIdentity'
 import ShowProjectDetailsParams from '../../../Core/params/ShowProjectDetailsParams'
 import ShowProjectDetailsController from '../../controllers/ShowProjectDetailsController'
 import LossTimeMatrix from './LossTime/LossTimeMatrix.vue'
+import { Observation } from '@/features/Organization/ObservationFactory/Core/Enums/ObservationTypeEnum'
+import IndexHazardParams from '@/features/Organization/ObservationFactory/Core/params/indexHazardParams'
+import IndexHazardController from '@/features/Organization/ObservationFactory/Presentation/controllers/indexHazardController'
+import IndexInvestigationResultParams from '@/features/Organization/Investigating/Core/params/investegationResult/indexInvestigationResultParams'
+import IndexInvestigatingController from '@/features/Organization/Investigating/Presentation/controllers/indexInvestigatingController'
+import FetchTaskReportParams from '@/features/Organization/TaskReports/Core/params/FetchTaskReportParams'
+import CorrectiveTasksController from '@/features/Organization/TaskReports/Presentation/controllers/CorrectiveTasksController'
+import PreventiveTasksController from '@/features/Organization/TaskReports/Presentation/controllers/PreventiveTasksController'
+import IndexInspectionParams from '@/features/Organization/Inspection/Core/params/indexInspectionParams'
+import IndexInspectionController from '@/features/Organization/Inspection/Presentation/controllers/indexInspectionController'
 
 const route = useRoute()
 const showProjectDetailsController = ShowProjectDetailsController.getInstance()
@@ -27,6 +37,82 @@ const heroIdentityStyle = computed(() => ({
   '--summary-secondary': activeIdentity.value.secondaryColor,
   '--summary-accent': activeIdentity.value.accentColor,
 }))
+const liveCounts = ref({
+  observations: null as number | null,
+  incidents: null as number | null,
+  investigations: null as number | null,
+  inspections: null as number | null,
+  correctiveTasks: null as number | null,
+  preventiveTasks: null as number | null,
+})
+const isStatisticsLoading = ref(false)
+
+const stateTotal = (value: { pagination?: { total?: number } | null; data?: unknown[] | null }) =>
+  Number(value.pagination?.total ?? value.data?.length ?? 0)
+
+const fetchSafetyStatistics = async () => {
+  if (!Number.isFinite(projectId.value) || projectId.value <= 0) return
+
+  isStatisticsLoading.value = true
+  liveCounts.value = {
+    observations: null,
+    incidents: null,
+    investigations: null,
+    inspections: null,
+    correctiveTasks: null,
+    preventiveTasks: null,
+  }
+  const id = projectId.value
+  const hazardController = IndexHazardController.getInstance()
+
+  const fetchObservationCounts = async () => {
+    const observations = await hazardController.getData(
+      new IndexHazardParams(
+        '',
+        1,
+        1,
+        1,
+        [Observation.ObservationType, Observation.HazardType],
+        [id],
+      ),
+    )
+    liveCounts.value.observations = stateTotal(observations.value)
+
+    const incidents = await hazardController.getData(
+      new IndexHazardParams('', 1, 1, 1, [Observation.AccidentsType], [id]),
+    )
+    liveCounts.value.incidents = stateTotal(incidents.value)
+  }
+
+  const requests = [
+    fetchObservationCounts(),
+    IndexInvestigatingController.getInstance()
+      .getData(
+        new IndexInvestigationResultParams('', 1, 1, 1, undefined, undefined, '', undefined, id),
+      )
+      .then((result) => {
+        liveCounts.value.investigations = stateTotal(result.value)
+      }),
+    IndexInspectionController.getInstance()
+      .getData(new IndexInspectionParams('', 1, 1, 1, undefined, undefined, undefined, id))
+      .then((result) => {
+        liveCounts.value.inspections = stateTotal(result.value)
+      }),
+    CorrectiveTasksController.getInstance()
+      .fetch(new FetchTaskReportParams('', 1, 1, 1, null, '', '', id))
+      .then((result) => {
+        liveCounts.value.correctiveTasks = stateTotal(result.value)
+      }),
+    PreventiveTasksController.getInstance()
+      .fetch(new FetchTaskReportParams('', 1, 1, 1, null, '', '', id))
+      .then((result) => {
+        liveCounts.value.preventiveTasks = stateTotal(result.value)
+      }),
+  ]
+
+  await Promise.allSettled(requests)
+  isStatisticsLoading.value = false
+}
 
 const GetProjectDetails = async () => {
   if (!Number.isFinite(projectId.value) || projectId.value <= 0) return
@@ -46,35 +132,49 @@ const equipmentFallback = computed(() =>
   ),
 )
 
+const meetingStatistics = computed(() => {
+  const meetings = project.value?.ProjectMeeting ?? []
+  return {
+    withResults: meetings.filter((meeting) => meeting.hasResult).length,
+    total: meetings.length,
+  }
+})
+
 // ${project.value?.observationHazardsCount ?? 0} hazards included
 const safetyStatistics = computed(() => [
   {
     label: 'Observations',
-    value: (project.value?.observationsCount ?? 0) + (project.value?.observationHazardsCount ?? 0),
+    value:
+      liveCounts.value.observations ??
+      (project.value?.observationsCount ?? 0) + (project.value?.observationHazardsCount ?? 0),
     note: ` `,
     tone: 'teal',
     icon: 'O',
+    to: `/organization/equipment-mangement/observation?isAll=1&type=2&project_id=${projectId.value}`,
   },
   {
     label: 'Incidents',
-    value: project.value?.observationAccidentsCount ?? 0,
+    value: liveCounts.value.incidents ?? project.value?.observationAccidentsCount ?? 0,
     note: 'Reported project incidents',
     tone: 'red',
     icon: '!',
+    to: `/organization/equipment-mangement/incident-report?project_id=${projectId.value}`,
   },
   {
     label: 'Investigations',
-    value: project.value?.investigationCount ?? 0,
+    value: liveCounts.value.investigations ?? project.value?.investigationCount ?? 0,
     note: 'Investigation records',
     tone: 'amber',
     icon: 'I',
+    to: `/organization/Investigating?isAll=1&project_id=${projectId.value}`,
   },
   {
     label: 'Inspections',
-    value: project.value?.inspectionsCount ?? 0,
+    value: liveCounts.value.inspections ?? project.value?.inspectionsCount ?? 0,
     note: 'Completed and active checks',
     tone: 'blue',
     icon: '✓',
+    to: `/organization/equipment-mangement/inspection?project_id=${projectId.value}`,
   },
   {
     label: 'Emergency drills',
@@ -82,14 +182,32 @@ const safetyStatistics = computed(() => [
     note: 'Preparedness exercises',
     tone: 'violet',
     icon: 'D',
+    to: `/organization/project-summary/${projectId.value}/data/drills`,
   },
   {
     label: 'Meetings',
-    value: project.value?.ProjectMeeting?.length ?? 0,
-    note: 'Project safety meetings',
+    value: `${meetingStatistics.value.withResults} / ${meetingStatistics.value.total}`,
+    note: 'With results / total meetings',
     tone: 'navy',
     icon: 'M',
+    to: `/organization/project-summary/${projectId.value}/data/meetings`,
   },
+  // {
+  //   label: 'Corrective actions',
+  //   value: liveCounts.value.correctiveTasks ?? 0,
+  //   note: 'Corrective action tasks',
+  //   tone: 'red',
+  //   icon: 'C',
+  //   to: `/organization/corrective-report?project_id=${projectId.value}`,
+  // },
+  // {
+  //   label: 'Preventive actions',
+  //   value: liveCounts.value.preventiveTasks ?? 0,
+  //   note: 'Preventive action tasks',
+  //   tone: 'blue',
+  //   icon: 'P',
+  //   to: `/organization/preventive-report?project_id=${projectId.value}`,
+  // },
 ])
 
 const operationalStatistics = computed(() => [
@@ -97,10 +215,12 @@ const operationalStatistics = computed(() => [
     label: 'Employees',
     value:
       project.value?.assignedEmployeesCount || project.value?.organization_employees?.length || 0,
+    to: `/organization/project-summary/${projectId.value}/data/employees`,
   },
   {
     label: 'Equipment',
     value: project.value?.equipmentCount || equipmentFallback.value,
+    to: `/organization/project-summary/${projectId.value}/data/equipment`,
   },
   {
     label: 'Locations',
@@ -109,13 +229,28 @@ const operationalStatistics = computed(() => [
       project.value?.project_locations?.length ||
       project.value?.locations?.length ||
       0,
+    to: `/organization/project-summary/${projectId.value}/data/locations`,
   },
   {
     label: 'Zones',
     value: project.value?.assignedZonesCount || project.value?.projectZoons?.length || 0,
+    to: `/organization/project-summary/${projectId.value}/data/zones`,
   },
-  { label: 'Teams', value: project.value?.TeamLocations?.length ?? 0 },
-  { label: 'Contractors', value: project.value?.contractors?.length ?? 0 },
+  {
+    label: 'Teams',
+    value: project.value?.TeamLocations?.length ?? 0,
+    to: `/organization/project-summary/${projectId.value}/data/teams`,
+  },
+  {
+    label: 'Positions',
+    value: project.value?.hierarchies?.length ?? 0,
+    to: `/organization/project-summary/${projectId.value}/data/hierarchies`,
+  },
+  {
+    label: 'Contractors',
+    value: project.value?.contractors?.length ?? 0,
+    to: `/organization/project-summary/${projectId.value}/data/contractors`,
+  },
 ])
 
 const quickLinks = computed(() => [
@@ -147,7 +282,10 @@ const quickLinks = computed(() => [
 
 watch(
   () => route.params.id,
-  () => GetProjectDetails(),
+  () => {
+    GetProjectDetails()
+    fetchSafetyStatistics()
+  },
   { immediate: true },
 )
 </script>
@@ -230,19 +368,21 @@ watch(
           </header>
 
           <div class="safety-stat-grid">
-            <article
+            <RouterLink
               v-for="stat in safetyStatistics"
               :key="stat.label"
+              :to="stat.to"
               class="safety-stat-card"
               :class="`safety-stat-card--${stat.tone}`"
             >
               <span class="safety-stat-card__icon" aria-hidden="true">{{ stat.icon }}</span>
               <div>
-                <strong>{{ stat.value }}</strong>
+                <strong>{{ isStatisticsLoading && stat.value === 0 ? '…' : stat.value }}</strong>
                 <h3>{{ stat.label }}</h3>
                 <p>{{ stat.note }}</p>
               </div>
-            </article>
+              <span class="stat-card-arrow" aria-hidden="true">→</span>
+            </RouterLink>
           </div>
         </section>
 
@@ -254,10 +394,16 @@ watch(
           </div>
 
           <div class="operational-stat-grid">
-            <div v-for="stat in operationalStatistics" :key="stat.label" class="operational-stat">
+            <RouterLink
+              v-for="stat in operationalStatistics"
+              :key="stat.label"
+              :to="stat.to"
+              class="operational-stat"
+            >
               <strong>{{ stat.value }}</strong>
               <span>{{ stat.label }}</span>
-            </div>
+              <small aria-hidden="true">→</small>
+            </RouterLink>
           </div>
         </section>
 
@@ -567,6 +713,7 @@ watch(
 
 .safety-stat-card {
   --stat-color: #00897b;
+  position: relative;
   display: flex;
   min-width: 0;
   align-items: center;
@@ -579,6 +726,28 @@ watch(
     color-mix(in srgb, var(--stat-color) 7%, transparent),
     transparent 64%
   );
+  color: inherit;
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    border-color 160ms ease;
+}
+
+.safety-stat-card:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--stat-color) 42%, var(--main-border));
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--stat-color) 14%, transparent);
+}
+
+.stat-card-arrow {
+  margin-inline-start: auto;
+  color: var(--stat-color);
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+[dir='rtl'] .stat-card-arrow {
+  transform: rotate(180deg);
 }
 
 .safety-stat-card--red {
@@ -651,21 +820,42 @@ watch(
 .operational-stat-grid {
   display: grid;
   min-width: min(100%, 620px);
-  grid-template-columns: repeat(6, minmax(72px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(82px, 1fr));
   gap: 8px;
 }
 
 .operational-stat {
+  position: relative;
   padding: 13px 8px;
   border: 1px solid var(--main-border);
   border-radius: 15px;
   background: var(--BgWhite);
   text-align: center;
+  transition:
+    transform 150ms ease,
+    border-color 150ms ease;
+}
+
+.operational-stat:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--PrimaryColor) 42%, var(--main-border));
 }
 
 .operational-stat strong,
 .operational-stat span {
   display: block;
+}
+
+.operational-stat small {
+  position: absolute;
+  inset-block-start: 7px;
+  inset-inline-end: 8px;
+  color: var(--PrimaryColor);
+  font-size: 0.72rem;
+}
+
+[dir='rtl'] .operational-stat small {
+  transform: rotate(180deg);
 }
 
 .operational-stat strong {
