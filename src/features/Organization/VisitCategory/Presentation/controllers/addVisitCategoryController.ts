@@ -7,7 +7,7 @@ import type { Router } from 'vue-router'
 import AddVisitCategoryUseCase from '../../Domain/useCase/addVisitCategoryUseCase'
 import type VisitCategoryModel from '../../Data/models/VisitCategoryModel'
 import AddVisitCategoryParams from '../../Core/params/addVisitCategoryParams'
-import TranslationsParams from '@/base/core/params/translations_params'
+import AddVisitCategoryExcelParams from '../../Core/params/addVisitCategoryExcelParams'
 
 export default class AddVisitCategoryController extends ControllerInterface<VisitCategoryModel> {
   private static instance: AddVisitCategoryController
@@ -63,17 +63,21 @@ export default class AddVisitCategoryController extends ControllerInterface<Visi
 
   async importVisitCategories(titles: string[], router: Router) {
     try {
-      for (const title of titles) {
-        const translations = new TranslationsParams(['en', 'ar'])
-        translations.setTranslation('title', 'en', title)
-        translations.setTranslation('title', 'ar', title)
-        const dataState: DataState<VisitCategoryModel> = await this.useCase.call(
-          new AddVisitCategoryParams(translations),
-        )
-        this.setLoading()
-        this.setState(dataState)
-        if (!this.isDataSuccess()) throw new Error(this.state.value.error?.title ?? 'Import failed')
+      const data = titles
+        .map((title) => ({ title: String(title ?? '').trim() }))
+        .filter((item) => item.title)
+
+      if (!data.length) {
+        throw new Error('At least one row is required')
       }
+
+      const dataState: DataState<VisitCategoryModel> = await this.useCase.call(
+        new AddVisitCategoryExcelParams({ data }),
+      )
+      this.setLoading()
+      this.setState(dataState)
+
+      if (!this.isDataSuccess()) throw new Error(this.state.value.error?.title ?? 'Import failed')
 
       DialogSelector.instance.successDialog.openDialog({
         dialogName: 'dialog-success',
@@ -82,7 +86,7 @@ export default class AddVisitCategoryController extends ControllerInterface<Visi
         messageContent: null,
       })
       const root = router.currentRoute.value.path.startsWith('/admin') ? '/admin' : '/organization'
-      await router.push(`${root}/visit-categories`)
+      await router.push(root + '/visit-categories')
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog-error',
@@ -96,15 +100,17 @@ export default class AddVisitCategoryController extends ControllerInterface<Visi
   }
 
   async addSystemVisitCategories(items: VisitCategoryModel[]) {
-  try {
-    for (const item of items) {
-      const translations = new TranslationsParams(['en', 'ar'])
+    try {
+      const data = items
+        .map((item) => ({ title: String(item.title ?? '').trim() }))
+        .filter((item) => item.title)
 
-      translations.setTranslation('title', 'en', item.title ?? '')
-      translations.setTranslation('title', 'ar', item.title ?? '')
+      if (!data.length) {
+        throw new Error('Visit Category title is missing')
+      }
 
       const dataState: DataState<VisitCategoryModel> = await this.useCase.call(
-        new AddVisitCategoryParams(translations),
+        new AddVisitCategoryExcelParams({ data }),
       )
 
       this.setLoading()
@@ -113,27 +119,26 @@ export default class AddVisitCategoryController extends ControllerInterface<Visi
       if (!this.isDataSuccess()) {
         throw new Error(this.state.value.error?.title ?? 'Import failed')
       }
+
+      DialogSelector.instance.successDialog.openDialog({
+        dialogName: 'dialog-success',
+        titleContent: 'Added was successful',
+        imageElement: successImage,
+        messageContent: null,
+      })
+
+      return true
+    } catch (error: unknown) {
+      DialogSelector.instance.failedDialog.openDialog({
+        dialogName: 'dialog-error',
+        titleContent: this.state.value.error?.title ?? String(error),
+        imageElement: errorImage,
+        messageContent: null,
+      })
+
+      return false
+    } finally {
+      super.handleResponseDialogs()
     }
-
-    DialogSelector.instance.successDialog.openDialog({
-      dialogName: 'dialog-success',
-      titleContent: 'Added was successful',
-      imageElement: successImage,
-      messageContent: null,
-    })
-
-    return true
-  } catch (error: unknown) {
-    DialogSelector.instance.failedDialog.openDialog({
-      dialogName: 'dialog-error',
-      titleContent: this.state.value.error?.title ?? String(error),
-      imageElement: errorImage,
-      messageContent: null,
-    })
-
-    return false
-  } finally {
-    super.handleResponseDialogs()
   }
-}
 }

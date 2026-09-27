@@ -358,7 +358,7 @@ export const OrgPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_HAZARD_TYPE_ALL,
           code: PermissionsEnum.ORG_HAZARD_TYPE_ALL,
-          label: 'Hazard Type',
+          label: 'Hazard Classification',
           permissions: [
             {
               key: PermissionsEnum.ORG_HAZARD_TYPE_ALL,

@@ -1707,7 +1707,7 @@ export const adminPermissions: PermissionItem = {
         {
           key: PermissionsEnum.HAZARD_TYPE_ALL,
           code: PermissionsEnum.HAZARD_TYPE_ALL,
-          label: 'Hazard Type',
+          label: 'Hazard Classification',
           permissions: [
             {
               key: PermissionsEnum.HAZARD_TYPE_ALL,
@@ -2236,7 +2236,7 @@ export const adminPermissions: PermissionItem = {
         {
           key: PermissionsEnum.ORG_HAZARD_TYPE_ALL,
           code: PermissionsEnum.ORG_HAZARD_TYPE_ALL,
-          label: 'Hazard Type',
+          label: 'Hazard Classification',
           permissions: [
             {
               key: PermissionsEnum.ORG_HAZARD_TYPE_ALL,

@@ -7,7 +7,7 @@ import type { Router } from 'vue-router'
 import AddVisitActivityUseCase from '../../Domain/useCase/addVisitActivityUseCase'
 import type VisitActivityModel from '../../Data/models/VisitActivityModel'
 import AddVisitActivityParams from '../../Core/params/addVisitActivityParams'
-import TranslationsParams from '@/base/core/params/translations_params'
+import AddVisitActivityExcelParams from '../../Core/params/addVisitActivityExcelParams'
 
 export default class AddVisitActivityController extends ControllerInterface<VisitActivityModel> {
   private static instance: AddVisitActivityController
@@ -43,7 +43,9 @@ export default class AddVisitActivityController extends ControllerInterface<Visi
           messageContent: null,
         })
         if (!draft) {
-          const root = router.currentRoute.value.path.startsWith('/admin') ? '/admin' : '/organization'
+          const root = router.currentRoute.value.path.startsWith('/admin')
+            ? '/admin'
+            : '/organization'
           await router.push(`${root}/visit-activities`)
         }
       } else {
@@ -69,17 +71,21 @@ export default class AddVisitActivityController extends ControllerInterface<Visi
 
   async importVisitActivities(titles: string[], router: Router) {
     try {
-      for (const title of titles) {
-        const translations = new TranslationsParams(['en', 'ar'])
-        translations.setTranslation('title', 'en', title)
-        translations.setTranslation('title', 'ar', title)
-        const dataState: DataState<VisitActivityModel> = await this.addVisitActivityUseCase.call(
-          new AddVisitActivityParams(translations),
-        )
-        this.setLoading()
-        this.setState(dataState)
-        if (!this.isDataSuccess()) throw new Error(this.state.value.error?.title ?? 'Import failed')
+      const data = titles
+        .map((title) => ({ title: String(title ?? '').trim() }))
+        .filter((item) => item.title)
+
+      if (!data.length) {
+        throw new Error('At least one row is required')
       }
+
+      const dataState: DataState<VisitActivityModel> = await this.addVisitActivityUseCase.call(
+        new AddVisitActivityExcelParams({ data }),
+      )
+      this.setLoading()
+      this.setState(dataState)
+
+      if (!this.isDataSuccess()) throw new Error(this.state.value.error?.title ?? 'Import failed')
 
       DialogSelector.instance.successDialog.openDialog({
         dialogName: 'dialog-success',
@@ -88,7 +94,7 @@ export default class AddVisitActivityController extends ControllerInterface<Visi
         messageContent: null,
       })
       const root = router.currentRoute.value.path.startsWith('/admin') ? '/admin' : '/organization'
-      await router.push(`${root}/visit-activities`)
+      await router.push(root + '/visit-activities')
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog-error',
@@ -102,60 +108,46 @@ export default class AddVisitActivityController extends ControllerInterface<Visi
   }
 
   async addSystemVisitActivities(items: VisitActivityModel[]) {
-  try {
-    for (const item of items) {
-      if (!item.title) {
+    try {
+      const data = items
+        .map((item) => ({ title: String(item.title ?? '').trim() }))
+        .filter((item) => item.title)
+
+      if (!data.length) {
         throw new Error('Visit Activity title is missing')
       }
 
-      const translations = new TranslationsParams(['en', 'ar'])
+      const dataState: DataState<VisitActivityModel> = await this.addVisitActivityUseCase.call(
+        new AddVisitActivityExcelParams({ data }),
+      )
 
-      translations.setTranslation('title', 'en', item.title)
-      translations.setTranslation('title', 'ar', item.title)
-
-      const params = new AddVisitActivityParams(translations)
-
-      const validation = params.validate()
-
-      if (!validation.isValid) {
-        params.validateOrThrow()
-      }
-
-      const dataState: DataState<VisitActivityModel> =
-        await this.addVisitActivityUseCase.call(params)
-
+      this.setLoading()
       this.setState(dataState)
 
       if (!this.isDataSuccess()) {
-        throw new Error(
-          this.state.value.error?.title ?? 'Failed to add visit activity',
-        )
+        throw new Error(this.state.value.error?.title ?? 'Failed to add visit activity')
       }
+
+      DialogSelector.instance.successDialog.openDialog({
+        dialogName: 'dialog-success',
+        titleContent: 'Added was successful',
+        imageElement: successImage,
+        messageContent: null,
+      })
+
+      return true
+    } catch (error: unknown) {
+      DialogSelector.instance.failedDialog.openDialog({
+        dialogName: 'dialog-error',
+        titleContent:
+          this.state.value.error?.title ?? (error instanceof Error ? error.message : String(error)),
+        imageElement: errorImage,
+        messageContent: null,
+      })
+
+      return false
+    } finally {
+      super.handleResponseDialogs()
     }
-
-    DialogSelector.instance.successDialog.openDialog({
-      dialogName: 'dialog-success',
-      titleContent: 'Added was successful',
-      imageElement: successImage,
-      messageContent: null,
-    })
-
-    return true
-  } catch (error: unknown) {
-    console.error('addSystemVisitActivities error:', error)
-
-    DialogSelector.instance.failedDialog.openDialog({
-      dialogName: 'dialog-error',
-      titleContent:
-        this.state.value.error?.title ??
-        (error instanceof Error ? error.message : String(error)),
-      imageElement: errorImage,
-      messageContent: null,
-    })
-
-    return false
-  } finally {
-    super.handleResponseDialogs()
   }
-}
 }

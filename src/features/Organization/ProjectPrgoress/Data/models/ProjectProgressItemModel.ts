@@ -43,7 +43,7 @@ export default class ProjectProgressItemModel {
     new ProjectProgressItemModel(ProjectProgressEnum.Zone, 'Zone', false),
     new ProjectProgressItemModel(ProjectProgressEnum.ObservationType, 'ObservationType', false),
     new ProjectProgressItemModel(ProjectProgressEnum.IncidantType, 'IncidantType', false),
-    new ProjectProgressItemModel(ProjectProgressEnum.HazardType, 'HazardType', false),
+    new ProjectProgressItemModel(ProjectProgressEnum.HazardType, 'Hazard Classification', false),
     new ProjectProgressItemModel(ProjectProgressEnum.Hazard, 'Hazard', false),
     new ProjectProgressItemModel(ProjectProgressEnum.EquipmentType, 'EquipmentType', false),
     new ProjectProgressItemModel(ProjectProgressEnum.Equipment, 'Equipment', false),
