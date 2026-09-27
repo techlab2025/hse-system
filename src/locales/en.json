@@ -2941,5 +2941,14 @@
   "Visitor Name": "Visitor name",
   "Weekly Days": "Weekly days",
   "worked hours": "Worked hours",
-  "write the reason for changing status": "Write the reason for changing status"
+  "write the reason for changing status": "Write the reason for changing status",
+  "Change Initiator Is Required": "Change initiator is required",
+  "Change Type Is Required": "Change type is required",
+  "Proposed Change Is Required": "Proposed change is required",
+  "Employee Is Required": "Employee is required",
+  "Equipment Is Required": "Equipment is required",
+  "Topic Is Required": "Topic is required",
+  "Risk Assessment Document Is Required": "Risk assessment document is required",
+  "Change Approval Is Required": "Change approval is required",
+  "Approved / Rejected By Is Required": "Approved / rejected by is required"
 }

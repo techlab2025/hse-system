@@ -2940,5 +2940,14 @@
   "Visitor Name": "اسم الزائر",
   "Weekly Days": "أيام الأسبوع",
   "worked hours": "ساعات العمل",
-  "write the reason for changing status": "اكتب سبب تغيير الحالة"
+  "write the reason for changing status": "اكتب سبب تغيير الحالة",
+  "Change Initiator Is Required": "مبادر التغيير مطلوب",
+  "Change Type Is Required": "نوع التغيير مطلوب",
+  "Proposed Change Is Required": "وصف التغيير المقترح مطلوب",
+  "Employee Is Required": "الموظف مطلوب",
+  "Equipment Is Required": "المعدة مطلوبة",
+  "Topic Is Required": "الموضوع مطلوب",
+  "Risk Assessment Document Is Required": "مستند تقييم المخاطر مطلوب",
+  "Change Approval Is Required": "حالة اعتماد التغيير مطلوبة",
+  "Approved / Rejected By Is Required": "المعتمد / الرافض مطلوب"
 }

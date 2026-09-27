@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import DatePicker from 'primevue/datepicker'
@@ -340,11 +339,11 @@ watch(
 
 const hasText = (value: unknown) => String(value ?? '').trim().length > 0
 const requiredFields = computed(() => [
-  // {
-  //   key: 'facilty',
-  //   message: t('Facility Is Required'),
-  //   isMissing: () => !hasText(facilty.value),
-  // },
+  {
+    key: 'initiatorEmployee',
+    message: t('Change Initiator Is Required'),
+    isMissing: () => !initiatorEmployeeId.value,
+  },
   {
     key: 'area',
     message: t('Area Is Required'),
@@ -354,6 +353,49 @@ const requiredFields = computed(() => [
     key: 'date',
     message: t('Date Is Required'),
     isMissing: () => !date.value,
+  },
+  {
+    key: 'changeType',
+    message: t('Change Type Is Required'),
+    isMissing: () => changeType.value === null || changeType.value === undefined,
+  },
+  {
+    key: 'management',
+    message: t('Proposed Change Is Required'),
+    isMissing: () => !Selectedmangement.value,
+  },
+  {
+    key: 'topicEmployee',
+    message: t('Employee Is Required'),
+    isMissing: () =>
+      selectedTopicType.value === MangementChangeTopicTypeEnum.employee && !employeeId.value,
+  },
+  {
+    key: 'topicEquipment',
+    message: t('Equipment Is Required'),
+    isMissing: () =>
+      selectedTopicType.value === MangementChangeTopicTypeEnum.equipment && !equipmentId.value,
+  },
+  {
+    key: 'topicText',
+    message: t('Topic Is Required'),
+    isMissing: () =>
+      selectedTopicType.value === MangementChangeTopicTypeEnum.other && !hasText(topicText.value),
+  },
+  {
+    key: 'riskAssessmentDocument',
+    message: t('Risk Assessment Document Is Required'),
+    isMissing: () => !riskAssismentFile.value,
+  },
+  {
+    key: 'changeApproval',
+    message: t('Change Approval Is Required'),
+    isMissing: () => status.value === null || status.value === undefined,
+  },
+  {
+    key: 'approvalBy',
+    message: t('Approved / Rejected By Is Required'),
+    isMissing: () => !approvalBy.value,
   },
 ])
 
@@ -467,42 +509,54 @@ onMounted(updateData)
         </p>
       </div>
 
-      <div class="management-change-field input-wrapper">
-        <CustomSelectInput
+      <div class="management-change-field input-wrapper" data-required-field="changeType">
+        <UpdatedCustomInputSelect
           :model-value="selectedChangeTypeMangement"
           :static-options="ChangeTypeMangementList"
           label="change type"
           id="change-type"
           :placeholder="$t('Select change type')"
+          required
           @update:model-value="changeType = $event.id"
         />
+        <p v-if="requiredFieldErrors.changeType" class="required-field-message">
+          {{ requiredFieldErrors.changeType }}
+        </p>
       </div>
 
-      <div class="management-change-field input-wrapper">
-        <CustomSelectInput
+      <div class="management-change-field input-wrapper" data-required-field="changeApproval">
+        <UpdatedCustomInputSelect
           :model-value="selectedChangeApprovalMangement"
           :static-options="ChangeApprovalMangementList"
           label="change approval"
           id="change-approval"
           :placeholder="$t('Select approval status')"
+          required
           @update:model-value="status = $event.id"
         />
+        <p v-if="requiredFieldErrors.changeApproval" class="required-field-message">
+          {{ requiredFieldErrors.changeApproval }}
+        </p>
       </div>
 
-      <div class="management-change-field input-wrapper">
-        <CustomSelectInput
+      <div class="management-change-field input-wrapper" data-required-field="approvalBy">
+        <UpdatedCustomInputSelect
           :model-value="Selectedemployee"
           :controller="indexOrganizatoinEmployeeController"
           :params="indexOrganizatoinEmployeeParams"
           label="Approved / Rejected By "
           id="approval-by"
           :placeholder="$t('Select an employee')"
-          optional
+          required
           @update:model-value="setApprovalBy"
         />
+        <p v-if="requiredFieldErrors.approvalBy" class="required-field-message">
+          {{ requiredFieldErrors.approvalBy }}
+        </p>
       </div>
-            <div
+      <div
         class="management-change-field input-wrapper"
+        data-required-field="initiatorEmployee"
       >
         <UpdatedCustomInputSelect
           :model-value="Selectedinitiatoremployeeid"
@@ -511,9 +565,12 @@ onMounted(updateData)
           label="Change Initiator"
           id="initiator-employee"
           :placeholder="$t('Select an initiator employee')"
-          optional
+          required
           @update:model-value="setinitiatorEmployee"
         />
+        <p v-if="requiredFieldErrors.initiatorEmployee" class="required-field-message">
+          {{ requiredFieldErrors.initiatorEmployee }}
+        </p>
       </div>
     </div>
   </section>
@@ -528,17 +585,23 @@ onMounted(updateData)
     </div>
 
     <div class="management-change-fields">
-      <div class="management-change-field input-wrapper management-change-field--full">
-        <CustomSelectInput
+      <div
+        class="management-change-field input-wrapper management-change-field--full"
+        data-required-field="management"
+      >
+        <UpdatedCustomInputSelect
           :model-value="Selectedmangement"
           :controller="indexMangementChangeTopicTypeController"
           :params="indexMangementChangeTopicTypeParams"
           label="Description of Proposed Change/Modification"
           id="management"
           :placeholder="$t('Select Proposed Change/Modification')"
-          optional
+          required
           @update:model-value="setManagement"
         />
+        <p v-if="requiredFieldErrors.management" class="required-field-message">
+          {{ requiredFieldErrors.management }}
+        </p>
         <p class="management-change-field__hint">
           {{ $t('Choose a management topic to show the related field.') }}
         </p>
@@ -547,6 +610,7 @@ onMounted(updateData)
       <div
         v-if="selectedTopicType === 1"
         class="management-change-field input-wrapper"
+        data-required-field="topicEmployee"
       >
         <UpdatedCustomInputSelect
           :model-value="Selectedemployeeid"
@@ -555,14 +619,18 @@ onMounted(updateData)
           label="employee"
           id="project-employee"
           :placeholder="$t('Select an employee')"
-          optional
+          required
           @update:model-value="setEmployee"
         />
+        <p v-if="requiredFieldErrors.topicEmployee" class="required-field-message">
+          {{ requiredFieldErrors.topicEmployee }}
+        </p>
       </div>
 
       <div
         v-if="selectedTopicType === 2"
         class="management-change-field input-wrapper"
+        data-required-field="topicEquipment"
       >
         <UpdatedCustomInputSelect
           :model-value="Selectedequipment"
@@ -571,18 +639,22 @@ onMounted(updateData)
           label="equipment"
           id="equipment"
           :placeholder="$t('Select equipment')"
-          optional
+          required
           @update:model-value="setequipment"
         />
+        <p v-if="requiredFieldErrors.topicEquipment" class="required-field-message">
+          {{ requiredFieldErrors.topicEquipment }}
+        </p>
       </div>
 
       <div
         v-if="selectedTopicType === 3"
         class="management-change-field input-wrapper"
+        data-required-field="topicText"
       >
         <label for="topic-text">
           {{ $t('topic') }}
-          <span class="management-change-optional-mark">({{ $t('optional') }})</span>
+          <span class="management-change-required-mark">*</span>
         </label>
         <input
           id="topic-text"
@@ -590,7 +662,11 @@ onMounted(updateData)
           class="input"
           type="text"
           :placeholder="$t('Enter the topic')"
+          required
         />
+        <p v-if="requiredFieldErrors.topicText" class="required-field-message">
+          {{ requiredFieldErrors.topicText }}
+        </p>
       </div>
     </div>
   </section>
@@ -605,15 +681,23 @@ onMounted(updateData)
     </div>
 
     <div class="management-change-fields management-change-fields--attachments">
-      <div :key="formKey" class="management-change-upload-field">
+      <div
+        :key="formKey"
+        class="management-change-upload-field"
+        data-required-field="riskAssessmentDocument"
+      >
         <HandleFIlesUpload
           :label="$t('Risk Assessment Document ')"
           accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
           :max-files="1"
           :multiple="false"
+          required
           class-name="input-file management-change-file-input"
           @change="handleFilesChange"
         />
+        <p v-if="requiredFieldErrors.riskAssessmentDocument" class="required-field-message">
+          {{ requiredFieldErrors.riskAssessmentDocument }}
+        </p>
       </div>
 
       <div class="management-change-upload-field input-wrapper">
