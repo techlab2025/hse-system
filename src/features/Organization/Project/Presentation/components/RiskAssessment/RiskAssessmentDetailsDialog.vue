@@ -564,4 +564,7 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
     transition: none;
   }
 }
+.dialog-content{
+  padding:10px !important;
+}
 </style>

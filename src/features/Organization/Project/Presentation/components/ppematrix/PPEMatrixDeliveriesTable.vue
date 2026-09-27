@@ -22,7 +22,7 @@ const fetchDeliveries = async (page = currentPage.value, limit = countPerPage.va
   currentPage.value = page
   countPerPage.value = limit
   await controller.fetchPPEMatrixDeliveries(
-    new FetchPPEMatrixDeliveriesParams(props.projectId, page,limit),
+    new FetchPPEMatrixDeliveriesParams(props.projectId, page, limit),
   )
 }
 
@@ -50,8 +50,6 @@ const activityTitles = computed(() =>
   ].join(', '),
 )
 
-const firstDelivery = computed(() => state.value.data?.[0] ?? null)
-
 const isToolDelivered = (deliveryIndex: number, toolId: number) =>
   state.value.data?.[deliveryIndex]?.activity.tools.find((tool) => tool.id === toolId)
     ?.isDelivery ?? false
@@ -73,7 +71,7 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
 
     <DataStatus :controller="state">
       <template #success>
-        <article class="+">
+        <article class="delivery-record">
           <dl class="delivery-meta">
             <!-- <div>
               <dt>Delivery date</dt>
@@ -148,6 +146,9 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
 
 <style scoped>
 .deliveries-card {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   padding: 26px;
   border: 1px solid var(--main-border);
   border-radius: 22px;
@@ -214,14 +215,39 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
 }
 
 .delivery-table-wrap {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
   border: 1px solid var(--main-border);
+  border-radius: 14px;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--PrimaryColor) 42%, transparent) transparent;
+}
+
+.delivery-table-wrap::-webkit-scrollbar {
+  height: 9px;
+}
+
+.delivery-table-wrap::-webkit-scrollbar-track {
+  background: color-mix(in srgb, var(--surface-2) 72%, transparent);
+}
+
+.delivery-table-wrap::-webkit-scrollbar-thumb {
+  border: 2px solid var(--surface-2);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--PrimaryColor) 42%, var(--main-border));
 }
 
 .delivery-table {
-  width: 100%;
-  min-width: 720px;
-  border-collapse: collapse;
+  width: max-content;
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 .delivery-table th,
@@ -234,14 +260,30 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
 }
 
 .delivery-table th:first-child {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 2;
   min-width: 200px;
+  max-width: 240px;
   text-align: start;
+  white-space: normal;
+  background: var(--surface-1);
+  box-shadow: 8px 0 14px -12px color-mix(in srgb, var(--text-strong) 48%, transparent);
+}
+
+.delivery-table thead th:first-child {
+  z-index: 4;
+  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1));
 }
 
 .delivery-table thead th,
 .delivery-table tbody th {
   background: color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-2));
   color: var(--text-strong);
+}
+
+.delivery-table tbody tr:hover th:first-child {
+  background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1));
 }
 
 .delivery-table tbody tr:last-child > * {
@@ -277,6 +319,11 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
   .delivery-meta {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .delivery-table th:first-child {
+    min-width: 160px;
+    max-width: 190px;
   }
 }
 </style>
