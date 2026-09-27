@@ -217,7 +217,7 @@ export default class AddHazardParams implements Params {
     if (this.ptwStatus != null) data['ptw_status'] = this.ptwStatus
     if (this.complianceNotification.length > 0)
       data['compliance_notification'] = this.complianceNotification
-    data['uauc'] = this.uauc
+    data['uauc_type'] = this.uauc
 
     return data
   }
