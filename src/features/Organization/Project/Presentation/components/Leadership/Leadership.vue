@@ -192,7 +192,7 @@ onMounted(async () => {
           </svg>
         </div>
         <div>
-          <span class="eyebrow">Project leadership</span>
+          <!-- <span class="eyebrow">Project leadership</span>-->
           <h1>Leadership visits</h1>
           <p>
             Plan visits month by month, then turn each visit into a clear record of actions and
@@ -274,7 +274,9 @@ onMounted(async () => {
                     <strong>{{ month.label }}</strong
                     ><small>{{ month.firstDate }} → {{ month.lastDate }}</small>
                   </div>
-                  <span class="draft-count">{{ rowsForMonth(month.key).length }} draft visits</span>
+                  <span class="draft-count"
+                    >{{ savedVisitsForMonth(month.key).length }} draft visits</span
+                  >
                 </div>
               </AccordionHeader>
               <AccordionContent>
@@ -570,7 +572,7 @@ onMounted(async () => {
   justify-content: space-between;
   gap: 24px;
   overflow: hidden;
-  padding: clamp(28px, 4vw, 46px);
+  padding: 20px;
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
   border-radius: 28px;
   background:
