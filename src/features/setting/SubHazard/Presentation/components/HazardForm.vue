@@ -290,9 +290,9 @@ const fields = ref([
       :controller="indexHazardTypeController"
       :params="indexHazardTypeParams"
       :required="true"
-      label="Hazard Type"
+      label="Hazard Classification"
       id="hazard type"
-      placeholder="Select Hazrd Type"
+      placeholder="Select Hazard Classification"
       @update:modelValue="setHazrdType"
     />
   </div>

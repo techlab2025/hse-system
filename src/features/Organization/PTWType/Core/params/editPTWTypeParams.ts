@@ -16,7 +16,7 @@ export default class EditPTWTypeParams implements Params {
     const data: Record<string, unknown> = {
       permit_type_id: this.id,
       translations: translations,
-      ptw_color: this.ptw_color,
+      color: this.ptw_color,
     }
     if (this.allIndustries != null) {
       data.all_industries = this.allIndustries ? 1 : 0

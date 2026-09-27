@@ -1,123 +1,100 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import TitleInterface from '@/base/Data/Models/title_interface'
-import OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
-import TraningTopicModel from '@/features/Organization/TraningTopic/Data/models/TraningTopicModel'
-
-const asRecord = (value: unknown): Record<string, unknown> =>
-  Boolean(value) && typeof value === 'object' && !Array.isArray(value)
-    ? (value as Record<string, unknown>)
-    : {}
-
-const asPositiveNumber = (value: unknown): number | null => {
-  const parsedValue = Number(value)
-
-  return Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : null
-}
-
-const asRecords = (value: unknown): Record<string, unknown>[] =>
-  Array.isArray(value)
-    ? value.filter(
-        (item): item is Record<string, unknown> =>
-          Boolean(item) && typeof item === 'object' && !Array.isArray(item),
-      )
-    : []
-
-const asStringArray = (value: unknown): string[] | null =>
-  Array.isArray(value) ? value.filter((item): item is string => typeof item === 'string') : null
-
-const asTrainingTopicRecords = (value: unknown): Record<string, unknown>[] =>
-  Array.isArray(value)
-    ? value
-        .map((item) => {
-          if (typeof item === 'number') return { id: item }
-          if (Boolean(item) && typeof item === 'object' && !Array.isArray(item)) {
-            const record = item as Record<string, unknown>
-            return {
-              ...record,
-              id: record.id ?? record.training_Topic_id ?? record.training_topic_id,
-            }
-          }
-          return null
-        })
-        .filter((item): item is Record<string, unknown> => Boolean(item))
-    : []
-
-const asEmployeeRecords = (value: unknown): Record<string, unknown>[] =>
-  asRecords(value).map((item) => ({
-    ...item,
-    id: item.id ?? item.organization_employee_id ?? item.organisation_employee_id,
-  }))
+import FilesModel from '@/features/Organization/Inspection/Data/models/FetchTaskResultModels/FilesModel'
+import InductionEmployeeModel from './InductionEmployeeModel'
+import InductionProjectLocationModel from './InductionProjectLocationModel'
+import InductionProjectModel from './InductionProjectModel'
+import InductionProjectZoneModel from './InductionProjectZoneModel'
+import InductionTrainingTopicModel from './InductionTrainingTopicModel'
 
 export default class InductionModel extends TitleInterface {
   public id: number
+  public inductionId: number
   public title: string
   public instractor_id: number
-  public date: string | null
-  public image: string[] | null
-  public trainingTopic: TraningTopicModel[]
-  public organisationEmployee: OrganizatoinEmployeeModel[]
+  public instructorEmployee: InductionEmployeeModel | null
+  public instructorName: string
+  public project: InductionProjectModel | null
+  public projectId: number | null
+  public projectTitle: string
+  public projectLocation: InductionProjectLocationModel | null
   public projectLocationId: number | null
+  public projectLocationTitle: string
+  public projectZone: InductionProjectZoneModel | null
   public projectZoonId: number | null
+  public projectZoneTitle: string
+  public date: string | null
+  public createdAt: string | null
+  public media: FilesModel[]
+  public image: string[] | null
+  public trainingTopic: InductionTrainingTopicModel[]
+  public organisationEmployee: InductionEmployeeModel[]
 
   constructor(
     id: number,
     title: string,
     instractor_id: number,
+    instructorEmployee: InductionEmployeeModel | null,
+    project: InductionProjectModel | null,
+    projectLocation: InductionProjectLocationModel | null,
+    projectZone: InductionProjectZoneModel | null,
     date: string | null,
+    createdAt: string | null,
+    media: FilesModel[],
     image: string[] | null,
-    trainingTopic: TraningTopicModel[],
-    organisationEmployee: OrganizatoinEmployeeModel[],
-    projectLocationId: number | null = null,
-    projectZoonId: number | null = null,
+    trainingTopic: InductionTrainingTopicModel[],
+    organisationEmployee: InductionEmployeeModel[],
   ) {
     super({ id, title })
     this.id = id
+    this.inductionId = id
     this.title = title
     this.instractor_id = instractor_id
+    this.instructorEmployee = instructorEmployee
+    this.instructorName = instructorEmployee?.title ?? instructorEmployee?.name ?? ''
+    this.project = project
+    this.projectId = project?.projectId ?? null
+    this.projectTitle = project?.title ?? ''
+    this.projectLocation = projectLocation
+    this.projectLocationId = projectLocation?.projectLocationId ?? null
+    this.projectLocationTitle = projectLocation?.title ?? ''
+    this.projectZone = projectZone
+    this.projectZoonId = projectZone?.projectZoneId ?? null
+    this.projectZoneTitle = projectZone?.title ?? ''
     this.date = date
-    this.image = image
+    this.createdAt = createdAt
+    this.media = media
+    this.image = image ?? (media.length ? media.map((item) => item.url) : null)
     this.trainingTopic = trainingTopic
     this.organisationEmployee = organisationEmployee
-    this.projectLocationId = projectLocationId
-    this.projectZoonId = projectZoonId
   }
 
-  static fromMap(data: Record<string, unknown>): InductionModel {
-    const id = Number(data.id ?? 0)
-    const location = asRecord(data.location)
-    const zoon = asRecord(data.zoon)
-    const trainingTopics =
-      data.trainingTopic ?? data.training_topic ?? data.training_topics ?? data.training_topic_ids ?? []
-    const organisationEmployees =
-      data.organisationEmployee ??
-      data.organisation_employee ??
-      data.organisation_employees ??
-      data.attendees ??
-      []
+  static fromMap(data: any): InductionModel {
+    const id = data.induction_id ?? data.id
+    const instructorEmployee = data.instructor_employee_id
+      ? InductionEmployeeModel.fromMap(data.instructor_employee_id)
+      : null
 
     return new InductionModel(
       id,
-      String(data.title ?? data.name ?? `Induction #${id}`),
-      Number(data.instractor_id ?? data.instructor_id ?? data.instructor_employee_id ?? 0),
-      typeof data.date === 'string' ? data.date : null,
-      asStringArray(data.attachments ?? data.image),
-      asTrainingTopicRecords(trainingTopics).map((item) => TraningTopicModel.fromMap(item)),
-      asEmployeeRecords(organisationEmployees).map((item) => OrganizatoinEmployeeModel.fromMap(item)),
-      asPositiveNumber(data.projectLocationId ?? data.project_location_id ?? location.project_location_id),
-      asPositiveNumber(
-        data.projectZoonId ?? data.project_location_zone_id ?? data.project_location_zone_id ?? zoon.project_location_zone_id,
-      ),
+      data.title ?? data.name ?? 'Induction #' + id,
+      instructorEmployee?.id ?? data.instractor_id ?? data.instructor_id ?? 0,
+      instructorEmployee,
+      data.project_id ? InductionProjectModel.fromMap(data.project_id) : null,
+      data.project_location_id ? InductionProjectLocationModel.fromMap(data.project_location_id) : null,
+      data.project_location_zone_id
+        ? InductionProjectZoneModel.fromMap(data.project_location_zone_id)
+        : null,
+      data.date,
+      data.created_at,
+      data.media?.map((item: any) => FilesModel.fromMap(item)) ?? [],
+      data.image ?? data.attachments ?? null,
+      data.induction_training_topics?.map((item: any) => InductionTrainingTopicModel.fromMap(item)) ?? [],
+      data.attendees?.map((item: any) => InductionEmployeeModel.fromMap(item)) ?? [],
     )
   }
 
   static example: InductionModel[] = [
-    new InductionModel(
-      1,
-      'Induction 1',
-      1,
-      '2022-01-01',
-      ['image1', 'image2'],
-      [],
-      [],
-    ),
+    new InductionModel(1, 'Induction #1', 1, null, null, null, null, '2022-01-01', null, [], null, [], []),
   ]
 }

@@ -20,7 +20,7 @@ export default class AddPTWTypeParams implements Params {
 
     const data: Record<string, unknown> = {
       translations: translations,
-      ptw_color: this.ptw_color,
+      color: this.ptw_color,
     }
     if (this.allIndustries != null) {
       data.all_industries = this.allIndustries ? 1 : 0

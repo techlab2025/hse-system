@@ -7,7 +7,7 @@ import type { Router } from 'vue-router'
 import AddVisitThemeUseCase from '../../Domain/useCase/addVisitThemeUseCase'
 import type VisitThemeModel from '../../Data/models/VisitThemeModel'
 import AddVisitThemeParams from '../../Core/params/addVisitThemeParams'
-import TranslationsParams from '@/base/core/params/translations_params'
+import AddVisitThemeExcelParams from '../../Core/params/addVisitThemeExcelParams'
 
 export default class AddVisitThemeController extends ControllerInterface<VisitThemeModel> {
   private static instance: AddVisitThemeController
@@ -63,17 +63,21 @@ export default class AddVisitThemeController extends ControllerInterface<VisitTh
 
   async importVisitThemes(titles: string[], router: Router) {
     try {
-      for (const title of titles) {
-        const translations = new TranslationsParams(['en', 'ar'])
-        translations.setTranslation('title', 'en', title)
-        translations.setTranslation('title', 'ar', title)
-        const dataState: DataState<VisitThemeModel> = await this.useCase.call(
-          new AddVisitThemeParams(translations),
-        )
-        this.setLoading()
-        this.setState(dataState)
-        if (!this.isDataSuccess()) throw new Error(this.state.value.error?.title ?? 'Import failed')
+      const data = titles
+        .map((title) => ({ title: String(title ?? '').trim() }))
+        .filter((item) => item.title)
+
+      if (!data.length) {
+        throw new Error('At least one row is required')
       }
+
+      const dataState: DataState<VisitThemeModel> = await this.useCase.call(
+        new AddVisitThemeExcelParams({ data }),
+      )
+      this.setLoading()
+      this.setState(dataState)
+
+      if (!this.isDataSuccess()) throw new Error(this.state.value.error?.title ?? 'Import failed')
 
       DialogSelector.instance.successDialog.openDialog({
         dialogName: 'dialog-success',
@@ -82,7 +86,7 @@ export default class AddVisitThemeController extends ControllerInterface<VisitTh
         messageContent: null,
       })
       const root = router.currentRoute.value.path.startsWith('/admin') ? '/admin' : '/organization'
-      await router.push(`${root}/visit-themes`)
+      await router.push(root + '/visit-themes')
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog-error',
@@ -96,46 +100,45 @@ export default class AddVisitThemeController extends ControllerInterface<VisitTh
   }
 
   async addSystemVisitThemes(items: VisitThemeModel[]) {
-  try {
-    for (const item of items) {
-      const translations = new TranslationsParams(['en', 'ar'])
+    try {
+      const data = items
+        .map((item) => ({ title: String(item.title ?? '').trim() }))
+        .filter((item) => item.title)
 
-      translations.setTranslation('title', 'en', item.title)
-      translations.setTranslation('title', 'ar', item.title)
+      if (!data.length) {
+        throw new Error('Visit Theme title is missing')
+      }
 
       const dataState: DataState<VisitThemeModel> = await this.useCase.call(
-        new AddVisitThemeParams(translations),
+        new AddVisitThemeExcelParams({ data }),
       )
 
       this.setLoading()
       this.setState(dataState)
 
       if (!this.isDataSuccess()) {
-        throw new Error(
-          this.state.value.error?.title ?? 'Import failed',
-        )
+        throw new Error(this.state.value.error?.title ?? 'Import failed')
       }
+
+      DialogSelector.instance.successDialog.openDialog({
+        dialogName: 'dialog-success',
+        titleContent: 'Added was successful',
+        imageElement: successImage,
+        messageContent: null,
+      })
+
+      return true
+    } catch (error: unknown) {
+      DialogSelector.instance.failedDialog.openDialog({
+        dialogName: 'dialog-error',
+        titleContent: this.state.value.error?.title ?? String(error),
+        imageElement: errorImage,
+        messageContent: null,
+      })
+
+      return false
+    } finally {
+      super.handleResponseDialogs()
     }
-
-    DialogSelector.instance.successDialog.openDialog({
-      dialogName: 'dialog-success',
-      titleContent: 'Added was successful',
-      imageElement: successImage,
-      messageContent: null,
-    })
-
-    return true
-  } catch (error: unknown) {
-    DialogSelector.instance.failedDialog.openDialog({
-      dialogName: 'dialog-error',
-      titleContent: this.state.value.error?.title ?? String(error),
-      imageElement: errorImage,
-      messageContent: null,
-    })
-
-    return false
-  } finally {
-    super.handleResponseDialogs()
   }
-}
 }

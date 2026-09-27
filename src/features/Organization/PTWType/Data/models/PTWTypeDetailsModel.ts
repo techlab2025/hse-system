@@ -37,7 +37,7 @@ export default class PTWTypeDetailsModel {
     return new PTWTypeDetailsModel(
       data.id,
       translations.titles,
-      data.ptw_color ?? data.color ?? '#ff0000',
+      data.color ?? data.color ?? '#ff0000',
       Boolean(data.all_industries),
       (data.industries ?? []).map(
         (industry) =>

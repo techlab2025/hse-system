@@ -20,6 +20,7 @@ import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { formatTime } from '@/base/Presentation/utils/time_format'
 import type { UploadedFile } from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
 import HandleFIlesUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
+import IconBackStage from '@/shared/icons/IconBackStage.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -61,14 +62,22 @@ const setptwNo = () => {}
 const indexPTWTypeController = IndexPTWTypeController.getInstance()
 
 const indexPTWTypeParams = new IndexPTWTypeParams('', 1, 10, 0)
+const permitTypeSelectKey = ref(0)
 
-const ptwHeroStyles = computed(() => {
-  const color = PermitToWorkType.value?.color || 'var(--PrimaryColor)'
+const ptwAccentColor = computed(() => PermitToWorkType.value?.color || 'var(--PrimaryColor)')
 
-  return {
-    background: `radial-gradient(circle at 92% 5%, rgba(255,255,255,0.16), transparent 27%), linear-gradient(125deg, ${color}, var(--brand-primary-900))`,
-  }
-})
+const ptwThemeStyles = computed<Record<string, string>>(() => ({
+  '--ptw-accent': ptwAccentColor.value,
+}))
+
+const ptwHeroStyles = computed(() => ({
+  background:
+    'radial-gradient(circle at 92% 5%, rgba(255,255,255,0.16), transparent 27%), linear-gradient(125deg, var(--ptw-accent), var(--brand-primary-900))',
+}))
+
+const reloadPermitTypes = () => {
+  permitTypeSelectKey.value += 1
+}
 
 const updatePermitToWorkType = (data: TitleInterface | TitleInterface[] | null) => {
   const selectedValue = Array.isArray(data) ? data[0] : data
@@ -141,7 +150,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
 </script>
 
 <template>
-  <section class="ptw-builder">
+  <section class="ptw-builder" :style="ptwThemeStyles">
     <header class="ptw-hero" :style="ptwHeroStyles">
       <div class="ptw-hero-copy">
         <span class="ptw-hero-icon" aria-hidden="true">
@@ -210,7 +219,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
             <div class="ptw-field" data-required-field="Name">
               <label for="name">
                 {{ $t('Permit Code') }}
-                <span>*</span>
+                <span class="required-mark">*</span>
               </label>
               <InputText
                 id="name"
@@ -225,11 +234,23 @@ const handleFilesChange = (files: UploadedFile[]) => {
             </div>
 
             <div class="ptw-field" data-required-field="SelectedWhereHouseType">
-              <label for="permit_to_work_type">
-                {{ $t('Permit Type ') }}
-                <span>*</span>
+              <label for="permit_to_work_type" class="ptw-field-label--with-action">
+                <span class="ptw-field-label-text">
+                  {{ $t('Permit Type ') }}
+                  <span class="required-mark">*</span>
+                </span>
+                <button
+                  type="button"
+                  class="ptw-reload-btn"
+                  :title="$t('Reload')"
+                  :aria-label="$t('Reload')"
+                  @click="reloadPermitTypes"
+                >
+                  <IconBackStage />
+                </button>
               </label>
               <UpdatedCustomInputSelect
+                :key="permitTypeSelectKey"
                 id="permit_to_work_type"
                 :required="true"
                 :has-header="true"
@@ -247,7 +268,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
             <div class="ptw-field" data-required-field="OrganizationEmployee">
               <label for="organization_employee">
                 {{ $t('Permit Applicant') }}
-                <span>*</span>
+                <span class="required-mark">*</span>
               </label>
               <UpdatedCustomInputSelect
                 id="organization_employee"
@@ -404,9 +425,9 @@ const handleFilesChange = (files: UploadedFile[]) => {
   // width: min(1120px, 100%);
   margin: 18px auto;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 15%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--ptw-accent) 15%, var(--main-border));
   border-radius: 28px;
-  background: color-mix(in srgb, var(--PrimaryColor) 2.5%, var(--surface-2));
+  background: color-mix(in srgb, var(--ptw-accent) 2.5%, var(--surface-2));
   box-shadow: 0 25px 60px color-mix(in srgb, var(--text-strong) 9%, transparent);
 }
 
@@ -421,7 +442,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
   color: white;
   background:
     radial-gradient(circle at 92% 5%, color-mix(in srgb, white 16%, transparent), transparent 27%),
-    linear-gradient(125deg, var(--brand-primary-900), var(--PrimaryColor));
+    linear-gradient(125deg, var(--brand-primary-900), var(--ptw-accent));
 }
 
 .ptw-hero::after {
@@ -561,8 +582,8 @@ const handleFilesChange = (files: UploadedFile[]) => {
 .ptw-step.active > span {
   border-color: transparent;
   color: white;
-  background: var(--PrimaryColor);
-  box-shadow: 0 7px 15px color-mix(in srgb, var(--PrimaryColor) 20%, transparent);
+  background: var(--ptw-accent);
+  box-shadow: 0 7px 15px color-mix(in srgb, var(--ptw-accent) 20%, transparent);
 }
 
 .ptw-step strong,
@@ -586,15 +607,15 @@ const handleFilesChange = (files: UploadedFile[]) => {
   gap: 9px;
   margin-top: 2px;
   padding: 12px;
-  border: 1px solid color-mix(in srgb, var(--status-success) 18%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--ptw-accent) 18%, var(--main-border));
   border-radius: 14px;
-  background: color-mix(in srgb, var(--status-success) 5%, var(--surface-2));
+  background: color-mix(in srgb, var(--ptw-accent) 5%, var(--surface-2));
 }
 
 .ptw-safety-note svg {
   width: 21px;
   flex: 0 0 auto;
-  color: var(--status-success);
+  color: var(--ptw-accent);
   stroke: currentColor;
   stroke-width: 1.7;
   stroke-linecap: round;
@@ -621,10 +642,11 @@ const handleFilesChange = (files: UploadedFile[]) => {
 
 .ptw-card {
   padding: 19px;
-  border: 1px solid var(--main-border);
+  border: 1px solid color-mix(in srgb, var(--ptw-accent) 18%, var(--main-border));
   border-radius: 19px;
-  background: var(--surface-1);
-  box-shadow: 0 8px 22px color-mix(in srgb, var(--text-strong) 4%, transparent);
+  background: transparent;
+  // background: color-mix(in srgb, var(--ptw-accent) 1.8%, var(--surface-1));
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--ptw-accent) 5%, transparent);
 }
 
 .ptw-card-header {
@@ -641,8 +663,8 @@ const handleFilesChange = (files: UploadedFile[]) => {
   flex: 0 0 auto;
   place-items: center;
   border-radius: 11px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-2));
+  color: var(--ptw-accent);
+  background: color-mix(in srgb, var(--ptw-accent) 9%, var(--surface-2));
   font-size: 0.63rem;
   font-weight: 900;
 }
@@ -686,8 +708,49 @@ const handleFilesChange = (files: UploadedFile[]) => {
   font-weight: 800;
 }
 
-.ptw-field > label span {
+.ptw-field > label .required-mark {
   color: var(--status-danger);
+}
+
+.ptw-field-label--with-action {
+  justify-content: space-between;
+}
+
+.ptw-field-label-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ptw-reload-btn {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--ptw-accent) 22%, var(--main-border));
+  border-radius: 10px;
+  color: var(--ptw-accent);
+  background: color-mix(in srgb, var(--ptw-accent) 7%, var(--surface-2));
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.ptw-reload-btn:hover {
+  transform: rotate(-18deg);
+  border-color: color-mix(in srgb, var(--ptw-accent) 42%, var(--main-border));
+  background: color-mix(in srgb, var(--ptw-accent) 12%, var(--surface-2));
+}
+
+.ptw-reload-btn :deep(svg) {
+  width: 16px;
+  height: 16px;
+}
+
+.ptw-reload-btn :deep(path) {
+  fill: currentColor;
 }
 
 .ptw-control,
@@ -695,10 +758,10 @@ const handleFilesChange = (files: UploadedFile[]) => {
 :deep(.input-select) {
   width: 100%;
   min-height: 46px;
-  border: 1px solid color-mix(in srgb, var(--text-soft) 20%, var(--main-border)) !important;
+  border: 1px solid color-mix(in srgb, var(--ptw-accent) 20%, var(--main-border)) !important;
   border-radius: 12px !important;
   color: var(--text-strong) !important;
-  background: var(--surface-2) !important;
+  background: color-mix(in srgb, var(--ptw-accent) 2%, var(--surface-2)) !important;
   box-shadow: none !important;
   transition:
     border-color 0.2s ease,
@@ -714,9 +777,9 @@ const handleFilesChange = (files: UploadedFile[]) => {
 :deep(.p-datepicker-input:focus),
 :deep(.input-select.p-focus) {
   outline: none;
-  border-color: var(--PrimaryColor) !important;
+  border-color: var(--ptw-accent) !important;
   background: var(--surface-1) !important;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 9%, transparent) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ptw-accent) 9%, transparent) !important;
 }
 
 .ptw-textarea {
@@ -736,9 +799,9 @@ const handleFilesChange = (files: UploadedFile[]) => {
 
 :deep(.p-datepicker-dropdown) {
   border: 0 !important;
-  border-inline-start: 1px solid var(--main-border) !important;
-  color: var(--PrimaryColor) !important;
-  background: transparent !important;
+  border-inline-start: 1px solid color-mix(in srgb, var(--ptw-accent) 22%, var(--main-border)) !important;
+  color: var(--ptw-accent) !important;
+  background: color-mix(in srgb, var(--ptw-accent) 4%, transparent) !important;
 }
 
 .ptw-schedule {
@@ -749,17 +812,14 @@ const handleFilesChange = (files: UploadedFile[]) => {
 
 .ptw-schedule-group {
   padding: 13px;
-  border: 1px solid var(--main-border);
+  border: 1px solid color-mix(in srgb, var(--ptw-accent) 20%, var(--main-border));
   border-radius: 15px;
-  background: color-mix(in srgb, var(--PrimaryColor) 2.5%, var(--surface-2));
+  background: color-mix(in srgb, var(--ptw-accent) 2.5%, var(--surface-2));
 }
 
-.ptw-schedule-group.start {
-  border-color: color-mix(in srgb, var(--status-success) 20%, var(--main-border));
-}
-
+.ptw-schedule-group.start,
 .ptw-schedule-group.end {
-  border-color: color-mix(in srgb, var(--status-danger) 16%, var(--main-border));
+  border-color: color-mix(in srgb, var(--ptw-accent) 28%, var(--main-border));
 }
 
 .ptw-schedule-title {
@@ -778,11 +838,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--status-success);
-}
-
-.ptw-schedule-group.end .ptw-schedule-title i {
-  background: var(--status-danger);
+  background: var(--ptw-accent);
 }
 
 .required-field-message {
@@ -797,9 +853,9 @@ const handleFilesChange = (files: UploadedFile[]) => {
   justify-content: space-between;
   gap: 15px;
   padding: 14px 16px;
-  border: 1px solid var(--main-border);
+  border: 1px solid color-mix(in srgb, var(--ptw-accent) 18%, var(--main-border));
   border-radius: 17px;
-  background: var(--surface-1);
+  background: color-mix(in srgb, var(--ptw-accent) 1.8%, var(--surface-1));
 }
 
 .ptw-actions p {
@@ -814,7 +870,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
 .ptw-actions p svg {
   width: 18px;
   flex: 0 0 auto;
-  color: var(--PrimaryColor);
+  color: var(--ptw-accent);
   stroke: currentColor;
   stroke-width: 1.7;
   stroke-linecap: round;
@@ -831,8 +887,12 @@ const handleFilesChange = (files: UploadedFile[]) => {
   border: 0;
   border-radius: 12px;
   color: white;
-  background: linear-gradient(135deg, var(--PrimaryColor), var(--brand-primary-700));
-  box-shadow: 0 10px 20px color-mix(in srgb, var(--PrimaryColor) 20%, transparent);
+  background: linear-gradient(
+    135deg,
+    var(--ptw-accent),
+    color-mix(in srgb, var(--ptw-accent) 68%, #111827)
+  );
+  box-shadow: 0 10px 20px color-mix(in srgb, var(--ptw-accent) 20%, transparent);
   font-weight: 900;
   cursor: pointer;
   transition:
@@ -842,7 +902,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
 
 .ptw-submit:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 25px color-mix(in srgb, var(--PrimaryColor) 26%, transparent);
+  box-shadow: 0 14px 25px color-mix(in srgb, var(--ptw-accent) 26%, transparent);
 }
 
 .ptw-submit svg {
