@@ -4,6 +4,8 @@ import { useRoute } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+import defaultLogo from '@/assets/images/logo.svg'
+import { useSystemIdentity } from '@/composables/useSystemIdentity'
 import ShowProjectDetailsParams from '../../../Core/params/ShowProjectDetailsParams'
 import ShowProjectDetailsController from '../../controllers/ShowProjectDetailsController'
 import LossTimeMatrix from './LossTime/LossTimeMatrix.vue'
@@ -11,9 +13,20 @@ import LossTimeMatrix from './LossTime/LossTimeMatrix.vue'
 const route = useRoute()
 const showProjectDetailsController = ShowProjectDetailsController.getInstance()
 const state = showProjectDetailsController.state
+const { identity: systemIdentity, defaultIdentity } = useSystemIdentity()
 
 const projectId = computed(() => Number(route.params.id))
 const project = computed(() => state.value.data)
+const activeIdentity = computed(() =>
+  systemIdentity.value.isActive ? systemIdentity.value : defaultIdentity.value,
+)
+const brandName = computed(() => activeIdentity.value.name || 'HSE.Cloud.Ai')
+const brandLogo = computed(() => activeIdentity.value.logo || defaultLogo)
+const heroIdentityStyle = computed(() => ({
+  '--summary-primary': activeIdentity.value.primaryColor,
+  '--summary-secondary': activeIdentity.value.secondaryColor,
+  '--summary-accent': activeIdentity.value.accentColor,
+}))
 
 const GetProjectDetails = async () => {
   if (!Number.isFinite(projectId.value) || projectId.value <= 0) return
@@ -142,15 +155,21 @@ watch(
   <DataStatus :controller="state">
     <template #success>
       <main class="project-summary-page">
-        <section class="summary-hero">
+        <section class="summary-hero" :style="heroIdentityStyle">
           <span class="summary-hero__orb summary-hero__orb--one" aria-hidden="true"></span>
           <span class="summary-hero__orb summary-hero__orb--two" aria-hidden="true"></span>
 
           <div class="summary-hero__content">
             <div class="summary-identity">
-              <span class="summary-identity__mark" aria-hidden="true">P</span>
+              <span class="summary-identity__mark">
+                <img :src="brandLogo" :alt="`${brandName} logo`" />
+              </span>
               <div>
-                <!-- <span class="summary-eyebrow">Project command overview</span> -->
+                <span class="summary-eyebrow">
+                  <!-- <b>{{ brandName }}</b> -->
+                  <!-- <i aria-hidden="true"></i> -->
+                  <!-- Project command overview -->
+                </span>
                 <h1>{{ project?.title || 'Project summary' }}</h1>
                 <p>
                   {{ project?.description || 'A concise view of project safety and operations.' }}
@@ -312,14 +331,22 @@ watch(
 }
 
 .summary-hero {
+  --summary-primary: var(--identity-primary);
+  --summary-secondary: var(--identity-secondary);
+  --summary-accent: var(--identity-accent);
   position: relative;
   isolation: isolate;
   overflow: hidden;
   padding: 30px;
   border-radius: 28px;
   background:
-    linear-gradient(120deg, rgb(4 35 48 / 96%), rgb(8 78 83 / 93%)), var(--brand-primary-900);
-  box-shadow: 0 24px 60px rgb(8 47 59 / 20%);
+    linear-gradient(
+      120deg,
+      color-mix(in srgb, var(--summary-secondary) 62%, #071820),
+      color-mix(in srgb, var(--summary-primary) 72%, var(--summary-secondary))
+    ),
+    var(--summary-secondary);
+  box-shadow: 0 24px 60px color-mix(in srgb, var(--summary-secondary) 24%, transparent);
   color: white;
 }
 
@@ -336,7 +363,7 @@ watch(
   height: 220px;
   inset-block-start: -115px;
   inset-inline-end: 8%;
-  background: #4de0ca;
+  background: var(--summary-primary);
 }
 
 .summary-hero__orb--two {
@@ -344,7 +371,7 @@ watch(
   height: 150px;
   inset-block-end: -100px;
   inset-inline-start: 36%;
-  background: #49a6ff;
+  background: var(--summary-accent);
 }
 
 .summary-hero__content,
@@ -372,10 +399,14 @@ watch(
   place-items: center;
   border: 1px solid rgb(255 255 255 / 26%);
   border-radius: 18px;
-  background: linear-gradient(145deg, #20b9a5, #087a75);
+  background: rgb(255 255 255 / 94%);
   box-shadow: 0 14px 30px rgb(0 0 0 / 18%);
-  font-size: 1.45rem;
-  font-weight: 900;
+}
+
+.summary-identity__mark img {
+  width: 72%;
+  height: 72%;
+  object-fit: contain;
 }
 
 .summary-eyebrow,
@@ -383,11 +414,30 @@ watch(
 .operations-panel__intro > span {
   display: block;
   margin-bottom: 5px;
-  color: #4de0ca;
+  color: color-mix(in srgb, var(--summary-primary) 52%, white);
   font-size: 0.68rem;
   font-weight: 900;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+.summary-eyebrow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.summary-eyebrow b {
+  color: white;
+  font: inherit;
+}
+
+.summary-eyebrow i {
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--summary-accent);
 }
 
 .summary-identity h1 {
@@ -412,7 +462,7 @@ watch(
 }
 
 .project-reference {
-  color: #8eeade;
+  color: color-mix(in srgb, var(--summary-primary) 42%, white);
   font-size: 0.76rem;
   font-weight: 850;
   letter-spacing: 0.08em;
@@ -436,7 +486,7 @@ watch(
 
 .full-details-link:hover {
   transform: translateY(-2px);
-  border-color: #69e3d4;
+  border-color: color-mix(in srgb, var(--summary-primary) 56%, white);
   background: rgb(255 255 255 / 18%);
 }
 
