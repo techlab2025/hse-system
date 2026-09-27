@@ -1012,7 +1012,7 @@ const selectedProject = useProjectSelectStore()
             <DataEmpty
               title="You have No Audit"
               description="You have no Audit"
-              :link="`/organization`"
+              :withbtn="false"
             />
           </template>
 
@@ -1020,7 +1020,7 @@ const selectedProject = useProjectSelectStore()
             <DataFailed
               title="You have No Audit"
               description="You have no Audit"
-              :link="`/organization`"
+              :withbtn="false"
             />
           </template>
         </DataStatus>
