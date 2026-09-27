@@ -46,11 +46,12 @@ const equipmentFallback = computed(() =>
   ),
 )
 
+// ${project.value?.observationHazardsCount ?? 0} hazards included
 const safetyStatistics = computed(() => [
   {
     label: 'Observations',
     value: (project.value?.observationsCount ?? 0) + (project.value?.observationHazardsCount ?? 0),
-    note: `${project.value?.observationHazardsCount ?? 0} hazards included`,
+    note: ` `,
     tone: 'teal',
     icon: 'O',
   },

@@ -183,10 +183,10 @@ export default class ShowProjectDetailsModel {
         ? data.meetings.map((el) => ProjectMeetingModel.fromMap(el))
         : [],
       Number(data.observations_count ?? 0),
-      Number(data.observation_hazards_count ?? 0),
-      Number(data.observation_accidents_count ?? 0),
+      Number(data.observation_count ?? 0),
+      Number(data.incident_count ?? 0),
       Number(data.investigation_count ?? 0),
-      Number(data.inspections_count ?? 0),
+      Number(data.inspection_count ?? 0),
       Number(data.equipment_count ?? 0),
       Number(data.assigned_locations_count ?? 0),
       Number(data.assigned_zones_count ?? 0),
