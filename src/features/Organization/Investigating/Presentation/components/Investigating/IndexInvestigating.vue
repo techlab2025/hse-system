@@ -19,7 +19,7 @@ import { formatJoinDate } from '@/base/Presentation/utils/date_format.ts'
 import { formatTime } from '@/base/Presentation/utils/time_format.ts'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
-import ExportReportPdf from '@/features/Organization/TaskReports/Presentation/subComponents/ExportReportPdf.vue'
+import Iso45001PdfExport from '@/shared/HelpersComponents/Iso45001PdfExport.vue'
 import InvestigatingTable from './InvestigatingTable.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 
@@ -219,6 +219,36 @@ const GethighObservationCount = (data: any): number => {
 const GerIncidantCount = (data: any): number => {
   return data.filter((el) => el.observation?.type === Observation.AccidentsType).length
 }
+
+const pdfColumns = [
+  { key: 'number', label: '#', width: 0.4 },
+  { key: 'reference', label: 'Report reference', width: 1.35 },
+  { key: 'title', label: 'Title', width: 1.6 },
+  { key: 'type', label: 'Source type', width: 0.9 },
+  { key: 'project', label: 'Project', width: 1.25 },
+  { key: 'dateTime', label: 'Date & Time', width: 1.15 },
+  { key: 'location', label: 'Location / Zone', width: 1.3 },
+  { key: 'status', label: 'Status', width: 0.85 },
+]
+
+const pdfRows = computed<Array<Record<string, unknown>>>(() =>
+  (state.value.data || []).map((item, index) => ({
+    number: (currentPage.value - 1) * countPerPage.value + index + 1,
+    reference: item?.observation?.serialName || item?.SerialName || `#${item?.Investegationid}`,
+    title: item?.observation?.title || item?.title || '--',
+    type: GetInvestigationType(item?.observation?.type),
+    project: item?.project?.title || item?.observation?.project?.title || '--',
+    dateTime: getDateTime(item?.date, item?.observation?.time) || '--',
+    location:
+      [
+        item?.location?.title || item?.observation?.location?.title,
+        item?.observation?.zoon?.title || item?.zoon?.title,
+      ]
+        .filter(Boolean)
+        .join(' / ') || '--',
+    status: ReturnStatusTitle(item?.status),
+  })),
+)
 // const GetLowObservationCount = (data: any): number => {
 // //   console.log(data.filter((el) => el.observation?.riskLevel === RiskLevelEnum.Low).length, "data.map((el) => el.observation?.riskLevel === RiskLevelEnum.Low).length");
 // //   return data.filter((el) => el.observation?.riskLevel === RiskLevelEnum.Low).length
@@ -247,11 +277,20 @@ const GerIncidantCount = (data: any): number => {
           <div class="flex items-center justify-between mb-4">
             <!-- <IndexFilter :filters="Filters" /> -->
             <div class="btns-filter">
-              <ExportReportPdf
+              <Iso45001PdfExport
                 v-if="state.data?.length"
-                target-selector=".report-board"
-                file-name="investigation-report"
-                :data="state.data"
+                title="Investigation Report"
+                subtitle="Incident and observation investigation control register"
+                file-name="investigation-iso-45001-report"
+                report-code="HSE-INV"
+                :rows="pdfRows"
+                :columns="pdfColumns"
+                :metadata="[
+                  {
+                    label: 'Report scope',
+                    value: isReportTableView ? 'All investigations' : 'Current investigation view',
+                  },
+                ]"
               />
               <!-- <IndexFilterDialog
                 show-date

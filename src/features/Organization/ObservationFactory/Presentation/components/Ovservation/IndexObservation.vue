@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import Image from 'primevue/image'
@@ -23,7 +23,7 @@ import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 import DeleteHazardParams from '../../../Core/params/deleteHazardParams'
 import DeleteHazardController from '../../controllers/deleteHazardController'
 import IndexHazardHeader from '../Hazard/HazardUtils/IndexHazardHeader.vue'
-import ExportReportPdf from '@/features/Organization/TaskReports/Presentation/subComponents/ExportReportPdf.vue'
+import Iso45001PdfExport from '@/shared/HelpersComponents/Iso45001PdfExport.vue'
 import IndexFilter from '../Hazard/HazardUtils/IndexFilter.vue'
 import type MyProjectsModel from '../../../Data/models/MyProjectsModel'
 import FetchMyProjectsParams from '../../../Core/params/fetchMyProjectsParams'
@@ -423,6 +423,32 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
   ReturnStatusTitle(status)
     .replace(/([a-z])([A-Z])/g, '$1-$2')
     .toLowerCase()
+
+const pdfColumns = [
+  { key: 'number', label: '#', width: 0.4 },
+  { key: 'reference', label: 'Reference', width: 1 },
+  { key: 'title', label: 'Observation', width: 1.5 },
+  { key: 'type', label: 'Type / Risk', width: 1.1 },
+  { key: 'observer', label: 'Observer', width: 1.1 },
+  { key: 'project', label: 'Project', width: 1.2 },
+  { key: 'dateTime', label: 'Date & Time', width: 1.1 },
+  { key: 'location', label: 'Location / Zone', width: 1.25 },
+  { key: 'status', label: 'Status', width: 0.9 },
+]
+
+const pdfRows = computed<Array<Record<string, unknown>>>(() =>
+  (state.value.data || []).map((item, index) => ({
+    number: (currentPage.value - 1) * countPerPage.value + index + 1,
+    reference: item.serialName || `#${item.id}`,
+    title: item.typeModel?.title || item.title || item.description || '--',
+    type: `${GetSaveStatus(item.saveStatus) || GetObservationType(item.type) || 'Observation'} · ${GetRiskLevel(item.riskLevel)}`,
+    observer: item.observer?.name || '--',
+    project: item.project?.title || '--',
+    dateTime: [item.date, item.time].filter(Boolean).join(' · ') || '--',
+    location: [item.location?.title, item.zoon?.title].filter(Boolean).join(' / ') || '--',
+    status: ReturnStatusTitle(item.investigationStatus),
+  })),
+)
 </script>
 
 <template>
@@ -461,11 +487,22 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
                   @apply="applyDialogFilters"
                   @reset="resetDialogFilters"
                 />
-                <ExportReportPdf
+                <Iso45001PdfExport
                   v-if="state.data?.length"
-                  target-selector=".report-board"
-                  file-name="observation-report"
-                  :data="state.data"
+                  title="Observation Report"
+                  subtitle="Workplace observation and hazard control register"
+                  file-name="observation-iso-45001-report"
+                  report-code="HSE-OBS"
+                  :rows="pdfRows"
+                  :columns="pdfColumns"
+                  :metadata="[
+                    {
+                      label: 'Project scope',
+                      value:
+                        Projects.find((project) => project.id === selectedProjctesFilters)?.title ||
+                        'All projects',
+                    },
+                  ]"
                 />
                 <PermissionBuilder
                   :code="[

@@ -14,7 +14,7 @@ import Search from '@/shared/icons/Search.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { Observation } from '@/features/Organization/ObservationFactory/Core/Enums/ObservationTypeEnum'
 import ReportFilterDialog from '../subComponents/ReportFilterDialog.vue'
-import ExportReportPdf from '../subComponents/ExportReportPdf.vue'
+import Iso45001PdfExport from '@/shared/HelpersComponents/Iso45001PdfExport.vue'
 import FetchTaskReportParams from '../../Core/params/FetchTaskReportParams'
 import CorrectiveTasksController from '../controllers/CorrectiveTasksController'
 import PreventiveTasksController from '../controllers/PreventiveTasksController'
@@ -404,6 +404,31 @@ const buildRelatedLinks = (task: TaskReportItem): RelatedLink[] => {
   return links
 }
 
+const pdfColumns = [
+  { key: 'number', label: '#', width: 0.45 },
+  { key: 'task', label: t('task'), width: 2.1 },
+  { key: 'status', label: t('task_status'), width: 1 },
+  { key: 'dueDate', label: t('task_due_date'), width: 0.9 },
+  { key: 'responsible', label: t('task_responsible'), width: 1.2 },
+  { key: 'assignedTo', label: t('assigned_to'), width: 1.2 },
+  { key: 'relatedRecords', label: t('lessons_related_records'), width: 1.55 },
+]
+
+const pdfRows = computed<Array<Record<string, unknown>>>(() =>
+  visibleTasks.value.map((task, index) => ({
+    number: getRowNumber(index),
+    task: getTaskTitle(task),
+    status: getTaskStatusLabel(task),
+    dueDate: getDueDate(task),
+    responsible: getResponsiblePerson(task),
+    assignedTo: getAssignedTo(task),
+    relatedRecords:
+      buildRelatedLinks(task)
+        .map((link) => `${link.label}: ${link.text}`)
+        .join(' · ') || 'N/A',
+  })),
+)
+
 watch(
   () => controller.state.value,
   (newState) => {
@@ -462,10 +487,22 @@ onMounted(() => fetchReport())
           {{ $t('Filter') }}
         </button>
 
-        <ExportReportPdf
-          target-selector=".report-board"
-          :file-name="`${props.type}-report`"
-          :data="visibleTasks"
+        <Iso45001PdfExport
+          :title="content.title"
+          :subtitle="content.description"
+          :file-name="`${props.type}-iso-45001-report`"
+          :report-code="props.type === 'corrective' ? 'HSE-CAR' : 'HSE-PAR'"
+          :rows="pdfRows"
+          :columns="pdfColumns"
+          :metadata="[
+            {
+              label: $t('task_status'),
+              value:
+                taskStatusOptions.find(
+                  (option) => option.id === normalizeStatusFilter(selectedStatusFilter),
+                )?.title || $t('all'),
+            },
+          ]"
         />
 
         <label class="report-search">

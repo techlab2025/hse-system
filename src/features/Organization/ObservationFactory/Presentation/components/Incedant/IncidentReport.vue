@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { formatTime } from '@/base/Presentation/utils/time_format'
@@ -10,7 +10,7 @@ import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
-import ExportReportPdf from '@/features/Organization/TaskReports/Presentation/subComponents/ExportReportPdf.vue'
+import Iso45001PdfExport from '@/shared/HelpersComponents/Iso45001PdfExport.vue'
 import Search from '@/shared/icons/Search.vue'
 import IndexHazardController from '../../controllers/indexHazardController'
 import IndexHazardParams from '../../../Core/params/indexHazardParams'
@@ -63,7 +63,8 @@ const getStatusTitle = (status?: number) => {
   }
 }
 
-const getStatusClass = (status?: number) => getStatusTitle(status).toLowerCase().replace(/\s+/g, '-')
+const getStatusClass = (status?: number) =>
+  getStatusTitle(status).toLowerCase().replace(/\s+/g, '-')
 
 const getDateTime = (date?: string, time?: string) => {
   if (!date) return '--'
@@ -88,6 +89,34 @@ const getEquipmentPlate = (equipment: unknown) => {
     ''
   )
 }
+
+const pdfColumns = [
+  { key: 'number', label: '#', width: 0.4 },
+  { key: 'reference', label: 'Reference', width: 1 },
+  { key: 'title', label: 'Incident', width: 1.6 },
+  { key: 'observer', label: 'Observer', width: 1.15 },
+  { key: 'project', label: 'Project', width: 1.25 },
+  { key: 'dateTime', label: 'Date & Time', width: 1.15 },
+  { key: 'location', label: 'Location / Zone', width: 1.35 },
+  { key: 'equipment', label: 'Equipment', width: 1.15 },
+  { key: 'status', label: 'Status', width: 0.85 },
+]
+
+const pdfRows = computed<Array<Record<string, unknown>>>(() =>
+  (state.value.data || []).map((item, index) => ({
+    number: (currentPage.value - 1) * countPerPage.value + index + 1,
+    reference: item.serialName || '--',
+    title: item.title || item.description || '--',
+    observer: item.observer?.name || '--',
+    project: item.project?.title || '--',
+    dateTime: getDateTime(item.updatedAt || item.date, item.time),
+    location: [item.location?.title, item.zoon?.title].filter(Boolean).join(' / ') || '--',
+    equipment:
+      [item.equipment?.title, getEquipmentPlate(item.equipment)].filter(Boolean).join(' · ') ||
+      '--',
+    status: getStatusTitle(item.investigationStatus),
+  })),
+)
 
 watch(
   () => indexHazardController.state.value,
@@ -117,11 +146,15 @@ onMounted(() => fetchIncidents('', 1, countPerPage.value))
           <span>{{ state.pagination?.total || 0 }} {{ $t('incident_report') }}</span>
         </div>
 
-        <ExportReportPdf
+        <Iso45001PdfExport
           v-if="state.data?.length"
-          target-selector=".incident-report-board"
-          file-name="incident-report"
-          orientation="landscape"
+          :title="$t('incident_report')"
+          subtitle="Incident register and investigation status overview"
+          file-name="incident-iso-45001-report"
+          report-code="HSE-INC"
+          :rows="pdfRows"
+          :columns="pdfColumns"
+          :metadata="[{ label: 'Search filter', value: word || 'All incidents' }]"
         />
       </header>
 

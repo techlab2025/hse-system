@@ -13,7 +13,7 @@ import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import Search from '@/shared/icons/Search.vue'
 import ReportFilterDialog from '../subComponents/ReportFilterDialog.vue'
-import ExportReportPdf from '../subComponents/ExportReportPdf.vue'
+import Iso45001PdfExport from '@/shared/HelpersComponents/Iso45001PdfExport.vue'
 import FetchTaskReportParams from '../../Core/params/FetchTaskReportParams'
 import LessonsLearntController from '../controllers/LessonsLearntController'
 
@@ -164,6 +164,36 @@ const getInvestigationLabel = (item: Record<string, any>) =>
   item?.investigation?.serialName ||
   (item?.investigation_id ? `#${item.investigation_id}` : 'N/A')
 
+const plainLesson = (value?: string) =>
+  String(value || '')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/\s+/g, ' ')
+    .trim() || t('lessons_no_details')
+
+const pdfColumns = [
+  { key: 'number', label: '#', width: 0.4 },
+  { key: 'lesson', label: t('lessons_report_title'), width: 3.4 },
+  { key: 'type', label: t('type'), width: 1 },
+  { key: 'date', label: t('date'), width: 1 },
+  { key: 'project', label: t('report_project'), width: 1.35 },
+  { key: 'observation', label: t('report_observation'), width: 1.2 },
+  { key: 'investigation', label: t('report_investigation'), width: 1.2 },
+]
+
+const pdfRows = computed<Array<Record<string, unknown>>>(() =>
+  visibleLessons.value.map((item, index) => ({
+    number: getRowNumber(index),
+    lesson: plainLesson(item.lesson_learnt),
+    type: observationType(Number(item.observation?.type)),
+    date: getLessonDate(item),
+    project: getProjectLabel(item),
+    observation: getObservationLabel(item),
+    investigation: getInvestigationLabel(item),
+  })),
+)
+
 watch(
   () => controller.state.value,
   (newState) => {
@@ -223,14 +253,21 @@ onMounted(() => fetchLessons())
           {{ $t('Filter') }}
         </button>
 
-        <ExportReportPdf
-          :target-selector="'.lessons-board'"
-          file-name="lessons-report"
-          :data="visibleLessons"
-          :columns="[
-            { key: 'lesson_learnt', label: $t('lessons_report_title') },
-            { key: 'project.serial_name', label: $t('report_project') },
-            { key: 'observation.serialName', label: $t('report_observation') },
+        <Iso45001PdfExport
+          :title="$t('lessons_report_title')"
+          :subtitle="$t('lessons_report_description')"
+          file-name="lessons-learnt-iso-45001-report"
+          report-code="HSE-LLR"
+          :rows="pdfRows"
+          :columns="pdfColumns"
+          :metadata="[
+            {
+              label: $t('date'),
+              value:
+                selectedFromDate || selectedToDate
+                  ? `${selectedFromDate || 'Start'} — ${selectedToDate || 'Present'}`
+                  : $t('all'),
+            },
           ]"
         />
 
