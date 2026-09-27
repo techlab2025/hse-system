@@ -177,9 +177,9 @@ const setManagement = (data: TitleInterface | null) => {
   if (!data) {
     selectedTopicType.value = null
     topicType.value = MangementChangeTopicTypeEnum.employee
-    Selectedemployee.value = null
+    Selectedemployeeid.value = null
     Selectedequipment.value = null
-    approvalBy.value = null
+    employeeId.value = null
     equipmentId.value = null
     topicText.value = ''
     return
@@ -191,9 +191,9 @@ const setManagement = (data: TitleInterface | null) => {
       : null
   topicType.value =
     selectedTopicType.value as MangementChangeTopicTypeEnum
-  Selectedemployee.value = null
+  Selectedemployeeid.value = null
   Selectedequipment.value = null
-  approvalBy.value = null
+  employeeId.value = null
   equipmentId.value = null
   topicText.value = ''
 }
@@ -550,7 +550,7 @@ onMounted(updateData)
           required
           @update:model-value="setApprovalBy"
         />
-        {{ Selectedemployee?.id }} - {{ Selectedemployee?.title}}
+     
         <p v-if="requiredFieldErrors.approvalBy" class="required-field-message">
           {{ requiredFieldErrors.approvalBy }}
         </p>
@@ -624,7 +624,7 @@ onMounted(updateData)
           required
           @update:model-value="setEmployee"
         />
-        {{ Selectedemployeeid?.id }} - {{ Selectedemployeeid?.title}}
+       
         <p v-if="requiredFieldErrors.topicEmployee" class="required-field-message">
           {{ requiredFieldErrors.topicEmployee }}
         </p>

@@ -30,7 +30,7 @@ interface Props {
 
   placeholder?: string
 
-  controller?: SelectControllerInterface<any>
+  controller?: SelectControllerInterface<unknown>
   params?: Params
 
   type?: ComponentType | number
@@ -126,7 +126,7 @@ const mergedOptions = computed<TitleInterface[]>(() => {
    * A filtered endpoint may intentionally omit already-assigned records. Keep
    * the current value in the options so PrimeVue can still render its label.
    */
-  return [...selectedOptions, ...availableOptions].filter((option) => {
+  return [...availableOptions, ...selectedOptions].filter((option) => {
     const key = getOptionKey(option)
 
     if (!key) return true
@@ -642,7 +642,7 @@ interface Props {
 
   placeholder?: string
 
-  controller?: SelectControllerInterface<any>
+  controller?: SelectControllerInterface<unknown>
   params?: Params
 
   type?: ComponentType | number
@@ -751,7 +751,7 @@ const mergedOptions = computed<TitleInterface[]>(() => {
    * A filtered endpoint may intentionally omit already-assigned records.
    * Keep the current value in the options so PrimeVue can still render its label.
    */
-  return [...selectedOptions, ...availableOptions].filter((option) => {
+  return [...availableOptions, ...selectedOptions].filter((option) => {
     const key = getOptionKey(option)
 
     if (!key) return true
