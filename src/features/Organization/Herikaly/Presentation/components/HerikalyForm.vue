@@ -16,6 +16,9 @@ import IndexCertificateController from '@/features/setting/Certificate/Presentat
 import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import IndexHerikalyController from '../controllers/indexHerikalyController'
+import IndexHerikalyParams from '../../Core/params/indexHerikalyParams'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -133,6 +136,7 @@ onMounted(async () => {
 
 const updateData = () => {
   const translationsParams = new TranslationsParams()
+  console.log(SelectedDepartment.value?.id, 'SelectedDepartment')
 
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
@@ -142,13 +146,13 @@ const updateData = () => {
     ? new EditHerikalyParams(
         props?.data?.id,
         translationsParams,
-        ParentId,
+        ParentId || SelectedDepartment.value?.id!,
         Certificate.value.map((item) => item.id),
       )
     : new AddHerikalyParams(
         translationsParams,
         Certificate.value.map((item) => item.id),
-        ParentId,
+        ParentId || SelectedDepartment?.value?.id!,
       )
 
   emit('update:data', params)
@@ -168,7 +172,6 @@ watch(
           const existing = newData.titles.find((t) => t.locale === l.locale)
           return existing ? existing : { locale: l.locale, title: '' }
         })
-
       } else {
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
@@ -252,9 +255,33 @@ const validateRequiredFields = async () => {
 defineExpose({
   validateRequiredFields,
 })
+
+const indexHerikalyController = IndexHerikalyController.getInstance()
+const HerikalyParams = new IndexHerikalyParams('', 1, 10, 0, true, null)
+const SelectedDepartment = ref<TitleInterface>()
+
+const updatedDepartment = (data: TitleInterface) => {
+  SelectedDepartment.value = data
+  console
+  updateData()
+}
 </script>
 
 <template>
+  <div class="col-span-4 md:col-span-2" v-if="!route.path.includes('/herikaly/add')">
+    <div class="input-wrapper">
+      <UpdatedCustomInputSelect
+        :modelValue="SelectedDepartment"
+        :params="HerikalyParams"
+        :controller="indexHerikalyController"
+        class="input"
+        :label="$t('Depratments')"
+        id="herikaly"
+        :placeholder="$t('Select Depratments')"
+        @update:modelValue="updatedDepartment"
+      />
+    </div>
+  </div>
   <div class="col-span-4 md:col-span-2" data-required-field="langs">
     <LangTitleInput
       type="text"
@@ -267,6 +294,7 @@ defineExpose({
       {{ getFieldError('langs') }}
     </p>
   </div>
+
   <div class="col-span-4" data-required-field="Certificate">
     <div class="training-selector">
       <div class="training-selector-header">
@@ -426,7 +454,9 @@ defineExpose({
   color: var(--text-strong, #172554);
   background: var(--surface-2, #f8faff);
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .training-search input:focus {
@@ -471,7 +501,10 @@ defineExpose({
   border-radius: 12px;
   background: var(--surface-1, #fff);
   cursor: pointer;
-  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .training-option:hover {
