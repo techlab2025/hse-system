@@ -679,6 +679,26 @@ class ApiNames {
     return this.prefix + 'disable_certificate'
   }
 
+  // Organization Certificate
+  public get CreateOrganizationCertificate() {
+    return this.prefix + 'create_certificate'
+  }
+  public get IndexOrganizationCertificate() {
+    return this.prefix + 'fetch_certificates'
+  }
+  public get ShowOrganizationCertificate() {
+    return this.prefix + 'fetch_certificate_details'
+  }
+  public get EditOrganizationCertificate() {
+    return this.prefix + 'update_certificate'
+  }
+  public get DeleteOrganizationCertificate() {
+    return this.prefix + 'delete_certificate'
+  }
+  public get DisOrganizationCertificate() {
+    return this.prefix + 'disable_certificate'
+  }
+
   // Category
   public get CreateCategory() {
     return this.prefix + 'create_category'

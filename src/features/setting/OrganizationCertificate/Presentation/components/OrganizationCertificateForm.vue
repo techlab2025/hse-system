@@ -1,0 +1,513 @@
+<script lang="ts" setup>
+import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
+import TitleInterface from '@/base/Data/Models/title_interface'
+import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
+
+import USA from '@/shared/icons/USA.vue'
+import SA from '@/shared/icons/SA.vue'
+import TranslationsParams from '@/base/core/params/translations_params.ts'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
+import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
+import { LangsMap } from '@/constant/langs.ts'
+import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
+import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
+import { useRoute } from 'vue-router'
+import { filesToBase64, type FileBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
+import type OrganizationCertificateDetailsModel from '../../Data/models/OrganizationCertificateDetailsModel'
+import EditOrganizationCertificateParams from '../../Core/params/editOrganizationCertificateParams'
+import AddOrganizationCertificateParams from '../../Core/params/addOrganizationCertificateParams'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
+import { OrganizationCertificateTypeEnum } from '../../Core/Enums/OrganizationCertificateTypeEnum'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
+
+const emit = defineEmits(['update:data'])
+
+const props = defineProps<{
+  data?: OrganizationCertificateDetailsModel
+}>()
+
+const route = useRoute()
+const id = route.params.parent_id
+
+function isBase64(str: any): boolean {
+  if (typeof str !== 'string') return false
+
+  // remove base64 prefix if exists
+  const base64 = str.includes('base64,') ? str.split('base64,')[1] : str
+
+  const base64Regex = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/
+
+  return base64Regex.test(base64)
+}
+// ---------- State ----------
+const langs = ref<
+  {
+    locale: string
+    icon?: any
+    title: string
+  }[]
+>([])
+
+const langsDescription = ref<
+  {
+    locale: string
+    icon?: any
+    description: string
+  }[]
+>([])
+
+const allIndustries = ref<number>(0)
+const industry = ref<TitleInterface[]>([])
+const image = ref<string>('')
+
+// industry controller
+const industryParams = new IndexIndustryParams('', 0, 10, 1)
+const industryController = IndexIndustryController.getInstance()
+
+// default available langs from backend
+const langDefault = ref<
+  {
+    locale: string
+    icon?: any
+    title: string
+  }[]
+>([])
+const langDefaultDescription = ref<
+  {
+    locale: string
+    icon?: any
+    title: string
+  }[]
+>([])
+
+const user = useUserStore()
+// ---------- Fetch available languages ----------
+const fetchLang = async (
+  query: string = '',
+  pageNumber: number = 1,
+  perPage: number = 10,
+  withPage: number = 0,
+) => {
+  if (user?.user?.languages.length) {
+    langDefault.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+
+    langDefaultDescription.value = user?.user?.languages.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+    return
+  }
+  const params = new IndexLangParams(query, pageNumber, perPage, withPage)
+  const indexOrganizationCertificateController = await IndexLangController.getInstance().getData(params)
+
+  const response = indexOrganizationCertificateController.value
+
+  if (response?.data?.length) {
+    langDefault.value = response.data.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+
+    langDefaultDescription.value = response.data.map((item: any) => ({
+      locale: item.code,
+      title: '',
+      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
+    }))
+  } else {
+    langDefault.value = [
+      { locale: 'en', icon: USA, title: '' },
+      { locale: 'ar', icon: SA, title: '' },
+    ]
+    langDefaultDescription.value = [
+      { locale: 'en', icon: USA, title: '' },
+      { locale: 'ar', icon: SA, title: '' },
+    ]
+  }
+}
+
+onMounted(async () => {
+  await fetchLang()
+})
+
+// ---------- Emit update ----------
+const updateData = () => {
+  const translationsParams = new TranslationsParams()
+
+  // titles
+  langs.value.forEach((lang) => {
+    translationsParams.setTranslation('title', lang.locale, lang.title)
+  })
+
+  // descriptions
+  langsDescription.value.forEach((lang) => {
+    translationsParams.setTranslation('description', lang.locale, lang.description)
+  })
+
+  const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
+
+  // console.log(isBase64(image.value), "isBase64(image.value)");
+  console.log(expiredate.value, 'expiredate.value')
+  const params = props.data?.id
+    ? new EditOrganizationCertificateParams(
+        props.data.id,
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id),
+        ImageCahnge.value ? isBase64(image.value) ? image.value : ' ' : isBase64(image.value) && image.value.length > 0 ? image.value : '*',
+        isBase64(image.value) && image.value.length > 0 ? image.value : null,
+        ImageCahnge.value && isBase64(image.value) && image.value.length > 0 ? image.value :
+        firstImage.value == image.value ? isBase64(firstImage.value) ? firstImage.value : '*' : image.value,
+        ImageCahnge.value && isBase64(image.value) && image.value.length > 0
+          ? image.value
+          : firstImage.value == image.value
+            ? null
+            : '*',
+        undefined,
+        expiredate.value,
+        certificateType.value.id,
+        requireCertificate.value,
+      )
+    : new AddOrganizationCertificateParams(
+        translationsParams,
+        AllIndustry,
+        industry.value?.map((item) => item.id),
+        isBase64(image.value) && image.value.length > 0 ? image.value : null,
+        expiredate.value,
+        certificateType.value.id,
+        requireCertificate.value,
+      )
+
+  console.log(params, 'params')
+
+  emit('update:data', params)
+}
+const firstImage = ref('')
+// ---------- Watchers ----------
+// Init from props (edit mode) or defaults (create mode)
+watch(
+  [() => props.data, () => langDefault.value, () => langDefaultDescription.value],
+  ([newData, newDefault, newDefaultDesc]) => {
+    // console.log(newData, 'newData');
+
+    if (newDefault.length) {
+      // titles
+
+      langs.value = newData?.titles?.length
+        ? newDefault.map((l) => {
+            const existing = newData.titles.find((t) => t.locale === l.locale)
+            return existing ?? { locale: l.locale, title: '' }
+          })
+        : newDefault.map((l) => ({ locale: l.locale, title: '' }))
+
+      // descriptions
+      langsDescription.value = newData?.descriptions?.length
+        ? newDefaultDesc.map((l) => {
+            const existing = newData.descriptions.find((t) => t.locale === l.locale)
+            return existing ?? { locale: l.locale, description: '' }
+          })
+        : newDefaultDesc.map((l) => ({ locale: l.locale, description: '' }))
+
+      allIndustries.value = newData?.allIndustries ?? 0
+      industry.value =
+        newData?.industries?.map(
+          (item) =>
+            new TitleInterface({
+              id: item.id,
+              title: item.title,
+              subtitle: item.subtitle,
+            }),
+        ) ?? []
+      image.value = newData?.image ? newData?.image : ''
+      firstImage.value = newData?.image ? newData?.image : ''
+      expiredate.value = newData?.requireExpiredDate ?? false
+      certificateType.value =
+        certificateTypes.value.find(
+          (type) => type.id === newData?.certificateType?.id,
+        ) ?? certificateTypes.value[0]
+      requireCertificate.value = newData?.requireCertificate ?? false
+    }
+  },
+  { immediate: true },
+)
+
+watch(
+  () => image.value,
+  (newValue) => {
+    if (newValue == props?.data?.image) {
+      ImageCahnge.value = false
+    } else {
+      ImageCahnge.value = true
+    }
+  },
+)
+
+// Auto-update emit whenever key data changes
+watch(
+  [langs, langsDescription, industry, allIndustries, image],
+  () => {
+    updateData()
+  },
+  { deep: true },
+)
+
+// ---------- Helpers ----------
+const ImageCahnge = ref(false)
+const getFileBase64Value = async (file: File) => {
+  const result = (await filesToBase64(file)) as FileBase64 | FileBase64[]
+  return Array.isArray(result) ? (result[0]?.file ?? '') : result.file
+}
+
+const setImage = async (data: File | string) => {
+  if (image.value == props?.data?.image) {
+    ImageCahnge.value = false
+  } else {
+    ImageCahnge.value = true
+  }
+  image.value = typeof data === 'string' ? data : await getFileBase64Value(data)
+  updateData()
+}
+
+const UpdateSerial = (data: unknown) => {
+  SerialNumber.value = data
+  updateData()
+}
+
+const SerialNumber = ref()
+
+const fields = ref([
+  {
+    key: 'SerialNumber',
+    label: 'serial_number',
+    placeholder: 'You can leave it (auto-generated)',
+    value: SerialNumber.value,
+    enabled: props?.data?.id ? false : true,
+  },
+])
+
+const expiredate = ref<boolean>(false)
+const updateExpireDate = (data: boolean) => {
+  expiredate.value = data
+  console.log(expiredate.value, 'expiredate')
+  updateData()
+}
+
+const requireCertificate = ref<boolean>(false)
+const updateRequireCertificate = (data: boolean) => {
+  requireCertificate.value = data
+  updateData()
+}
+
+const certificateTypes = ref<TitleInterface[]>([
+  new TitleInterface({
+    id: OrganizationCertificateTypeEnum.SCALE,
+    title: 'skill',
+  }),
+  new TitleInterface({
+    id: OrganizationCertificateTypeEnum.AWARENESS,
+    title: 'awareness',
+  }),
+  new TitleInterface({
+    id: OrganizationCertificateTypeEnum.KNOWLEDGE,
+    title: 'knowledge',
+  }),
+])
+const certificateType = ref<TitleInterface>(
+  certificateTypes.value[0],
+)
+const updateOrganizationCertificateType = (data: TitleInterface) => {
+  certificateType.value = data
+  console.log(certificateType.value, 'certificateType')
+  updateData()
+}
+
+type RequiredFieldRule = {
+  key: string
+  message: string
+  isMissing: () => boolean
+}
+
+const requiredFieldErrors = ref<Record<string, string>>({})
+const hasValue = (value: unknown) =>
+  value !== null && value !== undefined && String(value).trim().length > 0
+const hasLangValue = () => langs.value.some((lang) => hasValue(lang.title))
+const updateLangs = (value: { locale: string; title?: string }[]) => {
+  langs.value = value.map((item) => ({
+    ...item,
+    title: item.title ?? '',
+  }))
+}
+
+const requiredFields = computed<RequiredFieldRule[]>(() => [
+  {
+    key: 'langs',
+    message: 'Name Is Required',
+    isMissing: () => !hasLangValue(),
+  },
+  {
+    key: 'industry',
+    message: 'Industry Is Required',
+    isMissing: () =>
+      user.user?.type === OrganizationTypeEnum.ADMIN &&
+      !allIndustries.value &&
+      !industry.value?.length,
+  },
+])
+
+const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
+
+const clearResolvedRequiredErrors = () => {
+  requiredFields.value.forEach((field) => {
+    if (requiredFieldErrors.value[field.key] && !field.isMissing()) {
+      const { [field.key]: _removed, ...rest } = requiredFieldErrors.value
+      requiredFieldErrors.value = rest
+    }
+  })
+}
+
+const scrollToRequiredField = async (key: string) => {
+  await nextTick()
+  document.querySelector<HTMLElement>(`[data-required-field="${key}"]`)?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+  })
+}
+
+const validateRequiredFields = async () => {
+  clearResolvedRequiredErrors()
+  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
+    errors[field.key] = field.message
+    return errors
+  }, {})
+
+  if (!missedFields.length) return true
+
+  new OpenWarningDilaog(missedFields[0].message).openDialog()
+  await scrollToRequiredField(missedFields[0].key)
+  return false
+}
+
+defineExpose({
+  validateRequiredFields,
+})
+</script>
+
+<template>
+  <div class="col-span-4 md:col-span-2" data-required-field="langs">
+    <LangTitleInput
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="updateLangs"
+      :required="true"
+      :label="`organization_certificate_title`"
+      :placeholder="$t('organization_certificate_title')"
+    />
+    <p v-if="getFieldError('langs')" class="required-field-message">
+      {{ getFieldError('langs') }}
+    </p>
+  </div>
+
+  <!-- <div class="input-wrapper col-span-4">
+    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
+      @update:value="UpdateSerial" />
+  </div> -->
+
+  <div class="input-wrapper col-span-2 mt-6">
+    <CustomCheckbox
+      :index="1"
+      :title="`has_expire_date`"
+      :checked="expiredate"
+      @update:checked="updateExpireDate"
+    />
+  </div>
+
+
+  <!-- <div class="col-span-4 md:col-span-2">
+    <CustomSelectInput
+      :modelValue="certificateType"
+      :static-options="certificateTypes"
+      :label="$t('organization_certificate_type')"
+      id="certificate_type"
+      :placeholder="$t('select_organization_certificate_type')"
+      @update:modelValue="updateOrganizationCertificateType"
+    />
+  </div> -->
+
+  <div class="input-wrapper col-span-2 mt-6">
+    <CustomCheckbox
+      :index="2"
+      :title="`has_require_data`"
+      :checked="requireCertificate"
+      @update:checked="updateRequireCertificate"
+    />
+  </div>
+  <!-- <div class="col-span-4 md:col-span-4">
+    <LangTitleInput
+      :label="$t('description')"
+      :langs="langDefaultDescription"
+      :modelValue="langsDescription"
+      field-type="description"
+      @update:modelValue="(val) => (langsDescription = val)"
+      type="textarea"
+      :required="false"
+    />
+  </div> -->
+
+  <div
+    class="col-span-4 md:col-span-2 input-wrapper check-box"
+    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
+  >
+    <label>{{ $t('all_industries') }}</label>
+    <input type="checkbox" :value="1" v-model="allIndustries" :checked="allIndustries == 1" />
+  </div>
+
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
+    data-required-field="industry"
+  >
+    <CustomSelectInput
+      :modelValue="industry"
+      :controller="industryController"
+      :params="industryParams"
+      :label="$t('all_industries')"
+      id="all_industries"
+      placeholder="Select industry"
+      :type="2"
+      @update:modelValue="(val) => (industry = val)"
+    />
+    <p v-if="getFieldError('industry')" class="required-field-message">
+      {{ getFieldError('industry') }}
+    </p>
+  </div>
+
+  <div class="col-span-4 md:col-span-4">
+    <SingleFileUpload
+      :returnType="`base64`"
+      v-model="image"
+      @update:modelValue="setImage"
+      label="Image"
+      id="image"
+      placeholder="Select image"
+    />
+  </div>
+</template>
+
+<style scoped>
+.required-field-message {
+  margin-top: 0.35rem;
+  color: var(--status-danger);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+</style>
