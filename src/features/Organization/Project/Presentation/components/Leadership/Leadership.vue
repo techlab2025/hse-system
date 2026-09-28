@@ -430,7 +430,7 @@ onMounted(async () => {
                                 <circle cx="12" cy="10" r="2.5" />
                               </svg>
                             </span>
-                            <span>Location <b>*</b></span>
+                            <span>Visit Location  <b>*</b></span>
                           </label>
                           <input
                             :id="`visit-location-${month.key}-${index}`"

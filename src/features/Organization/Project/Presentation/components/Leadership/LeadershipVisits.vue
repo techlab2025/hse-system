@@ -110,9 +110,9 @@ onMounted(async () => {
             <table class="main-table">
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Location</th>
-                  <th>Employee</th>
+                  <th>Visit Date</th>
+                  <th>Visit Location</th>
+                  <th>Visiting Managers</th>
                   <th>Activity</th>
                   <!-- <th>Status</th> -->
                   <th>Action</th>
