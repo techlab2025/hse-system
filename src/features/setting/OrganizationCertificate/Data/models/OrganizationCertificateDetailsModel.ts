@@ -6,6 +6,7 @@ import TranslationsParams, {
 // import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import TitleModel from '@/base/Data/Models/title_model.ts'
 import TitleInterface from '@/base/Data/Models/title_interface.ts'
+import type { CertificateTypeEnum } from '../../Core/Enums/CertificateTypeEnum'
 // import { LangEnum } from '../../Core/enums/langEnum'
 
 export default class OrganizationCertificateDetailsModel {
@@ -20,6 +21,7 @@ export default class OrganizationCertificateDetailsModel {
   public requireExpiredDate: boolean
   public certificateType: TitleInterface
   public hasrequiredata: boolean
+  public type: CertificateTypeEnum
 
   constructor(
     id: number,
@@ -33,6 +35,7 @@ export default class OrganizationCertificateDetailsModel {
     requireExpiredDate: boolean,
     certificateType: TitleInterface,
     hasrequiredata: boolean,
+    type: CertificateTypeEnum,
   ) {
     this.id = id
     this.titles = titles
@@ -45,6 +48,7 @@ export default class OrganizationCertificateDetailsModel {
     this.requireExpiredDate = requireExpiredDate
     this.certificateType = certificateType
     this.hasrequiredata = hasrequiredata
+    this.type = type
   }
 
   static fromMap(data: any): OrganizationCertificateDetailsModel {
@@ -62,6 +66,7 @@ export default class OrganizationCertificateDetailsModel {
       data.require_expired_date,
       this.getTitle(data.certificate_type),
       this.toBoolean(data.hasrequiredata ?? data.has_require_data ?? data.require_certificate),
+      data.type,
     )
   }
 

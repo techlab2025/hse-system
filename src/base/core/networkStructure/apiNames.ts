@@ -684,7 +684,7 @@ class ApiNames {
     return this.prefix + 'create_certificate'
   }
   public get IndexOrganizationCertificate() {
-    return this.prefix + 'fetch_certificates'
+    return this.prefix + 'fetch_organization_certificate'
   }
   public get ShowOrganizationCertificate() {
     return this.prefix + 'fetch_certificate_details'

@@ -21,6 +21,7 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import { OrganizationCertificateTypeEnum } from '../../Core/Enums/OrganizationCertificateTypeEnum'
+import { CertificateTypeEnum } from '../../Core/Enums/CertificateTypeEnum'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
 
@@ -174,6 +175,7 @@ const updateData = () => {
         expiredate.value,
         certificateType.value.id,
         hasrequiredata.value,
+        CertificateTypeEnum.CERTIFICATE,
       )
     : new AddOrganizationCertificateParams(
         translationsParams,
@@ -183,6 +185,7 @@ const updateData = () => {
         expiredate.value,
         certificateType.value.id,
         hasrequiredata.value,
+        CertificateTypeEnum.CERTIFICATE,
       )
 
   console.log(params, 'params')

@@ -14,6 +14,7 @@ import AddOrganizationCertificateExcelParams from '../../Core/params/addOrganiza
 import AddOrganizationCertificateController from '../controllers/addOrganizationCertificateController'
 import OrganizationCertificateDetailsModel from '../../Data/models/OrganizationCertificateDetailsModel'
 import { OrganizationCertificateTypeEnum } from '../../Core/Enums/OrganizationCertificateTypeEnum'
+import { CertificateTypeEnum } from '../../Core/Enums/CertificateTypeEnum'
 
 interface ExtractedImage {
   name: string
@@ -224,6 +225,7 @@ const submitOrganizationCertificateUpload = async () => {
     obj.certificate_type = getOrganizationCertificateTypeValue(obj.certificate_type)
     obj.require_expired_date = getBooleanValue(obj.require_expired_date)
     obj.hasrequiredata = getBooleanValue(obj.hasrequiredata)
+    obj.type = CertificateTypeEnum.CERTIFICATE
 
     return obj
   })

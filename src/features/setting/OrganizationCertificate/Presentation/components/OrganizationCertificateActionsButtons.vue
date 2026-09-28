@@ -49,24 +49,24 @@ const onFileSelected = (e: Event) => {
 const DownloadExample = () => {
   const worksheetData = [
     {
-      'Organization Certificate Title': 'NEBOSH',
-      'Organization Certificate Type': 'Skill',
+      'Certificate Title': 'NEBOSH',
+      'Certificate Type': 'Skill',
       require_expired_date: 'Yes',
       'Has Required Data': 'Yes',
     },
     {
-      'Organization Certificate Title': 'OSHA',
-      'Organization Certificate Type': 'Awareness',
+      'Certificate Title': 'OSHA',
+      'Certificate Type': 'Awareness',
       require_expired_date: 'Yes',
       'Has Required Data': 'No',
     },
   ]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Organization Certificate')
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Certificate')
   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
   const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
-  saveAs(blob, 'organization_certificate_form.xlsx')
+  saveAs(blob, 'certificate_form.xlsx')
 }
 
 const actionList = () => [

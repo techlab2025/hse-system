@@ -205,8 +205,8 @@ const exportExcel = () => {
   const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
     const it = item as any
     return {
-      'Organization Certificate Title': it.title || 'N/A',
-      'Organization Certificate Type': getOrganizationCertificateTypeLabel(it.certificateType),
+      'Certificate Title': it.title || 'N/A',
+      'Certificate Type': getOrganizationCertificateTypeLabel(it.certificateType),
       'Require Expired Date': it.requireExpiredDate ? 'Yes' : 'No',
       'Has Required Data': it.hasrequiredata ? 'Yes' : 'No',
       Image: '*',
@@ -214,33 +214,33 @@ const exportExcel = () => {
   })
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Organization Certificate')
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Certificate')
   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
   const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
-  saveAs(data, 'organization_certificate.xlsx')
+  saveAs(data, 'certificate.xlsx')
 }
 
 const DownloadExample = () => {
   const worksheetData = [
     {
-      'Organization Certificate Title': 'NEBOSH',
-      'Organization Certificate Type': 'Skill',
+      'Certificate Title': 'NEBOSH',
+      'Certificate Type': 'Skill',
       require_expired_date: 'Yes',
       'Has Required Data': 'Yes',
     },
     {
-      'Organization Certificate Title': 'OSHA',
-      'Organization Certificate Type': 'Awareness',
+      'Certificate Title': 'OSHA',
+      'Certificate Type': 'Awareness',
       require_expired_date: 'Yes',
       'Has Required Data': 'No',
     },
   ]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'Organization Certificate')
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Certificate')
   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
   const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
-  saveAs(blob, 'organization_certificate_form.xlsx')
+  saveAs(blob, 'certificate_form.xlsx')
 }
 
 const organizationCertificateActionList = () => [
@@ -276,7 +276,7 @@ const organizationCertificateActionList = () => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4  certificate_index">
     <div class="input-search col-span-1">
       <span class="icon-remove" @click="((word = ''), searchOrganizationCertificate())">
         <Search />
@@ -312,7 +312,7 @@ const organizationCertificateActionList = () => [
         <span class="download-title">Excel Sheet</span>
       </a> -->
       <ActionsList
-        feature-name="action_feature_organization_certificate"
+        feature-name="action_feature_certificate"
         :show-actions="true"
         :actionList="organizationCertificateActionList()"
         :actionsNumber="5"
@@ -465,3 +465,10 @@ const organizationCertificateActionList = () => [
     @change="onFileSelected"
   />
 </template>
+
+<style scoped>
+/* .certificate_index{
+  align-items: center;
+  
+} */
+</style>

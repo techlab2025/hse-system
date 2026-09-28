@@ -1,5 +1,6 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import TitleModel from '@/base/Data/Models/title_model.ts'
+import type { CertificateTypeEnum } from '../../Core/Enums/CertificateTypeEnum'
 // import ClientCategoryModel from "@/features/dashboard/settings/clientCategory/Data/models/index_client_category_model";
 
 export default class OrganizationCertificateModel extends TitleInterface {
@@ -15,6 +16,7 @@ export default class OrganizationCertificateModel extends TitleInterface {
   public certificateType: number
   public hasrequiredata: boolean
   public createdAt: string
+  public type: CertificateTypeEnum
 
   constructor(
     id: number,
@@ -31,6 +33,7 @@ export default class OrganizationCertificateModel extends TitleInterface {
     certificateType: number,
     hasrequiredata: boolean,
     createdAt: string,
+    type: CertificateTypeEnum,
   ) {
     super({ id, title, subtitle })
 
@@ -46,6 +49,7 @@ export default class OrganizationCertificateModel extends TitleInterface {
     this.certificateType = certificateType
     this.hasrequiredata = hasrequiredata
     this.createdAt = createdAt
+    this.type = type
   }
 
   static fromMap(data: any): OrganizationCertificateModel {
@@ -66,6 +70,7 @@ export default class OrganizationCertificateModel extends TitleInterface {
       Number(data.certificate_type?.id ?? data.certificate_type ?? 0),
       this.toBoolean(data.hasrequiredata ?? data.has_require_data ?? data.require_certificate),
       data.created_at,
+      data.type,
     )
   }
 
