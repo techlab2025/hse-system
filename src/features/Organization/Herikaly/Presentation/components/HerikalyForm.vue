@@ -262,7 +262,6 @@ const SelectedDepartment = ref<TitleInterface>()
 
 const updatedDepartment = (data: TitleInterface) => {
   SelectedDepartment.value = data
-  console
   updateData()
 }
 </script>

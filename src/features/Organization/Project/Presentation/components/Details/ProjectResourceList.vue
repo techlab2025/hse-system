@@ -22,6 +22,9 @@ import FetchDrillPlansParams from '../../../Core/params/Drill/FetchDrillPlansPar
 import FetchDrillPlansController from '../../controllers/Drill/FetchDrillPlansController'
 import DrillDetailsDialog from '../Dialogs/Drill/DrillDetailsDialog.vue'
 import MeetingResultDialog from './ProjectMeeting/MeetingResultDialog.vue'
+import Pagination from '@/shared/HelpersComponents/Pagination.vue'
+import FetchDrillsController from '../../controllers/Drill/FetchDrillsController'
+import FetchDrillsParams from '../../../Core/params/Drill/FetchDrillsParams'
 
 type ResourceKey =
   | 'locations'
@@ -57,9 +60,13 @@ const router = useRouter()
 const customLocationController = ProjectCustomLocationController.getInstance()
 const detailsController = ShowProjectDetailsController.getInstance()
 const meetingsController = FetchProjectMeetingsController.getInstance()
+const drillsController = FetchDrillsController.getInstance()
 const customState = ref(customLocationController.state.value)
 const detailsState = detailsController.state
 const meetingsState = meetingsController.state
+const drillsState = drillsController.state
+const currentPage = ref(1)
+const countPerPage = ref(10)
 const isLoading = ref(false)
 const errorMessage = ref('')
 const showAddOptions = ref(false)
@@ -134,6 +141,9 @@ const resourceDefinitions: Record<
 }
 
 const definition = computed(() => resourceDefinitions[resource.value])
+const state = computed(() =>
+  resource.value === 'drills' ? drillsState.value : meetingsState.value,
+)
 const locations = computed<ProjectCustomLocationModel[]>(() => customState.value.data ?? [])
 const zones = computed(() => locations.value.flatMap((location) => location.locationZones ?? []))
 const hasScopedAddAction = computed(() =>
@@ -154,16 +164,14 @@ const workflowAction = computed(() => {
   }
   return null
 })
-const addActionLabel = computed(
-  () =>
-    ({
-      zones: 'Add zone',
-      equipment: 'Add equipment',
-      employees: 'Add employee',
-      teams: 'Add team',
-      hierarchies: 'Add position',
-    })[resource.value] ?? 'Add',
-)
+const addActionLabels: Partial<Record<ResourceKey, string>> = {
+  zones: 'Add zone',
+  equipment: 'Add equipment',
+  employees: 'Add employee',
+  teams: 'Add team',
+  hierarchies: 'Add position',
+}
+const addActionLabel = computed(() => addActionLabels[resource.value] ?? 'Add')
 
 const locationId = (location: ProjectCustomLocationModel) => Number(location.id)
 
@@ -189,7 +197,7 @@ const resourceItems = computed<ResourceItem[]>(() => {
   }
 
   if (resource.value === 'drills') {
-    return (detailsState.value.data?.drills ?? []).map((drill, index) => ({
+    return (drillsState.value.data ?? []).map((drill, index) => ({
       key: `drill-${drill.id || index}`,
       title: drill.drillType?.title || `Emergency drill ${index + 1}`,
       subtitle: drill.serialNumber || 'Emergency preparedness drill',
@@ -317,6 +325,12 @@ const resourceItems = computed<ResourceItem[]>(() => {
   )
 })
 
+const resourceTotal = computed(() =>
+  resource.value === 'drills' || resource.value === 'meetings'
+    ? (state.value.pagination?.total ?? resourceItems.value.length)
+    : resourceItems.value.length,
+)
+
 const isActionableItem = (item: ResourceItem) =>
   Boolean(item.employeeId || item.equipmentId || item.drill || item.meeting)
 
@@ -376,7 +390,11 @@ const fetchResource = async () => {
       customState.value = customLocationController.state.value
     } else if (resource.value === 'meetings') {
       await meetingsController.fetchMeetings(
-        new FetchProjectMeetingsParams(projectId.value, 1, 100, 0),
+        new FetchProjectMeetingsParams(projectId.value, currentPage.value, countPerPage.value, 1),
+      )
+    } else if (resource.value === 'drills') {
+      await drillsController.fetchDrills(
+        new FetchDrillsParams(projectId.value, currentPage.value, countPerPage.value, 1),
       )
     } else {
       await detailsController.showProjectDetails(new ShowProjectDetailsParams(projectId.value))
@@ -388,9 +406,23 @@ const fetchResource = async () => {
   }
 }
 
+const handleChangePage = (page: number) => {
+  currentPage.value = page
+  fetchResource()
+}
+
+const handleCountPerPage = (count: number) => {
+  countPerPage.value = count
+  currentPage.value = 1
+  fetchResource()
+}
+
 watch(
   () => [route.params.id, route.params.resource],
-  () => fetchResource(),
+  () => {
+    currentPage.value = 1
+    fetchResource()
+  },
   { immediate: true },
 )
 
@@ -421,7 +453,7 @@ watch(resource, () => {
       </div>
       <div class="resource-hero__actions">
         <div class="resource-total">
-          <strong>{{ resourceItems.length }}</strong>
+          <strong>{{ resourceTotal }}</strong>
           <span>{{ resource }}</span>
         </div>
 
@@ -596,6 +628,13 @@ watch(resource, () => {
       <p>This project does not currently have matching {{ resource }} assignments.</p>
       <RouterLink :to="`/organization/project-details/${projectId}`">Open full details</RouterLink>
     </section>
+
+    <Pagination
+      v-if="(resource === 'drills' || resource === 'meetings') && !isLoading"
+      :pagination="state.pagination"
+      @changePage="handleChangePage"
+      @countPerPage="handleCountPerPage"
+    />
 
     <DrillDetailsDialog
       v-if="selectedDrill"
