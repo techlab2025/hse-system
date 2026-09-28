@@ -219,7 +219,7 @@ watch(() => props.projectId, getProjectLocationsHierarchiesEmployees, { immediat
 
 <style scoped>
 .position-row.has-team-leader {
-  grid-template-columns: 1fr 1.35fr 1.1fr auto;
+  grid-template-columns: 1fr 1fr ;
 }
 
 @media (max-width: 850px) {
