@@ -120,7 +120,7 @@ const resourceDefinitions: Record<
   },
   hierarchies: {
     title: 'Project positions',
-    description: 'Hierarchy positions and their assigned employees.',
+    description: 'positions and their assigned employees.',
     types: [ProjectCustomLocationEnum.HIERARCHY, ProjectCustomLocationEnum.HIERARCHY_EMPLOYEE],
   },
   contractors: {

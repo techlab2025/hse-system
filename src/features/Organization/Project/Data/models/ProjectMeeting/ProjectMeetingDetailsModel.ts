@@ -15,6 +15,7 @@ export default class ProjectMeetingDetails {
   public serialName: string
   public meetingAgenda: MeeintgAgendaModel[]
   public MeetingActions: MeetingActionsModel[]
+  public employees: OrganizatoinEmployeeModel[]
 
   constructor(data: {
     id: number
@@ -28,6 +29,7 @@ export default class ProjectMeetingDetails {
     serialName: string
     meetingAgenda: MeeintgAgendaModel[]
     MeetingActions: MeetingActionsModel[]
+    employees: OrganizatoinEmployeeModel[]
   }) {
     this.id = data.id
     this.meetingId = data.meetingId
@@ -40,6 +42,7 @@ export default class ProjectMeetingDetails {
     this.hierarchies = data.hierarchies
     this.meetingAgenda = data.meetingAgenda
     this.MeetingActions = data.MeetingActions
+    this.employees = data.employees
   }
 
   static fromMap(data: any): ProjectMeetingDetails {
@@ -59,6 +62,7 @@ export default class ProjectMeetingDetails {
       MeetingActions: Array.isArray(data.meeting_actions)
         ? data.meeting_actions.map((el) => MeetingActionsModel.fromMap(el))
         : [],
+      employees: data.employees,
     })
   }
 
@@ -74,5 +78,6 @@ export default class ProjectMeetingDetails {
     serialName: '',
     meetingAgenda: [MeeintgAgendaModel.example],
     MeetingActions: [MeetingActionsModel.example],
+    employees:OrganizatoinEmployeeModel.example,
   })
 }

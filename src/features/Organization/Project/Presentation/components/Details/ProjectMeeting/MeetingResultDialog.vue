@@ -470,6 +470,7 @@ watch(
 )
 
 const meetingResult = computed(() => MeetingDetailsState.value?.data ?? null)
+const meetingEmployees = computed(() => meetingResult.value?.employees ?? [])
 
 const getActionTypeLabel = (type: number) => {
   switch (Number(type)) {
@@ -513,6 +514,52 @@ const getEmployeeName = (employee?: { name?: string; title?: string } | null) =>
   if (!employee) return '—'
 
   return employee.name || employee.title || '—'
+}
+
+const getEmployeeInitials = (employee?: { name?: string; title?: string } | null) => {
+  const name = getEmployeeName(employee)
+
+  if (name === '—') return '?'
+
+  const parts = name.trim().split(/\s+/).filter(Boolean)
+
+  if (!parts.length) return '?'
+
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase()
+
+  return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase()
+}
+
+const getEmployeeMeta = (employee?: unknown) => {
+  if (!employee || typeof employee !== 'object') return ''
+
+  const data = employee as {
+    email?: unknown
+    phone?: unknown
+    hierarchy?: unknown
+    hierarchies?: unknown
+  }
+
+  const firstHierarchy = Array.isArray(data.hierarchy) ? data.hierarchy[0] : null
+  const firstHierarchyDetails = Array.isArray(data.hierarchies) ? data.hierarchies[0] : null
+  const getText = (value: unknown) => (typeof value === 'string' ? value.trim() : '')
+  const getObjectText = (value: unknown, key: 'title' | 'name') => {
+    if (!value || typeof value !== 'object') return ''
+
+    return getText((value as Record<string, unknown>)[key])
+  }
+
+  return (
+    getText(data.email) ||
+    getText(data.phone) ||
+    getObjectText(firstHierarchy, 'title') ||
+    getObjectText(firstHierarchyDetails, 'title') ||
+    getObjectText(firstHierarchyDetails, 'name')
+  )
+}
+
+const getEmployeeImage = (employee?: { image?: string | null } | null) => {
+  return employee?.image || ''
 }
 </script>
 
@@ -835,18 +882,18 @@ const getEmployeeName = (employee?: { name?: string; title?: string } | null) =>
 
         <div class="meeting-info-grid">
           <!-- Date -->
-          <div class="meeting-info-card">
-            <span class="meeting-info-label">
-              {{ $t('Date') }}
-            </span>
+             <div class="meeting-info-card">
+              <span class="meeting-info-label">
+                {{ $t('Date') }}
+              </span>
 
-            <strong>
-              {{ meetingResult.date || '—' }}
-            </strong>
-          </div>
+              <strong>
+                {{ meetingResult.date || '—' }}
+              </strong>
+            </div> 
 
           <!-- Time -->
-          <div class="meeting-info-card">
+          <!-- <div class="meeting-info-card">
             <span class="meeting-info-label">
               {{ $t('Time') }}
             </span>
@@ -854,7 +901,7 @@ const getEmployeeName = (employee?: { name?: string; title?: string } | null) =>
             <strong>
               {{ formatMeetingTime(meetingResult.time) }}
             </strong>
-          </div>
+          </div> -->
 
           <!-- Team Leader -->
           <div class="meeting-info-card">
@@ -884,7 +931,7 @@ const getEmployeeName = (employee?: { name?: string; title?: string } | null) =>
       <!-- Hierarchies -->
       <!-- ============================================================= -->
 
-      <section class="meeting-show-section">
+      <!-- <section class="meeting-show-section">
         <div class="meeting-show-section-header">
           <div>
             <h3>
@@ -915,6 +962,64 @@ const getEmployeeName = (employee?: { name?: string; title?: string } | null) =>
 
         <div v-else class="meeting-empty-state">
           {{ $t('No hierarchies available') }}
+        </div>
+      </section> -->
+
+
+      <!-- Employees -->
+      <section class="meeting-show-section">
+        <div class="meeting-show-section-header">
+          <div>
+            <h3>
+              {{ $t('Employees') }}
+            </h3>
+
+            <p>
+              {{ $t('Meeting related employees') }}
+            </p>
+          </div>
+
+          <span class="meeting-count-badge">
+            {{ meetingEmployees.length }}
+          </span>
+        </div>
+
+        <div v-if="meetingEmployees.length" class="meeting-employees-grid">
+          <article
+            v-for="(employee, index) in meetingEmployees"
+            :key="employee.id || `employee-${index}`"
+            class="meeting-employee-card"
+          >
+            <div class="meeting-employee-avatar">
+              <img
+                v-if="getEmployeeImage(employee)"
+                :src="getEmployeeImage(employee)"
+                :alt="getEmployeeName(employee)"
+              />
+
+              <span v-else>
+                {{ getEmployeeInitials(employee) }}
+              </span>
+            </div>
+
+            <div class="meeting-employee-content">
+              <span class="meeting-employee-index">
+                {{ index + 1 }}
+              </span>
+
+              <strong>
+                {{ getEmployeeName(employee) }}
+              </strong>
+
+              <small v-if="getEmployeeMeta(employee)">
+                {{ getEmployeeMeta(employee) }}
+              </small>
+            </div>
+          </article>
+        </div>
+
+        <div v-else class="meeting-empty-state">
+          {{ $t('No employees available') }}
         </div>
       </section>
 
@@ -1820,6 +1925,115 @@ const getEmployeeName = (employee?: { name?: string; title?: string } | null) =>
 }
 
 /* ==========================================================================
+   Employees
+   ========================================================================== */
+
+.meeting-employees-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.meeting-employee-card {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: center;
+  gap: 11px;
+
+  padding: 11px 12px;
+
+  border: 1px solid var(--main-border);
+  border-radius: 12px;
+
+  background: var(--surface-1);
+}
+
+.meeting-employee-avatar {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  place-items: center;
+
+  border: 1px solid
+    color-mix(
+      in srgb,
+      var(--PrimaryColor) 18%,
+      var(--main-border)
+    );
+  border-radius: 12px;
+
+  color: var(--PrimaryColor);
+
+  background: color-mix(
+    in srgb,
+    var(--PrimaryColor) 9%,
+    var(--surface-2)
+  );
+
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.meeting-employee-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.meeting-employee-content {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 4px 8px;
+}
+
+.meeting-employee-index {
+  display: grid;
+  min-width: 24px;
+  height: 24px;
+  place-items: center;
+
+  border-radius: 8px;
+
+  color: var(--PrimaryColor);
+
+  background: color-mix(
+    in srgb,
+    var(--PrimaryColor) 10%,
+    transparent
+  );
+
+  font-size: 0.66rem;
+  font-weight: 900;
+}
+
+.meeting-employee-content strong {
+  overflow: hidden;
+
+  color: var(--text-strong);
+
+  font-size: 0.78rem;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meeting-employee-content small {
+  overflow: hidden;
+  grid-column: 2;
+
+  color: var(--text-soft);
+
+  font-size: 0.68rem;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
    Agenda
    ========================================================================== */
 
@@ -2147,6 +2361,10 @@ const getEmployeeName = (employee?: { name?: string; title?: string } | null) =>
   }
 
   .meeting-info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .meeting-employees-grid {
     grid-template-columns: 1fr;
   }
 

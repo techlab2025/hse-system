@@ -157,7 +157,7 @@ onMounted(fetchInductionDetails)
         </section>
 
         <div class="content-grid">
-          <section class="smart-panel topics-panel">
+          <!-- <section class="smart-panel topics-panel">
             <header class="panel-header">
               <span class="panel-header__icon" aria-hidden="true">
                 <Icon icon="uil:list-ul" />
@@ -177,9 +177,9 @@ onMounted(fetchInductionDetails)
               </div>
             </div>
             <p v-else class="empty-text">{{ $t('No training topics selected') }}</p>
-          </section>
+          </section> -->
 
-          <section class="smart-panel people-panel">
+          <!-- <section class="smart-panel people-panel">
             <header class="panel-header">
               <span class="panel-header__icon" aria-hidden="true">
                 <Icon icon="uil:users-alt" />
@@ -203,7 +203,7 @@ onMounted(fetchInductionDetails)
               </div>
             </div>
             <p v-else class="empty-text">{{ $t('No attendees selected') }}</p>
-          </section>
+          </section> -->
 
           <section class="smart-panel evidence-panel">
             <header class="panel-header">
