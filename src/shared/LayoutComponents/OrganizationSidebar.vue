@@ -140,6 +140,18 @@ const OrganizationRoutes = ref<Routes[]>([
     ],
   },
   {
+    link: '/organization/organization-certificate',
+    name: 'organization_certificate',
+    icon: 'award',
+    permissions: [
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_ALL,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_DELETE,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_FETCH,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_UPDATE,
+    ],
+  },
+  {
     link: '/organization/template',
     name: 'templates',
     icon: 'book-open',

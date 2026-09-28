@@ -385,13 +385,13 @@ defineExpose({ validateRequiredFields })
         </div>
       </div>
 
-      <div class="objective-progress" :style="{ '--progress-value': `${completionPercent}%` }">
+      <!-- <div class="objective-progress" :style="{ '--progress-value': `${completionPercent}%` }">
         <span>{{ completedRequiredCount }}/{{ completionTotal }}</span>
         <strong>{{ completionPercent }}%</strong>
-      </div>
+      </div> -->
     </header>
 
-    <div class="objective-summary">
+    <!-- <div class="objective-summary">
       <div class="summary-main">
         <span>{{ $t('Objective') }}</span>
         <strong>{{ objectivePreview }}</strong>
@@ -408,7 +408,7 @@ defineExpose({ validateRequiredFields })
         <span>{{ $t('Target') }}</span>
         <strong>{{ targetPreview }}</strong>
       </div>
-    </div>
+    </div> -->
 
     <div class="objective-sections">
       <section class="objective-section section-details">
