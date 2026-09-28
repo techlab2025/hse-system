@@ -1,24 +1,10 @@
-export class AttachmentMatrixItemModel {
-  constructor(
-    public alt: string,
-    public file: string,
-  ) {}
-
-  static fromMap(data: unknown): AttachmentMatrixItemModel {
-    if (typeof data === 'string') {
-      return new AttachmentMatrixItemModel('', data)
-    }
-
-    const item = (data ?? {}) as Record<string, unknown>
-    return new AttachmentMatrixItemModel(String(item.alt ?? ''), String(item.file ?? ''))
-  }
-}
+import AttachmentMatrixItemModel from './AttachmentMatrixItemModel'
 
 export default class AttachmentMatrixModel {
   constructor(
-    public x: AttachmentMatrixItemModel[],
-    public y: AttachmentMatrixItemModel[],
-    public z: AttachmentMatrixItemModel[],
+    public hse_policy: AttachmentMatrixItemModel[],
+    public sos: AttachmentMatrixItemModel[],
+    public standerd_policy: AttachmentMatrixItemModel[],
   ) {}
 
   static fromMap(data: Record<string, unknown>): AttachmentMatrixModel {

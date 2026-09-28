@@ -5,22 +5,34 @@ import HandleFIlesUpload, {
 } from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
 import CreateAttachmentMatrixParams from '../../Core/params/CreateAttachmentMatrixParams'
 import FetchAttachmentMatrixParams from '../../Core/params/FetchAttachmentMatrixParams'
-import type { AttachmentMatrixItemModel } from '../../Data/models/AttachmentMatrixModel'
+import type AttachmentMatrixItemModel from '../../Data/models/AttachmentMatrixItemModel'
 import CreateAttachmentMatrixController from '../controllers/CreateAttachmentMatrixController'
 import FetchAttachmentMatrixController from '../controllers/FetchAttachmentMatrixController'
 
-type GroupKey = 'x' | 'y' | 'z'
+type GroupKey = 'H' | 'sos' | 's'
 
 const groups: Array<{ key: GroupKey; title: string; description: string }> = [
-  { key: 'x', title: 'X attachments', description: 'Upload the documents assigned to block X.' },
-  { key: 'y', title: 'Y attachments', description: 'Upload the documents assigned to block Y.' },
-  { key: 'z', title: 'Z attachments', description: 'Upload the documents assigned to block Z.' },
+  {
+    key: 'H',
+    title: 'hse_policy attachments',
+    description: 'Upload the documents assigned to block hse_policy.',
+  },
+  {
+    key: 'sos',
+    title: 'sos attachments',
+    description: 'Upload the documents assigned to block sos.',
+  },
+  {
+    key: 's',
+    title: 'standerd_policy attachments',
+    description: 'Upload the documents assigned to block standerd_policy.',
+  },
 ]
 
 const attachments = reactive<Record<GroupKey, string[]>>({
-  x: [],
-  y: [],
-  z: [],
+  H: [],
+  sos: [],
+  s: [],
 })
 const fetchController = FetchAttachmentMatrixController.getInstance()
 const createController = CreateAttachmentMatrixController.getInstance()
@@ -40,9 +52,9 @@ const fetchMatrix = async () => {
 
   if (fetchController.isDataSuccess() && fetchController.state.value.data) {
     const matrix = fetchController.state.value.data
-    setGroupAttachments('x', matrix.x)
-    setGroupAttachments('y', matrix.y)
-    setGroupAttachments('z', matrix.z)
+    setGroupAttachments('H', matrix.hse_policy)
+    setGroupAttachments('sos', matrix.sos)
+    setGroupAttachments('s', matrix.standerd_policy)
     return
   }
 
@@ -66,7 +78,7 @@ const submit = async () => {
   hasError.value = false
 
   await createController.create(
-    new CreateAttachmentMatrixParams(groupValues('x'), groupValues('y'), groupValues('z')),
+    new CreateAttachmentMatrixParams(groupValues('H'), groupValues('sos'), groupValues('s')),
   )
 
   if (createController.isDataSuccess()) {
