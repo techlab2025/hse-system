@@ -339,6 +339,20 @@ const validateStep = () => {
     return false
   }
   if (
+    activeStep.value === 3 &&
+    positions.value.some((location) =>
+      location.heirarchys.some(
+        (hierarchy) =>
+          hierarchy.employees.length > 0 &&
+          (!hierarchy.teamLeader ||
+            !hierarchy.employees.some((employee) => employee.id === hierarchy.teamLeader?.id)),
+      ),
+    )
+  ) {
+    errorMessage.value = 'Select one team leader for every position with employees.'
+    return false
+  }
+  if (
     activeStep.value === 4 &&
     teams.value.some((location) => location.projectTeams.some((team) => !team.team))
   ) {
@@ -400,7 +414,10 @@ const buildParams = () => {
                   hierarchy_id: hierarchy.hierarchy!.id,
                   organizaion_employees: hierarchy.employees.map(
                     (employee) =>
-                      new ProjectEmployeeParams({ organizaion_employee_id: employee.id }),
+                      new ProjectEmployeeParams({
+                        organizaion_employee_id: employee.id,
+                        is_leader: employee.id === hierarchy.teamLeader?.id,
+                      }),
                   ),
                 }),
             ),
