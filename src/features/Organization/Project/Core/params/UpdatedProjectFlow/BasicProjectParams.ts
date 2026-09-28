@@ -14,6 +14,7 @@ export default class BasicProjectParams implements Params {
   public readonly hasZoon: boolean
   public readonly projectId?: number
   public readonly isUpdate: boolean
+  public readonly drill_count: number
 
   constructor(data: {
     translation: TranslationsParams
@@ -27,6 +28,7 @@ export default class BasicProjectParams implements Params {
     hasZoon: boolean
     projectId?: number
     isUpdate: boolean
+    drill_count: number
   }) {
     this.translation = data.translation
     this.contractorIds = data.contractorIds
@@ -39,6 +41,7 @@ export default class BasicProjectParams implements Params {
     this.hasZoon = data.hasZoon
     this.projectId = data.projectId
     this.isUpdate = data.isUpdate
+    this.drill_count = data.drill_count
   }
 
   toMap(): Record<string, unknown> {
@@ -55,6 +58,7 @@ export default class BasicProjectParams implements Params {
       end_date: formatJoinDate(this.endDate),
       cost: this.cost,
       has_zoon: this.hasZoon,
+      drill_count: this.drill_count,
     }
   }
 }

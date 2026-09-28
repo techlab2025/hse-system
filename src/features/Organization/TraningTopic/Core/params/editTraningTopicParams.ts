@@ -19,7 +19,7 @@ export default class EditTraningTopicParams implements Params {
     const translations = this.translation.toMap() as Record<string, unknown>
 
     const data: Record<string, unknown> = {
-      traning_topic_id: this.id,
+      training_topic_id: this.id,
       translations: translations,
     }
     if (this.allIndustries != null) {

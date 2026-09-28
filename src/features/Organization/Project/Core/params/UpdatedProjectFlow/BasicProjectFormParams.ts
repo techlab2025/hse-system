@@ -6,11 +6,19 @@ export type BasicProjectForm = {
   endDate: Date | null
   cost: string
   hasZoon: boolean
+  drill_count: number
 }
 
 export type BasicProjectValidationErrors = Partial<
   Record<
-    'projectName' | 'contractors' | 'locations' | 'startDate' | 'endDate' | 'cost' | 'zones',
+    | 'projectName'
+    | 'contractors'
+    | 'locations'
+    | 'startDate'
+    | 'endDate'
+    | 'cost'
+    | 'zones'
+    | 'drill_count',
     string
   >
 >

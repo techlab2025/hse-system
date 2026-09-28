@@ -114,7 +114,6 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
     </div>
     <div class="input-wrapper" :class="{ 'field-has-error': props.validationErrors.contractors }">
       <UpdatedCustomInputSelect
-        
         :model-value="contractorIds"
         :type="2"
         :controller="contractorController"
@@ -195,6 +194,25 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
       />
       <small v-if="props.validationErrors.cost" class="field-error">
         {{ props.validationErrors.cost }}
+      </small>
+    </label>
+
+    <label class="input-wrapper">
+      <!--  <span aria-hidden="true">*</span> -->
+      <span class="required-label"> Number Of Drills </span>
+      <input
+        v-model.number="basic.drill_count"
+        type="number"
+        inputmode="numeric"
+        min="0"
+        step="1"
+        required
+        placeholder="1"
+        :class="{ 'field-invalid': props.validationErrors.drill_count }"
+        @input="emit('clearValidationError', 'drill_count')"
+      />
+      <small v-if="props.validationErrors.drill_count" class="field-error">
+        {{ props.validationErrors.drill_count }}
       </small>
     </label>
     <div class="switch-row zone-switch">

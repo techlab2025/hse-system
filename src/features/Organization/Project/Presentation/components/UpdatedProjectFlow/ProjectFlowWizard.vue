@@ -88,6 +88,7 @@ const basic = ref<BasicProjectForm>({
   endDate: null as Date | null,
   cost: '',
   hasZoon: true,
+  drill_count: 0,
 })
 const serialFields = ref<ProjectSerialField[]>([
   {
@@ -237,6 +238,7 @@ onMounted(async () => {
     endDate: data.end_date ? new Date(data.end_date) : null,
     cost: String(data.cost ?? ''),
     hasZoon: data.has_zoon ?? true,
+    drill_count: details.drills_count,
   }
   serialFields.value[0].value = basic.value.serial
   serialFields.value[0].enabled = false
@@ -284,6 +286,9 @@ const validateStep = () => {
       normalizedCost !== '' &&
       Number.isFinite(Number(normalizedCost)) &&
       Number(normalizedCost) >= 0
+    const drillCount = Number(basic.value.drill_count)
+    const hasValidDrillCount =
+      Number.isFinite(drillCount) && Number.isInteger(drillCount) && drillCount >= 0
 
     basicValidationErrors.value = {
       ...(!langs.value.some((item) => item.title.trim()) && {
@@ -294,6 +299,9 @@ const validateStep = () => {
       ...(!basic.value.startDate && { startDate: 'Start date is required.' }),
       ...(!basic.value.endDate && { endDate: 'End date is required.' }),
       ...(!hasValidCost && { cost: 'Enter a valid cost of zero or more.' }),
+      ...(!hasValidDrillCount && {
+        drill_count: 'Enter a valid number of drills of zero or more.',
+      }),
       ...(basic.value.hasZoon &&
         !zoneIds.value.length && {
           zones: 'Select at least one zone.',
@@ -362,6 +370,7 @@ const buildParams = () => {
       hasZoon: basic.value.hasZoon,
       projectId: updateProjectId.value,
       isUpdate: isCurrentStepUpdate.value,
+      drill_count: Number(basic.value.drill_count),
     })
   }
   if (activeStep.value === 2) {
