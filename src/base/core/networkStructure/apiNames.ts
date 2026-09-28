@@ -1288,6 +1288,9 @@ class ApiNames {
   public get CreateDrill() {
     return this.prefix + 'create_drill'
   }
+  public get FetchDrills() {
+    return this.prefix + 'fetch_drills'
+  }
   public get CreateDrillPlanning() {
     return this.prefix + 'create_drill_plan'
   }
@@ -1413,6 +1416,14 @@ class ApiNames {
   }
   public get DeleteRole() {
     return this.prefix + 'delete_role'
+  }
+
+  // Attachment matrix
+  public get CreateAttachmentMatrix() {
+    return this.prefix + 'create_attachment_matrix'
+  }
+  public get FetchAttachmentMatrix() {
+    return this.prefix + 'fetch_attachment_matrix'
   }
 
   public get CreateInvestegation() {

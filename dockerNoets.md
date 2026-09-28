@@ -1,3 +1,21 @@
+## default docker
+
+```
+services:
+  app:
+    build: .
+    ports:
+      - "3000:80"
+    restart: unless-stopped
+```
+
+## docker watch
+
+# commend
+
+docker compose up --watch
+
+```
 services:
   app:
     build: .
@@ -13,3 +31,7 @@ services:
             - node_modules/
             - dist/
             - .git/
+
+
+
+```
