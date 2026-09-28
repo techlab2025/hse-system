@@ -1418,6 +1418,14 @@ class ApiNames {
     return this.prefix + 'delete_role'
   }
 
+  // Attachment matrix
+  public get CreateAttachmentMatrix() {
+    return this.prefix + 'create_attachment_matrix'
+  }
+  public get FetchAttachmentMatrix() {
+    return this.prefix + 'fetch_attachment_matrix'
+  }
+
   public get CreateInvestegation() {
     return this.prefix + 'create_full_investigation'
   }

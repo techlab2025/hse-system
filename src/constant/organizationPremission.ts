@@ -841,6 +841,30 @@ export const OrgPermissions: PermissionItem = {
           ],
         },
 
+        // Attachment Matrix
+        {
+          key: PermissionsEnum.ATTACHMENT_MATRIX_ALL,
+          code: PermissionsEnum.ATTACHMENT_MATRIX_ALL,
+          label: 'Attachment Matrix',
+          permissions: [
+            {
+              key: PermissionsEnum.ATTACHMENT_MATRIX_ALL,
+              code: PermissionsEnum.ATTACHMENT_MATRIX_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.ATTACHMENT_MATRIX_FETCH,
+              code: PermissionsEnum.ATTACHMENT_MATRIX_FETCH,
+              label: 'Table',
+            },
+            {
+              key: PermissionsEnum.ATTACHMENT_MATRIX_CREATE,
+              code: PermissionsEnum.ATTACHMENT_MATRIX_CREATE,
+              label: 'Create',
+            },
+          ],
+        },
+
         // Inspection
         {
           key: PermissionsEnum.ORG_INSPECTION_ALL,

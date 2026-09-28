@@ -36,6 +36,7 @@ import { todayTalkRoutes } from './todayTalk'
 import { inductionRoutes } from './induction'
 import { managementChangeTopicRoutes } from './MangementChangeTopicType'
 import { managementChangeRoutes } from './MangementOfChange'
+import { attachmentMatrixRoutes } from './attachmentMatrix'
 
 export const organizationRoutes: RouteRecordRaw[] = [
   {
@@ -80,6 +81,7 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...inductionRoutes,
   ...managementChangeTopicRoutes,
   ...managementChangeRoutes,
+  ...attachmentMatrixRoutes,
   {
     path: 'permission/:id',
     name: 'Permission Organization',

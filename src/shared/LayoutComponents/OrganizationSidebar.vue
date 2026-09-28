@@ -224,6 +224,16 @@ const OrganizationRoutes = ref<Routes[]>([
     ],
   },
   {
+    link: '/organization/attachment-matrix',
+    name: 'Attachment Matrix',
+    icon: 'file-check-alt',
+    permissions: [
+      PermissionsEnum.ATTACHMENT_MATRIX_ALL,
+      PermissionsEnum.ATTACHMENT_MATRIX_FETCH,
+      PermissionsEnum.ATTACHMENT_MATRIX_CREATE,
+    ],
+  },
+  {
     link: '/organization/scope',
     name: 'contractor_scope',
     icon: 'crosshair',
