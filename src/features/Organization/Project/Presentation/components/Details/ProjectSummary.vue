@@ -314,8 +314,9 @@ watch(
             </RouterLink>
           </div>
         </section>
+        <!-- v-if="project?.lossTimes?.length" -->
 
-        <LossTimeMatrix v-if="project?.lossTimes?.length" :loss-times="project.lossTimes" />
+        <LossTimeMatrix :loss-times="project?.lossTimes!" />
 
         <section class="summary-section">
           <header class="section-heading">
