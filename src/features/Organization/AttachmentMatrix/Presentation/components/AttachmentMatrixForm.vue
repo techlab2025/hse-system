@@ -5,6 +5,7 @@ import HandleFIlesUpload, {
 } from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
 import CreateAttachmentMatrixParams from '../../Core/params/CreateAttachmentMatrixParams'
 import FetchAttachmentMatrixParams from '../../Core/params/FetchAttachmentMatrixParams'
+import type AttachmentMatrixGroupModel from '../../Data/models/AttachmentMatrixGroupModel'
 import type AttachmentMatrixItemModel from '../../Data/models/AttachmentMatrixItemModel'
 import CreateAttachmentMatrixController from '../controllers/CreateAttachmentMatrixController'
 import FetchAttachmentMatrixController from '../controllers/FetchAttachmentMatrixController'
@@ -34,6 +35,11 @@ const attachments = reactive<Record<GroupKey, string[]>>({
   sos: [],
   s: [],
 })
+const attachmentNames = reactive<Record<GroupKey, string[]>>({
+  H: [],
+  sos: [],
+  s: [],
+})
 const fetchController = FetchAttachmentMatrixController.getInstance()
 const createController = CreateAttachmentMatrixController.getInstance()
 const feedback = ref('')
@@ -41,8 +47,10 @@ const hasError = ref(false)
 const isLoading = computed(() => fetchController.isDataLoading())
 const isSaving = computed(() => createController.isDataLoading())
 
-const setGroupAttachments = (key: GroupKey, items: AttachmentMatrixItemModel[]) => {
-  attachments[key] = items.map((item) => item.file).filter(Boolean)
+const setGroupAttachments = (key: GroupKey, group: AttachmentMatrixGroupModel) => {
+  const items: AttachmentMatrixItemModel[] = group.media.filter((item) => item.url)
+  attachments[key] = items.map((item) => item.url)
+  attachmentNames[key] = items.map((item) => item.file_name)
 }
 
 const fetchMatrix = async () => {
@@ -64,6 +72,7 @@ const fetchMatrix = async () => {
 
 const handleFilesChange = (key: GroupKey, files: UploadedFile[]) => {
   attachments[key] = files.map((file) => file.base64 || file.url).filter(Boolean)
+  attachmentNames[key] = files.map((file) => file.name)
 }
 
 const groupValues = (key: GroupKey): string[] => attachments[key].filter(Boolean)
@@ -96,16 +105,16 @@ onMounted(fetchMatrix)
 <template>
   <form class="attachment-matrix" @submit.prevent="submit">
     <header class="attachment-matrix__header">
-      <span class="hero-orb hero-orb--one" aria-hidden="true"></span>
-      <span class="hero-orb hero-orb--two" aria-hidden="true"></span>
+      <!-- <span class="hero-orb hero-orb--one" aria-hidden="true"></span> -->
+      <!-- <span class="hero-orb hero-orb--two" aria-hidden="true"></span> -->
 
       <div class="attachment-matrix__hero-copy">
-        <span class="attachment-matrix__eyebrow"><i></i> Organization configuration</span>
+        <!-- <span class="attachment-matrix__eyebrow"><i></i> Organization configuration</span> -->
         <h1>Attachment <em>matrix</em></h1>
-        <p>
+        <!-- <p>
           Build a clear, organized library of supporting documents across your three operational
           blocks.
-        </p>
+        </p> -->
 
         <div class="attachment-matrix__stats" aria-label="Attachment summary">
           <span v-for="group in groups" :key="group.key" :data-stat="group.key">
@@ -179,6 +188,7 @@ onMounted(fetchMatrix)
               :multiple="true"
               :index="groupIndex"
               :file="attachments[group.key]"
+              :file-names="attachmentNames[group.key]"
               class-name="report-file-input"
               @change="(files) => handleFilesChange(group.key, files)"
             />
@@ -190,14 +200,14 @@ onMounted(fetchMatrix)
       </section>
     </div>
 
-    <p
+    <!-- <p
       v-if="feedback"
       class="attachment-matrix__feedback"
       :class="{ 'attachment-matrix__feedback--error': hasError }"
       role="status"
     >
       {{ feedback }}
-    </p>
+    </p> -->
   </form>
 </template>
 
@@ -216,7 +226,7 @@ onMounted(fetchMatrix)
 .attachment-matrix {
   --matrix-radius: 24px;
   display: flex;
-  max-width: 1500px;
+  // max-width: 1500px;
   flex-direction: column;
   gap: 22px;
   margin: 0 auto;
@@ -250,21 +260,21 @@ onMounted(fetchMatrix)
   isolation: isolate;
 }
 
-.attachment-matrix__header::before {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  background-image:
-    linear-gradient(color-mix(in srgb, var(--text-on-brand) 6%, transparent) 1px, transparent 1px),
-    linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--text-on-brand) 6%, transparent) 1px,
-      transparent 1px
-    );
-  background-size: 34px 34px;
-  content: '';
-  mask-image: linear-gradient(90deg, #000, transparent 72%);
-}
+// .attachment-matrix__header::before {
+//   position: absolute;
+//   z-index: -1;
+//   inset: 0;
+//   background-image:
+//     linear-gradient(color-mix(in srgb, var(--text-on-brand) 6%, transparent) 1px, transparent 1px),
+//     linear-gradient(
+//       90deg,
+//       color-mix(in srgb, var(--text-on-brand) 6%, transparent) 1px,
+//       transparent 1px
+//     );
+//   background-size: 34px 34px;
+//   content: '';
+//   mask-image: linear-gradient(90deg, #000, transparent 72%);
+// }
 
 .hero-orb {
   position: absolute;

@@ -1,18 +1,29 @@
-import AttachmentMatrixItemModel from './AttachmentMatrixItemModel'
+import AttachmentMatrixGroupModel from './AttachmentMatrixGroupModel'
 
 export default class AttachmentMatrixModel {
   constructor(
-    public hse_policy: AttachmentMatrixItemModel[],
-    public sos: AttachmentMatrixItemModel[],
-    public standerd_policy: AttachmentMatrixItemModel[],
+    public hse_policy: AttachmentMatrixGroupModel,
+    public sos: AttachmentMatrixGroupModel,
+    public standerd_policy: AttachmentMatrixGroupModel,
   ) {}
 
   static fromMap(data: Record<string, unknown>): AttachmentMatrixModel {
-    const parseItems = (items: unknown): AttachmentMatrixItemModel[] =>
-      Array.isArray(items) ? items.map((item) => AttachmentMatrixItemModel.fromMap(item)) : []
+    const nestedData = data.data
+    const payload =
+      nestedData && typeof nestedData === 'object' && !Array.isArray(nestedData)
+        ? (nestedData as Record<string, unknown>)
+        : data
 
-    return new AttachmentMatrixModel(parseItems(data.x), parseItems(data.y), parseItems(data.z))
+    return new AttachmentMatrixModel(
+      AttachmentMatrixGroupModel.fromMap(payload.hse_policy ?? payload.x),
+      AttachmentMatrixGroupModel.fromMap(payload.sos ?? payload.y),
+      AttachmentMatrixGroupModel.fromMap(payload.standerd_policy ?? payload.z),
+    )
   }
 
-  static empty = new AttachmentMatrixModel([], [], [])
+  static empty = new AttachmentMatrixModel(
+    AttachmentMatrixGroupModel.empty,
+    AttachmentMatrixGroupModel.empty,
+    AttachmentMatrixGroupModel.empty,
+  )
 }
