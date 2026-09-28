@@ -48,6 +48,7 @@ export default class AddInvestigationResultParams implements Params {
   public lessonLearnt?: string
   public documentReferenceIds?: number[]
   public eventTimeLines?: InvestigationEventTimeLineParams[]
+  public observation:InvestigationEventTimeLineParams
 
   constructor(data: {
     investigationMeetingId: number
@@ -76,6 +77,7 @@ export default class AddInvestigationResultParams implements Params {
     lessonLearnt?: string
     documentReferenceIds?: number[]
     eventTimeLines?: InvestigationEventTimeLineParams[]
+    observation:InvestigationEventTimeLineParams
   }) {
     this.investigationMeetingId = data.investigationMeetingId
     this.isInvestigationClosed = data.isInvestigationClosed
@@ -103,6 +105,7 @@ export default class AddInvestigationResultParams implements Params {
     this.lessonLearnt = data.lessonLearnt
     this.documentReferenceIds = data.documentReferenceIds
     this.eventTimeLines = data.eventTimeLines
+    this.observation = data.observation
   }
   private filterTasks(tasks: any[] = []) {
     return tasks
@@ -239,6 +242,7 @@ export default class AddInvestigationResultParams implements Params {
     if (this.Injury?.length) {
       data['injuries'] = this.Injury.map((item) => item.toMap())
     }
+    data['observation'] = this.observation
 
     return data
   }
