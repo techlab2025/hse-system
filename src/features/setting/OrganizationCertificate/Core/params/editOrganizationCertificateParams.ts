@@ -14,7 +14,7 @@ export default class EditOrganizationCertificateParams implements Params {
   imageId?: number
   require_expired_date?: boolean
   certificate_type?: number
-  require_certificate?: boolean
+  hasrequiredata?: boolean
 
   constructor(
     id: number,
@@ -27,7 +27,7 @@ export default class EditOrganizationCertificateParams implements Params {
     imageId?: number,
     require_expired_date?: boolean,
     certificate_type?: number,
-    require_certificate?: boolean,
+    hasrequiredata?: boolean,
   ) {
     this.id = id
     this.translation = translation
@@ -39,7 +39,7 @@ export default class EditOrganizationCertificateParams implements Params {
     this.imageId = imageId
     this.require_expired_date = require_expired_date
     this.certificate_type = certificate_type
-    this.require_certificate = require_certificate
+    this.hasrequiredata = hasrequiredata
   }
 
   toMap(): Record<
@@ -70,7 +70,7 @@ export default class EditOrganizationCertificateParams implements Params {
 
     if (this.require_expired_date !== undefined) data['require_expired_date'] = this.require_expired_date
     if (this.certificate_type) data['certificate_type'] = this.certificate_type
-    if (this.require_certificate !== undefined) data['require_certificate'] = this.require_certificate
+    if (this.hasrequiredata !== undefined) data['hasrequiredata'] = this.hasrequiredata
     return data
   }
 }

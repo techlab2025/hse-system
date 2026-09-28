@@ -49,21 +49,21 @@ const onFileSelected = (e: Event) => {
 const DownloadExample = () => {
   const worksheetData = [
     {
-      'OrganizationCertificate Title': 'NEBOSH',
-      'OrganizationCertificate Type': 'Skill',
+      'Organization Certificate Title': 'NEBOSH',
+      'Organization Certificate Type': 'Skill',
       require_expired_date: 'Yes',
-      'OrganizationCertificate Required': 'Yes',
+      'Has Required Data': 'Yes',
     },
     {
-      'OrganizationCertificate Title': 'OSHA',
-      'OrganizationCertificate Type': 'Awareness',
+      'Organization Certificate Title': 'OSHA',
+      'Organization Certificate Type': 'Awareness',
       require_expired_date: 'Yes',
-      'OrganizationCertificate Required': 'No',
+      'Has Required Data': 'No',
     },
   ]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'OrganizationCertificate')
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Organization Certificate')
   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
   const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
   saveAs(blob, 'organization_certificate_form.xlsx')
@@ -82,7 +82,7 @@ const actionList = () => [
     icon: ExceIcon,
     action: () => DownloadExample(),
     type: ActionItemsTypeEnum.Success,
-    permission: [PermissionsEnum.ORG_CERTIFICATE_FETCH, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+    permission: [PermissionsEnum.ORGANIZATION_CERTIFICATE_FETCH, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
 ]
 </script>

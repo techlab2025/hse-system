@@ -4,7 +4,7 @@ interface Data {
   image?: string
   require_expired_date?: boolean | number
   certificate_type?: number
-  require_certificate?: boolean | number
+  hasrequiredata?: boolean | number
 }
 export default class AddOrganizationCertificateExcelParams implements Params {
   data: Data[]

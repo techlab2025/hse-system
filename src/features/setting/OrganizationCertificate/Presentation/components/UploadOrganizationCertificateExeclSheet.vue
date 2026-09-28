@@ -146,13 +146,13 @@ const SendData = ref<string[]>([
   'title',
   'certificate_type',
   'require_expired_date',
-  'require_certificate',
+  'hasrequiredata',
 ])
 const SendDataLabels: Record<string, string> = {
   title: t('organization_certificate_title'),
   certificate_type: t('organization_certificate_type'),
   require_expired_date: t('require_expired_date'),
-  require_certificate: t('require_organization_certificate'),
+  hasrequiredata: t('has_require_data'),
 }
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return
@@ -205,11 +205,17 @@ const submitOrganizationCertificateUpload = async () => {
         certificate_title: 'title',
         organizationcertificate: 'title',
         'organizationcertificate title': 'title',
+        'organization certificate title': 'title',
         organization_certificate_title: 'title',
         'organizationcertificate type': 'certificate_type',
+        'organization certificate type': 'certificate_type',
         organization_certificate_type: 'certificate_type',
-        'organizationcertificate required': 'require_certificate',
-        organization_certificate_required: 'require_certificate',
+        hasrequiredata: 'hasrequiredata',
+        'has required data': 'hasrequiredata',
+        has_required_data: 'hasrequiredata',
+        'organizationcertificate required': 'hasrequiredata',
+        'organization certificate required': 'hasrequiredata',
+        organization_certificate_required: 'hasrequiredata',
       }
       const payloadKey = payloadKeys[normalizedKey] ?? normalizedKey
 
@@ -217,7 +223,7 @@ const submitOrganizationCertificateUpload = async () => {
     })
     obj.certificate_type = getOrganizationCertificateTypeValue(obj.certificate_type)
     obj.require_expired_date = getBooleanValue(obj.require_expired_date)
-    obj.require_certificate = getBooleanValue(obj.require_certificate)
+    obj.hasrequiredata = getBooleanValue(obj.hasrequiredata)
 
     return obj
   })

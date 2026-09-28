@@ -1,3 +1,4 @@
+import { featureTranslation } from '@/features/Organization/featureTranslation'
 import type { RouteRecordRaw } from '@/router/types'
 
 export const OrganizationCertificateRoutes: RouteRecordRaw[] = [
@@ -7,7 +8,7 @@ export const OrganizationCertificateRoutes: RouteRecordRaw[] = [
     component: () =>
       import('@/views/Organization/OrganizationCertificate/IndexOrganizationCertificate.vue'),
     meta: {
-      breadcrumb: 'OrganizationCertificate',
+      breadcrumb: featureTranslation('OrganizationCertificate'),
       isSidebar: true,
       type: 'Shared',
     },
@@ -18,7 +19,7 @@ export const OrganizationCertificateRoutes: RouteRecordRaw[] = [
     component: () =>
       import('@/views/Organization/OrganizationCertificate/AddOrganizationCertificate.vue'),
     meta: {
-      breadcrumb: 'Add OrganizationCertificate',
+      breadcrumb: featureTranslation('Add OrganizationCertificate'),
       parent: 'OrganizationCertificates',
       isSidebar: true,
       type: 'Shared',
@@ -30,7 +31,7 @@ export const OrganizationCertificateRoutes: RouteRecordRaw[] = [
     component: () =>
       import('@/views/Organization/OrganizationCertificate/EditOrganizationCertificate.vue'),
     meta: {
-      breadcrumb: 'Edit OrganizationCertificate',
+      breadcrumb: featureTranslation('Edit OrganizationCertificate'),
       parent: 'OrganizationCertificates',
       isSidebar: true,
       type: 'Shared',
@@ -42,7 +43,7 @@ export const OrganizationCertificateRoutes: RouteRecordRaw[] = [
     component: () =>
       import('@/views/Organization/OrganizationCertificate/UploadOrganizationCertificate.vue'),
     meta: {
-      breadcrumb: 'Import OrganizationCertificate',
+      breadcrumb: featureTranslation('Import OrganizationCertificate'),
       parent: 'OrganizationCertificates',
       isSidebar: true,
       type: 'Shared',

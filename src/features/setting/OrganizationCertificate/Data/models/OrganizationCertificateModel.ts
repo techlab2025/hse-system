@@ -13,7 +13,7 @@ export default class OrganizationCertificateModel extends TitleInterface {
   public descriptions: string
   public requireExpiredDate: boolean
   public certificateType: number
-  public requireCertificate: boolean
+  public hasrequiredata: boolean
   public createdAt: string
 
   constructor(
@@ -29,7 +29,7 @@ export default class OrganizationCertificateModel extends TitleInterface {
     descriptions: string,
     requireExpiredDate: boolean,
     certificateType: number,
-    requireCertificate: boolean,
+    hasrequiredata: boolean,
     createdAt: string,
   ) {
     super({ id, title, subtitle })
@@ -44,7 +44,7 @@ export default class OrganizationCertificateModel extends TitleInterface {
     this.descriptions = descriptions
     this.requireExpiredDate = requireExpiredDate
     this.certificateType = certificateType
-    this.requireCertificate = requireCertificate
+    this.hasrequiredata = hasrequiredata
     this.createdAt = createdAt
   }
 
@@ -64,7 +64,7 @@ export default class OrganizationCertificateModel extends TitleInterface {
       data.descriptions,
       this.toBoolean(data.require_expired_date),
       Number(data.certificate_type?.id ?? data.certificate_type ?? 0),
-      this.toBoolean(data.require_certificate),
+      this.toBoolean(data.hasrequiredata ?? data.has_require_data ?? data.require_certificate),
       data.created_at,
     )
   }

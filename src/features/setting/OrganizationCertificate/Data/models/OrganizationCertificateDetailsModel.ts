@@ -19,7 +19,7 @@ export default class OrganizationCertificateDetailsModel {
   public industries: TitleModel<string>[]
   public requireExpiredDate: boolean
   public certificateType: TitleInterface
-  public requireCertificate: boolean
+  public hasrequiredata: boolean
 
   constructor(
     id: number,
@@ -32,7 +32,7 @@ export default class OrganizationCertificateDetailsModel {
     image: string,
     requireExpiredDate: boolean,
     certificateType: TitleInterface,
-    requireCertificate: boolean,
+    hasrequiredata: boolean,
   ) {
     this.id = id
     this.titles = titles
@@ -44,7 +44,7 @@ export default class OrganizationCertificateDetailsModel {
     this.image = image
     this.requireExpiredDate = requireExpiredDate
     this.certificateType = certificateType
-    this.requireCertificate = requireCertificate
+    this.hasrequiredata = hasrequiredata
   }
 
   static fromMap(data: any): OrganizationCertificateDetailsModel {
@@ -61,12 +61,16 @@ export default class OrganizationCertificateDetailsModel {
       data.image,
       data.require_expired_date,
       this.getTitle(data.certificate_type),
-      Boolean(data.require_certificate),
+      this.toBoolean(data.hasrequiredata ?? data.has_require_data ?? data.require_certificate),
     )
   }
 
   static transformData(data: any[]): OrganizationCertificateDetailsModel[] {
     return data.map((item) => this.fromMap(item))
+  }
+
+  private static toBoolean(value: unknown): boolean {
+    return value === true || value === 1 || value === '1' || value === 'true'
   }
 
   static getTitle(data: any) {

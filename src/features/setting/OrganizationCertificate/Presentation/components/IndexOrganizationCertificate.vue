@@ -158,10 +158,10 @@ const actionList = (id: number, deleteOrganizationCertificate: (id: number) => v
     icon: ActionsTableEdit,
     link: `${organizationCertificateRoute}/${id}`,
     permission: [
-      PermissionsEnum.ORG_CERTIFICATE_UPDATE,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_UPDATE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.ORG_CERTIFICATE_ALL,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_ALL,
     ],
   },
 
@@ -170,10 +170,10 @@ const actionList = (id: number, deleteOrganizationCertificate: (id: number) => v
     icon: IconDelete,
     action: () => deleteOrganizationCertificate(id),
     permission: [
-      PermissionsEnum.ORG_CERTIFICATE_DELETE,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_DELETE,
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.ORG_CERTIFICATE_ALL,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_ALL,
     ],
   },
 ]
@@ -205,16 +205,16 @@ const exportExcel = () => {
   const worksheetData = state.value.data.map((item: Record<string, unknown>) => {
     const it = item as any
     return {
-      'OrganizationCertificate Title': it.title || 'N/A',
-      'OrganizationCertificate Type': getOrganizationCertificateTypeLabel(it.certificateType),
+      'Organization Certificate Title': it.title || 'N/A',
+      'Organization Certificate Type': getOrganizationCertificateTypeLabel(it.certificateType),
       'Require Expired Date': it.requireExpiredDate ? 'Yes' : 'No',
-      'OrganizationCertificate Required': it.requireCertificate ? 'Yes' : 'No',
+      'Has Required Data': it.hasrequiredata ? 'Yes' : 'No',
       Image: '*',
     }
   })
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'OrganizationCertificate')
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Organization Certificate')
   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
   const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
   saveAs(data, 'organization_certificate.xlsx')
@@ -223,21 +223,21 @@ const exportExcel = () => {
 const DownloadExample = () => {
   const worksheetData = [
     {
-      'OrganizationCertificate Title': 'NEBOSH',
-      'OrganizationCertificate Type': 'Skill',
+      'Organization Certificate Title': 'NEBOSH',
+      'Organization Certificate Type': 'Skill',
       require_expired_date: 'Yes',
-      'OrganizationCertificate Required': 'Yes',
+      'Has Required Data': 'Yes',
     },
     {
-      'OrganizationCertificate Title': 'OSHA',
-      'OrganizationCertificate Type': 'Awareness',
+      'Organization Certificate Title': 'OSHA',
+      'Organization Certificate Type': 'Awareness',
       require_expired_date: 'Yes',
-      'OrganizationCertificate Required': 'No',
+      'Has Required Data': 'No',
     },
   ]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'OrganizationCertificate')
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Organization Certificate')
   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
   const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
   saveAs(blob, 'organization_certificate_form.xlsx')
@@ -256,14 +256,14 @@ const organizationCertificateActionList = () => [
     link: `${organizationCertificateRoute}/add`,
     primary: true,
     type: ActionItemsTypeEnum.Info,
-    permission: [PermissionsEnum.ORG_CERTIFICATE_CREATE],
+    permission: [PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE],
   },
   {
     text: t('download_excel_template'),
     icon: ExceIcon,
     action: () => DownloadExample(),
     type: ActionItemsTypeEnum.Success,
-    permission: [PermissionsEnum.ORG_CERTIFICATE_FETCH, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+    permission: [PermissionsEnum.ORGANIZATION_CERTIFICATE_FETCH, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
     text: t('upload_complated_template'),
@@ -297,7 +297,7 @@ const organizationCertificateActionList = () => [
         @reset="resetFilters"
       />
 
-      <!-- <PermissionBuilder :code="[PermissionsEnum.ORG_CERTIFICATE_CREATE]">
+      <!-- <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE]">
         <router-link
           :to="`/${
             user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'
@@ -327,11 +327,11 @@ const organizationCertificateActionList = () => [
 
   <PermissionBuilder
     :code="[
-      PermissionsEnum.ORG_CERTIFICATE_ALL,
-      PermissionsEnum.ORG_CERTIFICATE_DELETE,
-      PermissionsEnum.ORG_CERTIFICATE_FETCH,
-      PermissionsEnum.ORG_CERTIFICATE_UPDATE,
-      PermissionsEnum.ORG_CERTIFICATE_CREATE,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_ALL,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_DELETE,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_FETCH,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_UPDATE,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE,
     ]"
   >
     <DataStatus :controller="state">
@@ -350,7 +350,7 @@ const organizationCertificateActionList = () => [
                 </th>
                 <th scope="col">{{ $t('organization_certificate_type') }}</th>
                 <th scope="col">{{ $t('expiry_date_required') }}</th>
-                <th scope="col">{{ $t('require_organization_certificate') }}</th>
+                <th scope="col">{{ $t('has_require_data') }}</th>
                 <!-- <th scope="col">{{ $t('image') }}</th> -->
 
                 <!-- <th scope="col">{{ $t('actions') }}</th> -->
@@ -382,8 +382,8 @@ const organizationCertificateActionList = () => [
                 <td :data-label="$t('require_expired_date')">
                   {{ item.requireExpiredDate ? $t('yes') : $t('no') }}
                 </td>
-                <td :data-label="$t('require_organization_certificate')">
-                  {{ item.requireCertificate ? $t('yes') : $t('no') }}
+                <td :data-label="$t('has_require_data')">
+                  {{ item.hasrequiredata ? $t('yes') : $t('no') }}
                 </td>
                 <!-- <td data-label="image">
                   <div class="image_certificate_container">
@@ -418,7 +418,7 @@ const organizationCertificateActionList = () => [
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <PermissionBuilder :code="[PermissionsEnum.ORG_CERTIFICATE_CREATE]">
+        <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE]">
           <DataEmpty
             :link="`${organizationCertificateRoute}/add`"
             :addText="$t('add_organization_certificate')"
@@ -428,7 +428,7 @@ const organizationCertificateActionList = () => [
         </PermissionBuilder>
       </template>
       <template #failed>
-        <PermissionBuilder :code="[PermissionsEnum.ORG_CERTIFICATE_CREATE]">
+        <PermissionBuilder :code="[PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE]">
           <DataFailed
             :link="`${organizationCertificateRoute}/add`"
             :addText="$t('add_organization_certificate')"

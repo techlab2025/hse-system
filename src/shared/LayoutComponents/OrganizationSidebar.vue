@@ -144,11 +144,11 @@ const OrganizationRoutes = ref<Routes[]>([
     name: 'organization_certificate',
     icon: 'award',
     permissions: [
-      PermissionsEnum.ORG_CERTIFICATE_ALL,
-      PermissionsEnum.ORG_CERTIFICATE_CREATE,
-      PermissionsEnum.ORG_CERTIFICATE_DELETE,
-      PermissionsEnum.ORG_CERTIFICATE_FETCH,
-      PermissionsEnum.ORG_CERTIFICATE_UPDATE,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_ALL,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_DELETE,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_FETCH,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_UPDATE,
     ],
   },
   {

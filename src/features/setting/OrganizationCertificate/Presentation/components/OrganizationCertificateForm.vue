@@ -157,25 +157,23 @@ const updateData = () => {
 
   // console.log(isBase64(image.value), "isBase64(image.value)");
   console.log(expiredate.value, 'expiredate.value')
+  const imagePayload = ImageCahnge.value && isBase64(image.value) && image.value.length > 0
+    ? image.value
+    : firstImage.value == image.value
+      ? null
+      : '*'
+
   const params = props.data?.id
     ? new EditOrganizationCertificateParams(
         props.data.id,
         translationsParams,
         AllIndustry,
         industry.value?.map((item) => item.id),
-        ImageCahnge.value ? isBase64(image.value) ? image.value : ' ' : isBase64(image.value) && image.value.length > 0 ? image.value : '*',
-        isBase64(image.value) && image.value.length > 0 ? image.value : null,
-        ImageCahnge.value && isBase64(image.value) && image.value.length > 0 ? image.value :
-        firstImage.value == image.value ? isBase64(firstImage.value) ? firstImage.value : '*' : image.value,
-        ImageCahnge.value && isBase64(image.value) && image.value.length > 0
-          ? image.value
-          : firstImage.value == image.value
-            ? null
-            : '*',
-        undefined,
+        imagePayload,
+        null,
         expiredate.value,
         certificateType.value.id,
-        requireCertificate.value,
+        hasrequiredata.value,
       )
     : new AddOrganizationCertificateParams(
         translationsParams,
@@ -184,7 +182,7 @@ const updateData = () => {
         isBase64(image.value) && image.value.length > 0 ? image.value : null,
         expiredate.value,
         certificateType.value.id,
-        requireCertificate.value,
+        hasrequiredata.value,
       )
 
   console.log(params, 'params')
@@ -234,7 +232,7 @@ watch(
         certificateTypes.value.find(
           (type) => type.id === newData?.certificateType?.id,
         ) ?? certificateTypes.value[0]
-      requireCertificate.value = newData?.requireCertificate ?? false
+      hasrequiredata.value = newData?.hasrequiredata ?? false
     }
   },
   { immediate: true },
@@ -301,9 +299,9 @@ const updateExpireDate = (data: boolean) => {
   updateData()
 }
 
-const requireCertificate = ref<boolean>(false)
-const updateRequireCertificate = (data: boolean) => {
-  requireCertificate.value = data
+const hasrequiredata = ref<boolean>(false)
+const updateHasRequireData = (data: boolean) => {
+  hasrequiredata.value = data
   updateData()
 }
 
@@ -447,8 +445,8 @@ defineExpose({
     <CustomCheckbox
       :index="2"
       :title="`has_require_data`"
-      :checked="requireCertificate"
-      @update:checked="updateRequireCertificate"
+      :checked="hasrequiredata"
+      @update:checked="updateHasRequireData"
     />
   </div>
   <!-- <div class="col-span-4 md:col-span-4">
