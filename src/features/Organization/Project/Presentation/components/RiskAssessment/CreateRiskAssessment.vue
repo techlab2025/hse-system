@@ -179,7 +179,7 @@ async function create() {
           <div class="evidence-layout">
             <div class="field upload-field">
               <HandleFIlesUpload
-                label=" Attachments "
+                label=" Documents and images "
                 accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
                 :max-files="6"
                 :multiple="true"
