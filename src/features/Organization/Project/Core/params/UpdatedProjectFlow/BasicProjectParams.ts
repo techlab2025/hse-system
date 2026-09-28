@@ -58,7 +58,7 @@ export default class BasicProjectParams implements Params {
       end_date: formatJoinDate(this.endDate),
       cost: this.cost,
       has_zoon: this.hasZoon,
-      drill_count: this.drill_count,
+      drills_count: this.drill_count,
     }
   }
 }
