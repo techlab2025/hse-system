@@ -28,10 +28,14 @@ import FetchMeetingDetailsParams from '@/features/Organization/Project/Core/para
 // Props / Emits
 // -----------------------------------------------------------------------------
 
-const props = defineProps<{
-  meeting: ProjectMeetingModel
-  projectId: number
-}>()
+const props = withDefaults(
+  defineProps<{
+    meeting: ProjectMeetingModel
+    projectId: number
+    triggerless?: boolean
+  }>(),
+  { triggerless: false },
+)
 
 const emit = defineEmits<{
   (event: 'opened'): void
@@ -76,6 +80,17 @@ const openShowResultDialog = () => {
 const closeShowResultDialog = () => {
   ShowResultDialogvisible.value = false
 }
+
+const openDialog = () => {
+  if (props.meeting.hasResult) {
+    openShowResultDialog()
+    return
+  }
+
+  openAddResultDialog()
+}
+
+defineExpose({ openDialog })
 
 // -----------------------------------------------------------------------------
 // Agenda
@@ -494,7 +509,7 @@ const formatMeetingTime = (time?: string | null) => {
   return time.substring(0, 5)
 }
 
-const getEmployeeName = (employee: any) => {
+const getEmployeeName = (employee?: { name?: string; title?: string } | null) => {
   if (!employee) return '—'
 
   return employee.name || employee.title || '—'
@@ -505,9 +520,10 @@ const getEmployeeName = (employee: any) => {
   <!-- Meeting Card -->
   <!-- {{ MeetingDetailsState }} -->
   <button
+    v-if="!triggerless"
     class="meeting-card"
     type="button"
-    @click="meeting.hasResult ? openShowResultDialog() : openAddResultDialog()"
+    @click="openDialog"
   >
     <span class="meeting-card-accent" />
 

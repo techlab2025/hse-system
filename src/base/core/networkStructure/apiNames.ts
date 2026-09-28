@@ -330,6 +330,9 @@ class ApiNames {
   public get ShowProject() {
     return this.prefix + 'fetch_project_details'
   }
+  public get ShowProjectSummaryDetails() {
+    return this.prefix + 'fetch_project_summary_details'
+  }
   public get EditProject() {
     return this.prefix + 'update_project'
   }

@@ -107,6 +107,12 @@ const auditCreateRoute = computed(() => ({
     id: auditProjectId.value,
   },
 }))
+const inspectionCreateRoute = computed(() => ({
+  name: 'Add Inspection',
+  query: selectedProjctesFilters.value
+    ? { project_id: String(selectedProjctesFilters.value) }
+    : undefined,
+}))
 
 /**
  * NEW
@@ -779,13 +785,7 @@ const selectedProject = useProjectSelectStore()
                   PermissionsEnum?.ORG_INSPECTION_CREATE,
                 ]"
               >
-                <router-link
-                  v-if="
-                    String(route?.query?.inspectionType) ==
-                    String(InspectionPageType.InspectionForm)
-                  "
-                  to="/organization/equipment-mangement/inspection/add"
-                >
+                <router-link :to="inspectionCreateRoute">
                   <button class="btn btn-primary create-inspection-btn">
                     <span class="create-icon">
                       <svg viewBox="0 0 24 24" fill="none">

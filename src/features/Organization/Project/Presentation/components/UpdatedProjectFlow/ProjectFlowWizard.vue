@@ -444,7 +444,11 @@ const controllerForStep = () => {
 
 const finishOrContinue = async () => {
   if (editOnly.value || activeStep.value === 5) {
-    await router.push('/organization/projects?type=1')
+    await router.push(
+      route.query.return_to === 'summary' && projectId.value
+        ? `/organization/project-summary/${projectId.value}`
+        : '/organization/projects?type=1',
+    )
     return
   }
   activeStep.value += 1

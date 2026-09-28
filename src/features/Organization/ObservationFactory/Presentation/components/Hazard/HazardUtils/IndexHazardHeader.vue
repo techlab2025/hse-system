@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useRoute } from 'vue-router'
 import HeaderProjectsFilter from './HeaderProjectsFilter.vue'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
 import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel.ts'
@@ -7,6 +8,7 @@ import type ProjectModel from '@/features/Organization/Project/Data/models/Proje
 const emit = defineEmits<{
   (e: 'update:data', value?: number): void
 }>()
+const route = useRoute()
 const props = defineProps<{
   title: string
   length: number
@@ -28,7 +30,9 @@ const UpdateData = (Id?: number) => {
       : projectSelectStore?.project?.id
   emit('update:data', ActiveTap.value)
 }
-const ProjectSelect = useProjectSelectStore()
+const hasSelectedProject = computed(
+  () => Boolean(projectSelectStore.project?.id) || Number(route.query.project_id) > 0,
+)
 </script>
 
 <template>
@@ -66,7 +70,7 @@ const ProjectSelect = useProjectSelectStore()
       </div>
     </div>
 
-    <div class="project-filter-content project-filter-panel" v-if="!ProjectSelect.project?.id">
+    <div v-if="!hasSelectedProject" class="project-filter-content project-filter-panel">
       <div v-if="isProjectsLoading" class="projects-filter-skeleton" aria-hidden="true">
         <span v-for="item in 4" :key="item"></span>
       </div>
