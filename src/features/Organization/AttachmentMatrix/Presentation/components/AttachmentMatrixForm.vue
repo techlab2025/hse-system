@@ -14,7 +14,7 @@ type GroupKey = 'H' | 'sos' | 's'
 const groups: Array<{ key: GroupKey; title: string; description: string }> = [
   {
     key: 'H',
-    title: 'hse_policy attachments',
+    title: 'hse policy attachments',
     description: 'Upload the documents assigned to block hse_policy.',
   },
   {
@@ -24,7 +24,7 @@ const groups: Array<{ key: GroupKey; title: string; description: string }> = [
   },
   {
     key: 's',
-    title: 'standerd_policy attachments',
+    title: 'standerd policy attachments',
     description: 'Upload the documents assigned to block standerd_policy.',
   },
 ]
