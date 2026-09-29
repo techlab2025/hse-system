@@ -52,6 +52,7 @@ import FetchInspectionsResultsParams from '../../Core/params/FetchInspectionsRes
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
 
 import CardSkelaton from './SubComponent/CardSkelaton.vue'
+import InspectionEmptyState from './SubComponent/InspectionEmptyState.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
 
 import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
@@ -1046,6 +1047,28 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
             />
           </template>
 
+          <template #empty>
+            <InspectionEmptyState
+              :filtered="
+                Boolean(SelectedZonesFilter.length || filterDate || filterInspectionType != null)
+              "
+              :results="String(route.query.inspectionType) === String(InspectionPageType.Result)"
+            >
+              <template #actions>
+                <PermissionBuilder
+                  :code="[
+                    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+                    PermissionsEnum.ORG_INSPECTION_CREATE,
+                  ]"
+                >
+                  <router-link :to="inspectionCreateRoute" class="btn btn-primary">
+                    {{ $t('Create Inspection') }}
+                  </router-link>
+                </PermissionBuilder>
+              </template>
+            </InspectionEmptyState>
+          </template>
+
           <template #loader>
             <CardSkelaton />
           </template>
@@ -1072,6 +1095,28 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
             />
           </template>
 
+          <template #empty>
+            <InspectionEmptyState
+              :filtered="
+                Boolean(SelectedZonesFilter.length || filterDate || filterInspectionType != null)
+              "
+              :results="String(route.query.inspectionType) === String(InspectionPageType.Result)"
+            >
+              <template #actions>
+                <PermissionBuilder
+                  :code="[
+                    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+                    PermissionsEnum.ORG_INSPECTION_CREATE,
+                  ]"
+                >
+                  <router-link :to="inspectionCreateRoute" class="btn btn-primary">
+                    {{ $t('Create Inspection') }}
+                  </router-link>
+                </PermissionBuilder>
+              </template>
+            </InspectionEmptyState>
+          </template>
+
           <template #loader>
             <CardSkelaton />
           </template>
@@ -1096,6 +1141,28 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
               @changePage="handleInspectionResultsChangePage"
               @countPerPage="handleInspectionResultsCountPerPage"
             />
+          </template>
+
+          <template #empty>
+            <InspectionEmptyState
+              :filtered="
+                Boolean(SelectedZonesFilter.length || filterDate || filterInspectionType != null)
+              "
+              :results="String(route.query.inspectionType) === String(InspectionPageType.Result)"
+            >
+              <template #actions>
+                <PermissionBuilder
+                  :code="[
+                    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+                    PermissionsEnum.ORG_INSPECTION_CREATE,
+                  ]"
+                >
+                  <router-link :to="inspectionCreateRoute" class="btn btn-primary">
+                    {{ $t('Create Inspection') }}
+                  </router-link>
+                </PermissionBuilder>
+              </template>
+            </InspectionEmptyState>
           </template>
 
           <template #loader>
