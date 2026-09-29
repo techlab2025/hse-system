@@ -1,49 +1,16 @@
 <script setup lang="ts">
 import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
 import HeaderProjectsFilter from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/HeaderProjectsFilter.vue'
-import { useProjectSelectStore } from '@/stores/ProjectSelect'
-import { onMounted, ref, watch } from 'vue'
 import { useThemeMode } from '@/composables/useThemeMode'
 const emit = defineEmits(['update:data'])
-const props = defineProps<{
+defineProps<{
   title: string
   length: number
   projects: MyProjectsModel[]
   isProject?: number
+  selectedProjectId?: number
 }>()
-const ProjectSelectStore = useProjectSelectStore()
 const { isDarkMode } = useThemeMode()
-const ActiveTap = ref(
-  ProjectSelectStore?.project?.id != -1 ? ProjectSelectStore?.project?.id : props.projects?.[0]?.id,
-)
-
-onMounted(() => {
-  emit('update:data', ActiveTap.value)
-})
-
-const UpdateData = (Id: number) => {
-  ActiveTap.value = Id
-  emit(
-    'update:data',
-    ProjectSelectStore?.project?.id != -1 && ProjectSelectStore?.project?.id != null
-      ? ProjectSelectStore?.project?.id
-      : ActiveTap.value,
-  )
-}
-
-const Projects = ref(props.projects)
-watch(
-  () => props.projects,
-  (newValue) => {
-    Projects.value = newValue
-  },
-)
-
-const SelectedProjectId = ref<number>()
-const GetProjectId = (id: number) => {
-  SelectedProjectId.value = id
-  UpdateData(id)
-}
 </script>
 <template>
   <div :class="['idnex-header', { 'is-dark': isDarkMode }]">
@@ -94,7 +61,13 @@ const GetProjectId = (id: number) => {
     </div>
 
     <div class="inspection-project-panel" v-if="!isProject">
-      <HeaderProjectsFilter class="noborder" :projects="projects" @update:data="GetProjectId" />
+      <HeaderProjectsFilter
+        class="noborder"
+        :projects="projects"
+        :selected-project-id="selectedProjectId"
+        :controlled="true"
+        @update:data="emit('update:data', $event)"
+      />
     </div>
   </div>
 </template>

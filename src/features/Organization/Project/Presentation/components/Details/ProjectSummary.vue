@@ -183,6 +183,12 @@ const quickLinks = computed(() => [
     to: `/organization/equipment-mangement/audits/${projectId.value}?project_id=${projectId.value}&inspectionType=1`,
     mark: 'A',
   },
+  {
+    title: 'permit to work',
+    description: 'create permit to work',
+    to: `/organization/project-permit/project/${projectId.value}`,
+    mark: 'A',
+  },
 ])
 
 watch(
@@ -204,7 +210,7 @@ watch(
 
           <div class="summary-hero__content">
             <div class="summary-identity">
-               <!-- <span class="summary-identity__mark">
+              <!-- <span class="summary-identity__mark">
                 <img :src="brandLogo" :alt="`${brandName} logo`" />
               </span> -->
               <div>
@@ -215,7 +221,8 @@ watch(
                 </span>
                 <h1>{{ project?.title || 'Project summary' }}</h1>
                 <p>
-                  <span class="scope-of-work">Project Scope of Work : </span>{{ project?.description || 'A concise view of project safety and operations.' }}
+                  <span class="scope-of-work">Project Scope of Work : </span>{{ project?.description || 'A concise view
+                  of project safety and operations.' }}
                 </p>
               </div>
             </div>
@@ -223,20 +230,12 @@ watch(
             <div class="summary-hero__actions">
               <span class="project-reference">{{
                 project?.serialName || project?.serialNumber
-              }}</span>
-              <RouterLink
-                class="full-details-link"
-                :to="`/organization/project-details/${projectId}`"
-              >
+                }}</span>
+              <RouterLink class="full-details-link" :to="`/organization/project-details/${projectId}`">
                 <span>Open full project details</span>
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path
-                    d="M5 12h14m-5-5 5 5-5 5"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
+                  <path d="M5 12h14m-5-5 5 5-5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" />
                 </svg>
               </RouterLink>
             </div>
@@ -272,17 +271,11 @@ watch(
           </header>
 
           <div class="safety-stat-grid">
-            <RouterLink
-              v-for="stat in safetyStatistics"
-              :key="stat.label"
-              :to="stat.to"
-              class="safety-stat-card"
-              :class="`safety-stat-card--${stat.tone}`"
-            >
+            <RouterLink v-for="stat in safetyStatistics" :key="stat.label" :to="stat.to" class="safety-stat-card"
+              :class="`safety-stat-card--${stat.tone}`">
               <span class="safety-stat-card__icon" aria-hidden="true">{{ stat.icon }}</span>
               <div>
-                <strong
-                  >{{ String(stat.value).split('/')[0] }}
+                <strong>{{ String(stat.value).split('/')[0] }}
                   <span class="tot-num">{{ String(stat.value).split('/')[1] ? '/' : '' }}</span>
                   <span class="tot-num">{{ String(stat.value).split('/')[1] }}</span>
                 </strong>
@@ -302,12 +295,7 @@ watch(
           </div>
 
           <div class="operational-stat-grid">
-            <RouterLink
-              v-for="stat in operationalStatistics"
-              :key="stat.label"
-              :to="stat.to"
-              class="operational-stat"
-            >
+            <RouterLink v-for="stat in operationalStatistics" :key="stat.label" :to="stat.to" class="operational-stat">
               <strong>{{ stat.value }}</strong>
               <span>{{ stat.label }}</span>
               <!-- <small aria-hidden="true">→</small> -->
@@ -328,12 +316,7 @@ watch(
           </header>
 
           <div class="quick-link-grid">
-            <RouterLink
-              v-for="item in quickLinks"
-              :key="item.title"
-              :to="item.to"
-              class="quick-link"
-            >
+            <RouterLink v-for="item in quickLinks" :key="item.title" :to="item.to" class="quick-link">
               <span class="quick-link__mark" aria-hidden="true">{{ item.mark }}</span>
               <span class="quick-link__copy">
                 <strong>{{ item.title }}</strong>
@@ -359,32 +342,26 @@ watch(
     </template>
 
     <template #empty>
-      <DataEmpty
-        link="/organization/projects"
-        add-text="Back to projects"
-        title="Project details are not available"
-        description="Choose another project and try again."
-      />
+      <DataEmpty link="/organization/projects" add-text="Back to projects" title="Project details are not available"
+        description="Choose another project and try again." />
     </template>
 
     <template #failed>
-      <DataFailed
-        link="/organization/projects"
-        add-text="Back to projects"
-        title="Unable to load project summary"
-        description="The project overview could not be loaded. Please try again."
-      />
+      <DataFailed link="/organization/projects" add-text="Back to projects" title="Unable to load project summary"
+        description="The project overview could not be loaded. Please try again." />
     </template>
   </DataStatus>
 </template>
 
 <style scoped lang="scss">
-.scope-of-work{
+.scope-of-work {
   font-size: 12px;
 }
+
 .tot-num {
   font-size: 14px;
 }
+
 .project-summary-page {
   display: flex;
   flex-direction: column;
@@ -402,11 +379,9 @@ watch(
   padding: 30px;
   border-radius: 28px;
   background:
-    linear-gradient(
-      120deg,
+    linear-gradient(120deg,
       color-mix(in srgb, var(--summary-secondary) 82%, var(--summary-primary)),
-      color-mix(in srgb, var(--summary-primary) 72%, var(--summary-secondary))
-    ),
+      color-mix(in srgb, var(--summary-primary) 72%, var(--summary-secondary))),
     var(--summary-secondary);
   box-shadow: 0 24px 60px color-mix(in srgb, var(--summary-secondary) 24%, transparent);
   color: var(--text-on-brand);
@@ -473,7 +448,7 @@ watch(
 
 .summary-eyebrow,
 .section-heading span,
-.operations-panel__intro > span {
+.operations-panel__intro>span {
   display: block;
   margin-bottom: 5px;
   color: color-mix(in srgb, var(--summary-primary) 52%, var(--text-on-brand));
@@ -567,7 +542,7 @@ watch(
   border-top: 1px solid color-mix(in srgb, var(--text-on-brand) 15%, transparent);
 }
 
-.summary-hero__meta > div {
+.summary-hero__meta>div {
   min-width: 0;
   flex: 1;
 }
@@ -602,7 +577,7 @@ watch(
 }
 
 .section-heading span,
-.operations-panel__intro > span {
+.operations-panel__intro>span {
   color: var(--summary-primary);
 }
 
@@ -636,11 +611,9 @@ watch(
   padding: 17px;
   border: 1px solid color-mix(in srgb, var(--stat-color) 18%, var(--main-border));
   border-radius: 18px;
-  background: linear-gradient(
-    145deg,
-    color-mix(in srgb, var(--stat-color) 7%, transparent),
-    transparent 64%
-  );
+  background: linear-gradient(145deg,
+      color-mix(in srgb, var(--stat-color) 7%, transparent),
+      transparent 64%);
   color: inherit;
   transition:
     transform 160ms ease,
@@ -668,15 +641,19 @@ watch(
 .safety-stat-card--red {
   --stat-color: var(--summary-accent);
 }
+
 .safety-stat-card--amber {
   --stat-color: color-mix(in srgb, var(--summary-accent) 68%, var(--summary-primary));
 }
+
 .safety-stat-card--blue {
   --stat-color: var(--summary-primary);
 }
+
 .safety-stat-card--violet {
   --stat-color: color-mix(in srgb, var(--summary-primary) 42%, var(--summary-accent));
 }
+
 .safety-stat-card--navy {
   --stat-color: var(--summary-secondary);
 }
@@ -715,11 +692,9 @@ watch(
 
 .operations-panel {
   background:
-    radial-gradient(
-      circle at 100% 0,
+    radial-gradient(circle at 100% 0,
       color-mix(in srgb, var(--summary-primary) 10%, transparent),
-      transparent 34%
-    ),
+      transparent 34%),
     var(--surface-2);
 }
 
@@ -881,10 +856,12 @@ watch(
   .safety-stat-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
   .operations-panel {
     align-items: flex-start;
     flex-direction: column;
   }
+
   .operational-stat-grid {
     width: 100%;
     grid-template-columns: repeat(3, 1fr);
@@ -895,34 +872,42 @@ watch(
   .project-summary-page {
     padding: 4px;
   }
+
   .summary-hero {
     padding: 22px 18px;
     border-radius: 22px;
   }
+
   .summary-hero__content,
   .summary-hero__meta,
   .section-heading {
     align-items: flex-start;
     flex-direction: column;
   }
+
   .summary-hero__actions {
     width: 100%;
     align-items: stretch;
   }
+
   .project-reference {
     align-self: flex-start;
   }
+
   .full-details-link {
     justify-content: center;
   }
+
   .summary-hero__meta {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
   }
+
   .safety-stat-grid,
   .quick-link-grid {
     grid-template-columns: 1fr;
   }
+
   .summary-section,
   .operations-panel {
     padding: 17px;
@@ -934,6 +919,7 @@ watch(
   .summary-identity {
     flex-direction: column;
   }
+
   .summary-hero__meta,
   .operational-stat-grid,
   .summary-loading {

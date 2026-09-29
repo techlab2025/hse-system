@@ -64,6 +64,8 @@ const { isDarkMode } = useThemeMode()
 const route = useRoute()
 const router = useRouter()
 
+const selectedProject = useProjectSelectStore()
+
 const word = ref('')
 
 const currentPage = ref(1)
@@ -124,7 +126,9 @@ const inspectionCreateRoute = computed(() => ({
 
 const activeAuditTab = ref<'all' | 'mine'>('all')
 
-const selectedProjctesFilters = ref<number | undefined>(auditProjectId.value)
+const selectedProjctesFilters = ref<number | undefined>(
+  auditProjectId.value ?? selectedProject.getProjectId(),
+)
 
 const SelectedZonesFilter = ref<number[]>([])
 
@@ -353,11 +357,12 @@ const changeAuditTab = (tab: 'all' | 'mine') => {
  */
 
 watch(
-  () => [route.query.typeId, route.query.inspectionType, route.query.project_id],
+  () => [route.query.typeId, route.query.inspectionType, auditProjectId.value],
 
-  () => {
-    if (isAuditPage.value) {
-      selectedProjctesFilters.value = auditProjectId.value
+  (values, previousValues) => {
+    if (!previousValues || values[2] !== previousValues[2]) {
+      selectedProjctesFilters.value = auditProjectId.value ?? selectedProject.getProjectId()
+      SelectedZonesFilter.value = []
     }
 
     currentPage.value = 1
@@ -657,6 +662,8 @@ const ApplayFilter = (data: number[]) => {
 }
 
 const setSelectedProjectFilter = (data?: number) => {
+  if (selectedProjctesFilters.value === data) return
+
   selectedProjctesFilters.value = data
 
   SelectedZonesFilter.value = []
@@ -666,10 +673,6 @@ const setSelectedProjectFilter = (data?: number) => {
   currentPage.value = 1
 
   fetchAuditData()
-
-  if (data) {
-    FetchMyZones()
-  }
 }
 
 /**
@@ -716,7 +719,7 @@ watch(
   },
 )
 
-const selectedProject = useProjectSelectStore()
+watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
 </script>
 <template>
   <div
@@ -763,7 +766,8 @@ const selectedProject = useProjectSelectStore()
               0
             "
             :projects="Projects"
-            :isProject="selectedProject.project?.id"
+            :selected-project-id="selectedProjctesFilters"
+            :isProject="auditProjectId ?? selectedProject.project?.id"
             @update:data="setSelectedProjectFilter"
           >
             <template #actions>
@@ -1009,11 +1013,7 @@ const selectedProject = useProjectSelectStore()
           </template>
 
           <template #empty>
-            <DataEmpty
-              title="You have No Audit"
-              description="You have no Audit"
-              :withbtn="false"
-            />
+            <DataEmpty title="You have No Audit" description="You have no Audit" :withbtn="false" />
           </template>
 
           <template #failed>
