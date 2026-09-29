@@ -79,8 +79,8 @@ const safetyStatistics = computed(() => [
     to: `/organization/equipment-mangement/inspection?inspectionType=1&project_id=${projectId.value}`,
   },
   {
-    label: 'Emergency drills',
-    value: project.value?.drillsCount ?? 0,
+    label: 'drills',
+    value: `${project.value?.drillsCount || 0} / ${project.value?.totalDrillCount || 0} `,
     note: 'Preparedness exercises',
     tone: 'violet',
     icon: 'D',
@@ -199,14 +199,14 @@ watch(
     <template #success>
       <main class="project-summary-page" :style="summaryIdentityStyle">
         <section class="summary-hero">
-          <span class="summary-hero__orb summary-hero__orb--one" aria-hidden="true"></span>
-          <span class="summary-hero__orb summary-hero__orb--two" aria-hidden="true"></span>
+          <!-- <span class="summary-hero__orb summary-hero__orb--one" aria-hidden="true"></span>
+          <span class="summary-hero__orb summary-hero__orb--two" aria-hidden="true"></span> -->
 
           <div class="summary-hero__content">
             <div class="summary-identity">
-              <span class="summary-identity__mark">
+               <!-- <span class="summary-identity__mark">
                 <img :src="brandLogo" :alt="`${brandName} logo`" />
-              </span>
+              </span> -->
               <div>
                 <span class="summary-eyebrow">
                   <!-- <b>{{ brandName }}</b> -->
@@ -215,7 +215,7 @@ watch(
                 </span>
                 <h1>{{ project?.title || 'Project summary' }}</h1>
                 <p>
-                  {{ project?.description || 'A concise view of project safety and operations.' }}
+                  <span class="scope-of-work">Project Scope of Work : </span>{{ project?.description || 'A concise view of project safety and operations.' }}
                 </p>
               </div>
             </div>
@@ -379,6 +379,9 @@ watch(
 </template>
 
 <style scoped lang="scss">
+.scope-of-work{
+  font-size: 12px;
+}
 .tot-num {
   font-size: 14px;
 }
