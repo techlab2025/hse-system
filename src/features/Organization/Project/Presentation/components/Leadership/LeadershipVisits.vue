@@ -9,6 +9,9 @@ import FetchAllLeadershipVisitsController from '../../controllers/Leadership/Fet
 import FetchLeadershipVisitDetailsController from '../../controllers/Leadership/FetchLeadershipVisitDetailsController'
 import type LeadershipVisitDetailsModel from '../../../Data/models/Leadership/LeadershipVisitDetailsModel'
 import ReportVisitDetailsDialog from './ReportVisitDetailsDialog.vue'
+import { debounce } from '@/base/Presentation/utils/debouced.ts'
+import DatePicker from 'primevue/datepicker'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format.ts'
 
 defineOptions({ name: 'ProjectLeadershipVisits' })
 
@@ -68,42 +71,66 @@ const closeDetailsDialog = () => {
   loadingVisitId.value = null
 }
 
-onMounted(async () => {
+const fetchAllVisits = async (data?: { word?: string, date?: string }) => {
   if (Number.isInteger(projectId.value) && projectId.value > 0) {
-    await controller.fetchVisits(new FetchAllLeadershipVisitsParams(projectId.value))
+    await controller.fetchVisits(new FetchAllLeadershipVisitsParams({
+      projectId: projectId.value, ...(data?.word && { word: data?.word }),
+      ...(data?.date && { date: data?.date })
+    }))
   }
+}
+onMounted(async () => {
+  fetchAllVisits()
 })
+
+const word = ref('')
+
+const searchVisits = debounce(() => {
+  fetchAllVisits({ word: word.value })
+})
+const Customdate = ref<Date | null>(null)
+const DateUpdate = (date?: Date) => {
+  if (date) {
+    fetchAllVisits({ date: String(formatJoinDate(date!)) })
+  }
+
+}
+
 </script>
 
 <template>
   <main class="visits-page">
-    <!-- <header class="visits-hero">
-      <div class="visits-hero__content">
-        <span class="visits-hero__icon" aria-hidden="true">◎</span>
-        <div>
-          <h1>Leadership visits</h1>
-          <p>Review planned visits, create reports, and revisit completed report details.</p>
-        </div>
-      </div>
-      <RouterLink :to="`/organization/project-details/${projectId}/leadership`" class="hero-link">
-        ← Back to visit plan
-      </RouterLink>
-    </header> -->
-
-    <!-- <div v-if="reportCreated" class="notice notice--success" role="status">
-      <span aria-hidden="true">✓</span>
-      Visit report submitted successfully.
-    </div> -->
-
     <section class="visits-card">
       <div class="section-heading">
         <div>
-          <h2>All visits</h2>
+          <h2>Reports</h2>
           <p>Reports can be added once and reviewed here afterward.</p>
         </div>
         <span class="total-pill">{{ visits.length }} visits</span>
       </div>
 
+      <div class="filters">
+        <div class="search">
+          <div class="input-search col-span-1">
+            <label for="">visit location</label>
+            <span class="icon-remove" @click="((word = ''), searchVisits())">
+              <Search />
+            </span>
+            <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchVisits" />
+          </div>
+        </div>
+        <div class="date-filter">
+          <div class="input-wrapper">
+            <div class="field-label">
+              <label for="drill_date">{{ $t('date') }}</label>
+              <FieldHelpIcon text="Select the date." />
+            </div>
+            <DatePicker id="drill_date" v-model="Customdate" date-format="yy-mm-dd" show-icon fluid :manualInput="false"
+              @update:model-value="DateUpdate" />
+          </div>
+
+        </div>
+      </div>
       <DataStatus :controller="state">
         <template #success>
           <div v-if="visits.length" class="table-responsive visits-table">
@@ -147,21 +174,14 @@ onMounted(async () => {
                     </span>
                   </td> -->
                   <td data-label="Action">
-                    <button
-                      v-if="visit.hasReport || visit.report"
-                      type="button"
-                      class="report-link report-link--details"
-                      :disabled="detailsLoading"
-                      @click="fetchReportDetails(visit.id)"
-                    >
+                    <button v-if="visit.hasReport || visit.report" type="button"
+                      class="report-link report-link--details" :disabled="detailsLoading"
+                      @click="fetchReportDetails(visit.id)">
                       {{ loadingVisitId === visit.id ? 'Loading…' : 'Report details' }}
                       <span v-if="loadingVisitId !== visit.id" aria-hidden="true">⌕</span>
                     </button>
-                    <a
-                      v-else
-                      :href="`/organization/project-details/${projectId}/leadership/visits/${visit.id}/report`"
-                      class="report-link"
-                    >
+                    <a v-else :href="`/organization/project-details/${projectId}/leadership/visits/${visit.id}/report`"
+                      class="report-link">
                       Report visit <span aria-hidden="true">↗</span>
                     </a>
                   </td>
@@ -178,8 +198,12 @@ onMounted(async () => {
             </RouterLink>
           </div>
         </template>
-        <template #loader><TableLoader :cols="6" :rows="5" /></template>
-        <template #initial><TableLoader :cols="6" :rows="5" /></template>
+        <template #loader>
+          <TableLoader :cols="6" :rows="5" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="6" :rows="5" />
+        </template>
         <template #empty>
           <div class="empty-state"><strong>No visits have been planned yet.</strong></div>
         </template>
@@ -189,17 +213,28 @@ onMounted(async () => {
       </DataStatus>
     </section>
 
-    <ReportVisitDetailsDialog
-      :visible="detailsDialogVisible"
-      :visit="selectedVisit"
-      :loading="detailsLoading"
-      :error="detailsError"
-      @close="closeDetailsDialog"
-    />
+    <ReportVisitDetailsDialog :visible="detailsDialogVisible" :visit="selectedVisit" :loading="detailsLoading"
+      :error="detailsError" @close="closeDetailsDialog" />
   </main>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.filters {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+
+  div {
+    width: 100% !important;
+
+  }
+
+  // .search {
+  //   width: 50% !important;
+  // }
+}
+
 .visits-page {
   display: grid;
   gap: 22px;
@@ -443,7 +478,7 @@ onMounted(async () => {
   background: color-mix(in srgb, var(--PrimaryColor) 3%, var(--surface-1));
 }
 
-.empty-state > span {
+.empty-state>span {
   font-size: 2rem;
   color: var(--PrimaryColor);
 }
@@ -488,6 +523,7 @@ onMounted(async () => {
 }
 
 @media (max-width: 760px) {
+
   .visits-hero,
   .section-heading {
     flex-wrap: wrap;
@@ -500,6 +536,7 @@ onMounted(async () => {
 }
 
 @media (max-width: 640px) {
+
   .visits-table table,
   .visits-table tbody,
   .visits-table tr,

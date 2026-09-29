@@ -117,7 +117,7 @@ onMounted(async () => {
     Number.isInteger(visitId.value) &&
     visitId.value > 0
   ) {
-    await visitsController.fetchVisits(new FetchAllLeadershipVisitsParams(projectId.value))
+    await visitsController.fetchVisits(new FetchAllLeadershipVisitsParams({ projectId: projectId.value }))
   }
 })
 </script>
@@ -182,21 +182,11 @@ onMounted(async () => {
               </label>
               <label class="field field--wide">
                 <span class="field__label">Discussion <b>*</b></span>
-                <textarea
-                  v-model="discussion"
-                  rows="5"
-                  required
-                  placeholder="Summarize what was discussed"
-                />
+                <textarea v-model="discussion" rows="5" required placeholder="Summarize what was discussed" />
               </label>
               <label class="field field--wide">
                 <span class="field__label">Observations <b>*</b></span>
-                <textarea
-                  v-model="observations"
-                  rows="5"
-                  required
-                  placeholder="Record the key observations"
-                />
+                <textarea v-model="observations" rows="5" required placeholder="Record the key observations" />
               </label>
             </div>
           </section>
@@ -220,18 +210,13 @@ onMounted(async () => {
                   <div>
                     <span class="improvement-card__number">{{
                       String(index + 1).padStart(2, '0')
-                    }}</span>
+                      }}</span>
                     <div>
-                      <strong>Improvement {{ index + 1 }}</strong
-                      ><small>Capture the issue and action taken</small>
+                      <strong>Improvement {{ index + 1 }}</strong><small>Capture the issue and action taken</small>
                     </div>
                   </div>
-                  <button
-                    type="button"
-                    class="remove-button"
-                    :disabled="improvements.length === 1"
-                    @click="improvements.splice(index, 1)"
-                  >
+                  <button type="button" class="remove-button" :disabled="improvements.length === 1"
+                    @click="improvements.splice(index, 1)">
                     <span aria-hidden="true">×</span> Remove
                   </button>
                 </div>
@@ -242,45 +227,20 @@ onMounted(async () => {
                   </label>
                   <label class="field">
                     <span class="field__label">Intervention carried out <b>*</b></span>
-                    <input
-                      v-model="item.interventionCarriedOut"
-                      type="text"
-                      required
-                      placeholder="Action taken"
-                    />
+                    <input v-model="item.interventionCarriedOut" type="text" required placeholder="Action taken" />
                   </label>
-                  <UpdatedCustomInputSelect
-                    :id="`unsafe-type-${index}`"
-                    label="UA / UC"
-                    placeholder="Select UA / UC"
-                    :required="true"
-                    :reload="false"
-                    :static-options="unsafeTypeOptions"
+                  <UpdatedCustomInputSelect :id="`unsafe-type-${index}`" label="UA / UC" placeholder="Select UA / UC"
+                    :required="true" :reload="false" :static-options="unsafeTypeOptions"
                     :model-value="selectedOption(unsafeTypeOptions, item.uaUc)"
-                    @update:model-value="(value) => (item.uaUc = selectedUnsafeType(value))"
-                  />
-                  <UpdatedCustomInputSelect
-                    :id="`visit-theme-${index}`"
-                    label="Visit theme"
-                    placeholder="Select theme"
-                    :required="true"
-                    :reload="false"
-                    :controller="visitThemeController"
-                    :params="visitThemeParams"
+                    @update:model-value="(value) => (item.uaUc = selectedUnsafeType(value))" />
+                  <UpdatedCustomInputSelect :id="`visit-theme-${index}`" label="Visit theme" placeholder="Select theme"
+                    :required="true" :reload="false" :controller="visitThemeController" :params="visitThemeParams"
                     :model-value="selectedOption(themeOptions, item.visitThemId)"
-                    @update:model-value="(value) => (item.visitThemId = selectedId(value))"
-                  />
-                  <UpdatedCustomInputSelect
-                    :id="`visit-category-${index}`"
-                    label="Visit category"
-                    placeholder="Select category"
-                    :required="true"
-                    :reload="false"
-                    :controller="visitCategoryController"
-                    :params="visitCategoryParams"
-                    :model-value="selectedOption(categoryOptions, item.visitCategoryId)"
-                    @update:model-value="(value) => (item.visitCategoryId = selectedId(value))"
-                  />
+                    @update:model-value="(value) => (item.visitThemId = selectedId(value))" />
+                  <UpdatedCustomInputSelect :id="`visit-category-${index}`" label="Visit category"
+                    placeholder="Select category" :required="true" :reload="false" :controller="visitCategoryController"
+                    :params="visitCategoryParams" :model-value="selectedOption(categoryOptions, item.visitCategoryId)"
+                    @update:model-value="(value) => (item.visitCategoryId = selectedId(value))" />
                 </div>
               </article>
             </div>
@@ -297,25 +257,15 @@ onMounted(async () => {
               </div>
             </div>
             <div class="report-upload-field">
-              <HandleFIlesUpload
-                label="Visit report attachment"
-                accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
-                :max-files="1"
-                :multiple="false"
-                class-name="report-file-input"
-                @change="handleFilesChange"
-              />
+              <HandleFIlesUpload label="Visit report attachment" accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
+                :max-files="1" :multiple="false" class-name="report-file-input" @change="handleFilesChange" />
               <small>PDF, Word, Excel, or image · One file maximum</small>
             </div>
           </section>
 
           <footer class="form-footer">
             <RouterLink :to="visitsPath" class="button button--quiet">Cancel</RouterLink>
-            <button
-              type="submit"
-              class="button button--primary"
-              :disabled="controller.isDataLoading()"
-            >
+            <button type="submit" class="button button--primary" :disabled="controller.isDataLoading()">
               {{ controller.isDataLoading() ? 'Submitting…' : 'Submit visit report' }}
               <span v-if="!controller.isDataLoading()" aria-hidden="true">→</span>
             </button>
@@ -335,19 +285,23 @@ onMounted(async () => {
           <RouterLink :to="visitsPath">Back to leadership visits</RouterLink>
         </section>
       </template>
-      <template #loader
-        ><div class="loader-card"><TableLoader :cols="2" :rows="5" /></div
-      ></template>
-      <template #initial
-        ><div class="loader-card"><TableLoader :cols="2" :rows="5" /></div
-      ></template>
-      <template #failed
-        ><section class="page-state page-state--error">
+      <template #loader>
+        <div class="loader-card">
+          <TableLoader :cols="2" :rows="5" />
+        </div>
+      </template>
+      <template #initial>
+        <div class="loader-card">
+          <TableLoader :cols="2" :rows="5" />
+        </div>
+      </template>
+      <template #failed>
+        <section class="page-state page-state--error">
           <span>!</span>
           <h2>Unable to load this visit</h2>
           <RouterLink :to="visitsPath">Back to leadership visits</RouterLink>
-        </section></template
-      >
+        </section>
+      </template>
     </DataStatus>
   </main>
 </template>
@@ -366,6 +320,7 @@ onMounted(async () => {
     ),
     var(--surface-2); */
 }
+
 .report-hero {
   display: flex;
   align-items: center;
@@ -380,18 +335,21 @@ onMounted(async () => {
     linear-gradient(125deg, var(--brand-primary-900), var(--PrimaryColor));
   box-shadow: 0 22px 52px color-mix(in srgb, var(--brand-primary-900) 19%, transparent);
 }
+
 .report-hero__content,
 .visit-context__main,
 .section-title,
 .section-title__copy,
 .improvement-card__heading,
-.improvement-card__heading > div {
+.improvement-card__heading>div {
   display: flex;
   align-items: center;
 }
+
 .report-hero__content {
   gap: 18px;
 }
+
 .report-hero__icon {
   display: grid;
   place-items: center;
@@ -402,6 +360,7 @@ onMounted(async () => {
   border-radius: 20px;
   background: color-mix(in srgb, white 12%, transparent);
 }
+
 .report-hero__icon svg {
   width: 31px;
   stroke: currentColor;
@@ -409,6 +368,7 @@ onMounted(async () => {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
 .eyebrow {
   color: var(--PrimaryColor);
   font-size: 0.68rem;
@@ -416,17 +376,21 @@ onMounted(async () => {
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
+
 .report-hero .eyebrow {
   color: color-mix(in srgb, white 72%, var(--PrimaryColor));
 }
+
 .report-hero h1 {
   margin: 4px 0 7px;
   font-size: clamp(1.7rem, 3vw, 2.45rem);
 }
+
 .report-hero p {
   margin: 0;
   color: color-mix(in srgb, white 72%, transparent);
 }
+
 .back-link {
   flex: none;
   padding: 11px 15px;
@@ -437,12 +401,14 @@ onMounted(async () => {
   font-weight: 750;
   text-decoration: none;
 }
+
 .report-form {
   display: grid;
   gap: 18px;
   /* width: min(1120px, 100%); */
   margin-inline: auto;
 }
+
 .visit-context,
 .form-section,
 .form-footer,
@@ -452,6 +418,7 @@ onMounted(async () => {
   background: var(--surface-1);
   box-shadow: 0 12px 34px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
 }
+
 .visit-context {
   display: flex;
   align-items: center;
@@ -460,26 +427,29 @@ onMounted(async () => {
   padding: 17px 20px;
   border-color: color-mix(in srgb, var(--PrimaryColor) 20%, var(--main-border));
   border-radius: 18px;
-  background: linear-gradient(
-    110deg,
-    color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1)),
-    var(--surface-1)
-  );
+  background: linear-gradient(110deg,
+      color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1)),
+      var(--surface-1));
 }
+
 .visit-context__main {
   gap: 12px;
 }
-.visit-context__main > div {
+
+.visit-context__main>div {
   display: grid;
   gap: 3px;
 }
+
 .visit-context__main strong {
   color: var(--text-strong);
   font-size: 1rem;
 }
+
 .visit-context__main small {
   color: var(--text-soft);
 }
+
 .visit-context__pin {
   display: grid;
   place-items: center;
@@ -492,12 +462,14 @@ onMounted(async () => {
   font-size: 1.3rem;
   font-weight: 900;
 }
+
 .visit-context__meta {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 9px;
 }
+
 .visit-context__meta span {
   display: inline-flex;
   align-items: center;
@@ -509,9 +481,11 @@ onMounted(async () => {
   font-size: 0.78rem;
   font-weight: 800;
 }
+
 .visit-context__meta i {
   font-style: normal;
 }
+
 .form-error {
   display: flex;
   align-items: center;
@@ -523,6 +497,7 @@ onMounted(async () => {
   background: var(--status-danger-soft);
   font-weight: 750;
 }
+
 .form-error span {
   display: grid;
   place-items: center;
@@ -532,24 +507,29 @@ onMounted(async () => {
   color: white;
   background: var(--status-danger);
 }
+
 .form-section {
   display: grid;
   gap: 20px;
   padding: clamp(19px, 3vw, 28px);
   border-radius: 20px;
 }
+
 .section-title {
   gap: 12px;
 }
+
 .section-title--with-action {
   justify-content: space-between;
   gap: 16px;
 }
+
 .section-title__copy {
   gap: 12px;
 }
-.section-title > span,
-.section-title__copy > span {
+
+.section-title>span,
+.section-title__copy>span {
   display: grid;
   place-items: center;
   width: 43px;
@@ -561,38 +541,46 @@ onMounted(async () => {
   font-size: 0.74rem;
   font-weight: 850;
 }
+
 .section-title h2 {
   margin: 0 0 4px;
   color: var(--text-strong);
   font-size: 1.08rem;
 }
+
 .section-title p {
   margin: 0;
   color: var(--text-soft);
   font-size: 0.82rem;
 }
+
 .fields {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
+
 .field {
   display: grid;
   align-content: start;
   gap: 8px;
   min-width: 0;
 }
+
 .field--wide {
   grid-column: 1 / -1;
 }
+
 .field__label {
   color: var(--text-strong);
   font-size: 0.82rem;
   font-weight: 800;
 }
+
 .field__label b {
   color: var(--status-danger);
 }
+
 .field input,
 .field textarea {
   width: 100%;
@@ -610,28 +598,34 @@ onMounted(async () => {
     box-shadow 0.2s ease,
     background 0.2s ease;
 }
+
 .field input:focus,
 .field textarea:focus {
   border-color: var(--PrimaryColor);
   background: var(--surface-1);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 13%, transparent);
 }
+
 .field textarea {
   min-height: 120px;
   resize: vertical;
   line-height: 1.55;
 }
+
 .fields :deep(.updated-custom-input-select) {
   min-width: 0;
 }
+
 .fields :deep(.p-select) {
   width: 100%;
   min-height: 46px;
 }
+
 .improvement-list {
   display: grid;
   gap: 13px;
 }
+
 .improvement-card {
   position: relative;
   overflow: hidden;
@@ -640,6 +634,7 @@ onMounted(async () => {
   border-radius: 17px;
   background: color-mix(in srgb, var(--surface-2) 67%, var(--surface-1));
 }
+
 .improvement-card::before {
   content: '';
   position: absolute;
@@ -648,25 +643,31 @@ onMounted(async () => {
   width: 3px;
   background: var(--PrimaryColor);
 }
+
 .improvement-card__heading {
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 17px;
 }
-.improvement-card__heading > div {
+
+.improvement-card__heading>div {
   gap: 10px;
 }
-.improvement-card__heading > div > div {
+
+.improvement-card__heading>div>div {
   display: grid;
   gap: 2px;
 }
+
 .improvement-card__heading strong {
   color: var(--text-strong);
 }
+
 .improvement-card__heading small {
   color: var(--text-soft);
   font-size: 0.72rem;
 }
+
 .improvement-card__number {
   display: grid;
   place-items: center;
@@ -678,6 +679,7 @@ onMounted(async () => {
   font-size: 0.72rem;
   font-weight: 850;
 }
+
 .remove-button {
   display: inline-flex;
   align-items: center;
@@ -691,10 +693,12 @@ onMounted(async () => {
   font: inherit;
   font-weight: 750;
 }
+
 .remove-button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
+
 .add-button {
   display: inline-flex;
   align-items: center;
@@ -708,6 +712,7 @@ onMounted(async () => {
   font: inherit;
   font-weight: 800;
 }
+
 .report-upload-field {
   display: grid;
   gap: 8px;
@@ -717,7 +722,7 @@ onMounted(async () => {
   background: color-mix(in srgb, var(--surface-2) 55%, var(--surface-1));
 }
 
-.report-upload-field > small {
+.report-upload-field>small {
   color: var(--text-soft);
   font-size: 0.75rem;
 }
@@ -772,6 +777,7 @@ onMounted(async () => {
   border-radius: 13px;
   background: var(--surface-1);
 }
+
 .form-footer {
   position: sticky;
   bottom: 12px;
@@ -784,6 +790,7 @@ onMounted(async () => {
   background: color-mix(in srgb, var(--surface-1) 90%, transparent);
   backdrop-filter: blur(14px);
 }
+
 .button {
   display: inline-flex;
   align-items: center;
@@ -798,20 +805,24 @@ onMounted(async () => {
   font-weight: 800;
   text-decoration: none;
 }
+
 .button--quiet {
   color: var(--text-strong);
   background: var(--surface-1);
 }
+
 .button--primary {
   color: var(--text-on-brand);
   border-color: var(--PrimaryColor);
   background: linear-gradient(135deg, var(--PrimaryColor), var(--brand-primary-700));
   box-shadow: 0 10px 22px color-mix(in srgb, var(--PrimaryColor) 23%, transparent);
 }
+
 .button:disabled {
   opacity: 0.55;
   cursor: wait;
 }
+
 .loader-card,
 .page-state {
   width: min(1120px, 100%);
@@ -819,13 +830,15 @@ onMounted(async () => {
   padding: clamp(22px, 4vw, 40px);
   border-radius: 20px;
 }
+
 .page-state {
   display: grid;
   place-items: center;
   gap: 9px;
   text-align: center;
 }
-.page-state > span {
+
+.page-state>span {
   display: grid;
   place-items: center;
   width: 52px;
@@ -836,61 +849,77 @@ onMounted(async () => {
   font-size: 1.4rem;
   font-weight: 900;
 }
+
 .page-state h2 {
   margin: 4px 0 0;
   color: var(--text-strong);
 }
+
 .page-state p {
   margin: 0;
   color: var(--text-soft);
 }
+
 .page-state a {
   margin-top: 6px;
   color: var(--PrimaryColor);
   font-weight: 800;
 }
-.page-state--error > span {
+
+.page-state--error>span {
   background: var(--status-danger);
 }
+
 @media (max-width: 720px) {
+
   .report-hero,
   .visit-context,
   .section-title--with-action {
     flex-wrap: wrap;
   }
+
   .back-link {
     width: 100%;
     text-align: center;
   }
+
   .visit-context__meta {
     justify-content: flex-start;
   }
+
   .fields {
     grid-template-columns: 1fr;
   }
+
   .field--wide {
     grid-column: auto;
   }
 }
+
 @media (max-width: 520px) {
   .report-hero__icon {
     width: 52px;
     height: 52px;
     border-radius: 16px;
   }
+
   .form-section {
     padding: 16px;
   }
+
   .improvement-card {
     padding: 15px;
   }
+
   .improvement-card__heading {
     align-items: flex-start;
   }
+
   .form-footer {
     position: static;
     flex-direction: column-reverse;
   }
+
   .form-footer .button {
     width: 100%;
   }
