@@ -216,8 +216,14 @@ const hasTaskResults = (task: InspectionModel) =>
           :fulltask="task"
         />
 
-        <div v-if="isAuditPage && !isDrag && !hasTaskResults(task)" class="mt w-full">
+        <div
+          v-if="!isDrag && !showresult && (!isAuditPage || !hasTaskResults(task))"
+          class="mt w-full"
+        >
           <InspectionTemplatePreviewDialog
+            :questions-only="!isAuditPage"
+            :button-label="isAuditPage ? undefined : $t('Show task')"
+            :dialog-title="isAuditPage ? undefined : $t('Task questions')"
             :template-id="task.template?.id"
             :template="task.template"
           />
@@ -249,7 +255,7 @@ const hasTaskResults = (task: InspectionModel) =>
           :to="`/organization/equipment-mangement/inspection/result/${task.id}`"
         >
           <div class="button-text">
-            <h5>{{ $t('Show all logs') }}</h5>
+            <h5>{{ $t(isAuditPage ? 'Show all logs' : 'Details') }}</h5>
             <!-- <span>20</span> -->
           </div>
           <ButtonArrow />

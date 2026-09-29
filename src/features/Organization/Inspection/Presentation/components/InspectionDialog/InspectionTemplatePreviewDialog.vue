@@ -3,18 +3,50 @@ import type TemplateDetailsModel from '@/features/setting/Template/Data/models/T
 import ShowTemplateParams from '@/features/setting/Template/Core/params/showTemplateParams'
 import ShowTemplateController from '@/features/setting/Template/Presentation/controllers/showTemplateController'
 import ReadOnlyTemplateDocument from '@/features/setting/TemplateItem/Presentation/components/TemplateDocument.vue'
+import { useI18n } from 'vue-i18n'
 import Dialog from 'primevue/dialog'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps<{
+  questionsOnly?: boolean
+  buttonLabel?: string
+  dialogTitle?: string
   templateId?: number
   template?: TemplateDetailsModel
 }>()
 
+const { t, locale } = useI18n()
 const visible = ref(false)
 const loading = ref(false)
 const errorMessage = ref('')
 const document = ref<TemplateDetailsModel | undefined>(props.template)
+
+const questionGroups = computed(() => {
+  const groups = (document.value?.templateItemTags ?? []).map((tag) => ({
+    title: tag.titles?.find((title) => title.locale === locale.value)?.title || tag.title,
+    items: tag.templateItems ?? [],
+  }))
+  const groupedIds = new Set(groups.flatMap((group) => group.items.map((item) => item.id)))
+  const remaining = (document.value?.templateItems ?? []).filter((item) => !groupedIds.has(item.id))
+  if (remaining.length) groups.push({ title: t('Questions'), items: remaining })
+  return groups.filter((group) => group.items.length)
+})
+
+// Use the audit document layout while retaining every inspection question,
+// including questions returned outside a tag group.
+const previewDocument = computed(() => {
+  if (!document.value || !props.questionsOnly) return document.value
+  return {
+    ...document.value,
+    templateItemTags: questionGroups.value.map((group, index) => ({
+      id: index,
+      templateItemTagId: index,
+      title: group.title,
+      titles: [],
+      templateItems: group.items,
+    })),
+  }
+})
 
 const openTemplate = async () => {
   visible.value = true
@@ -54,7 +86,7 @@ const openTemplate = async () => {
         />
       </svg>
     </span>
-    <span>{{ $t('View audit template') }}</span>
+    <span>{{ buttonLabel || $t('View audit template') }}</span>
   </button>
 
   <Dialog
@@ -62,11 +94,11 @@ const openTemplate = async () => {
     modal
     dismissable-mask
     :draggable="false"
-    :header="$t('Audit template')"
+    :header="dialogTitle || $t('Audit template')"
     class="audit-template-preview-dialog"
     :style="{ width: 'min(68rem, calc(100vw - 24px))' }"
   >
-    <div v-if="loading && !document" class="template-preview-state">
+    <div v-if="loading && (questionsOnly || !document)" class="template-preview-state">
       {{ $t('Loading template...') }}
     </div>
 
@@ -74,8 +106,12 @@ const openTemplate = async () => {
       {{ errorMessage }}
     </div>
 
-    <div v-else-if="document" class="read-only-template">
-      <ReadOnlyTemplateDocument :all-data="document" :header-display="true" :is-actions="false" />
+    <div v-else-if="previewDocument" class="read-only-template" :inert="questionsOnly">
+      <ReadOnlyTemplateDocument
+        :all-data="previewDocument"
+        :header-display="true"
+        :is-actions="false"
+      />
     </div>
 
     <div v-else class="template-preview-state">
@@ -85,6 +121,9 @@ const openTemplate = async () => {
 </template>
 
 <style scoped lang="scss">
+.read-only-template {
+  pointer-events: none;
+}
 .template-preview-trigger {
   display: inline-flex;
   width: 100%;
@@ -132,9 +171,5 @@ const openTemplate = async () => {
 
 .template-preview-state--error {
   color: var(--status-danger);
-}
-
-.read-only-template {
-  pointer-events: none;
 }
 </style>

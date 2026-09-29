@@ -93,7 +93,21 @@ const InspectionsResultsState = ref(fetchInspectionsResultsController.state.valu
  * Audit page
  */
 
-const inspectionType = computed(() => route.query.inspectionType)
+const inspectionType = computed(() => {
+  const type = Number(route.query.inspectionType)
+  return [1, 2, 3].includes(type) ? type : InspectionPageType.InspectionForm
+})
+
+const taskTabs = [
+  { type: InspectionPageType.InspectionForm, label: 'All tasks' },
+  { type: InspectionPageType.DragInspection, label: 'My tasks' },
+  { type: InspectionPageType.Result, label: 'Submitted tasks' },
+]
+
+const changeTaskTab = (type: InspectionPageType) => {
+  if (inspectionType.value === type) return
+  router.push({ query: { ...route.query, inspectionType: String(type) } })
+}
 
 const isAuditPage = computed(() => route.name === 'Audits')
 
@@ -116,14 +130,6 @@ const inspectionCreateRoute = computed(() => ({
     ? { project_id: String(selectedProjctesFilters.value) }
     : undefined,
 }))
-
-/**
- * NEW
- * Audit tabs:
- *
- * all  => All Audits
- * mine => My Audits
- */
 
 const activeAuditTab = ref<'all' | 'mine'>('all')
 
@@ -280,7 +286,7 @@ const fetchCurrentInspectionData = (
   perPage: number = countPerPage.value,
   withPage: number = 1,
 ) => {
-  if (String(route?.query?.inspectionType) === String(InspectionPageType.DragInspection)) {
+  if (String(inspectionType.value) === String(InspectionPageType.DragInspection)) {
     return fetchInspection(
       query,
       pageNumber,
@@ -289,26 +295,16 @@ const fetchCurrentInspectionData = (
       undefined,
       getSelectedZonesFilter(),
     )
-  } else if (String(route?.query?.inspectionType) === String(InspectionPageType.InspectionForm)) {
+  } else if (String(inspectionType.value) === String(InspectionPageType.InspectionForm)) {
     return InspectionFormTasks(query, pageNumber, perPage, withPage, getSelectedZonesFilter())
   } else {
     return InspectionsResultsTasks(query, pageNumber, perPage, withPage, getSelectedZonesFilter())
   }
 }
 
-/**
- * NEW Audit dispatcher
- *
- * All Audits:
- *     FetchAllTasksController
- *
- * My Audits:
- *     IndexInspectionController
- */
-
 const fetchAuditData = () => {
   if (!isAuditPage.value) {
-    return fetchCurrentInspectionData()
+    return fetchCurrentInspectionData(word.value)
   }
 
   console.log('activeAuditTab', activeAuditTab)
@@ -753,6 +749,19 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
           PermissionsEnum?.ORG_INSPECTION_FETCH,
         ]"
       >
+        <nav v-if="!isAuditPage" class="task-tabs" :aria-label="$t('Inspection tasks')">
+          <button
+            v-for="tab in taskTabs"
+            :key="tab.type"
+            type="button"
+            :class="{ active: inspectionType === tab.type }"
+            :aria-pressed="inspectionType === tab.type"
+            @click="changeTaskTab(tab.type)"
+          >
+            {{ $t(tab.label) }}
+          </button>
+        </nav>
+
         <!-- ========================= -->
         <!-- NORMAL INSPECTION HEADER -->
         <!-- ========================= -->
@@ -761,10 +770,11 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
           <IndexInspectionHeader
             :title="`Inspection`"
             :length="
-              state?.pagination?.total ||
-              AllTasksState?.pagination?.total ||
-              InspectionsResultsState?.pagination?.total ||
-              0
+              (inspectionType === InspectionPageType.InspectionForm
+                ? AllTasksState?.pagination?.total
+                : inspectionType === InspectionPageType.DragInspection
+                  ? state?.pagination?.total
+                  : InspectionsResultsState?.pagination?.total) || 0
             "
             :projects="Projects"
             :selected-project-id="selectedProjctesFilters"
@@ -1031,10 +1041,7 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
         <!-- ========================= -->
 
         <DataStatus
-          v-if="
-            !isAuditPage &&
-            String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)
-          "
+          v-if="!isAuditPage && inspectionType == InspectionPageType.InspectionForm"
           :controller="AllTasksState"
         >
           <template #success>
@@ -1061,8 +1068,11 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
                     PermissionsEnum.ORG_INSPECTION_CREATE,
                   ]"
                 >
-                  <router-link :to="inspectionCreateRoute" class="btn btn-primary">
-                    {{ $t('Create Inspection') }}
+                  <router-link
+                    :to="isAuditPage ? auditCreateRoute : inspectionCreateRoute"
+                    class="btn btn-primary"
+                  >
+                    {{ $t(isAuditPage ? 'Create Audit' : 'Create Inspection') }}
                   </router-link>
                 </PermissionBuilder>
               </template>
@@ -1079,10 +1089,7 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
         <!-- ========================= -->
 
         <DataStatus
-          v-if="
-            !isAuditPage &&
-            String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)
-          "
+          v-if="!isAuditPage && inspectionType == InspectionPageType.DragInspection"
           :controller="state"
         >
           <template #success>
@@ -1109,8 +1116,11 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
                     PermissionsEnum.ORG_INSPECTION_CREATE,
                   ]"
                 >
-                  <router-link :to="inspectionCreateRoute" class="btn btn-primary">
-                    {{ $t('Create Inspection') }}
+                  <router-link
+                    :to="isAuditPage ? auditCreateRoute : inspectionCreateRoute"
+                    class="btn btn-primary"
+                  >
+                    {{ $t(isAuditPage ? 'Create Audit' : 'Create Inspection') }}
                   </router-link>
                 </PermissionBuilder>
               </template>
@@ -1127,10 +1137,7 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
         <!-- ========================= -->
 
         <DataStatus
-          v-if="
-            !isAuditPage &&
-            String(route?.query?.inspectionType) == String(InspectionPageType.Result)
-          "
+          v-if="!isAuditPage && inspectionType == InspectionPageType.Result"
           :controller="InspectionsResultsState"
         >
           <template #success>
@@ -1157,8 +1164,11 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
                     PermissionsEnum.ORG_INSPECTION_CREATE,
                   ]"
                 >
-                  <router-link :to="inspectionCreateRoute" class="btn btn-primary">
-                    {{ $t('Create Inspection') }}
+                  <router-link
+                    :to="isAuditPage ? auditCreateRoute : inspectionCreateRoute"
+                    class="btn btn-primary"
+                  >
+                    {{ $t(isAuditPage ? 'Create Audit' : 'Create Inspection') }}
                   </router-link>
                 </PermissionBuilder>
               </template>
@@ -1199,6 +1209,62 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
       transparent 50%
     ),
     var(--BgWhite);
+}
+
+.task-tabs {
+  margin-bottom: 20px;
+  padding: 6px;
+  border: 1px solid var(--main-border);
+  border-radius: 16px;
+  background: var(--BgWhite);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.task-tabs button {
+  flex: 1;
+  min-width: 0;
+
+  padding: 10px 20px;
+
+  border-radius: 12px;
+
+  border: 1px solid var(--main-border);
+
+  background: transparent;
+
+  color: var(--header-page-color);
+
+  font-family: 'Bold';
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.task-tabs button:hover {
+  transform: translateY(-1px);
+
+  border-color: var(--PrimaryColor);
+}
+
+.task-tabs button.active {
+  background: var(--PrimaryColor);
+
+  color: white;
+
+  border-color: var(--PrimaryColor);
+
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--PrimaryColor) 25%, transparent);
 }
 
 .audit-tabs {
@@ -1272,11 +1338,13 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
     align-items: stretch;
   }
 
-  .audit-tabs {
+  .audit-tabs,
+  .task-tabs {
     width: 100%;
   }
 
-  .audit-tabs button {
+  .audit-tabs button,
+  .task-tabs button {
     flex: 1;
 
     min-width: auto;
