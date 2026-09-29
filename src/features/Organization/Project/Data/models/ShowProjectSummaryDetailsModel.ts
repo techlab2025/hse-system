@@ -26,7 +26,7 @@ export default class ShowProjectSummaryDetailsModel {
     public readonly meetingsCount: number,
     public readonly meetingsWithResultsCount: number,
     public readonly lossTimes: ProjectLossTimeModel[],
-    public readonly totalDrillCount:number
+    public readonly actualDrillsCount:number
   ) {}
 
   static fromMap(data: Record<string, unknown>): ShowProjectSummaryDetailsModel {
@@ -60,7 +60,7 @@ export default class ShowProjectSummaryDetailsModel {
       Number(data.meetings_count ?? 0),
       Number(data.meetings_with_results_count ?? 0),
       lossTimes.map((item) => ProjectLossTimeModel.fromMap(item as Record<string, unknown>)),
-      Number(data.total_drill_count)
+      Number(data.actual_drills_count)
     )
   }
 

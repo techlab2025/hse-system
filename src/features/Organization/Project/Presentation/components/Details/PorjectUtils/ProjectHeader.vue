@@ -394,7 +394,7 @@ defineProps<{
 .project-serial {
   display: flex;
   min-width: 0;
-  max-width: 560px;all Audits
+  max-width: 560px;
   flex-direction: column;
   gap: 3px;
   padding-inline-start: 65px;

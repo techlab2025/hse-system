@@ -80,7 +80,7 @@ const safetyStatistics = computed(() => [
   },
   {
     label: 'drills',
-    value: `${project.value?.drillsCount || 0} / ${project.value?.totalDrillCount || 0} `,
+    value: `${project.value?.actualDrillsCount || 0} / ${project.value?.drillsCount || 0} `,
     note: 'Preparedness exercises',
     tone: 'violet',
     icon: 'D',
@@ -221,8 +221,7 @@ watch(
                 </span>
                 <h1>{{ project?.title || 'Project summary' }}</h1>
                 <p>
-                  <span class="scope-of-work">Project Scope of Work : </span>{{ project?.description || 'A concise view
-                  of project safety and operations.' }}
+                  <span class="scope-of-work">Project Scope of Work : </span>{{ project?.description || 'A concise viewof project safety and operations.' }}
                 </p>
               </div>
             </div>
