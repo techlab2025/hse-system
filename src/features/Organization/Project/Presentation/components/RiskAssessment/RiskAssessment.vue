@@ -134,7 +134,7 @@ onMounted(fetchAll)
           <div>
             <!-- <span class="eyebrow">Assessment register</span> -->
             <h2>
-              All assessments <span class="count">{{ items.length }}</span>
+              Assessments <span class="count">{{ items.length }}</span>
             </h2>
             <p>Open any record to review its approval and supporting evidence.</p>
           </div>

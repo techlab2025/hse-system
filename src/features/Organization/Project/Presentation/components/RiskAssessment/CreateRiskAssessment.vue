@@ -171,9 +171,9 @@ async function create() {
           <div class="section-heading">
             <span class="step-number">02</span>
             <div>
-              <span class="eyebrow">Supporting evidence</span>
+              <!-- <span class="eyebrow">Supporting evidence</span> -->
               <h2>Add an assessment file</h2>
-              <p>Attach the document that supports this safety record.</p>
+              <!-- <p>Attach the document that supports this safety record.</p> -->
             </div>
           </div>
           <div class="evidence-layout">
