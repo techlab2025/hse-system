@@ -74,7 +74,7 @@ onMounted(fetchAll)
 <template>
   <main class="risk-page">
     <header class="risk-hero">
-      <div class="hero-art" aria-hidden="true"><span></span><span></span><span></span></div>
+      <!-- <div class="hero-art" aria-hidden="true"><span></span><span></span><span></span></div> -->
       <div class="hero-copy">
         <!-- <RouterLink class="back-link" :to="`/organization/project-details/${projectId}`">
           <span aria-hidden="true">←</span> Project details
@@ -255,6 +255,7 @@ th {
   justify-content: space-between;
   gap: 20px;
   padding: 34px;
+  padding-top:10px !important;
   background:
     radial-gradient(
       circle at 95% 10%,
@@ -442,14 +443,14 @@ tbody tr:hover {
 .risk-page {
   min-height: 100%;
   margin: 0;
-  padding: clamp(14px, 2vw, 28px);
+  /* padding: clamp(14px, 2vw, 28px);
   background:
     radial-gradient(
       circle at 7% 3%,
       color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
       transparent 25rem
     ),
-    var(--surface-2);
+    var(--surface-2); */
   color: var(--text-strong);
 }
 

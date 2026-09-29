@@ -106,63 +106,36 @@ async function create() {
           </div>
           <div class="form-grid">
             <label class="field">
-              <span class="field-label"
-                ><span class="field-icon" aria-hidden="true">◇</span
-                ><span>Activity <b>*</b></span></span
-              >
+              <span class="field-label"><span class="field-icon" aria-hidden="true">◇</span><span>Activity
+                  <b>*</b></span></span>
               <input v-model="form.activity" required placeholder="e.g. Working at height" />
             </label>
             <label class="field">
-              <span class="field-label"
-                ><span class="field-icon" aria-hidden="true">⌖</span
-                ><span>Work area <b>*</b></span></span
-              >
+              <span class="field-label"><span class="field-icon" aria-hidden="true">⌖</span><span>Work area
+                  <b>*</b></span></span>
               <input v-model="form.workAreaStrign" required placeholder="e.g. North building" />
             </label>
             <label class="field">
-              <span class="field-label"
-                ><span class="field-icon" aria-hidden="true">◷</span
-                ><span>Date <b>*</b></span></span
-              >
-              <DatePicker
-                input-id="risk-assessment-date"
-                :model-value="parseDate(form.date)"
-                date-format="yy-mm-dd"
-                show-icon
-                fluid
-                placeholder="Select assessment date"
-                @update:model-value="setAssessmentDate"
-              />
+              <span class="field-label"><span class="field-icon" aria-hidden="true">◷</span><span>Date
+                  <b>*</b></span></span>
+              <DatePicker input-id="risk-assessment-date" :model-value="parseDate(form.date)" date-format="yy-mm-dd"
+                show-icon fluid placeholder="Select assessment date" @update:model-value="setAssessmentDate" />
             </label>
-            <UpdatedCustomInputSelect
-              class="field field--select"
-              :model-value="selectedEmployee"
-              :controller="indexOrganizatoinEmployeeController"
-              :params="indexOrganizatoinEmployeeParams"
-              id="risk-assessment-approver"
-              placeholder="Select an approver"
-              required
-              :has-header="true"
-              @update:model-value="setEmployee"
-            >
+            <UpdatedCustomInputSelect class="field field--select" :model-value="selectedEmployee"
+              :controller="indexOrganizatoinEmployeeController" :params="indexOrganizatoinEmployeeParams"
+              id="risk-assessment-approver" placeholder="Select an approver" required :has-header="true"
+              @update:model-value="setEmployee">
               <template #Header>
-                <span class="field-label"
-                  ><span class="field-icon" aria-hidden="true">✓</span
-                  ><span>Prepared By <b>*</b></span></span
-                >
+                <span class="field-label"><span class="field-icon" aria-hidden="true">✓</span><span>Prepared By
+                    <b>*</b></span></span>
               </template>
             </UpdatedCustomInputSelect>
             <label class="field full">
-              <span class="field-label"
-                ><span class="field-icon" aria-hidden="true">≡</span
-                ><span>Activity description <b>*</b></span></span
-              >
-              <textarea
-                v-model="form.desctiprion"
-                rows="5"
-                required
-                placeholder="Describe the work, hazards, and planned controls"
-              />
+              <span class="field-label"><span class="field-icon" aria-hidden="true">≡</span><span>Activity description
+                </span>
+                <span  class="optional">(optional)</span></span>
+              <textarea v-model="form.desctiprion" rows="5" required
+                placeholder="Describe the work, hazards, and planned controls" />
             </label>
           </div>
         </section>
@@ -178,13 +151,8 @@ async function create() {
           </div>
           <div class="evidence-layout">
             <div class="field upload-field">
-              <HandleFIlesUpload
-                label=" Documents and images "
-                accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
-                :max-files="6"
-                :multiple="true"
-                @change="handleFilesChange"
-              />
+              <HandleFIlesUpload label=" Documents and images " accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
+                :max-files="6" :multiple="true" @change="handleFilesChange" />
               <small>PDF, Word, Excel, or image · One file maximum</small>
             </div>
             <!-- <aside class="evidence-note">
@@ -201,8 +169,7 @@ async function create() {
           <div class="footer-note">
             <span aria-hidden="true">✓</span>
             <p>
-              <strong>Ready to save?</strong
-              ><small>Required fields are marked with an asterisk.</small>
+              <strong>Ready to save?</strong><small>Required fields are marked with an asterisk.</small>
             </p>
           </div>
           <div class="footer-actions">
@@ -219,10 +186,14 @@ async function create() {
 </template>
 
 <style scoped>
+.optional{
+  color:#607067;
+  font-size: 10px;
+}
 .create-page {
   /* max-width: 1020px; */
   margin: auto;
-  padding: 26px;
+  /* padding: 26px; */
   color: var(--text-primary, #172334);
 }
 
@@ -245,11 +216,9 @@ async function create() {
 .form-header {
   padding: 34px;
   background:
-    radial-gradient(
-      circle at 90% 5%,
+    radial-gradient(circle at 90% 5%,
       color-mix(in srgb, var(--PrimaryColor, #087d80) 16%, transparent),
-      transparent 38%
-    ),
+      transparent 38%),
     var(--surface-1, #f8fafb);
   border-bottom: 1px solid var(--main-border, #e5eaf0);
 }
@@ -378,14 +347,14 @@ footer button:disabled {
 .create-page {
   min-height: 100%;
   margin: 0;
-  padding: clamp(14px, 2vw, 28px);
+  /* padding: clamp(14px, 2vw, 28px);
   background:
     radial-gradient(
       circle at 8% 3%,
       color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
       transparent 26rem
     ),
-    var(--surface-2);
+    var(--surface-2); */
   color: var(--text-strong);
 }
 
@@ -404,16 +373,12 @@ footer button:disabled {
   padding: clamp(26px, 4vw, 42px);
   border-bottom-color: color-mix(in srgb, var(--PrimaryColor) 18%, transparent);
   background:
-    radial-gradient(
-      circle at 88% 10%,
+    radial-gradient(circle at 88% 10%,
       color-mix(in srgb, var(--PrimaryColor) 24%, transparent),
-      transparent 35%
-    ),
-    linear-gradient(
-      125deg,
+      transparent 35%),
+    linear-gradient(125deg,
       color-mix(in srgb, var(--brand-primary-900) 96%, var(--surface-1)),
-      color-mix(in srgb, var(--PrimaryColor) 76%, var(--brand-primary-900))
-    );
+      color-mix(in srgb, var(--PrimaryColor) 76%, var(--brand-primary-900)));
 }
 
 .header-art {
@@ -421,16 +386,19 @@ footer button:disabled {
   inset: 0;
   pointer-events: none;
 }
+
 .header-art span {
   position: absolute;
   border: 1px solid color-mix(in srgb, white 13%, transparent);
   border-radius: 50%;
 }
+
 .header-art span:first-child {
   width: 290px;
   height: 290px;
   inset: -180px -70px auto auto;
 }
+
 .header-art span:last-child {
   width: 150px;
   height: 150px;
@@ -442,6 +410,7 @@ footer button:disabled {
   position: relative;
   z-index: 1;
 }
+
 .back-link {
   display: inline-flex;
   align-items: center;
@@ -450,15 +419,18 @@ footer button:disabled {
   color: color-mix(in srgb, white 78%, transparent);
   font-size: 0.8rem;
 }
+
 .back-link:hover {
   color: white;
   transform: translateX(-2px);
 }
+
 .header-content {
   display: flex;
   align-items: center;
   gap: 18px;
 }
+
 .header-icon {
   display: grid;
   place-items: center;
@@ -474,6 +446,7 @@ footer button:disabled {
     0 14px 30px color-mix(in srgb, black 20%, transparent);
   backdrop-filter: blur(10px);
 }
+
 .header-icon svg {
   width: 33px;
   stroke: currentColor;
@@ -481,6 +454,7 @@ footer button:disabled {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+
 .eyebrow {
   color: var(--PrimaryColor);
   font-size: 0.67rem;
@@ -488,15 +462,18 @@ footer button:disabled {
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
+
 .form-header .eyebrow {
   color: color-mix(in srgb, white 68%, var(--PrimaryColor));
 }
+
 .form-header h1 {
   margin: 5px 0 8px;
   color: white;
   font-size: clamp(1.8rem, 3vw, 2.55rem);
   line-height: 1.08;
 }
+
 .form-header p {
   max-width: 630px;
   color: color-mix(in srgb, white 72%, transparent);
@@ -509,6 +486,7 @@ form {
   padding: clamp(18px, 3vw, 30px);
   background: color-mix(in srgb, var(--surface-2) 62%, var(--surface-1));
 }
+
 .form-section {
   display: grid;
   gap: 22px;
@@ -518,24 +496,29 @@ form {
   background: var(--surface-1);
   box-shadow: 0 10px 28px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
 }
+
 .section-heading {
   display: flex;
   align-items: center;
   gap: 13px;
 }
-.section-heading > div {
+
+.section-heading>div {
   display: grid;
   gap: 2px;
 }
+
 .section-heading h2 {
   margin: 2px 0;
   color: var(--text-strong);
   font-size: 1.25rem;
 }
+
 .section-heading p {
   color: var(--text-soft);
   font-size: 0.8rem;
 }
+
 .step-number {
   display: grid;
   place-items: center;
@@ -553,6 +536,7 @@ form {
 .form-grid {
   gap: 14px;
 }
+
 .field {
   align-content: start;
   gap: 10px;
@@ -567,12 +551,14 @@ form {
     box-shadow 0.2s ease,
     transform 0.2s ease;
 }
+
 .field:hover,
 .field:focus-within {
   transform: translateY(-1px);
   border-color: color-mix(in srgb, var(--PrimaryColor) 34%, var(--main-border));
   box-shadow: 0 10px 24px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
 }
+
 .field-label {
   display: flex;
   align-items: center;
@@ -582,6 +568,7 @@ form {
   font-size: 0.8rem;
   font-weight: 800;
 }
+
 .field-icon {
   display: grid;
   place-items: center;
@@ -592,6 +579,7 @@ form {
   color: var(--PrimaryColor);
   background: color-mix(in srgb, var(--PrimaryColor) 10%, var(--surface-1));
 }
+
 .field b {
   color: var(--status-danger);
 }
@@ -606,24 +594,29 @@ textarea {
   color: var(--text-strong);
   background: var(--surface-1);
 }
+
 textarea {
   min-height: 130px;
   line-height: 1.55;
 }
+
 input:focus,
 textarea:focus {
   border-color: var(--PrimaryColor);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 14%, transparent);
 }
+
 .field--select.updated-custom-input-select {
   display: grid;
   gap: 10px;
 }
+
 .field--select :deep(.input-label) {
   min-height: 28px;
   align-items: center;
   justify-content: start;
 }
+
 .field--select :deep(.p-select) {
   width: 100%;
   min-height: 46px;
@@ -631,11 +624,13 @@ textarea:focus {
   border-radius: 11px;
   background: var(--surface-1);
 }
+
 .field--select :deep(.p-select-label) {
   display: flex;
   align-items: center;
   padding-inline: 13px;
 }
+
 .field--select :deep(.p-select-dropdown) {
   width: 44px;
   color: var(--PrimaryColor);
@@ -674,22 +669,27 @@ textarea:focus {
   gap: 14px;
   align-items: stretch;
 }
+
 .upload-field {
   padding: 16px;
   background: var(--surface-1);
 }
+
 .upload-field small {
   color: var(--text-soft);
   font-size: 0.7rem;
 }
+
 .upload-field :deep(.file-upload-wrapper) {
   gap: 10px;
 }
+
 .upload-field :deep(.upload-label) {
   color: var(--text-strong);
   font-size: 0.8rem;
   font-weight: 800;
 }
+
 .upload-field :deep(.upload-area) {
   min-height: 132px;
   border: 1.5px dashed color-mix(in srgb, var(--PrimaryColor) 34%, var(--main-border));
@@ -697,9 +697,11 @@ textarea:focus {
   color: var(--PrimaryColor);
   background: color-mix(in srgb, var(--PrimaryColor) 4%, var(--surface-1));
 }
+
 .upload-field :deep(.upload-area:hover:not(.disabled)) {
   background: color-mix(in srgb, var(--PrimaryColor) 8%, var(--surface-1));
 }
+
 .upload-field :deep(.upload-icon) {
   display: grid;
   place-items: center;
@@ -710,6 +712,7 @@ textarea:focus {
   background: linear-gradient(145deg, var(--PrimaryColor), var(--brand-primary-700));
   font-size: 1.15rem;
 }
+
 .upload-field :deep(.upload-text) {
   color: var(--PrimaryColor);
   font-weight: 750;
@@ -722,12 +725,11 @@ textarea:focus {
   padding: 18px;
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
   border-radius: 15px;
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1)),
-    var(--surface-1)
-  );
+  background: linear-gradient(135deg,
+      color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1)),
+      var(--surface-1));
 }
+
 .evidence-note__icon {
   display: grid;
   place-items: center;
@@ -740,14 +742,17 @@ textarea:focus {
   font-family: serif;
   font-weight: 800;
 }
+
 .evidence-note div {
   display: grid;
   gap: 6px;
 }
+
 .evidence-note strong {
   color: var(--text-strong);
   font-size: 0.82rem;
 }
+
 .evidence-note p {
   color: var(--text-soft);
   font-size: 0.75rem;
@@ -766,7 +771,8 @@ textarea:focus {
   background: var(--status-danger-soft);
   font-weight: 700;
 }
-.error > span {
+
+.error>span {
   display: grid;
   place-items: center;
   width: 22px;
@@ -787,12 +793,14 @@ textarea:focus {
   background: color-mix(in srgb, var(--surface-1) 92%, transparent);
   backdrop-filter: blur(14px);
 }
+
 .footer-note {
   display: flex;
   align-items: center;
   gap: 9px;
 }
-.footer-note > span {
+
+.footer-note>span {
   display: grid;
   place-items: center;
   width: 32px;
@@ -802,23 +810,28 @@ textarea:focus {
   background: color-mix(in srgb, var(--PrimaryColor) 10%, var(--surface-1));
   font-weight: 850;
 }
+
 .footer-note p {
   display: grid;
   gap: 2px;
 }
+
 .footer-note strong {
   color: var(--text-strong);
   font-size: 0.78rem;
 }
+
 .footer-note small {
   color: var(--text-soft);
   font-size: 0.68rem;
 }
+
 .footer-actions {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
 .cancel-button {
   padding: 11px 15px;
   border: 1px solid var(--main-border);
@@ -826,6 +839,7 @@ textarea:focus {
   color: var(--text-strong);
   background: var(--surface-1);
 }
+
 .form-footer button {
   display: inline-flex;
   align-items: center;
@@ -841,6 +855,7 @@ textarea:focus {
     transform 0.2s ease,
     box-shadow 0.2s ease;
 }
+
 .form-footer button:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow: 0 14px 28px color-mix(in srgb, var(--PrimaryColor) 30%, transparent);
@@ -864,41 +879,52 @@ textarea:focus-visible {
   .create-page {
     padding: 12px;
   }
+
   .form-shell {
     border-radius: 21px;
   }
+
   .form-header {
     padding: 22px;
   }
+
   .header-content {
     align-items: flex-start;
   }
+
   .header-icon {
     width: 52px;
     height: 52px;
     border-radius: 16px;
   }
+
   .header-icon svg {
     width: 27px;
   }
+
   form {
     padding: 16px;
   }
+
   .form-section {
     padding: 16px;
     border-radius: 16px;
   }
+
   .form-footer {
     margin: 0 -16px -16px;
     padding: 14px 16px;
   }
+
   .footer-note {
     display: none;
   }
+
   .footer-actions {
     width: 100%;
   }
-  .footer-actions > * {
+
+  .footer-actions>* {
     flex: 1;
     text-align: center;
   }
@@ -908,15 +934,18 @@ textarea:focus-visible {
   .header-content {
     display: block;
   }
+
   .header-icon {
     margin-bottom: 14px;
   }
+
   .section-heading {
     align-items: flex-start;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .back-link,
   .field,
   .form-footer button {
