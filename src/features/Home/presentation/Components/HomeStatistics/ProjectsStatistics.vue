@@ -5,6 +5,7 @@ import type ProjectModel from '@/features/Organization/Project/Data/models/Proje
 
 defineProps<{
   projectStatistics: ProjectModel[]
+  totalNumOfProjects?: number
 }>()
 </script>
 <template>
@@ -16,7 +17,8 @@ defineProps<{
           <div class="content-info">
             <span class="title">{{ $t('all_projects') }}</span>
             <span class="count">
-              {{ $t('total') }} : <span class="counter">{{ projectStatistics?.length }}</span>
+              {{ $t('total') }} :
+              <span class="counter">{{ totalNumOfProjects || projectStatistics?.length }}</span>
             </span>
           </div>
           <span class="description">{{ $t('In short, project progress and task statuses') }}</span>
