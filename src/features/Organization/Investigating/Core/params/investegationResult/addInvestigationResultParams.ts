@@ -48,7 +48,7 @@ export default class AddInvestigationResultParams implements Params {
   public lessonLearnt?: string
   public documentReferenceIds?: number[]
   public eventTimeLines?: InvestigationEventTimeLineParams[]
-  public observation:InvestigationEventTimeLineParams
+  public observation?:InvestigationEventTimeLineParams
 
   constructor(data: {
     investigationMeetingId: number
@@ -77,7 +77,7 @@ export default class AddInvestigationResultParams implements Params {
     lessonLearnt?: string
     documentReferenceIds?: number[]
     eventTimeLines?: InvestigationEventTimeLineParams[]
-    observation:InvestigationEventTimeLineParams
+    observation?:InvestigationEventTimeLineParams
   }) {
     this.investigationMeetingId = data.investigationMeetingId
     this.isInvestigationClosed = data.isInvestigationClosed

@@ -975,7 +975,8 @@ const getObservationType = (type: number | undefined) => {
             </AccordionHeader>
             <AccordionContent>
               <div data-required-field="viewersResults.0.employee">
-                <WitnessesTimeLine @update:data="Updatewitnesses" />
+
+                <WitnessesTimeLine :statements="state.data?.observation?.witness_statements " @update:data="Updatewitnesses" />
                 <p v-if="getFirstFieldError('viewersResults.')" class="required-field-message">
                   {{ getFirstFieldError('viewersResults.') }}
                 </p>

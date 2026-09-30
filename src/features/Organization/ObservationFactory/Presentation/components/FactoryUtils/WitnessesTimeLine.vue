@@ -4,11 +4,15 @@ import IndexOrganizatoinEmployeeParams from '@/features/Organization/Organizatio
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
 import AddAnswer from '@/shared/icons/AddAnswer.vue'
 import DeleteItemAction from '@/shared/icons/DeleteItemAction.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
+import type InjuryDetailsModel from '../../../Data/models/InjuryModel'
 
 const emit = defineEmits(['update:data'])
+const props = defineProps<{
+  statements?: InjuryDetailsModel[]
+}>()
 
 const fetchOriganizatioEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const fetchOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams('', 1, 10, 0)
@@ -35,11 +39,6 @@ const DeleteItem = (index: number) => {
   UpdateData()
 }
 
-const UpdateData = () => {
-  Answers.value.forEach(ensureEmployee)
-  emit('update:data', Answers.value)
-}
-
 const getSelectedEmployeeIds = (currentIndex: number) =>
   Answers.value
     .filter((_, index) => index !== currentIndex)
@@ -56,6 +55,28 @@ const ensureEmployee = (item: any) => {
     item.employee = new TitleInterface({ id: 0, title: '' })
   }
 }
+
+const syncWitnessMode = (item: any, index: number) => {
+  const employeeId = Number(item.employee?.id) || 0
+  const employeeName = String(item.employee?.title || '').trim()
+
+  if (employeeId) {
+    // An organization employee is a staff witness.
+    isSelectHasContent.value[index] = false
+  } else if (employeeName) {
+    // A manually entered employee_name is a non-staff witness.
+    isSelectHasContent.value[index] = true
+  }
+}
+
+const UpdateData = () => {
+  Answers.value.forEach((item, index) => {
+    ensureEmployee(item)
+    syncWitnessMode(item, index)
+  })
+  emit('update:data', Answers.value)
+}
+
 const toggleMode = (index: number, isManual: boolean) => {
   // 1. Update the toggle state
   isSelectHasContent.value[index] = isManual
@@ -67,6 +88,40 @@ const toggleMode = (index: number, isManual: boolean) => {
   // 3. Notify parent
   UpdateData()
 }
+
+watch(
+  () => props.statements,
+  (newVal) => {
+    Answers.value = newVal?.length
+      ? newVal.map((el) => {
+          const employeeId = Number(el.organization_employee?.id) || 0
+          const employeeName = employeeId
+            ? el.organization_employee?.name || ''
+            : el.employee_name || ''
+
+          return {
+            text: el.note ?? '',
+            employee: new TitleInterface({
+              id: employeeId,
+              title: employeeName,
+            }),
+          }
+        })
+      : [
+          {
+            text: '',
+            employee: new TitleInterface({ id: 0, title: '' }),
+          },
+        ]
+
+    isSelectHasContent.value = Answers.value.map(
+      (answer) => !Number(answer.employee.id) && Boolean(answer.employee.title?.trim()),
+    )
+  },
+  {
+    immediate: true,
+  },
+)
 </script>
 <template>
   <div class="template-container col-span-6">
