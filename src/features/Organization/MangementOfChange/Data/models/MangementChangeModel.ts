@@ -38,6 +38,8 @@ type ManagementChangeData = {
   approver_by?: ManagementChangeReferenceData | null
   initiator_employee_id?: number | null
   initiatore_employee_id?: number | null
+  serial?: string | null
+  serial_number?: string | null
   initiator_employee?: ManagementChangeReferenceData | null
   topic_text?: string | null
   changement_topic_other?: string | null
@@ -77,6 +79,7 @@ export default class MangementChangeModel {
   public createdByName?: string
   public descriptionOfProposedChange: string = ''
   public initiatore_employee_id: number | null = null
+  public serial: string = ''
 
   constructor(data: Partial<MangementChangeModel>) {
     Object.assign(this, data)
@@ -119,6 +122,7 @@ export default class MangementChangeModel {
 
     return new MangementChangeModel({
       id: data.id,
+      serial: data.serial ?? data.serial_number ?? '',
       organization: data.organization_id,
       risk_assisment_file: data.risk_assisment_file,
       attachments: data.media?.map((item) => item.url) ?? [],

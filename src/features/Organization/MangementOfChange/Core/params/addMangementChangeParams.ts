@@ -3,6 +3,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 import type { ChangeTypeMangementEnum } from '../Core/ChangeTypeEnum'
 import type { ChangeApprovalMangementEnum } from '../Core/ChangeApprovalEnum'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 export default class AddMangementChangeParams implements Params {
   constructor(
@@ -32,12 +33,13 @@ export default class AddMangementChangeParams implements Params {
 
     public management_change_topic_text?: string,
     public initiatore_employee_id?: number,
+    public serial?: string,
   ) {}
 
   public static readonly validation = new ClassValidation().setRules({})
 
   toMap(): Record<string, unknown> {
-    return {
+    const data: Record<string, unknown> = {
       risk_assisment_file: this.risk_assisment_file,
       attachments: this.image,
       changer_request_id: this.changer_request_id,
@@ -53,6 +55,12 @@ export default class AddMangementChangeParams implements Params {
       topic_text: this.management_change_topic_text,
       initiator_employee_id: this.initiatore_employee_id,
     }
+
+    if (useProjectAppStatusStore().isSerialNumberAuto()) data.serial_number = this.serial
+    else data.serial = this.serial
+
+    return data
+    
   }
 
   validate() {

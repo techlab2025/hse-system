@@ -27,6 +27,8 @@ import AddMangementChangeParams from '../../Core/params/addMangementChangeParams
 import EditMangementChangeParams from '../../Core/params/editMangementChangeParams'
 import type MangementChangeModel from '../../Data/models/MangementChangeModel'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddMangementChangeParams | EditMangementChangeParams): void
@@ -61,6 +63,10 @@ const Selectedemployeeid = ref<TitleInterface | null>(null)
 const Selectedinitiatoremployeeid = ref<TitleInterface | null>(null)
 const Selectedequipment = ref<TitleInterface | null>(null)
 const requiredFieldErrors = ref<Record<string, string>>({})
+const error = ref('')
+const serial = ref('')
+const statusStore = useProjectAppStatusStore()
+const serialIsAuto = computed(() => statusStore.isSerialNumberAuto())
 
 const indexMangementChangeTopicTypeController =
   IndexMangementChangeTopicTypeController.getInstance()
@@ -147,9 +153,15 @@ const formParams = computed(() => [
     ? topicText.value || undefined
     : undefined,
   initiatorEmployeeId.value ?? undefined,
+  serial.value.trim(),
 ] as const)
 
 const updateData = () => {
+   error.value = ''
+   if (!serialIsAuto.value && !serial.value.trim()) {
+    error.value = 'Serial number is required when manual serial numbering is enabled.'
+    return
+  }
   emit(
     'update:data',
     props.data?.id
@@ -221,6 +233,7 @@ const setequipment = (data: TitleInterface | TitleInterface[] | null) => {
 }
 
 const setFormData = (change?: MangementChangeModel) => {
+  
   if (!change) {
     updateData()
     return
@@ -232,6 +245,7 @@ const setFormData = (change?: MangementChangeModel) => {
     file,
   }))
   changerRequestId.value = change.changer_request_id
+  serial.value = change.serial ?? ''
   facilty.value = change.facilty
   area.value = change.area
 
@@ -314,6 +328,7 @@ watch(
     riskAssismentFile,
     images,
     changerRequestId,
+    serial,
     facilty,
     area,
     date,
@@ -441,14 +456,40 @@ onMounted(updateData)
 
   <section class="management-change-section">
     <div class="management-change-section__heading">
-      <span class="management-change-section__number">01</span>
+      <!-- <span class="management-change-section__number">01</span> -->
       <div>
-        <h2>{{ $t('change request details') }}</h2>
-        <p>{{ $t('Capture where and when the change will happen.') }}</p>
+        <h2>{{ $t('New Change Request') }}</h2>
+        <p>{{ $t('Create the change request for the current project.') }}</p>
       </div>
     </div>
 
     <div class="management-change-fields">
+
+      <div class="input-wrapper  drill-serial">
+        <div class="field-label"><label for="management_change_serial">{{ $t('serial_number') }}</label><FieldHelpIcon :text="serialIsAuto ? 'The serial will be generated automatically.' : 'Enter the serial number.'" /></div>
+        <input id="management_change_serial" v-model="serial" class="input" type="text" :disabled="serialIsAuto" :placeholder="serialIsAuto ? $t('Auto-generated') : $t('Enter serial number')" />
+        <small v-if="serialIsAuto">{{ $t('Automatic serial numbering is enabled') }}</small>
+      </div>
+       <div
+        class="management-change-field input-wrapper"
+        data-required-field="initiatorEmployee"
+      >
+        <UpdatedCustomInputSelect
+          :model-value="Selectedinitiatoremployeeid"
+          :controller="indexOrganizatoinEmployeeController"
+          :params="indexOrganizatoinEmployeeidParams"
+          label="Change Initiator"
+          id="initiator-employee"
+          :placeholder="$t('Select an initiator employee')"
+          required
+          @update:model-value="setinitiatorEmployee"
+        />
+       
+        <p v-if="requiredFieldErrors.initiatorEmployee" class="required-field-message">
+          {{ requiredFieldErrors.initiatorEmployee }}
+        </p>
+      </div>
+
       <div
         class="management-change-field input-wrapper"
         data-required-field="facilty"
@@ -555,36 +596,18 @@ onMounted(updateData)
           {{ requiredFieldErrors.approvalBy }}
         </p>
       </div>
-      <div
-        class="management-change-field input-wrapper"
-        data-required-field="initiatorEmployee"
-      >
-        <UpdatedCustomInputSelect
-          :model-value="Selectedinitiatoremployeeid"
-          :controller="indexOrganizatoinEmployeeController"
-          :params="indexOrganizatoinEmployeeidParams"
-          label="Change Initiator"
-          id="initiator-employee"
-          :placeholder="$t('Select an initiator employee')"
-          required
-          @update:model-value="setinitiatorEmployee"
-        />
-       
-        <p v-if="requiredFieldErrors.initiatorEmployee" class="required-field-message">
-          {{ requiredFieldErrors.initiatorEmployee }}
-        </p>
-      </div>
+     
     </div>
   </section>
 
   <section class="management-change-section">
-    <div class="management-change-section__heading">
+    <!-- <div class="management-change-section__heading">
       <span class="management-change-section__number">02</span>
       <div>
         <h2>{{ $t('change scope') }}</h2>
         <p>{{ $t('Define what is affected by this change.') }}</p>
       </div>
-    </div>
+    </div> -->
 
     <div class="management-change-fields">
       <div
@@ -675,13 +698,13 @@ onMounted(updateData)
   </section>
 
   <section class="management-change-section">
-    <div class="management-change-section__heading">
+    <!-- <div class="management-change-section__heading">
       <span class="management-change-section__number">03</span>
       <div>
         <h2>{{ $t('supporting documents') }}</h2>
         <p>{{ $t('Attach the risk assessment and any supporting images.') }}</p>
       </div>
-    </div>
+    </div> -->
 
     <div class="management-change-fields management-change-fields--attachments">
       <div
@@ -725,6 +748,14 @@ onMounted(updateData)
   background: transparent !important;
   color: var(--brand-primary-500) !important;
 } */
+ .drill-serial #management_change_serial{
+  min-height: 48px;
+  border: 1px solid var(--management-change-border) !important;
+  border-radius: 12px !important;
+  background: var(--management-change-soft) !important;
+  color: var(--text-strong) !important;
+  box-shadow: none !important;
+ }
 .required-field-message {
   margin-top: 0.35rem;
   color: var(--status-danger);

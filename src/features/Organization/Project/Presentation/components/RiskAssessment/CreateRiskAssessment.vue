@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import DatePicker from 'primevue/datepicker'
 import CreateRiskAssessmentParams from '../../../Core/params/RiskAssessment/CreateRiskAssessmentParams'
@@ -11,6 +11,8 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 import HandleFIlesUpload, {
   type UploadedFile,
 } from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 const route = useRoute()
 const router = useRouter()
@@ -19,6 +21,8 @@ const listPath = `/organization/project-details/${projectId}/risk-assessments`
 const form = ref({ activity: '', desctiprion: '', workAreaStrign: '', date: '' })
 const selectedEmployee = ref<TitleInterface | null>(null)
 const attachments = ref<string[]>([])
+const serial = ref('')
+const serialIsAuto = computed(() => useProjectAppStatusStore().isSerialNumberAuto())
 const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
 const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams('', 0, 0, 0)
 const saving = ref(false)
@@ -43,6 +47,10 @@ function setAssessmentDate(value: unknown) {
 
 async function create() {
   error.value = ''
+  if (!serialIsAuto.value && !serial.value.trim()) {
+    error.value = 'Serial number is required when manual serial numbering is enabled.'
+    return
+  }
   const params = new CreateRiskAssessmentParams(
     form.value.activity.trim(),
     form.value.desctiprion.trim(),
@@ -50,6 +58,7 @@ async function create() {
     form.value.date,
     selectedEmployee.value?.id ?? 0,
     attachments.value,
+    serial.value.trim(),
   )
   const validation = params.validate()
   if (!validation.isValid) {
@@ -105,6 +114,11 @@ async function create() {
             </div>
           </div>
           <div class="form-grid">
+            <div class="field">
+              <span class="field-label"><span>{{ $t('serial_number') }}</span><FieldHelpIcon :text="serialIsAuto ? 'The serial will be generated automatically.' : 'Enter the serial number.'" /></span>
+              <input v-model="serial" :disabled="serialIsAuto" :placeholder="serialIsAuto ? $t('Auto-generated') : $t('Enter serial number')" />
+              <small v-if="serialIsAuto">{{ $t('Automatic serial numbering is enabled') }}</small>
+            </div>
             <label class="field">
               <span class="field-label"><span class="field-icon" aria-hidden="true">◇</span><span>Activity
                   <b>*</b></span></span>

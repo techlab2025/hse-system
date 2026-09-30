@@ -21,6 +21,8 @@ import { formatTime } from '@/base/Presentation/utils/time_format'
 import type { UploadedFile } from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
 import HandleFIlesUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
 import IconBackStage from '@/shared/icons/IconBackStage.vue'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 const route = useRoute()
 const router = useRouter()
@@ -30,6 +32,9 @@ const router = useRouter()
 ========================= */
 
 const ptwNum = ref<string>('')
+const serial = ref('')
+const statusStore = useProjectAppStatusStore()
+const serialIsAuto = computed(() => statusStore.isSerialNumberAuto())
 
 const PermitToWorkType = ref<TitleInterface>()
 const organizationEmployee = ref<TitleInterface>()
@@ -116,6 +121,12 @@ const updateOrganizationEmployee = (data: TitleInterface | TitleInterface[] | nu
 const permitToWorkController = PermitToWorkController.getInstance()
 
 const SubmitFrom = async () => {
+  if (!serialIsAuto.value && !serial.value.trim()) {
+    requiredFieldErrors.value.serial = 'Serial number is required when manual serial numbering is enabled.'
+    return
+  }
+  delete requiredFieldErrors.value.serial
+
   if (!organizationEmployee.value) {
     requiredFieldErrors.value.OrganizationEmployee = 'Select an organization employee.'
     return
@@ -126,6 +137,7 @@ const SubmitFrom = async () => {
     organization_employee_id: organizationEmployee.value.id,
 
     ptw_number: ptwNum.value,
+    serial: serial.value.trim(),
 
     ptw_type_id: Number(PermitToWorkType.value?.id ?? 0),
 
@@ -230,6 +242,24 @@ const handleFilesChange = (files: UploadedFile[]) => {
               />
               <p v-if="getFieldError('Name')" class="required-field-message">
                 {{ getFieldError('Name') }}
+              </p>
+            </div>
+
+            <div class="ptw-field">
+              <label class="ptw-field-label--with-action" for="permit_serial_number">
+                <span class="ptw-field-label-text">{{ $t('serial_number') }}</span>
+                <FieldHelpIcon :text="serialIsAuto ? 'The serial will be generated automatically.' : 'Enter the serial number.'" />
+              </label>
+              <InputText
+                id="permit_serial_number"
+                v-model="serial"
+                class="ptw-control"
+                :disabled="serialIsAuto"
+                :placeholder="serialIsAuto ? $t('Auto-generated') : $t('Enter serial number')"
+              />
+              <small v-if="serialIsAuto">{{ $t('Automatic serial numbering is enabled') }}</small>
+              <p v-if="getFieldError('serial')" class="required-field-message">
+                {{ getFieldError('serial') }}
               </p>
             </div>
 

@@ -44,6 +44,9 @@ const SERIAL_TITLES: Record<SerialNumberEnum, string> = {
   [SerialNumberEnum.INVESTIGATION]: 'Investigation',
   [SerialNumberEnum.CAPA]: 'CAPA',
   [SerialNumberEnum.INCIDANT]: 'Incident',
+  [SerialNumberEnum.PRIMTTOWORK]: 'PRIMTTOWORK',
+  [SerialNumberEnum.MANGEMENTOFCHAGE]: 'MANGEMENTOFCHAGE',
+  [SerialNumberEnum.RISKASSESSMENT]: 'RISKASSESSMENT',
 }
 const getTitle = (type: SerialNumberEnum) => SERIAL_TITLES[type]
 
@@ -190,6 +193,33 @@ const fields = ref([
     serialNumberType: SerialNumberEnum.INCIDANT,
     name: SerialNumberEnum.INCIDANT,
     title: getTitle(SerialNumberEnum.INCIDANT),
+    prefix: '',
+    suffix: '',
+    start: '',
+  },
+  {
+    id: 18,
+    serialNumberType: SerialNumberEnum.PRIMTTOWORK,
+    name: SerialNumberEnum.PRIMTTOWORK,
+    title: getTitle(SerialNumberEnum.PRIMTTOWORK),
+    prefix: '',
+    suffix: '',
+    start: '',
+  },
+  {
+    id: 19,
+    serialNumberType: SerialNumberEnum.MANGEMENTOFCHAGE,
+    name: SerialNumberEnum.MANGEMENTOFCHAGE,
+    title: getTitle(SerialNumberEnum.MANGEMENTOFCHAGE),
+    prefix: '',
+    suffix: '',
+    start: '',
+  },
+  {
+    id: 20,
+    serialNumberType: SerialNumberEnum.MANGEMENTOFCHAGE,
+    name: SerialNumberEnum.MANGEMENTOFCHAGE,
+    title: getTitle(SerialNumberEnum.MANGEMENTOFCHAGE),
     prefix: '',
     suffix: '',
     start: '',

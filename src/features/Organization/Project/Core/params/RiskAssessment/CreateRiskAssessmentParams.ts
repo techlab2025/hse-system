@@ -1,5 +1,6 @@
 import type Params from '@/base/core/params/params'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 export default class CreateRiskAssessmentParams implements Params {
   constructor(
@@ -9,6 +10,7 @@ export default class CreateRiskAssessmentParams implements Params {
     public date: string,
     public employeeApproverId: number,
     public attachents: string[],
+    public serial: string,
   ) {}
 
   static readonly validation = new ClassValidation().setRules({
@@ -20,7 +22,7 @@ export default class CreateRiskAssessmentParams implements Params {
   })
 
   toMap(): Record<string, unknown> {
-    return {
+    const data: Record<string, unknown> = {
       activity: this.activity,
       activity_description: this.desctiprion,
       work_area: this.workAreaStrign,
@@ -28,6 +30,11 @@ export default class CreateRiskAssessmentParams implements Params {
       employee_approver_id: this.employeeApproverId,
       attachments: this.attachents,
     }
+
+    if (useProjectAppStatusStore().isSerialNumberAuto()) data.serial_number = this.serial
+    else data.serial = this.serial
+
+    return data
   }
 
   validate() {

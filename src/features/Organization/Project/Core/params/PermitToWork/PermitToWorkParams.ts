@@ -1,9 +1,11 @@
 import type Params from '@/base/core/params/params'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 export default class PermitToWorkParams implements Params {
   public project_id: number
   public organization_employee_id: number
   public ptw_number: string
+  public serial: string
   public ptw_type_id: number
   public start_date: string | null
   public end_date: string | null
@@ -17,6 +19,7 @@ export default class PermitToWorkParams implements Params {
     project_id: number
     organization_employee_id: number
     ptw_number: string
+    serial: string
     ptw_type_id: number
     start_date: string | null
     end_date: string | null
@@ -29,6 +32,7 @@ export default class PermitToWorkParams implements Params {
     this.project_id = data.project_id
     this.organization_employee_id = data.organization_employee_id
     this.ptw_number = data.ptw_number
+    this.serial = data.serial
     this.ptw_type_id = data.ptw_type_id
     this.start_date = data.start_date
     this.end_date = data.end_date
@@ -46,6 +50,8 @@ export default class PermitToWorkParams implements Params {
     data['project_id'] = this.project_id
     data['asigned_employee_id'] = this.organization_employee_id
     data['ptw_number'] = this.ptw_number
+    if (useProjectAppStatusStore().isSerialNumberAuto()) data['serial_number'] = this.serial
+    else data['serial'] = this.serial
     data['permit_type_id'] = this.ptw_type_id
     data['start_date'] = this.start_date
     data['end_date'] = this.end_date

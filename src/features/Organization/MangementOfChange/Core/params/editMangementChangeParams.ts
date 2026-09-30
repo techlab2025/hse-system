@@ -2,6 +2,7 @@ import type Params from '@/base/core/params/params'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import type { ChangeApprovalMangementEnum } from '../Core/ChangeApprovalEnum'
 import type { ChangeTypeMangementEnum } from '../Core/ChangeTypeEnum'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 export default class EditMangementChangeParams implements Params {
   constructor(
@@ -20,10 +21,11 @@ export default class EditMangementChangeParams implements Params {
     public management_change_topic_equipment_id?: number,
     public management_change_topic_text?: string,
     public initiatore_employee_id?: number,
+    public serial?: string,
   ) {}
 
   toMap(): Record<string, unknown> {
-    return {
+    const data: Record<string, unknown> = {
       management_of_change_id: this.id,
       risk_assisment_file: this.risk_assisment_file,
       attachments: this.image,
@@ -41,5 +43,10 @@ export default class EditMangementChangeParams implements Params {
       initiator_employee_id:
         this.initiatore_employee_id,
     }
+
+      if (useProjectAppStatusStore().isSerialNumberAuto()) data.serial_number = this.serial
+      else data.serial = this.serial
+
+      return data
   }
 }
