@@ -628,6 +628,26 @@ const setDecoDate = (date: Date | null) => {
   updateData()
 }
 
+const isInspectionExpired = computed(() => {
+  const expiryDate = decommissioningDateObj.value
+  if (!expiryDate || Number.isNaN(expiryDate.getTime())) return false
+
+  const todayStart = new Date()
+  todayStart.setHours(0, 0, 0, 0)
+
+  const expiryDay = new Date(expiryDate)
+  expiryDay.setHours(0, 0, 0, 0)
+
+  return expiryDay < todayStart
+})
+
+const showExpiredInspectionWarning = computed(
+  () =>
+    deviceStatus.value === EquipmentStatus.OWN &&
+    equipmentUsedStatus.value?.id === EquipmentUsed.used &&
+    isInspectionExpired.value,
+)
+
 const setMainfacturyDate = (date: Date | null) => {
   mainfacturyDateObj.value = date
   mainfacturyDate.value = date ? formatJoinDate(date) : null
@@ -1316,6 +1336,9 @@ const startYear = new Date(today.getFullYear() - 1, 0, 1)
             <FieldHelpIcon text="Select whether this owned equipment has been used before." />
           </template>
         </UpdatedCustomInputSelect>
+        <p v-if="showExpiredInspectionWarning" class="equipment-warning-message">
+          {{ $t('equipment_expired_inspection_used_warning') }}
+        </p>
       </div>
 
       <!-- <div
@@ -1512,6 +1535,18 @@ const startYear = new Date(today.getFullYear() - 1, 0, 1)
   color: var(--status-danger);
   font-size: 0.82rem;
   font-weight: 700;
+}
+
+.equipment-warning-message {
+  margin-top: 0.45rem;
+  border: 1px solid color-mix(in srgb, var(--status-warning) 42%, var(--main-border));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--status-warning) 12%, transparent);
+  color: color-mix(in srgb, var(--status-warning) 70%, var(--text-strong));
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.5;
+  padding: 0.55rem 0.7rem;
 }
 
 .equipment-form.is-dark {
