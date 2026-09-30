@@ -31,7 +31,11 @@ const isLinked = (activityId: number, toolId: number) =>
   )
 
 const refreshMatrix = () =>
-  matrixController.fetchPPEActivityTools(new FetchPPEActivityToolsParams())
+  matrixController.fetchPPEActivityTools(
+    new FetchPPEActivityToolsParams({
+      ProjectId: projectId.value,
+    }),
+  )
 
 const toggle = async (activityId: number, toolId: number) => {
   const key = keyFor(activityId, toolId)

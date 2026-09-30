@@ -395,7 +395,8 @@ defineProps<{
   display: flex;
   min-width: 0;
   max-width: 560px;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   gap: 3px;
   padding-inline-start: 65px;
 }

@@ -192,8 +192,22 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
           <div><i :style="{ width: `${data.projectProgress}%` }" /></div>
         </div>
         <div class="flow-step-links">
-          <button v-for="(label, index) in availableFlowSteps" :key="label" type="button" @click.prevent.stop="openFlow(index + 1, true)">{{ label }}</button>
-          <button v-if="data.projectStatus !== null && data.projectStatus < 5" type="button" class="continue-flow" @click.prevent.stop="openFlow(continueStep)">Continue setup →</button>
+          <button
+            v-for="(label, index) in availableFlowSteps"
+            :key="label"
+            type="button"
+            @click.prevent.stop="openFlow(index + 1, true)"
+          >
+            {{ label }}
+          </button>
+          <button
+            v-if="data.projectStatus !== null && data.projectStatus < 5"
+            type="button"
+            class="continue-flow"
+            @click.prevent.stop="openFlow(continueStep)"
+          >
+            Continue setup →
+          </button>
         </div>
       </div>
     </div>
@@ -210,13 +224,53 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
   padding-top: 13px;
   border-top: 1px solid var(--main-border);
 }
-.flow-progress-copy { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; font-size: 11px; font-weight: 900; color: var(--PrimaryColor); }
-.flow-progress-copy > div { flex: 1; height: 5px; overflow: hidden; border-radius: 9px; background: var(--Gray-1); }
-.flow-progress-copy i { display: block; height: 100%; border-radius: inherit; background: var(--PrimaryColor); }
-.flow-step-links { display: flex; flex-wrap: wrap; gap: 6px; }
-.flow-step-links button { border: 1px solid var(--main-border); border-radius: 9px; padding: 6px 8px; background: var(--BgWhite); color: var(--GrayText-1); font-size: 10px; font-weight: 800; cursor: pointer; }
-.flow-step-links button:hover { border-color: var(--PrimaryColor); color: var(--PrimaryColor); }
-.flow-step-links .continue-flow { margin-inline-start: auto; border-color: color-mix(in srgb, var(--PrimaryColor) 30%, var(--main-border)); background: color-mix(in srgb, var(--PrimaryColor) 8%, transparent); color: var(--PrimaryColor); }
+.flow-progress-copy {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 9px;
+  font-size: 11px;
+  font-weight: 900;
+  color: var(--PrimaryColor);
+}
+.flow-progress-copy > div {
+  flex: 1;
+  height: 5px;
+  overflow: hidden;
+  border-radius: 9px;
+  background: var(--Gray-1);
+}
+.flow-progress-copy i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--PrimaryColor);
+}
+.flow-step-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.flow-step-links button {
+  border: 1px solid var(--main-border);
+  border-radius: 9px;
+  padding: 6px 8px;
+  background: var(--BgWhite);
+  color: var(--GrayText-1);
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.flow-step-links button:hover {
+  border-color: var(--PrimaryColor);
+  color: var(--PrimaryColor);
+}
+.flow-step-links .continue-flow {
+  margin-inline-start: auto;
+  border-color: color-mix(in srgb, var(--PrimaryColor) 30%, var(--main-border));
+  background: color-mix(in srgb, var(--PrimaryColor) 8%, transparent);
+  color: var(--PrimaryColor);
+}
 
 .update-locations {
   display: inline-flex;

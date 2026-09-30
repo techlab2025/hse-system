@@ -9,7 +9,7 @@ export default class FetchPPEMatrixDeliveriesParams implements Params {
 
   toMap(): Record<string, number> {
     return {
-      // project_id: this.projectId,
+      project_id: this.projectId,
       // paginate: 0,
       // page: this.page,
       // limit: this.limit,

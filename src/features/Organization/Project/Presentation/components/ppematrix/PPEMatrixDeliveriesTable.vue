@@ -7,11 +7,13 @@ import FetchPPEMatrixDeliveriesParams from '../../../Core/params/ppematrix/Fetch
 import type PPEMatrixDeliveryModel from '../../../Data/models/ppematrix/PPEMatrixDeliveryModel'
 import type PPEMatrixDeliveryToolModel from '../../../Data/models/ppematrix/PPEMatrixDeliveryToolModel'
 import FetchPPEMatrixDeliveriesController from '../../controllers/ppematrix/FetchPPEMatrixDeliveriesController'
+import { useRoute } from 'vue-router'
 
 const props = defineProps<{
   projectId: number
 }>()
 
+const route = useRoute()
 const controller = FetchPPEMatrixDeliveriesController.getInstance()
 const state = computed(() => controller.state.value)
 const currentPage = ref(1)
@@ -23,7 +25,7 @@ const fetchDeliveries = async (page = currentPage.value, limit = countPerPage.va
   currentPage.value = page
   countPerPage.value = limit
   await controller.fetchPPEMatrixDeliveries(
-    new FetchPPEMatrixDeliveriesParams(props.projectId, page, limit),
+    new FetchPPEMatrixDeliveriesParams(props.projectId || route.params.id, page, limit),
   )
 }
 
