@@ -4424,5 +4424,8 @@
   "induction_identity": "Induction identity",
   "session_details": "Session details",
   "evidence_files": "Evidence files",
-  "external_attendee": "External attendee"
+  "external_attendee": "External attendee",
+  "RISKASSESSMENT":"Risk Assessment",
+  "MANGEMENTOFCHAGE":"Management of changes",
+  "PRIMTTOWORK" :"Permit to work"
 }
