@@ -4,9 +4,14 @@ export default class CreatePPEActivityToolParams implements Params {
   constructor(
     public ppeActivityId: number,
     public ppeToolId: number,
+    public ProjectId?: number,
   ) {}
 
   toMap(): Record<string, number> {
-    return { ppe_active_id: this.ppeActivityId, ppe_tool_id: this.ppeToolId }
+    return {
+      ppe_active_id: this.ppeActivityId,
+      ppe_tool_id: this.ppeToolId,
+      project_id: this.ProjectId!,
+    }
   }
 }

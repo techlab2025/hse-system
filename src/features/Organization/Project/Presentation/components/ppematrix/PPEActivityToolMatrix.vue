@@ -44,7 +44,7 @@ const toggle = async (activityId: number, toolId: number) => {
   pending.value = new Set([...pending.value, key])
   try {
     await toggleController.createPPEActivityTool(
-      new CreatePPEActivityToolParams(activityId, toolId),
+      new CreatePPEActivityToolParams(activityId, toolId, projectId.value),
     )
     if (!toggleController.isDataSuccess())
       throw new Error('Unable to update this activity and tool.')
