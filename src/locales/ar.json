@@ -4417,5 +4417,12 @@
   "zones available": "المناطق افايلابلي",
   "Zoom": "زووم",
   "zoon ar": "منطقة ار",
-  "zoon en": "منطقة ين"
+  "zoon en": "منطقة ين",
+  "induction_overview": "نظرة عامة على التعريف",
+  "attendees": "الحاضرون",
+  "training_topics": "موضوعات التدريب",
+  "induction_identity": "بيانات التعريف",
+  "session_details": "تفاصيل الجلسة",
+  "evidence_files": "ملفات الدليل",
+  "external_attendee": "حاضر خارجي"
 }
