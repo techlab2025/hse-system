@@ -36,11 +36,14 @@ export default class DeletePPEActivityController extends ControllerInterface<PPE
       }
     } catch (error: any) {
       console.log(error)
+      const errorMessage =
+        this.state.value.error?.title ??
+        this.state.value.message ?? error?.message ??'An Error Occurred'
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog-error',
-        titleContent: this.state.value.message,
+        titleContent: 'An Error Occurred',
         imageElement: errorImage,
-        messageContent: null,
+        messageContent: errorMessage,
       })
     }
     super.handleResponseDialogs()

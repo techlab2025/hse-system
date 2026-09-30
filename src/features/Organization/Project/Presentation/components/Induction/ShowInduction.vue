@@ -15,36 +15,6 @@ const controller = ShowInductionController.getInstance()
 const state = ref(controller.state.value)
 
 const induction = computed(() => state.value.data)
-
-const fetchInductionDetails = async () => {
-  await controller.showInduction(new ShowInductionParams(id.value))
-}
-
-const personName = (
-  item: { id?: number | null; title?: string; name?: string } | null | undefined,
-) => {
-  if (!item) return '-'
-  return item.title || item.name || (item.id ? '#' + item.id : '-')
-}
-
-const topicName = (item: { id?: number | null; title?: string } | null | undefined) => {
-  if (!item) return '-'
-  return item.title || (item.id ? '#' + item.id : '-')
-}
-
-const personInitials = (item: { id?: number | null; title?: string; name?: string }) => {
-  const name = personName(item)
-  if (name === '-') return '-'
-
-  return name
-    .split(' ')
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part.charAt(0))
-    .join('')
-    .toUpperCase()
-}
-
 const attachments = computed(() => induction.value?.image ?? [])
 const trainingTopicCount = computed(() => induction.value?.trainingTopic.length ?? 0)
 const attendeeCount = computed(() => induction.value?.organisationEmployee.length ?? 0)
@@ -55,12 +25,33 @@ const instructorValue = computed(
     (induction.value?.instractor_id ? '#' + induction.value.instractor_id : '-'),
 )
 
-const summaryItems = computed(() => [
+const heroMetrics = computed(() => [
+  {
+    icon: 'uil:list-ul',
+    label: 'training_topics',
+    value: trainingTopicCount.value,
+    tone: 'blue',
+  },
+  {
+    icon: 'uil:users-alt',
+    label: 'attendees',
+    value: attendeeCount.value,
+    tone: 'green',
+  },
+  {
+    icon: 'uil:image-v',
+    label: 'Evidence',
+    value: evidenceCount.value,
+    tone: 'amber',
+  },
+])
+
+const detailItems = computed(() => [
   {
     icon: 'uil:user-check',
     label: 'instractor',
     value: instructorValue.value,
-    tone: 'sky',
+    tone: 'blue',
   },
   {
     icon: 'uil:briefcase-alt',
@@ -90,6 +81,12 @@ const summaryItems = computed(() => [
       (induction.value?.projectZoonId ? '#' + induction.value.projectZoonId : '-'),
     tone: 'slate',
   },
+  {
+    icon: 'uil:clock',
+    label: 'created_at',
+    value: induction.value?.createdAt || '-',
+    tone: 'slate',
+  },
 ])
 
 watch(
@@ -100,22 +97,24 @@ watch(
   { deep: true },
 )
 
-onMounted(fetchInductionDetails)
+onMounted(() => {
+  controller.showInduction(new ShowInductionParams(id.value))
+})
 </script>
 
 <template>
   <DataStatus :controller="state">
     <template #success>
       <section v-if="induction" class="induction-show">
-        <header class="show-hero">
-          <div class="show-hero__identity">
-            <span class="show-hero__icon" aria-hidden="true">
+        <header class="induction-hero">
+          <div class="induction-hero__main">
+            <span class="induction-hero__icon" aria-hidden="true">
               <Icon icon="uil:book-open" />
             </span>
-            <div class="show-hero__copy">
-              <p>{{ $t('Induction') }}</p>
+            <div class="induction-hero__copy">
+              <p>{{ $t('induction_overview') }}</p>
               <h1>{{ induction.title }}</h1>
-              <div class="show-hero__meta">
+              <div class="induction-hero__chips">
                 <span>{{ induction.projectTitle || '-' }}</span>
                 <span>{{ induction.date || '-' }}</span>
                 <span>{{ instructorValue }}</span>
@@ -123,30 +122,30 @@ onMounted(fetchInductionDetails)
             </div>
           </div>
 
-          <div class="show-hero__metrics" aria-label="Induction summary">
-            <div class="metric-pill">
-              <strong>{{ trainingTopicCount }}</strong>
-              <span>{{ $t('trainingTopic') }}</span>
-            </div>
-            <div class="metric-pill">
-              <strong>{{ attendeeCount }}</strong>
-              <span>{{ $t('organisationEmployee') }}</span>
-            </div>
-            <div class="metric-pill">
-              <strong>{{ evidenceCount }}</strong>
-              <span>{{ $t('Evidence') }}</span>
-            </div>
+          <div class="metric-grid" :aria-label="$t('session_details')">
+            <article
+              v-for="metric in heroMetrics"
+              :key="metric.label"
+              class="metric-card"
+              :data-tone="metric.tone"
+            >
+              <span class="metric-card__icon" aria-hidden="true">
+                <Icon :icon="metric.icon" />
+              </span>
+              <strong>{{ metric.value }}</strong>
+              <p>{{ $t(metric.label) }}</p>
+            </article>
           </div>
         </header>
 
-        <section class="smart-summary" aria-label="Induction details">
+        <section class="detail-grid" :aria-label="$t('induction_identity')">
           <article
-            v-for="item in summaryItems"
+            v-for="item in detailItems"
             :key="item.label"
-            class="summary-card"
+            class="detail-card"
             :data-tone="item.tone"
           >
-            <span class="summary-card__icon" aria-hidden="true">
+            <span class="detail-card__icon" aria-hidden="true">
               <Icon :icon="item.icon" />
             </span>
             <div>
@@ -156,73 +155,78 @@ onMounted(fetchInductionDetails)
           </article>
         </section>
 
-        <div class="content-grid">
-          <!-- <section class="smart-panel topics-panel">
+        <div class="show-grid">
+          <section class="show-panel topics-panel">
             <header class="panel-header">
               <span class="panel-header__icon" aria-hidden="true">
                 <Icon icon="uil:list-ul" />
               </span>
-              <h2>{{ $t('trainingTopic') }}</h2>
-              <small>{{ trainingTopicCount }}</small>
+              <div>
+                <h2>{{ $t('training_topics') }}</h2>
+                <p>{{ trainingTopicCount }}</p>
+              </div>
             </header>
 
-            <div v-if="induction.trainingTopic.length" class="topic-stack">
-              <div
+            <div v-if="induction.trainingTopic.length" class="topic-list">
+              <article
                 v-for="(topic, index) in induction.trainingTopic"
-                :key="topic.id || topic.title"
-                class="topic-row"
+                :key="topic.inductionTrainingTopicId || topic.trainingTopicId || index"
+                class="topic-item"
               >
                 <span>{{ index + 1 }}</span>
-                <strong>{{ topicName(topic) }}</strong>
-              </div>
+                <strong>{{ topic.displayTitle }}</strong>
+              </article>
             </div>
             <p v-else class="empty-text">{{ $t('No training topics selected') }}</p>
-          </section> -->
+          </section>
 
-          <!-- <section class="smart-panel people-panel">
+          <section class="show-panel attendees-panel">
             <header class="panel-header">
               <span class="panel-header__icon" aria-hidden="true">
                 <Icon icon="uil:users-alt" />
               </span>
-              <h2>{{ $t('organisationEmployee') }}</h2>
-              <small>{{ attendeeCount }}</small>
+              <div>
+                <h2>{{ $t('attendees') }}</h2>
+                <p>{{ attendeeCount }}</p>
+              </div>
             </header>
 
-            <div v-if="induction.organisationEmployee.length" class="people-list">
-              <div
+            <div v-if="induction.organisationEmployee.length" class="attendee-list">
+              <article
                 v-for="employee in induction.organisationEmployee"
-                :key="employee.id || employee.name"
-                class="person-row"
+                :key="employee.id + '-' + employee.displayTitle"
+                class="attendee-item"
               >
-                <span class="person-avatar">{{ personInitials(employee) }}</span>
-                <div class="person-row__body">
-                  <strong>{{ personName(employee) }}</strong>
-                  <small v-if="employee.email">{{ employee.email }}</small>
-                  <small v-else-if="employee.id">#{{ employee.id }}</small>
+                <span class="attendee-avatar">{{ employee.initials }}</span>
+                <div class="attendee-copy">
+                  <strong>{{ employee.displayTitle }}</strong>
+                  <small>{{ employee.displaySubtitle || $t('external_attendee') }}</small>
                 </div>
-              </div>
+              </article>
             </div>
             <p v-else class="empty-text">{{ $t('No attendees selected') }}</p>
-          </section> -->
+          </section>
 
-          <section class="smart-panel evidence-panel">
+          <section class="show-panel evidence-panel">
             <header class="panel-header">
               <span class="panel-header__icon" aria-hidden="true">
                 <Icon icon="uil:image-v" />
               </span>
-              <h2>{{ $t('Evidence') }}</h2>
-              <small>{{ evidenceCount }}</small>
+              <div>
+                <h2>{{ $t('evidence_files') }}</h2>
+                <p>{{ evidenceCount }}</p>
+              </div>
             </header>
 
             <div v-if="attachments.length" class="attachment-grid">
-              <div
+              <article
                 v-for="(file, index) in attachments"
                 :key="file + '-' + index"
                 class="attachment-item"
               >
                 <Image :src="file" alt="Image" preview image-class="attachment-image" />
                 <span>{{ index + 1 }}</span>
-              </div>
+              </article>
             </div>
             <p v-else class="empty-text">{{ $t('No attachments') }}</p>
           </section>
@@ -243,96 +247,100 @@ onMounted(fetchInductionDetails)
 <style scoped>
 .induction-show {
   display: grid;
-  gap: 16px;
+  gap: 18px;
   padding: 16px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 14%, var(--main-border));
-  border-radius: 16px;
-  background:
-    linear-gradient(180deg, color-mix(in srgb, var(--surface-1) 96%, #eef4ff) 0%, var(--surface-1) 42%),
-    var(--surface-1);
 }
 
-.show-hero {
-  display: flex;
-  align-items: stretch;
-  justify-content: space-between;
+.induction-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.72fr);
   gap: 16px;
+  align-items: stretch;
+  min-width: 0;
   padding: 18px;
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 16%, var(--main-border));
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--surface-1) 92%, #f8fbff);
+  border-radius: 16px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--PrimaryColor) 12%, transparent), transparent 42%),
+    color-mix(in srgb, var(--surface-1) 96%, #f8fbff);
 }
 
-.show-hero__identity {
+.induction-hero__main {
   display: flex;
-  align-items: center;
   gap: 14px;
+  align-items: center;
   min-width: 0;
 }
 
-.show-hero__icon,
-.summary-card__icon,
+.induction-hero__icon,
+.metric-card__icon,
+.detail-card__icon,
 .panel-header__icon {
   display: grid;
   flex: 0 0 auto;
   place-items: center;
+}
+
+.induction-hero__icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--PrimaryColor) 13%, transparent);
   color: var(--PrimaryColor);
 }
 
-.show-hero__icon {
-  width: 52px;
-  height: 52px;
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--PrimaryColor) 12%, transparent);
+.induction-hero__icon svg {
+  width: 30px;
+  height: 30px;
 }
 
-.show-hero__icon svg {
-  width: 27px;
-  height: 27px;
-}
-
-.show-hero__copy {
+.induction-hero__copy {
   min-width: 0;
 }
 
-.show-hero__copy p,
-.show-hero__copy h1,
-.show-hero__meta {
+.induction-hero__copy p,
+.induction-hero__copy h1,
+.induction-hero__chips,
+.metric-card p,
+.panel-header h2,
+.panel-header p {
   margin: 0;
 }
 
-.show-hero__copy p {
+.induction-hero__copy p {
   color: var(--text-soft);
   font-size: 0.78rem;
   font-weight: 800;
 }
 
-.show-hero__copy h1 {
+.induction-hero__copy h1 {
+  margin-top: 4px;
   overflow: hidden;
   color: var(--text-strong);
-  font-size: 1.5rem;
+  font-size: clamp(1.35rem, 2.4vw, 2rem);
   font-weight: 900;
-  line-height: 1.2;
+  line-height: 1.15;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.show-hero__meta {
+.induction-hero__chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 9px;
+  margin-top: 12px;
 }
 
-.show-hero__meta span {
+.induction-hero__chips span {
   display: inline-flex;
   align-items: center;
-  max-width: 220px;
-  min-height: 28px;
-  padding: 5px 9px;
+  max-width: 230px;
+  min-height: 30px;
+  padding: 5px 10px;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 14%, var(--main-border));
   border-radius: 999px;
+  background: color-mix(in srgb, var(--surface-1) 84%, transparent);
   color: var(--text-soft);
   font-size: 0.78rem;
   font-weight: 800;
@@ -340,104 +348,116 @@ onMounted(fetchInductionDetails)
   white-space: nowrap;
 }
 
-.show-hero__metrics {
+.metric-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(96px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
-  min-width: min(100%, 380px);
 }
 
-.metric-pill {
+.metric-card {
   display: grid;
+  gap: 7px;
   align-content: center;
-  min-height: 76px;
-  padding: 10px 12px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 14%, var(--main-border));
-  border-radius: 12px;
+  min-height: 112px;
+  padding: 14px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 13%, var(--main-border));
+  border-radius: 14px;
   background: var(--surface-1);
 }
 
-.metric-pill strong {
+.metric-card__icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--PrimaryColor) 10%, transparent);
   color: var(--PrimaryColor);
-  font-size: 1.35rem;
-  font-weight: 900;
-  line-height: 1;
 }
 
-.metric-pill span {
-  margin-top: 6px;
-  color: var(--text-soft);
-  font-size: 0.73rem;
-  font-weight: 800;
-}
-
-.smart-summary {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.summary-card {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 0;
-  min-height: 78px;
-  padding: 12px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
-  border-radius: 12px;
-  background: var(--surface-1);
-}
-
-.summary-card[data-tone='green'] .summary-card__icon {
+.metric-card[data-tone='green'] .metric-card__icon {
   color: #16805d;
   background: color-mix(in srgb, #16a34a 12%, transparent);
 }
 
-.summary-card[data-tone='amber'] .summary-card__icon {
+.metric-card[data-tone='amber'] .metric-card__icon {
   color: #93610d;
   background: color-mix(in srgb, #f59e0b 14%, transparent);
 }
 
-.summary-card[data-tone='violet'] .summary-card__icon {
+.metric-card strong {
+  color: var(--text-strong);
+  font-size: 1.55rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.metric-card p {
+  color: var(--text-soft);
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.detail-card {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+  min-height: 76px;
+  padding: 13px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 11%, var(--main-border));
+  border-radius: 14px;
+  background: var(--surface-1);
+}
+
+.detail-card__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: color-mix(in srgb, var(--PrimaryColor) 10%, transparent);
+  color: var(--PrimaryColor);
+}
+
+.detail-card[data-tone='green'] .detail-card__icon {
+  color: #16805d;
+  background: color-mix(in srgb, #16a34a 12%, transparent);
+}
+
+.detail-card[data-tone='amber'] .detail-card__icon {
+  color: #93610d;
+  background: color-mix(in srgb, #f59e0b 14%, transparent);
+}
+
+.detail-card[data-tone='violet'] .detail-card__icon {
   color: #6554c0;
   background: color-mix(in srgb, #7c3aed 11%, transparent);
 }
 
-.summary-card[data-tone='slate'] .summary-card__icon {
+.detail-card[data-tone='slate'] .detail-card__icon {
   color: var(--text-soft);
   background: color-mix(in srgb, var(--text-soft) 10%, transparent);
 }
 
-.summary-card__icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: color-mix(in srgb, var(--PrimaryColor) 10%, transparent);
-}
-
-.summary-card__icon svg,
-.panel-header__icon svg {
-  width: 20px;
-  height: 20px;
-}
-
-.summary-card div {
+.detail-card div {
   min-width: 0;
 }
 
-.summary-card p,
-.summary-card strong {
+.detail-card p,
+.detail-card strong {
   margin: 0;
 }
 
-.summary-card p {
+.detail-card p {
   color: var(--text-soft);
   font-size: 0.72rem;
   font-weight: 800;
 }
 
-.summary-card strong {
+.detail-card strong {
   display: block;
   overflow: hidden;
   color: var(--text-strong);
@@ -447,20 +467,20 @@ onMounted(fetchInductionDetails)
   white-space: nowrap;
 }
 
-.content-grid {
+.show-grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: 14px;
 }
 
-.smart-panel {
+.show-panel {
   display: grid;
-  gap: 12px;
+  gap: 13px;
   align-content: start;
   min-width: 0;
   padding: 14px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
-  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 11%, var(--main-border));
+  border-radius: 16px;
   background: var(--surface-1);
 }
 
@@ -471,109 +491,131 @@ onMounted(fetchInductionDetails)
 .panel-header {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
   min-width: 0;
 }
 
 .panel-header__icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 9px;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
   background: color-mix(in srgb, var(--PrimaryColor) 10%, transparent);
+  color: var(--PrimaryColor);
+}
+
+.metric-card__icon svg,
+.detail-card__icon svg,
+.panel-header__icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.panel-header div {
+  min-width: 0;
 }
 
 .panel-header h2 {
-  flex: 1;
-  margin: 0;
+  overflow: hidden;
   color: var(--text-strong);
   font-size: 1rem;
   font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.panel-header small {
-  display: grid;
-  min-width: 28px;
-  height: 28px;
-  place-items: center;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--PrimaryColor) 10%, transparent);
-  color: var(--PrimaryColor);
+.panel-header p {
+  color: var(--text-soft);
   font-size: 0.78rem;
-  font-weight: 900;
+  font-weight: 800;
 }
 
-.topic-stack,
-.people-list {
+.topic-list,
+.attendee-list {
   display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 9px;
 }
+@media (max-width: 600px) {
+  .topic-list,
+  .attendee-list {
+    grid-template-columns: 1fr;
+  }
+}
 
-.topic-row,
-.person-row {
+.topic-item,
+.attendee-item {
   display: flex;
   align-items: center;
   gap: 10px;
   min-width: 0;
-  min-height: 48px;
-  padding: 9px 10px;
-  border: 1px solid color-mix(in srgb, var(--main-border) 84%, transparent);
-  border-radius: 11px;
+  min-height: 50px;
+  padding: 10px;
+  border: 1px solid color-mix(in srgb, var(--main-border) 86%, transparent);
+  border-radius: 12px;
   background: color-mix(in srgb, var(--surface-1) 96%, #eef4ff);
 }
 
-.topic-row span {
+.topic-item span,
+.attendee-avatar {
   display: grid;
-  flex: 0 0 28px;
-  width: 28px;
-  height: 28px;
+  flex: 0 0 auto;
   place-items: center;
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--PrimaryColor) 12%, transparent);
   color: var(--PrimaryColor);
-  font-size: 0.8rem;
   font-weight: 900;
 }
 
-.topic-row strong,
-.person-row__body strong {
+.topic-item span {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--PrimaryColor) 11%, transparent);
+  font-size: 0.8rem;
+}
+
+.topic-item strong {
   overflow: hidden;
   color: var(--text-strong);
-  font-size: 0.9rem;
+  font-size: 0.91rem;
   font-weight: 900;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.person-avatar {
-  display: grid;
-  flex: 0 0 38px;
-  width: 38px;
-  height: 38px;
-  place-items: center;
-  border-radius: 10px;
-  background: color-mix(in srgb, var(--PrimaryColor) 12%, transparent);
-  color: var(--PrimaryColor);
+.attendee-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--PrimaryColor) 11%, transparent);
   font-size: 0.78rem;
-  font-weight: 900;
 }
 
-.person-row__body {
+.attendee-copy {
   display: grid;
   min-width: 0;
 }
 
-.person-row__body small {
+.attendee-copy strong,
+.attendee-copy small {
   overflow: hidden;
-  color: var(--text-soft);
-  font-size: 0.76rem;
-  font-weight: 700;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
+.attendee-copy strong {
+  color: var(--text-strong);
+  font-size: 0.92rem;
+  font-weight: 900;
+}
+
+.attendee-copy small {
+  color: var(--text-soft);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
 .attachment-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(154px, 1fr));
   gap: 12px;
 }
 
@@ -582,7 +624,7 @@ onMounted(fetchInductionDetails)
   overflow: hidden;
   aspect-ratio: 16 / 10;
   border: 1px solid color-mix(in srgb, var(--main-border) 84%, transparent);
-  border-radius: 12px;
+  border-radius: 14px;
   background: var(--surface-2);
 }
 
@@ -603,11 +645,11 @@ onMounted(fetchInductionDetails)
   inset-block-start: 8px;
   inset-inline-start: 8px;
   display: grid;
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   place-items: center;
-  border-radius: 8px;
-  background: color-mix(in srgb, var(--surface-1) 92%, transparent);
+  border-radius: 9px;
+  background: color-mix(in srgb, var(--surface-1) 94%, transparent);
   color: var(--PrimaryColor);
   font-size: 0.78rem;
   font-weight: 900;
@@ -623,41 +665,35 @@ onMounted(fetchInductionDetails)
   font-weight: 800;
 }
 
-@media (max-width: 1180px) {
-  .show-hero {
-    flex-direction: column;
-  }
-
-  .show-hero__metrics,
-  .smart-summary {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+@media (max-width: 1120px) {
+  .induction-hero,
+  .show-grid {
+    grid-template-columns: 1fr;
   }
 }
 
-@media (max-width: 900px) {
-  .content-grid,
-  .smart-summary {
+@media (max-width: 860px) {
+  .detail-grid,
+  .metric-grid {
     grid-template-columns: 1fr;
   }
 }
 
 @media (max-width: 640px) {
   .induction-show,
-  .show-hero,
-  .smart-panel {
+  .induction-hero,
+  .show-panel {
     padding: 12px;
   }
 
-  .show-hero__identity {
+  .induction-hero__main {
     align-items: flex-start;
   }
 
-  .show-hero__copy h1 {
+  .induction-hero__copy h1,
+  .detail-card strong,
+  .panel-header h2 {
     white-space: normal;
-  }
-
-  .show-hero__metrics {
-    grid-template-columns: 1fr;
   }
 }
 </style>

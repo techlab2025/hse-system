@@ -20,7 +20,7 @@ export default class DeletePPEToolController extends ControllerInterface<PPETool
     return this.instance
   }
 
-  async deletePPETool(params: Params) {
+  async deletePPETool(params: Params) { 
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
@@ -35,12 +35,15 @@ export default class DeletePPEToolController extends ControllerInterface<PPETool
         throw new Error('Error while addServices')
       }
     } catch (error: any) {
-      console.log(error)
+        console.log(error)
+      const errorMessage =
+        this.state.value.error?.title ??
+        this.state.value.message ?? error?.message ??'An Error Occurred'
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog-error',
-        titleContent: this.state.value.message,
+        titleContent: 'An Error Occurred',
         imageElement: errorImage,
-        messageContent: null,
+        messageContent: errorMessage,
       })
     }
     super.handleResponseDialogs()

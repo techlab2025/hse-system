@@ -18,7 +18,7 @@ import IndexIndustryController from '@/features/setting/Industries/Presentation/
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import AddPPEActivityParams from '../../Core/params/addPPEActivityParams'
 import EditPPEActivityParams from '../../Core/params/editPPEActivityParams'
-import type PPEActivityDetailsModel from '../../Data/models/PPEActivityDetailsModel'
+import type PPEActivityDetailsModel from '../../Data/models/PPEActivityDetailsModel' 
 
 type LanguageOption = { locale: string; title: string; icon?: Component | string }
 type LocalizedTitle = { locale: string; title: string }

@@ -687,7 +687,7 @@ onMounted(() => {
           <UpdatedCustomInputSelect
             :model-value="selectedOrganisationEmployees"
             :static-options="employeeOptions"
-            label="Employee Name"
+            label="Add Employee "
             id="induction-organisation-employee"
             :placeholder="$t('Select employees')"
             :type="2"

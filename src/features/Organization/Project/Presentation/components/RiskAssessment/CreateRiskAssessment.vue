@@ -134,7 +134,7 @@ async function create() {
               <span class="field-label"><span class="field-icon" aria-hidden="true">≡</span><span>Activity description
                 </span>
                 <span  class="optional">(optional)</span></span>
-              <textarea v-model="form.desctiprion" rows="5" required
+              <textarea v-model="form.desctiprion" rows="5" 
                 placeholder="Describe the work, hazards, and planned controls" />
             </label>
           </div>
