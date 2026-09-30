@@ -10,11 +10,24 @@ export default class PPEMatrixDeliveryModel {
     public deliveryDate: string,
     public project: PPEMatrixDeliveryReferenceModel,
     public preparedBy: PPEMatrixDeliveryReferenceModel,
-    public activity: PPEMatrixDeliveryActivityModel,
+    public activities: PPEMatrixDeliveryActivityModel[],
   ) {}
+
+  /**
+   * Backward-compatible access for consumers that still expect one activity.
+   */
+  get activity(): PPEMatrixDeliveryActivityModel {
+    return this.activities[0] ?? new PPEMatrixDeliveryActivityModel(0, '', [])
+  }
 
   static fromMap(data: Record<string, unknown>): PPEMatrixDeliveryModel {
     const employee = PPEMatrixDeliveryEmployeeModel.fromMap(data.employee ?? data)
+    const activityData = data.ppe_activity ?? data.activities ?? data.activity
+    const activities = Array.isArray(activityData)
+      ? activityData.map(PPEMatrixDeliveryActivityModel.fromMap)
+      : activityData
+        ? [PPEMatrixDeliveryActivityModel.fromMap(activityData)]
+        : []
 
     return new PPEMatrixDeliveryModel(
       Number(data.employee_id ?? employee.id),
@@ -31,7 +44,7 @@ export default class PPEMatrixDeliveryModel {
             title: data.prepared_by_name ?? data.created_by_name,
           },
       ),
-      PPEMatrixDeliveryActivityModel.fromMap(data.activity ?? data.ppe_activity),
+      activities,
     )
   }
 }

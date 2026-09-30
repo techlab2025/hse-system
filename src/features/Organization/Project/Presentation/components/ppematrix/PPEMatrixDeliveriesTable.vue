@@ -4,6 +4,7 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import FetchPPEMatrixDeliveriesParams from '../../../Core/params/ppematrix/FetchPPEMatrixDeliveriesParams'
+import type PPEMatrixDeliveryModel from '../../../Data/models/ppematrix/PPEMatrixDeliveryModel'
 import type PPEMatrixDeliveryToolModel from '../../../Data/models/ppematrix/PPEMatrixDeliveryToolModel'
 import FetchPPEMatrixDeliveriesController from '../../controllers/ppematrix/FetchPPEMatrixDeliveriesController'
 
@@ -34,8 +35,10 @@ const tools = computed<PPEMatrixDeliveryToolModel[]>(() => {
   const deliveries = state.value.data ?? []
 
   deliveries.forEach((delivery) => {
-    delivery.activity.tools.forEach((tool) => {
-      if (!toolMap.has(tool.id)) toolMap.set(tool.id, tool)
+    delivery.activities.forEach((activity) => {
+      activity.tools.forEach((tool) => {
+        if (tool.id && !toolMap.has(tool.id)) toolMap.set(tool.id, tool)
+      })
     })
   })
 
@@ -45,14 +48,17 @@ const tools = computed<PPEMatrixDeliveryToolModel[]>(() => {
 const activityTitles = computed(() =>
   [
     ...new Set(
-      (state.value.data ?? []).map((delivery) => delivery.activity.title).filter((title) => title),
+      (state.value.data ?? [])
+        .flatMap((delivery) => delivery.activities.map((activity) => activity.title))
+        .filter((title) => title),
     ),
   ].join(', '),
 )
 
-const isToolDelivered = (deliveryIndex: number, toolId: number) =>
-  state.value.data?.[deliveryIndex]?.activity.tools.find((tool) => tool.id === toolId)
-    ?.isDelivery ?? false
+const isToolDelivered = (delivery: PPEMatrixDeliveryModel, toolId: number) =>
+  delivery.activities.some((activity) =>
+    activity.tools.some((tool) => tool.id === toolId && tool.isDelivery),
+  )
 
 onMounted(() => fetchDeliveries())
 
@@ -113,13 +119,13 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
                     <span
                       class="delivery-status"
                       :class="{
-                        'delivery-status--checked': isToolDelivered(deliveryIndex, tool.id),
+                        'delivery-status--checked': isToolDelivered(delivery, tool.id),
                       }"
                       :aria-label="
-                        isToolDelivered(deliveryIndex, tool.id) ? 'Delivered' : 'Not delivered'
+                        isToolDelivered(delivery, tool.id) ? 'Delivered' : 'Not delivered'
                       "
                     >
-                      {{ isToolDelivered(deliveryIndex, tool.id) ? '✓' : '—' }}
+                      {{ isToolDelivered(delivery, tool.id) ? '✓' : '—' }}
                     </span>
                   </td>
                 </tr>

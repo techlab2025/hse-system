@@ -23,6 +23,7 @@ interface NotificationBody {
 
 export interface Notification {
   id: string
+  messageId?: string | number
   title: string
   isBroadcast?: boolean
   targetUserId?: string
@@ -341,6 +342,56 @@ class WebSocketNotificationService {
     } catch (error: any) {
       this.addLog(`❌ Failed to mark notification as read: ${error.message}`)
     }
+  }
+
+  /**
+   * Mark a notification as read through the notifications API.
+   */
+  async markAsRead(messageId: string | number, token?: string | null): Promise<void> {
+    if (!messageId) {
+      throw new Error('A notification messageId is required')
+    }
+
+    if (!token) {
+      throw new Error('An API token is required to mark a notification as read')
+    }
+
+    const response = await fetch(baseUrl + 'organization/' + 'notification_mark_as_read', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({ messageId }),
+    })
+
+    if (!response.ok) {
+      let message = 'Failed to mark notification as read'
+
+      try {
+        const errorResponse = await response.json()
+        message = errorResponse?.message || message
+      } catch {
+        // Keep the fallback error when the response has no JSON body.
+      }
+
+      throw new Error(message)
+    }
+
+    const notification = this.notifications.value.find(
+      (item) => String(item.messageId ?? item.id) === String(messageId),
+    )
+
+    if (notification && notification.readStatus !== 'READ') {
+      notification.readStatus = 'READ'
+      notification.status = 'READ'
+      this.updateNotificationCount({ read: 1, unread: -1 })
+      this.emit('notifications:updated', this.notifications.value)
+      this.emit('notification:read', notification)
+    }
+
+    this.addLog(`✓ Notification marked as read through API: ${messageId}`)
   }
 
   /**

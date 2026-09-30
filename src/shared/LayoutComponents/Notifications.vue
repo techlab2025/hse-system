@@ -9,7 +9,10 @@ import Popover from 'primevue/popover'
 import wordSlice from '@/base/Presentation/utils/word_slice'
 import Notification from '../icons/Notification.vue'
 import { NotificationEnum } from './Enums/NotificationEnum'
-import type { EnrichedNotification } from '@/services/WebSocketNotificationService'
+import {
+  notificationService,
+  type EnrichedNotification,
+} from '@/services/WebSocketNotificationService'
 import RefreshNotificationTokenController from '@/features/notification/Presentation/controllers/RefreshNotificationTokenController.ts'
 import RefreshNotificationParams from '@/features/notification/Core/params/RefreshNotificationParams.ts'
 // import { NOTIFICATION_SOUND_BASE64 } from '@/base/Presentation/utils/notification_ring.ts'
@@ -81,32 +84,26 @@ const refreshInProgress = ref(false)
 let recoveryAttempted = false
 
 // Integrate new notification system
-const {
-  notifications,
-  unreadCount,
-  acknowledgeNotification,
-  wsConnected,
-  wsError,
-  reconnectWebSocket,
-} = useIntegratedNotifications({
-  autoConnect: true,
-  token: newRefreshToken.value ? newRefreshToken.value : userStore.user?.WebSocketToken,
-  userId: userStore.user?.id,
-  fetchNotifications: true,
-  userToken: userStore.user?.apiToken,
-  onNotification: (notification) => {
-    const payload = getNotificationPayload(notification)
-    const audio = new Audio(NOTIFICATION_SOUND_BASE64)
-    audio.play()
+const { notifications, unreadCount, wsConnected, wsError, reconnectWebSocket } =
+  useIntegratedNotifications({
+    autoConnect: true,
+    token: newRefreshToken.value ? newRefreshToken.value : userStore.user?.WebSocketToken,
+    userId: userStore.user?.id,
+    fetchNotifications: true,
+    userToken: userStore.user?.apiToken,
+    onNotification: (notification) => {
+      const payload = getNotificationPayload(notification)
+      const audio = new Audio(NOTIFICATION_SOUND_BASE64)
+      audio.play()
 
-    toast.add({
-      severity: 'info',
-      summary: payload.title,
-      detail: payload.message,
-      life: 5000,
-    })
-  },
-})
+      toast.add({
+        severity: 'info',
+        summary: payload.title,
+        detail: payload.message,
+        life: 5000,
+      })
+    },
+  })
 
 const hasUnreadNotifications = computed(() => unreadCount.value !== 0 && unreadCount.value !== '0')
 
@@ -115,14 +112,19 @@ const unreadCountLabel = computed(() => {
   return typeof unreadCount.value === 'number' && unreadCount.value > 99 ? '99+' : unreadCount.value
 })
 
-const handleNotificationClick = (notification: EnrichedNotification) => {
-  if (isNotificationUnread(notification)) {
-    acknowledgeNotification(notification.id)
+const handleNotificationClick = async (notification: EnrichedNotification) => {
+  try {
+    if (isNotificationUnread(notification)) {
+      const messageId = notification.messageId ?? notification.id
+      await notificationService.markAsRead(messageId, userStore.user?.apiToken)
+    }
+  } catch (error) {
+    console.error('Unable to mark notification as read:', error)
+  } finally {
+    const payload = getNotificationPayload(notification)
+    navigateToNotification(payload.type, payload.typeId)
+    op.value?.hide?.()
   }
-
-  const payload = getNotificationPayload(notification)
-  navigateToNotification(payload.type, payload.typeId)
-  op.value?.hide?.()
 }
 
 const formatNotificationTime = (value?: Date | string | number) => {
