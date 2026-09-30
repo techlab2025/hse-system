@@ -155,6 +155,7 @@ const updateIncidentCategories = (
 
 const updatePpeItems = (value: TitleInterface | TitleInterface[] | null, index: number) => {
   const items = Array.isArray(value) ? value : []
+
   Answers.value[index].ppeItems = items.map(
     (item) => new TitleInterface({ id: item.id, title: item.title }),
   )
@@ -290,6 +291,9 @@ watch(
   (newInjuries) => {
     if (props.isOpen && newInjuries?.length) {
       Answers.value = newInjuries.map(mapInjuryToAnswer)
+
+      const FetchedPPeItems = newInjuries.map((el) => el.ppeItems)
+      Answers.value.map((el, index) => (el.ppeItems = FetchedPPeItems[index]))
       isSelectHasContent.value = Answers.value.map(
         (item) => !item.employee?.id && !!item.employee?.title,
       )
@@ -309,6 +313,7 @@ onMounted(async () => {
 })
 </script>
 <template>
+  <!-- <pre>  {{ injuries}}</pre> -->
   <div class="template-container col-span-6 injuries-timeline w-full">
     <div class="heirarchy-info">
       <div class="timeline-container injury-timeline-container">
@@ -443,13 +448,13 @@ onMounted(async () => {
                 </UpdatedCustomInputSelect>
               </div>
               <!--  -->
-              <div class="injury-field injury-body-map-field w-full">
+              <!-- <div class="injury-field injury-body-map-field w-full">
                 <InjuryBodySlection
                   :model-value="item.locations"
                   :id-prefix="`injury-body-${index}`"
                   @update:model-value="(locations) => updateBodyLocations(locations, index)"
                 />
-              </div>
+              </div> -->
               <div class="injury-field input-wrapper w-full">
                 <div class="flex items-center gap-2">
                   <label :for="`injury-description-${index}`">{{ $t('Description') }}</label>

@@ -3,7 +3,8 @@ import type FilesModel from '@/features/Organization/Inspection/Data/models/Fetc
 import OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeModel'
 
 export type InjuryPpeItem = {
-  ppe_item: number
+  ppe_item: number,
+  id:number
 }
 
 export default class InjuryDetailsModel {
@@ -22,7 +23,7 @@ export default class InjuryDetailsModel {
   public updated_at: string
   public injury_type?: TitleInterface
   public ppe_item: number
-  public ppe_items: InjuryPpeItem[]
+  public ppeItems: InjuryPpeItem[]
   public ppe_item_condition: number
   public ppe_item_text: string
   public locations: string[]
@@ -45,7 +46,7 @@ export default class InjuryDetailsModel {
     ppe_item: number = 0,
     ppe_item_condition: number = 0,
     ppe_item_text: string = '',
-    ppe_items: InjuryPpeItem[] = [],
+    ppeItems: InjuryPpeItem[] = [],
     locations: string[] = [],
   ) {
     this.id = id
@@ -65,13 +66,11 @@ export default class InjuryDetailsModel {
     this.ppe_item = ppe_item
     this.ppe_item_condition = ppe_item_condition
     this.ppe_item_text = ppe_item_text
-    this.ppe_items = ppe_items
+    this.ppeItems = ppeItems
     this.locations = locations
   }
 
   static fromMap(data: any): InjuryDetailsModel {
-    const ppeItems = this.getPpeItems(data)
-
     return new InjuryDetailsModel(
       data.id,
       data.title,
@@ -97,10 +96,10 @@ export default class InjuryDetailsModel {
             '',
         })
       }),
-      ppeItems[0]?.ppe_item ?? 0,
+      data.ppeItems,
       Number(data.ppe_item_condition) || 0,
       data.ppe_item_text ?? '',
-      ppeItems,
+      data.ppeItems,
       this.getLocations(data),
     )
   }
@@ -112,20 +111,6 @@ export default class InjuryDetailsModel {
     return locations
       .map((item: any) => String(item?.location ?? item?.region ?? item?.id ?? item ?? ''))
       .filter(Boolean)
-  }
-
-  static getPpeItems(data: any): InjuryPpeItem[] {
-    const items = Array.isArray(data?.ppe_items)
-      ? data.ppe_items
-      : Array.isArray(data?.ppe_item)
-        ? data.ppe_item
-        : data?.ppe_item
-          ? [{ ppe_item: data.ppe_item }]
-          : []
-
-    return items
-      .map((item: any) => ({ ppe_item: Number(item?.ppe_item ?? item?.id ?? item) || 0 }))
-      .filter((item: InjuryPpeItem) => item.ppe_item > 0)
   }
 
   static example: InjuryDetailsModel = new InjuryDetailsModel(

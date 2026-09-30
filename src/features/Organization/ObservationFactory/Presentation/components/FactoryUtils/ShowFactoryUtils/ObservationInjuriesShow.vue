@@ -27,21 +27,7 @@ const ppeConditionLabels: Record<number, string> = {
   [PpeItemConditionEnum.DEFECTIVE]: 'Defective',
 }
 
-const getPpeItemIds = (injury: InjuryDetailsModel) => {
-  if (injury.ppe_items?.length) return injury.ppe_items.map((item) => item.ppe_item)
-  return injury.ppe_item ? [injury.ppe_item] : []
-}
 
-const getPpeItemLabel = (injury: InjuryDetailsModel) => {
-  return getPpeItemIds(injury)
-    .map((ppeItem) => {
-      const label = ppeItemLabels[ppeItem] || String(ppeItem)
-      return ppeItem === PpeItemEnum.OTHERS && injury.ppe_item_text
-        ? `${label}: ${injury.ppe_item_text}`
-        : label
-    })
-    .join(', ')
-}
 
 const getPpeConditionLabel = (condition: number) =>
   ppeConditionLabels[condition] || String(condition)
@@ -69,10 +55,10 @@ const getPpeConditionLabel = (condition: number) =>
         </div>
         <div class="user_note">
           <p class="note">{{ wordSlice(injury?.note, 120) }}</p>
-          <div v-if="getPpeItemIds(injury).length || injury.ppe_item_condition" class="ppe-details">
-            <p v-if="getPpeItemIds(injury).length">
+          <div v-if="injury.ppeItems.length > 0 || injury.ppe_item_condition" class="ppe-details">
+            <p v-if="injury.ppeItems.length">
               <span>{{ $t('PPE Item') }}:</span>
-              <strong>{{ getPpeItemLabel(injury) }}</strong>
+              <strong v-for="inj in injury.ppeItems">{{ inj?.title }}</strong>
             </p>
             <p v-if="injury.ppe_item_condition">
               <span>{{ $t('PPE Item Condition') }}:</span>
