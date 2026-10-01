@@ -619,7 +619,7 @@ defineExpose({ validateRequiredFields })
             <UpdatedCustomInputSelect
               id="objective-department"
               :model-value="department"
-              :label="$t('Departments')"
+              :label="$t('Primary Responsibility: Departments')"
               :placeholder="$t('Select department')"
               :controller="herikalyController"
               :params="departmentParams"
@@ -635,7 +635,7 @@ defineExpose({ validateRequiredFields })
             <UpdatedCustomInputSelect
               id="objective-follow-up-employee"
               :model-value="followUpEmployee"
-              :label="$t('Follow-up Employee')"
+              :label="$t('Secondary Responsibility: Follow-up Employee')"
               :placeholder="$t('Select employee')"
               :controller="employeeController"
               :params="employeeParams"

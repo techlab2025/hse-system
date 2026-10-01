@@ -3,7 +3,7 @@ import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 export default class PermitToWorkParams implements Params {
   public project_id: number
-  public organization_employee_id: number
+  public organization_employee_id?: number
   public ptw_number: string
   public serial: string
   public ptw_type_id: number
@@ -17,7 +17,7 @@ export default class PermitToWorkParams implements Params {
 
   constructor(data: {
     project_id: number
-    organization_employee_id: number
+    organization_employee_id?: number
     ptw_number: string
     serial: string
     ptw_type_id: number

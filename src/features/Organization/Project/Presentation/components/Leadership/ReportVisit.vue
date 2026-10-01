@@ -101,7 +101,7 @@ const submit = async () => {
       ),
     )
     if (controller.isDataSuccess()) {
-      await router.push({ path: visitsPath.value, query: { report: 'created' } })
+      await router.replace({ path: visitsPath.value, query: { report: 'created' } })
     } else {
       errorMessage.value = controller.state.value.error?.title ?? 'Unable to submit the report.'
     }
