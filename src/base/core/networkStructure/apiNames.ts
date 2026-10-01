@@ -1439,19 +1439,19 @@ class ApiNames {
   }
 
   // Internal Audit
-  public get CreateInternalAudit() {
+  public get CreateInternalAuditPlan() {
     return this.prefix + 'create_internal_audit'
   }
-  public get IndexInternalAudit() {
+  public get IndexInternalAuditPlan() {
     return this.prefix + 'fetch_internal_audits'
   }
-  public get ShowInternalAudit() {
+  public get ShowInternalAuditPlan() {
     return this.prefix + 'fetch_internal_audit_details'
   }
-  public get EditInternalAudit() {
+  public get EditInternalAuditPlan() {
     return this.prefix + 'update_internal_audit'
   }
-  public get DeleteInternalAudit() {
+  public get DeleteInternalAuditPlan() {
     return this.prefix + 'delete_internal_audit'
   }
 

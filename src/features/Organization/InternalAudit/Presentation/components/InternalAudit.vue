@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import InternalAuditPlanTab from './tabs/InternalAuditPlanTab.vue'
-import InternalAuditAttendanceTab from './tabs/InternalAuditAttendanceTab.vue'
-import InternalAuditNcrsTab from './tabs/InternalAuditNcrsTab.vue'
-import InternalAuditReportTab from './tabs/InternalAuditReportTab.vue'
+import InternalAuditPlanTab from './plan/InternalAuditPlanTab.vue'
+import InternalAuditAttendanceTab from './attendance/InternalAuditAttendanceTab.vue'
+import InternalAuditNcrsTab from './ncrs/InternalAuditNcrsTab.vue'
+import InternalAuditReportTab from './reports/InternalAuditReportTab.vue'
 
 const tabs = [
   { key: 'plan', label: 'Plan', component: InternalAuditPlanTab },
