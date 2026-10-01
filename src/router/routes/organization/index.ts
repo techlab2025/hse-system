@@ -19,6 +19,7 @@ import { WhereHouseRoutes } from './whereHouse'
 import { SettingRoutes } from './setting'
 import { AllInvestigationMeetingRoutes } from './allInvestigationmeetings'
 import { AllInvestigationTasksRoutes } from './allInvestigationTasks'
+import { OrganizationCertificateRoutes } from './OrganizationCertificate'
 import { EmployeeCertificateRoutes } from './EmployeeCertificate'
 import { serialNumberRoutes } from './SerialNumber'
 import { EmployeeInterfaceRoutes } from './employeeInterface'
@@ -33,8 +34,10 @@ import { ShiftsRoutes } from './shifts'
 import { notificationPlanRoutes } from './notificationPlan'
 import { taskReportRoutes } from './taskReports'
 import { todayTalkRoutes } from './todayTalk'
+import { inductionRoutes } from './induction'
 import { managementChangeTopicRoutes } from './MangementChangeTopicType'
 import { managementChangeRoutes } from './MangementOfChange'
+import { attachmentMatrixRoutes } from './attachmentMatrix'
 
 export const organizationRoutes: RouteRecordRaw[] = [
   {
@@ -62,6 +65,7 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...WhereHouseRoutes,
   ...AllInvestigationMeetingRoutes,
   ...AllInvestigationTasksRoutes,
+  ...OrganizationCertificateRoutes,
   ...EmployeeCertificateRoutes,
   ...serialNumberRoutes,
   ...EmployeeInterfaceRoutes,
@@ -76,8 +80,10 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...notificationPlanRoutes,
   ...taskReportRoutes,
   ...todayTalkRoutes,
+  ...inductionRoutes,
   ...managementChangeTopicRoutes,
   ...managementChangeRoutes,
+  ...attachmentMatrixRoutes,
   {
     path: 'permission/:id',
     name: 'Permission Organization',

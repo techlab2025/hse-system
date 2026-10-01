@@ -4,3 +4,12 @@ services:
     ports:
       - "3000:80"
     restart: unless-stopped
+
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+          ignore:
+            - node_modules/
+            - dist/
+            - .git/

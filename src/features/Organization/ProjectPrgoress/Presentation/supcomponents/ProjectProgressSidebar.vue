@@ -189,8 +189,8 @@ const AllPagesToView = ref([
   },
   {
     id: ProjectProgressEnum.HazardType,
-    title: 'Hazard Type',
-    description: 'Define hazard types and assign related project roles',
+    title: 'Hazard Classification',
+    description: 'Define hazard classifications and assign related project roles',
     link: '/organization/hazard-type?type=2',
   },
   {

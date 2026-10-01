@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 import Popover from 'primevue/popover'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import { DataSuccess } from '@/base/core/networkStructure/Resources/dataState/data_state'
@@ -80,6 +81,7 @@ type RelatedLink = {
 
 const props = defineProps<{ type: ReportType }>()
 const { t } = useI18n({ useScope: 'global' })
+const route = useRoute()
 
 const controller =
   props.type === 'corrective'
@@ -201,6 +203,7 @@ const fetchReport = async (
       normalizeStatusFilter(status),
       fromDate,
       toDate,
+      Number(route.query.project_id) || undefined,
     ),
   )
 }

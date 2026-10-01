@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import DatePicker from 'primevue/datepicker'
@@ -12,10 +12,17 @@ import PermitToWorkParams from '@/features/Organization/Project/Core/params/Perm
 
 import IndexPTWTypeController from '@/features/Organization/PTWType/Presentation/controllers/indexPTWTypeController'
 import IndexPTWTypeParams from '@/features/Organization/PTWType/Core/params/indexPTWTypeParams'
+import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
+import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { formatTime } from '@/base/Presentation/utils/time_format'
+import type { UploadedFile } from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
+import HandleFIlesUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
+import IconBackStage from '@/shared/icons/IconBackStage.vue'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 const route = useRoute()
 const router = useRouter()
@@ -25,8 +32,12 @@ const router = useRouter()
 ========================= */
 
 const ptwNum = ref<string>('')
+const serial = ref('')
+const statusStore = useProjectAppStatusStore()
+const serialIsAuto = computed(() => statusStore.isSerialNumberAuto())
 
 const PermitToWorkType = ref<TitleInterface>()
+const organizationEmployee = ref<TitleInterface>()
 
 const startDate = ref<Date | null>(null)
 const endDate = ref<Date | null>(null)
@@ -56,9 +67,51 @@ const setptwNo = () => {}
 const indexPTWTypeController = IndexPTWTypeController.getInstance()
 
 const indexPTWTypeParams = new IndexPTWTypeParams('', 1, 10, 0)
+const permitTypeSelectKey = ref(0)
 
-const updatePermitToWorkType = (data: TitleInterface) => {
-  PermitToWorkType.value = data
+const ptwAccentColor = computed(() => PermitToWorkType.value?.color || 'var(--PrimaryColor)')
+
+const ptwThemeStyles = computed<Record<string, string>>(() => ({
+  '--ptw-accent': ptwAccentColor.value,
+}))
+
+const ptwHeroStyles = computed(() => ({
+  background:
+    'radial-gradient(circle at 92% 5%, rgba(255,255,255,0.16), transparent 27%), linear-gradient(125deg, var(--ptw-accent), var(--brand-primary-900))',
+}))
+
+const reloadPermitTypes = () => {
+  permitTypeSelectKey.value += 1
+}
+
+const updatePermitToWorkType = (data: TitleInterface | TitleInterface[] | null) => {
+  const selectedValue = Array.isArray(data) ? data[0] : data
+  PermitToWorkType.value = selectedValue ?? undefined
+}
+
+/* =========================
+   Organization Employee
+========================= */
+
+const indexOrganizationEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
+const indexOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams(
+  '',
+  1,
+  10,
+  0,
+  null,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  false,
+  Number(route.params.project_id),
+)
+
+const updateOrganizationEmployee = (data: TitleInterface | TitleInterface[] | null) => {
+  const selectedValue = Array.isArray(data) ? data[0] : data
+  organizationEmployee.value = selectedValue ?? undefined
+  delete requiredFieldErrors.value.OrganizationEmployee
 }
 
 /* =========================
@@ -68,12 +121,25 @@ const updatePermitToWorkType = (data: TitleInterface) => {
 const permitToWorkController = PermitToWorkController.getInstance()
 
 const SubmitFrom = async () => {
+  if (!serialIsAuto.value && !serial.value.trim()) {
+    requiredFieldErrors.value.serial = 'Serial number is required when manual serial numbering is enabled.'
+    return
+  }
+  delete requiredFieldErrors.value.serial
+
+  // if (!organizationEmployee.value) {
+  //   requiredFieldErrors.value.OrganizationEmployee = 'Select an organization employee.'
+  //   return
+  // }
+
   const permitToWorkParams = new PermitToWorkParams({
     project_id: Number(route.params.project_id!),
+    // organization_employee_id: organizationEmployee.value.id,
 
     ptw_number: ptwNum.value,
+    serial: serial.value.trim(),
 
-    ptw_type_id: PermitToWorkType.value?.id!,
+    ptw_type_id: Number(PermitToWorkType.value?.id ?? 0),
 
     start_date: formatJoinDate(startDate.value!),
     end_date: formatJoinDate(endDate.value!),
@@ -83,15 +149,21 @@ const SubmitFrom = async () => {
 
     location: location.value,
     description: description.value,
+    attachments: riskAssismentFile.value!,
   })
 
   await permitToWorkController.PermitToWork(permitToWorkParams, router)
 }
+const riskAssismentFile = ref<string[] | null>(null)
+
+const handleFilesChange = (files: UploadedFile[]) => {
+  riskAssismentFile.value = files.map((el) => el.base64 || '')
+}
 </script>
 
 <template>
-  <section class="ptw-builder">
-    <header class="ptw-hero">
+  <section class="ptw-builder" :style="ptwThemeStyles">
+    <header class="ptw-hero" :style="ptwHeroStyles">
       <div class="ptw-hero-copy">
         <span class="ptw-hero-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none">
@@ -158,14 +230,14 @@ const SubmitFrom = async () => {
           <div class="ptw-grid ptw-grid--two">
             <div class="ptw-field" data-required-field="Name">
               <label for="name">
-                {{ $t('Permit number') }}
-                <span>*</span>
+                {{ $t('Permit Code') }}
+                <span class="required-mark">*</span>
               </label>
               <InputText
                 id="name"
                 v-model="ptwNum"
                 class="ptw-control"
-                :placeholder="$t('Enter permit number')"
+                :placeholder="$t('Enter permit Code')"
                 @input="setptwNo"
               />
               <p v-if="getFieldError('Name')" class="required-field-message">
@@ -173,12 +245,42 @@ const SubmitFrom = async () => {
               </p>
             </div>
 
+            <div class="ptw-field">
+              <label class="ptw-field-label--with-action" for="permit_serial_number">
+                <span class="ptw-field-label-text">{{ $t('serial_number') }}</span>
+                <FieldHelpIcon :text="serialIsAuto ? 'The serial will be generated automatically.' : 'Enter the serial number.'" />
+              </label>
+              <InputText
+                id="permit_serial_number"
+                v-model="serial"
+                class="ptw-control"
+                :disabled="serialIsAuto"
+                :placeholder="serialIsAuto ? $t('Auto-generated') : $t('Enter serial number')"
+              />
+              <small v-if="serialIsAuto">{{ $t('Automatic serial numbering is enabled') }}</small>
+              <p v-if="getFieldError('serial')" class="required-field-message">
+                {{ getFieldError('serial') }}
+              </p>
+            </div>
+
             <div class="ptw-field" data-required-field="SelectedWhereHouseType">
-              <label for="permit_to_work_type">
-                {{ $t('permit_to_work_type') }}
-                <span>*</span>
+              <label for="permit_to_work_type" class="ptw-field-label--with-action">
+                <span class="ptw-field-label-text">
+                  {{ $t('Permit Type ') }}
+                  <span class="required-mark">*</span>
+                </span>
+                <!-- <button
+                  type="button"
+                  class="ptw-reload-btn"
+                  :title="$t('Reload')"
+                  :aria-label="$t('Reload')"
+                  @click="reloadPermitTypes"
+                >
+                  <IconBackStage />
+                </button> -->
               </label>
               <UpdatedCustomInputSelect
+                :key="permitTypeSelectKey"
                 id="permit_to_work_type"
                 :required="true"
                 :has-header="true"
@@ -188,10 +290,30 @@ const SubmitFrom = async () => {
                 :placeholder="$t('Select_permit_to_work_type')"
                 @update:model-value="updatePermitToWorkType"
               />
-              <p v-if="getFieldError('SelectedWhereHouseType')" class="required-field-message">
+              <!-- <p v-if="getFieldError('SelectedWhereHouseType')" class="required-field-message">
                 {{ getFieldError('SelectedWhereHouseType') }}
-              </p>
+              </p> -->
             </div>
+
+            <!-- <div class="ptw-field" data-required-field="OrganizationEmployee">
+              <label for="organization_employee">
+                {{ $t('Permit Applicant') }}
+                <span class="required-mark">*</span>
+              </label>
+              <UpdatedCustomInputSelect
+                id="organization_employee"
+                :required="true"
+                :has-header="true"
+                :model-value="organizationEmployee"
+                :controller="indexOrganizationEmployeeController"
+                :params="indexOrganizationEmployeeParams"
+                :placeholder="$t('Permit Applicant')"
+                @update:model-value="updateOrganizationEmployee"
+              />
+              <p v-if="getFieldError('OrganizationEmployee')" class="required-field-message">
+                {{ getFieldError('OrganizationEmployee') }}
+              </p>
+            </div> -->
           </div>
         </section>
 
@@ -277,16 +399,16 @@ const SubmitFrom = async () => {
 
           <div class="ptw-grid">
             <div class="ptw-field">
-              <label for="location">{{ $t('location') }}</label>
+              <label for="location">{{ $t('Area') }}</label>
               <InputText
                 id="location"
                 v-model="location"
                 class="ptw-control"
-                :placeholder="$t('Enter work location')"
+                :placeholder="$t('Enter work Area')"
               />
             </div>
             <div class="ptw-field">
-              <label for="description">{{ $t('description') }}</label>
+              <label for="description">{{ $t('Description of Work Optional') }}</label>
               <textarea
                 id="description"
                 v-model="description"
@@ -294,6 +416,16 @@ const SubmitFrom = async () => {
                 rows="4"
                 :placeholder="$t('Describe the work activity and safety requirements')"
               ></textarea>
+            </div>
+            <div class="ptw-field ptw-control management-change-upload-field">
+              <HandleFIlesUpload
+                :label="$t('attachments')"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
+                :max-files="1"
+                :multiple="false"
+                class-name="input-file management-change-file-input"
+                @change="handleFilesChange"
+              />
             </div>
           </div>
         </section>
@@ -323,9 +455,9 @@ const SubmitFrom = async () => {
   // width: min(1120px, 100%);
   margin: 18px auto;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 15%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--ptw-accent) 15%, var(--main-border));
   border-radius: 28px;
-  background: color-mix(in srgb, var(--PrimaryColor) 2.5%, var(--surface-2));
+  background: color-mix(in srgb, var(--ptw-accent) 2.5%, var(--surface-2));
   box-shadow: 0 25px 60px color-mix(in srgb, var(--text-strong) 9%, transparent);
 }
 
@@ -340,7 +472,7 @@ const SubmitFrom = async () => {
   color: white;
   background:
     radial-gradient(circle at 92% 5%, color-mix(in srgb, white 16%, transparent), transparent 27%),
-    linear-gradient(125deg, var(--brand-primary-900), var(--PrimaryColor));
+    linear-gradient(125deg, var(--brand-primary-900), var(--ptw-accent));
 }
 
 .ptw-hero::after {
@@ -480,8 +612,8 @@ const SubmitFrom = async () => {
 .ptw-step.active > span {
   border-color: transparent;
   color: white;
-  background: var(--PrimaryColor);
-  box-shadow: 0 7px 15px color-mix(in srgb, var(--PrimaryColor) 20%, transparent);
+  background: var(--ptw-accent);
+  box-shadow: 0 7px 15px color-mix(in srgb, var(--ptw-accent) 20%, transparent);
 }
 
 .ptw-step strong,
@@ -505,15 +637,15 @@ const SubmitFrom = async () => {
   gap: 9px;
   margin-top: 2px;
   padding: 12px;
-  border: 1px solid color-mix(in srgb, var(--status-success) 18%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--ptw-accent) 18%, var(--main-border));
   border-radius: 14px;
-  background: color-mix(in srgb, var(--status-success) 5%, var(--surface-2));
+  background: color-mix(in srgb, var(--ptw-accent) 5%, var(--surface-2));
 }
 
 .ptw-safety-note svg {
   width: 21px;
   flex: 0 0 auto;
-  color: var(--status-success);
+  color: var(--ptw-accent);
   stroke: currentColor;
   stroke-width: 1.7;
   stroke-linecap: round;
@@ -540,10 +672,11 @@ const SubmitFrom = async () => {
 
 .ptw-card {
   padding: 19px;
-  border: 1px solid var(--main-border);
+  border: 1px solid color-mix(in srgb, var(--ptw-accent) 18%, var(--main-border));
   border-radius: 19px;
-  background: var(--surface-1);
-  box-shadow: 0 8px 22px color-mix(in srgb, var(--text-strong) 4%, transparent);
+  background: transparent;
+  // background: color-mix(in srgb, var(--ptw-accent) 1.8%, var(--surface-1));
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--ptw-accent) 5%, transparent);
 }
 
 .ptw-card-header {
@@ -560,8 +693,8 @@ const SubmitFrom = async () => {
   flex: 0 0 auto;
   place-items: center;
   border-radius: 11px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-2));
+  color: var(--ptw-accent);
+  background: color-mix(in srgb, var(--ptw-accent) 9%, var(--surface-2));
   font-size: 0.63rem;
   font-weight: 900;
 }
@@ -605,8 +738,49 @@ const SubmitFrom = async () => {
   font-weight: 800;
 }
 
-.ptw-field > label span {
+.ptw-field > label .required-mark {
   color: var(--status-danger);
+}
+
+.ptw-field-label--with-action {
+  justify-content: space-between;
+}
+
+.ptw-field-label-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ptw-reload-btn {
+  display: inline-grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid color-mix(in srgb, var(--ptw-accent) 22%, var(--main-border));
+  border-radius: 10px;
+  color: var(--ptw-accent);
+  background: color-mix(in srgb, var(--ptw-accent) 7%, var(--surface-2));
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.ptw-reload-btn:hover {
+  transform: rotate(-18deg);
+  border-color: color-mix(in srgb, var(--ptw-accent) 42%, var(--main-border));
+  background: color-mix(in srgb, var(--ptw-accent) 12%, var(--surface-2));
+}
+
+.ptw-reload-btn :deep(svg) {
+  width: 16px;
+  height: 16px;
+}
+
+.ptw-reload-btn :deep(path) {
+  fill: currentColor;
 }
 
 .ptw-control,
@@ -614,10 +788,10 @@ const SubmitFrom = async () => {
 :deep(.input-select) {
   width: 100%;
   min-height: 46px;
-  border: 1px solid color-mix(in srgb, var(--text-soft) 20%, var(--main-border)) !important;
+  border: 1px solid color-mix(in srgb, var(--ptw-accent) 20%, var(--main-border)) !important;
   border-radius: 12px !important;
   color: var(--text-strong) !important;
-  background: var(--surface-2) !important;
+  background: color-mix(in srgb, var(--ptw-accent) 2%, var(--surface-2)) !important;
   box-shadow: none !important;
   transition:
     border-color 0.2s ease,
@@ -633,9 +807,9 @@ const SubmitFrom = async () => {
 :deep(.p-datepicker-input:focus),
 :deep(.input-select.p-focus) {
   outline: none;
-  border-color: var(--PrimaryColor) !important;
+  border-color: var(--ptw-accent) !important;
   background: var(--surface-1) !important;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 9%, transparent) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ptw-accent) 9%, transparent) !important;
 }
 
 .ptw-textarea {
@@ -655,9 +829,9 @@ const SubmitFrom = async () => {
 
 :deep(.p-datepicker-dropdown) {
   border: 0 !important;
-  border-inline-start: 1px solid var(--main-border) !important;
-  color: var(--PrimaryColor) !important;
-  background: transparent !important;
+  border-inline-start: 1px solid color-mix(in srgb, var(--ptw-accent) 22%, var(--main-border)) !important;
+  color: var(--ptw-accent) !important;
+  background: color-mix(in srgb, var(--ptw-accent) 4%, transparent) !important;
 }
 
 .ptw-schedule {
@@ -668,17 +842,14 @@ const SubmitFrom = async () => {
 
 .ptw-schedule-group {
   padding: 13px;
-  border: 1px solid var(--main-border);
+  border: 1px solid color-mix(in srgb, var(--ptw-accent) 20%, var(--main-border));
   border-radius: 15px;
-  background: color-mix(in srgb, var(--PrimaryColor) 2.5%, var(--surface-2));
+  background: color-mix(in srgb, var(--ptw-accent) 2.5%, var(--surface-2));
 }
 
-.ptw-schedule-group.start {
-  border-color: color-mix(in srgb, var(--status-success) 20%, var(--main-border));
-}
-
+.ptw-schedule-group.start,
 .ptw-schedule-group.end {
-  border-color: color-mix(in srgb, var(--status-danger) 16%, var(--main-border));
+  border-color: color-mix(in srgb, var(--ptw-accent) 28%, var(--main-border));
 }
 
 .ptw-schedule-title {
@@ -697,11 +868,7 @@ const SubmitFrom = async () => {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--status-success);
-}
-
-.ptw-schedule-group.end .ptw-schedule-title i {
-  background: var(--status-danger);
+  background: var(--ptw-accent);
 }
 
 .required-field-message {
@@ -716,9 +883,9 @@ const SubmitFrom = async () => {
   justify-content: space-between;
   gap: 15px;
   padding: 14px 16px;
-  border: 1px solid var(--main-border);
+  border: 1px solid color-mix(in srgb, var(--ptw-accent) 18%, var(--main-border));
   border-radius: 17px;
-  background: var(--surface-1);
+  background: color-mix(in srgb, var(--ptw-accent) 1.8%, var(--surface-1));
 }
 
 .ptw-actions p {
@@ -733,7 +900,7 @@ const SubmitFrom = async () => {
 .ptw-actions p svg {
   width: 18px;
   flex: 0 0 auto;
-  color: var(--PrimaryColor);
+  color: var(--ptw-accent);
   stroke: currentColor;
   stroke-width: 1.7;
   stroke-linecap: round;
@@ -750,8 +917,12 @@ const SubmitFrom = async () => {
   border: 0;
   border-radius: 12px;
   color: white;
-  background: linear-gradient(135deg, var(--PrimaryColor), var(--brand-primary-700));
-  box-shadow: 0 10px 20px color-mix(in srgb, var(--PrimaryColor) 20%, transparent);
+  background: linear-gradient(
+    135deg,
+    var(--ptw-accent),
+    color-mix(in srgb, var(--ptw-accent) 68%, #111827)
+  );
+  box-shadow: 0 10px 20px color-mix(in srgb, var(--ptw-accent) 20%, transparent);
   font-weight: 900;
   cursor: pointer;
   transition:
@@ -761,7 +932,7 @@ const SubmitFrom = async () => {
 
 .ptw-submit:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 25px color-mix(in srgb, var(--PrimaryColor) 26%, transparent);
+  box-shadow: 0 14px 25px color-mix(in srgb, var(--ptw-accent) 26%, transparent);
 }
 
 .ptw-submit svg {

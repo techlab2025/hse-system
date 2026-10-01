@@ -88,6 +88,7 @@ const basic = ref<BasicProjectForm>({
   endDate: null as Date | null,
   cost: '',
   hasZoon: true,
+  drill_count: 0,
 })
 const serialFields = ref<ProjectSerialField[]>([
   {
@@ -237,6 +238,7 @@ onMounted(async () => {
     endDate: data.end_date ? new Date(data.end_date) : null,
     cost: String(data.cost ?? ''),
     hasZoon: data.has_zoon ?? true,
+    drill_count: details.drills_count,
   }
   serialFields.value[0].value = basic.value.serial
   serialFields.value[0].enabled = false
@@ -284,6 +286,9 @@ const validateStep = () => {
       normalizedCost !== '' &&
       Number.isFinite(Number(normalizedCost)) &&
       Number(normalizedCost) >= 0
+    const drillCount = Number(basic.value.drill_count)
+    const hasValidDrillCount =
+      Number.isFinite(drillCount) && Number.isInteger(drillCount) && drillCount >= 0
 
     basicValidationErrors.value = {
       ...(!langs.value.some((item) => item.title.trim()) && {
@@ -294,6 +299,9 @@ const validateStep = () => {
       ...(!basic.value.startDate && { startDate: 'Start date is required.' }),
       ...(!basic.value.endDate && { endDate: 'End date is required.' }),
       ...(!hasValidCost && { cost: 'Enter a valid cost of zero or more.' }),
+      ...(!hasValidDrillCount && {
+        drill_count: 'Enter a valid number of drills of zero or more.',
+      }),
       ...(basic.value.hasZoon &&
         !zoneIds.value.length && {
           zones: 'Select at least one zone.',
@@ -331,6 +339,20 @@ const validateStep = () => {
     return false
   }
   if (
+    activeStep.value === 3 &&
+    positions.value.some((location) =>
+      location.heirarchys.some(
+        (hierarchy) =>
+          hierarchy.employees.length > 0 &&
+          (!hierarchy.teamLeader ||
+            !hierarchy.employees.some((employee) => employee.id === hierarchy.teamLeader?.id)),
+      ),
+    )
+  ) {
+    errorMessage.value = 'Select one team leader for every position with employees.'
+    return false
+  }
+  if (
     activeStep.value === 4 &&
     teams.value.some((location) => location.projectTeams.some((team) => !team.team))
   ) {
@@ -362,6 +384,7 @@ const buildParams = () => {
       hasZoon: basic.value.hasZoon,
       projectId: updateProjectId.value,
       isUpdate: isCurrentStepUpdate.value,
+      drill_count: Number(basic.value.drill_count),
     })
   }
   if (activeStep.value === 2) {
@@ -391,7 +414,10 @@ const buildParams = () => {
                   hierarchy_id: hierarchy.hierarchy!.id,
                   organizaion_employees: hierarchy.employees.map(
                     (employee) =>
-                      new ProjectEmployeeParams({ organizaion_employee_id: employee.id }),
+                      new ProjectEmployeeParams({
+                        organizaion_employee_id: employee.id,
+                        is_leader: employee.id === hierarchy.teamLeader?.id,
+                      }),
                   ),
                 }),
             ),
@@ -444,7 +470,11 @@ const controllerForStep = () => {
 
 const finishOrContinue = async () => {
   if (editOnly.value || activeStep.value === 5) {
-    await router.push('/organization/projects?type=1')
+    await router.push(
+      route.query.return_to === 'summary' && projectId.value
+        ? `/organization/project-summary/${projectId.value}`
+        : '/organization/projects?type=1',
+    )
     return
   }
   activeStep.value += 1

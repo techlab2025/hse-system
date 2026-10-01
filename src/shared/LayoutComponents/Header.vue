@@ -95,12 +95,17 @@ const toggleDropMenu = () => {
 const { user } = useUserStore()
 const ProjectSelector = useProjectSelectStore()
 
-const SelectProject = ref<TitleInterface>(
-  new TitleInterface({
-    id: ProjectSelector.getProject()?.id,
-    title: ProjectSelector.getProject()?.title,
-  }),
-)
+const SelectProject = computed(() => {
+  const routeProjectId = Number(route.query.project_id)
+  if (routeProjectId > 0) {
+    return (
+      ProjectSelector.AllProjects.find((project) => project.id === routeProjectId) ??
+      new TitleInterface({ id: routeProjectId, title: `Project #${routeProjectId}` })
+    )
+  }
+  return ProjectSelector.getProject()
+})
+
 const indexProjectController = FetchMyProjectsController.getInstance()
 
 const GetAllProjects = async () => {

@@ -26,6 +26,12 @@ import { drillTypeRoutes } from './drillType'
 import { ppeItemRoutes } from './ppeItem'
 import { MeetingTypeRoutes } from './meeting_type'
 import { ptwTypeRoutes } from './ptw_type'
+import { PPEActivityRoutes } from './ppe_activity'
+import { PPEToolRoutes } from './ppe_tool'
+import { TraningTopicRoutes } from './traning_topic'
+import { visitActivityRoutes } from './visitActivity'
+import { visitThemeRoutes } from './visitTheme'
+import { visitCategoryRoutes } from './visitCategory'
 
 export const sharedRoutes: RouteRecordRaw[] = [
   ...accidentsRoutes,
@@ -54,5 +60,11 @@ export const sharedRoutes: RouteRecordRaw[] = [
   ...WhereHouseTypeRoutes,
   ...InjuryRoutes,
   ...MeetingTypeRoutes,
-  ...ptwTypeRoutes
+  ...ptwTypeRoutes,
+  ...PPEActivityRoutes,
+  ...PPEToolRoutes,
+  ...TraningTopicRoutes,
+  ...visitActivityRoutes,
+  ...visitThemeRoutes,
+  ...visitCategoryRoutes
 ]

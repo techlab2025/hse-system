@@ -10,36 +10,23 @@ export default class DialogService {
     titleContent: string | null
     messageContent: string | null
   }) {
-    const dialog: HTMLDialogElement | null = document.querySelector(`.${dialogName}`)
-    let title: HTMLElement | null
-    let message: HTMLElement | null
-    let image: HTMLImageElement | null
+    const dialog = document.querySelector<HTMLDialogElement>('.' + dialogName)
+    if (!dialog) return
 
-    // 0 is Main Dialog and Success Dialog
-    // 1 is Error Dialog
-    if (dialogName == 'dialog-success') {
-      title = document.querySelectorAll(`.dialog-title`)[0]
-      message = document.querySelectorAll(`.dialog-message`)[0]
-      image = document.querySelectorAll(`.dialog-icon`)[0]
-    } else {
-      title = document.querySelectorAll(`.dialog-title`)[1]
-      message = document.querySelectorAll(`.dialog-message`)[1]
-      image = document.querySelectorAll(`.dialog-icon`)[1]
+    const title = dialog.querySelector<HTMLElement>('.dialog-title')
+    const message = dialog.querySelector<HTMLElement>('.dialog-message')
+    const image = dialog.querySelector<HTMLImageElement>('.dialog-icon')
+
+    dialog.showModal()
+    if (image && typeof imageElement === 'string') {
+      image.src = imageElement
     }
-
-    if (dialog) {
-      dialog.showModal()
-      if (image)
-        if (typeof imageElement === 'string') {
-          image.src = imageElement
-        }
-      if (message) message.textContent = messageContent
-      if (title) title.textContent = titleContent
-      if (dialogName == 'dialog-success') {
-        setTimeout(() => {
-          dialog.close()
-        }, 1000)
-      }
+    if (message) message.textContent = messageContent
+    if (title) title.textContent = titleContent
+    if (dialogName == 'dialog-success') {
+      setTimeout(() => {
+        dialog.close()
+      }, 1000)
     }
   }
 

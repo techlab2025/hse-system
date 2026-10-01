@@ -35,7 +35,7 @@ export default class ProjectMeetingModel {
           : [],
       serialName: data.serial_name,
       teamLeader: data.team_leader ? OrganizatoinEmployeeModel.fromMap(data.team_leader) : {},
-      hasResult: data?.has_result ? data?.has_result : false,
+      hasResult: data?.has_result === true || data?.has_result === 1 || data?.has_result === '1',
     })
   }
 

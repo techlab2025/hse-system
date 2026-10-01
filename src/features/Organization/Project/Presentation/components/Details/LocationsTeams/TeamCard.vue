@@ -11,6 +11,7 @@ import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/
 import TeamIcon from '@/shared/icons/TeamIcon.vue'
 import AddCreateTeam from '../../Dialogs/CreateTeamDialog/AddCreateTeam.vue'
 import type TeamLocation from '@/features/Organization/Project/Data/models/TeamLocationModel'
+import { watch } from 'vue'
 
 const props = defineProps<{
   team: ProjectLocationTeamModel
@@ -26,7 +27,7 @@ const projectCustomLocationController = ProjectCustomLocationController.getInsta
 const route = useRoute()
 const GetProjectLocationsEmployes = async () => {
   const projectCustomLocationParams = new ProjectCustomLocationParams(
-    Number(route?.params?.project_id),
+    Number(route?.params?.id || route?.params?.project_id),
     [ProjectCustomLocationEnum.TEAM_EMPLOYEE, ProjectCustomLocationEnum.EMPLOYEE],
   )
   const response = await projectCustomLocationController.getData(projectCustomLocationParams)

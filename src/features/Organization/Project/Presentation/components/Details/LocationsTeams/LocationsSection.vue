@@ -231,6 +231,7 @@ watch(
               </router-link>
             </div>
             <div class="teams teams-grid">
+              <!-- <pre>{{ visibleTeams }}</pre> -->
               <TeamCard
                 :isShow="true"
                 v-for="(team, index) in visibleTeams"

@@ -127,7 +127,7 @@ watch(
       industry.value = newData?.industries ?? []
       Equipment.value = newData?.equipmentTypeId
       allIndustries.value = newData?.allIndustries == 1
-      
+
     }
   },
   { immediate: true },

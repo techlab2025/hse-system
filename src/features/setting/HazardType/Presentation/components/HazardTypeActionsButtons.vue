@@ -70,13 +70,22 @@ const exportExcel = () => {
 }
 
 const DownloadExample = () => {
-  const worksheetData = [{ title: 'Example Hazard Type' }, { title: 'Example Hazard Type 2' }]
+  const worksheetData = [
+    { title: 'Example Hazard Classification' },
+    { title: 'Example Hazard Classification 2' },
+  ]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'HazardTypes')
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'HazardClassifications')
   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
   const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
   saveAs(blob, 'hazard_type_form.xlsx')
+}
+
+const handleUploadCompleted = async () => {
+  showUploadDialog.value = false
+  pendingFile.value = null
+  await fetchHazardType()
 }
 
 const actionList = () => [
@@ -137,14 +146,7 @@ const actionList = () => [
     :header="$t('import_hazard_type')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <UploadHazardTypeExeclSheet
-      :initial-file="pendingFile"
-      @uploaded="
-        showUploadDialog = false;
-        pendingFile = null;
-        fetchHazardType()
-      "
-    />
+    <UploadHazardTypeExeclSheet :initial-file="pendingFile" @uploaded="handleUploadCompleted" />
   </Dialog>
 
   <input

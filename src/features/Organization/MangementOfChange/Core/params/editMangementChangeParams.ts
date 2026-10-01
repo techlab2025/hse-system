@@ -2,6 +2,7 @@ import type Params from '@/base/core/params/params'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import type { ChangeApprovalMangementEnum } from '../Core/ChangeApprovalEnum'
 import type { ChangeTypeMangementEnum } from '../Core/ChangeTypeEnum'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 export default class EditMangementChangeParams implements Params {
   constructor(
@@ -19,24 +20,33 @@ export default class EditMangementChangeParams implements Params {
     public management_change_topic_employee_id?: number,
     public management_change_topic_equipment_id?: number,
     public management_change_topic_text?: string,
+    public initiatore_employee_id?: number,
+    public serial?: string,
   ) {}
 
   toMap(): Record<string, unknown> {
-    return {
+    const data: Record<string, unknown> = {
       management_of_change_id: this.id,
       risk_assisment_file: this.risk_assisment_file,
       attachments: this.image,
       changer_request_id: this.changer_request_id,
-      facilty: this.facilty,
+      facility: this.facilty,
       area: this.area,
       date: this.date ? formatJoinDate(this.date) : undefined,
       change_type: this.change_type,
-      management_change_topic_type_id: this.management_change_topic_type_id,
+      changement_topic_id: this.management_change_topic_type_id,
       status: this.status,
-      approval_by: this.approval_by,
-      management_change_topic_employee_id: this.management_change_topic_employee_id,
+      approver_by: this.approval_by,
+      changer_request_employee_id: this.management_change_topic_employee_id,
       management_change_topic_equipment_id: this.management_change_topic_equipment_id,
-      management_change_topic_text: this.management_change_topic_text,
+      topic_text: this.management_change_topic_text,
+      initiator_employee_id:
+        this.initiatore_employee_id,
     }
+
+      if (useProjectAppStatusStore().isSerialNumberAuto()) data.serial_number = this.serial
+      else data.serial = this.serial
+
+      return data
   }
 }

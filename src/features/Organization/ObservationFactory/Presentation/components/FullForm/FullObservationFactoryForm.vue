@@ -67,6 +67,8 @@ import { useI18n } from 'vue-i18n'
 import { useProjectSelectStore } from '@/stores/ProjectSelect.ts'
 import IndexPpeItemController from '@/features/Organization/ppeItem/Presentation/controllers/indexPpeItemController.ts'
 import IndexPpeItemParams from '@/features/Organization/ppeItem/Core/params/indexPpeItemParams.ts'
+import { ObservationTypeStaticOptions } from '@/features/setting/ObserverationType/Core/Enum/ObservationTypeEnum.ts'
+import InjuryBodySlection from '../../SubComponent/InjuryBodySlection.vue'
 
 const emit = defineEmits(['update:data'])
 const { isDarkMode } = useThemeMode()
@@ -87,6 +89,7 @@ const date = ref<Date>(new Date())
 const descripe = ref<string>('')
 const image = ref([])
 const route = useRoute()
+const routeProjectId = computed(() => Number(route.query.project_id) || undefined)
 const ObservationFactoryType = ref(
   route?.path?.includes('incedant')
     ? Observation.AccidentsType
@@ -163,8 +166,8 @@ const Projects = ref<MyProjectsModel[]>([])
 const isProjectsLoading = ref(false)
 const selectedProjectName = computed(
   () =>
-    selectedProject.project?.title ||
     Projects.value.find((project) => project.id === SelectedProjectId.value)?.title ||
+    selectedProject.project?.title ||
     '',
 )
 const FetchMyProjects = async () => {
@@ -189,7 +192,7 @@ onMounted(() => {
   FetchMyProjects()
 })
 
-const SelectedProjectId = ref<number | undefined>(selectedProject.project?.id)
+const SelectedProjectId = ref<number | undefined>(routeProjectId.value || selectedProject.project?.id)
 const GetProjectId = (id: number) => {
   if (SelectedProjectId.value !== id) {
     ZoneIds.value = undefined
@@ -508,17 +511,19 @@ const updateData = () => {
     : new AddHazardParams({
         title: ObservationTitle.value ?? '',
         propertyTitle:
-          ObservationFactoryType.value === Observation.AccidentsType
-            ? PropertyTitle.value
-            : null,
+          ObservationFactoryType.value === Observation.AccidentsType ? PropertyTitle.value : null,
         description: text.value ?? null,
         image: image.value?.map((el) => el?.file) ?? null,
         typeId:
           ObservationFactoryType.value == Observation.ObservationType
-            ? SelectedObservationType.value?.id
+            ? undefined
             : ObservationFactoryType.value == Observation.AccidentsType
               ? AccidentsType.value?.id
               : HazardType.value?.id,
+        uauc:
+          ObservationFactoryType.value == Observation.ObservationType
+            ? SelectedObservationType.value?.id
+            : 0,
         type: ObservationFactoryType.value,
         equipmentId: SelectedMachine.value?.id ?? null,
         zoonId: ZoneIds.value ?? null,
@@ -554,6 +559,7 @@ const updateData = () => {
                 item?.ppeItems?.some((ppeItem: TitleInterface) => ppeItem.id === PpeItemEnum.OTHERS)
                   ? item?.customPpeItem?.trim() || ''
                   : '',
+                item?.locations ?? [],
               )
             })
           : [],
@@ -842,12 +848,10 @@ const validateRequiredFields = async () => {
 defineExpose({
   validateRequiredFields,
 })
-
-
-
 </script>
 
 <template>
+  <!--  -->
   <div
     :class="[
       'full-observation-form col-span-6 grid items-start grid-cols-1 md:grid-cols-6 gap-4',
@@ -871,8 +875,9 @@ defineExpose({
         <span class="filter-marker"></span>
         <p>{{ $t('Projects') }}</p>
       </div>
+
       <div
-        v-if="selectedProject.project?.id"
+        v-if="selectedProject.project?.id || routeProjectId"
         class="locked-filter-selection selected-project-summary"
       >
         <span class="locked-selection-icon" aria-hidden="true">P</span>
@@ -1052,11 +1057,12 @@ defineExpose({
                  New Update => Custom input Select inspection Observisoon Form
         /> -->
 
+      <!-- :controller="indexObservatioTyepController"
+        :params="indexObservationTypeParams" -->
       <UpdatedCustomInputSelect
         :required="true"
+        :static-options="ObservationTypeStaticOptions"
         :modelValue="SelectedObservationType"
-        :controller="indexObservatioTyepController"
-        :params="indexObservationTypeParams"
         :label="$t('Observation Type')"
         help-text="The category that best describes this observation."
         id="Equipment"
@@ -1228,7 +1234,7 @@ defineExpose({
       </p>
     </div>
 
-    <!-- Shifts --> 
+    <!-- Shifts -->
     <div class="col-span-3 md:col-span-3 input-wrapper">
       <UpdatedCustomInputSelect
         :controller="shiftsContrller"

@@ -3,10 +3,10 @@ import type { RouteRecordRaw } from '@/router/types'
 export const hazardTypesRoutes: RouteRecordRaw[] = [
   {
     path: 'hazard-type',
-    name: 'Hazard Type',
+    name: 'Hazard Classification',
     component: () => import('@/views/Admin/HazardType/IndexHazardType.vue'),
     meta: {
-      breadcrumb: 'Hazard Type',
+      breadcrumb: 'Hazard Classification',
       type: 'Shared',
       subType: 'Hazards',
       isSidebar: true,
@@ -14,11 +14,11 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
   },
   {
     path: 'hazard-type/add/:parent_id?',
-    name: 'Add Hazard Type',
+    name: 'Add Hazard Classification',
     component: () => import('@/views/Admin/HazardType/AddHazardType.vue'),
     meta: {
-      breadcrumb: 'Add Hazard Type',
-      parent: 'Hazard Type',
+      breadcrumb: 'Add Hazard Classification',
+      parent: 'Hazard Classification',
       type: 'Shared',
       subType: 'Add Hazard',
       subParent: 'Hazards',
@@ -27,11 +27,11 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
   },
   {
     path: 'hazard-type/:id',
-    name: 'Edit Hazard Type',
+    name: 'Edit Hazard Classification',
     component: () => import('@/views/Admin/HazardType/EditHazardType.vue'),
     meta: {
-      breadcrumb: 'Edit Hazard Type',
-      parent: 'Hazard Type',
+      breadcrumb: 'Edit Hazard Classification',
+      parent: 'Hazard Classification',
       type: 'Shared',
       subType: 'Edit Hazard',
       subParent: 'Hazards',
@@ -44,7 +44,7 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Admin/HazardType/IndexHazardType.vue'),
     meta: {
       breadcrumb: ' Hazards',
-      parent: 'Hazard Type',
+      parent: 'Hazard Classification',
       type: 'Shared',
       isSidebar: true,
     },
@@ -55,18 +55,18 @@ export const hazardTypesRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Admin/HazardType/IndexHazardType.vue'),
     meta: {
       breadcrumb: ' Hazards',
-      parent: 'Hazard Type',
+      parent: 'Hazard Classification',
       type: 'Shared',
       isSidebar: true,
     },
   },
   {
     path: 'hazard-type/upload-excel',
-    name: 'Upload Hazard Type',
+    name: 'Upload Hazard Classification',
     component: () => import('@/views/Admin/HazardType/UploadHazard.vue'),
     meta: {
-      breadcrumb: 'Upload Hazard Type',
-      parent: 'Hazard Type',
+      breadcrumb: 'Upload Hazard Classification',
+      parent: 'Hazard Classification',
       type: 'Shared',
       isSidebar: true,
     },

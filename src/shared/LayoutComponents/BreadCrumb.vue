@@ -2,6 +2,7 @@
 import Breadcrumb from 'primevue/breadcrumb'
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import BackIcon from '../icons/BackIcon.vue'
 import { buildBreadcrumb } from './Helper/RouteHelper'
 import { useUserStore } from '@/stores/user'
@@ -11,6 +12,7 @@ import { useThemeMode } from '@/composables/useThemeMode'
 
 const route = useRoute()
 const router = useRouter()
+const { t } = useI18n()
 const { isDarkMode } = useThemeMode()
 
 const RouterBack = () => {
@@ -100,7 +102,10 @@ const items = computed(() => {
     }
   }
 
-  return breadcrumb
+  return breadcrumb.map((item) => ({
+    ...item,
+    label: t(item.label),
+  }))
 })
 
 const allRoutes = router.getRoutes()
