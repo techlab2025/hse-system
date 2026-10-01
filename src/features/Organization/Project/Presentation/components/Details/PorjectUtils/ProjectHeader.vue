@@ -98,7 +98,7 @@ defineProps<{
             </svg>
           </span>
           <span class="action-copy">
-            <strong>{{ t('Audits') }}</strong>
+            <strong>{{ t('Site Audit') }}</strong>
             <small>{{ t('Review project audits') }}</small>
           </span>
           <span class="action-arrow" aria-hidden="true">→</span>

@@ -259,7 +259,7 @@ onMounted(async () => {
             <div class="report-upload-field">
               <HandleFIlesUpload label="Visit report attachment" accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
                 :max-files="1" :multiple="false" class-name="report-file-input" @change="handleFilesChange" />
-              <small>PDF, Word, Excel, or image · One file maximum</small>
+              <!-- <small>PDF, Word, Excel, or image · One file maximum</small> -->
             </div>
           </section>
 

@@ -2059,7 +2059,7 @@ class ApiNames {
     return this.baseUrl + this.organizationPrefix + 'fetch_permit_to_work_results'
   }
   public get FetchStaticsMyPermits() {
-    return this.baseUrl + this.organizationPrefix + 'fetch_statics_permit_to_works'
+    return this.baseUrl + this.organizationPrefix + 'fetch_project_permit_statistics'
   }
 
   // Drill Type

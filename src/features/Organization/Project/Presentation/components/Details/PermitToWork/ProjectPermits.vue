@@ -145,7 +145,7 @@ const FetchPermitsAuidtResult = async (permitId: number) => {
         </span>
 
         <strong>
-          {{ staticsPermits?.totalPermits ?? 0 }}
+          {{ staticsPermits?.total ?? 0 }}
         </strong>
 
         <small>
@@ -172,7 +172,7 @@ const FetchPermitsAuidtResult = async (permitId: number) => {
         </span>
 
         <strong>
-          {{ staticsPermits?.totalActivePermits ?? 0 }}
+          {{ staticsPermits?.active ?? 0 }}
         </strong>
 
         <small>
@@ -199,7 +199,7 @@ const FetchPermitsAuidtResult = async (permitId: number) => {
         </span>
 
         <strong>
-          {{ staticsPermits?.totalDraftPermits ?? 0 }}
+          {{ staticsPermits?.draft ?? 0 }}
         </strong>
 
         <small>
@@ -226,7 +226,7 @@ const FetchPermitsAuidtResult = async (permitId: number) => {
         </span>
 
         <strong>
-          {{ staticsPermits?.totalCancelledPermits ?? 0 }}
+          {{ staticsPermits?.cancel ?? 0 }}
         </strong>
 
         <small>

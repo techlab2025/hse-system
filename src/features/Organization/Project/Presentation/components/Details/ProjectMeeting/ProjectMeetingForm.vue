@@ -268,7 +268,7 @@ const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
       />
 
       <!-- title -->
-      <div class="input-wrapper">
+      <!-- <div class="input-wrapper">
         <div class="field-label">
           <label for="title">{{ $t('title') }}</label
           ><FieldHelpIcon text="Record the initial title." />
@@ -280,7 +280,7 @@ const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
           class="input"
           :placeholder="$t('Enter title')"
         />
-      </div>
+      </div> -->
 
       <!-- WeeklySelect -->
       <UpdatedCustomInputSelect
@@ -313,7 +313,7 @@ const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
       <!-- Yearly -->
       <div class="input-wrapper" v-if="PeriodicType == MeetingTypePeriodicEnum.yearly">
         <div class="field-label">
-          <label for="drill_date">{{ $t('dates') }}</label
+          <label for="drill_date">{{ $t('Meeting dates') }}</label
           ><FieldHelpIcon text="Select the dates." />
         </div>
         <DatePicker
@@ -331,7 +331,7 @@ const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
       <!-- dates -->
       <div class="input-wrapper" v-if="PeriodicType == MeetingTypePeriodicEnum.dates">
         <div class="field-label">
-          <label for="drill_date">{{ $t('dates') }}</label
+          <label for="drill_date">{{ $t('Meeting dates') }}</label
           ><FieldHelpIcon text="Select the dates." />
         </div>
         <DatePicker
@@ -363,8 +363,8 @@ const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
       <UpdatedCustomInputSelect
         id="employees_id"
         v-model="selectedEmployees"
-        :label="$t('Employees')"
-        :placeholder="$t('Select employees')"
+        :label="$t('Participants')"
+        :placeholder="$t('Select Participants')"
         :controller="indexOrganizationEmployeeController"
         :params="indexOrganizationEmployeeParams"
         required
@@ -375,8 +375,8 @@ const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
         id="meeting-team-leader"
         :model-value="selectedEmployees.find((employee) => employee.id === selectedTeamLeaderId) ?? null"
         :static-options="selectedEmployees"
-        :label="$t('Team Leader')"
-        :placeholder="$t('Select Team Leader')"
+        :label="$t('Chaired By')"
+        :placeholder="$t('Select Chaired By')"
         :reload="false"
         required
         @update:model-value="UpdateTeamLeader"
