@@ -4,7 +4,8 @@ import OrganizatoinEmployeeModel from '@/features/Organization/OrganizationEmplo
 
 export type InjuryPpeItem = {
   ppe_item: number,
-  id:number
+  id:number,
+  title:string
 }
 
 export default class InjuryDetailsModel {

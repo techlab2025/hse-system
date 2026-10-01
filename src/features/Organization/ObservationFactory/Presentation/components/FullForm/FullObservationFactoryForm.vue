@@ -875,6 +875,7 @@ defineExpose({
         <span class="filter-marker"></span>
         <p>{{ $t('Projects') }}</p>
       </div>
+
       <div
         v-if="selectedProject.project?.id || routeProjectId"
         class="locked-filter-selection selected-project-summary"
