@@ -1438,6 +1438,23 @@ class ApiNames {
     return this.prefix + 'delete_role'
   }
 
+  // Internal Audit
+  public get CreateInternalAudit() {
+    return this.prefix + 'create_internal_audit'
+  }
+  public get IndexInternalAudit() {
+    return this.prefix + 'fetch_internal_audits'
+  }
+  public get ShowInternalAudit() {
+    return this.prefix + 'fetch_internal_audit_details'
+  }
+  public get EditInternalAudit() {
+    return this.prefix + 'update_internal_audit'
+  }
+  public get DeleteInternalAudit() {
+    return this.prefix + 'delete_internal_audit'
+  }
+
   // Attachment matrix
   public get CreateAttachmentMatrix() {
     return this.prefix + 'create_attachment_matrix'

@@ -14,6 +14,19 @@ export const OrgPermissions: PermissionItem = {
       code: PermissionsEnum.ORGANIZATION_EMPLOYEE,
       label: 'Organization',
       permissions: [
+        {
+          key: PermissionsEnum.INTERNAL_AUDIT_ALL,
+          code: PermissionsEnum.INTERNAL_AUDIT_ALL,
+          label: 'Internal Audit',
+          permissions: [
+            { key: PermissionsEnum.INTERNAL_AUDIT_ALL, code: PermissionsEnum.INTERNAL_AUDIT_ALL, label: 'All' },
+            { key: PermissionsEnum.INTERNAL_AUDIT_FETCH, code: PermissionsEnum.INTERNAL_AUDIT_FETCH, label: 'Table' },
+            { key: PermissionsEnum.INTERNAL_AUDIT_DETAILS, code: PermissionsEnum.INTERNAL_AUDIT_DETAILS, label: 'Details' },
+            { key: PermissionsEnum.INTERNAL_AUDIT_CREATE, code: PermissionsEnum.INTERNAL_AUDIT_CREATE, label: 'Create' },
+            { key: PermissionsEnum.INTERNAL_AUDIT_UPDATE, code: PermissionsEnum.INTERNAL_AUDIT_UPDATE, label: 'Update' },
+            { key: PermissionsEnum.INTERNAL_AUDIT_DELETE, code: PermissionsEnum.INTERNAL_AUDIT_DELETE, label: 'Delete' },
+          ],
+        },
         // Auth
         // {
         //     key: PermissionsEnum.ORG_EMPLOYEE_LOGIN,

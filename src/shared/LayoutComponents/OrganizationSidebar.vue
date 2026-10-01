@@ -38,6 +38,18 @@ const GauideRoutes = ref<Routes[]>([
 
 const OperationsRoutes = ref<Routes[]>([
   {
+    link: '/organization/internal-audit',
+    name: 'Internal Audit',
+    icon: 'clipboard-notes',
+    permissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.INTERNAL_AUDIT_ALL,
+      PermissionsEnum.INTERNAL_AUDIT_FETCH,
+      PermissionsEnum.INTERNAL_AUDIT_CREATE,
+    ],
+  },
+  {
     link: '/organization/projects',
     name: 'Projects',
     icon: 'briefcase-alt',
