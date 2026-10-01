@@ -549,67 +549,24 @@ onMounted(updateData)
         </p>
       </div>
 
-      <div class="management-change-field input-wrapper" data-required-field="changeType">
-        <UpdatedCustomInputSelect
-          :model-value="selectedChangeTypeMangement"
-          :static-options="ChangeTypeMangementList"
-          label="change type"
-          id="change-type"
-          :placeholder="$t('Select change type')"
-          required
-          @update:model-value="changeType = $event.id"
-        />
-        <p v-if="requiredFieldErrors.changeType" class="required-field-message">
-          {{ requiredFieldErrors.changeType }}
-        </p>
-      </div>
-
-      <div class="management-change-field input-wrapper" data-required-field="changeApproval">
-        <UpdatedCustomInputSelect
-          :model-value="selectedChangeApprovalMangement"
-          :static-options="ChangeApprovalMangementList"
-          label="change approval"
-          id="change-approval"
-          :placeholder="$t('Select approval status')"
-          required
-          @update:model-value="status = $event.id"
-        />
-        
-        <p v-if="requiredFieldErrors.changeApproval" class="required-field-message">
-          {{ requiredFieldErrors.changeApproval }}
-        </p>
-      </div>
-
-      <div class="management-change-field input-wrapper" data-required-field="approvalBy">
-        <UpdatedCustomInputSelect
-          :model-value="Selectedemployee"
-          :controller="indexOrganizatoinEmployeeController"
-          :params="indexOrganizatoinEmployeeParams"
-          label="Approved / Rejected By "
-          id="approval-by"
-          :placeholder="$t('Select an employee')"
-          required
-          @update:model-value="setApprovalBy"
-        />
      
-        <p v-if="requiredFieldErrors.approvalBy" class="required-field-message">
-          {{ requiredFieldErrors.approvalBy }}
-        </p>
-      </div>
-     
-    </div>
-  </section>
 
-  <section class="management-change-section">
-    <!-- <div class="management-change-section__heading">
-      <span class="management-change-section__number">02</span>
-      <div>
-        <h2>{{ $t('change scope') }}</h2>
-        <p>{{ $t('Define what is affected by this change.') }}</p>
-      </div>
-    </div> -->
-
-    <div class="management-change-fields">
+       <div class="management-change-field input-wrapper" data-required-field="changeType">
+          <UpdatedCustomInputSelect
+            :model-value="selectedChangeTypeMangement"
+            :static-options="ChangeTypeMangementList"
+            label="change type"
+            id="change-type"
+            :placeholder="$t('Select change type')"
+            required
+            @update:model-value="changeType = $event.id"
+          />
+          <p v-if="requiredFieldErrors.changeType" class="required-field-message">
+            {{ requiredFieldErrors.changeType }}
+          </p>
+        </div>
+   
+      
       <div
         class="management-change-field input-wrapper management-change-field--full"
         data-required-field="management"
@@ -695,6 +652,141 @@ onMounted(updateData)
         </p>
       </div>
     </div>
+     
+   
+  </section>
+
+  <section class="management-change-section">
+     <div class="management-change-fields">
+
+      
+  
+        <div class="management-change-field input-wrapper" data-required-field="changeApproval">
+          <UpdatedCustomInputSelect
+            :model-value="selectedChangeApprovalMangement"
+            :static-options="ChangeApprovalMangementList"
+            label="change approval"
+            id="change-approval"
+            :placeholder="$t('Select approval status')"
+            required
+            @update:model-value="status = $event.id"
+          />
+          
+          <p v-if="requiredFieldErrors.changeApproval" class="required-field-message">
+            {{ requiredFieldErrors.changeApproval }}
+          </p>
+        </div>
+           <div class="management-change-field input-wrapper" data-required-field="approvalBy">
+        <UpdatedCustomInputSelect
+          :model-value="Selectedemployee"
+          :controller="indexOrganizatoinEmployeeController"
+          :params="indexOrganizatoinEmployeeParams"
+          label="Approved / Rejected By "
+          id="approval-by"
+          :placeholder="$t('Select an employee')"
+          required
+          @update:model-value="setApprovalBy"
+        />
+     
+        <p v-if="requiredFieldErrors.approvalBy" class="required-field-message">
+          {{ requiredFieldErrors.approvalBy }}
+        </p>
+      </div>
+     </div>
+    <!-- <div class="management-change-section__heading">
+      <span class="management-change-section__number">02</span>
+      <div>
+        <h2>{{ $t('change scope') }}</h2>
+        <p>{{ $t('Define what is affected by this change.') }}</p>
+      </div>
+    </div> -->
+
+    <!-- <div class="management-change-fields">
+      <div
+        class="management-change-field input-wrapper management-change-field--full"
+        data-required-field="management"
+      >
+        <UpdatedCustomInputSelect
+          :model-value="Selectedmangement"
+          :controller="indexMangementChangeTopicTypeController"
+          :params="indexMangementChangeTopicTypeParams"
+          label="Description of Proposed Change/Modification"
+          id="management"
+          :placeholder="$t('Select Proposed Change/Modification')"
+          required
+          @update:model-value="setManagement"
+        />
+        <p v-if="requiredFieldErrors.management" class="required-field-message">
+          {{ requiredFieldErrors.management }}
+        </p>
+        <p class="management-change-field__hint">
+          {{ $t('Choose a management topic to show the related field.') }}
+        </p>
+      </div>
+
+      <div
+        v-if="selectedTopicType === 1"
+        class="management-change-field input-wrapper"
+        data-required-field="topicEmployee"
+      >
+        <UpdatedCustomInputSelect
+          :model-value="Selectedemployeeid"
+          :controller="indexOrganizatoinEmployeeController"
+          :params="indexOrganizatoinEmployeeidParams"
+          label="employee"
+          id="project-employee"
+          :placeholder="$t('Select an employee')"
+          required
+          @update:model-value="setEmployee"
+        />
+       
+        <p v-if="requiredFieldErrors.topicEmployee" class="required-field-message">
+          {{ requiredFieldErrors.topicEmployee }}
+        </p>
+      </div>
+
+      <div
+        v-if="selectedTopicType === 2"
+        class="management-change-field input-wrapper"
+        data-required-field="topicEquipment"
+      >
+        <UpdatedCustomInputSelect
+          :model-value="Selectedequipment"
+          :controller="indexEquipmentController"
+          :params="indexEquipmentParams"
+          label="equipment"
+          id="equipment"
+          :placeholder="$t('Select equipment')"
+          required
+          @update:model-value="setequipment"
+        />
+        <p v-if="requiredFieldErrors.topicEquipment" class="required-field-message">
+          {{ requiredFieldErrors.topicEquipment }}
+        </p>
+      </div>
+
+      <div
+        v-if="selectedTopicType === 3"
+        class="management-change-field input-wrapper"
+        data-required-field="topicText"
+      >
+        <label for="topic-text">
+          {{ $t('topic') }}
+          <span class="management-change-required-mark">*</span>
+        </label>
+        <input
+          id="topic-text"
+          v-model="topicText"
+          class="input"
+          type="text"
+          :placeholder="$t('Enter the topic')"
+          required
+        />
+        <p v-if="requiredFieldErrors.topicText" class="required-field-message">
+          {{ requiredFieldErrors.topicText }}
+        </p>
+      </div>
+    </div> -->
   </section>
 
   <section class="management-change-section">
@@ -706,7 +798,7 @@ onMounted(updateData)
       </div>
     </div> -->
 
-    <div class="management-change-fields management-change-fields--attachments">
+    <div class="management-change-fields management-change-fields--attachments management-change-fields-full">
       <div
         :key="formKey"
         class="management-change-upload-field"
@@ -740,6 +832,9 @@ onMounted(updateData)
 </template>
 
 <style scoped>
+.management-change-fields-full{
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
 /* :deep(.p-datepicker-dropdown) {
    border-color: var(--management-change-border) !important;
 }

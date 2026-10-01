@@ -59,6 +59,7 @@ async function create() {
     selectedEmployee.value?.id ?? 0,
     attachments.value,
     serial.value.trim(),
+    projectId,
   )
   const validation = params.validate()
   if (!validation.isValid) {

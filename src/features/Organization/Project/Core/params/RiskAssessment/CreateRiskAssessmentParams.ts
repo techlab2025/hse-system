@@ -11,6 +11,7 @@ export default class CreateRiskAssessmentParams implements Params {
     public employeeApproverId: number,
     public attachents: string[],
     public serial: string,
+    public projectId?: number,
   ) {}
 
   static readonly validation = new ClassValidation().setRules({
@@ -27,8 +28,9 @@ export default class CreateRiskAssessmentParams implements Params {
       activity_description: this.desctiprion,
       work_area: this.workAreaStrign,
       date: this.date,
-      employee_approver_id: this.employeeApproverId,
+      employee_approver_by_id: this.employeeApproverId,
       attachments: this.attachents,
+      project_id: this.projectId,
     }
 
     if (useProjectAppStatusStore().isSerialNumberAuto()) data.serial_number = this.serial
