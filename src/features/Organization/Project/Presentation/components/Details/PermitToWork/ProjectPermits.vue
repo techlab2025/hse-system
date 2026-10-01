@@ -8,11 +8,21 @@ import { ref } from 'vue'
 import FetchProjectPermitsAuditsController from '../../../controllers/PermitToWork/FetchProjectPermitsAuditsController'
 import FetchPermitsAuditsParams from '@/features/Organization/Project/Core/params/PermitToWork/FetchPermitAuditParams'
 import PermitToWorkResultDialog from './PermitToWorkResultDialog.vue'
+import FetchStaticsPermitsController from '../../../controllers/PermitToWork/FetchStaticsPermitsController.ts'
 
 const route = useRoute()
 const router = useRouter()
 const emit = defineEmits(['has_data'])
 const fetchProjectPermitsController = FetchProjectPermitsController.getInstance()
+
+const fetchStaticsPermitsController = FetchStaticsPermitsController.getInstance()
+const FetchStaticsMyPermitToWorkParams = new FetchPermitsParams({
+  projectId: Number(route.params.project_id),
+})
+const FetchStaticsPermits = async () => {
+  await fetchStaticsPermitsController.FetchMyProjectPermits(FetchStaticsMyPermitToWorkParams)
+}
+const staticsPermits = computed(() => fetchStaticsPermitsController.state?.value?.data ?? null)
 
 const state = computed(() => fetchProjectPermitsController.state.value)
 
@@ -61,6 +71,7 @@ const GetStatus = (status: PermitToWorkStatusEnum) => {
 
 onMounted(async () => {
   await FetchProjectPermits()
+  await FetchStaticsPermits()
 
   // emit('has_data', state.value.data?.length! > 0)
 })
@@ -96,6 +107,136 @@ const FetchPermitsAuidtResult = async (permitId: number) => {
 
 <template>
   <div class="permits-page">
+    <!-- static -->
+     <!-- Project Permits Statistics -->
+<div class="permits-statistics">
+  <div class="statistics-header">
+    <div>
+      <span class="statistics-kicker">
+        {{ $t('Overview') }}
+      </span>
+
+      <h2>
+        {{ $t('Project Permits Statics') }}
+      </h2>
+
+      <p>
+        {{ $t('Overview of permits status in this project') }}
+      </p>
+    </div>
+  </div>
+
+  <div class="statistics-grid">
+    <!-- Total -->
+    <div class="statistics-card total">
+      <div class="statistics-card-top">
+        <div class="statistics-icon">
+          <span>ALL</span>
+        </div>
+
+        <span class="statistics-badge">
+          {{ $t('Total') }}
+        </span>
+      </div>
+
+      <div class="statistics-card-content">
+        <span class="statistics-label">
+          {{ $t('Total Permits') }}
+        </span>
+
+        <strong>
+          {{ staticsPermits?.total ?? 0 }}
+        </strong>
+
+        <small>
+          {{ $t('All project permits') }}
+        </small>
+      </div>
+    </div>
+
+    <!-- Active -->
+    <div class="statistics-card active">
+      <div class="statistics-card-top">
+        <div class="statistics-icon">
+          <span>ACT</span>
+        </div>
+
+        <span class="statistics-badge">
+          {{ $t('Active') }}
+        </span>
+      </div>
+
+      <div class="statistics-card-content">
+        <span class="statistics-label">
+          {{ $t('Active Permits') }}
+        </span>
+
+        <strong>
+          {{ staticsPermits?.active ?? 0 }}
+        </strong>
+
+        <small>
+          {{ $t('Currently active permits') }}
+        </small>
+      </div>
+    </div>
+
+    <!-- Draft -->
+    <div class="statistics-card draft">
+      <div class="statistics-card-top">
+        <div class="statistics-icon">
+          <span>DRF</span>
+        </div>
+
+        <span class="statistics-badge">
+          {{ $t('Draft') }}
+        </span>
+      </div>
+
+      <div class="statistics-card-content">
+        <span class="statistics-label">
+          {{ $t('Draft Permits') }}
+        </span>
+
+        <strong>
+          {{ staticsPermits?.draft ?? 0 }}
+        </strong>
+
+        <small>
+          {{ $t('Permits not submitted yet') }}
+        </small>
+      </div>
+    </div>
+
+    <!-- Canceled -->
+    <div class="statistics-card canceled">
+      <div class="statistics-card-top">
+        <div class="statistics-icon">
+          <span>CAN</span>
+        </div>
+
+        <span class="statistics-badge">
+          {{ $t('Canceled') }}
+        </span>
+      </div>
+
+      <div class="statistics-card-content">
+        <span class="statistics-label">
+          {{ $t('Canceled Permits') }}
+        </span>
+
+        <strong>
+          {{ staticsPermits?.cancel ?? 0 }}
+        </strong>
+
+        <small>
+          {{ $t('Canceled project permits') }}
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
+
     <!-- Header -->
     <div class="permits-page-header">
       <div>
@@ -309,6 +450,277 @@ const FetchPermitsAuidtResult = async (permitId: number) => {
 </template>
 
 <style scoped lang="scss">
+/* ==========================================================================
+   Project Permits Statistics
+   ========================================================================== */
+
+.permits-statistics {
+  margin-bottom: 18px;
+}
+
+.statistics-header {
+  margin-bottom: 12px;
+  padding-inline: 4px;
+}
+
+.statistics-kicker {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: var(--PrimaryColor);
+
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.statistics-header h2 {
+  margin: 0;
+
+  color: var(--text-strong);
+
+  font-size: 1.15rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.statistics-header p {
+  margin: 5px 0 0;
+
+  color: var(--text-soft);
+
+  font-size: 0.7rem;
+}
+
+/* Grid */
+
+.statistics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+@media screen and (max-width: 1000px) {
+  .statistics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media screen and (max-width: 768px) {
+  .statistics-grid {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+/* Card */
+
+.statistics-card {
+  position: relative;
+
+  overflow: hidden;
+
+  min-height: 150px;
+
+  padding: 16px;
+
+  border: 1px solid var(--main-border);
+  border-radius: 16px;
+
+  background: var(--surface-2);
+
+  box-shadow:
+    0 8px 22px color-mix(
+      in srgb,
+      var(--brand-primary-900) 5%,
+      transparent
+    );
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.statistics-card::before {
+  position: absolute;
+
+  inset-inline-start: 0;
+  top: 0;
+
+  width: 4px;
+  height: 100%;
+
+  content: '';
+
+  background: var(--statistics-color);
+}
+
+.statistics-card::after {
+  position: absolute;
+
+  width: 100px;
+  height: 100px;
+
+  top: -45px;
+  inset-inline-end: -40px;
+
+  border-radius: 50%;
+
+  content: '';
+
+  background: color-mix(
+    in srgb,
+    var(--statistics-color) 10%,
+    transparent
+  );
+}
+
+.statistics-card:hover {
+  transform: translateY(-3px);
+
+  border-color: color-mix(
+    in srgb,
+    var(--statistics-color) 30%,
+    var(--main-border)
+  );
+
+  box-shadow:
+    0 14px 30px color-mix(
+      in srgb,
+      var(--statistics-color) 10%,
+      transparent
+    );
+}
+
+/* Colors */
+
+.statistics-card.total {
+  --statistics-color: var(--PrimaryColor);
+}
+
+.statistics-card.active {
+  --statistics-color: #16a34a;
+}
+
+.statistics-card.draft {
+  --statistics-color: #f59e0b;
+}
+
+.statistics-card.canceled {
+  --statistics-color: #ef4444;
+}
+
+/* Top */
+
+.statistics-card-top {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  margin-bottom: 16px;
+}
+
+/* Icon */
+
+.statistics-icon {
+  display: grid;
+
+  width: 42px;
+  height: 42px;
+
+  place-items: center;
+
+  border-radius: 12px;
+
+  color: var(--statistics-color);
+
+  background: color-mix(
+    in srgb,
+    var(--statistics-color) 11%,
+    transparent
+  );
+
+  border: 1px solid color-mix(
+    in srgb,
+    var(--statistics-color) 15%,
+    transparent
+  );
+}
+
+.statistics-icon span {
+  font-size: 0.52rem;
+  font-weight: 900;
+  letter-spacing: 0.03em;
+}
+
+/* Badge */
+
+.statistics-badge {
+  padding: 5px 8px;
+
+  border-radius: 999px;
+
+  color: var(--statistics-color);
+
+  background: color-mix(
+    in srgb,
+    var(--statistics-color) 8%,
+    transparent
+  );
+
+  font-size: 0.58rem;
+  font-weight: 900;
+}
+
+/* Content */
+
+.statistics-card-content {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+.statistics-label {
+  color: var(--text-soft);
+
+  font-size: 0.67rem;
+  font-weight: 700;
+}
+
+.statistics-card-content strong {
+  margin-top: 2px;
+
+  color: var(--text-strong);
+
+  font-size: 1.65rem;
+  font-weight: 900;
+
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+}
+
+.statistics-card-content small {
+  margin-top: 5px;
+
+  overflow: hidden;
+
+  color: var(--text-soft);
+
+  font-size: 0.59rem;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .filter-btns {
   display: inline-flex;
   align-items: center;

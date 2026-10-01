@@ -59,6 +59,7 @@ async function create() {
     selectedEmployee.value?.id ?? 0,
     attachments.value,
     serial.value.trim(),
+    projectId,
   )
   const validation = params.validate()
   if (!validation.isValid) {
@@ -80,7 +81,7 @@ async function create() {
 </script>
 
 <template>
-  <main class="create-page">
+  <main class="create-page"> 
     <div class="form-shell">
       <header class="form-header">
         <div class="header-art" aria-hidden="true"><span></span><span></span></div>
@@ -124,16 +125,17 @@ async function create() {
                   <b>*</b></span></span>
               <input v-model="form.activity" required placeholder="e.g. Working at height" />
             </label>
+                        <label class="field full">
+              <span class="field-label"><span class="field-icon" aria-hidden="true">≡</span><span>Activity description
+                </span>
+                <span  class="optional">(optional)</span></span>
+              <textarea v-model="form.desctiprion" rows="5" 
+                placeholder="Describe the work, hazards, and planned controls" />
+            </label>
             <label class="field">
               <span class="field-label"><span class="field-icon" aria-hidden="true">⌖</span><span>Work area
                   <b>*</b></span></span>
               <input v-model="form.workAreaStrign" required placeholder="e.g. North building" />
-            </label>
-            <label class="field">
-              <span class="field-label"><span class="field-icon" aria-hidden="true">◷</span><span>Date
-                  <b>*</b></span></span>
-              <DatePicker input-id="risk-assessment-date" :model-value="parseDate(form.date)" date-format="yy-mm-dd"
-                show-icon fluid placeholder="Select assessment date" @update:model-value="setAssessmentDate" />
             </label>
             <UpdatedCustomInputSelect class="field field--select" :model-value="selectedEmployee"
               :controller="indexOrganizatoinEmployeeController" :params="indexOrganizatoinEmployeeParams"
@@ -144,13 +146,14 @@ async function create() {
                     <b>*</b></span></span>
               </template>
             </UpdatedCustomInputSelect>
-            <label class="field full">
-              <span class="field-label"><span class="field-icon" aria-hidden="true">≡</span><span>Activity description
-                </span>
-                <span  class="optional">(optional)</span></span>
-              <textarea v-model="form.desctiprion" rows="5" 
-                placeholder="Describe the work, hazards, and planned controls" />
+            <label class="field">
+              <span class="field-label"><span class="field-icon" aria-hidden="true">◷</span><span>Date
+                  <b>*</b></span></span>
+              <DatePicker input-id="risk-assessment-date" :model-value="parseDate(form.date)" date-format="yy-mm-dd"
+                show-icon fluid placeholder="Select assessment date" @update:model-value="setAssessmentDate" />
             </label>
+            
+
           </div>
         </section>
 

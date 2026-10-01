@@ -1,3 +1,4 @@
+import type InvestegationDocumentMedaModel from '@/features/Organization/Investigating/Data/models/InvestegationDocumentMedaModel'
 import LeadershipVisitReportImprovementModel from './LeadershipVisitReportImprovementModel'
 
 export default class LeadershipVisitDetailsModel {
@@ -14,6 +15,8 @@ export default class LeadershipVisitDetailsModel {
     public areasOfImprovement: LeadershipVisitReportImprovementModel[],
     public createdAt: string,
     public updatedAt: string,
+    public media: string[] = []
+    //  public media: InvestegationDocumentMedaModel[]
   ) {}
 
   static fromMap(data: Record<string, unknown>): LeadershipVisitDetailsModel {
@@ -34,6 +37,14 @@ export default class LeadershipVisitDetailsModel {
         : [],
       String(data.created_at ?? ''),
       String(data.updated_at ?? ''),
+      Array.isArray(data.media)
+        ? data.media.flatMap((item) => {
+            if (typeof item === 'string') return [item]
+            if (!item || typeof item !== 'object') return []
+            const url = (item as Record<string, unknown>).url
+            return typeof url === 'string' && url ? [url] : []
+          })
+        : [],
     )
   }
 }

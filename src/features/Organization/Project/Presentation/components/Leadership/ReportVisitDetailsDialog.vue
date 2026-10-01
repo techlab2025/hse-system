@@ -2,6 +2,8 @@
 import Dialog from 'primevue/dialog'
 import type LeadershipVisitDetailsModel from '../../../Data/models/Leadership/LeadershipVisitDetailsModel'
 
+import Image from 'primevue/image';
+
 defineProps<{
   visible: boolean
   visit: LeadershipVisitDetailsModel | null
@@ -15,6 +17,10 @@ const unsafeTypeLabel = (value: number | null) => {
   if (value === 2) return 'Unsafe condition'
   return '—'
 }
+
+const isImage = (url: string) => /\.(png|jpe?g|gif|webp|svg)(\?.*)?$/i.test(url)
+const mediaName = (url: string, index: number) =>
+  url.split('/').pop()?.split('?')[0] || `Media ${index + 1}`
 </script>
 
 <template>
@@ -70,7 +76,7 @@ const unsafeTypeLabel = (value: number | null) => {
         </article>
       </section>
 
-      <section class="details-section">
+      <section class="details-section"> 
         <div class="details-section__heading">
           <div>
             <span>Actions</span>
@@ -97,6 +103,32 @@ const unsafeTypeLabel = (value: number | null) => {
           </article>
         </div>
         <p v-else class="empty-copy">No improvement details were returned.</p>
+      </section>
+
+      <section class="details-section">
+        <div class="details-section__heading">
+          <div>
+            <span>Attachments</span>
+            <!-- <h3>Media</h3> -->
+          </div>
+          <strong>{{ visit.media.length }}</strong>
+        </div>
+        <div v-if="visit.media.length" class="media-grid">
+
+          
+          <div
+            v-for="(media, index) in visit.media"
+            :key="`${media}-${index}`"
+
+            class="media-item"
+          >
+           <Image v-if="isImage(media)" :src="media" :alt="mediaName(media, index)" width="250" preview />
+            <!-- <img  :src="media" :alt="mediaName(media, index)" /> -->
+            <!-- <span v-else class="media-item__file" aria-hidden="true">▤</span>
+            <span>{{ mediaName(media, index) }}</span> -->
+        </div>
+        </div>
+        <p v-else class="empty-copy">No media attached to this report.</p>
       </section>
     </div>
 
@@ -338,6 +370,45 @@ const unsafeTypeLabel = (value: number | null) => {
   font-size: 0.75rem;
   font-weight: 750;
   text-decoration: none;
+}
+
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.media-item {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+  color: var(--text-soft);
+  font-size: 0.75rem;
+  text-decoration: none;
+}
+
+.media-item img,
+.media-item__file {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100px;
+  overflow: hidden;
+  border: 1px solid var(--main-border);
+  border-radius: 10px;
+  background: var(--surface-2);
+  object-fit: cover;
+}
+
+.media-item__file {
+  color: var(--PrimaryColor);
+  font-size: 1.5rem;
+}
+
+.media-item > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .details-unavailable {

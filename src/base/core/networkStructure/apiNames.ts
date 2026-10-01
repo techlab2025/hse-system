@@ -2058,6 +2058,9 @@ class ApiNames {
   public get FetchPermitsAudits() {
     return this.baseUrl + this.organizationPrefix + 'fetch_permit_to_work_results'
   }
+  public get FetchStaticsMyPermits() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_project_permit_statistics'
+  }
 
   // Drill Type
   public get create_ppe_activity() {

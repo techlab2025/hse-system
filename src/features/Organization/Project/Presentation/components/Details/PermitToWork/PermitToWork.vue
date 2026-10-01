@@ -269,7 +269,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
                   {{ $t('Permit Type ') }}
                   <span class="required-mark">*</span>
                 </span>
-                <button
+                <!-- <button
                   type="button"
                   class="ptw-reload-btn"
                   :title="$t('Reload')"
@@ -277,7 +277,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
                   @click="reloadPermitTypes"
                 >
                   <IconBackStage />
-                </button>
+                </button> -->
               </label>
               <UpdatedCustomInputSelect
                 :key="permitTypeSelectKey"
