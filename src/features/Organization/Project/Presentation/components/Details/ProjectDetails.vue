@@ -102,6 +102,16 @@ watch(
   },
   { immediate: true },
 )
+
+watch(
+  () => showProjectDetailsController.state.value,
+  (newVal) => {
+    console.log('newVal => ', newVal)
+    state.value = newVal
+    console.log('state => ', state.value.data)
+  },
+)
+
 // const selected = ref<string[]>()
 </script>
 <template>

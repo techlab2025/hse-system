@@ -131,26 +131,25 @@ const handleNotificationClick = async (notification: EnrichedNotification) => {
       const messageId = notification.body[0]?.notification_id
       await notificationService.markAsRead(messageId, userStore.user?.apiToken)
       const { notifications, unreadCount, wsConnected, wsError, reconnectWebSocket } =
-  useIntegratedNotifications({
-    autoConnect: true,
-    token: newRefreshToken.value ? newRefreshToken.value : userStore.user?.WebSocketToken,
-    userId: userStore.user?.id,
-    fetchNotifications: true,
-    userToken: userStore.user?.apiToken,
-    onNotification: (notification) => {
-      const payload = getNotificationPayload(notification)
-      const audio = new Audio(NOTIFICATION_SOUND_BASE64)
-      audio.play()
+        useIntegratedNotifications({
+          autoConnect: true,
+          token: newRefreshToken.value ? newRefreshToken.value : userStore.user?.WebSocketToken,
+          userId: userStore.user?.id,
+          fetchNotifications: true,
+          userToken: userStore.user?.apiToken,
+          onNotification: (notification) => {
+            const payload = getNotificationPayload(notification)
+            const audio = new Audio(NOTIFICATION_SOUND_BASE64)
+            audio.play()
 
-      toast.add({
-        severity: 'info',
-        summary: payload.title,
-        detail: payload.message,
-        life: 5000,
-      })
-    },
-  })
-
+            toast.add({
+              severity: 'info',
+              summary: payload.title,
+              detail: payload.message,
+              life: 5000,
+            })
+          },
+        })
     }
   } catch (error) {
     console.error('Unable to mark notification as read:', error)
