@@ -1,6 +1,13 @@
 import type Params from '@/base/core/params/params'
 import type LeadershipPlanVisitParams from './LeadershipPlanVisitParams'
 
+export type LeadershipVisitInput = {
+  date: string
+  location: string
+  orgnizationEmployeeIds: number[]
+  visitActivityIds: number[]
+}
+
 export default class CreateLeadershipPlanParams implements Params {
   constructor(
     public projectId: number,

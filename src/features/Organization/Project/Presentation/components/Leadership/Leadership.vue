@@ -53,8 +53,8 @@ const successMessage = ref('')
 const newVisit = (): LeadershipVisitInput => ({
   date: '',
   location: '',
-  orgnizationEmployeeId: 0,
-  visitActivityId: 0,
+  orgnizationEmployeeIds: [],
+  visitActivityIds: [],
 })
 const formatDate = (date: Date) =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
@@ -62,10 +62,10 @@ const parseDate = (value: string): Date | null => (value ? new Date(`${value}T00
 const setVisitDate = (visit: LeadershipVisitInput, value: unknown) => {
   visit.date = value instanceof Date && !Number.isNaN(value.getTime()) ? formatDate(value) : ''
 }
-const selectedOption = (options: TitleInterface[], id: number): TitleInterface | null =>
-  options.find((option) => option.id === id) ?? null
-const selectedId = (value: TitleInterface | TitleInterface[] | null): number =>
-  value && !Array.isArray(value) ? value.id : 0
+const selectedOptions = (options: TitleInterface[], ids: number[]): TitleInterface[] =>
+  options.filter((option) => ids.includes(option.id))
+const selectedIds = (value: TitleInterface | TitleInterface[] | null): number[] =>
+  Array.isArray(value) ? value.map((option) => option.id) : value ? [value.id] : []
 const months = computed<ProjectMonth[]>(() => {
   const startText = projectState.value.data?.startDate?.slice(0, 10)
   const endText = projectState.value.data?.endDate?.slice(0, 10)
@@ -126,10 +126,10 @@ const saveMonth = async (month: ProjectMonth) => {
         row.date < month.firstDate ||
         row.date > month.lastDate ||
         !row.location.trim() ||
-        !Number.isInteger(row.orgnizationEmployeeId) ||
-        row.orgnizationEmployeeId <= 0 ||
-        !Number.isInteger(row.visitActivityId) ||
-        row.visitActivityId <= 0,
+        !row.orgnizationEmployeeIds.length ||
+        row.orgnizationEmployeeIds.some((id) => !Number.isInteger(id) || id <= 0) ||
+        !row.visitActivityIds.length ||
+        row.visitActivityIds.some((id) => !Number.isInteger(id) || id <= 0),
     )
   ) {
     errorMessage.value = 'Complete every visit and choose a date within the selected month.'
@@ -142,8 +142,8 @@ const saveMonth = async (month: ProjectMonth) => {
         new LeadershipPlanVisitParams(
           el.date,
           el.location,
-          el.orgnizationEmployeeId,
-          el.visitActivityId,
+          el.orgnizationEmployeeIds,
+          el.visitActivityIds,
         ),
     )
     await planController.createPlan(new CreateLeadershipPlanParams(projectId.value, AllVitis))
@@ -392,12 +392,12 @@ onMounted(async () => {
                             placeholder="e.g. Main site" required />
                         </div>
                         <UpdatedCustomInputSelect :id="`visit-employee-${month.key}-${index}`"
-                          class="visit-field visit-field--select" label="Organization employee"
-                          placeholder="Select Visiting Managers" :required="true" :reload="false" :has-header="true"
-                          :static-options="employeeOptions" :model-value="selectedOption(employeeOptions, visit.orgnizationEmployeeId)
+                          class="visit-field visit-field--select" label="Organization employee" 
+                          placeholder="Select Visiting Managers" :required="true" :reload="false" :has-header="true" :type="2" 
+                          :static-options="employeeOptions" :model-value="selectedOptions(employeeOptions, visit.orgnizationEmployeeIds)
                             " @update:model-value="
                             (value) => {
-                              visit.orgnizationEmployeeId = selectedId(value)
+                              visit.orgnizationEmployeeIds = selectedIds(value)
                             }
                           ">
                           <template #Header>
@@ -411,14 +411,14 @@ onMounted(async () => {
                               <span>Visiting Managers <b>*</b></span>
                             </label>
                           </template>
-                        </UpdatedCustomInputSelect>
-                        <UpdatedCustomInputSelect :id="`visit-activity-${month.key}-${index}`"
+                        </UpdatedCustomInputSelect> 
+                        <UpdatedCustomInputSelect :id="`visit-activity-${month.key}-${index}`" 
                           class="visit-field visit-field--select" label="Visit activity" placeholder="Select Activities"
                           :required="true" :reload="false" :has-header="true" :controller="visitActivityController"
-                          :params="visitActivityParams"
-                          :model-value="selectedOption(activityOptions, visit.visitActivityId)" @update:model-value="
+                          :params="visitActivityParams" :type="2" 
+                          :model-value="selectedOptions(activityOptions, visit.visitActivityIds)" @update:model-value="
                             (value) => {
-                              visit.visitActivityId = selectedId(value)
+                              visit.visitActivityIds = selectedIds(value)
                             }
                           ">
                           <template #Header>
@@ -490,6 +490,24 @@ onMounted(async () => {
 </template>
 
 <style scoped>
+.visit-field--select :deep(.p-multiselect) {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.visit-field--select :deep(.p-multiselect-label-container) {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.visit-field--select :deep(.p-multiselect-label) {
+  display: flex;
+  flex-wrap: nowrap;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
 .leadership-page {
   position: relative;
   display: grid;

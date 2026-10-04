@@ -1198,7 +1198,7 @@ defineExpose({
         @update:model-value="setOragnizationemployee"
         :hascontent="isSelectHasContent"
         :reload="false"
-        :type="2"
+        :type="2" 
       >
         <template #reloadHeader>
           <div class="flex gap-2 items-center">

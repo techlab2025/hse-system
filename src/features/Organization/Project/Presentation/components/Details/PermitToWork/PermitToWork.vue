@@ -295,6 +295,16 @@ const handleFilesChange = (files: UploadedFile[]) => {
               </p> -->
             </div>
 
+            <div class="ptw-field">
+              <label for="location">{{ $t('Area') }}</label>
+              <InputText
+                id="location"
+                v-model="location"
+                class="ptw-control"
+                :placeholder="$t('Enter work Area')"
+              />
+            </div>
+
             <!-- <div class="ptw-field" data-required-field="OrganizationEmployee">
               <label for="organization_employee">
                 {{ $t('Permit Applicant') }}
@@ -398,15 +408,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
           </div>
 
           <div class="ptw-grid">
-            <div class="ptw-field">
-              <label for="location">{{ $t('Area') }}</label>
-              <InputText
-                id="location"
-                v-model="location"
-                class="ptw-control"
-                :placeholder="$t('Enter work Area')"
-              />
-            </div>
+            
             <div class="ptw-field">
               <label for="description">{{ $t('Description of Work Optional') }}</label>
               <textarea
