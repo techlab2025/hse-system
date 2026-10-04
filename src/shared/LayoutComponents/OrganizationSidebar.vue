@@ -480,6 +480,32 @@ const LockUpsRoutes = ref<Routes[]>([
     ],
   },
   {
+    link: '/organization/audit-standards',
+    name: 'Audit Standards',
+    icon: 'clipboard-check',
+    permissions: [
+      PermissionsEnum.ORG_AUDIT_STANDARDS_ALL,
+      PermissionsEnum.ORG_AUDIT_STANDARDS_FETCH,
+      PermissionsEnum.ORG_AUDIT_STANDARDS_DETAILS,
+      PermissionsEnum.ORG_AUDIT_STANDARDS_CREATE,
+      PermissionsEnum.ORG_AUDIT_STANDARDS_UPDATE,
+      PermissionsEnum.ORG_AUDIT_STANDARDS_DELETE,
+    ],
+  },
+  {
+    link: '/organization/audit-activities',
+    name: 'Audit Activities',
+    icon: 'clipboard-list',
+    permissions: [
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_ALL,
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_FETCH,
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_DETAILS,
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_CREATE,
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_UPDATE,
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_DELETE,
+    ],
+  },
+  {
     link: '/organization/ppe-items',
     name: 'ppe_items',
     icon: 'shield-check',

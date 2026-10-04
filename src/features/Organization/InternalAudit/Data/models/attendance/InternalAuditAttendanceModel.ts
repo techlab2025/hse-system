@@ -24,6 +24,9 @@ export default class InternalAuditAttendanceModel {
     public department: TitleInterface | null,
     public openMeeting: boolean,
     public closeMeeting: boolean,
+    public orgEmployeeId: number = employee.id,
+    public isParticipant: boolean = false,
+    public isLead: boolean = false,
   ) {}
 
   get position(): TitleInterface | null {
@@ -38,9 +41,24 @@ export default class InternalAuditAttendanceModel {
     return this.closeMeeting
   }
 
+  get org_emploee_id(): number {
+    return this.orgEmployeeId
+  }
+
   static fromMap(data: unknown): InternalAuditAttendanceModel {
     const item = (data ?? {}) as Record<string, unknown>
     const employee = (item.employee ?? {}) as Record<string, unknown>
+    const attendanceGroup = String(
+      item.attendance_group ?? item.employee_type ?? item.type ?? '',
+    ).toLowerCase()
+    const participantValue = item.is_participant ?? item.isParticipant
+    const auditTeamValue = item.is_audit_team ?? item.is_auditor
+    const isParticipant =
+      participantValue !== undefined
+        ? parseBoolean(participantValue)
+        : auditTeamValue !== undefined
+          ? !parseBoolean(auditTeamValue)
+          : ['participant', 'participants'].includes(attendanceGroup)
 
     return new InternalAuditAttendanceModel(
       Number(item.id ?? item.internal_audit_attendance_id ?? item.internal_audit_attendace_id ?? 0),
@@ -49,6 +67,22 @@ export default class InternalAuditAttendanceModel {
       parseTitle(item.department),
       parseBoolean(item.open_meeting ?? item.open_meting),
       parseBoolean(item.close_meeting ?? item.closing_meeting),
+      Number(
+        item.org_emploee_id ??
+          item.org_employee_id ??
+          employee.org_emploee_id ??
+          employee.org_employee_id ??
+          employee.id ??
+          0,
+      ),
+      isParticipant,
+      parseBoolean(
+        item.is_lead ??
+          item.is_leader ??
+          item.is_lead_auditor ??
+          employee.is_lead ??
+          employee.is_lead_auditor,
+      ),
     )
   }
 
@@ -60,6 +94,9 @@ export default class InternalAuditAttendanceModel {
       new TitleInterface({ id: 21, title: 'Health and Safety' }),
       true,
       true,
+      101,
+      false,
+      true,
     ),
     new InternalAuditAttendanceModel(
       2,
@@ -68,6 +105,7 @@ export default class InternalAuditAttendanceModel {
       new TitleInterface({ id: 22, title: 'Maintenance' }),
       true,
       false,
+      102,
     ),
     new InternalAuditAttendanceModel(
       3,
@@ -76,6 +114,8 @@ export default class InternalAuditAttendanceModel {
       new TitleInterface({ id: 23, title: 'Quality' }),
       false,
       false,
+      103,
+      true,
     ),
   ]
 }

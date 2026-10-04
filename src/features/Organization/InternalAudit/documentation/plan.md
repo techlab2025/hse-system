@@ -9,9 +9,6 @@ enum InrernalAuditStatusEnum {
   reported = 3,
 }
 ```
-
-The model currently stores the returned `status` as a string, such as `"draft"` or `"planned"`.
-
 ## Request Types
 
 ```ts
@@ -51,7 +48,6 @@ type InternalAuditPlanRequest = {
 }
 ```
 
-`project_id` is included only when `full_company` is `false` and a project ID is selected. General instructions and attachments belong to each schedule item, not to the full activity list.
 
 ## Response Model
 
@@ -68,6 +64,8 @@ type InternalAuditPlanModel = {
   auditTeam: unknown[]
   auditScope: unknown[]
   auditSchedule: unknown[]
+  serial_name: string
+  serial_number: string
 }
 ```
 
@@ -86,11 +84,11 @@ The mapper reads these API keys:
   audit_standard: { id: number, title: string } | null,
   audit_team: unknown[],
   audit_scope: unknown[],
-  audit_schedule: unknown[]
+  audit_schedule: unknown[],
+  serial_name: string,
+  serial_number: string
 }
 ```
-
-If `title` is absent, the mapper uses `audit_number`, then falls back to `IA-{id}`.
 
 ## 1. Create Plan
 
@@ -106,9 +104,10 @@ If `title` is absent, the mapper uses `audit_number`, then falls back to `IA-{id
   full_company: false,
   audit_standern_id: 1,
   audit_team: [
-    { organization_employee_id: 101, is_leader: true },
-    { organization_employee_id: 102, is_leader: false }
+    { organization_employee_id: 101 },
+    { organization_employee_id: 102}
   ],
+  leader_id:101,
   audit_scope: [
     {
       depertment_id: 22,
@@ -126,10 +125,11 @@ If `title` is absent, the mapper uses `audit_number`, then falls back to `IA-{id
       audit_foucse_id: 5,
       location: "Maintenance Workshop",
       assigend_auditors_id: 101,
-      general_instructions: "Review maintenance records before the meeting.",
-      attachments: ["JVBERi0xLjQ..."]
+   
     }
   ],
+    general_instructions: "Review maintenance records before the meeting.",
+    attachments: ["JVBERi0xLjQ..."],
   is_draft: false
 }
 ```
@@ -326,7 +326,8 @@ Test mode returns `InternalAuditPlanModel.example`.
       day: "2026-10-04",
       location: "Maintenance Workshop"
     }
-  ]
+  ],
+  serial_name: "IA-2026-0012",
+  serial_number: "0012"
 }
 ```
-

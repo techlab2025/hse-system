@@ -24,6 +24,8 @@ export default class InternalAuditNcrModel extends TitleInterface {
     public status: StatusEnum,
     public leadReview: NcrPerson,
     public leadReviewStatus: string,
+    public serial_name: string = '',
+    public serial_number: string = '',
   ) {
     super({ id, title: ncr || area })
   }
@@ -53,6 +55,8 @@ export default class InternalAuditNcrModel extends TitleInterface {
           item.LeadReviewStatus ??
           (typeof leadReview === 'string' ? leadReview : ''),
       ),
+      String(item.serial_name ?? ''),
+      String(item.serial_number ?? ''),
     )
   }
 
@@ -68,6 +72,8 @@ export default class InternalAuditNcrModel extends TitleInterface {
       StatusEnum.OPEN,
       { id: 102, name: 'Ahmed Hassan' },
       'Pending',
+      'NCR-2026-001',
+      '001',
     ),
     new InternalAuditNcrModel(
       2,
@@ -80,6 +86,8 @@ export default class InternalAuditNcrModel extends TitleInterface {
       StatusEnum.IN_PROGRESS,
       { id: 101, name: 'Sara Ibrahim' },
       'Reviewed',
+      'NCR-2026-002',
+      '002',
     ),
   ]
 }

@@ -47,7 +47,7 @@ export class NcrPreventiveActionParams {
   }
 }
 
-export class NcrCapaParams {
+export class NcrInternalAuditTaskParams {
   constructor(
     public correctiveAction: NcrCorrectiveActionParams,
     public preventiveAction: NcrPreventiveActionParams,
@@ -70,7 +70,7 @@ export default class CreateNcrsParams implements Params {
     public requirementReference: string,
     public description: string,
     public immediateAction: string,
-    public capa: NcrCapaParams[],
+    public internalAuditTasks: NcrInternalAuditTaskParams[],
     public attachments: string[],
   ) {}
 
@@ -83,7 +83,7 @@ export default class CreateNcrsParams implements Params {
       rquiriment_refrence: this.requirementReference,
       description: this.description,
       immediate_action: this.immediateAction,
-      capa: this.capa.map((item) => item.toMap()),
+      internal_audit_tasks: this.internalAuditTasks.map((item) => item.toMap()),
       attachments: this.attachments,
     }
   }

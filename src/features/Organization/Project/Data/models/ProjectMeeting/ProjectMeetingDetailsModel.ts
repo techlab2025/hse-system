@@ -13,6 +13,8 @@ export default class ProjectMeetingDetails {
   public hierarchies: TitleInterface[]
   public teamLeader: OrganizatoinEmployeeModel
   public serialName: string
+  public serial_name: string
+  public serial_number: string
   public meetingAgenda: MeeintgAgendaModel[]
   public MeetingActions: MeetingActionsModel[]
   public employees: OrganizatoinEmployeeModel[]
@@ -27,6 +29,8 @@ export default class ProjectMeetingDetails {
     hierarchies: TitleInterface[]
     teamLeader: OrganizatoinEmployeeModel
     serialName: string
+    serial_name?: string
+    serial_number?: string
     meetingAgenda: MeeintgAgendaModel[]
     MeetingActions: MeetingActionsModel[]
     employees: OrganizatoinEmployeeModel[]
@@ -38,6 +42,8 @@ export default class ProjectMeetingDetails {
     this.time = data.time
     this.content = data.content
     this.serialName = data.serialName
+    this.serial_name = data.serial_name ?? data.serialName
+    this.serial_number = data.serial_number ?? ''
     this.teamLeader = data.teamLeader
     this.hierarchies = data.hierarchies
     this.meetingAgenda = data.meetingAgenda
@@ -56,6 +62,8 @@ export default class ProjectMeetingDetails {
       hierarchies: data.hierarchies,
       teamLeader: data.team_leader ? OrganizatoinEmployeeModel.fromMap(data.team_leader) : {},
       serialName: data.serial_name,
+      serial_name: data.serial_name,
+      serial_number: data.serial_number,
       meetingAgenda: Array.isArray(data.meeting_agenda)
         ? data.meeting_agenda.map((el) => MeeintgAgendaModel.fromMap(el))
         : [],
@@ -76,8 +84,10 @@ export default class ProjectMeetingDetails {
     hierarchies: [new TitleInterface({ id: 1, title: 'as' })],
     teamLeader: OrganizatoinEmployeeModel.exampl2,
     serialName: '',
+    serial_name: '',
+    serial_number: '',
     meetingAgenda: [MeeintgAgendaModel.example],
     MeetingActions: [MeetingActionsModel.example],
-    employees:OrganizatoinEmployeeModel.example,
+    employees: OrganizatoinEmployeeModel.example,
   })
 }

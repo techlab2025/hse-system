@@ -16,15 +16,6 @@ type InternalAuditPlanReportDetailsModel = {
 }
 ```
 
-The response mapper accepts these aliases:
-
-- ID: `id`, `internal_audit_plan_id`, or `internal_audit_id`.
-- Audit number: `audit_number`, `audit_nume`, `audit_no`, or `title`.
-- Auditors: `internal_auditors`, `internal_auditor`, or `audit_team`.
-- Auditor ID: `id` or `is`.
-- Purpose: `Purpose` or `purpose`.
-- Dates: `audit_start_date`/`audit_end_date`, an `audit_dates` object, or an `audit_dates` array.
-
 ## 1. Fetch Plan Details for Report
 
 `POST - /fetch_internal_audit_plan_details`
@@ -59,19 +50,6 @@ Preferred response shape:
 }
 ```
 
-Supported alternative date shapes:
-
-```ts
-audit_dates: {
-  start_date: "2026-10-04",
-  end_date: "2026-10-04"
-}
-```
-
-```ts
-audit_dates: ["2026-10-04", "2026-10-04"]
-```
-
 ## 2. Create Report
 
 `POST - /create_internal_audit_report`
@@ -89,9 +67,6 @@ type CreateInternalAuditReportRequest = {
   report_attachments: string[] // Base64 file strings
 }
 ```
-
-`general_observations` and `report_attachments` are optional in the UI but are still serialized; send an empty string and empty array when they have no value.
-
 ### Request Example
 
 ```ts
@@ -116,8 +91,6 @@ Production and development expect a message-only success response:
   message: "Internal audit report created successfully"
 }
 ```
-
-Test mode returns `InternalAuditPlanReportDetailsModel.example`.
 
 ## Test Model Example
 

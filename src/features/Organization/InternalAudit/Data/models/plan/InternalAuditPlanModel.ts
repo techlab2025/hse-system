@@ -13,6 +13,8 @@ export default class InternalAuditPlanModel extends TitleInterface {
     public auditTeam: unknown[],
     public auditScope: unknown[],
     public auditSchedule: unknown[],
+    public serial_name: string = '',
+    public serial_number: string = '',
   ) {
     super({ id, title })
   }
@@ -41,6 +43,8 @@ export default class InternalAuditPlanModel extends TitleInterface {
       Array.isArray(item.audit_team) ? item.audit_team : [],
       Array.isArray(item.audit_scope) ? item.audit_scope : [],
       Array.isArray(item.audit_schedule) ? item.audit_schedule : [],
+      String(item.serial_name ?? ''),
+      String(item.serial_number ?? ''),
     )
   }
 
@@ -66,5 +70,7 @@ export default class InternalAuditPlanModel extends TitleInterface {
         location: 'Maintenance Workshop',
       },
     ],
+    'IA-2026-0012',
+    '0012',
   )
 }

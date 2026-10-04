@@ -9,10 +9,10 @@ enum NcrCategoryEnum {
 }
 
 enum StatusEnum {
-  PENDING = "pending",
-  OPEN = "open",
-  IN_PROGRESS = "in_progress",
-  CLOSED = "closed",
+  PENDING = 'pending',
+  OPEN = 'open',
+  IN_PROGRESS = 'in_progress',
+  CLOSED = 'closed',
 }
 ```
 
@@ -30,10 +30,10 @@ type InternalAuditNcrModel = {
   status: StatusEnum
   leadReview: { id: number; name: string }
   leadReviewStatus: string
+  serial_name: string
+  serial_number: string
 }
 ```
-
-The model exposes `LeadReview` as an alias of `leadReview`. The mapper reads category from `ncrs_category`, `ncr_category`, or `category`; auditee from `auditee` or `audited_employee`; and lead review from `LeadReview` or `lead_review`.
 
 ## 1. Fetch NCRs
 
@@ -79,7 +79,9 @@ Example:
         due_date: "2026-10-18",
         status: "open",
         lead_review: { id: 102, name: "Ahmed Hassan" },
-        lead_review_status: "Pending"
+        lead_review_status: "Pending",
+        serial_name: "NCR-2026-001",
+        serial_number: "001"
       }
     ],
     meta: {
@@ -109,7 +111,7 @@ type CreateNcrRequest = {
   rquiriment_refrence: string
   description: string
   immediate_action: string
-  capa: Array<{
+  internal_audit_tasks: Array<{
     correcive_action: {
       correction: string
       root_causes: Array<{
@@ -141,7 +143,7 @@ type CreateNcrRequest = {
   rquiriment_refrence: "ISO 45001:2018 - 8.1",
   description: "Maintenance calibration records were incomplete.",
   immediate_action: "Missing records were collected and isolated for review.",
-  capa: [
+  internal_audit_tasks: [
     {
       correcive_action: {
         correction: "Complete and validate all calibration records.",
@@ -181,31 +183,34 @@ Test mode returns the first `InternalAuditNcrModel.example` item.
 ## Test Model Example
 
 ```ts
-[
+;[
   {
     id: 1,
-    ncr: "NCR-2026-001",
+    ncr: 'NCR-2026-001',
     ncrsCategory: 1,
-    area: "Maintenance Workshop",
-    createdBy: { id: 101, name: "Sara Ibrahim" },
-    auditee: { id: 104, name: "Mona Adel" },
-    dueDate: "2026-10-18",
-    status: "open",
-    leadReview: { id: 102, name: "Ahmed Hassan" },
-    leadReviewStatus: "Pending"
+    area: 'Maintenance Workshop',
+    createdBy: { id: 101, name: 'Sara Ibrahim' },
+    auditee: { id: 104, name: 'Mona Adel' },
+    dueDate: '2026-10-18',
+    status: 'open',
+    leadReview: { id: 102, name: 'Ahmed Hassan' },
+    leadReviewStatus: 'Pending',
+    serial_name: 'NCR-2026-001',
+    serial_number: '001',
   },
   {
     id: 2,
-    ncr: "NCR-2026-002",
+    ncr: 'NCR-2026-002',
     ncrsCategory: 2,
-    area: "Calibration Records",
-    createdBy: { id: 103, name: "Mona Ali" },
-    auditee: { id: 105, name: "Omar Khaled" },
-    dueDate: "2026-10-22",
-    status: "in_progress",
-    leadReview: { id: 101, name: "Sara Ibrahim" },
-    leadReviewStatus: "Reviewed"
-  }
+    area: 'Calibration Records',
+    createdBy: { id: 103, name: 'Mona Ali' },
+    auditee: { id: 105, name: 'Omar Khaled' },
+    dueDate: '2026-10-22',
+    status: 'in_progress',
+    leadReview: { id: 101, name: 'Sara Ibrahim' },
+    leadReviewStatus: 'Reviewed',
+    serial_name: 'NCR-2026-002',
+    serial_number: '002',
+  },
 ]
 ```
-

@@ -1,53 +1,33 @@
 # Internal Audit Attendance
 
-Attendance is stored per employee row. Opening and closing meetings are separate boolean states; there is no single `attended` field.
-
-## Enum
-
-```ts
-enum InternalAuditMeetingTypeEnum {
-  OPENING = 1,
-  CLOSING = 2,
-}
-```
 
 ## Response Model
 
 ```ts
 type InternalAuditAttendanceModel = {
   id: number
+  orgEmployeeId: number // response key: org_emploee_id
   employee: { id: number; name: string }
   pisition: { id: number; title: string } | null
   department: { id: number; title: string } | null
   openMeeting: boolean
   closeMeeting: boolean
+  isParticipant: boolean
+  isLead: boolean
 }
 ```
-
-The model also exposes these aliases:
-
-```ts
-position      // returns pisition
-open_meeting  // returns openMeeting
-close_meeting // returns closeMeeting
-```
-
-The response mapper accepts the following backend aliases:
-
-- ID: `id`, `internal_audit_attendance_id`, or `internal_audit_attendace_id`.
-- Position: `pisition` or `position`.
-- Opening: `open_meeting` or `open_meting`.
-- Closing: `close_meeting` or `closing_meeting`.
-- Booleans: `true`, `1`, `"1"`, `"true"`, and `"yes"` are treated as `true`.
 
 ## 1. Fetch Attendance
 
 `POST - /fetch_internal_audit_attendance`
 
+This endpoint and its empty request remain unchanged.
+
 ### Request
 
 ```ts
-{}
+{
+}
 ```
 
 ### Response
@@ -59,91 +39,83 @@ The response mapper accepts the following backend aliases:
   data: [
     {
       id: 1,
+      org_emploee_id: 101,
       employee: { id: 101, name: "Sara Ibrahim" },
       pisition: { id: 11, title: "HSE Manager" },
       department: { id: 21, title: "Health and Safety" },
       open_meeting: true,
-      close_meeting: true
+      close_meeting: true,
+      is_participant: false,
+      is_lead: true
     },
     {
       id: 2,
-      employee: { id: 102, name: "Ahmed Hassan" },
-      pisition: { id: 12, title: "Maintenance Engineer" },
-      department: { id: 22, title: "Maintenance" },
-      open_meeting: true,
-      close_meeting: false
+      org_emploee_id: 103,
+      employee: { id: 103, name: "Mona Ali" },
+      pisition: { id: 13, title: "Quality Specialist" },
+      department: { id: 23, title: "Quality" },
+      open_meeting: false,
+      close_meeting: false,
+      is_participant: true,
+      is_lead: false
     }
   ]
 }
 ```
 
-## 2. Change Meeting Status
+## 2. Save Attendance
 
-`POST - /change_internal_audit_attendance_status`
+`POST - /save_internal_audit_attendance`
 
-The clicked row supplies its attendance ID. The clicked switch determines `meeting_type`; only that row and meeting status are toggled.
+One object is sent for every row returned by the attendance fetch, including audit-team employees and participants.
 
 ### Request
 
-Opening meeting:
-
 ```ts
 {
-  internal_audit_attendace_id: 2,
-  meeting_type: 1
-}
-```
-
-Closing meeting:
-
-```ts
-{
-  internal_audit_attendace_id: 2,
-  meeting_type: 2
+  employees: [
+    {
+      org_emploee_id: 101,
+      open_meeting: true,
+      close_meeting: false,
+    },
+    {
+      org_emploee_id: 103,
+      open_meeting: false,
+      close_meeting: true,
+    },
+  ]
 }
 ```
 
 ### Response
 
-Production and development expect a message-only success response:
+```ts
+{
+  status: true,
+  message: "Attendance saved successfully"
+}
+```
+
+## 3. Add Internal Audit Participants
+
+`POST - /add_internal_audit_Participants`
+
+### Request
+
+The `emolpoyees` spelling is intentionally preserved from the backend contract.
+
+```ts
+{
+  emolpoyees: [{ employee_id: 103 }, { employee_id: 104 }]
+}
+```
+
+### Response
 
 ```ts
 {
   status: true,
-  message: "Attendance status changed successfully"
+  message: "Participants added successfully"
 }
 ```
-
-Test mode returns the first `InternalAuditAttendanceModel.example` row.
-
-## Test Model Example
-
-```ts
-[
-  {
-    id: 1,
-    employee: { id: 101, name: "Sara Ibrahim" },
-    pisition: { id: 11, title: "HSE Manager" },
-    department: { id: 21, title: "Health and Safety" },
-    openMeeting: true,
-    closeMeeting: true
-  },
-  {
-    id: 2,
-    employee: { id: 102, name: "Ahmed Hassan" },
-    pisition: { id: 12, title: "Maintenance Engineer" },
-    department: { id: 22, title: "Maintenance" },
-    openMeeting: true,
-    closeMeeting: false
-  },
-  {
-    id: 3,
-    employee: { id: 103, name: "Mona Ali" },
-    pisition: { id: 13, title: "Quality Specialist" },
-    department: { id: 23, title: "Quality" },
-    openMeeting: false,
-    closeMeeting: false
-  }
-]
-```
-

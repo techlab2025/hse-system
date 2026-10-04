@@ -28,6 +28,8 @@ import { MeetingTypeRoutes } from './meeting_type'
 import { ptwTypeRoutes } from './ptw_type'
 import { PPEActivityRoutes } from './ppe_activity'
 import { PPEToolRoutes } from './ppe_tool'
+import { AuditStandardRoutes } from './audit_standard'
+import { AuditActivityRoutes } from './audit_activity'
 import { TraningTopicRoutes } from './traning_topic'
 import { visitActivityRoutes } from './visitActivity'
 import { visitThemeRoutes } from './visitTheme'
@@ -63,8 +65,10 @@ export const sharedRoutes: RouteRecordRaw[] = [
   ...ptwTypeRoutes,
   ...PPEActivityRoutes,
   ...PPEToolRoutes,
+  ...AuditStandardRoutes,
+  ...AuditActivityRoutes,
   ...TraningTopicRoutes,
   ...visitActivityRoutes,
   ...visitThemeRoutes,
-  ...visitCategoryRoutes
+  ...visitCategoryRoutes,
 ]

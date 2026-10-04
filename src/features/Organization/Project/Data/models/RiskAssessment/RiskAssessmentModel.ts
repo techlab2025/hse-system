@@ -10,6 +10,8 @@ export default class RiskAssessmentModel {
     public employeeApproverId: OrganizatoinEmployeeDetailsModel,
     public media: RiskAssessmentMediaModel[],
     public id?: number,
+    public serial_name: string = '',
+    public serial_number: string = '',
   ) {}
 
   static fromMap(data: Record<string, unknown>): RiskAssessmentModel {
@@ -25,6 +27,8 @@ export default class RiskAssessmentModel {
         ? data.media.map((item: unknown) => RiskAssessmentMediaModel.fromMap(item))
         : [],
       data.id == null ? undefined : Number(data.id),
+      String(data.serial_name ?? ''),
+      String(data.serial_number ?? ''),
     )
   }
 }

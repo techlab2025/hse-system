@@ -11,6 +11,8 @@ export default class PPEMatrixDeliveryModel {
     public project: PPEMatrixDeliveryReferenceModel,
     public preparedBy: PPEMatrixDeliveryReferenceModel,
     public activities: PPEMatrixDeliveryActivityModel[],
+    public serial_name: string = '',
+    public serial_number: string = '',
   ) {}
 
   /**
@@ -45,6 +47,8 @@ export default class PPEMatrixDeliveryModel {
           },
       ),
       activities,
+      String(data.serial_name ?? ''),
+      String(data.serial_number ?? ''),
     )
   }
 }

@@ -11,19 +11,20 @@ This folder documents the endpoints, request parameters, response models, enums,
 
 ## Endpoint Summary
 
-| Module | Method | Endpoint | Purpose |
-| --- | --- | --- | --- |
-| Plan | `POST` | `/create_internal_audit` | Create or save a draft audit plan |
-| Plan | `POST` | `/fetch_internal_audits` | Fetch paginated audit plans |
-| Plan | `POST` | `/fetch_internal_audit_details` | Fetch one audit plan |
-| Plan | `POST` | `/update_internal_audit` | Update an audit plan |
-| Plan | `POST` | `/delete_internal_audit` | Delete an audit plan |
-| Attendance | `POST` | `/fetch_internal_audit_attendance` | Fetch attendance rows |
-| Attendance | `POST` | `/change_internal_audit_attendance_status` | Toggle one meeting status for one row |
-| NCRs | `POST` | `/fetch_ncrs` | Fetch paginated NCRs |
-| NCRs | `POST` | `/create_ncrs` | Create an NCR and its CAPA |
-| Reports | `POST` | `/fetch_internal_audit_plan_details` | Fetch audit details for the report |
-| Reports | `POST` | `/create_internal_audit_report` | Create the audit report |
+| Module     | Method | Endpoint                             | Purpose                                     |
+| ---------- | ------ | ------------------------------------ | ------------------------------------------- |
+| Plan       | `POST` | `/create_internal_audit`             | Create or save a draft audit plan           |
+| Plan       | `POST` | `/fetch_internal_audits`             | Fetch paginated audit plans                 |
+| Plan       | `POST` | `/fetch_internal_audit_details`      | Fetch one audit plan                        |
+| Plan       | `POST` | `/update_internal_audit`             | Update an audit plan                        |
+| Plan       | `POST` | `/delete_internal_audit`             | Delete an audit plan                        |
+| Attendance | `POST` | `/fetch_internal_audit_attendance`   | Fetch attendance rows                       |
+| Attendance | `POST` | `/save_internal_audit_attendance`    | Save all opening and closing meeting states |
+| Attendance | `POST` | `/add_internal_audit_Participants`   | Add selected employee participants          |
+| NCRs       | `POST` | `/fetch_ncrs`                        | Fetch paginated NCRs                        |
+| NCRs       | `POST` | `/create_ncrs`                       | Create an NCR and its internal audit tasks  |
+| Reports    | `POST` | `/fetch_internal_audit_plan_details` | Fetch audit details for the report          |
+| Reports    | `POST` | `/create_internal_audit_report`      | Create the audit report                     |
 
 All endpoints require authentication and currently use `POST`.
 
@@ -63,7 +64,7 @@ Used by `/fetch_internal_audits` and `/fetch_ncrs`.
 
 ### Mutation response without data
 
-Create, update, delete, attendance status, NCR creation, and report creation repositories use `ResponseType.withoutData` in development and production.
+Create, update, delete, attendance save, participant creation, NCR creation, and report creation repositories use `ResponseType.withoutData` in development and production.
 
 ```ts
 {
@@ -98,7 +99,8 @@ Some request and response keys intentionally preserve the current backend contra
 - `audit_activitys`
 - `audit_foucse_id`
 - `assigend_auditors_id`
-- `internal_audit_attendace_id`
+- `org_emploee_id`
+- `emolpoyees`
 - `rquiriment_refrence`
 - `correcive_action`
 - `assgined_to_id`
@@ -113,4 +115,3 @@ Activity, NCR, and report attachments are sent as arrays of Base64 strings:
 attachments: string[]
 report_attachments: string[]
 ```
-

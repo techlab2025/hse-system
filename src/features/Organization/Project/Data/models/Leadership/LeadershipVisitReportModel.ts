@@ -8,6 +8,8 @@ export default class LeadershipVisitReportModel {
     public observations: string,
     public improvements: LeadershipVisitImprovementModel[],
     public attachments: string[],
+    public serial_name: string = '',
+    public serial_number: string = '',
   ) {}
 
   static fromMap(data: unknown): LeadershipVisitReportModel {
@@ -34,6 +36,8 @@ export default class LeadershipVisitReportModel {
             })
             .filter(Boolean)
         : [],
+      String(source.serial_name ?? ''),
+      String(source.serial_number ?? ''),
     )
   }
 }
