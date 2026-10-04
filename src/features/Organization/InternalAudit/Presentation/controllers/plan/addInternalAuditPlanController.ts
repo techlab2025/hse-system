@@ -17,7 +17,15 @@ export default class AddInternalAuditPlanController extends ControllerInterface<
     this.setState(await this.useCase.call(params))
     if (this.isDataSuccess()) {
       DialogSelector.instance.successDialog.openDialog({ dialogName: 'dialog-success', titleContent: params.isDraft ? 'Audit draft saved' : 'Audit plan published', imageElement: successImage, messageContent: null })
-      await router.push('/organization/internal-audit/register')
+      const id = Number(this.state.value.data?.id ?? 0)
+      await router.push(
+        id
+          ? {
+              path: '/organization/internal-audit',
+              query: { internal_audit_plan_id: id, tab: 'plan' },
+            }
+          : '/organization/internal-audit/register',
+      )
     } else {
       DialogSelector.instance.failedDialog.openDialog({ dialogName: 'dialog-error', titleContent: this.state.value.error?.title ?? 'An error occurred', imageElement: errorImage, messageContent: null })
     }
