@@ -19,6 +19,7 @@ export default class InternalAuditPlanModel extends TitleInterface {
     public leader: TitleInterface | null = null,
     public generalInstructions: string = '',
     public attachments: string[] = [],
+    public auditee: TitleInterface | null = null,
   ) {
     super({ id, title })
   }
@@ -34,6 +35,13 @@ export default class InternalAuditPlanModel extends TitleInterface {
     const leaderEmployee = (rawLeader?.employee ??
       rawLeader?.organization_employee ??
       rawLeader) as Record<string, unknown> | null | undefined
+    const rawAuditee = (item.auditee ?? item.auditee_employee ?? item.audited_employee) as
+      | Record<string, unknown>
+      | null
+      | undefined
+    const auditeeEmployee = (rawAuditee?.employee ??
+      rawAuditee?.organization_employee ??
+      rawAuditee) as Record<string, unknown> | null | undefined
 
     return new InternalAuditPlanModel(
       Number(item.id ?? 0),
@@ -65,6 +73,12 @@ export default class InternalAuditPlanModel extends TitleInterface {
         : null,
       String(item.general_instructions ?? ''),
       Array.isArray(item.attachments) ? item.attachments.map(String) : [],
+      auditeeEmployee
+        ? new TitleInterface({
+            id: Number(auditeeEmployee.id ?? auditeeEmployee.organization_employee_id ?? 0),
+            title: String(auditeeEmployee.title ?? auditeeEmployee.name ?? ''),
+          })
+        : null,
     )
   }
 
@@ -96,5 +110,6 @@ export default class InternalAuditPlanModel extends TitleInterface {
     new TitleInterface({ id: 101, title: 'Sara Ibrahim' }),
     'Review maintenance records before the meeting.',
     ['JVBERi0xLjQ...'],
+    new TitleInterface({ id: 104, title: 'Mona Adel' }),
   )
 }

@@ -25,6 +25,7 @@ type InternalAuditNcrModel = {
   ncrsCategory: 1 | 2 | number | string
   area: string
   createdBy: { id: number; name: string }
+  createdAt: string
   auditee: { id: number; name: string }
   dueDate: string
   status: StatusEnum
@@ -73,8 +74,18 @@ Example:
         id: 1,
         ncr: "NCR-2026-001",
         ncrs_category: 1,
-        area: "Maintenance Workshop",
+        area_under_reviews: [
+          {
+            area_under_review_id: 616,
+            area_under_review: { id: 616, title: "qqqqqqqqq" }
+          },
+          {
+            area_under_review_id: 713,
+            area_under_review: { id: 713, title: "Position Name 12" }
+          }
+        ],
         created_by: { id: 101, name: "Sara Ibrahim" },
+        created_at: "2026-10-04T13:15:20.000000Z",
         auditee: { id: 104, name: "Mona Adel" },
         due_date: "2026-10-18",
         status: "open",
@@ -176,6 +187,8 @@ type CreateNcrRequest = {
 
 The form fetches `/fetch_internal_audit_details` using the audit ID from the route. Its `serial_name` is displayed as a disabled field, and only the departments from `audit_scope` are available in the Area under review multi-select. Audit standards are loaded with `IndexAuditStandardController` and `IndexAuditStandardParams`.
 
+The NCR table also uses the `auditee` returned by `/fetch_internal_audit_details`. If audit details do not include an auditee, it falls back to the NCR row's `auditee` value.
+
 ### Response
 
 Production and development expect a message-only success response:
@@ -199,6 +212,7 @@ Test mode returns the first `InternalAuditNcrModel.example` item.
     ncrsCategory: 1,
     area: 'Maintenance Workshop',
     createdBy: { id: 101, name: 'Sara Ibrahim' },
+    createdAt: '2026-10-04T13:15:20.000000Z',
     auditee: { id: 104, name: 'Mona Adel' },
     dueDate: '2026-10-18',
     status: 'open',
@@ -213,6 +227,7 @@ Test mode returns the first `InternalAuditNcrModel.example` item.
     ncrsCategory: 2,
     area: 'Calibration Records',
     createdBy: { id: 103, name: 'Mona Ali' },
+    createdAt: '2026-10-05T09:30:00.000000Z',
     auditee: { id: 105, name: 'Omar Khaled' },
     dueDate: '2026-10-22',
     status: 'in_progress',

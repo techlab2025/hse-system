@@ -9,7 +9,28 @@ export type NcrPerson = {
 
 function parsePerson(value: unknown): NcrPerson {
   const person = (value ?? {}) as Record<string, unknown>
-  return { id: Number(person.id ?? 0), name: String(person.name ?? '') }
+  return {
+    id: Number(person.id ?? person.organization_employee_id ?? 0),
+    name: String(person.name ?? person.title ?? ''),
+  }
+}
+
+function parseArea(data: Record<string, unknown>): string {
+  const directArea = data.area_under_review as Record<string, unknown> | undefined
+  if (directArea?.title) return String(directArea.title)
+
+  if (Array.isArray(data.area_under_reviews)) {
+    return data.area_under_reviews
+      .map((entry) => {
+        const review = (entry ?? {}) as Record<string, unknown>
+        const area = (review.area_under_review ?? review) as Record<string, unknown>
+        return String(area.title ?? '')
+      })
+      .filter(Boolean)
+      .join(', ')
+  }
+
+  return String(data.area ?? '')
 }
 
 export default class InternalAuditNcrModel extends TitleInterface {
@@ -26,6 +47,7 @@ export default class InternalAuditNcrModel extends TitleInterface {
     public leadReviewStatus: string,
     public serial_name: string = '',
     public serial_number: string = '',
+    public createdAt: string = '',
   ) {
     super({ id, title: ncr || area })
   }
@@ -44,8 +66,8 @@ export default class InternalAuditNcrModel extends TitleInterface {
         | NcrCategoryEnum
         | number
         | string,
-      String(item.area ?? ''),
-      parsePerson(item.created_by),
+      parseArea(item),
+      parsePerson(item.created_by ?? item.cerated_by),
       parsePerson(item.auditee ?? item.audited_employee),
       String(item.due_date ?? ''),
       item.status as StatusEnum,
@@ -57,6 +79,7 @@ export default class InternalAuditNcrModel extends TitleInterface {
       ),
       String(item.serial_name ?? ''),
       String(item.serial_number ?? ''),
+      String(item.created_at ?? ''),
     )
   }
 
@@ -74,6 +97,7 @@ export default class InternalAuditNcrModel extends TitleInterface {
       'Pending',
       'NCR-2026-001',
       '001',
+      '2026-10-04T13:15:20.000000Z',
     ),
     new InternalAuditNcrModel(
       2,
@@ -88,6 +112,7 @@ export default class InternalAuditNcrModel extends TitleInterface {
       'Reviewed',
       'NCR-2026-002',
       '002',
+      '2026-10-05T09:30:00.000000Z',
     ),
   ]
 }

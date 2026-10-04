@@ -70,6 +70,7 @@ type InternalAuditPlanModel = {
   leader: { id: number; title: string } | null
   generalInstructions: string
   attachments: string[]
+  auditee: { id: number; title: string } | null
 }
 ```
 
@@ -93,6 +94,7 @@ The mapper reads these API keys:
   audit_schedule: unknown[],
   general_instructions: string,
   attachments: string[],
+  auditee?: { id: number, name: string },
   serial_name: string,
   serial_number: string
 }
@@ -246,6 +248,7 @@ Example:
     ],
     leader_id: 101,
     leader: { id: 101, name: "Sara Ibrahim" },
+    auditee: { id: 104, name: "Mona Adel" },
     audit_scope: [],
     audit_schedule: [],
     general_instructions: "Review maintenance records before the meeting.",
@@ -335,6 +338,7 @@ Test mode returns `InternalAuditPlanModel.example`.
   ],
   leaderId: 101,
   leader: { id: 101, title: "Sara Ibrahim" },
+  auditee: { id: 104, title: "Mona Adel" },
   auditScope: [
     { department: { id: 22, title: "Maintenance" }, activities: [] }
   ],

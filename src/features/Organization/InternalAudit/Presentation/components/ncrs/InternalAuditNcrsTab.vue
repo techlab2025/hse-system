@@ -13,6 +13,7 @@ import IndexAuditStandardController from '@/features/Organization/AuditStandard/
 import IndexAuditStandardParams from '@/features/Organization/AuditStandard/Core/params/indexAuditStandardParams'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { NcrCategoryEnum } from '../../../Core/enums/ncrs/NcrCategoryEnum'
+import { InrernalAuditStatusEnum } from '../../../Core/enums/plan/PlanStatusENum'
 import CreateNcrsParams from '../../../Core/params/ncrs/createNcrsParams'
 import NcrAreaUnderReviewParams from '../../../Core/params/ncrs/ncrAreaUnderReviewParams'
 import NcrCorrectiveActionParams from '../../../Core/params/ncrs/ncrCorrectiveActionParams'
@@ -66,6 +67,9 @@ const auditStandardParams = new IndexAuditStandardParams('', 1, 1000, 0)
 const ncrs = ref<InternalAuditNcrModel[]>([])
 const showForm = ref(false)
 const auditSerialName = ref('')
+const auditAuditee = ref<TitleInterface | null>(null)
+const auditDetailsStatus = ref<string | number>('')
+const auditDetailsStartDate = ref('')
 const areaOptions = ref<TitleInterface[]>([])
 const category = ref<NcrCategoryEnum>(NcrCategoryEnum.MINOR_NC)
 const areaUnderReviews = ref<TitleInterface[]>([])
@@ -91,13 +95,16 @@ const currentAuditId = computed(() => {
   return Number.isFinite(value) && value > 0 ? value : 0
 })
 const canCreateNcr = computed(() => {
-  const status = props.auditStatus.toLowerCase()
+  const status = String(auditDetailsStatus.value || props.auditStatus).toLowerCase()
+  const isPlanned =
+    status === 'planned' || Number(status) === Number(InrernalAuditStatusEnum.planned)
+  const auditStartDate = auditDetailsStartDate.value || props.auditStartDate
   const now = new Date()
   const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
   return (
     currentAuditId.value > 0 &&
-    status === 'planned' &&
-    (!props.auditStartDate || props.auditStartDate.slice(0, 10) <= today)
+    isPlanned &&
+    (!auditStartDate || auditStartDate.slice(0, 10) <= today)
   )
 })
 
@@ -164,6 +171,9 @@ async function fetchAuditDetails() {
 
   const plan = showPlanController.state.value.data
   auditSerialName.value = plan.serial_name || plan.title
+  auditAuditee.value = plan.auditee
+  auditDetailsStatus.value = plan.status
+  auditDetailsStartDate.value = plan.auditStartDate
   const departments = plan.auditScope
     .map((entry) => {
       const item = (entry ?? {}) as Record<string, unknown>
@@ -303,6 +313,12 @@ function categoryLabel(categoryValue: unknown): string {
   if (value === '1' || value === 'minor' || value === 'minor_nc') return 'Minor NC'
   if (value === '2' || value === 'major' || value === 'major_nc') return 'Major NC'
   return value.split('_').join(' ') || '—'
+}
+
+function createdAtLabel(value: string): string {
+  if (!value) return '—'
+  const date = new Date(value)
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleString()
 }
 
 watch(currentAuditId, () => void fetchAuditDetails())
@@ -552,6 +568,7 @@ onMounted(() => void Promise.all([fetchNcrs(), fetchAuditDetails()]))
               <th>NCR</th>
               <th>Area</th>
               <th>Created by</th>
+              <th>Created at</th>
               <th>Auditee</th>
               <th>Due</th>
               <th>Status</th>
@@ -573,7 +590,8 @@ onMounted(() => void Promise.all([fetchNcrs(), fetchAuditDetails()]))
               </td>
               <td>{{ item.area || '—' }}</td>
               <td>{{ item.createdBy.name || '—' }}</td>
-              <td>{{ item.auditee.name || '—' }}</td>
+              <td>{{ createdAtLabel(item.createdAt) }}</td>
+              <td>{{ auditAuditee?.title || auditAuditee?.name || item.auditee.name || '—' }}</td>
               <td>{{ item.dueDate || '—' }}</td>
               <td>
                 <span class="status">{{ statusLabel(item.status) }}</span>
