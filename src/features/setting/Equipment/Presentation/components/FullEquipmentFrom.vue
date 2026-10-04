@@ -1321,7 +1321,7 @@ const startYear = new Date(today.getFullYear() - 1, 0, 1)
       </div>
 
       <div
-        v-if="deviceStatus === EquipmentStatus.OWN && activeTab === EquipmentTypesEnum.EQUIPMENT"
+        v-if="deviceStatus === EquipmentStatus.OWN && (activeTab === EquipmentTypesEnum.DEVICE || activeTab === EquipmentTypesEnum.TOOL)"
         class="col-span-2 md:col-span-1"
       >
         <UpdatedCustomInputSelect
