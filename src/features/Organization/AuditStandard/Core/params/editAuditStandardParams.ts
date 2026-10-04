@@ -13,7 +13,7 @@ export default class EditAuditStandardParams implements Params {
     const translations = this.translation.toMap() as Record<string, unknown>
 
     const data: Record<string, unknown> = {
-      audit_standard_id: this.id,
+      internal_audit_standard_id: this.id,
       translations: translations,
     }
     if (this.allIndustries != null) {

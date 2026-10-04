@@ -24,7 +24,8 @@ const initialAuditId = Number(
 const activeTab = ref(
   tabs.some((tab) => tab.key === requestedTab.value) &&
     (requestedTab.value === 'plan' || (Number.isFinite(initialAuditId) && initialAuditId > 0))
-    ? requestedTab.value
+    ?
+    requestedTab.value
     : 'plan',
 )
 const activeComponent = computed(() => tabs.find((tab) => tab.key === activeTab.value)?.component)

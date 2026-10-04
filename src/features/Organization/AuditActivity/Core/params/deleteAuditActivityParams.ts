@@ -7,7 +7,7 @@ export default class DeleteAuditActivityParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {}
-    data['audit_activity_id'] = this.id
+    data['internal_audit_activity_id'] = this.id
     return data
   }
 }

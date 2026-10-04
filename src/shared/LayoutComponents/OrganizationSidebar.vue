@@ -482,7 +482,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/organization/audit-standards',
     name: 'Audit Standards',
-    icon: 'clipboard-check',
+   icon: 'shield-check',
     permissions: [
       PermissionsEnum.ORG_AUDIT_STANDARDS_ALL,
       PermissionsEnum.ORG_AUDIT_STANDARDS_FETCH,
@@ -495,7 +495,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/organization/audit-activities',
     name: 'Audit Activities',
-    icon: 'clipboard-list',
+    icon: 'shield-check',
     permissions: [
       PermissionsEnum.ORG_AUDIT_ACTIVITIES_ALL,
       PermissionsEnum.ORG_AUDIT_ACTIVITIES_FETCH,

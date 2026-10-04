@@ -9,7 +9,7 @@ export default class ShowAuditStandardParams implements Params {
 
   toMap(): Record<string, number> {
     const data: Record<string, number> = {}
-    data['audit_standard_id'] = this.id
+    data['internal_audit_standard_id'] = this.id
     return data
   }
 }
