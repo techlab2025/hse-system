@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import InternalAuditPlanTab from './plan/InternalAuditPlanTab.vue'
 import InternalAuditAttendanceTab from './attendance/InternalAuditAttendanceTab.vue'
 import InternalAuditNcrsTab from './ncrs/InternalAuditNcrsTab.vue'
@@ -11,8 +12,13 @@ const tabs = [
   { key: 'ncrs', label: 'NCRs', component: InternalAuditNcrsTab },
   { key: 'report', label: 'Report', component: InternalAuditReportTab },
 ]
-const activeTab = ref('plan')
+const route = useRoute()
+const requestedTab = computed(() => String(route.query.tab ?? 'plan'))
+const activeTab = ref(tabs.some((tab) => tab.key === requestedTab.value) ? requestedTab.value : 'plan')
 const activeComponent = computed(() => tabs.find((tab) => tab.key === activeTab.value)?.component)
+watch(requestedTab, (tab) => {
+  if (tabs.some((item) => item.key === tab)) activeTab.value = tab
+})
 </script>
 
 <template>

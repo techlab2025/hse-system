@@ -36,8 +36,6 @@ type ScheduleRow = {
   focus: TitleInterface | null
   location: string
   assignedAuditor: TitleInterface | null
-  generalInstructions: string
-  attachments: string[]
 }
 
 const router = useRouter()
@@ -69,6 +67,8 @@ const auditFocusOptions = ref<TitleInterface[]>([
 
 const scopes = ref<ScopeRow[]>([{ department: null, activities: [] }])
 const schedules = ref<ScheduleRow[]>([createSchedule()])
+const generalInstructions = ref('')
+const scheduleAttachments = ref<string[]>([])
 const selectedTeamOptions = computed(() => auditTeam.value)
 
 onMounted(async () => {
@@ -84,8 +84,6 @@ function createSchedule(): ScheduleRow {
     focus: null,
     location: '',
     assignedAuditor: null,
-    generalInstructions: '',
-    attachments: [],
   }
 }
 
@@ -112,8 +110,8 @@ function setScheduleValue(index: number, key: 'focus' | 'assignedAuditor', value
   schedules.value[index]![key] = Array.isArray(value) ? (value[0] ?? null) : value
 }
 
-function setScheduleFiles(index: number, files: UploadedFile[]) {
-  schedules.value[index]!.attachments = files.map((file) => file.base64 || file.url).filter(Boolean)
+function setScheduleFiles(files: UploadedFile[]) {
+  scheduleAttachments.value = files.map((file) => file.base64 || file.url).filter(Boolean)
 }
 
 function formatDate(value: Date | null): string {
@@ -148,8 +146,8 @@ function buildParams(isDraft: boolean): AddInternalAuditPlanParams {
         Number(schedule.focus?.id ?? 0),
         schedule.location,
         Number(schedule.assignedAuditor?.id ?? 0),
-        schedule.generalInstructions,
-        schedule.attachments,
+        generalInstructions.value,
+        scheduleAttachments.value,
       ),
   )
   const isFullCompany = Number(selectedProject.value?.id) === 0
@@ -225,13 +223,15 @@ async function submit(isDraft: boolean) {
           <UpdatedCustomInputSelect class="field" :model-value="schedule.focus" :static-options="auditFocusOptions" label="Audit Focus" placeholder="Select focus" @update:model-value="setScheduleValue(index, 'focus', $event)" />
           <label class="field"><span>Location</span><input v-model="schedule.location" type="text" placeholder="Enter location" /></label>
           <UpdatedCustomInputSelect class="field" :model-value="schedule.assignedAuditor" :static-options="selectedTeamOptions" label="Assigned Auditor" placeholder="Select from audit team" @update:model-value="setScheduleValue(index, 'assignedAuditor', $event)" />
-          <label class="field field-wide"><span>General Instructions</span><textarea v-model="schedule.generalInstructions" rows="4" placeholder="Add instructions for this activity" /></label>
-          <div class="field field-wide"><HandleFIlesUpload label="Activity attachments" accept=".pdf,.doc,.docx,.xls,.xlsx,image/*" :multiple="true" :max-files="8" @change="setScheduleFiles(index, $event)" /></div>
         </div>
       </article>
       <button class="outline-button" type="button" @click="schedules.push(createSchedule())">＋ Add Activity</button>
-    </section>
 
+    </section>
+      <div class="schedule-shared-fields">
+        <label class="field field-wide"><span>General Instructions</span><textarea v-model="generalInstructions" rows="4" placeholder="Add general instructions for the audit schedule" /></label>
+        <div class="field field-wide"><HandleFIlesUpload label="Schedule attachments" accept=".pdf,.doc,.docx,.xls,.xlsx,image/*" :multiple="true" :max-files="8" @change="setScheduleFiles" /></div>
+      </div>
     <p v-if="error" class="form-error">{{ error }}</p>
     <footer class="form-actions">
       <button class="btn btn-secondary" type="button" :disabled="saving" @click="submit(true)">Save Draft</button>
@@ -241,5 +241,8 @@ async function submit(isDraft: boolean) {
 </template>
 
 <style scoped>
-.audit-plan{display:grid;gap:20px}.audit-section{padding:24px;border:1px solid var(--main-border,#d9e1df);border-radius:18px;background:var(--card-bg,#fff)}.section-title{display:flex;gap:12px;align-items:flex-start;margin-bottom:22px}.section-title>span{display:grid;width:34px;height:34px;place-items:center;border-radius:10px;background:color-mix(in srgb,var(--PrimaryColor,#087d80) 12%,transparent);color:var(--PrimaryColor,#087d80);font-weight:700}.section-title h2{margin:0;color:var(--text-primary,#172334);font-size:1.08rem}.section-title p{margin:4px 0 0;color:var(--text-soft,#687777);font-size:.86rem}.form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.field{display:flex;min-width:0;flex-direction:column;gap:8px}.field-wide{grid-column:span 2}.field>span{color:var(--text-primary,#172334);font-size:.84rem;font-weight:600}.field b{color:#cf3030}.field input,.field textarea{width:100%;border:1px solid var(--main-border,#cbd8d6);border-radius:10px;background:transparent;padding:11px 13px;color:var(--text-primary,#172334);outline:none}.field input:focus,.field textarea:focus{border-color:var(--PrimaryColor,#087d80);box-shadow:0 0 0 3px color-mix(in srgb,var(--PrimaryColor,#087d80) 10%,transparent)}.company-option{display:block;color:var(--text-soft,#687777);font-size:.72rem}.scope-row{display:grid;grid-template-columns:1fr 1.5fr auto;gap:14px;align-items:end;margin-bottom:14px;padding:16px;border-radius:12px;background:var(--surface-ground,#f6f9f8)}.schedule-card{overflow:hidden;margin-bottom:14px;border:1px solid var(--main-border,#d9e1df);border-radius:14px}.schedule-card header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:color-mix(in srgb,var(--PrimaryColor,#087d80) 7%,transparent);color:var(--text-primary,#172334)}.schedule-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:18px}.icon-button{width:36px;height:36px;border:1px solid var(--main-border,#cbd8d6);border-radius:9px;background:transparent;font-size:1.35rem}.danger{color:#b42318}.outline-button{border:1px solid var(--PrimaryColor,#087d80);border-radius:10px;background:transparent;padding:10px 15px;color:var(--PrimaryColor,#087d80);font-weight:600}.form-actions{display:flex;justify-content:flex-end;gap:12px;padding:4px}.form-error{margin:0;border-radius:10px;background:#fff0f0;padding:12px 16px;color:#b42318}@media(max-width:900px){.form-grid,.schedule-grid{grid-template-columns:1fr 1fr}.field-wide{grid-column:span 2}.scope-row{grid-template-columns:1fr}}@media(max-width:600px){.form-grid,.schedule-grid{grid-template-columns:1fr}.field-wide{grid-column:span 1}.audit-section{padding:16px}}
+:deep(.upload-area){
+  border: 1px solid lightgray !important;
+}
+.audit-plan{display:grid;gap:20px}.audit-section{padding:24px;border:1px solid var(--main-border,#d9e1df);border-radius:18px;background:var(--card-bg,#fff)}.section-title{display:flex;gap:12px;align-items:flex-start;margin-bottom:22px}.section-title>span{display:grid;width:34px;height:34px;place-items:center;border-radius:10px;background:color-mix(in srgb,var(--PrimaryColor,#087d80) 12%,transparent);color:var(--PrimaryColor,#087d80);font-weight:700}.section-title h2{margin:0;color:var(--text-primary,#172334);font-size:1.08rem}.section-title p{margin:4px 0 0;color:var(--text-soft,#687777);font-size:.86rem}.form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.field{display:flex;min-width:0;flex-direction:column;gap:8px}.field-wide{grid-column:span 2}.field>span{color:var(--text-primary,#172334);font-size:.84rem;font-weight:600}.field b{color:#cf3030}.field input,.field textarea{width:100%;border:1px solid var(--main-border,#cbd8d6);border-radius:10px;background:transparent;padding:11px 13px;color:var(--text-primary,#172334);outline:none}.field input:focus,.field textarea:focus{border-color:var(--PrimaryColor,#087d80);box-shadow:0 0 0 3px color-mix(in srgb,var(--PrimaryColor,#087d80) 10%,transparent)}.company-option{display:block;color:var(--text-soft,#687777);font-size:.72rem}.scope-row{display:grid;grid-template-columns:1fr 1.5fr auto;gap:14px;align-items:end;margin-bottom:14px;padding:16px;border-radius:12px;background:var(--surface-ground,#f6f9f8)}.schedule-card{overflow:hidden;margin-bottom:14px;border:1px solid var(--main-border,#d9e1df);border-radius:14px}.schedule-card header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:color-mix(in srgb,var(--PrimaryColor,#087d80) 7%,transparent);color:var(--text-primary,#172334)}.schedule-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;padding:18px}.schedule-shared-fields{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px;margin-top:18px;padding-top:18px;border-top:1px solid var(--main-border,#d9e1df)}.icon-button{width:36px;height:36px;border:1px solid var(--main-border,#cbd8d6);border-radius:9px;background:transparent;font-size:1.35rem}.danger{color:#b42318}.outline-button{border:1px solid var(--PrimaryColor,#087d80);border-radius:10px;background:transparent;padding:10px 15px;color:var(--PrimaryColor,#087d80);font-weight:600}.form-actions{display:flex;justify-content:flex-end;gap:12px;padding:4px}.form-error{margin:0;border-radius:10px;background:#fff0f0;padding:12px 16px;color:#b42318}@media(max-width:900px){.form-grid,.schedule-grid{grid-template-columns:1fr 1fr}.field-wide{grid-column:span 2}.scope-row{grid-template-columns:1fr}.schedule-shared-fields{grid-template-columns:1fr}}@media(max-width:600px){.form-grid,.schedule-grid{grid-template-columns:1fr}.field-wide{grid-column:span 1}.audit-section{padding:16px}}
 </style>

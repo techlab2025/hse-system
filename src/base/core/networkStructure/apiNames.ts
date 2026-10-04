@@ -1454,6 +1454,24 @@ class ApiNames {
   public get DeleteInternalAuditPlan() {
     return this.prefix + 'delete_internal_audit'
   }
+  public get FetchInternalAuditAttendance() {
+    return this.prefix + 'fetch_internal_audit_attendance'
+  }
+  public get ChangeInternalAuditAttendanceStatus() {
+    return this.prefix + 'change_internal_audit_attendance_status'
+  }
+  public get FetchInternalAuditNcrs() {
+    return this.prefix + 'fetch_ncrs'
+  }
+  public get CreateInternalAuditNcrs() {
+    return this.prefix + 'create_ncrs'
+  }
+  public get FetchInternalAuditPlanDetailsForReport() {
+    return this.prefix + 'fetch_internal_audit_plan_details'
+  }
+  public get CreateInternalAuditReport() {
+    return this.prefix + 'create_internal_audit_report'
+  }
 
   // Attachment matrix
   public get CreateAttachmentMatrix() {
