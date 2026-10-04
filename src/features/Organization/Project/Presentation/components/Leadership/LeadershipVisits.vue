@@ -140,7 +140,8 @@ const DateUpdate = (date?: Date) => {
                   <th>Visit Date</th>
                   <th>Visit Location</th>
                   <th>Visiting Managers</th>
-                  <th>Activity</th>
+                  <th>complete by</th>
+                  <!-- <th>Activity</th> -->
                   <!-- <th>Status</th> -->
                   <th>Action</th>
                 </tr>
@@ -164,9 +165,12 @@ const DateUpdate = (date?: Date) => {
                       <span>{{ visit.employees[0]?.employeeName || '—' }}</span>
                     </span>
                   </td>
-                  <td data-label="Activity">
-                    <span class="activity-pill">{{ visit.activities?.[0]?.title || '—' }}</span>
+                     <td data-label="Activity">
+                    <span class="activity-pill">{{ visit?.creatable?.name || '—' }}</span>
                   </td>
+                  <!-- <td data-label="Activity">
+                    <span class="activity-pill">{{ visit.activities?.[0]?.title || '—' }}</span>
+                  </td> -->
                   <!-- <td data-label="Status">
                     <span :class="['status-pill', { 'status-pill--complete': visit.reportAdded }]">
                       <span aria-hidden="true">{{ visit.reportAdded ? '✓' : '○' }}</span>

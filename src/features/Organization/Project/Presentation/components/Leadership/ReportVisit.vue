@@ -185,7 +185,7 @@ onMounted(async () => {
                 <textarea v-model="discussion" rows="5" required placeholder="Summarize what was discussed" />
               </label>
               <label class="field field--wide">
-                <span class="field__label">Observations <b>*</b></span>
+                <span class="field__label">Positive Observations <b>*</b></span>
                 <textarea v-model="observations" rows="5" required placeholder="Record the key observations" />
               </label>
             </div>

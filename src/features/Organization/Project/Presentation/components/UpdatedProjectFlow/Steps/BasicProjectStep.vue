@@ -23,6 +23,7 @@ import type {
   LangTitleValue,
   ProjectSerialField,
 } from '../../../../Core/params/UpdatedProjectFlow/BasicProjectFormParams'
+import { useRoute } from 'vue-router'
 
 const props = withDefaults(
   defineProps<{
@@ -31,6 +32,8 @@ const props = withDefaults(
   }>(),
   { validationErrors: () => ({}) },
 )
+const route = useRoute()
+const projectedit = Number(route.query.edit ?? 0)
 
 const emit = defineEmits<{
   updateZones: [value: { locationId: number; ZoneIds: number[] }[]]
@@ -148,6 +151,10 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
       <small v-if="props.validationErrors.locations" class="field-error">
         {{ props.validationErrors.locations }}
       </small>
+      
+      <small v-if="projectedit" class="field-delete-warning">
+        {{ $t('if you delete a location, the project will be deleted') }}
+      </small>
     </div>
     <label class="input-wrapper">
       <span class="required-label"> Start date <span aria-hidden="true">*</span> </span>
@@ -253,7 +260,18 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
   </div>
 </template>
 
+<style scoped lang="scss">
+.field-delete-warning {
+  margin-top: 6px;
+  color: #e67e22 !important;
+  font-size: 12px;
+  font-weight: 600;
+}
+</style>
+
+
 <style scoped src="../ProjectFlowStepStyles.css">
+
 .switch-row.zone-switch {
   display: flex !important;
   flex-direction: row !important;
