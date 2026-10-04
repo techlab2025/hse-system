@@ -157,9 +157,13 @@ async function loadPlan() {
     const item = (entry ?? {}) as Record<string, unknown>
     return Boolean(item.is_leader ?? item.is_lead_auditor)
   }) as Record<string, unknown> | undefined
-  leadAuditor.value = titleFrom(
-    leaderEntry?.employee ?? leaderEntry?.organization_employee ?? leaderEntry,
-  )
+  leadAuditor.value =
+    plan.leader ??
+    auditTeam.value.find((employee) => Number(employee.id) === plan.leaderId) ??
+    titleFrom(leaderEntry?.employee ?? leaderEntry?.organization_employee ?? leaderEntry)
+
+  generalInstructions.value = plan.generalInstructions
+  scheduleAttachments.value = [...plan.attachments]
 
   scopes.value = plan.auditScope.map((entry) => {
     const item = (entry ?? {}) as Record<string, unknown>
@@ -183,8 +187,9 @@ async function loadPlan() {
   schedules.value = plan.auditSchedule.map((entry) => {
     const item = (entry ?? {}) as Record<string, unknown>
     const attachments = item.attachments
-    if (Array.isArray(attachments)) scheduleAttachments.value = attachments.map(String)
-    if (typeof item.general_instructions === 'string')
+    if (!scheduleAttachments.value.length && Array.isArray(attachments))
+      scheduleAttachments.value = attachments.map(String)
+    if (!generalInstructions.value && typeof item.general_instructions === 'string')
       generalInstructions.value = item.general_instructions
     return {
       startTime: timeFromString(String(item.start_time ?? '')),
@@ -263,11 +268,7 @@ function formatTime(value: Date | null): string {
 
 function buildParams(isDraft: boolean): AddInternalAuditPlanParams {
   const team = auditTeam.value.map(
-    (employee) =>
-      new InternalAuditPlanEmployeeParams(
-        Number(employee.id),
-        employee.id === leadAuditor.value?.id,
-      ),
+    (employee) => new InternalAuditPlanEmployeeParams(Number(employee.id)),
   )
   const scopeParams = scopes.value
     .filter((scope) => scope.department)
@@ -289,8 +290,6 @@ function buildParams(isDraft: boolean): AddInternalAuditPlanParams {
         Number(schedule.focus?.id ?? 0),
         schedule.location,
         Number(schedule.assignedAuditor?.id ?? 0),
-        generalInstructions.value,
-        scheduleAttachments.value,
       ),
   )
   const isFullCompany = Number(selectedProject.value?.id) === 0
@@ -301,8 +300,11 @@ function buildParams(isDraft: boolean): AddInternalAuditPlanParams {
     isFullCompany,
     Number(auditStandard.value?.id ?? 0),
     team,
+    Number(leadAuditor.value?.id ?? 0),
     scopeParams,
     scheduleParams,
+    generalInstructions.value,
+    scheduleAttachments.value,
     isDraft,
   )
 }
@@ -375,8 +377,11 @@ async function submit(isDraft: boolean) {
           params.fullCompany,
           params.auditStandardId,
           params.auditTeam,
+          params.leaderId,
           params.auditScope,
           params.auditSchedule,
+          params.generalInstructions,
+          params.attachments,
           params.isDraft,
         ),
       )
@@ -461,7 +466,7 @@ async function submit(isDraft: boolean) {
           @update:model-value="auditStandard = normalizeSingle($event)"
         />
         <UpdatedCustomInputSelect
-          class="field "
+          class="field"
           :model-value="auditTeam"
           :controller="employeeController"
           :params="employeeParams"

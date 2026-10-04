@@ -20,8 +20,8 @@ export default class InternalAuditAttendanceModel {
   constructor(
     public id: number,
     public employee: InternalAuditAttendanceEmployee,
-    public pisition: TitleInterface | null,
-    public department: TitleInterface | null,
+    public position: string,
+    public department: string | null,
     public openMeeting: boolean,
     public closeMeeting: boolean,
     public orgEmployeeId: number = employee.id,
@@ -29,9 +29,7 @@ export default class InternalAuditAttendanceModel {
     public isLead: boolean = false,
   ) {}
 
-  get position(): TitleInterface | null {
-    return this.pisition
-  }
+
 
   get open_meeting(): boolean {
     return this.openMeeting
@@ -63,8 +61,8 @@ export default class InternalAuditAttendanceModel {
     return new InternalAuditAttendanceModel(
       Number(item.id ?? item.internal_audit_attendance_id ?? item.internal_audit_attendace_id ?? 0),
       { id: Number(employee.id ?? 0), name: String(employee.name ?? '') },
-      parseTitle(item.pisition ?? item.position),
-      parseTitle(item.department),
+      item.position! || item.pisition!,
+      item.department,
       parseBoolean(item.open_meeting ?? item.open_meting),
       parseBoolean(item.close_meeting ?? item.closing_meeting),
       Number(

@@ -23,10 +23,10 @@ const initialAuditId = Number(
 )
 const activeTab = ref(
   tabs.some((tab) => tab.key === requestedTab.value) &&
-    (requestedTab.value === 'plan' || (Number.isFinite(initialAuditId) && initialAuditId > 0))
-    ?
+    // (requestedTab.value === 'plan' || (Number.isFinite(initialAuditId) && initialAuditId > 0))
+    // ?
     requestedTab.value
-    : 'plan',
+    // : 'plan',
 )
 const activeComponent = computed(() => tabs.find((tab) => tab.key === activeTab.value)?.component)
 const selectedAudit = ref(showController.state.value.data ?? null)
@@ -60,9 +60,10 @@ onMounted(loadSelectedAudit)
 <template>
   <main class="internal-audit-page">
     <header class="page-header">
-      <div><span class="eyebrow">Assurance & compliance</span>
+      <div>
+        <!-- <span class="eyebrow">Assurance & compliance</span> -->
         <h1>Internal Audit</h1>
-        <p>Create and manage a complete organization audit lifecycle.</p>
+        <!-- <p>Create and manage a complete organization audit lifecycle.</p> -->
         <div v-if="selectedAudit" class="audit-identity"><strong>{{ selectedAudit.title }}</strong><span>{{
           selectedAudit.status }}</span></div>
       </div>

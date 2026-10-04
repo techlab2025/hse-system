@@ -8,8 +8,8 @@ export default class InternalAuditPlanScopeParams {
 
   toMap() {
     return {
-      depertment_id: this.departmentId,
-      audit_activitys: this.auditActivities.map((activity) => activity.toMap()),
+      department_id: this.departmentId,
+      audit_activities: this.auditActivities.map((activity) => activity.toMap()),
     }
   }
 }

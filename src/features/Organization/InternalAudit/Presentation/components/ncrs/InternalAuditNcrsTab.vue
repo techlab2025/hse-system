@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import HandleFIlesUpload, {
   type UploadedFile,
@@ -8,18 +9,22 @@ import IndexOrganizatoinEmployeeController from '@/features/Organization/Organiz
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 import IndexRootCausesController from '@/features/setting/RootCauses/Presentation/controllers/indexRootCausesController'
 import IndexRootCausesParams from '@/features/setting/RootCauses/Core/params/indexRootCausesParams'
+import IndexAuditStandardController from '@/features/Organization/AuditStandard/Presentation/controllers/indexAuditStandardController'
+import IndexAuditStandardParams from '@/features/Organization/AuditStandard/Core/params/indexAuditStandardParams'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { NcrCategoryEnum } from '../../../Core/enums/ncrs/NcrCategoryEnum'
-import CreateNcrsParams, {
-  NcrInternalAuditTaskParams,
-  NcrCorrectiveActionParams,
-  NcrPreventiveActionParams,
-  NcrRootCauseParams,
-} from '../../../Core/params/ncrs/createNcrsParams'
+import CreateNcrsParams from '../../../Core/params/ncrs/createNcrsParams'
+import NcrAreaUnderReviewParams from '../../../Core/params/ncrs/ncrAreaUnderReviewParams'
+import NcrCorrectiveActionParams from '../../../Core/params/ncrs/ncrCorrectiveActionParams'
+import NcrInternalAuditTaskParams from '../../../Core/params/ncrs/ncrInternalAuditTaskParams'
+import NcrPreventiveActionParams from '../../../Core/params/ncrs/ncrPreventiveActionParams'
+import NcrRootCauseParams from '../../../Core/params/ncrs/ncrRootCauseParams'
 import IndexNcrsParams from '../../../Core/params/ncrs/indexNcrsParams'
 import type InternalAuditNcrModel from '../../../Data/models/ncrs/InternalAuditNcrModel'
 import CreateNcrsController from '../../controllers/ncrs/createNcrsController'
 import FetchNcrsController from '../../controllers/ncrs/fetchNcrsController'
+import ShowInternalAuditPlanParams from '../../../Core/params/plan/showInternalAuditPlanParams'
+import ShowInternalAuditPlanController from '../../controllers/plan/showInternalAuditPlanController'
 
 type ActionForm = {
   correction: string
@@ -29,7 +34,7 @@ type ActionForm = {
 }
 
 type CapaForm = {
-  corrective: ActionForm & { rootCauses: TitleInterface[] }
+  corrective: ActionForm
   preventive: ActionForm
 }
 
@@ -48,33 +53,49 @@ const emit = defineEmits<{
 
 const fetchController = FetchNcrsController.getInstance()
 const createController = CreateNcrsController.getInstance()
+const showPlanController = ShowInternalAuditPlanController.getInstance()
 const employeeController = IndexOrganizatoinEmployeeController.getInstance()
 const rootCauseController = IndexRootCausesController.getInstance()
+const auditStandardController = IndexAuditStandardController.getInstance()
+const route = useRoute()
 const indexParams = new IndexNcrsParams('', 1, 1000, 0)
 const employeeParams = new IndexOrganizatoinEmployeeParams('', 1, 1000, 0)
 const rootCauseParams = new IndexRootCausesParams('', 1, 1000, 0)
+const auditStandardParams = new IndexAuditStandardParams('', 1, 1000, 0)
 
 const ncrs = ref<InternalAuditNcrModel[]>([])
 const showForm = ref(false)
-const ncrId = ref<number | null>(null)
+const auditSerialName = ref('')
+const areaOptions = ref<TitleInterface[]>([])
 const category = ref<NcrCategoryEnum>(NcrCategoryEnum.MINOR_NC)
-const areaUnderReview = ref<TitleInterface | null>(null)
-const auditStandardId = ref<number | null>(null)
+const areaUnderReviews = ref<TitleInterface[]>([])
+const auditStandard = ref<TitleInterface | null>(null)
 const requirementReference = ref('')
 const description = ref('')
 const immediateAction = ref('')
+const rootCauses = ref<TitleInterface[]>([])
 const attachments = ref<string[]>([])
 const capas = ref<CapaForm[]>([createCapa()])
 const feedback = ref('')
 const hasError = ref(false)
 const isLoading = computed(() => fetchController.isDataLoading())
 const isSaving = computed(() => createController.isDataLoading())
+const currentAuditId = computed(() => {
+  const value = Number(
+    props.internalAuditPlanId ||
+      route.query.internal_audit_plan_id ||
+      route.query.internal_audit_id ||
+      route.query.id ||
+      route.params.id,
+  )
+  return Number.isFinite(value) && value > 0 ? value : 0
+})
 const canCreateNcr = computed(() => {
   const status = props.auditStatus.toLowerCase()
   const now = new Date()
   const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
   return (
-    props.internalAuditPlanId > 0 &&
+    currentAuditId.value > 0 &&
     status === 'planned' &&
     (!props.auditStartDate || props.auditStartDate.slice(0, 10) <= today)
   )
@@ -86,7 +107,7 @@ function emptyAction(): ActionForm {
 
 function createCapa(): CapaForm {
   return {
-    corrective: { ...emptyAction(), rootCauses: [] },
+    corrective: emptyAction(),
     preventive: emptyAction(),
   }
 }
@@ -107,8 +128,8 @@ function setPreventiveAssignee(index: number, value: TitleInterface | TitleInter
   capas.value[index]!.preventive.assignedTo = normalizeSingle(value)
 }
 
-function setRootCauses(index: number, value: TitleInterface | TitleInterface[] | null) {
-  capas.value[index]!.corrective.rootCauses = normalizeMultiple(value)
+function setRootCauses(value: TitleInterface | TitleInterface[] | null) {
+  rootCauses.value = normalizeMultiple(value)
 }
 
 function setAttachments(files: UploadedFile[]) {
@@ -130,14 +151,50 @@ async function fetchNcrs() {
   feedback.value = fetchController.state.value.error?.title ?? 'Unable to load NCRs.'
 }
 
+async function fetchAuditDetails() {
+  if (!currentAuditId.value) return
+
+  await showPlanController.getData(new ShowInternalAuditPlanParams(currentAuditId.value))
+  if (!showPlanController.isDataSuccess() || !showPlanController.state.value.data) {
+    hasError.value = true
+    feedback.value =
+      showPlanController.state.value.error?.title ?? 'Unable to load internal audit details.'
+    return
+  }
+
+  const plan = showPlanController.state.value.data
+  auditSerialName.value = plan.serial_name || plan.title
+  const departments = plan.auditScope
+    .map((entry) => {
+      const item = (entry ?? {}) as Record<string, unknown>
+      return titleFrom(item.department ?? item.depertment)
+    })
+    .filter((department): department is TitleInterface => Boolean(department))
+  areaOptions.value = departments.filter(
+    (department, index, all) =>
+      all.findIndex((item) => Number(item.id) === Number(department.id)) === index,
+  )
+}
+
+function titleFrom(value: unknown): TitleInterface | null {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) return null
+  const item = value as Record<string, unknown>
+  return new TitleInterface({
+    id: Number(item.id ?? 0),
+    title: String(item.title ?? item.name ?? ''),
+  })
+}
+
 function validate(): boolean {
   const today = new Date().toISOString().slice(0, 10)
-  if (!ncrId.value || !areaUnderReview.value || !auditStandardId.value) {
-    feedback.value = 'NCR, area under review, and audit standard are required.'
+  if (!areaUnderReviews.value.length || !auditStandard.value) {
+    feedback.value = 'Area under review and audit standard are required.'
   } else if (!requirementReference.value.trim() || !description.value.trim()) {
     feedback.value = 'Requirement reference and description are required.'
   } else if (!immediateAction.value.trim()) {
     feedback.value = 'Correction / immediate action is required.'
+  } else if (!rootCauses.value.length) {
+    feedback.value = 'Select at least one root cause.'
   } else if (!capas.value.length) {
     feedback.value = 'Add at least one CAPA.'
   } else if (
@@ -171,21 +228,18 @@ function validate(): boolean {
 
 function buildParams(): CreateNcrsParams {
   return new CreateNcrsParams(
-    Number(ncrId.value),
     category.value,
-    Number(areaUnderReview.value?.id),
-    Number(auditStandardId.value),
+    areaUnderReviews.value.map((area) => new NcrAreaUnderReviewParams(Number(area.id))),
+    Number(auditStandard.value?.id),
     requirementReference.value,
     description.value,
     immediateAction.value,
+    rootCauses.value.map((rootCause) => new NcrRootCauseParams(Number(rootCause.id))),
     capas.value.map(
       (capa) =>
         new NcrInternalAuditTaskParams(
           new NcrCorrectiveActionParams(
             capa.corrective.correction,
-            capa.corrective.rootCauses.map(
-              (rootCause) => new NcrRootCauseParams(Number(rootCause.id)),
-            ),
             Number(capa.corrective.assignedTo?.id ?? 0),
             capa.corrective.targetDate,
             capa.corrective.actualDate,
@@ -199,17 +253,19 @@ function buildParams(): CreateNcrsParams {
         ),
     ),
     attachments.value,
+    currentAuditId.value,
+    false,
   )
 }
 
 function resetForm() {
-  ncrId.value = null
   category.value = NcrCategoryEnum.MINOR_NC
-  areaUnderReview.value = null
-  auditStandardId.value = null
+  areaUnderReviews.value = []
+  auditStandard.value = null
   requirementReference.value = ''
   description.value = ''
   immediateAction.value = ''
+  rootCauses.value = []
   attachments.value = []
   capas.value = [createCapa()]
 }
@@ -249,7 +305,8 @@ function categoryLabel(categoryValue: unknown): string {
   return value.split('_').join(' ') || '—'
 }
 
-onMounted(fetchNcrs)
+watch(currentAuditId, () => void fetchAuditDetails())
+onMounted(() => void Promise.all([fetchNcrs(), fetchAuditDetails()]))
 </script>
 
 <template>
@@ -268,7 +325,7 @@ onMounted(fetchNcrs)
       </div>
     </header>
 
-    <p
+    <!-- <p
       v-if="feedback"
       class="message"
       :class="{ error: hasError, success: !hasError }"
@@ -278,7 +335,7 @@ onMounted(fetchNcrs)
     </p>
     <p v-if="!canCreateNcr" class="stage-note">
       NCR entry is available after the plan is published and the audit start date is reached.
-    </p>
+    </p> -->
 
     <form v-if="showForm" class="ncr-form" @submit.prevent="submit">
       <section class="form-section">
@@ -291,8 +348,8 @@ onMounted(fetchNcrs)
         </div>
         <div class="form-grid">
           <label class="field"
-            ><span>NCR ID <b>*</b></span
-            ><input v-model.number="ncrId" type="number" min="1" placeholder="Enter NCR ID"
+            ><span>Internal Audit</span
+            ><input :value="auditSerialName" type="text" disabled placeholder="Audit serial name"
           /></label>
           <label class="field"
             ><span>Category <b>*</b></span
@@ -303,22 +360,24 @@ onMounted(fetchNcrs)
           >
           <UpdatedCustomInputSelect
             class="field"
-            :model-value="areaUnderReview"
-            :controller="fetchController"
-            :params="indexParams"
+            :model-value="areaUnderReviews"
+            :static-options="areaOptions"
+            type="multiselect"
             label="Area under review"
-            placeholder="Select area"
+            placeholder="Select departments"
             required
-            @update:model-value="areaUnderReview = normalizeSingle($event)"
+            @update:model-value="areaUnderReviews = normalizeMultiple($event)"
           />
-          <label class="field"
-            ><span>Audit standard ID <b>*</b></span
-            ><input
-              v-model.number="auditStandardId"
-              type="number"
-              min="1"
-              placeholder="Enter standard ID"
-          /></label>
+          <UpdatedCustomInputSelect
+            class="field"
+            :model-value="auditStandard"
+            :controller="auditStandardController"
+            :params="auditStandardParams"
+            label="Audit standard"
+            placeholder="Select audit standard"
+            required
+            @update:model-value="auditStandard = normalizeSingle($event)"
+          />
           <label class="field field-wide"
             ><span>Requirement reference <b>*</b></span
             ><input
@@ -342,6 +401,17 @@ onMounted(fetchNcrs)
               placeholder="Describe the immediate action taken"
             ></textarea>
           </label>
+          <UpdatedCustomInputSelect
+            class="field field-wide"
+            :model-value="rootCauses"
+            :controller="rootCauseController"
+            :params="rootCauseParams"
+            type="multiselect"
+            label="Root causes"
+            placeholder="Select root causes"
+            required
+            @update:model-value="setRootCauses"
+          />
         </div>
       </section>
 
@@ -349,13 +419,13 @@ onMounted(fetchNcrs)
         <div class="section-heading">
           <span>02</span>
           <div>
-            <h3>CAPA</h3>
-            <p>Add corrective and preventive actions.</p>
+            <h3>Add corrective and preventive actions.</h3>
+            <!-- <p>Add corrective and preventive actions.</p> -->
           </div>
         </div>
         <article v-for="(capa, index) in capas" :key="index" class="capa-card">
           <header>
-            <strong>CAPA {{ index + 1 }}</strong
+            <strong> {{ index + 1 }}</strong
             ><button
               v-if="capas.length > 1"
               type="button"
@@ -376,16 +446,6 @@ onMounted(fetchNcrs)
                   placeholder="Describe the corrective action"
                 ></textarea>
               </label>
-              <UpdatedCustomInputSelect
-                class="field field-wide"
-                :model-value="capa.corrective.rootCauses"
-                :controller="rootCauseController"
-                :params="rootCauseParams"
-                type="multiselect"
-                label="Root causes"
-                placeholder="Select root causes"
-                @update:model-value="setRootCauses(index, $event)"
-              />
               <UpdatedCustomInputSelect
                 class="field"
                 :model-value="capa.corrective.assignedTo"
@@ -444,9 +504,9 @@ onMounted(fetchNcrs)
             </div>
           </div>
         </article>
-        <button class="add-capa" type="button" @click="capas.push(createCapa())">
+        <!-- <button class="add-capa" type="button" @click="capas.push(createCapa())">
           ＋ Add CAPA
-        </button>
+        </button> -->
       </section>
 
       <section class="form-section">
@@ -454,7 +514,7 @@ onMounted(fetchNcrs)
           <span>03</span>
           <div>
             <h3>Attachments</h3>
-            <p>Add supporting evidence as base64 files.</p>
+            <p>Add supporting evidence files.</p>
           </div>
         </div>
         <HandleFIlesUpload
@@ -536,6 +596,9 @@ onMounted(fetchNcrs)
 </template>
 
 <style scoped>
+:deep(.upload-area) {
+  border: 1px solid lightgray !important;
+}
 label:has(textarea) {
   grid-column: span 3 !important;
 }

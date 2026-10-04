@@ -9,12 +9,12 @@ enum InrernalAuditStatusEnum {
   reported = 3,
 }
 ```
+
 ## Request Types
 
 ```ts
 type AuditTeamMember = {
   organization_employee_id: number
-  is_leader: boolean
 }
 
 type AuditScope = {
@@ -31,8 +31,6 @@ type AuditSchedule = {
   audit_foucse_id: number
   location: string
   assigend_auditors_id: number
-  general_instructions: string
-  attachments: string[] // Base64 file strings
 }
 
 type InternalAuditPlanRequest = {
@@ -42,12 +40,14 @@ type InternalAuditPlanRequest = {
   full_company: boolean
   audit_standern_id: number
   audit_team: AuditTeamMember[]
+  leader_id: number
   audit_scope: AuditScope[]
   audit_schedule: AuditSchedule[]
+  general_instructions: string
+  attachments: string[] // Base64 file strings
   is_draft: boolean
 }
 ```
-
 
 ## Response Model
 
@@ -66,6 +66,10 @@ type InternalAuditPlanModel = {
   auditSchedule: unknown[]
   serial_name: string
   serial_number: string
+  leaderId: number
+  leader: { id: number; title: string } | null
+  generalInstructions: string
+  attachments: string[]
 }
 ```
 
@@ -83,8 +87,12 @@ The mapper reads these API keys:
   full_company: boolean,
   audit_standard: { id: number, title: string } | null,
   audit_team: unknown[],
+  leader_id: number,
+  leader?: { id: number, name: string },
   audit_scope: unknown[],
   audit_schedule: unknown[],
+  general_instructions: string,
+  attachments: string[],
   serial_name: string,
   serial_number: string
 }
@@ -105,9 +113,9 @@ The mapper reads these API keys:
   audit_standern_id: 1,
   audit_team: [
     { organization_employee_id: 101 },
-    { organization_employee_id: 102}
+    { organization_employee_id: 102 }
   ],
-  leader_id:101,
+  leader_id: 101,
   audit_scope: [
     {
       depertment_id: 22,
@@ -124,12 +132,11 @@ The mapper reads these API keys:
       day: "2026-10-04",
       audit_foucse_id: 5,
       location: "Maintenance Workshop",
-      assigend_auditors_id: 101,
-   
+      assigend_auditors_id: 101
     }
   ],
-    general_instructions: "Review maintenance records before the meeting.",
-    attachments: ["JVBERi0xLjQ..."],
+  general_instructions: "Review maintenance records before the meeting.",
+  attachments: ["JVBERi0xLjQ..."],
   is_draft: false
 }
 ```
@@ -235,10 +242,14 @@ Example:
     full_company: false,
     audit_standard: { id: 1, title: "ISO 45001:2018" },
     audit_team: [
-      { employee: { id: 101, name: "Sara Ibrahim" }, is_lead_auditor: true }
+      { employee: { id: 101, name: "Sara Ibrahim" } }
     ],
+    leader_id: 101,
+    leader: { id: 101, name: "Sara Ibrahim" },
     audit_scope: [],
-    audit_schedule: []
+    audit_schedule: [],
+    general_instructions: "Review maintenance records before the meeting.",
+    attachments: ["JVBERi0xLjQ..."]
   }
 }
 ```
@@ -259,9 +270,15 @@ The request contains `internal_audit_id` plus all fields from the create request
   project_id: 1,
   full_company: false,
   audit_standern_id: 1,
-  audit_team: [],
+  audit_team: [
+    { organization_employee_id: 101 },
+    { organization_employee_id: 102 }
+  ],
+  leader_id: 101,
   audit_scope: [],
   audit_schedule: [],
+  general_instructions: "Review maintenance records before the meeting.",
+  attachments: ["JVBERi0xLjQ..."],
   is_draft: true
 }
 ```
@@ -313,9 +330,11 @@ Test mode returns `InternalAuditPlanModel.example`.
   fullCompany: false,
   auditStandard: { id: 1, title: "ISO 45001:2018" },
   auditTeam: [
-    { employee: { id: 101, name: "Sara Ibrahim" }, is_lead_auditor: true },
-    { employee: { id: 102, name: "Ahmed Hassan" }, is_lead_auditor: false }
+    { employee: { id: 101, name: "Sara Ibrahim" } },
+    { employee: { id: 102, name: "Ahmed Hassan" } }
   ],
+  leaderId: 101,
+  leader: { id: 101, title: "Sara Ibrahim" },
   auditScope: [
     { department: { id: 22, title: "Maintenance" }, activities: [] }
   ],
@@ -328,6 +347,8 @@ Test mode returns `InternalAuditPlanModel.example`.
     }
   ],
   serial_name: "IA-2026-0012",
-  serial_number: "0012"
+  serial_number: "0012",
+  generalInstructions: "Review maintenance records before the meeting.",
+  attachments: ["JVBERi0xLjQ..."]
 }
 ```

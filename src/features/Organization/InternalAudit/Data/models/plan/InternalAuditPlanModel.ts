@@ -15,6 +15,10 @@ export default class InternalAuditPlanModel extends TitleInterface {
     public auditSchedule: unknown[],
     public serial_name: string = '',
     public serial_number: string = '',
+    public leaderId: number = 0,
+    public leader: TitleInterface | null = null,
+    public generalInstructions: string = '',
+    public attachments: string[] = [],
   ) {
     super({ id, title })
   }
@@ -23,6 +27,13 @@ export default class InternalAuditPlanModel extends TitleInterface {
     const item = (data ?? {}) as Record<string, unknown>
     const project = item.project as Record<string, unknown> | null | undefined
     const auditStandard = item.audit_standard as Record<string, unknown> | null | undefined
+    const rawLeader = (item.leader ?? item.lead_auditor) as
+      | Record<string, unknown>
+      | null
+      | undefined
+    const leaderEmployee = (rawLeader?.employee ??
+      rawLeader?.organization_employee ??
+      rawLeader) as Record<string, unknown> | null | undefined
 
     return new InternalAuditPlanModel(
       Number(item.id ?? 0),
@@ -45,6 +56,15 @@ export default class InternalAuditPlanModel extends TitleInterface {
       Array.isArray(item.audit_schedule) ? item.audit_schedule : [],
       String(item.serial_name ?? ''),
       String(item.serial_number ?? ''),
+      Number(item.leader_id ?? leaderEmployee?.id ?? 0),
+      leaderEmployee
+        ? new TitleInterface({
+            id: Number(leaderEmployee.id ?? 0),
+            title: String(leaderEmployee.title ?? leaderEmployee.name ?? ''),
+          })
+        : null,
+      String(item.general_instructions ?? ''),
+      Array.isArray(item.attachments) ? item.attachments.map(String) : [],
     )
   }
 
@@ -58,8 +78,8 @@ export default class InternalAuditPlanModel extends TitleInterface {
     false,
     new TitleInterface({ id: 1, title: 'ISO 45001:2018' }),
     [
-      { employee: { id: 101, name: 'Sara Ibrahim' }, is_lead_auditor: true },
-      { employee: { id: 102, name: 'Ahmed Hassan' }, is_lead_auditor: false },
+      { employee: { id: 101, name: 'Sara Ibrahim' } },
+      { employee: { id: 102, name: 'Ahmed Hassan' } },
     ],
     [{ department: { id: 22, title: 'Maintenance' }, activities: [] }],
     [
@@ -72,5 +92,9 @@ export default class InternalAuditPlanModel extends TitleInterface {
     ],
     'IA-2026-0012',
     '0012',
+    101,
+    new TitleInterface({ id: 101, title: 'Sara Ibrahim' }),
+    'Review maintenance records before the meeting.',
+    ['JVBERi0xLjQ...'],
   )
 }

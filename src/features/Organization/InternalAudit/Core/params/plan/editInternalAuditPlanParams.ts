@@ -12,8 +12,11 @@ export default class EditInternalAuditPlanParams extends AddInternalAuditPlanPar
     fullCompany: boolean,
     auditStandardId: number,
     auditTeam: InternalAuditPlanEmployeeParams[],
+    leaderId: number,
     auditScope: InternalAuditPlanScopeParams[],
     auditSchedule: InternalAuditPlanScheduleParams[],
+    generalInstructions: string,
+    attachments: string[],
     isDraft: boolean = false,
   ) {
     super(
@@ -23,8 +26,11 @@ export default class EditInternalAuditPlanParams extends AddInternalAuditPlanPar
       fullCompany,
       auditStandardId,
       auditTeam,
+      leaderId,
       auditScope,
       auditSchedule,
+      generalInstructions,
+      attachments,
       isDraft,
     )
   }

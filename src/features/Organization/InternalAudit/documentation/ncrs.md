@@ -104,31 +104,34 @@ Example:
 
 ```ts
 type CreateNcrRequest = {
-  ncr_id: number
   ncrs_category: 1 | 2
-  area_under_review_id: number
+  area_under_reviews: Array<{
+    area_under_review_id: number
+  }>
   audit_standard_id: number
   rquiriment_refrence: string
   description: string
   immediate_action: string
+  root_causes: Array<{
+    root_causes_id: number
+  }>
   internal_audit_tasks: Array<{
     correcive_action: {
       correction: string
-      root_causes: Array<{
-        root_causes_id: number
-      }>
       assgined_to_id: number
       target_date: string
       actual_date: string
     }
     preventive_action: {
-      correction: string
+      preventive: string
       assgined_to_id: number
       target_date: string
       actual_date: string
     }
   }>
   attachments: string[] // Base64 file strings
+  internal_audit_id: number
+  is_draft: false
 }
 ```
 
@@ -136,36 +139,42 @@ type CreateNcrRequest = {
 
 ```ts
 {
-  ncr_id: 12,
   ncrs_category: 1,
-  area_under_review_id: 22,
+  area_under_reviews: [
+    { area_under_review_id: 616 },
+    { area_under_review_id: 713 }
+  ],
   audit_standard_id: 1,
   rquiriment_refrence: "ISO 45001:2018 - 8.1",
   description: "Maintenance calibration records were incomplete.",
   immediate_action: "Missing records were collected and isolated for review.",
+  root_causes: [
+    { root_causes_id: 3 },
+    { root_causes_id: 7 }
+  ],
   internal_audit_tasks: [
     {
       correcive_action: {
         correction: "Complete and validate all calibration records.",
-        root_causes: [
-          { root_causes_id: 3 },
-          { root_causes_id: 7 }
-        ],
         assgined_to_id: 104,
         target_date: "2026-10-18",
         actual_date: ""
       },
       preventive_action: {
-        correction: "Add a monthly calibration-record review.",
+        preventive: "Add a monthly calibration-record review.",
         assgined_to_id: 102,
         target_date: "2026-10-25",
         actual_date: ""
       }
     }
   ],
-  attachments: ["JVBERi0xLjQ..."]
+  attachments: ["JVBERi0xLjQ..."],
+  internal_audit_id: 12,
+  is_draft: false
 }
 ```
+
+The form fetches `/fetch_internal_audit_details` using the audit ID from the route. Its `serial_name` is displayed as a disabled field, and only the departments from `audit_scope` are available in the Area under review multi-select. Audit standards are loaded with `IndexAuditStandardController` and `IndexAuditStandardParams`.
 
 ### Response
 

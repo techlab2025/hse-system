@@ -11,8 +11,11 @@ export default class AddInternalAuditPlanParams implements Params {
     public fullCompany: boolean,
     public auditStandardId: number,
     public auditTeam: InternalAuditPlanEmployeeParams[],
+    public leaderId: number,
     public auditScope: InternalAuditPlanScopeParams[],
     public auditSchedule: InternalAuditPlanScheduleParams[],
+    public generalInstructions: string,
+    public attachments: string[],
     public isDraft: boolean = false,
   ) {}
 
@@ -21,10 +24,13 @@ export default class AddInternalAuditPlanParams implements Params {
       audit_start_date: this.auditStartDate,
       audit_end_date: this.auditEndDate,
       full_company: this.fullCompany,
-      audit_standern_id: this.auditStandardId,
+      audit_standard_id: this.auditStandardId,
       audit_team: this.auditTeam.map((member) => member.toMap()),
+      leader_id: this.leaderId,
       audit_scope: this.auditScope.map((scope) => scope.toMap()),
       audit_schedule: this.auditSchedule.map((schedule) => schedule.toMap()),
+      general_instructions: this.generalInstructions,
+      attachments: this.attachments,
       is_draft: this.isDraft,
     }
 

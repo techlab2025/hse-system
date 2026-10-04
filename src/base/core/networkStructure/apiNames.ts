@@ -2174,7 +2174,7 @@ class ApiNames {
     return this.prefix + 'delete_internal_audit_standard'
   }
   public get clone_audit_standard() {
-    return this.prefix + 'clone_internal_audit_standard'
+    return this.prefix + 'clone_internal_audit_standards'
   }
 
   // Audit Activity
@@ -2194,7 +2194,7 @@ class ApiNames {
     return this.prefix + 'delete_internal_audit_activity'
   }
   public get clone_audit_activity() {
-    return this.prefix + 'clone_internal_audit_activity'
+    return this.prefix + 'clone_internal_audit_activities'
   }
   // Risk Assessment
   public get CreateRiskAssessment() {

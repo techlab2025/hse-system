@@ -151,11 +151,11 @@ onMounted(fetchAttendance)
       </div>
     </header>
 
-    <p v-if="error" class="message error" role="alert">{{ error }}</p>
-    <p v-if="success" class="message success" role="status">{{ success }}</p>
+    <!-- <p v-if="error" class="message error" role="alert">{{ error }}</p> -->
+    <!-- <p v-if="success" class="message success" role="status">{{ success }}</p>
     <p v-if="!canManageAttendance" class="stage-note">
       Attendance can be updated after the plan is published and the audit start date is reached.
-    </p>
+    </p> -->
 
     <div v-if="isLoading" class="attendance-loading" aria-label="Loading audit attendance">
       <span v-for="index in 4" :key="index"></span>
@@ -186,8 +186,8 @@ onMounted(fetchAttendance)
                     <span v-if="item.isLead" class="lead-badge">Lead</span>
                   </div>
                 </td>
-                <td>{{ item.position?.title || '—' }}</td>
-                <td>{{ item.department?.title || '—' }}</td>
+                <td>{{ item.position || '—' }}</td>
+                <td>{{ item.department || '—' }}</td>
                 <td>
                   <Checkbox
                     :model-value="item.openMeeting"
@@ -235,8 +235,8 @@ onMounted(fetchAttendance)
                     <strong>{{ item.employee.name || 'Unknown employee' }}</strong>
                   </div>
                 </td>
-                <td>{{ item.position?.title || '—' }}</td>
-                <td>{{ item.department?.title || '—' }}</td>
+                <td>{{ item.position || '—' }}</td>
+                <td>{{ item.department || '—' }}</td>
                 <td>
                   <Checkbox
                     :model-value="item.openMeeting"
