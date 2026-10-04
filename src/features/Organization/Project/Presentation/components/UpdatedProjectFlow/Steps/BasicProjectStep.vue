@@ -153,7 +153,7 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
       </small>
       
       <small v-if="projectedit" class="field-delete-warning">
-        {{ $t('if you delete a location, the project will be deleted') }}
+        {{ $t('Removing this Location will also remove all employees and equipment and teams assigned to this Location from the project.') }}
       </small>
     </div>
     <label class="input-wrapper">
