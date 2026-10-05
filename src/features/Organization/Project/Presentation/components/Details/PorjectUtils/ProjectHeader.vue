@@ -175,6 +175,7 @@ defineProps<{
           <span class="action-arrow" aria-hidden="true">→</span>
         </router-link>
 
+        <!-- Induction moved to the Company sidebar.
         <router-link
           :to="{ name: 'Inductions', query: { project_id: projectId } }"
           class="project-action-link action-induction"
@@ -190,7 +191,7 @@ defineProps<{
             <small>{{ t('Manage project inductions') }}</small>
           </span>
           <span class="action-arrow" aria-hidden="true">→</span>
-        </router-link>
+        </router-link> -->
 
         <router-link
           :to="{ name: 'Project Leadership', params: { id: projectId } }"
@@ -208,6 +209,7 @@ defineProps<{
           <span class="action-arrow" aria-hidden="true">→</span>
         </router-link>
 
+        <!-- PPE Matrix moved to the Company sidebar.
         <router-link
           :to="{ name: 'Project PPE Matrix', params: { id: projectId } }"
           class="project-action-link action-ppe-matrix"
@@ -222,7 +224,7 @@ defineProps<{
             <small>Set required PPE Matrix</small>
           </span>
           <span class="action-arrow" aria-hidden="true">→</span>
-        </router-link>
+        </router-link> -->
 
         <router-link
           :to="{ name: 'Project Risk Assessments', params: { id: projectId } }"
@@ -240,6 +242,7 @@ defineProps<{
           <span class="action-arrow" aria-hidden="true">→</span>
         </router-link>
 
+        <!-- Objectives moved to the Company sidebar.
         <PermissionBuilder
           :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.OBJECTIVE_ORG_CREATE]"
         >
@@ -260,7 +263,7 @@ defineProps<{
             </span>
             <span class="action-arrow" aria-hidden="true">→</span>
           </router-link>
-        </PermissionBuilder>
+        </PermissionBuilder> -->
       </div>
     </div>
   </header>

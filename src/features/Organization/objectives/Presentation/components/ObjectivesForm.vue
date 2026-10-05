@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { computed, nextTick, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import DatePicker from 'primevue/datepicker'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -20,13 +19,14 @@ import {
   ObjectiveTargetTypeEnum,
   ObjectiveTargetTypeOptions,
 } from '../../Core/enums/objectivesEnums'
+import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
+import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddObjectivesParams | EditObjectivesParams): void
 }>()
 const props = defineProps<{ data?: ObjectivesDetailsModel }>()
 
-const route = useRoute()
 const { t } = useI18n()
 const maxYearDate = new Date(new Date().getFullYear(), 11, 31)
 
@@ -43,23 +43,12 @@ const unit = ref('')
 const frequency = ref<TitleInterface | null>(ObjectiveFrequencyOptions[0]!)
 const requiredFieldErrors = ref<Record<string, string>>({})
 
-// const projectController = IndexProjectController.getInstance()
-// const projectParams = new IndexProjectParams('', 1, 10, 0)
+const projectController = IndexProjectController.getInstance()
+const projectParams = new IndexProjectParams('', 1, 1000, 0)
 const herikalyController = IndexHerikalyController.getInstance()
 const employeeController = IndexOrganizatoinEmployeeController.getInstance()
 
-const routeProjectId = computed(() => {
-  const routeValue =
-    route.params.project_id ??
-    route.query.project_id ??
-    (route.path.includes('/project-details/') ? route.params.id : null)
-  const rawValue = Array.isArray(routeValue) ? routeValue[0] : routeValue
-  const parsedValue = Number(rawValue)
-
-  return Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : null
-})
-
-const activeProjectId = computed(() => project.value?.id ?? routeProjectId.value)
+const activeProjectId = computed(() => project.value?.id ?? null)
 
 const departmentParams = computed(
   () => new IndexHerikalyParams('', 1, 10, 0, false, activeProjectId.value),
@@ -136,24 +125,12 @@ const targetHelp = computed(() => {
 const selectedYearLabel = computed(() => year.value?.getFullYear().toString() ?? '-')
 const scopeLabel = computed(() => {
   if (project.value?.title) return project.value.title
-  if (routeProjectId.value) return t('project_number', { number: routeProjectId.value })
   return t('Company-wide')
 })
-const objectivePreview = computed(
-  () => objective.value.trim() || t('Train 80% of company employees in HSE.'),
-)
 const measurementLabel = computed(() => {
   if (isPeriodicFrequency.value) return translatedOptionTitle(frequency.value) || t('Periodic frequency')
   return `${translatedOptionTitle(targetType.value)} ${translatedOptionTitle(direction.value)}`.trim()
 })
-const targetPreview = computed(() => {
-  if (isPeriodicFrequency.value) return t('times_per_year', { count: annualOccurrences.value ?? '-' })
-  if (!hasNumber(target.value)) return '-'
-
-  const suffix = isPercentage.value ? '%' : unit.value.trim() ? ` ${unit.value.trim()}` : ''
-  return `${Number(target.value).toLocaleString()}${suffix}`
-})
-
 const toSingle = (value: TitleInterface | TitleInterface[] | null): TitleInterface | null =>
   Array.isArray(value) ? (value[0] ?? null) : value
 
@@ -234,12 +211,12 @@ const updateData = () => {
   emit('update:data', params)
 }
 
-// const onProjectChange = (value: TitleInterface | TitleInterface[] | null) => {
-//   project.value = toSingle(value)
-//   department.value = null
-//   followUpEmployee.value = null
-//   updateData()
-// }
+const onProjectChange = (value: TitleInterface | TitleInterface[] | null) => {
+  project.value = toSingle(value)
+  department.value = null
+  followUpEmployee.value = null
+  updateData()
+}
 
 const onTargetTypeChange = (value: TitleInterface | TitleInterface[] | null) => {
   targetType.value = toSingle(value) ?? ObjectiveTargetTypeOptions[0]!
@@ -278,7 +255,7 @@ watch(
 
     year.value = toYearDate(data.year)
     objective.value = data.objective
-    // project.value = data.project
+    project.value = data.project
     targetType.value =
       findOption(ObjectiveTargetTypeOptions, data.targetType) ?? ObjectiveTargetTypeOptions[0]!
     direction.value = findOption(ObjectiveDirectionOptions, data.direction)
@@ -346,14 +323,6 @@ const requiredFields = computed(() => [
     isMissing: () => !followUpEmployee.value?.id,
   },
 ])
-
-const completedRequiredCount = computed(
-  () => requiredFields.value.filter((field) => !field.isMissing()).length,
-)
-const completionTotal = computed(() => requiredFields.value.length)
-const completionPercent = computed(() =>
-  Math.round((completedRequiredCount.value / completionTotal.value) * 100),
-)
 
 const validateRequiredFields = async () => {
   const missedFields = requiredFields.value.filter((field) => field.isMissing())
@@ -443,7 +412,6 @@ defineExpose({ validateRequiredFields })
               {{ requiredFieldErrors.year }}
             </p>
           </div>
-<!-- 
           <div class="objective-field input-wrapper field-project">
             <UpdatedCustomInputSelect
               id="objective-project"
@@ -458,7 +426,7 @@ defineExpose({ validateRequiredFields })
             <p class="field-help">
               {{ $t('Leave company-wide selected when the goal is not limited to one project.') }}
             </p>
-          </div> -->
+          </div>
 
           <div class="objective-field input-wrapper field-full" data-required-field="objective">
             <label class="input-label required" for="objective-text">

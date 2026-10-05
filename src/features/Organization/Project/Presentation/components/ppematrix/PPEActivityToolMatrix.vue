@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { RouterLink, useRoute } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import Checkbox from 'primevue/checkbox'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
@@ -13,8 +13,6 @@ import FetchPPEActivityToolsParams from '../../../Core/params/ppematrix/FetchPPE
 import CreatePPEActivityToolController from '../../controllers/ppematrix/CreatePPEActivityToolController'
 import FetchPPEActivityToolsController from '../../controllers/ppematrix/FetchPPEActivityToolsController'
 
-const route = useRoute()
-const projectId = computed(() => Number(route.params.id))
 const activityController = IndexPPEActivityController.getInstance()
 const toolController = IndexPPEToolController.getInstance()
 const matrixController = FetchPPEActivityToolsController.getInstance()
@@ -32,9 +30,7 @@ const isLinked = (activityId: number, toolId: number) =>
 
 const refreshMatrix = () =>
   matrixController.fetchPPEActivityTools(
-    new FetchPPEActivityToolsParams({
-      ProjectId: projectId.value,
-    }),
+    new FetchPPEActivityToolsParams(),
   )
 
 const toggle = async (activityId: number, toolId: number) => {
@@ -44,7 +40,7 @@ const toggle = async (activityId: number, toolId: number) => {
   pending.value = new Set([...pending.value, key])
   try {
     await toggleController.createPPEActivityTool(
-      new CreatePPEActivityToolParams(activityId, toolId, projectId.value),
+      new CreatePPEActivityToolParams(activityId, toolId),
     )
     if (!toggleController.isDataSuccess())
       throw new Error('Unable to update this activity and tool.')
@@ -80,12 +76,12 @@ onMounted(async () => {
       </div>
       <nav class="header-actions" aria-label="PPE navigation">
         <!-- <RouterLink :to="`/organization/project-details/${projectId}`">Project details</RouterLink> -->
-        <RouterLink :to="`/organization/project-details/${projectId}/ppe-deliveries`">
+        <RouterLink to="/organization/ppe-deliveries">
           PPE log
         </RouterLink>
         <RouterLink
           class="primary-link"
-          :to="`/organization/project-details/${projectId}/ppe-delivery`"
+          to="/organization/ppe-delivery"
           >New Delivery →</RouterLink
         >
       </nav>
