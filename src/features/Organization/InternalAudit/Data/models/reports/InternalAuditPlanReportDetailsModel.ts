@@ -13,6 +13,12 @@ export type InternalAuditSchedule = {
   assignedAuditor: string
 }
 
+export type InternalAuditScope = {
+  departmentId: number
+  department: string
+  activities: string[]
+}
+
 const defaultPurpose =
   'To evaluate the implementation of the occupational health and safety management system against ISO 45001:2018 within the agreed audit scope.'
 
@@ -55,6 +61,27 @@ function parseSchedule(value: unknown): InternalAuditSchedule[] {
   })
 }
 
+function parseScope(value: unknown): InternalAuditScope[] {
+  if (!Array.isArray(value)) return []
+
+  return value.map((entry) => {
+    const item = asRecord(entry)
+    const department = asRecord(item.department)
+    const activities = Array.isArray(item.activities) ? item.activities : []
+
+    return {
+      departmentId: Number(department.id ?? 0),
+      department: String(department.title ?? department.name ?? ''),
+      activities: activities
+        .map((activity) => {
+          const parsedActivity = asRecord(activity)
+          return String(parsedActivity.title ?? parsedActivity.name ?? '')
+        })
+        .filter(Boolean),
+    }
+  })
+}
+
 export default class InternalAuditPlanReportDetailsModel {
   constructor(
     public id: number,
@@ -64,6 +91,7 @@ export default class InternalAuditPlanReportDetailsModel {
     public internalAuditors: InternalAuditor[],
     public purpose: string,
     public auditSchedule: InternalAuditSchedule[],
+    public auditScope: InternalAuditScope[],
   ) {}
 
   static fromMap(data: unknown): InternalAuditPlanReportDetailsModel {
@@ -96,6 +124,7 @@ export default class InternalAuditPlanReportDetailsModel {
       parseAuditors(item.internal_auditors ?? item.internal_auditor ?? item.audit_team),
       String(item.Purpose || item.purpose || defaultPurpose),
       parseSchedule(item.audit_schedule),
+      parseScope(item.audit_scope),
     )
   }
 
@@ -118,6 +147,13 @@ export default class InternalAuditPlanReportDetailsModel {
         location: 'Main office',
         auditFocus: 'Maintenance',
         assignedAuditor: 'Example Employee',
+      },
+    ],
+    [
+      {
+        departmentId: 616,
+        department: 'Maintenance',
+        activities: ['Equipment inspection', 'Calibration review'],
       },
     ],
   )

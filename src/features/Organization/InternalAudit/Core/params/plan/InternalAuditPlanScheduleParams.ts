@@ -13,9 +13,13 @@ export default class InternalAuditPlanScheduleParams {
       start_time: this.startTime,
       end_time: this.endTime,
       day: this.day,
-      audit_focus_id: this.auditFocusId,
+      ...(  this.auditFocusId != 0 &&{
+        audit_focus_id: this.auditFocusId
+      }),
       location: this.location,
-      assigend_auditors_id: this.assignedAuditorsId,
+       ...(  this.assignedAuditorsId != 0 &&{
+        assigend_auditors_id: this.assignedAuditorsId
+      }),
     }
   }
 }

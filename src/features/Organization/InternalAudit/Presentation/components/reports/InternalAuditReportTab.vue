@@ -294,6 +294,19 @@ onMounted(fetchDetails)
             <dd>{{ conclusion || '—' }}</dd>
           </div>
         </dl>
+        <section class="preview-audit-scope">
+          <h3>Audit Scope</h3>
+          <div class="audit-scope-list">
+            <article
+              v-for="(scopeItem, index) in details.auditScope"
+              :key="scopeItem.departmentId || index"
+            >
+              <strong>{{ scopeItem.department || '—' }}</strong>
+              <span>{{ scopeItem.activities.join(', ') || 'No activities recorded' }}</span>
+            </article>
+            <p v-if="!details.auditScope.length">No audit scope recorded.</p>
+          </div>
+        </section>
         <section class="preview-schedule">
           <h3>Audit schedule</h3>
           <div class="schedule-table-wrap">
@@ -341,6 +354,22 @@ onMounted(fetchDetails)
           </div>
           <label class="field"><span>Purpose</span><textarea :value="details.purpose" rows="4"
               readonly></textarea></label>
+          <div class="audit-scope">
+            <div class="section-title">
+              <h3>Audit Scope</h3>
+              <p>Departments and activities included in this audit.</p>
+            </div>
+            <div class="audit-scope-list">
+              <article
+                v-for="(scopeItem, index) in details.auditScope"
+                :key="scopeItem.departmentId || index"
+              >
+                <strong>{{ scopeItem.department || '—' }}</strong>
+                <span>{{ scopeItem.activities.join(', ') || 'No activities recorded' }}</span>
+              </article>
+              <p v-if="!details.auditScope.length">No audit scope recorded.</p>
+            </div>
+          </div>
           <label class="field"><span>Scope Clarifications <b>*</b></span><textarea v-model="scope" rows="4"
               placeholder="Define the scope covered by this report" :disabled="isReported"></textarea></label>
           <label class="field"><span>Methodology <b>*</b></span><textarea v-model="methodology" rows="4"
@@ -624,6 +653,35 @@ button:disabled {
   font-size: 1rem
 }
 
+.audit-scope {
+  display: grid;
+  gap: 14px
+}
+
+.audit-scope-list {
+  display: grid;
+  gap: 10px
+}
+
+.audit-scope-list article {
+  display: grid;
+  grid-template-columns: minmax(160px, .35fr) 1fr;
+  gap: 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--main-border, #d9e1df);
+  border-radius: 10px;
+  background: var(--surface-ground, #f4f7f6)
+}
+
+.audit-scope-list span,
+.audit-scope-list p {
+  color: var(--text-soft, #687777)
+}
+
+.audit-scope-list p {
+  margin: 0
+}
+
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -735,6 +793,7 @@ button:disabled {
 }
 
 .preview-ncrs,
+.preview-audit-scope,
 .preview-schedule {
   margin-top: 24px
 }
@@ -782,6 +841,11 @@ button:disabled {
   }
 
   .report-preview dl>div {
+    grid-template-columns: 1fr;
+    gap: 5px
+  }
+
+  .audit-scope-list article {
     grid-template-columns: 1fr;
     gap: 5px
   }
