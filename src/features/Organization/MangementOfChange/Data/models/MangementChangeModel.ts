@@ -39,6 +39,7 @@ type ManagementChangeData = {
   initiator_employee_id?: number | null
   initiatore_employee_id?: number | null
   serial?: string | null
+  serial_name?: string | null
   serial_number?: string | null
   initiator_employee?: ManagementChangeReferenceData | null
   topic_text?: string | null
@@ -80,6 +81,8 @@ export default class MangementChangeModel {
   public descriptionOfProposedChange: string = ''
   public initiatore_employee_id: number | null = null
   public serial: string = ''
+  public serial_name: string = ''
+  public serial_number: string = ''
 
   constructor(data: Partial<MangementChangeModel>) {
     Object.assign(this, data)
@@ -91,9 +94,9 @@ export default class MangementChangeModel {
       : null
     const employee = data.changer_request_employee_id
       ? new TitleInterface({
-        id: data.changer_request_employee_id.id,
-        title: data.changer_request_employee_id.title ?? data.changer_request_employee_id.name,
-      })
+          id: data.changer_request_employee_id.id,
+          title: data.changer_request_employee_id.title ?? data.changer_request_employee_id.name,
+        })
       : null
     const equipmentData =
       data.management_change_topic_equipment_id &&
@@ -102,27 +105,29 @@ export default class MangementChangeModel {
         : null
     const equipment = equipmentData
       ? new TitleInterface({
-        id: equipmentData.id,
-        title: equipmentData.title ?? equipmentData.name,
-      })
+          id: equipmentData.id,
+          title: equipmentData.title ?? equipmentData.name,
+        })
       : null
     const approver = data.approver_by
       ? new TitleInterface({
-        id: data.approver_by.id,
-        title: data.approver_by.title ?? data.approver_by.name,
-      })
+          id: data.approver_by.id,
+          title: data.approver_by.title ?? data.approver_by.name,
+        })
       : null
     const initiatorEmployee = data.initiator_employee
       ? new TitleInterface({
-        id: data.initiator_employee.id,
-        title: data.initiator_employee.title ?? data.initiator_employee.name,
-      })
+          id: data.initiator_employee.id,
+          title: data.initiator_employee.title ?? data.initiator_employee.name,
+        })
       : null
     const managementChangeText = data.topic_text ?? data.changement_topic_other
 
     return new MangementChangeModel({
       id: data.id,
-      serial: data.serial ?? data.serial_number ?? '',
+      serial: data.serial ?? data.serial_name ?? data.serial_number ?? '',
+      serial_name: data.serial_name ?? data.serial ?? '',
+      serial_number: data.serial_number ?? '',
       organization: data.organization_id,
       risk_assisment_file: data.risk_assisment_file,
       attachments: data.media?.map((item) => item.url) ?? [],
@@ -157,10 +162,7 @@ export default class MangementChangeModel {
       equipmentTitle: equipment?.title,
       approvalByName: approver?.title,
       initiatorEmployeeName: initiatorEmployee?.title,
-      createdByName:
-        data.created_by?.title ??
-        data.created_by?.name ??
-        initiatorEmployee?.title,
+      createdByName: data.created_by?.title ?? data.created_by?.name ?? initiatorEmployee?.title,
       descriptionOfProposedChange: managementChangeText ?? topic?.title ?? '',
       initiatore_employee_id:
         data.initiator_employee_id ?? data.initiatore_employee_id ?? initiatorEmployee?.id ?? null,

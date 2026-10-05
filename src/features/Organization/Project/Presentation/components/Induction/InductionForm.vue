@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import Checkbox from 'primevue/checkbox'
 import DatePicker from 'primevue/datepicker'
@@ -21,23 +20,22 @@ import InductionTrainingTopicParams from '../../../Core/params/induction/addIndu
 import InductionOrganisationEmployeeParams from '../../../Core/params/induction/InductionOrganisationEmployeeParams'
 import type InductionDetailsModel from '../../../Data/models/Induction/InductionDetailsModel'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
-import ProjectCustomLocationController from '@/features/Organization/Project/Presentation/controllers/ProjectCustomLocationController'
-import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
-import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
-import type ProjectCustomLocationModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectCustomLocationModel'
+import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
+import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
+import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddInductionParams | EditInductionParams): void
 }>()
 const props = defineProps<{ data?: InductionDetailsModel }>()
 
-const route = useRoute()
 const { t } = useI18n()
 const employeeController = IndexOrganizatoinEmployeeController.getInstance()
 const employeeParams = new IndexOrganizatoinEmployeeParams('', 1, 1000, 1)
 const trainingTopicController = IndexTraningTopicController.getInstance()
 const trainingTopicParams = new IndexTraningTopicParams('', 1, 1000, 1)
-const projectCustomLocationController = ProjectCustomLocationController.getInstance()
+const projectController = IndexProjectController.getInstance()
+const projectParams = new IndexProjectParams('', 1, 1000, 0)
 
 const employees = ref<OrganizatoinEmployeeModel[]>([])
 const employeesLoading = ref(false)
@@ -45,9 +43,7 @@ const employeesFailed = ref(false)
 const trainingTopics = ref<TraningTopicModel[]>([])
 const trainingTopicsLoading = ref(false)
 const trainingTopicsFailed = ref(false)
-const projectLocations = ref<ProjectCustomLocationModel[]>([])
-const projectLocationsLoading = ref(false)
-const projectLocationsFailed = ref(false)
+const selectedProject = ref<TitleInterface | null>(null)
 const selectedProjectLocation = ref<TitleInterface | null>(null)
 const selectedProjectZone = ref<TitleInterface | null>(null)
 const instractor = ref<TitleInterface | null>(null)
@@ -59,13 +55,12 @@ const manualOrganisationEmployeeName = ref('')
 const manualOrganisationEmployeeNames = ref<string[]>([])
 const requiredFieldErrors = ref<Record<string, string>>({})
 
-const projectId = computed(() => {
-  const routeValue = route.query.project_id ?? route.params.project_id
-  const rawValue = Array.isArray(routeValue) ? routeValue[0] : routeValue
-  const parsedValue = Number(rawValue)
-
-  return Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : null
-})
+const projects = computed<ProjectModel[]>(() => projectController.state.value.data ?? [])
+const projectOptions = computed(() => projects.value)
+const selectedProjectData = computed(() =>
+  projects.value.find((project) => Number(project.id) === Number(selectedProject.value?.id)),
+)
+const projectId = computed(() => Number(selectedProject.value?.id) || null)
 const shouldUseProjectLocation = computed(() => Boolean(projectId.value))
 
 const employeeOptions = computed(() =>
@@ -79,14 +74,14 @@ const employeeOptions = computed(() =>
   ),
 )
 const projectLocationOptions = computed(() =>
-  projectLocations.value.flatMap((location) => {
-    const locationId = Number(location.projectLocationId || location.id)
+  (selectedProjectData.value?.projectLocations ?? []).flatMap((location) => {
+    const locationId = Number(location.projectLocationId)
     if (!Number.isFinite(locationId) || locationId <= 0) return []
 
     return [
       new TitleInterface({
         id: locationId,
-        title: location.title || `Location #${locationId}`,
+        title: location.locationTitle || location.title || `Location #${locationId}`,
       }),
     ]
   }),
@@ -94,19 +89,22 @@ const projectLocationOptions = computed(() =>
 const selectedProjectLocationData = computed(() => {
   const locationId = Number(selectedProjectLocation.value?.id ?? 0)
 
-  return projectLocations.value.find(
-    (location) => Number(location.projectLocationId || location.id) === locationId,
+  return selectedProjectData.value?.projectLocations.find(
+    (location) => Number(location.projectLocationId) === locationId,
   )
 })
 const projectZoneOptions = computed(() =>
-  (selectedProjectLocationData.value?.locationZones ?? []).flatMap((zone) => {
-    const zoneId = Number(zone.projectZoonId || zone.zoonId)
+  (selectedProjectData.value?.projectZones ?? []).flatMap((zone) => {
+    if (Number(zone.projectLocationId) !== Number(selectedProjectLocationData.value?.projectLocationId)) {
+      return []
+    }
+    const zoneId = Number(zone.projectZoonId)
     if (!Number.isFinite(zoneId) || zoneId <= 0) return []
 
     return [
       new TitleInterface({
         id: zoneId,
-        title: zone.zoonTitle || zone.title || `ZOON #${zoneId}`,
+        title: zone.zoonTitle || zone.title || `Zone #${zoneId}`,
       }),
     ]
   }),
@@ -133,20 +131,6 @@ const completionItems = computed(() => {
       icon: 'uil:calendar-alt',
       done: Boolean(date.value),
     },
-    ...(shouldUseProjectLocation.value
-      ? [
-          {
-            key: 'location',
-            icon: 'uil:map-marker',
-            done: Boolean(selectedProjectLocation.value?.id),
-          },
-          {
-            key: 'ZOON',
-            icon: 'uil:map-pin',
-            done: Boolean(selectedProjectZone.value?.id),
-          },
-        ]
-      : []),
     {
       key: 'organisationEmployee',
       icon: 'uil:users-alt',
@@ -274,6 +258,13 @@ const setInstructor = (value: TitleInterface | TitleInterface[] | null) => {
   updateData()
 }
 
+const setProject = (value: TitleInterface | TitleInterface[] | null) => {
+  selectedProject.value = Array.isArray(value) ? null : value
+  selectedProjectLocation.value = null
+  selectedProjectZone.value = null
+  updateData()
+}
+
 const setProjectLocation = (value: TitleInterface | TitleInterface[] | null) => {
   selectedProjectLocation.value = Array.isArray(value) ? null : value
   selectedProjectZone.value = null
@@ -385,6 +376,14 @@ const syncData = () => {
     .map((employee) => (employee.title || employee.name || '').trim())
     .filter((name): name is string => Boolean(name))
 
+  selectedProject.value = data.projectId
+    ? (projectOptions.value.find((project) => Number(project.id) === Number(data.projectId)) ??
+      new TitleInterface({
+        id: data.projectId,
+        title: data.projectTitle || `Project #${data.projectId}`,
+      }))
+    : null
+
   selectedProjectLocation.value = data.projectLocationId
     ? (projectLocationOptions.value.find(
         (location) => Number(location.id) === Number(data.projectLocationId),
@@ -446,30 +445,6 @@ const fetchTrainingTopics = async () => {
   }
 }
 
-const fetchProjectLocations = async () => {
-  if (!projectId.value) {
-    projectLocations.value = []
-    selectedProjectLocation.value = null
-    selectedProjectZone.value = null
-    updateData()
-    return
-  }
-
-  projectLocationsLoading.value = true
-  projectLocationsFailed.value = false
-  try {
-    await projectCustomLocationController.getData(
-      new ProjectCustomLocationParams(projectId.value, [ProjectCustomLocationEnum.ZOON]),
-    )
-    projectLocations.value = projectCustomLocationController.state.value.data ?? []
-    syncData()
-  } catch {
-    projectLocationsFailed.value = true
-  } finally {
-    projectLocationsLoading.value = false
-  }
-}
-
 const requiredFields = computed(() => {
   const fields = [
     {
@@ -481,16 +456,6 @@ const requiredFields = computed(() => {
       key: 'date',
       message: t('Date is required'),
       isMissing: () => !date.value,
-    },
-    {
-      key: 'projectLocation',
-      message: t('Location is required'),
-      isMissing: () => shouldUseProjectLocation.value && !selectedProjectLocation.value?.id,
-    },
-    {
-      key: 'projectZone',
-      message: t('Zone is required'),
-      isMissing: () => shouldUseProjectLocation.value && !selectedProjectZone.value?.id,
     },
     {
       key: 'trainingTopic',
@@ -527,7 +492,7 @@ const validateRequiredFields = async () => {
 }
 
 watch(
-  [() => props.data, employeeOptions],
+  [() => props.data, employeeOptions, projectOptions],
   () => {
     syncData()
   },
@@ -538,7 +503,6 @@ defineExpose({ validateRequiredFields })
 onMounted(() => {
   void fetchEmployees()
   void fetchTrainingTopics()
-  void fetchProjectLocations()
 })
 </script>
 
@@ -628,6 +592,19 @@ onMounted(() => {
           </p>
         </div>
 
+        <div class="induction-field">
+          <UpdatedCustomInputSelect
+            :model-value="selectedProject"
+            :controller="projectController"
+            :params="projectParams"
+            label="Project"
+            id="induction-project"
+            :placeholder="$t('Select project')"
+            optional
+            @update:model-value="setProject"
+          />
+        </div>
+
         <template v-if="shouldUseProjectLocation">
           <div class="induction-field" data-required-field="projectLocation">
             <UpdatedCustomInputSelect
@@ -637,25 +614,12 @@ onMounted(() => {
               id="induction-project-location"
               :placeholder="$t('Select location')"
               :reload="false"
-              required
+              optional
               @update:model-value="setProjectLocation"
             />
-            <p v-if="projectLocationsLoading" class="field-helper">
-              {{ $t('loading_locations') }}
-            </p>
-            <p v-else-if="projectLocationsFailed" class="field-helper field-helper--error">
-              {{ $t('locations_could_not_be_loaded') }}
-              <button type="button" class="field-retry" @click.prevent="fetchProjectLocations">
-                <Icon icon="uil:redo" />
-                {{ $t('retry') }}
-              </button>
-            </p>
-            <p v-if="requiredFieldErrors.projectLocation" class="required-field-message">
-              {{ requiredFieldErrors.projectLocation }}
-            </p>
           </div>
 
-          <div class="induction-field" data-required-field="projectZone">
+          <div v-if="selectedProjectLocation" class="induction-field" data-required-field="projectZone">
             <UpdatedCustomInputSelect
               :model-value="selectedProjectZone"
               :static-options="projectZoneOptions"
@@ -663,19 +627,16 @@ onMounted(() => {
               id="induction-project-zone"
               :placeholder="$t('Select ZOON')"
               :reload="false"
-              required
+              optional
               @update:model-value="setProjectZone"
             />
             <p
               v-if="
-                selectedProjectLocation && !projectZoneOptions.length && !projectLocationsLoading
+                selectedProjectLocation && !projectZoneOptions.length
               "
               class="field-helper"
             >
               {{ $t('no_zoon_found') }}
-            </p>
-            <p v-if="requiredFieldErrors.projectZone" class="required-field-message">
-              {{ requiredFieldErrors.projectZone }}
             </p>
           </div>
         </template>

@@ -3317,6 +3317,80 @@ export const adminPermissions: PermissionItem = {
             },
           ],
         },
+        {
+          key: PermissionsEnum.AUDIT_STANDARDS_ALL,
+          code: PermissionsEnum.AUDIT_STANDARDS_ALL,
+          label: 'Audit Standards',
+          permissions: [
+            {
+              key: PermissionsEnum.AUDIT_STANDARDS_ALL,
+              code: PermissionsEnum.AUDIT_STANDARDS_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.AUDIT_STANDARDS_FETCH,
+              code: PermissionsEnum.AUDIT_STANDARDS_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.AUDIT_STANDARDS_DETAILS,
+              code: PermissionsEnum.AUDIT_STANDARDS_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.AUDIT_STANDARDS_CREATE,
+              code: PermissionsEnum.AUDIT_STANDARDS_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.AUDIT_STANDARDS_UPDATE,
+              code: PermissionsEnum.AUDIT_STANDARDS_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.AUDIT_STANDARDS_DELETE,
+              code: PermissionsEnum.AUDIT_STANDARDS_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
+        {
+          key: PermissionsEnum.AUDIT_ACTIVITIES_ALL,
+          code: PermissionsEnum.AUDIT_ACTIVITIES_ALL,
+          label: 'Audit Activities',
+          permissions: [
+            {
+              key: PermissionsEnum.AUDIT_ACTIVITIES_ALL,
+              code: PermissionsEnum.AUDIT_ACTIVITIES_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.AUDIT_ACTIVITIES_FETCH,
+              code: PermissionsEnum.AUDIT_ACTIVITIES_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.AUDIT_ACTIVITIES_DETAILS,
+              code: PermissionsEnum.AUDIT_ACTIVITIES_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.AUDIT_ACTIVITIES_CREATE,
+              code: PermissionsEnum.AUDIT_ACTIVITIES_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.AUDIT_ACTIVITIES_UPDATE,
+              code: PermissionsEnum.AUDIT_ACTIVITIES_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.AUDIT_ACTIVITIES_DELETE,
+              code: PermissionsEnum.AUDIT_ACTIVITIES_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
         // PPE Item
         {
           key: PermissionsEnum.PPE_ITEM_ALL,

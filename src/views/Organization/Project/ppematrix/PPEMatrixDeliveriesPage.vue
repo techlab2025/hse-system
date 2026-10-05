@@ -1,27 +1,23 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { RouterLink, useRoute } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import PPEMatrixDeliveriesTable from '@/features/Organization/Project/Presentation/components/ppematrix/PPEMatrixDeliveriesTable.vue'
-
-const route = useRoute()
-const projectId = computed(() => Number(route.params.id))
 </script>
 
 <template>
   <main class="deliveries-page">
     <nav class="deliveries-navigation" aria-label="PPE navigation">
-      <RouterLink :to="`/organization/project-details/${projectId}/ppe-matrix`">
+      <RouterLink to="/organization/ppe-matrix">
         ← Activity and tool matrix
       </RouterLink>
       <RouterLink
         class="primary-link"
-        :to="`/organization/project-details/${projectId}/ppe-delivery`"
+        to="/organization/ppe-delivery"
       >
         Deliver PPE →
       </RouterLink>
     </nav>
 
-    <PPEMatrixDeliveriesTable :project-id="projectId" />
+    <PPEMatrixDeliveriesTable />
   </main>
 </template>
 

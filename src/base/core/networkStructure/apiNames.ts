@@ -1438,6 +1438,47 @@ class ApiNames {
     return this.prefix + 'delete_role'
   }
 
+  // Internal Audit
+  public get CreateInternalAuditPlan() {
+    return this.prefix + 'create_internal_audit'
+  }
+  public get IndexInternalAuditPlan() {
+    return this.prefix + 'fetch_internal_audits'
+  }
+  public get ShowInternalAuditPlan() {
+    return this.prefix + 'fetch_internal_audit_details'
+  }
+  public get EditInternalAuditPlan() {
+    return this.prefix + 'update_internal_audit'
+  }
+  public get DeleteInternalAuditPlan() {
+    return this.prefix + 'delete_internal_audit'
+  }
+  public get FetchInternalAuditAttendance() {
+    return this.prefix + 'fetch_internal_audit_attendance'
+  }
+  public get SaveInternalAuditAttendance() {
+    return this.prefix + 'save_internal_audit_attendance'
+  }
+  public get AddInternalAuditParticipants() {
+    return this.prefix + 'add_internal_audit_Participants'
+  }
+  public get FetchInternalAuditNcrs() {
+    return this.prefix + 'fetch_ncrs'
+  }
+  public get FetchInternalAuditNcrDetails() {
+    return this.prefix + 'fetch_ncr_details'
+  }
+  public get CreateInternalAuditNcrs() {
+    return this.prefix + 'create_ncrs'
+  }
+  public get FetchInternalAuditPlanDetailsForReport() {
+    return this.prefix + 'fetch_internal_audit_plan_details'
+  }
+  public get CreateInternalAuditReport() {
+    return this.prefix + 'create_internal_audit_report'
+  }
+
   // Attachment matrix
   public get CreateAttachmentMatrix() {
     return this.prefix + 'create_attachment_matrix'
@@ -2117,6 +2158,46 @@ class ApiNames {
   }
   public get clone_ppe_tool() {
     return this.prefix + 'clone_ppe_tools'
+  }
+
+  // Audit Standard
+  public get fetch_audit_standards() {
+    return this.prefix + 'fetch_internal_audit_standards'
+  }
+  public get fetch_audit_standard_details() {
+    return this.prefix + 'fetch_internal_audit_standard_details'
+  }
+  public get create_audit_standard() {
+    return this.prefix + 'create_internal_audit_standard'
+  }
+  public get update_audit_standard() {
+    return this.prefix + 'update_internal_audit_standard'
+  }
+  public get delete_audit_standard() {
+    return this.prefix + 'delete_internal_audit_standard'
+  }
+  public get clone_audit_standard() {
+    return this.prefix + 'clone_internal_audit_standards'
+  }
+
+  // Audit Activity
+  public get fetch_audit_activities() {
+    return this.prefix + 'fetch_internal_audit_activities'
+  }
+  public get fetch_audit_activity_details() {
+    return this.prefix + 'fetch_internal_audit_activity_details'
+  }
+  public get create_audit_activity() {
+    return this.prefix + 'create_internal_audit_activity'
+  }
+  public get update_audit_activity() {
+    return this.prefix + 'update_internal_audit_activity'
+  }
+  public get delete_audit_activity() {
+    return this.prefix + 'delete_internal_audit_activity'
+  }
+  public get clone_audit_activity() {
+    return this.prefix + 'clone_internal_audit_activities'
   }
   // Risk Assessment
   public get CreateRiskAssessment() {

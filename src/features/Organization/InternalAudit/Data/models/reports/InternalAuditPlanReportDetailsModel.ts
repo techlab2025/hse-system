@@ -1,0 +1,63 @@
+export type InternalAuditor = {
+  id: number
+  name: string
+}
+
+const defaultPurpose =
+  'To evaluate the implementation of the occupational health and safety management system against ISO 45001:2018 within the agreed audit scope.'
+
+function parseAuditors(value: unknown): InternalAuditor[] {
+  if (!Array.isArray(value)) return []
+  return value.map((auditor) => {
+    const item = (auditor ?? {}) as Record<string, unknown>
+    return { id: Number(item.id ?? item.is ?? 0), name: String(item.name ?? '') }
+  })
+}
+
+export default class InternalAuditPlanReportDetailsModel {
+  constructor(
+    public id: number,
+    public auditNumber: string,
+    public auditStartDate: string,
+    public auditEndDate: string,
+    public internalAuditors: InternalAuditor[],
+    public purpose: string,
+  ) {}
+
+  static fromMap(data: unknown): InternalAuditPlanReportDetailsModel {
+    const item = (data ?? {}) as Record<string, unknown>
+    const rawDates = item.audit_dates
+    const dates =
+      rawDates && typeof rawDates === 'object' && !Array.isArray(rawDates)
+        ? (rawDates as Record<string, unknown>)
+        : {}
+    const dateList = Array.isArray(rawDates) ? rawDates : []
+
+    return new InternalAuditPlanReportDetailsModel(
+      Number(item.id ?? item.internal_audit_plan_id ?? item.internal_audit_id ?? 0),
+      String(item.audit_number ?? item.audit_nume ?? item.audit_no ?? item.title ?? ''),
+      String(
+        item.audit_start_date ??
+          dates.start_date ??
+          dates.start ??
+          dateList[0] ??
+          (typeof rawDates === 'string' ? rawDates : ''),
+      ),
+      String(item.audit_end_date ?? dates.end_date ?? dates.end ?? dateList[1] ?? ''),
+      parseAuditors(item.internal_auditors ?? item.internal_auditor ?? item.audit_team),
+      String(item.Purpose || item.purpose || defaultPurpose),
+    )
+  }
+
+  static example: InternalAuditPlanReportDetailsModel = new InternalAuditPlanReportDetailsModel(
+    12,
+    'IA-2026-0012',
+    '2026-10-04',
+    '2026-10-04',
+    [
+      { id: 101, name: 'Sara Ibrahim' },
+      { id: 102, name: 'Ahmed Hassan' },
+    ],
+    defaultPurpose,
+  )
+}

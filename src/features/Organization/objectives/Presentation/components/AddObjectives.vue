@@ -1,13 +1,12 @@
 <script lang="ts" setup>
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
-import { computed, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import ObjectivesForm from './ObjectivesForm.vue'
 import type AddObjectivesParams from '../../Core/params/addObjectivesParams'
 import AddObjectivesController from '../controllers/addObjectivesController'
 
 const router = useRouter()
-const route = useRoute()
 const stayOnPageRouter = createStayOnPageRouter(router)
 const params = ref<AddObjectivesParams | null>(null)
 const formKey = ref(0)
@@ -15,27 +14,13 @@ const formRef = ref<InstanceType<typeof ObjectivesForm> | null>(null)
 
 const addObjectivesController = AddObjectivesController.getInstance()
 
-const routeProjectId = computed(() => {
-  const routeValue = route.params.project_id ?? route.query.project_id
-  const rawValue = Array.isArray(routeValue) ? routeValue[0] : routeValue
-  const parsedValue = Number(rawValue)
-
-  return Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : null
-})
-
-const redirectPath = computed(() =>
-  routeProjectId.value
-    ? `/organization/objectives/project/${routeProjectId.value}`
-    : '/organization/objectives',
-)
-
 const addObjectives = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
   await addObjectivesController.addObjectives(
     params.value as AddObjectivesParams,
     router,
     false,
-    redirectPath.value,
+    '/organization/objectives',
   )
 }
 

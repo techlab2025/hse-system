@@ -15,7 +15,9 @@ export default class LeadershipVisitDetailsModel {
     public areasOfImprovement: LeadershipVisitReportImprovementModel[],
     public createdAt: string,
     public updatedAt: string,
-    public media: string[] = []
+    public media: string[] = [],
+    public serial_name: string = '',
+    public serial_number: string = '',
     //  public media: InvestegationDocumentMedaModel[]
   ) {}
 
@@ -45,6 +47,8 @@ export default class LeadershipVisitDetailsModel {
             return typeof url === 'string' && url ? [url] : []
           })
         : [],
+      String(data.serial_name ?? data.serial ?? ''),
+      String(data.serial_number ?? ''),
     )
   }
 }

@@ -4,7 +4,6 @@ import { useRoute } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
-import defaultLogo from '@/assets/images/logo.svg'
 import { useSystemIdentity } from '@/composables/useSystemIdentity'
 import ShowProjectSummaryDetailsParams from '../../../Core/params/ShowProjectSummaryDetailsParams'
 import ShowProjectSummaryDetailsController from '../../controllers/ShowProjectSummaryDetailsController'
@@ -20,8 +19,6 @@ const project = computed(() => state.value.data)
 const activeIdentity = computed(() =>
   systemIdentity.value.isActive ? systemIdentity.value : defaultIdentity.value,
 )
-const brandName = computed(() => activeIdentity.value.name || 'HSE.Cloud.Ai')
-const brandLogo = computed(() => activeIdentity.value.logo || defaultLogo)
 const summaryIdentityStyle = computed(() => ({
   '--summary-primary': activeIdentity.value.primaryColor,
   '--summary-secondary': activeIdentity.value.secondaryColor,
@@ -147,30 +144,32 @@ const quickLinks = computed(() => [
     to: `/organization/project-details/${projectId.value}/risk-assessments`,
     mark: 'R',
   },
-  {
-    title: 'PPE matrix',
-    description: 'Activities, tools and protection',
-    to: `/organization/project-details/${projectId.value}/ppe-matrix`,
-    mark: 'P',
-  },
+  // PPE Matrix moved to the Company sidebar.
+  // {
+  //   title: 'PPE matrix',
+  //   description: 'Activities, tools and protection',
+  //   to: `/organization/project-details/${projectId.value}/ppe-matrix`,
+  //   mark: 'P',
+  // },
   {
     title: 'Project meetings',
     description: 'Meeting schedule and outcomes',
     to: `/organization/project-meetings/${projectId.value}`,
     mark: 'M',
   },
-  {
-    title: 'Induction',
-    description: 'All Inductions',
-    to: `/organization/inductions?project_id=${projectId.value}`,
-    mark: 'I',
-  },
-  {
-    title: 'objectives',
-    description: 'All Objectives',
-    to: `/organization/objectives/project/${projectId.value}`,
-    mark: 'O',
-  },
+  // Induction and Objectives moved to the Company sidebar.
+  // {
+  //   title: 'Induction',
+  //   description: 'All Inductions',
+  //   to: `/organization/inductions?project_id=${projectId.value}`,
+  //   mark: 'I',
+  // },
+  // {
+  //   title: 'objectives',
+  //   description: 'All Objectives',
+  //   to: `/organization/objectives/project/${projectId.value}`,
+  //   mark: 'O',
+  // },
   {
     title: 'management of change',
     description: 'all management of change',

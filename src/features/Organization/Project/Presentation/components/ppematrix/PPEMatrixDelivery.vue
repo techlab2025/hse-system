@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
-import { RouterLink, useRoute } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import Checkbox from 'primevue/checkbox'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -14,23 +14,40 @@ import CreatePPEMatrixDeliveryParams, {
 } from '../../../Core/params/ppematrix/CreatePPEMatrixDeliveryParams'
 import FetchPPEActivityToolsController from '../../controllers/ppematrix/FetchPPEActivityToolsController'
 import CreatePPEMatrixDeliveryController from '../../controllers/ppematrix/CreatePPEMatrixDeliveryController'
+import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
+import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
+import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 
 interface DeliveryRow extends PPEMatrixDeliveryEmployee {
   key: number
 }
-const route = useRoute()
-const projectId = computed(() => Number(route.params.id))
 const activityController = IndexPPEActivityController.getInstance()
 const employeeController = IndexOrganizatoinEmployeeController.getInstance()
 const toolsController = FetchPPEActivityToolsController.getInstance()
 const deliveryController = CreatePPEMatrixDeliveryController.getInstance()
+const projectController = IndexProjectController.getInstance()
+const projectParams = new IndexProjectParams('', 1, 1000, 0)
 const employeeParams = new IndexOrganizatoinEmployeeParams('', 0, 0, 0)
 const activities = computed(() => activityController.state.value.data ?? [])
 const selectedActivityId = ref<number | null>(null)
+const selectedProject = ref<TitleInterface | null>(null)
+const selectedProjectLocation = ref<TitleInterface | null>(null)
+const selectedProjectZone = ref<TitleInterface | null>(null)
 const selectedEmployees = ref<TitleInterface[]>([])
 const rows = ref<DeliveryRow[]>([])
 const errorMessage = ref('')
 const successMessage = ref('')
+const projects = computed<ProjectModel[]>(() => projectController.state.value.data ?? [])
+const selectedProjectData = computed(() =>
+  projects.value.find((project) => Number(project.id) === Number(selectedProject.value?.id)),
+)
+const projectLocationOptions = computed(() => selectedProjectData.value?.projectLocations ?? [])
+const projectZoneOptions = computed(() => {
+  const projectLocationId = Number(selectedProjectLocation.value?.id ?? 0)
+  return (selectedProjectData.value?.projectZones ?? []).filter(
+    (zone) => Number(zone.projectLocationId) === projectLocationId,
+  )
+})
 const availableTools = computed(
   () =>
     toolsController.state.value.data?.find((row) => row.activityId === selectedActivityId.value)
@@ -50,6 +67,18 @@ const setEmployees = (value: TitleInterface | TitleInterface[] | null) => {
       },
   )
 }
+const setProject = (value: TitleInterface | TitleInterface[] | null) => {
+  selectedProject.value = Array.isArray(value) ? null : value
+  selectedProjectLocation.value = null
+  selectedProjectZone.value = null
+}
+const setProjectLocation = (value: TitleInterface | TitleInterface[] | null) => {
+  selectedProjectLocation.value = Array.isArray(value) ? null : value
+  selectedProjectZone.value = null
+}
+const setProjectZone = (value: TitleInterface | TitleInterface[] | null) => {
+  selectedProjectZone.value = Array.isArray(value) ? null : value
+}
 const removeEmployee = (employeeId: number) => {
   setEmployees(selectedEmployees.value.filter((employee) => employee.id !== employeeId))
 }
@@ -66,14 +95,16 @@ watch(selectedActivityId, async (activityId) => {
   errorMessage.value = ''
   successMessage.value = ''
   if (activityId)
-    await toolsController.fetchPPEActivityTools(new FetchPPEActivityToolsParams(activityId))
+    await toolsController.fetchPPEActivityTools(
+      new FetchPPEActivityToolsParams({ ppeActivityId: activityId }),
+    )
 })
 
 const submit = async () => {
   errorMessage.value = ''
   successMessage.value = ''
-  if (!Number.isInteger(projectId.value) || projectId.value <= 0 || !selectedActivityId.value) {
-    errorMessage.value = 'Select a project activity first.'
+  if (!selectedActivityId.value) {
+    errorMessage.value = 'Select an activity first.'
     return
   }
   // if (!rows.value.length || rows.value.some((row) => !row.employeeId || !row.ppeToolIds.length)) {
@@ -87,9 +118,11 @@ const submit = async () => {
   try {
     await deliveryController.createPPEMatrixDelivery(
       new CreatePPEMatrixDeliveryParams(
-        projectId.value,
+        Number(selectedProject.value?.id) || null,
         selectedActivityId.value,
         rows.value.map((row) => ({ employeeId: row.employeeId, ppeToolIds: row.ppeToolIds })),
+        Number(selectedProjectLocation.value?.id) || null,
+        Number(selectedProjectZone.value?.id) || null,
       ),
     )
     if (!deliveryController.isDataSuccess()) throw new Error('Delivery failed')
@@ -117,7 +150,7 @@ onMounted(async () => {
         <h1>PPE delivery</h1>
         <!-- <p>Select one activity, then choose the tools delivered to each employee.</p> -->
       </div>
-      <RouterLink :to="`/organization/project-details/${projectId}/ppe-matrix`"
+      <RouterLink to="/organization/ppe-matrix"
         >← Activity and tool matrix</RouterLink
       >
     </header>
@@ -125,7 +158,45 @@ onMounted(async () => {
     <!-- <p v-if="successMessage" class="notice notice--success" role="status">{{ successMessage }}</p> -->
 
     <section class="card">
-      <h2>1.  Activities</h2>
+      <h2>1. Project scope</h2>
+      <div class="scope-grid">
+        <UpdatedCustomInputSelect
+          id="delivery-project"
+          :model-value="selectedProject"
+          label="Project"
+          placeholder="Select project"
+          :controller="projectController"
+          :params="projectParams"
+          optional
+          @update:model-value="setProject"
+        />
+        <UpdatedCustomInputSelect
+          v-if="selectedProject"
+          id="delivery-project-location"
+          :model-value="selectedProjectLocation"
+          label="Location"
+          placeholder="Select location"
+          :static-options="projectLocationOptions"
+          :reload="false"
+          optional
+          @update:model-value="setProjectLocation"
+        />
+        <UpdatedCustomInputSelect
+          v-if="selectedProjectLocation"
+          id="delivery-project-zone"
+          :model-value="selectedProjectZone"
+          label="Zone"
+          placeholder="Select zone"
+          :static-options="projectZoneOptions"
+          :reload="false"
+          optional
+          @update:model-value="setProjectZone"
+        />
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2. Activities</h2>
       <div class="activity-list">
         <label v-for="activity in activities" :key="activity.id" class="activity-option">
           <Checkbox
@@ -147,7 +218,7 @@ onMounted(async () => {
     <section v-if="selectedActivityId && availableTools.length > 0" class="card">
       <div class="section-heading">
         <div>
-          <h2>2. Assign PPE tools to employees</h2>
+          <h2>3. Assign PPE tools to employees</h2>
           <p>Only tools linked to the selected activity are listed.</p>
         </div>
       </div>
@@ -235,6 +306,13 @@ onMounted(async () => {
   /* min-height: 100%; */
 
   /* padding: 32px; */
+}
+
+.scope-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
 }
 
 /* =========================================================
@@ -380,6 +458,12 @@ p {
   color: var(--text-soft);
 
   line-height: 1.65;
+}
+
+@media (max-width: 900px) {
+  .scope-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* =========================================================

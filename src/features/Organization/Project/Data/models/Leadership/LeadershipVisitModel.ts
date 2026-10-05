@@ -21,6 +21,8 @@ export default class LeadershipVisitModel {
 
     public reportAdded = false,
     public hasReport = false,
+    public serial_name: string = '',
+    public serial_number: string = '',
   ) {}
 
   static fromMap(data: Record<string, unknown>): LeadershipVisitModel {
@@ -58,6 +60,8 @@ export default class LeadershipVisitModel {
       report && typeof report === 'object' ? LeadershipVisitReportModel.fromMap(report) : null,
       Boolean(data.report_added ?? data.has_report ?? report),
       Boolean(data.has_report ?? data.report_added ?? report),
+      String(data.serial_name ?? ''),
+      String(data.serial_number ?? ''),
     )
   }
 }

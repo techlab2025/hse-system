@@ -18,6 +18,7 @@ interface Routes {
   name: string
   permissions: PermissionsEnum[]
   icon: string
+  activePrefixes?: string[]
   children?: Routes[]
 }
 const { t } = useI18n()
@@ -114,6 +115,66 @@ const OperationsRoutes = ref<Routes[]>([
   //   icon: 'file-contract',
   //   permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   // },
+])
+
+const CompanyRoutes = ref<Routes[]>([
+  {
+    link: '/organization/inductions',
+    name: 'Inductions',
+    icon: 'book-open',
+    activePrefixes: ['/organization/induction'],
+    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+  {
+    link: '/organization/ppe-matrix',
+    name: 'PPE Matrix & Log',
+    icon: 'shield-check',
+    activePrefixes: ['/organization/ppe-'],
+    permissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_PPE_ACTIVITY_ALL,
+      PermissionsEnum.ORG_PPE_ACTIVITY_FETCH,
+      PermissionsEnum.ORG_PPE_ACTIVITY_CREATE,
+      PermissionsEnum.ORG_PPE_ACTIVITY_UPDATE,
+      PermissionsEnum.ORG_PPE_TOOLS_ALL,
+      PermissionsEnum.ORG_PPE_TOOLS_FETCH,
+      PermissionsEnum.ORG_PPE_TOOLS_CREATE,
+      PermissionsEnum.ORG_PPE_TOOLS_UPDATE,
+    ],
+  },
+  {
+    link: '/organization/objectives',
+    name: 'objectives',
+    icon: 'crosshair',
+    activePrefixes: ['/organization/objectives'],
+    permissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.OBJECTIVE_ORG_ALL,
+      PermissionsEnum.OBJECTIVE_ORG_FETCH,
+      PermissionsEnum.OBJECTIVE_ORG_DETAILS,
+      PermissionsEnum.OBJECTIVE_ORG_CREATE,
+      PermissionsEnum.OBJECTIVE_ORG_UPDATE,
+      PermissionsEnum.OBJECTIVE_ORG_DELETE,
+    ],
+  },
+  {
+    link: '/organization/internal-audit',
+    name: 'Internal Audit',
+    icon: 'clipboard-notes',
+    activePrefixes: ['/organization/internal-audit'],
+    permissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.INTERNAL_AUDIT_ALL,
+      PermissionsEnum.INTERNAL_AUDIT_FETCH,
+      PermissionsEnum.INTERNAL_AUDIT_DETAILS,
+      PermissionsEnum.INTERNAL_AUDIT_CREATE,
+      PermissionsEnum.INTERNAL_AUDIT_UPDATE,
+      PermissionsEnum.INTERNAL_AUDIT_DELETE,
+    ],
+  },
 ])
 
 const OrganizationRoutes = ref<Routes[]>([
@@ -468,6 +529,32 @@ const LockUpsRoutes = ref<Routes[]>([
     ],
   },
   {
+    link: '/organization/audit-standards',
+    name: 'Audit Standards',
+   icon: 'shield-check',
+    permissions: [
+      PermissionsEnum.ORG_AUDIT_STANDARDS_ALL,
+      PermissionsEnum.ORG_AUDIT_STANDARDS_FETCH,
+      PermissionsEnum.ORG_AUDIT_STANDARDS_DETAILS,
+      PermissionsEnum.ORG_AUDIT_STANDARDS_CREATE,
+      PermissionsEnum.ORG_AUDIT_STANDARDS_UPDATE,
+      PermissionsEnum.ORG_AUDIT_STANDARDS_DELETE,
+    ],
+  },
+  {
+    link: '/organization/audit-activities',
+    name: 'Audit Activities',
+    icon: 'shield-check',
+    permissions: [
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_ALL,
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_FETCH,
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_DETAILS,
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_CREATE,
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_UPDATE,
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_DELETE,
+    ],
+  },
+  {
     link: '/organization/ppe-items',
     name: 'ppe_items',
     icon: 'shield-check',
@@ -759,6 +846,14 @@ const routeGroups = computed<RouteGroup[]>(() => {
       permissions: flattenPermissions(OperationsRoutes.value),
     },
     {
+      key: 'company',
+      label: t('Company'),
+      eyebrow: t('Company'),
+      icon: 'building',
+      routes: CompanyRoutes.value,
+      permissions: flattenPermissions(CompanyRoutes.value),
+    },
+    {
       key: 'reports',
       label: t('reports'),
       eyebrow: t('reports'),
@@ -823,13 +918,17 @@ const isLinkActive = (link: Routes['link']) => {
   )
 }
 
+const isRouteActive = (sidebarRoute: Routes) =>
+  isLinkActive(sidebarRoute.link) ||
+  Boolean(sidebarRoute.activePrefixes?.some((prefix) => route.path.startsWith(prefix)))
+
 const isParentLinkActive = (sidebarRoute: Routes) =>
-  isLinkActive(sidebarRoute.link) &&
+  isRouteActive(sidebarRoute) &&
   !sidebarRoute.children?.some((child) => isLinkActive(child.link))
 
 const groupHasActiveRoute = (group: RouteGroup) =>
   group.routes.some(
-    (item) => isLinkActive(item.link) || item.children?.some((child) => isLinkActive(child.link)),
+    (item) => isRouteActive(item) || item.children?.some((child) => isRouteActive(child)),
   )
 
 const activeGroup = computed(() => {

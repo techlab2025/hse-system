@@ -2,7 +2,7 @@
 // import IndexObjectivesTypeParams from '@/features/setting/ObjectivesType/Core/params/indexObjectivesTypeParams'
 // import IndexObjectivesTypeController from '@/features/setting/ObjectivesType/Presentation/controllers/indexObjectivesTypeController'
 
-import { computed, onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
@@ -17,7 +17,6 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
-import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 // import ExportIcon from '@/shared/icons/ExportIcon.vue'
@@ -38,28 +37,10 @@ const currentPage = ref(1)
 const countPerPage = ref(10)
 const indexObjectivesController = IndexObjectivesController.getInstance()
 const state = ref(indexObjectivesController.state.value)
-const route = useRoute()
 // const type = ref<ObjectivesTypeStatusEnum>(ObjectivesTypeStatusEnum[route.params.type as keyof typeof ObjectivesTypeStatusEnum])
 
-const routeProjectId = computed(() => {
-  const routeValue = route.params.project_id ?? route.query.project_id
-  const rawValue = Array.isArray(routeValue) ? routeValue[0] : routeValue
-  const parsedValue = Number(rawValue)
-
-  return Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : null
-})
-
-const addObjectivesLink = computed(() =>
-  routeProjectId.value
-    ? { name: 'Add Project Objective', params: { project_id: routeProjectId.value } }
-    : { name: 'Add Objective' },
-)
-
-const createObjectiveLink = computed(() =>
-  routeProjectId.value
-    ? `/organization/objectives/project/${routeProjectId.value}/add`
-    : '/organization/objectives/add',
-)
+const addObjectivesLink = { name: 'Add Objective' }
+const createObjectiveLink = '/organization/objectives/add'
 
 const fetchObjectives = async (
   query: string = '',
@@ -72,7 +53,7 @@ const fetchObjectives = async (
     pageNumber,
     perPage,
     withPage,
-    routeProjectId.value,
+    null,
   )
   await indexObjectivesController.getData(deleteObjectivesTypeParams)
 }
@@ -119,9 +100,7 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: routeProjectId.value
-  ? `/organization/objectives/project/${routeProjectId.value}/${id}`
-  : `/organization/objectives/${id}`,
+    link: `/organization/objectives/${id}`,
     permission: [
       PermissionsEnum.OBJECTIVE_ORG_UPDATE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -141,12 +120,6 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
   },
 ]
 
-watch(
-  () => [route.params.project_id, route.query.project_id],
-  () => {
-    fetchObjectives()
-  },
-)
 </script>
 
 <template>
