@@ -38,22 +38,29 @@ const employeeParams = (hierarchyId: number | null = null) =>
     undefined,
     undefined,
   )
-const addHierarchy = (location: PositionLocationForm) => {
-  location.heirarchys.push({
-    hierarchy: null,
-    employees: [],
-    teamLeader: null,
-    employeeParams: employeeParams(),
-  })
-}
-const setHierarchy = (
-  hierarchy: PositionHierarchyForm,
+const selectedHierarchies = (location: PositionLocationForm) =>
+  location.heirarchys.flatMap((item) => (item.hierarchy ? [item.hierarchy] : []))
+
+const setLocationHierarchies = (
+  location: PositionLocationForm,
   value: TitleInterface | TitleInterface[] | null,
 ) => {
-  hierarchy.hierarchy = Array.isArray(value) ? (value[0] ?? null) : value
-  hierarchy.employees = []
-  hierarchy.teamLeader = null
-  hierarchy.employeeParams = employeeParams(hierarchy.hierarchy?.id ?? null)
+  const selected = Array.isArray(value) ? value : value ? [value] : []
+  const existingById = new Map(
+    location.heirarchys.flatMap((item) =>
+      item.hierarchy ? [[item.hierarchy.id, item] as const] : [],
+    ),
+  )
+
+  location.heirarchys = selected.map(
+    (hierarchy) =>
+      existingById.get(hierarchy.id) ?? {
+        hierarchy,
+        employees: [],
+        teamLeader: null,
+        employeeParams: employeeParams(hierarchy.id),
+      },
+  )
 }
 const setPositionEmployees = (
   hierarchy: PositionHierarchyForm,
@@ -161,56 +168,48 @@ watch(() => props.projectId, getProjectLocationsHierarchiesEmployees, { immediat
           <strong>{{ location.projectLocation?.title }}</strong>
         </div>
       </div>
-      <div
-        v-for="(hierarchy, index) in location.heirarchys"
-        :key="index"
-        class="nested-row position-row"
-        :class="{ 'has-team-leader': hierarchy.employees.length }"
-      >
-        <div class="input-wrapper">
-          <UpdatedCustomInputSelect
-            :model-value="hierarchy.hierarchy"
-            :params="hierarchyParams"
-            :controller="hierarchyController"
-            label="position"
-            placeholder="Select position"
-            :type="1"
-            :required="true"
-            @update:model-value="setHierarchy(hierarchy, $event)"
-          />
-        </div>
-        <div class="input-wrapper">
-          <UpdatedCustomInputSelect
-            :model-value="hierarchy.employees"
-            :params="hierarchy.employeeParams"
-            :controller="employeeController"
-            label="employees"
-            placeholder="Select employees"
-            :type="2"
-            :disabled="!hierarchy.hierarchy"
-            @update:model-value="setPositionEmployees(hierarchy, $event)"
-          />
-        </div>
-        <div v-if="hierarchy.employees.length" class="input-wrapper">
-          <UpdatedCustomInputSelect
-            :model-value="hierarchy.teamLeader"
-            :static-options="hierarchy.employees"
-            label="Team leader"
-            placeholder="Select team leader"
-            :type="1"
-            :required="true"
-            @update:model-value="setTeamLeader(hierarchy, $event)"
-          />
-        </div>
-        <button
-          type="button"
-          class="icon-button danger"
-          @click="location.heirarchys.splice(index, 1)"
-        >
-          ×
-        </button>
+      <div class="input-wrapper">
+        <UpdatedCustomInputSelect
+          :model-value="selectedHierarchies(location)"
+          :params="hierarchyParams"
+          :controller="hierarchyController"
+          label="positions"
+          placeholder="Select positions"
+          :type="2"
+          @update:model-value="setLocationHierarchies(location, $event)"
+        />
       </div>
-      <button type="button" class="add-row" @click="addHierarchy(location)">+ Add Position</button>
+      <div
+        v-for="hierarchy in location.heirarchys"
+        :key="hierarchy.hierarchy?.id"
+        class="position-assignment"
+      >
+        <h3>{{ hierarchy.hierarchy?.title }}</h3>
+        <div class="position-assignment-fields">
+          <div class="input-wrapper">
+            <UpdatedCustomInputSelect
+              :model-value="hierarchy.employees"
+              :params="hierarchy.employeeParams"
+              :controller="employeeController"
+              label="employees"
+              placeholder="Select employees"
+              :type="2"
+              @update:model-value="setPositionEmployees(hierarchy, $event)"
+            />
+          </div>
+          <div v-if="hierarchy.employees.length" class="input-wrapper">
+            <UpdatedCustomInputSelect
+              :model-value="hierarchy.teamLeader"
+              :static-options="hierarchy.employees"
+              label="Team leader"
+              placeholder="Select team leader"
+              :type="1"
+              :required="true"
+              @update:model-value="setTeamLeader(hierarchy, $event)"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -218,12 +217,31 @@ watch(() => props.projectId, getProjectLocationsHierarchiesEmployees, { immediat
 <style scoped src="../ProjectFlowStepStyles.css"></style>
 
 <style scoped>
-.position-row.has-team-leader {
-  grid-template-columns: 1fr 1fr ;
+.position-assignment {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--main-border);
+  border-radius: 15px;
+  background: var(--Gray-1);
+}
+
+.position-assignment h3 {
+  margin: 0;
+  color: var(--GrayText-1);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.position-assignment-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
 }
 
 @media (max-width: 850px) {
-  .position-row.has-team-leader {
+  .position-assignment-fields {
     grid-template-columns: 1fr;
   }
 }
