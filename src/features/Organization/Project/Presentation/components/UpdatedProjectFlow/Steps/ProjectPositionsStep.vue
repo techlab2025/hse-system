@@ -90,7 +90,7 @@ type PositionEmployeeOption = {
 }
 
 const isLeaderValue = (value: PositionEmployeeOption['is_leader']) => {
-  return value === true || value === 1 || value === '1'
+  return value === true || value === 1 || ['1', 'true', 'yes'].includes(String(value).toLowerCase())
 }
 
 const toEmployeeTitle = (employee: PositionEmployeeOption) =>
@@ -107,11 +107,15 @@ const mapProjectLocation = (location: ProjectCustomLocationModel): PositionLocat
   heirarchys: (location.locationHierarchy ?? []).map((hierarchy) => {
     const employees = hierarchy.Employees ?? []
     const leader = employees.find((employee) => isLeaderValue(employee.is_leader))
+    const employeeOptions = employees.map(toEmployeeTitle)
+    const leaderOption = leader
+      ? (employeeOptions.find((employee) => employee.id === toEmployeeTitle(leader).id) ?? null)
+      : null
 
     return {
       hierarchy: new TitleInterface({ id: hierarchy.id, title: hierarchy.title }),
-      employees: employees.map(toEmployeeTitle),
-      teamLeader: leader ? toEmployeeTitle(leader) : null,
+      employees: employeeOptions,
+      teamLeader: leaderOption,
       employeeParams: employeeParams(hierarchy.id),
     }
   }),
