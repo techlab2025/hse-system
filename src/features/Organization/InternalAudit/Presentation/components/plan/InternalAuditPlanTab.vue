@@ -466,8 +466,8 @@ async function submit(isDraft: boolean) {
           class="field"
           :model-value="selectedProject"
           :static-options="projectOptions"
-          label="Project / company"
-          placeholder="Select a project"
+          label="Focus Area"
+          placeholder="Select a Focus Area"
           required
           @update:model-value="selectedProject = normalizeSingle($event)"
         >
@@ -526,8 +526,8 @@ async function submit(isDraft: boolean) {
           :model-value="scope.department"
           :controller="hierarchyController"
           :params="hierarchyParams"
-          label="Department"
-          placeholder="Select department"
+          label="Audit Process"
+          placeholder="Select Audit Process"
           @update:model-value="setScopeDepartment(index, $event)"
         />
         <UpdatedCustomInputSelect
@@ -644,7 +644,7 @@ async function submit(isDraft: boolean) {
       </label>
       <div class="field field-wide">
         <HandleFIlesUpload
-          label="Schedule attachments"
+          label="Plan Attachments"
           accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
           :multiple="true"
           :max-files="8"
