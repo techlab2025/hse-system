@@ -669,6 +669,9 @@ interface Props {
    */
   maxSelectOptions?: number | null
 
+  /* Option IDs hidden from the dropdown. Current selections are always retained. */
+  excludedOptionIds?: Array<string | number>
+
   onclick?: () => void
 }
 
@@ -691,6 +694,7 @@ const props = withDefaults(defineProps<Props>(), {
 
   // null means unlimited selection
   maxSelectOptions: null,
+  excludedOptionIds: () => [],
 })
 
 const emit = defineEmits<{
@@ -746,6 +750,8 @@ const mergedOptions = computed<TitleInterface[]>(() => {
       : []
 
   const optionKeys = new Set<string>()
+  const selectedOptionKeys = new Set(selectedOptions.map(getOptionKey).filter(Boolean))
+  const excludedOptionKeys = new Set(props.excludedOptionIds.map(String))
 
   /*
    * A filtered endpoint may intentionally omit already-assigned records.
@@ -755,6 +761,8 @@ const mergedOptions = computed<TitleInterface[]>(() => {
     const key = getOptionKey(option)
 
     if (!key) return true
+
+    if (excludedOptionKeys.has(key) && !selectedOptionKeys.has(key)) return false
 
     if (optionKeys.has(key)) return false
 
