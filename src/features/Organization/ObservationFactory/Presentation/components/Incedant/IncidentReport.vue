@@ -181,7 +181,7 @@ onMounted(() => fetchIncidents('', 1, countPerPage.value))
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">{{ $t('Serial') }}</th>
-                  <th scope="col">{{ $t('title') }}</th>
+                  <!-- <th scope="col">{{ $t('title') }}</th> -->
                   <th scope="col">{{ $t('observer') }}</th>
                   <th scope="col">{{ $t('project') }}</th>
                   <th scope="col">{{ $t('Date & Time') }}</th>
@@ -197,7 +197,7 @@ onMounted(() => fetchIncidents('', 1, countPerPage.value))
                 <tr v-for="(item, index) in state.data" :key="item.id">
                   <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
                   <td>{{ item.serialName || '--' }}</td>
-                  <td>{{ item.title || '--' }}</td>
+                  <!-- <td>{{ item.title || '--' }}</td> -->
                   <td>{{ item.observer?.name || '--' }}</td>
                   <td>{{ item.project?.title || '--' }}</td>
                   <td>{{ getDateTime(item.updatedAt || item.date, item.time) }}</td>
