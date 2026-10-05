@@ -264,11 +264,41 @@ const updatedDepartment = (data: TitleInterface) => {
   SelectedDepartment.value = data
   updateData()
 }
+watch(
+  [() => props.data?.parent_id, () => props.data?.parent],
+  ([newParentId, parent]) => {
+    if (parent) {
+      const locale = localStorage.getItem('lang')
+      SelectedDepartment.value = new TitleInterface({
+        id: parent.id,
+        title:
+          parent.titles?.find((title) => title.locale === locale)?.title ??
+          parent.titles?.[0]?.title ??
+          '',
+      })
+      return
+    }
+
+    if (!newParentId) return
+
+    const selected = indexHerikalyController.state.value?.data?.find(
+      (item) => item.id === Number(newParentId),
+    )
+    if (!selected) return
+
+    SelectedDepartment.value = new TitleInterface({
+      id: selected.id,
+      title: selected.title ?? '',
+    })
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2" v-if="!route.path.includes('/herikaly/add')">
+  <div class="col-span-4 md:col-span-2" v-if="!route.path.includes('/herikaly/add')  && props?.data?.parent !== null"> 
     <div class="input-wrapper">
+
       <UpdatedCustomInputSelect
         :modelValue="SelectedDepartment"
         :params="HerikalyParams"
