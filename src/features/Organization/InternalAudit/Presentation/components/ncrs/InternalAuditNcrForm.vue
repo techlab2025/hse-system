@@ -33,12 +33,17 @@ type CapaForm = {
   preventive: ActionForm
 }
 
-const props = defineProps<{
-  internalAuditPlanId: number
-  auditSerialName: string
-  areaOptions: TitleInterface[]
-  details?: InternalAuditNcrDetailsModel | null
-}>()
+const props = withDefaults(
+  defineProps<{
+    internalAuditPlanId: number
+    auditSerialName: string
+    areaOptions: TitleInterface[]
+    details?: InternalAuditNcrDetailsModel | null
+    readonly?: boolean
+    embedded?: boolean
+  }>(),
+  { details: null, readonly: false, embedded: false },
+)
 
 const emit = defineEmits<{
   close: []
@@ -66,6 +71,11 @@ const capas = ref<CapaForm[]>([createCapa()])
 const feedback = ref('')
 const isSaving = computed(() => createController.isDataLoading())
 const isExisting = computed(() => Boolean(props.details?.id))
+const isReadOnly = computed(() => props.readonly || isExisting.value)
+
+function titles(value: TitleInterface[]): string {
+  return value.map((item) => item.title).filter(Boolean).join(', ')
+}
 
 function emptyAction(): ActionForm {
   return { correction: '', assignedTo: null, targetDate: '', actualDate: '' }
@@ -97,7 +107,6 @@ function setAttachments(files: UploadedFile[]) {
 }
 
 function initializeForm(details?: InternalAuditNcrDetailsModel | null) {
-  console.log(details , "details")
   feedback.value = ''
   category.value = details?.category ?? NcrCategoryEnum.MINOR_NC
   areaUnderReviews.value = details?.areaUnderReviews ?? []
@@ -210,7 +219,7 @@ watch(() => props.details, initializeForm, { immediate: true })
 </script>
 
 <template>
-  <form class="ncr-form" @submit.prevent="submit">
+  <component :is="embedded ? 'div' : 'form'" class="ncr-form" @submit.prevent="submit">
     <p v-if="feedback" class="message error" role="alert">{{ feedback }}</p>
 
     <section class="form-section">
@@ -226,14 +235,23 @@ watch(() => props.details, initializeForm, { immediate: true })
           <span>Internal Audit</span>
           <input :value="auditSerialName" type="text" disabled placeholder="Audit serial name" />
         </label>
+        <label v-if="isExisting" class="field">
+          <span>NCR</span>
+          <input :value="details?.ncr || `NCR-${details?.id}`" type="text" disabled />
+        </label>
         <label class="field">
           <span>Category <b>*</b></span>
-          <select v-model="category">
+          <select v-model="category" :disabled="isReadOnly">
             <option :value="NcrCategoryEnum.MINOR_NC">Minor NC</option>
             <option :value="NcrCategoryEnum.MAJOR_NC">Major NC</option>
           </select>
         </label>
+        <label v-if="isReadOnly" class="field">
+          <span>Area under review</span>
+          <input :value="titles(areaUnderReviews)" type="text" disabled />
+        </label>
         <UpdatedCustomInputSelect
+          v-else
           class="field"
           :model-value="areaUnderReviews"
           :static-options="areaOptions"
@@ -243,7 +261,14 @@ watch(() => props.details, initializeForm, { immediate: true })
           required
           @update:model-value="areaUnderReviews = normalizeMultiple($event)"
         />
+        <label v-if="isReadOnly" class="field">
+          <span>Audit standard</span>
+          <select disabled>
+            <option>{{ auditStandard?.title || '—' }}</option>
+          </select>
+        </label>
         <UpdatedCustomInputSelect
+          v-else
           class="field"
           :model-value="auditStandard"
           :controller="auditStandardController"
@@ -254,10 +279,11 @@ watch(() => props.details, initializeForm, { immediate: true })
           @update:model-value="auditStandard = normalizeSingle($event)"
         />
         <label class="field field-wide">
-          <span>Requirement reference <b>*</b></span>
+          <span>Requirement reference <strong>(optional)</strong></span>
           <input
             v-model="requirementReference"
             type="text"
+            :disabled="isReadOnly"
             placeholder="Enter requirement reference"
           />
         </label>
@@ -266,6 +292,7 @@ watch(() => props.details, initializeForm, { immediate: true })
           <textarea
             v-model="description"
             rows="4"
+            :disabled="isReadOnly"
             placeholder="Describe the non-conformance"
           ></textarea>
         </label>
@@ -274,10 +301,16 @@ watch(() => props.details, initializeForm, { immediate: true })
           <textarea
             v-model="immediateAction"
             rows="3"
+            :disabled="isReadOnly"
             placeholder="Describe the immediate action taken"
           ></textarea>
         </label>
+        <label v-if="isReadOnly" class="field field-wide">
+          <span>Root causes</span>
+          <input :value="titles(rootCauses)" type="text" disabled />
+        </label>
         <UpdatedCustomInputSelect
+          v-else
           class="field field-wide"
           :model-value="rootCauses"
           :controller="rootCauseController"
@@ -285,7 +318,7 @@ watch(() => props.details, initializeForm, { immediate: true })
           type="multiselect"
           label="Root causes"
           placeholder="Select root causes"
-          required
+
           @update:model-value="rootCauses = normalizeMultiple($event)"
         />
       </div>
@@ -300,7 +333,7 @@ watch(() => props.details, initializeForm, { immediate: true })
         <header>
           <strong>{{ index + 1 }}</strong>
           <button
-            v-if="capas.length > 1"
+            v-if="!isReadOnly && capas.length > 1"
             type="button"
             class="remove-button"
             @click="capas.splice(index, 1)"
@@ -316,10 +349,18 @@ watch(() => props.details, initializeForm, { immediate: true })
               <textarea
                 v-model="capa.corrective.correction"
                 rows="3"
+                :disabled="isReadOnly"
                 placeholder="Describe the corrective action"
               ></textarea>
             </label>
+            <label v-if="isReadOnly" class="field">
+              <span>Assigned to</span>
+              <select disabled>
+                <option>{{ capa.corrective.assignedTo?.title || '—' }}</option>
+              </select>
+            </label>
             <UpdatedCustomInputSelect
+              v-else
               class="field"
               :model-value="capa.corrective.assignedTo"
               :controller="employeeController"
@@ -331,7 +372,7 @@ watch(() => props.details, initializeForm, { immediate: true })
             />
             <label class="field">
               <span>Target date <b>*</b></span>
-              <input v-model="capa.corrective.targetDate" type="date" />
+              <input v-model="capa.corrective.targetDate" type="date" :disabled="isReadOnly" />
             </label>
             <label class="field">
               <span>Actual date</span>
@@ -339,6 +380,7 @@ watch(() => props.details, initializeForm, { immediate: true })
                 v-model="capa.corrective.actualDate"
                 type="date"
                 :max="new Date().toISOString().slice(0, 10)"
+                :disabled="isReadOnly"
               />
             </label>
           </div>
@@ -351,10 +393,18 @@ watch(() => props.details, initializeForm, { immediate: true })
               <textarea
                 v-model="capa.preventive.correction"
                 rows="3"
+                :disabled="isReadOnly"
                 placeholder="Describe the preventive action"
               ></textarea>
             </label>
+            <label v-if="isReadOnly" class="field">
+              <span>Assigned to</span>
+              <select disabled>
+                <option>{{ capa.preventive.assignedTo?.title || '—' }}</option>
+              </select>
+            </label>
             <UpdatedCustomInputSelect
+              v-else
               class="field"
               :model-value="capa.preventive.assignedTo"
               :controller="employeeController"
@@ -366,7 +416,7 @@ watch(() => props.details, initializeForm, { immediate: true })
             />
             <label class="field">
               <span>Target date <b>*</b></span>
-              <input v-model="capa.preventive.targetDate" type="date" />
+              <input v-model="capa.preventive.targetDate" type="date" :disabled="isReadOnly" />
             </label>
             <label class="field">
               <span>Actual date</span>
@@ -374,6 +424,7 @@ watch(() => props.details, initializeForm, { immediate: true })
                 v-model="capa.preventive.actualDate"
                 type="date"
                 :max="new Date().toISOString().slice(0, 10)"
+                :disabled="isReadOnly"
               />
             </label>
           </div>
@@ -389,7 +440,17 @@ watch(() => props.details, initializeForm, { immediate: true })
           <p>Add supporting evidence files.</p>
         </div>
       </div>
+      <ul v-if="isReadOnly && details?.media.length" class="attachment-list">
+        <li v-for="media in details.media" :key="media.id || media.url">
+          <img width="120" :src="media.url" :alt="media.fileName">
+          <!-- <a :href="media.url" target="_blank" rel="noopener noreferrer">
+            {{ media.fileName }}
+          </a> -->
+        </li>
+      </ul>
+      <p v-else-if="isReadOnly" class="empty-attachments">No attachments.</p>
       <HandleFIlesUpload
+        v-else
         label="NCR attachments"
         accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
         :multiple="true"
@@ -400,18 +461,29 @@ watch(() => props.details, initializeForm, { immediate: true })
       />
     </section>
 
-    <footer class="form-actions">
+    <footer v-if="!embedded" class="form-actions">
       <button class="secondary-button" type="button" :disabled="isSaving" @click="emit('close')">
         {{ isExisting ? 'Close' : 'Cancel' }}
       </button>
       <button v-if="!isExisting" class="primary-button" type="submit" :disabled="isSaving">
-        {{ isSaving ? 'Creating…' : 'Create NCR' }}
+        {{ isSaving ? 'Creating…' : 'Submit NCR' }}
       </button>
     </footer>
-  </form>
+  </component>
 </template>
 
 <style scoped>
+.attachment-list{
+    display: flex !important;
+
+  li{
+    display: flex !important;
+    img{
+      border-radius: 12px;
+    }
+
+  }
+}
 :deep(.upload-area) {
   border: 1px solid lightgray !important;
 }
@@ -475,6 +547,9 @@ label:has(textarea) {
 .field b {
   color: #b42318;
 }
+.field strong{
+  font-size: 9px;
+}
 .field input,
 .field select,
 .field textarea {
@@ -485,6 +560,28 @@ label:has(textarea) {
   padding: 10px 12px;
   color: var(--text-primary, #172334);
   outline: none;
+}
+.field input:disabled,
+.field select:disabled,
+.field textarea:disabled {
+  cursor: default;
+  opacity: 1;
+  background: var(--surface-ground, #f4f7f6);
+  color: var(--text-soft, #687777);
+}
+.attachment-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-inline-start: 20px;
+}
+.attachment-list a {
+  color: var(--PrimaryColor, #087d80);
+  overflow-wrap: anywhere;
+}
+.empty-attachments {
+  margin: 0;
+  color: var(--text-soft, #687777);
 }
 .field input:focus,
 .field select:focus,

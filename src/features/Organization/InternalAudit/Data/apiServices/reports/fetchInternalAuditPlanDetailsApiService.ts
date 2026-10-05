@@ -10,7 +10,7 @@ export default class FetchInternalAuditPlanDetailsApiService extends ServicesInt
 
   applyService(params: Params) {
     return super.call({
-      url: ApiNames.instance.FetchInternalAuditPlanDetailsForReport,
+      url: ApiNames.instance.ShowInternalAuditPlan,
       type: CrudType.POST,
       auth: true,
       params,

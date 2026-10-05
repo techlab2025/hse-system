@@ -13,6 +13,12 @@ export type NcrDetailsTask = {
   preventive: NcrDetailsAction
 }
 
+export type NcrDetailsMedia = {
+  id: number
+  url: string
+  fileName: string
+}
+
 function asRecord(value: unknown): Record<string, unknown> {
   return value && typeof value === 'object' && !Array.isArray(value)
     ? (value as Record<string, unknown>)
@@ -20,7 +26,9 @@ function asRecord(value: unknown): Record<string, unknown> {
 }
 
 function parseTitle(value: unknown, fallbackId: unknown = 0): TitleInterface | null {
-  const item = asRecord(value)
+  const parsedValue = asRecord(value)
+  const parsedFallback = asRecord(fallbackId)
+  const item = Object.keys(parsedValue).length ? parsedValue : parsedFallback
   const nested = asRecord(
     item.organization_employee ?? item.employee ?? item.assigned_to ?? item.assgined_to,
   )
@@ -31,7 +39,7 @@ function parseTitle(value: unknown, fallbackId: unknown = 0): TitleInterface | n
       item.assgined_to_id ??
       source.organization_employee_id ??
       source.id ??
-      fallbackId,
+      (typeof fallbackId === 'object' ? 0 : fallbackId),
   )
   const title = String(source.title ?? source.name ?? item.title ?? item.name ?? '')
   return id || title ? new TitleInterface({ id, title, name: title }) : null
@@ -54,11 +62,20 @@ function dateOnly(value: unknown): string {
 
 function parseAction(value: unknown, textKeys: string[]): NcrDetailsAction {
   const item = asRecord(value)
-  const text = textKeys.reduce<unknown>((found, key) => found ?? item[key], null)
+  const task = asRecord(item.internal_audit_ncr_task_id)
+  const text =
+    textKeys.reduce<unknown>((found, key) => found ?? item[key], null) ??
+    item.action ??
+    task.title
   return {
     text: String(text ?? ''),
     assignedTo: parseTitle(
-      item.assigned_to ?? item.assgined_to ?? item.organization_employee ?? item.employee,
+      item.assigned_to ??
+        item.assgined_to ??
+        item.organization_employee ??
+        item.employee ??
+        item.assigned_to_id ??
+        item.assgined_to_id,
       item.assigned_to_id ?? item.assgined_to_id,
     ),
     targetDate: dateOnly(item.target_date),
@@ -80,25 +97,22 @@ function parseTasks(value: unknown): NcrDetailsTask[] {
   })
 }
 
-function parseAttachments(value: unknown): { urls: string[]; fileNames: string[] } {
-  if (!Array.isArray(value)) return { urls: [], fileNames: [] }
-  const attachments = value
+function parseMedia(value: unknown): NcrDetailsMedia[] {
+  if (!Array.isArray(value)) return []
+  return value
     .map((entry) => {
       if (typeof entry === 'string') {
-        return { url: entry, fileName: entry.split('/').pop() ?? 'file' }
+        return { id: 0, url: entry, fileName: entry.split('/').pop() ?? 'file' }
       }
       const item = asRecord(entry)
       const url = String(item.url ?? item.file ?? item.path ?? item.base64 ?? '')
       return {
+        id: Number(item.id ?? 0),
         url,
         fileName: String(item.file_name ?? item.name ?? url.split('/').pop() ?? 'file'),
       }
     })
-    .filter((attachment) => Boolean(attachment.url))
-  return {
-    urls: attachments.map((attachment) => attachment.url),
-    fileNames: attachments.map((attachment) => attachment.fileName),
-  }
+    .filter((media) => Boolean(media.url))
 }
 
 export default class InternalAuditNcrDetailsModel {
@@ -113,14 +127,21 @@ export default class InternalAuditNcrDetailsModel {
     public immediateAction: string,
     public rootCauses: TitleInterface[],
     public tasks: NcrDetailsTask[],
-    public attachments: string[],
-    public attachmentFileNames: string[],
+    public media: NcrDetailsMedia[],
   ) {}
+
+  get attachments(): string[] {
+    return this.media.map((item) => item.url)
+  }
+
+  get attachmentFileNames(): string[] {
+    return this.media.map((item) => item.fileName)
+  }
 
   static fromMap(data: unknown): InternalAuditNcrDetailsModel {
     const item = asRecord(data)
     const category = Number(item.ncrs_category ?? item.ncr_category ?? item.category)
-    const attachments = parseAttachments(item.media)
+    const media = parseMedia(item.media)
     return new InternalAuditNcrDetailsModel(
       Number(item.id ?? item.ncrs_id ?? item.ncr_id ?? 0),
       String(item.ncr ?? item.serial_name ?? ''),
@@ -129,7 +150,7 @@ export default class InternalAuditNcrDetailsModel {
         'area_under_review',
         'department',
       ]),
-      parseTitle(item.audit_standard, item.audit_standard_id),
+      parseTitle(item.audit_standard ?? item.audit_standard_id, item.audit_standard_id),
       String(
         item.rquiriment_refrence ?? item.requirement_reference ?? item.requirement_refrence ?? '',
       ),
@@ -137,8 +158,7 @@ export default class InternalAuditNcrDetailsModel {
       String(item.immediate_action ?? ''),
       parseTitles(item.root_causes, ['root_cause', 'root_causes']),
       parseTasks(item.internal_audit_tasks ?? item.tasks),
-      attachments.urls,
-      attachments.fileNames,
+      media,
     )
   }
 
@@ -168,7 +188,6 @@ export default class InternalAuditNcrDetailsModel {
         },
       },
     ],
-    [],
     [],
   )
 }
