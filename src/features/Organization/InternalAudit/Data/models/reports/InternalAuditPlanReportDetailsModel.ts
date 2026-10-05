@@ -3,6 +3,9 @@ export type InternalAuditor = {
   name: string
 }
 
+const defaultPurpose =
+  'To evaluate the implementation of the occupational health and safety management system against ISO 45001:2018 within the agreed audit scope.'
+
 function parseAuditors(value: unknown): InternalAuditor[] {
   if (!Array.isArray(value)) return []
   return value.map((auditor) => {
@@ -42,20 +45,19 @@ export default class InternalAuditPlanReportDetailsModel {
       ),
       String(item.audit_end_date ?? dates.end_date ?? dates.end ?? dateList[1] ?? ''),
       parseAuditors(item.internal_auditors ?? item.internal_auditor ?? item.audit_team),
-      String(item.Purpose ?? item.purpose ?? ''),
+      String(item.Purpose || item.purpose || defaultPurpose),
     )
   }
 
-  static example: InternalAuditPlanReportDetailsModel =
-    new InternalAuditPlanReportDetailsModel(
-      12,
-      'IA-2026-0012',
-      '2026-10-04',
-      '2026-10-04',
-      [
-        { id: 101, name: 'Sara Ibrahim' },
-        { id: 102, name: 'Ahmed Hassan' },
-      ],
-      'To evaluate implementation of the occupational health and safety management system against ISO 45001:2018 within the agreed audit scope.',
-    )
+  static example: InternalAuditPlanReportDetailsModel = new InternalAuditPlanReportDetailsModel(
+    12,
+    'IA-2026-0012',
+    '2026-10-04',
+    '2026-10-04',
+    [
+      { id: 101, name: 'Sara Ibrahim' },
+      { id: 102, name: 'Ahmed Hassan' },
+    ],
+    defaultPurpose,
+  )
 }
