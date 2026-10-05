@@ -74,6 +74,7 @@ const leadAuditor = ref<TitleInterface | null>(null)
 const saving = ref(false)
 const error = ref('')
 const success = ref('')
+const publishAttempted = ref(false)
 const loadedStatus = ref(props.auditStatus)
 
 const scopes = ref<ScopeRow[]>([{ department: null, activities: [] }])
@@ -224,6 +225,7 @@ function resetPlanForm() {
   scheduleAttachmentFileNames.value = []
   error.value = ''
   success.value = ''
+  publishAttempted.value = false
 }
 
 function createSchedule(): ScheduleRow {
@@ -276,6 +278,24 @@ function setScheduleValue(
 function setScheduleFiles(files: UploadedFile[]) {
   scheduleAttachments.value = files.map((file) => file.base64 || file.url).filter(Boolean)
   scheduleAttachmentFileNames.value = files.map((file) => file.name)
+}
+
+function hasValidAuditFocus(schedule: ScheduleRow): boolean {
+  return Boolean(
+    schedule.focus &&
+      auditFocusOptions.value.some(
+        (option) => Number(option.id) === Number(schedule.focus?.id),
+      ),
+  )
+}
+
+function hasValidAssignedAuditor(schedule: ScheduleRow): boolean {
+  return Boolean(
+    schedule.assignedAuditor &&
+      auditTeam.value.some(
+        (member) => Number(member.id) === Number(schedule.assignedAuditor?.id),
+      ),
+  )
 }
 
 function formatDate(value: Date | null): string {
@@ -333,6 +353,7 @@ function buildParams(isDraft: boolean): AddInternalAuditPlanParams {
 
 function validate(isDraft: boolean): boolean {
   error.value = ''
+  publishAttempted.value = !isDraft
   if (isDraft) return true
   if (!auditStartDate.value || !auditEndDate.value || !selectedProject.value)
     error.value = 'Complete the audit dates and project scope.'
@@ -363,12 +384,9 @@ function validate(isDraft: boolean): boolean {
         !day ||
         day < start ||
         day > end ||
-        !schedule.focus ||
+        !hasValidAuditFocus(schedule) ||
         !schedule.location.trim() ||
-        !schedule.assignedAuditor ||
-        !auditTeam.value.some(
-          (member) => Number(member.id) === Number(schedule.assignedAuditor?.id),
-        )
+        !hasValidAssignedAuditor(schedule)
       )
     })
     if (invalidSchedule) {
@@ -384,11 +402,9 @@ async function submit(isDraft: boolean) {
   //   error.value = 'Issued audit reports are fixed and the audit plan can no longer be changed.'
   //   return
   // }
-  console.log('111')
   if (!validate(isDraft)) return
   saving.value = true
   success.value = ''
-  console.log('2222')
 
   try {
     if (isExisting.value) {
@@ -411,6 +427,7 @@ async function submit(isDraft: boolean) {
         ),
       )
       if (editController.isDataSuccess()) {
+        publishAttempted.value = false
         loadedStatus.value = isDraft ? 'draft' : 'planned'
         success.value = isDraft ? 'Audit draft saved.' : 'Audit plan updated.'
         emit('saved')
@@ -426,6 +443,10 @@ async function submit(isDraft: boolean) {
   } finally {
     saving.value = false
   }
+}
+
+async function saveAsDraft() {
+  await submit(true)
 }
 </script>
 
@@ -605,28 +626,49 @@ async function submit(isDraft: boolean) {
               fluid
               placeholder="Select day"
           /></label>
-          <UpdatedCustomInputSelect
-            class="field"
-            :model-value="schedule.focus"
-            :static-options="auditFocusOptions"
-            label="Audit Focus"
-            placeholder="Select from audit scope"
-            required
-            @update:model-value="setScheduleValue(index, 'focus', $event)"
-          />
+          <div
+            class="schedule-field"
+            :class="{ invalid: publishAttempted && !hasValidAuditFocus(schedule) }"
+          >
+            <UpdatedCustomInputSelect
+              class="field"
+              :model-value="schedule.focus"
+              :static-options="auditFocusOptions"
+              label="Audit Focus"
+              placeholder="Select from audit scope"
+              required
+              :aria-invalid="publishAttempted && !hasValidAuditFocus(schedule)"
+              @update:model-value="setScheduleValue(index, 'focus', $event)"
+            />
+            <p v-if="publishAttempted && !hasValidAuditFocus(schedule)" class="field-error">
+              Select an audit focus from the audit scope.
+            </p>
+          </div>
           <label class="field"
             ><span>Location <b>*</b></span
             ><input v-model="schedule.location" type="text" placeholder="Enter location"
           /></label>
-          <UpdatedCustomInputSelect
-            class="field"
-            :model-value="schedule.assignedAuditor"
-            :static-options="selectedTeamOptions"
-            label="Assigned Auditor"
-            placeholder="Select from audit team"
-            required
-            @update:model-value="setScheduleValue(index, 'assignedAuditor', $event)"
-          />
+          <div
+            class="schedule-field"
+            :class="{ invalid: publishAttempted && !hasValidAssignedAuditor(schedule) }"
+          >
+            <UpdatedCustomInputSelect
+              class="field"
+              :model-value="schedule.assignedAuditor"
+              :static-options="selectedTeamOptions"
+              label="Assigned Auditor"
+              placeholder="Select from audit team"
+              required
+              :aria-invalid="publishAttempted && !hasValidAssignedAuditor(schedule)"
+              @update:model-value="setScheduleValue(index, 'assignedAuditor', $event)"
+            />
+            <p
+              v-if="publishAttempted && !hasValidAssignedAuditor(schedule)"
+              class="field-error"
+            >
+              Select an assigned auditor from the audit team.
+            </p>
+          </div>
         </div>
       </article>
       <button class="outline-button" type="button" @click="schedules.push(createSchedule())">
@@ -654,21 +696,17 @@ async function submit(isDraft: boolean) {
         />
       </div>
     </div>
-    <!-- <p v-if="error" class="form-error" role="alert">{{ error }}</p>
+    <p v-if="error" class="form-error" role="alert">{{ error }}</p>
     <p v-if="success" class="form-success" role="status">{{ success }}</p>
-    <p v-if="isReported" class="form-success">
-      This audit has been reported. The issued record is read-only.
-    </p> -->
-    <!-- v-if="!isReported"  -->
     <footer class="form-actions">
       <button
         v-if="!isPublished"
         class="btn btn-secondary"
         type="button"
         :disabled="saving"
-        @click="submit(true)"
+        @click="saveAsDraft"
       >
-        Save Draft
+        {{ saving ? 'Saving…' : 'Save as Draft' }}
       </button>
       <button class="btn btn-primary" type="submit" :disabled="saving">
         {{ saving ? 'Saving…' : isPublished ? 'Save Changes' : 'Publish Plan' }}
@@ -791,6 +829,21 @@ async function submit(isDraft: boolean) {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
   padding: 18px;
+}
+.schedule-field {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-width: 0;
+}
+.schedule-field.invalid :deep(.p-select),
+.schedule-field.invalid :deep(.p-multiselect) {
+  border-color: #b42318;
+}
+.field-error {
+  margin: 0;
+  color: #b42318;
+  font-size: 0.76rem;
 }
 .schedule-shared-fields {
   display: grid;

@@ -232,7 +232,7 @@ watch(() => props.details, initializeForm, { immediate: true })
       </div>
       <div class="form-grid">
         <label class="field">
-          <span>Internal Audit</span>
+          <span>Audit No.</span>
           <input :value="auditSerialName" type="text" disabled placeholder="Audit serial name" />
         </label>
         <label v-if="isExisting" class="field">
