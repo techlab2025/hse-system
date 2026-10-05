@@ -6,10 +6,14 @@ export default class InternalAuditPlanScopeParams {
     public auditActivities: InternalAuditPlanActivityParams[],
   ) {}
 
-  toMap() {
+  toMap(): Record<string, unknown> {
+    const activities = this.auditActivities
+      .map((activity) => activity.toMap())
+      .filter((activity) => Object.keys(activity).length > 0)
+
     return {
-      department_id: this.departmentId,
-      audit_activities: this.auditActivities.map((activity) => activity.toMap()),
+      ...(this.departmentId > 0 ? { department_id: this.departmentId } : {}),
+      ...(activities.length ? { audit_activities: activities } : {}),
     }
   }
 }

@@ -35,7 +35,10 @@ export default class EditInternalAuditPlanParams extends AddInternalAuditPlanPar
     )
   }
 
-  override toMap(): Record<string, any> {
-    return { internal_audit_id: this.id, ...super.toMap() }
+  override toMap(): Record<string, unknown> {
+    return {
+      ...(this.id > 0 ? { internal_audit_id: this.id } : {}),
+      ...super.toMap(),
+    }
   }
 }

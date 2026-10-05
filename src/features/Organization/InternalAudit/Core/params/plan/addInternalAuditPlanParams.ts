@@ -19,22 +19,37 @@ export default class AddInternalAuditPlanParams implements Params {
     public isDraft: boolean = false,
   ) {}
 
-  toMap(): Record<string, any> {
-    const data: Record<string, any> = {
-      audit_start_date: this.auditStartDate,
-      audit_end_date: this.auditEndDate,
+  toMap(): Record<string, unknown> {
+    const auditTeam = this.auditTeam
+      .map((member) => member.toMap())
+      .filter((member) => Object.keys(member).length > 0)
+    const auditScope = this.auditScope
+      .map((scope) => scope.toMap())
+      .filter((scope) => Object.keys(scope).length > 0)
+    const auditSchedule = this.auditSchedule
+      .map((schedule) => schedule.toMap())
+      .filter((schedule) => Object.keys(schedule).length > 0)
+    const attachments = this.attachments.filter((attachment) => attachment.trim())
+
+    const data: Record<string, unknown> = {
+      ...(this.auditStartDate.trim() ? { audit_start_date: this.auditStartDate } : {}),
+      ...(this.auditEndDate.trim() ? { audit_end_date: this.auditEndDate } : {}),
       full_company: this.fullCompany,
-      audit_standard_id: this.auditStandardId,
-      audit_team: this.auditTeam.map((member) => member.toMap()),
-      leader_id: this.leaderId,
-      audit_scope: this.auditScope.map((scope) => scope.toMap()),
-      audit_schedule: this.auditSchedule.map((schedule) => schedule.toMap()),
-      general_instructions: this.generalInstructions,
-      attachments: this.attachments,
+      ...(this.auditStandardId > 0 ? { audit_standard_id: this.auditStandardId } : {}),
+      ...(auditTeam.length ? { audit_team: auditTeam } : {}),
+      ...(this.leaderId > 0 ? { leader_id: this.leaderId } : {}),
+      ...(auditScope.length ? { audit_scope: auditScope } : {}),
+      ...(auditSchedule.length ? { audit_schedule: auditSchedule } : {}),
+      ...(this.generalInstructions.trim()
+        ? { general_instructions: this.generalInstructions.trim() }
+        : {}),
+      ...(attachments.length ? { attachments } : {}),
       is_draft: this.isDraft,
     }
 
-    if (!this.fullCompany && this.projectId) data.project_id = this.projectId
+    if (!this.fullCompany && this.projectId && this.projectId > 0) {
+      data.project_id = this.projectId
+    }
     return data
   }
 }
