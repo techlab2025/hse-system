@@ -167,7 +167,7 @@ function collectManualOrganisationEmployeeNames() {
       .map((employee) => normalizeEmployeeName(employee.title ?? employee.name))
       .filter(Boolean),
   )
-  const names = [...manualOrganisationEmployeeNames.value, manualOrganisationEmployeeName.value]
+  const names = manualOrganisationEmployeeNames.value
   const uniqueNames = new Set<string>()
 
   return names
@@ -670,7 +670,6 @@ onMounted(() => {
                 class="manual-employee-entry__input"
                 type="text"
                 :placeholder="$t(' Add Visitor')"
-                @input="updateData()"
                 @keydown.enter.prevent="addManualOrganisationEmployee"
               />
               <button
