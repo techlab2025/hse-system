@@ -62,6 +62,8 @@ const showController = ShowInternalAuditPlanController.getInstance()
 const editController = EditInternalAuditPlanController.getInstance()
 
 const fullCompanyOption = new TitleInterface({ id: 0, title: 'Full Company' })
+const defaultGeneralInstructions =
+  'All staff must be notified in advance of the onsite audit: the purpose of the audit, and of their roles. They may be interviewed.\nBefore the audit, keep aside process maps, procedures, work instructions, and supporting documentation.\nWhere applicable, agree corrective and preventive actions and target dates.\nSenior management should attend opening and closing meetings.'
 const projectOptions = ref<TitleInterface[]>([fullCompanyOption])
 const selectedProject = ref<TitleInterface | null>(null)
 const auditStartDate = ref<Date | null>(dateFromString(today()))
@@ -76,10 +78,9 @@ const loadedStatus = ref(props.auditStatus)
 
 const scopes = ref<ScopeRow[]>([{ department: null, activities: [] }])
 const schedules = ref<ScheduleRow[]>([createSchedule()])
-const generalInstructions = ref(
-  'All staff must be notified in advance of the onsite audit: the purpose of the audit, and of their roles. They may be interviewed.\nBefore the audit, keep aside process maps, procedures, work instructions, and supporting documentation.\nWhere applicable, agree corrective and preventive actions and target dates.\nSenior management should attend opening and closing meetings.',
-)
+const generalInstructions = ref(defaultGeneralInstructions)
 const scheduleAttachments = ref<string[]>([])
+const scheduleAttachmentFileNames = ref<string[]>([])
 const selectedTeamOptions = computed(() => auditTeam.value)
 const auditFocusOptions = computed(() =>
   scopes.value
@@ -90,7 +91,6 @@ const isExisting = computed(() => props.internalAuditPlanId > 0)
 const isPublished = computed(
   () => loadedStatus.value.toLowerCase() === 'planned' && isExisting.value,
 )
-const isReported = computed(() => loadedStatus.value.toLowerCase() === 'reported')
 
 onMounted(async () => {
   const projects = await projectController.fetch(projectParams)
@@ -132,7 +132,10 @@ function titleFrom(value: unknown): TitleInterface | null {
 }
 
 async function loadPlan() {
-  if (!props.internalAuditPlanId) return
+  if (!props.internalAuditPlanId) {
+    resetPlanForm()
+    return
+  }
   error.value = ''
   await showController.getData(new ShowInternalAuditPlanParams(props.internalAuditPlanId))
   if (!showController.isDataSuccess() || !showController.state.value.data) {
@@ -164,6 +167,7 @@ async function loadPlan() {
 
   generalInstructions.value = plan.generalInstructions
   scheduleAttachments.value = [...plan.attachments]
+  scheduleAttachmentFileNames.value = [...plan.attachmentFileNames]
 
   scopes.value = plan.auditScope.map((entry) => {
     const item = (entry ?? {}) as Record<string, unknown>
@@ -203,6 +207,23 @@ async function loadPlan() {
     }
   })
   if (!schedules.value.length) schedules.value = [createSchedule()]
+}
+
+function resetPlanForm() {
+  loadedStatus.value = 'draft'
+  auditStartDate.value = dateFromString(today())
+  auditEndDate.value = dateFromString(today())
+  selectedProject.value = null
+  auditStandard.value = null
+  auditTeam.value = []
+  leadAuditor.value = null
+  scopes.value = [{ department: null, activities: [] }]
+  schedules.value = [createSchedule()]
+  generalInstructions.value = defaultGeneralInstructions
+  scheduleAttachments.value = []
+  scheduleAttachmentFileNames.value = []
+  error.value = ''
+  success.value = ''
 }
 
 function createSchedule(): ScheduleRow {
@@ -254,6 +275,7 @@ function setScheduleValue(
 
 function setScheduleFiles(files: UploadedFile[]) {
   scheduleAttachments.value = files.map((file) => file.base64 || file.url).filter(Boolean)
+  scheduleAttachmentFileNames.value = files.map((file) => file.name)
 }
 
 function formatDate(value: Date | null): string {
@@ -358,13 +380,16 @@ function validate(isDraft: boolean): boolean {
 }
 
 async function submit(isDraft: boolean) {
-  if (isReported.value) {
-    error.value = 'Issued audit reports are fixed and the audit plan can no longer be changed.'
-    return
-  }
+  // if (isReported.value) {
+  //   error.value = 'Issued audit reports are fixed and the audit plan can no longer be changed.'
+  //   return
+  // }
+  console.log('111')
   if (!validate(isDraft)) return
   saving.value = true
   success.value = ''
+  console.log('2222')
+
   try {
     if (isExisting.value) {
       const params = buildParams(isDraft)
@@ -623,16 +648,19 @@ async function submit(isDraft: boolean) {
           accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
           :multiple="true"
           :max-files="8"
+          :file="scheduleAttachments"
+          :file-names="scheduleAttachmentFileNames"
           @change="setScheduleFiles"
         />
       </div>
     </div>
-    <p v-if="error" class="form-error" role="alert">{{ error }}</p>
+    <!-- <p v-if="error" class="form-error" role="alert">{{ error }}</p>
     <p v-if="success" class="form-success" role="status">{{ success }}</p>
     <p v-if="isReported" class="form-success">
       This audit has been reported. The issued record is read-only.
-    </p>
-    <footer v-if="!isReported" class="form-actions">
+    </p> -->
+    <!-- v-if="!isReported"  -->
+    <footer class="form-actions">
       <button
         v-if="!isPublished"
         class="btn btn-secondary"

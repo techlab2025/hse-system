@@ -1,5 +1,26 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 
+function parseAttachments(value: unknown): { urls: string[]; fileNames: string[] } {
+  if (!Array.isArray(value)) return { urls: [], fileNames: [] }
+  const attachments = value
+    .map((entry) => {
+      if (typeof entry === 'string') {
+        return { url: entry, fileName: entry.split('/').pop() ?? 'file' }
+      }
+      const item = (entry ?? {}) as Record<string, unknown>
+      const url = String(item.url ?? item.file ?? item.path ?? item.base64 ?? '')
+      return {
+        url,
+        fileName: String(item.file_name ?? item.name ?? url.split('/').pop() ?? 'file'),
+      }
+    })
+    .filter((attachment) => Boolean(attachment.url))
+  return {
+    urls: attachments.map((attachment) => attachment.url),
+    fileNames: attachments.map((attachment) => attachment.fileName),
+  }
+}
+
 export default class InternalAuditPlanModel extends TitleInterface {
   constructor(
     public id: number,
@@ -19,6 +40,7 @@ export default class InternalAuditPlanModel extends TitleInterface {
     public leader: TitleInterface | null = null,
     public generalInstructions: string = '',
     public attachments: string[] = [],
+    public attachmentFileNames: string[] = [],
     public auditee: TitleInterface | null = null,
   ) {
     super({ id, title })
@@ -42,6 +64,7 @@ export default class InternalAuditPlanModel extends TitleInterface {
     const auditeeEmployee = (rawAuditee?.employee ??
       rawAuditee?.organization_employee ??
       rawAuditee) as Record<string, unknown> | null | undefined
+    const attachments = parseAttachments(item.attachments)
 
     return new InternalAuditPlanModel(
       Number(item.id ?? 0),
@@ -72,7 +95,8 @@ export default class InternalAuditPlanModel extends TitleInterface {
           })
         : null,
       String(item.general_instructions ?? ''),
-      Array.isArray(item.attachments) ? item.attachments.map(String) : [],
+      attachments.urls,
+      attachments.fileNames,
       auditeeEmployee
         ? new TitleInterface({
             id: Number(auditeeEmployee.id ?? auditeeEmployee.organization_employee_id ?? 0),
@@ -110,6 +134,7 @@ export default class InternalAuditPlanModel extends TitleInterface {
     new TitleInterface({ id: 101, title: 'Sara Ibrahim' }),
     'Review maintenance records before the meeting.',
     ['JVBERi0xLjQ...'],
+    ['audit-evidence.pdf'],
     new TitleInterface({ id: 104, title: 'Mona Adel' }),
   )
 }

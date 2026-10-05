@@ -1466,6 +1466,9 @@ class ApiNames {
   public get FetchInternalAuditNcrs() {
     return this.prefix + 'fetch_ncrs'
   }
+  public get FetchInternalAuditNcrDetails() {
+    return this.prefix + 'fetch_ncr_details'
+  }
   public get CreateInternalAuditNcrs() {
     return this.prefix + 'create_ncrs'
   }

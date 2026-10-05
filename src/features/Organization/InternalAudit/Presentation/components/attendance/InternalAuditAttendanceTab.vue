@@ -49,6 +49,22 @@ const canManageAttendance = computed(() => {
     (!props.auditStartDate || props.auditStartDate.slice(0, 10) <= today)
   )
 })
+const attendanceDisabledMessage = computed(() => {
+  if (!props.internalAuditPlanId || !props.auditStatus) return ''
+  if (props.auditStatus.toLowerCase() === 'reported') {
+    return 'This audit has been reported. Attendance is read-only.'
+  }
+  if (props.auditStatus.toLowerCase() !== 'planned') {
+    return 'Publish the audit plan before updating attendance.'
+  }
+  if (
+    props.auditStartDate &&
+    props.auditStartDate.slice(0, 10) > new Date().toISOString().slice(0, 10)
+  ) {
+    return 'Attendance can be updated when the audit start date is reached.'
+  }
+  return ''
+})
 
 async function fetchAttendance() {
   error.value = ''
@@ -132,14 +148,14 @@ onMounted(fetchAttendance)
         <p>Track attendance for the opening and closing meetings.</p>
       </div>
       <div class="header-actions">
-        <button
+       <!-- <button
           class="secondary-button"
           type="button"
           :disabled="isLoading"
           @click="fetchAttendance"
         >
           {{ isLoading ? 'Loading…' : 'Refresh' }}
-        </button>
+        </button> -->
         <button
           class="primary-button"
           type="button"
@@ -148,6 +164,9 @@ onMounted(fetchAttendance)
         >
           Add Attendee
         </button>
+        <p v-if="attendanceDisabledMessage" class="attendance-disabled-note" role="status">
+          {{ attendanceDisabledMessage }}
+        </p>
       </div>
     </header>
 
@@ -354,6 +373,16 @@ onMounted(fetchAttendance)
   align-items: center;
   gap: 10px;
 }
+.header-actions {
+  align-items: flex-end;
+  flex-direction: column;
+}
+.attendance-disabled-note {
+  max-width: 19rem;
+  color: #76501b !important;
+  font-size: 0.75rem !important;
+  text-align: end;
+}
 .primary-button,
 .secondary-button {
   border: 1px solid var(--PrimaryColor, #087d80);
@@ -512,7 +541,12 @@ button:disabled {
     flex-direction: column;
   }
   .header-actions {
+    align-items: stretch;
     width: 100%;
+  }
+  .attendance-disabled-note {
+    max-width: none;
+    text-align: start;
   }
   .header-actions button {
     flex: 1;

@@ -18,20 +18,15 @@ const route = useRoute()
 const router = useRouter()
 const showController = ShowInternalAuditPlanController.getInstance()
 const requestedTab = computed(() => String(route.query.tab ?? 'plan'))
-const initialAuditId = Number(
-  route.query.internal_audit_plan_id ?? route.query.internal_audit_id ?? route.query.id,
-)
 const activeTab = ref(
-  tabs.some((tab) => tab.key === requestedTab.value) &&
-    // (requestedTab.value === 'plan' || (Number.isFinite(initialAuditId) && initialAuditId > 0))
-    // ?
-    requestedTab.value
-    // : 'plan',
+  tabs.some((tab) => tab.key === requestedTab.value) ? requestedTab.value : 'plan',
 )
 const activeComponent = computed(() => tabs.find((tab) => tab.key === activeTab.value)?.component)
-const selectedAudit = ref(showController.state.value.data ?? null)
+const selectedAudit = ref<NonNullable<typeof showController.state.value.data> | null>(null)
 const internalAuditPlanId = computed(() => {
-  const value = Number(route.query.internal_audit_plan_id ?? route.query.internal_audit_id ?? route.query.id)
+  const value = Number(
+    route.query.internal_audit_plan_id ?? route.query.internal_audit_id ?? route.query.id,
+  )
   return Number.isFinite(value) && value > 0 ? value : 0
 })
 
@@ -64,21 +59,38 @@ onMounted(loadSelectedAudit)
         <!-- <span class="eyebrow">Assurance & compliance</span> -->
         <h1>Internal Audit</h1>
         <!-- <p>Create and manage a complete organization audit lifecycle.</p> -->
-        <div v-if="selectedAudit" class="audit-identity"><strong>{{ selectedAudit.title }}</strong><span>{{
-          selectedAudit.status }}</span></div>
+        <div v-if="selectedAudit" class="audit-identity">
+          <strong>{{ selectedAudit.title }}</strong
+          ><span>{{ selectedAudit.status }}</span>
+        </div>
       </div>
-      <router-link class="btn btn-secondary" to="/organization/internal-audit/register">Audit Register</router-link>
+      <router-link class="btn btn-secondary" to="/organization/internal-audit/register"
+        >Audit Register</router-link
+      >
     </header>
     <nav class="audit-tabs" aria-label="Internal audit sections">
-      <button v-for="tab in tabs" :key="tab.key" type="button" :disabled="tab.key !== 'plan' && !internalAuditPlanId"
-        :class="{ active: activeTab === tab.key }" @click="selectTab(tab.key)">{{ tab.label }}</button>
+      <button
+        v-for="tab in tabs"
+        :key="tab.key"
+        type="button"
+        :disabled="tab.key !== 'plan' && !internalAuditPlanId"
+        :class="{ active: activeTab === tab.key }"
+        @click="selectTab(tab.key)"
+      >
+        {{ tab.label }}
+      </button>
     </nav>
-    <p v-if="!internalAuditPlanId && activeTab === 'plan'" class="stage-note">Save the audit plan before continuing to
-      Attendance, NCRs, and Report.</p>
+    <p v-if="!internalAuditPlanId && activeTab === 'plan'" class="stage-note">
+      Save the audit plan before continuing to Attendance, NCRs, and Report.
+    </p>
     <KeepAlive>
-      <component :is="activeComponent" :internal-audit-plan-id="internalAuditPlanId"
-        :audit-status="selectedAudit?.status ?? ''" :audit-start-date="selectedAudit?.auditStartDate ?? ''"
-        @saved="loadSelectedAudit" />
+      <component
+        :is="activeComponent"
+        :internal-audit-plan-id="internalAuditPlanId"
+        :audit-status="selectedAudit?.status ?? ''"
+        :audit-start-date="selectedAudit?.auditStartDate ?? ''"
+        @saved="loadSelectedAudit"
+      />
     </KeepAlive>
   </main>
 </template>
@@ -87,39 +99,39 @@ onMounted(loadSelectedAudit)
 .internal-audit-page {
   display: grid;
   gap: 20px;
-  color: var(--text-primary, #172334)
+  color: var(--text-primary, #172334);
 }
 
 .page-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px
+  gap: 20px;
 }
 
 .eyebrow {
   color: var(--PrimaryColor, #087d80);
-  font-size: .75rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .page-header h1 {
   margin: 4px 0;
-  font-size: 1.65rem
+  font-size: 1.65rem;
 }
 
 .page-header p {
   margin: 0;
-  color: var(--text-soft, #687777)
+  color: var(--text-soft, #687777);
 }
 
 .audit-identity {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 12px
+  margin-top: 12px;
 }
 
 .audit-identity span {
@@ -127,9 +139,9 @@ onMounted(loadSelectedAudit)
   background: color-mix(in srgb, var(--PrimaryColor, #087d80) 10%, transparent);
   padding: 5px 8px;
   color: var(--PrimaryColor, #087d80);
-  font-size: .75rem;
+  font-size: 0.75rem;
   font-weight: 700;
-  text-transform: capitalize
+  text-transform: capitalize;
 }
 
 .audit-tabs {
@@ -139,7 +151,7 @@ onMounted(loadSelectedAudit)
   padding: 6px;
   border: 1px solid var(--main-border, #d9e1df);
   border-radius: 14px;
-  background: var(--card-bg, #fff)
+  background: var(--card-bg, #fff);
 }
 
 .audit-tabs button {
@@ -149,18 +161,18 @@ onMounted(loadSelectedAudit)
   padding: 13px;
   color: var(--text-primary, #172334);
   font-weight: 600;
-  transition: .2s
+  transition: 0.2s;
 }
 
 .audit-tabs button:disabled {
   cursor: not-allowed;
-  opacity: .45
+  opacity: 0.45;
 }
 
 .audit-tabs button.active {
   background: var(--PrimaryColor, #087d80);
   color: #fff;
-  box-shadow: 0 5px 14px color-mix(in srgb, var(--PrimaryColor, #087d80) 22%, transparent)
+  box-shadow: 0 5px 14px color-mix(in srgb, var(--PrimaryColor, #087d80) 22%, transparent);
 }
 
 .stage-note {
@@ -168,17 +180,17 @@ onMounted(loadSelectedAudit)
   border-inline-start: 4px solid #c6841b;
   background: #fff6e5;
   padding: 12px 16px;
-  color: #76501b
+  color: #76501b;
 }
 
-@media(max-width:600px) {
+@media (max-width: 600px) {
   .page-header {
     align-items: flex-start;
-    flex-direction: column
+    flex-direction: column;
   }
 
   .audit-tabs {
-    grid-template-columns: 1fr 1fr
+    grid-template-columns: 1fr 1fr;
   }
 }
 </style>
