@@ -364,7 +364,7 @@ onMounted(async () => {
                   v-model="item.employee"
                   placeholder="Select Incident"
                   class="mt-4 mr-2 input"
-                  :label="$t('Injured Person')"
+                  :label="$t('Person')"
                   help-text="Select the injured Incident, or enter the person's name manually if they are not an Incident."
                   :reload="true"
                   :excludedOptionIds="getSelectedEmployeeIds(index)"
@@ -457,7 +457,7 @@ onMounted(async () => {
               </div> -->
               <div class="injury-field input-wrapper w-full">
                 <div class="flex items-center gap-2">
-                  <label :for="`injury-description-${index}`">{{ $t('Description') }}</label>
+                  <label :for="`injury-description-${index}`">{{ $t('Description of Injury ') }}</label>
                   <FieldHelpIcon
                     text="Describe the injury, affected body part, and any relevant medical details."
                   />

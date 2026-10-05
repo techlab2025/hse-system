@@ -956,7 +956,7 @@ defineExpose({
       class="input-wrapper col-span-6"
     >
       <div class="field-label">
-        <label for="property-title">{{ $t('property') }}</label>
+        <label for="property-title">{{ $t('Property Damage') }}</label>
       </div>
       <input
         id="property-title"
@@ -1292,7 +1292,7 @@ defineExpose({
     <!-- Image -->
     <div class="col-span-6 md:col-span-6 input-wrapper w-full">
       <div class="field-label">
-        <label>{{ $t('upload image') }}</label
+        <label>{{ $t('Incident Photos ') }}</label
         ><FieldHelpIcon
           text="Attach photos that help document the location, condition, damage, or evidence."
         />
