@@ -4453,5 +4453,9 @@
   "import_audit_activities": "استيراد أنشطة التدقيق",
   "no_audit_activities": "لا توجد أنشطة تدقيق",
   "no_audit_activities_description": "لم تتم إضافة أنشطة تدقيق بعد.",
-  "action_feature_audit_activities": "إجراءات أنشطة التدقيق"
+  "action_feature_audit_activities": "إجراءات أنشطة التدقيق",
+  "certification_name": "اسم الشهادة",
+  "issuing_body": "الجهة المصدرة",
+  "certificate_number": "رقم الشهادة",
+  "certificate_file": "ملف الشهادة"
 }

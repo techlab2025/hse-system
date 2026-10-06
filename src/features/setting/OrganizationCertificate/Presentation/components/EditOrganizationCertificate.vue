@@ -13,12 +13,15 @@ const route = useRoute()
 const router = useRouter()
 const id = route.params.id
 const params = ref<Params | null>(null)
+const formRef = ref<InstanceType<typeof OrganizationCertificateForm> | null>(null)
 
 const showOrganizationCertificateController = ShowOrganizationCertificateController.getInstance()
 const state = ref(showOrganizationCertificateController.state.value)
 const fetchOrganizationCertificateDetails = async () => {
   const organizationCertificateParams = new ShowOrganizationCertificateParams(Number(id))
-  await showOrganizationCertificateController.showOrganizationCertificate(organizationCertificateParams)
+  await showOrganizationCertificateController.showOrganizationCertificate(
+    organizationCertificateParams,
+  )
 }
 
 onMounted(() => {
@@ -26,7 +29,11 @@ onMounted(() => {
 })
 
 const editOrganizationCertificate = async () => {
-  await EditOrganizationCertificateController.getInstance().editOrganizationCertificate(params.value!, router)
+  if (!(await formRef.value?.validateRequiredFields())) return
+  await EditOrganizationCertificateController.getInstance().editOrganizationCertificate(
+    params.value!,
+    router,
+  )
 }
 
 watch(
@@ -51,10 +58,13 @@ const setParams = (data: Params) => {
       <!--              {{ state.data?.titles }}-->
 
       <!--      </pre>-->
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="editOrganizationCertificate">
-        <OrganizationCertificateForm @update:data="setParams" :data="state.data!" />
+      <form
+        class="grid grid-cols-1 md:grid-cols-4 gap-4"
+        @submit.prevent="editOrganizationCertificate"
+      >
+        <OrganizationCertificateForm ref="formRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary ">{{ $t('save') }}</button>
+          <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>
       </form>
     </template>

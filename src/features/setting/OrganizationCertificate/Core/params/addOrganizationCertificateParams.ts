@@ -1,71 +1,30 @@
 import type Params from '@/base/core/params/params'
-import type TranslationsParams from '@/base/core/params/translations_params.ts'
-import { CertificateTypeEnum } from '../Enums/CertificateTypeEnum'
+
+export interface OrganizationCertificateFields {
+  certification_name: string
+  issuing_body: string
+  certificate_number: string
+  issue_date: string
+  hase_expiry_date: boolean
+  expire_date?: string
+  certificate_file: string
+  notes?: string
+}
 
 export default class AddOrganizationCertificateParams implements Params {
-  translation: TranslationsParams
-  // hasCertificate: number
-  allIndustries: number | null
-  industries: number[]
-  // parentId: number
-  image: string | null
-  require_expired_date: boolean
-  certificate_type: number
-  hasrequiredata: boolean
-  type: CertificateTypeEnum
+  constructor(public fields: OrganizationCertificateFields) {}
 
-  constructor(
-    translation: TranslationsParams,
-    // hasCertificate: number,
-    allIndustries: number | null,
-    industries: number[],
-    // parentId: number,
-    image: string | null,
-    require_expired_date: boolean,
-    certificate_type: number,
-    hasrequiredata: boolean,
-    type: CertificateTypeEnum = CertificateTypeEnum.CERTIFICATE,
-  ) {
-    this.translation = translation
-    // this.hasCertificate = hasCertificate
-    this.allIndustries = allIndustries
-    this.industries = industries
-    // this.parentId = parentId
-    this.image = image
-    this.require_expired_date = require_expired_date
-    this.certificate_type = certificate_type
-    this.hasrequiredata = hasrequiredata
-    this.type = type === CertificateTypeEnum.CERTIFICATE ? type : CertificateTypeEnum.CERTIFICATE
-  }
-
-  toMap(): Record<
-    string,
-    | number
-    | string
-    | boolean
-    | number[]
-    | Record<string, string | number[] | number | boolean | Record<string, string>>
-  > {
-    const data: Record<
-      string,
-      | number
-      | string
-      | boolean
-      | number[]
-      | Record<string, string | number[] | number | boolean | Record<string, string>>
-    > = {}
-
-    if (this.translation) data['translations'] = this.translation.toMap()
-    // data['has_certificate'] = this.hasCertificate ? 1 : 0
-    if (this.allIndustries != null) data['all_industries'] = this.allIndustries ? 1 : 0
-    // console.log(this.allIndustries)
-    if (this.industries?.length > 0 && !this.allIndustries) data['industry_ids'] = this.industries
-    // if (this.parentId) data['parent_id'] = this.parentId
-    if (this.image) data['image'] = this.image
-    data['require_expired_date'] = this.require_expired_date
-    data['certificate_type'] = this.certificate_type
-    data['require_certificate'] = this.hasrequiredata
-    data['type'] = this.type
+  toMap(): Record<string, string | boolean | number> {
+    const data: Record<string, string | boolean> = {
+      certification_name: this.fields.certification_name,
+      issuing_body: this.fields.issuing_body,
+      certificate_number: this.fields.certificate_number,
+      issue_date: this.fields.issue_date,
+      hase_expiry_date: this.fields.hase_expiry_date,
+      certificate_file: this.fields.certificate_file,
+    }
+    if (this.fields.hase_expiry_date) data.expire_date = this.fields.expire_date ?? ''
+    if (this.fields.notes !== undefined) data.notes = this.fields.notes
     return data
   }
 }

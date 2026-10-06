@@ -10,7 +10,7 @@ export default class NcrCorrectiveActionParams {
     return {
       title: this.correction,
       assgined_to_id: this.assignedToId,
-      target_date: this.targetDate,
+      due_date: this.targetDate,
       // actual_date: this.actualDate,
     }
   }

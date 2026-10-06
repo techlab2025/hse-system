@@ -1,429 +1,184 @@
 <script lang="ts" setup>
-import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
-import TitleInterface from '@/base/Data/Models/title_interface'
-import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
-
-import USA from '@/shared/icons/USA.vue'
-import SA from '@/shared/icons/SA.vue'
-import TranslationsParams from '@/base/core/params/translations_params.ts'
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController.ts'
-import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams.ts'
-import { LangsMap } from '@/constant/langs.ts'
-import IndexIndustryParams from '@/features/setting/Industries/Core/Params/indexIndustryParams.ts'
-import IndexIndustryController from '@/features/setting/Industries/Presentation/controllers/indexIndustryController.ts'
-import { useRoute } from 'vue-router'
-import { filesToBase64, type FileBase64 } from '@/base/Presentation/utils/file_to_base_64.ts'
-import type OrganizationCertificateDetailsModel from '../../Data/models/OrganizationCertificateDetailsModel'
-import EditOrganizationCertificateParams from '../../Core/params/editOrganizationCertificateParams'
-import AddOrganizationCertificateParams from '../../Core/params/addOrganizationCertificateParams'
-import { useUserStore } from '@/stores/user'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { nextTick, reactive, ref, watch } from 'vue'
+import DatePicker from 'primevue/datepicker'
+import FileUpload from '@/shared/FormInputs/FileUpload.vue'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
-import { OrganizationCertificateTypeEnum } from '../../Core/Enums/OrganizationCertificateTypeEnum'
-import { CertificateTypeEnum } from '../../Core/Enums/CertificateTypeEnum'
+import { filesToBase64, type FileBase64 } from '@/base/Presentation/utils/file_to_base_64'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
-import SingleFileUpload from '@/shared/HelpersComponents/SingleFileUpload.vue'
+import type OrganizationCertificateDetailsModel from '../../Data/models/OrganizationCertificateDetailsModel'
+import AddOrganizationCertificateParams from '../../Core/params/addOrganizationCertificateParams'
+import EditOrganizationCertificateParams from '../../Core/params/editOrganizationCertificateParams'
 
-const emit = defineEmits(['update:data'])
-
-const props = defineProps<{
-  data?: OrganizationCertificateDetailsModel
+const props = defineProps<{ data?: OrganizationCertificateDetailsModel }>()
+const emit = defineEmits<{
+  'update:data': [params: AddOrganizationCertificateParams | EditOrganizationCertificateParams]
 }>()
 
-const route = useRoute()
-const id = route.params.parent_id
-
-function isBase64(str: any): boolean {
-  if (typeof str !== 'string') return false
-
-  // remove base64 prefix if exists
-  const base64 = str.includes('base64,') ? str.split('base64,')[1] : str
-
-  const base64Regex = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/
-
-  return base64Regex.test(base64)
-}
-// ---------- State ----------
-const langs = ref<
-  {
-    locale: string
-    icon?: any
-    title: string
-  }[]
->([])
-
-const langsDescription = ref<
-  {
-    locale: string
-    icon?: any
-    description: string
-  }[]
->([])
-
-const allIndustries = ref<number>(0)
-const industry = ref<TitleInterface[]>([])
-const image = ref<string>('')
-
-// industry controller
-const industryParams = new IndexIndustryParams('', 0, 10, 1)
-const industryController = IndexIndustryController.getInstance()
-
-// default available langs from backend
-const langDefault = ref<
-  {
-    locale: string
-    icon?: any
-    title: string
-  }[]
->([])
-const langDefaultDescription = ref<
-  {
-    locale: string
-    icon?: any
-    title: string
-  }[]
->([])
-
-const user = useUserStore()
-// ---------- Fetch available languages ----------
-const fetchLang = async (
-  query: string = '',
-  pageNumber: number = 1,
-  perPage: number = 10,
-  withPage: number = 0,
-) => {
-  if (user?.user?.languages.length) {
-    langDefault.value = user?.user?.languages.map((item: any) => ({
-      locale: item.code,
-      title: '',
-      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-    }))
-
-    langDefaultDescription.value = user?.user?.languages.map((item: any) => ({
-      locale: item.code,
-      title: '',
-      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-    }))
-    return
-  }
-  const params = new IndexLangParams(query, pageNumber, perPage, withPage)
-  const indexOrganizationCertificateController = await IndexLangController.getInstance().getData(params)
-
-  const response = indexOrganizationCertificateController.value
-
-  if (response?.data?.length) {
-    langDefault.value = response.data.map((item: any) => ({
-      locale: item.code,
-      title: '',
-      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-    }))
-
-    langDefaultDescription.value = response.data.map((item: any) => ({
-      locale: item.code,
-      title: '',
-      icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
-    }))
-  } else {
-    langDefault.value = [
-      { locale: 'en', icon: USA, title: '' },
-      { locale: 'ar', icon: SA, title: '' },
-    ]
-    langDefaultDescription.value = [
-      { locale: 'en', icon: USA, title: '' },
-      { locale: 'ar', icon: SA, title: '' },
-    ]
-  }
-}
-
-onMounted(async () => {
-  await fetchLang()
+const form = reactive({
+  certification_name: '',
+  issuing_body: '',
+  certificate_number: '',
+  notes: '',
 })
+const issueDate = ref<Date | null>(null)
+const expiryDate = ref<Date | null>(null)
+const expiredate = ref(false)
+const certificateFile = ref('')
+const initialFile = ref('')
+const requiredFieldErrors = ref<Record<string, string>>({})
+const fileError = ref('')
+let fileVersion = 0
+let pendingFile: Promise<void> | null = null
 
-// ---------- Emit update ----------
-const updateData = () => {
-  const translationsParams = new TranslationsParams()
-
-  // titles
-  langs.value.forEach((lang) => {
-    translationsParams.setTranslation('title', lang.locale, lang.title)
-  })
-
-  // descriptions
-  langsDescription.value.forEach((lang) => {
-    translationsParams.setTranslation('description', lang.locale, lang.description)
-  })
-
-  const AllIndustry = user.user?.type == OrganizationTypeEnum?.ADMIN ? allIndustries.value : null
-
-  // console.log(isBase64(image.value), "isBase64(image.value)");
-  console.log(expiredate.value, 'expiredate.value')
-  const imagePayload = ImageCahnge.value && isBase64(image.value) && image.value.length > 0
-    ? image.value
-    : firstImage.value == image.value
-      ? null
-      : '*'
-
-  const params = props.data?.id
-    ? new EditOrganizationCertificateParams(
-        props.data.id,
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((item) => item.id),
-        imagePayload,
-        null,
-        expiredate.value,
-        certificateType.value.id,
-        hasrequiredata.value,
-        CertificateTypeEnum.CERTIFICATE,
-      )
-    : new AddOrganizationCertificateParams(
-        translationsParams,
-        AllIndustry,
-        industry.value?.map((item) => item.id),
-        isBase64(image.value) && image.value.length > 0 ? image.value : null,
-        expiredate.value,
-        certificateType.value.id,
-        hasrequiredata.value,
-        CertificateTypeEnum.CERTIFICATE,
-      )
-
-  console.log(params, 'params')
-
-  emit('update:data', params)
+const parseDate = (value?: string): Date | null => {
+  if (!value) return null
+  const date = new Date(value.slice(0, 10) + 'T00:00:00')
+  return Number.isNaN(date.getTime()) ? null : date
 }
-const firstImage = ref('')
-// ---------- Watchers ----------
-// Init from props (edit mode) or defaults (create mode)
+
 watch(
-  [() => props.data, () => langDefault.value, () => langDefaultDescription.value],
-  ([newData, newDefault, newDefaultDesc]) => {
-    // console.log(newData, 'newData');
-
-    if (newDefault.length) {
-      // titles
-
-      langs.value = newData?.titles?.length
-        ? newDefault.map((l) => {
-            const existing = newData.titles.find((t) => t.locale === l.locale)
-            return existing ?? { locale: l.locale, title: '' }
-          })
-        : newDefault.map((l) => ({ locale: l.locale, title: '' }))
-
-      // descriptions
-      langsDescription.value = newData?.descriptions?.length
-        ? newDefaultDesc.map((l) => {
-            const existing = newData.descriptions.find((t) => t.locale === l.locale)
-            return existing ?? { locale: l.locale, description: '' }
-          })
-        : newDefaultDesc.map((l) => ({ locale: l.locale, description: '' }))
-
-      allIndustries.value = newData?.allIndustries ?? 0
-      industry.value =
-        newData?.industries?.map(
-          (item) =>
-            new TitleInterface({
-              id: item.id,
-              title: item.title,
-              subtitle: item.subtitle,
-            }),
-        ) ?? []
-      image.value = newData?.image ? newData?.image : ''
-      firstImage.value = newData?.image ? newData?.image : ''
-      expiredate.value = newData?.requireExpiredDate ?? false
-      certificateType.value =
-        certificateTypes.value.find(
-          (type) => type.id === newData?.certificateType?.id,
-        ) ?? certificateTypes.value[0]
-      hasrequiredata.value = newData?.hasrequiredata ?? false
-    }
+  () => props.data,
+  (data) => {
+    fileVersion++
+    pendingFile = null
+    form.certification_name = data?.certification_name ?? ''
+    form.issuing_body = data?.issuing_body ?? ''
+    form.certificate_number = data?.certificate_number ?? ''
+    form.notes = data?.notes ?? ''
+    issueDate.value = parseDate(data?.issue_date)
+    expiredate.value = data?.hase_expiry_date ?? false
+    expiryDate.value = expiredate.value ? parseDate(data?.expire_date) : null
+    certificateFile.value = data?.certificate_file ?? ''
+    initialFile.value = certificateFile.value
+    fileError.value = ''
+    requiredFieldErrors.value = {}
   },
   { immediate: true },
 )
 
-watch(
-  () => image.value,
-  (newValue) => {
-    if (newValue == props?.data?.image) {
-      ImageCahnge.value = false
-    } else {
-      ImageCahnge.value = true
-    }
-  },
-)
+const updateData = () => {
+  const fields = {
+    ...form,
+    issue_date: issueDate.value ? formatJoinDate(issueDate.value) : '',
+    hase_expiry_date: expiredate.value,
+    expire_date:
+      expiredate.value && expiryDate.value ? formatJoinDate(expiryDate.value) : undefined,
+    certificate_file: certificateFile.value,
+  }
+  emit(
+    'update:data',
+    props.data?.id
+      ? new EditOrganizationCertificateParams(props.data.id, fields)
+      : new AddOrganizationCertificateParams(fields),
+  )
+}
 
-// Auto-update emit whenever key data changes
+const updateExpireDate = (checked: boolean) => {
+  expiredate.value = checked
+  if (!checked) expiryDate.value = null
+}
+
+const setFile = (files: File | File[] | null) => {
+  const version = ++fileVersion
+  const file = Array.isArray(files) ? files[0] : files
+  certificateFile.value = ''
+  fileError.value = ''
+  pendingFile = file
+    ? (async () => {
+        try {
+          const result = (await filesToBase64(file)) as FileBase64
+          if (version === fileVersion) certificateFile.value = result.file
+        } catch {
+          if (version === fileVersion)
+            fileError.value = 'Unable to read certificate file. Please select it again.'
+        }
+      })()
+    : null
+}
+
+const getMissingFields = () => {
+  const errors: Record<string, string> = {}
+  if (!form.certification_name.trim()) errors.certification_name = 'Certification name is required'
+  if (!form.issuing_body.trim()) errors.issuing_body = 'Issuing body is required'
+  if (!form.certificate_number.trim()) errors.certificate_number = 'Certificate number is required'
+  if (!issueDate.value) errors.issue_date = 'Issue date is required'
+  if (expiredate.value && !expiryDate.value) errors.expire_date = 'Expiry date is required'
+  if (!certificateFile.value)
+    errors.certificate_file = fileError.value || 'Certificate file is required'
+  return errors
+}
+
 watch(
-  [langs, langsDescription, industry, allIndustries, image],
+  [form, issueDate, expiryDate, expiredate, certificateFile],
   () => {
+    const errors = getMissingFields()
+    for (const key of Object.keys(requiredFieldErrors.value)) {
+      if (!errors[key]) delete requiredFieldErrors.value[key]
+    }
     updateData()
   },
-  { deep: true },
+  { deep: true, immediate: true },
 )
 
-// ---------- Helpers ----------
-const ImageCahnge = ref(false)
-const getFileBase64Value = async (file: File) => {
-  const result = (await filesToBase64(file)) as FileBase64 | FileBase64[]
-  return Array.isArray(result) ? (result[0]?.file ?? '') : result.file
-}
-
-const setImage = async (data: File | string) => {
-  if (image.value == props?.data?.image) {
-    ImageCahnge.value = false
-  } else {
-    ImageCahnge.value = true
+const validateRequiredFields = async () => {
+  await pendingFile
+  requiredFieldErrors.value = getMissingFields()
+  const firstField = Object.keys(requiredFieldErrors.value)[0]
+  if (!firstField) {
+    updateData()
+    return true
   }
-  image.value = typeof data === 'string' ? data : await getFileBase64Value(data)
-  updateData()
-}
-
-const UpdateSerial = (data: unknown) => {
-  SerialNumber.value = data
-  updateData()
-}
-
-const SerialNumber = ref()
-
-const fields = ref([
-  {
-    key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
-    value: SerialNumber.value,
-    enabled: props?.data?.id ? false : true,
-  },
-])
-
-const expiredate = ref<boolean>(false)
-const updateExpireDate = (data: boolean) => {
-  expiredate.value = data
-  console.log(expiredate.value, 'expiredate')
-  updateData()
-}
-
-const hasrequiredata = ref<boolean>(false)
-const updateHasRequireData = (data: boolean) => {
-  hasrequiredata.value = data
-  updateData()
-}
-
-const certificateTypes = ref<TitleInterface[]>([
-  new TitleInterface({
-    id: OrganizationCertificateTypeEnum.SCALE,
-    title: 'skill',
-  }),
-  new TitleInterface({
-    id: OrganizationCertificateTypeEnum.AWARENESS,
-    title: 'awareness',
-  }),
-  new TitleInterface({
-    id: OrganizationCertificateTypeEnum.KNOWLEDGE,
-    title: 'knowledge',
-  }),
-])
-const certificateType = ref<TitleInterface>(
-  certificateTypes.value[0],
-)
-const updateOrganizationCertificateType = (data: TitleInterface) => {
-  certificateType.value = data
-  console.log(certificateType.value, 'certificateType')
-  updateData()
-}
-
-type RequiredFieldRule = {
-  key: string
-  message: string
-  isMissing: () => boolean
-}
-
-const requiredFieldErrors = ref<Record<string, string>>({})
-const hasValue = (value: unknown) =>
-  value !== null && value !== undefined && String(value).trim().length > 0
-const hasLangValue = () => langs.value.some((lang) => hasValue(lang.title))
-const updateLangs = (value: { locale: string; title?: string }[]) => {
-  langs.value = value.map((item) => ({
-    ...item,
-    title: item.title ?? '',
-  }))
-}
-
-const requiredFields = computed<RequiredFieldRule[]>(() => [
-  {
-    key: 'langs',
-    message: 'Name Is Required',
-    isMissing: () => !hasLangValue(),
-  },
-  {
-    key: 'industry',
-    message: 'Industry Is Required',
-    isMissing: () =>
-      user.user?.type === OrganizationTypeEnum.ADMIN &&
-      !allIndustries.value &&
-      !industry.value?.length,
-  },
-])
-
-const getFieldError = (key: string) => requiredFieldErrors.value[key] ?? ''
-
-const clearResolvedRequiredErrors = () => {
-  requiredFields.value.forEach((field) => {
-    if (requiredFieldErrors.value[field.key] && !field.isMissing()) {
-      const { [field.key]: _removed, ...rest } = requiredFieldErrors.value
-      requiredFieldErrors.value = rest
-    }
-  })
-}
-
-const scrollToRequiredField = async (key: string) => {
+  new OpenWarningDilaog(requiredFieldErrors.value[firstField]).openDialog()
   await nextTick()
-  document.querySelector<HTMLElement>(`[data-required-field="${key}"]`)?.scrollIntoView({
+  document.querySelector<HTMLElement>(`[data-required-field="${firstField}"]`)?.scrollIntoView({
     behavior: 'smooth',
     block: 'center',
   })
-}
-
-const validateRequiredFields = async () => {
-  clearResolvedRequiredErrors()
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
-  requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
-    errors[field.key] = field.message
-    return errors
-  }, {})
-
-  if (!missedFields.length) return true
-
-  new OpenWarningDilaog(missedFields[0].message).openDialog()
-  await scrollToRequiredField(missedFields[0].key)
   return false
 }
 
-defineExpose({
-  validateRequiredFields,
-})
+defineExpose({ validateRequiredFields })
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2" data-required-field="langs">
-    <LangTitleInput
-      :langs="langDefault"
-      :modelValue="langs"
-      @update:modelValue="updateLangs"
-      :required="true"
-      :label="`organization_certificate_title`"
-      :placeholder="$t('organization_certificate_title')"
+  <div
+    v-for="field in ['certification_name', 'issuing_body', 'certificate_number'] as const"
+    :key="field"
+    class="input-wrapper col-span-4 md:col-span-2"
+    :data-required-field="field"
+  >
+    <label :for="field">{{ $t(field) }} <span>*</span></label>
+    <input
+      :id="field"
+      v-model="form[field]"
+      type="text"
+      class="input"
+      :placeholder="$t(field)"
+      :aria-invalid="!!requiredFieldErrors[field]"
     />
-    <p v-if="getFieldError('langs')" class="required-field-message">
-      {{ getFieldError('langs') }}
+    <p v-if="requiredFieldErrors[field]" class="required-field-message">
+      {{ requiredFieldErrors[field] }}
     </p>
   </div>
 
-  <!-- <div class="input-wrapper col-span-4">
-    <SwitchInput :fields="fields" :switch_title="$t('auto')" :switch_reverse="true" :is-auto="true"
-      @update:value="UpdateSerial" />
-  </div> -->
+  <div class="input-wrapper col-span-4 md:col-span-2" data-required-field="issue_date">
+    <label for="issue_date">{{ $t('issue_date') }} <span>*</span></label>
+    <DatePicker
+      v-model="issueDate"
+      input-id="issue_date"
+      date-format="yy-mm-dd"
+      show-icon
+      class="input"
+      :manual-input="false"
+      :invalid="!!requiredFieldErrors.issue_date"
+    />
+    <p v-if="requiredFieldErrors.issue_date" class="required-field-message">
+      {{ requiredFieldErrors.issue_date }}
+    </p>
+  </div>
 
-  <div class="input-wrapper col-span-2 mt-6">
+  <div class="input-wrapper col-span-4 md:col-span-2 mt-6">
     <CustomCheckbox
       :index="1"
       :title="`has_expire_date`"
@@ -432,75 +187,42 @@ defineExpose({
     />
   </div>
 
-
-  <!-- <div class="col-span-4 md:col-span-2">
-    <CustomSelectInput
-      :modelValue="certificateType"
-      :static-options="certificateTypes"
-      :label="$t('organization_certificate_type')"
-      id="certificate_type"
-      :placeholder="$t('select_organization_certificate_type')"
-      @update:modelValue="updateOrganizationCertificateType"
-    />
-  </div> -->
-
-  <div class="input-wrapper col-span-2 mt-6">
-    <CustomCheckbox
-      :index="2"
-      :title="`has_require_data`"
-      :checked="hasrequiredata"
-      @update:checked="updateHasRequireData"
-    />
-  </div>
-  <!-- <div class="col-span-4 md:col-span-4">
-    <LangTitleInput
-      :label="$t('description')"
-      :langs="langDefaultDescription"
-      :modelValue="langsDescription"
-      field-type="description"
-      @update:modelValue="(val) => (langsDescription = val)"
-      type="textarea"
-      :required="false"
-    />
-  </div> -->
-
   <div
-    class="col-span-4 md:col-span-2 input-wrapper check-box"
-    v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
+    v-if="expiredate"
+    class="input-wrapper col-span-4 md:col-span-2"
+    data-required-field="expire_date"
   >
-    <label>{{ $t('all_industries') }}</label>
-    <input type="checkbox" :value="1" v-model="allIndustries" :checked="allIndustries == 1" />
-  </div>
-
-  <div
-    class="col-span-4 md:col-span-2"
-    v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
-    data-required-field="industry"
-  >
-    <CustomSelectInput
-      :modelValue="industry"
-      :controller="industryController"
-      :params="industryParams"
-      :label="$t('all_industries')"
-      id="all_industries"
-      placeholder="Select industry"
-      :type="2"
-      @update:modelValue="(val) => (industry = val)"
+    <label for="expire_date">{{ $t('expire_date') }} <span>*</span></label>
+    <DatePicker
+      v-model="expiryDate"
+      input-id="expire_date"
+      date-format="yy-mm-dd"
+      show-icon
+      class="input"
+      :manual-input="false"
+      :invalid="!!requiredFieldErrors.expire_date"
     />
-    <p v-if="getFieldError('industry')" class="required-field-message">
-      {{ getFieldError('industry') }}
+    <p v-if="requiredFieldErrors.expire_date" class="required-field-message">
+      {{ requiredFieldErrors.expire_date }}
     </p>
   </div>
 
-  <div class="col-span-4 md:col-span-4">
-    <SingleFileUpload
-      :returnType="`base64`"
-      v-model="image"
-      @update:modelValue="setImage"
-      label="Image"
-      id="image"
-      placeholder="Select image"
+  <div class="input-wrapper col-span-4" data-required-field="certificate_file">
+    <label>{{ $t('certificate_file') }} <span>*</span></label>
+    <FileUpload
+      :index="1"
+      :initial-file-data="initialFile"
+      accept="*/*"
+      @update:file-data="setFile"
     />
+    <p v-if="fileError || requiredFieldErrors.certificate_file" class="required-field-message">
+      {{ fileError || requiredFieldErrors.certificate_file }}
+    </p>
+  </div>
+
+  <div class="input-wrapper col-span-4">
+    <label for="notes">{{ $t('notes') }}</label>
+    <textarea id="notes" v-model="form.notes" class="input" rows="4" :placeholder="$t('notes')" />
   </div>
 </template>
 
@@ -510,5 +232,8 @@ defineExpose({
   color: var(--status-danger);
   font-size: 0.82rem;
   font-weight: 700;
+}
+label span{
+  color:red;
 }
 </style>

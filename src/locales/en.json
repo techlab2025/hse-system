@@ -4457,5 +4457,9 @@
   "no_audit_activities": "No audit activities",
   "no_audit_activities_description": "No audit activities have been added yet.",
   "action_feature_audit_activities": "Audit activity actions",
-  "add_new_department":"add new department"
+  "add_new_department":"add new department",
+  "certification_name": "Certification Name",
+  "issuing_body": "Issuing Body",
+  "certificate_number": "Certificate Number",
+  "certificate_file": "Certificate File"
 }

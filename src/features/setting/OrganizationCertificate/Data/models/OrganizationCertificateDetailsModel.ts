@@ -1,72 +1,29 @@
-// import type TitleModel from "@/base/core/Models/title_model";
-import TranslationsParams, {
-  type DescriptionLocale,
-  type TitleLocale,
-} from '@/base/core/params/translations_params.ts'
-// import TitleInterface from '@/base/Data/Models/title_interface.ts'
-import TitleModel from '@/base/Data/Models/title_model.ts'
-import TitleInterface from '@/base/Data/Models/title_interface.ts'
-import type { CertificateTypeEnum } from '../../Core/Enums/CertificateTypeEnum'
-// import { LangEnum } from '../../Core/enums/langEnum'
+import type { OrganizationCertificateFields } from '../../Core/params/addOrganizationCertificateParams'
 
-export default class OrganizationCertificateDetailsModel {
-  public id: number
-  public titles: TitleLocale[]
-  public descriptions: DescriptionLocale[]
-  public hasCertificate: number
-  public allIndustries: number
-  public parentId: number
-  public image: string
-  public industries: TitleModel<string>[]
-  public requireExpiredDate: boolean
-  public certificateType: TitleInterface
-  public hasrequiredata: boolean
-  public type: CertificateTypeEnum
-
+export default class OrganizationCertificateDetailsModel implements OrganizationCertificateFields {
   constructor(
-    id: number,
-    titles: TitleLocale[],
-    descriptions: DescriptionLocale[],
-    hasCertificate: number,
-    allIndustries: number,
-    industries: TitleModel<string>[] = [],
-    parentId: number,
-    image: string,
-    requireExpiredDate: boolean,
-    certificateType: TitleInterface,
-    hasrequiredata: boolean,
-    type: CertificateTypeEnum,
-  ) {
-    this.id = id
-    this.titles = titles
-    this.descriptions = descriptions
-    this.hasCertificate = hasCertificate
-    this.allIndustries = allIndustries
-    this.industries = industries
-    this.parentId = parentId
-    this.image = image
-    this.requireExpiredDate = requireExpiredDate
-    this.certificateType = certificateType
-    this.hasrequiredata = hasrequiredata
-    this.type = type
-  }
+    public id: number,
+    public certification_name: string,
+    public issuing_body: string,
+    public certificate_number: string,
+    public issue_date: string,
+    public hase_expiry_date: boolean,
+    public expire_date: string,
+    public certificate_file: string,
+    public notes: string = '',
+  ) {}
 
   static fromMap(data: any): OrganizationCertificateDetailsModel {
     return new OrganizationCertificateDetailsModel(
       data.id,
-      TranslationsParams.fromMap(data.titles).titles,
-      TranslationsParams.fromMap([], data.descriptions, []).descriptions,
-      data.has_certificate,
-      data.all_industries,
-      data.industries?.length > 0
-        ? data.industries?.map((industry: Record<string, unknown>) => this.getTitle(industry))
-        : [],
-      data.parent_id,
-      data.image,
-      data.require_expired_date,
-      this.getTitle(data.certificate_type),
-      this.toBoolean(data.hasrequiredata ?? data.has_require_data ?? data.require_certificate),
-      data.type,
+      data.certification_name ?? data.title ?? '',
+      data.issuing_body ?? '',
+      String(data.certificate_number ?? ''),
+      data.issue_date ?? '',
+      this.toBoolean(data.hase_expiry_date ?? data.has_expiry_date),
+      data.expire_date ?? '',
+      data.certificate_file ?? '',
+      data.notes ?? '',
     )
   }
 
@@ -76,18 +33,5 @@ export default class OrganizationCertificateDetailsModel {
 
   private static toBoolean(value: unknown): boolean {
     return value === true || value === 1 || value === '1' || value === 'true'
-  }
-
-  static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
-
-    if (typeof data === 'number') {
-      return new TitleInterface({ id: data })
-    }
-
-    return new TitleInterface({
-      id: data?.id ?? 0,
-      title: data?.titles?.find((title: any) => title.locale === savedLocale)?.title,
-    })
   }
 }
