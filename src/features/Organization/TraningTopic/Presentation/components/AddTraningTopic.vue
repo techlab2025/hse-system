@@ -62,7 +62,7 @@ const saveAndNew = async () => {
 
 <template>
   <PermissionBuilder :code="createPermissions">
-    <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addTraningTopic">
+    <form class="grid grid-cols-1 md:grid-cols-2 gap-4" @submit.prevent="addTraningTopic">
       <TraningTopicForm :key="formKey" @update:data="setParams" />
 
       <div class="col-span-4 button-wrapper create-form-actions">

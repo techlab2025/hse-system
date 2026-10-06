@@ -74,7 +74,7 @@ const editTraningTopic = async () => {
   <PermissionBuilder :code="detailsPermissions">
     <DataStatus :controller="state">
       <template #success>
-        <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="editTraningTopic">
+        <form class="grid grid-cols-1 md:grid-cols-2 gap-4" @submit.prevent="editTraningTopic">
           <TraningTopicForm :data="state.data!" @update:data="setParams" />
 
           <PermissionBuilder :code="updatePermissions">
