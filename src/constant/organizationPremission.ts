@@ -2004,43 +2004,7 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         }, 
-             {
-          key: PermissionsEnum.equipment_type_ALL,
-          code: PermissionsEnum.equipment_type_ALL,
-          label: 'Equipment Types',
-          permissions: [
-            {
-              key: PermissionsEnum.equipment_type_ALL,
-              code: PermissionsEnum.equipment_type_ALL,
-              label: 'All',
-            },
-            {
-              key: PermissionsEnum.equipment_type_FETCH,
-              code: PermissionsEnum.equipment_type_FETCH,
-              label: 'Table',
-            },
-            {
-              key: PermissionsEnum.equipment_type_DETAILS,
-              code: PermissionsEnum.equipment_type_DETAILS,
-              label: 'Details',
-            },
-            {
-              key: PermissionsEnum.equipment_type_CREATE,
-              code: PermissionsEnum.equipment_type_CREATE,
-              label: 'Create',
-            },
-            {
-              key: PermissionsEnum.equipment_type_UPDATE,
-              code: PermissionsEnum.equipment_type_UPDATE,
-              label: 'Update',
-            },
-            {
-              key: PermissionsEnum.equipment_type_DELETE,
-              code: PermissionsEnum.equipment_type_DELETE,
-              label: 'Delete',
-            },
-          ],
-        }, 
+       
 
         // {
         //   key: PermissionsEnum.PROJECT_PROGRESS_ALL,
