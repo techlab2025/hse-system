@@ -20,6 +20,8 @@ import NcrPreventiveActionParams from '../../../Core/params/ncrs/ncrPreventiveAc
 import NcrRootCauseParams from '../../../Core/params/ncrs/ncrRootCauseParams'
 import type InternalAuditNcrDetailsModel from '../../../Data/models/ncrs/InternalAuditNcrDetailsModel'
 import CreateNcrsController from '../../controllers/ncrs/createNcrsController'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
+
 
 type ActionForm = {
   correction: string
@@ -78,7 +80,7 @@ function titles(value: TitleInterface[]): string {
 }
 
 function emptyAction(): ActionForm {
-  return { correction: '', assignedTo: null, targetDate: '', actualDate: '' }
+  return { correction: '', assignedTo: null, targetDate: '', actualDate: formatJoinDate(new Date()) }
 }
 
 function createCapa(): CapaForm {
@@ -374,7 +376,7 @@ watch(() => props.details, initializeForm, { immediate: true })
               <span>Target date <b>*</b></span>
               <input v-model="capa.corrective.targetDate" type="date" :disabled="isReadOnly" />
             </label>
-            <label class="field">
+            <label class="field disabled">
               <span>Actual date</span>
               <input
                 v-model="capa.corrective.actualDate"
@@ -418,7 +420,7 @@ watch(() => props.details, initializeForm, { immediate: true })
               <span>Target date <b>*</b></span>
               <input v-model="capa.preventive.targetDate" type="date" :disabled="isReadOnly" />
             </label>
-            <label class="field">
+            <label class="field disabled">
               <span>Actual date</span>
               <input
                 v-model="capa.preventive.actualDate"
@@ -473,6 +475,11 @@ watch(() => props.details, initializeForm, { immediate: true })
 </template>
 
 <style scoped>
+.disabled{
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 .attachment-list{
     display: flex !important;
 

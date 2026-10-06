@@ -8,10 +8,10 @@ export default class NcrCorrectiveActionParams {
 
   toMap() {
     return {
-      correction: this.correction,
+      title: this.correction,
       assgined_to_id: this.assignedToId,
       target_date: this.targetDate,
-      actual_date: this.actualDate,
+      // actual_date: this.actualDate,
     }
   }
 }

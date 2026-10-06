@@ -316,7 +316,7 @@ watch(
       type="text"
       :langs="langDefault"
       :modelValue="langs"
-      :label="$t('position_name')"
+      :label="ParentId || props.data?.parent?.id ?   $t('position_name') : $t('Department Name')"
       @update:modelValue="setLangs"
     />
     <p v-if="getFieldError('langs')" class="required-field-message">

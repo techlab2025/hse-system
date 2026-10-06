@@ -8,10 +8,10 @@ export default class NcrPreventiveActionParams {
 
   toMap() {
     return {
-      preventive: this.preventive,
+      title: this.preventive,
       assgined_to_id: this.assignedToId,
-      target_date: this.targetDate,
-      actual_date: this.actualDate,
+      due_date: this.targetDate,
+      // actual_date: this.actualDate,
     }
   }
 }
