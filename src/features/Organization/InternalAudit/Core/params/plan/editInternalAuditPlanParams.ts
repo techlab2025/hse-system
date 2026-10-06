@@ -1,4 +1,5 @@
 import AddInternalAuditPlanParams from './addInternalAuditPlanParams'
+import type InternalAuditidParams from './InternalAuditidParams'
 import type InternalAuditPlanEmployeeParams from './InternalAuditPlanEmployeeParams'
 import type InternalAuditPlanScopeParams from './InternalAuditPlanScopeParams'
 import type InternalAuditPlanScheduleParams from './InternalAuditPlanScheduleParams'
@@ -10,7 +11,7 @@ export default class EditInternalAuditPlanParams extends AddInternalAuditPlanPar
     auditEndDate: string,
     projectId: number | null,
     fullCompany: boolean,
-    auditStandardId: number,
+    auditStandardId: InternalAuditidParams[],
     auditTeam: InternalAuditPlanEmployeeParams[],
     leaderId: number,
     auditScope: InternalAuditPlanScopeParams[],

@@ -2,6 +2,7 @@ import type Params from '@/base/core/params/params'
 import type InternalAuditPlanEmployeeParams from './InternalAuditPlanEmployeeParams'
 import type InternalAuditPlanScopeParams from './InternalAuditPlanScopeParams'
 import type InternalAuditPlanScheduleParams from './InternalAuditPlanScheduleParams'
+import type InternalAuditidParams from './InternalAuditidParams'
 
 export default class AddInternalAuditPlanParams implements Params {
   constructor(
@@ -9,7 +10,7 @@ export default class AddInternalAuditPlanParams implements Params {
     public auditEndDate: string,
     public projectId: number | null,
     public fullCompany: boolean,
-    public auditStandardId: number,
+    public auditStandardId: InternalAuditidParams[],
     public auditTeam: InternalAuditPlanEmployeeParams[],
     public leaderId: number,
     public auditScope: InternalAuditPlanScopeParams[],
@@ -35,7 +36,7 @@ export default class AddInternalAuditPlanParams implements Params {
       ...(this.auditStartDate.trim() ? { audit_start_date: this.auditStartDate } : {}),
       ...(this.auditEndDate.trim() ? { audit_end_date: this.auditEndDate } : {}),
       full_company: this.fullCompany,
-      ...(this.auditStandardId > 0 ? { audit_standard_id: this.auditStandardId } : {}),
+      ...(this.auditStandardId.length ? { audit_standardes: this.auditStandardId.map((id) => id.toMap()) } : {}),
       ...(auditTeam.length ? { audit_team: auditTeam } : {}),
       ...(this.leaderId > 0 ? { leader_id: this.leaderId } : {}),
       ...(auditScope.length ? { audit_scope: auditScope } : {}),
