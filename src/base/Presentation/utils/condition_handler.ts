@@ -21,6 +21,19 @@ export default class ConditionHandler {
     const { user } = useUserStore()
     return user?.employeeType == EmployeeStatusEnum.Employee
   }
+
+  shouldUseEmployeeInterface() {
+    const { user } = useUserStore()
+
+    if (!user || user.type !== OrganizationTypeEnum.ORGANIZATION || user.isMaster === 1) {
+      return false
+    }
+
+    const hasPermissions = Array.isArray(user.permission) && user.permission.length > 0
+
+    return user.employeeType === EmployeeStatusEnum.Employee || !hasPermissions
+  }
+
   isSettingAdmin() {
     const { user } = useUserStore()
     return user?.type == OrganizationTypeEnum.ADMIN
