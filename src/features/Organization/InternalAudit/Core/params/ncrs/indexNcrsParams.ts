@@ -6,6 +6,8 @@ export default class IndexNcrsParams implements Params {
     public pageNumber: number = 1,
     public perPage: number = 10,
     public withPage: number = 1,
+    public internalAuditId: number = 1,
+
   ) {}
 
   toMap() {
@@ -14,6 +16,7 @@ export default class IndexNcrsParams implements Params {
       paginate: this.withPage,
       page: this.pageNumber,
       limit: this.perPage,
+      internal_audit_id:this.internalAuditId
     }
   }
 }

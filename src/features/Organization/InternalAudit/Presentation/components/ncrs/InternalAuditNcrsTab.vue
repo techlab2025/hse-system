@@ -27,7 +27,7 @@ const fetchController = FetchNcrsController.getInstance()
 const detailsController = FetchNcrDetailsController.getInstance()
 const showPlanController = ShowInternalAuditPlanController.getInstance()
 const route = useRoute()
-const indexParams = new IndexNcrsParams('', 1, 1000, 0)
+const indexParams = new IndexNcrsParams('', 1, 1, 0 , Number(route.query?.internal_audit_plan_id))
 
 const ncrs = ref<InternalAuditNcrModel[]>([])
 const showForm = ref(false)
