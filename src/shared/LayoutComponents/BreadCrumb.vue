@@ -7,13 +7,14 @@ import BackIcon from '../icons/BackIcon.vue'
 import { buildBreadcrumb } from './Helper/RouteHelper'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 import { useThemeMode } from '@/composables/useThemeMode'
+import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
 const { isDarkMode } = useThemeMode()
+const conditionHandler = ConditionHandler.getInstance()
 
 const RouterBack = () => {
   router.back()
@@ -144,7 +145,7 @@ watch(
 const ShowBackBtn = computed(() => {
   return (
     user?.type == OrganizationTypeEnum.ORGANIZATION &&
-    user?.employeeType == EmployeeStatusEnum.Employee
+    conditionHandler.shouldUseEmployeeInterface()
   )
 })
 </script>
