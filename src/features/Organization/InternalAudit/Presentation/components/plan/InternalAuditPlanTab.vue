@@ -484,7 +484,7 @@ async function saveAsDraft() {
 </script>
 
 <template>
-  <form class="audit-plan" @submit.prevent="submit(false)">
+  <form class="audit-plan" :class="props.auditStatus"  @submit.prevent="submit(false)">
     <section class="audit-section">
       <div class="section-title">
         <span>01</span>
@@ -743,7 +743,7 @@ async function saveAsDraft() {
       >
         {{ saving ? 'Saving…' : 'Save as Draft' }}
       </button>
-      <button class="btn btn-primary" type="submit" :disabled="saving">
+      <button class="btn btn-primary" type="submit" v-if="props.auditStatus !== 'planned'" :disabled="saving">
         {{ saving ? 'Saving…' : isPublished ? 'Save Changes' : 'Publish Plan' }}
       </button>
     </footer>
@@ -751,6 +751,11 @@ async function saveAsDraft() {
 </template>
 
 <style scoped>
+.planned{
+       opacity: 0.7;
+      cursor: not-allowed;
+      pointer-events: none; 
+}
 :deep(.upload-area) {
   border: 1px solid lightgray !important;
 }

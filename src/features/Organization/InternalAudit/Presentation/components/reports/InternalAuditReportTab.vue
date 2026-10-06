@@ -248,7 +248,7 @@ onMounted(fetchDetails)
         <button class="secondary-button" type="button" :disabled="!details" @click="previewMode = !previewMode">
           {{ previewMode ? 'Edit report' : 'Preview' }}
         </button>
-        <button class="secondary-button" type="button" :disabled="!details" @click="printReport">Print / PDF</button>
+        <!-- <button class="secondary-button" type="button" :disabled="!details" @click="printReport">Print / PDF</button> -->
       </div>
     </header>
 
