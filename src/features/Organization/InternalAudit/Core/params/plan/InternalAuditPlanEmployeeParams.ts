@@ -3,7 +3,7 @@ export default class InternalAuditPlanEmployeeParams {
 
   toMap(): Record<string, number> {
     return this.organizationEmployeeId > 0
-      ? { organization_employee_id: this.organizationEmployeeId }
+      ? { assigend_auditors_id: this.organizationEmployeeId }
       : {}
   }
 }

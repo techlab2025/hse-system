@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import DatePicker from 'primevue/datepicker'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
-import HandleFIlesUpload, {
+import HandleFIlesUpload, { 
   type UploadedFile,
 } from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
 import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
@@ -18,6 +18,7 @@ import EditInternalAuditPlanParams from '../../../Core/params/plan/editInternalA
 import ShowInternalAuditPlanParams from '../../../Core/params/plan/showInternalAuditPlanParams'
 import InternalAuditPlanEmployeeParams from '../../../Core/params/plan/InternalAuditPlanEmployeeParams'
 import InternalAuditPlanActivityParams from '../../../Core/params/plan/InternalAuditPlanActivityParams'
+import InternalAuditidParams from '../../../Core/params/plan/InternalAuditidParams'
 import InternalAuditPlanScopeParams from '../../../Core/params/plan/InternalAuditPlanScopeParams'
 import InternalAuditPlanScheduleParams from '../../../Core/params/plan/InternalAuditPlanScheduleParams'
 import AddInternalAuditPlanController from '../../controllers/plan/addInternalAuditPlanController'
@@ -35,7 +36,7 @@ type ScheduleRow = {
   day: Date | null
   focus: TitleInterface | null
   location: string
-  assignedAuditor: TitleInterface | null
+  assignedAuditors: TitleInterface[]
 }
 
 const props = withDefaults(
@@ -68,7 +69,7 @@ const projectOptions = ref<TitleInterface[]>([fullCompanyOption])
 const selectedProject = ref<TitleInterface | null>(null)
 const auditStartDate = ref<Date | null>(dateFromString(today()))
 const auditEndDate = ref<Date | null>(dateFromString(today()))
-const auditStandard = ref<TitleInterface | null>(null)
+const auditStandard = ref<TitleInterface[]>([])
 const auditTeam = ref<TitleInterface[]>([])
 const leadAuditor = ref<TitleInterface | null>(null)
 const saving = ref(false)
@@ -149,7 +150,13 @@ async function loadPlan() {
   auditStartDate.value = dateFromString(plan.auditStartDate)
   auditEndDate.value = dateFromString(plan.auditEndDate)
   selectedProject.value = plan.fullCompany ? fullCompanyOption : plan.project
-  auditStandard.value = plan.auditStandard
+  auditStandard.value = Array.isArray(plan.auditStandard)
+    ? plan.auditStandard
+        .map((entry) => titleFrom(entry))
+        .filter((standard): standard is TitleInterface => Boolean(standard))
+    : plan.auditStandard
+      ? [titleFrom(plan.auditStandard) as TitleInterface].filter(Boolean)
+      : []
 
   auditTeam.value = plan.auditTeam
     .map((entry) => {
@@ -196,15 +203,23 @@ async function loadPlan() {
       scheduleAttachments.value = attachments.map(String)
     if (!generalInstructions.value && typeof item.general_instructions === 'string')
       generalInstructions.value = item.general_instructions
+    const assignedAuditors = Array.isArray(item.assigned_auditors)
+      ? item.assigned_auditors
+      : Array.isArray(item.assigned_auditor)
+        ? item.assigned_auditor
+        : item.assigned_auditor || item.assigend_auditor
+          ? [item.assigned_auditor ?? item.assigend_auditor]
+          : []
+
     return {
       startTime: timeFromString(String(item.start_time ?? '')),
       endTime: timeFromString(String(item.end_time ?? '')),
       day: dateFromString(String(item.day ?? item.date ?? '')),
       focus: titleFrom(item.audit_focus ?? item.audit_foucse ?? item.focus),
       location: String(item.location ?? ''),
-      assignedAuditor: titleFrom(
-        item.assigned_auditor ?? item.assigend_auditor ?? item.assigned_auditors,
-      ),
+      assignedAuditors: assignedAuditors
+        .map((auditor) => titleFrom(auditor))
+        .filter((auditor): auditor is TitleInterface => Boolean(auditor)),
     }
   })
   if (!schedules.value.length) schedules.value = [createSchedule()]
@@ -215,7 +230,7 @@ function resetPlanForm() {
   auditStartDate.value = dateFromString(today())
   auditEndDate.value = dateFromString(today())
   selectedProject.value = null
-  auditStandard.value = null
+  auditStandard.value = []
   auditTeam.value = []
   leadAuditor.value = null
   scopes.value = [{ department: null, activities: [] }]
@@ -235,12 +250,20 @@ function createSchedule(): ScheduleRow {
     day: auditStartDate.value ? new Date(auditStartDate.value) : dateFromString(today()),
     focus: null,
     location: '',
-    assignedAuditor: null,
+    assignedAuditors: [],
   }
 }
 
 function normalizeSingle(value: TitleInterface | TitleInterface[] | null): TitleInterface | null {
   return Array.isArray(value) ? (value[0] ?? null) : value
+}
+
+function normalizeMany(value: TitleInterface | TitleInterface[] | null): TitleInterface[] {
+  return Array.isArray(value) ? value : value ? [value] : []
+}
+
+function setAuditStandard(value: TitleInterface | TitleInterface[] | null) {
+  auditStandard.value = normalizeMany(value)
 }
 
 function setTeam(value: TitleInterface | TitleInterface[] | null) {
@@ -269,9 +292,14 @@ function setScopeActivities(index: number, value: TitleInterface | TitleInterfac
 
 function setScheduleValue(
   index: number,
-  key: 'focus' | 'assignedAuditor',
+  key: 'focus' | 'assignedAuditors',
   value: TitleInterface | TitleInterface[] | null,
 ) {
+  if (key === 'assignedAuditors') {
+    schedules.value[index]![key] = normalizeMany(value)
+    return
+  }
+
   schedules.value[index]![key] = Array.isArray(value) ? (value[0] ?? null) : value
 }
 
@@ -291,9 +319,9 @@ function hasValidAuditFocus(schedule: ScheduleRow): boolean {
 
 function hasValidAssignedAuditor(schedule: ScheduleRow): boolean {
   return Boolean(
-    schedule.assignedAuditor &&
-      auditTeam.value.some(
-        (member) => Number(member.id) === Number(schedule.assignedAuditor?.id),
+    schedule.assignedAuditors.length &&
+      schedule.assignedAuditors.every((auditor) =>
+        auditTeam.value.some((member) => Number(member.id) === Number(auditor.id)),
       ),
   )
 }
@@ -309,6 +337,9 @@ function formatTime(value: Date | null): string {
 }
 
 function buildParams(isDraft: boolean): AddInternalAuditPlanParams {
+  const standards = auditStandard.value.map(
+    (standard) => new InternalAuditidParams(Number(standard.id)),
+  )
   const team = auditTeam.value.map(
     (employee) => new InternalAuditPlanEmployeeParams(Number(employee.id)),
   )
@@ -331,7 +362,9 @@ function buildParams(isDraft: boolean): AddInternalAuditPlanParams {
         formatDate(schedule.day),
         Number(schedule.focus?.id ?? 0),
         schedule.location,
-        Number(schedule.assignedAuditor?.id ?? 0),
+        schedule.assignedAuditors.map(
+          (auditor) => new InternalAuditPlanEmployeeParams(Number(auditor.id)),
+        ),
       ),
   )
   const isFullCompany = Number(selectedProject.value?.id) === 0
@@ -340,7 +373,7 @@ function buildParams(isDraft: boolean): AddInternalAuditPlanParams {
     formatDate(auditEndDate.value),
     isFullCompany ? null : Number(selectedProject.value?.id ?? 0),
     isFullCompany,
-    Number(auditStandard.value?.id ?? 0),
+    standards,
     team,
     Number(leadAuditor.value?.id ?? 0),
     scopeParams,
@@ -359,7 +392,7 @@ function validate(isDraft: boolean): boolean {
     error.value = 'Complete the audit dates and project scope.'
   else if (auditEndDate.value < auditStartDate.value)
     error.value = 'Audit end date must be on or after the start date.'
-  else if (!auditStandard.value) error.value = 'Select an audit standard.'
+  else if (!auditStandard.value.length) error.value = 'Select at least one audit standard.'
   else if (
     !auditTeam.value.length ||
     !leadAuditor.value ||
@@ -507,9 +540,10 @@ async function saveAsDraft() {
           :controller="auditStandardController"
           :params="auditStandardParams"
           label="Audit Standard"
+          type="multiselect"
           placeholder="Select audit standard"
           required
-          @update:model-value="auditStandard = normalizeSingle($event)"
+          @update:model-value="setAuditStandard"
         />
         <UpdatedCustomInputSelect
           class="field"
@@ -654,13 +688,14 @@ async function saveAsDraft() {
           >
             <UpdatedCustomInputSelect
               class="field"
-              :model-value="schedule.assignedAuditor"
+              :model-value="schedule.assignedAuditors"
               :static-options="selectedTeamOptions"
               label="Assigned Auditor"
+              type="multiselect"
               placeholder="Select from audit team"
               required
               :aria-invalid="publishAttempted && !hasValidAssignedAuditor(schedule)"
-              @update:model-value="setScheduleValue(index, 'assignedAuditor', $event)"
+              @update:model-value="setScheduleValue(index, 'assignedAuditors', $event)"
             />
             <p
               v-if="publishAttempted && !hasValidAssignedAuditor(schedule)"
