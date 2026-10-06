@@ -500,6 +500,45 @@ export const OrgPermissions: PermissionItem = {
           ],
         },
 
+        // Organization Documents
+        {
+          key: PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
+          code: PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
+          label: 'Organization Documents',
+          permissions: [
+            {
+              key: PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
+              code: PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.ORGANIZATION_DOCUMENTS_FETCH,
+              code: PermissionsEnum.ORGANIZATION_DOCUMENTS_FETCH,
+              label: 'Table',
+            },
+            {
+              key: PermissionsEnum.ORGANIZATION_DOCUMENTS_DETAILS,
+              code: PermissionsEnum.ORGANIZATION_DOCUMENTS_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.ORGANIZATION_DOCUMENTS_CREATE,
+              code: PermissionsEnum.ORGANIZATION_DOCUMENTS_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.ORGANIZATION_DOCUMENTS_UPDATE,
+              code: PermissionsEnum.ORGANIZATION_DOCUMENTS_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.ORGANIZATION_DOCUMENTS_DELETE,
+              code: PermissionsEnum.ORGANIZATION_DOCUMENTS_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
+
         // Certificate
         {
           key: PermissionsEnum.CERTIFICATE_ALL,
@@ -1500,6 +1539,43 @@ export const OrgPermissions: PermissionItem = {
             {
               key: PermissionsEnum.ORG_PPE_TOOLS_DELETE,
               code: PermissionsEnum.ORG_PPE_TOOLS_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
+        {
+          key: PermissionsEnum.ORG_DOCUMENT_CATEGORY_ALL,
+          code: PermissionsEnum.ORG_DOCUMENT_CATEGORY_ALL,
+          label: 'Document Categories',
+          permissions: [
+            {
+              key: PermissionsEnum.ORG_DOCUMENT_CATEGORY_ALL,
+              code: PermissionsEnum.ORG_DOCUMENT_CATEGORY_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.ORG_DOCUMENT_CATEGORY_FETCH,
+              code: PermissionsEnum.ORG_DOCUMENT_CATEGORY_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.ORG_DOCUMENT_CATEGORY_DETAILS,
+              code: PermissionsEnum.ORG_DOCUMENT_CATEGORY_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.ORG_DOCUMENT_CATEGORY_CREATE,
+              code: PermissionsEnum.ORG_DOCUMENT_CATEGORY_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.ORG_DOCUMENT_CATEGORY_UPDATE,
+              code: PermissionsEnum.ORG_DOCUMENT_CATEGORY_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.ORG_DOCUMENT_CATEGORY_DELETE,
+              code: PermissionsEnum.ORG_DOCUMENT_CATEGORY_DELETE,
               label: 'Delete',
             },
           ],

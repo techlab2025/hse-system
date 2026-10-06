@@ -19,6 +19,7 @@ import { WhereHouseRoutes } from './whereHouse'
 import { SettingRoutes } from './setting'
 import { AllInvestigationMeetingRoutes } from './allInvestigationmeetings'
 import { AllInvestigationTasksRoutes } from './allInvestigationTasks'
+import { OrganizationDocumentsRoutes } from './OrganizationDocuments'
 import { OrganizationCertificateRoutes } from './OrganizationCertificate'
 import { EmployeeCertificateRoutes } from './EmployeeCertificate'
 import { serialNumberRoutes } from './SerialNumber'
@@ -67,6 +68,7 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...AllInvestigationMeetingRoutes,
   ...AllInvestigationTasksRoutes,
   ...OrganizationCertificateRoutes,
+  ...OrganizationDocumentsRoutes,
   ...EmployeeCertificateRoutes,
   ...serialNumberRoutes,
   ...EmployeeInterfaceRoutes,

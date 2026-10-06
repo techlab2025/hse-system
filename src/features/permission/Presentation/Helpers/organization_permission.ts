@@ -52,3 +52,18 @@ export const auditActivityPermissions: PermissionsEnum[] = [
   PermissionsEnum.ORG_AUDIT_ACTIVITIES_UPDATE,
   PermissionsEnum.ORG_AUDIT_ACTIVITIES_DELETE,
 ]
+
+export const documentCategoryPermissions: PermissionsEnum[] = [
+  PermissionsEnum.DOCUMENT_CATEGORY_ALL,
+  PermissionsEnum.DOCUMENT_CATEGORY_FETCH,
+  PermissionsEnum.DOCUMENT_CATEGORY_DETAILS,
+  PermissionsEnum.DOCUMENT_CATEGORY_CREATE,
+  PermissionsEnum.DOCUMENT_CATEGORY_UPDATE,
+  PermissionsEnum.DOCUMENT_CATEGORY_DELETE,
+  PermissionsEnum.ORG_DOCUMENT_CATEGORY_ALL,
+  PermissionsEnum.ORG_DOCUMENT_CATEGORY_FETCH,
+  PermissionsEnum.ORG_DOCUMENT_CATEGORY_DETAILS,
+  PermissionsEnum.ORG_DOCUMENT_CATEGORY_CREATE,
+  PermissionsEnum.ORG_DOCUMENT_CATEGORY_UPDATE,
+  PermissionsEnum.ORG_DOCUMENT_CATEGORY_DELETE,
+]

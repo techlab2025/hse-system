@@ -27,6 +27,7 @@ import { ppeItemRoutes } from './ppeItem'
 import { MeetingTypeRoutes } from './meeting_type'
 import { ptwTypeRoutes } from './ptw_type'
 import { PPEActivityRoutes } from './ppe_activity'
+import { DocumentCategoryRoutes } from './document_category'
 import { PPEToolRoutes } from './ppe_tool'
 import { AuditStandardRoutes } from './audit_standard'
 import { AuditActivityRoutes } from './audit_activity'
@@ -65,6 +66,7 @@ export const sharedRoutes: RouteRecordRaw[] = [
   ...ptwTypeRoutes,
   ...PPEActivityRoutes,
   ...PPEToolRoutes,
+  ...DocumentCategoryRoutes,
   ...AuditStandardRoutes,
   ...AuditActivityRoutes,
   ...TraningTopicRoutes,

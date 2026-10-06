@@ -213,6 +213,18 @@ const OrganizationRoutes = ref<Routes[]>([
     ],
   },
   {
+    link: '/organization/organization-documents',
+    name: 'organization_documents',
+    icon: 'file-text',
+    permissions: [
+      PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
+      PermissionsEnum.ORGANIZATION_DOCUMENTS_CREATE,
+      PermissionsEnum.ORGANIZATION_DOCUMENTS_DELETE,
+      PermissionsEnum.ORGANIZATION_DOCUMENTS_FETCH,
+      PermissionsEnum.ORGANIZATION_DOCUMENTS_UPDATE,
+    ],
+  },
+  {
     link: '/organization/template',
     name: 'templates',
     icon: 'book-open',
@@ -526,6 +538,19 @@ const LockUpsRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_PPE_TOOLS_CREATE,
       PermissionsEnum.ORG_PPE_TOOLS_UPDATE,
       PermissionsEnum.ORG_PPE_TOOLS_DELETE,
+    ],
+  },
+  {
+    link: '/organization/document-categories',
+    name: 'Document Categories',
+    icon: 'folder',
+    permissions: [
+      PermissionsEnum.ORG_DOCUMENT_CATEGORY_ALL,
+      PermissionsEnum.ORG_DOCUMENT_CATEGORY_FETCH,
+      PermissionsEnum.ORG_DOCUMENT_CATEGORY_DETAILS,
+      PermissionsEnum.ORG_DOCUMENT_CATEGORY_CREATE,
+      PermissionsEnum.ORG_DOCUMENT_CATEGORY_UPDATE,
+      PermissionsEnum.ORG_DOCUMENT_CATEGORY_DELETE,
     ],
   },
   {

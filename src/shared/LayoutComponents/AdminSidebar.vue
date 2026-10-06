@@ -285,6 +285,19 @@ const LockUpsRoutes = ref<Routes[]>([
     ],
   },
   {
+    link: '/admin/document-categories',
+    name: 'Document Categories',
+    icon: 'folder',
+    permissions: [
+      PermissionsEnum.DOCUMENT_CATEGORY_ALL,
+      PermissionsEnum.DOCUMENT_CATEGORY_FETCH,
+      PermissionsEnum.DOCUMENT_CATEGORY_DETAILS,
+      PermissionsEnum.DOCUMENT_CATEGORY_CREATE,
+      PermissionsEnum.DOCUMENT_CATEGORY_UPDATE,
+      PermissionsEnum.DOCUMENT_CATEGORY_DELETE,
+    ],
+  },
+  {
     link: '/admin/audit-standards',
     name: 'Audit Standards',
     icon: 'clipboard-check',

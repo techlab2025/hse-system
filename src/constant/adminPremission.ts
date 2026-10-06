@@ -3318,6 +3318,43 @@ export const adminPermissions: PermissionItem = {
           ],
         },
         {
+          key: PermissionsEnum.DOCUMENT_CATEGORY_ALL,
+          code: PermissionsEnum.DOCUMENT_CATEGORY_ALL,
+          label: 'Document Categories',
+          permissions: [
+            {
+              key: PermissionsEnum.DOCUMENT_CATEGORY_ALL,
+              code: PermissionsEnum.DOCUMENT_CATEGORY_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.DOCUMENT_CATEGORY_FETCH,
+              code: PermissionsEnum.DOCUMENT_CATEGORY_FETCH,
+              label: 'Fetch',
+            },
+            {
+              key: PermissionsEnum.DOCUMENT_CATEGORY_DETAILS,
+              code: PermissionsEnum.DOCUMENT_CATEGORY_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.DOCUMENT_CATEGORY_CREATE,
+              code: PermissionsEnum.DOCUMENT_CATEGORY_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.DOCUMENT_CATEGORY_UPDATE,
+              code: PermissionsEnum.DOCUMENT_CATEGORY_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.DOCUMENT_CATEGORY_DELETE,
+              code: PermissionsEnum.DOCUMENT_CATEGORY_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
+        {
           key: PermissionsEnum.AUDIT_STANDARDS_ALL,
           code: PermissionsEnum.AUDIT_STANDARDS_ALL,
           label: 'Audit Standards',

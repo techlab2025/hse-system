@@ -679,6 +679,26 @@ class ApiNames {
     return this.prefix + 'disable_certificate'
   }
 
+  // Organization Documents
+  public get CreateOrganizationDocuments() {
+    return this.prefix + 'create_organization_document'
+  }
+  public get IndexOrganizationDocuments() {
+    return this.prefix + 'fetch_organization_documents'
+  }
+  public get ShowOrganizationDocuments() {
+    return this.prefix + 'fetch_organization_document_details'
+  }
+  public get EditOrganizationDocuments() {
+    return this.prefix + 'update_organization_document'
+  }
+  public get DeleteOrganizationDocuments() {
+    return this.prefix + 'delete_organization_document'
+  }
+  public get DisOrganizationDocuments() {
+    return this.prefix + 'disable_organization_document'
+  }
+
   // Organization Certificate
   public get CreateOrganizationCertificate() {
     return this.prefix + 'create_certificate'
@@ -2158,6 +2178,26 @@ class ApiNames {
   }
   public get clone_ppe_tool() {
     return this.prefix + 'clone_ppe_tools'
+  }
+
+  // Document Category
+  public get fetch_document_categories() {
+    return this.prefix + 'fetch_document_categories'
+  }
+  public get fetch_document_category_details() {
+    return this.prefix + 'fetch_document_category_details'
+  }
+  public get create_document_category() {
+    return this.prefix + 'create_document_category'
+  }
+  public get update_document_category() {
+    return this.prefix + 'update_document_category'
+  }
+  public get delete_document_category() {
+    return this.prefix + 'delete_document_category'
+  }
+  public get clone_document_category() {
+    return this.prefix + 'clone_document_categories'
   }
 
   // Audit Standard
