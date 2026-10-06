@@ -48,9 +48,14 @@ const fetchHerikaly = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const HerikalyParams = new IndexHerikalyParams(query,
-  route.query.page ? Number(route.query.page) : pageNumber
-  , perPage, withPage, true, null)
+  const HerikalyParams = new IndexHerikalyParams(
+    query,
+    route.query.page ? Number(route.query.page) : pageNumber,
+    perPage,
+    withPage,
+    true,
+    null,
+  )
   await indexHerikalyController.getData(HerikalyParams)
 }
 
@@ -185,10 +190,7 @@ const exportExcel = () => {
 }
 
 const DownloadExample = () => {
-  const worksheetData = [
-    { title: 'Example Position' },
-    { title: 'Example Position 2' },
-  ]
+  const worksheetData = [{ title: 'Example Position' }, { title: 'Example Position 2' }]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Positions')
@@ -203,20 +205,14 @@ const IndexHerikalyactionList = () => [
     icon: ExceIcon,
     action: () => DownloadExample(),
     type: ActionItemsTypeEnum.Success,
-    permission: [
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.HERIKALY_CREATE,
-    ],
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE],
   },
   {
     text: t('upload_complated_template'),
     icon: UploadExcelIcon,
     action: () => fileInputRef.value?.click(),
     type: ActionItemsTypeEnum.Warning,
-    permission: [
-      PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum?.HERIKALY_CREATE,
-    ],
+    permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE],
   },
 ]
 </script>
@@ -243,7 +239,7 @@ const IndexHerikalyactionList = () => [
               :subtitle="$t(`define_the_position_and_assign_roles_for_your_project_team`)"
               :img="Heirarchy"
             />
-            <div class="btn-container flex">
+            <div class="btn-container" role="group" :aria-label="$t('functional_position')">
               <PermissionBuilder
                 :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE]"
               >
@@ -257,7 +253,9 @@ const IndexHerikalyactionList = () => [
                 <AddMatrix /> {{ $t('competency_matrix') }}</router-link
               >
 
-              <button class="btn btn-secondary" @click="exportExcel">Export Excel</button>
+              <button type="button" class="btn btn-secondary" @click="exportExcel">
+                Export Excel
+              </button>
               <ActionsList
                 feature-name="action_feature_positions"
                 :show-actions="true"
@@ -266,7 +264,6 @@ const IndexHerikalyactionList = () => [
               />
             </div>
           </div>
-          <div class="btn-container flex"></div>
         </div>
         <TreeTimeLine :Hierarchies="state.data" @delete-data="fetchHerikaly" />
         <Pagination
@@ -342,24 +339,94 @@ const IndexHerikalyactionList = () => [
 </template>
 
 <style scoped lang="scss">
-/* .btn-container {
-  position: fixed;
-  bottom: 0;   <AddHerikaly />
-  width: 72%;
-  padding-block: 1rem;
-} */
+:deep(.employee-header){
+  background-color: color-mix(in srgb, var(--brand-primary-500) 5.1%, transparent);
+}
 .functional_hierarchy_parent {
-  position: relative;
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+
   .btn-container {
-    position: absolute;
-    top: 10px;
-    right: 5px;
-    z-index: 11111;
-    @media (max-width: 1050px) {
-      position: relative;
-      justify-content: end;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: flex-end;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--brand-primary-100);
+    border-radius: var(--xl-size-base);
+    background: var(--surface-1);
+
+    .btn {
+      min-height: 48px;
+      line-height: 1.25;
+      white-space: nowrap;
     }
-    .btn-secondary {
+
+    :deep(.actions-list-controls) {
+      min-width: 0;
+    }
+  }
+}
+
+@media (max-width: 1100px) {
+  .functional_hierarchy_parent {
+    .btn-container {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+
+      .btn {
+        width: 100%;
+        min-width: 0;
+        justify-content: center;
+        text-align: center;
+        white-space: normal;
+      }
+
+      :deep(.actions-list-controls),
+      :deep(.action-list-trigger) {
+        width: 100%;
+        min-width: 0;
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .functional_hierarchy_parent {
+    gap: 10px;
+
+    :deep(.employee-header) {
+      padding: 12px;
+    }
+
+    :deep(.employee-header-text) {
+      align-items: flex-start;
+    }
+
+    :deep(.employee-header-text img) {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+    }
+
+    .btn-container {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+      padding: 10px;
+
+      :deep(.actions-list-controls) {
+        display: block;
+      }
+
+      :deep(.action-list-trigger) {
+        min-height: 48px;
+        padding: 10px 14px;
+      }
     }
   }
 }
