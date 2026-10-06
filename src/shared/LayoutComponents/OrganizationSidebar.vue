@@ -160,10 +160,10 @@ const CompanyRoutes = ref<Routes[]>([
     ],
   },
   {
-    link: '/organization/internal-audit',
+    link: '/organization/internal-audit/register',
     name: 'Internal Audit',
     icon: 'clipboard-notes',
-    activePrefixes: ['/organization/internal-audit'],
+    activePrefixes: ['/organization/internal-audit/register'],
     permissions: [
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,

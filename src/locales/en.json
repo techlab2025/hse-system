@@ -1487,6 +1487,7 @@
   "add_new_position": "Add New Position",
   "functional_position": "Positions",
   "define_the_position_and_assign_roles_for_your_project_team": "Define the position and assign roles for your project team",
+  "click_first_level_department_to_add_position": "Click a department in the first level below to add a new position under that department.",
   "import_position": "Import Position",
   "project_scope_of_work": "Project Scope of Work",
   "itme_tag": "Item Tag",
@@ -4455,5 +4456,6 @@
   "import_audit_activities": "Import audit activities",
   "no_audit_activities": "No audit activities",
   "no_audit_activities_description": "No audit activities have been added yet.",
-  "action_feature_audit_activities": "Audit activity actions"
+  "action_feature_audit_activities": "Audit activity actions",
+  "add_new_department":"add new department"
 }

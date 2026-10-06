@@ -1610,6 +1610,7 @@
   "dashboard_access": "الوصول إلى لوحة القيادة",
   "project_scope_of_work": "نطاق عمل المشروع",
   "add_new_position": "إضافة منصب جديد",
+  "click_first_level_department_to_add_position": "انقر على أحد الأقسام في المستوى الأول أدناه لإضافة منصب جديد تحت هذا القسم.",
   "Text": "نص",
   "Multiple Choice": "الاختيار من متعدد",
   "Upload_photo": "تحميل الصورة",

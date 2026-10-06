@@ -246,7 +246,8 @@ const IndexHerikalyactionList = () => [
                 <!-- add-btn -->
                 <router-link to="/organization/herikaly/add" class="btn btn-primary">
                   <AddHerikly />
-                  {{ $t('add_new_position') }}
+                  <!-- {{ $t('add_new_position') }} -->
+                  {{ $t('add_new_department') }}
                 </router-link>
               </PermissionBuilder>
               <router-link class="btn btn-secondary" to="/organization/herikaly/matrix">
@@ -265,6 +266,12 @@ const IndexHerikalyactionList = () => [
             </div>
           </div>
         </div>
+        <PermissionBuilder :code="[PermissionsEnum.HERIKALY_CREATE]">
+          <div class="hierarchy-add-hint" role="note">
+            <span class="hierarchy-add-hint__icon" aria-hidden="true">i</span>
+            <p>{{ $t('click_first_level_department_to_add_position') }}</p>
+          </div>
+        </PermissionBuilder>
         <TreeTimeLine :Hierarchies="state.data" @delete-data="fetchHerikaly" />
         <Pagination
           :pagination="state.pagination"
@@ -373,6 +380,41 @@ const IndexHerikalyactionList = () => [
   }
 }
 
+.hierarchy-add-hint {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-block: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--brand-primary-200);
+  border-radius: var(--xl-size-base);
+  background: var(--brand-primary-50);
+  color: var(--brand-primary-800);
+
+  &__icon {
+    display: inline-flex;
+    flex: 0 0 24px;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--brand-primary-600);
+    color: var(--text-on-brand);
+    font-family: 'Bold', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: lowercase;
+  }
+
+  p {
+    margin: 0;
+    font-size: var(--sm-size);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+}
+
 @media (max-width: 1100px) {
   .functional_hierarchy_parent {
     .btn-container {
@@ -397,6 +439,12 @@ const IndexHerikalyactionList = () => [
 }
 
 @media (max-width: 640px) {
+  .hierarchy-add-hint {
+    align-items: flex-start;
+    margin-block: 10px;
+    padding: 10px 12px;
+  }
+
   .functional_hierarchy_parent {
     gap: 10px;
 

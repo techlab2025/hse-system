@@ -296,7 +296,7 @@ watch(
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2" v-if="!route.path.includes('/herikaly/add')  && props?.data?.parent !== null"> 
+  <div class="col-span-4 md:col-span-2" v-if="!route.path.includes('/herikaly/add')  && props?.data?.parent !== null">
     <div class="input-wrapper">
 
       <UpdatedCustomInputSelect
@@ -324,7 +324,7 @@ watch(
     </p>
   </div>
 
-  <div class="col-span-4" data-required-field="Certificate">
+  <div v-if="ParentId || props.data?.parent?.id" class="col-span-4" data-required-field="Certificate">
     <div class="training-selector">
       <div class="training-selector-header">
         <label class="training-selector-label">{{ $t('certificate') }}</label>
