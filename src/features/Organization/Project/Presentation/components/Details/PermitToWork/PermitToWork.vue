@@ -127,14 +127,14 @@ const SubmitFrom = async () => {
   }
   delete requiredFieldErrors.value.serial
 
-  // if (!organizationEmployee.value) {
-  //   requiredFieldErrors.value.OrganizationEmployee = 'Select an organization employee.'
-  //   return
-  // }
+  if (!organizationEmployee.value) {
+    requiredFieldErrors.value.OrganizationEmployee = 'Select an organization employee.'
+    return
+  }
 
   const permitToWorkParams = new PermitToWorkParams({
     project_id: Number(route.params.project_id!),
-    // organization_employee_id: organizationEmployee.value.id,
+    organization_employee_id: organizationEmployee.value.id,
 
     ptw_number: ptwNum.value,
     serial: serial.value.trim(),
@@ -305,7 +305,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
               />
             </div>
 
-            <!-- <div class="ptw-field" data-required-field="OrganizationEmployee">
+            <div class="ptw-field" data-required-field="OrganizationEmployee">
               <label for="organization_employee">
                 {{ $t('Permit Applicant') }}
                 <span class="required-mark">*</span>
@@ -323,7 +323,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
               <p v-if="getFieldError('OrganizationEmployee')" class="required-field-message">
                 {{ getFieldError('OrganizationEmployee') }}
               </p>
-            </div> -->
+            </div>
           </div>
         </section>
 
@@ -408,7 +408,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
           </div>
 
           <div class="ptw-grid">
-            
+
             <div class="ptw-field">
               <label for="description">{{ $t('Description of Work Optional') }}</label>
               <textarea
