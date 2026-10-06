@@ -4497,5 +4497,19 @@
   "add_system_document_categories": "Add System Document Categories",
   "select_system_document_categories": "Select document categories to add to your organization.",
   "action_feature_document_categories": "Document Categories",
-  "admin_permission_document_categories": "Administration permissions, including document categories"
+  "admin_permission_document_categories": "Administration permissions, including document categories",
+  "My Internal Audit": "My Internal Audit",
+  "My Internal Audit NCRs": "My Internal Audit NCRs",
+  "search_audit_number": "Search audit number",
+  "select_audit_status": "Select audit status",
+  "audit_number": "Audit No.",
+  "audit_period": "Period",
+  "lead_auditor": "Lead Auditor",
+  "full_company": "Full Company",
+  "open": "Open",
+  "no_matching_audits": "No matching audits",
+  "no_my_internal_audits": "No internal audits assigned to you yet.",
+  "my_internal_audits_load_failed": "Could not load your internal audits.",
+  "back_to_my_internal_audits": "Back to My Internal Audit",
+  "create_first_ncr": "Create the first NCR"
 }

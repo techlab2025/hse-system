@@ -175,6 +175,19 @@ const CompanyRoutes = ref<Routes[]>([
       PermissionsEnum.INTERNAL_AUDIT_DELETE,
     ],
   },
+  {
+    link: '/organization/my-internal-audit',
+    name: 'My Internal Audit',
+    icon: 'clipboard-notes',
+    activePrefixes: ['/organization/my-internal-audit'],
+    permissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.MY_INTERNAL_AUDIT_ALL,
+      PermissionsEnum.MY_INTERNAL_AUDIT_FETCH,
+      PermissionsEnum.MY_INTERNAL_AUDIT_DETAILS,
+      PermissionsEnum.MY_INTERNAL_AUDIT_CREATE,
+    ],
+  },
 ])
 
 const OrganizationRoutes = ref<Routes[]>([

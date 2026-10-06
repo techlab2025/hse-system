@@ -4493,5 +4493,19 @@
   "add_system_document_categories": "إضافة تصنيفات الوثائق من النظام",
   "select_system_document_categories": "حدد تصنيفات الوثائق لإضافتها إلى مؤسستك.",
   "action_feature_document_categories": "تصنيفات الوثائق",
-  "admin_permission_document_categories": "صلاحيات الإدارة، بما فيها تصنيفات الوثائق"
+  "admin_permission_document_categories": "صلاحيات الإدارة، بما فيها تصنيفات الوثائق",
+  "My Internal Audit": "التدقيق الداخلي الخاص بي",
+  "My Internal Audit NCRs": "تقارير عدم المطابقة الخاصة بالتدقيق الداخلي الخاص بي",
+  "search_audit_number": "البحث برقم التدقيق",
+  "select_audit_status": "اختر حالة التدقيق",
+  "audit_number": "رقم التدقيق",
+  "audit_period": "الفترة",
+  "lead_auditor": "المدقق الرئيسي",
+  "full_company": "المؤسسة بالكامل",
+  "open": "فتح",
+  "no_matching_audits": "لا توجد عمليات تدقيق مطابقة",
+  "no_my_internal_audits": "لم يتم تعيين عمليات تدقيق داخلي لك بعد.",
+  "my_internal_audits_load_failed": "تعذر تحميل عمليات التدقيق الداخلي الخاصة بك.",
+  "back_to_my_internal_audits": "العودة إلى التدقيق الداخلي الخاص بي",
+  "create_first_ncr": "إنشاء أول تقرير عدم مطابقة"
 }

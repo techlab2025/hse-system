@@ -51,6 +51,33 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
+        {
+          key: PermissionsEnum.MY_INTERNAL_AUDIT_ALL,
+          code: PermissionsEnum.MY_INTERNAL_AUDIT_ALL,
+          label: 'My Internal Audit',
+          permissions: [
+            {
+              key: PermissionsEnum.MY_INTERNAL_AUDIT_ALL,
+              code: PermissionsEnum.MY_INTERNAL_AUDIT_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.MY_INTERNAL_AUDIT_FETCH,
+              code: PermissionsEnum.MY_INTERNAL_AUDIT_FETCH,
+              label: 'Table',
+            },
+            {
+              key: PermissionsEnum.MY_INTERNAL_AUDIT_DETAILS,
+              code: PermissionsEnum.MY_INTERNAL_AUDIT_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.MY_INTERNAL_AUDIT_CREATE,
+              code: PermissionsEnum.MY_INTERNAL_AUDIT_CREATE,
+              label: 'Create NCR',
+            },
+          ],
+        },
         // Auth
         // {
         //     key: PermissionsEnum.ORG_EMPLOYEE_LOGIN,

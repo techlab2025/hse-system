@@ -67,3 +67,10 @@ export const documentCategoryPermissions: PermissionsEnum[] = [
   PermissionsEnum.ORG_DOCUMENT_CATEGORY_UPDATE,
   PermissionsEnum.ORG_DOCUMENT_CATEGORY_DELETE,
 ]
+
+export const myInternalAuditPermissions: PermissionsEnum[] = [
+  PermissionsEnum.MY_INTERNAL_AUDIT_ALL,
+  PermissionsEnum.MY_INTERNAL_AUDIT_FETCH,
+  PermissionsEnum.MY_INTERNAL_AUDIT_DETAILS,
+  PermissionsEnum.MY_INTERNAL_AUDIT_CREATE,
+]

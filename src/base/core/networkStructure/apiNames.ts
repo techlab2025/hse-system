@@ -1458,6 +1458,14 @@ class ApiNames {
     return this.prefix + 'delete_role'
   }
 
+  // My Internal Audit
+  public get IndexMyInternalAudit() {
+    return this.prefix + 'fetch_my_internal_audite'
+  }
+  public get FetchMyInternalAuditNcrs() {
+    return this.prefix + 'fetch_my_ncrs'
+  }
+
   // Internal Audit
   public get CreateInternalAuditPlan() {
     return this.prefix + 'create_internal_audit'
@@ -1490,7 +1498,7 @@ class ApiNames {
     return this.prefix + 'fetch_ncr_details'
   }
   public get CreateInternalAuditNcrs() {
-    return this.prefix + 'create_ncrs'
+    return this.prefix + 'create_full_ncrs'
   }
   public get FetchInternalAuditPlanDetailsForReport() {
     return this.prefix + 'fetch_internal_audit_plan_details'
