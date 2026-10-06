@@ -1243,5 +1243,29 @@ export enum PermissionsEnum {
   VISIT_CATEGORY_UPDATE = 'VC04',
   VISIT_CATEGORY_DELETE = 'VC05',
 
+  inductions_ALL = 'IND00',
+  inductions_FETCH = 'IND01',
+  inductions_DETAILS = 'IND02',
+  inductions_CREATE = 'IND03',
+  inductions_UPDATE = 'IND04',
+  inductions_DELETE = 'IND05',
+
+  ppe_matrix_logs_ALL = 'PPE00',
+  ppe_matrix_logs_FETCH = 'PPE01',
+  ppe_matrix_logs_DETAILS = 'PPE02',
+  ppe_matrix_logs_CREATE = 'PPE03',
+  ppe_matrix_logs_UPDATE = 'PPE04',
+  ppe_matrix_logs_DELETE = 'PPE05',
+
+   objectives_ALL = 'PPE00',
+  objectives_FETCH = 'PPE01',
+  objectives_DETAILS = 'PPE02',
+  objectives_CREATE = 'PPE03',
+  objectives_UPDATE = 'PPE04',
+  objectives_DELETE = 'PPE05',
+
+
+
+
   PROJECT_PERMIT = 'PP01',
 }

@@ -1893,6 +1893,154 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
+          {
+          key: PermissionsEnum.inductions_ALL,
+          code: PermissionsEnum.inductions_ALL,
+          label: 'Inductions',
+          permissions: [
+            {
+              key: PermissionsEnum.inductions_ALL,
+              code: PermissionsEnum.inductions_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.inductions_FETCH,
+              code: PermissionsEnum.inductions_FETCH,
+              label: 'Table',
+            },
+            {
+              key: PermissionsEnum.inductions_DETAILS,
+              code: PermissionsEnum.inductions_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.inductions_CREATE,
+              code: PermissionsEnum.inductions_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.inductions_UPDATE,
+              code: PermissionsEnum.inductions_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.inductions_DELETE,
+              code: PermissionsEnum.inductions_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
+           {
+          key: PermissionsEnum.ppe_matrix_logs_ALL,
+          code: PermissionsEnum.ppe_matrix_logs_ALL,
+          label: 'PPE Matrix Logs',
+          permissions: [
+            {
+              key: PermissionsEnum.ppe_matrix_logs_ALL,
+              code: PermissionsEnum.ppe_matrix_logs_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.ppe_matrix_logs_FETCH,
+              code: PermissionsEnum.ppe_matrix_logs_FETCH,
+              label: 'Table',
+            },
+            {
+              key: PermissionsEnum.ppe_matrix_logs_DETAILS,
+              code: PermissionsEnum.ppe_matrix_logs_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.ppe_matrix_logs_CREATE,
+              code: PermissionsEnum.ppe_matrix_logs_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.ppe_matrix_logs_UPDATE,
+              code: PermissionsEnum.ppe_matrix_logs_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.ppe_matrix_logs_DELETE,
+              code: PermissionsEnum.ppe_matrix_logs_DELETE,
+              label: 'Delete',
+            },
+          ],
+        }, 
+            {
+          key: PermissionsEnum.objectives_ALL,
+          code: PermissionsEnum.objectives_ALL,
+          label: 'Objectives',
+          permissions: [
+            {
+              key: PermissionsEnum.objectives_ALL,
+              code: PermissionsEnum.objectives_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.objectives_FETCH,
+              code: PermissionsEnum.objectives_FETCH,
+              label: 'Table',
+            },
+            {
+              key: PermissionsEnum.objectives_DETAILS,
+              code: PermissionsEnum.objectives_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.objectives_CREATE,
+              code: PermissionsEnum.objectives_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.objectives_UPDATE,
+              code: PermissionsEnum.objectives_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.objectives_DELETE,
+              code: PermissionsEnum.objectives_DELETE,
+              label: 'Delete',
+            },
+          ],
+        }, 
+             {
+          key: PermissionsEnum.equipment_type_ALL,
+          code: PermissionsEnum.equipment_type_ALL,
+          label: 'Equipment Types',
+          permissions: [
+            {
+              key: PermissionsEnum.equipment_type_ALL,
+              code: PermissionsEnum.equipment_type_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.equipment_type_FETCH,
+              code: PermissionsEnum.equipment_type_FETCH,
+              label: 'Table',
+            },
+            {
+              key: PermissionsEnum.equipment_type_DETAILS,
+              code: PermissionsEnum.equipment_type_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.equipment_type_CREATE,
+              code: PermissionsEnum.equipment_type_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.equipment_type_UPDATE,
+              code: PermissionsEnum.equipment_type_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.equipment_type_DELETE,
+              code: PermissionsEnum.equipment_type_DELETE,
+              label: 'Delete',
+            },
+          ],
+        }, 
 
         // {
         //   key: PermissionsEnum.PROJECT_PROGRESS_ALL,
