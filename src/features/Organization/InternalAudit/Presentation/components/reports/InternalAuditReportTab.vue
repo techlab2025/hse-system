@@ -6,6 +6,7 @@ import HandleFIlesUpload, {
 } from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
 import CreateInternalAuditReportParams from '../../../Core/params/reports/createInternalAuditReportParams'
 import FetchInternalAuditPlanDetailsParams from '../../../Core/params/reports/fetchInternalAuditPlanDetailsParams'
+import FetchInternalAuditReportParams from '../../../Core/params/reports/fetchInternalAuditReportParams'
 import IndexNcrsParams from '../../../Core/params/ncrs/indexNcrsParams'
 import FetchNcrDetailsParams from '../../../Core/params/ncrs/fetchNcrDetailsParams'
 import type InternalAuditPlanReportDetailsModel from '../../../Data/models/reports/InternalAuditPlanReportDetailsModel'
@@ -14,6 +15,7 @@ import type InternalAuditNcrModel from '../../../Data/models/ncrs/InternalAuditN
 import InternalAuditNcrForm from '../ncrs/InternalAuditNcrForm.vue'
 import CreateInternalAuditReportController from '../../controllers/reports/createInternalAuditReportController'
 import FetchInternalAuditPlanDetailsController from '../../controllers/reports/fetchInternalAuditPlanDetailsController'
+import FetchInternalAuditReportController from '../../controllers/reports/fetchInternalAuditReportController'
 import FetchNcrDetailsController from '../../controllers/ncrs/fetchNcrDetailsController'
 import FetchNcrsController from '../../controllers/ncrs/fetchNcrsController'
 
@@ -28,6 +30,7 @@ const props = withDefaults(
 
 const route = useRoute()
 const fetchController = FetchInternalAuditPlanDetailsController.getInstance()
+const reportController = FetchInternalAuditReportController.getInstance()
 const createController = CreateInternalAuditReportController.getInstance()
 const ncrController = FetchNcrsController.getInstance()
 const ncrDetailsController = FetchNcrDetailsController.getInstance()
@@ -47,6 +50,7 @@ const previewMode = ref(false)
 const isLoading = computed(
   () =>
     fetchController.isDataLoading() ||
+    reportController.isDataLoading() ||
     ncrController.isDataLoading() ||
     isLoadingFullNcrs.value,
 )
@@ -114,11 +118,11 @@ function restoreDraft() {
   if (!internalAuditPlanId.value) return
   try {
     const saved = JSON.parse(localStorage.getItem(draftKey.value) ?? '{}') as Record<string, unknown>
-    scope.value = String(saved.scope ?? '')
-    methodology.value = String(saved.methodology ?? '')
-    maintenance.value = String(saved.maintenance ?? '')
-    generalObservations.value = String(saved.generalObservations ?? '')
-    conclusion.value = String(saved.conclusion ?? '')
+    scope.value = String(saved.scope ?? scope.value)
+    methodology.value = String(saved.methodology ?? methodology.value)
+    maintenance.value = String(saved.maintenance ?? maintenance.value)
+    generalObservations.value = String(saved.generalObservations ?? generalObservations.value)
+    conclusion.value = String(saved.conclusion ?? conclusion.value)
     reportAttachments.value = Array.isArray(saved.reportAttachments)
       ? saved.reportAttachments.map(String)
       : []
@@ -151,6 +155,14 @@ function saveDraft() {
 async function fetchDetails() {
   feedback.value = ''
   hasError.value = false
+  details.value = null
+  scope.value = ''
+  methodology.value = ''
+  maintenance.value = ''
+  generalObservations.value = ''
+  conclusion.value = ''
+  reportAttachments.value = []
+  previewMode.value = false
 
   if (!internalAuditPlanId.value) {
     details.value = null
@@ -165,8 +177,20 @@ async function fetchDetails() {
 
   if (fetchController.isDataSuccess()) {
     details.value = fetchController.state.value.data
+    await reportController.fetch(new FetchInternalAuditReportParams(internalAuditPlanId.value))
+    const report = reportController.isDataSuccess() ? reportController.state.value.data : null
+    if (report) {
+      scope.value = report.scope
+      methodology.value = report.methodology
+      maintenance.value = report.maintenance
+      generalObservations.value = report.generalObservations
+      conclusion.value = report.conclusion
+    } else if (isReported.value) {
+      hasError.value = true
+      feedback.value = reportController.state.value.error?.title ?? 'Unable to load audit report.'
+    }
     if (isReported.value) previewMode.value = true
-    restoreDraft()
+    else restoreDraft()
     if (!methodology.value) {
       methodology.value =
         'Audit was conducted by selecting samples from the relevant processes, reviewing records, interviewing personnel, and observing activities.'

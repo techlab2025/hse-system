@@ -1503,6 +1503,9 @@ class ApiNames {
   public get FetchInternalAuditPlanDetailsForReport() {
     return this.prefix + 'fetch_internal_audit_plan_details'
   }
+  public get FetchInternalAuditReport() {
+    return this.prefix + 'fetch_internal_audit_report'
+  }
   public get CreateInternalAuditReport() {
     return this.prefix + 'create_internal_audit_report'
   }
