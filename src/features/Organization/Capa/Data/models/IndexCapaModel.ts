@@ -132,7 +132,7 @@ export default class IndexCapaModel {
       data.observer ? OvserverModel?.fromMap(data.observer) : undefined,
       data.creator ? OvserverModel?.fromMap(data.creator) : undefined,
       data.capa ? CapaModel.fromMap(data.capa) : undefined,
-      data.media.map((item: any) => FilesModel.fromMap(item)),
+      (data.media ?? []).map((item: any) => FilesModel.fromMap(item)),
       data.serial_name,
       data.time,
       data.action_status,
