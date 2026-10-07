@@ -31,22 +31,27 @@ const summaryCards = computed(() => {
     },
   ]
 
-  if (details?.observation) return cards
+  if (details?.internalAuditNcr && !details.observation) return cards
 
-  if (details?.investigation)
-    cards.push({
-      label: 'Investigation srial',
-      value:
-        state.value.data?.investigation?.SerialName ||
-        state.value.data?.investigation?.Investegationid ||
-        'N/A',
-      path: `/organization/Investigating-result-answer/${state.value.data?.investigation?.Investegationid}`,
-    })
-  if (details?.internalAuditNcr)
-    cards.push({
-      label: 'NCR serial',
-      value: details.internalAuditNcr.ncr || 'N/A',
-    })
+  if (details?.observation || details?.investigation) {
+    const investigation = details.investigation
+    const observation = details.observation ?? investigation?.observation
+
+    cards.push(
+      {
+        label: 'Investigation serial',
+        value: investigation?.SerialName || investigation?.Investegationid || 'N/A',
+        path: investigation?.Investegationid
+          ? `/organization/Investigating-result-answer/${investigation.Investegationid}`
+          : undefined,
+      },
+      {
+        label: 'Incident serial',
+        value: observation?.serialName || observation?.serial || 'N/A',
+        path: observation?.id ? `/organization/observation/show/${observation.id}` : undefined,
+      },
+    )
+  }
 
   return cards
 })
