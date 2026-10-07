@@ -29,6 +29,7 @@ const indexParams = new IndexNcrsParams('', 1, 1, 0 , Number(route.query?.intern
 const ncrs = ref<InternalAuditNcrModel[]>([])
 const showForm = ref(false)
 const openedNcrId = ref(0)
+const openedNcrHasResult = ref(false)
 const selectedDetails = ref<InternalAuditNcrDetailsModel | null>(null)
 const auditSerialName = ref('')
 const auditLeadAuditor = ref<TitleInterface | null>(null)
@@ -122,6 +123,7 @@ function toggleNewNcrForm() {
     return
   }
   openedNcrId.value = 0
+  openedNcrHasResult.value = false
   selectedDetails.value = null
   showForm.value = true
 }
@@ -138,6 +140,7 @@ async function openNcr(item: InternalAuditNcrModel) {
   showForm.value = false
   await nextTick()
   openedNcrId.value = item.id
+  openedNcrHasResult.value = item.hasResult
   selectedDetails.value = item.details
   showForm.value = true
   await nextTick()
@@ -147,6 +150,7 @@ async function openNcr(item: InternalAuditNcrModel) {
 function closeForm() {
   showForm.value = false
   openedNcrId.value = 0
+  openedNcrHasResult.value = false
   selectedDetails.value = null
 }
 
@@ -193,6 +197,7 @@ onMounted(() => void Promise.all([fetchNcrs(), fetchAuditDetails()]))
       :audit-serial-name="auditSerialName"
       :area-options="areaOptions"
       :details="selectedDetails"
+      :readonly="openedNcrHasResult"
       @close="closeForm"
       @created="handleCreated"
       @edited="handleEdited"
