@@ -8,9 +8,12 @@ export default class InternalAuditReportModel {
   ) {}
 
   static fromMap(data: unknown): InternalAuditReportModel {
-    const item = data && typeof data === 'object' && !Array.isArray(data)
+    const details = data && typeof data === 'object' && !Array.isArray(data)
       ? data as Record<string, unknown>
       : {}
+    const item = details.report && typeof details.report === 'object' && !Array.isArray(details.report)
+      ? details.report as Record<string, unknown>
+      : details
 
     return new InternalAuditReportModel(
       String(item.scope ?? item.scopr ?? ''),
