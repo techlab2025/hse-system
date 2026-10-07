@@ -14,7 +14,7 @@ export default class CreateInternalAuditReportParams implements Params {
   toMap() {
     return {
       internal_audit_id: this.internalAuditId,
-      scopr: this.scope,
+      scope: this.scope,
       methodology: this.methodology,
       maintenance: this.maintenance,
       general_observations: this.generalObservations,

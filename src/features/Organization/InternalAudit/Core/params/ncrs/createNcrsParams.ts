@@ -26,7 +26,7 @@ export default class CreateNcrsParams implements Params {
       ncrs_category: this.ncrsCategory,
       area_under_reviews: this.areaUnderReviews.map((item) => item.toMap()),
       audit_standard_id: this.auditStandardId,
-      rquiriment_refrence: this.requirementReference,
+      requirement_reference: this.requirementReference,
       description: this.description,
       immediate_action: this.immediateAction,
       root_causes: this.rootCauses.map((item) => item.toMap()),

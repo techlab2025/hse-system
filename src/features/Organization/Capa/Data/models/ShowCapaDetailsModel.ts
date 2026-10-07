@@ -66,6 +66,14 @@ export default class ShowCapaDetailsModel extends TitleInterface {
   static fromMap(data: any): ShowCapaDetailsModel {
     const source = data.observation ?? data.internal_audit_ncr
     const investigation = data.investigation ?? source?.investigation
+    const ncrTasks =
+      data.internal_audit_ncr?.internal_audit_tasks ?? data.internal_audit_ncr?.tasks ?? []
+    const ncrCorrectiveTasks = ncrTasks
+      .map((item: any) => item.correcive_action ?? item.corrective_action)
+      .filter((item: any) => item != null)
+    const ncrPreventiveTasks = ncrTasks
+      .map((item: any) => item.preventive_action)
+      .filter((item: any) => item != null)
     const correctiveTasks =
       data.corrective_tasks ??
       data.correctiveTasks ??
@@ -76,7 +84,7 @@ export default class ShowCapaDetailsModel extends TitleInterface {
       investigation?.corrective_tasks ??
       investigation?.correctiveTasks ??
       investigation?.coorevtive_tasks ??
-      []
+      ncrCorrectiveTasks
     const preventiveTasks =
       data.preventive_tasks ??
       data.preventiveTasks ??
@@ -87,7 +95,7 @@ export default class ShowCapaDetailsModel extends TitleInterface {
       investigation?.preventive_tasks ??
       investigation?.preventiveTasks ??
       investigation?.previtive_tasks ??
-      []
+      ncrPreventiveTasks
 
     return new ShowCapaDetailsModel({
       id: data.id,

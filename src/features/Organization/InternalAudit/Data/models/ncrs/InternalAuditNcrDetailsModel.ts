@@ -169,7 +169,7 @@ export default class InternalAuditNcrDetailsModel {
       ]),
       parseTitle(item.audit_standard ?? item.audit_standard_id, item.audit_standard_id),
       String(
-        item.rquiriment_refrence ?? item.requirement_reference ?? item.requirement_refrence ?? '',
+        item.requirement_reference ?? item.requirement_reference ?? item.requirement_refrence ?? '',
       ),
       String(item.description ?? ''),
       String(item.immediate_action ?? ''),

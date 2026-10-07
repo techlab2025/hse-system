@@ -16,7 +16,7 @@ export default class InternalAuditReportModel {
       : details
 
     return new InternalAuditReportModel(
-      String(item.scope ?? item.scopr ?? ''),
+      String(item.scope ?? item.scope ?? ''),
       String(item.methodology ?? ''),
       String(item.maintenance ?? ''),
       String(item.general_observations ?? ''),
