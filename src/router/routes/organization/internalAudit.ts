@@ -2,6 +2,12 @@ import type { RouteRecordRaw } from '@/router/types'
 
 export const internalAuditRoutes: RouteRecordRaw[] = [
   {
+    path: 'internal-audit/ncr/:id',
+    name: 'NCR Details',
+    component: () => import('@/views/Organization/InternalAudit/NcrDetails.vue'),
+    meta: { breadcrumb: 'NCR Details', parent: 'Internal Audit', isSidebar: true },
+  },
+  {
     path: 'internal-audit',
     name: 'Internal Audit',
     component: () => import('@/views/Organization/InternalAudit/InternalAudit.vue'),

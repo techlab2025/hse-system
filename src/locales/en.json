@@ -4511,5 +4511,7 @@
   "no_my_internal_audits": "No internal audits assigned to you yet.",
   "my_internal_audits_load_failed": "Could not load your internal audits.",
   "back_to_my_internal_audits": "Back to My Internal Audit",
-  "create_first_ncr": "Create the first NCR"
+  "create_first_ncr": "Create the first NCR",
+  "NCR Serial": "NCR Serial",
+  "NCR Details": "NCR Details"
 }

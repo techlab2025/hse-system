@@ -18,6 +18,7 @@ export default class EditNcrsParams extends CreateNcrsParams {
     attachments: string[],
     internalAuditId: number,
     isDraft: boolean = false,
+    serialNumber: string = '',
   ) {
     super(
       ncrsCategory,
@@ -31,10 +32,11 @@ export default class EditNcrsParams extends CreateNcrsParams {
       attachments,
       internalAuditId,
       isDraft,
+      serialNumber,
     )
   }
 
   override toMap() {
-    return { ...super.toMap(), ncr_id: this.ncrId }
+    return { ...super.toMap(), internal_audit__ncr_id: this.ncrId }
   }
 }

@@ -23,7 +23,7 @@ import type InternalAuditNcrDetailsModel from '../../../Data/models/ncrs/Interna
 import CreateNcrsController from '../../controllers/ncrs/createNcrsController'
 import EditNcrsController from '../../controllers/ncrs/editNcrsController'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
-
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 type ActionForm = {
   correction: string
@@ -65,6 +65,8 @@ const rootCauseParams = new IndexRootCausesParams('', 1, 1000, 0)
 const auditStandardParams = new IndexAuditStandardParams('', 1, 1000, 0)
 
 const category = ref<NcrCategoryEnum>(NcrCategoryEnum.MINOR_NC)
+const serialNumber = ref('')
+const projectStatus = useProjectAppStatusStore()
 const areaUnderReviews = ref<TitleInterface[]>([])
 const auditStandard = ref<TitleInterface | null>(null)
 const requirementReference = ref('')
@@ -80,11 +82,19 @@ const isExisting = computed(() => Boolean(props.details?.id))
 const isReadOnly = computed(() => props.readonly || Boolean(props.details?.hasResult))
 
 function titles(value: TitleInterface[]): string {
-  return value.map((item) => item.title).filter(Boolean).join(', ')
+  return value
+    .map((item) => item.title)
+    .filter(Boolean)
+    .join(', ')
 }
 
 function emptyAction(): ActionForm {
-  return { correction: '', assignedTo: null, targetDate: '', actualDate: formatJoinDate(new Date()) }
+  return {
+    correction: '',
+    assignedTo: null,
+    targetDate: '',
+    actualDate: formatJoinDate(new Date()),
+  }
 }
 
 function createCapa(): CapaForm {
@@ -115,6 +125,7 @@ function setAttachments(files: UploadedFile[]) {
 function initializeForm(details?: InternalAuditNcrDetailsModel | null) {
   feedback.value = ''
   category.value = details?.category ?? NcrCategoryEnum.MINOR_NC
+  serialNumber.value = details?.serialNumber ?? ''
   areaUnderReviews.value = details?.areaUnderReviews ?? []
   auditStandard.value = details?.auditStandard ?? null
   requirementReference.value = details?.requirementReference ?? ''
@@ -208,6 +219,7 @@ function buildParams(): CreateNcrsParams {
     attachments.value,
     props.internalAuditPlanId,
     false,
+    serialNumber.value.trim(),
   )
 }
 
@@ -215,20 +227,23 @@ async function submit() {
   if (isReadOnly.value || isSaving.value || !validate()) return
   const params = buildParams()
   if (isExisting.value) {
-    await editController.edit(new EditNcrsParams(
-      props.details!.id,
-      params.ncrsCategory,
-      params.areaUnderReviews,
-      params.auditStandardId,
-      params.requirementReference,
-      params.description,
-      params.immediateAction,
-      params.rootCauses,
-      params.internalAuditTasks,
-      params.attachments,
-      params.internalAuditId,
-      params.isDraft,
-    ))
+    await editController.edit(
+      new EditNcrsParams(
+        props.details!.id,
+        params.ncrsCategory,
+        params.areaUnderReviews,
+        params.auditStandardId,
+        params.requirementReference,
+        params.description,
+        params.immediateAction,
+        params.rootCauses,
+        params.internalAuditTasks,
+        params.attachments,
+        params.internalAuditId,
+        params.isDraft,
+        params.serialNumber,
+      ),
+    )
     if (editController.isDataSuccess()) {
       emit('edited')
       return
@@ -267,6 +282,19 @@ watch(() => props.details, initializeForm, { immediate: true })
         <label v-if="isExisting" class="field">
           <span>NCR</span>
           <input :value="details?.ncr || `NCR-${details?.id}`" type="text" disabled />
+        </label>
+        <label class="field">
+          <span>Serial Number</span>
+          <input
+            v-model="serialNumber"
+            type="text"
+            :disabled="isReadOnly || projectStatus.isSerialNumberAuto()"
+            :placeholder="
+              projectStatus.isSerialNumberAuto()
+                ? 'You can leave it (auto-generated)'
+                : 'Enter Your Serial Number'
+            "
+          />
         </label>
         <label class="field">
           <span>Category <b>*</b></span>
@@ -347,7 +375,6 @@ watch(() => props.details, initializeForm, { immediate: true })
           type="multiselect"
           label="Root causes"
           placeholder="Select root causes"
-
           @update:model-value="rootCauses = normalizeMultiple($event)"
         />
       </div>
@@ -471,7 +498,7 @@ watch(() => props.details, initializeForm, { immediate: true })
       </div>
       <ul v-if="isReadOnly && details?.media.length" class="attachment-list">
         <li v-for="media in details.media" :key="media.id || media.url">
-          <img width="120" :src="media.url" :alt="media.fileName">
+          <img width="120" :src="media.url" :alt="media.fileName" />
           <!-- <a :href="media.url" target="_blank" rel="noopener noreferrer">
             {{ media.fileName }}
           </a> -->
@@ -495,27 +522,28 @@ watch(() => props.details, initializeForm, { immediate: true })
         {{ isExisting ? 'Close' : 'Cancel' }}
       </button>
       <button v-if="!isReadOnly" class="primary-button" type="submit" :disabled="isSaving">
-        {{ isSaving ? (isExisting ? 'Saving…' : 'Creating…') : (isExisting ? 'Edit NCR' : 'Submit NCR') }}
+        {{
+          isSaving ? (isExisting ? 'Saving…' : 'Creating…') : isExisting ? 'Edit NCR' : 'Submit NCR'
+        }}
       </button>
     </footer>
   </component>
 </template>
 
 <style scoped>
-.disabled{
+.disabled {
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
 }
-.attachment-list{
-    display: flex !important;
+.attachment-list {
+  display: flex !important;
 
-  li{
+  li {
     display: flex !important;
-    img{
+    img {
       border-radius: 12px;
     }
-
   }
 }
 :deep(.upload-area) {
@@ -581,7 +609,7 @@ label:has(textarea) {
 .field b {
   color: #b42318;
 }
-.field strong{
+.field strong {
   font-size: 9px;
 }
 .field input,

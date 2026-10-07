@@ -1,4 +1,5 @@
 import type Params from '@/base/core/params/params'
+import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import type { NcrCategoryEnum } from '../../enums/ncrs/NcrCategoryEnum'
 import type NcrAreaUnderReviewParams from './ncrAreaUnderReviewParams'
 import type NcrInternalAuditTaskParams from './ncrInternalAuditTaskParams'
@@ -17,6 +18,7 @@ export default class CreateNcrsParams implements Params {
     public attachments: string[],
     public internalAuditId: number,
     public isDraft: boolean = false,
+    public serialNumber: string = '',
   ) {}
 
   toMap() {
@@ -32,6 +34,9 @@ export default class CreateNcrsParams implements Params {
       attachments: this.attachments,
       is_draft: this.isDraft,
       internal_audit_id: this.internalAuditId,
+      ...(useProjectAppStatusStore().isSerialNumberAuto()
+        ? { serial_number: this.serialNumber }
+        : { serial: this.serialNumber }),
     }
   }
 }

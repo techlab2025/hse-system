@@ -75,9 +75,7 @@ function parseAction(value: unknown, textKeys: string[]): NcrDetailsAction {
   const item = asRecord(value)
   const task = asRecord(item.internal_audit_ncr_task_id)
   const text =
-    textKeys.reduce<unknown>((found, key) => found ?? item[key], null) ??
-    item.action ??
-    task.title
+    textKeys.reduce<unknown>((found, key) => found ?? item[key], null) ?? item.action ?? task.title
   return {
     text: String(text ?? ''),
     assignedTo: parseTitle(
@@ -140,6 +138,9 @@ export default class InternalAuditNcrDetailsModel {
     public tasks: NcrDetailsTask[],
     public media: NcrDetailsMedia[],
     public hasResult: boolean = false,
+    public serialNumber: string = '',
+    public internalAuditId: number = 0,
+    public auditSerialName: string = '',
   ) {}
 
   get attachments(): string[] {
@@ -176,6 +177,9 @@ export default class InternalAuditNcrDetailsModel {
       parseTasks(item.internal_audit_tasks ?? item.tasks),
       media,
       item.has_result === true,
+      String(item.serial_number ?? item.serial ?? ''),
+      Number(item.internal_audit_id ?? asRecord(item.internal_audit).id ?? 0),
+      String(asRecord(item.internal_audit).serial_name ?? ''),
     )
   }
 
