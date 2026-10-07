@@ -1,6 +1,7 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { NcrCategoryEnum } from '../../../Core/enums/ncrs/NcrCategoryEnum'
 import { StatusEnum } from '../../../Core/enums/ncrs/StatusEnum'
+import InternalAuditNcrDetailsModel from './InternalAuditNcrDetailsModel'
 
 export type NcrPerson = {
   id: number
@@ -48,6 +49,8 @@ export default class InternalAuditNcrModel extends TitleInterface {
     public serial_name: string = '',
     public serial_number: string = '',
     public createdAt: string = '',
+    public hasResult: boolean = false,
+    public details: InternalAuditNcrDetailsModel | null = null,
   ) {
     super({ id, title: ncr || area })
   }
@@ -80,6 +83,8 @@ export default class InternalAuditNcrModel extends TitleInterface {
       String(item.serial_name ?? ''),
       String(item.serial_number ?? ''),
       String(item.created_at ?? ''),
+      item.has_result === true,
+      InternalAuditNcrDetailsModel.fromMap(item),
     )
   }
 

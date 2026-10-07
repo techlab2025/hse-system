@@ -25,6 +25,17 @@ function asRecord(value: unknown): Record<string, unknown> {
     : {}
 }
 
+function detailsRecord(value: unknown): Record<string, unknown> {
+  let item = asRecord(Array.isArray(value) ? value[0] : value)
+  for (let depth = 0; depth < 5; depth++) {
+    const nested = item.data ?? item.ncr_details ?? item.internal_audit_ncr ?? item.ncr
+    const record = asRecord(Array.isArray(nested) ? nested[0] : nested)
+    if (!Object.keys(record).length) break
+    item = record
+  }
+  return item
+}
+
 function parseTitle(value: unknown, fallbackId: unknown = 0): TitleInterface | null {
   const parsedValue = asRecord(value)
   const parsedFallback = asRecord(fallbackId)
@@ -128,6 +139,7 @@ export default class InternalAuditNcrDetailsModel {
     public rootCauses: TitleInterface[],
     public tasks: NcrDetailsTask[],
     public media: NcrDetailsMedia[],
+    public hasResult: boolean = false,
   ) {}
 
   get attachments(): string[] {
@@ -139,11 +151,15 @@ export default class InternalAuditNcrDetailsModel {
   }
 
   static fromMap(data: unknown): InternalAuditNcrDetailsModel {
-    const item = asRecord(data)
+    const item = detailsRecord(data)
+    const id = Number(item.id ?? item.internal_audit_ncr_id ?? item.ncrs_id ?? item.ncr_id ?? 0)
+    if (!Number.isInteger(id) || id <= 0) {
+      throw new Error('NCR details response does not contain a valid NCR ID.')
+    }
     const category = Number(item.ncrs_category ?? item.ncr_category ?? item.category)
     const media = parseMedia(item.media)
     return new InternalAuditNcrDetailsModel(
-      Number(item.id ?? item.ncrs_id ?? item.ncr_id ?? 0),
+      id,
       String(item.ncr ?? item.serial_name ?? ''),
       category === NcrCategoryEnum.MAJOR_NC ? NcrCategoryEnum.MAJOR_NC : NcrCategoryEnum.MINOR_NC,
       parseTitles(item.area_under_reviews ?? item.areas_under_review, [
@@ -159,6 +175,7 @@ export default class InternalAuditNcrDetailsModel {
       parseTitles(item.root_causes, ['root_cause', 'root_causes']),
       parseTasks(item.internal_audit_tasks ?? item.tasks),
       media,
+      item.has_result === true,
     )
   }
 

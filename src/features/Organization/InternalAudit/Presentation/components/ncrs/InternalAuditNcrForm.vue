@@ -13,6 +13,7 @@ import IndexRootCausesController from '@/features/setting/RootCauses/Presentatio
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { NcrCategoryEnum } from '../../../Core/enums/ncrs/NcrCategoryEnum'
 import CreateNcrsParams from '../../../Core/params/ncrs/createNcrsParams'
+import EditNcrsParams from '../../../Core/params/ncrs/editNcrsParams'
 import NcrAreaUnderReviewParams from '../../../Core/params/ncrs/ncrAreaUnderReviewParams'
 import NcrCorrectiveActionParams from '../../../Core/params/ncrs/ncrCorrectiveActionParams'
 import NcrInternalAuditTaskParams from '../../../Core/params/ncrs/ncrInternalAuditTaskParams'
@@ -20,6 +21,7 @@ import NcrPreventiveActionParams from '../../../Core/params/ncrs/ncrPreventiveAc
 import NcrRootCauseParams from '../../../Core/params/ncrs/ncrRootCauseParams'
 import type InternalAuditNcrDetailsModel from '../../../Data/models/ncrs/InternalAuditNcrDetailsModel'
 import CreateNcrsController from '../../controllers/ncrs/createNcrsController'
+import EditNcrsController from '../../controllers/ncrs/editNcrsController'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 
 
@@ -50,9 +52,11 @@ const props = withDefaults(
 const emit = defineEmits<{
   close: []
   created: []
+  edited: []
 }>()
 
 const createController = CreateNcrsController.getInstance()
+const editController = EditNcrsController.getInstance()
 const employeeController = IndexOrganizatoinEmployeeController.getInstance()
 const rootCauseController = IndexRootCausesController.getInstance()
 const auditStandardController = IndexAuditStandardController.getInstance()
@@ -71,9 +75,9 @@ const attachments = ref<string[]>([])
 const attachmentFileNames = ref<string[]>([])
 const capas = ref<CapaForm[]>([createCapa()])
 const feedback = ref('')
-const isSaving = computed(() => createController.isDataLoading())
+const isSaving = computed(() => createController.isDataLoading() || editController.isDataLoading())
 const isExisting = computed(() => Boolean(props.details?.id))
-const isReadOnly = computed(() => props.readonly || isExisting.value)
+const isReadOnly = computed(() => props.readonly || Boolean(props.details?.hasResult))
 
 function titles(value: TitleInterface[]): string {
   return value.map((item) => item.title).filter(Boolean).join(', ')
@@ -208,8 +212,31 @@ function buildParams(): CreateNcrsParams {
 }
 
 async function submit() {
-  if (isExisting.value || !validate()) return
-  await createController.create(buildParams())
+  if (isReadOnly.value || isSaving.value || !validate()) return
+  const params = buildParams()
+  if (isExisting.value) {
+    await editController.edit(new EditNcrsParams(
+      props.details!.id,
+      params.ncrsCategory,
+      params.areaUnderReviews,
+      params.auditStandardId,
+      params.requirementReference,
+      params.description,
+      params.immediateAction,
+      params.rootCauses,
+      params.internalAuditTasks,
+      params.attachments,
+      params.internalAuditId,
+      params.isDraft,
+    ))
+    if (editController.isDataSuccess()) {
+      emit('edited')
+      return
+    }
+    feedback.value = editController.state.value.error?.title ?? 'Unable to update NCR.'
+    return
+  }
+  await createController.create(params)
   if (createController.isDataSuccess()) {
     emit('created')
     return
@@ -467,8 +494,8 @@ watch(() => props.details, initializeForm, { immediate: true })
       <button class="secondary-button" type="button" :disabled="isSaving" @click="emit('close')">
         {{ isExisting ? 'Close' : 'Cancel' }}
       </button>
-      <button v-if="!isExisting" class="primary-button" type="submit" :disabled="isSaving">
-        {{ isSaving ? 'Creating…' : 'Submit NCR' }}
+      <button v-if="!isReadOnly" class="primary-button" type="submit" :disabled="isSaving">
+        {{ isSaving ? (isExisting ? 'Saving…' : 'Creating…') : (isExisting ? 'Edit NCR' : 'Submit NCR') }}
       </button>
     </footer>
   </component>

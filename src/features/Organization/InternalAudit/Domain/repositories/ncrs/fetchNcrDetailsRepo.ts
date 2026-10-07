@@ -14,7 +14,7 @@ export default class FetchNcrDetailsRepo extends RepoInterface<InternalAuditNcrD
   }
 
   onParse(data: Record<string, unknown> | Array<Record<string, unknown>>) {
-    return InternalAuditNcrDetailsModel.fromMap(Array.isArray(data) ? data[0] : data)
+    return InternalAuditNcrDetailsModel.fromMap(data)
   }
 
   get serviceInstance(): ServicesInterface {

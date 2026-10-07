@@ -6,8 +6,6 @@ defineProps<{
   ncrs: InternalAuditNcrModel[]
   auditLeadAuditor: TitleInterface | null
   loading: boolean
-  loadingDetails: boolean
-  openingNcrId: number
   hasError: boolean
 }>()
 
@@ -86,10 +84,9 @@ function createdAtLabel(value: string): string {
               <button
                 type="button"
                 class="open-button"
-                :disabled="loadingDetails"
                 @click="emit('open', item)"
               >
-                {{ loadingDetails && openingNcrId === item.id ? 'Loading…' : 'Open' }}
+                Open
               </button>
             </td>
           </tr>

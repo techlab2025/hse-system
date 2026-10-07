@@ -3,12 +3,10 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { InrernalAuditStatusEnum } from '../../../Core/enums/plan/PlanStatusENum'
-import FetchNcrDetailsParams from '../../../Core/params/ncrs/fetchNcrDetailsParams'
 import IndexNcrsParams from '../../../Core/params/ncrs/indexNcrsParams'
 import ShowInternalAuditPlanParams from '../../../Core/params/plan/showInternalAuditPlanParams'
 import type InternalAuditNcrDetailsModel from '../../../Data/models/ncrs/InternalAuditNcrDetailsModel'
 import type InternalAuditNcrModel from '../../../Data/models/ncrs/InternalAuditNcrModel'
-import FetchNcrDetailsController from '../../controllers/ncrs/fetchNcrDetailsController'
 import FetchNcrsController from '../../controllers/ncrs/fetchNcrsController'
 import ShowInternalAuditPlanController from '../../controllers/plan/showInternalAuditPlanController'
 import InternalAuditNcrForm from './InternalAuditNcrForm.vue'
@@ -24,7 +22,6 @@ const props = withDefaults(
 )
 
 const fetchController = FetchNcrsController.getInstance()
-const detailsController = FetchNcrDetailsController.getInstance()
 const showPlanController = ShowInternalAuditPlanController.getInstance()
 const route = useRoute()
 const indexParams = new IndexNcrsParams('', 1, 1, 0 , Number(route.query?.internal_audit_plan_id))
@@ -42,7 +39,6 @@ const feedback = ref('')
 const hasError = ref(false)
 
 const isLoading = computed(() => fetchController.isDataLoading())
-const isLoadingDetails = computed(() => detailsController.isDataLoading())
 const currentAuditId = computed(() => {
   const value = Number(
     props.internalAuditPlanId ||
@@ -131,22 +127,18 @@ function toggleNewNcrForm() {
 }
 
 async function openNcr(item: InternalAuditNcrModel) {
-  if (!item.id || isLoadingDetails.value) return
+  if (!item.id || !ncrs.value.some((ncr) => ncr.id === item.id)) return
   feedback.value = ''
   hasError.value = false
-  showForm.value = false
-  selectedDetails.value = null
-  openedNcrId.value = item.id
-  await detailsController.getData(new FetchNcrDetailsParams(item.id))
-
-  if (!detailsController.isDataSuccess() || !detailsController.state.value.data) {
-    openedNcrId.value = 0
+  if (!item.details) {
     hasError.value = true
-    feedback.value = detailsController.state.value.error?.title ?? 'Unable to load NCR details.'
+    feedback.value = 'Unable to load NCR details.'
     return
   }
-
-  selectedDetails.value = detailsController.state.value.data
+  showForm.value = false
+  await nextTick()
+  openedNcrId.value = item.id
+  selectedDetails.value = item.details
   showForm.value = true
   await nextTick()
   document.querySelector('.ncr-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -156,6 +148,12 @@ function closeForm() {
   showForm.value = false
   openedNcrId.value = 0
   selectedDetails.value = null
+}
+
+async function handleEdited() {
+  closeForm()
+  await fetchNcrs()
+  if (!hasError.value) feedback.value = 'NCR updated successfully.'
 }
 
 async function handleCreated() {
@@ -197,14 +195,13 @@ onMounted(() => void Promise.all([fetchNcrs(), fetchAuditDetails()]))
       :details="selectedDetails"
       @close="closeForm"
       @created="handleCreated"
+      @edited="handleEdited"
     />
 
     <InternalAuditNcrIndex
       :ncrs="ncrs"
       :audit-lead-auditor="auditLeadAuditor"
       :loading="isLoading"
-      :loading-details="isLoadingDetails"
-      :opening-ncr-id="openedNcrId"
       :has-error="hasError"
       @open="openNcr"
     />
