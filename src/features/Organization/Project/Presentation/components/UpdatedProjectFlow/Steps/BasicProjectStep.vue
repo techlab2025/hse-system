@@ -23,6 +23,7 @@ import type {
   LangTitleValue,
   ProjectSerialField,
 } from '../../../../Core/params/UpdatedProjectFlow/BasicProjectFormParams'
+import { useRoute } from 'vue-router'
 
 const props = withDefaults(
   defineProps<{
@@ -31,6 +32,8 @@ const props = withDefaults(
   }>(),
   { validationErrors: () => ({}) },
 )
+const route = useRoute()
+const projectedit = Number(route.query.edit ?? 0)
 
 const emit = defineEmits<{
   updateZones: [value: { locationId: number; ZoneIds: number[] }[]]
@@ -114,7 +117,6 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
     </div>
     <div class="input-wrapper" :class="{ 'field-has-error': props.validationErrors.contractors }">
       <UpdatedCustomInputSelect
-        
         :model-value="contractorIds"
         :type="2"
         :controller="contractorController"
@@ -148,6 +150,10 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
       />
       <small v-if="props.validationErrors.locations" class="field-error">
         {{ props.validationErrors.locations }}
+      </small>
+      
+      <small v-if="projectedit" class="field-delete-warning">
+        {{ $t('Removing this Location will also remove all employees and equipment and teams assigned to this Location from the project.') }}
       </small>
     </div>
     <label class="input-wrapper">
@@ -197,6 +203,25 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
         {{ props.validationErrors.cost }}
       </small>
     </label>
+
+    <label class="input-wrapper">
+      <!--  <span aria-hidden="true">*</span> -->
+      <span class="required-label"> Number Of Drills </span>
+      <input
+        v-model.number="basic.drill_count"
+        type="number"
+        inputmode="numeric"
+        min="0"
+        step="1"
+        required
+        placeholder="1"
+        :class="{ 'field-invalid': props.validationErrors.drill_count }"
+        @input="emit('clearValidationError', 'drill_count')"
+      />
+      <small v-if="props.validationErrors.drill_count" class="field-error">
+        {{ props.validationErrors.drill_count }}
+      </small>
+    </label>
     <div class="switch-row zone-switch">
       <span>
         <strong>Project has zones</strong>
@@ -235,7 +260,18 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
   </div>
 </template>
 
+<style scoped lang="scss">
+.field-delete-warning {
+  margin-top: 6px;
+  color: #e67e22 !important;
+  font-size: 12px;
+  font-weight: 600;
+}
+</style>
+
+
 <style scoped src="../ProjectFlowStepStyles.css">
+
 .switch-row.zone-switch {
   display: flex !important;
   flex-direction: row !important;

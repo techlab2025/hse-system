@@ -4,7 +4,11 @@ export default class UpdateInvestigationTaskParams implements Params {
   private id: number
   private status: number
   private reason?: string
-  constructor(data: { id: number; status: number; reason?: string }) {
+  constructor(data: {
+    id: number
+    status: number
+    reason?: string
+  }) {
     this.id = data.id
     this.status = data.status
     this.reason = data.reason

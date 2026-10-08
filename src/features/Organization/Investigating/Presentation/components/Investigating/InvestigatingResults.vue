@@ -206,6 +206,7 @@ const AddEnvestigatingResult = async () => {
         item?.ppeItems?.some((ppeItem: TitleInterface) => ppeItem.id === PpeItemEnum.OTHERS)
           ? item?.customPpeItem?.trim() || ''
           : '',
+        item?.locations ?? [],
       )
     }),
     correctiveTasks: actionPlan.corrective,
@@ -713,7 +714,7 @@ const getObservationType = (type: number | undefined) => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>{{ getObservationType(state?.data?.observation.type )}} Identification</p>
+                <p>{{ getObservationType(state?.data?.observation.type) }} Identification</p>
                 <span class="arrow" :class="{ open: isPanelOpen('1') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
@@ -722,7 +723,7 @@ const getObservationType = (type: number | undefined) => {
                 :title="state?.data?.observation?.title"
                 :serial="state?.data?.observation?.serial_name"
                 :victim="state?.data?.observation?.observer?.name"
-                :date="state?.data?.investigationMeetingDate"
+                :date="state?.data?.observation?.date"
                 :meetingDate="state?.data?.date"
                 :TeamLeader="state?.data?.TeamLeader.name"
                 :TeamNumbers="state.data?.investigationEmployees?.length"
@@ -731,7 +732,7 @@ const getObservationType = (type: number | undefined) => {
                 :equipment="state?.data?.observation?.equipment"
                 :incidantDescription="state?.data?.observation?.description"
                 :team="state.data?.investigationEmployees"
-                :time="state.data?.investigationMeetingTime"
+                :time="state.data?.observation?.time"
                 :shift="state.data?.observation.work_shift"
                 :serialName="state.data?.serialName"
                 :observationCreator="state?.data?.observation?.observer?.name"
@@ -742,7 +743,7 @@ const getObservationType = (type: number | undefined) => {
               />
             </AccordionContent>
           </AccordionPanel>
-            <AccordionPanel value="6" data-investigation-panel="6">
+          <AccordionPanel value="6" data-investigation-panel="6">
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
@@ -834,7 +835,7 @@ const getObservationType = (type: number | undefined) => {
             <AccordionHeader>
               <div class="investigation-title">
                 <img :src="investigationImg" alt="" />
-                <p>Events Timeline </p>
+                <p>Events Timeline</p>
                 <span class="arrow" :class="{ open: isPanelOpen('3') }"><DownArrow /></span>
               </div>
             </AccordionHeader>
@@ -974,7 +975,8 @@ const getObservationType = (type: number | undefined) => {
             </AccordionHeader>
             <AccordionContent>
               <div data-required-field="viewersResults.0.employee">
-                <WitnessesTimeLine @update:data="Updatewitnesses" />
+
+                <WitnessesTimeLine :statements="state.data?.observation?.witness_statements " @update:data="Updatewitnesses" />
                 <p v-if="getFirstFieldError('viewersResults.')" class="required-field-message">
                   {{ getFirstFieldError('viewersResults.') }}
                 </p>
@@ -999,7 +1001,7 @@ const getObservationType = (type: number | undefined) => {
                   {{ getFieldError('CauseOfAction') }}
                 </p>
               </div>
-               <!-- root causes -->
+              <!-- root causes -->
               <div class="input-wrapper w-full root-cause-panel" data-required-field="RootCauses">
                 <UpdatedCustomInputSelect
                   :modelValue="RootCauses"

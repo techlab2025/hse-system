@@ -22,29 +22,39 @@ const ShowCapaDetails = () => {
   showCapaDetailsController.getData(showCapaSetailsParams)
 }
 
-const summaryCards = computed(() => [
-  {
-    label: 'Capa serial',
-    value: state.value.data?.serialName || 'N/A',
-  },
-  {
-    label: 'Investigation srial',
-    value:
-      state.value.data?.investigation?.SerialName ||
-      state.value.data?.investigation?.Investegationid ||
-      'N/A',
-    path: `/organization/Investigating-result-answer/${state.value.data?.investigation?.Investegationid}`,
-  },
-  {
-    label: 'Incidant serial',
-    value: state.value.data?.observation?.serialName || 'N/A',
-    path: `/organization/equipment-mangement/incedant/show/${state.value.data?.observation?.id}`,
-  },
-  // {
-  //   label: 'CAPA ID',
-  //   value: state.value.data?.observationCapaId || 'N/A',
-  // },
-])
+const summaryCards = computed(() => {
+  const details = state.value.data
+  const cards: { label: string; value: string | number; path?: string }[] = [
+    {
+      label: 'Capa serial',
+      value: details?.serialName || 'N/A',
+    },
+  ]
+
+  if (details?.internalAuditNcr && !details.observation) return cards
+
+  if (details?.observation || details?.investigation) {
+    const investigation = details.investigation
+    const observation = details.observation ?? investigation?.observation
+
+    cards.push(
+      {
+        label: 'Investigation serial',
+        value: investigation?.SerialName || investigation?.Investegationid || 'N/A',
+        path: investigation?.Investegationid
+          ? `/organization/Investigating-result-answer/${investigation.Investegationid}`
+          : undefined,
+      },
+      {
+        label: 'Incident serial',
+        value: observation?.serialName || observation?.serial || 'N/A',
+        path: observation?.id ? `/organization/observation/show/${observation.id}` : undefined,
+      },
+    )
+  }
+
+  return cards
+})
 
 onMounted(() => {
   ShowCapaDetails()
@@ -97,8 +107,8 @@ onMounted(() => {
         </section> -->
 
         <CapaActionPlanDetails
-          :corrective-tasks="state.data?.investigation?.correctiveTask ?? []"
-          :preventive-tasks="state.data?.investigation?.preventiveTask ?? []"
+          :corrective-tasks="state.data?.correctiveTasks ?? []"
+          :preventive-tasks="state.data?.preventiveTasks ?? []"
           @answered="ShowCapaDetails"
         />
         <!-- <section class="lesson-section">

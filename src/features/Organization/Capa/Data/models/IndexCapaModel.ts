@@ -72,6 +72,7 @@ export default class IndexCapaModel {
     isWorkStopped: number,
     createdAt: string,
     updatedAt: string,
+    public internalAuditNcrId: number | null = null,
   ) {
     this.id = id
     this.title = title
@@ -107,6 +108,17 @@ export default class IndexCapaModel {
   }
 
   static fromMap(data: any): IndexCapaModel {
+    const ncr = data.internal_audit_ncr
+    const ncrId =
+      ncr?.id ??
+      data.internal_audit_ncr_id ??
+      data.capa?.internal_audit_ncr_id ??
+      (data.ncrs_category != null ||
+      data.internal_audit_id != null ||
+      data.ncr != null ||
+      (!data.type && data.capa && !data.capa.observation_id)
+        ? data.id
+        : null)
     return new IndexCapaModel(
       data.id,
       data.title,
@@ -132,13 +144,20 @@ export default class IndexCapaModel {
       data.observer ? OvserverModel?.fromMap(data.observer) : undefined,
       data.creator ? OvserverModel?.fromMap(data.creator) : undefined,
       data.capa ? CapaModel.fromMap(data.capa) : undefined,
-      data.media.map((item: any) => FilesModel.fromMap(item)),
-      data.serial_name,
+      (data.media ?? []).map((item: any) => FilesModel.fromMap(item)),
+      data.serial_name ||
+        ncr?.serial_name ||
+        data.serial_number ||
+        ncr?.serial_number ||
+        data.ncr ||
+        ncr?.ncr ||
+        data.serial,
       data.time,
       data.action_status,
       data?.is_work_stopped,
       data?.created_at,
       data?.updated_at,
+      ncrId != null ? Number(ncrId) : null,
     )
   }
 }

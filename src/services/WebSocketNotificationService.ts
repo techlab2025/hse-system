@@ -19,10 +19,13 @@ interface NotificationBody {
   title: string
   type: number
   type_id: number
+  notification_id: number
+  is_read: number
 }
 
 export interface Notification {
   id: string
+  messageId?: string | number
   title: string
   isBroadcast?: boolean
   targetUserId?: string
@@ -202,9 +205,13 @@ class WebSocketNotificationService {
       notification.created_at ||
       notification.createdAt
     const receivedAt = receivedAtSource ? new Date(receivedAtSource) : new Date()
-    const readStatus =
-      notification.readStatus ?? (notification.status === 'READ' ? 'READ' : 'UNREAD')
+    // const readStatus =
+    //   notification.readStatus ?? (notification.status === 'READ' ? 'READ' : 'UNREAD')
+    // const readStatus =
+    //   notification?.body[0]?.is_read! ?? (notification?.body[0]?.is_read === 1 ? 'READ' : 'UNREAD')
+    const isRead = Number(notification?.body?.[0]?.is_read) === 1
 
+    const readStatus: 'READ' | 'UNREAD' = isRead ? 'READ' : 'UNREAD'
     return {
       ...notification,
       readStatus,
@@ -224,7 +231,7 @@ class WebSocketNotificationService {
     }
 
     const unread = this.notifications.value.filter(
-      (notification) => notification.readStatus === 'UNREAD',
+      (notification) => notification.body[0]?.is_read === 0,
     ).length
 
     this.notificationCount.value = {
@@ -294,7 +301,7 @@ class WebSocketNotificationService {
     if (notificationKey) {
       this.processedNotificationIds.add(notificationKey)
     }
-    if (enrichedNotification.readStatus === 'UNREAD') {
+    if (enrichedNotification.body[0]?.is_read === 0) {
       this.updateNotificationCount({ unread: 1, total: 1 })
     } else {
       this.updateNotificationCount({ read: 1, total: 1 })
@@ -315,7 +322,7 @@ class WebSocketNotificationService {
     }
 
     const notification = this.notifications.value.find((item) => item.id === notificationId)
-    if (notification?.readStatus === 'READ') {
+    if (notification?.body[0]?.is_read === 1) {
       return
     }
 
@@ -342,6 +349,133 @@ class WebSocketNotificationService {
       this.addLog(`❌ Failed to mark notification as read: ${error.message}`)
     }
   }
+
+  /**
+   * Mark a notification as read through the notifications API.
+   */
+  async markAsRead(NotificationId: string | number, token?: string | null): Promise<void> {
+    if (!NotificationId) {
+      throw new Error('A notification messageId is required')
+    }
+
+    if (!token) {
+      throw new Error('An API token is required to mark a notification as read')
+    }
+
+    const response = await fetch(baseUrl + 'organization/' + 'notification_mark_as_read', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+      body: JSON.stringify({ notification_id: NotificationId }),
+    })
+
+    if (!response.ok) {
+      let message = 'Failed to mark notification as read'
+
+      try {
+        const errorResponse = await response.json()
+        message = errorResponse?.message || message
+      } catch {
+        // Keep the fallback error when the response has no JSON body.
+      }
+
+      throw new Error(message)
+    }
+
+    const notification = this.notifications.value.find(
+      (item) => String(item.NotificationId ?? item.id) === String(NotificationId),
+    )
+
+    if (notification && notification.body[0]?.is_read !== 1) {
+      notification.readStatus = 'READ'
+      notification.status = 'READ'
+      this.updateNotificationCount({ read: 1, unread: -1 })
+      this.emit('notifications:updated', this.notifications.value)
+      this.emit('notification:read', notification)
+    }
+
+    this.addLog(`✓ Notification marked as read through API: ${NotificationId}`)
+  }
+
+  // async markAsRead(notificationId: string | number, token?: string | null): Promise<void> {
+  //   if (!notificationId) {
+  //     throw new Error('A notification id is required')
+  //   }
+
+  //   if (!token) {
+  //     throw new Error('An API token is required to mark a notification as read')
+  //   }
+
+  //   console.log('🔵 markAsRead called:', {
+  //     notificationId,
+  //     tokenExists: !!token,
+  //     url: baseUrl + 'organization/notification_mark_as_read',
+  //   })
+
+  //   const response = await fetch(baseUrl + 'organization/notification_mark_as_read', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Bearer ${token}`,
+  //       Accept: 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       notification_id: notificationId,
+  //     }),
+  //   })
+
+  //   console.log('🟢 markAsRead response:', response.status)
+
+  //   if (!response.ok) {
+  //     let message = 'Failed to mark notification as read'
+
+  //     try {
+  //       const errorResponse = await response.json()
+  //       message = errorResponse?.message || message
+  //     } catch {
+  //       // Ignore invalid/empty JSON response
+  //     }
+
+  //     throw new Error(message)
+  //   }
+
+  //   // Find notification using ALL possible ids
+  //   const notification = this.notifications.value.find((item) => {
+  //     const bodyNotificationId = item.body?.[0]?.notification_id
+
+  //     return (
+  //       String(bodyNotificationId) === String(notificationId) ||
+  //       String(item.id) === String(notificationId) ||
+  //       String(item.messageId) === String(notificationId) ||
+  //       String((item as any).NotificationId) === String(notificationId)
+  //     )
+  //   })
+
+  //   if (notification) {
+  //     // Update the real read flag
+  //     if (notification.body?.[0]) {
+  //       notification.body[0].is_read = 1
+  //     }
+
+  //     // Update normalized fields
+  //     notification.readStatus = 'READ'
+  //     notification.status = 'READ'
+
+  //     // Update unread count
+  //     this.updateNotificationCount({
+  //       read: 1,
+  //       unread: -1,
+  //     })
+
+  //     this.emit('notifications:updated', this.notifications.value)
+  //     this.emit('notification:read', notification)
+  //   }
+
+  //   this.addLog(`✓ Notification marked as read through API: ${notificationId}`)
+  // }
 
   /**
    * Subscribe to a channel
@@ -734,8 +868,8 @@ class WebSocketNotificationService {
       this.notifications.value.splice(index, 1)
       this.processedNotificationIds.delete(id)
       this.updateNotificationCount({
-        read: notification.readStatus === 'READ' ? -1 : 0,
-        unread: notification.readStatus === 'UNREAD' ? -1 : 0,
+        read: notification.body[0]?.is_read === 1 ? -1 : 0,
+        unread: notification.body[0]?.is_read === 0 ? -1 : 0,
         total: -1,
       })
       this.emit('notification:removed', id)

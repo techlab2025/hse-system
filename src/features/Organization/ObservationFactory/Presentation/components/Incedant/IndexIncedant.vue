@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import Image from 'primevue/image'
@@ -50,6 +50,7 @@ const countPerPage = ref(10)
 const indexHazardController = IndexHazardController.getInstance()
 const state = ref(indexHazardController.state.value)
 const route = useRoute()
+const routeProjectId = computed(() => Number(route.query.project_id) || undefined)
 const id = route.params.parent_id
 // const type = ref<HazardStatusEnum>(HazardStatusEnum[route.params.type as keyof typeof HazardStatusEnum])
 
@@ -120,11 +121,11 @@ const fetchHazard = async (
 // }
 
 onMounted(async () => {
-  // if (selectedProjctesFilters.value) {
-
-  fetchHazard('', 1, 12, 1)
-  // }
-  FetchMyProjects()
+  await Promise.all([
+    fetchHazard('', 1, 12, 1, undefined, undefined, undefined, routeProjectId.value),
+    FetchMyProjects(),
+    routeProjectId.value ? FetchMyZones() : Promise.resolve(),
+  ])
 })
 
 const searchHazard = debounce(() => {
@@ -204,7 +205,17 @@ const FetchMyProjects = async () => {
     isProjectsLoading.value = false
   }
 }
-const selectedProjctesFilters = ref<number>()
+const selectedProjctesFilters = ref<number | undefined>(routeProjectId.value)
+const incidentCreateRoute = computed(() => ({
+  path: '/organization/equipment-mangement/incedant/add',
+  query: selectedProjctesFilters.value
+    ? { project_id: String(selectedProjctesFilters.value) }
+    : undefined,
+}))
+const incidentCreateLink = computed(() => {
+  const selectedProjectId = selectedProjctesFilters.value
+  return `/organization/equipment-mangement/incedant/add${selectedProjectId ? `?project_id=${selectedProjectId}` : ''}`
+})
 
 const Filters = ref<MyZonesModel[]>()
 const fetchMyZonesController = FetchMyZonesController.getInstance()
@@ -351,7 +362,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
                     PermissionsEnum?.ORG_INCEDANT_CREATE,
                   ]"
                 >
-                  <router-link :to="`/organization/equipment-mangement/incedant/add`">
+                  <router-link :to="incidentCreateRoute">
                     <button class="btn btn-primary create-incident-btn">
                       <span class="create-icon" aria-hidden="true">+</span>
                       <span class="create-copy">
@@ -389,7 +400,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
                 class="incident-zone-filter"
                 :filters="Filters"
                 @update:data="ApplayFilter"
-                :link="'/organization/equipment-mangement/incedant/add'"
+                :link="incidentCreateLink"
                 :linkText="'Create incedant'"
               />
             </div>
@@ -571,7 +582,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
               :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INCEDANT_CREATE]"
             >
               <DataEmpty
-                :link="`/organization/equipment-mangement/incedant/add`"
+                :link="incidentCreateLink"
                 addText="Report incident"
                 description=" "
                 title="You have No incident"
@@ -583,7 +594,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
               :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INCEDANT_CREATE]"
             >
               <DataFailed
-                :link="`/organization/equipment-mangement/incedant/add`"
+                :link="incidentCreateLink"
                 addText="Report incident "
                 description=" "
                 title="You have No incident"

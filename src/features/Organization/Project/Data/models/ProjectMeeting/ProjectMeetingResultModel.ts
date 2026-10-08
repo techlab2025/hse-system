@@ -7,6 +7,8 @@ export default class ProjectMeetingDetailsProjectMeetingResultModel {
   public hierarchies: ProjectMeetingHierarchyModel[]
   public teamLeader: OrganizatoinEmployeeModel
   public serialName: string
+  public serial_name: string
+  public serial_number: string
   public hasResult: boolean
 
   constructor(data: {
@@ -15,6 +17,8 @@ export default class ProjectMeetingDetailsProjectMeetingResultModel {
     hierarchies: ProjectMeetingHierarchyModel[]
     teamLeader: OrganizatoinEmployeeModel
     serialName: string
+    serial_name?: string
+    serial_number?: string
     hasResult: boolean
   }) {
     this.id = data.id
@@ -22,6 +26,8 @@ export default class ProjectMeetingDetailsProjectMeetingResultModel {
     this.hierarchies = data.hierarchies
     this.teamLeader = data.teamLeader
     this.serialName = data.serialName
+    this.serial_name = data.serial_name ?? data.serialName
+    this.serial_number = data.serial_number ?? ''
     this.hasResult = data.hasResult
   }
 
@@ -34,6 +40,8 @@ export default class ProjectMeetingDetailsProjectMeetingResultModel {
           ? data.hierarchies.map((el) => ProjectMeetingHierarchyModel.fromMap(el))
           : [],
       serialName: data.serial_name,
+      serial_name: data.serial_name,
+      serial_number: data.serial_number,
       teamLeader: data.team_leader ? OrganizatoinEmployeeModel.fromMap(data.team_leader) : {},
       hasResult: data?.has_result ? data?.has_result : false,
     })
@@ -44,6 +52,8 @@ export default class ProjectMeetingDetailsProjectMeetingResultModel {
     date: '1-9-2001',
     hierarchies: [ProjectMeetingHierarchyModel.example],
     serialName: '#Meting-10',
+    serial_name: '#Meting-10',
+    serial_number: '10',
     teamLeader: OrganizatoinEmployeeModel.exampl2,
     hasResult: true,
   })

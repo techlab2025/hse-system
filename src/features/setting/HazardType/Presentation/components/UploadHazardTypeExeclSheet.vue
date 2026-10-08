@@ -143,7 +143,7 @@ watch(
 // ─── Column Mapping ───────────────────────────────────────────────────────────
 const SendData = ref<string[]>(['title'])
 const SendDataLabels: Record<string, string> = {
-  title: 'Hazard Type Title',
+  title: 'Hazard Classification Title',
 }
 const onColumnMapping = (mapping: Record<string, string>) => {
   if (!Data.value || Data.value.length === 0) return
@@ -226,7 +226,7 @@ const onMappingClose = () => {
 
       <div class="rule-group">
         <div class="field-tags">
-          <span class="field-tag">Hazard Type Name</span>
+          <span class="field-tag">Hazard Classification Name</span>
         </div>
       </div>
       <hr class="separator" />

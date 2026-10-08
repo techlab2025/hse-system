@@ -20,8 +20,10 @@ interface Props {
   index?: number
   haveContent?: boolean
   file?: string | string[]
+  fileNames?: string[]
   base64File?: string | string[]
   hidepreview?: boolean
+  required?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -54,6 +56,7 @@ const props = withDefaults(defineProps<Props>(), {
   ].join(','),
   maxFiles: Infinity,
   multiple: false,
+  required: false,
 })
 
 const emit = defineEmits<{
@@ -121,6 +124,7 @@ const EXT_ICON_MAP: Record<string, string> = {
 const initFilesFromProps = (
   file: string | string[] | undefined,
   base64File: string | string[] | undefined,
+  fileNames: string[] | undefined,
 ) => {
   if (!file && !base64File) return
 
@@ -128,15 +132,15 @@ const initFilesFromProps = (
   const base64List = Array.isArray(base64File) ? base64File : base64File ? [base64File] : []
 
   files.value = fileList.map((url, i) => {
-    let name = 'file'
+    let name = fileNames?.[i] || 'file'
     let ext = ''
     if (url.startsWith('data:')) {
       const match = url.match(/^data:([^;]+);/)
       const mime = match ? match[1] : ''
       ext = mime?.split('/').pop() ?? ''
-      name = `file.${ext}`
+      name = fileNames?.[i] || `file.${ext}`
     } else {
-      name = url.split('/').pop() ?? 'file'
+      name = fileNames?.[i] || url.split('/').pop() || 'file'
       ext = name.split('.').pop()?.toLowerCase() ?? ''
     }
     const type = EXT_MIME_MAP[ext] ?? 'application/octet-stream'
@@ -152,11 +156,12 @@ const initFilesFromProps = (
   })
 }
 
-onMounted(() => initFilesFromProps(props.file, props.base64File))
+onMounted(() => initFilesFromProps(props.file, props.base64File, props.fileNames))
 
 watch(
-  () => props.file,
-  (newFile) => initFilesFromProps(newFile, props.base64File),
+  () => [props.file, props.base64File, props.fileNames] as const,
+  ([newFile, newBase64File, newFileNames]) =>
+    initFilesFromProps(newFile, newBase64File, newFileNames),
 )
 
 const isMaxReached = computed(() => files.value.length >= props.maxFiles)
@@ -236,7 +241,10 @@ const inputId = `file-upload-${props.index ?? Math.random().toString(36).substri
 
 <template>
   <div class="file-upload-wrapper">
-    <label class="upload-label">{{ label }}</label>
+    <label class="upload-label">
+      {{ label }}
+      <span v-if="required" class="upload-required-mark">*</span>
+    </label>
 
     <label
       v-if="!haveContent"
@@ -319,6 +327,10 @@ const inputId = `file-upload-${props.index ?? Math.random().toString(36).substri
   color: var(--gray-5);
   font-size: 16px;
   font-weight: 600;
+}
+
+.upload-required-mark {
+  color: var(--status-danger);
 }
 
 .upload-area {

@@ -93,33 +93,38 @@ export default class OrganizatoinEmployeeDetailsModel {
   // =====================
   // Mapper (API → Model)
   // =====================
-  static fromMap(data: any): OrganizatoinEmployeeDetailsModel {
+  static fromMap(data: unknown): OrganizatoinEmployeeDetailsModel {
+    const item = (data ?? {}) as Record<string, unknown>
+    const hierarchy = Array.isArray(item.hierarchy) ? item.hierarchy : []
+    const roles = Array.isArray(item.roles) ? item.roles : []
+    const projects = Array.isArray(item.projects) ? item.projects : []
     return new OrganizatoinEmployeeDetailsModel(
-      data.id,
-      data.name,
-      data.phone,
-      data.country_code,
-      data.email,
-      data.is_master,
-      data.image,
-      data.hierarchy?.map((item: any) => this.getTitle(item)) || [],
-      // data.projects?.map((item: any) => ProjectDetailsModel.fromMap(item))  || [],
-      data.roles?.map((roleData: any) => RoleDetailsModel.fromMap(roleData)) || [],
-      data.organization_employee_id,
-      data.organization_id,
-      data.serial_name,
-      data.serial_number,
-      data.certificates,
-      data.employee_certificates,
-      data.hierarchy,
-      data?.projects?.map((item: any) => ProjectModel.fromMap(item)),
-      data?.employee_type,
-      data.tasks,
-      data.project_location_hierarchy_employee_id,
-      data.project_location_team_employee_id,
-      data.can_access_dashboard,
-      data.is_leader,
-      data.allow_all_permissions,
+      Number(item.id ?? item.organization_employee_id ?? 0),
+      String(item.name ?? ''),
+      String(item.phone ?? ''),
+      String(item.country_code ?? ''),
+      String(item.email ?? ''),
+      Number(item.is_master ?? 0),
+      typeof item.image === 'string' && item.image ? item.image : null,
+      hierarchy.map((hierarchyItem) => this.getTitle(hierarchyItem)),
+      roles.map((roleData) => RoleDetailsModel.fromMap(roleData)),
+      Number(item.organization_employee_id ?? item.id ?? 0),
+      Number(item.organization_id ?? 0),
+      String(item.serial_name ?? ''),
+      String(item.serial_number ?? ''),
+      (Array.isArray(item.certificates) ? item.certificates : []) as CertificateModel[],
+      (Array.isArray(item.employee_certificates)
+        ? item.employee_certificates
+        : []) as CertificateModel[],
+      hierarchy.map((hierarchyItem) => this.getTitle(hierarchyItem)),
+      projects.map((project) => ProjectModel.fromMap(project)),
+      Number(item.employee_type ?? EmployeeStatusEnum.Employee) as EmployeeStatusEnum,
+      (Array.isArray(item.tasks) ? item.tasks : []) as InspectionModel[],
+      Number(item.project_location_hierarchy_employee_id ?? 0),
+      Number(item.project_location_team_employee_id ?? 0),
+      Boolean(item.can_access_dashboard),
+      Number(item.is_leader ?? 0),
+      Boolean(item.allow_all_permissions),
       // data.employee_performance,
     )
   }
@@ -127,17 +132,20 @@ export default class OrganizatoinEmployeeDetailsModel {
   // =====================
   // Helpers
   // =====================
-  static getTitle(data: any) {
+  static getTitle(data: unknown) {
+    const item = (data ?? {}) as Record<string, unknown>
+    const titles = Array.isArray(item.titles) ? (item.titles as Array<Record<string, unknown>>) : []
     const savedLocale = localStorage.getItem('lang')
 
     const title =
-      data.titles?.find((t: any) => t.locale === savedLocale)?.title ?? // try saved locale
-      data.titles?.find((t: any) => t.locale === 'en')?.title ?? // fallback to English
-      data.titles?.[0]?.title ?? // fallback to first available
-      data.title ?? // fallback to flat title field
+      titles.find((translation) => translation.locale === savedLocale)?.title ?? // try saved locale
+      titles.find((translation) => translation.locale === 'en')?.title ?? // fallback to English
+      titles[0]?.title ?? // fallback to first available
+      item.title ?? // fallback to flat title field
+      item.name ?? // fallback to flat name field
       '' // last resort empty string
 
-    return new TitleInterface({ id: data.id, title })
+    return new TitleInterface({ id: Number(item.id ?? 0), title: String(title) })
   }
 
   // =====================
@@ -170,7 +178,8 @@ export default class OrganizatoinEmployeeDetailsModel {
     [],
     1,
     1,
+    true,
     1,
-    1,
+    true,
   )
 }

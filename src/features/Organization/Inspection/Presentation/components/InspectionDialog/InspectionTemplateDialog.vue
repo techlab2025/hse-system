@@ -2,7 +2,7 @@
 import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue'
 import Dialog from 'primevue/dialog'
 import InspectionTemplateImage from '@/assets/images/check-list.png'
-import { onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import IndexTemplateController from '@/features/setting/Template/Presentation/controllers/indexTemplateController'
 import IndexTemplateParams from '@/features/setting/Template/Core/params/indexTemplateParams'
 import TemplateSelector from '../InspectionUtils/TemplateSelector.vue'
@@ -34,8 +34,8 @@ const fetchTemplateItem = async () => {
   await indexTemplateController.getData(deleteTemplateItemTypeParams)
 }
 
-onMounted(() => {
-  if (visible.value) fetchTemplateItem()
+watch(visible, (isVisible) => {
+  if (isVisible) fetchTemplateItem()
 })
 
 watch(

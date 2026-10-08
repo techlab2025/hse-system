@@ -1,38 +1,79 @@
-// import type TitleModel from "@/base/core/Models/title_model";
-import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
-// import TitleInterface from '@/base/Data/Models/title_interface.ts'
 import TitleInterface from '@/base/Data/Models/title_interface'
-// import { LangEnum } from '../../Core/enums/langEnum'
+
+import type {
+  ObjectiveDirectionEnum,
+  ObjectiveTargetTypeEnum,
+} from '../../Core/enums/objectivesEnums'
 
 export default class ObjectivesDetailsModel {
-  public id: number
-  public titles: TitleLocale[]
-
-
   constructor(
-    id: number,
-    titles: TitleLocale[],
+    public id: number,
+    public year: string,
+    public objective: string,
+    public project: TitleInterface | null,
+    public targetType: ObjectiveTargetTypeEnum,
+    public direction: ObjectiveDirectionEnum | null,
+    public department: TitleInterface | null,
+    public followUpEmployee: TitleInterface | null,
+    public target: number | null,
+    public baseline: number | null,
+    public unit: string | null,
+    public frequency: number | null,
+    public annualOccurrences: number | null,
+  ) {}
 
-  ) {
-    this.id = id
-    this.titles = titles
-
-  }
-
-  static fromMap(data: any): ObjectivesDetailsModel {
+  static fromMap(data: Record<string, any>): ObjectivesDetailsModel {
     return new ObjectivesDetailsModel(
       data.id,
-      TranslationsParams.fromMap(data.titles).titles,
 
+      data.year,
+
+      data.objective,
+
+      data.project
+        ? new TitleInterface({
+            id: data.project.id,
+            title:
+              data.project.titles?.find(
+                (item: any) => item.locale === 'en',
+              )?.title ??
+              data.project.titles?.[0]?.title ??
+              '',
+          })
+        : null,
+
+      data.target_type,
+
+      data.direction,
+
+      data.department
+        ? new TitleInterface({
+            id: data.department.id,
+            title:
+              data.department.titles?.find(
+                (item: any) => item.locale === 'en',
+              )?.title ??
+              data.department.titles?.[0]?.title ??
+              '',
+          })
+        : null,
+
+      data.follow_up_employee
+        ? new TitleInterface({
+            id: data.follow_up_employee.id,
+            title: data.follow_up_employee.name ?? '',
+          })
+        : null,
+
+      data.target,
+
+      data.baseline,
+
+      data.unit,
+
+      data.frequency,
+
+      data.annual_occurrences,
     )
-  }
-
-  static getTitle(data: any) {
-    const savedLocale = localStorage.getItem('lang')
-
-    return new TitleInterface({
-      id: data.id,
-      title: data.titles?.find((title: any) => title.locale === savedLocale)?.title,
-    })
   }
 }

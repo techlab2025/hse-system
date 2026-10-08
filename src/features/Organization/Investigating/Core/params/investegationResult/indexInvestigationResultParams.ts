@@ -10,6 +10,7 @@ export default class IndexInvestigationResultParams implements Params {
   public status?: number
   public date?: string
   public observationType?: number
+  public projectId?: number
   constructor(
     word: string,
     pageNumber: number = 1,
@@ -19,6 +20,7 @@ export default class IndexInvestigationResultParams implements Params {
     status?: number,
     date?: string,
     observationType?: number,
+    projectId?: number,
   ) {
     this.word = word
     this.withPage = withPage
@@ -28,6 +30,7 @@ export default class IndexInvestigationResultParams implements Params {
     this.status = status
     this.date = date
     this.observationType = observationType
+    this.projectId = projectId
   }
 
   toMap(): Record<string, number | string | any> {
@@ -40,6 +43,7 @@ export default class IndexInvestigationResultParams implements Params {
     if (this.status != null) data['status'] = this.status
     if (this.date) data['date'] = this.date
     if (this.observationType != null) data['observation_type'] = this.observationType
+    if (this.projectId) data['project_id'] = this.projectId
 
     return data
   }

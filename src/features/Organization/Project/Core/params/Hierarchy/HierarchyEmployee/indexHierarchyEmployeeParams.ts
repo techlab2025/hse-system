@@ -7,19 +7,27 @@ export default class IndexLocationHierarchyEmployeeParams implements Params {
   public projectId?: number = 1
   public locationId?: number = 1
   public hierarchyId?: number | null
+  public isLeader?: boolean
 
-  constructor(projectId: number = 1, locationId: number = 1, hierarchyId?: number | null) {
+  constructor(
+    projectId: number = 1,
+    locationId: number = 1,
+    hierarchyId?: number | null,
+    isLeader?: boolean,
+  ) {
     this.projectId = projectId
     this.locationId = locationId
     this.hierarchyId = hierarchyId
+    this.isLeader = isLeader
   }
 
-  toMap(): Record<string, string | number | number[] | null> {
-    const data: Record<string, string | number | number[] | null> = {}
+  toMap(): Record<string, string | number | number[] | null | boolean> {
+    const data: Record<string, string | number | number[] | null | boolean> = {}
     if (this.projectId || useProjectSelectStore().getProjectId())
       data['project_id'] = useProjectSelectStore().SelectedProjectId(this.projectId)
     if (this.locationId) data['location_id'] = this.locationId
     if (this.hierarchyId) data['hierarchy_id'] = this.hierarchyId
+    data['is_leader'] = this.isLeader
 
     return data
   }

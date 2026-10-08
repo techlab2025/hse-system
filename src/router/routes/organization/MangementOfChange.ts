@@ -7,6 +7,7 @@ export const managementChangeRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/Organization/MangementOfChange/MangementOfChange.vue'),
     meta: {
       breadcrumb: 'Management Of Change',
+      projectParent: 'Project Details',
       isSidebar: true,
     },
   },

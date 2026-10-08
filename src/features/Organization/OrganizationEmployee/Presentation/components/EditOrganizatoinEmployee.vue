@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 import type Params from '@/base/core/params/params'
+import type EditOrganizatoinEmployeeParams from '../../Core/params/editOrganizatoinEmployeeParams'
 import ShowOrganizatoinEmployeeController from '../controllers/showOrganizatoinEmployeeController'
 import ShowOrganizatoinEmployeeParams from '../../Core/params/showOrganizatoinEmployeeParams'
 import EditOrganizatoinEmployeeController from '../controllers/editOrganizatoinEmployeeController'
@@ -12,13 +13,13 @@ import OrganizatoinEmployeeForm from './OrganizatoinEmployeeForm.vue'
 const route = useRoute()
 const router = useRouter()
 const id = route.params.id
-const params = ref<Params | null>(null)
+const params = ref<EditOrganizatoinEmployeeParams | null>(null)
 const formRef = ref<InstanceType<typeof OrganizatoinEmployeeForm> | null>(null)
 
 const showOrganizatoinEmployeeController = ShowOrganizatoinEmployeeController.getInstance()
 const state = ref(showOrganizatoinEmployeeController.state.value)
 const fetchOrganizatoinEmployeeDetails = async () => {
-  const OrganizatoinEmployeeParams = new ShowOrganizatoinEmployeeParams(Number(id))
+  const OrganizatoinEmployeeParams = new ShowOrganizatoinEmployeeParams(Number(id), false)
 
   await showOrganizatoinEmployeeController.showOrganizatoinEmployee(OrganizatoinEmployeeParams)
 }
@@ -27,34 +28,25 @@ onMounted(() => {
   fetchOrganizatoinEmployeeDetails()
 })
 
-const EditOrganizatoinEmployee = async (draft: boolean) => {
+const EditOrganizatoinEmployee = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
-  console.log(params.value, 'parsmsmsmasmdasda')
-  if (draft) {
-    await EditOrganizatoinEmployeeController.getInstance().editOrganizatoinEmployee(
-      params.value!,
-      router,
-    )
-  } else {
-    await EditOrganizatoinEmployeeController.getInstance().editOrganizatoinEmployee(
-      params.value!,
-      router,
-    )
-  }
+  await EditOrganizatoinEmployeeController.getInstance().editOrganizatoinEmployee(
+    params.value!,
+    router,
+  )
 }
 
 watch(
   () => showOrganizatoinEmployeeController.state.value,
   (newState) => {
     if (newState) {
-      console.log(newState)
       state.value = newState
     }
   },
 )
 
 const setParams = (data: Params) => {
-  params.value = data
+  params.value = data as EditOrganizatoinEmployeeParams
 }
 </script>
 

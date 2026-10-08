@@ -18,6 +18,7 @@ interface Routes {
   name: string
   permissions: PermissionsEnum[]
   icon: string
+  activePrefixes?: string[]
   children?: Routes[]
 }
 const { t } = useI18n()
@@ -108,13 +109,85 @@ const OperationsRoutes = ref<Routes[]>([
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
 
-
   // {
   //   link: '/organization/management-of-change',
   //   name: 'Management Of Change',
   //   icon: 'file-contract',
   //   permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   // },
+])
+
+const CompanyRoutes = ref<Routes[]>([
+  {
+    link: '/organization/inductions',
+    name: 'Inductions',
+    icon: 'book-open',
+    activePrefixes: ['/organization/induction'],
+    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+  {
+    link: '/organization/ppe-matrix',
+    name: 'PPE Matrix & Log',
+    icon: 'shield-check',
+    activePrefixes: ['/organization/ppe-'],
+    permissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_PPE_ACTIVITY_ALL,
+      PermissionsEnum.ORG_PPE_ACTIVITY_FETCH,
+      PermissionsEnum.ORG_PPE_ACTIVITY_CREATE,
+      PermissionsEnum.ORG_PPE_ACTIVITY_UPDATE,
+      PermissionsEnum.ORG_PPE_TOOLS_ALL,
+      PermissionsEnum.ORG_PPE_TOOLS_FETCH,
+      PermissionsEnum.ORG_PPE_TOOLS_CREATE,
+      PermissionsEnum.ORG_PPE_TOOLS_UPDATE,
+    ],
+  },
+  {
+    link: '/organization/objectives',
+    name: 'objectives',
+    icon: 'crosshair',
+    activePrefixes: ['/organization/objectives'],
+    permissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.OBJECTIVE_ORG_ALL,
+      PermissionsEnum.OBJECTIVE_ORG_FETCH,
+      PermissionsEnum.OBJECTIVE_ORG_DETAILS,
+      PermissionsEnum.OBJECTIVE_ORG_CREATE,
+      PermissionsEnum.OBJECTIVE_ORG_UPDATE,
+      PermissionsEnum.OBJECTIVE_ORG_DELETE,
+    ],
+  },
+  {
+    link: '/organization/internal-audit/register',
+    name: 'Internal Audit',
+    icon: 'clipboard-notes',
+    activePrefixes: ['/organization/internal-audit/register'],
+    permissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.INTERNAL_AUDIT_ALL,
+      PermissionsEnum.INTERNAL_AUDIT_FETCH,
+      PermissionsEnum.INTERNAL_AUDIT_DETAILS,
+      PermissionsEnum.INTERNAL_AUDIT_CREATE,
+      PermissionsEnum.INTERNAL_AUDIT_UPDATE,
+      PermissionsEnum.INTERNAL_AUDIT_DELETE,
+    ],
+  },
+  {
+    link: '/organization/my-internal-audit',
+    name: 'My Internal Audit',
+    icon: 'clipboard-notes',
+    activePrefixes: ['/organization/my-internal-audit'],
+    permissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.MY_INTERNAL_AUDIT_ALL,
+      PermissionsEnum.MY_INTERNAL_AUDIT_FETCH,
+      PermissionsEnum.MY_INTERNAL_AUDIT_DETAILS,
+      PermissionsEnum.MY_INTERNAL_AUDIT_CREATE,
+    ],
+  },
 ])
 
 const OrganizationRoutes = ref<Routes[]>([
@@ -138,6 +211,30 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.CERTIFICATE_DELETE,
       PermissionsEnum.CERTIFICATE_FETCH,
       PermissionsEnum.CERTIFICATE_UPDATE,
+    ],
+  },
+  {
+    link: '/organization/organization-certificate',
+    name: 'organization_certificate',
+    icon: 'award',
+    permissions: [
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_ALL,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_CREATE,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_DELETE,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_FETCH,
+      PermissionsEnum.ORGANIZATION_CERTIFICATE_UPDATE,
+    ],
+  },
+  {
+    link: '/organization/organization-documents',
+    name: 'organization_documents',
+    icon: 'file-text',
+    permissions: [
+      PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
+      PermissionsEnum.ORGANIZATION_DOCUMENTS_CREATE,
+      PermissionsEnum.ORGANIZATION_DOCUMENTS_DELETE,
+      PermissionsEnum.ORGANIZATION_DOCUMENTS_FETCH,
+      PermissionsEnum.ORGANIZATION_DOCUMENTS_UPDATE,
     ],
   },
   {
@@ -222,6 +319,16 @@ const OrganizationRoutes = ref<Routes[]>([
       PermissionsEnum.NOTIFICATION_PLAN_CREATE,
       PermissionsEnum.NOTIFICATION_PLAN_FETCH,
       PermissionsEnum.NOTIFICATION_PLAN_UPDATE,
+    ],
+  },
+  {
+    link: '/organization/attachment-matrix',
+    name: 'Attachment Matrix',
+    icon: 'file-check-alt',
+    permissions: [
+      PermissionsEnum.ATTACHMENT_MATRIX_ALL,
+      PermissionsEnum.ATTACHMENT_MATRIX_FETCH,
+      PermissionsEnum.ATTACHMENT_MATRIX_CREATE,
     ],
   },
   {
@@ -421,6 +528,71 @@ const LocationRoutes = ref<Routes[]>([
 
 const LockUpsRoutes = ref<Routes[]>([
   {
+    link: '/organization/ppe-activities',
+    name: 'PPE Activity',
+    icon: 'shield-check',
+    permissions: [
+      PermissionsEnum.ORG_PPE_ACTIVITY_ALL,
+      PermissionsEnum.ORG_PPE_ACTIVITY_FETCH,
+      PermissionsEnum.ORG_PPE_ACTIVITY_DETAILS,
+      PermissionsEnum.ORG_PPE_ACTIVITY_CREATE,
+      PermissionsEnum.ORG_PPE_ACTIVITY_UPDATE,
+      PermissionsEnum.ORG_PPE_ACTIVITY_DELETE,
+    ],
+  },
+  {
+    link: '/organization/ppe-tools',
+    name: 'PPE Tools',
+    icon: 'shield-check',
+    permissions: [
+      PermissionsEnum.ORG_PPE_TOOLS_ALL,
+      PermissionsEnum.ORG_PPE_TOOLS_FETCH,
+      PermissionsEnum.ORG_PPE_TOOLS_DETAILS,
+      PermissionsEnum.ORG_PPE_TOOLS_CREATE,
+      PermissionsEnum.ORG_PPE_TOOLS_UPDATE,
+      PermissionsEnum.ORG_PPE_TOOLS_DELETE,
+    ],
+  },
+  {
+    link: '/organization/document-categories',
+    name: 'Document Categories',
+    icon: 'folder',
+    permissions: [
+      PermissionsEnum.ORG_DOCUMENT_CATEGORY_ALL,
+      PermissionsEnum.ORG_DOCUMENT_CATEGORY_FETCH,
+      PermissionsEnum.ORG_DOCUMENT_CATEGORY_DETAILS,
+      PermissionsEnum.ORG_DOCUMENT_CATEGORY_CREATE,
+      PermissionsEnum.ORG_DOCUMENT_CATEGORY_UPDATE,
+      PermissionsEnum.ORG_DOCUMENT_CATEGORY_DELETE,
+    ],
+  },
+  {
+    link: '/organization/audit-standards',
+    name: 'Audit Standards',
+   icon: 'shield-check',
+    permissions: [
+      PermissionsEnum.ORG_AUDIT_STANDARDS_ALL,
+      PermissionsEnum.ORG_AUDIT_STANDARDS_FETCH,
+      PermissionsEnum.ORG_AUDIT_STANDARDS_DETAILS,
+      PermissionsEnum.ORG_AUDIT_STANDARDS_CREATE,
+      PermissionsEnum.ORG_AUDIT_STANDARDS_UPDATE,
+      PermissionsEnum.ORG_AUDIT_STANDARDS_DELETE,
+    ],
+  },
+  {
+    link: '/organization/audit-activities',
+    name: 'Audit Activities',
+    icon: 'shield-check',
+    permissions: [
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_ALL,
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_FETCH,
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_DETAILS,
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_CREATE,
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_UPDATE,
+      PermissionsEnum.ORG_AUDIT_ACTIVITIES_DELETE,
+    ],
+  },
+  {
     link: '/organization/ppe-items',
     name: 'ppe_items',
     icon: 'shield-check',
@@ -431,6 +603,45 @@ const LockUpsRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_PPE_ITEM_CREATE,
       PermissionsEnum.ORG_PPE_ITEM_UPDATE,
       PermissionsEnum.ORG_PPE_ITEM_DELETE,
+    ],
+  },
+  {
+    link: '/organization/visit-activities',
+    name: 'visit_activities',
+    icon: 'clipboard-notes',
+    permissions: [
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_ALL,
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_FETCH,
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_DETAILS,
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_CREATE,
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_UPDATE,
+      PermissionsEnum.ORG_VISIT_ACTIVITIES_DELETE,
+    ],
+  },
+  {
+    link: '/organization/visit-themes',
+    name: 'visit_themes',
+    icon: 'clipboard-notes',
+    permissions: [
+      PermissionsEnum.ORG_VISIT_THEME_ALL,
+      PermissionsEnum.ORG_VISIT_THEME_FETCH,
+      PermissionsEnum.ORG_VISIT_THEME_DETAILS,
+      PermissionsEnum.ORG_VISIT_THEME_CREATE,
+      PermissionsEnum.ORG_VISIT_THEME_UPDATE,
+      PermissionsEnum.ORG_VISIT_THEME_DELETE,
+    ],
+  },
+  {
+    link: '/organization/visit-categories',
+    name: 'visit_categories',
+    icon: 'clipboard-notes',
+    permissions: [
+      PermissionsEnum.ORG_VISIT_CATEGORY_ALL,
+      PermissionsEnum.ORG_VISIT_CATEGORY_FETCH,
+      PermissionsEnum.ORG_VISIT_CATEGORY_DETAILS,
+      PermissionsEnum.ORG_VISIT_CATEGORY_CREATE,
+      PermissionsEnum.ORG_VISIT_CATEGORY_UPDATE,
+      PermissionsEnum.ORG_VISIT_CATEGORY_DELETE,
     ],
   },
   {
@@ -560,7 +771,7 @@ const LockUpsRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_MEETING_TYPE_UPDATE,
     ],
   },
-    {
+  {
     link: '/organization/ptw-types',
     name: 'ptw-types',
     icon: 'medical-square',
@@ -572,11 +783,24 @@ const LockUpsRoutes = ref<Routes[]>([
       PermissionsEnum.ORG_PTW_TYPE_UPDATE,
     ],
   },
-    {
+  {
     link: '/organization/management-change-topic-type',
     name: 'Management Change Topic Type',
     icon: 'sitemap',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  },
+  {
+    link: '/organization/traning-topics',
+    name: 'traning_topics',
+    icon: 'medical-square',
+    permissions: [
+      PermissionsEnum.ORG_TRANING_TOPIC_ALL,
+      PermissionsEnum.ORG_TRANING_TOPIC_FETCH,
+      PermissionsEnum.ORG_TRANING_TOPIC_DETAILS,
+      PermissionsEnum.ORG_TRANING_TOPIC_CREATE,
+      PermissionsEnum.ORG_TRANING_TOPIC_UPDATE,
+      PermissionsEnum.ORG_TRANING_TOPIC_DELETE,
+    ],
   },
 ])
 const ReportsRoutes = ref<Routes[]>([
@@ -660,6 +884,14 @@ const routeGroups = computed<RouteGroup[]>(() => {
       permissions: flattenPermissions(OperationsRoutes.value),
     },
     {
+      key: 'company',
+      label: t('Company'),
+      eyebrow: t('Company'),
+      icon: 'building',
+      routes: CompanyRoutes.value,
+      permissions: flattenPermissions(CompanyRoutes.value),
+    },
+    {
       key: 'reports',
       label: t('reports'),
       eyebrow: t('reports'),
@@ -724,13 +956,17 @@ const isLinkActive = (link: Routes['link']) => {
   )
 }
 
+const isRouteActive = (sidebarRoute: Routes) =>
+  isLinkActive(sidebarRoute.link) ||
+  Boolean(sidebarRoute.activePrefixes?.some((prefix) => route.path.startsWith(prefix)))
+
 const isParentLinkActive = (sidebarRoute: Routes) =>
-  isLinkActive(sidebarRoute.link) &&
+  isRouteActive(sidebarRoute) &&
   !sidebarRoute.children?.some((child) => isLinkActive(child.link))
 
 const groupHasActiveRoute = (group: RouteGroup) =>
   group.routes.some(
-    (item) => isLinkActive(item.link) || item.children?.some((child) => isLinkActive(child.link)),
+    (item) => isRouteActive(item) || item.children?.some((child) => isRouteActive(child)),
   )
 
 const activeGroup = computed(() => {
@@ -979,6 +1215,7 @@ onBeforeUnmount(() => {
   width: 37px !important;
   height: 35px !important;
 }
+
 .modern-sidebar {
   display: flex;
   height: 100dvh;

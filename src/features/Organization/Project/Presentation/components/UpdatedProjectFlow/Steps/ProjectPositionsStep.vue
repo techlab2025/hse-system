@@ -38,40 +38,87 @@ const employeeParams = (hierarchyId: number | null = null) =>
     undefined,
     undefined,
   )
-const addHierarchy = (location: PositionLocationForm) => {
-  location.heirarchys.push({ hierarchy: null, employees: [], employeeParams: employeeParams() })
-}
-const setHierarchy = (
-  hierarchy: PositionHierarchyForm,
+const selectedHierarchies = (location: PositionLocationForm) =>
+  location.heirarchys.flatMap((item) => (item.hierarchy ? [item.hierarchy] : []))
+
+const setLocationHierarchies = (
+  location: PositionLocationForm,
   value: TitleInterface | TitleInterface[] | null,
 ) => {
-  hierarchy.hierarchy = Array.isArray(value) ? (value[0] ?? null) : value
-  hierarchy.employees = []
-  hierarchy.employeeParams = employeeParams(hierarchy.hierarchy?.id ?? null)
+  const selected = Array.isArray(value) ? value : value ? [value] : []
+  const existingById = new Map(
+    location.heirarchys.flatMap((item) =>
+      item.hierarchy ? [[item.hierarchy.id, item] as const] : [],
+    ),
+  )
+
+  location.heirarchys = selected.map(
+    (hierarchy) =>
+      existingById.get(hierarchy.id) ?? {
+        hierarchy,
+        employees: [],
+        teamLeader: null,
+        employeeParams: employeeParams(hierarchy.id),
+      },
+  )
 }
 const setPositionEmployees = (
   hierarchy: PositionHierarchyForm,
   value: TitleInterface | TitleInterface[] | null,
 ) => {
   hierarchy.employees = Array.isArray(value) ? value : value ? [value] : []
+
+  if (!hierarchy.employees.some((employee) => employee.id === hierarchy.teamLeader?.id)) {
+    hierarchy.teamLeader = null
+  }
 }
+
+const setTeamLeader = (
+  hierarchy: PositionHierarchyForm,
+  value: TitleInterface | TitleInterface[] | null,
+) => {
+  hierarchy.teamLeader = Array.isArray(value) ? (value[0] ?? null) : value
+}
+
+type PositionEmployeeOption = {
+  id?: number
+  organization_employee_id?: number
+  employeeId?: number
+  name?: string
+  title?: string
+  is_leader?: boolean | number | string
+}
+
+const isLeaderValue = (value: PositionEmployeeOption['is_leader']) => {
+  return value === true || value === 1 || ['1', 'true', 'yes'].includes(String(value).toLowerCase())
+}
+
+const toEmployeeTitle = (employee: PositionEmployeeOption) =>
+  new TitleInterface({
+    id: employee.organization_employee_id || employee.employeeId || employee.id || 0,
+    title: employee.name || employee.title || '',
+  })
 
 const mapProjectLocation = (location: ProjectCustomLocationModel): PositionLocationForm => ({
   projectLocation: new TitleInterface({
     id: location.projectLocationId,
     title: location.title,
   }),
-  heirarchys: (location.locationHierarchy ?? []).map((hierarchy) => ({
-    hierarchy: new TitleInterface({ id: hierarchy.id, title: hierarchy.title }),
-    employees: (hierarchy.Employees ?? []).map(
-      (employee) =>
-        new TitleInterface({
-          id: employee.organization_employee_id || employee.employeeId,
-          title: employee.name,
-        }),
-    ),
-    employeeParams: employeeParams(hierarchy.id),
-  })),
+  heirarchys: (location.locationHierarchy ?? []).map((hierarchy) => {
+    const employees = hierarchy.Employees ?? []
+    const leader = employees.find((employee) => isLeaderValue(employee.is_leader))
+    const employeeOptions = employees.map(toEmployeeTitle)
+    const leaderOption = leader
+      ? (employeeOptions.find((employee) => employee.id === toEmployeeTitle(leader).id) ?? null)
+      : null
+
+    return {
+      hierarchy: new TitleInterface({ id: hierarchy.id, title: hierarchy.title }),
+      employees: employeeOptions,
+      teamLeader: leaderOption,
+      employeeParams: employeeParams(hierarchy.id),
+    }
+  }),
 })
 
 const getProjectLocationsHierarchiesEmployees = async () => {
@@ -125,42 +172,81 @@ watch(() => props.projectId, getProjectLocationsHierarchiesEmployees, { immediat
           <strong>{{ location.projectLocation?.title }}</strong>
         </div>
       </div>
-      <div v-for="(hierarchy, index) in location.heirarchys" :key="index" class="nested-row">
-        <div class="input-wrapper">
-          <UpdatedCustomInputSelect
-            :model-value="hierarchy.hierarchy"
-            :params="hierarchyParams"
-            :controller="hierarchyController"
-            label="position"
-            placeholder="Select position"
-            :type="1"
-            :required="true"
-            @update:model-value="setHierarchy(hierarchy, $event)"
-          />
-        </div>
-        <div class="input-wrapper">
-          <UpdatedCustomInputSelect
-            :model-value="hierarchy.employees"
-            :params="hierarchy.employeeParams"
-            :controller="employeeController"
-            label="employees"
-            placeholder="Select employees"
-            :type="2"
-            :disabled="!hierarchy.hierarchy"
-            @update:model-value="setPositionEmployees(hierarchy, $event)"
-          />
-        </div>
-        <button
-          type="button"
-          class="icon-button danger"
-          @click="location.heirarchys.splice(index, 1)"
-        >
-          ×
-        </button>
+      <div class="input-wrapper">
+        <UpdatedCustomInputSelect
+          :model-value="selectedHierarchies(location)"
+          :params="hierarchyParams"
+          :controller="hierarchyController"
+          label="positions"
+          placeholder="Select positions"
+          :type="2"
+          @update:model-value="setLocationHierarchies(location, $event)"
+        />
       </div>
-      <button type="button" class="add-row" @click="addHierarchy(location)">+ Add Position</button>
+      <div
+        v-for="hierarchy in location.heirarchys"
+        :key="hierarchy.hierarchy?.id"
+        class="position-assignment"
+      >
+        <h3>{{ hierarchy.hierarchy?.title }}</h3>
+        <div class="position-assignment-fields">
+          <div class="input-wrapper">
+            <UpdatedCustomInputSelect
+              :model-value="hierarchy.employees"
+              :params="hierarchy.employeeParams"
+              :controller="employeeController"
+              label="employees"
+              placeholder="Select employees"
+              :type="2"
+              @update:model-value="setPositionEmployees(hierarchy, $event)"
+            />
+          </div>
+          <div v-if="hierarchy.employees.length" class="input-wrapper">
+            <UpdatedCustomInputSelect
+              :model-value="hierarchy.teamLeader"
+              :static-options="hierarchy.employees"
+              label="Team leader"
+              placeholder="Select team leader"
+              :type="1"
+              :required="true"
+              @update:model-value="setTeamLeader(hierarchy, $event)"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped src="../ProjectFlowStepStyles.css"></style>
+
+<style scoped>
+.position-assignment {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--main-border);
+  border-radius: 15px;
+  background: var(--Gray-1);
+}
+
+.position-assignment h3 {
+  margin: 0;
+  color: var(--GrayText-1);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.position-assignment-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 850px) {
+  .position-assignment-fields {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

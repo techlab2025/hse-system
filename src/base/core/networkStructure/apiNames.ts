@@ -134,20 +134,35 @@ class ApiNames {
   }
 
   // objectives
-  public get CreateObjective() {
-    return this.prefix + 'create_objective'
+  public get CreateObjectives() {
+    return this.prefix + 'create_objectives'
   }
   public get IndexObjectives() {
     return this.prefix + 'fetch_objectives'
   }
+  public get ShowObjectives() {
+    return this.prefix + 'fetch_objectives_details'
+  }
+  public get EditObjectives() {
+    return this.prefix + 'update_objectives'
+  }
+  public get DeleteObjectives() {
+    return this.prefix + 'delete_objectives'
+  }
+  public get DisObjectives() {
+    return this.prefix + 'change_objectives_active_status'
+  }
+  public get CreateObjective() {
+    return this.CreateObjectives
+  }
   public get ShowObjective() {
-    return this.prefix + 'fetch_objective_details'
+    return this.ShowObjectives
   }
   public get EditObjective() {
-    return this.prefix + 'update_objective'
+    return this.EditObjectives
   }
   public get DeleteObjective() {
-    return this.prefix + 'delete_objective'
+    return this.DeleteObjectives
   }
 
   // admin
@@ -314,6 +329,9 @@ class ApiNames {
   }
   public get ShowProject() {
     return this.prefix + 'fetch_project_details'
+  }
+  public get ShowProjectSummaryDetails() {
+    return this.prefix + 'fetch_project_summary_details'
   }
   public get EditProject() {
     return this.prefix + 'update_project'
@@ -658,6 +676,46 @@ class ApiNames {
     return this.prefix + 'delete_certificate'
   }
   public get DisCertificate() {
+    return this.prefix + 'disable_certificate'
+  }
+
+  // Organization Documents
+  public get CreateOrganizationDocuments() {
+    return this.prefix + 'create_organization_document'
+  }
+  public get IndexOrganizationDocuments() {
+    return this.prefix + 'fetch_organization_documents'
+  }
+  public get ShowOrganizationDocuments() {
+    return this.prefix + 'fetch_organization_document_details'
+  }
+  public get EditOrganizationDocuments() {
+    return this.prefix + 'update_organization_document'
+  }
+  public get DeleteOrganizationDocuments() {
+    return this.prefix + 'delete_organization_document'
+  }
+  public get DisOrganizationDocuments() {
+    return this.prefix + 'disable_organization_document'
+  }
+
+  // Organization Certificate
+  public get CreateOrganizationCertificate() {
+    return this.prefix + 'create_certificate'
+  }
+  public get IndexOrganizationCertificate() {
+    return this.prefix + 'fetch_organization_certificate'
+  }
+  public get ShowOrganizationCertificate() {
+    return this.prefix + 'fetch_certificate_details'
+  }
+  public get EditOrganizationCertificate() {
+    return this.prefix + 'update_certificate'
+  }
+  public get DeleteOrganizationCertificate() {
+    return this.prefix + 'delete_certificate'
+  }
+  public get DisOrganizationCertificate() {
     return this.prefix + 'disable_certificate'
   }
 
@@ -1270,6 +1328,9 @@ class ApiNames {
   public get CreateDrill() {
     return this.prefix + 'create_drill'
   }
+  public get FetchDrills() {
+    return this.prefix + 'fetch_drills'
+  }
   public get CreateDrillPlanning() {
     return this.prefix + 'create_drill_plan'
   }
@@ -1397,6 +1458,69 @@ class ApiNames {
     return this.prefix + 'delete_role'
   }
 
+  // My Internal Audit
+  public get IndexMyInternalAudit() {
+    return this.prefix + 'fetch_my_internal_audite'
+  }
+  public get FetchMyInternalAuditNcrs() {
+    return this.prefix + 'fetch_my_ncrs'
+  }
+
+  // Internal Audit
+  public get CreateInternalAuditPlan() {
+    return this.prefix + 'create_internal_audit'
+  }
+  public get IndexInternalAuditPlan() {
+    return this.prefix + 'fetch_internal_audits'
+  }
+  public get ShowInternalAuditPlan() {
+    return this.prefix + 'fetch_internal_audit_details'
+  }
+  public get EditInternalAuditPlan() {
+    return this.prefix + 'update_internal_audit'
+  }
+  public get DeleteInternalAuditPlan() {
+    return this.prefix + 'delete_internal_audit'
+  }
+  public get FetchInternalAuditAttendance() {
+    return this.prefix + 'fetch_internal_audit_attendance'
+  }
+  public get SaveInternalAuditAttendance() {
+    return this.prefix + 'save_internal_audit_attendance'
+  }
+  public get AddInternalAuditParticipants() {
+    return this.prefix + 'add_internal_audit_Participants'
+  }
+  public get FetchInternalAuditNcrs() {
+    return this.prefix + 'fetch_ncrs'
+  }
+  public get FetchInternalAuditNcrDetails() {
+    return this.prefix + 'fetch_ncr_details'
+  }
+  public get EditInternalAuditNcrs() {
+    return this.prefix + 'update_full_ncrs'
+  }
+  public get CreateInternalAuditNcrs() {
+    return this.prefix + 'create_full_ncrs'
+  }
+  public get FetchInternalAuditPlanDetailsForReport() {
+    return this.prefix + 'fetch_internal_audit_plan_details'
+  }
+  public get FetchInternalAuditReport() {
+    return this.prefix + 'fetch_internal_audit_report_details'
+  }
+  public get CreateInternalAuditReport() {
+    return this.prefix + 'create_internal_audit_report'
+  }
+
+  // Attachment matrix
+  public get CreateAttachmentMatrix() {
+    return this.prefix + 'create_attachment_matrix'
+  }
+  public get FetchAttachmentMatrix() {
+    return this.prefix + 'fetch_attachment_matrix'
+  }
+
   public get CreateInvestegation() {
     return this.prefix + 'create_full_investigation'
   }
@@ -1492,6 +1616,39 @@ class ApiNames {
   }
   public get DeletePpeItem() {
     return this.prefix + 'delete_ppe_item'
+  }
+  // Visit Theme
+  public get CreateVisitTheme() {
+    return this.prefix + 'create_leadership_theme'
+  }
+  public get IndexVisitTheme() {
+    return this.prefix + 'fetch_leadership_themes'
+  }
+  public get ShowVisitTheme() {
+    return this.prefix + 'fetch_leadership_theme_details'
+  }
+  public get EditVisitTheme() {
+    return this.prefix + 'update_leadership_theme'
+  }
+  public get DeleteVisitTheme() {
+    return this.prefix + 'delete_leadership_theme'
+  }
+
+  // Visit Category
+  public get CreateVisitCategory() {
+    return this.prefix + 'create_leadership_category'
+  }
+  public get IndexVisitCategory() {
+    return this.prefix + 'fetch_leadership_categories'
+  }
+  public get ShowVisitCategory() {
+    return this.prefix + 'fetch_leadership_category_details'
+  }
+  public get EditVisitCategory() {
+    return this.prefix + 'update_leadership_category'
+  }
+  public get DeleteVisitCategory() {
+    return this.prefix + 'delete_leadership_category'
   }
 
   // MangementChange Topic Type
@@ -1916,6 +2073,27 @@ class ApiNames {
   public get FetchProjectMeetings() {
     return this.baseUrl + this.organizationPrefix + 'fetch_meetings'
   }
+  public get FetchAllLeadershipVisits() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_visits'
+  }
+  public get FetchLeadershipVisitDetails() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_visit_report'
+  }
+  public get CreatePPEActivityTool() {
+    return this.baseUrl + this.organizationPrefix + 'change_ppe_active_tool_matrix'
+  }
+  public get FetchPPEActivityTools() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_ppe_active_tool_matrix'
+  }
+  public get CreatePPEMatrixDelivery() {
+    return this.baseUrl + this.organizationPrefix + 'create_ppe_matrix_delivery'
+  }
+  public get FetchPPEMatrixDeliveries() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_ppe_matrix_delivery'
+  }
+  public get CreateLeadershipVisitReport() {
+    return this.baseUrl + this.organizationPrefix + 'create_visit_report'
+  }
   // CloneMeetingType
 
   public get ShowPTWType() {
@@ -1947,13 +2125,205 @@ class ApiNames {
     return this.baseUrl + this.organizationPrefix + 'fetch_meeting_details'
   }
   public get FetchPermits() {
-    return this.baseUrl + this.organizationPrefix + 'fetch_permit_to_works'
+    return this.baseUrl + this.organizationPrefix + 'fetch_asigned_permit_to_works'
   }
   public get FetchMyPermits() {
     return this.baseUrl + this.organizationPrefix + 'fetch_my_permit_to_works'
   }
   public get FetchPermitsAudits() {
     return this.baseUrl + this.organizationPrefix + 'fetch_permit_to_work_results'
+  }
+  public get FetchStaticsMyPermits() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_project_permit_statistics'
+  }
+
+  // Drill Type
+  public get create_ppe_activity() {
+    return this.prefix + 'create_ppe_activity'
+  }
+  public get clone_ppe_activity() {
+    return this.prefix + 'clone_ppe_activities'
+  }
+  public get delete_ppe_activity() {
+    return this.prefix + 'delete_ppe_activity'
+  }
+  public get update_ppe_activity() {
+    return this.prefix + 'update_ppe_activity'
+  }
+  public get fetch_ppe_activities() {
+    return this.prefix + 'fetch_ppe_activities'
+  }
+  public get fetch_ppe_activity_details() {
+    return this.prefix + 'fetch_ppe_activity_details'
+  }
+
+  // Visit Activity
+  public get CreateVisitActivity() {
+    return this.prefix + 'create_visit_activity'
+  }
+  public get IndexVisitActivity() {
+    return this.prefix + 'fetch_visit_activities'
+  }
+  public get ShowVisitActivity() {
+    return this.prefix + 'fetch_visit_activity_details'
+  }
+  public get EditVisitActivity() {
+    return this.prefix + 'update_visit_activity'
+  }
+  public get DeleteVisitActivity() {
+    return this.prefix + 'delete_visit_activity'
+  }
+
+  // PPE Tool
+  public get fetch_ppe_tools() {
+    return this.prefix + 'fetch_ppe_tools'
+  }
+  public get fetch_ppe_toll_deails() {
+    return this.prefix + 'fetch_ppe_tool_details'
+  }
+  public get create_ppe_toll() {
+    return this.prefix + 'create_ppe_tool'
+  }
+  public get update_ppe_tool() {
+    return this.prefix + 'update_ppe_tool'
+  }
+  public get delete_ppe_tool() {
+    return this.prefix + 'delete_ppe_tool'
+  }
+  public get clone_ppe_tool() {
+    return this.prefix + 'clone_ppe_tools'
+  }
+
+  // Document Category
+  public get fetch_document_categories() {
+    return this.prefix + 'fetch_document_categories'
+  }
+  public get fetch_document_category_details() {
+    return this.prefix + 'fetch_document_category_details'
+  }
+  public get create_document_category() {
+    return this.prefix + 'create_document_category'
+  }
+  public get update_document_category() {
+    return this.prefix + 'update_document_category'
+  }
+  public get delete_document_category() {
+    return this.prefix + 'delete_document_category'
+  }
+  public get clone_document_category() {
+    return this.prefix + 'clone_document_categories'
+  }
+
+  // Audit Standard
+  public get fetch_audit_standards() {
+    return this.prefix + 'fetch_internal_audit_standards'
+  }
+  public get fetch_audit_standard_details() {
+    return this.prefix + 'fetch_internal_audit_standard_details'
+  }
+  public get create_audit_standard() {
+    return this.prefix + 'create_internal_audit_standard'
+  }
+  public get update_audit_standard() {
+    return this.prefix + 'update_internal_audit_standard'
+  }
+  public get delete_audit_standard() {
+    return this.prefix + 'delete_internal_audit_standard'
+  }
+  public get clone_audit_standard() {
+    return this.prefix + 'clone_internal_audit_standards'
+  }
+
+  // Audit Activity
+  public get fetch_audit_activities() {
+    return this.prefix + 'fetch_internal_audit_activities'
+  }
+  public get fetch_audit_activity_details() {
+    return this.prefix + 'fetch_internal_audit_activity_details'
+  }
+  public get create_audit_activity() {
+    return this.prefix + 'create_internal_audit_activity'
+  }
+  public get update_audit_activity() {
+    return this.prefix + 'update_internal_audit_activity'
+  }
+  public get delete_audit_activity() {
+    return this.prefix + 'delete_internal_audit_activity'
+  }
+  public get clone_audit_activity() {
+    return this.prefix + 'clone_internal_audit_activities'
+  }
+  // Risk Assessment
+  public get CreateRiskAssessment() {
+    return this.baseUrl + this.organizationPrefix + 'create_risk_assessment'
+  }
+  public get FetchRiskAssessments() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_risk_assessments'
+  }
+  public get FetchRiskAssessmentDetails() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_risk_assessment_details'
+  }
+
+  // Induction
+
+  public get create_induction() {
+    return this.prefix + 'create_induction'
+  }
+  public get fetch_inductions() {
+    return this.prefix + 'fetch_induction'
+  }
+  public get fetch_induction_details() {
+    return this.prefix + 'fetch_induction_detail'
+  }
+  public get update_induction() {
+    return this.prefix + 'update_induction'
+  }
+  public get delete_induction() {
+    return this.prefix + 'delete_induction'
+  }
+
+  // public get create_induction() {
+  //   return this.prefix + 'create_induction'
+  // }
+  // public get fetch_inductions() {
+  //   return this.prefix + 'fetch_inductions'
+  // }
+  // public get fetch_induction_details() {
+  //   return this.prefix + 'fetch_induction_details'
+  // }
+  // public get update_induction() {
+  //   return this.prefix + 'update_induction'
+  // }
+  // public get delete_induction() {
+  //   return this.prefix + 'delete_induction'
+  // }
+
+  // Traning Topic
+  public get fetch_tranning_topic() {
+    return this.prefix + 'fetch_training_topics'
+  }
+
+  public get fetch_traning_topic_details() {
+    return this.prefix + 'fetch_training_topic_details'
+  }
+
+  public get create_traning_topic() {
+    return this.prefix + 'create_training_topic'
+  }
+
+  public get update_traning_topic() {
+    return this.prefix + 'update_training_topic'
+  }
+
+  public get delete_traning_topic() {
+    return this.prefix + 'delete_training_topic'
+  }
+
+  public get clone_traning_topic() {
+    return this.prefix + 'clone_traning_topic'
+  }
+  public get CreateLeadershipPlan() {
+    return this.baseUrl + this.organizationPrefix + 'create_leadership_engagement'
   }
 }
 
