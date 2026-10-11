@@ -434,39 +434,7 @@ onMounted(fetchDetails)
           </div>
         </section>
 
-        <!-- <section class="report-section">
-          <div class="section-title">
-            <h3>Non-conformity</h3>
-            <p>The following non-conformities were identified.</p>
-          </div>
-          <div class="ncr-table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>NCR</th>
-                  <th>Area / Process</th>
-                  <th>Created by</th>
-                  <th>Due</th>
-                  <th>Status</th>
-                  <th>Lead Review</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="ncr in ncrs" :key="ncr.id || ncr.ncr">
-                  <td>{{ ncr.ncr || `NCR-${ncr.id}` }}</td>
-                  <td>{{ ncr.area || '—' }}</td>
-                  <td>{{ ncr.createdBy.name || '—' }}</td>
-                  <td>{{ ncr.dueDate || '—' }}</td>
-                  <td>{{ ncr.status }}</td>
-                  <td>{{ ncr.leadReviewStatus || ncr.leadReview.name || 'Pending' }}</td>
-                </tr>
-                <tr v-if="!ncrs.length">
-                  <td colspan="6" class="empty-row">No NCRs recorded</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </section> -->
+  
 
         <section class="report-section">
           <div class="section-title">
