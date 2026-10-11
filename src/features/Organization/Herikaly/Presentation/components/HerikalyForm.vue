@@ -26,9 +26,11 @@ const props = withDefaults(
   defineProps<{
     data?: HerikalyDetailsModel
     showCertificateSelectAll?: boolean
+    mode?: 'auto' | 'department' | 'position'
   }>(),
   {
     showCertificateSelectAll: true,
+    mode: 'auto',
   },
 )
 
@@ -102,9 +104,8 @@ const fetchLang = async (
   perPage: number = 10,
   withPage: number = 0,
 ) => {
-  console.log(user.user, 'user')
   if (user?.user?.languages.length) {
-    langDefault.value = user?.user?.languages.map((item: any) => ({
+    langDefault.value = user?.user?.languages.map((item: { code: string }) => ({
       locale: item.code,
       title: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
@@ -117,7 +118,7 @@ const fetchLang = async (
   const response = indexPartnerController.value
 
   if (response?.data?.length) {
-    langDefault.value = response.data.map((item: any) => ({
+    langDefault.value = response.data.map((item: { code: string }) => ({
       locale: item.code,
       title: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
@@ -131,12 +132,11 @@ const fetchLang = async (
 }
 
 onMounted(async () => {
-  await Promise.all([fetchLang(), fetchCertificates()])
+  await Promise.all([fetchLang(), ...(props.mode === 'department' ? [] : [fetchCertificates()])])
 })
 
 const updateData = () => {
   const translationsParams = new TranslationsParams()
-  console.log(SelectedDepartment.value?.id, 'SelectedDepartment')
 
   langs.value.forEach((lang) => {
     translationsParams.setTranslation('title', lang.locale, lang.title)
@@ -146,13 +146,13 @@ const updateData = () => {
     ? new EditHerikalyParams(
         props?.data?.id,
         translationsParams,
-        ParentId || SelectedDepartment.value?.id!,
-        Certificate.value.map((item) => item.id),
+        effectiveParentId.value,
+        props.mode === 'department' ? [] : Certificate.value.map((item) => item.id),
       )
     : new AddHerikalyParams(
         translationsParams,
-        Certificate.value.map((item) => item.id),
-        ParentId || SelectedDepartment?.value?.id!,
+        props.mode === 'department' ? [] : Certificate.value.map((item) => item.id),
+        effectiveParentId.value,
       )
 
   emit('update:data', params)
@@ -187,23 +187,6 @@ watch(
   },
   { immediate: true },
 )
-const UpdateSerial = (data) => {
-  SerialNumber.value = data
-  updateData()
-}
-
-const SerialNumber = ref()
-
-const fields = ref([
-  {
-    key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
-    value: SerialNumber.value,
-    enabled: props?.data?.id ? false : true,
-  },
-])
-
 type RequiredFieldRule = {
   key: string
   message: string
@@ -220,6 +203,11 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     key: 'langs',
     message: 'Title Is Required',
     isMissing: () => !hasLangValue(),
+  },
+  {
+    key: 'department',
+    message: 'Department is required',
+    isMissing: () => props.mode === 'position' && !(Number(SelectedDepartment.value?.id) > 0),
   },
   // {
   //   key: 'Certificate',
@@ -259,9 +247,27 @@ defineExpose({
 const indexHerikalyController = IndexHerikalyController.getInstance()
 const HerikalyParams = new IndexHerikalyParams('', 1, 10, 0, true, null)
 const SelectedDepartment = ref<TitleInterface>()
+const effectiveParentId = computed(() =>
+  props.mode === 'department'
+    ? undefined
+    : props.mode === 'position'
+      ? SelectedDepartment.value?.id
+      : Number(ParentId) || SelectedDepartment.value?.id,
+)
+const isPosition = computed(
+  () =>
+    props.mode === 'position' ||
+    (props.mode === 'auto' &&
+      Boolean(ParentId || props.data?.parent?.id || SelectedDepartment.value?.id)),
+)
+const showDepartmentSelect = computed(
+  () =>
+    props.mode === 'position' ||
+    (props.mode === 'auto' && !route.path.includes('/herikaly/add') && props.data?.parent !== null),
+)
 
-const updatedDepartment = (data: TitleInterface) => {
-  SelectedDepartment.value = data
+const updatedDepartment = (data: TitleInterface | TitleInterface[] | null) => {
+  SelectedDepartment.value = (Array.isArray(data) ? data[0] : data) ?? undefined
   updateData()
 }
 watch(
@@ -296,19 +302,26 @@ watch(
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2" v-if="!route.path.includes('/herikaly/add')  && props?.data?.parent !== null">
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="showDepartmentSelect"
+    data-required-field="department"
+  >
     <div class="input-wrapper">
-
       <UpdatedCustomInputSelect
         :modelValue="SelectedDepartment"
         :params="HerikalyParams"
         :controller="indexHerikalyController"
         class="input"
-        :label="$t('Depratments')"
+        :label="$t('Department')"
+        :required="props.mode === 'position'"
         id="herikaly"
-        :placeholder="$t('Select Depratments')"
+        :placeholder="$t('Select department')"
         @update:modelValue="updatedDepartment"
       />
+      <p v-if="getFieldError('department')" class="required-field-message">
+        {{ getFieldError('department') }}
+      </p>
     </div>
   </div>
   <div class="col-span-4 md:col-span-2" data-required-field="langs">
@@ -316,7 +329,7 @@ watch(
       type="text"
       :langs="langDefault"
       :modelValue="langs"
-      :label="ParentId || props.data?.parent?.id ?   $t('position_name') : $t('Department Name')"
+      :label="isPosition ? $t('position_name') : $t('Department Name')"
       @update:modelValue="setLangs"
     />
     <p v-if="getFieldError('langs')" class="required-field-message">
@@ -324,7 +337,7 @@ watch(
     </p>
   </div>
 
-  <div v-if="ParentId || props.data?.parent?.id" class="col-span-4" data-required-field="Certificate">
+  <div v-if="isPosition" class="col-span-4" data-required-field="Certificate">
     <div class="training-selector">
       <div class="training-selector-header">
         <label class="training-selector-label">{{ $t('certificate') }}</label>
@@ -386,15 +399,6 @@ watch(
       {{ getFieldError('Certificate') }}
     </p>
   </div>
-  <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
-      <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :switch_reverse="true"
-      :is-auto="true"
-      @update:value="UpdateSerial"
-    />
-  </div> -->
 </template>
 
 <style scoped>
