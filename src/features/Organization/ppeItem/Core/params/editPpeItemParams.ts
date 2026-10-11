@@ -5,23 +5,19 @@ export default class EditPpeItemParams implements Params {
   constructor(
     public id: number,
     public translation: TranslationsParams,
+    public allIndustries: boolean | null = null,
+    public industries: number[] = [],
   ) {}
 
-  toMap(): Record<
-    string,
-    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
-  > {
-    const data: Record<
-      string,
-      | number
-      | string
-      | number[]
-      | Record<string, string | number[] | number | Record<string, string>>
-    > = {}
-
-    data['ppe_item_id'] = this.id
-    data['translations'] = this.translation.toMap()
-
+  toMap(): Record<string, unknown> {
+    const data: Record<string, unknown> = {
+      ppe_item_id: this.id,
+      translations: this.translation.toMap(),
+    }
+    if (this.allIndustries != null) {
+      data.all_industries = this.allIndustries ? 1 : 0
+      if (!this.allIndustries) data.industry_ids = this.industries
+    }
     return data
   }
 }

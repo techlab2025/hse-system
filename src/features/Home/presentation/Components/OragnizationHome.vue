@@ -75,7 +75,7 @@ const fetchProject = async (
   query: string = '',
   pageNumber: number = 1,
   perPage: number = 10,
-  withPage: number = 0,
+  withPage: number = 1,
 ) => {
   const indexProjects = new IndexProjectParams(query, pageNumber, perPage, withPage)
   await indexProjectController.getData(indexProjects)
@@ -151,7 +151,7 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
 
         <div class="home-overview-grid">
           <div class="home-panel home-panel-projects">
-            <ProjectsStatistics :projectStatistics="ProjectStatics?.data" />
+            <ProjectsStatistics :projectStatistics="ProjectStatics?.data" :totalNumOfProjects="ProjectStatics.pagination?.total" />
           </div>
 
           <div class="home-panel home-panel-kpis">
@@ -253,11 +253,7 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
   :deep(.project-statistics .header) {
     border-color: var(--main-border) !important;
     background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
-        transparent
-      ),
+      linear-gradient(180deg, color-mix(in srgb, var(--PrimaryColor) 7%, transparent), transparent),
       var(--surface-1) !important;
   }
 

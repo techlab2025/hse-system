@@ -9,6 +9,7 @@ export default class FetchTaskReportParams implements Params {
     public status: string | number | null = null,
     public fromDate: string = '',
     public toDate: string = '',
+    public projectId?: number,
   ) {}
 
   toMap(): Record<string, string | number> {
@@ -19,9 +20,11 @@ export default class FetchTaskReportParams implements Params {
     }
 
     if (this.word.trim()) data.word = this.word.trim()
-    if (this.status !== null && this.status !== '' && this.status !== 'all') data.status = this.status
+    if (this.status !== null && this.status !== '' && this.status !== 'all')
+      data.status = this.status
     if (this.fromDate?.trim()) data.from_date = this.fromDate.trim()
     if (this.toDate?.trim()) data.to_date = this.toDate.trim()
+    if (this.projectId) data.project_id = this.projectId
 
     return data
   }

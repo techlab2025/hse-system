@@ -45,6 +45,13 @@ const setZoneEquipments = (
   zone.equipments = Array.isArray(value) ? value : value ? [value] : []
 }
 
+const equipmentIdsSelectedInOtherZones = (currentZoneIndex: number): number[] =>
+  equipments.value
+    .flatMap((zone, zoneIndex) =>
+      zoneIndex === currentZoneIndex ? [] : zone.equipments.map((equipment) => Number(equipment.id)),
+    )
+    .filter((id) => Number.isFinite(id) && id > 0)
+
 const mapProjectZone = (zone: SohwProjectZoonModel): EquipmentZoneForm => ({
   zone: new TitleInterface({ id: zone.projectZoonId, title: zone.zoonTitle }),
   equipments: (zone.projectZoonEquipments ?? []).map(
@@ -111,6 +118,7 @@ watch([() => props.projectId, () => props.isEdit], getProjectZonesEquipments, { 
           :model-value="zone.equipments"
           :params="zone.equipmentParams"
           :controller="equipmentController"
+          :excluded-option-ids="equipmentIdsSelectedInOtherZones(zoneIndex)"
           label="Equipment"
           placeholder="Select equipment"
           :type="2"

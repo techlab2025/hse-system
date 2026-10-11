@@ -43,7 +43,9 @@ export default class AddLocationHierarchyController extends ControllerInterface<
         })
 
         await router.push(
-          `/organization/project-employee/project/${ProjectId}?locationId=${LocationId}`,
+          router.currentRoute.value.query.return_to === 'summary'
+            ? `/organization/project-summary/${ProjectId}`
+            : `/organization/project-employee/project/${ProjectId}?locationId=${LocationId}`,
         )
 
         // useLoaderStore().endLoadingWithDialog();

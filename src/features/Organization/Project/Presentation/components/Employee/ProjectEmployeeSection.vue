@@ -224,6 +224,7 @@ watch(
               <span class="count-badge">{{ locationTeam.locationTeams?.length || 0 }}</span>
             </div>
             <div class="project-teams-cards" v-if="locationTeam.locationTeams?.length">
+             
               <TeamCard
                 class="employee-card"
                 v-for="(team, index) in locationTeam.locationTeams"

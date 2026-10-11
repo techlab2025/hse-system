@@ -1,12 +1,12 @@
 import type Params from '@/base/core/params/params'
 
 export default class ShowOrganizatoinEmployeeParams implements Params {
-  id: number;
-  isShow:boolean;
+  id: number
+  isShow: boolean
 
-  constructor(id: number,isShow:boolean) {
-    this.id = id;
-    this.isShow = isShow;
+  constructor(id: number, isShow: boolean = false) {
+    this.id = id
+    this.isShow = isShow
   }
 
   toMap(): Record<string, number> {

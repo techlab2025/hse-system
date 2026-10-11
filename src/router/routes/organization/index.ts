@@ -19,6 +19,8 @@ import { WhereHouseRoutes } from './whereHouse'
 import { SettingRoutes } from './setting'
 import { AllInvestigationMeetingRoutes } from './allInvestigationmeetings'
 import { AllInvestigationTasksRoutes } from './allInvestigationTasks'
+import { OrganizationDocumentsRoutes } from './OrganizationDocuments'
+import { OrganizationCertificateRoutes } from './OrganizationCertificate'
 import { EmployeeCertificateRoutes } from './EmployeeCertificate'
 import { serialNumberRoutes } from './SerialNumber'
 import { EmployeeInterfaceRoutes } from './employeeInterface'
@@ -33,8 +35,11 @@ import { ShiftsRoutes } from './shifts'
 import { notificationPlanRoutes } from './notificationPlan'
 import { taskReportRoutes } from './taskReports'
 import { todayTalkRoutes } from './todayTalk'
+import { inductionRoutes } from './induction'
 import { managementChangeTopicRoutes } from './MangementChangeTopicType'
 import { managementChangeRoutes } from './MangementOfChange'
+import { attachmentMatrixRoutes } from './attachmentMatrix'
+import { internalAuditRoutes } from './internalAudit'
 
 export const organizationRoutes: RouteRecordRaw[] = [
   {
@@ -62,6 +67,8 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...WhereHouseRoutes,
   ...AllInvestigationMeetingRoutes,
   ...AllInvestigationTasksRoutes,
+  ...OrganizationCertificateRoutes,
+  ...OrganizationDocumentsRoutes,
   ...EmployeeCertificateRoutes,
   ...serialNumberRoutes,
   ...EmployeeInterfaceRoutes,
@@ -76,8 +83,11 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...notificationPlanRoutes,
   ...taskReportRoutes,
   ...todayTalkRoutes,
+  ...inductionRoutes,
   ...managementChangeTopicRoutes,
   ...managementChangeRoutes,
+  ...attachmentMatrixRoutes,
+  ...internalAuditRoutes,
   {
     path: 'permission/:id',
     name: 'Permission Organization',

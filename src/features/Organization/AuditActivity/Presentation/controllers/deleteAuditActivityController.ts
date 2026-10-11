@@ -1,0 +1,54 @@
+import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
+import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
+import type Params from '@/base/core/params/params'
+import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
+import errorImage from '@/assets/images/error.png'
+import type AuditActivityModel from '../../Data/models/AuditActivityModel'
+import DeleteAuditActivityUseCase from '../../Domain/useCase/deleteAuditActivityUseCase'
+
+export default class DeleteAuditActivityController extends ControllerInterface<AuditActivityModel> {
+  private static instance: DeleteAuditActivityController
+  private constructor() {
+    super()
+  }
+  private DeleteAuditActivityUseCase = new DeleteAuditActivityUseCase()
+
+  static getInstance() {
+    if (!this.instance) {
+      this.instance = new DeleteAuditActivityController()
+    }
+    return this.instance
+  }
+
+  async deleteAuditActivity(params: Params) {
+    // useLoaderStore().setLoadingWithDialog();
+    // console.log(params)
+    try {
+      const dataState: DataState<AuditActivityModel> =
+        await this.DeleteAuditActivityUseCase.call(params)
+      this.setLoading()
+
+      this.setState(dataState)
+      if (this.isDataSuccess()) {
+        // useLoaderStore().endLoadingWithDialog();
+      } else {
+        throw new Error('Error while addServices')
+      }
+    } catch (error: any) {
+      console.log(error)
+      const errorMessage =
+        this.state.value.error?.title ??
+        this.state.value.message ??
+        error?.message ??
+        'An Error Occurred'
+      DialogSelector.instance.failedDialog.openDialog({
+        dialogName: 'dialog-error',
+        titleContent: 'An Error Occurred',
+        imageElement: errorImage,
+        messageContent: errorMessage,
+      })
+    }
+    super.handleResponseDialogs()
+    return this.state
+  }
+}

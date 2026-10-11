@@ -17,10 +17,12 @@ const props = withDefaults(
     projectId: number
     plans?: DrillTimelineItemModel[]
     plansLoading?: boolean
+    triggerless?: boolean
   }>(),
   {
     plans: undefined,
     plansLoading: false,
+    triggerless: false,
   },
 )
 const emit = defineEmits<{
@@ -63,6 +65,8 @@ const openDialog = () => {
   void fetchDrillActions()
   emit('opened')
 }
+
+defineExpose({ openDialog })
 
 const saved = () => {
   editorMode.value = null
@@ -109,7 +113,7 @@ const confirmDelete = async () => {
 </script>
 
 <template>
-  <button class="drill-card" type="button" @click="openDialog">
+  <button v-if="!triggerless" class="drill-card" type="button" @click="openDialog">
     <span class="drill-card-accent"></span>
     <span class="drill-card-main">
       <span class="drill-card-kicker">{{ drill.drillType.title || $t('Drill') }}</span>

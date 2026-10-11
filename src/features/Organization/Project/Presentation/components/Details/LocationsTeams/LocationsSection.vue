@@ -11,7 +11,7 @@ import AccordionContent from 'primevue/accordioncontent'
 import AccordArrowDown from '@/shared/icons/AccordArrowDown.vue'
 import AccordArrowRight from '@/shared/icons/AccordArrowRight.vue'
 
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import AddCreateTeam from '../../Dialogs/CreateTeamDialog/AddCreateTeam.vue'
 import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
 import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/Enums/ProjectCustomLocationEnum'
@@ -27,8 +27,6 @@ import type projectLocationModel from '@/features/Organization/Project/Data/mode
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import DeleteProjectlocationHierarchyEmployeeParams from '@/features/Organization/Project/Core/params/deleteProjectlocationHierarchyEmployeeParams'
 import DeleteProjectLocationHeirarchyEmployeeController from '../../../controllers/DeleteProjectLocationHeirarchyEmployeeController'
-import ShowProjectDetailsController from '../../../controllers/ShowProjectDetailsController'
-import ShowProjectDetailsParams from '@/features/Organization/Project/Core/params/ShowProjectDetailsParams'
 
 const route = useRoute()
 const id = route.params.id
@@ -78,14 +76,6 @@ const updatetabValue = (value: any) => {
   OpenAccordion.value = value
 }
 
-watch(
-  () => location,
-  () => {
-    ShowProjectDetailsController.getInstance().showProjectDetails(
-      new ShowProjectDetailsParams(Number(route.params?.id)),
-    )
-  },
-)
 </script>
 
 <template>
@@ -231,6 +221,7 @@ watch(
               </router-link>
             </div>
             <div class="teams teams-grid">
+              <!-- <pre>{{ visibleTeams }}</pre> -->
               <TeamCard
                 :isShow="true"
                 v-for="(team, index) in visibleTeams"

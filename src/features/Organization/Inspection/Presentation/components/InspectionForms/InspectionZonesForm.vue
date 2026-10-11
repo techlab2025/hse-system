@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import InspectionGeneralForm from './InspectionGeneralForm.vue'
 import InspectionTemplateDialog from '@/features/Organization/Inspection/Presentation/components/InspectionDialog/InspectionTemplateDialog.vue'
 import FetchMyZonesController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController'
@@ -10,6 +11,8 @@ import IndexEquipmentController from '@/features/setting/Equipment/Presentation/
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
 import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
 import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
+
+const route = useRoute()
 
 const emit = defineEmits(['update:data'])
 const SelectedZones = ref<TitleInterface>()
@@ -65,6 +68,26 @@ const setEquipment = (data: TitleInterface) => {
   SelectedEquipment.value = data
   UpdateData()
 }
+// Apply the route default through the same handler as a manual project selection.
+watch(
+  () => Number(route.query.project_id) || undefined,
+  (projectId) => {
+    if (!projectId) return
+    setProject(new TitleInterface({ id: projectId, title: `Project #${projectId}` }))
+  },
+  { immediate: true },
+)
+
+// Resolve the display name when the project selector finishes loading its options.
+watch(
+  () => fetchMyProjectsController.state.value.data,
+  (projects) => {
+    const project = projects?.find((project) => project.id === SelectedProject.value?.id)
+    if (project)
+      SelectedProject.value = new TitleInterface({ id: project.id, title: project.title })
+  },
+  { immediate: true },
+)
 </script>
 <template>
   <div class="zone-inspection-form">

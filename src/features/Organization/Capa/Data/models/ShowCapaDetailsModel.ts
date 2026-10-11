@@ -3,6 +3,7 @@ import IndexCapaModel from './IndexCapaModel'
 import InvestigatingModel from '@/features/Organization/Investigating/Data/models/investigatingModel'
 import { CapaTaskDetailsModel } from './CapaTasksModel'
 import type { VerificationEnum } from '../../Core/Core/VerificationEnum'
+import InternalAuditNcrDetailsModel from '@/features/Organization/InternalAudit/Data/models/ncrs/InternalAuditNcrDetailsModel'
 
 export default class ShowCapaDetailsModel extends TitleInterface {
   public id: number
@@ -13,15 +14,15 @@ export default class ShowCapaDetailsModel extends TitleInterface {
   public observationId: number
   public date: string
   public time: string
-  public observation: IndexCapaModel
-  public investigation: InvestigatingModel
+  public observation: IndexCapaModel | null
+  public internalAuditNcr: InternalAuditNcrDetailsModel | null
+  public investigation: InvestigatingModel | null
   public correctiveTasks: CapaTaskDetailsModel[]
   public preventiveTasks: CapaTaskDetailsModel[]
   public lessonLearnt: string
   public resultFindings: string
   public verificationMethodology: string
   public verificationStatus: VerificationEnum
-
 
   constructor(data: {
     id: number
@@ -32,8 +33,9 @@ export default class ShowCapaDetailsModel extends TitleInterface {
     observationId: number
     date: string
     time: string
-    observation: IndexCapaModel
-    investigation: InvestigatingModel
+    observation: IndexCapaModel | null
+    internalAuditNcr: InternalAuditNcrDetailsModel | null
+    investigation: InvestigatingModel | null
     correctiveTasks: CapaTaskDetailsModel[]
     preventiveTasks: CapaTaskDetailsModel[]
     lessonLearnt: string
@@ -51,6 +53,7 @@ export default class ShowCapaDetailsModel extends TitleInterface {
     this.date = data.date
     this.time = data.time
     this.observation = data.observation
+    this.internalAuditNcr = data.internalAuditNcr
     this.investigation = data.investigation
     this.correctiveTasks = data.correctiveTasks
     this.preventiveTasks = data.preventiveTasks
@@ -61,10 +64,38 @@ export default class ShowCapaDetailsModel extends TitleInterface {
   }
 
   static fromMap(data: any): ShowCapaDetailsModel {
+    const source = data.observation ?? data.internal_audit_ncr
+    const investigation = data.investigation ?? source?.investigation
+    const ncrTasks =
+      data.internal_audit_ncr?.internal_audit_tasks ?? data.internal_audit_ncr?.tasks ?? []
+    const ncrCorrectiveTasks = ncrTasks
+      .map((item: any) => item.correcive_action ?? item.corrective_action)
+      .filter((item: any) => item != null)
+    const ncrPreventiveTasks = ncrTasks
+      .map((item: any) => item.preventive_action)
+      .filter((item: any) => item != null)
     const correctiveTasks =
-      data.corrective_tasks ?? data.correctiveTasks ?? data.coorevtive_tasks ?? []
+      data.corrective_tasks ??
+      data.correctiveTasks ??
+      data.coorevtive_tasks ??
+      source?.corrective_tasks ??
+      source?.correctiveTasks ??
+      source?.coorevtive_tasks ??
+      investigation?.corrective_tasks ??
+      investigation?.correctiveTasks ??
+      investigation?.coorevtive_tasks ??
+      ncrCorrectiveTasks
     const preventiveTasks =
-      data.preventive_tasks ?? data.preventiveTasks ?? data.previtive_tasks ?? []
+      data.preventive_tasks ??
+      data.preventiveTasks ??
+      data.previtive_tasks ??
+      source?.preventive_tasks ??
+      source?.preventiveTasks ??
+      source?.previtive_tasks ??
+      investigation?.preventive_tasks ??
+      investigation?.preventiveTasks ??
+      investigation?.previtive_tasks ??
+      ncrPreventiveTasks
 
     return new ShowCapaDetailsModel({
       id: data.id,
@@ -75,8 +106,11 @@ export default class ShowCapaDetailsModel extends TitleInterface {
       observationId: data.observation_id,
       date: data.date,
       time: data.time,
-      observation: IndexCapaModel.fromMap(data.observation),
-      investigation: InvestigatingModel.fromMap(data.investigation),
+      observation: data.observation ? IndexCapaModel.fromMap(data.observation) : null,
+      internalAuditNcr: data.internal_audit_ncr
+        ? InternalAuditNcrDetailsModel.fromMap(data.internal_audit_ncr)
+        : null,
+      investigation: investigation ? InvestigatingModel.fromMap(investigation) : null,
       correctiveTasks: correctiveTasks.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
       preventiveTasks: preventiveTasks.map((item: any) => CapaTaskDetailsModel.fromMap(item)),
       lessonLearnt: data.lesson_learnt ?? data.lessonLearnt ?? '',

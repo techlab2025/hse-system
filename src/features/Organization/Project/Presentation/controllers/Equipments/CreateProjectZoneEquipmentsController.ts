@@ -11,8 +11,6 @@ import CreateProjectZoonEquipmentUseCase from '../../../Domain/useCase/Equipment
 import ProjectCustomLocationController from '../ProjectCustomLocationController'
 import { ProjectCustomLocationEnum } from '../../../Core/Enums/ProjectCustomLocationEnum'
 import ProjectCustomLocationParams from '../../../Core/params/ProjectCustomLocationParams'
-import ShowProjectDetailsController from '../ShowProjectDetailsController'
-import ShowProjectDetailsParams from '../../../Core/params/ShowProjectDetailsParams'
 
 export default class CreateProjectZoneEquipmentsController extends ControllerInterface<ProjectModel> {
   private static instance: CreateProjectZoneEquipmentsController
@@ -34,6 +32,8 @@ export default class CreateProjectZoneEquipmentsController extends ControllerInt
     projectId: number,
     draft: boolean = false,
   ) {
+    void router
+    void draft
     // useLoaderStore().setLoadingWithDialog();
     try {
       const dataState: DataState<ProjectModel> =
@@ -47,19 +47,12 @@ export default class CreateProjectZoneEquipmentsController extends ControllerInt
           messageContent: null,
         })
         // if (!draft) await router.push(`/organization/project-equipment/project/${router.currentRoute.value.params.id}`)
-        ProjectCustomLocationController.getInstance().getData(
+        await ProjectCustomLocationController.getInstance().getData(
           new ProjectCustomLocationParams(projectId, [
             ProjectCustomLocationEnum.ZOON,
             ProjectCustomLocationEnum.ZOON_EQUIPMENT,
           ]),
         )
-
-        console.log('detaile start')
-        console.log(projectId)
-        ShowProjectDetailsController.getInstance().showProjectDetails(
-          new ShowProjectDetailsParams(projectId),
-        )
-        console.log('detaile end')
         // useLoaderStore().endLoadingWithDialog();
       } else {
         DialogSelector.instance.failedDialog.openDialog({

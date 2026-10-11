@@ -7,17 +7,20 @@ export default class IndexObjectivesParams implements Params {
   public withPage: number = 1
   public perPage: number = 10
   public pageNumber: number = 10
+  public projectId?: number | null
 
   constructor(
     word: string,
     pageNumber: number = 1,
     perPage: number = 10,
     withPage: number = 1,
+    projectId?: number | null,
   ) {
     this.word = word
     this.withPage = withPage
     this.pageNumber = pageNumber
     this.perPage = perPage
+    this.projectId = projectId
   }
 
   toMap(): Record<string, string | number | number[] | null> {
@@ -26,6 +29,7 @@ export default class IndexObjectivesParams implements Params {
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
+    if (this.projectId != null) data['project_id'] = this.projectId
 
     return data
   }

@@ -30,7 +30,7 @@ interface Props {
 
   placeholder?: string
 
-  controller?: SelectControllerInterface<any>
+  controller?: SelectControllerInterface<unknown>
   params?: Params
 
   type?: ComponentType | number
@@ -126,7 +126,7 @@ const mergedOptions = computed<TitleInterface[]>(() => {
    * A filtered endpoint may intentionally omit already-assigned records. Keep
    * the current value in the options so PrimeVue can still render its label.
    */
-  return [...selectedOptions, ...availableOptions].filter((option) => {
+  return [...availableOptions, ...selectedOptions].filter((option) => {
     const key = getOptionKey(option)
 
     if (!key) return true
@@ -642,7 +642,7 @@ interface Props {
 
   placeholder?: string
 
-  controller?: SelectControllerInterface<any>
+  controller?: SelectControllerInterface<unknown>
   params?: Params
 
   type?: ComponentType | number
@@ -669,6 +669,9 @@ interface Props {
    */
   maxSelectOptions?: number | null
 
+  /* Option IDs hidden from the dropdown. Current selections are always retained. */
+  excludedOptionIds?: Array<string | number>
+
   onclick?: () => void
 }
 
@@ -691,6 +694,7 @@ const props = withDefaults(defineProps<Props>(), {
 
   // null means unlimited selection
   maxSelectOptions: null,
+  excludedOptionIds: () => [],
 })
 
 const emit = defineEmits<{
@@ -746,15 +750,19 @@ const mergedOptions = computed<TitleInterface[]>(() => {
       : []
 
   const optionKeys = new Set<string>()
+  const selectedOptionKeys = new Set(selectedOptions.map(getOptionKey).filter(Boolean))
+  const excludedOptionKeys = new Set(props.excludedOptionIds.map(String))
 
   /*
    * A filtered endpoint may intentionally omit already-assigned records.
    * Keep the current value in the options so PrimeVue can still render its label.
    */
-  return [...selectedOptions, ...availableOptions].filter((option) => {
+  return [...availableOptions, ...selectedOptions].filter((option) => {
     const key = getOptionKey(option)
 
     if (!key) return true
+
+    if (excludedOptionKeys.has(key) && !selectedOptionKeys.has(key)) return false
 
     if (optionKeys.has(key)) return false
 

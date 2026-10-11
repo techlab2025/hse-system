@@ -1,0 +1,54 @@
+import type Params from '@/base/core/params/params'
+import { ClassValidation } from '@/base/Presentation/utils/class_validation'
+import type InductionTrainingTopicParams from './addInductionTrainingTopicParams'
+import type InductionOrganisationEmployee from './InductionOrganisationEmployeeParams'
+
+export default class AddInductionParams implements Params {
+  constructor(
+    public instractor_id: number,
+    public projectId: number | null,
+    public projectLocationId: number | null,
+    public projectZoonId: number | null,
+    public date: string | null,
+    public image: string[] | null,
+    public trainingTopic: InductionTrainingTopicParams[],
+    public organisationEmployee: InductionOrganisationEmployee[],
+  ) {}
+
+  public static readonly validation = new ClassValidation().setRules({
+    instractor_id: { required: true },
+    date: { required: true },
+    trainingTopic: { required: true },
+    organisationEmployee: { required: true },
+  })
+
+  toMap(): Record<string, unknown> {
+    const data: Record<string, unknown> = {
+      date: this.date,
+      attachments: this.image ?? [],
+      training_topic_ids: this.trainingTopic.map((item) => item.training_Topic_id),
+      attendees: this.organisationEmployee.map((item) => item.toMap()),
+      instructor_employee_id: this.instractor_id,
+    }
+
+    if (this.projectId !== null) {
+      data.project_id = this.projectId
+    }
+    if (this.projectLocationId !== null) {
+      data.project_location_id = this.projectLocationId
+    }
+    if (this.projectZoonId !== null) {
+      data.project_location_zone_id = this.projectZoonId
+    }
+
+    return data
+  }
+
+  validate() {
+    return AddInductionParams.validation.validate(this)
+  }
+
+  validateOrThrow() {
+    return AddInductionParams.validation.validateOrThrow(this)
+  }
+}

@@ -5,7 +5,7 @@ import AddHazardTypeUseCase from '@/features/setting/HazardType/Domain/useCase/a
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
-import { useRoute, type Router } from 'vue-router'
+import type { Router } from 'vue-router'
 import type HazardTypeModel from '@/features/setting/HazardType/Data/models/hazardTypeModel'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
@@ -45,7 +45,7 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
       console.log(route?.path, 'route')
       if (route?.path?.includes('hazard/add') && !params?.ParentId) {
         console.log('inside')
-        new OpenWarningDilaog('Should Select Hazard Type').openDialog()
+        new OpenWarningDilaog('Should Select Hazard Classification').openDialog()
         return
       }
 
@@ -61,19 +61,26 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
 
         const { user } = useUserStore()
 
-        const route = useRoute()
+        const currentRoute = router?.currentRoute?.value
+        const currentPath = currentRoute?.path ?? route?.path ?? ''
+        const currentFullPath = currentRoute?.fullPath ?? route?.fullPath ?? ''
+        const routeType = currentRoute?.query?.type ?? route?.query?.type
+        const typeQuery = Array.isArray(routeType) ? routeType[0] : routeType
+        const basePath = `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}`
+        const normalizedPath = currentPath.replace(/\/+$/, '')
+        const isHazardClassificationRoute =
+          normalizedPath.endsWith('/hazard-type') ||
+          normalizedPath.endsWith('/hazard-type/upload-excel')
 
-        if (router?.currentRoute?.value?.fullPath?.includes('/hazard-type/upload-excel?type=2')) {
+        if (isHazardClassificationRoute) {
           await router.push(
-            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type?type=2`,
+            `${basePath}/hazard-type${typeQuery ? `?type=${encodeURIComponent(typeQuery)}` : ''}`,
           )
         } else if (
-          !router?.currentRoute?.value?.fullPath?.includes('project-progress') &&
-          !router?.currentRoute?.value?.fullPath?.includes('equipment-mangement/observation')
+          !currentFullPath.includes('project-progress') &&
+          !currentFullPath.includes('equipment-mangement/observation')
         ) {
-          await router.push(
-            `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard`,
-          )
+          await router.push(`${basePath}/hazard`)
         }
       } else {
         DialogSelector.instance.failedDialog.openDialog({

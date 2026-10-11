@@ -1,16 +1,29 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import type Params from '@/base/core/params/params'
 import MangementChangeForm from './MangementChangeForm.vue'
 import AddMangementChangeController from '../controllers/addMangementChangeController'
 import type AddMangementChangeParams from '../../Core/params/addMangementChangeParams'
 
+const route = useRoute()
 const router = useRouter()
 const params = ref<Params | null>(null)
 const formKey = ref(0)
 const formRef = ref<InstanceType<typeof MangementChangeForm> | null>(null)
 const addMangementChangeController = AddMangementChangeController.getInstance()
+const projectId = computed(() => {
+  const routeValue = route.query.project_id ?? route.params.id
+  const rawValue = Array.isArray(routeValue) ? routeValue[0] : routeValue
+  const parsedValue = Number(rawValue)
+
+  return Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : null
+})
+const listPath = computed(() =>
+  projectId.value
+    ? `/organization/management-of-change?project_id=${projectId.value}`
+    : '/organization/management-of-change',
+)
 
 const addMangementChange = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
@@ -19,7 +32,7 @@ const addMangementChange = async () => {
   )
 
   if (addMangementChangeController.isDataSuccess()) {
-    router.push('/organization/management-of-change')
+    router.push(listPath.value)
   }
 }
 

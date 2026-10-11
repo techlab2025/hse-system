@@ -16,6 +16,9 @@ import IndexCertificateController from '@/features/setting/Certificate/Presentat
 import IndexCertificateParams from '@/features/setting/Certificate/Core/params/indexCertificateParams'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import IndexHerikalyController from '../controllers/indexHerikalyController'
+import IndexHerikalyParams from '../../Core/params/indexHerikalyParams'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -23,9 +26,11 @@ const props = withDefaults(
   defineProps<{
     data?: HerikalyDetailsModel
     showCertificateSelectAll?: boolean
+    mode?: 'auto' | 'department' | 'position'
   }>(),
   {
     showCertificateSelectAll: true,
+    mode: 'auto',
   },
 )
 
@@ -99,9 +104,8 @@ const fetchLang = async (
   perPage: number = 10,
   withPage: number = 0,
 ) => {
-  console.log(user.user, 'user')
   if (user?.user?.languages.length) {
-    langDefault.value = user?.user?.languages.map((item: any) => ({
+    langDefault.value = user?.user?.languages.map((item: { code: string }) => ({
       locale: item.code,
       title: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
@@ -114,7 +118,7 @@ const fetchLang = async (
   const response = indexPartnerController.value
 
   if (response?.data?.length) {
-    langDefault.value = response.data.map((item: any) => ({
+    langDefault.value = response.data.map((item: { code: string }) => ({
       locale: item.code,
       title: '',
       icon: markRaw(LangsMap[item.code as keyof typeof LangsMap]?.icon),
@@ -128,7 +132,7 @@ const fetchLang = async (
 }
 
 onMounted(async () => {
-  await Promise.all([fetchLang(), fetchCertificates()])
+  await Promise.all([fetchLang(), ...(props.mode === 'department' ? [] : [fetchCertificates()])])
 })
 
 const updateData = () => {
@@ -142,13 +146,13 @@ const updateData = () => {
     ? new EditHerikalyParams(
         props?.data?.id,
         translationsParams,
-        ParentId,
-        Certificate.value.map((item) => item.id),
+        effectiveParentId.value,
+        props.mode === 'department' ? [] : Certificate.value.map((item) => item.id),
       )
     : new AddHerikalyParams(
         translationsParams,
-        Certificate.value.map((item) => item.id),
-        ParentId,
+        props.mode === 'department' ? [] : Certificate.value.map((item) => item.id),
+        effectiveParentId.value,
       )
 
   emit('update:data', params)
@@ -168,7 +172,6 @@ watch(
           const existing = newData.titles.find((t) => t.locale === l.locale)
           return existing ? existing : { locale: l.locale, title: '' }
         })
-
       } else {
         langs.value = newDefault.map((l) => ({ locale: l.locale, title: '' }))
       }
@@ -184,23 +187,6 @@ watch(
   },
   { immediate: true },
 )
-const UpdateSerial = (data) => {
-  SerialNumber.value = data
-  updateData()
-}
-
-const SerialNumber = ref()
-
-const fields = ref([
-  {
-    key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
-    value: SerialNumber.value,
-    enabled: props?.data?.id ? false : true,
-  },
-])
-
 type RequiredFieldRule = {
   key: string
   message: string
@@ -217,6 +203,11 @@ const requiredFields = computed<RequiredFieldRule[]>(() => [
     key: 'langs',
     message: 'Title Is Required',
     isMissing: () => !hasLangValue(),
+  },
+  {
+    key: 'department',
+    message: 'Department is required',
+    isMissing: () => props.mode === 'position' && !(Number(SelectedDepartment.value?.id) > 0),
   },
   // {
   //   key: 'Certificate',
@@ -252,22 +243,101 @@ const validateRequiredFields = async () => {
 defineExpose({
   validateRequiredFields,
 })
+
+const indexHerikalyController = IndexHerikalyController.getInstance()
+const HerikalyParams = new IndexHerikalyParams('', 1, 10, 0, true, null)
+const SelectedDepartment = ref<TitleInterface>()
+const effectiveParentId = computed(() =>
+  props.mode === 'department'
+    ? undefined
+    : props.mode === 'position'
+      ? SelectedDepartment.value?.id
+      : Number(ParentId) || SelectedDepartment.value?.id,
+)
+const isPosition = computed(
+  () =>
+    props.mode === 'position' ||
+    (props.mode === 'auto' &&
+      Boolean(ParentId || props.data?.parent?.id || SelectedDepartment.value?.id)),
+)
+const showDepartmentSelect = computed(
+  () =>
+    props.mode === 'position' ||
+    (props.mode === 'auto' && !route.path.includes('/herikaly/add') && props.data?.parent !== null),
+)
+
+const updatedDepartment = (data: TitleInterface | TitleInterface[] | null) => {
+  SelectedDepartment.value = (Array.isArray(data) ? data[0] : data) ?? undefined
+  updateData()
+}
+watch(
+  [() => props.data?.parent_id, () => props.data?.parent],
+  ([newParentId, parent]) => {
+    if (parent) {
+      const locale = localStorage.getItem('lang')
+      SelectedDepartment.value = new TitleInterface({
+        id: parent.id,
+        title:
+          parent.titles?.find((title) => title.locale === locale)?.title ??
+          parent.titles?.[0]?.title ??
+          '',
+      })
+      return
+    }
+
+    if (!newParentId) return
+
+    const selected = indexHerikalyController.state.value?.data?.find(
+      (item) => item.id === Number(newParentId),
+    )
+    if (!selected) return
+
+    SelectedDepartment.value = new TitleInterface({
+      id: selected.id,
+      title: selected.title ?? '',
+    })
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
+  <div
+    class="col-span-4 md:col-span-2"
+    v-if="showDepartmentSelect"
+    data-required-field="department"
+  >
+    <div class="input-wrapper">
+      <UpdatedCustomInputSelect
+        :modelValue="SelectedDepartment"
+        :params="HerikalyParams"
+        :controller="indexHerikalyController"
+        class="input"
+        :label="$t('Department')"
+        :required="props.mode === 'position'"
+        id="herikaly"
+        :placeholder="$t('Select department')"
+        @update:modelValue="updatedDepartment"
+      />
+      <p v-if="getFieldError('department')" class="required-field-message">
+        {{ getFieldError('department') }}
+      </p>
+    </div>
+  </div>
   <div class="col-span-4 md:col-span-2" data-required-field="langs">
     <LangTitleInput
       type="text"
       :langs="langDefault"
       :modelValue="langs"
-      :label="$t('position_name')"
+      :label="isPosition ? $t('position_name') : $t('Department Name')"
       @update:modelValue="setLangs"
     />
     <p v-if="getFieldError('langs')" class="required-field-message">
       {{ getFieldError('langs') }}
     </p>
   </div>
-  <div class="col-span-4" data-required-field="Certificate">
+
+  <div v-if="isPosition" class="col-span-4" data-required-field="Certificate">
     <div class="training-selector">
       <div class="training-selector-header">
         <label class="training-selector-label">{{ $t('certificate') }}</label>
@@ -329,15 +399,6 @@ defineExpose({
       {{ getFieldError('Certificate') }}
     </p>
   </div>
-  <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
-      <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :switch_reverse="true"
-      :is-auto="true"
-      @update:value="UpdateSerial"
-    />
-  </div> -->
 </template>
 
 <style scoped>
@@ -426,7 +487,9 @@ defineExpose({
   color: var(--text-strong, #172554);
   background: var(--surface-2, #f8faff);
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .training-search input:focus {
@@ -471,7 +534,10 @@ defineExpose({
   border-radius: 12px;
   background: var(--surface-1, #fff);
   cursor: pointer;
-  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .training-option:hover {

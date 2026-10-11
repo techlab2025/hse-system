@@ -9,6 +9,7 @@ import ProjectFlowHolidaysModel from './ProjectFlowHolidaysModel'
 export default class ProjectFlowDetailsModel {
   constructor(
     public readonly data: any,
+    public readonly drills_count: number,
     public readonly holidays: ProjectFlowHolidaysModel,
     public readonly basicHolidayDays: HolidayDaysEnum[],
     public readonly hasCustomHolidayDays: boolean,
@@ -23,6 +24,7 @@ export default class ProjectFlowDetailsModel {
     const holidays = ProjectFlowHolidaysModel.fromMap(data.holidays ?? data)
     return new ProjectFlowDetailsModel(
       data,
+      Number(data.drills_count ?? data.drill_count ?? 0),
       holidays,
       holidays.basicHolidayDays,
       holidays.hasCustomHolidayDays,

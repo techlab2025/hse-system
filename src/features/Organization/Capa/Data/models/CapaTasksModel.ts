@@ -10,7 +10,7 @@ export class CapaTaskDetailsModel {
   public verificationStatus: number
   public resultFindings: string
   public reason: string
-
+  public isInternalAuditTask: boolean
 
   constructor(data: {
     id: number
@@ -24,6 +24,7 @@ export class CapaTaskDetailsModel {
     verificationStatus?: number
     resultFindings?: string
     reason?: string
+    isInternalAuditTask?: boolean
   }) {
     this.id = data.id
     this.title = data.title
@@ -36,18 +37,21 @@ export class CapaTaskDetailsModel {
     this.verificationStatus = data.verificationStatus ?? 0
     this.resultFindings = data.resultFindings ?? ''
     this.reason = data.reason ?? ''
+    this.isInternalAuditTask = data.isInternalAuditTask ?? false
   }
 
   static fromMap(data: any): CapaTaskDetailsModel {
     const taskEmployees = data?.investigation_task_employees?.[0]
+    const ncrTask = data?.internal_audit_ncr_task_id
 
     return new CapaTaskDetailsModel({
-      id: data?.id,
-      title: data?.title,
+      id: data?.id ?? ncrTask?.id ?? ncrTask,
+      title: data?.title ?? data?.action ?? ncrTask?.title,
       status: data?.status,
-      dueDate: data?.due_date,
+      dueDate: data?.due_date ?? data?.target_date,
       assignedToName:
         data?.assigned_to?.name ||
+        data?.assigned_to_id?.name ||
         taskEmployees?.employee?.name ||
         data?.employee?.name ||
         data?.assignedTo?.name ||
@@ -72,6 +76,7 @@ export class CapaTaskDetailsModel {
       verificationStatus: data?.verification_status ?? data?.verificationStatus ?? 0,
       resultFindings: data?.result_findings || data?.resultFindings || '',
       reason: data?.reason || data?.Reason || '',
+      isInternalAuditTask: ncrTask != null,
     })
   }
 }

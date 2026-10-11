@@ -1,13 +1,13 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
-import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import AddObjectivesUseCase from '../../Domain/useCase/addObjectivesUseCase'
 import type ObjectivesModel from '../../Data/models/objectivesModel'
+import AddObjectivesParams from '../../Core/params/addObjectivesParams'
 
 export default class AddObjectivesController extends ControllerInterface<ObjectivesModel> {
   private static instance: AddObjectivesController
@@ -23,9 +23,20 @@ export default class AddObjectivesController extends ControllerInterface<Objecti
     return this.instance
   }
 
-  async addObjectives(params: Params, router: Router, draft: boolean = false) {
+  async addObjectives(
+    params: AddObjectivesParams,
+    router: Router,
+    draft: boolean = false,
+    redirectPath: string = '/organization/objectives',
+  ) {
     // useLoaderStore().setLoadingWithDialog();
     try {
+      const validation = params.validate()
+      if (!validation.isValid) {
+        params.validateOrThrow()
+        return this.state
+      }
+
       const dataState: DataState<ObjectivesModel> = await this.addObjectivesUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {
@@ -36,7 +47,7 @@ export default class AddObjectivesController extends ControllerInterface<Objecti
           messageContent: null,
         })
 
-        if (!draft) await router.push(`/organization/objectives`)
+        if (!draft) await router.push(redirectPath)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

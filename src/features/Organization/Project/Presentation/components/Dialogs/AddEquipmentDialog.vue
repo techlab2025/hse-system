@@ -74,7 +74,7 @@ const AddEquipment = async () => {
       linkText="Start building your crew now!" @click="visible = true" v-if="isEmpty" />
 
     <!-- <AddEquipmentIcon class="add-equipment-icon" @click="visible = true" v-else /> -->
-    <p class="add-equipment-icon" v-if="!isEmpty" @click="visible = true">{{ `add_equipment` }}</p>
+    <p class="add-equipment-icon" v-if="!isEmpty" @click="visible = true">{{ `add equipment` }}</p>
     <Dialog v-model:visible="visible" modal dismissable-mask :style="{ width: '50rem' }">
       <template #header>
         <HeaderSection :img="EquipmentImg" :title="$t('Equipment')"
@@ -101,3 +101,15 @@ const AddEquipment = async () => {
     </Dialog>
   </div>
 </template>
+
+<style scoped>
+.card .add-equipment-icon{
+  cursor: pointer !important;
+  font-weight: 600;
+  border: 1px solid #14307c;
+  color: #14307c;
+  border-radius: 15px !important;
+  padding: 6px 20px;
+  border-radius: 6px;
+}
+</style>

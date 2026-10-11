@@ -1,0 +1,33 @@
+import type Params from '@/base/core/params/params'
+import { CertificateTypeEnum } from '../Enums/CertificateTypeEnum'
+interface Data {
+  title?: string
+  image?: string
+  require_expired_date?: boolean | number
+  certificate_type?: number
+  hasrequiredata?: boolean | number
+  type?: number
+}
+export default class AddOrganizationCertificateExcelParams implements Params {
+  data: Data[]
+  constructor(data: { data: Data[] }) {
+    this.data = data.data.map((item) => ({
+      ...item,
+      type: CertificateTypeEnum.CERTIFICATE,
+    }))
+  }
+
+  toMap(): Record<
+    string,
+    number | string | Data[] | Record<string, string | number[] | number | Record<string, string>>
+  > {
+    const data: Record<
+      string,
+      number | string | Data[] | Record<string, string | number[] | number | Record<string, string>>
+    > = {}
+
+    if (this.data) data['data'] = this.data
+
+    return data
+  }
+}

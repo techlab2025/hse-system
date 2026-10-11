@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { markRaw, onMounted, ref, watch } from 'vue'
+import { computed, markRaw, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 import type ShowObservationModel from '@/features/setting/Observation/Data/models/observationDetailsModel'
@@ -44,6 +45,11 @@ import IndexObserverationTypeController from '@/features/setting/ObserverationTy
 import IndexObserverationTypeParams from '@/features/setting/ObserverationType/Core/params/indexObserverationTypeParams'
 
 const emit = defineEmits(['update:data', 'update:activeTab'])
+const route = useRoute()
+const routeProjectId = computed(() => {
+  const projectId = Number(route.query.project_id)
+  return projectId > 0 ? projectId : undefined
+})
 
 const props = defineProps<{
   data?: ShowObservationModel
@@ -263,7 +269,7 @@ onMounted(() => {
   FetchMyProjects()
 })
 
-const SelectedProjectId = ref<number>()
+const SelectedProjectId = ref<number | undefined>(routeProjectId.value)
 const GetProjectId = (id: number) => {
   SelectedProjectId.value = id
   updateData()
@@ -331,7 +337,12 @@ const setSelectedObservationType = (data: TitleInterface) => {
       subtitle="Document what you observe to improve workplace safety"
       :img="ToDoList"
     />
-    <HeaderProjectsFilter class="colored" :projects="Projects" @update:data="GetProjectId" />
+    <HeaderProjectsFilter
+      v-if="!routeProjectId"
+      class="colored"
+      :projects="Projects"
+      @update:data="GetProjectId"
+    />
 
     <!-- zoneId = $event -->
     <TabsSelection

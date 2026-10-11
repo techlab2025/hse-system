@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useRoute } from 'vue-router'
 import { ref, watch } from 'vue'
 import IndexOrganizatoinEmployeeParams from '@/features/Organization/OrganizationEmployee/Core/params/indexOrganizatoinEmployeeParams'
 import IndexOrganizatoinEmployeeController from '@/features/Organization/OrganizationEmployee/Presentation/controllers/indexOrganizatoinEmployeeController'
@@ -14,6 +15,8 @@ import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/m
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/indexEquipmentParams'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+
+const route = useRoute()
 
 const emit = defineEmits(['update:data'])
 const SelectedProject = ref<TitleInterface>()
@@ -130,6 +133,26 @@ const setEquipment = (data: TitleInterface) => {
   SelectedEquipment.value = data
   UpdateData()
 }
+// Apply the route default through the same handler as a manual project selection.
+watch(
+  () => Number(route.query.project_id) || undefined,
+  (projectId) => {
+    if (!projectId) return
+    setProject(new TitleInterface({ id: projectId, title: `Project #${projectId}` }))
+  },
+  { immediate: true },
+)
+
+// Resolve the display name when the project selector finishes loading its options.
+watch(
+  () => indexProjectController.state.value.data,
+  (projects) => {
+    const project = projects?.find((project) => project.id === SelectedProject.value?.id)
+    if (project)
+      SelectedProject.value = new TitleInterface({ id: project.id, title: project.title })
+  },
+  { immediate: true },
+)
 </script>
 
 <template>

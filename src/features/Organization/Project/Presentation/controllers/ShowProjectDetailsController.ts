@@ -21,8 +21,9 @@ export default class ShowProjectDetailsController extends ControllerInterface<Sh
   }
 
   async showProjectDetails(params: Params) {
-
-    this.setLoading()
+    if (this.state.value.data === null) {
+      this.setLoading()
+    }
 
     const dataState: DataState<ShowProjectDetailsModel> =
       await this.showProjectDetailsUseCase.call(params)

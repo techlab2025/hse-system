@@ -78,6 +78,7 @@ const GetInvsetegationResult = async (
     filterStatus.value ?? undefined,
     filterDate.value,
     filterObservationType.value ?? undefined,
+    Number(route.query.project_id) || undefined,
   )
   await indexInvestigatingController.getData(indexInvestigationResultParams)
 }

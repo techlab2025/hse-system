@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import Image from 'primevue/image'
@@ -272,7 +272,19 @@ const FetchMyProjects = async () => {
     isProjectsLoading.value = false
   }
 }
-const selectedProjctesFilters = ref<number | undefined>(ProjectSelect.project?.id)
+const selectedProjctesFilters = ref<number | undefined>(
+  Number(route.query.project_id) || ProjectSelect.project?.id,
+)
+const observationCreateRoute = computed(() => ({
+  path: '/organization/equipment-mangement/observation/add',
+  query: selectedProjctesFilters.value
+    ? { project_id: String(selectedProjctesFilters.value) }
+    : undefined,
+}))
+const observationCreateLink = computed(() => {
+  const projectId = selectedProjctesFilters.value
+  return `/organization/equipment-mangement/observation/add${projectId ? `?project_id=${projectId}` : ''}`
+})
 
 const Filters = ref<MyZonesModel[]>()
 const fetchMyZonesController = FetchMyZonesController.getInstance()
@@ -473,7 +485,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
                     PermissionsEnum?.ORG_OBSERVATION_CREATE,
                   ]"
                 >
-                  <router-link :to="`/organization/equipment-mangement/observation/add`">
+                  <router-link :to="observationCreateRoute">
                     <button class="btn btn-primary create-observation-btn">
                       <span class="create-icon" aria-hidden="true">+</span>
                       <span class="create-copy">
@@ -518,7 +530,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
                   class="observation-zone-filter"
                   :filters="Filters"
                   @update:data="ApplayFilter"
-                  :link="'/organization/equipment-mangement/observation/add'"
+                  :link="observationCreateLink"
                   :linkText="'Create Observation'"
                 />
               </PermissionBuilder>
@@ -730,7 +742,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
               ]"
             >
               <DataEmpty
-                :link="`/organization/equipment-mangement/observation/add`"
+                :link="observationCreateLink"
                 addText="Report Observation"
                 description=" "
                 title="You have No Observation"
@@ -745,7 +757,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
               ]"
             >
               <DataFailed
-                :link="`/organization/equipment-mangement/observation/add`"
+                :link="observationCreateLink"
                 addText="Report Observation"
                 description=" "
                 title="You have No Observation"

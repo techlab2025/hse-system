@@ -67,18 +67,18 @@
   //   z-index: -1;
   // }
 
-  &::after {
-    content: '';
-    position: absolute;
-    inset-inline-end: -36px;
-    top: -42px;
-    width: 120px;
-    height: 120px;
-    border: 1px solid color-mix(in srgb, var(--project-accent) 22%, transparent);
-    border-radius: 50%;
-    background-color: var(--project-accent-soft);
-    z-index: -1;
-  }
+  // &::after {
+  //   content: '';
+  //   position: absolute;
+  //   inset-inline-end: -36px;
+  //   top: -42px;
+  //   width: 120px;
+  //   height: 120px;
+  //   border: 1px solid color-mix(in srgb, var(--project-accent) 22%, transparent);
+  //   border-radius: 50%;
+  //   background-color: var(--project-accent-soft);
+  //   z-index: -1;
+  // }
 
   &.completed {
     --project-accent: var(--brand-primary-500);

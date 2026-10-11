@@ -12,18 +12,15 @@ import wordSlice from '@/base/Presentation/utils/word_slice'
 
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
-import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 // import DeleteObjectivesTypeController from '@/features/setting/ObjectivesType/Presentation/controllers/deleteObjectivesTypeController'
 // import DeleteObjectivesTypeParams from '@/features/setting/ObjectivesType/Core/params/deleteObjectivesTypeParams'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
-import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 // import ExportIcon from '@/shared/icons/ExportIcon.vue'
 import Search from '@/shared/icons/Search.vue'
-import { useUserStore } from '@/stores/user'
 import IndexObjectivesController from '../controllers/indexObjectivesController'
 import IndexObjectivesParams from '../../Core/params/indexObjectivesParams'
 import DeleteObjectivesParams from '../../Core/params/deleteObjectivesParams'
@@ -40,9 +37,10 @@ const currentPage = ref(1)
 const countPerPage = ref(10)
 const indexObjectivesController = IndexObjectivesController.getInstance()
 const state = ref(indexObjectivesController.state.value)
-const route = useRoute()
-let id = route.params.id
 // const type = ref<ObjectivesTypeStatusEnum>(ObjectivesTypeStatusEnum[route.params.type as keyof typeof ObjectivesTypeStatusEnum])
+
+const addObjectivesLink = { name: 'Add Objective' }
+const createObjectiveLink = '/organization/objectives/add'
 
 const fetchObjectives = async (
   query: string = '',
@@ -50,7 +48,13 @@ const fetchObjectives = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const deleteObjectivesTypeParams = new IndexObjectivesParams(query, pageNumber, perPage, withPage)
+  const deleteObjectivesTypeParams = new IndexObjectivesParams(
+    query,
+    pageNumber,
+    perPage,
+    withPage,
+    null,
+  )
   await indexObjectivesController.getData(deleteObjectivesTypeParams)
 }
 
@@ -92,13 +96,11 @@ watch(
   },
 )
 
-const { user } = useUserStore()
-
 const actionList = (id: number, deleteObjectives: (id: number) => void) => [
   {
     text: t('edit'),
     icon: IconEdit,
-    link: `organization/objectives/${id}`,
+    link: `/organization/objectives/${id}`,
     permission: [
       PermissionsEnum.OBJECTIVE_ORG_UPDATE,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
@@ -118,13 +120,6 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
   },
 ]
 
-watch(
-  () => route?.params?.id,
-  (Newvalue) => {
-    id = Newvalue
-    fetchObjectives()
-  },
-)
 </script>
 
 <template>
@@ -134,13 +129,13 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchObjectivesType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchObjectivesType" />
+      <input v-model="word" :placeholder="$t('search')" class="input" type="text" @input="searchObjectivesType" />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
-      <ExportPdf />
+      <!-- <ExportPdf /> -->
       <permission-builder :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.OBJECTIVE_ORG_CREATE]">
-        <router-link :to="`/organization/objectives/add`" class="btn btn-primary">
+        <router-link :to="addObjectivesLink" class="btn btn-primary">
           {{ $t('Add_Objectives') }}
         </router-link>
       </permission-builder>
@@ -162,7 +157,11 @@ watch(
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">{{ $t('title') }}</th>
+                <th scope="col">{{ $t('Objective') }}</th>
+                <th scope="col">{{ $t('Project') }}</th>
+                <th scope="col">{{ $t('Year') }}</th>
+                <th scope="col">{{ $t('Target Type') }}</th>
+                <th scope="col">{{ $t('Direction') }}</th>
 
                 <!-- <th scope="col">{{ $t('actions') }}</th> -->
                 <th class="empty"></th>
@@ -174,9 +173,15 @@ watch(
                   <router-link :to="`/organization/objectives/${item.id}`">{{ index + 1 }}
                   </router-link>
                 </td>
-                <td data-label="Name">{{ wordSlice(item?.title) }}</td>
+                <td :data-label="$t('Objective')">{{ wordSlice(item.objective) }}</td>
+                <td :data-label="$t('Project')">{{ item.projectTitle || $t('Company-wide') }}</td>
+                <td :data-label="$t('Year')">{{ item.year }}</td>
+                <td :data-label="$t('Target Type')">{{ $t(item.targetTypeTitle || '-') }}</td>
+                <td :data-label="$t('Direction')">
+                  {{ item.directionTitle || item.frequencyTitle ? $t(item.directionTitle || item.frequencyTitle) : '-' }}
+                </td>
 
-                <td data-label="Actions">
+                <td :data-label="$t('actions')">
                   <DropList :actionList="actionList(item.id, deleteObjectives)" @delete="deleteObjectives(item.id)" />
                 </td>
               </tr>
@@ -186,26 +191,26 @@ watch(
         <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
       </template>
       <template #loader>
-        <TableLoader :cols="3" :rows="10" />
+        <TableLoader :cols="7" :rows="10" />
       </template>
       <template #initial>
-        <TableLoader :cols="3" :rows="10" />
+        <TableLoader :cols="7" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="`/organization/Objectives/add`" addText="Add Objectives"
-          description="You have no Objectives .. All your joined customers will appear here when you add your customer data"
-          title="You have No Objectives" />
+        <DataEmpty :link="createObjectiveLink" :add-text="$t('Add_Objectives')"
+          :description="$t('no_objectives_description')"
+          :title="$t('no_objectives')" />
       </template>
       <template #failed>
-        <DataFailed :link="`/organization/objectives/add`" addText="Add Objectives"
-          description="You have no Objectives .. All your joined customers will appear here when you add your customer data"
-          title="You have No Objectives" />
+        <DataFailed :link="createObjectiveLink" :add-text="$t('Add_Objectives')"
+          :description="$t('unable_to_load_objectives')"
+          :title="$t('no_objectives')" />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no Objectives .. All your joined customers will appear here when you add your customer data" />
+      <DataFailed :add-text="$t('have_not_permission')"
+        :description="$t('no_objectives_description')" />
     </template>
   </permission-builder>
 </template>

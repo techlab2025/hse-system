@@ -86,19 +86,31 @@ const deleteHierarchy = async (Id: number) => {
                     PermissionsEnum.HERIKALY_FETCH,
                   ]"
                 >
-                  <!--  <router-link :to="`/organization/herikaly/add/${item.id}`">
- -->
-                  <div class="heirarchy-container">
-                    <div class="heirarchy-header">
-                      <EmployeeIcon class="icon" />
-                      <p class="heirarchy-title">{{ item.title }}</p>
+                  <router-link v-if="itemIndex < 1" :to="`/organization/herikaly/add/${item.id}`">
+                    <div class="heirarchy-container">
+                      <div class="heirarchy-header">
+                        <EmployeeIcon class="icon" />
+                        <p class="heirarchy-title">{{ item.title }}</p>
+                      </div>
+                      <div class="heirarchy-details">
+                        <!-- <p>Employees: <span>{{ item.employees || 100 }}</span></p> -->
+                        <!-- <p>Certifications: <span>{{ item.certifications || 10 }}</span></p> -->
+                      </div>
                     </div>
-                    <div class="heirarchy-details">
-                      <!-- <p>Employees: <span>{{ item.employees || 100 }}</span></p> -->
-                      <!-- <p>Certifications: <span>{{ item.certifications || 10 }}</span></p> -->
+                  </router-link>
+
+                  <div v-else>
+                    <div class="heirarchy-container">
+                      <div class="heirarchy-header">
+                        <EmployeeIcon class="icon" />
+                        <p class="heirarchy-title">{{ item.title }}</p>
+                      </div>
+                      <div class="heirarchy-details">
+                        <!-- <p>Employees: <span>{{ item.employees || 100 }}</span></p> -->
+                        <!-- <p>Certifications: <span>{{ item.certifications || 10 }}</span></p> -->
+                      </div>
                     </div>
                   </div>
-                  <!--  </router-link> -->
                 </PermissionBuilder>
                 <PermissionBuilder
                   v-else

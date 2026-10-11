@@ -5,7 +5,6 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import { useUserStore } from '@/stores/user'
 import AddHazardUseCase from '../../Domain/useCase/addHazardUseCase'
 import type HazardModel from '../../Data/models/hazardModel'
 import { Observation } from '../../Core/Enums/ObservationTypeEnum'
@@ -26,17 +25,19 @@ export default class AddHazardController extends ControllerInterface<HazardModel
     return this.instance
   }
 
-  async addHazard(params: AddHazardParams, router: Router, draft: boolean = false) {
+  async addHazard(params: AddHazardParams, router: Router) {
     if (params.type == Observation.AccidentsType && !params.typeId) {
       new OpenWarningDilaog('Incidant Type Is Required').openDialog()
       return
-    } else if (params.type == Observation.HazardType && !params.typeId) {
-      new OpenWarningDilaog('Observation Type Is Required').openDialog()
-      return
-    } else if (params.type == Observation.ObservationType && !params.typeId) {
-      new OpenWarningDilaog('Observation Type Is Required').openDialog()
-      return
     }
+    // else if (params.type == Observation.HazardType && !params.typeId) {
+    //   new OpenWarningDilaog('Observation Type Is Required').openDialog()
+    //   return
+    // }
+    // else if (params.type == Observation.ObservationType && !params.typeId) {
+    //   new OpenWarningDilaog('Observation Type Is Required').openDialog()
+    //   return
+    // }
     try {
       this.setLoading()
       params.validate()
@@ -55,9 +56,12 @@ export default class AddHazardController extends ControllerInterface<HazardModel
           messageContent: null,
         })
 
-        const { user } = useUserStore()
+        const currentRoute = router.currentRoute.value
+        const projectId = Number(currentRoute.query.project_id)
 
-        if (params.type == Observation.HazardType) {
+        if (Number.isFinite(projectId) && projectId > 0) {
+          await router.push(`/organization/project-summary/${projectId}`)
+        } else if (params.type == Observation.HazardType) {
           await router.push(`/organization/equipment-mangement/hazard`)
         } else if (params.type == Observation.ObservationType) {
           await router.push(`/organization/equipment-mangement/observation`)

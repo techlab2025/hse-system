@@ -140,6 +140,12 @@ const AllPagesToView = ref([
     link: '/organization/organization-employee?type=3',
   },
   {
+    id: ProjectProgressEnum.Department,
+    title: 'Departments',
+    description: 'Create departments before adding their positions',
+    link: '/organization/herikaly?type=3',
+  },
+  {
     id: ProjectProgressEnum.Heirarchy,
     title: 'Positions',
     description: 'Define positions structure and assign related project roles',
@@ -189,8 +195,8 @@ const AllPagesToView = ref([
   },
   {
     id: ProjectProgressEnum.HazardType,
-    title: 'Hazard Type',
-    description: 'Define hazard types and assign related project roles',
+    title: 'Hazard Classification',
+    description: 'Define hazard classifications and assign related project roles',
     link: '/organization/hazard-type?type=2',
   },
   {

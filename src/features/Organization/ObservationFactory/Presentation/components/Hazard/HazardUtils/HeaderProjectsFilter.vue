@@ -9,16 +9,20 @@ const emit = defineEmits<{
 const props = defineProps<{
   projects: ProjectModel[]
   isForm?: boolean
+  controlled?: boolean
+  selectedProjectId?: number
 }>()
 
 const ProjectStore = useProjectSelectStore()
 const selectedProjectId = ProjectStore.getProjectId()
 const ActiveTap = ref<number | undefined>(
-  selectedProjectId !== -1 && selectedProjectId != null
-    ? selectedProjectId
-    : props.isForm
-      ? props.projects?.[0]?.id
-      : undefined,
+  props.controlled
+    ? props.selectedProjectId
+    : selectedProjectId !== -1 && selectedProjectId != null
+      ? selectedProjectId
+      : props.isForm
+        ? props.projects?.[0]?.id
+        : undefined,
 )
 const AllProjects = ref(props.projects)
 
@@ -37,7 +41,7 @@ watch(
   (newVal) => {
     AllProjects.value = newVal
 
-    if (newVal && newVal.length > 0) {
+    if (!props.controlled && newVal && newVal.length > 0) {
       if (props.isForm) {
         ActiveTap.value = newVal[0].id
         emit('update:data', ActiveTap.value)
@@ -51,7 +55,14 @@ watch(
 watch(
   () => ProjectStore.getProjectId(),
   (projectId) => {
+    if (props.controlled) return
     ActiveTap.value = projectId === -1 || projectId == null ? undefined : projectId
+  },
+)
+watch(
+  () => props.selectedProjectId,
+  (id) => {
+    if (props.controlled) ActiveTap.value = id
   },
 )
 </script>
@@ -120,8 +131,7 @@ watch(
 </template>
 
 <style scoped>
-.project-filter-heading{
-
+.project-filter-heading {
 }
 .project-filter-heading {
   display: flex;

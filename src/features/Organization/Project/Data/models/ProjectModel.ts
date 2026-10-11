@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import TitleInterface from '@/base/Data/Models/title_interface'
 import PartnerModel from '@/features/Organization/Partner/Data/models/PartnerModel'
 import ProjectZoneDetailsModel from '@/features/Organization/ProjectZone/Data/models/ProjectZoneDetailsModel'
@@ -6,6 +7,8 @@ import LocationDetailsModel from '@/features/setting/Location/Data/models/Locati
 import MethodsDetailsModel from '@/features/setting/Methods/Data/models/MethodsDetailsModel'
 import { ProjectStatusEnum } from '../../Core/Enums/ProjectStatusEnum'
 import { ProjectProgressStatusEnum } from '../../Core/Enums/UpdatedProjectFlow/ProjectProgressStatusEnum'
+import ProjectScopeLocationModel from './ProjectScopeLocationModel'
+import ProjectScopeZoneModel from './ProjectScopeZoneModel'
 
 export default class ProjectModel extends TitleInterface {
   public id: number
@@ -30,6 +33,8 @@ export default class ProjectModel extends TitleInterface {
   public inspections_count:number
   public projectStatus: ProjectProgressStatusEnum | null
   public projectProgress: number
+  public projectLocations: ProjectScopeLocationModel[] = []
+  public projectZones: ProjectScopeZoneModel[] = []
 
   constructor(
     id: number,
@@ -81,7 +86,7 @@ export default class ProjectModel extends TitleInterface {
   }
 
   static fromMap(data: any): ProjectModel {
-    return new ProjectModel(
+    const project = new ProjectModel(
       data.id,
       data.title,
       data.partner,
@@ -105,6 +110,17 @@ export default class ProjectModel extends TitleInterface {
       data.project_status ?? null,
       data.project_progress ?? 0,
     )
+
+    project.projectLocations = Array.isArray(data.project_locations)
+      ? data.project_locations.map((item: Record<string, unknown>) =>
+          ProjectScopeLocationModel.fromMap(item),
+        )
+      : []
+    project.projectZones = Array.isArray(data.project_zoons)
+      ? data.project_zoons.map((item: Record<string, unknown>) => ProjectScopeZoneModel.fromMap(item))
+      : []
+
+    return project
   }
 
   static example: ProjectModel = new ProjectModel(

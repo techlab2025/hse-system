@@ -19,6 +19,7 @@ import { Observation } from '@/features/Organization/ObservationFactory/Core/Enu
 import IndexHazardHeader from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexHazardHeader.vue'
 import type CapaModel from '@/features/Organization/ObservationFactory/Data/models/CapaModel'
 import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel.ts'
+import type IndexCapaModel from '../../Data/models/IndexCapaModel'
 
 const currentPage = ref(1)
 const countPerPage = ref(10)
@@ -120,6 +121,14 @@ const GetObservationType = (type: number) => {
       return 'Observation'
   }
 }
+
+const getSourceType = (item: IndexCapaModel) =>
+  item.internalAuditNcrId ? 'NCR' : GetObservationType(item.type) || 'Observation'
+
+const getSourceDetailsPath = (item: IndexCapaModel) =>
+  item.internalAuditNcrId
+    ? `/organization/internal-audit/ncr/${item.internalAuditNcrId}`
+    : `/organization/equipment-mangement/incedant/show/${item.capa?.observationId ?? item.id}`
 
 const GetCapaStataus = (capa: CapaModel) => {
   if (String(capa?.corrective)?.length > 0 && String(capa?.preventive)?.length > 0) {
@@ -246,7 +255,7 @@ watch(
                       <div class="capa-meta-item">
                         <span class="capa-meta-icon" aria-hidden="true">S</span>
                         <div>
-                          <span>{{ $t(`${GetObservationType(item.type)} Serial`) }}</span>
+                          <span>{{ $t(`${getSourceType(item)} Serial`) }}</span>
                           <strong>{{ item?.serialName || '—' }}</strong>
                         </div>
                       </div>
@@ -314,11 +323,11 @@ watch(
 
                     <div class="capa-card-actions">
                       <router-link
-                        :to="`/organization/equipment-mangement/incedant/show/${item.capa?.observationId}`"
+                        :to="getSourceDetailsPath(item)"
                         class="source-details-btn"
                       >
                       <!-- observation type -->
-                        <span>{{ $t(`${GetObservationType(item.type)} Details`) }}</span>
+                        <span>{{ $t(`${getSourceType(item)} Details`) }}</span>
                         <span class="button-arrow" aria-hidden="true">↗</span>
                       </router-link>
 

@@ -39,12 +39,30 @@ const employeeParams = () =>
     undefined,
   )
 
-const addTeam = (location: TeamLocationForm) => {
-  location.projectTeams.push({ team: null, employees: [], employeeParams: employeeParams() })
+const selectedTeams = (location: TeamLocationForm) =>
+  location.projectTeams.flatMap((item) => (item.team ? [item.team] : []))
+
+const setLocationTeams = (
+  location: TeamLocationForm,
+  value: TitleInterface | TitleInterface[] | null,
+) => {
+  const selected = Array.isArray(value) ? value : value ? [value] : []
+  const existingById = new Map(
+    location.projectTeams.flatMap((item) =>
+      item.team ? [[item.team.id, item] as const] : [],
+    ),
+  )
+
+  location.projectTeams = selected.map(
+    (team) =>
+      existingById.get(team.id) ?? {
+        team,
+        employees: [],
+        employeeParams: employeeParams(),
+      },
+  )
 }
-const setTeam = (team: TeamForm, value: TitleInterface | TitleInterface[] | null) => {
-  team.team = Array.isArray(value) ? (value[0] ?? null) : value
-}
+
 const setTeamEmployees = (team: TeamForm, value: TitleInterface | TitleInterface[] | null) => {
   team.employees = Array.isArray(value) ? value : value ? [value] : []
 }
@@ -138,18 +156,23 @@ watch(() => props.projectId, getProjectLocationsTeamsEmployees, { immediate: tru
           <strong>{{ location.projectLocation?.title }}</strong>
         </div>
       </div>
-      <div v-for="(team, index) in location.projectTeams" :key="index" class="nested-row">
-        <div class="input-wrapper">
-          <UpdatedCustomInputSelect
-            :model-value="team.team"
-            :params="teamParams"
-            :controller="teamController"
-            label="Team"
-            placeholder="Select team"
-            :type="1"
-            @update:model-value="setTeam(team, $event)"
-          />
-        </div>
+      <div class="input-wrapper">
+        <UpdatedCustomInputSelect
+          :model-value="selectedTeams(location)"
+          :params="teamParams"
+          :controller="teamController"
+          label="Teams"
+          placeholder="Select teams"
+          :type="2"
+          @update:model-value="setLocationTeams(location, $event)"
+        />
+      </div>
+      <div
+        v-for="team in location.projectTeams"
+        :key="team.team?.id"
+        class="team-assignment"
+      >
+        <h3>{{ team.team?.title }}</h3>
         <div class="input-wrapper">
           <UpdatedCustomInputSelect
             :model-value="team.employees"
@@ -160,17 +183,28 @@ watch(() => props.projectId, getProjectLocationsTeamsEmployees, { immediate: tru
             @update:model-value="setTeamEmployees(team, $event)"
           />
         </div>
-        <button
-          type="button"
-          class="icon-button danger"
-          @click="location.projectTeams.splice(index, 1)"
-        >
-          ×
-        </button>
       </div>
-      <button type="button" class="add-row" @click="addTeam(location)">+ Add team</button>
     </div>
   </div>
 </template>
 
 <style scoped src="../ProjectFlowStepStyles.css"></style>
+
+<style scoped>
+.team-assignment {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--main-border);
+  border-radius: 15px;
+  background: var(--Gray-1);
+}
+
+.team-assignment h3 {
+  margin: 0;
+  color: var(--GrayText-1);
+  font-size: 14px;
+  font-weight: 800;
+}
+</style>

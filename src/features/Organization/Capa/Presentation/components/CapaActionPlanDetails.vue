@@ -85,7 +85,7 @@ const openStatusDialog = (task: CapaTaskDetailsModel) => {
 const updateInvestigationTaskController = UpdateInvestigationTaskController.getInstance()
 
 const saveTaskStatus = async () => {
-  if (!selectedStatusTask.value) return
+  if (!selectedStatusTask.value || isSavingStatus.value) return
   if (isReasonRequired.value && !selectedStatusReason.value.trim()) return
 
   isSavingStatus.value = true
@@ -96,6 +96,7 @@ const saveTaskStatus = async () => {
       reason: isReasonRequired.value ? selectedStatusReason.value.trim() : undefined,
     })
     await updateInvestigationTaskController.getData(updateInvestigationTaskParams)
+    if (!updateInvestigationTaskController.isDataSuccess()) return
 
     localStatuses.value[selectedStatusTask.value.id] = selectedStatus.value
     selectedStatusTask.value.reason = isReasonRequired.value
@@ -159,16 +160,16 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
                 </div>
               </div>
             </div>
-            <div class="task-meta">
+            <div class="task-meta" :class="{ 'ncr-task-meta': task.isInternalAuditTask }">
               <p>
-                <span>Due date</span>
+                <span>{{ task.isInternalAuditTask ? 'Date' : 'Due date' }}</span>
                 <strong>{{ task.dueDate || 'N/A' }}</strong>
               </p>
               <p>
                 <span>Assigned to</span>
                 <strong>{{ task.assignedToName || 'N/A' }}</strong>
               </p>
-              <p>
+              <p v-if="!task.isInternalAuditTask">
                 <span>Responsible</span>
                 <strong>{{ task.responsiblePersonName || 'N/A' }}</strong>
               </p>
@@ -214,16 +215,16 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
                 </div>
               </div>
             </div>
-            <div class="task-meta">
+            <div class="task-meta" :class="{ 'ncr-task-meta': task.isInternalAuditTask }">
               <p>
-                <span>Due date</span>
+                <span>{{ task.isInternalAuditTask ? 'Date' : 'Due date' }}</span>
                 <strong>{{ task.dueDate || 'N/A' }}</strong>
               </p>
               <p>
                 <span>Assigned to</span>
                 <strong>{{ task.assignedToName || 'N/A' }}</strong>
               </p>
-              <p>
+              <p v-if="!task.isInternalAuditTask">
                 <span>Responsible</span>
                 <strong>{{ task.responsiblePersonName || 'N/A' }}</strong>
               </p>
@@ -317,6 +318,7 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
         v-if="selectedVerificationTask"
         :key="selectedVerificationTask.id"
         :task-id="selectedVerificationTask.id"
+        :is-internal-audit-task="selectedVerificationTask.isInternalAuditTask"
         :props-verification-methodology="selectedVerificationTask.verificationMethodology"
         :props-verification-status="selectedVerificationTask.verificationStatus"
         :props-result-findings="selectedVerificationTask.resultFindings"
@@ -600,6 +602,10 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.75rem;
   margin-top: 0.9rem;
+
+  &.ncr-task-meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .task-meta p,
@@ -847,7 +853,8 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
     flex-direction: column;
   }
 
-  .task-meta {
+  .task-meta,
+  .task-meta.ncr-task-meta {
     grid-template-columns: 1fr;
   }
 }

@@ -52,6 +52,7 @@ import FetchInspectionsResultsParams from '../../Core/params/FetchInspectionsRes
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
 
 import CardSkelaton from './SubComponent/CardSkelaton.vue'
+import InspectionEmptyState from './SubComponent/InspectionEmptyState.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
 
 import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
@@ -63,6 +64,8 @@ const { isDarkMode } = useThemeMode()
 
 const route = useRoute()
 const router = useRouter()
+
+const selectedProject = useProjectSelectStore()
 
 const word = ref('')
 
@@ -90,7 +93,21 @@ const InspectionsResultsState = ref(fetchInspectionsResultsController.state.valu
  * Audit page
  */
 
-const inspectionType = computed(() => route.query.inspectionType)
+const inspectionType = computed(() => {
+  const type = Number(route.query.inspectionType)
+  return [1, 2, 3].includes(type) ? type : InspectionPageType.InspectionForm
+})
+
+const taskTabs = [
+  { type: InspectionPageType.InspectionForm, label: 'All tasks' },
+  { type: InspectionPageType.DragInspection, label: 'My tasks' },
+  { type: InspectionPageType.Result, label: 'Submitted tasks' },
+]
+
+const changeTaskTab = (type: InspectionPageType) => {
+  if (inspectionType.value === type) return
+  router.push({ query: { ...route.query, inspectionType: String(type) } })
+}
 
 const isAuditPage = computed(() => route.name === 'Audits')
 
@@ -107,18 +124,18 @@ const auditCreateRoute = computed(() => ({
     id: auditProjectId.value,
   },
 }))
-
-/**
- * NEW
- * Audit tabs:
- *
- * all  => All Audits
- * mine => My Audits
- */
+const inspectionCreateRoute = computed(() => ({
+  name: 'Add Inspection',
+  query: selectedProjctesFilters.value
+    ? { project_id: String(selectedProjctesFilters.value) }
+    : undefined,
+}))
 
 const activeAuditTab = ref<'all' | 'mine'>('all')
 
-const selectedProjctesFilters = ref<number | undefined>(auditProjectId.value)
+const selectedProjctesFilters = ref<number | undefined>(
+  auditProjectId.value ?? selectedProject.getProjectId(),
+)
 
 const SelectedZonesFilter = ref<number[]>([])
 
@@ -269,7 +286,7 @@ const fetchCurrentInspectionData = (
   perPage: number = countPerPage.value,
   withPage: number = 1,
 ) => {
-  if (String(route?.query?.inspectionType) === String(InspectionPageType.DragInspection)) {
+  if (String(inspectionType.value) === String(InspectionPageType.DragInspection)) {
     return fetchInspection(
       query,
       pageNumber,
@@ -278,26 +295,16 @@ const fetchCurrentInspectionData = (
       undefined,
       getSelectedZonesFilter(),
     )
-  } else if (String(route?.query?.inspectionType) === String(InspectionPageType.InspectionForm)) {
+  } else if (String(inspectionType.value) === String(InspectionPageType.InspectionForm)) {
     return InspectionFormTasks(query, pageNumber, perPage, withPage, getSelectedZonesFilter())
   } else {
     return InspectionsResultsTasks(query, pageNumber, perPage, withPage, getSelectedZonesFilter())
   }
 }
 
-/**
- * NEW Audit dispatcher
- *
- * All Audits:
- *     FetchAllTasksController
- *
- * My Audits:
- *     IndexInspectionController
- */
-
 const fetchAuditData = () => {
   if (!isAuditPage.value) {
-    return fetchCurrentInspectionData()
+    return fetchCurrentInspectionData(word.value)
   }
 
   console.log('activeAuditTab', activeAuditTab)
@@ -347,11 +354,12 @@ const changeAuditTab = (tab: 'all' | 'mine') => {
  */
 
 watch(
-  () => [route.query.typeId, route.query.inspectionType, route.query.project_id],
+  () => [route.query.typeId, route.query.inspectionType, auditProjectId.value],
 
-  () => {
-    if (isAuditPage.value) {
-      selectedProjctesFilters.value = auditProjectId.value
+  (values, previousValues) => {
+    if (!previousValues || values[2] !== previousValues[2]) {
+      selectedProjctesFilters.value = auditProjectId.value ?? selectedProject.getProjectId()
+      SelectedZonesFilter.value = []
     }
 
     currentPage.value = 1
@@ -651,6 +659,8 @@ const ApplayFilter = (data: number[]) => {
 }
 
 const setSelectedProjectFilter = (data?: number) => {
+  if (selectedProjctesFilters.value === data) return
+
   selectedProjctesFilters.value = data
 
   SelectedZonesFilter.value = []
@@ -660,10 +670,6 @@ const setSelectedProjectFilter = (data?: number) => {
   currentPage.value = 1
 
   fetchAuditData()
-
-  if (data) {
-    FetchMyZones()
-  }
 }
 
 /**
@@ -710,7 +716,7 @@ watch(
   },
 )
 
-const selectedProject = useProjectSelectStore()
+watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
 </script>
 <template>
   <div
@@ -743,6 +749,19 @@ const selectedProject = useProjectSelectStore()
           PermissionsEnum?.ORG_INSPECTION_FETCH,
         ]"
       >
+        <nav v-if="!isAuditPage" class="task-tabs" :aria-label="$t('Inspection tasks')">
+          <button
+            v-for="tab in taskTabs"
+            :key="tab.type"
+            type="button"
+            :class="{ active: inspectionType === tab.type }"
+            :aria-pressed="inspectionType === tab.type"
+            @click="changeTaskTab(tab.type)"
+          >
+            {{ $t(tab.label) }}
+          </button>
+        </nav>
+
         <!-- ========================= -->
         <!-- NORMAL INSPECTION HEADER -->
         <!-- ========================= -->
@@ -751,13 +770,15 @@ const selectedProject = useProjectSelectStore()
           <IndexInspectionHeader
             :title="`Inspection`"
             :length="
-              state?.pagination?.total ||
-              AllTasksState?.pagination?.total ||
-              InspectionsResultsState?.pagination?.total ||
-              0
+              (inspectionType === InspectionPageType.InspectionForm
+                ? AllTasksState?.pagination?.total
+                : inspectionType === InspectionPageType.DragInspection
+                  ? state?.pagination?.total
+                  : InspectionsResultsState?.pagination?.total) || 0
             "
             :projects="Projects"
-            :isProject="selectedProject.project?.id"
+            :selected-project-id="selectedProjctesFilters"
+            :isProject="auditProjectId ?? selectedProject.project?.id"
             @update:data="setSelectedProjectFilter"
           >
             <template #actions>
@@ -779,13 +800,7 @@ const selectedProject = useProjectSelectStore()
                   PermissionsEnum?.ORG_INSPECTION_CREATE,
                 ]"
               >
-                <router-link
-                  v-if="
-                    String(route?.query?.inspectionType) ==
-                    String(InspectionPageType.InspectionForm)
-                  "
-                  to="/organization/equipment-mangement/inspection/add"
-                >
+                <router-link :to="inspectionCreateRoute">
                   <button class="btn btn-primary create-inspection-btn">
                     <span class="create-icon">
                       <svg viewBox="0 0 24 24" fill="none">
@@ -1009,18 +1024,14 @@ const selectedProject = useProjectSelectStore()
           </template>
 
           <template #empty>
-            <DataEmpty
-              title="You have No Audit"
-              description="You have no Audit"
-              :link="`/organization`"
-            />
+            <DataEmpty title="You have No Audit" description="You have no Audit" :withbtn="false" />
           </template>
 
           <template #failed>
             <DataFailed
               title="You have No Audit"
               description="You have no Audit"
-              :link="`/organization`"
+              :withbtn="false"
             />
           </template>
         </DataStatus>
@@ -1030,10 +1041,7 @@ const selectedProject = useProjectSelectStore()
         <!-- ========================= -->
 
         <DataStatus
-          v-if="
-            !isAuditPage &&
-            String(route?.query?.inspectionType) == String(InspectionPageType.InspectionForm)
-          "
+          v-if="!isAuditPage && inspectionType == InspectionPageType.InspectionForm"
           :controller="AllTasksState"
         >
           <template #success>
@@ -1046,6 +1054,31 @@ const selectedProject = useProjectSelectStore()
             />
           </template>
 
+          <template #empty>
+            <InspectionEmptyState
+              :filtered="
+                Boolean(SelectedZonesFilter.length || filterDate || filterInspectionType != null)
+              "
+              :results="String(route.query.inspectionType) === String(InspectionPageType.Result)"
+            >
+              <template #actions>
+                <PermissionBuilder
+                  :code="[
+                    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+                    PermissionsEnum.ORG_INSPECTION_CREATE,
+                  ]"
+                >
+                  <router-link
+                    :to="isAuditPage ? auditCreateRoute : inspectionCreateRoute"
+                    class="btn btn-primary"
+                  >
+                    {{ $t(isAuditPage ? 'Create Audit' : 'Create Inspection') }}
+                  </router-link>
+                </PermissionBuilder>
+              </template>
+            </InspectionEmptyState>
+          </template>
+
           <template #loader>
             <CardSkelaton />
           </template>
@@ -1056,10 +1089,7 @@ const selectedProject = useProjectSelectStore()
         <!-- ========================= -->
 
         <DataStatus
-          v-if="
-            !isAuditPage &&
-            String(route?.query?.inspectionType) == String(InspectionPageType.DragInspection)
-          "
+          v-if="!isAuditPage && inspectionType == InspectionPageType.DragInspection"
           :controller="state"
         >
           <template #success>
@@ -1072,6 +1102,31 @@ const selectedProject = useProjectSelectStore()
             />
           </template>
 
+          <template #empty>
+            <InspectionEmptyState
+              :filtered="
+                Boolean(SelectedZonesFilter.length || filterDate || filterInspectionType != null)
+              "
+              :results="String(route.query.inspectionType) === String(InspectionPageType.Result)"
+            >
+              <template #actions>
+                <PermissionBuilder
+                  :code="[
+                    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+                    PermissionsEnum.ORG_INSPECTION_CREATE,
+                  ]"
+                >
+                  <router-link
+                    :to="isAuditPage ? auditCreateRoute : inspectionCreateRoute"
+                    class="btn btn-primary"
+                  >
+                    {{ $t(isAuditPage ? 'Create Audit' : 'Create Inspection') }}
+                  </router-link>
+                </PermissionBuilder>
+              </template>
+            </InspectionEmptyState>
+          </template>
+
           <template #loader>
             <CardSkelaton />
           </template>
@@ -1082,10 +1137,7 @@ const selectedProject = useProjectSelectStore()
         <!-- ========================= -->
 
         <DataStatus
-          v-if="
-            !isAuditPage &&
-            String(route?.query?.inspectionType) == String(InspectionPageType.Result)
-          "
+          v-if="!isAuditPage && inspectionType == InspectionPageType.Result"
           :controller="InspectionsResultsState"
         >
           <template #success>
@@ -1096,6 +1148,31 @@ const selectedProject = useProjectSelectStore()
               @changePage="handleInspectionResultsChangePage"
               @countPerPage="handleInspectionResultsCountPerPage"
             />
+          </template>
+
+          <template #empty>
+            <InspectionEmptyState
+              :filtered="
+                Boolean(SelectedZonesFilter.length || filterDate || filterInspectionType != null)
+              "
+              :results="String(route.query.inspectionType) === String(InspectionPageType.Result)"
+            >
+              <template #actions>
+                <PermissionBuilder
+                  :code="[
+                    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+                    PermissionsEnum.ORG_INSPECTION_CREATE,
+                  ]"
+                >
+                  <router-link
+                    :to="isAuditPage ? auditCreateRoute : inspectionCreateRoute"
+                    class="btn btn-primary"
+                  >
+                    {{ $t(isAuditPage ? 'Create Audit' : 'Create Inspection') }}
+                  </router-link>
+                </PermissionBuilder>
+              </template>
+            </InspectionEmptyState>
           </template>
 
           <template #loader>
@@ -1132,6 +1209,62 @@ const selectedProject = useProjectSelectStore()
       transparent 50%
     ),
     var(--BgWhite);
+}
+
+.task-tabs {
+  margin-bottom: 20px;
+  padding: 6px;
+  border: 1px solid var(--main-border);
+  border-radius: 16px;
+  background: var(--BgWhite);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.task-tabs button {
+  flex: 1;
+  min-width: 0;
+
+  padding: 10px 20px;
+
+  border-radius: 12px;
+
+  border: 1px solid var(--main-border);
+
+  background: transparent;
+
+  color: var(--header-page-color);
+
+  font-family: 'Bold';
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.task-tabs button:hover {
+  transform: translateY(-1px);
+
+  border-color: var(--PrimaryColor);
+}
+
+.task-tabs button.active {
+  background: var(--PrimaryColor);
+
+  color: white;
+
+  border-color: var(--PrimaryColor);
+
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--PrimaryColor) 25%, transparent);
 }
 
 .audit-tabs {
@@ -1205,11 +1338,13 @@ const selectedProject = useProjectSelectStore()
     align-items: stretch;
   }
 
-  .audit-tabs {
+  .audit-tabs,
+  .task-tabs {
     width: 100%;
   }
 
-  .audit-tabs button {
+  .audit-tabs button,
+  .task-tabs button {
     flex: 1;
 
     min-width: auto;

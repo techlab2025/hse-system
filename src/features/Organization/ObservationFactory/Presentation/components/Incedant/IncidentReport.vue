@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import { formatTime } from '@/base/Presentation/utils/time_format'
@@ -17,14 +18,29 @@ import IndexHazardParams from '../../../Core/params/indexHazardParams'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 
 const word = ref('')
+const route = useRoute()
 const currentPage = ref(1)
 const countPerPage = ref(10)
 const indexHazardController = IndexHazardController.getInstance()
 const state = ref(indexHazardController.state.value)
+const incidentCreateRoute = computed(() => ({
+  path: '/organization/equipment-mangement/incedant/add',
+  query: Number(route.query.project_id) > 0
+    ? { project_id: String(route.query.project_id) }
+    : undefined,
+}))
 
 const fetchIncidents = async (query = '', page = 1, limit = 10) => {
+  const projectId = Number(route.query.project_id)
   await indexHazardController.getData(
-    new IndexHazardParams(query, page, limit, 1, [Observation.AccidentsType], []),
+    new IndexHazardParams(
+      query,
+      page,
+      limit,
+      1,
+      [Observation.AccidentsType],
+      projectId > 0 ? [projectId] : [],
+    ),
   )
 }
 
@@ -63,7 +79,8 @@ const getStatusTitle = (status?: number) => {
   }
 }
 
-const getStatusClass = (status?: number) => getStatusTitle(status).toLowerCase().replace(/\s+/g, '-')
+const getStatusClass = (status?: number) =>
+  getStatusTitle(status).toLowerCase().replace(/\s+/g, '-')
 
 const getDateTime = (date?: string, time?: string) => {
   if (!date) return '--'
@@ -117,12 +134,23 @@ onMounted(() => fetchIncidents('', 1, countPerPage.value))
           <span>{{ state.pagination?.total || 0 }} {{ $t('incident_report') }}</span>
         </div>
 
-        <ExportReportPdf
-          v-if="state.data?.length"
-          target-selector=".incident-report-board"
-          file-name="incident-report"
-          orientation="landscape"
-        />
+        <div class="report-page-actions">
+          <ExportReportPdf
+            v-if="state.data?.length"
+            target-selector=".incident-report-board"
+            file-name="incident-report"
+            orientation="landscape"
+          />
+          <PermissionBuilder
+            :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.ORG_INCEDANT_CREATE]"
+          >
+            <RouterLink :to="incidentCreateRoute" class="create-incident-btn">
+              <span aria-hidden="true">+</span>
+              <strong>{{ $t('Report incident') }}</strong>
+              <i aria-hidden="true">→</i>
+            </RouterLink>
+          </PermissionBuilder>
+        </div>
       </header>
 
       <div class="report-toolbar">
@@ -243,6 +271,42 @@ onMounted(() => fetchIncidents('', 1, countPerPage.value))
 .report-eyebrow {
   color: var(--text-soft);
 }
+.report-page-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.create-incident-btn {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 14px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--PrimaryColor), var(--brand-primary-700));
+  color: var(--text-on-brand);
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--PrimaryColor) 22%, transparent);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.create-incident-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--PrimaryColor) 28%, transparent);
+}
+.create-incident-btn > span {
+  display: grid;
+  width: 25px;
+  height: 25px;
+  place-items: center;
+  border-radius: 8px;
+  background: rgb(255 255 255 / 17%);
+  font-size: 1.15rem;
+}
+.create-incident-btn strong {
+  font-size: 0.74rem;
+}
+.create-incident-btn i {
+  font-style: normal;
+}
 
 .report-eyebrow {
   margin: 0;
@@ -320,6 +384,10 @@ onMounted(() => fetchIncidents('', 1, countPerPage.value))
 
 @media (max-width: 640px) {
   .report-page-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .report-page-actions {
     align-items: stretch;
     flex-direction: column;
   }

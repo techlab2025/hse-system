@@ -176,6 +176,7 @@ export function useIntegratedNotifications(options: UseIntegratedNotificationsOp
         endpoint: subscription.endpoint,
         p256dh: btoa(String.fromCharCode(...new Uint8Array(p256dhKey))),
         auth: btoa(String.fromCharCode(...new Uint8Array(authKey))),
+        
       }),
     })
     return subscription

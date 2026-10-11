@@ -185,7 +185,9 @@ const updateData = () => {
         DataParams.value?.TempalteIds || TempalteIds.value,
         data.inspectionType || InspectionTypeEnum?.DAY,
         data.periodType || PeriodTypeEnum?.DAILY,
-        isAuditCreation.value ? routeProjectId.value : DataParams.value?.ProjectId || null,
+        isAuditCreation.value
+          ? routeProjectId.value
+          : DataParams.value?.ProjectId || routeProjectId.value || null,
         periodTasks,
         data.onceday,
         data.fromDate,

@@ -15,8 +15,8 @@ const emit = defineEmits(['update:data'])
 const addRoleController = AddRoleController.getInstance()
 
 const addRole = async () => {
-  await addRoleController.addRole(params.value as AddRoleParams, router)
-  emit('update:data')
+  const wasAdded = await addRoleController.addRole(params.value as AddRoleParams, router)
+  if (wasAdded) emit('update:data')
 }
 
 const saveAndNew = async () => {

@@ -9,14 +9,21 @@ import FetchInvestigationTaskVerificationController from '../controllers/investi
 import FetchInvestigationTaskVerificationParams from '../../Core/params/InvestigationTask/FetchInvestigationTaskVerificationParams'
 
 const emit = defineEmits(['update:data', 'saved'])
-const { taskId, propsVerificationMethodology, propsVerificationStatus, propsResultFindings , capa_id } =
-  defineProps<{
-    taskId: number
-    propsVerificationMethodology?: string
-    propsVerificationStatus?: number
-    propsResultFindings?: string
-    capa_id?:number
-  }>()
+const {
+  taskId,
+  propsVerificationMethodology,
+  propsVerificationStatus,
+  propsResultFindings,
+  capa_id,
+  isInternalAuditTask = false,
+} = defineProps<{
+  taskId: number
+  propsVerificationMethodology?: string
+  propsVerificationStatus?: number
+  propsResultFindings?: string
+  capa_id?: number
+  isInternalAuditTask?: boolean
+}>()
 
 const verificationMethodology = ref(propsVerificationMethodology || '')
 const resultFindings = ref(propsResultFindings || '')
@@ -48,17 +55,21 @@ const emitData = () => {
   })
 }
 
-watch([verificationMethodology, resultFindings, verificationStatus, capa_id], emitData, {
-  immediate: true,
-})
+watch(
+  () => [verificationMethodology.value, resultFindings.value, verificationStatus.value, capa_id],
+  emitData,
+  { immediate: true },
+)
 
 const verificationController = SetInvestigationTaskVerificationController.getInstance()
 const fetchVerificationController = FetchInvestigationTaskVerificationController.getInstance()
 
 const loadVerification = async () => {
-  if (!taskId || !capa_id) return
+  if (!taskId || (!isInternalAuditTask && !capa_id)) return
 
-  await fetchVerificationController.getData(new FetchInvestigationTaskVerificationParams(taskId, capa_id))
+  await fetchVerificationController.getData(
+    new FetchInvestigationTaskVerificationParams(taskId, capa_id, isInternalAuditTask),
+  )
 
   if (fetchVerificationController.isDataSuccess()) {
     const data = fetchVerificationController.state.value.data
@@ -71,7 +82,7 @@ const loadVerification = async () => {
 }
 
 watch(
-  () => taskId,
+  () => [taskId, capa_id, isInternalAuditTask],
   () => {
     loadVerification()
   },
@@ -79,7 +90,7 @@ watch(
 )
 
 const submitVerification = async () => {
-  if (!taskId || isSaving.value) return
+  if (!taskId || (!isInternalAuditTask && !capa_id) || isSaving.value) return
 
   isSaving.value = true
   try {
@@ -88,7 +99,8 @@ const submitVerification = async () => {
       verificationMethodology.value,
       resultFindings.value,
       verificationStatus.value,
-      capa_id!
+      capa_id,
+      isInternalAuditTask,
     )
     await verificationController.getData(params)
     if (verificationController.isDataSuccess()) emit('saved')
@@ -104,7 +116,6 @@ const submitVerification = async () => {
       <span>Verification of effectiveness</span>
       <h2>Make sure actions actually changed the risk</h2>
     </div>
-
 
     <div class="verification-form">
       <div class="editor-field">

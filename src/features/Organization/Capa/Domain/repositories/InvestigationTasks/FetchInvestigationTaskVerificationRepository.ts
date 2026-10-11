@@ -24,7 +24,6 @@ export default class FetchInvestigationTaskVerificationRepository extends RepoIn
   }
 
   onParse(data: any): FetchInvestigationTaskVerificationModel {
-    console.log('FetchInvestigationTaskVerificationRepository onParse data', data ? FetchInvestigationTaskVerificationModel.fromMap(data) : new FetchInvestigationTaskVerificationModel({}))
-    return data ? FetchInvestigationTaskVerificationModel.fromMap(data[0]) : new FetchInvestigationTaskVerificationModel({})
+    return FetchInvestigationTaskVerificationModel.fromMap(Array.isArray(data) ? data[0] : data)
   }
 }

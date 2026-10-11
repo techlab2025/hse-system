@@ -16,15 +16,16 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
 import OrganizationEmployeeDefaultProjectRepoController from '@/features/auth/presentation/controllers/OrganizationEmployeeDefaultProjectRepoController'
 import OrganizationEmployeeDefaultProjectParams from '@/features/auth/Core/Params/OrganizationEmployeeDefaultProjectParams'
-import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 import FetchMyProjectsController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyProjectsController'
 import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Core/params/fetchMyProjectsParams'
 import { useToast } from 'primevue/usetoast'
 import Notifications from './Notifications.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
+import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 // import { NOTIFICATION_SOUND_BASE64 } from '@/base/Presentation/utils/notification_ring.ts'
 
 const route = useRoute()
+const conditionHandler = ConditionHandler.getInstance()
 // console.log(route.name)
 // defineEmits(["open"]);
 
@@ -95,12 +96,17 @@ const toggleDropMenu = () => {
 const { user } = useUserStore()
 const ProjectSelector = useProjectSelectStore()
 
-const SelectProject = ref<TitleInterface>(
-  new TitleInterface({
-    id: ProjectSelector.getProject()?.id,
-    title: ProjectSelector.getProject()?.title,
-  }),
-)
+const SelectProject = computed(() => {
+  const routeProjectId = Number(route.query.project_id)
+  if (routeProjectId > 0) {
+    return (
+      ProjectSelector.AllProjects.find((project) => project.id === routeProjectId) ??
+      new TitleInterface({ id: routeProjectId, title: `Project #${routeProjectId}` })
+    )
+  }
+  return ProjectSelector.getProject()
+})
+
 const indexProjectController = FetchMyProjectsController.getInstance()
 
 const GetAllProjects = async () => {
@@ -148,7 +154,7 @@ const setSelectedProject = async (project: TitleInterface | null) => {
 const showProjectSelect = ref<boolean>(false)
 onMounted(() => {
   showProjectSelect.value =
-    user?.type == OrganizationTypeEnum.ADMIN || user?.employeeType == EmployeeStatusEnum.Employee
+    user?.type == OrganizationTypeEnum.ADMIN || conditionHandler.shouldUseEmployeeInterface()
 })
 
 const userStore = useUserStore()
@@ -221,7 +227,7 @@ const toggle = (event: Event) => {
           :to="
             user?.type == OrganizationTypeEnum?.ADMIN
               ? '/admin'
-              : user?.employeeType == EmployeeStatusEnum.Employee
+              : conditionHandler.shouldUseEmployeeInterface()
                 ? '/organization/employee-interface'
                 : '/organization'
           "

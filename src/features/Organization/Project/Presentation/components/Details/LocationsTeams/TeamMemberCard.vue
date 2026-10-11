@@ -4,6 +4,7 @@ import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
 import wordSlice from '@/base/Presentation/utils/word_slice'
 import DeleteEmployeeDialog from './DeleteEmployeeDialog.vue'
 import type OrganizatoinEmployeeDetailsModel from '@/features/Organization/OrganizationEmployee/Data/models/OrganizatoinEmployeeDetailsModel'
+import { watch } from 'vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -16,6 +17,13 @@ const { member, hierarchy } = defineProps<{
 const UpdateData = (id: number) => {
   emit('update:data', id)
 }
+
+watch(
+  () => member.is_leader,
+  () => {
+    console.log(member, 'mmmmemmmmmber')
+  },
+)
 </script>
 <template>
   <router-link
@@ -43,7 +51,7 @@ const UpdateData = (id: number) => {
 
     <div class="member-data">
       <p class="name">{{ wordSlice(member?.name, 18) }}</p>
-          <!-- <p>  {{ member.hierarchy?.map((p) => p.title).join(', ') }}</p> -->
+      <!-- <p>  {{ member.hierarchy?.map((p) => p.title).join(', ') }}</p> -->
       <p class="position" v-if="member.hierarchy?.length > 0">
         <span>
           {{ member.hierarchy?.map((p) => p.title).join(', ') }}

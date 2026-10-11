@@ -254,13 +254,22 @@ const exportExcel = () => {
 }
 
 const DownloadExample = () => {
-  const worksheetData = [{ title: 'Example Hazard Type' }, { title: 'Example Hazard Type 2' }]
+  const worksheetData = [
+    { title: 'Example Hazard Classification' },
+    { title: 'Example Hazard Classification 2' },
+  ]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'HazardTypes')
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'HazardClassifications')
   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
   const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
   saveAs(blob, 'hazard_type_form.xlsx')
+}
+
+const handleUploadCompleted = async () => {
+  showUploadDialog.value = false
+  pendingFile.value = null
+  await fetchHazardType()
 }
 
 const IndexHazardTypeactionList = () => [
@@ -476,9 +485,9 @@ const IndexHazardTypeactionList = () => [
                 ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add/${route.params.parent_id}`
                 : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`
             "
-            :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
-            description="You have no HazardType .. All your joined customers will appear here when you add your customer data"
-            title="You have No HazardType"
+            :addText="route.params.parent_id ? 'Add Hazard' : 'Add Hazard Classification'"
+            description="You have no hazard classifications yet. All your joined customers will appear here when you add your customer data"
+            title="You have No Hazard Classifications"
           />
         </PermissionBuilder>
       </template>
@@ -497,9 +506,9 @@ const IndexHazardTypeactionList = () => [
                 ? `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}hazard-type/add/${route.params.parent_id}`
                 : `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/hazard-type/add`
             "
-            :addText="route.params.parent_id ? 'Add Hazard' : 'Add HazardType'"
-            description="You have no HazardType .. All your joined customers will appear here when you add your customer data"
-            title="You have No HazardType"
+            :addText="route.params.parent_id ? 'Add Hazard' : 'Add Hazard Classification'"
+            description="You have no hazard classifications yet. All your joined customers will appear here when you add your customer data"
+            title="You have No Hazard Classifications"
           />
         </PermissionBuilder>
       </template>
@@ -508,7 +517,7 @@ const IndexHazardTypeactionList = () => [
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="You have no HazardType .. All your joined customers will appear here when you add your customer data"
+        description="You have no hazard classifications yet. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </PermissionBuilder>
@@ -520,14 +529,7 @@ const IndexHazardTypeactionList = () => [
     :header="$t('import_hazard_type')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <UploadHazardTypeExeclSheet
-      :initial-file="pendingFile"
-      @uploaded="
-        showUploadDialog = false;
-        pendingFile = null;
-        fetchHazardType()
-      "
-    />
+    <UploadHazardTypeExeclSheet :initial-file="pendingFile" @uploaded="handleUploadCompleted" />
   </Dialog>
 
   <input

@@ -3,8 +3,13 @@ import type { DataState } from '@/base/core/networkStructure/Resources/dataState
 import type Params from '@/base/core/params/params'
 import type ProjectModel from '../../Data/models/ProjectModel'
 import CreateProjectLocationTeamEmployeeUseCase from '../../Domain/useCase/CreateProjectLocationTeamEmployeeUseCase'
+import ProjectCustomLocationController from './ProjectCustomLocationController'
+import ProjectCustomLocationParams from '../../Core/params/ProjectCustomLocationParams'
+import { ProjectCustomLocationEnum } from '../../Core/Enums/ProjectCustomLocationEnum'
+import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
+import ShowProjectController from './showProjectController'
+import ShowProjectParams from '../../Core/params/showProjectParams'
 import ShowProjectDetailsController from './ShowProjectDetailsController'
-import ShowProjectDetailsParams from '../../Core/params/ShowProjectDetailsParams'
 
 export default class CreateProjectLocationTeamEmployeeController extends ControllerInterface<ProjectModel> {
   private static instance: CreateProjectLocationTeamEmployeeController
@@ -22,7 +27,7 @@ export default class CreateProjectLocationTeamEmployeeController extends Control
     return this.instance
   }
 
-  async CreatePorjectLocationTeamEmployee(params: Params, route: any) {
+  async CreatePorjectLocationTeamEmployee(params: Params, router: Router) {
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     try {
@@ -39,8 +44,25 @@ export default class CreateProjectLocationTeamEmployeeController extends Control
         // })
         // await router.push('/organization/projects')
         // console.log(this.state.value.data)
+        await ProjectCustomLocationController.getInstance().getData(
+          new ProjectCustomLocationParams(
+            Number(
+              router.currentRoute.value?.params?.id ||
+                router.currentRoute.value?.params?.project_id,
+            ),
+            [
+              ProjectCustomLocationEnum.TEAM,
+              ProjectCustomLocationEnum.TEAM_EMPLOYEE,
+              ProjectCustomLocationEnum.EMPLOYEE,
+            ],
+          ),
+        )
+
+        // await ShowProjectController.getInstance().showProject(
+        //   new ShowProjectParams(Number(router.currentRoute.value.params.id)),
+        // )
         await ShowProjectDetailsController.getInstance().showProjectDetails(
-          new ShowProjectDetailsParams(Number(route?.params?.id || route?.params?.project_id)),
+          new ShowProjectParams(Number(router.currentRoute.value.params.id)),
         )
       } else {
         // DialogSelector.instance.failedDialog.openDialog({
@@ -50,7 +72,7 @@ export default class CreateProjectLocationTeamEmployeeController extends Control
         //   messageContent: null,
         // })
       }
-    } catch (error: any) {
+    } catch {
       // DialogSelector.instance.failedDialog.openDialog({
       //   dialogName: 'dialog',
       //   titleContent: this.state.value.message,

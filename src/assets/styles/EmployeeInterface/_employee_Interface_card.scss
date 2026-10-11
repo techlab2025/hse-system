@@ -1,212 +1,343 @@
-@use '../variables' as *;
-@use '../mixins/flex' as *;
-@use '../mixins/grid' as *;
-
 .employee-interface-wrapper {
-  @include flex-column();
-  gap: $XlSize2;
-  padding: $XlSize4 0;
+  display: grid;
+  gap: 20px;
+  padding-block: 28px;
+
   .employee-interface-card {
-    @include flex-row(nowrap, space-between, center);
-    border-radius: $XlSize2;
-    border: 1px solid var(--brand-primary-50);
-    padding: $MdSize $XlSize2;
-    width: 100%;
-    gap: $XlSize2;
+    --card-accent: var(--brand-primary-600);
+    --card-tint: color-mix(in srgb, var(--card-accent) 7%, var(--surface-1));
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 220px;
+    grid-template-areas: 'content illustration' 'actions illustration';
+    gap: 24px 32px;
     position: relative;
+    isolation: isolate;
     overflow: hidden;
-    transition: 0.4s ease-in-out;
+    padding: clamp(24px, 3vw, 40px);
+    border: 1px solid color-mix(in srgb, var(--card-accent) 16%, var(--surface-1));
+    border-radius: 24px;
+    background: linear-gradient(115deg, var(--surface-1) 40%, var(--card-tint));
+    box-shadow: 0 6px 24px color-mix(in srgb, var(--text-primary) 4%, transparent);
+    transition:
+      border-color 220ms ease,
+      box-shadow 220ms ease,
+      transform 220ms ease;
 
     &::before {
       content: '';
       position: absolute;
-      left: 0;
-      top: 0;
-      width: $XsSize3; // العرض الأساسي
-      height: 100%;
-      border-top-left-radius: $XlSize2;
-      border-bottom-left-radius: $XlSize2;
-      transition: width 0.4s ease-in-out;
-    }
-    &:hover {
-      &::before {
-        width: $MdSize; // أكبر شوية عند الهوفر
-      }
+      inset-block: 32px;
+      inset-inline-start: 0;
+      width: 4px;
+      border-radius: 0 4px 4px 0;
+      background: var(--card-accent);
     }
 
-    /* ================= Inspection ================= */
-    &.Inspection {
-      &::before {
-        background: var(--brand-primary-600);
-      }
-
-      .card-title {
-        color: var(--brand-primary-600);
-      }
-
-      .button-main {
-        background: var(--brand-primary-600);
-        border-color: var(--brand-primary-600);
-      }
-
-      .button-view {
-        color: var(--brand-primary-600);
-        border-color: color-mix(in srgb, var(--brand-primary-600) 20%, transparent);
-        background: var(--brand-primary-50);
-      }
-    }
-
-    /* ================= Observation ================= */
     &.Observation {
-      &::before {
-        background: var(--brand-accent-500);
-      }
-
-      .card-title {
-        color: var(--brand-accent-500);
-      }
-
-      .button-main {
-        background: var(--brand-accent-500);
-        border-color: var(--brand-accent-500);
-      }
-
-      .button-view {
-        color: var(--brand-accent-500);
-        border-color: color-mix(in srgb, var(--brand-accent-500) 30%, transparent);
-        background: var(--brand-accent-50);
-      }
+      --card-accent: var(--brand-accent-700);
     }
 
-    /* ================= Incident ================= */
     &.Incident {
-      &::before {
-        background: var(--status-danger);
-      }
+      --card-accent: var(--status-danger);
+    }
 
-      .card-title {
-        color: var(--status-danger);
-      }
+    &:focus-within {
+      border-color: var(--card-accent);
+    }
+  }
 
-      .button-main {
-        background: var(--status-danger);
-        border-color: var(--status-danger);
-      }
+  .employee-project-picker {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 20px 24px;
+    border: 1px solid var(--main-border);
+    border-radius: 20px;
+    background: var(--surface-1);
+    color: var(--text-primary);
 
-      .button-view {
-        color: var(--status-danger);
-        border-color: color-mix(in srgb, var(--status-danger) 30%, transparent);
-        background: color-mix(in srgb, var(--status-danger) 20%, transparent);
+    label {
+      font-size: 16px;
+      font-weight: 700;
+    }
+    p {
+      margin: 6px 0 0;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    select {
+      min-height: 46px;
+      flex: 0 1 280px;
+      width: 100%;
+      max-width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--main-border);
+      border-radius: 12px;
+      background: var(--surface-1);
+      color: var(--text-primary);
+      font: inherit;
+    }
+    select:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--brand-primary-600);
+      outline-offset: 3px;
+    }
+    button {
+      color: var(--brand-primary-600);
+      text-decoration: underline;
+    }
+  }
+
+  .project-required-note {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .actions-button button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  .employee-interface-card {
+    &.Permit-to-Work {
+      --card-accent: var(--brand-primary-700);
+    }
+    &.Induction {
+      --card-accent: var(--brand-accent-700);
+    }
+    &.Management-of-Change {
+      --card-accent: var(--brand-secondary-700);
+    }
+    &.Leadership {
+      --card-accent: var(--brand-primary-600);
+    }
+    &.Risk-Assessment {
+      --card-accent: var(--brand-accent-700);
+    }
+  }
+
+  .card-text {
+    grid-area: content;
+    min-width: 0;
+    align-self: end;
+  }
+
+  .card-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-block-end: 16px;
+    color: var(--card-accent);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .card-number {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid color-mix(in srgb, var(--card-accent) 16%, transparent);
+    border-radius: 10px;
+    background: var(--card-tint);
+    font-size: 11px;
+    letter-spacing: 0;
+  }
+
+  .card-title {
+    margin: 0 0 10px;
+    color: var(--text-primary);
+    font-size: clamp(24px, 2.5vw, 32px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+  }
+
+  .card-subtitle {
+    max-width: 55ch;
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.7;
+    text-wrap: pretty;
+  }
+
+  .card-illustration {
+    grid-area: illustration;
+    display: grid;
+    place-items: center;
+    position: relative;
+    align-self: center;
+    aspect-ratio: 1;
+    width: 100%;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--card-accent) 12%, transparent),
+      transparent 70%
+    );
+
+    .illustration-orbit {
+      position: absolute;
+      inset: 8%;
+      border: 1px solid color-mix(in srgb, var(--card-accent) 12%, transparent);
+      border-radius: 50%;
+      transform: rotate(-25deg);
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset-block-start: 13%;
+        inset-inline-end: 10%;
+        width: 10px;
+        height: 10px;
+        border: 3px solid var(--surface-1);
+        border-radius: 50%;
+        background: var(--card-accent);
+        box-sizing: content-box;
       }
     }
 
-    .card-text {
-      @include flex-column();
-      gap: $XsSize3;
-      white-space: initial;
-      text-overflow: ellipsis;
-      overflow: hidden;
+    img {
+      position: relative;
+      width: 90%;
+      max-height: 210px;
+      object-fit: contain;
+      filter: drop-shadow(0 12px 12px color-mix(in srgb, var(--card-accent) 12%, transparent));
+      transition: transform 250ms ease;
+    }
+  }
 
-      .info-sub-wrapper {
-        @include flex-row(nowrap, space-between, center);
-        gap: $XsSize3;
-        img {
-          @media (min-width: 769px) {
-            display: none;
-          }
-        }
-      }
+  .actions-button {
+    grid-area: actions;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
 
-      .card-title {
-        font-size: $XlSize2;
-        font-weight: $BaseFontWeightBold;
-      }
+    a,
+    button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      min-height: 46px;
+      padding: 12px 18px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.4;
+      text-decoration: none;
+      transition:
+        background 180ms ease,
+        box-shadow 180ms ease;
 
-      .card-subtitle {
-        font-size: $MdSize2;
-        font-weight: $BaseFontMediumWeight;
-        color: var(--text-muted);
-      }
-
-      .actions-button {
-        @include flex-row(wrap, start, start);
-        gap: $XlSize2;
-        width: 100%;
-
-        button {
-          flex: 1;
-          padding: $XsSize2;
-          border-radius: $XlSize;
-          font-size: $MdSize;
-          font-weight: $BaseFontSemiBoldWeight;
-          white-space: nowrap;
-        }
-
-        .button-main {
-          color: var(--text-on-brand);
-        }
+      &:focus-visible {
+        outline: 3px solid var(--card-accent);
+        outline-offset: 4px;
       }
     }
 
-    .lotty-card-img {
-      // flex-shrink: 0;
-      display: flex;
-      justify-content: flex-end;
+    svg {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
 
-      @media (max-width: 768px) {
-        display: none;
-      }
+    .button-main {
+      background: var(--card-accent);
+      color: var(--text-on-brand);
+      box-shadow: 0 4px 10px color-mix(in srgb, var(--card-accent) 18%, transparent);
 
-      img {
-        max-width: 220px;
-        width: 100%;
-        height: auto;
-        object-fit: contain;
+      &:hover {
+        background: color-mix(in srgb, var(--card-accent) 86%, #000);
       }
+    }
+
+    .button-view {
+      color: var(--text-primary);
+      border-color: color-mix(in srgb, var(--card-accent) 18%, var(--surface-1));
+      background: var(--surface-1);
+
+      &:hover {
+        background: var(--card-tint);
+      }
+    }
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .employee-interface-card:hover {
+      transform: translateY(-3px);
+      border-color: color-mix(in srgb, var(--card-accent) 40%, var(--surface-1));
+      box-shadow: 0 12px 32px color-mix(in srgb, var(--card-accent) 10%, transparent);
+
+      .card-illustration img {
+        transform: translateY(-4px) rotate(-2deg);
+      }
+    }
+  }
+
+  @media (max-width: 640px) {
+    gap: 16px;
+    padding-block: 20px;
+
+    .employee-interface-card {
+      grid-template-columns: minmax(0, 1fr) 88px;
+      grid-template-areas: 'content illustration' 'actions actions';
+      gap: 22px 12px;
+      padding: 24px 20px;
+      border-radius: 20px;
+    }
+
+    .card-eyebrow {
+      gap: 8px;
+      font-size: 10px;
+      letter-spacing: 0.04em;
+    }
+
+    .card-subtitle {
+      font-size: 14px;
+    }
+
+    .card-illustration {
+      align-self: start;
+      margin-block-start: 30px;
+    }
+
+    .actions-button {
+      align-items: stretch;
+      gap: 10px;
+
+      a,
+      button {
+        flex: 1 1 180px;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .employee-interface-card,
+    .card-illustration img,
+    .actions-button a,
+    .actions-button button {
+      transition: none;
     }
   }
 }
 
-// @media (max-width: 768px) {
-//   .employee-interface-card {
-//     align-items: flex-start !important;
-//     justify-content: start !important;
-
-//     .card-text {
-//       flex: 2;
-//     }
-
-//     .lotty-card-img {
-//       flex: 1;
-//       align-self: start;
-
-//       img {
-//         max-width: 140px; // تصغير الصورة للموبايل
-//       }
-//     }
-
-//     .actions-button {
-//       width: 100%;
-//       margin-top: $XsSize3;
-
-//       button {
-//         // flex: 1;
-//         width: 100%;
-//       }
-//     }
-//   }
-// }
-
-// @media (max-width: 480px) {
-//   .employee-interface-card {
-//     gap: $MdSize;
-
-//     .lotty-card-img img {
-//       max-width: 110px;
-//     }
-
-//     .actions-button {
-//       gap: $MdSize;
-//     }
-//   }
-// }
+[dir='rtl'] .employee-interface-wrapper .actions-button svg {
+  transform: scaleX(-1);
+}

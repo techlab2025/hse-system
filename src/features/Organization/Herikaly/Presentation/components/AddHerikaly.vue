@@ -10,9 +10,11 @@ import HerikalyForm from './HerikalyForm.vue'
 const props = withDefaults(
   defineProps<{
     showCertificateSelectAll?: boolean
+    mode?: 'auto' | 'department' | 'position'
   }>(),
   {
     showCertificateSelectAll: true,
+    mode: 'auto',
   },
 )
 
@@ -55,6 +57,7 @@ const setParams = (data: Params) => {
       ref="formRef"
       :key="formKey"
       :show-certificate-select-all="props.showCertificateSelectAll"
+      :mode="props.mode"
       @update:data="setParams"
     />
     <div class="col-span-4 button-wrapper create-form-actions">

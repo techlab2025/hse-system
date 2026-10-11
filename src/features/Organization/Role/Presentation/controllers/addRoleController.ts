@@ -26,12 +26,12 @@ export default class AddRoleController extends ControllerInterface<RoleModel> {
     return this.instance
   }
 
-  async addRole(params: AddRoleParams, router: Router, draft: boolean = false) {
+  async addRole(params: AddRoleParams, router: Router, draft: boolean = false): Promise<boolean> {
     // useLoaderStore().setLoadingWithDialog();
     try {
       if (params.role.length < 1) {
         new OpenWarningDilaog('You Should Add Role ').openDialog()
-        return
+        return false
       }
       // if (params.roleName.length < 1) {
       //   new OpenWarningDilaog('You Should Add Role Name').openDialog()
@@ -69,6 +69,7 @@ export default class AddRoleController extends ControllerInterface<RoleModel> {
           imageElement: errorImage,
           messageContent: null,
         })
+        return false
       }
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
@@ -77,9 +78,10 @@ export default class AddRoleController extends ControllerInterface<RoleModel> {
         imageElement: errorImage,
         messageContent: null,
       })
+      return false
     }
 
     super.handleResponseDialogs()
-    return this.state
+    return true
   }
 }

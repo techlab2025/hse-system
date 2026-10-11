@@ -6,7 +6,8 @@ export default class SetInvestigationTaskVerificationParams implements Params {
     private readonly verificationMethodology: string,
     private readonly resultFindings: string,
     private readonly verificationStatus: number,
-    private readonly capa_id: number
+    private readonly capa_id: number | undefined,
+    private readonly isInternalAuditTask: boolean = false,
   ) {}
 
   toMap(): Record<string, string | number> {
@@ -15,7 +16,9 @@ export default class SetInvestigationTaskVerificationParams implements Params {
       verification_methodology: this.verificationMethodology,
       result_findings: this.resultFindings,
       verification_status: this.verificationStatus,
-      observation_capa_id: this.capa_id,
+      ...(!this.isInternalAuditTask && this.capa_id !== undefined
+        ? { observation_capa_id: this.capa_id }
+        : {}),
     }
   }
 }

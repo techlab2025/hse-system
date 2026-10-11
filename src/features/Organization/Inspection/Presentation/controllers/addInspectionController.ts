@@ -6,7 +6,6 @@ import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import successImage from '@/assets/images/Success.png'
 import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
-import { useUserStore } from '@/stores/user'
 import type InspectionModel from '../../Data/models/InspectionModel'
 import AddInspectionUseCase from '../../Domain/useCase/addInspectionUseCase'
 
@@ -24,7 +23,7 @@ export default class AddInspectionController extends ControllerInterface<Inspect
     return this.instance
   }
 
-  async addInspection(params: Params, router: Router, draft: boolean = false) {
+  async addInspection(params: Params, router: Router) {
     // useLoaderStore().setLoadingWithDialog();
     console.log(params, 'params')
 
@@ -39,14 +38,16 @@ export default class AddInspectionController extends ControllerInterface<Inspect
           messageContent: null,
         })
 
-        const { user } = useUserStore()
-
         const currentRoute = router.currentRoute.value
         if (currentRoute.name === 'Add Audit') {
           await router.push({
             name: 'Audits',
             query: { project_id: currentRoute.query.project_id },
           })
+        } else if (Number(currentRoute.query.project_id) > 0) {
+          await router.push(
+            `/organization/project-summary/${Number(currentRoute.query.project_id)}`,
+          )
         } else {
           await router.push(`/organization/equipment-mangement/inspection?inspectionType=1`)
         }

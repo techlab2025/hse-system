@@ -46,6 +46,15 @@ const teamGroups = computed(() => {
   })
   return [...groups.values()]
 })
+const showAllDrills = ref(false)
+
+const displayedDrills = computed(() => {
+  return showAllDrills.value ? props.drills : props.drills.slice(0, 5)
+})
+
+const toggleShowDrills = () => {
+  showAllDrills.value = !showAllDrills.value
+}
 </script>
 
 <template>
@@ -83,7 +92,7 @@ const teamGroups = computed(() => {
       </div>
       <div class="drill-cards">
         <DrillDetailsDialog
-          v-for="drill in drills"
+          v-for="drill in displayedDrills"
           :key="drill.id"
           :drill="drill"
           :project-id="projectId"
@@ -93,6 +102,14 @@ const teamGroups = computed(() => {
           @saved="handleDrillSaved(drill.id)"
         />
       </div>
+      <button
+        v-if="drills.length > 5"
+        type="button"
+        class="show-more-btn"
+        @click="toggleShowDrills"
+      >
+        {{ $t(showAllDrills ? 'Show less' : 'Show more') }}
+      </button>
       <!-- </article> -->
     </div>
     <div v-else class="drill-empty-state">
@@ -108,6 +125,24 @@ const teamGroups = computed(() => {
 </template>
 
 <style scoped lang="scss">
+.show-more-btn {
+  width: fit-content;
+  margin: 12px auto 0;
+  padding: 8px 18px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 25%, var(--main-border));
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-2));
+  color: var(--PrimaryColor);
+  font-size: 0.7rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.show-more-btn:hover {
+  background: var(--PrimaryColor);
+  color: white;
+}
 .project-drill-section {
   position: relative;
   isolation: isolate;

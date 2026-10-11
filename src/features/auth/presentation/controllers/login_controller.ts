@@ -60,7 +60,7 @@ export default class LoginController extends ControllerInterface<UserModel> {
           axios.defaults.headers.common['Authorization'] = `Bearer ${apiToken}`
           ProjectSelector.setProjectId(this.state?.value?.data?.Defaultproject)
           options?.onSuccessBeforeNavigate?.()
-          if (!ConditionHandler.getInstance().isOrganizationEmployee()) {
+          if (!ConditionHandler.getInstance().shouldUseEmployeeInterface()) {
             await router.push({
               path: activeType === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization',
             })

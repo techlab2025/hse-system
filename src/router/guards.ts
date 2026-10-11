@@ -1,11 +1,13 @@
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
+import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 import { useUserStore } from '@/stores/user'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 export function authGuard(to, from, next) {
   const userData = useUserStore()
+  const shouldUseEmployeeInterface = () =>
+    ConditionHandler.getInstance().shouldUseEmployeeInterface()
   const Path = ref<boolean>(to.path == '' || to.path == '/' || to.path == '/login')
 
   const loginPages = ['Login', 'Organization Login']
@@ -37,7 +39,7 @@ export function authGuard(to, from, next) {
   }
 
   if (
-    userData?.user?.employeeType === EmployeeStatusEnum.Employee &&
+    shouldUseEmployeeInterface() &&
     to.path !== '/organization/employee-interface' &&
     (to.path == '/organization' || to.path == '/admin' || to.path == '/')
   ) {
@@ -46,14 +48,19 @@ export function authGuard(to, from, next) {
 
   // AUTHENTICATED
   if (loginPages.includes(to.name)) {
-    const redirectPath =
-      userData.user?.type === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization'
+    const redirectPath = shouldUseEmployeeInterface()
+      ? '/organization/employee-interface'
+      : userData.user?.type === OrganizationTypeEnum.ADMIN
+        ? '/admin'
+        : '/organization'
 
     return next({ path: redirectPath })
   }
 
   if (Path?.value) {
-    return next({ path: '/organization' })
+    return next({
+      path: shouldUseEmployeeInterface() ? '/organization/employee-interface' : '/organization',
+    })
   }
 
   next()

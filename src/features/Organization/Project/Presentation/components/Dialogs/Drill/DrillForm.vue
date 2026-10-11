@@ -112,7 +112,7 @@ onMounted(loadTeams)
         :placeholder="$t('Select project team')"
         :static-options="teamOptions"
         required
-      />
+      /> 
 
       <div class="input-wrapper">
         <div class="field-label"><label for="drill_date">{{ $t('Drill date') }}</label><FieldHelpIcon text="Select the drill date." /></div>

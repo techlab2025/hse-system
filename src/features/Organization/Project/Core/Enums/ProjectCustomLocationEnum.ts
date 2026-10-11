@@ -7,4 +7,5 @@ export enum ProjectCustomLocationEnum {
   TEAM_EMPLOYEE = 5,
   HIERARCHY = 6,
   HIERARCHY_EMPLOYEE = 7,
+  CONTRUCTOR = 8,
 }
