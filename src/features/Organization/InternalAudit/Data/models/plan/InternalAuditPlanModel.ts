@@ -43,6 +43,7 @@ export default class InternalAuditPlanModel extends TitleInterface {
     public attachmentFileNames: string[] = [],
     public auditee: TitleInterface | null = null,
     public auditStandards: TitleInterface[] = auditStandard ? [auditStandard] : [],
+    public ncrsCount:number
   ) {
     super({ id, title })
   }
@@ -107,6 +108,7 @@ export default class InternalAuditPlanModel extends TitleInterface {
           })
         : null,
       auditStandards,
+      data?.ncrs_count!
     )
   }
 

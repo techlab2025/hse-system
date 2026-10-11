@@ -100,6 +100,7 @@ const statusOptions = ref<TitleInterface[]>([
                 <th>Scope</th>
                 <th>Lead</th>
                 <th>Status</th>
+                <th>ncr count</th>
                 <th><span class="sr-only">Actions</span></th>
               </tr>
             </thead>
@@ -110,6 +111,7 @@ const statusOptions = ref<TitleInterface[]>([
                 <td>{{ audit.fullCompany ? 'Full Company' : audit.project?.title || '—' }}</td>
                 <td>{{ leadName(audit.auditTeam) }}</td>
                 <td><span class="status">{{ audit.status }}</span></td>
+                <td>{{ audit.ncrsCount }}</td>
                 <td><router-link class="btn btn-secondary"
                     :to="{ path: '/organization/internal-audit', query: { internal_audit_plan_id: audit.id, tab: 'plan' } }">Open</router-link>
                 </td>
