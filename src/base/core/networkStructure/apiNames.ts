@@ -681,19 +681,19 @@ class ApiNames {
 
   // Organization Documents
   public get CreateOrganizationDocuments() {
-    return this.prefix + 'create_organization_document'
+    return this.prefix + 'create_document'
   }
   public get IndexOrganizationDocuments() {
     return this.prefix + 'fetch_organization_documents'
   }
   public get ShowOrganizationDocuments() {
-    return this.prefix + 'fetch_organization_document_details'
+    return this.prefix + 'fetch_document_details'
   }
   public get EditOrganizationDocuments() {
-    return this.prefix + 'update_organization_document'
+    return this.prefix + 'update_document'
   }
   public get DeleteOrganizationDocuments() {
-    return this.prefix + 'delete_organization_document'
+    return this.prefix + 'delete_document'
   }
   public get DisOrganizationDocuments() {
     return this.prefix + 'disable_organization_document'

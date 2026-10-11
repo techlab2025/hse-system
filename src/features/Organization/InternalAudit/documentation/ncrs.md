@@ -8,13 +8,11 @@ enum NcrCategoryEnum {
   MAJOR_NC = 2,
 }
 
-enum InvestegationStatusEnum {
-  OPEN = 0,
-  NEW = 1,
-  IN_PROGRESS = 2,
-  HOLD = 3,
-  CLOSED = 4,
-  COMPLETED = 5,
+enum StatusEnum {
+  PENDING = 'pending',
+  OPEN = 'open',
+  IN_PROGRESS = 'in_progress',
+  CLOSED = 'closed',
 }
 ```
 
@@ -30,7 +28,7 @@ type InternalAuditNcrModel = {
   createdAt: string
   auditee: { id: number; name: string }
   dueDate: string
-  status: InvestegationStatusEnum
+  status: StatusEnum
   leadReview: { id: number; name: string }
   leadReviewStatus: string
   serial_name: string
@@ -90,7 +88,7 @@ Example:
         created_at: "2026-10-04T13:15:20.000000Z",
         auditee: { id: 104, name: "Mona Adel" },
         due_date: "2026-10-18",
-        status: 0,
+        status: "open",
         lead_review: { id: 102, name: "Ahmed Hassan" },
         lead_review_status: "Pending",
         serial_name: "NCR-2026-001",
@@ -219,7 +217,7 @@ Test mode returns the first `InternalAuditNcrModel.example` item.
     createdAt: '2026-10-04T13:15:20.000000Z',
     auditee: { id: 104, name: 'Mona Adel' },
     dueDate: '2026-10-18',
-    status: 0,
+    status: 'open',
     leadReview: { id: 102, name: 'Ahmed Hassan' },
     leadReviewStatus: 'Pending',
     serial_name: 'NCR-2026-001',
@@ -234,7 +232,7 @@ Test mode returns the first `InternalAuditNcrModel.example` item.
     createdAt: '2026-10-05T09:30:00.000000Z',
     auditee: { id: 105, name: 'Omar Khaled' },
     dueDate: '2026-10-22',
-    status: 2,
+    status: 'in_progress',
     leadReview: { id: 101, name: 'Sara Ibrahim' },
     leadReviewStatus: 'Reviewed',
     serial_name: 'NCR-2026-002',

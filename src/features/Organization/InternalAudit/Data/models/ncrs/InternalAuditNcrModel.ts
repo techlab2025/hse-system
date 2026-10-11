@@ -1,7 +1,6 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { NcrCategoryEnum } from '../../../Core/enums/ncrs/NcrCategoryEnum'
-import { InvestegationStatusEnum } from '@/features/Organization/Investigating/Core/Enums/InvestegationStatusEnum'
-import { parseNcrStatus } from '../../../Core/enums/ncrs/StatusEnum'
+import { StatusEnum } from '../../../Core/enums/ncrs/StatusEnum'
 import InternalAuditNcrDetailsModel, { detailsRecord } from './InternalAuditNcrDetailsModel'
 
 export type NcrPerson = {
@@ -44,7 +43,7 @@ export default class InternalAuditNcrModel extends TitleInterface {
     public createdBy: NcrPerson,
     public auditee: NcrPerson,
     public dueDate: string,
-    public status: InvestegationStatusEnum | undefined,
+    public status: StatusEnum,
     public leadReview: NcrPerson,
     public leadReviewStatus: string,
     public serial_name: string = '',
@@ -74,7 +73,7 @@ export default class InternalAuditNcrModel extends TitleInterface {
       parsePerson(item.created_by ?? item.cerated_by),
       parsePerson(item.auditee ?? item.audited_employee),
       String(item.due_date ?? ''),
-      parseNcrStatus(item.status),
+      item.status as StatusEnum,
       parsePerson(leadReview),
       String(
         item.lead_review_status ??
@@ -98,7 +97,7 @@ export default class InternalAuditNcrModel extends TitleInterface {
       { id: 101, name: 'Sara Ibrahim' },
       { id: 104, name: 'Mona Adel' },
       '2026-10-18',
-      InvestegationStatusEnum.OPEN,
+      StatusEnum.OPEN,
       { id: 102, name: 'Ahmed Hassan' },
       'Pending',
       'NCR-2026-001',
@@ -113,7 +112,7 @@ export default class InternalAuditNcrModel extends TitleInterface {
       { id: 103, name: 'Mona Ali' },
       { id: 105, name: 'Omar Khaled' },
       '2026-10-22',
-      InvestegationStatusEnum.IN_PROGRESS,
+      StatusEnum.IN_PROGRESS,
       { id: 101, name: 'Sara Ibrahim' },
       'Reviewed',
       'NCR-2026-002',

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ncrStatusLabel } from '../../../Core/enums/ncrs/StatusEnum'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import type InternalAuditNcrModel from '../../../Data/models/ncrs/InternalAuditNcrModel'
 
@@ -14,6 +13,17 @@ defineProps<{
 const emit = defineEmits<{
   open: [ncr: InternalAuditNcrModel]
 }>()
+
+function statusLabel(status: unknown): string {
+  const value = String(status ?? '')
+  const numericLabels: Record<string, string> = {
+    '1': 'Pending',
+    '2': 'Open',
+    '3': 'In progress',
+    '4': 'Closed',
+  }
+  return (numericLabels[value] ?? value.split('_').join(' ')) || 'Unknown'
+}
 
 function categoryLabel(categoryValue: unknown): string {
   const value = String(categoryValue ?? '').toLowerCase()
@@ -45,7 +55,7 @@ function createdAtLabel(value: string): string {
             <th>Lead Auditor</th>
             <!-- <th>Due</th> -->
             <th>Status</th>
-            <th>Lead Review</th>
+            <!-- <th>Lead Review</th> -->
             <th><span class="sr-only">Actions</span></th>
           </tr>
         </thead>
@@ -68,9 +78,9 @@ function createdAtLabel(value: string): string {
             <td>{{ auditLeadAuditor?.title || auditLeadAuditor?.name || '—' }}</td>
             <!-- <td>{{ item.dueDate || '—' }}</td> -->
             <td>
-              <span class="status">{{ ncrStatusLabel(item.status) }}</span>
+              <span class="status">{{ statusLabel(item.status) }}</span>
             </td>
-            <td>{{ item.leadReviewStatus || item.leadReview.name || 'Pending' }}</td>
+            <!-- <td>{{ item.leadReviewStatus || item.leadReview.name || 'Pending' }}</td> -->
             <td class="row-action">
               <button
                 type="button"

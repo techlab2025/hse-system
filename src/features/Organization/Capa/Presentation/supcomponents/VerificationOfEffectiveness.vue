@@ -65,7 +65,7 @@ const verificationController = SetInvestigationTaskVerificationController.getIns
 const fetchVerificationController = FetchInvestigationTaskVerificationController.getInstance()
 
 const loadVerification = async () => {
-  if (!taskId || !capa_id) return
+  if (!taskId || (!isInternalAuditTask && !capa_id)) return
 
   await fetchVerificationController.getData(
     new FetchInvestigationTaskVerificationParams(taskId, capa_id, isInternalAuditTask),
@@ -90,7 +90,7 @@ watch(
 )
 
 const submitVerification = async () => {
-  if (!taskId || isSaving.value) return
+  if (!taskId || (!isInternalAuditTask && !capa_id) || isSaving.value) return
 
   isSaving.value = true
   try {
@@ -99,7 +99,7 @@ const submitVerification = async () => {
       verificationMethodology.value,
       resultFindings.value,
       verificationStatus.value,
-      capa_id!,
+      capa_id,
       isInternalAuditTask,
     )
     await verificationController.getData(params)
