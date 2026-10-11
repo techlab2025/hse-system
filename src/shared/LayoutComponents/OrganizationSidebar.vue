@@ -228,7 +228,7 @@ const OrganizationRoutes = ref<Routes[]>([
   {
     link: '/organization/organization-documents',
     name: 'organization_documents',
-    icon: 'file-text',
+    icon: 'award',
     permissions: [
       PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
       PermissionsEnum.ORGANIZATION_DOCUMENTS_CREATE,
