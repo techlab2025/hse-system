@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import DatePicker from 'primevue/datepicker'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
-import HandleFIlesUpload, { 
+import HandleFIlesUpload, {
   type UploadedFile,
 } from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
 import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
@@ -43,8 +43,9 @@ const props = withDefaults(
   defineProps<{
     internalAuditPlanId?: number
     auditStatus?: string
+    readonly?: boolean
   }>(),
-  { internalAuditPlanId: 0, auditStatus: '' },
+  { internalAuditPlanId: 0, auditStatus: '', readonly: false },
 )
 const emit = defineEmits<{ saved: [] }>()
 
@@ -95,8 +96,10 @@ const isPublished = computed(
 )
 
 onMounted(async () => {
-  const projects = await projectController.fetch(projectParams)
-  projectOptions.value = [fullCompanyOption, ...projects]
+  if (!props.readonly) {
+    const projects = await projectController.fetch(projectParams)
+    projectOptions.value = [fullCompanyOption, ...projects]
+  }
   await loadPlan()
 })
 
@@ -104,6 +107,15 @@ watch(
   () => props.internalAuditPlanId,
   () => void loadPlan(),
 )
+
+function readonlyTitles(value: TitleInterface | TitleInterface[] | null): string {
+  return (
+    (Array.isArray(value) ? value : value ? [value] : [])
+      .map((item) => item.title || item.name || '')
+      .filter(Boolean)
+      .join(', ') || '—'
+  )
+}
 
 function today(): string {
   const date = new Date()
@@ -311,9 +323,7 @@ function setScheduleFiles(files: UploadedFile[]) {
 function hasValidAuditFocus(schedule: ScheduleRow): boolean {
   return Boolean(
     schedule.focus &&
-      auditFocusOptions.value.some(
-        (option) => Number(option.id) === Number(schedule.focus?.id),
-      ),
+      auditFocusOptions.value.some((option) => Number(option.id) === Number(schedule.focus?.id)),
   )
 }
 
@@ -431,6 +441,7 @@ function validate(isDraft: boolean): boolean {
 }
 
 async function submit(isDraft: boolean) {
+  if (props.readonly) return
   // if (isReported.value) {
   //   error.value = 'Issued audit reports are fixed and the audit plan can no longer be changed.'
   //   return
@@ -484,256 +495,345 @@ async function saveAsDraft() {
 </script>
 
 <template>
-  <form class="audit-plan" :class="props.auditStatus"  @submit.prevent="submit(false)">
-    <section class="audit-section">
-      <div class="section-title">
-        <span>01</span>
-        <div>
-          <h2>Audit Overview</h2>
-          <p>Define when, where, and who will conduct this internal audit.</p>
+  <form
+    class="audit-plan"
+    :class="props.readonly ? 'report-plan' : props.auditStatus"
+    @submit.prevent="submit(false)"
+  >
+    <fieldset class="plan-fields" :disabled="props.readonly">
+      <section class="audit-section">
+        <div class="section-title">
+          <span>01</span>
+          <div>
+            <h2>Audit Overview</h2>
+            <p>Define when, where, and who will conduct this internal audit.</p>
+          </div>
         </div>
-      </div>
-      <div class="form-grid">
-        <label v-if="isExisting" class="field"
-          ><span>Audit No.</span
-          ><input :value="showController.state.value.data?.title" type="text" readonly
-        /></label>
-        <label class="field"
-          ><span>Audit Start Date <b>*</b></span
-          ><DatePicker
-            v-model="auditStartDate"
-            date-format="yy-mm-dd"
-            show-icon
-            fluid
-            placeholder="Select start date"
-        /></label>
-        <label class="field"
-          ><span>Audit End Date <b>*</b></span
-          ><DatePicker
-            v-model="auditEndDate"
-            date-format="yy-mm-dd"
-            show-icon
-            fluid
-            placeholder="Select end date"
-        /></label>
-        <UpdatedCustomInputSelect
-          class="field"
-          :model-value="selectedProject"
-          :static-options="projectOptions"
-          label="Focus Area"
-          placeholder="Select a Focus Area"
-          required
-          @update:model-value="selectedProject = normalizeSingle($event)"
-        >
-          <template #option="{ option }"
-            ><span
-              >{{ option.title
-              }}<small v-if="Number(option.id) === 0" class="company-option"
-                >Company-wide audit</small
-              ></span
-            ></template
-          >
-        </UpdatedCustomInputSelect>
-        <UpdatedCustomInputSelect
-          class="field"
-          :model-value="auditStandard"
-          :controller="auditStandardController"
-          :params="auditStandardParams"
-          label="Audit Standard"
-          type="multiselect"
-          placeholder="Select audit standard"
-          required
-          @update:model-value="setAuditStandard"
-        />
-        <UpdatedCustomInputSelect
-          class="field"
-          :model-value="auditTeam"
-          :controller="employeeController"
-          :params="employeeParams"
-          type="multiselect"
-          label="Audit Team"
-          placeholder="Select audit team members"
-          required
-          @update:model-value="setTeam"
-        />
-        <UpdatedCustomInputSelect
-          class="field"
-          :model-value="leadAuditor"
-          :static-options="selectedTeamOptions"
-          label="Lead Auditor"
-          placeholder="Select from audit team"
-          required
-          @update:model-value="leadAuditor = normalizeSingle($event)"
-        />
-      </div>
-    </section>
-
-    <section class="audit-section">
-      <div class="section-title">
-        <span>02</span>
-        <div>
-          <h2>Audit Scope</h2>
-          <p>Select the departments and activities included in this audit.</p>
-        </div>
-      </div>
-      <div v-for="(scope, index) in scopes" :key="index" class="scope-row">
-        <UpdatedCustomInputSelect
-          :model-value="scope.department"
-          :controller="hierarchyController"
-          :params="hierarchyParams"
-          label="Audit Process"
-          placeholder="Select Audit Process"
-          @update:model-value="setScopeDepartment(index, $event)"
-        />
-        <UpdatedCustomInputSelect
-          :model-value="scope.activities"
-          :controller="auditActivityController"
-          :params="auditActivityParams"
-          type="multiselect"
-          label="Audit Activities"
-          placeholder="Select activities"
-          @update:model-value="setScopeActivities(index, $event)"
-        />
-        <button
-          class="icon-button danger"
-          type="button"
-          aria-label="Remove audit scope"
-          @click="scopes.splice(index, 1)"
-        >
-          ×
-        </button>
-      </div>
-      <button
-        class="outline-button"
-        type="button"
-        @click="scopes.push({ department: null, activities: [] })"
-      >
-        ＋ Add Audit Scope
-      </button>
-    </section>
-
-    <section class="audit-section">
-      <div class="section-title">
-        <span>03</span>
-        <div>
-          <h2>Audit Schedule</h2>
-          <p>Break the audit into timed activities and assign an auditor.</p>
-        </div>
-      </div>
-      <article v-for="(schedule, index) in schedules" :key="index" class="schedule-card">
-        <header>
-          <strong>Activity {{ index + 1 }}</strong
-          ><button
-            v-if="schedules.length > 1"
-            class="icon-button danger"
-            type="button"
-            @click="schedules.splice(index, 1)"
-          >
-            ×
-          </button>
-        </header>
-        <div class="schedule-grid">
-          <label class="field"
-            ><span>Start Time <b>*</b></span
-            ><DatePicker
-              v-model="schedule.startTime"
-              time-only
-              hour-format="24"
-              fluid
-              placeholder="09:00"
+        <div class="form-grid">
+          <label v-if="isExisting" class="field"
+            ><span>Audit No.</span
+            ><input :value="showController.state.value.data?.title" type="text" readonly
           /></label>
           <label class="field"
-            ><span>End Time <b>*</b></span
+            ><span>Audit Start Date <b>*</b></span
             ><DatePicker
-              v-model="schedule.endTime"
-              time-only
-              hour-format="24"
-              fluid
-              placeholder="10:00"
-          /></label>
-          <label class="field"
-            ><span>Day <b>*</b></span
-            ><DatePicker
-              v-model="schedule.day"
+              :disabled="props.readonly"
+              v-model="auditStartDate"
               date-format="yy-mm-dd"
               show-icon
               fluid
-              placeholder="Select day"
+              placeholder="Select start date"
           /></label>
-          <div
-            class="schedule-field"
-            :class="{ invalid: publishAttempted && !hasValidAuditFocus(schedule) }"
-          >
-            <UpdatedCustomInputSelect
-              class="field"
-              :model-value="schedule.focus"
-              :static-options="auditFocusOptions"
-              label="Audit Focus"
-              placeholder="Select from audit scope"
-              required
-              :aria-invalid="publishAttempted && !hasValidAuditFocus(schedule)"
-              @update:model-value="setScheduleValue(index, 'focus', $event)"
-            />
-            <p v-if="publishAttempted && !hasValidAuditFocus(schedule)" class="field-error">
-              Select an audit focus from the audit scope.
-            </p>
-          </div>
           <label class="field"
-            ><span>Location <b>*</b></span
-            ><input v-model="schedule.location" type="text" placeholder="Enter location"
+            ><span>Audit End Date <b>*</b></span
+            ><DatePicker
+              :disabled="props.readonly"
+              v-model="auditEndDate"
+              date-format="yy-mm-dd"
+              show-icon
+              fluid
+              placeholder="Select end date"
           /></label>
-          <div
-            class="schedule-field"
-            :class="{ invalid: publishAttempted && !hasValidAssignedAuditor(schedule) }"
+          <UpdatedCustomInputSelect
+            :hascontent="props.readonly"
+            :reload="!props.readonly"
+            class="field"
+            :model-value="selectedProject"
+            :static-options="projectOptions"
+            label="Focus Area"
+            placeholder="Select a Focus Area"
+            required
+            @update:model-value="selectedProject = normalizeSingle($event)"
           >
-            <UpdatedCustomInputSelect
-              class="field"
-              :model-value="schedule.assignedAuditors"
-              :static-options="selectedTeamOptions"
-              label="Assigned Auditor"
-              type="multiselect"
-              placeholder="Select from audit team"
-              required
-              :aria-invalid="publishAttempted && !hasValidAssignedAuditor(schedule)"
-              @update:model-value="setScheduleValue(index, 'assignedAuditors', $event)"
-            />
-            <p
-              v-if="publishAttempted && !hasValidAssignedAuditor(schedule)"
-              class="field-error"
+            <template #content
+              ><input
+                :value="readonlyTitles(selectedProject)"
+                class="readonly-select"
+                type="text"
+                disabled
+            /></template>
+
+            <template #option="{ option }"
+              ><span
+                >{{ option.title
+                }}<small v-if="Number(option.id) === 0" class="company-option"
+                  >Company-wide audit</small
+                ></span
+              ></template
             >
-              Select an assigned auditor from the audit team.
-            </p>
+          </UpdatedCustomInputSelect>
+          <UpdatedCustomInputSelect
+            :hascontent="props.readonly"
+            :reload="!props.readonly"
+            class="field"
+            :model-value="auditStandard"
+            :controller="props.readonly ? undefined : auditStandardController"
+            :params="auditStandardParams"
+            label="Audit Standard"
+            type="multiselect"
+            placeholder="Select audit standard"
+            required
+            @update:model-value="setAuditStandard"
+          >
+            <template #content
+              ><input
+                :value="readonlyTitles(auditStandard)"
+                class="readonly-select"
+                type="text"
+                disabled
+            /></template>
+          </UpdatedCustomInputSelect>
+          <UpdatedCustomInputSelect
+            :hascontent="props.readonly"
+            :reload="!props.readonly"
+            class="field"
+            :model-value="auditTeam"
+            :controller="props.readonly ? undefined : employeeController"
+            :params="employeeParams"
+            type="multiselect"
+            label="Audit Team"
+            placeholder="Select audit team members"
+            required
+            @update:model-value="setTeam"
+          >
+            <template #content
+              ><input
+                :value="readonlyTitles(auditTeam)"
+                class="readonly-select"
+                type="text"
+                disabled
+            /></template>
+          </UpdatedCustomInputSelect>
+          <UpdatedCustomInputSelect
+            :hascontent="props.readonly"
+            :reload="!props.readonly"
+            class="field"
+            :model-value="leadAuditor"
+            :static-options="selectedTeamOptions"
+            label="Lead Auditor"
+            placeholder="Select from audit team"
+            required
+            @update:model-value="leadAuditor = normalizeSingle($event)"
+          >
+            <template #content
+              ><input
+                :value="readonlyTitles(leadAuditor)"
+                class="readonly-select"
+                type="text"
+                disabled
+            /></template>
+          </UpdatedCustomInputSelect>
+        </div>
+      </section>
+
+      <section class="audit-section">
+        <div class="section-title">
+          <span>02</span>
+          <div>
+            <h2>Audit Scope</h2>
+            <p>Select the departments and activities included in this audit.</p>
           </div>
         </div>
-      </article>
-      <button class="outline-button" type="button" @click="schedules.push(createSchedule())">
-        ＋ Add Activity
-      </button>
-    </section>
-    <div class="schedule-shared-fields">
-      <label class="field field-wide"
-        ><span>General Instructions</span
-        ><textarea
-          v-model="generalInstructions"
-          rows="4"
-          placeholder="Add general instructions for the audit schedule"
-        />
-      </label>
-      <div class="field field-wide">
-        <HandleFIlesUpload
-          label="Plan Attachments"
-          accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
-          :multiple="true"
-          :max-files="8"
-          :file="scheduleAttachments"
-          :file-names="scheduleAttachmentFileNames"
-          @change="setScheduleFiles"
-        />
+        <div v-for="(scope, index) in scopes" :key="index" class="scope-row">
+          <UpdatedCustomInputSelect
+            :hascontent="props.readonly"
+            :reload="!props.readonly"
+            :model-value="scope.department"
+            :controller="props.readonly ? undefined : hierarchyController"
+            :params="hierarchyParams"
+            label="Audit Process"
+            placeholder="Select Audit Process"
+            @update:model-value="setScopeDepartment(index, $event)"
+          >
+            <template #content
+              ><input
+                :value="readonlyTitles(scope.department)"
+                class="readonly-select"
+                type="text"
+                disabled
+            /></template>
+          </UpdatedCustomInputSelect>
+          <UpdatedCustomInputSelect
+            :hascontent="props.readonly"
+            :reload="!props.readonly"
+            :model-value="scope.activities"
+            :controller="props.readonly ? undefined : auditActivityController"
+            :params="auditActivityParams"
+            type="multiselect"
+            label="Audit Activities"
+            placeholder="Select activities"
+            @update:model-value="setScopeActivities(index, $event)"
+          >
+            <template #content
+              ><input
+                :value="readonlyTitles(scope.activities)"
+                class="readonly-select"
+                type="text"
+                disabled
+            /></template>
+          </UpdatedCustomInputSelect>
+          <button
+            class="icon-button danger"
+            type="button"
+            aria-label="Remove audit scope"
+            @click="scopes.splice(index, 1)"
+          >
+            ×
+          </button>
+        </div>
+        <button
+          class="outline-button"
+          type="button"
+          @click="scopes.push({ department: null, activities: [] })"
+        >
+          ＋ Add Audit Scope
+        </button>
+      </section>
+
+      <section class="audit-section">
+        <div class="section-title">
+          <span>03</span>
+          <div>
+            <h2>Audit Schedule</h2>
+            <p>Break the audit into timed activities and assign an auditor.</p>
+          </div>
+        </div>
+        <article v-for="(schedule, index) in schedules" :key="index" class="schedule-card">
+          <header>
+            <strong>Activity {{ index + 1 }}</strong
+            ><button
+              v-if="schedules.length > 1"
+              class="icon-button danger"
+              type="button"
+              @click="schedules.splice(index, 1)"
+            >
+              ×
+            </button>
+          </header>
+          <div class="schedule-grid">
+            <label class="field"
+              ><span>Start Time <b>*</b></span
+              ><DatePicker
+                :disabled="props.readonly"
+                v-model="schedule.startTime"
+                time-only
+                hour-format="24"
+                fluid
+                placeholder="09:00"
+            /></label>
+            <label class="field"
+              ><span>End Time <b>*</b></span
+              ><DatePicker
+                :disabled="props.readonly"
+                v-model="schedule.endTime"
+                time-only
+                hour-format="24"
+                fluid
+                placeholder="10:00"
+            /></label>
+            <label class="field"
+              ><span>Day <b>*</b></span
+              ><DatePicker
+                :disabled="props.readonly"
+                v-model="schedule.day"
+                date-format="yy-mm-dd"
+                show-icon
+                fluid
+                placeholder="Select day"
+            /></label>
+            <div
+              class="schedule-field"
+              :class="{ invalid: publishAttempted && !hasValidAuditFocus(schedule) }"
+            >
+              <UpdatedCustomInputSelect
+                :hascontent="props.readonly"
+                :reload="!props.readonly"
+                class="field"
+                :model-value="schedule.focus"
+                :static-options="auditFocusOptions"
+                label="Audit Focus"
+                placeholder="Select from audit scope"
+                required
+                :aria-invalid="publishAttempted && !hasValidAuditFocus(schedule)"
+                @update:model-value="setScheduleValue(index, 'focus', $event)"
+              >
+                <template #content
+                  ><input
+                    :value="readonlyTitles(schedule.focus)"
+                    class="readonly-select"
+                    type="text"
+                    disabled
+                /></template>
+              </UpdatedCustomInputSelect>
+              <p v-if="publishAttempted && !hasValidAuditFocus(schedule)" class="field-error">
+                Select an audit focus from the audit scope.
+              </p>
+            </div>
+            <label class="field"
+              ><span>Location <b>*</b></span
+              ><input v-model="schedule.location" type="text" placeholder="Enter location"
+            /></label>
+            <div
+              class="schedule-field"
+              :class="{ invalid: publishAttempted && !hasValidAssignedAuditor(schedule) }"
+            >
+              <UpdatedCustomInputSelect
+                :hascontent="props.readonly"
+                :reload="!props.readonly"
+                class="field"
+                :model-value="schedule.assignedAuditors"
+                :static-options="selectedTeamOptions"
+                label="Assigned Auditor"
+                type="multiselect"
+                placeholder="Select from audit team"
+                required
+                :aria-invalid="publishAttempted && !hasValidAssignedAuditor(schedule)"
+                @update:model-value="setScheduleValue(index, 'assignedAuditors', $event)"
+              >
+                <template #content
+                  ><input
+                    :value="readonlyTitles(schedule.assignedAuditors)"
+                    class="readonly-select"
+                    type="text"
+                    disabled
+                /></template>
+              </UpdatedCustomInputSelect>
+              <p v-if="publishAttempted && !hasValidAssignedAuditor(schedule)" class="field-error">
+                Select an assigned auditor from the audit team.
+              </p>
+            </div>
+          </div>
+        </article>
+        <button class="outline-button" type="button" @click="schedules.push(createSchedule())">
+          ＋ Add Activity
+        </button>
+      </section>
+      <div class="schedule-shared-fields">
+        <label class="field field-wide"
+          ><span>General Instructions</span
+          ><textarea
+            v-model="generalInstructions"
+            rows="4"
+            placeholder="Add general instructions for the audit schedule"
+          />
+        </label>
+        <div class="field field-wide">
+          <HandleFIlesUpload
+            :readonly="props.readonly"
+            label="Plan Attachments"
+            accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
+            :multiple="true"
+            :max-files="8"
+            :file="scheduleAttachments"
+            :file-names="scheduleAttachmentFileNames"
+            @change="setScheduleFiles"
+          />
+        </div>
       </div>
-    </div>
-    <p v-if="error" class="form-error" role="alert">{{ error }}</p>
-    <p v-if="success" class="form-success" role="status">{{ success }}</p>
-    <footer class="form-actions">
+      <p v-if="error" class="form-error" role="alert">{{ error }}</p>
+      <p v-if="success" class="form-success" role="status">{{ success }}</p>
+    </fieldset>
+    <footer v-if="!props.readonly" class="form-actions">
       <button
         v-if="!isPublished"
         class="btn btn-secondary"
@@ -743,7 +843,12 @@ async function saveAsDraft() {
       >
         {{ saving ? 'Saving…' : 'Save as Draft' }}
       </button>
-      <button class="btn btn-primary" type="submit" v-if="props.auditStatus !== 'planned'" :disabled="saving">
+      <button
+        class="btn btn-primary"
+        type="submit"
+        v-if="props.auditStatus !== 'planned'"
+        :disabled="saving"
+      >
         {{ saving ? 'Saving…' : isPublished ? 'Save Changes' : 'Publish Plan' }}
       </button>
     </footer>
@@ -751,10 +856,24 @@ async function saveAsDraft() {
 </template>
 
 <style scoped>
-.planned{
-       opacity: 0.7;
-      cursor: not-allowed;
-      pointer-events: none; 
+.plan-fields {
+  display: contents;
+}
+.readonly-select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--main-border);
+  border-radius: 10px;
+  color: var(--text-primary);
+  background: var(--surface-2);
+}
+.report-plan button {
+  display: none;
+}
+.planned {
+  opacity: 0.7;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 :deep(.upload-area) {
   border: 1px solid lightgray !important;

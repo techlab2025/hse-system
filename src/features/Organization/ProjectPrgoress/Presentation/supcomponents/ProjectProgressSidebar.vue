@@ -140,6 +140,12 @@ const AllPagesToView = ref([
     link: '/organization/organization-employee?type=3',
   },
   {
+    id: ProjectProgressEnum.Department,
+    title: 'Departments',
+    description: 'Create departments before adding their positions',
+    link: '/organization/herikaly?type=3',
+  },
+  {
     id: ProjectProgressEnum.Heirarchy,
     title: 'Positions',
     description: 'Define positions structure and assign related project roles',

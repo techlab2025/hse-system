@@ -19,8 +19,9 @@ const props = withDefaults(
     internalAuditPlanId?: number
     auditStatus?: string
     auditStartDate?: string
+    readonly?: boolean
   }>(),
-  { internalAuditPlanId: 0, auditStatus: '', auditStartDate: '' },
+  { internalAuditPlanId: 0, auditStatus: '', auditStartDate: '', readonly: false },
 )
 
 const fetchController = FetchInternalAuditAttendanceController.getInstance()
@@ -44,12 +45,14 @@ const canManageAttendance = computed(() => {
   const status = props.auditStatus.toLowerCase()
   const today = new Date().toISOString().slice(0, 10)
   return (
+    !props.readonly &&
     props.internalAuditPlanId > 0 &&
     status === 'planned' &&
     (!props.auditStartDate || props.auditStartDate.slice(0, 10) <= today)
   )
 })
 const attendanceDisabledMessage = computed(() => {
+  if (props.readonly) return ''
   if (!props.internalAuditPlanId || !props.auditStatus) return ''
   if (props.auditStatus.toLowerCase() === 'reported') {
     return 'This audit has been reported. Attendance is read-only.'
@@ -88,11 +91,13 @@ function setMeetingStatus(
   key: 'openMeeting' | 'closeMeeting',
   value: boolean,
 ) {
+  if (props.readonly) return
   item[key] = value
   success.value = ''
 }
 
 async function saveAttendance() {
+  if (props.readonly) return
   if (!attendance.value.length || isSaving.value) return
 
   error.value = ''
@@ -114,6 +119,7 @@ async function saveAttendance() {
 }
 
 async function addAttendees() {
+  if (props.readonly) return
   if (!selectedEmployees.value.length || isAddingParticipants.value) return
 
   error.value = ''
@@ -147,8 +153,8 @@ onMounted(fetchAttendance)
         <h2>Audit Attendance</h2>
         <p>Track attendance for the opening and closing meetings.</p>
       </div>
-      <div class="header-actions">
-       <!-- <button
+      <div v-if="!props.readonly" class="header-actions">
+        <!-- <button
           class="secondary-button"
           type="button"
           :disabled="isLoading"
@@ -170,7 +176,7 @@ onMounted(fetchAttendance)
       </div>
     </header>
 
-    <!-- <p v-if="error" class="message error" role="alert">{{ error }}</p> -->
+    <p v-if="error" class="message error" role="alert">{{ error }}</p>
     <!-- <p v-if="success" class="message success" role="status">{{ success }}</p>
     <p v-if="!canManageAttendance" class="stage-note">
       Attendance can be updated after the plan is published and the audit start date is reached.
@@ -281,6 +287,7 @@ onMounted(fetchAttendance)
       </section>
 
       <button
+        v-if="!props.readonly"
         class="primary-button save-button"
         type="button"
         :disabled="!canManageAttendance || isSaving"
@@ -297,6 +304,7 @@ onMounted(fetchAttendance)
     </div>
 
     <Dialog
+      v-if="!props.readonly"
       v-model:visible="attendeeDialogVisible"
       modal
       header="Add audit attendees"

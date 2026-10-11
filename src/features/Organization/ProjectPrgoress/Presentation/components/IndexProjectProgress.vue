@@ -5,6 +5,10 @@ import { useRouter } from 'vue-router'
 import IndexProjectProgressController from '../controllers/indexProjectProgressController'
 import IndexProjectProgressParams from '../../Core/params/indexProjectProgressParams'
 import { ProjectProgressEnum } from '../../Core/Enum/ProjectProgressEnum'
+import { DataEmpty, DataSuccess } from '@/base/core/networkStructure/Resources/dataState/data_state'
+import IndexHerikalyUseCase from '@/features/Organization/Herikaly/Domain/useCase/indexHerikalyUseCase'
+import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams'
+import { countHierarchyEntries, splitHierarchySteps } from '../utils/hierarchySetupSteps'
 
 import ProjectProgressHeader from '../supcomponents/ProjectProgressHeader.vue'
 import ProjectProgressSidebar from '../supcomponents/ProjectProgressSidebar.vue'
@@ -35,7 +39,7 @@ const AddOrganization = defineAsyncComponent(
   () => import('@/views/Organization/OrganizationEmployee/AddOrganization.vue'),
 )
 const AddHerikaly = defineAsyncComponent(
-  () => import('@/views/Organization/Herikaly/AddHerikaly.vue'),
+  () => import('@/features/Organization/Herikaly/Presentation/components/AddHerikaly.vue'),
 )
 const AddCountry = defineAsyncComponent(
   () => import('@/views/Admin/Location/Country/AddCountry.vue'),
@@ -123,7 +127,23 @@ const RootCausesActionsButtons = defineAsyncComponent(
 const indexProjectProgressController = IndexProjectProgressController.getInstance()
 const state = ref(indexProjectProgressController.state.value)
 
+const hierarchyCounts = ref({ departments: 0, positions: 0 })
+const hierarchyError = ref('')
+const hierarchyUseCase = new IndexHerikalyUseCase()
+
 const getProjectProgress = async () => {
+  hierarchyError.value = ''
+  try {
+    const result = await hierarchyUseCase.call(new IndexHerikalyParams('', 1, 1000, 0, false, null))
+    if (result instanceof DataSuccess || result instanceof DataEmpty) {
+      hierarchyCounts.value = countHierarchyEntries(result.data ?? [])
+    } else {
+      hierarchyError.value =
+        result.error?.title || 'Unable to load department and position progress.'
+    }
+  } catch {
+    hierarchyError.value = 'Unable to load department and position progress.'
+  }
   const params = new IndexProjectProgressParams('', 1, 10, 0)
   await indexProjectProgressController.getData(params)
 }
@@ -158,7 +178,7 @@ const ActiveItem = ref(
 const GetActiveItem = (value: number) => (ActiveItem.value = value)
 
 const sidebarItems = computed(() => {
-  const items = state.value.data?.progressItems ?? []
+  const items = splitHierarchySteps(state.value.data?.progressItems ?? [], hierarchyCounts.value)
 
   if (presetDataCloned.value) {
     return items
@@ -175,6 +195,25 @@ const sidebarItems = computed(() => {
     ...items,
   ]
 })
+
+const setupProgress = computed(() => {
+  const required = sidebarItems.value.filter((item) => item.required)
+  if (required.length)
+    return Math.round((required.filter((item) => item.progress).length / required.length) * 100)
+  const incompleteHierarchy = sidebarItems.value.some(
+    (item) =>
+      [ProjectProgressEnum.Department, ProjectProgressEnum.Heirarchy].includes(item.id) &&
+      !item.progress,
+  )
+  return incompleteHierarchy
+    ? Math.min(state.value.data?.progress ?? 0, 99)
+    : (state.value.data?.progress ?? 0)
+})
+const handleStepSaved = async () => {
+  const savedStep = ActiveItem.value
+  await getProjectProgress()
+  if (savedStep === ProjectProgressEnum.Department) ActiveItem.value = ProjectProgressEnum.Heirarchy
+}
 
 const AllPagesToView = [
   {
@@ -209,11 +248,19 @@ const AllPagesToView = [
     description: 'Define employees structure and assign roles within the organization',
   },
   {
-    id: ProjectProgressEnum.Heirarchy,
+    id: ProjectProgressEnum.Department,
     component: AddHerikaly,
     actionsComponent: HerikalyActionsButtons,
+    componentProps: { mode: 'department' },
+    title: 'Departments',
+    description: 'Add the departments that positions will belong to.',
+  },
+  {
+    id: ProjectProgressEnum.Heirarchy,
+    component: AddHerikaly,
+    componentProps: { mode: 'position' },
     title: 'Positions',
-    description: 'Define positions structure and assign related project roles',
+    description: 'Select a department, then add its positions and required training.',
   },
   {
     id: ProjectProgressEnum.Country,
@@ -389,7 +436,10 @@ watch(
 
     <DataStatus :controller="state">
       <template #success>
-        <ProjectProgressHeader :progressValue="state.data?.progress ?? 0" />
+        <p v-if="hierarchyError" role="alert">
+          {{ hierarchyError }} <button type="button" @click="getProjectProgress">Retry</button>
+        </p>
+        <ProjectProgressHeader :progressValue="setupProgress" />
 
         <div class="project-progress-body-container">
           <div
@@ -400,7 +450,7 @@ watch(
               @update:ActiveItem="GetActiveItem"
               :active-item="ActiveItem"
               :sidebarItems="sidebarItems"
-              :projectProgress="state.data?.progress ?? 0"
+              :projectProgress="setupProgress"
             />
 
             <div v-if="showOverlay && !startNextNote" class="overlay-note sidebar-note">
@@ -419,7 +469,7 @@ watch(
             </div>
           </div>
 
-          <div class="lottie-container" v-if="state.data?.progress == 100">
+          <div class="lottie-container" v-if="setupProgress === 100">
             <div class="lottie-header">
               <h2 class="title">Data Completed Successfully</h2>
               <p class="text">You can now start using the system</p>
@@ -505,9 +555,10 @@ watch(
             <component
               :is="selectedPage.component"
               :key="selectedPage.id"
+              v-bind="selectedPage.componentProps ?? {}"
               class="full-content"
-              @update:data="getProjectProgress"
-              v-if="state.data?.progress != 100 && selectedPage.component"
+              @update:data="handleStepSaved"
+              v-if="setupProgress !== 100 && selectedPage.component"
             />
             <!-- animationComplatedData2 -->
           </div>
@@ -517,11 +568,11 @@ watch(
           title="Add Your Own Data To Start Using System Easily"
           :index="6"
           :visible="
-            state.data?.progress == 0 &&
+            setupProgress === 0 &&
             !showOverlay &&
             !startNextNote &&
             !visited &&
-            !state.data.progressItems.find((el) => el.progress)
+            !state.data?.progressItems.find((el) => el.progress)
           "
           @Gotit="setGotit"
         />

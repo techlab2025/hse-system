@@ -17,10 +17,10 @@ const emit = defineEmits<{
 function statusLabel(status: unknown): string {
   const value = String(status ?? '')
   const numericLabels: Record<string, string> = {
-    '0': 'Pending',
-    '1': 'Open',
-    '2': 'In progress',
-    '3': 'Closed',
+    '1': 'Pending',
+    '2': 'Open',
+    '3': 'In progress',
+    '4': 'Closed',
   }
   return (numericLabels[value] ?? value.split('_').join(' ')) || 'Unknown'
 }
@@ -55,7 +55,7 @@ function createdAtLabel(value: string): string {
             <th>Lead Auditor</th>
             <!-- <th>Due</th> -->
             <th>Status</th>
-            <th>Lead Review</th>
+            <!-- <th>Lead Review</th> -->
             <th><span class="sr-only">Actions</span></th>
           </tr>
         </thead>
@@ -80,7 +80,7 @@ function createdAtLabel(value: string): string {
             <td>
               <span class="status">{{ statusLabel(item.status) }}</span>
             </td>
-            <td>{{ item.leadReviewStatus || item.leadReview.name || 'Pending' }}</td>
+            <!-- <td>{{ item.leadReviewStatus || item.leadReview.name || 'Pending' }}</td> -->
             <td class="row-action">
               <button
                 type="button"
