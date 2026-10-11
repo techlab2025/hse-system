@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { debounce } from '@/base/Presentation/utils/debouced'
@@ -24,7 +24,12 @@ import { ChangeApprovalMangementEnum } from '../../Core/Core/ChangeApprovalEnum'
 
 const { t } = useI18n()
 const route = useRoute()
-const projectId = Number(route.query.project_id || route.params.id)
+const projectId = computed(() => {
+  const value = route.query.project_id ?? route.params.project_id ??
+    (route.path.includes('/project-details/') ? route.params.id : undefined)
+  const id = Number(Array.isArray(value) ? value[0] : value)
+  return Number.isInteger(id) && id > 0 ? id : undefined
+})
 const word = ref('')
 const currentPage = ref(1)
 const countPerPage = ref(10)
@@ -32,8 +37,8 @@ const controller = IndexMangementChangeController.getInstance()
 const state = ref(controller.state.value)
 
 const addLink = computed(() => {
-  if (Number.isInteger(projectId) && projectId > 0) {
-    return `/organization/management-of-change/add?project_id=${projectId}`
+  if (projectId.value !== undefined) {
+    return `/organization/management-of-change/add?project_id=${projectId.value}`
   }
 
   return '/organization/management-of-change/add'
@@ -65,14 +70,17 @@ const fetchMangementChanges = async (
       page,
       limit,
       1,
-      Number.isInteger(projectId) && projectId > 0
-        ? projectId
+      projectId.value !== undefined
+        ? projectId.value
         : null,
     ),
   )
 }
 
-onMounted(() => fetchMangementChanges())
+watch(projectId, () => {
+  currentPage.value = 1
+  fetchMangementChanges(word.value, 1, countPerPage.value)
+}, { immediate: true })
 watch(
   () => controller.state.value,
   (value) => {
@@ -101,7 +109,7 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
   {
     text: t('edit'),
     icon: ActionsTableEdit,
-    link: `/organization/management-of-change/${id}?project_id=${projectId}`,
+    link: `/organization/management-of-change/${id}${projectId.value ? `?project_id=${projectId.value}` : ''}`,
     permission: featurePermissions,
   },
   {

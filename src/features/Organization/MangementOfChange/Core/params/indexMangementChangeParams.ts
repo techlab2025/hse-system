@@ -16,7 +16,9 @@ export default class IndexMangementChangeParams implements Params {
     data.paginate = this.withPage
     data.page = this.pageNumber
     data.limit = this.perPage
-    if (this.projectId) data.project_id = this.projectId
+    if (this.projectId !== null && Number.isInteger(this.projectId) && this.projectId > 0) {
+      data.project_id = this.projectId
+    }
 
     return data
   }

@@ -34,12 +34,16 @@ export default class AddMangementChangeParams implements Params {
     public management_change_topic_text?: string,
     public initiatore_employee_id?: number,
     public serial?: string,
+    public projectId?: number,
   ) {}
 
   public static readonly validation = new ClassValidation().setRules({})
 
   toMap(): Record<string, unknown> {
     const data: Record<string, unknown> = {
+      ...(Number.isInteger(this.projectId) && this.projectId! > 0
+        ? { project_id: this.projectId }
+        : {}),
       risk_assisment_file: this.risk_assisment_file,
       attachments: this.image,
       changer_request_id: this.changer_request_id,

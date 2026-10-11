@@ -78,7 +78,7 @@ const statusOptions = ref<TitleInterface[]>([
             :model-value="statusFilter"
             :static-options="statusOptions"
             label="Status"
-            placeholder="Sekect statuses"
+            placeholder="select statuses"
             class="input"
             @update:model-value="normalizeStatus"
           />

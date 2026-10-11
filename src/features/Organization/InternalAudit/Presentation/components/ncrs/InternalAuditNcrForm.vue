@@ -6,8 +6,6 @@ import IndexOrganizatoinEmployeeController from '@/features/Organization/Organiz
 import HandleFIlesUpload, {
   type UploadedFile,
 } from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
-import IndexAuditStandardParams from '@/features/Organization/AuditStandard/Core/params/indexAuditStandardParams'
-import IndexAuditStandardController from '@/features/Organization/AuditStandard/Presentation/controllers/indexAuditStandardController'
 import IndexRootCausesParams from '@/features/setting/RootCauses/Core/params/indexRootCausesParams'
 import IndexRootCausesController from '@/features/setting/RootCauses/Presentation/controllers/indexRootCausesController'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
@@ -23,7 +21,6 @@ import type InternalAuditNcrDetailsModel from '../../../Data/models/ncrs/Interna
 import CreateNcrsController from '../../controllers/ncrs/createNcrsController'
 import EditNcrsController from '../../controllers/ncrs/editNcrsController'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
-import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 type ActionForm = {
   correction: string
@@ -42,11 +39,12 @@ const props = withDefaults(
     internalAuditPlanId: number
     auditSerialName: string
     areaOptions: TitleInterface[]
+    standardOptions?: TitleInterface[]
     details?: InternalAuditNcrDetailsModel | null
     readonly?: boolean
     embedded?: boolean
   }>(),
-  { details: null, readonly: false, embedded: false },
+  { details: null, readonly: false, embedded: false, standardOptions: () => [] },
 )
 
 const emit = defineEmits<{
@@ -59,14 +57,11 @@ const createController = CreateNcrsController.getInstance()
 const editController = EditNcrsController.getInstance()
 const employeeController = IndexOrganizatoinEmployeeController.getInstance()
 const rootCauseController = IndexRootCausesController.getInstance()
-const auditStandardController = IndexAuditStandardController.getInstance()
 const employeeParams = new IndexOrganizatoinEmployeeParams('', 1, 1000, 0)
 const rootCauseParams = new IndexRootCausesParams('', 1, 1000, 0)
-const auditStandardParams = new IndexAuditStandardParams('', 1, 1000, 0)
 
 const category = ref<NcrCategoryEnum>(NcrCategoryEnum.MINOR_NC)
 const serialNumber = ref('')
-const projectStatus = useProjectAppStatusStore()
 const areaUnderReviews = ref<TitleInterface[]>([])
 const auditStandard = ref<TitleInterface | null>(null)
 const requirementReference = ref('')
@@ -322,6 +317,7 @@ watch(() => props.details, initializeForm, { immediate: true })
           required
           @update:model-value="areaUnderReviews = normalizeMultiple($event)"
         />
+
         <label v-if="isReadOnly" class="field">
           <span>Audit standard</span>
           <select disabled>
@@ -331,9 +327,8 @@ watch(() => props.details, initializeForm, { immediate: true })
         <UpdatedCustomInputSelect
           v-else
           class="field"
+          :static-options="standardOptions"
           :model-value="auditStandard"
-          :controller="auditStandardController"
-          :params="auditStandardParams"
           label="Audit standard"
           placeholder="Select audit standard"
           required

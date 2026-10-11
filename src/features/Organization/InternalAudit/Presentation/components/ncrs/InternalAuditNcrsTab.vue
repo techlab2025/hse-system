@@ -41,6 +41,7 @@ const auditLeadAuditor = ref<TitleInterface | null>(null)
 const auditDetailsStatus = ref<string | number>('')
 const auditDetailsStartDate = ref('')
 const areaOptions = ref<TitleInterface[]>([])
+const standardOptions = ref<TitleInterface[]>([])
 const feedback = ref('')
 const hasError = ref(false)
 
@@ -92,6 +93,7 @@ async function fetchNcrs() {
 }
 
 async function fetchAuditDetails() {
+  standardOptions.value = []
   if (!currentAuditId.value) return
   await showPlanController.getData(new ShowInternalAuditPlanParams(currentAuditId.value))
   if (!showPlanController.isDataSuccess() || !showPlanController.state.value.data) {
@@ -102,6 +104,7 @@ async function fetchAuditDetails() {
   }
 
   const plan = showPlanController.state.value.data
+  standardOptions.value = plan.auditStandards
   auditSerialName.value = plan.serial_name || plan.title
   const leadAuditor = plan.auditTeam.find((entry) => {
     const member = (entry ?? {}) as Record<string, unknown>
@@ -233,6 +236,7 @@ onBeforeUnmount(() => {
       :internal-audit-plan-id="currentAuditId"
       :audit-serial-name="auditSerialName"
       :area-options="areaOptions"
+      :standard-options="standardOptions"
       :details="selectedDetails"
       :readonly="openedNcrHasResult"
       @close="closeForm"

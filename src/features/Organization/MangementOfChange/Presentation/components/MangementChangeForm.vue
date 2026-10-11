@@ -37,7 +37,12 @@ const props = defineProps<{ data?: MangementChangeModel }>()
 
 const route = useRoute()
 const { t } = useI18n()
-const projectId = Number(route.query.project_id || route.params.id)
+const projectId = computed(() => {
+  const value = route.query.project_id ?? route.params.project_id ??
+    (route.path.includes('/project-details/') ? route.params.id : undefined)
+  const id = Number(Array.isArray(value) ? value[0] : value)
+  return Number.isInteger(id) && id > 0 ? id : undefined
+})
 const formKey = ref(0)
 
 const riskAssismentFile = ref<string | null>(null)
@@ -93,8 +98,8 @@ const indexOrganizatoinEmployeeidParams =
     undefined,
     undefined,
     false,
-    Number.isInteger(projectId) && projectId > 0
-      ? projectId
+    projectId.value !== undefined
+      ? projectId.value
       : null,
   )
 
@@ -169,7 +174,7 @@ const updateData = () => {
         props.data.id,
         ...formParams.value,
       )
-      : new AddMangementChangeParams(...formParams.value),
+      : new AddMangementChangeParams(...formParams.value, projectId.value),
   )
 }
 

@@ -42,6 +42,7 @@ export default class InternalAuditPlanModel extends TitleInterface {
     public attachments: string[] = [],
     public attachmentFileNames: string[] = [],
     public auditee: TitleInterface | null = null,
+    public auditStandards: TitleInterface[] = auditStandard ? [auditStandard] : [],
   ) {
     super({ id, title })
   }
@@ -49,7 +50,14 @@ export default class InternalAuditPlanModel extends TitleInterface {
   static fromMap(data: unknown): InternalAuditPlanModel {
     const item = (data ?? {}) as Record<string, unknown>
     const project = item.project as Record<string, unknown> | null | undefined
-    const auditStandard = item.audit_standard as Record<string, unknown> | null | undefined
+    const rawStandards = item.audit_standards ?? item.audit_standard
+    const auditStandards = (Array.isArray(rawStandards) ? rawStandards : rawStandards ? [rawStandards] : [])
+      .filter((entry): entry is Record<string, unknown> => Boolean(entry) && typeof entry === 'object')
+      .map((entry) => new TitleInterface({
+        id: Number(entry.id ?? 0),
+        title: String(entry.title ?? entry.name ?? ''),
+      }))
+      .filter((entry) => entry.id > 0)
     const rawLeader = (item.leader ?? item.lead_auditor) as
       | Record<string, unknown>
       | null
@@ -76,12 +84,7 @@ export default class InternalAuditPlanModel extends TitleInterface {
         ? new TitleInterface({ id: Number(project.id ?? 0), title: String(project.title ?? '') })
         : null,
       Boolean(item.full_company),
-      auditStandard
-        ? new TitleInterface({
-            id: Number(auditStandard.id ?? 0),
-            title: String(auditStandard.title ?? ''),
-          })
-        : null,
+      auditStandards[0] ?? null,
       Array.isArray(item.audit_team) ? item.audit_team : [],
       Array.isArray(item.audit_scope) ? item.audit_scope : [],
       Array.isArray(item.audit_schedule) ? item.audit_schedule : [],
@@ -103,6 +106,7 @@ export default class InternalAuditPlanModel extends TitleInterface {
             title: String(auditeeEmployee.title ?? auditeeEmployee.name ?? ''),
           })
         : null,
+      auditStandards,
     )
   }
 

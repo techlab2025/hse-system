@@ -162,13 +162,7 @@ async function loadPlan() {
   auditStartDate.value = dateFromString(plan.auditStartDate)
   auditEndDate.value = dateFromString(plan.auditEndDate)
   selectedProject.value = plan.fullCompany ? fullCompanyOption : plan.project
-  auditStandard.value = Array.isArray(plan.auditStandard)
-    ? plan.auditStandard
-        .map((entry) => titleFrom(entry))
-        .filter((standard): standard is TitleInterface => Boolean(standard))
-    : plan.auditStandard
-      ? [titleFrom(plan.auditStandard) as TitleInterface].filter(Boolean)
-      : []
+  auditStandard.value = plan.auditStandards
 
   auditTeam.value = plan.auditTeam
     .map((entry) => {
