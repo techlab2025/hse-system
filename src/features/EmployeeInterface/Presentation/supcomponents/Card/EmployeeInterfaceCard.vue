@@ -15,6 +15,7 @@ interface CardAction {
 interface EmpCard {
   type: empCardEnum
   title: string
+  eyebrow: string
   subtitle: string
   img: string
   actions: CardAction[]
@@ -25,6 +26,7 @@ const cards: EmpCard[] = [
   {
     type: empCardEnum.Inspection,
     title: 'Inspection',
+    eyebrow: 'Stay proactive',
     subtitle: 'Complete an inspection to verify compliance with safety standards and procedures.',
     img: empCardImg,
     actions: [
@@ -36,13 +38,14 @@ const cards: EmpCard[] = [
       {
         title: 'Inspection logs',
         route: `/organization/equipment-mangement/inspection?inspectionType=${InspectionPageType.Result}`,
-        show: true
+        show: true,
       },
     ],
   },
   {
     type: empCardEnum.Observation,
     title: 'Observation',
+    eyebrow: 'See it. Share it.',
     subtitle: 'Document safety observations in line with organizational standards.',
     img: observationImg,
     actions: [
@@ -61,6 +64,7 @@ const cards: EmpCard[] = [
   {
     type: empCardEnum.Incident,
     title: 'Incident',
+    eyebrow: 'Make a difference',
     subtitle: 'Report and review incidents to ensure proper investigation and corrective actions.',
     img: incidentImg,
     actions: [
@@ -72,42 +76,50 @@ const cards: EmpCard[] = [
       {
         title: 'View Incident',
         route: '/organization/equipment-mangement/incedant?isAll=1',
-        show: true
+        show: true,
       },
     ],
   },
 ]
-
-const buttons = [{ title: 'Daily Inspection' }, { title: 'View Inspection Logs' }]
 </script>
 <template>
   <div class="employee-interface-wrapper">
-    <div v-for="card in cards" :key="card.type" class="employee-interface-card" :class="card.title">
+    <article
+      v-for="(card, cardIndex) in cards"
+      :key="card.type"
+      class="employee-interface-card"
+      :class="card.title"
+      :aria-labelledby="`employee-card-${card.type}`"
+    >
       <div class="card-text">
-        <div class="info-sub-wrapper">
-          <div class="info-wrapper">
-            <p class="card-title">{{ card.title }}</p>
-            <p class="card-subtitle">{{ card.subtitle }}</p>
-          </div>
-          <div>
-            <img :src="card.img" alt="card image" />
-          </div>
+        <div class="card-eyebrow">
+          <span class="card-number" aria-hidden="true">0{{ cardIndex + 1 }}</span>
+          <span>{{ card.eyebrow }}</span>
         </div>
-
-        <div class="actions-button">
-          <!-- v-if="action.show" -->
-          <div v-for="(action, index) in card.actions" :key="index">
-            <button @click="$router.push(action.route)" :class="index === 0 ? 'button-main' : 'button-view'">
-              {{ action.title }}
-            </button>
-          </div>
+        <div class="info-wrapper">
+          <h2 :id="`employee-card-${card.type}`" class="card-title">{{ card.title }}</h2>
+          <p class="card-subtitle">{{ card.subtitle }}</p>
         </div>
       </div>
 
-      <!-- Desktop image -->
-      <div class="lotty-card-img">
-        <img :src="card.img" alt="card image" />
+      <div class="card-illustration" aria-hidden="true">
+        <span class="illustration-orbit"></span>
+        <img :src="card.img" alt="" />
       </div>
-    </div>
+
+      <div class="actions-button">
+        <RouterLink
+          v-for="(action, index) in card.actions"
+          :key="action.route"
+          :to="action.route"
+          :class="index === 0 ? 'button-main' : 'button-view'"
+        >
+          <span>{{ action.title }}</span>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 12h14m-6-6 6 6-6 6" />
+          </svg>
+        </RouterLink>
+      </div>
+    </article>
   </div>
 </template>
