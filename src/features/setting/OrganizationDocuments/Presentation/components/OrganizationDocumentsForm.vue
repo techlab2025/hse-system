@@ -108,7 +108,7 @@ const getMissingFields = () => {
   if (!issueDate.value) errors.issue_date = 'Issue date is required'
   if (!reviewDate.value) errors.nex_review_date = 'Next review date is required'
   if (!documentCategory.value?.id) errors.document_category_id = 'Document category is required'
-  if (!documentFile.value) errors.document_file = fileError.value || 'Document file is required'
+  if (fileError.value) errors.document_file = fileError.value
   return errors
 }
 
@@ -214,7 +214,7 @@ defineExpose({ validateRequiredFields })
   </div>
 
   <div class="input-wrapper col-span-4" data-required-field="document_file">
-    <label>{{ $t('document_file') }} <span>*</span></label>
+    <label>{{ $t('document_file') }}</label>
     <FileUpload
       :index="1"
       :initial-file-data="initialFile"
