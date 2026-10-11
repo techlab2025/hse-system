@@ -217,6 +217,8 @@ onMounted(fetchDocuments)
       </template>
       <template #failed>
         <DataFailed
+         :link="`${baseRoute}/add`"
+            :add-text="$t('add_organization_documents')"
           :title="$t('organization_documents')"
           :description="$t('organization_documents_load_failed')"
         />
