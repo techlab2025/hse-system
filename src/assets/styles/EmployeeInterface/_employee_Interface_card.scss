@@ -47,6 +47,81 @@
     }
   }
 
+  .employee-project-picker {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 20px 24px;
+    border: 1px solid var(--main-border);
+    border-radius: 20px;
+    background: var(--surface-1);
+    color: var(--text-primary);
+
+    label {
+      font-size: 16px;
+      font-weight: 700;
+    }
+    p {
+      margin: 6px 0 0;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    select {
+      min-height: 46px;
+      flex: 0 1 280px;
+      width: 100%;
+      max-width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--main-border);
+      border-radius: 12px;
+      background: var(--surface-1);
+      color: var(--text-primary);
+      font: inherit;
+    }
+    select:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--brand-primary-600);
+      outline-offset: 3px;
+    }
+    button {
+      color: var(--brand-primary-600);
+      text-decoration: underline;
+    }
+  }
+
+  .project-required-note {
+    flex-basis: 100%;
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-muted);
+  }
+
+  .actions-button button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  .employee-interface-card {
+    &.Permit-to-Work {
+      --card-accent: var(--brand-primary-700);
+    }
+    &.Induction {
+      --card-accent: var(--brand-accent-700);
+    }
+    &.Management-of-Change {
+      --card-accent: var(--brand-secondary-700);
+    }
+    &.Leadership {
+      --card-accent: var(--brand-primary-600);
+    }
+    &.Risk-Assessment {
+      --card-accent: var(--brand-accent-700);
+    }
+  }
+
   .card-text {
     grid-area: content;
     min-width: 0;
@@ -148,7 +223,8 @@
     flex-wrap: wrap;
     gap: 12px;
 
-    a {
+    a,
+    button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -245,7 +321,8 @@
       align-items: stretch;
       gap: 10px;
 
-      a {
+      a,
+      button {
         flex: 1 1 180px;
       }
     }
@@ -254,7 +331,8 @@
   @media (prefers-reduced-motion: reduce) {
     .employee-interface-card,
     .card-illustration img,
-    .actions-button a {
+    .actions-button a,
+    .actions-button button {
       transition: none;
     }
   }
