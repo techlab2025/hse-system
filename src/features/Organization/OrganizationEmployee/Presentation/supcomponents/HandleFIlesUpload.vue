@@ -24,6 +24,7 @@ interface Props {
   base64File?: string | string[]
   hidepreview?: boolean
   required?: boolean
+  readonly?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -57,6 +58,7 @@ const props = withDefaults(defineProps<Props>(), {
   maxFiles: Infinity,
   multiple: false,
   required: false,
+  readonly: false,
 })
 
 const emit = defineEmits<{
@@ -175,6 +177,7 @@ const fileToBase64 = (file: File): Promise<string> =>
   })
 
 const handleFileUpload = async (event: Event) => {
+  if (props.readonly) return
   const input = event.target as HTMLInputElement
   if (!input.files?.length) return
 
@@ -224,6 +227,7 @@ const downloadFile = (file: UploadedFile) => {
 }
 
 const removeFile = (id: string) => {
+  if (props.readonly) return
   const target = files.value.find((f) => f.id === id)
   if (target?.url.startsWith('blob:')) URL.revokeObjectURL(target.url)
   files.value = files.value.filter((f) => f.id !== id)
@@ -247,7 +251,7 @@ const inputId = `file-upload-${props.index ?? Math.random().toString(36).substri
     </label>
 
     <label
-      v-if="!haveContent"
+      v-if="!readonly && !haveContent"
       :for="inputId"
       :class="[className ?? 'upload-area', { disabled: isMaxReached }]"
     >
@@ -265,7 +269,7 @@ const inputId = `file-upload-${props.index ?? Math.random().toString(36).substri
         @change="handleFileUpload"
       />
     </label>
-    <label v-else :for="inputId" :class="[className ?? 'upload-area', { disabled: isMaxReached }]">
+    <label v-else-if="!readonly" :for="inputId" :class="[className ?? 'upload-area', { disabled: isMaxReached }]">
       <slot name="content"></slot>
       <input
         :id="inputId"
@@ -304,6 +308,7 @@ const inputId = `file-upload-${props.index ?? Math.random().toString(36).substri
         <div class="download-badge">↓</div>
 
         <button
+          v-if="!readonly"
           type="button"
           class="remove-btn"
           title="Remove"

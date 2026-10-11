@@ -819,7 +819,7 @@ async function saveAsDraft() {
         </label>
         <div class="field field-wide">
           <HandleFIlesUpload
-            v-if="!props.readonly"
+            :readonly="props.readonly"
             label="Plan Attachments"
             accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
             :multiple="true"
@@ -830,11 +830,6 @@ async function saveAsDraft() {
           />
         </div>
       </div>
-      <ul v-if="props.readonly && scheduleAttachments.length">
-        <li v-for="(file, index) in scheduleAttachments" :key="index">
-          {{ scheduleAttachmentFileNames[index] || `Attachment ${index + 1}` }}
-        </li>
-      </ul>
       <p v-if="error" class="form-error" role="alert">{{ error }}</p>
       <p v-if="success" class="form-success" role="status">{{ success }}</p>
     </fieldset>

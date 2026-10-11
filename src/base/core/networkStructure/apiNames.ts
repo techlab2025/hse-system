@@ -684,7 +684,7 @@ class ApiNames {
     return this.prefix + 'create_document'
   }
   public get IndexOrganizationDocuments() {
-    return this.prefix + 'fetch_organization_documents'
+    return this.prefix + 'fetch_documents'
   }
   public get ShowOrganizationDocuments() {
     return this.prefix + 'fetch_document_details'
