@@ -140,13 +140,13 @@ function initializeForm(details?: InternalAuditNcrDetailsModel | null) {
           correction: task.corrective.text,
           assignedTo: task.corrective.assignedTo,
           targetDate: task.corrective.targetDate,
-          actualDate: task.corrective.actualDate,
+          actualDate: formatJoinDate(new Date()),
         },
         preventive: {
           correction: task.preventive.text,
           assignedTo: task.preventive.assignedTo,
           targetDate: task.preventive.targetDate,
-          actualDate: task.preventive.actualDate,
+          actualDate: formatJoinDate(new Date()),
         },
       }))
     : [createCapa()]
@@ -280,10 +280,14 @@ watch(() => props.details, initializeForm, { immediate: true })
           <input :value="auditSerialName" type="text" disabled placeholder="Audit serial name" />
         </label>
         <label v-if="isExisting" class="field">
-          <span>NCR</span>
-          <input :value="details?.ncr || `NCR-${details?.id}`" type="text" disabled />
+          <span>Serial Number</span>
+          <input
+            :value="details?.serialName || details?.ncr || `NCR-${details?.id}`"
+            type="text"
+            disabled
+          />
         </label>
-        <label class="field">
+        <!-- <label class="field">
           <span>Serial Number</span>
           <input
             v-model="serialNumber"
@@ -295,7 +299,7 @@ watch(() => props.details, initializeForm, { immediate: true })
                 : 'Enter Your Serial Number'
             "
           />
-        </label>
+        </label> -->
         <label class="field">
           <span>Category <b>*</b></span>
           <select v-model="category" :disabled="isReadOnly">
@@ -430,7 +434,7 @@ watch(() => props.details, initializeForm, { immediate: true })
               <span>Target date <b>*</b></span>
               <input v-model="capa.corrective.targetDate" type="date" :disabled="isReadOnly" />
             </label>
-            <label class="field">
+            <label class="field disabled">
               <span>Actual date</span>
               <input
                 v-model="capa.corrective.actualDate"
@@ -470,11 +474,11 @@ watch(() => props.details, initializeForm, { immediate: true })
               required
               @update:model-value="setPreventiveAssignee(index, $event)"
             />
-            <label class="field">
+            <label class="field ">
               <span>Target date <b>*</b></span>
               <input v-model="capa.preventive.targetDate" type="date" :disabled="isReadOnly" />
             </label>
-            <label class="field">
+            <label class="field disabled">
               <span>Actual date</span>
               <input
                 v-model="capa.preventive.actualDate"
@@ -531,6 +535,11 @@ watch(() => props.details, initializeForm, { immediate: true })
 </template>
 
 <style scoped>
+.disabled{
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
 .attachment-list {
   display: flex !important;
 

@@ -189,7 +189,7 @@ The form fetches `/fetch_internal_audit_details` using the audit ID from the rou
 
 The NCR table also uses the `auditee` returned by `/fetch_internal_audit_details`. If audit details do not include an auditee, it falls back to the NCR row's `auditee` value.
 
-Opening an NCR uses the saved details included in its `fetch_ncrs` list item directly, without a separate `fetch_ncr_details` request. Each item includes the form fields, actions, media, and `has_result`: `true` opens a read-only form and prevents saving; `false` allows editing the existing NCR. The My NCRs list follows the same behavior with its own list response.
+Opening an NCR sends `POST /fetch_ncr_details` with `{ ncr_id: id }` through the NCR params, API service, repository, use case, and controller. The response uses `InternalAuditNcrModel`, shared with `fetch_ncrs`, including `serial_name` and `serial_number`. Its `details` provides the form fields, actions, media, `serialName`, and `serialNumber`. The fetched `has_result` determines whether the form is read-only. Both NCR lists display an Opening state, prevent duplicate requests, and show an error without opening the form if loading fails.
 
 ### Response
 

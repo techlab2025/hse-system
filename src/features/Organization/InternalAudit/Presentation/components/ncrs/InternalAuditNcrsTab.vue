@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import FetchNcrDetailsParams from '../../../Core/params/ncrs/fetchNcrDetailsParams'
+import FetchNcrDetailsController from '../../controllers/ncrs/fetchNcrDetailsController'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { InrernalAuditStatusEnum } from '../../../Core/enums/plan/PlanStatusENum'
 import IndexNcrsParams from '../../../Core/params/ncrs/indexNcrsParams'
@@ -24,10 +26,13 @@ const props = withDefaults(
 const fetchController = FetchNcrsController.getInstance()
 const showPlanController = ShowInternalAuditPlanController.getInstance()
 const route = useRoute()
-const indexParams = new IndexNcrsParams('', 1, 1, 0 , Number(route.query?.internal_audit_plan_id))
+const indexParams = new IndexNcrsParams('', 1, 1, 0, Number(route.query?.internal_audit_plan_id))
 
 const ncrs = ref<InternalAuditNcrModel[]>([])
 const showForm = ref(false)
+const openingNcrId = ref(0)
+let openVersion = 0
+const ncrDetailsController = FetchNcrDetailsController.getInstance()
 const openedNcrId = ref(0)
 const openedNcrHasResult = ref(false)
 const selectedDetails = ref<InternalAuditNcrDetailsModel | null>(null)
@@ -118,6 +123,7 @@ async function fetchAuditDetails() {
 }
 
 function toggleNewNcrForm() {
+  if (openingNcrId.value) return
   if (showForm.value && !openedNcrId.value) {
     closeForm()
     return
@@ -129,25 +135,44 @@ function toggleNewNcrForm() {
 }
 
 async function openNcr(item: InternalAuditNcrModel) {
-  if (!item.id || !ncrs.value.some((ncr) => ncr.id === item.id)) return
+  if (openingNcrId.value || !item.id || !ncrs.value.some((ncr) => ncr.id === item.id)) return
+  const version = ++openVersion
+  openingNcrId.value = item.id
   feedback.value = ''
   hasError.value = false
-  if (!item.details) {
-    hasError.value = true
-    feedback.value = 'Unable to load NCR details.'
-    return
-  }
   showForm.value = false
-  await nextTick()
-  openedNcrId.value = item.id
-  openedNcrHasResult.value = item.hasResult
-  selectedDetails.value = item.details
-  showForm.value = true
-  await nextTick()
-  document.querySelector('.ncr-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  selectedDetails.value = null
+  try {
+    await ncrDetailsController.getData(new FetchNcrDetailsParams(item.id))
+    if (version !== openVersion) return
+    const ncr = ncrDetailsController.state.value.data
+    if (!ncrDetailsController.isDataSuccess() || !ncr?.details || ncr.id !== item.id) {
+      hasError.value = true
+      feedback.value =
+        ncrDetailsController.state.value.error?.title ?? 'Unable to load NCR details.'
+      return
+    }
+    openedNcrId.value = ncr.id
+    selectedDetails.value = ncr.details
+    openedNcrHasResult.value = ncr.hasResult
+    showForm.value = true
+    await nextTick()
+    if (version === openVersion) {
+      document.querySelector('.ncr-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  } catch {
+    if (version === openVersion) {
+      hasError.value = true
+      feedback.value = 'Unable to load NCR details. Please try again.'
+    }
+  } finally {
+    if (version === openVersion) openingNcrId.value = 0
+  }
 }
 
 function closeForm() {
+  ++openVersion
+  openingNcrId.value = 0
   showForm.value = false
   openedNcrId.value = 0
   openedNcrHasResult.value = false
@@ -166,8 +191,14 @@ async function handleCreated() {
   if (!hasError.value) feedback.value = 'NCR created successfully.'
 }
 
-watch(currentAuditId, () => void fetchAuditDetails())
+watch(currentAuditId, () => {
+  closeForm()
+  void fetchAuditDetails()
+})
 onMounted(() => void Promise.all([fetchNcrs(), fetchAuditDetails()]))
+onBeforeUnmount(() => {
+  ++openVersion
+})
 </script>
 
 <template>
@@ -175,7 +206,13 @@ onMounted(() => void Promise.all([fetchNcrs(), fetchAuditDetails()]))
     <header class="ncr-header">
       <h2>Non-conformance reports</h2>
       <div class="header-actions">
-        <button v-if="canCreateNcr" class="primary-button" type="button" @click="toggleNewNcrForm">
+        <button
+          v-if="canCreateNcr"
+          :disabled="Boolean(openingNcrId)"
+          class="primary-button"
+          type="button"
+          @click="toggleNewNcrForm"
+        >
           {{ showForm && !openedNcrId ? 'Close form' : 'New NCR' }}
         </button>
       </div>
@@ -207,6 +244,7 @@ onMounted(() => void Promise.all([fetchNcrs(), fetchAuditDetails()]))
       :ncrs="ncrs"
       :audit-lead-auditor="auditLeadAuditor"
       :loading="isLoading"
+      :opening-ncr-id="openingNcrId"
       :has-error="hasError"
       @open="openNcr"
     />

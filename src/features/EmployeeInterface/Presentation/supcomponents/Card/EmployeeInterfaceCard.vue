@@ -34,12 +34,12 @@ const useprojectSaddelectStore = useProjectSelectStore()
 
 const selectedProjectId = ref<number | null>(null)
 const projectId = computed(() => {
-  const id = Number(selectedProjectId.value ?? useprojectSelectStore.project?.id)
+  const id = Number(selectedProjectId.value ?? useprojectSaddelectStore.project?.id)
   return Number.isInteger(id) && id > 0 ? id : null
 })
 const projectOptions = computed(() => {
-  const projects = useprojectSelectStore.AllProjects.filter((project) => project.id > 0)
-  const selected = useprojectSelectStore.project
+  const projects = useprojectSaddelectStore.AllProjects.filter((project) => project.id > 0)
+  const selected = useprojectSaddelectStore.project
   return selected && selected.id > 0 && !projects.some((project) => project.id === selected.id)
     ? [selected, ...projects]
     : projects
@@ -53,7 +53,7 @@ async function loadProjects() {
     const projects = await FetchMyProjectsController.getInstance().fetch(
       new FetchMyProjectsParams(true),
     )
-    if (projects) useprojectSelectStore.setAllProjects(projects)
+    if (projects) useprojectSaddelectStore.setAllProjects(projects)
     else projectError.value = true
   } catch {
     projectError.value = true
@@ -62,7 +62,7 @@ async function loadProjects() {
   }
 }
 onMounted(() => {
-  if (!useprojectSelectStore.AllProjects.length) void loadProjects()
+  if (!useprojectSaddelectStore.AllProjects.length) void loadProjects()
 })
 const projectQuery = computed(() => (projectId.value ? `?project_id=${projectId.value}` : ''))
 const projectAction = (title: string, path: string): CardAction => ({

@@ -5,6 +5,7 @@ import type InternalAuditNcrModel from '../../../Data/models/ncrs/InternalAuditN
 defineProps<{
   ncrs: InternalAuditNcrModel[]
   auditLeadAuditor: TitleInterface | null
+  openingNcrId?: number
   loading: boolean
   hasError: boolean
 }>()
@@ -84,9 +85,11 @@ function createdAtLabel(value: string): string {
               <button
                 type="button"
                 class="open-button"
+                :disabled="Boolean(openingNcrId)"
+                :aria-busy="openingNcrId === item.id"
                 @click="emit('open', item)"
               >
-                Open
+                {{ openingNcrId === item.id ? 'Opening…' : 'Open' }}
               </button>
             </td>
           </tr>

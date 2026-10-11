@@ -1,6 +1,6 @@
 import { ApiNames } from '@/base/core/networkStructure/apiNames'
 import { CrudType } from '@/base/core/params/call_params_interface'
-import type Params from '@/base/core/params/params'
+import type FetchNcrDetailsParams from '../../../Core/params/ncrs/fetchNcrDetailsParams'
 import ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 
 export default class FetchNcrDetailsApiService extends ServicesInterface {
@@ -13,7 +13,7 @@ export default class FetchNcrDetailsApiService extends ServicesInterface {
     return (this.instance ??= new FetchNcrDetailsApiService())
   }
 
-  applyService(params: Params) {
+  applyService(params: FetchNcrDetailsParams) {
     return super.call({
       url: ApiNames.instance.FetchInternalAuditNcrDetails,
       type: CrudType.POST,

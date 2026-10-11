@@ -1,7 +1,7 @@
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type { NcrCategoryEnum } from '../../../Core/enums/ncrs/NcrCategoryEnum'
 import { StatusEnum } from '../../../Core/enums/ncrs/StatusEnum'
-import InternalAuditNcrDetailsModel from './InternalAuditNcrDetailsModel'
+import InternalAuditNcrDetailsModel, { detailsRecord } from './InternalAuditNcrDetailsModel'
 
 export type NcrPerson = {
   id: number
@@ -60,11 +60,11 @@ export default class InternalAuditNcrModel extends TitleInterface {
   }
 
   static fromMap(data: unknown): InternalAuditNcrModel {
-    const item = (data ?? {}) as Record<string, unknown>
+    const item = detailsRecord(data)
     const leadReview = item.LeadReview ?? item.lead_review
     return new InternalAuditNcrModel(
-      Number(item.id ?? item.ncr_id ?? 0),
-      String(item.ncr ?? ''),
+      Number(item.id ?? item.internal_audit_ncr_id ?? item.ncrs_id ?? item.ncr_id ?? 0),
+      String(item.ncr ?? item.serial_name ?? ''),
       (item.ncrs_category ?? item.ncr_category ?? item.category ?? '') as
         | NcrCategoryEnum
         | number

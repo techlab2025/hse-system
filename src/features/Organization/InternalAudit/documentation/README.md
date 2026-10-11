@@ -22,6 +22,7 @@ This folder documents the endpoints, request parameters, response models, enums,
 | Attendance | `POST` | `/save_internal_audit_attendance`    | Save all opening and closing meeting states |
 | Attendance | `POST` | `/add_internal_audit_Participants`   | Add selected employee participants          |
 | NCRs       | `POST` | `/fetch_ncrs`                        | Fetch paginated NCRs                        |
+| NCRs       | `POST` | `/fetch_ncr_details`                 | Fetch one NCR using `ncr_id`                |
 | NCRs       | `POST` | `/create_ncrs`                       | Create an NCR and its internal audit tasks  |
 | Reports    | `POST` | `/fetch_internal_audit_plan_details` | Fetch audit details for the report          |
 | Reports    | `POST` | `/create_internal_audit_report`      | Create the audit report                     |

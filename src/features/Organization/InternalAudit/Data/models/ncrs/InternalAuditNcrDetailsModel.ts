@@ -25,7 +25,7 @@ function asRecord(value: unknown): Record<string, unknown> {
     : {}
 }
 
-function detailsRecord(value: unknown): Record<string, unknown> {
+export function detailsRecord(value: unknown): Record<string, unknown> {
   let item = asRecord(Array.isArray(value) ? value[0] : value)
   for (let depth = 0; depth < 5; depth++) {
     const nested = item.data ?? item.ncr_details ?? item.internal_audit_ncr ?? item.ncr
@@ -141,6 +141,7 @@ export default class InternalAuditNcrDetailsModel {
     public serialNumber: string = '',
     public internalAuditId: number = 0,
     public auditSerialName: string = '',
+    public serialName: string = '',
   ) {}
 
   get attachments(): string[] {
@@ -180,6 +181,7 @@ export default class InternalAuditNcrDetailsModel {
       String(item.serial_number ?? item.serial ?? ''),
       Number(item.internal_audit_id ?? asRecord(item.internal_audit).id ?? 0),
       String(asRecord(item.internal_audit).serial_name ?? ''),
+      String(item.serial_name ?? ''),
     )
   }
 

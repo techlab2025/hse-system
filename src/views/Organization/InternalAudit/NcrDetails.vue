@@ -35,11 +35,11 @@ watch(
     <DataStatus :controller="state">
       <template #success>
         <InternalAuditNcrForm
-          v-if="state.data"
-          :details="state.data"
-          :internal-audit-plan-id="state.data.internalAuditId"
-          :audit-serial-name="state.data.auditSerialName"
-          :area-options="state.data.areaUnderReviews"
+          v-if="state.data?.details"
+          :details="state.data.details"
+          :internal-audit-plan-id="state.data.details.internalAuditId"
+          :audit-serial-name="state.data.details.auditSerialName"
+          :area-options="state.data.details.areaUnderReviews"
           readonly
         />
       </template>

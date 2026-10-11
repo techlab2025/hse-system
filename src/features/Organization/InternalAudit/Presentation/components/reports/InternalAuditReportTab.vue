@@ -102,9 +102,9 @@ async function fetchFullNcrs() {
   try {
     for (const ncr of ncrs.value) {
       if (!ncr.id) continue
-      await ncrDetailsController.getData(new FetchNcrDetailsParams(ncr.id))
-      if (ncrDetailsController.isDataSuccess() && ncrDetailsController.state.value.data) {
-        fullNcrs.value.push(ncrDetailsController.state.value.data)
+      await ncrDetailsController.getData(new FetchNcrDetailsParams(Number(route.query?.internal_audit_plan_id)))
+      if (ncrDetailsController.isDataSuccess() && ncrDetailsController.state.value.data?.details) {
+        fullNcrs.value.push(ncrDetailsController.state.value.data.details)
       }
     }
   } finally {
@@ -195,7 +195,7 @@ async function fetchDetails() {
       methodology.value =
         'Audit was conducted by selecting samples from the relevant processes, reviewing records, interviewing personnel, and observing activities.'
     }
-    await ncrController.getData(new IndexNcrsParams('', 1, 1000, 0))
+    await ncrController.getData(new IndexNcrsParams('', 1, 1000, 0, internalAuditPlanId.value))
     ncrs.value = ncrController.isDataSuccess() ? (ncrController.state.value.data ?? []) : []
     await fetchFullNcrs()
     return
