@@ -224,6 +224,8 @@ const downloadTemplate = () => {
         <DataEmpty
           :title="$t('no_traning_topics')"
           :description="$t('no_traning_topics_description')"
+          :addText="$t('add_traning_topic')"
+          :link="`/${user?.type === OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/traning-topics/add`"
         />
       </template>
 
@@ -231,7 +233,7 @@ const downloadTemplate = () => {
         <DataFailed
           :title="$t('no_traning_topics')"
           :description="$t('no_traning_topics_description')"
-          link=""
+          :link="`/${user?.type === OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/traning-topics/add`"
         />
       </template>
     </DataStatus>

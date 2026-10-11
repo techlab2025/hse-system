@@ -129,7 +129,7 @@ const CompanyRoutes = ref<Routes[]>([
     link: '/organization/ppe-matrix',
     name: 'PPE Matrix & Log',
     icon: 'shield-check',
-    activePrefixes: ['/organization/ppe-'],
+    // activePrefixes: ['/organization/ppe-'],
     permissions: [
       PermissionsEnum.ADMIN,
       PermissionsEnum.ORGANIZATION_EMPLOYEE,
