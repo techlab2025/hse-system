@@ -11,10 +11,12 @@ const props = withDefaults(
   defineProps<{
     showCertificateSelectAll?: boolean
     mode?: 'auto' | 'department' | 'position'
+    stayOnPage?: boolean
   }>(),
   {
     showCertificateSelectAll: true,
     mode: 'auto',
+    stayOnPage: false,
   },
 )
 
@@ -32,8 +34,17 @@ const addHerikaly = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
   console.log(params.value, 'params')
   addHerikalyController.setLoading()
-  await addHerikalyController.addHerikaly(params.value as AddHerikalyParams, router)
-  if (addHerikalyController.isDataSuccess()) emit('update:data')
+  await addHerikalyController.addHerikaly(
+    params.value as AddHerikalyParams,
+    props.stayOnPage ? stayOnPageRouter : router,
+  )
+  if (addHerikalyController.isDataSuccess()) {
+    if (props.stayOnPage) {
+      params.value = null
+      formKey.value++
+    }
+    emit('update:data')
+  }
 }
 
 const saveAndNew = async () => {

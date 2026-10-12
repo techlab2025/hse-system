@@ -10,6 +10,8 @@ import AuditActivityForm from './AuditActivityForm.vue'
 import AddAuditActivityController from '../controllers/addAuditActivityController'
 import type AddAuditActivityParams from '../../Core/params/addAuditActivityParams'
 
+const props = withDefaults(defineProps<{ stayOnPage?: boolean }>(), { stayOnPage: false })
+
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
 const params = ref<Params | null>(null)
@@ -21,8 +23,17 @@ const addAuditActivityController = AddAuditActivityController.getInstance()
 
 const addAuditActivity = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
-  await addAuditActivityController.addAuditActivity(params.value as AddAuditActivityParams, router)
-  emit('update:data')
+  await addAuditActivityController.addAuditActivity(
+    params.value as AddAuditActivityParams,
+    props.stayOnPage ? stayOnPageRouter : router,
+  )
+  if (addAuditActivityController.isDataSuccess()) {
+    if (props.stayOnPage) {
+      params.value = null
+      formKey.value++
+    }
+    emit('update:data')
+  }
 }
 
 const saveAndNew = async () => {

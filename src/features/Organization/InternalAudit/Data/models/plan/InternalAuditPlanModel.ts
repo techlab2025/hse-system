@@ -43,21 +43,34 @@ export default class InternalAuditPlanModel extends TitleInterface {
     public attachmentFileNames: string[] = [],
     public auditee: TitleInterface | null = null,
     public auditStandards: TitleInterface[] = auditStandard ? [auditStandard] : [],
-    public ncrsCount:number
+    public ncrsCount: number,
+    public ClosedncrsCount: number,
+    public OpenncrsCount: number,
   ) {
     super({ id, title })
   }
 
   static fromMap(data: unknown): InternalAuditPlanModel {
     const item = (data ?? {}) as Record<string, unknown>
+
+    const OpenNcrs = Number(item.open_ncrs_count)
+    const ClosedNcrs = Number(item.closed_ncrs_count)
+    const totalNcrs = Number(item.ncrs_count)
     const project = item.project as Record<string, unknown> | null | undefined
     const rawStandards = item.audit_standards ?? item.audit_standard
-    const auditStandards = (Array.isArray(rawStandards) ? rawStandards : rawStandards ? [rawStandards] : [])
-      .filter((entry): entry is Record<string, unknown> => Boolean(entry) && typeof entry === 'object')
-      .map((entry) => new TitleInterface({
-        id: Number(entry.id ?? 0),
-        title: String(entry.title ?? entry.name ?? ''),
-      }))
+    const auditStandards = (
+      Array.isArray(rawStandards) ? rawStandards : rawStandards ? [rawStandards] : []
+    )
+      .filter(
+        (entry): entry is Record<string, unknown> => Boolean(entry) && typeof entry === 'object',
+      )
+      .map(
+        (entry) =>
+          new TitleInterface({
+            id: Number(entry.id ?? 0),
+            title: String(entry.title ?? entry.name ?? ''),
+          }),
+      )
       .filter((entry) => entry.id > 0)
     const rawLeader = (item.leader ?? item.lead_auditor) as
       | Record<string, unknown>
@@ -108,7 +121,9 @@ export default class InternalAuditPlanModel extends TitleInterface {
           })
         : null,
       auditStandards,
-      data?.ncrs_count!
+      totalNcrs,
+      ClosedNcrs,
+      OpenNcrs,
     )
   }
 
@@ -142,5 +157,9 @@ export default class InternalAuditPlanModel extends TitleInterface {
     ['JVBERi0xLjQ...'],
     ['audit-evidence.pdf'],
     new TitleInterface({ id: 104, title: 'Mona Adel' }),
+    10,
+    20,
+    30,
+    20,
   )
 }
