@@ -183,7 +183,7 @@ export default class InternalAuditNcrDetailsModel {
       Number(item.internal_audit_id ?? asRecord(item.internal_audit).id ?? 0),
       String(asRecord(item.internal_audit).serial_name ?? ''),
       String(item.serial_name ?? ''),
-      Number()
+      Number(item.status)
     )
   }
 
