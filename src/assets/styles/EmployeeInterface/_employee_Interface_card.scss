@@ -92,10 +92,32 @@
   }
 
   .project-required-note {
-    flex-basis: 100%;
-    margin: 0;
-    font-size: 14px;
-    color: var(--text-muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 16px 0 0;
+    padding: 12px 14px;
+    border: 1px solid color-mix(in srgb, var(--card-accent) 25%, transparent);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--card-accent) 8%, transparent);
+    color: var(--text-strong);
+    font-size: 13px;
+    line-height: 1.5;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      color: var(--card-accent);
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+    }
+
+    strong,
+    span > span {
+      display: block;
+    }
   }
 
   .actions-button button:disabled {

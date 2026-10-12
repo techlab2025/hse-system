@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { defineAsyncComponent } from 'vue'
+import EmployeeTasksButton from '@/shared/HelpersComponents/EmployeeTasksButton.vue'
 import ProjectsStatistics from './HomeStatistics/ProjectsStatistics.vue'
 import FetchPorjectStatisticsController from '../Controllers/FetchProjectStatisticsController'
 import { computed, onMounted, ref, watch } from 'vue'
@@ -117,6 +118,7 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
 </script>
 <template>
   <div :class="['home-page organization-home-page', { 'is-dark': isDarkMode }]">
+    <EmployeeTasksButton />
     <router-link
       @click="setVisited"
       to="/organization/project-progress"

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import empinerface from '@/assets/images/empinerface.png'
 import EmployeeInterfaceCard from '../supcomponents/Card/EmployeeInterfaceCard.vue'
+import EmployeeTasksButton from '@/shared/HelpersComponents/EmployeeTasksButton.vue'
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue';
 
 
@@ -106,14 +107,41 @@ const items = [
 
 <template>
   <div class="all-observation">
-    <HeaderPage
-      :title="'all you need in one page'"
-      :subtitle="'select what you want to do'"
-      :img="empinerface"
-    />
-
+    <div class="employee-home-heading">
+      <HeaderPage
+        :title="'all you need in one page'"
+        :subtitle="'select what you want to do'"
+        :img="empinerface"
+      />
+      <EmployeeTasksButton />
+    </div>
     <div class="">
       <EmployeeInterfaceCard />
     </div>
   </div>
 </template>
+
+<style scoped>
+.employee-home-heading {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: 24px;
+  margin-block-end: 24px;
+}
+
+.employee-home-heading :deep(.section-header-page-container) {
+  padding: 0;
+}
+
+.employee-home-heading :deep(.employee-tasks-action) {
+  margin: 0;
+}
+
+@media (max-width: 1000px) {
+  .employee-home-heading {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+</style>

@@ -244,6 +244,21 @@ const cards = computed<EmpCard[]>(() => [
         <div class="info-wrapper">
           <h2 :id="`employee-card-${card.type}`" class="card-title">{{ card.title }}</h2>
           <p class="card-subtitle">{{ card.subtitle }}</p>
+          <p
+            v-if="card.requiresProject"
+            :id="`employee-card-project-hint-${card.type}`"
+            class="project-required-note"
+          >
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 11v6M12 7h.01" />
+            </svg>
+            <span>
+              <strong>Project required</strong>
+              <span v-if="!projectId">Select a project above to enable these actions.</span>
+              <span v-else>These actions use your selected project.</span>
+            </span>
+          </p>
         </div>
       </div>
 
@@ -253,15 +268,13 @@ const cards = computed<EmpCard[]>(() => [
       </div>
 
       <div class="actions-button">
-        <p v-if="card.requiresProject && !projectId" class="project-required-note">
-          Select a project above to get started.
-        </p>
         <component
           :is="action.disabled ? 'button' : RouterLink"
           v-for="(action, index) in card.actions"
           :key="action.title"
           :to="action.disabled ? undefined : action.route"
           :disabled="action.disabled || undefined"
+          :aria-describedby="card.requiresProject ? `employee-card-project-hint-${card.type}` : undefined"
           :class="index === 0 ? 'button-main' : 'button-view'"
         >
           <span>{{ action.title }}</span>
