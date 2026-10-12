@@ -16,9 +16,12 @@ export default class SetInvestigationTaskVerificationParams implements Params {
       verification_methodology: this.verificationMethodology,
       result_findings: this.resultFindings,
       verification_status: this.verificationStatus,
-      ...(!this.isInternalAuditTask && this.capa_id !== undefined
-        ? { observation_capa_id: this.capa_id }
-        : {}),
+      // ...(!this.isInternalAuditTask && this.capa_id !== undefined
+        // ? {
+          observation_capa_id: this.capa_id!
+
+        // }
+        // : {}),
     }
   }
 }
