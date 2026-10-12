@@ -113,7 +113,7 @@ const statusOptions = ref<TitleInterface[]>([
                 <th>Scope</th>
                 <th>Lead</th>
                 <th>Status</th>
-                <th>ncr count</th>
+                <th>NCRs count</th>
                 <!-- <th>ncr count</th> -->
                 <th><span class="sr-only">Actions</span></th>
               </tr>
@@ -129,7 +129,7 @@ const statusOptions = ref<TitleInterface[]>([
                 <td>
                   <span class="status">{{ audit.status }}</span>
                 </td>
-                <td>{{  audit.OpenncrsCount }} open / {{ audit.ClosedncrsCount  }} closed </td>
+                <td>{{ audit.OpenncrsCount }} open / {{ audit.ClosedncrsCount }} closed</td>
                 <!-- <td>{{ audit.ClosedncrsCount }}</td> -->
                 <!-- <td>{{ audit.OpenncrsCount }}</td> -->
                 <td>
@@ -157,8 +157,7 @@ const statusOptions = ref<TitleInterface[]>([
           "
         />
       </template>
-      <template #loader>
-        <TableLoader :cols="5" :rows="8" /> </template
+      <template #loader> <TableLoader :cols="5" :rows="8" /> </template
       ><template #initial>
         <TableLoader :cols="5" :rows="8" />
       </template>

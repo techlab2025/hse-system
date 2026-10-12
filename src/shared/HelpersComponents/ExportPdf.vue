@@ -1,78 +1,60 @@
 <script setup lang="ts">
-import jsPDF from 'jspdf'
-import html2canvas from 'html2canvas-pro'
+import { usePdfExport } from '@/composables/usePdfExport'
 import PdefActionIcon from '../icons/PdefActionIcon.vue'
+
+defineOptions({ inheritAttrs: false })
 
 const props = withDefaults(
   defineProps<{
     isDropList?: boolean
     targetSelector?: string
     filename?: string
+    title?: string
+    orientation?: 'portrait' | 'landscape'
   }>(),
   {
     targetSelector: '.table-responsive',
     filename: 'export.pdf',
+    orientation: 'landscape',
   },
 )
 
-const exportPDF = async () => {
-  const exportElement = document.querySelector<HTMLElement>(props.targetSelector)
-
-  if (!exportElement) {
-    console.error(`PDF export element not found: ${props.targetSelector}`)
-
-    return
-  }
-
-  try {
-    const canvas = await html2canvas(exportElement, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: '#ffffff',
-    })
-
-    const imgData = canvas.toDataURL('image/png')
-    const pdf = new jsPDF({
-      orientation: 'landscape',
-      unit: 'mm',
-      format: 'a4',
-    })
-
-    const pageMargin = 5
-    const pdfWidth = pdf.internal.pageSize.getWidth()
-    const pdfPageHeight = pdf.internal.pageSize.getHeight()
-    const imageWidth = pdfWidth - pageMargin * 2
-    const imageHeight = (canvas.height * imageWidth) / canvas.width
-    const printablePageHeight = pdfPageHeight - pageMargin * 2
-
-    let renderedHeight = 0
-    pdf.addImage(imgData, 'PNG', pageMargin, pageMargin, imageWidth, imageHeight)
-
-    while (imageHeight - renderedHeight > printablePageHeight) {
-      renderedHeight += printablePageHeight
-      pdf.addPage()
-      pdf.addImage(imgData, 'PNG', pageMargin, pageMargin - renderedHeight, imageWidth, imageHeight)
-    }
-
-    pdf.save(props.filename)
-  } catch (error) {
-    console.error('Error generating PDF:', error)
-  }
-}
+const { exportPdf, isExporting, exportError } = usePdfExport()
+const exportPDF = () =>
+  exportPdf({
+    targetSelector: props.targetSelector,
+    filename: props.filename,
+    title: props.title,
+    orientation: props.orientation,
+  })
 </script>
 
 <template>
   <button
+    v-bind="$attrs"
     :class="isDropList ? 'export-pdf-btn ms-2' : 'btn btn-secondary'"
     type="button"
+    data-pdf-exclude
+    :disabled="isExporting"
+    :aria-busy="isExporting"
     @click="exportPDF"
   >
     <PdefActionIcon v-if="isDropList" />
-    Export to PDF
+    {{ isExporting ? 'Exporting…' : 'Export to PDF' }}
   </button>
+  <p v-if="exportError" class="pdf-export-error" role="alert" data-pdf-exclude>{{ exportError }}</p>
 </template>
 
 <style scoped>
+.pdf-export-error {
+  color: var(--status-danger, #b42318);
+  font-size: 0.8rem;
+  margin: 6px 0;
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
 .export-pdf-btn {
   font-family: 'Regular';
   width: 100%;

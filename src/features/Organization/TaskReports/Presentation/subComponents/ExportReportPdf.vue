@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import html2canvas from 'html2canvas-pro'
-import jsPDF from 'jspdf'
+import { usePdfExport } from '@/composables/usePdfExport'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
 import PdefActionIcon from '@/shared/icons/PdefActionIcon.vue'
@@ -18,6 +16,7 @@ const props = withDefaults(
     isDropList?: boolean
     targetSelector?: string
     fileName?: string
+    title?: string
     orientation?: PdfOrientation
     buttonLabel?: string
     excelButtonLabel?: string
@@ -38,12 +37,10 @@ const props = withDefaults(
   },
 )
 
-const isExporting = ref(false)
+const { exportPdf, isExporting, exportError } = usePdfExport()
 
 const normalizeFileName = (fileName: string, extension: 'pdf' | 'xlsx') =>
-  fileName.toLowerCase().endsWith(`.${extension}`)
-    ? fileName
-    : `${fileName}.${extension}`
+  fileName.toLowerCase().endsWith(`.${extension}`) ? fileName : `${fileName}.${extension}`
 
 const formatCellValue = (value: unknown) => {
   if (value === null || value === undefined) return 'N/A'
@@ -56,12 +53,21 @@ const formatCellValue = (value: unknown) => {
 const exportExcel = () => {
   if (!props.data.length) return
 
-  const columns = props.columns.length > 0 ? props.columns : Object.keys(props.data[0] ?? {}).map((key) => ({ key, label: key }))
+  const columns =
+    props.columns.length > 0
+      ? props.columns
+      : Object.keys(props.data[0] ?? {}).map((key) => ({ key, label: key }))
   const rows = props.data.map((item) => {
     const row: Record<string, string> = {}
 
     columns.forEach((column) => {
-      const value = column.key.split('.').reduce<unknown>((acc, key) => (acc && typeof acc === 'object' ? (acc as Record<string, unknown>)[key] : undefined), item)
+      const value = column.key
+        .split('.')
+        .reduce<unknown>(
+          (acc, key) =>
+            acc && typeof acc === 'object' ? (acc as Record<string, unknown>)[key] : undefined,
+          item,
+        )
       row[column.label || column.key] = formatCellValue(value)
     })
 
@@ -77,182 +83,28 @@ const exportExcel = () => {
   saveAs(blob, normalizeFileName(props.fileName, 'xlsx'))
 }
 
-const exportPDF = async () => {
-  if (isExporting.value) return
+defineExpose({ exportExcel })
 
-  const targetElement = document.querySelector<HTMLElement>(
-    props.targetSelector,
-  )
-
-  if (!targetElement) {
-    console.error(
-      `PDF export target not found: ${props.targetSelector}`,
-    )
-    return
-  }
-
-  isExporting.value = true
-
-  try {
-    if ('fonts' in document) {
-      await document.fonts.ready
-    }
-
-    const canvas = await html2canvas(targetElement, {
-      scale: 2,
-      useCORS: true,
-      allowTaint: false,
-      logging: false,
-      backgroundColor: '#ffffff',
-      windowWidth: Math.max(
-        targetElement.scrollWidth,
-        document.documentElement.clientWidth,
-      ),
-      windowHeight: Math.max(
-        targetElement.scrollHeight,
-        document.documentElement.clientHeight,
-      ),
-      onclone: (clonedDocument) => {
-        const clonedTarget =
-          clonedDocument.querySelector<HTMLElement>(
-            props.targetSelector,
-          )
-
-        if (!clonedTarget) return
-
-        clonedTarget
-          .querySelectorAll<HTMLElement>('[data-pdf-exclude]')
-          .forEach((element) => element.remove())
-
-        /*
-         * The action area is ignored in the PDF.
-         * Make the report header use the full available width.
-         */
-        const reportHeader =
-          clonedTarget.querySelector<HTMLElement>(
-            '.report-board-header',
-          )
-
-        if (reportHeader) {
-          reportHeader.style.gridTemplateColumns = '1fr'
-        }
-
-        /*
-         * Prevent animations and hover transformations
-         * from affecting the captured PDF.
-         */
-        clonedTarget
-          .querySelectorAll<HTMLElement>('*')
-          .forEach((element) => {
-            element.style.animation = 'none'
-            element.style.transition = 'none'
-          })
-      },
-    })
-
-    if (!canvas.width || !canvas.height) {
-      throw new Error('The generated PDF canvas is empty.')
-    }
-
-    const pdf = new jsPDF({
-      orientation: props.orientation,
-      unit: 'mm',
-      format: 'a4',
-      compress: true,
-    })
-
-    const pageWidth = pdf.internal.pageSize.getWidth()
-    const pageHeight = pdf.internal.pageSize.getHeight()
-
-    const printableWidth = pageWidth - props.margin * 2
-    const printableHeight = pageHeight - props.margin * 2
-
-    /*
-     * Calculate how many canvas pixels fit on one PDF page.
-     * The canvas is sliced to create a real multi-page PDF.
-     */
-    const pageHeightInPixels = Math.floor(
-      (canvas.width * printableHeight) / printableWidth,
-    )
-
-    let currentPosition = 0
-    let pageIndex = 0
-
-    while (currentPosition < canvas.height) {
-      const remainingHeight = canvas.height - currentPosition
-      const sliceHeight = Math.min(
-        pageHeightInPixels,
-        remainingHeight,
-      )
-
-      const pageCanvas = document.createElement('canvas')
-      pageCanvas.width = canvas.width
-      pageCanvas.height = sliceHeight
-
-      const context = pageCanvas.getContext('2d')
-
-      if (!context) {
-        throw new Error('Unable to create the PDF page canvas.')
-      }
-
-      context.fillStyle = '#ffffff'
-      context.fillRect(
-        0,
-        0,
-        pageCanvas.width,
-        pageCanvas.height,
-      )
-
-      context.drawImage(
-        canvas,
-        0,
-        currentPosition,
-        canvas.width,
-        sliceHeight,
-        0,
-        0,
-        canvas.width,
-        sliceHeight,
-      )
-
-      const imageData = pageCanvas.toDataURL('image/png')
-      const renderedHeight =
-        (sliceHeight * printableWidth) / canvas.width
-
-      if (pageIndex > 0) {
-        pdf.addPage()
-      }
-
-      pdf.addImage(
-        imageData,
-        'PNG',
-        props.margin,
-        props.margin,
-        printableWidth,
-        renderedHeight,
-        undefined,
-        'FAST',
-      )
-
-      currentPosition += sliceHeight
-      pageIndex += 1
-    }
-
-    pdf.save(normalizeFileName(props.fileName, 'pdf'))
-  } catch (error) {
-    console.error('Error generating PDF:', error)
-  } finally {
-    isExporting.value = false
-  }
-}
+const exportPDF = () =>
+  exportPdf({
+    targetSelector: props.targetSelector,
+    filename: props.fileName,
+    title: props.title,
+    orientation: props.orientation,
+    margin: props.margin,
+  })
 </script>
 
 <template>
-  <div :class="isDropList ? 'export-actions export-actions--drop-list' : 'export-actions'">
+  <div
+    data-pdf-exclude
+    :class="isDropList ? 'export-actions export-actions--drop-list' : 'export-actions'"
+  >
     <button
       :class="isDropList ? 'export-pdf-btn ms-2' : 'btn btn-secondary'"
       type="button"
       :disabled="isExporting"
+      :aria-busy="isExporting"
       @click="exportPDF"
     >
       <PdefActionIcon v-if="isDropList" />
@@ -261,6 +113,8 @@ const exportPDF = async () => {
         {{ isExporting ? 'Exporting...' : buttonLabel }}
       </span>
     </button>
+
+    <p v-if="exportError" class="pdf-export-error" role="alert">{{ exportError }}</p>
 
     <!-- <button
       :class="isDropList ? 'export-pdf-btn ms-2' : 'btn btn-secondary'"
@@ -277,6 +131,11 @@ const exportPDF = async () => {
 </template>
 
 <style scoped lang="scss">
+.pdf-export-error {
+  color: var(--status-danger, #b42318);
+  font-size: 0.8rem;
+  margin: 6px 0;
+}
 .export-actions {
   display: flex;
   flex-wrap: wrap;
@@ -298,11 +157,7 @@ const exportPDF = async () => {
   padding: 10px 12px;
   border: none;
   border-radius: 8px;
-  background-color: color-mix(
-    in srgb,
-    var(--main-border) 5.88%,
-    transparent
-  );
+  background-color: color-mix(in srgb, var(--main-border) 5.88%, transparent);
   color: var(--text-soft);
   cursor: pointer;
   font-family: 'Regular';
@@ -311,11 +166,7 @@ const exportPDF = async () => {
   transition: background-color 0.3s ease;
 
   &:hover:not(:disabled) {
-    background-color: color-mix(
-      in srgb,
-      var(--status-danger) 5.88%,
-      transparent
-    );
+    background-color: color-mix(in srgb, var(--status-danger) 5.88%, transparent);
   }
 
   &:disabled {
