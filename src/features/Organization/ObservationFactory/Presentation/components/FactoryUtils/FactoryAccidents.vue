@@ -11,7 +11,7 @@ const { isOpen, injuries, incidentTypeId } = defineProps<{
   injuries?: InjuryDetailsModel[]
   incidentTypeId?: number | null
 }>()
-const isAnotherMeeting = ref(isOpen ? isOpen : 0)
+const isAnotherMeeting = ref(isOpen ? 1 : 0)
 const updateData = () => {
   emit('update:data', {
     isAnotherMeeting: isAnotherMeeting.value,
@@ -22,7 +22,6 @@ const updateData = () => {
 const accidentsData = ref()
 const UpdateAccidentsData = (data: any) => {
   accidentsData.value = data
-  console.log(accidentsData.value, 'accidentsData.value')
   updateData()
 }
 

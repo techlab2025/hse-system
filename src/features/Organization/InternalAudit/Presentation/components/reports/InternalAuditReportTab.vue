@@ -10,6 +10,7 @@ import {
   watch,
 } from 'vue'
 import { useRoute } from 'vue-router'
+import { usePdfExport } from '@/composables/usePdfExport'
 import { DataEmpty } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import InternalAuditReportForms from './InternalAuditReportForms.vue'
 import HandleFIlesUpload, {
@@ -36,6 +37,7 @@ const props = withDefaults(
 )
 
 const emit = defineEmits<{ saved: [] }>()
+const { exportPdf, isExporting, exportError } = usePdfExport()
 const ncrError = ref('')
 const issued = ref(false)
 let loadVersion = 0
@@ -269,11 +271,20 @@ async function submit() {
 }
 
 async function printReport() {
+  if (isExporting.value) return
   const wasPreviewing = previewMode.value
   previewMode.value = true
-  await nextTick()
-  window.print()
-  previewMode.value = wasPreviewing
+  try {
+    await nextTick()
+    await exportPdf({
+      targetSelector: '.report-tab',
+      filename: `internal-audit-${details.value?.auditNumber || internalAuditPlanId.value}.pdf`,
+      title: `Internal Audit Report${details.value?.auditNumber ? ` — ${details.value.auditNumber}` : ''}`,
+      orientation: 'portrait',
+    })
+  } finally {
+    previewMode.value = wasPreviewing
+  }
 }
 
 watch(internalAuditPlanId, () => {
@@ -301,7 +312,7 @@ onDeactivated(() => {
 
 <template>
   <section class="report-tab">
-    <header class="report-header">
+    <header class="report-header" data-pdf-exclude>
       <div>
         <span class="eyebrow">Final audit record</span>
         <h2>Audit Report</h2>
@@ -312,7 +323,7 @@ onDeactivated(() => {
           v-if="!isReported"
           class="secondary-button"
           type="button"
-          :disabled="!details || isLoading"
+          :disabled="!details || isLoading || isExporting"
           @click="previewMode = !previewMode"
         >
           {{ previewMode ? 'Edit report' : 'Preview' }}
@@ -320,21 +331,23 @@ onDeactivated(() => {
         <button
           class="secondary-button"
           type="button"
-          :disabled="!details || isLoading"
+          :disabled="!details || isLoading || isExporting"
           @click="printReport"
         >
-          Print / PDF
+          {{ isExporting ? 'Exporting…' : 'Export PDF' }}
         </button>
       </div>
     </header>
     <p
       v-if="feedback"
+      data-pdf-exclude
       class="message"
       :class="{ error: hasError, success: !hasError }"
       role="status"
     >
       {{ feedback }}
     </p>
+    <p v-if="exportError" class="message error" role="alert" data-pdf-exclude>{{ exportError }}</p>
     <div v-if="isLoading" class="report-loading" aria-label="Loading audit details">
       <span v-for="index in 4" :key="index"></span>
     </div>
@@ -423,7 +436,7 @@ onDeactivated(() => {
         <p v-if="!isReported && !canIssueReport" class="stage-note">
           The report can be issued after the plan is published and the audit start date is reached.
         </p>
-        <footer v-if="!isReported && !previewMode" class="form-actions">
+        <footer v-if="!isReported && !previewMode" class="form-actions" data-pdf-exclude>
           <button class="secondary-button" type="button" :disabled="isSaving" @click="saveDraft">
             Save Draft</button
           ><button

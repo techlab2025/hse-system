@@ -2,6 +2,8 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import DatePicker from 'primevue/datepicker'
+import AddHerikaly from '@/features/Organization/Herikaly/Presentation/components/AddHerikaly.vue'
+import AddAuditActivity from '@/features/Organization/AuditActivity/Presentation/components/AddAuditActivity.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import HandleFIlesUpload, {
@@ -80,6 +82,8 @@ const publishAttempted = ref(false)
 const loadedStatus = ref(props.auditStatus)
 
 const scopes = ref<ScopeRow[]>([{ department: null, activities: [] }])
+const processDialogScope = ref<ScopeRow | null>(null)
+const activityDialogScope = ref<ScopeRow | null>(null)
 const schedules = ref<ScheduleRow[]>([createSchedule()])
 const generalInstructions = ref(defaultGeneralInstructions)
 const scheduleAttachments = ref<string[]>([])
@@ -91,7 +95,8 @@ const auditFocusOptions = computed(() =>
     .filter((department): department is TitleInterface => Boolean(department)),
 )
 const isExisting = computed(() => props.internalAuditPlanId > 0)
-const isReadOnly = computed(() => props.readonly || isExisting.value)
+// const isReadOnly = computed(() => props.readonly || isExisting.value)
+const isReadOnly = computed(() => props.readonly || loadedStatus.value.toLowerCase() === 'reported')
 const isPublished = computed(
   () => loadedStatus.value.toLowerCase() === 'planned' && isExisting.value,
 )
@@ -437,6 +442,7 @@ function validate(isDraft: boolean): boolean {
 
 async function submit(isDraft: boolean) {
   if (isReadOnly.value) return
+
   if (!validate(isDraft)) return
   saving.value = true
   success.value = ''
@@ -486,7 +492,12 @@ async function saveAsDraft() {
 </script>
 
 <template>
-  <form class="audit-plan" :class="{ 'report-plan': isReadOnly }" @submit.prevent="submit(false)">
+
+  <form
+    class="audit-plan"
+    :class="isReadOnly ? 'report-plan' : props.auditStatus"
+    @submit.prevent="submit(false)"
+  >
     <fieldset class="plan-fields" :disabled="isReadOnly">
       <section class="audit-section">
         <div class="section-title">
@@ -625,6 +636,11 @@ async function saveAsDraft() {
           <UpdatedCustomInputSelect
             :hascontent="isReadOnly"
             :reload="!isReadOnly"
+
+            :is-dialog="!isReadOnly"
+            :dialog-visible="processDialogScope === scope"
+            @update:dialog-visible="processDialogScope = $event ? scope : null"
+            @close="processDialogScope = null"
             :model-value="scope.department"
             :controller="isReadOnly ? undefined : hierarchyController"
             :params="hierarchyParams"
@@ -632,6 +648,14 @@ async function saveAsDraft() {
             placeholder="Select Audit Process"
             @update:model-value="setScopeDepartment(index, $event)"
           >
+            <template v-if="!isReadOnly" #LabelHeader>
+              <button class="add-dialog" type="button" @click.stop="processDialogScope = scope">
+                {{ $t('New') }}
+              </button>
+            </template>
+            <template #Dialog>
+              <AddHerikaly mode="department" stay-on-page />
+            </template>
             <template #content
               ><input
                 :value="readonlyTitles(scope.department)"
@@ -643,6 +667,10 @@ async function saveAsDraft() {
           <UpdatedCustomInputSelect
             :hascontent="isReadOnly"
             :reload="!isReadOnly"
+            :is-dialog="!isReadOnly"
+            :dialog-visible="activityDialogScope === scope"
+            @update:dialog-visible="activityDialogScope = $event ? scope : null"
+            @close="activityDialogScope = null"
             :model-value="scope.activities"
             :controller="isReadOnly ? undefined : auditActivityController"
             :params="auditActivityParams"
@@ -651,6 +679,14 @@ async function saveAsDraft() {
             placeholder="Select activities"
             @update:model-value="setScopeActivities(index, $event)"
           >
+            <template v-if="!isReadOnly" #LabelHeader>
+              <button class="add-dialog" type="button" @click.stop="activityDialogScope = scope">
+                {{ $t('New') }}
+              </button>
+            </template>
+            <template #Dialog>
+              <AddAuditActivity stay-on-page />
+            </template>
             <template #content
               ><input
                 :value="readonlyTitles(scope.activities)"
@@ -847,6 +883,15 @@ async function saveAsDraft() {
   opacity: 0.7;
   pointer-events: none;
 }
+.add-dialog {
+  border: 0;
+  background: transparent;
+  color: var(--PrimaryColor, #087d80);
+  cursor: pointer;
+  font-weight: 600;
+}
+
+
 .plan-fields {
   display: contents;
 }

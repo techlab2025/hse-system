@@ -3,7 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import Image from 'primevue/image'
-// import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
@@ -81,6 +81,7 @@ const filterFields = [
 const indexHazardController = IndexHazardController.getInstance()
 const state = ref(indexHazardController.state.value)
 const route = useRoute()
+const isReportView = computed(() => route.query.isAll === '1')
 const id = route.params.parent_id
 // const type = ref<HazardStatusEnum>(HazardStatusEnum[route.params.type as keyof typeof HazardStatusEnum])
 
@@ -456,7 +457,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
 
           <div class="observation-control-header">
             <IndexHazardHeader
-              :title="`observation`"
+              :title="isReportView ? 'observation report' : 'observation'"
               :length="state?.pagination?.total || 0"
               :projects="Projects"
               :isProjectsLoading="isProjectsLoading"
@@ -475,7 +476,8 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
                 />
                 <ExportReportPdf
                   v-if="state.data?.length"
-                  target-selector=".report-board"
+                  :target-selector="isReportView ? '.observation-report-board' : '.report-board'"
+                  orientation="landscape"
                   file-name="observation-report"
                   :data="state.data"
                 />
@@ -539,8 +541,74 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
         </div>
         <DataStatus :controller="state">
           <template #success>
-            <div class="table-responsive report-board">
-              <div class="index-table-card-container">
+            <div
+              class="table-responsive report-board"
+              :class="{ 'observation-report-board': isReportView }"
+            >
+              <table v-if="isReportView" class="main-table observation-report-table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">{{ $t('Serial') }}</th>
+                    <th scope="col">{{ $t('observer') }}</th>
+                    <th scope="col">{{ $t('project') }}</th>
+                    <th scope="col">{{ $t('Date & Time') }}</th>
+                    <th scope="col">{{ $t('Location') }} / {{ $t('Zone') }}</th>
+                    <th scope="col">{{ $t('Machine') }}</th>
+                    <th scope="col">{{ $t('observation_type') }}</th>
+                    <th scope="col">{{ $t('Risk Level') }}</th>
+                    <th scope="col">{{ $t('description') }}</th>
+                    <th scope="col">{{ $t('status') }}</th>
+                    <th scope="col">{{ $t('Work Stopped') }}</th>
+                    <th scope="col">{{ $t('Attachment') }}</th>
+                    <th scope="col" data-pdf-actions>{{ $t('Actions') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(item, index) in state.data" :key="item.id || index">
+                    <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
+                    <td>{{ item.serialName || '—' }}</td>
+                    <td>{{ item.observer?.name || '—' }}</td>
+                    <td>{{ item.project?.title || '—' }}</td>
+                    <td>{{ item.date || '—' }} · {{ item.time || '—' }}</td>
+                    <td>
+                      <span class="report-cell-stack">
+                        <span>{{ item.location?.title || '—' }}</span>
+                        <small>{{ item.zoon?.title || '—' }}</small>
+                      </span>
+                    </td>
+                    <td>
+                      <span class="report-cell-stack">
+                        <span>{{ item.equipment?.title || '—' }}</span>
+                        <small v-if="item.equipment?.license_plate_number">
+                          {{ item.equipment.license_plate_number }}
+                        </small>
+                      </span>
+                    </td>
+                    <td>{{ GetSaveStatus(item.saveStatus) || '—' }}</td>
+                    <td>
+                      {{ item.saveStatus === SaveStatusEnum.NotSaved ? GetRiskLevel(item.riskLevel) : '—' }}
+                    </td>
+                    <td class="report-description-cell">{{ item.description || '—' }}</td>
+                    <td>
+                      <span
+                        class="investigation-status-badge"
+                        :class="`investigation-status-badge--${ReturnStatusClass(item.investigationStatus)}`"
+                      >
+                        {{ ReturnStatusTitle(item.investigationStatus) }}
+                      </span>
+                    </td>
+                    <td>{{ item.isWorkStopped == 1 ? $t('Yes') : $t('No') }}</td>
+                    <td>{{ item.media?.[0]?.url ? $t('Available') : '—' }}</td>
+                    <td data-pdf-actions>
+                      <RouterLink :to="`/organization/equipment-mangement/observation/show/${item.id}`">
+                        {{ $t('View Details') }}
+                      </RouterLink>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div v-else class="index-table-card-container">
                 <article
                   class="index-table-card observation-card"
                   :class="[
@@ -727,12 +795,12 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
             />
           </template>
           <template #loader>
-            <CardSkelaton />
-            <!-- <TableLoader :cols="3" :rows="10" /> -->
+            <TableLoader v-if="isReportView" :cols="14" :rows="10" />
+            <CardSkelaton v-else />
           </template>
           <template #initial>
-            <CardSkelaton />
-            <!-- <TableLoader :cols="3" :rows="10" /> -->
+            <TableLoader v-if="isReportView" :cols="14" :rows="10" />
+            <CardSkelaton v-else />
           </template>
           <template #empty>
             <PermissionBuilder
@@ -777,6 +845,32 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
 </template>
 
 <style scoped lang="scss">
+.observation-report-board {
+  overflow-x: auto;
+  border: 1px solid var(--main-border);
+  border-radius: 16px;
+  background: var(--BgWhite);
+}
+
+.observation-report-table {
+  min-width: 1700px;
+}
+
+.report-cell-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  small {
+    color: var(--text-soft);
+  }
+}
+
+.report-description-cell {
+  min-width: 220px;
+  white-space: normal;
+}
+
 .small-text {
   font-size: 12px !important;
   color: #475569 !important;

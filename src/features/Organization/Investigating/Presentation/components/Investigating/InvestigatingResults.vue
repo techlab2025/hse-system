@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import InjuryDetailsModel from '@/features/Organization/ObservationFactory/Data/models/InjuryModel'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import InvestigatingHedaer from './InvestigatingResultsUtils/InvestigatingHedaer.vue'
 import investigationImg from '@/assets/images/investigationImg.png'
@@ -293,10 +294,14 @@ const uniqueByIdOrName = (items: any[]) => {
 
 const initialInjuries = computed(() =>
   uniqueByIdOrName([
+    // Saved investigation injuries take precedence over the original observation.
+    ...(state.value?.data?.injuries ?? []),
     ...(state.value?.data?.observation?.injuries ?? []),
     ...(state.value?.data?.observation?.accident_victim ?? []),
-    ...(state.value?.data?.injuries ?? []),
-  ]),
+  ]).map((injury) => ({
+    ...injury,
+    locations: InjuryDetailsModel.getLocations(injury),
+  })),
 )
 const FiveWhyQuestionsData = ref()
 const setFiveWhyQuestions = (data) => {
@@ -502,6 +507,7 @@ const isInjuryStarted = (item: any) =>
   hasInjuryType(item) ||
   hasInjuryDescription(item) ||
   hasFiles(item?.images) ||
+  hasFiles(item?.locations) ||
   hasFiles(item?.files)
 const isAddedInjuryRow = (index: number) => index >= Math.max(initialInjuries.value?.length ?? 0, 1)
 const hasInitialInjuryRows = () => Boolean(initialInjuries.value?.length)

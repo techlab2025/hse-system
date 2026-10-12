@@ -280,7 +280,11 @@ watch(() => props.details, initializeForm, { immediate: true })
             :value="details?.serialName || details?.ncr || `NCR-${details?.id}`"
             type="text"
             disabled
-          />
+          />``
+        </label>
+        <label class="field">
+          <span>NCR Date</span>
+          <input :value="formatJoinDate(new Date())" type="text" disabled />
         </label>
         <!-- <label class="field">
           <span>Serial Number</span>
@@ -469,7 +473,7 @@ watch(() => props.details, initializeForm, { immediate: true })
               required
               @update:model-value="setPreventiveAssignee(index, $event)"
             />
-            <label class="field ">
+            <label class="field">
               <span>Target date <b>*</b></span>
               <input v-model="capa.preventive.targetDate" type="date" :disabled="isReadOnly" />
             </label>
@@ -530,7 +534,7 @@ watch(() => props.details, initializeForm, { immediate: true })
 </template>
 
 <style scoped>
-.disabled{
+.disabled {
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;

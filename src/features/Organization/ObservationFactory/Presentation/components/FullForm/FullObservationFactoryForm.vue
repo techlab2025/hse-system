@@ -68,7 +68,6 @@ import { useProjectSelectStore } from '@/stores/ProjectSelect.ts'
 import IndexPpeItemController from '@/features/Organization/ppeItem/Presentation/controllers/indexPpeItemController.ts'
 import IndexPpeItemParams from '@/features/Organization/ppeItem/Core/params/indexPpeItemParams.ts'
 import { ObservationTypeStaticOptions } from '@/features/setting/ObserverationType/Core/Enum/ObservationTypeEnum.ts'
-import InjuryBodySlection from '../../SubComponent/InjuryBodySlection.vue'
 
 const emit = defineEmits(['update:data'])
 const { isDarkMode } = useThemeMode()
@@ -134,6 +133,7 @@ const hasInjuryData = (item: any) =>
   hasSectionValue(item?.text) ||
   Boolean(Number(item?.infectionTypeId?.id)) ||
   hasSectionFiles(item?.incidentCategories) ||
+  hasSectionFiles(item?.locations) ||
   hasSectionFiles(item?.images)
 
 const hasFatalityData = (item: any) =>
