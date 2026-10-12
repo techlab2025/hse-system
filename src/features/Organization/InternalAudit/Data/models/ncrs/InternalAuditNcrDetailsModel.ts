@@ -142,6 +142,7 @@ export default class InternalAuditNcrDetailsModel {
     public internalAuditId: number = 0,
     public auditSerialName: string = '',
     public serialName: string = '',
+    public status: number = 1,
   ) {}
 
   get attachments(): string[] {
@@ -182,6 +183,7 @@ export default class InternalAuditNcrDetailsModel {
       Number(item.internal_audit_id ?? asRecord(item.internal_audit).id ?? 0),
       String(asRecord(item.internal_audit).serial_name ?? ''),
       String(item.serial_name ?? ''),
+      Number()
     )
   }
 

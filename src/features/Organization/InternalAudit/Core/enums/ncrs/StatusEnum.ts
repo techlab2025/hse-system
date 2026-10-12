@@ -1,6 +1,6 @@
 export enum StatusEnum {
-  PENDING = 'pending',
-  OPEN = 'open',
-  IN_PROGRESS = 'in_progress',
-  CLOSED = 'closed',
+  PENDING = 1,
+  OPEN = 2,
+  IN_PROGRESS =3,
+  CLOSED = 4,
 }
