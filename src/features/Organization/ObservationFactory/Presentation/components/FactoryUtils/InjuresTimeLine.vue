@@ -448,13 +448,13 @@ onMounted(async () => {
                 </UpdatedCustomInputSelect>
               </div>
               <!--  -->
-              <!-- <div class="injury-field injury-body-map-field w-full">
+              <div class="injury-field injury-body-map-field w-full">
                 <InjuryBodySlection
                   :model-value="item.locations"
                   :id-prefix="`injury-body-${index}`"
                   @update:model-value="(locations) => updateBodyLocations(locations, index)"
                 />
-              </div> -->
+              </div>
               <div class="injury-field input-wrapper w-full">
                 <div class="flex items-center gap-2">
                   <label :for="`injury-description-${index}`">{{ $t('Description of Injury ') }}</label>
