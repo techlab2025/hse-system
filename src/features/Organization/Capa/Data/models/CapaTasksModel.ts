@@ -11,6 +11,7 @@ export class CapaTaskDetailsModel {
   public resultFindings: string
   public reason: string
   public isInternalAuditTask: boolean
+  public isVerification: boolean
 
   constructor(data: {
     id: number
@@ -25,6 +26,7 @@ export class CapaTaskDetailsModel {
     resultFindings?: string
     reason?: string
     isInternalAuditTask?: boolean
+    isVerification?: boolean
   }) {
     this.id = data.id
     this.title = data.title
@@ -38,6 +40,7 @@ export class CapaTaskDetailsModel {
     this.resultFindings = data.resultFindings ?? ''
     this.reason = data.reason ?? ''
     this.isInternalAuditTask = data.isInternalAuditTask ?? false
+    this.isVerification = data.isVerification
   }
 
   static fromMap(data: any): CapaTaskDetailsModel {
@@ -64,7 +67,7 @@ export class CapaTaskDetailsModel {
         '',
       answerNotes:
         data?.investigation_task_results?.[0]?.notes ||
-        data?.investigationTaskResults?.[0]?.notes ||
+        data?.investigationTaskResults?.[0]?.notes || 
         data?.task_results?.[0]?.notes ||
         data?.taskResults?.[0]?.notes ||
         data?.task_result?.notes ||
@@ -77,6 +80,7 @@ export class CapaTaskDetailsModel {
       resultFindings: data?.result_findings || data?.resultFindings || '',
       reason: data?.reason || data?.Reason || '',
       isInternalAuditTask: ncrTask != null,
+      isVerification: data.is_verification,
     })
   }
 }

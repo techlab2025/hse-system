@@ -2,7 +2,7 @@ import TitleInterface from '@/base/Data/Models/title_interface'
 import InvestegationEmployeeModel from './InvestegationEmployeeModel'
 import MeetingModel from '../Meetings/MeetingModel'
 import type HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel'
-import type InjuryDetailsModel from '@/features/Organization/ObservationFactory/Data/models/InjuryModel'
+import InjuryDetailsModel from '@/features/Organization/ObservationFactory/Data/models/InjuryModel'
 import type { InvestigationMeetingEnum } from '../../../Core/Enums/investigation_meeting_enum'
 
 type investigationMeeting = {
@@ -45,7 +45,7 @@ export default class InvestegationResultDetailsModel {
   public incidentDescription: string
   public recommendation: string
   public lessonLearnt: string
-  public injuries: any[]
+  public injuries: InjuryDetailsModel[]
   public deaths: any[]
   public rootCauses: any[]
   public questions: any[]
@@ -83,7 +83,7 @@ export default class InvestegationResultDetailsModel {
     incidentDescription: string = '',
     recommendation: string = '',
     lessonLearnt: string = '',
-    injuries: any[] = [],
+    injuries: InjuryDetailsModel[] = [],
     deaths: any[] = [],
     rootCauses: any[] = [],
     questions: any[] = [],
@@ -120,7 +120,10 @@ export default class InvestegationResultDetailsModel {
     this.incidentDescription = incidentDescription
     this.recommendation = recommendation
     this.lessonLearnt = lessonLearnt
-    this.injuries = injuries
+    this.injuries = injuries.map((injury) => ({
+      ...injury,
+      locations: InjuryDetailsModel.getLocations(injury),
+    }))
     this.deaths = deaths
     this.rootCauses = rootCauses
     this.questions = questions

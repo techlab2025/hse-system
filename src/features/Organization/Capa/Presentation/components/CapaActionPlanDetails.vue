@@ -174,7 +174,7 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
                 <strong>{{ task.responsiblePersonName || 'N/A' }}</strong>
               </p>
             </div>
-            <div class="task-actions">
+            <div class="task-actions" :class="task.isVerification ? `disabled` : ``">
               <button class="change-status-btn" @click="openStatusDialog(task)">
                 Change status
               </button>
@@ -229,7 +229,7 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
                 <strong>{{ task.responsiblePersonName || 'N/A' }}</strong>
               </p>
             </div>
-            <div class="task-actions">
+            <div class="task-actions" :class="task.isVerification ? `disabled` : ``">
               <button class="change-status-btn" @click="openStatusDialog(task)">
                 Change status
               </button>
@@ -330,6 +330,10 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
 </template>
 
 <style scoped lang="scss">
+.disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
 .saved-action-plan {
   border: 1px solid var(--main-border);
   border-radius: 18px;

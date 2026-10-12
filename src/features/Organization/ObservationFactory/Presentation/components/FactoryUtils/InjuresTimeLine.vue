@@ -11,7 +11,7 @@ import IndexInjuryParams from '@/features/Organization/Injury/Core/params/indexI
 import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import AddInjury from '@/views/Organization/Injury/AddInjury.vue'
-import type InjuryDetailsModel from '../../../Data/models/InjuryModel'
+import InjuryDetailsModel from '../../../Data/models/InjuryModel'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 import IndexIncidentCategoryController from '@/features/setting/IncidentCategories/Presentation/controllers/indexIncidentCategoryController'
 import IndexIncidentCategoryParams from '@/features/setting/IncidentCategories/Core/params/indexIncidentCategoryParams'
@@ -261,11 +261,7 @@ const mapInjuryToAnswer = (item: InjuryDetailsModel): AnswerModel => {
           title: selectedPpeItemCondition.title,
         })
       : new TitleInterface({ id: 0, title: '' }),
-    locations: Array.isArray(item?.locations)
-      ? item.locations
-      : Array.isArray((item as any)?.body_regions)
-        ? (item as any).body_regions
-        : [],
+    locations: InjuryDetailsModel.getLocations(item),
   }
 }
 
