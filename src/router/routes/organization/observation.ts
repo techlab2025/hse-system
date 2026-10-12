@@ -2,6 +2,16 @@ import type { RouteRecordRaw } from '@/router/types'
 
 export const observationRoutes: RouteRecordRaw[] = [
   {
+    path: 'observation-report',
+    name: 'Observation Report',
+    component: () =>
+      import('@/views/Organization/ObservationFactory/Observation/IndexObservation.vue'),
+    meta: {
+      breadcrumb: 'observation report',
+      isSidebar: false,
+    },
+  },
+  {
     path: 'observation',
     name: 'Observeration',
     component: () =>

@@ -433,7 +433,7 @@ watch(() => props.details, initializeForm, { immediate: true })
               <span>Target date <b>*</b></span>
               <input v-model="capa.corrective.targetDate" type="date" :disabled="isReadOnly" />
             </label>
-            <label class="field disabled">
+            <!-- <label class="field disabled">
               <span>Actual date</span>
               <input
                 v-model="capa.corrective.actualDate"
@@ -441,7 +441,7 @@ watch(() => props.details, initializeForm, { immediate: true })
                 :max="new Date().toISOString().slice(0, 10)"
                 :disabled="isReadOnly"
               />
-            </label>
+            </label>-->
           </div>
         </div>
         <div class="action-block preventive">
@@ -477,7 +477,7 @@ watch(() => props.details, initializeForm, { immediate: true })
               <span>Target date <b>*</b></span>
               <input v-model="capa.preventive.targetDate" type="date" :disabled="isReadOnly" />
             </label>
-            <label class="field disabled">
+            <!--      <label class="field disabled">
               <span>Actual date</span>
               <input
                 v-model="capa.preventive.actualDate"
@@ -485,7 +485,7 @@ watch(() => props.details, initializeForm, { immediate: true })
                 :max="new Date().toISOString().slice(0, 10)"
                 :disabled="isReadOnly"
               />
-            </label>
+            </label>-->
           </div>
         </div>
       </article>

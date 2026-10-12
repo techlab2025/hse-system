@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
+import ConditionHandler from '@/base/Presentation/utils/condition_handler'
+import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import Image from 'primevue/image'
@@ -160,6 +162,19 @@ watch(
   {
     deep: true,
   },
+)
+
+const canViewIncidents = computed(
+  () =>
+    ConditionHandler.getInstance().shouldUseEmployeeInterface() ||
+    PermissionHandler.Instance.handle([
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_INCEDANT_ALL,
+      PermissionsEnum.ORG_INCEDANT_DELETE,
+      PermissionsEnum.ORG_INCEDANT_FETCH,
+      PermissionsEnum.ORG_INCEDANT_UPDATE,
+      PermissionsEnum.ORG_INCEDANT_CREATE,
+    ]),
 )
 
 const { user } = useUserStore()
@@ -325,17 +340,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
   <div :class="['incident-index-page grid grid-cols-12 gap-4', { 'is-dark': isDarkMode }]">
     <IndexEquipmentMangement class="col-span-2" />
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
-      <PermissionBuilder
-        :code="[
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-
-          PermissionsEnum.ORG_INCEDANT_ALL,
-          PermissionsEnum.ORG_INCEDANT_DELETE,
-          PermissionsEnum.ORG_INCEDANT_FETCH,
-          PermissionsEnum.ORG_INCEDANT_UPDATE,
-          PermissionsEnum.ORG_INCEDANT_CREATE,
-        ]"
-      >
+      <template v-if="canViewIncidents">
         <div class="incident-control-center">
           <div class="incident-control-glow" aria-hidden="true"></div>
 
@@ -602,13 +607,12 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
             </PermissionBuilder>
           </template>
         </DataStatus>
-        <template #notPermitted>
-          <DataFailed
-            addText="Have not  Permission"
-            description="You have no incedant .. All your joined customers will appear here when you add your customer data"
-          />
-        </template>
-      </PermissionBuilder>
+      </template>
+      <DataFailed
+        v-else
+        addText="Have not Permission"
+        description="You do not have permission to view incidents."
+      />
     </div>
   </div>
 </template>

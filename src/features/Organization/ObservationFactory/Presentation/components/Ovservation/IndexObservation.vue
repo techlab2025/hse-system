@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
+import ConditionHandler from '@/base/Presentation/utils/condition_handler'
+import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import Image from 'primevue/image'
@@ -81,7 +83,7 @@ const filterFields = [
 const indexHazardController = IndexHazardController.getInstance()
 const state = ref(indexHazardController.state.value)
 const route = useRoute()
-const isReportView = computed(() => route.query.isAll === '1')
+const isReportView = computed(() => route.name === 'Observation Report')
 const id = route.params.parent_id
 // const type = ref<HazardStatusEnum>(HazardStatusEnum[route.params.type as keyof typeof HazardStatusEnum])
 
@@ -230,6 +232,19 @@ watch(
   {
     deep: true,
   },
+)
+
+const canViewObservations = computed(
+  () =>
+    ConditionHandler.getInstance().shouldUseEmployeeInterface() ||
+    PermissionHandler.Instance.handle([
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.ORG_OBSERVATION_ALL,
+      PermissionsEnum.ORG_OBSERVATION_DELETE,
+      PermissionsEnum.ORG_OBSERVATION_FETCH,
+      PermissionsEnum.ORG_OBSERVATION_UPDATE,
+      PermissionsEnum.ORG_OBSERVATION_CREATE,
+    ]),
 )
 
 const { user } = useUserStore()
@@ -442,16 +457,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
   <div class="grid grid-cols-12 gap-4 observation-index-page" :class="{ 'is-dark': isDarkMode }">
     <IndexEquipmentMangement class="col-span-2" />
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
-      <PermissionBuilder
-        :code="[
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-          PermissionsEnum.ORG_OBSERVATION_ALL,
-          PermissionsEnum.ORG_OBSERVATION_DELETE,
-          PermissionsEnum.ORG_OBSERVATION_FETCH,
-          PermissionsEnum.ORG_OBSERVATION_UPDATE,
-          PermissionsEnum.ORG_OBSERVATION_CREATE,
-        ]"
-      >
+      <template v-if="canViewObservations">
         <div class="observation-control-center">
           <div class="observation-control-glow" aria-hidden="true"></div>
 
@@ -833,13 +839,12 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
             </PermissionBuilder>
           </template>
         </DataStatus>
-        <template #notPermitted>
-          <DataFailed
-            addText="Have not  Permission"
-            description="You have no Observation .. All your joined customers will appear here when you add your customer data"
-          />
-        </template>
-      </PermissionBuilder>
+      </template>
+      <DataFailed
+        v-else
+        addText="Have not Permission"
+        description="You do not have permission to view observations."
+      />
     </div>
   </div>
 </template>

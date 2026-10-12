@@ -492,7 +492,6 @@ async function saveAsDraft() {
 </script>
 
 <template>
-
   <form
     class="audit-plan"
     :class="isReadOnly ? 'report-plan' : props.auditStatus"
@@ -636,7 +635,6 @@ async function saveAsDraft() {
           <UpdatedCustomInputSelect
             :hascontent="isReadOnly"
             :reload="!isReadOnly"
-
             :is-dialog="!isReadOnly"
             :dialog-visible="processDialogScope === scope"
             @update:dialog-visible="processDialogScope = $event ? scope : null"
@@ -890,7 +888,6 @@ async function saveAsDraft() {
   cursor: pointer;
   font-weight: 600;
 }
-
 
 .plan-fields {
   display: contents;

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import ShowOrganizatoinEmployeeParams from '../../Core/params/showOrganizatoinEmployeeParams'
 import ShowOrganizatoinEmployeeController from '../controllers/showOrganizatoinEmployeeController'
 import CertificateComp from '../supcomponents/showOrgEmployee/CertificateComp.vue'
@@ -21,9 +21,7 @@ const ShowEmployeeDetails = async () => {
     empDetastate.value = state.value.data
   }
 }
-onMounted(() => {
-  ShowEmployeeDetails()
-})
+watch(() => route.params.id, ShowEmployeeDetails, { immediate: true })
 const isShowAllTasks = ref(false)
 const viewAllTasks = () => {
   isShowAllTasks.value = true

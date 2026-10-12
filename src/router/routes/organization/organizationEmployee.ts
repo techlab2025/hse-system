@@ -31,19 +31,6 @@ export const organizationEmployeeRoutes: RouteRecordRaw[] = [
     },
   },
   {
-    path: 'organization-employee/show/:id',
-    name: 'Show Organization Employee',
-    component: () =>
-      import(
-        '@/features/Organization/OrganizationEmployee/Presentation/components/ShowOrgnizationEmployee.vue'
-      ),
-    meta: {
-      breadcrumb: 'Show Employee',
-      parent: 'Organization Employee',
-      isSidebar: true,
-    },
-  },
-  {
     path: 'organization-employee/upload',
     name: 'Upload Organization Employee',
     component: () =>

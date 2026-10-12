@@ -817,7 +817,7 @@ const ReportsRoutes = ref<Routes[]>([
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
   {
-    link: '/organization/equipment-mangement/observation?isAll=1&type=2',
+    link: '/organization/equipment-mangement/observation-report',
     name: 'observation report',
     icon: 'eye',
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],

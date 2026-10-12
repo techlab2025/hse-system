@@ -92,6 +92,17 @@ const toggleDropMenu = () => {
   isDropMenuOpen.value = !isDropMenuOpen.value
 }
 
+const openUserProfile = () => {
+  const currentUser = useUserStore().user
+  if (currentUser?.type !== OrganizationTypeEnum.ORGANIZATION || !currentUser.id) {
+    toggleDropMenu()
+    return
+  }
+
+  isDropMenuOpen.value = false
+  router.push({ name: 'Show Organization Employee', params: { id: currentUser.id } })
+}
+
 // fetch user store data
 const { user } = useUserStore()
 const ProjectSelector = useProjectSelectStore()
@@ -317,7 +328,10 @@ const toggle = (event: Event) => {
         <div
           ref="userMenuRef"
           class="user cursor-pointer dropdown-trigger header-user-menu"
-          @click.stop="toggleDropMenu"
+          role="link"
+          tabindex="0"
+          @click.stop="openUserProfile"
+          @keydown.enter.stop="openUserProfile"
         >
           <!--  <IconArrowDownNav class="drop-icon" /> -->
           <div class="profile-data">
