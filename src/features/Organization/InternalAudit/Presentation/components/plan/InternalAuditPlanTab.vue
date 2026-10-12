@@ -91,12 +91,13 @@ const auditFocusOptions = computed(() =>
     .filter((department): department is TitleInterface => Boolean(department)),
 )
 const isExisting = computed(() => props.internalAuditPlanId > 0)
+const isReadOnly = computed(() => props.readonly || isExisting.value)
 const isPublished = computed(
   () => loadedStatus.value.toLowerCase() === 'planned' && isExisting.value,
 )
 
 onMounted(async () => {
-  if (!props.readonly) {
+  if (!isReadOnly.value) {
     const projects = await projectController.fetch(projectParams)
     projectOptions.value = [fullCompanyOption, ...projects]
   }
@@ -435,11 +436,7 @@ function validate(isDraft: boolean): boolean {
 }
 
 async function submit(isDraft: boolean) {
-  if (props.readonly) return
-  // if (isReported.value) {
-  //   error.value = 'Issued audit reports are fixed and the audit plan can no longer be changed.'
-  //   return
-  // }
+  if (isReadOnly.value) return
   if (!validate(isDraft)) return
   saving.value = true
   success.value = ''
@@ -489,12 +486,8 @@ async function saveAsDraft() {
 </script>
 
 <template>
-  <form
-    class="audit-plan"
-    :class="props.readonly ? 'report-plan' : props.auditStatus"
-    @submit.prevent="submit(false)"
-  >
-    <fieldset class="plan-fields" :disabled="props.readonly">
+  <form class="audit-plan" :class="{ 'report-plan': isReadOnly }" @submit.prevent="submit(false)">
+    <fieldset class="plan-fields" :disabled="isReadOnly">
       <section class="audit-section">
         <div class="section-title">
           <span>01</span>
@@ -511,7 +504,7 @@ async function saveAsDraft() {
           <label class="field"
             ><span>Audit Start Date <b>*</b></span
             ><DatePicker
-              :disabled="props.readonly"
+              :disabled="isReadOnly"
               v-model="auditStartDate"
               date-format="yy-mm-dd"
               show-icon
@@ -521,7 +514,7 @@ async function saveAsDraft() {
           <label class="field"
             ><span>Audit End Date <b>*</b></span
             ><DatePicker
-              :disabled="props.readonly"
+              :disabled="isReadOnly"
               v-model="auditEndDate"
               date-format="yy-mm-dd"
               show-icon
@@ -529,8 +522,8 @@ async function saveAsDraft() {
               placeholder="Select end date"
           /></label>
           <UpdatedCustomInputSelect
-            :hascontent="props.readonly"
-            :reload="!props.readonly"
+            :hascontent="isReadOnly"
+            :reload="!isReadOnly"
             class="field"
             :model-value="selectedProject"
             :static-options="projectOptions"
@@ -557,11 +550,11 @@ async function saveAsDraft() {
             >
           </UpdatedCustomInputSelect>
           <UpdatedCustomInputSelect
-            :hascontent="props.readonly"
-            :reload="!props.readonly"
+            :hascontent="isReadOnly"
+            :reload="!isReadOnly"
             class="field"
             :model-value="auditStandard"
-            :controller="props.readonly ? undefined : auditStandardController"
+            :controller="isReadOnly ? undefined : auditStandardController"
             :params="auditStandardParams"
             label="Audit Standard"
             type="multiselect"
@@ -578,11 +571,11 @@ async function saveAsDraft() {
             /></template>
           </UpdatedCustomInputSelect>
           <UpdatedCustomInputSelect
-            :hascontent="props.readonly"
-            :reload="!props.readonly"
+            :hascontent="isReadOnly"
+            :reload="!isReadOnly"
             class="field"
             :model-value="auditTeam"
-            :controller="props.readonly ? undefined : employeeController"
+            :controller="isReadOnly ? undefined : employeeController"
             :params="employeeParams"
             type="multiselect"
             label="Audit Team"
@@ -599,8 +592,8 @@ async function saveAsDraft() {
             /></template>
           </UpdatedCustomInputSelect>
           <UpdatedCustomInputSelect
-            :hascontent="props.readonly"
-            :reload="!props.readonly"
+            :hascontent="isReadOnly"
+            :reload="!isReadOnly"
             class="field"
             :model-value="leadAuditor"
             :static-options="selectedTeamOptions"
@@ -630,10 +623,10 @@ async function saveAsDraft() {
         </div>
         <div v-for="(scope, index) in scopes" :key="index" class="scope-row">
           <UpdatedCustomInputSelect
-            :hascontent="props.readonly"
-            :reload="!props.readonly"
+            :hascontent="isReadOnly"
+            :reload="!isReadOnly"
             :model-value="scope.department"
-            :controller="props.readonly ? undefined : hierarchyController"
+            :controller="isReadOnly ? undefined : hierarchyController"
             :params="hierarchyParams"
             label="Audit Process"
             placeholder="Select Audit Process"
@@ -648,10 +641,10 @@ async function saveAsDraft() {
             /></template>
           </UpdatedCustomInputSelect>
           <UpdatedCustomInputSelect
-            :hascontent="props.readonly"
-            :reload="!props.readonly"
+            :hascontent="isReadOnly"
+            :reload="!isReadOnly"
             :model-value="scope.activities"
-            :controller="props.readonly ? undefined : auditActivityController"
+            :controller="isReadOnly ? undefined : auditActivityController"
             :params="auditActivityParams"
             type="multiselect"
             label="Audit Activities"
@@ -708,7 +701,7 @@ async function saveAsDraft() {
             <label class="field"
               ><span>Start Time <b>*</b></span
               ><DatePicker
-                :disabled="props.readonly"
+                :disabled="isReadOnly"
                 v-model="schedule.startTime"
                 time-only
                 hour-format="24"
@@ -718,7 +711,7 @@ async function saveAsDraft() {
             <label class="field"
               ><span>End Time <b>*</b></span
               ><DatePicker
-                :disabled="props.readonly"
+                :disabled="isReadOnly"
                 v-model="schedule.endTime"
                 time-only
                 hour-format="24"
@@ -728,7 +721,7 @@ async function saveAsDraft() {
             <label class="field"
               ><span>Day <b>*</b></span
               ><DatePicker
-                :disabled="props.readonly"
+                :disabled="isReadOnly"
                 v-model="schedule.day"
                 date-format="yy-mm-dd"
                 show-icon
@@ -740,8 +733,8 @@ async function saveAsDraft() {
               :class="{ invalid: publishAttempted && !hasValidAuditFocus(schedule) }"
             >
               <UpdatedCustomInputSelect
-                :hascontent="props.readonly"
-                :reload="!props.readonly"
+                :hascontent="isReadOnly"
+                :reload="!isReadOnly"
                 class="field"
                 :model-value="schedule.focus"
                 :static-options="auditFocusOptions"
@@ -772,8 +765,8 @@ async function saveAsDraft() {
               :class="{ invalid: publishAttempted && !hasValidAssignedAuditor(schedule) }"
             >
               <UpdatedCustomInputSelect
-                :hascontent="props.readonly"
-                :reload="!props.readonly"
+                :hascontent="isReadOnly"
+                :reload="!isReadOnly"
                 class="field"
                 :model-value="schedule.assignedAuditors"
                 :static-options="selectedTeamOptions"
@@ -813,7 +806,7 @@ async function saveAsDraft() {
         </label>
         <div class="field field-wide">
           <HandleFIlesUpload
-            :readonly="props.readonly"
+            :readonly="isReadOnly"
             label="Plan Attachments"
             accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
             :multiple="true"
@@ -827,7 +820,7 @@ async function saveAsDraft() {
       <p v-if="error" class="form-error" role="alert">{{ error }}</p>
       <p v-if="success" class="form-success" role="status">{{ success }}</p>
     </fieldset>
-    <footer v-if="!props.readonly" class="form-actions">
+    <footer v-if="!isReadOnly" class="form-actions">
       <button
         v-if="!isPublished"
         class="btn btn-secondary"
@@ -850,6 +843,10 @@ async function saveAsDraft() {
 </template>
 
 <style scoped>
+.report-plan {
+  opacity: 0.7;
+  pointer-events: none;
+}
 .plan-fields {
   display: contents;
 }

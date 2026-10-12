@@ -56,6 +56,14 @@ const reportAttachments = ref<string[]>([])
 const feedback = ref('')
 const hasError = ref(false)
 const previewMode = ref(false)
+const showReport = computed(() => isReported.value || previewMode.value)
+const reportFields = computed(() => [
+  { label: 'Scope clarifications', value: scope.value },
+  { label: 'Methodology', value: methodology.value },
+  { label: 'Maintenance', value: maintenance.value },
+  { label: 'General observations', value: generalObservations.value },
+  { label: 'Conclusion', value: conclusion.value },
+])
 const isLoading = computed(
   () =>
     fetchController.isDataLoading() ||
@@ -121,6 +129,7 @@ function restoreDraft() {
 }
 
 function saveDraft() {
+  if (isReported.value) return
   if (!internalAuditPlanId.value) {
     hasError.value = true
     feedback.value = 'Select an audit before saving the report draft.'
@@ -174,7 +183,13 @@ async function fetchDetails() {
     const report = reportController.isDataSuccess() ? reportController.state.value.data : null
     if (
       report &&
-      [report.scope, report.methodology, report.maintenance, report.conclusion].some(Boolean)
+      [
+        report.scope,
+        report.methodology,
+        report.maintenance,
+        report.generalObservations,
+        report.conclusion,
+      ].some(Boolean)
     ) {
       issued.value = true
       scope.value = report.scope
@@ -182,6 +197,7 @@ async function fetchDetails() {
       maintenance.value = report.maintenance
       generalObservations.value = report.generalObservations
       conclusion.value = report.conclusion
+      reportAttachments.value = report.attachments
     } else if (isReported.value) {
       hasError.value = true
       feedback.value = reportController.state.value.error?.title ?? 'Unable to load audit report.'
@@ -223,7 +239,8 @@ function validate(): boolean {
 }
 
 async function submit() {
-  if (isReported.value || isSaving.value || !validate()) return
+  if (isReported.value || isSaving.value || !canIssueReport.value || ncrError.value || !validate())
+    return
 
   await createController.create(
     new CreateInternalAuditReportParams(
@@ -243,8 +260,7 @@ async function submit() {
     emit('saved')
     await fetchDetails()
     previewMode.value = true
-    hasError.value = false
-    feedback.value = 'Internal audit report issued successfully.'
+    if (!hasError.value) feedback.value = 'Internal audit report issued successfully.'
     return
   }
 
@@ -324,13 +340,35 @@ onDeactivated(() => {
     </div>
     <template v-else-if="details">
       <InternalAuditReportForms
+        v-show="showReport"
         :key="internalAuditPlanId"
         :audit-id="internalAuditPlanId"
         :audit-serial-name="details.auditNumber"
         :ncrs="ncrs"
         :ncr-error="ncrError"
       />
-      <form class="report-form" @submit.prevent="submit">
+      <article v-if="showReport" class="report-preview" aria-label="Audit report details">
+        <header>
+          <div>
+            <small>{{ isReported ? 'Issued audit report' : 'Audit report preview' }}</small>
+            <h2>4. Report details</h2>
+          </div>
+          <strong>{{ details.auditNumber }}</strong>
+        </header>
+        <dl>
+          <div v-for="field in reportFields" :key="field.label">
+            <dt>{{ field.label }}</dt>
+            <dd>{{ field.value || '—' }}</dd>
+          </div>
+        </dl>
+        <HandleFIlesUpload
+          v-if="reportAttachments.length"
+          label="Report attachments"
+          :file="reportAttachments"
+          readonly
+        />
+      </article>
+      <form v-else class="report-form" @submit.prevent="submit">
         <section class="report-section">
           <div class="section-title">
             <h3>4. Report details</h3>
@@ -377,6 +415,7 @@ onDeactivated(() => {
             label="Report attachments (optional)"
             accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
             :multiple="true"
+            :file="reportAttachments"
             :max-files="10"
             @change="setAttachments"
           />
