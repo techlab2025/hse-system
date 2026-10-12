@@ -9,24 +9,43 @@ import IndexInternalAuditPlanParams from '../../../Core/params/plan/indexInterna
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { InrernalAuditStatusEnum } from '../../../Core/enums/plan/PlanStatusENum'
+import DatePicker from 'primevue/datepicker'
+import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController'
+import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams'
 
 const controller = IndexInternalAuditPlanController.getInstance()
 const state = ref(controller.state.value)
 const word = ref('')
-const page = ref(1)
+const currentPage = ref(1)
+const countPerPage = ref(10)
 const statusFilter = ref<TitleInterface | null>(null)
 
-const filteredAudits = computed(() => {
-  const audits = state.value.data ?? []
-  if (!statusFilter.value) return audits
-  return audits.filter(
-    (audit) => audit.status.toLowerCase() === String(statusFilter.value?.title ?? '').toLowerCase(),
-  )
-})
+const fromDate = ref<Date | null>(null)
+const toDate = ref<Date | null>(null)
+const focusArea = ref<TitleInterface | null>(null)
+const hierarchyController = IndexHerikalyController.getInstance()
+const hierarchyParams = new IndexHerikalyParams('', 1, 1000, 0, true)
+const filteredAudits = computed(() => state.value.data ?? [])
 
 function normalizeStatus(value: TitleInterface | TitleInterface[] | null) {
   statusFilter.value = Array.isArray(value) ? (value[0] ?? null) : value
 }
+
+function normalizeFocusArea(value: TitleInterface | TitleInterface[] | null) {
+  focusArea.value = Array.isArray(value) ? (value[0] ?? null) : value
+}
+
+function formatFilterDate(value: Date | null) {
+  if (!value) return ''
+  return `${value.getFullYear()}-${String(value.getMonth() + 1).padStart(2, '0')}-${String(value.getDate()).padStart(2, '0')}`
+}
+
+function applyFilters() {
+  currentPage.value = 1
+  return fetchInternalAuditPlans()
+}
+
+watch([fromDate, toDate, statusFilter, focusArea], applyFilters)
 
 function leadName(auditTeam: unknown[]): string {
   const member = auditTeam.find((entry) => {
@@ -41,7 +60,18 @@ function leadName(auditTeam: unknown[]): string {
 }
 
 async function fetchInternalAuditPlans() {
-  await controller.getData(new IndexInternalAuditPlanParams(word.value, page.value, 10, 1))
+  await controller.getData(
+    new IndexInternalAuditPlanParams(
+      word.value,
+      currentPage.value,
+      countPerPage.value,
+      1,
+      formatFilterDate(fromDate.value),
+      formatFilterDate(toDate.value),
+      statusFilter.value?.id ?? null,
+      focusArea.value?.id ?? null,
+    ),
+  )
 }
 watch(
   () => controller.state.value,
@@ -57,6 +87,16 @@ const statusOptions = ref<TitleInterface[]>([
   new TitleInterface({ id: InrernalAuditStatusEnum.planned, title: 'planned' }),
   new TitleInterface({ id: InrernalAuditStatusEnum.reported, title: 'reported' }),
 ])
+
+const handleChangePage = (page: number) => {
+  currentPage.value = page
+  return fetchInternalAuditPlans()
+}
+
+const handleCountPerPage = (count: number) => {
+  countPerPage.value = count
+  return applyFilters()
+}
 </script>
 
 <template>
@@ -77,11 +117,12 @@ const statusOptions = ref<TitleInterface[]>([
         <div class="input-wrapper">
           <label for="search">Search</label>
           <input
+            id="search"
             v-model="word"
             class="input"
             type="search"
             placeholder="Search audit number"
-            @input="fetchInternalAuditPlans"
+            @input="applyFilters"
           />
         </div>
 
@@ -95,12 +136,51 @@ const statusOptions = ref<TitleInterface[]>([
             @update:model-value="normalizeStatus"
           />
         </div>
-      </div>
 
-      <router-link class="btn btn-primary" to="/organization/internal-audit"
-        >New Audit Plan</router-link
-      >
+        <div class="input-wrapper">
+          <label for="audit-from-date">From Date</label>
+          <DatePicker
+            v-model="fromDate"
+            input-id="audit-from-date"
+            date-format="yy-mm-dd"
+            placeholder="Select from date"
+            :max-date="toDate ?? undefined"
+            :manual-input="false"
+            show-icon
+            show-button-bar
+            class="input"
+          />
+        </div>
+        <div class="input-wrapper">
+          <label for="audit-to-date">To Date</label>
+          <DatePicker
+            v-model="toDate"
+            input-id="audit-to-date"
+            date-format="yy-mm-dd"
+            placeholder="Select to date"
+            :min-date="fromDate ?? undefined"
+            :manual-input="false"
+            show-icon
+            show-button-bar
+            class="input"
+          />
+        </div>
+        <div class="input-wrapper">
+          <UpdatedCustomInputSelect
+            :model-value="focusArea"
+            :controller="hierarchyController"
+            :params="hierarchyParams"
+            label="Focus Area"
+            placeholder="Select department"
+            class="input"
+            @update:model-value="normalizeFocusArea"
+          />
+        </div>
+      </div>
     </div>
+    <router-link class="btn btn-primary" to="/organization/internal-audit"
+      >New Audit Plan</router-link
+    >
 
     <DataStatus :controller="state">
       <template #success>
@@ -144,17 +224,15 @@ const statusOptions = ref<TitleInterface[]>([
                 </td>
               </tr>
               <tr v-if="!filteredAudits.length">
-                <td colspan="6" class="empty-row">No matching audits</td>
+                <td colspan="7" class="empty-row">No matching audits</td>
               </tr>
             </tbody>
           </table>
         </div>
         <Pagination
           :pagination="state.pagination"
-          @change-page="
-            page = $event;
-            fetchInternalAuditPlans()
-          "
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
         />
       </template>
       <template #loader> <TableLoader :cols="5" :rows="8" /> </template
@@ -184,7 +262,14 @@ const statusOptions = ref<TitleInterface[]>([
 .filters {
   display: flex;
   gap: 12px;
-  align-items: center;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  flex: 1;
+  min-width: 0;
+}
+.filters > .input-wrapper {
+  flex: 1 1 180px;
+  min-width: 0;
 }
 .register-page {
   display: grid;
