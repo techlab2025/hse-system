@@ -7,4 +7,5 @@ export enum empCardEnum {
   ManagementOfChange = 6,
   Leadership = 7,
   RiskAssessment = 8,
+  MyTasks = 9,
 }

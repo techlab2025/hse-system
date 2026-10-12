@@ -6,6 +6,7 @@ import inductionImg from '@/assets/images/books.png'
 import changeImg from '@/assets/images/Geer.png'
 import leadershipImg from '@/assets/images/TeamRatio.png'
 import riskImg from '@/assets/images/risk-assessment-document.png'
+import tasksImg from '@/assets/images/ToDoList.png'
 import FetchMyProjectsController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyProjectsController'
 import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Core/params/fetchMyProjectsParams'
 import empCardImg from '@/assets/images/employee-card-img.png'
@@ -14,6 +15,8 @@ import incidentImg from '@/assets/images/incident-img.png'
 import { empCardEnum } from '@/features/EmployeeInterface/Core/Enum/empIntEnum'
 import { InspectionPageType } from '@/features/Organization/ObservationFactory/Core/Enums/InspectionTypeEnum'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
+import { useUserStore } from '@/stores/user'
+import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 
 interface CardAction {
   title: string
@@ -31,6 +34,11 @@ interface EmpCard {
   actions: CardAction[]
 }
 const useprojectSaddelectStore = useProjectSelectStore()
+const userStore = useUserStore()
+const canShowMyTasks = computed(
+  () =>
+    ConditionHandler.getInstance().shouldUseEmployeeInterface() && !!userStore.user?.id,
+)
 
 const selectedProjectId = ref<number | null>(null)
 const projectId = computed(() => {
@@ -72,6 +80,23 @@ const projectAction = (title: string, path: string): CardAction => ({
 })
 
 const cards = computed<EmpCard[]>(() => [
+  ...(canShowMyTasks.value
+    ? [
+        {
+          type: empCardEnum.MyTasks,
+          title: 'My tasks',
+          eyebrow: 'Stay on track',
+          subtitle: 'Review your assigned tasks, follow up on deadlines, and update your progress.',
+          img: tasksImg,
+          actions: [
+            {
+              title: 'Show tasks',
+              route: `/organization/organization-employee-tasks/${userStore.user?.id}`,
+            },
+          ],
+        },
+      ]
+    : []),
   {
     type: empCardEnum.Inspection,
     title: 'Inspection',

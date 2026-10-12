@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import empinerface from '@/assets/images/empinerface.png'
 import EmployeeInterfaceCard from '../supcomponents/Card/EmployeeInterfaceCard.vue'
-import EmployeeTasksButton from '@/shared/HelpersComponents/EmployeeTasksButton.vue'
 import HeaderPage from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue';
 
 
@@ -113,7 +112,6 @@ const items = [
         :subtitle="'select what you want to do'"
         :img="empinerface"
       />
-      <EmployeeTasksButton />
     </div>
     <div class="">
       <EmployeeInterfaceCard />
@@ -132,10 +130,6 @@ const items = [
 
 .employee-home-heading :deep(.section-header-page-container) {
   padding: 0;
-}
-
-.employee-home-heading :deep(.employee-tasks-action) {
-  margin: 0;
 }
 
 @media (max-width: 1000px) {

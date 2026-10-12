@@ -1,13 +1,19 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 
 const userStore = useUserStore()
 </script>
 
 <template>
   <RouterLink
-    v-if="userStore.user?.type === OrganizationTypeEnum.ORGANIZATION && userStore.user?.id"
+    v-if="
+      userStore.user?.type === OrganizationTypeEnum.ORGANIZATION &&
+      userStore.user.employeeType === EmployeeStatusEnum.Employee &&
+      userStore.user.isMaster !== 1 &&
+      userStore.user.id
+    "
     :to="{ name: 'Organization Employee Tasks', params: { id: userStore.user.id } }"
     class="employee-tasks-action"
   >
