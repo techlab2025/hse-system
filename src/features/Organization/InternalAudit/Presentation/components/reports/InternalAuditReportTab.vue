@@ -13,6 +13,14 @@ import { useRoute } from 'vue-router'
 import { usePdfExport } from '@/composables/usePdfExport'
 import { DataEmpty } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import InternalAuditReportForms from './InternalAuditReportForms.vue'
+import InternalAuditReportDocument from './InternalAuditReportDocument.vue'
+import ShowInternalAuditPlanUseCase from '../../../Domain/useCase/plan/showInternalAuditPlanUseCase'
+import FetchInternalAuditAttendanceUseCase from '../../../Domain/useCase/attendance/fetchInternalAuditAttendanceUseCase'
+import ShowInternalAuditPlanParams from '../../../Core/params/plan/showInternalAuditPlanParams'
+import FetchInternalAuditAttendanceParams from '../../../Core/params/attendance/fetchInternalAuditAttendanceParams'
+import type InternalAuditPlanModel from '../../../Data/models/plan/InternalAuditPlanModel'
+import type InternalAuditAttendanceModel from '../../../Data/models/attendance/InternalAuditAttendanceModel'
+import { DataSuccess } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import HandleFIlesUpload, {
   type UploadedFile,
 } from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
@@ -58,16 +66,13 @@ const reportAttachments = ref<string[]>([])
 const feedback = ref('')
 const hasError = ref(false)
 const previewMode = ref(false)
-const showReport = computed(() => isReported.value || previewMode.value)
-const reportFields = computed(() => [
-  { label: 'Scope clarifications', value: scope.value },
-  { label: 'Methodology', value: methodology.value },
-  { label: 'Maintenance', value: maintenance.value },
-  { label: 'General observations', value: generalObservations.value },
-  { label: 'Conclusion', value: conclusion.value },
-])
+const reportPlan = ref<InternalAuditPlanModel | null>(null)
+const reportAttendance = ref<InternalAuditAttendanceModel[]>([])
+const documentLoading = ref(false)
+const documentError = ref('')
 const isLoading = computed(
   () =>
+    documentLoading.value ||
     fetchController.isDataLoading() ||
     reportController.isDataLoading() ||
     ncrController.isDataLoading(),
@@ -167,6 +172,10 @@ async function fetchDetails() {
   conclusion.value = ''
   reportAttachments.value = []
   previewMode.value = false
+  documentLoading.value = false
+  reportPlan.value = null
+  reportAttendance.value = []
+  documentError.value = ''
 
   if (!internalAuditPlanId.value) {
     details.value = null
@@ -180,6 +189,23 @@ async function fetchDetails() {
   if (version !== loadVersion) return
   if (fetchController.isDataSuccess()) {
     details.value = fetchController.state.value.data
+    documentLoading.value = true
+    try {
+      const [planResult, attendanceResult] = await Promise.all([
+        new ShowInternalAuditPlanUseCase().call(new ShowInternalAuditPlanParams(auditId)),
+        new FetchInternalAuditAttendanceUseCase().call(new FetchInternalAuditAttendanceParams()),
+      ])
+      if (version !== loadVersion) return
+      if (planResult instanceof DataSuccess) reportPlan.value = planResult.data
+      else documentError.value = 'Unable to load the full audit plan.'
+      if (attendanceResult instanceof DataSuccess || attendanceResult instanceof DataEmpty) {
+        reportAttendance.value = attendanceResult.data ?? []
+      } else documentError.value = 'Unable to load audit attendance.'
+    } catch {
+      if (version === loadVersion) documentError.value = 'Unable to load the full report data.'
+    } finally {
+      if (version === loadVersion) documentLoading.value = false
+    }
     await reportController.fetch(new FetchInternalAuditReportParams(auditId))
     if (version !== loadVersion) return
     const report = reportController.isDataSuccess() ? reportController.state.value.data : null
@@ -204,8 +230,7 @@ async function fetchDetails() {
       hasError.value = true
       feedback.value = reportController.state.value.error?.title ?? 'Unable to load audit report.'
     }
-    if (isReported.value) previewMode.value = true
-    else restoreDraft()
+    if (!isReported.value) restoreDraft()
     if (!methodology.value) {
       methodology.value =
         'Audit was conducted by selecting samples from the relevant processes, reviewing records, interviewing personnel, and observing activities.'
@@ -271,13 +296,13 @@ async function submit() {
 }
 
 async function printReport() {
-  if (isExporting.value) return
+  if (isExporting.value || isLoading.value || documentError.value || ncrError.value) return
   const wasPreviewing = previewMode.value
   previewMode.value = true
   try {
     await nextTick()
     await exportPdf({
-      targetSelector: '.report-tab',
+      targetSelector: '.audit-report-document',
       filename: `internal-audit-${details.value?.auditNumber || internalAuditPlanId.value}.pdf`,
       title: `Internal Audit Report${details.value?.auditNumber ? ` — ${details.value.auditNumber}` : ''}`,
       orientation: 'portrait',
@@ -320,18 +345,17 @@ onDeactivated(() => {
       </div>
       <div class="header-actions">
         <button
-          v-if="!isReported"
           class="secondary-button"
           type="button"
-          :disabled="!details || isLoading || isExporting"
+          :disabled="!details || isLoading || isExporting || !!documentError || !!ncrError"
           @click="previewMode = !previewMode"
         >
-          {{ previewMode ? 'Edit report' : 'Preview' }}
+          {{ previewMode ? 'Back to form' : 'Preview' }}
         </button>
         <button
           class="secondary-button"
           type="button"
-          :disabled="!details || isLoading || isExporting"
+          :disabled="!details || isLoading || isExporting || !!documentError || !!ncrError"
           @click="printReport"
         >
           {{ isExporting ? 'Exporting…' : 'Export PDF' }}
@@ -353,34 +377,27 @@ onDeactivated(() => {
     </div>
     <template v-else-if="details">
       <InternalAuditReportForms
-        v-show="showReport"
+        v-show="!previewMode"
         :key="internalAuditPlanId"
         :audit-id="internalAuditPlanId"
         :audit-serial-name="details.auditNumber"
         :ncrs="ncrs"
         :ncr-error="ncrError"
       />
-      <article v-if="showReport" class="report-preview" aria-label="Audit report details">
-        <header>
-          <div>
-            <small>{{ isReported ? 'Issued audit report' : 'Audit report preview' }}</small>
-            <h2>4. Report details</h2>
-          </div>
-          <strong>{{ details.auditNumber }}</strong>
-        </header>
-        <dl>
-          <div v-for="field in reportFields" :key="field.label">
-            <dt>{{ field.label }}</dt>
-            <dd>{{ field.value || '—' }}</dd>
-          </div>
-        </dl>
-        <HandleFIlesUpload
-          v-if="reportAttachments.length"
-          label="Report attachments"
-          :file="reportAttachments"
-          readonly
-        />
-      </article>
+      <p v-if="documentError" class="message error" role="alert">{{ documentError }}</p>
+      <InternalAuditReportDocument
+        v-if="previewMode"
+        :details="details"
+        :plan="reportPlan"
+        :attendance="reportAttendance"
+        :ncrs="ncrs"
+        :scope="scope"
+        :methodology="methodology"
+        :maintenance="maintenance"
+        :general-observations="generalObservations"
+        :conclusion="conclusion"
+        :attachments="reportAttachments"
+      />
       <form v-else class="report-form" @submit.prevent="submit">
         <section class="report-section">
           <div class="section-title">
