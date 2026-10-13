@@ -141,7 +141,8 @@ const handleCountPerPage = (count: number) => {
               </svg>
             </span>
             <span class="filter-heading-copy">
-              <span class="filter-title">Audit filters</span>
+              <!-- {{ activeFilterCount ? ``:`(${activeFilterCount})` }} -->
+              <span class="filter-title">Audit filters </span>
               <span class="filter-description"
                 >Find the right audit by status, date or focus area</span
               >
@@ -306,6 +307,9 @@ const handleCountPerPage = (count: number) => {
 /* :deep(.p-select) {
   border: 1px solid black !important;
 } */
+.filters {
+  padding-block: 10px;
+}
 .audit-filters-accordion {
   border: 1px solid var(--brand-primary-100);
   border-radius: 18px;
