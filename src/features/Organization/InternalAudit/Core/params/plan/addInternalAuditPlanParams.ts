@@ -18,6 +18,7 @@ export default class AddInternalAuditPlanParams implements Params {
     public generalInstructions: string,
     public attachments: string[],
     public isDraft: boolean = false,
+    public reasonForDateChanges: string = '',
   ) {}
 
   toMap(): Record<string, unknown> {
@@ -46,6 +47,7 @@ export default class AddInternalAuditPlanParams implements Params {
         : {}),
       ...(attachments.length ? { attachments } : {}),
       is_draft: this.isDraft,
+      reason_for_date_changes: this.reasonForDateChanges.trim(),
     }
 
     if (!this.fullCompany && this.projectId && this.projectId > 0) {

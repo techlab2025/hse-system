@@ -5,27 +5,29 @@ export default class IndexOwnTaskModel {
   public id: number
   public title: string
   public status: ChangeTaskStatusEnum
-  public created_at?:string
-  public actual_task_id?:number
-  public investigation_task_id?:number
-  public reason?:string
-  public due_date?:string
-  public due_time?:string
-  public assigned_to?:string
+  public created_at?: string
+  public actual_task_id?: number
+  public investigation_task_id?: number
+  public reason?: string
+  public due_date?: string
+  public due_time?: string
+  public assigned_to?: string
   public responable_person?: ResponsblePresonTaskModel
+  public hasReason: boolean
 
   constructor(data: {
     id: number
     title: string
     status: ChangeTaskStatusEnum
-    created_at?:string
-    actual_task_id?:number
-    investigation_task_id?:number
-    reason?:string
-    due_date?:string
-    due_time?:string
-    assigned_to?:string
+    created_at?: string
+    actual_task_id?: number
+    investigation_task_id?: number
+    reason?: string
+    due_date?: string
+    due_time?: string
+    assigned_to?: string
     responable_person?: ResponsblePresonTaskModel
+    hasReason: boolean
   }) {
     this.id = data.id
     this.title = data.title
@@ -38,13 +40,14 @@ export default class IndexOwnTaskModel {
     this.due_time = data.due_time
     this.assigned_to = data.assigned_to
     this.responable_person = data.responable_person
+    this.hasReason = data.hasReason
   }
 
   static fromMap(data: any): IndexOwnTaskModel {
     return new IndexOwnTaskModel({
       id: data?.id,
       title: data?.title ?? '',
-      status: data?.status?data.status: 1,
+      status: data?.status ? data.status : 1,
       created_at: data?.created_at,
       actual_task_id: data?.actual_task_id,
       investigation_task_id: data?.investigation_task_id,
@@ -52,7 +55,10 @@ export default class IndexOwnTaskModel {
       due_date: data?.due_date,
       due_time: data?.due_time,
       assigned_to: data?.assigned_to,
-      responable_person: data?.responable_person ? ResponsblePresonTaskModel.fromMap(data.responable_person) : undefined
+      responable_person: data?.responable_person
+        ? ResponsblePresonTaskModel.fromMap(data.responable_person)
+        : undefined,
+      hasReason: data.has_reason,
     })
   }
 
@@ -67,6 +73,7 @@ export default class IndexOwnTaskModel {
     due_date: '2026-10-05',
     due_time: '15:00',
     assigned_to: 'Ahmed',
-    responable_person: ResponsblePresonTaskModel.example
+    responable_person: ResponsblePresonTaskModel.example,
+    hasReason: false,
   })
 }

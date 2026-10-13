@@ -127,7 +127,8 @@ watch(
           :disabled="
             task.status == ChangeTaskStatusEnum.COMPLETED ||
             task.status == ChangeTaskStatusEnum.CANCELLED ||
-            task.status == ChangeTaskStatusEnum.PENDING_ON_HOLD
+            task.status == ChangeTaskStatusEnum.PENDING_ON_HOLD ||
+            task.hasReason
           "
           @click.stop.prevent="openStatusDialog(task.id, task.status)"
         >

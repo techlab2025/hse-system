@@ -86,6 +86,7 @@ const processDialogScope = ref<ScopeRow | null>(null)
 const activityDialogScope = ref<ScopeRow | null>(null)
 const schedules = ref<ScheduleRow[]>([createSchedule()])
 const generalInstructions = ref(defaultGeneralInstructions)
+const reasonForDateChanges = ref('')
 const scheduleAttachments = ref<string[]>([])
 const scheduleAttachmentFileNames = ref<string[]>([])
 const selectedTeamOptions = computed(() => auditTeam.value)
@@ -186,6 +187,7 @@ async function loadPlan() {
     titleFrom(leaderEntry?.employee ?? leaderEntry?.organization_employee ?? leaderEntry)
 
   generalInstructions.value = plan.generalInstructions
+  reasonForDateChanges.value = plan.reasonForDateChanges
   scheduleAttachments.value = [...plan.attachments]
   scheduleAttachmentFileNames.value = [...plan.attachmentFileNames]
 
@@ -248,6 +250,7 @@ function resetPlanForm() {
   scopes.value = [{ department: null, activities: [] }]
   schedules.value = [createSchedule()]
   generalInstructions.value = defaultGeneralInstructions
+  reasonForDateChanges.value = ''
   scheduleAttachments.value = []
   scheduleAttachmentFileNames.value = []
   error.value = ''
@@ -391,6 +394,7 @@ function buildParams(isDraft: boolean): AddInternalAuditPlanParams {
     generalInstructions.value,
     scheduleAttachments.value,
     isDraft,
+    reasonForDateChanges.value,
   )
 }
 
@@ -465,6 +469,7 @@ async function submit(isDraft: boolean) {
           params.generalInstructions,
           params.attachments,
           params.isDraft,
+          params.reasonForDateChanges,
         ),
       )
       if (editController.isDataSuccess()) {
@@ -850,6 +855,13 @@ async function saveAsDraft() {
             @change="setScheduleFiles"
           />
         </div>
+        <label class="field field-wide"
+          ><span>Reason For Date Changes</span
+          ><textarea
+            v-model="reasonForDateChanges"
+            rows="4"
+          />
+        </label>
       </div>
       <p v-if="error" class="form-error" role="alert">{{ error }}</p>
       <p v-if="success" class="form-success" role="status">{{ success }}</p>

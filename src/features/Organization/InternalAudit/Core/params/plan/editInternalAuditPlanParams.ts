@@ -19,6 +19,7 @@ export default class EditInternalAuditPlanParams extends AddInternalAuditPlanPar
     generalInstructions: string,
     attachments: string[],
     isDraft: boolean = false,
+    reasonForDateChanges: string = '',
   ) {
     super(
       auditStartDate,
@@ -33,6 +34,7 @@ export default class EditInternalAuditPlanParams extends AddInternalAuditPlanPar
       generalInstructions,
       attachments,
       isDraft,
+      reasonForDateChanges,
     )
   }
 

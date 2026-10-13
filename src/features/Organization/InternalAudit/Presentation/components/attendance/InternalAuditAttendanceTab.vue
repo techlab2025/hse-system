@@ -433,6 +433,7 @@ button:disabled {
 .attendance-group {
   display: grid;
   gap: 12px;
+  min-width: 0;
 }
 .attendance-group h3 {
   margin: 0;
@@ -447,7 +448,22 @@ button:disabled {
 }
 .attendance-table {
   width: 100%;
+  min-width: 850px;
+  table-layout: fixed;
   border-collapse: collapse;
+}
+.attendance-table th:nth-child(1) {
+  width: 34%;
+}
+.attendance-table th:nth-child(2) {
+  width: 12%;
+}
+.attendance-table th:nth-child(3) {
+  width: 16%;
+}
+.attendance-table th:nth-child(4),
+.attendance-table th:nth-child(5) {
+  width: 19%;
 }
 .attendance-table th,
 .attendance-table td {
@@ -466,10 +482,23 @@ button:disabled {
 .attendance-table tbody tr:last-child td {
   border-bottom: 0;
 }
+.attendance-table td {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .employee-cell {
   display: flex;
   align-items: center;
   gap: 9px;
+}
+.employee-cell strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.avatar,
+.lead-badge {
+  flex-shrink: 0;
 }
 .avatar {
   display: grid;

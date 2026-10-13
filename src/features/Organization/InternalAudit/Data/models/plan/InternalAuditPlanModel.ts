@@ -46,6 +46,7 @@ export default class InternalAuditPlanModel extends TitleInterface {
     public ncrsCount: number,
     public ClosedncrsCount: number,
     public OpenncrsCount: number,
+    public reasonForDateChanges: string = '',
   ) {
     super({ id, title })
   }
@@ -124,6 +125,7 @@ export default class InternalAuditPlanModel extends TitleInterface {
       totalNcrs,
       ClosedNcrs,
       OpenNcrs,
+      String(item.reason_for_date_changes ?? ''),
     )
   }
 

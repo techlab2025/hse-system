@@ -123,9 +123,12 @@ const handleCountPerPage = (count: number) => {
           to="/organization/internal-audit">New Audit Plan</router-link> -->
       </div>
     </header>
+    <router-link class="btn btn-primary" to="/organization/internal-audit"
+      >New Audit Plan</router-link
+    >
     <Accordion value="filters" class="audit-filters-accordion">
       <AccordionPanel value="">
-        <AccordionHeader>
+        <AccordionHeader v-slot="{ active }">
           <span class="filter-heading">
             <span class="filter-icon" aria-hidden="true">
               <svg
@@ -149,7 +152,9 @@ const handleCountPerPage = (count: number) => {
             </span>
             <span class="filter-count" :class="{ 'has-filters': activeFilterCount > 0 }">
               <!-- {{ activeFilterCount ? `${activeFilterCount} active` : 'All audits' }} -->
-              <DownArrow />
+              <span class="filter-arrow" :class="{ 'is-open': active }" aria-hidden="true">
+                <DownArrow />
+              </span>
             </span>
           </span>
         </AccordionHeader>
@@ -223,9 +228,6 @@ const handleCountPerPage = (count: number) => {
         </AccordionContent>
       </AccordionPanel>
     </Accordion>
-    <router-link class="btn btn-primary" to="/organization/internal-audit"
-      >New Audit Plan</router-link
-    >
 
     <DataStatus :controller="state">
       <template #success>
@@ -307,6 +309,9 @@ const handleCountPerPage = (count: number) => {
 /* :deep(.p-select) {
   border: 1px solid black !important;
 } */
+.btn-primary {
+  margin-left: auto;
+}
 .filters {
   padding-block: 10px;
 }
@@ -402,6 +407,21 @@ const handleCountPerPage = (count: number) => {
 .filter-count.has-filters {
   background: var(--brand-primary-100);
   color: var(--brand-primary-700);
+}
+
+.filter-arrow {
+  display: inline-flex;
+  transition: transform 200ms ease;
+}
+
+.filter-arrow.is-open {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filter-arrow {
+    transition: none;
+  }
 }
 
 .filters {

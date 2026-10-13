@@ -510,7 +510,7 @@ watch(() => props.details, initializeForm, { immediate: true })
       <p v-else-if="isReadOnly" class="empty-attachments">No attachments.</p>
       <HandleFIlesUpload
         v-else
-        label="NCR Attachments (optional)"
+        label="Attachments (optional)"
         accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
         :multiple="true"
         :max-files="10"
