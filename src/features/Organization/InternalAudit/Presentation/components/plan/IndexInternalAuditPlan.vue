@@ -309,6 +309,9 @@ const handleCountPerPage = (count: number) => {
 /* :deep(.p-select) {
   border: 1px solid black !important;
 } */
+.btn-secondary:hover {
+  color: white !important;
+}
 .btn-primary {
   margin-left: auto;
 }

@@ -533,7 +533,7 @@ defineExpose({
           <div
             class="input-wrapper field-panel col-span-6 pt-15 md:col-span-3"
             data-required-field="SelectedEquipment"
-            v-if="!id && SelectedAssigned === AssignToTypeEnum.MACHINE && !route.query.project_id"
+            v-if="!id && !isAuditCreation && SelectedAssigned === AssignToTypeEnum.MACHINE"
           >
             <UpdatedCustomInputSelect
               class="input"
