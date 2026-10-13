@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import DatePicker from 'primevue/datepicker'
 import { HolidayDaysEnum } from '../../../../Core/Enums/UpdatedProjectFlow/HolidayDaysEnum'
 import type { ProjectHolidaysForm } from '../../../../Core/params/UpdatedProjectFlow/ProjectHolidaysFormParams'
@@ -19,7 +21,7 @@ const addCustomHoliday = () => holidays.value.custom.push({ holiday_title: '', h
 </script>
 
 <template>
-  <div class="form-grid">
+  <div data-hse-project v-project-panels class="hse-project-root form-grid">
     <div class="section-title full">
       <span>02</span>
       <div>
@@ -28,12 +30,12 @@ const addCustomHoliday = () => holidays.value.custom.push({ holiday_title: '', h
       </div>
     </div>
     <div class="full weekday-grid">
-      <label v-for="day in dayOptions" :key="day[1]" class="day-pill">
+      <label v-for="day in dayOptions" :key="day[1]" class="hse-project-field-label day-pill">
         <input v-model="holidays.basicDays" type="checkbox" :value="day[1]" />
         <span>{{ day[0].slice(0, 3) }}</span>
       </label>
     </div>
-    <label class="switch-row full">
+    <label class="hse-project-field-label switch-row full">
       <input v-model="holidays.hasCustom" type="checkbox" />
       <span>
         <strong>Custom holidays</strong>
@@ -42,10 +44,13 @@ const addCustomHoliday = () => holidays.value.custom.push({ holiday_title: '', h
     </label>
     <template v-if="holidays.hasCustom">
       <div v-for="(holiday, index) in holidays.custom" :key="index" class="repeat-card full">
-        <label>Holiday name<input v-model="holiday.holiday_title" /></label>
-        <label>
+        <label class="hse-project-field-label"
+          >Holiday name<input class="hse-project-input" v-model="holiday.holiday_title"
+        /></label>
+        <label class="hse-project-field-label">
           Holiday dates
           <DatePicker
+            panel-class="hse-project-overlay"
             v-model="holiday.holidays_dates"
             selection-mode="multiple"
             date-format="yy-mm-dd"
@@ -54,7 +59,12 @@ const addCustomHoliday = () => holidays.value.custom.push({ holiday_title: '', h
             placeholder="Select one or more dates"
           />
         </label>
-        <button type="button" class="icon-button danger" @click="holidays.custom.splice(index, 1)">
+        <button
+          :aria-label="$t('delete')"
+          type="button"
+          class="hse-project-button--icon hse-project-button hse-project-button--danger icon-button danger"
+          @click="holidays.custom.splice(index, 1)"
+        >
           ×
         </button>
       </div>

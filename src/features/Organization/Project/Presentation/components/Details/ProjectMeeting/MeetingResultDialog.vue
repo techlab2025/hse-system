@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { inject } from 'vue'
+import { overviewPresentationKey } from '../overviewPresentation'
+const overviewPresentation = inject(overviewPresentationKey, false)
+
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -567,8 +573,10 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
   <!-- Meeting Card -->
   <!-- {{ MeetingDetailsState }} -->
   <button
+    data-hse-project
+    v-project-panels
     v-if="!triggerless"
-    class="meeting-card"
+    class="hse-project-root meeting-card hse-project-planning"
     type="button"
     @click="openDialog"
   >
@@ -592,6 +600,10 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   <!-- Meeting Result Dialog -->
   <Dialog
+    :class="{ 'hse-project-overview-overlay': overviewPresentation }"
+    data-hse-project
+    class="hse-project-root hse-project-overlay hse-project-planning"
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
     v-model:visible="AddResultDialogvisible"
     modal
     dismissable-mask
@@ -626,7 +638,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
       <!-- Agenda -->
       <!-- ============================================================= -->
 
-      <section class="form-section">
+      <section class="hse-project-panel form-section">
         <div class="section-header">
           <div>
             <h3>
@@ -638,7 +650,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
             </p>
           </div>
 
-          <button type="button" class="add-button" @click="addAgenda">
+          <button type="button" class="hse-project-button add-button" @click="addAgenda">
             + {{ $t('Add Agenda') }}
           </button>
         </div>
@@ -652,14 +664,15 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
             <input
               v-model="agenda[index]"
               type="text"
-              class="input"
+              class="hse-project-input input"
               :placeholder="$t('Enter agenda item')"
             />
 
             <button
+              :aria-label="$t('delete')"
               v-if="agenda.length > 1"
               type="button"
-              class="remove-button"
+              class="hse-project-button--icon hse-project-button hse-project-button--danger remove-button"
               @click="removeAgenda(index)"
             >
               ×
@@ -672,7 +685,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
       <!-- Meeting Actions -->
       <!-- ============================================================= -->
 
-      <section class="form-section">
+      <section class="hse-project-panel form-section">
         <div class="section-header">
           <div>
             <h3>
@@ -684,7 +697,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
             </p>
           </div>
 
-          <button type="button" class="add-button" @click="addAction">
+          <button type="button" class="hse-project-button add-button" @click="addAction">
             + {{ $t('Add Action') }}
           </button>
         </div>
@@ -726,13 +739,15 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
                 :label="$t('Action Type')"
                 :placeholder="$t('Select Action Type')"
                 :static-options="ActionTypeSelectionOptions"
-                
                 @update:model-value="UpdateActionType(index, $event)"
               />
 
               <!-- Title -->
-              <div v-if="showTitle(action)" class="input-wrapper">
-                <label :for="`action_title_${index}`" class="field-label">
+              <div v-if="showTitle(action)" class="hse-project-field input-wrapper">
+                <label
+                  :for="`action_title_${index}`"
+                  class="hse-project-field-label hse-project-field field-label"
+                >
                   {{ $t('title') }}
 
                   <!-- <span class="required-star"> * </span> -->
@@ -742,20 +757,24 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
                   :id="`action_title_${index}`"
                   v-model="action.title"
                   type="text"
-                  class="input"
+                  class="hse-project-input input"
                   :placeholder="$t('Enter action title')"
                 />
               </div>
 
               <!-- Task Due Date -->
-              <div v-if="isTask(action)" class="input-wrapper">
-                <label :for="`due_date_${index}`" class="field-label">
+              <div v-if="isTask(action)" class="hse-project-field input-wrapper">
+                <label
+                  :for="`due_date_${index}`"
+                  class="hse-project-field-label hse-project-field field-label"
+                >
                   {{ $t('Due Date') }}
 
                   <span class="required-star"> * </span>
                 </label>
 
                 <DatePicker
+                  panel-class="hse-project-overlay hse-project-planning"
                   :id="`due_date_${index}`"
                   v-model="action.dueDate"
                   date-format="yy-mm-dd"
@@ -767,8 +786,11 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
               </div>
 
               <!-- Task Due Time -->
-              <div v-if="isTask(action)" class="input-wrapper">
-                <label :for="`due_time_${index}`" class="field-label">
+              <div v-if="isTask(action)" class="hse-project-field input-wrapper">
+                <label
+                  :for="`due_time_${index}`"
+                  class="hse-project-field-label hse-project-field field-label"
+                >
                   {{ $t('Due Time') }}
 
                   <span class="required-star"> * </span>
@@ -778,7 +800,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
                   :id="`due_time_${index}`"
                   v-model="action.dueTime"
                   type="time"
-                  class="input"
+                  class="hse-project-input input"
                 />
               </div>
 
@@ -810,17 +832,21 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
       </p>
 
       <!-- Actions -->
-      <div class="form-actions">
+      <div class="hse-project-form-footer form-actions">
         <button
           type="button"
-          class="btn-secondary"
+          class="hse-project-button btn-secondary"
           :disabled="submitting"
           @click="closeAddResultDialog"
         >
           {{ $t('Cancel') }}
         </button>
 
-        <button type="submit" class="btn-primary" :disabled="submitting">
+        <button
+          type="submit"
+          class="hse-project-button hse-project-button--primary btn-primary"
+          :disabled="submitting"
+        >
           {{ submitting ? $t('Saving...') : $t('Save Meeting Result') }}
         </button>
       </div>
@@ -829,10 +855,13 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   <!-- Meeting Show Result Dialog -->
   <Dialog
+    :class="{ 'hse-project-overview-overlay': overviewPresentation }"
+    data-hse-project
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
     v-model:visible="ShowResultDialogvisible"
     modal
     dismissable-mask
-    class="meeting-show-dialog"
+    class="hse-project-root hse-project-overlay meeting-show-dialog hse-project-planning"
     :style="{
       width: 'min(70rem, calc(100vw - 24px))',
     }"
@@ -882,15 +911,15 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
         <div class="meeting-info-grid">
           <!-- Date -->
-             <div class="meeting-info-card">
-              <span class="meeting-info-label">
-                {{ $t('Date') }}
-              </span>
+          <div class="meeting-info-card">
+            <span class="meeting-info-label">
+              {{ $t('Date') }}
+            </span>
 
-              <strong>
-                {{ meetingResult.date || '—' }}
-              </strong>
-            </div> 
+            <strong>
+              {{ meetingResult.date || '—' }}
+            </strong>
+          </div>
 
           <!-- Time -->
           <!-- <div class="meeting-info-card">
@@ -964,7 +993,6 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
           {{ $t('No hierarchies available') }}
         </div>
       </section> -->
-
 
       <!-- Employees -->
       <section class="meeting-show-section">
@@ -1210,7 +1238,11 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
       <!-- ============================================================= -->
 
       <div class="meeting-show-footer">
-        <button type="button" class="meeting-show-close-button" @click="closeShowResultDialog">
+        <button
+          type="button"
+          class="hse-project-button meeting-show-close-button"
+          @click="closeShowResultDialog"
+        >
           {{ $t('Close') }}
         </button>
       </div>
@@ -1241,11 +1273,11 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
   gap: 13px;
   overflow: hidden;
   padding: 13px;
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--hse-project-line);
   border-radius: 16px;
   text-align: start;
   cursor: pointer;
-  background: var(--surface-2);
+  background: var(--hse-project-surface-soft);
 
   transition:
     border-color 0.2s ease,
@@ -1256,16 +1288,16 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 .meeting-card:hover {
   transform: translateY(-2px);
 
-  border-color: color-mix(in srgb, var(--PrimaryColor) 45%, var(--main-border));
+  border-color: color-mix(in srgb, var(--hse-project-blue) 45%, var(--hse-project-line));
 
-  box-shadow: 0 12px 28px color-mix(in srgb, var(--brand-primary-900) 9%, transparent);
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--hse-project-navy) 9%, transparent);
 }
 
 .meeting-card-accent {
   align-self: stretch;
   border-radius: 9px;
 
-  background: linear-gradient(var(--PrimaryColor), var(--brand-primary-700));
+  background: linear-gradient(var(--hse-project-blue), var(--hse-project-blue));
 }
 
 .meeting-card-main {
@@ -1277,9 +1309,9 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 .meeting-card-kicker {
   overflow: hidden;
 
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 900;
 
   text-overflow: ellipsis;
@@ -1289,17 +1321,17 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 .meeting-card-main strong {
   margin-top: 3px;
 
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 
 .meeting-card-main small {
   margin-top: 3px;
 
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 }
 
 .meeting-card-arrow {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 
   font-size: 1.2rem;
 }
@@ -1325,13 +1357,14 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   color: white;
 
-  background: linear-gradient(145deg, var(--PrimaryColor), var(--brand-primary-700));
+  background: linear-gradient(145deg, var(--hse-project-blue), var(--hse-project-blue));
 
-  font-family: 'Bold';
+  font-family: var(--hse-project-font);
+  font-weight: 700;
 }
 
 .meeting-result-header small {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 
   font-weight: 900;
   text-transform: uppercase;
@@ -1340,7 +1373,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 .meeting-result-header h2 {
   margin: 2px 0;
 
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 
   font-size: 1rem;
 }
@@ -1348,7 +1381,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 .meeting-result-header p {
   margin: 0;
 
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 
   font-size: 0.75rem;
 }
@@ -1366,10 +1399,10 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 .form-section {
   padding: 16px;
 
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--hse-project-line);
   border-radius: 16px;
 
-  background: var(--surface-2);
+  background: var(--hse-project-surface-soft);
 }
 
 .section-header {
@@ -1384,7 +1417,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 .section-header h3 {
   margin: 0;
 
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 
   font-size: 0.9rem;
 }
@@ -1392,9 +1425,9 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 .section-header p {
   margin: 4px 0 0;
 
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 
-  font-size: 0.7rem;
+  font-size: 0.75rem;
 }
 
 .add-button {
@@ -1402,15 +1435,15 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   padding: 8px 12px;
 
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 35%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 35%, var(--hse-project-line));
 
   border-radius: 10px;
 
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 
   cursor: pointer;
 
-  background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-2));
+  background: color-mix(in srgb, var(--hse-project-blue) 7%, var(--hse-project-surface-soft));
 
   font-weight: 700;
 }
@@ -1440,11 +1473,11 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   border-radius: 9px;
 
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 
-  background: color-mix(in srgb, var(--PrimaryColor) 10%, transparent);
+  background: color-mix(in srgb, var(--hse-project-blue) 10%, transparent);
 
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 900;
 }
 
@@ -1457,11 +1490,11 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
   border: 0;
   border-radius: 9px;
 
-  color: var(--status-danger);
+  color: var(--hse-project-red);
 
   cursor: pointer;
 
-  background: color-mix(in srgb, var(--status-danger) 8%, transparent);
+  background: color-mix(in srgb, var(--hse-project-red) 8%, transparent);
 
   font-size: 1.2rem;
 }
@@ -1479,10 +1512,10 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 .action-card {
   padding: 15px;
 
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--hse-project-line);
   border-radius: 14px;
 
-  background: var(--surface-1);
+  background: var(--hse-project-surface);
 }
 
 .action-card-header {
@@ -1510,14 +1543,14 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   color: white;
 
-  background: var(--PrimaryColor);
+  background: var(--hse-project-blue);
 
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 900;
 }
 
 .action-card-header strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 
   font-size: 0.8rem;
 }
@@ -1528,13 +1561,13 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
   border: 0;
   border-radius: 8px;
 
-  color: var(--status-danger);
+  color: var(--hse-project-red);
 
   cursor: pointer;
 
-  background: color-mix(in srgb, var(--status-danger) 8%, transparent);
+  background: color-mix(in srgb, var(--hse-project-red) 8%, transparent);
 
-  font-size: 0.68rem;
+  font-size: 0.75rem;
 }
 
 .action-form-grid {
@@ -1555,14 +1588,14 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 }
 
 .field-label {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 
   font-size: 0.75rem;
   font-weight: 700;
 }
 
 .required-star {
-  color: var(--status-danger);
+  color: var(--hse-project-red);
 }
 
 .input {
@@ -1571,10 +1604,10 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   padding: 9px 12px;
 
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--hse-project-line);
   border-radius: 12px;
 
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 
   outline: none;
 
@@ -1582,7 +1615,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 }
 
 .input:focus {
-  border-color: var(--PrimaryColor);
+  border-color: var(--hse-project-blue);
 }
 
 /* ==========================================================================
@@ -1599,11 +1632,11 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   border-radius: 12px;
 
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 
-  background: color-mix(in srgb, var(--PrimaryColor) 6%, var(--surface-2));
+  background: color-mix(in srgb, var(--hse-project-blue) 6%, var(--hse-project-surface-soft));
 
-  font-size: 0.7rem;
+  font-size: 0.75rem;
 }
 
 /* ==========================================================================
@@ -1617,9 +1650,9 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   border-radius: 10px;
 
-  color: var(--status-danger);
+  color: var(--hse-project-red);
 
-  background: color-mix(in srgb, var(--status-danger) 9%, transparent);
+  background: color-mix(in srgb, var(--hse-project-red) 9%, transparent);
 
   font-size: 0.75rem;
 }
@@ -1642,19 +1675,19 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 }
 
 .btn-primary {
-  border: 1px solid var(--PrimaryColor);
+  border: 1px solid var(--hse-project-blue);
 
   color: white;
 
-  background: var(--PrimaryColor);
+  background: var(--hse-project-blue);
 }
 
 .btn-secondary {
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--hse-project-line);
 
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 
-  background: var(--surface-2);
+  background: var(--hse-project-surface-soft);
 }
 
 .btn-primary:disabled,
@@ -1723,13 +1756,10 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   color: #fff;
 
-  background: linear-gradient(
-    145deg,
-    var(--PrimaryColor),
-    var(--brand-primary-700)
-  );
+  background: linear-gradient(145deg, var(--hse-project-blue), var(--hse-project-blue));
 
-  font-family: 'Bold';
+  font-family: var(--hse-project-font);
+  font-weight: 700;
   font-size: 0.85rem;
 }
 
@@ -1740,9 +1770,9 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 .meeting-show-header-content small {
   display: block;
 
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 900;
   text-transform: uppercase;
 }
@@ -1752,7 +1782,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   margin: 2px 0;
 
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 
   font-size: 1rem;
 
@@ -1763,7 +1793,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 .meeting-show-header-content p {
   margin: 0;
 
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 
   font-size: 0.75rem;
 }
@@ -1781,10 +1811,10 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 .meeting-show-section {
   padding: 16px;
 
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--hse-project-line);
   border-radius: 16px;
 
-  background: var(--surface-2);
+  background: var(--hse-project-surface-soft);
 }
 
 .meeting-show-section-header {
@@ -1799,7 +1829,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 .meeting-show-section-header h3 {
   margin: 0;
 
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 
   font-size: 0.9rem;
 }
@@ -1807,9 +1837,9 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 .meeting-show-section-header p {
   margin: 4px 0 0;
 
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 
-  font-size: 0.7rem;
+  font-size: 0.75rem;
 }
 
 .meeting-count-badge {
@@ -1823,15 +1853,11 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   border-radius: 9px;
 
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 
-  background: color-mix(
-    in srgb,
-    var(--PrimaryColor) 10%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--hse-project-blue) 10%, transparent);
 
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 900;
 }
 
@@ -1853,22 +1879,22 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   padding: 13px;
 
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--hse-project-line);
   border-radius: 12px;
 
-  background: var(--surface-1);
+  background: var(--hse-project-surface);
 }
 
 .meeting-info-label {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 
-  font-size: 0.68rem;
+  font-size: 0.75rem;
 }
 
 .meeting-info-card strong {
   overflow: hidden;
 
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 
   font-size: 0.78rem;
 
@@ -1893,24 +1919,15 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   padding: 8px 11px;
 
-  border: 1px solid
-    color-mix(
-      in srgb,
-      var(--PrimaryColor) 22%,
-      var(--main-border)
-    );
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 22%, var(--hse-project-line));
 
   border-radius: 10px;
 
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 
-  background: color-mix(
-    in srgb,
-    var(--PrimaryColor) 5%,
-    var(--surface-1)
-  );
+  background: color-mix(in srgb, var(--hse-project-blue) 5%, var(--hse-project-surface));
 
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
 }
 
@@ -1921,7 +1938,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   border-radius: 50%;
 
-  background: var(--PrimaryColor);
+  background: var(--hse-project-blue);
 }
 
 /* ==========================================================================
@@ -1943,10 +1960,10 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   padding: 11px 12px;
 
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--hse-project-line);
   border-radius: 12px;
 
-  background: var(--surface-1);
+  background: var(--hse-project-surface);
 }
 
 .meeting-employee-avatar {
@@ -1956,23 +1973,14 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
   overflow: hidden;
   place-items: center;
 
-  border: 1px solid
-    color-mix(
-      in srgb,
-      var(--PrimaryColor) 18%,
-      var(--main-border)
-    );
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 18%, var(--hse-project-line));
   border-radius: 12px;
 
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 
-  background: color-mix(
-    in srgb,
-    var(--PrimaryColor) 9%,
-    var(--surface-2)
-  );
+  background: color-mix(in srgb, var(--hse-project-blue) 9%, var(--hse-project-surface-soft));
 
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 900;
 }
 
@@ -1998,22 +2006,18 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   border-radius: 8px;
 
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 
-  background: color-mix(
-    in srgb,
-    var(--PrimaryColor) 10%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--hse-project-blue) 10%, transparent);
 
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   font-weight: 900;
 }
 
 .meeting-employee-content strong {
   overflow: hidden;
 
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 
   font-size: 0.78rem;
 
@@ -2025,9 +2029,9 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
   overflow: hidden;
   grid-column: 2;
 
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 
-  font-size: 0.68rem;
+  font-size: 0.75rem;
 
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -2051,10 +2055,10 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   padding: 10px 12px;
 
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--hse-project-line);
   border-radius: 12px;
 
-  background: var(--surface-1);
+  background: var(--hse-project-surface);
 }
 
 .meeting-show-number {
@@ -2065,22 +2069,18 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   border-radius: 9px;
 
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 
-  background: color-mix(
-    in srgb,
-    var(--PrimaryColor) 10%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--hse-project-blue) 10%, transparent);
 
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 900;
 }
 
 .meeting-show-agenda-text {
   min-width: 0;
 
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 
   font-size: 0.78rem;
   line-height: 1.5;
@@ -2101,10 +2101,10 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 .meeting-show-action-card {
   overflow: hidden;
 
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--hse-project-line);
   border-radius: 14px;
 
-  background: var(--surface-1);
+  background: var(--hse-project-surface);
 }
 
 .meeting-show-action-header {
@@ -2115,7 +2115,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   padding: 13px 14px;
 
-  border-bottom: 1px solid var(--main-border);
+  border-bottom: 1px solid var(--hse-project-line);
 }
 
 .meeting-show-action-title {
@@ -2136,9 +2136,9 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   color: #fff;
 
-  background: var(--PrimaryColor);
+  background: var(--hse-project-blue);
 
-  font-size: 0.7rem;
+  font-size: 0.75rem;
   font-weight: 900;
 }
 
@@ -2147,9 +2147,9 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   margin-bottom: 2px;
 
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 
-  font-size: 0.64rem;
+  font-size: 0.75rem;
 }
 
 .meeting-show-action-title h4 {
@@ -2157,7 +2157,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   margin: 0;
 
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 
   font-size: 0.8rem;
 
@@ -2172,38 +2172,26 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   border-radius: 20px;
 
-  font-size: 0.66rem;
+  font-size: 0.75rem;
   font-weight: 800;
 }
 
 .action-type-ongoing {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 
-  background: color-mix(
-    in srgb,
-    var(--PrimaryColor) 10%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--hse-project-blue) 10%, transparent);
 }
 
 .action-type-info {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 
-  background: color-mix(
-    in srgb,
-    var(--text-soft) 10%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--hse-project-muted) 10%, transparent);
 }
 
 .action-type-task {
-  color: var(--status-success, var(--PrimaryColor));
+  color: var(--status-success, var(--hse-project-blue));
 
-  background: color-mix(
-    in srgb,
-    var(--status-success, var(--PrimaryColor)) 10%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--status-success, var(--hse-project-blue)) 10%, transparent);
 }
 
 .meeting-show-action-details {
@@ -2220,22 +2208,22 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   padding: 13px 14px;
 
-  border-inline-end: 1px solid var(--main-border);
-  border-bottom: 1px solid var(--main-border);
+  border-inline-end: 1px solid var(--hse-project-line);
+  border-bottom: 1px solid var(--hse-project-line);
 }
 
 .meeting-action-detail span {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 
-  font-size: 0.65rem;
+  font-size: 0.75rem;
 }
 
 .meeting-action-detail strong {
   overflow: hidden;
 
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 
-  font-size: 0.74rem;
+  font-size: 0.75rem;
 
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -2248,12 +2236,12 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 .meeting-content-box {
   padding: 12px 14px;
 
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--hse-project-line);
   border-radius: 12px;
 
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 
-  background: var(--surface-1);
+  background: var(--hse-project-surface);
 
   font-size: 0.78rem;
   line-height: 1.6;
@@ -2264,10 +2252,10 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 .meeting-empty-state {
   padding: 20px;
 
-  border: 1px dashed var(--main-border);
+  border: 1px dashed var(--hse-project-line);
   border-radius: 12px;
 
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 
   text-align: center;
 
@@ -2282,7 +2270,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
   flex-direction: column;
   gap: 12px;
 
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 }
 
 .meeting-show-no-data-icon {
@@ -2293,13 +2281,9 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   border-radius: 15px;
 
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 
-  background: color-mix(
-    in srgb,
-    var(--PrimaryColor) 10%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--hse-project-blue) 10%, transparent);
 
   font-weight: 900;
 }
@@ -2320,14 +2304,14 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
   padding: 10px 18px;
 
-  border: 1px solid var(--PrimaryColor);
+  border: 1px solid var(--hse-project-blue);
   border-radius: 11px;
 
   color: #fff;
 
   cursor: pointer;
 
-  background: var(--PrimaryColor);
+  background: var(--hse-project-blue);
 
   font-weight: 700;
 

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import Location from '@/assets/images/Location.png'
 import HeaderSection from '../DetailsHeader/HeaderSection.vue'
 import LocationCard from './LocationCard.vue'
@@ -19,7 +21,11 @@ const remainingLocations = computed(() => Math.max((locations?.length || 0) - 2,
 </script>
 
 <template>
-  <div class="project-location">
+  <div
+    data-hse-project
+    v-project-panels
+    class="hse-project-panel hse-project-root project-location"
+  >
     <span class="section-accent" aria-hidden="true"></span>
     <div class="project-location-header">
       <HeaderSection

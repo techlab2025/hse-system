@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import ObjectivesDetails from './ObjectivesDetails.vue'
 
 const props = defineProps<{
@@ -7,7 +9,11 @@ const props = defineProps<{
 </script>
 
 <template>
-  <section class="main-objective">
+  <section
+    data-hse-project
+    v-project-panels
+    class="hse-project-panel hse-project-root main-objective"
+  >
     <span class="objective-orbit" aria-hidden="true"></span>
 
     <div class="objective-header">
@@ -54,17 +60,17 @@ const props = defineProps<{
   width: 100%;
   flex-direction: column;
   gap: 15px;
-  padding: 20px !important;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 14%, var(--main-border)) !important;
-  border-radius: 23px !important;
+  padding: 20px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 14%, var(--main-border));
+  border-radius: 23px;
   background:
     radial-gradient(
       circle at 100% 0,
       color-mix(in srgb, var(--brand-secondary-500) 9%, transparent),
       transparent 32%
     ),
-    var(--surface-1) !important;
-  box-shadow: 0 14px 34px color-mix(in srgb, var(--brand-primary-900) 7%, transparent) !important;
+    var(--surface-1);
+  box-shadow: 0 14px 34px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
   font-family: 'Regular';
 }
 
@@ -197,16 +203,16 @@ const props = defineProps<{
   width: 100%;
   min-height: 92px;
   gap: 12px;
-  padding: 16px !important;
-  border: 1px solid color-mix(in srgb, var(--brand-secondary-500) 13%, var(--main-border)) !important;
-  border-radius: 17px !important;
+  padding: 16px;
+  border: 1px solid color-mix(in srgb, var(--brand-secondary-500) 13%, var(--main-border));
+  border-radius: 17px;
   background:
     linear-gradient(
       120deg,
       color-mix(in srgb, var(--brand-secondary-500) 6%, transparent),
       transparent 34%
     ),
-    color-mix(in srgb, var(--surface-2) 45%, var(--surface-1)) !important;
+    color-mix(in srgb, var(--surface-2) 45%, var(--surface-1));
 }
 
 .statement-icon {
@@ -261,8 +267,8 @@ const props = defineProps<{
 
 @media (max-width: 640px) {
   .main-objective {
-    padding: 16px !important;
-    border-radius: 19px !important;
+    padding: 16px;
+    border-radius: 19px;
   }
 
   .objective-header {
@@ -291,7 +297,7 @@ const props = defineProps<{
   }
 
   .objective-details {
-    padding: 13px !important;
+    padding: 13px;
   }
 }
 </style>

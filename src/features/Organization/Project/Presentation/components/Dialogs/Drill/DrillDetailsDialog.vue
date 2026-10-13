@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { inject } from 'vue'
+import { overviewPresentationKey } from '../../Details/overviewPresentation'
+const overviewPresentation = inject(overviewPresentationKey, false)
+
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { computed, ref } from 'vue'
 import Dialog from 'primevue/dialog'
 import type DrillModel from '@/features/Organization/Project/Data/models/Drill/DrillModel'
@@ -113,7 +119,14 @@ const confirmDelete = async () => {
 </script>
 
 <template>
-  <button v-if="!triggerless" class="drill-card" type="button" @click="openDialog">
+  <button
+    data-hse-project
+    v-project-panels
+    v-if="!triggerless"
+    class="hse-project-root drill-card hse-project-planning"
+    type="button"
+    @click="openDialog"
+  >
     <span class="drill-card-accent"></span>
     <span class="drill-card-main">
       <span class="drill-card-kicker">{{ drill.drillType.title || $t('Drill') }}</span>
@@ -134,6 +147,10 @@ const confirmDelete = async () => {
   </button>
 
   <Dialog
+    :class="{ 'hse-project-overview-overlay': overviewPresentation }"
+    data-hse-project
+    class="hse-project-root hse-project-overlay hse-project-planning"
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
     v-model:visible="visible"
     modal
     dismissable-mask
@@ -326,12 +343,15 @@ const confirmDelete = async () => {
   </Dialog>
 
   <Dialog
+    :class="{ 'hse-project-overview-overlay': overviewPresentation }"
+    data-hse-project
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
     v-model:visible="deleteDialogVisible"
     modal
     :closable="!deleting"
     :dismissable-mask="!deleting"
     :draggable="false"
-    class="drill-delete-dialog"
+    class="hse-project-root hse-project-overlay drill-delete-dialog hse-project-planning"
   >
     <template #container>
       <div class="delete-dialog-content">
@@ -347,7 +367,7 @@ const confirmDelete = async () => {
           }}
         </h4>
         <p>{{ $t('This operation cannot be undone.') }}</p>
-        <div class="delete-dialog-actions">
+        <div class="hse-project-form-footer delete-dialog-actions">
           <button class="confirm-delete" type="button" :disabled="deleting" @click="confirmDelete">
             {{ deleting ? $t('Deleting...') : $t('Delete') }}
           </button>
@@ -375,11 +395,11 @@ const confirmDelete = async () => {
   gap: 13px;
   overflow: hidden;
   padding: 13px;
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--hse-project-line);
   border-radius: 16px;
   text-align: start;
   cursor: pointer;
-  background: var(--surface-2);
+  background: var(--hse-project-surface-soft);
   transition:
     border-color 0.2s ease,
     transform 0.2s ease,
@@ -387,30 +407,30 @@ const confirmDelete = async () => {
 }
 .drill-card:hover {
   transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--PrimaryColor) 45%, var(--main-border));
-  box-shadow: 0 12px 28px color-mix(in srgb, var(--brand-primary-900) 9%, transparent);
+  border-color: color-mix(in srgb, var(--hse-project-blue) 45%, var(--hse-project-line));
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--hse-project-navy) 9%, transparent);
 }
 .drill-card-accent {
   align-self: stretch;
   border-radius: 9px;
-  background: linear-gradient(var(--PrimaryColor), var(--brand-primary-700));
+  background: linear-gradient(var(--hse-project-blue), var(--hse-project-blue));
 }
 .drill-card-main {
   display: flex;
   flex-direction: column;
 }
 .drill-card-kicker {
-  color: var(--PrimaryColor);
-  font-size: 0.62rem;
+  color: var(--hse-project-blue);
+  font-size: 0.75rem;
   font-weight: 900;
   text-transform: uppercase;
 }
 .drill-card-main strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 .drill-card-main small {
   margin-top: 3px;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 }
 .drill-card-status {
   display: inline-flex;
@@ -418,18 +438,18 @@ const confirmDelete = async () => {
   gap: 6px;
   padding: 6px 9px;
   border-radius: 999px;
-  color: var(--text-soft);
-  background: var(--surface-1);
-  font-size: 0.62rem;
+  color: var(--hse-project-muted);
+  background: var(--hse-project-surface);
+  font-size: 0.75rem;
 }
 .drill-card-status i {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: var(--status-success);
+  background: var(--hse-project-green);
 }
 .drill-card-arrow {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
   font-size: 1.2rem;
 }
 .details-heading {
@@ -444,21 +464,22 @@ const confirmDelete = async () => {
   place-items: center;
   border-radius: 15px;
   color: white;
-  background: linear-gradient(145deg, var(--PrimaryColor), var(--brand-primary-700));
-  font-family: 'Bold';
+  background: linear-gradient(145deg, var(--hse-project-blue), var(--hse-project-blue));
+  font-family: var(--hse-project-font);
+  font-weight: 700;
 }
 .details-heading small {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
   font-weight: 900;
   text-transform: uppercase;
 }
 .details-heading h2 {
   margin: 1px 0;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 .details-heading p {
   margin: 0;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 }
 .drill-detail-summary {
   display: grid;
@@ -467,22 +488,22 @@ const confirmDelete = async () => {
 }
 .drill-detail-summary > div {
   padding: 12px;
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--hse-project-line);
   border-radius: 13px;
-  background: var(--surface-2);
+  background: var(--hse-project-surface-soft);
 }
 .drill-detail-summary span,
 .drill-detail-copy span {
   display: block;
-  color: var(--text-soft);
-  font-size: 0.62rem;
+  color: var(--hse-project-muted);
+  font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
 }
 .drill-detail-summary strong {
   display: block;
   margin-top: 4px;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 0.76rem;
 }
 .drill-detail-copy {
@@ -494,12 +515,12 @@ const confirmDelete = async () => {
 .drill-detail-copy article {
   padding: 12px;
   border-radius: 13px;
-  background: color-mix(in srgb, var(--PrimaryColor) 4%, var(--surface-2));
+  background: color-mix(in srgb, var(--hse-project-blue) 4%, var(--hse-project-surface-soft));
 }
 .drill-detail-copy p {
   margin: 5px 0 0;
-  color: var(--text-strong);
-  font-size: 0.72rem;
+  color: var(--hse-project-ink);
+  font-size: 0.75rem;
   line-height: 1.5;
 }
 .drill-workflow-actions {
@@ -513,15 +534,15 @@ const confirmDelete = async () => {
   align-items: center;
   gap: 11px;
   padding: 13px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 20%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 20%, var(--hse-project-line));
   border-radius: 15px;
   text-align: start;
   cursor: pointer;
-  background: var(--surface-2);
+  background: var(--hse-project-surface-soft);
 }
 .drill-workflow-actions button.active {
-  border-color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-2));
+  border-color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 7%, var(--hse-project-surface-soft));
 }
 .drill-workflow-actions button:disabled {
   opacity: 0.5;
@@ -534,19 +555,20 @@ const confirmDelete = async () => {
   place-items: center;
   border-radius: 11px;
   color: white;
-  background: var(--PrimaryColor);
-  font-family: 'Bold';
+  background: var(--hse-project-blue);
+  font-family: var(--hse-project-font);
+  font-weight: 700;
 }
 .drill-workflow-actions strong,
 .drill-workflow-actions small {
   display: block;
 }
 .drill-workflow-actions strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 .drill-workflow-actions small {
   margin-top: 2px;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 }
 .saved-timelines {
   display: grid;
@@ -555,9 +577,9 @@ const confirmDelete = async () => {
 }
 .saved-timeline-group {
   padding: 14px;
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--hse-project-line);
   border-radius: 16px;
-  background: var(--surface-2);
+  background: var(--hse-project-surface-soft);
 }
 .saved-title {
   display: flex;
@@ -572,26 +594,26 @@ const confirmDelete = async () => {
   place-items: center;
   border-radius: 10px;
   color: white;
-  background: var(--PrimaryColor);
+  background: var(--hse-project-blue);
 }
 .saved-title h3,
 .saved-title p {
   margin: 0;
 }
 .saved-title h3 {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 0.84rem;
 }
 .saved-title p {
-  color: var(--text-soft);
-  font-size: 0.62rem;
+  color: var(--hse-project-muted);
+  font-size: 0.75rem;
 }
 .saved-entry {
   display: grid;
   grid-template-columns: 28px minmax(0, 1fr) auto;
   gap: 9px;
   padding: 9px 0;
-  border-top: 1px solid var(--main-border);
+  border-top: 1px solid var(--hse-project-line);
 }
 .saved-entry-delete {
   display: grid;
@@ -599,18 +621,18 @@ const confirmDelete = async () => {
   height: 30px;
   place-items: center;
   padding: 6px;
-  border: 1px solid color-mix(in srgb, var(--status-danger) 22%, transparent);
+  border: 1px solid color-mix(in srgb, var(--hse-project-red) 22%, transparent);
   border-radius: 9px;
-  color: var(--status-danger);
-  background: color-mix(in srgb, var(--status-danger) 7%, var(--surface-1));
+  color: var(--hse-project-red);
+  background: color-mix(in srgb, var(--hse-project-red) 7%, var(--hse-project-surface));
   cursor: pointer;
   transition:
     border-color 0.2s ease,
     background 0.2s ease;
 }
 .saved-entry-delete:hover {
-  border-color: var(--status-danger);
-  background: color-mix(in srgb, var(--status-danger) 12%, var(--surface-1));
+  border-color: var(--hse-project-red);
+  background: color-mix(in srgb, var(--hse-project-red) 12%, var(--hse-project-surface));
 }
 .saved-entry-delete svg {
   width: 17px;
@@ -625,22 +647,22 @@ const confirmDelete = async () => {
   height: 25px;
   place-items: center;
   border-radius: 50%;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 10%, transparent);
-  font-size: 0.62rem;
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 10%, transparent);
+  font-size: 0.75rem;
   font-weight: 900;
 }
 .saved-entry small {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 }
 .saved-entry p {
   margin: 3px 0;
-  color: var(--text-strong);
-  font-size: 0.7rem;
+  color: var(--hse-project-ink);
+  font-size: 0.75rem;
 }
 .saved-entry em {
-  color: var(--text-soft);
-  font-size: 0.65rem;
+  color: var(--hse-project-muted);
+  font-size: 0.75rem;
 }
 .saved-images {
   display: flex;
@@ -656,28 +678,28 @@ const confirmDelete = async () => {
 }
 .loading-plans {
   padding: 24px;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   text-align: center;
 }
 .timeline-error {
   margin: 0;
   padding: 16px;
-  color: var(--status-danger);
+  color: var(--hse-project-red);
   text-align: center;
 }
 .empty-workflow {
   padding: 24px;
-  border: 1px dashed var(--main-border);
+  border: 1px dashed var(--hse-project-line);
   border-radius: 16px;
   text-align: center;
-  background: var(--surface-2);
+  background: var(--hse-project-surface-soft);
 }
 .empty-workflow strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 .empty-workflow p {
   margin: 4px 0 0;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 }
 .delete-dialog-content {
   display: flex;
@@ -686,7 +708,7 @@ const confirmDelete = async () => {
   flex-direction: column;
   padding: 26px;
   border-radius: 22px;
-  background: var(--surface-1);
+  background: var(--hse-project-surface);
   text-align: center;
 }
 .delete-visual {
@@ -696,7 +718,7 @@ const confirmDelete = async () => {
   margin-bottom: 12px;
   place-items: center;
   border-radius: 24px;
-  background: color-mix(in srgb, var(--status-danger) 7%, var(--surface-2));
+  background: color-mix(in srgb, var(--hse-project-red) 7%, var(--hse-project-surface-soft));
 }
 .delete-visual img {
   width: 62px;
@@ -704,19 +726,19 @@ const confirmDelete = async () => {
   object-fit: contain;
 }
 .delete-kicker {
-  color: var(--status-danger);
-  font-size: 0.62rem;
+  color: var(--hse-project-red);
+  font-size: 0.75rem;
   font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 .delete-dialog-content h4 {
   margin: 7px 0 5px;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 .delete-dialog-content p {
   margin: 0 0 18px;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.75rem;
 }
 .delete-dialog-actions {
@@ -736,14 +758,14 @@ const confirmDelete = async () => {
   cursor: wait;
 }
 .confirm-delete {
-  border: 1px solid var(--status-danger);
+  border: 1px solid var(--hse-project-red);
   color: white;
-  background: var(--status-danger);
+  background: var(--hse-project-red);
 }
 .cancel-delete {
-  border: 1px solid var(--main-border);
-  color: var(--text-strong);
-  background: var(--surface-2);
+  border: 1px solid var(--hse-project-line);
+  color: var(--hse-project-ink);
+  background: var(--hse-project-surface-soft);
 }
 @media (max-width: 760px) {
   .drill-detail-summary,

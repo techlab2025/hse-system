@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import FetchPermitsParams from '@/features/Organization/Project/Core/params/PermitToWork/fetchPermitsParams'
 import FetchProjectPermitsController from '../../../controllers/PermitToWork/FetchProjectPermitsController'
 import { computed, onMounted } from 'vue'
@@ -106,139 +108,139 @@ const FetchPermitsAuidtResult = async (permitId: number) => {
 </script>
 
 <template>
-  <div class="permits-page">
+  <div data-hse-project v-project-panels class="hse-project-root hse-project-page permits-page">
     <!-- static -->
-     <!-- Project Permits Statistics -->
-<div class="permits-statistics">
-  <div class="statistics-header">
-    <div>
-      <span class="statistics-kicker">
-        {{ $t('Overview') }}
-      </span>
+    <!-- Project Permits Statistics -->
+    <div class="permits-statistics">
+      <div class="statistics-header">
+        <div>
+          <span class="statistics-kicker">
+            {{ $t('Overview') }}
+          </span>
 
-      <h2>
-        {{ $t('Project Permits Statics') }}
-      </h2>
+          <h2>
+            {{ $t('Project Permits Statics') }}
+          </h2>
 
-      <p>
-        {{ $t('Overview of permits status in this project') }}
-      </p>
-    </div>
-  </div>
+          <p>
+            {{ $t('Overview of permits status in this project') }}
+          </p>
+        </div>
+      </div>
 
-  <div class="statistics-grid">
-    <!-- Total -->
-    <div class="statistics-card total">
-      <div class="statistics-card-top">
-        <div class="statistics-icon">
-          <span>ALL</span>
+      <div class="statistics-grid">
+        <!-- Total -->
+        <div class="statistics-card total">
+          <div class="statistics-card-top">
+            <div class="statistics-icon">
+              <span>ALL</span>
+            </div>
+
+            <span class="statistics-badge">
+              {{ $t('Total') }}
+            </span>
+          </div>
+
+          <div class="statistics-card-content">
+            <span class="statistics-label">
+              {{ $t('Total Permits') }}
+            </span>
+
+            <strong>
+              {{ staticsPermits?.total ?? 0 }}
+            </strong>
+
+            <small>
+              {{ $t('All project permits') }}
+            </small>
+          </div>
         </div>
 
-        <span class="statistics-badge">
-          {{ $t('Total') }}
-        </span>
-      </div>
+        <!-- Active -->
+        <div class="statistics-card active">
+          <div class="statistics-card-top">
+            <div class="statistics-icon">
+              <span>ACT</span>
+            </div>
 
-      <div class="statistics-card-content">
-        <span class="statistics-label">
-          {{ $t('Total Permits') }}
-        </span>
+            <span class="statistics-badge">
+              {{ $t('Active') }}
+            </span>
+          </div>
 
-        <strong>
-          {{ staticsPermits?.total ?? 0 }}
-        </strong>
+          <div class="statistics-card-content">
+            <span class="statistics-label">
+              {{ $t('Active Permits') }}
+            </span>
 
-        <small>
-          {{ $t('All project permits') }}
-        </small>
-      </div>
-    </div>
+            <strong>
+              {{ staticsPermits?.active ?? 0 }}
+            </strong>
 
-    <!-- Active -->
-    <div class="statistics-card active">
-      <div class="statistics-card-top">
-        <div class="statistics-icon">
-          <span>ACT</span>
+            <small>
+              {{ $t('Currently active permits') }}
+            </small>
+          </div>
         </div>
 
-        <span class="statistics-badge">
-          {{ $t('Active') }}
-        </span>
-      </div>
+        <!-- Draft -->
+        <div class="statistics-card draft">
+          <div class="statistics-card-top">
+            <div class="statistics-icon">
+              <span>DRF</span>
+            </div>
 
-      <div class="statistics-card-content">
-        <span class="statistics-label">
-          {{ $t('Active Permits') }}
-        </span>
+            <span class="statistics-badge">
+              {{ $t('Draft') }}
+            </span>
+          </div>
 
-        <strong>
-          {{ staticsPermits?.active ?? 0 }}
-        </strong>
+          <div class="statistics-card-content">
+            <span class="statistics-label">
+              {{ $t('Draft Permits') }}
+            </span>
 
-        <small>
-          {{ $t('Currently active permits') }}
-        </small>
-      </div>
-    </div>
+            <strong>
+              {{ staticsPermits?.draft ?? 0 }}
+            </strong>
 
-    <!-- Draft -->
-    <div class="statistics-card draft">
-      <div class="statistics-card-top">
-        <div class="statistics-icon">
-          <span>DRF</span>
+            <small>
+              {{ $t('Permits not submitted yet') }}
+            </small>
+          </div>
         </div>
 
-        <span class="statistics-badge">
-          {{ $t('Draft') }}
-        </span>
-      </div>
+        <!-- Canceled -->
+        <div class="statistics-card canceled">
+          <div class="statistics-card-top">
+            <div class="statistics-icon">
+              <span>CAN</span>
+            </div>
 
-      <div class="statistics-card-content">
-        <span class="statistics-label">
-          {{ $t('Draft Permits') }}
-        </span>
+            <span class="statistics-badge">
+              {{ $t('Canceled') }}
+            </span>
+          </div>
 
-        <strong>
-          {{ staticsPermits?.draft ?? 0 }}
-        </strong>
+          <div class="statistics-card-content">
+            <span class="statistics-label">
+              {{ $t('Canceled Permits') }}
+            </span>
 
-        <small>
-          {{ $t('Permits not submitted yet') }}
-        </small>
-      </div>
-    </div>
+            <strong>
+              {{ staticsPermits?.cancel ?? 0 }}
+            </strong>
 
-    <!-- Canceled -->
-    <div class="statistics-card canceled">
-      <div class="statistics-card-top">
-        <div class="statistics-icon">
-          <span>CAN</span>
+            <small>
+              {{ $t('Canceled project permits') }}
+            </small>
+          </div>
         </div>
-
-        <span class="statistics-badge">
-          {{ $t('Canceled') }}
-        </span>
-      </div>
-
-      <div class="statistics-card-content">
-        <span class="statistics-label">
-          {{ $t('Canceled Permits') }}
-        </span>
-
-        <strong>
-          {{ staticsPermits?.cancel ?? 0 }}
-        </strong>
-
-        <small>
-          {{ $t('Canceled project permits') }}
-        </small>
       </div>
     </div>
-  </div>
-</div>
 
     <!-- Header -->
-    <div class="permits-page-header">
+    <div data-hse-project-head class="hse-project-page-head permits-page-header">
       <div>
         <h2>
           {{ $t('Project Permits') }}
@@ -528,12 +530,7 @@ const FetchPermitsAuidtResult = async (permitId: number) => {
 
   background: var(--surface-2);
 
-  box-shadow:
-    0 8px 22px color-mix(
-      in srgb,
-      var(--brand-primary-900) 5%,
-      transparent
-    );
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--brand-primary-900) 5%, transparent);
 
   transition:
     transform 0.2s ease,
@@ -568,28 +565,15 @@ const FetchPermitsAuidtResult = async (permitId: number) => {
 
   content: '';
 
-  background: color-mix(
-    in srgb,
-    var(--statistics-color) 10%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--statistics-color) 10%, transparent);
 }
 
 .statistics-card:hover {
   transform: translateY(-3px);
 
-  border-color: color-mix(
-    in srgb,
-    var(--statistics-color) 30%,
-    var(--main-border)
-  );
+  border-color: color-mix(in srgb, var(--statistics-color) 30%, var(--main-border));
 
-  box-shadow:
-    0 14px 30px color-mix(
-      in srgb,
-      var(--statistics-color) 10%,
-      transparent
-    );
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--statistics-color) 10%, transparent);
 }
 
 /* Colors */
@@ -640,17 +624,9 @@ const FetchPermitsAuidtResult = async (permitId: number) => {
 
   color: var(--statistics-color);
 
-  background: color-mix(
-    in srgb,
-    var(--statistics-color) 11%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--statistics-color) 11%, transparent);
 
-  border: 1px solid color-mix(
-    in srgb,
-    var(--statistics-color) 15%,
-    transparent
-  );
+  border: 1px solid color-mix(in srgb, var(--statistics-color) 15%, transparent);
 }
 
 .statistics-icon span {
@@ -668,11 +644,7 @@ const FetchPermitsAuidtResult = async (permitId: number) => {
 
   color: var(--statistics-color);
 
-  background: color-mix(
-    in srgb,
-    var(--statistics-color) 8%,
-    transparent
-  );
+  background: color-mix(in srgb, var(--statistics-color) 8%, transparent);
 
   font-size: 0.58rem;
   font-weight: 900;

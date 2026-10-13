@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import type ProjectLocationEmployeeModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationEmployeeModel'
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
 import wordSlice from '@/base/Presentation/utils/word_slice'
@@ -27,8 +29,10 @@ watch(
 </script>
 <template>
   <router-link
+    data-hse-project
+    v-project-panels
     :to="`/organization/organization-employee/show/${member?.organization_employee_id || member.employeeId}?type=3`"
-    class="member-card"
+    class="hse-project-root member-card"
     :class="{ isLeader: member.is_leader == 1 }"
   >
     <span v-if="member.is_leader == 1" class="leader-badge">{{ $t('Leader') }}</span>

@@ -1,0 +1,239 @@
+/* Shared drill/meeting presentation, including their teleported dialog controls. */
+.hse-project-root.hse-project-planning[data-hse-project],
+.hse-project-overlay.hse-project-planning {
+  --hse-project-font: 'HSE Project Studio', 'Regular', sans-serif;
+  --hse-planning-font: 'HSE Project Studio', 'Regular', sans-serif;
+  --p-primary-color: var(--hse-project-blue);
+  --p-primary-contrast-color: var(--hse-project-surface);
+  --p-select-option-selected-background: var(--hse-project-ice);
+  --p-select-option-selected-color: var(--hse-project-blue);
+  --p-multiselect-option-selected-background: var(--hse-project-ice);
+  --p-multiselect-option-selected-color: var(--hse-project-blue);
+  --p-datepicker-date-selected-background: var(--hse-project-blue);
+  --p-datepicker-date-selected-color: var(--hse-project-surface);
+  font-family: var(--hse-planning-font);
+  color: var(--hse-project-ink);
+}
+.hse-project-root.hse-project-planning[data-hse-project]:dir(rtl),
+.hse-project-overlay.hse-project-planning:dir(rtl) {
+  --hse-project-font: 'Regular', 'URW DIN Arabic', sans-serif;
+  --hse-planning-font: 'Regular', 'URW DIN Arabic', sans-serif;
+}
+.hse-project-planning[data-hse-project]
+  :is(h2, h3, h4, p, small, strong, span, a, button, input, textarea),
+.hse-project-overlay.hse-project-planning :is(button, input, span) {
+  font-family: var(--hse-planning-font);
+}
+/* Shared input labels define an important font; keep that override feature-local. */
+.hse-project-root.hse-project-planning[data-hse-project] :is(label, .input-label label) {
+  font-family: var(--hse-planning-font) !important;
+  font-size: 12px !important;
+  font-weight: 600;
+  color: var(--hse-project-ink);
+}
+.hse-project-root.hse-project-planning.project-drill-section[data-hse-project] {
+  margin: 0;
+  padding: 20px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
+  background: var(--hse-project-surface);
+  box-shadow: var(--hse-project-shadow-panel);
+  min-width: 0;
+}
+.hse-project-planning .drill-section-glow {
+  display: none;
+}
+.hse-project-root.hse-project-planning .drill-section-header {
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.hse-project-root.hse-project-planning .drill-section-title {
+  min-width: 0;
+  flex: 1 1 280px;
+}
+.hse-project-root.hse-project-planning .drill-section-title h2 {
+  font-size: 18px;
+  font-weight: 700;
+}
+.hse-project-root.hse-project-planning .drill-section-title p {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.hse-project-root.hse-project-planning .drill-section-symbol {
+  width: 40px;
+  height: 40px;
+  flex-basis: 40px;
+  padding: 10px;
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-ice);
+}
+.hse-project-root.hse-project-planning .drill-section-symbol i {
+  background: var(--hse-project-blue);
+}
+.hse-project-root.hse-project-planning :is(.drill-empty-state, .drill-form-intro) {
+  background: var(--hse-project-surface-soft);
+  border-color: var(--hse-project-line);
+  border-radius: var(--hse-project-radius-control);
+}
+.hse-project-root.hse-project-planning :is(.drill-card, .meeting-card) {
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-surface);
+  box-shadow: var(--hse-project-shadow-card);
+  min-width: 0;
+}
+.hse-project-root.hse-project-planning
+  :is(.drill-dialog-header, .meeting-result-header, .meeting-show-header) {
+  min-width: 0;
+  gap: 12px;
+}
+.hse-project-root.hse-project-planning
+  :is(.drill-dialog-header, .meeting-result-header, .meeting-show-header)
+  h2 {
+  font-size: 18px;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+.hse-project-root.hse-project-planning
+  :is(.drill-dialog-header, .meeting-result-header, .meeting-show-header)
+  p {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.hse-project-root.hse-project-planning
+  :is(.form-section, .meeting-show-section, .drill-detail-summary, .drill-timeline-card) {
+  border-color: var(--hse-project-line);
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-surface-soft);
+  min-width: 0;
+}
+.hse-project-root.hse-project-planning
+  :is(.input-wrapper, .updated-custom-input-select, .timeline-fields) {
+  min-width: 0;
+}
+.hse-project-root.hse-project-planning :is(.p-select, .p-multiselect, .p-datepicker) {
+  width: 100%;
+}
+.hse-project-root.hse-project-planning :is(.p-select-label, .p-multiselect-label) {
+  font-family: var(--hse-planning-font);
+  font-size: 13px;
+  padding-block: 10px;
+  color: var(--hse-project-ink);
+}
+.hse-project-root.hse-project-planning :is(.p-select, .p-multiselect):focus-within {
+  border-color: var(--hse-project-blue) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--hse-project-blue) 12%, transparent);
+}
+.hse-project-root.hse-project-planning .hse-project-form-footer {
+  gap: 10px;
+  justify-content: flex-end;
+}
+.hse-project-root.hse-project-planning .meeting-header-actions {
+  flex-wrap: wrap;
+  min-width: 0;
+}
+.hse-project-root.hse-project-planning :is(.all-meetings-link, .show-more-btn) {
+  min-height: 40px;
+  border-radius: var(--hse-project-radius-control);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--hse-project-blue);
+  background: var(--hse-project-ice);
+}
+.hse-project-overlay.hse-project-planning :is(.p-select-option, .p-multiselect-option) {
+  font-family: var(--hse-planning-font);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--hse-project-ink);
+}
+.hse-project-overlay.hse-project-planning
+  :is(.p-select-option-selected, .p-multiselect-option-selected) {
+  background: var(--hse-project-ice);
+  color: var(--hse-project-blue);
+}
+.hse-project-overlay.hse-project-planning :is(.p-select-option, .p-multiselect-option):hover {
+  background: var(--hse-project-surface-soft);
+}
+.hse-project-overlay.hse-project-planning .p-datepicker-header {
+  background: var(--hse-project-surface);
+  border-color: var(--hse-project-line);
+  color: var(--hse-project-ink);
+}
+.hse-project-overlay.hse-project-planning .p-datepicker-day-selected {
+  background: var(--hse-project-blue);
+  color: var(--hse-project-surface);
+}
+@media (max-width: 680px) {
+  .hse-project-root.hse-project-planning.project-drill-section[data-hse-project] {
+    padding: 16px;
+  }
+  .hse-project-root.hse-project-planning .drill-section-title {
+    flex-basis: auto;
+  }
+  .hse-project-overlay.hse-project-planning :is(.p-dialog-header, .p-dialog-content) {
+    padding: 16px;
+  }
+  .hse-project-root.hse-project-planning :is(.meeting-header-actions, .drill-form-actions) {
+    width: 100%;
+  }
+  .hse-project-root.hse-project-planning .meeting-header-actions > * {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hse-project-planning :is(button, a) {
+    transition: none;
+    transform: none;
+  }
+}
+.hse-project-root.hse-project-planning.add-drill-trigger[data-hse-project],
+.hse-project-root.hse-project-planning[data-hse-project] .hse-project-button--primary {
+  min-height: var(--hse-project-control-height);
+  border: 1px solid var(--hse-project-blue);
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-blue);
+  color: var(--hse-project-surface);
+  font-size: 12px;
+  font-weight: 600;
+  box-shadow: var(--hse-project-shadow-primary);
+}
+.hse-project-root.hse-project-planning.add-drill-trigger[data-hse-project]:hover,
+.hse-project-root.hse-project-planning[data-hse-project]
+  .hse-project-button--primary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--hse-project-blue) 85%, var(--hse-project-navy));
+}
+.hse-project-root.hse-project-planning[data-hse-project] .field-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.hse-project-root.hse-project-planning[data-hse-project] .field-help {
+  min-width: 22px;
+  min-height: 22px;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 22px;
+  padding: 0;
+  margin: 0 !important;
+  border-radius: 7px;
+  border: 1px solid var(--hse-project-line);
+  color: var(--hse-project-blue);
+  background: var(--hse-project-ice);
+  box-shadow: none;
+}
+.hse-project-root.hse-project-planning[data-hse-project] .field-help__glow {
+  display: none;
+}
+.hse-project-root.hse-project-planning[data-hse-project] .p-datepicker {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.hse-project-overlay.hse-project-planning.field-help__tooltip {
+  background: var(--hse-project-surface);
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-control);
+  box-shadow: var(--hse-project-shadow-panel);
+}

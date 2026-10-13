@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { ref, computed, watch } from 'vue'
 import EditTollIcon from '@/shared/icons/EditTollIcon.vue'
 import ZoneIcon from '@/shared/icons/ZoneIcon.vue'
@@ -31,24 +33,62 @@ const props = defineProps<{
 const selectedType = ref(props.type)
 
 const widgetOptions = [
-  { id: WidgetEnum.ProjectSafetyScore, name: 'Project Safety Score', img: NewProjectSafetyScoreWidget, component: ProjectSafetyWidget },
-  { id: WidgetEnum.ProjectLocations, name: 'Project Locations', img: NewProjectLocation, component: ProjectLocationsWidget },
-  { id: WidgetEnum.LinkedCAPAs, name: 'Linked CAPAs', img: NewLinkedCAPAs, component: LinkedCAPAsWidget },
-  { id: WidgetEnum.EmployeePerformance, name: 'Employee Performance', img: NewEmployeePerformance, component: EmployeePerformanceWidget },
-  { id: WidgetEnum.NeedMaintenance, name: 'Need Maintenance', img: NewNeedMentance, component: NeedMaintenanceWidget },
-  { id: WidgetEnum.NumberOfIncidents, name: 'Number Of Incidents', img: NewNumberOfIncidence, component: NumberOfIncidentsWidget },
-  { id: WidgetEnum.EquipmentDevices, name: 'Equipment Devices', img: NewEquipmentDevices, component: EquipmentDevicesWidget },
+  {
+    id: WidgetEnum.ProjectSafetyScore,
+    name: 'Project Safety Score',
+    img: NewProjectSafetyScoreWidget,
+    component: ProjectSafetyWidget,
+  },
+  {
+    id: WidgetEnum.ProjectLocations,
+    name: 'Project Locations',
+    img: NewProjectLocation,
+    component: ProjectLocationsWidget,
+  },
+  {
+    id: WidgetEnum.LinkedCAPAs,
+    name: 'Linked CAPAs',
+    img: NewLinkedCAPAs,
+    component: LinkedCAPAsWidget,
+  },
+  {
+    id: WidgetEnum.EmployeePerformance,
+    name: 'Employee Performance',
+    img: NewEmployeePerformance,
+    component: EmployeePerformanceWidget,
+  },
+  {
+    id: WidgetEnum.NeedMaintenance,
+    name: 'Need Maintenance',
+    img: NewNeedMentance,
+    component: NeedMaintenanceWidget,
+  },
+  {
+    id: WidgetEnum.NumberOfIncidents,
+    name: 'Number Of Incidents',
+    img: NewNumberOfIncidence,
+    component: NumberOfIncidentsWidget,
+  },
+  {
+    id: WidgetEnum.EquipmentDevices,
+    name: 'Equipment Devices',
+    img: NewEquipmentDevices,
+    component: EquipmentDevicesWidget,
+  },
   { id: WidgetEnum.TeamsRatio, name: 'Teams Ratio', img: TeamRatio, component: TeamsRatioWidget },
   { id: WidgetEnum.Noteswidget, name: 'Notes Widget', img: NoteWidget, component: NotesWidget },
 ]
 
 const selectedWidget = computed(() => {
-  return widgetOptions.find(widget => widget.id === selectedType.value)
+  return widgetOptions.find((widget) => widget.id === selectedType.value)
 })
 
-watch(() => props.type, newType => {
-  selectedType.value = newType
-})
+watch(
+  () => props.type,
+  (newType) => {
+    selectedType.value = newType
+  },
+)
 
 const Data = ref()
 const WidgetDate = (data) => {
@@ -56,12 +96,12 @@ const WidgetDate = (data) => {
   // console.log(data, "data");
 }
 const SubmitData = () => {
-  console.log(Data.value, "data.value");
+  console.log(Data.value, 'data.value')
 }
 </script>
 
 <template>
-  <div class="edit-zone">
+  <div data-hse-project v-project-panels class="hse-project-root edit-zone">
     <hr class="edit-zone-hr" />
     <div class="zone-form-container">
       <div class="zone-data">
@@ -72,8 +112,12 @@ const SubmitData = () => {
           </div>
           <button class="delete">{{ $t('delete') }}</button>
         </div>
-        <component @update:value="WidgetDate($event)" :is="selectedWidget?.component" :id="selectedWidget.id"
-          v-if="selectedWidget?.component" />
+        <component
+          @update:value="WidgetDate($event)"
+          :is="selectedWidget?.component"
+          :id="selectedWidget.id"
+          v-if="selectedWidget?.component"
+        />
       </div>
       <div class="zone-image">
         <div class="zone-image-header">
@@ -85,7 +129,12 @@ const SubmitData = () => {
     </div>
 
     <div class="save">
-      <button @click="SubmitData" class="btn btn-primary">{{ $t('save_changes') }}</button>
+      <button
+        @click="SubmitData"
+        class="hse-project-button hse-project-button--primary btn btn-primary"
+      >
+        {{ $t('save_changes') }}
+      </button>
     </div>
   </div>
 </template>

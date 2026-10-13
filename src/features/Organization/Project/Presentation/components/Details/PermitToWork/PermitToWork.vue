@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -122,7 +124,8 @@ const permitToWorkController = PermitToWorkController.getInstance()
 
 const SubmitFrom = async () => {
   if (!serialIsAuto.value && !serial.value.trim()) {
-    requiredFieldErrors.value.serial = 'Serial number is required when manual serial numbering is enabled.'
+    requiredFieldErrors.value.serial =
+      'Serial number is required when manual serial numbering is enabled.'
     return
   }
   delete requiredFieldErrors.value.serial
@@ -162,8 +165,13 @@ const handleFilesChange = (files: UploadedFile[]) => {
 </script>
 
 <template>
-  <section class="ptw-builder" :style="ptwThemeStyles">
-    <header class="ptw-hero" :style="ptwHeroStyles">
+  <section
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-page ptw-builder"
+    :style="ptwThemeStyles"
+  >
+    <header data-hse-project-head class="hse-project-page-head ptw-hero" :style="ptwHeroStyles">
       <div class="ptw-hero-copy">
         <span class="ptw-hero-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none">
@@ -228,8 +236,8 @@ const handleFilesChange = (files: UploadedFile[]) => {
           </div>
 
           <div class="ptw-grid ptw-grid--two">
-            <div class="ptw-field" data-required-field="Name">
-              <label for="name">
+            <div class="hse-project-field ptw-field" data-required-field="Name">
+              <label class="hse-project-field-label" for="name">
                 {{ $t('Permit Code') }}
                 <span class="required-mark">*</span>
               </label>
@@ -240,15 +248,26 @@ const handleFilesChange = (files: UploadedFile[]) => {
                 :placeholder="$t('Enter permit Code')"
                 @input="setptwNo"
               />
-              <p v-if="getFieldError('Name')" class="required-field-message">
+              <p v-if="getFieldError('Name')" class="hse-project-field required-field-message">
                 {{ getFieldError('Name') }}
               </p>
             </div>
 
-            <div class="ptw-field">
-              <label class="ptw-field-label--with-action" for="permit_serial_number">
-                <span class="ptw-field-label-text">{{ $t('serial_number') }}</span>
-                <FieldHelpIcon :text="serialIsAuto ? 'The serial will be generated automatically.' : 'Enter the serial number.'" />
+            <div class="hse-project-field ptw-field">
+              <label
+                class="hse-project-field-label hse-project-field ptw-field-label--with-action"
+                for="permit_serial_number"
+              >
+                <span class="hse-project-field ptw-field-label-text">{{
+                  $t('serial_number')
+                }}</span>
+                <FieldHelpIcon
+                  :text="
+                    serialIsAuto
+                      ? 'The serial will be generated automatically.'
+                      : 'Enter the serial number.'
+                  "
+                />
               </label>
               <InputText
                 id="permit_serial_number"
@@ -258,14 +277,17 @@ const handleFilesChange = (files: UploadedFile[]) => {
                 :placeholder="serialIsAuto ? $t('Auto-generated') : $t('Enter serial number')"
               />
               <small v-if="serialIsAuto">{{ $t('Automatic serial numbering is enabled') }}</small>
-              <p v-if="getFieldError('serial')" class="required-field-message">
+              <p v-if="getFieldError('serial')" class="hse-project-field required-field-message">
                 {{ getFieldError('serial') }}
               </p>
             </div>
 
-            <div class="ptw-field" data-required-field="SelectedWhereHouseType">
-              <label for="permit_to_work_type" class="ptw-field-label--with-action">
-                <span class="ptw-field-label-text">
+            <div class="hse-project-field ptw-field" data-required-field="SelectedWhereHouseType">
+              <label
+                for="permit_to_work_type"
+                class="hse-project-field-label hse-project-field ptw-field-label--with-action"
+              >
+                <span class="hse-project-field ptw-field-label-text">
                   {{ $t('Permit Type ') }}
                   <span class="required-mark">*</span>
                 </span>
@@ -295,8 +317,8 @@ const handleFilesChange = (files: UploadedFile[]) => {
               </p> -->
             </div>
 
-            <div class="ptw-field">
-              <label for="location">{{ $t('Area') }}</label>
+            <div class="hse-project-field ptw-field">
+              <label class="hse-project-field-label" for="location">{{ $t('Area') }}</label>
               <InputText
                 id="location"
                 v-model="location"
@@ -305,8 +327,8 @@ const handleFilesChange = (files: UploadedFile[]) => {
               />
             </div>
 
-            <div class="ptw-field" data-required-field="OrganizationEmployee">
-              <label for="organization_employee">
+            <div class="hse-project-field ptw-field" data-required-field="OrganizationEmployee">
+              <label class="hse-project-field-label" for="organization_employee">
                 {{ $t('Permit Applicant') }}
                 <span class="required-mark">*</span>
               </label>
@@ -320,7 +342,10 @@ const handleFilesChange = (files: UploadedFile[]) => {
                 :placeholder="$t('Permit Applicant')"
                 @update:model-value="updateOrganizationEmployee"
               />
-              <p v-if="getFieldError('OrganizationEmployee')" class="required-field-message">
+              <p
+                v-if="getFieldError('OrganizationEmployee')"
+                class="hse-project-field required-field-message"
+              >
                 {{ getFieldError('OrganizationEmployee') }}
               </p>
             </div>
@@ -340,9 +365,12 @@ const handleFilesChange = (files: UploadedFile[]) => {
             <div class="ptw-schedule-group start">
               <div class="ptw-schedule-title"><i></i>{{ $t('Starts') }}</div>
               <div class="ptw-grid ptw-grid--two">
-                <div class="ptw-field">
-                  <label for="start_date">{{ $t('start_date') }}</label>
+                <div class="hse-project-field ptw-field">
+                  <label class="hse-project-field-label" for="start_date">{{
+                    $t('start_date')
+                  }}</label>
                   <DatePicker
+                    panel-class="hse-project-overlay"
                     id="start_date"
                     v-model="startDate"
                     date-format="yy-mm-dd"
@@ -351,9 +379,12 @@ const handleFilesChange = (files: UploadedFile[]) => {
                     :placeholder="$t('start_date')"
                   />
                 </div>
-                <div class="ptw-field">
-                  <label for="start_time">{{ $t('start_time') }}</label>
+                <div class="hse-project-field ptw-field">
+                  <label class="hse-project-field-label" for="start_time">{{
+                    $t('start_time')
+                  }}</label>
                   <DatePicker
+                    panel-class="hse-project-overlay"
                     id="start_time"
                     v-model="startTime"
                     time-only
@@ -369,9 +400,10 @@ const handleFilesChange = (files: UploadedFile[]) => {
             <div class="ptw-schedule-group end">
               <div class="ptw-schedule-title"><i></i>{{ $t('Ends') }}</div>
               <div class="ptw-grid ptw-grid--two">
-                <div class="ptw-field">
-                  <label for="end_date">{{ $t('end_date') }}</label>
+                <div class="hse-project-field ptw-field">
+                  <label class="hse-project-field-label" for="end_date">{{ $t('end_date') }}</label>
                   <DatePicker
+                    panel-class="hse-project-overlay"
                     id="end_date"
                     v-model="endDate"
                     date-format="yy-mm-dd"
@@ -381,9 +413,10 @@ const handleFilesChange = (files: UploadedFile[]) => {
                     :placeholder="$t('end_date')"
                   />
                 </div>
-                <div class="ptw-field">
-                  <label for="end_time">{{ $t('end_time') }}</label>
+                <div class="hse-project-field ptw-field">
+                  <label class="hse-project-field-label" for="end_time">{{ $t('end_time') }}</label>
                   <DatePicker
+                    panel-class="hse-project-overlay"
                     id="end_time"
                     v-model="endTime"
                     time-only
@@ -408,18 +441,19 @@ const handleFilesChange = (files: UploadedFile[]) => {
           </div>
 
           <div class="ptw-grid">
-
-            <div class="ptw-field">
-              <label for="description">{{ $t('Description of Work Optional') }}</label>
+            <div class="hse-project-field ptw-field">
+              <label class="hse-project-field-label" for="description">{{
+                $t('Description of Work Optional')
+              }}</label>
               <textarea
                 id="description"
                 v-model="description"
-                class="ptw-control ptw-textarea"
+                class="hse-project-input ptw-control ptw-textarea"
                 rows="4"
                 :placeholder="$t('Describe the work activity and safety requirements')"
               ></textarea>
             </div>
-            <div class="ptw-field ptw-control management-change-upload-field">
+            <div class="hse-project-field ptw-field ptw-control management-change-upload-field">
               <HandleFIlesUpload
                 :label="$t('attachments')"
                 accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
@@ -440,7 +474,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
             </svg>
             {{ $t('Review all information before creating the permit.') }}
           </p>
-          <button type="submit" class="ptw-submit">
+          <button type="submit" class="hse-project-button hse-project-button--primary ptw-submit">
             {{ $t('Create permit') }}
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M5 12h14M14 7l5 5-5 5" />

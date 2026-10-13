@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import TemplateDocument from '@/features/setting/TemplateItem/Presentation/components/TemplateDocument.vue'
 import type TemplateModel from '@/features/setting/Template/Data/models/TemplateModel'
 import DocumnetHeader from '@/assets/images/DocumnetHeader.png'
@@ -29,7 +31,7 @@ const showMore = ref(false)
 </script>
 
 <template>
-  <div class="template-selector">
+  <div data-hse-project v-project-panels class="hse-project-root template-selector">
     <div class="template-selector-container-AccordionPanel">
       <div
         @click="SetSelectedTemplate(template.id)"
@@ -64,7 +66,9 @@ const showMore = ref(false)
                   v-model="SelectedTemplate"
                   :value="template.id"
                 />
-                <label :for="`${template.id}`">{{ $t('select') }}</label>
+                <label class="hse-project-field-label" :for="`${template.id}`">{{
+                  $t('select')
+                }}</label>
               </div>
               <img :src="DocumnetHeader" alt="header" />
             </div>

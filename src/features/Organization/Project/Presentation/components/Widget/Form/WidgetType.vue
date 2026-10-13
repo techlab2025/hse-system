@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import ProjectSafetyScoreWidget from '@/assets/images/ProjectSafetyScoreWidget.png'
 import ProjectLocation from '@/assets/images/ProjectLocation.png'
 import LinkedCAPAs from '@/assets/images/LinkedCAPAs.png'
@@ -8,15 +10,15 @@ import NumberOfIncidence from '@/assets/images/NumberOfIncidence.png'
 import EquipmentDevices from '@/assets/images/EquipmentDevices.png'
 import NoteWidget from '@/assets/images/NotesWidget.png'
 import TeamRatioWidget from '@/assets/images/TeamRatioWidget.png'
-import { ref, watch, onMounted } from 'vue';
-import { WidgetEnum } from '@/features/Organization/Project/Core/Enums/widget_enum';
-import AddWidgetIcon from '@/shared/icons/AddWidgetIcon.vue';
-import wordSlice from '@/base/Presentation/utils/word_slice';
+import { ref, watch, onMounted } from 'vue'
+import { WidgetEnum } from '@/features/Organization/Project/Core/Enums/widget_enum'
+import AddWidgetIcon from '@/shared/icons/AddWidgetIcon.vue'
+import wordSlice from '@/base/Presentation/utils/word_slice'
 
-const emit = defineEmits(['selected:widget']);
+const emit = defineEmits(['selected:widget'])
 interface WidgetInterface {
-  id: number,
-  name: string,
+  id: number
+  name: string
   img: string
 }
 const SelectedWidget = ref()
@@ -24,117 +26,144 @@ const WidgetsTypes = ref<WidgetInterface[]>([
   {
     id: WidgetEnum.ProjectSafetyScore,
     name: 'Project Safety Score',
-    img: ProjectSafetyScoreWidget
+    img: ProjectSafetyScoreWidget,
   },
   {
     id: WidgetEnum.ProjectLocations,
     name: 'Project Locations',
-    img: ProjectLocation
+    img: ProjectLocation,
   },
   {
     id: WidgetEnum.LinkedCAPAs,
     name: 'Linked CAPAs',
-    img: LinkedCAPAs
+    img: LinkedCAPAs,
   },
   {
     id: WidgetEnum.EmployeePerformance,
     name: 'Employee Performance',
-    img: EmployeePerformance
+    img: EmployeePerformance,
   },
   {
     id: WidgetEnum.NeedMaintenance,
     name: 'Need Maintenance',
-    img: NeedMentance
+    img: NeedMentance,
   },
   {
     id: WidgetEnum.NumberOfIncidents,
     name: 'Number Of Incidents',
-    img: NumberOfIncidence
+    img: NumberOfIncidence,
   },
   {
     id: WidgetEnum.EquipmentDevices,
     name: 'Equipment Devices',
-    img: EquipmentDevices
+    img: EquipmentDevices,
   },
   {
     id: WidgetEnum.TeamsRatio,
     name: 'Teams Ratio',
-    img: TeamRatioWidget
+    img: TeamRatioWidget,
   },
   {
     id: WidgetEnum.Noteswidget,
     name: 'Note Widget',
-    img: NoteWidget
+    img: NoteWidget,
   },
 ])
 
 const WidgetsData = ref(WidgetsTypes.value.slice(0, 4))
 const AddWidgetDisplay = ref(true)
 const AddWidget = () => {
-  AddWidgetDisplay.value = false;
+  AddWidgetDisplay.value = false
   WidgetsData.value = WidgetsTypes.value.slice(0, WidgetsTypes.value.length)
 }
 
-watch(() => SelectedWidget.value, (newValue) => {
-  emit('selected:widget', newValue)
-})
+watch(
+  () => SelectedWidget.value,
+  (newValue) => {
+    emit('selected:widget', newValue)
+  },
+)
 
 const setupDragScroll = () => {
-  const container = document.querySelector('.widgets-container') as HTMLElement;
-  if (!container) return;
+  const container = document.querySelector('.widgets-container') as HTMLElement
+  if (!container) return
 
-  let isDown = false;
-  let startX: number;
-  let scrollLeftPos: number;
+  let isDown = false
+  let startX: number
+  let scrollLeftPos: number
 
   container.addEventListener('mousedown', (e: MouseEvent) => {
-    isDown = true;
-    container.classList.add('active-drag');
-    startX = e.pageX - container.offsetLeft;
-    scrollLeftPos = container.scrollLeft;
-  });
+    isDown = true
+    container.classList.add('active-drag')
+    startX = e.pageX - container.offsetLeft
+    scrollLeftPos = container.scrollLeft
+  })
 
   container.addEventListener('mouseleave', () => {
-    isDown = false;
-    container.classList.remove('active-drag');
-  });
+    isDown = false
+    container.classList.remove('active-drag')
+  })
 
   container.addEventListener('mouseup', () => {
-    isDown = false;
-    container.classList.remove('active-drag');
-  });
+    isDown = false
+    container.classList.remove('active-drag')
+  })
 
   container.addEventListener('mousemove', (e: MouseEvent) => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - container.offsetLeft;
-    const walk = (x - startX) * 2;
-    container.scrollLeft = scrollLeftPos - walk;
-  });
+    if (!isDown) return
+    e.preventDefault()
+    const x = e.pageX - container.offsetLeft
+    const walk = (x - startX) * 2
+    container.scrollLeft = scrollLeftPos - walk
+  })
 }
 
-watch(() => AddWidgetDisplay.value, (newValue) => {
-  if (!newValue) {
-    setTimeout(() => {
-      setupDragScroll();
-    }, 0);
-  }
-})
+watch(
+  () => AddWidgetDisplay.value,
+  (newValue) => {
+    if (!newValue) {
+      setTimeout(() => {
+        setupDragScroll()
+      }, 0)
+    }
+  },
+)
 
 onMounted(() => {
   if (!AddWidgetDisplay.value) {
-    setupDragScroll();
+    setupDragScroll()
   }
 })
 </script>
 
 <template>
-  <div class="widgets-container" :class="!AddWidgetDisplay ? 'scroll-mode' : ''">
-    <div class="widgets-types" v-for="(widget, index) in WidgetsData" :key="index" @click="SelectedWidget = widget.id"
-      :class="SelectedWidget == widget.id ? 'active' : ''">
+  <div
+    data-hse-project
+    v-project-panels
+    class="hse-project-root widgets-container"
+    :class="!AddWidgetDisplay ? 'scroll-mode' : ''"
+  >
+    <div
+      class="widgets-types"
+      v-for="(widget, index) in WidgetsData"
+      :key="index"
+      @click="SelectedWidget = widget.id"
+      :class="SelectedWidget == widget.id ? 'active' : ''"
+    >
       <div class="types">
-        <input type="radio" :id="`radio-${widget.id}`" name="radio" v-model="SelectedWidget" :value="widget.id">
-        <img :src="widget.img" class="item" @click="SelectedWidget = widget.id" :for="`radio-${widget.id}`">
+        <input
+          type="radio"
+          :id="`radio-${widget.id}`"
+          name="radio"
+          v-model="SelectedWidget"
+          :value="widget.id"
+        />
+        <img
+          :src="widget.img"
+          class="item"
+          @click="SelectedWidget = widget.id"
+          :for="`radio-${widget.id}`"
+        />
       </div>
       <p class="title">{{ wordSlice(widget.name, 18) }}</p>
     </div>

@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../../composables/projectPanels'
+
 import { ref } from 'vue'
 import ColorSelection from '../WidgetUtils/ColorSelection.vue'
 import RadioSection from '@/shared/HelpersComponents/RadioSection.vue'
-import TitleInterface from '@/base/Data/Models/title_interface';
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue';
-import ZoneTitlesForm from '../WidgetUtils/ZoneTitlesForm.vue';
+import TitleInterface from '@/base/Data/Models/title_interface'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import ZoneTitlesForm from '../WidgetUtils/ZoneTitlesForm.vue'
 
 const emit = defineEmits(['update:value'])
 const MainTitle = ref()
@@ -23,13 +25,7 @@ const AppearWay = ref()
 const WantedType = ref()
 const SelectedOption = ref<TitleInterface>()
 
-const colors = ref([
-  '#1D4ED8',
-  '#EAEAEA',
-  '#9760F6',
-  '#FBF5B5',
-  '#4CAF50'
-])
+const colors = ref(['#1D4ED8', '#EAEAEA', '#9760F6', '#FBF5B5', '#4CAF50'])
 
 const UpdateData = () => {
   emit('update:value', {
@@ -53,21 +49,51 @@ const UpdateData = () => {
 
 const updateField = (field: string, value: any) => {
   switch (field) {
-    case 'MainTitle': MainTitle.value = value; break
-    case 'MiniTitle': MiniTitle.value = value; break
-    case 'Hint': Hint.value = value; break
-    case 'subType': subType.value = value; break
-    case 'name': name.value = value; break
-    case 'picture': picture.value = value; break
-    case 'lastInspection': lastInspection.value = value; break
-    case 'inspectionDuration': inspectionDuration.value = value; break
-    case 'lastInspectionBy': lastInspectionBy.value = value; break
-    case 'lastInspectionDate': lastInspectionDate.value = value; break
-    case 'AppearWay': AppearWay.value = value; break
-    case 'WantedType': WantedType.value = value; break
-    case 'SelectedOption': SelectedOption.value = value; break
-    case 'SelectedAvailable': SelectedAvailable.value = value; break
-    case 'SelectedColor': SelectedColor.value = value; break
+    case 'MainTitle':
+      MainTitle.value = value
+      break
+    case 'MiniTitle':
+      MiniTitle.value = value
+      break
+    case 'Hint':
+      Hint.value = value
+      break
+    case 'subType':
+      subType.value = value
+      break
+    case 'name':
+      name.value = value
+      break
+    case 'picture':
+      picture.value = value
+      break
+    case 'lastInspection':
+      lastInspection.value = value
+      break
+    case 'inspectionDuration':
+      inspectionDuration.value = value
+      break
+    case 'lastInspectionBy':
+      lastInspectionBy.value = value
+      break
+    case 'lastInspectionDate':
+      lastInspectionDate.value = value
+      break
+    case 'AppearWay':
+      AppearWay.value = value
+      break
+    case 'WantedType':
+      WantedType.value = value
+      break
+    case 'SelectedOption':
+      SelectedOption.value = value
+      break
+    case 'SelectedAvailable':
+      SelectedAvailable.value = value
+      break
+    case 'SelectedColor':
+      SelectedColor.value = value
+      break
   }
   UpdateData()
 }
@@ -81,13 +107,12 @@ const Options = ref<TitleInterface[]>([
 const UpdateOption = (data: TitleInterface) => {
   SelectedOption.value = data
   updateField('SelectedOption', SelectedOption.value)
-
 }
 
 const UpdateTitle = (data) => {
-  MainTitle.value = data.MainTitle;
-  MiniTitle.value = data.MiniTitle;
-  Hint.value = data.Hint;
+  MainTitle.value = data.MainTitle
+  MiniTitle.value = data.MiniTitle
+  Hint.value = data.Hint
   if (data.MainTitle) updateField('MainTitle', MainTitle.value)
   if (data.MiniTitle) updateField('MiniTitle', MiniTitle.value)
   if (data.Hint) updateField('Hint', Hint.value)
@@ -97,40 +122,85 @@ const UpdateTitle = (data) => {
 <template>
   <ZoneTitlesForm @update:value="UpdateTitle" />
 
-  <div class="Selections">
-    <RadioSection :title="$t('Choose the way you want to appear')" :selections="['count of Equipment', 'show the Equipment']"
-      @update:value="v => updateField('AppearWay', v)" />
-    <RadioSection :title="$t('Choose the type you want')"
+  <div data-hse-project v-project-panels class="hse-project-root Selections">
+    <RadioSection
+      :title="$t('Choose the way you want to appear')"
+      :selections="['count of Equipment', 'show the Equipment']"
+      @update:value="(v) => updateField('AppearWay', v)"
+    />
+    <RadioSection
+      :title="$t('Choose the type you want')"
       :selections="['Equipment only', 'devices only', 'tools only', 'show all']"
-      @update:value="v => updateField('WantedType', v)" :Customize="true" @update:customize="console.log($event);" />
+      @update:value="(v) => updateField('WantedType', v)"
+      :Customize="true"
+      @update:customize="console.log($event)"
+    />
   </div>
-  <div class="type-select">
-    <CustomSelectInput :staticOptions="Options" @update:modelValue="UpdateOption" :modelValue="SelectedOption"
-      :label="$t('select the types you want')" id="EmployeeType" :placeholder="$t('select here')" />
+  <div data-hse-project v-project-panels class="hse-project-root type-select">
+    <CustomSelectInput
+      overlay-class="hse-project-overlay"
+      :staticOptions="Options"
+      @update:modelValue="UpdateOption"
+      :modelValue="SelectedOption"
+      :label="$t('select the types you want')"
+      id="EmployeeType"
+      :placeholder="$t('select here')"
+    />
   </div>
-  <div class="selctors-container">
+  <div data-hse-project v-project-panels class="hse-project-root selctors-container">
     <p class="title">{{ $t('check on details you want it to appear in your widget') }}</p>
     <div class="setting-form">
-      <RadioSection :title="$t('sub type')" :selections="['Yes', 'On']" @update:value="v => updateField('subType', v)" />
-      <RadioSection :title="$t('name')" :selections="['Yes', 'No']" @update:value="v => updateField('name', v)" />
+      <RadioSection
+        :title="$t('sub type')"
+        :selections="['Yes', 'On']"
+        @update:value="(v) => updateField('subType', v)"
+      />
+      <RadioSection
+        :title="$t('name')"
+        :selections="['Yes', 'No']"
+        @update:value="(v) => updateField('name', v)"
+      />
     </div>
     <div class="setting-form">
-      <RadioSection :title="$t('picture')" :selections="['Yes', 'On']" @update:value="v => updateField('picture', v)" />
-      <RadioSection :title="$t('last inspection')" :selections="['Yes', 'No']"
-        @update:value="v => updateField('lastInspection', v)" />
+      <RadioSection
+        :title="$t('picture')"
+        :selections="['Yes', 'On']"
+        @update:value="(v) => updateField('picture', v)"
+      />
+      <RadioSection
+        :title="$t('last inspection')"
+        :selections="['Yes', 'No']"
+        @update:value="(v) => updateField('lastInspection', v)"
+      />
     </div>
     <div class="setting-form">
-      <RadioSection :title="$t('inspection duration')" :selections="['Yes', 'On']"
-        @update:value="v => updateField('inspectionDuration', v)" />
-      <RadioSection :title="$t('last inspection by')" :selections="['Yes', 'On']"
-        @update:value="v => updateField('lastInspectionBy', v)" />
+      <RadioSection
+        :title="$t('inspection duration')"
+        :selections="['Yes', 'On']"
+        @update:value="(v) => updateField('inspectionDuration', v)"
+      />
+      <RadioSection
+        :title="$t('last inspection by')"
+        :selections="['Yes', 'On']"
+        @update:value="(v) => updateField('lastInspectionBy', v)"
+      />
     </div>
     <div class="setting-form">
-      <RadioSection :title="$t('last inspection date')" :selections="['Yes', 'On']"
-        @update:value="v => updateField('lastInspectionDate', v)" />
+      <RadioSection
+        :title="$t('last inspection date')"
+        :selections="['Yes', 'On']"
+        @update:value="(v) => updateField('lastInspectionDate', v)"
+      />
     </div>
   </div>
-  <ColorSelection :title="$t('chart color')" :colors="colors" @update:value="v => updateField('SelectedColor', v)" />
-  <RadioSection :title="$t('Available to')" :selections="['anyone', 'only me']"
-    @update:value="v => updateField('SelectedAvailable', v)" />
+  <ColorSelection
+    :title="$t('chart color')"
+    :colors="colors"
+    @update:value="(v) => updateField('SelectedColor', v)"
+  />
+  <RadioSection
+    :title="$t('Available to')"
+    :selections="['anyone', 'only me']"
+    @update:value="(v) => updateField('SelectedAvailable', v)"
+  />
 </template>

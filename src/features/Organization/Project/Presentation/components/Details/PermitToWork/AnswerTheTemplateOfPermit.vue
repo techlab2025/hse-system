@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import type TemplateModel from '@/features/setting/Template/Data/models/TemplateModel'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -162,8 +164,17 @@ const CreateAnswer = async () => {
 </script>
 
 <template>
-  <TemplateDocument ref="templateDocumentRef" :allData="state.data!" @update:data="UpdateData" />
-  <button class="btn btn-primary" @click="CreateAnswer">submit</button>
+  <section data-hse-project v-project-panels class="hse-project-root hse-project-page">
+    <TemplateDocument ref="templateDocumentRef" :allData="state.data!" @update:data="UpdateData" />
+    <button
+      data-hse-project
+      v-project-panels
+      class="hse-project-root hse-project-button hse-project-button--primary btn btn-primary"
+      @click="CreateAnswer"
+    >
+      submit
+    </button>
+  </section>
 </template>
 
 <style lang="scss" scoped>

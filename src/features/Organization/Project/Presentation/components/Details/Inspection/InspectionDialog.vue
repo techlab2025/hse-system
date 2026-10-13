@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import ArrowLink from '@/shared/icons/ArrowLink.vue'
 import Dialog from 'primevue/dialog'
 import { ref } from 'vue'
@@ -21,20 +23,21 @@ const activeInspection = ref<number>(1)
 const GetSelectedAssigned = (data: number) => {
   activeInspection.value = data
 }
-
 </script>
 
 <template>
-  <div class="card flex justify-center">
+  <div data-hse-project v-project-panels class="hse-project-root card flex justify-center">
     <button @click="visible = true">
       <ArrowLink />
     </button>
     <Dialog
+      data-hse-project
+      :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
       v-model:visible="visible"
       dismissableMask
       modal
       :style="{ width: '36vw' }"
-      class="inspection-dialog"
+      class="hse-project-root hse-project-overlay inspection-dialog"
     >
       <template #container="{ closeCallback }">
         <div class="!px-5 !mt-5">
@@ -44,7 +47,11 @@ const GetSelectedAssigned = (data: number) => {
             :subtitle="$t('Track and manage all inspection assignments')"
           />
 
-          <button class="btn btn-primary w-full !mt-3">{{ $t('add_task') }}</button>
+          <button
+            class="hse-project-button hse-project-button--primary btn btn-primary w-full !mt-3"
+          >
+            {{ $t('add_task') }}
+          </button>
         </div>
 
         <TaskAssignTo

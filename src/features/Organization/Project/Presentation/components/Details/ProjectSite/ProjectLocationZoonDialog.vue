@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { inject } from 'vue'
+import { overviewPresentationKey } from '../overviewPresentation'
+const overviewPresentation = inject(overviewPresentationKey, false)
+
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { ref } from 'vue'
 import HeaderSection from '../DetailsHeader/HeaderSection.vue'
 import ZoneDialog from '@/assets/images/ZoneDialog.png'
@@ -39,14 +45,23 @@ const setProjectLocationZoon = (data: TitleInterface) => {
 }
 </script>
 <template>
-  <button class="add-zone" type="button" @click="visible = true">
+  <button
+    data-hse-project
+    v-project-panels
+    class="hse-project-root add-zone"
+    type="button"
+    @click="visible = true"
+  >
     <span aria-hidden="true">+</span>{{ $t('add Zone') }}
   </button>
   <Dialog
+    :class="{ 'hse-project-overview-overlay': overviewPresentation }"
+    data-hse-project
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
     v-model:visible="visible"
     modal
     :dismissable-mask="true"
-    class="project-zone-dialog"
+    class="hse-project-root hse-project-overlay project-zone-dialog"
     :style="{ width: 'min(50rem, calc(100vw - 24px))' }"
   >
     <template #header>
@@ -65,8 +80,9 @@ const setProjectLocationZoon = (data: TitleInterface) => {
           <p>{{ $t('The selected zone will be linked to this project location') }}</p>
         </div>
       </div>
-      <div class="input-wrapper zone-select-field">
+      <div class="hse-project-field input-wrapper zone-select-field">
         <CustomSelectInput
+          overlay-class="hse-project-overlay"
           :required="false"
           :modelValue="SelectedProjectZone"
           :controller="indexProjectZoneController"
@@ -78,7 +94,7 @@ const setProjectLocationZoon = (data: TitleInterface) => {
         />
       </div>
       <button
-        class="btn btn-primary confirm-zone-btn"
+        class="hse-project-button hse-project-button--primary btn btn-primary confirm-zone-btn"
         type="button"
         :disabled="!SelectedProjectZone"
         @click="CreatProjectZoon"

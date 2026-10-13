@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
@@ -41,15 +43,27 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4 induction-entry-form" @submit.prevent="addInduction">
+  <form
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-page grid grid-cols-1 md:grid-cols-4 gap-4 induction-entry-form"
+    @submit.prevent="addInduction"
+  >
     <InductionForm :key="formKey" ref="formRef" @update:data="setParams" />
 
-    <div class="col-span-4 induction-form-actions create-form-actions">
-      <button type="button" class="btn btn-secondary induction-action" @click.prevent="saveAndNew">
+    <div class="hse-project-form-footer col-span-4 induction-form-actions create-form-actions">
+      <button
+        type="button"
+        class="hse-project-button btn btn-secondary induction-action"
+        @click.prevent="saveAndNew"
+      >
         <Icon icon="uil:plus-circle" />
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary induction-action induction-action--primary">
+      <button
+        type="submit"
+        class="hse-project-button hse-project-button--primary btn btn-primary induction-action induction-action--primary"
+      >
         <Icon icon="uil:check-circle" />
         {{ $t('save') }}
       </button>

@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import '../../../styles/project.css'
+
 import Dialog from 'primevue/dialog'
 import type LeadershipVisitDetailsModel from '../../../Data/models/Leadership/LeadershipVisitDetailsModel'
 
-import Image from 'primevue/image';
+import Image from 'primevue/image'
 
 defineProps<{
   visible: boolean
@@ -25,11 +27,13 @@ const mediaName = (url: string, index: number) =>
 
 <template>
   <Dialog
+    data-hse-project
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
     :visible="visible"
     modal
     dismissable-mask
     :style="{ width: 'min(920px, 96vw)' }"
-    class="report-details-dialog"
+    class="hse-project-root hse-project-overlay report-details-dialog"
     @update:visible="(visible: boolean) => !visible && emit('close')"
   >
     <template #header>
@@ -76,7 +80,7 @@ const mediaName = (url: string, index: number) =>
         </article>
       </section>
 
-      <section class="details-section"> 
+      <section class="details-section">
         <div class="details-section__heading">
           <div>
             <span>Actions</span>
@@ -114,19 +118,18 @@ const mediaName = (url: string, index: number) =>
           <strong>{{ visit.media.length }}</strong>
         </div>
         <div v-if="visit.media.length" class="media-grid">
-
-          
-          <div
-            v-for="(media, index) in visit.media"
-            :key="`${media}-${index}`"
-
-            class="media-item"
-          >
-           <Image v-if="isImage(media)" :src="media" :alt="mediaName(media, index)" width="250" preview />
+          <div v-for="(media, index) in visit.media" :key="`${media}-${index}`" class="media-item">
+            <Image
+              v-if="isImage(media)"
+              :src="media"
+              :alt="mediaName(media, index)"
+              width="250"
+              preview
+            />
             <!-- <img  :src="media" :alt="mediaName(media, index)" /> -->
             <!-- <span v-else class="media-item__file" aria-hidden="true">▤</span>
             <span>{{ mediaName(media, index) }}</span> -->
-        </div>
+          </div>
         </div>
         <p v-else class="empty-copy">No media attached to this report.</p>
       </section>

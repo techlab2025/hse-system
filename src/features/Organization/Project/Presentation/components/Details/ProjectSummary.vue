@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { computed, watch } from 'vue'
+import '../../../styles/project-overview.css'
+import { vProjectPanels } from '../../composables/projectPanels'
+
+import { computed, ref, watch } from 'vue'
+import { useProjectLabels } from '../../composables/useProjectLabels'
 import { useRoute } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
@@ -7,12 +11,31 @@ import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import { useSystemIdentity } from '@/composables/useSystemIdentity'
 import ShowProjectSummaryDetailsParams from '../../../Core/params/ShowProjectSummaryDetailsParams'
 import ShowProjectSummaryDetailsController from '../../controllers/ShowProjectSummaryDetailsController'
+import ProjectIcon from '../ProjectUtils/ProjectIcon.vue'
 import LossTimeMatrix from './LossTime/LossTimeMatrix.vue'
 
+const labels = useProjectLabels()
 const route = useRoute()
 const showProjectSummaryDetailsController = ShowProjectSummaryDetailsController.getInstance()
 const state = showProjectSummaryDetailsController.state
 const { identity: systemIdentity, defaultIdentity } = useSystemIdentity()
+
+const summaryTabs = [
+  { key: 'all', label: 'allData', icon: 'grid' },
+  { key: 'dashboard', label: 'dashboard', icon: 'grid' },
+  { key: 'safety', label: 'safety', icon: 'gauge' },
+  { key: 'operations', label: 'operations', icon: 'users' },
+  { key: 'equipment', label: 'equipment', icon: 'equipment' },
+  { key: 'meetings', label: 'meetings', icon: 'clock' },
+  { key: 'drills', label: 'drills', icon: 'pulse' },
+  { key: 'lossTime', label: 'lossTime', icon: 'clock' },
+  { key: 'quick', label: 'quick', icon: 'folder' },
+] as const
+
+type SummaryTab = (typeof summaryTabs)[number]['key']
+const activeTab = ref<SummaryTab>('all')
+const showsSection = (...tabs: SummaryTab[]) =>
+  activeTab.value === 'all' || tabs.includes(activeTab.value)
 
 const projectId = computed(() => Number(route.params.id))
 const project = computed(() => state.value.data)
@@ -131,6 +154,24 @@ const operationalStatistics = computed(() => [
   },
 ])
 
+const visibleSafetyStatistics = computed(() => {
+  if (activeTab.value === 'meetings')
+    return safetyStatistics.value.filter((stat) => stat.label === 'Meetings')
+  if (activeTab.value === 'drills')
+    return safetyStatistics.value.filter((stat) => stat.label === 'drills')
+  return safetyStatistics.value
+})
+const visibleOperationalStatistics = computed(() =>
+  activeTab.value === 'equipment'
+    ? operationalStatistics.value.filter((stat) => stat.label === 'Equipment')
+    : operationalStatistics.value,
+)
+const safetyHeading = computed(() =>
+  labels(
+    activeTab.value === 'meetings' || activeTab.value === 'drills' ? activeTab.value : 'safety',
+  ),
+)
+
 const quickLinks = computed(() => [
   {
     title: 'Leadership',
@@ -193,6 +234,7 @@ const quickLinks = computed(() => [
 watch(
   () => route.params.id,
   () => {
+    activeTab.value = 'all'
     getProjectSummaryDetails()
   },
   { immediate: true },
@@ -200,188 +242,250 @@ watch(
 </script>
 
 <template>
-  <DataStatus :controller="state">
-    <template #success>
-      <main class="project-summary-page" :style="summaryIdentityStyle">
-        <section class="summary-hero">
-          <!-- <span class="summary-hero__orb summary-hero__orb--one" aria-hidden="true"></span>
+  <div
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-state-host hse-project-overview hse-project-overview--summary"
+  >
+    <DataStatus :controller="state">
+      <template #success>
+        <main
+          data-hse-project
+          v-project-panels
+          class="hse-project-root hse-project-page project-summary-page"
+          :style="summaryIdentityStyle"
+        >
+          <nav class="hse-project-tabs" :aria-label="labels('workspace')">
+            <button
+              v-for="tab in summaryTabs"
+              :key="tab.key"
+              type="button"
+              :data-summary-filter="tab.key"
+              :aria-pressed="activeTab === tab.key"
+              @click="activeTab = tab.key"
+            >
+              <ProjectIcon :name="tab.icon" />{{ labels(tab.label) }}
+            </button>
+          </nav>
+          <section v-if="showsSection('dashboard')" class="summary-hero">
+            <!-- <span class="summary-hero__orb summary-hero__orb--one" aria-hidden="true"></span>
           <span class="summary-hero__orb summary-hero__orb--two" aria-hidden="true"></span> -->
 
-          <div class="summary-hero__content">
-            <div class="summary-identity">
-              <!-- <span class="summary-identity__mark">
+            <div class="summary-hero__content">
+              <div class="summary-identity">
+                <!-- <span class="summary-identity__mark">
                 <img :src="brandLogo" :alt="`${brandName} logo`" />
               </span> -->
-              <div>
-                <span class="summary-eyebrow">
-                  <!-- <b>{{ brandName }}</b> -->
-                  <!-- <i aria-hidden="true"></i> -->
-                  <!-- Project command overview -->
-                </span>
-                <h1>{{ project?.title || 'Project summary' }}</h1>
-                <p>
-                  <span class="scope-of-work">Project Scope of Work : </span
-                  >{{ project?.description || 'A concise viewof project safety and operations.' }}
-                </p>
+                <div>
+                  <span class="summary-eyebrow"
+                    >{{ labels('workspace') }}
+                    <!-- <b>{{ brandName }}</b> -->
+                    <!-- <i aria-hidden="true"></i> -->
+                    <!-- Project command overview -->
+                  </span>
+                  <h1>{{ project?.title || 'Project summary' }}</h1>
+                  <p>
+                    <span class="scope-of-work">{{ labels('scope') }}: </span
+                    >{{ project?.description || '' }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="summary-hero__actions">
+                <span class="project-reference">{{
+                  project?.serialName || project?.serialNumber
+                }}</span>
+                <RouterLink
+                  class="full-details-link"
+                  :to="`/organization/project-details/${projectId}`"
+                >
+                  <span>{{ labels('details') }}</span>
+                  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M5 12h14m-5-5 5 5-5 5"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </RouterLink>
               </div>
             </div>
 
-            <div class="summary-hero__actions">
-              <span class="project-reference">{{
-                project?.serialName || project?.serialNumber
-              }}</span>
-              <RouterLink
-                class="full-details-link"
-                :to="`/organization/project-details/${projectId}`"
-              >
-                <span>Open full project details</span>
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path
-                    d="M5 12h14m-5-5 5 5-5 5"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </RouterLink>
-            </div>
-          </div>
-
-          <div class="summary-hero__meta">
-            <div>
-              <span>Start date</span>
-              <strong>{{ project?.startDate || 'Not set' }}</strong>
-            </div>
-            <div>
-              <span>Target completion</span>
-              <strong>{{ project?.endDate || 'Not set' }}</strong>
-            </div>
-            <!-- <div>
+            <div class="summary-hero__meta">
+              <div>
+                <span>{{ labels('start') }}</span>
+                <strong>{{ project?.startDate || 'Not set' }}</strong>
+              </div>
+              <div>
+                <span>{{ labels('end') }}</span>
+                <strong>{{ project?.endDate || 'Not set' }}</strong>
+              </div>
+              <!-- <div>
               <span>Partner</span>
               <strong>{{ project?.partner?.title || 'Not assigned' }}</strong>
             </div> -->
-            <div>
-              <span>Project readiness</span>
-              <strong>{{ project?.projectProgress || 0 }}%</strong>
-            </div>
-          </div>
-        </section>
-
-        <section class="summary-section">
-          <header class="section-heading">
-            <div>
-              <span>Live performance</span>
-              <h2>Safety statistics</h2>
-            </div>
-            <p>Current project records returned by the project summary service.</p>
-          </header>
-
-          <div class="safety-stat-grid">
-            <RouterLink
-              v-for="stat in safetyStatistics"
-              :key="stat.label"
-              :to="stat.to"
-              class="safety-stat-card"
-              :class="`safety-stat-card--${stat.tone}`"
-            >
-              <span class="safety-stat-card__icon" aria-hidden="true">{{ stat.icon }}</span>
               <div>
-                <strong
-                  >{{ String(stat.value).split('/')[0] }}
-                  <span class="tot-num">{{ String(stat.value).split('/')[1] ? '/' : '' }}</span>
-                  <span class="tot-num">{{ String(stat.value).split('/')[1] }}</span>
-                </strong>
-                <h3>{{ stat.label }}</h3>
-                <p>{{ stat.note }}</p>
+                <span>{{ labels('readiness') }}</span>
+                <strong>{{ project?.projectProgress || 0 }}%</strong
+                ><progress
+                  class="hse-overview-readiness"
+                  :value="project?.projectProgress || 0"
+                  max="100"
+                  :aria-label="labels('readiness')"
+                />
               </div>
-              <span class="stat-card-arrow" aria-hidden="true">→</span>
-            </RouterLink>
-          </div>
-        </section>
-
-        <section class="operations-panel">
-          <div class="operations-panel__intro">
-            <!-- <span>Operational footprint</span> -->
-            <h2>Project Statics</h2>
-            <p>People, places and assets currently connected to this project.</p>
-          </div>
-
-          <div class="operational-stat-grid">
-            <RouterLink
-              v-for="stat in operationalStatistics"
-              :key="stat.label"
-              :to="stat.to"
-              class="operational-stat"
-            >
-              <strong>{{ stat.value }}</strong>
-              <span>{{ stat.label }}</span>
-              <!-- <small aria-hidden="true">→</small> -->
-            </RouterLink>
-          </div>
-        </section>
-        <!-- v-if="project?.lossTimes?.length" -->
-
-        <LossTimeMatrix :loss-times="project?.lossTimes!" />
-
-        <section class="summary-section">
-          <header class="section-heading">
-            <div>
-              <span>Project workspace</span>
-              <h2>Quick access</h2>
             </div>
-            <p>Continue directly to the most-used safety areas.</p>
-          </header>
+          </section>
 
-          <div class="quick-link-grid">
-            <RouterLink
-              v-for="item in quickLinks"
-              :key="item.title"
-              :to="item.to"
-              class="quick-link"
-            >
-              <span class="quick-link__mark" aria-hidden="true">{{ item.mark }}</span>
-              <span class="quick-link__copy">
-                <strong>{{ item.title }}</strong>
-                <small>{{ item.description }}</small>
-              </span>
-              <span class="quick-link__arrow" aria-hidden="true">→</span>
-            </RouterLink>
-          </div>
-        </section>
-      </main>
-    </template>
+          <section v-if="showsSection('safety', 'meetings', 'drills')" class="summary-section">
+            <header class="section-heading">
+              <div>
+                <span>{{ labels('performance') }}</span>
+                <h2>{{ safetyHeading }}</h2>
+              </div>
+              <p>{{ safetyHeading }}</p>
+            </header>
 
-    <template #loader>
-      <div class="summary-loading" aria-label="Loading project summary">
-        <span v-for="index in 8" :key="index"></span>
-      </div>
-    </template>
+            <div class="safety-stat-grid">
+              <RouterLink
+                v-for="stat in visibleSafetyStatistics"
+                :key="stat.label"
+                :to="stat.to"
+                class="safety-stat-card"
+                :class="`safety-stat-card--${stat.tone}`"
+              >
+                <span class="safety-stat-card__icon" aria-hidden="true"
+                  ><ProjectIcon
+                    :name="
+                      stat.tone === 'navy'
+                        ? 'clock'
+                        : stat.tone === 'red'
+                          ? 'pulse'
+                          : stat.tone === 'amber'
+                            ? 'folder'
+                            : 'gauge'
+                    "
+                /></span>
+                <div>
+                  <strong
+                    >{{ String(stat.value).split('/')[0] }}
+                    <span class="tot-num">{{ String(stat.value).split('/')[1] ? '/' : '' }}</span>
+                    <span class="tot-num">{{ String(stat.value).split('/')[1] }}</span>
+                  </strong>
+                  <h3>{{ $t(stat.label) }}</h3>
+                  <p>{{ stat.note }}</p>
+                </div>
+                <span class="stat-card-arrow" aria-hidden="true">→</span>
+              </RouterLink>
+            </div>
+          </section>
 
-    <template #initial>
-      <div class="summary-loading" aria-label="Loading project summary">
-        <span v-for="index in 8" :key="index"></span>
-      </div>
-    </template>
+          <section v-if="showsSection('operations', 'equipment')" class="operations-panel">
+            <div class="operations-panel__intro">
+              <!-- <span>Operational footprint</span> -->
+              <h2>{{ activeTab === 'equipment' ? labels('equipment') : labels('resources') }}</h2>
+              <p>{{ labels('resourcesNote') }}</p>
+            </div>
 
-    <template #empty>
-      <DataEmpty
-        link="/organization/projects"
-        add-text="Back to projects"
-        title="Project details are not available"
-        description="Choose another project and try again."
-      />
-    </template>
+            <div class="operational-stat-grid">
+              <RouterLink
+                v-for="stat in visibleOperationalStatistics"
+                :key="stat.label"
+                :to="stat.to"
+                class="operational-stat"
+              >
+                <strong>{{ stat.value }}</strong>
+                <span>{{ $t(stat.label) }}</span>
+                <!-- <small aria-hidden="true">→</small> -->
+              </RouterLink>
+            </div>
+          </section>
+          <!-- v-if="project?.lossTimes?.length" -->
 
-    <template #failed>
-      <DataFailed
-        link="/organization/projects"
-        add-text="Back to projects"
-        title="Unable to load project summary"
-        description="The project overview could not be loaded. Please try again."
-      />
-    </template>
-  </DataStatus>
+          <LossTimeMatrix v-if="showsSection('lossTime')" :loss-times="project?.lossTimes ?? []" />
+
+          <section v-if="showsSection('quick')" class="summary-section">
+            <header class="section-heading">
+              <div>
+                <span>{{ labels('workspace') }}</span>
+                <h2>{{ labels('quick') }}</h2>
+              </div>
+              <p>{{ labels('quickNote') }}</p>
+            </header>
+
+            <div class="quick-link-grid">
+              <RouterLink
+                v-for="item in quickLinks"
+                :key="item.title"
+                :to="item.to"
+                class="quick-link"
+              >
+                <span class="quick-link__mark" aria-hidden="true"
+                  ><ProjectIcon
+                    :name="
+                      item.mark === 'L'
+                        ? 'users'
+                        : item.mark === 'R'
+                          ? 'gauge'
+                          : item.mark === 'M'
+                            ? 'clock'
+                            : 'folder'
+                    "
+                /></span>
+                <span class="quick-link__copy">
+                  <strong>{{ $t(item.title) }}</strong>
+                  <small>{{ item.description }}</small>
+                </span>
+                <span class="quick-link__arrow" aria-hidden="true">→</span>
+              </RouterLink>
+            </div>
+          </section>
+        </main>
+      </template>
+
+      <template #loader>
+        <div
+          data-hse-project
+          v-project-panels
+          class="hse-project-root hse-project-page summary-loading"
+          aria-label="Loading project summary"
+        >
+          <span v-for="index in 8" :key="index"></span>
+        </div>
+      </template>
+
+      <template #initial>
+        <div
+          data-hse-project
+          v-project-panels
+          class="hse-project-root hse-project-page summary-loading"
+          aria-label="Loading project summary"
+        >
+          <span v-for="index in 8" :key="index"></span>
+        </div>
+      </template>
+
+      <template #empty>
+        <DataEmpty
+          link="/organization/projects"
+          add-text="Back to projects"
+          title="Project details are not available"
+          description="Choose another project and try again."
+        />
+      </template>
+
+      <template #failed>
+        <DataFailed
+          link="/organization/projects"
+          add-text="Back to projects"
+          title="Unable to load project summary"
+          description="The project overview could not be loaded. Please try again."
+        />
+      </template>
+    </DataStatus>
+  </div>
 </template>
 
 <style scoped lang="scss">

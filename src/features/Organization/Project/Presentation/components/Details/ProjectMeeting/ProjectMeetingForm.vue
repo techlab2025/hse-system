@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { computed, ref } from 'vue'
 import DatePicker from 'primevue/datepicker'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -37,7 +39,7 @@ const PeriodicType = ref<number>()
 const dates = ref<Date[] | null>(null)
 const Customdates = ref<Date[] | null>(null)
 
-const error = ref('') 
+const error = ref('')
 
 const submitting = computed(() => CreateProjectMeetingController.getInstance().isDataLoading())
 
@@ -90,7 +92,10 @@ const submit = async () => {
     error.value = 'Select at least one employee.'
     return
   }
-  if (!selectedTeamLeaderId.value || !selectedEmployees.value.some((employee) => employee.id === selectedTeamLeaderId.value)) {
+  if (
+    !selectedTeamLeaderId.value ||
+    !selectedEmployees.value.some((employee) => employee.id === selectedTeamLeaderId.value)
+  ) {
     error.value = 'Select a team leader from the chosen employees.'
     return
   }
@@ -248,12 +253,15 @@ const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
     ? employee!.id
     : null
 }
-
-
 </script>
 
 <template>
-  <form class="drill-form" @submit.prevent="submit">
+  <form
+    data-hse-project
+    v-project-panels
+    class="hse-project-root drill-form hse-project-planning"
+    @submit.prevent="submit"
+  >
     <div class="drill-form-grid">
       <!-- meeting type -->
       <UpdatedCustomInputSelect
@@ -311,12 +319,16 @@ const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
       />
 
       <!-- Yearly -->
-      <div class="input-wrapper" v-if="PeriodicType == MeetingTypePeriodicEnum.yearly">
-        <div class="field-label">
-          <label for="drill_date">{{ $t('Meeting dates') }}</label
+      <div
+        class="hse-project-field input-wrapper"
+        v-if="PeriodicType == MeetingTypePeriodicEnum.yearly"
+      >
+        <div class="hse-project-field field-label">
+          <label class="hse-project-field-label" for="drill_date">{{ $t('Meeting dates') }}</label
           ><FieldHelpIcon text="Select the dates." />
         </div>
         <DatePicker
+          panel-class="hse-project-overlay hse-project-planning"
           id="drill_date"
           v-model="dates"
           date-format="yy-mm-dd"
@@ -329,12 +341,16 @@ const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
       </div>
 
       <!-- dates -->
-      <div class="input-wrapper" v-if="PeriodicType == MeetingTypePeriodicEnum.dates">
-        <div class="field-label">
-          <label for="drill_date">{{ $t('Meeting dates') }}</label
+      <div
+        class="hse-project-field input-wrapper"
+        v-if="PeriodicType == MeetingTypePeriodicEnum.dates"
+      >
+        <div class="hse-project-field field-label">
+          <label class="hse-project-field-label" for="drill_date">{{ $t('Meeting dates') }}</label
           ><FieldHelpIcon text="Select the dates." />
         </div>
         <DatePicker
+          panel-class="hse-project-overlay hse-project-planning"
           id="drill_date"
           v-model="Customdates"
           date-format="yy-mm-dd"
@@ -373,7 +389,9 @@ const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
       />
       <UpdatedCustomInputSelect
         id="meeting-team-leader"
-        :model-value="selectedEmployees.find((employee) => employee.id === selectedTeamLeaderId) ?? null"
+        :model-value="
+          selectedEmployees.find((employee) => employee.id === selectedTeamLeaderId) ?? null
+        "
         :static-options="selectedEmployees"
         :label="$t('Chaired By')"
         :placeholder="$t('Select Chaired By')"
@@ -384,8 +402,12 @@ const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
     </div>
 
     <p v-if="error" class="drill-form-error">{{ error }}</p>
-    <div class="drill-form-actions">
-      <button class="btn btn-primary" type="submit" :disabled="submitting">
+    <div class="hse-project-form-footer drill-form-actions">
+      <button
+        class="hse-project-button hse-project-button--primary btn btn-primary"
+        type="submit"
+        :disabled="submitting"
+      >
         {{ submitting ? $t('Saving...') : $t('Add Meeting') }}
       </button>
     </div>
@@ -403,9 +425,9 @@ const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
   align-items: center;
   gap: 12px;
   padding: 14px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 16%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 16%, var(--hse-project-line));
   border-radius: 16px;
-  background: color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-2));
+  background: color-mix(in srgb, var(--hse-project-blue) 5%, var(--hse-project-surface-soft));
 }
 .drill-form-intro > span {
   display: grid;
@@ -414,15 +436,16 @@ const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
   place-items: center;
   border-radius: 12px;
   color: white;
-  background: var(--PrimaryColor);
-  font-family: 'Bold';
+  background: var(--hse-project-blue);
+  font-family: var(--hse-project-font);
+  font-weight: 700;
 }
 .drill-form-intro strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 .drill-form-intro p {
   margin: 2px 0 0;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.75rem;
 }
 .drill-form-grid {
@@ -439,14 +462,14 @@ const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
   resize: vertical;
 }
 .drill-serial small {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 }
 .drill-form-error {
   margin: 0;
   padding: 10px 12px;
   border-radius: 10px;
-  color: var(--status-danger);
-  background: var(--status-danger-soft);
+  color: var(--hse-project-red);
+  background: var(--hse-project-red-soft);
 }
 .drill-form-actions {
   display: flex;

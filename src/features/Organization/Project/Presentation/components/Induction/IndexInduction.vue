@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
@@ -96,16 +98,25 @@ watch(
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 input_search_btn">
+  <div
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-page grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 input_search_btn"
+  >
     <div class="input-search col-span-1">
       <span class="icon-remove" @click="((word = ''), searchInductions())"><Search /></span>
-      <input v-model="word" :placeholder="$t('search')" class="input" @input="searchInductions" />
+      <input
+        v-model="word"
+        :placeholder="$t('search')"
+        class="hse-project-input input"
+        @input="searchInductions"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <PermissionBuilder :code="createPermissions">
         <router-link
           :to="`${basePath}/induction/add${projectQuery}`"
-          class="btn btn-primary induction-add-button"
+          class="hse-project-button hse-project-button--primary btn btn-primary induction-add-button"
         >
           <ActionsListAddIcon />
           <span>{{ $t('add_induction') }}</span>
@@ -117,8 +128,12 @@ watch(
   <PermissionBuilder :code="featurePermissions">
     <DataStatus :controller="state">
       <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
+        <div
+          data-hse-project
+          v-project-panels
+          class="hse-project-root hse-project-page table-responsive"
+        >
+          <table class="hse-project-table main-table">
             <thead>
               <tr>
                 <th scope="col">#</th>
@@ -136,7 +151,7 @@ watch(
                 <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
                 <td>{{ wordSlice(item.instructorName, 20) || '-' }}</td>
                 <td>{{ item.projectTitle || '-' }}</td>
-                <td>{{ wordSlice(item.projectLocationTitle, 20)  || '-' }}</td>
+                <td>{{ wordSlice(item.projectLocationTitle, 20) || '-' }}</td>
                 <td>{{ wordSlice(item.projectZoneTitle, 20) || '-' }}</td>
                 <td>{{ item.date || '-' }}</td>
                 <td>{{ item.createdAt || '-' }}</td>

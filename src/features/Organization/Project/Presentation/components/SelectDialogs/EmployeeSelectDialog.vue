@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import AddOrganizatoinEmployee from '@/features/Organization/OrganizationEmployee/Presentation/components/AddOrganizatoinEmployee.vue';
+import '../../../styles/project.css'
+
+import AddOrganizatoinEmployee from '@/features/Organization/OrganizationEmployee/Presentation/components/AddOrganizatoinEmployee.vue'
 import Dialog from 'primevue/dialog'
 
 const props = defineProps<{
@@ -14,6 +16,9 @@ const emit = defineEmits<{
 
 <template>
   <Dialog
+    data-hse-project
+    class="hse-project-root hse-project-overlay"
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
     :visible="props.visible"
     modal
     :header="$t('Add Employee')"

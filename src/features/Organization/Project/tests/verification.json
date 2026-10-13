@@ -1,0 +1,100 @@
+{
+  "branch": "project-styles",
+  "startingWorkingTree": [
+    "?? desginrefreance/"
+  ],
+  "scope": "src/features/Organization/Project/",
+  "reference": "/home/techlab/Downloads/HSE_Projects_Studio_05_1_FIXED_EN.html",
+  "build": {
+    "command": "npm run build",
+    "exitCode": 0,
+    "log": "/tmp/project-build-final.log",
+    "warnings": "Existing deep-selector and large-chunk warnings"
+  },
+  "lint": {
+    "command": "npx eslint src/features/Organization/Project -f json",
+    "exitCode": 1,
+    "errors": 273,
+    "warnings": 62,
+    "addedFindings": 0,
+    "baseline": "/tmp/project-baseline-eslint.json",
+    "final": "/tmp/project-eslint-final.json"
+  },
+  "typecheck": {
+    "command": "npm run type-check -- --force",
+    "exitCode": 2,
+    "diagnostics": 3684,
+    "baselineDiagnostics": 3684,
+    "addedErrorCodesPerFile": 0,
+    "log": "/tmp/project-typecheck-final.log"
+  },
+  "playwright": {
+    "command": "npx playwright test --config src/features/Organization/Project/tests/playwright.config.mjs",
+    "passed": 11,
+    "failed": 0,
+    "log": "/tmp/project-playwright-final.log",
+    "fixturesOnly": true
+  },
+  "responsive": {
+    "viewports": [
+      1920,
+      1440,
+      1280,
+      768,
+      390,
+      320
+    ],
+    "locales": [
+      "en",
+      "ar"
+    ],
+    "routes": [
+      "/organization/projects",
+      "/organization/project-summary/433",
+      "/organization/project/flow",
+      "/organization/project-details/433/risk-assessments"
+    ],
+    "featureOverflows": 0,
+    "screenshots": "/tmp/hse-project-visual/"
+  },
+  "routeAudit": {
+    "visitedURLs": 46,
+    "pageErrors": 0,
+    "primary": "/tmp/hse-project-visual/routes/audit.json",
+    "additional": "/tmp/hse-project-visual/routes/extra-audit.json"
+  },
+  "isolation": {
+    "outsideTrackedChanges": 0,
+    "unscopedFeatureCSSRules": 0,
+    "partnerSPAScreenshotIdentical": true,
+    "homeProjectCardsScreenshotIdentical": true,
+    "homePresentation": "Legacy by default; portfolio explicitly opts in with studio prop"
+  },
+  "scriptAudit": {
+    "unchangedExistingScriptASTs": 123,
+    "changedForPresentation": [
+      "IndexProject.vue",
+      "ProjectCard.vue",
+      "ProjectCardSkelaton.vue",
+      "ProjectSummary.vue"
+    ],
+    "artifact": "/tmp/hse-project-visual/script-preservation.json"
+  },
+  "accessibility": {
+    "reducedMotionCardTransition": "0s",
+    "expandedSidebarFeatureOverflow": false,
+    "tested": "Keyboard Escape, dialog closing, portal visibility, semantic view toggles, permission gating"
+  },
+  "unverified": [
+    "Live authorized backend reads and persisted writes",
+    "Real destructive actions and all populated-data permutations",
+    "PDF export execution"
+  ],
+  "deviations": [
+    "Existing app shell/sidebar/topbar/footer and shared outer Project meeting view are unchanged",
+    "Reference-only critical-control scores, alerts and charts are omitted where actual APIs provide no matching data",
+    "Installed Inter is used instead of the embedded Jakarta font",
+    "Shared global success/error dialogs retain the app presentation"
+  ],
+  "gitActions": "No commit, push, merge, reset, clean or stash performed"
+}

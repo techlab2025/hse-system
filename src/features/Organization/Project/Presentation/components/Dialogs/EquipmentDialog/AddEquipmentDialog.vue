@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import Dialog from 'primevue/dialog';
-import EquipmentImg from '@/assets/images/Equipment.png';
-import { ref } from "vue";
-import HeaderSection from '../../Details/DetailsHeader/HeaderSection.vue';
-import EquipmentForm from './EquipmentForm.vue';
-const visible = ref(false);
+import { vProjectPanels } from '../../../composables/projectPanels'
+
+import Dialog from 'primevue/dialog'
+import EquipmentImg from '@/assets/images/Equipment.png'
+import { ref } from 'vue'
+import HeaderSection from '../../Details/DetailsHeader/HeaderSection.vue'
+import EquipmentForm from './EquipmentForm.vue'
+const visible = ref(false)
 const props = defineProps<{
   zoonId: number
 }>()
@@ -12,17 +14,33 @@ const props = defineProps<{
 const UpdateData = () => {
   visible.value = false
 }
-
 </script>
 
 <template>
   <!-- <AddTollIcon @click="visible = true" class="cursor-pointer" /> -->
-  <span @click="visible = true" class="add-asset cursor-pointer underline">{{ $t('add_equipment') }}</span>
-  <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem', minHeight: '25vh' }">
+  <span
+    data-hse-project
+    v-project-panels
+    @click="visible = true"
+    class="hse-project-root add-asset cursor-pointer underline"
+    >{{ $t('add_equipment') }}</span
+  >
+  <Dialog
+    data-hse-project
+    class="hse-project-root hse-project-overlay"
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
+    v-model:visible="visible"
+    modal
+    :dismissable-mask="true"
+    :style="{ width: '50rem', minHeight: '25vh' }"
+  >
     <template #header>
       <div class="add-equipment-header">
-        <HeaderSection :img="EquipmentImg" :title="$t('Equipment , Devices & Tools')"
-          :subtitle="$t('Choose for each zone all the equipment and devices you want.')" />
+        <HeaderSection
+          :img="EquipmentImg"
+          :title="$t('Equipment , Devices & Tools')"
+          :subtitle="$t('Choose for each zone all the equipment and devices you want.')"
+        />
       </div>
     </template>
     <div class="equipment-dialog-data">

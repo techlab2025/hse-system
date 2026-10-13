@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Checkbox from 'primevue/checkbox'
@@ -95,7 +97,10 @@ const selectedProjectLocationData = computed(() => {
 })
 const projectZoneOptions = computed(() =>
   (selectedProjectData.value?.projectZones ?? []).flatMap((zone) => {
-    if (Number(zone.projectLocationId) !== Number(selectedProjectLocationData.value?.projectLocationId)) {
+    if (
+      Number(zone.projectLocationId) !==
+      Number(selectedProjectLocationData.value?.projectLocationId)
+    ) {
       return []
     }
     const zoneId = Number(zone.projectZoonId)
@@ -507,7 +512,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="induction-form-shell col-span-4">
+  <div data-hse-project v-project-panels class="hse-project-root induction-form-shell col-span-4">
     <section class="induction-overview" aria-label="Induction form status">
       <div class="induction-overview__main">
         <span class="induction-overview__icon" aria-hidden="true">
@@ -534,7 +539,7 @@ onMounted(() => {
       </div>
     </section>
 
-    <section class="induction-section">
+    <section class="hse-project-panel induction-section">
       <header class="induction-section__header">
         <span class="induction-section__icon" aria-hidden="true">
           <Icon icon="uil:clipboard-notes" />
@@ -550,7 +555,7 @@ onMounted(() => {
       </header>
 
       <div class="induction-fields">
-        <div class="induction-field" data-required-field="instractor">
+        <div class="hse-project-field induction-field" data-required-field="instractor">
           <UpdatedCustomInputSelect
             :model-value="instractor"
             :static-options="employeeOptions"
@@ -561,18 +566,19 @@ onMounted(() => {
             required
             @update:model-value="setInstructor"
           />
-          <p v-if="requiredFieldErrors.instractor" class="required-field-message">
+          <p v-if="requiredFieldErrors.instractor" class="hse-project-field required-field-message">
             {{ requiredFieldErrors.instractor }}
           </p>
         </div>
 
-        <div class="update_data_picker input-wrapper" data-required-field="date">
-          <label class="input-label required" for="induction-date">
+        <div class="hse-project-field update_data_picker input-wrapper" data-required-field="date">
+          <label class="hse-project-field-label input-label required" for="induction-date">
             <span class="required-mark" aria-hidden="true">*</span>
             {{ $t('date') }}
           </label>
           <div class="induction-date-control">
             <DatePicker
+              panel-class="hse-project-overlay"
               v-model="date"
               input-id="induction-date"
               input-class="induction-date-input"
@@ -587,12 +593,12 @@ onMounted(() => {
               @update:model-value="setDate"
             />
           </div>
-          <p v-if="requiredFieldErrors.date" class="required-field-message">
+          <p v-if="requiredFieldErrors.date" class="hse-project-field required-field-message">
             {{ requiredFieldErrors.date }}
           </p>
         </div>
 
-        <div class="induction-field">
+        <div class="hse-project-field induction-field">
           <UpdatedCustomInputSelect
             :model-value="selectedProject"
             :controller="projectController"
@@ -606,7 +612,7 @@ onMounted(() => {
         </div>
 
         <template v-if="shouldUseProjectLocation">
-          <div class="induction-field" data-required-field="projectLocation">
+          <div class="hse-project-field induction-field" data-required-field="projectLocation">
             <UpdatedCustomInputSelect
               :model-value="selectedProjectLocation"
               :static-options="projectLocationOptions"
@@ -619,7 +625,11 @@ onMounted(() => {
             />
           </div>
 
-          <div v-if="selectedProjectLocation" class="induction-field" data-required-field="projectZone">
+          <div
+            v-if="selectedProjectLocation"
+            class="hse-project-field induction-field"
+            data-required-field="projectZone"
+          >
             <UpdatedCustomInputSelect
               :model-value="selectedProjectZone"
               :static-options="projectZoneOptions"
@@ -631,10 +641,8 @@ onMounted(() => {
               @update:model-value="setProjectZone"
             />
             <p
-              v-if="
-                selectedProjectLocation && !projectZoneOptions.length
-              "
-              class="field-helper"
+              v-if="selectedProjectLocation && !projectZoneOptions.length"
+              class="hse-project-field field-helper"
             >
               {{ $t('no_zoon_found') }}
             </p>
@@ -642,7 +650,7 @@ onMounted(() => {
         </template>
 
         <div
-          class="induction-field induction-field--wide"
+          class="hse-project-field induction-field induction-field--wide"
           data-required-field="organisationEmployee"
         >
           <UpdatedCustomInputSelect
@@ -658,7 +666,7 @@ onMounted(() => {
           />
           <div class="manual-employee-entry">
             <label
-              class="input-label employee_name_lable"
+              class="hse-project-field-label input-label employee_name_lable"
               for="induction-manual-organisation-employee"
             >
               {{ $t('Visitor Name') }}
@@ -667,7 +675,7 @@ onMounted(() => {
               <input
                 id="induction-manual-organisation-employee"
                 v-model="manualOrganisationEmployeeName"
-                class="manual-employee-entry__input"
+                class="hse-project-input manual-employee-entry__input"
                 type="text"
                 :placeholder="$t(' Add Visitor')"
                 @keydown.enter.prevent="addManualOrganisationEmployee"
@@ -699,20 +707,26 @@ onMounted(() => {
               </span>
             </div>
           </div>
-          <p v-if="requiredFieldErrors.organisationEmployee" class="required-field-message">
+          <p
+            v-if="requiredFieldErrors.organisationEmployee"
+            class="hse-project-field required-field-message"
+          >
             {{ requiredFieldErrors.organisationEmployee }}
           </p>
         </div>
       </div>
     </section>
 
-    <section class="induction-section topic-selection" data-required-field="trainingTopic">
+    <section
+      class="hse-project-panel induction-section topic-selection"
+      data-required-field="trainingTopic"
+    >
       <div class="induction-section__header topic-selection__header">
         <span class="induction-section__icon" aria-hidden="true">
           <Icon icon="uil:book-reader" />
         </span>
         <div>
-          <label class="input-label required">
+          <label class="hse-project-field-label input-label required">
             <span class="required-mark" aria-hidden="true">*</span>
             {{ $t('trainingTopic') }}
           </label>
@@ -723,7 +737,7 @@ onMounted(() => {
         <button
           v-if="trainingTopics.length"
           type="button"
-          class="btn btn-secondary topic-selection__toggle"
+          class="hse-project-button btn btn-secondary topic-selection__toggle"
           @click.prevent="toggleAllTrainingTopics"
         >
           <Icon :icon="allTrainingTopicsSelected ? 'uil:times-circle' : 'uil:check-square'" />
@@ -738,7 +752,11 @@ onMounted(() => {
       <div v-else-if="trainingTopicsFailed" class="topic-selection__empty">
         <Icon icon="uil:exclamation-triangle" />
         {{ $t('training_topics_could_not_be_loaded') }}
-        <button type="button" class="retry-button" @click.prevent="fetchTrainingTopics">
+        <button
+          type="button"
+          class="hse-project-button retry-button"
+          @click.prevent="fetchTrainingTopics"
+        >
           <Icon icon="uil:redo" />
           {{ $t('retry') }}
         </button>
@@ -747,7 +765,7 @@ onMounted(() => {
         <label
           v-for="topic in trainingTopics"
           :key="topic.id"
-          class="topic-selection__item"
+          class="hse-project-field-label topic-selection__item"
           :class="{ selected: selectedTrainingTopicIds.has(Number(topic.id)) }"
           :for="`induction-training-topic-${topic.id}`"
         >
@@ -768,13 +786,13 @@ onMounted(() => {
         {{ $t('no_training_topics_found') }}
       </div>
 
-      <p v-if="requiredFieldErrors.trainingTopic" class="required-field-message">
+      <p v-if="requiredFieldErrors.trainingTopic" class="hse-project-field required-field-message">
         {{ requiredFieldErrors.trainingTopic }}
       </p>
     </section>
 
     <section
-      class="induction-section induction-section--evidence"
+      class="hse-project-panel induction-section induction-section--evidence"
       data-required-field="image"
     >
       <header class="induction-section__header">
@@ -789,10 +807,10 @@ onMounted(() => {
           <p>{{ image.length }} {{ $t('images') }}</p>
         </div>
       </header>
-      <div class="induction-upload input-wrapper w-full">
+      <div class="hse-project-field induction-upload input-wrapper w-full">
         <MultiImagesInput :initial-images="image" @update:images="setImages" />
       </div>
-      <p v-if="requiredFieldErrors.image" class="required-field-message">
+      <p v-if="requiredFieldErrors.image" class="hse-project-field required-field-message">
         {{ requiredFieldErrors.image }}
       </p>
     </section>

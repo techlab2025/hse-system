@@ -1,12 +1,13 @@
 <script setup lang="ts">
-// import EditTollIcon from '@/shared/icons/EditTollIcon.vue';
-import ToolCard from './ToolCard.vue';
-import LocationPin from "@/assets/images/LocationPin.png"
-import AddEquipmentDialog from '../../Dialogs/EquipmentDialog/AddEquipmentDialog.vue';
-import { ref, watch } from 'vue';
-import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone';
-import { useRoute } from 'vue-router';
+import { vProjectPanels } from '../../../composables/projectPanels'
 
+// import EditTollIcon from '@/shared/icons/EditTollIcon.vue';
+import ToolCard from './ToolCard.vue'
+import LocationPin from '@/assets/images/LocationPin.png'
+import AddEquipmentDialog from '../../Dialogs/EquipmentDialog/AddEquipmentDialog.vue'
+import { ref, watch } from 'vue'
+import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
+import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const id = route.params.id || route.params.project_id
@@ -14,32 +15,39 @@ const props = defineProps<{
   zones: SohwProjectZoonModel
 }>()
 const Zones = ref(props.zones)
-watch(() => props.zones, (newValue) => {
-  Zones.value = newValue
-})
-
+watch(
+  () => props.zones,
+  (newValue) => {
+    Zones.value = newValue
+  },
+)
 </script>
 
 <template>
-  <div class="equipment-card" v-if="Zones?.projectZoonEquipments?.length > 0">
+  <div
+    data-hse-project
+    v-project-panels
+    class="hse-project-panel hse-project-root equipment-card"
+    v-if="Zones?.projectZoonEquipments?.length > 0"
+  >
     <div class="equipment-card-header-container">
       <div class="equipment-card-header">
-        <img :src="LocationPin" :alt="$t('Equipment')">
+        <img :src="LocationPin" :alt="$t('Equipment')" />
         <div class="equipment-card-header-text">
           <p class="title">{{ Zones?.zoonTitle }}</p>
-          <p class="subtitle"><span>{{ Zones?.projectZoonEquipments?.length }} </span> {{ $t('Equipment & Devices') }}</p>
+          <p class="subtitle">
+            <span>{{ Zones?.projectZoonEquipments?.length }} </span> {{ $t('Equipment & Devices') }}
+          </p>
         </div>
       </div>
       <div class="equipment-card-actions">
         <AddEquipmentDialog :zoonId="Zones?.projectZoonId" />
       </div>
     </div>
-    <hr class="equipment-hr">
+    <hr class="equipment-hr" />
 
     <div class="tool-cards" v-if="Zones?.projectZoonEquipments?.length > 0">
       <ToolCard v-for="(tool, index) in Zones?.projectZoonEquipments" :key="index" :tool="tool" />
     </div>
-
   </div>
-
 </template>

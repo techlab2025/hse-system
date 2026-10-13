@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import Dialog from 'primevue/dialog'
 import CreateTeam from '@/assets/images/hrd-manager 1.png'
 import { ref } from 'vue'
@@ -25,6 +27,9 @@ const UpdateData = () => {
 
 <template>
   <button
+    data-hse-project
+    class="hse-project-root"
+    v-project-panels
     v-if="!isInCard"
     type="button"
     @click="visible = true"
@@ -34,16 +39,25 @@ const UpdateData = () => {
   >
     <span aria-hidden="true">+</span>{{ $t('create_team') }}
   </button>
-  <button class="pluse-icon-container" type="button" v-else @click="visible = true">
+  <button
+    data-hse-project
+    v-project-panels
+    class="hse-project-root pluse-icon-container"
+    type="button"
+    v-else
+    @click="visible = true"
+  >
     <PlusIcon class="pluse-icon" />
     <span v-if="mode === 'leader'" class="btn-text">{{ $t('change_team_leader') }}</span>
     <span v-else-if="mode === 'employee'" class="btn-text">{{ $t('add_employee') }}</span>
   </button>
   <Dialog
+    data-hse-project
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
     v-model:visible="visible"
     modal
     :dismissable-mask="true"
-    class="create-project-team-dialog"
+    class="hse-project-root hse-project-overlay create-project-team-dialog"
     :style="{ width: 'min(50rem, calc(100vw - 24px))' }"
   >
     <template #header>

@@ -1,7 +1,13 @@
 <script setup lang="ts">
+import { inject } from 'vue'
+import { overviewPresentationKey } from '../overviewPresentation'
+const overviewPresentation = inject(overviewPresentationKey, false)
+
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { ref } from 'vue'
 import Dialog from 'primevue/dialog'
-import ProjectMeetingForm from './ProjectMeetingForm.vue';
+import ProjectMeetingForm from './ProjectMeetingForm.vue'
 
 defineProps<{ projectId: number; compact?: boolean }>()
 const emit = defineEmits<{ (event: 'saved'): void }>()
@@ -14,7 +20,14 @@ const saved = () => {
 </script>
 
 <template>
-  <button class="add-drill-trigger" :class="{ compact }" type="button" @click="visible = true">
+  <button
+    data-hse-project
+    v-project-panels
+    class="hse-project-root add-drill-trigger hse-project-planning"
+    :class="{ compact }"
+    type="button"
+    @click="visible = true"
+  >
     <span class="add-drill-icon" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none">
         <path d="M12 5v14M5 12h14" />
@@ -28,6 +41,10 @@ const saved = () => {
   </button>
 
   <Dialog
+    :class="{ 'hse-project-overview-overlay': overviewPresentation }"
+    data-hse-project
+    class="hse-project-root hse-project-overlay hse-project-planning"
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
     v-model:visible="visible"
     modal
     dismissable-mask
@@ -53,20 +70,20 @@ const saved = () => {
   gap: 12px;
   min-width: 220px;
   padding: 12px 16px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 28%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 28%, var(--hse-project-line));
   border-radius: 16px;
   color: white;
   text-align: start;
   cursor: pointer;
-  background: linear-gradient(135deg, var(--PrimaryColor), var(--brand-primary-700));
-  box-shadow: 0 14px 28px color-mix(in srgb, var(--PrimaryColor) 22%, transparent);
+  background: linear-gradient(135deg, var(--hse-project-blue), var(--hse-project-blue));
+  box-shadow: 0 14px 28px color-mix(in srgb, var(--hse-project-blue) 22%, transparent);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
 }
 .add-drill-trigger:hover {
   transform: translateY(-2px);
-  box-shadow: 0 18px 34px color-mix(in srgb, var(--PrimaryColor) 28%, transparent);
+  box-shadow: 0 18px 34px color-mix(in srgb, var(--hse-project-blue) 28%, transparent);
 }
 .add-drill-trigger.compact {
   min-width: 0;
@@ -92,7 +109,7 @@ const saved = () => {
 .add-drill-trigger small {
   margin-top: 2px;
   opacity: 0.78;
-  font-size: 0.65rem;
+  font-size: 0.75rem;
 }
 .drill-dialog-header {
   display: flex;
@@ -106,17 +123,18 @@ const saved = () => {
   place-items: center;
   border-radius: 14px;
   color: white;
-  background: linear-gradient(145deg, var(--PrimaryColor), var(--brand-primary-700));
-  font-family: 'Bold';
+  background: linear-gradient(145deg, var(--hse-project-blue), var(--hse-project-blue));
+  font-family: var(--hse-project-font);
+  font-weight: 700;
 }
 .drill-dialog-header h2 {
   margin: 0;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 1.1rem;
 }
 .drill-dialog-header p {
   margin: 3px 0 0;
-  color: var(--text-soft);
-  font-size: 0.72rem;
+  color: var(--hse-project-muted);
+  font-size: 0.75rem;
 }
 </style>

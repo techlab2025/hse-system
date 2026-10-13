@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { onMounted, ref } from 'vue'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
 import type TitleInterface from '@/base/Data/Models/title_interface'
@@ -36,11 +38,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="equipment-form employee-selector">
+  <div data-hse-project v-project-panels class="hse-project-root equipment-form employee-selector">
     <form>
       <div class="input-container">
-        <div class="input-wrapper">
+        <div class="hse-project-field input-wrapper">
           <CustomSelectInput
+            overlay-class="hse-project-overlay"
             :modelValue="employees"
             :params="indexEmployeeTypeParams"
             :controller="indexEmployeeTypeController"

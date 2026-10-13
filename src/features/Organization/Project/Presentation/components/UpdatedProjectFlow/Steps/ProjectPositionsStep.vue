@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { computed, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
@@ -150,7 +152,7 @@ watch(() => props.projectId, getProjectLocationsHierarchiesEmployees, { immediat
 </script>
 
 <template>
-  <div class="form-stack">
+  <div data-hse-project v-project-panels class="hse-project-root form-stack">
     <div class="section-title">
       <span>03</span>
       <div>
@@ -172,7 +174,7 @@ watch(() => props.projectId, getProjectLocationsHierarchiesEmployees, { immediat
           <strong>{{ location.projectLocation?.title }}</strong>
         </div>
       </div>
-      <div class="input-wrapper">
+      <div class="hse-project-field input-wrapper">
         <UpdatedCustomInputSelect
           :model-value="selectedHierarchies(location)"
           :params="hierarchyParams"
@@ -190,7 +192,7 @@ watch(() => props.projectId, getProjectLocationsHierarchiesEmployees, { immediat
       >
         <h3>{{ hierarchy.hierarchy?.title }}</h3>
         <div class="position-assignment-fields">
-          <div class="input-wrapper">
+          <div class="hse-project-field input-wrapper">
             <UpdatedCustomInputSelect
               :model-value="hierarchy.employees"
               :params="hierarchy.employeeParams"
@@ -201,7 +203,7 @@ watch(() => props.projectId, getProjectLocationsHierarchiesEmployees, { immediat
               @update:model-value="setPositionEmployees(hierarchy, $event)"
             />
           </div>
-          <div v-if="hierarchy.employees.length" class="input-wrapper">
+          <div v-if="hierarchy.employees.length" class="hse-project-field input-wrapper">
             <UpdatedCustomInputSelect
               :model-value="hierarchy.teamLeader"
               :static-options="hierarchy.employees"

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { computed, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
@@ -48,9 +50,7 @@ const setLocationTeams = (
 ) => {
   const selected = Array.isArray(value) ? value : value ? [value] : []
   const existingById = new Map(
-    location.projectTeams.flatMap((item) =>
-      item.team ? [[item.team.id, item] as const] : [],
-    ),
+    location.projectTeams.flatMap((item) => (item.team ? [[item.team.id, item] as const] : [])),
   )
 
   location.projectTeams = selected.map(
@@ -134,7 +134,7 @@ watch(() => props.projectId, getProjectLocationsTeamsEmployees, { immediate: tru
 </script>
 
 <template>
-  <div class="form-stack">
+  <div data-hse-project v-project-panels class="hse-project-root form-stack">
     <div class="section-title">
       <span>04</span>
       <div>
@@ -156,7 +156,7 @@ watch(() => props.projectId, getProjectLocationsTeamsEmployees, { immediate: tru
           <strong>{{ location.projectLocation?.title }}</strong>
         </div>
       </div>
-      <div class="input-wrapper">
+      <div class="hse-project-field input-wrapper">
         <UpdatedCustomInputSelect
           :model-value="selectedTeams(location)"
           :params="teamParams"
@@ -167,13 +167,9 @@ watch(() => props.projectId, getProjectLocationsTeamsEmployees, { immediate: tru
           @update:model-value="setLocationTeams(location, $event)"
         />
       </div>
-      <div
-        v-for="team in location.projectTeams"
-        :key="team.team?.id"
-        class="team-assignment"
-      >
+      <div v-for="team in location.projectTeams" :key="team.team?.id" class="team-assignment">
         <h3>{{ team.team?.title }}</h3>
-        <div class="input-wrapper">
+        <div class="hse-project-field input-wrapper">
           <UpdatedCustomInputSelect
             :model-value="team.employees"
             :static-options="projectEmployees(location)"

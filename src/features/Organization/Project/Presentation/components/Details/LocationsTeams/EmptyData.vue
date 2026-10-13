@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
@@ -11,7 +13,12 @@ const props = defineProps<{
 }>()
 </script>
 <template>
-  <router-link :to="link || route.path" class="empty-teams">
+  <router-link
+    data-hse-project
+    v-project-panels
+    :to="link || route.path"
+    class="hse-project-root empty-teams"
+  >
     <span class="empty-visual"><img :src="img" :alt="$t('empty_state')" /></span>
     <div class="empty-text">
       <p class="title">{{ title }}</p>

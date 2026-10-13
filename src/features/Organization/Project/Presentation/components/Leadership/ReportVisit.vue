@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { computed, onMounted, ref } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
@@ -117,13 +119,15 @@ onMounted(async () => {
     Number.isInteger(visitId.value) &&
     visitId.value > 0
   ) {
-    await visitsController.fetchVisits(new FetchAllLeadershipVisitsParams({ projectId: projectId.value }))
+    await visitsController.fetchVisits(
+      new FetchAllLeadershipVisitsParams({ projectId: projectId.value }),
+    )
   }
 })
 </script>
 
 <template>
-  <main class="report-page">
+  <main data-hse-project v-project-panels class="hse-project-root hse-project-page report-page">
     <!-- <header class="report-hero">
       <div class="report-hero__content">
         <span class="report-hero__icon" aria-hidden="true">
@@ -167,7 +171,7 @@ onMounted(async () => {
             <span aria-hidden="true">!</span>{{ errorMessage }}
           </p>
 
-          <section class="form-section">
+          <section class="hse-project-panel form-section">
             <div class="section-title">
               <span>01</span>
               <div>
@@ -176,22 +180,40 @@ onMounted(async () => {
               </div>
             </div>
             <div class="fields">
-              <label class="field field--wide">
+              <label class="hse-project-field-label hse-project-field field field--wide">
                 <span class="field__label">Topic <b>*</b></span>
-                <input v-model="topic" type="text" required placeholder="Enter the visit topic" />
+                <input
+                  class="hse-project-input"
+                  v-model="topic"
+                  type="text"
+                  required
+                  placeholder="Enter the visit topic"
+                />
               </label>
-              <label class="field field--wide">
+              <label class="hse-project-field-label hse-project-field field field--wide">
                 <span class="field__label">Discussion <b>*</b></span>
-                <textarea v-model="discussion" rows="5" required placeholder="Summarize what was discussed" />
+                <textarea
+                  class="hse-project-input"
+                  v-model="discussion"
+                  rows="5"
+                  required
+                  placeholder="Summarize what was discussed"
+                />
               </label>
-              <label class="field field--wide">
+              <label class="hse-project-field-label hse-project-field field field--wide">
                 <span class="field__label">Positive Observations <b>*</b></span>
-                <textarea v-model="observations" rows="5" required placeholder="Record the key observations" />
+                <textarea
+                  class="hse-project-input"
+                  v-model="observations"
+                  rows="5"
+                  required
+                  placeholder="Record the key observations"
+                />
               </label>
             </div>
           </section>
 
-          <section class="form-section">
+          <section class="hse-project-panel form-section">
             <div class="section-title section-title--with-action">
               <div class="section-title__copy">
                 <span>02</span>
@@ -200,7 +222,11 @@ onMounted(async () => {
                   <p>Add each intervention as a separate action.</p>
                 </div>
               </div>
-              <button type="button" class="add-button" @click="improvements.push(newImprovement())">
+              <button
+                type="button"
+                class="hse-project-button add-button"
+                @click="improvements.push(newImprovement())"
+              >
                 <span aria-hidden="true">＋</span> Add improvement
               </button>
             </div>
@@ -210,43 +236,81 @@ onMounted(async () => {
                   <div>
                     <span class="improvement-card__number">{{
                       String(index + 1).padStart(2, '0')
-                      }}</span>
+                    }}</span>
                     <div>
-                      <strong>Improvement {{ index + 1 }}</strong><small>Capture the issue and action taken</small>
+                      <strong>Improvement {{ index + 1 }}</strong
+                      ><small>Capture the issue and action taken</small>
                     </div>
                   </div>
-                  <button type="button" class="remove-button" :disabled="improvements.length === 1"
-                    @click="improvements.splice(index, 1)">
+                  <button
+                    :aria-label="$t('delete')"
+                    type="button"
+                    class="hse-project-button--icon hse-project-button hse-project-button--danger remove-button"
+                    :disabled="improvements.length === 1"
+                    @click="improvements.splice(index, 1)"
+                  >
                     <span aria-hidden="true">×</span> Remove
                   </button>
                 </div>
                 <div class="fields">
-                  <label class="field">
+                  <label class="hse-project-field-label hse-project-field field">
                     <span class="field__label">Area <b>*</b></span>
-                    <input v-model="item.areas" type="text" required placeholder="Affected area" />
+                    <input
+                      class="hse-project-input"
+                      v-model="item.areas"
+                      type="text"
+                      required
+                      placeholder="Affected area"
+                    />
                   </label>
-                  <label class="field">
+                  <label class="hse-project-field-label hse-project-field field">
                     <span class="field__label">Intervention carried out <b>*</b></span>
-                    <input v-model="item.interventionCarriedOut" type="text" required placeholder="Action taken" />
+                    <input
+                      class="hse-project-input"
+                      v-model="item.interventionCarriedOut"
+                      type="text"
+                      required
+                      placeholder="Action taken"
+                    />
                   </label>
-                  <UpdatedCustomInputSelect :id="`unsafe-type-${index}`" label="UA / UC" placeholder="Select UA / UC"
-                    :required="true" :reload="false" :static-options="unsafeTypeOptions"
+                  <UpdatedCustomInputSelect
+                    :id="`unsafe-type-${index}`"
+                    label="UA / UC"
+                    placeholder="Select UA / UC"
+                    :required="true"
+                    :reload="false"
+                    :static-options="unsafeTypeOptions"
                     :model-value="selectedOption(unsafeTypeOptions, item.uaUc)"
-                    @update:model-value="(value) => (item.uaUc = selectedUnsafeType(value))" />
-                  <UpdatedCustomInputSelect :id="`visit-theme-${index}`" label="Visit theme" placeholder="Select theme"
-                    :required="true" :reload="false" :controller="visitThemeController" :params="visitThemeParams"
+                    @update:model-value="(value) => (item.uaUc = selectedUnsafeType(value))"
+                  />
+                  <UpdatedCustomInputSelect
+                    :id="`visit-theme-${index}`"
+                    label="Visit theme"
+                    placeholder="Select theme"
+                    :required="true"
+                    :reload="false"
+                    :controller="visitThemeController"
+                    :params="visitThemeParams"
                     :model-value="selectedOption(themeOptions, item.visitThemId)"
-                    @update:model-value="(value) => (item.visitThemId = selectedId(value))" />
-                  <UpdatedCustomInputSelect :id="`visit-category-${index}`" label="Visit category"
-                    placeholder="Select category" :required="true" :reload="false" :controller="visitCategoryController"
-                    :params="visitCategoryParams" :model-value="selectedOption(categoryOptions, item.visitCategoryId)"
-                    @update:model-value="(value) => (item.visitCategoryId = selectedId(value))" />
+                    @update:model-value="(value) => (item.visitThemId = selectedId(value))"
+                  />
+                  <UpdatedCustomInputSelect
+                    :id="`visit-category-${index}`"
+                    label="Visit category"
+                    placeholder="Select category"
+                    :required="true"
+                    :reload="false"
+                    :controller="visitCategoryController"
+                    :params="visitCategoryParams"
+                    :model-value="selectedOption(categoryOptions, item.visitCategoryId)"
+                    @update:model-value="(value) => (item.visitCategoryId = selectedId(value))"
+                  />
                 </div>
               </article>
             </div>
           </section>
 
-          <section class="form-section">
+          <section class="hse-project-panel form-section">
             <div class="section-title">
               <div class="section-title__copy">
                 <span>03</span>
@@ -256,16 +320,28 @@ onMounted(async () => {
                 </div>
               </div>
             </div>
-            <div class="report-upload-field">
-              <HandleFIlesUpload label="Visit report attachment" accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
-                :max-files="1" :multiple="false" class-name="report-file-input" @change="handleFilesChange" />
+            <div class="hse-project-field report-upload-field">
+              <HandleFIlesUpload
+                label="Visit report attachment"
+                accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
+                :max-files="1"
+                :multiple="false"
+                class-name="report-file-input"
+                @change="handleFilesChange"
+              />
               <!-- <small>PDF, Word, Excel, or image · One file maximum</small> -->
             </div>
           </section>
 
           <footer class="form-footer">
-            <RouterLink :to="visitsPath" class="button button--quiet">Cancel</RouterLink>
-            <button type="submit" class="button button--primary" :disabled="controller.isDataLoading()">
+            <RouterLink :to="visitsPath" class="hse-project-button button button--quiet"
+              >Cancel</RouterLink
+            >
+            <button
+              type="submit"
+              class="hse-project-button hse-project-button--primary button button--primary"
+              :disabled="controller.isDataLoading()"
+            >
               {{ controller.isDataLoading() ? 'Submitting…' : 'Submit visit report' }}
               <span v-if="!controller.isDataLoading()" aria-hidden="true">→</span>
             </button>
@@ -341,7 +417,7 @@ onMounted(async () => {
 .section-title,
 .section-title__copy,
 .improvement-card__heading,
-.improvement-card__heading>div {
+.improvement-card__heading > div {
   display: flex;
   align-items: center;
 }
@@ -427,16 +503,18 @@ onMounted(async () => {
   padding: 17px 20px;
   border-color: color-mix(in srgb, var(--PrimaryColor) 20%, var(--main-border));
   border-radius: 18px;
-  background: linear-gradient(110deg,
-      color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1)),
-      var(--surface-1));
+  background: linear-gradient(
+    110deg,
+    color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1)),
+    var(--surface-1)
+  );
 }
 
 .visit-context__main {
   gap: 12px;
 }
 
-.visit-context__main>div {
+.visit-context__main > div {
   display: grid;
   gap: 3px;
 }
@@ -528,8 +606,8 @@ onMounted(async () => {
   gap: 12px;
 }
 
-.section-title>span,
-.section-title__copy>span {
+.section-title > span,
+.section-title__copy > span {
   display: grid;
   place-items: center;
   width: 43px;
@@ -650,11 +728,11 @@ onMounted(async () => {
   margin-bottom: 17px;
 }
 
-.improvement-card__heading>div {
+.improvement-card__heading > div {
   gap: 10px;
 }
 
-.improvement-card__heading>div>div {
+.improvement-card__heading > div > div {
   display: grid;
   gap: 2px;
 }
@@ -722,7 +800,7 @@ onMounted(async () => {
   background: color-mix(in srgb, var(--surface-2) 55%, var(--surface-1));
 }
 
-.report-upload-field>small {
+.report-upload-field > small {
   color: var(--text-soft);
   font-size: 0.75rem;
 }
@@ -838,7 +916,7 @@ onMounted(async () => {
   text-align: center;
 }
 
-.page-state>span {
+.page-state > span {
   display: grid;
   place-items: center;
   width: 52px;
@@ -866,12 +944,11 @@ onMounted(async () => {
   font-weight: 800;
 }
 
-.page-state--error>span {
+.page-state--error > span {
   background: var(--status-danger);
 }
 
 @media (max-width: 720px) {
-
   .report-hero,
   .visit-context,
   .section-title--with-action {

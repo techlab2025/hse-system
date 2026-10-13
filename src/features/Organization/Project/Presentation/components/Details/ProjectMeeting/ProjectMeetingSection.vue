@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import type ProjectMeetingModel from '@/features/Organization/Project/Data/models/ProjectMeeting/ProjectMeetingModel.ts'
 import AddProjectMeetingDialog from './AddProjectMeetingDialog.vue'
 import MeetingResultDialog from './MeetingResultDialog.vue'
@@ -12,7 +14,11 @@ const emit = defineEmits(['updated'])
 </script>
 
 <template>
-  <section class="project-drill-section">
+  <section
+    data-hse-project
+    v-project-panels
+    class="hse-project-panel hse-project-root project-drill-section hse-project-planning"
+  >
     <div class="drill-section-glow"></div>
     <header class="drill-section-header">
       <div class="drill-section-title">
@@ -97,16 +103,16 @@ const emit = defineEmits(['updated'])
   overflow: hidden;
   margin-top: 18px;
   padding: 18px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 18%, var(--hse-project-line));
   border-radius: 27px;
   background:
     linear-gradient(
       145deg,
-      color-mix(in srgb, var(--PrimaryColor) 5%, transparent),
+      color-mix(in srgb, var(--hse-project-blue) 5%, transparent),
       transparent 52%
     ),
-    var(--surface-2);
-  box-shadow: 0 22px 55px color-mix(in srgb, var(--brand-primary-900) 9%, transparent);
+    var(--hse-project-surface-soft);
+  box-shadow: 0 22px 55px color-mix(in srgb, var(--hse-project-navy) 9%, transparent);
 }
 .drill-section-glow {
   position: absolute;
@@ -116,7 +122,7 @@ const emit = defineEmits(['updated'])
   width: 260px;
   height: 260px;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--PrimaryColor) 13%, transparent);
+  background: color-mix(in srgb, var(--hse-project-blue) 13%, transparent);
   filter: blur(35px);
 }
 .drill-section-header {
@@ -138,11 +144,11 @@ const emit = defineEmits(['updated'])
   justify-content: center;
   gap: 8px;
   padding: 9px 14px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 25%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 25%, var(--hse-project-line));
   border-radius: 14px;
-  color: var(--PrimaryColor);
-  background: var(--surface-1);
-  font-size: 0.7rem;
+  color: var(--hse-project-blue);
+  background: var(--hse-project-surface);
+  font-size: 0.75rem;
   font-weight: 900;
   transition:
     transform 0.2s ease,
@@ -150,7 +156,7 @@ const emit = defineEmits(['updated'])
 }
 .all-meetings-link:hover {
   transform: translateY(-2px);
-  border-color: var(--PrimaryColor);
+  border-color: var(--hse-project-blue);
 }
 .all-meetings-link svg {
   width: 17px;
@@ -176,7 +182,7 @@ const emit = defineEmits(['updated'])
   gap: 4px;
   padding: 11px;
   border-radius: 16px;
-  background: linear-gradient(145deg, var(--PrimaryColor), var(--brand-primary-700));
+  background: linear-gradient(145deg, var(--hse-project-blue), var(--hse-project-blue));
 }
 .drill-section-symbol i {
   display: block;
@@ -193,22 +199,22 @@ const emit = defineEmits(['updated'])
   height: 65%;
 }
 .drill-section-title small {
-  color: var(--PrimaryColor);
-  font-size: 0.62rem;
+  color: var(--hse-project-blue);
+  font-size: 0.75rem;
   font-weight: 900;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 .drill-section-title h2 {
   margin: 2px 0;
-  color: var(--text-strong);
-  font: 1.18rem 'Bold';
+  color: var(--hse-project-ink);
+  font: 700 1.18rem var(--hse-project-font);
 }
 .drill-section-title p {
   max-width: 610px;
   margin: 0;
-  color: var(--text-soft);
-  font-size: 0.7rem;
+  color: var(--hse-project-muted);
+  font-size: 0.75rem;
   line-height: 1.5;
 }
 .drill-team-groups {
@@ -220,16 +226,16 @@ const emit = defineEmits(['updated'])
   display: flex;
   align-items: center;
   gap: 8px;
-  color: var(--text-soft);
-  font-size: 0.64rem;
+  color: var(--hse-project-muted);
+  font-size: 0.75rem;
   font-weight: 800;
 }
 .upcoming-label > span {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--status-success);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--status-success) 12%, transparent);
+  background: var(--hse-project-green);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--hse-project-green) 12%, transparent);
 }
 .upcoming-label strong {
   display: grid;
@@ -238,14 +244,14 @@ const emit = defineEmits(['updated'])
   place-items: center;
   padding: 0 5px;
   border-radius: 7px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 8%, transparent);
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 8%, transparent);
 }
 .drill-team-group {
   padding: 14px;
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--hse-project-line);
   border-radius: 19px;
-  background: color-mix(in srgb, var(--surface-1) 88%, transparent);
+  background: color-mix(in srgb, var(--hse-project-surface) 88%, transparent);
 }
 .drill-team-header {
   display: flex;
@@ -254,26 +260,26 @@ const emit = defineEmits(['updated'])
   margin-bottom: 11px;
 }
 .drill-team-header span {
-  color: var(--PrimaryColor);
-  font-size: 0.59rem;
+  color: var(--hse-project-blue);
+  font-size: 0.75rem;
   font-weight: 900;
   text-transform: uppercase;
 }
 .drill-team-header h3 {
   margin: 2px 0 0;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 0.9rem;
 }
 .drill-team-header > strong {
   display: flex;
   align-items: baseline;
   gap: 5px;
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
   font-size: 1.15rem;
 }
 .drill-team-header strong small {
-  color: var(--text-soft);
-  font-size: 0.6rem;
+  color: var(--hse-project-muted);
+  font-size: 0.75rem;
   font-weight: 700;
 }
 .drill-cards {
@@ -287,9 +293,9 @@ const emit = defineEmits(['updated'])
   gap: 13px;
   margin-top: 17px;
   padding: 16px;
-  border: 1px dashed color-mix(in srgb, var(--PrimaryColor) 32%, var(--main-border));
+  border: 1px dashed color-mix(in srgb, var(--hse-project-blue) 32%, var(--hse-project-line));
   border-radius: 17px;
-  background: color-mix(in srgb, var(--PrimaryColor) 4%, transparent);
+  background: color-mix(in srgb, var(--hse-project-blue) 4%, transparent);
 }
 .drill-empty-state > span {
   display: grid;
@@ -297,19 +303,19 @@ const emit = defineEmits(['updated'])
   height: 46px;
   place-items: center;
   border-radius: 14px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 11%, transparent);
-  font: 0.7rem 'Bold';
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 11%, transparent);
+  font: 700 0.7rem var(--hse-project-font);
 }
 .drill-empty-state h3 {
   margin: 0;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 0.86rem;
 }
 .drill-empty-state p {
   margin: 3px 0 0;
-  color: var(--text-soft);
-  font-size: 0.68rem;
+  color: var(--hse-project-muted);
+  font-size: 0.75rem;
 }
 @media (max-width: 780px) {
   .drill-section-header {

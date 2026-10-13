@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import '../../../styles/project.css'
+
 import { computed } from 'vue'
 import Dialog from 'primevue/dialog'
 import type RiskAssessmentModel from '../../../Data/models/RiskAssessment/RiskAssessmentModel'
@@ -25,11 +27,13 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
 
 <template>
   <Dialog
+    data-hse-project
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
     :visible="visible"
     modal
     :dismissable-mask="true"
     :style="{ width: 'min(920px, 96vw)' }"
-    class="risk-details-dialog"
+    class="hse-project-root hse-project-overlay risk-details-dialog"
     @update:visible="
       (value: boolean) => {
         if (!value) emit('close')
@@ -564,7 +568,7 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
     transition: none;
   }
 }
-.dialog-content{
-  padding:10px !important;
+.dialog-content {
+  padding: 10px !important;
 }
 </style>

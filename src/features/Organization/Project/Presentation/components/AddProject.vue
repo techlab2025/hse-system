@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { vProjectPanels } from '../composables/projectPanels'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -42,16 +44,26 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addProject">
+  <form
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-page grid grid-cols-1 md:grid-cols-4 gap-4"
+    @submit.prevent="addProject"
+  >
     <ProjectForm :key="formKey" ref="formRef" @update:data="setParams" />
 
-    <div class="col-span-4 btns button-wrapper flex w-full create-form-actions">
-      <router-link to="/organization/projects?type=1" @click.prevent class="btn btn-cancel">{{
-        $t('cancel')
-      }}</router-link>
+    <div
+      class="hse-project-form-footer col-span-4 btns button-wrapper flex w-full create-form-actions"
+    >
+      <router-link
+        to="/organization/projects?type=1"
+        @click.prevent
+        class="hse-project-button hse-project-button--ghost btn btn-cancel"
+        >{{ $t('cancel') }}</router-link
+      >
       <button
         type="button"
-        class="btn btn-secondary"
+        class="hse-project-button btn btn-secondary"
         :disabled="loading"
         :class="{ disabled: loading }"
         @click.prevent="saveAndNew"
@@ -60,7 +72,7 @@ const setParams = (data: Params) => {
       </button>
       <button
         type="submit"
-        class="btn btn-primary"
+        class="hse-project-button hse-project-button--primary btn btn-primary"
         :disabled="loading"
         :class="{ disabled: loading }"
       >

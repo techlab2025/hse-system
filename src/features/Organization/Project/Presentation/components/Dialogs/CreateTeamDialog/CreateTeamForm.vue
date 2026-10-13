@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { computed, ref } from 'vue'
 
 import { useRoute, useRouter } from 'vue-router'
@@ -165,7 +167,7 @@ const canSubmit = computed(() => {
 </script>
 
 <template>
-  <div class="equipment-form team-form">
+  <div data-hse-project v-project-panels class="hse-project-root equipment-form team-form">
     <form @submit.prevent="CreateProjectLocationTeamEmployee">
       <!--
       <div
@@ -196,8 +198,8 @@ const canSubmit = computed(() => {
       <div class="input-container">
         <!-- Team Type -->
 
-        <div class="input-wrapper modern-team-field" v-if="!teamId">
-          <span class="field-step"> 01 </span>
+        <div class="hse-project-field input-wrapper modern-team-field" v-if="!teamId">
+          <span class="hse-project-field field-step"> 01 </span>
 
           <UpdatedCustomInputSelect
             :modelValue="TeamType"
@@ -225,12 +227,13 @@ const canSubmit = computed(() => {
 
         <!-- Employees -->
 
-        <div class="input-wrapper modern-team-field">
-          <span class="field-step">
+        <div class="hse-project-field input-wrapper modern-team-field">
+          <span class="hse-project-field field-step">
             {{ teamId ? '01' : '02' }}
           </span>
 
           <CustomSelectInput
+            overlay-class="hse-project-overlay"
             :modelValue="Employees"
             :controller="indexHierarchyEmployeeController"
             :params="indexLocationHierarchyEmployeeParams"
@@ -246,12 +249,13 @@ const canSubmit = computed(() => {
         <!-- Team Leader -->
 
         <div
-          class="input-wrapper modern-team-field"
+          class="hse-project-field input-wrapper modern-team-field"
           v-if="mode !== 'leader' && mode !== 'employee'"
         >
-          <span class="field-step"> 03 </span>
+          <span class="hse-project-field field-step"> 03 </span>
 
           <CustomSelectInput
+            overlay-class="hse-project-overlay"
             :modelValue="TeamLeader"
             class="input"
             :staticOptions="Employees"
@@ -265,7 +269,7 @@ const canSubmit = computed(() => {
 
       <!-- Actions -->
 
-      <div class="submit-btn create-form-actions">
+      <div class="hse-project-form-footer submit-btn create-form-actions">
         <!-- <button
           class="btn btn-secondary"
           type="button"
@@ -275,7 +279,11 @@ const canSubmit = computed(() => {
           {{ $t('save and new') }}
         </button> -->
 
-        <button class="btn btn-primary" type="submit" :disabled="loading || !canSubmit">
+        <button
+          class="hse-project-button hse-project-button--primary btn btn-primary"
+          type="submit"
+          :disabled="loading || !canSubmit"
+        >
           {{ loading ? $t('loading') : $t('confirm') }}
 
           <span aria-hidden="true"> → </span>

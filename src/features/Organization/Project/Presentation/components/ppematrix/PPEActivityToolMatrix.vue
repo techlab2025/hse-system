@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { computed, onMounted, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import Checkbox from 'primevue/checkbox'
@@ -29,9 +31,7 @@ const isLinked = (activityId: number, toolId: number) =>
   )
 
 const refreshMatrix = () =>
-  matrixController.fetchPPEActivityTools(
-    new FetchPPEActivityToolsParams(),
-  )
+  matrixController.fetchPPEActivityTools(new FetchPPEActivityToolsParams())
 
 const toggle = async (activityId: number, toolId: number) => {
   const key = keyFor(activityId, toolId)
@@ -65,8 +65,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="ppe-page">
-    <header class="ppe-header">
+  <main data-hse-project v-project-panels class="hse-project-root hse-project-page ppe-page">
+    <header data-hse-project-head class="hse-project-page-head ppe-header">
       <div>
         <!-- <span class="eyebrow">Project PPE</span> -->
         <!-- <h1>Activity and tool matrix</h1> -->
@@ -76,14 +76,8 @@ onMounted(async () => {
       </div>
       <nav class="header-actions" aria-label="PPE navigation">
         <!-- <RouterLink :to="`/organization/project-details/${projectId}`">Project details</RouterLink> -->
-        <RouterLink to="/organization/ppe-deliveries">
-          PPE log
-        </RouterLink>
-        <RouterLink
-          class="primary-link"
-          to="/organization/ppe-delivery"
-          >New Delivery →</RouterLink
-        >
+        <RouterLink to="/organization/ppe-deliveries"> PPE log </RouterLink>
+        <RouterLink class="primary-link" to="/organization/ppe-delivery">New Delivery →</RouterLink>
       </nav>
     </header>
     <p v-if="errorMessage" class="error-message" role="alert">{{ errorMessage }}</p>
@@ -97,7 +91,7 @@ onMounted(async () => {
     <DataStatus :controller="toolController.state.value">
       <template #success>
         <div class="matrix-scroll">
-          <table class="main-table matrix-table">
+          <table class="hse-project-table main-table matrix-table">
             <thead>
               <tr>
                 <th scope="col">PPE activity</th>

@@ -1,0 +1,415 @@
+/* Every selector is anchored to a feature root or an explicitly marked portal. */
+.hse-project-root[data-hse-project] *,
+.hse-project-overlay * {
+  box-sizing: border-box;
+}
+.hse-project-root[data-hse-project] :is(button, input, select, textarea),
+.hse-project-overlay :is(button, input) {
+  font-family: inherit;
+}
+.hse-project-root[data-hse-project] :is(h1, h2, h3, h4) {
+  color: var(--hse-project-ink);
+  line-height: 1.25;
+}
+.hse-project-root[data-hse-project] h1 {
+  font-size: var(--hse-project-title-size);
+  letter-spacing: -0.7px;
+}
+.hse-project-root[data-hse-project] h2 {
+  font-size: 20px;
+  letter-spacing: -0.3px;
+}
+.hse-project-root[data-hse-project] h3 {
+  font-size: 16px;
+}
+.hse-project-root[data-hse-project]
+  :is(button, a, input, select, textarea, [tabindex]):focus-visible,
+.hse-project-overlay :is(button, a, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--hse-project-blue);
+  outline-offset: 3px;
+}
+.hse-project-root[data-hse-project] :is(button:disabled, .disabled, [aria-disabled='true']) {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.hse-project-root[data-hse-project] .hse-project-button,
+.hse-project-overlay .hse-project-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--hse-project-space-sm);
+  min-height: var(--hse-project-control-height);
+  padding: 0 15px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-surface);
+  color: var(--hse-project-ink);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background var(--hse-project-motion),
+    box-shadow var(--hse-project-motion),
+    border-color var(--hse-project-motion);
+}
+.hse-project-root[data-hse-project] .hse-project-button:hover:not(:disabled),
+.hse-project-overlay .hse-project-button:hover:not(:disabled) {
+  border-color: #b8c9df;
+  box-shadow: var(--hse-project-shadow-card);
+}
+.hse-project-root[data-hse-project] .hse-project-button--primary,
+.hse-project-overlay .hse-project-button--primary {
+  background: linear-gradient(135deg, #2167ee, #347cff);
+  color: var(--hse-project-surface);
+  border-color: #1f65f6;
+  box-shadow: var(--hse-project-shadow-primary);
+}
+.hse-project-root[data-hse-project] .hse-project-button--primary:hover:not(:disabled),
+.hse-project-overlay .hse-project-button--primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, #165fcb, #2377f1);
+  color: var(--hse-project-surface);
+}
+.hse-project-root[data-hse-project] .hse-project-button--danger {
+  color: var(--hse-project-red);
+  border-color: #f2ccd1;
+  background: var(--hse-project-red-soft);
+}
+.hse-project-root[data-hse-project] .hse-project-button--success {
+  color: #087d5e;
+  border-color: #cceee2;
+  background: var(--hse-project-green-soft);
+}
+.hse-project-root[data-hse-project] .hse-project-button--warning {
+  color: #9d6508;
+  border-color: #f5dfb6;
+  background: var(--hse-project-amber-soft);
+}
+.hse-project-root[data-hse-project] .hse-project-button--ghost {
+  background: #f7f9fc;
+}
+.hse-project-root[data-hse-project] .hse-project-button--icon {
+  flex: 0 0 42px;
+  width: 42px;
+  padding: 0;
+  color: var(--hse-project-muted);
+}
+.hse-project-root[data-hse-project] .hse-project-button svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+.hse-project-root[data-hse-project] .hse-project-panel,
+.hse-project-root[data-hse-project]
+  :is(
+    .workspace-card,
+    .risk-panel,
+    .form-panel,
+    .loss-time-card,
+    .project-operations-workspace,
+    .drill-section,
+    .meeting-section,
+    .resource-card,
+    .summary-card
+  ) {
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
+  background: var(--hse-project-surface);
+  box-shadow: var(--hse-project-shadow-panel);
+}
+.hse-project-root[data-hse-project] .hse-project-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--hse-project-blue);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.hse-project-root[data-hse-project] .hse-project-dot {
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--hse-project-green);
+  box-shadow: 0 0 0 5px rgb(10 167 120 / 10%);
+}
+.hse-project-root[data-hse-project] .hse-project-subtitle {
+  margin-top: 7px;
+  color: var(--hse-project-muted);
+  font-size: 12px;
+  line-height: 1.55;
+}
+.hse-project-root[data-hse-project] .hse-project-tabs,
+.hse-project-root[data-hse-project] .p-tablist-tab-list {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: 12px;
+  background: #f7f9fc;
+  overflow-x: auto;
+}
+.hse-project-root[data-hse-project] .hse-project-tabs a,
+.hse-project-root[data-hse-project] .p-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 9px;
+  color: var(--hse-project-muted);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.hse-project-root[data-hse-project] .hse-project-tabs a[aria-current='page'],
+.hse-project-root[data-hse-project] .p-tab-active {
+  background: var(--hse-project-surface);
+  color: #174f9d;
+  box-shadow: 0 3px 10px rgb(24 54 92 / 7%);
+}
+.hse-project-root[data-hse-project] .hse-project-field {
+  min-width: 0;
+}
+.hse-project-root[data-hse-project] :is(.hse-project-field-label, .input-label label) {
+  color: var(--hse-project-ink);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: start;
+}
+.hse-project-root[data-hse-project]
+  :is(.hse-project-input, .p-inputtext, .p-textarea, .p-select, .p-multiselect),
+.hse-project-overlay :is(.p-inputtext, .p-textarea, .p-select, .p-multiselect) {
+  min-width: 0;
+  max-width: 100%;
+  min-height: var(--hse-project-control-height);
+  border: 1px solid var(--hse-project-line);
+  background: var(--hse-project-input-bg);
+  color: var(--hse-project-ink);
+  font-size: 13px;
+  box-shadow: none;
+  /* Existing app input/select rules use !important. These two local properties
+     must match that specificity; they apply only inside Project. */
+  border-radius: var(--hse-project-radius-control) !important;
+  padding: 10px 12px !important;
+}
+.hse-project-root[data-hse-project] :is(.p-select, .p-multiselect) {
+  padding-block: 0 !important;
+}
+.hse-project-root[data-hse-project] .p-datepicker {
+  min-width: 0;
+  max-width: 100%;
+}
+.hse-project-root[data-hse-project] :is(.hse-project-input, .p-inputtext, .p-textarea):focus {
+  border-color: var(--hse-project-blue);
+  box-shadow: 0 0 0 3px rgb(37 109 244 / 10%);
+}
+.hse-project-root[data-hse-project] textarea.hse-project-input {
+  min-height: 88px;
+  resize: vertical;
+}
+.hse-project-root[data-hse-project] :is(.form-error, .field-error, .validation-error) {
+  color: var(--hse-project-red);
+  font-size: 12px;
+}
+.hse-project-root[data-hse-project] :is(.notice--error, .message.error) {
+  border: 1px solid #f2ccd1;
+  background: var(--hse-project-red-soft);
+  border-radius: 11px;
+}
+.hse-project-root[data-hse-project] :is(.notice--success, .message.success) {
+  border: 1px solid #cceee2;
+  background: var(--hse-project-green-soft);
+  border-radius: 11px;
+}
+.hse-project-root[data-hse-project] .hse-project-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.hse-project-root[data-hse-project] .hse-project-table :is(th, td) {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--hse-project-line);
+  text-align: start;
+}
+.hse-project-root[data-hse-project] .hse-project-table thead th {
+  background: var(--hse-project-surface-soft);
+  color: var(--hse-project-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.045em;
+}
+.hse-project-root[data-hse-project] .hse-project-table tbody tr:hover {
+  background: #fbfdff;
+}
+.hse-project-root[data-hse-project]
+  :is(.table-scroll, .matrix-scroll, .table-responsive, .saved-visits-table) {
+  overflow-x: auto;
+  max-width: 100%;
+}
+.hse-project-root[data-hse-project] .hse-project-form-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid var(--hse-project-line);
+  padding-block-start: 16px;
+}
+.hse-project-root[data-hse-project] .p-accordionheader {
+  background: #f8fbff;
+  color: var(--hse-project-ink);
+  padding: 14px 16px;
+}
+.hse-project-root[data-hse-project] .p-accordioncontent-content {
+  background: var(--hse-project-surface);
+}
+.hse-project-root[data-hse-project] :is(.empty-state, .resource-empty, .loading-state) {
+  border: 1px dashed var(--hse-project-line);
+  border-radius: 16px;
+  padding: 28px;
+  color: var(--hse-project-muted);
+  background: var(--hse-project-surface);
+}
+.hse-project-overlay.p-dialog,
+.hse-project-overlay.p-popover,
+.hse-project-overlay.p-select-overlay,
+.hse-project-overlay.p-multiselect-overlay,
+.hse-project-overlay.p-datepicker-panel {
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
+  background: var(--hse-project-surface);
+  color: var(--hse-project-ink);
+  box-shadow: var(--hse-project-shadow);
+  --p-dialog-background: var(--hse-project-surface);
+  --p-dialog-border-color: var(--hse-project-line);
+  --p-dialog-color: var(--hse-project-ink);
+  --p-dialog-border-radius: 16px;
+}
+.hse-project-overlay.p-dialog {
+  width: min(800px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+}
+.hse-project-overlay .p-dialog-header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--hse-project-line);
+  gap: 12px;
+}
+.hse-project-overlay .p-dialog-title {
+  font-size: 20px;
+  font-weight: 700;
+}
+.hse-project-overlay .p-dialog-content {
+  padding: 20px 24px;
+}
+.hse-project-overlay .p-dialog-footer {
+  padding: 16px 24px;
+  border-top: 1px solid var(--hse-project-line);
+}
+.hse-project-overlay :is(.p-select-option, .p-multiselect-option) {
+  font-size: 13px;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.hse-project-overlay :is(.p-select-option-selected, .p-multiselect-option-selected) {
+  background: var(--hse-project-ice);
+  color: #174f9d;
+}
+.hse-project-overlay .p-popover-content {
+  padding: 16px;
+}
+.hse-project-root[data-hse-project] :is(h1, h2, h3, h4),
+.hse-project-root[data-hse-project].hse-project-card .hse-project-card__title {
+  font-weight: 700;
+}
+.hse-project-root[data-hse-project] .safety-stat-card__icon {
+  box-shadow: none;
+}
+.hse-project-root[data-hse-project] .stat-card-arrow {
+  color: var(--hse-project-blue);
+}
+/* App labels use important font rules. This narrowly scoped override restores
+   the reference's reading scale without changing labels elsewhere. */
+.hse-project-root[data-hse-project] :is(label, .input-label label) {
+  font-family: var(--hse-project-font) !important;
+  font-size: 12px !important;
+}
+.hse-project-root[data-hse-project] .hse-project-search input.hse-project-input {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.hse-project-root[data-hse-project] .hse-project-search input.hse-project-input:focus-visible {
+  outline: 0;
+}
+.hse-project-root[data-hse-project] :is(.pagination, .pagination-container) {
+  margin-block-start: 16px;
+}
+.hse-project-root[data-hse-project] * {
+  text-transform: none;
+}
+.hse-project-root[data-hse-project]
+  :is(.hse-project-eyebrow, .summary-eyebrow, .section-heading > div > span) {
+  text-transform: uppercase;
+}
+.hse-project-root[data-hse-project] .section-title p {
+  margin: 3px 0 0;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--hse-project-muted);
+}
+.hse-project-root[data-hse-project] .section-title h2 {
+  font-size: 20px;
+}
+.hse-project-root[data-hse-project] .section-header .section-img-wrap {
+  width: 38px;
+  height: 38px;
+  flex-basis: 38px;
+  border-radius: 10px;
+  background: var(--hse-project-ice);
+  box-shadow: none;
+}
+.hse-project-root[data-hse-project] .section-header .section-icon {
+  width: 22px;
+  height: 22px;
+}
+.hse-project-root[data-hse-project] .section-header .title {
+  font-size: 17px;
+  font-family: inherit;
+  font-weight: 700;
+}
+.hse-project-root[data-hse-project] .section-header .subtitle {
+  font-size: 11px;
+  font-weight: 400;
+}
+.hse-project-root[data-hse-project] .pagination-wrapper {
+  margin-block-start: 16px;
+  gap: 12px;
+}
+.hse-project-root[data-hse-project] :is(.pagination-btn, .pagination-item) {
+  min-height: 36px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: 9px;
+  background: var(--hse-project-surface);
+  color: var(--hse-project-muted);
+  font-size: 12px;
+  padding: 8px 12px;
+}
+.hse-project-root[data-hse-project] .pagination-item.active {
+  color: var(--hse-project-blue);
+  background: var(--hse-project-ice);
+  border-color: #bfd4fa;
+}
+.hse-project-root[data-hse-project] .show-results,
+.hse-project-root[data-hse-project] .count-per-page {
+  font-size: 12px;
+  color: var(--hse-project-muted);
+}
+.hse-project-root[data-hse-project].hse-project-card .hse-project-card__title {
+  font-size: 16px;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}

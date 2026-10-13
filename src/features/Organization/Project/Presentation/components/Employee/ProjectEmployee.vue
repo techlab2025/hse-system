@@ -1,11 +1,17 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { useRoute } from 'vue-router'
 import ProjectEmployeeSection from './ProjectEmployeeSection.vue'
 
 const route = useRoute()
 </script>
 <template>
-  <main class="project-people-page">
+  <main
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-page project-people-page"
+  >
     <!-- <PagesHeader
       :title="$t('Teams by Operational location')"
       :subtitle="$t('View all working teams assigned to each operational zone')"
@@ -14,7 +20,7 @@ const route = useRoute()
 
     <div class="page-footer">
       <router-link
-        class="back-btn"
+        class="hse-project-button back-btn"
         :to="`/organization/project-details/${route.params.project_id}`"
       >
         <svg viewBox="0 0 24 24" aria-hidden="true">

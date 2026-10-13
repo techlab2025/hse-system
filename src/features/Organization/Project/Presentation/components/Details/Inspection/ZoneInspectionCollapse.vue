@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import Accordion from 'primevue/accordion'
 import AccordionPanel from 'primevue/accordionpanel'
 import AccordionHeader from 'primevue/accordionheader'
@@ -8,7 +10,7 @@ import InspectionsCard from './InspectionsCard.vue'
 </script>
 
 <template>
-  <div class="card bg-white rounded-md">
+  <div data-hse-project v-project-panels class="hse-project-root card bg-white rounded-md">
     <Accordion value="0">
       <AccordionPanel value="0">
         <AccordionHeader>

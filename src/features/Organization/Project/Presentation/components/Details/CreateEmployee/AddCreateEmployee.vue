@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import CreateEmployeeForm from './CreateEmployeeForm.vue'
@@ -69,8 +71,8 @@ const handleAddAllEmployees = async () => {
         ),
     )
 
-    const haveAnyEmployee = hierarchies.filter((el)=>el.employee_ids.length > 0)
-    if(haveAnyEmployee.length  > 0){
+    const haveAnyEmployee = hierarchies.filter((el) => el.employee_ids.length > 0)
+    if (haveAnyEmployee.length > 0) {
       validationMessage.value = null
       if (hierarchies.length === 0) return
       const params = new AddHierarchyEmployeeParams(
@@ -78,13 +80,11 @@ const handleAddAllEmployees = async () => {
         hierarchies.filter((el) => el.employee_ids.length > 0),
       )
       await addHierarchyEmployeeController.addHierarchyEmployee(params, router, route)
-
-    }
-    else{
+    } else {
       validationMessage.value = 'Please select at least one employee for each position.'
     }
   } catch (error) {
-      validationMessage.value = 'Please select at least one employee for each position.'
+    validationMessage.value = 'Please select at least one employee for each position.'
 
     console.error('Error adding employees:', error)
   } finally {
@@ -109,11 +109,11 @@ const assignedEmployeesCount = computed(() =>
 </script>
 
 <template>
-  <main class="add-employee">
+  <main data-hse-project v-project-panels class="hse-project-root hse-project-page add-employee">
     <DataStatus :controller="state">
       <template #success>
         <template v-if="hasLocationHierarchy && selectedLocation">
-          <section class="assignment-hero">
+          <section data-hse-project-head class="hse-project-page-head assignment-hero">
             <div class="hero-icon">
               <span>02</span>
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -216,14 +216,11 @@ const assignedEmployeesCount = computed(() =>
                     (value) => handleEmployeesUpdate(hierarchy.projectLocationHierarchyId, value)
                   "
                 />
-                
               </article>
-              
             </div>
-            <p class="validation-message" v-if="validationMessage!=null">
+            <p class="validation-message" v-if="validationMessage != null">
               {{ validationMessage }}
             </p>
-
           </section>
 
           <footer class="submit-btn">
@@ -235,7 +232,7 @@ const assignedEmployeesCount = computed(() =>
             </div>
             <div class="footer-actions">
               <router-link
-                class="action-btn back-btn"
+                class="hse-project-button action-btn back-btn"
                 :to="`/organization/project-details/${route.params.project_id}`"
               >
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>
@@ -243,13 +240,13 @@ const assignedEmployeesCount = computed(() =>
               </router-link>
               <RouterLink
                 :to="`/organization/employee-details/${projectId}`"
-                class="action-btn cancel-btn"
+                class="hse-project-button hse-project-button--ghost action-btn cancel-btn"
               >
                 {{ $t('cancel') }}
               </RouterLink>
               <button
                 type="button"
-                class="action-btn confirm-btn"
+                class="hse-project-button action-btn confirm-btn"
                 :disabled="isSubmitting"
                 @click="handleAddAllEmployees"
               >
@@ -299,9 +296,9 @@ const assignedEmployeesCount = computed(() =>
 </template>
 
 <style scoped lang="scss">
-.validation-message{
+.validation-message {
   color: red;
-  padding:10px;
+  padding: 10px;
   font-size: 12px;
 }
 .add-employee {

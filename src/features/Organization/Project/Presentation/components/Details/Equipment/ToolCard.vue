@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image';
-import type ProjectLocationEquipmentModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationEquipmentModel';
-import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum';
-import { useI18n } from 'vue-i18n';
+import { vProjectPanels } from '../../../composables/projectPanels'
 
+import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
+import type ProjectLocationEquipmentModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationEquipmentModel'
+import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
+import { useI18n } from 'vue-i18n'
 
 const props = defineProps<{
   tool: ProjectLocationEquipmentModel
@@ -17,13 +18,15 @@ const GetEquipmentType = (type: number) => {
 </script>
 
 <template>
-
-  <div class="tool-card">
+  <div data-hse-project v-project-panels class="hse-project-panel hse-project-root tool-card">
     <div class="tool-card-header">
       <!-- <pre>{{ tool?.equipment?.image }}</pre> -->
-      <img :src="tool?.equipment?.image || '/src/assets/images/logo.svg'" :alt="$t('tool')" @error="setDefaultImage">
+      <img
+        :src="tool?.equipment?.image || '/src/assets/images/logo.svg'"
+        :alt="$t('tool')"
+        @error="setDefaultImage"
+      />
       <div class="tool-card-header-text">
-
         <div class="flex gap-2 items-center card-type">
           <span class="subtype" v-if="tool?.equipment?.[0]?.equipment_type?.type">
             <span>
@@ -33,16 +36,15 @@ const GetEquipmentType = (type: number) => {
           </span>
           <p class="title" v-if="tool.equipmenType?.title">{{ tool.equipmenType?.title }}</p>
         </div>
-        <p class="type"><span class="main-type">{{ tool.title }}</span></p>
-
-
-
+        <p class="type">
+          <span class="main-type">{{ tool.title }}</span>
+        </p>
 
         <!-- <p class="inspection">inspection date : <span class="date">{{ tool.decodedData }}</span> <span class="per">( per week
             )</span></p> -->
       </div>
     </div>
-    <hr class="tool-hr">
+    <hr class="tool-hr" />
     <!-- <div class="tool-subtitle">
       <ToolIcon />
       <p class="subtitle">Last Inspection</p>

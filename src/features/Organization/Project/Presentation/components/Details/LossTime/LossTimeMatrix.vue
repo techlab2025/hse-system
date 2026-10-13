@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import type ProjectLossTimeModel from '../../../../Data/models/ProjectLossTimeModel'
 
 defineProps<{ lossTimes: ProjectLossTimeModel[] }>()
@@ -7,7 +9,11 @@ const formatValue = (value: number) => new Intl.NumberFormat().format(value)
 </script>
 
 <template>
-  <section class="loss-time-card">
+  <section
+    data-hse-project
+    v-project-panels
+    class="hse-project-panel hse-project-root loss-time-card"
+  >
     <header class="loss-time-header">
       <div>
         <span>SAFETY PERFORMANCE</span>
@@ -17,7 +23,7 @@ const formatValue = (value: number) => new Intl.NumberFormat().format(value)
     </header>
 
     <div class="matrix-scroll">
-      <table>
+      <table class="hse-project-table">
         <thead>
           <tr>
             <th scope="col">Accident type</th>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 type ProjectSkeletonVariant = 'details' | 'hierarchy' | 'assignment' | 'people'
 
 withDefaults(
@@ -13,7 +15,9 @@ withDefaults(
 
 <template>
   <div
-    class="project-page-skeleton"
+    data-hse-project
+    v-project-panels
+    class="hse-project-root project-page-skeleton"
     :class="`is-${variant}`"
     aria-busy="true"
     aria-live="polite"
@@ -100,7 +104,7 @@ withDefaults(
             <span class="skeleton-line line-wide skeleton-shape"></span>
           </div>
         </div>
-        <div class="field-skeleton">
+        <div class="hse-project-field field-skeleton">
           <span class="skeleton-line line-label skeleton-shape"></span>
           <span class="skeleton-input skeleton-shape"></span>
         </div>

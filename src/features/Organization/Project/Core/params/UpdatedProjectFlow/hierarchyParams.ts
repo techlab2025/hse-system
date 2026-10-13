@@ -13,7 +13,9 @@ export default class ProjectHierarchyParams implements Params {
   toMap(): Record<string, unknown> {
     return {
       hierarchy_id: this.hierarchy_id,
-      organization_employees: this.organizaion_employees.map((el) => el.toMap()),
+      ...(this.organizaion_employees.length > 0 && {
+        organization_employees: this.organizaion_employees.map((el) => el.toMap()),
+      }),
     }
   }
 }

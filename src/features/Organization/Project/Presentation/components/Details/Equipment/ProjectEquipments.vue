@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import ProjectCustomLocationParams from '@/features/Organization/Project/Core/params/ProjectCustomLocationParams'
 import ProjectCustomLocationController from '../../../controllers/ProjectCustomLocationController'
 import { computed, onMounted, ref, watch } from 'vue'
@@ -81,9 +83,10 @@ watch(
 )
 </script>
 <template>
-  <DataStatus :controller="state">
-    <template #success>
-      <!-- <PagesHeader
+  <div data-hse-project v-project-panels class="hse-project-root hse-project-state-host">
+    <DataStatus :controller="state">
+      <template #success>
+        <!-- <PagesHeader
         :title="$t('Equipment_tools_&_devices_by_zone')"
         :subtitle="$t('view_and_manage_all_equipment_assigned_to_each_operational_zone')"
         :actions="true"
@@ -93,184 +96,191 @@ watch(
         </template>
       </PagesHeader> -->
 
-      <EmptyEquimentsProjectZones
-        v-if="emptyZones.length"
-        :zonesNumber="emptyZones.length"
-        :zones="emptyZones"
-      />
+        <EmptyEquimentsProjectZones
+          v-if="emptyZones.length"
+          :zonesNumber="emptyZones.length"
+          :zones="emptyZones"
+        />
 
-      <div class="project-equipments-pdf-content">
-        <section class="equipment-overview" aria-label="Equipment overview">
-          <div class="overview-copy">
-            <span class="overview-kicker">{{ $t('project_equipment_inventory') }}</span>
-            <h2>{{ $t('Equipment_tools_&_devices_by_zone') }}</h2>
-            <p>{{ $t('view_and_manage_all_equipment_assigned_to_each_operational_zone') }}</p>
-          </div>
-
-          <div class="overview-stats">
-            <div class="overview-stat location-stat">
-              <span class="stat-icon"><SidebarUnicon name="map-marker" /></span>
-              <span class="stat-copy">
-                <strong>{{ locations.length }}</strong>
-                <small>{{ $t('project_equipment_locations') }}</small>
-              </span>
-            </div>
-            <div class="overview-stat zone-stat">
-              <span class="stat-icon"><SidebarUnicon name="layer-group" /></span>
-              <span class="stat-copy">
-                <strong>{{ totalZones }}</strong>
-                <small>{{ $t('project_equipment_operational_zones') }}</small>
-              </span>
-            </div>
-            <div class="overview-stat equipment-stat">
-              <span class="stat-icon"><SidebarUnicon name="wrench" /></span>
-              <span class="stat-copy">
-                <strong>{{ totalEquipments }}</strong>
-                <small>{{ $t('project_equipment_assigned_assets') }}</small>
-              </span>
-            </div>
-            <div class="overview-stat equipment-stat" data-html2canvas-ignore="true">
-              <ExportPdf
-                target-selector=".project-equipments-pdf-content"
-                :filename="`project-${id}-equipment-by-area.pdf`"
-                class="export-pdf"
-              />
+        <div
+          data-hse-project
+          v-project-panels
+          class="hse-project-root hse-project-page project-equipments-pdf-content"
+        >
+          <section class="equipment-overview" aria-label="Equipment overview">
+            <div class="overview-copy">
+              <span class="overview-kicker">{{ $t('project_equipment_inventory') }}</span>
+              <h2>{{ $t('Equipment_tools_&_devices_by_zone') }}</h2>
+              <p>{{ $t('view_and_manage_all_equipment_assigned_to_each_operational_zone') }}</p>
             </div>
 
-            <div
-              class="equipment-type-filter"
-              role="radiogroup"
-              :aria-label="$t('project_equipment_filter_type')"
-              data-html2canvas-ignore="true"
-            >
-              <!-- <span class="filter-label">
+            <div class="overview-stats">
+              <div class="overview-stat location-stat">
+                <span class="stat-icon"><SidebarUnicon name="map-marker" /></span>
+                <span class="stat-copy">
+                  <strong>{{ locations.length }}</strong>
+                  <small>{{ $t('project_equipment_locations') }}</small>
+                </span>
+              </div>
+              <div class="overview-stat zone-stat">
+                <span class="stat-icon"><SidebarUnicon name="layer-group" /></span>
+                <span class="stat-copy">
+                  <strong>{{ totalZones }}</strong>
+                  <small>{{ $t('project_equipment_operational_zones') }}</small>
+                </span>
+              </div>
+              <div class="overview-stat equipment-stat">
+                <span class="stat-icon"><SidebarUnicon name="wrench" /></span>
+                <span class="stat-copy">
+                  <strong>{{ totalEquipments }}</strong>
+                  <small>{{ $t('project_equipment_assigned_assets') }}</small>
+                </span>
+              </div>
+              <div class="overview-stat equipment-stat" data-html2canvas-ignore="true">
+                <ExportPdf
+                  target-selector=".project-equipments-pdf-content"
+                  :filename="`project-${id}-equipment-by-area.pdf`"
+                  class="export-pdf"
+                />
+              </div>
+
+              <div
+                class="equipment-type-filter"
+                role="radiogroup"
+                :aria-label="$t('project_equipment_filter_type')"
+                data-html2canvas-ignore="true"
+              >
+                <!-- <span class="filter-label">
                 <SidebarUnicon name="filter" />
                 {{ $t('project_equipment_filter_type') }}
               </span> -->
 
-              <div class="filter-options">
-                <button
-                  v-for="option in equipmentTypeOptions"
-                  :key="option.value"
-                  type="button"
-                  class="filter-option"
-                  :class="{ active: selectedEquipmentType === option.value }"
-                  role="radio"
-                  :aria-checked="selectedEquipmentType === option.value"
-                  @click="filterByEquipmentType(option.value)"
-                >
-                  <SidebarUnicon :name="option.icon" />
-                  <span>{{ $t(option.label) }}</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <article
-          v-for="(location, locationIndex) in locations"
-          :key="location.projectLocationId || location.id || locationIndex"
-          class="location-section"
-        >
-          <header class="location-header">
-            <div class="location-identity">
-              <span class="location-number">{{ String(locationIndex + 1).padStart(2, '0') }}</span>
-              <span class="location-icon"><SidebarUnicon name="map-marker" /></span>
-              <div>
-                <small>{{ $t('project_equipment_location') }}</small>
-                <h2>{{ location.title || '—' }}</h2>
-              </div>
-            </div>
-
-            <div class="location-counts">
-              <span>
-                <strong>{{ location.locationZones?.length ?? 0 }}</strong>
-                {{ $t('zones') }}
-              </span>
-              <span>
-                <strong>{{
-                  location.locationZones?.reduce(
-                    (total, zone) => total + (zone.projectZoonEquipments?.length ?? 0),
-                    0,
-                  ) ?? 0
-                }}</strong>
-                {{ $t('equipments') }}
-              </span>
-            </div>
-          </header>
-
-          <div v-if="location.locationZones?.length" class="zones-list">
-            <section
-              v-for="(zone, zoneIndex) in location.locationZones"
-              :key="zone.projectZoonId || zone.zoonId || zoneIndex"
-              class="zone-section"
-              :class="{ 'zone-section--empty': !zone.projectZoonEquipments?.length }"
-            >
-              <header class="zone-header">
-                <div class="zone-identity">
-                  <span class="zone-line" aria-hidden="true"></span>
-                  <span class="zone-icon"><SidebarUnicon name="layer-group" /></span>
-                  <div>
-                    <small>{{ $t('project_equipment_zone') }} {{ zoneIndex + 1 }}</small>
-                    <h3>{{ zone.title || zone.zoonTitle || '—' }}</h3>
-                  </div>
+                <div class="filter-options">
+                  <button
+                    v-for="option in equipmentTypeOptions"
+                    :key="option.value"
+                    type="button"
+                    class="filter-option"
+                    :class="{ active: selectedEquipmentType === option.value }"
+                    role="radio"
+                    :aria-checked="selectedEquipmentType === option.value"
+                    @click="filterByEquipmentType(option.value)"
+                  >
+                    <SidebarUnicon :name="option.icon" />
+                    <span>{{ $t(option.label) }}</span>
+                  </button>
                 </div>
+              </div>
+            </div>
+          </section>
 
-                <span class="equipment-count">
-                  <SidebarUnicon name="wrench" />
-                  <strong>{{ zone.projectZoonEquipments?.length ?? 0 }}</strong>
+          <article
+            v-for="(location, locationIndex) in locations"
+            :key="location.projectLocationId || location.id || locationIndex"
+            class="location-section"
+          >
+            <header class="location-header">
+              <div class="location-identity">
+                <span class="location-number">{{
+                  String(locationIndex + 1).padStart(2, '0')
+                }}</span>
+                <span class="location-icon"><SidebarUnicon name="map-marker" /></span>
+                <div>
+                  <small>{{ $t('project_equipment_location') }}</small>
+                  <h2>{{ location.title || '—' }}</h2>
+                </div>
+              </div>
+
+              <div class="location-counts">
+                <span>
+                  <strong>{{ location.locationZones?.length ?? 0 }}</strong>
+                  {{ $t('zones') }}
+                </span>
+                <span>
+                  <strong>{{
+                    location.locationZones?.reduce(
+                      (total, zone) => total + (zone.projectZoonEquipments?.length ?? 0),
+                      0,
+                    ) ?? 0
+                  }}</strong>
                   {{ $t('equipments') }}
                 </span>
-              </header>
-
-              <div v-if="zone.projectZoonEquipments?.length" class="equipment-grid">
-                <ProjectEquipmentCard
-                  v-for="tool in zone.projectZoonEquipments"
-                  :key="tool.projectZoonEquipmentId || tool.id"
-                  :tool="tool"
-                />
               </div>
+            </header>
 
-              <div v-else class="zone-empty-state">
-                <span><SidebarUnicon name="wrench" /></span>
-                <div>
-                  <strong>{{ $t('project_equipment_zone_empty_title') }}</strong>
-                  <p>{{ $t('project_equipment_zone_empty_description') }}</p>
+            <div v-if="location.locationZones?.length" class="zones-list">
+              <section
+                v-for="(zone, zoneIndex) in location.locationZones"
+                :key="zone.projectZoonId || zone.zoonId || zoneIndex"
+                class="zone-section"
+                :class="{ 'zone-section--empty': !zone.projectZoonEquipments?.length }"
+              >
+                <header class="zone-header">
+                  <div class="zone-identity">
+                    <span class="zone-line" aria-hidden="true"></span>
+                    <span class="zone-icon"><SidebarUnicon name="layer-group" /></span>
+                    <div>
+                      <small>{{ $t('project_equipment_zone') }} {{ zoneIndex + 1 }}</small>
+                      <h3>{{ zone.title || zone.zoonTitle || '—' }}</h3>
+                    </div>
+                  </div>
+
+                  <span class="equipment-count">
+                    <SidebarUnicon name="wrench" />
+                    <strong>{{ zone.projectZoonEquipments?.length ?? 0 }}</strong>
+                    {{ $t('equipments') }}
+                  </span>
+                </header>
+
+                <div v-if="zone.projectZoonEquipments?.length" class="equipment-grid">
+                  <ProjectEquipmentCard
+                    v-for="tool in zone.projectZoonEquipments"
+                    :key="tool.projectZoonEquipmentId || tool.id"
+                    :tool="tool"
+                  />
                 </div>
-              </div>
-            </section>
-          </div>
 
-          <div v-else class="location-empty-state">
-            <SidebarUnicon name="layer-group" />
-            <p>{{ $t('project_equipment_no_zones') }}</p>
-          </div>
-        </article>
-      </div>
-    </template>
-    <template #loader>
-      <TableLoader :cols="8" :rows="10" />
-    </template>
-    <template #initial>
-      <TableLoader :cols="8" :rows="10" />
-    </template>
-    <template #empty>
-      <DataEmpty
-        :link="`/organization/project/add`"
-        addText="Add Project"
-        description="You have no Project .. All your joined customers will appear here when you add your customer data"
-        title="You have No Project"
-      />
-    </template>
-    <template #failed>
-      <DataFailed
-        :link="`/organization/project/add`"
-        addText="Add Project"
-        description="You have no Project .. All your joined customers will appear here when you add your customer data"
-        title="You have No Project"
-      />
-    </template>
-  </DataStatus>
+                <div v-else class="zone-empty-state">
+                  <span><SidebarUnicon name="wrench" /></span>
+                  <div>
+                    <strong>{{ $t('project_equipment_zone_empty_title') }}</strong>
+                    <p>{{ $t('project_equipment_zone_empty_description') }}</p>
+                  </div>
+                </div>
+              </section>
+            </div>
+
+            <div v-else class="location-empty-state">
+              <SidebarUnicon name="layer-group" />
+              <p>{{ $t('project_equipment_no_zones') }}</p>
+            </div>
+          </article>
+        </div>
+      </template>
+      <template #loader>
+        <TableLoader :cols="8" :rows="10" />
+      </template>
+      <template #initial>
+        <TableLoader :cols="8" :rows="10" />
+      </template>
+      <template #empty>
+        <DataEmpty
+          :link="`/organization/project/add`"
+          addText="Add Project"
+          description="You have no Project .. All your joined customers will appear here when you add your customer data"
+          title="You have No Project"
+        />
+      </template>
+      <template #failed>
+        <DataFailed
+          :link="`/organization/project/add`"
+          addText="Add Project"
+          description="You have no Project .. All your joined customers will appear here when you add your customer data"
+          title="You have No Project"
+        />
+      </template>
+    </DataStatus>
+  </div>
 </template>
 <style scoped lang="scss">
 .export-pdf {

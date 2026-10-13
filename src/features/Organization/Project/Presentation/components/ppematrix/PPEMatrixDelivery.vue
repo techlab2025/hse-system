@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import Checkbox from 'primevue/checkbox'
@@ -143,21 +145,19 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="delivery-page">
-    <header class="delivery-header">
+  <main data-hse-project v-project-panels class="hse-project-root hse-project-page delivery-page">
+    <header data-hse-project-head class="hse-project-page-head delivery-header">
       <div>
         <span class="eyebrow">Project PPE</span>
         <h1>PPE delivery</h1>
         <!-- <p>Select one activity, then choose the tools delivered to each employee.</p> -->
       </div>
-      <RouterLink to="/organization/ppe-matrix"
-        >← Activity and tool matrix</RouterLink
-      >
+      <RouterLink to="/organization/ppe-matrix">← Activity and tool matrix</RouterLink>
     </header>
     <p v-if="errorMessage" class="notice notice--error" role="alert">{{ errorMessage }}</p>
     <!-- <p v-if="successMessage" class="notice notice--success" role="status">{{ successMessage }}</p> -->
 
-    <section class="card">
+    <section class="hse-project-panel card">
       <h2>1. Project scope</h2>
       <div class="scope-grid">
         <UpdatedCustomInputSelect
@@ -195,10 +195,14 @@ onMounted(async () => {
       </div>
     </section>
 
-    <section class="card">
+    <section class="hse-project-panel card">
       <h2>2. Activities</h2>
       <div class="activity-list">
-        <label v-for="activity in activities" :key="activity.id" class="activity-option">
+        <label
+          v-for="activity in activities"
+          :key="activity.id"
+          class="hse-project-field-label activity-option"
+        >
           <Checkbox
             :input-id="`delivery-activity-${activity.id}`"
             :model-value="selectedActivityId === activity.id"
@@ -215,7 +219,7 @@ onMounted(async () => {
       <p v-if="!activities.length" class="muted">No PPE activities available.</p>
     </section>
 
-    <section v-if="selectedActivityId && availableTools.length > 0" class="card">
+    <section v-if="selectedActivityId && availableTools.length > 0" class="hse-project-panel card">
       <div class="section-heading">
         <div>
           <h2>3. Assign PPE tools to employees</h2>
@@ -246,12 +250,17 @@ onMounted(async () => {
       <div v-for="(row, index) in rows" :key="row.key" class="employee-card">
         <div class="section-heading">
           <h3>{{ selectedEmployees[index]?.title ?? `Employee ${index + 1}` }}</h3>
-          <button type="button" class="remove-button" @click="removeEmployee(row.employeeId)">
+          <button
+            :aria-label="$t('delete')"
+            type="button"
+            class="hse-project-button--icon hse-project-button hse-project-button--danger remove-button"
+            @click="removeEmployee(row.employeeId)"
+          >
             Remove
           </button>
         </div>
         <div class="tool-table-wrap">
-          <table class="main-table tool-table">
+          <table class="hse-project-table main-table tool-table">
             <thead>
               <tr>
                 <th scope="col">PPE tool</th>
@@ -277,7 +286,7 @@ onMounted(async () => {
       </div>
       <button
         type="button"
-        class="button-primary"
+        class="hse-project-button hse-project-button--primary button-primary"
         :disabled="deliveryController.isDataLoading() || !rows.length"
         @click="submit"
       >
@@ -285,7 +294,7 @@ onMounted(async () => {
       </button>
     </section>
 
-    <section v-else class="card empty">
+    <section v-else class="hse-project-panel card empty">
       <div class="section-heading">
         <h2>No Tools Assigned To This Activity</h2>
       </div>

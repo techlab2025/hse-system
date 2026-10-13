@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import {
   DataFailed,
@@ -110,14 +112,17 @@ onMounted(fetchTalks)
 </script>
 
 <template>
-  <main class="talks-page">
-    <header class="talks-header">
+  <main data-hse-project v-project-panels class="hse-project-root hse-project-page talks-page">
+    <header data-hse-project-head class="hse-project-page-head talks-header">
       <div>
         <span class="eyebrow">Daily safety conversations</span>
         <h1>Today Talks</h1>
         <p>Review organization and project briefings, attendance, dates, and times.</p>
       </div>
-      <RouterLink to="/organization/today-talks/create" class="btn btn-primary">
+      <RouterLink
+        to="/organization/today-talks/create"
+        class="hse-project-button hse-project-button--primary btn btn-primary"
+      >
         <span aria-hidden="true">+</span> Add today talk
       </RouterLink>
     </header>
@@ -144,7 +149,9 @@ onMounted(fetchTalks)
         placeholder="All talks"
         @update:model-value="setSelectedAssignment"
       />
-      <button type="button" class="reset-button" @click="resetFilters">Reset filters</button>
+      <button type="button" class="hse-project-button reset-button" @click="resetFilters">
+        Reset filters
+      </button>
     </section>
 
     <section v-if="isLoading" class="talk-grid" aria-live="polite">
@@ -210,10 +217,12 @@ onMounted(fetchTalks)
     </section>
 
     <Dialog
+      data-hse-project
+      :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
       v-model:visible="talkDialogVisible"
       modal
       dismissable-mask
-      class="talk-details-dialog"
+      class="hse-project-root hse-project-overlay talk-details-dialog"
       :style="{ width: 'min(58rem, calc(100vw - 24px))' }"
     >
       <template #header>

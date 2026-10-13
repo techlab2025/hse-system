@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { ref } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
@@ -85,177 +87,196 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
 </script>
 
 <template>
-  <div class="form-grid">
-    <div class="section-title full">
-      <span>01</span>
-      <div>
-        <h2>Basic project data</h2>
-        <p>Define the project, its scope, and timeline.</p>
+  <div data-hse-project v-project-panels class="hse-project-root hse-wizard-basic">
+    <section class="hse-wizard-section">
+      <h3 class="hse-wizard-section-title">Project identity</h3>
+      <div class="form-grid">
+        <div
+          class="hse-project-field input-wrapper"
+          :class="{ 'field-has-error': props.validationErrors.projectName }"
+        >
+          <LangTitleInput
+            label="Project Name"
+            :langs="langDefault"
+            :model-value="langs"
+            help-text="Enter the project name in each available language."
+            @update:model-value="setLangTitles"
+          />
+          <small v-if="props.validationErrors.projectName" class="hse-project-field field-error">
+            {{ props.validationErrors.projectName }}
+          </small>
+        </div>
+        <div class="hse-project-field input-wrapper">
+          <SwitchInput
+            :fields="serialFields"
+            :switch-title="$t('auto')"
+            :is-auto="true"
+            :switch-reverse="true"
+            help-text="Enter a unique project serial number, or enable automatic generation to let the system create it."
+            @update:value="updateSerial"
+          />
+        </div>
+        <div
+          class="hse-project-field input-wrapper"
+          :class="{ 'field-has-error': props.validationErrors.contractors }"
+        >
+          <UpdatedCustomInputSelect
+            :model-value="contractorIds"
+            :type="2"
+            :controller="contractorController"
+            :params="contractorParams"
+            label="sub contractors"
+            placeholder="Select sub contractors"
+            :is-dialog="true"
+            v-model:dialog-visible="contractorDialog"
+            @update:model-value="setContractors"
+          >
+            <template #LabelHeader>
+              <span class="add-dialog" @click="contractorDialog = true">{{ $t('New') }}</span>
+            </template>
+            <template #Dialog><AddContractor @update:data="contractorDialog = false" /></template>
+          </UpdatedCustomInputSelect>
+          <small v-if="props.validationErrors.contractors" class="hse-project-field field-error">
+            {{ props.validationErrors.contractors }}
+          </small>
+        </div>
+        <label class="hse-project-field-label hse-project-field input-wrapper">
+          <!--  <span aria-hidden="true">*</span> -->
+          <span class="required-label"> Cost</span>
+          <input
+            class="hse-project-input"
+            v-model="basic.cost"
+            type="number"
+            inputmode="decimal"
+            min="0"
+            step="0.01"
+            required
+            placeholder="0.00"
+            :class="{ 'field-invalid': props.validationErrors.cost }"
+            @input="emit('clearValidationError', 'cost')"
+          />
+          <small v-if="props.validationErrors.cost" class="hse-project-field field-error">
+            {{ props.validationErrors.cost }}
+          </small>
+        </label>
+        <label class="hse-project-field-label hse-project-field input-wrapper">
+          <span class="required-label"> Start date <span aria-hidden="true">*</span> </span>
+          <DatePicker
+            panel-class="hse-project-overlay"
+            v-model="basic.startDate"
+            date-format="yy-mm-dd"
+            placeholder="Select start date"
+            required
+            :invalid="Boolean(props.validationErrors.startDate)"
+            @update:model-value="emit('clearValidationError', 'startDate')"
+          />
+          <small v-if="props.validationErrors.startDate" class="hse-project-field field-error">
+            {{ props.validationErrors.startDate }}
+          </small>
+        </label>
+        <label class="hse-project-field-label hse-project-field input-wrapper">
+          <span class="required-label">End date <span aria-hidden="true">*</span> </span>
+          <DatePicker
+            panel-class="hse-project-overlay"
+            v-model="basic.endDate"
+            date-format="yy-mm-dd"
+            placeholder="Select end date"
+            :min-date="basic.startDate ?? undefined"
+            required
+            :invalid="Boolean(props.validationErrors.endDate)"
+            @update:model-value="emit('clearValidationError', 'endDate')"
+          />
+          <small v-if="props.validationErrors.endDate" class="hse-project-field field-error">
+            {{ props.validationErrors.endDate }}
+          </small>
+        </label>
+        <div class="hse-project-field input-wrapper full">
+          <LangTitleInput
+            label="project_scope_of_work"
+            :langs="langDefault"
+            :model-value="langsDescription"
+            field-type="description"
+            type="textarea"
+            placeholder="What is the project scope of work?"
+            :required="false"
+            help-text="Describe the scope, main activities, and work boundaries in each language."
+            @update:model-value="setLangDescriptions"
+          />
+        </div>
       </div>
-    </div>
-    <div class="input-wrapper" :class="{ 'field-has-error': props.validationErrors.projectName }">
-      <LangTitleInput
-        label="Project Name"
-        :langs="langDefault"
-        :model-value="langs"
-        help-text="Enter the project name in each available language."
-        @update:model-value="setLangTitles"
-      />
-      <small v-if="props.validationErrors.projectName" class="field-error">
-        {{ props.validationErrors.projectName }}
-      </small>
-    </div>
-    <div class="input-wrapper">
-      <SwitchInput
-        :fields="serialFields"
-        :switch-title="$t('auto')"
-        :is-auto="true"
-        :switch-reverse="true"
-        help-text="Enter a unique project serial number, or enable automatic generation to let the system create it."
-        @update:value="updateSerial"
-      />
-    </div>
-    <div class="input-wrapper" :class="{ 'field-has-error': props.validationErrors.contractors }">
-      <UpdatedCustomInputSelect
-        :model-value="contractorIds"
-        :type="2"
-        :controller="contractorController"
-        :params="contractorParams"
-        label="sub contractors"
-        placeholder="Select sub contractors"
-        :is-dialog="true"
-        v-model:dialog-visible="contractorDialog"
-        @update:model-value="setContractors"
-      >
-        <template #LabelHeader>
-          <span class="add-dialog" @click="contractorDialog = true">{{ $t('New') }}</span>
-        </template>
-        <template #Dialog><AddContractor @update:data="contractorDialog = false" /></template>
-      </UpdatedCustomInputSelect>
-      <small v-if="props.validationErrors.contractors" class="field-error">
-        {{ props.validationErrors.contractors }}
-      </small>
-    </div>
-    <div class="input-wrapper" :class="{ 'field-has-error': props.validationErrors.locations }">
-      <UpdatedCustomInputSelect
-        :required="true"
-        :model-value="locations"
-        :controller="locationController"
-        :params="locationParams"
-        label="location"
-        placeholder="Select locations"
-        :type="2"
-        :onclick="() => (locationVisible = true)"
-        @update:model-value="setLocations"
-      />
-      <small v-if="props.validationErrors.locations" class="field-error">
-        {{ props.validationErrors.locations }}
-      </small>
-      
-      <small v-if="projectedit" class="field-delete-warning">
-        {{ $t('Removing this Location will also remove all employees and equipment and teams assigned to this Location from the project.') }}
-      </small>
-    </div>
-    <label class="input-wrapper">
-      <span class="required-label"> Start date <span aria-hidden="true">*</span> </span>
-      <DatePicker
-        v-model="basic.startDate"
-        date-format="yy-mm-dd"
-        placeholder="Select start date"
-        required
-        :invalid="Boolean(props.validationErrors.startDate)"
-        @update:model-value="emit('clearValidationError', 'startDate')"
-      />
-      <small v-if="props.validationErrors.startDate" class="field-error">
-        {{ props.validationErrors.startDate }}
-      </small>
-    </label>
-    <label class="input-wrapper">
-      <span class="required-label">End date <span aria-hidden="true">*</span> </span>
-      <DatePicker
-        v-model="basic.endDate"
-        date-format="yy-mm-dd"
-        placeholder="Select end date"
-        :min-date="basic.startDate ?? undefined"
-        required
-        :invalid="Boolean(props.validationErrors.endDate)"
-        @update:model-value="emit('clearValidationError', 'endDate')"
-      />
-      <small v-if="props.validationErrors.endDate" class="field-error">
-        {{ props.validationErrors.endDate }}
-      </small>
-    </label>
-    <label class="input-wrapper">
-      <!--  <span aria-hidden="true">*</span> -->
-      <span class="required-label"> Cost</span>
-      <input
-        v-model="basic.cost"
-        type="number"
-        inputmode="decimal"
-        min="0"
-        step="0.01"
-        required
-        placeholder="0.00"
-        :class="{ 'field-invalid': props.validationErrors.cost }"
-        @input="emit('clearValidationError', 'cost')"
-      />
-      <small v-if="props.validationErrors.cost" class="field-error">
-        {{ props.validationErrors.cost }}
-      </small>
-    </label>
+    </section>
+    <section class="hse-wizard-section">
+      <h3 class="hse-wizard-section-title">Operating structure</h3>
+      <div class="form-grid">
+        <div
+          class="hse-project-field input-wrapper"
+          :class="{ 'field-has-error': props.validationErrors.locations }"
+        >
+          <UpdatedCustomInputSelect
+            :required="true"
+            :model-value="locations"
+            :controller="locationController"
+            :params="locationParams"
+            label="location"
+            placeholder="Select locations"
+            :type="2"
+            :onclick="() => (locationVisible = true)"
+            @update:model-value="setLocations"
+          />
+          <small v-if="props.validationErrors.locations" class="hse-project-field field-error">
+            {{ props.validationErrors.locations }}
+          </small>
 
-    <label class="input-wrapper">
-      <!--  <span aria-hidden="true">*</span> -->
-      <span class="required-label"> Number Of Drills </span>
-      <input
-        v-model.number="basic.drill_count"
-        type="number"
-        inputmode="numeric"
-        min="0"
-        step="1"
-        required
-        placeholder="1"
-        :class="{ 'field-invalid': props.validationErrors.drill_count }"
-        @input="emit('clearValidationError', 'drill_count')"
-      />
-      <small v-if="props.validationErrors.drill_count" class="field-error">
-        {{ props.validationErrors.drill_count }}
-      </small>
-    </label>
-    <div class="switch-row zone-switch">
-      <span>
-        <strong>Project has zones</strong>
-        <small>Turn this on to select zones for the chosen locations.</small>
-      </span>
-      <ToggleSwitch v-model="basic.hasZoon" />
-    </div>
-    <div v-if="basic.hasZoon" class="input-wrapper full zone-selector">
-      <label class="zone-label">
-        <span>{{ $t('zones') }} <span class="required-star" aria-hidden="true">*</span></span>
-        <AddProjectZoneDialog @update:data="setZones" />
-      </label>
-      <AddZoneDialog
-        :locations="locations"
-        :selected-zones="props.selectedZones"
-        @update:data="setZones"
-      />
-      <small v-if="props.validationErrors.zones" class="field-error">
-        {{ props.validationErrors.zones }}
-      </small>
-    </div>
-    <div class="input-wrapper full">
-      <LangTitleInput
-        label="project_scope_of_work"
-        :langs="langDefault"
-        :model-value="langsDescription"
-        field-type="description"
-        type="textarea"
-        placeholder="What is the project scope of work?"
-        :required="false"
-        help-text="Describe the scope, main activities, and work boundaries in each language."
-        @update:model-value="setLangDescriptions"
-      />
-    </div>
+          <small v-if="projectedit" class="hse-project-field field-delete-warning">
+            {{
+              $t(
+                'Removing this Location will also remove all employees and equipment and teams assigned to this Location from the project.',
+              )
+            }}
+          </small>
+        </div>
+        <label class="hse-project-field-label hse-project-field input-wrapper">
+          <!--  <span aria-hidden="true">*</span> -->
+          <span class="required-label"> Number Of Drills </span>
+          <input
+            class="hse-project-input"
+            v-model.number="basic.drill_count"
+            type="number"
+            inputmode="numeric"
+            min="0"
+            step="1"
+            required
+            placeholder="1"
+            :class="{ 'field-invalid': props.validationErrors.drill_count }"
+            @input="emit('clearValidationError', 'drill_count')"
+          />
+          <small v-if="props.validationErrors.drill_count" class="hse-project-field field-error">
+            {{ props.validationErrors.drill_count }}
+          </small>
+        </label>
+        <div class="switch-row zone-switch">
+          <span>
+            <strong>Project has zones</strong>
+            <small>Turn this on to select zones for the chosen locations.</small>
+          </span>
+          <ToggleSwitch v-model="basic.hasZoon" />
+        </div>
+        <div v-if="basic.hasZoon" class="hse-project-field input-wrapper full zone-selector">
+          <label class="hse-project-field-label zone-label">
+            <span>{{ $t('zones') }} <span class="required-star" aria-hidden="true">*</span></span>
+            <AddProjectZoneDialog @update:data="setZones" />
+          </label>
+          <AddZoneDialog
+            :locations="locations"
+            :selected-zones="props.selectedZones"
+            @update:data="setZones"
+          />
+          <small v-if="props.validationErrors.zones" class="hse-project-field field-error">
+            {{ props.validationErrors.zones }}
+          </small>
+        </div>
+      </div>
+    </section>
     <LocationSelectDialog v-model:visible="locationVisible" @location-added="reloadLocations" />
   </div>
 </template>
@@ -269,9 +290,7 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
 }
 </style>
 
-
 <style scoped src="../ProjectFlowStepStyles.css">
-
 .switch-row.zone-switch {
   display: flex !important;
   flex-direction: row !important;

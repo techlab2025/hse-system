@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { inject } from 'vue'
+import { overviewPresentationKey } from '../overviewPresentation'
+const overviewPresentation = inject(overviewPresentationKey, false)
+
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { onMounted, ref } from 'vue'
 import Dialog from 'primevue/dialog'
 import EquipmentImg from '@/assets/images/Equipment.png'
@@ -65,7 +71,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="card flex justify-center">
+  <div data-hse-project v-project-panels class="hse-project-root card flex justify-center">
     <EmptyData
       v-if="isEmpty"
       @click="visible = true"
@@ -91,10 +97,13 @@ onMounted(() => {
 
     <!-- <button @click="visible = true" class="content-btn">{{ btn_name }}</button> -->
     <Dialog
+      :class="{ 'hse-project-overview-overlay': overviewPresentation }"
+      data-hse-project
+      :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
       v-model:visible="visible"
       modal
       dismissable-mask
-      class="project-equipment-dialog"
+      class="hse-project-root hse-project-overlay project-equipment-dialog"
       :style="{ width: 'min(50rem, calc(100vw - 24px))' }"
     >
       <template #header>
@@ -116,8 +125,9 @@ onMounted(() => {
         <!-- <CustomSelectInput :modelValue="equipments" :controller="indexEquipmentController"
           :params="indexEquipmentParams" label="Equipment" placeholder="Select Your Equipment" :type="2"
           @update:modelValue="setEquipments" /> -->
-        <label for="equipment">{{ $t('Select Equipment') }}</label>
+        <label class="hse-project-field-label" for="equipment">{{ $t('Select Equipment') }}</label>
         <MultiSelect
+          overlay-class="hse-project-overlay"
           :modelValue="equipments"
           :options="AllEquipments"
           optionLabel="title"
@@ -133,7 +143,7 @@ onMounted(() => {
 
         <div class="submit-btn w-full mt-4">
           <button
-            class="btn btn-primary w-full confirm-equipment-btn"
+            class="hse-project-button hse-project-button--primary btn btn-primary w-full confirm-equipment-btn"
             :disabled="!equipments.length"
             @click="AddEquipment"
           >

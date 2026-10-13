@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import { inject } from 'vue'
+import { overviewPresentationKey } from '../overviewPresentation'
+const overviewPresentation = inject(overviewPresentationKey, false)
+
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { ref } from 'vue'
 import HeaderSection from '../DetailsHeader/HeaderSection.vue'
 import ZoneDialog from '@/assets/images/ZoneDialog.png'
@@ -14,15 +20,24 @@ const { locations, projectId } = defineProps<{
 const emit = defineEmits(['update:data'])
 </script>
 <template>
-  <button type="button" @click.prevent="visible = true" class="show-all-btn">
+  <button
+    data-hse-project
+    v-project-panels
+    type="button"
+    @click.prevent="visible = true"
+    class="hse-project-root hse-project-button show-all-btn"
+  >
     <span>{{ $t('show_all') }}</span
     ><span class="show-all-arrow" aria-hidden="true">→</span>
   </button>
   <Dialog
+    :class="{ 'hse-project-overview-overlay': overviewPresentation }"
+    data-hse-project
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
     v-model:visible="visible"
     modal
     :dismissable-mask="true"
-    class="all-zones-dialog"
+    class="hse-project-root hse-project-overlay all-zones-dialog"
     :style="{ width: 'min(58rem, calc(100vw - 24px))' }"
   >
     <template #header>

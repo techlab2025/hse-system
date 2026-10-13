@@ -1,4 +1,10 @@
 <script setup lang="ts">
+import '../../../styles/project-overview.css'
+import { useProjectLabels } from '../../composables/useProjectLabels'
+import ProjectIcon from '../ProjectUtils/ProjectIcon.vue'
+import { overviewPresentationKey } from './overviewPresentation'
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { useRoute, useRouter } from 'vue-router'
 import ShowProjectDetailsParams from '../../../Core/params/ShowProjectDetailsParams'
 import ShowProjectDetailsController from '../../controllers/ShowProjectDetailsController'
@@ -7,7 +13,7 @@ import EquipmentSection from './Equipment/EquipmentSection.vue'
 import LocationsTeamsSection from './LocationsTeams/LocationsTeamsSection.vue'
 import MainObjectivesSection from './Objectives/MainObjectivesSection.vue'
 import ProjectSiteSection from './ProjectSite/ProjectSiteSection.vue'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, provide, ref, watch } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import ProjectPageSkeleton from './Skeletons/ProjectPageSkeleton.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
@@ -18,15 +24,32 @@ import DrillSection from './Drill/DrillSection.vue'
 import ProjectMeetingSection from './ProjectMeeting/ProjectMeetingSection.vue'
 import FetchProjectPermitsController from '../../controllers/PermitToWork/FetchProjectPermitsController.ts'
 import FetchPermitsParams from '../../../Core/params/PermitToWork/fetchPermitsParams.ts'
-import InjuryBodySlection from '@/features/Organization/ObservationFactory/Presentation/SubComponent/InjuryBodySlection.vue'
 // import zoneInspectionTasks from '@/assets/images/InspectionTaskbg.png'
 // import EmployeeInspectionTasks from '@/assets/images/employee Inspection Tasks.png'
+
+provide(overviewPresentationKey, true)
 
 const showProjectDetailsController = ShowProjectDetailsController.getInstance()
 const state = showProjectDetailsController.state
 
 const route = useRoute()
 const router = useRouter()
+
+const labels = useProjectLabels()
+const detailTabs = [
+  { key: 'all', label: 'allData', icon: 'grid' },
+  { key: 'dashboard', label: 'dashboard', icon: 'grid' },
+  { key: 'operations', label: 'operations', icon: 'users' },
+  { key: 'equipment', label: 'equipment', icon: 'equipment' },
+  { key: 'meetings', label: 'meetings', icon: 'clock' },
+  { key: 'drills', label: 'drills', icon: 'pulse' },
+  { key: 'lossTime', label: 'lossTime', icon: 'clock' },
+] as const
+
+type DetailTab = (typeof detailTabs)[number]['key']
+const activeTab = ref<DetailTab>('all')
+const showsSection = (...tabs: DetailTab[]) =>
+  activeTab.value === 'all' || tabs.includes(activeTab.value)
 
 const getMeetingTimestamp = (date: string) => new Date(`${date}T00:00:00`).getTime()
 
@@ -60,7 +83,7 @@ const fetchProjectPermitsController = FetchProjectPermitsController.getInstance(
 
 const Permitsstate = computed(() => fetchProjectPermitsController.state.value)
 
-const FetchProjectPermits = async (status?: number) => {
+const FetchProjectPermits = async () => {
   const fetchProjectPermitsParams = new FetchPermitsParams({
     projectId: Number(route.params.project_id) || Number(route.params.id),
     // hasResult: status == 1 ? true : false,
@@ -98,6 +121,7 @@ onMounted(async () => {
 watch(
   () => route.params.id,
   () => {
+    activeTab.value = 'all'
     GetProjectDetails()
   },
   { immediate: true },
@@ -115,10 +139,19 @@ watch(
 // const selected = ref<string[]>()
 </script>
 <template>
-  <DataStatus :controller="state">
-    <template #success>
-      <div class="project-details-section">
-        <!-- <div class="project-details-page-header">
+  <div
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-state-host hse-project-overview hse-project-overview--details"
+  >
+    <DataStatus :controller="state">
+      <template #success>
+        <div
+          data-hse-project
+          v-project-panels
+          class="hse-project-root hse-project-page project-details-section"
+        >
+          <!-- <div class="project-details-page-header">
           <div class="page-title-content">
             <span class="page-eyebrow">{{ state.data?.serialName }}</span>
             <h1 class="page-title">{{ $t('projectDetails') }}</h1>
@@ -131,26 +164,45 @@ watch(
             </div>
           </div>
         </div> -->
-        <!-- <InjuryBodySlection
+          <!-- <InjuryBodySlection
         :modelValue="selected"
         /> -->
 
-        <ProjectHeader
-          :projectId="state.data?.id"
-          :projectName="state.data?.title"
-          :SerialNumber="state.data?.SerialNumber"
-          :serialName="state.data?.serialName"
-          :Projectdate="state.data?.startDate"
-          :Contractors="state.data?.contractors?.length"
-          :endDate="state.data?.endDate"
-          :has_assigned_permit="Permitsstate.data?.length > 0"
-        />
+          <ProjectHeader
+            :projectId="state.data?.id"
+            :projectName="state.data?.title"
+            :SerialNumber="state.data?.SerialNumber"
+            :serialName="state.data?.serialName"
+            :Projectdate="state.data?.startDate"
+            :Contractors="state.data?.contractors?.length"
+            :endDate="state.data?.endDate"
+            :has_assigned_permit="Permitsstate.data?.length > 0"
+          />
 
-        <LossTimeMatrix v-if="state.data?.lossTimes?.length" :loss-times="state.data.lossTimes" />
+          <nav class="hse-project-tabs" :aria-label="$t('Project')">
+            <button
+              v-for="tab in detailTabs"
+              :key="tab.key"
+              type="button"
+              :data-details-filter="tab.key"
+              :aria-pressed="activeTab === tab.key"
+              @click="activeTab = tab.key"
+            >
+              <ProjectIcon :name="tab.icon" />{{ labels(tab.label) }}
+            </button>
+          </nav>
 
-        <!-- <TodayTalkSummary :project-id="state.data?.id" :project-name="state.data?.title" /> -->
+          <LossTimeMatrix
+            v-if="
+              showsSection('lossTime') &&
+              (activeTab === 'lossTime' || state.data?.lossTimes?.length)
+            "
+            :loss-times="state.data?.lossTimes ?? []"
+          />
 
-        <!-- <div class="inspections-sections">
+          <!-- <TodayTalkSummary :project-id="state.data?.id" :project-name="state.data?.title" /> -->
+
+          <!-- <div class="inspections-sections">
           <InspectionsSections
             :inspectionsImage="zoneInspectionTasks"
             :inspectionHeaderTitle="'zone Inspection Tasks'"
@@ -170,24 +222,31 @@ watch(
           />
         </div> -->
 
-        <section class="project-operations-workspace">
-          <MainObjectivesSection class="main-objective" :description="state.data?.description" />
+          <section
+            v-if="showsSection('dashboard', 'operations', 'equipment')"
+            class="project-operations-workspace"
+          >
+            <MainObjectivesSection
+              v-if="showsSection('dashboard')"
+              class="hse-project-panel main-objective"
+              :description="state.data?.description"
+            />
 
-          <div class="operations-intro">
-            <div class="operations-title">
-              <span class="operations-mark" aria-hidden="true"> <i></i><i></i><i></i> </span>
-              <div>
-                <!-- <span class="operations-eyebrow">{{ $t('Operational workspace') }}</span> -->
-                <h2>{{ $t('Project Operational Structure & Resources') }}</h2>
-                <p>
-                  {{
-                    $t(
-                      'Manage locations, zones, workforce assignments, and equipment in one place.',
-                    )
-                  }}
-                </p>
-              </div>
-            </div>
+            <!-- <div class="operations-intro"> -->
+            <!-- <div class="operations-title"> -->
+            <!-- <span class="operations-mark" aria-hidden="true"> <i></i><i></i><i></i> </span> -->
+            <!-- <div> -->
+            <!-- <span class="operations-eyebrow">{{ $t('Operational workspace') }}</span> -->
+            <!-- <h2>{{ $t('Project Operational Structure & Resources') }}</h2> -->
+            <!-- <p>
+                    {{
+                      $t(
+                        'Manage locations, zones, workforce assignments, and equipment in one place.',
+                      )
+                    }}
+                  </p> -->
+            <!-- </div> -->
+            <!-- </div> -->
 
             <!-- <div class="operations-flow" aria-label="Project resource sections">
               <span><strong>01</strong>{{ $t('Sites') }}</span>
@@ -196,57 +255,70 @@ watch(
               <i aria-hidden="true"></i>
               <span><strong>03</strong>{{ $t('Equipment') }}</span>
             </div> -->
-          </div>
+            <!-- </div> -->
 
-          <div class="project-operations-stack">
-            <ProjectSiteSection :locations="state.data?.locations" :projectId="state.data?.id" />
+            <div v-if="showsSection('operations', 'equipment')" class="project-operations-stack">
+              <ProjectSiteSection
+                v-if="showsSection('operations')"
+                :locations="state.data?.locations"
+                :projectId="state.data?.id"
+              />
 
-            <LocationsTeamsSection
-              :teamLocations="state.data?.TeamLocations"
-              :projectLocations="state.data?.project_locations"
-              :hierarchy="state.data?.hierarchies"
-              :orgganizationEmployeeWithHierarchy="state.data?.organization_employees"
+              <LocationsTeamsSection
+                v-if="showsSection('operations')"
+                :teamLocations="state.data?.TeamLocations"
+                :projectLocations="state.data?.project_locations"
+                :hierarchy="state.data?.hierarchies"
+                :orgganizationEmployeeWithHierarchy="state.data?.organization_employees"
+              />
+              <EquipmentSection
+                v-if="showsSection('equipment')"
+                :project_zoons="state.data?.projectZoons"
+              />
+            </div>
+          </section>
+
+          <div v-if="showsSection('drills', 'meetings')" class="hse-overview-planning">
+            <DrillSection
+              v-if="showsSection('drills')"
+              :project-id="state.data?.id ?? Number(route.params.id)"
+              :drills="state.data?.drills ?? []"
+              @updated="GetProjectDetails"
             />
-            <EquipmentSection :project_zoons="state.data?.projectZoons" />
+
+            <ProjectMeetingSection
+              v-if="showsSection('meetings')"
+              :project-id="state.data?.id ?? Number(route.params.id)"
+              :meetings="todayAndUpcomingMeetings"
+              @updated="GetProjectDetails"
+            />
           </div>
-        </section>
-
-        <DrillSection
-          :project-id="state.data?.id ?? Number(route.params.id)"
-          :drills="state.data?.drills ?? []"
-          @updated="GetProjectDetails"
+        </div>
+      </template>
+      <template #loader>
+        <ProjectPageSkeleton variant="details" />
+      </template>
+      <template #initial>
+        <ProjectPageSkeleton variant="details" />
+      </template>
+      <template #empty>
+        <DataEmpty
+          :link="`/organization/project/add`"
+          addText="Add Project"
+          description="You have no Project .. All your joined customers will appear here when you add your customer data"
+          title="You have No Project"
         />
-
-        <ProjectMeetingSection
-          :project-id="state.data?.id ?? Number(route.params.id)"
-          :meetings="todayAndUpcomingMeetings"
-          @updated="GetProjectDetails"
+      </template>
+      <template #failed>
+        <DataFailed
+          :link="`/organization/project/add`"
+          addText="Add Project"
+          description="You have no Project .. All your joined customers will appear here when you add your customer data"
+          title="You have No Project"
         />
-      </div>
-    </template>
-    <template #loader>
-      <ProjectPageSkeleton variant="details" />
-    </template>
-    <template #initial>
-      <ProjectPageSkeleton variant="details" />
-    </template>
-    <template #empty>
-      <DataEmpty
-        :link="`/organization/project/add`"
-        addText="Add Project"
-        description="You have no Project .. All your joined customers will appear here when you add your customer data"
-        title="You have No Project"
-      />
-    </template>
-    <template #failed>
-      <DataFailed
-        :link="`/organization/project/add`"
-        addText="Add Project"
-        description="You have no Project .. All your joined customers will appear here when you add your customer data"
-        title="You have No Project"
-      />
-    </template>
-  </DataStatus>
+      </template>
+    </DataStatus>
+  </div>
 </template>
 
 <style scoped lang="scss">

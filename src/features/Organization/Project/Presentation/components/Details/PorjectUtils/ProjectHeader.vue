@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import ContractorIcon from '@/shared/icons/ContractorIcon.vue'
@@ -16,7 +18,7 @@ defineProps<{
 }>()
 </script>
 <template>
-  <header class="project-header-container">
+  <header data-hse-project v-project-panels class="hse-project-root project-header-container">
     <span class="header-orbit orbit-one" aria-hidden="true"></span>
     <span class="header-orbit orbit-two" aria-hidden="true"></span>
 
@@ -29,7 +31,7 @@ defineProps<{
           </svg>
         </span>
         <div>
-          <!-- <span class="project-eyebrow"><i></i>{{ t('Project overview') }}</span> -->
+          <span class="project-eyebrow">{{ t('Project overview') }}</span>
           <h1 class="project-name">{{ projectName || t('Project') }}</h1>
         </div>
       </div>
@@ -284,9 +286,9 @@ defineProps<{
   width: 100%;
   min-height: 150px;
   gap: 24px;
-  padding: 22px !important;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border)) !important;
-  border-radius: 23px !important;
+  padding: 22px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
+  border-radius: 23px;
   background:
     radial-gradient(
       circle at 0 0,
@@ -297,8 +299,8 @@ defineProps<{
       135deg,
       var(--surface-1),
       color-mix(in srgb, var(--surface-2) 58%, var(--surface-1))
-    ) !important;
-  box-shadow: 0 16px 38px color-mix(in srgb, var(--brand-primary-900) 8%, transparent) !important;
+    );
+  box-shadow: 0 16px 38px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
   font-family: 'Regular';
 }
 .project-header-container::before {
@@ -655,8 +657,8 @@ defineProps<{
 @media (max-width: 680px) {
   .project-header-container {
     gap: 16px;
-    padding: 17px !important;
-    border-radius: 19px !important;
+    padding: 17px;
+    border-radius: 19px;
   }
   .project-meta {
     grid-template-columns: 1fr 1fr;

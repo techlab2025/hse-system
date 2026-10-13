@@ -1,11 +1,13 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { ref, onMounted, watch } from 'vue'
 import type TitleInterface from '@/base/Data/Models/title_interface'
 import IndexProjectLocationZonesController from '../../../controllers/fetchLocationZonesController'
 import IndexProjectLocationZonesParams from '@/features/Organization/Project/Core/params/fetchProjectLocationsZonesParams'
 import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
-import loading from "@/assets/images/loading.gif"
+import loading from '@/assets/images/loading.gif'
 const controller = IndexProjectLocationZonesController.getInstance()
 const state = ref(controller?.state?.value)
 
@@ -29,11 +31,11 @@ const initializeFromProps = () => {
   SelectedZoneTitles.value.clear()
 
   if (props.selectedZones && props.selectedZones.length > 0) {
-    props.selectedZones.forEach(location => {
+    props.selectedZones.forEach((location) => {
       if (location.zoons && location.zoons.length > 0) {
         const zoneIdsSet = new Set<number>()
 
-        location.zoons.forEach(zone => {
+        location.zoons.forEach((zone) => {
           zoneIdsSet.add(zone.id)
           SelectedZoneTitles.value.set(zone.id, zone.title || zone.titles?.[0]?.title || '')
         })
@@ -47,7 +49,13 @@ const initializeFromProps = () => {
 }
 
 const GetZones = async () => {
-  const params = new IndexProjectLocationZonesParams('', 1, 10, 1, AllLocations.value.map(l => l.id))
+  const params = new IndexProjectLocationZonesParams(
+    '',
+    1,
+    10,
+    1,
+    AllLocations.value.map((l) => l.id),
+  )
   const response = await controller.getData(params)
 
   if (response.value.data) {
@@ -63,7 +71,12 @@ const isZoneSelected = (locationId: number, zoneId: number) => {
   return locationZones ? locationZones.has(zoneId) : false
 }
 
-const UpdateSelectedZone = (locationId: number, zoneId: number, zoneTitle: string, event: Event) => {
+const UpdateSelectedZone = (
+  locationId: number,
+  zoneId: number,
+  zoneTitle: string,
+  event: Event,
+) => {
   const checked = (event.target as HTMLInputElement).checked
 
   if (checked) {
@@ -96,24 +109,23 @@ const UpdateData = () => {
     if (zoneIds.size > 0) {
       zoonIds.push({
         locationId,
-        ZoneIds: Array.from(zoneIds)
+        ZoneIds: Array.from(zoneIds),
       })
 
       // Find the location in AllZones to build full structure
-      const locationData = AllZones.value.find(loc => loc.zoonId === locationId)
+      const locationData = AllZones.value.find((loc) => loc.zoonId === locationId)
       if (locationData) {
-        const selectedZonesForLocation = locationData.zoons?.filter(zone =>
-          zoneIds.has(zone.id)
-        ) || []
+        const selectedZonesForLocation =
+          locationData.zoons?.filter((zone) => zoneIds.has(zone.id)) || []
 
         fullZoneData.push({
           zoonId: locationData.zoonId,
           zoonTitle: locationData.zoonTitle,
-          zoons: selectedZonesForLocation
+          zoons: selectedZonesForLocation,
         })
 
         // Add titles
-        selectedZonesForLocation.forEach(zone => {
+        selectedZonesForLocation.forEach((zone) => {
           const title = zone.title || zone.titles?.[0]?.title || ''
           zoonTitles.push(title)
         })
@@ -126,7 +138,7 @@ const UpdateData = () => {
   emit('update:data', {
     zoonTitles,
     zoonIds,
-    fullZoneData
+    fullZoneData,
   })
 }
 
@@ -135,60 +147,85 @@ onMounted(() => {
 })
 
 // Watch for prop changes
-watch(() => props.selectedZones, (newVal) => {
-  console.log('ZoneDialogForm - Props selectedZones changed:', newVal)
-  if (AllZones.value.length > 0) {
-    initializeFromProps()
-  }
-}, { deep: true, immediate: true })
+watch(
+  () => props.selectedZones,
+  (newVal) => {
+    console.log('ZoneDialogForm - Props selectedZones changed:', newVal)
+    if (AllZones.value.length > 0) {
+      initializeFromProps()
+    }
+  },
+  { deep: true, immediate: true },
+)
 
-watch(() => props.locations, () => {
-  AllLocations.value = props.locations
-  GetZones()
-}, { deep: true })
+watch(
+  () => props.locations,
+  () => {
+    AllLocations.value = props.locations
+    GetZones()
+  },
+  { deep: true },
+)
 
-watch(() => controller.state.value, (newState) => {
-  state.value = newState
-})
+watch(
+  () => controller.state.value,
+  (newState) => {
+    state.value = newState
+  },
+)
 </script>
 
 <template>
-  <DataStatus :controller="state">
-    <template #success>
-      <div class="zone-form">
-        <div class="zone-container" v-for="(location, index) in AllZones" :key="index">
-          <div class="location-header">
-            <h2 class="title">
-              {{ $t('Location') }}: <span>{{ location.zoonTitle }}</span>
-            </h2>
-          </div>
-
-          <div class="zone-content-container">
-            <div v-if="location.zoons?.length > 0" v-for="(zone, index2) in location.zoons" :key="index2"
-              class="zone-content" :class="{ active: isZoneSelected(location.zoonId, zone.id) }">
-
-              <label :for="`${location.zoonTitle}-${zone.title}-${zone.id}`" class="zone-title">
-                {{ zone.title }}
-              </label>
-              <input type="checkbox" :id="`${location.zoonTitle}-${zone.title}-${zone.id}`"
-                :checked="isZoneSelected(location.zoonId, zone.id)"
-                @change="UpdateSelectedZone(location.zoonId, zone.id, zone?.title, $event)" />
+  <div data-hse-project v-project-panels class="hse-project-root hse-project-state-host">
+    <DataStatus :controller="state">
+      <template #success>
+        <div data-hse-project v-project-panels class="hse-project-root zone-form">
+          <div class="zone-container" v-for="(location, index) in AllZones" :key="index">
+            <div class="location-header">
+              <h2 class="title">
+                {{ $t('Location') }}: <span>{{ location.zoonTitle }}</span>
+              </h2>
             </div>
-            <div v-else class="empty-zone">{{ $t('No Available Zones') }}</div>
-          </div>
-        </div>
-        <button class="confirm-btn btn btn-primary" @click="UpdateData">
-          <span>{{ $t('confirm') }}</span>
-        </button>
-      </div>
 
-    </template>
-    <template #loader>
-      <div class="image-container">
-        <img :src="loading" alt="">
-      </div>
-    </template>
-  </DataStatus>
+            <div class="zone-content-container">
+              <div
+                v-if="location.zoons?.length > 0"
+                v-for="(zone, index2) in location.zoons"
+                :key="index2"
+                class="zone-content"
+                :class="{ active: isZoneSelected(location.zoonId, zone.id) }"
+              >
+                <label
+                  :for="`${location.zoonTitle}-${zone.title}-${zone.id}`"
+                  class="hse-project-field-label zone-title"
+                >
+                  {{ zone.title }}
+                </label>
+                <input
+                  type="checkbox"
+                  :id="`${location.zoonTitle}-${zone.title}-${zone.id}`"
+                  :checked="isZoneSelected(location.zoonId, zone.id)"
+                  @change="UpdateSelectedZone(location.zoonId, zone.id, zone?.title, $event)"
+                />
+              </div>
+              <div v-else class="empty-zone">{{ $t('No Available Zones') }}</div>
+            </div>
+          </div>
+          <button
+            class="hse-project-button hse-project-button--primary confirm-btn btn btn-primary"
+            @click="UpdateData"
+          >
+            <span>{{ $t('confirm') }}</span>
+          </button>
+        </div>
+      </template>
+      <template #loader>
+        <div data-hse-project v-project-panels class="hse-project-root image-container">
+          <img :src="loading" alt="" />
+        </div>
+      </template>
+    </DataStatus>
+  </div>
 </template>
 
 <style scoped>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Icon } from '@iconify/vue'
@@ -25,7 +27,10 @@ const fetchInductionDetails = async () => {
 
 const editInduction = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
-  await EditInductionController.getInstance().editInduction(params.value as EditInductionParams, router)
+  await EditInductionController.getInstance().editInduction(
+    params.value as EditInductionParams,
+    router,
+  )
 }
 
 watch(
@@ -43,22 +48,32 @@ onMounted(fetchInductionDetails)
 </script>
 
 <template>
-  <DataStatus :controller="state">
-    <template #success>
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4 induction-entry-form" @submit.prevent="editInduction">
-        <InductionForm ref="formRef" :data="state.data!" @update:data="setParams" />
-        <div class="col-span-4 induction-form-actions">
-          <button type="submit" class="btn btn-primary induction-action induction-action--primary">
-            <Icon icon="uil:check-circle" />
-            {{ $t('save') }}
-          </button>
-        </div>
-      </form>
-    </template>
-    <template #loader>
-      <FormLoader :inputsCount="5" />
-    </template>
-  </DataStatus>
+  <div data-hse-project v-project-panels class="hse-project-root hse-project-state-host">
+    <DataStatus :controller="state">
+      <template #success>
+        <form
+          data-hse-project
+          v-project-panels
+          class="hse-project-root hse-project-page grid grid-cols-1 md:grid-cols-4 gap-4 induction-entry-form"
+          @submit.prevent="editInduction"
+        >
+          <InductionForm ref="formRef" :data="state.data!" @update:data="setParams" />
+          <div class="hse-project-form-footer col-span-4 induction-form-actions">
+            <button
+              type="submit"
+              class="hse-project-button hse-project-button--primary btn btn-primary induction-action induction-action--primary"
+            >
+              <Icon icon="uil:check-circle" />
+              {{ $t('save') }}
+            </button>
+          </div>
+        </form>
+      </template>
+      <template #loader>
+        <FormLoader :inputsCount="5" />
+      </template>
+    </DataStatus>
+  </div>
 </template>
 
 <style scoped>

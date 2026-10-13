@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import ToggleSwitch from 'primevue/toggleswitch'
@@ -192,13 +194,13 @@ onMounted(getEmployees)
 </script>
 
 <template>
-  <main class="today-talk-page">
-    <header class="page-header">
+  <main data-hse-project v-project-panels class="hse-project-root hse-project-page today-talk-page">
+    <header data-hse-project-head class="hse-project-page-head page-header">
       <RouterLink
         :to="
           isProjectTalk ? `/organization/project-details/${projectId}` : '/organization/today-talks'
         "
-        class="back-link"
+        class="hse-project-button back-link"
       >
         <span aria-hidden="true">←</span>
         {{ isProjectTalk ? 'Back to project' : 'Back to today talks' }}
@@ -227,8 +229,9 @@ onMounted(getEmployees)
             <p>Record the key safety topic, decisions, and actions from today’s talk.</p>
           </div>
         </div>
-        <div class="content-field" :class="{ invalid: contentError }">
+        <div class="hse-project-field content-field" :class="{ invalid: contentError }">
           <textarea
+            class="hse-project-input"
             id="today-talk-content"
             v-model="content"
             rows="7"
@@ -236,20 +239,30 @@ onMounted(getEmployees)
             placeholder="Example: We reviewed safe lifting practices, the day’s high-risk activities, and the stop-work procedure..."
             :aria-invalid="Boolean(contentError)"
           ></textarea>
-          <div class="field-meta">
+          <div class="hse-project-field field-meta">
             <span class="error-message">{{ contentError }}</span>
             <span>{{ content.length }}/3000</span>
           </div>
         </div>
         <div class="schedule-grid">
-          <label :class="{ invalid: dateError }">
+          <label class="hse-project-field-label" :class="{ invalid: dateError }">
             <span>Talk date</span>
-            <input v-model="date" type="date" :aria-invalid="Boolean(dateError)" />
+            <input
+              class="hse-project-input"
+              v-model="date"
+              type="date"
+              :aria-invalid="Boolean(dateError)"
+            />
             <small class="error-message">{{ dateError }}</small>
           </label>
-          <label :class="{ invalid: timeError }">
+          <label class="hse-project-field-label" :class="{ invalid: timeError }">
             <span>Talk time</span>
-            <input v-model="time" type="time" :aria-invalid="Boolean(timeError)" />
+            <input
+              class="hse-project-input"
+              v-model="time"
+              type="time"
+              :aria-invalid="Boolean(timeError)"
+            />
             <small class="error-message">{{ timeError }}</small>
           </label>
         </div>
@@ -282,7 +295,7 @@ onMounted(getEmployees)
           <label
             v-for="employee in attendance"
             :key="employee.organizationEmployeeId"
-            class="employee-card"
+            class="hse-project-field-label employee-card"
             :class="{ attending: employee.isAttend }"
             :for="`attendance-${employee.organizationEmployeeId}`"
           >
@@ -321,27 +334,31 @@ onMounted(getEmployees)
         <p v-if="employeesError" class="error-message employees-error">{{ employeesError }}</p>
       </section>
 
-      <footer class="form-actions create-form-actions">
+      <footer class="hse-project-form-footer form-actions create-form-actions">
         <RouterLink
           :to="
             isProjectTalk
               ? `/organization/project-details/${projectId}`
               : '/organization/today-talks'
           "
-          class="cancel-button"
+          class="hse-project-button hse-project-button--ghost cancel-button"
         >
           Cancel
         </RouterLink>
         <button
           type="button"
-          class="btn btn-secondary save-button"
+          class="hse-project-button btn btn-secondary save-button"
           :disabled="isSaving"
           @click.prevent="saveAndNew"
         >
           <span v-if="isSaving" class="button-spinner" aria-hidden="true"></span>
           {{ isSaving ? 'Saving talk…' : $t('save and new') }}
         </button>
-        <button type="submit" class="btn btn-primary save-button" :disabled="isSaving">
+        <button
+          type="submit"
+          class="hse-project-button hse-project-button--primary btn btn-primary save-button"
+          :disabled="isSaving"
+        >
           <span v-if="isSaving" class="button-spinner" aria-hidden="true"></span>
           {{ isSaving ? 'Saving talk…' : 'Save today’s talk' }}
         </button>

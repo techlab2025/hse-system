@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import Dialog from 'primevue/dialog';
-import HeaderSection from "../Details/DetailsHeader/HeaderSection.vue";
-import EquipmentImg from "@/assets/images/Equipment.png";
-import EmptyData from "../Details/LocationsTeams/EmptyData.vue";
-import EquimentFolderEmpty from "@/assets/images/EquimentFolderEmpty.png"
-import type SohwProjectZoonModel from "../../../Data/models/ShowProjectZone";
-import ProjectZoneSelection from "../Details/PorjectUtils/ProjectZoneSelection.vue";
-import CustomSelectInput from "@/shared/FormInputs/CustomSelectInput.vue";
-import IndexEquipmentController from "@/features/_templateFeature/Presentation/controllers/indexEquipmentController";
-import IndexEquipmentParams from "@/features/_templateFeature/Core/params/indexEquipmentParams";
-import CreateProjectZoneEquipment from "../../../Core/params/ProjectEquipments/CreateProjectZoneEquipment.ts";
-import type TitleInterface from "@/base/Data/Models/title_interface";
-import { useRoute, useRouter } from "vue-router";
-import CreateProjectZoneEquipmentsController from "../../controllers/Equipments/CreateProjectZoneEquipmentsController";
+import { vProjectPanels } from '../../composables/projectPanels'
+
+import { ref } from 'vue'
+import Dialog from 'primevue/dialog'
+import HeaderSection from '../Details/DetailsHeader/HeaderSection.vue'
+import EquipmentImg from '@/assets/images/Equipment.png'
+import EmptyData from '../Details/LocationsTeams/EmptyData.vue'
+import EquimentFolderEmpty from '@/assets/images/EquimentFolderEmpty.png'
+import type SohwProjectZoonModel from '../../../Data/models/ShowProjectZone'
+import ProjectZoneSelection from '../Details/PorjectUtils/ProjectZoneSelection.vue'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import IndexEquipmentController from '@/features/_templateFeature/Presentation/controllers/indexEquipmentController'
+import IndexEquipmentParams from '@/features/_templateFeature/Core/params/indexEquipmentParams'
+import CreateProjectZoneEquipment from '../../../Core/params/ProjectEquipments/CreateProjectZoneEquipment.ts'
+import type TitleInterface from '@/base/Data/Models/title_interface'
+import { useRoute, useRouter } from 'vue-router'
+import CreateProjectZoneEquipmentsController from '../../controllers/Equipments/CreateProjectZoneEquipmentsController'
 
 const props = defineProps<{
   project_zoons: SohwProjectZoonModel[]
@@ -51,8 +53,8 @@ const AddEquipment = async () => {
   const payload = new CreateProjectZoneEquipment(projectId, [
     {
       project_zoon_id: selectedZoneId.value || props.ZoonId,
-      equipment_ids: equipments.value.map(e => e.id)
-    }
+      equipment_ids: equipments.value.map((e) => e.id),
+    },
   ])
 
   const controller = CreateProjectZoneEquipmentsController.getInstance()
@@ -68,17 +70,35 @@ const AddEquipment = async () => {
 </script>
 
 <template>
-  <div class="card flex justify-center">
-    <EmptyData :img="EquimentFolderEmpty" :title="$t('No Equipment Yet')"
-      :subtitle="$t('You haven’t added any equipment to this project. Start building your crew now!')"
-      linkText="Start building your crew now!" @click="visible = true" v-if="isEmpty" />
+  <div data-hse-project v-project-panels class="hse-project-root card flex justify-center">
+    <EmptyData
+      :img="EquimentFolderEmpty"
+      :title="$t('No Equipment Yet')"
+      :subtitle="
+        $t('You haven’t added any equipment to this project. Start building your crew now!')
+      "
+      linkText="Start building your crew now!"
+      @click="visible = true"
+      v-if="isEmpty"
+    />
 
     <!-- <AddEquipmentIcon class="add-equipment-icon" @click="visible = true" v-else /> -->
     <p class="add-equipment-icon" v-if="!isEmpty" @click="visible = true">{{ `add equipment` }}</p>
-    <Dialog v-model:visible="visible" modal dismissable-mask :style="{ width: '50rem' }">
+    <Dialog
+      data-hse-project
+      class="hse-project-root hse-project-overlay"
+      :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
+      v-model:visible="visible"
+      modal
+      dismissable-mask
+      :style="{ width: '50rem' }"
+    >
       <template #header>
-        <HeaderSection :img="EquipmentImg" :title="$t('Equipment')"
-          :subtitle="$t('Choose for each zone all the equipment and devices you want.')" />
+        <HeaderSection
+          :img="EquipmentImg"
+          :title="$t('Equipment')"
+          :subtitle="$t('Choose for each zone all the equipment and devices you want.')"
+        />
       </template>
 
       <!-- Zone selection -->
@@ -88,12 +108,22 @@ const AddEquipment = async () => {
 
       <!-- Equipment selection -->
       <div class="equipment-selection">
-        <CustomSelectInput :modelValue="equipments" :controller="indexEquipmentController"
-          :params="indexEquipmentParams" :label="$t('Equipment')" :placeholder="$t('Select Your Equipment')" :type="2"
-          @update:modelValue="setEquipments" />
+        <CustomSelectInput
+          overlay-class="hse-project-overlay"
+          :modelValue="equipments"
+          :controller="indexEquipmentController"
+          :params="indexEquipmentParams"
+          :label="$t('Equipment')"
+          :placeholder="$t('Select Your Equipment')"
+          :type="2"
+          @update:modelValue="setEquipments"
+        />
 
         <div class="submit-btn w-full mt-4">
-          <button class="btn btn-primary w-full" @click="AddEquipment">
+          <button
+            class="hse-project-button hse-project-button--primary btn btn-primary w-full"
+            @click="AddEquipment"
+          >
             {{ $t('Confirm') }}
           </button>
         </div>
@@ -103,7 +133,7 @@ const AddEquipment = async () => {
 </template>
 
 <style scoped>
-.card .add-equipment-icon{
+.card .add-equipment-icon {
   cursor: pointer !important;
   font-weight: 600;
   border: 1px solid #14307c;

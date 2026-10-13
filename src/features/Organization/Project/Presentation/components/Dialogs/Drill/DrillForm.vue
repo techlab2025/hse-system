@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { computed, onMounted, ref } from 'vue'
 import DatePicker from 'primevue/datepicker'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -86,7 +88,12 @@ onMounted(loadTeams)
 </script>
 
 <template>
-  <form class="drill-form" @submit.prevent="submit">
+  <form
+    data-hse-project
+    v-project-panels
+    class="hse-project-root drill-form hse-project-planning"
+    @submit.prevent="submit"
+  >
     <div class="drill-form-intro">
       <span>01</span>
       <div>
@@ -112,20 +119,56 @@ onMounted(loadTeams)
         :placeholder="$t('Select project team')"
         :static-options="teamOptions"
         required
-      /> 
+      />
 
-      <div class="input-wrapper">
-        <div class="field-label"><label for="drill_date">{{ $t('Drill date') }}</label><FieldHelpIcon text="Select the drill date." /></div>
-        <DatePicker id="drill_date" v-model="date" date-format="yy-mm-dd" show-icon fluid />
+      <div class="hse-project-field input-wrapper">
+        <div class="hse-project-field field-label">
+          <label class="hse-project-field-label" for="drill_date">{{ $t('Drill date') }}</label
+          ><FieldHelpIcon text="Select the drill date." />
+        </div>
+        <DatePicker
+          panel-class="hse-project-overlay hse-project-planning"
+          id="drill_date"
+          v-model="date"
+          date-format="yy-mm-dd"
+          show-icon
+          fluid
+        />
       </div>
-      <div class="input-wrapper">
-        <div class="field-label"><label for="drill_time">{{ $t('Drill time') }}</label><FieldHelpIcon text="Select the drill start time." /></div>
-        <DatePicker id="drill_time" v-model="time" time-only hour-format="12" fluid />
+      <div class="hse-project-field input-wrapper">
+        <div class="hse-project-field field-label">
+          <label class="hse-project-field-label" for="drill_time">{{ $t('Drill time') }}</label
+          ><FieldHelpIcon text="Select the drill start time." />
+        </div>
+        <DatePicker
+          panel-class="hse-project-overlay hse-project-planning"
+          id="drill_time"
+          v-model="time"
+          time-only
+          hour-format="12"
+          fluid
+        />
       </div>
 
-      <div class="input-wrapper drill-serial">
-        <div class="field-label"><label for="drill_serial">{{ $t('serial_number') }}</label><FieldHelpIcon :text="serialIsAuto ? 'The serial will be generated automatically.' : 'Enter the drill serial number.'" /></div>
-        <input id="drill_serial" v-model="serial" class="input" type="text" :disabled="serialIsAuto" :placeholder="serialIsAuto ? $t('Auto-generated') : $t('Enter serial number')" />
+      <div class="hse-project-field input-wrapper drill-serial">
+        <div class="hse-project-field field-label">
+          <label class="hse-project-field-label" for="drill_serial">{{ $t('serial_number') }}</label
+          ><FieldHelpIcon
+            :text="
+              serialIsAuto
+                ? 'The serial will be generated automatically.'
+                : 'Enter the drill serial number.'
+            "
+          />
+        </div>
+        <input
+          id="drill_serial"
+          v-model="serial"
+          class="hse-project-input input"
+          type="text"
+          :disabled="serialIsAuto"
+          :placeholder="serialIsAuto ? $t('Auto-generated') : $t('Enter serial number')"
+        />
         <small v-if="serialIsAuto">{{ $t('Automatic serial numbering is enabled') }}</small>
       </div>
 
@@ -137,15 +180,27 @@ onMounted(loadTeams)
         <div class="field-label"><label for="drill_improvement">{{ $t('Improvement') }}</label><FieldHelpIcon text="Describe opportunities for improvement." /></div>
         <textarea id="drill_improvement" v-model="improvement" class="input" :placeholder="$t('Enter improvement opportunities')"></textarea>
       </div> -->
-      <div class="input-wrapper full-field">
-        <div class="field-label"><label for="drill_notes">{{ $t('scenario') }}</label><FieldHelpIcon text="Add any supporting scenario for this drill." /></div>
-        <textarea id="drill_notes" v-model="notes" class="input" :placeholder="$t('Enter scenario')"></textarea>
+      <div class="hse-project-field input-wrapper full-field">
+        <div class="hse-project-field field-label">
+          <label class="hse-project-field-label" for="drill_notes">{{ $t('scenario') }}</label
+          ><FieldHelpIcon text="Add any supporting scenario for this drill." />
+        </div>
+        <textarea
+          id="drill_notes"
+          v-model="notes"
+          class="hse-project-input input"
+          :placeholder="$t('Enter scenario')"
+        ></textarea>
       </div>
     </div>
 
     <p v-if="error" class="drill-form-error">{{ error }}</p>
-    <div class="drill-form-actions">
-      <button class="btn btn-primary" type="submit" :disabled="submitting">
+    <div class="hse-project-form-footer drill-form-actions">
+      <button
+        class="hse-project-button hse-project-button--primary btn btn-primary"
+        type="submit"
+        :disabled="submitting"
+      >
         {{ submitting ? $t('Saving...') : $t('Add Drill') }}
       </button>
     </div>
@@ -153,16 +208,73 @@ onMounted(loadTeams)
 </template>
 
 <style scoped lang="scss">
-.drill-form { display: flex; flex-direction: column; gap: 16px; }
-.drill-form-intro { display: flex; align-items: center; gap: 12px; padding: 14px; border: 1px solid color-mix(in srgb, var(--PrimaryColor) 16%, var(--main-border)); border-radius: 16px; background: color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-2)); }
-.drill-form-intro > span { display: grid; width: 40px; height: 40px; place-items: center; border-radius: 12px; color: white; background: var(--PrimaryColor); font-family: 'Bold'; }
-.drill-form-intro strong { color: var(--text-strong); }
-.drill-form-intro p { margin: 2px 0 0; color: var(--text-soft); font-size: .75rem; }
-.drill-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
-.full-field, .drill-serial { grid-column: 1 / -1; }
-.input-wrapper textarea { min-height: 82px; resize: vertical; }
-.drill-serial small { color: var(--PrimaryColor); }
-.drill-form-error { margin: 0; padding: 10px 12px; border-radius: 10px; color: var(--status-danger); background: var(--status-danger-soft); }
-.drill-form-actions { display: flex; justify-content: flex-end; }
-@media (max-width: 680px) { .drill-form-grid { grid-template-columns: 1fr; } .full-field, .drill-serial { grid-column: auto; } }
+.drill-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.drill-form-intro {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 16%, var(--hse-project-line));
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--hse-project-blue) 5%, var(--hse-project-surface-soft));
+}
+.drill-form-intro > span {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 12px;
+  color: white;
+  background: var(--hse-project-blue);
+  font-family: var(--hse-project-font);
+  font-weight: 700;
+}
+.drill-form-intro strong {
+  color: var(--hse-project-ink);
+}
+.drill-form-intro p {
+  margin: 2px 0 0;
+  color: var(--hse-project-muted);
+  font-size: 0.75rem;
+}
+.drill-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+.full-field,
+.drill-serial {
+  grid-column: 1 / -1;
+}
+.input-wrapper textarea {
+  min-height: 82px;
+  resize: vertical;
+}
+.drill-serial small {
+  color: var(--hse-project-blue);
+}
+.drill-form-error {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: var(--hse-project-red);
+  background: var(--hse-project-red-soft);
+}
+.drill-form-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+@media (max-width: 680px) {
+  .drill-form-grid {
+    grid-template-columns: 1fr;
+  }
+  .full-field,
+  .drill-serial {
+    grid-column: auto;
+  }
+}
 </style>

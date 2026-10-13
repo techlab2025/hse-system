@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { computed, onMounted, ref } from 'vue'
 import DatePicker from 'primevue/datepicker'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
@@ -159,8 +161,11 @@ onMounted(fetchProjectEmployees)
 </script>
 
 <template>
-
-  <section class="drill-timeline-builder">
+  <section
+    data-hse-project
+    v-project-panels
+    class="hse-project-root drill-timeline-builder hse-project-planning"
+  >
     <div class="timeline-heading">
       <div>
         <span>{{ mode === 'planning' ? 'PLAN' : 'ACT' }}</span>
@@ -232,12 +237,15 @@ onMounted(fetchProjectEmployees)
           </div>
 
           <div class="timeline-fields">
-            <div class="input-wrapper" v-if="mode === 'action'">
-              <div class="field-label">
-                <label :for="`drill_timeline_date_${index}`">{{ $t('Photographer date') }}</label
+            <div class="hse-project-field input-wrapper" v-if="mode === 'action'">
+              <div class="hse-project-field field-label">
+                <label class="hse-project-field-label" :for="`drill_timeline_date_${index}`">{{
+                  $t('Photographer date')
+                }}</label
                 ><FieldHelpIcon text="Select the date for this timeline entry." />
               </div>
               <DatePicker
+                panel-class="hse-project-overlay hse-project-planning"
                 :id="`drill_timeline_date_${index}`"
                 v-model="item.date"
                 date-format="yy-mm-dd"
@@ -245,12 +253,15 @@ onMounted(fetchProjectEmployees)
                 fluid
               />
             </div>
-            <div class="input-wrapper">
-              <div class="field-label">
-                <label :for="`drill_timeline_time_${index}`">{{ $t('time') }}</label
+            <div class="hse-project-field input-wrapper">
+              <div class="hse-project-field field-label">
+                <label class="hse-project-field-label" :for="`drill_timeline_time_${index}`">{{
+                  $t('time')
+                }}</label
                 ><FieldHelpIcon text="Select the time for this timeline entry." />
               </div>
               <DatePicker
+                panel-class="hse-project-overlay hse-project-planning"
                 :id="`drill_timeline_time_${index}`"
                 v-model="item.time"
                 time-only
@@ -258,27 +269,32 @@ onMounted(fetchProjectEmployees)
                 fluid
               />
             </div>
-            <div v-if="mode === 'planning'" class="input-wrapper full-field">
-              <div class="field-label">
-                <label :for="`drill_timeline_notes_${index}`">{{ $t('notes') }}</label
+            <div v-if="mode === 'planning'" class="hse-project-field input-wrapper full-field">
+              <div class="hse-project-field field-label">
+                <label class="hse-project-field-label" :for="`drill_timeline_notes_${index}`">{{
+                  $t('notes')
+                }}</label
                 ><FieldHelpIcon text="Describe what is planned at this point." />
               </div>
               <textarea
                 :id="`drill_timeline_notes_${index}`"
                 v-model="item.notes"
-                class="input"
+                class="hse-project-input input"
                 :placeholder="$t('Enter planning notes')"
               ></textarea>
             </div>
-            <div v-else class="input-wrapper full-field">
-              <div class="field-label">
-                <label :for="`drill_timeline_description_${index}`">{{ $t('Explanation') }}</label
+            <div v-else class="hse-project-field input-wrapper full-field">
+              <div class="hse-project-field field-label">
+                <label
+                  class="hse-project-field-label"
+                  :for="`drill_timeline_description_${index}`"
+                  >{{ $t('Explanation') }}</label
                 ><FieldHelpIcon text="Describe what is planned or what happened at this point." />
               </div>
               <textarea
                 :id="`drill_timeline_description_${index}`"
                 v-model="item.description"
-                class="input"
+                class="hse-project-input input"
                 :placeholder="$t('What happened? (in detail)')"
               ></textarea>
             </div>
@@ -297,41 +313,47 @@ onMounted(fetchProjectEmployees)
                   :placeholder="$t('Enter photographer name')"
                 />
               </div> -->
-              <div class="input-wrapper">
-                <div class="field-label">
-                  <label :for="`drill_photographer_${index}`">{{ $t('Photographer place') }}</label
+              <div class="hse-project-field input-wrapper">
+                <div class="hse-project-field field-label">
+                  <label class="hse-project-field-label" :for="`drill_photographer_${index}`">{{
+                    $t('Photographer place')
+                  }}</label
                   ><FieldHelpIcon text="Enter the place of the person who captured the evidence." />
                 </div>
                 <input
                   :id="`drill_photographer_${index}`"
                   v-model="item.photographerplace"
-                  class="input"
+                  class="hse-project-input input"
                   type="text"
                   :placeholder="$t('Enter photographer place')"
                 />
               </div>
-              <div class="input-wrapper">
-                <div class="field-label">
-                  <label :for="`evaluation_${index}`">{{ $t('evaluation') }}</label
+              <div class="hse-project-field input-wrapper">
+                <div class="hse-project-field field-label">
+                  <label class="hse-project-field-label" :for="`evaluation_${index}`">{{
+                    $t('evaluation')
+                  }}</label
                   ><FieldHelpIcon text="Enter the evaluation" />
                 </div>
                 <input
                   :id="`evaluation_${index}`"
                   v-model="item.evaluation"
-                  class="input"
+                  class="hse-project-input input"
                   type="text"
                   :placeholder="$t('Enter Evaluation')"
                 />
               </div>
-              <div class="input-wrapper">
-                <div class="field-label">
-                  <label :for="`improvement_${index}`">{{ $t('Suggested Improvement') }}</label
+              <div class="hse-project-field input-wrapper">
+                <div class="hse-project-field field-label">
+                  <label class="hse-project-field-label" :for="`improvement_${index}`">{{
+                    $t('Suggested Improvement')
+                  }}</label
                   ><FieldHelpIcon text="Enter the improvement" />
                 </div>
                 <input
                   :id="`improvement_${index}`"
                   v-model="item.improvement"
-                  class="input"
+                  class="hse-project-input input"
                   type="text"
                   :placeholder="$t('Enter improvement')"
                 />
@@ -349,21 +371,23 @@ onMounted(fetchProjectEmployees)
                 />
               </div> -->
 
-              <div class="input-wrapper">
-                <div class="field-label">
-                  <label :for="`drill_action_notes_${index}`">{{ $t('notes') }}</label
+              <div class="hse-project-field input-wrapper">
+                <div class="hse-project-field field-label">
+                  <label class="hse-project-field-label" :for="`drill_action_notes_${index}`">{{
+                    $t('notes')
+                  }}</label
                   ><FieldHelpIcon text="Add notes about this drill action." />
                 </div>
                 <textarea
                   :id="`drill_action_notes_${index}`"
                   v-model="item.notes"
-                  class="input compact-textarea"
+                  class="hse-project-input input compact-textarea"
                   :placeholder="$t('Enter notes')"
                 ></textarea>
               </div>
-              <div class="full-field input-wrapper">
-                <div class="field-label">
-                  <label>{{ $t('upload image') }}</label
+              <div class="hse-project-field full-field input-wrapper">
+                <div class="hse-project-field field-label">
+                  <label class="hse-project-field-label">{{ $t('upload image') }}</label
                   ><FieldHelpIcon
                     text="Attach photos that document the drill action or evidence."
                   />
@@ -381,7 +405,11 @@ onMounted(fetchProjectEmployees)
     </button>
     <p v-if="error" class="timeline-error">{{ error }}</p>
     <div class="timeline-submit">
-      <button class="btn btn-primary" type="button" @click="submit">
+      <button
+        class="hse-project-button hse-project-button--primary btn btn-primary"
+        type="button"
+        @click="submit"
+      >
         {{ $t('Save timeline') }}
       </button>
     </div>
@@ -400,7 +428,7 @@ onMounted(fetchProjectEmployees)
   gap: 11px;
   padding: 13px;
   border-radius: 15px;
-  background: color-mix(in srgb, var(--PrimaryColor) 6%, var(--surface-2));
+  background: color-mix(in srgb, var(--hse-project-blue) 6%, var(--hse-project-surface-soft));
 }
 .timeline-heading > div:first-child span {
   display: grid;
@@ -409,18 +437,18 @@ onMounted(fetchProjectEmployees)
   place-items: center;
   border-radius: 13px;
   color: white;
-  background: var(--PrimaryColor);
-  font: 0.65rem 'Bold';
+  background: var(--hse-project-blue);
+  font: 700 0.65rem var(--hse-project-font);
 }
 .timeline-heading h3 {
   margin: 0;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 0.95rem;
 }
 .timeline-heading p {
   margin: 2px 0 0;
-  color: var(--text-soft);
-  font-size: 0.68rem;
+  color: var(--hse-project-muted);
+  font-size: 0.75rem;
 }
 .existing-actions {
   display: grid;
@@ -428,7 +456,7 @@ onMounted(fetchProjectEmployees)
 }
 .existing-actions-status {
   margin: 0;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 }
 .existing-actions-title {
   display: flex;
@@ -437,20 +465,20 @@ onMounted(fetchProjectEmployees)
 }
 .existing-actions-title h4 {
   margin: 0;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 .existing-actions-title span {
-  color: var(--text-soft);
-  font-size: 0.7rem;
+  color: var(--hse-project-muted);
+  font-size: 0.75rem;
 }
 .existing-action {
   display: grid;
   grid-template-columns: 30px 1fr;
   gap: 10px;
   padding: 12px;
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--hse-project-line);
   border-radius: 13px;
-  background: var(--surface-2);
+  background: var(--hse-project-surface-soft);
 }
 .existing-action > span {
   display: grid;
@@ -459,18 +487,19 @@ onMounted(fetchProjectEmployees)
   place-items: center;
   border-radius: 50%;
   color: white;
-  background: var(--PrimaryColor);
-  font-family: 'Bold';
+  background: var(--hse-project-blue);
+  font-family: var(--hse-project-font);
+  font-weight: 700;
 }
 .existing-action small {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 }
 .existing-action p {
   margin: 4px 0;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 .existing-action em {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.75rem;
 }
 .existing-action-images {
@@ -506,7 +535,7 @@ onMounted(fetchProjectEmployees)
   top: 34px;
   bottom: -22px;
   width: 2px;
-  background: color-mix(in srgb, var(--PrimaryColor) 25%, var(--main-border));
+  background: color-mix(in srgb, var(--hse-project-blue) 25%, var(--hse-project-line));
 }
 .drill-timeline-item:last-child .drill-timeline-marker::after {
   display: none;
@@ -519,14 +548,15 @@ onMounted(fetchProjectEmployees)
   place-items: center;
   border-radius: 50%;
   color: white;
-  background: var(--PrimaryColor);
-  font-family: 'Bold';
+  background: var(--hse-project-blue);
+  font-family: var(--hse-project-font);
+  font-weight: 700;
 }
 .drill-timeline-card {
   padding: 15px;
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--hse-project-line);
   border-radius: 17px;
-  background: var(--surface-2);
+  background: var(--hse-project-surface-soft);
 }
 .drill-timeline-card-header {
   display: flex;
@@ -534,17 +564,17 @@ onMounted(fetchProjectEmployees)
   margin-bottom: 13px;
 }
 .drill-timeline-card-header span {
-  color: var(--PrimaryColor);
-  font-size: 0.63rem;
+  color: var(--hse-project-blue);
+  font-size: 0.75rem;
   font-weight: 900;
   text-transform: uppercase;
 }
 .drill-timeline-card-header h4 {
   margin: 2px 0 0;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 .timeline-delete {
-  color: var(--status-danger);
+  color: var(--hse-project-red);
   cursor: pointer;
 }
 .timeline-fields {
@@ -565,15 +595,15 @@ onMounted(fetchProjectEmployees)
 .add-timeline-item {
   align-self: flex-start;
   padding: 9px 13px;
-  border: 1px dashed var(--PrimaryColor);
+  border: 1px dashed var(--hse-project-blue);
   border-radius: 11px;
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
   cursor: pointer;
-  background: color-mix(in srgb, var(--PrimaryColor) 5%, transparent);
+  background: color-mix(in srgb, var(--hse-project-blue) 5%, transparent);
 }
 .timeline-error {
   margin: 0;
-  color: var(--status-danger);
+  color: var(--hse-project-red);
 }
 .timeline-submit {
   display: flex;

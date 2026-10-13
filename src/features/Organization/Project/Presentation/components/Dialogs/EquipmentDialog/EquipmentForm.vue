@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -86,15 +88,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="equipment-form">
+  <div data-hse-project v-project-panels class="hse-project-root equipment-form">
     <form @submit.prevent="AddEquipment">
       <div class="input-container">
-        <div class="input-wrapper w-full">
+        <div class="hse-project-field input-wrapper w-full">
           <!-- <CustomSelectInput :modelValue="Equipment" :controller="indexEquipmentController"
             :params="indexEquipmentParams" class="input" label="Equipment" id="Equipment" :type="2"
             placeholder="Select Your Equipment" @update:modelValue="setEquipments" /> -->
-          <label for="equipment">{{ $t('Select Equipment') }}</label>
+          <label class="hse-project-field-label" for="equipment">{{
+            $t('Select Equipment')
+          }}</label>
           <MultiSelect
+            overlay-class="hse-project-overlay"
             :key="formKey"
             :modelValue="Equipment"
             :options="AllEquipments"
@@ -108,11 +113,20 @@ onMounted(() => {
         </div>
       </div>
 
-      <div class="submit-btn create-form-actions">
-        <button class="btn btn-secondary" type="button" @click.prevent="saveAndNew">
+      <div class="hse-project-form-footer submit-btn create-form-actions">
+        <button
+          class="hse-project-button btn btn-secondary"
+          type="button"
+          @click.prevent="saveAndNew"
+        >
           {{ $t('save and new') }}
         </button>
-        <button class="btn btn-primary" type="submit">{{ $t('confirm') }}</button>
+        <button
+          class="hse-project-button hse-project-button--primary btn btn-primary"
+          type="submit"
+        >
+          {{ $t('confirm') }}
+        </button>
       </div>
     </form>
   </div>

@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import TitleInterface from '@/base/Data/Models/title_interface';
-import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue';
-import LocationIcon from '@/shared/icons/LocationIcon.vue';
-import { ref } from 'vue';
+import { vProjectPanels } from '../../../composables/projectPanels'
+
+import TitleInterface from '@/base/Data/Models/title_interface'
+import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
+import LocationIcon from '@/shared/icons/LocationIcon.vue'
+import { ref } from 'vue'
 const employee = ref<TitleInterface>()
 const employees = ref<TitleInterface[]>([
   new TitleInterface({ id: 1, title: 'Employee 1', subtitle: '' }),
@@ -12,20 +14,26 @@ const employees = ref<TitleInterface[]>([
 const setEmployee = (data: TitleInterface) => {
   employee.value = data
 }
-
 </script>
 <template>
-  <div class="add-employee-cards-container">
+  <div data-hse-project v-project-panels class="hse-project-root add-employee-cards-container">
     <div class="add-employee-cards">
       <div class="add-employee-card">
         <div class="add-employee-card-header">
           <LocationIcon />
           <p class="title">Alexandria</p>
         </div>
-        <div class="input-wrapper">
-          <CustomSelectInput :modelValue="employee" :static-options="employees" class="input"
-            :label="$t('functional Hierarchy')" id="Employee" :placeholder="$t('select your functional Hierarchy')"
-            @update:modelValue="setEmployee" />
+        <div class="hse-project-field input-wrapper">
+          <CustomSelectInput
+            overlay-class="hse-project-overlay"
+            :modelValue="employee"
+            :static-options="employees"
+            class="input"
+            :label="$t('functional Hierarchy')"
+            id="Employee"
+            :placeholder="$t('select your functional Hierarchy')"
+            @update:modelValue="setEmployee"
+          />
         </div>
       </div>
       <div class="add-employee-card">
@@ -33,10 +41,17 @@ const setEmployee = (data: TitleInterface) => {
           <LocationIcon />
           <p class="title">Cairo</p>
         </div>
-        <div class="input-wrapper">
-          <CustomSelectInput :modelValue="employee" :static-options="employees" class="input"
-            :label="$t('functional Hierarchy')" id="Employee" :placeholder="$t('select your functional Hierarchy')"
-            @update:modelValue="setEmployee" />
+        <div class="hse-project-field input-wrapper">
+          <CustomSelectInput
+            overlay-class="hse-project-overlay"
+            :modelValue="employee"
+            :static-options="employees"
+            class="input"
+            :label="$t('functional Hierarchy')"
+            id="Employee"
+            :placeholder="$t('select your functional Hierarchy')"
+            @update:modelValue="setEmployee"
+          />
         </div>
       </div>
       <div class="add-employee-card">
@@ -44,15 +59,22 @@ const setEmployee = (data: TitleInterface) => {
           <LocationIcon />
           <p class="title">Cairo</p>
         </div>
-        <div class="input-wrapper">
-          <CustomSelectInput :modelValue="employee" :static-options="employees" class="input"
-            :label="$t('functional Hierarchy')" id="Employee" :placeholder="$t('select your functional Hierarchy')"
-            @update:modelValue="setEmployee" />
+        <div class="hse-project-field input-wrapper">
+          <CustomSelectInput
+            overlay-class="hse-project-overlay"
+            :modelValue="employee"
+            :static-options="employees"
+            class="input"
+            :label="$t('functional Hierarchy')"
+            id="Employee"
+            :placeholder="$t('select your functional Hierarchy')"
+            @update:modelValue="setEmployee"
+          />
         </div>
       </div>
     </div>
     <div class="submit-btn">
-      <button class="btn btn-ptimary">{{ $t('confirm') }}</button>
+      <button class="hse-project-button btn btn-ptimary">{{ $t('confirm') }}</button>
     </div>
   </div>
 </template>

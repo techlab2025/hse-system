@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { vProjectPanels } from '../composables/projectPanels'
+
 import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -52,19 +54,31 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <DataStatus :controller="state">
-    <template #success>
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditProject">
-        <ProjectForm ref="formRef" @update:data="setParams" :data="state.data!" />
-        <div class="col-span-4 button-wrapper w-full">
-          <button type="submit" class="btn btn-primary w-full">{{ $t('save') }}</button>
-        </div>
-      </form>
-    </template>
-    <template #loader>
-      <FormLoader :inputsCount="5" />
-    </template>
-  </DataStatus>
+  <div data-hse-project v-project-panels class="hse-project-root hse-project-state-host">
+    <DataStatus :controller="state">
+      <template #success>
+        <form
+          data-hse-project
+          v-project-panels
+          class="hse-project-root hse-project-page grid grid-cols-1 md:grid-cols-4 gap-4"
+          @submit.prevent="EditProject"
+        >
+          <ProjectForm ref="formRef" @update:data="setParams" :data="state.data!" />
+          <div class="col-span-4 button-wrapper w-full">
+            <button
+              type="submit"
+              class="hse-project-button hse-project-button--primary btn btn-primary w-full"
+            >
+              {{ $t('save') }}
+            </button>
+          </div>
+        </form>
+      </template>
+      <template #loader>
+        <FormLoader :inputsCount="5" />
+      </template>
+    </DataStatus>
+  </div>
 </template>
 
 <style scoped></style>

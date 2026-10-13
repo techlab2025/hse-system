@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { DataLoading, DataSuccess } from '@/base/core/networkStructure/Resources/dataState/data_state'
+import {
+  DataLoading,
+  DataSuccess,
+} from '@/base/core/networkStructure/Resources/dataState/data_state'
 import GetTodayTalkParams from '../../../Core/params/TodayTalk/GetTodayTalkParams'
 import GetTodayTalkController from '../../controllers/TodayTalk/GetTodayTalkController'
 import type TodayTalkModel from '../../../Data/models/TodayTalk/TodayTalkModel'
@@ -37,12 +42,14 @@ const talkTimestamp = (item: TodayTalkModel) => {
 const talk = computed(() => {
   if (!(state.value instanceof DataSuccess) || !state.value.data?.length) return null
 
-  return [...state.value.data]
-    .filter((item) => item.date.slice(0, 10) === todayDate)
-    .sort((first, second) => {
-      const timestampDifference = talkTimestamp(second) - talkTimestamp(first)
-      return timestampDifference || second.id - first.id
-    })[0] ?? null
+  return (
+    [...state.value.data]
+      .filter((item) => item.date.slice(0, 10) === todayDate)
+      .sort((first, second) => {
+        const timestampDifference = talkTimestamp(second) - talkTimestamp(first)
+        return timestampDifference || second.id - first.id
+      })[0] ?? null
+  )
 })
 const historyTalks = computed(() => {
   if (!(state.value instanceof DataSuccess) || !state.value.data?.length) return []
@@ -59,7 +66,9 @@ const attendingCount = computed(
   () => talk.value?.employees.filter((employee) => employee.isAttend).length ?? 0,
 )
 const projectId = computed(() => Number(props.projectId ?? route.params.id))
-const createRoute = computed(() => `/organization/project-details/${projectId.value}/today-talk/create`)
+const createRoute = computed(
+  () => `/organization/project-details/${projectId.value}/today-talk/create`,
+)
 
 const formatDate = (date: string) => {
   if (!date) return 'Today'
@@ -94,13 +103,18 @@ watch(projectId, fetchTodayTalk, { immediate: true })
 </script>
 
 <template>
-  <section class="today-talk-card" aria-labelledby="today-talk-title">
+  <section
+    data-hse-project
+    v-project-panels
+    class="hse-project-panel hse-project-root today-talk-card"
+    aria-labelledby="today-talk-title"
+  >
     <div class="talk-accent" aria-hidden="true"></div>
 
     <button
       v-if="historyTalks.length && !isLoading"
       type="button"
-      class="history-button"
+      class="hse-project-button history-button"
       :aria-label="`Open ${historyTalks.length} previous talks`"
       :title="`${historyTalks.length} previous talks`"
       @click="historyDialogVisible = true"
@@ -177,7 +191,11 @@ watch(projectId, fetchTodayTalk, { immediate: true })
       </div>
       <div class="empty-action">
         <!-- <span aria-hidden="true">+</span> -->
-        <RouterLink :to="createRoute" class="btn btn-primary">Create today’s talk</RouterLink>
+        <RouterLink
+          :to="createRoute"
+          class="hse-project-button hse-project-button--primary btn btn-primary"
+          >Create today’s talk</RouterLink
+        >
         <!-- <button type="button" class="retry-button" @click="fetchTodayTalk">Check again</button> -->
       </div>
     </div>
@@ -207,8 +225,16 @@ watch(projectId, fetchTodayTalk, { immediate: true })
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 20%, var(--main-border));
   border-radius: 24px;
   background:
-    radial-gradient(circle at 92% 8%, color-mix(in srgb, var(--PrimaryColor) 17%, transparent), transparent 34%),
-    linear-gradient(135deg, var(--surface-1), color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-2)));
+    radial-gradient(
+      circle at 92% 8%,
+      color-mix(in srgb, var(--PrimaryColor) 17%, transparent),
+      transparent 34%
+    ),
+    linear-gradient(
+      135deg,
+      var(--surface-1),
+      color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-2))
+    );
   box-shadow: 0 18px 42px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
 }
 
@@ -448,20 +474,48 @@ h2 {
   animation: pulse 1.3s ease-in-out infinite alternate;
 }
 
-.loading-orb { width: 54px; height: 54px; border-radius: 50%; }
-.talk-loading div { flex: 1; }
-.talk-loading div span:first-child { width: 34%; height: 17px; margin-bottom: 12px; }
-.talk-loading div span:last-child { width: 72%; height: 44px; }
+.loading-orb {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+}
+.talk-loading div {
+  flex: 1;
+}
+.talk-loading div span:first-child {
+  width: 34%;
+  height: 17px;
+  margin-bottom: 12px;
+}
+.talk-loading div span:last-child {
+  width: 72%;
+  height: 44px;
+}
 
-@keyframes pulse { to { opacity: 0.42; } }
+@keyframes pulse {
+  to {
+    opacity: 0.42;
+  }
+}
 
 @media (max-width: 700px) {
   .talk-header,
   .talk-footer,
-  .talk-empty { align-items: flex-start; flex-direction: column; }
-  .talk-date { text-align: start; }
-  .empty-action { align-items: flex-start; }
-  .view-details { align-self: flex-end; }
-  .history-button span { display: none; }
+  .talk-empty {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .talk-date {
+    text-align: start;
+  }
+  .empty-action {
+    align-items: flex-start;
+  }
+  .view-details {
+    align-self: flex-end;
+  }
+  .history-button span {
+    display: none;
+  }
 }
 </style>

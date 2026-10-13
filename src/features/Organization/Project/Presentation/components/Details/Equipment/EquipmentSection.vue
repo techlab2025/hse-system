@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import HeaderSection from '../DetailsHeader/HeaderSection.vue'
 import Equipment from '@/assets/images/Equipment.png'
 import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
@@ -43,7 +45,11 @@ watch(
 </script>
 
 <template>
-  <div class="equipment-section">
+  <div
+    data-hse-project
+    v-project-panels
+    class="hse-project-panel hse-project-root equipment-section"
+  >
     <div class="equipment-section-header">
       <HeaderSection
         :img="Equipment"
@@ -143,8 +149,7 @@ watch(
 .show-all {
   display: flex;
   align-items: center;
-  color:white !important;
-
+  color: white !important;
 }
 
 .equipment-section-header {

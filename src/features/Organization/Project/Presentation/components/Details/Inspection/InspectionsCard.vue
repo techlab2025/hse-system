@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import PinIcons from '@/shared/icons/PinIcons.vue'
 import InspectionDialog from './InspectionDialog.vue'
 
@@ -10,7 +12,11 @@ const { showHeader, showArrowLink, isAssign } = defineProps<{
 </script>
 
 <template>
-  <div class="inspections-card">
+  <div
+    data-hse-project
+    v-project-panels
+    class="hse-project-panel hse-project-root inspections-card"
+  >
     <div class="card-header" v-if="showHeader">
       <div class="card-header-title">
         <PinIcons />

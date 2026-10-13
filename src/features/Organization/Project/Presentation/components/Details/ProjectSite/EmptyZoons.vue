@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import EmptyZoon from '@/assets/images/EmptyZoon.png'
 </script>
 <template>
-  <div class="empty-zoon">
+  <div data-hse-project v-project-panels class="hse-project-root empty-zoon">
     <span class="empty-zone-mark" aria-hidden="true">+</span>
     <div class="empty-zoon-info">
       <p class="no-zoon">{{ $t('No Zoons Yet') }}</p>

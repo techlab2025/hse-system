@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { computed, onMounted, reactive, ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import Accordion from 'primevue/accordion'
@@ -112,7 +114,9 @@ const addVisit = (key: string) => {
 }
 const refreshVisits = async () => {
   if (projectId.value > 0)
-    await visitsController.fetchVisits(new FetchAllLeadershipVisitsParams({ projectId: projectId.value }))
+    await visitsController.fetchVisits(
+      new FetchAllLeadershipVisitsParams({ projectId: projectId.value }),
+    )
 }
 const saveMonth = async (month: ProjectMonth) => {
   errorMessage.value = ''
@@ -181,8 +185,8 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main class="leadership-page">
-    <header class="hero">
+  <main data-hse-project v-project-panels class="hse-project-root hse-project-page leadership-page">
+    <header data-hse-project-head class="hse-project-page-head hero">
       <div class="hero__art" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="hero__content">
         <div class="hero__symbol" aria-hidden="true">
@@ -200,11 +204,16 @@ onMounted(async () => {
         </div>
       </div>
       <div class="hero__actions">
-        <RouterLink :to="`/organization/project-details/${projectId}/leadership/visits`"
-          class="back-link back-link--primary">
+        <RouterLink
+          :to="`/organization/project-details/${projectId}/leadership/visits`"
+          class="hse-project-button hse-project-button--primary back-link back-link--primary"
+        >
           <span>View leadership plans</span> →
         </RouterLink>
-        <RouterLink :to="`/organization/project-details/${projectId}`" class="back-link">
+        <RouterLink
+          :to="`/organization/project-details/${projectId}`"
+          class="hse-project-button back-link"
+        >
           ← <span>Back to project</span>
         </RouterLink>
       </div>
@@ -219,15 +228,18 @@ onMounted(async () => {
 
     <DataStatus :controller="projectState">
       <template #success>
-        <section class="workspace-card">
+        <section class="hse-project-panel workspace-card">
           <div class="section-intro">
             <!-- <div> -->
             <!-- <h2>plans</h2> -->
             <!-- <p>Choose a project month, add one or more visits, and save them together.</p> -->
             <!-- </div> -->
             <div class="date-range">
-              <span>Project duration</span><strong>{{ projectState.data?.startDate?.slice(0, 10) }} <i>→</i>
-                {{ projectState.data?.endDate?.slice(0, 10) }}</strong>
+              <span>Project duration</span
+              ><strong
+                >{{ projectState.data?.startDate?.slice(0, 10) }} <i>→</i>
+                {{ projectState.data?.endDate?.slice(0, 10) }}</strong
+              >
             </div>
           </div>
 
@@ -254,7 +266,12 @@ onMounted(async () => {
           </div>
 
           <Accordion v-if="months.length" :value="months[0]?.key" class="month-accordion">
-            <AccordionPanel v-for="month in months" :key="month.key" :value="month.key" class="month-panel">
+            <AccordionPanel
+              v-for="month in months"
+              :key="month.key"
+              :value="month.key"
+              class="month-panel"
+            >
               <AccordionHeader>
                 <div class="month-heading">
                   <span class="month-heading__badge" aria-hidden="true">
@@ -271,7 +288,10 @@ onMounted(async () => {
                       {{ month.firstDate }} <i>→</i> {{ month.lastDate }}
                     </small>
                   </div>
-                  <span class="visit-count" :class="{ 'visit-count--empty': !savedVisitsForMonth(month.key).length }">
+                  <span
+                    class="visit-count"
+                    :class="{ 'visit-count--empty': !savedVisitsForMonth(month.key).length }"
+                  >
                     <b>{{ savedVisitsForMonth(month.key).length }}</b>
                     <span>
                       {{
@@ -287,18 +307,28 @@ onMounted(async () => {
                 <div class="month-body">
                   <!-- <div v-if="!rowsForMonth(month.key).length" class="month-empty">
                     <span class="month-empty__symbol">＋</span> -->
-                  <div v-if="!rowsForMonth(month.key).length && !savedVisitsForMonth(month.key).length"
-                    class="month-empty">
+                  <div
+                    v-if="!rowsForMonth(month.key).length && !savedVisitsForMonth(month.key).length"
+                    class="month-empty"
+                  >
                     <div>
                       <strong>Start this month’s plan</strong>
                       <p>Add a visit with its date, location, employee, and activity.</p>
                     </div>
-                    <button type="button" class="button button--primary" @click="addVisit(month.key)">
+                    <button
+                      type="button"
+                      class="hse-project-button hse-project-button--primary button button--primary"
+                      @click="addVisit(month.key)"
+                    >
                       Add first visit
                     </button>
                   </div>
                   <div v-if="savedVisitsForMonth(month.key).length" class="month-actions">
-                    <button type="button" class="button button--outline" @click="addVisit(month.key)">
+                    <button
+                      type="button"
+                      class="hse-project-button button button--outline"
+                      @click="addVisit(month.key)"
+                    >
                       ＋ Add another visit
                     </button>
                   </div>
@@ -306,7 +336,7 @@ onMounted(async () => {
                   <div v-if="savedVisitsForMonth(month.key).length" class="saved-visits-table">
                     <h3>plans</h3>
 
-                    <table>
+                    <table class="hse-project-table">
                       <thead>
                         <tr>
                           <th>plan</th>
@@ -319,10 +349,11 @@ onMounted(async () => {
                       </thead>
 
                       <tbody>
-                        <tr v-for="(visit, index) in savedVisitsForMonth(month.key)" :key="visit.id">
-                          <td>
-                            plan {{ index + 1 }}
-                          </td>
+                        <tr
+                          v-for="(visit, index) in savedVisitsForMonth(month.key)"
+                          :key="visit.id"
+                        >
+                          <td>plan {{ index + 1 }}</td>
 
                           <td>
                             {{ visit.date }}
@@ -349,37 +380,61 @@ onMounted(async () => {
 
                   <!-- <div v-else class="draft-list"> -->
                   <div v-if="rowsForMonth(month.key).length" class="draft-list">
-                    <article v-for="(visit, index) in rowsForMonth(month.key)" :key="index" class="draft-card">
+                    <article
+                      v-for="(visit, index) in rowsForMonth(month.key)"
+                      :key="index"
+                      class="hse-project-panel draft-card"
+                    >
                       <div class="draft-card__top">
                         <div class="draft-card__number">
                           {{ String(index + 1).padStart(2, '0') }}
                         </div>
                         <div>
-                          <strong>Visit {{ index + 1 }}</strong><small>Complete the details for this planned
-                            visit</small>
+                          <strong>Visit {{ index + 1 }}</strong
+                          ><small>Complete the details for this planned visit</small>
                         </div>
-                        <button type="button" class="remove-button" @click="monthVisits[month.key]?.splice(index, 1)">
+                        <button
+                          :aria-label="$t('delete')"
+                          type="button"
+                          class="hse-project-button--icon hse-project-button hse-project-button--danger remove-button"
+                          @click="monthVisits[month.key]?.splice(index, 1)"
+                        >
                           Remove
                         </button>
                       </div>
                       <div class="visit-fields">
-                        <div class="visit-field">
-                          <label :for="`visit-date-${month.key}-${index}`" class="visit-field__label">
+                        <div class="hse-project-field visit-field">
+                          <label
+                            :for="`visit-date-${month.key}-${index}`"
+                            class="hse-project-field-label visit-field__label"
+                          >
                             <span class="visit-field__icon" aria-hidden="true">
                               <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M7 3v3M17 3v3M4 9h16M6 5h12a2 2 0 0 1 2 2v12H4V7a2 2 0 0 1 2-2Z" />
+                                <path
+                                  d="M7 3v3M17 3v3M4 9h16M6 5h12a2 2 0 0 1 2 2v12H4V7a2 2 0 0 1 2-2Z"
+                                />
                               </svg>
                             </span>
                             <span>Date <b>*</b></span>
                           </label>
-                          <DatePicker :input-id="`visit-date-${month.key}-${index}`"
-                            :model-value="parseDate(visit.date)" date-format="yy-mm-dd" show-icon fluid
+                          <DatePicker
+                            panel-class="hse-project-overlay"
+                            :input-id="`visit-date-${month.key}-${index}`"
+                            :model-value="parseDate(visit.date)"
+                            date-format="yy-mm-dd"
+                            show-icon
+                            fluid
                             :min-date="parseDate(month.firstDate) ?? undefined"
-                            :max-date="parseDate(month.lastDate) ?? undefined" placeholder="Select visit date"
-                            @update:model-value="(value) => setVisitDate(visit, value)" />
+                            :max-date="parseDate(month.lastDate) ?? undefined"
+                            placeholder="Select visit date"
+                            @update:model-value="(value) => setVisitDate(visit, value)"
+                          />
                         </div>
-                        <div class="visit-field">
-                          <label :for="`visit-location-${month.key}-${index}`" class="visit-field__label">
+                        <div class="hse-project-field visit-field">
+                          <label
+                            :for="`visit-location-${month.key}-${index}`"
+                            class="hse-project-field-label visit-field__label"
+                          >
                             <span class="visit-field__icon" aria-hidden="true">
                               <svg viewBox="0 0 24 24" fill="none">
                                 <path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z" />
@@ -388,20 +443,36 @@ onMounted(async () => {
                             </span>
                             <span>Visit Location <b>*</b></span>
                           </label>
-                          <input :id="`visit-location-${month.key}-${index}`" v-model="visit.location" type="text"
-                            placeholder="e.g. Main site" required />
+                          <input
+                            class="hse-project-input"
+                            :id="`visit-location-${month.key}-${index}`"
+                            v-model="visit.location"
+                            type="text"
+                            placeholder="e.g. Main site"
+                            required
+                          />
                         </div>
-                        <UpdatedCustomInputSelect :id="`visit-employee-${month.key}-${index}`"
-                          class="visit-field visit-field--select" label="Organization employee" 
-                          placeholder="Select Visiting Managers" :required="true" :reload="false" :has-header="true" :type="2" 
-                          :static-options="employeeOptions" :model-value="selectedOptions(employeeOptions, visit.orgnizationEmployeeIds)
-                            " @update:model-value="
+                        <UpdatedCustomInputSelect
+                          :id="`visit-employee-${month.key}-${index}`"
+                          class="hse-project-field visit-field visit-field--select"
+                          label="Organization employee"
+                          placeholder="Select Visiting Managers"
+                          :required="true"
+                          :reload="false"
+                          :has-header="true"
+                          :type="2"
+                          :static-options="employeeOptions"
+                          :model-value="
+                            selectedOptions(employeeOptions, visit.orgnizationEmployeeIds)
+                          "
+                          @update:model-value="
                             (value) => {
                               visit.orgnizationEmployeeIds = selectedIds(value)
                             }
-                          ">
+                          "
+                        >
                           <template #Header>
-                            <label class="visit-field__label">
+                            <label class="hse-project-field-label visit-field__label">
                               <span class="visit-field__icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none">
                                   <circle cx="12" cy="8" r="3.5" />
@@ -411,22 +482,33 @@ onMounted(async () => {
                               <span>Visiting Managers <b>*</b></span>
                             </label>
                           </template>
-                        </UpdatedCustomInputSelect> 
-                        <UpdatedCustomInputSelect :id="`visit-activity-${month.key}-${index}`" 
-                          class="visit-field visit-field--select" label="Visit activity" placeholder="Select Activities"
-                          :required="true" :reload="false" :has-header="true" :controller="visitActivityController"
-                          :params="visitActivityParams" :type="2" 
-                          :model-value="selectedOptions(activityOptions, visit.visitActivityIds)" @update:model-value="
+                        </UpdatedCustomInputSelect>
+                        <UpdatedCustomInputSelect
+                          :id="`visit-activity-${month.key}-${index}`"
+                          class="hse-project-field visit-field visit-field--select"
+                          label="Visit activity"
+                          placeholder="Select Activities"
+                          :required="true"
+                          :reload="false"
+                          :has-header="true"
+                          :controller="visitActivityController"
+                          :params="visitActivityParams"
+                          :type="2"
+                          :model-value="selectedOptions(activityOptions, visit.visitActivityIds)"
+                          @update:model-value="
                             (value) => {
                               visit.visitActivityIds = selectedIds(value)
                             }
-                          ">
+                          "
+                        >
                           <template #Header>
-                            <label class="visit-field__label">
+                            <label class="hse-project-field-label visit-field__label">
                               <span class="visit-field__icon" aria-hidden="true">
                                 <svg viewBox="0 0 24 24" fill="none">
                                   <path d="M8 4h8M9 3h6a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1Z" />
-                                  <path d="M7 5H6a2 2 0 0 0-2 2v12h16V7a2 2 0 0 0-2-2h-1M8 11h8M8 15h5" />
+                                  <path
+                                    d="M7 5H6a2 2 0 0 0-2 2v12h16V7a2 2 0 0 0-2-2h-1M8 11h8M8 15h5"
+                                  />
                                 </svg>
                               </span>
                               <span>Visit Activities <b>*</b></span>
@@ -457,11 +539,19 @@ onMounted(async () => {
                       </button>
                     </div> -->
                     <div class="month-actions">
-                      <button type="button" class="button button--outline" @click="addVisit(month.key)">
+                      <button
+                        type="button"
+                        class="hse-project-button button button--outline"
+                        @click="addVisit(month.key)"
+                      >
                         ＋ Add another plan
                       </button>
 
-                      <button type="button" class="button button--primary" @click="saveMonth(month)">
+                      <button
+                        type="button"
+                        class="hse-project-button hse-project-button--primary button button--primary"
+                        @click="saveMonth(month)"
+                      >
                         Save plan
                       </button>
                     </div>
@@ -535,12 +625,16 @@ onMounted(async () => {
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
   border-radius: 28px;
   background:
-    radial-gradient(circle at 87% 12%,
+    radial-gradient(
+      circle at 87% 12%,
       color-mix(in srgb, var(--PrimaryColor) 20%, transparent),
-      transparent 34%),
-    linear-gradient(125deg,
+      transparent 34%
+    ),
+    linear-gradient(
+      125deg,
       color-mix(in srgb, var(--brand-primary-900) 96%, var(--surface-1)),
-      color-mix(in srgb, var(--PrimaryColor) 76%, var(--brand-primary-900)));
+      color-mix(in srgb, var(--PrimaryColor) 76%, var(--brand-primary-900))
+    );
   box-shadow: 0 24px 55px color-mix(in srgb, var(--brand-primary-900) 20%, transparent);
 }
 
@@ -732,10 +826,12 @@ onMounted(async () => {
   position: absolute;
   inset: 0 0 auto;
   height: 3px;
-  background: linear-gradient(90deg,
-      var(--PrimaryColor),
-      color-mix(in srgb, var(--PrimaryColor) 18%, transparent) 54%,
-      transparent);
+  background: linear-gradient(
+    90deg,
+    var(--PrimaryColor),
+    color-mix(in srgb, var(--PrimaryColor) 18%, transparent) 54%,
+    transparent
+  );
 }
 
 .section-intro {
@@ -764,9 +860,11 @@ onMounted(async () => {
   padding: 13px 16px;
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 15%, var(--main-border));
   border-radius: 15px;
-  background: linear-gradient(135deg,
-      color-mix(in srgb, var(--PrimaryColor) 8%, var(--surface-1)),
-      var(--surface-1));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--PrimaryColor) 8%, var(--surface-1)),
+    var(--surface-1)
+  );
   box-shadow: inset 0 1px 0 color-mix(in srgb, white 45%, transparent);
 }
 
@@ -805,9 +903,11 @@ onMounted(async () => {
   padding: 16px;
   border: 1px solid var(--main-border);
   border-radius: 16px;
-  background: linear-gradient(140deg,
-      color-mix(in srgb, var(--surface-2) 76%, var(--surface-1)),
-      var(--surface-1));
+  background: linear-gradient(
+    140deg,
+    color-mix(in srgb, var(--surface-2) 76%, var(--surface-1)),
+    var(--surface-1)
+  );
   transition:
     transform 0.2s ease,
     border-color 0.2s ease,
@@ -867,9 +967,11 @@ onMounted(async () => {
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
   border-radius: 20px;
-  background: linear-gradient(130deg,
-      color-mix(in srgb, var(--surface-2) 42%, var(--surface-1)),
-      var(--surface-1) 54%);
+  background: linear-gradient(
+    130deg,
+    color-mix(in srgb, var(--surface-2) 42%, var(--surface-1)),
+    var(--surface-1) 54%
+  );
   box-shadow: 0 7px 20px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
   transition:
     transform 0.25s ease,
@@ -976,13 +1078,13 @@ onMounted(async () => {
   letter-spacing: 0.13em;
 }
 
-.month-heading__details>strong {
+.month-heading__details > strong {
   color: var(--text-strong);
   font-size: 1rem;
   line-height: 1.25;
 }
 
-.month-heading__details>small {
+.month-heading__details > small {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -990,7 +1092,7 @@ onMounted(async () => {
   font-size: 0.75rem;
 }
 
-.month-heading__details>small svg {
+.month-heading__details > small svg {
   width: 14px;
   height: 14px;
   flex: none;
@@ -1000,7 +1102,7 @@ onMounted(async () => {
   stroke-linejoin: round;
 }
 
-.month-heading__details>small i {
+.month-heading__details > small i {
   color: var(--PrimaryColor);
   font-style: normal;
 }
@@ -1059,7 +1161,7 @@ onMounted(async () => {
 }
 
 .month-empty__symbol,
-.empty-state>span {
+.empty-state > span {
   display: grid;
   place-items: center;
   width: 48px;
@@ -1198,7 +1300,7 @@ onMounted(async () => {
   line-height: 1.25;
 }
 
-.visit-field__label>span:last-child {
+.visit-field__label > span:last-child {
   min-width: 0;
 }
 
@@ -1349,9 +1451,11 @@ onMounted(async () => {
 }
 
 .month-panel.p-accordionpanel-active :deep(.p-accordionheader) {
-  background: linear-gradient(90deg,
-      color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
-      transparent 48%) !important;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+    transparent 48%
+  ) !important;
 }
 
 :deep(.p-accordionheader-toggle-icon) {
@@ -1375,9 +1479,11 @@ onMounted(async () => {
 :deep(.p-accordioncontent-content) {
   padding: 14px 20px 20px;
   border-top: 1px solid color-mix(in srgb, var(--PrimaryColor) 10%, var(--main-border));
-  background: linear-gradient(180deg,
-      color-mix(in srgb, var(--PrimaryColor) 2%, var(--surface-1)),
-      var(--surface-1) 80px) !important;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--PrimaryColor) 2%, var(--surface-1)),
+    var(--surface-1) 80px
+  ) !important;
 }
 
 button:focus-visible,
@@ -1389,7 +1495,6 @@ select:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   .back-link,
   .overview__item,
   .month-panel,
@@ -1405,7 +1510,6 @@ select:focus-visible {
 }
 
 @media (max-width: 720px) {
-
   .hero,
   .section-intro,
   .month-empty {
@@ -1464,8 +1568,8 @@ select:focus-visible {
     gap: 10px;
   }
 
-  .month-heading__details>small svg,
-  .month-heading__details>small i,
+  .month-heading__details > small svg,
+  .month-heading__details > small i,
   .visit-count span {
     display: none;
   }

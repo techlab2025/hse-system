@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import HeaderSection from '../Details/DetailsHeader/HeaderSection.vue'
 import TeamMemberCard from '../Details/LocationsTeams/TeamMemberCard.vue'
 import { computed, onMounted, ref, watch } from 'vue'
@@ -69,207 +71,213 @@ watch(
 )
 </script>
 <template>
-  <DataStatus :controller="state">
-    <template #success>
-      <section class="people-overview" aria-label="Project people overview">
-        <div class="overview-copy">
-          <span class="overview-kicker">{{ $t('Project workforce') }}</span>
-          <h2>{{ $t('People and teams at a glance') }}</h2>
-          <p>
-            {{
-              $t('Manage positions, employees and working teams for every operational location.')
-            }}
-          </p>
-        </div>
-        <div class="overview-stats">
-          <div class="stat-item stat-locations">
-            <span class="stat-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
-                <circle cx="12" cy="10" r="2.5" />
-              </svg>
-            </span>
-            <span
-              ><strong>{{ locationsCount }}</strong
-              >{{ $t('Locations') }}</span
-            >
-          </div>
-          <div class="stat-item stat-employees">
-            <span class="stat-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <circle cx="9" cy="8" r="3" />
-                <path
-                  d="M3.5 20v-2a5.5 5.5 0 0 1 11 0v2M16 4.5a3 3 0 0 1 0 5.8M17 13a5.5 5.5 0 0 1 3.5 5.1V20"
-                />
-              </svg>
-            </span>
-            <span
-              ><strong>{{ employeesCount }}</strong
-              >{{ $t('Employees') }}</span
-            >
-          </div>
-          <div class="stat-item stat-teams">
-            <span class="stat-icon">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                  d="M4 19a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4M6 8a3 3 0 1 0 6 0 3 3 0 0 0-6 0ZM15 11a2.5 2.5 0 1 0 0-5M16 14a4 4 0 0 1 4 4v1"
-                />
-              </svg>
-            </span>
-            <span
-              ><strong>{{ teamsCount }}</strong
-              >{{ $t('Teams') }}</span
-            >
-          </div>
-        </div>
-      </section>
-
-      <div class="locations-list">
-        <article
-          class="emoloyees-details"
-          v-for="(locationTeam, index) in state.data"
-          :key="locationTeam.id || index"
+  <div data-hse-project v-project-panels class="hse-project-root hse-project-state-host">
+    <DataStatus :controller="state">
+      <template #success>
+        <section
+          data-hse-project
+          v-project-panels
+          class="hse-project-panel hse-project-root people-overview"
+          aria-label="Project people overview"
         >
-          <div class="card-header">
-            <div class="location-heading">
-              <span class="location-number">{{ String(index + 1).padStart(2, '0') }}</span>
-              <HeaderSection
-                icon="sitemap"
-                :title="locationTeam?.title"
-                :subtitle="`${locationTeam?.locationEmplyees?.length || 0} ${$t('employees')} · ${locationTeam?.locationTeams?.length || 0} ${$t('teams')}`"
-              />
-            </div>
-
-            <div class="card-actions">
-              <RouterLink
-                :to="`/organization/project-hierarchy/project/${id}?locationId=${locationTeam.id}`"
-                class="edit-btn"
-              >
+          <div class="overview-copy">
+            <span class="overview-kicker">{{ $t('Project workforce') }}</span>
+            <h2>{{ $t('People and teams at a glance') }}</h2>
+            <p>
+              {{
+                $t('Manage positions, employees and working teams for every operational location.')
+              }}
+            </p>
+          </div>
+          <div class="overview-stats">
+            <div class="stat-item stat-locations">
+              <span class="stat-icon">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M12 20V10M6 20v-4M18 20V4M4 20h16" />
+                  <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
+                  <circle cx="12" cy="10" r="2.5" />
                 </svg>
-                {{ $t('Add Position') }}
-              </RouterLink>
-              <RouterLink
-                :to="`/organization/project-employee/project/${id}?locationId=${locationTeam.id}`"
-                class="add-btn btn"
-                v-if="locationTeam?.locationHierarchies?.length! > 0"
+              </span>
+              <span
+                ><strong>{{ locationsCount }}</strong
+                >{{ $t('Locations') }}</span
               >
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
-                {{ $t('Add Employee') }}
-              </RouterLink>
-              <AddCreateTeam
-                :ProjectLocationId="locationTeam.projectLocationId"
-                :LocationId="locationTeam.id"
-                @update:data="GetProjectLocationsEmployes"
-                v-if="
-                  locationTeam?.locationHierarchies?.length! > 0 &&
-                  locationTeam.locationEmplyees?.length! > 0
-                "
-              />
+            </div>
+            <div class="stat-item stat-employees">
+              <span class="stat-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="9" cy="8" r="3" />
+                  <path
+                    d="M3.5 20v-2a5.5 5.5 0 0 1 11 0v2M16 4.5a3 3 0 0 1 0 5.8M17 13a5.5 5.5 0 0 1 3.5 5.1V20"
+                  />
+                </svg>
+              </span>
+              <span
+                ><strong>{{ employeesCount }}</strong
+                >{{ $t('Employees') }}</span
+              >
+            </div>
+            <div class="stat-item stat-teams">
+              <span class="stat-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M4 19a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4M6 8a3 3 0 1 0 6 0 3 3 0 0 0-6 0ZM15 11a2.5 2.5 0 1 0 0-5M16 14a4 4 0 0 1 4 4v1"
+                  />
+                </svg>
+              </span>
+              <span
+                ><strong>{{ teamsCount }}</strong
+                >{{ $t('Teams') }}</span
+              >
             </div>
           </div>
+        </section>
 
-          <section class="content-block">
-            <div class="content-heading">
-              <div>
-                <span class="content-icon employee-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="9" cy="8" r="3" />
-                    <path
-                      d="M3.5 20v-2a5.5 5.5 0 0 1 11 0v2M16 5a3 3 0 0 1 0 6M17 14a5 5 0 0 1 3.5 4.8V20"
-                    /></svg
-                ></span>
-                <span
-                  ><strong>{{ $t('Assigned employees') }}</strong
-                  ><small>{{ $t('People working at this location') }}</small></span
-                >
+        <div data-hse-project v-project-panels class="hse-project-root locations-list">
+          <article
+            class="emoloyees-details"
+            v-for="(locationTeam, index) in state.data"
+            :key="locationTeam.id || index"
+          >
+            <div class="card-header">
+              <div class="location-heading">
+                <span class="location-number">{{ String(index + 1).padStart(2, '0') }}</span>
+                <HeaderSection
+                  icon="sitemap"
+                  :title="locationTeam?.title"
+                  :subtitle="`${locationTeam?.locationEmplyees?.length || 0} ${$t('employees')} · ${locationTeam?.locationTeams?.length || 0} ${$t('teams')}`"
+                />
               </div>
-              <span class="count-badge">{{ locationTeam.locationEmplyees?.length || 0 }}</span>
-            </div>
-            <div class="employees-section" v-if="locationTeam.locationEmplyees?.length">
-              <TeamMemberCard
-                @update:data="DeleteMember"
-                class="employee-card"
-                v-for="(member, index) in locationTeam.locationEmplyees"
-                :key="index"
-                :member="member"
-              />
-            </div>
-            <div class="section-empty" v-else>
-              <!-- <span>+</span> -->
-              <p>
-                <strong>{{ $t('No employees assigned yet') }}</strong
-                ><small>{{
-                  $t('Add a position first, then assign employees to this location.')
-                }}</small>
-              </p>
-            </div>
-          </section>
 
-          <section class="content-block teams-block">
-            <div class="content-heading">
-              <div>
-                <span class="content-icon team-icon"
-                  ><svg viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="8" cy="8" r="3" />
-                    <circle cx="17" cy="9" r="2.5" />
-                    <path d="M2.5 20v-2a5.5 5.5 0 0 1 11 0v2M14 15a4.5 4.5 0 0 1 6.5 4v1" /></svg
-                ></span>
-                <span
-                  ><strong>{{ $t('Operational teams') }}</strong
-                  ><small>{{ $t('Organized groups and their members') }}</small></span
+              <div class="card-actions">
+                <RouterLink
+                  :to="`/organization/project-hierarchy/project/${id}?locationId=${locationTeam.id}`"
+                  class="hse-project-button edit-btn"
                 >
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 20V10M6 20v-4M18 20V4M4 20h16" />
+                  </svg>
+                  {{ $t('Add Position') }}
+                </RouterLink>
+                <RouterLink
+                  :to="`/organization/project-employee/project/${id}?locationId=${locationTeam.id}`"
+                  class="hse-project-button add-btn btn"
+                  v-if="locationTeam?.locationHierarchies?.length! > 0"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+                  {{ $t('Add Employee') }}
+                </RouterLink>
+                <AddCreateTeam
+                  :ProjectLocationId="locationTeam.projectLocationId"
+                  :LocationId="locationTeam.id"
+                  @update:data="GetProjectLocationsEmployes"
+                  v-if="
+                    locationTeam?.locationHierarchies?.length! > 0 &&
+                    locationTeam.locationEmplyees?.length! > 0
+                  "
+                />
               </div>
-              <span class="count-badge">{{ locationTeam.locationTeams?.length || 0 }}</span>
             </div>
-            <div class="project-teams-cards" v-if="locationTeam.locationTeams?.length">
-             
-              <TeamCard
-                class="employee-card"
-                v-for="(team, index) in locationTeam.locationTeams"
-                :key="index"
-                :team="team"
-                :teamId="team.teamId"
-                :LocationId="locationTeam.id"
-                :ProjectLocationId="locationTeam.projectLocationId"
-              />
-            </div>
-            <div class="section-empty" v-else>
-              <!-- <span>+</span> -->
-              <p>
-                <strong>{{ $t('No teams created yet') }}</strong
-                ><small>{{
-                  $t('Assign employees, then create the first team for this location.')
-                }}</small>
-              </p>
-            </div>
-          </section>
-        </article>
-      </div>
-    </template>
-    <template #loader>
-      <ProjectPageSkeleton variant="people" />
-    </template>
-    <template #initial>
-      <ProjectPageSkeleton variant="people" />
-    </template>
-    <template #empty>
-      <DataEmpty
-        :link="`/add-project`"
-        :description="
-          $t(
-            'You have no project types .. All your joined customers will appear here when you add your customer data',
-          )
-        "
-        :title="$t('You have No Projects')"
-        :addText="$t('Add Projects')"
-      />
-    </template>
-    <template #failed>
-      <DataFailed />
-    </template>
-  </DataStatus>
+
+            <section class="content-block">
+              <div class="content-heading">
+                <div>
+                  <span class="content-icon employee-icon"
+                    ><svg viewBox="0 0 24 24" aria-hidden="true">
+                      <circle cx="9" cy="8" r="3" />
+                      <path
+                        d="M3.5 20v-2a5.5 5.5 0 0 1 11 0v2M16 5a3 3 0 0 1 0 6M17 14a5 5 0 0 1 3.5 4.8V20"
+                      /></svg
+                  ></span>
+                  <span
+                    ><strong>{{ $t('Assigned employees') }}</strong
+                    ><small>{{ $t('People working at this location') }}</small></span
+                  >
+                </div>
+                <span class="count-badge">{{ locationTeam.locationEmplyees?.length || 0 }}</span>
+              </div>
+              <div class="employees-section" v-if="locationTeam.locationEmplyees?.length">
+                <TeamMemberCard
+                  @update:data="DeleteMember"
+                  class="employee-card"
+                  v-for="(member, index) in locationTeam.locationEmplyees"
+                  :key="index"
+                  :member="member"
+                />
+              </div>
+              <div class="section-empty" v-else>
+                <!-- <span>+</span> -->
+                <p>
+                  <strong>{{ $t('No employees assigned yet') }}</strong
+                  ><small>{{
+                    $t('Add a position first, then assign employees to this location.')
+                  }}</small>
+                </p>
+              </div>
+            </section>
+
+            <section class="content-block teams-block">
+              <div class="content-heading">
+                <div>
+                  <span class="content-icon team-icon"
+                    ><svg viewBox="0 0 24 24" aria-hidden="true">
+                      <circle cx="8" cy="8" r="3" />
+                      <circle cx="17" cy="9" r="2.5" />
+                      <path d="M2.5 20v-2a5.5 5.5 0 0 1 11 0v2M14 15a4.5 4.5 0 0 1 6.5 4v1" /></svg
+                  ></span>
+                  <span
+                    ><strong>{{ $t('Operational teams') }}</strong
+                    ><small>{{ $t('Organized groups and their members') }}</small></span
+                  >
+                </div>
+                <span class="count-badge">{{ locationTeam.locationTeams?.length || 0 }}</span>
+              </div>
+              <div class="project-teams-cards" v-if="locationTeam.locationTeams?.length">
+                <TeamCard
+                  class="employee-card"
+                  v-for="(team, index) in locationTeam.locationTeams"
+                  :key="index"
+                  :team="team"
+                  :teamId="team.teamId"
+                  :LocationId="locationTeam.id"
+                  :ProjectLocationId="locationTeam.projectLocationId"
+                />
+              </div>
+              <div class="section-empty" v-else>
+                <!-- <span>+</span> -->
+                <p>
+                  <strong>{{ $t('No teams created yet') }}</strong
+                  ><small>{{
+                    $t('Assign employees, then create the first team for this location.')
+                  }}</small>
+                </p>
+              </div>
+            </section>
+          </article>
+        </div>
+      </template>
+      <template #loader>
+        <ProjectPageSkeleton variant="people" />
+      </template>
+      <template #initial>
+        <ProjectPageSkeleton variant="people" />
+      </template>
+      <template #empty>
+        <DataEmpty
+          :link="`/add-project`"
+          :description="
+            $t(
+              'You have no project types .. All your joined customers will appear here when you add your customer data',
+            )
+          "
+          :title="$t('You have No Projects')"
+          :addText="$t('Add Projects')"
+        />
+      </template>
+      <template #failed>
+        <DataFailed />
+      </template>
+    </DataStatus>
+  </div>
 </template>
 
 <style scoped lang="scss">

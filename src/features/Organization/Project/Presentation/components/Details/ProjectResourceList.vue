@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
@@ -441,10 +443,13 @@ watch(resource, () => {
 </script>
 
 <template>
-  <main class="resource-page">
-    <header class="resource-hero">
+  <main data-hse-project v-project-panels class="hse-project-root hse-project-page resource-page">
+    <header data-hse-project-head class="hse-project-page-head resource-hero">
       <div>
-        <RouterLink :to="`/organization/project-summary/${projectId}`" class="back-link">
+        <RouterLink
+          :to="`/organization/project-summary/${projectId}`"
+          class="hse-project-button back-link"
+        >
           <span aria-hidden="true">←</span> Project summary
         </RouterLink>
         <span class="resource-eyebrow">{{ projectLabel }}</span>
@@ -469,13 +474,17 @@ watch(resource, () => {
           compact
           @saved="fetchResource"
         />
-        <RouterLink v-else-if="workflowAction" :to="workflowAction.to" class="resource-add-button">
+        <RouterLink
+          v-else-if="workflowAction"
+          :to="workflowAction.to"
+          class="hse-project-button resource-add-button"
+        >
           <span aria-hidden="true">+</span>{{ workflowAction.label }}
         </RouterLink>
         <button
           v-else-if="hasScopedAddAction"
           type="button"
-          class="resource-add-button"
+          class="hse-project-button resource-add-button"
           :aria-expanded="showAddOptions"
           aria-controls="resource-add-options"
           @click="showAddOptions = !showAddOptions"

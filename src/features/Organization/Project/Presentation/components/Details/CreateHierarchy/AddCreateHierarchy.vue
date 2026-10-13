@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { computed, ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import CreateHierarchyForm from './CreateHierarchyForm.vue'
@@ -96,7 +98,7 @@ watch(
 </script>
 
 <template>
-  <div class="add-hierarchy">
+  <div data-hse-project v-project-panels class="hse-project-root hse-project-page add-hierarchy">
     <DataStatus :controller="state">
       <template #success>
         <section class="hierarchy-intro">
@@ -217,7 +219,7 @@ watch(
           </div>
           <div class="footer-actions">
             <router-link
-              class="back-btn action-btn"
+              class="hse-project-button back-btn action-btn"
               :to="`/organization/project-details/${route.params.project_id}`"
             >
               <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -227,13 +229,13 @@ watch(
             </router-link>
             <RouterLink
               :to="`/organization/employee-details/${route.params.project_id}`"
-              class="action-btn btn-cancel"
+              class="hse-project-button hse-project-button--ghost action-btn btn-cancel"
             >
               {{ $t('cancel') }}
             </RouterLink>
             <button
               type="button"
-              class="action-btn confirm-btn"
+              class="hse-project-button action-btn confirm-btn"
               :disabled="isSubmitting"
               @click="handleAddAllHierarchies"
             >

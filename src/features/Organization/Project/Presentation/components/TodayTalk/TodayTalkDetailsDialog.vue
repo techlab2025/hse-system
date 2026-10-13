@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import '../../../styles/project.css'
+
 import { computed } from 'vue'
 import Dialog from 'primevue/dialog'
 import type TodayTalkModel from '../../../Data/models/TodayTalk/TodayTalkModel'
@@ -56,10 +58,12 @@ const formatDateTime = (dateTime: string | null | undefined) => {
 
 <template>
   <Dialog
+    data-hse-project
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
     :visible="visible"
     modal
     dismissable-mask
-    class="talk-details-dialog"
+    class="hse-project-root hse-project-overlay talk-details-dialog"
     :style="{ width: 'min(58rem, calc(100vw - 24px))' }"
     @update:visible="emit('update:visible', $event)"
   >
@@ -89,8 +93,12 @@ const formatDateTime = (dateTime: string | null | undefined) => {
         <p>{{ talk.content }}</p>
         <div class="talk-identifiers">
           <!-- <span><small>Talk ID</small><strong>#{{ talk.id }}</strong></span> -->
-          <span><small>Serial number</small><strong>{{ talk.serialNumber || '—' }}</strong></span>
-          <span><small>Created</small><strong>{{ formatDateTime(talk.createdAt) }}</strong></span>
+          <span
+            ><small>Serial number</small><strong>{{ talk.serialNumber || '—' }}</strong></span
+          >
+          <span
+            ><small>Created</small><strong>{{ formatDateTime(talk.createdAt) }}</strong></span
+          >
         </div>
       </section>
 
@@ -162,7 +170,13 @@ const formatDateTime = (dateTime: string | null | undefined) => {
 :global(.talk-details-dialog .p-dialog-header) {
   padding: 20px 22px;
   border-bottom: 1px solid var(--main-border);
-  background: radial-gradient(circle at 88% 0, color-mix(in srgb, var(--PrimaryColor) 20%, transparent), transparent 46%), var(--surface-1);
+  background:
+    radial-gradient(
+      circle at 88% 0,
+      color-mix(in srgb, var(--PrimaryColor) 20%, transparent),
+      transparent 46%
+    ),
+    var(--surface-1);
 }
 :global(.talk-details-dialog .p-dialog-content) {
   padding: 0;
@@ -173,11 +187,16 @@ const formatDateTime = (dateTime: string | null | undefined) => {
   color: var(--text-strong);
   background: var(--surface-2);
 }
-.dialog-heading, .details-meta, .employee-roster > header, .attendance-stat {
+.dialog-heading,
+.details-meta,
+.employee-roster > header,
+.attendance-stat {
   display: flex;
   align-items: center;
 }
-.dialog-heading { gap: 12px; }
+.dialog-heading {
+  gap: 12px;
+}
 .dialog-icon {
   display: grid;
   width: 44px;
@@ -188,58 +207,300 @@ const formatDateTime = (dateTime: string | null | undefined) => {
   color: var(--text-on-brand);
   background: linear-gradient(145deg, var(--PrimaryColor), var(--brand-primary-700));
 }
-.dialog-icon svg { width: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; }
-.dialog-eyebrow { color: var(--PrimaryColor); font-size: .65rem; font-weight: 900; letter-spacing: .09em; text-transform: uppercase; }
-.dialog-heading h2 { margin: 3px 0 0; color: var(--text-strong); font-size: 1.2rem; }
-.talk-details { display: grid; gap: 14px; max-height: min(75vh, 760px); padding: 18px; overflow-y: auto; }
-.details-hero, .attendance-overview, .employee-roster { border: 1px solid var(--main-border); border-radius: 18px; background: var(--surface-1); }
-.details-hero { position: relative; overflow: hidden; padding: 20px; background: radial-gradient(circle at 100% 0, color-mix(in srgb, var(--PrimaryColor) 10%, transparent), transparent 38%), var(--surface-1); }
-.details-hero::before { content: ''; position: absolute; inset-block: 0; inset-inline-start: 0; width: 4px; background: linear-gradient(var(--PrimaryColor), var(--brand-accent-500)); }
-.details-meta { flex-wrap: wrap; gap: 8px; color: var(--text-soft); font-size: .72rem; }
-.details-meta i { width: 4px; height: 4px; border-radius: 50%; background: var(--main-border); }
-.assignment-badge { padding: 5px 9px; border-radius: 999px; color: var(--PrimaryColor); background: color-mix(in srgb, var(--PrimaryColor) 10%, var(--surface-1)); font-weight: 900; }
-.details-hero > p { margin: 17px 0 20px; color: var(--text-strong); line-height: 1.75; white-space: pre-wrap; }
-.talk-identifiers { display: grid; grid-template-columns: .7fr 1fr 1.4fr; gap: 9px; }
-.talk-identifiers > span { display: grid; gap: 3px; min-width: 0; padding: 10px 12px; border-radius: 11px; background: var(--surface-2); }
-.talk-identifiers small { color: var(--text-soft); font-size: .61rem; font-weight: 700; }
-.talk-identifiers strong { overflow: hidden; color: var(--text-strong); font-size: .72rem; text-overflow: ellipsis; white-space: nowrap; }
-.attendance-overview { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); overflow: hidden; }
-.attendance-stat { position: relative; justify-content: space-between; min-height: 76px; gap: 8px; padding: 14px 16px; border-inline-end: 1px solid var(--main-border); }
-.attendance-stat:last-child { border-inline-end: 0; }
-.attendance-stat::after { content: ''; position: absolute; inset-inline: 15px; inset-block-end: 0; height: 3px; border-radius: 999px 999px 0 0; background: var(--PrimaryColor); }
-.attendance-stat span { color: var(--text-soft); font-size: .67rem; font-weight: 750; }
-.attendance-stat strong { color: var(--text-strong); font-size: 1.35rem; }
-.attended-stat::after { background: var(--status-success); }
-.attended-stat strong { color: var(--status-success); }
-.absent-stat::after { background: var(--status-danger); }
-.absent-stat strong { color: var(--status-danger); }
-.rate-stat::after { background: var(--brand-accent-500); }
-.employee-roster { overflow: hidden; }
-.employee-roster > header { justify-content: space-between; gap: 12px; padding: 17px 18px; border-bottom: 1px solid var(--main-border); }
-.employee-roster header > div { display: grid; gap: 2px; }
-.employee-roster header > div > span { color: var(--PrimaryColor); font-size: .61rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
-.employee-roster h3 { margin: 0; color: var(--text-strong); font-size: .95rem; }
-.roster-count { padding: 6px 10px; border-radius: 999px; color: var(--PrimaryColor); background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1)); font-size: .65rem; font-weight: 850; }
-.employee-list { display: grid; max-height: 330px; overflow-y: auto; }
-.employee-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 11px; padding: 12px 17px; border-bottom: 1px solid color-mix(in srgb, var(--main-border) 72%, transparent); text-decoration: none; transition: background .18s ease; }
-.employee-row:last-child { border-bottom: 0; }
-.employee-row:hover { background: color-mix(in srgb, var(--PrimaryColor) 4%, var(--surface-1)); }
-.employee-avatar { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid var(--main-border); border-radius: 12px; color: var(--text-soft); background: var(--surface-2); font-size: .7rem; font-weight: 900; text-transform: uppercase; }
-.employee-avatar.attended { border-color: color-mix(in srgb, var(--status-success) 25%, var(--main-border)); color: var(--status-success); background: var(--status-success-soft); }
-.employee-identity { display: grid; min-width: 0; gap: 3px; }
-.employee-identity strong { overflow: hidden; color: var(--text-strong); font-size: .76rem; text-overflow: ellipsis; white-space: nowrap; }
-.employee-identity span, .attendance-result small { color: var(--text-soft); font-size: .62rem; }
-.attendance-result { display: grid; justify-items: end; gap: 4px; }
-.status-pill { display: inline-flex; align-items: center; gap: 5px; padding: 5px 8px; border-radius: 999px; color: var(--status-danger); background: var(--status-danger-soft); font-size: .62rem; font-weight: 900; }
-.status-pill i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-.status-pill.attended { color: var(--status-success); background: var(--status-success-soft); }
-.employee-arrow { width: 16px; fill: none; stroke: var(--PrimaryColor); stroke-width: 1.8; }
-.no-employees { padding: 30px 18px; color: var(--text-soft); text-align: center; }
+.dialog-icon svg {
+  width: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+}
+.dialog-eyebrow {
+  color: var(--PrimaryColor);
+  font-size: 0.65rem;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+.dialog-heading h2 {
+  margin: 3px 0 0;
+  color: var(--text-strong);
+  font-size: 1.2rem;
+}
+.talk-details {
+  display: grid;
+  gap: 14px;
+  max-height: min(75vh, 760px);
+  padding: 18px;
+  overflow-y: auto;
+}
+.details-hero,
+.attendance-overview,
+.employee-roster {
+  border: 1px solid var(--main-border);
+  border-radius: 18px;
+  background: var(--surface-1);
+}
+.details-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  background:
+    radial-gradient(
+      circle at 100% 0,
+      color-mix(in srgb, var(--PrimaryColor) 10%, transparent),
+      transparent 38%
+    ),
+    var(--surface-1);
+}
+.details-hero::before {
+  content: '';
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 4px;
+  background: linear-gradient(var(--PrimaryColor), var(--brand-accent-500));
+}
+.details-meta {
+  flex-wrap: wrap;
+  gap: 8px;
+  color: var(--text-soft);
+  font-size: 0.72rem;
+}
+.details-meta i {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--main-border);
+}
+.assignment-badge {
+  padding: 5px 9px;
+  border-radius: 999px;
+  color: var(--PrimaryColor);
+  background: color-mix(in srgb, var(--PrimaryColor) 10%, var(--surface-1));
+  font-weight: 900;
+}
+.details-hero > p {
+  margin: 17px 0 20px;
+  color: var(--text-strong);
+  line-height: 1.75;
+  white-space: pre-wrap;
+}
+.talk-identifiers {
+  display: grid;
+  grid-template-columns: 0.7fr 1fr 1.4fr;
+  gap: 9px;
+}
+.talk-identifiers > span {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  padding: 10px 12px;
+  border-radius: 11px;
+  background: var(--surface-2);
+}
+.talk-identifiers small {
+  color: var(--text-soft);
+  font-size: 0.61rem;
+  font-weight: 700;
+}
+.talk-identifiers strong {
+  overflow: hidden;
+  color: var(--text-strong);
+  font-size: 0.72rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.attendance-overview {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  overflow: hidden;
+}
+.attendance-stat {
+  position: relative;
+  justify-content: space-between;
+  min-height: 76px;
+  gap: 8px;
+  padding: 14px 16px;
+  border-inline-end: 1px solid var(--main-border);
+}
+.attendance-stat:last-child {
+  border-inline-end: 0;
+}
+.attendance-stat::after {
+  content: '';
+  position: absolute;
+  inset-inline: 15px;
+  inset-block-end: 0;
+  height: 3px;
+  border-radius: 999px 999px 0 0;
+  background: var(--PrimaryColor);
+}
+.attendance-stat span {
+  color: var(--text-soft);
+  font-size: 0.67rem;
+  font-weight: 750;
+}
+.attendance-stat strong {
+  color: var(--text-strong);
+  font-size: 1.35rem;
+}
+.attended-stat::after {
+  background: var(--status-success);
+}
+.attended-stat strong {
+  color: var(--status-success);
+}
+.absent-stat::after {
+  background: var(--status-danger);
+}
+.absent-stat strong {
+  color: var(--status-danger);
+}
+.rate-stat::after {
+  background: var(--brand-accent-500);
+}
+.employee-roster {
+  overflow: hidden;
+}
+.employee-roster > header {
+  justify-content: space-between;
+  gap: 12px;
+  padding: 17px 18px;
+  border-bottom: 1px solid var(--main-border);
+}
+.employee-roster header > div {
+  display: grid;
+  gap: 2px;
+}
+.employee-roster header > div > span {
+  color: var(--PrimaryColor);
+  font-size: 0.61rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.employee-roster h3 {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: 0.95rem;
+}
+.roster-count {
+  padding: 6px 10px;
+  border-radius: 999px;
+  color: var(--PrimaryColor);
+  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1));
+  font-size: 0.65rem;
+  font-weight: 850;
+}
+.employee-list {
+  display: grid;
+  max-height: 330px;
+  overflow-y: auto;
+}
+.employee-row {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 11px;
+  padding: 12px 17px;
+  border-bottom: 1px solid color-mix(in srgb, var(--main-border) 72%, transparent);
+  text-decoration: none;
+  transition: background 0.18s ease;
+}
+.employee-row:last-child {
+  border-bottom: 0;
+}
+.employee-row:hover {
+  background: color-mix(in srgb, var(--PrimaryColor) 4%, var(--surface-1));
+}
+.employee-avatar {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid var(--main-border);
+  border-radius: 12px;
+  color: var(--text-soft);
+  background: var(--surface-2);
+  font-size: 0.7rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+.employee-avatar.attended {
+  border-color: color-mix(in srgb, var(--status-success) 25%, var(--main-border));
+  color: var(--status-success);
+  background: var(--status-success-soft);
+}
+.employee-identity {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+.employee-identity strong {
+  overflow: hidden;
+  color: var(--text-strong);
+  font-size: 0.76rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.employee-identity span,
+.attendance-result small {
+  color: var(--text-soft);
+  font-size: 0.62rem;
+}
+.attendance-result {
+  display: grid;
+  justify-items: end;
+  gap: 4px;
+}
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  color: var(--status-danger);
+  background: var(--status-danger-soft);
+  font-size: 0.62rem;
+  font-weight: 900;
+}
+.status-pill i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.status-pill.attended {
+  color: var(--status-success);
+  background: var(--status-success-soft);
+}
+.employee-arrow {
+  width: 16px;
+  fill: none;
+  stroke: var(--PrimaryColor);
+  stroke-width: 1.8;
+}
+.no-employees {
+  padding: 30px 18px;
+  color: var(--text-soft);
+  text-align: center;
+}
 @media (max-width: 650px) {
-  .attendance-overview { grid-template-columns: repeat(2, 1fr); }
-  .talk-identifiers { grid-template-columns: 1fr; }
-  .employee-row { grid-template-columns: auto minmax(0, 1fr) auto; }
-  .attendance-result { grid-column: 2; justify-items: start; }
-  .employee-arrow { grid-column: 3; grid-row: 1 / span 2; }
+  .attendance-overview {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .talk-identifiers {
+    grid-template-columns: 1fr;
+  }
+  .employee-row {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+  .attendance-result {
+    grid-column: 2;
+    justify-items: start;
+  }
+  .employee-arrow {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+  }
 }
 </style>

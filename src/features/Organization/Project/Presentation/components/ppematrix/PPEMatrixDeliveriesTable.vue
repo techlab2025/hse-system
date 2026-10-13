@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { computed, onMounted, ref } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
@@ -15,9 +17,7 @@ const countPerPage = ref(10)
 const fetchDeliveries = async (page = currentPage.value, limit = countPerPage.value) => {
   currentPage.value = page
   countPerPage.value = limit
-  await controller.fetchPPEMatrixDeliveries(
-    new FetchPPEMatrixDeliveriesParams(null, page, limit),
-  )
+  await controller.fetchPPEMatrixDeliveries(new FetchPPEMatrixDeliveriesParams(null, page, limit))
 }
 
 const changePage = (page: number) => fetchDeliveries(page, countPerPage.value)
@@ -59,7 +59,11 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
 </script>
 
 <template>
-  <section class="deliveries-card">
+  <section
+    data-hse-project
+    v-project-panels
+    class="hse-project-panel hse-project-root hse-project-page deliveries-card"
+  >
     <div class="deliveries-heading">
       <div>
         <!-- <span class="eyebrow">Delivery history</span> -->
@@ -91,7 +95,7 @@ defineExpose({ refresh: () => fetchDeliveries(1, countPerPage.value) })
           </dl>
 
           <div class="delivery-table-wrap">
-            <table class="main-table delivery-table">
+            <table class="hse-project-table main-table delivery-table">
               <thead>
                 <tr>
                   <th scope="col">Recipient</th>

@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import './ProjectWizardStyles.css'
+import { vWizardPanels } from './wizardPanels'
+import { vProjectPanels } from '../../composables/projectPanels'
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { computed, markRaw, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -538,109 +542,172 @@ const goToPreviousStep = async () => {
 </script>
 
 <template>
-  <main class="flow-page">
+  <main
+    data-hse-project
+    v-project-panels
+    v-wizard-panels
+    class="hse-project-root hse-project-page flow-page hse-project-wizard"
+  >
     <header class="flow-hero">
       <div>
         <span class="eyebrow">PROJECT SETUP</span>
-        <h1>{{ editOnly ? `Update ${steps[activeStep - 1].title}` : 'Build your project' }}</h1>
-        <p>{{ steps[activeStep - 1].caption }} · Step {{ activeStep }} of 5</p>
-      </div>
-      <div v-if="!editOnly" class="progress-orbit">
-        <strong>{{ projectProgress }}%</strong><span>complete</span>
+        <h1>{{ editOnly ? `Update ${steps[activeStep - 1].title}` : 'Create a new project' }}</h1>
+        <p>
+          Configure the operating foundation once. Every project module will use this structure.
+        </p>
       </div>
     </header>
-
-    <nav v-if="!editOnly" class="stepper" aria-label="Project steps">
-      <button
-        v-for="step in steps"
-        :key="step.number"
-        type="button"
-        :class="{ active: step.number === activeStep, done: step.number < activeStep }"
-        :disabled="step.number > activeStep"
-      >
-        <span>{{ step.number < activeStep ? '✓' : step.number }}</span>
-        <div>
-          <strong>{{ step.title }}</strong
-          ><small>{{ step.caption }}</small>
-        </div>
-      </button>
-    </nav>
-
-    <form class="flow-card" novalidate @submit.prevent="saveAndNext">
-      <BasicProjectStep
-        v-if="activeStep === 1"
-        v-model:basic="basic"
-        v-model:serial-fields="serialFields"
-        v-model:lang-default="langDefault"
-        v-model:langs="langs"
-        v-model:langs-description="langsDescription"
-        v-model:contractor-ids="contractorIds"
-        v-model:locations="locations"
-        :selected-zones="selectedZones"
-        :validation-errors="basicValidationErrors"
-        @update-zones="updateZones"
-        @clear-validation-error="clearBasicValidationError"
-      />
-      <ProjectHolidaysStep v-else-if="activeStep === 2" v-model:holidays="holidays" />
-      <ProjectPositionsStep
-        v-else-if="activeStep === 3"
-        v-model:positions="positions"
-        :project-id="routeProjectId"
-      />
-      <ProjectTeamsStep
-        v-else-if="activeStep === 4"
-        v-model:teams="teams"
-        :project-id="routeProjectId"
-      />
-      <ProjectEquipmentsStep
-        v-else
-        v-model:equipments="equipments"
-        :project-id="routeProjectId"
-        :is-edit="editOnly"
-      />
-
-      <p v-if="errorMessage" class="form-error">{{ errorMessage }}</p>
-      <footer class="flow-actions">
-        <button
-          type="button"
-          class="btn-secondary"
-          @click="router.push('/organization/projects?type=1')"
-        >
-          Cancel
-        </button>
-        <div>
-          <button
-            v-if="activeStep > 1"
-            type="button"
-            class="btn-secondary"
-            :disabled="loading"
-            @click="goToPreviousStep"
+    <div class="hse-wizard-shell" :class="{ 'hse-wizard-shell--edit': editOnly }">
+      <aside v-if="!editOnly" class="hse-wizard-rail">
+        <div class="hse-wizard-rail-head">
+          <strong>Setup journey</strong>
+          <p>Complete the core project structure before operational use.</p>
+          <div
+            class="hse-wizard-progress"
+            role="progressbar"
+            :aria-valuenow="projectProgress"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-label="Setup completion"
           >
-            Back
-          </button>
-          <button
-            v-if="activeStep > 1"
-            type="button"
-            class="btn-skip"
-            :disabled="loading"
-            @click="skipAndNext"
-          >
-            {{ editOnly || activeStep === 5 ? 'Skip & Finish' : 'Skip & Next' }}
-          </button>
-          <button v-if="hasCurrentStepData" type="submit" class="btn-primary" :disabled="loading">
-            {{
-              loading
-                ? 'Saving…'
-                : editOnly
-                  ? 'Save changes'
-                  : activeStep === 5
-                    ? 'Save & Finish'
-                    : 'Save & Next'
-            }}
-          </button>
+            <span :style="{ width: `${projectProgress}%` }" />
+          </div>
         </div>
-      </footer>
-    </form>
+        <nav v-if="!editOnly" class="stepper" aria-label="Project steps">
+          <button
+            v-for="step in steps"
+            :key="step.number"
+            :aria-label="step.title"
+            :aria-current="step.number === activeStep ? 'step' : undefined"
+            type="button"
+            :class="{ active: step.number === activeStep, done: step.number < activeStep }"
+            :disabled="step.number > activeStep"
+          >
+            <span>{{ step.number < activeStep ? '✓' : String(step.number).padStart(2, '0') }}</span>
+            <div>
+              <strong>{{ step.title }}</strong
+              ><small>{{ step.caption }}</small>
+            </div>
+          </button>
+        </nav>
+        <div class="hse-wizard-note">
+          <span aria-hidden="true">✓</span>
+          <p>
+            <strong>Project foundation</strong>Locations, teams and equipment defined here feed
+            every operational module.
+          </p>
+        </div>
+        <div class="hse-wizard-completion">
+          <small>Setup completion</small><strong>{{ projectProgress }}%</strong>
+        </div>
+      </aside>
+
+      <form class="flow-card" novalidate @submit.prevent="saveAndNext">
+        <header class="hse-wizard-card-head">
+          <div>
+            <h2>
+              {{
+                [
+                  'Basic project data',
+                  'Project holidays',
+                  'Project positions',
+                  'Operating teams',
+                  'Equipment allocation',
+                ][activeStep - 1]
+              }}
+            </h2>
+            <p>
+              {{
+                activeStep === 1
+                  ? 'Define the project identity, commercial context and operating footprint.'
+                  : steps[activeStep - 1].caption
+              }}
+            </p>
+          </div>
+          <span class="eyebrow">Step {{ activeStep }} of 5</span>
+        </header>
+        <div class="hse-wizard-step-content">
+          <BasicProjectStep
+            v-if="activeStep === 1"
+            v-model:basic="basic"
+            v-model:serial-fields="serialFields"
+            v-model:lang-default="langDefault"
+            v-model:langs="langs"
+            v-model:langs-description="langsDescription"
+            v-model:contractor-ids="contractorIds"
+            v-model:locations="locations"
+            :selected-zones="selectedZones"
+            :validation-errors="basicValidationErrors"
+            @update-zones="updateZones"
+            @clear-validation-error="clearBasicValidationError"
+          />
+          <ProjectHolidaysStep v-else-if="activeStep === 2" v-model:holidays="holidays" />
+          <ProjectPositionsStep
+            v-else-if="activeStep === 3"
+            v-model:positions="positions"
+            :project-id="routeProjectId"
+          />
+          <ProjectTeamsStep
+            v-else-if="activeStep === 4"
+            v-model:teams="teams"
+            :project-id="routeProjectId"
+          />
+          <ProjectEquipmentsStep
+            v-else
+            v-model:equipments="equipments"
+            :project-id="routeProjectId"
+            :is-edit="editOnly"
+          />
+
+          <p v-if="errorMessage" class="form-error">{{ errorMessage }}</p>
+        </div>
+        <footer class="hse-project-form-footer flow-actions">
+          <button
+            type="button"
+            class="hse-project-button btn-secondary"
+            @click="router.push('/organization/projects?type=1')"
+          >
+            Cancel
+          </button>
+          <div>
+            <button
+              v-if="activeStep > 1"
+              type="button"
+              class="hse-project-button btn-secondary"
+              :disabled="loading"
+              @click="goToPreviousStep"
+            >
+              Back
+            </button>
+            <button
+              v-if="activeStep > 1"
+              type="button"
+              class="hse-project-button hse-project-button--ghost btn-skip"
+              :disabled="loading"
+              @click="skipAndNext"
+            >
+              {{ editOnly || activeStep === 5 ? 'Skip & Finish' : 'Skip & Next' }}
+            </button>
+            <button
+              v-if="hasCurrentStepData"
+              type="submit"
+              class="hse-project-button hse-project-button--primary btn-primary"
+              :disabled="loading"
+            >
+              {{
+                loading
+                  ? 'Saving…'
+                  : editOnly
+                    ? 'Save changes'
+                    : activeStep === 5
+                      ? 'Save & Finish'
+                      : 'Save & Next'
+              }}
+            </button>
+          </div>
+        </footer>
+      </form>
+    </div>
   </main>
 </template>
 

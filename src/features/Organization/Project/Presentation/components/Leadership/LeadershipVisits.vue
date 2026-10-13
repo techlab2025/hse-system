@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { computed, onMounted, ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -71,12 +73,15 @@ const closeDetailsDialog = () => {
   loadingVisitId.value = null
 }
 
-const fetchAllVisits = async (data?: { word?: string, date?: string }) => {
+const fetchAllVisits = async (data?: { word?: string; date?: string }) => {
   if (Number.isInteger(projectId.value) && projectId.value > 0) {
-    await controller.fetchVisits(new FetchAllLeadershipVisitsParams({
-      projectId: projectId.value, ...(data?.word && { word: data?.word }),
-      ...(data?.date && { date: data?.date })
-    }))
+    await controller.fetchVisits(
+      new FetchAllLeadershipVisitsParams({
+        projectId: projectId.value,
+        ...(data?.word && { word: data?.word }),
+        ...(data?.date && { date: data?.date }),
+      }),
+    )
   }
 }
 onMounted(async () => {
@@ -93,14 +98,12 @@ const DateUpdate = (date?: Date) => {
   if (date) {
     fetchAllVisits({ date: String(formatJoinDate(date!)) })
   }
-
 }
-
 </script>
 
 <template>
-  <main class="visits-page">
-    <section class="visits-card">
+  <main data-hse-project v-project-panels class="hse-project-root hse-project-page visits-page">
+    <section class="hse-project-panel visits-card">
       <div class="section-heading">
         <div>
           <h2>Reports</h2>
@@ -112,29 +115,42 @@ const DateUpdate = (date?: Date) => {
       <div class="filters">
         <div class="search">
           <div class="input-search col-span-1">
-            <label for="">visit location</label>
+            <label class="hse-project-field-label" for="">visit location</label>
             <span class="icon-remove" @click="((word = ''), searchVisits())">
               <Search />
             </span>
-            <input v-model="word" :placeholder="'search'" class="input" type="text" @input="searchVisits" />
+            <input
+              v-model="word"
+              :placeholder="'search'"
+              class="hse-project-input input"
+              type="text"
+              @input="searchVisits"
+            />
           </div>
         </div>
         <div class="date-filter">
-          <div class="input-wrapper">
-            <div class="field-label">
-              <label for="drill_date">{{ $t('date') }}</label>
+          <div class="hse-project-field input-wrapper">
+            <div class="hse-project-field field-label">
+              <label class="hse-project-field-label" for="drill_date">{{ $t('date') }}</label>
               <FieldHelpIcon text="Select the date." />
             </div>
-            <DatePicker id="drill_date" v-model="Customdate" date-format="yy-mm-dd" show-icon fluid :manualInput="false"
-              @update:model-value="DateUpdate" />
+            <DatePicker
+              panel-class="hse-project-overlay"
+              id="drill_date"
+              v-model="Customdate"
+              date-format="yy-mm-dd"
+              show-icon
+              fluid
+              :manualInput="false"
+              @update:model-value="DateUpdate"
+            />
           </div>
-
         </div>
       </div>
       <DataStatus :controller="state">
         <template #success>
           <div v-if="visits.length" class="table-responsive visits-table">
-            <table class="main-table">
+            <table class="hse-project-table main-table">
               <thead>
                 <tr>
                   <th>Visit Date</th>
@@ -165,7 +181,7 @@ const DateUpdate = (date?: Date) => {
                       <span>{{ visit.employees[0]?.employeeName || '—' }}</span>
                     </span>
                   </td>
-                     <td data-label="Activity">
+                  <td data-label="Activity">
                     <span class="activity-pill">{{ visit?.creatable?.name || '—' }}</span>
                   </td>
                   <!-- <td data-label="Activity">
@@ -178,14 +194,21 @@ const DateUpdate = (date?: Date) => {
                     </span>
                   </td> -->
                   <td data-label="Action">
-                    <button v-if="visit.hasReport || visit.report" type="button"
-                      class="report-link report-link--details" :disabled="detailsLoading"
-                      @click="fetchReportDetails(visit.id)">
+                    <button
+                      v-if="visit.hasReport || visit.report"
+                      type="button"
+                      class="report-link report-link--details"
+                      :disabled="detailsLoading"
+                      @click="fetchReportDetails(visit.id)"
+                    >
                       {{ loadingVisitId === visit.id ? 'Loading…' : 'Report details' }}
                       <span v-if="loadingVisitId !== visit.id" aria-hidden="true">⌕</span>
                     </button>
-                    <a v-else :href="`/organization/project-details/${projectId}/leadership/visits/${visit.id}/report`"
-                      class="report-link">
+                    <a
+                      v-else
+                      :href="`/organization/project-details/${projectId}/leadership/visits/${visit.id}/report`"
+                      class="report-link"
+                    >
                       Report visit <span aria-hidden="true">↗</span>
                     </a>
                   </td>
@@ -217,8 +240,13 @@ const DateUpdate = (date?: Date) => {
       </DataStatus>
     </section>
 
-    <ReportVisitDetailsDialog :visible="detailsDialogVisible" :visit="selectedVisit" :loading="detailsLoading"
-      :error="detailsError" @close="closeDetailsDialog" />
+    <ReportVisitDetailsDialog
+      :visible="detailsDialogVisible"
+      :visit="selectedVisit"
+      :loading="detailsLoading"
+      :error="detailsError"
+      @close="closeDetailsDialog"
+    />
   </main>
 </template>
 
@@ -231,7 +259,6 @@ const DateUpdate = (date?: Date) => {
 
   div {
     width: 100% !important;
-
   }
 
   // .search {
@@ -482,7 +509,7 @@ const DateUpdate = (date?: Date) => {
   background: color-mix(in srgb, var(--PrimaryColor) 3%, var(--surface-1));
 }
 
-.empty-state>span {
+.empty-state > span {
   font-size: 2rem;
   color: var(--PrimaryColor);
 }
@@ -527,7 +554,6 @@ const DateUpdate = (date?: Date) => {
 }
 
 @media (max-width: 760px) {
-
   .visits-hero,
   .section-heading {
     flex-wrap: wrap;
@@ -540,7 +566,6 @@ const DateUpdate = (date?: Date) => {
 }
 
 @media (max-width: 640px) {
-
   .visits-table table,
   .visits-table tbody,
   .visits-table tr,

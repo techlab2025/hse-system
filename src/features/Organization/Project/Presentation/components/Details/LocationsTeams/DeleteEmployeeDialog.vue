@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { ref } from 'vue'
 import Dialog from 'primevue/dialog'
 import MemberDeleteIcon from '@/shared/icons/MemberDeleteIcon.vue'
@@ -12,14 +14,22 @@ const DeleteEmployee = () => {
 
 <template>
   <button
-    class="delete-member-trigger"
+    data-hse-project
+    v-project-panels
+    class="hse-project-button hse-project-button--icon hse-project-button--danger hse-project-root delete-member-trigger"
     type="button"
     :aria-label="$t('Delete')"
     @click.prevent="visible = true"
   >
     <MemberDeleteIcon class="card-delete" />
   </button>
-  <Dialog v-model:visible="visible" :modal="true" class="delete-dialog project-delete-dialog">
+  <Dialog
+    data-hse-project
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
+    v-model:visible="visible"
+    :modal="true"
+    class="hse-project-root hse-project-overlay delete-dialog project-delete-dialog"
+  >
     <template #container>
       <div class="delete-dialog-content">
         <span class="delete-visual"
@@ -29,10 +39,13 @@ const DeleteEmployee = () => {
         <h4 class="dialog-title">{{ $t('Are you sure') }}</h4>
         <p class="dialog-message">{{ $t('Now you will delete') }}</p>
         <div class="flex w-full btns">
-          <button class="btn btn-primary justify-center mb-sm" @click.prevent="DeleteEmployee">
+          <button
+            class="hse-project-button hse-project-button--primary btn btn-primary justify-center mb-sm"
+            @click.prevent="DeleteEmployee"
+          >
             {{ $t('Delete') }}
           </button>
-          <button class="btn btn-secondary" @click.prevent="visible = false">
+          <button class="hse-project-button btn btn-secondary" @click.prevent="visible = false">
             {{ $t('Cancel') }}
           </button>
         </div>

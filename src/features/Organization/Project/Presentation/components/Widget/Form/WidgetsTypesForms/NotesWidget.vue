@@ -1,9 +1,10 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../../composables/projectPanels'
+
 import { ref } from 'vue'
 import ColorSelection from '../WidgetUtils/ColorSelection.vue'
 import RadioSection from '@/shared/HelpersComponents/RadioSection.vue'
 import ZoneTitlesForm from '../WidgetUtils/ZoneTitlesForm.vue'
-
 
 const emit = defineEmits(['update:value'])
 const MainTitle = ref()
@@ -20,13 +21,7 @@ const time = ref()
 const addedby = ref()
 const PoweredTo = ref()
 
-const colors = ref([
-  '#1D4ED8',
-  '#EAEAEA',
-  '#9760F6',
-  '#FBF5B5',
-  '#4CAF50'
-])
+const colors = ref(['#1D4ED8', '#EAEAEA', '#9760F6', '#FBF5B5', '#4CAF50'])
 
 const UpdateData = () => {
   emit('update:value', {
@@ -48,58 +43,119 @@ const UpdateData = () => {
 
 const updateField = (field: string, value: any) => {
   switch (field) {
-    case 'MainTitle': MainTitle.value = value; break
-    case 'MiniTitle': MiniTitle.value = value; break
-    case 'Hint': Hint.value = value; break
-    case 'title': title.value = value; break
-    case 'description': description.value = value; break
-    case 'picture': picture.value = value; break
-    case 'date': date.value = value; break
-    case 'time': time.value = value; break
-    case 'addedby': addedby.value = value; break
-    case 'ActionColor': ActionColor.value = value; break
-    case 'PoweredTo': PoweredTo.value = value; break
-    case 'SelectedAvailable': SelectedAvailable.value = value; break
-    case 'SelectedColor': SelectedColor.value = value; break
+    case 'MainTitle':
+      MainTitle.value = value
+      break
+    case 'MiniTitle':
+      MiniTitle.value = value
+      break
+    case 'Hint':
+      Hint.value = value
+      break
+    case 'title':
+      title.value = value
+      break
+    case 'description':
+      description.value = value
+      break
+    case 'picture':
+      picture.value = value
+      break
+    case 'date':
+      date.value = value
+      break
+    case 'time':
+      time.value = value
+      break
+    case 'addedby':
+      addedby.value = value
+      break
+    case 'ActionColor':
+      ActionColor.value = value
+      break
+    case 'PoweredTo':
+      PoweredTo.value = value
+      break
+    case 'SelectedAvailable':
+      SelectedAvailable.value = value
+      break
+    case 'SelectedColor':
+      SelectedColor.value = value
+      break
   }
   UpdateData()
 }
 const UpdateTitle = (data) => {
-  MainTitle.value = data.MainTitle;
-  MiniTitle.value = data.MiniTitle;
-  Hint.value = data.Hint;
+  MainTitle.value = data.MainTitle
+  MiniTitle.value = data.MiniTitle
+  Hint.value = data.Hint
   if (data.MainTitle) updateField('MainTitle', MainTitle.value)
   if (data.MiniTitle) updateField('MiniTitle', MiniTitle.value)
   if (data.Hint) updateField('Hint', Hint.value)
 }
-
 </script>
 
 <template>
   <ZoneTitlesForm @update:value="UpdateTitle" />
 
-  <ColorSelection title="Action color" :colors="colors" @update:value="v => updateField('ActionColor', v)" />
+  <ColorSelection
+    title="Action color"
+    :colors="colors"
+    @update:value="(v) => updateField('ActionColor', v)"
+  />
 
-  <div class="selctors-container">
+  <div data-hse-project v-project-panels class="hse-project-root selctors-container">
     <p class="title">{{ $t('check on the data that can be added in a single note') }}</p>
     <div class="setting-form">
-      <RadioSection :title="$t('title') " :selections="['Yes', 'No']" @update:value="v => updateField('title', v)" />
-      <RadioSection :title="$t('description')" :selections="['Yes', 'No']"
-        @update:value="v => updateField('description', v)" />
+      <RadioSection
+        :title="$t('title')"
+        :selections="['Yes', 'No']"
+        @update:value="(v) => updateField('title', v)"
+      />
+      <RadioSection
+        :title="$t('description')"
+        :selections="['Yes', 'No']"
+        @update:value="(v) => updateField('description', v)"
+      />
     </div>
     <div class="setting-form">
-      <RadioSection :title="$t('picture')" :selections="['Yes', 'No']" @update:value="v => updateField('picture', v)" />
-      <RadioSection :title="$t('date')" :selections="['Yes', 'No']" @update:value="v => updateField('date', v)" />
+      <RadioSection
+        :title="$t('picture')"
+        :selections="['Yes', 'No']"
+        @update:value="(v) => updateField('picture', v)"
+      />
+      <RadioSection
+        :title="$t('date')"
+        :selections="['Yes', 'No']"
+        @update:value="(v) => updateField('date', v)"
+      />
     </div>
     <div class="setting-form">
-      <RadioSection :title="$t('Time')" :selections="['Yes', 'No']" @update:value="v => updateField('time', v)" />
-      <RadioSection :title="$t('added by')" :selections="['Yes', 'No']" @update:value="v => updateField('addedby', v)" />
+      <RadioSection
+        :title="$t('Time')"
+        :selections="['Yes', 'No']"
+        @update:value="(v) => updateField('time', v)"
+      />
+      <RadioSection
+        :title="$t('added by')"
+        :selections="['Yes', 'No']"
+        @update:value="(v) => updateField('addedby', v)"
+      />
     </div>
-    <RadioSection :title="$t('Who has the power to edit and delete?')"
+    <RadioSection
+      :title="$t('Who has the power to edit and delete?')"
       :selections="['anyone', 'only me', 'Each person has access to his own note only.']"
-      @update:value="v => updateField('PoweredTo', v)" />
+      @update:value="(v) => updateField('PoweredTo', v)"
+    />
   </div>
-  <ColorSelection :title="$t('chart color')" :colors="colors" @update:value="v => updateField('SelectedColor', v)" />
-  <RadioSection :title="$t('Available to')" :selections="['anyone', 'only me']"
-    @update:value="v => updateField('SelectedAvailable', v)" />
+  <ColorSelection
+    :title="$t('chart color')"
+    :colors="colors"
+    @update:value="(v) => updateField('SelectedColor', v)"
+  />
+  <RadioSection
+    :title="$t('Available to')"
+    :selections="['anyone', 'only me']"
+    @update:value="(v) => updateField('SelectedAvailable', v)"
+  />
 </template>

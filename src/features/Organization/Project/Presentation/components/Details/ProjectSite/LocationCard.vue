@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import type SohwProjectZoonModel from '@/features/Organization/Project/Data/models/ShowProjectZone'
 import ProjectLocationZoonDialog from './ProjectLocationZoonDialog.vue'
 import EmptyZoons from './EmptyZoons.vue'
@@ -13,7 +15,7 @@ const { title, zoneLength, zoons, LocationId, projectId } = defineProps<{
 </script>
 
 <template>
-  <div class="location-card">
+  <div data-hse-project v-project-panels class="hse-project-panel hse-project-root location-card">
     <div class="card-header">
       <div class="location-header-container">
         <div class="location-header">

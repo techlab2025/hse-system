@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import TeamsIcon from '@/shared/icons/TeamsIcon.vue'
 import TeamMemberCard from './TeamMemberCard.vue'
 import type ProjectLocationTeamModel from '@/features/Organization/Project/Data/models/CustomLocation/ProjectLocationTeamModel'
@@ -48,7 +50,12 @@ const DeleteTeamMember = async (id: number) => {
 </script>
 
 <template>
-  <div class="team-card" v-if="team.Employees?.length > 0">
+  <div
+    data-hse-project
+    v-project-panels
+    class="hse-project-panel hse-project-root team-card"
+    v-if="team.Employees?.length > 0"
+  >
     <div class="team-card-header">
       <div class="team-card-header-content">
         <TeamsIcon v-if="!isShow" class="team-icon" />

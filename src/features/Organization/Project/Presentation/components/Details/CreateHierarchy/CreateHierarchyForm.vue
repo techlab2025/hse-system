@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams'
@@ -16,8 +18,9 @@ const HerikalyParams = new IndexHerikalyParams('', 1, 10, 0, false)
 const emit = defineEmits(['update:herikaly'])
 
 const herikaly = ref<TitleInterface[]>(
-  props?.selectedHirarchy?.map((item) => new TitleInterface({ id: item?.id, title: item?.title })) ||
-    [],
+  props?.selectedHirarchy?.map(
+    (item) => new TitleInterface({ id: item?.id, title: item?.title }),
+  ) || [],
 )
 
 const updateHerikaly = (value: TitleInterface[]) => {
@@ -40,10 +43,10 @@ watch(
 </script>
 
 <template>
-  <div class="equipment-form hierarchy-selector">
+  <div data-hse-project v-project-panels class="hse-project-root equipment-form hierarchy-selector">
     <form>
       <div class="input-container">
-        <div class="input-wrapper">
+        <div class="hse-project-field input-wrapper">
           <UpdatedCustomInputSelect
             :modelValue="herikaly"
             :params="HerikalyParams"

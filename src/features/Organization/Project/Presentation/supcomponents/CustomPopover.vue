@@ -1,4 +1,6 @@
 <script setup>
+import { vProjectPanels } from '../composables/projectPanels'
+
 import { ref } from 'vue'
 import Popover from 'primevue/popover'
 
@@ -32,11 +34,22 @@ const scheduleHidePopover = () => {
 </script>
 
 <template>
-  <button @mouseenter="showPopover" @mouseleave="scheduleHidePopover">
+  <button
+    data-hse-project
+    class="hse-project-root"
+    v-project-panels
+    @mouseenter="showPopover"
+    @mouseleave="scheduleHidePopover"
+  >
     <slot name="btn"></slot>
   </button>
 
-  <Popover ref="op">
+  <Popover
+    data-hse-project
+    class="hse-project-root hse-project-overlay"
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
+    ref="op"
+  >
     <div class="custom-popover-hover-bridge" @mouseenter="clearHideTimer" @mouseleave="hidePopover">
       <slot name="content"></slot>
     </div>

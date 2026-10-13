@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import HeaderSection from '../DetailsHeader/HeaderSection.vue'
 import InspectionsCard from './InspectionsCard.vue'
 
@@ -20,7 +22,7 @@ const {
 </script>
 
 <template>
-  <div class="inspections">
+  <div data-hse-project v-project-panels class="hse-project-root inspections">
     <HeaderSection
       :img="inspectionsImage"
       :title="inspectionHeaderTitle"

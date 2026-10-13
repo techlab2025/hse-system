@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { setDefaultImage } from '@/base/Presentation/utils/set_default_image'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 import RentIcon from '@/shared/icons/RentIcon.vue'
@@ -29,9 +31,13 @@ const deleteEquipment = async (id: number) => {
 </script>
 
 <template>
-  <div class="project-equipment-card">
+  <div
+    data-hse-project
+    v-project-panels
+    class="hse-project-panel hse-project-root project-equipment-card"
+  >
     <div
-      class="tool-card equipment-card w-full"
+      class="hse-project-panel tool-card equipment-card w-full"
       :class="[
         isSelect ? 'is-select' : '',
         tool?.equipment?.status == EquipmentStatus.RENT ? 'is-rent' : 'is-owned',

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import type TeamLocation from '@/features/Organization/Project/Data/models/TeamLocationModel'
 import TeamCard from './TeamCard.vue'
 import EmptyData from './EmptyData.vue'
@@ -75,7 +77,6 @@ const DeleteTeamMember = async (id: number) => {
 const updatetabValue = (value: any) => {
   OpenAccordion.value = value
 }
-
 </script>
 
 <template>
@@ -87,7 +88,7 @@ const updatetabValue = (value: any) => {
   >
     <AccordionPanel value="0">
       <AccordionHeader>
-        <div class="location-container">
+        <div data-hse-project v-project-panels class="hse-project-root location-container">
           <div class="location">
             <AccordArrowDown v-if="OpenAccordion.includes('0')" class="arrow-accord" />
             <AccordArrowRight v-else class="arrow-right" />
@@ -137,7 +138,12 @@ const updatetabValue = (value: any) => {
         </div>
       </AccordionHeader>
       <AccordionContent>
-        <div class="workforce-intro" v-if="employeeCount > 0 || visibleTeams.length > 0">
+        <div
+          data-hse-project
+          v-project-panels
+          class="hse-project-root workforce-intro"
+          v-if="employeeCount > 0 || visibleTeams.length > 0"
+        >
           <div class="workforce-intro-copy">
             <span class="workforce-mark" aria-hidden="true">
               <svg viewBox="0 0 24 24">
@@ -171,7 +177,7 @@ const updatetabValue = (value: any) => {
           </div>
         </div>
 
-        <div class="workforce-sections">
+        <div data-hse-project v-project-panels class="hse-project-root workforce-sections">
           <section class="all-employees workforce-panel employees-panel" v-if="employeeCount > 0">
             <div class="all-employees-header-container">
               <div class="section-title">
@@ -232,7 +238,7 @@ const updatetabValue = (value: any) => {
             </div>
           </section>
         </div>
-        <div class="empty-teams" v-if="employeeCount < 1">
+        <div v-project-panels class="hse-project-root empty-teams" v-if="employeeCount < 1">
           <EmptyData
             :img="EmptyFolder"
             :title="$t('No Teams Or Employees Yet')"
@@ -243,7 +249,11 @@ const updatetabValue = (value: any) => {
             :linkText="$t('Start building your crew now!')"
           />
         </div>
-        <div class="inline-empty" v-else-if="visibleTeams.length < 1">
+        <div
+          v-project-panels
+          class="hse-project-root inline-empty"
+          v-else-if="visibleTeams.length < 1"
+        >
           <!-- <span class="inline-empty-icon" aria-hidden="true">+</span> -->
           <span>
             <strong>{{ $t('Employees are ready — create the first team') }}</strong>

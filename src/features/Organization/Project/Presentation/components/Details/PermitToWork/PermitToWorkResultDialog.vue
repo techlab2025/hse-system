@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import '../../../../styles/project.css'
+
 import type PermitAuditResultItemModel from '@/features/Organization/Project/Data/models/PermitToWork/PermitAuditResultItemModel'
 import type PermitAuditResultModel from '@/features/Organization/Project/Data/models/PermitToWork/PermitAuditResultModel'
 import type PermitAuditTemplateItemModel from '@/features/Organization/Project/Data/models/PermitToWork/PermitAuditTemplateItemModel'
@@ -115,11 +117,13 @@ const formatTime = (time: string): string => (time ? time.slice(0, 5) : '—')
 
 <template>
   <Dialog
+    data-hse-project
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
     v-model:visible="visible"
     modal
     dismissable-mask
     :header="$t('Permit audit results')"
-    class="permit-audit-dialog"
+    class="hse-project-root hse-project-overlay permit-audit-dialog"
     :style="{ width: 'min(70rem, calc(100vw - 24px))' }"
   >
     <div v-if="audits.length" class="audit-dialog-content">

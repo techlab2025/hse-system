@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { onMounted, ref, watch } from 'vue'
 import IndexTemplateController from '@/features/setting/Template/Presentation/controllers/indexTemplateController'
 import IndexTemplateParams from '@/features/setting/Template/Core/params/indexTemplateParams'
@@ -140,9 +142,13 @@ const route = useRoute()
     </button>
   </div> -->
 
-  <div class="template-switcher">
+  <div
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-page template-switcher"
+  >
     <button
-      class="template-btn"
+      class="hse-project-button template-btn"
       :class="{ active: SelctedType === 1 }"
       @click.prevent="SelectTemplatesType(1)"
     >
@@ -157,7 +163,7 @@ const route = useRoute()
     </button>
 
     <button
-      class="template-btn"
+      class="hse-project-button template-btn"
       :class="{ active: SelctedType === 0 }"
       @click.prevent="SelectTemplatesType(0)"
     >
@@ -177,9 +183,14 @@ const route = useRoute()
     @update:data="GetTemplateId"
     :selectedTemplates="selectedTemplates"
   />
-  <div class="btn-container" v-if="selectedTemplates != null">
+  <div
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-page btn-container"
+    v-if="selectedTemplates != null"
+  >
     <router-link
-      class="btn btn-primary"
+      class="hse-project-button hse-project-button--primary btn btn-primary"
       :to="{
         path: `/organization/project-permit/project/templates/answer`,
         query: {

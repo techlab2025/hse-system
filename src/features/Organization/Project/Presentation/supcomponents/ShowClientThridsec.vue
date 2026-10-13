@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
-import type ShowClientModel from "../../Data/models/equipmentTypeDetailsModel.ts";
+import { vProjectPanels } from '../composables/projectPanels'
 
-const props = defineProps<{ data: Array<ShowClientModel> | null }>();
+import PrimaryButton from '@/components/HelpersComponents/PrimaryButton.vue'
+import type ShowClientModel from '../../Data/models/equipmentTypeDetailsModel.ts'
+
+const props = defineProps<{ data: Array<ShowClientModel> | null }>()
 </script>
 
 <template>
-  <div class="Practical-information">
+  <div data-hse-project v-project-panels class="hse-project-root Practical-information">
     <div class="right">
       <div class="head">
         <h4>Practical employee information</h4>
       </div>
-      <div
-        class="client-details grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3"
-      >
+      <div class="client-details grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
         <div class="main-details col-span-1">
           <h4>Name of sponsor</h4>
           <p>Muhammad Hussein</p>
@@ -47,9 +47,7 @@ const props = defineProps<{ data: Array<ShowClientModel> | null }>();
       <div class="head">
         <h4>Login data to the system</h4>
       </div>
-      <div
-        class="client-details grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3"
-      >
+      <div class="client-details grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
         <div class="main-details col-span-1">
           <h4>e-mail</h4>
           <p>{{ data?.email }}</p>

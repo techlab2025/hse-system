@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import Dialog from 'primevue/dialog'
 import { ref, watch } from 'vue'
 import ZoneDialog from '@/assets/images/ZoneDialog.png'
@@ -25,16 +27,19 @@ const initializeFromProps = () => {
   mergedSelectedZones.value = [...props.selectedZones]
   currentZoneTitles.value = []
 
-  props.selectedZones.forEach(location => {
+  props.selectedZones.forEach((location) => {
     if (location.zoons && location.zoons.length > 0) {
-      location.zoons.forEach(zone => {
+      location.zoons.forEach((zone) => {
         const title = zone.title || zone.titles?.[0]?.title || 'Unknown'
         currentZoneTitles.value.push(title)
       })
     }
   })
 
-  console.log('AddZoneDialog - Initialized:', { mergedSelectedZones: mergedSelectedZones.value, currentZoneTitles: currentZoneTitles.value })
+  console.log('AddZoneDialog - Initialized:', {
+    mergedSelectedZones: mergedSelectedZones.value,
+    currentZoneTitles: currentZoneTitles.value,
+  })
 }
 
 initializeFromProps()
@@ -45,12 +50,12 @@ watch(
     console.log('AddZoneDialog - Props selectedZones changed:', newVal)
     initializeFromProps()
   },
-  { deep: true }
+  { deep: true },
 )
 
 const GetData = (data: {
-  zoonTitles: string[],
-  zoonIds: { locationId: number; ZoneIds: number[] }[],
+  zoonTitles: string[]
+  zoonIds: { locationId: number; ZoneIds: number[] }[]
   fullZoneData?: SohwProjectZoonModel[]
 }) => {
   console.log('AddZoneDialog - Received data from form:', data)
@@ -90,9 +95,9 @@ const deleteZone = (index: number) => {
         }
 
         // Convert back to the format expected by parent
-        const dataToEmit = mergedSelectedZones.value.map(loc => ({
+        const dataToEmit = mergedSelectedZones.value.map((loc) => ({
           locationId: loc.zoonId,
-          ZoneIds: loc.zoons?.map(z => z.id) || []
+          ZoneIds: loc.zoons?.map((z) => z.id) || [],
         }))
 
         console.log('AddZoneDialog - After delete, emitting:', dataToEmit)
@@ -106,15 +111,15 @@ const deleteZone = (index: number) => {
 </script>
 
 <template>
-  <div class="input-wrapper" v-bind="$attrs">
+  <div
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-field input-wrapper"
+    v-bind="$attrs"
+  >
     <div class="zones input" @click="visible = true">
       <template v-if="currentZoneTitles.length > 0">
-        <div
-          class="zone"
-          v-for="(zone, index) in currentZoneTitles"
-          :key="index"
-          @click.stop
-        >
+        <div class="zone" v-for="(zone, index) in currentZoneTitles" :key="index" @click.stop>
           {{ zone }}
           <CloseDelete class="delete" @click.stop="deleteZone(index)" />
         </div>
@@ -125,15 +130,30 @@ const deleteZone = (index: number) => {
     </div>
   </div>
 
-  <Dialog v-model:visible="visible" modal :dismissable-mask="true" :style="{ width: '50rem' }">
+  <Dialog
+    data-hse-project
+    class="hse-project-root hse-project-overlay"
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
+    v-model:visible="visible"
+    modal
+    :dismissable-mask="true"
+    :style="{ width: '50rem' }"
+  >
     <template #header>
-      <HeaderSection :img="ZoneDialog" :title="$t('Select Zones')"
-        :subtitle="$t('At least 1 zone required for every location')" />
+      <HeaderSection
+        :img="ZoneDialog"
+        :title="$t('Select Zones')"
+        :subtitle="$t('At least 1 zone required for every location')"
+      />
     </template>
 
     <div v-if="locations.length > 0" class="equipment-dialog-data">
       <hr class="add-equipment-hr" />
-      <ZoneDialogForm :locations="locations" @update:data="GetData" :selectedZones="mergedSelectedZones" />
+      <ZoneDialogForm
+        :locations="locations"
+        @update:data="GetData"
+        :selectedZones="mergedSelectedZones"
+      />
     </div>
 
     <div v-else class="empty">
@@ -143,8 +163,8 @@ const deleteZone = (index: number) => {
 </template>
 
 <style scoped>
-.placeholder{
-  color:var(--text-soft);
+.placeholder {
+  color: var(--text-soft);
   font-size: 14px;
   font-weight: 500;
 }

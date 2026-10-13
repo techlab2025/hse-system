@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { computed, ref } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import DatePicker from 'primevue/datepicker'
@@ -81,9 +83,9 @@ async function create() {
 </script>
 
 <template>
-  <main class="create-page"> 
+  <main data-hse-project v-project-panels class="hse-project-root hse-project-page create-page">
     <div class="form-shell">
-      <header class="form-header">
+      <header data-hse-project-head class="hse-project-page-head form-header">
         <div class="header-art" aria-hidden="true"><span></span><span></span></div>
         <!-- <RouterLink class="back-link" :to="listPath">
           <span aria-hidden="true">←</span> Risk assessments
@@ -105,7 +107,7 @@ async function create() {
       <form @submit.prevent="create">
         <p v-if="error" class="error" role="alert"><span aria-hidden="true">!</span>{{ error }}</p>
 
-        <section class="form-section">
+        <section class="hse-project-panel form-section">
           <div class="section-heading">
             <!-- <span class="step-number">01</span> -->
             <div>
@@ -115,49 +117,98 @@ async function create() {
             </div>
           </div>
           <div class="form-grid">
-            <div class="field">
-              <span class="field-label"><span>{{ $t('serial_number') }}</span><FieldHelpIcon :text="serialIsAuto ? 'The serial will be generated automatically.' : 'Enter the serial number.'" /></span>
-              <input v-model="serial" :disabled="serialIsAuto" :placeholder="serialIsAuto ? $t('Auto-generated') : $t('Enter serial number')" />
+            <div class="hse-project-field field">
+              <span class="hse-project-field field-label"
+                ><span>{{ $t('serial_number') }}</span
+                ><FieldHelpIcon
+                  :text="
+                    serialIsAuto
+                      ? 'The serial will be generated automatically.'
+                      : 'Enter the serial number.'
+                  "
+              /></span>
+              <input
+                class="hse-project-input"
+                v-model="serial"
+                :disabled="serialIsAuto"
+                :placeholder="serialIsAuto ? $t('Auto-generated') : $t('Enter serial number')"
+              />
               <small v-if="serialIsAuto">{{ $t('Automatic serial numbering is enabled') }}</small>
             </div>
-            <label class="field">
-              <span class="field-label"><span class="field-icon" aria-hidden="true">◇</span><span>Activity
-                  <b>*</b></span></span>
-              <input v-model="form.activity" required placeholder="e.g. Working at height" />
+            <label class="hse-project-field-label hse-project-field field">
+              <span class="hse-project-field field-label"
+                ><span class="hse-project-field field-icon" aria-hidden="true">◇</span
+                ><span>Activity <b>*</b></span></span
+              >
+              <input
+                class="hse-project-input"
+                v-model="form.activity"
+                required
+                placeholder="e.g. Working at height"
+              />
             </label>
-                        <label class="field full">
-              <span class="field-label"><span class="field-icon" aria-hidden="true">≡</span><span>Activity description
-                </span>
-                <span  class="optional">(optional)</span></span>
-              <textarea v-model="form.desctiprion" rows="5" 
-                placeholder="Describe the work, hazards, and planned controls" />
+            <label class="hse-project-field-label hse-project-field field full">
+              <span class="hse-project-field field-label"
+                ><span class="hse-project-field field-icon" aria-hidden="true">≡</span
+                ><span>Activity description </span> <span class="optional">(optional)</span></span
+              >
+              <textarea
+                class="hse-project-input"
+                v-model="form.desctiprion"
+                rows="5"
+                placeholder="Describe the work, hazards, and planned controls"
+              />
             </label>
-            <label class="field">
-              <span class="field-label"><span class="field-icon" aria-hidden="true">⌖</span><span>Work area
-                  <b>*</b></span></span>
-              <input v-model="form.workAreaStrign" required placeholder="e.g. North building" />
+            <label class="hse-project-field-label hse-project-field field">
+              <span class="hse-project-field field-label"
+                ><span class="hse-project-field field-icon" aria-hidden="true">⌖</span
+                ><span>Work area <b>*</b></span></span
+              >
+              <input
+                class="hse-project-input"
+                v-model="form.workAreaStrign"
+                required
+                placeholder="e.g. North building"
+              />
             </label>
-            <UpdatedCustomInputSelect class="field field--select" :model-value="selectedEmployee"
-              :controller="indexOrganizatoinEmployeeController" :params="indexOrganizatoinEmployeeParams"
-              id="risk-assessment-approver" placeholder="Select an approver" required :has-header="true"
-              @update:model-value="setEmployee">
+            <UpdatedCustomInputSelect
+              class="hse-project-field field field--select"
+              :model-value="selectedEmployee"
+              :controller="indexOrganizatoinEmployeeController"
+              :params="indexOrganizatoinEmployeeParams"
+              id="risk-assessment-approver"
+              placeholder="Select an approver"
+              required
+              :has-header="true"
+              @update:model-value="setEmployee"
+            >
               <template #Header>
-                <span class="field-label"><span class="field-icon" aria-hidden="true">✓</span><span>Prepared By
-                    <b>*</b></span></span>
+                <span class="hse-project-field field-label"
+                  ><span class="hse-project-field field-icon" aria-hidden="true">✓</span
+                  ><span>Prepared By <b>*</b></span></span
+                >
               </template>
             </UpdatedCustomInputSelect>
-            <label class="field">
-              <span class="field-label"><span class="field-icon" aria-hidden="true">◷</span><span>Date
-                  <b>*</b></span></span>
-              <DatePicker input-id="risk-assessment-date" :model-value="parseDate(form.date)" date-format="yy-mm-dd"
-                show-icon fluid placeholder="Select assessment date" @update:model-value="setAssessmentDate" />
+            <label class="hse-project-field-label hse-project-field field">
+              <span class="hse-project-field field-label"
+                ><span class="hse-project-field field-icon" aria-hidden="true">◷</span
+                ><span>Date <b>*</b></span></span
+              >
+              <DatePicker
+                panel-class="hse-project-overlay"
+                input-id="risk-assessment-date"
+                :model-value="parseDate(form.date)"
+                date-format="yy-mm-dd"
+                show-icon
+                fluid
+                placeholder="Select assessment date"
+                @update:model-value="setAssessmentDate"
+              />
             </label>
-            
-
           </div>
         </section>
 
-        <section class="form-section evidence-section">
+        <section class="hse-project-panel form-section evidence-section">
           <div class="section-heading">
             <span class="step-number">02</span>
             <div>
@@ -167,9 +218,14 @@ async function create() {
             </div>
           </div>
           <div class="evidence-layout">
-            <div class="field upload-field">
-              <HandleFIlesUpload label=" Documents and images " accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
-                :max-files="6" :multiple="true" @change="handleFilesChange" />
+            <div class="hse-project-field field upload-field">
+              <HandleFIlesUpload
+                label=" Documents and images "
+                accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
+                :max-files="6"
+                :multiple="true"
+                @change="handleFilesChange"
+              />
               <small>PDF, Word, Excel, or image · One file maximum</small>
             </div>
             <!-- <aside class="evidence-note">
@@ -186,12 +242,21 @@ async function create() {
           <div class="footer-note">
             <span aria-hidden="true">✓</span>
             <p>
-              <strong>Ready to save?</strong><small>Required fields are marked with an asterisk.</small>
+              <strong>Ready to save?</strong
+              ><small>Required fields are marked with an asterisk.</small>
             </p>
           </div>
           <div class="footer-actions">
-            <RouterLink class="cancel-button" :to="listPath">Cancel</RouterLink>
-            <button type="submit" :disabled="saving">
+            <RouterLink
+              class="hse-project-button hse-project-button--ghost cancel-button"
+              :to="listPath"
+              >Cancel</RouterLink
+            >
+            <button
+              class="hse-project-button hse-project-button--primary"
+              type="submit"
+              :disabled="saving"
+            >
               {{ saving ? 'Creating…' : 'Create assessment' }}
               <span v-if="!saving" aria-hidden="true">→</span>
             </button>
@@ -203,8 +268,8 @@ async function create() {
 </template>
 
 <style scoped>
-.optional{
-  color:#607067;
+.optional {
+  color: #607067;
   font-size: 10px;
 }
 .create-page {
@@ -233,9 +298,11 @@ async function create() {
 .form-header {
   padding: 34px;
   background:
-    radial-gradient(circle at 90% 5%,
+    radial-gradient(
+      circle at 90% 5%,
       color-mix(in srgb, var(--PrimaryColor, #087d80) 16%, transparent),
-      transparent 38%),
+      transparent 38%
+    ),
     var(--surface-1, #f8fafb);
   border-bottom: 1px solid var(--main-border, #e5eaf0);
 }
@@ -390,12 +457,16 @@ footer button:disabled {
   padding: clamp(26px, 4vw, 42px);
   border-bottom-color: color-mix(in srgb, var(--PrimaryColor) 18%, transparent);
   background:
-    radial-gradient(circle at 88% 10%,
+    radial-gradient(
+      circle at 88% 10%,
       color-mix(in srgb, var(--PrimaryColor) 24%, transparent),
-      transparent 35%),
-    linear-gradient(125deg,
+      transparent 35%
+    ),
+    linear-gradient(
+      125deg,
       color-mix(in srgb, var(--brand-primary-900) 96%, var(--surface-1)),
-      color-mix(in srgb, var(--PrimaryColor) 76%, var(--brand-primary-900)));
+      color-mix(in srgb, var(--PrimaryColor) 76%, var(--brand-primary-900))
+    );
 }
 
 .header-art {
@@ -520,7 +591,7 @@ form {
   gap: 13px;
 }
 
-.section-heading>div {
+.section-heading > div {
   display: grid;
   gap: 2px;
 }
@@ -742,9 +813,11 @@ textarea:focus {
   padding: 18px;
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
   border-radius: 15px;
-  background: linear-gradient(135deg,
-      color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1)),
-      var(--surface-1));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1)),
+    var(--surface-1)
+  );
 }
 
 .evidence-note__icon {
@@ -789,7 +862,7 @@ textarea:focus {
   font-weight: 700;
 }
 
-.error>span {
+.error > span {
   display: grid;
   place-items: center;
   width: 22px;
@@ -817,7 +890,7 @@ textarea:focus {
   gap: 9px;
 }
 
-.footer-note>span {
+.footer-note > span {
   display: grid;
   place-items: center;
   width: 32px;
@@ -941,7 +1014,7 @@ textarea:focus-visible {
     width: 100%;
   }
 
-  .footer-actions>* {
+  .footer-actions > * {
     flex: 1;
     text-align: center;
   }
@@ -962,7 +1035,6 @@ textarea:focus-visible {
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   .back-link,
   .field,
   .form-footer button {

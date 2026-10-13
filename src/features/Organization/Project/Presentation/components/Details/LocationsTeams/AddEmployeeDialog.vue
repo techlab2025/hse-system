@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { onMounted, ref } from 'vue'
 import HeaderSection from '../DetailsHeader/HeaderSection.vue'
 import ZoneDialog from '@/assets/images/ZoneDialog.png'
@@ -92,14 +94,21 @@ onMounted(() => {
 })
 </script>
 <template>
-  <button @click.prevent="visible = true" class="btn btn-primary add-employee-trigger">
+  <button
+    data-hse-project
+    v-project-panels
+    @click.prevent="visible = true"
+    class="hse-project-root hse-project-button hse-project-button--primary btn btn-primary add-employee-trigger"
+  >
     <span aria-hidden="true">+</span>{{ $t('add_employee') }}
   </button>
   <Dialog
+    data-hse-project
+    :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
     v-model:visible="visible"
     modal
     :dismissable-mask="true"
-    class="project-employee-dialog"
+    class="hse-project-root hse-project-overlay project-employee-dialog"
     :style="{ width: 'min(50rem, calc(100vw - 24px))' }"
   >
     <template #header>
@@ -117,8 +126,9 @@ onMounted(() => {
         <p>{{ $t('Choose a Position first, then select the employees to assign') }}</p>
       </div>
     </div>
-    <div class="input-wrapper dialog-field">
+    <div class="hse-project-field input-wrapper dialog-field">
       <CustomSelectInput
+        overlay-class="hse-project-overlay"
         :required="false"
         :modelValue="SelectedHierarchy"
         :static-options="AllLocationHerarchy"
@@ -128,8 +138,9 @@ onMounted(() => {
         @update:modelValue="setSelectedHierarchy"
       />
     </div>
-    <div class="input-wrapper dialog-field" v-if="SelectedHierarchy">
+    <div class="hse-project-field input-wrapper dialog-field" v-if="SelectedHierarchy">
       <CustomSelectInput
+        overlay-class="hse-project-overlay"
         :required="false"
         :modelValue="SelectedEmployee"
         :controller="indexOrganizatoinEmployeeController"
@@ -143,7 +154,7 @@ onMounted(() => {
     </div>
 
     <button
-      class="btn btn-primary w-full confirm-employee-btn"
+      class="hse-project-button hse-project-button--primary btn btn-primary w-full confirm-employee-btn"
       :disabled="!SelectedHierarchy || !SelectedEmployee?.length"
       @click.prevent="UpdateDate"
     >

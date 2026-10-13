@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import LoactionTeams from '@/assets/images/LoactionTeams.png'
 import HeaderSection from '../DetailsHeader/HeaderSection.vue'
 import LocationsSection from './LocationsSection.vue'
@@ -42,7 +44,7 @@ const totalTeams = computed(
 </script>
 
 <template>
-  <div class="locations-teams">
+  <div data-hse-project v-project-panels class="hse-project-panel hse-project-root locations-teams">
     <span class="section-accent" aria-hidden="true"></span>
     <div class="locations-teams-header">
       <HeaderSection

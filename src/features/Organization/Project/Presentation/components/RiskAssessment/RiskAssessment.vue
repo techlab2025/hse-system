@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { vProjectPanels } from '../../composables/projectPanels'
+
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import FetchRiskAssessmentsParams from '../../../Core/params/RiskAssessment/FetchRiskAssessmentsParams'
@@ -72,8 +74,8 @@ onMounted(fetchAll)
 </script>
 
 <template>
-  <main class="risk-page">
-    <header class="risk-hero">
+  <main data-hse-project v-project-panels class="hse-project-root hse-project-page risk-page">
+    <header data-hse-project-head class="hse-project-page-head risk-hero">
       <!-- <div class="hero-art" aria-hidden="true"><span></span><span></span><span></span></div> -->
       <div class="hero-copy">
         <!-- <RouterLink class="back-link" :to="`/organization/project-details/${projectId}`">
@@ -94,7 +96,7 @@ onMounted(fetchAll)
         </div>
       </div>
       <RouterLink
-        class="primary-button"
+        class="hse-project-button hse-project-button--primary primary-button"
         :to="`/organization/project-details/${projectId}/risk-assessments/create`"
       >
         <span class="primary-button__icon" aria-hidden="true">＋</span>
@@ -127,7 +129,7 @@ onMounted(fetchAll)
       </article>
     </section>
 
-    <section class="risk-panel">
+    <section class="hse-project-panel risk-panel">
       <div class="panel-heading">
         <div class="panel-heading__copy">
           <span class="section-icon" aria-hidden="true">▦</span>
@@ -149,7 +151,7 @@ onMounted(fetchAll)
         <div><strong>Loading assessments</strong><small>Preparing the safety register…</small></div>
       </div>
       <div v-else-if="items.length" class="table-scroll">
-        <table>
+        <table class="hse-project-table">
           <thead>
             <tr>
               <th>Activity</th>
@@ -172,9 +174,7 @@ onMounted(fetchAll)
                 </span>
               </td>
               <td>
-                <span class="area-cell"
-                  >{{ item.workAreaStrign || '—' }}</span
-                >
+                <span class="area-cell">{{ item.workAreaStrign || '—' }}</span>
               </td>
               <td>
                 <span class="date-pill">{{ item.date || '—' }}</span>
@@ -190,7 +190,7 @@ onMounted(fetchAll)
               <td>
                 <button
                   v-if="item.id != null"
-                  class="details-button"
+                  class="hse-project-button details-button"
                   type="button"
                   @click="fetchDetails(item.id)"
                 >
@@ -212,7 +212,7 @@ onMounted(fetchAll)
         <h3>No assessments yet</h3>
         <p>Create the first assessment to start documenting project risks and approvals.</p>
         <RouterLink
-          class="empty-action"
+          class="hse-project-button hse-project-button--primary empty-action"
           :to="`/organization/project-details/${projectId}/risk-assessments/create`"
         >
           Create first assessment <span aria-hidden="true">→</span>
@@ -255,7 +255,7 @@ th {
   justify-content: space-between;
   gap: 20px;
   padding: 34px;
-  padding-top:10px !important;
+  padding-top: 10px !important;
   background:
     radial-gradient(
       circle at 95% 10%,

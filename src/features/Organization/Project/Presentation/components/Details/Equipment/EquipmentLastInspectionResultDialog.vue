@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import type TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
 import ShowTemplateController from '@/features/setting/Template/Presentation/controllers/showTemplateController'
 import Dialog from 'primevue/dialog'
@@ -88,7 +90,11 @@ watch(
 </script>
 
 <template>
-  <div class="inspection-start card w-full flex justify-center">
+  <div
+    data-hse-project
+    v-project-panels
+    class="hse-project-root inspection-start card w-full flex justify-center"
+  >
     <button @click="GetData" class="last-inspection-trigger w-full" type="button">
       <div class="last-inspection-info-container">
         <div class="inspection-label">
@@ -110,11 +116,13 @@ watch(
     </button>
 
     <Dialog
+      data-hse-project
+      :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
       v-model:visible="visible"
       :header="title"
       modal
       :dismissable-mask="true"
-      class="last-inspection-dialog"
+      class="hse-project-root hse-project-overlay last-inspection-dialog"
       :style="{ width: 'min(70rem, calc(100vw - 24px))' }"
     >
       <TemplateDocument

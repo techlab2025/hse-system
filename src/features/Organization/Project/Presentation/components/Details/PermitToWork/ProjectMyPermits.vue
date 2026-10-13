@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { vProjectPanels } from '../../../composables/projectPanels'
+
 import { computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { PermitToWorkStatusEnum } from '@/features/Organization/Project/Core/Enums/PermitToWorkStatusEnum'
@@ -59,8 +61,8 @@ onMounted(FetchMyProjectPermits)
 </script>
 
 <template>
-  <div class="permits-page">
-    <div class="permits-page-header">
+  <div data-hse-project v-project-panels class="hse-project-root hse-project-page permits-page">
+    <div data-hse-project-head class="hse-project-page-head permits-page-header">
       <div>
         <h2>
           {{ $t('Project Permits') }}
