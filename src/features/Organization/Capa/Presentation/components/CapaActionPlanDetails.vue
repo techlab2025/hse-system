@@ -25,12 +25,12 @@ const localStatuses = ref<Record<number, number>>({})
 const isSavingStatus = ref(false)
 
 const taskStatusOptions = [
-  {
-    value: InvestegationTaskEnum.NotStarted,
-    label: 'Not Started',
-    description: 'Work has not yet begun.',
-    color: 'var(--text-muted)',
-  },
+  // {
+  //   value: InvestegationTaskEnum.NotStarted,
+  //   label: 'Not Started',
+  //   description: 'Work has not yet begun.',
+  //   color: 'var(--text-muted)',
+  // },
   {
     value: InvestegationTaskEnum.InProgress,
     label: 'In Progress',
@@ -43,12 +43,12 @@ const taskStatusOptions = [
     description: 'Work is temporarily suspended, for example awaiting resources.',
     color: 'var(--status-warning)',
   },
-  {
-    value: InvestegationTaskEnum.Overdue,
-    label: 'Overdue',
-    description: 'Work is ongoing but past the target deadline.',
-    color: 'var(--status-danger)',
-  },
+  // {
+  //   value: InvestegationTaskEnum.Overdue,
+  //   label: 'Overdue',
+  //   description: 'Work is ongoing but past the target deadline.',
+  //   color: 'var(--status-danger)',
+  // },
   {
     value: InvestegationTaskEnum.Completed,
     label: 'Completed',

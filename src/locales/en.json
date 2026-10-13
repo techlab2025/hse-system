@@ -4514,5 +4514,6 @@
   "back_to_my_internal_audits": "Back to My Internal Audit",
   "create_first_ncr": "Create the first NCR",
   "NCR Serial": "NCR Serial",
-  "NCR Details": "NCR Details"
+  "NCR Details": "NCR Details",
+  "add_reason":"Add Reason"
 }

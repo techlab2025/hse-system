@@ -12,6 +12,7 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 
 const props = defineProps<{
   taskId: number
+  taskStatus: number
   visible: boolean
 }>()
 
@@ -28,15 +29,15 @@ const selectedOption = ref<TitleInterface | null>(null)
 const isSubmitting = ref(false)
 
 const ChangeTaskStatusOptions = ref<TitleInterface[]>([
-  new TitleInterface({ id: ChangeTaskStatusEnum.NOT_STARTED, title: t('task_status_not_started') }),
+  // new TitleInterface({ id: ChangeTaskStatusEnum.NOT_STARTED, title: t('task_status_not_started') }),
   new TitleInterface({ id: ChangeTaskStatusEnum.IN_PROGRESS, title: t('task_status_in_progress') }),
   new TitleInterface({ id: ChangeTaskStatusEnum.PENDING_ON_HOLD, title: t('task_status_pending') }),
-  new TitleInterface({ id: ChangeTaskStatusEnum.OVERDUE, title: t('task_status_overdue') }),
+  // new TitleInterface({ id: ChangeTaskStatusEnum.OVERDUE, title: t('task_status_overdue') }),
   new TitleInterface({ id: ChangeTaskStatusEnum.COMPLETED, title: t('task_status_completed') }),
   new TitleInterface({ id: ChangeTaskStatusEnum.CANCELLED, title: t('task_status_cancelled') }),
 ])
 
-const isValid = computed(() => selectedOption.value !== null && reason.value.trim().length > 0)
+const isOverdue = computed(() => props.taskStatus === ChangeTaskStatusEnum.OVERDUE)
 
 const reset = () => {
   reason.value = ''
@@ -56,14 +57,14 @@ watch(
 )
 
 const submit = async () => {
-  if (!isValid.value || isSubmitting.value) return
+  if (isSubmitting.value) return
 
   isSubmitting.value = true
   try {
     await controller.getData(
       new ChangeTaskStatusParams({
         id: props.taskId,
-        status: selectedOption.value!.id,
+        status: isOverdue.value ? undefined : selectedOption.value?.id,
         reason: reason.value.trim(),
       }),
     )
@@ -85,11 +86,14 @@ const submit = async () => {
     :style="{ width: 'min(28rem, calc(100vw - 24px))' }"
   >
     <div class="task-status-dialog">
-      <div class="input-wrapper">
+      <div v-if="isOverdue" class="task-status-overdue">
+        {{ $t('task_status_overdue') }}
+      </div>
+      <div v-else class="input-wrapper">
         <UpdatedCustomInputSelect
           :modelValue="selectedOption"
           :staticOptions="ChangeTaskStatusOptions"
-          :required="true"
+          :required="false"
           :reload="false"
           label="status"
           id="task_status"
@@ -115,7 +119,7 @@ const submit = async () => {
       </Button>
       <Button
         type="button"
-        :disabled="!isValid || isSubmitting"
+        :disabled="isSubmitting"
         :loading="isSubmitting"
         @click="submit"
       >
@@ -135,6 +139,15 @@ const submit = async () => {
 .task-note-field {
   display: grid;
   gap: 8px;
+}
+
+.task-status-overdue {
+  padding: 12px 16px;
+  border: 1px solid var(--brand-primary-100);
+  border-radius: 8px;
+  background: var(--surface-1);
+  color: var(--text-strong);
+  font-weight: 700;
 }
 
 .task-note-field label {

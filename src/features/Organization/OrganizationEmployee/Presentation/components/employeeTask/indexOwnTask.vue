@@ -31,9 +31,11 @@ const state = ref(controller.state.value)
 
 const dialogVisible = ref(false)
 const selectedTaskId = ref<number>(0)
+const selectedTaskStatus = ref<number>(0)
 
-const openStatusDialog = (taskId: number) => {
+const openStatusDialog = (taskId: number, TaskStatus: number) => {
   selectedTaskId.value = taskId
+  selectedTaskStatus.value = TaskStatus
   dialogVisible.value = true
 }
 
@@ -65,10 +67,10 @@ watch(
     >
       <div class="task_card__header">
         <div class="task_codes">
-          <span class="task_code">#{{ task?.id }}</span>
+          <!-- <span class="task_code">#{{ task?.id }}</span>
           <span v-if="task?.actual_task_id" class="task_sub_code">
             Actual #{{ task.actual_task_id }}
-          </span>
+          </span> -->
         </div>
         <span
           class="task_status"
@@ -110,21 +112,30 @@ watch(
         </div>
       </div>
 
-      <div class="task_card__meta task_card__meta--compact">
+      <!-- <div class="task_card__meta task_card__meta--compact">
         <div class="meta_item">
           <span class="meta_label">{{ $t('assigned_to') }}</span>
           <span class="meta_value">{{ task?.assigned_to || '-' }}</span>
         </div>
-      </div>
+      </div> -->
 
       <div class="task_card__footer">
         <Button
           class="task_change_btn"
           size="small"
           type="button"
-          @click.stop.prevent="openStatusDialog(task.id)"
+          :disabled="
+            task.status == ChangeTaskStatusEnum.COMPLETED ||
+            task.status == ChangeTaskStatusEnum.CANCELLED ||
+            task.status == ChangeTaskStatusEnum.PENDING_ON_HOLD
+          "
+          @click.stop.prevent="openStatusDialog(task.id, task.status)"
         >
-          {{ $t('task_change_status') }}
+          {{
+            task.status == ChangeTaskStatusEnum.OVERDUE
+              ? $t('add_reason')
+              : $t('task_change_status')
+          }}
         </Button>
       </div>
     </article>
@@ -133,6 +144,7 @@ watch(
   <DialogChangeStatus
     v-model:visible="dialogVisible"
     :task-id="selectedTaskId"
+    :task-status="selectedTaskStatus"
     @update:data="fetchEmployeeOwnTasks(Number(route.params.id))"
   />
 </template>
