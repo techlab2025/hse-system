@@ -495,7 +495,7 @@ watch(() => props.details, initializeForm, { immediate: true })
       <div class="section-heading">
         <span>03</span>
         <div>
-          <h3>Attachments</h3>
+          <h3>NCR Attachments</h3>
           <p>Add supporting evidence files.</p>
         </div>
       </div>
@@ -510,7 +510,7 @@ watch(() => props.details, initializeForm, { immediate: true })
       <p v-else-if="isReadOnly" class="empty-attachments">No attachments.</p>
       <HandleFIlesUpload
         v-else
-        label="NCR attachments"
+        label="NCR Attachments (optional)"
         accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
         :multiple="true"
         :max-files="10"

@@ -10,8 +10,13 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { InrernalAuditStatusEnum } from '../../../Core/enums/plan/PlanStatusENum'
 import DatePicker from 'primevue/datepicker'
+import Accordion from 'primevue/accordion'
+import AccordionPanel from 'primevue/accordionpanel'
+import AccordionHeader from 'primevue/accordionheader'
+import AccordionContent from 'primevue/accordioncontent'
 import IndexHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/indexHerikalyController'
 import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams'
+import DownArrow from '@/shared/icons/DownArrow.vue'
 
 const controller = IndexInternalAuditPlanController.getInstance()
 const state = ref(controller.state.value)
@@ -26,6 +31,12 @@ const focusArea = ref<TitleInterface | null>(null)
 const hierarchyController = IndexHerikalyController.getInstance()
 const hierarchyParams = new IndexHerikalyParams('', 1, 1000, 0, true)
 const filteredAudits = computed(() => state.value.data ?? [])
+const activeFilterCount = computed(
+  () =>
+    [word.value.trim(), statusFilter.value, fromDate.value, toDate.value, focusArea.value].filter(
+      Boolean,
+    ).length,
+)
 
 function normalizeStatus(value: TitleInterface | TitleInterface[] | null) {
   statusFilter.value = Array.isArray(value) ? (value[0] ?? null) : value
@@ -112,72 +123,105 @@ const handleCountPerPage = (count: number) => {
           to="/organization/internal-audit">New Audit Plan</router-link> -->
       </div>
     </header>
-    <div class="toolbar">
-      <div class="flex filters">
-        <div class="input-wrapper">
-          <label for="search">Search</label>
-          <input
-            id="search"
-            v-model="word"
-            class="input"
-            type="search"
-            placeholder="Search audit number"
-            @input="applyFilters"
-          />
-        </div>
+    <Accordion value="filters" class="audit-filters-accordion">
+      <AccordionPanel value="">
+        <AccordionHeader>
+          <span class="filter-heading">
+            <span class="filter-icon" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                stroke-linecap="round"
+              >
+                <path d="M4 7h7m4 0h5M4 17h3m4 0h9" />
+                <circle cx="13" cy="7" r="2" />
+                <circle cx="9" cy="17" r="2" />
+              </svg>
+            </span>
+            <span class="filter-heading-copy">
+              <span class="filter-title">Audit filters</span>
+              <span class="filter-description"
+                >Find the right audit by status, date or focus area</span
+              >
+            </span>
+            <span class="filter-count" :class="{ 'has-filters': activeFilterCount > 0 }">
+              <!-- {{ activeFilterCount ? `${activeFilterCount} active` : 'All audits' }} -->
+              <DownArrow />
+            </span>
+          </span>
+        </AccordionHeader>
+        <AccordionContent>
+          <div class="toolbar">
+            <div class="filters">
+              <div class="input-wrapper">
+                <label for="search">Search</label>
+                <input
+                  id="search"
+                  v-model="word"
+                  class="input"
+                  type="search"
+                  placeholder="Search audit number"
+                  @input="applyFilters"
+                />
+              </div>
 
-        <div class="input-wrapper">
-          <UpdatedCustomInputSelect
-            :model-value="statusFilter"
-            :static-options="statusOptions"
-            label="Status"
-            placeholder="select statuses"
-            class="input"
-            @update:model-value="normalizeStatus"
-          />
-        </div>
+              <div class="input-wrapper">
+                <UpdatedCustomInputSelect
+                  :model-value="statusFilter"
+                  :static-options="statusOptions"
+                  label="Status"
+                  placeholder="select statuses"
+                  class="audit-filter-select"
+                  @update:model-value="normalizeStatus"
+                />
+              </div>
 
-        <div class="input-wrapper">
-          <label for="audit-from-date">From Date</label>
-          <DatePicker
-            v-model="fromDate"
-            input-id="audit-from-date"
-            date-format="yy-mm-dd"
-            placeholder="Select from date"
-            :max-date="toDate ?? undefined"
-            :manual-input="false"
-            show-icon
-            show-button-bar
-            class="input"
-          />
-        </div>
-        <div class="input-wrapper">
-          <label for="audit-to-date">To Date</label>
-          <DatePicker
-            v-model="toDate"
-            input-id="audit-to-date"
-            date-format="yy-mm-dd"
-            placeholder="Select to date"
-            :min-date="fromDate ?? undefined"
-            :manual-input="false"
-            show-icon
-            show-button-bar
-            class="input"
-          />
-        </div>
-        <div class="input-wrapper">
-          <UpdatedCustomInputSelect
-            :model-value="focusArea"
-            :controller="hierarchyController"
-            :params="hierarchyParams"
-            label="Focus Area"
-            placeholder="Select department"
-            class="input"
-            @update:model-value="normalizeFocusArea"
-          />
-        </div>
-      </div>
-    </div>
+              <div class="input-wrapper">
+                <label for="audit-from-date">From Date</label>
+                <DatePicker
+                  v-model="fromDate"
+                  input-id="audit-from-date"
+                  date-format="yy-mm-dd"
+                  placeholder="Select from date"
+                  :max-date="toDate ?? undefined"
+                  :manual-input="false"
+                  show-icon
+                  show-button-bar
+                  class="input"
+                />
+              </div>
+              <div class="input-wrapper">
+                <label for="audit-to-date">To Date</label>
+                <DatePicker
+                  v-model="toDate"
+                  input-id="audit-to-date"
+                  date-format="yy-mm-dd"
+                  placeholder="Select to date"
+                  :min-date="fromDate ?? undefined"
+                  :manual-input="false"
+                  show-icon
+                  show-button-bar
+                  class="input"
+                />
+              </div>
+              <div class="input-wrapper">
+                <UpdatedCustomInputSelect
+                  :model-value="focusArea"
+                  :controller="hierarchyController"
+                  :params="hierarchyParams"
+                  label="Focus Area"
+                  placeholder="Select department"
+                  class="audit-filter-select"
+                  @update:model-value="normalizeFocusArea"
+                />
+              </div>
+            </div>
+          </div>
+        </AccordionContent>
+      </AccordionPanel>
+    </Accordion>
     <router-link class="btn btn-primary" to="/organization/internal-audit"
       >New Audit Plan</router-link
     >
@@ -259,18 +303,158 @@ const handleCountPerPage = (count: number) => {
   </main>
 </template>
 <style scoped>
-.filters {
+/* :deep(.p-select) {
+  border: 1px solid black !important;
+} */
+.audit-filters-accordion {
+  border: 1px solid var(--brand-primary-100);
+  border-radius: 18px;
+  background: var(--surface-1);
+  box-shadow: 0 6px 24px color-mix(in srgb, var(--brand-primary-500) 6%, transparent);
+}
+
+.audit-filters-accordion :deep(.p-accordionpanel) {
+  border: 0;
+}
+
+.audit-filters-accordion :deep(.p-accordionheader) {
+  gap: 16px;
+  padding: 20px;
+  border-radius: 18px;
+  background: linear-gradient(115deg, var(--brand-primary-50), var(--surface-1));
+  color: var(--text-strong);
+}
+
+.audit-filters-accordion :deep(.p-accordionheader:hover) {
+  background: var(--brand-primary-50);
+}
+
+.audit-filters-accordion :deep(.p-accordionheader:focus-visible) {
+  outline: 2px solid var(--brand-primary-500);
+  outline-offset: 3px;
+}
+
+.audit-filters-accordion :deep(.p-accordioncontent-content) {
+  padding: 20px;
+  border-top: 1px solid var(--brand-primary-100);
+  border-radius: 0 0 18px 18px;
+  background: var(--surface-1);
+}
+
+.filter-heading {
   display: flex;
-  gap: 12px;
-  align-items: flex-end;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
   flex: 1;
   min-width: 0;
+  text-align: start;
 }
-.filters > .input-wrapper {
-  flex: 1 1 180px;
+
+.filter-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border: 1px solid var(--brand-primary-100);
+  border-radius: 14px;
+  background: var(--surface-1);
+  color: var(--brand-primary-600);
+}
+
+.filter-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.filter-heading-copy {
+  display: grid;
+  gap: 5px;
+}
+
+.filter-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.filter-description {
+  color: var(--text-soft, #687777);
+  font-size: 0.8rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.filter-count {
+  margin-inline-start: auto;
+  padding: 6px 11px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--surface-1);
+  color: var(--text-soft, #687777);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.filter-count.has-filters {
+  background: var(--brand-primary-100);
+  color: var(--brand-primary-700);
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  gap: 18px;
+  align-items: end;
+  width: 100%;
   min-width: 0;
 }
+
+.filters > .input-wrapper {
+  min-width: 0;
+}
+
+.filters :deep(.p-datepicker),
+.filters .input {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Style the actual select control, rather than its label-and-control wrapper. */
+.audit-filters-accordion .filters :deep(.audit-filter-select .input-select) {
+  width: 100%;
+  border: 1px solid var(--main-border, #cbd8d6) !important;
+  background-color: var(--surface-1, #fff);
+}
+
+.audit-filters-accordion .filters :deep(.audit-filter-select .input-select:hover) {
+  border-color: var(--brand-primary-400, #087d80) !important;
+}
+
+.audit-filters-accordion .filters :deep(.audit-filter-select .input-select:focus-within) {
+  border-color: var(--brand-primary-500, #087d80) !important;
+}
+
+@media (max-width: 600px) {
+  .audit-filters-accordion :deep(.p-accordionheader),
+  .audit-filters-accordion :deep(.p-accordioncontent-content) {
+    padding: 16px;
+  }
+
+  .filter-heading {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .filter-heading-copy {
+    flex: 1;
+    min-width: 140px;
+  }
+
+  .filter-count {
+    margin-inline-start: 54px;
+  }
+}
+
 .register-page {
   display: grid;
   gap: 18px;

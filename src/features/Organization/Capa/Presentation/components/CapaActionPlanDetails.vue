@@ -25,12 +25,12 @@ const localStatuses = ref<Record<number, number>>({})
 const isSavingStatus = ref(false)
 
 const taskStatusOptions = [
-  // {
-  //   value: InvestegationTaskEnum.NotStarted,
-  //   label: 'Not Started',
-  //   description: 'Work has not yet begun.',
-  //   color: 'var(--text-muted)',
-  // },
+  {
+    value: InvestegationTaskEnum.NotStarted,
+    label: 'Not Started',
+    description: 'Work has not yet begun.',
+    color: 'var(--text-muted)',
+  },
   {
     value: InvestegationTaskEnum.InProgress,
     label: 'In Progress',
@@ -43,12 +43,12 @@ const taskStatusOptions = [
     description: 'Work is temporarily suspended, for example awaiting resources.',
     color: 'var(--status-warning)',
   },
-  // {
-  //   value: InvestegationTaskEnum.Overdue,
-  //   label: 'Overdue',
-  //   description: 'Work is ongoing but past the target deadline.',
-  //   color: 'var(--status-danger)',
-  // },
+  {
+    value: InvestegationTaskEnum.Overdue,
+    label: 'Overdue',
+    description: 'Work is ongoing but past the target deadline.',
+    color: 'var(--status-danger)',
+  },
   {
     value: InvestegationTaskEnum.Completed,
     label: 'Completed',
@@ -62,6 +62,15 @@ const taskStatusOptions = [
     color: 'var(--identity-accent)',
   },
 ]
+
+const dialogStatusOptions = taskStatusOptions.filter(
+  (option) =>
+    option.value !== InvestegationTaskEnum.NotStarted &&
+    option.value !== InvestegationTaskEnum.Overdue,
+)
+const isSelectableStatus = computed(() =>
+  dialogStatusOptions.some((option) => option.value === selectedStatus.value),
+)
 
 const taskStatus = (task: CapaTaskDetailsModel) => localStatuses.value[task.id] ?? task.status ?? 0
 const statusesThatNeedReason = [
@@ -85,7 +94,7 @@ const openStatusDialog = (task: CapaTaskDetailsModel) => {
 const updateInvestigationTaskController = UpdateInvestigationTaskController.getInstance()
 
 const saveTaskStatus = async () => {
-  if (!selectedStatusTask.value || isSavingStatus.value) return
+  if (!selectedStatusTask.value || isSavingStatus.value || !isSelectableStatus.value) return
   if (isReasonRequired.value && !selectedStatusReason.value.trim()) return
 
   isSavingStatus.value = true
@@ -259,7 +268,7 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
 
       <div class="status-dialog-body">
         <label
-          v-for="option in taskStatusOptions"
+          v-for="option in dialogStatusOptions"
           :key="option.value"
           class="status-radio-option"
           :class="{ selected: selectedStatus === option.value }"
@@ -291,7 +300,9 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
       <template #footer>
         <button
           class="status-save-btn"
-          :disabled="isSavingStatus || (isReasonRequired && !selectedStatusReason.trim())"
+          :disabled="
+            isSavingStatus || !isSelectableStatus || (isReasonRequired && !selectedStatusReason.trim())
+          "
           @click="saveTaskStatus"
         >
           {{ isSavingStatus ? 'Saving...' : 'Save status' }}

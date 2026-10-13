@@ -4,11 +4,12 @@ import type Params from '@/base/core/params/params'
 import { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import type IndexOwnTaskModel from '../../../Data/models/IndexOwnTaskModel'
 import ChangeTaskStatusUseCase from '../../../Domain/useCase/employeeTask/ChangeTaskStatusUseCase'
+import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 // import TitleInterface from '@/base/Data/Models/title_interface'
+import successImage from '@/assets/images/Success.png'
+import errorImage from '@/assets/images/error.png'
 
-export default class changeTaskStatusController extends SelectControllerInterface<
-  IndexOwnTaskModel
-> {
+export default class changeTaskStatusController extends SelectControllerInterface<IndexOwnTaskModel> {
   private static instance: changeTaskStatusController
   private constructor() {
     super()
@@ -26,14 +27,23 @@ export default class changeTaskStatusController extends SelectControllerInterfac
     // useLoaderStore().setLoadingWithDialog();
     // console.log(params)
     this.setLoading()
-    const dataState: DataState<IndexOwnTaskModel> =
-      await this.changeTaskStatusUseCase.call(params)
+    const dataState: DataState<IndexOwnTaskModel> = await this.changeTaskStatusUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {
-      // useLoaderStore().endLoadingWithDialog();
+      DialogSelector.instance.successDialog.openDialog({
+        dialogName: 'dialog-success',
+        titleContent: 'Added was successful',
+        imageElement: successImage,
+        messageContent: null,
+      })
     } else {
-      throw new Error('Error while addServices')
+      DialogSelector.instance.failedDialog.openDialog({
+        dialogName: 'dialog-error',
+        titleContent: this.state.value.error?.title ?? 'Ann Error Occurred',
+        imageElement: errorImage,
+        messageContent: null,
+      })
     }
     super.handleResponseDialogs()
     return this.state

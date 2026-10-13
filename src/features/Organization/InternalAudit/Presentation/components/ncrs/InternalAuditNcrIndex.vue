@@ -37,6 +37,13 @@ function createdAtLabel(value: string): string {
   const date = new Date(value)
   return Number.isNaN(date.getTime()) ? value : date.toLocaleString()
 }
+
+function assignedToLabel(ncr: InternalAuditNcrModel, action: 'corrective' | 'preventive'): string {
+  const names = (ncr.details?.tasks ?? [])
+    .map((task) => task[action].assignedTo?.name || task[action].assignedTo?.title || '')
+    .filter(Boolean)
+  return [...new Set(names)].join(', ') || '—'
+}
 </script>
 
 <template>
@@ -53,6 +60,8 @@ function createdAtLabel(value: string): string {
             <th>Created by</th>
             <th>Created at</th>
             <th>Lead Auditor</th>
+            <th>Corrective action assigned to</th>
+            <th>Preventive action assigned to</th>
             <!-- <th>Due</th> -->
             <th>Status</th>
             <!-- <th>Lead Review</th> -->
@@ -76,6 +85,8 @@ function createdAtLabel(value: string): string {
             <td>{{ item.createdBy.name || '—' }}</td>
             <td>{{ createdAtLabel(item.createdAt) }}</td>
             <td>{{ auditLeadAuditor?.title || auditLeadAuditor?.name || '—' }}</td>
+            <td>{{ assignedToLabel(item, 'corrective') }}</td>
+            <td>{{ assignedToLabel(item, 'preventive') }}</td>
             <!-- <td>{{ item.dueDate || '—' }}</td> -->
             <td>
               <span class="status">{{ statusLabel(item.status) }}</span>
