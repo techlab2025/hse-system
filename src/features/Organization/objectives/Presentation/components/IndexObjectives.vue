@@ -119,7 +119,6 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
     ],
   },
 ]
-
 </script>
 
 <template>
@@ -129,12 +128,20 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
       <span class="icon-remove" @click="((word = ''), searchObjectivesType())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="$t('search')" class="input" type="text" @input="searchObjectivesType" />
+      <input
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchObjectivesType"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
       <!-- <ExportPdf /> -->
-      <permission-builder :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.OBJECTIVE_ORG_CREATE]">
+      <permission-builder
+        :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.OBJECTIVE_ORG_CREATE]"
+      >
         <router-link :to="addObjectivesLink" class="btn btn-primary">
           {{ $t('Add_Objectives') }}
         </router-link>
@@ -142,14 +149,16 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
     </div>
   </div>
 
-  <permission-builder :code="[
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.OBJECTIVE_ORG_ALL,
-    PermissionsEnum.OBJECTIVE_ORG_DELETE,
-    PermissionsEnum.OBJECTIVE_ORG_FETCH,
-    PermissionsEnum.OBJECTIVE_ORG_UPDATE,
-    PermissionsEnum.OBJECTIVE_ORG_CREATE,
-  ]">
+  <permission-builder
+    :code="[
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.OBJECTIVE_ORG_ALL,
+      PermissionsEnum.OBJECTIVE_ORG_DELETE,
+      PermissionsEnum.OBJECTIVE_ORG_FETCH,
+      PermissionsEnum.OBJECTIVE_ORG_UPDATE,
+      PermissionsEnum.OBJECTIVE_ORG_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -170,7 +179,8 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/organization/objectives/${item.id}`">{{ index + 1 }}
+                  <router-link :to="`/organization/objectives/${item.id}`"
+                    >{{ index + 1 }}
                   </router-link>
                 </td>
                 <td :data-label="$t('Objective')">{{ wordSlice(item.objective) }}</td>
@@ -178,17 +188,28 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
                 <td :data-label="$t('Year')">{{ item.year }}</td>
                 <td :data-label="$t('Target Type')">{{ $t(item.targetTypeTitle || '-') }}</td>
                 <td :data-label="$t('Direction')">
-                  {{ item.directionTitle || item.frequencyTitle ? $t(item.directionTitle || item.frequencyTitle) : '-' }}
+                  {{
+                    item.directionTitle || item.frequencyTitle
+                      ? $t(item.directionTitle || item.frequencyTitle)
+                      : '-'
+                  }}
                 </td>
 
                 <td :data-label="$t('actions')">
-                  <DropList :actionList="actionList(item.id, deleteObjectives)" @delete="deleteObjectives(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteObjectives)"
+                    @delete="deleteObjectives(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="7" :rows="10" />
@@ -197,22 +218,34 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
         <TableLoader :cols="7" :rows="10" />
       </template>
       <template #empty>
-        <DataEmpty :link="createObjectiveLink" :add-text="$t('Add_Objectives')"
+        <DataEmpty
+          :link="createObjectiveLink"
+          :add-text="$t('Add_Objectives')"
           :description="$t('no_objectives_description')"
-          :title="$t('no_objectives')" />
+          :title="$t('no_objectives')"
+        />
       </template>
       <template #failed>
-        <DataFailed :link="createObjectiveLink" :add-text="$t('Add_Objectives')"
+        <DataFailed
+          :link="createObjectiveLink"
+          :add-text="$t('Add_Objectives')"
           :description="$t('unable_to_load_objectives')"
-          :title="$t('no_objectives')" />
+          :title="$t('no_objectives')"
+        />
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed :add-text="$t('have_not_permission')"
-        :description="$t('no_objectives_description')" />
+      <DataFailed
+        :add-text="$t('have_not_permission')"
+        :description="$t('no_objectives_description')"
+      />
     </template>
   </permission-builder>
 </template>
 
-<style scoped></style>
+<style scoped>
+.btn-primary {
+  border-radius: 12px !important;
+}
+</style>

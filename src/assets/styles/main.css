@@ -686,12 +686,10 @@ html[dir=rtl] .login .login-form .inputs .input-wrapper .icon-eye {
   width: fit-content;
   cursor: pointer;
   gap: var(--xs-size);
+  border-radius: var(--hse-project-radius-control) !important;
 }
 .btn.w-full {
   width: 100%;
-}
-.btn {
-  border-radius: var(--hse-project-radius-control);
 }
 
 .btn-primary {
