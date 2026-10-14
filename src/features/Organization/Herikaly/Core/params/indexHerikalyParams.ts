@@ -8,6 +8,7 @@ export default class IndexHerikalyParams implements Params {
   public pageNumber: number = 10
   public parentOnly: boolean
   public projectId?: number | null
+  public ignoreSelectedProject: boolean
 
   constructor(
     word: string,
@@ -16,6 +17,7 @@ export default class IndexHerikalyParams implements Params {
     withPage: number = 1,
     parentOnly: boolean,
     projectId?: number | null,
+    ignoreSelectedProject: boolean = false,
   ) {
     this.word = word
     this.withPage = withPage
@@ -23,6 +25,7 @@ export default class IndexHerikalyParams implements Params {
     this.perPage = perPage
     this.parentOnly = parentOnly
     this.projectId = projectId
+    this.ignoreSelectedProject = ignoreSelectedProject
   }
 
   toMap(): Record<string, string | number | number[] | null | any> {
@@ -32,7 +35,8 @@ export default class IndexHerikalyParams implements Params {
     if (this.pageNumber) data['page'] = this.pageNumber
     if (this.perPage) data['limit'] = this.perPage
     data['return_patent_only'] = this.parentOnly
-    if (this.projectId || useProjectSelectStore().getProjectId())
+    if (this.projectId != null) data['project_id'] = this.projectId
+    else if (!this.ignoreSelectedProject && useProjectSelectStore().getProjectId())
       data['project_id'] = useProjectSelectStore().SelectedProjectId(this.projectId!)
 
     return data

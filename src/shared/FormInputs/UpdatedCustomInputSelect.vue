@@ -672,6 +672,9 @@ interface Props {
   /* Option IDs hidden from the dropdown. Current selections are always retained. */
   excludedOptionIds?: Array<string | number>
 
+  /* Options rendered before fetched/static options. */
+  prependOptions?: TitleInterface[]
+
   onclick?: () => void
 }
 
@@ -695,6 +698,7 @@ const props = withDefaults(defineProps<Props>(), {
   // null means unlimited selection
   maxSelectOptions: null,
   excludedOptionIds: () => [],
+  prependOptions: () => [],
 })
 
 const emit = defineEmits<{
@@ -757,7 +761,7 @@ const mergedOptions = computed<TitleInterface[]>(() => {
    * A filtered endpoint may intentionally omit already-assigned records.
    * Keep the current value in the options so PrimeVue can still render its label.
    */
-  return [...availableOptions, ...selectedOptions].filter((option) => {
+  return [...props.prependOptions, ...availableOptions, ...selectedOptions].filter((option) => {
     const key = getOptionKey(option)
 
     if (!key) return true

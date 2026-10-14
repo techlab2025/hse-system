@@ -199,11 +199,11 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
                   <th scope="col">{{ $t('Direction') }}</th>
 
                   <th scope="col">{{ $t('op.target') }}</th>
-                  <th scope="col">{{ $t('op.department') }}</th>
-                  <th scope="col">{{ $t('op.followUp') }}</th>
-                  <th scope="col">{{ $t('op.latestActual') }}</th>
-                  <th scope="col">{{ $t('op.indicator') }}</th>
-                  <th scope="col">{{ $t('op.latestPeriod') }}</th>
+                  <!-- <th scope="col">{{ $t('op.department') }}</th> -->
+                  <!-- <th scope="col">{{ $t('op.followUp') }}</th> -->
+                  <!-- <th scope="col">{{ $t('op.latestActual') }}</th> -->
+                  <!-- <th scope="col">{{ $t('op.indicator') }}</th> -->
+                  <!-- <th scope="col">{{ $t('op.latestPeriod') }}</th> -->
                   <th class="empty"></th>
                 </tr>
               </thead>
@@ -226,20 +226,20 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
                     }}
                   </td>
 
-                  <td :data-label="$t('op.target')">{{ targetValue(item) }}</td>
+                  <!-- <td :data-label="$t('op.target')">{{ targetValue(item) }}</td>
                   <td :data-label="$t('op.department')">{{ item.department?.title || '—' }}</td>
                   <td :data-label="$t('op.followUp')">{{ item.followUpEmployee?.title || '—' }}</td>
                   <td :data-label="$t('op.latestActual')">
                     {{ item.progressSummary?.actualResult ?? '—' }}
                     {{ item.progressSummary?.actualResult != null ? actualUnit(item) : '' }}
-                  </td>
-                  <td :data-label="$t('op.indicator')">
+                  </td> -->
+                  <!-- <td :data-label="$t('op.indicator')">
                     <ObjectiveProgressIndicator
                       :objective="item"
                       :actual="item.progressSummary?.actualResult ?? null"
                       :backend-indicator="item.progressSummary?.indicator"
                     />
-                  </td>
+                  </td> -->
                   <td :data-label="$t('op.latestPeriod')">
                     {{
                       item.progressSummary
