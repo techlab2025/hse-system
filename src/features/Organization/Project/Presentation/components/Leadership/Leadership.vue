@@ -821,7 +821,7 @@ onMounted(async () => {
   box-shadow: 0 16px 42px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
 }
 
-.workspace-card::before {
+/* .workspace-card::before {
   content: '';
   position: absolute;
   inset: 0 0 auto;
@@ -832,7 +832,7 @@ onMounted(async () => {
     color-mix(in srgb, var(--PrimaryColor) 18%, transparent) 54%,
     transparent
   );
-}
+} */
 
 .section-intro {
   display: flex;

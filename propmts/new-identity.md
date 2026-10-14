@@ -6,8 +6,8 @@
     Targets:
 
     - ProjectSummary.vue
-    - ProjectDetails.vue
-    - ProjectCard.vue
+    - @
+
 
     Apply the HSE.Cloud.AI design identity
     to all three components.

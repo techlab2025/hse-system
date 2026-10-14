@@ -327,7 +327,7 @@ watch(
 }
 .project-details-section {
   gap: 20px;
-  padding: 12px;
+  // padding: 12px;
 }
 
 .project-operations-workspace {

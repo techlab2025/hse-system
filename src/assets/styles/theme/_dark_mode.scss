@@ -1541,48 +1541,6 @@ body,
       var(--surface-2) !important;
   }
 
-  .breadcrump-container,
-  .breadcrump-container.is-dark {
-    background-color: var(--text-on-brand) !important;
-    border: 1px solid var(--main-border) !important;
-    color: var(--text-strong) !important;
-    box-shadow: 0 12px 28px color-mix(in srgb, var(--text-strong) 18%, transparent) !important;
-
-    .breadcrump,
-    .p-breadcrumb,
-    .p-breadcrumb-list {
-      background-color: transparent !important;
-      color: var(--text-strong) !important;
-      border-color: transparent !important;
-    }
-
-    .sidebar-back {
-      background-color: transparent !important;
-      color: var(--text-soft) !important;
-
-      &:hover {
-        background-color: var(--text-on-brand) !important;
-        color: var(--PrimaryColor) !important;
-      }
-
-      .icon path {
-        fill: currentColor !important;
-      }
-    }
-
-    .p-breadcrumb-item-label {
-      color: var(--PrimaryColor) !important;
-    }
-
-    .p-breadcrumb-item:last-child .p-breadcrumb-item-label {
-      color: var(--text-soft) !important;
-    }
-
-    .p-breadcrumb-separator {
-      color: var(--text-muted) !important;
-    }
-  }
-
   .project-details-section {
     color: var(--text-strong) !important;
 

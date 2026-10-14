@@ -24,12 +24,12 @@ defineProps<{
 
     <div class="project-identity">
       <div class="project-heading">
-        <span class="project-mark" aria-hidden="true">
+        <!-- <span class="project-mark" aria-hidden="true">
           <svg viewBox="0 0 24 24">
             <path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z" />
             <path d="m4 7.5 8 4.5 8-4.5M12 12v9" />
           </svg>
-        </span>
+        </span> -->
         <div>
           <span class="project-eyebrow">{{ t('Project overview') }}</span>
           <h1 class="project-name">{{ projectName || t('Project') }}</h1>
@@ -271,6 +271,12 @@ defineProps<{
   </header>
 </template>
 <style scoped lang="scss">
+.project-meta {
+  background:
+    radial-gradient(ellipse at 85% 0, rgba(75, 132, 255, 0.07), transparent 35%), #f4f7fb !important;
+    padding: 15px !important;
+    border-radius: 12px !important;
+}
 .btn-route {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

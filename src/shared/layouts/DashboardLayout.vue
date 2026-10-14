@@ -84,7 +84,9 @@ const showSidebar = computed(() => {
     <section class="content-wrapper">
       <Header @open="toggleSidebar" />
       <div class="main-content minmize">
-        <BreadCrumb v-if="!route.fullPath.includes('project-progress')" />
+        <BreadCrumb
+          v-if="!route.fullPath.includes('project-progress') && route.fullPath != `/organization`"
+        />
         <slot />
       </div>
     </section>

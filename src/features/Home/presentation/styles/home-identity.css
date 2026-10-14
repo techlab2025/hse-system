@@ -1,0 +1,293 @@
+/* Home-only composition. Typography, colors and radii come from the shared HSE tokens. */
+.hse-home-dashboard {
+  --header-page-color: var(--hse-project-ink);
+  --subtitle-color: var(--hse-project-muted);
+  --surface-2: var(--hse-project-surface-soft);
+}
+.hse-home-dashboard .home-analytics-shell,
+.hse-home-dashboard .home-overview-grid {
+  display: grid;
+  gap: 24px;
+  min-width: 0;
+}
+.hse-home-dashboard .home-analytics-shell {
+  margin-top: 24px;
+}
+.hse-home-panel {
+  min-width: 0;
+  border: 1px solid var(--hse-project-line) !important;
+  border-radius: var(--hse-project-radius-card);
+  background: var(--hse-project-surface) !important;
+  box-shadow: var(--hse-project-shadow-panel) !important;
+}
+.hse-home-dashboard .home-panel-projects {
+  overflow: hidden;
+}
+.hse-home-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-block: 20px;
+}
+.hse-home-shortcuts > a {
+  min-width: 0;
+  text-decoration: none;
+}
+.hse-home-shortcuts .home-routes-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  height: 100%;
+  /* min-height: 112px; */
+  padding: 18px;
+  border: 1px solid var(--hse-project-line) !important;
+  border-radius: var(--hse-project-radius-card);
+  background: var(--hse-project-surface) !important;
+  box-shadow: var(--hse-project-shadow-panel) !important;
+  transform: none;
+}
+.hse-home-shortcuts .home-routes-card::before,
+.hse-home-shortcuts .home-routes-card::after {
+  display: none;
+}
+.hse-home-shortcuts a:hover .home-routes-card {
+  border-color: var(--hse-project-blue);
+  background: var(--hse-project-input-bg);
+}
+.hse-home-shortcuts .home-routes-card .card-img {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  padding: 9px;
+  margin: 0;
+  border: 1px solid var(--hse-project-line) !important;
+  border-radius: 10px;
+  background: var(--hse-project-ice) !important;
+  box-shadow: none !important;
+}
+.hse-home-shortcuts .card-img svg {
+  width: 22px;
+  height: 22px;
+}
+.hse-home-shortcuts .card-content {
+  min-width: 0;
+}
+.hse-home-shortcuts .home-routes-card .title {
+  margin: 0 0 6px;
+  color: var(--hse-project-ink);
+  font: 700 14px/1.4 var(--hse-project-font);
+}
+.hse-home-shortcuts .home-routes-card .description {
+  color: var(--hse-project-muted);
+  font: 400 11px/1.6 var(--hse-project-font);
+}
+.hse-home-kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.hse-home-kpis > * {
+  min-width: 0;
+}
+.hse-home-kpis .total-insedent-card,
+.hse-home-details .incidant-factor-container {
+  min-width: 0;
+  height: 100%;
+  padding: 20px;
+  border: 1px solid var(--hse-project-line) !important;
+  border-radius: var(--hse-project-radius-card);
+  background: var(--hse-project-surface) !important;
+  box-shadow: var(--hse-project-shadow-panel) !important;
+  transform: none;
+}
+.hse-home-kpis .total-insedent-card::before {
+  display: none;
+}
+.hse-home-kpis a:hover .total-insedent-card {
+  border-color: var(--hse-project-blue);
+}
+.hse-home-kpis .titlte p {
+  margin: 0;
+  color: var(--hse-project-ink);
+  font: 600 13px/1.5 var(--hse-project-font);
+}
+.hse-home-kpis .data {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 22px;
+}
+.hse-home-kpis .data p {
+  margin: 0;
+  color: var(--hse-project-blue);
+  font: 700 32px/1.1 var(--hse-project-font);
+}
+.hse-home-kpis .data p.ToatlInsedant-one,
+.hse-home-kpis .data p.ToatlInsedant-two {
+  color: var(--hse-project-red);
+}
+.hse-home-kpis .data h6 {
+  margin: 0;
+  color: var(--hse-project-muted);
+  font: 400 11px/1.5 var(--hse-project-font);
+}
+.hse-home-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 16px;
+}
+.hse-home-details .incidant-factor-header-container {
+  padding: 0;
+  margin: 0 0 16px;
+}
+.hse-home-details .static-title {
+  margin: 0;
+  color: var(--hse-project-ink);
+  font: 700 14px/1.4 var(--hse-project-font);
+}
+.hse-home-details .static-data {
+  margin-top: 8px;
+}
+.hse-home-details .static-data p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  margin: 0;
+  border: 1px solid var(--hse-project-line-soft);
+  border-radius: 9px;
+  background: var(--hse-project-surface-soft);
+  color: var(--hse-project-muted);
+  font: 500 12px/1.5 var(--hse-project-font);
+}
+.hse-home-details .static-data p span {
+  min-width: 32px;
+  color: var(--hse-project-ink);
+  font: 700 18px/1.3 var(--hse-project-font);
+  background: transparent !important;
+}
+.hse-home-details .static-data p span:is(.Expired, .duration-ended) {
+  color: var(--hse-project-red);
+}
+.hse-home-details .static-data p span.finished {
+  color: var(--hse-project-green);
+}
+.hse-home-details .static-data a:hover p {
+  border-color: var(--hse-project-blue);
+}
+.hse-home-charts {
+  min-width: 0;
+}
+.hse-home-chart-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 24px;
+}
+.hse-home-chart-panel {
+  padding: 22px;
+}
+.hse-home-chart-panel
+  :is(
+    .total-machines-container,
+    .top-teams-container,
+    .total-observation-container,
+    .machine-statics
+  ) {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.hse-home-chart-panel :is(.total-machines-header-container, .total-observation-header-container) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 0;
+}
+.hse-home-chart-panel .static-title {
+  color: var(--hse-project-ink);
+  font: 700 16px/1.4 var(--hse-project-font);
+}
+.hse-home-chart-panel .static {
+  color: var(--hse-project-muted);
+  background: transparent !important;
+  padding: 0;
+  font: 500 10px/1.5 var(--hse-project-font);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.hse-home-chart-panel
+  :is(.chart-container, .chart-scroll-wrapper, .chart_container, .machine-statics) {
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+  background: transparent !important;
+  overflow-x: auto;
+}
+.hse-home-chart-panel :is(.col-name, .legend-label) {
+  color: var(--hse-project-muted);
+  font-family: var(--hse-project-font);
+}
+.hse-home-chart-panel .legend-container {
+  flex-wrap: wrap;
+}
+.hse-home-chart-panel .chart-wrapper {
+  min-width: 440px;
+}
+@media (max-width: 1100px) {
+  .hse-home-shortcuts,
+  .hse-home-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .hse-home-chart-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .hse-home-shortcuts {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .hse-home-kpis {
+    grid-template-columns: 1fr;
+  }
+  .hse-home-chart-panel {
+    padding: 16px;
+  }
+  .hse-home-dashboard .home-analytics-shell,
+  .hse-home-dashboard .home-overview-grid,
+  .hse-home-chart-grid {
+    gap: 16px;
+  }
+}
+.hse-home-chart-panel .total-machines-header-container .static-title,
+.hse-home-chart-panel .top-teams-header .static-title,
+.hse-home-chart-panel .total-observation-header-container .static-title {
+  color: var(--hse-project-ink) !important;
+  font: 700 16px/1.4 var(--hse-project-font) !important;
+}
+.hse-home-chart-panel .total-machines-header-container .static-data p:nth-child(1)::before {
+  background: var(--hse-project-cyan);
+}
+.hse-home-chart-panel .total-machines-header-container .static-data p:nth-child(2)::before {
+  background: var(--hse-project-blue);
+}
+.hse-home-chart-panel .total-machines-header-container .static-data p:nth-child(3)::before {
+  background: var(--hse-project-blue2);
+}
+.hse-home-chart-panel .precentage-container > div:not(.info-container) {
+  box-shadow: none !important;
+}
+
+.hse-home-dashboard .hse-project-card__locations,
+.hse-home-chart-panel .total-machines-header-container .static-data p {
+  background: var(--hse-project-surface-soft) !important;
+  color: var(--hse-project-muted) !important;
+}

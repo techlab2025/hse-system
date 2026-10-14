@@ -30,11 +30,12 @@ export default class ProjectModel extends TitleInterface {
   public assigned_employees_count: number
   public serialName: string
   public status: ProjectStatusEnum
-  public inspections_count:number
+  public inspections_count: number
   public projectStatus: ProjectProgressStatusEnum | null
   public projectProgress: number
   public projectLocations: ProjectScopeLocationModel[] = []
   public projectZones: ProjectScopeZoneModel[] = []
+  public image: string
 
   constructor(
     id: number,
@@ -56,9 +57,10 @@ export default class ProjectModel extends TitleInterface {
     assigned_employees_count: number,
     serialName: string,
     status: ProjectStatusEnum,
-    inspections_count:number,
+    inspections_count: number,
     projectStatus: ProjectProgressStatusEnum | null,
     projectProgress: number,
+    image: string,
   ) {
     super({ id, title })
     this.id = id
@@ -83,6 +85,7 @@ export default class ProjectModel extends TitleInterface {
     this.inspections_count = inspections_count
     this.projectStatus = projectStatus
     this.projectProgress = projectProgress
+    this.image = image
   }
 
   static fromMap(data: any): ProjectModel {
@@ -109,6 +112,7 @@ export default class ProjectModel extends TitleInterface {
       data.inspections_count,
       data.project_status ?? null,
       data.project_progress ?? 0,
+      data.image,
     )
 
     project.projectLocations = Array.isArray(data.project_locations)
@@ -117,7 +121,9 @@ export default class ProjectModel extends TitleInterface {
         )
       : []
     project.projectZones = Array.isArray(data.project_zoons)
-      ? data.project_zoons.map((item: Record<string, unknown>) => ProjectScopeZoneModel.fromMap(item))
+      ? data.project_zoons.map((item: Record<string, unknown>) =>
+          ProjectScopeZoneModel.fromMap(item),
+        )
       : []
 
     return project
@@ -127,9 +133,13 @@ export default class ProjectModel extends TitleInterface {
     1,
     'Eco-friendly / Sustainability-oriented Names',
     PartnerModel.example,
-    [LocationDetailsModel.example ,LocationDetailsModel.example,LocationDetailsModel.example ],
-    [MethodsDetailsModel.example ,  MethodsDetailsModel.example ,  MethodsDetailsModel.example],
-    [ProjectZoneDetailsModel.example , ProjectZoneDetailsModel.example , ProjectZoneDetailsModel.example],
+    [LocationDetailsModel.example, LocationDetailsModel.example, LocationDetailsModel.example],
+    [MethodsDetailsModel.example, MethodsDetailsModel.example, MethodsDetailsModel.example],
+    [
+      ProjectZoneDetailsModel.example,
+      ProjectZoneDetailsModel.example,
+      ProjectZoneDetailsModel.example,
+    ],
     '2022-01-01',
     'SN001',
     [ContractorDetailsModel.example, ContractorDetailsModel.example],

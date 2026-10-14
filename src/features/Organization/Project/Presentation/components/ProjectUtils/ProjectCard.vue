@@ -12,6 +12,7 @@ import LegacyProjectCard from './LegacyProjectCard.vue'
 import ProjectIcon from './ProjectIcon.vue'
 import CustomPopover from '../../supcomponents/CustomPopover.vue'
 import { useI18n } from 'vue-i18n'
+import defaultProjectImage from '@/features/Organization/Project/assets/project-reference-sites.webp'
 
 const props = defineProps<{
   data: ProjectModel
@@ -85,7 +86,26 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
       :to="`/organization/project-summary/${data.id}`"
       :aria-label="`${labels('open')}: ${data.title}`"
     />
-    <div class="hse-project-card__photo">
+    <!--   background:
+    linear-gradient(180deg, rgb(9 37 70 / 5%), rgb(9 37 70 / 72%)),
+    url('../assets/project-reference-sites.webp'); -->
+    <div
+      class="hse-project-card__photo"
+      :style="{
+        backgroundImage: `
+        linear-gradient(
+          180deg,
+          rgb(9 37 70 / 5%),
+          rgb(9 37 70 / 72%)
+        ),
+        url('${data.image || defaultProjectImage}')
+      `,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        
+      }"
+    >
       <span
         v-if="data.status"
         class="hse-project-card__status"

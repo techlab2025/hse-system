@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import '../../styles/home-identity.css'
 import HomeProjectIcon from '@/shared/icons/HomeProjectIcon.vue'
 import HomeOperationIcon from '@/shared/icons/HomeOperationIcon.vue'
 import HomeEquipmentIcon from '@/shared/icons/HomeEquipmentIcon.vue'
@@ -8,13 +9,13 @@ import HomeRoutesCard from './HomeRoutesCard.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { RouterEnum } from '@/features/Home/core/enums/SettingEnum/SettingEnum'
 
-const {ProgressValue} = defineProps<{
+const { ProgressValue } = defineProps<{
   ProgressValue: number
 }>()
 </script>
 
 <template>
-  <div class="home-routes-cards">
+  <div class="hse-identity hse-home-shortcuts">
     <PermissionBuilder
       :code="[
         PermissionsEnum.PROJECT_ALL,

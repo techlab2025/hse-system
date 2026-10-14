@@ -238,7 +238,7 @@ onMounted(async () => {
   setProjectProgress(data.project_progress)
   activeStep.value = requestedRouteStep() ?? resumeStepFromProject(data)
   basic.value = {
-    image: null,
+    image: data.image || null,
     serial: data.serial ?? data.serial_number ?? '',
     startDate: data.start_date ? new Date(data.start_date) : null,
     endDate: data.end_date ? new Date(data.end_date) : null,

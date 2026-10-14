@@ -22,7 +22,7 @@ const { identity: systemIdentity, defaultIdentity } = useSystemIdentity()
 
 const summaryTabs = [
   { key: 'all', label: 'allData', icon: 'grid' },
-  { key: 'dashboard', label: 'dashboard', icon: 'grid' },
+  // { key: 'dashboard', label: 'dashboard', icon: 'grid' },
   { key: 'safety', label: 'safety', icon: 'gauge' },
   { key: 'operations', label: 'operations', icon: 'users' },
   { key: 'equipment', label: 'equipment', icon: 'equipment' },

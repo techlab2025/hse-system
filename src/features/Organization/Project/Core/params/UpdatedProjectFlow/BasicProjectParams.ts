@@ -62,7 +62,8 @@ export default class BasicProjectParams implements Params {
       cost: this.cost,
       has_zoon: this.hasZoon,
       drills_count: this.drill_count,
-      image: this.image,
+      // Keep the stored image when the form still contains its fetched URL.
+      ...(this.image && /^https?:\/\//i.test(this.image) ? {} : { image: this.image }),
     }
   }
 }

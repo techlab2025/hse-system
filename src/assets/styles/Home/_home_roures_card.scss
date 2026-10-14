@@ -5,7 +5,7 @@
   @include flex-row(nowrap, flex-start, stretch);
   position: relative;
   isolation: isolate;
-  min-height: 104px;
+  // min-height: 104px;
   overflow: hidden;
   gap: $XsSize2;
   font-family: 'Regular';
@@ -128,7 +128,7 @@
   .card-content {
     @include flex-column(nowrap, center, flex-start);
     min-width: 0;
-    gap: $XsSize3;
+    // gap: $XsSize3;
 
     .title {
       margin: 0;

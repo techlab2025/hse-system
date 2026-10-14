@@ -3,6 +3,11 @@ import { ref, onMounted } from 'vue'
 import Chart from 'primevue/chart'
 import { watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useThemeMode } from '@/composables/useThemeMode'
+const identityRoot = ref<HTMLElement | null>(null)
+const { isDarkMode } = useThemeMode()
+const chartStyle = () =>
+  getComputedStyle(identityRoot.value?.closest('.hse-identity') ?? document.documentElement)
 
 const props = defineProps<{
   statics: { rent: number; owned: number }
@@ -23,7 +28,7 @@ const chartData = ref()
 const chartOptions = ref()
 
 const setChartData = () => {
-  const documentStyle = getComputedStyle(document.body)
+  const documentStyle = chartStyle()
 
   return {
     labels: [t('rent'), t('owned')],
@@ -31,12 +36,16 @@ const setChartData = () => {
       {
         data: [Rent.value, Owned.value],
         backgroundColor: [
-          documentStyle.getPropertyValue('--p-owned-500'),
-          documentStyle.getPropertyValue('--p-rent-500'),
+          documentStyle.getPropertyValue('--hse-project-blue') ||
+            documentStyle.getPropertyValue('--p-owned-500'),
+          documentStyle.getPropertyValue('--hse-project-cyan') ||
+            documentStyle.getPropertyValue('--p-rent-500'),
         ],
         hoverBackgroundColor: [
-          documentStyle.getPropertyValue('--p-owned-500'),
-          documentStyle.getPropertyValue('--p-rent-500'),
+          documentStyle.getPropertyValue('--hse-project-blue') ||
+            documentStyle.getPropertyValue('--p-owned-500'),
+          documentStyle.getPropertyValue('--hse-project-cyan') ||
+            documentStyle.getPropertyValue('--p-rent-500'),
         ],
       },
     ],
@@ -44,14 +53,17 @@ const setChartData = () => {
 }
 
 const setChartOptions = () => {
-  const documentStyle = getComputedStyle(document.documentElement)
-  const textColor = documentStyle.getPropertyValue('--p-text-color')
+  const documentStyle = chartStyle()
+  const textColor =
+    documentStyle.getPropertyValue('--hse-project-muted') ||
+    documentStyle.getPropertyValue('--p-text-color')
 
   return {
     plugins: {
       legend: {
         labels: {
           usePointStyle: true,
+          font: { family: documentStyle.fontFamily, size: 12 },
           color: textColor,
         },
       },
@@ -70,12 +82,17 @@ watch(
   },
 )
 
-watch(locale, () => {
-  chartData.value = setChartData()
-})
+watch(
+  [locale, isDarkMode],
+  () => {
+    chartData.value = setChartData()
+    chartOptions.value = setChartOptions()
+  },
+  { flush: 'post' },
+)
 </script>
 <template>
-  <div class="top-teams-container">
+  <div ref="identityRoot" class="top-teams-container">
     <div class="top-teams-header">
       <span class="static">{{ $t('statistics') }}</span>
       <p class="static-title">{{ $t('equipment_devices_tools') }}</p>

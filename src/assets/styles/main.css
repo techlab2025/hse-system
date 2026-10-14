@@ -691,7 +691,7 @@ html[dir=rtl] .login .login-form .inputs .input-wrapper .icon-eye {
   width: 100%;
 }
 .btn {
-  border-radius: clamp(40px, 5000vw / var(--base-width), 60px);
+  border-radius: var(--hse-project-radius-control);
 }
 
 .btn-primary {
@@ -16195,7 +16195,6 @@ html[dir=rtl] .table-responsive table.main-table tbody tr td:last-child {
   gap: var(--xl-size-base);
   width: 100%;
   margin-inline: auto;
-  padding: var(--xs-size-3);
 }
 .project-details-section .project-details-page-header {
   display: flex;
@@ -21444,7 +21443,6 @@ html[dir=rtl] .employee-header .right-header-background .right-blue-background {
   align-items: stretch;
   position: relative;
   isolation: isolate;
-  min-height: 104px;
   overflow: hidden;
   gap: var(--xs-size-2);
   font-family: "Regular";
@@ -21528,7 +21526,6 @@ html[dir=rtl] .employee-header .right-header-background .right-blue-background {
   justify-content: center;
   align-items: flex-start;
   min-width: 0;
-  gap: var(--xs-size-3);
 }
 .home-routes-card .card-content .title {
   margin: 0;
@@ -21857,114 +21854,6 @@ html[dir=rtl] .employee-header .right-header-background .right-blue-background {
 
 /*</editor-fold>*/
 /*<editor-fold desc="home breadcrump">*/
-.breadcrump-container {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  background-color: var(--brand-primary-50);
-  border-radius: var(--xl-size-base);
-  font-family: "Regular";
-  width: 100%;
-  margin-bottom: 12px;
-}
-.breadcrump-container.is-dark {
-  background-color: var(--surface-1) !important;
-  border: 1px solid var(--main-border);
-}
-.breadcrump-container.is-dark .breadcrump {
-  background-color: transparent !important;
-}
-.breadcrump-container.is-dark .sidebar-back {
-  background-color: transparent !important;
-  color: var(--text-strong) !important;
-}
-.breadcrump-container.is-dark .sidebar-back:hover {
-  background-color: var(--surface-3) !important;
-  color: var(--PrimaryColor) !important;
-}
-.breadcrump-container.is-dark .sidebar-back .icon path {
-  fill: currentColor !important;
-}
-.breadcrump-container.is-dark .p-breadcrumb,
-.breadcrump-container.is-dark .p-breadcrumb-list {
-  background-color: transparent !important;
-  color: var(--text-strong) !important;
-}
-.breadcrump-container.is-dark .p-breadcrumb-item-label {
-  color: var(--PrimaryColor) !important;
-}
-.breadcrump-container.is-dark .p-breadcrumb-item:last-child .p-breadcrumb-item-label {
-  color: var(--subtitle-color) !important;
-}
-.breadcrump-container.is-dark .p-breadcrumb-separator {
-  color: var(--text-muted) !important;
-}
-.breadcrump-container .breadcrump {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-}
-.breadcrump-container .breadcrump .info-dialog {
-  width: 30px;
-  height: 30px;
-}
-.breadcrump-container .breadcrump .sidebar-back {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  gap: var(--xs-size-3);
-  background-color: var(--brand-primary-50);
-  color: var(--text-soft);
-  font-size: var(--sm-size);
-  font-weight: 600;
-  border-radius: var(--xl-size-1);
-  cursor: pointer;
-}
-.breadcrump-container .breadcrump .sidebar-back .icon {
-  border-radius: 50%;
-  padding: var(--xs-size-4);
-  width: 30px;
-  height: 30px;
-}
-.breadcrump-container .breadcrump .p-breadcrumb {
-  width: 100%;
-  background-color: var(--brand-primary-50);
-  text-transform: capitalize;
-}
-.breadcrump-container .breadcrump .p-breadcrumb .p-breadcrumb-list {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  background-color: var(--brand-primary-50);
-}
-@media (max-width: 468px) {
-  .breadcrump-container .breadcrump .p-breadcrumb .p-breadcrumb-list {
-    flex-wrap: wrap;
-  }
-}
-.breadcrump-container .breadcrump .p-breadcrumb .p-breadcrumb-list .p-breadcrumb-item .p-breadcrumb-item-link .p-breadcrumb-item-label {
-  text-transform: capitalize;
-  color: var(--PrimaryColor) !important;
-  font-size: var(--sm-size);
-  font-weight: 500;
-}
-.breadcrump-container .breadcrump .p-breadcrumb .p-breadcrumb-list .p-breadcrumb-item:last-child .p-breadcrumb-item-link .p-breadcrumb-item-label {
-  color: color-mix(in srgb, var(--brand-primary-600) 40%, transparent) !important;
-}
-.breadcrump-container .breadcrump .p-breadcrumb .p-breadcrumb-list .p-breadcrumb-separator {
-  color: color-mix(in srgb, var(--brand-primary-600) 30.2%, transparent) !important;
-}
-
 /*</editor-fold>*/
 /*<editor-fold desc="fast routes">*/
 .fast-route-container {

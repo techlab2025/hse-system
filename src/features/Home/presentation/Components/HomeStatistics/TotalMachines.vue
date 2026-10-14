@@ -21,7 +21,7 @@ const chartData = computed(() => {
       segments: staticsArray.map((stat: any) => ({
         number: stat.count,
         value: (stat.count / total) * 100,
-        color: stat.type === 1 ? '#3b82f6' : stat.type === 2 ? '#60a5fa' : '#93c5fd',
+        color: stat.type === 1 ? 'var(--hse-project-blue, #3b82f6)' : stat.type === 2 ? 'var(--hse-project-blue2, #60a5fa)' : 'var(--hse-project-cyan, #93c5fd)',
         type: stat.type
       }))
     };

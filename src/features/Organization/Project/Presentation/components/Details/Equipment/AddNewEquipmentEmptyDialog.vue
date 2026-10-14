@@ -14,7 +14,7 @@ import { useRoute, useRouter } from 'vue-router'
 import HeaderSection from '../../Details/DetailsHeader/HeaderSection.vue'
 import CreateProjectZoneEquipment from '@/features/Organization/Project/Core/params/ProjectEquipments/CreateProjectZoneEquipment.ts'
 import CreateProjectZoneEquipmentsController from '../../../controllers/Equipments/CreateProjectZoneEquipmentsController'
-import MultiSelect from '@/shared/HelpersComponents/MultiSelect.vue'
+import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import IndexEquipmentController from '@/features/setting/Equipment/Presentation/controllers/indexEquipmentController'
 import IndexEquipmentParams from '@/features/_templateFeature/Core/params/indexEquipmentParams'
 import EmptyData from '../LocationsTeams/EmptyData.vue'
@@ -40,8 +40,8 @@ const indexEquipmentController = IndexEquipmentController.getInstance()
 const indexEquipmentParams = new IndexEquipmentParams('', 1, 100, 0, null, true)
 // ================== HANDLERS ==================
 
-const setEquipments = (data: TitleInterface[]) => {
-  equipments.value = data
+const setEquipments = (data: TitleInterface | TitleInterface[] | null) => {
+  equipments.value = Array.isArray(data) ? data : []
 }
 
 const AddEquipment = async () => {
@@ -60,7 +60,7 @@ const AddEquipment = async () => {
   selectedZoneId.value = null
 }
 
-const AllEquipments = ref([])
+const AllEquipments = ref<TitleInterface[]>([])
 const getEquipment = async () => {
   const res = await indexEquipmentController.getData(indexEquipmentParams)
   AllEquipments.value = res.value?.data || []
@@ -122,22 +122,15 @@ onMounted(() => {
             <p>{{ $t('Select one or more available tools and devices') }}</p>
           </div>
         </div>
-        <!-- <CustomSelectInput :modelValue="equipments" :controller="indexEquipmentController"
-          :params="indexEquipmentParams" label="Equipment" placeholder="Select Your Equipment" :type="2"
-          @update:modelValue="setEquipments" /> -->
-        <label class="hse-project-field-label" for="equipment">{{ $t('Select Equipment') }}</label>
-        <MultiSelect
-          overlay-class="hse-project-overlay"
+        <UpdatedCustomInputSelect
+          :id="`zone-equipment-${project_zone_id}`"
           :modelValue="equipments"
-          :options="AllEquipments"
-          optionLabel="title"
-          filter
+          :staticOptions="AllEquipments"
+          type="multiselect"
+          :label="$t('Select Equipment')"
           :placeholder="$t('Select Your Equipment')"
-          display="chip"
-          simpleOptions
+          :reload="false"
           showOptionSerial
-          showSelectAllOption
-          class="w-full md:w-80"
           @update:modelValue="setEquipments"
         />
 
@@ -221,23 +214,6 @@ onMounted(() => {
   margin: 2px 0 0;
   color: var(--text-soft);
   font-size: 0.67rem;
-}
-
-.equipment-selection > label {
-  display: block;
-  margin-bottom: 7px;
-  color: var(--text-strong);
-  font-size: 0.72rem;
-  font-weight: 850;
-}
-
-.equipment-selection :deep(.p-multiselect) {
-  width: 100% !important;
-  max-width: 100%;
-  min-height: 48px;
-  border-color: var(--main-border);
-  border-radius: 12px;
-  background: var(--surface-1);
 }
 
 .confirm-equipment-btn {

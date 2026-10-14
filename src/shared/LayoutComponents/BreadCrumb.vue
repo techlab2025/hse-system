@@ -7,13 +7,11 @@ import BackIcon from '../icons/BackIcon.vue'
 import { buildBreadcrumb } from './Helper/RouteHelper'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import { useThemeMode } from '@/composables/useThemeMode'
 import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
-const { isDarkMode } = useThemeMode()
 const conditionHandler = ConditionHandler.getInstance()
 
 const RouterBack = () => {
@@ -144,88 +142,190 @@ watch(
 
 const ShowBackBtn = computed(() => {
   return (
-    user?.type == OrganizationTypeEnum.ORGANIZATION &&
-    conditionHandler.shouldUseEmployeeInterface()
+    user?.type == OrganizationTypeEnum.ORGANIZATION && conditionHandler.shouldUseEmployeeInterface()
   )
 })
 </script>
 
 <template>
-  <div :class="['breadcrump-container', { 'is-dark': isDarkMode }]">
-    <div class="breadcrump">
+  <div class="hse-identity hse-breadcrumb-bar">
+    <div class="hse-breadcrumb-trail">
       <button
-        class="sidebar-back"
-        @click="RouterBack"
         v-if="(!IsHome || !ShowBackBtn) && route.path != '/admin' && route.path != '/organization'"
+        class="hse-breadcrumb-back"
+        type="button"
+        :aria-label="$t('back')"
+        @click="RouterBack"
       >
-        <BackIcon class="icon" />
+        <BackIcon aria-hidden="true" />
         <span>{{ $t('back') }}</span>
       </button>
 
-      <Breadcrumb :model="items" />
-      <!-- <HomeDialogInfo /> -->
+      <Breadcrumb :model="items" class="hse-breadcrumb" aria-label="Breadcrumb">
+        <template #item="{ item, props }">
+          <a v-if="item.url" v-bind="props.action" :href="item.url" class="hse-breadcrumb-link">
+            {{ item.label }}
+          </a>
+          <span v-else class="hse-breadcrumb-current" aria-current="page">
+            {{ item.label }}
+          </span>
+        </template>
+      </Breadcrumb>
     </div>
-
-    <!-- v-if="!IsHomeSetting" -->
-    <!-- <FastRoutes /> -->
   </div>
 </template>
 
-<style scoped lang="scss">
-@media (max-width: 400px) {
-  .breadcrump-container,
-  .breadcrump {
-    width: 100%;
-    max-width: 100%;
-    min-width: 0;
+<style scoped>
+.hse-breadcrumb-bar {
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  min-width: 0;
+  margin-bottom: 16px;
+}
+/* Keep the whole trail on the left as requested, including in Arabic. */
+.hse-breadcrumb-bar:dir(rtl) {
+  justify-content: flex-end;
+}
+.hse-breadcrumb-trail {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 100%;
+  min-width: 0;
+  padding: 6px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: 14px;
+  background: var(--hse-project-surface);
+  box-shadow: var(--hse-project-shadow-panel);
+}
+.hse-breadcrumb-back {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 8px 12px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-control-radius);
+  background: var(--hse-project-surface-soft);
+  color: var(--hse-project-ink);
+  font: 600 12px/1.5 var(--hse-project-font);
+  cursor: pointer;
+  transition:
+    background var(--hse-project-motion),
+    color var(--hse-project-motion);
+}
+.hse-breadcrumb-back:hover {
+  color: var(--hse-project-blue);
+  background: var(--hse-project-ice);
+}
+.hse-breadcrumb-back svg {
+  width: 17px;
+  height: 17px;
+}
+.hse-breadcrumb-back :deep(path) {
+  stroke: currentColor;
+}
+.hse-breadcrumb-back:dir(rtl) svg {
+  transform: scaleX(-1);
+}
+.hse-breadcrumb {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: visible;
+  font-family: var(--hse-project-font);
+}
+.hse-breadcrumb-back + .hse-breadcrumb {
+  padding-inline-start: 12px;
+  border-inline-start: 1px solid var(--hse-project-line);
+}
+.hse-breadcrumb :deep(.p-breadcrumb-list) {
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+}
+.hse-breadcrumb :deep(.p-breadcrumb-item) {
+  min-width: 0;
+}
+.hse-breadcrumb-link,
+.hse-breadcrumb-current {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 8px 10px;
+  border-radius: var(--hse-control-radius);
+  font: 500 12px/1.5 var(--hse-project-font);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.hse-breadcrumb-link {
+  color: var(--hse-project-muted);
+  transition:
+    background var(--hse-project-motion),
+    color var(--hse-project-motion);
+}
+.hse-breadcrumb-link:hover {
+  color: var(--hse-project-blue);
+  background: var(--hse-project-surface-soft);
+}
+.hse-breadcrumb-current {
+  color: var(--hse-project-blue);
+  background: var(--hse-project-ice);
+  font-weight: 700;
+}
+.hse-breadcrumb-current:where([data-theme='dark'] *) {
+  color: var(--hse-project-blue2);
+}
+.hse-breadcrumb-current::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: currentColor;
+}
+.hse-breadcrumb :deep(.p-breadcrumb-separator) {
+  color: var(--hse-project-muted);
+  opacity: 0.65;
+}
+.hse-breadcrumb :deep(.p-breadcrumb-separator svg) {
+  width: 10px;
+  height: 10px;
+}
+.hse-breadcrumb:dir(rtl) :deep(.p-breadcrumb-separator svg) {
+  transform: scaleX(-1);
+}
+@media (max-width: 600px) {
+  .hse-breadcrumb-trail {
+    gap: 8px;
   }
-
-  .breadcrump {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    overflow: hidden;
-  }
-
-  .sidebar-back {
-    flex: 0 0 auto;
-    min-width: 42px;
-    min-height: 42px;
+  .hse-breadcrumb-back {
+    width: 38px;
     padding: 8px;
   }
-
-  .sidebar-back span {
+  .hse-breadcrumb-back span {
     display: none;
   }
-
-  :deep(.p-breadcrumb) {
-    flex: 1 1 auto;
-    min-width: 0;
-    padding: 8px !important;
-    overflow-x: auto;
-    scrollbar-width: none;
+  .hse-breadcrumb-back + .hse-breadcrumb {
+    padding-inline-start: 8px;
   }
-
-  :deep(.p-breadcrumb::-webkit-scrollbar) {
-    display: none;
+  .hse-breadcrumb-link,
+  .hse-breadcrumb-current {
+    padding-inline: 7px;
+    font-size: 11px;
   }
-
-  :deep(.p-breadcrumb-list) {
-    flex-wrap: nowrap;
-    width: max-content;
-    min-width: 100%;
-  }
-
-  :deep(.p-breadcrumb-item-link) {
-    min-height: 36px;
-    padding-inline: 4px;
-  }
-
-  :deep(.p-breadcrumb-item-label) {
-    max-width: 130px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hse-breadcrumb-back,
+  .hse-breadcrumb-link {
+    transition: none;
   }
 }
 </style>

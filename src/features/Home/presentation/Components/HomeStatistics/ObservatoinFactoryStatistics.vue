@@ -45,11 +45,11 @@ const shadeColor = (color: string, percent: number): string => {
 };
 
 const setChartData = () => {
-  const documentStyle = getComputedStyle(document.documentElement);
+  const documentStyle = getComputedStyle(canvasRef.value?.closest(".hse-identity") ?? document.documentElement);
   // ✅ Hazard = أزرق، Observation = بنفسجي، Incident = أحمر (مطابق للديزاين)
-  const hazardColor = extractHexColor(documentStyle.getPropertyValue("--hazard-color"), "#3762D0");
-  const observationColor = extractHexColor(documentStyle.getPropertyValue("--observation-color"), "#8137D0");
-  const incidentColor = extractHexColor(documentStyle.getPropertyValue("--incidant-color"), "#D03737");
+  const hazardColor = extractHexColor(documentStyle.getPropertyValue("--hse-project-blue") || documentStyle.getPropertyValue("--hazard-color"), "#3762D0");
+  const observationColor = extractHexColor(documentStyle.getPropertyValue("--hse-project-cyan") || documentStyle.getPropertyValue("--observation-color"), "#8137D0");
+  const incidentColor = extractHexColor(documentStyle.getPropertyValue("--hse-project-red") || documentStyle.getPropertyValue("--incidant-color"), "#D03737");
 
   return {
     labels:
@@ -81,7 +81,7 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
 
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
-  const documentStyle = getComputedStyle(document.documentElement);
+  const documentStyle = getComputedStyle(canvasRef.value?.closest(".hse-identity") ?? document.documentElement);
   const isDark = document.documentElement.dataset.theme === "dark";
   const canvasBg = documentStyle.getPropertyValue("--surface-1").trim() || (isDark ? "#111827" : "#ffffff");
   const gridColor = isDark ? "rgba(148, 163, 184, 0.24)" : "rgba(209, 213, 219, 0.5)";
@@ -118,7 +118,7 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
 
   if (!isFinite(maxValue) || maxValue <= 0) {
     ctx.fillStyle = emptyColor;
-    ctx.font = `${Math.max(11, 14 * scale)}px sans-serif`;
+    ctx.font = `${Math.max(11, 14 * scale)}px ${documentStyle.fontFamily}`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText(t("No data available"), width / 2, height / 2);
@@ -170,7 +170,7 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
 
     // Y-axis labels
     ctx.fillStyle = emptyColor;
-    ctx.font = `${axisFontSize}px sans-serif`;
+    ctx.font = `${axisFontSize}px ${documentStyle.fontFamily}`;
     ctx.textAlign = "right";
     ctx.textBaseline = "middle";
     ctx.fillText(gridValue.toString(), paddingLeft - 8, gridY);
@@ -246,7 +246,7 @@ const drawGroupedBarChart3D = (canvas: HTMLCanvasElement) => {
     // X-axis label
     ctx.shadowColor = "transparent";
     ctx.fillStyle = labelColor;
-    ctx.font = `${axisFontSize}px sans-serif`;
+    ctx.font = `${axisFontSize}px ${documentStyle.fontFamily}`;
     ctx.textAlign = "center";
     ctx.textBaseline = "top";
     ctx.fillText(label, groupCenterX + depthX / 2, height - paddingBottom + 8);
@@ -329,6 +329,7 @@ watch(locale, () => {
 
 onMounted(() => {
   if (!canvasRef.value) return;
+  chartData.value = setChartData();
   const container = canvasRef.value.closest(".chart-wrapper") as HTMLElement;
   if (!container) return;
 

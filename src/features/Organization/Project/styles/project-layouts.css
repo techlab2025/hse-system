@@ -203,9 +203,9 @@
   height: 158px;
   position: relative;
   border-radius: 16px 16px 0 0;
-  background:
+  /* background:
     linear-gradient(180deg, rgb(9 37 70 / 5%), rgb(9 37 70 / 72%)),
-    url('../assets/project-reference-sites.webp');
+    url('../assets/project-reference-sites.webp'); */
   background-size: 300% 100%;
   background-position: left center;
 }
