@@ -1,22 +1,24 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
+import IdentityColorEditor from '@/features/SystemIdentity/components/IdentityColorEditor.vue'
+import IdentityLayoutEditor from '@/features/SystemIdentity/components/IdentityLayoutEditor.vue'
+import IdentityPreview from '@/features/SystemIdentity/components/IdentityPreview.vue'
+import { normalizeAppearance } from '@/features/SystemIdentity/appearance'
+import '@/features/SystemIdentity/identity-editor.css'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 import { useSystemIdentity, type SystemIdentity } from '@/composables/useSystemIdentity'
 
-const { identity, defaultIdentity, loadIdentity, saveIdentity, resetIdentity, applyIdentity } =
-  useSystemIdentity()
+const { identity, defaultIdentity, loadIdentity, saveIdentity, resetIdentity } = useSystemIdentity()
 
-const form = ref<SystemIdentity>({ ...defaultIdentity.value })
+const form = ref<SystemIdentity>({
+  ...defaultIdentity.value,
+  appearance: normalizeAppearance(defaultIdentity.value.appearance),
+  extractedColors: [...defaultIdentity.value.extractedColors],
+})
 const fileInput = ref<HTMLInputElement | null>(null)
 const isExtracting = ref(false)
 const isSaving = ref(false)
 const message = ref('')
-
-const previewStyle = computed(() => ({
-  '--preview-primary': form.value.primaryColor,
-  '--preview-secondary': form.value.secondaryColor,
-  '--preview-accent': form.value.accentColor,
-}))
 
 const rgbToHex = (red: number, green: number, blue: number) =>
   `#${[red, green, blue].map((value) => value.toString(16).padStart(2, '0')).join('')}`
@@ -92,12 +94,14 @@ const applyDetectedColors = () => {
   if (primary) form.value.primaryColor = primary
   if (secondary) form.value.secondaryColor = secondary
   if (accent) form.value.accentColor = accent
-  applyIdentity(form.value)
 }
 
 const restoreDefaults = () => {
-  form.value = { ...defaultIdentity.value }
-  applyIdentity(form.value)
+  form.value = {
+    ...defaultIdentity.value,
+    appearance: normalizeAppearance(defaultIdentity.value.appearance),
+    extractedColors: [...defaultIdentity.value.extractedColors],
+  }
 }
 
 const save = async () => {
@@ -107,26 +111,42 @@ const save = async () => {
   }
   isSaving.value = true
   message.value = ''
-  saveIdentity({ ...form.value, name: form.value.name.trim() })
+  try {
+    saveIdentity({ ...form.value, name: form.value.name.trim() })
+  } catch {
+    isSaving.value = false
+    message.value =
+      'Could not save identity. Browser storage may be full or unavailable. Your draft is still here.'
+    return
+  }
   await new Promise((resolve) => window.setTimeout(resolve, 250))
   isSaving.value = false
   message.value = 'System identity has been saved and applied.'
 }
 
 const reset = () => {
-  resetIdentity()
-  form.value = { ...identity.value }
+  try {
+    resetIdentity()
+  } catch {
+    message.value = 'Could not reset browser storage.'
+    return
+  }
+  form.value = { ...identity.value, appearance: normalizeAppearance(identity.value.appearance) }
   message.value = 'Default system identity has been restored.'
 }
 
 onMounted(() => {
   loadIdentity()
-  form.value = { ...identity.value, extractedColors: [...identity.value.extractedColors] }
+  form.value = {
+    ...identity.value,
+    extractedColors: [...identity.value.extractedColors],
+    appearance: normalizeAppearance(identity.value.appearance),
+  }
 })
 </script>
 
 <template>
-  <main class="identity-page">
+  <main class="identity-page hse-identity">
     <header class="identity-hero">
       <div>
         <span class="eyebrow">Organization settings</span>
@@ -276,31 +296,12 @@ onMounted(() => {
             </button>
           </div>
         </section>
-
-        <section class="identity-card preview-card" :style="previewStyle">
-          <div class="preview-copy">
-            <span class="eyebrow">Live preview</span>
-            <h3>{{ form.name || 'System Identity' }}</h3>
-            <p>See how your selected identity works across common interface elements.</p>
-          </div>
-          <div class="preview-ui">
-            <div class="preview-nav">
-              <span class="preview-logo"
-                ><img v-if="form.logo" :src="form.logo" alt="" /><b v-else>HSE</b></span
-              ><i></i><i></i><i></i>
-            </div>
-            <div class="preview-content">
-              <div class="preview-banner"></div>
-              <div class="preview-stat">
-                <span></span><b>Healthy workplace</b><small>Identity preview</small>
-              </div>
-              <button type="button">Primary action</button>
-            </div>
-          </div>
-          <div class="preview-strip"><span></span><span></span><span></span></div>
-        </section>
       </div>
     </section>
+
+    <IdentityColorEditor v-model="form.appearance" />
+    <IdentityLayoutEditor v-model="form.appearance" />
+    <IdentityPreview :identity="form" />
 
     <button class="save-button" type="button" :disabled="isSaving" @click="save">
       {{ isSaving ? 'Saving identity…' : 'Save and apply identity' }}
@@ -633,112 +634,6 @@ input[type='text']:focus {
   cursor: not-allowed;
   opacity: 0.45;
 }
-.preview-card {
-  position: relative;
-  display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
-  align-items: center;
-  min-height: 260px;
-  overflow: hidden;
-  grid-column: 1 / -1;
-}
-.preview-copy {
-  padding: 0.5rem;
-}
-.preview-copy h3 {
-  margin: 0.4rem 0;
-  font-size: 1.5rem;
-}
-.preview-ui {
-  overflow: hidden;
-  border: 1px solid var(--main-border);
-  border-radius: 15px;
-  background: var(--surface-1);
-  box-shadow: 0 15px 30px color-mix(in srgb, var(--text-strong) 12%, transparent);
-}
-.preview-nav {
-  display: flex;
-  align-items: center;
-  gap: 0.55rem;
-  height: 48px;
-  padding: 0 0.7rem;
-  background: var(--preview-secondary);
-}
-.preview-nav i {
-  width: 34px;
-  height: 6px;
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--surface-1) 35%, transparent);
-}
-.preview-logo {
-  display: grid;
-  place-items: center;
-  width: 34px;
-  height: 32px;
-  margin-inline-end: auto;
-  color: var(--text-on-brand);
-}
-.preview-logo img {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-.preview-content {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 0.7rem;
-  padding: 0.85rem;
-}
-.preview-banner {
-  height: 60px;
-  border-radius: 10px;
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--preview-primary) 18%, var(--surface-2)),
-    var(--surface-2)
-  );
-  grid-column: 1 / -1;
-}
-.preview-stat {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 0.15rem 0.55rem;
-}
-.preview-stat span {
-  width: 30px;
-  height: 30px;
-  border-radius: 9px;
-  background: var(--preview-accent);
-  grid-row: span 2;
-}
-.preview-stat small {
-  color: var(--text-muted);
-}
-.preview-content button {
-  border: 0;
-  border-radius: 9px;
-  background: var(--preview-primary);
-  color: var(--text-on-brand);
-  padding: 0.55rem 0.8rem;
-  font-weight: 700;
-}
-.preview-strip {
-  position: absolute;
-  inset: auto 0 0;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  height: 5px;
-}
-.preview-strip span:nth-child(1) {
-  background: var(--preview-primary);
-}
-.preview-strip span:nth-child(2) {
-  background: var(--preview-secondary);
-}
-.preview-strip span:nth-child(3) {
-  background: var(--preview-accent);
-}
 .save-button {
   width: 100%;
   min-height: 50px;
@@ -749,8 +644,7 @@ input[type='text']:focus {
   opacity: 0.65;
 }
 @media (max-width: 900px) {
-  .identity-grid,
-  .preview-card {
+  .identity-grid {
     grid-template-columns: 1fr;
   }
   .identity-hero,
@@ -771,12 +665,6 @@ input[type='text']:focus {
     flex-direction: column;
   }
   .button-row .button {
-    width: 100%;
-  }
-  .preview-content {
-    grid-template-columns: 1fr;
-  }
-  .preview-content button {
     width: 100%;
   }
 }

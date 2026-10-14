@@ -1,4 +1,10 @@
 import { computed, ref } from 'vue'
+import {
+  colorFields,
+  defaultAppearance,
+  normalizeAppearance,
+  type Appearance,
+} from '@/features/SystemIdentity/appearance'
 
 export interface SystemIdentity {
   name: string
@@ -8,6 +14,7 @@ export interface SystemIdentity {
   accentColor: string
   extractedColors: string[]
   isActive: boolean
+  appearance: Appearance
 }
 
 const STORAGE_KEY = 'hse-system-identity'
@@ -19,6 +26,7 @@ const defaults: SystemIdentity = {
   accentColor: '#6230a8',
   extractedColors: [],
   isActive: true,
+  appearance: defaultAppearance(),
 }
 
 const identity = ref<SystemIdentity>({ ...defaults })
@@ -29,6 +37,10 @@ const isHexColor = (value: unknown): value is string =>
 const normalize = (value?: Partial<SystemIdentity>): SystemIdentity => ({
   ...defaults,
   ...value,
+  appearance: normalizeAppearance(value?.appearance),
+  name: typeof value?.name === 'string' ? value.name : defaults.name,
+  logo: typeof value?.logo === 'string' ? value.logo : defaults.logo,
+  isActive: typeof value?.isActive === 'boolean' ? value.isActive : true,
   primaryColor: isHexColor(value?.primaryColor) ? value.primaryColor : defaults.primaryColor,
   secondaryColor: isHexColor(value?.secondaryColor)
     ? value.secondaryColor
@@ -42,6 +54,13 @@ const normalize = (value?: Partial<SystemIdentity>): SystemIdentity => ({
 const applyIdentity = (value: SystemIdentity) => {
   const root = document.documentElement
   const active = value.isActive ? value : defaults
+  for (const { key } of colorFields) {
+    const color = active.appearance.colors[key]
+    if (color) root.style.setProperty(`--identity-${key}`, color)
+    else root.style.removeProperty(`--identity-${key}`)
+    root.toggleAttribute(`data-identity-${key.toLowerCase()}`, Boolean(color))
+  }
+  root.dataset.identityBreadcrumbPosition = active.appearance.breadcrumbPosition
 
   root.style.setProperty('--PrimaryColor', active.primaryColor)
   root.style.setProperty('--identity-primary', active.primaryColor)
@@ -65,20 +84,21 @@ const loadIdentity = () => {
 }
 
 const saveIdentity = (value: SystemIdentity) => {
-  identity.value = normalize(value)
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(identity.value))
+  const next = normalize(value)
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(next))
+  identity.value = next
   applyIdentity(identity.value)
 }
 
 const resetIdentity = () => {
-  identity.value = { ...defaults }
   localStorage.removeItem(STORAGE_KEY)
+  identity.value = normalize(defaults)
   applyIdentity(identity.value)
 }
 
 export const useSystemIdentity = () => ({
   identity,
-  defaultIdentity: computed(() => ({ ...defaults })),
+  defaultIdentity: computed(() => normalize(defaults)),
   loadIdentity,
   saveIdentity,
   resetIdentity,

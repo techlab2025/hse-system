@@ -10,6 +10,7 @@ import ChangeLanguage from './ChangeLanguage.vue'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import defaultLogo from '@/assets/images/logo.svg'
+import IdentityHeaderLayout from '@/features/SystemIdentity/components/IdentityHeaderLayout.vue'
 import { useSystemIdentity } from '@/composables/useSystemIdentity'
 import CustomSelectInput from '../FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -217,188 +218,92 @@ const toggle = (event: Event) => {
 <template>
   <!-- {{ notifications }} -->
   <header :class="['hse-identity hse-app-header', { 'is-dark': isDarkMode }]">
-    <nav class="nav">
-      <div class="menu flex items-center gap-3">
-        <button
-          type="button"
-          class="drawer cursor-pointer flex items-center justify-center p-1"
-          :aria-label="$t('open menu') || 'Open menu'"
-          @click="emit('open')"
-        >
-          <IconMenu />
-        </button>
-        <!-- <div class="header-link flex gap-sm items-center">
+    <nav
+      class="nav"
+      :data-custom-layout="
+        systemIdentity.isActive &&
+        systemIdentity.appearance.headerOrder.join() !== 'brand,project,actions'
+      "
+    >
+      <IdentityHeaderLayout>
+        <template #brand>
+          <div class="menu flex items-center gap-3">
+            <button
+              type="button"
+              class="drawer cursor-pointer flex items-center justify-center p-1"
+              :aria-label="$t('open menu') || 'Open menu'"
+              @click="emit('open')"
+            >
+              <IconMenu />
+            </button>
+            <!-- <div class="header-link flex gap-sm items-center">
           <h1>
             <router-link to="/">{{ $t('home') }} </router-link>
           </h1>
           <p class="route-name">{{ $t(typeof route?.name === 'string' ? route.name : '') }} /</p>
         </div> -->
-        <router-link
-          class="brand-link flex items-center gap-2"
-          :to="
-            user?.type == OrganizationTypeEnum?.ADMIN
-              ? '/admin'
-              : conditionHandler.shouldUseEmployeeInterface()
-                ? '/organization/employee-interface'
-                : '/organization'
-          "
-        >
-          <img :src="brandLogo" :alt="$t('brand_logo', { brand: brandName })" />
-          <p class="logo">{{ brandName }}</p>
-        </router-link>
-      </div>
-
-      <div
-        class="input-wrapper header-select"
-        v-if="
-          !showProjectSelect &&
-          user?.type != OrganizationTypeEnum.ADMIN &&
-          route.fullPath !== `/organization/projects`
-        "
-      >
-        <!-- label="Project" -->
-        <CustomSelectInput
-          :modelValue="SelectProject"
-          class="hse-identity hse-control hse-select-control"
-          panel-class="hse-identity hse-select-panel"
-          :pt="{ overlay: { dir: $i18n.locale.startsWith('ar') ? 'rtl' : 'ltr' } }"
-          :staticOptions="ProjectSelector.AllProjects"
-          id="project"
-          :placeholder="$t('select your project')"
-          @update:modelValue="setSelectedProject"
-          :reload="false"
-          label=""
-        />
-      </div>
-      <!-- <div class="search">
-        <SearchIcon />
-        <input type="serach" placeholder="Search What You Want" />
-      </div> -->
-
-      <div class="setting">
-        <ChangeLanguage class="countery-icon" />
-        <!-- <button
-          class="theme-toggle"
-          type="button"
-          :aria-label="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
-          :title="isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'"
-          @click="toggleThemeMode"
-        >
-          <svg
-            v-if="isDarkMode"
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12 4V2M12 22v-2M4.93 4.93 3.52 3.52M20.48 20.48l-1.41-1.41M4 12H2M22 12h-2M4.93 19.07l-1.41 1.41M20.48 3.52l-1.41 1.41"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-            <path
-              d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z"
-              stroke="currentColor"
-              stroke-width="2"
-            />
-          </svg>
-          <svg
-            v-else
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M20.35 15.35A8.5 8.5 0 0 1 8.65 3.65 8.5 8.5 0 1 0 20.35 15.35Z"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </button> -->
-        <Notifications class="notifications-control" />
-        <!-- {{ wsConnected }} -->
-        <!-- <div class="notification cursor-pointer" @click="toggleFullScreen">
-          <Notification />
-        </div> -->
-
-        <div
-          ref="userMenuRef"
-          class="user cursor-pointer dropdown-trigger header-user-menu"
-          role="link"
-          tabindex="0"
-          @click.stop="openUserProfile"
-          @keydown.enter.stop="openUserProfile"
-        >
-          <!--  <IconArrowDownNav class="drop-icon" /> -->
-          <div class="profile-data">
-            <span>{{ user?.name.split(' ')[0] }}</span>
-            <!-- <span>{{ user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization' }}</span> -->
-            <span>{{ user?.organizationName }}</span>
+            <router-link
+              class="brand-link flex items-center gap-2"
+              :to="
+                user?.type == OrganizationTypeEnum?.ADMIN
+                  ? '/admin'
+                  : conditionHandler.shouldUseEmployeeInterface()
+                    ? '/organization/employee-interface'
+                    : '/organization'
+              "
+            >
+              <img :src="brandLogo" :alt="$t('brand_logo', { brand: brandName })" />
+              <p class="logo">{{ brandName }}</p>
+            </router-link>
           </div>
-
-          <!-- <img alt="user" src="../../assets/images/travel.png" /> -->
-          <img src="https://cyber.comolho.com/static/img/avatar.png" :alt="$t('employee')" />
-        </div>
-
-        <!-- <Teleport to="body">
+        </template>
+        <template #project>
           <div
-            class="header-dropdown-menu"
-            v-if="isDropMenuOpen"
-            :style="dropdownPosition"
-            @click.stop
+            class="input-wrapper header-select"
+            v-if="
+              !showProjectSelect &&
+              user?.type != OrganizationTypeEnum.ADMIN &&
+              route.fullPath !== `/organization/projects`
+            "
           >
-            <ul>
-              <li @click.stop="logout">
-                <IconLogout />
-                <span> {{ $t('logout') }} </span>
-              </li>
-            </ul>
+            <!-- label="Project" -->
+            <CustomSelectInput
+              :modelValue="SelectProject"
+              class="hse-identity hse-control hse-select-control"
+              panel-class="hse-identity hse-select-panel"
+              :pt="{ overlay: { dir: $i18n.locale.startsWith('ar') ? 'rtl' : 'ltr' } }"
+              :staticOptions="ProjectSelector.AllProjects"
+              id="project"
+              :placeholder="$t('select your project')"
+              @update:modelValue="setSelectedProject"
+              :reload="false"
+              label=""
+            />
           </div>
-        </Teleport> -->
+        </template>
+        <template #language><ChangeLanguage class="countery-icon" /></template>
+        <template #notifications><Notifications class="notifications-control" /></template>
+        <template #profile>
+          <div
+            ref="userMenuRef"
+            class="user cursor-pointer dropdown-trigger header-user-menu"
+            role="link"
+            tabindex="0"
+            @click.stop="openUserProfile"
+            @keydown.enter.stop="openUserProfile"
+          >
+            <!--  <IconArrowDownNav class="drop-icon" /> -->
+            <div class="profile-data">
+              <span>{{ user?.name.split(' ')[0] }}</span>
+              <!-- <span>{{ user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization' }}</span> -->
+              <span>{{ user?.organizationName }}</span>
+            </div>
 
-        <!-- <button class="notification" type="button" @click="toggle">
-          <Notifacations />
-          <span v-if="wsConnected" class="status-dot connected"></span>
-          <span v-else class="status-dot disconnected"></span>
-          <span v-if="unreadCount > 0" class="notification-count">
-            {{ unreadCount }}
-          </span>
-        </button>
-        <Popover ref="op">
-          <div class="list-notifaction-body">
-            <ul class="list-notifaction">
-              <li v-if="notifications.length === 0" class="list-notifaction-item empty-msg">
-                No new notifications
-              </li>
-              <li v-for="notification in notifications" :key="notification.id" class="list-notifaction-item"
-                :class="{ 'new-item': notification.status === 'PENDING' }">
-                <div class="notification-content-wrapper">
-                  <RouterLink :to="`/daily-work/${JSON.parse(notification?.body!)?.data?.type_id}`"
-                    class="notification-text">
-                    <strong>{{ wordSlice(notification.title, 25) }}</strong>
-                    <p>
-                      {{
-                        wordSlice(JSON.parse(notification?.body!)?.message, 35)
-                      }}
-                    </p>
-                    <small v-if="notification.receivedAt">{{
-                      notification.receivedAt.toLocaleTimeString()
-                    }}</small>
-                  </RouterLink>
-
-                </div>
-              </li>
-
-            </ul>
+            <!-- <img alt="user" src="../../assets/images/travel.png" /> -->
+            <img src="https://cyber.comolho.com/static/img/avatar.png" :alt="$t('employee')" />
           </div>
-        </Popover> -->
-      </div>
+        </template>
+      </IdentityHeaderLayout>
     </nav>
   </header>
 </template>
@@ -571,6 +476,9 @@ const toggle = (event: Event) => {
   .header-select {
     order: 3;
     flex: 1 1 100%;
+  }
+  .nav[data-custom-layout='true'] .header-select {
+    order: 0;
   }
   .user {
     display: none;

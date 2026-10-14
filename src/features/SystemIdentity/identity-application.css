@@ -1,0 +1,142 @@
+/* Overrides exist only for explicitly customized fields. Defaults keep the existing cascade. */
+html[data-identity-sidebarbackground]
+  :is(.sidebar-container, .sidebar.organization-modern, .modern-sidebar, .side-pane) {
+  background: var(--identity-sidebarBackground) !important;
+  --hse-nav-background: var(--identity-sidebarBackground);
+}
+html[data-identity-sidebartext] .modern-sidebar {
+  --hse-nav-text: var(--identity-sidebarText);
+}
+html[data-identity-sidebartext]
+  .modern-sidebar
+  :is(
+    .side-rail-btn,
+    .side-btn,
+    .side-pane-heading,
+    .side-route-group-title,
+    .side-label-parent,
+    .sidebar-search__input
+  ) {
+  color: var(--identity-sidebarText) !important;
+}
+html[data-identity-headerbackground] .hse-app-header {
+  background: var(--identity-headerBackground) !important;
+}
+html[data-identity-headertext]
+  .hse-app-header
+  :is(
+    .brand-link,
+    .profile-data,
+    .profile-data span,
+    .drawer,
+    .notifications-control,
+    .countery-icon button
+  ) {
+  color: var(--identity-headerText) !important;
+}
+html[data-identity-systembackground] :is(body, main.content, .content-wrapper, .main-content) {
+  background: var(--identity-systemBackground) !important;
+}
+html[data-identity-primarybuttonbackground]
+  :is(
+    .btn-primary,
+    .hse-project-button--primary,
+    .p-button:not(.p-button-secondary):not(.p-button-text):not(.p-button-outlined):not(
+        .p-button-danger
+      ):not(.p-button-success):not(.p-button-warn):not(.p-button-info):not(.p-button-help),
+    .identity-page .save-button,
+    .identity-page .button:not(.ghost)
+  ) {
+  background: var(--identity-primaryButtonBackground) !important;
+  border-color: var(--identity-primaryButtonBackground) !important;
+}
+html[data-identity-primarybuttontext]
+  :is(
+    .btn-primary,
+    .hse-project-button--primary,
+    .p-button:not(.p-button-secondary):not(.p-button-text):not(.p-button-outlined):not(
+        .p-button-danger
+      ):not(.p-button-success):not(.p-button-warn):not(.p-button-info):not(.p-button-help),
+    .identity-page .save-button,
+    .identity-page .button:not(.ghost)
+  ),
+html[data-identity-primarybuttontext] :is(.btn-primary, .hse-project-button--primary) span {
+  color: var(--identity-primaryButtonText) !important;
+}
+html[data-identity-secondarybuttonbackground]
+  :is(
+    .btn-secondary,
+    .hse-project-button--secondary,
+    .p-button-secondary,
+    .identity-page .button.ghost:not(.danger)
+  ) {
+  background: var(--identity-secondaryButtonBackground) !important;
+  border-color: var(--identity-secondaryButtonBackground) !important;
+}
+html[data-identity-secondarybuttontext]
+  :is(
+    .btn-secondary,
+    .hse-project-button--secondary,
+    .p-button-secondary,
+    .identity-page .button.ghost:not(.danger)
+  ) {
+  color: var(--identity-secondaryButtonText) !important;
+}
+html[data-identity-breadcrumbbackground] .hse-breadcrumb-trail {
+  background: var(--identity-breadcrumbBackground) !important;
+}
+html[data-identity-breadcrumbtext]
+  :is(
+    .hse-breadcrumb-link,
+    .hse-breadcrumb-current,
+    .hse-breadcrumb-back,
+    .hse-breadcrumb .p-breadcrumb-separator
+  ) {
+  color: var(--identity-breadcrumbText) !important;
+}
+html[data-identity-breadcrumb-position='center'] .hse-breadcrumb-bar {
+  justify-content: center !important;
+}
+html[data-identity-breadcrumb-position='right'] .hse-breadcrumb-bar {
+  justify-content: flex-end !important;
+}
+html[data-identity-breadcrumb-position='right'] .hse-breadcrumb-bar:dir(rtl) {
+  justify-content: flex-start !important;
+}
+
+html[data-identity-systembackground] {
+  --app-bg: var(--identity-systemBackground);
+}
+html[data-identity-systembackground] :is(.hse-project-root, .hse-identity) {
+  --hse-project-bg: var(--identity-systemBackground);
+}
+
+/* Page sections opt in only after a section color is saved. Keep shell and control colors independent. */
+html[data-identity-sectionbackground] .main-content section {
+  background: var(--identity-sectionBackground) !important;
+}
+html[data-identity-sectiontext] .main-content section,
+html[data-identity-sectiontext]
+  .content-wrapper
+  .main-content
+  section
+  :is(h1, h2, h3, h4, h5, h6, p, label, legend, dt, dd, li, span, strong, small):not(
+    :where(
+      button *,
+      .hse-control *,
+      .p-select *,
+      .p-multiselect *,
+      .p-datepicker *,
+      a *,
+      [role='button'] *,
+      .p-button *,
+      .hse-control *,
+      .p-select *,
+      .p-multiselect *,
+      .p-datepicker *,
+      .hse-breadcrumb-bar *,
+      .identity-shell-preview *
+    )
+  ) {
+  color: var(--identity-sectionText) !important;
+}
