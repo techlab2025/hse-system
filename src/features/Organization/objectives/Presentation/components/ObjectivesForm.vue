@@ -394,8 +394,8 @@ defineExpose({ validateRequiredFields })
             <label class="input-label required" for="objective-year">
               <span class="text-red-500">*</span>
               {{ $t('Year') }}
-            </label> 
-           
+            </label>
+
               <DatePicker
                 id="objective-year"
                 v-model="year"
@@ -407,7 +407,7 @@ defineExpose({ validateRequiredFields })
                 :max-date="maxYearDate"
                 @update:model-value="updateData"
               />
-           
+
             <p v-if="requiredFieldErrors.year" class="required-field-message">
               {{ requiredFieldErrors.year }}
             </p>
