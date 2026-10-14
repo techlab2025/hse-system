@@ -38,7 +38,7 @@ const router = useRouter()
 const labels = useProjectLabels()
 const detailTabs = [
   { key: 'all', label: 'allData', icon: 'grid' },
-  { key: 'dashboard', label: 'dashboard', icon: 'grid' },
+  { key: 'scope', label: 'scope', icon: 'grid' },
   { key: 'operations', label: 'operations', icon: 'users' },
   { key: 'equipment', label: 'equipment', icon: 'equipment' },
   { key: 'meetings', label: 'meetings', icon: 'clock' },
@@ -223,11 +223,11 @@ watch(
         </div> -->
 
           <section
-            v-if="showsSection('dashboard', 'operations', 'equipment')"
+            v-if="showsSection('scope', 'operations', 'equipment')"
             class="project-operations-workspace"
           >
             <MainObjectivesSection
-              v-if="showsSection('dashboard')"
+              v-if="showsSection('scope')"
               class="hse-project-panel main-objective"
               :description="state.data?.description"
             />

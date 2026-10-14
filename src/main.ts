@@ -1,6 +1,9 @@
 import './assets/styles/main.scss'
 import './assets/styles/tailwind.css'
 import './assets/styles/theme/_dark_mode.scss'
+import './shared/styles/hse-identity-tokens.css'
+import './shared/styles/hse-controls.css'
+import { hseDatePickerPt } from './shared/styles/hsePrimeVue'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
@@ -59,6 +62,8 @@ app.use(i18n)
 app.use(createAutoTranslate(i18n.global))
 app.use(ToastService)
 app.use(PrimeVue, {
+  pt: { datepicker: hseDatePickerPt },
+  ptOptions: { mergeSections: true, mergeProps: true },
   theme: {
     preset: Aura,
     options: {

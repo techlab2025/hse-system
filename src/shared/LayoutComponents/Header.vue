@@ -216,7 +216,7 @@ const toggle = (event: Event) => {
 
 <template>
   <!-- {{ notifications }} -->
-  <header :class="['header minmize', { 'is-dark': isDarkMode }]">
+  <header :class="['hse-identity hse-app-header', { 'is-dark': isDarkMode }]">
     <nav class="nav">
       <div class="menu flex items-center gap-3">
         <button
@@ -259,7 +259,9 @@ const toggle = (event: Event) => {
         <!-- label="Project" -->
         <CustomSelectInput
           :modelValue="SelectProject"
-          class="input"
+          class="hse-identity hse-control hse-select-control"
+          panel-class="hse-identity hse-select-panel"
+          :pt="{ overlay: { dir: $i18n.locale.startsWith('ar') ? 'rtl' : 'ltr' } }"
           :staticOptions="ProjectSelector.AllProjects"
           id="project"
           :placeholder="$t('select your project')"
@@ -401,492 +403,215 @@ const toggle = (event: Event) => {
   </header>
 </template>
 
-<style scoped lang="scss">
-.input-wrapper :deep(label) {
-  display: none !important;
-}
-
-.header {
+<style scoped>
+.hse-app-header {
   position: sticky;
-  top: 6px;
+  top: 0;
   z-index: 80;
-  overflow: visible;
-  isolation: isolate;
-  padding: 14px 22px;
-  min-height: 76px;
-  background:
-    radial-gradient(
-      circle at 18% 0%,
-      color-mix(in srgb, var(--surface-1) 20%, transparent) 0 18%,
-      transparent 34%
-    ),
-    radial-gradient(
-      circle at 82% 18%,
-      color-mix(in srgb, var(--brand-primary-300) 18%, transparent) 0 16%,
-      transparent 34%
-    ),
-    linear-gradient(
-      155deg,
-      var(--brand-primary-500) 0%,
-      var(--brand-primary-600) 44%,
-      var(--brand-primary-700) 100%
-    ) !important;
-  border-bottom-left-radius: 22px;
-  border-bottom-right-radius: 22px;
-  border-top-left-radius: 22px;
-
-  border-top-right-radius: 22px;
-
-  box-shadow:
-    0 4px 10px color-mix(in srgb, var(--brand-primary-700) 22%, transparent),
-    inset 0 -1px 0 color-mix(in srgb, var(--shadow-color) 18%, transparent);
+  width: 100%;
+  min-height: 66px;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--hse-project-line);
+  background: var(--hse-project-surface);
+  box-shadow: 0 1px 0 rgb(16 42 77 / 3%);
 }
-
-.header.is-dark {
-  background:
-    radial-gradient(
-      circle at 18% 0%,
-      color-mix(in srgb, var(--brand-primary-300) 16%, transparent) 0 18%,
-      transparent 34%
-    ),
-    radial-gradient(
-      circle at 82% 18%,
-      color-mix(in srgb, var(--status-success) 12%, transparent) 0 16%,
-      transparent 34%
-    ),
-    linear-gradient(
-      155deg,
-      var(--brand-primary-900) 0%,
-      var(--brand-primary-900) 52%,
-      var(--brand-primary-900) 100%
-    ) !important;
-  border: 1px solid color-mix(in srgb, var(--brand-primary-400) 14%, transparent);
-  border-top: 0;
-  box-shadow:
-    0 4px 18px color-mix(in srgb, var(--shadow-color) 32%, transparent),
-    inset 0 -1px 0 color-mix(in srgb, var(--brand-primary-400) 16%, transparent);
-}
-
-.header::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      color-mix(in srgb, var(--surface-1) 16%, transparent),
-      transparent
-    ),
-    repeating-linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--surface-1) 4.5%, transparent) 0 1px,
-      transparent 1px 18px
-    );
-  opacity: 0.78;
-}
-
-.header::after {
-  content: '';
-  position: absolute;
-  right: 26%;
-  bottom: -1px;
-  width: 220px;
-  height: 3px;
-  border-radius: 999px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--brand-primary-200),
-    var(--surface-1),
-    transparent
-  );
-  opacity: 0.75;
-}
-
-.header.is-dark::before {
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      color-mix(in srgb, var(--brand-primary-300) 10%, transparent),
-      transparent
-    ),
-    repeating-linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--brand-primary-400) 4%, transparent) 0 1px,
-      transparent 1px 18px
-    );
-  opacity: 0.7;
-}
-
-.header.is-dark::after {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    var(--brand-primary-700),
-    var(--brand-primary-300),
-    transparent
-  );
-  opacity: 0.65;
-}
-
 .nav {
-  position: relative;
-  gap: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  min-width: 0;
 }
-
+.menu,
+.setting,
+.brand-link,
+.user {
+  display: flex;
+  align-items: center;
+}
+.menu {
+  gap: 10px;
+  min-width: 0;
+}
 .brand-link {
-  min-height: 48px;
-  padding: 7px 12px 7px 8px;
-  border-radius: 18px;
-  color: var(--text-on-brand);
-  // background: color-mix(in srgb, var(--surface-1) 11%, transparent);
-  // border: 1px solid color-mix(in srgb, var(--surface-1) 16%, transparent);
-  // box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 16%, transparent);
-  transition:
-    transform 0.2s ease,
-    background 0.2s ease,
-    border-color 0.2s ease;
+  gap: 10px;
+  color: var(--hse-project-ink);
+  text-decoration: none;
 }
-
-.header.is-dark .brand-link,
-.header.is-dark .countery-icon,
-.header.is-dark .notification,
-.header.is-dark .theme-toggle,
-.header.is-dark .drawer,
-.header.is-dark .user {
-  // background: color-mix(in srgb, var(--brand-primary-800) 86%, transparent) !important;
-  border-color: color-mix(in srgb, var(--brand-primary-400) 20%, transparent) !important;
-  // box-shadow:
-  //   inset 0 1px 0 color-mix(in srgb, var(--shadow-color) 6%, transparent),
-  //   0 10px 24px color-mix(in srgb, var(--shadow-color) 16%, transparent);
-}
-
-.header.is-dark .brand-link:hover,
-.header.is-dark .countery-icon:hover,
-.header.is-dark .notification:hover,
-.header.is-dark .theme-toggle:hover,
-.header.is-dark .drawer:hover,
-.header.is-dark .user:hover {
-  background: color-mix(in srgb, var(--brand-primary-700) 94%, transparent) !important;
-  border-color: color-mix(in srgb, var(--brand-primary-300) 34%, transparent) !important;
-}
-
-.brand-link:hover {
-  transform: translateY(-1px);
-  background: color-mix(in srgb, var(--surface-1) 17%, transparent);
-  border-color: color-mix(in srgb, var(--surface-1) 26%, transparent);
-}
-
 .brand-link img {
-  width: 50px;
-  height: 50px;
-  padding: 6px;
-  border-radius: 12px;
-  // background: var(--surface-1);
-  // box-shadow: 0 10px 20px color-mix(in srgb, var(--brand-primary-900) 18%, transparent);
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
 }
-
-.header.is-dark .brand-link img {
-  // background: var(--brand-primary-100);
-  box-shadow: 0 10px 20px color-mix(in srgb, var(--text-strong) 28%, transparent);
-}
-
 .logo {
-  color: var(--text-on-brand) !important;
-  font-size: 18px !important;
-  line-height: 1;
-  letter-spacing: 0;
-  text-shadow: 0 1px 10px color-mix(in srgb, var(--brand-primary-900) 18%, transparent);
+  margin: 0;
+  font: 700 16px/1.3 var(--hse-project-font);
 }
-
-.input-wrapper {
-  width: min(400px, 34vw);
-  padding-inline: 0;
-
-  :deep(.input),
-  :deep(.p-select),
-  :deep(.p-multiselect),
-  :deep(input) {
-    min-height: 46px;
-    border-color: color-mix(in srgb, var(--surface-1) 24%, transparent) !important;
-    background: color-mix(in srgb, var(--surface-1) 14%, transparent) !important;
-    color: var(--text-on-brand) !important;
-    box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 12%, transparent);
-    backdrop-filter: blur(10px);
-  }
-
-  :deep(input::placeholder),
-  :deep(.p-placeholder) {
-    color: color-mix(in srgb, var(--surface-1) 78%, transparent) !important;
-  }
-
-  :deep(.p-select-label),
-  :deep(.p-multiselect-label) {
-    color: var(--text-on-brand) !important;
-  }
-
-  @media (max-width: 1000px) {
-    width: 220px;
-  }
-
-  @media (max-width: 768px) {
-    display: none;
-  }
+.header-select {
+  flex: 0 1 340px;
+  min-width: 180px;
+  margin: 0;
 }
-
+.header-select :deep(.input-label) {
+  display: none;
+}
 .setting {
-  position: relative;
-  gap: 8px !important;
-  padding: 5px;
-  border: 1px solid color-mix(in srgb, var(--surface-1) 18%, transparent);
-  border-radius: 21px;
-  background: color-mix(in srgb, var(--brand-primary-900) 12%, transparent);
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--surface-1) 13%, transparent),
-    0 10px 30px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
-  backdrop-filter: blur(14px);
+  gap: 8px;
+  margin-inline-start: auto;
 }
-
-.setting :deep(svg path) {
-  transition: fill 0.2s ease;
-}
-
-.countery-icon,
-.theme-toggle {
-  display: flex !important;
+.countery-icon :deep(button),
+.drawer,
+.notifications-control :deep(.notification) {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 46px !important;
-  height: 46px !important;
-  padding: 10px !important;
-  border-radius: 16px !important;
-  background: color-mix(in srgb, var(--surface-1) 14%, transparent) !important;
-  border: 1px solid color-mix(in srgb, var(--surface-1) 18%, transparent);
-  color: var(--text-on-brand);
-  appearance: none;
+  width: 40px;
+  height: 40px;
+  padding: 8px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: 11px;
+  background: var(--hse-project-surface);
+  color: var(--hse-project-muted);
+  box-shadow: none;
   cursor: pointer;
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 14%, transparent);
-  backdrop-filter: blur(10px);
   transition:
-    transform 0.2s ease,
-    background 0.2s ease,
-    border-color 0.2s ease;
+    background 180ms ease,
+    border-color 180ms ease;
 }
-
-.countery-icon:hover,
-.theme-toggle:hover {
-  transform: translateY(-1px);
-  background: color-mix(in srgb, var(--surface-1) 22%, transparent) !important;
-  border-color: color-mix(in srgb, var(--surface-1) 30%, transparent);
+.countery-icon :deep(button:hover),
+.drawer:hover,
+.notifications-control :deep(.notification:hover) {
+  background: var(--hse-project-ice);
+  border-color: var(--hse-project-blue);
+  color: var(--hse-project-blue);
+  transform: none;
 }
-
 .countery-icon :deep(svg),
-.theme-toggle svg {
-  width: 22px;
-  height: 22px;
+.drawer :deep(svg) {
+  width: 20px;
+  height: 20px;
 }
-
-.drawer :deep(path),
-.drop-icon :deep(path) {
-  fill: var(--text-on-brand) !important;
+.drawer :deep(path) {
+  fill: currentColor;
 }
-
 .notifications-control {
   display: inline-flex;
-  flex: none;
+  align-items: center;
+  gap: 8px;
 }
-
-.notifications-control :deep(.notification) {
-  border-color: color-mix(in srgb, var(--surface-1) 18%, transparent);
+.notifications-control :deep(.notification-glow) {
+  display: none;
 }
-
 .notifications-control :deep(.circle-icon path) {
-  fill: none !important;
-  stroke: var(--text-on-brand) !important;
-}
-
-.theme-toggle path {
   stroke: currentColor;
 }
-
-.drawer {
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  color: var(--text-on-brand);
-  background: color-mix(in srgb, var(--surface-1) 14%, transparent);
-  border: 1px solid color-mix(in srgb, var(--surface-1) 18%, transparent);
-  appearance: none;
-  cursor: pointer;
-  transition:
-    transform 0.2s ease,
-    background 0.2s ease;
-
-  &:hover {
-    transform: translateY(-1px);
-    background: color-mix(in srgb, var(--surface-1) 22%, transparent);
-  }
-
-  @media (min-width: 769px) {
-    display: none;
-  }
+.notifications-control :deep(.image-refresh) {
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  border-radius: 9px;
+  background: var(--hse-project-navy);
 }
-
 .user {
-  position: relative;
-  min-height: 54px;
-  padding: 7px 8px 7px 14px;
-  border-radius: 20px;
-  color: var(--text-on-brand);
-  background: color-mix(in srgb, var(--surface-1) 14%, transparent);
-  border: 1px solid color-mix(in srgb, var(--surface-1) 18%, transparent);
-  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--surface-1) 14%, transparent);
-  backdrop-filter: blur(10px);
-  transition:
-    transform 0.2s ease,
-    background 0.2s ease,
-    border-color 0.2s ease;
+  gap: 10px;
+  min-width: 0;
+  padding: 0 0 0 10px;
+  border: 0;
+  border-inline-start: 1px solid var(--hse-project-line);
+  border-radius: 0;
+  color: var(--hse-project-ink);
 }
-
-.user:hover {
-  transform: translateY(-1px);
-  background: color-mix(in srgb, var(--surface-1) 20%, transparent);
-  border-color: color-mix(in srgb, var(--surface-1) 28%, transparent);
+.user:dir(rtl) {
+  padding: 0 10px 0 0;
 }
-
 .user img {
-  width: 42px !important;
-  height: 42px;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
   object-fit: cover;
-  border: 2px solid color-mix(in srgb, var(--surface-1) 78%, transparent);
-  box-shadow: 0 10px 22px color-mix(in srgb, var(--brand-primary-900) 20%, transparent);
+  background: var(--hse-project-ice);
 }
-
 .profile-data {
-  min-width: 116px;
+  display: grid;
+  gap: 2px;
+  max-width: 140px;
 }
-
-.profile-data span:first-child {
-  color: var(--text-on-brand) !important;
-  min-width: 0 !important;
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.profile-data span:last-child {
-  color: color-mix(in srgb, var(--brand-primary-100) 82%, transparent) !important;
-  margin-left: auto !important;
-  font-size: 12px;
-  max-width: 150px;
+.profile-data span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-family: var(--hse-project-font);
 }
-
-.drop-icon {
-  order: 3;
-  width: 18px;
-  height: 18px;
-  opacity: 0.9;
+.profile-data span:first-child {
+  font-size: 12px;
+  font-weight: 700;
 }
-
-:global(.header-dropdown-menu) {
-  position: fixed;
-  z-index: 10000;
-  min-width: 178px !important;
-  overflow: hidden;
-  padding: 6px;
-  border-radius: 16px !important;
-  background: var(--surface-1) !important;
-  border: 1px solid color-mix(in srgb, var(--brand-primary-600) 10%, transparent);
-  box-shadow: 0 22px 48px color-mix(in srgb, var(--brand-primary-900) 18%, transparent) !important;
+.profile-data span:last-child:not(:first-child) {
+  font-size: 11px;
+  color: var(--hse-project-muted);
 }
-
-:global(.header-dropdown-menu ul) {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-:global(.header-dropdown-menu li) {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 14px;
-  border-radius: 12px !important;
-  color: var(--brand-primary-700) !important;
-  cursor: pointer;
-  transition:
-    color 0.2s ease,
-    background 0.2s ease;
-}
-
-:global(.header-dropdown-menu li:hover) {
-  background: var(--brand-primary-50) !important;
-  color: var(--brand-primary-500) !important;
-}
-
-:global(.header-dropdown-menu li:hover svg path) {
-  fill: var(--brand-primary-500) !important;
-}
-
-:global([data-theme='dark'] .header-dropdown-menu) {
-  background: var(--brand-primary-900) !important;
-  border-color: var(--brand-primary-700) !important;
-}
-
-:global([data-theme='dark'] .header-dropdown-menu li) {
-  color: var(--brand-primary-50) !important;
-}
-
-:global([data-theme='dark'] .header-dropdown-menu li:hover) {
-  background: var(--brand-primary-800) !important;
-  color: var(--brand-primary-300) !important;
-}
-
-.header-user-menu {
-  @media (max-width: 768px) {
-    display: none !important;
+@media (min-width: 769px) {
+  .drawer {
+    display: none;
   }
 }
-
+@media (max-width: 1100px) {
+  .profile-data {
+    display: none;
+  }
+}
 @media (max-width: 768px) {
-  .header {
-    min-height: 66px;
-    padding: 10px 14px;
-    border-bottom-left-radius: 18px;
-    border-bottom-right-radius: 18px;
+  .hse-app-header {
+    padding: 10px 12px;
   }
-
-  .brand-link {
-    min-height: 44px;
-    padding: 6px 10px 6px 7px;
+  .nav {
+    gap: 10px;
   }
-
-  .brand-link img {
-    width: 30px;
-    height: 30px;
+  .header-select {
+    order: 3;
+    flex: 1 1 100%;
   }
-
+  .user {
+    display: none;
+  }
   .logo {
-    font-size: 16px !important;
+    font-size: 14px;
+    max-width: 120px;
+    overflow-wrap: anywhere;
   }
-
-  .setting {
-    gap: 5px !important;
-    padding: 4px;
-    border-radius: 18px;
+  .brand-link {
+    gap: 6px;
   }
-
-  .countery-icon,
+  .brand-link img {
+    width: 26px;
+    height: 26px;
+  }
+  .menu,
+  .setting,
+  .notifications-control {
+    gap: 6px;
+  }
+}
+@media (max-width: 400px) {
+  .brand-link .logo {
+    max-width: 90px;
+    font-size: 12px;
+  }
+  .brand-link img {
+    width: 22px;
+    height: 22px;
+  }
+  .drawer,
+  .countery-icon :deep(button),
   .notifications-control :deep(.notification) {
-    width: 42px !important;
-    height: 42px !important;
-    border-radius: 14px !important;
+    width: 36px;
+    height: 36px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hse-app-header :deep(*) {
+    transition: none;
   }
 }
 </style>

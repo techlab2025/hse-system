@@ -17,9 +17,9 @@
   --hse-project-font: HSEWizardJakarta, Regular, sans-serif;
   display: block;
   /* max-width: 1540px; */
-  padding: 28px 30px 58px;
+  /* padding: 28px 30px 58px; */
   color: var(--hse-wizard-ink);
-  background: linear-gradient(180deg, #f7f9fc, #f4f7fb 360px);
+  /* background: linear-gradient(180deg, #f7f9fc, #f4f7fb 360px); */
   font-family: var(--hse-project-font);
   font-size: 14px;
   line-height: 1.45;
@@ -367,10 +367,10 @@
 }
 /* Existing shared inputs use important utilities; these two properties need narrow overrides. */
 .hse-project-root[data-hse-project].flow-page.hse-project-wizard
-  input:not([type='checkbox']):not([type='radio']),
+  input:not(.hse-control):not([type='checkbox']):not([type='radio']),
 .hse-project-root[data-hse-project].flow-page.hse-project-wizard textarea,
-.hse-project-root[data-hse-project].flow-page.hse-project-wizard .p-select,
-.hse-project-root[data-hse-project].flow-page.hse-project-wizard .p-multiselect {
+.hse-project-root[data-hse-project].flow-page.hse-project-wizard .p-select:not(.hse-control),
+.hse-project-root[data-hse-project].flow-page.hse-project-wizard .p-multiselect:not(.hse-control) {
   width: 100%;
   min-height: 0;
   box-sizing: border-box;
@@ -387,8 +387,8 @@
   box-shadow: none;
   height: auto;
 }
-.hse-project-root[data-hse-project].flow-page.hse-project-wizard .p-select,
-.hse-project-root[data-hse-project].flow-page.hse-project-wizard .p-multiselect {
+.hse-project-root[data-hse-project].flow-page.hse-project-wizard .p-select:not(.hse-control),
+.hse-project-root[data-hse-project].flow-page.hse-project-wizard .p-multiselect:not(.hse-control) {
   padding: 0 !important;
   min-height: 40.85px;
   align-items: center;
@@ -406,8 +406,10 @@
 }
 .hse-project-root[data-hse-project].flow-page.hse-project-wizard input:focus,
 .hse-project-root[data-hse-project].flow-page.hse-project-wizard textarea:focus,
-.hse-project-root[data-hse-project].flow-page.hse-project-wizard .p-select.p-focus,
-.hse-project-root[data-hse-project].flow-page.hse-project-wizard .p-multiselect.p-focus {
+.hse-project-root[data-hse-project].flow-page.hse-project-wizard
+  .p-select:not(.hse-control).p-focus,
+.hse-project-root[data-hse-project].flow-page.hse-project-wizard
+  .p-multiselect:not(.hse-control).p-focus {
   border-color: #6b9dff !important;
   box-shadow: 0 0 0 3px rgba(36, 107, 254, 0.09);
   background: white;
@@ -658,10 +660,10 @@
   width: 100%;
 }
 .hse-project-root[data-hse-project].flow-page.hse-project-wizard
-  input:not([type='checkbox']):not([type='radio']),
+  input:not(.hse-control):not([type='checkbox']):not([type='radio']),
 .hse-project-root[data-hse-project].flow-page.hse-project-wizard textarea,
-.hse-project-root[data-hse-project].flow-page.hse-project-wizard .p-select,
-.hse-project-root[data-hse-project].flow-page.hse-project-wizard .p-multiselect {
+.hse-project-root[data-hse-project].flow-page.hse-project-wizard .p-select:not(.hse-control),
+.hse-project-root[data-hse-project].flow-page.hse-project-wizard .p-multiselect:not(.hse-control) {
   width: 100% !important;
   max-width: none !important;
 }
@@ -700,7 +702,9 @@
   width: auto;
   margin: 0;
 }
-.hse-project-root[data-hse-project].flow-page.hse-project-wizard .p-datepicker input {
+.hse-project-root[data-hse-project].flow-page.hse-project-wizard
+  .p-datepicker
+  input:not(.hse-control) {
   height: 40.85px;
   box-shadow: none;
 }

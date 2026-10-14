@@ -1,0 +1,261 @@
+/* One control skin for the shared select and PrimeVue's date/time variants.
+   Every selector is opt-in, including portals rendered outside the form. */
+.hse-select-field {
+  min-width: 0;
+  width: 100%;
+}
+.hse-select-field > .input-label {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 22px;
+  margin-bottom: 6px;
+}
+.hse-select-field.hse-identity label.input-label {
+  margin: 0;
+  color: var(--hse-project-ink) !important;
+  font: 600 12px/1.45 var(--hse-control-font) !important;
+  text-transform: none;
+}
+.hse-select-field .reload-icon {
+  margin: 0;
+  gap: 6px;
+  color: var(--hse-project-muted);
+}
+.hse-select-field .reload-icon:hover {
+  color: var(--hse-project-blue);
+}
+.hse-select-field .optional-text {
+  color: var(--hse-project-muted);
+  font-size: 11px;
+}
+.hse-identity.hse-date-picker {
+  outline: 0 !important;
+  box-shadow: none !important;
+  display: inline-flex;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+/* Legacy application fields use important padding/radius and font declarations. */
+.hse-control.hse-select-control,
+.hse-date-picker .hse-control.hse-date-input {
+  min-width: 0;
+  max-width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--hse-project-line) !important;
+  border-radius: var(--hse-control-radius, 9px) !important;
+  background: var(--hse-project-input-bg) !important;
+  color: var(--hse-project-ink) !important;
+  font: 400 13px/1.45 var(--hse-control-font) !important;
+  box-shadow: none;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+.hse-control.hse-select-control {
+  padding: 0 !important;
+}
+.hse-date-picker .hse-control.hse-date-input {
+  padding: 10px 12px !important;
+}
+.hse-control.hse-select-control:not(.p-disabled):hover,
+.hse-date-picker .hse-control.hse-date-input:not(:disabled):hover {
+  border-color: #b8c9df !important;
+}
+.hse-control.hse-select-control:focus-within,
+.hse-date-picker .hse-control.hse-date-input:focus {
+  border-color: #6b9dff !important;
+  box-shadow: var(--hse-control-focus);
+  outline: 0;
+}
+.hse-control.hse-select-control:is(.p-invalid, [aria-invalid='true']),
+.hse-date-picker .hse-control.hse-date-input:is(.p-invalid, [aria-invalid='true']) {
+  border-color: var(--hse-project-red) !important;
+}
+.hse-control.hse-select-control.p-disabled,
+.hse-date-picker .hse-control.hse-date-input:disabled {
+  background: var(--hse-project-surface-soft) !important;
+  color: var(--hse-project-muted) !important;
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+.hse-select-control :is(.p-select-label, .p-multiselect-label) {
+  min-width: 0;
+  padding: 10px 12px !important;
+  color: var(--hse-project-ink);
+  font: 400 13px/1.45 var(--hse-control-font) !important;
+  text-transform: none;
+}
+.hse-select-control :is(.p-select-label.p-placeholder, .p-multiselect-label.p-placeholder),
+.hse-date-input::placeholder {
+  color: var(--hse-project-muted);
+  opacity: 1;
+}
+.hse-select-control :is(.p-select-dropdown, .p-multiselect-dropdown) {
+  width: 36px;
+  color: var(--hse-project-muted);
+}
+.hse-select-control .p-chip {
+  background: var(--hse-project-ice);
+  color: var(--hse-project-blue);
+  border-radius: 6px;
+  font: 500 12px/1.4 var(--hse-control-font);
+}
+.hse-date-picker .p-datepicker-dropdown {
+  background: var(--hse-project-surface-soft);
+  color: var(--hse-project-blue);
+  border: 1px solid var(--hse-project-line);
+  border-inline-start: 0;
+  border-start-end-radius: 9px;
+  border-end-end-radius: 9px;
+}
+.hse-date-picker:has(.p-datepicker-dropdown) .hse-date-input {
+  border-start-end-radius: 0 !important;
+  border-end-end-radius: 0 !important;
+}
+.hse-identity:is(.hse-select-panel, .hse-calendar, .hse-select-dialog) {
+  border: 1px solid var(--hse-project-line);
+  border-radius: 12px;
+  background: var(--hse-project-surface) !important;
+  color: var(--hse-project-ink) !important;
+  font-family: var(--hse-control-font);
+  box-shadow: var(--hse-project-shadow);
+  --p-primary-color: var(--hse-project-blue);
+  --p-checkbox-checked-background: var(--hse-project-blue);
+  --p-checkbox-checked-border-color: var(--hse-project-blue);
+  --p-checkbox-checked-hover-background: var(--hse-project-blue);
+  --p-checkbox-checked-hover-border-color: var(--hse-project-blue);
+}
+.hse-select-dialog {
+  max-width: calc(100vw - 24px);
+}
+.hse-select-panel :is(.p-select-header, .p-multiselect-header) {
+  padding: 12px;
+  border-bottom: 1px solid var(--hse-project-line-soft);
+  gap: 10px;
+}
+.hse-select-panel :is(.p-select-filter, .p-multiselect-filter) {
+  min-height: 38px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: 9px;
+  padding: 8px 12px;
+  padding-inline-end: 34px;
+  background: var(--hse-project-input-bg);
+  color: var(--hse-project-ink);
+  font: 400 13px/1.45 var(--hse-control-font);
+}
+.hse-select-panel :is(.p-select-filter, .p-multiselect-filter):focus {
+  border-color: var(--hse-project-blue) !important;
+  box-shadow: var(--hse-control-focus);
+  outline: 0;
+}
+.hse-select-panel :is(.p-select-list, .p-multiselect-list) {
+  padding: 5px;
+}
+.hse-select-panel :is(.p-select-option, .p-multiselect-option) {
+  gap: 10px;
+  padding: 10px 12px;
+  min-height: 38px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--hse-project-ink);
+  font: 400 13px/1.5 var(--hse-control-font);
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.hse-select-panel :is(.p-select-option, .p-multiselect-option) span {
+  font-family: inherit;
+}
+.hse-select-panel :is(.p-select-option, .p-multiselect-option):is(:hover, .p-focus) {
+  background: var(--hse-project-surface-soft);
+}
+.hse-select-panel :is(.p-select-option-selected, .p-multiselect-option-selected) {
+  background: var(--hse-project-ice);
+  color: var(--hse-project-blue);
+}
+.hse-select-panel :is(.p-select-empty-message, .p-multiselect-empty-message) {
+  padding: 18px 12px;
+  color: var(--hse-project-muted);
+  font: 400 13px/1.5 var(--hse-control-font);
+}
+.hse-calendar {
+  max-width: calc(100vw - 24px);
+  padding: 12px;
+}
+.hse-calendar .p-datepicker-calendar-container {
+  gap: 16px;
+  overflow-x: auto;
+}
+.hse-calendar .p-datepicker-header {
+  padding: 4px 0 12px;
+  border-bottom: 1px solid var(--hse-project-line-soft);
+  background: transparent;
+  color: var(--hse-project-ink);
+}
+.hse-calendar :is(.p-datepicker-select-month, .p-datepicker-select-year, .p-datepicker-decade) {
+  color: var(--hse-project-ink);
+  font: 700 13px/1.45 var(--hse-control-font);
+}
+.hse-calendar :is(.p-datepicker-prev-button, .p-datepicker-next-button) {
+  color: var(--hse-project-muted);
+  border-radius: 9px;
+}
+.hse-calendar .p-datepicker-weekday {
+  color: var(--hse-project-muted);
+  font: 600 11px/1.5 var(--hse-control-font);
+}
+.hse-calendar :is(.p-datepicker-day, .p-datepicker-month, .p-datepicker-year) {
+  color: var(--hse-project-ink);
+  border-radius: 8px;
+  font: 500 12px/1.45 var(--hse-control-font);
+}
+.hse-calendar
+  :is(.p-datepicker-day, .p-datepicker-month, .p-datepicker-year):not(.p-disabled):hover {
+  background: var(--hse-project-ice);
+}
+.hse-calendar .p-datepicker-today > .p-datepicker-day {
+  background: var(--hse-project-ice);
+  color: var(--hse-project-blue);
+}
+.hse-calendar
+  :is(.p-datepicker-day-selected, .p-datepicker-month-selected, .p-datepicker-year-selected) {
+  background: var(--hse-project-blue);
+  color: #fff;
+}
+.hse-calendar .p-datepicker-day-selected-range {
+  background: var(--hse-project-ice);
+  color: var(--hse-project-blue);
+}
+.hse-calendar :is(.p-datepicker-day, .p-datepicker-month, .p-datepicker-year).p-disabled {
+  opacity: 0.35;
+}
+.hse-calendar .p-datepicker-time-picker {
+  padding: 12px 0 0;
+  border-color: var(--hse-project-line);
+}
+.hse-calendar .p-datepicker-time-picker span {
+  color: var(--hse-project-ink);
+  font: 600 16px/1.5 var(--hse-control-font);
+}
+.hse-calendar .p-datepicker-buttonbar {
+  border-color: var(--hse-project-line);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hse-control,
+  .hse-calendar *,
+  .hse-select-panel * {
+    transition: none !important;
+  }
+}
+/* Legacy global [dir=rtl] rules rotate explicitly directed elements. Direction
+   belongs to text/layout; it must not transform a portaled control panel. */
+.hse-identity:is(.hse-select-panel, .hse-calendar, .hse-select-dialog)[dir],
+.hse-select-panel [dir] {
+  transform: none !important;
+}

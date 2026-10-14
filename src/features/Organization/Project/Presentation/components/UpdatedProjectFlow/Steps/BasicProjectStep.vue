@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import HandleFIlesUpload, {
+  type UploadedFile,
+} from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import { ref } from 'vue'
@@ -58,6 +62,10 @@ const contractorController = IndexContractorController.getInstance()
 const contractorParams = new IndexContractorParams('', 0, 0, 0)
 const locationController = IndexLocationController.getInstance()
 const locationParams = ref(new IndexLocationParams('', 0, 0, 0, LocationEnum.AREA))
+
+const updateImage = (files: UploadedFile[]) => {
+  basic.value.image = files[0]?.base64 || null
+}
 
 const updateSerial = (data: { SerialNumber: string }) => {
   basic.value.serial = data.SerialNumber
@@ -191,6 +199,17 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
           </small>
         </label>
         <div class="hse-project-field input-wrapper full">
+          <HandleFIlesUpload
+            label="Project image (optional)"
+            accept="image/*"
+            :max-files="1"
+            :multiple="false"
+            :required="false"
+            :file="basic.image ?? undefined"
+            @change="updateImage"
+          />
+        </div>
+        <div class="hse-project-field input-wrapper full">
           <LangTitleInput
             label="project_scope_of_work"
             :langs="langDefault"
@@ -282,6 +301,10 @@ const setZones = (value: { locationId: number; ZoneIds: number[] }[]) => {
 </template>
 
 <style scoped lang="scss">
+:deep(.upload-area) {
+  border: 1px solid lightgray;
+  padding: 15px !important;
+}
 .field-delete-warning {
   margin-top: 6px;
   color: #e67e22 !important;

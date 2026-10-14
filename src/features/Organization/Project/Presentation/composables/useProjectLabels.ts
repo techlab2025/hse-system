@@ -5,7 +5,7 @@ const messages = {
     portfolio: 'Project portfolio',
     projects: 'Projects',
     subtitle: 'Manage project setup and operational performance from one place.',
-    pulse: 'Portfolio overview',
+    pulse: 'Projects overview',
     pageMetrics: 'Metrics for projects on this page',
     active: 'Active projects',
     progress: 'Average setup readiness',

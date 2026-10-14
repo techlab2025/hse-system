@@ -1,0 +1,43 @@
+/* HSE.Cloud.AI IDENTITY — PROVISIONAL BASELINE.
+   Confirm and override values by extracting actual CSS from the reference HTML.
+   Use only on a target feature root; never paste into global :root. */
+.hse-identity {
+  --hse-id-bg: #f5f8fc;
+  --hse-id-surface: #ffffff;
+  --hse-id-surface-muted: #f1f5fa;
+  --hse-id-text: #10233f;
+  --hse-id-muted: #6b7b91;
+  --hse-id-border: #dfe7f1;
+  --hse-id-navy: #0e2a4d;
+  --hse-id-navy-2: #183d68;
+  --hse-id-primary: #246bfe;
+  --hse-id-primary-light: #5a8dff;
+  --hse-id-cyan: #11a5c5;
+  --hse-id-success: #0aa778;
+  --hse-id-success-bg: #e9faf4;
+  --hse-id-warning: #e69a18;
+  --hse-id-warning-bg: #fff7e7;
+  --hse-id-danger: #e14a57;
+  --hse-id-danger-bg: #fff0f2;
+  --hse-id-radius-control: 10px;
+  --hse-id-radius-card: 16px;
+  --hse-id-radius-pill: 999px;
+  --hse-id-shadow-card: 0 8px 24px rgba(24,54,92,.08);
+  --hse-id-shadow-raised: 0 18px 55px rgba(24,54,92,.10);
+  --hse-id-space-1: 4px;
+  --hse-id-space-2: 8px;
+  --hse-id-space-3: 12px;
+  --hse-id-space-4: 16px;
+  --hse-id-space-5: 20px;
+  --hse-id-space-6: 24px;
+  --hse-id-space-8: 32px;
+  --hse-id-control-height: 38px;
+  --hse-id-font-ui: Inter, "Segoe UI", system-ui, -apple-system, sans-serif;
+  --hse-id-text-xs: 11px;
+  --hse-id-text-sm: 12px;
+  --hse-id-text-md: 14px;
+  --hse-id-text-lg: 16px;
+  --hse-id-title-size: clamp(24px, 2vw, 32px);
+  color: var(--hse-id-text);
+  font-family: var(--hse-id-font-ui);
+}

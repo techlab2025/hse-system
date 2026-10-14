@@ -3,10 +3,10 @@
   min-width: 0;
   /* max-width: 1540px; */
   margin-inline: auto;
-  padding: var(--hse-project-space-2xl) 30px 58px;
-  background:
+  /* padding: var(--hse-project-space-2xl) 30px 58px; */
+  /* background:
     radial-gradient(circle at 72% -12%, rgb(75 132 255 / 9%), transparent 29%),
-    linear-gradient(180deg, #f7f9fc, var(--hse-project-bg) 360px);
+    linear-gradient(180deg, #f7f9fc, var(--hse-project-bg) 360px); */
 }
 .hse-project-root[data-hse-project] .hse-project-page-head {
   display: flex;
@@ -430,7 +430,7 @@
   color: var(--hse-project-blue);
 }
 .hse-project-root[data-hse-project] .hse-project-grid--list {
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 .hse-project-root[data-hse-project] .hse-project-grid--list .hse-project-card {
   display: grid;

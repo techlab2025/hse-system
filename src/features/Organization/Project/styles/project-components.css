@@ -182,8 +182,20 @@
   text-align: start;
 }
 .hse-project-root[data-hse-project]
-  :is(.hse-project-input, .p-inputtext, .p-textarea, .p-select, .p-multiselect),
-.hse-project-overlay :is(.p-inputtext, .p-textarea, .p-select, .p-multiselect) {
+  :is(
+    .hse-project-input,
+    .p-inputtext:not(.hse-control),
+    .p-textarea,
+    .p-select:not(.hse-control),
+    .p-multiselect:not(.hse-control)
+  ),
+.hse-project-overlay
+  :is(
+    .p-inputtext:not(.hse-control),
+    .p-textarea,
+    .p-select:not(.hse-control),
+    .p-multiselect:not(.hse-control)
+  ) {
   min-width: 0;
   max-width: 100%;
   min-height: var(--hse-project-control-height);
@@ -197,14 +209,16 @@
   border-radius: var(--hse-project-radius-control) !important;
   padding: 10px 12px !important;
 }
-.hse-project-root[data-hse-project] :is(.p-select, .p-multiselect) {
+.hse-project-root[data-hse-project]
+  :is(.p-select:not(.hse-control), .p-multiselect:not(.hse-control)) {
   padding-block: 0 !important;
 }
 .hse-project-root[data-hse-project] .p-datepicker {
   min-width: 0;
   max-width: 100%;
 }
-.hse-project-root[data-hse-project] :is(.hse-project-input, .p-inputtext, .p-textarea):focus {
+.hse-project-root[data-hse-project]
+  :is(.hse-project-input, .p-inputtext:not(.hse-control), .p-textarea):focus {
   border-color: var(--hse-project-blue);
   box-shadow: 0 0 0 3px rgb(37 109 244 / 10%);
 }

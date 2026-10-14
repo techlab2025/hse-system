@@ -189,12 +189,12 @@ onMounted(async () => {
     <header data-hse-project-head class="hse-project-page-head hero">
       <div class="hero__art" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="hero__content">
-        <div class="hero__symbol" aria-hidden="true">
+        <!-- <div class="hero__symbol" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none">
             <path d="M12 3 14.4 8.6 20 11l-5.6 2.4L12 19l-2.4-5.6L4 11l5.6-2.4L12 3Z" />
             <path d="m19 3 .7 1.3L21 5l-1.3.7L19 7l-.7-1.3L17 5l1.3-.7L19 3Z" />
           </svg>
-        </div>
+        </div> -->
         <div>
           <h1>{{ $t('Leadership Engagement') }}</h1>
           <!-- <p>
@@ -638,7 +638,7 @@ onMounted(async () => {
   box-shadow: 0 24px 55px color-mix(in srgb, var(--brand-primary-900) 20%, transparent);
 }
 
-.hero::after {
+/* .hero::after {
   content: '';
   position: absolute;
   inset: auto 8% -55px auto;
@@ -648,7 +648,7 @@ onMounted(async () => {
   background: color-mix(in srgb, var(--PrimaryColor) 36%, transparent);
   filter: blur(52px);
   pointer-events: none;
-}
+} */
 
 .hero__content {
   display: flex;
@@ -759,7 +759,7 @@ onMounted(async () => {
 
 .back-link:hover {
   border-color: color-mix(in srgb, white 45%, transparent);
-  color: white;
+  color: black;
   background: color-mix(in srgb, white 17%, transparent);
   transform: translateY(-1px);
 }

@@ -11,6 +11,7 @@ export default class AddProjectParams implements Params {
   zoonIds: number[]
   methodIds: number[]
   endDate: string | Date | null
+  image: string | null
   serial?: string
   constructor(data: {
     translation: TranslationsParams
@@ -21,6 +22,7 @@ export default class AddProjectParams implements Params {
     zoonIds: number[]
     methodIds: number[]
     endDate: string | Date | null
+    image?: string | null
     serial?: string
   }) {
     this.translation = data.translation
@@ -31,14 +33,20 @@ export default class AddProjectParams implements Params {
     this.zoonIds = data.zoonIds
     this.methodIds = data.methodIds
     this.endDate = data.endDate
+    this.image = data.image ?? null
     this.serial = data.serial
   }
   toMap(): Record<
     string,
-    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
+    | null
+    | number
+    | string
+    | number[]
+    | Record<string, string | number[] | number | Record<string, string>>
   > {
     const data: Record<
       string,
+      | null
       | number
       | string
       | number[]
@@ -56,6 +64,7 @@ export default class AddProjectParams implements Params {
     if (this.zoonIds?.length > 0) data['zoon_ids'] = this.zoonIds
     if (this.methodIds?.length > 0) data['method_ids'] = this.methodIds
     if (this.endDate) data['end_date'] = formatJoinDate(this.endDate)
+    data['image'] = this.image
 
     return data
   }

@@ -103,6 +103,7 @@ const logout = () => {
       {
         'is-dark': isDarkMode,
         'organization-modern': isOrganizationSidebar,
+        'hse-identity': isOrganizationSidebar,
       },
     ]"
   >
@@ -568,56 +569,16 @@ const logout = () => {
   -webkit-box-orient: vertical;
 }
 
-.sidebar.organization-modern {
+.sidebar.organization-modern,
+.sidebar.organization-modern.open {
   width: 90px;
   padding-top: 0;
   overflow: visible;
   border-radius: 0;
-  background:
-    radial-gradient(
-      circle at 18% 0%,
-      color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%,
-      transparent 34%
-    ),
-    radial-gradient(
-      circle at 82% 18%,
-      color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%,
-      transparent 34%
-    ),
-    linear-gradient(
-      155deg,
-      var(--brand-primary-600) 0%,
-      var(--brand-primary-700) 44%,
-      var(--brand-primary-800) 100%
-    ) !important;
-  box-shadow:
-    14px 0 32px color-mix(in srgb, var(--brand-primary-600) 22%, transparent),
-    inset -1px 0 0 color-mix(in srgb, var(--shadow-color) 12%, transparent);
+  background: var(--hse-nav-background) !important;
+  box-shadow: 8px 0 26px rgb(11 40 74 / 10%);
   z-index: 10040;
-  transition:
-    width 0.24s ease,
-    background 0.24s ease;
-}
-
-.sidebar.organization-modern.open {
-  width: 90px;
-  background:
-    radial-gradient(
-      circle at 18% 0%,
-      color-mix(in srgb, var(--surface-1) 10%, transparent) 0 18%,
-      transparent 34%
-    ),
-    radial-gradient(
-      circle at 82% 18%,
-      color-mix(in srgb, var(--brand-primary-300) 9%, transparent) 0 16%,
-      transparent 34%
-    ),
-    linear-gradient(
-      155deg,
-      var(--brand-primary-600) 0%,
-      var(--brand-primary-700) 44%,
-      var(--brand-primary-800) 100%
-    ) !important;
+  transition: width 180ms ease;
 }
 
 .sidebar.organization-modern.close {
@@ -721,7 +682,7 @@ const logout = () => {
 
 .sidebar.organization-modern.is-dark,
 .sidebar.organization-modern.is-dark.open {
-  background: var(--brand-primary-900) !important;
+  background: var(--hse-nav-background) !important;
 }
 
 .sidebar.close .mobile-sidebar-logout,
@@ -807,6 +768,14 @@ const logout = () => {
 
   .sidebar.organization-modern.close {
     width: 90px !important;
+  }
+
+  .sidebar.organization-modern:dir(rtl) {
+    left: auto !important;
+  }
+
+  .sidebar.organization-modern.close:dir(rtl) {
+    right: -320px !important;
   }
 }
 </style>

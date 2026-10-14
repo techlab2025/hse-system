@@ -1,6 +1,7 @@
 import type { Component } from 'vue'
 
 export type BasicProjectForm = {
+  image: string | null
   serial: string
   startDate: Date | null
   endDate: Date | null

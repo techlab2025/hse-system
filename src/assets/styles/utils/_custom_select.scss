@@ -8,7 +8,7 @@
   font-weight: $BaseFontSemiBoldWeight;
 }
 
-.p-select {
+.p-select:not(.hse-control) {
   border-color: var(--brand-primary-100) !important;
   font-family: 'Regular';
   font-size: $SmSize;
@@ -21,7 +21,7 @@
   }
 }
 
-.p-select-overlay {
+.p-select-overlay:not(.hse-select-panel) {
   background-color: var(--text-on-brand) !important;
   border: none !important;
   font-size: $SmSize;
@@ -32,18 +32,18 @@
   }
 }
 
-.p-select-option {
+.p-select-option:not(.hse-select-panel *) {
   font-family: 'Regular';
   font-size: $SmSize;
   font-weight: $BaseFontSemiBoldWeight;
   background-color: var(--text-on-brand) !important;
   color: var(--text-strong) !important;
 }
-.p-select-empty-message {
+.p-select-empty-message:not(.hse-select-panel *) {
   color: var(--text-strong) !important;
 }
 
-.p-multiselect-overlay {
+.p-multiselect-overlay:not(.hse-select-panel) {
   font-family: 'Regular';
   font-size: $SmSize;
   font-weight: $BaseFontSemiBoldWeight;
@@ -58,7 +58,7 @@
   }
 }
 
-.p-multiselect-option {
+.p-multiselect-option:not(.hse-select-panel *) {
   font-family: 'Regular';
   font-size: $SmSize;
   font-weight: $BaseFontSemiBoldWeight;
@@ -78,7 +78,7 @@
   }
 }
 
-.p-checkbox-input {
+.p-checkbox-input:not(.hse-select-panel *) {
   font-family: 'Regular';
   font-size: $SmSize;
   font-weight: $BaseFontSemiBoldWeight;
@@ -88,7 +88,7 @@
   }
 }
 
-.p-multiselect {
+.p-multiselect:not(.hse-control) {
   font-family: 'Regular';
   font-size: $SmSize;
   font-weight: $BaseFontSemiBoldWeight;
@@ -104,7 +104,7 @@
   }
 }
 
-.p-multiselect-label {
+.p-multiselect-label:not(.hse-select-control *) {
   color: var(--text-strong) !important;
   // color: ;
   // background-color: var(--brand-primary-500) !important;
@@ -121,7 +121,7 @@
   }
 }
 
-.p-checkbox-box {
+.p-checkbox-box:not(.hse-select-panel *) {
   background-color: var(--text-on-brand) !important;
   border: 1px solid var(--text-soft) !important;
   transition: all 0.2s ease;
@@ -134,8 +134,8 @@
   }
 }
 
-.p-checkbox-checked {
-  .p-checkbox-box {
+.p-checkbox-checked:not(.hse-select-panel *) {
+  .p-checkbox-box:not(.hse-select-panel *) {
     background-color: var(--brand-primary-500) !important;
     border: none !important;
     svg {
@@ -143,7 +143,7 @@
     }
   }
 }
-.p-checkbox-box.p-highlight {
+.p-checkbox-box:not(.hse-select-panel *).p-highlight {
   background-color: $PrimaryColor !important;
   border-color: $PrimaryColor !important;
   color: var(--text-on-brand) !important;
@@ -153,8 +153,8 @@
   }
 }
 
-.p-multiselect-header {
-  .p-checkbox-box {
+.p-multiselect-header:not(.hse-select-panel *) {
+  .p-checkbox-box:not(.hse-select-panel *) {
     display: none !important;
   }
 }
@@ -165,7 +165,7 @@
   font-weight: $BaseFontSemiBoldWeight;
 }
 
-.p-multiselect-chip-item {
+.p-multiselect-chip-item:not(.hse-select-control *) {
   background-color: color-mix(in srgb, var(--brand-primary-500) 10.2%, transparent) !important;
   // border-radius: $XlSize !important;
   border-radius: $SmSize !important;
@@ -197,7 +197,7 @@
   }
 }
 
-.p-select-label {
+.p-select-label:not(.hse-select-control *) {
   font-size: $SmSize !important;
   font-weight: $BaseFontMediumWeight !important;
   // background-color: color-mix(in srgb, var(--brand-primary-500) 10.2%, transparent) !important;
@@ -247,7 +247,7 @@
   }
 }
 
-.p-datepicker-input,
+.p-datepicker-input:not(.hse-date-input),
 .text-input,
 .ql-editor,
 #SerialNumber {
@@ -276,7 +276,7 @@
   opacity: 0;
 }
 
-.p-checkbox {
+.p-checkbox:not(.hse-select-panel *) {
   width: 28px !important;
   height: 20px !important;
 }

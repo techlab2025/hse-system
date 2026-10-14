@@ -87,6 +87,7 @@ const steps = [
 ]
 
 const basic = ref<BasicProjectForm>({
+  image: null,
   serial: '',
   startDate: null as Date | null,
   endDate: null as Date | null,
@@ -237,6 +238,7 @@ onMounted(async () => {
   setProjectProgress(data.project_progress)
   activeStep.value = requestedRouteStep() ?? resumeStepFromProject(data)
   basic.value = {
+    image: null,
     serial: data.serial ?? data.serial_number ?? '',
     startDate: data.start_date ? new Date(data.start_date) : null,
     endDate: data.end_date ? new Date(data.end_date) : null,
@@ -389,6 +391,7 @@ const buildParams = () => {
       projectId: updateProjectId.value,
       isUpdate: isCurrentStepUpdate.value,
       drill_count: Number(basic.value.drill_count),
+      image: basic.value.image,
     })
   }
   if (activeStep.value === 2) {
@@ -550,7 +553,7 @@ const goToPreviousStep = async () => {
   >
     <header class="flow-hero">
       <div>
-        <span class="eyebrow">PROJECT SETUP</span>
+        <!-- <span class="eyebrow">PROJECT SETUP</span> -->
         <h1>{{ editOnly ? `Update ${steps[activeStep - 1].title}` : 'Create a new project' }}</h1>
         <p>
           Configure the operating foundation once. Every project module will use this structure.

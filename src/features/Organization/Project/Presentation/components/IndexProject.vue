@@ -127,9 +127,9 @@ watch(
   >
     <header class="hse-project-page-head">
       <div>
-        <span class="hse-project-eyebrow"
+        <!-- <span class="hse-project-eyebrow"
           ><i class="hse-project-dot" aria-hidden="true"></i>{{ labels('portfolio') }}</span
-        >
+        > -->
         <h1>{{ labels('projects') }}</h1>
         <p class="hse-project-subtitle">{{ labels('subtitle') }}</p>
       </div>
@@ -211,7 +211,7 @@ watch(
           @input="searchProject"
         />
       </div>
-      <select
+      <!-- <select
         v-model="statusFilter"
         class="hse-project-input hse-project-filter"
         :aria-label="labels('allStatuses')"
@@ -221,7 +221,7 @@ watch(
         <option value="2">{{ t('project_status_completed') }}</option>
         <option value="3">{{ t('project_status_on_hold') }}</option>
         <option value="4">{{ t('project_status_cancelled') }}</option>
-      </select>
+      </select> -->
       <div class="hse-project-view-toggle" role="group" :aria-label="labels('projects')">
         <button
           type="button"

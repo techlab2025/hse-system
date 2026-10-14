@@ -14,6 +14,7 @@ export default class BasicProjectParams implements Params {
   public readonly hasZoon: boolean
   public readonly projectId?: number
   public readonly isUpdate: boolean
+  public readonly image: string | null
   public readonly drill_count: number
 
   constructor(data: {
@@ -28,6 +29,7 @@ export default class BasicProjectParams implements Params {
     hasZoon: boolean
     projectId?: number
     isUpdate: boolean
+    image?: string | null
     drill_count: number
   }) {
     this.translation = data.translation
@@ -41,6 +43,7 @@ export default class BasicProjectParams implements Params {
     this.hasZoon = data.hasZoon
     this.projectId = data.projectId
     this.isUpdate = data.isUpdate
+    this.image = data.image ?? null
     this.drill_count = data.drill_count
   }
 
@@ -59,6 +62,7 @@ export default class BasicProjectParams implements Params {
       cost: this.cost,
       has_zoon: this.hasZoon,
       drills_count: this.drill_count,
+      image: this.image,
     }
   }
 }

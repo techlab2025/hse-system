@@ -1,0 +1,131 @@
+@font-face {
+  font-family: 'HSE Project Studio';
+  src: url('../../features/Organization/Project/Presentation/components/UpdatedProjectFlow/assets/plus-jakarta-sans-reference.woff2')
+    format('woff2');
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+}
+/* Studio 05.1 tokens shared by opt-in components and existing Project roots.
+   Keep the established variable names for compatibility with approved Project pages. */
+@font-face {
+  font-family: 'HSE Project Inter';
+  src: url('../../assets/fonts/Inter/Inter_18pt-Regular.ttf') format('truetype');
+  font-weight: 400 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'HSE Project Inter';
+  src: url('../../assets/fonts/Inter/Inter_18pt-Bold.ttf') format('truetype');
+  font-weight: 600 800;
+  font-display: swap;
+}
+.hse-identity,
+.hse-project-root,
+.hse-project-overlay {
+  --hse-project-bg: #f4f7fb;
+  --hse-project-surface: #fff;
+  --hse-project-ink: #10243f;
+  --hse-project-muted: #6c7d92;
+  --hse-project-line: #e2e9f2;
+  --hse-project-line-soft: #edf1f6;
+  --hse-project-surface-soft: #f8fafc;
+  --hse-project-input-bg: #fcfdff;
+  --hse-project-shadow-primary: 0 10px 22px rgb(37 109 244 / 18%);
+  --hse-project-navy: #0c2a4d;
+  --hse-project-navy2: #173e6b;
+  --hse-project-blue: #256df4;
+  --hse-project-blue2: #76a4ff;
+  --hse-project-cyan: #11a5c5;
+  --hse-project-green: #079a70;
+  --hse-project-green-soft: #e9faf4;
+  --hse-project-amber: #d98a12;
+  --hse-project-amber-soft: #fff7e7;
+  --hse-project-red: #d94755;
+  --hse-project-red-soft: #fff0f2;
+  --hse-project-ice: #eef5ff;
+  --hse-project-radius-card: 17px;
+  --hse-project-radius-panel: 16px;
+  --hse-project-radius-control: 11px;
+  --hse-project-radius-small: 8px;
+  --hse-project-shadow: 0 12px 34px rgb(18 48 84 / 7.5%);
+  --hse-project-shadow-card: 0 5px 18px rgb(24 54 92 / 5.5%);
+  --hse-project-shadow-panel: 0 5px 20px rgb(24 54 92 / 4%);
+  --hse-project-shadow-hover: 0 14px 30px rgb(24 54 92 / 10%);
+  --hse-project-space-xs: 4px;
+  --hse-project-space-sm: 8px;
+  --hse-project-space-md: 12px;
+  --hse-project-space-lg: 16px;
+  --hse-project-space-xl: 20px;
+  --hse-project-space-2xl: 28px;
+  --hse-project-control-height: 42px;
+  --hse-project-motion: 180ms ease;
+  --hse-project-font: 'HSE Project Inter', 'Regular', ui-sans-serif, sans-serif;
+  --hse-project-title-size: 30px;
+  --hse-project-text-size: 13px;
+  --hse-project-label-size: 11px;
+  color: var(--hse-project-ink);
+  font-family: var(--hse-project-font);
+  font-size: var(--hse-project-text-size);
+  line-height: 1.45;
+  text-align: start;
+  /* Bridge existing feature controls to local tokens without touching root theme. */
+  --PrimaryColor: var(--hse-project-blue);
+  --main-border: var(--hse-project-line);
+  --BgWhite: var(--hse-project-surface);
+  --GrayText-1: var(--hse-project-ink);
+  --GrayText-2: var(--hse-project-muted);
+  --Gray-1: #f1f5f9;
+  --text-strong: var(--hse-project-ink);
+  --text-soft: var(--hse-project-muted);
+  --surface-1: var(--hse-project-surface);
+  --surface-2: #f8fafc;
+  --brand-primary-500: var(--hse-project-blue);
+  --brand-primary-100: var(--hse-project-ice);
+  --brand-primary-900: var(--hse-project-navy);
+  --status-danger: var(--hse-project-red);
+  --status-success: var(--hse-project-green);
+  --status-warning: var(--hse-project-amber);
+  --p-primary-color: var(--hse-project-blue);
+  --p-primary-hover-color: #1f65de;
+  --p-primary-active-color: #165fcb;
+  --p-form-field-border-color: var(--hse-project-line);
+  --p-form-field-focus-border-color: var(--hse-project-blue);
+}
+.hse-project-root:dir(rtl),
+.hse-project-overlay:dir(rtl) {
+  --hse-project-font: 'Regular', 'URW DIN Arabic', ui-sans-serif, sans-serif;
+}
+
+.hse-identity {
+  --hse-project-font: 'HSE Project Studio', 'Regular', ui-sans-serif, sans-serif;
+  --hse-control-font: 'HSE Project Studio', 'Regular', ui-sans-serif, sans-serif;
+  --hse-control-radius: 9px;
+  --hse-control-focus: 0 0 0 3px rgb(36 107 254 / 9%);
+  --hse-nav-background: linear-gradient(180deg, #0b294c 0%, #0a223f 68%, #091d36 100%);
+  --hse-nav-text: #b7c9dc;
+  --hse-nav-active: rgb(70 129 244 / 17%);
+  --hse-nav-accent: #6ea2ff;
+  font-family: var(--hse-project-font);
+}
+.hse-identity:dir(rtl) {
+  --hse-control-font: 'Regular', 'URW DIN Arabic', ui-sans-serif, sans-serif;
+  --hse-project-font: 'Regular', 'URW DIN Arabic', ui-sans-serif, sans-serif;
+}
+.hse-identity :is(button, input, textarea, select) {
+  font-family: var(--hse-project-font);
+}
+.hse-identity :is(button, a, input, [tabindex]):focus-visible {
+  outline: 2px solid var(--hse-project-blue);
+  outline-offset: 3px;
+}
+[data-theme='dark'] .hse-identity {
+  --hse-project-surface: #10243f;
+  --hse-project-ink: #edf4ff;
+  --hse-project-muted: #b7c9dc;
+  --hse-project-line: #36516c;
+  --hse-project-line-soft: #294662;
+  --hse-project-surface-soft: #14304f;
+  --hse-project-input-bg: #10243f;
+  --hse-project-ice: #183d68;
+}

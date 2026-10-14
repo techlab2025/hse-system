@@ -45,7 +45,6 @@
 /*<editor-fold desc="components">*/
 @use './components/drop_menu';
 @use './components/search_input';
-@use './components/date_picker';
 
 @use './components/dialog';
 
@@ -227,6 +226,7 @@ body,
 #app {
   rotate: none !important;
   transform: none !important;
+  // background: radial-gradient(ellipse at 85% 0, rgba(75, 132, 255, 0.07), transparent 35%), #f4f7fb;
 }
 
 .p-accordionheader {
@@ -621,4 +621,3 @@ label {
     height: 35px !important;
   }
 }
-

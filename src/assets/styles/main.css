@@ -11642,13 +11642,12 @@ body {
 }
 
 .content {
+  background: radial-gradient(ellipse at 85% 0, rgba(75, 132, 255, 0.07), transparent 35%), #f4f7fb;
   display: flex;
   flex-direction: row;
   flex-wrap: flex-start;
   justify-content: stretch;
   align-items: stretch;
-  gap: var(--xl-size-2);
-  width: 98%;
 }
 .content .content-wrapper {
   flex: 1;
@@ -11668,12 +11667,14 @@ body {
   margin-inline: 19px;
 }
 .content .main-content {
-  background-color: var(--surface-1);
+  background: radial-gradient(ellipse at 85% 0, rgba(75, 132, 255, 0.07), transparent 35%), #f4f7fb;
   padding: var(--md-size);
   border-radius: var(--xl-size-base);
   overflow: hidden;
   z-index: 999;
   position: relative;
+  width: 96%;
+  margin-inline: auto;
   min-height: 82vh;
 }
 
@@ -12305,188 +12306,6 @@ body {
   position: relative;
 }
 
-/*
- * PrimeVue DatePicker
- *
- * Keep the border and focus treatment on the component shell. PrimeVue renders
- * the text input and icon trigger as siblings, so styling both as standalone
- * controls creates doubled borders and mismatched rounded corners.
- */
-body .p-datepicker.p-component:not(.p-datepicker-inline) {
-  display: inline-flex !important;
-  align-items: stretch;
-  width: 100%;
-  min-width: 0;
-  min-height: 46px;
-  overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border)) !important;
-  border-radius: 12px !important;
-  outline: 0;
-  background: color-mix(in srgb, var(--surface-2) 52%, var(--surface-1)) !important;
-  box-shadow: 0 1px 2px color-mix(in srgb, var(--text-strong) 4%, transparent) !important;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-body .p-datepicker.p-component:not(.p-datepicker-inline):not(.p-disabled):hover {
-  border-color: color-mix(in srgb, var(--PrimaryColor) 36%, var(--main-border)) !important;
-  background: var(--surface-1) !important;
-}
-
-body .p-datepicker.p-component:not(.p-datepicker-inline):not(.p-disabled):focus-within,
-body .p-datepicker.p-component:not(.p-datepicker-inline).p-focus {
-  border-color: var(--PrimaryColor) !important;
-  background: var(--surface-1) !important;
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 14%, transparent) !important;
-}
-
-body .p-datepicker.p-component:not(.p-datepicker-inline) > .p-datepicker-input.p-inputtext {
-  flex: 1 1 auto;
-  width: 100%;
-  min-width: 0;
-  min-height: 44px;
-  padding: 10px 13px !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  outline: 0 !important;
-  color: var(--text-strong) !important;
-  background: transparent !important;
-  box-shadow: none !important;
-  font: inherit;
-  font-weight: 500;
-}
-
-body .p-datepicker.p-component:not(.p-datepicker-inline) > .p-datepicker-input.p-inputtext::-moz-placeholder {
-  color: var(--text-soft) !important;
-  opacity: 0.82;
-}
-
-body .p-datepicker.p-component:not(.p-datepicker-inline) > .p-datepicker-input.p-inputtext::placeholder {
-  color: var(--text-soft) !important;
-  opacity: 0.82;
-}
-
-body .p-datepicker.p-component:not(.p-datepicker-inline) > .p-datepicker-dropdown {
-  display: inline-grid;
-  place-items: center;
-  flex: 0 0 44px;
-  width: 44px;
-  min-width: 44px;
-  min-height: 44px;
-  margin: 0;
-  padding: 0 !important;
-  border: 0 !important;
-  border-inline-start: 1px solid color-mix(in srgb, var(--PrimaryColor) 15%, var(--main-border)) !important;
-  border-radius: 0 !important;
-  outline: 0;
-  color: var(--PrimaryColor) !important;
-  background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1)) !important;
-  box-shadow: none !important;
-  transition: color 0.2s ease, background-color 0.2s ease;
-}
-
-body .p-datepicker.p-component:not(.p-datepicker-inline):not(.p-disabled) > .p-datepicker-dropdown:hover {
-  color: var(--text-on-brand) !important;
-  background: var(--PrimaryColor) !important;
-}
-
-body .p-datepicker.p-component:not(.p-datepicker-inline) > .p-datepicker-dropdown:focus-visible {
-  outline: 2px solid var(--PrimaryColor);
-  outline-offset: -3px;
-}
-
-body .p-datepicker.p-component:not(.p-datepicker-inline) > .p-datepicker-dropdown .p-icon {
-  width: 16px;
-  height: 16px;
-}
-
-body .p-datepicker.p-component.p-disabled:not(.p-datepicker-inline) {
-  cursor: not-allowed;
-  opacity: 0.62;
-  background: var(--surface-2) !important;
-  box-shadow: none !important;
-}
-
-body .p-datepicker.p-component.p-disabled:not(.p-datepicker-inline) > * {
-  cursor: not-allowed;
-}
-
-body .p-datepicker.p-component:not(.p-datepicker-inline):has(> .p-invalid) {
-  border-color: var(--status-danger) !important;
-}
-
-/* Calendar/time overlay */
-.p-datepicker-panel {
-  overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border)) !important;
-  border-radius: 16px !important;
-  color: var(--text-strong) !important;
-  background: var(--surface-1) !important;
-  box-shadow: 0 18px 45px color-mix(in srgb, var(--text-strong) 16%, transparent) !important;
-}
-
-.p-datepicker-panel .p-datepicker-header {
-  padding: 12px !important;
-  border-block-end: 1px solid var(--main-border) !important;
-  color: var(--text-strong) !important;
-  background: var(--surface-1) !important;
-}
-
-.p-datepicker-panel :is(.p-datepicker-prev-button, .p-datepicker-next-button) {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px !important;
-  color: var(--PrimaryColor) !important;
-}
-
-.p-datepicker-panel :is(.p-datepicker-prev-button, .p-datepicker-next-button):hover {
-  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1)) !important;
-}
-
-.p-datepicker-panel :is(.p-datepicker-select-month, .p-datepicker-select-year) {
-  border-radius: 8px;
-  color: var(--text-strong) !important;
-  font-weight: 750;
-}
-
-.p-datepicker-panel .p-datepicker-weekday {
-  color: var(--text-soft) !important;
-  font-size: 0.75rem;
-  font-weight: 750;
-}
-
-.p-datepicker-panel .p-datepicker-day {
-  border-radius: 10px !important;
-  color: var(--text-strong);
-  transition: color 0.15s ease, background-color 0.15s ease;
-}
-
-.p-datepicker-panel .p-datepicker-day:not(.p-datepicker-day-selected):hover {
-  color: var(--PrimaryColor) !important;
-  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1)) !important;
-}
-
-.p-datepicker-panel .p-datepicker-day.p-datepicker-day-selected,
-.p-datepicker-panel .p-datepicker-month.p-datepicker-month-selected,
-.p-datepicker-panel .p-datepicker-year.p-datepicker-year-selected {
-  color: var(--text-on-brand) !important;
-  background: var(--PrimaryColor) !important;
-}
-
-.p-datepicker-panel .p-datepicker-today > .p-datepicker-day:not(.p-datepicker-day-selected) {
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 45%, transparent);
-  color: var(--PrimaryColor) !important;
-  background: color-mix(in srgb, var(--PrimaryColor) 8%, var(--surface-1)) !important;
-}
-
-.p-datepicker-panel .p-datepicker-time-picker {
-  border-block-start-color: var(--main-border) !important;
-}
-
-@media (max-width: 480px) {
-  .p-datepicker-panel:not(.p-datepicker-panel-inline) {
-    max-width: calc(100vw - 16px) !important;
-  }
-}
 .custom-dialog-header {
   min-height: auto;
 }
@@ -13050,7 +12869,7 @@ body .p-datepicker.p-component:not(.p-datepicker-inline):has(> .p-invalid) {
   font-weight: 600;
 }
 
-.p-select {
+.p-select:not(.hse-control) {
   border-color: var(--brand-primary-100) !important;
   font-family: "Regular";
   font-size: var(--sm-size);
@@ -13058,22 +12877,22 @@ body .p-datepicker.p-component:not(.p-datepicker-inline):has(> .p-invalid) {
   padding: var(--md-size-2) var(--md-size);
   border-radius: calc(var(--xl-size-base) + 2px);
 }
-.p-select:focus {
+.p-select:not(.hse-control):focus {
   border-color: var(--brand-primary-100) !important;
 }
 
-.p-select-overlay {
+.p-select-overlay:not(.hse-select-panel) {
   background-color: var(--text-on-brand) !important;
   border: none !important;
   font-size: var(--sm-size);
   font-weight: 600;
 }
-.p-select-overlay .p-inputtext {
+.p-select-overlay:not(.hse-select-panel) .p-inputtext {
   background-color: var(--text-on-brand) !important;
   border: none !important;
 }
 
-.p-select-option {
+.p-select-option:not(.hse-select-panel *) {
   font-family: "Regular";
   font-size: var(--sm-size);
   font-weight: 600;
@@ -13081,11 +12900,11 @@ body .p-datepicker.p-component:not(.p-datepicker-inline):has(> .p-invalid) {
   color: var(--text-strong) !important;
 }
 
-.p-select-empty-message {
+.p-select-empty-message:not(.hse-select-panel *) {
   color: var(--text-strong) !important;
 }
 
-.p-multiselect-overlay {
+.p-multiselect-overlay:not(.hse-select-panel) {
   font-family: "Regular";
   font-size: var(--sm-size);
   font-weight: 600;
@@ -13094,13 +12913,13 @@ body .p-datepicker.p-component:not(.p-datepicker-inline):has(> .p-invalid) {
   color: var(--text-strong) !important;
   margin-top: var(--xl-size-base) !important;
 }
-.p-multiselect-overlay .p-inputtext {
+.p-multiselect-overlay:not(.hse-select-panel) .p-inputtext {
   color: var(--text-strong) !important;
   background-color: var(--text-on-brand) !important;
   border: 1px solid var(--brand-primary-100) !important;
 }
 
-.p-multiselect-option {
+.p-multiselect-option:not(.hse-select-panel *) {
   font-family: "Regular";
   font-size: var(--sm-size);
   font-weight: 600;
@@ -13113,21 +12932,21 @@ body .p-datepicker.p-component:not(.p-datepicker-inline):has(> .p-invalid) {
   justify-content: space-between !important;
   padding: 20px !important;
 }
-.p-multiselect-option:hover {
+.p-multiselect-option:not(.hse-select-panel *):hover {
   background-color: color-mix(in srgb, var(--brand-primary-500) 5.88%, transparent) !important;
 }
 
-.p-checkbox-input {
+.p-checkbox-input:not(.hse-select-panel *) {
   font-family: "Regular";
   font-size: var(--sm-size);
   font-weight: 600;
   background-color: var(--text-on-brand) !important;
 }
-.p-checkbox-input:focus {
+.p-checkbox-input:not(.hse-select-panel *):focus {
   border: 1px solid var(--brand-primary-100) !important;
 }
 
-.p-multiselect {
+.p-multiselect:not(.hse-control) {
   font-family: "Regular";
   font-size: var(--sm-size);
   font-weight: 600;
@@ -13135,11 +12954,11 @@ body .p-datepicker.p-component:not(.p-datepicker-inline):has(> .p-invalid) {
   padding: var(--md-size-2) var(--md-size);
   border-radius: calc(var(--xl-size-base) + 2px) !important;
 }
-.p-multiselect:focus {
+.p-multiselect:not(.hse-control):focus {
   border-color: var(--brand-primary-100) !important;
 }
 
-.p-multiselect-label {
+.p-multiselect-label:not(.hse-select-control *) {
   color: var(--text-strong) !important;
   margin-inline: 5px;
   padding: 0 !important;
@@ -13148,13 +12967,13 @@ body .p-datepicker.p-component:not(.p-datepicker-inline):has(> .p-invalid) {
   width: -moz-fit-content;
   width: fit-content;
 }
-.p-multiselect-label.p-placeholder {
+.p-multiselect-label:not(.hse-select-control *).p-placeholder {
   color: var(--text-soft) !important;
   font-size: 14px !important;
   font-weight: 500 !important;
 }
 
-.p-checkbox-box {
+.p-checkbox-box:not(.hse-select-panel *) {
   background-color: var(--text-on-brand) !important;
   border: 1px solid var(--text-soft) !important;
   transition: all 0.2s ease;
@@ -13162,28 +12981,28 @@ body .p-datepicker.p-component:not(.p-datepicker-inline):has(> .p-invalid) {
   width: var(--xl-size-base) !important;
   height: var(--xl-size-base) !important;
 }
-.p-checkbox-box:first-child {
+.p-checkbox-box:not(.hse-select-panel *):first-child {
   display: none !important;
 }
 
-.p-checkbox-checked .p-checkbox-box {
+.p-checkbox-checked:not(.hse-select-panel *) .p-checkbox-box:not(.hse-select-panel *) {
   background-color: var(--brand-primary-500) !important;
   border: none !important;
 }
-.p-checkbox-checked .p-checkbox-box svg {
+.p-checkbox-checked:not(.hse-select-panel *) .p-checkbox-box:not(.hse-select-panel *) svg {
   display: none !important;
 }
 
-.p-checkbox-box.p-highlight {
+.p-checkbox-box:not(.hse-select-panel *).p-highlight {
   background-color: var(--PrimaryColor) !important;
   border-color: var(--PrimaryColor) !important;
   color: var(--text-on-brand) !important;
 }
-.p-checkbox-box.p-highlight .p-checkbox-icon {
+.p-checkbox-box:not(.hse-select-panel *).p-highlight .p-checkbox-icon {
   color: var(--text-on-brand) !important;
 }
 
-.p-multiselect-header .p-checkbox-box {
+.p-multiselect-header:not(.hse-select-panel *) .p-checkbox-box:not(.hse-select-panel *) {
   display: none !important;
 }
 
@@ -13193,11 +13012,11 @@ body .p-datepicker.p-component:not(.p-datepicker-inline):has(> .p-invalid) {
   font-weight: 600;
 }
 
-.p-multiselect-chip-item {
+.p-multiselect-chip-item:not(.hse-select-control *) {
   background-color: color-mix(in srgb, var(--brand-primary-500) 10.2%, transparent) !important;
   border-radius: var(--sm-size) !important;
 }
-.p-multiselect-chip-item .p-chip {
+.p-multiselect-chip-item:not(.hse-select-control *) .p-chip {
   background-color: var(--text-on-brand) !important;
   color: var(--PrimaryColor) !important;
   border-radius: var(--sm-size) !important;
@@ -13212,14 +13031,14 @@ body .p-datepicker.p-component:not(.p-datepicker-inline):has(> .p-invalid) {
   height: 32px !important;
   line-height: 1 !important;
 }
-.p-multiselect-chip-item svg {
+.p-multiselect-chip-item:not(.hse-select-control *) svg {
   background: var(--surface-1) !important;
 }
-.p-multiselect-chip-item svg path {
+.p-multiselect-chip-item:not(.hse-select-control *) svg path {
   fill: var(--brand-primary-500) !important;
 }
 
-.p-select-label {
+.p-select-label:not(.hse-select-control *) {
   font-size: var(--sm-size) !important;
   font-weight: 500 !important;
   border-radius: 20px !important;
@@ -13228,7 +13047,7 @@ body .p-datepicker.p-component:not(.p-datepicker-inline):has(> .p-invalid) {
   color: var(--PrimaryColor) !important;
   padding: 0 !important;
 }
-.p-select-label.p-placeholder {
+.p-select-label:not(.hse-select-control *).p-placeholder {
   font-weight: 300 !important;
   font-size: 14px !important;
   color: var(--text-soft) !important;
@@ -13266,13 +13085,13 @@ body .p-datepicker.p-component:not(.p-datepicker-inline):has(> .p-invalid) {
   width: fit-content;
 }
 
-.p-datepicker-input::-moz-placeholder, .text-input::-moz-placeholder, .ql-editor::-moz-placeholder, #SerialNumber::-moz-placeholder {
+.p-datepicker-input:not(.hse-date-input)::-moz-placeholder, .text-input::-moz-placeholder, .ql-editor::-moz-placeholder, #SerialNumber::-moz-placeholder {
   font-weight: 300 !important;
   font-size: 14px !important;
   color: var(--text-soft) !important;
 }
 
-.p-datepicker-input::placeholder,
+.p-datepicker-input:not(.hse-date-input)::placeholder,
 .text-input::placeholder,
 .ql-editor::placeholder,
 #SerialNumber::placeholder {
@@ -13299,7 +13118,7 @@ body .p-datepicker.p-component:not(.p-datepicker-inline):has(> .p-invalid) {
   opacity: 0;
 }
 
-.p-checkbox {
+.p-checkbox:not(.hse-select-panel *) {
   width: 28px !important;
   height: 20px !important;
 }
@@ -15150,7 +14969,6 @@ html[dir=rtl] .table-responsive table.main-table tbody tr td:last-child {
   border-radius: var(--xl-size-base) !important;
   padding: var(--xs-size) var(--xs-size-4);
   background-color: var(--surface-1);
-  margin-block: var(--xs-size);
 }
 @media (max-width: 640px) {
   .locations-teams {
@@ -25598,10 +25416,30 @@ html[dir=rtl] .performance-box::after {
   text-decoration: underline;
 }
 .employee-interface-wrapper .project-required-note {
-  flex-basis: 100%;
-  margin: 0;
-  font-size: 14px;
-  color: var(--text-muted);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border: 1px solid color-mix(in srgb, var(--card-accent) 25%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--card-accent) 8%, transparent);
+  color: var(--text-strong);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.employee-interface-wrapper .project-required-note svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--card-accent);
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+.employee-interface-wrapper .project-required-note strong,
+.employee-interface-wrapper .project-required-note span > span {
+  display: block;
 }
 .employee-interface-wrapper .actions-button button:disabled {
   opacity: 0.5;

@@ -31,9 +31,17 @@ import AddProjectZoneDialog from './Dialogs/AddProjectZoneDialog.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
+import HandleFIlesUpload, {
+  type UploadedFile,
+} from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
 
 const emit = defineEmits(['update:data'])
 const SerialNumber = ref<string>('')
+const image = ref<string | null>(null)
+const updateImage = (files: UploadedFile[]) => {
+  image.value = files[0]?.base64 || null
+  updateData()
+}
 
 const props = defineProps<{
   data?: ProjectDetailsModel
@@ -182,6 +190,7 @@ const updateData = () => {
         zoonIds: ZoneIds.value.filter((z): z is number => typeof z === 'number'),
         methodIds: EvaluatingMethod.value?.map((p) => p.id) ?? [],
         endDate: endDate.value,
+        image: image.value,
       })
     : new AddProjectParams({
         translation: translationsParams,
@@ -192,6 +201,7 @@ const updateData = () => {
         methodIds: EvaluatingMethod.value?.map((p) => p.id) ?? [],
         SerialNumber: SerialNumber.value,
         endDate: endDate.value,
+        image: image.value,
         serial: !fields.value[0].enabled ? SerialNumber.value : undefined,
       })
   emit('update:data', params)
@@ -554,6 +564,20 @@ defineExpose({
     <p v-if="getFieldError('ZoneIds')" class="hse-project-field required-field-message">
       {{ getFieldError('ZoneIds') }}
     </p>
+  </div>
+  <div
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-field col-span-4 input-wrapper"
+  >
+    <HandleFIlesUpload
+      label="Project image (optional)"
+      accept="image/*"
+      :max-files="1"
+      :multiple="false"
+      :required="false"
+      @change="updateImage"
+    />
   </div>
   <div
     data-hse-project
