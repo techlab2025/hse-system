@@ -6,8 +6,6 @@ import { useProjectLabels } from '../../composables/useProjectLabels'
 import { useRouter } from 'vue-router'
 import { ProjectStatusEnum } from '../../../Core/Enums/ProjectStatusEnum'
 import type ProjectModel from '../../../Data/models/ProjectModel'
-import Stopcard from '@/shared/icons/stopcard.vue'
-import PinIcons from '@/shared/icons/PinIcons.vue'
 import LegacyProjectCard from './LegacyProjectCard.vue'
 import ProjectIcon from './ProjectIcon.vue'
 import CustomPopover from '../../supcomponents/CustomPopover.vue'
@@ -103,7 +101,6 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
-        
       }"
     >
       <span
@@ -134,35 +131,44 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
         </div>
       </div>
       <div class="hse-project-card__locations">
-        <CustomPopover>
-          <template #btn
-            ><span
-              >{{ $t('locations') }} <b>{{ data.locations?.length || 0 }}</b
-              ><Stopcard /></span
-          ></template>
+        <CustomPopover identity>
+          <template #btn>
+            <ProjectIcon name="folder" /><span>{{ $t('locations') }}</span>
+            <b>{{ data.locations?.length || 0 }}</b>
+          </template>
           <template #content>
-            <div class="project-location-popover">
-              <h4>{{ $t('locations') }}</h4>
-              <p v-for="(location, index) in data.locations" :key="location.id">
-                {{ index + 1 }}. {{ location.title }}
-              </p>
-              <p v-if="!data.locations?.length">{{ $t('No data available') }}</p>
+            <div class="hse-project-resource-list">
+              <h4>
+                <ProjectIcon name="folder" />{{ $t('locations')
+                }}<b>{{ data.locations?.length || 0 }}</b>
+              </h4>
+              <ol v-if="data.locations?.length">
+                <li v-for="(location, index) in data.locations" :key="location.id">
+                  <span>{{ index + 1 }}</span
+                  >{{ location.title }}
+                </li>
+              </ol>
+              <p v-else>{{ $t('No data available') }}</p>
             </div>
           </template>
         </CustomPopover>
-        <CustomPopover>
-          <template #btn
-            ><span
-              >{{ $t('zones') }} <b>{{ data.zoons?.length || 0 }}</b
-              ><Stopcard /></span
-          ></template>
+        <CustomPopover identity>
+          <template #btn>
+            <ProjectIcon name="grid" /><span>{{ $t('zones') }}</span>
+            <b>{{ data.zoons?.length || 0 }}</b>
+          </template>
           <template #content>
-            <div class="project-location-popover">
-              <h4>{{ $t('zones') }}</h4>
-              <p v-for="(zone, index) in data.zoons" :key="zone.id">
-                <PinIcons />{{ index + 1 }}. {{ zone.title }}
-              </p>
-              <p v-if="!data.zoons?.length">{{ $t('No data available') }}</p>
+            <div class="hse-project-resource-list">
+              <h4>
+                <ProjectIcon name="grid" />{{ $t('zones') }}<b>{{ data.zoons?.length || 0 }}</b>
+              </h4>
+              <ol v-if="data.zoons?.length">
+                <li v-for="(zone, index) in data.zoons" :key="zone.id">
+                  <span>{{ index + 1 }}</span
+                  >{{ zone.title }}
+                </li>
+              </ol>
+              <p v-else>{{ $t('No data available') }}</p>
             </div>
           </template>
         </CustomPopover>

@@ -2,8 +2,8 @@
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import Dialog from 'primevue/dialog'
-import { ref, watch } from 'vue'
-import ZoneDialog from '@/assets/images/ZoneDialog.png'
+import { ref, watch, useId } from 'vue'
+import ProjectIcon from '../../ProjectUtils/ProjectIcon.vue'
 import HeaderSection from '../../Details/DetailsHeader/HeaderSection.vue'
 import ZoneDialogForm from './ZoneDialogForm.vue'
 import CloseDelete from '@/shared/icons/CloseDelete.vue'
@@ -13,6 +13,7 @@ import type SohwProjectZoonModel from '@/features/Organization/Project/Data/mode
 defineOptions({ inheritAttrs: false })
 
 const visible = ref(false)
+const dialogId = useId()
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   locations: TitleInterface[]
@@ -114,41 +115,61 @@ const deleteZone = (index: number) => {
   <div
     data-hse-project
     v-project-panels
-    class="hse-project-root hse-project-field input-wrapper"
+    class="hse-project-root hse-identity hse-zone-picker hse-project-field input-wrapper"
     v-bind="$attrs"
   >
-    <div class="zones input" @click="visible = true">
-      <template v-if="currentZoneTitles.length > 0">
-        <div class="zone" v-for="(zone, index) in currentZoneTitles" :key="index" @click.stop>
-          {{ zone }}
-          <CloseDelete class="delete" @click.stop="deleteZone(index)" />
-        </div>
-      </template>
-      <div v-else>
-        <span class="placeholder">at least 1 zone required</span>
+    <div class="hse-zone-picker__control" @click="visible = true">
+      <div v-if="currentZoneTitles.length" class="hse-zone-picker__chips">
+        <span
+          v-for="(zone, index) in currentZoneTitles"
+          :key="index"
+          class="hse-zone-picker__chip"
+          @click.stop
+        >
+          <span>{{ zone }}</span>
+          <button
+            type="button"
+            :aria-label="`${$t('delete')} ${zone}`"
+            @click.stop="deleteZone(index)"
+          >
+            <CloseDelete aria-hidden="true" />
+          </button>
+        </span>
       </div>
+      <button
+        type="button"
+        class="hse-zone-picker__open"
+        aria-haspopup="dialog"
+        :aria-expanded="visible"
+        :aria-controls="dialogId"
+        @click.stop="visible = true"
+      >
+        <ProjectIcon name="grid" aria-hidden="true" />
+        <span>{{ $t('Select Zones') }}</span>
+        <span aria-hidden="true">+</span>
+      </button>
     </div>
   </div>
 
   <Dialog
     data-hse-project
-    class="hse-project-root hse-project-overlay"
+    class="hse-project-root hse-project-overlay hse-identity hse-zone-dialog"
+    :id="dialogId"
     :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
     v-model:visible="visible"
     modal
     :dismissable-mask="true"
-    :style="{ width: '50rem' }"
+    :style="{ width: '42rem', maxWidth: 'calc(100vw - 32px)' }"
   >
     <template #header>
       <HeaderSection
-        :img="ZoneDialog"
+        icon="map-marker"
         :title="$t('Select Zones')"
         :subtitle="$t('At least 1 zone required for every location')"
       />
     </template>
 
-    <div v-if="locations.length > 0" class="equipment-dialog-data">
-      <hr class="add-equipment-hr" />
+    <div v-if="locations.length > 0" class="hse-zone-dialog__body">
       <ZoneDialogForm
         :locations="locations"
         @update:data="GetData"
@@ -156,16 +177,208 @@ const deleteZone = (index: number) => {
       />
     </div>
 
-    <div v-else class="empty">
+    <div v-else class="hse-zone-dialog__empty">
       <p>{{ $t('No Selected locations') }}</p>
     </div>
   </Dialog>
 </template>
 
 <style scoped>
-.placeholder {
-  color: var(--text-soft);
-  font-size: 14px;
-  font-weight: 500;
+.hse-zone-picker__control {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 7px 10px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: 9px;
+  background: var(--hse-project-input-bg);
+  font-family: var(--hse-control-font);
+  cursor: pointer;
+}
+.hse-zone-picker__control:hover,
+.hse-zone-picker__control:focus-within {
+  border-color: var(--hse-project-blue);
+}
+.hse-zone-picker__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+.hse-zone-picker__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 4px 8px;
+  border-radius: 6px;
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 9%, var(--hse-project-surface));
+  font-size: 12px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.hse-zone-picker__chip button,
+.hse-zone-picker__open {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.hse-zone-picker__chip button {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+}
+.hse-zone-picker__chip button :deep(svg) {
+  width: 16px;
+  height: 16px;
+}
+.hse-zone-picker__open {
+  color: var(--hse-project-muted);
+  min-height: 30px;
+  font-size: 13px;
+}
+.hse-zone-picker__open svg {
+  width: 17px;
+  height: 17px;
+  color: var(--hse-project-blue);
+}
+.hse-zone-picker__open:focus-visible,
+.hse-zone-picker__chip button:focus-visible {
+  outline: 2px solid var(--hse-project-blue);
+  outline-offset: 3px;
+  border-radius: 5px;
+}
+</style>
+
+<style>
+.hse-project-root.hse-identity.hse-zone-dialog .hse-project-root {
+  --hse-project-surface: inherit;
+  --hse-project-ink: inherit;
+  --hse-project-muted: inherit;
+  --hse-project-line: inherit;
+  --hse-project-input-bg: inherit;
+  --hse-project-surface-soft: inherit;
+}
+.hse-project-root.hse-identity.hse-zone-dialog,
+.hse-project-root.hse-identity.hse-zone-dialog :is(.p-dialog-header, .p-dialog-content) {
+  background: var(--hse-project-surface) !important;
+}
+.hse-project-root.hse-identity.hse-zone-dialog
+  :is(.zone-form, .zone-container, .location-header, .zone-content-container) {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.hse-project-root.hse-identity.hse-zone-dialog .zone-form .zone-content {
+  background: var(--hse-project-input-bg) !important;
+  box-shadow: none !important;
+}
+.hse-project-root.hse-identity.hse-zone-dialog .confirm-btn,
+.hse-project-root.hse-identity.hse-zone-dialog .confirm-btn span {
+  color: white !important;
+}
+
+.hse-project-root.hse-identity.hse-zone-dialog,
+.hse-project-root.hse-identity.hse-zone-dialog .hse-project-root {
+  --hse-project-font: var(--hse-control-font);
+}
+.hse-project-root.hse-identity.hse-zone-dialog {
+  font-family: var(--hse-control-font);
+}
+.hse-project-root.hse-identity.hse-zone-dialog .section-header .title {
+  font-family: var(--hse-control-font);
+  font-weight: 750;
+}
+.hse-project-root.hse-identity.hse-zone-dialog .section-header .subtitle {
+  font-family: var(--hse-control-font);
+  font-size: 12px;
+}
+.hse-project-root.hse-identity.hse-zone-dialog .zone-form {
+  margin: 0;
+  gap: 20px;
+  font-family: var(--hse-control-font);
+}
+.hse-project-root.hse-identity.hse-zone-dialog .zone-container {
+  gap: 10px;
+}
+.hse-project-root.hse-identity.hse-zone-dialog .location-header .title {
+  margin: 0;
+  font: 650 13px var(--hse-control-font);
+}
+.hse-project-root.hse-identity.hse-zone-dialog .zone-content-container {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0;
+  border: 0;
+  gap: 10px;
+  border-radius: 0;
+}
+.hse-project-root.hse-identity.hse-zone-dialog .zone-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  border: 1px solid var(--hse-project-line);
+  border-radius: 9px;
+  background: var(--hse-project-input-bg);
+  padding-inline-end: 12px;
+}
+.hse-project-root.hse-identity.hse-zone-dialog .zone-content.active {
+  border-color: var(--hse-project-blue);
+}
+.hse-project-root.hse-identity.hse-zone-dialog .zone-content .zone-title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 13px 12px;
+  background: transparent;
+  color: var(--hse-project-ink);
+  font: 600 13px var(--hse-control-font);
+  overflow-wrap: anywhere;
+}
+.hse-project-root.hse-identity.hse-zone-dialog .zone-form .zone-content.active .zone-title {
+  background: transparent;
+  color: var(--hse-project-ink);
+}
+.hse-project-root.hse-identity.hse-zone-dialog .zone-content input {
+  display: block;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--hse-project-blue);
+  cursor: pointer;
+}
+.hse-project-root.hse-identity.hse-zone-dialog .zone-content:focus-within {
+  outline: 2px solid var(--hse-project-blue);
+  outline-offset: 2px;
+}
+.hse-project-root.hse-identity.hse-zone-dialog .confirm-btn {
+  font-family: var(--hse-control-font);
+  border-radius: 9px;
+  margin: 0;
+}
+.hse-zone-dialog__empty,
+.hse-project-root.hse-identity.hse-zone-dialog .empty-zone {
+  grid-column: 1 / -1;
+  padding: 28px 16px;
+  border: 1px dashed var(--hse-project-line);
+  border-radius: 12px;
+  background: var(--hse-project-surface-soft);
+  color: var(--hse-project-muted);
+  font-size: 13px;
+  text-align: center;
+}
+@media (max-width: 540px) {
+  .hse-project-root.hse-identity.hse-zone-dialog .zone-content-container {
+    grid-template-columns: 1fr;
+  }
 }
 </style>
