@@ -224,7 +224,7 @@ html[dir='rtl'] {
 
 /* Mobile tables become readable record cards instead of compressed desktop columns. */
 @media (max-width: 768px) {
-  .table-responsive {
+  .table-responsive:not(.table-responsive--scroll) {
     width: 100%;
     min-width: 0;
     max-width: 100%;
@@ -371,7 +371,7 @@ html[dir='rtl'] {
 }
 
 @media (max-width: 420px) {
-  .table-responsive {
+  .table-responsive:not(.table-responsive--scroll) {
     padding: 4px;
 
     table.main-table tbody tr td {
