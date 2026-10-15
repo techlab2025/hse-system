@@ -2,6 +2,7 @@ import { ApiNames } from '@/base/core/networkStructure/apiNames'
 import ServicesInterface from '@/base/Data/ApiService/api_service_interface'
 import { CrudType } from '@/base/core/params/call_params_interface'
 import type Params from '@/base/core/params/params'
+import { invalidateProjectListCacheAfter } from '../../cache/projectListCache'
 
 class BasicProjectApiService extends ServicesInterface {
   private static instance: BasicProjectApiService
@@ -17,13 +18,15 @@ class BasicProjectApiService extends ServicesInterface {
 
   async applyService(params: Params) {
     const isUpdate = (params as { isUpdate?: boolean }).isUpdate === true
-    return super.call({
-      url: isUpdate ? ApiNames.instance.UpdateBasicProject : ApiNames.instance.CreateBasicProject,
-      type: CrudType.POST,
-      auth: true,
-      params,
-      showLoadingDialog: false,
-    })
+    return invalidateProjectListCacheAfter(
+      super.call({
+        url: isUpdate ? ApiNames.instance.UpdateBasicProject : ApiNames.instance.CreateBasicProject,
+        type: CrudType.POST,
+        auth: true,
+        params,
+        showLoadingDialog: false,
+      }),
+    )
   }
 }
 
