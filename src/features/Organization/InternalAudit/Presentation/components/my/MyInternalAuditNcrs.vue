@@ -238,7 +238,7 @@ onBeforeUnmount(() => {
         </button>
       </div>
     </header>
-
+<!-- 
     <p
       v-if="feedback"
       class="message"
@@ -246,7 +246,7 @@ onBeforeUnmount(() => {
       role="status"
     >
       {{ feedback }}
-    </p>
+    </p> -->
 
     <div
       v-if="listsLoaded && detailsLoaded && !ncrs.length && !showForm && !hasError"

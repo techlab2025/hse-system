@@ -50,7 +50,7 @@ export default class AddMangementChangeParams implements Params {
       facility: this.facilty,
       area: this.area,
       date: this.date ? formatJoinDate(this.date) : undefined,
-      change_type: this.change_type,
+      changement_type: this.change_type,
       changement_topic_id: this.management_change_topic_type_id,
       status: this.status,
       approver_by: this.approval_by,
@@ -64,7 +64,7 @@ export default class AddMangementChangeParams implements Params {
     else data.serial = this.serial
 
     return data
-    
+
   }
 
   validate() {

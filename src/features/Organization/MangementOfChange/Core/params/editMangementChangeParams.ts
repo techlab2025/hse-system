@@ -33,20 +33,19 @@ export default class EditMangementChangeParams implements Params {
       facility: this.facilty,
       area: this.area,
       date: this.date ? formatJoinDate(this.date) : undefined,
-      change_type: this.change_type,
+      changement_type: this.change_type,
       changement_topic_id: this.management_change_topic_type_id,
       status: this.status,
       approver_by: this.approval_by,
       changer_request_employee_id: this.management_change_topic_employee_id,
       management_change_topic_equipment_id: this.management_change_topic_equipment_id,
       topic_text: this.management_change_topic_text,
-      initiator_employee_id:
-        this.initiatore_employee_id,
+      initiator_employee_id: this.initiatore_employee_id,
     }
 
-      if (useProjectAppStatusStore().isSerialNumberAuto()) data.serial_number = this.serial
-      else data.serial = this.serial
+    if (useProjectAppStatusStore().isSerialNumberAuto()) data.serial_number = this.serial
+    else data.serial = this.serial
 
-      return data
+    return data
   }
 }

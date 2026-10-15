@@ -221,14 +221,14 @@ onBeforeUnmount(() => {
       </div>
     </header>
 
-    <p
+    <!-- <p
       v-if="feedback"
       class="message"
       :class="{ error: hasError, success: !hasError }"
       role="status"
     >
       {{ feedback }}
-    </p>
+    </p> -->
 
     <InternalAuditNcrForm
       v-if="showForm"

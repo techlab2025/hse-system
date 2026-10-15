@@ -23,18 +23,37 @@ export function splitHierarchySteps(
   items: ProjectProgressItemModel[],
   counts: HierarchyCounts,
 ): ProjectProgressItemModel[] {
-  return items.flatMap((item) =>
-    item.id === ProjectProgressEnum.Heirarchy
-      ? [
-          {
-            ...item,
-            id: ProjectProgressEnum.Department,
-            title: 'Departments',
-            count: counts.departments,
-            progress: counts.departments > 0,
-          },
-          { ...item, title: 'Positions', count: counts.positions, progress: counts.positions > 0 },
-        ]
-      : [item],
-  )
+  const department = items.find((item) => item.id === ProjectProgressEnum.Department)
+  const hasPosition = items.some((item) => item.id === ProjectProgressEnum.Heirarchy)
+
+  return items.flatMap((item) => {
+    if (item.id === ProjectProgressEnum.Department && hasPosition) return []
+
+    if (item.id !== ProjectProgressEnum.Heirarchy) {
+      return item.id === ProjectProgressEnum.Department
+        ? [{ ...item, title: 'Departments' }]
+        : [item]
+    }
+
+    const departmentStep = department
+      ? { ...department, title: 'Departments' }
+      : {
+          ...item,
+          id: ProjectProgressEnum.Department,
+          title: 'Departments',
+          count: counts.departments,
+          progress: counts.departments > 0,
+        }
+
+    const positionStep = department
+      ? { ...item, title: 'Positions' }
+      : {
+          ...item,
+          title: 'Positions',
+          count: counts.positions,
+          progress: counts.positions > 0,
+        }
+
+    return [departmentStep, positionStep]
+  })
 }

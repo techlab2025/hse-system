@@ -1,5 +1,4 @@
 export enum ProjectProgressEnum {
-  Department = -1, // Client-side substep of the hierarchy setup; not an API ID.
   PresetData = 0, // Enable with the preset-data first step.
   Certificate = 1,
   Tempalte = 2,
@@ -22,4 +21,6 @@ export enum ProjectProgressEnum {
   Factor = 22,
   DrillType = 23,
   PpeItem = 24,
+  // Returned independently by the progress API; displayed before Position.
+  Department = 25,
 }
