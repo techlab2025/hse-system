@@ -303,7 +303,7 @@ watch(
 
 <template>
   <div
-    class="col-span-4 md:col-span-2"
+    class="col-span-4 md:col-span-2 depart"
     v-if="showDepartmentSelect"
     data-required-field="department"
   >
@@ -329,7 +329,11 @@ watch(
       type="text"
       :langs="langDefault"
       :modelValue="langs"
-      :label="isPosition ? $t('position_name') : $t('Department Name')"
+      :label="
+        isPosition || route.fullPath.includes('organization-employee/add')
+          ? $t('position_name')
+          : $t('Department Name')
+      "
       @update:modelValue="setLangs"
     />
     <p v-if="getFieldError('langs')" class="required-field-message">
@@ -402,6 +406,9 @@ watch(
 </template>
 
 <style scoped>
+.depart {
+  height: 100% !important;
+}
 .required-field-message {
   margin-top: 0.35rem;
   color: var(--status-danger);

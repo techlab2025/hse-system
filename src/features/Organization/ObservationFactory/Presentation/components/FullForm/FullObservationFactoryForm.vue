@@ -192,7 +192,9 @@ onMounted(() => {
   FetchMyProjects()
 })
 
-const SelectedProjectId = ref<number | undefined>(routeProjectId.value || selectedProject.project?.id)
+const SelectedProjectId = ref<number | undefined>(
+  routeProjectId.value || selectedProject.project?.id,
+)
 const GetProjectId = (id: number) => {
   if (SelectedProjectId.value !== id) {
     ZoneIds.value = undefined
@@ -854,7 +856,7 @@ defineExpose({
   <!--  -->
   <div
     :class="[
-      'full-observation-form col-span-6 grid items-start grid-cols-1 md:grid-cols-6 gap-4',
+      'full-observation-form hse-operations-form col-span-6 grid items-start grid-cols-1 md:grid-cols-6 gap-4',
       { 'is-dark': isDarkMode },
     ]"
   >
@@ -1198,7 +1200,7 @@ defineExpose({
         @update:model-value="setOragnizationemployee"
         :hascontent="isSelectHasContent"
         :reload="false"
-        :type="2" 
+        :type="2"
       >
         <template #reloadHeader>
           <div class="flex gap-2 items-center">

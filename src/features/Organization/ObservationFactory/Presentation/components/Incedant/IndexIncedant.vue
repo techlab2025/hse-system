@@ -337,11 +337,16 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
 </script>
 
 <template>
-  <div :class="['incident-index-page grid grid-cols-12 gap-4', { 'is-dark': isDarkMode }]">
+  <div
+    :class="[
+      'incident-index-page hse-operations-page grid grid-cols-12 gap-4',
+      { 'is-dark': isDarkMode },
+    ]"
+  >
     <IndexEquipmentMangement class="col-span-2" />
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
       <template v-if="canViewIncidents">
-        <div class="incident-control-center">
+        <div class="incident-control-center hse-operations-command">
           <div class="incident-control-glow" aria-hidden="true"></div>
 
           <div class="incident-control-header">
@@ -416,7 +421,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
             <div class="table-responsive incident-table-responsive report-board">
               <div class="index-table-card-container incident-card-list">
                 <article
-                  class="index-table-card incident-card"
+                  class="index-table-card incident-card hse-operation-card"
                   v-for="(item, index) in state.data"
                   :key="item.id || index"
                 >

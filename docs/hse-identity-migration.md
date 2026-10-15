@@ -155,6 +155,7 @@ All feature roots inherit the global typography, palette, form, table, button, o
 
 - Screenshots are stored outside the repository in `/tmp/hse-global-identity` and `/tmp/hse-shell-identity`. Browser fixtures intercepted remote requests and did not write production data.
 - Equipment and organization employee forms received dedicated sectioned layouts with identity headers, contextual field groups, responsive access/ownership cards, and focused desktop/mobile screenshot coverage.
+- Incident, observation, inspection, and investigation workflows now share `operations.css` for command surfaces, record cards, form stages, validation, responsive layout, and System Identity color inheritance. Their list and creation routes were verified at desktop and 390px; the `investigationResult` target contains API services only and required no visual changes.
 - Verified screenshot routes: organization login, dashboard, project list, project summary, employees, locations, equipment, incidents, investigations, inspections, corrective reports, organization settings, and Project setup.
 - Verified sizes: 1920, 1440, 1280, 1024, 768, 390, and 320 CSS px. The representative mobile pages have no document-level horizontal overflow.
 - Verified LTR and RTL shell direction, English Inter typography, Arabic Cairo typography, navigation, controls, responsive cards/tables, empty states, selects, date overlays, and dark control states.

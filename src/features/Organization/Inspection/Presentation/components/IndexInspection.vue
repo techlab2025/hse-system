@@ -721,7 +721,7 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
 <template>
   <div
     :class="[
-      'inspection-index-page grid grid-cols-12 gap-4',
+      'inspection-index-page hse-operations-page grid grid-cols-12 gap-4',
       {
         'is-dark': isDarkMode,
         'is-audit-page': isAuditPage,
@@ -766,7 +766,7 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
         <!-- NORMAL INSPECTION HEADER -->
         <!-- ========================= -->
 
-        <div v-if="!isAuditPage" class="inspection-controls-panel">
+        <div v-if="!isAuditPage" class="inspection-controls-panel hse-operations-command">
           <IndexInspectionHeader
             :title="`Inspection`"
             :length="

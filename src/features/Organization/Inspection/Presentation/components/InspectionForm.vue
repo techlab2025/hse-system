@@ -430,7 +430,7 @@ defineExpose({
 </script>
 
 <template>
-  <div class="inspection-form-shell col-span-full">
+  <div class="inspection-form-shell hse-operations-form col-span-full">
     <!-- Page Header -->
     <div class="inspection-page-header">
       <PagesHeader
@@ -442,7 +442,7 @@ defineExpose({
     </div>
 
     <!-- Assignment setup (only in create mode) -->
-    <section v-if="!id && !isAuditCreation" class="form-stage assignment-stage">
+    <section v-if="!id && !isAuditCreation" class="form-stage hse-form-stage assignment-stage">
       <div class="stage-heading">
         <span class="stage-number">01</span>
         <div>
@@ -460,7 +460,7 @@ defineExpose({
       />
     </section>
 
-    <section v-if="!data?.id" class="form-stage serial-stage">
+    <section v-if="!data?.id" class="form-stage hse-form-stage serial-stage">
       <div class="serial-stage-copy">
         <span class="field-icon" aria-hidden="true">
           <svg viewBox="0 0 24 24" fill="none">
@@ -498,7 +498,7 @@ defineExpose({
       </div>
     </section>
 
-    <section class="form-stage details-stage">
+    <section class="form-stage hse-form-stage details-stage">
       <div class="stage-heading">
         <span class="stage-number">{{ id || isAuditCreation ? '01' : '02' }}</span>
         <div>
@@ -788,6 +788,8 @@ defineExpose({
 
 .stage-heading > div,
 .serial-stage-copy > div {
+  flex: 1 1 auto;
+  width: 100%;
   min-width: 0;
 }
 
@@ -1052,6 +1054,29 @@ defineExpose({
   .serial-stage {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+
+  .serial-stage-copy {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    width: 100%;
+  }
+
+  .serial-stage-copy > div,
+  .serial-stage-copy p {
+    width: auto !important;
+    min-width: 0 !important;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .inspection-form-shell :deep(.schedule-once) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .inspection-form-shell :deep(.mode-copy) {
+    width: 100% !important;
+    min-width: 0 !important;
   }
 
   .serial-input {

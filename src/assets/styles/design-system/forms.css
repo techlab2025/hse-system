@@ -26,7 +26,7 @@
   min-width: 0;
   min-height: var(--hse-control-height);
   border-color: var(--hse-color-border);
-  border-radius: var(--hse-radius-input);
+  border-radius: var(--hse-control-radius, 9px) !important;
   background: #fbfdff;
   color: var(--hse-color-text);
   font-size: var(--hse-text-base);
@@ -109,4 +109,30 @@
   border-color: var(--hse-color-border);
   border-radius: var(--hse-radius-card);
   background: var(--hse-color-surface-muted);
+}
+
+/* One control silhouette across native, PrimeVue, and established custom form controls. */
+.hse-cloud-identity
+  :is(
+    input,
+    select,
+    textarea,
+    .p-inputtext,
+    .p-textarea,
+    .p-select,
+    .p-dropdown,
+    .p-multiselect,
+    .p-autocomplete,
+    .p-cascadeselect,
+    .p-treeselect,
+    .p-listbox,
+    .p-inputnumber,
+    .p-datepicker,
+    .p-password,
+    .p-editor-container,
+    .custom-select,
+    .custom-select-input,
+    .select-input
+  ) {
+  border-radius: var(--hse-control-radius, 9px) !important;
 }

@@ -1,0 +1,167 @@
+/* Shared identity for operational HSE workflows: incidents, observations, inspections, and investigations. */
+.hse-cloud-identity :is(.hse-operations-page, .hse-operations-form) {
+  --hse-operation-accent: var(--identity-primary, var(--hse-color-primary));
+  min-width: 0;
+  color: var(--hse-color-text);
+}
+
+.hse-cloud-identity .hse-operations-page {
+  width: 100%;
+}
+
+.hse-cloud-identity .hse-operations-command {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-block-end: var(--hse-space-6);
+  padding: var(--hse-space-5);
+  border: 1px solid color-mix(in srgb, var(--hse-operation-accent) 16%, var(--hse-color-border));
+  border-radius: var(--hse-radius-card);
+  background:
+    radial-gradient(
+      circle at 92% 0%,
+      color-mix(in srgb, var(--identity-accent, var(--hse-color-info)) 13%, transparent),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--hse-operation-accent) 5%, var(--hse-color-surface)),
+      var(--hse-color-surface) 48%
+    );
+  box-shadow: var(--hse-shadow-md);
+}
+
+.hse-cloud-identity :is(.hse-operation-card, .hse-operations-page .index-table-card) {
+  overflow: hidden;
+  border: 1px solid var(--hse-color-border);
+  border-radius: var(--hse-radius-card);
+  background: var(--hse-color-surface);
+  box-shadow: var(--hse-shadow-sm);
+  transition:
+    transform var(--hse-transition) var(--hse-ease),
+    border-color var(--hse-transition) var(--hse-ease),
+    box-shadow var(--hse-transition) var(--hse-ease);
+}
+
+.hse-cloud-identity :is(.hse-operation-card, .hse-operations-page .index-table-card):hover {
+  border-color: color-mix(in srgb, var(--hse-operation-accent) 32%, var(--hse-color-border));
+  box-shadow: var(--hse-shadow-md);
+  transform: translateY(-2px);
+}
+
+.hse-cloud-identity .hse-operations-page :is(.report-board, .table-responsive) {
+  min-width: 0;
+}
+
+.hse-cloud-identity .hse-operations-page :is(.index-table-card-container, .incident-card-list) {
+  gap: var(--hse-space-4);
+}
+
+.hse-cloud-identity .hse-operations-form {
+  width: 100%;
+}
+
+.hse-cloud-identity .hse-operations-form > :is(.input-wrapper, .form-filter-panel),
+.hse-cloud-identity .hse-operations-form :is(.hse-form-stage, .factory-people-section) {
+  min-width: 0;
+  border: 1px solid color-mix(in srgb, var(--hse-operation-accent) 11%, var(--hse-color-border));
+  border-radius: var(--hse-radius-card);
+  background: var(--hse-color-surface);
+  box-shadow: var(--hse-shadow-sm);
+}
+
+.hse-cloud-identity .hse-operations-form > .input-wrapper,
+.hse-cloud-identity .hse-operations-form > .form-filter-panel {
+  padding: var(--hse-space-4);
+}
+
+.hse-cloud-identity .hse-operations-form > :is(.input-wrapper, .form-filter-panel):focus-within,
+.hse-cloud-identity
+  .hse-operations-form
+  :is(.hse-form-stage, .factory-people-section):focus-within {
+  border-color: color-mix(in srgb, var(--hse-operation-accent) 38%, var(--hse-color-border));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--hse-operation-accent) 8%, transparent);
+}
+
+.hse-cloud-identity .hse-operations-form .Hazard-form-header {
+  overflow: hidden;
+  padding: var(--hse-space-5) var(--hse-space-6);
+  border: 1px solid color-mix(in srgb, var(--hse-operation-accent) 25%, transparent);
+  border-radius: var(--hse-radius-card);
+  background:
+    radial-gradient(circle at 90% 0%, rgb(17 165 197 / 22%), transparent 34%),
+    linear-gradient(135deg, var(--hse-color-navy), var(--hse-color-navy-secondary));
+  box-shadow: var(--hse-shadow-md);
+}
+
+.hse-cloud-identity .hse-operations-form .Hazard-form-header .title {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.hse-cloud-identity .hse-operations-form :is(.required-field-message, .p-error) {
+  border-inline-start: 3px solid var(--hse-color-danger);
+  border-radius: 0.45rem;
+  background: var(--hse-color-danger-subtle);
+  padding: 0.4rem 0.6rem;
+}
+
+@media (max-width: 768px) {
+  .hse-cloud-identity .hse-operations-command {
+    margin-block-end: var(--hse-space-4);
+    padding: var(--hse-space-4);
+  }
+
+  .hse-cloud-identity .hse-operations-form > .input-wrapper,
+  .hse-cloud-identity .hse-operations-form > .form-filter-panel {
+    padding: var(--hse-space-3);
+  }
+
+  .hse-cloud-identity .hse-operations-form .input-wrapper {
+    grid-column: 1 / -1 !important;
+  }
+
+  .hse-cloud-identity .hse-operations-form :is(.serial-stage, .schedule-once) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .hse-cloud-identity .hse-operations-form .serial-stage-copy {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    width: 100% !important;
+  }
+
+  .hse-cloud-identity .hse-operations-form :is(.serial-stage-copy > div, .mode-copy) {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .hse-cloud-identity .hse-operations-form .is-stopped {
+    align-items: stretch;
+    flex-direction: column;
+    gap: var(--hse-space-3);
+  }
+
+  .hse-cloud-identity .hse-operations-form .is-stopped > div {
+    width: 100% !important;
+  }
+
+  .hse-cloud-identity .hse-operations-form .meeting-status {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--hse-space-2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hse-cloud-identity .hse-operation-card {
+    transition: none;
+  }
+
+  .hse-cloud-identity .hse-operation-card:hover {
+    transform: none;
+  }
+}

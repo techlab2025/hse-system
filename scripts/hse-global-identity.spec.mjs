@@ -105,3 +105,65 @@ test('equipment and employee forms keep their sectioned responsive layouts', asy
     }
   }
 })
+
+test('operational workflows share the identity and follow system branding', async ({ page }) => {
+  page.setDefaultTimeout(20_000)
+  await installFixtures(page)
+
+  const listRoutes = [
+    ['incidents', '/organization/equipment-mangement/incedant'],
+    ['observations', '/organization/equipment-mangement/observation'],
+    ['inspections', '/organization/equipment-mangement/inspection'],
+    ['investigations', '/organization/Investigating'],
+  ]
+
+  for (const [name, path] of listRoutes) {
+    await page.setViewportSize({ width: 1440, height: 1000 })
+    await page.goto(`${baseURL}${path}`, { waitUntil: 'domcontentloaded' })
+    await expect(page.locator('.hse-operations-page')).toBeVisible()
+    await page.screenshot({ path: `${screenshots}/${name}-operations-1440.png`, fullPage: true })
+  }
+
+  const formRoutes = [
+    ['incident-form', '/organization/equipment-mangement/incedant/add', '.full-observation-form'],
+    [
+      'observation-form',
+      '/organization/equipment-mangement/observation/add',
+      '.full-observation-form',
+    ],
+    [
+      'inspection-form',
+      '/organization/equipment-mangement/inspection/add',
+      '.inspection-form-shell',
+    ],
+  ]
+
+  for (const [name, path, shell] of formRoutes) {
+    for (const width of [1440, 390]) {
+      await page.setViewportSize({ width, height: 1000 })
+      await page.goto(`${baseURL}${path}`, { waitUntil: 'domcontentloaded' })
+      await expect(page.locator(shell)).toBeVisible()
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+      ).toBe(true)
+      await page.screenshot({ path: `${screenshots}/${name}-${width}.png`, fullPage: true })
+    }
+  }
+
+  await page.evaluate(() => {
+    localStorage.setItem(
+      'hse-system-identity',
+      JSON.stringify({
+        name: 'Custom HSE',
+        logo: '',
+        primaryColor: '#7c3aed',
+        secondaryColor: '#123456',
+        accentColor: '#f97316',
+        extractedColors: [],
+        isActive: true,
+      }),
+    )
+  })
+  await page.reload({ waitUntil: 'domcontentloaded' })
+  await expect(page.locator('html')).toHaveCSS('--identity-primary', '#7c3aed')
+})

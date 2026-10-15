@@ -454,11 +454,14 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
 </script>
 
 <template>
-  <div class="grid grid-cols-12 gap-4 observation-index-page" :class="{ 'is-dark': isDarkMode }">
+  <div
+    class="grid grid-cols-12 gap-4 observation-index-page hse-operations-page"
+    :class="{ 'is-dark': isDarkMode }"
+  >
     <IndexEquipmentMangement class="col-span-2" />
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
       <template v-if="canViewObservations">
-        <div class="observation-control-center">
+        <div class="observation-control-center hse-operations-command">
           <div class="observation-control-glow" aria-hidden="true"></div>
 
           <div class="observation-control-header">
@@ -593,7 +596,11 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
                     </td>
                     <td>{{ GetSaveStatus(item.saveStatus) || '—' }}</td>
                     <td>
-                      {{ item.saveStatus === SaveStatusEnum.NotSaved ? GetRiskLevel(item.riskLevel) : '—' }}
+                      {{
+                        item.saveStatus === SaveStatusEnum.NotSaved
+                          ? GetRiskLevel(item.riskLevel)
+                          : '—'
+                      }}
                     </td>
                     <td class="report-description-cell">{{ item.description || '—' }}</td>
                     <td>
@@ -607,7 +614,9 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
                     <td>{{ item.isWorkStopped == 1 ? $t('Yes') : $t('No') }}</td>
                     <td>{{ item.media?.[0]?.url ? $t('Available') : '—' }}</td>
                     <td data-pdf-actions>
-                      <RouterLink :to="`/organization/equipment-mangement/observation/show/${item.id}`">
+                      <RouterLink
+                        :to="`/organization/equipment-mangement/observation/show/${item.id}`"
+                      >
                         {{ $t('View Details') }}
                       </RouterLink>
                     </td>
@@ -616,7 +625,7 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
               </table>
               <div v-else class="index-table-card-container">
                 <article
-                  class="index-table-card observation-card"
+                  class="index-table-card observation-card hse-operation-card"
                   :class="[
                     `risk-${GetRiskLevel(item.riskLevel).toLowerCase()}`,
                     { 'is-work-stopped': item.isWorkStopped == 1 },

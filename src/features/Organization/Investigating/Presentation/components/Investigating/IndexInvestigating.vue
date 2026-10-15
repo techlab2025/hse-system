@@ -230,7 +230,10 @@ const GerIncidantCount = (data: any): number => {
   <DataStatus :controller="state">
     <template #success>
       <!-- {{ console.log(state.data, 'state') }} -->
-      <div class="grid grid-cols-12 gap-4 index-investigating" :class="{ 'is-dark': isDarkMode }">
+      <div
+        class="grid grid-cols-12 gap-4 index-investigating hse-operations-page"
+        :class="{ 'is-dark': isDarkMode }"
+      >
         <!-- Sidebar -->
         <!--  :mediumObservationCount="GetMediumObservationCount(state.data)" -->
 
@@ -245,16 +248,28 @@ const GerIncidantCount = (data: any): number => {
         <!-- Main content (Cards) -->
         <div class="col-span-12">
           <!-- Header -->
-          <div class="flex items-center justify-between mb-4">
-            <!-- <IndexFilter :filters="Filters" /> -->
-            <div class="btns-filter">
-              <ExportReportPdf
-                v-if="state.data?.length"
-                target-selector=".report-board"
-                file-name="investigation-report"
-                :data="state.data"
-              />
-              <!-- <IndexFilterDialog
+          <section class="investigation-command-center hse-operations-command">
+            <div class="investigation-command-copy">
+              <span class="investigation-command-mark" aria-hidden="true">I</span>
+              <div>
+                <span class="investigation-command-eyebrow">HSE operations</span>
+                <h1>{{ $t('Investigation') }}</h1>
+                <p>{{ $t('Review investigation status, evidence, meetings, and outcomes') }}</p>
+              </div>
+            </div>
+            <div class="investigation-command-actions">
+              <span class="investigation-command-count">
+                <strong>{{ state.pagination?.total || state.data?.length || 0 }}</strong>
+                {{ $t('records') }}
+              </span>
+              <div class="btns-filter">
+                <ExportReportPdf
+                  v-if="state.data?.length"
+                  target-selector=".report-board"
+                  file-name="investigation-report"
+                  :data="state.data"
+                />
+                <!-- <IndexFilterDialog
                 show-date
                 :fields="filterFields"
                 :initial-date="filterDate"
@@ -262,11 +277,12 @@ const GerIncidantCount = (data: any): number => {
                 @apply="applyFilters"
                 @reset="resetFilters"
               /> -->
-              <!-- <router-link :to="`/organization/investigating/add`">
+                <!-- <router-link :to="`/organization/investigating/add`">
             <button class="btn btn-primary">Create Investigating</button>
           </router-link> -->
+              </div>
             </div>
-          </div>
+          </section>
 
           <!-- Reports use the table; Project Management keeps the existing cards. -->
           <InvestigatingTable
@@ -279,7 +295,7 @@ const GerIncidantCount = (data: any): number => {
             <div class="index-table-card-container">
               <!--  InvestigatingList-->
               <div
-                class="index-table-card"
+                class="index-table-card hse-operation-card"
                 v-for="(item, index) in state.data"
                 :key="getInvestigationKey(item, index)"
               >
@@ -613,6 +629,99 @@ const GerIncidantCount = (data: any): number => {
 </template>
 
 <style lang="scss" scoped>
+.investigation-command-center {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.investigation-command-copy,
+.investigation-command-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.investigation-command-copy {
+  min-width: 0;
+}
+
+.investigation-command-mark {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  flex: 0 0 3rem;
+  place-items: center;
+  border-radius: 0.9rem;
+  background: linear-gradient(145deg, var(--PrimaryColor), var(--identity-accent));
+  color: #fff;
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--PrimaryColor) 22%, transparent);
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.investigation-command-eyebrow {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: var(--PrimaryColor);
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.investigation-command-copy h1,
+.investigation-command-copy p {
+  margin: 0;
+}
+
+.investigation-command-copy h1 {
+  color: var(--text-strong);
+  font-size: clamp(1.2rem, 2vw, 1.65rem);
+}
+
+.investigation-command-copy p {
+  margin-top: 0.2rem;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.investigation-command-count {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--main-border);
+  border-radius: var(--hse-control-radius, 9px);
+  background: var(--surface-2);
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.investigation-command-count strong {
+  color: var(--text-strong);
+  font-size: 1rem;
+}
+
+@media (max-width: 680px) {
+  .investigation-command-center,
+  .investigation-command-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .investigation-command-actions {
+    gap: 0.6rem;
+  }
+
+  .investigation-command-count {
+    justify-content: center;
+  }
+}
+
 .index-investigating {
   align-items: flex-start;
 

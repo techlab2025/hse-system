@@ -6,9 +6,9 @@
   box-shadow: var(--hse-shadow-sm);
 }
 
-.hse-cloud-identity :is(.btn, .button, .p-button, button[class*='btn-']) {
-  min-height: var(--hse-control-height);
-  border-radius: var(--hse-radius-button);
+.hse-cloud-identity :is(button, .btn, .button, .p-button, button[class*='btn-']) {
+  /* min-height: var(--hse-control-height); */
+  border-radius: var(--hse-control-radius, 9px) !important;
   font-size: var(--hse-text-sm);
   font-weight: 700;
   transition:
