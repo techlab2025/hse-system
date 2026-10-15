@@ -1,0 +1,54 @@
+.hse-cloud-identity :is(.table-responsive, .table-container, .p-datatable) {
+  overflow: hidden;
+  border: 1px solid var(--hse-color-border);
+  border-radius: var(--hse-radius-card);
+  background: var(--hse-color-surface);
+  box-shadow: var(--hse-shadow-sm);
+}
+
+.hse-cloud-identity :is(table, .main-table) {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--hse-color-text);
+  font-size: var(--hse-text-sm);
+}
+
+.hse-cloud-identity :is(table, .main-table, .p-datatable-table) :is(th, .p-datatable-header-cell) {
+  padding: 0.75rem 1rem;
+  border-block-end: 1px solid var(--hse-color-border);
+  background: var(--hse-color-surface-muted);
+  color: var(--hse-color-text-secondary);
+  text-align: start;
+  text-transform: none;
+}
+
+.hse-cloud-identity :is(table, .main-table, .p-datatable-table) :is(td, .p-datatable-body-cell) {
+  padding: 0.75rem 1rem;
+  border-block-end: 1px solid var(--hse-color-divider);
+  background: var(--hse-color-surface);
+  color: var(--hse-color-text);
+  vertical-align: middle;
+}
+
+.hse-cloud-identity :is(table, .main-table, .p-datatable-table) tbody tr {
+  transition: background-color var(--hse-transition-fast) var(--hse-ease);
+}
+
+.hse-cloud-identity :is(table, .main-table, .p-datatable-table) tbody tr:hover > td {
+  background: var(--hse-color-surface-muted);
+}
+
+.hse-cloud-identity :is(.p-paginator, .pagination) {
+  gap: 0.25rem;
+  border-block-start: 1px solid var(--hse-color-divider);
+  background: var(--hse-color-surface);
+  padding: 0.75rem;
+}
+
+.hse-cloud-identity
+  :is(.p-paginator-page, .p-paginator-next, .p-paginator-prev, .pagination button) {
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  border-radius: 0.625rem;
+}

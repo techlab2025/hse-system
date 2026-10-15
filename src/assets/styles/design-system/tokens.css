@@ -1,0 +1,146 @@
+@font-face {
+  font-family: 'HSE Inter';
+  src: url('../../fonts/Inter/Inter_18pt-Regular.ttf') format('truetype');
+  font-weight: 400 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'HSE Inter';
+  src: url('../../fonts/Inter/Inter_18pt-Bold.ttf') format('truetype');
+  font-weight: 600 800;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'HSE Arabic';
+  src: url('../../fonts/Cairo/Cairo-Regular.ttf') format('truetype');
+  font-weight: 400 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'HSE Arabic';
+  src: url('../../fonts/Cairo/Cairo-Bold.ttf') format('truetype');
+  font-weight: 600 800;
+  font-display: swap;
+}
+
+:root {
+  --hse-color-primary: #246bfe;
+  --hse-color-primary-hover: #1f65f6;
+  --hse-color-primary-active: #174fca;
+  --hse-color-primary-subtle: #eef5ff;
+  --hse-color-navy: #0e2a4d;
+  --hse-color-navy-secondary: #183d68;
+  --hse-color-text: #10233f;
+  --hse-color-text-secondary: #506178;
+  --hse-color-text-muted: #6b7b91;
+  --hse-color-page: #f5f8fc;
+  --hse-color-surface: #ffffff;
+  --hse-color-surface-elevated: #ffffff;
+  --hse-color-surface-muted: #f8fbff;
+  --hse-color-border: #dfe7f1;
+  --hse-color-divider: #edf1f6;
+  --hse-color-success: #0aa778;
+  --hse-color-success-subtle: #e9faf4;
+  --hse-color-warning: #e69a18;
+  --hse-color-warning-subtle: #fff7e7;
+  --hse-color-danger: #e14a57;
+  --hse-color-danger-subtle: #fff0f2;
+  --hse-color-info: #11a5c5;
+  --hse-color-info-subtle: #e8f8fc;
+  --hse-color-disabled: #91a1b6;
+
+  --hse-font-sans:
+    'HSE Inter', Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --hse-font-arabic: 'HSE Arabic', Cairo, 'URW DIN Arabic', sans-serif;
+  --hse-text-xs: 0.6875rem;
+  --hse-text-sm: 0.75rem;
+  --hse-text-base: 0.875rem;
+  --hse-text-md: 1rem;
+  --hse-text-lg: 1.125rem;
+  --hse-text-xl: 1.5rem;
+  --hse-text-display: clamp(1.5rem, 2vw, 2rem);
+
+  --hse-space-1: 0.25rem;
+  --hse-space-2: 0.5rem;
+  --hse-space-3: 0.75rem;
+  --hse-space-4: 1rem;
+  --hse-space-5: 1.25rem;
+  --hse-space-6: 1.5rem;
+  --hse-space-8: 2rem;
+  --hse-space-10: 2.5rem;
+  --hse-space-12: 3rem;
+
+  --hse-radius-input: 0.6875rem;
+  --hse-radius-button: 0.75rem;
+  --hse-radius-card: 1.125rem;
+  --hse-radius-dialog: 1.375rem;
+  --hse-radius-badge: 999px;
+  --hse-border-width: 1px;
+
+  --hse-shadow-sm: 0 4px 12px rgb(24 54 92 / 5%);
+  --hse-shadow-md: 0 8px 24px rgb(24 54 92 / 8%);
+  --hse-shadow-lg: 0 18px 55px rgb(24 54 92 / 10%);
+  --hse-shadow-floating: 0 18px 42px rgb(15 47 88 / 18%);
+  --hse-shadow-dropdown: 0 14px 34px rgb(18 48 84 / 12%);
+  --hse-shadow-dialog: 0 24px 72px rgb(9 35 65 / 22%);
+
+  --hse-sidebar-width: 14.5rem;
+  --hse-sidebar-rail-width: 5.125rem;
+  --hse-header-height: 4.5rem;
+  --hse-page-padding-inline: clamp(1rem, 2vw, 1.75rem);
+  --hse-page-padding-block: clamp(1rem, 2vw, 1.625rem);
+  --hse-content-max: 100rem;
+  --hse-control-height: 2.625rem;
+  --hse-transition-fast: 140ms;
+  --hse-transition: 200ms;
+  --hse-ease: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Compatibility bridge for the legacy SCSS system and Project identity. */
+  --PrimaryColor: var(--identity-primary, var(--hse-color-primary));
+  --identity-primary: var(--hse-color-primary);
+  --identity-secondary: var(--hse-color-navy);
+  --identity-accent: var(--hse-color-info);
+  --app-bg: var(--hse-color-page);
+  --surface-1: var(--hse-color-surface);
+  --surface-2: var(--hse-color-surface-muted);
+  --surface-3: #eef2f7;
+  --text-primary: var(--hse-color-text);
+  --text-strong: var(--hse-color-text);
+  --text-soft: var(--hse-color-text-secondary);
+  --text-muted: var(--hse-color-text-muted);
+  --main-border: var(--hse-color-border);
+  --BgWhite: var(--hse-color-surface);
+  --Gray-1: var(--hse-color-surface-muted);
+  --Gray-2: #f1f5f9;
+  --Gray-3: var(--hse-color-disabled);
+  --GrayText-1: var(--hse-color-text-muted);
+  --status-success: var(--hse-color-success);
+  --status-warning: var(--hse-color-warning);
+  --status-danger: var(--hse-color-danger);
+  --status-info: var(--hse-color-info);
+  --font-family: var(--hse-font-sans);
+  --p-primary-color: var(--identity-primary, var(--hse-color-primary));
+  --p-primary-hover-color: var(--hse-color-primary-hover);
+  --p-primary-active-color: var(--hse-color-primary-active);
+  --p-form-field-border-color: var(--hse-color-border);
+  --p-form-field-focus-border-color: var(--identity-primary, var(--hse-color-primary));
+}
+
+:root[dir='rtl'] {
+  --font-family: var(--hse-font-arabic);
+}
+
+:root[data-theme='dark'] {
+  --hse-color-text: #edf4ff;
+  --hse-color-text-secondary: #c7d6e7;
+  --hse-color-text-muted: #9fb6d2;
+  --hse-color-page: #07111f;
+  --hse-color-surface: #10233f;
+  --hse-color-surface-elevated: #14304f;
+  --hse-color-surface-muted: #0e2a4d;
+  --hse-color-border: #36516c;
+  --hse-color-divider: #294662;
+}

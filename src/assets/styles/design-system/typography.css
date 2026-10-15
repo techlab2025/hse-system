@@ -1,0 +1,57 @@
+html.hse-cloud-identity {
+  color: var(--hse-color-text);
+  font-family: var(--hse-font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+html.hse-cloud-identity[dir='rtl'] {
+  font-family: var(--hse-font-arabic);
+}
+
+.hse-cloud-identity body,
+.hse-cloud-identity :is(button, input, select, textarea, .p-component:not(.hse-identity)) {
+  font-family: inherit;
+}
+
+.hse-cloud-identity body :is(p, span, div) {
+  text-transform: none;
+}
+
+.hse-cloud-identity :is(h1, h2, h3, h4, h5, h6) {
+  color: var(--hse-color-text);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.hse-cloud-identity h1 {
+  font-size: var(--hse-text-display);
+}
+.hse-cloud-identity h2 {
+  font-size: var(--hse-text-xl);
+}
+.hse-cloud-identity h3 {
+  font-size: var(--hse-text-lg);
+}
+.hse-cloud-identity h4 {
+  font-size: var(--hse-text-md);
+}
+
+.hse-cloud-identity :is(label, legend, th) {
+  font-size: var(--hse-text-sm);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.hse-cloud-identity :is(small, .helper-text, .form-hint, .hint) {
+  color: var(--hse-color-text-muted);
+  font-size: var(--hse-text-xs);
+  line-height: 1.5;
+}
+
+.hse-cloud-identity :is(.metric, .stat-number, .total, [data-numeric]) {
+  font-variant-numeric: tabular-nums;
+}

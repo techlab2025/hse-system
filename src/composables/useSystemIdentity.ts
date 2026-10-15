@@ -21,9 +21,9 @@ const STORAGE_KEY = 'hse-system-identity'
 const defaults: SystemIdentity = {
   name: 'HSE.Cloud.Ai',
   logo: '',
-  primaryColor: '#1d4ed8',
-  secondaryColor: '#041953',
-  accentColor: '#6230a8',
+  primaryColor: '#246bfe',
+  secondaryColor: '#0e2a4d',
+  accentColor: '#11a5c5',
   extractedColors: [],
   isActive: true,
   appearance: defaultAppearance(),

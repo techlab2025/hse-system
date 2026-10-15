@@ -482,7 +482,7 @@ input {
   justify-content: center !important;
 }
 
-html[dir='ltr'] :deep(.actions-switch) {
+html[dir='ltr'] .actions-switch {
   margin-left: auto;
 }
 
@@ -538,7 +538,7 @@ label {
   }
 }
 
-.header-select :deep(label) {
+.header-select label {
   display: none !important;
 }
 

@@ -1,0 +1,66 @@
+.hse-cloud-identity
+  :is(
+    .p-dialog,
+    .p-drawer,
+    .p-popover,
+    .p-menu,
+    .p-tieredmenu,
+    .p-contextmenu,
+    .p-select-overlay,
+    .p-multiselect-overlay,
+    .p-datepicker-panel
+  ) {
+  border: 1px solid var(--hse-color-border);
+  background: var(--hse-color-surface-elevated);
+  color: var(--hse-color-text);
+  box-shadow: var(--hse-shadow-dropdown);
+}
+
+.hse-cloud-identity :is(.p-dialog, .p-drawer) {
+  overflow: hidden;
+  border-radius: var(--hse-radius-dialog);
+  box-shadow: var(--hse-shadow-dialog);
+}
+
+.hse-cloud-identity :is(.p-dialog-header, .p-drawer-header) {
+  border-block-end: 1px solid var(--hse-color-divider);
+  padding: 1.125rem 1.25rem;
+}
+
+.hse-cloud-identity :is(.p-dialog-content, .p-drawer-content) {
+  padding: 1.25rem;
+}
+
+.hse-cloud-identity :is(.p-dialog-footer, .p-drawer-footer) {
+  border-block-start: 1px solid var(--hse-color-divider);
+  background: var(--hse-color-surface-muted);
+  padding: 0.875rem 1.25rem;
+}
+
+.hse-cloud-identity :is(.p-select-option, .p-multiselect-option, .p-menu-item-content) {
+  min-height: 2.375rem;
+  border-radius: 0.5rem;
+  color: var(--hse-color-text);
+}
+
+.hse-cloud-identity :is(.p-select-option, .p-multiselect-option, .p-menu-item-content):hover {
+  background: var(--hse-color-surface-muted);
+}
+
+.hse-cloud-identity :is(.p-select-option-selected, .p-multiselect-option-selected) {
+  background: var(--hse-color-primary-subtle);
+  color: var(--identity-primary, var(--hse-color-primary));
+}
+
+.hse-cloud-identity .p-toast-message {
+  border-radius: var(--hse-radius-card);
+  box-shadow: var(--hse-shadow-floating);
+}
+
+.hse-cloud-identity .p-tooltip-text {
+  border-radius: 0.5rem;
+  background: var(--hse-color-navy);
+  color: #fff;
+  font-size: var(--hse-text-xs);
+  box-shadow: var(--hse-shadow-dropdown);
+}

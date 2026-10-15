@@ -272,7 +272,7 @@
   transition: opacity 0.2s ease;
 }
 
-:deep(.ql-editor:not(.ql-blank)::before) {
+.ql-editor:not(.ql-blank)::before {
   opacity: 0;
 }
 

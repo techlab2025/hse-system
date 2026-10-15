@@ -1,0 +1,39 @@
+html.hse-cloud-identity,
+.hse-cloud-identity body,
+.hse-cloud-identity #app {
+  min-height: 100%;
+  background: var(--hse-color-page);
+}
+
+.hse-cloud-identity body {
+  margin: 0;
+  color: var(--hse-color-text);
+}
+
+.hse-cloud-identity :is(main.content, .content-wrapper, .main-content) {
+  background-color: var(--hse-color-page);
+}
+
+.hse-cloud-identity .main-content {
+  min-width: 0;
+  width: 100%;
+  /* max-width: var(--hse-content-max); */
+  margin-inline: auto;
+  padding: var(--hse-page-padding-block) var(--hse-page-padding-inline);
+}
+
+.hse-cloud-identity :is(a, button, input, textarea, select, [tabindex]):focus-visible {
+  outline: 2px solid var(--identity-primary, var(--hse-color-primary));
+  outline-offset: 2px;
+}
+
+.hse-cloud-identity ::selection {
+  background: color-mix(in srgb, var(--identity-primary, var(--hse-color-primary)) 24%, white);
+  color: var(--hse-color-navy);
+}
+
+.hse-cloud-identity :is(.container, .hse-container) {
+  width: 100%;
+  max-width: var(--hse-content-max);
+  margin-inline: auto;
+}

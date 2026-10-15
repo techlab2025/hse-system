@@ -1,0 +1,50 @@
+@media (max-width: 64rem) {
+  :root {
+    --hse-page-padding-inline: 1.125rem;
+  }
+}
+
+@media (max-width: 48rem) {
+  :root {
+    --hse-header-height: 4rem;
+    --hse-page-padding-inline: 1rem;
+    --hse-page-padding-block: 1rem;
+  }
+
+  .hse-cloud-identity .main-content {
+    overflow-x: clip;
+  }
+  .hse-cloud-identity :is(.form-grid, .fields-grid, .grid-form) {
+    grid-template-columns: 1fr;
+  }
+  .hse-cloud-identity :is(.p-dialog, .p-drawer) {
+    max-width: calc(100vw - 1.5rem);
+  }
+  .hse-cloud-identity :is(.table-responsive, .table-container) {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 24.375rem) {
+  :root {
+    --hse-page-padding-inline: 0.75rem;
+  }
+  .hse-cloud-identity :is(.create-form-actions, .form-actions, .dialog-actions) {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .hse-cloud-identity :is(.create-form-actions, .form-actions, .dialog-actions) > * {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hse-cloud-identity *,
+  .hse-cloud-identity *::before,
+  .hse-cloud-identity *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

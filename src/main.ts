@@ -4,13 +4,14 @@ import './assets/styles/theme/_dark_mode.scss'
 import './shared/styles/hse-identity-tokens.css'
 import './shared/styles/hse-controls.css'
 import './features/SystemIdentity/identity-application.css'
+import './assets/styles/design-system/index.css'
+import HseCloudPreset from './config/hseCloudPreset'
 import { hseDatePickerPt } from './shared/styles/hsePrimeVue'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import ToastService from 'primevue/toastservice'
 import PrimeVue from 'primevue/config'
-import Aura from '@primeuix/themes/aura'
 import App from './App.vue'
 import router from './router'
 import { createI18n } from 'vue-i18n'
@@ -23,6 +24,7 @@ const savedLanguage = localStorage.getItem('lang') || 'en'
 
 document.documentElement.lang = savedLanguage
 document.documentElement.dir = savedLanguage === 'ar' ? 'rtl' : 'ltr'
+document.documentElement.classList.add('hse-cloud-identity')
 
 const i18n = createI18n({
   legacy: false,
@@ -66,7 +68,7 @@ app.use(PrimeVue, {
   pt: { datepicker: hseDatePickerPt },
   ptOptions: { mergeSections: true, mergeProps: true },
   theme: {
-    preset: Aura,
+    preset: HseCloudPreset,
     options: {
       prefix: 'p',
       darkModeSelector: '[data-theme="dark"]',
