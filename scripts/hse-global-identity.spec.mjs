@@ -82,3 +82,26 @@ test('Arabic shell keeps RTL direction and Arabic typography', async ({ page }) 
   await expect(page.locator('body')).toHaveCSS('font-family', /HSE Arabic/)
   await page.screenshot({ path: `${screenshots}/projects-ar-1280.png`, fullPage: true })
 })
+
+test('equipment and employee forms keep their sectioned responsive layouts', async ({ page }) => {
+  page.setDefaultTimeout(20_000)
+  await installFixtures(page)
+
+  for (const [name, path, shell] of [
+    ['equipment-form', '/organization/equipment/add', '.equipment-form'],
+    ['employee-form', '/organization/organization-employee/add', '.employee-form-shell'],
+  ]) {
+    for (const width of [1440, 390]) {
+      await page.setViewportSize({ width, height: 1000 })
+      await page.goto(`${baseURL}${path}`, { waitUntil: 'domcontentloaded' })
+      await expect(page.locator(shell)).toBeVisible()
+      await expect(
+        page.locator(`${shell} section, ${shell} .equipment-section-heading`).first(),
+      ).toBeVisible()
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+      ).toBe(true)
+      await page.screenshot({ path: `${screenshots}/${name}-${width}.png`, fullPage: true })
+    }
+  }
+})

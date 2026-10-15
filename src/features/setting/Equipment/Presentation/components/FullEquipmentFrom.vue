@@ -475,6 +475,10 @@ const UpdateequipmentOfHavyStatus = (data) => {
   equipmentOfHavyStatus.value = data.target.value
   updateData()
 }
+const setEquipmentOfHavyStatus = (status: number) => {
+  equipmentOfHavyStatus.value = status
+  updateData()
+}
 watch(
   () => deviceStatus.value,
   (newValue) => {
@@ -876,6 +880,26 @@ const startYear = new Date(today.getFullYear() - 1, 0, 1)
   <div :class="['w-full col-span-6 equipment-form', { 'is-dark': isDarkMode }]">
     <Tabs @update:activeTab="UpdateActiveTap" :activeTabData="activeTab" />
 
+    <header class="equipment-form-hero">
+      <div class="equipment-form-hero__icon" aria-hidden="true">
+        <Car v-if="activeTab === EquipmentTypesEnum.EQUIPMENT" />
+        <span v-else>{{ GetEquipmentTitle(activeTab)?.charAt(0) }}</span>
+      </div>
+      <div class="equipment-form-hero__copy">
+        <p class="equipment-form-hero__eyebrow">Asset registry</p>
+        <h2>{{ data?.id ? $t('edit') : $t('add') }} {{ GetEquipmentTitle(activeTab) }}</h2>
+        <p>
+          Capture identity, compliance, ownership, and operational details in one asset profile.
+        </p>
+      </div>
+      <div class="equipment-form-hero__meta">
+        <span>{{ GetEquipmentTitle(activeTab) }}</span>
+        <span v-if="user?.type === OrganizationTypeEnum.ORGANIZATION">
+          {{ deviceStatus === EquipmentStatus.OWN ? $t('Owned') : $t('Rent') }}
+        </span>
+      </div>
+    </header>
+
     <!-- <div class="vehicle flex w-full col-span-6" v-if="activeTab === EquipmentTypesEnum.EQUIPMENT">
       <div class="flex gap-2 w-full col-span-6">
         <Car />
@@ -906,36 +930,52 @@ const startYear = new Date(today.getFullYear() - 1, 0, 1)
         />
       </div>
     </div> -->
-    <div class="equipment-status-options" v-if="activeTab === EquipmentTypesEnum.EQUIPMENT">
-      <div
-        class="radio-wrapper"
-        :class="equipmentOfHavyStatus == option?.id ? 'active' : ''"
-        v-for="(option, index) in EquipmentOfHavyOptions"
-        :key="index"
-        @click="
-          equipmentOfHavyStatus = option?.id;
-          updateData()
-        "
-      >
-        <div class="flex items-center justify-center gap-1 w-full h-full">
-          <label class="text-lg w-full flex justify-center" :for="`${option?.id}-${option?.title}`">
-            {{ option?.title }}
-          </label>
-          <!-- <RentIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.RENT" />
-              <OwnedIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.OWN" /> -->
+    <div v-if="activeTab === EquipmentTypesEnum.EQUIPMENT" class="equipment-status-panel">
+      <div class="equipment-status-panel__copy">
+        <span class="equipment-section-heading__index">01</span>
+        <div>
+          <h3>Equipment class</h3>
+          <p>Choose how this equipment is measured and tracked.</p>
         </div>
-        <input
-          :id="`${option?.id}-${option?.title}`"
-          type="radio"
-          v-model="equipmentOfHavyStatus"
-          :value="option?.id"
-          name="radio"
-          @change="UpdateequipmentOfHavyStatus"
-        />
+      </div>
+      <div class="equipment-status-options">
+        <div
+          class="radio-wrapper"
+          :class="equipmentOfHavyStatus == option?.id ? 'active' : ''"
+          v-for="(option, index) in EquipmentOfHavyOptions"
+          :key="index"
+          @click="setEquipmentOfHavyStatus(option?.id)"
+        >
+          <div class="flex items-center justify-center gap-1 w-full h-full">
+            <label
+              class="text-lg w-full flex justify-center"
+              :for="`${option?.id}-${option?.title}`"
+            >
+              {{ option?.title }}
+            </label>
+            <!-- <RentIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.RENT" />
+              <OwnedIcon class="w-10 h-10" v-if="option?.id == EquipmentStatus.OWN" /> -->
+          </div>
+          <input
+            :id="`${option?.id}-${option?.title}`"
+            type="radio"
+            v-model="equipmentOfHavyStatus"
+            :value="option?.id"
+            name="radio"
+            @change="UpdateequipmentOfHavyStatus"
+          />
+        </div>
       </div>
     </div>
 
-    <div class="grid grid-cols-2 gap-6 mt-8">
+    <div class="asset-form-grid grid grid-cols-2 gap-6 mt-8">
+      <div class="equipment-section-heading col-span-2">
+        <span class="equipment-section-heading__index">02</span>
+        <div>
+          <h3>Asset identity</h3>
+          <p>Define the asset model, brand, serial reference, and current usage.</p>
+        </div>
+      </div>
       <div
         v-if="
           equipmentOfHavyStatus == EquipmentOfHavyStatus.havy &&
@@ -1046,6 +1086,14 @@ const startYear = new Date(today.getFullYear() - 1, 0, 1)
         </p>
       </div>
 
+      <div class="equipment-section-heading col-span-2">
+        <span class="equipment-section-heading__index">03</span>
+        <div>
+          <h3>Documentation and compliance</h3>
+          <p>Add visual records and the dates used for inspection and lifecycle tracking.</p>
+        </div>
+      </div>
+
       <div class="flex flex-col gap-2 input-wrapper col-span-2 md:col-span-1">
         <label class="flex items-center gap-2">
           {{ $t('upload image') }}
@@ -1113,6 +1161,14 @@ const startYear = new Date(today.getFullYear() - 1, 0, 1)
           {{ $t('IVMS') }}
         </label>
         <input v-model="ivhm" @change="updateData" type="checkbox" id="ivhm" />
+      </div>
+
+      <div class="equipment-section-heading col-span-2">
+        <span class="equipment-section-heading__index">04</span>
+        <div>
+          <h3>Ownership and assignment</h3>
+          <p>Record whether the asset is owned or rented and where it is assigned.</p>
+        </div>
       </div>
 
       <div
@@ -1304,6 +1360,14 @@ const startYear = new Date(today.getFullYear() - 1, 0, 1)
         />
       </div>
 
+      <div class="equipment-section-heading col-span-2">
+        <span class="equipment-section-heading__index">05</span>
+        <div>
+          <h3>Operational details</h3>
+          <p>Complete the registration and availability information for daily operations.</p>
+        </div>
+      </div>
+
       <div class="input-wrapper col-span-2 md:col-span-1">
         <label for="License Plate Number" class="flex items-center gap-2">
           {{ $t(' Plate No.') }}
@@ -1321,7 +1385,10 @@ const startYear = new Date(today.getFullYear() - 1, 0, 1)
       </div>
 
       <div
-        v-if="deviceStatus === EquipmentStatus.OWN && (activeTab === EquipmentTypesEnum.DEVICE || activeTab === EquipmentTypesEnum.TOOL)"
+        v-if="
+          deviceStatus === EquipmentStatus.OWN &&
+          (activeTab === EquipmentTypesEnum.DEVICE || activeTab === EquipmentTypesEnum.TOOL)
+        "
         class="col-span-2 md:col-span-1"
       >
         <UpdatedCustomInputSelect
@@ -1414,6 +1481,14 @@ const startYear = new Date(today.getFullYear() - 1, 0, 1)
         />
       </div>
 
+      <div class="equipment-section-heading col-span-2 equipment-preview-heading">
+        <span class="equipment-section-heading__index">06</span>
+        <div>
+          <h3>Asset card preview</h3>
+          <p>Review how this equipment will appear to operational teams.</p>
+        </div>
+      </div>
+
       <div class="col-span-2 md:col-span-2 card_Qr">
         <div class="machine_card">
           <h6>{{ EquipmentTypesEnum[activeTab] }} card</h6>
@@ -1449,6 +1524,170 @@ const startYear = new Date(today.getFullYear() - 1, 0, 1)
 </template>
 
 <style scoped lang="scss">
+.equipment-form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.equipment-form-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  overflow: hidden;
+  padding: 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--identity-primary) 18%, var(--hse-color-border));
+  border-radius: var(--hse-radius-card);
+  background:
+    radial-gradient(circle at 90% 0%, rgb(17 165 197 / 22%), transparent 32%),
+    linear-gradient(135deg, var(--hse-color-navy), var(--hse-color-navy-secondary));
+  color: #fff;
+  box-shadow: var(--hse-shadow-md);
+}
+
+.equipment-form-hero__icon {
+  display: grid;
+  width: 4rem;
+  height: 4rem;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 22%);
+  border-radius: 1rem;
+  background: rgb(255 255 255 / 12%);
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.equipment-form-hero__icon :deep(svg) {
+  width: 2rem;
+  height: 2rem;
+  color: #fff;
+}
+
+.equipment-form-hero__copy h2,
+.equipment-form-hero__copy p {
+  margin: 0;
+  color: inherit;
+}
+
+.equipment-form-hero__copy h2 {
+  font-size: 1.35rem;
+}
+
+.equipment-form-hero__copy > p:last-child {
+  margin-top: 0.25rem;
+  color: #c8d8ec;
+}
+
+.equipment-form-hero__eyebrow {
+  margin-bottom: 0.2rem !important;
+  color: #9fc5ff !important;
+  font-size: var(--hse-text-xs);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.equipment-form-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.45rem;
+}
+
+.equipment-form-hero__meta span {
+  padding: 0.4rem 0.7rem;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: var(--hse-radius-badge);
+  background: rgb(255 255 255 / 10%);
+  font-size: var(--hse-text-xs);
+  font-weight: 700;
+}
+
+.equipment-status-panel {
+  display: grid;
+  grid-template-columns: minmax(14rem, 0.8fr) minmax(18rem, 1.2fr);
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  border: 1px solid var(--hse-color-border);
+  border-radius: var(--hse-radius-card);
+  background: var(--hse-color-surface);
+  box-shadow: var(--hse-shadow-sm);
+}
+
+.equipment-status-panel__copy,
+.equipment-section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.equipment-status-panel__copy h3,
+.equipment-status-panel__copy p,
+.equipment-section-heading h3,
+.equipment-section-heading p {
+  margin: 0;
+}
+
+.equipment-status-panel__copy h3,
+.equipment-section-heading h3 {
+  color: var(--hse-color-text);
+  font-size: var(--hse-text-md);
+}
+
+.equipment-status-panel__copy p,
+.equipment-section-heading p {
+  margin-top: 0.2rem;
+  color: var(--hse-color-text-muted);
+  font-size: var(--hse-text-sm);
+}
+
+.equipment-section-heading__index {
+  display: grid;
+  flex: 0 0 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border-radius: 0.7rem;
+  background: var(--hse-color-primary-subtle);
+  color: var(--identity-primary);
+  font-size: var(--hse-text-xs);
+  font-weight: 800;
+}
+
+.asset-form-grid {
+  margin-top: 0 !important;
+  padding: 1.25rem;
+  border: 1px solid var(--hse-color-border);
+  border-radius: var(--hse-radius-card);
+  background: var(--hse-color-surface);
+  box-shadow: var(--hse-shadow-sm);
+}
+
+.asset-form-grid > .equipment-section-heading {
+  margin-top: 0.5rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--hse-color-divider);
+}
+
+.asset-form-grid > .equipment-section-heading:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.asset-form-grid > :not(.equipment-section-heading):not(.card_Qr) {
+  min-width: 0;
+  padding: 0.9rem;
+  border: 1px solid var(--hse-color-divider);
+  border-radius: 0.875rem;
+  background: var(--hse-color-surface-muted);
+}
+
+.asset-form-grid > .input-wrapper:empty {
+  display: none;
+}
+
 .ivhm-checkbox {
   display: flex;
   align-items: center;
@@ -1487,13 +1726,17 @@ const startYear = new Date(today.getFullYear() - 1, 0, 1)
   padding: 0;
 }
 
+.radio-wrapper.active {
+  background-color: var(--hse-color-primary-subtle);
+}
+
 .equipment-status-options {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
   width: 100%;
   min-width: 0;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
 }
 
 .equipment-status-options .radio-wrapper {
@@ -1554,6 +1797,8 @@ const startYear = new Date(today.getFullYear() - 1, 0, 1)
 }
 
 .equipment-form.is-dark .vehicle,
+.equipment-form.is-dark .equipment-status-panel,
+.equipment-form.is-dark .asset-form-grid,
 .equipment-form.is-dark .card_Qr,
 .equipment-form.is-dark .machine_card,
 .equipment-form.is-dark .Qr_EQUIPMENt,
@@ -1607,6 +1852,25 @@ const startYear = new Date(today.getFullYear() - 1, 0, 1)
     }
   }
 
+  .equipment-form-hero {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 1.1rem;
+  }
+
+  .equipment-form-hero__meta {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+
+  .equipment-status-panel {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+
+  .asset-form-grid {
+    padding: 1rem;
+  }
+
   .vehicle {
     align-items: stretch;
     flex-direction: column !important;
@@ -1633,6 +1897,19 @@ const startYear = new Date(today.getFullYear() - 1, 0, 1)
   .equipment-form > .grid {
     gap: 12px;
     margin-top: 14px;
+  }
+
+  .equipment-form-hero__icon {
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+
+  .equipment-form-hero__copy > p:last-child {
+    display: none;
+  }
+
+  .equipment-status-options {
+    grid-template-columns: 1fr;
   }
 
   .equipment-form .col-span-2.flex.item-center {

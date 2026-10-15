@@ -366,226 +366,497 @@ defineExpose({
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Name">
-    <label for="name" class="flex items-center gap-2">
-      {{ $t('employee_name') }}
-      <FieldHelpIcon text="Enter the employee's full name as it should appear in the system." />
-    </label>
-    <input
-      id="name"
-      type="text"
-      v-model="Name"
-      @input="UpdateName"
-      :placeholder="$t('enter your name')"
-    />
-    <p v-if="getFieldError('Name')" class="required-field-message">
-      {{ getFieldError('Name') }}
-    </p>
-  </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <label for="serialNumber" class="flex items-center gap-2">
-      {{ $t('serial_number') }}
-      <FieldHelpIcon
-        text="Enter a unique employee serial number, or leave it empty when automatic generation is enabled."
-      />
-    </label>
-    <input
-      type="text"
-      v-model="SerialNumber"
-      @input="UpdateSerial"
-      id="serialNumber"
-      :disabled="projtecStateus.isSerialNumberAuto()"
-      :placeholder="
-        projtecStateus.isSerialNumberAuto()
-          ? 'You can leave it (auto-generated)'
-          : 'Enter Your Serial Number'
-      "
-    />
-  </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="phone-country-code" class="flex items-center gap-2">
-      {{ $t('phone_country_code') }}
-      <FieldHelpIcon
-        text="Select the international dialing code for the employee's phone number."
-      />
-    </label>
-    <PhoneCountryCode :model-value="CountryCode" @update:model-value="updateCountryCode" />
-  </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Phone">
-    <label for="phone" class="flex items-center gap-2">
-      {{ $t('phone_number') }}
-      <FieldHelpIcon text="Enter the employee's phone number for work-related contact." />
-    </label>
-    <input
-      id="phone"
-      type="tel"
-      v-model="Phone"
-      @input="UpdatePhone"
-      :placeholder="$t('enter your phone')"
-    />
-    <p v-if="getFieldError('Phone')" class="required-field-message">
-      {{ getFieldError('Phone') }}
-    </p>
-  </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Email">
-    <label for="email" class="flex items-center gap-2">
-      {{ $t('email_address') }}
-      <FieldHelpIcon text="This email address is used to log in to the system." />
-    </label>
-    <input
-      id="email"
-      type="email"
-      v-model="Email"
-      @input="UpdateEmail"
-      :placeholder="$t('enter your email')"
-    />
-    <p v-if="getFieldError('Email')" class="required-field-message">
-      {{ getFieldError('Email') }}
-    </p>
-  </div>
-  <div
-    v-if="booleandashAccessStatus"
-    class="col-span-4 md:col-span-2 input-wrapper"
-    data-required-field="Password"
-  >
-    <label for="password" class="flex items-center gap-2">
-      {{ $t('Password') }}
-      <FieldHelpIcon text="Set the password the employee will use to log in to the system." />
-    </label>
-    <input
-      id="password"
-      type="text"
-      min="8"
-      v-model="Password"
-      @input="UpdatePassword"
-      :placeholder="$t('enter your password')"
-    />
-    <p v-if="getFieldError('Password')" class="required-field-message">
-      {{ getFieldError('Password') }}
-    </p>
-  </div>
-  <!--<div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="password_confirmation">{{ $t('confirm_password') }}</label>
-    <input id="password_confirmation" type="text" min="8" v-model="ConfirmPassword" @input="UpdateConfirmPassword"
-      :placeholder="$t('enter your confirm password')" />
-  </div>-->
-  <!-- :type="2" -->
-  <div
-    v-if="props.heirarchyId == null"
-    class="col-span-4 md:col-span-2 input-wrapper"
-    data-required-field="Heirarchy"
-  >
-    <UpdatedCustomInputSelect
-      :modelValue="Heirarchy"
-      @update:modelValue="setHeirarchy"
-      :controller="indexHerikalyController"
-      :params="HerikalyParams"
-      :label="$t('position')"
-      :placeholder="$t('select_position')"
-      :isDialog="true"
-      v-model:dialogVisible="PositionDialog"
-    >
-      <template #LabelHeader>
-        <FieldHelpIcon text="Select the employee's position in the organization hierarchy." />
-        <span class="add-dialog" @click="PositionDialog = true">New</span>
-      </template>
-      <template #Dialog>
-        <AddHerikaly @update:data="PositionDialog = false" />
-      </template>
-    </UpdatedCustomInputSelect>
-    <p v-if="getFieldError('Heirarchy')" class="required-field-message">
-      {{ getFieldError('Heirarchy') }}
-    </p>
-  </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper checkbox-with-help">
-    <CustomCheckbox
-      :index="5"
-      :title="`all_permissions`"
-      :checked="AllPermissions"
-      @update:checked="updaetAllPermissions"
-    />
-    <!-- <FieldHelpIcon text="Enable this option to grant the employee all available permissions." /> -->
-  </div>
-  <div
-    v-if="!AllPermissions"
-    class="col-span-4 md:col-span-2 input-wrapper"
-    data-required-field="role"
-  >
-    <UpdatedCustomInputSelect
-      :modelValue="role"
-      @update:modelValue="setRole"
-      :controller="indexRoleController"
-      :params="indexRoleParams"
-      :label="$t('permissions')"
-      :type="2"
-      :placeholder="$t('Select Role')"
-      :isDialog="true"
-      v-model:dialogVisible="RoleDialog"
-    >
-      <template #LabelHeader>
-        <!-- <FieldHelpIcon text="Select the roles that define what the employee can view and manage." /> -->
-        <span class="add-dialog" @click="RoleDialog = true">New</span>
-      </template>
-      <template #option="{ option }">
-        <div class="role-option">
-          <span>{{ option.title }}</span>
-          <span class="role-option__help" @mousedown.stop @click.stop>
-            <FieldHelpIcon :text="getRolePermissionsHint(option as RoleModel)" />
-          </span>
-        </div>
-      </template>
-      <template #Dialog>
-        <AddRole @update:data="RoleDialog = false" />
-      </template>
-    </UpdatedCustomInputSelect>
-    <p v-if="getFieldError('role')" class="required-field-message">
-      {{ getFieldError('role') }}
-    </p>
-  </div>
-  <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomCheckbox :index="5" :title="$t('isAdmin')" :label="$t('admin_status')" :checked="EmployeeStatus"
-      @update:checked="updaetAdminStatus" />
-  </div> -->
+  <div class="employee-form-shell col-span-4">
+    <header class="employee-form-hero">
+      <div class="employee-form-hero__mark" aria-hidden="true">
+        {{ Name?.trim()?.charAt(0)?.toUpperCase() || 'E' }}
+      </div>
+      <div>
+        <p class="employee-form-hero__eyebrow">{{ data?.id ? $t('edit') : $t('add') }}</p>
+        <h2>{{ $t('employee') }}</h2>
+        <p>Set up the employee profile, organization position, and workspace access.</p>
+      </div>
+      <span class="employee-form-hero__status">
+        <span aria-hidden="true"></span>
+        {{ booleandashAccessStatus ? $t('dashboard_access') : $t('employee') }}
+      </span>
+    </header>
 
-  <div class="col-span-4 md:col-span-2 input-wrapper checkbox-with-help">
-    <CustomCheckbox
-      :index="3"
-      :title="`admin_permission`"
-      :checked="booleanEmpStatus"
-      @update:checked="updaetAdminStatus"
-    />
-    <!-- <FieldHelpIcon text="Enable this option to give the employee administrator privileges." /> -->
+    <section class="employee-form-section" aria-labelledby="employee-profile-heading">
+      <div class="employee-section-heading">
+        <span class="employee-section-heading__index">01</span>
+        <div>
+          <h3 id="employee-profile-heading">Profile information</h3>
+          <p>Core information used to identify and contact this employee.</p>
+        </div>
+      </div>
+
+      <div class="employee-field-grid">
+        <div class="input-wrapper field-required" data-required-field="Name">
+          <label for="name" class="flex items-center gap-2">
+            {{ $t('employee_name') }}
+            <FieldHelpIcon
+              text="Enter the employee's full name as it should appear in the system."
+            />
+          </label>
+          <input
+            id="name"
+            v-model="Name"
+            type="text"
+            :placeholder="$t('enter your name')"
+            @input="UpdateName"
+          />
+          <p v-if="getFieldError('Name')" class="required-field-message">
+            {{ getFieldError('Name') }}
+          </p>
+        </div>
+
+        <div v-if="!data?.id" class="input-wrapper">
+          <label for="serialNumber" class="flex items-center gap-2">
+            {{ $t('serial_number') }}
+            <FieldHelpIcon
+              text="Enter a unique employee serial number, or leave it empty when automatic generation is enabled."
+            />
+          </label>
+          <input
+            id="serialNumber"
+            v-model="SerialNumber"
+            type="text"
+            :disabled="projtecStateus.isSerialNumberAuto()"
+            :placeholder="
+              projtecStateus.isSerialNumberAuto()
+                ? 'You can leave it (auto-generated)'
+                : 'Enter Your Serial Number'
+            "
+            @input="UpdateSerial"
+          />
+        </div>
+
+        <div class="input-wrapper">
+          <label for="phone-country-code" class="flex items-center gap-2">
+            {{ $t('phone_country_code') }}
+            <FieldHelpIcon
+              text="Select the international dialing code for the employee's phone number."
+            />
+          </label>
+          <PhoneCountryCode :model-value="CountryCode" @update:model-value="updateCountryCode" />
+        </div>
+
+        <div class="input-wrapper field-required" data-required-field="Phone">
+          <label for="phone" class="flex items-center gap-2">
+            {{ $t('phone_number') }}
+            <FieldHelpIcon text="Enter the employee's phone number for work-related contact." />
+          </label>
+          <input
+            id="phone"
+            v-model="Phone"
+            type="tel"
+            :placeholder="$t('enter your phone')"
+            @input="UpdatePhone"
+          />
+          <p v-if="getFieldError('Phone')" class="required-field-message">
+            {{ getFieldError('Phone') }}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="employee-form-section" aria-labelledby="employee-workspace-heading">
+      <div class="employee-section-heading">
+        <span class="employee-section-heading__index">02</span>
+        <div>
+          <h3 id="employee-workspace-heading">Organization and workspace</h3>
+          <p>Connect the employee to their position and dashboard credentials.</p>
+        </div>
+      </div>
+
+      <div class="employee-field-grid">
+        <div class="input-wrapper field-required" data-required-field="Email">
+          <label for="email" class="flex items-center gap-2">
+            {{ $t('email_address') }}
+            <FieldHelpIcon text="This email address is used to log in to the system." />
+          </label>
+          <input
+            id="email"
+            v-model="Email"
+            type="email"
+            :placeholder="$t('enter your email')"
+            @input="UpdateEmail"
+          />
+          <p v-if="getFieldError('Email')" class="required-field-message">
+            {{ getFieldError('Email') }}
+          </p>
+        </div>
+
+        <div v-if="booleandashAccessStatus" class="input-wrapper" data-required-field="Password">
+          <label for="password" class="flex items-center gap-2">
+            {{ $t('Password') }}
+            <FieldHelpIcon text="Set the password the employee will use to log in to the system." />
+          </label>
+          <input
+            id="password"
+            v-model="Password"
+            type="password"
+            minlength="8"
+            autocomplete="new-password"
+            :placeholder="$t('enter your password')"
+            @input="UpdatePassword"
+          />
+          <p v-if="getFieldError('Password')" class="required-field-message">
+            {{ getFieldError('Password') }}
+          </p>
+        </div>
+
+        <div v-if="props.heirarchyId == null" class="input-wrapper" data-required-field="Heirarchy">
+          <UpdatedCustomInputSelect
+            :modelValue="Heirarchy"
+            :controller="indexHerikalyController"
+            :params="HerikalyParams"
+            :label="$t('position')"
+            :placeholder="$t('select_position')"
+            :isDialog="true"
+            v-model:dialogVisible="PositionDialog"
+            @update:modelValue="setHeirarchy"
+          >
+            <template #LabelHeader>
+              <FieldHelpIcon text="Select the employee's position in the organization hierarchy." />
+              <button class="inline-create-action" type="button" @click="PositionDialog = true">
+                + New
+              </button>
+            </template>
+            <template #Dialog><AddHerikaly @update:data="PositionDialog = false" /></template>
+          </UpdatedCustomInputSelect>
+          <p v-if="getFieldError('Heirarchy')" class="required-field-message">
+            {{ getFieldError('Heirarchy') }}
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section
+      class="employee-form-section employee-access-section"
+      aria-labelledby="employee-access-heading"
+    >
+      <div class="employee-section-heading">
+        <span class="employee-section-heading__index">03</span>
+        <div>
+          <h3 id="employee-access-heading">Access and permissions</h3>
+          <p>Choose the access level and roles that match this employee's responsibilities.</p>
+        </div>
+      </div>
+
+      <div class="employee-access-grid">
+        <div class="access-toggle-card">
+          <div class="flex gap-2">
+            <div class="access-toggle-card__icon" aria-hidden="true">A</div>
+            <div>
+              <strong>{{ $t('admin_permission') }}</strong>
+              <p>Allow organization administration capabilities.</p>
+            </div>
+          </div>
+          <CustomCheckbox
+            :index="3"
+            :title="`admin_permission`"
+            :checked="booleanEmpStatus"
+            @update:checked="updaetAdminStatus"
+          />
+        </div>
+
+        <div class="access-toggle-card">
+          <div class="flex gap-2">
+            <div class="access-toggle-card__icon" aria-hidden="true">D</div>
+            <div>
+              <strong>{{ $t('dashboard_access') }}</strong>
+              <p>Allow the employee to sign in to the dashboard.</p>
+            </div>
+          </div>
+          <CustomCheckbox
+            :index="4"
+            :title="`dashboard_access`"
+            :checked="booleandashAccessStatus"
+            @update:checked="updaetdashAccessStatus"
+          />
+        </div>
+
+        <div class="access-toggle-card">
+          <div class="flex gap-2">
+            <div class="access-toggle-card__icon" aria-hidden="true">∞</div>
+            <div>
+              <strong>{{ $t('all_permissions') }}</strong>
+              <p>Grant access to all available organization modules.</p>
+            </div>
+          </div>
+          <CustomCheckbox
+            :index="5"
+            :title="`all_permissions`"
+            :checked="AllPermissions"
+            @update:checked="updaetAllPermissions"
+          />
+        </div>
+      </div>
+
+      <div
+        v-if="!AllPermissions"
+        class="employee-role-picker input-wrapper"
+        data-required-field="role"
+      >
+        <UpdatedCustomInputSelect
+          :modelValue="role"
+          :controller="indexRoleController"
+          :params="indexRoleParams"
+          :label="$t('permissions')"
+          :type="2"
+          :placeholder="$t('Select Role')"
+          :isDialog="true"
+          v-model:dialogVisible="RoleDialog"
+          @update:modelValue="setRole"
+        >
+          <template #LabelHeader>
+            <FieldHelpIcon
+              text="Select the roles that define what the employee can view and manage."
+            />
+            <button class="inline-create-action" type="button" @click="RoleDialog = true">
+              + New
+            </button>
+          </template>
+          <template #option="{ option }">
+            <div class="role-option">
+              <span>{{ option.title }}</span>
+              <span class="role-option__help" @mousedown.stop @click.stop>
+                <FieldHelpIcon :text="getRolePermissionsHint(option as RoleModel)" />
+              </span>
+            </div>
+          </template>
+          <template #Dialog><AddRole @update:data="RoleDialog = false" /></template>
+        </UpdatedCustomInputSelect>
+        <p v-if="getFieldError('role')" class="required-field-message">
+          {{ getFieldError('role') }}
+        </p>
+      </div>
+    </section>
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper checkbox-with-help">
-    <CustomCheckbox
-      :index="4"
-      :title="`dashboard_access`"
-      :checked="booleandashAccessStatus"
-      @update:checked="updaetdashAccessStatus"
-    />
-    <!-- <FieldHelpIcon
-      text="Enable this option to allow the employee to log in and use the dashboard."
-    /> -->
-  </div>
-  <!-- <div class="col-span-4 md:col-span-2 input-wrapper">
-    <CustomSelectInput :modelValue="Certificates" @update:modelValue="setCertificates"
-      :controller="indexCertificateController" :type="2" :params="deleteCertificateParams" :label="$t('Certificates')"
-      :placeholder="$t('Select Certificates')" />
-  </div> -->
 </template>
 
 <style scoped>
+.employee-form-shell {
+  display: grid;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.employee-form-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  overflow: hidden;
+  padding: 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--identity-primary) 18%, var(--hse-color-border));
+  border-radius: var(--hse-radius-card);
+  background:
+    radial-gradient(circle at 90% 10%, rgb(17 165 197 / 18%), transparent 32%),
+    linear-gradient(135deg, var(--hse-color-navy), var(--hse-color-navy-secondary));
+  color: #fff;
+  box-shadow: var(--hse-shadow-md);
+}
+
+.employee-form-hero__mark {
+  display: grid;
+  width: 3.75rem;
+  height: 3.75rem;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 24%);
+  border-radius: 1rem;
+  background: rgb(255 255 255 / 12%);
+  font-size: 1.5rem;
+  font-weight: 800;
+}
+
+.employee-form-hero__eyebrow {
+  margin: 0 0 0.2rem;
+  color: #9fc5ff;
+  font-size: var(--hse-text-xs);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.employee-form-hero h2,
+.employee-form-hero p {
+  margin: 0;
+  color: inherit;
+}
+
+.employee-form-hero h2 {
+  font-size: 1.35rem;
+}
+
+.employee-form-hero > div > p:last-child {
+  margin-top: 0.25rem;
+  color: #c8d8ec;
+}
+
+.employee-form-hero__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: var(--hse-radius-badge);
+  background: rgb(255 255 255 / 10%);
+  font-size: var(--hse-text-xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.employee-form-hero__status > span {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #4ce0b3;
+  box-shadow: 0 0 0 4px rgb(76 224 179 / 14%);
+}
+
+.employee-form-section {
+  padding: 1.25rem;
+  border: 1px solid var(--hse-color-border);
+  border-radius: var(--hse-radius-card);
+  background: var(--hse-color-surface);
+  box-shadow: var(--hse-shadow-sm);
+}
+
+.employee-section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--hse-color-divider);
+}
+
+.employee-section-heading__index {
+  display: grid;
+  flex: 0 0 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border-radius: 0.7rem;
+  background: var(--hse-color-primary-subtle);
+  color: var(--identity-primary);
+  font-size: var(--hse-text-xs);
+  font-weight: 800;
+}
+
+.employee-section-heading h3,
+.employee-section-heading p {
+  margin: 0;
+}
+
+.employee-section-heading h3 {
+  color: var(--hse-color-text);
+  font-size: var(--hse-text-md);
+}
+
+.employee-section-heading p {
+  margin-top: 0.2rem;
+  color: var(--hse-color-text-muted);
+  font-size: var(--hse-text-sm);
+}
+
+.employee-field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.25rem;
+}
+
+.employee-field-grid > * {
+  min-width: 0;
+}
+
+.employee-access-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.access-toggle-card {
+  /* display: grid;
+  grid-template-columns: auto minmax(0, 1fr); */
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 0.9rem;
+  border: 1px solid var(--hse-color-border);
+  border-radius: 0.875rem;
+  background: var(--hse-color-surface-muted);
+  transition:
+    border-color var(--hse-transition-fast) var(--hse-ease),
+    box-shadow var(--hse-transition-fast) var(--hse-ease);
+}
+
+.access-toggle-card:hover {
+  border-color: color-mix(in srgb, var(--identity-primary) 38%, var(--hse-color-border));
+  box-shadow: var(--hse-shadow-sm);
+}
+
+.access-toggle-card__icon {
+  display: grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border-radius: 0.65rem;
+  background: var(--hse-color-primary-subtle);
+  color: var(--identity-primary);
+  font-weight: 800;
+}
+
+.access-toggle-card strong,
+.access-toggle-card p {
+  margin: 0;
+}
+
+.access-toggle-card strong {
+  color: var(--hse-color-text);
+  font-size: var(--hse-text-sm);
+}
+
+.access-toggle-card p {
+  margin-top: 0.15rem;
+  color: var(--hse-color-text-muted);
+  font-size: var(--hse-text-xs);
+  line-height: 1.45;
+}
+
+.access-toggle-card :deep(.custom-checkbox) {
+  grid-column: 1 / -1;
+}
+
+.employee-role-picker {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px dashed color-mix(in srgb, var(--identity-primary) 30%, var(--hse-color-border));
+  border-radius: 0.875rem;
+  background: color-mix(in srgb, var(--hse-color-primary-subtle) 42%, var(--hse-color-surface));
+}
+
+.inline-create-action {
+  width: auto;
+  min-height: 1.75rem;
+  margin-inline-start: auto;
+  padding: 0.2rem 0.55rem;
+  border: 0;
+  border-radius: var(--hse-radius-badge);
+  background: var(--hse-color-primary-subtle);
+  color: var(--identity-primary);
+  font-size: var(--hse-text-xs);
+  font-weight: 800;
+}
+
 .required-field-message {
   margin-top: 0.35rem;
   color: var(--status-danger);
   font-size: 0.82rem;
   font-weight: 700;
-}
-
-.checkbox-with-help {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 }
 
 .role-option {
@@ -597,5 +868,31 @@ defineExpose({
 
 .role-option__help {
   margin-inline-start: auto;
+}
+
+@media (max-width: 900px) {
+  .employee-access-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .employee-form-hero {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 1.1rem;
+  }
+
+  .employee-form-hero__status {
+    grid-column: 1 / -1;
+    width: fit-content;
+  }
+
+  .employee-field-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .employee-form-section {
+    padding: 1rem;
+  }
 }
 </style>
