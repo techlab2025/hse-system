@@ -452,7 +452,7 @@ watch(resource, () => {
         >
           <span aria-hidden="true">←</span> Project summary
         </RouterLink>
-        <span class="resource-eyebrow">{{ projectLabel }}</span>
+        <!-- <span class="resource-eyebrow">{{ projectLabel }}</span> -->
         <h1>{{ definition.title }}</h1>
         <p>{{ definition.description }}</p>
       </div>

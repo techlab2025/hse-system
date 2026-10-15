@@ -50,83 +50,88 @@ const dateLabel = (value: string | null) =>
       :cols="7"
       :rows="3"
     />
-    <div v-else-if="state instanceof DataFailed" role="alert">
-      <p>{{ $t('op.historyFailed') }}</p>
-      <button type="button" class="op-button" @click="$emit('retry')">{{ $t('op.retry') }}</button>
-    </div>
-    <p v-else-if="!rows.length" class="op-empty">{{ $t('op.noHistory') }}</p>
-    <div v-else class="op-table-scroll" tabindex="0" :aria-label="$t('op.history')">
-      <table class="main-table op-table">
-        <thead>
-          <tr>
-            <th
-              v-for="key in [
-                'period',
-                'actual',
-                'recordedBy',
-                'recordedAt',
-                'notes',
-                'attachments',
-                'corrections',
-              ]"
-              :key="key"
-              scope="col"
-            >
-              {{ $t(`op.${key}`) }}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="record in rows" :key="record.id">
-            <td>{{ periodLabel(record.period) }}</td>
-            <td>
-              {{ record.actualResult ?? '—' }}
-              {{ record.actualResult !== null ? actualUnit(objective) : '' }}
-            </td>
-            <td>{{ record.recordedBy || '—' }}</td>
-            <td>{{ dateLabel(record.recordedAt ?? record.createdAt) }}</td>
-            <td class="op-notes">{{ record.notes || '—' }}</td>
-            <td>
-              <ul v-if="record.attachments.length" class="op-files">
-                <li v-for="file in record.attachments" :key="file.id">
-                  <a
-                    v-if="safeAttachmentUrl(file.url)"
-                    :href="safeAttachmentUrl(file.url)!"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    ><img
-                      v-if="file.mimeType?.startsWith('image/')"
-                      :src="safeAttachmentUrl(file.url)!"
-                      :alt="file.name"
-                      loading="lazy"
-                    />{{ file.name }}</a
-                  ><span v-else>{{ file.name }}</span>
-                </li>
-              </ul>
-              <span v-else>—</span>
-            </td>
-            <td>
-              <details v-if="record.corrections.length">
-                <summary>{{ $t('op.corrections') }} ({{ record.corrections.length }})</summary>
-                <p v-for="(correction, index) in record.corrections" :key="index" class="op-notes">
-                  {{ correction.recordedBy || '—' }} · {{ dateLabel(correction.recordedAt)
-                  }}<br />{{ correction.notes || '—' }}
-                </p>
-              </details>
-              <span v-else>—</span
-              ><RouterLink
-                v-if="canUpdate && supportsProgress('edit') && supportsProgress('details')"
-                class="op-button"
-                :to="{
-                  name: 'organization-objectives-edit-progress',
-                  params: { objectiveId: objective.id, progressId: record.id },
-                }"
-                >{{ $t('op.correct') }}</RouterLink
-              >
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+
   </section>
 </template>
+
+
+
+
+  // <div v-else-if="state instanceof DataFailed" role="alert">
+  //     <p>{{ $t('op.historyFailed') }}</p>
+  //     <button type="button" class="op-button" @click="$emit('retry')">{{ $t('op.retry') }}</button>
+  //   </div>
+  //   <p v-else-if="!rows.length" class="op-empty">{{ $t('op.noHistory') }}</p>
+  //   <div v-else class="op-table-scroll" tabindex="0" :aria-label="$t('op.history')">
+  //     <table class="main-table op-table">
+  //       <thead>
+  //         <tr>
+  //           <th
+  //             v-for="key in [
+  //               'period',
+  //               'actual',
+  //               'recordedBy',
+  //               'recordedAt',
+  //               'notes',
+  //               'attachments',
+  //               'corrections',
+  //             ]"
+  //             :key="key"
+  //             scope="col"
+  //           >
+  //             {{ $t(`op.${key}`) }}
+  //           </th>
+  //         </tr>
+  //       </thead>
+  //       <tbody>
+  //         <tr v-for="record in rows" :key="record.id">
+  //           <td>{{ periodLabel(record.period) }}</td>
+  //           <td>
+  //             {{ record.actualResult ?? '—' }}
+  //             {{ record.actualResult !== null ? actualUnit(objective) : '' }}
+  //           </td>
+  //           <td>{{ record.recordedBy || '—' }}</td>
+  //           <td>{{ dateLabel(record.recordedAt ?? record.createdAt) }}</td>
+  //           <td class="op-notes">{{ record.notes || '—' }}</td>
+  //           <td>
+  //             <ul v-if="record.attachments.length" class="op-files">
+  //               <li v-for="file in record.attachments" :key="file.id">
+  //                 <a
+  //                   v-if="safeAttachmentUrl(file.url)"
+  //                   :href="safeAttachmentUrl(file.url)!"
+  //                   target="_blank"
+  //                   rel="noopener noreferrer"
+  //                   ><img
+  //                     v-if="file.mimeType?.startsWith('image/')"
+  //                     :src="safeAttachmentUrl(file.url)!"
+  //                     :alt="file.name"
+  //                     loading="lazy"
+  //                   />{{ file.name }}</a
+  //                 ><span v-else>{{ file.name }}</span>
+  //               </li>
+  //             </ul>
+  //             <span v-else>—</span>
+  //           </td>
+  //           <td>
+  //             <details v-if="record.corrections.length">
+  //               <summary>{{ $t('op.corrections') }} ({{ record.corrections.length }})</summary>
+  //               <p v-for="(correction, index) in record.corrections" :key="index" class="op-notes">
+  //                 {{ correction.recordedBy || '—' }} · {{ dateLabel(correction.recordedAt)
+  //                 }}<br />{{ correction.notes || '—' }}
+  //               </p>
+  //             </details>
+  //             <span v-else>—</span
+  //             ><RouterLink
+  //               v-if="canUpdate && supportsProgress('edit') && supportsProgress('details')"
+  //               class="op-button"
+  //               :to="{
+  //                 name: 'organization-objectives-edit-progress',
+  //                 params: { objectiveId: objective.id, progressId: record.id },
+  //               }"
+  //               >{{ $t('op.correct') }}</RouterLink
+  //             >
+  //           </td>
+  //         </tr>
+  //       </tbody>
+  //     </table>
+  //   </div>

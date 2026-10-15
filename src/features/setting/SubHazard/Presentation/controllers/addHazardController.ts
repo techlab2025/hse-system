@@ -93,7 +93,8 @@ export default class AddHazardTypeController extends ControllerInterface<HazardT
     } catch (error: unknown) {
       DialogSelector.instance.failedDialog.openDialog({
         dialogName: 'dialog-error',
-        titleContent: this.state.value.error?.title ?? (error as string),
+        titleContent:
+          this.state.value.error?.title ?? ((error as string) || this.state.value.message),
         imageElement: errorImage,
         messageContent: null,
       })
