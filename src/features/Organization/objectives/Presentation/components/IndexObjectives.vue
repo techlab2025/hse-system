@@ -8,13 +8,21 @@ import DropList from '@/shared/HelpersComponents/DropList.vue'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
-import wordSlice from '@/base/Presentation/utils/word_slice'
+// import ObjectiveProgressIndicator from '../../ObjectiveProgress/Presentation/components/ObjectiveProgressIndicator.vue'
+import {
+  targetValue,
+  actualUnit,
+  generatePeriods,
+} from '../../ObjectiveProgress/Core/utils/objectiveProgress'
+import { objectiveProgressContract } from '../../ObjectiveProgress/Data/apiServices/objectiveProgressContract'
+import '../../ObjectiveProgress/Presentation/styles/objective-progress.css'
 
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 // import IconRemoveInput from '@/shared/icons/IconRemoveInput.vue'
 // import DeleteObjectivesTypeController from '@/features/setting/ObjectivesType/Presentation/controllers/deleteObjectivesTypeController'
 // import DeleteObjectivesTypeParams from '@/features/setting/ObjectivesType/Core/params/deleteObjectivesTypeParams'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+import IconEye from '@/shared/icons/IconEye.vue'
 import IconEdit from '@/shared/icons/IconEdit.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import { useI18n } from 'vue-i18n'
@@ -27,7 +35,7 @@ import DeleteObjectivesParams from '../../Core/params/deleteObjectivesParams'
 import DeleteObjectivesController from '../controllers/deleteObjectivesController'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 
 // import DialogChangeStatusObjectivesType from "@/features/setting/ObjectivesTypes/Presentation/components/ObjectivesType/DialogChangeStatusObjectivesType.vue";
 // const route = useRoute()
@@ -74,13 +82,13 @@ const deleteObjectives = async (id: number) => {
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchObjectives('', currentPage.value, countPerPage.value)
+  fetchObjectives(word.value, currentPage.value, countPerPage.value)
 }
 
 // Handle count per page change
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchObjectives('', currentPage.value, countPerPage.value)
+  fetchObjectives(word.value, currentPage.value, countPerPage.value)
 }
 
 watch(
@@ -97,6 +105,19 @@ watch(
 )
 
 const actionList = (id: number, deleteObjectives: (id: number) => void) => [
+  {
+    text: t('op.view'),
+    icon: IconEye,
+    link: `/organization/objectives/${id}/details`,
+    permission: [
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.OBJECTIVE_ORG_ALL,
+      PermissionsEnum.OBJECTIVE_ORG_FETCH,
+      PermissionsEnum.OBJECTIVE_ORG_UPDATE,
+      PermissionsEnum.OBJECTIVE_ORG_CREATE,
+      PermissionsEnum.OBJECTIVE_ORG_DELETE,
+    ],
+  },
   {
     text: t('edit'),
     icon: IconEdit,
@@ -122,126 +143,164 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
 </script>
 
 <template>
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
-    <div class="input-search col-span-1">
-      <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
-      <span class="icon-remove" @click="((word = ''), searchObjectivesType())">
-        <Search />
-      </span>
-      <input
-        v-model="word"
-        :placeholder="$t('search')"
-        class="input"
-        type="text"
-        @input="searchObjectivesType"
-      />
-    </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <!-- <ExportExcel :data="state.data" /> -->
-      <!-- <ExportPdf /> -->
-      <permission-builder
-        :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.OBJECTIVE_ORG_CREATE]"
-      >
-        <router-link :to="addObjectivesLink" class="btn btn-primary">
-          {{ $t('Add_Objectives') }}
-        </router-link>
-      </permission-builder>
-    </div>
-  </div>
-
-  <permission-builder
-    :code="[
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.OBJECTIVE_ORG_ALL,
-      PermissionsEnum.OBJECTIVE_ORG_DELETE,
-      PermissionsEnum.OBJECTIVE_ORG_FETCH,
-      PermissionsEnum.OBJECTIVE_ORG_UPDATE,
-      PermissionsEnum.OBJECTIVE_ORG_CREATE,
-    ]"
-  >
-    <DataStatus :controller="state">
-      <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">{{ $t('Objective') }}</th>
-                <th scope="col">{{ $t('Project') }}</th>
-                <th scope="col">{{ $t('Year') }}</th>
-                <th scope="col">{{ $t('Target Type') }}</th>
-                <th scope="col">{{ $t('Direction') }}</th>
-
-                <!-- <th scope="col">{{ $t('actions') }}</th> -->
-                <th class="empty"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in state.data" :key="item.id">
-                <td data-label="#">
-                  <router-link :to="`/organization/objectives/${item.id}`"
-                    >{{ index + 1 }}
-                  </router-link>
-                </td>
-                <td :data-label="$t('Objective')">{{ wordSlice(item.objective) }}</td>
-                <td :data-label="$t('Project')">{{ item.projectTitle || $t('Company-wide') }}</td>
-                <td :data-label="$t('Year')">{{ item.year }}</td>
-                <td :data-label="$t('Target Type')">{{ $t(item.targetTypeTitle || '-') }}</td>
-                <td :data-label="$t('Direction')">
-                  {{
-                    item.directionTitle || item.frequencyTitle
-                      ? $t(item.directionTitle || item.frequencyTitle)
-                      : '-'
-                  }}
-                </td>
-
-                <td :data-label="$t('actions')">
-                  <DropList
-                    :actionList="actionList(item.id, deleteObjectives)"
-                    @delete="deleteObjectives(item.id)"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <Pagination
-          :pagination="state.pagination"
-          @changePage="handleChangePage"
-          @countPerPage="handleCountPerPage"
+    <div class="op-page op-index">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
+      <div class="input-search col-span-1">
+        <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
+        <span class="icon-remove" @click="((word = ''), searchObjectivesType())">
+          <Search />
+        </span>
+        <input
+          v-model="word"
+          :placeholder="$t('search')"
+          class="input"
+          type="text"
+          @input="searchObjectivesType"
         />
-      </template>
-      <template #loader>
-        <TableLoader :cols="7" :rows="10" />
-      </template>
-      <template #initial>
-        <TableLoader :cols="7" :rows="10" />
-      </template>
-      <template #empty>
-        <DataEmpty
-          :link="createObjectiveLink"
-          :add-text="$t('Add_Objectives')"
-          :description="$t('no_objectives_description')"
-          :title="$t('no_objectives')"
-        />
-      </template>
-      <template #failed>
+      </div>
+      <div class="col-span-1 md:col-span-1 lg:col-span-2 flex justify-end gap-2">
+        <!-- <ExportExcel :data="state.data" /> -->
+        <!-- <ExportPdf /> -->
+        <permission-builder
+          :code="[PermissionsEnum.ORGANIZATION_EMPLOYEE, PermissionsEnum.OBJECTIVE_ORG_CREATE]"
+        >
+          <router-link :to="addObjectivesLink" class="btn btn-primary">
+            {{ $t('Add_Objectives') }}
+          </router-link>
+        </permission-builder>
+      </div>
+    </div>
+
+    <permission-builder
+      :code="[
+        PermissionsEnum.ORGANIZATION_EMPLOYEE,
+        PermissionsEnum.OBJECTIVE_ORG_ALL,
+        PermissionsEnum.OBJECTIVE_ORG_DELETE,
+        PermissionsEnum.OBJECTIVE_ORG_FETCH,
+        PermissionsEnum.OBJECTIVE_ORG_UPDATE,
+        PermissionsEnum.OBJECTIVE_ORG_CREATE,
+      ]"
+    >
+      <DataStatus :controller="state">
+        <template #success>
+          <div
+            class="table-responsive table-responsive--scroll"
+            tabindex="0"
+            :aria-label="$t('Objectives')"
+          >
+            <table class="main-table">
+              <thead>
+                <tr>
+                  <th scope="col">{{ $t('op.number') }}</th>
+                  <th scope="col">{{ $t('Objective') }}</th>
+                  <th scope="col">{{ $t('Project') }}</th>
+                  <th scope="col">{{ $t('Year') }}</th>
+                  <th scope="col">{{ $t('Target Type') }}</th>
+                  <th scope="col">{{ $t('Direction') }}</th>
+
+                  <th scope="col">{{ $t('op.target') }}</th>
+                  <!-- <th scope="col">{{ $t('op.department') }}</th> -->
+                  <!-- <th scope="col">{{ $t('op.followUp') }}</th> -->
+                  <!-- <th scope="col">{{ $t('op.latestActual') }}</th> -->
+                  <!-- <th scope="col">{{ $t('op.indicator') }}</th> -->
+                  <!-- <th scope="col">{{ $t('op.latestPeriod') }}</th> -->
+                  <th class="empty"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in state.data" :key="item.id">
+                  <td data-label="#">
+                    <router-link :to="`/organization/objectives/${item.id}`"
+                      >{{ item.id }}
+                    </router-link>
+                  </td>
+                  <td :data-label="$t('Objective')">{{ item.objective }}</td>
+                  <td :data-label="$t('Project')">{{ item.projectTitle || $t('Company-wide') }}</td>
+                  <td :data-label="$t('Year')">{{ item.year }}</td>
+                  <td :data-label="$t('Target Type')">{{ $t(item.targetTypeTitle || '-') }}</td>
+                  <td :data-label="$t('Direction')">
+                    {{
+                      item.directionTitle || item.frequencyTitle
+                        ? $t(item.directionTitle || item.frequencyTitle)
+                        : '-'
+                    }}
+                  </td>
+
+                  <!-- <td :data-label="$t('op.target')">{{ targetValue(item) }}</td>
+                  <td :data-label="$t('op.department')">{{ item.department?.title || '—' }}</td>
+                  <td :data-label="$t('op.followUp')">{{ item.followUpEmployee?.title || '—' }}</td>
+                  <td :data-label="$t('op.latestActual')">
+                    {{ item.progressSummary?.actualResult ?? '—' }}
+                    {{ item.progressSummary?.actualResult != null ? actualUnit(item) : '' }}
+                  </td> -->
+                  <!-- <td :data-label="$t('op.indicator')">
+                    <ObjectiveProgressIndicator
+                      :objective="item"
+                      :actual="item.progressSummary?.actualResult ?? null"
+                      :backend-indicator="item.progressSummary?.indicator"
+                    />
+                  </td> -->
+                  <td :data-label="$t('op.latestPeriod')">
+                    {{
+                      item.progressSummary
+                        ? (generatePeriods(
+                            item,
+                            locale,
+                            new Date(),
+                            objectiveProgressContract.reportingFrequency,
+                          ).find((p) => p.value === item.progressSummary?.period)?.label ??
+                          item.progressSummary.period)
+                        : '—'
+                    }}
+                  </td>
+                  <td :data-label="$t('actions')">
+                    <DropList
+                      :actionList="actionList(item.id, deleteObjectives)"
+                      @delete="deleteObjectives(item.id)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <Pagination
+            :pagination="state.pagination"
+            @changePage="handleChangePage"
+            @countPerPage="handleCountPerPage"
+          />
+        </template>
+        <template #loader>
+          <TableLoader :cols="13" :rows="10" />
+        </template>
+        <template #initial>
+          <TableLoader :cols="13" :rows="10" />
+        </template>
+        <template #empty>
+          <DataEmpty
+            :link="createObjectiveLink"
+            :add-text="$t('Add_Objectives')"
+            :description="$t('no_objectives_description')"
+            :title="$t('no_objectives')"
+          />
+        </template>
+        <template #failed>
+          <DataFailed
+            :link="createObjectiveLink"
+            :add-text="$t('Add_Objectives')"
+            :description="$t('unable_to_load_objectives')"
+            :title="$t('no_objectives')"
+          />
+        </template>
+      </DataStatus>
+
+      <template #notPermitted>
         <DataFailed
-          :link="createObjectiveLink"
-          :add-text="$t('Add_Objectives')"
-          :description="$t('unable_to_load_objectives')"
-          :title="$t('no_objectives')"
+          :add-text="$t('have_not_permission')"
+          :description="$t('no_objectives_description')"
         />
       </template>
-    </DataStatus>
-
-    <template #notPermitted>
-      <DataFailed
-        :add-text="$t('have_not_permission')"
-        :description="$t('no_objectives_description')"
-      />
-    </template>
-  </permission-builder>
+    </permission-builder>
+  </div>
 </template>
 
 <style scoped>

@@ -165,6 +165,20 @@ class ApiNames {
     return this.DeleteObjectives
   }
 
+  // objective progress
+  public get CreateObjectiveProgress() {
+    return this.prefix + 'create_objective_progress'
+  }
+  public get IndexObjectiveProgress() {
+    return this.prefix + 'fetch_objective_progress'
+  }
+  public get ShowObjectiveProgress() {
+    return this.prefix + 'fetch_objective_progress_details'
+  }
+  public get EditObjectiveProgress() {
+    return this.prefix + 'update_objective_progress'
+  }
+
   // admin
   public get CreateAdmin() {
     return this.prefix + 'create_admin'

@@ -29,10 +29,12 @@ const props = defineProps<{ data?: ObjectivesDetailsModel }>()
 
 const { t } = useI18n()
 const maxYearDate = new Date(new Date().getFullYear(), 11, 31)
+const companyWideProject = new TitleInterface({ id: -1, title: t('Company-wide') })
+const companyWideProjectOptions = [companyWideProject]
 
 const year = ref<Date | null>(new Date(new Date().getFullYear(), 0, 1))
 const objective = ref('')
-const project = ref<TitleInterface | null>(null)
+const project = ref<TitleInterface | null>(companyWideProject)
 const targetType = ref<TitleInterface>(ObjectiveTargetTypeOptions[0]!)
 const direction = ref<TitleInterface | null>(ObjectiveDirectionOptions[0]!)
 const department = ref<TitleInterface | null>(null)
@@ -48,10 +50,22 @@ const projectParams = new IndexProjectParams('', 1, 1000, 0)
 const herikalyController = IndexHerikalyController.getInstance()
 const employeeController = IndexOrganizatoinEmployeeController.getInstance()
 
-const activeProjectId = computed(() => project.value?.id ?? null)
+const activeProjectId = computed(() => {
+  const id = Number(project.value?.id)
+  return Number.isFinite(id) && id > 0 ? id : null
+})
 
 const departmentParams = computed(
-  () => new IndexHerikalyParams('', 1, 10, 0, false, activeProjectId.value),
+  () =>
+    new IndexHerikalyParams(
+      '',
+      1,
+      10,
+      0,
+      false,
+      activeProjectId.value,
+      activeProjectId.value === null,
+    ),
 )
 
 const employeeParams = computed(
@@ -82,7 +96,8 @@ const objectiveTargetTypeOptions = computed(() => ObjectiveTargetTypeOptions.map
 const objectiveDirectionOptions = computed(() => ObjectiveDirectionOptions.map(translateOption))
 const objectiveFrequencyOptions = computed(() => ObjectiveFrequencyOptions.map(translateOption))
 const selectedTargetTypeOption = computed(
-  () => objectiveTargetTypeOptions.value.find((option) => option.id === targetType.value?.id) ?? null,
+  () =>
+    objectiveTargetTypeOptions.value.find((option) => option.id === targetType.value?.id) ?? null,
 )
 const selectedDirectionOption = computed(
   () => objectiveDirectionOptions.value.find((option) => option.id === direction.value?.id) ?? null,
@@ -99,7 +114,9 @@ const isPeriodicFrequency = computed(
 const isPercentage = computed(
   () => Number(targetType.value?.id) === ObjectiveTargetTypeEnum.Percentage,
 )
-const isNumberTarget = computed(() => Number(targetType.value?.id) === ObjectiveTargetTypeEnum.Number)
+const isNumberTarget = computed(
+  () => Number(targetType.value?.id) === ObjectiveTargetTypeEnum.Number,
+)
 const isReduceDirection = computed(
   () => Number(direction.value?.id) === ObjectiveDirectionEnum.Reduce,
 )
@@ -124,11 +141,12 @@ const targetHelp = computed(() => {
 })
 const selectedYearLabel = computed(() => year.value?.getFullYear().toString() ?? '-')
 const scopeLabel = computed(() => {
-  if (project.value?.title) return project.value.title
+  if (activeProjectId.value && project.value?.title) return project.value.title
   return t('Company-wide')
 })
 const measurementLabel = computed(() => {
-  if (isPeriodicFrequency.value) return translatedOptionTitle(frequency.value) || t('Periodic frequency')
+  if (isPeriodicFrequency.value)
+    return translatedOptionTitle(frequency.value) || t('Periodic frequency')
   return `${translatedOptionTitle(targetType.value)} ${translatedOptionTitle(direction.value)}`.trim()
 })
 const toSingle = (value: TitleInterface | TitleInterface[] | null): TitleInterface | null =>
@@ -212,7 +230,7 @@ const updateData = () => {
 }
 
 const onProjectChange = (value: TitleInterface | TitleInterface[] | null) => {
-  project.value = toSingle(value)
+  project.value = toSingle(value) ?? companyWideProject
   department.value = null
   followUpEmployee.value = null
   updateData()
@@ -255,7 +273,7 @@ watch(
 
     year.value = toYearDate(data.year)
     objective.value = data.objective
-    project.value = data.project
+    project.value = data.project ?? companyWideProject
     targetType.value =
       findOption(ObjectiveTargetTypeOptions, data.targetType) ?? ObjectiveTargetTypeOptions[0]!
     direction.value = findOption(ObjectiveDirectionOptions, data.direction)
@@ -264,7 +282,8 @@ watch(
     target.value = data.target
     baseline.value = data.baseline
     unit.value = data.unit ?? ''
-    frequency.value = findOption(ObjectiveFrequencyOptions, data.frequency) ?? ObjectiveFrequencyOptions[0]!
+    frequency.value =
+      findOption(ObjectiveFrequencyOptions, data.frequency) ?? ObjectiveFrequencyOptions[0]!
     syncConditionalFields()
     updateData()
   },
@@ -394,20 +413,20 @@ defineExpose({ validateRequiredFields })
             <label class="input-label required" for="objective-year">
               <span class="text-red-500">*</span>
               {{ $t('Year') }}
-            </label> 
-           
-              <DatePicker
-                id="objective-year"
-                v-model="year"
-                view="year"
-                date-format="yy"
-                show-icon
-                fluid
-                :manual-input="false"
-                :max-date="maxYearDate"
-                @update:model-value="updateData"
-              />
-           
+            </label>
+
+            <DatePicker
+              id="objective-year"
+              v-model="year"
+              view="year"
+              date-format="yy"
+              show-icon
+              fluid
+              :manual-input="false"
+              :max-date="maxYearDate"
+              @update:model-value="updateData"
+            />
+
             <p v-if="requiredFieldErrors.year" class="required-field-message">
               {{ requiredFieldErrors.year }}
             </p>
@@ -420,6 +439,7 @@ defineExpose({ validateRequiredFields })
               :placeholder="$t('Select project')"
               :controller="projectController"
               :params="projectParams"
+              :prepend-options="companyWideProjectOptions"
               optional
               @update:model-value="onProjectChange"
             />
@@ -475,7 +495,11 @@ defineExpose({ validateRequiredFields })
             </p>
           </div>
 
-          <div v-if="showDirection" class="objective-field input-wrapper" data-required-field="direction">
+          <div
+            v-if="showDirection"
+            class="objective-field input-wrapper"
+            data-required-field="direction"
+          >
             <UpdatedCustomInputSelect
               id="objective-direction"
               :model-value="selectedDirectionOption"
@@ -491,7 +515,11 @@ defineExpose({ validateRequiredFields })
             </p>
           </div>
 
-          <div v-if="isPeriodicFrequency" class="objective-field input-wrapper" data-required-field="frequency">
+          <div
+            v-if="isPeriodicFrequency"
+            class="objective-field input-wrapper"
+            data-required-field="frequency"
+          >
             <UpdatedCustomInputSelect
               id="objective-frequency"
               :model-value="selectedFrequencyOption"
@@ -526,7 +554,11 @@ defineExpose({ validateRequiredFields })
             </p>
           </div>
 
-          <div v-if="showBaseline" class="objective-field input-wrapper" data-required-field="baseline">
+          <div
+            v-if="showBaseline"
+            class="objective-field input-wrapper"
+            data-required-field="baseline"
+          >
             <label class="input-label required" for="objective-baseline">
               <span class="text-red-500">*</span>
               {{ $t('Baseline') }}
@@ -540,7 +572,9 @@ defineExpose({ validateRequiredFields })
               @input="updateData"
             />
             <p class="field-help">
-              {{ $t('The starting value before reduction. For example: consumption of 1,000 units.') }}
+              {{
+                $t('The starting value before reduction. For example: consumption of 1,000 units.')
+              }}
             </p>
             <p v-if="requiredFieldErrors.baseline" class="required-field-message">
               {{ requiredFieldErrors.baseline }}
@@ -552,7 +586,13 @@ defineExpose({ validateRequiredFields })
               <span class="text-red-500">*</span>
               {{ $t('Unit') }}
             </label>
-            <input id="objective-unit" v-model="unit" class="input w-full" type="text" @input="updateData" />
+            <input
+              id="objective-unit"
+              v-model="unit"
+              class="input w-full"
+              type="text"
+              @input="updateData"
+            />
             <p v-if="requiredFieldErrors.unit" class="required-field-message">
               {{ requiredFieldErrors.unit }}
             </p>
@@ -629,7 +669,11 @@ defineExpose({ validateRequiredFields })
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 13%, var(--main-border));
   border-radius: 18px;
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--PrimaryColor) 5%, transparent), transparent 34%),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--PrimaryColor) 5%, transparent),
+      transparent 34%
+    ),
     var(--surface-1);
   box-shadow: 0 18px 42px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
 }
@@ -984,7 +1028,7 @@ defineExpose({ validateRequiredFields })
     grid-column: 1 / -1;
   }
 }
- /* .p-datepicker-dropdown,  .induction-date-button {
+/* .p-datepicker-dropdown,  .induction-date-button {
   display: none !important;
 }
 .p-datepicker-fluid{

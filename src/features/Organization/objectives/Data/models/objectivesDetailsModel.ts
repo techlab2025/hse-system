@@ -22,58 +22,41 @@ export default class ObjectivesDetailsModel {
     public annualOccurrences: number | null,
   ) {}
 
-  static fromMap(data: Record<string, any>): ObjectivesDetailsModel {
+  static fromMap(data: Record<string, unknown>): ObjectivesDetailsModel {
+    const title = (value: unknown): TitleInterface | null => {
+      if (!value || typeof value !== 'object') return null
+      const item = value as Record<string, unknown>
+      const locale = localStorage.getItem('lang') || 'en'
+      const titles = Array.isArray(item.titles)
+        ? (item.titles as { locale?: string; title?: string }[])
+        : []
+      return new TitleInterface({
+        id: Number(item.id),
+        title: String(
+          item.title ??
+            item.name ??
+            titles.find((t) => t.locale === locale)?.title ??
+            titles[0]?.title ??
+            '',
+        ),
+      })
+    }
+    const number = (value: unknown): number | null =>
+      value == null || value === '' || !Number.isFinite(Number(value)) ? null : Number(value)
     return new ObjectivesDetailsModel(
-      data.id,
-
-      data.year,
-
-      data.objective,
-
-      data.project
-        ? new TitleInterface({
-            id: data.project.id,
-            title:
-              data.project.titles?.find(
-                (item: any) => item.locale === 'en',
-              )?.title ??
-              data.project.titles?.[0]?.title ??
-              '',
-          })
-        : null,
-
-      data.target_type,
-
-      data.direction,
-
-      data.department
-        ? new TitleInterface({
-            id: data.department.id,
-            title:
-              data.department.titles?.find(
-                (item: any) => item.locale === 'en',
-              )?.title ??
-              data.department.titles?.[0]?.title ??
-              '',
-          })
-        : null,
-
-      data.follow_up_employee
-        ? new TitleInterface({
-            id: data.follow_up_employee.id,
-            title: data.follow_up_employee.name ?? '',
-          })
-        : null,
-
-      data.target,
-
-      data.baseline,
-
-      data.unit,
-
-      data.frequency,
-
-      data.annual_occurrences,
+      Number(data.id),
+      String(data.year ?? ''),
+      String(data.objective ?? ''),
+      title(data.project),
+      Number(data.target_type) as ObjectiveTargetTypeEnum,
+      number(data.direction) as ObjectiveDirectionEnum | null,
+      title(data.department),
+      title(data.follow_up_employee),
+      number(data.target),
+      number(data.baseline),
+      typeof data.unit === 'string' ? data.unit : null,
+      number(data.frequency),
+      number(data.annual_occurrences),
     )
   }
 }

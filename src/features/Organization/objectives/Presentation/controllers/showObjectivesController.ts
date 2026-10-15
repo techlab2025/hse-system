@@ -13,6 +13,10 @@ export default class ShowObjectivesController extends ControllerInterface<Object
 
   private showObjectivesUseCase = new ShowObjectivesUseCase()
 
+  static create() {
+    return new ShowObjectivesController()
+  }
+
   static getInstance() {
     if (!this.instance) {
       this.instance = new ShowObjectivesController()
@@ -25,7 +29,8 @@ export default class ShowObjectivesController extends ControllerInterface<Object
     // console.log(params)
     this.setLoading()
 
-    const dataState: DataState<ObjectivesDetailsModel> = await this.showObjectivesUseCase.call(params)
+    const dataState: DataState<ObjectivesDetailsModel> =
+      await this.showObjectivesUseCase.call(params)
 
     this.setState(dataState)
     if (this.isDataSuccess()) {

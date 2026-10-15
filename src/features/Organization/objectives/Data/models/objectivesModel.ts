@@ -1,3 +1,6 @@
+import ObjectivesDetailsModel from './objectivesDetailsModel'
+import { objectiveProgressContract } from '../../ObjectiveProgress/Data/apiServices/objectiveProgressContract'
+import type ObjectiveProgressModel from '../../ObjectiveProgress/Data/models/objectiveProgressModel'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type {
   ObjectiveDirectionEnum,
@@ -5,6 +8,12 @@ import type {
 } from '../../Core/enums/objectivesEnums'
 
 export default class ObjectivesModel extends TitleInterface {
+  public department: TitleInterface | null = null
+  public followUpEmployee: TitleInterface | null = null
+  public baseline: number | null = null
+  public unit: string | null = null
+  public annualOccurrences: number | null = null
+  public progressSummary: ObjectiveProgressModel | null = null
   public id: number
   public year: string
   public objective: string
@@ -46,7 +55,7 @@ export default class ObjectivesModel extends TitleInterface {
   }
 
   static fromMap(data: Record<string, unknown>): ObjectivesModel {
-    return new ObjectivesModel(
+    const model = new ObjectivesModel(
       data.id as number,
       data.year as string,
       data.objective as string,
@@ -59,5 +68,16 @@ export default class ObjectivesModel extends TitleInterface {
       data.direction_title as string,
       data.frequency_title as string,
     )
+    // Optional fields use the already documented objective-details mapping. No per-row requests.
+    const details = ObjectivesDetailsModel.fromMap(data)
+    model.department = details.department
+    model.followUpEmployee = details.followUpEmployee
+    model.baseline = details.baseline
+    model.unit = details.unit
+    model.annualOccurrences = details.annualOccurrences
+    if (objectiveProgressContract.confirmed) {
+      model.progressSummary = objectiveProgressContract.decodeSummary(data)
+    }
+    return model
   }
 }
