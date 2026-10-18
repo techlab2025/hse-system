@@ -136,3 +136,187 @@
   ) {
   border-radius: var(--hse-control-radius, 9px) !important;
 }
+
+/* Application-wide form composition --------------------------------------
+ * Form components intentionally share these foundations. Feature components
+ * keep their bindings and layout rules while receiving one HSE.Cloud.AI
+ * surface, field, section, and action language.
+ */
+.hse-cloud-identity
+  :is(.main-content, .p-dialog-content, .p-drawer-content)
+  form:not(.login-form):not(.hse-form-bare) {
+  min-width: 0;
+  padding: clamp(1rem, 2vw, 1.5rem);
+  border: var(--hse-border-width) solid var(--hse-color-border);
+  border-radius: var(--hse-radius-card);
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(in srgb, var(--identity-primary) 5%, transparent),
+      transparent 28%
+    ),
+    var(--hse-color-surface);
+  box-shadow: var(--hse-shadow-sm);
+}
+
+.hse-cloud-identity
+  form:not(.login-form):not(.hse-form-bare)
+  > :is(.input-wrapper, [class*='col-span']):not(.button-wrapper):not([class*='shell']):not(
+    [class*='section']
+  ):not([class*='header']):not(.hse-project-root) {
+  min-width: 0;
+  padding: 0.8rem;
+  border: 1px solid transparent;
+  border-radius: var(--hse-radius-input-group, 0.875rem);
+  background: color-mix(in srgb, var(--hse-color-surface-muted) 72%, transparent);
+  transition:
+    border-color var(--hse-transition-fast) var(--hse-ease),
+    background-color var(--hse-transition-fast) var(--hse-ease),
+    box-shadow var(--hse-transition-fast) var(--hse-ease),
+    transform var(--hse-transition-fast) var(--hse-ease);
+}
+
+.hse-cloud-identity
+  form:not(.login-form):not(.hse-form-bare)
+  > :is(.input-wrapper, [class*='col-span']):not(.button-wrapper):not([class*='shell']):not(
+    [class*='section']
+  ):not([class*='header']):not(.hse-project-root):focus-within {
+  border-color: color-mix(in srgb, var(--identity-primary) 28%, var(--hse-color-border));
+  background: var(--hse-color-surface);
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--hse-color-navy) 7%, transparent);
+  transform: translateY(-1px);
+}
+
+.hse-cloud-identity
+  :is([class*='form-section'], [class*='form-panel'], .form-card, fieldset:not(.p-fieldset)) {
+  min-width: 0;
+  border: var(--hse-border-width) solid var(--hse-color-border);
+  border-radius: var(--hse-radius-card);
+  background: var(--hse-color-surface);
+  box-shadow: var(--hse-shadow-sm);
+}
+
+.hse-cloud-identity
+  :is(
+    [class*='section-heading'],
+    [class*='form-heading'],
+    .form-section-header,
+    .form-card-header
+  ) {
+  border-color: var(--hse-color-divider);
+  color: var(--hse-color-text);
+}
+
+.hse-cloud-identity
+  :is([class*='section-heading'], [class*='form-heading'], .form-section-header)
+  :is(h2, h3, h4) {
+  color: var(--hse-color-text);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+}
+
+.hse-cloud-identity
+  :is([class*='section-heading'], [class*='form-heading'], .form-section-header)
+  p {
+  color: var(--hse-color-text-muted);
+  line-height: 1.55;
+}
+
+.hse-cloud-identity
+  form
+  :is(.input-wrapper, .field, .form-group, .form-field):focus-within
+  > label {
+  color: var(--identity-primary, var(--hse-color-primary));
+}
+
+.hse-cloud-identity
+  form
+  :is(.required-field-message, .error-message, .p-error, [class*='validation-error']) {
+  display: flex;
+  align-items: center;
+  gap: var(--hse-space-1);
+  margin-block-start: 0.4rem;
+  color: var(--hse-color-danger, var(--status-danger));
+  font-size: var(--hse-text-xs);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.hse-cloud-identity form :is(.required-field-message, .error-message, .p-error)::before {
+  width: 0.38rem;
+  height: 0.38rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: currentColor;
+  content: '';
+}
+
+.hse-cloud-identity
+  form
+  :is(.p-fileupload, .file-upload-wrapper, .upload-area, [class*='upload-card']) {
+  border-radius: var(--hse-radius-card);
+}
+
+.hse-cloud-identity form :is(.upload-area, .input-file, [class*='drop-zone']) {
+  border-color: color-mix(in srgb, var(--identity-primary) 30%, var(--hse-color-border));
+  background: color-mix(in srgb, var(--hse-color-primary-subtle) 42%, var(--hse-color-surface));
+  transition:
+    border-color var(--hse-transition-fast) var(--hse-ease),
+    background-color var(--hse-transition-fast) var(--hse-ease);
+}
+
+.hse-cloud-identity form :is(.upload-area, .input-file, [class*='drop-zone']):hover:not(.disabled) {
+  border-color: var(--identity-primary, var(--hse-color-primary));
+  background: var(--hse-color-primary-subtle);
+}
+
+.hse-cloud-identity form :is(.button-wrapper, .form-actions, .create-form-actions) {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--hse-space-3);
+  min-width: 0;
+  padding-block-start: var(--hse-space-4);
+  border-block-start: 1px solid var(--hse-color-divider);
+}
+
+.hse-cloud-identity form :is(.button-wrapper, .form-actions, .create-form-actions) > * {
+  min-width: min(10rem, 100%);
+}
+
+.hse-cloud-identity form :is(input, textarea, select, button, .p-component):disabled,
+.hse-cloud-identity form :is(.p-disabled, [aria-disabled='true']) {
+  cursor: not-allowed;
+  opacity: 0.62;
+}
+
+@media (max-width: 768px) {
+  .hse-cloud-identity
+    :is(.main-content, .p-dialog-content, .p-drawer-content)
+    form:not(.login-form):not(.hse-form-bare) {
+    padding: 1rem;
+  }
+
+  .hse-cloud-identity form :is(.button-wrapper, .form-actions, .create-form-actions) {
+    flex-wrap: wrap;
+  }
+
+  .hse-cloud-identity form :is(.button-wrapper, .form-actions, .create-form-actions) > * {
+    flex: 1 1 10rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hse-cloud-identity
+    form:not(.login-form):not(.hse-form-bare)
+    > :is(.input-wrapper, [class*='col-span']):not(.button-wrapper):not([class*='shell']):not(
+      [class*='section']
+    ):not([class*='header']):not(.hse-project-root) {
+    padding: 0.65rem;
+  }
+
+  .hse-cloud-identity form :is(.button-wrapper, .form-actions, .create-form-actions) > * {
+    flex-basis: 100%;
+    width: 100%;
+  }
+}
