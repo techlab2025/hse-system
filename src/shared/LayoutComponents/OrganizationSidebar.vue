@@ -974,6 +974,10 @@ const activeGroup = computed(() => {
 
 const isSearching = computed(() => searchTerm.value.trim().length > 0)
 
+const clearSearch = () => {
+  searchTerm.value = ''
+}
+
 const visibleRouteGroups = computed<RouteGroup[]>(() => {
   const query = searchTerm.value.trim().toLocaleLowerCase()
   const groups = query ? routeGroups.value : activeGroup.value ? [activeGroup.value] : []
@@ -1135,17 +1139,31 @@ onBeforeUnmount(() => {
             </div>
           </div>
 
-          <label class="sidebar-search">
-            <SidebarUnicon name="search" class="sidebar-search__icon" />
+          <div class="sidebar-search" role="search">
+            <span class="sidebar-search__icon-shell" aria-hidden="true">
+              <SidebarUnicon name="search" class="sidebar-search__icon" />
+            </span>
             <input
               v-model="searchTerm"
               type="search"
               class="sidebar-search__input"
               :placeholder="$t('search')"
               :aria-label="$t('search_all_sidebar_routes')"
+              autocomplete="off"
+              spellcheck="false"
               @keydown.esc="hidePane"
             />
-          </label>
+            <button
+              v-if="isSearching"
+              type="button"
+              class="sidebar-search__clear"
+              :aria-label="$t('clear')"
+              :title="$t('clear')"
+              @click="clearSearch"
+            >
+              <SidebarUnicon name="times" />
+            </button>
+          </div>
         </header>
 
         <nav
@@ -1270,8 +1288,7 @@ onBeforeUnmount(() => {
   overflow-wrap: normal;
 }
 .strip-icon,
-.side-icon,
-.sidebar-search__icon {
+.side-icon {
   width: 20px;
   height: 20px;
   flex-shrink: 0;
@@ -1324,41 +1341,107 @@ onBeforeUnmount(() => {
   flex-shrink: 0;
 }
 .sidebar-search {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-height: 42px;
-  padding: 0 12px;
-  border: 1px solid rgb(255 255 255 / 16%);
-  border-radius: 9px;
-  background: rgb(255 255 255 / 5%);
+  gap: 9px;
+  min-height: 46px;
+  padding: 6px 7px;
+  border: 1px solid color-mix(in srgb, var(--hse-nav-text) 22%, transparent);
+  border-radius: var(--hse-control-radius, 9px) !important;
+  background: color-mix(in srgb, #fff 7%, transparent);
   color: var(--hse-nav-text);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 4%);
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+.sidebar-search:hover {
+  border-color: color-mix(in srgb, var(--hse-nav-accent) 48%, transparent);
+  background: color-mix(in srgb, #fff 9%, transparent);
 }
 .sidebar-search:focus-within {
   border-color: var(--hse-nav-accent);
-  box-shadow: 0 0 0 3px rgb(110 162 255 / 12%);
+  background: color-mix(in srgb, #fff 10%, transparent);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--hse-nav-accent) 18%, transparent),
+    inset 0 1px 0 rgb(255 255 255 / 5%);
+}
+.sidebar-search__icon-shell {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 32px;
+  border: 1px solid color-mix(in srgb, var(--hse-nav-accent) 25%, transparent);
+  border-radius: var(--hse-control-radius, 9px);
+  background: var(--hse-nav-active);
+  color: color-mix(in srgb, var(--hse-nav-accent) 82%, #fff);
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+.sidebar-search:focus-within .sidebar-search__icon-shell {
+  background: color-mix(in srgb, var(--hse-nav-accent) 22%, transparent);
+  color: #fff;
 }
 .modern-sidebar .sidebar-search__input {
+  appearance: none;
   width: 100%;
   min-width: 0;
-  padding: 0;
+  min-height: 32px;
+  margin: 0;
   border: 0 !important;
   border-radius: 0 !important;
   padding: 0 !important;
   box-shadow: none !important;
   outline: 0 !important;
-  background: transparent;
+  background: transparent !important;
   color: #fff;
-  font: 400 13px/1.5 var(--hse-project-font);
+  caret-color: var(--hse-nav-accent);
+  font: 500 13px/1.5 var(--hse-project-font);
 }
 .modern-sidebar .sidebar-search__input:focus-visible {
   outline: 0;
 }
 .sidebar-search__icon {
-  color: var(--hse-nav-text);
+  width: 17px;
+  height: 17px;
+  color: currentColor;
 }
 .sidebar-search__input::placeholder {
+  color: color-mix(in srgb, var(--hse-nav-text) 82%, transparent);
+  opacity: 1;
+}
+.sidebar-search__input::-webkit-search-cancel-button {
+  display: none;
+}
+.sidebar-search__clear {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 30px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--hse-control-radius, 9px) !important;
+  background: transparent;
   color: var(--hse-nav-text);
+  cursor: pointer;
+  transition:
+    background 160ms ease,
+    color 160ms ease;
+}
+.sidebar-search__clear:hover,
+.sidebar-search__clear:focus-visible {
+  background: var(--hse-nav-active);
+  color: #fff;
+  outline: none;
+}
+.sidebar-search__clear :deep(svg) {
+  width: 16px;
+  height: 16px;
 }
 .side-pane-routes {
   flex: 1;
