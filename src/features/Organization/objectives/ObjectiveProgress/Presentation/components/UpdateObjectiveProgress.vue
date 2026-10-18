@@ -3,7 +3,6 @@ import { computed, onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import Select from 'primevue/select'
-import InputNumber from 'primevue/inputnumber'
 import Textarea from 'primevue/textarea'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import { DataSuccess } from '@/base/core/networkStructure/Resources/dataState/data_state'
@@ -254,15 +253,16 @@ async function save() {
           <div class="op-field">
             <label for="objective-actual-result"
               >{{ $t(actualLabel) }} {{ actualUnit(objective) }} *</label
-            ><InputNumber
-              input-id="objective-actual-result"
+            ><input
+              id="objective-actual-result"
               v-model="draft.actualResult"
+              class="op-number-input"
+              type="number"
+              inputmode="decimal"
               :min="0"
-              :max-fraction-digits="objective.targetType === Type.PeriodicFrequency ? 0 : 8"
-              :locale="locale"
-              :use-grouping="false"
+              :step="objective.targetType === Type.PeriodicFrequency ? 1 : 'any'"
               :disabled="saving"
-              :invalid="!!errors.actualResult"
+              :aria-invalid="Boolean(errors.actualResult)"
               aria-describedby="actual-help actual-error"
             /><small id="actual-help">{{
               $t(

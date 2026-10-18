@@ -198,13 +198,13 @@
   gap: 8px;
   min-width: 0;
 }
-.op-page .op-field :is(.p-select, .p-inputnumber, .p-textarea, .p-inputnumber-input) {
+.op-page .op-field :is(.p-select, .p-inputnumber, .p-textarea, .p-inputnumber-input, .op-number-input) {
   width: 100%;
   min-width: 0;
 }
-.op-page .op-field :is(.p-select, .p-textarea, .p-inputnumber-input) {
+.op-page .op-field :is(.p-select, .p-textarea, .p-inputnumber-input, .op-number-input) {
   border: 1px solid var(--main-border);
-  border-radius: 10px;
+  border-radius: var(--hse-control-radius, 9px);
   min-height: 44px;
   background: var(--surface-1);
   color: var(--text-strong);
