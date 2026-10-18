@@ -68,6 +68,7 @@ const dateLabel = (value: string | null) =>
                 'recordedBy',
                 'recordedAt',
                 'notes',
+                'total_progress',
                 // 'corrections',
               ]"
               :key="key"
@@ -81,12 +82,13 @@ const dateLabel = (value: string | null) =>
           <tr v-for="record in rows" :key="record.id">
             <td>{{ periodLabel(record.period) }}</td>
             <td>
-              {{ record.actualResult ?? '—' }}%
-              <!-- {{ record.actualResult !== null ? actualUnit(objective) : '' }} -->
+              {{ record.actualResult ?? '—' }}
+              {{ record.actualResult !== null ? actualUnit(objective) : '' }}
             </td>
             <td>{{ record.createdBy?.name ?? record.recordedBy ?? '—' }}</td>
             <td>{{ dateLabel(record.createdAt ?? record.recordedAt) }}</td>
             <td class="op-notes">{{ record.notes || '—' }}</td>
+            <td class="op-totla">{{ record.progress || '—' }}%</td>
             <!-- <td>
               <ul v-if="record.attachments.length" class="op-files">
                 <li v-for="file in record.attachments" :key="file.id">

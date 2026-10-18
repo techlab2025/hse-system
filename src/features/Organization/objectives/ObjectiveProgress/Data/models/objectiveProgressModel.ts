@@ -29,6 +29,7 @@ export default class ObjectiveProgressModel {
     public updatedAt: string | null,
     public corrections: ProgressCorrection[],
     public indicator: number | null,
+    public progress: number | null,
   ) {}
 
   static fromMap(data: unknown): ObjectiveProgressModel {
@@ -91,6 +92,7 @@ export default class ObjectiveProgressModel {
       nullableString(item.updated_at),
       corrections,
       nullableNumber(item.indicator ?? item.achievement_percentage),
+      nullableNumber(item.progress),
     )
   }
 }

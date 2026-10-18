@@ -416,21 +416,21 @@ const route = useRoute()
       </div>
     </div>
 
-      <div class="form-sticky-button flex gap-2 create-form-actions">
-        <router-link
-          v-if="!route.path.includes('project-progress')"
-          to="/organization"
-          class="btn btn-cancel"
-          style="width: 15%"
-          >{{ $t('cancel') }}</router-link
-        >
-        <!-- <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+    <div class="form-sticky-button flex gap-2 create-form-actions">
+      <router-link
+        v-if="!route.path.includes('project-progress')"
+        to="/organization"
+        class="btn btn-cancel"
+        style="width: 15%"
+        >{{ $t('cancel') }}</router-link
+      >
+      <!-- <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
           {{ $t('save and new') }}
         </button> -->
-        <button type="submit" class="btn btn-primary">
-          {{ route.path.includes('project-progress') ? $t('save and next step') : $t('save') }}
-        </button>
-      </div>
+      <button type="submit" class="btn btn-primary">
+        {{ route.path.includes('project-progress') ? $t('save and next step') : $t('save') }}
+      </button>
+    </div>
   </form>
 </template>
 
@@ -491,4 +491,14 @@ const route = useRoute()
     }
   }
 }
+.serial-number-input-fields {
+  padding-block: 15px !important;
+}
+.serial-form-section {
+  margin-block: 12px;
+}
+
+// :deep(.employee-header) {
+//   background-color: red !important;
+// }
 </style>

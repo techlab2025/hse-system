@@ -21,7 +21,7 @@ const fields = computed(() => {
     ['op.target', targetValue(o)],
     ['op.department', o.department?.title],
     ['op.followUp', o.followUpEmployee?.title],
-    ['progress' , o.progress || 0]
+    ['progress', o.progress + '%' || 0],
   ]
   if (o.targetType === ObjectiveTargetTypeEnum.PeriodicFrequency)
     values.push(

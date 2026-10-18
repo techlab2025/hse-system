@@ -80,4 +80,8 @@ watch(
   margin-top: 8px;
   display: block;
 }
+:deep(.employee-header) {
+  background-color: white;
+  margin-block: 12px;
+}
 </style>

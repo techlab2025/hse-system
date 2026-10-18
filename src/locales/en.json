@@ -4586,6 +4586,7 @@
     "invalidActual": "Enter a finite, non-negative actual result.",
     "integerRequired": "Completed occurrences must be a whole number.",
     "tooManyFiles": "Too many attachments selected.",
-    "invalidFile": "A file exceeds the allowed size or has an unsupported type."
+    "invalidFile": "A file exceeds the allowed size or has an unsupported type.",
+    "total_progress":"total progress"
   }
 }
