@@ -1286,15 +1286,16 @@ export enum PermissionsEnum {
   ppe_matrix_logs_UPDATE = 'PPE04',
   ppe_matrix_logs_DELETE = 'PPE05',
 
-   objectives_ALL = 'PPE00',
-  objectives_FETCH = 'PPE01',
-  objectives_DETAILS = 'PPE02',
-  objectives_CREATE = 'PPE03',
-  objectives_UPDATE = 'PPE04',
-  objectives_DELETE = 'PPE05',
+  objectives_ALL = 'OBJ00',
+  objectives_FETCH = 'OBJ01',
+  objectives_DETAILS = 'OBJ02',
+  objectives_CREATE = 'OBJ03',
+  objectives_UPDATE = 'OBJ04',
+  objectives_DELETE = 'OBJ05',
 
-
-
+  PTW_All = 'PTW00',
+  PTW_FETCH = 'PTW01',
+  PTW_CREATE = 'PTW02',
 
   PROJECT_PERMIT = 'PP01',
 }

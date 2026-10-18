@@ -1996,7 +1996,7 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
-          {
+        {
           key: PermissionsEnum.inductions_ALL,
           code: PermissionsEnum.inductions_ALL,
           label: 'Inductions',
@@ -2033,7 +2033,7 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
-           {
+        {
           key: PermissionsEnum.ppe_matrix_logs_ALL,
           code: PermissionsEnum.ppe_matrix_logs_ALL,
           label: 'PPE Matrix Logs',
@@ -2069,8 +2069,8 @@ export const OrgPermissions: PermissionItem = {
               label: 'Delete',
             },
           ],
-        }, 
-            {
+        },
+        {
           key: PermissionsEnum.objectives_ALL,
           code: PermissionsEnum.objectives_ALL,
           label: 'Objectives',
@@ -2106,8 +2106,29 @@ export const OrgPermissions: PermissionItem = {
               label: 'Delete',
             },
           ],
-        }, 
-       
+        },
+        {
+          key: PermissionsEnum.PTW_All,
+          code: PermissionsEnum.PTW_All,
+          label: 'Permit to wotk',
+          permissions: [
+            {
+              key: PermissionsEnum.PTW_All,
+              code: PermissionsEnum.PTW_All,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.PTW_FETCH,
+              code: PermissionsEnum.PTW_FETCH,
+              label: 'Table',
+            },
+            {
+              key: PermissionsEnum.PTW_CREATE,
+              code: PermissionsEnum.PTW_CREATE,
+              label: 'Create',
+            },
+          ],
+        },
 
         // {
         //   key: PermissionsEnum.PROJECT_PROGRESS_ALL,
