@@ -33,7 +33,7 @@ async function fetchAll() {
   error.value = ''
   try {
     const state = await FetchRiskAssessmentsController.getInstance().execute(
-      new FetchRiskAssessmentsParams(),
+      new FetchRiskAssessmentsParams({ projectId: projectId }),
     )
     if (FetchRiskAssessmentsController.getInstance().isDataSuccess())
       items.value = state.value.data ?? []
