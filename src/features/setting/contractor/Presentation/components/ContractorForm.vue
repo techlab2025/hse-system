@@ -15,7 +15,6 @@ import ScopeIdParams from '../../Core/params/AddscopesParams'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import AddScope from '@/features/Organization/Scope/Presentation/components/AddScope.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
-import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import HandleFIlesUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 
@@ -36,7 +35,7 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new editContractorParams(
-        props.data?.id! ?? 0,
+        props.data.id,
         Name.value,
         phoneNumber.value,
         Scopes,
@@ -169,70 +168,11 @@ const UpdateSerial = (data) => {
 }
 const SerialNumber = ref()
 
-const fields = ref([
-  {
-    key: 'SerialNumber',
-    label: 'serial_number',
-    placeholder: 'You can leave it (auto-generated)',
-    value: SerialNumber.value,
-    enabled: props?.data?.id ? false : true,
-  },
-])
-interface PreviewFile {
-  id: string
-  name: string
-  type: string
-  size: string
-  url: string
-}
-
-const files = ref<PreviewFile[]>([])
-
-const handleFileUpload = async (event: Event) => {
-  const input = event.target as HTMLInputElement
-  if (!input.files?.length) return
-
-  for (const file of Array.from(input.files)) {
-    const base64 = await filesToBase64(file)
-    console.log(base64.file)
-
-    files.value.push({
-      id: crypto.randomUUID(),
-      name: file.name,
-      type: file.type,
-      size: formatFileSize(file.size),
-      url: URL.createObjectURL(file),
-    })
-  }
-
-  // Reset input so same file can be re-added
-  input.value = ''
-}
-
-const downloadFile = (file: PreviewFile) => {
-  const a = document.createElement('a')
-  a.href = file.url
-  a.download = file.name
-  a.click()
-}
-
-const removeFile = (id: string) => {
-  const index = files.value.findIndex((f) => f.id === id)
-  if (index !== -1) {
-    URL.revokeObjectURL(files.value[index].url)
-    files.value.splice(index, 1)
-  }
-}
-
-const formatFileSize = (bytes: number): string => {
-  if (bytes < 1024) return `${bytes} B`
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
-}
-
 const UploadedFiles = ref<string[]>([])
-const handleFilesChange = (files: any) => {
-  UploadedFiles.value = files.map((f: any) => f.base64)
+const handleFilesChange = (files: Array<{ base64?: string }>) => {
+  UploadedFiles.value = files
+    .map((file) => file.base64)
+    .filter((base64): base64 is string => Boolean(base64))
   updateData()
   console.log(UploadedFiles.value)
 }
@@ -305,223 +245,519 @@ defineExpose({
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Name">
-    <label for="name">{{ $t('name') }}</label>
-    <input
-      type="text"
-      id="name"
-      class="input"
-      v-model="Name"
-      @input="setName"
-      placeholder="Enter Name "
-    />
-    <p v-if="getFieldError('Name')" class="required-field-message">
-      {{ getFieldError('Name') }}
-    </p>
+  <div class="contractor-form-shell col-span-4">
+    <header class="contractor-form-hero">
+      <div class="contractor-form-hero__mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M4 20h16M6 20V8l6-4 6 4v12M9 11h2m2 0h2m-6 4h2m2 0h2" />
+        </svg>
+      </div>
+      <div class="contractor-form-hero__copy">
+        <p class="contractor-form-hero__eyebrow">
+          {{ data?.id ? $t('edit') : $t('add') }} · Contractor registry
+        </p>
+        <h2>{{ data?.id ? 'Update contractor profile' : 'Create contractor profile' }}</h2>
+        <p>Keep company, contact, service scope, and contract records together.</p>
+      </div>
+      <span class="contractor-form-hero__status">
+        <span aria-hidden="true"></span>
+        {{ SelectedStatus?.title || $t('status') }}
+      </span>
+    </header>
+
+    <section class="contractor-form-section" aria-labelledby="contractor-company-heading">
+      <div class="contractor-section-heading">
+        <span class="contractor-section-heading__index">01</span>
+        <div>
+          <h3 id="contractor-company-heading">Company identity</h3>
+          <p>Record the contractor’s primary identity and company contact details.</p>
+        </div>
+      </div>
+
+      <div class="contractor-field-grid">
+        <div class="input-wrapper field-required" data-required-field="Name">
+          <label for="name">{{ $t('name') }}</label>
+          <input
+            id="name"
+            v-model="Name"
+            type="text"
+            class="input"
+            :placeholder="$t('name')"
+            @input="setName"
+          />
+          <p v-if="getFieldError('Name')" class="required-field-message">
+            {{ getFieldError('Name') }}
+          </p>
+        </div>
+
+        <div v-if="!data?.id" class="input-wrapper">
+          <label for="serialNumber">{{ $t('serial_number') }}</label>
+          <input
+            id="serialNumber"
+            v-model="SerialNumber"
+            type="text"
+            :disabled="projtecStateus.isSerialNumberAuto()"
+            :placeholder="
+              projtecStateus.isSerialNumberAuto()
+                ? 'You can leave it (auto-generated)'
+                : 'Enter Your Serial Number'
+            "
+            @input="UpdateSerial"
+          />
+          <small class="field-helper">A unique reference can be generated automatically.</small>
+        </div>
+
+        <div class="input-wrapper field-required" data-required-field="phoneNumber">
+          <label for="company_number">{{ $t('phone_number') }}</label>
+          <input
+            id="company_number"
+            v-model="phoneNumber"
+            type="tel"
+            class="input"
+            placeholder="Enter phone number"
+            @input="setPhoneNumber"
+          />
+          <p v-if="getFieldError('phoneNumber')" class="required-field-message">
+            {{ getFieldError('phoneNumber') }}
+          </p>
+        </div>
+
+        <div class="input-wrapper">
+          <label for="company_email">{{ $t('email') }}</label>
+          <input
+            id="company_email"
+            v-model="CompanyEmail"
+            type="email"
+            class="input"
+            placeholder="Enter company email"
+            @input="setCompanyEmail"
+          />
+        </div>
+
+        <div class="input-wrapper contractor-field--wide">
+          <label for="company_address">{{ $t('address') }}</label>
+          <input
+            id="company_address"
+            v-model="CompanyAddress"
+            type="text"
+            class="input"
+            placeholder="Enter company address"
+            @input="setCompanyAddress"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="contractor-form-section" aria-labelledby="contractor-contact-heading">
+      <div class="contractor-section-heading">
+        <span class="contractor-section-heading__index">02</span>
+        <div>
+          <h3 id="contractor-contact-heading">Contact and service coverage</h3>
+          <p>Connect the responsible person with the contractor’s approved scopes and status.</p>
+        </div>
+      </div>
+
+      <div class="contractor-field-grid">
+        <div class="input-wrapper">
+          <label for="contact_person">{{ $t('person_name') }}</label>
+          <input
+            id="contact_person"
+            v-model="contactPerson"
+            type="text"
+            class="input"
+            placeholder="Enter contact person"
+            @input="setcontactPerson"
+          />
+        </div>
+
+        <div class="input-wrapper">
+          <label for="contact_person_email">{{ $t('person_email') }}</label>
+          <input
+            id="contact_person_email"
+            v-model="contactPersonEmail"
+            type="email"
+            class="input"
+            placeholder="Enter contact email"
+            @input="setcontactPersonEmail"
+          />
+        </div>
+
+        <div class="input-wrapper field-required" data-required-field="contactPersonPhone">
+          <label for="contact_person_phone">{{ $t('person_phone') }}</label>
+          <input
+            id="contact_person_phone"
+            v-model="contactPersonPhone"
+            type="tel"
+            class="input"
+            placeholder="Enter contact phone"
+            @input="setcontactPersonPhone"
+          />
+          <p v-if="getFieldError('contactPersonPhone')" class="required-field-message">
+            {{ getFieldError('contactPersonPhone') }}
+          </p>
+        </div>
+
+        <div class="input-wrapper" data-required-field="Scope">
+          <UpdatedCustomInputSelect
+            id="Scope"
+            :modelValue="Scope"
+            class="input"
+            :controller="indexScopeController"
+            :params="indexScopeParams"
+            :label="$t('scope of service')"
+            placeholder="Select scope of service"
+            :type="2"
+            :isDialog="true"
+            v-model:dialogVisible="scopeDialogRef"
+            @update:modelValue="setScope"
+            @close="scopeDialogRef = false"
+          >
+            <template #LabelHeader>
+              <button class="inline-create-action" type="button" @click="scopeDialogRef = true">
+                + New
+              </button>
+            </template>
+            <template #Dialog>
+              <AddScope @update:data="scopeDialogRef = false" />
+            </template>
+          </UpdatedCustomInputSelect>
+          <p v-if="getFieldError('Scope')" class="required-field-message">
+            {{ getFieldError('Scope') }}
+          </p>
+        </div>
+
+        <div class="input-wrapper contractor-field--wide contractor-status-field">
+          <CustomSelectInput
+            id="Status"
+            :modelValue="SelectedStatus"
+            class="input"
+            :static-options="StatusList"
+            :label="$t('status')"
+            :reload="false"
+            placeholder="Select contractor status"
+            @update:modelValue="setStatus"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="contractor-form-section" aria-labelledby="contractor-contract-heading">
+      <div class="contractor-section-heading">
+        <span class="contractor-section-heading__index">03</span>
+        <div>
+          <h3 id="contractor-contract-heading">Contract validity and evidence</h3>
+          <p>Set the expiry date and attach the latest supporting contract document.</p>
+        </div>
+      </div>
+
+      <div class="contractor-document-grid">
+        <div class="input-wrapper field-required" data-required-field="date">
+          <label for="expiry_date">{{ $t('expiry_date') }}</label>
+          <DatePicker
+            id="expiry_date"
+            :modelValue="date"
+            class="input"
+            label="Date"
+            placeholder="Select contract expiry date"
+            @update:modelValue="setExpiryDate"
+          />
+          <p v-if="getFieldError('date')" class="required-field-message">
+            {{ getFieldError('date') }}
+          </p>
+        </div>
+
+        <div class="contractor-upload-card">
+          <div class="contractor-upload-card__copy">
+            <span class="contractor-upload-card__icon" aria-hidden="true">↑</span>
+            <div>
+              <strong>{{ $t('upload contract image') }}</strong>
+              <p>PDF, Office document, or image. One current contract file.</p>
+            </div>
+          </div>
+          <HandleFIlesUpload
+            :label="$t('upload contract image')"
+            :file="data?.contractFile"
+            accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
+            :max-files="1"
+            :multiple="false"
+            className="input-file"
+            @change="handleFilesChange"
+          />
+        </div>
+      </div>
+    </section>
   </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <label for="serialNumber">{{ $t('serial_number') }}</label>
-    <input
-      type="text"
-      v-model="SerialNumber"
-      @input="UpdateSerial"
-      id="serialNumber"
-      :disabled="projtecStateus.isSerialNumberAuto()"
-      :placeholder="
-        projtecStateus.isSerialNumberAuto()
-          ? 'You can leave it (auto-generated)'
-          : 'Enter Your Serial Number'
-      "
-    />
-  </div>
-  <div
-    class="input-wrapper col-span-4 md:col-span-2 field-required"
-    data-required-field="phoneNumber"
-  >
-    <label for="company_number">{{ $t('phone_number') }}</label>
-    <input
-      type="text"
-      id="company_number"
-      min="1"
-      class="input"
-      v-model="phoneNumber"
-      @input="setPhoneNumber"
-      placeholder="Enter  Phone "
-    />
-    <p v-if="getFieldError('phoneNumber')" class="required-field-message">
-      {{ getFieldError('phoneNumber') }}
-    </p>
-  </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="company_email">{{ $t('email') }}</label>
-    <input
-      type="email"
-      id="company_email"
-      class="input"
-      v-model="CompanyEmail"
-      @input="setCompanyEmail"
-      placeholder="Enter  Email "
-    />
-  </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper">
-    <label for="company_address">{{ $t('address') }}</label>
-    <input
-      type="text"
-      id="company_address"
-      class="input"
-      v-model="CompanyAddress"
-      @input="setCompanyAddress"
-      placeholder="Enter  Adress "
-    />
-  </div>
-  <div class="col-span-4 md:col-span-4 input-wrapper border_line"></div>
-
-    <div class="col-span-4 md:col-span-2 input-wrapper">
-      <label for="contact_person">{{ $t('person_name') }}</label>
-      <input
-        type="text"
-        id="contact_person"
-        class="input"
-        v-model="contactPerson"
-        @input="setcontactPerson"
-        placeholder="Enter  Person "
-      />
-    </div>
-    <div class="col-span-4 md:col-span-2 input-wrapper">
-      <label for="contact_person_email">{{ $t('person_email') }}</label>
-      <input
-        type="text"
-        id="contact_person_email"
-        class="input"
-        v-model="contactPersonEmail"
-        @input="setcontactPersonEmail"
-        placeholder="Enter Person Email"
-      />
-    </div>
-    <div class="col-span-4 md:col-span-2 input-wrapper field-required"
-      data-required-field="contactPersonPhone"
-    >
-      <label for="contact_person_phone">{{ $t('person_phone') }}</label>
-      <input
-        type="text"
-        id="contact_person_phone"
-        class="input"
-        v-model="contactPersonPhone"
-        @input="setcontactPersonPhone"
-        placeholder="Enter Person Phone"
-      />
-      <p v-if="getFieldError('contactPersonPhone')" class="required-field-message">
-        {{ getFieldError('contactPersonPhone') }}
-      </p>
-    </div>
-    <div class="col-span-6 md:col-span-2 input-wrapper" data-required-field="Scope">
-      <!-- <CustomSelectInput
-      :modelValue="Scope"
-          class="input"
-          :controller="indexScopeController"
-          :params="indexScopeParams"
-          label="Scope"
-          id="Scope"
-          placeholder="Select Scope"
-          @update:modelValue="setScope"
-          :type="2"
-
-          /> -->
-
-      <UpdatedCustomInputSelect
-        :modelValue="Scope"
-        class="input"
-        :controller="indexScopeController"
-        :params="indexScopeParams"
-        :label="$t('scope of service')"
-        id="Scope"
-        placeholder="Select Scope service"
-        @update:modelValue="setScope"
-        :type="2"
-        @close="scopeDialogRef = false"
-        :isDialog="true"
-        v-model:dialogVisible="scopeDialogRef"
-      >
-        <template #LabelHeader>
-          <span class="add-dialog" @click="scopeDialogRef = true">New</span>
-        </template>
-        <template #Dialog>
-          <AddScope @update:data="scopeDialogRef = false" />
-        </template>
-      </UpdatedCustomInputSelect>
-      <p v-if="getFieldError('Scope')" class="required-field-message">
-        {{ getFieldError('Scope') }}
-      </p>
-    </div>
-
-    <div class="col-span-6 md:col-span-2 input-wrapper">
-      <CustomSelectInput
-        :modelValue="SelectedStatus"
-        class="input"
-        :static-options="StatusList"
-        :label="$t('status')"
-        :reload="false"
-        id="Status"
-        placeholder="Select Status"
-        @update:modelValue="setStatus"
-      />
-    </div>
-
-    <div class="col-span-6 md:col-span-2 input-wrapper" data-required-field="date">
-      <label for="expiry_date">{{ $t('expiry_date') }}</label>
-      <DatePicker
-        :modelValue="date"
-        class="input"
-        label="Date"
-        id="expiry_date"
-        placeholder="Contruct Expiry Date"
-        @update:modelValue="setExpiryDate"
-      />
-      <p v-if="getFieldError('date')" class="required-field-message">
-        {{ getFieldError('date') }}
-      </p>
-    </div>
-    <div class="col-span-6 md:col-span-2">
-      <HandleFIlesUpload
-        :label="$t('upload contract image')"
-        accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
-        :max-files="1"
-        :multiple="false"
-        @change="handleFilesChange"
-        className="input-file"
-      />
-    </div> 
-
 </template>
 
 <style scoped>
-.border_line{
-  position: relative;
+.contractor-form-shell {
+  display: grid;
+  gap: 1.25rem;
   width: 100%;
-  background-color: black ;
-  height: 1.5px;
-  bottom: 0px;
+  min-width: 0;
 }
-:deep(.input-file) {
-  border: 1px solid var(--brand-primary-100) !important;
-  padding: 11px;
-  border-radius: 20px !important;
+
+.contractor-form-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 1rem;
+  overflow: hidden;
+  padding: clamp(1.2rem, 3vw, 1.6rem);
+  border: 1px solid color-mix(in srgb, var(--identity-primary) 18%, var(--hse-color-border));
+  border-radius: var(--hse-radius-card, 18px);
+  background:
+    radial-gradient(circle at 88% 8%, rgb(17 165 197 / 20%), transparent 32%),
+    linear-gradient(135deg, var(--hse-color-navy), var(--hse-color-navy-secondary));
+  color: #fff;
+  box-shadow: var(--hse-shadow-md);
+}
+
+.contractor-form-hero::after {
+  position: absolute;
+  inset-block-end: -4.5rem;
+  inset-inline-end: 12%;
+  width: 10rem;
+  height: 10rem;
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 50%;
+  content: '';
+  pointer-events: none;
+}
+
+.contractor-form-hero__mark {
+  display: grid;
+  width: 3.8rem;
+  height: 3.8rem;
+  place-items: center;
+  border: 1px solid rgb(255 255 255 / 22%);
+  border-radius: 1rem;
+  background: rgb(255 255 255 / 11%);
+}
+
+.contractor-form-hero__mark svg {
+  width: 1.9rem;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.contractor-form-hero__copy h2,
+.contractor-form-hero__copy p {
+  margin: 0;
+  color: inherit;
+}
+
+.contractor-form-hero__eyebrow {
+  margin-bottom: 0.2rem !important;
+  color: #9fc5ff !important;
+  font-size: var(--hse-text-xs);
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.contractor-form-hero__copy h2 {
+  font-size: clamp(1.2rem, 2.5vw, 1.45rem);
+  line-height: 1.25;
+}
+
+.contractor-form-hero__copy > p:last-child {
+  margin-top: 0.3rem;
+  color: #c8d8ec;
+  font-size: var(--hse-text-sm);
+}
+
+.contractor-form-hero__status {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgb(255 255 255 / 18%);
+  border-radius: var(--hse-radius-badge, 999px);
+  background: rgb(255 255 255 / 10%);
+  font-size: var(--hse-text-xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.contractor-form-hero__status > span {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #4ce0b3;
+  box-shadow: 0 0 0 4px rgb(76 224 179 / 14%);
+}
+
+.contractor-form-section {
+  min-width: 0;
+  padding: 1.25rem;
+  border: 1px solid var(--hse-color-border);
+  border-radius: var(--hse-radius-card, 18px);
+  background: var(--hse-color-surface);
+  box-shadow: var(--hse-shadow-sm);
+}
+
+.contractor-section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--hse-color-divider);
+}
+
+.contractor-section-heading__index {
+  display: grid;
+  flex: 0 0 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  border-radius: 0.7rem;
+  background: var(--hse-color-primary-subtle);
+  color: var(--identity-primary);
+  font-size: var(--hse-text-xs);
+  font-weight: 800;
+}
+
+.contractor-section-heading h3,
+.contractor-section-heading p {
+  margin: 0;
+}
+
+.contractor-section-heading h3 {
+  color: var(--hse-color-text);
+  font-size: var(--hse-text-md);
+}
+
+.contractor-section-heading p {
+  margin-top: 0.2rem;
+  color: var(--hse-color-text-muted);
+  font-size: var(--hse-text-sm);
+  line-height: 1.5;
+}
+
+.contractor-field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.25rem;
+}
+.contractor-document-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1rem 1.25rem;
+}
+.contractor-field-grid > *,
+.contractor-document-grid > * {
+  min-width: 0;
+}
+
+.contractor-field--wide {
+  grid-column: 1 / -1;
+}
+
+.contractor-status-field {
+  max-width: calc(50% - 0.625rem);
+}
+
+.contractor-form-shell :deep(input),
+.contractor-form-shell :deep(textarea),
+.contractor-form-shell :deep(.p-select),
+.contractor-form-shell :deep(.p-multiselect),
+.contractor-form-shell :deep(.p-datepicker),
+.contractor-form-shell :deep(.input-wrapper) {
+  border-radius: var(--hse-control-radius, 9px) !important;
+}
+
+.contractor-form-shell :deep(input:focus),
+.contractor-form-shell :deep(textarea:focus),
+.contractor-form-shell :deep(.p-focus) {
+  border-color: var(--identity-primary) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--identity-primary) 14%, transparent) !important;
+}
+
+.field-helper {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--hse-color-text-muted);
+  font-size: var(--hse-text-xs);
+}
+
+.inline-create-action {
+  width: auto;
+  min-height: 1.75rem;
+  margin-inline-start: auto;
+  padding: 0.2rem 0.65rem;
+  border: 0;
+  border-radius: var(--hse-radius-badge, 999px) !important;
+  background: var(--hse-color-primary-subtle);
+  color: var(--identity-primary);
   cursor: pointer;
-  color: var(--text-strong);
-  font-family: 'Light';
+  font-size: var(--hse-text-xs);
+  font-weight: 800;
+}
+
+.contractor-upload-card {
+  padding: 1rem;
+  border: 1px dashed color-mix(in srgb, var(--identity-primary) 34%, var(--hse-color-border));
+  border-radius: var(--hse-radius-card, 18px);
+  background: color-mix(in srgb, var(--hse-color-primary-subtle) 38%, var(--hse-color-surface));
+}
+
+.contractor-upload-card__copy {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.contractor-upload-card__icon {
+  display: grid;
+  flex: 0 0 2.4rem;
+  height: 2.4rem;
+  place-items: center;
+  border-radius: 0.75rem;
+  background: var(--identity-primary);
+  color: var(--hse-color-text-on-primary, #fff);
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.contractor-upload-card strong,
+.contractor-upload-card p {
+  margin: 0;
+}
+
+.contractor-upload-card strong {
+  color: var(--hse-color-text);
+  font-size: var(--hse-text-sm);
+}
+
+.contractor-upload-card p {
+  margin-top: 0.15rem;
+  color: var(--hse-color-text-muted);
+  font-size: var(--hse-text-xs);
+  line-height: 1.45;
+}
+
+:deep(.input-file) {
+  padding: 0.75rem !important;
+  border: 1px solid var(--hse-color-border) !important;
+  border-radius: var(--hse-control-radius, 9px) !important;
+  background: var(--hse-color-surface) !important;
+  color: var(--hse-color-text);
+  cursor: pointer;
 }
 
 :deep(.upload-label) {
-  width: -moz-fit-content;
-  width: fit-content;
-  text-align: start;
-  font-weight: 600;
-  font-size: var(--md-size);
-  color: var(--text-strong);
-  font-family: 'Light';
+  display: none;
 }
+
 :deep(.file-upload-wrapper) {
-  gap: 4px !important;
+  gap: 0.4rem !important;
 }
 
 .required-field-message {
@@ -530,13 +766,44 @@ defineExpose({
   font-size: 0.82rem;
   font-weight: 700;
 }
-</style>
 
-<!-- :label="`upload image`"
-              accept="image/*"
-              :multiple="false"
-              :index="1"
-              :file="UploadedImage"
-              :have-content="true"
-              :class="`image-input`"
-              @change="handleImageChange" -->
+@media (max-width: 720px) {
+  .contractor-form-hero {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 1.1rem;
+  }
+
+  .contractor-form-hero__status {
+    grid-column: 1 / -1;
+    width: fit-content;
+  }
+
+  .contractor-field-grid,
+  .contractor-document-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .contractor-field--wide {
+    grid-column: auto;
+  }
+
+  .contractor-status-field {
+    max-width: none;
+  }
+
+  .contractor-form-section {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .contractor-form-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .contractor-form-hero__mark {
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+}
+</style>

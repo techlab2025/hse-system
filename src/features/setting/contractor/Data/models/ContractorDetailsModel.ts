@@ -12,6 +12,7 @@ export default class ContractorDetailsModel {
   public contactPersonPhone: string
   public SelectedStatus: number
   public date: string
+  public contractFile: string
 
   constructor(
     id: number,
@@ -25,6 +26,7 @@ export default class ContractorDetailsModel {
     contactPersonPhone: string,
     SelectedStatus: number,
     date: string,
+    contractFile: string = '',
   ) {
     this.id = id
     this.name = name
@@ -37,6 +39,7 @@ export default class ContractorDetailsModel {
     this.contactPersonPhone = contactPersonPhone
     this.SelectedStatus = SelectedStatus
     this.date = date
+    this.contractFile = contractFile
   }
 
   static fromMap(data: any): ContractorDetailsModel {
@@ -52,6 +55,7 @@ export default class ContractorDetailsModel {
       data?.contact_person_phone,
       data?.status,
       data?.expiry_date,
+      data?.contract_file ?? '',
     )
   }
 
