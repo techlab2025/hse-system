@@ -26,14 +26,7 @@ export default class IndexProjectController extends SelectControllerInterface<Pr
     const dataState: DataState<ProjectModel[]> = await this.IndexProjectUseCase.call(params)
 
     this.setState(dataState)
-    if (this.isDataSuccess()) {
-      // useLoaderStore().endLoadingWithDialog();
-    } else {
-      throw new Error('Error while addServices')
-    }
     super.handleResponseDialogs()
     return this.state
   }
-
-
 }

@@ -3,7 +3,6 @@ import '../styles/home-identity.css'
 import { defineAsyncComponent } from 'vue'
 import EmployeeTasksButton from '@/shared/HelpersComponents/EmployeeTasksButton.vue'
 import ProjectsStatistics from './HomeStatistics/ProjectsStatistics.vue'
-import FetchPorjectStatisticsController from '../Controllers/FetchProjectStatisticsController'
 import { computed, onMounted, ref, watch } from 'vue'
 import ProjectProgressHeader from '@/features/Organization/ProjectPrgoress/Presentation/supcomponents/ProjectProgressHeader.vue'
 import IndexProjectProgressController from '@/features/Organization/ProjectPrgoress/Presentation/controllers/indexProjectProgressController'
@@ -21,6 +20,10 @@ import FetchEquipmentStaticsParams from '../../core/params/FetchEquipmentStatics
 import OverviewInvestigationsChartParams from '../../core/params/OverviewInvestigationsChartParams'
 import HomeSkelaton from '../subComponent/HomeSkelaton.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
+import {
+  DataInitial,
+  DataLoading,
+} from '@/base/core/networkStructure/Resources/dataState/data_state'
 
 const InvestegationStatics = defineAsyncComponent(
   () => import('./HomeUtils/InvestegationStatics.vue'),
@@ -35,8 +38,6 @@ const StaticsCardPerMonth = defineAsyncComponent(
 const HomeCards = defineAsyncComponent(() => import('./HomeUtils/HomeCards.vue'))
 const { isDarkMode } = useThemeMode()
 
-const fetchPorjectStatisticsController = FetchPorjectStatisticsController.getInstance()
-const state = computed(() => fetchPorjectStatisticsController.state.value)
 const ProgressValue = ref<number | null>(null)
 const ProjectAppStatusStore = useProjectAppStatusStore()
 const visited = ref(localStorage.getItem('visited'))
@@ -45,6 +46,11 @@ const homeInspectionState = computed(() => fetchHomeInspectionController.state.v
 const indexProjectProgressController = IndexProjectProgressController.getInstance()
 const indexProjectController = IndexProjectController.getInstance()
 const ProjectStatics = computed(() => indexProjectController.state.value)
+const projects = computed(() => ProjectStatics.value.data ?? [])
+const projectsLoading = computed(
+  () =>
+    ProjectStatics.value instanceof DataInitial || ProjectStatics.value instanceof DataLoading,
+)
 const overviewHazardChartController = OverviewHazardChartController.getInstance()
 const OverviewHazardChartstate = computed(() => overviewHazardChartController.state.value)
 const overviewInvestigationsChartController = OverviewInvestigationsChartController.getInstance()
@@ -101,7 +107,7 @@ const GetEquipmentStatics = async () => {
 onMounted(async () => {
   visited.value = localStorage.getItem('visited')
 
-  await Promise.all([
+  await Promise.allSettled([
     GetEquipmentStatics(),
     fetchProject(),
     getProjectProgress(),
@@ -116,6 +122,7 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
     ProjectAppStatusStore.setProjectAppStatus(UpdatedProjectProgressState)
   }
 })
+
 </script>
 <template>
   <div
@@ -150,7 +157,7 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
 
     <HomeCards :ProgressValue="Number(ProgressValue)" />
 
-    <template v-if="ProjectStatics?.data">
+    <template v-if="!projectsLoading">
       <section class="home-analytics-shell">
         <!-- <div class="home-analytics-heading">
           <span>{{ $t('dashboard') }}</span>
@@ -160,7 +167,7 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
         <div class="home-overview-grid">
           <div class="hse-home-panel home-panel-projects">
             <ProjectsStatistics
-              :projectStatistics="ProjectStatics?.data"
+              :projectStatistics="projects"
               :totalNumOfProjects="ProjectStatics.pagination?.total"
             />
           </div>
@@ -181,6 +188,6 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
         />
       </section>
     </template>
-    <HomeSkelaton v-if="!ProjectStatics?.data" />
+    <HomeSkelaton v-if="projectsLoading" />
   </div>
 </template>
