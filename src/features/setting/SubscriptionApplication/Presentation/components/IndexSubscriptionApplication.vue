@@ -171,8 +171,12 @@ const displayValue = (value: unknown) => {
   >
     <DataStatus :controller="state">
       <template #success>
-        <div class="table-responsive">
-          <table class="main-table">
+        <div
+          class="table-responsive table-responsive--scroll subscription-applications-table"
+          tabindex="0"
+          aria-label="Subscription applications"
+        >
+          <table class="main-table subscription-applications-grid">
             <thead>
               <tr>
                 <th scope="col">{{ $t('id') }}</th>
@@ -306,6 +310,21 @@ const displayValue = (value: unknown) => {
 </template>
 
 <style scoped>
+.subscription-applications-table {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: auto !important;
+  overflow-y: hidden;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.subscription-applications-grid {
+  width: max(100%, 1500px) !important;
+  min-width: 1500px !important;
+}
+
 .status {
   &.PENDING {
     color: var(--text-strong);
