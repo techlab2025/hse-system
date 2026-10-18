@@ -14,7 +14,7 @@ const { t } = useI18n()
 const fields = computed(() => {
   const o = props.objective
   const values: [string, string | number | null | undefined][] = [
-    ['op.number', o.id],
+    // ['op.number', o.id],
     ['op.year', o.year],
     ['op.project', o.project?.title || t('Company-wide')],
     ['op.targetType', t(getObjectiveTargetTypeTitle(o.targetType))],

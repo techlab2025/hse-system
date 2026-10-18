@@ -69,6 +69,7 @@ const dateLabel = (value: string | null) =>
                 'recordedAt',
                 'notes',
                 'total_progress',
+                'attachments',
                 // 'corrections',
               ]"
               :key="key"
@@ -89,6 +90,10 @@ const dateLabel = (value: string | null) =>
             <td>{{ dateLabel(record.createdAt ?? record.recordedAt) }}</td>
             <td class="op-notes">{{ record.notes || '—' }}</td>
             <td class="op-totla">{{ record.progress || '—' }}%</td>
+            <td class="op-totla imag-c">
+              <img v-for="img in record?.media!" :src="img?.url" alt="" width="60" />
+              <!-- <p v-else class="center">__</p> -->
+            </td>
             <!-- <td>
               <ul v-if="record.attachments.length" class="op-files">
                 <li v-for="file in record.attachments" :key="file.id">
@@ -137,3 +142,16 @@ const dateLabel = (value: string | null) =>
     </div>
   </section>
 </template>
+
+<style scoped>
+.img-center {
+  margin-inline: auto;
+}
+.center {
+  margin-left: 15px;
+}
+.imag-c {
+  display: flex;
+  gap: 12px;
+}
+</style>

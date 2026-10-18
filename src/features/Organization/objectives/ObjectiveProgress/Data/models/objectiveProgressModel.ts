@@ -30,6 +30,7 @@ export default class ObjectiveProgressModel {
     public corrections: ProgressCorrection[],
     public indicator: number | null,
     public progress: number | null,
+    public media: {id:number , url:string , file_name:string }[],
   ) {}
 
   static fromMap(data: unknown): ObjectiveProgressModel {
@@ -93,6 +94,7 @@ export default class ObjectiveProgressModel {
       corrections,
       nullableNumber(item.indicator ?? item.achievement_percentage),
       nullableNumber(item.progress),
+      item.media!
     )
   }
 }
