@@ -47,11 +47,11 @@ const { printArea, print } = usePrint()
 const GetEquipmentTypeInShow = (type: EquipmentTypesEnum) => {
   switch (type) {
     case EquipmentTypesEnum.TOOL:
-      return "tools"
+      return 'tools'
     case EquipmentTypesEnum.DEVICE:
-      return "devices"
+      return 'devices'
     case EquipmentTypesEnum.EQUIPMENT:
-      return "Equipment"
+      return 'Equipment'
   }
 }
 </script>
@@ -68,32 +68,53 @@ const GetEquipmentTypeInShow = (type: EquipmentTypesEnum) => {
           <div class="Qr_EQUIPMENt equipment-qr-panel printable-area" ref="printArea">
             <button class="print-icon" type="button" @click="print">{{ $t('Print') }}</button>
 
-            <DemoCard v-if="user?.type === OrganizationTypeEnum.ORGANIZATION" :equipmentName="state.data?.title"
-              :isForm="true" :inspectionDuration="state.data?.inspectionDuration || $t('Determined')"
-              :image="state.data?.image" :selctedequipment="state.data?.title"
-              :selectedequipmentType="state.data?.equipment_type" :decommissioningDate="state.data?.date || ''"
-              :isBreadCramp="true" :expiredate="state.data?.certificateExppiredDate"
-              :startDate="state.data?.checkinDate" :EndDate="state.data?.checkout_date"
-              :typerent="user?.type === OrganizationTypeEnum.ORGANIZATION" :deviceStatus="state.data?.status"
-              :equipmentTypeInShow="GetEquipmentTypeInShow(state.data?.equipment_type.type!)" />
+            <DemoCard
+              v-if="user?.type === OrganizationTypeEnum.ORGANIZATION"
+              :equipmentName="state.data?.title"
+              :isForm="true"
+              :inspectionDuration="state.data?.inspectionDuration || $t('Determined')"
+              :image="state.data?.image"
+              :selctedequipment="state.data?.title"
+              :selectedequipmentType="state.data?.equipment_type"
+              :decommissioningDate="state.data?.date || ''"
+              :isBreadCramp="true"
+              :expiredate="state.data?.certificateExppiredDate"
+              :startDate="state.data?.checkinDate"
+              :EndDate="state.data?.checkout_date"
+              :typerent="user?.type === OrganizationTypeEnum.ORGANIZATION"
+              :deviceStatus="state.data?.status"
+              :equipmentTypeInShow="GetEquipmentTypeInShow(state.data?.equipment_type.type!)"
+      
+            />
             <img :src="state.data?.qr_code_image" alt="qr" class="qr-scan" width="100" />
           </div>
         </div>
         <div class="inspection-btn inspection-switch w-full" role="tablist">
-          <button type="button" role="tab" @click="InspectionStatus = EquipmentInspectionEnum.Inspection"
-            :class="InspectionStatus === EquipmentInspectionEnum.Inspection ? 'active' : ''">
+          <button
+            type="button"
+            role="tab"
+            @click="InspectionStatus = EquipmentInspectionEnum.Inspection"
+            :class="InspectionStatus === EquipmentInspectionEnum.Inspection ? 'active' : ''"
+          >
             <span class="tab-dot"></span>
             <span>{{ $t('Inspection') }}</span>
           </button>
-          <button type="button" role="tab" @click="InspectionStatus = EquipmentInspectionEnum.Results"
-            :class="InspectionStatus === EquipmentInspectionEnum.Results ? 'active' : ''">
+          <button
+            type="button"
+            role="tab"
+            @click="InspectionStatus = EquipmentInspectionEnum.Results"
+            :class="InspectionStatus === EquipmentInspectionEnum.Results ? 'active' : ''"
+          >
             <span class="tab-dot"></span>
             <span>{{ $t('Results') }}</span>
           </button>
         </div>
         <div class="history-qr">
-          <HistoryLog :show_tasks="state.data?.tasks_without_result" :result_tasks="state.data?.tasks_with_result"
-            :inspectionType="InspectionStatus" />
+          <HistoryLog
+            :show_tasks="state.data?.tasks_without_result"
+            :result_tasks="state.data?.tasks_with_result"
+            :inspectionType="InspectionStatus"
+          />
           <!-- <QrCode /> -->
         </div>
       </div>
@@ -179,7 +200,14 @@ const GetEquipmentTypeInShow = (type: EquipmentTypesEnum) => {
   overflow: hidden;
   border: 1px solid var(--brand-primary-100);
   border-radius: 18px;
-  background: linear-gradient(135deg, var(--surface-1) 0%, var(--brand-primary-50) 58%, var(--brand-primary-50) 100%), var(--surface-1);
+  background:
+    linear-gradient(
+      135deg,
+      var(--surface-1) 0%,
+      var(--brand-primary-50) 58%,
+      var(--brand-primary-50) 100%
+    ),
+    var(--surface-1);
   color: var(--brand-primary-900);
   box-shadow: 0 14px 34px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
 }
@@ -196,7 +224,7 @@ const GetEquipmentTypeInShow = (type: EquipmentTypesEnum) => {
   background: color-mix(in srgb, var(--brand-primary-500) 8%, transparent);
 }
 
-.equipment-qr-panel>* {
+.equipment-qr-panel > * {
   position: relative;
   z-index: 1;
 }
@@ -402,7 +430,6 @@ const GetEquipmentTypeInShow = (type: EquipmentTypesEnum) => {
 }
 
 @media print {
-
   /* Hide everything */
   body * {
     visibility: hidden;

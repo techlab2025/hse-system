@@ -49,10 +49,11 @@ export default class EquipmentDetailsModel {
   public equipmentUsedStatus: EquipmentUsed | null
   public workedHoures: string
   public ivhm?: boolean
-  public WorkedHours ?: string
-  public equipmentOfHavyStatus ?: EquipmentOfHavyStatus
-  public mainfacturyDate ?: string
-  
+  public ivms?: boolean
+  public WorkedHours?: string
+  public equipmentOfHavyStatus?: EquipmentOfHavyStatus
+  public mainfacturyDate?: string
+  public equipmentWorkedHeavy?: string
 
   constructor(
     id: number,
@@ -92,9 +93,11 @@ export default class EquipmentDetailsModel {
     equipmentUsedStatus: EquipmentUsed | null,
     workedHoures: string,
     ivhm?: boolean,
-    WorkedHours ?: string,
-    equipmentOfHavyStatus ?: EquipmentOfHavyStatus,
-    mainfacturyDate ?: string
+    WorkedHours?: string,
+    equipmentOfHavyStatus?: EquipmentOfHavyStatus,
+    mainfacturyDate?: string,
+    ivms?: boolean,
+    equipmentWorkedHeavy?: string,
   ) {
     this.id = id
     this.allIndustries = allIndustries
@@ -136,6 +139,8 @@ export default class EquipmentDetailsModel {
     this.WorkedHours = WorkedHours
     this.equipmentOfHavyStatus = equipmentOfHavyStatus
     this.mainfacturyDate = mainfacturyDate
+    this.ivms = ivms
+    this.equipmentWorkedHeavy = equipmentWorkedHeavy
     // this.type = type
   }
 
@@ -187,7 +192,9 @@ export default class EquipmentDetailsModel {
       data?.ivms,
       data?.equipment_worked_heavy,
       data?.equipment_of_havy_status,
-      data?.manufacturing_year
+      data?.manufacturing_year,
+      data?.ivms,
+      data?.equipment_worked_heavy,
     )
   }
 

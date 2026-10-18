@@ -152,13 +152,25 @@ const getEquipmentUsedStatus = (usedStatus: EquipmentUsed | null) => {
               <span>{{ $t('Vehicle Kilometer') }} : </span>
               <p>{{ equipmentData?.kilometer }}</p>
             </div>
-            <div class="item">
+            <div class="item" v-if="equipmentData?.equipmentUsedStatus">
               <span>{{ $t('Equipment Used Status') }} : </span>
               <p>{{ $t(getEquipmentUsedStatus(equipmentData?.equipmentUsedStatus)) }}</p>
             </div>
             <div class="item" v-if="equipmentData?.equipmentUsedStatus === EquipmentUsed.used">
               <span>{{ $t('Equipment Condition') }} : </span>
               <p>{{ $t(getEquipmentCondition(equipmentData?.equipmentCondition)) }}</p>
+            </div>
+            <div class="item" v-if="equipmentData?.ivms">
+              <span>{{ $t('ivms') }} : </span>
+              <p>{{ equipmentData?.ivms ? `yes` : `no` }}</p>
+            </div>
+            <div class="item" v-if="equipmentData?.mainfacturyDate">
+              <span>{{ $t('Mainfactury Year') }} : </span>
+              <p>{{ equipmentData?.mainfacturyDate }}</p>
+            </div>
+            <div class="item" v-if="equipmentData?.equipmentWorkedHeavy">
+              <span>{{ $t('Equipment Worked Hours') }} : </span>
+              <p>{{ equipmentData?.equipmentWorkedHeavy }}</p>
             </div>
           </div>
         </div>

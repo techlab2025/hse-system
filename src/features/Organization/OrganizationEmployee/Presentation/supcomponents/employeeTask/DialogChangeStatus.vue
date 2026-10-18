@@ -117,12 +117,7 @@ const submit = async () => {
       <Button severity="secondary" variant="outlined" type="button" @click="dialogVisible = false">
         {{ $t('cancel') }}
       </Button>
-      <Button
-        type="button"
-        :disabled="isSubmitting"
-        :loading="isSubmitting"
-        @click="submit"
-      >
+      <Button type="button" :disabled="isSubmitting" :loading="isSubmitting" @click="submit">
         {{ $t('save') }}
       </Button>
     </template>
@@ -134,6 +129,7 @@ const submit = async () => {
   display: grid;
   gap: 18px;
   padding-block: 4px;
+  width: 100% !important;
 }
 
 .task-note-field {

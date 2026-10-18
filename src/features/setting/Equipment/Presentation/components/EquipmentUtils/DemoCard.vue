@@ -32,7 +32,8 @@ const props = withDefaults(
     rentType?: RentTypeEnum
     typerent?: boolean
     deviceStatus?: number
-    equipmentTypeInShow?:string
+    equipmentTypeInShow?: string
+
   }>(),
   {
     BreadCramps: () => [],
@@ -58,7 +59,6 @@ const props = withDefaults(
 // watch(() => props.selctedequipment, (Newval) => {
 //   getSelectedLang(Newval)
 // })
-
 </script>
 
 <template>
@@ -72,15 +72,20 @@ const props = withDefaults(
     </div> -->
 
     <div class="sub-card flex gap-4">
-
       <img v-if="props.image" :src="props.image" alt="demo card" class="demo-img" />
       <img v-else src="@/assets/images/Rectangle 39931.png" alt="demo card" class="demo-img" />
 
       <div class="sub-card-body">
         <p v-if="!props.isBreadCramp" class="first-item">device</p>
         <div v-else class="sub-card-header">
-          <BreadCrumb :isForm="isForm" :selctedequipment="selctedequipment || equipmentName"
-            :equipmentType="selectedequipmentType " :equipment="equipmentTypeInShow" :BreadCramps="props.BreadCramps" :cardType="cardType" />
+          <BreadCrumb
+            :isForm="isForm"
+            :selctedequipment="selctedequipment || equipmentName"
+            :equipmentType="selectedequipmentType"
+            :equipment="equipmentTypeInShow"
+            :BreadCramps="props.BreadCramps"
+            :cardType="cardType"
+          />
           <!-- <CertificateImageDialog :certificateImage="props.certificateImage" /> -->
         </div>
 
