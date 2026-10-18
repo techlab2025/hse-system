@@ -1033,6 +1033,7 @@
   background: transparent;
   color: var(--hse-project-ink);
   box-shadow: none;
+  padding: 24px;
 }
 .hse-project-root[data-hse-project] .hse-project-page-head[data-hse-project-head] h1 {
   font-size: var(--hse-project-title-size);

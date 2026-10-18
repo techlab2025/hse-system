@@ -2108,13 +2108,13 @@ export const OrgPermissions: PermissionItem = {
           ],
         },
         {
-          key: PermissionsEnum.PTW_All,
-          code: PermissionsEnum.PTW_All,
+          key: PermissionsEnum.PTW_ALL,
+          code: PermissionsEnum.PTW_ALL,
           label: 'Permit to wotk',
           permissions: [
             {
-              key: PermissionsEnum.PTW_All,
-              code: PermissionsEnum.PTW_All,
+              key: PermissionsEnum.PTW_ALL,
+              code: PermissionsEnum.PTW_ALL,
               label: 'All',
             },
             {
@@ -2127,9 +2127,134 @@ export const OrgPermissions: PermissionItem = {
               code: PermissionsEnum.PTW_CREATE,
               label: 'Create',
             },
+            {
+              key: PermissionsEnum.PTW_DELETE,
+              code: PermissionsEnum.PTW_DELETE,
+              label: 'Delete',
+            },
+            {
+              key: PermissionsEnum.PTW_DETAILS,
+              code: PermissionsEnum.PTW_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.PTW_UPDATE,
+              code: PermissionsEnum.PTW_UPDATE,
+              label: 'Update',
+            },
           ],
         },
-
+        {
+          key: PermissionsEnum.RISK_ASSESSMENT_ALL,
+          code: PermissionsEnum.RISK_ASSESSMENT_ALL,
+          label: 'Risk Assessment',
+          permissions: [
+            {
+              key: PermissionsEnum.RISK_ASSESSMENT_ALL,
+              code: PermissionsEnum.RISK_ASSESSMENT_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.RISK_ASSESSMENT_FETCH,
+              code: PermissionsEnum.RISK_ASSESSMENT_FETCH,
+              label: 'Table',
+            },
+            {
+              key: PermissionsEnum.RISK_ASSESSMENT_DETAILS,
+              code: PermissionsEnum.RISK_ASSESSMENT_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.RISK_ASSESSMENT_CREATE,
+              code: PermissionsEnum.RISK_ASSESSMENT_CREATE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.RISK_ASSESSMENT_UPDATE,
+              code: PermissionsEnum.RISK_ASSESSMENT_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.RISK_ASSESSMENT_DELETE,
+              code: PermissionsEnum.RISK_ASSESSMENT_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
+        {
+          key: PermissionsEnum.LEADERSHIP_ALL,
+          code: PermissionsEnum.LEADERSHIP_ALL,
+          label: 'Leadership ',
+          permissions: [
+            {
+              key: PermissionsEnum.LEADERSHIP_ALL,
+              code: PermissionsEnum.LEADERSHIP_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.LEADERSHIP_FETCH,
+              code: PermissionsEnum.LEADERSHIP_FETCH,
+              label: 'Table',
+            },
+            {
+              key: PermissionsEnum.LEADERSHIP_DETAILS,
+              code: PermissionsEnum.LEADERSHIP_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.LEADERSHIP_CRAETE,
+              code: PermissionsEnum.LEADERSHIP_CRAETE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.LEADERSHIP_UPDATE,
+              code: PermissionsEnum.LEADERSHIP_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.LEADERSHIP_DELETE,
+              code: PermissionsEnum.LEADERSHIP_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
+        {
+          key: PermissionsEnum.MOC_ALL,
+          code: PermissionsEnum.MOC_ALL,
+          label: 'Mangement Of Change ',
+          permissions: [
+            {
+              key: PermissionsEnum.MOC_ALL,
+              code: PermissionsEnum.MOC_ALL,
+              label: 'All',
+            },
+            {
+              key: PermissionsEnum.MOC_FETCH,
+              code: PermissionsEnum.MOC_FETCH,
+              label: 'Table',
+            },
+            {
+              key: PermissionsEnum.MOC_DETAILS,
+              code: PermissionsEnum.MOC_DETAILS,
+              label: 'Details',
+            },
+            {
+              key: PermissionsEnum.MOC_CRAETE,
+              code: PermissionsEnum.MOC_CRAETE,
+              label: 'Create',
+            },
+            {
+              key: PermissionsEnum.MOC_UPDATE,
+              code: PermissionsEnum.MOC_UPDATE,
+              label: 'Update',
+            },
+            {
+              key: PermissionsEnum.MOC_DELETE,
+              code: PermissionsEnum.MOC_DELETE,
+              label: 'Delete',
+            },
+          ],
+        },
         // {
         //   key: PermissionsEnum.PROJECT_PROGRESS_ALL,
         //   code: PermissionsEnum.PROJECT_PROGRESS_ALL,

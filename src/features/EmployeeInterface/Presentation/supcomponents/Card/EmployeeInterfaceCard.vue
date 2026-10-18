@@ -17,11 +17,14 @@ import { InspectionPageType } from '@/features/Organization/ObservationFactory/C
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
 import { useUserStore } from '@/stores/user'
 import ConditionHandler from '@/base/Presentation/utils/condition_handler'
+import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
 interface CardAction {
   title: string
   route: string
   disabled?: boolean
+  permissions: PermissionsEnum[]
 }
 
 interface EmpCard {
@@ -31,13 +34,13 @@ interface EmpCard {
   subtitle: string
   img: string
   requiresProject?: boolean
+  permissions: PermissionsEnum[]
   actions: CardAction[]
 }
 const useprojectSaddelectStore = useProjectSelectStore()
 const userStore = useUserStore()
 const canShowMyTasks = computed(
-  () =>
-    ConditionHandler.getInstance().shouldUseEmployeeInterface() && !!userStore.user?.id,
+  () => ConditionHandler.getInstance().shouldUseEmployeeInterface() && !!userStore.user?.id,
 )
 
 const selectedProjectId = ref<number | null>(null)
@@ -73,10 +76,15 @@ onMounted(() => {
   if (!useprojectSaddelectStore.AllProjects.length) void loadProjects()
 })
 const projectQuery = computed(() => (projectId.value ? `?project_id=${projectId.value}` : ''))
-const projectAction = (title: string, path: string): CardAction => ({
+const projectAction = (
+  title: string,
+  path: string,
+  permissions: PermissionsEnum[],
+): CardAction => ({
   title,
   route: projectId.value ? path : '',
   disabled: !projectId.value,
+  permissions,
 })
 
 const cards = computed<EmpCard[]>(() => [
@@ -88,10 +96,12 @@ const cards = computed<EmpCard[]>(() => [
           eyebrow: 'Stay on track',
           subtitle: 'Review your assigned tasks, follow up on deadlines, and update your progress.',
           img: tasksImg,
+          permissions: [PermissionsEnum.MY_TASKS_ALL],
           actions: [
             {
               title: 'Show tasks',
               route: `/organization/organization-employee-tasks/${userStore.user?.id}`,
+              permissions: [PermissionsEnum.MY_TASKS_ALL],
             },
           ],
         },
@@ -103,14 +113,21 @@ const cards = computed<EmpCard[]>(() => [
     eyebrow: 'Stay proactive',
     subtitle: 'Complete an inspection to verify compliance with safety standards and procedures.',
     img: empCardImg,
+    permissions: [
+      PermissionsEnum.ORG_INSPECTION_ALL,
+      PermissionsEnum.MY_TASKS_ALL,
+      PermissionsEnum.INSPECTION_RESULTS_FETCH,
+    ],
     actions: [
       {
         title: 'Daily Inspection',
         route: `/organization/equipment-mangement/inspection?inspectionType=${InspectionPageType.DragInspection}`,
+        permissions: [PermissionsEnum.ORG_INSPECTION_ALL, PermissionsEnum.MY_TASKS_ALL],
       },
       {
         title: 'Inspection logs',
         route: `/organization/equipment-mangement/inspection?inspectionType=${InspectionPageType.Result}`,
+        permissions: [PermissionsEnum.ORG_INSPECTION_ALL, PermissionsEnum.INSPECTION_RESULTS_FETCH],
       },
     ],
   },
@@ -120,14 +137,21 @@ const cards = computed<EmpCard[]>(() => [
     eyebrow: 'See it. Share it.',
     subtitle: 'Document safety observations in line with organizational standards.',
     img: observationImg,
+    permissions: [
+      PermissionsEnum.ORG_OBSERVATION_ALL,
+      PermissionsEnum.ORG_OBSERVATION_CREATE,
+      PermissionsEnum.ORG_OBSERVATION_FETCH,
+    ],
     actions: [
       {
         title: 'Add Observation',
         route: '/organization/equipment-mangement/observation/add',
+        permissions: [PermissionsEnum.ORG_OBSERVATION_ALL, PermissionsEnum.ORG_OBSERVATION_CREATE],
       },
       {
         title: 'View Observations',
         route: '/organization/equipment-mangement/observation?isAll=1',
+        permissions: [PermissionsEnum.ORG_OBSERVATION_ALL, PermissionsEnum.ORG_OBSERVATION_FETCH],
       },
     ],
   },
@@ -137,14 +161,21 @@ const cards = computed<EmpCard[]>(() => [
     eyebrow: 'Make a difference',
     subtitle: 'Report and review incidents to ensure proper investigation and corrective actions.',
     img: incidentImg,
+    permissions: [
+      PermissionsEnum.ORG_INCEDANT_ALL,
+      PermissionsEnum.ORG_INCEDANT_CREATE,
+      PermissionsEnum.ORG_INCEDANT_FETCH,
+    ],
     actions: [
       {
         title: 'Report Incident',
         route: '/organization/equipment-mangement/incedant/add',
+        permissions: [PermissionsEnum.ORG_INCEDANT_ALL, PermissionsEnum.ORG_INCEDANT_CREATE],
       },
       {
         title: 'View Incident',
         route: '/organization/equipment-mangement/incedant?isAll=1',
+        permissions: [PermissionsEnum.ORG_INCEDANT_ALL, PermissionsEnum.ORG_INCEDANT_FETCH],
       },
     ],
   },
@@ -155,9 +186,16 @@ const cards = computed<EmpCard[]>(() => [
     subtitle: 'Request a work permit and track your permits for the selected project.',
     img: permitImg,
     requiresProject: true,
+    permissions: [PermissionsEnum.PTW_ALL, PermissionsEnum.PTW_CREATE, PermissionsEnum.PTW_FETCH],
     actions: [
-      projectAction('Request Permit', `/organization/project-permit/project/${projectId.value}`),
-      projectAction('My Permits', `/organization/project-my-permits/${projectId.value}`),
+      projectAction('Request Permit', `/organization/project-permit/project/${projectId.value}`, [
+        PermissionsEnum.PTW_ALL,
+        PermissionsEnum.PTW_CREATE,
+      ]),
+      projectAction('My Permits', `/organization/project-my-permits/${projectId.value}`, [
+        PermissionsEnum.PTW_ALL,
+        PermissionsEnum.PTW_FETCH,
+      ]),
     ],
   },
   {
@@ -166,9 +204,22 @@ const cards = computed<EmpCard[]>(() => [
     eyebrow: 'Start with safety',
     subtitle: 'Record inductions and review the safety information needed before work begins.',
     img: inductionImg,
+    permissions: [
+      PermissionsEnum.inductions_ALL,
+      PermissionsEnum.inductions_CREATE,
+      PermissionsEnum.inductions_FETCH,
+    ],
     actions: [
-      { title: 'Add Induction', route: `/organization/induction/add${projectQuery.value}` },
-      { title: 'View Inductions', route: `/organization/inductions${projectQuery.value}` },
+      {
+        title: 'Add Induction',
+        route: `/organization/induction/add${projectQuery.value}`,
+        permissions: [PermissionsEnum.inductions_ALL, PermissionsEnum.inductions_CREATE],
+      },
+      {
+        title: 'View Inductions',
+        route: `/organization/inductions${projectQuery.value}`,
+        permissions: [PermissionsEnum.inductions_ALL, PermissionsEnum.inductions_FETCH],
+      },
     ],
   },
   {
@@ -177,12 +228,18 @@ const cards = computed<EmpCard[]>(() => [
     eyebrow: 'Change with confidence',
     subtitle: 'Submit and review changes to keep people, processes, and operations safe.',
     img: changeImg,
+    permissions: [PermissionsEnum.MOC_ALL],
     actions: [
       {
         title: 'Request Change',
         route: `/organization/management-of-change/add${projectQuery.value}`,
+        permissions: [PermissionsEnum.MOC_CRAETE],
       },
-      { title: 'View Changes', route: `/organization/management-of-change${projectQuery.value}` },
+      {
+        title: 'View Changes',
+        route: `/organization/management-of-change${projectQuery.value}`,
+        permissions: [PermissionsEnum.MOC_FETCH],
+      },
     ],
   },
   {
@@ -192,14 +249,17 @@ const cards = computed<EmpCard[]>(() => [
     subtitle: 'Explore safety leadership plans and follow up on project visits.',
     img: leadershipImg,
     requiresProject: true,
+    permissions: [PermissionsEnum.LEADERSHIP_ALL],
     actions: [
       projectAction(
         'View Leadership',
         `/organization/project-details/${projectId.value}/leadership`,
+        [PermissionsEnum.LEADERSHIP_ALL, PermissionsEnum.LEADERSHIP_FETCH],
       ),
       projectAction(
         'View Visits',
         `/organization/project-details/${projectId.value}/leadership/visits`,
+        [PermissionsEnum.LEADERSHIP_ALL],
       ),
     ],
   },
@@ -211,14 +271,17 @@ const cards = computed<EmpCard[]>(() => [
       'Identify hazards, assess project risks, and define the controls needed for safer work.',
     img: riskImg,
     requiresProject: true,
+    permissions: [PermissionsEnum.RISK_ASSESSMENT_ALL],
     actions: [
       projectAction(
         'Create Assessment',
         `/organization/project-details/${projectId.value}/risk-assessments/create`,
+        [PermissionsEnum.RISK_ASSESSMENT_ALL, PermissionsEnum.RISK_ASSESSMENT_CREATE],
       ),
       projectAction(
         'View Assessments',
         `/organization/project-details/${projectId.value}/risk-assessments`,
+        [PermissionsEnum.RISK_ASSESSMENT_ALL, PermissionsEnum.RISK_ASSESSMENT_FETCH],
       ),
     ],
   },
@@ -254,60 +317,80 @@ const cards = computed<EmpCard[]>(() => [
         No assigned projects are available.
       </p>
     </div>
-    <article
-      v-for="(card, cardIndex) in cards"
-      :key="card.type"
-      class="employee-interface-card"
-      :class="card.title.replaceAll(' ', '-')"
-      :aria-labelledby="`employee-card-${card.type}`"
-    >
-      <div class="card-text">
-        <div class="card-eyebrow">
-          <span class="card-number" aria-hidden="true">0{{ cardIndex + 1 }}</span>
-          <span>{{ card.eyebrow }}</span>
+    <PermissionBuilder v-for="card in cards" :key="card.type" :code="card.permissions">
+      <article
+        class="employee-interface-card"
+        :class="card.title.replaceAll(' ', '-')"
+        :aria-labelledby="`employee-card-${card.type}`"
+      >
+        <div class="card-text">
+          <div class="card-eyebrow">
+            <span class="card-number" aria-hidden="true"></span>
+            <span>{{ card.eyebrow }}</span>
+          </div>
+          <div class="info-wrapper">
+            <h2 :id="`employee-card-${card.type}`" class="card-title">{{ card.title }}</h2>
+            <p class="card-subtitle">{{ card.subtitle }}</p>
+            <p
+              v-if="card.requiresProject"
+              :id="`employee-card-project-hint-${card.type}`"
+              class="project-required-note"
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 11v6M12 7h.01" />
+              </svg>
+              <span>
+                <strong>Project required</strong>
+                <span v-if="!projectId">Select a project above to enable these actions.</span>
+                <span v-else>These actions use your selected project.</span>
+              </span>
+            </p>
+          </div>
         </div>
-        <div class="info-wrapper">
-          <h2 :id="`employee-card-${card.type}`" class="card-title">{{ card.title }}</h2>
-          <p class="card-subtitle">{{ card.subtitle }}</p>
-          <p
-            v-if="card.requiresProject"
-            :id="`employee-card-project-hint-${card.type}`"
-            class="project-required-note"
+
+        <div class="card-illustration" aria-hidden="true">
+          <span class="illustration-orbit"></span>
+          <img :src="card.img" alt="" />
+        </div>
+
+        <div class="actions-button">
+          <PermissionBuilder
+            v-for="(action, index) in card.actions"
+            :key="action.title"
+            :code="action.permissions"
           >
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="12" cy="12" r="9" />
-              <path d="M12 11v6M12 7h.01" />
-            </svg>
-            <span>
-              <strong>Project required</strong>
-              <span v-if="!projectId">Select a project above to enable these actions.</span>
-              <span v-else>These actions use your selected project.</span>
-            </span>
-          </p>
+            <component
+              :is="action.disabled ? 'button' : RouterLink"
+              :to="action.disabled ? undefined : action.route"
+              :disabled="action.disabled || undefined"
+              :aria-describedby="
+                card.requiresProject ? `employee-card-project-hint-${card.type}` : undefined
+              "
+              :class="index === 0 ? 'button-main' : 'button-view'"
+            >
+              <span>{{ action.title }}</span>
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 12h14m-6-6 6 6-6 6" />
+              </svg>
+            </component>
+          </PermissionBuilder>
         </div>
-      </div>
-
-      <div class="card-illustration" aria-hidden="true">
-        <span class="illustration-orbit"></span>
-        <img :src="card.img" alt="" />
-      </div>
-
-      <div class="actions-button">
-        <component
-          :is="action.disabled ? 'button' : RouterLink"
-          v-for="(action, index) in card.actions"
-          :key="action.title"
-          :to="action.disabled ? undefined : action.route"
-          :disabled="action.disabled || undefined"
-          :aria-describedby="card.requiresProject ? `employee-card-project-hint-${card.type}` : undefined"
-          :class="index === 0 ? 'button-main' : 'button-view'"
-        >
-          <span>{{ action.title }}</span>
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M5 12h14m-6-6 6 6-6 6" />
-          </svg>
-        </component>
-      </div>
-    </article>
+      </article>
+    </PermissionBuilder>
   </div>
 </template>
+
+<style scoped>
+.employee-interface-wrapper {
+  counter-reset: visible-employee-card;
+}
+
+.employee-interface-card {
+  counter-increment: visible-employee-card;
+}
+
+.card-number::before {
+  content: counter(visible-employee-card, decimal-leading-zero);
+}
+</style>
