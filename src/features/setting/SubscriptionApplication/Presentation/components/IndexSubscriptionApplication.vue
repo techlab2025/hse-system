@@ -178,7 +178,7 @@ const displayValue = (value: unknown) => {
                 <th scope="col">{{ $t('id') }}</th>
                 <!-- <th scope="col">{{ $t('subscription_application_id') }}</th> -->
                 <th scope="col">{{ $t('request_date') }}</th>
-                <th scope="col">{{ $t('request_status') }}</th>
+                <!-- <th scope="col">{{ $t('request_status') }}</th> -->
                 <th scope="col">{{ $t('organization_name') }}</th>
                 <th scope="col">{{ $t('phone') }}</th>
                 <th scope="col">{{ $t('email') }}</th>
@@ -198,9 +198,9 @@ const displayValue = (value: unknown) => {
                   {{ displayValue(item?.subscription_application_id) }}
                 </td> -->
                 <td :data-label="$t('request_date')">{{ displayValue(item?.request_date) }}</td>
-                <td :data-label="$t('request_status')">
+                <!-- <td :data-label="$t('request_status')">
                   {{ displayValue(item?.request_status) }}
-                </td>
+                </td> -->
                 <td :data-label="$t('organization_name')">{{ displayValue(item?.name) }}</td>
                 <td :data-label="$t('phone')">{{ displayValue(item?.phone) }}</td>
                 <td :data-label="$t('email')">{{ displayValue(item?.email) }}</td>
