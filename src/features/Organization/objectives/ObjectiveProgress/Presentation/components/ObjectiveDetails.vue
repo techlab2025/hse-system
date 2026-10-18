@@ -32,7 +32,7 @@ const latestPeriod = computed(() =>
         <p class="op-eyebrow">{{ $t('Objectives') }}</p>
         <h1>{{ $t('op.details') }}</h1>
         <p v-if="objective" class="op-objective-title">
-          #{{ objective.id }} · {{ objective.objective }}
+          {{ objective.objective }}
         </p>
       </div>
       <div class="op-actions">
@@ -68,14 +68,14 @@ const latestPeriod = computed(() =>
             <small>{{ latest?.actualResult != null ? actualUnit(objective) : '' }}</small></strong
           >
         </div>
-        <div class="op-card">
+        <!-- <div class="op-card">
           <h2>{{ $t('op.indicator') }}</h2>
           <ObjectiveProgressIndicator
             :objective="objective"
             :actual="latest?.actualResult ?? null"
             :backend-indicator="latest?.indicator"
           />
-        </div>
+        </div> -->
         <div class="op-card">
           <h2>{{ $t('op.latestPeriod') }}</h2>
           <strong>{{ latestPeriod }}</strong>

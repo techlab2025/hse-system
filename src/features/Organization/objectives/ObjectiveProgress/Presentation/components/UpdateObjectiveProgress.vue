@@ -230,10 +230,11 @@ async function save() {
     </div>
     <template v-else-if="objective">
       <form class="op-card op-form" @submit.prevent="save" novalidate>
-        <p class="op-muted">{{ $t('op.configurationReadOnly') }}</p>
+        <!-- <p class="op-muted">{{ $t('op.configurationReadOnly') }}</p> -->
         <div class="op-form-fields">
           <div class="op-field">
-            <label for="objective-reporting-period">{{ $t('op.period') }} *</label
+            <label for="objective-reporting-period"
+              >{{ $t('op.period') }} <span class="red">*</span></label
             ><Select
               input-id="objective-reporting-period"
               v-model="draft.period"
@@ -245,14 +246,16 @@ async function save() {
               :disabled="saving"
               :invalid="!!errors.period"
               aria-describedby="period-help period-error"
-            /><small id="period-help">{{ $t('op.periodHelp') }}</small
-            ><small v-if="errors.period" id="period-error" class="op-error">{{
+            />
+            <!-- <small id="period-help">{{ $t('op.periodHelp') }}</small
+            >
+            <small v-if="errors.period" id="period-error" class="op-error">{{
               $t(errors.period)
-            }}</small>
+            }}</small> -->
           </div>
           <div class="op-field">
             <label for="objective-actual-result"
-              >{{ $t(actualLabel) }} {{ actualUnit(objective) }} *</label
+              >{{ $t(actualLabel) }} {{ actualUnit(objective) }} <span class="red">*</span></label
             ><input
               id="objective-actual-result"
               v-model="draft.actualResult"
@@ -264,7 +267,8 @@ async function save() {
               :disabled="saving"
               :aria-invalid="Boolean(errors.actualResult)"
               aria-describedby="actual-help actual-error"
-            /><small id="actual-help">{{
+            />
+            <!-- <small id="actual-help">{{
               $t(
                 contract.semantics === 'period-specific'
                   ? 'op.periodSpecificHelp'
@@ -275,7 +279,7 @@ async function save() {
             }}</small
             ><small v-if="errors.actualResult" id="actual-error" class="op-error">{{
               $t(errors.actualResult)
-            }}</small>
+            }}</small> -->
           </div>
         </div>
         <div class="op-field">
@@ -345,5 +349,8 @@ async function save() {
 <style scoped>
 :deep(.upload-area) {
   border: 1px solid lightgray;
+}
+.red {
+  color: red;
 }
 </style>

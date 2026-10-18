@@ -81,8 +81,8 @@ const dateLabel = (value: string | null) =>
           <tr v-for="record in rows" :key="record.id">
             <td>{{ periodLabel(record.period) }}</td>
             <td>
-              {{ record.actualResult ?? '—' }}
-              {{ record.actualResult !== null ? actualUnit(objective) : '' }}
+              {{ record.actualResult ?? '—' }}%
+              <!-- {{ record.actualResult !== null ? actualUnit(objective) : '' }} -->
             </td>
             <td>{{ record.createdBy?.name ?? record.recordedBy ?? '—' }}</td>
             <td>{{ dateLabel(record.createdAt ?? record.recordedAt) }}</td>

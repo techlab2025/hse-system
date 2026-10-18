@@ -143,7 +143,7 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
 </script>
 
 <template>
-    <div class="op-page op-index">
+  <div class="op-page op-index">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
       <div class="input-search col-span-1">
         <!--      <img alt="search" src="../../../../../../../assets/images/search-normal.png" />-->
@@ -241,17 +241,7 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
                     />
                   </td> -->
                   <td :data-label="$t('op.latestPeriod')">
-                    {{
-                      item.progressSummary
-                        ? (generatePeriods(
-                            item,
-                            locale,
-                            new Date(),
-                            objectiveProgressContract.reportingFrequency,
-                          ).find((p) => p.value === item.progressSummary?.period)?.label ??
-                          item.progressSummary.period)
-                        : '—'
-                    }}
+                    {{ item.target }}
                   </td>
                   <td :data-label="$t('actions')">
                     <DropList

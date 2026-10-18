@@ -20,6 +20,7 @@ export default class ObjectivesDetailsModel {
     public unit: string | null,
     public frequency: number | null,
     public annualOccurrences: number | null,
+    public progress: number | null,
   ) {}
 
   static fromMap(data: Record<string, unknown>): ObjectivesDetailsModel {
@@ -57,6 +58,7 @@ export default class ObjectivesDetailsModel {
       typeof data.unit === 'string' ? data.unit : null,
       number(data.frequency),
       number(data.annual_occurrences),
+      number(data.progress),
     )
   }
 }
