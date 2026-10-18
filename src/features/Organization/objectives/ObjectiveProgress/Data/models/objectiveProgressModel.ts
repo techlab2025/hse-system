@@ -5,6 +5,10 @@ export interface ProgressAttachment {
   url: string
   mimeType?: string
 }
+export interface ProgressCreator {
+  id: number
+  name: string
+}
 export interface ProgressCorrection {
   recordedBy: string | null
   recordedAt: string | null
@@ -18,6 +22,7 @@ export default class ObjectiveProgressModel {
     public actualResult: number | null,
     public notes: string | null,
     public attachments: ProgressAttachment[],
+    public createdBy: ProgressCreator | null,
     public recordedBy: string | null,
     public recordedAt: string | null,
     public createdAt: string | null,
@@ -34,6 +39,15 @@ export default class ObjectiveProgressModel {
         : Number(value)
     const nullableString = (value: unknown): string | null =>
       value === null || value === undefined || value === '' ? null : String(value)
+    const creator = (value: unknown): ProgressCreator | null => {
+      if (!value || typeof value !== 'object') return null
+      const user = value as Record<string, unknown>
+      const id = Number(user.id)
+      const name = nullableString(user.name)
+      return Number.isFinite(id) && name ? { id, name } : null
+    }
+    const createdBy = creator(item.created_by)
+    const recordedByValue = creator(item.recorded_by)?.name ?? nullableString(item.recorded_by)
     const rawAttachments = Array.isArray(item.attachments)
       ? item.attachments
       : Array.isArray(item.files)
@@ -70,8 +84,9 @@ export default class ObjectiveProgressModel {
       nullableNumber(item.actual_result ?? item.actual),
       nullableString(item.notes),
       attachments,
-      nullableString(item.recorded_by ?? item.created_by_name),
-      nullableString(item.recorded_at),
+      createdBy,
+      recordedByValue ?? nullableString(item.created_by_name) ?? createdBy?.name ?? null,
+      nullableString(item.recorded_at ?? item.created_at),
       nullableString(item.created_at),
       nullableString(item.updated_at),
       corrections,

@@ -184,13 +184,13 @@ const displayValue = (value: unknown) => {
                 <th scope="col">{{ $t('request_date') }}</th>
                 <!-- <th scope="col">{{ $t('request_status') }}</th> -->
                 <th scope="col">{{ $t('organization_name') }}</th>
+                <th scope="col">{{ $t('industry') }}</th>
                 <th scope="col">{{ $t('phone') }}</th>
                 <th scope="col">{{ $t('email') }}</th>
                 <th scope="col">{{ $t('address') }}</th>
                 <th scope="col">{{ $t('admin_name') }}</th>
                 <th scope="col">{{ $t('admin_phone') }}</th>
                 <th scope="col">{{ $t('admin_email') }}</th>
-                <th scope="col">{{ $t('industry') }}</th>
                 <th scope="col">{{ $t('status_name') }}</th>
                 <th scope="col">{{ $t('actions') }}</th>
               </tr>
@@ -206,15 +206,15 @@ const displayValue = (value: unknown) => {
                   {{ displayValue(item?.request_status) }}
                 </td> -->
                 <td :data-label="$t('organization_name')">{{ displayValue(item?.name) }}</td>
+                <td :data-label="$t('industry')">
+                  {{ displayValue(item?.industry?.title ?? item?.industry?.titile) }}
+                </td>
                 <td :data-label="$t('phone')">{{ displayValue(item?.phone) }}</td>
                 <td :data-label="$t('email')">{{ displayValue(item?.email) }}</td>
                 <td :data-label="$t('address')">{{ displayValue(item?.address) }}</td>
                 <td :data-label="$t('admin_name')">{{ displayValue(item?.admin_name) }}</td>
                 <td :data-label="$t('admin_phone')">{{ displayValue(item?.admin_phone) }}</td>
                 <td :data-label="$t('admin_email')">{{ displayValue(item?.admin_email) }}</td>
-                <td :data-label="$t('industry')">
-                  {{ displayValue(item?.industry?.title ?? item?.industry?.titile) }}
-                </td>
                 <td
                   class="status"
                   :class="GetProjectStatus(item?.request_status)"

@@ -68,8 +68,7 @@ const dateLabel = (value: string | null) =>
                 'recordedBy',
                 'recordedAt',
                 'notes',
-                'attachments',
-                'corrections',
+                // 'corrections',
               ]"
               :key="key"
               scope="col"
@@ -85,10 +84,10 @@ const dateLabel = (value: string | null) =>
               {{ record.actualResult ?? '—' }}
               {{ record.actualResult !== null ? actualUnit(objective) : '' }}
             </td>
-            <td>{{ record.recordedBy || '—' }}</td>
-            <td>{{ dateLabel(record.recordedAt ?? record.createdAt) }}</td>
+            <td>{{ record.createdBy?.name ?? record.recordedBy ?? '—' }}</td>
+            <td>{{ dateLabel(record.createdAt ?? record.recordedAt) }}</td>
             <td class="op-notes">{{ record.notes || '—' }}</td>
-            <td>
+            <!-- <td>
               <ul v-if="record.attachments.length" class="op-files">
                 <li v-for="file in record.attachments" :key="file.id">
                   <a
@@ -109,8 +108,8 @@ const dateLabel = (value: string | null) =>
                 </li>
               </ul>
               <span v-else>—</span>
-            </td>
-            <td>
+            </td> -->
+            <!-- <td>
               <details v-if="record.corrections.length">
                 <summary>{{ $t('op.corrections') }} ({{ record.corrections.length }})</summary>
                 <p v-for="(correction, index) in record.corrections" :key="index" class="op-notes">
@@ -129,7 +128,7 @@ const dateLabel = (value: string | null) =>
               >
                 {{ $t('op.correct') }}
               </RouterLink>
-            </td>
+            </td> -->
           </tr>
         </tbody>
       </table>
