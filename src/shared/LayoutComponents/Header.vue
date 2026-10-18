@@ -19,18 +19,20 @@ import OrganizationEmployeeDefaultProjectRepoController from '@/features/auth/pr
 import OrganizationEmployeeDefaultProjectParams from '@/features/auth/Core/Params/OrganizationEmployeeDefaultProjectParams'
 import FetchMyProjectsController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyProjectsController'
 import FetchMyProjectsParams from '@/features/Organization/ObservationFactory/Core/params/fetchMyProjectsParams'
-import { useToast } from 'primevue/usetoast'
 import Notifications from './Notifications.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
 import ConditionHandler from '@/base/Presentation/utils/condition_handler'
+import SidebarUnicon from '@/shared/icons/SidebarUnicon.vue'
 // import { NOTIFICATION_SOUND_BASE64 } from '@/base/Presentation/utils/notification_ring.ts'
+
+defineOptions({ name: 'AppHeader' })
 
 const route = useRoute()
 const conditionHandler = ConditionHandler.getInstance()
 // console.log(route.name)
 // defineEmits(["open"]);
 
-const props = defineProps({
+defineProps({
   open: {
     type: Boolean,
     default: true,
@@ -39,8 +41,7 @@ const props = defineProps({
 
 const emit = defineEmits(['open'])
 
-const language = ref<string>('')
-const { isDarkMode, initThemeMode, toggleThemeMode } = useThemeMode()
+const { isDarkMode, initThemeMode } = useThemeMode()
 const { identity: systemIdentity } = useSystemIdentity()
 const brandLogo = computed(() =>
   systemIdentity.value.isActive && systemIdentity.value.logo
@@ -57,6 +58,7 @@ const router = useRouter()
 // const userStore = useUserStore();
 
 const logout = () => {
+  closeDropMenu()
   if (user?.type == OrganizationTypeEnum.ADMIN) {
     localStorage.removeItem('user')
     localStorage.removeItem('token')
@@ -73,6 +75,7 @@ const logout = () => {
 
 const isDropMenuOpen = ref(false)
 const userMenuRef = ref<HTMLElement | null>(null)
+const userMenuPanelRef = ref<HTMLElement | null>(null)
 const dropdownPosition = ref<Record<string, string>>({})
 
 const updateDropdownPosition = () => {
@@ -80,10 +83,22 @@ const updateDropdownPosition = () => {
   if (!rect) return
 
   const isRtl = document.documentElement.dir === 'rtl'
+  const menuWidth = 264
+  const viewportPadding = 12
+  const preferredLeft = isRtl ? rect.left : rect.right - menuWidth
+  const left = Math.min(
+    Math.max(preferredLeft, viewportPadding),
+    Math.max(viewportPadding, window.innerWidth - menuWidth - viewportPadding),
+  )
+
   dropdownPosition.value = {
     top: `${rect.bottom + 12}px`,
-    ...(isRtl ? { left: `${rect.left}px` } : { right: `${window.innerWidth - rect.right}px` }),
+    left: `${left}px`,
   }
+}
+
+const closeDropMenu = () => {
+  isDropMenuOpen.value = false
 }
 
 const toggleDropMenu = () => {
@@ -93,15 +108,29 @@ const toggleDropMenu = () => {
   isDropMenuOpen.value = !isDropMenuOpen.value
 }
 
-const openUserProfile = () => {
+const openUserProfile = async () => {
   const currentUser = useUserStore().user
-  if (currentUser?.type !== OrganizationTypeEnum.ORGANIZATION || !currentUser.id) {
-    toggleDropMenu()
-    return
-  }
+  if (!currentUser?.id) return
 
-  isDropMenuOpen.value = false
-  router.push({ name: 'Show Organization Employee', params: { id: currentUser.id } })
+  closeDropMenu()
+
+  await router.push(
+    currentUser.type === OrganizationTypeEnum.ADMIN
+      ? { name: 'Edit admin', params: { id: currentUser.id } }
+      : { name: 'Show Organization Employee', params: { id: currentUser.id } },
+  )
+}
+
+const handleOutsideMenuClick = (event: PointerEvent) => {
+  const target = event.target as Node
+  if (userMenuRef.value?.contains(target) || userMenuPanelRef.value?.contains(target)) return
+  closeDropMenu()
+}
+
+const handleMenuKeydown = (event: KeyboardEvent) => {
+  if (event.key !== 'Escape' || !isDropMenuOpen.value) return
+  closeDropMenu()
+  userMenuRef.value?.focus()
 }
 
 // fetch user store data
@@ -136,11 +165,15 @@ onMounted(() => {
   }
   window.addEventListener('resize', updateDropdownPosition)
   window.addEventListener('scroll', updateDropdownPosition, true)
+  document.addEventListener('pointerdown', handleOutsideMenuClick)
+  document.addEventListener('keydown', handleMenuKeydown)
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateDropdownPosition)
   window.removeEventListener('scroll', updateDropdownPosition, true)
+  document.removeEventListener('pointerdown', handleOutsideMenuClick)
+  document.removeEventListener('keydown', handleMenuKeydown)
 })
 
 const setSelectedProject = async (project: TitleInterface | null) => {
@@ -169,8 +202,6 @@ onMounted(() => {
     user?.type == OrganizationTypeEnum.ADMIN || conditionHandler.shouldUseEmployeeInterface()
 })
 
-const userStore = useUserStore()
-const toast = useToast()
 // const NOTIFICATION_SOUND_BASE64 =
 //   'data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIF2W56+mmUBELTKXh8bllHAU2jdXvyn0tBSh+zPLaizsKGGS46Om1XBoFM4nU8c1+LgYngM3y3I4+ChlluOvpplARC0ul4fG5ZRwFNo3V78p9LQUofszy2os7ChhluevrpVERC0yn4fG3ZBwFOI7U8ct+LQUoftDy24k7ChZluujoplARDEul4e+3ZRwGOY/V8Mp/LgYpf9Dy3Ik7CxZluejpplARDEym4fG3ZBwFOI/V8cp+LQYoftDy24o7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuujqplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/LgYof9Dy3Io7ChZmuejpplARDEym4fG3YxwFOI/V8Ml/'
 
@@ -199,12 +230,6 @@ const toast = useToast()
 //     })
 //   },
 // })
-const op = ref()
-
-const toggle = (event: Event) => {
-  op.value.toggle(event)
-}
-
 // const refreshNotificationTokenController = RefreshNotificationTokenController.getInstance();
 // watch(()=>wsConnected , async (newvalue)=>{
 //   console.log(wsConnected , "wsConnected");
@@ -287,24 +312,62 @@ const toggle = (event: Event) => {
           <div
             ref="userMenuRef"
             class="user cursor-pointer dropdown-trigger header-user-menu"
-            role="link"
+            role="button"
             tabindex="0"
-            @click.stop="openUserProfile"
-            @keydown.enter.stop="openUserProfile"
+            aria-haspopup="menu"
+            :aria-expanded="isDropMenuOpen"
+            :aria-label="$t('profile')"
+            @click.stop="toggleDropMenu"
+            @keydown.enter.stop.prevent="toggleDropMenu"
+            @keydown.space.stop.prevent="toggleDropMenu"
           >
-            <!--  <IconArrowDownNav class="drop-icon" /> -->
             <div class="profile-data">
-              <span>{{ user?.name.split(' ')[0] }}</span>
-              <!-- <span>{{ user?.type == OrganizationTypeEnum.ADMIN ? 'Admin' : 'Organization' }}</span> -->
+              <span>{{ user?.name?.split(' ')[0] }}</span>
               <span>{{ user?.organizationName }}</span>
             </div>
 
-            <!-- <img alt="user" src="../../assets/images/travel.png" /> -->
             <img src="https://cyber.comolho.com/static/img/avatar.png" :alt="$t('employee')" />
+            <svg class="profile-chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+              <path d="m6 8 4 4 4-4" />
+            </svg>
           </div>
         </template>
       </IdentityHeaderLayout>
     </nav>
+
+    <Teleport to="body">
+      <Transition name="profile-menu">
+        <div
+          v-if="isDropMenuOpen"
+          ref="userMenuPanelRef"
+          class="hse-identity header-profile-menu"
+          :class="{ 'is-dark': isDarkMode }"
+          :style="dropdownPosition"
+          role="menu"
+          :aria-label="$t('profile')"
+          @click.stop
+        >
+          <div class="header-profile-menu__identity">
+            <img src="https://cyber.comolho.com/static/img/avatar.png" alt="" />
+            <div>
+              <strong>{{ user?.name }}</strong>
+              <span>{{ user?.organizationName }}</span>
+            </div>
+          </div>
+
+          <div class="header-profile-menu__divider" aria-hidden="true"></div>
+
+          <button type="button" role="menuitem" @click="openUserProfile">
+            <SidebarUnicon name="user" />
+            <span>{{ $t('profile') }}</span>
+          </button>
+          <button type="button" role="menuitem" class="header-profile-menu__logout" @click="logout">
+            <SidebarUnicon name="signout" />
+            <span>{{ $t('logout') }}</span>
+          </button>
+        </div>
+      </Transition>
+    </Teleport>
   </header>
 </template>
 
@@ -426,6 +489,13 @@ const toggle = (event: Event) => {
   border-inline-start: 1px solid var(--hse-project-line);
   border-radius: 0;
   color: var(--hse-project-ink);
+  outline: none;
+  transition: color 160ms ease;
+}
+.user:hover,
+.user:focus-visible,
+.user[aria-expanded='true'] {
+  color: var(--hse-project-blue);
 }
 .user:dir(rtl) {
   padding: 0 10px 0 0;
@@ -456,6 +526,120 @@ const toggle = (event: Event) => {
   font-size: 11px;
   color: var(--hse-project-muted);
 }
+.profile-chevron {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  transition: transform 160ms ease;
+}
+.profile-chevron path {
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.user[aria-expanded='true'] .profile-chevron {
+  transform: rotate(180deg);
+}
+.header-profile-menu {
+  position: fixed;
+  z-index: 1300;
+  display: grid;
+  width: min(264px, calc(100vw - 24px));
+  padding: 8px;
+  border: 1px solid var(--hse-project-line, #dce5ef);
+  border-radius: var(--hse-card-radius, 14px);
+  background: var(--hse-project-surface, #fff);
+  color: var(--hse-project-ink, #102a4d);
+  box-shadow: var(--hse-shadow-dropdown, 0 16px 38px rgb(16 42 77 / 16%));
+}
+.header-profile-menu__identity {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 8px;
+}
+.header-profile-menu__identity img {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  border-radius: var(--hse-control-radius, 9px);
+  object-fit: cover;
+  background: var(--hse-project-ice, #edf5ff);
+}
+.header-profile-menu__identity div {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.header-profile-menu__identity strong,
+.header-profile-menu__identity span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.header-profile-menu__identity strong {
+  font: 700 13px/1.35 var(--hse-project-font);
+}
+.header-profile-menu__identity span {
+  color: var(--hse-project-muted, #66788e);
+  font: 500 11px/1.4 var(--hse-project-font);
+}
+.header-profile-menu__divider {
+  height: 1px;
+  margin: 4px 8px;
+  background: var(--hse-project-line, #dce5ef);
+}
+.header-profile-menu button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 42px;
+  padding: 9px 11px;
+  border: 0;
+  border-radius: var(--hse-control-radius, 9px) !important;
+  background: transparent;
+  color: var(--hse-project-ink, #102a4d);
+  font: 600 13px/1.4 var(--hse-project-font);
+  text-align: start;
+  cursor: pointer;
+  transition:
+    color 160ms ease,
+    background 160ms ease;
+}
+.header-profile-menu button:hover,
+.header-profile-menu button:focus-visible {
+  background: var(--hse-project-ice, #edf5ff);
+  color: var(--hse-project-blue, #1677d2);
+  outline: none;
+}
+.header-profile-menu button :deep(.sidebar-unicon) {
+  width: 19px;
+  height: 19px;
+  flex: 0 0 auto;
+}
+.header-profile-menu .header-profile-menu__logout {
+  color: var(--hse-danger, #c93f4d);
+}
+.header-profile-menu .header-profile-menu__logout:hover,
+.header-profile-menu .header-profile-menu__logout:focus-visible {
+  background: color-mix(in srgb, var(--hse-danger, #c93f4d) 9%, transparent);
+  color: var(--hse-danger, #c93f4d);
+}
+.profile-menu-enter-active,
+.profile-menu-leave-active {
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease;
+  transform-origin: top right;
+}
+.profile-menu-enter-from,
+.profile-menu-leave-to {
+  opacity: 0;
+  transform: translateY(-5px) scale(0.98);
+}
 @media (min-width: 769px) {
   .drawer {
     display: none;
@@ -481,7 +665,12 @@ const toggle = (event: Event) => {
     order: 0;
   }
   .user {
-    display: none;
+    display: flex;
+    gap: 0;
+    padding-inline-start: 8px;
+  }
+  .user .profile-chevron {
+    margin-inline-start: 2px;
   }
   .logo {
     font-size: 14px;
@@ -519,6 +708,10 @@ const toggle = (event: Event) => {
 }
 @media (prefers-reduced-motion: reduce) {
   .hse-app-header :deep(*) {
+    transition: none;
+  }
+  .profile-menu-enter-active,
+  .profile-menu-leave-active {
     transition: none;
   }
 }

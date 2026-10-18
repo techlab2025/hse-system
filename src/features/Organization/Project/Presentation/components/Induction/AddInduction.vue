@@ -9,6 +9,9 @@ import type Params from '@/base/core/params/params'
 import InductionForm from './InductionForm.vue'
 import AddInductionController from '../../controllers/Induction/addInductionController'
 import type AddInductionParams from '../../../Core/params/induction/addInductionParams'
+import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
+import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
@@ -17,6 +20,11 @@ const formKey = ref(0)
 const formRef = ref<InstanceType<typeof InductionForm> | null>(null)
 const emit = defineEmits(['update:data'])
 const addInductionController = AddInductionController.getInstance()
+const createPermissions = [
+  PermissionsEnum.ADMIN,
+  PermissionsEnum.inductions_ALL,
+  PermissionsEnum.inductions_CREATE,
+]
 
 const addInduction = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
@@ -43,32 +51,42 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form
-    data-hse-project
-    v-project-panels
-    class="hse-project-root hse-project-page grid grid-cols-1 md:grid-cols-4 gap-4 induction-entry-form"
-    @submit.prevent="addInduction"
-  >
-    <InductionForm :key="formKey" ref="formRef" @update:data="setParams" />
+  <PermissionBuilder :code="createPermissions">
+    <form
+      data-hse-project
+      v-project-panels
+      class="hse-project-root hse-project-page grid grid-cols-1 md:grid-cols-4 gap-4 induction-entry-form"
+      @submit.prevent="addInduction"
+    >
+      <InductionForm :key="formKey" ref="formRef" @update:data="setParams" />
 
-    <div class="hse-project-form-footer col-span-4 induction-form-actions create-form-actions">
-      <button
-        type="button"
-        class="hse-project-button btn btn-secondary induction-action"
-        @click.prevent="saveAndNew"
-      >
-        <Icon icon="uil:plus-circle" />
-        {{ $t('save and new') }}
-      </button>
-      <button
-        type="submit"
-        class="hse-project-button hse-project-button--primary btn btn-primary induction-action induction-action--primary"
-      >
-        <Icon icon="uil:check-circle" />
-        {{ $t('save') }}
-      </button>
-    </div>
-  </form>
+      <div class="hse-project-form-footer col-span-4 induction-form-actions create-form-actions">
+        <button
+          type="button"
+          class="hse-project-button btn btn-secondary induction-action"
+          @click.prevent="saveAndNew"
+        >
+          <Icon icon="uil:plus-circle" />
+          {{ $t('save and new') }}
+        </button>
+        <button
+          type="submit"
+          class="hse-project-button hse-project-button--primary btn btn-primary induction-action induction-action--primary"
+        >
+          <Icon icon="uil:check-circle" />
+          {{ $t('save') }}
+        </button>
+      </div>
+    </form>
+    <template #notPermitted>
+      <DataFailed
+        :title="$t('have_not_permission')"
+        :description="$t('permission_denied_description')"
+        link=""
+        :withbtn="false"
+      />
+    </template>
+  </PermissionBuilder>
 </template>
 
 <style scoped>

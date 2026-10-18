@@ -10,11 +10,19 @@ import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import ShowInductionController from '../../controllers/Induction/showInductionController'
 import ShowInductionParams from '../../../Core/params/induction/showInductionParams'
+import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 
 const route = useRoute()
 const id = computed(() => Number(route.params.id))
 const controller = ShowInductionController.getInstance()
 const state = ref(controller.state.value)
+const detailsPermissions = [
+  PermissionsEnum.ADMIN,
+  PermissionsEnum.inductions_ALL,
+  PermissionsEnum.inductions_DETAILS,
+]
 
 const induction = computed(() => state.value.data)
 const attachments = computed(() => induction.value?.image ?? [])
@@ -100,157 +108,168 @@ watch(
 )
 
 onMounted(() => {
+  if (!PermissionHandler.Instance.handle(detailsPermissions)) return
   controller.showInduction(new ShowInductionParams(id.value))
 })
 </script>
 
 <template>
-  <div data-hse-project v-project-panels class="hse-project-root hse-project-state-host">
-    <DataStatus :controller="state">
-      <template #success>
-        <section
-          data-hse-project
-          v-project-panels
-          v-if="induction"
-          class="hse-project-root hse-project-page induction-show"
-        >
-          <header data-hse-project-head class="hse-project-page-head induction-hero">
-            <div class="induction-hero__main">
-              <span class="induction-hero__icon" aria-hidden="true">
-                <Icon icon="uil:book-open" />
-              </span>
-              <div class="induction-hero__copy">
-                <p>{{ $t('induction_overview') }}</p>
-                <h1>{{ induction.title }}</h1>
-                <div class="induction-hero__chips">
-                  <span>{{ induction.projectTitle || '-' }}</span>
-                  <span>{{ induction.date || '-' }}</span>
-                  <span>{{ instructorValue }}</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="metric-grid" :aria-label="$t('session_details')">
-              <article
-                v-for="metric in heroMetrics"
-                :key="metric.label"
-                class="metric-card"
-                :data-tone="metric.tone"
-              >
-                <span class="metric-card__icon" aria-hidden="true">
-                  <Icon :icon="metric.icon" />
+  <PermissionBuilder :code="detailsPermissions">
+    <div data-hse-project v-project-panels class="hse-project-root hse-project-state-host">
+      <DataStatus :controller="state">
+        <template #success>
+          <section
+            data-hse-project
+            v-project-panels
+            v-if="induction"
+            class="hse-project-root hse-project-page induction-show"
+          >
+            <header data-hse-project-head class="hse-project-page-head induction-hero">
+              <div class="induction-hero__main">
+                <span class="induction-hero__icon" aria-hidden="true">
+                  <Icon icon="uil:book-open" />
                 </span>
-                <strong>{{ metric.value }}</strong>
-                <p>{{ $t(metric.label) }}</p>
-              </article>
-            </div>
-          </header>
-
-          <section class="detail-grid" :aria-label="$t('induction_identity')">
-            <article
-              v-for="item in detailItems"
-              :key="item.label"
-              class="detail-card"
-              :data-tone="item.tone"
-            >
-              <span class="detail-card__icon" aria-hidden="true">
-                <Icon :icon="item.icon" />
-              </span>
-              <div>
-                <p>{{ $t(item.label) }}</p>
-                <strong>{{ item.value }}</strong>
-              </div>
-            </article>
-          </section>
-
-          <div class="show-grid">
-            <section class="show-panel topics-panel">
-              <header class="panel-header">
-                <span class="panel-header__icon" aria-hidden="true">
-                  <Icon icon="uil:list-ul" />
-                </span>
-                <div>
-                  <h2>{{ $t('training_topics') }}</h2>
-                  <p>{{ trainingTopicCount }}</p>
-                </div>
-              </header>
-
-              <div v-if="induction.trainingTopic.length" class="topic-list">
-                <article
-                  v-for="(topic, index) in induction.trainingTopic"
-                  :key="topic.inductionTrainingTopicId || topic.trainingTopicId || index"
-                  class="topic-item"
-                >
-                  <span>{{ index + 1 }}</span>
-                  <strong>{{ topic.displayTitle }}</strong>
-                </article>
-              </div>
-              <p v-else class="empty-text">{{ $t('No training topics selected') }}</p>
-            </section>
-
-            <section class="show-panel attendees-panel">
-              <header class="panel-header">
-                <span class="panel-header__icon" aria-hidden="true">
-                  <Icon icon="uil:users-alt" />
-                </span>
-                <div>
-                  <h2>{{ $t('attendees') }}</h2>
-                  <p>{{ attendeeCount }}</p>
-                </div>
-              </header>
-
-              <div v-if="induction.organisationEmployee.length" class="attendee-list">
-                <article
-                  v-for="employee in induction.organisationEmployee"
-                  :key="employee.id + '-' + employee.displayTitle"
-                  class="attendee-item"
-                >
-                  <span class="attendee-avatar">{{ employee.initials }}</span>
-                  <div class="attendee-copy">
-                    <strong>{{ employee.displayTitle }}</strong>
-                    <small>{{ employee.displaySubtitle || $t('external_attendee') }}</small>
+                <div class="induction-hero__copy">
+                  <p>{{ $t('induction_overview') }}</p>
+                  <h1>{{ induction.title }}</h1>
+                  <div class="induction-hero__chips">
+                    <span>{{ induction.projectTitle || '-' }}</span>
+                    <span>{{ induction.date || '-' }}</span>
+                    <span>{{ instructorValue }}</span>
                   </div>
+                </div>
+              </div>
+
+              <div class="metric-grid" :aria-label="$t('session_details')">
+                <article
+                  v-for="metric in heroMetrics"
+                  :key="metric.label"
+                  class="metric-card"
+                  :data-tone="metric.tone"
+                >
+                  <span class="metric-card__icon" aria-hidden="true">
+                    <Icon :icon="metric.icon" />
+                  </span>
+                  <strong>{{ metric.value }}</strong>
+                  <p>{{ $t(metric.label) }}</p>
                 </article>
               </div>
-              <p v-else class="empty-text">{{ $t('No attendees selected') }}</p>
-            </section>
+            </header>
 
-            <section class="show-panel evidence-panel">
-              <header class="panel-header">
-                <span class="panel-header__icon" aria-hidden="true">
-                  <Icon icon="uil:image-v" />
+            <section class="detail-grid" :aria-label="$t('induction_identity')">
+              <article
+                v-for="item in detailItems"
+                :key="item.label"
+                class="detail-card"
+                :data-tone="item.tone"
+              >
+                <span class="detail-card__icon" aria-hidden="true">
+                  <Icon :icon="item.icon" />
                 </span>
                 <div>
-                  <h2>{{ $t('evidence_files') }}</h2>
-                  <p>{{ evidenceCount }}</p>
+                  <p>{{ $t(item.label) }}</p>
+                  <strong>{{ item.value }}</strong>
                 </div>
-              </header>
-
-              <div v-if="attachments.length" class="attachment-grid">
-                <article
-                  v-for="(file, index) in attachments"
-                  :key="file + '-' + index"
-                  class="attachment-item"
-                >
-                  <Image :src="file" alt="Image" preview image-class="attachment-image" />
-                  <span>{{ index + 1 }}</span>
-                </article>
-              </div>
-              <p v-else class="empty-text">{{ $t('No attachments') }}</p>
+              </article>
             </section>
-          </div>
-        </section>
-      </template>
 
-      <template #loader>
-        <FormLoader :inputsCount="5" />
-      </template>
+            <div class="show-grid">
+              <section class="show-panel topics-panel">
+                <header class="panel-header">
+                  <span class="panel-header__icon" aria-hidden="true">
+                    <Icon icon="uil:list-ul" />
+                  </span>
+                  <div>
+                    <h2>{{ $t('training_topics') }}</h2>
+                    <p>{{ trainingTopicCount }}</p>
+                  </div>
+                </header>
 
-      <template #failed>
-        <DataFailed :title="$t('no_inductions')" :description="$t('unable_to_load_inductions')" />
-      </template>
-    </DataStatus>
-  </div>
+                <div v-if="induction.trainingTopic.length" class="topic-list">
+                  <article
+                    v-for="(topic, index) in induction.trainingTopic"
+                    :key="topic.inductionTrainingTopicId || topic.trainingTopicId || index"
+                    class="topic-item"
+                  >
+                    <span>{{ index + 1 }}</span>
+                    <strong>{{ topic.displayTitle }}</strong>
+                  </article>
+                </div>
+                <p v-else class="empty-text">{{ $t('No training topics selected') }}</p>
+              </section>
+
+              <section class="show-panel attendees-panel">
+                <header class="panel-header">
+                  <span class="panel-header__icon" aria-hidden="true">
+                    <Icon icon="uil:users-alt" />
+                  </span>
+                  <div>
+                    <h2>{{ $t('attendees') }}</h2>
+                    <p>{{ attendeeCount }}</p>
+                  </div>
+                </header>
+
+                <div v-if="induction.organisationEmployee.length" class="attendee-list">
+                  <article
+                    v-for="employee in induction.organisationEmployee"
+                    :key="employee.id + '-' + employee.displayTitle"
+                    class="attendee-item"
+                  >
+                    <span class="attendee-avatar">{{ employee.initials }}</span>
+                    <div class="attendee-copy">
+                      <strong>{{ employee.displayTitle }}</strong>
+                      <small>{{ employee.displaySubtitle || $t('external_attendee') }}</small>
+                    </div>
+                  </article>
+                </div>
+                <p v-else class="empty-text">{{ $t('No attendees selected') }}</p>
+              </section>
+
+              <section class="show-panel evidence-panel">
+                <header class="panel-header">
+                  <span class="panel-header__icon" aria-hidden="true">
+                    <Icon icon="uil:image-v" />
+                  </span>
+                  <div>
+                    <h2>{{ $t('evidence_files') }}</h2>
+                    <p>{{ evidenceCount }}</p>
+                  </div>
+                </header>
+
+                <div v-if="attachments.length" class="attachment-grid">
+                  <article
+                    v-for="(file, index) in attachments"
+                    :key="file + '-' + index"
+                    class="attachment-item"
+                  >
+                    <Image :src="file" alt="Image" preview image-class="attachment-image" />
+                    <span>{{ index + 1 }}</span>
+                  </article>
+                </div>
+                <p v-else class="empty-text">{{ $t('No attachments') }}</p>
+              </section>
+            </div>
+          </section>
+        </template>
+
+        <template #loader>
+          <FormLoader :inputsCount="5" />
+        </template>
+
+        <template #failed>
+          <DataFailed :title="$t('no_inductions')" :description="$t('unable_to_load_inductions')" />
+        </template>
+      </DataStatus>
+    </div>
+    <template #notPermitted>
+      <DataFailed
+        :title="$t('have_not_permission')"
+        :description="$t('permission_denied_description')"
+        link=""
+        :withbtn="false"
+      />
+    </template>
+  </PermissionBuilder>
 </template>
 
 <style scoped>

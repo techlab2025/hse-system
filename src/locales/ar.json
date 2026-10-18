@@ -2615,6 +2615,7 @@
   "title_required_all_languages": "العنوان مطلوب بكل لغة محددة.",
   "title_required": "العنوان مطلوب.",
   "permission_denied": "ليس لديك صلاحية.",
+  "permission_denied_description": "تواصل مع مسؤول النظام إذا كنت بحاجة إلى الوصول إلى هذه الصفحة.",
   "failed_to_process_file": "تعذرت معالجة الملف.",
   "processing_file": "جارٍ معالجة الملف…",
   "mapped_data_preview": "معاينة البيانات المطابقة",

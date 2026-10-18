@@ -22,6 +22,7 @@ import DeleteInductionController from '../../controllers/Induction/deleteInducti
 import IndexInductionParams from '../../../Core/params/induction/indexInductionParams'
 import DeleteInductionParams from '../../../Core/params/induction/deleteInductionToolParams'
 import wordSlice from '@/base/Presentation/utils/word_slice'
+import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -42,10 +43,31 @@ const projectQuery = computed(() =>
   routeProjectId.value ? `?project_id=${routeProjectId.value}` : '',
 )
 
-const featurePermissions = [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE]
-const createPermissions = [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE]
+const fetchPermissions = [
+  PermissionsEnum.ADMIN,
+  PermissionsEnum.inductions_ALL,
+  PermissionsEnum.inductions_FETCH,
+]
+const createPermissions = [
+  PermissionsEnum.ADMIN,
+  PermissionsEnum.inductions_ALL,
+  PermissionsEnum.inductions_CREATE,
+]
+const detailsPermissions = [
+  PermissionsEnum.ADMIN,
+  PermissionsEnum.inductions_ALL,
+  PermissionsEnum.inductions_DETAILS,
+]
+const deletePermissions = [
+  PermissionsEnum.ADMIN,
+  PermissionsEnum.inductions_ALL,
+  PermissionsEnum.inductions_DELETE,
+]
+const canFetch = computed(() => PermissionHandler.Instance.handle(fetchPermissions))
+const canCreate = computed(() => PermissionHandler.Instance.handle(createPermissions))
 
 const fetchInductions = async (query: string = '', page: number = 1, limit: number = 10) => {
+  if (!canFetch.value) return
   await controller.getData(new IndexInductionParams(query, page, limit, 1))
 }
 
@@ -59,6 +81,7 @@ const changePageSize = (limit: number) => {
   fetchInductions(word.value, currentPage.value, limit)
 }
 const deleteInduction = async (id: number) => {
+  if (!PermissionHandler.Instance.handle(deletePermissions)) return
   const deleteController = DeleteInductionController.getInstance()
   await deleteController.deleteInduction(new DeleteInductionParams(id))
   if (deleteController.isDataSuccess()) {
@@ -71,7 +94,7 @@ const rowActions = (id: number) => [
     text: t('show'),
     icon: ActionsTableView,
     link: `${basePath}/induction/show/${id}${projectQuery.value}`,
-    permission: featurePermissions,
+    permission: detailsPermissions,
   },
   // {
   //   text: t('edit'),
@@ -83,7 +106,7 @@ const rowActions = (id: number) => [
     text: t('delete'),
     icon: IconDelete,
     action: () => deleteInduction(id),
-    permission: featurePermissions,
+    permission: deletePermissions,
   },
 ]
 
@@ -98,34 +121,34 @@ watch(
 </script>
 
 <template>
-  <div
-    data-hse-project
-    v-project-panels
-    class="hse-project-root hse-project-page grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 input_search_btn"
-  >
-    <div class="input-search col-span-1">
-      <span class="icon-remove" @click="((word = ''), searchInductions())"><Search /></span>
-      <input
-        v-model="word"
-        :placeholder="$t('search')"
-        class="hse-project-input input"
-        @input="searchInductions"
-      />
+  <PermissionBuilder :code="fetchPermissions">
+    <div
+      data-hse-project
+      v-project-panels
+      class="hse-project-root hse-project-page grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4 input_search_btn"
+    >
+      <div class="input-search col-span-1">
+        <span class="icon-remove" @click="((word = ''), searchInductions())"><Search /></span>
+        <input
+          v-model="word"
+          :placeholder="$t('search')"
+          class="hse-project-input input"
+          @input="searchInductions"
+        />
+      </div>
+      <div class="col-span-2 flex justify-end gap-2">
+        <PermissionBuilder :code="createPermissions">
+          <router-link
+            :to="`${basePath}/induction/add${projectQuery}`"
+            class="hse-project-button hse-project-button--primary btn btn-primary induction-add-button"
+          >
+            <ActionsListAddIcon />
+            <span>{{ $t('add_induction') }}</span>
+          </router-link>
+        </PermissionBuilder>
+      </div>
     </div>
-    <div class="col-span-2 flex justify-end gap-2">
-      <PermissionBuilder :code="createPermissions">
-        <router-link
-          :to="`${basePath}/induction/add${projectQuery}`"
-          class="hse-project-button hse-project-button--primary btn btn-primary induction-add-button"
-        >
-          <ActionsListAddIcon />
-          <span>{{ $t('add_induction') }}</span>
-        </router-link>
-      </PermissionBuilder>
-    </div>
-  </div>
 
-  <PermissionBuilder :code="featurePermissions">
     <DataStatus :controller="state">
       <template #success>
         <div
@@ -174,6 +197,7 @@ watch(
           :add-text="$t('add_induction')"
           :description="$t('no_inductions_description')"
           :title="$t('no_inductions')"
+          :withbtn="canCreate"
         />
       </template>
       <template #failed>
@@ -182,11 +206,17 @@ watch(
           :add-text="$t('add_induction')"
           :description="$t('unable_to_load_inductions')"
           :title="$t('no_inductions')"
+          :withbtn="canCreate"
         />
       </template>
     </DataStatus>
     <template #notPermitted>
-      <DataFailed :add-text="$t('have_not_permission')" description="" link="" />
+      <DataFailed
+        :title="$t('have_not_permission')"
+        :description="$t('permission_denied_description')"
+        link=""
+        :withbtn="false"
+      />
     </template>
   </PermissionBuilder>
 </template>

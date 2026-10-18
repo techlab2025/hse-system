@@ -2635,6 +2635,7 @@
   "title_required_all_languages": "A title is required in every selected language.",
   "title_required": "Title is required.",
   "permission_denied": "You do not have permission.",
+  "permission_denied_description": "Contact your administrator if you need access to this page.",
   "failed_to_process_file": "Failed to process the file.",
   "processing_file": "Processing file…",
   "mapped_data_preview": "Mapped data preview",

@@ -12,6 +12,10 @@ import ShowInductionController from '../../controllers/Induction/showInductionCo
 import EditInductionController from '../../controllers/Induction/editInductionController'
 import ShowInductionParams from '../../../Core/params/induction/showInductionParams'
 import type EditInductionParams from '../../../Core/params/induction/editInductionParams'
+import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
+import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 
 const route = useRoute()
 const router = useRouter()
@@ -20,12 +24,25 @@ const params = ref<Params | null>(null)
 const formRef = ref<InstanceType<typeof InductionForm> | null>(null)
 const showInductionController = ShowInductionController.getInstance()
 const state = ref(showInductionController.state.value)
+const viewPermissions = [
+  PermissionsEnum.ADMIN,
+  PermissionsEnum.inductions_ALL,
+  PermissionsEnum.inductions_DETAILS,
+  PermissionsEnum.inductions_UPDATE,
+]
+const updatePermissions = [
+  PermissionsEnum.ADMIN,
+  PermissionsEnum.inductions_ALL,
+  PermissionsEnum.inductions_UPDATE,
+]
 
 const fetchInductionDetails = async () => {
+  if (!PermissionHandler.Instance.handle(viewPermissions)) return
   await showInductionController.showInduction(new ShowInductionParams(Number(id)))
 }
 
 const editInduction = async () => {
+  if (!PermissionHandler.Instance.handle(updatePermissions)) return
   if (!(await formRef.value?.validateRequiredFields())) return
   await EditInductionController.getInstance().editInduction(
     params.value as EditInductionParams,
@@ -48,32 +65,44 @@ onMounted(fetchInductionDetails)
 </script>
 
 <template>
-  <div data-hse-project v-project-panels class="hse-project-root hse-project-state-host">
-    <DataStatus :controller="state">
-      <template #success>
-        <form
-          data-hse-project
-          v-project-panels
-          class="hse-project-root hse-project-page grid grid-cols-1 md:grid-cols-4 gap-4 induction-entry-form"
-          @submit.prevent="editInduction"
-        >
-          <InductionForm ref="formRef" :data="state.data!" @update:data="setParams" />
-          <div class="hse-project-form-footer col-span-4 induction-form-actions">
-            <button
-              type="submit"
-              class="hse-project-button hse-project-button--primary btn btn-primary induction-action induction-action--primary"
-            >
-              <Icon icon="uil:check-circle" />
-              {{ $t('save') }}
-            </button>
-          </div>
-        </form>
-      </template>
-      <template #loader>
-        <FormLoader :inputsCount="5" />
-      </template>
-    </DataStatus>
-  </div>
+  <PermissionBuilder :code="viewPermissions">
+    <div data-hse-project v-project-panels class="hse-project-root hse-project-state-host">
+      <DataStatus :controller="state">
+        <template #success>
+          <form
+            data-hse-project
+            v-project-panels
+            class="hse-project-root hse-project-page grid grid-cols-1 md:grid-cols-4 gap-4 induction-entry-form"
+            @submit.prevent="editInduction"
+          >
+            <InductionForm ref="formRef" :data="state.data!" @update:data="setParams" />
+            <div class="hse-project-form-footer col-span-4 induction-form-actions">
+              <PermissionBuilder :code="updatePermissions">
+                <button
+                  type="submit"
+                  class="hse-project-button hse-project-button--primary btn btn-primary induction-action induction-action--primary"
+                >
+                  <Icon icon="uil:check-circle" />
+                  {{ $t('save') }}
+                </button>
+              </PermissionBuilder>
+            </div>
+          </form>
+        </template>
+        <template #loader>
+          <FormLoader :inputsCount="5" />
+        </template>
+      </DataStatus>
+    </div>
+    <template #notPermitted>
+      <DataFailed
+        :title="$t('have_not_permission')"
+        :description="$t('permission_denied_description')"
+        link=""
+        :withbtn="false"
+      />
+    </template>
+  </PermissionBuilder>
 </template>
 
 <style scoped>
