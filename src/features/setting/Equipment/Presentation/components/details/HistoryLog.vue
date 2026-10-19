@@ -1,77 +1,35 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import type InspectionModel from '@/features/Organization/Inspection/Data/models/InspectionModel'
-import { ref } from 'vue'
 import { EquipmentInspectionEnum } from '../../../Core/enum/EquipmentInspectionEnum'
 import EquipmentInspectionCard from './EquipmentInspectionCard.vue'
-import NoData from "@/assets/images/no-data.png"
-
+import ProjectIcon from '@/features/Organization/Project/Presentation/components/ProjectUtils/ProjectIcon.vue'
 const props = defineProps<{
   show_tasks: InspectionModel[]
   result_tasks: InspectionModel[]
   inspectionType: EquipmentInspectionEnum
 }>()
-
-const GetInspectionTitle = (task: InspectionModel) => {
-  return task.template?.titles?.find((title: any) => title.locale === localStorage.getItem('lang'))
-    ?.title
-}
-
-const Types = ref(['sunday', 'monday', 'tuesday'])
+const isResults = computed(() => props.inspectionType === EquipmentInspectionEnum.Results)
+const records = computed(() =>
+  isResults.value ? props.result_tasks : [...props.show_tasks, ...props.result_tasks],
+)
 </script>
-
 <template>
-  <div class="history-log">
-    <!-- <Filter /> -->
-    <!-- <div class="title">
-      <HistoryLog />
-      <h4>{{ $t('History Log') }}</h4>
-    </div> -->
-
-    <div class="inspection-history-container" v-if="inspectionType == EquipmentInspectionEnum.Inspection">
-
-      <template v-if="show_tasks.length > 0 || result_tasks?.length > 0">
-        <EquipmentInspectionCard :isEquipmentShowQuestions="true" :tasks="show_tasks" :isDrag="false"
-          :showresult="false" :isEquipment="true" />
-        <EquipmentInspectionCard :isEquipmentShowQuestions="true" :tasks="result_tasks" :isDrag="false"
-          :showresult="false" :isEquipment="true" />
-      </template>
-      <template v-else>
-        <div class="empty-inspection-container">
-          <img class="empty-inspection" :src="NoData" alt="equipemnt-inspection">
-        </div>
-      </template>
-      <!-- <EquipmentInspectionCard :tasks="result_tasks" :isDrag="false" :showresult="true" :isEquipment="true" /> -->
+  <div class="eq-history">
+    <EquipmentInspectionCard
+      v-if="records.length"
+      :tasks="records"
+      :is-equipment-show-questions="!isResults"
+      :is-equipment-result="isResults"
+      :is-drag="false"
+      :showresult="false"
+      :is-equipment="true"
+    />
+    <div v-else class="eq-empty" role="status">
+      <ProjectIcon name="folder" /><strong>{{
+        $t(isResults ? 'eq_no_results' : 'eq_no_inspections')
+      }}</strong>
+      <p>{{ $t('eq_records_empty_hint') }}</p>
     </div>
-    <div class="inspection-history-container" v-if="inspectionType == EquipmentInspectionEnum.Results">
-      <template v-if="result_tasks?.length > 0">
-
-        <EquipmentInspectionCard :tasks="result_tasks" :isEquipmentResult="true" />
-      </template>
-      <template v-else>
-        <div class="empty-inspection-container">
-          <img class="empty-inspection" :src="NoData" alt="equipemnt-inspection">
-        </div>
-      </template>
-    </div>
-
-    <!-- <PendingHistoryCard /> -->
   </div>
 </template>
-
-<style scoped>
-.empty-inspection-container {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  img {
-    width: 30%;
-    height: 40%;
-  }
-}
-
-.empty-inspection {
-  margin: auto;
-}
-</style>

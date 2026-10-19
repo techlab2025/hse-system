@@ -1,4 +1,25 @@
 {
+  "equipment_asset_card": "Equipment identification",
+  "equipment_qr_code": "Equipment QR code",
+
+  "eq_equipment_details": "Equipment details",
+  "eq_start_date": "Start date",
+  "eq_end_date": "End date",
+  "eq_inspection_frequency": "Inspection frequency",
+  "eq_scan_equipment": "Scan for equipment details",
+  "eq_qr_unavailable": "QR code unavailable",
+  "eq_print_card": "Print QR card",
+  "eq_inspection_records": "Inspection records",
+  "eq_inspection_records_hint": "Review assigned inspections, completed checks, and recorded results.",
+  "eq_no_results": "No results yet",
+  "eq_no_inspections": "No inspections yet",
+  "eq_records_empty_hint": "Equipment inspection records will appear here when available.",
+  "eq_assigned_to": "Assigned to",
+  "eq_items": "items",
+  "eq_view_inspection": "View inspection details",
+  "eq_load_failed": "Unable to load equipment details. Please try again.",
+  "eq_loading": "Loading equipment details",
+
   "employee_tasks_shortcut_hint": "Your assigned work, one click away.",
   "not_found": {
     "error_code": "Error 404",

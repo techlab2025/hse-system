@@ -1,4 +1,25 @@
 {
+  "equipment_asset_card": "بطاقة تعريف المعدة",
+  "equipment_qr_code": "رمز الاستجابة السريعة للمعدة",
+
+  "eq_equipment_details": "تفاصيل المعدة",
+  "eq_start_date": "تاريخ البداية",
+  "eq_end_date": "تاريخ النهاية",
+  "eq_inspection_frequency": "تكرار التفتيش",
+  "eq_scan_equipment": "امسح الرمز لعرض تفاصيل المعدة",
+  "eq_qr_unavailable": "رمز الاستجابة السريعة غير متوفر",
+  "eq_print_card": "طباعة بطاقة المعدة",
+  "eq_inspection_records": "سجلات التفتيش",
+  "eq_inspection_records_hint": "راجع عمليات التفتيش المكلّفة والفحوصات المكتملة والنتائج المسجلة.",
+  "eq_no_results": "لا توجد نتائج بعد",
+  "eq_no_inspections": "لا توجد عمليات تفتيش بعد",
+  "eq_records_empty_hint": "ستظهر سجلات تفتيش المعدة هنا عند توفرها.",
+  "eq_assigned_to": "مُسند إلى",
+  "eq_items": "بنود",
+  "eq_view_inspection": "عرض تفاصيل التفتيش",
+  "eq_load_failed": "تعذر تحميل تفاصيل المعدة. يرجى المحاولة مرة أخرى.",
+  "eq_loading": "جارٍ تحميل تفاصيل المعدة",
+
   "employee_tasks_shortcut_hint": "مهامك المسندة إليك، على بُعد نقرة واحدة.",
   "not_found": {
     "error_code": "خطأ 404",

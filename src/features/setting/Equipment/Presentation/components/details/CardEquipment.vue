@@ -1,253 +1,157 @@
 <script setup lang="ts">
-import BreadCrumb from '@/shared/HelpersComponents/BreadCrumb.vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import RentIcons from '@/shared/icons/RentIcons.vue'
-import DropdownIcons from '@/shared/icons/DropdownIcons.vue'
-import Popover from 'primevue/popover'
-import { computed, ref } from 'vue'
-import IconDelete from '@/shared/icons/IconDelete.vue'
-import IconEdit from '@/shared/icons/IconEdit.vue'
+import Image from 'primevue/image'
 import type EquipmentDetailsModel from '../../../Data/models/equipmentDetailsModel'
-import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
-import { useRoute } from 'vue-router'
-import { useUserStore } from '@/stores/user'
-import DeleteEquipmentParams from '../../../Core/params/deleteEquipmentParams'
-import DeleteEquipmentController from '../../controllers/deleteEquipmentController'
 import { EquipmentStatus } from '../../../Core/enum/equipmentStatus'
-import { setDefaultImage } from '@/base/Presentation/utils/set_default_image.ts'
-import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
-import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { EquipmentCondition } from '../../../Core/enum/equipmentConditionEnum'
 import { EquipmentUsed } from '../../../Core/enum/EquipemntUsedENum'
+import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+import { PermissionsEnum as P } from '@/features/users/Admin/Core/Enum/permission_enum'
+import { useUserStore } from '@/stores/user'
+import DropList from '@/shared/HelpersComponents/DropList.vue'
+import IconEdit from '@/shared/icons/IconEdit.vue'
+import IconDelete from '@/shared/icons/IconDelete.vue'
+import ProjectIcon from '@/features/Organization/Project/Presentation/components/ProjectUtils/ProjectIcon.vue'
+import DeleteEquipmentParams from '../../../Core/params/deleteEquipmentParams'
+import DeleteEquipmentController from '../../controllers/deleteEquipmentController'
+import placeholder from '@/assets/images/EmptyEquipment.png'
 
+const props = defineProps<{ equipmentData: EquipmentDetailsModel }>()
 const { t } = useI18n()
-
-const { equipmentData } = defineProps<{
-  equipmentData: EquipmentDetailsModel
-}>()
-
-const op = ref()
-const { user } = useUserStore()
-
-const route = useRoute()
-
-const actions = ref([
+const userStore = useUserStore()
+const actions = computed(() => [
   {
-    title: t('edit'),
-    link: `/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/${route.params.id}`,
+    text: t('edit'),
     icon: IconEdit,
+    link: `/${userStore.user?.type === OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/equipment/${props.equipmentData.id}`,
     permission: [
-      PermissionsEnum.ORG_EQUIPMENT_UPDATE,
-      PermissionsEnum.ORG_EQUIPMENT_ALL,
-      // PermissionsEnum.ORG_EQUIPMENT_DETAILS,
+      P.ADMIN,
+      P.ORGANIZATION_EMPLOYEE,
+      P.EQUIPMENT_ALL,
+      P.EQUIPMENT_UPDATE,
+      P.ORG_EQUIPMENT_ALL,
+      P.ORG_EQUIPMENT_UPDATE,
     ],
   },
   {
-    title: t('delete'),
+    text: t('delete'),
     icon: IconDelete,
+    isDelete: true,
+    action: () =>
+      DeleteEquipmentController.getInstance().deleteEquipment(
+        new DeleteEquipmentParams(props.equipmentData.id),
+      ),
     permission: [
-      PermissionsEnum.ORG_EQUIPMENT_DELETE,
-      PermissionsEnum.ORG_EQUIPMENT_ALL,
-      // PermissionsEnum.ORG_EQUIPMENT_DETAILS,
+      P.ADMIN,
+      P.ORGANIZATION_EMPLOYEE,
+      P.EQUIPMENT_ALL,
+      P.EQUIPMENT_DELETE,
+      P.ORG_EQUIPMENT_ALL,
+      P.ORG_EQUIPMENT_DELETE,
     ],
-    id: 2,
   },
-  // {
-  //   title: t('view'),
-  //   icon: IconEye,
-  //   id: 3,
-  // },
 ])
-
-const toggle = (event) => {
-  op.value.toggle(event)
-}
-
-const breadcrumbs = [
-  {
-    title: t('equipment'),
-    link: '',
-  },
-  {
-    title: t('heavy'),
-    link: '',
-  },
-]
-
-const { locale } = useI18n()
-
-const tTitle = computed(() => {
-  return equipmentData?.titles?.find((item) => item.locale === locale.value)?.title || ''
+const specs = computed(() => {
+  const d = props.equipmentData
+  return [
+    { label: 'serial name', value: d.serial_name, icon: 'equipment' as const },
+    {
+      label: 'License number',
+      value: d.licensePlateNumber || d.licenseNumber,
+      icon: 'equipment' as const,
+    },
+    { label: 'Vehicle Kilometer', value: d.kilometer, icon: 'gauge' as const },
+    {
+      label: 'ivms',
+      value: d.ivms == null ? null : t(d.ivms ? 'yes' : 'no'),
+      icon: 'pulse' as const,
+    },
+    { label: 'Mainfactury Year', value: d.mainfacturyDate, icon: 'clock' as const },
+    {
+      label: 'Equipment Worked Hours',
+      value: d.equipmentWorkedHeavy || d.workedHoures || d.WorkedHours,
+      icon: 'clock' as const,
+    },
+    {
+      label: 'Equipment Used Status',
+      value: d.equipmentUsedStatus == null ? null : t(EquipmentUsed[d.equipmentUsedStatus] || '—'),
+      icon: 'gauge' as const,
+    },
+    {
+      label: 'Equipment Condition',
+      value:
+        d.equipmentUsedStatus === EquipmentUsed.used && d.equipmentCondition != null
+          ? t(EquipmentCondition[d.equipmentCondition] || '—')
+          : null,
+      icon: 'gauge' as const,
+    },
+    { label: 'inspection date', value: d.lastInspectoinDate, icon: 'clock' as const },
+  ].filter((s) => s.value !== null && s.value !== undefined && s.value !== '')
 })
-
-const deleteEquipment = async (id: number) => {
-  const deleteEquipmentParams = new DeleteEquipmentParams(+route.params.id!)
-  await DeleteEquipmentController.getInstance().deleteEquipment(deleteEquipmentParams)
-}
-
-const GetEquipmentType = (type: number) => {
-  return EquipmentTypesEnum[type]
-}
-
-const getEquipmentCondition = (condition: EquipmentCondition | null) => {
-  if (!condition) return '-'
-  return EquipmentCondition[condition]
-}
-
-const getEquipmentUsedStatus = (usedStatus: EquipmentUsed | null) => {
-  if (!usedStatus) return '-'
-  return EquipmentUsed[usedStatus]
+function imageFallback(event: Event) {
+  const image = event.target as HTMLImageElement
+  image.onerror = null
+  image.src = placeholder
 }
 </script>
 
 <template>
-  <div class="card-equipment">
-    <img
-      :src="equipmentData.image || `/src/assets/images/logo.svg`"
-      @error="setDefaultImage($event)"
-      alt=""
-      class="img-equipment"
-    />
-
-    <div class="card-body flex-nowrap">
-      <div class="card-body-content-left">
-        <!-- {{ GetEquipmentType(equipmentData?.equipment_type?.type) }} -->
-        <div class="info-container flex flex-col gap-2">
-          <BreadCrumb
-            :BreadCramps="breadcrumbs"
-            :equipment="GetEquipmentType(equipmentData?.equipment_type?.type)"
-            :equipmentType="equipmentData.equipment_type?.title"
-          />
-          <!-- :equipmentType="equipmentData?.equipment_type?.title"  -->
-          <div class="card-body-title">
-            <!-- <h3 class="title">{{ tTitle }}</h3> -->
-
-            <h3 class="title">{{ equipmentData?.title }}</h3>
-            <RentIcons v-if="equipmentData.status == EquipmentStatus.RENT" />
-          </div>
-        </div>
-
-        <div class="inspection" v-if="equipmentData.lastInspectoinDate">
-          <span>{{ $t('inspection date') }} :</span>
-          <p>
-            {{ equipmentData.lastInspectoinDate }} <span>({{ $t('per_week') }})</span>
-          </p>
-        </div>
-        <!-- <div class="date-of-decommissioning" v-if="equipmentData.date">
-          <span>{{ $t('expiry date') }} :</span>
-          <p>{{ new Date(equipmentData.check) }}</p>
-        </div> -->
-        <div class="vehicle">
-          <!-- <Car /> -->
-
-          <div class="items">
-            <div class="item">
-              <span>{{ $t('License number') }} : </span>
-              <p>{{ equipmentData?.licensePlateNumber }}</p>
-              <!-- <br> -->
-              <span>{{ $t('serial name') }}</span>
-              <p>{{ equipmentData.serial_name }}</p>
-            </div>
-            <div class="item" v-if="equipmentData?.kilometer">
-              <span>{{ $t('Vehicle Kilometer') }} : </span>
-              <p>{{ equipmentData?.kilometer }}</p>
-            </div>
-            <div class="item" v-if="equipmentData?.equipmentUsedStatus">
-              <span>{{ $t('Equipment Used Status') }} : </span>
-              <p>{{ $t(getEquipmentUsedStatus(equipmentData?.equipmentUsedStatus)) }}</p>
-            </div>
-            <div class="item" v-if="equipmentData?.equipmentUsedStatus === EquipmentUsed.used">
-              <span>{{ $t('Equipment Condition') }} : </span>
-              <p>{{ $t(getEquipmentCondition(equipmentData?.equipmentCondition)) }}</p>
-            </div>
-            <div class="item" v-if="equipmentData?.ivms">
-              <span>{{ $t('ivms') }} : </span>
-              <p>{{ equipmentData?.ivms ? `yes` : `no` }}</p>
-            </div>
-            <div class="item" v-if="equipmentData?.mainfacturyDate">
-              <span>{{ $t('Mainfactury Year') }} : </span>
-              <p>{{ equipmentData?.mainfacturyDate }}</p>
-            </div>
-            <div class="item" v-if="equipmentData?.equipmentWorkedHeavy">
-              <span>{{ $t('Equipment Worked Hours') }} : </span>
-              <p>{{ equipmentData?.equipmentWorkedHeavy }}</p>
-            </div>
-          </div>
-        </div>
+  <article class="eq-summary eq-panel">
+    <div class="eq-summary-image">
+      <img
+        :src="equipmentData.image || placeholder"
+        :alt="equipmentData.title || $t('Equipment')"
+        @error="imageFallback"
+      />
+    </div>
+    <div class="eq-summary-content">
+      <div class="eq-summary-topline">
+        <p class="eq-category">
+          <ProjectIcon name="equipment" /><span>{{
+            $t(EquipmentTypesEnum[equipmentData.equipment_type?.type] || 'Equipment')
+          }}</span
+          ><span v-if="equipmentData.equipment_type?.title"
+            >/ {{ equipmentData.equipment_type.title }}</span
+          >
+        </p>
+        <DropList :action-list="actions" />
       </div>
-      <div class="card-body-content-right">
-        <div class="card flex justify-center">
-          <Popover ref="op">
-            <div class="flex flex-col gap-4">
-              <div>
-                <ul class="list-none !px-3 !py-1 flex-col m-0 flex gap-3">
-                  <li
-                    v-for="action in actions"
-                    :key="action.id"
-                    class="flex flex-col items-start justify-start gap-2 px-2 py-1 hover:bg-emphasis cursor-pointer rounded-border"
-                  >
-                    <RouterLink
-                      :to="action.link"
-                      class="flex items-center gap-3"
-                      v-if="action.id == 1"
-                    >
-                      <component :is="action.icon" />
-                      <div class="text-sm text-surface-500 dark:text-surface-400">
-                        {{ action.title }}
-                      </div>
-                    </RouterLink>
-
-                    <button
-                      v-else-if="action.id == 2"
-                      @click="deleteEquipment"
-                      class="flex items-center gap-3 w-full"
-                    >
-                      <component :is="action.icon" />
-                      <div class="text-sm text-surface-500 dark:text-surface-400">
-                        {{ action.title }}
-                      </div>
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </Popover>
-        </div>
-        <div class="image-content" v-if="equipmentData.certificateImage">
-          <div class="texts" v-if="equipmentData?.date">
-            <!-- <p>Lorem ipsum dolor</p> -->
-            <span>{{ $t('EXP-Date') }} {{ equipmentData?.date }}</span>
+      <div class="eq-summary-title">
+        <h2>{{ equipmentData.title || '—' }}</h2>
+        <span
+          v-if="
+            equipmentData.status === EquipmentStatus.RENT ||
+            equipmentData.status === EquipmentStatus.OWN
+          "
+          class="eq-badge"
+          :class="{ 'eq-badge--rent': equipmentData.status === EquipmentStatus.RENT }"
+          >{{ $t(equipmentData.status === EquipmentStatus.RENT ? 'Rent' : 'Owned') }}</span
+        >
+      </div>
+      <dl class="eq-specs">
+        <div v-for="spec in specs" :key="spec.label" class="eq-spec">
+          <ProjectIcon :name="spec.icon" />
+          <div>
+            <dt>{{ $t(spec.label) }}</dt>
+            <dd>{{ spec.value }}</dd>
           </div>
-          <img :src="equipmentData.certificateImage" alt="" class="" />
         </div>
-
-        <button @click="toggle" class="drop-down-btn" type="button">
-          <DropdownIcons />
-        </button>
+      </dl>
+      <div v-if="equipmentData.certificateImage || equipmentData.date" class="eq-certificate">
+        <Image
+          v-if="equipmentData.certificateImage"
+          :src="equipmentData.certificateImage"
+          :alt="$t('training_image')"
+          preview
+          image-class="eq-certificate-image"
+        />
+        <div>
+          <span class="eq-muted">{{ $t('CertificateExpireDate') }}</span
+          ><strong>{{ equipmentData.date || '—' }}</strong>
+        </div>
       </div>
     </div>
-  </div>
+  </article>
 </template>
-
-<style scoped>
-.card-equipment {
-  position: relative;
-
-  .drop-down-btn {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    z-index: 2;
-  }
-}
-.vehicle {
-  width: 100% !important;
-}
-.items {
-  width: 100% !important;
-}
-.card-body-content-left {
-  width: 100% !important;
-  grid-column: span 2;
-}
-</style>

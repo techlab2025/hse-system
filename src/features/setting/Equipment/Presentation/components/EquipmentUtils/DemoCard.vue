@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import wordSlice from '@/base/Presentation/utils/word_slice'
 import BreadCrumb from '@/shared/HelpersComponents/BreadCrumb.vue'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
@@ -15,6 +17,10 @@ type EquipmentTranslation = {
 
 const props = withDefaults(
   defineProps<{
+    identification?: boolean
+    qrCode?: string
+    serial?: string
+    licenseNumber?: string
     isBreadCramp: boolean
     BreadCramps?: { title: string; link: string }[]
     equipmentName?: string
@@ -23,7 +29,7 @@ const props = withDefaults(
     decommissioningDate?: string
     certificateImage?: string
     cardType?: string
-    selctedequipment: EquipmentTranslation[]
+    selctedequipment: EquipmentTranslation[] | string
     selectedequipmentType?: TitleInterface | null
     isForm?: boolean
     expiredate?: string | Date | null
@@ -33,7 +39,6 @@ const props = withDefaults(
     typerent?: boolean
     deviceStatus?: number
     equipmentTypeInShow?: string
-
   }>(),
   {
     BreadCramps: () => [],
@@ -50,20 +55,68 @@ const props = withDefaults(
   },
 )
 
-// const getSelectedLang = (data) => {
-//   const currentLang = user?.languages?.[0]?.code || 'en'
-//   console.log(data.find(el => el.locale === currentLang)?.title || '', "data.find(el => el.locale === currentLang)?.title || ''");
-//   return data.find(el => el.locale === currentLang)?.title || ''
-// }
-
-// watch(() => props.selctedequipment, (Newval) => {
-//   getSelectedLang(Newval)
-// })
+const { locale } = useI18n()
+const resolvedName = computed(() =>
+  typeof props.selctedequipment === 'string'
+    ? props.selctedequipment
+    : props.selctedequipment?.find((item) => item.locale === locale.value)?.title ||
+      props.equipmentName,
+)
+const labelDates = computed(() => [
+  { label: 'eq_start_date', value: props.startDate },
+  { label: 'eq_end_date', value: props.EndDate },
+  { label: 'CertificateExpireDate', value: props.expiredate },
+])
+const displayDate = (value: string | Date | null | undefined) =>
+  value
+    ? props.rentType === RentTypeEnum.HOUR
+      ? `${formatJoinDate(value)} ${formatTime(value)}`
+      : formatJoinDate(value)
+    : '—'
 </script>
 
 <template>
   <!-- {{ props }} -->
-  <div class="demo-card">
+  <article
+    v-if="identification"
+    class="eq-label"
+    :style="{ direction: locale === 'ar' ? 'rtl' : 'ltr' }"
+  >
+    <div class="eq-label-information">
+      <p class="eq-label-category">
+        {{ selectedequipmentType?.title || equipmentTypeInShow || $t('Equipment') }}
+      </p>
+      <h3>{{ resolvedName || equipmentName || '—' }}</h3>
+      <span v-if="deviceStatus" class="eq-label-status"
+        >{{ $t(deviceStatus === EquipmentStatus.RENT ? 'Rent' : 'Owned')
+        }}<template v-if="rentType"> · {{ $t(RentTypeEnum[rentType]) }}</template></span
+      >
+      <dl class="eq-label-fields">
+        <div v-if="serial">
+          <dt>{{ $t('serial name') }}</dt>
+          <dd>{{ serial }}</dd>
+        </div>
+        <div v-if="licenseNumber">
+          <dt>{{ $t('License number') }}</dt>
+          <dd>{{ licenseNumber }}</dd>
+        </div>
+        <div v-for="field in labelDates" :key="field.label">
+          <dt>{{ $t(field.label) }}</dt>
+          <dd>{{ displayDate(field.value) }}</dd>
+        </div>
+        <div v-if="inspectionDuration">
+          <dt>{{ $t('eq_inspection_frequency') }}</dt>
+          <dd>{{ inspectionDuration }}</dd>
+        </div>
+      </dl>
+    </div>
+    <figure v-if="qrCode" class="eq-label-qr">
+      <img :src="qrCode" :alt="$t('equipment_qr_code')" width="120" height="120" />
+      <figcaption>{{ $t('eq_scan_equipment') }}</figcaption>
+    </figure>
+    <p v-else class="eq-muted">{{ $t('eq_qr_unavailable') }}</p>
+  </article>
+  <div v-else class="demo-card">
     <!-- <div class="texts">
       <h5 class="title">{{ cardType }} Card</h5>
       <span class="subtitle">
@@ -80,7 +133,7 @@ const props = withDefaults(
         <div v-else class="sub-card-header">
           <BreadCrumb
             :isForm="isForm"
-            :selctedequipment="selctedequipment || equipmentName"
+            :selctedequipment="resolvedName || equipmentName"
             :equipmentType="selectedequipmentType"
             :equipment="equipmentTypeInShow"
             :BreadCramps="props.BreadCramps"
@@ -90,7 +143,7 @@ const props = withDefaults(
         </div>
 
         <h3 class="demo-title">
-          {{ wordSlice(selctedequipment?.[1]?.title, 40) || equipmentName }}
+          {{ wordSlice(resolvedName, 40) || equipmentName }}
         </h3>
 
         <div class="rent_expire">
