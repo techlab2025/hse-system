@@ -1185,6 +1185,9 @@ onBeforeUnmount(() => {
                 <div class="side-route-entry">
                   <router-link
                     :to="sidebarRoute.link"
+                    active-class=""
+                    exact-active-class=""
+                    :aria-current-value="isParentLinkActive(sidebarRoute) ? 'page' : 'false'"
                     :class="['side-btn', { active: isParentLinkActive(sidebarRoute) }]"
                     :title="$t(sidebarRoute.name)"
                     @click="activateRouteGroup(group.key)"
@@ -1204,6 +1207,9 @@ onBeforeUnmount(() => {
                     >
                       <router-link
                         :to="childRoute.link"
+                        active-class=""
+                        exact-active-class=""
+                        :aria-current-value="isLinkActive(childRoute.link) ? 'page' : 'false'"
                         :class="[
                           'side-btn side-btn--child',
                           { active: isLinkActive(childRoute.link) },
