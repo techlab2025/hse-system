@@ -17,7 +17,9 @@ import { InspectionPageType } from '@/features/Organization/ObservationFactory/C
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
 import { useUserStore } from '@/stores/user'
 import ConditionHandler from '@/base/Presentation/utils/condition_handler'
-import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
+import PermissionHandler from '@/base/Presentation/utils/permission_handler'
+import { useToast } from 'primevue/usetoast'
+import { useI18n } from 'vue-i18n'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
 interface CardAction {
@@ -39,6 +41,23 @@ interface EmpCard {
 }
 const useprojectSaddelectStore = useProjectSelectStore()
 const userStore = useUserStore()
+const toast = useToast()
+const { t } = useI18n()
+const hasPermission = (permissions: PermissionsEnum[]) =>
+  PermissionHandler.Instance.handle(permissions)
+const canAccessAction = (card: EmpCard, action: CardAction) =>
+  hasPermission(card.permissions) && hasPermission(action.permissions)
+
+const showPermissionDenied = () => {
+  toast.add({ severity: 'warn', summary: t("You don't have permission"), life: 4000 })
+}
+
+const handleActionClick = (event: MouseEvent, card: EmpCard, action: CardAction) => {
+  if (!canAccessAction(card, action)) {
+    event.preventDefault()
+    showPermissionDenied()
+  }
+}
 const canShowMyTasks = computed(
   () => ConditionHandler.getInstance().shouldUseEmployeeInterface() && !!userStore.user?.id,
 )
@@ -322,73 +341,76 @@ const cards = computed<EmpCard[]>(() => [
         No assigned projects are available.
       </p>
     </div>
-    <PermissionBuilder v-for="card in cards" :key="card.type" :code="card.permissions">
-      <article
-        class="employee-interface-card"
-        :class="card.title.replaceAll(' ', '-')"
-        :aria-labelledby="`employee-card-${card.type}`"
-      >
-        <div class="card-text">
-          <div class="card-eyebrow">
-            <span class="card-number" aria-hidden="true"></span>
-            <span>{{ card.eyebrow }}</span>
-          </div>
-          <div class="info-wrapper">
-            <h2 :id="`employee-card-${card.type}`" class="card-title">{{ card.title }}</h2>
-            <p class="card-subtitle">{{ card.subtitle }}</p>
-            <p
-              v-if="card.requiresProject"
-              :id="`employee-card-project-hint-${card.type}`"
-              class="project-required-note"
-            >
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <circle cx="12" cy="12" r="9" />
-                <path d="M12 11v6M12 7h.01" />
-              </svg>
-              <span>
-                <strong>Project required</strong>
-                <span v-if="!projectId">
-                  {{ $t('employeeProjectAction.viewHint') }}
-                  <template v-if="card.type !== empCardEnum.Leadership">{{
-                    $t('employeeProjectAction.createHint')
-                  }}</template>
-                </span>
-                <span v-else>These actions use your selected project.</span>
-              </span>
-            </p>
-          </div>
+    <article
+      v-for="card in cards"
+      :key="card.type"
+      class="employee-interface-card"
+      :class="[
+        card.title.replaceAll(' ', '-'),
+        { 'is-permission-denied': !hasPermission(card.permissions) },
+      ]"
+      @click="!hasPermission(card.permissions) && showPermissionDenied()"
+      :aria-labelledby="`employee-card-${card.type}`"
+    >
+      <div class="card-text">
+        <div class="card-eyebrow">
+          <span class="card-number" aria-hidden="true"></span>
+          <span>{{ card.eyebrow }}</span>
         </div>
-
-        <div class="card-illustration" aria-hidden="true">
-          <span class="illustration-orbit"></span>
-          <img :src="card.img" alt="" />
-        </div>
-
-        <div class="actions-button">
-          <PermissionBuilder
-            v-for="(action, index) in card.actions"
-            :key="action.title"
-            :code="action.permissions"
+        <div class="info-wrapper">
+          <h2 :id="`employee-card-${card.type}`" class="card-title">{{ card.title }}</h2>
+          <p class="card-subtitle">{{ card.subtitle }}</p>
+          <p
+            v-if="card.requiresProject"
+            :id="`employee-card-project-hint-${card.type}`"
+            class="project-required-note"
           >
-            <component
-              :is="action.disabled ? 'button' : RouterLink"
-              :to="action.disabled ? undefined : action.route"
-              :type="action.disabled ? 'button' : undefined"
-              :disabled="action.disabled || undefined"
-              :aria-describedby="
-                card.requiresProject ? `employee-card-project-hint-${card.type}` : undefined
-              "
-              :class="index === 0 ? 'button-main' : 'button-view'"
-            >
-              <span>{{ action.title }}</span>
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M5 12h14m-6-6 6 6-6 6" />
-              </svg>
-            </component>
-          </PermissionBuilder>
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M12 11v6M12 7h.01" />
+            </svg>
+            <span>
+              <strong>Project required</strong>
+              <span v-if="!projectId">
+                {{ $t('employeeProjectAction.viewHint') }}
+                <template v-if="card.type !== empCardEnum.Leadership">{{
+                  $t('employeeProjectAction.createHint')
+                }}</template>
+              </span>
+              <span v-else>These actions use your selected project.</span>
+            </span>
+          </p>
         </div>
-      </article>
-    </PermissionBuilder>
+      </div>
+
+      <div class="card-illustration" aria-hidden="true">
+        <span class="illustration-orbit"></span>
+        <img :src="card.img" alt="" />
+      </div>
+
+      <div class="actions-button">
+        <component
+          v-for="(action, index) in card.actions"
+          :key="action.title"
+          :is="!canAccessAction(card, action) || action.disabled ? 'button' : RouterLink"
+          :to="!canAccessAction(card, action) || action.disabled ? undefined : action.route"
+          :type="!canAccessAction(card, action) || action.disabled ? 'button' : undefined"
+          :disabled="(canAccessAction(card, action) && action.disabled) || undefined"
+          :aria-disabled="!canAccessAction(card, action) || action.disabled || undefined"
+          :title="!canAccessAction(card, action) ? $t('permission_denied') : undefined"
+          @click.stop="handleActionClick($event, card, action)"
+          :aria-describedby="
+            card.requiresProject ? `employee-card-project-hint-${card.type}` : undefined
+          "
+          :class="index === 0 ? 'button-main' : 'button-view'"
+        >
+          <span>{{ action.title }}</span>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M5 12h14m-6-6 6 6-6 6" />
+          </svg>
+        </component>
+      </div>
+    </article>
   </div>
 </template>
 
@@ -399,6 +421,20 @@ const cards = computed<EmpCard[]>(() => [
 
 .employee-interface-card {
   counter-increment: visible-employee-card;
+}
+
+.employee-interface-card.is-permission-denied {
+  filter: grayscale(0.8);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.employee-interface-card .actions-button [aria-disabled='true'] {
+  cursor: not-allowed;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  border-color: var(--main-border);
+  box-shadow: none;
 }
 
 .card-number::before {

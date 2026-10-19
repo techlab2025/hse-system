@@ -16,7 +16,10 @@ const sidebarRef = ref<HTMLElement | null>(null)
 const isMobileSidebar = ref(false)
 const { isDarkMode } = useThemeMode()
 const isOrganizationSidebar = computed(() => user.user?.type === OrganizationTypeEnum.ORGANIZATION)
-const shouldRenderCompactRail = computed(() => isOrganizationSidebar.value || isMobileSidebar.value)
+const isModernSidebar = computed(
+  () => isOrganizationSidebar.value || user.user?.type === OrganizationTypeEnum.ADMIN,
+)
+const shouldRenderCompactRail = computed(() => isModernSidebar.value || isMobileSidebar.value)
 const sidebarDisplayState = computed(() =>
   shouldRenderCompactRail.value ? 'close' : props.open ? 'open' : 'close',
 )
@@ -101,8 +104,8 @@ const logout = () => {
       sidebarDisplayState,
       {
         'is-dark': isDarkMode,
-        'organization-modern': isOrganizationSidebar,
-        'hse-identity': isOrganizationSidebar,
+        'organization-modern': isModernSidebar,
+        'hse-identity': isModernSidebar,
       },
     ]"
   >
@@ -119,7 +122,7 @@ const logout = () => {
 
       <div class="links">
         <template v-if="user?.user?.type === OrganizationTypeEnum?.ADMIN">
-          <AdminSidebar :open="open && !isMobileSidebar" @logout="logout" />
+          <AdminSidebar :open="open && !isMobileSidebar" />
         </template>
         <template v-if="isOrganizationSidebar">
           <OrganizationSidebar :open="open" />

@@ -15,12 +15,15 @@ const { isDarkMode } = useThemeMode()
 
 const isSidebarOpen = ref(true)
 const isMobileScreen = ref(false)
-const isOrganizationSidebar = computed(() => user?.type === OrganizationTypeEnum.ORGANIZATION)
+const isModernSidebar = computed(
+  () =>
+    user?.type === OrganizationTypeEnum.ORGANIZATION || user?.type === OrganizationTypeEnum.ADMIN,
+)
 
 const checkScreenSize = () => {
   isMobileScreen.value = window.innerWidth <= 768
 
-  if (isOrganizationSidebar.value || isMobileScreen.value) {
+  if (isModernSidebar.value || isMobileScreen.value) {
     isSidebarOpen.value = false
   } else {
     isSidebarOpen.value = true
@@ -28,7 +31,7 @@ const checkScreenSize = () => {
 }
 
 const toggleSidebar = () => {
-  if (isOrganizationSidebar.value && !isMobileScreen.value) {
+  if (isModernSidebar.value && !isMobileScreen.value) {
     isSidebarOpen.value = false
     return
   }
@@ -55,7 +58,7 @@ watch(
   },
 )
 
-watch(isOrganizationSidebar, () => {
+watch(isModernSidebar, () => {
   checkScreenSize()
 })
 
@@ -75,7 +78,7 @@ const showSidebar = computed(() => {
       class="sidebar-container"
       :class="{
         'sidebar-open': isSidebarOpen,
-        'organization-sidebar-container': isOrganizationSidebar,
+        'organization-sidebar-container': isModernSidebar,
       }"
     >
       <NewSidebar v-if="showSidebar" v-model:open="isSidebarOpen" />

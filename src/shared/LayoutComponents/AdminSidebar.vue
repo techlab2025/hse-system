@@ -1,9 +1,5 @@
 <script setup lang="ts">
-import Accordion from 'primevue/accordion'
-import AccordionPanel from 'primevue/accordionpanel'
-import AccordionHeader from 'primevue/accordionheader'
-import AccordionContent from 'primevue/accordioncontent'
-import { ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { useRoute } from 'vue-router'
@@ -11,7 +7,6 @@ import { useI18n } from 'vue-i18n'
 import SidebarUnicon from '@/shared/icons/SidebarUnicon.vue'
 
 const props = defineProps<{ open: boolean }>()
-const emit = defineEmits<{ logout: [] }>()
 
 const route = useRoute()
 
@@ -26,7 +21,7 @@ const { t } = useI18n()
 const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/admins',
-    name: t('admins'),
+    name: 'admins',
     icon: 'user-circle',
     permissions: [
       PermissionsEnum?.ADMIN,
@@ -40,7 +35,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/team',
-    name: t('team'),
+    name: 'team',
     icon: 'team',
     permissions: [
       PermissionsEnum.TEAM_ALL,
@@ -53,7 +48,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/languages',
-    name: t('languages'),
+    name: 'languages',
     icon: 'language',
     permissions: [
       PermissionsEnum?.ADMIN,
@@ -67,7 +62,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/industry',
-    name: t('industry'),
+    name: 'industry',
     icon: 'building',
     permissions: [
       PermissionsEnum?.ADMIN,
@@ -80,7 +75,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   // {
   //   link: '/admin/equipments',
-  //   name: t('equipments'),
+  //   name: 'equipments',
   //   icon: 'wrench',
   //   permissions: [
   //     PermissionsEnum?.ADMIN,
@@ -93,7 +88,7 @@ const SettingsRoutes = ref<Routes[]>([
   // },
   // {
   //   link: '/admin/factories-items',
-  //   name: t('factor_items'),
+  //   name: 'factor_items',
   //   icon: 'circle-layer',
   //   permissions: [
   //     PermissionsEnum.FACTORY_ITEM_ALL,
@@ -105,7 +100,7 @@ const SettingsRoutes = ref<Routes[]>([
   // },
   // {
   //   link: '/admin/factory',
-  //   name: t('factors'),
+  //   name: 'factors',
   //   icon: 'shield-exclamation',
   //   permissions: [
   //     PermissionsEnum.FACTORY_ALL,
@@ -117,7 +112,7 @@ const SettingsRoutes = ref<Routes[]>([
   // },
   {
     link: '/admin/template',
-    name: t('templates'),
+    name: 'templates',
     icon: 'book-open',
     permissions: [
       PermissionsEnum.TEMPLATE_ALL,
@@ -129,7 +124,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/organization',
-    name: t('organization'),
+    name: 'organization',
     icon: 'building',
     permissions: [
       PermissionsEnum.ORGANIZATION_ALL,
@@ -141,7 +136,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/role',
-    name: t('roles'),
+    name: 'roles',
     icon: 'shield-check',
     permissions: [
       PermissionsEnum.ROLE_ALL,
@@ -153,7 +148,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/ticket-type',
-    name: t('ticket_types'),
+    name: 'ticket_types',
     icon: 'ticket',
     permissions: [
       PermissionsEnum.TICKET_TYPE_ALL,
@@ -165,7 +160,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/ticket',
-    name: t('ticket'),
+    name: 'ticket',
     icon: 'ticket',
     permissions: [
       PermissionsEnum.TICKET_ALL,
@@ -177,7 +172,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/catalog',
-    name: t('catalog'),
+    name: 'catalog',
     icon: 'books',
     permissions: [
       PermissionsEnum.CATALOG_ALL,
@@ -189,7 +184,7 @@ const SettingsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/catalog-items',
-    name: t('catalog_items'),
+    name: 'catalog_items',
     icon: 'list-ui-alt',
     permissions: [
       PermissionsEnum.CATALOG_ALL,
@@ -204,7 +199,7 @@ const SettingsRoutes = ref<Routes[]>([
 const LocationRoutes = ref<Routes[]>([
   {
     link: '/admin/countries',
-    name: t('country'),
+    name: 'country',
     icon: 'globe',
     permissions: [
       PermissionsEnum?.ADMIN,
@@ -218,7 +213,7 @@ const LocationRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/states',
-    name: t('state'),
+    name: 'state',
     icon: 'map-marker-alt',
     permissions: [
       PermissionsEnum?.ADMIN,
@@ -231,7 +226,7 @@ const LocationRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/cities',
-    name: t('city'),
+    name: 'city',
     icon: 'map',
     permissions: [
       PermissionsEnum?.ADMIN,
@@ -244,7 +239,7 @@ const LocationRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/areas',
-    name: t('locations'),
+    name: 'locations',
     icon: 'location-point',
     permissions: [
       PermissionsEnum?.ADMIN,
@@ -286,7 +281,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/equipments',
-    name: t('equipments'),
+    name: 'equipments',
     icon: 'wrench',
     permissions: [
       PermissionsEnum?.ADMIN,
@@ -299,7 +294,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/factories-items',
-    name: t('factor_items'),
+    name: 'factor_items',
     icon: 'circle-layer',
     permissions: [
       PermissionsEnum.FACTORY_ITEM_ALL,
@@ -311,7 +306,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/factory',
-    name: t('factors'),
+    name: 'factors',
     icon: 'shield-exclamation',
     permissions: [
       PermissionsEnum.FACTORY_ALL,
@@ -362,7 +357,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/ppe-items',
-    name: t('ppe_items'),
+    name: 'ppe_items',
     icon: 'shield-check',
     permissions: [
       PermissionsEnum.PPE_ITEM_ALL,
@@ -388,7 +383,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/visit-themes',
-    name: t('visit_themes'),
+    name: 'visit_themes',
     icon: 'clipboard-notes',
     permissions: [
       PermissionsEnum.VISIT_THEME_ALL,
@@ -401,7 +396,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/visit-categories',
-    name: t('visit_categories'),
+    name: 'visit_categories',
     icon: 'clipboard-notes',
     permissions: [
       PermissionsEnum.VISIT_CATEGORY_ALL,
@@ -414,7 +409,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/drill-types',
-    name: t('drill_types'),
+    name: 'drill_types',
     icon: 'clipboard-notes',
     permissions: [
       PermissionsEnum.DRILL_TYPE_ALL,
@@ -427,7 +422,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/where-house-type',
-    name: t('warehouse_types'),
+    name: 'warehouse_types',
     icon: 'store-alt',
     permissions: [
       PermissionsEnum.WHIERE_HOUSE_TYPE_ALL,
@@ -440,7 +435,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/hazard-type',
-    name: t('hazard_type'),
+    name: 'hazard_type',
     icon: 'shield-exclamation',
     permissions: [
       PermissionsEnum.HAZARD_TYPE_ALL,
@@ -453,7 +448,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/accidents-type',
-    name: t('incident_types'),
+    name: 'incident_types',
     icon: 'exclamation-octagon',
     permissions: [
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
@@ -466,7 +461,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/incident-category',
-    name: t('incident_categories'),
+    name: 'incident_categories',
     icon: 'list-ui-alt',
     permissions: [
       PermissionsEnum.ACCIDENTS_TYPE_ALL,
@@ -479,7 +474,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/observation-type',
-    name: t('observation_type'),
+    name: 'observation_type',
     icon: 'eye',
     permissions: [
       PermissionsEnum.OBSERVATION_TYPE_ALL,
@@ -492,7 +487,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/equipment-types',
-    name: t('equipment_types'),
+    name: 'equipment_types',
     icon: 'hard-hat',
     permissions: [
       PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,
@@ -505,7 +500,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/root-causes',
-    name: t('root_causes'),
+    name: 'root_causes',
     icon: 'sitemap',
     permissions: [
       PermissionsEnum.ROOT_CAUSES_ALL,
@@ -517,7 +512,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/injury',
-    name: t('injury'),
+    name: 'injury',
     icon: 'medical-square',
     permissions: [
       PermissionsEnum.INJURY_ALL,
@@ -529,7 +524,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/meeting-types',
-    name: t('meeting types'),
+    name: 'meeting types',
     icon: 'receipt',
     permissions: [
       PermissionsEnum?.ADMIN,
@@ -543,7 +538,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/ptw-types',
-    name: t('ptw types'),
+    name: 'ptw types',
     icon: 'receipt',
     permissions: [
       PermissionsEnum?.ADMIN,
@@ -557,7 +552,7 @@ const LockUpsRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/traning-topics',
-    name: t('traning_topics'),
+    name: 'traning_topics',
     icon: 'medical-square',
     permissions: [
       PermissionsEnum.TRANING_TOPIC_ALL,
@@ -573,7 +568,7 @@ const LockUpsRoutes = ref<Routes[]>([
 const SubscriptionTypeRoutes = ref<Routes[]>([
   {
     link: '/admin/subscription-types',
-    name: t('subscription_type'),
+    name: 'subscription_type',
     icon: 'money-bill',
     permissions: [
       PermissionsEnum?.ADMIN,
@@ -587,7 +582,7 @@ const SubscriptionTypeRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/subscription-application',
-    name: t('subscriptions_request'),
+    name: 'subscriptions_request',
     icon: 'receipt',
     permissions: [
       PermissionsEnum?.ADMIN,
@@ -604,7 +599,7 @@ const SubscriptionTypeRoutes = ref<Routes[]>([
 const WebsiteRoutes = ref<Routes[]>([
   {
     link: '/admin/client-opinions',
-    name: t('client_opinion'),
+    name: 'client_opinion',
     icon: 'feedback',
     permissions: [
       PermissionsEnum?.WEBSITE,
@@ -618,7 +613,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/home-contact-us',
-    name: t('home_contact_us'),
+    name: 'home_contact_us',
     icon: 'comment-message',
     permissions: [
       PermissionsEnum?.WEBSITE,
@@ -632,7 +627,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/categories',
-    name: t('categories'),
+    name: 'categories',
     icon: 'list-ui-alt',
     permissions: [
       PermissionsEnum.CATEGORY_ALL,
@@ -644,7 +639,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/services',
-    name: t('services'),
+    name: 'services',
     icon: 'setting',
     permissions: [
       PermissionsEnum.SERVICE_ALL,
@@ -656,7 +651,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/hashtags',
-    name: t('hashtags'),
+    name: 'hashtags',
     icon: 'tag-alt',
     permissions: [
       PermissionsEnum.HASHTAG_ALL,
@@ -668,7 +663,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/term/add',
-    name: t('terms'),
+    name: 'terms',
     icon: 'file-contract',
     permissions: [
       PermissionsEnum.TERM_ALL,
@@ -678,7 +673,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/headers',
-    name: t('headers'),
+    name: 'headers',
     icon: 'window',
     permissions: [
       PermissionsEnum.HEADER_ALL,
@@ -690,7 +685,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/service-features',
-    name: t('service_features'),
+    name: 'service_features',
     icon: 'bolt',
     permissions: [
       PermissionsEnum.SERVICE_FEATURE_ALL,
@@ -702,7 +697,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/service_section',
-    name: t('service_section'),
+    name: 'service_section',
     icon: 'web-section',
     permissions: [
       PermissionsEnum.SERVICE_SECTION_ALL,
@@ -714,7 +709,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/powerfull-features',
-    name: t('powerful_features'),
+    name: 'powerful_features',
     icon: 'star',
     permissions: [
       PermissionsEnum.POWERFUL_FEATURE_ALL,
@@ -726,7 +721,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/system-works',
-    name: t('system_works'),
+    name: 'system_works',
     icon: 'sync',
     permissions: [
       PermissionsEnum.SYSTEM_WORK_ALL,
@@ -738,7 +733,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/privacy/add',
-    name: t('privacy'),
+    name: 'privacy',
     icon: 'lock',
     permissions: [
       PermissionsEnum.PRIVACY_ALL,
@@ -748,7 +743,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/home-view-pricing',
-    name: t('homeViewPricing'),
+    name: 'homeViewPricing',
     icon: 'wallet',
     permissions: [
       PermissionsEnum.HOME_VIEW_PRICING_ALL,
@@ -760,7 +755,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/service_logs',
-    name: t('service_logs'),
+    name: 'service_logs',
     icon: 'history',
     permissions: [
       PermissionsEnum.SERVICE_LOG_ALL,
@@ -772,7 +767,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/blog',
-    name: t('blogs'),
+    name: 'blogs',
     icon: 'book',
     permissions: [
       PermissionsEnum.BLOG_ALL,
@@ -784,7 +779,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/home-about-us',
-    name: t('home_about_us'),
+    name: 'home_about_us',
     icon: 'estate',
     permissions: [
       PermissionsEnum.HOME_ABOUT_US_ALL,
@@ -796,7 +791,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/about-us-features',
-    name: t('about_us_features'),
+    name: 'about_us_features',
     icon: 'question-circle',
     permissions: [
       PermissionsEnum.ABOUT_US_FEATURE_ALL,
@@ -808,7 +803,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/about-us-core',
-    name: t('about_us_core'),
+    name: 'about_us_core',
     icon: 'bullseye',
     permissions: [
       PermissionsEnum.ABOUT_US_CORE_ALL,
@@ -820,7 +815,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/faq',
-    name: t('faqs'),
+    name: 'faqs',
     icon: 'comment-question',
     permissions: [
       PermissionsEnum.FAQ_ALL,
@@ -832,7 +827,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/system-risk-management',
-    name: t('systemRiskManagement'),
+    name: 'systemRiskManagement',
     icon: 'shield-exclamation',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_RISK_MANAGEMENT_ALL,
@@ -844,7 +839,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/our-system-step',
-    name: t('ourSystemStep'),
+    name: 'ourSystemStep',
     icon: 'directions',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_STEP_ALL,
@@ -856,7 +851,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/system_banner',
-    name: t('systemBanner'),
+    name: 'systemBanner',
     icon: 'image',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_BANNER_ALL,
@@ -868,7 +863,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/system_feature',
-    name: t('systemFeature'),
+    name: 'systemFeature',
     icon: 'grid',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_FEATURE_ALL,
@@ -880,7 +875,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/system_risk_type',
-    name: t('systemRiskType'),
+    name: 'systemRiskType',
     icon: 'exclamation-triangle',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_RISK_TYPE_ALL,
@@ -892,7 +887,7 @@ const WebsiteRoutes = ref<Routes[]>([
   },
   {
     link: '/admin/system_components',
-    name: t('systemComponents'),
+    name: 'systemComponents',
     icon: 'layers',
     permissions: [
       PermissionsEnum.OUR_SYSTEM_COMPONENT_ALL,
@@ -904,447 +899,278 @@ const WebsiteRoutes = ref<Routes[]>([
   },
 ])
 
-const SelectedSettingsRoute = ref<string>('')
-const SelectedLocationRoute = ref<string>('')
-const SelectedWebsiteRoute = ref<string>('')
-const SelectedSubscriptionTypeRoute = ref<string>('')
-const SelectedLockupsRoute = ref<string>('')
+interface RouteGroup {
+  key: string
+  label: string
+  icon: string
+  routes: Routes[]
+  permissions: PermissionsEnum[]
+}
+
+const routeGroups = computed<RouteGroup[]>(() =>
+  [
+    { key: 'settings', label: t('settings'), icon: 'setting', routes: SettingsRoutes.value },
+    {
+      key: 'locations',
+      label: t('location'),
+      icon: 'map-marker-alt',
+      routes: LocationRoutes.value,
+    },
+    {
+      key: 'subscriptions',
+      label: t('subscriptions'),
+      icon: 'receipt',
+      routes: SubscriptionTypeRoutes.value,
+    },
+    { key: 'website', label: t('website'), icon: 'globe', routes: WebsiteRoutes.value },
+    { key: 'lookups', label: t('Lockups'), icon: 'lock', routes: LockUpsRoutes.value },
+  ].map((group) => ({
+    ...group,
+    permissions: [...new Set(group.routes.flatMap((item) => item.permissions))],
+  })),
+)
+
+const activeRouteGroupKey = ref('settings')
+const paneGroupKey = ref('settings')
+const searchTerm = ref('')
+const isPaneVisible = ref(false)
+const sidePaneRoutesRef = ref<HTMLElement | null>(null)
+let closePaneTimer: number | undefined
+
+const isLinkActive = (link: string) => route.path === link || route.path.startsWith(`${link}/`)
+
+const groupHasActiveRoute = (group: RouteGroup) =>
+  group.routes.some((item) => isLinkActive(item.link))
+
+const activeGroup = computed(() => {
+  return routeGroups.value.find((group) => group.key === paneGroupKey.value) || routeGroups.value[0]
+})
+
+const isSearching = computed(() => searchTerm.value.trim().length > 0)
+
+const clearSearch = () => {
+  searchTerm.value = ''
+}
+
+const visibleRouteGroups = computed<RouteGroup[]>(() => {
+  const query = searchTerm.value.trim().toLocaleLowerCase()
+  const groups = query ? routeGroups.value : activeGroup.value ? [activeGroup.value] : []
+
+  return groups
+    .map((group) => ({
+      ...group,
+      routes: query
+        ? group.routes.filter(
+            (item) =>
+              t(item.name).toLocaleLowerCase().includes(query) ||
+              group.label.toLocaleLowerCase().includes(query),
+          )
+        : group.routes,
+    }))
+    .filter((group) => group.routes.length > 0)
+})
+
+const selectGroup = (groupKey: string) => {
+  paneGroupKey.value = groupKey
+  searchTerm.value = ''
+}
+
+const activateRouteGroup = (groupKey: string) => {
+  activeRouteGroupKey.value = groupKey
+  paneGroupKey.value = groupKey
+  hidePane()
+}
+
+const clearClosePaneTimer = () => {
+  if (!closePaneTimer) return
+
+  window.clearTimeout(closePaneTimer)
+  closePaneTimer = undefined
+}
+
+const openGroup = (groupKey: string) => {
+  clearClosePaneTimer()
+  selectGroup(groupKey)
+  isPaneVisible.value = true
+
+  nextTick(() => {
+    if (sidePaneRoutesRef.value) sidePaneRoutesRef.value.scrollTop = 0
+  })
+}
+
+const keepPaneOpen = () => {
+  clearClosePaneTimer()
+}
+
+const hidePane = () => {
+  clearClosePaneTimer()
+  isPaneVisible.value = false
+  searchTerm.value = ''
+}
+
+const scheduleClosePane = () => {
+  clearClosePaneTimer()
+
+  closePaneTimer = window.setTimeout(() => {
+    hidePane()
+  }, 160)
+}
 
 watch(
-  () => route.path,
-  (newPath) => {
-    SelectedSettingsRoute.value =
-      SettingsRoutes.value.find((item) => item.link === newPath)?.name || ''
-    SelectedLocationRoute.value =
-      LocationRoutes.value.find((item) => item.link === newPath)?.name || ''
-    SelectedWebsiteRoute.value =
-      WebsiteRoutes.value.find((item) => item.link === newPath)?.name || ''
-    SelectedSubscriptionTypeRoute.value =
-      SubscriptionTypeRoutes.value.find((item) => item.link === newPath)?.name || ''
-    SelectedLockupsRoute.value =
-      LockUpsRoutes.value.find((item) => item.link === newPath)?.name || ''
+  () => props.open,
+  (open) => {
+    if (!open) {
+      hidePane()
+    }
   },
 )
 
-const settingsAccordion = ref<string | null>('0')
-const locationAccordion = ref<string | null>('1')
-const websiteAccordion = ref<string | null>('2')
-const subscriptionTypeAccordion = ref<string | null>('3')
-const LoackupsAccordion = ref<string | null>('4')
-watch(LoackupsAccordion, (val) => {
-  LoackupsAccordion.value = val
+watch(
+  () => route.fullPath,
+  () => {
+    const currentRouteGroup = routeGroups.value.find(
+      (group) => group.key === activeRouteGroupKey.value && groupHasActiveRoute(group),
+    )
+    const routeGroup =
+      currentRouteGroup || routeGroups.value.find((group) => groupHasActiveRoute(group))
+
+    if (routeGroup) {
+      activeRouteGroupKey.value = routeGroup.key
+
+      if (!isPaneVisible.value) {
+        paneGroupKey.value = routeGroup.key
+      }
+    }
+  },
+  { immediate: true },
+)
+
+onBeforeUnmount(() => {
+  clearClosePaneTimer()
 })
 </script>
 
 <template>
-  <!-- Icon strip shown when sidebar is closed -->
-  <template v-if="!open">
-    <div class="icon-strip">
-      <PermissionBuilder v-for="r in SettingsRoutes" :key="r.link" :code="r.permissions">
-        <router-link :to="r.link" class="icon-item" :data-title="r.name">
-          <SidebarUnicon :name="r.icon" class="strip-icon" />
-          <span class="icon-label">{{ $t(r.name) }}</span>
-        </router-link>
-      </PermissionBuilder>
+  <div class="modern-sidebar hse-identity">
+    <nav class="side-rail-nav" :aria-label="$t('main_sidebar_groups')">
+      <template v-for="group in routeGroups" :key="group.key">
+        <PermissionBuilder :code="group.permissions">
+          <button
+            type="button"
+            :class="[
+              'side-rail-btn',
+              {
+                'is-selected': isPaneVisible && paneGroupKey === group.key,
+                'is-active': activeRouteGroupKey === group.key && groupHasActiveRoute(group),
+              },
+            ]"
+            :title="group.label"
+            :aria-expanded="isPaneVisible && paneGroupKey === group.key"
+            aria-controls="admin-sidebar-pane"
+            @click="openGroup(group.key)"
+            @mouseenter="openGroup(group.key)"
+            @mouseleave="scheduleClosePane"
+            @focus="openGroup(group.key)"
+            @blur="scheduleClosePane"
+          >
+            <SidebarUnicon :name="group.icon" class="strip-icon" />
+            <span>{{ group.label }}</span>
+          </button>
+        </PermissionBuilder>
+      </template>
+    </nav>
 
-      <PermissionBuilder v-for="r in LocationRoutes" :key="r.link" :code="r.permissions">
-        <router-link :to="r.link" class="icon-item" :data-title="r.name">
-          <SidebarUnicon :name="r.icon" class="strip-icon" />
-          <span class="icon-label">{{ $t(r.name) }}</span>
-        </router-link>
-      </PermissionBuilder>
-
-      <PermissionBuilder v-for="r in SubscriptionTypeRoutes" :key="r.link" :code="r.permissions">
-        <router-link :to="r.link" class="icon-item" :data-title="r.name">
-          <SidebarUnicon :name="r.icon" class="strip-icon" />
-          <span class="icon-label">{{ $t(r.name) }}</span>
-        </router-link>
-      </PermissionBuilder>
-
-      <PermissionBuilder v-for="r in WebsiteRoutes" :key="r.link" :code="r.permissions">
-        <router-link :to="r.link" class="icon-item" :data-title="r.name">
-          <SidebarUnicon :name="r.icon" class="strip-icon" />
-          <span class="icon-label">{{ $t(r.name) }}</span>
-        </router-link>
-      </PermissionBuilder>
-
-      <PermissionBuilder v-for="r in LockUpsRoutes" :key="r.link" :code="r.permissions">
-        <router-link :to="r.link" class="icon-item" :data-title="r.name">
-          <SidebarUnicon :name="r.icon" class="strip-icon" />
-          <span class="icon-label">{{ $t(r.name) }}</span>
-        </router-link>
-      </PermissionBuilder>
-    </div>
-  </template>
-
-  <!-- Full accordion view when sidebar is open -->
-  <template v-else>
-    <PermissionBuilder
-      :code="[
-        PermissionsEnum?.ADMIN_ALL,
-        PermissionsEnum?.LANGUAGE_ALL,
-        PermissionsEnum?.INDUSTRY_ALL,
-        PermissionsEnum?.EQUIPMENT_TYPE_ALL,
-        PermissionsEnum?.EQUIPMENT_ALL,
-        PermissionsEnum?.HAZARD_TYPE_ALL,
-        PermissionsEnum?.ACCIDENTS_TYPE_ALL,
-        PermissionsEnum?.FACTORY_ITEM_ALL,
-        PermissionsEnum?.FACTORY_ALL,
-        PermissionsEnum?.CERTIFICATE_ALL,
-        PermissionsEnum?.TEMPLATE_ALL,
-        PermissionsEnum?.PROJECT_TYPE_ALL,
-        PermissionsEnum?.ORGANIZATION_ALL,
-      ]"
-    >
-      <Accordion v-model:value="settingsAccordion">
-        <AccordionPanel value="0">
-          <AccordionHeader>
-            <div class="links-header">
-              <SidebarUnicon name="setting" />
-              {{ $t('settings') }}
+    <Transition name="side-pane">
+      <aside
+        v-if="isPaneVisible && activeGroup"
+        id="admin-sidebar-pane"
+        class="side-pane"
+        @mouseenter="keepPaneOpen"
+        @mouseleave="scheduleClosePane"
+        @focusin="keepPaneOpen"
+        @focusout="scheduleClosePane"
+      >
+        <header class="side-pane-header">
+          <div class="side-pane-heading">
+            <span class="side-pane-icon">
+              <SidebarUnicon :name="activeGroup.icon" />
+            </span>
+            <div>
+              <strong>{{ activeGroup.label }}</strong>
             </div>
-          </AccordionHeader>
+          </div>
 
-          <AccordionContent>
-            <ul>
-              <PermissionBuilder
-                v-for="(r, index) in SettingsRoutes"
-                :key="index"
-                :code="r.permissions"
-              >
-                <li>
-                  <router-link :to="r.link">
-                    <SidebarUnicon :name="r.icon" class="route-icon" />
-                    <span>{{ $t(r.name) }}</span>
-                  </router-link>
-                </li>
-              </PermissionBuilder>
-            </ul>
-          </AccordionContent>
-        </AccordionPanel>
-        <AccordionPanel class="active-panel-out" v-if="SelectedSettingsRoute && !settingsAccordion">
-          <span>{{ SelectedSettingsRoute }}</span>
-        </AccordionPanel>
-      </Accordion>
-    </PermissionBuilder>
+          <div class="sidebar-search" role="search">
+            <span class="sidebar-search__icon-shell" aria-hidden="true">
+              <SidebarUnicon name="search" class="sidebar-search__icon" />
+            </span>
+            <input
+              v-model="searchTerm"
+              type="search"
+              class="sidebar-search__input"
+              :placeholder="$t('search')"
+              :aria-label="$t('search_all_sidebar_routes')"
+              autocomplete="off"
+              spellcheck="false"
+              @keydown.esc="hidePane"
+            />
+            <button
+              v-if="isSearching"
+              type="button"
+              class="sidebar-search__clear"
+              :aria-label="$t('clear')"
+              :title="$t('clear')"
+              @click="clearSearch"
+            >
+              <SidebarUnicon name="times" />
+            </button>
+          </div>
+        </header>
 
-    <PermissionBuilder :code="[PermissionsEnum?.LOCATION_ALL]">
-      <Accordion v-model:value="locationAccordion">
-        <AccordionPanel value="1">
-          <AccordionHeader>
-            <div class="links-header">
-              <SidebarUnicon name="map-marker-alt" />
-              {{ $t('location') }}
-            </div>
-          </AccordionHeader>
-          <AccordionContent>
-            <ul>
-              <PermissionBuilder
-                v-for="(r, index) in LocationRoutes"
-                :key="index"
-                :code="r.permissions"
-              >
-                <li>
-                  <router-link :to="r.link">
-                    <SidebarUnicon :name="r.icon" class="route-icon" />
-                    <span>{{ $t(r.name) }}</span>
-                  </router-link>
-                </li>
-              </PermissionBuilder>
-            </ul>
-          </AccordionContent>
-        </AccordionPanel>
-        <AccordionPanel class="active-panel-out" v-if="SelectedLocationRoute && !locationAccordion">
-          <span>{{ SelectedLocationRoute }}</span>
-        </AccordionPanel>
-      </Accordion>
-    </PermissionBuilder>
-
-    <PermissionBuilder
-      :code="[
-        PermissionsEnum?.SUBSCRIPTION_TYPE_ALL,
-        PermissionsEnum?.SUBSCRIPTION_TYPE_CREATE,
-        PermissionsEnum?.SUBSCRIPTION_TYPE_UPDATE,
-        PermissionsEnum?.SUBSCRIPTION_TYPE_DETAILS,
-        PermissionsEnum?.SUBSCRIPTION_TYPE_DELETE,
-        PermissionsEnum?.SUBSCRIPTION_TYPE_FETCH,
-      ]"
-    >
-      <Accordion v-model:value="subscriptionTypeAccordion">
-        <AccordionPanel value="3">
-          <AccordionHeader>
-            <div class="links-header">
-              <SidebarUnicon name="money-bill" />
-              {{ $t('subscription_type') }}
-            </div>
-          </AccordionHeader>
-          <AccordionContent>
-            <ul>
-              <PermissionBuilder
-                v-for="(r, index) in SubscriptionTypeRoutes"
-                :key="index"
-                :code="r.permissions"
-              >
-                <li>
-                  <router-link :to="r.link">
-                    <SidebarUnicon :name="r.icon" class="route-icon" />
-                    <span>{{ $t(r.name) }}</span>
-                  </router-link>
-                </li>
-              </PermissionBuilder>
-            </ul>
-          </AccordionContent>
-        </AccordionPanel>
-        <AccordionPanel
-          class="active-panel-out"
-          v-if="SelectedSubscriptionTypeRoute && !subscriptionTypeAccordion"
+        <nav
+          ref="sidePaneRoutesRef"
+          class="side-pane-routes"
+          :aria-label="$t('sidebar_group_routes', { group: activeGroup.label })"
         >
-          <span>{{ SelectedSubscriptionTypeRoute }}</span>
-        </AccordionPanel>
-      </Accordion>
-    </PermissionBuilder>
-
-    <PermissionBuilder
-      :code="[
-        PermissionsEnum?.WEBSITE,
-        PermissionsEnum?.CLIENT_OPINION_ALL,
-        PermissionsEnum?.HOME_CONTACT_US_ALL,
-        PermissionsEnum?.CATEGORY_ALL,
-        PermissionsEnum?.SERVICE_ALL,
-        PermissionsEnum?.HASHTAG_ALL,
-        PermissionsEnum?.TERM_ALL,
-        PermissionsEnum?.HEADER_ALL,
-        PermissionsEnum?.SERVICE_FEATURE_ALL,
-        PermissionsEnum?.SERVICE_SECTION_ALL,
-        PermissionsEnum?.POWERFUL_FEATURE_ALL,
-        PermissionsEnum?.SYSTEM_WORK_ALL,
-        PermissionsEnum?.PRIVACY_ALL,
-        PermissionsEnum?.HOME_VIEW_PRICING_ALL,
-        PermissionsEnum?.SERVICE_LOG_ALL,
-        PermissionsEnum?.BLOG_ALL,
-        PermissionsEnum?.HOME_ABOUT_US_ALL,
-        PermissionsEnum?.ABOUT_US_FEATURE_ALL,
-        PermissionsEnum?.ABOUT_US_CORE_ALL,
-        PermissionsEnum?.FAQ_ALL,
-        PermissionsEnum?.OUR_SYSTEM_RISK_MANAGEMENT_ALL,
-        PermissionsEnum?.OUR_SYSTEM_STEP_ALL,
-        PermissionsEnum?.OUR_SYSTEM_FEATURE_ALL,
-        PermissionsEnum?.OUR_SYSTEM_RISK_TYPE_ALL,
-        PermissionsEnum?.OUR_SYSTEM_COMPONENT_ALL,
-      ]"
-    >
-      <Accordion v-model:value="websiteAccordion">
-        <AccordionPanel value="2">
-          <AccordionHeader>
-            <div class="links-header">
-              <SidebarUnicon name="globe" />
-              {{ $t('website') }}
-            </div>
-          </AccordionHeader>
-
-          <AccordionContent>
-            <ul>
-              <PermissionBuilder
-                v-for="(r, index) in WebsiteRoutes"
-                :key="index"
-                :code="r.permissions"
-              >
-                <li>
-                  <router-link :to="r.link">
-                    <SidebarUnicon :name="r.icon" class="route-icon" />
-                    <span>{{ $t(r.name) }}</span>
-                  </router-link>
-                </li>
+          <div class="side-pane-routes__inner">
+            <template v-for="group in visibleRouteGroups" :key="group.key">
+              <PermissionBuilder v-if="isSearching" :code="group.permissions">
+                <p class="side-route-group-title">{{ group.label }}</p>
               </PermissionBuilder>
-            </ul>
-          </AccordionContent>
-        </AccordionPanel>
-        <AccordionPanel class="active-panel-out" v-if="SelectedWebsiteRoute && !websiteAccordion">
-          <span>{{ SelectedWebsiteRoute }}</span>
-        </AccordionPanel>
-      </Accordion>
-    </PermissionBuilder>
 
-    <PermissionBuilder
-      :code="LockUpsRoutes?.map((item) => item.permissions.map((item) => item)).flat()"
-    >
-      <Accordion v-model:value="LoackupsAccordion">
-        <AccordionPanel value="4">
-          <AccordionHeader>
-            <div class="links-header">
-              <SidebarUnicon name="lock" />
-              {{ $t('Lockups') }}
-            </div>
-          </AccordionHeader>
-
-          <AccordionContent>
-            <ul>
               <PermissionBuilder
-                v-for="(r, index) in LockUpsRoutes"
-                :key="index"
-                :code="r?.permissions"
+                v-for="sidebarRoute in group.routes"
+                :key="`${group.key}-${String(sidebarRoute.link)}`"
+                :code="sidebarRoute.permissions"
               >
-                <li>
-                  <router-link :to="r.link" :class="route?.fullPath?.includes(r.link) ? '' : ''">
-                    <SidebarUnicon :name="r.icon" class="route-icon" />
-                    <span>{{ $t(r.name) }}</span>
+                <div class="side-route-entry">
+                  <router-link
+                    :to="sidebarRoute.link"
+                    active-class=""
+                    exact-active-class=""
+                    :aria-current-value="isLinkActive(sidebarRoute.link) ? 'page' : 'false'"
+                    :class="['side-btn', { active: isLinkActive(sidebarRoute.link) }]"
+                    :title="$t(sidebarRoute.name)"
+                    @click="activateRouteGroup(group.key)"
+                  >
+                    <SidebarUnicon :name="sidebarRoute.icon" class="side-icon" />
+                    <span class="side-label-wrap">
+                      <span class="side-label">{{ $t(sidebarRoute.name) }}</span>
+                      <span v-if="isSearching" class="side-label-parent">{{ group.label }}</span>
+                    </span>
                   </router-link>
-                </li>
+                </div>
               </PermissionBuilder>
-            </ul>
-          </AccordionContent>
-        </AccordionPanel>
-        <AccordionPanel class="active-panel-out" v-if="SelectedLockupsRoute && !LoackupsAccordion">
-          <span>{{ SelectedLockupsRoute }}</span>
-        </AccordionPanel>
-      </Accordion>
-    </PermissionBuilder>
+            </template>
 
-    <button class="admin-sidebar-logout" type="button" @click="emit('logout')">
-      <SidebarUnicon name="signout" />
-      <span>{{ $t('logout') }}</span>
-    </button>
-  </template>
+            <p v-if="!visibleRouteGroups.length" class="side-pane-empty">
+              {{ $t('No Data Found') }}
+            </p>
+          </div>
+        </nav>
+      </aside>
+    </Transition>
+  </div>
 </template>
 
-<style scoped>
-.icon-strip {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 0 16px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  overscroll-behavior-x: none;
-  flex: 1;
-  scrollbar-width: none;
-}
-
-.icon-strip::-webkit-scrollbar {
-  display: none;
-}
-
-.icon-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: 72px;
-  min-height: 68px;
-  padding: 8px 4px;
-  border-radius: 16px;
-  color: var(--brand-primary-100);
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
-  position: relative;
-  text-decoration: none;
-  flex-shrink: 0;
-  text-align: center;
-}
-
-.icon-item:hover,
-.icon-item.router-link-active {
-  background: color-mix(in srgb, var(--surface-1) 14%, transparent);
-  box-shadow:
-    inset 0 0 0 1px color-mix(in srgb, var(--shadow-color) 12%, transparent),
-    0 12px 24px color-mix(in srgb, var(--brand-primary-700) 18%, transparent);
-  color: var(--text-on-brand);
-  transform: translateY(-1px);
-}
-
-.icon-item::after {
-  content: attr(data-title);
-  position: absolute;
-  inset-inline-start: calc(100% + 6px);
-  top: 50%;
-  transform: translateY(-50%);
-  background: var(--brand-secondary-900);
-  color: var(--text-on-brand);
-  padding: 5px 10px;
-  border-radius: 6px;
-  white-space: nowrap;
-  font-size: 12px;
-  font-family: 'Regular', sans-serif;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s ease;
-  z-index: 9999;
-  box-shadow: 0 2px 8px color-mix(in srgb, var(--text-strong) 15%, transparent);
-}
-
-.icon-item:hover::after {
-  opacity: 1;
-}
-
-.strip-icon {
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
-  color: currentColor;
-}
-
-.icon-label {
-  max-width: 64px;
-  font-size: 10px;
-  line-height: 1.15;
-  font-weight: 700;
-  text-align: center;
-  color: inherit;
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-.route-icon {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-  color: currentColor;
-  opacity: 0.82;
-}
-
-.admin-sidebar-logout {
-  position: sticky;
-  bottom: 8px;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 12px;
-  width: calc(100% - 8px);
-  min-height: 48px;
-  margin: 16px 4px 8px;
-  padding: 12px 16px;
-  border: 1px solid color-mix(in srgb, var(--status-danger) 35%, transparent);
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--status-danger) 18%, var(--brand-primary-700));
-  color: var(--text-on-brand);
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 10px 24px color-mix(in srgb, var(--shadow-color) 16%, transparent);
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease;
-}
-
-.admin-sidebar-logout:hover {
-  background: color-mix(in srgb, var(--status-danger) 32%, var(--brand-primary-700));
-  transform: translateY(-1px);
-}
-
-.admin-sidebar-logout :deep(svg),
-.admin-sidebar-logout :deep(.sidebar-unicon) {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-}
-
-.admin-sidebar-logout :deep(path) {
-  fill: currentColor !important;
-}
-</style>
+<style scoped src="./sidebar-navigation.css"></style>
