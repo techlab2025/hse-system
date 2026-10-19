@@ -4481,7 +4481,7 @@
   "no_audit_activities": "No audit activities",
   "no_audit_activities_description": "No audit activities have been added yet.",
   "action_feature_audit_activities": "Audit activity actions",
-  "add_new_department":"add new department",
+  "add_new_department": "add new department",
   "certification_name": "Certification Name",
   "issuing_body": "Issuing Body",
   "certificate_number": "Certificate Number",
@@ -4538,7 +4538,7 @@
   "create_first_ncr": "Create the first NCR",
   "NCR Serial": "NCR Serial",
   "NCR Details": "NCR Details",
-  "add_reason":"Add Reason",
+  "add_reason": "Add Reason",
   "op": {
     "view": "View",
     "details": "Objective Details",
@@ -4610,6 +4610,16 @@
     "integerRequired": "Completed occurrences must be a whole number.",
     "tooManyFiles": "Too many attachments selected.",
     "invalidFile": "A file exceeds the allowed size or has an unsupported type.",
-    "total_progress":"total progress"
+    "total_progress": "total progress"
+  },
+  "employeeProjectAction": {
+    "loadError": "Unable to load projects.",
+    "retry": "Try again",
+    "noProjects": "No assigned projects are available.",
+    "selectProject": "Select a project",
+    "chooseFor": "Choose the project for {action}.",
+    "continue": "Continue",
+    "viewHint": "Select a project to view records.",
+    "createHint": "Choose the project inside the create form."
   }
 }

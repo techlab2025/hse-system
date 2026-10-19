@@ -983,7 +983,10 @@ const visibleRouteGroups = computed<RouteGroup[]>(() => {
   const groups = query ? routeGroups.value : activeGroup.value ? [activeGroup.value] : []
 
   return groups
-    .filter((group) => !group.adminOnly || user?.employeeType == EmployeeStatusEnum.Admin)
+    .filter(
+      (group) =>
+        !group.adminOnly || user?.isMaster === 1 || user?.employeeType == EmployeeStatusEnum.Admin,
+    )
     .map((group) => {
       const routes = query
         ? group.routes.filter((item) => {
@@ -1090,7 +1093,11 @@ onBeforeUnmount(() => {
     <nav class="side-rail-nav" :aria-label="$t('main_sidebar_groups')">
       <template v-for="group in routeGroups" :key="group.key">
         <PermissionBuilder
-          v-if="!group.adminOnly || user?.employeeType == EmployeeStatusEnum.Admin"
+          v-if="
+            !group.adminOnly ||
+            user?.isMaster === 1 ||
+            user?.employeeType == EmployeeStatusEnum.Admin
+          "
           :code="group.permissions"
         >
           <button

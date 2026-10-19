@@ -188,10 +188,11 @@ const cards = computed<EmpCard[]>(() => [
     requiresProject: true,
     permissions: [PermissionsEnum.PTW_ALL, PermissionsEnum.PTW_CREATE, PermissionsEnum.PTW_FETCH],
     actions: [
-      projectAction('Request Permit', `/organization/project-permit/project/${projectId.value}`, [
-        PermissionsEnum.PTW_ALL,
-        PermissionsEnum.PTW_CREATE,
-      ]),
+      {
+        title: 'Request Permit',
+        route: `/organization/project-permit/create${projectQuery.value}`,
+        permissions: [PermissionsEnum.PTW_ALL, PermissionsEnum.PTW_CREATE],
+      },
       projectAction('My Permits', `/organization/project-my-permits/${projectId.value}`, [
         PermissionsEnum.PTW_ALL,
         PermissionsEnum.PTW_FETCH,
@@ -228,17 +229,17 @@ const cards = computed<EmpCard[]>(() => [
     eyebrow: 'Change with confidence',
     subtitle: 'Submit and review changes to keep people, processes, and operations safe.',
     img: changeImg,
-    permissions: [PermissionsEnum.MOC_ALL],
+    permissions: [PermissionsEnum.MOC_ALL, PermissionsEnum.MOC_CRAETE, PermissionsEnum.MOC_FETCH],
     actions: [
       {
         title: 'Request Change',
         route: `/organization/management-of-change/add${projectQuery.value}`,
-        permissions: [PermissionsEnum.MOC_CRAETE],
+        permissions: [PermissionsEnum.MOC_ALL, PermissionsEnum.MOC_CRAETE],
       },
       {
         title: 'View Changes',
         route: `/organization/management-of-change${projectQuery.value}`,
-        permissions: [PermissionsEnum.MOC_FETCH],
+        permissions: [PermissionsEnum.MOC_ALL, PermissionsEnum.MOC_FETCH],
       },
     ],
   },
@@ -249,7 +250,7 @@ const cards = computed<EmpCard[]>(() => [
     subtitle: 'Explore safety leadership plans and follow up on project visits.',
     img: leadershipImg,
     requiresProject: true,
-    permissions: [PermissionsEnum.LEADERSHIP_ALL],
+    permissions: [PermissionsEnum.LEADERSHIP_ALL, PermissionsEnum.LEADERSHIP_FETCH],
     actions: [
       projectAction(
         'View Leadership',
@@ -271,13 +272,17 @@ const cards = computed<EmpCard[]>(() => [
       'Identify hazards, assess project risks, and define the controls needed for safer work.',
     img: riskImg,
     requiresProject: true,
-    permissions: [PermissionsEnum.RISK_ASSESSMENT_ALL],
+    permissions: [
+      PermissionsEnum.RISK_ASSESSMENT_ALL,
+      PermissionsEnum.RISK_ASSESSMENT_CREATE,
+      PermissionsEnum.RISK_ASSESSMENT_FETCH,
+    ],
     actions: [
-      projectAction(
-        'Create Assessment',
-        `/organization/project-details/${projectId.value}/risk-assessments/create`,
-        [PermissionsEnum.RISK_ASSESSMENT_ALL, PermissionsEnum.RISK_ASSESSMENT_CREATE],
-      ),
+      {
+        title: 'Create Assessment',
+        route: `/organization/risk-assessments/create${projectQuery.value}`,
+        permissions: [PermissionsEnum.RISK_ASSESSMENT_ALL, PermissionsEnum.RISK_ASSESSMENT_CREATE],
+      },
       projectAction(
         'View Assessments',
         `/organization/project-details/${projectId.value}/risk-assessments`,
@@ -342,7 +347,12 @@ const cards = computed<EmpCard[]>(() => [
               </svg>
               <span>
                 <strong>Project required</strong>
-                <span v-if="!projectId">Select a project above to enable these actions.</span>
+                <span v-if="!projectId">
+                  {{ $t('employeeProjectAction.viewHint') }}
+                  <template v-if="card.type !== empCardEnum.Leadership">{{
+                    $t('employeeProjectAction.createHint')
+                  }}</template>
+                </span>
                 <span v-else>These actions use your selected project.</span>
               </span>
             </p>
@@ -363,6 +373,7 @@ const cards = computed<EmpCard[]>(() => [
             <component
               :is="action.disabled ? 'button' : RouterLink"
               :to="action.disabled ? undefined : action.route"
+              :type="action.disabled ? 'button' : undefined"
               :disabled="action.disabled || undefined"
               :aria-describedby="
                 card.requiresProject ? `employee-card-project-hint-${card.type}` : undefined

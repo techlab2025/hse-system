@@ -116,8 +116,8 @@ const EmployeeStatus = ref()
 const dashAccessStatus = ref()
 const booleanEmpStatus = ref(true)
 const booleandashAccessStatus = ref(true)
-const updaetAdminStatus = (status: number) => {
-  booleanEmpStatus.value = status == EmployeeStatusEnum.Admin ? true : false
+const updaetAdminStatus = (status: boolean) => {
+  booleanEmpStatus.value = status
   if (status) {
     EmployeeStatus.value = EmployeeStatusEnum.Admin
   } else {
@@ -125,8 +125,8 @@ const updaetAdminStatus = (status: number) => {
   }
   updateData()
 }
-const updaetdashAccessStatus = (status: number) => {
-  booleandashAccessStatus.value = status == EmployeeStatusEnum.Admin ? true : false
+const updaetdashAccessStatus = (status: boolean) => {
+  booleandashAccessStatus.value = status
   updateData()
 }
 const updateData = () => {
@@ -402,7 +402,6 @@ defineExpose({
       </div>
 
       <div class="employee-field-grid">
-
         <div class="input-wrapper field-required" data-required-field="Name">
           <label for="name" class="flex items-center gap-2">
             {{ $t('employee_name') }}
@@ -469,7 +468,7 @@ defineExpose({
             {{ getFieldError('Phone') }}
           </p>
         </div>
-          <div class="input-wrapper employee-image-field" data-employee-image>
+        <div class="input-wrapper employee-image-field" data-employee-image>
           <HandleFIlesUpload
             :label="$t('employee_image_optional')"
             accept="image/*"

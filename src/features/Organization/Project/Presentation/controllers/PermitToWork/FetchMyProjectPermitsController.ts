@@ -1,6 +1,9 @@
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface.ts'
 // import LangModel from '@/features/setting/languages/Data/models/langModel'
-import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
+import {
+  DataEmpty,
+  type DataState,
+} from '@/base/core/networkStructure/Resources/dataState/data_state'
 import type Params from '@/base/core/params/params'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
 import errorImage from '@/assets/images/error.png'
@@ -30,7 +33,7 @@ export default class FetchMyProjectPermitsController extends ControllerInterface
       const dataState: DataState<ProjectPermitsModel[]> =
         await this.fetchMyProjectPermitsUseCase.call(params)
       this.setState(dataState)
-      if (this.isDataSuccess()) {
+      if (this.isDataSuccess() || this.state.value instanceof DataEmpty) {
         // DialogSelector.instance.successDialog.openDialog({
         //   dialogName: 'dialog-success',
         //   titleContent: 'Added was successful',

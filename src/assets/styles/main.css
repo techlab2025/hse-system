@@ -702,10 +702,10 @@ html[dir=rtl] .login .login-form .inputs .input-wrapper .icon-eye {
 }
 .btn-primary:hover {
   background-color: transparent;
-  color: var(--PrimaryColor);
+  color: white;
 }
 .btn-primary:hover * {
-  color: var(--PrimaryColor) !important;
+  color: white !important;
 }
 
 .btn-secondary {
@@ -11654,7 +11654,6 @@ body {
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: stretch;
-  gap: var(--md-size);
   width: 100%;
   overflow: hidden;
 }
@@ -11667,7 +11666,6 @@ body {
 .content .main-content {
   background: radial-gradient(ellipse at 85% 0, rgba(75, 132, 255, 0.07), transparent 35%), #f4f7fb;
   padding: var(--md-size);
-  border-radius: var(--xl-size-base);
   overflow: hidden;
   z-index: 999;
   position: relative;
@@ -12099,7 +12097,7 @@ body {
     transform: scale(1.15);
     filter: drop-shadow(0 6px 12px color-mix(in srgb, var(--identity-primary) 40%, transparent));
   }
-  .navigation .nav-link.active .icon :deep(svg) {
+  .navigation .nav-link.active .icon svg {
     animation: iconBounce 0.6s ease-out;
   }
   .navigation .nav-link.active .text {
@@ -12119,7 +12117,7 @@ body {
     position: relative;
     flex-shrink: 0;
   }
-  .navigation .icon :deep(svg) {
+  .navigation .icon svg {
     width: 24px !important;
     height: 24px !important;
     max-width: 24px;
@@ -12127,7 +12125,7 @@ body {
     stroke-width: 2;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .navigation .icon :deep(*) {
+  .navigation .icon > * {
     width: 24px;
     height: 24px;
     max-width: 24px;
@@ -12170,7 +12168,7 @@ body {
   .navigation .lang_sar .menu:active {
     transform: scale(0.96);
   }
-  .navigation .lang_sar .menu :deep(svg) {
+  .navigation .lang_sar .menu svg {
     width: 16px;
     height: 16px;
   }
@@ -12781,8 +12779,11 @@ body {
 .input-wrapper textarea:focus-visible {
   outline: none;
 }
-.input-wrapper input:not([type=checkbox]):placeholder,
-.input-wrapper textarea:placeholder {
+.input-wrapper input:not([type=checkbox])::-moz-placeholder, .input-wrapper textarea::-moz-placeholder {
+  color: var(--Gray-3);
+}
+.input-wrapper input:not([type=checkbox])::placeholder,
+.input-wrapper textarea::placeholder {
   color: var(--Gray-3);
 }
 .input-wrapper input:not([type=checkbox]):disabled,
@@ -13112,7 +13113,7 @@ body {
   transition: opacity 0.2s ease;
 }
 
-:deep(.ql-editor:not(.ql-blank)::before) {
+.ql-editor:not(.ql-blank)::before {
   opacity: 0;
 }
 
@@ -13293,7 +13294,7 @@ html[dir=rtl] .table-responsive table.main-table tbody tr td:last-child {
 }
 /* Mobile tables become readable record cards instead of compressed desktop columns. */
 @media (max-width: 768px) {
-  .table-responsive {
+  .table-responsive:not(.table-responsive--scroll) {
     width: 100%;
     min-width: 0;
     max-width: 100%;
@@ -13301,7 +13302,7 @@ html[dir=rtl] .table-responsive table.main-table tbody tr td:last-child {
     padding: 6px;
     border-radius: 16px;
   }
-  .table-responsive table.main-table {
+  .table-responsive:not(.table-responsive--scroll) table.main-table {
     display: block;
     width: 100%;
     min-width: 0;
@@ -13309,7 +13310,7 @@ html[dir=rtl] .table-responsive table.main-table tbody tr td:last-child {
     border: 0;
     border-spacing: 0;
   }
-  .table-responsive table.main-table thead {
+  .table-responsive:not(.table-responsive--scroll) table.main-table thead {
     position: absolute !important;
     width: 1px;
     height: 1px;
@@ -13321,7 +13322,7 @@ html[dir=rtl] .table-responsive table.main-table tbody tr td:last-child {
     white-space: nowrap;
     border: 0;
   }
-  .table-responsive table.main-table tbody {
+  .table-responsive:not(.table-responsive--scroll) table.main-table tbody {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 10px;
@@ -13329,7 +13330,7 @@ html[dir=rtl] .table-responsive table.main-table tbody tr td:last-child {
     min-width: 0;
     padding: 0;
   }
-  .table-responsive table.main-table tbody tr {
+  .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -13343,10 +13344,10 @@ html[dir=rtl] .table-responsive table.main-table tbody tr td:last-child {
     box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary-900) 5%, transparent);
     transform: none;
   }
-  .table-responsive table.main-table tbody tr:hover {
+  .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr:hover {
     transform: none;
   }
-  .table-responsive table.main-table tbody tr td {
+  .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr td {
     position: static !important;
     display: grid;
     grid-template-columns: minmax(100px, 36%) minmax(0, 1fr);
@@ -13369,7 +13370,7 @@ html[dir=rtl] .table-responsive table.main-table tbody tr td:last-child {
     overflow-wrap: anywhere;
     word-break: break-word;
   }
-  .table-responsive table.main-table tbody tr td::before {
+  .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr td::before {
     content: attr(data-label);
     min-width: 0;
     color: var(--text-muted);
@@ -13380,47 +13381,47 @@ html[dir=rtl] .table-responsive table.main-table tbody tr td:last-child {
     text-transform: capitalize;
     overflow-wrap: anywhere;
   }
-  .table-responsive table.main-table tbody tr td:not([data-label]) {
+  .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr td:not([data-label]) {
     display: block;
     text-align: start !important;
   }
-  .table-responsive table.main-table tbody tr td:not([data-label])::before, .table-responsive table.main-table tbody tr td[colspan]::before {
+  .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr td:not([data-label])::before, .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr td[colspan]::before {
     display: none;
   }
-  .table-responsive table.main-table tbody tr td[colspan] {
+  .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr td[colspan] {
     display: block;
     width: 100%;
     text-align: start !important;
   }
-  .table-responsive table.main-table tbody tr td:first-child, .table-responsive table.main-table tbody tr td:last-child {
+  .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr td:first-child, .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr td:last-child {
     right: auto !important;
     left: auto !important;
   }
-  .table-responsive table.main-table tbody tr td:last-child {
+  .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr td:last-child {
     border-bottom: 0 !important;
   }
-  .table-responsive table.main-table tbody tr td > * {
+  .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr td > * {
     min-width: 0;
     max-width: 100%;
     justify-self: end;
   }
-  .table-responsive table.main-table tbody tr td img {
+  .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr td img {
     width: 38px;
     height: 38px;
   }
-  .table-responsive table.main-table tbody tr td .actions-container,
-  .table-responsive table.main-table tbody tr td .actions,
-  .table-responsive table.main-table tbody tr td .drop-list,
-  .table-responsive table.main-table tbody tr td .p-button {
+  .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr td .actions-container,
+  .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr td .actions,
+  .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr td .drop-list,
+  .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr td .p-button {
     max-width: 100%;
     margin-inline-start: auto;
   }
 }
 @media (max-width: 420px) {
-  .table-responsive {
+  .table-responsive:not(.table-responsive--scroll) {
     padding: 4px;
   }
-  .table-responsive table.main-table tbody tr td {
+  .table-responsive:not(.table-responsive--scroll) table.main-table tbody tr td {
     grid-template-columns: minmax(86px, 34%) minmax(0, 1fr);
     gap: 8px;
     min-height: 44px;
@@ -26260,7 +26261,7 @@ input.py {
   justify-content: center !important;
 }
 
-html[dir=ltr] :deep(.actions-switch) {
+html[dir=ltr] .actions-switch {
   margin-left: auto;
 }
 
@@ -26314,7 +26315,7 @@ label {
   display: none !important;
 }
 
-.header-select :deep(label) {
+.header-select label {
   display: none !important;
 }
 

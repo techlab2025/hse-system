@@ -9,7 +9,7 @@ import {
   DataSuccess,
   DataValid,
 } from '@/base/core/networkStructure/Resources/dataState/data_state'
-import { computed } from 'vue'
+import { computed, useSlots } from 'vue'
 import DataFailedState from './DataFailed.vue'
 
 const props = defineProps({
@@ -24,10 +24,20 @@ const props = defineProps({
 })
 
 const currentState = computed(() => props.controller)
+const slots = useSlots()
+const showEmpty = computed(
+  () =>
+    !!slots.empty &&
+    currentState.value instanceof DataSuccess &&
+    Array.isArray(currentState.value.data) &&
+    currentState.value.data.length === 0,
+)
 </script>
 
 <template>
-  <div v-if="currentState instanceof DataSuccess || currentState instanceof DataDump" >
+  <div
+    v-if="(currentState instanceof DataSuccess && !showEmpty) || currentState instanceof DataDump"
+  >
     <div v-if="$slots.success">
       <slot name="success" />
     </div>
@@ -39,7 +49,7 @@ const currentState = computed(() => props.controller)
     </div>
     <div v-else></div>
   </div>
-  <div v-else-if="currentState instanceof DataEmpty">
+  <div v-else-if="currentState instanceof DataEmpty || showEmpty">
     <div v-if="$slots.empty">
       <slot name="empty" />
     </div>

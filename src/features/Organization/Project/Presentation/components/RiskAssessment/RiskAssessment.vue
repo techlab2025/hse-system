@@ -1,6 +1,9 @@
 <script lang="ts" setup>
 import { vProjectPanels } from '../../composables/projectPanels'
 
+import PermissionHandler from '@/base/Presentation/utils/permission_handler'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+import { DataEmpty } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import FetchRiskAssessmentsParams from '../../../Core/params/RiskAssessment/FetchRiskAssessmentsParams'
@@ -10,6 +13,27 @@ import FetchRiskAssessmentDetailsController from '../../controllers/RiskAssessme
 import type RiskAssessmentModel from '../../../Data/models/RiskAssessment/RiskAssessmentModel'
 import RiskAssessmentDetailsDialog from './RiskAssessmentDetailsDialog.vue'
 
+const canFetch = computed(() =>
+  PermissionHandler.Instance.handle([
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.RISK_ASSESSMENT_ALL,
+    PermissionsEnum.RISK_ASSESSMENT_FETCH,
+  ]),
+)
+const canCreate = computed(() =>
+  PermissionHandler.Instance.handle([
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.RISK_ASSESSMENT_ALL,
+    PermissionsEnum.RISK_ASSESSMENT_CREATE,
+  ]),
+)
+const canViewDetails = computed(() =>
+  PermissionHandler.Instance.handle([
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.RISK_ASSESSMENT_ALL,
+    PermissionsEnum.RISK_ASSESSMENT_DETAILS,
+  ]),
+)
 const route = useRoute()
 const items = ref<RiskAssessmentModel[]>([])
 const selected = ref<RiskAssessmentModel | null>(null)
@@ -29,13 +53,17 @@ const latestAssessmentDate = computed(() => {
 const activityInitial = (activity: string) => activity.trim().charAt(0).toUpperCase() || 'R'
 
 async function fetchAll() {
+  if (!canFetch.value) return
   loading.value = true
   error.value = ''
   try {
     const state = await FetchRiskAssessmentsController.getInstance().execute(
       new FetchRiskAssessmentsParams({ projectId: projectId }),
     )
-    if (FetchRiskAssessmentsController.getInstance().isDataSuccess())
+    if (
+      FetchRiskAssessmentsController.getInstance().isDataSuccess() ||
+      state.value instanceof DataEmpty
+    )
       items.value = state.value.data ?? []
     else error.value = state.value.error?.title ?? 'Could not load risk assessments'
   } catch {
@@ -46,6 +74,7 @@ async function fetchAll() {
 }
 
 async function fetchDetails(id: number) {
+  if (!canViewDetails.value) return
   detailsDialogVisible.value = true
   detailsLoading.value = true
   selected.value = null
@@ -74,7 +103,12 @@ onMounted(fetchAll)
 </script>
 
 <template>
-  <main data-hse-project v-project-panels class="hse-project-root hse-project-page risk-page">
+  <main
+    v-if="canFetch"
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-page risk-page"
+  >
     <header data-hse-project-head class="hse-project-page-head risk-hero">
       <!-- <div class="hero-art" aria-hidden="true"><span></span><span></span><span></span></div> -->
       <div class="hero-copy">
@@ -96,6 +130,7 @@ onMounted(fetchAll)
         </div>
       </div>
       <RouterLink
+        v-if="canCreate"
         class="hse-project-button hse-project-button--primary primary-button"
         :to="`/organization/project-details/${projectId}/risk-assessments/create`"
       >
@@ -189,7 +224,7 @@ onMounted(fetchAll)
               </td> -->
               <td>
                 <button
-                  v-if="item.id != null"
+                  v-if="item.id != null && canViewDetails"
                   class="hse-project-button details-button"
                   type="button"
                   @click="fetchDetails(item.id)"
@@ -212,6 +247,7 @@ onMounted(fetchAll)
         <h3>No assessments yet</h3>
         <p>Create the first assessment to start documenting project risks and approvals.</p>
         <RouterLink
+          v-if="canCreate"
           class="hse-project-button hse-project-button--primary empty-action"
           :to="`/organization/project-details/${projectId}/risk-assessments/create`"
         >
@@ -228,6 +264,7 @@ onMounted(fetchAll)
       @close="closeDetailsDialog"
     />
   </main>
+  <p v-else role="status">{{ $t('have_not_permission') }}</p>
 </template>
 
 <style scoped>

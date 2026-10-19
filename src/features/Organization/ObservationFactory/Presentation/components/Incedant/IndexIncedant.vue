@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
-import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
@@ -73,6 +72,7 @@ const fetchHazard = async (
   equipmentSubTypeIds?: number[],
   rootCauseId?: number,
 ) => {
+  if (!canViewIncidents.value) return
   const params = new IndexHazardParams(
     query,
     pageNumber,
@@ -164,17 +164,12 @@ watch(
   },
 )
 
-const canViewIncidents = computed(
-  () =>
-    ConditionHandler.getInstance().shouldUseEmployeeInterface() ||
-    PermissionHandler.Instance.handle([
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.ORG_INCEDANT_ALL,
-      PermissionsEnum.ORG_INCEDANT_DELETE,
-      PermissionsEnum.ORG_INCEDANT_FETCH,
-      PermissionsEnum.ORG_INCEDANT_UPDATE,
-      PermissionsEnum.ORG_INCEDANT_CREATE,
-    ]),
+const canViewIncidents = computed(() =>
+  PermissionHandler.Instance.handle([
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.ORG_INCEDANT_ALL,
+    PermissionsEnum.ORG_INCEDANT_FETCH,
+  ]),
 )
 
 const { user } = useUserStore()
@@ -334,6 +329,13 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
   ReturnStatusTitle(status)
     .replace(/([a-z])([A-Z])/g, '$1-$2')
     .toLowerCase()
+const canCreateRecord = computed(() =>
+  PermissionHandler.Instance.handle([
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.ORG_INCEDANT_ALL,
+    PermissionsEnum.ORG_INCEDANT_CREATE,
+  ]),
+)
 </script>
 
 <template>
@@ -368,8 +370,9 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
                 />
                 <PermissionBuilder
                   :code="[
-                    PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-                    PermissionsEnum?.ORG_INCEDANT_CREATE,
+                    PermissionsEnum.ADMIN,
+                    PermissionsEnum.ORG_INCEDANT_ALL,
+                    PermissionsEnum.ORG_INCEDANT_CREATE,
                   ]"
                 >
                   <router-link :to="incidentCreateRoute">
@@ -588,34 +591,29 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
             <!-- <TableLoader :cols="3" :rows="10" /> -->
           </template>
           <template #empty>
-            <PermissionBuilder
-              :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INCEDANT_CREATE]"
-            >
-              <DataEmpty
-                :link="incidentCreateLink"
-                addText="Report incident"
-                description=" "
-                title="You have No incident"
-              />
-            </PermissionBuilder>
+            <DataEmpty
+              :withbtn="canCreateRecord"
+              :link="incidentCreateLink"
+              addText="Report incident"
+              description=" "
+              title="You have No incident"
+            />
           </template>
           <template #failed>
-            <PermissionBuilder
-              :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_INCEDANT_CREATE]"
-            >
-              <DataFailed
-                :link="incidentCreateLink"
-                addText="Report incident "
-                description=" "
-                title="You have No incident"
-              />
-            </PermissionBuilder>
+            <DataFailed
+              :withbtn="canCreateRecord"
+              :link="incidentCreateLink"
+              addText="Report incident "
+              description=" "
+              title="You have No incident"
+            />
           </template>
         </DataStatus>
       </template>
       <DataFailed
         v-else
-        addText="Have not Permission"
+        :title="$t('have_not_permission')"
+        :withbtn="false"
         description="You do not have permission to view incidents."
       />
     </div>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import PermissionHandler from '@/base/Presentation/utils/permission_handler'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, onMounted, reactive, ref } from 'vue'
@@ -36,6 +38,20 @@ type ProjectMonth = {
   firstDate: string
   lastDate: string
 }
+const canFetch = computed(() =>
+  PermissionHandler.Instance.handle([
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.LEADERSHIP_ALL,
+    PermissionsEnum.LEADERSHIP_FETCH,
+  ]),
+)
+const canCreate = computed(() =>
+  PermissionHandler.Instance.handle([
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.LEADERSHIP_ALL,
+    PermissionsEnum.LEADERSHIP_CRAETE,
+  ]),
+)
 const route = useRoute()
 const projectId = computed(() => Number(route.params.id))
 const projectController = ShowProjectDetailsController.getInstance()
@@ -109,16 +125,19 @@ const savedVisitsForMonth = (key: string) => {
   return visits.value.filter((visit) => visit.date.slice(0, 7) === key)
 }
 const addVisit = (key: string) => {
+  if (!canCreate.value) return
   if (!monthVisits[key]) monthVisits[key] = []
   monthVisits[key].push(newVisit())
 }
 const refreshVisits = async () => {
+  if (!canFetch.value) return
   if (projectId.value > 0)
     await visitsController.fetchVisits(
       new FetchAllLeadershipVisitsParams({ projectId: projectId.value }),
     )
 }
 const saveMonth = async (month: ProjectMonth) => {
+  if (!canCreate.value) return
   errorMessage.value = ''
   successMessage.value = ''
   const rows = rowsForMonth(month.key)
@@ -161,6 +180,7 @@ const saveMonth = async (month: ProjectMonth) => {
   }
 }
 onMounted(async () => {
+  if (!canFetch.value) return
   if (!Number.isInteger(projectId.value) || projectId.value <= 0) return
   await Promise.allSettled([
     projectController.showProjectDetails(new ShowProjectDetailsParams(projectId.value)),
@@ -185,7 +205,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main data-hse-project v-project-panels class="hse-project-root hse-project-page leadership-page">
+  <main
+    v-if="canFetch"
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-page leadership-page"
+  >
     <header data-hse-project-head class="hse-project-page-head hero">
       <div class="hero__art" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="hero__content">
@@ -316,6 +341,7 @@ onMounted(async () => {
                       <p>Add a visit with its date, location, employee, and activity.</p>
                     </div>
                     <button
+                      v-if="canCreate"
                       type="button"
                       class="hse-project-button hse-project-button--primary button button--primary"
                       @click="addVisit(month.key)"
@@ -325,6 +351,7 @@ onMounted(async () => {
                   </div>
                   <div v-if="savedVisitsForMonth(month.key).length" class="month-actions">
                     <button
+                      v-if="canCreate"
                       type="button"
                       class="hse-project-button button button--outline"
                       @click="addVisit(month.key)"
@@ -394,6 +421,7 @@ onMounted(async () => {
                           ><small>Complete the details for this planned visit</small>
                         </div>
                         <button
+                          v-if="canCreate"
                           :aria-label="$t('delete')"
                           type="button"
                           class="hse-project-button--icon hse-project-button hse-project-button--danger remove-button"
@@ -518,13 +546,13 @@ onMounted(async () => {
                       </div>
                     </article>
                     <!-- <div class="month-actions">
-                      <button
+                      <button v-if="canCreate"
                         type="button"
                         class="button button--outline"
                         @click="addVisit(month.key)"
                       >
                         ＋ Add another visit</button
-                      ><button
+                      ><button v-if="canCreate"
                         type="button"
                         class="button button--primary"
                         :disabled="planController.isDataLoading()"
@@ -540,6 +568,7 @@ onMounted(async () => {
                     </div> -->
                     <div class="month-actions">
                       <button
+                        v-if="canCreate"
                         type="button"
                         class="hse-project-button button button--outline"
                         @click="addVisit(month.key)"
@@ -548,6 +577,7 @@ onMounted(async () => {
                       </button>
 
                       <button
+                        v-if="canCreate"
                         type="button"
                         class="hse-project-button hse-project-button--primary button button--primary"
                         @click="saveMonth(month)"
@@ -577,6 +607,7 @@ onMounted(async () => {
       </template>
     </DataStatus>
   </main>
+  <p v-else role="status">{{ $t('have_not_permission') }}</p>
 </template>
 
 <style scoped>

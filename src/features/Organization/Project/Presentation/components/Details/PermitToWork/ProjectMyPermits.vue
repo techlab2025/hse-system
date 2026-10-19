@@ -1,12 +1,27 @@
 <script lang="ts" setup>
 import { vProjectPanels } from '../../../composables/projectPanels'
 
-import { computed, onMounted } from 'vue'
+import PermissionHandler from '@/base/Presentation/utils/permission_handler'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+import {
+  DataFailed,
+  DataInitial,
+  DataLoading,
+} from '@/base/core/networkStructure/Resources/dataState/data_state'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { PermitToWorkStatusEnum } from '@/features/Organization/Project/Core/Enums/PermitToWorkStatusEnum'
 import FetchMyProjectPermitsController from '../../../controllers/PermitToWork/FetchMyProjectPermitsController'
 import FetchMyPermitsParams from '@/features/Organization/Project/Core/params/PermitToWork/fetchMyPermitToWorkParams'
 
+const canFetch = computed(() =>
+  PermissionHandler.Instance.handle([
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.PTW_ALL,
+    PermissionsEnum.PTW_FETCH,
+  ]),
+)
+const fetching = ref(false)
 const route = useRoute()
 const router = useRouter()
 
@@ -17,11 +32,17 @@ const state = computed(() => fetchMyProjectPermitsController.state.value)
 const permits = computed(() => state.value?.data ?? [])
 
 const FetchMyProjectPermits = async (status?: number) => {
+  if (!canFetch.value) return
+  fetching.value = true
   const fetchMyPermitsParams = new FetchMyPermitsParams({
     projectId: Number(route.params.project_id),
     hasResult: status == 1 ? true : false,
   })
-  await fetchMyProjectPermitsController.FetchMyProjectPermits(fetchMyPermitsParams, router)
+  try {
+    await fetchMyProjectPermitsController.FetchMyProjectPermits(fetchMyPermitsParams, router)
+  } finally {
+    fetching.value = false
+  }
 }
 
 const formatTime = (time?: string | null) => {
@@ -61,7 +82,12 @@ onMounted(FetchMyProjectPermits)
 </script>
 
 <template>
-  <div data-hse-project v-project-panels class="hse-project-root hse-project-page permits-page">
+  <div
+    v-if="canFetch"
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-page permits-page"
+  >
     <div data-hse-project-head class="hse-project-page-head permits-page-header">
       <div>
         <h2>
@@ -76,7 +102,16 @@ onMounted(FetchMyProjectPermits)
       </div>
     </div>
 
-    <div v-if="permits.length" class="permits-grid">
+    <p
+      v-if="fetching || state instanceof DataInitial || state instanceof DataLoading"
+      role="status"
+    >
+      {{ $t('loading') }}
+    </p>
+    <p v-else-if="state instanceof DataFailed" role="alert">
+      {{ state.error?.title || $t('error') }}
+    </p>
+    <div v-else-if="permits.length" class="permits-grid">
       <article v-for="permit in permits" :key="permit.id" class="permit-card">
         <!-- Top -->
         <div class="permit-card-top">
@@ -212,6 +247,7 @@ onMounted(FetchMyProjectPermits)
       </p>
     </div>
   </div>
+  <p v-else role="status">{{ $t('have_not_permission') }}</p>
 </template>
 
 <style scoped lang="scss">

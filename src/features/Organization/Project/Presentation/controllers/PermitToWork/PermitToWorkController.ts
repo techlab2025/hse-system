@@ -36,7 +36,7 @@ export default class PermitToWorkController extends ControllerInterface<ProjectM
           messageContent: null,
         })
         // if (!draft) await router.push('/organization/project-details')
-        router.push(`/organization/project-details/${router.currentRoute.value.params.project_id}`)
+        await router.push(`/organization/project-details/${params.toMap().project_id}`)
 
         // useLoaderStore().endLoadingWithDialog();
       } else {

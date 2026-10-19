@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import PermissionHandler from '@/base/Presentation/utils/permission_handler'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, onMounted, ref } from 'vue'
@@ -17,6 +19,27 @@ import { formatJoinDate } from '@/base/Presentation/utils/date_format.ts'
 
 defineOptions({ name: 'ProjectLeadershipVisits' })
 
+const canFetch = computed(() =>
+  PermissionHandler.Instance.handle([
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.LEADERSHIP_ALL,
+    PermissionsEnum.LEADERSHIP_FETCH,
+  ]),
+)
+const canCreate = computed(() =>
+  PermissionHandler.Instance.handle([
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.LEADERSHIP_ALL,
+    PermissionsEnum.LEADERSHIP_CRAETE,
+  ]),
+)
+const canViewDetails = computed(() =>
+  PermissionHandler.Instance.handle([
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.LEADERSHIP_ALL,
+    PermissionsEnum.LEADERSHIP_DETAILS,
+  ]),
+)
 const route = useRoute()
 const projectId = computed(() => Number(route.params.id))
 const controller = FetchAllLeadershipVisitsController.getInstance()
@@ -32,6 +55,7 @@ let detailsRequestSequence = 0
 const reportCreated = computed(() => route.query.report === 'created')
 
 const fetchReportDetails = async (visitId: number) => {
+  if (!canViewDetails.value) return
   const requestSequence = ++detailsRequestSequence
   detailsDialogVisible.value = true
   detailsLoading.value = true
@@ -74,6 +98,7 @@ const closeDetailsDialog = () => {
 }
 
 const fetchAllVisits = async (data?: { word?: string; date?: string }) => {
+  if (!canFetch.value) return
   if (Number.isInteger(projectId.value) && projectId.value > 0) {
     await controller.fetchVisits(
       new FetchAllLeadershipVisitsParams({
@@ -102,7 +127,12 @@ const DateUpdate = (date?: Date) => {
 </script>
 
 <template>
-  <main data-hse-project v-project-panels class="hse-project-root hse-project-page visits-page">
+  <main
+    v-if="canFetch"
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-page visits-page"
+  >
     <section class="hse-project-panel visits-card">
       <div class="section-heading">
         <div>
@@ -195,7 +225,7 @@ const DateUpdate = (date?: Date) => {
                   </td> -->
                   <td data-label="Action">
                     <button
-                      v-if="visit.hasReport || visit.report"
+                      v-if="(visit.hasReport || visit.report) && canViewDetails"
                       type="button"
                       class="report-link report-link--details"
                       :disabled="detailsLoading"
@@ -205,7 +235,7 @@ const DateUpdate = (date?: Date) => {
                       <span v-if="loadingVisitId !== visit.id" aria-hidden="true">⌕</span>
                     </button>
                     <a
-                      v-else
+                      v-else-if="!visit.hasReport && !visit.report && canCreate"
                       :href="`/organization/project-details/${projectId}/leadership/visits/${visit.id}/report`"
                       class="report-link"
                     >
@@ -248,6 +278,7 @@ const DateUpdate = (date?: Date) => {
       @close="closeDetailsDialog"
     />
   </main>
+  <p v-else role="status">{{ $t('have_not_permission') }}</p>
 </template>
 
 <style scoped lang="scss">

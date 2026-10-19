@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 import { computed, onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 
@@ -175,6 +176,7 @@ const fetchInspection = async (
   employeeId?: number[],
   zoneId?: number[],
 ) => {
+  if (!canViewRecords.value) return
   const params = new IndexInspectionParams(
     query,
     pageNumber,
@@ -212,6 +214,7 @@ const InspectionFormTasks = async (
   withPage: number = 1,
   filter?: number[],
 ) => {
+  if (!canViewRecords.value) return
   const params = new FetchAllTasksParams(
     query,
 
@@ -246,6 +249,7 @@ const InspectionsResultsTasks = async (
   withPage: number = 1,
   filter?: number[],
 ) => {
+  if (!canViewRecords.value) return
   const params = new FetchInspectionsResultsParams(
     query,
 
@@ -279,6 +283,16 @@ const getSelectedZonesFilter = () =>
 /**
  * Existing Inspection Flow
  */
+
+const canViewRecords = computed(() =>
+  PermissionHandler.Instance.handle([
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.ORG_INSPECTION_ALL,
+    ...(String(inspectionType.value) === String(InspectionPageType.Result)
+      ? [PermissionsEnum.INSPECTION_RESULTS_FETCH]
+      : [PermissionsEnum.ORG_INSPECTION_FETCH, PermissionsEnum.MY_TASKS_ALL]),
+  ]),
+)
 
 const fetchCurrentInspectionData = (
   query: string = '',
@@ -717,6 +731,13 @@ watch(
 )
 
 watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
+const canCreateRecord = computed(() =>
+  PermissionHandler.Instance.handle([
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.ORG_INSPECTION_ALL,
+    PermissionsEnum.ORG_INSPECTION_CREATE,
+  ]),
+)
 </script>
 <template>
   <div
@@ -732,23 +753,7 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
     <IndexEquipmentMangement v-if="!isAuditPage" class="col-span-2" />
 
     <div class="col-span-12">
-      <PermissionBuilder
-        :code="[
-          PermissionsEnum.ORGANIZATION_EMPLOYEE,
-
-          PermissionsEnum?.ORG_INSPECTION_ALL,
-
-          PermissionsEnum?.ORG_INSPECTION_CREATE,
-
-          PermissionsEnum?.ORG_INSPECTION_UPDATE,
-
-          PermissionsEnum?.ORG_INSPECTION_DETAILS,
-
-          PermissionsEnum?.ORG_INSPECTION_DELETE,
-
-          PermissionsEnum?.ORG_INSPECTION_FETCH,
-        ]"
-      >
+      <template v-if="canViewRecords">
         <nav v-if="!isAuditPage" class="task-tabs" :aria-label="$t('Inspection tasks')">
           <button
             v-for="tab in taskTabs"
@@ -795,9 +800,9 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
 
               <PermissionBuilder
                 :code="[
-                  PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-
-                  PermissionsEnum?.ORG_INSPECTION_CREATE,
+                  PermissionsEnum.ADMIN,
+                  PermissionsEnum.ORG_INSPECTION_ALL,
+                  PermissionsEnum.ORG_INSPECTION_CREATE,
                 ]"
               >
                 <router-link :to="inspectionCreateRoute">
@@ -868,9 +873,9 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
 
             <PermissionBuilder
               :code="[
-                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-
-                PermissionsEnum?.ORG_INSPECTION_CREATE,
+                PermissionsEnum.ADMIN,
+                PermissionsEnum.ORG_INSPECTION_ALL,
+                PermissionsEnum.ORG_INSPECTION_CREATE,
               ]"
             >
               <IndexFilter
@@ -913,9 +918,9 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
           <div class="audit-create-action">
             <PermissionBuilder
               :code="[
-                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-
-                PermissionsEnum?.ORG_INSPECTION_CREATE,
+                PermissionsEnum.ADMIN,
+                PermissionsEnum.ORG_INSPECTION_ALL,
+                PermissionsEnum.ORG_INSPECTION_CREATE,
               ]"
             >
               <router-link :to="auditCreateRoute">
@@ -960,37 +965,23 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
           </template>
 
           <template #empty>
-            <PermissionBuilder
-              :code="[
-                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-
-                PermissionsEnum?.ORG_INSPECTION_CREATE,
-              ]"
-            >
-              <DataFailed
-                :link="auditCreateRoute"
-                addText="Create Audit"
-                title="You have No Audit"
-                description=""
-              />
-            </PermissionBuilder>
+            <DataFailed
+              :withbtn="canCreateRecord"
+              :link="auditCreateRoute"
+              addText="Create Audit"
+              title="You have No Audit"
+              description=""
+            />
           </template>
 
           <template #failed>
-            <PermissionBuilder
-              :code="[
-                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-
-                PermissionsEnum?.ORG_INSPECTION_CREATE,
-              ]"
-            >
-              <DataFailed
-                :link="auditCreateRoute"
-                addText="Create Audit"
-                title="You have No Audit"
-                description=""
-              />
-            </PermissionBuilder>
+            <DataFailed
+              :withbtn="canCreateRecord"
+              :link="auditCreateRoute"
+              addText="Create Audit"
+              title="You have No Audit"
+              description=""
+            />
           </template>
         </DataStatus>
 
@@ -1064,7 +1055,8 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
               <template #actions>
                 <PermissionBuilder
                   :code="[
-                    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+                    PermissionsEnum.ADMIN,
+                    PermissionsEnum.ORG_INSPECTION_ALL,
                     PermissionsEnum.ORG_INSPECTION_CREATE,
                   ]"
                 >
@@ -1112,7 +1104,8 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
               <template #actions>
                 <PermissionBuilder
                   :code="[
-                    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+                    PermissionsEnum.ADMIN,
+                    PermissionsEnum.ORG_INSPECTION_ALL,
                     PermissionsEnum.ORG_INSPECTION_CREATE,
                   ]"
                 >
@@ -1160,7 +1153,8 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
               <template #actions>
                 <PermissionBuilder
                   :code="[
-                    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+                    PermissionsEnum.ADMIN,
+                    PermissionsEnum.ORG_INSPECTION_ALL,
                     PermissionsEnum.ORG_INSPECTION_CREATE,
                   ]"
                 >
@@ -1179,11 +1173,13 @@ watch(selectedProjctesFilters, () => FetchMyZones(), { immediate: true })
             <CardSkelaton />
           </template>
         </DataStatus>
-
-        <template #notPermitted>
-          <DataFailed addText="Have not Permission" description="You don't have permission" />
-        </template>
-      </PermissionBuilder>
+      </template>
+      <DataFailed
+        v-else
+        :title="$t('have_not_permission')"
+        :description="$t('permission_denied_description')"
+        :withbtn="false"
+      />
     </div>
   </div>
 </template>

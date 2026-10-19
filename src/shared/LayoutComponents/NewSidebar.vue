@@ -5,7 +5,6 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import OrganizationSidebar from './OrganizationSidebar.vue'
 import AdminSidebar from './AdminSidebar.vue'
-import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus.ts'
 import SidebarUnicon from '@/shared/icons/SidebarUnicon.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
 
@@ -109,7 +108,7 @@ const logout = () => {
   >
     <div class="sidebar-wrapper">
       <router-link
-        :to="`${Number(user.user?.type) === EmployeeStatusEnum.Admin ? '/admin' : '/organization'}`"
+        :to="`${Number(user.user?.type) === OrganizationTypeEnum.ADMIN ? '/admin' : '/organization'}`"
         class="sidebar-back"
         active-class=""
         exact-active-class="sidebar-home-active"

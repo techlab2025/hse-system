@@ -88,7 +88,7 @@ export default class UserModel {
       map['email'],
       map['api_token'],
       map['image'],
-      map['employee_type'],
+      Number(map['employee_type']) as EmployeeStatusEnum,
       map['phone'],
       map['is_master'],
       map['first_name'],

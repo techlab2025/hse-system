@@ -140,6 +140,13 @@ export const projectRoutes: RouteRecordRaw[] = [
     },
   },
   {
+    path: 'risk-assessments/create',
+    name: 'Create Employee Risk Assessment',
+    component: () =>
+      import('@/views/Organization/Project/RiskAssessment/CreateRiskAssessmentPage.vue'),
+    meta: { breadcrumb: 'Create Risk Assessment', isSidebar: false },
+  },
+  {
     path: 'project-details/:id/risk-assessments/create',
     name: 'Create Risk Assessment',
     component: () =>
@@ -219,6 +226,12 @@ export const projectRoutes: RouteRecordRaw[] = [
       parent: 'Project Details',
       isSidebar: false,
     },
+  },
+  {
+    path: 'project-permit/create',
+    name: 'Create Employee Permit',
+    component: () => import('@/views/Organization/Project/PermitToWork/PermitToWorkPAge.vue'),
+    meta: { breadcrumb: 'Create Permit To Work', isSidebar: false },
   },
   {
     path: 'project-permit/project/:project_id',

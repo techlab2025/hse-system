@@ -10,6 +10,7 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
+import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import Search from '@/shared/icons/Search.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
@@ -25,7 +26,9 @@ import { ChangeApprovalMangementEnum } from '../../Core/Core/ChangeApprovalEnum'
 const { t } = useI18n()
 const route = useRoute()
 const projectId = computed(() => {
-  const value = route.query.project_id ?? route.params.project_id ??
+  const value =
+    route.query.project_id ??
+    route.params.project_id ??
     (route.path.includes('/project-details/') ? route.params.id : undefined)
   const id = Number(Array.isArray(value) ? value[0] : value)
   return Number.isInteger(id) && id > 0 ? id : undefined
@@ -46,8 +49,28 @@ const addLink = computed(() => {
 
 const featurePermissions = [
   PermissionsEnum.ADMIN,
-  PermissionsEnum.ORGANIZATION_EMPLOYEE,
+  PermissionsEnum.MOC_ALL,
+  PermissionsEnum.MOC_FETCH,
 ]
+const createPermissions = [
+  PermissionsEnum.ADMIN,
+  PermissionsEnum.MOC_ALL,
+  PermissionsEnum.MOC_CRAETE,
+]
+const updatePermissions = [
+  PermissionsEnum.ADMIN,
+  PermissionsEnum.MOC_ALL,
+  PermissionsEnum.MOC_UPDATE,
+]
+const deletePermissions = [
+  PermissionsEnum.ADMIN,
+  PermissionsEnum.MOC_ALL,
+  PermissionsEnum.MOC_DELETE,
+]
+const canManage = computed(() =>
+  PermissionHandler.Instance.handle([...updatePermissions, ...deletePermissions]),
+)
+const canCreate = computed(() => PermissionHandler.Instance.handle(createPermissions))
 
 const changeTypeLabels: Record<number, string> = {
   [ChangeTypeMangementEnum.temp]: 'temporary',
@@ -59,28 +82,27 @@ const statusLabels: Record<number, string> = {
   [ChangeApprovalMangementEnum.reject]: 'reject',
 }
 
-const fetchMangementChanges = async (
-  query: string = '',
-  page: number = 1,
-  limit: number = 10,
-) => {
+const fetchMangementChanges = async (query: string = '', page: number = 1, limit: number = 10) => {
+  if (!PermissionHandler.Instance.handle(featurePermissions)) return
   await controller.getData(
     new IndexMangementChangeParams(
       query,
       page,
       limit,
       1,
-      projectId.value !== undefined
-        ? projectId.value
-        : null,
+      projectId.value !== undefined ? projectId.value : null,
     ),
   )
 }
 
-watch(projectId, () => {
-  currentPage.value = 1
-  fetchMangementChanges(word.value, 1, countPerPage.value)
-}, { immediate: true })
+watch(
+  projectId,
+  () => {
+    currentPage.value = 1
+    fetchMangementChanges(word.value, 1, countPerPage.value)
+  },
+  { immediate: true },
+)
 watch(
   () => controller.state.value,
   (value) => {
@@ -99,6 +121,7 @@ const changePageSize = (limit: number) => {
   fetchMangementChanges(word.value, currentPage.value, limit)
 }
 const deleteMangementChange = async (id: number) => {
+  if (!PermissionHandler.Instance.handle(deletePermissions)) return
   await DeleteMangementChangeController.getInstance().deleteMangementChange(
     new DeleteMangementChangeParams(id),
   )
@@ -110,13 +133,13 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
     text: t('edit'),
     icon: ActionsTableEdit,
     link: `/organization/management-of-change/${id}${projectId.value ? `?project_id=${projectId.value}` : ''}`,
-    permission: featurePermissions,
+    permission: updatePermissions,
   },
   {
     text: t('delete'),
     icon: IconDelete,
     action: () => deleteMangementChange(id),
-    permission: featurePermissions,
+    permission: deletePermissions,
     isDelete: true,
   },
 ]
@@ -136,7 +159,7 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
       />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
-      <PermissionBuilder :code="featurePermissions">
+      <PermissionBuilder :code="createPermissions">
         <router-link :to="addLink" class="btn btn-primary">
           {{ $t('add') }}
         </router-link>
@@ -158,7 +181,7 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
                 <th scope="col">{{ $t('area') }}</th>
                 <th scope="col">{{ $t('change approval') }}</th>
                 <th scope="col">{{ $t('created_by') }}</th>
-                <th scope="col">{{ $t('actions') }}</th>
+                <th v-if="canManage" scope="col">{{ $t('actions') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -179,16 +202,12 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
                 </td>
                 <td :data-label="$t('area')">{{ wordSlice(item.area || '-', 30) }}</td>
                 <td :data-label="$t('change approval')">
-                  {{
-                    item.status
-                      ? $t(statusLabels[item.status] ?? String(item.status))
-                      : '-'
-                  }}
+                  {{ item.status ? $t(statusLabels[item.status] ?? String(item.status)) : '-' }}
                 </td>
                 <td :data-label="$t('created_by')">
                   {{ wordSlice(item.createdByName || item.initiatorEmployeeName || '-', 30) }}
                 </td>
-                <td :data-label="$t('actions')">
+                <td v-if="canManage" :data-label="$t('actions')">
                   <DropList
                     v-if="item.id"
                     :actionList="actionList(item.id, deleteMangementChange)"
@@ -213,6 +232,7 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
           :add-text="$t('add')"
           description=""
           :title="$t('no_management_changes')"
+          :withbtn="canCreate"
         />
       </template>
       <template #failed>
@@ -221,11 +241,16 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
           :add-text="$t('add')"
           description=""
           :title="$t('no_management_changes')"
+          :withbtn="canCreate"
         />
       </template>
     </DataStatus>
     <template #notPermitted>
-      <DataFailed :add-text="$t('have_not_permission')" description="" link="" />
+      <DataFailed
+        :title="$t('have_not_permission')"
+        :description="$t('permission_denied_description')"
+        :withbtn="false"
+      />
     </template>
   </PermissionBuilder>
 </template>

@@ -472,11 +472,11 @@ const requiredFields = computed(() => {
       message: t('At least one employee is required'),
       isMissing: () => !organisationEmployeeCount.value,
     },
-    {
-      key: 'image',
-      message: t('Attachments are required'),
-      isMissing: () => !image.value.length,
-    },
+    // {
+    //   key: 'image',
+    //   message: t('Attachments are required'),
+    //   isMissing: () => !image.value.length,
+    // },
   ]
   return fields
 })
@@ -793,7 +793,6 @@ onMounted(() => {
 
     <section
       class="hse-project-panel induction-section induction-section--evidence"
-      data-required-field="image"
     >
       <header class="induction-section__header">
         <span class="induction-section__icon" aria-hidden="true">
@@ -801,7 +800,7 @@ onMounted(() => {
         </span>
         <div>
           <h3>
-            <span class="required-mark" aria-hidden="true">*</span>
+            <!-- <span class="required-mark" aria-hidden="true">*</span> -->
             {{ $t('Attachments') }}
           </h3>
           <p>{{ image.length }} {{ $t('images') }}</p>

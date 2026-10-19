@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
-import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
@@ -97,6 +96,7 @@ const fetchHazard = async (
   zoonIds?: number[],
   projectIds?: number,
 ) => {
+  if (!canViewObservations.value) return
   const params = new IndexHazardParams(
     query,
     pageNumber,
@@ -234,17 +234,12 @@ watch(
   },
 )
 
-const canViewObservations = computed(
-  () =>
-    ConditionHandler.getInstance().shouldUseEmployeeInterface() ||
-    PermissionHandler.Instance.handle([
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.ORG_OBSERVATION_ALL,
-      PermissionsEnum.ORG_OBSERVATION_DELETE,
-      PermissionsEnum.ORG_OBSERVATION_FETCH,
-      PermissionsEnum.ORG_OBSERVATION_UPDATE,
-      PermissionsEnum.ORG_OBSERVATION_CREATE,
-    ]),
+const canViewObservations = computed(() =>
+  PermissionHandler.Instance.handle([
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.ORG_OBSERVATION_ALL,
+    PermissionsEnum.ORG_OBSERVATION_FETCH,
+  ]),
 )
 
 const { user } = useUserStore()
@@ -451,6 +446,13 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
   ReturnStatusTitle(status)
     .replace(/([a-z])([A-Z])/g, '$1-$2')
     .toLowerCase()
+const canCreateRecord = computed(() =>
+  PermissionHandler.Instance.handle([
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.ORG_OBSERVATION_ALL,
+    PermissionsEnum.ORG_OBSERVATION_CREATE,
+  ]),
+)
 </script>
 
 <template>
@@ -492,8 +494,9 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
                 />
                 <PermissionBuilder
                   :code="[
-                    PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-                    PermissionsEnum?.ORG_OBSERVATION_CREATE,
+                    PermissionsEnum.ADMIN,
+                    PermissionsEnum.ORG_OBSERVATION_ALL,
+                    PermissionsEnum.ORG_OBSERVATION_CREATE,
                   ]"
                 >
                   <router-link :to="observationCreateRoute">
@@ -532,8 +535,9 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
               <PermissionBuilder
                 v-if="Filters?.length"
                 :code="[
-                  PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-                  PermissionsEnum?.ORG_OBSERVATION_CREATE,
+                  PermissionsEnum.ADMIN,
+                  PermissionsEnum.ORG_OBSERVATION_ALL,
+                  PermissionsEnum.ORG_OBSERVATION_CREATE,
                 ]"
               >
                 <IndexFilter
@@ -818,40 +822,29 @@ const ReturnStatusClass = (status: InvestegationStatusEnum): string =>
             <CardSkelaton v-else />
           </template>
           <template #empty>
-            <PermissionBuilder
-              :code="[
-                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-                PermissionsEnum?.ORG_OBSERVATION_CREATE,
-              ]"
-            >
-              <DataEmpty
-                :link="observationCreateLink"
-                addText="Report Observation"
-                description=" "
-                title="You have No Observation"
-              />
-            </PermissionBuilder>
+            <DataEmpty
+              :withbtn="canCreateRecord"
+              :link="observationCreateLink"
+              addText="Report Observation"
+              description=" "
+              title="You have No Observation"
+            />
           </template>
           <template #failed>
-            <PermissionBuilder
-              :code="[
-                PermissionsEnum?.ORGANIZATION_EMPLOYEE,
-                PermissionsEnum?.ORG_OBSERVATION_CREATE,
-              ]"
-            >
-              <DataFailed
-                :link="observationCreateLink"
-                addText="Report Observation"
-                description=" "
-                title="You have No Observation"
-              />
-            </PermissionBuilder>
+            <DataFailed
+              :withbtn="canCreateRecord"
+              :link="observationCreateLink"
+              addText="Report Observation"
+              description=" "
+              title="You have No Observation"
+            />
           </template>
         </DataStatus>
       </template>
       <DataFailed
         v-else
-        addText="Have not Permission"
+        :title="$t('have_not_permission')"
+        :withbtn="false"
         description="You do not have permission to view observations."
       />
     </div>

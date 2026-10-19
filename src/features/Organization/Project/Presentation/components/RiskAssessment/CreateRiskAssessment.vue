@@ -2,6 +2,9 @@
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
+import ProjectFormSelect from '@/shared/FormInputs/ProjectFormSelect.vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import DatePicker from 'primevue/datepicker'
 import CreateRiskAssessmentParams from '../../../Core/params/RiskAssessment/CreateRiskAssessmentParams'
@@ -18,8 +21,15 @@ import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 const route = useRoute()
 const router = useRouter()
-const projectId = Number(route.params.id)
-const listPath = `/organization/project-details/${projectId}/risk-assessments`
+const { t } = useI18n()
+const canSelectProject = computed(() => !route.params.id)
+const initialProjectId = Number(
+  route.params.id ?? route.query.project_id ?? useProjectSelectStore().project?.id,
+)
+const projectId = ref<number | null>(
+  Number.isInteger(initialProjectId) && initialProjectId > 0 ? initialProjectId : null,
+)
+const listPath = computed(() => `/organization/project-details/${projectId.value}/risk-assessments`)
 const form = ref({ activity: '', desctiprion: '', workAreaStrign: '', date: '' })
 const selectedEmployee = ref<TitleInterface | null>(null)
 const attachments = ref<string[]>([])
@@ -49,6 +59,10 @@ function setAssessmentDate(value: unknown) {
 
 async function create() {
   error.value = ''
+  if (!projectId.value) {
+    error.value = t('employeeProjectAction.selectProject')
+    return
+  }
   if (!serialIsAuto.value && !serial.value.trim()) {
     error.value = 'Serial number is required when manual serial numbering is enabled.'
     return
@@ -61,7 +75,7 @@ async function create() {
     selectedEmployee.value?.id ?? 0,
     attachments.value,
     serial.value.trim(),
-    projectId,
+    projectId.value,
   )
   const validation = params.validate()
   if (!validation.isValid) {
@@ -72,7 +86,7 @@ async function create() {
   try {
     const controller = CreateRiskAssessmentController.getInstance()
     const state = await controller.execute(params)
-    if (controller.isDataSuccess()) await router.push(listPath)
+    if (controller.isDataSuccess()) await router.push(listPath.value)
     else error.value = state.value.error?.title ?? 'Could not create risk assessment'
   } catch {
     error.value = 'Could not create risk assessment'
@@ -117,6 +131,13 @@ async function create() {
             </div>
           </div>
           <div class="form-grid">
+            <ProjectFormSelect
+              id="risk-assessment-project"
+              v-model="projectId"
+              class="field"
+              :disabled="!canSelectProject"
+              :auto-select-first="canSelectProject"
+            />
             <div class="hse-project-field field">
               <span class="hse-project-field field-label"
                 ><span>{{ $t('serial_number') }}</span

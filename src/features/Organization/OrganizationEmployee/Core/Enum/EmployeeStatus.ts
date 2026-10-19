@@ -1,4 +1,4 @@
 export enum EmployeeStatusEnum {
-  Admin = 1,
-  Employee = 2,
+  Admin = 2,
+  Employee = 1,
 }

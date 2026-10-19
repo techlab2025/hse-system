@@ -29,9 +29,7 @@ export default class ConditionHandler {
       return false
     }
 
-    const hasPermissions = Array.isArray(user.permission) && user.permission.length > 0
-
-    return user.employeeType === EmployeeStatusEnum.Employee || !hasPermissions
+    return Number(user.employeeType) === EmployeeStatusEnum.Employee
   }
 
   isSettingAdmin() {

@@ -1,7 +1,10 @@
 <script lang="ts" setup>
 import { vProjectPanels } from '../../../composables/projectPanels'
 
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
+import ProjectFormSelect from '@/shared/FormInputs/ProjectFormSelect.vue'
 import { useRoute, useRouter } from 'vue-router'
 
 import DatePicker from 'primevue/datepicker'
@@ -28,6 +31,14 @@ import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 
 const route = useRoute()
 const router = useRouter()
+const { t } = useI18n()
+const canSelectProject = computed(() => !route.params.project_id)
+const initialProjectId = Number(
+  route.params.project_id ?? route.query.project_id ?? useProjectSelectStore().project?.id,
+)
+const projectId = ref<number | null>(
+  Number.isInteger(initialProjectId) && initialProjectId > 0 ? initialProjectId : null,
+)
 
 /* =========================
    Form Data
@@ -96,19 +107,27 @@ const updatePermitToWorkType = (data: TitleInterface | TitleInterface[] | null) 
 ========================= */
 
 const indexOrganizationEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
-const indexOrganizationEmployeeParams = new IndexOrganizatoinEmployeeParams(
-  '',
-  1,
-  10,
-  0,
-  null,
-  undefined,
-  undefined,
-  undefined,
-  undefined,
-  false,
-  Number(route.params.project_id),
+const indexOrganizationEmployeeParams = computed(
+  () =>
+    new IndexOrganizatoinEmployeeParams(
+      '',
+      1,
+      10,
+      0,
+      null,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      false,
+      projectId.value,
+    ),
 )
+watch(projectId, () => {
+  organizationEmployee.value = undefined
+  delete requiredFieldErrors.value.Project
+  delete requiredFieldErrors.value.OrganizationEmployee
+})
 
 const updateOrganizationEmployee = (data: TitleInterface | TitleInterface[] | null) => {
   const selectedValue = Array.isArray(data) ? data[0] : data
@@ -123,6 +142,10 @@ const updateOrganizationEmployee = (data: TitleInterface | TitleInterface[] | nu
 const permitToWorkController = PermitToWorkController.getInstance()
 
 const SubmitFrom = async () => {
+  if (!projectId.value) {
+    requiredFieldErrors.value.Project = t('employeeProjectAction.selectProject')
+    return
+  }
   if (!serialIsAuto.value && !serial.value.trim()) {
     requiredFieldErrors.value.serial =
       'Serial number is required when manual serial numbering is enabled.'
@@ -136,7 +159,7 @@ const SubmitFrom = async () => {
   }
 
   const permitToWorkParams = new PermitToWorkParams({
-    project_id: Number(route.params.project_id!),
+    project_id: projectId.value,
     organization_employee_id: organizationEmployee.value.id,
 
     ptw_number: ptwNum.value,
@@ -236,6 +259,17 @@ const handleFilesChange = (files: UploadedFile[]) => {
           </div>
 
           <div class="ptw-grid ptw-grid--two">
+            <div class="hse-project-field ptw-field" data-required-field="Project">
+              <ProjectFormSelect
+                id="permit-project"
+                v-model="projectId"
+                :disabled="!canSelectProject"
+                :auto-select-first="canSelectProject"
+              />
+              <p v-if="getFieldError('Project')" class="required-field-message">
+                {{ getFieldError('Project') }}
+              </p>
+            </div>
             <div class="hse-project-field ptw-field" data-required-field="Name">
               <label class="hse-project-field-label" for="name">
                 {{ $t('Permit Code') }}
@@ -333,6 +367,8 @@ const handleFilesChange = (files: UploadedFile[]) => {
                 <span class="required-mark">*</span>
               </label>
               <UpdatedCustomInputSelect
+                v-if="projectId"
+                :key="projectId"
                 id="organization_employee"
                 :required="true"
                 :has-header="true"
@@ -342,6 +378,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
                 :placeholder="$t('Permit Applicant')"
                 @update:model-value="updateOrganizationEmployee"
               />
+              <p v-else>{{ $t('employeeProjectAction.selectProject') }}</p>
               <p
                 v-if="getFieldError('OrganizationEmployee')"
                 class="hse-project-field required-field-message"

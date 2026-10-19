@@ -61,7 +61,11 @@ watch(isOrganizationSidebar, () => {
 
 const showSidebar = computed(() => {
   if (!user) return false
-  return user.type === OrganizationTypeEnum.ADMIN || user.employeeType == EmployeeStatusEnum.Admin
+  return (
+    user.type === OrganizationTypeEnum.ADMIN ||
+    user.isMaster === 1 ||
+    user.employeeType == EmployeeStatusEnum.Admin
+  )
 })
 </script>
 
