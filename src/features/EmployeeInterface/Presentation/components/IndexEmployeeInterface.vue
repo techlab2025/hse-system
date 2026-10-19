@@ -106,13 +106,13 @@ const items = [
 
 <template>
   <div class="all-observation">
-    <div class="employee-home-heading">
+    <!-- <div class="employee-home-heading">
       <HeaderPage
         :title="'all you need in one page'"
         :subtitle="'select what you want to do'"
         :img="empinerface"
       />
-    </div>
+    </div> -->
     <div class="">
       <EmployeeInterfaceCard />
     </div>
