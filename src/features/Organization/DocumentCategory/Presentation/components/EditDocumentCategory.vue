@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { onMounted, ref, watch } from 'vue'
@@ -59,6 +62,8 @@ const allowedPermissions = [
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['update_document_category'])">
+
   <PermissionBuilder :code="allowedPermissions">
     <DataStatus :controller="state">
       <template #success>
@@ -78,6 +83,8 @@ const allowedPermissions = [
       </template>
     </DataStatus>
   </PermissionBuilder>
+
+  </template>
 </template>
 
 <style scoped></style>

@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -45,6 +48,8 @@ const setParams = (data: EditShiftParams) => {
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['update_work_shift'])">
+
   <DataStatus :controller="state">
     <template #success>
       <form @submit.prevent="EditShift" class="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -58,4 +63,6 @@ const setParams = (data: EditShiftParams) => {
       <FormLoader :inputsCount="5" />
     </template>
   </DataStatus>
+
+  </template>
 </template>

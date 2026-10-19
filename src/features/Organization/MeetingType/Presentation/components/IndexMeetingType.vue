@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { debounce } from '@/base/Presentation/utils/debouced'
@@ -129,6 +131,8 @@ const periodLabel = (type: number) => {
 }
 
 const saveWorkbook = (rows: Record<string, unknown>[], filename: string) => {
+  if (!canOrganizationCapability('export')) return
+
   const worksheet = XLSX.utils.json_to_sheet(rows)
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Meeting Types')
@@ -184,6 +188,7 @@ const headerActions = () => [
   {
     text: t('export_to_excel'),
     icon: ExceIcon,
+    capability: 'export' as const,
     action: exportExcel,
     type: ActionItemsTypeEnum.Success,
     permission: featurePermissions,
@@ -206,6 +211,7 @@ const headerActions = () => [
   {
     text: t('download_excel_template'),
     icon: ExceIcon,
+    capability: 'export' as const,
     action: downloadExample,
     type: ActionItemsTypeEnum.Success,
     permission: createPermissions,

@@ -1,0 +1,82 @@
+[
+  {
+    "file": "src/features/Organization/AttachmentMatrix/Presentation/components/AttachmentMatrixForm.vue",
+    "reviewed": [
+      "fetch gated by ATTACHMENT_MATRIX_FETCH/ALL",
+      "save gated by ATTACHMENT_MATRIX_CREATE/ALL before controller call",
+      "uploader readonly and change handler gated independently",
+      "read-only users retain attachment information"
+    ],
+    "remaining": [
+      "shared uploader preview/download authorization",
+      "live save contract unavailable"
+    ],
+    "status": "partially reviewed; explicit read/save/local-upload guards implemented"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/IndexInspection.vue",
+    "reviewed": [
+      "list/results fetch handlers already check independent canViewRecords",
+      "delete handler rechecks ORG_INSPECTION_DELETE/ALL",
+      "dedicated results API uses INSPECTION_RESULTS_FETCH",
+      "self-task API permits MY_TASKS_ALL; all-task API does not inherit it"
+    ],
+    "remaining": [
+      "nested task forms/results actions and lookup dependencies",
+      "live independent-role scenarios"
+    ],
+    "status": "partially reviewed; delete execution and results/self-task policies corrected"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/IndexInvestigating.vue",
+    "reviewed": [
+      "fetch/filter/pagination require investigation list permission",
+      "stale records hidden when list access is revoked",
+      "expansion requires investigation DETAILS",
+      "six route destinations independently authorized",
+      "list summary remains visible as plain content without related-record details access"
+    ],
+    "remaining": [
+      "nested detail components, public media access and related hazard navigation",
+      "live status/assignment workflows"
+    ],
+    "status": "partially reviewed; list/detail/navigation boundaries implemented"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingTable.vue",
+    "reviewed": [
+      "four action/reference links use destination route authorization",
+      "report reference remains plain text without details access"
+    ],
+    "remaining": [
+      "standalone table data scoping depends on parent and backend",
+      "live business status transitions"
+    ],
+    "status": "partially reviewed; navigation guarded without removing list data"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingResults.vue",
+    "reviewed": [
+      "submission page requires FULL_INVESTIGATION_MEETING_RESULT_CREATE/ALL",
+      "submit handler rechecks before validation/payload/controller execution",
+      "read-only result route mapped separately"
+    ],
+    "remaining": [
+      "nested CAPA/dialog/lookup operations",
+      "read-for-create prefetch needs backend contract"
+    ],
+    "status": "partially reviewed; creation boundary and submit handler implemented"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswer.vue",
+    "reviewed": [
+      "read-only answer page requires INVESTIGATION_DETAILS/ALL",
+      "details fetch rechecks permission",
+      "stale page hidden when grant revoked"
+    ],
+    "remaining": [
+      "nested result/attachment/similar-observation components"
+    ],
+    "status": "partially reviewed; read boundary implemented"
+  }
+]

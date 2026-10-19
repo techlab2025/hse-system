@@ -1,0 +1,2622 @@
+[
+  {
+    "file": "src/features/Organization/AttachmentMatrix/Presentation/components/AttachmentMatrixForm.vue",
+    "status": "not a standalone mutation form; individual review required",
+    "manualReview": {
+      "file": "src/features/Organization/AttachmentMatrix/Presentation/components/AttachmentMatrixForm.vue",
+      "reviewed": [
+        "fetch gated by ATTACHMENT_MATRIX_FETCH/ALL",
+        "save gated by ATTACHMENT_MATRIX_CREATE/ALL before controller call",
+        "uploader readonly and change handler gated independently",
+        "read-only users retain attachment information"
+      ],
+      "remaining": [
+        "shared uploader preview/download authorization",
+        "live save contract unavailable"
+      ],
+      "status": "partially reviewed; explicit read/save/local-upload guards implemented"
+    }
+  },
+  {
+    "file": "src/features/Organization/AuditActivity/Presentation/components/AddAuditActivity.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_internal_audit_activity"
+    ]
+  },
+  {
+    "file": "src/features/Organization/AuditActivity/Presentation/components/AuditActivityForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/AuditActivity/Presentation/components/EditAuditActivity.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_internal_audit_activity"
+    ]
+  },
+  {
+    "file": "src/features/Organization/AuditActivity/Presentation/components/IndexAuditActivity.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/AuditActivity/Presentation/components/UploadAuditActivityExcelSheet.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/AuditActivity/Presentation/supcomponents/AuditActivitySystemDataHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/AuditActivity/Presentation/supcomponents/SystemAuditActivities.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/AuditStandard/Presentation/components/AddAuditStandard.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_internal_audit_standard"
+    ]
+  },
+  {
+    "file": "src/features/Organization/AuditStandard/Presentation/components/AuditStandardForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/AuditStandard/Presentation/components/EditAuditStandard.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_internal_audit_standard"
+    ]
+  },
+  {
+    "file": "src/features/Organization/AuditStandard/Presentation/components/IndexAuditStandard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/AuditStandard/Presentation/components/UploadAuditStandardExcelSheet.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/AuditStandard/Presentation/supcomponents/AuditStandardSystemDataHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/AuditStandard/Presentation/supcomponents/SystemAuditStandards.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Capa/Presentation/components/CapaActionPlan.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Capa/Presentation/components/CapaActionPlanDetails.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Capa/Presentation/components/IndexCapa.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Capa/Presentation/components/ShowCapaDetails.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Capa/Presentation/supcomponents/CapaDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Capa/Presentation/supcomponents/VerificationOfEffectiveness.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/CheckList/Presentation/components/AddCheckList.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_checklist"
+    ]
+  },
+  {
+    "file": "src/features/Organization/CheckList/Presentation/components/CheckListForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/CheckList/Presentation/components/EditCheckList.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_checklist"
+    ]
+  },
+  {
+    "file": "src/features/Organization/CheckList/Presentation/components/IndexCheckList.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/CheckList/Presentation/supcomponents/SystemChecklistTypes.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/CheckList/Presentation/supcomponents/SystemDataHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/DocumentCategory/Presentation/components/AddDocumentCategory.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_document_category"
+    ]
+  },
+  {
+    "file": "src/features/Organization/DocumentCategory/Presentation/components/DocumentCategoryForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/DocumentCategory/Presentation/components/EditDocumentCategory.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_document_category"
+    ]
+  },
+  {
+    "file": "src/features/Organization/DocumentCategory/Presentation/components/IndexDocumentCategory.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/DocumentCategory/Presentation/components/UploadDocumentCategoryExcelSheet.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/DocumentCategory/Presentation/supcomponents/DocumentCategorySystemDataHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/DocumentCategory/Presentation/supcomponents/SystemDocumentCategories.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/DocumentRefrence/Presentation/components/AddDocumentRefrence.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_document_reference"
+    ]
+  },
+  {
+    "file": "src/features/Organization/DocumentRefrence/Presentation/components/DocumentRefrenceForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/DocumentRefrence/Presentation/components/EditDocumentRefrence.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_document_reference"
+    ]
+  },
+  {
+    "file": "src/features/Organization/DocumentRefrence/Presentation/components/IndexDocumentRefrence.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/DocumentRefrence/Presentation/supcomponents/SysteminjuryTypes.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/DrillType/Presentation/components/AddDrillType.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_drill_type"
+    ]
+  },
+  {
+    "file": "src/features/Organization/DrillType/Presentation/components/DrillTypeActionsButtons.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/DrillType/Presentation/components/DrillTypeForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/DrillType/Presentation/components/EditDrillType.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_drill_type"
+    ]
+  },
+  {
+    "file": "src/features/Organization/DrillType/Presentation/components/IndexDrillType.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/DrillType/Presentation/components/UploadDrillTypeExcelSheet.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/DrillType/Presentation/supcomponents/DrillTypeSystemDataHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/DrillType/Presentation/supcomponents/SystemDrillTypes.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/EmployeesCertificates/Presentation/components/AddEmployeeCertificate.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_employee_certificate"
+    ]
+  },
+  {
+    "file": "src/features/Organization/EmployeesCertificates/Presentation/components/EditEmployeeCertificate.vue",
+    "status": "no directly imported mutating API controller; individual review required"
+  },
+  {
+    "file": "src/features/Organization/EmployeesCertificates/Presentation/components/EmployeeCertificateForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/EmployeesCertificates/Presentation/components/IndexEmployeeCertificate.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/EmployeesCertificates/Presentation/supcomponents/CertificateImageDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/EmployeesCertificates/Presentation/supcomponents/ExpiredCertificate.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/EmployeesCertificates/Presentation/supcomponents/NotReqValid.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/EmployeesCertificates/Presentation/supcomponents/NotRequired.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/EmployeesCertificates/Presentation/supcomponents/NotValidCertificate.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/EmployeesCertificates/Presentation/supcomponents/RenewCertificateNotRequiredDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/EmployeesCertificates/Presentation/supcomponents/ValidCertificate.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ForgetPassword/Presentation/components/ForgetPassword.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ForgetPassword/Presentation/supcomponents/ShowClientFristsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ForgetPassword/Presentation/supcomponents/ShowClientSecondsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ForgetPassword/Presentation/supcomponents/ShowClientThridsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Herikaly/Presentation/components/AddHerikaly.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_herikaly"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Herikaly/Presentation/components/EditHerikaly.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_herikaly"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Herikaly/Presentation/components/HerikalyActionsButtons.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Herikaly/Presentation/components/HerikalyForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Herikaly/Presentation/components/HerikalyItem.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Herikaly/Presentation/components/IndexHerikaly.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Herikaly/Presentation/components/TreeTimeLine.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Herikaly/Presentation/components/UploadHierarachyExeclSheet.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Herikaly/Presentation/supcomponents/DeleteHierarchy.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Herikaly/Presentation/supcomponents/HierarchyMatrix.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Injury/Presentation/components/AddInjury.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_injury_type"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Injury/Presentation/components/EditInjury.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_injury_type"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Injury/Presentation/components/IndexInjury.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Injury/Presentation/components/InjuryForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Injury/Presentation/components/UploadInjuryExeclSheet.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Injury/Presentation/supcomponents/SysteminjuryTypes.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/AddInspection.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_task"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/EditInspection.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_task"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/IndexInspection.vue",
+    "status": "not a standalone mutation form; individual review required",
+    "manualReview": {
+      "file": "src/features/Organization/Inspection/Presentation/components/IndexInspection.vue",
+      "reviewed": [
+        "list/results fetch handlers already check independent canViewRecords",
+        "delete handler rechecks ORG_INSPECTION_DELETE/ALL",
+        "dedicated results API uses INSPECTION_RESULTS_FETCH",
+        "self-task API permits MY_TASKS_ALL; all-task API does not inherit it"
+      ],
+      "remaining": [
+        "nested task forms/results actions and lookup dependencies",
+        "live independent-role scenarios"
+      ],
+      "status": "partially reviewed; delete execution and results/self-task policies corrected"
+    }
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionDialog/AddNewTemplateDialog.vue",
+    "status": "no directly imported mutating API controller; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionDialog/InspectionStartTemplate.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionDialog/InspectionTemplateDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionDialog/InspectionTemplatePreviewDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionDialog/ShowInspectionDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionDialog/TemplateDocument.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionDialog/TemplateDocumentTypes/AnswerTextField.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionDialog/TemplateDocumentTypes/EvidenceImageUpload.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionDialog/TemplateDocumentTypes/QuestionChoiceCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionDialog/TemplateDocumentTypes/QuestionHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionDialog/TemplateDocumentTypes/TemplateDocumentCheckboxShow.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionDialog/TemplateDocumentTypes/TemplateDocumentRadioButtonShow.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionDialog/TemplateDocumentTypes/TemplateDocumentSelectShow.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionDialog/TemplateDocumentTypes/TemplateDocumentTextAreaShow.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionForms/InspectionEmployeeForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionForms/InspectionGeneralForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionForms/InspectionZonesForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionPages/InspectionDragPage.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionPages/InspectionFormPage.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionPages/InspectionResultPage.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionPages/InspectionResultPageSkeleton.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionPages/InspectionsResultsPage.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionUtils/DurationBox.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionUtils/IndexFilter.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionUtils/IndexInspectionHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionUtils/InspectionCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionUtils/InspectionTypeSelection.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionUtils/LastInspectionCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionUtils/PeriodTypeSelect.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionUtils/TaskAssignTo.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionUtils/TemplateItemTimeLine.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionUtils/TemplateSelector.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionUtils/TemplateTimeLine.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/Overdueinspection.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/ShowResultActions/ModernAnswerResult.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/ShowResultActions/TemplateDocumentCheckboxShowResult.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/ShowResultActions/TemplateDocumentRadioShowResult.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/ShowResultActions/TemplateDocumentSelectShowResult.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/ShowResultActions/TemplateDocumentTextAreaShowResult.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/SubComponent/CardSkelaton.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/SubComponent/InspectionEmptyState.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/employeeTasksCard/employeeTasksCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/InternalAudit/Presentation/components/InternalAudit.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/InternalAudit/Presentation/components/attendance/InternalAuditAttendanceTab.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/InternalAudit/Presentation/components/my/IndexMyInternalAudit.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/InternalAudit/Presentation/components/my/MyInternalAuditNcrs.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/InternalAudit/Presentation/components/ncrs/InternalAuditNcrForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/InternalAudit/Presentation/components/ncrs/InternalAuditNcrIndex.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/InternalAudit/Presentation/components/ncrs/InternalAuditNcrsTab.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/InternalAudit/Presentation/components/plan/IndexInternalAuditPlan.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/InternalAudit/Presentation/components/plan/InternalAuditPlanTab.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/InternalAudit/Presentation/components/reports/InternalAuditReportDocument.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/InternalAudit/Presentation/components/reports/InternalAuditReportForms.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/InternalAudit/Presentation/components/reports/InternalAuditReportTab.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/SubComponents/InvestigationCapaDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/SubComponents/InvestigationFormSkilaton.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswer.vue",
+    "status": "not a standalone mutation form; individual review required",
+    "manualReview": {
+      "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswer.vue",
+      "reviewed": [
+        "read-only answer page requires INVESTIGATION_DETAILS/ALL",
+        "details fetch rechecks permission",
+        "stale page hidden when grant revoked"
+      ],
+      "remaining": [
+        "nested result/attachment/similar-observation components"
+      ],
+      "status": "partially reviewed; read boundary implemented"
+    }
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswerParts/CauseOfAccidantAnswer.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswerParts/InvestegationResultAttachmentAnswer.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswerParts/InvestegationResultTakeActionAnswer.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswerParts/InvestegationResultTasksAnswer.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswerParts/InvestegationResultViewersAnswer.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswerParts/InvestigatingResultAnswerHedaer.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswerParts/MeetingOverviewAnswer.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswerUtils/CauseOfActionFactors.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswerUtils/InvestegaionMeetingResultAnswerCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswerUtils/InvestegaionMeetingViewersCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswerUtils/InvestegaionResultAttachmentCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswerUtils/InvestegaionResultTakeActionCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswerUtils/InvestegaionResultTasksAnswerCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswerUtils/InvestigationResultDialoge.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/AddInvestigating.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_full_investigation"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/EditInvestigating.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_observation"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/FactorInvestigating.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/IndexInvestigating.vue",
+    "status": "not a standalone mutation form; individual review required",
+    "manualReview": {
+      "file": "src/features/Organization/Investigating/Presentation/components/Investigating/IndexInvestigating.vue",
+      "reviewed": [
+        "fetch/filter/pagination require investigation list permission",
+        "stale records hidden when list access is revoked",
+        "expansion requires investigation DETAILS",
+        "six route destinations independently authorized",
+        "list summary remains visible as plain content without related-record details access"
+      ],
+      "remaining": [
+        "nested detail components, public media access and related hazard navigation",
+        "live status/assignment workflows"
+      ],
+      "status": "partially reviewed; list/detail/navigation boundaries implemented"
+    }
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestegationDialogs/AddInvestegationTaskAnswerDialog.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_investigation_task_result"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestegationDialogs/CloseInvestegaionDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestegationDialogs/InvestegationAttachmentsDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestegationDialogs/ShowInvestegationDetailsDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestegationResultParts/AnotherMeeting.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestegationResultParts/CauseOfAccidant.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestegationResultParts/FiveWhyQuestions.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestegationResultParts/InvestegationAttachment.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestegationResultParts/InvestigationTasks.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestegationResultParts/RateActions.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestegationResultParts/ViewersResults.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingCardsLoader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingResults.vue",
+    "status": "not a standalone mutation form; individual review required",
+    "manualReview": {
+      "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingResults.vue",
+      "reviewed": [
+        "submission page requires FULL_INVESTIGATION_MEETING_RESULT_CREATE/ALL",
+        "submit handler rechecks before validation/payload/controller execution",
+        "read-only result route mapped separately"
+      ],
+      "remaining": [
+        "nested CAPA/dialog/lookup operations",
+        "read-for-create prefetch needs backend contract"
+      ],
+      "status": "partially reviewed; creation boundary and submit handler implemented"
+    }
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingResultsUtils/FiveWhyQuestionTree.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingResultsUtils/InvestigatingHedaer.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingResultsUtils/TimeLineTasks.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingResultsUtils/ViewerResultsTree.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingSidebar.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingTable.vue",
+    "status": "not a standalone mutation form; individual review required",
+    "manualReview": {
+      "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingTable.vue",
+      "reviewed": [
+        "four action/reference links use destination route authorization",
+        "report reference remains plain text without details access"
+      ],
+      "remaining": [
+        "standalone table data scoping depends on parent and backend",
+        "live business status transitions"
+      ],
+      "status": "partially reviewed; navigation guarded without removing list data"
+    }
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingUtils/FilterDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingUtils/FilterWithProject.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingUtils/IndexFilter.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingUtils/IndexInvestigatingHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestigationMeeting/AddInvestigationMeeting.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_full_investigation"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestigationMeeting/EditInvestigationMeeting.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_observation"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestigationMeeting/FactorInvestigationMeeting.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestigationMeeting/IndexInvestigationMeeting.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestigationMeeting/InvestigationMeetingForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestigationMeeting/InvestigationMeetingUtils/FilterDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestigationMeeting/InvestigationMeetingUtils/FilterWithProject.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestigationMeeting/InvestigationMeetingUtils/IndexFilter.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestigationMeeting/InvestigationMeetingUtils/IndexInvestigationMeetingHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Meetings/IndexMeeting.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Meetings/MeetingsForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Tasks/IndexTasks.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Tasks/TasksForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/MangementChangeTopicType/Presentation/components/AddMangementChangeTopicType.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_changement_topic"
+    ]
+  },
+  {
+    "file": "src/features/Organization/MangementChangeTopicType/Presentation/components/EditMangementChangeTopicType.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_changement_topic"
+    ]
+  },
+  {
+    "file": "src/features/Organization/MangementChangeTopicType/Presentation/components/IndexMangementChangeTopicType.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/MangementChangeTopicType/Presentation/components/MangementChangeTopicTypeForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/MangementChangeTopicType/Presentation/components/UploadMangementChangeTopicTypeExcelSheet.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/MangementChangeTopicType/Presentation/supcomponents/MangementChangeTopicTypeSystemDataHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/MangementChangeTopicType/Presentation/supcomponents/SystemMangementChangeTopicType.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/MangementOfChange/Presentation/components/AddMangementChange.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_management_of_change"
+    ]
+  },
+  {
+    "file": "src/features/Organization/MangementOfChange/Presentation/components/EditMangementChange.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_management_of_change"
+    ]
+  },
+  {
+    "file": "src/features/Organization/MangementOfChange/Presentation/components/MangementChangeForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/MangementOfChange/Presentation/components/MangementOfChanges.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/MeetingType/Presentation/components/AddMeetingType.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_meeting_type"
+    ]
+  },
+  {
+    "file": "src/features/Organization/MeetingType/Presentation/components/EditMeetingType.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_meeting_type"
+    ]
+  },
+  {
+    "file": "src/features/Organization/MeetingType/Presentation/components/IndexMeetingType.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/MeetingType/Presentation/components/MeetingTypeForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/MeetingType/Presentation/components/UploadMeetingTypeExcelSheet.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/MeetingType/Presentation/supcomponents/MeetingTypeSystemDataHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/MeetingType/Presentation/supcomponents/SystemMeetingType.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/MeetingType/Presentation/supcomponents/SystemMeetingTypes.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/SubComponent/CustomCheckboxToggle.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/SubComponent/InjuryBodySlection.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/DethsTimeLine.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/EmployeeTypeSelect.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/FactoryAccidents.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/FactoryFatalities.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/Factorywitnesses.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/InjuresTimeLine.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/ObservationCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/ShowFactoryUtils/ObservationCapaDestails.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/ShowFactoryUtils/ObservationDeths.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/ShowFactoryUtils/ObservationFactoryGenralInfo.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/ShowFactoryUtils/ObservationFactoryInspection.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/ShowFactoryUtils/ObservationInjuriesShow.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/ShowFactoryUtils/ObservationInvestegationFactory/ClosedObservationInvestegation.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/ShowFactoryUtils/ObservationInvestegationFactory/InprogressObservationInvestegation.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/ShowFactoryUtils/ObservationInvestegationFactory/NewObservationInvestegation.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/ShowFactoryUtils/ObservationInvestigationDetails.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/ShowFactoryUtils/ObservationWitnessStatements.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/WitnessesTimeLine.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FullForm/FullObservationFactoryForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Hazard/AddHazard.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_observation"
+    ]
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Hazard/EditHazard.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_observation"
+    ]
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/FilterDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/FilterWithProject.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/HeaderProjectsFilter.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexFilter.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/IndexHazardHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Hazard/IndexHazard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Incedant/AddIncedant.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_observation"
+    ]
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Incedant/EditIncedant.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_observation"
+    ]
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Incedant/IncedantForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Incedant/IncedantUtils/IndexFilter.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Incedant/IncidentReport.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Incedant/IndexIncedant.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Ovservation/AddObservation.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_observation"
+    ]
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Ovservation/AllObservation.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Ovservation/EditObservation.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_observation_type"
+    ]
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Ovservation/HazerdType.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Ovservation/IndexObservation.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Ovservation/LocationsZone.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Ovservation/ObservationForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Ovservation/ObservationLevel.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Ovservation/SaveStatusSelector.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Ovservation/ShowObservation.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Ovservation/ShowObservationSkeleton.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Ovservation/cards/ObservationCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/indexEquipmentMangement.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/components/AddOrganizatoinEmployee.vue",
+    "status": "multiple distinct operations require individual guards",
+    "endpoints": [
+      "validate_bulk_employees",
+      "create_organization_employee"
+    ]
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/components/EditOrganizatoinEmployee.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_organization_employee"
+    ]
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/components/IndexOrganizatoinEmployee.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/components/OrganizationEmployeeActionsButtons.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/components/OrganizatoinEmployeeForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/components/ShowOrgnizationEmployee.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/components/UploadOrganizationEmployee.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/components/employeeTask/ChangeTaskStatus.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/components/employeeTask/ShowTaskHistory.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/components/employeeTask/indexOwnTask.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/supcomponents/DataEmployee.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/supcomponents/ShowClientFristsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/supcomponents/ShowClientSecondsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/supcomponents/ShowClientThridsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/supcomponents/employeeTask/DialogChangeStatus.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/supcomponents/showOrgEmployee/CertificateComp.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/supcomponents/showOrgEmployee/EmpTasks.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/supcomponents/showOrgEmployee/EmployeeProfileBox.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/supcomponents/showOrgEmployee/Employeetasks.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/supcomponents/showOrgEmployee/PerformanceBox.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/supcomponents/showOrgEmployee/ProjectComp.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationLocation/Presentation/components/AddOrganizationLocation.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_organization_location"
+    ]
+  },
+  {
+    "file": "src/features/Organization/OrganizationLocation/Presentation/components/EditOrganizationLocation.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_organization_location"
+    ]
+  },
+  {
+    "file": "src/features/Organization/OrganizationLocation/Presentation/components/IndexOrganizationLocation.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationLocation/Presentation/components/OrganizationLocationForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationLocation/Presentation/supcomponents/ShowClientFristsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationLocation/Presentation/supcomponents/ShowClientSecondsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/OrganizationLocation/Presentation/supcomponents/ShowClientThridsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/PPEActivity/Presentation/components/AddPPEActivity.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_ppe_activity"
+    ]
+  },
+  {
+    "file": "src/features/Organization/PPEActivity/Presentation/components/EditPPEActivity.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_ppe_activity"
+    ]
+  },
+  {
+    "file": "src/features/Organization/PPEActivity/Presentation/components/IndexPPEActivity.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/PPEActivity/Presentation/components/PPEActivityForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/PPEActivity/Presentation/components/UploadPPEActivityExcelSheet.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/PPEActivity/Presentation/supcomponents/PPEActivitySystemDataHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/PPEActivity/Presentation/supcomponents/SystemPPEActivities.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/PPETool/Presentation/components/AddPPETool.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_ppe_tool"
+    ]
+  },
+  {
+    "file": "src/features/Organization/PPETool/Presentation/components/EditPPETool.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_ppe_tool"
+    ]
+  },
+  {
+    "file": "src/features/Organization/PPETool/Presentation/components/IndexPPETool.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/PPETool/Presentation/components/PPEToolForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/PPETool/Presentation/components/UploadPPEToolExcelSheet.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/PPETool/Presentation/supcomponents/PPEToolSystemDataHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/PPETool/Presentation/supcomponents/SystemPPETools.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/PTWType/Presentation/components/AddPTWType.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_permit_type"
+    ]
+  },
+  {
+    "file": "src/features/Organization/PTWType/Presentation/components/EditPTWType.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_permit_type"
+    ]
+  },
+  {
+    "file": "src/features/Organization/PTWType/Presentation/components/IndexPTWType.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/PTWType/Presentation/components/PTWTypeForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/PTWType/Presentation/components/UploadPTWTypeExcelSheet.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/PTWType/Presentation/supcomponents/PTWTypeSystemDataHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/PTWType/Presentation/supcomponents/SystemPTWTypes.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Partner/Presentation/components/AddPartner.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_partner"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Partner/Presentation/components/EditPartner.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_partner"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Partner/Presentation/components/IndexPartner.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Partner/Presentation/components/PartnerForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Partner/Presentation/supcomponents/ShowClientFristsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Partner/Presentation/supcomponents/ShowClientSecondsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Partner/Presentation/supcomponents/ShowClientThridsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/AddProject.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_project"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/CreateEmployee/AddCreateEmployee.vue",
+    "status": "multiple distinct operations require individual guards",
+    "endpoints": [
+      "create_project_location_hierarchy_employee",
+      "fetch_full_project_locations"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/CreateEmployee/CreateEmployeeForm.vue",
+    "status": "no directly imported mutating API controller; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/CreateHierarchy/AddCreateHierarchy.vue",
+    "status": "multiple distinct operations require individual guards",
+    "endpoints": [
+      "create_project_location_hierarchy",
+      "fetch_full_project_locations"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/CreateHierarchy/CreateHierarchyForm.vue",
+    "status": "no directly imported mutating API controller; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/DetailsHeader/Breadcrumbs.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderPage.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/Drill/DrillSection.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/Equipment/AddNewEquipmentEmptyDialog.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_project_zoon_equipment"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/Equipment/EquipmentCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/Equipment/EquipmentLastInspectionResultDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/Equipment/EquipmentSection.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/Equipment/ProjectEquipmentCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/Equipment/ProjectEquipments.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/Equipment/ToolCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/Inspection/InspectionDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/Inspection/InspectionsCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/Inspection/InspectionsSections.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/Inspection/ZoneInspectionCollapse.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/LocationsTeams/AddEmployeeDialog.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_project_location_hierarchy_employee"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/LocationsTeams/DeleteEmployeeDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/LocationsTeams/EmptyData.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/LocationsTeams/LocationsSection.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/LocationsTeams/LocationsTeamsSection.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/LocationsTeams/TeamCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/LocationsTeams/TeamMemberCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/LocationsTeams/TeamsAccordion.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/LossTime/LossTimeMatrix.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/Objectives/MainObjectivesSection.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/Objectives/ObjectivesDetails.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/PermitToWork/AnswerTheTemplateOfPermit.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/PermitToWork/PermitAuditResult.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/PermitToWork/PermitToWork.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/PermitToWork/PermitToWorkAnswer.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/PermitToWork/PermitToWorkResultDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/PermitToWork/ProjectMyPermits.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/PermitToWork/ProjectPermits.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/PermitToWork/SelectTemplatesOfPermits.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/PorjectUtils/EmptyEquimentsProjectZones.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/PorjectUtils/ProjectHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/PorjectUtils/ProjectZoneSelection.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/ProjectDetails.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/ProjectMeeting/AddProjectMeetingDialog.vue",
+    "status": "no directly imported mutating API controller; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/ProjectMeeting/MeetingResultDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/ProjectMeeting/ProjectMeetingForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/ProjectMeeting/ProjectMeetingSection.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/ProjectResourceList.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/ProjectSite/EmptyZoons.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/ProjectSite/LocationCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/ProjectSite/ProjectLocationZoonDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/ProjectSite/ProjectSiteSection.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/ProjectSite/ShowAllZonesDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/ProjectSummary.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/Skeletons/ProjectPageSkeleton.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/AddEquipmentDialog.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_project_zoon_equipment"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/AddProjectZoneDialog.vue",
+    "status": "no directly imported mutating API controller; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/CreateTeamDialog/AddCreateTeam.vue",
+    "status": "no directly imported mutating API controller; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/CreateTeamDialog/CreateTeamForm.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_project_location_team_employee"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/Drill/AddDrillDialog.vue",
+    "status": "no directly imported mutating API controller; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/Drill/DrillDetailsDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/Drill/DrillForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/Drill/DrillTimelineEditor.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/EmployeeDialog/AddEmployeeCard.vue",
+    "status": "no directly imported mutating API controller; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/EmployeeDialog/AddEmployeeDialog.vue",
+    "status": "no directly imported mutating API controller; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/EmployeeDialog/AddHierarchyCard.vue",
+    "status": "no directly imported mutating API controller; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/EquipmentDialog/AddEquipmentDialog.vue",
+    "status": "no directly imported mutating API controller; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/EquipmentDialog/EquipmentForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/EquipmentZoneDialog/EquipmentZoneDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/ZoneDialog/AddZoneDialog.vue",
+    "status": "no directly imported mutating API controller; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/ZoneDialog/ZoneDialogForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/EditProject.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_project"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Employee/ProjectEmployee.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Employee/ProjectEmployeeSection.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/IndexProject.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Induction/AddInduction.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_induction"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Induction/EditInduction.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_induction"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Induction/IndexInduction.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Induction/InductionForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Induction/ShowInduction.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Leadership/Leadership.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Leadership/LeadershipVisits.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Leadership/ReportVisit.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Leadership/ReportVisitDetailsDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/ProjectForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/ProjectUtils/LegacyProjectCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/ProjectUtils/LegacyProjectPopover.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/ProjectUtils/ProjectCard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/ProjectUtils/ProjectCardSkelaton.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/ProjectUtils/ProjectIcon.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/RiskAssessment/CreateRiskAssessment.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_risk_assessment"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/RiskAssessment/RiskAssessment.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/RiskAssessment/RiskAssessmentDetailsDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/SelectDialogs/ContructorSelectDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/SelectDialogs/EmployeeSelectDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/SelectDialogs/HeirarchySelectDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/SelectDialogs/LocationSelectDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/TodayTalk/CreateTodayTalk.vue",
+    "status": "multiple distinct operations require individual guards",
+    "endpoints": [
+      "fetch_full_project_locations",
+      "create_today_talk"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/TodayTalk/TodayTalkDetailsDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/TodayTalk/TodayTalkHistoryDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/TodayTalk/TodayTalkIndex.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/TodayTalk/TodayTalkSummary.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/UpdatedProjectFlow/ProjectFlowWizard.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/UpdatedProjectFlow/Steps/BasicProjectStep.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/UpdatedProjectFlow/Steps/ProjectEquipmentsStep.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/UpdatedProjectFlow/Steps/ProjectHolidaysStep.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/UpdatedProjectFlow/Steps/ProjectPositionsStep.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/UpdatedProjectFlow/Steps/ProjectTeamsStep.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Widget/Form/Widget.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Widget/Form/WidgetFrom.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Widget/Form/WidgetType.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Widget/Form/WidgetUtils/ColorSelection.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Widget/Form/WidgetUtils/ZoneTitlesForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Widget/Form/WidgetsTypesForms/EmployeePerformanceWidget.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Widget/Form/WidgetsTypesForms/EquipmentDevicesWidget.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Widget/Form/WidgetsTypesForms/LinkedCAPAsWidget.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Widget/Form/WidgetsTypesForms/NeedMaintenanceWidget.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Widget/Form/WidgetsTypesForms/NotesWidget.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Widget/Form/WidgetsTypesForms/NumberOfIncidentsWidget.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Widget/Form/WidgetsTypesForms/ProjectLocationsWidget.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Widget/Form/WidgetsTypesForms/ProjectSafetyWidget.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Widget/Form/WidgetsTypesForms/TeamsRatioWidget.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Widget/MainWidgetDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/ppematrix/PPEActivityToolMatrix.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/ppematrix/PPEMatrixDeliveriesTable.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/ppematrix/PPEMatrixDelivery.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/supcomponents/CustomPopover.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/supcomponents/ShowClientFristsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/supcomponents/ShowClientSecondsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/supcomponents/ShowClientThridsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ProjectPrgoress/Presentation/components/AddProjectProgress.vue",
+    "status": "no directly imported mutating API controller; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ProjectPrgoress/Presentation/components/EditProjectProgress.vue",
+    "status": "no directly imported mutating API controller; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ProjectPrgoress/Presentation/components/IndexProjectProgress.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ProjectPrgoress/Presentation/components/ProjectProgressForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ProjectPrgoress/Presentation/supcomponents/ProjectProgreesDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ProjectPrgoress/Presentation/supcomponents/ProjectProgressHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ProjectPrgoress/Presentation/supcomponents/ProjectProgressLoader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ProjectPrgoress/Presentation/supcomponents/ProjectProgressSidebar.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ProjectPrgoress/Presentation/supcomponents/TemplateItemAdd.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ProjectZone/Presentation/components/AddProjectZone.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_zoon"
+    ]
+  },
+  {
+    "file": "src/features/Organization/ProjectZone/Presentation/components/EditProjectZone.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_zoon"
+    ]
+  },
+  {
+    "file": "src/features/Organization/ProjectZone/Presentation/components/IndexProjectZone.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ProjectZone/Presentation/components/ProjectZoneForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ProjectZone/Presentation/supcomponents/ShowClientFristsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ProjectZone/Presentation/supcomponents/ShowClientSecondsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ProjectZone/Presentation/supcomponents/ShowClientThridsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Role/Presentation/components/AddRole.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_role"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Role/Presentation/components/EditRole.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_role"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Role/Presentation/components/IndexRole.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Role/Presentation/components/RoleForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Role/Presentation/supcomponents/ShowClientFristsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Role/Presentation/supcomponents/ShowClientSecondsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Role/Presentation/supcomponents/ShowClientThridsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Scope/Presentation/components/AddScope.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_scope"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Scope/Presentation/components/EditScope.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_scope"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Scope/Presentation/components/IndexScope.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Scope/Presentation/components/ScopeForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Scope/Presentation/supcomponents/ShowClientFristsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Scope/Presentation/supcomponents/ShowClientSecondsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Scope/Presentation/supcomponents/ShowClientThridsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/SerialNumber/Presentation/components/AddSerialForm.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_coding_system"
+    ]
+  },
+  {
+    "file": "src/features/Organization/SerialNumber/Presentation/components/indexSerial.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Shifts/Presentation/components/AddShift.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_work_shift"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Shifts/Presentation/components/EditShift.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_work_shift"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Shifts/Presentation/components/IndexShift.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Shifts/Presentation/components/ShiftForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/TaskReports/Presentation/components/LessonsLearntReportPage.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/TaskReports/Presentation/components/TaskReportPage.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/TaskReports/Presentation/subComponents/ExportReportPdf.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/TaskReports/Presentation/subComponents/ReportFilterDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Ticket/Presentation/components/AddTicket.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_ticket"
+    ]
+  },
+  {
+    "file": "src/features/Organization/Ticket/Presentation/components/Details/ClientReply.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Ticket/Presentation/components/Details/DetailsHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Ticket/Presentation/components/Details/EmployeeReply.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Ticket/Presentation/components/Details/IndexDetails.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Ticket/Presentation/components/Dialog/CloseTicketDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Ticket/Presentation/components/Dialog/ResolveTickeDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Ticket/Presentation/components/HistoryTicket.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Ticket/Presentation/components/IndexTicket.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Ticket/Presentation/components/TicketDialog/TicketDialog.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/Ticket/Presentation/components/TicketForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/TicketType/Presentation/components/AddTicketType.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_ticket_type"
+    ]
+  },
+  {
+    "file": "src/features/Organization/TicketType/Presentation/components/EditTicketType.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_ticket_type"
+    ]
+  },
+  {
+    "file": "src/features/Organization/TicketType/Presentation/components/IndexTicketType.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/TicketType/Presentation/components/TicketTypeForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/TraningTopic/Presentation/components/AddTraningTopic.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_training_topic"
+    ]
+  },
+  {
+    "file": "src/features/Organization/TraningTopic/Presentation/components/EditTraningTopic.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_training_topic"
+    ]
+  },
+  {
+    "file": "src/features/Organization/TraningTopic/Presentation/components/IndexTraningTopic.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/TraningTopic/Presentation/components/TraningTopicActionsButtons.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/TraningTopic/Presentation/components/TraningTopicForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/TraningTopic/Presentation/components/UploadTraningTopicExcelSheet.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/TraningTopic/Presentation/supcomponents/SystemTraningTopics.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/TraningTopic/Presentation/supcomponents/TraningTopicSystemDataHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/TraningTopic/Presentation/supcomponents/TraningTopicTableSkeleton.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/VisitActivity/Presentation/components/AddVisitActivity.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_visit_activity"
+    ]
+  },
+  {
+    "file": "src/features/Organization/VisitActivity/Presentation/components/EditVisitActivity.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_visit_activity"
+    ]
+  },
+  {
+    "file": "src/features/Organization/VisitActivity/Presentation/components/IndexVisitActivity.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/VisitActivity/Presentation/components/VisitActivityForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/VisitActivity/Presentation/supcomponents/SystemVisitActivities.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/VisitCategory/Presentation/components/AddVisitCategory.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_leadership_category"
+    ]
+  },
+  {
+    "file": "src/features/Organization/VisitCategory/Presentation/components/EditVisitCategory.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_leadership_category"
+    ]
+  },
+  {
+    "file": "src/features/Organization/VisitCategory/Presentation/components/IndexVisitCategory.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/VisitCategory/Presentation/components/VisitCategoryForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/VisitCategory/Presentation/supcomponents/SystemVisitCategories.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/VisitTheme/Presentation/components/AddVisitTheme.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_leadership_theme"
+    ]
+  },
+  {
+    "file": "src/features/Organization/VisitTheme/Presentation/components/EditVisitTheme.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_leadership_theme"
+    ]
+  },
+  {
+    "file": "src/features/Organization/VisitTheme/Presentation/components/IndexVisitTheme.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/VisitTheme/Presentation/components/VisitThemeForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/VisitTheme/Presentation/supcomponents/SystemVisitThemes.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/WhereHouse/Presentation/components/AddWhereHouse.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_warehouse"
+    ]
+  },
+  {
+    "file": "src/features/Organization/WhereHouse/Presentation/components/EditWhereHouse.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_warehouse"
+    ]
+  },
+  {
+    "file": "src/features/Organization/WhereHouse/Presentation/components/IndexWhereHouse.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/WhereHouse/Presentation/components/WhereHouseForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/WhereHouse/Presentation/supcomponents/ShowClientFristsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/WhereHouse/Presentation/supcomponents/ShowClientSecondsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/WhereHouse/Presentation/supcomponents/ShowClientThridsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/WhereHouseType/Presentation/components/AddWhereHouseType.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_warehouse_type"
+    ]
+  },
+  {
+    "file": "src/features/Organization/WhereHouseType/Presentation/components/EditWhereHouseType.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_warehouse_type"
+    ]
+  },
+  {
+    "file": "src/features/Organization/WhereHouseType/Presentation/components/IndexWhereHouseType.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/WhereHouseType/Presentation/components/UploadWarehouseExeclSheet.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/WhereHouseType/Presentation/components/WhereHouseTypeForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/WhereHouseType/Presentation/supcomponents/SystemDataHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/WhereHouseType/Presentation/supcomponents/SystemWarehouseTypes.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/notificationPlan/presentation/components/AddNotificationPlan.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_notification_plan"
+    ]
+  },
+  {
+    "file": "src/features/Organization/notificationPlan/presentation/components/IndexNotificationPlan.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/objectives/ObjectiveProgress/Presentation/components/ObjectiveDetails.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/objectives/ObjectiveProgress/Presentation/components/ObjectiveInformation.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/objectives/ObjectiveProgress/Presentation/components/ObjectiveProgressHistory.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/objectives/ObjectiveProgress/Presentation/components/ObjectiveProgressIndicator.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/objectives/ObjectiveProgress/Presentation/components/UpdateObjectiveProgress.vue",
+    "status": "multiple distinct operations require individual guards",
+    "endpoints": [
+      "create_objective_progress",
+      "update_objective_progress",
+      "fetch_objective_progress_details"
+    ]
+  },
+  {
+    "file": "src/features/Organization/objectives/Presentation/components/AddObjectives.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_objectives"
+    ]
+  },
+  {
+    "file": "src/features/Organization/objectives/Presentation/components/EditObjectives.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_objectives"
+    ]
+  },
+  {
+    "file": "src/features/Organization/objectives/Presentation/components/IndexObjectives.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/objectives/Presentation/components/ObjectivesForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/objectives/Presentation/supcomponents/ShowClientFristsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/objectives/Presentation/supcomponents/ShowClientSecondsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/objectives/Presentation/supcomponents/ShowClientThridsec.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ppeItem/Presentation/components/AddPpeItem.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "create_ppe_item"
+    ]
+  },
+  {
+    "file": "src/features/Organization/ppeItem/Presentation/components/EditPpeItem.vue",
+    "status": "standalone mutation form guarded by its actual API policy",
+    "endpoints": [
+      "update_ppe_item"
+    ]
+  },
+  {
+    "file": "src/features/Organization/ppeItem/Presentation/components/IndexPpeItem.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ppeItem/Presentation/components/PPEItemActionsButtons.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ppeItem/Presentation/components/PpeItemForm.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ppeItem/Presentation/components/UploadPpeItemExcelSheet.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ppeItem/Presentation/supcomponents/PpeItemSystemDataHeader.vue",
+    "status": "not a standalone mutation form; individual review required"
+  },
+  {
+    "file": "src/features/Organization/ppeItem/Presentation/supcomponents/SystemPpeItems.vue",
+    "status": "not a standalone mutation form; individual review required"
+  }
+]

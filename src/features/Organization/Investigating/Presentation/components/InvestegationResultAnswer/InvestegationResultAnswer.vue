@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { canAny } from '@/features/permission/Presentation/Helpers/organization_permission'
+import { PermissionsEnum as P } from '@/features/users/Admin/Core/Enum/permission_enum'
+const canReadResult = computed(() => canAny([P.INVESTIGATION_ALL, P.INVESTIGATION_DETAILS]))
+
 import { computed, onMounted, ref, watch } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
@@ -147,6 +151,7 @@ const formatBoolean = (value: any) => {
 }
 
 const GetInvestegationDetails = async () => {
+  if (!canReadResult.value) return
   const showInvestigatingParams = new ShowInvestigatingParams(Number(id))
   const response = await showInvestigatingController.showInvestigating(showInvestigatingParams)
   console.log(response.value.data, 'response')
@@ -213,7 +218,7 @@ const getObservationType = (type: number | undefined) => {
 }
 </script>
 <template>
-  <DataStatus :controller="state">
+  <DataStatus v-if="canReadResult" :controller="state">
     <template #success>
       <div class="investegation-result-answer-container">
         <!-- <InvestigatingResultAnswerHedaer
@@ -346,7 +351,7 @@ const getObservationType = (type: number | undefined) => {
           />
         </section>
 
-          <section class="final-answer-section">
+        <section class="final-answer-section">
           <div class="final-section-heading">
             <span>04</span>
             <h2>Witnesses Management</h2>
@@ -392,10 +397,6 @@ const getObservationType = (type: number | undefined) => {
           </div>
           <p v-else class="answer-empty">No health impact records were added.</p>
         </section>
-
-
-
-        
 
         <section class="final-answer-section">
           <div class="final-section-heading">
@@ -545,6 +546,7 @@ const getObservationType = (type: number | undefined) => {
       />
     </template>
   </DataStatus>
+  <p v-else role="alert">{{ $t('authorization.denied') }}</p>
 </template>
 
 <style scoped>

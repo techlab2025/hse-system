@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { onMounted, ref, watch } from 'vue'
@@ -65,6 +68,8 @@ onMounted(fetchInductionDetails)
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['update_induction'])">
+
   <PermissionBuilder :code="viewPermissions">
     <div data-hse-project v-project-panels class="hse-project-root hse-project-state-host">
       <DataStatus :controller="state">
@@ -103,6 +108,8 @@ onMounted(fetchInductionDetails)
       />
     </template>
   </PermissionBuilder>
+
+  </template>
 </template>
 
 <style scoped>

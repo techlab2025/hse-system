@@ -21,7 +21,7 @@ class AddPermissionApiService extends ServicesInterface {
     params: Params,
   ): Promise<{ data: any; statusCode: number }> {
     return await super.call({
-      url: ApiNames.instance.CreatePermission,
+      url: ApiNames.instance.EditPermission,
       type: CrudType.POST,
       auth: true,
       params: params,

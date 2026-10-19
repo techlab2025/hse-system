@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { ref } from 'vue'
@@ -51,6 +54,8 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['create_induction'])">
+
   <PermissionBuilder :code="createPermissions">
     <form
       data-hse-project
@@ -87,6 +92,8 @@ const setParams = (data: Params) => {
       />
     </template>
   </PermissionBuilder>
+
+  </template>
 </template>
 
 <style scoped>

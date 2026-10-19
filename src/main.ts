@@ -14,6 +14,7 @@ import ToastService from 'primevue/toastservice'
 import PrimeVue from 'primevue/config'
 import App from './App.vue'
 import router from './router'
+import { watchOrganizationAuthorization } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { createI18n } from 'vue-i18n'
 // import * as Sentry from '@sentry/vue'
 import ar from './locales/ar.json'
@@ -61,6 +62,8 @@ pinia.use(piniaPluginPersistedstate)
 
 app.use(pinia)
 app.use(router)
+const stopAuthorizationWatch = watchOrganizationAuthorization(router)
+if (import.meta.hot) import.meta.hot.dispose(stopAuthorizationWatch)
 app.use(i18n)
 app.use(createAutoTranslate(i18n.global))
 app.use(ToastService)

@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -67,6 +70,8 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['update_management_of_change'])">
+
   <DataStatus :controller="state">
     <template #success>
       <form
@@ -89,6 +94,8 @@ const setParams = (data: Params) => {
       <FormLoader :inputsCount="10" />
     </template>
   </DataStatus>
+
+  </template>
 </template>
 
 <style scoped></style>

@@ -1,4 +1,10 @@
 <script lang="ts" setup>
+import { canAny } from '@/features/permission/Presentation/Helpers/organization_permission'
+import { PermissionsEnum as P } from '@/features/users/Admin/Core/Enum/permission_enum'
+const canSubmitResult = computed(() =>
+  canAny([P.INVESTIGATION_ALL, P.FULL_INVESTIGATION_MEETING_RESULT_CREATE]),
+)
+
 import InjuryDetailsModel from '@/features/Organization/ObservationFactory/Data/models/InjuryModel'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import InvestigatingHedaer from './InvestigatingResultsUtils/InvestigatingHedaer.vue'
@@ -156,6 +162,7 @@ const ShoeInvestegationResultDetails = async () => {
 const openDialog = ref(false)
 
 const AddEnvestigatingResult = async () => {
+  if (!canSubmitResult.value) return
   if (!(await validateRequiredFields())) return
 
   const RootCausesIds = RootCauses.value.map(
@@ -712,7 +719,7 @@ const getObservationType = (type: number | undefined) => {
 }
 </script>
 <template>
-  <DataStatus :controller="state">
+  <DataStatus v-if="canSubmitResult" :controller="state">
     <template #success>
       <div class="investigation-result">
         <Accordion v-model:value="ActivePanel">
@@ -981,8 +988,10 @@ const getObservationType = (type: number | undefined) => {
             </AccordionHeader>
             <AccordionContent>
               <div data-required-field="viewersResults.0.employee">
-
-                <WitnessesTimeLine :statements="state.data?.observation?.witness_statements " @update:data="Updatewitnesses" />
+                <WitnessesTimeLine
+                  :statements="state.data?.observation?.witness_statements"
+                  @update:data="Updatewitnesses"
+                />
                 <p v-if="getFirstFieldError('viewersResults.')" class="required-field-message">
                   {{ getFirstFieldError('viewersResults.') }}
                 </p>
@@ -1252,6 +1261,7 @@ const getObservationType = (type: number | undefined) => {
       />
     </template>
   </DataStatus>
+  <p v-else role="alert">{{ $t('authorization.denied') }}</p>
 </template>
 
 <style scoped lang="scss">

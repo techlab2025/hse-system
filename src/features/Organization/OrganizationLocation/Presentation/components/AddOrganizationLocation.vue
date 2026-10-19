@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -39,6 +42,8 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['create_organization_location'])">
+
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addOrganizationLocation">
     <OrganizationLocationForm :key="formKey" @update:data="setParams" />
 
@@ -49,6 +54,8 @@ const setParams = (data: Params) => {
       <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </div>
   </form>
+
+  </template>
 </template>
 
 <style scoped></style>

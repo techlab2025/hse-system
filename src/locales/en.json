@@ -4621,5 +4621,20 @@
     "continue": "Continue",
     "viewHint": "Select a project to view records.",
     "createHint": "Choose the project inside the create form."
+  },
+  "authorization": {
+    "searchPermissions": "Search permissions",
+    "selectedCount": "{count} permissions selected",
+    "viewList": "View / List",
+    "noMatchingPermissions": "No permissions match your search.",
+    "preservedCount": "{count} existing permissions outside this catalogue are preserved.",
+    "catalogUnavailable": "The backend permission catalogue is unavailable. Existing definitions and assigned permissions are preserved.",
+    "unscopedAssignments": "Permission editing is disabled: the server response does not identify this account’s assigned permissions.",
+
+    "denied": "Access denied",
+    "description": "Your account does not have permission to access this page or operation.",
+    "refresh": "Refresh permissions",
+    "refreshFailed": "Permissions could not be refreshed. Sign in again or contact your administrator.",
+    "signIn": "Sign in again"
   }
 }

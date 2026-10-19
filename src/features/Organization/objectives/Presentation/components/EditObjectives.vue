@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -50,6 +53,8 @@ const setParams = (data: AddObjectivesParams | EditObjectivesParams) => {
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['update_objectives'])">
+
   <DataStatus :controller="state">
     <template #success>
       <form class="objective-editor-form" @submit.prevent="editObjectives">
@@ -63,6 +68,8 @@ const setParams = (data: AddObjectivesParams | EditObjectivesParams) => {
       <FormLoader :inputsCount="5" />
     </template>
   </DataStatus>
+
+  </template>
 </template>
 
 <style scoped>

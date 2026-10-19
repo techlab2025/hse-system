@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
@@ -71,6 +74,8 @@ const editTraningTopic = async () => {
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['update_training_topic'])">
+
   <PermissionBuilder :code="detailsPermissions">
     <DataStatus :controller="state">
       <template #success>
@@ -108,4 +113,6 @@ const editTraningTopic = async () => {
       <DataFailed :add-text="$t('permission_denied')" description="" link="" />
     </template>
   </PermissionBuilder>
+
+  </template>
 </template>

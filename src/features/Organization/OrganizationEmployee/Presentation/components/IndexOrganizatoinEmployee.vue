@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -220,6 +222,8 @@ watch(
 )
 
 const exportExcel = () => {
+  if (!canOrganizationCapability('export')) return
+
   if (!state.value.data || state.value.data.length === 0) {
     alert('No data available to export')
     return
@@ -314,6 +318,8 @@ const handleUploadComplete = () => {
 }
 
 const DownloadExample = () => {
+  if (!canOrganizationCapability('export')) return
+
   const worksheetData = [
     {
       name: 'Example Employee',
@@ -340,6 +346,7 @@ const IndexOrganizationEmployeectionList = () => [
   {
     text: t('export_to_excel'),
     icon: ExceIcon,
+    capability: 'export' as const,
     action: () => exportExcel(),
     type: ActionItemsTypeEnum.Success,
     permission: [PermissionsEnum.ORG_EMPLOYEE_FETCH, PermissionsEnum.ORGANIZATION_EMPLOYEE],
@@ -362,6 +369,7 @@ const IndexOrganizationEmployeectionList = () => [
   {
     text: t('download_excel_template'),
     icon: ExceIcon,
+    capability: 'export' as const,
     action: () => DownloadExample(),
     type: ActionItemsTypeEnum.Success,
     permission: [PermissionsEnum?.ORG_EMPLOYEE_CREATE, PermissionsEnum?.ADMIN],

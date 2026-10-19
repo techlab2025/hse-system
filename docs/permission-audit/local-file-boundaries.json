@@ -1,0 +1,262 @@
+[
+  {
+    "file": "src/features/Organization/AuditActivity/Presentation/components/IndexAuditActivity.vue",
+    "executionBoundaries": 1,
+    "menuActions": 2,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/AuditStandard/Presentation/components/IndexAuditStandard.vue",
+    "executionBoundaries": 1,
+    "menuActions": 2,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/CheckList/Presentation/components/IndexCheckList.vue",
+    "executionBoundaries": 1,
+    "menuActions": 1,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/DocumentCategory/Presentation/components/IndexDocumentCategory.vue",
+    "executionBoundaries": 1,
+    "menuActions": 2,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/DrillType/Presentation/components/DrillTypeActionsButtons.vue",
+    "executionBoundaries": 2,
+    "menuActions": 1,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/DrillType/Presentation/components/IndexDrillType.vue",
+    "executionBoundaries": 1,
+    "menuActions": 2,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/Herikaly/Presentation/components/HerikalyActionsButtons.vue",
+    "executionBoundaries": 2,
+    "menuActions": 1,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/Herikaly/Presentation/components/IndexHerikaly.vue",
+    "executionBoundaries": 2,
+    "menuActions": 1,
+    "controls": 1,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/Injury/Presentation/components/IndexInjury.vue",
+    "executionBoundaries": 2,
+    "menuActions": 2,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/MangementChangeTopicType/Presentation/components/IndexMangementChangeTopicType.vue",
+    "executionBoundaries": 1,
+    "menuActions": 2,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/MeetingType/Presentation/components/IndexMeetingType.vue",
+    "executionBoundaries": 1,
+    "menuActions": 2,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/components/IndexOrganizatoinEmployee.vue",
+    "executionBoundaries": 2,
+    "menuActions": 2,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/components/OrganizationEmployeeActionsButtons.vue",
+    "executionBoundaries": 2,
+    "menuActions": 1,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/components/ShowOrgnizationEmployee.vue",
+    "executionBoundaries": 1,
+    "menuActions": 0,
+    "controls": 0,
+    "operations": [
+      "print"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/supcomponents/showOrgEmployee/EmployeeProfileBox.vue",
+    "executionBoundaries": 1,
+    "menuActions": 1,
+    "controls": 0,
+    "operations": [
+      "print"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/PPEActivity/Presentation/components/IndexPPEActivity.vue",
+    "executionBoundaries": 1,
+    "menuActions": 2,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/PPETool/Presentation/components/IndexPPETool.vue",
+    "executionBoundaries": 1,
+    "menuActions": 2,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/PTWType/Presentation/components/IndexPTWType.vue",
+    "executionBoundaries": 1,
+    "menuActions": 2,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/TaskReports/Presentation/subComponents/ExportReportPdf.vue",
+    "executionBoundaries": 1,
+    "menuActions": 0,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/TraningTopic/Presentation/components/IndexTraningTopic.vue",
+    "executionBoundaries": 2,
+    "menuActions": 0,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/VisitActivity/Presentation/components/IndexVisitActivity.vue",
+    "executionBoundaries": 1,
+    "menuActions": 2,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/VisitCategory/Presentation/components/IndexVisitCategory.vue",
+    "executionBoundaries": 1,
+    "menuActions": 2,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/VisitTheme/Presentation/components/IndexVisitTheme.vue",
+    "executionBoundaries": 1,
+    "menuActions": 2,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/WhereHouseType/Presentation/components/IndexWhereHouseType.vue",
+    "executionBoundaries": 2,
+    "menuActions": 2,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/ppeItem/Presentation/components/IndexPpeItem.vue",
+    "executionBoundaries": 1,
+    "menuActions": 2,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  },
+  {
+    "file": "src/features/Organization/ppeItem/Presentation/components/PPEItemActionsButtons.vue",
+    "executionBoundaries": 2,
+    "menuActions": 1,
+    "controls": 0,
+    "operations": [
+      "export"
+    ],
+    "status": "Local file execution guarded; independent backend capability registration pending; other component actions remain under review"
+  }
+]

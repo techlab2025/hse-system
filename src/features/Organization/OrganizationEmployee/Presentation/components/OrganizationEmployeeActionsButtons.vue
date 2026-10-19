@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
+
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
 import { onMounted, ref, watch } from 'vue'
@@ -47,6 +49,8 @@ const onFileSelected = (e: Event) => {
 }
 
 const exportExcel = () => {
+  if (!canOrganizationCapability('export')) return
+
   if (!state.value.data || state.value.data.length === 0) {
     alert('No data available to export')
     return
@@ -69,6 +73,8 @@ const exportExcel = () => {
 }
 
 const DownloadExample = () => {
+  if (!canOrganizationCapability('export')) return
+
   const worksheetData = [
     {
       name: 'Example Employee',
@@ -103,6 +109,7 @@ const actionList = () => [
   {
     text: t('download_excel_template'),
     icon: ExceIcon,
+    capability: 'export' as const,
     action: () => DownloadExample(),
     type: ActionItemsTypeEnum.Success,
     permission: [PermissionsEnum?.ORG_EMPLOYEE_CREATE, PermissionsEnum?.ADMIN],

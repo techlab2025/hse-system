@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import { computed, ref } from 'vue'
@@ -167,6 +170,8 @@ const canSubmit = computed(() => {
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['create_project_location_team_employee'])">
+
   <div data-hse-project v-project-panels class="hse-project-root equipment-form team-form">
     <form @submit.prevent="CreateProjectLocationTeamEmployee">
       <!--
@@ -291,6 +296,8 @@ const canSubmit = computed(() => {
       </div>
     </form>
   </div>
+
+  </template>
 </template>
 
 <style scoped lang="scss">

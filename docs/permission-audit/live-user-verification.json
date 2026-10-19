@@ -1,0 +1,26 @@
+{
+  "account": "supplied organization test user",
+  "loginPreviouslyVerified": true,
+  "assignedPermissions": 0,
+  "results": [
+    {
+      "requested": "/organization/projects",
+      "blocked": true,
+      "visibleMessage": "Access denied"
+    },
+    {
+      "requested": "/organization/projects/add",
+      "blocked": true,
+      "visibleMessage": "Access denied"
+    },
+    {
+      "requested": "/organization/permission/1074",
+      "blocked": true,
+      "visibleMessage": "Access denied"
+    }
+  ],
+  "mutationRequests": 0,
+  "pageErrors": [],
+  "mobileOverflow": false,
+  "assignmentsChanged": false
+}

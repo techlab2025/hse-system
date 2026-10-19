@@ -2,15 +2,16 @@
 import { ref, computed, type Component } from 'vue'
 import Popover from 'primevue/popover'
 import DeleteDialog from '@/base/Presentation/Dialogs/MainDialogs/DeleteDialog.vue'
-import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 import type { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import ActionListArrow from '../icons/ActionListArrow.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
 import CloseArrowActios from '../icons/CloseArrowActios.vue'
+import { useRouter } from 'vue-router'
+import { canPermissionAction, type PermissionAction } from '@/features/permission/Presentation/Helpers/organization_actions'
 
-interface ActionItem {
+interface ActionItem extends PermissionAction {
   text: string
-  icon: any
+  icon: Component
   link?: string
   action?: () => void
   permission?: PermissionsEnum[]
@@ -22,9 +23,14 @@ interface ActionItem {
 defineOptions({ inheritAttrs: false })
 
 const actions = ref()
+const router = useRouter()
+const executeAction = (action: ActionItem) => {
+  if (!canPermissionAction(action, router)) return
+  action.action?.()
+}
 
 const toggle = (event: Event) => {
-  actions.value.toggle(event)
+  if (menuActions.value.length) actions.value.toggle(event)
 }
 
 const {
@@ -41,11 +47,7 @@ const {
 
 // ✅ Filter actions by permission
 const permittedActions = computed(() =>
-  showActions
-    ? actionList.filter((a) =>
-        a.permission ? PermissionHandler.Instance.handle(a.permission) : true,
-      )
-    : [],
+  showActions ? actionList.filter((action) => canPermissionAction(action, router)) : [],
 )
 const primaryActions = computed(() => permittedActions.value.filter((action) => action.primary))
 const menuActions = computed(() => permittedActions.value.filter((action) => !action.primary))
@@ -73,14 +75,14 @@ const isVisible = computed(() => {
         v-else-if="action.action"
         class="btn btn-primary primary-action-button"
         type="button"
-        @click="action.action"
+        @click="executeAction(action)"
       >
         <component :is="action.icon" />
         <span>{{ action.text }}</span>
       </button>
     </template>
 
-    <div class="action-list-trigger" @click.stop="toggle">
+    <div v-if="menuActions.length" class="action-list-trigger" @click.stop="toggle">
       <button class="action-icon" type="button">
         <span>{{ menuActionsNumber }}</span>
         {{ $t('import_feature', { feature: $t(featureName) }) }}
@@ -95,9 +97,7 @@ const isVisible = computed(() => {
       <ul class="border-none">
         <li
           class="list-item cursor-pointer"
-          :class="
-            action.type == null ? '' : String(ActionItemsTypeEnum[action.type]).toLowerCase()
-          "
+          :class="action.type == null ? '' : String(ActionItemsTypeEnum[action.type]).toLowerCase()"
           v-for="action in menuActions"
           :key="action.text"
         >
@@ -108,14 +108,18 @@ const isVisible = computed(() => {
 
           <button
             v-else-if="action.action && action.text != $t('delete')"
-            @click="action.action"
+            @click="executeAction(action)"
             class="flex items-center gap-sm"
           >
             <component :is="action.icon" />
             <span>{{ action.text }}</span>
           </button>
 
-          <DeleteDialog v-else-if="action.text == $t('delete')" @delete="action.action" />
+          <DeleteDialog
+            v-else-if="action.text == $t('delete')"
+            :allowed="() => canPermissionAction(action, router)"
+            @delete="executeAction(action)"
+          />
         </li>
         <slot name="custom"></slot>
       </ul>

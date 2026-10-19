@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { SerialNumberEnum } from '../../Core/Enums/serialNum'
 import AddSerialNumberParams from '../../Core/params/addSerialNumberParams'
 import { onMounted, ref } from 'vue'
@@ -361,6 +364,8 @@ const route = useRoute()
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['create_coding_system'])">
+
   <form @submit.prevent="sendData" class="serial-form container">
     <div v-if="serialType == SertialNumberStatusEnum.MANUAL" class="serial-overlay"></div>
     <div
@@ -432,6 +437,8 @@ const route = useRoute()
       </button>
     </div>
   </form>
+
+  </template>
 </template>
 
 <style lang="scss" scoped>

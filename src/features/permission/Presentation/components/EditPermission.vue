@@ -1,10 +1,12 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { canAny, validatePermissionChanges } from '../Helpers/organization_permission'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+import type AddPermissionParams from '../../Core/params/addPermissionParams'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 import PermissionForm from './PermissionForm.vue'
-import type Params from '@/base/core/params/params'
 import ShowPermissionteController from '../controllers/showPermissionController'
 import ShowPermissionParams from '../../Core/params/showPermissionParams'
 import EditPermissionController from '../controllers/editPermissionController'
@@ -12,8 +14,12 @@ import { getOrganizationType } from '../Helpers/organization_type'
 
 const route = useRoute()
 const router = useRouter()
-const id = route.params.id
-const params = ref<Params | null>(null)
+const params = ref<AddPermissionParams | null>(null)
+const canEdit = computed(
+  () =>
+    canAny([PermissionsEnum.PERMISSION_UPDATE]) &&
+    state.value.data?.isScopedTo(type, Number(route.params.id)) === true,
+)
 
 const showPermissionController = ShowPermissionteController.getInstance()
 const state = ref(showPermissionController.state.value)
@@ -31,12 +37,11 @@ onMounted(() => {
   fetchPermissionDetails()
 })
 
-const EditPermission = async (draft: boolean) => {
-  if (draft) {
-    await EditPermissionController.getInstance().editPermission(params.value!, router)
-  } else {
-    await EditPermissionController.getInstance().editPermission(params.value!, router)
-  }
+const EditPermission = async () => {
+  if (!canEdit.value || !params.value) return
+  const original = state.value.data?.permission.map((item) => item.permission) ?? []
+  if (!validatePermissionChanges(original, params.value.permission)) return
+  await EditPermissionController.getInstance().editPermission(params.value, router)
 }
 
 watch(
@@ -49,7 +54,7 @@ watch(
   },
 )
 
-const setParams = (data: Params) => {
+const setParams = (data: AddPermissionParams) => {
   params.value = data
 }
 </script>
@@ -61,12 +66,20 @@ const setParams = (data: Params) => {
       <!--              {{ state.data?.titles }}-->
 
       <!--      </pre>-->
-      <form @submit.prevent="EditPermission">
+        <!-- v-if="state.data?.isScopedTo(type, Number(route.params.id))" -->
+
+      <form
+        v-if="state.data?.isScopedTo(type, Number(route.params.id))"
+        @submit.prevent="EditPermission"
+      >
         <PermissionForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">Edit</button>
+          <button v-if="canEdit" type="submit" class="btn btn-primary" :disabled="!params">
+            {{ $t('save') }}
+          </button>
         </div>
       </form>
+      <p v-else role="alert">{{ $t('authorization.unscopedAssignments') }}</p>
     </template>
     <template #loader>
       <FormLoader :inputsCount="5" />

@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, ref } from 'vue'
@@ -97,6 +100,8 @@ async function create() {
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['create_risk_assessment'])">
+
   <main data-hse-project v-project-panels class="hse-project-root hse-project-page create-page">
     <div class="form-shell">
       <header data-hse-project-head class="hse-project-page-head form-header">
@@ -286,6 +291,8 @@ async function create() {
       </form>
     </div>
   </main>
+
+  </template>
 </template>
 
 <style scoped>

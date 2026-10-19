@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { ref } from 'vue'
@@ -70,6 +73,8 @@ const AddEquipment = async () => {
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['create_project_zoon_equipment'])">
+
   <div data-hse-project v-project-panels class="hse-project-root card flex justify-center">
     <EmptyData
       :img="EquimentFolderEmpty"
@@ -130,6 +135,8 @@ const AddEquipment = async () => {
       </div>
     </Dialog>
   </div>
+
+  </template>
 </template>
 
 <style scoped>

@@ -1,0 +1,2875 @@
+[
+  {
+    "name": "Project Permit Answer",
+    "path": "/organization/project-permit/project/templates/answer",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "Permit answer submission needs its own backend identifier"
+    }
+  },
+  {
+    "name": "Show Incedant",
+    "path": "/organization/equipment-mangement/incedant/show/:id",
+    "policy": {
+      "anyOf": [
+        "OI00",
+        "OI02"
+      ]
+    }
+  },
+  {
+    "name": "Inspection Result",
+    "path": "/organization/equipment-mangement/inspection/result/:id",
+    "policy": {
+      "anyOf": [
+        "OIS00",
+        "OIS01"
+      ]
+    }
+  },
+  {
+    "name": "Show Observeration",
+    "path": "/organization/equipment-mangement/observation/show/:id",
+    "policy": {
+      "anyOf": [
+        "OOB00",
+        "OOB02"
+      ]
+    }
+  },
+  {
+    "name": "Add Inspection",
+    "path": "/organization/equipment-mangement/inspection/add/:equipment_id?",
+    "policy": {
+      "anyOf": [
+        "OIS00",
+        "OIS03"
+      ]
+    }
+  },
+  {
+    "name": "Add Audit",
+    "path": "/organization/equipment-mangement/audits/add/:id?",
+    "policy": {
+      "anyOf": [
+        "OIS00",
+        "OIS03"
+      ]
+    }
+  },
+  {
+    "name": "Project Permit Templates",
+    "path": "/organization/project-permit/project/templates",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "Permit template answer operation needs its own backend identifier"
+    }
+  },
+  {
+    "name": "Project Template Result",
+    "path": "/organization/project-permit/project/templates-result",
+    "policy": {
+      "anyOf": [
+        "PTW00",
+        "PTW01"
+      ]
+    }
+  },
+  {
+    "name": "Add Incedant ",
+    "path": "/organization/equipment-mangement/incedant/add",
+    "policy": {
+      "anyOf": [
+        "OI00",
+        "OI03"
+      ]
+    }
+  },
+  {
+    "name": "Overdue Inspection",
+    "path": "/organization/equipment-mangement/inspection/overdue",
+    "policy": {
+      "anyOf": [
+        "OIS00",
+        "OIS01"
+      ]
+    }
+  },
+  {
+    "name": "Add Hazard ",
+    "path": "/organization/equipment-mangement/hazard/add",
+    "policy": {
+      "anyOf": [
+        "OH00",
+        "OH03"
+      ]
+    }
+  },
+  {
+    "name": "Add Observeration",
+    "path": "/organization/equipment-mangement/observation/add",
+    "policy": {
+      "anyOf": [
+        "OOB00",
+        "OOB03"
+      ]
+    }
+  },
+  {
+    "name": "Project Hierarchy",
+    "path": "/organization/project-hierarchy/project/:project_id",
+    "policy": {
+      "anyOf": [
+        "PLH00",
+        "PLH03"
+      ]
+    }
+  },
+  {
+    "name": "Project Employee",
+    "path": "/organization/project-employee/project/:project_id",
+    "policy": {
+      "anyOf": [
+        "PLHE00",
+        "PLHE03"
+      ]
+    }
+  },
+  {
+    "name": "Project Equipment",
+    "path": "/organization/project-equipment/project/:project_id",
+    "policy": {
+      "anyOf": [
+        "PZE00",
+        "PZE03"
+      ]
+    }
+  },
+  {
+    "name": "Project Permit",
+    "path": "/organization/project-permit/project/:project_id",
+    "policy": {
+      "anyOf": [
+        "PTW00",
+        "PTW03"
+      ]
+    }
+  },
+  {
+    "name": "Edit Incedant",
+    "path": "/organization/equipment-mangement/incedant/:id",
+    "policy": {
+      "anyOf": [
+        "OI00",
+        "OI04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Inspection",
+    "path": "/organization/equipment-mangement/inspection/:id",
+    "policy": {
+      "anyOf": [
+        "OIS00",
+        "OIS04"
+      ]
+    }
+  },
+  {
+    "name": "Audits",
+    "path": "/organization/equipment-mangement/audits/:id",
+    "policy": {
+      "anyOf": [
+        "OIS00",
+        "OIS01"
+      ]
+    }
+  },
+  {
+    "name": "Edit Hazard ",
+    "path": "/organization/equipment-mangement/hazard/:id",
+    "policy": {
+      "anyOf": [
+        "OH00",
+        "OH04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Observeration",
+    "path": "/organization/equipment-mangement/observation/:id",
+    "policy": {
+      "anyOf": [
+        "OOB00",
+        "OOB04"
+      ]
+    }
+  },
+  {
+    "name": "Show Organization Employee",
+    "path": "/organization/organization-employee/show/:id",
+    "policy": {
+      "anyOf": [
+        "OE00",
+        "OE02"
+      ]
+    }
+  },
+  {
+    "name": "Show Induction",
+    "path": "/organization/induction/show/:id",
+    "policy": {
+      "anyOf": [
+        "IND00",
+        "IND02"
+      ]
+    }
+  },
+  {
+    "name": "NCR Details",
+    "path": "/organization/internal-audit/ncr/:id",
+    "policy": {
+      "anyOf": [
+        "OMIA00",
+        "OMIA02"
+      ]
+    }
+  },
+  {
+    "name": "Project Setup Flow",
+    "path": "/organization/project/flow/:id?/:step?",
+    "policy": {
+      "anyOf": [
+        "PJ00",
+        "PJ03"
+      ]
+    }
+  },
+  {
+    "name": "Add Hierarchy",
+    "path": "/organization/herikaly/add/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "HRK00",
+        "HRK03"
+      ]
+    }
+  },
+  {
+    "name": "Add Equipment Type Organization",
+    "path": "/organization/equipment-type/add/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "OET00",
+        "OET03"
+      ]
+    }
+  },
+  {
+    "name": "Add Equipment Organization",
+    "path": "/organization/equipment/add/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "OEQ00",
+        "OEQ03"
+      ]
+    }
+  },
+  {
+    "name": "Add Hazard Classification Organization",
+    "path": "/organization/hazard-type/add/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "OHT00",
+        "OHT03"
+      ]
+    }
+  },
+  {
+    "name": "Add Template Item Organization",
+    "path": "/organization/template-item/add/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "TI00",
+        "TI03"
+      ]
+    }
+  },
+  {
+    "name": "Add  Country Organization",
+    "path": "/organization/countries/add/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "LO00",
+        "LO03"
+      ]
+    }
+  },
+  {
+    "name": "Add  State Organization",
+    "path": "/organization/states/add/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "LO00",
+        "LO03"
+      ]
+    }
+  },
+  {
+    "name": "Add  City Organization",
+    "path": "/organization/cities/add/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "LO00",
+        "LO03"
+      ]
+    }
+  },
+  {
+    "name": "Add  Area Organization",
+    "path": "/organization/areas/add/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "LO00",
+        "LO03"
+      ]
+    }
+  },
+  {
+    "name": "Add Risk Organization",
+    "path": "/organization/hazard/add/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "OH00",
+        "OH03"
+      ]
+    }
+  },
+  {
+    "name": "Add Partner Organization",
+    "path": "/organization/partner/add",
+    "policy": {
+      "anyOf": [
+        "P00",
+        "P03"
+      ]
+    }
+  },
+  {
+    "name": "Add Project",
+    "path": "/organization/project/add",
+    "policy": {
+      "anyOf": [
+        "PJ00",
+        "PJ03"
+      ]
+    }
+  },
+  {
+    "name": "Create Employee Risk Assessment",
+    "path": "/organization/risk-assessments/create",
+    "policy": {
+      "anyOf": [
+        "RSKA00",
+        "RSKA03"
+      ]
+    }
+  },
+  {
+    "name": "Create Employee Permit",
+    "path": "/organization/project-permit/create",
+    "policy": {
+      "anyOf": [
+        "PTW00",
+        "PTW03"
+      ]
+    }
+  },
+  {
+    "name": "Add Project Zone",
+    "path": "/organization/project-zone/add",
+    "policy": {
+      "anyOf": [
+        "PZ00",
+        "PZ03"
+      ]
+    }
+  },
+  {
+    "name": "Add Organization Employee",
+    "path": "/organization/organization-employee/add",
+    "policy": {
+      "anyOf": [
+        "OE00",
+        "OE03"
+      ]
+    }
+  },
+  {
+    "name": "Upload Organization Employee",
+    "path": "/organization/organization-employee/upload",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Organization Employee"
+    }
+  },
+  {
+    "name": "Add Organization Location",
+    "path": "/organization/organization-location/add",
+    "policy": {
+      "anyOf": [
+        "OL00",
+        "OL03"
+      ]
+    }
+  },
+  {
+    "name": "Hierarchy Matrix",
+    "path": "/organization/herikaly/matrix",
+    "policy": {
+      "anyOf": [
+        "HRK00",
+        "HRK01"
+      ]
+    }
+  },
+  {
+    "name": "Upload Hierarchy Excel",
+    "path": "/organization/herikaly/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Hierarchy Excel"
+    }
+  },
+  {
+    "name": "Add Objective",
+    "path": "/organization/objectives/add",
+    "policy": {
+      "anyOf": [
+        "OBJ00",
+        "OBJ03"
+      ]
+    }
+  },
+  {
+    "name": "Add Investigating ",
+    "path": "/organization/Investigating/add",
+    "policy": {
+      "anyOf": [
+        "INV00",
+        "INV06"
+      ]
+    }
+  },
+  {
+    "name": "Incedant",
+    "path": "/organization/equipment-mangement/incedant",
+    "policy": {
+      "anyOf": [
+        "OI00",
+        "OI01"
+      ]
+    }
+  },
+  {
+    "name": "Incident Report",
+    "path": "/organization/equipment-mangement/incident-report",
+    "policy": {
+      "anyOf": [
+        "OI00",
+        "OI01"
+      ]
+    }
+  },
+  {
+    "name": "Inspection",
+    "path": "/organization/equipment-mangement/inspection",
+    "policy": {
+      "anyOf": [
+        "OIS00",
+        "OIS01"
+      ]
+    }
+  },
+  {
+    "name": "Hazard ",
+    "path": "/organization/equipment-mangement/hazard",
+    "policy": {
+      "anyOf": [
+        "OH00",
+        "OH01"
+      ]
+    }
+  },
+  {
+    "name": "Observation Report",
+    "path": "/organization/equipment-mangement/observation-report",
+    "policy": {
+      "anyOf": [
+        "OOB00",
+        "OOB01"
+      ]
+    }
+  },
+  {
+    "name": "Observeration",
+    "path": "/organization/equipment-mangement/observation",
+    "policy": {
+      "anyOf": [
+        "OOB00",
+        "OOB01"
+      ]
+    }
+  },
+  {
+    "name": "All Observeration",
+    "path": "/organization/equipment-mangement/all-observatin",
+    "policy": {
+      "anyOf": [
+        "OOB00",
+        "OOB01"
+      ]
+    }
+  },
+  {
+    "name": "Add InvestigationMeeting ",
+    "path": "/organization/InvestigationMeeting/add",
+    "policy": {
+      "anyOf": [
+        "IVM00",
+        "IVM03"
+      ]
+    }
+  },
+  {
+    "name": "Add Injury",
+    "path": "/organization/injury/add",
+    "policy": {
+      "anyOf": [
+        "IN00",
+        "IN03"
+      ]
+    }
+  },
+  {
+    "name": "Upload Injury Excel",
+    "path": "/organization/injury/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Injury Excel"
+    }
+  },
+  {
+    "name": "Add WarehouseType",
+    "path": "/organization/where-house-type/add",
+    "policy": {
+      "anyOf": [
+        "WHT00",
+        "WHT03"
+      ]
+    }
+  },
+  {
+    "name": "Upload WarehouseType",
+    "path": "/organization/where-house-type/upload",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload WarehouseType"
+    }
+  },
+  {
+    "name": "Add warehouse",
+    "path": "/organization/where-house/add",
+    "policy": {
+      "anyOf": [
+        "WH00",
+        "WH03"
+      ]
+    }
+  },
+  {
+    "name": "Add OrganizationCertificate",
+    "path": "/organization/organization-certificate/add",
+    "policy": {
+      "anyOf": [
+        "OCF00",
+        "OCF03"
+      ]
+    }
+  },
+  {
+    "name": "Import OrganizationCertificate",
+    "path": "/organization/organization-certificate/import-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Import OrganizationCertificate"
+    }
+  },
+  {
+    "name": "Add OrganizationDocuments",
+    "path": "/organization/organization-documents/add",
+    "policy": {
+      "anyOf": [
+        "ODO00",
+        "ODO03"
+      ]
+    }
+  },
+  {
+    "name": "Import OrganizationDocuments",
+    "path": "/organization/organization-documents/import-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Import OrganizationDocuments"
+    }
+  },
+  {
+    "name": "Create Ticket Type",
+    "path": "/organization/ticket-type/add",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No confirmed create permission for this feature"
+    }
+  },
+  {
+    "name": "Create Ticket",
+    "path": "/organization/ticket/add",
+    "policy": {
+      "anyOf": [
+        "TK00",
+        "TK03"
+      ]
+    }
+  },
+  {
+    "name": "Add CheckList",
+    "path": "/organization/check-list/add",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No confirmed create permission for this feature"
+    }
+  },
+  {
+    "name": "Add Document Refrence",
+    "path": "/organization/document-refrence/add",
+    "policy": {
+      "anyOf": [
+        "ODR00",
+        "ODR03"
+      ]
+    }
+  },
+  {
+    "name": "Add Shift",
+    "path": "/organization/shifts/add",
+    "policy": {
+      "anyOf": [
+        "OSH00",
+        "OSH03"
+      ]
+    }
+  },
+  {
+    "name": "Add Notification Plan",
+    "path": "/organization/notification-plan/add",
+    "policy": {
+      "anyOf": [
+        "NP00",
+        "NP03"
+      ]
+    }
+  },
+  {
+    "name": "Add Today Talk",
+    "path": "/organization/today-talks/create",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "Today talks need backend permission identifiers"
+    }
+  },
+  {
+    "name": "Add Induction",
+    "path": "/organization/induction/add",
+    "policy": {
+      "anyOf": [
+        "IND00",
+        "IND03"
+      ]
+    }
+  },
+  {
+    "name": "Add Management Change Topic Type",
+    "path": "/organization/management-change-topic-type/add",
+    "policy": {
+      "anyOf": [
+        "OMCTT00",
+        "OMCTT03"
+      ]
+    }
+  },
+  {
+    "name": "Add Management Of Change",
+    "path": "/organization/management-of-change/add",
+    "policy": {
+      "anyOf": [
+        "MOC00",
+        "MOC02"
+      ]
+    }
+  },
+  {
+    "name": "Internal Audit Register",
+    "path": "/organization/internal-audit/register",
+    "policy": {
+      "anyOf": [
+        "OIA00",
+        "OIA01"
+      ]
+    }
+  },
+  {
+    "name": "Add Accidents Type Organization",
+    "path": "/organization/accidents-type/add",
+    "policy": {
+      "anyOf": [
+        "OAT00",
+        "OAT03"
+      ]
+    }
+  },
+  {
+    "name": "Upload Accidents Type Excel Organization",
+    "path": "/organization/accidents-type/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Accidents Type Excel"
+    }
+  },
+  {
+    "name": "Add Incident Category Organization",
+    "path": "/organization/incident-category/add",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No confirmed create permission for this feature"
+    }
+  },
+  {
+    "name": "Add Drill Type Organization",
+    "path": "/organization/drill-type/add",
+    "policy": {
+      "anyOf": [
+        "ODT00",
+        "ODT03"
+      ]
+    }
+  },
+  {
+    "name": "Upload Drill Types Organization",
+    "path": "/organization/drill-type/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Drill Types"
+    }
+  },
+  {
+    "name": "Add PPE Item Organization",
+    "path": "/organization/ppe-item/add",
+    "policy": {
+      "anyOf": [
+        "OPPEI00",
+        "OPPEI03"
+      ]
+    }
+  },
+  {
+    "name": "Upload PPE Items Organization",
+    "path": "/organization/ppe-item/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload PPE Items"
+    }
+  },
+  {
+    "name": "Add Certificate Organization",
+    "path": "/organization/certificate/add",
+    "policy": {
+      "anyOf": [
+        "OCF00",
+        "OCF03"
+      ]
+    }
+  },
+  {
+    "name": "Import Certificate Organization",
+    "path": "/organization/certificate/import-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Import Certificate"
+    }
+  },
+  {
+    "name": "Upload Equipment Excel Organization",
+    "path": "/organization/equipment/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Equipment Excel"
+    }
+  },
+  {
+    "name": "Upload Equipment Type Excel Organization",
+    "path": "/organization/equipment-type/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Equipment Type Excel"
+    }
+  },
+  {
+    "name": "Add Factory Organization",
+    "path": "/organization/factory/add",
+    "policy": {
+      "anyOf": [
+        "OF00",
+        "OF03"
+      ]
+    }
+  },
+  {
+    "name": "Add Factory Item Organization",
+    "path": "/organization/factory-item/add",
+    "policy": {
+      "anyOf": [
+        "OFI00",
+        "OFI03"
+      ]
+    }
+  },
+  {
+    "name": "Upload Hazard Classification Organization",
+    "path": "/organization/hazard-type/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Hazard Classification"
+    }
+  },
+  {
+    "name": "Add Template Organization",
+    "path": "/organization/template/add",
+    "policy": {
+      "anyOf": [
+        "OT00",
+        "OT03"
+      ]
+    }
+  },
+  {
+    "name": "Add Methods Organization",
+    "path": "/organization/methods/add",
+    "policy": {
+      "anyOf": [
+        "M00",
+        "M03"
+      ]
+    }
+  },
+  {
+    "name": "Add Team Organization",
+    "path": "/organization/team/add",
+    "policy": {
+      "anyOf": [
+        "OTT00",
+        "OTT03"
+      ]
+    }
+  },
+  {
+    "name": "Add Contractor Organization",
+    "path": "/organization/contractor/add",
+    "policy": {
+      "anyOf": [
+        "OOC00",
+        "OOC03"
+      ]
+    }
+  },
+  {
+    "name": "Add Observeration Type Organization",
+    "path": "/organization/observation-type/add",
+    "policy": {
+      "anyOf": [
+        "OOBT00",
+        "OOBT03"
+      ]
+    }
+  },
+  {
+    "name": "Import Observeration Type Organization",
+    "path": "/organization/observation-type/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Import Observeration Type"
+    }
+  },
+  {
+    "name": "Add Health Condition Organization",
+    "path": "/organization/health-conditions/add",
+    "policy": {
+      "anyOf": [
+        "OOHC00",
+        "OOHC03"
+      ]
+    }
+  },
+  {
+    "name": "Add Role Organization",
+    "path": "/organization/role/add",
+    "policy": {
+      "anyOf": [
+        "OR00",
+        "OR03"
+      ]
+    }
+  },
+  {
+    "name": "Add Scope Organization",
+    "path": "/organization/scope/add",
+    "policy": {
+      "anyOf": [
+        "SC00",
+        "SC03"
+      ]
+    }
+  },
+  {
+    "name": "Add Root Causes Organization",
+    "path": "/organization/root-causes/add",
+    "policy": {
+      "anyOf": [
+        "RC00",
+        "RC03"
+      ]
+    }
+  },
+  {
+    "name": "Upload Root Causes Excel Organization",
+    "path": "/organization/root-causes/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Root Causes Excel"
+    }
+  },
+  {
+    "name": "Create Ticket Type Organization",
+    "path": "/organization/ticket-type/add",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No confirmed create permission for this feature"
+    }
+  },
+  {
+    "name": "Create Ticket Organization",
+    "path": "/organization/ticket/add",
+    "policy": {
+      "anyOf": [
+        "TK00",
+        "TK03"
+      ]
+    }
+  },
+  {
+    "name": "Add WarehouseType Organization",
+    "path": "/organization/where-house-type/add",
+    "policy": {
+      "anyOf": [
+        "WHT00",
+        "WHT03"
+      ]
+    }
+  },
+  {
+    "name": "Upload WarehouseType Organization",
+    "path": "/organization/where-house-type/upload",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload WarehouseType"
+    }
+  },
+  {
+    "name": "Add Injury Organization",
+    "path": "/organization/injury/add",
+    "policy": {
+      "anyOf": [
+        "IN00",
+        "IN03"
+      ]
+    }
+  },
+  {
+    "name": "Upload Injury Excel Organization",
+    "path": "/organization/injury/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Injury Excel"
+    }
+  },
+  {
+    "name": "Add Meeting Type Organization",
+    "path": "/organization/meeting-types/add",
+    "policy": {
+      "anyOf": [
+        "OMTI00",
+        "OMTI03"
+      ]
+    }
+  },
+  {
+    "name": "Upload Meeting Types Organization",
+    "path": "/organization/meeting-type/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Meeting Types"
+    }
+  },
+  {
+    "name": "Add PTW Type Organization",
+    "path": "/organization/ptw-type/add",
+    "policy": {
+      "anyOf": [
+        "OPTWT00",
+        "OPTWT01"
+      ]
+    }
+  },
+  {
+    "name": "Upload PTW Types Organization",
+    "path": "/organization/ptw-type/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload PTW Types"
+    }
+  },
+  {
+    "name": "Add PPE Activity Organization",
+    "path": "/organization/ppe-activity/add",
+    "policy": {
+      "anyOf": [
+        "OPPEAA00",
+        "OPPEAC03"
+      ]
+    }
+  },
+  {
+    "name": "Upload PPE Activities Organization",
+    "path": "/organization/ppe-activity/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload PPE Activities"
+    }
+  },
+  {
+    "name": "Add PPE Tool Organization",
+    "path": "/organization/ppe-tool/add",
+    "policy": {
+      "anyOf": [
+        "OPPETA00",
+        "OPPETC03"
+      ]
+    }
+  },
+  {
+    "name": "Upload PPE Tools Organization",
+    "path": "/organization/ppe-tool/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload PPE Tools"
+    }
+  },
+  {
+    "name": "Add Document Category Organization",
+    "path": "/organization/document-category/add",
+    "policy": {
+      "anyOf": [
+        "ODCA00",
+        "ODCA03"
+      ]
+    }
+  },
+  {
+    "name": "Upload Document Categories Organization",
+    "path": "/organization/document-category/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Document Categories"
+    }
+  },
+  {
+    "name": "Add Audit Standard Organization",
+    "path": "/organization/audit-standard/add",
+    "policy": {
+      "anyOf": [
+        "OASTA00",
+        "OASTC03"
+      ]
+    }
+  },
+  {
+    "name": "Upload Audit Standards Organization",
+    "path": "/organization/audit-standard/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Audit Standards"
+    }
+  },
+  {
+    "name": "Add Audit Activity Organization",
+    "path": "/organization/audit-activity/add",
+    "policy": {
+      "anyOf": [
+        "OAACTA00",
+        "OAACTC03"
+      ]
+    }
+  },
+  {
+    "name": "Upload Audit Activities Organization",
+    "path": "/organization/audit-activity/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Audit Activities"
+    }
+  },
+  {
+    "name": "Add Traning Topic Organization",
+    "path": "/organization/traning-topics/add",
+    "policy": {
+      "anyOf": [
+        "OTRTP00",
+        "OTRTP03"
+      ]
+    }
+  },
+  {
+    "name": "Upload Traning Topics Organization",
+    "path": "/organization/traning-topic/upload-excel",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Traning Topics"
+    }
+  },
+  {
+    "name": "Add Visit Activity Organization",
+    "path": "/organization/visit-activity/add",
+    "policy": {
+      "anyOf": [
+        "OVA00",
+        "OVA03"
+      ]
+    }
+  },
+  {
+    "name": "Add Visit Theme Organization",
+    "path": "/organization/visit-theme/add",
+    "policy": {
+      "anyOf": [
+        "OVT00",
+        "OVT03"
+      ]
+    }
+  },
+  {
+    "name": "Add Visit Category Organization",
+    "path": "/organization/visit-category/add",
+    "policy": {
+      "anyOf": [
+        "OVC00",
+        "OVC03"
+      ]
+    }
+  },
+  {
+    "name": "Project Leadership Visit Report",
+    "path": "/organization/project-details/:id/leadership/visits/:visitId/report",
+    "policy": {
+      "anyOf": [
+        "OLE00",
+        "OLE02"
+      ]
+    }
+  },
+  {
+    "name": "Project Leadership Visits",
+    "path": "/organization/project-details/:id/leadership/visits",
+    "policy": {
+      "anyOf": [
+        "OLE00",
+        "OLE01"
+      ]
+    }
+  },
+  {
+    "name": "Create Risk Assessment",
+    "path": "/organization/project-details/:id/risk-assessments/create",
+    "policy": {
+      "anyOf": [
+        "RSKA00",
+        "RSKA03"
+      ]
+    }
+  },
+  {
+    "name": "Create Today Talk",
+    "path": "/organization/project-details/:id/today-talk/create",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "Today talks need backend permission identifiers"
+    }
+  },
+  {
+    "name": "organization-objectives-update-progress",
+    "path": "/organization/objectives/:objectiveId/progress/update",
+    "policy": {
+      "anyOf": [
+        "OBJ00",
+        "OBJ04"
+      ]
+    }
+  },
+  {
+    "name": "organization-objectives-edit-progress",
+    "path": "/organization/objectives/:objectiveId/progress/:progressId/edit",
+    "policy": {
+      "anyOf": [
+        "OBJ00",
+        "OBJ04"
+      ]
+    }
+  },
+  {
+    "name": "Project Summary Data",
+    "path": "/organization/project-summary/:id/data/:resource",
+    "policy": {
+      "anyOf": [
+        "PJ00",
+        "PJ02"
+      ]
+    }
+  },
+  {
+    "name": "Project Leadership",
+    "path": "/organization/project-details/:id/leadership",
+    "policy": {
+      "anyOf": [
+        "OLE00",
+        "OLE01"
+      ]
+    }
+  },
+  {
+    "name": "Project Risk Assessments",
+    "path": "/organization/project-details/:id/risk-assessments",
+    "policy": {
+      "anyOf": [
+        "RSKA00",
+        "RSKA01"
+      ]
+    }
+  },
+  {
+    "name": "management-of-change",
+    "path": "/organization/project-details/:id/management-of-change",
+    "policy": {
+      "anyOf": [
+        "MOC00",
+        "MOC01"
+      ]
+    }
+  },
+  {
+    "name": "organization-objectives-details",
+    "path": "/organization/objectives/:objectiveId/details",
+    "policy": {
+      "anyOf": [
+        "OBJ00",
+        "OBJ02"
+      ]
+    }
+  },
+  {
+    "name": "Edit Ticket Type",
+    "path": "/organization/ticket-type/:id/edit",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No confirmed update permission for this feature"
+    }
+  },
+  {
+    "name": "Edit Ticket Type Organization",
+    "path": "/organization/ticket-type/:id/edit",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No confirmed update permission for this feature"
+    }
+  },
+  {
+    "name": "Edit Equipment Organization",
+    "path": "/organization/equipment/:id/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "OEQ00",
+        "OEQ04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Template Item Organization",
+    "path": "/organization/template-item/:id/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "TI00",
+        "TI04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Partner Organization",
+    "path": "/organization/partner/:id",
+    "policy": {
+      "anyOf": [
+        "P00",
+        "P04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Project",
+    "path": "/organization/project/:id",
+    "policy": {
+      "anyOf": [
+        "PJ00",
+        "PJ04"
+      ]
+    }
+  },
+  {
+    "name": "Project Summary",
+    "path": "/organization/project-summary/:id",
+    "policy": {
+      "anyOf": [
+        "PJ00",
+        "PJ02"
+      ]
+    }
+  },
+  {
+    "name": "Project Details",
+    "path": "/organization/project-details/:id",
+    "policy": {
+      "anyOf": [
+        "PJ00",
+        "PJ02"
+      ]
+    }
+  },
+  {
+    "name": "Project Meetings",
+    "path": "/organization/project-meetings/:project_id",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "Project meetings need backend permission identifiers"
+    }
+  },
+  {
+    "name": "Employee Details",
+    "path": "/organization/employee-details/:project_id",
+    "policy": {
+      "anyOf": [
+        "PLE00",
+        "PLE01"
+      ]
+    }
+  },
+  {
+    "name": "Project Permits",
+    "path": "/organization/project-permits/:project_id",
+    "policy": {
+      "anyOf": [
+        "PTW00",
+        "PTW01"
+      ]
+    }
+  },
+  {
+    "name": "Project My Permits",
+    "path": "/organization/project-my-permits/:project_id",
+    "policy": {
+      "anyOf": [
+        "PTW00",
+        "PTW01"
+      ]
+    }
+  },
+  {
+    "name": "Edit Project Zone",
+    "path": "/organization/project-zone/:id",
+    "policy": {
+      "anyOf": [
+        "PZ00",
+        "PZ04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Organization Employee",
+    "path": "/organization/organization-employee/:id",
+    "policy": {
+      "anyOf": [
+        "OE00",
+        "OE04"
+      ]
+    }
+  },
+  {
+    "name": "Organization Employee Tasks",
+    "path": "/organization/organization-employee-tasks/:id",
+    "policy": {
+      "anyOf": [
+        "TSK00",
+        "TSK01"
+      ]
+    }
+  },
+  {
+    "name": "Edit Organization Location",
+    "path": "/organization/organization-location/:id",
+    "policy": {
+      "anyOf": [
+        "OL00",
+        "OL04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Hierarchy",
+    "path": "/organization/herikaly/:id",
+    "policy": {
+      "anyOf": [
+        "HRK00",
+        "HRK04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Objective",
+    "path": "/organization/objectives/:id",
+    "policy": {
+      "anyOf": [
+        "OBJ00",
+        "OBJ04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Investigating ",
+    "path": "/organization/Investigating/:id",
+    "policy": {
+      "anyOf": [
+        "INV00",
+        "INV04"
+      ]
+    }
+  },
+  {
+    "name": "Investigating Result",
+    "path": "/organization/Investigating-result/:id",
+    "policy": {
+      "anyOf": [
+        "INV00",
+        "IVTR06"
+      ]
+    }
+  },
+  {
+    "name": "Investigating Result Answer",
+    "path": "/organization/Investigating-result-answer/:id",
+    "policy": {
+      "anyOf": [
+        "INV00",
+        "INV02"
+      ]
+    }
+  },
+  {
+    "name": "Edit InvestigationMeeting ",
+    "path": "/organization/InvestigationMeeting/:id",
+    "policy": {
+      "anyOf": [
+        "IVM00",
+        "IVM04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Injury",
+    "path": "/organization/injury/:id",
+    "policy": {
+      "anyOf": [
+        "IN00",
+        "IN04"
+      ]
+    }
+  },
+  {
+    "name": "Edit WarehouseType",
+    "path": "/organization/where-house-type/:id",
+    "policy": {
+      "anyOf": [
+        "WHT00",
+        "WHT04"
+      ]
+    }
+  },
+  {
+    "name": "Edit warehouse",
+    "path": "/organization/where-house/:id",
+    "policy": {
+      "anyOf": [
+        "WH00",
+        "WH04"
+      ]
+    }
+  },
+  {
+    "name": "Edit OrganizationCertificate",
+    "path": "/organization/organization-certificate/:id",
+    "policy": {
+      "anyOf": [
+        "OCF00",
+        "OCF04"
+      ]
+    }
+  },
+  {
+    "name": "Edit OrganizationDocuments",
+    "path": "/organization/organization-documents/:id",
+    "policy": {
+      "anyOf": [
+        "ODO00",
+        "ODO04"
+      ]
+    }
+  },
+  {
+    "name": "History Ticket",
+    "path": "/organization/ticket/:id",
+    "policy": {
+      "anyOf": [
+        "TK00",
+        "TK02"
+      ]
+    }
+  },
+  {
+    "name": "Capa Details",
+    "path": "/organization/capa/:id",
+    "policy": {
+      "anyOf": [
+        "CAPA00",
+        "CAPA05"
+      ]
+    }
+  },
+  {
+    "name": "Edit CheckList",
+    "path": "/organization/check-list/:id",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No confirmed update permission for this feature"
+    }
+  },
+  {
+    "name": "Edit Document Refrence",
+    "path": "/organization/document-refrence/:id",
+    "policy": {
+      "anyOf": [
+        "ODR00",
+        "ODR04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Shift",
+    "path": "/organization/shifts/:id",
+    "policy": {
+      "anyOf": [
+        "OSH00",
+        "OSH04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Induction",
+    "path": "/organization/induction/:id",
+    "policy": {
+      "anyOf": [
+        "IND00",
+        "IND04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Management Change Topic Type",
+    "path": "/organization/management-change-topic-type/:id",
+    "policy": {
+      "anyOf": [
+        "OMCTT00",
+        "OMCTT04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Management Of Change",
+    "path": "/organization/management-of-change/:id",
+    "policy": {
+      "anyOf": [
+        "MOC00",
+        "MOC05"
+      ]
+    }
+  },
+  {
+    "name": "My Internal Audit NCRs",
+    "path": "/organization/my-internal-audit/:id",
+    "policy": {
+      "anyOf": [
+        "OMIA00",
+        "OMIA02"
+      ]
+    }
+  },
+  {
+    "name": "Permission Organization",
+    "path": "/organization/permission/:id",
+    "policy": {
+      "anyOf": [
+        "UP00"
+      ]
+    }
+  },
+  {
+    "name": "Edit Accidents Type Organization",
+    "path": "/organization/accidents-type/:id",
+    "policy": {
+      "anyOf": [
+        "OAT00",
+        "OAT04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Incident Category Organization",
+    "path": "/organization/incident-category/:id",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No confirmed update permission for this feature"
+    }
+  },
+  {
+    "name": "Edit Drill Type Organization",
+    "path": "/organization/drill-type/:id",
+    "policy": {
+      "anyOf": [
+        "ODT00",
+        "ODT04"
+      ]
+    }
+  },
+  {
+    "name": "Edit PPE Item Organization",
+    "path": "/organization/ppe-item/:id",
+    "policy": {
+      "anyOf": [
+        "OPPEI00",
+        "OPPEI04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Certificate Organization",
+    "path": "/organization/certificate/:id",
+    "policy": {
+      "anyOf": [
+        "OCF00",
+        "OCF04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Equipment Type Organization",
+    "path": "/organization/equipment-type/:id",
+    "policy": {
+      "anyOf": [
+        "OET00",
+        "OET04"
+      ]
+    }
+  },
+  {
+    "name": "Show Equipment Organization",
+    "path": "/organization/equipment-show/:id",
+    "policy": {
+      "anyOf": [
+        "OEQ00",
+        "OEQ02"
+      ]
+    }
+  },
+  {
+    "name": "Edit Factory Organization",
+    "path": "/organization/factory/:id",
+    "policy": {
+      "anyOf": [
+        "OF00",
+        "OF04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Factory Item Organization",
+    "path": "/organization/factory-item/:id",
+    "policy": {
+      "anyOf": [
+        "OFI00",
+        "OFI04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Hazard Classification Organization",
+    "path": "/organization/hazard-type/:id",
+    "policy": {
+      "anyOf": [
+        "OHT00",
+        "OHT04"
+      ]
+    }
+  },
+  {
+    "name": "Hazards Organization",
+    "path": "/organization/hazards/:parent_id",
+    "policy": {
+      "anyOf": [
+        "OHT00",
+        "OHT01"
+      ]
+    }
+  },
+  {
+    "name": "Edit Template Organization",
+    "path": "/organization/template/:id",
+    "policy": {
+      "anyOf": [
+        "OT00",
+        "OT04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Methods Organization",
+    "path": "/organization/methods/:id",
+    "policy": {
+      "anyOf": [
+        "M00",
+        "M04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Team Organization",
+    "path": "/organization/team/:id",
+    "policy": {
+      "anyOf": [
+        "OTT00",
+        "OTT04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Contractor Organization",
+    "path": "/organization/contractor/:id",
+    "policy": {
+      "anyOf": [
+        "OOC00",
+        "OOC04"
+      ]
+    }
+  },
+  {
+    "name": "Edit  Country Organization",
+    "path": "/organization/countries/:id",
+    "policy": {
+      "anyOf": [
+        "LO00",
+        "LO04"
+      ]
+    }
+  },
+  {
+    "name": "Edit  State Organization",
+    "path": "/organization/states/:id",
+    "policy": {
+      "anyOf": [
+        "LO00",
+        "LO04"
+      ]
+    }
+  },
+  {
+    "name": "Edit  City Organization",
+    "path": "/organization/cities/:id",
+    "policy": {
+      "anyOf": [
+        "LO00",
+        "LO04"
+      ]
+    }
+  },
+  {
+    "name": "Edit  Area Organization",
+    "path": "/organization/areas/:id",
+    "policy": {
+      "anyOf": [
+        "LO00",
+        "LO04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Observeration Type Organization",
+    "path": "/organization/observation-type/:id",
+    "policy": {
+      "anyOf": [
+        "OOBT00",
+        "OOBT04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Health Condition Organization",
+    "path": "/organization/health-conditions/:id",
+    "policy": {
+      "anyOf": [
+        "OOHC00",
+        "OOHC04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Role Organization",
+    "path": "/organization/role/:id",
+    "policy": {
+      "anyOf": [
+        "OR00",
+        "OR04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Scope Organization",
+    "path": "/organization/scope/:id",
+    "policy": {
+      "anyOf": [
+        "SC00",
+        "SC04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Risk Organization",
+    "path": "/organization/hazard/:id",
+    "policy": {
+      "anyOf": [
+        "OH00",
+        "OH04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Root Causes Organization",
+    "path": "/organization/root-causes/:id",
+    "policy": {
+      "anyOf": [
+        "RC00",
+        "RC04"
+      ]
+    }
+  },
+  {
+    "name": "History Ticket Organization",
+    "path": "/organization/ticket/:id",
+    "policy": {
+      "anyOf": [
+        "TK00",
+        "TK02"
+      ]
+    }
+  },
+  {
+    "name": "Edit WarehouseType Organization",
+    "path": "/organization/where-house-type/:id",
+    "policy": {
+      "anyOf": [
+        "WHT00",
+        "WHT04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Injury Organization",
+    "path": "/organization/injury/:id",
+    "policy": {
+      "anyOf": [
+        "IN00",
+        "IN04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Meeting Type Organization",
+    "path": "/organization/meeting-type/:id",
+    "policy": {
+      "anyOf": [
+        "OMTI00",
+        "OMTI04"
+      ]
+    }
+  },
+  {
+    "name": "Edit PTW Type Organization",
+    "path": "/organization/ptw-type/:id",
+    "policy": {
+      "anyOf": [
+        "OPTWT00",
+        "OPTWT04"
+      ]
+    }
+  },
+  {
+    "name": "Edit PPE Activity Organization",
+    "path": "/organization/ppe-activity/:id",
+    "policy": {
+      "anyOf": [
+        "OPPEAA00",
+        "OPPEAU04"
+      ]
+    }
+  },
+  {
+    "name": "Edit PPE Tool Organization",
+    "path": "/organization/ppe-tool/:id",
+    "policy": {
+      "anyOf": [
+        "OPPETA00",
+        "OPPETU04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Document Category Organization",
+    "path": "/organization/document-category/:id",
+    "policy": {
+      "anyOf": [
+        "ODCA00",
+        "ODCA04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Audit Standard Organization",
+    "path": "/organization/audit-standard/:id",
+    "policy": {
+      "anyOf": [
+        "OASTA00",
+        "OASTU04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Audit Activity Organization",
+    "path": "/organization/audit-activity/:id",
+    "policy": {
+      "anyOf": [
+        "OAACTA00",
+        "OAACTU04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Traning Topic Organization",
+    "path": "/organization/traning-topic/:id",
+    "policy": {
+      "anyOf": [
+        "OTRTP00",
+        "OTRTP04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Visit Activity Organization",
+    "path": "/organization/visit-activity/:id",
+    "policy": {
+      "anyOf": [
+        "OVA00",
+        "OVA04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Visit Theme Organization",
+    "path": "/organization/visit-theme/:id",
+    "policy": {
+      "anyOf": [
+        "OVT00",
+        "OVT04"
+      ]
+    }
+  },
+  {
+    "name": "Edit Visit Category Organization",
+    "path": "/organization/visit-category/:id",
+    "policy": {
+      "anyOf": [
+        "OVC00",
+        "OVC04"
+      ]
+    }
+  },
+  {
+    "name": "Investigation Meetings ",
+    "path": "/organization/investegation-meetings/:id?",
+    "policy": {
+      "anyOf": [
+        "IVM00",
+        "IVM01"
+      ]
+    }
+  },
+  {
+    "name": "Investigation Tasks ",
+    "path": "/organization/investegation-tasks/:id?",
+    "policy": {
+      "anyOf": [
+        "IVT00",
+        "IVT01"
+      ]
+    }
+  },
+  {
+    "name": "Employee Certificates ",
+    "path": "/organization/employee-certificate/:id?",
+    "policy": {
+      "anyOf": [
+        "EC00",
+        "EC01"
+      ]
+    }
+  },
+  {
+    "name": "Equipment Type Organization",
+    "path": "/organization/equipment-types/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "OET00",
+        "OET01"
+      ]
+    }
+  },
+  {
+    "name": "Equipment Organization",
+    "path": "/organization/equipments/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "OEQ00",
+        "OEQ01"
+      ]
+    }
+  },
+  {
+    "name": " Country Organization",
+    "path": "/organization/countries/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "LO00",
+        "LO01"
+      ]
+    }
+  },
+  {
+    "name": " State Organization",
+    "path": "/organization/states/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "LO00",
+        "LO01"
+      ]
+    }
+  },
+  {
+    "name": " City Organization",
+    "path": "/organization/cities/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "LO00",
+        "LO01"
+      ]
+    }
+  },
+  {
+    "name": " Area Organization",
+    "path": "/organization/areas/:parent_id?",
+    "policy": {
+      "anyOf": [
+        "LO00",
+        "LO01"
+      ]
+    }
+  },
+  {
+    "name": "Access Denied Organization",
+    "path": "/organization/access-denied",
+    "policy": {
+      "authenticated": true
+    }
+  },
+  {
+    "name": "Partners Organization",
+    "path": "/organization/partner",
+    "policy": {
+      "anyOf": [
+        "P00",
+        "P01"
+      ]
+    }
+  },
+  {
+    "name": "Projects",
+    "path": "/organization/projects",
+    "policy": {
+      "anyOf": [
+        "PJ00",
+        "PJ01"
+      ]
+    }
+  },
+  {
+    "name": "Company PPE Matrix",
+    "path": "/organization/ppe-matrix",
+    "policy": {
+      "anyOf": [
+        "PPE00",
+        "PPE01"
+      ]
+    }
+  },
+  {
+    "name": "Company PPE Delivery",
+    "path": "/organization/ppe-delivery",
+    "policy": {
+      "anyOf": [
+        "PPE00",
+        "PPE03"
+      ]
+    }
+  },
+  {
+    "name": "Company PPE Deliveries",
+    "path": "/organization/ppe-deliveries",
+    "policy": {
+      "anyOf": [
+        "PPE00",
+        "PPE01"
+      ]
+    }
+  },
+  {
+    "name": "Project Zone",
+    "path": "/organization/project-zone",
+    "policy": {
+      "anyOf": [
+        "PZ00",
+        "PZ01"
+      ]
+    }
+  },
+  {
+    "name": "Organization Employee",
+    "path": "/organization/organization-employee",
+    "policy": {
+      "anyOf": [
+        "OE00",
+        "OE01"
+      ]
+    }
+  },
+  {
+    "name": "Organization Locations",
+    "path": "/organization/organization-locations",
+    "policy": {
+      "anyOf": [
+        "OL00",
+        "OL01"
+      ]
+    }
+  },
+  {
+    "name": "Hierarchy",
+    "path": "/organization/herikaly",
+    "policy": {
+      "anyOf": [
+        "HRK00",
+        "HRK01"
+      ]
+    }
+  },
+  {
+    "name": "Objectives",
+    "path": "/organization/objectives",
+    "policy": {
+      "anyOf": [
+        "OBJ00",
+        "OBJ01"
+      ]
+    }
+  },
+  {
+    "name": "Investigating",
+    "path": "/organization/Investigating",
+    "policy": {
+      "anyOf": [
+        "INV00",
+        "INV01"
+      ]
+    }
+  },
+  {
+    "name": "Equipment Mangement",
+    "path": "/organization/equipment-mangement",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No reviewed feature mapping for Equipment Mangement"
+    }
+  },
+  {
+    "name": "InvestigationMeeting ",
+    "path": "/organization/InvestigationMeeting",
+    "policy": {
+      "anyOf": [
+        "IVM00",
+        "IVM01"
+      ]
+    }
+  },
+  {
+    "name": "Injury",
+    "path": "/organization/injury",
+    "policy": {
+      "anyOf": [
+        "IN00",
+        "IN01"
+      ]
+    }
+  },
+  {
+    "name": "System Identity",
+    "path": "/organization/system-identity",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "Identity management has no independently confirmed backend permission"
+    }
+  },
+  {
+    "name": "Organization Setting",
+    "path": "/organization/setting",
+    "policy": {
+      "authenticated": true
+    }
+  },
+  {
+    "name": "WarehouseType",
+    "path": "/organization/where-house-type",
+    "policy": {
+      "anyOf": [
+        "WHT00",
+        "WHT01"
+      ]
+    }
+  },
+  {
+    "name": "warehouse",
+    "path": "/organization/where-house",
+    "policy": {
+      "anyOf": [
+        "WH00",
+        "WH01"
+      ]
+    }
+  },
+  {
+    "name": "OrganizationCertificates",
+    "path": "/organization/organization-certificate",
+    "policy": {
+      "anyOf": [
+        "OCF00",
+        "OCF01"
+      ]
+    }
+  },
+  {
+    "name": "OrganizationDocuments",
+    "path": "/organization/organization-documents",
+    "policy": {
+      "anyOf": [
+        "ODO00",
+        "ODO01"
+      ]
+    }
+  },
+  {
+    "name": "Serial Number",
+    "path": "/organization/serial-number",
+    "policy": {
+      "anyOf": [
+        "CS00",
+        "CS01"
+      ]
+    }
+  },
+  {
+    "name": "Employee Interface ",
+    "path": "/organization/employee-interface",
+    "policy": {
+      "authenticated": true
+    }
+  },
+  {
+    "name": "Ticket Type",
+    "path": "/organization/ticket-type",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No confirmed fetch permission for this feature"
+    }
+  },
+  {
+    "name": "Ticket",
+    "path": "/organization/ticket",
+    "policy": {
+      "anyOf": [
+        "TK00",
+        "TK01"
+      ]
+    }
+  },
+  {
+    "name": "Project Progress",
+    "path": "/organization/project-progress",
+    "policy": {
+      "anyOf": [
+        "PP00"
+      ]
+    }
+  },
+  {
+    "name": "Capa",
+    "path": "/organization/capa",
+    "policy": {
+      "anyOf": [
+        "CAPA00",
+        "CAPA03"
+      ]
+    }
+  },
+  {
+    "name": "CheckList",
+    "path": "/organization/check-list",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No confirmed fetch permission for this feature"
+    }
+  },
+  {
+    "name": "DocumentRefrence",
+    "path": "/organization/document-refrence",
+    "policy": {
+      "anyOf": [
+        "ODR00",
+        "ODR01"
+      ]
+    }
+  },
+  {
+    "name": "Shifts",
+    "path": "/organization/shifts",
+    "policy": {
+      "anyOf": [
+        "OSH00",
+        "OSH01"
+      ]
+    }
+  },
+  {
+    "name": "Notification Plan",
+    "path": "/organization/notification-plan",
+    "policy": {
+      "anyOf": [
+        "NP00",
+        "NP01"
+      ]
+    }
+  },
+  {
+    "name": "Corrective Report",
+    "path": "/organization/corrective-report",
+    "policy": {
+      "anyOf": [
+        "IVT00",
+        "IVT01"
+      ]
+    }
+  },
+  {
+    "name": "Preventive Report",
+    "path": "/organization/preventive-report",
+    "policy": {
+      "anyOf": [
+        "IVT00",
+        "IVT01"
+      ]
+    }
+  },
+  {
+    "name": "Lessons Learnt Report",
+    "path": "/organization/lessons-learnt-report",
+    "policy": {
+      "anyOf": [
+        "INV00",
+        "INV01"
+      ]
+    }
+  },
+  {
+    "name": "Today Talks",
+    "path": "/organization/today-talks",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "Today talks need backend permission identifiers"
+    }
+  },
+  {
+    "name": "Inductions",
+    "path": "/organization/inductions",
+    "policy": {
+      "anyOf": [
+        "IND00",
+        "IND01"
+      ]
+    }
+  },
+  {
+    "name": "Management Change Topic Type",
+    "path": "/organization/management-change-topic-type",
+    "policy": {
+      "anyOf": [
+        "OMCTT00",
+        "OMCTT01"
+      ]
+    }
+  },
+  {
+    "name": "Management Of Change",
+    "path": "/organization/management-of-change",
+    "policy": {
+      "anyOf": [
+        "MOC00",
+        "MOC01"
+      ]
+    }
+  },
+  {
+    "name": "Attachment Matrix",
+    "path": "/organization/attachment-matrix",
+    "policy": {
+      "anyOf": [
+        "AM00",
+        "AM01"
+      ]
+    }
+  },
+  {
+    "name": "Internal Audit",
+    "path": "/organization/internal-audit",
+    "policy": {
+      "anyOf": [
+        "OIA00",
+        "OIA01"
+      ]
+    }
+  },
+  {
+    "name": "My Internal Audit",
+    "path": "/organization/my-internal-audit",
+    "policy": {
+      "anyOf": [
+        "OMIA00",
+        "OMIA01"
+      ]
+    }
+  },
+  {
+    "name": "Accidents Type Organization",
+    "path": "/organization/accidents-type",
+    "policy": {
+      "anyOf": [
+        "OAT00",
+        "OAT01"
+      ]
+    }
+  },
+  {
+    "name": "Incident Categories Organization",
+    "path": "/organization/incident-category",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No confirmed fetch permission for this feature"
+    }
+  },
+  {
+    "name": "Drill Types Organization",
+    "path": "/organization/drill-types",
+    "policy": {
+      "anyOf": [
+        "ODT00",
+        "ODT01"
+      ]
+    }
+  },
+  {
+    "name": "PPE Items Organization",
+    "path": "/organization/ppe-items",
+    "policy": {
+      "anyOf": [
+        "OPPEI00",
+        "OPPEI01"
+      ]
+    }
+  },
+  {
+    "name": "Certificates Organization",
+    "path": "/organization/certificate",
+    "policy": {
+      "anyOf": [
+        "OCF00",
+        "OCF01"
+      ]
+    }
+  },
+  {
+    "name": "Factories Organization",
+    "path": "/organization/factory",
+    "policy": {
+      "anyOf": [
+        "OF00",
+        "OF01"
+      ]
+    }
+  },
+  {
+    "name": "Factories Items Organization",
+    "path": "/organization/factories-items",
+    "policy": {
+      "anyOf": [
+        "OFI00",
+        "OFI01"
+      ]
+    }
+  },
+  {
+    "name": "Hazard Classification Organization",
+    "path": "/organization/hazard-type",
+    "policy": {
+      "anyOf": [
+        "OHT00",
+        "OHT01"
+      ]
+    }
+  },
+  {
+    "name": "Templates Organization",
+    "path": "/organization/template",
+    "policy": {
+      "anyOf": [
+        "OT00",
+        "OT01"
+      ]
+    }
+  },
+  {
+    "name": "Template Item Organization",
+    "path": "/organization/template-item",
+    "policy": {
+      "anyOf": [
+        "TI00",
+        "TI01"
+      ]
+    }
+  },
+  {
+    "name": "Methods Organization",
+    "path": "/organization/methods",
+    "policy": {
+      "anyOf": [
+        "M00",
+        "M01"
+      ]
+    }
+  },
+  {
+    "name": "Teams Organization",
+    "path": "/organization/team",
+    "policy": {
+      "anyOf": [
+        "OTT00",
+        "OTT01"
+      ]
+    }
+  },
+  {
+    "name": "Contractor Organization",
+    "path": "/organization/contractor",
+    "policy": {
+      "anyOf": [
+        "OOC00",
+        "OOC01"
+      ]
+    }
+  },
+  {
+    "name": "Observeration Type Organization",
+    "path": "/organization/observation-type",
+    "policy": {
+      "anyOf": [
+        "OOBT00",
+        "OOBT01"
+      ]
+    }
+  },
+  {
+    "name": "Health Conditions Organization",
+    "path": "/organization/health-conditions",
+    "policy": {
+      "anyOf": [
+        "OOHC00",
+        "OOHC01"
+      ]
+    }
+  },
+  {
+    "name": "Role Organization",
+    "path": "/organization/role",
+    "policy": {
+      "anyOf": [
+        "OR00",
+        "OR01"
+      ]
+    }
+  },
+  {
+    "name": "Scope Organization",
+    "path": "/organization/scope",
+    "policy": {
+      "anyOf": [
+        "SC00",
+        "SC01"
+      ]
+    }
+  },
+  {
+    "name": "Risk Organization",
+    "path": "/organization/hazard",
+    "policy": {
+      "anyOf": [
+        "OH00",
+        "OH01"
+      ]
+    }
+  },
+  {
+    "name": "Root Causes Organization",
+    "path": "/organization/root-causes",
+    "policy": {
+      "anyOf": [
+        "RC00",
+        "RC01"
+      ]
+    }
+  },
+  {
+    "name": "Ticket Type Organization",
+    "path": "/organization/ticket-type",
+    "policy": {
+      "anyOf": [],
+      "unsupported": "No confirmed fetch permission for this feature"
+    }
+  },
+  {
+    "name": "Ticket Organization",
+    "path": "/organization/ticket",
+    "policy": {
+      "anyOf": [
+        "TK00",
+        "TK01"
+      ]
+    }
+  },
+  {
+    "name": "WarehouseType Organization",
+    "path": "/organization/where-house-type",
+    "policy": {
+      "anyOf": [
+        "WHT00",
+        "WHT01"
+      ]
+    }
+  },
+  {
+    "name": "Injury Organization",
+    "path": "/organization/injury",
+    "policy": {
+      "anyOf": [
+        "IN00",
+        "IN01"
+      ]
+    }
+  },
+  {
+    "name": "meeting Types Organization",
+    "path": "/organization/meeting-types",
+    "policy": {
+      "anyOf": [
+        "OMTI00",
+        "OMTI01"
+      ]
+    }
+  },
+  {
+    "name": "PTW Types Organization",
+    "path": "/organization/ptw-types",
+    "policy": {
+      "anyOf": [
+        "OPTWT00",
+        "OPTWT03"
+      ]
+    }
+  },
+  {
+    "name": "PPE Activities Organization",
+    "path": "/organization/ppe-activities",
+    "policy": {
+      "anyOf": [
+        "OPPEAA00",
+        "OPPEAF01"
+      ]
+    }
+  },
+  {
+    "name": "PPE Tools Organization",
+    "path": "/organization/ppe-tools",
+    "policy": {
+      "anyOf": [
+        "OPPETA00",
+        "OPPETF01"
+      ]
+    }
+  },
+  {
+    "name": "Document Categories Organization",
+    "path": "/organization/document-categories",
+    "policy": {
+      "anyOf": [
+        "ODCA00",
+        "ODCA01"
+      ]
+    }
+  },
+  {
+    "name": "Audit Standards Organization",
+    "path": "/organization/audit-standards",
+    "policy": {
+      "anyOf": [
+        "OASTA00",
+        "OASTF01"
+      ]
+    }
+  },
+  {
+    "name": "Audit Activities Organization",
+    "path": "/organization/audit-activities",
+    "policy": {
+      "anyOf": [
+        "OAACTA00",
+        "OAACTF01"
+      ]
+    }
+  },
+  {
+    "name": "Traning Topics Organization",
+    "path": "/organization/traning-topics",
+    "policy": {
+      "anyOf": [
+        "OTRTP00",
+        "OTRTP01"
+      ]
+    }
+  },
+  {
+    "name": "Visit Activities Organization",
+    "path": "/organization/visit-activities",
+    "policy": {
+      "anyOf": [
+        "OVA00",
+        "OVA01"
+      ]
+    }
+  },
+  {
+    "name": "Visit Themes Organization",
+    "path": "/organization/visit-themes",
+    "policy": {
+      "anyOf": [
+        "OVT00",
+        "OVT01"
+      ]
+    }
+  },
+  {
+    "name": "Visit Categories Organization",
+    "path": "/organization/visit-categories",
+    "policy": {
+      "anyOf": [
+        "OVC00",
+        "OVC01"
+      ]
+    }
+  },
+  {
+    "name": "Organization",
+    "path": "/organization",
+    "policy": {
+      "authenticated": true
+    }
+  },
+  {
+    "name": "Organization App",
+    "path": "/organization",
+    "policy": {
+      "authenticated": true
+    }
+  }
+]

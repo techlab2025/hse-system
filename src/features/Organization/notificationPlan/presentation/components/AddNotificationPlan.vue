@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { computed, nextTick, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -253,6 +256,8 @@ const saveAndNew = () => submitNotificationPlan(true)
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['create_notification_plan'])">
+
   <form @submit.prevent="addNotificationPlan" class="notification-plan-form">
     <div class="input-wrapper title-field" data-required-field="title">
       <label for="title">{{ $t('title') }}</label>
@@ -468,6 +473,8 @@ const saveAndNew = () => submitNotificationPlan(true)
       </button>
     </div>
   </form>
+
+  </template>
 </template>
 
 <style scoped>

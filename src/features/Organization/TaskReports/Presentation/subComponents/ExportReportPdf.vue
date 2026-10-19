@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
+
 import { usePdfExport } from '@/composables/usePdfExport'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
@@ -51,6 +53,8 @@ const formatCellValue = (value: unknown) => {
 }
 
 const exportExcel = () => {
+  if (!canOrganizationCapability('export')) return
+
   if (!props.data.length) return
 
   const columns =
@@ -97,6 +101,7 @@ const exportPDF = () =>
 
 <template>
   <div
+    v-if="canOrganizationCapability('export')"
     data-pdf-exclude
     :class="isDropList ? 'export-actions export-actions--drop-list' : 'export-actions'"
   >

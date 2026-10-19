@@ -28,8 +28,6 @@ class HeaderHandler {
     }
     // console.log(includeLanguage)
 
-    // const organizationToken = '8|7JyOHkVkkOnMDeZ6WaiM9bRrZiI7kmhwLgHdBnEp199e1c72'
-    // const adminToken = '1|uGaOEtBqrL718B1lZlllkayaOaxKT91cMcuoHfSa4583ca2b'
 
     if (includeLanguage) {
       const savedLocale = localStorage.getItem('lang')
@@ -41,7 +39,6 @@ class HeaderHandler {
     }
     headers['Content-Type'] = 'application/json'
     headers['Accept'] = 'application/json'
-    // headers['Authorization'] = 'Bearer ' + adminToken
 
     return headers
   }

@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -38,6 +41,8 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['create_task'])">
+
   <form class="grid grid-cols-1 md:grid-cols-6 gap-4" @submit.prevent="addInspection">
     <InspectionForm :key="formKey" ref="inspectionFormRef" @update:data="setParams" />
 
@@ -48,6 +53,8 @@ const setParams = (data: Params) => {
       <button type="submit" class="btn btn-primary w-full">{{ $t('save') }}</button>
     </div>
   </form>
+
+  </template>
 </template>
 
 <style scoped></style>

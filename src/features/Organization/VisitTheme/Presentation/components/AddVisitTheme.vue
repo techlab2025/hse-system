@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import type Params from '@/base/core/params/params'
@@ -30,6 +33,8 @@ const saveAndNew = async () => {
 }
 </script>
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['create_leadership_theme'])">
+
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addVisitTheme">
     <VisitThemeForm :key="formKey" ref="formRef" @update:data="setParams" />
     <div class="col-span-4 button-wrapper create-form-actions">
@@ -39,4 +44,6 @@ const saveAndNew = async () => {
       <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </div>
   </form>
+
+  </template>
 </template>

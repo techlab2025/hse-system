@@ -1,3 +1,4 @@
+import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 import { ref } from 'vue'
 
 // composables/usePrint.ts
@@ -5,7 +6,7 @@ export function usePrint(options: { isolated?: boolean } = {}) {
   const printArea = ref<HTMLElement | null>(null)
 
   const print = async (): Promise<void> => {
-    if (!printArea.value) return
+    if (!canOrganizationCapability('print') || !printArea.value) return
 
     if (options.isolated) {
       const frame = document.createElement('iframe')

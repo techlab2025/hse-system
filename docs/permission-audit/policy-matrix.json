@@ -1,0 +1,6980 @@
+{
+  "features": {
+    "AttachmentMatrix": "ATTACHMENT_MATRIX",
+    "AuditActivity": "ORG_AUDIT_ACTIVITIES",
+    "AuditStandard": "ORG_AUDIT_STANDARDS",
+    "Capa": "CAPA",
+    "CheckList": null,
+    "DocumentCategory": "ORG_DOCUMENT_CATEGORY",
+    "DocumentRefrence": "ORG_DOCUMENTATION_REFERENCE",
+    "DrillType": "ORG_DRILL_TYPE",
+    "EmployeesCertificates": "EMPLOYEE_CERTIFICATE",
+    "Herikaly": "HERIKALY",
+    "Injury": "INJURY",
+    "Inspection": "ORG_INSPECTION",
+    "InternalAudit": "INTERNAL_AUDIT",
+    "Investigating": "INVESTIGATION",
+    "MangementChangeTopicType": "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE",
+    "MangementOfChange": "MOC",
+    "MeetingType": "ORG_MEETING_TYPE",
+    "ObservationFactory": null,
+    "OrganizationEmployee": "ORG_EMPLOYEE",
+    "OrganizationLocation": "ORG_LOCATION",
+    "PPEActivity": "ORG_PPE_ACTIVITY",
+    "PPETool": "ORG_PPE_TOOLS",
+    "PTWType": "ORG_PTW_TYPE",
+    "Partner": "PARTNER",
+    "Project": "PROJECT",
+    "ProjectPrgoress": "PROJECT_PROGRESS",
+    "ProjectZone": "PROJECT_ZONE",
+    "Role": "ORG_ROLE",
+    "Scope": "SCOPE",
+    "SerialNumber": "CODING_SYSTEM",
+    "Shifts": "ORG_SHIFT",
+    "TaskReports": null,
+    "Ticket": "TICKET",
+    "TicketType": null,
+    "TraningTopic": "ORG_TRANING_TOPIC",
+    "VisitActivity": "ORG_VISIT_ACTIVITIES",
+    "VisitCategory": "ORG_VISIT_CATEGORY",
+    "VisitTheme": "ORG_VISIT_THEME",
+    "WhereHouse": "WHIERE_HOUSE",
+    "WhereHouseType": "WHIERE_HOUSE_TYPE",
+    "notificationPlan": "NOTIFICATION_PLAN",
+    "objectives": "objectives",
+    "ppeItem": "ORG_PPE_ITEM",
+    "Equipment": "ORG_EQUIPMENT",
+    "EquipmentType": "ORG_EQUIPMENT_TYPE",
+    "AccidentsType": "ORG_ACCIDENTS_TYPE",
+    "Factory": "ORG_FACTORY",
+    "FactoryItem": "ORG_FACTORY_ITEM",
+    "Hazard": "ORG_HAZARD",
+    "HazardType": "ORG_HAZARD_TYPE",
+    "Methods": "ORG_METHOD",
+    "ObserverationType": "ORG_OBSERVATION_TYPE",
+    "Certificate": "ORGANIZATION_CERTIFICATE",
+    "OrganizationDocument": "ORGANIZATION_DOCUMENTS",
+    "Team": "ORG_TEAM",
+    "Teams": "ORG_TEAM",
+    "HealthConditions": "ORG_HEALTH_CONDITION",
+    "contractor": "ORG_CONTRACTOR",
+    "Contractor": "ORG_CONTRACTOR",
+    "RootCauses": "ROOT_CAUSES",
+    "Location": "LOCATION_ORG"
+  },
+  "routes": {
+    "Organization": {
+      "authenticated": true
+    },
+    "Organization App": {
+      "authenticated": true
+    },
+    "Employee Interface": {
+      "authenticated": true
+    },
+    "Organization Setting": {
+      "authenticated": true
+    },
+    "Access Denied Organization": {
+      "authenticated": true
+    },
+    "Permission Organization": {
+      "anyOf": [
+        "PERMISSION_UPDATE"
+      ]
+    },
+    "Project Progress": {
+      "anyOf": [
+        "PROJECT_PROGRESS_ALL"
+      ]
+    },
+    "Serial Number": {
+      "anyOf": [
+        "CODING_SYSTEM_ALL",
+        "CODING_SYSTEM_FETCH"
+      ]
+    },
+    "NCR Details": {
+      "anyOf": [
+        "MY_INTERNAL_AUDIT_ALL",
+        "MY_INTERNAL_AUDIT_DETAILS"
+      ]
+    },
+    "Internal Audit": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_FETCH"
+      ]
+    },
+    "Internal Audit Register": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_FETCH"
+      ]
+    },
+    "My Internal Audit": {
+      "anyOf": [
+        "MY_INTERNAL_AUDIT_ALL",
+        "MY_INTERNAL_AUDIT_FETCH"
+      ]
+    },
+    "My Internal Audit NCRs": {
+      "anyOf": [
+        "MY_INTERNAL_AUDIT_ALL",
+        "MY_INTERNAL_AUDIT_DETAILS"
+      ]
+    },
+    "Project Leadership": {
+      "anyOf": [
+        "LEADERSHIP_ALL",
+        "LEADERSHIP_FETCH"
+      ]
+    },
+    "Project Leadership Visits": {
+      "anyOf": [
+        "LEADERSHIP_ALL",
+        "LEADERSHIP_FETCH"
+      ]
+    },
+    "Project Leadership Visit Report": {
+      "anyOf": [
+        "LEADERSHIP_ALL",
+        "LEADERSHIP_CRAETE"
+      ]
+    },
+    "Company PPE Matrix": {
+      "anyOf": [
+        "ppe_matrix_logs_ALL",
+        "ppe_matrix_logs_FETCH"
+      ]
+    },
+    "Company PPE Deliveries": {
+      "anyOf": [
+        "ppe_matrix_logs_ALL",
+        "ppe_matrix_logs_FETCH"
+      ]
+    },
+    "Company PPE Delivery": {
+      "anyOf": [
+        "ppe_matrix_logs_ALL",
+        "ppe_matrix_logs_CREATE"
+      ]
+    },
+    "Project Risk Assessments": {
+      "anyOf": [
+        "RISK_ASSESSMENT_ALL",
+        "RISK_ASSESSMENT_FETCH"
+      ]
+    },
+    "Create Risk Assessment": {
+      "anyOf": [
+        "RISK_ASSESSMENT_ALL",
+        "RISK_ASSESSMENT_CREATE"
+      ]
+    },
+    "Create Employee Risk Assessment": {
+      "anyOf": [
+        "RISK_ASSESSMENT_ALL",
+        "RISK_ASSESSMENT_CREATE"
+      ]
+    },
+    "management-of-change": {
+      "anyOf": [
+        "MOC_ALL",
+        "MOC_FETCH"
+      ]
+    },
+    "Project Meetings": {
+      "anyOf": [],
+      "unsupported": "Project meetings need backend permission identifiers"
+    },
+    "Create Today Talk": {
+      "anyOf": [],
+      "unsupported": "Today talks need backend permission identifiers"
+    },
+    "Today Talks": {
+      "anyOf": [],
+      "unsupported": "Today talks need backend permission identifiers"
+    },
+    "Add Today Talk": {
+      "anyOf": [],
+      "unsupported": "Today talks need backend permission identifiers"
+    },
+    "Employee Details": {
+      "anyOf": [
+        "PROJECT_LOCATION_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_EMPLOYEE_FETCH"
+      ]
+    },
+    "Project Hierarchy": {
+      "anyOf": [
+        "PROJECT_LOCATION_HIERARCHY_ALL",
+        "PROJECT_LOCATION_HIERARCHY_CREATE"
+      ]
+    },
+    "Project Employee": {
+      "anyOf": [
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_CREATE"
+      ]
+    },
+    "Project Equipment": {
+      "anyOf": [
+        "PROJECT_ZOON_EQUIPMENT_ALL",
+        "PROJECT_ZOON_EQUIPMENT_CREATE"
+      ]
+    },
+    "Create Employee Permit": {
+      "anyOf": [
+        "PTW_ALL",
+        "PTW_CREATE"
+      ]
+    },
+    "Project Permit": {
+      "anyOf": [
+        "PTW_ALL",
+        "PTW_CREATE"
+      ]
+    },
+    "Project My Permits": {
+      "anyOf": [
+        "PTW_ALL",
+        "PTW_FETCH"
+      ]
+    },
+    "Project Permits": {
+      "anyOf": [
+        "PTW_ALL",
+        "PTW_FETCH"
+      ]
+    },
+    "Project Template Result": {
+      "anyOf": [
+        "PTW_ALL",
+        "PTW_FETCH"
+      ]
+    },
+    "Project Permit Templates": {
+      "anyOf": [],
+      "unsupported": "Permit template answer operation needs its own backend identifier"
+    },
+    "Project Permit Answer": {
+      "anyOf": [],
+      "unsupported": "Permit answer submission needs its own backend identifier"
+    },
+    "organization-objectives-details": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_DETAILS"
+      ]
+    },
+    "organization-objectives-update-progress": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_UPDATE"
+      ]
+    },
+    "organization-objectives-edit-progress": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_UPDATE"
+      ]
+    },
+    "Corrective Report": {
+      "anyOf": [
+        "INVESTIGATION_TASK_ALL",
+        "INVESTIGATION_TASK_FETCH"
+      ]
+    },
+    "Preventive Report": {
+      "anyOf": [
+        "INVESTIGATION_TASK_ALL",
+        "INVESTIGATION_TASK_FETCH"
+      ]
+    },
+    "Lessons Learnt Report": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "INVESTIGATION_FETCH"
+      ]
+    },
+    "Organization Employee Tasks": {
+      "anyOf": [
+        "MY_TASKS_ALL",
+        "TASK_FETCH"
+      ]
+    },
+    "Show Organization Employee": {
+      "anyOf": [
+        "ORG_EMPLOYEE_ALL",
+        "ORG_EMPLOYEE_DETAILS"
+      ]
+    },
+    "Add Investigating": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "FULL_INVESTIGATION_CREATE"
+      ]
+    },
+    "Investigating Result": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "FULL_INVESTIGATION_MEETING_RESULT_CREATE"
+      ]
+    },
+    "Investigating Result Answer": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "INVESTIGATION_DETAILS"
+      ]
+    },
+    "Hierarchy Matrix": {
+      "anyOf": [
+        "HERIKALY_ALL",
+        "HERIKALY_FETCH"
+      ]
+    },
+    "Project Summary": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_DETAILS"
+      ]
+    },
+    "Project Summary Data": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_DETAILS"
+      ]
+    },
+    "System Identity": {
+      "anyOf": [],
+      "unsupported": "Identity management has no independently confirmed backend permission"
+    },
+    "Capa": {
+      "anyOf": [
+        "CAPA_ALL",
+        "CAPA_FETCH"
+      ]
+    },
+    "Capa Details": {
+      "anyOf": [
+        "CAPA_ALL",
+        "CAPA_DETAILS"
+      ]
+    },
+    "CheckList": {
+      "anyOf": [],
+      "unsupported": "No confirmed fetch permission for this feature"
+    },
+    "Add CheckList": {
+      "anyOf": [],
+      "unsupported": "No confirmed create permission for this feature"
+    },
+    "Edit CheckList": {
+      "anyOf": [],
+      "unsupported": "No confirmed update permission for this feature"
+    },
+    "Employee Certificates": {
+      "anyOf": [
+        "EMPLOYEE_CERTIFICATE_ALL",
+        "EMPLOYEE_CERTIFICATE_FETCH"
+      ]
+    },
+    "forget-password": {
+      "anyOf": [],
+      "unsupported": "No reviewed feature mapping for forget-password"
+    },
+    "Incedant": {
+      "anyOf": [
+        "ORG_INCEDANT_ALL",
+        "ORG_INCEDANT_FETCH"
+      ]
+    },
+    "Incident Report": {
+      "anyOf": [
+        "ORG_INCEDANT_ALL",
+        "ORG_INCEDANT_FETCH"
+      ]
+    },
+    "Add Incedant": {
+      "anyOf": [
+        "ORG_INCEDANT_ALL",
+        "ORG_INCEDANT_CREATE"
+      ]
+    },
+    "Edit Incedant": {
+      "anyOf": [
+        "ORG_INCEDANT_ALL",
+        "ORG_INCEDANT_UPDATE"
+      ]
+    },
+    "Show Incedant": {
+      "anyOf": [
+        "ORG_INCEDANT_ALL",
+        "ORG_INCEDANT_DETAILS"
+      ]
+    },
+    "Injury": {
+      "anyOf": [
+        "INJURY_ALL",
+        "INJURY_FETCH"
+      ]
+    },
+    "Add Injury": {
+      "anyOf": [
+        "INJURY_ALL",
+        "INJURY_CREATE"
+      ]
+    },
+    "Edit Injury": {
+      "anyOf": [
+        "INJURY_ALL",
+        "INJURY_UPDATE"
+      ]
+    },
+    "Upload Injury Excel": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Injury Excel"
+    },
+    "Management Change Topic Type": {
+      "anyOf": [
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL",
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_FETCH"
+      ]
+    },
+    "Add Management Change Topic Type": {
+      "anyOf": [
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL",
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_CREATE"
+      ]
+    },
+    "Edit Management Change Topic Type": {
+      "anyOf": [
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL",
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_UPDATE"
+      ]
+    },
+    "Management Of Change": {
+      "anyOf": [
+        "MOC_ALL",
+        "MOC_FETCH"
+      ]
+    },
+    "Add Management Of Change": {
+      "anyOf": [
+        "MOC_ALL",
+        "MOC_CRAETE"
+      ]
+    },
+    "Edit Management Of Change": {
+      "anyOf": [
+        "MOC_ALL",
+        "MOC_UPDATE"
+      ]
+    },
+    "OrganizationCertificates": {
+      "anyOf": [
+        "ORGANIZATION_CERTIFICATE_ALL",
+        "ORGANIZATION_CERTIFICATE_FETCH"
+      ]
+    },
+    "Add OrganizationCertificate": {
+      "anyOf": [
+        "ORGANIZATION_CERTIFICATE_ALL",
+        "ORGANIZATION_CERTIFICATE_CREATE"
+      ]
+    },
+    "Edit OrganizationCertificate": {
+      "anyOf": [
+        "ORGANIZATION_CERTIFICATE_ALL",
+        "ORGANIZATION_CERTIFICATE_UPDATE"
+      ]
+    },
+    "Import OrganizationCertificate": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Import OrganizationCertificate"
+    },
+    "OrganizationDocuments": {
+      "anyOf": [
+        "ORGANIZATION_DOCUMENTS_ALL",
+        "ORGANIZATION_DOCUMENTS_FETCH"
+      ]
+    },
+    "Add OrganizationDocuments": {
+      "anyOf": [
+        "ORGANIZATION_DOCUMENTS_ALL",
+        "ORGANIZATION_DOCUMENTS_CREATE"
+      ]
+    },
+    "Edit OrganizationDocuments": {
+      "anyOf": [
+        "ORGANIZATION_DOCUMENTS_ALL",
+        "ORGANIZATION_DOCUMENTS_UPDATE"
+      ]
+    },
+    "Import OrganizationDocuments": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Import OrganizationDocuments"
+    },
+    "Investigation Tasks": {
+      "anyOf": [
+        "INVESTIGATION_TASK_ALL",
+        "INVESTIGATION_TASK_FETCH"
+      ]
+    },
+    "Investigation Meetings": {
+      "anyOf": [
+        "INVESTIGATION_MEETING_ALL",
+        "INVESTIGATION_MEETING_FETCH"
+      ]
+    },
+    "Attachment Matrix": {
+      "anyOf": [
+        "ATTACHMENT_MATRIX_ALL",
+        "ATTACHMENT_MATRIX_FETCH"
+      ]
+    },
+    "Audits": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_FETCH"
+      ]
+    },
+    "Add Audit": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_CREATE"
+      ]
+    },
+    "DocumentRefrence": {
+      "anyOf": [
+        "ORG_DOCUMENTATION_REFERENCE_ALL",
+        "ORG_DOCUMENTATION_REFERENCE_FETCH"
+      ]
+    },
+    "Add Document Refrence": {
+      "anyOf": [
+        "ORG_DOCUMENTATION_REFERENCE_ALL",
+        "ORG_DOCUMENTATION_REFERENCE_CREATE"
+      ]
+    },
+    "Edit Document Refrence": {
+      "anyOf": [
+        "ORG_DOCUMENTATION_REFERENCE_ALL",
+        "ORG_DOCUMENTATION_REFERENCE_UPDATE"
+      ]
+    },
+    "Equipment Mangement": {
+      "anyOf": [],
+      "unsupported": "No reviewed feature mapping for Equipment Mangement"
+    },
+    "Hazard": {
+      "anyOf": [
+        "ORG_HAZARD_ALL",
+        "ORG_HAZARD_FETCH"
+      ]
+    },
+    "Add Hazard": {
+      "anyOf": [
+        "ORG_HAZARD_ALL",
+        "ORG_HAZARD_CREATE"
+      ]
+    },
+    "Edit Hazard": {
+      "anyOf": [
+        "ORG_HAZARD_ALL",
+        "ORG_HAZARD_UPDATE"
+      ]
+    },
+    "Hierarchy": {
+      "anyOf": [
+        "HERIKALY_ALL",
+        "HERIKALY_FETCH"
+      ]
+    },
+    "Edit Hierarchy": {
+      "anyOf": [
+        "HERIKALY_ALL",
+        "HERIKALY_UPDATE"
+      ]
+    },
+    "Add Hierarchy": {
+      "anyOf": [
+        "HERIKALY_ALL",
+        "HERIKALY_CREATE"
+      ]
+    },
+    "Upload Hierarchy Excel": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Hierarchy Excel"
+    },
+    "Inductions": {
+      "anyOf": [
+        "inductions_ALL",
+        "inductions_FETCH"
+      ]
+    },
+    "Add Induction": {
+      "anyOf": [
+        "inductions_ALL",
+        "inductions_CREATE"
+      ]
+    },
+    "Show Induction": {
+      "anyOf": [
+        "inductions_ALL",
+        "inductions_DETAILS"
+      ]
+    },
+    "Edit Induction": {
+      "anyOf": [
+        "inductions_ALL",
+        "inductions_UPDATE"
+      ]
+    },
+    "Inspection": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_FETCH"
+      ]
+    },
+    "Add Inspection": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_CREATE"
+      ]
+    },
+    "Edit Inspection": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_UPDATE"
+      ]
+    },
+    "Overdue Inspection": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_FETCH"
+      ]
+    },
+    "Inspection Result": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_FETCH"
+      ]
+    },
+    "Investigating": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "INVESTIGATION_FETCH"
+      ]
+    },
+    "Edit Investigating": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "INVESTIGATION_UPDATE"
+      ]
+    },
+    "InvestigationMeeting": {
+      "anyOf": [
+        "INVESTIGATION_MEETING_ALL",
+        "INVESTIGATION_MEETING_FETCH"
+      ]
+    },
+    "Add InvestigationMeeting": {
+      "anyOf": [
+        "INVESTIGATION_MEETING_ALL",
+        "INVESTIGATION_MEETING_CREATE"
+      ]
+    },
+    "Edit InvestigationMeeting": {
+      "anyOf": [
+        "INVESTIGATION_MEETING_ALL",
+        "INVESTIGATION_MEETING_UPDATE"
+      ]
+    },
+    "Notification Plan": {
+      "anyOf": [
+        "NOTIFICATION_PLAN_ALL",
+        "NOTIFICATION_PLAN_FETCH"
+      ]
+    },
+    "Add Notification Plan": {
+      "anyOf": [
+        "NOTIFICATION_PLAN_ALL",
+        "NOTIFICATION_PLAN_CREATE"
+      ]
+    },
+    "Objectives": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_FETCH"
+      ]
+    },
+    "Add Objective": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_CREATE"
+      ]
+    },
+    "Edit Objective": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_UPDATE"
+      ]
+    },
+    "Observation Report": {
+      "anyOf": [
+        "ORG_OBSERVATION_ALL",
+        "ORG_OBSERVATION_FETCH"
+      ]
+    },
+    "Observeration": {
+      "anyOf": [
+        "ORG_OBSERVATION_ALL",
+        "ORG_OBSERVATION_FETCH"
+      ]
+    },
+    "Add Observeration": {
+      "anyOf": [
+        "ORG_OBSERVATION_ALL",
+        "ORG_OBSERVATION_CREATE"
+      ]
+    },
+    "Edit Observeration": {
+      "anyOf": [
+        "ORG_OBSERVATION_ALL",
+        "ORG_OBSERVATION_UPDATE"
+      ]
+    },
+    "Show Observeration": {
+      "anyOf": [
+        "ORG_OBSERVATION_ALL",
+        "ORG_OBSERVATION_DETAILS"
+      ]
+    },
+    "All Observeration": {
+      "anyOf": [
+        "ORG_OBSERVATION_ALL",
+        "ORG_OBSERVATION_FETCH"
+      ]
+    },
+    "Organization Employee": {
+      "anyOf": [
+        "ORG_EMPLOYEE_ALL",
+        "ORG_EMPLOYEE_FETCH"
+      ]
+    },
+    "Edit Organization Employee": {
+      "anyOf": [
+        "ORG_EMPLOYEE_ALL",
+        "ORG_EMPLOYEE_UPDATE"
+      ]
+    },
+    "Add Organization Employee": {
+      "anyOf": [
+        "ORG_EMPLOYEE_ALL",
+        "ORG_EMPLOYEE_CREATE"
+      ]
+    },
+    "Upload Organization Employee": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Organization Employee"
+    },
+    "Organization Locations": {
+      "anyOf": [
+        "ORG_LOCATION_ALL",
+        "ORG_LOCATION_FETCH"
+      ]
+    },
+    "Add Organization Location": {
+      "anyOf": [
+        "ORG_LOCATION_ALL",
+        "ORG_LOCATION_CREATE"
+      ]
+    },
+    "Edit Organization Location": {
+      "anyOf": [
+        "ORG_LOCATION_ALL",
+        "ORG_LOCATION_UPDATE"
+      ]
+    },
+    "Partners Organization": {
+      "anyOf": [
+        "PARTNER_ALL",
+        "PARTNER_FETCH"
+      ]
+    },
+    "Add Partner Organization": {
+      "anyOf": [
+        "PARTNER_ALL",
+        "PARTNER_CREATE"
+      ]
+    },
+    "Edit Partner Organization": {
+      "anyOf": [
+        "PARTNER_ALL",
+        "PARTNER_UPDATE"
+      ]
+    },
+    "Projects": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_FETCH"
+      ]
+    },
+    "Add Project": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_CREATE"
+      ]
+    },
+    "Project Setup Flow": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_FETCH"
+      ]
+    },
+    "Edit Project": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_UPDATE"
+      ]
+    },
+    "Project Details": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_DETAILS"
+      ]
+    },
+    "Project Zone": {
+      "anyOf": [
+        "PROJECT_ZONE_ALL",
+        "PROJECT_ZONE_FETCH"
+      ]
+    },
+    "Edit Project Zone": {
+      "anyOf": [
+        "PROJECT_ZONE_ALL",
+        "PROJECT_ZONE_UPDATE"
+      ]
+    },
+    "Add Project Zone": {
+      "anyOf": [
+        "PROJECT_ZONE_ALL",
+        "PROJECT_ZONE_CREATE"
+      ]
+    },
+    "Shifts": {
+      "anyOf": [
+        "ORG_SHIFT_ALL",
+        "ORG_SHIFT_FETCH"
+      ]
+    },
+    "Add Shift": {
+      "anyOf": [
+        "ORG_SHIFT_ALL",
+        "ORG_SHIFT_CREATE"
+      ]
+    },
+    "Edit Shift": {
+      "anyOf": [
+        "ORG_SHIFT_ALL",
+        "ORG_SHIFT_UPDATE"
+      ]
+    },
+    "warehouse": {
+      "anyOf": [
+        "WHIERE_HOUSE_ALL",
+        "WHIERE_HOUSE_FETCH"
+      ]
+    },
+    "Add warehouse": {
+      "anyOf": [
+        "WHIERE_HOUSE_ALL",
+        "WHIERE_HOUSE_CREATE"
+      ]
+    },
+    "Edit warehouse": {
+      "anyOf": [
+        "WHIERE_HOUSE_ALL",
+        "WHIERE_HOUSE_UPDATE"
+      ]
+    },
+    "WarehouseType": {
+      "anyOf": [
+        "WHIERE_HOUSE_TYPE_ALL",
+        "WHIERE_HOUSE_TYPE_FETCH"
+      ]
+    },
+    "Add WarehouseType": {
+      "anyOf": [
+        "WHIERE_HOUSE_TYPE_ALL",
+        "WHIERE_HOUSE_TYPE_CREATE"
+      ]
+    },
+    "Edit WarehouseType": {
+      "anyOf": [
+        "WHIERE_HOUSE_TYPE_ALL",
+        "WHIERE_HOUSE_TYPE_UPDATE"
+      ]
+    },
+    "Upload WarehouseType": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload WarehouseType"
+    },
+    "Accidents Type": {
+      "anyOf": [
+        "ORG_ACCIDENTS_TYPE_ALL",
+        "ORG_ACCIDENTS_TYPE_FETCH"
+      ]
+    },
+    "Add Accidents Type": {
+      "anyOf": [
+        "ORG_ACCIDENTS_TYPE_ALL",
+        "ORG_ACCIDENTS_TYPE_CREATE"
+      ]
+    },
+    "Edit Accidents Type": {
+      "anyOf": [
+        "ORG_ACCIDENTS_TYPE_ALL",
+        "ORG_ACCIDENTS_TYPE_UPDATE"
+      ]
+    },
+    "Upload Accidents Type Excel": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Accidents Type Excel"
+    },
+    "Audit Activities": {
+      "anyOf": [
+        "ORG_AUDIT_ACTIVITIES_ALL",
+        "ORG_AUDIT_ACTIVITIES_FETCH"
+      ]
+    },
+    "Add Audit Activity": {
+      "anyOf": [
+        "ORG_AUDIT_ACTIVITIES_ALL",
+        "ORG_AUDIT_ACTIVITIES_CREATE"
+      ]
+    },
+    "Edit Audit Activity": {
+      "anyOf": [
+        "ORG_AUDIT_ACTIVITIES_ALL",
+        "ORG_AUDIT_ACTIVITIES_UPDATE"
+      ]
+    },
+    "Upload Audit Activities": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Audit Activities"
+    },
+    "Audit Standards": {
+      "anyOf": [
+        "ORG_AUDIT_STANDARDS_ALL",
+        "ORG_AUDIT_STANDARDS_FETCH"
+      ]
+    },
+    "Add Audit Standard": {
+      "anyOf": [
+        "ORG_AUDIT_STANDARDS_ALL",
+        "ORG_AUDIT_STANDARDS_CREATE"
+      ]
+    },
+    "Edit Audit Standard": {
+      "anyOf": [
+        "ORG_AUDIT_STANDARDS_ALL",
+        "ORG_AUDIT_STANDARDS_UPDATE"
+      ]
+    },
+    "Upload Audit Standards": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Audit Standards"
+    },
+    "Certificates": {
+      "anyOf": [
+        "ORGANIZATION_CERTIFICATE_ALL",
+        "ORGANIZATION_CERTIFICATE_FETCH"
+      ]
+    },
+    "Add Certificate": {
+      "anyOf": [
+        "ORGANIZATION_CERTIFICATE_ALL",
+        "ORGANIZATION_CERTIFICATE_CREATE"
+      ]
+    },
+    "Edit Certificate": {
+      "anyOf": [
+        "ORGANIZATION_CERTIFICATE_ALL",
+        "ORGANIZATION_CERTIFICATE_UPDATE"
+      ]
+    },
+    "Import Certificate": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Import Certificate"
+    },
+    "Contractor": {
+      "anyOf": [
+        "ORG_CONTRACTOR_ALL",
+        "ORG_CONTRACTOR_FETCH"
+      ]
+    },
+    "Add Contractor": {
+      "anyOf": [
+        "ORG_CONTRACTOR_ALL",
+        "ORG_CONTRACTOR_CREATE"
+      ]
+    },
+    "Edit Contractor": {
+      "anyOf": [
+        "ORG_CONTRACTOR_ALL",
+        "ORG_CONTRACTOR_UPDATE"
+      ]
+    },
+    "Document Categories": {
+      "anyOf": [
+        "ORG_DOCUMENT_CATEGORY_ALL",
+        "ORG_DOCUMENT_CATEGORY_FETCH"
+      ]
+    },
+    "Add Document Category": {
+      "anyOf": [
+        "ORG_DOCUMENT_CATEGORY_ALL",
+        "ORG_DOCUMENT_CATEGORY_CREATE"
+      ]
+    },
+    "Edit Document Category": {
+      "anyOf": [
+        "ORG_DOCUMENT_CATEGORY_ALL",
+        "ORG_DOCUMENT_CATEGORY_UPDATE"
+      ]
+    },
+    "Upload Document Categories": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Document Categories"
+    },
+    "Drill Types": {
+      "anyOf": [
+        "ORG_DRILL_TYPE_ALL",
+        "ORG_DRILL_TYPE_FETCH"
+      ]
+    },
+    "Add Drill Type": {
+      "anyOf": [
+        "ORG_DRILL_TYPE_ALL",
+        "ORG_DRILL_TYPE_CREATE"
+      ]
+    },
+    "Edit Drill Type": {
+      "anyOf": [
+        "ORG_DRILL_TYPE_ALL",
+        "ORG_DRILL_TYPE_UPDATE"
+      ]
+    },
+    "Upload Drill Types": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Drill Types"
+    },
+    "Equipment Type": {
+      "anyOf": [
+        "ORG_EQUIPMENT_TYPE_ALL",
+        "ORG_EQUIPMENT_TYPE_FETCH"
+      ]
+    },
+    "Add Equipment Type": {
+      "anyOf": [
+        "ORG_EQUIPMENT_TYPE_ALL",
+        "ORG_EQUIPMENT_TYPE_CREATE"
+      ]
+    },
+    "Edit Equipment Type": {
+      "anyOf": [
+        "ORG_EQUIPMENT_TYPE_ALL",
+        "ORG_EQUIPMENT_TYPE_UPDATE"
+      ]
+    },
+    "Equipment": {
+      "anyOf": [
+        "ORG_EQUIPMENT_ALL",
+        "ORG_EQUIPMENT_FETCH"
+      ]
+    },
+    "Add Equipment": {
+      "anyOf": [
+        "ORG_EQUIPMENT_ALL",
+        "ORG_EQUIPMENT_CREATE"
+      ]
+    },
+    "Edit Equipment": {
+      "anyOf": [
+        "ORG_EQUIPMENT_ALL",
+        "ORG_EQUIPMENT_UPDATE"
+      ]
+    },
+    "Show Equipment": {
+      "anyOf": [
+        "ORG_EQUIPMENT_ALL",
+        "ORG_EQUIPMENT_DETAILS"
+      ]
+    },
+    "Upload Equipment Excel": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Equipment Excel"
+    },
+    "Upload Equipment Type Excel": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Equipment Type Excel"
+    },
+    "Factories": {
+      "anyOf": [
+        "ORG_FACTORY_ALL",
+        "ORG_FACTORY_FETCH"
+      ]
+    },
+    "Add Factory": {
+      "anyOf": [
+        "ORG_FACTORY_ALL",
+        "ORG_FACTORY_CREATE"
+      ]
+    },
+    "Edit Factory": {
+      "anyOf": [
+        "ORG_FACTORY_ALL",
+        "ORG_FACTORY_UPDATE"
+      ]
+    },
+    "Factories Items": {
+      "anyOf": [
+        "ORG_FACTORY_ITEM_ALL",
+        "ORG_FACTORY_ITEM_FETCH"
+      ]
+    },
+    "Add Factory Item": {
+      "anyOf": [
+        "ORG_FACTORY_ITEM_ALL",
+        "ORG_FACTORY_ITEM_CREATE"
+      ]
+    },
+    "Edit Factory Item": {
+      "anyOf": [
+        "ORG_FACTORY_ITEM_ALL",
+        "ORG_FACTORY_ITEM_UPDATE"
+      ]
+    },
+    "Hazard Classification": {
+      "anyOf": [
+        "ORG_HAZARD_TYPE_ALL",
+        "ORG_HAZARD_TYPE_FETCH"
+      ]
+    },
+    "Add Hazard Classification": {
+      "anyOf": [
+        "ORG_HAZARD_TYPE_ALL",
+        "ORG_HAZARD_TYPE_CREATE"
+      ]
+    },
+    "Edit Hazard Classification": {
+      "anyOf": [
+        "ORG_HAZARD_TYPE_ALL",
+        "ORG_HAZARD_TYPE_UPDATE"
+      ]
+    },
+    "Hazards": {
+      "anyOf": [
+        "ORG_HAZARD_TYPE_ALL",
+        "ORG_HAZARD_TYPE_FETCH"
+      ]
+    },
+    "Upload Hazard Classification": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Hazard Classification"
+    },
+    "Health Conditions": {
+      "anyOf": [
+        "ORG_HEALTH_CONDITION_ALL",
+        "ORG_HEALTH_CONDITION_FETCH"
+      ]
+    },
+    "Add Health Condition": {
+      "anyOf": [
+        "ORG_HEALTH_CONDITION_ALL",
+        "ORG_HEALTH_CONDITION_CREATE"
+      ]
+    },
+    "Edit Health Condition": {
+      "anyOf": [
+        "ORG_HEALTH_CONDITION_ALL",
+        "ORG_HEALTH_CONDITION_UPDATE"
+      ]
+    },
+    "Incident Categories": {
+      "anyOf": [],
+      "unsupported": "No confirmed fetch permission for this feature"
+    },
+    "Add Incident Category": {
+      "anyOf": [],
+      "unsupported": "No confirmed create permission for this feature"
+    },
+    "Edit Incident Category": {
+      "anyOf": [],
+      "unsupported": "No confirmed update permission for this feature"
+    },
+    "meeting Types": {
+      "anyOf": [
+        "ORG_MEETING_TYPE_ALL",
+        "ORG_MEETING_TYPE_FETCH"
+      ]
+    },
+    "Add Meeting Type": {
+      "anyOf": [
+        "ORG_MEETING_TYPE_ALL",
+        "ORG_MEETING_TYPE_CREATE"
+      ]
+    },
+    "Edit Meeting Type": {
+      "anyOf": [
+        "ORG_MEETING_TYPE_ALL",
+        "ORG_MEETING_TYPE_UPDATE"
+      ]
+    },
+    "Upload Meeting Types": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Meeting Types"
+    },
+    "Methods": {
+      "anyOf": [
+        "ORG_METHOD_ALL",
+        "ORG_METHOD_FETCH"
+      ]
+    },
+    "Add Methods": {
+      "anyOf": [
+        "ORG_METHOD_ALL",
+        "ORG_METHOD_CREATE"
+      ]
+    },
+    "Edit Methods": {
+      "anyOf": [
+        "ORG_METHOD_ALL",
+        "ORG_METHOD_UPDATE"
+      ]
+    },
+    "Observeration Type": {
+      "anyOf": [
+        "ORG_OBSERVATION_TYPE_ALL",
+        "ORG_OBSERVATION_TYPE_FETCH"
+      ]
+    },
+    "Add Observeration Type": {
+      "anyOf": [
+        "ORG_OBSERVATION_TYPE_ALL",
+        "ORG_OBSERVATION_TYPE_CREATE"
+      ]
+    },
+    "Edit Observeration Type": {
+      "anyOf": [
+        "ORG_OBSERVATION_TYPE_ALL",
+        "ORG_OBSERVATION_TYPE_UPDATE"
+      ]
+    },
+    "Import Observeration Type": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Import Observeration Type"
+    },
+    "PPE Items": {
+      "anyOf": [
+        "ORG_PPE_ITEM_ALL",
+        "ORG_PPE_ITEM_FETCH"
+      ]
+    },
+    "Add PPE Item": {
+      "anyOf": [
+        "ORG_PPE_ITEM_ALL",
+        "ORG_PPE_ITEM_CREATE"
+      ]
+    },
+    "Edit PPE Item": {
+      "anyOf": [
+        "ORG_PPE_ITEM_ALL",
+        "ORG_PPE_ITEM_UPDATE"
+      ]
+    },
+    "Upload PPE Items": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload PPE Items"
+    },
+    "PPE Activities": {
+      "anyOf": [
+        "ORG_PPE_ACTIVITY_ALL",
+        "ORG_PPE_ACTIVITY_FETCH"
+      ]
+    },
+    "Add PPE Activity": {
+      "anyOf": [
+        "ORG_PPE_ACTIVITY_ALL",
+        "ORG_PPE_ACTIVITY_CREATE"
+      ]
+    },
+    "Edit PPE Activity": {
+      "anyOf": [
+        "ORG_PPE_ACTIVITY_ALL",
+        "ORG_PPE_ACTIVITY_UPDATE"
+      ]
+    },
+    "Upload PPE Activities": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload PPE Activities"
+    },
+    "PPE Tools": {
+      "anyOf": [
+        "ORG_PPE_TOOLS_ALL",
+        "ORG_PPE_TOOLS_FETCH"
+      ]
+    },
+    "Add PPE Tool": {
+      "anyOf": [
+        "ORG_PPE_TOOLS_ALL",
+        "ORG_PPE_TOOLS_CREATE"
+      ]
+    },
+    "Edit PPE Tool": {
+      "anyOf": [
+        "ORG_PPE_TOOLS_ALL",
+        "ORG_PPE_TOOLS_UPDATE"
+      ]
+    },
+    "Upload PPE Tools": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload PPE Tools"
+    },
+    "PTW Types": {
+      "anyOf": [
+        "ORG_PTW_TYPE_ALL",
+        "ORG_PTW_TYPE_FETCH"
+      ]
+    },
+    "Add PTW Type": {
+      "anyOf": [
+        "ORG_PTW_TYPE_ALL",
+        "ORG_PTW_TYPE_CREATE"
+      ]
+    },
+    "Edit PTW Type": {
+      "anyOf": [
+        "ORG_PTW_TYPE_ALL",
+        "ORG_PTW_TYPE_UPDATE"
+      ]
+    },
+    "Upload PTW Types": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload PTW Types"
+    },
+    "Role": {
+      "anyOf": [
+        "ORG_ROLE_ALL",
+        "ORG_ROLE_FETCH"
+      ]
+    },
+    "Edit Role": {
+      "anyOf": [
+        "ORG_ROLE_ALL",
+        "ORG_ROLE_UPDATE"
+      ]
+    },
+    "Add Role": {
+      "anyOf": [
+        "ORG_ROLE_ALL",
+        "ORG_ROLE_CREATE"
+      ]
+    },
+    "Root Causes": {
+      "anyOf": [
+        "ROOT_CAUSES_ALL",
+        "ROOT_CAUSES_FETCH"
+      ]
+    },
+    "Edit Root Causes": {
+      "anyOf": [
+        "ROOT_CAUSES_ALL",
+        "ROOT_CAUSES_UPDATE"
+      ]
+    },
+    "Add Root Causes": {
+      "anyOf": [
+        "ROOT_CAUSES_ALL",
+        "ROOT_CAUSES_CREATE"
+      ]
+    },
+    "Upload Root Causes Excel": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Root Causes Excel"
+    },
+    "Scope": {
+      "anyOf": [
+        "SCOPE_ALL",
+        "SCOPE_FETCH"
+      ]
+    },
+    "Edit Scope": {
+      "anyOf": [
+        "SCOPE_ALL",
+        "SCOPE_UPDATE"
+      ]
+    },
+    "Add Scope": {
+      "anyOf": [
+        "SCOPE_ALL",
+        "SCOPE_CREATE"
+      ]
+    },
+    "Risk": {
+      "anyOf": [
+        "ORG_HAZARD_ALL",
+        "ORG_HAZARD_FETCH"
+      ]
+    },
+    "Add Risk": {
+      "anyOf": [
+        "ORG_HAZARD_ALL",
+        "ORG_HAZARD_CREATE"
+      ]
+    },
+    "Edit Risk": {
+      "anyOf": [
+        "ORG_HAZARD_ALL",
+        "ORG_HAZARD_UPDATE"
+      ]
+    },
+    "Teams": {
+      "anyOf": [
+        "ORG_TEAM_ALL",
+        "ORG_TEAM_FETCH"
+      ]
+    },
+    "Add Team": {
+      "anyOf": [
+        "ORG_TEAM_ALL",
+        "ORG_TEAM_CREATE"
+      ]
+    },
+    "Edit Team": {
+      "anyOf": [
+        "ORG_TEAM_ALL",
+        "ORG_TEAM_UPDATE"
+      ]
+    },
+    "Templates": {
+      "anyOf": [
+        "ORG_TEMPLATE_ALL",
+        "ORG_TEMPLATE_FETCH"
+      ]
+    },
+    "Add Template": {
+      "anyOf": [
+        "ORG_TEMPLATE_ALL",
+        "ORG_TEMPLATE_CREATE"
+      ]
+    },
+    "Edit Template": {
+      "anyOf": [
+        "ORG_TEMPLATE_ALL",
+        "ORG_TEMPLATE_UPDATE"
+      ]
+    },
+    "Template Item": {
+      "anyOf": [
+        "TEMPLATE_ITEM_ALL",
+        "TEMPLATE_ITEM_FETCH"
+      ]
+    },
+    "Add Template Item": {
+      "anyOf": [
+        "TEMPLATE_ITEM_ALL",
+        "TEMPLATE_ITEM_CREATE"
+      ]
+    },
+    "Edit Template Item": {
+      "anyOf": [
+        "TEMPLATE_ITEM_ALL",
+        "TEMPLATE_ITEM_UPDATE"
+      ]
+    },
+    "Ticket": {
+      "anyOf": [
+        "TICKET_ALL",
+        "TICKET_FETCH"
+      ]
+    },
+    "Create Ticket": {
+      "anyOf": [
+        "TICKET_ALL",
+        "TICKET_CREATE"
+      ]
+    },
+    "History Ticket": {
+      "anyOf": [
+        "TICKET_ALL",
+        "TICKET_DETAILS"
+      ]
+    },
+    "Ticket Type": {
+      "anyOf": [],
+      "unsupported": "No confirmed fetch permission for this feature"
+    },
+    "Create Ticket Type": {
+      "anyOf": [],
+      "unsupported": "No confirmed create permission for this feature"
+    },
+    "Edit Ticket Type": {
+      "anyOf": [],
+      "unsupported": "No confirmed update permission for this feature"
+    },
+    "Traning Topics": {
+      "anyOf": [
+        "ORG_TRANING_TOPIC_ALL",
+        "ORG_TRANING_TOPIC_FETCH"
+      ]
+    },
+    "Add Traning Topic": {
+      "anyOf": [
+        "ORG_TRANING_TOPIC_ALL",
+        "ORG_TRANING_TOPIC_CREATE"
+      ]
+    },
+    "Edit Traning Topic": {
+      "anyOf": [
+        "ORG_TRANING_TOPIC_ALL",
+        "ORG_TRANING_TOPIC_UPDATE"
+      ]
+    },
+    "Upload Traning Topics": {
+      "anyOf": [],
+      "unsupported": "No independent import permission for Upload Traning Topics"
+    },
+    "Visit Activities": {
+      "anyOf": [
+        "ORG_VISIT_ACTIVITIES_ALL",
+        "ORG_VISIT_ACTIVITIES_FETCH"
+      ]
+    },
+    "Add Visit Activity": {
+      "anyOf": [
+        "ORG_VISIT_ACTIVITIES_ALL",
+        "ORG_VISIT_ACTIVITIES_CREATE"
+      ]
+    },
+    "Edit Visit Activity": {
+      "anyOf": [
+        "ORG_VISIT_ACTIVITIES_ALL",
+        "ORG_VISIT_ACTIVITIES_UPDATE"
+      ]
+    },
+    "Visit Categories": {
+      "anyOf": [
+        "ORG_VISIT_CATEGORY_ALL",
+        "ORG_VISIT_CATEGORY_FETCH"
+      ]
+    },
+    "Add Visit Category": {
+      "anyOf": [
+        "ORG_VISIT_CATEGORY_ALL",
+        "ORG_VISIT_CATEGORY_CREATE"
+      ]
+    },
+    "Edit Visit Category": {
+      "anyOf": [
+        "ORG_VISIT_CATEGORY_ALL",
+        "ORG_VISIT_CATEGORY_UPDATE"
+      ]
+    },
+    "Visit Themes": {
+      "anyOf": [
+        "ORG_VISIT_THEME_ALL",
+        "ORG_VISIT_THEME_FETCH"
+      ]
+    },
+    "Add Visit Theme": {
+      "anyOf": [
+        "ORG_VISIT_THEME_ALL",
+        "ORG_VISIT_THEME_CREATE"
+      ]
+    },
+    "Edit Visit Theme": {
+      "anyOf": [
+        "ORG_VISIT_THEME_ALL",
+        "ORG_VISIT_THEME_UPDATE"
+      ]
+    },
+    "Country": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_FETCH"
+      ]
+    },
+    "Add Country": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_CREATE"
+      ]
+    },
+    "Edit Country": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_UPDATE"
+      ]
+    },
+    "State": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_FETCH"
+      ]
+    },
+    "Add State": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_CREATE"
+      ]
+    },
+    "Edit State": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_UPDATE"
+      ]
+    },
+    "City": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_FETCH"
+      ]
+    },
+    "Add City": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_CREATE"
+      ]
+    },
+    "Edit City": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_UPDATE"
+      ]
+    },
+    "Area": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_FETCH"
+      ]
+    },
+    "Add Area": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_CREATE"
+      ]
+    },
+    "Edit Area": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_UPDATE"
+      ]
+    },
+    "Location": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_FETCH"
+      ]
+    },
+    "Add Location": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_CREATE"
+      ]
+    },
+    "Edit Location": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_UPDATE"
+      ]
+    }
+  },
+  "api": {
+    "IndexInspection": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_FETCH",
+        "MY_TASKS_ALL"
+      ]
+    },
+    "FetchInspectionsResults": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "INSPECTION_RESULTS_FETCH"
+      ]
+    },
+    "FetchMyProjects": {
+      "authenticated": true
+    },
+    "FetchMyZones": {
+      "authenticated": true
+    },
+    "ShowPermission": {
+      "anyOf": [
+        "PERMISSION_DETAILS",
+        "PERMISSION_UPDATE"
+      ]
+    },
+    "EditPermission": {
+      "anyOf": [
+        "PERMISSION_UPDATE"
+      ]
+    },
+    "IndexPermission": {
+      "anyOf": [
+        "PERMISSION_FETCH"
+      ]
+    },
+    "DeletePermission": {
+      "anyOf": [
+        "PERMISSION_DELETE"
+      ]
+    },
+    "FetchEmployeeTasks": {
+      "anyOf": [
+        "MY_TASKS_ALL",
+        "TASK_FETCH"
+      ]
+    },
+    "fetchTaskhistory": {
+      "anyOf": [
+        "MY_TASKS_ALL",
+        "TASK_DETAILS"
+      ]
+    },
+    "changeTaskStatus": {
+      "anyOf": [],
+      "unsupported": "Task status needs a backend operation permission"
+    },
+    "CreateObjectiveProgress": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_UPDATE"
+      ]
+    },
+    "EditObjectiveProgress": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_UPDATE"
+      ]
+    },
+    "IndexObjectiveProgress": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_DETAILS"
+      ]
+    },
+    "ShowObjectiveProgress": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_DETAILS"
+      ]
+    },
+    "CreateCapaResult": {
+      "anyOf": [
+        "CAPA_ALL",
+        "CAPA_SET_RESULT"
+      ]
+    },
+    "UpdateTasks": {
+      "anyOf": [
+        "INVESTIGATION_TASK_ALL",
+        "INVESTIGATION_TASK_UPDATE"
+      ]
+    },
+    "CreateInvestegation": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "FULL_INVESTIGATION_CREATE"
+      ]
+    },
+    "CreateInvestigatingResult": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "FULL_INVESTIGATION_MEETING_RESULT_CREATE"
+      ]
+    },
+    "CreateInvestigationTaskResult": {
+      "anyOf": [
+        "INVESTIGATION_TASK_RESULT_ALL",
+        "INVESTIGATION_TASK_RESULT_CREATE"
+      ]
+    },
+    "AddTasks": {
+      "anyOf": [
+        "INVESTIGATION_TASK_ALL",
+        "INVESTIGATION_TASK_CREATE"
+      ]
+    },
+    "IndexTasks": {
+      "anyOf": [
+        "INVESTIGATION_TASK_ALL",
+        "INVESTIGATION_TASK_FETCH"
+      ]
+    },
+    "AddMeetings": {
+      "anyOf": [
+        "INVESTIGATION_MEETING_ALL",
+        "INVESTIGATION_MEETING_CREATE"
+      ]
+    },
+    "IndexMeeting": {
+      "anyOf": [
+        "INVESTIGATION_MEETING_ALL",
+        "INVESTIGATION_MEETING_FETCH"
+      ]
+    },
+    "IndexInvestigatingResult": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "INVESTIGATION_FETCH"
+      ]
+    },
+    "ShowInvestigatingResult": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "INVESTIGATION_DETAILS"
+      ]
+    },
+    "CreatePermitToWork": {
+      "anyOf": [
+        "PTW_ALL",
+        "PTW_CREATE"
+      ]
+    },
+    "FetchMyPermits": {
+      "anyOf": [
+        "PTW_ALL",
+        "PTW_FETCH"
+      ]
+    },
+    "FetchPermits": {
+      "anyOf": [
+        "PTW_ALL",
+        "PTW_FETCH"
+      ]
+    },
+    "FetchPermitsAudits": {
+      "anyOf": [
+        "PTW_ALL",
+        "PTW_FETCH"
+      ]
+    },
+    "FetchStaticsMyPermits": {
+      "anyOf": [
+        "PTW_ALL",
+        "PTW_FETCH"
+      ]
+    },
+    "CreatePermitToWorkResult": {
+      "anyOf": [],
+      "unsupported": "Permit results need a distinct backend operation permission"
+    },
+    "CreateRiskAssessment": {
+      "anyOf": [
+        "RISK_ASSESSMENT_ALL",
+        "RISK_ASSESSMENT_CREATE"
+      ]
+    },
+    "FetchRiskAssessments": {
+      "anyOf": [
+        "RISK_ASSESSMENT_ALL",
+        "RISK_ASSESSMENT_FETCH"
+      ]
+    },
+    "FetchRiskAssessmentDetails": {
+      "anyOf": [
+        "RISK_ASSESSMENT_ALL",
+        "RISK_ASSESSMENT_DETAILS"
+      ]
+    },
+    "CreateLeadershipPlan": {
+      "anyOf": [
+        "LEADERSHIP_ALL",
+        "LEADERSHIP_CRAETE"
+      ]
+    },
+    "CreateLeadershipVisitReport": {
+      "anyOf": [
+        "LEADERSHIP_ALL",
+        "LEADERSHIP_CRAETE"
+      ]
+    },
+    "FetchAllLeadershipVisits": {
+      "anyOf": [
+        "LEADERSHIP_ALL",
+        "LEADERSHIP_FETCH"
+      ]
+    },
+    "FetchLeadershipVisitDetails": {
+      "anyOf": [
+        "LEADERSHIP_ALL",
+        "LEADERSHIP_DETAILS"
+      ]
+    },
+    "create_induction": {
+      "anyOf": [
+        "inductions_ALL",
+        "inductions_CREATE"
+      ]
+    },
+    "update_induction": {
+      "anyOf": [
+        "inductions_ALL",
+        "inductions_UPDATE"
+      ]
+    },
+    "delete_induction": {
+      "anyOf": [
+        "inductions_ALL",
+        "inductions_DELETE"
+      ]
+    },
+    "fetch_inductions": {
+      "anyOf": [
+        "inductions_ALL",
+        "inductions_FETCH"
+      ]
+    },
+    "fetch_induction_details": {
+      "anyOf": [
+        "inductions_ALL",
+        "inductions_DETAILS"
+      ]
+    },
+    "CreatePPEActivityTool": {
+      "anyOf": [
+        "ppe_matrix_logs_ALL",
+        "ppe_matrix_logs_UPDATE"
+      ]
+    },
+    "FetchPPEActivityTools": {
+      "anyOf": [
+        "ppe_matrix_logs_ALL",
+        "ppe_matrix_logs_FETCH"
+      ]
+    },
+    "CreatePPEMatrixDelivery": {
+      "anyOf": [
+        "ppe_matrix_logs_ALL",
+        "ppe_matrix_logs_CREATE"
+      ]
+    },
+    "FetchPPEMatrixDeliveries": {
+      "anyOf": [
+        "ppe_matrix_logs_ALL",
+        "ppe_matrix_logs_FETCH"
+      ]
+    },
+    "CreateBasicProject": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_CREATE"
+      ]
+    },
+    "UpdateBasicProject": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_UPDATE"
+      ]
+    },
+    "ShowProjectSummaryDetails": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_DETAILS"
+      ]
+    },
+    "CreateLocationHierarchy": {
+      "anyOf": [
+        "PROJECT_LOCATION_HIERARCHY_ALL",
+        "PROJECT_LOCATION_HIERARCHY_CREATE"
+      ]
+    },
+    "IndexLocationHierarchy": {
+      "anyOf": [
+        "PROJECT_LOCATION_HIERARCHY_ALL",
+        "PROJECT_LOCATION_HIERARCHY_FETCH"
+      ]
+    },
+    "CreateHierarchyEmployee": {
+      "anyOf": [
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_CREATE"
+      ]
+    },
+    "IndexHierarchyEmployee": {
+      "anyOf": [
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_FETCH"
+      ]
+    },
+    "CreateProjectLocationPositionEmployees": {
+      "anyOf": [
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_CREATE"
+      ]
+    },
+    "UpdateProjectLocationPositionEmployees": {
+      "anyOf": [
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_UPDATE"
+      ]
+    },
+    "DeleteProjectLocationHeirarchyEmployee": {
+      "anyOf": [
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_DELETE"
+      ]
+    },
+    "CreateProjectZoon": {
+      "anyOf": [
+        "PROJECT_ZOON_ALL",
+        "PROJECT_ZOON_CREATE"
+      ]
+    },
+    "CreateProjectZoonEquipment": {
+      "anyOf": [
+        "PROJECT_ZOON_EQUIPMENT_ALL",
+        "PROJECT_ZOON_EQUIPMENT_CREATE"
+      ]
+    },
+    "CreateProjectLocationTeamEmployee": {
+      "anyOf": [
+        "PROJECT_LOCATION_TEAM_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_TEAM_EMPLOYEE_CREATE"
+      ]
+    },
+    "DeleteProjectLocationTeamEmployee": {
+      "anyOf": [
+        "PROJECT_LOCATION_TEAM_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_TEAM_EMPLOYEE_DELETE"
+      ]
+    },
+    "FetchProjectLocationEmployee": {
+      "anyOf": [
+        "PROJECT_LOCATION_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_EMPLOYEE_FETCH"
+      ]
+    },
+    "FetchProjectLocationsEmployee": {
+      "anyOf": [
+        "PROJECT_LOCATION_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_EMPLOYEE_FETCH"
+      ]
+    },
+    "IndexProjectLocationZones": {
+      "anyOf": [
+        "PROJECT_ZOON_ALL",
+        "PROJECT_ZOON_FETCH"
+      ]
+    },
+    "FetchProjectZones": {
+      "anyOf": [
+        "PROJECT_ZONE_ALL",
+        "PROJECT_ZONE_FETCH"
+      ]
+    },
+    "CreateInternalAuditPlan": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_CREATE"
+      ]
+    },
+    "EditInternalAuditPlan": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_UPDATE"
+      ]
+    },
+    "IndexInternalAuditPlan": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_FETCH"
+      ]
+    },
+    "ShowInternalAuditPlan": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_DETAILS"
+      ]
+    },
+    "DeleteInternalAuditPlan": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_DELETE"
+      ]
+    },
+    "IndexMyInternalAudit": {
+      "anyOf": [
+        "MY_INTERNAL_AUDIT_ALL",
+        "MY_INTERNAL_AUDIT_FETCH"
+      ]
+    },
+    "FetchMyInternalAuditNcrs": {
+      "anyOf": [
+        "MY_INTERNAL_AUDIT_ALL",
+        "MY_INTERNAL_AUDIT_DETAILS"
+      ]
+    },
+    "CreateInternalAuditNcrs": {
+      "anyOf": [
+        "MY_INTERNAL_AUDIT_ALL",
+        "MY_INTERNAL_AUDIT_CREATE"
+      ]
+    },
+    "EditInternalAuditNcrs": {
+      "anyOf": [],
+      "unsupported": "NCR correction needs its own backend operation permission"
+    },
+    "FetchInternalAuditNcrDetails": {
+      "anyOf": [
+        "MY_INTERNAL_AUDIT_ALL",
+        "MY_INTERNAL_AUDIT_DETAILS"
+      ]
+    },
+    "FetchInternalAuditNcrs": {
+      "anyOf": [
+        "MY_INTERNAL_AUDIT_ALL",
+        "MY_INTERNAL_AUDIT_FETCH"
+      ]
+    },
+    "FetchInternalAuditAttendance": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_DETAILS"
+      ]
+    },
+    "FetchInternalAuditPlanDetailsForReport": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_DETAILS"
+      ]
+    },
+    "FetchInternalAuditReport": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_DETAILS"
+      ]
+    },
+    "AddInternalAuditParticipants": {
+      "anyOf": [],
+      "unsupported": "Audit participant assignment permission is absent"
+    },
+    "SaveInternalAuditAttendance": {
+      "anyOf": [],
+      "unsupported": "Audit attendance permission is absent"
+    },
+    "CreateInternalAuditReport": {
+      "anyOf": [],
+      "unsupported": "Audit report submission permission is absent"
+    },
+    "FetchCorrectiveTasks": {
+      "anyOf": [
+        "INVESTIGATION_TASK_ALL",
+        "INVESTIGATION_TASK_FETCH"
+      ]
+    },
+    "FetchPreventiveTasks": {
+      "anyOf": [
+        "INVESTIGATION_TASK_ALL",
+        "INVESTIGATION_TASK_FETCH"
+      ]
+    },
+    "FetchLessonsLearnt": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "INVESTIGATION_FETCH"
+      ]
+    },
+    "createCodingSystem": {
+      "anyOf": [
+        "CODING_SYSTEM_ALL",
+        "CODING_SYSTEM_CREATE"
+      ]
+    },
+    "fetchCodingSystem": {
+      "anyOf": [
+        "CODING_SYSTEM_ALL",
+        "CODING_SYSTEM_FETCH"
+      ]
+    },
+    "IndexProjectProgress": {
+      "anyOf": [
+        "PROJECT_PROGRESS_ALL"
+      ]
+    },
+    "ProjectCustomLocation": {
+      "anyOf": [],
+      "unsupported": "Project resource request must be scoped to its resource-specific permission"
+    },
+    "CloseInvestigating": {
+      "anyOf": [],
+      "unsupported": "Investigation close permission is absent"
+    },
+    "ToggleObservationActionStatus": {
+      "anyOf": [],
+      "unsupported": "Observation action status permission is absent"
+    },
+    "ToggleObservationWorkStopped": {
+      "anyOf": [],
+      "unsupported": "Observation stop-work permission is absent"
+    },
+    "GetTodayTalk": {
+      "anyOf": [],
+      "unsupported": "Today talk permission family is absent"
+    },
+    "CreateTodayTalk": {
+      "anyOf": [],
+      "unsupported": "Today talk permission family is absent"
+    },
+    "CreateTodayTalkAnswer": {
+      "anyOf": [],
+      "unsupported": "Today talk permission family is absent"
+    },
+    "FetchDrills": {
+      "anyOf": [],
+      "unsupported": "Drill operations differ from drill-type configuration and lack permission identifiers"
+    },
+    "FetchDrillPlans": {
+      "anyOf": [],
+      "unsupported": "Drill plan permission is absent"
+    },
+    "FetchDrillActions": {
+      "anyOf": [],
+      "unsupported": "Drill action permission is absent"
+    },
+    "CreateDrill": {
+      "anyOf": [],
+      "unsupported": "Drill create permission is absent"
+    },
+    "CreateDrillPlanning": {
+      "anyOf": [],
+      "unsupported": "Drill plan create permission is absent"
+    },
+    "CreateDrillAction": {
+      "anyOf": [],
+      "unsupported": "Drill action create permission is absent"
+    },
+    "DeleteDrillAction": {
+      "anyOf": [],
+      "unsupported": "Drill action delete permission is absent"
+    },
+    "DeleteDrillPlan": {
+      "anyOf": [],
+      "unsupported": "Drill plan delete permission is absent"
+    },
+    "CreateProjectMeeting": {
+      "anyOf": [],
+      "unsupported": "Project meeting permission family is absent"
+    },
+    "CreateProjectMeetingResult": {
+      "anyOf": [],
+      "unsupported": "Project meeting result permission is absent"
+    },
+    "FetchProjectMeetings": {
+      "anyOf": [],
+      "unsupported": "Project meeting permission family is absent"
+    },
+    "FetchMeetingDetails": {
+      "anyOf": [],
+      "unsupported": "Project meeting permission family is absent"
+    },
+    "CreateAttachmentMatrix": {
+      "anyOf": [
+        "ATTACHMENT_MATRIX_ALL",
+        "ATTACHMENT_MATRIX_CREATE"
+      ]
+    },
+    "FetchAttachmentMatrix": {
+      "anyOf": [
+        "ATTACHMENT_MATRIX_ALL",
+        "ATTACHMENT_MATRIX_FETCH"
+      ]
+    },
+    "clone_audit_activity": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for clone_audit_activity"
+    },
+    "create_audit_activity": {
+      "anyOf": [
+        "ORG_AUDIT_ACTIVITIES_ALL",
+        "ORG_AUDIT_ACTIVITIES_CREATE"
+      ]
+    },
+    "delete_audit_activity": {
+      "anyOf": [
+        "ORG_AUDIT_ACTIVITIES_ALL",
+        "ORG_AUDIT_ACTIVITIES_DELETE"
+      ]
+    },
+    "update_audit_activity": {
+      "anyOf": [
+        "ORG_AUDIT_ACTIVITIES_ALL",
+        "ORG_AUDIT_ACTIVITIES_UPDATE"
+      ]
+    },
+    "fetch_audit_activities": {
+      "anyOf": [
+        "ORG_AUDIT_ACTIVITIES_ALL",
+        "ORG_AUDIT_ACTIVITIES_FETCH"
+      ]
+    },
+    "fetch_audit_activity_details": {
+      "anyOf": [
+        "ORG_AUDIT_ACTIVITIES_ALL",
+        "ORG_AUDIT_ACTIVITIES_DETAILS"
+      ]
+    },
+    "clone_audit_standard": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for clone_audit_standard"
+    },
+    "create_audit_standard": {
+      "anyOf": [
+        "ORG_AUDIT_STANDARDS_ALL",
+        "ORG_AUDIT_STANDARDS_CREATE"
+      ]
+    },
+    "delete_audit_standard": {
+      "anyOf": [
+        "ORG_AUDIT_STANDARDS_ALL",
+        "ORG_AUDIT_STANDARDS_DELETE"
+      ]
+    },
+    "update_audit_standard": {
+      "anyOf": [
+        "ORG_AUDIT_STANDARDS_ALL",
+        "ORG_AUDIT_STANDARDS_UPDATE"
+      ]
+    },
+    "fetch_audit_standards": {
+      "anyOf": [
+        "ORG_AUDIT_STANDARDS_ALL",
+        "ORG_AUDIT_STANDARDS_FETCH"
+      ]
+    },
+    "fetch_audit_standard_details": {
+      "anyOf": [
+        "ORG_AUDIT_STANDARDS_ALL",
+        "ORG_AUDIT_STANDARDS_DETAILS"
+      ]
+    },
+    "FetchInvestigationTaskVerification": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for FetchInvestigationTaskVerification"
+    },
+    "SetInvestigationTaskVerification": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for SetInvestigationTaskVerification"
+    },
+    "ShowCapaDetails": {
+      "anyOf": [
+        "CAPA_ALL",
+        "CAPA_DETAILS"
+      ]
+    },
+    "UpdateCapa": {
+      "anyOf": [
+        "CAPA_ALL",
+        "CAPA_UPDATE"
+      ]
+    },
+    "DeleteCapa": {
+      "anyOf": [
+        "CAPA_ALL",
+        "CAPA_DELETE"
+      ]
+    },
+    "IndexCapa": {
+      "anyOf": [
+        "CAPA_ALL",
+        "CAPA_FETCH"
+      ]
+    },
+    "AddCheckList": {
+      "anyOf": [],
+      "unsupported": "No confirmed create permission for this feature"
+    },
+    "DeleteCheckList": {
+      "anyOf": [],
+      "unsupported": "No confirmed delete permission for this feature"
+    },
+    "EditCheckList": {
+      "anyOf": [],
+      "unsupported": "No confirmed update permission for this feature"
+    },
+    "IndexCheckList": {
+      "anyOf": [],
+      "unsupported": "No confirmed fetch permission for this feature"
+    },
+    "ShowCheckList": {
+      "anyOf": [],
+      "unsupported": "No confirmed details permission for this feature"
+    },
+    "clone_document_category": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for clone_document_category"
+    },
+    "create_document_category": {
+      "anyOf": [
+        "ORG_DOCUMENT_CATEGORY_ALL",
+        "ORG_DOCUMENT_CATEGORY_CREATE"
+      ]
+    },
+    "delete_document_category": {
+      "anyOf": [
+        "ORG_DOCUMENT_CATEGORY_ALL",
+        "ORG_DOCUMENT_CATEGORY_DELETE"
+      ]
+    },
+    "update_document_category": {
+      "anyOf": [
+        "ORG_DOCUMENT_CATEGORY_ALL",
+        "ORG_DOCUMENT_CATEGORY_UPDATE"
+      ]
+    },
+    "fetch_document_categories": {
+      "anyOf": [
+        "ORG_DOCUMENT_CATEGORY_ALL",
+        "ORG_DOCUMENT_CATEGORY_FETCH"
+      ]
+    },
+    "fetch_document_category_details": {
+      "anyOf": [
+        "ORG_DOCUMENT_CATEGORY_ALL",
+        "ORG_DOCUMENT_CATEGORY_DETAILS"
+      ]
+    },
+    "CreateDocumentRefrence": {
+      "anyOf": [
+        "ORG_DOCUMENTATION_REFERENCE_ALL",
+        "ORG_DOCUMENTATION_REFERENCE_CREATE"
+      ]
+    },
+    "DeleteDocumentRefrence": {
+      "anyOf": [
+        "ORG_DOCUMENTATION_REFERENCE_ALL",
+        "ORG_DOCUMENTATION_REFERENCE_DELETE"
+      ]
+    },
+    "EditDocumentRefrence": {
+      "anyOf": [
+        "ORG_DOCUMENTATION_REFERENCE_ALL",
+        "ORG_DOCUMENTATION_REFERENCE_UPDATE"
+      ]
+    },
+    "IndexDocumentRefrence": {
+      "anyOf": [
+        "ORG_DOCUMENTATION_REFERENCE_ALL",
+        "ORG_DOCUMENTATION_REFERENCE_FETCH"
+      ]
+    },
+    "ShowDocumentRefrence": {
+      "anyOf": [
+        "ORG_DOCUMENTATION_REFERENCE_ALL",
+        "ORG_DOCUMENTATION_REFERENCE_DETAILS"
+      ]
+    },
+    "CloneDrillTypes": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CloneDrillTypes"
+    },
+    "CreateDrillType": {
+      "anyOf": [
+        "ORG_DRILL_TYPE_ALL",
+        "ORG_DRILL_TYPE_CREATE"
+      ]
+    },
+    "DeleteDrillType": {
+      "anyOf": [
+        "ORG_DRILL_TYPE_ALL",
+        "ORG_DRILL_TYPE_DELETE"
+      ]
+    },
+    "EditDrillType": {
+      "anyOf": [
+        "ORG_DRILL_TYPE_ALL",
+        "ORG_DRILL_TYPE_UPDATE"
+      ]
+    },
+    "IndexDrillType": {
+      "anyOf": [
+        "ORG_DRILL_TYPE_ALL",
+        "ORG_DRILL_TYPE_FETCH"
+      ]
+    },
+    "ShowDrillType": {
+      "anyOf": [
+        "ORG_DRILL_TYPE_ALL",
+        "ORG_DRILL_TYPE_DETAILS"
+      ]
+    },
+    "CreateEmployeeCertificate": {
+      "anyOf": [
+        "EMPLOYEE_CERTIFICATE_ALL",
+        "EMPLOYEE_CERTIFICATE_CREATE"
+      ]
+    },
+    "DeleteEmployeeCertificate": {
+      "anyOf": [
+        "EMPLOYEE_CERTIFICATE_ALL",
+        "EMPLOYEE_CERTIFICATE_DELETE"
+      ]
+    },
+    "EditInjury": {
+      "anyOf": [
+        "EMPLOYEE_CERTIFICATE_ALL",
+        "EMPLOYEE_CERTIFICATE_UPDATE"
+      ]
+    },
+    "IndexEmployeeCertificate": {
+      "anyOf": [
+        "EMPLOYEE_CERTIFICATE_ALL",
+        "EMPLOYEE_CERTIFICATE_FETCH"
+      ]
+    },
+    "ShowInjury": {
+      "anyOf": [
+        "EMPLOYEE_CERTIFICATE_ALL",
+        "EMPLOYEE_CERTIFICATE_DETAILS"
+      ]
+    },
+    "deleteCertificateToHierarchy": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for deleteCertificateToHierarchy"
+    },
+    "FetchHierarchyCertificates": {
+      "anyOf": [
+        "HERIKALY_ALL",
+        "HERIKALY_FETCH"
+      ]
+    },
+    "CreateHerikaly": {
+      "anyOf": [
+        "HERIKALY_ALL",
+        "HERIKALY_CREATE"
+      ]
+    },
+    "addCertificateToHierarchy": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for addCertificateToHierarchy"
+    },
+    "DeleteHerikaly": {
+      "anyOf": [
+        "HERIKALY_ALL",
+        "HERIKALY_DELETE"
+      ]
+    },
+    "EditHerikaly": {
+      "anyOf": [
+        "HERIKALY_ALL",
+        "HERIKALY_UPDATE"
+      ]
+    },
+    "IndexHerikaly": {
+      "anyOf": [
+        "HERIKALY_ALL",
+        "HERIKALY_FETCH"
+      ]
+    },
+    "ShowHerikaly": {
+      "anyOf": [
+        "HERIKALY_ALL",
+        "HERIKALY_DETAILS"
+      ]
+    },
+    "CreateInjury": {
+      "anyOf": [
+        "INJURY_ALL",
+        "INJURY_CREATE"
+      ]
+    },
+    "CreateInjuryClones": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CreateInjuryClones"
+    },
+    "DeleteInjury": {
+      "anyOf": [
+        "INJURY_ALL",
+        "INJURY_DELETE"
+      ]
+    },
+    "IndexInjury": {
+      "anyOf": [
+        "INJURY_ALL",
+        "INJURY_FETCH"
+      ]
+    },
+    "CreateTaskAnswer": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_CREATE"
+      ]
+    },
+    "FetchAllTasks": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_FETCH"
+      ]
+    },
+    "FetchInspectionResult": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_FETCH"
+      ]
+    },
+    "FetchTaskResult": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_FETCH"
+      ]
+    },
+    "FetchTaskResultDetails": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_DETAILS"
+      ]
+    },
+    "CreateInspection": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_CREATE"
+      ]
+    },
+    "DeleteInspection": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_DELETE"
+      ]
+    },
+    "EditInspection": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_UPDATE"
+      ]
+    },
+    "ShowInspection": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_DETAILS"
+      ]
+    },
+    "FetchSimilarObservation": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "INVESTIGATION_FETCH"
+      ]
+    },
+    "DeleteInvestigating": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "INVESTIGATION_DELETE"
+      ]
+    },
+    "EditInvestigating": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "INVESTIGATION_UPDATE"
+      ]
+    },
+    "IndexInvestigating": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "INVESTIGATION_FETCH"
+      ]
+    },
+    "ShowInvestigating": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "INVESTIGATION_DETAILS"
+      ]
+    },
+    "CloneMangementChangeTopicTypes": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CloneMangementChangeTopicTypes"
+    },
+    "CreateMangementChangeTopicType": {
+      "anyOf": [
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL",
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_CREATE"
+      ]
+    },
+    "DeleteMangementChangeTopicType": {
+      "anyOf": [
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL",
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_DELETE"
+      ]
+    },
+    "EditMangementChangeTopicType": {
+      "anyOf": [
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL",
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_UPDATE"
+      ]
+    },
+    "IndexMangementChangeTopicType": {
+      "anyOf": [
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL",
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_FETCH"
+      ]
+    },
+    "ShowMangementChangeTopicType": {
+      "anyOf": [
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL",
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_DETAILS"
+      ]
+    },
+    "CreateMangementChange": {
+      "anyOf": [
+        "MOC_ALL",
+        "MOC_CRAETE"
+      ]
+    },
+    "DeleteMangementChange": {
+      "anyOf": [
+        "MOC_ALL",
+        "MOC_DELETE"
+      ]
+    },
+    "EditMangementChange": {
+      "anyOf": [
+        "MOC_ALL",
+        "MOC_UPDATE"
+      ]
+    },
+    "IndexMangementChange": {
+      "anyOf": [
+        "MOC_ALL",
+        "MOC_FETCH"
+      ]
+    },
+    "ShowMangementChange": {
+      "anyOf": [
+        "MOC_ALL",
+        "MOC_DETAILS"
+      ]
+    },
+    "CloneMeetingType": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CloneMeetingType"
+    },
+    "CloneMeetingTypes": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CloneMeetingTypes"
+    },
+    "CreateMeetingType": {
+      "anyOf": [
+        "ORG_MEETING_TYPE_ALL",
+        "ORG_MEETING_TYPE_CREATE"
+      ]
+    },
+    "DeleteMeetingType": {
+      "anyOf": [
+        "ORG_MEETING_TYPE_ALL",
+        "ORG_MEETING_TYPE_DELETE"
+      ]
+    },
+    "EditMeetingType": {
+      "anyOf": [
+        "ORG_MEETING_TYPE_ALL",
+        "ORG_MEETING_TYPE_UPDATE"
+      ]
+    },
+    "IndexMeetingType": {
+      "anyOf": [
+        "ORG_MEETING_TYPE_ALL",
+        "ORG_MEETING_TYPE_FETCH"
+      ]
+    },
+    "ShowMeetingType": {
+      "anyOf": [
+        "ORG_MEETING_TYPE_ALL",
+        "ORG_MEETING_TYPE_DETAILS"
+      ]
+    },
+    "CreateHazard": {
+      "anyOf": [],
+      "unsupported": "No confirmed create permission for this feature"
+    },
+    "DeleteHazard": {
+      "anyOf": [],
+      "unsupported": "No confirmed delete permission for this feature"
+    },
+    "EditHazard": {
+      "anyOf": [],
+      "unsupported": "No confirmed update permission for this feature"
+    },
+    "IndexHazard": {
+      "anyOf": [],
+      "unsupported": "No confirmed fetch permission for this feature"
+    },
+    "ShowHazard": {
+      "anyOf": [],
+      "unsupported": "No confirmed details permission for this feature"
+    },
+    "CreateOrganizatoinEmployeeExcel": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CreateOrganizatoinEmployeeExcel"
+    },
+    "CreateOrganizatoinEmployee": {
+      "anyOf": [
+        "ORG_EMPLOYEE_ALL",
+        "ORG_EMPLOYEE_CREATE"
+      ]
+    },
+    "AddOrganizationEmployeeToHierarchy": {
+      "anyOf": [
+        "ORG_EMPLOYEE_ALL",
+        "ORG_EMPLOYEE_CREATE"
+      ]
+    },
+    "DeleteOrganizatoinEmployee": {
+      "anyOf": [
+        "ORG_EMPLOYEE_ALL",
+        "ORG_EMPLOYEE_DELETE"
+      ]
+    },
+    "DisOrganizatoinEmployee": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisOrganizatoinEmployee"
+    },
+    "EditOrganizatoinEmployee": {
+      "anyOf": [
+        "ORG_EMPLOYEE_ALL",
+        "ORG_EMPLOYEE_UPDATE"
+      ]
+    },
+    "IndexOrganizatoinEmployee": {
+      "anyOf": [
+        "ORG_EMPLOYEE_ALL",
+        "ORG_EMPLOYEE_FETCH"
+      ]
+    },
+    "ShowOrganizatoinEmployee": {
+      "anyOf": [
+        "ORG_EMPLOYEE_ALL",
+        "ORG_EMPLOYEE_DETAILS"
+      ]
+    },
+    "CreateOrganizationLocation": {
+      "anyOf": [
+        "ORG_LOCATION_ALL",
+        "ORG_LOCATION_CREATE"
+      ]
+    },
+    "DeleteOrganizationLocation": {
+      "anyOf": [
+        "ORG_LOCATION_ALL",
+        "ORG_LOCATION_DELETE"
+      ]
+    },
+    "EditOrganizationLocation": {
+      "anyOf": [
+        "ORG_LOCATION_ALL",
+        "ORG_LOCATION_UPDATE"
+      ]
+    },
+    "IndexOrganizationLocation": {
+      "anyOf": [
+        "ORG_LOCATION_ALL",
+        "ORG_LOCATION_FETCH"
+      ]
+    },
+    "ShowOrganizationLocation": {
+      "anyOf": [
+        "ORG_LOCATION_ALL",
+        "ORG_LOCATION_DETAILS"
+      ]
+    },
+    "clone_ppe_activity": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for clone_ppe_activity"
+    },
+    "create_ppe_activity": {
+      "anyOf": [
+        "ORG_PPE_ACTIVITY_ALL",
+        "ORG_PPE_ACTIVITY_CREATE"
+      ]
+    },
+    "delete_ppe_activity": {
+      "anyOf": [
+        "ORG_PPE_ACTIVITY_ALL",
+        "ORG_PPE_ACTIVITY_DELETE"
+      ]
+    },
+    "update_ppe_activity": {
+      "anyOf": [
+        "ORG_PPE_ACTIVITY_ALL",
+        "ORG_PPE_ACTIVITY_UPDATE"
+      ]
+    },
+    "fetch_ppe_activities": {
+      "anyOf": [
+        "ORG_PPE_ACTIVITY_ALL",
+        "ORG_PPE_ACTIVITY_FETCH"
+      ]
+    },
+    "fetch_ppe_activity_details": {
+      "anyOf": [
+        "ORG_PPE_ACTIVITY_ALL",
+        "ORG_PPE_ACTIVITY_DETAILS"
+      ]
+    },
+    "clone_ppe_tool": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for clone_ppe_tool"
+    },
+    "create_ppe_toll": {
+      "anyOf": [
+        "ORG_PPE_TOOLS_ALL",
+        "ORG_PPE_TOOLS_CREATE"
+      ]
+    },
+    "delete_ppe_tool": {
+      "anyOf": [
+        "ORG_PPE_TOOLS_ALL",
+        "ORG_PPE_TOOLS_DELETE"
+      ]
+    },
+    "update_ppe_tool": {
+      "anyOf": [
+        "ORG_PPE_TOOLS_ALL",
+        "ORG_PPE_TOOLS_UPDATE"
+      ]
+    },
+    "fetch_ppe_tools": {
+      "anyOf": [
+        "ORG_PPE_TOOLS_ALL",
+        "ORG_PPE_TOOLS_FETCH"
+      ]
+    },
+    "fetch_ppe_toll_deails": {
+      "anyOf": [
+        "ORG_PPE_TOOLS_ALL",
+        "ORG_PPE_TOOLS_FETCH"
+      ]
+    },
+    "ClonePTWTypes": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for ClonePTWTypes"
+    },
+    "CreatePTWType": {
+      "anyOf": [
+        "ORG_PTW_TYPE_ALL",
+        "ORG_PTW_TYPE_CREATE"
+      ]
+    },
+    "DeletePTWType": {
+      "anyOf": [
+        "ORG_PTW_TYPE_ALL",
+        "ORG_PTW_TYPE_DELETE"
+      ]
+    },
+    "EditPTWType": {
+      "anyOf": [
+        "ORG_PTW_TYPE_ALL",
+        "ORG_PTW_TYPE_UPDATE"
+      ]
+    },
+    "IndexPTWType": {
+      "anyOf": [
+        "ORG_PTW_TYPE_ALL",
+        "ORG_PTW_TYPE_FETCH"
+      ]
+    },
+    "ShowPTWType": {
+      "anyOf": [],
+      "unsupported": "No confirmed details permission for ORG_PTW_TYPE"
+    },
+    "CreatePartner": {
+      "anyOf": [
+        "PARTNER_ALL",
+        "PARTNER_CREATE"
+      ]
+    },
+    "DeletePartner": {
+      "anyOf": [
+        "PARTNER_ALL",
+        "PARTNER_DELETE"
+      ]
+    },
+    "EditPartner": {
+      "anyOf": [
+        "PARTNER_ALL",
+        "PARTNER_UPDATE"
+      ]
+    },
+    "IndexPartner": {
+      "anyOf": [
+        "PARTNER_ALL",
+        "PARTNER_FETCH"
+      ]
+    },
+    "ShowPartner": {
+      "anyOf": [
+        "PARTNER_ALL",
+        "PARTNER_DETAILS"
+      ]
+    },
+    "ShowProject": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_DETAILS"
+      ]
+    },
+    "UpdateProjectEquipments": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_UPDATE"
+      ]
+    },
+    "CreateProjectEquipments": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_CREATE"
+      ]
+    },
+    "CreateProjectHolidays": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CreateProjectHolidays"
+    },
+    "UpdateProjectHolidays": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for UpdateProjectHolidays"
+    },
+    "CreateProjectTeams": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_CREATE"
+      ]
+    },
+    "UpdateProjectTeams": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_UPDATE"
+      ]
+    },
+    "CreateProject": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_CREATE"
+      ]
+    },
+    "DeleteProject": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_DELETE"
+      ]
+    },
+    "EditProject": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_UPDATE"
+      ]
+    },
+    "IndexProject": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_FETCH"
+      ]
+    },
+    "CloneAllData": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CloneAllData"
+    },
+    "CreateProjectZone": {
+      "anyOf": [
+        "PROJECT_ZONE_ALL",
+        "PROJECT_ZONE_CREATE"
+      ]
+    },
+    "DeleteProjectZone": {
+      "anyOf": [
+        "PROJECT_ZONE_ALL",
+        "PROJECT_ZONE_DELETE"
+      ]
+    },
+    "EditProjectZone": {
+      "anyOf": [
+        "PROJECT_ZONE_ALL",
+        "PROJECT_ZONE_UPDATE"
+      ]
+    },
+    "IndexProjectZone": {
+      "anyOf": [
+        "PROJECT_ZONE_ALL",
+        "PROJECT_ZONE_FETCH"
+      ]
+    },
+    "ShowProjectZone": {
+      "anyOf": [
+        "PROJECT_ZONE_ALL",
+        "PROJECT_ZONE_DETAILS"
+      ]
+    },
+    "CreateRole": {
+      "anyOf": [
+        "ORG_ROLE_ALL",
+        "ORG_ROLE_CREATE"
+      ]
+    },
+    "DeleteRole": {
+      "anyOf": [
+        "ORG_ROLE_ALL",
+        "ORG_ROLE_DELETE"
+      ]
+    },
+    "EditRole": {
+      "anyOf": [
+        "ORG_ROLE_ALL",
+        "ORG_ROLE_UPDATE"
+      ]
+    },
+    "IndexRole": {
+      "anyOf": [
+        "ORG_ROLE_ALL",
+        "ORG_ROLE_FETCH"
+      ]
+    },
+    "ShowRole": {
+      "anyOf": [
+        "ORG_ROLE_ALL",
+        "ORG_ROLE_DETAILS"
+      ]
+    },
+    "CreateScope": {
+      "anyOf": [
+        "SCOPE_ALL",
+        "SCOPE_CREATE"
+      ]
+    },
+    "DeleteScope": {
+      "anyOf": [
+        "SCOPE_ALL",
+        "SCOPE_DELETE"
+      ]
+    },
+    "EditScope": {
+      "anyOf": [
+        "SCOPE_ALL",
+        "SCOPE_UPDATE"
+      ]
+    },
+    "IndexScope": {
+      "anyOf": [
+        "SCOPE_ALL",
+        "SCOPE_FETCH"
+      ]
+    },
+    "ShowScope": {
+      "anyOf": [
+        "SCOPE_ALL",
+        "SCOPE_DETAILS"
+      ]
+    },
+    "CreateShift": {
+      "anyOf": [
+        "ORG_SHIFT_ALL",
+        "ORG_SHIFT_CREATE"
+      ]
+    },
+    "DeleteShift": {
+      "anyOf": [
+        "ORG_SHIFT_ALL",
+        "ORG_SHIFT_DELETE"
+      ]
+    },
+    "EditShift": {
+      "anyOf": [
+        "ORG_SHIFT_ALL",
+        "ORG_SHIFT_UPDATE"
+      ]
+    },
+    "IndexShift": {
+      "anyOf": [
+        "ORG_SHIFT_ALL",
+        "ORG_SHIFT_FETCH"
+      ]
+    },
+    "ShowShift": {
+      "anyOf": [
+        "ORG_SHIFT_ALL",
+        "ORG_SHIFT_DETAILS"
+      ]
+    },
+    "CreateTicket": {
+      "anyOf": [
+        "TICKET_ALL",
+        "TICKET_CREATE"
+      ]
+    },
+    "CloseTicket": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CloseTicket"
+    },
+    "DeleteTicket": {
+      "anyOf": [
+        "TICKET_ALL",
+        "TICKET_DELETE"
+      ]
+    },
+    "EditTicket": {
+      "anyOf": [
+        "TICKET_ALL",
+        "TICKET_UPDATE"
+      ]
+    },
+    "IndexTicket": {
+      "anyOf": [
+        "TICKET_ALL",
+        "TICKET_FETCH"
+      ]
+    },
+    "ReplaceTicket": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for ReplaceTicket"
+    },
+    "ShowTicket": {
+      "anyOf": [
+        "TICKET_ALL",
+        "TICKET_DETAILS"
+      ]
+    },
+    "CreateTicketType": {
+      "anyOf": [],
+      "unsupported": "No confirmed create permission for this feature"
+    },
+    "DeleteTicketType": {
+      "anyOf": [],
+      "unsupported": "No confirmed delete permission for this feature"
+    },
+    "EditTicketType": {
+      "anyOf": [],
+      "unsupported": "No confirmed update permission for this feature"
+    },
+    "IndexTicketType": {
+      "anyOf": [],
+      "unsupported": "No confirmed fetch permission for this feature"
+    },
+    "ShowTicketType": {
+      "anyOf": [],
+      "unsupported": "No confirmed details permission for this feature"
+    },
+    "clone_traning_topic": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for clone_traning_topic"
+    },
+    "create_traning_topic": {
+      "anyOf": [
+        "ORG_TRANING_TOPIC_ALL",
+        "ORG_TRANING_TOPIC_CREATE"
+      ]
+    },
+    "delete_traning_topic": {
+      "anyOf": [
+        "ORG_TRANING_TOPIC_ALL",
+        "ORG_TRANING_TOPIC_DELETE"
+      ]
+    },
+    "update_traning_topic": {
+      "anyOf": [
+        "ORG_TRANING_TOPIC_ALL",
+        "ORG_TRANING_TOPIC_UPDATE"
+      ]
+    },
+    "fetch_tranning_topic": {
+      "anyOf": [
+        "ORG_TRANING_TOPIC_ALL",
+        "ORG_TRANING_TOPIC_FETCH"
+      ]
+    },
+    "fetch_traning_topic_details": {
+      "anyOf": [
+        "ORG_TRANING_TOPIC_ALL",
+        "ORG_TRANING_TOPIC_DETAILS"
+      ]
+    },
+    "CreateVisitActivity": {
+      "anyOf": [
+        "ORG_VISIT_ACTIVITIES_ALL",
+        "ORG_VISIT_ACTIVITIES_CREATE"
+      ]
+    },
+    "DeleteVisitActivity": {
+      "anyOf": [
+        "ORG_VISIT_ACTIVITIES_ALL",
+        "ORG_VISIT_ACTIVITIES_DELETE"
+      ]
+    },
+    "EditVisitActivity": {
+      "anyOf": [
+        "ORG_VISIT_ACTIVITIES_ALL",
+        "ORG_VISIT_ACTIVITIES_UPDATE"
+      ]
+    },
+    "IndexVisitActivity": {
+      "anyOf": [
+        "ORG_VISIT_ACTIVITIES_ALL",
+        "ORG_VISIT_ACTIVITIES_FETCH"
+      ]
+    },
+    "ShowVisitActivity": {
+      "anyOf": [
+        "ORG_VISIT_ACTIVITIES_ALL",
+        "ORG_VISIT_ACTIVITIES_DETAILS"
+      ]
+    },
+    "CreateVisitCategory": {
+      "anyOf": [
+        "ORG_VISIT_CATEGORY_ALL",
+        "ORG_VISIT_CATEGORY_CREATE"
+      ]
+    },
+    "DeleteVisitCategory": {
+      "anyOf": [
+        "ORG_VISIT_CATEGORY_ALL",
+        "ORG_VISIT_CATEGORY_DELETE"
+      ]
+    },
+    "EditVisitCategory": {
+      "anyOf": [
+        "ORG_VISIT_CATEGORY_ALL",
+        "ORG_VISIT_CATEGORY_UPDATE"
+      ]
+    },
+    "IndexVisitCategory": {
+      "anyOf": [
+        "ORG_VISIT_CATEGORY_ALL",
+        "ORG_VISIT_CATEGORY_FETCH"
+      ]
+    },
+    "ShowVisitCategory": {
+      "anyOf": [
+        "ORG_VISIT_CATEGORY_ALL",
+        "ORG_VISIT_CATEGORY_DETAILS"
+      ]
+    },
+    "CreateVisitTheme": {
+      "anyOf": [
+        "ORG_VISIT_THEME_ALL",
+        "ORG_VISIT_THEME_CREATE"
+      ]
+    },
+    "DeleteVisitTheme": {
+      "anyOf": [
+        "ORG_VISIT_THEME_ALL",
+        "ORG_VISIT_THEME_DELETE"
+      ]
+    },
+    "EditVisitTheme": {
+      "anyOf": [
+        "ORG_VISIT_THEME_ALL",
+        "ORG_VISIT_THEME_UPDATE"
+      ]
+    },
+    "IndexVisitTheme": {
+      "anyOf": [
+        "ORG_VISIT_THEME_ALL",
+        "ORG_VISIT_THEME_FETCH"
+      ]
+    },
+    "ShowVisitTheme": {
+      "anyOf": [
+        "ORG_VISIT_THEME_ALL",
+        "ORG_VISIT_THEME_DETAILS"
+      ]
+    },
+    "CreateWhereHouse": {
+      "anyOf": [
+        "WHIERE_HOUSE_ALL",
+        "WHIERE_HOUSE_CREATE"
+      ]
+    },
+    "DeleteWhereHouse": {
+      "anyOf": [
+        "WHIERE_HOUSE_ALL",
+        "WHIERE_HOUSE_DELETE"
+      ]
+    },
+    "EditWhereHouse": {
+      "anyOf": [
+        "WHIERE_HOUSE_ALL",
+        "WHIERE_HOUSE_UPDATE"
+      ]
+    },
+    "IndexWhereHouse": {
+      "anyOf": [
+        "WHIERE_HOUSE_ALL",
+        "WHIERE_HOUSE_FETCH"
+      ]
+    },
+    "ShowWhereHouse": {
+      "anyOf": [
+        "WHIERE_HOUSE_ALL",
+        "WHIERE_HOUSE_DETAILS"
+      ]
+    },
+    "AddWarehouseClones": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for AddWarehouseClones"
+    },
+    "CreateWhereHouseType": {
+      "anyOf": [
+        "WHIERE_HOUSE_TYPE_ALL",
+        "WHIERE_HOUSE_TYPE_CREATE"
+      ]
+    },
+    "DeleteWhereHouseType": {
+      "anyOf": [
+        "WHIERE_HOUSE_TYPE_ALL",
+        "WHIERE_HOUSE_TYPE_DELETE"
+      ]
+    },
+    "EditWhereHouseType": {
+      "anyOf": [
+        "WHIERE_HOUSE_TYPE_ALL",
+        "WHIERE_HOUSE_TYPE_UPDATE"
+      ]
+    },
+    "IndexWhereHouseType": {
+      "anyOf": [
+        "WHIERE_HOUSE_TYPE_ALL",
+        "WHIERE_HOUSE_TYPE_FETCH"
+      ]
+    },
+    "ShowWhereHouseType": {
+      "anyOf": [
+        "WHIERE_HOUSE_TYPE_ALL",
+        "WHIERE_HOUSE_TYPE_DETAILS"
+      ]
+    },
+    "ActiveNotificationPlan": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for ActiveNotificationPlan"
+    },
+    "CreateNotificationPlan": {
+      "anyOf": [
+        "NOTIFICATION_PLAN_ALL",
+        "NOTIFICATION_PLAN_CREATE"
+      ]
+    },
+    "DeleteNotificationPlan": {
+      "anyOf": [
+        "NOTIFICATION_PLAN_ALL",
+        "NOTIFICATION_PLAN_DELETE"
+      ]
+    },
+    "EditNotificationPlan": {
+      "anyOf": [
+        "NOTIFICATION_PLAN_ALL",
+        "NOTIFICATION_PLAN_UPDATE"
+      ]
+    },
+    "IndexNotificationPlan": {
+      "anyOf": [
+        "NOTIFICATION_PLAN_ALL",
+        "NOTIFICATION_PLAN_FETCH"
+      ]
+    },
+    "ShowNotificationPlan": {
+      "anyOf": [
+        "NOTIFICATION_PLAN_ALL",
+        "NOTIFICATION_PLAN_DETAILS"
+      ]
+    },
+    "CreateObjectives": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_CREATE"
+      ]
+    },
+    "DeleteObjectives": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_DELETE"
+      ]
+    },
+    "DisObjectives": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisObjectives"
+    },
+    "EditObjectives": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_UPDATE"
+      ]
+    },
+    "IndexObjectives": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_FETCH"
+      ]
+    },
+    "ShowObjectives": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_DETAILS"
+      ]
+    },
+    "ClonePpeItems": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for ClonePpeItems"
+    },
+    "CreatePpeItem": {
+      "anyOf": [
+        "ORG_PPE_ITEM_ALL",
+        "ORG_PPE_ITEM_CREATE"
+      ]
+    },
+    "DeletePpeItem": {
+      "anyOf": [
+        "ORG_PPE_ITEM_ALL",
+        "ORG_PPE_ITEM_DELETE"
+      ]
+    },
+    "EditPpeItem": {
+      "anyOf": [
+        "ORG_PPE_ITEM_ALL",
+        "ORG_PPE_ITEM_UPDATE"
+      ]
+    },
+    "IndexPpeItem": {
+      "anyOf": [
+        "ORG_PPE_ITEM_ALL",
+        "ORG_PPE_ITEM_FETCH"
+      ]
+    },
+    "ShowPpeItem": {
+      "anyOf": [
+        "ORG_PPE_ITEM_ALL",
+        "ORG_PPE_ITEM_DETAILS"
+      ]
+    },
+    "CreateCertificate": {
+      "anyOf": [
+        "ORGANIZATION_CERTIFICATE_ALL",
+        "ORGANIZATION_CERTIFICATE_CREATE"
+      ]
+    },
+    "DeleteCertificate": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DeleteCertificate"
+    },
+    "DisCertificate": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisCertificate"
+    },
+    "EditCertificate": {
+      "anyOf": [
+        "ORGANIZATION_CERTIFICATE_ALL",
+        "ORGANIZATION_CERTIFICATE_UPDATE"
+      ]
+    },
+    "IndexCertificate": {
+      "anyOf": [
+        "ORGANIZATION_CERTIFICATE_ALL",
+        "ORGANIZATION_CERTIFICATE_FETCH"
+      ]
+    },
+    "ShowCertificate": {
+      "anyOf": [
+        "ORGANIZATION_CERTIFICATE_ALL",
+        "ORGANIZATION_CERTIFICATE_DETAILS"
+      ]
+    },
+    "CreateEquipment": {
+      "anyOf": [
+        "ORG_EQUIPMENT_ALL",
+        "ORG_EQUIPMENT_CREATE"
+      ]
+    },
+    "DeleteEquipment": {
+      "anyOf": [
+        "ORG_EQUIPMENT_ALL",
+        "ORG_EQUIPMENT_DELETE"
+      ]
+    },
+    "DisEquipment": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisEquipment"
+    },
+    "EditEquipment": {
+      "anyOf": [
+        "ORG_EQUIPMENT_ALL",
+        "ORG_EQUIPMENT_UPDATE"
+      ]
+    },
+    "IndexEquipment": {
+      "anyOf": [
+        "ORG_EQUIPMENT_ALL",
+        "ORG_EQUIPMENT_FETCH"
+      ]
+    },
+    "ShowEquipment": {
+      "anyOf": [
+        "ORG_EQUIPMENT_ALL",
+        "ORG_EQUIPMENT_DETAILS"
+      ]
+    },
+    "CreateEquipmentType": {
+      "anyOf": [
+        "ORG_EQUIPMENT_TYPE_ALL",
+        "ORG_EQUIPMENT_TYPE_CREATE"
+      ]
+    },
+    "AddSystemEquipmentType": {
+      "anyOf": [
+        "ORG_EQUIPMENT_TYPE_ALL",
+        "ORG_EQUIPMENT_TYPE_CREATE"
+      ]
+    },
+    "DeleteEquipmentType": {
+      "anyOf": [
+        "ORG_EQUIPMENT_TYPE_ALL",
+        "ORG_EQUIPMENT_TYPE_DELETE"
+      ]
+    },
+    "DisEquipmentType": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisEquipmentType"
+    },
+    "EditEquipmentType": {
+      "anyOf": [
+        "ORG_EQUIPMENT_TYPE_ALL",
+        "ORG_EQUIPMENT_TYPE_UPDATE"
+      ]
+    },
+    "IndexEquipmentType": {
+      "anyOf": [
+        "ORG_EQUIPMENT_TYPE_ALL",
+        "ORG_EQUIPMENT_TYPE_FETCH"
+      ]
+    },
+    "ShowEquipmentType": {
+      "anyOf": [
+        "ORG_EQUIPMENT_TYPE_ALL",
+        "ORG_EQUIPMENT_TYPE_DETAILS"
+      ]
+    },
+    "CreateFactory": {
+      "anyOf": [
+        "ORG_FACTORY_ALL",
+        "ORG_FACTORY_CREATE"
+      ]
+    },
+    "DeleteFactory": {
+      "anyOf": [
+        "ORG_FACTORY_ALL",
+        "ORG_FACTORY_DELETE"
+      ]
+    },
+    "DisFactory": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisFactory"
+    },
+    "EditFactory": {
+      "anyOf": [
+        "ORG_FACTORY_ALL",
+        "ORG_FACTORY_UPDATE"
+      ]
+    },
+    "IndexFactory": {
+      "anyOf": [
+        "ORG_FACTORY_ALL",
+        "ORG_FACTORY_FETCH"
+      ]
+    },
+    "ShowFactory": {
+      "anyOf": [
+        "ORG_FACTORY_ALL",
+        "ORG_FACTORY_DETAILS"
+      ]
+    },
+    "CreateFactoryItem": {
+      "anyOf": [
+        "ORG_FACTORY_ITEM_ALL",
+        "ORG_FACTORY_ITEM_CREATE"
+      ]
+    },
+    "CloneFactoryItems": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CloneFactoryItems"
+    },
+    "DeleteFactoryItem": {
+      "anyOf": [
+        "ORG_FACTORY_ITEM_ALL",
+        "ORG_FACTORY_ITEM_DELETE"
+      ]
+    },
+    "DisFactoryItem": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisFactoryItem"
+    },
+    "EditFactoryItem": {
+      "anyOf": [
+        "ORG_FACTORY_ITEM_ALL",
+        "ORG_FACTORY_ITEM_UPDATE"
+      ]
+    },
+    "IndexFactoryItem": {
+      "anyOf": [
+        "ORG_FACTORY_ITEM_ALL",
+        "ORG_FACTORY_ITEM_FETCH"
+      ]
+    },
+    "ShowFactoryItem": {
+      "anyOf": [
+        "ORG_FACTORY_ITEM_ALL",
+        "ORG_FACTORY_ITEM_DETAILS"
+      ]
+    },
+    "CreateHazardType": {
+      "anyOf": [
+        "ORG_HAZARD_TYPE_ALL",
+        "ORG_HAZARD_TYPE_CREATE"
+      ]
+    },
+    "CreateSystemHazardType": {
+      "anyOf": [
+        "ORG_HAZARD_TYPE_ALL",
+        "ORG_HAZARD_TYPE_CREATE"
+      ]
+    },
+    "DeleteHazardType": {
+      "anyOf": [
+        "ORG_HAZARD_TYPE_ALL",
+        "ORG_HAZARD_TYPE_DELETE"
+      ]
+    },
+    "DisHazardType": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisHazardType"
+    },
+    "EditHazardType": {
+      "anyOf": [
+        "ORG_HAZARD_TYPE_ALL",
+        "ORG_HAZARD_TYPE_UPDATE"
+      ]
+    },
+    "IndexHazardType": {
+      "anyOf": [
+        "ORG_HAZARD_TYPE_ALL",
+        "ORG_HAZARD_TYPE_FETCH"
+      ]
+    },
+    "ShowHazardType": {
+      "anyOf": [
+        "ORG_HAZARD_TYPE_ALL",
+        "ORG_HAZARD_TYPE_DETAILS"
+      ]
+    },
+    "CreateHealthCondition": {
+      "anyOf": [
+        "ORG_HEALTH_CONDITION_ALL",
+        "ORG_HEALTH_CONDITION_CREATE"
+      ]
+    },
+    "DeleteHealthCondition": {
+      "anyOf": [
+        "ORG_HEALTH_CONDITION_ALL",
+        "ORG_HEALTH_CONDITION_DELETE"
+      ]
+    },
+    "DisHealthConditions": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisHealthConditions"
+    },
+    "EditHealthCondition": {
+      "anyOf": [
+        "ORG_HEALTH_CONDITION_ALL",
+        "ORG_HEALTH_CONDITION_UPDATE"
+      ]
+    },
+    "IndexHealthCondition": {
+      "anyOf": [
+        "ORG_HEALTH_CONDITION_ALL",
+        "ORG_HEALTH_CONDITION_FETCH"
+      ]
+    },
+    "ShowHealthCondition": {
+      "anyOf": [
+        "ORG_HEALTH_CONDITION_ALL",
+        "ORG_HEALTH_CONDITION_DETAILS"
+      ]
+    },
+    "CreateLocation": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_CREATE"
+      ]
+    },
+    "DeleteLocation": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_DELETE"
+      ]
+    },
+    "AddLang": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_CREATE"
+      ]
+    },
+    "EditLocation": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_UPDATE"
+      ]
+    },
+    "IndexLocation": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_FETCH"
+      ]
+    },
+    "ShowLocation": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_DETAILS"
+      ]
+    },
+    "CreateMethod": {
+      "anyOf": [
+        "ORG_METHOD_ALL",
+        "ORG_METHOD_CREATE"
+      ]
+    },
+    "DeleteMethod": {
+      "anyOf": [
+        "ORG_METHOD_ALL",
+        "ORG_METHOD_DELETE"
+      ]
+    },
+    "EditMethod": {
+      "anyOf": [
+        "ORG_METHOD_ALL",
+        "ORG_METHOD_UPDATE"
+      ]
+    },
+    "IndexMethod": {
+      "anyOf": [
+        "ORG_METHOD_ALL",
+        "ORG_METHOD_FETCH"
+      ]
+    },
+    "ShowMethod": {
+      "anyOf": [
+        "ORG_METHOD_ALL",
+        "ORG_METHOD_DETAILS"
+      ]
+    },
+    "CreateObserverationType": {
+      "anyOf": [
+        "ORG_OBSERVATION_TYPE_ALL",
+        "ORG_OBSERVATION_TYPE_CREATE"
+      ]
+    },
+    "CreateSystemObserverationType": {
+      "anyOf": [
+        "ORG_OBSERVATION_TYPE_ALL",
+        "ORG_OBSERVATION_TYPE_CREATE"
+      ]
+    },
+    "DeleteObserverationType": {
+      "anyOf": [
+        "ORG_OBSERVATION_TYPE_ALL",
+        "ORG_OBSERVATION_TYPE_DELETE"
+      ]
+    },
+    "DisObserverationType": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisObserverationType"
+    },
+    "EditObserverationType": {
+      "anyOf": [
+        "ORG_OBSERVATION_TYPE_ALL",
+        "ORG_OBSERVATION_TYPE_UPDATE"
+      ]
+    },
+    "IndexObserverationType": {
+      "anyOf": [
+        "ORG_OBSERVATION_TYPE_ALL",
+        "ORG_OBSERVATION_TYPE_FETCH"
+      ]
+    },
+    "ShowObserverationType": {
+      "anyOf": [
+        "ORG_OBSERVATION_TYPE_ALL",
+        "ORG_OBSERVATION_TYPE_DETAILS"
+      ]
+    },
+    "CreateRootCauses": {
+      "anyOf": [
+        "ROOT_CAUSES_ALL",
+        "ROOT_CAUSES_CREATE"
+      ]
+    },
+    "AddSystemRootCauses": {
+      "anyOf": [
+        "ROOT_CAUSES_ALL",
+        "ROOT_CAUSES_CREATE"
+      ]
+    },
+    "DeleteRootCauses": {
+      "anyOf": [
+        "ROOT_CAUSES_ALL",
+        "ROOT_CAUSES_DELETE"
+      ]
+    },
+    "EditRootCauses": {
+      "anyOf": [
+        "ROOT_CAUSES_ALL",
+        "ROOT_CAUSES_UPDATE"
+      ]
+    },
+    "IndexRootCauses": {
+      "anyOf": [
+        "ROOT_CAUSES_ALL",
+        "ROOT_CAUSES_FETCH"
+      ]
+    },
+    "ShowRootCauses": {
+      "anyOf": [
+        "ROOT_CAUSES_ALL",
+        "ROOT_CAUSES_DETAILS"
+      ]
+    },
+    "CloneTeam": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CloneTeam"
+    },
+    "CreateTeam": {
+      "anyOf": [
+        "ORG_TEAM_ALL",
+        "ORG_TEAM_CREATE"
+      ]
+    },
+    "DeleteTeam": {
+      "anyOf": [
+        "ORG_TEAM_ALL",
+        "ORG_TEAM_DELETE"
+      ]
+    },
+    "EditTeam": {
+      "anyOf": [
+        "ORG_TEAM_ALL",
+        "ORG_TEAM_UPDATE"
+      ]
+    },
+    "FetchSystemTeam": {
+      "anyOf": [
+        "ORG_TEAM_ALL",
+        "ORG_TEAM_FETCH"
+      ]
+    },
+    "IndexTeam": {
+      "anyOf": [
+        "ORG_TEAM_ALL",
+        "ORG_TEAM_FETCH"
+      ]
+    },
+    "ShowTeam": {
+      "anyOf": [
+        "ORG_TEAM_ALL",
+        "ORG_TEAM_DETAILS"
+      ]
+    },
+    "CreateContractor": {
+      "anyOf": [
+        "ORG_CONTRACTOR_ALL",
+        "ORG_CONTRACTOR_CREATE"
+      ]
+    },
+    "DeleteContractor": {
+      "anyOf": [
+        "ORG_CONTRACTOR_ALL",
+        "ORG_CONTRACTOR_DELETE"
+      ]
+    },
+    "EditContractor": {
+      "anyOf": [
+        "ORG_CONTRACTOR_ALL",
+        "ORG_CONTRACTOR_UPDATE"
+      ]
+    },
+    "IndexContractor": {
+      "anyOf": [
+        "ORG_CONTRACTOR_ALL",
+        "ORG_CONTRACTOR_FETCH"
+      ]
+    },
+    "ShowContractor": {
+      "anyOf": [
+        "ORG_CONTRACTOR_ALL",
+        "ORG_CONTRACTOR_DETAILS"
+      ]
+    }
+  },
+  "endpoints": {
+    "create_language": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_CREATE"
+      ]
+    },
+    "create_partner": {
+      "anyOf": [
+        "PARTNER_ALL",
+        "PARTNER_CREATE"
+      ]
+    },
+    "fetch_partners": {
+      "anyOf": [
+        "PARTNER_ALL",
+        "PARTNER_FETCH"
+      ]
+    },
+    "fetch_partner_details": {
+      "anyOf": [
+        "PARTNER_ALL",
+        "PARTNER_DETAILS"
+      ]
+    },
+    "update_partner": {
+      "anyOf": [
+        "PARTNER_ALL",
+        "PARTNER_UPDATE"
+      ]
+    },
+    "delete_partner": {
+      "anyOf": [
+        "PARTNER_ALL",
+        "PARTNER_DELETE"
+      ]
+    },
+    "create_task": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_CREATE"
+      ]
+    },
+    "fetch_my_tasks": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_FETCH",
+        "MY_TASKS_ALL"
+      ]
+    },
+    "fetch_tasks": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_FETCH"
+      ]
+    },
+    "fetch_task_details": {
+      "anyOf": [],
+      "unsupported": "Conflicting policies for endpoint fetch_task_details"
+    },
+    "update_task": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_UPDATE"
+      ]
+    },
+    "delete_task": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_DELETE"
+      ]
+    },
+    "fetch_task_results": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_FETCH"
+      ]
+    },
+    "create_project_location_hierarchy": {
+      "anyOf": [
+        "PROJECT_LOCATION_HIERARCHY_ALL",
+        "PROJECT_LOCATION_HIERARCHY_CREATE"
+      ]
+    },
+    "fetch_project_locations_hierarchies": {
+      "anyOf": [
+        "PROJECT_LOCATION_HIERARCHY_ALL",
+        "PROJECT_LOCATION_HIERARCHY_FETCH"
+      ]
+    },
+    "create_project_location_hierarchy_employee": {
+      "anyOf": [
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_CREATE"
+      ]
+    },
+    "fetch_project_locations_hierarchy_employees": {
+      "anyOf": [
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_FETCH"
+      ]
+    },
+    "create_objectives": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_CREATE"
+      ]
+    },
+    "fetch_objectives": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_FETCH"
+      ]
+    },
+    "fetch_objectives_details": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_DETAILS"
+      ]
+    },
+    "update_objectives": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_UPDATE"
+      ]
+    },
+    "delete_objectives": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_DELETE"
+      ]
+    },
+    "change_objectives_active_status": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisObjectives"
+    },
+    "create_objective_progress": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_UPDATE"
+      ]
+    },
+    "fetch_objective_progress": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_DETAILS"
+      ]
+    },
+    "fetch_objective_progress_details": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_DETAILS"
+      ]
+    },
+    "update_objective_progress": {
+      "anyOf": [
+        "objectives_ALL",
+        "objectives_UPDATE"
+      ]
+    },
+    "create_method": {
+      "anyOf": [
+        "ORG_METHOD_ALL",
+        "ORG_METHOD_CREATE"
+      ]
+    },
+    "fetch_methods": {
+      "anyOf": [
+        "ORG_METHOD_ALL",
+        "ORG_METHOD_FETCH"
+      ]
+    },
+    "fetch_method_details": {
+      "anyOf": [
+        "ORG_METHOD_ALL",
+        "ORG_METHOD_DETAILS"
+      ]
+    },
+    "update_method": {
+      "anyOf": [
+        "ORG_METHOD_ALL",
+        "ORG_METHOD_UPDATE"
+      ]
+    },
+    "delete_method": {
+      "anyOf": [
+        "ORG_METHOD_ALL",
+        "ORG_METHOD_DELETE"
+      ]
+    },
+    "create_team": {
+      "anyOf": [
+        "ORG_TEAM_ALL",
+        "ORG_TEAM_CREATE"
+      ]
+    },
+    "fetch_teams": {
+      "anyOf": [
+        "ORG_TEAM_ALL",
+        "ORG_TEAM_FETCH"
+      ]
+    },
+    "clone_teams": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CloneTeam"
+    },
+    "fetch_team_details": {
+      "anyOf": [
+        "ORG_TEAM_ALL",
+        "ORG_TEAM_DETAILS"
+      ]
+    },
+    "update_team": {
+      "anyOf": [
+        "ORG_TEAM_ALL",
+        "ORG_TEAM_UPDATE"
+      ]
+    },
+    "delete_team": {
+      "anyOf": [
+        "ORG_TEAM_ALL",
+        "ORG_TEAM_DELETE"
+      ]
+    },
+    "create_contractor": {
+      "anyOf": [
+        "ORG_CONTRACTOR_ALL",
+        "ORG_CONTRACTOR_CREATE"
+      ]
+    },
+    "fetch_contractors": {
+      "anyOf": [
+        "ORG_CONTRACTOR_ALL",
+        "ORG_CONTRACTOR_FETCH"
+      ]
+    },
+    "fetch_contractor_details": {
+      "anyOf": [
+        "ORG_CONTRACTOR_ALL",
+        "ORG_CONTRACTOR_DETAILS"
+      ]
+    },
+    "update_contractor": {
+      "anyOf": [
+        "ORG_CONTRACTOR_ALL",
+        "ORG_CONTRACTOR_UPDATE"
+      ]
+    },
+    "delete_contractor": {
+      "anyOf": [
+        "ORG_CONTRACTOR_ALL",
+        "ORG_CONTRACTOR_DELETE"
+      ]
+    },
+    "fetch_permissions": {
+      "anyOf": [
+        "PERMISSION_FETCH"
+      ]
+    },
+    "show_permissions": {
+      "anyOf": [
+        "PERMISSION_DETAILS",
+        "PERMISSION_UPDATE"
+      ]
+    },
+    "create_permissions": {
+      "anyOf": [
+        "PERMISSION_UPDATE"
+      ]
+    },
+    "delete_permission": {
+      "anyOf": [
+        "PERMISSION_DELETE"
+      ]
+    },
+    "create_organization_location": {
+      "anyOf": [
+        "ORG_LOCATION_ALL",
+        "ORG_LOCATION_CREATE"
+      ]
+    },
+    "fetch_organization_locations": {
+      "anyOf": [
+        "ORG_LOCATION_ALL",
+        "ORG_LOCATION_FETCH"
+      ]
+    },
+    "fetch_organization_location_details": {
+      "anyOf": [
+        "ORG_LOCATION_ALL",
+        "ORG_LOCATION_DETAILS"
+      ]
+    },
+    "update_organization_location": {
+      "anyOf": [
+        "ORG_LOCATION_ALL",
+        "ORG_LOCATION_UPDATE"
+      ]
+    },
+    "delete_organization_location": {
+      "anyOf": [
+        "ORG_LOCATION_ALL",
+        "ORG_LOCATION_DELETE"
+      ]
+    },
+    "create_project": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_CREATE"
+      ]
+    },
+    "fetch_projects": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_FETCH"
+      ]
+    },
+    "fetch_project_details": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_DETAILS"
+      ]
+    },
+    "fetch_project_summary_details": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_DETAILS"
+      ]
+    },
+    "update_project": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_UPDATE"
+      ]
+    },
+    "delete_project": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_DELETE"
+      ]
+    },
+    "create_basic_project": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_CREATE"
+      ]
+    },
+    "update_basic_project": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_UPDATE"
+      ]
+    },
+    "create_project_holidays": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CreateProjectHolidays"
+    },
+    "update_project_holidays": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for UpdateProjectHolidays"
+    },
+    "create_project_location_position_employees": {
+      "anyOf": [
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_CREATE"
+      ]
+    },
+    "update_project_location_position_employees": {
+      "anyOf": [
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_UPDATE"
+      ]
+    },
+    "create_project_teams": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_CREATE"
+      ]
+    },
+    "update_project_teams": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_UPDATE"
+      ]
+    },
+    "create_project_equipments": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_CREATE"
+      ]
+    },
+    "update_project_equipments": {
+      "anyOf": [
+        "PROJECT_ALL",
+        "PROJECT_UPDATE"
+      ]
+    },
+    "fetch_today_talks": {
+      "anyOf": [],
+      "unsupported": "Today talk permission family is absent"
+    },
+    "create_today_talk": {
+      "anyOf": [],
+      "unsupported": "Today talk permission family is absent"
+    },
+    "create_factory": {
+      "anyOf": [
+        "ORG_FACTORY_ALL",
+        "ORG_FACTORY_CREATE"
+      ]
+    },
+    "fetch_factories": {
+      "anyOf": [
+        "ORG_FACTORY_ALL",
+        "ORG_FACTORY_FETCH"
+      ]
+    },
+    "fetch_factory_details": {
+      "anyOf": [
+        "ORG_FACTORY_ALL",
+        "ORG_FACTORY_DETAILS"
+      ]
+    },
+    "update_factory": {
+      "anyOf": [
+        "ORG_FACTORY_ALL",
+        "ORG_FACTORY_UPDATE"
+      ]
+    },
+    "delete_factory": {
+      "anyOf": [
+        "ORG_FACTORY_ALL",
+        "ORG_FACTORY_DELETE"
+      ]
+    },
+    "disable_factory": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisFactory"
+    },
+    "create_equipment_type": {
+      "anyOf": [
+        "ORG_EQUIPMENT_TYPE_ALL",
+        "ORG_EQUIPMENT_TYPE_CREATE"
+      ]
+    },
+    "clone_equipment_types": {
+      "anyOf": [
+        "ORG_EQUIPMENT_TYPE_ALL",
+        "ORG_EQUIPMENT_TYPE_CREATE"
+      ]
+    },
+    "fetch_equipment_types": {
+      "anyOf": [
+        "ORG_EQUIPMENT_TYPE_ALL",
+        "ORG_EQUIPMENT_TYPE_FETCH"
+      ]
+    },
+    "fetch_equipment_type_details": {
+      "anyOf": [
+        "ORG_EQUIPMENT_TYPE_ALL",
+        "ORG_EQUIPMENT_TYPE_DETAILS"
+      ]
+    },
+    "update_equipment_type": {
+      "anyOf": [
+        "ORG_EQUIPMENT_TYPE_ALL",
+        "ORG_EQUIPMENT_TYPE_UPDATE"
+      ]
+    },
+    "delete_equipment_type": {
+      "anyOf": [
+        "ORG_EQUIPMENT_TYPE_ALL",
+        "ORG_EQUIPMENT_TYPE_DELETE"
+      ]
+    },
+    "disable_equipment_type": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisEquipmentType"
+    },
+    "create_certificate": {
+      "anyOf": [
+        "ORGANIZATION_CERTIFICATE_ALL",
+        "ORGANIZATION_CERTIFICATE_CREATE"
+      ]
+    },
+    "fetch_certificates": {
+      "anyOf": [
+        "ORGANIZATION_CERTIFICATE_ALL",
+        "ORGANIZATION_CERTIFICATE_FETCH"
+      ]
+    },
+    "fetch_certificate_details": {
+      "anyOf": [
+        "ORGANIZATION_CERTIFICATE_ALL",
+        "ORGANIZATION_CERTIFICATE_DETAILS"
+      ]
+    },
+    "update_certificate": {
+      "anyOf": [
+        "ORGANIZATION_CERTIFICATE_ALL",
+        "ORGANIZATION_CERTIFICATE_UPDATE"
+      ]
+    },
+    "delete_certificate": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DeleteCertificate"
+    },
+    "disable_certificate": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisCertificate"
+    },
+    "create_equipment": {
+      "anyOf": [
+        "ORG_EQUIPMENT_ALL",
+        "ORG_EQUIPMENT_CREATE"
+      ]
+    },
+    "fetch_equipments": {
+      "anyOf": [
+        "ORG_EQUIPMENT_ALL",
+        "ORG_EQUIPMENT_FETCH"
+      ]
+    },
+    "fetch_equipment_details": {
+      "anyOf": [
+        "ORG_EQUIPMENT_ALL",
+        "ORG_EQUIPMENT_DETAILS"
+      ]
+    },
+    "update_equipment": {
+      "anyOf": [
+        "ORG_EQUIPMENT_ALL",
+        "ORG_EQUIPMENT_UPDATE"
+      ]
+    },
+    "delete_equipment": {
+      "anyOf": [
+        "ORG_EQUIPMENT_ALL",
+        "ORG_EQUIPMENT_DELETE"
+      ]
+    },
+    "disable_equipment": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisEquipment"
+    },
+    "create_hazard_type": {
+      "anyOf": [
+        "ORG_HAZARD_TYPE_ALL",
+        "ORG_HAZARD_TYPE_CREATE"
+      ]
+    },
+    "fetch_hazard_types": {
+      "anyOf": [
+        "ORG_HAZARD_TYPE_ALL",
+        "ORG_HAZARD_TYPE_FETCH"
+      ]
+    },
+    "fetch_hazard_type_details": {
+      "anyOf": [
+        "ORG_HAZARD_TYPE_ALL",
+        "ORG_HAZARD_TYPE_DETAILS"
+      ]
+    },
+    "update_hazard_type": {
+      "anyOf": [
+        "ORG_HAZARD_TYPE_ALL",
+        "ORG_HAZARD_TYPE_UPDATE"
+      ]
+    },
+    "delete_hazard_type": {
+      "anyOf": [
+        "ORG_HAZARD_TYPE_ALL",
+        "ORG_HAZARD_TYPE_DELETE"
+      ]
+    },
+    "disable_hazard_type": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisHazardType"
+    },
+    "create_observation_type": {
+      "anyOf": [
+        "ORG_OBSERVATION_TYPE_ALL",
+        "ORG_OBSERVATION_TYPE_CREATE"
+      ]
+    },
+    "fetch_observation_types": {
+      "anyOf": [
+        "ORG_OBSERVATION_TYPE_ALL",
+        "ORG_OBSERVATION_TYPE_FETCH"
+      ]
+    },
+    "fetch_observation_type_details": {
+      "anyOf": [
+        "ORG_OBSERVATION_TYPE_ALL",
+        "ORG_OBSERVATION_TYPE_DETAILS"
+      ]
+    },
+    "update_observation_type": {
+      "anyOf": [
+        "ORG_OBSERVATION_TYPE_ALL",
+        "ORG_OBSERVATION_TYPE_UPDATE"
+      ]
+    },
+    "delete_observation_type": {
+      "anyOf": [
+        "ORG_OBSERVATION_TYPE_ALL",
+        "ORG_OBSERVATION_TYPE_DELETE"
+      ]
+    },
+    "disable_observation_type": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisObserverationType"
+    },
+    "create_factory_item": {
+      "anyOf": [
+        "ORG_FACTORY_ITEM_ALL",
+        "ORG_FACTORY_ITEM_CREATE"
+      ]
+    },
+    "fetch_factory_items": {
+      "anyOf": [
+        "ORG_FACTORY_ITEM_ALL",
+        "ORG_FACTORY_ITEM_FETCH"
+      ]
+    },
+    "fetch_factory_item_details": {
+      "anyOf": [
+        "ORG_FACTORY_ITEM_ALL",
+        "ORG_FACTORY_ITEM_DETAILS"
+      ]
+    },
+    "update_factory_item": {
+      "anyOf": [
+        "ORG_FACTORY_ITEM_ALL",
+        "ORG_FACTORY_ITEM_UPDATE"
+      ]
+    },
+    "delete_factory_item": {
+      "anyOf": [
+        "ORG_FACTORY_ITEM_ALL",
+        "ORG_FACTORY_ITEM_DELETE"
+      ]
+    },
+    "disable_factory_item": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisFactoryItem"
+    },
+    "clone_factory_items": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CloneFactoryItems"
+    },
+    "create_location": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_CREATE"
+      ]
+    },
+    "fetch_locations": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_FETCH"
+      ]
+    },
+    "fetch_location_details": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_DETAILS"
+      ]
+    },
+    "update_location": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_UPDATE"
+      ]
+    },
+    "delete_location": {
+      "anyOf": [
+        "LOCATION_ORG_ALL",
+        "LOCATION_ORG_DELETE"
+      ]
+    },
+    "create_organization_employee": {
+      "anyOf": [
+        "ORG_EMPLOYEE_ALL",
+        "ORG_EMPLOYEE_CREATE"
+      ]
+    },
+    "validate_bulk_employees": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CreateOrganizatoinEmployeeExcel"
+    },
+    "fetch_organization_employees": {
+      "anyOf": [
+        "ORG_EMPLOYEE_ALL",
+        "ORG_EMPLOYEE_FETCH"
+      ]
+    },
+    "fetch_organization_employee_details": {
+      "anyOf": [
+        "ORG_EMPLOYEE_ALL",
+        "ORG_EMPLOYEE_DETAILS"
+      ]
+    },
+    "update_organization_employee": {
+      "anyOf": [
+        "ORG_EMPLOYEE_ALL",
+        "ORG_EMPLOYEE_UPDATE"
+      ]
+    },
+    "delete_organization_employee": {
+      "anyOf": [
+        "ORG_EMPLOYEE_ALL",
+        "ORG_EMPLOYEE_DELETE"
+      ]
+    },
+    "disable_project_type": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisOrganizatoinEmployee"
+    },
+    "create_herikaly": {
+      "anyOf": [
+        "HERIKALY_ALL",
+        "HERIKALY_CREATE"
+      ]
+    },
+    "fetch_herikalys": {
+      "anyOf": [
+        "HERIKALY_ALL",
+        "HERIKALY_FETCH"
+      ]
+    },
+    "fetch_herikaly_details": {
+      "anyOf": [
+        "HERIKALY_ALL",
+        "HERIKALY_DETAILS"
+      ]
+    },
+    "update_herikaly": {
+      "anyOf": [
+        "HERIKALY_ALL",
+        "HERIKALY_UPDATE"
+      ]
+    },
+    "delete_herikaly": {
+      "anyOf": [
+        "HERIKALY_ALL",
+        "HERIKALY_DELETE"
+      ]
+    },
+    "create_zoon": {
+      "anyOf": [
+        "PROJECT_ZONE_ALL",
+        "PROJECT_ZONE_CREATE"
+      ]
+    },
+    "fetch_zoons": {
+      "anyOf": [
+        "PROJECT_ZONE_ALL",
+        "PROJECT_ZONE_FETCH"
+      ]
+    },
+    "fetch_zoon_details": {
+      "anyOf": [
+        "PROJECT_ZONE_ALL",
+        "PROJECT_ZONE_DETAILS"
+      ]
+    },
+    "update_zoon": {
+      "anyOf": [
+        "PROJECT_ZONE_ALL",
+        "PROJECT_ZONE_UPDATE"
+      ]
+    },
+    "delete_zoon": {
+      "anyOf": [
+        "PROJECT_ZONE_ALL",
+        "PROJECT_ZONE_DELETE"
+      ]
+    },
+    "fetch_project_location_employees": {
+      "anyOf": [
+        "PROJECT_LOCATION_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_EMPLOYEE_FETCH"
+      ]
+    },
+    "fetch_project_locations_employees": {
+      "anyOf": [
+        "PROJECT_LOCATION_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_EMPLOYEE_FETCH"
+      ]
+    },
+    "create_project_location_team_employee": {
+      "anyOf": [
+        "PROJECT_LOCATION_TEAM_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_TEAM_EMPLOYEE_CREATE"
+      ]
+    },
+    "create_project_zoon_equipment": {
+      "anyOf": [
+        "PROJECT_ZOON_EQUIPMENT_ALL",
+        "PROJECT_ZOON_EQUIPMENT_CREATE"
+      ]
+    },
+    "fetch_zoons_by_location_ids": {
+      "anyOf": [
+        "PROJECT_ZOON_ALL",
+        "PROJECT_ZOON_FETCH"
+      ]
+    },
+    "fetch_full_project_locations": {
+      "anyOf": [],
+      "unsupported": "Project resource request must be scoped to its resource-specific permission"
+    },
+    "create_drill": {
+      "anyOf": [],
+      "unsupported": "Drill create permission is absent"
+    },
+    "fetch_drills": {
+      "anyOf": [],
+      "unsupported": "Drill operations differ from drill-type configuration and lack permission identifiers"
+    },
+    "create_drill_plan": {
+      "anyOf": [],
+      "unsupported": "Drill plan create permission is absent"
+    },
+    "fetch_drill_plans": {
+      "anyOf": [],
+      "unsupported": "Drill plan permission is absent"
+    },
+    "fetch_drill_actions": {
+      "anyOf": [],
+      "unsupported": "Drill action permission is absent"
+    },
+    "create_drill_action": {
+      "anyOf": [],
+      "unsupported": "Drill action create permission is absent"
+    },
+    "delete_drill_action": {
+      "anyOf": [],
+      "unsupported": "Drill action delete permission is absent"
+    },
+    "delete_drill_plan": {
+      "anyOf": [],
+      "unsupported": "Drill plan delete permission is absent"
+    },
+    "create_observation": {
+      "anyOf": [],
+      "unsupported": "No confirmed create permission for this feature"
+    },
+    "fetch_observations": {
+      "anyOf": [],
+      "unsupported": "No confirmed fetch permission for this feature"
+    },
+    "fetch_observation_details": {
+      "anyOf": [],
+      "unsupported": "No confirmed details permission for this feature"
+    },
+    "update_observation": {
+      "anyOf": [],
+      "unsupported": "No confirmed update permission for this feature"
+    },
+    "delete_observation": {
+      "anyOf": [],
+      "unsupported": "No confirmed delete permission for this feature"
+    },
+    "fetch_project_zoons": {
+      "anyOf": [
+        "PROJECT_ZONE_ALL",
+        "PROJECT_ZONE_FETCH"
+      ]
+    },
+    "create_health_condition": {
+      "anyOf": [
+        "ORG_HEALTH_CONDITION_ALL",
+        "ORG_HEALTH_CONDITION_CREATE"
+      ]
+    },
+    "fetch_health_conditions": {
+      "anyOf": [
+        "ORG_HEALTH_CONDITION_ALL",
+        "ORG_HEALTH_CONDITION_FETCH"
+      ]
+    },
+    "fetch_health_condition_details": {
+      "anyOf": [
+        "ORG_HEALTH_CONDITION_ALL",
+        "ORG_HEALTH_CONDITION_DETAILS"
+      ]
+    },
+    "update_health_condition": {
+      "anyOf": [
+        "ORG_HEALTH_CONDITION_ALL",
+        "ORG_HEALTH_CONDITION_UPDATE"
+      ]
+    },
+    "delete_health_condition": {
+      "anyOf": [
+        "ORG_HEALTH_CONDITION_ALL",
+        "ORG_HEALTH_CONDITION_DELETE"
+      ]
+    },
+    "disable_health_condition": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for DisHealthConditions"
+    },
+    "create_task_result": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_CREATE"
+      ]
+    },
+    "fetch_my_zoons": {
+      "authenticated": true
+    },
+    "fetch_my_projects": {
+      "authenticated": true
+    },
+    "create_full_investigation_meeting_result": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "FULL_INVESTIGATION_MEETING_RESULT_CREATE"
+      ]
+    },
+    "fetch_investigations": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "INVESTIGATION_FETCH"
+      ]
+    },
+    "fetch_investigation_details": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "INVESTIGATION_DETAILS"
+      ]
+    },
+    "create_role": {
+      "anyOf": [
+        "ORG_ROLE_ALL",
+        "ORG_ROLE_CREATE"
+      ]
+    },
+    "fetch_roles": {
+      "anyOf": [
+        "ORG_ROLE_ALL",
+        "ORG_ROLE_FETCH"
+      ]
+    },
+    "fetch_role_details": {
+      "anyOf": [
+        "ORG_ROLE_ALL",
+        "ORG_ROLE_DETAILS"
+      ]
+    },
+    "update_role": {
+      "anyOf": [
+        "ORG_ROLE_ALL",
+        "ORG_ROLE_UPDATE"
+      ]
+    },
+    "delete_role": {
+      "anyOf": [
+        "ORG_ROLE_ALL",
+        "ORG_ROLE_DELETE"
+      ]
+    },
+    "fetch_my_internal_audite": {
+      "anyOf": [
+        "MY_INTERNAL_AUDIT_ALL",
+        "MY_INTERNAL_AUDIT_FETCH"
+      ]
+    },
+    "fetch_my_ncrs": {
+      "anyOf": [
+        "MY_INTERNAL_AUDIT_ALL",
+        "MY_INTERNAL_AUDIT_DETAILS"
+      ]
+    },
+    "create_internal_audit": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_CREATE"
+      ]
+    },
+    "fetch_internal_audits": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_FETCH"
+      ]
+    },
+    "fetch_internal_audit_details": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_DETAILS"
+      ]
+    },
+    "update_internal_audit": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_UPDATE"
+      ]
+    },
+    "delete_internal_audit": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_DELETE"
+      ]
+    },
+    "fetch_internal_audit_attendance": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_DETAILS"
+      ]
+    },
+    "save_internal_audit_attendance": {
+      "anyOf": [],
+      "unsupported": "Audit attendance permission is absent"
+    },
+    "add_internal_audit_Participants": {
+      "anyOf": [],
+      "unsupported": "Audit participant assignment permission is absent"
+    },
+    "fetch_ncrs": {
+      "anyOf": [
+        "MY_INTERNAL_AUDIT_ALL",
+        "MY_INTERNAL_AUDIT_FETCH"
+      ]
+    },
+    "fetch_ncr_details": {
+      "anyOf": [
+        "MY_INTERNAL_AUDIT_ALL",
+        "MY_INTERNAL_AUDIT_DETAILS"
+      ]
+    },
+    "update_full_ncrs": {
+      "anyOf": [],
+      "unsupported": "NCR correction needs its own backend operation permission"
+    },
+    "create_full_ncrs": {
+      "anyOf": [
+        "MY_INTERNAL_AUDIT_ALL",
+        "MY_INTERNAL_AUDIT_CREATE"
+      ]
+    },
+    "fetch_internal_audit_plan_details": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_DETAILS"
+      ]
+    },
+    "fetch_internal_audit_report_details": {
+      "anyOf": [
+        "INTERNAL_AUDIT_ALL",
+        "INTERNAL_AUDIT_DETAILS"
+      ]
+    },
+    "create_internal_audit_report": {
+      "anyOf": [],
+      "unsupported": "Audit report submission permission is absent"
+    },
+    "create_attachment_matrix": {
+      "anyOf": [
+        "ATTACHMENT_MATRIX_ALL",
+        "ATTACHMENT_MATRIX_CREATE"
+      ]
+    },
+    "fetch_attachment_matrix": {
+      "anyOf": [
+        "ATTACHMENT_MATRIX_ALL",
+        "ATTACHMENT_MATRIX_FETCH"
+      ]
+    },
+    "create_full_investigation": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "FULL_INVESTIGATION_CREATE"
+      ]
+    },
+    "create_injury_type": {
+      "anyOf": [
+        "INJURY_ALL",
+        "INJURY_CREATE"
+      ]
+    },
+    "clone_injury_types": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CreateInjuryClones"
+    },
+    "fetch_injury_types": {
+      "anyOf": [
+        "INJURY_ALL",
+        "INJURY_FETCH"
+      ]
+    },
+    "fetch_injury_type_details": {
+      "anyOf": [
+        "EMPLOYEE_CERTIFICATE_ALL",
+        "EMPLOYEE_CERTIFICATE_DETAILS"
+      ]
+    },
+    "update_injury_type": {
+      "anyOf": [
+        "EMPLOYEE_CERTIFICATE_ALL",
+        "EMPLOYEE_CERTIFICATE_UPDATE"
+      ]
+    },
+    "delete_injury_type": {
+      "anyOf": [
+        "INJURY_ALL",
+        "INJURY_DELETE"
+      ]
+    },
+    "delete_project_location_hierarchy_employee": {
+      "anyOf": [
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_HIERARCHY_EMPLOYEE_DELETE"
+      ]
+    },
+    "delete_project_location_team_employee": {
+      "anyOf": [
+        "PROJECT_LOCATION_TEAM_EMPLOYEE_ALL",
+        "PROJECT_LOCATION_TEAM_EMPLOYEE_DELETE"
+      ]
+    },
+    "create_scope": {
+      "anyOf": [
+        "SCOPE_ALL",
+        "SCOPE_CREATE"
+      ]
+    },
+    "fetch_scopes": {
+      "anyOf": [
+        "SCOPE_ALL",
+        "SCOPE_FETCH"
+      ]
+    },
+    "fetch_scope_details": {
+      "anyOf": [
+        "SCOPE_ALL",
+        "SCOPE_DETAILS"
+      ]
+    },
+    "update_scope": {
+      "anyOf": [
+        "SCOPE_ALL",
+        "SCOPE_UPDATE"
+      ]
+    },
+    "delete_scope": {
+      "anyOf": [
+        "SCOPE_ALL",
+        "SCOPE_DELETE"
+      ]
+    },
+    "create_warehouse_type": {
+      "anyOf": [
+        "WHIERE_HOUSE_TYPE_ALL",
+        "WHIERE_HOUSE_TYPE_CREATE"
+      ]
+    },
+    "fetch_warehouse_types": {
+      "anyOf": [
+        "WHIERE_HOUSE_TYPE_ALL",
+        "WHIERE_HOUSE_TYPE_FETCH"
+      ]
+    },
+    "fetch_warehouse_type_details": {
+      "anyOf": [
+        "WHIERE_HOUSE_TYPE_ALL",
+        "WHIERE_HOUSE_TYPE_DETAILS"
+      ]
+    },
+    "update_warehouse_type": {
+      "anyOf": [
+        "WHIERE_HOUSE_TYPE_ALL",
+        "WHIERE_HOUSE_TYPE_UPDATE"
+      ]
+    },
+    "delete_warehouse_type": {
+      "anyOf": [
+        "WHIERE_HOUSE_TYPE_ALL",
+        "WHIERE_HOUSE_TYPE_DELETE"
+      ]
+    },
+    "create_drill_type": {
+      "anyOf": [
+        "ORG_DRILL_TYPE_ALL",
+        "ORG_DRILL_TYPE_CREATE"
+      ]
+    },
+    "fetch_drill_types": {
+      "anyOf": [
+        "ORG_DRILL_TYPE_ALL",
+        "ORG_DRILL_TYPE_FETCH"
+      ]
+    },
+    "fetch_drill_type_details": {
+      "anyOf": [
+        "ORG_DRILL_TYPE_ALL",
+        "ORG_DRILL_TYPE_DETAILS"
+      ]
+    },
+    "update_drill_type": {
+      "anyOf": [
+        "ORG_DRILL_TYPE_ALL",
+        "ORG_DRILL_TYPE_UPDATE"
+      ]
+    },
+    "delete_drill_type": {
+      "anyOf": [
+        "ORG_DRILL_TYPE_ALL",
+        "ORG_DRILL_TYPE_DELETE"
+      ]
+    },
+    "create_ppe_item": {
+      "anyOf": [
+        "ORG_PPE_ITEM_ALL",
+        "ORG_PPE_ITEM_CREATE"
+      ]
+    },
+    "fetch_ppe_items": {
+      "anyOf": [
+        "ORG_PPE_ITEM_ALL",
+        "ORG_PPE_ITEM_FETCH"
+      ]
+    },
+    "fetch_ppe_item_details": {
+      "anyOf": [
+        "ORG_PPE_ITEM_ALL",
+        "ORG_PPE_ITEM_DETAILS"
+      ]
+    },
+    "update_ppe_item": {
+      "anyOf": [
+        "ORG_PPE_ITEM_ALL",
+        "ORG_PPE_ITEM_UPDATE"
+      ]
+    },
+    "delete_ppe_item": {
+      "anyOf": [
+        "ORG_PPE_ITEM_ALL",
+        "ORG_PPE_ITEM_DELETE"
+      ]
+    },
+    "create_leadership_theme": {
+      "anyOf": [
+        "ORG_VISIT_THEME_ALL",
+        "ORG_VISIT_THEME_CREATE"
+      ]
+    },
+    "fetch_leadership_themes": {
+      "anyOf": [
+        "ORG_VISIT_THEME_ALL",
+        "ORG_VISIT_THEME_FETCH"
+      ]
+    },
+    "fetch_leadership_theme_details": {
+      "anyOf": [
+        "ORG_VISIT_THEME_ALL",
+        "ORG_VISIT_THEME_DETAILS"
+      ]
+    },
+    "update_leadership_theme": {
+      "anyOf": [
+        "ORG_VISIT_THEME_ALL",
+        "ORG_VISIT_THEME_UPDATE"
+      ]
+    },
+    "delete_leadership_theme": {
+      "anyOf": [
+        "ORG_VISIT_THEME_ALL",
+        "ORG_VISIT_THEME_DELETE"
+      ]
+    },
+    "create_leadership_category": {
+      "anyOf": [
+        "ORG_VISIT_CATEGORY_ALL",
+        "ORG_VISIT_CATEGORY_CREATE"
+      ]
+    },
+    "fetch_leadership_categories": {
+      "anyOf": [
+        "ORG_VISIT_CATEGORY_ALL",
+        "ORG_VISIT_CATEGORY_FETCH"
+      ]
+    },
+    "fetch_leadership_category_details": {
+      "anyOf": [
+        "ORG_VISIT_CATEGORY_ALL",
+        "ORG_VISIT_CATEGORY_DETAILS"
+      ]
+    },
+    "update_leadership_category": {
+      "anyOf": [
+        "ORG_VISIT_CATEGORY_ALL",
+        "ORG_VISIT_CATEGORY_UPDATE"
+      ]
+    },
+    "delete_leadership_category": {
+      "anyOf": [
+        "ORG_VISIT_CATEGORY_ALL",
+        "ORG_VISIT_CATEGORY_DELETE"
+      ]
+    },
+    "create_changement_topic": {
+      "anyOf": [
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL",
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_CREATE"
+      ]
+    },
+    "create_management_of_change": {
+      "anyOf": [
+        "MOC_ALL",
+        "MOC_CRAETE"
+      ]
+    },
+    "fetch_management_of_changes": {
+      "anyOf": [
+        "MOC_ALL",
+        "MOC_FETCH"
+      ]
+    },
+    "fetch_management_of_change_details": {
+      "anyOf": [
+        "MOC_ALL",
+        "MOC_DETAILS"
+      ]
+    },
+    "update_management_of_change": {
+      "anyOf": [
+        "MOC_ALL",
+        "MOC_UPDATE"
+      ]
+    },
+    "delete_management_of_change": {
+      "anyOf": [
+        "MOC_ALL",
+        "MOC_DELETE"
+      ]
+    },
+    "fetch_changement_topics": {
+      "anyOf": [
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL",
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_FETCH"
+      ]
+    },
+    "fetch_changement_topic_details": {
+      "anyOf": [
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL",
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_DETAILS"
+      ]
+    },
+    "update_changement_topic": {
+      "anyOf": [
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL",
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_UPDATE"
+      ]
+    },
+    "delete_changement_topic": {
+      "anyOf": [
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL",
+        "ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_DELETE"
+      ]
+    },
+    "create_warehouse": {
+      "anyOf": [
+        "WHIERE_HOUSE_ALL",
+        "WHIERE_HOUSE_CREATE"
+      ]
+    },
+    "fetch_warehouses": {
+      "anyOf": [
+        "WHIERE_HOUSE_ALL",
+        "WHIERE_HOUSE_FETCH"
+      ]
+    },
+    "fetch_warehouse_details": {
+      "anyOf": [
+        "WHIERE_HOUSE_ALL",
+        "WHIERE_HOUSE_DETAILS"
+      ]
+    },
+    "update_warehouse": {
+      "anyOf": [
+        "WHIERE_HOUSE_ALL",
+        "WHIERE_HOUSE_UPDATE"
+      ]
+    },
+    "delete_warehouse": {
+      "anyOf": [
+        "WHIERE_HOUSE_ALL",
+        "WHIERE_HOUSE_DELETE"
+      ]
+    },
+    "create_investigation_meeting": {
+      "anyOf": [
+        "INVESTIGATION_MEETING_ALL",
+        "INVESTIGATION_MEETING_CREATE"
+      ]
+    },
+    "fetch_investigation_meetings": {
+      "anyOf": [
+        "INVESTIGATION_MEETING_ALL",
+        "INVESTIGATION_MEETING_FETCH"
+      ]
+    },
+    "create_investigation_tasks": {
+      "anyOf": [
+        "INVESTIGATION_TASK_ALL",
+        "INVESTIGATION_TASK_CREATE"
+      ]
+    },
+    "update_investigation_task": {
+      "anyOf": [
+        "INVESTIGATION_TASK_ALL",
+        "INVESTIGATION_TASK_UPDATE"
+      ]
+    },
+    "fetch_investigation_tasks": {
+      "anyOf": [
+        "INVESTIGATION_TASK_ALL",
+        "INVESTIGATION_TASK_FETCH"
+      ]
+    },
+    "fetch_corrective_action_plan": {
+      "anyOf": [
+        "INVESTIGATION_TASK_ALL",
+        "INVESTIGATION_TASK_FETCH"
+      ]
+    },
+    "fetch_preventive_action_plan": {
+      "anyOf": [
+        "INVESTIGATION_TASK_ALL",
+        "INVESTIGATION_TASK_FETCH"
+      ]
+    },
+    "fetch_investigations_lesson_learnt": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "INVESTIGATION_FETCH"
+      ]
+    },
+    "fetch_task_inspection_details": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "ORG_INSPECTION_DETAILS"
+      ]
+    },
+    "fetch_inspections_results": {
+      "anyOf": [
+        "ORG_INSPECTION_ALL",
+        "INSPECTION_RESULTS_FETCH"
+      ]
+    },
+    "create_employee_certificate": {
+      "anyOf": [
+        "EMPLOYEE_CERTIFICATE_ALL",
+        "EMPLOYEE_CERTIFICATE_CREATE"
+      ]
+    },
+    "delete_employee_certificate": {
+      "anyOf": [
+        "EMPLOYEE_CERTIFICATE_ALL",
+        "EMPLOYEE_CERTIFICATE_DELETE"
+      ]
+    },
+    "create_investigation_task_result": {
+      "anyOf": [
+        "INVESTIGATION_TASK_RESULT_ALL",
+        "INVESTIGATION_TASK_RESULT_CREATE"
+      ]
+    },
+    "create_coding_system": {
+      "anyOf": [
+        "CODING_SYSTEM_ALL",
+        "CODING_SYSTEM_CREATE"
+      ]
+    },
+    "fetch_coding_systems": {
+      "anyOf": [
+        "CODING_SYSTEM_ALL",
+        "CODING_SYSTEM_FETCH"
+      ]
+    },
+    "fetch_organization_employees_certificates": {
+      "anyOf": [
+        "EMPLOYEE_CERTIFICATE_ALL",
+        "EMPLOYEE_CERTIFICATE_FETCH"
+      ]
+    },
+    "create_project_zone": {
+      "anyOf": [
+        "PROJECT_ZOON_ALL",
+        "PROJECT_ZOON_CREATE"
+      ]
+    },
+    "fetch_root_causes": {
+      "anyOf": [
+        "ROOT_CAUSES_ALL",
+        "ROOT_CAUSES_FETCH"
+      ]
+    },
+    "fetch_root_cause_details": {
+      "anyOf": [
+        "ROOT_CAUSES_ALL",
+        "ROOT_CAUSES_DETAILS"
+      ]
+    },
+    "update_root_cause": {
+      "anyOf": [
+        "ROOT_CAUSES_ALL",
+        "ROOT_CAUSES_UPDATE"
+      ]
+    },
+    "delete_root_cause": {
+      "anyOf": [
+        "ROOT_CAUSES_ALL",
+        "ROOT_CAUSES_DELETE"
+      ]
+    },
+    "create_root_cause": {
+      "anyOf": [
+        "ROOT_CAUSES_ALL",
+        "ROOT_CAUSES_CREATE"
+      ]
+    },
+    "clone_root_causes": {
+      "anyOf": [
+        "ROOT_CAUSES_ALL",
+        "ROOT_CAUSES_CREATE"
+      ]
+    },
+    "set_capa_result": {
+      "anyOf": [
+        "CAPA_ALL",
+        "CAPA_SET_RESULT"
+      ]
+    },
+    "fetch_ticket_types": {
+      "anyOf": [],
+      "unsupported": "No confirmed fetch permission for this feature"
+    },
+    "create_ticket_type": {
+      "anyOf": [],
+      "unsupported": "No confirmed create permission for this feature"
+    },
+    "fetch_ticket_type_details": {
+      "anyOf": [],
+      "unsupported": "No confirmed details permission for this feature"
+    },
+    "update_ticket_type": {
+      "anyOf": [],
+      "unsupported": "No confirmed update permission for this feature"
+    },
+    "delete_ticket_type": {
+      "anyOf": [],
+      "unsupported": "No confirmed delete permission for this feature"
+    },
+    "fetch_tickets": {
+      "anyOf": [
+        "TICKET_ALL",
+        "TICKET_FETCH"
+      ]
+    },
+    "create_ticket": {
+      "anyOf": [
+        "TICKET_ALL",
+        "TICKET_CREATE"
+      ]
+    },
+    "fetch_ticket_details": {
+      "anyOf": [
+        "TICKET_ALL",
+        "TICKET_DETAILS"
+      ]
+    },
+    "update_ticket": {
+      "anyOf": [
+        "TICKET_ALL",
+        "TICKET_UPDATE"
+      ]
+    },
+    "delete_ticket": {
+      "anyOf": [
+        "TICKET_ALL",
+        "TICKET_DELETE"
+      ]
+    },
+    "fetch_organization_app_status_details": {
+      "anyOf": [
+        "PROJECT_PROGRESS_ALL"
+      ]
+    },
+    "create_ticket_reply": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for ReplaceTicket"
+    },
+    "change_ticket_status": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CloseTicket"
+    },
+    "toggle_observation_action_status": {
+      "anyOf": [],
+      "unsupported": "Observation action status permission is absent"
+    },
+    "toggle_observation_work_status": {
+      "anyOf": [],
+      "unsupported": "Observation stop-work permission is absent"
+    },
+    "fetch_capas": {
+      "anyOf": [
+        "CAPA_ALL",
+        "CAPA_FETCH"
+      ]
+    },
+    "fetch_capa_details": {
+      "anyOf": [
+        "CAPA_ALL",
+        "CAPA_DETAILS"
+      ]
+    },
+    "update_capa": {
+      "anyOf": [
+        "CAPA_ALL",
+        "CAPA_UPDATE"
+      ]
+    },
+    "set_investigation_task_verification": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for SetInvestigationTaskVerification"
+    },
+    "fetch_investigation_task_verifications": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for FetchInvestigationTaskVerification"
+    },
+    "delete_capa": {
+      "anyOf": [
+        "CAPA_ALL",
+        "CAPA_DELETE"
+      ]
+    },
+    "sync_herikaly_employees": {
+      "anyOf": [
+        "ORG_EMPLOYEE_ALL",
+        "ORG_EMPLOYEE_CREATE"
+      ]
+    },
+    "fetch_owned_actual_tasks": {
+      "anyOf": [
+        "MY_TASKS_ALL",
+        "TASK_FETCH"
+      ]
+    },
+    "change_meeting_task_status": {
+      "anyOf": [],
+      "unsupported": "Task status needs a backend operation permission"
+    },
+    "fetch_task_history": {
+      "anyOf": [
+        "MY_TASKS_ALL",
+        "TASK_DETAILS"
+      ]
+    },
+    "fetch_hierarchies_certificates": {
+      "anyOf": [
+        "HERIKALY_ALL",
+        "HERIKALY_FETCH"
+      ]
+    },
+    "clone_warehouse_types": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for AddWarehouseClones"
+    },
+    "clone_drill_types": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CloneDrillTypes"
+    },
+    "clone_ppe_items": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for ClonePpeItems"
+    },
+    "clone_hazard_types": {
+      "anyOf": [
+        "ORG_HAZARD_TYPE_ALL",
+        "ORG_HAZARD_TYPE_CREATE"
+      ]
+    },
+    "clone_observation_types": {
+      "anyOf": [
+        "ORG_OBSERVATION_TYPE_ALL",
+        "ORG_OBSERVATION_TYPE_CREATE"
+      ]
+    },
+    "fetch_checklists": {
+      "anyOf": [],
+      "unsupported": "No confirmed fetch permission for this feature"
+    },
+    "create_checklist": {
+      "anyOf": [],
+      "unsupported": "No confirmed create permission for this feature"
+    },
+    "fetch_checklist_details": {
+      "anyOf": [],
+      "unsupported": "No confirmed details permission for this feature"
+    },
+    "update_checklist": {
+      "anyOf": [],
+      "unsupported": "No confirmed update permission for this feature"
+    },
+    "delete_checklist": {
+      "anyOf": [],
+      "unsupported": "No confirmed delete permission for this feature"
+    },
+    "close_investigation": {
+      "anyOf": [],
+      "unsupported": "Investigation close permission is absent"
+    },
+    "create_certificate_hierarchy": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for addCertificateToHierarchy"
+    },
+    "delete_hierarchy_certificate": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for deleteCertificateToHierarchy"
+    },
+    "create_document_reference": {
+      "anyOf": [
+        "ORG_DOCUMENTATION_REFERENCE_ALL",
+        "ORG_DOCUMENTATION_REFERENCE_CREATE"
+      ]
+    },
+    "fetch_document_references": {
+      "anyOf": [
+        "ORG_DOCUMENTATION_REFERENCE_ALL",
+        "ORG_DOCUMENTATION_REFERENCE_FETCH"
+      ]
+    },
+    "fetch_document_reference_details": {
+      "anyOf": [
+        "ORG_DOCUMENTATION_REFERENCE_ALL",
+        "ORG_DOCUMENTATION_REFERENCE_DETAILS"
+      ]
+    },
+    "update_document_reference": {
+      "anyOf": [
+        "ORG_DOCUMENTATION_REFERENCE_ALL",
+        "ORG_DOCUMENTATION_REFERENCE_UPDATE"
+      ]
+    },
+    "delete_document_reference": {
+      "anyOf": [
+        "ORG_DOCUMENTATION_REFERENCE_ALL",
+        "ORG_DOCUMENTATION_REFERENCE_DELETE"
+      ]
+    },
+    "create_work_shift": {
+      "anyOf": [
+        "ORG_SHIFT_ALL",
+        "ORG_SHIFT_CREATE"
+      ]
+    },
+    "fetch_work_shifts": {
+      "anyOf": [
+        "ORG_SHIFT_ALL",
+        "ORG_SHIFT_FETCH"
+      ]
+    },
+    "fetch_work_shift_details": {
+      "anyOf": [
+        "ORG_SHIFT_ALL",
+        "ORG_SHIFT_DETAILS"
+      ]
+    },
+    "update_work_shift": {
+      "anyOf": [
+        "ORG_SHIFT_ALL",
+        "ORG_SHIFT_UPDATE"
+      ]
+    },
+    "delete_work_shift": {
+      "anyOf": [
+        "ORG_SHIFT_ALL",
+        "ORG_SHIFT_DELETE"
+      ]
+    },
+    "fetch_similar_observations": {
+      "anyOf": [
+        "INVESTIGATION_ALL",
+        "INVESTIGATION_FETCH"
+      ]
+    },
+    "create_notification_plan": {
+      "anyOf": [
+        "NOTIFICATION_PLAN_ALL",
+        "NOTIFICATION_PLAN_CREATE"
+      ]
+    },
+    "fetch_notification_plans": {
+      "anyOf": [
+        "NOTIFICATION_PLAN_ALL",
+        "NOTIFICATION_PLAN_FETCH"
+      ]
+    },
+    "fetch_notification_plan_details": {
+      "anyOf": [
+        "NOTIFICATION_PLAN_ALL",
+        "NOTIFICATION_PLAN_DETAILS"
+      ]
+    },
+    "update_notification_plan": {
+      "anyOf": [
+        "NOTIFICATION_PLAN_ALL",
+        "NOTIFICATION_PLAN_UPDATE"
+      ]
+    },
+    "change_notification_active_status": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for ActiveNotificationPlan"
+    },
+    "delete_notification_plan": {
+      "anyOf": [
+        "NOTIFICATION_PLAN_ALL",
+        "NOTIFICATION_PLAN_DELETE"
+      ]
+    },
+    "clone_all_data": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CloneAllData"
+    },
+    "fetch_meeting_type_details": {
+      "anyOf": [
+        "ORG_MEETING_TYPE_ALL",
+        "ORG_MEETING_TYPE_DETAILS"
+      ]
+    },
+    "create_meeting_type": {
+      "anyOf": [
+        "ORG_MEETING_TYPE_ALL",
+        "ORG_MEETING_TYPE_CREATE"
+      ]
+    },
+    "delete_meeting_type": {
+      "anyOf": [
+        "ORG_MEETING_TYPE_ALL",
+        "ORG_MEETING_TYPE_DELETE"
+      ]
+    },
+    "update_meeting_type": {
+      "anyOf": [
+        "ORG_MEETING_TYPE_ALL",
+        "ORG_MEETING_TYPE_UPDATE"
+      ]
+    },
+    "fetch_meeting_types": {
+      "anyOf": [
+        "ORG_MEETING_TYPE_ALL",
+        "ORG_MEETING_TYPE_FETCH"
+      ]
+    },
+    "clone_meeting_types": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for CloneMeetingTypes"
+    },
+    "create_project_meeting": {
+      "anyOf": [],
+      "unsupported": "Project meeting permission family is absent"
+    },
+    "create_project_meeting_result": {
+      "anyOf": [],
+      "unsupported": "Project meeting result permission is absent"
+    },
+    "fetch_meetings": {
+      "anyOf": [],
+      "unsupported": "Project meeting permission family is absent"
+    },
+    "fetch_visits": {
+      "anyOf": [
+        "LEADERSHIP_ALL",
+        "LEADERSHIP_FETCH"
+      ]
+    },
+    "fetch_visit_report": {
+      "anyOf": [
+        "LEADERSHIP_ALL",
+        "LEADERSHIP_DETAILS"
+      ]
+    },
+    "change_ppe_active_tool_matrix": {
+      "anyOf": [
+        "ppe_matrix_logs_ALL",
+        "ppe_matrix_logs_UPDATE"
+      ]
+    },
+    "fetch_ppe_active_tool_matrix": {
+      "anyOf": [
+        "ppe_matrix_logs_ALL",
+        "ppe_matrix_logs_FETCH"
+      ]
+    },
+    "create_ppe_matrix_delivery": {
+      "anyOf": [
+        "ppe_matrix_logs_ALL",
+        "ppe_matrix_logs_CREATE"
+      ]
+    },
+    "fetch_ppe_matrix_delivery": {
+      "anyOf": [
+        "ppe_matrix_logs_ALL",
+        "ppe_matrix_logs_FETCH"
+      ]
+    },
+    "create_visit_report": {
+      "anyOf": [
+        "LEADERSHIP_ALL",
+        "LEADERSHIP_CRAETE"
+      ]
+    },
+    "fetch_permit_type_details": {
+      "anyOf": [],
+      "unsupported": "No confirmed details permission for ORG_PTW_TYPE"
+    },
+    "create_permit_type": {
+      "anyOf": [
+        "ORG_PTW_TYPE_ALL",
+        "ORG_PTW_TYPE_CREATE"
+      ]
+    },
+    "delete_permit_type": {
+      "anyOf": [
+        "ORG_PTW_TYPE_ALL",
+        "ORG_PTW_TYPE_DELETE"
+      ]
+    },
+    "update_permit_type": {
+      "anyOf": [
+        "ORG_PTW_TYPE_ALL",
+        "ORG_PTW_TYPE_UPDATE"
+      ]
+    },
+    "fetch_permit_types": {
+      "anyOf": [
+        "ORG_PTW_TYPE_ALL",
+        "ORG_PTW_TYPE_FETCH"
+      ]
+    },
+    "clone_permit_types": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for ClonePTWTypes"
+    },
+    "create_permit_to_work": {
+      "anyOf": [
+        "PTW_ALL",
+        "PTW_CREATE"
+      ]
+    },
+    "create_permit_to_work_result": {
+      "anyOf": [],
+      "unsupported": "Permit results need a distinct backend operation permission"
+    },
+    "fetch_meeting_details": {
+      "anyOf": [],
+      "unsupported": "Project meeting permission family is absent"
+    },
+    "fetch_asigned_permit_to_works": {
+      "anyOf": [
+        "PTW_ALL",
+        "PTW_FETCH"
+      ]
+    },
+    "fetch_my_permit_to_works": {
+      "anyOf": [
+        "PTW_ALL",
+        "PTW_FETCH"
+      ]
+    },
+    "fetch_permit_to_work_results": {
+      "anyOf": [
+        "PTW_ALL",
+        "PTW_FETCH"
+      ]
+    },
+    "fetch_project_permit_statistics": {
+      "anyOf": [
+        "PTW_ALL",
+        "PTW_FETCH"
+      ]
+    },
+    "create_ppe_activity": {
+      "anyOf": [
+        "ORG_PPE_ACTIVITY_ALL",
+        "ORG_PPE_ACTIVITY_CREATE"
+      ]
+    },
+    "clone_ppe_activities": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for clone_ppe_activity"
+    },
+    "delete_ppe_activity": {
+      "anyOf": [
+        "ORG_PPE_ACTIVITY_ALL",
+        "ORG_PPE_ACTIVITY_DELETE"
+      ]
+    },
+    "update_ppe_activity": {
+      "anyOf": [
+        "ORG_PPE_ACTIVITY_ALL",
+        "ORG_PPE_ACTIVITY_UPDATE"
+      ]
+    },
+    "fetch_ppe_activities": {
+      "anyOf": [
+        "ORG_PPE_ACTIVITY_ALL",
+        "ORG_PPE_ACTIVITY_FETCH"
+      ]
+    },
+    "fetch_ppe_activity_details": {
+      "anyOf": [
+        "ORG_PPE_ACTIVITY_ALL",
+        "ORG_PPE_ACTIVITY_DETAILS"
+      ]
+    },
+    "create_visit_activity": {
+      "anyOf": [
+        "ORG_VISIT_ACTIVITIES_ALL",
+        "ORG_VISIT_ACTIVITIES_CREATE"
+      ]
+    },
+    "fetch_visit_activities": {
+      "anyOf": [
+        "ORG_VISIT_ACTIVITIES_ALL",
+        "ORG_VISIT_ACTIVITIES_FETCH"
+      ]
+    },
+    "fetch_visit_activity_details": {
+      "anyOf": [
+        "ORG_VISIT_ACTIVITIES_ALL",
+        "ORG_VISIT_ACTIVITIES_DETAILS"
+      ]
+    },
+    "update_visit_activity": {
+      "anyOf": [
+        "ORG_VISIT_ACTIVITIES_ALL",
+        "ORG_VISIT_ACTIVITIES_UPDATE"
+      ]
+    },
+    "delete_visit_activity": {
+      "anyOf": [
+        "ORG_VISIT_ACTIVITIES_ALL",
+        "ORG_VISIT_ACTIVITIES_DELETE"
+      ]
+    },
+    "fetch_ppe_tools": {
+      "anyOf": [
+        "ORG_PPE_TOOLS_ALL",
+        "ORG_PPE_TOOLS_FETCH"
+      ]
+    },
+    "fetch_ppe_tool_details": {
+      "anyOf": [
+        "ORG_PPE_TOOLS_ALL",
+        "ORG_PPE_TOOLS_FETCH"
+      ]
+    },
+    "create_ppe_tool": {
+      "anyOf": [
+        "ORG_PPE_TOOLS_ALL",
+        "ORG_PPE_TOOLS_CREATE"
+      ]
+    },
+    "update_ppe_tool": {
+      "anyOf": [
+        "ORG_PPE_TOOLS_ALL",
+        "ORG_PPE_TOOLS_UPDATE"
+      ]
+    },
+    "delete_ppe_tool": {
+      "anyOf": [
+        "ORG_PPE_TOOLS_ALL",
+        "ORG_PPE_TOOLS_DELETE"
+      ]
+    },
+    "clone_ppe_tools": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for clone_ppe_tool"
+    },
+    "fetch_document_categories": {
+      "anyOf": [
+        "ORG_DOCUMENT_CATEGORY_ALL",
+        "ORG_DOCUMENT_CATEGORY_FETCH"
+      ]
+    },
+    "fetch_document_category_details": {
+      "anyOf": [
+        "ORG_DOCUMENT_CATEGORY_ALL",
+        "ORG_DOCUMENT_CATEGORY_DETAILS"
+      ]
+    },
+    "create_document_category": {
+      "anyOf": [
+        "ORG_DOCUMENT_CATEGORY_ALL",
+        "ORG_DOCUMENT_CATEGORY_CREATE"
+      ]
+    },
+    "update_document_category": {
+      "anyOf": [
+        "ORG_DOCUMENT_CATEGORY_ALL",
+        "ORG_DOCUMENT_CATEGORY_UPDATE"
+      ]
+    },
+    "delete_document_category": {
+      "anyOf": [
+        "ORG_DOCUMENT_CATEGORY_ALL",
+        "ORG_DOCUMENT_CATEGORY_DELETE"
+      ]
+    },
+    "clone_document_categories": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for clone_document_category"
+    },
+    "fetch_internal_audit_standards": {
+      "anyOf": [
+        "ORG_AUDIT_STANDARDS_ALL",
+        "ORG_AUDIT_STANDARDS_FETCH"
+      ]
+    },
+    "fetch_internal_audit_standard_details": {
+      "anyOf": [
+        "ORG_AUDIT_STANDARDS_ALL",
+        "ORG_AUDIT_STANDARDS_DETAILS"
+      ]
+    },
+    "create_internal_audit_standard": {
+      "anyOf": [
+        "ORG_AUDIT_STANDARDS_ALL",
+        "ORG_AUDIT_STANDARDS_CREATE"
+      ]
+    },
+    "update_internal_audit_standard": {
+      "anyOf": [
+        "ORG_AUDIT_STANDARDS_ALL",
+        "ORG_AUDIT_STANDARDS_UPDATE"
+      ]
+    },
+    "delete_internal_audit_standard": {
+      "anyOf": [
+        "ORG_AUDIT_STANDARDS_ALL",
+        "ORG_AUDIT_STANDARDS_DELETE"
+      ]
+    },
+    "clone_internal_audit_standards": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for clone_audit_standard"
+    },
+    "fetch_internal_audit_activities": {
+      "anyOf": [
+        "ORG_AUDIT_ACTIVITIES_ALL",
+        "ORG_AUDIT_ACTIVITIES_FETCH"
+      ]
+    },
+    "fetch_internal_audit_activity_details": {
+      "anyOf": [
+        "ORG_AUDIT_ACTIVITIES_ALL",
+        "ORG_AUDIT_ACTIVITIES_DETAILS"
+      ]
+    },
+    "create_internal_audit_activity": {
+      "anyOf": [
+        "ORG_AUDIT_ACTIVITIES_ALL",
+        "ORG_AUDIT_ACTIVITIES_CREATE"
+      ]
+    },
+    "update_internal_audit_activity": {
+      "anyOf": [
+        "ORG_AUDIT_ACTIVITIES_ALL",
+        "ORG_AUDIT_ACTIVITIES_UPDATE"
+      ]
+    },
+    "delete_internal_audit_activity": {
+      "anyOf": [
+        "ORG_AUDIT_ACTIVITIES_ALL",
+        "ORG_AUDIT_ACTIVITIES_DELETE"
+      ]
+    },
+    "clone_internal_audit_activities": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for clone_audit_activity"
+    },
+    "create_risk_assessment": {
+      "anyOf": [
+        "RISK_ASSESSMENT_ALL",
+        "RISK_ASSESSMENT_CREATE"
+      ]
+    },
+    "fetch_risk_assessments": {
+      "anyOf": [
+        "RISK_ASSESSMENT_ALL",
+        "RISK_ASSESSMENT_FETCH"
+      ]
+    },
+    "fetch_risk_assessment_details": {
+      "anyOf": [
+        "RISK_ASSESSMENT_ALL",
+        "RISK_ASSESSMENT_DETAILS"
+      ]
+    },
+    "create_induction": {
+      "anyOf": [
+        "inductions_ALL",
+        "inductions_CREATE"
+      ]
+    },
+    "fetch_induction": {
+      "anyOf": [
+        "inductions_ALL",
+        "inductions_FETCH"
+      ]
+    },
+    "fetch_induction_detail": {
+      "anyOf": [
+        "inductions_ALL",
+        "inductions_DETAILS"
+      ]
+    },
+    "update_induction": {
+      "anyOf": [
+        "inductions_ALL",
+        "inductions_UPDATE"
+      ]
+    },
+    "delete_induction": {
+      "anyOf": [
+        "inductions_ALL",
+        "inductions_DELETE"
+      ]
+    },
+    "fetch_training_topics": {
+      "anyOf": [
+        "ORG_TRANING_TOPIC_ALL",
+        "ORG_TRANING_TOPIC_FETCH"
+      ]
+    },
+    "fetch_training_topic_details": {
+      "anyOf": [
+        "ORG_TRANING_TOPIC_ALL",
+        "ORG_TRANING_TOPIC_DETAILS"
+      ]
+    },
+    "create_training_topic": {
+      "anyOf": [
+        "ORG_TRANING_TOPIC_ALL",
+        "ORG_TRANING_TOPIC_CREATE"
+      ]
+    },
+    "update_training_topic": {
+      "anyOf": [
+        "ORG_TRANING_TOPIC_ALL",
+        "ORG_TRANING_TOPIC_UPDATE"
+      ]
+    },
+    "delete_training_topic": {
+      "anyOf": [
+        "ORG_TRANING_TOPIC_ALL",
+        "ORG_TRANING_TOPIC_DELETE"
+      ]
+    },
+    "clone_traning_topic": {
+      "anyOf": [],
+      "unsupported": "No independently confirmed backend permission for clone_traning_topic"
+    },
+    "create_leadership_engagement": {
+      "anyOf": [
+        "LEADERSHIP_ALL",
+        "LEADERSHIP_CRAETE"
+      ]
+    }
+  },
+  "getterEndpoints": {
+    "AddLang": "create_language",
+    "IndexLang": "fetch_languages",
+    "ShowLang": "fetch_language_details",
+    "EditLang": "update_language",
+    "DeleteLang": "delete_language",
+    "AuthLoginOrganization": "login",
+    "AuthLogin": "login",
+    "CreatePartner": "create_partner",
+    "IndexPartner": "fetch_partners",
+    "ShowPartner": "fetch_partner_details",
+    "EditPartner": "update_partner",
+    "DeletePartner": "delete_partner",
+    "CreateInspection": "create_task",
+    "IndexInspection": "fetch_my_tasks",
+    "FetchAllTasks": "fetch_tasks",
+    "ShowInspection": "fetch_task_details",
+    "EditInspection": "update_task",
+    "DeleteInspection": "delete_task",
+    "FetchInspectionResult": "fetch_task_results",
+    "CreateLocationHierarchy": "create_project_location_hierarchy",
+    "IndexLocationHierarchy": "fetch_project_locations_hierarchies",
+    "ShowLocationHierarchy": "fetch_location_details",
+    "CreateHierarchyEmployee": "create_project_location_hierarchy_employee",
+    "IndexHierarchyEmployee": "fetch_project_locations_hierarchy_employees",
+    "ShowHierarchyEmployee": "fetch_hierarchy_employee_details",
+    "EditHierarchyEmployee": "update_hierarchy_employee",
+    "DeleteHierarchyEmployee": "delete_hierarchy_employee",
+    "IndexProjectLocation": "fetch_project_locations",
+    "CreateObjectives": "create_objectives",
+    "IndexObjectives": "fetch_objectives",
+    "ShowObjectives": "fetch_objectives_details",
+    "EditObjectives": "update_objectives",
+    "DeleteObjectives": "delete_objectives",
+    "DisObjectives": "change_objectives_active_status",
+    "CreateObjectiveProgress": "create_objective_progress",
+    "IndexObjectiveProgress": "fetch_objective_progress",
+    "ShowObjectiveProgress": "fetch_objective_progress_details",
+    "EditObjectiveProgress": "update_objective_progress",
+    "CreateAdmin": "create_admin",
+    "IndexAdmin": "fetch_admins",
+    "ShowAdmin": "fetch_admin_details",
+    "EditAdmin": "update_admin",
+    "DeleteAdmin": "delete_admin",
+    "CreateMethod": "create_method",
+    "IndexMethod": "fetch_methods",
+    "ShowMethod": "fetch_method_details",
+    "EditMethod": "update_method",
+    "DeleteMethod": "delete_method",
+    "CreateTeam": "create_team",
+    "IndexTeam": "fetch_teams",
+    "FetchSystemTeam": "fetch_teams",
+    "CloneTeam": "clone_teams",
+    "ShowTeam": "fetch_team_details",
+    "EditTeam": "update_team",
+    "DeleteTeam": "delete_team",
+    "CreateCatalog": "create_guide_category",
+    "IndexCatalog": "fetch_guide_categories",
+    "ShowCatalog": "fetch_guide_category_details",
+    "EditCatalog": "update_guide_category",
+    "DeleteCatalog": "delete_guide_category",
+    "CreateCatalogItems": "create_guide_category",
+    "IndexCatalogItems": "fetch_guide_categories",
+    "ShowCatalogItems": "fetch_guide_category_details",
+    "EditCatalogItems": "update_guide_category",
+    "DeleteCatalogItems": "delete_guide_category",
+    "CreateCatalogItemsDetails": "create_guide_category_item",
+    "IndexCatalogItemsDetails": "fetch_guide_category_items",
+    "ShowCatalogItemsDetails": "fetch_guide_category_item_details",
+    "EditCatalogItemsDetails": "update_guide_category_item",
+    "DeleteCatalogItemsDetails": "delete_guide_category_item",
+    "CreateContractor": "create_contractor",
+    "IndexContractor": "fetch_contractors",
+    "ShowContractor": "fetch_contractor_details",
+    "EditContractor": "update_contractor",
+    "DeleteContractor": "delete_contractor",
+    "IndexPermission": "fetch_permissions",
+    "ShowPermission": "show_permissions",
+    "EditPermission": "create_permissions",
+    "DeletePermission": "delete_permission",
+    "CreateOrganizationLocation": "create_organization_location",
+    "IndexOrganizationLocation": "fetch_organization_locations",
+    "ShowOrganizationLocation": "fetch_organization_location_details",
+    "EditOrganizationLocation": "update_organization_location",
+    "DeleteOrganizationLocation": "delete_organization_location",
+    "CreateProject": "create_project",
+    "IndexProject": "fetch_projects",
+    "ShowProject": "fetch_project_details",
+    "ShowProjectSummaryDetails": "fetch_project_summary_details",
+    "EditProject": "update_project",
+    "DeleteProject": "delete_project",
+    "CreateBasicProject": "create_basic_project",
+    "UpdateBasicProject": "update_basic_project",
+    "CreateProjectHolidays": "create_project_holidays",
+    "UpdateProjectHolidays": "update_project_holidays",
+    "CreateProjectLocationPositionEmployees": "create_project_location_position_employees",
+    "UpdateProjectLocationPositionEmployees": "update_project_location_position_employees",
+    "CreateProjectTeams": "create_project_teams",
+    "UpdateProjectTeams": "update_project_teams",
+    "CreateProjectEquipments": "create_project_equipments",
+    "UpdateProjectEquipments": "update_project_equipments",
+    "GetTodayTalk": "fetch_today_talks",
+    "CreateTodayTalk": "create_today_talk",
+    "CreateTodayTalkAnswer": "create_today_talk",
+    "CreateAboutUsFeature": "create_about_us_feature",
+    "IndexAboutUsFeature": "fetch_about_us_features",
+    "ShowAboutUsFeature": "fetch_about_us_feature_details",
+    "EditAboutUsFeature": "update_about_us_feature",
+    "DeleteAboutUsFeature": "delete_about_us_feature",
+    "ChangeStatusAboutUsFeature": "change_about_us_feature_active_status",
+    "CreateSystemRiskManagement": "create_our_system_risk_management",
+    "IndexSystemRiskManagement": "fetch_our_system_risk_managements",
+    "ShowSystemRiskManagement": "fetch_our_system_risk_management_details",
+    "EditSystemRiskManagement": "update_our_system_risk_management",
+    "DeleteSystemRiskManagement": "delete_our_system_risk_management",
+    "ChangeStatusSystemRiskManagement": "change_our_system_risk_management_active_status",
+    "CreateAboutUsCore": "create_about_us_core",
+    "IndexAboutUsCore": "fetch_about_us_core",
+    "ShowAboutUsCore": "fetch_about_us_core_details",
+    "EditAboutUsCore": "update_about_us_core",
+    "DeleteAboutUsCore": "delete_about_us_core",
+    "ChangeStatusAboutUsCore": "change_about_us_core_active_status",
+    "CreateHomeViewPricing": "create_home_view_pricing",
+    "IndexHomeViewPricing": "fetch_home_view_pricing",
+    "ShowHomeViewPricing": "fetch_home_view_pricing_details",
+    "EditHomeViewPricing": "update_home_view_pricing",
+    "DeleteHomeViewPricing": "delete_home_view_pricing",
+    "ChangeStatusHomeViewPricing": "change_home_view_pricing_active_status",
+    "CreateHeader": "create_header",
+    "IndexHeader": "fetch_headers",
+    "ShowHeader": "fetch_header_details",
+    "EditHeader": "update_header",
+    "DeleteHeader": "delete_header",
+    "ChangeStatusHeader": "change_header_active_status",
+    "CreateHomeAboutUs": "create_home_about_us",
+    "IndexHomeAboutUs": "fetch_home_about_us",
+    "ShowHomeAboutUs": "fetch_home_about_us_details",
+    "EditHomeAboutUs": "update_home_about_us",
+    "DeleteHomeAboutUs": "delete_home_about_us",
+    "ChangeStatusHomeAboutUs": "change_home_about_us_active_status",
+    "CreatePowerFull": "create_powerful_feature",
+    "IndexPowerFull": "fetch_powerful_features",
+    "ShowPowerFull": "fetch_powerful_feature_details",
+    "EditPowerFull": "update_powerful_feature",
+    "DeletePowerFull": "delete_powerful_feature",
+    "ChangeStatusPowerFull": "change_powerful_feature_active_status",
+    "CreateSystemWork": "create_system_work",
+    "IndexSystemWork": "fetch_system_works",
+    "ShowSystemWork": "fetch_system_work_details",
+    "EditSystemWork": "update_system_work",
+    "DeleteSystemWork": "delete_system_work",
+    "ChangeStatusSystemWork": "change_system_work_active_status",
+    "CreateHomeContactUs": "create_home_contact_us",
+    "IndexHomeContactUs": "fetch_home_contact_us",
+    "ShowHomeContactUs": "fetch_home_contact_us_details",
+    "EditHomeContactUs": "update_home_contact_us",
+    "DeleteHomeContactUs": "delete_home_contact_us",
+    "ChangeStatusHomeContactUs": "change_home_contact_us_active_status",
+    "CreateClientOpinion": "create_client_opinion",
+    "IndexClientOpinion": "fetch_client_opinions",
+    "ShowClientOpinion": "fetch_client_opinion_details",
+    "EditClientOpinion": "update_client_opinion",
+    "DeleteClientOpinion": "delete_client_opinion",
+    "ChangeStatusClientOpinion": "change_client_opinion_active_status",
+    "CreateTemplate": "create_template",
+    "IndexTemplate": "fetch_templates",
+    "ShowTemplate": "fetch_template_details",
+    "EditTemplate": "update_template",
+    "DeleteTemplate": "delete_template",
+    "DisActiveTemplate": "disable_template",
+    "CreateFactory": "create_factory",
+    "IndexFactory": "fetch_factories",
+    "ShowFactory": "fetch_factory_details",
+    "EditFactory": "update_factory",
+    "DeleteFactory": "delete_factory",
+    "DisFactory": "disable_factory",
+    "CreateIndustry": "create_industry",
+    "IndexIndustry": "fetch_industries",
+    "ShowIndustry": "fetch_industry_details",
+    "EditIndustry": "update_industry",
+    "DeleteIndustry": "delete_industry",
+    "CreateEquipmentType": "create_equipment_type",
+    "AddSystemEquipmentType": "clone_equipment_types",
+    "IndexEquipmentType": "fetch_equipment_types",
+    "ShowEquipmentType": "fetch_equipment_type_details",
+    "EditEquipmentType": "update_equipment_type",
+    "DeleteEquipmentType": "delete_equipment_type",
+    "DisEquipmentType": "disable_equipment_type",
+    "CreateCertificate": "create_certificate",
+    "IndexCertificate": "fetch_certificates",
+    "ShowCertificate": "fetch_certificate_details",
+    "EditCertificate": "update_certificate",
+    "DeleteCertificate": "delete_certificate",
+    "DisCertificate": "disable_certificate",
+    "CreateOrganizationDocuments": "create_document",
+    "IndexOrganizationDocuments": "fetch_documents",
+    "ShowOrganizationDocuments": "fetch_document_details",
+    "EditOrganizationDocuments": "update_document",
+    "DeleteOrganizationDocuments": "delete_document",
+    "DisOrganizationDocuments": "disable_organization_document",
+    "CreateOrganizationCertificate": "create_certificate",
+    "IndexOrganizationCertificate": "fetch_organization_certificate",
+    "ShowOrganizationCertificate": "fetch_certificate_details",
+    "EditOrganizationCertificate": "update_certificate",
+    "DeleteOrganizationCertificate": "delete_certificate",
+    "DisOrganizationCertificate": "disable_certificate",
+    "CreateCategory": "create_category",
+    "IndexCategory": "fetch_categories",
+    "ShowCategory": "fetch_category_details",
+    "EditCategory": "update_category",
+    "DeleteCategory": "delete_category",
+    "DisCategory": "change_category_active_status",
+    "CreateBlog": "create_blog",
+    "IndexBlog": "fetch_blogs",
+    "ShowBlog": "fetch_blog_details",
+    "EditBlog": "update_blog",
+    "DeleteBlog": "delete_blog",
+    "DisBlog": "change_blog_active_status",
+    "ChangeStatusBlog": "change_blog_active_status",
+    "CreateOurSystemStep": "create_our_system_step",
+    "IndexOurSystemStep": "fetch_our_system_steps",
+    "ShowOurSystemStep": "fetch_our_system_step_details",
+    "EditOurSystemStep": "update_our_system_step",
+    "DeleteOurSystemStep": "delete_our_system_step",
+    "DisOurSystemStep": "change_our_system_step_active_status",
+    "ChangeStatusOurSystemStep": "change_our_system_step_active_status",
+    "CreateFaq": "create_faq",
+    "IndexFaq": "fetch_faqs",
+    "ShowFaq": "fetch_faq_details",
+    "EditFaq": "update_faq",
+    "DeleteFaq": "delete_faq",
+    "DisFaq": "change_faq_active_status",
+    "ChangeStatusFaq": "change_faq_active_status",
+    "CreateHashtag": "create_hashtag",
+    "IndexHashtag": "fetch_hashtags",
+    "ShowHashtag": "fetch_hashtag_details",
+    "EditHashtag": "update_hashtag",
+    "DeleteHashtag": "delete_hashtag",
+    "DisHashtag": "change_hashtag_active_status",
+    "CreateTerm": "create_or_update_term",
+    "IndexTerm": "fetch_terms",
+    "ShowTerm": "fetch_terms",
+    "EditTerm": "create_or_update_term",
+    "DeleteTerm": "delete_term",
+    "DisTerm": "change_term_active_status",
+    "CreatePrivacy": "create_or_update_privacy",
+    "IndexPrivacy": "fetch_privacy",
+    "ShowPrivacy": "fetch_privacy",
+    "EditPrivacy": "create_or_update_privacy",
+    "DeletePrivacy": "delete_privacy",
+    "DisPrivacy": "change_privacy_active_status",
+    "CreateEquipment": "create_equipment",
+    "IndexEquipment": "fetch_equipments",
+    "ShowEquipment": "fetch_equipment_details",
+    "EditEquipment": "update_equipment",
+    "DeleteEquipment": "delete_equipment",
+    "DisEquipment": "disable_equipment",
+    "CreateHazardType": "create_hazard_type",
+    "IndexHazardType": "fetch_hazard_types",
+    "ShowHazardType": "fetch_hazard_type_details",
+    "EditHazardType": "update_hazard_type",
+    "DeleteHazardType": "delete_hazard_type",
+    "DisHazardType": "disable_hazard_type",
+    "CreateIncedant": "create_incedant",
+    "IndexIncedant": "fetch_incedants",
+    "ShowIncedant": "fetch_incedant_details",
+    "EditIncedant": "update_incedant",
+    "DeleteIncedant": "delete_incedant",
+    "DisIncedant": "disable_incedant",
+    "CreateObserverationType": "create_observation_type",
+    "IndexObserverationType": "fetch_observation_types",
+    "ShowObserverationType": "fetch_observation_type_details",
+    "EditObserverationType": "update_observation_type",
+    "DeleteObserverationType": "delete_observation_type",
+    "DisObserverationType": "disable_observation_type",
+    "CreateProjectType": "create_project_type",
+    "IndexProjectType": "fetch_project_types",
+    "ShowProjectType": "fetch_project_type_details",
+    "EditProjectType": "update_project_type",
+    "DeleteProjectType": "delete_project_type",
+    "DisProjectType": "disable_project_type",
+    "CreateFactoryItem": "create_factory_item",
+    "IndexFactoryItem": "fetch_factory_items",
+    "ShowFactoryItem": "fetch_factory_item_details",
+    "EditFactoryItem": "update_factory_item",
+    "DeleteFactoryItem": "delete_factory_item",
+    "DisFactoryItem": "disable_factory_item",
+    "CloneFactoryItems": "clone_factory_items",
+    "CreateAccidentsType": "create_accidents_type",
+    "IndexAccidentsType": "fetch_accidents_types",
+    "ShowAccidentsType": "fetch_accidents_type_details",
+    "EditAccidentsType": "update_accidents_type",
+    "DeleteAccidentsType": "delete_accidents_type",
+    "DisAccidentsType": "disable_accidents_type",
+    "CreateIncidentCategory": "create_incident_category",
+    "IndexIncidentCategory": "fetch_incident_categories",
+    "ShowIncidentCategory": "fetch_incident_category_details",
+    "EditIncidentCategory": "update_incident_category",
+    "DeleteIncidentCategory": "delete_incident_category",
+    "DisIncidentCategory": "disable_incident_category",
+    "CreateOrganization": "create_organization",
+    "IndexOrganization": "fetch_organizations",
+    "ShowOrganization": "fetch_organization_details",
+    "EditOrganization": "update_organization",
+    "DeleteOrganization": "delete_organization",
+    "CreateLocation": "create_location",
+    "IndexLocation": "fetch_locations",
+    "ShowLocation": "fetch_location_details",
+    "EditLocation": "update_location",
+    "DeleteLocation": "delete_location",
+    "CreateService": "create_service",
+    "IndexService": "fetch_services",
+    "ShowService": "fetch_service_details",
+    "EditService": "update_service",
+    "DeleteService": "delete_service",
+    "DisService": "change_service_active_status",
+    "CreateServiceFeature": "create_service_feature",
+    "IndexServiceFeature": "fetch_service_features",
+    "ShowServiceFeature": "fetch_service_feature_details",
+    "EditServiceFeature": "update_service_feature",
+    "DeleteServiceFeature": "delete_service_feature",
+    "DisServiceFeature": "change_service_feature_active_status",
+    "CreateServiceSection": "create_service_section",
+    "IndexServiceSection": "fetch_service_sections",
+    "ShowServiceSection": "fetch_service_section_details",
+    "EditServiceSection": "update_service_section",
+    "DeleteServiceSection": "delete_service_section",
+    "DisServiceSection": "change_service_section_active_status",
+    "CreateServiceLog": "create_service_log",
+    "IndexServiceLog": "fetch_service_logs",
+    "ShowServiceLog": "fetch_service_log_details",
+    "EditServiceLog": "update_service_log",
+    "DeleteServiceLog": "delete_service_log",
+    "DisServiceLog": "change_service_log_active_status",
+    "CreateSystemBanner": "create_our_system_banner",
+    "IndexSystemBanner": "fetch_our_system_banners",
+    "ShowSystemBanner": "fetch_our_system_banner_details",
+    "EditSystemBanner": "update_our_system_banner",
+    "DeleteSystemBanner": "delete_our_system_banner",
+    "DisSystemBanner": "change_our_system_banner_active_status",
+    "CreateSystemFeature": "create_our_system_feature",
+    "IndexSystemFeature": "fetch_our_system_features",
+    "ShowSystemFeature": "fetch_our_system_feature_details",
+    "EditSystemFeature": "update_our_system_feature",
+    "DeleteSystemFeature": "delete_our_system_feature",
+    "DisSystemFeature": "change_our_system_feature_active_status",
+    "CreateSystemRiskType": "create_our_system_risk_type",
+    "IndexSystemRiskType": "fetch_our_system_risk_types",
+    "ShowSystemRiskType": "fetch_our_system_risk_type_details",
+    "EditSystemRiskType": "update_our_system_risk_type",
+    "DeleteSystemRiskType": "delete_our_system_risk_type",
+    "DisSystemRiskType": "change_our_system_risk_type_active_status",
+    "CreateSystemComponent": "create_our_system_component",
+    "IndexSystemComponent": "fetch_our_system_components",
+    "ShowSystemComponent": "fetch_our_system_component_details",
+    "EditSystemComponent": "update_our_system_component",
+    "DeleteSystemComponent": "delete_our_system_component",
+    "DisSystemComponent": "change_our_system_component_active_status",
+    "CreateOrganizatoinEmployee": "create_organization_employee",
+    "CreateOrganizatoinEmployeeExcel": "validate_bulk_employees",
+    "IndexOrganizatoinEmployee": "fetch_organization_employees",
+    "ShowOrganizatoinEmployee": "fetch_organization_employee_details",
+    "EditOrganizatoinEmployee": "update_organization_employee",
+    "DeleteOrganizatoinEmployee": "delete_organization_employee",
+    "DisOrganizatoinEmployee": "disable_project_type",
+    "CreateHerikaly": "create_herikaly",
+    "IndexHerikaly": "fetch_herikalys",
+    "ShowHerikaly": "fetch_herikaly_details",
+    "EditHerikaly": "update_herikaly",
+    "DeleteHerikaly": "delete_herikaly",
+    "CreateProjectZone": "create_zoon",
+    "IndexProjectZone": "fetch_zoons",
+    "ShowProjectZone": "fetch_zoon_details",
+    "EditProjectZone": "update_zoon",
+    "DeleteProjectZone": "delete_zoon",
+    "CreateTemplateItem": "create_template_item",
+    "IndexTemplateItem": "fetch_template_items",
+    "ShowTemplateItem": "fetch_template_item_details",
+    "EditTemplateItem": "update_template_item",
+    "DeleteTemplateItem": "delete_template_item",
+    "FetchProjectLocationEmployee": "fetch_project_location_employees",
+    "FetchProjectLocationsEmployee": "fetch_project_locations_employees",
+    "FetchProjectLocationTeamEmployees": "fetch_project_location_team_employees",
+    "CreateProjectLocationTeamEmployee": "create_project_location_team_employee",
+    "CreateProjectZoonEquipment": "create_project_zoon_equipment",
+    "IndexProjectLocationZones": "fetch_zoons_by_location_ids",
+    "ProjectCustomLocation": "fetch_full_project_locations",
+    "CreateDrill": "create_drill",
+    "FetchDrills": "fetch_drills",
+    "CreateDrillPlanning": "create_drill_plan",
+    "FetchDrillPlans": "fetch_drill_plans",
+    "FetchDrillActions": "fetch_drill_actions",
+    "CreateDrillAction": "create_drill_action",
+    "DeleteDrillAction": "delete_drill_action",
+    "DeleteDrillPlan": "delete_drill_plan",
+    "CreateObservation": "create_observation",
+    "IndexObservation": "fetch_observations",
+    "ShowObservation": "fetch_observation_details",
+    "EditObservation": "update_observation",
+    "DeleteObservation": "delete_observation",
+    "CreateHazard": "create_observation",
+    "IndexHazard": "fetch_observations",
+    "ShowHazard": "fetch_observation_details",
+    "EditHazard": "update_observation",
+    "DeleteHazard": "delete_observation",
+    "FetchProjectZones": "fetch_project_zoons",
+    "CreateHealthCondition": "create_health_condition",
+    "IndexHealthCondition": "fetch_health_conditions",
+    "ShowHealthCondition": "fetch_health_condition_details",
+    "EditHealthCondition": "update_health_condition",
+    "DeleteHealthCondition": "delete_health_condition",
+    "DisHealthConditions": "disable_health_condition",
+    "CreateTaskAnswer": "create_task_result",
+    "FetchTaskResult": "fetch_task_details",
+    "FetchMyZones": "fetch_my_zoons",
+    "FetchMyProjects": "fetch_my_projects",
+    "CreateInvestigatingResult": "create_full_investigation_meeting_result",
+    "IndexInvestigatingResult": "fetch_investigations",
+    "ShowInvestigatingResult": "fetch_investigation_details",
+    "CreateInvestigating": "create_full_investigation",
+    "IndexInvestigating": "fetch_investigations",
+    "ShowInvestigating": "fetch_investigation_details",
+    "CreateRole": "create_role",
+    "IndexRole": "fetch_roles",
+    "ShowRole": "fetch_role_details",
+    "EditRole": "update_role",
+    "DeleteRole": "delete_role",
+    "IndexMyInternalAudit": "fetch_my_internal_audite",
+    "FetchMyInternalAuditNcrs": "fetch_my_ncrs",
+    "CreateInternalAuditPlan": "create_internal_audit",
+    "IndexInternalAuditPlan": "fetch_internal_audits",
+    "ShowInternalAuditPlan": "fetch_internal_audit_details",
+    "EditInternalAuditPlan": "update_internal_audit",
+    "DeleteInternalAuditPlan": "delete_internal_audit",
+    "FetchInternalAuditAttendance": "fetch_internal_audit_attendance",
+    "SaveInternalAuditAttendance": "save_internal_audit_attendance",
+    "AddInternalAuditParticipants": "add_internal_audit_Participants",
+    "FetchInternalAuditNcrs": "fetch_ncrs",
+    "FetchInternalAuditNcrDetails": "fetch_ncr_details",
+    "EditInternalAuditNcrs": "update_full_ncrs",
+    "CreateInternalAuditNcrs": "create_full_ncrs",
+    "FetchInternalAuditPlanDetailsForReport": "fetch_internal_audit_plan_details",
+    "FetchInternalAuditReport": "fetch_internal_audit_report_details",
+    "CreateInternalAuditReport": "create_internal_audit_report",
+    "CreateAttachmentMatrix": "create_attachment_matrix",
+    "FetchAttachmentMatrix": "fetch_attachment_matrix",
+    "CreateInvestegation": "create_full_investigation",
+    "CreateInjury": "create_injury_type",
+    "CreateInjuryClones": "clone_injury_types",
+    "IndexInjury": "fetch_injury_types",
+    "ShowInjury": "fetch_injury_type_details",
+    "EditInjury": "update_injury_type",
+    "DeleteInjury": "delete_injury_type",
+    "DeleteProjectLocationHeirarchyEmployee": "delete_project_location_hierarchy_employee",
+    "DeleteProjectLocationTeamEmployee": "delete_project_location_team_employee",
+    "CreateScope": "create_scope",
+    "IndexScope": "fetch_scopes",
+    "ShowScope": "fetch_scope_details",
+    "EditScope": "update_scope",
+    "DeleteScope": "delete_scope",
+    "CreateWhereHouseType": "create_warehouse_type",
+    "IndexWhereHouseType": "fetch_warehouse_types",
+    "ShowWhereHouseType": "fetch_warehouse_type_details",
+    "EditWhereHouseType": "update_warehouse_type",
+    "DeleteWhereHouseType": "delete_warehouse_type",
+    "CreateDrillType": "create_drill_type",
+    "IndexDrillType": "fetch_drill_types",
+    "ShowDrillType": "fetch_drill_type_details",
+    "EditDrillType": "update_drill_type",
+    "DeleteDrillType": "delete_drill_type",
+    "CreatePpeItem": "create_ppe_item",
+    "IndexPpeItem": "fetch_ppe_items",
+    "ShowPpeItem": "fetch_ppe_item_details",
+    "EditPpeItem": "update_ppe_item",
+    "DeletePpeItem": "delete_ppe_item",
+    "CreateVisitTheme": "create_leadership_theme",
+    "IndexVisitTheme": "fetch_leadership_themes",
+    "ShowVisitTheme": "fetch_leadership_theme_details",
+    "EditVisitTheme": "update_leadership_theme",
+    "DeleteVisitTheme": "delete_leadership_theme",
+    "CreateVisitCategory": "create_leadership_category",
+    "IndexVisitCategory": "fetch_leadership_categories",
+    "ShowVisitCategory": "fetch_leadership_category_details",
+    "EditVisitCategory": "update_leadership_category",
+    "DeleteVisitCategory": "delete_leadership_category",
+    "CreateMangementChangeTopicType": "create_changement_topic",
+    "CreateMangementChange": "create_management_of_change",
+    "IndexMangementChange": "fetch_management_of_changes",
+    "ShowMangementChange": "fetch_management_of_change_details",
+    "EditMangementChange": "update_management_of_change",
+    "DeleteMangementChange": "delete_management_of_change",
+    "IndexMangementChangeTopicType": "fetch_changement_topics",
+    "ShowMangementChangeTopicType": "fetch_changement_topic_details",
+    "EditMangementChangeTopicType": "update_changement_topic",
+    "DeleteMangementChangeTopicType": "delete_changement_topic",
+    "CreateWhereHouse": "create_warehouse",
+    "IndexWhereHouse": "fetch_warehouses",
+    "ShowWhereHouse": "fetch_warehouse_details",
+    "EditWhereHouse": "update_warehouse",
+    "DeleteWhereHouse": "delete_warehouse",
+    "AddMeetings": "create_investigation_meeting",
+    "IndexMeeting": "fetch_investigation_meetings",
+    "AddTasks": "create_investigation_tasks",
+    "UpdateTasks": "update_investigation_task",
+    "IndexTasks": "fetch_investigation_tasks",
+    "FetchCorrectiveTasks": "fetch_corrective_action_plan",
+    "FetchPreventiveTasks": "fetch_preventive_action_plan",
+    "FetchLessonsLearnt": "fetch_investigations_lesson_learnt",
+    "FetchProjectStatistics": "fetch_project_statistics",
+    "FetchTaskResultDetails": "fetch_task_inspection_details",
+    "FetchInspectionsResults": "fetch_inspections_results",
+    "CreateEmployeeCertificate": "create_employee_certificate",
+    "DeleteEmployeeCertificate": "delete_employee_certificate",
+    "CreateInvestigationTaskResult": "create_investigation_task_result",
+    "createCodingSystem": "create_coding_system",
+    "fetchCodingSystem": "fetch_coding_systems",
+    "IndexEmployeeCertificate": "fetch_organization_employees_certificates",
+    "CreateProjectZoon": "create_project_zone",
+    "IndexRootCauses": "fetch_root_causes",
+    "ShowRootCauses": "fetch_root_cause_details",
+    "EditRootCauses": "update_root_cause",
+    "DeleteRootCauses": "delete_root_cause",
+    "CreateRootCauses": "create_root_cause",
+    "AddSystemRootCauses": "clone_root_causes",
+    "CreateCapaResult": "set_capa_result",
+    "OrganizationEmployeeDefaultProject": "update_organization_employee_default_project",
+    "CreateSubscriptionType": "create_subscription_type",
+    "IndexSubscriptionType": "fetch_subscription_types",
+    "ShowSubscriptionType": "fetch_subscription_type_details",
+    "EditSubscriptionType": "update_subscription_type",
+    "DeleteSubscriptionType": "delete_subscription_type",
+    "CreateSubscription": "create_subscription",
+    "IndexSubscription": "fetch_subscriptions",
+    "ShowSubscription": "fetch_subscription_details",
+    "EditSubscription": "update_subscription",
+    "DeleteSubscription": "delete_subscription",
+    "IndexSubscriptionApplication": "fetch_subscription_applications",
+    "ApproveSubscriptionApplication": "approve_subscription_application",
+    "RejectSubscriptionApplication": "reject_subscription_application",
+    "IndexTicketType": "fetch_ticket_types",
+    "CreateTicketType": "create_ticket_type",
+    "ShowTicketType": "fetch_ticket_type_details",
+    "EditTicketType": "update_ticket_type",
+    "DeleteTicketType": "delete_ticket_type",
+    "IndexTicket": "fetch_tickets",
+    "CreateTicket": "create_ticket",
+    "ShowTicket": "fetch_ticket_details",
+    "EditTicket": "update_ticket",
+    "DeleteTicket": "delete_ticket",
+    "IndexProjectProgress": "fetch_organization_app_status_details",
+    "ReplaceTicket": "create_ticket_reply",
+    "CloseTicket": "change_ticket_status",
+    "ToggleObservationActionStatus": "toggle_observation_action_status",
+    "ToggleObservationWorkStopped": "toggle_observation_work_status",
+    "FetchProjectStaticsNumbers": "fetch_project_statics_numbers",
+    "FetchHomeInspection": "fetch_home_inspection_and_observations_statices",
+    "OverviewHazardChart": "fetch_home_observation_types_with_zones_statices",
+    "OverviewInvestigationsChart": "fetch_home_observations_investigations_statices",
+    "FetchEqipmentStatics": "fetch_home_equipments_statices",
+    "IndexCapa": "fetch_capas",
+    "ShowCapaDetails": "fetch_capa_details",
+    "UpdateCapa": "update_capa",
+    "SetInvestigationTaskVerification": "set_investigation_task_verification",
+    "FetchInvestigationTaskVerification": "fetch_investigation_task_verifications",
+    "DeleteCapa": "delete_capa",
+    "AddOrganizationEmployeeToHierarchy": "sync_herikaly_employees",
+    "FetchEmployeeTasks": "fetch_owned_actual_tasks",
+    "changeTaskStatus": "change_meeting_task_status",
+    "fetchTaskhistory": "fetch_task_history",
+    "FetchHierarchyCertificates": "fetch_hierarchies_certificates",
+    "AddWarehouseClones": "clone_warehouse_types",
+    "CloneDrillTypes": "clone_drill_types",
+    "ClonePpeItems": "clone_ppe_items",
+    "CreateSystemHazardType": "clone_hazard_types",
+    "CreateSystemAccidentsType": "clone_accidents_types",
+    "CreateSystemIncidentCategory": "clone_incident_categories",
+    "CreateSystemObserverationType": "clone_observation_types",
+    "IndexCheckList": "fetch_checklists",
+    "AddCheckList": "create_checklist",
+    "ShowCheckList": "fetch_checklist_details",
+    "EditCheckList": "update_checklist",
+    "DeleteCheckList": "delete_checklist",
+    "CloseInvestigating": "close_investigation",
+    "addCertificateToHierarchy": "create_certificate_hierarchy",
+    "deleteCertificateToHierarchy": "delete_hierarchy_certificate",
+    "CreateDocumentRefrence": "create_document_reference",
+    "IndexDocumentRefrence": "fetch_document_references",
+    "ShowDocumentRefrence": "fetch_document_reference_details",
+    "EditDocumentRefrence": "update_document_reference",
+    "DeleteDocumentRefrence": "delete_document_reference",
+    "CreateShift": "create_work_shift",
+    "IndexShift": "fetch_work_shifts",
+    "ShowShift": "fetch_work_shift_details",
+    "EditShift": "update_work_shift",
+    "DeleteShift": "delete_work_shift",
+    "FetchSimilarObservation": "fetch_similar_observations",
+    "CreateNotificationPlan": "create_notification_plan",
+    "IndexNotificationPlan": "fetch_notification_plans",
+    "ShowNotificationPlan": "fetch_notification_plan_details",
+    "EditNotificationPlan": "update_notification_plan",
+    "ActiveNotificationPlan": "change_notification_active_status",
+    "DeleteNotificationPlan": "delete_notification_plan",
+    "RefreshNotification": "register_notification_socket_user",
+    "CloneAllData": "clone_all_data",
+    "ShowMeetingType": "fetch_meeting_type_details",
+    "CreateMeetingType": "create_meeting_type",
+    "DeleteMeetingType": "delete_meeting_type",
+    "EditMeetingType": "update_meeting_type",
+    "IndexMeetingType": "fetch_meeting_types",
+    "CloneMeetingTypes": "clone_meeting_types",
+    "CreateProjectMeeting": "create_project_meeting",
+    "CreateProjectMeetingResult": "create_project_meeting_result",
+    "FetchProjectMeetings": "fetch_meetings",
+    "FetchAllLeadershipVisits": "fetch_visits",
+    "FetchLeadershipVisitDetails": "fetch_visit_report",
+    "CreatePPEActivityTool": "change_ppe_active_tool_matrix",
+    "FetchPPEActivityTools": "fetch_ppe_active_tool_matrix",
+    "CreatePPEMatrixDelivery": "create_ppe_matrix_delivery",
+    "FetchPPEMatrixDeliveries": "fetch_ppe_matrix_delivery",
+    "CreateLeadershipVisitReport": "create_visit_report",
+    "ShowPTWType": "fetch_permit_type_details",
+    "CreatePTWType": "create_permit_type",
+    "DeletePTWType": "delete_permit_type",
+    "EditPTWType": "update_permit_type",
+    "IndexPTWType": "fetch_permit_types",
+    "ClonePTWTypes": "clone_permit_types",
+    "CreatePermitToWork": "create_permit_to_work",
+    "CreatePermitToWorkResult": "create_permit_to_work_result",
+    "FetchMeetingDetails": "fetch_meeting_details",
+    "FetchPermits": "fetch_asigned_permit_to_works",
+    "FetchMyPermits": "fetch_my_permit_to_works",
+    "FetchPermitsAudits": "fetch_permit_to_work_results",
+    "FetchStaticsMyPermits": "fetch_project_permit_statistics",
+    "create_ppe_activity": "create_ppe_activity",
+    "clone_ppe_activity": "clone_ppe_activities",
+    "delete_ppe_activity": "delete_ppe_activity",
+    "update_ppe_activity": "update_ppe_activity",
+    "fetch_ppe_activities": "fetch_ppe_activities",
+    "fetch_ppe_activity_details": "fetch_ppe_activity_details",
+    "CreateVisitActivity": "create_visit_activity",
+    "IndexVisitActivity": "fetch_visit_activities",
+    "ShowVisitActivity": "fetch_visit_activity_details",
+    "EditVisitActivity": "update_visit_activity",
+    "DeleteVisitActivity": "delete_visit_activity",
+    "fetch_ppe_tools": "fetch_ppe_tools",
+    "fetch_ppe_toll_deails": "fetch_ppe_tool_details",
+    "create_ppe_toll": "create_ppe_tool",
+    "update_ppe_tool": "update_ppe_tool",
+    "delete_ppe_tool": "delete_ppe_tool",
+    "clone_ppe_tool": "clone_ppe_tools",
+    "fetch_document_categories": "fetch_document_categories",
+    "fetch_document_category_details": "fetch_document_category_details",
+    "create_document_category": "create_document_category",
+    "update_document_category": "update_document_category",
+    "delete_document_category": "delete_document_category",
+    "clone_document_category": "clone_document_categories",
+    "fetch_audit_standards": "fetch_internal_audit_standards",
+    "fetch_audit_standard_details": "fetch_internal_audit_standard_details",
+    "create_audit_standard": "create_internal_audit_standard",
+    "update_audit_standard": "update_internal_audit_standard",
+    "delete_audit_standard": "delete_internal_audit_standard",
+    "clone_audit_standard": "clone_internal_audit_standards",
+    "fetch_audit_activities": "fetch_internal_audit_activities",
+    "fetch_audit_activity_details": "fetch_internal_audit_activity_details",
+    "create_audit_activity": "create_internal_audit_activity",
+    "update_audit_activity": "update_internal_audit_activity",
+    "delete_audit_activity": "delete_internal_audit_activity",
+    "clone_audit_activity": "clone_internal_audit_activities",
+    "CreateRiskAssessment": "create_risk_assessment",
+    "FetchRiskAssessments": "fetch_risk_assessments",
+    "FetchRiskAssessmentDetails": "fetch_risk_assessment_details",
+    "create_induction": "create_induction",
+    "fetch_inductions": "fetch_induction",
+    "fetch_induction_details": "fetch_induction_detail",
+    "update_induction": "update_induction",
+    "delete_induction": "delete_induction",
+    "fetch_tranning_topic": "fetch_training_topics",
+    "fetch_traning_topic_details": "fetch_training_topic_details",
+    "create_traning_topic": "create_training_topic",
+    "update_traning_topic": "update_training_topic",
+    "delete_traning_topic": "delete_training_topic",
+    "clone_traning_topic": "clone_traning_topic",
+    "CreateLeadershipPlan": "create_leadership_engagement"
+  }
+}

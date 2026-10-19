@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { vProjectPanels } from '../composables/projectPanels'
 
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
@@ -44,6 +47,8 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['create_project'])">
+
   <form
     data-hse-project
     v-project-panels
@@ -80,6 +85,8 @@ const setParams = (data: Params) => {
       </button>
     </div>
   </form>
+
+  </template>
 </template>
 
 <style scoped>

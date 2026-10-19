@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
-import PermissionBuilder from '@/components/DataStatus/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter, type RouteLocationRaw } from 'vue-router'
+import { canOrganizationRoute } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { useI18n } from 'vue-i18n'
-import { useUserStore } from '@/stores/user'
-import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 import SidebarUnicon from '@/shared/icons/SidebarUnicon.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 // import { EquipmentTypeEnum } from '@/features/Home/core/enums/SettingEnum/EquipmentTypeEnum'
@@ -13,6 +11,21 @@ import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 const props = defineProps<{ open: boolean }>()
 
 const route = useRoute()
+const router = useRouter()
+const canNavigate = (link: Routes['link']) => {
+  try {
+    return canOrganizationRoute(router.resolve(link as RouteLocationRaw))
+  } catch {
+    return false
+  }
+}
+const accessibleRoutes = (routes: Routes[]): Routes[] =>
+  routes.flatMap((item) => {
+    const children = item.children ? accessibleRoutes(item.children) : []
+    const allowed = canNavigate(item.link)
+    if (!allowed && !children.length) return []
+    return [{ ...item, link: allowed ? item.link : children[0]!.link, children }]
+  })
 interface Routes {
   link: string | object
   name: string
@@ -841,7 +854,6 @@ const ReportsRoutes = ref<Routes[]>([
     permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_EMPLOYEE],
   },
 ])
-const { user } = useUserStore()
 const projectAppStatusStore = useProjectAppStatusStore()
 
 const shouldShowOverviewGroup = computed(() => {
@@ -933,7 +945,10 @@ const routeGroups = computed<RouteGroup[]>(() => {
     },
   ]
 
-  return groups.filter((group) => group.key !== 'overview' || shouldShowOverviewGroup.value)
+  return groups
+    .filter((group) => group.key !== 'overview' || shouldShowOverviewGroup.value)
+    .map((group) => ({ ...group, routes: accessibleRoutes(group.routes) }))
+    .filter((group) => group.routes.length > 0)
 })
 
 const activeRouteGroupKey = ref('operations')
@@ -983,10 +998,6 @@ const visibleRouteGroups = computed<RouteGroup[]>(() => {
   const groups = query ? routeGroups.value : activeGroup.value ? [activeGroup.value] : []
 
   return groups
-    .filter(
-      (group) =>
-        !group.adminOnly || user?.isMaster === 1 || user?.employeeType == EmployeeStatusEnum.Admin,
-    )
     .map((group) => {
       const routes = query
         ? group.routes.filter((item) => {
@@ -1092,14 +1103,7 @@ onBeforeUnmount(() => {
   <div class="modern-sidebar hse-identity">
     <nav class="side-rail-nav" :aria-label="$t('main_sidebar_groups')">
       <template v-for="group in routeGroups" :key="group.key">
-        <PermissionBuilder
-          v-if="
-            !group.adminOnly ||
-            user?.isMaster === 1 ||
-            user?.employeeType == EmployeeStatusEnum.Admin
-          "
-          :code="group.permissions"
-        >
+
           <button
             type="button"
             :class="[
@@ -1121,11 +1125,11 @@ onBeforeUnmount(() => {
             <SidebarUnicon :name="group.icon" class="strip-icon" />
             <span>{{ group.label }}</span>
           </button>
-        </PermissionBuilder>
+
       </template>
     </nav>
 
-    <Transition name="side-pane">
+    <Transition name="side-pane" :css="!!activeGroup">
       <aside
         v-if="isPaneVisible && activeGroup"
         id="organization-sidebar-pane"
@@ -1180,14 +1184,13 @@ onBeforeUnmount(() => {
         >
           <div class="side-pane-routes__inner">
             <template v-for="group in visibleRouteGroups" :key="group.key">
-              <PermissionBuilder v-if="isSearching" :code="group.permissions">
+              <template v-if="isSearching">
                 <p class="side-route-group-title">{{ group.label }}</p>
-              </PermissionBuilder>
+              </template>
 
-              <PermissionBuilder
+              <template
                 v-for="sidebarRoute in group.routes"
                 :key="`${group.key}-${String(sidebarRoute.link)}`"
-                :code="sidebarRoute.permissions"
               >
                 <div class="side-route-entry">
                   <router-link
@@ -1207,10 +1210,9 @@ onBeforeUnmount(() => {
                   </router-link>
 
                   <div v-if="sidebarRoute.children?.length" class="side-route-children">
-                    <PermissionBuilder
+                    <template
                       v-for="childRoute in sidebarRoute.children"
                       :key="String(childRoute.link)"
-                      :code="childRoute.permissions"
                     >
                       <router-link
                         :to="childRoute.link"
@@ -1227,10 +1229,10 @@ onBeforeUnmount(() => {
                         <SidebarUnicon :name="childRoute.icon" class="side-icon" />
                         <span class="side-label">{{ $t(childRoute.name) }}</span>
                       </router-link>
-                    </PermissionBuilder>
+                    </template>
                   </div>
                 </div>
-              </PermissionBuilder>
+              </template>
             </template>
 
             <p v-if="!visibleRouteGroups.length" class="side-pane-empty">

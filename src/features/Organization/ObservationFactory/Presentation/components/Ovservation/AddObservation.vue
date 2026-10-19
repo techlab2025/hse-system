@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationApi } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 // import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
@@ -39,6 +41,8 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
+  <template v-if="canOrganizationApi('create_observation')">
+
   <form class="grid grid-cols-1 md:grid-cols-6 gap-4" @submit.prevent="addObservation">
     <!-- <ObservationForm @update:data="setParams" /> -->
     <FullObservationFactoryForm :key="formKey" ref="formRef" @update:data="setParams" />
@@ -50,6 +54,8 @@ const setParams = (data: Params) => {
       <button type="submit" class="btn btn-primary">{{ $t('submit') }}</button>
     </div>
   </form>
+
+  </template>
 </template>
 
 <style scoped></style>

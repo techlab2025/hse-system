@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
+
 import DropList from '@/shared/HelpersComponents/DropList.vue'
 import type OrganizatoinEmployeeDetailsModel from '../../../Data/models/OrganizatoinEmployeeDetailsModel'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
@@ -56,7 +58,11 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
   {
     text: t('print'),
     icon: PrintIcon,
-    action: () => window.print(),
+    capability: 'print' as const,
+    action: () => {
+      if (!canOrganizationCapability('print')) return
+      return window.print()
+    },
     permission: [
       PermissionsEnum.ORG_EMPLOYEE_DELETE,
       PermissionsEnum.ADMIN,
@@ -136,7 +142,11 @@ const deleteOrganizatoinEmployee = async (id: number) => {
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 76%, transparent);
   border-radius: 26px;
   background:
-    radial-gradient(circle at 0 0, color-mix(in srgb, var(--brand-primary-500) 14%, transparent), transparent 32%),
+    radial-gradient(
+      circle at 0 0,
+      color-mix(in srgb, var(--brand-primary-500) 14%, transparent),
+      transparent 32%
+    ),
     linear-gradient(135deg, var(--surface-1), var(--brand-primary-50));
   box-shadow: 0 22px 48px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
 }

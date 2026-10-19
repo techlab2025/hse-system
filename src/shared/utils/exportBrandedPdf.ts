@@ -1,3 +1,4 @@
+import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 import html2canvas from 'html2canvas-pro'
 import jsPDF from 'jspdf'
 
@@ -275,6 +276,7 @@ async function createChrome(options: PdfReportOptions, width: number) {
 
 /** Shared by table exports and composed report exports; live page styles are never changed. */
 export async function exportBrandedPdf(options: PdfReportOptions): Promise<void> {
+  if (!canOrganizationCapability('export')) throw new Error('You do not have permission to export this report.')
   if (!options.target.isConnected)
     throw new Error('The report is no longer available. Please try again.')
   await document.fonts.ready

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { canAny } from '@/features/permission/Presentation/Helpers/organization_permission'
+import { PermissionsEnum as P } from '@/features/users/Admin/Core/Enum/permission_enum'
+
 import { computed, onMounted, reactive, ref } from 'vue'
 import HandleFIlesUpload, {
   type UploadedFile,
@@ -9,6 +12,9 @@ import type AttachmentMatrixGroupModel from '../../Data/models/AttachmentMatrixG
 import type AttachmentMatrixItemModel from '../../Data/models/AttachmentMatrixItemModel'
 import CreateAttachmentMatrixController from '../controllers/CreateAttachmentMatrixController'
 import FetchAttachmentMatrixController from '../controllers/FetchAttachmentMatrixController'
+
+const canReadMatrix = computed(() => canAny([P.ATTACHMENT_MATRIX_ALL, P.ATTACHMENT_MATRIX_FETCH]))
+const canSaveMatrix = computed(() => canAny([P.ATTACHMENT_MATRIX_ALL, P.ATTACHMENT_MATRIX_CREATE]))
 
 type GroupKey = 'H' | 'sos' | 's'
 
@@ -54,6 +60,7 @@ const setGroupAttachments = (key: GroupKey, group: AttachmentMatrixGroupModel) =
 }
 
 const fetchMatrix = async () => {
+  if (!canReadMatrix.value) return
   feedback.value = ''
   hasError.value = false
   await fetchController.fetch(new FetchAttachmentMatrixParams())
@@ -71,6 +78,7 @@ const fetchMatrix = async () => {
 }
 
 const handleFilesChange = (key: GroupKey, files: UploadedFile[]) => {
+  if (!canSaveMatrix.value) return
   attachments[key] = files.map((file) => file.base64 || file.url).filter(Boolean)
   attachmentNames[key] = files.map((file) => file.name)
 }
@@ -83,6 +91,7 @@ const totalAttachments = computed(() =>
 )
 
 const submit = async () => {
+  if (!canSaveMatrix.value || isSaving.value) return
   feedback.value = ''
   hasError.value = false
 
@@ -103,7 +112,7 @@ onMounted(fetchMatrix)
 </script>
 
 <template>
-  <form class="attachment-matrix" @submit.prevent="submit">
+  <form v-if="canReadMatrix || canSaveMatrix" class="attachment-matrix" @submit.prevent="submit">
     <header class="attachment-matrix__header">
       <!-- <span class="hero-orb hero-orb--one" aria-hidden="true"></span> -->
       <!-- <span class="hero-orb hero-orb--two" aria-hidden="true"></span> -->
@@ -135,7 +144,12 @@ onMounted(fetchMatrix)
             <path d="M15 3v5h4M10 12h6M10 16h6" />
           </svg>
         </span>
-        <button class="matrix-save-button" type="submit" :disabled="isLoading || isSaving">
+        <button
+          v-if="canSaveMatrix"
+          class="matrix-save-button"
+          type="submit"
+          :disabled="isLoading || isSaving"
+        >
           <svg v-if="!isSaving" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M5 4h12l2 2v14H5V4Z" />
             <path d="M8 4v6h8V4M8 20v-6h8v6" />
@@ -182,6 +196,7 @@ onMounted(fetchMatrix)
             :class="{ 'attachment-slot--filled': attachmentCount(group.key) }"
           >
             <HandleFIlesUpload
+              :readonly="!canSaveMatrix"
               :label="group.title"
               accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
               :max-files="10"
@@ -192,7 +207,7 @@ onMounted(fetchMatrix)
               class-name="report-file-input"
               @change="(files) => handleFilesChange(group.key, files)"
             />
-            <p class="attachment-slot__hint">
+            <p v-if="canSaveMatrix" class="attachment-slot__hint">
               Select up to 10 files at once. You can remove individual files from the preview list.
             </p>
           </article>
@@ -209,6 +224,7 @@ onMounted(fetchMatrix)
       {{ feedback }}
     </p> -->
   </form>
+  <p v-else role="alert">{{ $t('authorization.denied') }}</p>
 </template>
 
 <style scoped lang="scss">

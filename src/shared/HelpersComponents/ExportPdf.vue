@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
+
 import { usePdfExport } from '@/composables/usePdfExport'
 import PdefActionIcon from '../icons/PdefActionIcon.vue'
 
@@ -31,6 +33,7 @@ const exportPDF = () =>
 
 <template>
   <button
+    v-if="canOrganizationCapability('export')"
     v-bind="$attrs"
     :class="isDropList ? 'export-pdf-btn ms-2' : 'btn btn-secondary'"
     type="button"

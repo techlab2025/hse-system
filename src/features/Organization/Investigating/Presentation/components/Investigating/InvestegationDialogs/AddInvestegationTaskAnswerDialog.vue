@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { computed, ref } from 'vue'
 import Dialog from 'primevue/dialog'
 import ChatForward from '@/assets/images/ChatForward.png'
@@ -43,6 +46,8 @@ const CreateInvestegationTaskResult = async () => {
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['create_investigation_task_result'])">
+
   <button class="answer-trigger" @click="visible = true">Answer</button>
   <Dialog v-model:visible="visible" modal :style="{ width: '40rem', maxWidth: '92vw' }">
     <template #header>
@@ -63,6 +68,8 @@ const CreateInvestegationTaskResult = async () => {
       </button>
     </div>
   </Dialog>
+
+  </template>
 </template>
 
 <style scoped lang="scss">

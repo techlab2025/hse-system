@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, type Component } from 'vue'
 import Popover from 'primevue/popover'
 import DeleteDialog from '@/base/Presentation/Dialogs/MainDialogs/DeleteDialog.vue'
 import ActionsIcon from '../icons/ActionsIcon.vue'
-import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 import type { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import ActionCloseIcon from '../icons/ActionCloseIcon.vue'
+import { useRouter } from 'vue-router'
+import { canPermissionAction, type PermissionAction } from '@/features/permission/Presentation/Helpers/organization_actions'
 
-interface ActionItem {
+interface ActionItem extends PermissionAction {
   text: string
-  icon: any
+  icon: Component
   link?: string
   action?: () => void
   permission?: PermissionsEnum[]
@@ -17,18 +18,22 @@ interface ActionItem {
   isDelete?: boolean
 }
 
-const emit = defineEmits(['delete'])
+defineEmits(['delete'])
 defineOptions({ inheritAttrs: false })
 
 const op = ref()
-const ActionIconsToggle = ref(false)
+const router = useRouter()
+const executeAction = (action: ActionItem) => {
+  if (!canPermissionAction(action, router)) return
+  action.action?.()
+}
 
 const isVisible = computed(() => {
   return op.value?.visible
 })
 
 const toggle = (event: Event) => {
-  op.value.toggle(event)
+  if (permittedActions.value.length) op.value.toggle(event)
 }
 const { actionList = [], showActions = true } = defineProps<{
   actionList: ActionItem[]
@@ -37,16 +42,12 @@ const { actionList = [], showActions = true } = defineProps<{
 
 // ✅ Filter actions by permission
 const permittedActions = computed(() =>
-  showActions
-    ? actionList.filter((a) =>
-        a.permission ? PermissionHandler.Instance.handle(a.permission) : true,
-      )
-    : [],
+  showActions ? actionList.filter((action) => canPermissionAction(action, router)) : [],
 )
 </script>
 
 <template>
-  <div class="list-trigger" @click.stop="toggle">
+  <div v-if="permittedActions.length" class="list-trigger" @click.stop="toggle">
     <ActionsIcon v-show="!isVisible" />
     <ActionCloseIcon v-show="isVisible" />
   </div>
@@ -67,7 +68,7 @@ const permittedActions = computed(() =>
 
           <button
             v-else-if="action.action && !action.isDelete && action.text != $t('delete')"
-            @click="action.action"
+            @click="executeAction(action)"
             class="flex items-center gap-sm"
           >
             <component :is="action.icon" />
@@ -77,7 +78,8 @@ const permittedActions = computed(() =>
 
           <DeleteDialog
             v-else-if="action.isDelete || action.text == $t('delete')"
-            @delete="action.action"
+            :allowed="() => canPermissionAction(action, router)"
+            @delete="executeAction(action)"
           />
         </li>
         <slot name="custom"></slot>

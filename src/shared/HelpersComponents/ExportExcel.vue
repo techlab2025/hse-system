@@ -1,11 +1,13 @@
 <!-- ExportExcel.vue -->
 <template>
-  <button class="btn btn-secondary ms-2" type="button" @click="handleExport">
+  <button v-if="canOrganizationCapability('export')" class="btn btn-secondary ms-2" type="button" @click="handleExport">
     Export Excel <SaveIcon />
   </button>
 </template>
 
 <script lang="ts" setup>
+import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
+
 import { ref, computed, watch, nextTick } from 'vue'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
@@ -156,6 +158,7 @@ const hideToast = () => {
 }
 
 const handleExport = async () => {
+  if (!canOrganizationCapability('export')) return
   try {
     loading.value = true
     emit('export-start')

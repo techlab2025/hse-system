@@ -1,12 +1,18 @@
 import type { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { useUserStore } from '@/stores/user'
+import {
+  can,
+  canAny,
+  isPermissionMaster,
+  permissionsReady,
+} from '@/features/permission/Presentation/Helpers/organization_permission'
+import { PermissionsEnum as Permission } from '@/features/users/Admin/Core/Enum/permission_enum'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 // import { useUserStore } from "@/stores/user";
 // import { PermissionsEnum } from "@/features/users/employee/Core/Enum/permission_enum";
 
 export default class PermissionHandler {
   private static _instance: PermissionHandler
-
-  private userStore = useUserStore()
 
   static get Instance(): PermissionHandler {
     if (!this._instance) {
@@ -15,36 +21,24 @@ export default class PermissionHandler {
     return this._instance
   }
 
-  handle(code: PermissionsEnum[]): boolean {
-    const handlePermission = true
-    const user = this.userStore.user!
-    // console.log(code);
-
-    if (handlePermission && user) {
-      if (user.isMaster === 1) {
-        return true
-      } else {
-        // Check if ANY permission in the code array exists in user's permissions
-        return code.some((permission) => user.permission?.includes(permission))
-        // return true
-      }
-    } else {
-      return true
-    }
+  handle(code: readonly PermissionsEnum[]): boolean {
+    if (!Array.isArray(code)) return false
+    if (isPermissionMaster()) return canAny(code)
+    // Legacy role markers are grouping metadata, never substitutes for an Organization operation.
+    const roles = new Set([
+      Permission.ADMIN,
+      Permission.ORGANIZATION_EMPLOYEE,
+      Permission.WEBSITE,
+      Permission.SETTING,
+    ])
+    const requested =
+      useUserStore().user?.type === OrganizationTypeEnum.ORGANIZATION
+        ? code.filter((permission) => !roles.has(permission))
+        : code
+    return canAny(requested)
   }
 
   except(code: PermissionsEnum): boolean {
-    const handlePermission = true
-    const user = this.userStore.user!
-    // return false;
-    if (handlePermission && user) {
-      if (user.isMaster === 1) {
-        return true
-      } else {
-        return !user.permission?.includes(code)
-      }
-    } else {
-      return true
-    }
+    return permissionsReady() && !can(code)
   }
 }

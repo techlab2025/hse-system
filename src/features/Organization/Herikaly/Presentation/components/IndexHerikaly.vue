@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
+
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
@@ -171,6 +173,8 @@ const onFileSelected = (e: Event) => {
 }
 
 const exportExcel = () => {
+  if (!canOrganizationCapability('export')) return
+
   if (!state.value.data || state.value.data.length === 0) {
     alert('No data available to export')
     return
@@ -190,6 +194,8 @@ const exportExcel = () => {
 }
 
 const DownloadExample = () => {
+  if (!canOrganizationCapability('export')) return
+
   const worksheetData = [{ title: 'Example Position' }, { title: 'Example Position 2' }]
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
@@ -203,6 +209,7 @@ const IndexHerikalyactionList = () => [
   {
     text: t('download_excel_template'),
     icon: ExceIcon,
+    capability: 'export' as const,
     action: () => DownloadExample(),
     type: ActionItemsTypeEnum.Success,
     permission: [PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.HERIKALY_CREATE],
@@ -254,7 +261,7 @@ const IndexHerikalyactionList = () => [
                 <AddMatrix /> {{ $t('competency_matrix') }}</router-link
               >
 
-              <button type="button" class="btn btn-secondary" @click="exportExcel">
+              <button v-if="canOrganizationCapability('export')" type="button" class="btn btn-secondary" @click="exportExcel">
                 Export Excel
               </button>
               <ActionsList

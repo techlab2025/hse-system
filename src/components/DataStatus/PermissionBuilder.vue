@@ -1,18 +1,13 @@
-<script lang="ts" setup>
-import PermissionHandler from '@/base/Presentation/utils/permission_handler';
-import type { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum';
+<script setup lang="ts">
+import SharedPermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
+import type { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
-// import PermissionHandler from "@/base/Presentation/utils/permission_handler";
-// import { PermissionsEnum } from "@/features/users/employee/Core/Enum/permission_enum";
-
-const { code } = defineProps<{
-  code: PermissionsEnum[];
-}>();
+defineProps<{ code: readonly PermissionsEnum[]; mode?: 'any' | 'all' }>()
 </script>
 
 <template>
-  <slot v-if="PermissionHandler.Instance.handle(code)" />
-  <slot v-else name="notPermitted" />
+  <SharedPermissionBuilder :code="code" :mode="mode">
+    <slot />
+    <template #notPermitted><slot name="notPermitted" /></template>
+  </SharedPermissionBuilder>
 </template>
-
-<style scoped></style>

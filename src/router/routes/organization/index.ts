@@ -43,6 +43,12 @@ import { internalAuditRoutes } from './internalAudit'
 
 export const organizationRoutes: RouteRecordRaw[] = [
   {
+    path: 'access-denied',
+    name: 'Access Denied Organization',
+    component: () => import('@/views/Organization/AccessDenied.vue'),
+    meta: { breadcrumb: 'authorization.denied', isSidebar: false },
+  },
+  {
     path: '',
     name: 'Organization',
     component: () => import('@/views/AppHome.vue'),

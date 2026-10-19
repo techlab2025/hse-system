@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type Params from '@/base/core/params/params'
@@ -55,6 +58,8 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['create_management_of_change'])">
+
   <form
     class="management-change-form"
     @submit.prevent="addMangementChange"
@@ -78,6 +83,8 @@ const setParams = (data: Params) => {
       </button>
     </div>
   </form>
+
+  </template>
 </template>
 
 <style scoped></style>

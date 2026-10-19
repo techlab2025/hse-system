@@ -1,6 +1,9 @@
 import type Params from '@/base/core/params/params'
 import axios from 'axios'
 import type { AxiosResponse } from 'axios'
+import { assertOrganizationApi } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { PermissionDeniedError } from '@/features/permission/Presentation/Helpers/organization_permission'
+import { useUserStore } from '@/stores/user'
 import NetworkService from '@/base/core/networkStructure/networking/network_service'
 import type ServiceCallParams from '@/base/core/params/call_params_interface'
 import ShowLoader from '@/base/Presentation/Dialogs/LoaderDialogs/loader'
@@ -43,6 +46,15 @@ export default abstract class ServicesInterface {
     details,
   }: ServiceCallParams): Promise<{ data: any; statusCode: number }> {
     let response: AxiosResponse | undefined
+    const payload = params?.toMap() ?? {}
+    if (auth) {
+      try {
+        assertOrganizationApi(url, payload)
+      } catch (error) {
+        if (error instanceof PermissionDeniedError) throw new ForbiddenException(error.message)
+        throw error
+      }
+    }
     if (showLoadingDialog) {
       // console.log(ShowLoader.getInstance().dialogElement)
       ShowLoader.instance.showLoader()
@@ -55,7 +67,7 @@ export default abstract class ServicesInterface {
         case CrudType.POST:
           response = await this.networkService.post({
             url: url,
-            data: params?.toMap() ?? {},
+            data: payload,
             headers: headers,
             queryParams: details ?? {},
             isAuth: auth,
@@ -72,7 +84,7 @@ export default abstract class ServicesInterface {
         case CrudType.FormData:
           response = await this.networkService.postFormData({
             url: url,
-            data: params?.toMap() ?? {},
+            data: payload,
             headers: headers,
             queryParams: details ?? {},
             isAuth: auth,
@@ -89,7 +101,7 @@ export default abstract class ServicesInterface {
         case CrudType.PUT:
           response = await this.networkService.put({
             url: url,
-            data: params?.toMap() ?? {},
+            data: payload,
             headers: headers,
             queryParams: details,
             isAuth: auth,
@@ -98,7 +110,7 @@ export default abstract class ServicesInterface {
         case CrudType.PATCH:
           response = await this.networkService.patch({
             url: url,
-            data: params?.toMap() ?? {},
+            data: payload,
             headers: headers,
             queryParams: details,
             isAuth: auth,
@@ -115,6 +127,7 @@ export default abstract class ServicesInterface {
             console.error(`BadRequestException >> ${statusCode}`)
             throw new BadRequestException(error.response?.data.message)
           case 403:
+            useUserStore().invalidatePermissions()
             console.error(`ForbiddenException >> ${statusCode}`)
             throw new ForbiddenException(error.response?.data.message ?? 'Forbidden')
           case 404:
@@ -138,7 +151,7 @@ export default abstract class ServicesInterface {
           case 409:
             console.error(`ConflictException >> ${statusCode}`)
             throw new ConflictException(error.response?.data.message ?? 'Conflict')
-            case 429:
+          case 429:
             console.error(`ConflictException >> ${statusCode}`)
             throw new ConflictException(error.response?.data.message ?? 'Conflict')
           case 422: {

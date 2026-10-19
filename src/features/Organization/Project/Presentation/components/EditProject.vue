@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { vProjectPanels } from '../composables/projectPanels'
 
 import { ref, watch } from 'vue'
@@ -54,6 +57,8 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['update_project'])">
+
   <div data-hse-project v-project-panels class="hse-project-root hse-project-state-host">
     <DataStatus :controller="state">
       <template #success>
@@ -79,6 +84,8 @@ const setParams = (data: Params) => {
       </template>
     </DataStatus>
   </div>
+
+  </template>
 </template>
 
 <style scoped></style>

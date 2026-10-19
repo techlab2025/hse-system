@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import { onMounted, ref } from 'vue'
@@ -94,6 +97,8 @@ onMounted(() => {
 })
 </script>
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['create_project_location_hierarchy_employee'])">
+
   <button
     data-hse-project
     v-project-panels
@@ -161,6 +166,8 @@ onMounted(() => {
       {{ $t('Confirm') }} <span aria-hidden="true">→</span>
     </button>
   </Dialog>
+
+  </template>
 </template>
 
 <style scoped lang="scss">

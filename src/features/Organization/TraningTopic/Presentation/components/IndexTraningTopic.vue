@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
+
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import { useI18n } from 'vue-i18n'
@@ -121,6 +123,8 @@ const rowActions = (id: number) => [
 ]
 
 const exportExcel = () => {
+  if (!canOrganizationCapability('export')) return
+
   const data = state.value.data ?? []
   if (!data.length) return
 
@@ -136,6 +140,8 @@ const exportExcel = () => {
 }
 
 const downloadTemplate = () => {
+  if (!canOrganizationCapability('export')) return
+
   const worksheetData = [
     { title: 'Example Traning Topic' },
     { title: 'Example Traning Topic 2' },

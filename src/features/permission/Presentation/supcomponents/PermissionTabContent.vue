@@ -1,178 +1,276 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
-import { type PermissionItem } from '@/constant/adminPremission'
-import type PermissionDetailsModel from '../../Data/models/PermissionDetailsModel'
+import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { getOrganizationPermissionLabel } from '../Helpers/organization_permission'
+import type { PermissionItem } from '@/constant/adminPremission'
+import {
+  getOrganizationPermissionLabel,
+  can,
+  isKnownPermission,
+} from '../Helpers/organization_permission'
+import type { AssignedPermission } from '../../Data/models/PermissionDetailsModel'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
-const emit = defineEmits<{
-  (e: 'update:permissions', value: string[]): void
+const props = defineProps<{
+  permissions: readonly AssignedPermission[]
+  availablePermissions?: readonly string[]
 }>()
-
+const emit = defineEmits<{ 'update:permissions': [permissions: string[]] }>()
 const route = useRoute()
-
-const baseSegment = `${route.path.split('/')[1]}`
-
-const type = getOrganizationPermissionLabel(baseSegment)
-
-const permissionRoots = ref<PermissionItem>(type)
-
-const { permissions } = defineProps<{
-  permissions: PermissionDetailsModel[]
-}>()
-
-const getGroupAllPermission = (group: any) =>
-  group.permissions?.find(
-    (permission: any) => permission.code === group.code || permission.label === 'All',
+const roots = getOrganizationPermissionLabel(route.path.split('/')[1] ?? '')
+const query = ref('')
+const selected = ref<string[]>([])
+const permissionNames = Object.entries(PermissionsEnum)
+const knownLabels = new Map(permissionNames.map(([name, code]) => [code as string, name]))
+const leaves = (item: PermissionItem): PermissionItem[] =>
+  item.permissions?.flatMap(leaves) ?? [item]
+const selectedSet = computed(() => new Set(selected.value))
+const groups = computed(() => {
+  const seen = new Set<string>()
+  const modules = (roots.permissions ?? []).map((module) => ({
+    ...module,
+    permissions: (module.permissions ?? [])
+      .map((group) => ({
+        ...group,
+        permissions: (group.permissions ?? []).filter((item) => {
+          if (!isKnownPermission(item.code) || seen.has(item.code)) return false
+          seen.add(item.code)
+          return (
+            !props.availablePermissions?.length ||
+            props.availablePermissions.includes(item.code) ||
+            selectedSet.value.has(item.code)
+          )
+        }),
+      }))
+      .filter((group) => group.permissions.length),
+  }))
+  const additional = (props.availablePermissions ?? []).filter(
+    (code) => isKnownPermission(code) && !seen.has(code),
   )
-
-// ✅ Mark permissions as checked based on backend data
-const applyCheckedPermissions = () => {
-  if (!permissions || !Array.isArray(permissions)) return
-
-  const permissionCodes = permissions.map((p) => p.permission)
-
-  permissionRoots.value.permissions.forEach((module: any) => {
-    module.permissions.forEach((group: any) => {
-      const allPermission = getGroupAllPermission(group)
-      const hasAllPermission = allPermission && permissionCodes.includes(allPermission.code)
-
-      group.permissions?.forEach((perm: any) => {
-        perm.checked = hasAllPermission || permissionCodes.includes(perm.code)
-      })
-
-      if (allPermission && !hasAllPermission) {
-        allPermission.checked = group.permissions
-          .filter((permission: any) => permission !== allPermission)
-          .every((permission: any) => permission.checked)
-      }
+  if (additional.length)
+    modules.push({
+      key: PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      code: PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      label: 'Additional backend permissions',
+      permissions: [
+        {
+          key: PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          code: PermissionsEnum.ORGANIZATION_EMPLOYEE,
+          label: 'Backend catalogue',
+          permissions: additional
+            .filter(isKnownPermission)
+            .map((code) => ({
+              key: code,
+              code,
+              label: knownLabels.get(code)?.replace(/_/g, ' ') ?? code,
+            })),
+        },
+      ],
     })
-  })
-
-  emit('update:permissions', getSelectedPermissions())
-}
+  return modules
+})
+const visibleGroups = computed(() => {
+  const term = query.value.trim().toLocaleLowerCase()
+  return groups.value
+    .map((module) => ({
+      ...module,
+      permissions: module.permissions.filter(
+        (group) =>
+          !term ||
+          `${module.label} ${group.label} ${group.permissions.map((item) => `${item.label} ${item.code}`).join(' ')}`
+            .toLocaleLowerCase()
+            .includes(term),
+      ),
+    }))
+    .filter((module) => module.permissions.length)
+})
+const represented = computed(
+  () => new Set(groups.value.flatMap(leaves).map((permission) => permission.code as string)),
+)
+const preserved = computed(() => selected.value.filter((code) => !represented.value.has(code)))
+const writable = (permission: PermissionItem) => can(permission.code)
+const groupSelected = (group: PermissionItem) =>
+  leaves(group).every((permission) => selectedSet.value.has(permission.code))
+const groupMixed = (group: PermissionItem) =>
+  !groupSelected(group) &&
+  leaves(group).some((permission) => selectedSet.value.has(permission.code))
+const publish = () => emit('update:permissions', [...new Set(selected.value)])
 
 watch(
-  () => permissions,
-  () => applyCheckedPermissions(),
-  { deep: true },
+  () => props.permissions,
+  (assignments) => {
+    selected.value = [
+      ...new Set(
+        assignments.map((item) => item.permission).filter((code) => typeof code === 'string'),
+      ),
+    ]
+    publish()
+  },
+  { immediate: true, deep: true },
 )
 
-// ✅ Return all selected codes
-const getSelectedPermissions = (): string[] => {
-  const selected: string[] = []
-  permissionRoots.value.permissions.forEach((module: any) => {
-    module.permissions.forEach((group: any) => {
-      group.permissions?.forEach((perm: any) => {
-        if (perm.checked) selected.push(perm.code)
-      })
-    })
-  })
-  return selected
-}
-
-// ✅ Helpers to detect “select all” states
-const isGroupFullyChecked = (group: any) => group.permissions?.every((perm: any) => perm.checked)
-
-const isModuleFullyChecked = (module: any) =>
-  module.permissions?.every((group: any) => group.permissions?.every((perm: any) => perm.checked))
-
-// ✅ Event handlers
-const toggleGroupSelectAll = (group: any, event: Event) => {
-  // When clicking the label, determine the new state based on current state
-  const isChecked =
-    event.target instanceof HTMLInputElement ? event.target.checked : !isGroupFullyChecked(group)
-  group.permissions.forEach((perm: any) => {
-    perm.checked = isChecked
-  })
-  emit('update:permissions', getSelectedPermissions())
-}
-
-const toggleModuleSelectAll = (module: any, event: Event) => {
-  // When clicking the label, determine the new state based on current state
-  const isChecked =
-    event.target instanceof HTMLInputElement ? event.target.checked : !isModuleFullyChecked(module)
-  module.permissions.forEach((group: any) => {
-    group.permissions?.forEach((perm: any) => (perm.checked = isChecked))
-  })
-  emit('update:permissions', getSelectedPermissions())
-}
-
-const togglePermission = (group: any, perm: any, event: Event) => {
-  const isChecked = (event.target as HTMLInputElement).checked
-  const allPermission = getGroupAllPermission(group)
-
-  if (perm === allPermission) {
-    group.permissions?.forEach((permission: any) => {
-      permission.checked = isChecked
-    })
-  } else {
-    perm.checked = isChecked
-
-    if (allPermission) {
-      allPermission.checked = group.permissions
-        .filter((permission: any) => permission !== allPermission)
-        .every((permission: any) => permission.checked)
-    }
+function toggle(permission: PermissionItem, checked: boolean) {
+  if (!writable(permission)) return
+  const next = new Set(selected.value)
+  if (checked) next.add(permission.code)
+  else {
+    next.delete(permission.code)
+    // Removing a granular grant must not leave the same feature's explicit All grant in force.
+    const name = knownLabels.get(permission.code) ?? ''
+    const family = name.replace(/_(FETCH|DETAILS|CREATE|UPDATE|DELETE|CRAETE|CAREATE)$/, '')
+    const all = permissionNames.find(([key]) => key === `${family}_ALL`)?.[1]
+    if (all) next.delete(all)
   }
-
-  emit('update:permissions', getSelectedPermissions())
+  selected.value = [...next]
+  publish()
 }
-
-onMounted(() => {
-  applyCheckedPermissions()
-})
+function toggleGroup(group: PermissionItem, checked: boolean) {
+  const next = new Set(selected.value)
+  for (const item of leaves(group))
+    if (writable(item)) {
+      if (checked) next.add(item.code)
+      else next.delete(item.code)
+    }
+  selected.value = [...next]
+  publish()
+}
 </script>
 
 <template>
-  <div class="premission-cards">
-    <div class="cards" v-for="item in permissionRoots.permissions" :key="item.code">
-      <div class="header">
-        <!-- ✅ Module Select All auto-sync -->
-        <label
-          class="select_all"
-          @click.prevent="
-            toggleModuleSelectAll(item, { target: { checked: !isModuleFullyChecked(item) } })
-          "
-        >
-          <input type="checkbox" :checked="isModuleFullyChecked(item)" tabindex="-1" />
-          <span class="checkmark"></span>
-          <span>{{ item.label }}</span>
+  <section class="permission-editor">
+    <div class="permission-toolbar">
+      <label for="permission-search">{{ $t('authorization.searchPermissions') }}</label>
+      <input
+        id="permission-search"
+        v-model="query"
+        type="search"
+        class="input"
+        :placeholder="$t('authorization.searchPermissions')"
+      />
+      <p role="status">{{ $t('authorization.selectedCount', { count: selected.length }) }}</p>
+    </div>
+    <section
+      v-for="module in visibleGroups"
+      :key="`${module.code}-${module.label}`"
+      class="permission-module"
+    >
+      <header class="permission-module-header">
+        <h2>{{ module.label }}</h2>
+        <label class="permission-check">
+          <input
+            type="checkbox"
+            :disabled="!leaves(module).some(writable)"
+            :checked="groupSelected(module)"
+            :indeterminate="groupMixed(module)"
+            @change="toggleGroup(module, ($event.target as HTMLInputElement).checked)"
+          />
+          {{ $t('select_all') }}
         </label>
-      </div>
-
-      <div class="tab-content">
-        <div class="card" v-for="prem in item.permissions" :key="prem.code">
-          <div class="card-header">
-            <h5>{{ prem.label }}</h5>
-
-            <!-- ✅ Group Select All auto-sync -->
-            <!-- <label class="select_all"
-              @click.prevent="toggleGroupSelectAll(prem, { target: { checked: !isGroupFullyChecked(prem) } })">
-              <input type="checkbox" :checked="isGroupFullyChecked(prem)" tabindex="-1" />
-              <span class="checkmark"></span>
-              <span>{{ $t('select_all') }}</span>
-            </label> -->
-          </div>
-
-          <hr />
-
-          <div class="card-body">
-            <label
-              v-for="premAction in prem.permissions"
-              :key="premAction.code"
-              class="permission-item"
-            >
+      </header>
+      <div class="permission-group-grid">
+        <article v-for="group in module.permissions" :key="group.code" class="permission-group">
+          <header>
+            <h3>{{ group.label }}</h3>
+            <label class="permission-check">
               <input
                 type="checkbox"
-                v-model="premAction.checked"
-                @change="togglePermission(prem, premAction, $event)"
+                :disabled="!leaves(group).some(writable)"
+                :checked="groupSelected(group)"
+                :indeterminate="groupMixed(group)"
+                @change="toggleGroup(group, ($event.target as HTMLInputElement).checked)"
               />
-              <span>{{ premAction.label }}</span>
+              {{ $t('select_all') }}
             </label>
-          </div>
-        </div>
+          </header>
+          <label
+            v-for="permission in group.permissions"
+            :key="permission.code"
+            class="permission-item permission-check"
+          >
+            <input
+              type="checkbox"
+              :data-permission="permission.code"
+              :checked="selectedSet.has(permission.code)"
+              :disabled="!writable(permission)"
+              @change="toggle(permission, ($event.target as HTMLInputElement).checked)"
+            />
+            <span>{{
+              permission.label === 'Table' || permission.label === 'Fetch'
+                ? $t('authorization.viewList')
+                : permission.label
+            }}</span>
+          </label>
+        </article>
       </div>
-    </div>
-  </div>
+    </section>
+    <p v-if="!visibleGroups.length" role="status">
+      {{ $t('authorization.noMatchingPermissions') }}
+    </p>
+    <p v-if="preserved.length" class="permission-preserved" role="note">
+      {{ $t('authorization.preservedCount', { count: preserved.length }) }}
+    </p>
+  </section>
 </template>
+
+<style scoped>
+.permission-editor {
+  display: grid;
+  gap: 24px;
+}
+.permission-toolbar {
+  display: grid;
+  gap: 10px;
+  padding: 20px;
+  border: 1px solid var(--main-border);
+  border-radius: 16px;
+  background: var(--surface-1);
+}
+.permission-toolbar input {
+  width: 100%;
+}
+.permission-module-header,
+.permission-group header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-block-end: 16px;
+}
+.permission-module h2 {
+  font-size: 20px;
+  font-weight: 700;
+}
+.permission-group-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 16px;
+}
+.permission-group {
+  padding: 20px;
+  border: 1px solid var(--main-border);
+  border-radius: 16px;
+  background: var(--surface-1);
+}
+.permission-group h3 {
+  font-weight: 700;
+  color: var(--text-strong);
+}
+.permission-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 36px;
+}
+.permission-check input {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--PrimaryColor);
+}
+.permission-item:has(input:disabled) {
+  opacity: 0.65;
+}
+.permission-preserved {
+  color: var(--text-soft);
+}
+</style>

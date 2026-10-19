@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
+
 import { computed, ref, watch } from 'vue'
 import ShowOrganizatoinEmployeeParams from '../../Core/params/showOrganizatoinEmployeeParams'
 import ShowOrganizatoinEmployeeController from '../controllers/showOrganizatoinEmployeeController'
@@ -30,6 +32,8 @@ const viewLessTasks = () => {
   isShowAllTasks.value = false
 }
 const printPage = () => {
+  if (!canOrganizationCapability('print')) return
+
   window.print()
 }
 const tasks = computed(() => empDetastate.value?.tasks ?? [])

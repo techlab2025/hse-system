@@ -1,5 +1,5 @@
 import type TitleInterface from '@/base/Data/Models/title_interface'
-import ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
+import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 

@@ -1322,4 +1322,6 @@ export enum PermissionsEnum {
   MOC_DETAILS = 'MOC03',
   MOC_DELETE = 'MOC04',
   MOC_UPDATE = 'MOC05',
+  //the new permssions
+  // Add identifiers here only after their backend registration is confirmed.
 }

@@ -1,0 +1,75 @@
+{
+  "baseline": {
+    "build": {
+      "passed": true,
+      "seconds": 29.48
+    },
+    "typescriptErrors": 3646,
+    "lintLog": "/dev/shm/hse-permission-baseline-lint.json"
+  },
+  "current": {
+    "typescript": {
+      "passed": false,
+      "errors": 3631,
+      "introducedDiagnosticsInChangedFiles": 0,
+      "note": "An unchanged ProjectSummary diagnostic has a reordered union type in its text; same source location and error existed at baseline."
+    },
+    "focusedEslint": {
+      "files": 16,
+      "errors": 0,
+      "warnings": 0
+    },
+    "changedFileEslint": {
+      "files": 148,
+      "errors": 117,
+      "warnings": 49,
+      "newDiagnosticsComparedWithBaseline": 0
+    },
+    "build": {
+      "passed": true,
+      "seconds": 35.01,
+      "warning": "Existing chunks exceed 500 kB after minification."
+    },
+    "automatedTests": {
+      "passed": 36,
+      "failed": 0,
+      "durationReported": "1.8m",
+      "secondsApproximate": 108.0,
+      "permissionTests": 22,
+      "existingObjectiveProgressTests": 14,
+      "command": "npx playwright test scripts/organization-permissions.spec.ts scripts/objective-progress.spec.ts --output=/dev/shm/hse-permission-test-artifacts --reporter=line"
+    }
+  },
+  "live": {
+    "adminOrganizationLogin": {
+      "httpStatus": 422,
+      "result": "Credentials rejected"
+    },
+    "adminDashboardLogin": {
+      "httpStatus": 500,
+      "result": "Internal Server Error"
+    },
+    "organizationUserLogin": {
+      "passed": true,
+      "assignedPermissions": 0
+    },
+    "backendReads": {
+      "fetch_projects": 200,
+      "fetch_organization_employees": 200,
+      "fetch_observations": 200,
+      "show_permissions": {
+        "httpStatus": 200,
+        "rows": 14386,
+        "uniqueCodes": 361,
+        "scopedAssignmentSnapshotVerified": false
+      },
+      "fetch_permissions": 404
+    },
+    "liveAssignmentsChanged": false
+  },
+  "limits": [
+    "No backend source or permission assignment contract is available.",
+    "No live permission assignment scenario could safely be executed.",
+    "Per-component semantic review remains incomplete."
+  ]
+}

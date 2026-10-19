@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { useRouter, RouterLink } from 'vue-router'
+import { canPermissionAction } from '@/features/permission/Presentation/Helpers/organization_actions'
+const router = useRouter()
+const canOpenLink = (link: string) => canPermissionAction({ link }, router)
+
 import { InvestegationStatusEnum } from '../../../Core/Enums/InvestegationStatusEnum'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
 
@@ -118,9 +123,13 @@ const getZoneTitle = (item: InvestigatingTableItem) =>
         <tr v-for="(item, index) in props.items || []" :key="item.Investegationid">
           <td data-label="#">{{ startIndex + index + 1 }}</td>
           <td data-label="Report">
-            <router-link :to="getObservationLink(item)" class="report-reference">
+            <component
+              :is="canOpenLink(getObservationLink(item)) ? RouterLink : 'span'"
+              :to="canOpenLink(getObservationLink(item)) ? getObservationLink(item) : undefined"
+              class="report-reference"
+            >
               {{ getReportReference(item) }}
-            </router-link>
+            </component>
           </td>
           <td data-label="Title">
             {{ item.observation?.title || item.title || '--' }}
@@ -141,7 +150,10 @@ const getZoneTitle = (item: InvestigatingTableItem) =>
           <td data-label="Actions" data-pdf-exclude>
             <div class="table-actions">
               <router-link
-                v-if="item.status === InvestegationStatusEnum.NEW"
+                v-if="
+                  item.status === InvestegationStatusEnum.NEW &&
+                  canOpenLink(`/organization/investigating/add?id=${item.Investegationid}`)
+                "
                 :to="`/organization/investigating/add?id=${item.Investegationid}`"
                 class="table-action-link"
               >
@@ -149,7 +161,12 @@ const getZoneTitle = (item: InvestigatingTableItem) =>
               </router-link>
 
               <router-link
-                v-if="item.status === InvestegationStatusEnum.IN_PROGRESS"
+                v-if="
+                  item.status === InvestegationStatusEnum.IN_PROGRESS &&
+                  canOpenLink(
+                    `/organization/Investigating-result/${item.LatestInvestigatingMeetingId}?investigating_id=${item.Investegationid}`,
+                  )
+                "
                 :to="`/organization/Investigating-result/${item.LatestInvestigatingMeetingId}?investigating_id=${item.Investegationid}`"
                 class="table-action-link"
               >
@@ -158,9 +175,10 @@ const getZoneTitle = (item: InvestigatingTableItem) =>
 
               <router-link
                 v-if="
-                  item.hasResults ||
-                  item.status === InvestegationStatusEnum.CLOSED ||
-                  item.status === InvestegationStatusEnum.COMPLETED
+                  (item.hasResults ||
+                    item.status === InvestegationStatusEnum.CLOSED ||
+                    item.status === InvestegationStatusEnum.COMPLETED) &&
+                  canOpenLink(`/organization/Investigating-result-answer/${item.Investegationid}`)
                 "
                 :to="`/organization/Investigating-result-answer/${item.Investegationid}`"
                 class="table-action-link secondary"

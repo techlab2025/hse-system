@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { inject } from 'vue'
 import { overviewPresentationKey } from '../overviewPresentation'
 const overviewPresentation = inject(overviewPresentationKey, false)
@@ -71,6 +74,8 @@ onMounted(() => {
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['create_project_zoon_equipment'])">
+
   <div data-hse-project v-project-panels class="hse-project-root card flex justify-center">
     <EmptyData
       v-if="isEmpty"
@@ -146,6 +151,8 @@ onMounted(() => {
       </div>
     </Dialog>
   </div>
+
+  </template>
 </template>
 
 <style scoped lang="scss">

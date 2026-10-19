@@ -25,6 +25,7 @@ export default class UserModel {
   public languages: LangModel[] = []
   public type: OrganizationTypeEnum = OrganizationTypeEnum.ADMIN
   public permission: string[] = []
+  public permissionsLoaded = false
   public Defaultproject?: TitleInterface
   public organizationName?: string
   public WebSocketToken?: string
@@ -82,7 +83,7 @@ export default class UserModel {
   }
 
   static fromMap(map: { [key: string]: any }): UserModel {
-    return new UserModel(
+    const user = new UserModel(
       map['id'],
       map['name'],
       map['email'],
@@ -108,5 +109,7 @@ export default class UserModel {
       map['organization_name'],
       map['notification_token'],
     )
+    user.permissionsLoaded = Array.isArray(map['permissions'])
+    return user
   }
 }

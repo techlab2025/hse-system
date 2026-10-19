@@ -437,6 +437,7 @@ const resetFilters = () => {
  */
 
 const deleteInspection = async (id: number) => {
+  if (!PermissionHandler.Instance.handle([PermissionsEnum.ORG_INSPECTION_ALL, PermissionsEnum.ORG_INSPECTION_DELETE])) return
   const params = new DeleteInspectionParams(id)
 
   await DeleteInspectionController.getInstance().deleteInspection(params)

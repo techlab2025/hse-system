@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
@@ -54,6 +57,8 @@ const allowedPermissions = [
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['create_document_category'])">
+
   <PermissionBuilder :code="allowedPermissions">
     <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addDocumentCategory">
       <DocumentCategoryForm :key="formKey" ref="formRef" @update:data="setParams" />
@@ -66,6 +71,8 @@ const allowedPermissions = [
       </div>
     </form>
   </PermissionBuilder>
+
+  </template>
 </template>
 
 <style scoped></style>

@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { canAny } from '@/features/permission/Presentation/Helpers/organization_permission'
+import { PermissionsEnum as P } from '@/features/users/Admin/Core/Enum/permission_enum'
+import { canPermissionAction } from '@/features/permission/Presentation/Helpers/organization_actions'
+
 import { computed, ref, onMounted, watch } from 'vue'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import InvestigatingCardsLoader from './InvestigatingCardsLoader.vue'
@@ -7,7 +11,7 @@ import { InvestegationStatusEnum } from '../../../Core/Enums/InvestegationStatus
 import LiveLink from '@/assets/images/LiveLink.png'
 import LiveIcon from '@/assets/images/LiveIcon.png'
 import IndexInvestigationResultParams from '../../../Core/params/investegationResult/indexInvestigationResultParams'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter, RouterLink } from 'vue-router'
 import { DataFailed } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import IndexInvestigatingController from '../../controllers/indexInvestigatingController'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
@@ -22,6 +26,10 @@ import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import ExportReportPdf from '@/features/Organization/TaskReports/Presentation/subComponents/ExportReportPdf.vue'
 import InvestigatingTable from './InvestigatingTable.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
+
+const canViewRecords = computed(() => canAny([P.INVESTIGATION_ALL, P.INVESTIGATION_FETCH]))
+const canViewDetails = computed(() => canAny([P.INVESTIGATION_ALL, P.INVESTIGATION_DETAILS]))
+const canOpenLink = (link: string) => canPermissionAction({ link }, router)
 
 const word = ref('')
 const currentPage = ref(1)
@@ -69,6 +77,7 @@ const GetInvsetegationResult = async (
   withPage = 1,
   riskLevel: RiskLevelEnum | undefined = observationRiskLevel.value ?? undefined,
 ) => {
+  if (!canViewRecords.value) return
   const indexInvestigationResultParams = new IndexInvestigationResultParams(
     query,
     pageNumber,
@@ -193,9 +202,10 @@ const getInvestigationKey = (item: any, index: number) =>
   String(item?.Investegationid ?? item?.id ?? item?.observation?.id ?? index)
 
 const isInvestigationExpanded = (item: any, index: number) =>
-  expandedInvestigationKey.value === getInvestigationKey(item, index)
+  canViewDetails.value && expandedInvestigationKey.value === getInvestigationKey(item, index)
 
 const toggleInvestigationDetails = (item: any, index: number) => {
+  if (!canViewDetails.value) return
   const key = getInvestigationKey(item, index)
   expandedInvestigationKey.value = expandedInvestigationKey.value === key ? null : key
 }
@@ -227,7 +237,7 @@ const GerIncidantCount = (data: any): number => {
 </script>
 
 <template>
-  <DataStatus :controller="state">
+  <DataStatus v-if="canViewRecords" :controller="state">
     <template #success>
       <!-- {{ console.log(state.data, 'state') }} -->
       <div
@@ -321,10 +331,24 @@ const GerIncidantCount = (data: any): number => {
                             {{ ReturnStatusTitle(item?.status) }}
                           </p>
                         </div>
-                        <router-link
-                          :to="getObservationDetailsLink(item)"
-                          class="investigation-summary-grid investigation-summary-link"
-                          :aria-label="$t('View Details')"
+                        <component
+                          :is="canOpenLink(getObservationDetailsLink(item)) ? RouterLink : 'div'"
+                          :to="
+                            canOpenLink(getObservationDetailsLink(item))
+                              ? getObservationDetailsLink(item)
+                              : undefined
+                          "
+                          class="investigation-summary-grid"
+                          :class="{
+                            'investigation-summary-link': canOpenLink(
+                              getObservationDetailsLink(item),
+                            ),
+                          }"
+                          :aria-label="
+                            canOpenLink(getObservationDetailsLink(item))
+                              ? $t('View Details')
+                              : undefined
+                          "
                         >
                           <div
                             v-if="hasValue(item?.observation?.typeModel)"
@@ -377,7 +401,7 @@ const GerIncidantCount = (data: any): number => {
                             </span>
                             <span class="summary-value">{{ item?.observation?.zoon?.title }}</span>
                           </div>
-                        </router-link>
+                        </component>
 
                         <div class="investigation-summary-footer">
                           <button
@@ -385,6 +409,7 @@ const GerIncidantCount = (data: any): number => {
                             class="investigation-accordion-trigger"
                             :aria-expanded="isInvestigationExpanded(item, index)"
                             :aria-controls="`investigation-details-${getInvestigationKey(item, index)}`"
+                            v-if="canViewDetails"
                             @click="toggleInvestigationDetails(item, index)"
                           >
                             <span class="investigation-details-label">
@@ -521,6 +546,11 @@ const GerIncidantCount = (data: any): number => {
                             <!-- <ShowInvestegationDetailsDialog :item="item" class="first-btn" /> -->
 
                             <router-link
+                              v-if="
+                                canOpenLink(
+                                  `/organization/investigating/add?id=${item?.Investegationid}`,
+                                )
+                              "
                               :to="`/organization/investigating/add?id=${item?.Investegationid}`"
                             >
                               <button class="btn second-btn">
@@ -533,7 +563,10 @@ const GerIncidantCount = (data: any): number => {
                             class="btn-inprogress"
                             v-if="item?.status === InvestegationStatusEnum.COMPLETED"
                           >
-                            <router-link :to="`/organization/investigating/view`">
+                            <router-link
+                              v-if="canOpenLink(`/organization/investigating/view`)"
+                              :to="`/organization/investigating/view`"
+                            >
                               <button class="btn view-btn">
                                 <div>
                                   <img :src="LiveLink" class="icon" />
@@ -552,6 +585,11 @@ const GerIncidantCount = (data: any): number => {
                             v-if="item?.status === InvestegationStatusEnum.IN_PROGRESS"
                           >
                             <router-link
+                              v-if="
+                                canOpenLink(
+                                  `/organization/Investigating-result/${item?.LatestInvestigatingMeetingId}?investigating_id=${item?.Investegationid}`,
+                                )
+                              "
                               :style="{ width: item?.hasResults ? '50%' : '100%' }"
                               :to="`/organization/Investigating-result/${item?.LatestInvestigatingMeetingId}?investigating_id=${item?.Investegationid}`"
                             >
@@ -561,7 +599,12 @@ const GerIncidantCount = (data: any): number => {
                             </router-link>
 
                             <router-link
-                              v-if="item?.hasResults"
+                              v-if="
+                                item?.hasResults &&
+                                canOpenLink(
+                                  `/organization/Investigating-result-answer/${item?.Investegationid}`,
+                                )
+                              "
                               style="width: 50%"
                               :to="`/organization/Investigating-result-answer/${item?.Investegationid}`"
                             >
@@ -575,6 +618,11 @@ const GerIncidantCount = (data: any): number => {
                             v-if="item?.status == InvestegationStatusEnum.CLOSED"
                           >
                             <router-link
+                              v-if="
+                                canOpenLink(
+                                  `/organization/Investigating-result-answer/${item?.Investegationid}`,
+                                )
+                              "
                               :to="`/organization/Investigating-result-answer/${item?.Investegationid}`"
                             >
                               <button class="btn btn-primary w-full">
@@ -626,6 +674,7 @@ const GerIncidantCount = (data: any): number => {
       />
     </template>
   </DataStatus>
+  <p v-else role="alert">{{ $t('authorization.denied') }}</p>
 </template>
 
 <style lang="scss" scoped>

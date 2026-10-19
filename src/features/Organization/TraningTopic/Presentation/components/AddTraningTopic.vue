@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -61,6 +64,8 @@ const saveAndNew = async () => {
 </script>
 
 <template>
+  <template v-if="canPolicy(organizationApiPolicies['create_training_topic'])">
+
   <PermissionBuilder :code="createPermissions">
     <form class="grid grid-cols-1 md:grid-cols-2 gap-4" @submit.prevent="addTraningTopic">
       <TraningTopicForm :key="formKey" @update:data="setParams" />
@@ -79,4 +84,6 @@ const saveAndNew = async () => {
       <DataFailed :add-text="$t('permission_denied')" description="" link="" />
     </template>
   </PermissionBuilder>
+
+  </template>
 </template>
