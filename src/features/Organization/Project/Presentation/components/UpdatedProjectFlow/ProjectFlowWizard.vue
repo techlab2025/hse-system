@@ -345,24 +345,23 @@ const validateStep = () => {
     return false
   }
   if (
-    activeStep.value === 3 &&
-    positions.value.some((location) =>
-      location.heirarchys.some(
-        (hierarchy) =>
-          hierarchy.employees.length > 0 &&
-          (!hierarchy.teamLeader ||
-            !hierarchy.employees.some((employee) => employee.id === hierarchy.teamLeader?.id)),
-      ),
-    )
-  ) {
-    errorMessage.value = 'Select one team leader for every position with employees.'
-    return false
-  }
-  if (
     activeStep.value === 4 &&
     teams.value.some((location) => location.projectTeams.some((team) => !team.team))
   ) {
     errorMessage.value = 'Complete every team you added or remove the incomplete row.'
+    return false
+  }
+  if (
+    activeStep.value === 4 &&
+    teams.value.some((location) =>
+      location.projectTeams.some(
+        (team) =>
+          team.employees.length > 0 &&
+          !team.employees.some((employee) => employee.id === team.teamLeader?.id),
+      ),
+    )
+  ) {
+    errorMessage.value = 'Select one team leader for every team with employees.'
     return false
   }
   errorMessage.value = ''
@@ -445,6 +444,7 @@ const buildParams = () => {
           team_id: team.team!.id,
           organization_employees: team.employees.map((employee) => ({
             organization_employee_id: employee.id,
+            is_leader: employee.id === team.teamLeader?.id,
           })),
         })),
       }))

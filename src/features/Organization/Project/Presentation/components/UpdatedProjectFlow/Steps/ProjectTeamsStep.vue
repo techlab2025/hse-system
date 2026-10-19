@@ -58,6 +58,7 @@ const setLocationTeams = (
       existingById.get(team.id) ?? {
         team,
         employees: [],
+        teamLeader: null,
         employeeParams: employeeParams(),
       },
   )
@@ -65,6 +66,13 @@ const setLocationTeams = (
 
 const setTeamEmployees = (team: TeamForm, value: TitleInterface | TitleInterface[] | null) => {
   team.employees = Array.isArray(value) ? value : value ? [value] : []
+  if (!team.employees.some((employee) => employee.id === team.teamLeader?.id)) {
+    team.teamLeader = null
+  }
+}
+
+const setTeamLeader = (team: TeamForm, value: TitleInterface | TitleInterface[] | null) => {
+  team.teamLeader = Array.isArray(value) ? (value[0] ?? null) : value
 }
 
 const toEmployeeTitle = (employee: {
@@ -94,11 +102,16 @@ const projectEmployees = (location: TeamLocationForm) => {
 
 const mapProjectLocation = (location: ProjectCustomLocationModel): TeamLocationForm => ({
   projectLocation: new TitleInterface({ id: location.projectLocationId, title: location.title }),
-  projectTeams: (location.locationTeams ?? []).map((team) => ({
-    team: new TitleInterface({ id: team.teamId, title: team.teamTitle ?? team.title }),
-    employees: (team.Employees ?? []).map(toEmployeeTitle),
-    employeeParams: employeeParams(),
-  })),
+  projectTeams: (location.locationTeams ?? []).map((team) => {
+    const employees = team.Employees ?? []
+    const leader = employees.find((employee) => [true, 1, '1', 'true'].includes(employee.is_leader))
+    return {
+      team: new TitleInterface({ id: team.teamId, title: team.teamTitle ?? team.title }),
+      employees: employees.map(toEmployeeTitle),
+      teamLeader: leader ? toEmployeeTitle(leader) : null,
+      employeeParams: employeeParams(),
+    }
+  }),
 })
 
 const getProjectLocationsTeamsEmployees = async () => {
@@ -177,6 +190,16 @@ watch(() => props.projectId, getProjectLocationsTeamsEmployees, { immediate: tru
             placeholder="Select project employees"
             :type="2"
             @update:model-value="setTeamEmployees(team, $event)"
+          />
+        </div>
+        <div v-if="team.employees.length" class="hse-project-field input-wrapper">
+          <UpdatedCustomInputSelect
+            :model-value="team.teamLeader"
+            :static-options="team.employees"
+            label="Team leader"
+            placeholder="Select team leader"
+            :required="true"
+            @update:model-value="setTeamLeader(team, $event)"
           />
         </div>
       </div>

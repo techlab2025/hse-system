@@ -4,6 +4,7 @@ import type IndexOrganizatoinEmployeeParams from '@/features/Organization/Organi
 export type PositionHierarchyForm = {
   hierarchy: TitleInterface | null
   employees: TitleInterface[]
+  /** Preserve an existing API leader assignment; this step does not choose leaders. */
   teamLeader: TitleInterface | null
   employeeParams: IndexOrganizatoinEmployeeParams
 }

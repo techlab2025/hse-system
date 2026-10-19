@@ -10,7 +10,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
   public phone: string
   public email: string
   public is_master: number
-  public image: null
+  public image: string | null
   public certificates: CertificateItemsModel[]
   public hierarchy: TitleInterface[]
   public employee_certificates: CertificateItemsModel[]
@@ -26,7 +26,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
     phone: string,
     email: string,
     is_master: number,
-    image: null,
+    image: string | null,
     certificates: CertificateItemsModel[],
     hierarchy: TitleInterface[],
     employee_certificates: CertificateItemsModel[],
@@ -58,7 +58,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
       data.phone,
       data.email,
       data.is_master,
-      data.image,
+      typeof data.image === 'string' && data.image ? data.image : null,
       data.certificates,
       data.hierarchy,
       data.employee_certificates,

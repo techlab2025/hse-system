@@ -7,6 +7,7 @@ import Select from 'primevue/select'
 import Dialog from 'primevue/dialog'
 
 import TitleInterface from '@/base/Data/Models/title_interface'
+import { getSelectOptionLabel } from './selectOptionLabel'
 import type { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import type Params from '@/base/core/params/params'
 
@@ -563,7 +564,7 @@ function closeDialog(): void {
         class="input-select w-full hse-control hse-select-control"
         panel-class="hse-identity hse-select-panel"
         :pt="{ overlay: { dir: locale.startsWith('ar') ? 'rtl' : 'ltr' } }"
-        option-label="title"
+        :option-label="getSelectOptionLabel"
         filter
         v-bind="multiselectProps"
       >
@@ -571,7 +572,7 @@ function closeDialog(): void {
           <slot name="option" :option="option">
             <span v-if="showOptionSerial || showOptionLicensePlate" class="equipment-option">
               <strong>
-                {{ option?.title }}
+                {{ getSelectOptionLabel(option) }}
               </strong>
 
               <small v-if="showOptionSerial && getOptionSerial(option)">
@@ -586,7 +587,7 @@ function closeDialog(): void {
             </span>
 
             <span v-else>
-              {{ option?.title }}
+              {{ getSelectOptionLabel(option) }}
             </span>
           </slot>
         </template>
@@ -594,7 +595,7 @@ function closeDialog(): void {
         <template v-if="showOptionLicensePlate && !isMultiselect" #value="{ value, placeholder }">
           <span v-if="value" class="equipment-selected-value">
             <strong>
-              {{ value?.title }}
+              {{ getSelectOptionLabel(value) }}
             </strong>
 
             <small v-if="getOptionLicensePlate(value)">

@@ -3,6 +3,7 @@ import MultiSelect from 'primevue/multiselect'
 import Select from 'primevue/select'
 import { computed, ref, watch, toRefs, type Component } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
+import { getSelectOptionLabel } from './selectOptionLabel'
 import type { SelectControllerInterface } from '@/base/Presentation/Controller/select_controller_interface'
 import type Params from '@/base/core/params/params'
 import ValidationService from '@/base/Presentation/utils/validationService'
@@ -232,7 +233,7 @@ const updateSlot = (data: unknown) => {
     data-key="id"
     :placeholder="placeholder"
     class="input-select w-full"
-    option-label="title"
+    :option-label="getSelectOptionLabel"
     v-bind="{ ...multiselectProps, ...$attrs }"
     filter
     :loading="loading"
@@ -242,7 +243,7 @@ const updateSlot = (data: unknown) => {
       <span v-if="isSelectAllOption(option)" class="select-all-option">
         {{ $t('select_all') }}
       </span>
-      <span v-else>{{ option?.title }}</span>
+      <span v-else>{{ getSelectOptionLabel(option) }}</span>
     </template>
   </component>
   <input type="text" class="hidden w-full" :value="normalizedValue" :id="id" />

@@ -4,6 +4,7 @@ import type IndexOrganizatoinEmployeeParams from '@/features/Organization/Organi
 export type TeamForm = {
   team: TitleInterface | null
   employees: TitleInterface[]
+  teamLeader: TitleInterface | null
   employeeParams: IndexOrganizatoinEmployeeParams
 }
 

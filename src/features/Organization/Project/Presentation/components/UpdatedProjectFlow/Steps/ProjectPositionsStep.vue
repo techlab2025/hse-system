@@ -75,13 +75,6 @@ const setPositionEmployees = (
   }
 }
 
-const setTeamLeader = (
-  hierarchy: PositionHierarchyForm,
-  value: TitleInterface | TitleInterface[] | null,
-) => {
-  hierarchy.teamLeader = Array.isArray(value) ? (value[0] ?? null) : value
-}
-
 type PositionEmployeeOption = {
   id?: number
   organization_employee_id?: number
@@ -203,17 +196,6 @@ watch(() => props.projectId, getProjectLocationsHierarchiesEmployees, { immediat
               @update:model-value="setPositionEmployees(hierarchy, $event)"
             />
           </div>
-          <div v-if="hierarchy.employees.length" class="hse-project-field input-wrapper">
-            <UpdatedCustomInputSelect
-              :model-value="hierarchy.teamLeader"
-              :static-options="hierarchy.employees"
-              label="Team leader"
-              placeholder="Select team leader"
-              :type="1"
-              :required="true"
-              @update:model-value="setTeamLeader(hierarchy, $event)"
-            />
-          </div>
         </div>
       </div>
     </div>
@@ -242,13 +224,7 @@ watch(() => props.projectId, getProjectLocationsHierarchiesEmployees, { immediat
 
 .position-assignment-fields {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 12px;
-}
-
-@media (max-width: 850px) {
-  .position-assignment-fields {
-    grid-template-columns: 1fr;
-  }
 }
 </style>

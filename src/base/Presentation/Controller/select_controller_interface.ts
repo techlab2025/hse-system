@@ -9,6 +9,7 @@ type SelectResponseItem = {
   type?: number
   color?: string
   ptw_color?: string
+  parent?: TitleInterface | null
 }
 
 type SelectControllerResponse = {
@@ -34,6 +35,7 @@ abstract class SelectControllerInterface<T> extends ControllerInterface<T> {
             subtitle: el.subtitle || '',
             type: el.type,
             color: el.color ?? el.ptw_color,
+            parent: el.parent,
           }),
         )
       })

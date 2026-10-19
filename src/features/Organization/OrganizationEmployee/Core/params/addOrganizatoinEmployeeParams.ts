@@ -18,6 +18,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
   serialNumber: string
   dashAccessStatus: boolean
   allPermissions: boolean
+  image: string | null
 
   // certificateId: number[]
 
@@ -43,6 +44,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     serialNumber: string,
     dashAccessStatus: boolean,
     allPermissions: boolean,
+    image: string | null = null,
     // certificateId: number[],
   ) {
     this.name = name
@@ -57,6 +59,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     this.serialNumber = serialNumber
     this.dashAccessStatus = dashAccessStatus
     this.allPermissions = allPermissions
+    this.image = image
     // this.certificateId = certificateId
   }
 
@@ -65,6 +68,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     | number
     | string
     | boolean
+    | null
     | number[]
     | Record<string, string | any | number[] | number | Record<string, string>>
   > {
@@ -73,6 +77,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
       | number
       | string
       | boolean
+      | null
       | number[]
       | Record<string, string | number[] | number | any | Record<string, string>>
     > = {}
@@ -95,6 +100,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
     data['can_access_dashboard'] = Number(this.dashAccessStatus)
     // data['certificate_id'] = this.certificateId.map((id) => id)
     data['allow_all_permissions'] = this.allPermissions
+    data['image'] = this.image
 
     return data
   }

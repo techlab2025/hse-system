@@ -47,6 +47,14 @@ import IndexHerikalyController from '@/features/Organization/Herikaly/Presentati
 import IndexHerikalyParams from '@/features/Organization/Herikaly/Core/params/indexHerikalyParams'
 
 const { t } = useI18n()
+const employeeAvatarFallback = 'https://cyber.comolho.com/static/img/avatar.png'
+
+const handleEmployeeImageError = (event: Event) => {
+  const image = event.target as HTMLImageElement
+  if (image.getAttribute('src') !== employeeAvatarFallback) {
+    image.src = employeeAvatarFallback
+  }
+}
 
 // import DialogChangeStatusOrganizatoinEmployee from "@/features/setting/OrganizatoinEmployeeuages/Presentation/components/OrganizatoinEmployee/DialogChangeStatusOrganizatoinEmployee.vue";
 // const route = useRoute()
@@ -477,13 +485,13 @@ const IndexOrganizationEmployeectionList = () => [
             <thead>
               <tr>
                 <th scope="col">#</th>
+                <th scope="col">{{ $t('image') }}</th>
                 <th scope="col">{{ $t('name') }}</th>
                 <th scope="col">{{ $t('position') }}</th>
                 <th scope="col">{{ $t('email') }}</th>
                 <th scope="col">{{ $t('phone') }}</th>
                 <!-- <th scope="col">{{ $t('actions') }}</th> -->
                 <th class="empty"></th>
-                <!-- <th scope="col">{{ $t('image') }}</th> -->
               </tr>
             </thead>
             <tbody>
@@ -493,15 +501,23 @@ const IndexOrganizationEmployeectionList = () => [
                     >{{ index + 1 }}
                   </span>
                 </td>
+                <td :data-label="$t('image')">
+                  <img
+                    class="employee-table-avatar"
+                    :src="item.image || employeeAvatarFallback"
+                    :alt="item.name || $t('employee')"
+                    width="44"
+                    height="44"
+                    loading="lazy"
+                    @error="handleEmployeeImageError"
+                  />
+                </td>
                 <td data-label="Name">{{ item.name }}</td>
                 <td data-label="Hierarchy" class="table-Hierarchy">
                   {{ item.hierarchy.map((el) => el.title).join(' - ') || 'N/A' }}
                 </td>
                 <td data-label="Email">{{ item.email }}</td>
                 <td data-label="Phone">{{ item.phone }}</td>
-                <!-- <td data-label="images">
-                  <img :src="item.image || '/src/assets/images/logo.svg'" @error="setDefaultImage($event)" alt="" />
-                </td> -->
 
                 <td data-label="Actions">
                   <DropList
@@ -520,10 +536,10 @@ const IndexOrganizationEmployeectionList = () => [
         />
       </template>
       <template #loader>
-        <TableLoader :cols="3" :rows="10" />
+        <TableLoader :cols="7" :rows="10" />
       </template>
       <template #initial>
-        <TableLoader :cols="3" :rows="10" />
+        <TableLoader :cols="7" :rows="10" />
       </template>
       <template #empty>
         <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORG_EMPLOYEE_CREATE]">
@@ -576,6 +592,16 @@ const IndexOrganizationEmployeectionList = () => [
 </template>
 
 <style scoped>
+.employee-table-avatar {
+  display: block;
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid var(--brand-primary-100);
+  background: var(--surface-1);
+}
+
 .upload {
   width: 100px;
   height: 40px;

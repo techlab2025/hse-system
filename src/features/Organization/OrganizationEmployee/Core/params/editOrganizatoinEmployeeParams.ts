@@ -19,6 +19,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
   dashAccessStatus: boolean
   // certificateId: number[]
   allPermissions: boolean
+  image: string | null | undefined
   public static readonly validation = new ClassValidation().setRules({
     name: { required: true, minLength: 2, maxLength: 100 },
     phone: { required: true, pattern: /^\+?[\d\s-()]+$/ },
@@ -37,6 +38,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     EmployeeStatus: EmployeeStatusEnum,
     dashAccessStatus: boolean,
     allPermissions: boolean,
+    image?: string | null,
 
     // certificateId: number[],
   ) {
@@ -52,12 +54,17 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     this.EmployeeStatus = EmployeeStatus
     this.dashAccessStatus = dashAccessStatus
     this.allPermissions = allPermissions
+    this.image = image
     // this.certificateId = certificateId
   }
 
   toMap(): Record<
     string,
-    number | string | number[] | Record<string, string | number[] | number | Record<string, string>>
+    | number
+    | string
+    | null
+    | number[]
+    | Record<string, string | number[] | number | Record<string, string>>
   > {
     const data: Record<string, any> = {}
 
@@ -75,6 +82,10 @@ export default class EditOrganizatoinEmployeeParams implements Params {
     data['can_access_dashboard'] = Number(this.dashAccessStatus)
     // data['certificate_id'] = this.certificateId.map((id) => id)
     data['allow_all_permissions'] = this.allPermissions
+    // A fetched URL is preview-only; send only a replacement or an explicit removal.
+    if (this.image !== undefined && !/^https?:\/\//i.test(this.image ?? '')) {
+      data['image'] = this.image
+    }
 
     return data
   }

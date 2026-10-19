@@ -28,6 +28,7 @@ import AddHerikaly from '@/features/Organization/Herikaly/Presentation/component
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 import PhoneCountryCode from '@/shared/HelpersComponents/PhoneCountryCode.vue'
+import HandleFIlesUpload, { type UploadedFile } from '../supcomponents/HandleFIlesUpload.vue'
 import type RoleModel from '@/features/Organization/Role/Data/models/RoleModel'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { adminPermissions, type PermissionItem } from '@/constant/adminPremission'
@@ -45,6 +46,7 @@ const Name = ref(props.data?.name)
 const Phone = ref(props.data?.phone)
 const CountryCode = ref(props.data?.countryCode ?? '')
 const Email = ref(props.data?.email)
+const Image = ref<string | null>(props.data?.image ?? null)
 const Password = ref('')
 const ConfirmPassword = ref<string>()
 const SerialNumber = ref()
@@ -146,6 +148,7 @@ const updateData = () => {
         booleanEmpStatus.value ? EmployeeStatusEnum.Admin : EmployeeStatusEnum.Employee,
         booleandashAccessStatus.value,
         AllPermissions.value,
+        Image.value,
 
         // Certificates.value.map((item) => item.id)
       )
@@ -162,11 +165,17 @@ const updateData = () => {
         SerialNumber.value,
         booleandashAccessStatus.value,
         AllPermissions.value,
+        Image.value,
 
         // Certificates.value.map((item) => item.id)
       )
   // console.log(params, "params");
   emit('update:data', params)
+}
+
+const updateImage = (files: UploadedFile[]) => {
+  Image.value = files[0]?.base64 || null
+  updateData()
 }
 
 watch(
@@ -177,6 +186,7 @@ watch(
       Phone.value = newData.phone
       CountryCode.value = newData.countryCode ?? ''
       Email.value = newData.email
+      Image.value = newData.image
       Heirarchy.value = new TitleInterface({
         id: newData?.hierarchy?.[0]?.id,
         title: newData?.hierarchy?.[0]?.title,
@@ -392,6 +402,7 @@ defineExpose({
       </div>
 
       <div class="employee-field-grid">
+
         <div class="input-wrapper field-required" data-required-field="Name">
           <label for="name" class="flex items-center gap-2">
             {{ $t('employee_name') }}
@@ -457,6 +468,17 @@ defineExpose({
           <p v-if="getFieldError('Phone')" class="required-field-message">
             {{ getFieldError('Phone') }}
           </p>
+        </div>
+          <div class="input-wrapper employee-image-field" data-employee-image>
+          <HandleFIlesUpload
+            :label="$t('employee_image_optional')"
+            accept="image/*"
+            :max-files="1"
+            :multiple="false"
+            :required="false"
+            :file="Image ?? undefined"
+            @change="updateImage"
+          />
         </div>
       </div>
     </section>
@@ -771,6 +793,7 @@ defineExpose({
 
 .employee-field-grid > * {
   min-width: 0;
+  grid-column: auto;
 }
 
 .employee-access-grid {
@@ -837,6 +860,11 @@ defineExpose({
   border: 1px dashed color-mix(in srgb, var(--identity-primary) 30%, var(--hse-color-border));
   border-radius: 0.875rem;
   background: color-mix(in srgb, var(--hse-color-primary-subtle) 42%, var(--hse-color-surface));
+}
+
+.employee-image-field {
+  grid-column: 1 / -1;
+  min-width: 0;
 }
 
 .inline-create-action {
