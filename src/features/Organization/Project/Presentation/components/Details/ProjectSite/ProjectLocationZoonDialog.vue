@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { inject } from 'vue'
 import { overviewPresentationKey } from '../overviewPresentation'
 const overviewPresentation = inject(overviewPresentationKey, false)
@@ -28,6 +30,8 @@ const indexProjectZoneController = IndexProjectZoneController.getInstance()
 const indexProjectZoneParams = new IndexProjectZoneParams('', 1, 10, 0, [LocationId!])
 
 const CreatProjectZoon = async () => {
+  if (!canOrganizationOperation('create_project_zone')) return
+
   const createProjectZoonController = CreateProjectZoonController.getInstance()
   const createProjectZoonParams = new CreateProjectZoneParams(
     projectId!,
@@ -93,7 +97,7 @@ const setProjectLocationZoon = (data: TitleInterface) => {
           @update:modelValue="setProjectLocationZoon"
         />
       </div>
-      <button
+      <button v-if="canOrganizationOperation('create_project_zone')"
         class="hse-project-button hse-project-button--primary btn btn-primary confirm-zone-btn"
         type="button"
         :disabled="!SelectedProjectZone"

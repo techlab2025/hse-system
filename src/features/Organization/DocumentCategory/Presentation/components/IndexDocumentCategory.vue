@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -85,6 +87,8 @@ const changePageSize = (limit: number) => {
   fetchDocumentCategories(word.value, currentPage.value, limit)
 }
 const deleteDocumentCategory = async (id: number) => {
+  if (!canOrganizationOperation('delete_document_category')) return
+
   await DeleteDocumentCategoryController.getInstance().deleteDocumentCategory(
     new DeleteDocumentCategoryParams(id),
   )
@@ -107,6 +111,7 @@ const rowActions = (id: number) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_DOCUMENT_CATEGORY_ALL, PermissionsEnum.ORG_DOCUMENT_CATEGORY_DELETE],
     action: () => deleteDocumentCategory(id),
     permission: [
       PermissionsEnum.ADMIN,

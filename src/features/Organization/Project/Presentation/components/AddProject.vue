@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -21,6 +23,8 @@ const formRef = ref<InstanceType<typeof ProjectForm> | null>(null)
 const addProjectController = AddProjectController.getInstance()
 const loading = ref(false)
 const addProject = async () => {
+  if (!canOrganizationOperation('create_project')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   loading.value = true
   const state = await addProjectController.addProject(params.value as AddProjectParams, router)
@@ -31,6 +35,8 @@ const addProject = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_project')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   loading.value = true
   addProjectController.setLoading()
@@ -66,7 +72,7 @@ const setParams = (data: Params) => {
         class="hse-project-button hse-project-button--ghost btn btn-cancel"
         >{{ $t('cancel') }}</router-link
       >
-      <button
+      <button v-if="canOrganizationOperation('create_project')"
         type="button"
         class="hse-project-button btn btn-secondary"
         :disabled="loading"
@@ -75,7 +81,7 @@ const setParams = (data: Params) => {
       >
         {{ $t('save and new') }}
       </button>
-      <button
+      <button v-if="canOrganizationOperation('create_project')"
         type="submit"
         class="hse-project-button hse-project-button--primary btn btn-primary"
         :disabled="loading"

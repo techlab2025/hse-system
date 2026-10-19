@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -93,6 +95,8 @@ const changePageSize = (limit: number) => {
   fetchPTWTypes(word.value, currentPage.value, limit)
 }
 const deletePTWType = async (id: number) => {
+  if (!canOrganizationOperation('delete_permit_type')) return
+
   await DeletePTWTypeController.getInstance().deletePTWType(new DeletePTWTypeParams(id))
   await fetchPTWTypes(word.value, currentPage.value, countPerPage.value)
 }
@@ -114,6 +118,7 @@ const rowActions = (id: number) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_PTW_TYPE_ALL, PermissionsEnum.ORG_PTW_TYPE_DELETE],
     action: () => deletePTWType(id),
     permission: [
       PermissionsEnum.ADMIN,

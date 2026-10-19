@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { computed } from 'vue'
 import EmployeeIcon from '@/shared/icons/EmployeeIcon.vue'
 import EmployeeLinkIcon from '../../../../../shared/icons/EmployeeLinkIcon.vue'
@@ -38,6 +40,8 @@ const flattenedHierarchies = computed(() => {
 })
 
 const deleteHierarchy = async (Id: number) => {
+  if (!canOrganizationOperation('delete_herikaly')) return
+
   const deleteHerikalyParams = new DeleteHerikalyParams(Id)
   const deleteHerikalyController = DeleteHerikalyController.getInstance()
   await deleteHerikalyController.deleteHerikaly(deleteHerikalyParams)

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import Dialog from 'primevue/dialog'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
@@ -21,6 +23,8 @@ const emit = defineEmits<{
 }>()
 
 const resolveTicket = () => {
+  if (!canOrganizationOperation('create_ticket_reply')) return
+
   const params = new ReplaceTicketParams({
     ticketId: ticketId ? ticketId : +route?.params?.ticket_id,
     reply: reply.value,
@@ -58,7 +62,7 @@ const resolveTicket = () => {
         <textarea id="reply" v-model="reply" :placeholder="$t('reply')"></textarea>
       </div>
 
-      <button class="btn btn-primary w-full !mt-4" @click="resolveTicket">{{ $t('Send') }}</button>
+      <button v-if="canOrganizationOperation('create_ticket_reply')" class="btn btn-primary w-full !mt-4" @click="resolveTicket">{{ $t('Send') }}</button>
     </Dialog>
   </div>
 </template>

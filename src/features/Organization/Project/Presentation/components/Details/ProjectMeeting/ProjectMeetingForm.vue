@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import { computed, ref } from 'vue'
@@ -78,6 +80,8 @@ const submitting = computed(() => CreateProjectMeetingController.getInstance().i
 // }
 
 const submit = async () => {
+  if (!canOrganizationOperation('create_project_meeting')) return
+
   error.value = ''
 
   if (!MeetingType.value?.id) {
@@ -403,7 +407,7 @@ const UpdateTeamLeader = (value: TitleInterface | TitleInterface[] | null) => {
 
     <p v-if="error" class="drill-form-error">{{ error }}</p>
     <div class="hse-project-form-footer drill-form-actions">
-      <button
+      <button v-if="canOrganizationOperation('create_project_meeting')"
         class="hse-project-button hse-project-button--primary btn btn-primary"
         type="submit"
         :disabled="submitting"

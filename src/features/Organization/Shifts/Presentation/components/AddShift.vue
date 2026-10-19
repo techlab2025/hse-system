@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -19,11 +21,15 @@ const emit = defineEmits(['close:dialog'])
 const addShiftController = AddShiftController.getInstance()
 
 const addShift = async () => {
+  if (!canOrganizationOperation('create_work_shift')) return
+
   await addShiftController.addShift(params.value as AddShiftParams, router)
   emit('close:dialog')
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_work_shift')) return
+
   addShiftController.setLoading()
   await addShiftController.addShift(params.value as AddShiftParams, stayOnPageRouter)
   if (addShiftController.isDataSuccess()) {
@@ -43,10 +49,10 @@ const setParams = (data: Params) => {
     <ShiftForm :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">
-      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+      <button v-if="canOrganizationOperation('create_work_shift')" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+      <button v-if="canOrganizationOperation('create_work_shift')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </div>
   </form>
 

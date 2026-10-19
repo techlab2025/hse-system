@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { ref } from "vue";
 import Dialog from 'primevue/dialog';
 import { useTicketStore } from "@/stores/TicketStor";
@@ -36,6 +38,8 @@ const setOrganization = (data: TitleInterface) => {
   SelectedOrganization.value = data
 }
 const SubmitTicket = async () => {
+  if (!canOrganizationOperation('create_ticket')) return
+
   const addTicketController = AddTicketController.getInstance()
   const addTicketParams = new AddTicketParams([ticketStore.capturedImage], TicketType.value?.id, title.value, description.value, SelectedOrganization?.value ? SelectedOrganization.value?.id : null)
   const response = await addTicketController.addTicket(addTicketParams, router)
@@ -103,7 +107,7 @@ const CloseDialog = () => {
       </div>
       <div class="btn-container">
         <button class="btn btn-close" @click.prevent="CloseDialog">{{ $t('cancel') }}</button>
-        <button class="btn btn-primary" @click.prevent="SubmitTicket">{{ $t('send') }}</button>
+        <button v-if="canOrganizationOperation('create_ticket')" class="btn btn-primary" @click.prevent="SubmitTicket">{{ $t('send') }}</button>
       </div>
     </Dialog>
   </div>

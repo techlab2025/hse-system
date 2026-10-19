@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -20,11 +22,15 @@ const emit = defineEmits(['close:dialog'])
 const addInjuryController = AddInjuryController.getInstance()
 
 const addInjury = async () => {
+  if (!canOrganizationOperation('create_injury_type')) return
+
   await addInjuryController.addInjury(params.value as AddInjuryParams, router)
   emit('close:dialog')
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_injury_type')) return
+
   addInjuryController.setLoading()
   await addInjuryController.addInjury(params.value as AddInjuryParams, stayOnPageRouter)
   if (addInjuryController.isDataSuccess()) {
@@ -44,10 +50,10 @@ const setParams = (data: Params) => {
     <InjuryForm :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">
-      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+      <button v-if="canOrganizationOperation('create_injury_type')" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+      <button v-if="canOrganizationOperation('create_injury_type')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </div>
   </form>
 

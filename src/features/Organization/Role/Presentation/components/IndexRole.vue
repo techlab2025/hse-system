@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -51,6 +53,8 @@ const searchRole = debounce(() => {
 })
 
 const deleteRole = async (id: number) => {
+  if (!canOrganizationOperation('delete_role')) return
+
   const deleteRoleParams = new DeleteRoleParams(id)
   await DeleteRoleController.getInstance().deleteRole(deleteRoleParams)
   await fetchRole()
@@ -96,6 +100,7 @@ const actionList = (id: number, deleteRole: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_ROLE_ALL, PermissionsEnum.ORG_ROLE_DELETE],
     action: () => deleteRole(id),
     permission: [
       PermissionsEnum.ORG_ROLE_DELETE,

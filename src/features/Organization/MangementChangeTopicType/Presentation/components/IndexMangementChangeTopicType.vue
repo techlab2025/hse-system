@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -95,6 +97,8 @@ const changePageSize = (limit: number) => {
   fetchmanagementChangeTopicTypes(word.value, currentPage.value, limit)
 }
 const deleteManagementChangeTopicType = async (id: number) => {
+  if (!canOrganizationOperation('delete_changement_topic')) return
+
   await DeleteMangementChangeTopicTypeController.getInstance().deleteMangementChangeTopicType(new DeleteMangementChangeTopicTypeParams(id))
   await fetchmanagementChangeTopicTypes(word.value, currentPage.value, countPerPage.value)
 }
@@ -116,6 +120,7 @@ const rowActions = (id: number) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_ALL, PermissionsEnum.ORG_MANAGEMENT_CHANGE_TOPIC_TYPE_DELETE],
     action: () => deleteManagementChangeTopicType(id),
     permission: [
       PermissionsEnum.ADMIN,

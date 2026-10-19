@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -20,6 +22,8 @@ const emit = defineEmits(['update:data'])
 const addProjectZoneController = AddProjectZoneController.getInstance()
 
 const addProjectZone = async () => {
+  if (!canOrganizationOperation('create_zoon')) return
+
   const isSuccess = await addProjectZoneController.addProjectZone(
     params.value as AddProjectZoneParams,
     router,
@@ -28,6 +32,8 @@ const addProjectZone = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_zoon')) return
+
   const isSuccess = addProjectZoneController.setLoading()
   await addProjectZoneController.addProjectZone(
     params.value as AddProjectZoneParams,
@@ -52,10 +58,10 @@ const setParams = (data: Params) => {
     <ProjectZoneForm :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">
-      <button type="button" @click.prevent="saveAndNew" class="btn btn-secondary">
+      <button v-if="canOrganizationOperation('create_zoon')" type="button" @click.prevent="saveAndNew" class="btn btn-secondary">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary">
+      <button v-if="canOrganizationOperation('create_zoon')" type="submit" class="btn btn-primary">
         {{ route.path.includes('project-progress') ? $t('save and next step') : $t('save') }}
       </button>
     </div>

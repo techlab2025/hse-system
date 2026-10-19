@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -21,6 +23,8 @@ const emit = defineEmits(['update:data'])
 const addWhereHouseTypeController = AddWhereHouseTypeController.getInstance()
 
 const addWhereHouseType = async () => {
+  if (!canOrganizationOperation('create_warehouse_type')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await addWhereHouseTypeController.addWhereHouseType(
     params.value as AddWhereHouseTypeParams,
@@ -30,6 +34,8 @@ const addWhereHouseType = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_warehouse_type')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   addWhereHouseTypeController.setLoading()
   await addWhereHouseTypeController.addWhereHouseType(
@@ -53,10 +59,10 @@ const setParams = (data: Params) => {
     <WhereHouseTypeForm :key="formKey" ref="formRef" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">
-      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+      <button v-if="canOrganizationOperation('create_warehouse_type')" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+      <button v-if="canOrganizationOperation('create_warehouse_type')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </div>
   </form>
 

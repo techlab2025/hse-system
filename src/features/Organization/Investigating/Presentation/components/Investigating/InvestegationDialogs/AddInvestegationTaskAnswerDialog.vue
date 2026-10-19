@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -21,6 +23,8 @@ const router = useRouter()
 const route = useRoute()
 const canSubmit = computed(() => !!answer.value?.trim() && !isSubmitting.value)
 const CreateInvestegationTaskResult = async () => {
+  if (!canOrganizationOperation('create_investigation_task_result')) return
+
   if (!canSubmit.value) return
 
   isSubmitting.value = true
@@ -63,7 +67,7 @@ const CreateInvestegationTaskResult = async () => {
         <label class="answer-label" for="answer">your answer</label>
         <textarea name="answer" id="answer" class="input" v-model="answer"></textarea>
       </div>
-      <button @click="CreateInvestegationTaskResult" class="confirm-answer" :disabled="!canSubmit">
+      <button v-if="canOrganizationOperation('create_investigation_task_result')" @click="CreateInvestegationTaskResult" class="confirm-answer" :disabled="!canSubmit">
         {{ isSubmitting ? 'Saving...' : 'Confirm' }}
       </button>
     </div>

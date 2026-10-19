@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -104,6 +106,8 @@ const selectedEmployees = computed<TitleInterface[]>(() => {
 })
 
 const submitProjectLocationTeamEmployee = async (saveAndNew: boolean) => {
+  if (!canOrganizationOperation('create_project_location_team_employee')) return
+
   const employees = selectedEmployees.value.map((emp) => ({
     employee_id: emp.id,
 

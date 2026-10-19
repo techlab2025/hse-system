@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { vProjectPanels } from '../../composables/projectPanels'
@@ -137,6 +139,8 @@ const refreshVisits = async () => {
     )
 }
 const saveMonth = async (month: ProjectMonth) => {
+  if (!canOrganizationOperation('create_leadership_engagement')) return
+
   if (!canCreate.value) return
   errorMessage.value = ''
   successMessage.value = ''
@@ -577,7 +581,7 @@ onMounted(async () => {
                       </button>
 
                       <button
-                        v-if="canCreate"
+                        v-if="(canCreate) && canOrganizationOperation('create_leadership_engagement')"
                         type="button"
                         class="hse-project-button hse-project-button--primary button button--primary"
                         @click="saveMonth(month)"

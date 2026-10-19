@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import type TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
 import ShowTemplateController from '@/features/setting/Template/Presentation/controllers/showTemplateController'
 import Dialog from 'primevue/dialog'
@@ -139,6 +141,8 @@ const formatTaskAnswer = () => {
 
 
 const CreateAnswer = async () => {
+  if (!canOrganizationOperation('create_task_result')) return
+
   const formatted = formatTaskAnswer()
   const UpdatedFormat = formatted.map(item => {
     return new ItemResultParams(item.result, item.template_item_id, item.files, item.item_answers)

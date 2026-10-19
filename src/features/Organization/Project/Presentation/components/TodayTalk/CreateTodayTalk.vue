@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -154,6 +156,8 @@ const resetTalkForm = () => {
 }
 
 const submitTalk = async (saveAndNew: boolean) => {
+  if (!canOrganizationOperation('create_today_talk')) return
+
   if (!validate() || isSaving.value) return
 
   const params = new CreateTodayTalkParams(

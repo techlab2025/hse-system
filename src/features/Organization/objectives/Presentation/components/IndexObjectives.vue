@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 // import IndexObjectivesTypeParams from '@/features/setting/ObjectivesType/Core/params/indexObjectivesTypeParams'
 // import IndexObjectivesTypeController from '@/features/setting/ObjectivesType/Presentation/controllers/indexObjectivesTypeController'
 
@@ -75,6 +77,8 @@ const searchObjectivesType = debounce(() => {
 })
 
 const deleteObjectives = async (id: number) => {
+  if (!canOrganizationOperation('delete_objectives')) return
+
   const deleteObjectivesParams = new DeleteObjectivesParams(id)
   await DeleteObjectivesController.getInstance().deleteObjectives(deleteObjectivesParams)
   await fetchObjectives()
@@ -132,6 +136,7 @@ const actionList = (id: number, deleteObjectives: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.objectives_ALL, PermissionsEnum.objectives_DELETE],
     action: () => deleteObjectives(id),
     permission: [
       PermissionsEnum.OBJECTIVE_ORG_DELETE,

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import type TemplateModel from '@/features/setting/Template/Data/models/TemplateModel'
@@ -134,6 +136,8 @@ const formatTaskAnswer = () => {
 
 const router = useRouter()
 const CreateAnswer = async () => {
+  if (!canOrganizationOperation('create_permit_to_work_result')) return
+
   const validation = await templateDocumentRef.value?.validateAnswers()
   if (validation && !validation.isValid) {
     new OpenWarningDilaog(validation.firstMessage).openDialog()
@@ -166,7 +170,7 @@ const CreateAnswer = async () => {
 <template>
   <section data-hse-project v-project-panels class="hse-project-root hse-project-page">
     <TemplateDocument ref="templateDocumentRef" :allData="state.data!" @update:data="UpdateData" />
-    <button
+    <button v-if="canOrganizationOperation('create_permit_to_work_result')"
       data-hse-project
       v-project-panels
       class="hse-project-root hse-project-button hse-project-button--primary btn btn-primary"

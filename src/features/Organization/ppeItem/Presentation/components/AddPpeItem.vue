@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -21,6 +23,8 @@ const emit = defineEmits(['update:data'])
 const addPpeItemController = AddPpeItemController.getInstance()
 
 const addPpeItem = async () => {
+  if (!canOrganizationOperation('create_ppe_item')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await addPpeItemController.addPpeItem(
     params.value as AddPpeItemParams,
@@ -30,6 +34,8 @@ const addPpeItem = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_ppe_item')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   addPpeItemController.setLoading()
   await addPpeItemController.addPpeItem(
@@ -53,10 +59,10 @@ const setParams = (data: Params) => {
     <PpeItemForm :key="formKey" ref="formRef" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">
-      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+      <button v-if="canOrganizationOperation('create_ppe_item')" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+      <button v-if="canOrganizationOperation('create_ppe_item')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </div>
   </form>
 

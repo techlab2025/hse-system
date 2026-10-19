@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -19,12 +21,16 @@ const inspectionFormRef = ref<InstanceType<typeof InspectionForm> | null>(null)
 const addInspectionController = AddInspectionController.getInstance()
 
 const addInspection = async () => {
+  if (!canOrganizationOperation('create_task')) return
+
   const isValid = await inspectionFormRef.value?.validateRequiredFields()
   if (!isValid) return
   await addInspectionController.addInspection(params.value as AddInspectionParams, router)
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_task')) return
+
   const isValid = await inspectionFormRef.value?.validateRequiredFields()
   if (!isValid) return
   addInspectionController.setLoading()
@@ -47,10 +53,10 @@ const setParams = (data: Params) => {
     <InspectionForm :key="formKey" ref="inspectionFormRef" @update:data="setParams" />
 
     <div class="col-span-6 button-wrapper create-form-actions">
-      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+      <button v-if="canOrganizationOperation('create_task')" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary w-full">{{ $t('save') }}</button>
+      <button v-if="canOrganizationOperation('create_task')" type="submit" class="btn btn-primary w-full">{{ $t('save') }}</button>
     </div>
   </form>
 

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationApi } from '@/features/permission/Presentation/Helpers/organization_authorization'
 
 import { ref } from 'vue'
@@ -19,12 +21,16 @@ const formRef = ref<InstanceType<typeof FullObservationFactoryForm> | null>(null
 const addObservationController = AddHazardController.getInstance()
 
 const addObservation = async () => {
+  if (!canOrganizationOperation('create_observation', { type: 1 })) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   console.log(params.value, 'params')
   await addObservationController.addHazard(params.value as AddHazardParams, router)
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_observation', { type: 1 })) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
 
   addObservationController.setLoading()
@@ -48,10 +54,10 @@ const setParams = (data: Params) => {
     <FullObservationFactoryForm :key="formKey" ref="formRef" @update:data="setParams" />
 
     <div class="col-span-6 button-wrapper create-form-actions">
-      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+      <button v-if="canOrganizationOperation('create_observation', { type: 1 })" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary">{{ $t('submit') }}</button>
+      <button v-if="canOrganizationOperation('create_observation', { type: 1 })" type="submit" class="btn btn-primary">{{ $t('submit') }}</button>
     </div>
   </form>
 

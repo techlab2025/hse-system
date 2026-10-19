@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -103,6 +105,8 @@ watch(selectedActivityId, async (activityId) => {
 })
 
 const submit = async () => {
+  if (!canOrganizationOperation('create_ppe_matrix_delivery')) return
+
   errorMessage.value = ''
   successMessage.value = ''
   if (!selectedActivityId.value) {
@@ -284,7 +288,7 @@ onMounted(async () => {
           </table>
         </div>
       </div>
-      <button
+      <button v-if="canOrganizationOperation('create_ppe_matrix_delivery')"
         type="button"
         class="hse-project-button hse-project-button--primary button-primary"
         :disabled="deliveryController.isDataLoading() || !rows.length"

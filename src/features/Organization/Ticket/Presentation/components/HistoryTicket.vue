@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import EditTicketController from '@/features/Organization/Ticket/Presentation/controllers/editTicketController.ts'
@@ -27,6 +29,8 @@ onMounted(() => {
 })
 
 const EditTicket = async (draft: boolean) => {
+  if (!canOrganizationOperation('update_ticket')) return
+
   if (draft) {
     await EditTicketController.getInstance().editTicket(params.value!, router)
   } else {

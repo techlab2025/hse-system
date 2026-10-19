@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -30,12 +32,16 @@ const createPermissions = [
 ]
 
 const addInduction = async () => {
+  if (!canOrganizationOperation('create_induction')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await addInductionController.addInduction(params.value as AddInductionParams, router)
   if (addInductionController.isDataSuccess()) emit('update:data')
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_induction')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await addInductionController.addInduction(
     params.value as AddInductionParams,
@@ -66,7 +72,7 @@ const setParams = (data: Params) => {
       <InductionForm :key="formKey" ref="formRef" @update:data="setParams" />
 
       <div class="hse-project-form-footer col-span-4 induction-form-actions create-form-actions">
-        <button
+        <button v-if="canOrganizationOperation('create_induction')"
           type="button"
           class="hse-project-button btn btn-secondary induction-action"
           @click.prevent="saveAndNew"
@@ -74,7 +80,7 @@ const setParams = (data: Params) => {
           <Icon icon="uil:plus-circle" />
           {{ $t('save and new') }}
         </button>
-        <button
+        <button v-if="canOrganizationOperation('create_induction')"
           type="submit"
           class="hse-project-button hse-project-button--primary btn btn-primary induction-action induction-action--primary"
         >

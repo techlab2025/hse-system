@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -31,6 +33,8 @@ const fetchProjectDetails = async (id: string | string[]) => {
 }
 
 const EditProject = async () => {
+  if (!canOrganizationOperation('update_project')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   if (!params.value) return
   await EditProjectController.getInstance().editProject(params.value, router)
@@ -70,7 +74,7 @@ const setParams = (data: Params) => {
         >
           <ProjectForm ref="formRef" @update:data="setParams" :data="state.data!" />
           <div class="col-span-4 button-wrapper w-full">
-            <button
+            <button v-if="canOrganizationOperation('update_project')"
               type="submit"
               class="hse-project-button hse-project-button--primary btn btn-primary w-full"
             >

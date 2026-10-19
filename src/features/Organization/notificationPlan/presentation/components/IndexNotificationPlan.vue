@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -161,6 +164,8 @@ const ActiveAction = async (id: number) => {
 }
 
 const deleteNotificationPlan = async (id: number) => {
+  if (!canOrganizationOperation('delete_notification_plan')) return
+
   if (deletingPlanId.value !== null) return
 
   deletingPlanId.value = id
@@ -182,6 +187,7 @@ const managementActions = (id: number) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.NOTIFICATION_PLAN_ALL, PermissionsEnum.NOTIFICATION_PLAN_DELETE],
     action: () => deleteNotificationPlan(id),
   },
 ]

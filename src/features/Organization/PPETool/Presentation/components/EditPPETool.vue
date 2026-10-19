@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -33,6 +35,8 @@ onMounted(() => {
 })
 
 const editPPETool = async () => {
+  if (!canOrganizationOperation('update_ppe_tool')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await EditPPEToolController.getInstance().editPPETool(params.value!, router)
 }
@@ -74,7 +78,7 @@ const allowedPermissions = [
         <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="editPPETool">
           <PPEToolForm ref="formRef" @update:data="setParams" :data="state.data!" />
           <div class="col-span-4 button-wrapper">
-            <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+            <button v-if="canOrganizationOperation('update_ppe_tool')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
           </div>
         </form>
       </template>

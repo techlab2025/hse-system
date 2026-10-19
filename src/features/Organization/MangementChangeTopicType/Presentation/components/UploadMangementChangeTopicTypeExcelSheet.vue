@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { ref, watch } from 'vue'
 import * as XLSX from 'xlsx'
 import { useRouter } from 'vue-router'
@@ -103,6 +105,8 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 const addMangementChangeTopicTypeController = AddMangementChangeTopicTypeController.getInstance()
 
 const addMangementChangeTopicTypes = async () => {
+  if (!canOrganizationOperation('create_changement_topic')) return
+
   if (!mappedData.value) return
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
@@ -212,7 +216,7 @@ const onMappingClose = () => {
           </div>
         </div>
 
-        <button class="btn-confirm" @click="addMangementChangeTopicTypes">Confirm & Submit</button>
+        <button v-if="canOrganizationOperation('create_changement_topic')" class="btn-confirm" @click="addMangementChangeTopicTypes">Confirm & Submit</button>
       </template>
     </template>
   </div>

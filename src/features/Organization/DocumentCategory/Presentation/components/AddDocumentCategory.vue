@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -23,6 +25,8 @@ const emit = defineEmits(['update:data'])
 const addDocumentCategoryController = AddDocumentCategoryController.getInstance()
 
 const addDocumentCategory = async () => {
+  if (!canOrganizationOperation('create_document_category')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await addDocumentCategoryController.addDocumentCategory(
     params.value as AddDocumentCategoryParams,
@@ -32,6 +36,8 @@ const addDocumentCategory = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_document_category')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   addDocumentCategoryController.setLoading()
   await addDocumentCategoryController.addDocumentCategory(
@@ -64,10 +70,10 @@ const allowedPermissions = [
       <DocumentCategoryForm :key="formKey" ref="formRef" @update:data="setParams" />
 
       <div class="col-span-4 button-wrapper create-form-actions">
-        <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+        <button v-if="canOrganizationOperation('create_document_category')" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
           {{ $t('save and new') }}
         </button>
-        <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+        <button v-if="canOrganizationOperation('create_document_category')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
       </div>
     </form>
   </PermissionBuilder>

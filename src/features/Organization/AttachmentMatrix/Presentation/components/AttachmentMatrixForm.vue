@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canAny } from '@/features/permission/Presentation/Helpers/organization_permission'
 import { PermissionsEnum as P } from '@/features/users/Admin/Core/Enum/permission_enum'
 
@@ -91,6 +93,8 @@ const totalAttachments = computed(() =>
 )
 
 const submit = async () => {
+  if (!canOrganizationOperation('create_attachment_matrix')) return
+
   if (!canSaveMatrix.value || isSaving.value) return
   feedback.value = ''
   hasError.value = false
@@ -145,7 +149,7 @@ onMounted(fetchMatrix)
           </svg>
         </span>
         <button
-          v-if="canSaveMatrix"
+          v-if="(canSaveMatrix) && canOrganizationOperation('create_attachment_matrix')"
           class="matrix-save-button"
           type="submit"
           :disabled="isLoading || isSaving"

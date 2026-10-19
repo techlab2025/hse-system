@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import { ref, watch } from 'vue'
 import * as XLSX from 'xlsx'
@@ -163,6 +165,8 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 const addWhereHouseTypeController = AddWhereHouseTypeController.getInstance()
 
 const AddWarehouseType = async () => {
+  if (!canOrganizationOperation('create_warehouse_type')) return
+
   if (!mappedData.value) return
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
@@ -298,7 +302,7 @@ const onMappingClose = () => {
           </div>
         </div>
 
-        <button @click="AddWarehouseType" class="btn-confirm">Confirm & Submit</button>
+        <button v-if="canOrganizationOperation('create_warehouse_type')" @click="AddWarehouseType" class="btn-confirm">Confirm & Submit</button>
       </template>
     </template>
   </div>

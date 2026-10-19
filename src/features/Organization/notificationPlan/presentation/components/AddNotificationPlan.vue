@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -218,6 +220,8 @@ const updateAssignmentMode = (mode: AssignmentMode) => {
 }
 
 const submitNotificationPlan = async (saveAndNew: boolean) => {
+  if (!canOrganizationOperation('create_notification_plan')) return
+
   if (!(await validateRequiredFields())) return
 
   const notificationPlanParams = new AddNotificationPlanParams(

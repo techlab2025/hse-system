@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
@@ -80,6 +82,8 @@ const searchInspection = debounce(() => {
 })
 
 const deleteInspection = async (id: number) => {
+  if (!canOrganizationOperation('delete_task')) return
+
   const deleteInspectionParams = new DeleteInspectionParams(id)
   await DeleteInspectionController.getInstance().deleteInspection(deleteInspectionParams)
   await fetchInspection()
@@ -125,6 +129,7 @@ const actionList = (id: number, deleteInspection: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_INSPECTION_ALL, PermissionsEnum.ORG_INSPECTION_DELETE],
     action: () => deleteInspection(id),
     permission: [
       PermissionsEnum.ORG_INSPECTION_DELETE,

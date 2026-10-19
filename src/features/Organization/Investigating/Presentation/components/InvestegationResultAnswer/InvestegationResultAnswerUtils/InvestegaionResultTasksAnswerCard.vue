@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import AssignedToicon from '@/shared/icons/AssignedToicon.vue'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -143,6 +145,8 @@ const openStatusDialog = () => {
 const updateInvestigationTaskController = UpdateInvestigationTaskController.getInstance()
 
 const saveTaskStatus = async () => {
+  if (!canOrganizationOperation('update_investigation_task')) return
+
   if (!props.task?.id) return
   if (isReasonRequired.value && !selectedStatusReason.value.trim()) return
 
@@ -275,7 +279,7 @@ const route = useRoute()
       </div>
 
       <template #footer>
-        <button
+        <button v-if="canOrganizationOperation('update_investigation_task')"
           class="status-save-btn"
           :disabled="isSavingStatus || (isReasonRequired && !selectedStatusReason.trim())"
           @click="saveTaskStatus"

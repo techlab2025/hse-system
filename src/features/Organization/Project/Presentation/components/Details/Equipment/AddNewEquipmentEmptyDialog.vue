@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -48,6 +50,8 @@ const setEquipments = (data: TitleInterface | TitleInterface[] | null) => {
 }
 
 const AddEquipment = async () => {
+  if (!canOrganizationOperation('create_project_zoon_equipment')) return
+
   const payload = new CreateProjectZoneEquipment(projectId, [
     {
       project_zoon_id: selectedZoneId.value,
@@ -140,7 +144,7 @@ onMounted(() => {
         />
 
         <div class="submit-btn w-full mt-4">
-          <button
+          <button v-if="canOrganizationOperation('create_project_zoon_equipment')"
             class="hse-project-button hse-project-button--primary btn btn-primary w-full confirm-equipment-btn"
             :disabled="!equipments.length"
             @click="AddEquipment"

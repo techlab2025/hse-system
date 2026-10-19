@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -69,6 +71,8 @@ const changePageSize = (limit: number) => {
   fetchVisitCategories(word.value, currentPage.value, limit)
 }
 const deleteVisitCategory = async (id: number) => {
+  if (!canOrganizationOperation('delete_leadership_category')) return
+
   await DeleteVisitCategoryController.getInstance().deleteVisitCategory(new DeleteVisitCategoryParams(id))
   await fetchVisitCategories(word.value, currentPage.value, countPerPage.value)
 }
@@ -95,6 +99,8 @@ const onFileSelected = (event: Event) => {
   input.value = ''
 }
 const onImported = async (titles: string[]) => {
+  if (!canOrganizationOperation('create_leadership_category')) return
+
   const controller = AddVisitCategoryController.getInstance()
   await controller.importVisitCategories(titles, router)
   if (controller.isDataSuccess()) {
@@ -113,6 +119,7 @@ const rowActions = (id: number) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_VISIT_CATEGORY_ALL, PermissionsEnum.ORG_VISIT_CATEGORY_DELETE],
     action: () => deleteVisitCategory(id),
     permission: permissions,
   },

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import { onMounted, ref } from 'vue'
@@ -51,6 +53,8 @@ const indexEquipmentController = IndexEquipmentController.getInstance()
 const indexEquipmentParams = new IndexEquipmentParams('', 0, 0, 0, null, true)
 
 const submitEquipment = async (saveAndNew: boolean) => {
+  if (!canOrganizationOperation('create_project_zoon_equipment')) return
+
   try {
     const controller = CreateProjectZoneEquipmentsController.getInstance()
     controller.setLoading()

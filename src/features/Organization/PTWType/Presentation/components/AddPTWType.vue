@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -21,6 +23,8 @@ const emit = defineEmits(['update:data'])
 const addPTWTypeController = AddPTWTypeController.getInstance()
 
 const addPTWType = async () => {
+  if (!canOrganizationOperation('create_permit_type')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   console.log(params.value, 'params.value')
   await addPTWTypeController.addPTWType(params.value as AddPTWTypeParams, router)
@@ -28,6 +32,8 @@ const addPTWType = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_permit_type')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   addPTWTypeController.setLoading()
   await addPTWTypeController.addPTWType(params.value as AddPTWTypeParams, stayOnPageRouter)
@@ -48,10 +54,10 @@ const setParams = (data: Params) => {
     <PTWTypeForm :key="formKey" ref="formRef" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">
-      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+      <button v-if="canOrganizationOperation('create_permit_type')" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+      <button v-if="canOrganizationOperation('create_permit_type')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </div>
   </form>
 

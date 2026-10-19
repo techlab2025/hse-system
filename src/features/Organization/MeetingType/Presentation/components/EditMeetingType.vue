@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -32,6 +34,8 @@ onMounted(() => {
 })
 
 const editMeetingType = async () => {
+  if (!canOrganizationOperation('update_meeting_type')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await EditMeetingTypeController.getInstance().editMeetingType(params.value!, router)
 }
@@ -62,7 +66,7 @@ const setParams = (data: AddMeetingTypeParams | EditMeetingTypeParams) => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="editMeetingType">
         <MeetingTypeForm ref="formRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+          <button v-if="canOrganizationOperation('update_meeting_type')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>
       </form>
     </template>

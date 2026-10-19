@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -33,6 +35,8 @@ onMounted(() => {
 })
 
 const editObjectives = async () => {
+  if (!canOrganizationOperation('update_objectives')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await EditObjectivesController.getInstance().editObjectives(params.value!, router)
 }
@@ -60,7 +64,7 @@ const setParams = (data: AddObjectivesParams | EditObjectivesParams) => {
       <form class="objective-editor-form" @submit.prevent="editObjectives">
         <ObjectivesForm ref="formRef" @update:data="setParams" :data="state.data!" />
         <div class="objective-action-bar create-form-actions">
-          <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+          <button v-if="canOrganizationOperation('update_objectives')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>
       </form>
     </template>

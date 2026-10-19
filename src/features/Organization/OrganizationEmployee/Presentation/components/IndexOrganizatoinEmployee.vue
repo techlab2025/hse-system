@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -113,6 +115,8 @@ const searchOrganizatoinEmployee = debounce(() => {
 })
 
 const deleteOrganizatoinEmployee = async (id: number) => {
+  if (!canOrganizationOperation('delete_organization_employee')) return
+
   const deleteOrganizatoinEmployeeParams = new DeleteOrganizatoinEmployeeParams(id)
   await DeleteOrganizatoinEmployeeController.getInstance().deleteOrganizatoinEmployee(
     deleteOrganizatoinEmployeeParams,
@@ -205,6 +209,7 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_EMPLOYEE_ALL, PermissionsEnum.ORG_EMPLOYEE_DELETE],
     action: () => deleteOrganizatoinEmployee(id),
     permission: [
       PermissionsEnum.ORG_EMPLOYEE_DELETE,

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import {
   computed,
   nextTick,
@@ -266,6 +268,8 @@ function validate(): boolean {
 }
 
 async function submit() {
+  if (!canOrganizationOperation('create_internal_audit_report')) return
+
   if (isReported.value || isSaving.value || !canIssueReport.value || ncrError.value || !validate())
     return
 
@@ -456,7 +460,7 @@ onDeactivated(() => {
         <footer v-if="!isReported && !previewMode" class="form-actions" data-pdf-exclude>
           <button class="secondary-button" type="button" :disabled="isSaving" @click="saveDraft">
             Save Draft</button
-          ><button
+          ><button v-if="canOrganizationOperation('create_internal_audit_report')"
             class="primary-button"
             type="submit"
             :disabled="isSaving || !canIssueReport || !!ncrError"

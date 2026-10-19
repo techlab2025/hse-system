@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -19,10 +21,14 @@ const formKey = ref(0)
 const addPartnerController = AddPartnerController.getInstance()
 
 const addPartner = async () => {
+  if (!canOrganizationOperation('create_partner')) return
+
   await addPartnerController.addPartner(params.value as AddPartnerParams, router)
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_partner')) return
+
   addPartnerController.setLoading()
   await addPartnerController.addPartner(params.value as AddPartnerParams, stayOnPageRouter)
   if (addPartnerController.isDataSuccess()) {
@@ -42,10 +48,10 @@ const setParams = (data: Params) => {
     <PartnerForm :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">
-      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+      <button v-if="canOrganizationOperation('create_partner')" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+      <button v-if="canOrganizationOperation('create_partner')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </div>
   </form>
 

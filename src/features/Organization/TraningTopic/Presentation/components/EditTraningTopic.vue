@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -63,6 +65,8 @@ watch(
 )
 
 const editTraningTopic = async () => {
+  if (!canOrganizationOperation('update_training_topic')) return
+
   if (!params.value) return
 
   editTraningTopicController.setLoading()
@@ -84,7 +88,7 @@ const editTraningTopic = async () => {
 
           <PermissionBuilder :code="updatePermissions">
             <div class="col-span-4 button-wrapper create-form-actions">
-              <button type="submit" class="btn btn-primary">
+              <button v-if="canOrganizationOperation('update_training_topic')" type="submit" class="btn btn-primary">
                 {{ $t('save') }}
               </button>
             </div>

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 
 import { onMounted, ref, watch } from 'vue'
@@ -64,6 +66,8 @@ const searchWhereHouseType = debounce(() => {
 })
 
 const deleteWhereHouseType = async (id: number) => {
+  if (!canOrganizationOperation('delete_warehouse_type')) return
+
   const deleteWhereHouseTypeParams = new DeleteWhereHouseTypeParams(id)
   await DeleteWhereHouseTypeController.getInstance().deleteWhereHouseType(deleteWhereHouseTypeParams)
   await fetchWhereHouseType()
@@ -109,6 +113,7 @@ const actionList = (id: number, deleteWhereHouseType: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.WHIERE_HOUSE_TYPE_ALL, PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE],
     action: () => deleteWhereHouseType(id),
     permission: [
       PermissionsEnum.WHIERE_HOUSE_TYPE_DELETE,

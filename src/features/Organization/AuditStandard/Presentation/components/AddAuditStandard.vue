@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -23,12 +25,16 @@ const emit = defineEmits(['update:data'])
 const addAuditStandardController = AddAuditStandardController.getInstance()
 
 const addAuditStandard = async () => {
+  if (!canOrganizationOperation('create_internal_audit_standard')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await addAuditStandardController.addAuditStandard(params.value as AddAuditStandardParams, router)
   emit('update:data')
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_internal_audit_standard')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   addAuditStandardController.setLoading()
   await addAuditStandardController.addAuditStandard(
@@ -61,10 +67,10 @@ const allowedPermissions = [
       <AuditStandardForm :key="formKey" ref="formRef" @update:data="setParams" />
 
       <div class="col-span-4 button-wrapper create-form-actions">
-        <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+        <button v-if="canOrganizationOperation('create_internal_audit_standard')" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
           {{ $t('save and new') }}
         </button>
-        <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+        <button v-if="canOrganizationOperation('create_internal_audit_standard')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
       </div>
     </form>
   </PermissionBuilder>

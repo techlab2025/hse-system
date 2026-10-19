@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -30,6 +32,8 @@ onMounted(() => {
 })
 
 const EditOrganizationLocation = async (draft: boolean) => {
+  if (!canOrganizationOperation('update_organization_location')) return
+
   if (draft) {
     await EditOrganizationLocationController.getInstance().editOrganizationLocation(params.value!, router)
   } else {
@@ -64,7 +68,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditOrganizationLocation">
         <OrganizationLocationForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+          <button v-if="canOrganizationOperation('update_organization_location')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>
       </form>
     </template>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, onMounted, ref } from 'vue'
@@ -69,6 +71,8 @@ const handleFilesChange = (files: UploadedFile[]) => {
 }
 
 const submit = async () => {
+  if (!canOrganizationOperation('create_visit_report')) return
+
   if (!visit.value || visit.value.reportAdded || controller.isDataLoading()) return
   errorMessage.value = ''
   if (!topic.value.trim() || !discussion.value.trim() || !observations.value.trim()) {
@@ -337,7 +341,7 @@ onMounted(async () => {
             <RouterLink :to="visitsPath" class="hse-project-button button button--quiet"
               >Cancel</RouterLink
             >
-            <button
+            <button v-if="canOrganizationOperation('create_visit_report')"
               type="submit"
               class="hse-project-button hse-project-button--primary button button--primary"
               :disabled="controller.isDataLoading()"

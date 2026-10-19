@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 
 import { onMounted, ref, watch } from 'vue'
@@ -82,12 +84,16 @@ const searchHerikaly = debounce(() => {
 // })
 
 const deleteHerikaly = async (id: number) => {
+  if (!canOrganizationOperation('delete_herikaly')) return
+
   const deleteHerikalyParams = new DeleteHerikalyParams(id)
   await DeleteHerikalyController.getInstance().deleteHerikaly(deleteHerikalyParams)
   await fetchHerikaly()
 }
 
 const changeStatusHerikaly = async (id: number) => {
+  if (!canOrganizationOperation('delete_herikaly')) return
+
   const changeStatusHerikalyParams = new ChangeStatusHerikalyParams(id)
   await ChangeStatusHerikalyController.getInstance().changeStatusHerikaly(
     changeStatusHerikalyParams,
@@ -151,6 +157,7 @@ const actionList = (id: number, deleteHerikaly: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.HERIKALY_ALL, PermissionsEnum.HERIKALY_DELETE],
     action: () => deleteHerikaly(id),
     permission: [
       PermissionsEnum.HERIKALY_DELETE,

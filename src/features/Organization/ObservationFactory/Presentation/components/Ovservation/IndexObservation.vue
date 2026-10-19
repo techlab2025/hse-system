@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 import { debounce } from '@/base/Presentation/utils/debouced'
@@ -147,6 +149,8 @@ const searchHazard = debounce(() => {
 })
 
 const deleteHazard = async (id: number) => {
+  if (!canOrganizationOperation('delete_observation', { type: 1 })) return
+
   const deleteHazardParams = new DeleteHazardParams(id)
   await DeleteHazardController.getInstance().deleteHazard(deleteHazardParams)
   await fetchHazard()
@@ -397,6 +401,8 @@ const getInvestigationRoute = (item: {
 }
 
 const toggleObservationWorkStopped = async (id: number) => {
+  if (!canOrganizationOperation('toggle_observation_work_status')) return
+
   const toggleObservationWorkStoppedParams = new ToggleObservationWorkStoppedParams(id)
   await ToggleObservationWorkStoppedController.getInstance().toggleObservationWorkStopped(
     toggleObservationWorkStoppedParams,

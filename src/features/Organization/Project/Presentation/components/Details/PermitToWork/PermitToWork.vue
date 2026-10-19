@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import { computed, ref, watch } from 'vue'
@@ -142,6 +144,8 @@ const updateOrganizationEmployee = (data: TitleInterface | TitleInterface[] | nu
 const permitToWorkController = PermitToWorkController.getInstance()
 
 const SubmitFrom = async () => {
+  if (!canOrganizationOperation('create_permit_to_work')) return
+
   if (!projectId.value) {
     requiredFieldErrors.value.Project = t('employeeProjectAction.selectProject')
     return
@@ -511,7 +515,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
             </svg>
             {{ $t('Review all information before creating the permit.') }}
           </p>
-          <button type="submit" class="hse-project-button hse-project-button--primary ptw-submit">
+          <button v-if="canOrganizationOperation('create_permit_to_work')" type="submit" class="hse-project-button hse-project-button--primary ptw-submit">
             {{ $t('Create permit') }}
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M5 12h14M14 7l5 5-5 5" />

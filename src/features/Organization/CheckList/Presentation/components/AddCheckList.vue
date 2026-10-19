@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -20,11 +22,15 @@ const emit = defineEmits(['update:data'])
 const addCheckListController = AddCheckListController.getInstance()
 
 const addCheckList = async () => {
+  if (!canOrganizationOperation('create_checklist')) return
+
   await addCheckListController.addCheckList(params.value as AddCheckListParams, router)
   emit('update:data')
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_checklist')) return
+
   addCheckListController.setLoading()
   await addCheckListController.addCheckList(params.value as AddCheckListParams, stayOnPageRouter)
   if (addCheckListController.isDataSuccess()) {
@@ -44,10 +50,10 @@ const setParams = (data: Params) => {
     <CheckListForm :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">
-      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+      <button v-if="canOrganizationOperation('create_checklist')" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+      <button v-if="canOrganizationOperation('create_checklist')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </div>
   </form>
 

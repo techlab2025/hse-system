@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import * as XLSX from 'xlsx'
@@ -68,6 +70,8 @@ const deleteRow = (index: number) => {
 }
 
 const upload = async () => {
+  if (!canOrganizationOperation('create_training_topic')) return
+
   if (!mappedData.value?.length) {
     new OpenWarningDilaog(t('excel_row_required')).openDialog()
     return
@@ -143,7 +147,7 @@ const upload = async () => {
         </table>
       </div>
 
-      <button class="btn btn-primary" :disabled="!sheetData.length" @click="upload">
+      <button v-if="canOrganizationOperation('create_training_topic')" class="btn btn-primary" :disabled="!sheetData.length" @click="upload">
         {{ $t('upload') }}
       </button>
     </div>

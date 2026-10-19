@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import * as XLSX from 'xlsx'
@@ -105,6 +107,8 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 const addDocumentCategoryController = AddDocumentCategoryController.getInstance()
 
 const addDocumentCategories = async () => {
+  if (!canOrganizationOperation('create_document_category')) return
+
   if (!mappedData.value) return
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
@@ -221,7 +225,7 @@ const createPermissions = [
             </div>
           </div>
 
-          <button class="btn-confirm" @click="addDocumentCategories">
+          <button v-if="canOrganizationOperation('create_document_category')" class="btn-confirm" @click="addDocumentCategories">
             {{ $t('confirm_and_submit') }}
           </button>
         </template>

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import { computed, ref, onMounted, watch } from 'vue'
@@ -51,6 +53,8 @@ const handleHierarchyUpdate = (projectLocationId: number, value: TitleInterface[
 const validationMessage = ref<string | null>('')
 
 const handleAddAllHierarchies = async () => {
+  if (!canOrganizationOperation('create_project_location_hierarchy')) return
+
   if (isSubmitting.value) return
 
   validationMessage.value = ''
@@ -233,7 +237,7 @@ watch(
             >
               {{ $t('cancel') }}
             </RouterLink>
-            <button
+            <button v-if="canOrganizationOperation('create_project_location_hierarchy')"
               type="button"
               class="hse-project-button action-btn confirm-btn"
               :disabled="isSubmitting"

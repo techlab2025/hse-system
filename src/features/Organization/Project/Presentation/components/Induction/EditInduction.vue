@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -45,6 +47,8 @@ const fetchInductionDetails = async () => {
 }
 
 const editInduction = async () => {
+  if (!canOrganizationOperation('update_induction')) return
+
   if (!PermissionHandler.Instance.handle(updatePermissions)) return
   if (!(await formRef.value?.validateRequiredFields())) return
   await EditInductionController.getInstance().editInduction(
@@ -83,7 +87,7 @@ onMounted(fetchInductionDetails)
             <InductionForm ref="formRef" :data="state.data!" @update:data="setParams" />
             <div class="hse-project-form-footer col-span-4 induction-form-actions">
               <PermissionBuilder :code="updatePermissions">
-                <button
+                <button v-if="canOrganizationOperation('update_induction')"
                   type="submit"
                   class="hse-project-button hse-project-button--primary btn btn-primary induction-action induction-action--primary"
                 >

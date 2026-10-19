@@ -130,6 +130,21 @@ export function canOrganizationApi(
   return canPolicy(organizationApiPolicies[endpoint])
 }
 
+/** Organization-only boundary for components also reused by the platform dashboard.
+ * Outside Organization context the caller's existing platform permissions still apply.
+ */
+export function canOrganizationOperation(
+  endpoint: string,
+  payload: Record<string, unknown> = {},
+): boolean {
+  if (!permissionsReady()) return false
+  if (
+    useUserStore().user?.type !== OrganizationTypeEnum.ORGANIZATION &&
+    !window.location.pathname.startsWith('/organization')
+  ) return true
+  return canOrganizationApi(endpoint, payload)
+}
+
 export function assertOrganizationApi(url: string, payload: Record<string, unknown>): void {
   const store = useUserStore()
   const user = store.user

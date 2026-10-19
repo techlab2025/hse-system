@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -18,6 +20,8 @@ const formRef = ref<InstanceType<typeof ObjectivesForm> | null>(null)
 const addObjectivesController = AddObjectivesController.getInstance()
 
 const addObjectives = async () => {
+  if (!canOrganizationOperation('create_objectives')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await addObjectivesController.addObjectives(
     params.value as AddObjectivesParams,
@@ -28,6 +32,8 @@ const addObjectives = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_objectives')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   addObjectivesController.setLoading()
   await addObjectivesController.addObjectives(params.value as AddObjectivesParams, stayOnPageRouter)
@@ -48,10 +54,10 @@ const setParams = (data: AddObjectivesParams) => {
     <ObjectivesForm :key="formKey" ref="formRef" @update:data="setParams" />
 
     <div class="objective-action-bar create-form-actions">
-      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+      <button v-if="canOrganizationOperation('create_objectives')" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+      <button v-if="canOrganizationOperation('create_objectives')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </div>
   </form>
 

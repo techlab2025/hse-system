@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -30,6 +32,8 @@ onMounted(() => {
 })
 
 const EditInjury = async (draft: boolean) => {
+  if (!canOrganizationOperation('update_injury_type')) return
+
   if (draft) {
     await EditInjuryController.getInstance().editInjury(params.value!, router)
   } else {
@@ -64,7 +68,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditInjury">
         <InjuryForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+          <button v-if="canOrganizationOperation('update_injury_type')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>
       </form>
     </template>

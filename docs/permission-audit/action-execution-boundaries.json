@@ -1,0 +1,2491 @@
+[
+  {
+    "file": "src/features/Organization/AttachmentMatrix/Presentation/components/AttachmentMatrixForm.vue",
+    "functions": [
+      {
+        "handler": "submit",
+        "endpoint": "create_attachment_matrix",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/AuditActivity/Presentation/components/AddAuditActivity.vue",
+    "functions": [
+      {
+        "handler": "addAuditActivity",
+        "endpoint": "create_internal_audit_activity",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_internal_audit_activity",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/AuditActivity/Presentation/components/EditAuditActivity.vue",
+    "functions": [
+      {
+        "handler": "editAuditActivity",
+        "endpoint": "update_internal_audit_activity",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/AuditActivity/Presentation/components/IndexAuditActivity.vue",
+    "functions": [
+      {
+        "handler": "deleteAuditActivity",
+        "endpoint": "delete_internal_audit_activity",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/AuditActivity/Presentation/components/UploadAuditActivityExcelSheet.vue",
+    "functions": [
+      {
+        "handler": "addAuditActivities",
+        "endpoint": "create_internal_audit_activity",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/AuditStandard/Presentation/components/AddAuditStandard.vue",
+    "functions": [
+      {
+        "handler": "addAuditStandard",
+        "endpoint": "create_internal_audit_standard",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_internal_audit_standard",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/AuditStandard/Presentation/components/EditAuditStandard.vue",
+    "functions": [
+      {
+        "handler": "editAuditStandard",
+        "endpoint": "update_internal_audit_standard",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/AuditStandard/Presentation/components/IndexAuditStandard.vue",
+    "functions": [
+      {
+        "handler": "deleteAuditStandard",
+        "endpoint": "delete_internal_audit_standard",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/AuditStandard/Presentation/components/UploadAuditStandardExcelSheet.vue",
+    "functions": [
+      {
+        "handler": "addAuditStandards",
+        "endpoint": "create_internal_audit_standard",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Capa/Presentation/components/CapaActionPlanDetails.vue",
+    "functions": [
+      {
+        "handler": "saveTaskStatus",
+        "endpoint": "update_investigation_task",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/CheckList/Presentation/components/AddCheckList.vue",
+    "functions": [
+      {
+        "handler": "addCheckList",
+        "endpoint": "create_checklist",
+        "status": "Denied pending backend permission registration"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_checklist",
+        "status": "Denied pending backend permission registration"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/CheckList/Presentation/components/EditCheckList.vue",
+    "functions": [
+      {
+        "handler": "editCheckList",
+        "endpoint": "update_checklist",
+        "status": "Denied pending backend permission registration"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/CheckList/Presentation/components/IndexCheckList.vue",
+    "functions": [
+      {
+        "handler": "deleteCheckList",
+        "endpoint": "delete_checklist",
+        "status": "Denied pending backend permission registration"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/DocumentCategory/Presentation/components/AddDocumentCategory.vue",
+    "functions": [
+      {
+        "handler": "addDocumentCategory",
+        "endpoint": "create_document_category",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_document_category",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/DocumentCategory/Presentation/components/EditDocumentCategory.vue",
+    "functions": [
+      {
+        "handler": "editDocumentCategory",
+        "endpoint": "update_document_category",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/DocumentCategory/Presentation/components/IndexDocumentCategory.vue",
+    "functions": [
+      {
+        "handler": "deleteDocumentCategory",
+        "endpoint": "delete_document_category",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/DocumentCategory/Presentation/components/UploadDocumentCategoryExcelSheet.vue",
+    "functions": [
+      {
+        "handler": "addDocumentCategories",
+        "endpoint": "create_document_category",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/DocumentRefrence/Presentation/components/AddDocumentRefrence.vue",
+    "functions": [
+      {
+        "handler": "addDocumentRefrence",
+        "endpoint": "create_document_reference",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_document_reference",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/DocumentRefrence/Presentation/components/EditDocumentRefrence.vue",
+    "functions": [
+      {
+        "handler": "EditDocumentRefrence",
+        "endpoint": "update_document_reference",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/DocumentRefrence/Presentation/components/IndexDocumentRefrence.vue",
+    "functions": [
+      {
+        "handler": "deleteDocumentRefrence",
+        "endpoint": "delete_document_reference",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/DrillType/Presentation/components/AddDrillType.vue",
+    "functions": [
+      {
+        "handler": "addDrillType",
+        "endpoint": "create_drill_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_drill_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/DrillType/Presentation/components/EditDrillType.vue",
+    "functions": [
+      {
+        "handler": "editDrillType",
+        "endpoint": "update_drill_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/DrillType/Presentation/components/IndexDrillType.vue",
+    "functions": [
+      {
+        "handler": "deleteDrillType",
+        "endpoint": "delete_drill_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/DrillType/Presentation/components/UploadDrillTypeExcelSheet.vue",
+    "functions": [
+      {
+        "handler": "addDrillTypes",
+        "endpoint": "create_drill_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/EmployeesCertificates/Presentation/components/AddEmployeeCertificate.vue",
+    "functions": [
+      {
+        "handler": "addEmployeeCertificate",
+        "endpoint": "create_employee_certificate",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_employee_certificate",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/EmployeesCertificates/Presentation/supcomponents/CertificateImageDialog.vue",
+    "functions": [
+      {
+        "handler": "UploadCertificateImage",
+        "endpoint": "create_employee_certificate",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/EmployeesCertificates/Presentation/supcomponents/RenewCertificateNotRequiredDialog.vue",
+    "functions": [
+      {
+        "handler": "UploadCertificateImage",
+        "endpoint": "create_employee_certificate",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Herikaly/Presentation/components/AddHerikaly.vue",
+    "functions": [
+      {
+        "handler": "addHerikaly",
+        "endpoint": "create_herikaly",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_herikaly",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Herikaly/Presentation/components/EditHerikaly.vue",
+    "functions": [
+      {
+        "handler": "EditHerikaly",
+        "endpoint": "update_herikaly",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Herikaly/Presentation/components/IndexHerikaly.vue",
+    "functions": [
+      {
+        "handler": "deleteHerikaly",
+        "endpoint": "delete_herikaly",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "changeStatusHerikaly",
+        "endpoint": "delete_herikaly",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Herikaly/Presentation/components/TreeTimeLine.vue",
+    "functions": [
+      {
+        "handler": "deleteHierarchy",
+        "endpoint": "delete_herikaly",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Herikaly/Presentation/components/UploadHierarachyExeclSheet.vue",
+    "functions": [
+      {
+        "handler": "AddOrgEmployee",
+        "endpoint": "create_herikaly",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Injury/Presentation/components/AddInjury.vue",
+    "functions": [
+      {
+        "handler": "addInjury",
+        "endpoint": "create_injury_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_injury_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Injury/Presentation/components/EditInjury.vue",
+    "functions": [
+      {
+        "handler": "EditInjury",
+        "endpoint": "update_injury_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Injury/Presentation/components/IndexInjury.vue",
+    "functions": [
+      {
+        "handler": "deleteInjury",
+        "endpoint": "delete_injury_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Injury/Presentation/components/UploadInjuryExeclSheet.vue",
+    "functions": [
+      {
+        "handler": "AddInjuries",
+        "endpoint": "create_injury_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/AddInspection.vue",
+    "functions": [
+      {
+        "handler": "addInspection",
+        "endpoint": "create_task",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_task",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/EditInspection.vue",
+    "functions": [
+      {
+        "handler": "EditInspection",
+        "endpoint": "update_task",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/IndexInspection.vue",
+    "functions": [
+      {
+        "handler": "deleteInspection",
+        "endpoint": "delete_task",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionDialog/InspectionStartTemplate.vue",
+    "functions": [
+      {
+        "handler": "CreateAnswer",
+        "endpoint": "create_task_result",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/InspectionDialog/ShowInspectionDialog.vue",
+    "functions": [
+      {
+        "handler": "CreateAnswer",
+        "endpoint": "create_task_result",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Inspection/Presentation/components/Overdueinspection.vue",
+    "functions": [
+      {
+        "handler": "deleteInspection",
+        "endpoint": "delete_task",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/InternalAudit/Presentation/components/reports/InternalAuditReportTab.vue",
+    "functions": [
+      {
+        "handler": "submit",
+        "endpoint": "create_internal_audit_report",
+        "status": "Denied pending backend permission registration"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestegationResultAnswer/InvestegationResultAnswerUtils/InvestegaionResultTasksAnswerCard.vue",
+    "functions": [
+      {
+        "handler": "saveTaskStatus",
+        "endpoint": "update_investigation_task",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/AddInvestigating.vue",
+    "functions": [
+      {
+        "handler": "addInvestigating",
+        "endpoint": "create_full_investigation",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_full_investigation",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestegationDialogs/AddInvestegationTaskAnswerDialog.vue",
+    "functions": [
+      {
+        "handler": "CreateInvestegationTaskResult",
+        "endpoint": "create_investigation_task_result",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestegationDialogs/CloseInvestegaionDialog.vue",
+    "functions": [
+      {
+        "handler": "SubmitData",
+        "endpoint": "close_investigation",
+        "status": "Denied pending backend permission registration"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/Investigating/InvestigatingResults.vue",
+    "functions": [
+      {
+        "handler": "AddEnvestigatingResult",
+        "endpoint": "create_full_investigation_meeting_result",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Investigating/Presentation/components/InvestigationMeeting/AddInvestigationMeeting.vue",
+    "functions": [
+      {
+        "handler": "addInvestigating",
+        "endpoint": "create_full_investigation",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_full_investigation",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/MangementChangeTopicType/Presentation/components/AddMangementChangeTopicType.vue",
+    "functions": [
+      {
+        "handler": "addMangementChangeTopicType",
+        "endpoint": "create_changement_topic",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_changement_topic",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/MangementChangeTopicType/Presentation/components/EditMangementChangeTopicType.vue",
+    "functions": [
+      {
+        "handler": "editMangementChangeTopicType",
+        "endpoint": "update_changement_topic",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/MangementChangeTopicType/Presentation/components/IndexMangementChangeTopicType.vue",
+    "functions": [
+      {
+        "handler": "deleteManagementChangeTopicType",
+        "endpoint": "delete_changement_topic",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/MangementChangeTopicType/Presentation/components/UploadMangementChangeTopicTypeExcelSheet.vue",
+    "functions": [
+      {
+        "handler": "addMangementChangeTopicTypes",
+        "endpoint": "create_changement_topic",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/MangementOfChange/Presentation/components/AddMangementChange.vue",
+    "functions": [
+      {
+        "handler": "addMangementChange",
+        "endpoint": "create_management_of_change",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_management_of_change",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/MangementOfChange/Presentation/components/EditMangementChange.vue",
+    "functions": [
+      {
+        "handler": "editMangementChange",
+        "endpoint": "update_management_of_change",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/MangementOfChange/Presentation/components/MangementOfChanges.vue",
+    "functions": [
+      {
+        "handler": "deleteMangementChange",
+        "endpoint": "delete_management_of_change",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/MeetingType/Presentation/components/AddMeetingType.vue",
+    "functions": [
+      {
+        "handler": "addMeetingType",
+        "endpoint": "create_meeting_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_meeting_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/MeetingType/Presentation/components/EditMeetingType.vue",
+    "functions": [
+      {
+        "handler": "editMeetingType",
+        "endpoint": "update_meeting_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/MeetingType/Presentation/components/IndexMeetingType.vue",
+    "functions": [
+      {
+        "handler": "deleteMeetingType",
+        "endpoint": "delete_meeting_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/MeetingType/Presentation/components/UploadMeetingTypeExcelSheet.vue",
+    "functions": [
+      {
+        "handler": "addMeetingTypes",
+        "endpoint": "create_meeting_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/FactoryUtils/ObservationCard.vue",
+    "functions": [
+      {
+        "handler": "toggleObservationActionStatus",
+        "endpoint": "toggle_observation_action_status",
+        "status": "Denied pending backend permission registration"
+      },
+      {
+        "handler": "ToogleStatus",
+        "endpoint": "toggle_observation_action_status",
+        "status": "Denied pending backend permission registration"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Hazard/AddHazard.vue",
+    "functions": [
+      {
+        "handler": "addHazard",
+        "endpoint": "create_observation",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_observation",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Hazard/EditHazard.vue",
+    "functions": [
+      {
+        "handler": "EditHazard",
+        "endpoint": "update_observation",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Hazard/IndexHazard.vue",
+    "functions": [
+      {
+        "handler": "deleteHazard",
+        "endpoint": "delete_observation",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Incedant/AddIncedant.vue",
+    "functions": [
+      {
+        "handler": "addHazard",
+        "endpoint": "create_observation",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_observation",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Incedant/EditIncedant.vue",
+    "functions": [
+      {
+        "handler": "EditHazard",
+        "endpoint": "update_observation",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Incedant/IndexIncedant.vue",
+    "functions": [
+      {
+        "handler": "deleteHazard",
+        "endpoint": "delete_observation",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Ovservation/AddObservation.vue",
+    "functions": [
+      {
+        "handler": "addObservation",
+        "endpoint": "create_observation",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_observation",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Ovservation/EditObservation.vue",
+    "functions": [
+      {
+        "handler": "EditObservation",
+        "endpoint": "update_observation_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/ObservationFactory/Presentation/components/Ovservation/IndexObservation.vue",
+    "functions": [
+      {
+        "handler": "deleteHazard",
+        "endpoint": "delete_observation",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "toggleObservationWorkStopped",
+        "endpoint": "toggle_observation_work_status",
+        "status": "Denied pending backend permission registration"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/components/AddOrganizatoinEmployee.vue",
+    "functions": [
+      {
+        "handler": "addOrganizatoinEmployee",
+        "endpoint": "create_organization_employee",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_organization_employee",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/components/EditOrganizatoinEmployee.vue",
+    "functions": [
+      {
+        "handler": "EditOrganizatoinEmployee",
+        "endpoint": "update_organization_employee",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/components/IndexOrganizatoinEmployee.vue",
+    "functions": [
+      {
+        "handler": "deleteOrganizatoinEmployee",
+        "endpoint": "delete_organization_employee",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/components/UploadOrganizationEmployee.vue",
+    "functions": [
+      {
+        "handler": "fileUpload",
+        "endpoint": "create_organization_employee",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "AddOrgEmployee",
+        "endpoint": "create_organization_employee",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/OrganizationEmployee/Presentation/supcomponents/showOrgEmployee/EmployeeProfileBox.vue",
+    "functions": [
+      {
+        "handler": "deleteOrganizatoinEmployee",
+        "endpoint": "delete_organization_employee",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/OrganizationLocation/Presentation/components/AddOrganizationLocation.vue",
+    "functions": [
+      {
+        "handler": "addOrganizationLocation",
+        "endpoint": "create_organization_location",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_organization_location",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/OrganizationLocation/Presentation/components/EditOrganizationLocation.vue",
+    "functions": [
+      {
+        "handler": "EditOrganizationLocation",
+        "endpoint": "update_organization_location",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/OrganizationLocation/Presentation/components/IndexOrganizationLocation.vue",
+    "functions": [
+      {
+        "handler": "deleteOrganizationLocation",
+        "endpoint": "delete_organization_location",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/PPEActivity/Presentation/components/AddPPEActivity.vue",
+    "functions": [
+      {
+        "handler": "addPPEActivity",
+        "endpoint": "create_ppe_activity",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_ppe_activity",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/PPEActivity/Presentation/components/EditPPEActivity.vue",
+    "functions": [
+      {
+        "handler": "editPPEActivity",
+        "endpoint": "update_ppe_activity",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/PPEActivity/Presentation/components/IndexPPEActivity.vue",
+    "functions": [
+      {
+        "handler": "deletePPEActivity",
+        "endpoint": "delete_ppe_activity",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/PPEActivity/Presentation/components/UploadPPEActivityExcelSheet.vue",
+    "functions": [
+      {
+        "handler": "addPPEActivities",
+        "endpoint": "create_ppe_activity",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/PPETool/Presentation/components/AddPPETool.vue",
+    "functions": [
+      {
+        "handler": "addPPETool",
+        "endpoint": "create_ppe_tool",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_ppe_tool",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/PPETool/Presentation/components/EditPPETool.vue",
+    "functions": [
+      {
+        "handler": "editPPETool",
+        "endpoint": "update_ppe_tool",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/PPETool/Presentation/components/IndexPPETool.vue",
+    "functions": [
+      {
+        "handler": "deletePPETool",
+        "endpoint": "delete_ppe_tool",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/PPETool/Presentation/components/UploadPPEToolExcelSheet.vue",
+    "functions": [
+      {
+        "handler": "addPPETools",
+        "endpoint": "create_ppe_tool",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/PTWType/Presentation/components/AddPTWType.vue",
+    "functions": [
+      {
+        "handler": "addPTWType",
+        "endpoint": "create_permit_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_permit_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/PTWType/Presentation/components/EditPTWType.vue",
+    "functions": [
+      {
+        "handler": "editPTWType",
+        "endpoint": "update_permit_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/PTWType/Presentation/components/IndexPTWType.vue",
+    "functions": [
+      {
+        "handler": "deletePTWType",
+        "endpoint": "delete_permit_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/PTWType/Presentation/components/UploadPTWTypeExcelSheet.vue",
+    "functions": [
+      {
+        "handler": "addPTWTypes",
+        "endpoint": "create_permit_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Partner/Presentation/components/AddPartner.vue",
+    "functions": [
+      {
+        "handler": "addPartner",
+        "endpoint": "create_partner",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_partner",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Partner/Presentation/components/EditPartner.vue",
+    "functions": [
+      {
+        "handler": "EditPartner",
+        "endpoint": "update_partner",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Partner/Presentation/components/IndexPartner.vue",
+    "functions": [
+      {
+        "handler": "deletePartner",
+        "endpoint": "delete_partner",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/AddProject.vue",
+    "functions": [
+      {
+        "handler": "addProject",
+        "endpoint": "create_project",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_project",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/CreateEmployee/AddCreateEmployee.vue",
+    "functions": [
+      {
+        "handler": "handleAddAllEmployees",
+        "endpoint": "create_project_location_hierarchy_employee",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/CreateHierarchy/AddCreateHierarchy.vue",
+    "functions": [
+      {
+        "handler": "handleAddAllHierarchies",
+        "endpoint": "create_project_location_hierarchy",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/Equipment/AddNewEquipmentEmptyDialog.vue",
+    "functions": [
+      {
+        "handler": "AddEquipment",
+        "endpoint": "create_project_zoon_equipment",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/LocationsTeams/AddEmployeeDialog.vue",
+    "functions": [
+      {
+        "handler": "UpdateDate",
+        "endpoint": "create_project_location_hierarchy_employee",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/LocationsTeams/LocationsSection.vue",
+    "functions": [
+      {
+        "handler": "DeleteTeamMember",
+        "endpoint": "delete_project_location_hierarchy_employee",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/LocationsTeams/TeamCard.vue",
+    "functions": [
+      {
+        "handler": "DeleteTeamMember",
+        "endpoint": "delete_project_location_team_employee",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/PermitToWork/AnswerTheTemplateOfPermit.vue",
+    "functions": [
+      {
+        "handler": "CreateAnswer",
+        "endpoint": "create_permit_to_work_result",
+        "status": "Denied pending backend permission registration"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/PermitToWork/PermitToWork.vue",
+    "functions": [
+      {
+        "handler": "SubmitFrom",
+        "endpoint": "create_permit_to_work",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/ProjectMeeting/MeetingResultDialog.vue",
+    "functions": [
+      {
+        "handler": "submit",
+        "endpoint": "create_project_meeting_result",
+        "status": "Denied pending backend permission registration"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/ProjectMeeting/ProjectMeetingForm.vue",
+    "functions": [
+      {
+        "handler": "submit",
+        "endpoint": "create_project_meeting",
+        "status": "Denied pending backend permission registration"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Details/ProjectSite/ProjectLocationZoonDialog.vue",
+    "functions": [
+      {
+        "handler": "CreatProjectZoon",
+        "endpoint": "create_project_zone",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/AddEquipmentDialog.vue",
+    "functions": [
+      {
+        "handler": "AddEquipment",
+        "endpoint": "create_project_zoon_equipment",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/CreateTeamDialog/CreateTeamForm.vue",
+    "functions": [
+      {
+        "handler": "submitProjectLocationTeamEmployee",
+        "endpoint": "create_project_location_team_employee",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/Drill/DrillForm.vue",
+    "functions": [
+      {
+        "handler": "submit",
+        "endpoint": "create_drill",
+        "status": "Denied pending backend permission registration"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/EquipmentDialog/EquipmentForm.vue",
+    "functions": [
+      {
+        "handler": "submitEquipment",
+        "endpoint": "create_project_zoon_equipment",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Dialogs/EquipmentZoneDialog/EquipmentZoneDialog.vue",
+    "functions": [
+      {
+        "handler": "AddEquipment",
+        "endpoint": "create_project_zoon_equipment",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/EditProject.vue",
+    "functions": [
+      {
+        "handler": "EditProject",
+        "endpoint": "update_project",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Employee/ProjectEmployeeSection.vue",
+    "functions": [
+      {
+        "handler": "DeleteMember",
+        "endpoint": "delete_project_location_hierarchy_employee",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Induction/AddInduction.vue",
+    "functions": [
+      {
+        "handler": "addInduction",
+        "endpoint": "create_induction",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_induction",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Induction/EditInduction.vue",
+    "functions": [
+      {
+        "handler": "editInduction",
+        "endpoint": "update_induction",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Induction/IndexInduction.vue",
+    "functions": [
+      {
+        "handler": "deleteInduction",
+        "endpoint": "delete_induction",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Leadership/Leadership.vue",
+    "functions": [
+      {
+        "handler": "saveMonth",
+        "endpoint": "create_leadership_engagement",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/Leadership/ReportVisit.vue",
+    "functions": [
+      {
+        "handler": "submit",
+        "endpoint": "create_visit_report",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/RiskAssessment/CreateRiskAssessment.vue",
+    "functions": [
+      {
+        "handler": "create",
+        "endpoint": "create_risk_assessment",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/TodayTalk/CreateTodayTalk.vue",
+    "functions": [
+      {
+        "handler": "submitTalk",
+        "endpoint": "create_today_talk",
+        "status": "Denied pending backend permission registration"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Project/Presentation/components/ppematrix/PPEMatrixDelivery.vue",
+    "functions": [
+      {
+        "handler": "submit",
+        "endpoint": "create_ppe_matrix_delivery",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/ProjectZone/Presentation/components/AddProjectZone.vue",
+    "functions": [
+      {
+        "handler": "addProjectZone",
+        "endpoint": "create_zoon",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_zoon",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/ProjectZone/Presentation/components/EditProjectZone.vue",
+    "functions": [
+      {
+        "handler": "EditProjectZone",
+        "endpoint": "update_zoon",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/ProjectZone/Presentation/components/IndexProjectZone.vue",
+    "functions": [
+      {
+        "handler": "deleteProjectZone",
+        "endpoint": "delete_zoon",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "changeStatusProjectZone",
+        "endpoint": "delete_zoon",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Role/Presentation/components/AddRole.vue",
+    "functions": [
+      {
+        "handler": "addRole",
+        "endpoint": "create_role",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_role",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Role/Presentation/components/EditRole.vue",
+    "functions": [
+      {
+        "handler": "EditRole",
+        "endpoint": "update_role",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Role/Presentation/components/IndexRole.vue",
+    "functions": [
+      {
+        "handler": "deleteRole",
+        "endpoint": "delete_role",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Scope/Presentation/components/AddScope.vue",
+    "functions": [
+      {
+        "handler": "addScope",
+        "endpoint": "create_scope",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_scope",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Scope/Presentation/components/EditScope.vue",
+    "functions": [
+      {
+        "handler": "EditScope",
+        "endpoint": "update_scope",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Scope/Presentation/components/IndexScope.vue",
+    "functions": [
+      {
+        "handler": "deleteScope",
+        "endpoint": "delete_scope",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/SerialNumber/Presentation/components/AddSerialForm.vue",
+    "functions": [
+      {
+        "handler": "submitSerialData",
+        "endpoint": "create_coding_system",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Shifts/Presentation/components/AddShift.vue",
+    "functions": [
+      {
+        "handler": "addShift",
+        "endpoint": "create_work_shift",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_work_shift",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Shifts/Presentation/components/EditShift.vue",
+    "functions": [
+      {
+        "handler": "EditShift",
+        "endpoint": "update_work_shift",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Shifts/Presentation/components/IndexShift.vue",
+    "functions": [
+      {
+        "handler": "deleteShift",
+        "endpoint": "delete_work_shift",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Ticket/Presentation/components/AddTicket.vue",
+    "functions": [
+      {
+        "handler": "addTicket",
+        "endpoint": "create_ticket",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_ticket",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Ticket/Presentation/components/Dialog/ResolveTickeDialog.vue",
+    "functions": [
+      {
+        "handler": "resolveTicket",
+        "endpoint": "create_ticket_reply",
+        "status": "Denied pending backend permission registration"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Ticket/Presentation/components/HistoryTicket.vue",
+    "functions": [
+      {
+        "handler": "EditTicket",
+        "endpoint": "update_ticket",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Ticket/Presentation/components/IndexTicket.vue",
+    "functions": [
+      {
+        "handler": "deleteTicket",
+        "endpoint": "delete_ticket",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/Ticket/Presentation/components/TicketDialog/TicketDialog.vue",
+    "functions": [
+      {
+        "handler": "SubmitTicket",
+        "endpoint": "create_ticket",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/TicketType/Presentation/components/AddTicketType.vue",
+    "functions": [
+      {
+        "handler": "addTicketType",
+        "endpoint": "create_ticket_type",
+        "status": "Denied pending backend permission registration"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_ticket_type",
+        "status": "Denied pending backend permission registration"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/TicketType/Presentation/components/EditTicketType.vue",
+    "functions": [
+      {
+        "handler": "EditTicketType",
+        "endpoint": "update_ticket_type",
+        "status": "Denied pending backend permission registration"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/TicketType/Presentation/components/IndexTicketType.vue",
+    "functions": [
+      {
+        "handler": "deleteTicketType",
+        "endpoint": "delete_ticket_type",
+        "status": "Denied pending backend permission registration"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/TraningTopic/Presentation/components/AddTraningTopic.vue",
+    "functions": [
+      {
+        "handler": "addTraningTopic",
+        "endpoint": "create_training_topic",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_training_topic",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/TraningTopic/Presentation/components/EditTraningTopic.vue",
+    "functions": [
+      {
+        "handler": "editTraningTopic",
+        "endpoint": "update_training_topic",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/TraningTopic/Presentation/components/IndexTraningTopic.vue",
+    "functions": [
+      {
+        "handler": "deleteTraningTopic",
+        "endpoint": "delete_training_topic",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/TraningTopic/Presentation/components/UploadTraningTopicExcelSheet.vue",
+    "functions": [
+      {
+        "handler": "upload",
+        "endpoint": "create_training_topic",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/VisitActivity/Presentation/components/AddVisitActivity.vue",
+    "functions": [
+      {
+        "handler": "addVisitActivity",
+        "endpoint": "create_visit_activity",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_visit_activity",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/VisitActivity/Presentation/components/EditVisitActivity.vue",
+    "functions": [
+      {
+        "handler": "editVisitActivity",
+        "endpoint": "update_visit_activity",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/VisitActivity/Presentation/components/IndexVisitActivity.vue",
+    "functions": [
+      {
+        "handler": "deleteVisitActivity",
+        "endpoint": "delete_visit_activity",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "onImported",
+        "endpoint": "create_visit_activity",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/VisitActivity/Presentation/supcomponents/SystemVisitActivities.vue",
+    "functions": [
+      {
+        "handler": "addSystemVisitActivities",
+        "endpoint": "create_visit_activity",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/VisitCategory/Presentation/components/AddVisitCategory.vue",
+    "functions": [
+      {
+        "handler": "addVisitCategory",
+        "endpoint": "create_leadership_category",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_leadership_category",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/VisitCategory/Presentation/components/EditVisitCategory.vue",
+    "functions": [
+      {
+        "handler": "editVisitCategory",
+        "endpoint": "update_leadership_category",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/VisitCategory/Presentation/components/IndexVisitCategory.vue",
+    "functions": [
+      {
+        "handler": "deleteVisitCategory",
+        "endpoint": "delete_leadership_category",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "onImported",
+        "endpoint": "create_leadership_category",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/VisitCategory/Presentation/supcomponents/SystemVisitCategories.vue",
+    "functions": [
+      {
+        "handler": "addSystemVisitCategories",
+        "endpoint": "create_leadership_category",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/VisitTheme/Presentation/components/AddVisitTheme.vue",
+    "functions": [
+      {
+        "handler": "addVisitTheme",
+        "endpoint": "create_leadership_theme",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_leadership_theme",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/VisitTheme/Presentation/components/EditVisitTheme.vue",
+    "functions": [
+      {
+        "handler": "editVisitTheme",
+        "endpoint": "update_leadership_theme",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/VisitTheme/Presentation/components/IndexVisitTheme.vue",
+    "functions": [
+      {
+        "handler": "deleteVisitTheme",
+        "endpoint": "delete_leadership_theme",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "onImported",
+        "endpoint": "create_leadership_theme",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/VisitTheme/Presentation/supcomponents/SystemVisitThemes.vue",
+    "functions": [
+      {
+        "handler": "addSystemVisitThemes",
+        "endpoint": "create_leadership_theme",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/WhereHouse/Presentation/components/AddWhereHouse.vue",
+    "functions": [
+      {
+        "handler": "addWhereHouse",
+        "endpoint": "create_warehouse",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_warehouse",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/WhereHouse/Presentation/components/EditWhereHouse.vue",
+    "functions": [
+      {
+        "handler": "EditWhereHouse",
+        "endpoint": "update_warehouse",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/WhereHouse/Presentation/components/IndexWhereHouse.vue",
+    "functions": [
+      {
+        "handler": "deleteWhereHouse",
+        "endpoint": "delete_warehouse",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/WhereHouseType/Presentation/components/AddWhereHouseType.vue",
+    "functions": [
+      {
+        "handler": "addWhereHouseType",
+        "endpoint": "create_warehouse_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_warehouse_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/WhereHouseType/Presentation/components/EditWhereHouseType.vue",
+    "functions": [
+      {
+        "handler": "EditWhereHouseType",
+        "endpoint": "update_warehouse_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/WhereHouseType/Presentation/components/IndexWhereHouseType.vue",
+    "functions": [
+      {
+        "handler": "deleteWhereHouseType",
+        "endpoint": "delete_warehouse_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/WhereHouseType/Presentation/components/UploadWarehouseExeclSheet.vue",
+    "functions": [
+      {
+        "handler": "AddWarehouseType",
+        "endpoint": "create_warehouse_type",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/notificationPlan/presentation/components/AddNotificationPlan.vue",
+    "functions": [
+      {
+        "handler": "submitNotificationPlan",
+        "endpoint": "create_notification_plan",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/notificationPlan/presentation/components/IndexNotificationPlan.vue",
+    "functions": [
+      {
+        "handler": "deleteNotificationPlan",
+        "endpoint": "delete_notification_plan",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/objectives/Presentation/components/AddObjectives.vue",
+    "functions": [
+      {
+        "handler": "addObjectives",
+        "endpoint": "create_objectives",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_objectives",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/objectives/Presentation/components/EditObjectives.vue",
+    "functions": [
+      {
+        "handler": "editObjectives",
+        "endpoint": "update_objectives",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/objectives/Presentation/components/IndexObjectives.vue",
+    "functions": [
+      {
+        "handler": "deleteObjectives",
+        "endpoint": "delete_objectives",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/ppeItem/Presentation/components/AddPpeItem.vue",
+    "functions": [
+      {
+        "handler": "addPpeItem",
+        "endpoint": "create_ppe_item",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      },
+      {
+        "handler": "saveAndNew",
+        "endpoint": "create_ppe_item",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 2,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/ppeItem/Presentation/components/EditPpeItem.vue",
+    "functions": [
+      {
+        "handler": "editPpeItem",
+        "endpoint": "update_ppe_item",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/ppeItem/Presentation/components/IndexPpeItem.vue",
+    "functions": [
+      {
+        "handler": "deletePpeItem",
+        "endpoint": "delete_ppe_item",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 1,
+    "controls": 0,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  },
+  {
+    "file": "src/features/Organization/ppeItem/Presentation/components/UploadPpeItemExcelSheet.vue",
+    "functions": [
+      {
+        "handler": "addPpeItems",
+        "endpoint": "create_ppe_item",
+        "status": "Execution guard derived from actual controller/API dependencies"
+      }
+    ],
+    "callbacks": 0,
+    "controls": 1,
+    "status": "Proven single-endpoint execution/control boundaries; other actions still require semantic review"
+  }
+]

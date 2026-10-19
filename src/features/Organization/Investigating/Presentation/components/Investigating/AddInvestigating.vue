@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -19,6 +21,8 @@ const investigatingFormRef = ref<InstanceType<typeof InvestigatingForm> | null>(
 const addInvestigatingController = AddInvestigatingController.getInstance()
 
 const addInvestigating = async () => {
+  if (!canOrganizationOperation('create_full_investigation')) return
+
   const isValid = await investigatingFormRef.value?.validateRequiredFields()
   if (isValid === false) return
   console.log(params.value, 'params')
@@ -26,6 +30,8 @@ const addInvestigating = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_full_investigation')) return
+
   const isValid = await investigatingFormRef.value?.validateRequiredFields()
   if (isValid === false) return
 
@@ -62,7 +68,7 @@ const setParams = (data: Params) => {
       <!-- <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
       </button> -->
-      <button type="submit" class="btn btn-primary" style="width: 70%">{{ $t('Confirm') }}</button>
+      <button v-if="canOrganizationOperation('create_full_investigation')" type="submit" class="btn btn-primary" style="width: 70%">{{ $t('Confirm') }}</button>
     </div>
   </form>
 

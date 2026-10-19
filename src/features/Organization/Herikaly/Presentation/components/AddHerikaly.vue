@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -34,6 +36,8 @@ const formRef = ref<InstanceType<typeof HerikalyForm> | null>(null)
 const addHerikalyController = AddHerikalyController.getInstance()
 
 const addHerikaly = async () => {
+  if (!canOrganizationOperation('create_herikaly')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   console.log(params.value, 'params')
   addHerikalyController.setLoading()
@@ -51,6 +55,8 @@ const addHerikaly = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_herikaly')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   addHerikalyController.setLoading()
   await addHerikalyController.addHerikaly(params.value as AddHerikalyParams, stayOnPageRouter, true)
@@ -77,10 +83,10 @@ const setParams = (data: Params) => {
       @update:data="setParams"
     />
     <div class="col-span-4 button-wrapper create-form-actions">
-      <button type="button" @click.prevent="saveAndNew" class="btn btn-secondary">
+      <button v-if="canOrganizationOperation('create_herikaly')" type="button" @click.prevent="saveAndNew" class="btn btn-secondary">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary">
+      <button v-if="canOrganizationOperation('create_herikaly')" type="submit" class="btn btn-primary">
         {{ route.path.includes('project-progress') ? $t('save and next step') : $t('save') }}
       </button>
     </div>

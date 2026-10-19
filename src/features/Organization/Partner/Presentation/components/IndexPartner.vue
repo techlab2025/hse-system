@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -63,6 +65,8 @@ const searchPartner = debounce(() => {
 })
 
 const deletePartner = async (id: number) => {
+  if (!canOrganizationOperation('delete_partner')) return
+
   const deletePartnerParams = new DeletePartnerParams(id)
   await DeletePartnerController.getInstance().deletePartner(deletePartnerParams)
   await fetchPartner()
@@ -108,6 +112,7 @@ const actionList = (id: number, deletePartner: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.PARTNER_ALL, PermissionsEnum.PARTNER_DELETE],
     action: () => deletePartner(id),
     permission: [
       PermissionsEnum.PARTNER_DELETE,

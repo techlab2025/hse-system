@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -31,6 +33,8 @@ onMounted(() => {
 })
 
 const EditWhereHouseType = async (draft: boolean) => {
+  if (!canOrganizationOperation('update_warehouse_type')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   if (draft) {
     await EditWhereHouseTypeController.getInstance().editWhereHouseType(params.value!, router)
@@ -66,7 +70,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditWhereHouseType">
         <WhereHouseTypeForm ref="formRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+          <button v-if="canOrganizationOperation('update_warehouse_type')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>
       </form>
     </template>

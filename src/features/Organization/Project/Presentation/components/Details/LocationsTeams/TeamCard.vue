@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import TeamsIcon from '@/shared/icons/TeamsIcon.vue'
@@ -36,6 +38,8 @@ const GetProjectLocationsEmployes = async () => {
 }
 
 const DeleteTeamMember = async (id: number) => {
+  if (!canOrganizationOperation('delete_project_location_team_employee')) return
+
   const deleteProjectLocationTeamEmployeeparams = new DeleteProjectlocationTeamEmployeeParams(id)
   const deleteProjectLocationTeamEmployeeController =
     DeleteProjectLocationTeamEmployeeController.getInstance()

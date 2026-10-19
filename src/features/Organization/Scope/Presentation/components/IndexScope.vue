@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -51,6 +53,8 @@ const searchScope = debounce(() => {
 })
 
 const deleteScope = async (id: number) => {
+  if (!canOrganizationOperation('delete_scope')) return
+
   const deleteScopeParams = new DeleteScopeParams(id)
   await DeleteScopeController.getInstance().deleteScope(deleteScopeParams)
   await fetchScope()
@@ -96,6 +100,7 @@ const actionList = (id: number, deleteScope: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.SCOPE_ALL, PermissionsEnum.SCOPE_DELETE],
     action: () => deleteScope(id),
     permission: [
       PermissionsEnum.SCOPE_DELETE,

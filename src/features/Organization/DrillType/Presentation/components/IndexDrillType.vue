@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -95,6 +97,8 @@ const changePageSize = (limit: number) => {
   fetchDrillTypes(word.value, currentPage.value, limit)
 }
 const deleteDrillType = async (id: number) => {
+  if (!canOrganizationOperation('delete_drill_type')) return
+
   await DeleteDrillTypeController.getInstance().deleteDrillType(new DeleteDrillTypeParams(id))
   await fetchDrillTypes(word.value, currentPage.value, countPerPage.value)
 }
@@ -116,6 +120,7 @@ const rowActions = (id: number) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_DRILL_TYPE_ALL, PermissionsEnum.ORG_DRILL_TYPE_DELETE],
     action: () => deleteDrillType(id),
     permission: [
       PermissionsEnum.ADMIN,

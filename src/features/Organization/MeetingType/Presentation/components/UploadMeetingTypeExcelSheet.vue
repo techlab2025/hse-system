@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { ref, watch } from 'vue'
 import * as XLSX from 'xlsx'
 import { useRouter } from 'vue-router'
@@ -149,6 +151,8 @@ const validateRows = (rows: ReturnType<typeof buildRows>) => {
 
 const addMeetingTypeController = AddMeetingTypeController.getInstance()
 const addMeetingTypes = async () => {
+  if (!canOrganizationOperation('create_meeting_type')) return
+
   const rows = buildRows()
   const validationError = validateRows(rows)
   if (validationError) {
@@ -240,7 +244,7 @@ const onMappingClose = () => {
           </div>
         </div>
 
-        <button class="btn-confirm" type="button" @click="addMeetingTypes">Confirm & Submit</button>
+        <button v-if="canOrganizationOperation('create_meeting_type')" class="btn-confirm" type="button" @click="addMeetingTypes">Confirm & Submit</button>
       </template>
     </template>
   </div>

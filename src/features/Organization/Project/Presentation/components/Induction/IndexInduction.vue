@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -81,6 +83,8 @@ const changePageSize = (limit: number) => {
   fetchInductions(word.value, currentPage.value, limit)
 }
 const deleteInduction = async (id: number) => {
+  if (!canOrganizationOperation('delete_induction')) return
+
   if (!PermissionHandler.Instance.handle(deletePermissions)) return
   const deleteController = DeleteInductionController.getInstance()
   await deleteController.deleteInduction(new DeleteInductionParams(id))
@@ -105,6 +109,7 @@ const rowActions = (id: number) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.inductions_ALL, PermissionsEnum.inductions_DELETE],
     action: () => deleteInduction(id),
     permission: deletePermissions,
   },

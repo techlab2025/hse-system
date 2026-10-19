@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { inject } from 'vue'
 import { overviewPresentationKey } from '../overviewPresentation'
 const overviewPresentation = inject(overviewPresentationKey, false)
@@ -381,6 +383,8 @@ const error = ref('')
 // -----------------------------------------------------------------------------
 
 const submit = async () => {
+  if (!canOrganizationOperation('create_project_meeting_result')) return
+
   // if (!validate()) {
   //   return
   // }
@@ -842,7 +846,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
           {{ $t('Cancel') }}
         </button>
 
-        <button
+        <button v-if="canOrganizationOperation('create_project_meeting_result')"
           type="submit"
           class="hse-project-button hse-project-button--primary btn-primary"
           :disabled="submitting"

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -81,6 +83,8 @@ const changePageSize = (limit: number) => {
   fetchPPEActivities(word.value, currentPage.value, limit)
 }
 const deletePPEActivity = async (id: number) => {
+  if (!canOrganizationOperation('delete_ppe_activity')) return
+
   await DeletePPEActivityController.getInstance().deletePPEActivity(new DeletePPEActivityParams(id))
   await fetchPPEActivities(word.value, currentPage.value, countPerPage.value)
 }
@@ -101,6 +105,7 @@ const rowActions = (id: number) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_PPE_ACTIVITY_ALL, PermissionsEnum.ORG_PPE_ACTIVITY_DELETE],
     action: () => deletePPEActivity(id),
     permission: [
       PermissionsEnum.ADMIN,

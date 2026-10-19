@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import * as XLSX from 'xlsx'
@@ -105,6 +107,8 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 const addPPEActivityController = AddPPEActivityController.getInstance()
 
 const addPPEActivities = async () => {
+  if (!canOrganizationOperation('create_ppe_activity')) return
+
   if (!mappedData.value) return
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
@@ -219,7 +223,7 @@ const createPermissions = [
             </div>
           </div>
 
-          <button class="btn-confirm" @click="addPPEActivities">{{ $t('confirm_and_submit') }}</button>
+          <button v-if="canOrganizationOperation('create_ppe_activity')" class="btn-confirm" @click="addPPEActivities">{{ $t('confirm_and_submit') }}</button>
         </template>
       </template>
     </div>

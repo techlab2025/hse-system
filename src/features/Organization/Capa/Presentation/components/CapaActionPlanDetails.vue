@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import type { CapaTaskDetailsModel } from '../../Data/models/CapaTasksModel'
 import { computed, ref } from 'vue'
 import Dialog from 'primevue/dialog'
@@ -94,6 +96,8 @@ const openStatusDialog = (task: CapaTaskDetailsModel) => {
 const updateInvestigationTaskController = UpdateInvestigationTaskController.getInstance()
 
 const saveTaskStatus = async () => {
+  if (!canOrganizationOperation('update_investigation_task')) return
+
   if (!selectedStatusTask.value || isSavingStatus.value || !isSelectableStatus.value) return
   if (isReasonRequired.value && !selectedStatusReason.value.trim()) return
 
@@ -298,7 +302,7 @@ const openVerificationDialog = (task: CapaTaskDetailsModel) => {
       </div>
 
       <template #footer>
-        <button
+        <button v-if="canOrganizationOperation('update_investigation_task')"
           class="status-save-btn"
           :disabled="
             isSavingStatus || !isSelectableStatus || (isReasonRequired && !selectedStatusReason.trim())

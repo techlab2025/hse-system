@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -92,6 +94,8 @@ const changePageSize = (limit: number) => {
   fetchMeetingTypes(word.value, currentPage.value, limit)
 }
 const deleteMeetingType = async (id: number) => {
+  if (!canOrganizationOperation('delete_meeting_type')) return
+
   await DeleteMeetingTypeController.getInstance().deleteMeetingType(new DeleteMeetingTypeParams(id))
   await fetchMeetingTypes(word.value, currentPage.value, countPerPage.value)
 }
@@ -113,6 +117,7 @@ const rowActions = (id: number) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_MEETING_TYPE_ALL, PermissionsEnum.ORG_MEETING_TYPE_DELETE],
     action: () => deleteMeetingType(id),
     permission: [
       PermissionsEnum.ADMIN,

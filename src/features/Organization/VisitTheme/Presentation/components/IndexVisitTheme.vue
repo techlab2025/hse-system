@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -69,6 +71,8 @@ const changePageSize = (limit: number) => {
   fetchVisitThemes(word.value, currentPage.value, limit)
 }
 const deleteVisitTheme = async (id: number) => {
+  if (!canOrganizationOperation('delete_leadership_theme')) return
+
   await DeleteVisitThemeController.getInstance().deleteVisitTheme(new DeleteVisitThemeParams(id))
   await fetchVisitThemes(word.value, currentPage.value, countPerPage.value)
 }
@@ -95,6 +99,8 @@ const onFileSelected = (event: Event) => {
   input.value = ''
 }
 const onImported = async (titles: string[]) => {
+  if (!canOrganizationOperation('create_leadership_theme')) return
+
   const controller = AddVisitThemeController.getInstance()
   await controller.importVisitThemes(titles, router)
   if (controller.isDataSuccess()) {
@@ -113,6 +119,7 @@ const rowActions = (id: number) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_VISIT_THEME_ALL, PermissionsEnum.ORG_VISIT_THEME_DELETE],
     action: () => deleteVisitTheme(id),
     permission: permissions,
   },

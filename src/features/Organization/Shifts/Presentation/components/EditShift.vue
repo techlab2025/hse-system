@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -30,6 +32,8 @@ onMounted(() => {
 })
 
 const EditShift = async () => {
+  if (!canOrganizationOperation('update_work_shift')) return
+
   await EditShiftController.getInstance().editShift(params.value!, router)
 }
 
@@ -55,7 +59,7 @@ const setParams = (data: EditShiftParams) => {
       <form @submit.prevent="EditShift" class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <ShiftForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+          <button v-if="canOrganizationOperation('update_work_shift')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>
       </form>
     </template>

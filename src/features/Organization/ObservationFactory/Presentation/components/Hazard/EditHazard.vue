@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationApi } from '@/features/permission/Presentation/Helpers/organization_authorization'
 
 import { onMounted, ref, watch } from 'vue'
@@ -29,6 +31,8 @@ onMounted(() => {
 })
 
 const EditHazard = async (draft: boolean) => {
+  if (!canOrganizationOperation('update_observation', { type: 2 })) return
+
   if (draft) {
     await EditHazardController.getInstance().editHazard(params.value!, router)
   } else {
@@ -63,7 +67,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditHazard">
         <HazardForm @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+          <button v-if="canOrganizationOperation('update_observation', { type: 2 })" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>
       </form>
     </template>

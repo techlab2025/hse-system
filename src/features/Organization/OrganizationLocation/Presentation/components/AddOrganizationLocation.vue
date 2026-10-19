@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -19,6 +21,8 @@ const formKey = ref(0)
 const addOrganizationLocationController = AddOrganizationLocationController.getInstance()
 
 const addOrganizationLocation = async () => {
+  if (!canOrganizationOperation('create_organization_location')) return
+
   await addOrganizationLocationController.addOrganizationLocation(
     params.value as AddOrganizationLocationParams,
     router,
@@ -26,6 +30,8 @@ const addOrganizationLocation = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_organization_location')) return
+
   addOrganizationLocationController.setLoading()
   await addOrganizationLocationController.addOrganizationLocation(
     params.value as AddOrganizationLocationParams,
@@ -48,10 +54,10 @@ const setParams = (data: Params) => {
     <OrganizationLocationForm :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">
-      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+      <button v-if="canOrganizationOperation('create_organization_location')" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+      <button v-if="canOrganizationOperation('create_organization_location')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </div>
   </form>
 

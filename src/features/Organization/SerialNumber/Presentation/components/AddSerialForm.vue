@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -280,6 +282,8 @@ const fields = ref([
 ])
 
 const submitSerialData = async (saveAndNew: boolean) => {
+  if (!canOrganizationOperation('create_coding_system')) return
+
   const codes = fields.value
     .filter((field) => field.prefix || field.suffix || field.start)
     .map(

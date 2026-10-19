@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -61,6 +63,8 @@ function setAssessmentDate(value: unknown) {
 }
 
 async function create() {
+  if (!canOrganizationOperation('create_risk_assessment')) return
+
   error.value = ''
   if (!projectId.value) {
     error.value = t('employeeProjectAction.selectProject')
@@ -278,7 +282,7 @@ async function create() {
               :to="listPath"
               >Cancel</RouterLink
             >
-            <button
+            <button v-if="canOrganizationOperation('create_risk_assessment')"
               class="hse-project-button hse-project-button--primary"
               type="submit"
               :disabled="saving"

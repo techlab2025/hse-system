@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import ShowTemplateParams from '@/features/setting/Template/Core/params/showTemplateParams'
 import type TemplateDetailsModel from '@/features/setting/Template/Data/models/TemplateDetailsModel'
 import ShowTemplateController from '@/features/setting/Template/Presentation/controllers/showTemplateController'
@@ -161,6 +163,8 @@ const formatTaskAnswer = () => {
 }
 
 const CreateAnswer = async () => {
+  if (!canOrganizationOperation('create_task_result')) return
+
   const validation = await templateDocumentRef.value?.validateAnswers()
   if (validation && !validation.isValid) {
     new OpenWarningDilaog(validation.firstMessage).openDialog()
@@ -344,7 +348,7 @@ watch(
             </svg>
             {{ $t('complete_required_fields') }}
           </span>
-          <button class="inspection-results-dialog__confirm" type="button" @click="CreateAnswer">
+          <button v-if="canOrganizationOperation('create_task_result')" class="inspection-results-dialog__confirm" type="button" @click="CreateAnswer">
             <span>{{ $t('save_results') }}</span>
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="m9 18 6-6-6-6" />

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -47,6 +49,8 @@ const searchShift = debounce(() => {
 })
 
 const deleteShift = async (id: number) => {
+  if (!canOrganizationOperation('delete_work_shift')) return
+
   const deleteShiftParams = new DeleteShiftParams(id)
   await DeleteShiftController.getInstance().deleteShift(deleteShiftParams)
   await fetchShift()
@@ -78,6 +82,7 @@ const actionList = (id: number, deleteShift: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_SHIFT_ALL, PermissionsEnum.ORG_SHIFT_DELETE],
     action: () => deleteShift(id),
     permission: [PermissionsEnum.ORG_SHIFT_DELETE, PermissionsEnum.ORG_SHIFT_ALL],
   },

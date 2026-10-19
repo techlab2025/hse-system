@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import { computed, onMounted, ref } from 'vue'
@@ -57,6 +59,8 @@ const loadTeams = async () => {
 }
 
 const submit = async () => {
+  if (!canOrganizationOperation('create_drill')) return
+
   error.value = ''
   if (!drillType.value?.id || !projectTeam.value?.id || !date.value || !time.value) {
     error.value = 'Drill type, project team, date and time are required.'
@@ -196,7 +200,7 @@ onMounted(loadTeams)
 
     <p v-if="error" class="drill-form-error">{{ error }}</p>
     <div class="hse-project-form-footer drill-form-actions">
-      <button
+      <button v-if="canOrganizationOperation('create_drill')"
         class="hse-project-button hse-project-button--primary btn btn-primary"
         type="submit"
         :disabled="submitting"

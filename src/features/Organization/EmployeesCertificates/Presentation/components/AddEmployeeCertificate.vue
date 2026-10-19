@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -19,6 +21,8 @@ const formKey = ref(0)
 const addEmployeeCertificateController = AddEmployeeCertificateController.getInstance()
 
 const addEmployeeCertificate = async () => {
+  if (!canOrganizationOperation('create_employee_certificate')) return
+
   await addEmployeeCertificateController.addEmployeeCertificate(
     params.value as AddEmployeeCertificateParams,
     router,
@@ -26,6 +30,8 @@ const addEmployeeCertificate = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_employee_certificate')) return
+
   addEmployeeCertificateController.setLoading()
   await addEmployeeCertificateController.addEmployeeCertificate(
     params.value as AddEmployeeCertificateParams,
@@ -48,10 +54,10 @@ const setParams = (data: Params) => {
     <EmployeeCertificateForm :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">
-      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+      <button v-if="canOrganizationOperation('create_employee_certificate')" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+      <button v-if="canOrganizationOperation('create_employee_certificate')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </div>
   </form>
 

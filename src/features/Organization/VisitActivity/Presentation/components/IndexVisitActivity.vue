@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -73,6 +75,8 @@ const changePageSize = (limit: number) => {
   fetchVisitActivities(word.value, currentPage.value, limit)
 }
 const deleteVisitActivity = async (id: number) => {
+  if (!canOrganizationOperation('delete_visit_activity')) return
+
   await DeleteVisitActivityController.getInstance().deleteVisitActivity(
     new DeleteVisitActivityParams(id),
   )
@@ -102,6 +106,8 @@ const onFileSelected = (event: Event) => {
   input.value = ''
 }
 const onImported = async (titles: string[]) => {
+  if (!canOrganizationOperation('create_visit_activity')) return
+
   await AddVisitActivityController.getInstance().importVisitActivities(titles, router)
   if (AddVisitActivityController.getInstance().isDataSuccess()) {
     showUploadDialog.value = false
@@ -120,6 +126,7 @@ const rowActions = (id: number) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_VISIT_ACTIVITIES_ALL, PermissionsEnum.ORG_VISIT_ACTIVITIES_DELETE],
     action: () => deleteVisitActivity(id),
     permission: permissions,
   },

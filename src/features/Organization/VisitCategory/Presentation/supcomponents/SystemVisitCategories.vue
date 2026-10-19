@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { ref, watch } from 'vue'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import Dialog from 'primevue/dialog'
@@ -33,6 +35,8 @@ const toggleSelection = (id: number) => {
 }
 
 const addSystemVisitCategories = async () => {
+  if (!canOrganizationOperation('create_leadership_category')) return
+
   const items = (state.value.data ?? []).filter((item: VisitCategoryModel) => selectedIds.value.includes(item.id))
   if (!items.length) return
   const added = await AddVisitCategoryController.getInstance().addSystemVisitCategories(items)
@@ -70,7 +74,7 @@ const addSystemVisitCategories = async () => {
               </div>
             </div>
           </div>
-          <button v-if="state.data?.length" class="btn btn-primary w-full mt-5 confirm-btn" type="button" @click="addSystemVisitCategories">{{ $t('confirm') }}</button>
+          <button v-if="(state.data?.length) && canOrganizationOperation('create_leadership_category')" class="btn btn-primary w-full mt-5 confirm-btn" type="button" @click="addSystemVisitCategories">{{ $t('confirm') }}</button>
         </template>
         <template #empty><SystemDialogEmptyState /></template>
         <template #loader></template>

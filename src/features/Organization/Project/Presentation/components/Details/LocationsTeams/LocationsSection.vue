@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import type TeamLocation from '@/features/Organization/Project/Data/models/TeamLocationModel'
@@ -62,6 +64,8 @@ const teamMembersCount = computed(() =>
 )
 
 const DeleteTeamMember = async (id: number) => {
+  if (!canOrganizationOperation('delete_project_location_hierarchy_employee')) return
+
   const deleteProjectLocationTeamEmployeeparams = new DeleteProjectlocationHierarchyEmployeeParams(
     id,
   )

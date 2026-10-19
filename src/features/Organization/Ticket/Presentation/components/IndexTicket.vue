@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
@@ -68,6 +70,8 @@ const searchTickets = debounce(() => {
 })
 
 const deleteTicket = async (id: number) => {
+  if (!canOrganizationOperation('delete_ticket')) return
+
   const deleteTicketParams = new DeleteTicketParams(id)
   await DeleteTicketController.getInstance().deleteTicket(deleteTicketParams)
   await fetchTickets()
@@ -117,6 +121,7 @@ const actionList = (id: number, deleteTicket: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.TICKET_ALL, PermissionsEnum.TICKET_DELETE],
     action: () => deleteTicket(id),
     permission: [
       PermissionsEnum.TICKET_TYPE_DELETE,

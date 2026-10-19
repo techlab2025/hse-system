@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { useRouter } from 'vue-router'
 import { ActionStatusEnum } from '../../../Core/Enums/ActionStatusEnum'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum'
@@ -69,6 +71,8 @@ const getComplianceNotificationLabel = (notifications: number[]) =>
 const emit = defineEmits(['update:data'])
 const router = useRouter()
 const toggleObservationActionStatus = async (id: number) => {
+  if (!canOrganizationOperation('toggle_observation_action_status')) return
+
   const toggleObservationActionStatusParams = new ToggleObservationActionStatusParams(id)
   await ToggleObservationActionStatusController.getInstance().toggleObservationActionStatus(
     toggleObservationActionStatusParams,
@@ -77,6 +81,8 @@ const toggleObservationActionStatus = async (id: number) => {
 }
 
 const ToogleStatus = async (id: number) => {
+  if (!canOrganizationOperation('toggle_observation_action_status')) return
+
   await toggleObservationActionStatus(id)
   emit('update:data')
 }

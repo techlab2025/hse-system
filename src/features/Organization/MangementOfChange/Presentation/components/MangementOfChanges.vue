@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -121,6 +123,8 @@ const changePageSize = (limit: number) => {
   fetchMangementChanges(word.value, currentPage.value, limit)
 }
 const deleteMangementChange = async (id: number) => {
+  if (!canOrganizationOperation('delete_management_of_change')) return
+
   if (!PermissionHandler.Instance.handle(deletePermissions)) return
   await DeleteMangementChangeController.getInstance().deleteMangementChange(
     new DeleteMangementChangeParams(id),
@@ -138,6 +142,7 @@ const actionList = (id: number, deleteMangementChange: (id: number) => void) => 
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.MOC_ALL, PermissionsEnum.MOC_DELETE],
     action: () => deleteMangementChange(id),
     permission: deletePermissions,
     isDelete: true,

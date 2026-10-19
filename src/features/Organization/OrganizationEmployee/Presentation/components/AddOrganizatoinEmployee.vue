@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -21,6 +23,8 @@ const formRef = ref<InstanceType<typeof OrganizatoinEmployeeForm> | null>(null)
 const addOrganizatoinEmployeeController = AddOrganizatoinEmployeeController.getInstance()
 
 const addOrganizatoinEmployee = async () => {
+  if (!canOrganizationOperation('create_organization_employee')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   console.log(params.value, 'params value')
   addOrganizatoinEmployeeController.setLoading()
@@ -36,6 +40,8 @@ const addOrganizatoinEmployee = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_organization_employee')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   addOrganizatoinEmployeeController.setLoading()
   const state = await addOrganizatoinEmployeeController.addOrganizatoinEmployee(
@@ -68,10 +74,10 @@ const setParams = (data: Params) => {
       @update:data="setParams"
     />
     <div class="col-span-4 button-wrapper create-form-actions">
-      <button type="button" @click.prevent="saveAndNew" class="btn btn-secondary">
+      <button v-if="canOrganizationOperation('create_organization_employee')" type="button" @click.prevent="saveAndNew" class="btn btn-secondary">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary">
+      <button v-if="canOrganizationOperation('create_organization_employee')" type="submit" class="btn btn-primary">
         {{ route.path.includes('project-progress') ? $t('save and next step') : $t('save') }}
       </button>
     </div>

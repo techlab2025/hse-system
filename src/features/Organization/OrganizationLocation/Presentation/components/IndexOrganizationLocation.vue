@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -65,6 +67,8 @@ const searchOrganizationLocation = debounce(() => {
 })
 
 const deleteOrganizationLocation = async (id: number) => {
+  if (!canOrganizationOperation('delete_organization_location')) return
+
   const deleteOrganizationLocationParams = new DeleteOrganizationLocationParams(id)
   await DeleteOrganizationLocationController.getInstance().deleteOrganizationLocation(
     deleteOrganizationLocationParams,
@@ -112,6 +116,7 @@ const actionList = (id: number, deleteOrganizationLocation: (id: number) => void
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_LOCATION_ALL, PermissionsEnum.ORG_LOCATION_DELETE],
     action: () => deleteOrganizationLocation(id),
     permission: [
       PermissionsEnum.ORG_LOCATION_DELETE,

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -119,6 +121,8 @@ const confirmFilters = (
 
 // delete hazard
 const deleteHazard = async (id: number) => {
+  if (!canOrganizationOperation('delete_observation', { type: 2 })) return
+
   const params = new DeleteHazardParams(id)
   await DeleteHazardController.getInstance().deleteHazard(params)
   await fetchHazard('', currentPage.value, countPerPage.value)

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -31,6 +33,8 @@ onMounted(() => {
 })
 
 const editPpeItem = async () => {
+  if (!canOrganizationOperation('update_ppe_item')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await EditPpeItemController.getInstance().editPpeItem(params.value!, router)
 }
@@ -61,7 +65,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="editPpeItem">
         <PpeItemForm ref="formRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+          <button v-if="canOrganizationOperation('update_ppe_item')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>
       </form>
     </template>

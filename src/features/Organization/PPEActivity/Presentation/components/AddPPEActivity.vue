@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -23,12 +25,16 @@ const emit = defineEmits(['update:data'])
 const addPPEActivityController = AddPPEActivityController.getInstance()
 
 const addPPEActivity = async () => {
+  if (!canOrganizationOperation('create_ppe_activity')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await addPPEActivityController.addPPEActivity(params.value as AddPPEActivityParams, router)
   emit('update:data')
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_ppe_activity')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   addPPEActivityController.setLoading()
   await addPPEActivityController.addPPEActivity(
@@ -61,10 +67,10 @@ const allowedPermissions = [
       <PPEActivityForm :key="formKey" ref="formRef" @update:data="setParams" />
 
       <div class="col-span-4 button-wrapper create-form-actions">
-        <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+        <button v-if="canOrganizationOperation('create_ppe_activity')" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
           {{ $t('save and new') }}
         </button>
-        <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+        <button v-if="canOrganizationOperation('create_ppe_activity')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
       </div>
     </form>
   </PermissionBuilder>

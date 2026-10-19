@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 
 import { onMounted, ref, watch } from 'vue'
@@ -78,6 +80,8 @@ const searchInjury = debounce(() => {
 })
 
 const deleteInjury = async (id: number) => {
+  if (!canOrganizationOperation('delete_injury_type')) return
+
   const deleteInjuryParams = new DeleteInjuryParams(id)
   await DeleteInjuryController.getInstance().deleteInjury(deleteInjuryParams)
   await fetchInjury()
@@ -123,6 +127,7 @@ const actionList = (id: number, deleteInjury: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.INJURY_ALL, PermissionsEnum.INJURY_DELETE],
     action: () => deleteInjury(id),
     permission: [
       PermissionsEnum.INJURY_DELETE,

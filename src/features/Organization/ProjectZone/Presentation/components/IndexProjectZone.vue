@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -61,12 +63,16 @@ const searchProjectZone = debounce(() => {
 })
 
 const deleteProjectZone = async (id: number) => {
+  if (!canOrganizationOperation('delete_zoon')) return
+
   const deleteProjectZoneParams = new DeleteProjectZoneParams(id)
   await DeleteProjectZoneController.getInstance().deleteProjectZone(deleteProjectZoneParams)
   await fetchProjectZone()
 }
 
 const changeStatusProjectZone = async (id: number) => {
+  if (!canOrganizationOperation('delete_zoon')) return
+
   const changeStatusProjectZoneParams = new ChangeStatusProjectZoneParams(id)
   await ChangeStatusProjectZoneController.getInstance().changeStatusProjectZone(
     changeStatusProjectZoneParams,
@@ -124,6 +130,7 @@ const actionList = (id: number, deleteProjectZone: (id: number) => void) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.PROJECT_ZONE_ALL, PermissionsEnum.PROJECT_ZONE_DELETE],
     action: () => deleteProjectZone(id),
     permission: [
       PermissionsEnum.PROJECT_ZONE_DELETE,

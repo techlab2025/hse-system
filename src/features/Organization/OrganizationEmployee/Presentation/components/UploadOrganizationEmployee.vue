@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import { computed, ref, watch } from 'vue'
 import * as XLSX from 'xlsx'
@@ -133,6 +135,8 @@ const Datastate = computed(() => addOrganizatoinEmployeeController.state.value)
 // ─── Upload Handler ───────────────────────────────────────────────────────────
 
 const fileUpload = async (file: File) => {
+  if (!canOrganizationOperation('create_organization_employee')) return
+
   errorMsg.value = null
   // Clear previous validation results so a new file always starts from a clean preview
   addOrganizatoinEmployeeController.setState(new DataInitial<OrganizatoinEmployeeModel[]>(null))
@@ -241,6 +245,8 @@ const isCurrentlyAllValid = computed(() => {
 
 const counter = ref(0)
 const AddOrgEmployee = async () => {
+  if (!canOrganizationOperation('create_organization_employee')) return
+
   counter.value += 1
   if (!mappedData.value) return
 
@@ -512,7 +518,7 @@ const onMappingClose = () => {
         </div>
 
         <!-- Confirm Button -->
-        <button @click="AddOrgEmployee" class="btn-confirm">
+        <button v-if="canOrganizationOperation('create_organization_employee')" @click="AddOrgEmployee" class="btn-confirm">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="18"

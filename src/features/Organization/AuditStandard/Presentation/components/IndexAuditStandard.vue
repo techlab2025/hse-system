@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -81,6 +83,8 @@ const changePageSize = (limit: number) => {
   fetchAuditStandards(word.value, currentPage.value, limit)
 }
 const deleteAuditStandard = async (id: number) => {
+  if (!canOrganizationOperation('delete_internal_audit_standard')) return
+
   await DeleteAuditStandardController.getInstance().deleteAuditStandard(
     new DeleteAuditStandardParams(id),
   )
@@ -103,6 +107,7 @@ const rowActions = (id: number) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_AUDIT_STANDARDS_ALL, PermissionsEnum.ORG_AUDIT_STANDARDS_DELETE],
     action: () => deleteAuditStandard(id),
     permission: [
       PermissionsEnum.ADMIN,

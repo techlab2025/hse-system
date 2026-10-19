@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 
 import { onMounted, ref, watch } from 'vue'
@@ -82,6 +84,8 @@ const searchTraningTopics = debounce(() => {
 })
 
 const deleteTraningTopic = async (id: number) => {
+  if (!canOrganizationOperation('delete_training_topic')) return
+
   await DeleteTraningTopicController.getInstance().deleteTraningTopic(
     new DeleteTraningTopicParams(id),
   )
@@ -117,6 +121,7 @@ const rowActions = (id: number) => [
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_TRANING_TOPIC_ALL, PermissionsEnum.ORG_TRANING_TOPIC_DELETE],
     action: () => deleteTraningTopic(id),
     permission: deletePermissions,
   },

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { vProjectPanels } from '../../../composables/projectPanels'
 
 import { onMounted, ref } from 'vue'
@@ -38,6 +40,8 @@ const setEquipments = (data: TitleInterface[]) => {
 }
 
 const AddEquipment = async () => {
+  if (!canOrganizationOperation('create_project_zoon_equipment')) return
+
   // try {
   //   if (!selectedZoneId.value || equipments.value.length === 0) return
 
@@ -108,7 +112,7 @@ onMounted(() => {
         />
 
         <div class="submit-btn w-full mt-4">
-          <button
+          <button v-if="canOrganizationOperation('create_project_zoon_equipment')"
             class="hse-project-button hse-project-button--primary btn btn-primary w-full"
             @click="AddEquipment"
           >

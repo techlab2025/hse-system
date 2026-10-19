@@ -4,11 +4,12 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import type { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 import { canOrganizationRoute } from './organization_authorization'
-import { isPermissionMaster, permissionsReady } from './organization_permission'
+import { canAny, isPermissionMaster, permissionsReady } from './organization_permission'
 
 export interface PermissionAction {
   link?: RouteLocationRaw
   permission?: readonly PermissionsEnum[]
+  organizationPermission?: readonly PermissionsEnum[]
   capability?: 'export' | 'import' | 'print' | 'download'
 }
 
@@ -23,6 +24,11 @@ export function canPermissionAction(action: PermissionAction, router: Router): b
       return false
     }
   }
+  if (
+    action.organizationPermission &&
+    (useUserStore().user?.type === OrganizationTypeEnum.ORGANIZATION ||
+      window.location.pathname.startsWith('/organization'))
+  ) return canAny(action.organizationPermission)
   if (action.permission) return PermissionHandler.Instance.handle(action.permission)
   return isPermissionMaster() || useUserStore().user?.type !== OrganizationTypeEnum.ORGANIZATION
 }

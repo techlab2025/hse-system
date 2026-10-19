@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { ref } from 'vue'
 import Dialog from 'primevue/dialog'
 import Cert from '@/assets/images/Cert.png'
@@ -81,6 +83,8 @@ const emit = defineEmits(['update:data'])
 
 const router = useRouter()
 const UploadCertificateImage = async () => {
+  if (!canOrganizationOperation('create_employee_certificate')) return
+
   const addEmployeeCertificateController = AddEmployeeCertificateController.getInstance()
   const addEmployeeCertificateParams = new AddEmployeeCertificateParams(
     props.certificateId,
@@ -165,7 +169,7 @@ const UploadCertificateImage = async () => {
           />
         </div>
       </div>
-      <button class="btn btn-primary w-full mt-10" @click="UploadCertificateImage">Confirm</button>
+      <button v-if="canOrganizationOperation('create_employee_certificate')" class="btn btn-primary w-full mt-10" @click="UploadCertificateImage">Confirm</button>
     </div>
   </Dialog>
 </template>

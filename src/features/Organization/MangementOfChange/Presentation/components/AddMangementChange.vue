@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -29,6 +31,8 @@ const listPath = computed(() =>
 )
 
 const addMangementChange = async () => {
+  if (!canOrganizationOperation('create_management_of_change')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await addMangementChangeController.addMangementChange(
     params.value as AddMangementChangeParams,
@@ -40,6 +44,8 @@ const addMangementChange = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_management_of_change')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   addMangementChangeController.setLoading()
   await addMangementChangeController.addMangementChange(
@@ -71,14 +77,14 @@ const setParams = (data: Params) => {
     />
 
     <div class="management-change-actions create-form-actions">
-      <button
+      <button v-if="canOrganizationOperation('create_management_of_change')"
         type="button"
         class="btn btn-secondary"
         @click.prevent="saveAndNew"
       >
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary">
+      <button v-if="canOrganizationOperation('create_management_of_change')" type="submit" class="btn btn-primary">
         {{ $t('save') }}
       </button>
     </div>

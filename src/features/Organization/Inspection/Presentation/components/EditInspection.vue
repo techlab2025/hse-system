@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -32,6 +34,8 @@ onMounted(() => {
 })
 
 const EditInspection = async (draft: boolean) => {
+  if (!canOrganizationOperation('update_task')) return
+
   const isValid = await inspectionFormRef.value?.validateRequiredFields()
   if (!isValid) return
   if (draft) {
@@ -68,7 +72,7 @@ const setParams = (data: Params) => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditInspection">
         <InspectionForm ref="inspectionFormRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+          <button v-if="canOrganizationOperation('update_task')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>
       </form>
     </template>

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { computed, onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -47,6 +49,8 @@ const searchDocumentRefrence = debounce(() => {
 })
 
 const deleteDocumentRefrence = async (id: number) => {
+  if (!canOrganizationOperation('delete_document_reference')) return
+
   const deleteDocumentRefrenceParams = new DeleteDocumentRefrenceParams(id)
   await DeleteDocumentRefrenceController.getInstance().deleteDocumentRefrence(
     deleteDocumentRefrenceParams,
@@ -80,6 +84,7 @@ const actionList = (id: number, deleteDocumentRefrence: (id: number) => void) =>
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_ALL, PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_DELETE],
     action: () => deleteDocumentRefrence(id),
     permission: [
       PermissionsEnum.ORG_DOCUMENTATION_REFERENCE_DELETE,

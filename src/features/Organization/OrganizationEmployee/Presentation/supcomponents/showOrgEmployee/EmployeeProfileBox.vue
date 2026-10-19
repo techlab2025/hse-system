@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -48,6 +50,7 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
   {
     text: t('delete'),
     icon: IconDelete,
+    organizationPermission: [PermissionsEnum.ORG_EMPLOYEE_ALL, PermissionsEnum.ORG_EMPLOYEE_DELETE],
     action: () => deleteOrganizatoinEmployee(id),
     permission: [
       PermissionsEnum.ORG_EMPLOYEE_DELETE,
@@ -72,6 +75,8 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
 ]
 const router = useRouter()
 const deleteOrganizatoinEmployee = async (id: number) => {
+  if (!canOrganizationOperation('delete_organization_employee')) return
+
   const deleteOrganizatoinEmployeeParams = new DeleteOrganizatoinEmployeeParams(id)
   await DeleteOrganizatoinEmployeeController.getInstance().deleteOrganizatoinEmployee(
     deleteOrganizatoinEmployeeParams,

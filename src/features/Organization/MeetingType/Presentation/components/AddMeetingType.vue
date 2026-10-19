@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -21,6 +23,8 @@ const emit = defineEmits(['update:data'])
 const addMeetingTypeController = AddMeetingTypeController.getInstance()
 
 const addMeetingType = async () => {
+  if (!canOrganizationOperation('create_meeting_type')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await addMeetingTypeController.addMeetingType(
     params.value as AddMeetingTypeParams,
@@ -30,6 +34,8 @@ const addMeetingType = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_meeting_type')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   addMeetingTypeController.setLoading()
   await addMeetingTypeController.addMeetingType(
@@ -53,10 +59,10 @@ const setParams = (data: Params) => {
     <MeetingTypeForm :key="formKey" ref="formRef" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">
-      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+      <button v-if="canOrganizationOperation('create_meeting_type')" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+      <button v-if="canOrganizationOperation('create_meeting_type')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </div>
   </form>
 

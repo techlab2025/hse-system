@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -30,6 +32,8 @@ const setParams = (data: Params) => {
   params.value = data
 }
 const editVisitTheme = async () => {
+  if (!canOrganizationOperation('update_leadership_theme')) return
+
   if (!(await formRef.value?.validateRequiredFields()) || !params.value) return
   await EditVisitThemeController.getInstance().editVisitTheme(params.value, router)
 }
@@ -42,7 +46,7 @@ const editVisitTheme = async () => {
       <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="editVisitTheme">
         <VisitThemeForm ref="formRef" :data="state.data!" @update:data="setParams" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+          <button v-if="canOrganizationOperation('update_leadership_theme')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>
       </form>
     </template>

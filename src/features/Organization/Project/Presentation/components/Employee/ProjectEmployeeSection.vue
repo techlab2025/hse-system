@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import HeaderSection from '../Details/DetailsHeader/HeaderSection.vue'
@@ -49,6 +51,8 @@ const GetProjectLocationsEmployes = async () => {
 
 const route = useRoute()
 const DeleteMember = async (id: number) => {
+  if (!canOrganizationOperation('delete_project_location_hierarchy_employee')) return
+
   const deleteProjectLocationTeamEmployeeparams = new DeleteProjectlocationHierarchyEmployeeParams(
     id,
   )

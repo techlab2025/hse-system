@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -64,6 +66,8 @@ const getAllLocationHeeirarchy = async () => {
 }
 
 const UpdateDate = async () => {
+  if (!canOrganizationOperation('create_project_location_hierarchy_employee')) return
+
   try {
     // const hierarchies = Object.entries(employeesByHierarchy.value).map(
     //   ([hierarchyId, employees]) =>
@@ -158,7 +162,7 @@ onMounted(() => {
       />
     </div>
 
-    <button
+    <button v-if="canOrganizationOperation('create_project_location_hierarchy_employee')"
       class="hse-project-button hse-project-button--primary btn btn-primary w-full confirm-employee-btn"
       :disabled="!SelectedHierarchy || !SelectedEmployee?.length"
       @click.prevent="UpdateDate"

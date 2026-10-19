@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canOrganizationCapability } from '@/features/permission/Presentation/Helpers/organization_actions'
 
 import { onMounted, ref, watch } from 'vue'
@@ -58,6 +60,8 @@ const searchCheckList = debounce(() => {
 })
 
 const deleteCheckList = async (id: number) => {
+  if (!canOrganizationOperation('delete_checklist')) return
+
   const deleteCheckListParams = new DeleteCheckListParams(id)
   await DeleteCheckListController.getInstance().deleteCheckList(deleteCheckListParams)
   await fetchCheckList()

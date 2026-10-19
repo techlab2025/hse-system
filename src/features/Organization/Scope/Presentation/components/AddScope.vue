@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -20,12 +22,16 @@ const formRef = ref<InstanceType<typeof ScopeForm> | null>(null)
 const addScopeController = AddScopeController.getInstance()
 
 const addScope = async () => {
+  if (!canOrganizationOperation('create_scope')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await addScopeController.addScope(params.value as AddScopeParams, router)
   emit('update:data')
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_scope')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   addScopeController.setLoading()
   await addScopeController.addScope(params.value as AddScopeParams, stayOnPageRouter)
@@ -45,10 +51,10 @@ const setParams = (data: Params) => {
   <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addScope">
     <ScopeForm :key="formKey" ref="formRef" @update:data="setParams" />
     <div class="col-span-4 button-wrapper create-form-actions">
-      <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+      <button v-if="canOrganizationOperation('create_scope')" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+      <button v-if="canOrganizationOperation('create_scope')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
     </div>
   </form>
 

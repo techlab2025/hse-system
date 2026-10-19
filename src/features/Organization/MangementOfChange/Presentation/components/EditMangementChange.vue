@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -45,6 +47,8 @@ onMounted(() => {
 })
 
 const editMangementChange = async () => {
+  if (!canOrganizationOperation('update_management_of_change')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await EditMangementChangeController.getInstance().editMangementChange(
     params.value as EditMangementChangeParams,
@@ -84,7 +88,7 @@ const setParams = (data: Params) => {
           @update:data="setParams"
         />
         <div class="management-change-actions">
-          <button type="submit" class="btn btn-primary">
+          <button v-if="canOrganizationOperation('update_management_of_change')" type="submit" class="btn btn-primary">
             {{ $t('save') }}
           </button>
         </div>

@@ -1,4 +1,6 @@
   <script setup lang="ts">
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
   import HeaderSection from '@/features/Organization/Project/Presentation/components/Details/DetailsHeader/HeaderSection.vue';
   import Dialog from 'primevue/dialog';
   import { ref, watch } from "vue";
@@ -64,6 +66,8 @@
 
   const router = useRouter()
   const SubmitData = async () => {
+  if (!canOrganizationOperation('close_investigation')) return
+
     const closeInvestegationController = CloseInvestegationController.getInstance()
     const ChecklistParams = selectedIds.value.map((el) => new InvestegationChecklistParams({checklist_id: el}))
     const closeInvestegationParams = new CloseInvestegationParams(props.investegationId!, ChecklistParams)
@@ -97,7 +101,7 @@
             </div>
           </div>
         </div>
-        <button class="btn btn-primary w-full mt-5 confirm-btn" @click="SubmitData">{{ $t('confirm') }}</button>
+        <button v-if="canOrganizationOperation('close_investigation')" class="btn btn-primary w-full mt-5 confirm-btn" @click="SubmitData">{{ $t('confirm') }}</button>
       </template>
       <template #loader>
       </template>

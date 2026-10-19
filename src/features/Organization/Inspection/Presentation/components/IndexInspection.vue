@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 import { computed, onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
@@ -437,6 +439,8 @@ const resetFilters = () => {
  */
 
 const deleteInspection = async (id: number) => {
+  if (!canOrganizationOperation('delete_task')) return
+
   if (!PermissionHandler.Instance.handle([PermissionsEnum.ORG_INSPECTION_ALL, PermissionsEnum.ORG_INSPECTION_DELETE])) return
   const params = new DeleteInspectionParams(id)
 
@@ -607,6 +611,7 @@ const actionList = (id: number, deleteInspection: (id: number) => void) => [
 
     icon: IconDelete,
 
+    organizationPermission: [PermissionsEnum.ORG_INSPECTION_ALL, PermissionsEnum.ORG_INSPECTION_DELETE],
     action: () => deleteInspection(id),
 
     permission: [

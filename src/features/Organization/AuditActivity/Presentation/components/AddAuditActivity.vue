@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -25,6 +27,8 @@ const emit = defineEmits(['update:data'])
 const addAuditActivityController = AddAuditActivityController.getInstance()
 
 const addAuditActivity = async () => {
+  if (!canOrganizationOperation('create_internal_audit_activity')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await addAuditActivityController.addAuditActivity(
     params.value as AddAuditActivityParams,
@@ -40,6 +44,8 @@ const addAuditActivity = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!canOrganizationOperation('create_internal_audit_activity')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   addAuditActivityController.setLoading()
   await addAuditActivityController.addAuditActivity(
@@ -72,10 +78,10 @@ const allowedPermissions = [
       <AuditActivityForm :key="formKey" ref="formRef" @update:data="setParams" />
 
       <div class="col-span-4 button-wrapper create-form-actions">
-        <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
+        <button v-if="canOrganizationOperation('create_internal_audit_activity')" type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
           {{ $t('save and new') }}
         </button>
-        <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+        <button v-if="canOrganizationOperation('create_internal_audit_activity')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
       </div>
     </form>
   </PermissionBuilder>

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canAny } from '@/features/permission/Presentation/Helpers/organization_permission'
 import { PermissionsEnum as P } from '@/features/users/Admin/Core/Enum/permission_enum'
 const canSubmitResult = computed(() =>
@@ -162,6 +164,8 @@ const ShoeInvestegationResultDetails = async () => {
 const openDialog = ref(false)
 
 const AddEnvestigatingResult = async () => {
+  if (!canOrganizationOperation('create_full_investigation_meeting_result')) return
+
   if (!canSubmitResult.value) return
   if (!(await validateRequiredFields())) return
 
@@ -1177,7 +1181,7 @@ const getObservationType = (type: number | undefined) => {
                 <router-link to="/organization/investigating" class="btn btn-cancel">{{
                   $t('cancel')
                 }}</router-link>
-                <button @click="AddEnvestigatingResult" class="btn btn-primary">
+                <button v-if="canOrganizationOperation('create_full_investigation_meeting_result')" @click="AddEnvestigatingResult" class="btn btn-primary">
                   {{ $t('Confirm') }}
                 </button>
               </div>

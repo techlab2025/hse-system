@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { canOrganizationOperation } from '@/features/permission/Presentation/Helpers/organization_authorization'
+
 import { canPolicy } from '@/features/permission/Presentation/Helpers/organization_authorization'
 import { organizationApiPolicies } from '@/features/permission/Core/organizationPolicies'
 
@@ -32,6 +34,8 @@ onMounted(() => {
 })
 
 const EditOrganizatoinEmployee = async () => {
+  if (!canOrganizationOperation('update_organization_employee')) return
+
   if (!(await formRef.value?.validateRequiredFields())) return
   await EditOrganizatoinEmployeeController.getInstance().editOrganizatoinEmployee(
     params.value!,
@@ -68,7 +72,7 @@ const setParams = (data: Params) => {
       >
         <OrganizatoinEmployeeForm ref="formRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
-          <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
+          <button v-if="canOrganizationOperation('update_organization_employee')" type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>
       </form>
     </template>
