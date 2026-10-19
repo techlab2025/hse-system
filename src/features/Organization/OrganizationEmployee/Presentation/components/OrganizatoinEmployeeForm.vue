@@ -534,7 +534,7 @@ defineExpose({
     </section>
 
     <section
-      class="employee-form-section employee-access-section"
+      class="employee-form-section employee~-access-section"
       aria-labelledby="employee-access-heading"
     >
       <div class="employee-section-heading">

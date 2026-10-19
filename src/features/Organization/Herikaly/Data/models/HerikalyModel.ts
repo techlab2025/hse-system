@@ -7,16 +7,31 @@ export default class HerikalyModel extends TitleInterface {
   public title: string
   public parent_id: number
   public children: HerikalyModel[]
+  public parent: TitleInterface | null
 
-  constructor(id: number, title: string, parent_id: number, children: HerikalyModel[]) {
-    super({ id })
+  constructor(
+    id: number,
+    title: string,
+    parent_id: number,
+    children: HerikalyModel[],
+    parent: TitleInterface | null = null,
+  ) {
+    // The shared select adapter keeps subtitle as the secondary option label.
+    super({ id, subtitle: parent?.title })
     this.id = id
     this.title = title
     this.parent_id = parent_id
     this.children = children
+    this.parent = parent
   }
 
   static fromMap(data: any): HerikalyModel {
-    return new HerikalyModel(data.id, data.title, data.parent_id, data.children)
+    return new HerikalyModel(
+      data.id,
+      data.title,
+      data.parent_id ?? data.parent?.id,
+      data.children,
+      data.parent ? new TitleInterface({ id: data.parent.id, title: data.parent.title }) : null,
+    )
   }
 }
