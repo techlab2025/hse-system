@@ -164,7 +164,7 @@ watch(
             ><span>{{ labels('pageMetrics') }}</span>
           </div>
         </div>
-        <div>
+        <!-- <div>
           <span class="hse-project-metric-icon" aria-hidden="true"
             ><ProjectIcon name="folder"
           /></span>
@@ -172,7 +172,7 @@ watch(
             <strong>{{ portfolio.active }}</strong
             ><span>{{ labels('active') }}</span>
           </div>
-        </div>
+        </div> -->
         <div>
           <span class="hse-project-metric-icon hse-project-metric-icon--green" aria-hidden="true"
             ><ProjectIcon name="gauge"

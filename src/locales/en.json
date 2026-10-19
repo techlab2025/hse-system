@@ -4551,6 +4551,7 @@
     "recordedAt": "Recorded At",
     "notes": "Notes",
     "attachments": "Attachments",
+    "openFile": "Open file",
     "corrections": "Corrections / Actions",
     "historyUnavailable": "Progress history is not available yet. The progress service has not been connected.",
     "historyFailed": "Could not load progress history. Please retry.",

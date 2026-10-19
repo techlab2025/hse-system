@@ -9,6 +9,12 @@ export interface ProgressCreator {
   id: number
   name: string
 }
+export interface ProgressMedia {
+  id: number
+  url: string
+  fileName: string
+  mimeType?: string
+}
 export interface ProgressCorrection {
   recordedBy: string | null
   recordedAt: string | null
@@ -30,7 +36,7 @@ export default class ObjectiveProgressModel {
     public corrections: ProgressCorrection[],
     public indicator: number | null,
     public progress: number | null,
-    public media: {id:number , url:string , file_name:string }[],
+    public media: ProgressMedia[],
   ) {}
 
   static fromMap(data: unknown): ObjectiveProgressModel {
@@ -65,6 +71,26 @@ export default class ObjectiveProgressModel {
         mimeType: nullableString(file.mime_type ?? file.type) ?? undefined,
       }
     })
+    const media = (Array.isArray(item.media) ? item.media : []).flatMap(
+      (value, index): ProgressMedia[] => {
+        const image = (value && typeof value === 'object' ? value : {}) as Record<string, unknown>
+        const url = nullableString(image.url ?? image.path ?? image.file)
+        if (!url) return []
+
+        const parsedId = Number(image.id)
+        return [
+          {
+            id: Number.isFinite(parsedId) ? parsedId : index,
+            url,
+            fileName:
+              nullableString(image.file_name ?? image.name) ??
+              url.split('/').pop() ??
+              `image-${index + 1}`,
+            mimeType: nullableString(image.mime_type ?? image.type) ?? undefined,
+          },
+        ]
+      },
+    )
     const corrections = (Array.isArray(item.corrections) ? item.corrections : []).map(
       (value): ProgressCorrection => {
         const correction = (value && typeof value === 'object' ? value : {}) as Record<
@@ -94,7 +120,7 @@ export default class ObjectiveProgressModel {
       corrections,
       nullableNumber(item.indicator ?? item.achievement_percentage),
       nullableNumber(item.progress),
-      item.media!
+      media,
     )
   }
 }
