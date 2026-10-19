@@ -18,6 +18,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
   public password: string
 
   public hierarchies: HierarchyIdModel[]
+  public hasAllPermission: boolean
 
   constructor(
     id: number,
@@ -33,6 +34,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
     status: ValidationStatusEnum,
     password: string,
     hierarchies: HierarchyIdModel[],
+    hasAllPermission: boolean,
   ) {
     super({ id, title })
 
@@ -48,6 +50,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
     this.status = status
     this.password = password
     this.hierarchies = hierarchies
+    this.hasAllPermission = hasAllPermission
   }
 
   static fromMap(data: any): OrganizatoinEmployeeModel {
@@ -65,6 +68,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
       data.validation_status,
       data.password,
       data?.hierarchies?.map((item: any) => HierarchyIdModel.fromMap(item)),
+      data.has_all_permission,
     )
   }
 
@@ -282,6 +286,7 @@ export default class OrganizatoinEmployeeModel extends TitleInterface {
     1,
     '',
     [],
+    false,
   )
 
   static transformData(data: string[][]): OrganizatoinEmployeeModel[] {

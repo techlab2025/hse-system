@@ -154,7 +154,11 @@ watch(
   },
 )
 
-const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void) => [
+const actionList = (
+  id: number,
+  deleteOrganizatoinEmployee: (id: number) => void,
+  hasAllpermission?: boolean,
+) => [
   {
     text: t('edit'),
     icon: ActionsTableEdit,
@@ -193,12 +197,16 @@ const actionList = (id: number, deleteOrganizatoinEmployee: (id: number) => void
     link: `/organization/organization-employee/show/${id}`,
     permission: [PermissionsEnum.ORG_EMPLOYEE_CREATE, PermissionsEnum.ORG_EMPLOYEE_DETAILS],
   },
-  {
-    text: t('add_permission'),
-    icon: ActionsTableShild,
-    link: `/organization/permission/${id}`,
-    permission: [PermissionsEnum.ORG_EMPLOYEE_DELETE, PermissionsEnum.ORG_EMPLOYEE_ALL],
-  },
+  ...(!hasAllpermission
+    ? [
+        {
+          text: t('add_permission'),
+          icon: ActionsTableShild,
+          link: `/organization/permission/${id}`,
+          permission: [PermissionsEnum.ORG_EMPLOYEE_DELETE, PermissionsEnum.ORG_EMPLOYEE_ALL],
+        },
+      ]
+    : []),
 
   {
     text: t('delete'),
@@ -521,7 +529,9 @@ const IndexOrganizationEmployeectionList = () => [
 
                 <td data-label="Actions">
                   <DropList
-                    :actionList="actionList(item.id, deleteOrganizatoinEmployee)"
+                    :actionList="
+                      actionList(item.id, deleteOrganizatoinEmployee, item.hasAllPermission)
+                    "
                     @delete="deleteOrganizatoinEmployee(item.id)"
                   />
                 </td>
