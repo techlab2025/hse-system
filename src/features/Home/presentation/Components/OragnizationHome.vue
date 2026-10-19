@@ -3,6 +3,7 @@ import '../styles/home-identity.css'
 import { defineAsyncComponent } from 'vue'
 import EmployeeTasksButton from '@/shared/HelpersComponents/EmployeeTasksButton.vue'
 import ProjectsStatistics from './HomeStatistics/ProjectsStatistics.vue'
+import HomeCards from './HomeUtils/HomeCards.vue'
 import { computed, onMounted, ref, watch } from 'vue'
 import ProjectProgressHeader from '@/features/Organization/ProjectPrgoress/Presentation/supcomponents/ProjectProgressHeader.vue'
 import IndexProjectProgressController from '@/features/Organization/ProjectPrgoress/Presentation/controllers/indexProjectProgressController'
@@ -35,7 +36,6 @@ const StaticCardsFullDetails = defineAsyncComponent(
 const StaticsCardPerMonth = defineAsyncComponent(
   () => import('./HomeUtils/StaticsCardPerMonth.vue'),
 )
-const HomeCards = defineAsyncComponent(() => import('./HomeUtils/HomeCards.vue'))
 const { isDarkMode } = useThemeMode()
 
 const ProgressValue = ref<number | null>(null)
@@ -131,6 +131,8 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
       { 'is-dark': isDarkMode },
     ]"
   >
+    <HomeCards :ProgressValue="Number(ProgressValue)" />
+
     <EmployeeTasksButton />
     <router-link
       @click="setVisited"
@@ -154,8 +156,6 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
     </router-link>
 
     <div v-if="showOverlay && !visited" class="container-overlay"></div>
-
-    <HomeCards :ProgressValue="Number(ProgressValue)" />
 
     <template v-if="!projectsLoading">
       <section class="home-analytics-shell">

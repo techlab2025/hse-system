@@ -6,6 +6,7 @@ import HomeEquipmentIcon from '@/shared/icons/HomeEquipmentIcon.vue'
 import HomeEmployeeIcon from '@/shared/icons/HomeEmployeeIcon.vue'
 import HomeSettingIcon from '@/shared/icons/HomeSettingIcon.vue'
 import HomeRoutesCard from './HomeRoutesCard.vue'
+import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { RouterEnum } from '@/features/Home/core/enums/SettingEnum/SettingEnum'
 
