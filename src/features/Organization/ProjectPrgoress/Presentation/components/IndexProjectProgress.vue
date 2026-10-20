@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { useOrganizationOnboarding } from '@/composables/useOrganizationOnboarding'
 
 import IndexProjectProgressController from '../controllers/indexProjectProgressController'
 import IndexProjectProgressParams from '../../Core/params/indexProjectProgressParams'
@@ -150,7 +151,6 @@ const getProjectProgress = async () => {
 
 onMounted(async () => {
   await getProjectProgress()
-  visited.value = localStorage.getItem('ProjectProgressVisited')
 })
 
 const progectStatus = useProjectAppStatusStore()
@@ -398,11 +398,12 @@ const clonePresetData = async () => {
 
 const showOverlay = ref(false)
 const startNextNote = ref(false)
+const { visited, setVisited } = useOrganizationOnboarding('ProjectProgressVisited')
 
 const setGotit = () => {
   showOverlay.value = true
   startNextNote.value = false
-  localStorage.setItem('ProjectProgressVisited', 'true')
+  setVisited()
 }
 
 const goToContentNote = () => {
@@ -412,15 +413,8 @@ const goToContentNote = () => {
 const closeOnboarding = () => {
   showOverlay.value = false
   startNextNote.value = false
-  localStorage.setItem('ProjectProgressVisited', 'true')
+  setVisited()
 }
-const visited = ref(localStorage.getItem('ProjectProgressVisited'))
-watch(
-  () => localStorage.getItem('ProjectProgressVisited'),
-  () => {
-    visited.value = localStorage.getItem('ProjectProgressVisited')
-  },
-)
 </script>
 
 <template>

@@ -21,6 +21,7 @@ import FetchEquipmentStaticsParams from '../../core/params/FetchEquipmentStatics
 import OverviewInvestigationsChartParams from '../../core/params/OverviewInvestigationsChartParams'
 import HomeSkelaton from '../subComponent/HomeSkelaton.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
+import { useOrganizationOnboarding } from '@/composables/useOrganizationOnboarding'
 import {
   DataInitial,
   DataLoading,
@@ -40,7 +41,7 @@ const { isDarkMode } = useThemeMode()
 
 const ProgressValue = ref<number | null>(null)
 const ProjectAppStatusStore = useProjectAppStatusStore()
-const visited = ref(localStorage.getItem('visited'))
+const { visited, setVisited } = useOrganizationOnboarding('visited')
 const fetchHomeInspectionController = FetchHomeInspectionController.getInstance()
 const homeInspectionState = computed(() => fetchHomeInspectionController.state.value)
 const indexProjectProgressController = IndexProjectProgressController.getInstance()
@@ -75,9 +76,6 @@ const getProjectProgress = async () => {
 const showOverlay = computed(() => {
   return ProgressValue.value == 0
 })
-const setVisited = () => {
-  localStorage.setItem('visited', 'true')
-}
 
 const fetchProject = async (
   query: string = '',
@@ -105,8 +103,6 @@ const GetEquipmentStatics = async () => {
 }
 
 onMounted(async () => {
-  visited.value = localStorage.getItem('visited')
-
   await Promise.allSettled([
     GetEquipmentStatics(),
     fetchProject(),
