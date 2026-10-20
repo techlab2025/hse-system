@@ -1,45 +1,44 @@
-<script lang="ts" setup>
-//example
-interface Data {
-  value: number;
-  label: string;
-  spanClass?: string;
-  divClass?: string;
-  link?: string;
+<script setup lang="ts">
+import { computed } from 'vue'
+import { RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import DashboardIcon from '../Dashboard/DashboardIcon.vue'
+import { formatMetric, metricNumber } from '../../utils/dashboardMetrics'
+interface MetricRow {
+  value?: number | null
+  label: string
+  spanClass?: string
+  divClass?: string
+  link?: string
 }
-
-const props = defineProps<{
-  title: string
-  data: Data[]
-}>()
-
-
+const props = defineProps<{ title: string; data: MetricRow[]; description?: string }>()
+const { locale } = useI18n()
+const max = computed(() => Math.max(1, ...props.data.map((row) => metricNumber(row.value) ?? 0)))
 </script>
 <template>
-
-
-  <div class="incidant-factor-container">
-    <div class="incidant-factor-header-container">
-      <div class="incidant-factor-header">
-        <!-- <span class="static">{{ $t('static') }}</span> -->
-        <p class="static-title">{{ title }} </p>
-      </div>
+  <section class="dashboard-detail-group" :aria-label="title">
+    <div class="dashboard-detail-group__heading">
+      <h3>{{ title }}</h3>
+      <p v-if="description">{{ description }}</p>
     </div>
-    <div class="static-data" v-for="item in data" :key="item.label">
-      <template v-if="item.link">
-        <router-link :to="item.link">
-          <p :class="item.divClass">
-            <span :class="item.spanClass">{{ item.value }}</span>
-            {{ item.label }}
-          </p>
-        </router-link>
-      </template>
-      <template v-else>
-        <p :class="item.divClass">
-          <span :class="item.spanClass">{{ item.value }}</span>
-          {{ item.label }}
-        </p>
-      </template>
+    <div v-if="data.length" class="dashboard-detail-rows">
+      <component
+        :is="item.link ? RouterLink : 'div'"
+        v-for="(item, index) in data"
+        :key="`${item.label}-${index}`"
+        :to="item.link"
+        class="dashboard-detail-row"
+        :class="item.spanClass"
+      >
+        <span class="dashboard-detail-row__dot" aria-hidden="true"></span
+        ><span class="dashboard-detail-row__label">{{ item.label }}</span
+        ><strong>{{ formatMetric(item.value, locale) }}</strong
+        ><DashboardIcon v-if="item.link" name="arrow" />
+        <span class="dashboard-detail-row__track" aria-hidden="true"
+          ><i :style="{ width: `${((metricNumber(item.value) ?? 0) / max) * 100}%` }"></i
+        ></span>
+      </component>
     </div>
-  </div>
+    <p v-else class="dashboard-empty-inline">{{ $t('No data available') }}</p>
+  </section>
 </template>

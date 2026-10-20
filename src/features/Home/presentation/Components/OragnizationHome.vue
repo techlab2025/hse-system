@@ -19,12 +19,9 @@ import OverviewInvestigationsChartController from '../Controllers/OverviewInvest
 import FetchEquipmentStaticsController from '../Controllers/FetchEquipmentStaticsController'
 import FetchEquipmentStaticsParams from '../../core/params/FetchEquipmentStaticsParams'
 import OverviewInvestigationsChartParams from '../../core/params/OverviewInvestigationsChartParams'
-import HomeSkelaton from '../subComponent/HomeSkelaton.vue'
+import DashboardIcon from './Dashboard/DashboardIcon.vue'
+import { useI18n } from 'vue-i18n'
 import { useThemeMode } from '@/composables/useThemeMode'
-import {
-  DataInitial,
-  DataLoading,
-} from '@/base/core/networkStructure/Resources/dataState/data_state'
 
 const InvestegationStatics = defineAsyncComponent(
   () => import('./HomeUtils/InvestegationStatics.vue'),
@@ -37,6 +34,19 @@ const StaticsCardPerMonth = defineAsyncComponent(
   () => import('./HomeUtils/StaticsCardPerMonth.vue'),
 )
 const { isDarkMode } = useThemeMode()
+const { locale } = useI18n()
+const refreshing = ref(false)
+const refreshedAt = ref<Date | null>(null)
+const reportingMonth = computed(() =>
+  new Intl.DateTimeFormat(locale.value, { month: 'long', year: 'numeric' }).format(new Date()),
+)
+const refreshTime = computed(() =>
+  refreshedAt.value
+    ? new Intl.DateTimeFormat(locale.value, { hour: 'numeric', minute: '2-digit' }).format(
+        refreshedAt.value,
+      )
+    : '',
+)
 
 const ProgressValue = ref<number | null>(null)
 const ProjectAppStatusStore = useProjectAppStatusStore()
@@ -47,10 +57,6 @@ const indexProjectProgressController = IndexProjectProgressController.getInstanc
 const indexProjectController = IndexProjectController.getInstance()
 const ProjectStatics = computed(() => indexProjectController.state.value)
 const projects = computed(() => ProjectStatics.value.data ?? [])
-const projectsLoading = computed(
-  () =>
-    ProjectStatics.value instanceof DataInitial || ProjectStatics.value instanceof DataLoading,
-)
 const overviewHazardChartController = OverviewHazardChartController.getInstance()
 const OverviewHazardChartstate = computed(() => overviewHazardChartController.state.value)
 const overviewInvestigationsChartController = OverviewInvestigationsChartController.getInstance()
@@ -104,17 +110,26 @@ const GetEquipmentStatics = async () => {
   await fetchEquipmentStaticsController.getData(fetchEquipmentStaticsParams)
 }
 
-onMounted(async () => {
+const refreshDashboard = async () => {
+  if (refreshing.value) return
+  refreshing.value = true
+  try {
+    await Promise.allSettled([
+      GetEquipmentStatics(),
+      fetchProject(),
+      getProjectProgress(),
+      GetHomeInspection(),
+      fetchOverviewHazardChart(),
+      fetchoverviewInvestigationsCharts(),
+    ])
+    refreshedAt.value = new Date()
+  } finally {
+    refreshing.value = false
+  }
+}
+onMounted(() => {
   visited.value = localStorage.getItem('visited')
-
-  await Promise.allSettled([
-    GetEquipmentStatics(),
-    fetchProject(),
-    getProjectProgress(),
-    GetHomeInspection(),
-    fetchOverviewHazardChart(),
-    fetchoverviewInvestigationsCharts(),
-  ])
+  void refreshDashboard()
 })
 
 watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectProgressState]) => {
@@ -122,7 +137,6 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
     ProjectAppStatusStore.setProjectAppStatus(UpdatedProjectProgressState)
   }
 })
-
 </script>
 <template>
   <div
@@ -131,6 +145,38 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
       { 'is-dark': isDarkMode },
     ]"
   >
+    <header class="dashboard-hero">
+      <div class="dashboard-hero__copy">
+        <span class="dashboard-eyebrow"><i></i>{{ $t('Organization overview') }}</span>
+        <h1>{{ $t('Your safety overview') }}</h1>
+        <p>{{ $t('A clearer view of your people, projects, and safety performance.') }}</p>
+      </div>
+      <div class="dashboard-hero__actions">
+        <span v-if="refreshTime" class="dashboard-refresh-time">{{
+          $t('Last refreshed at', { time: refreshTime })
+        }}</span
+        ><button
+          class="dashboard-refresh"
+          type="button"
+          :disabled="refreshing"
+          :aria-busy="refreshing"
+          @click="refreshDashboard"
+        >
+          <svg
+            :class="{ 'is-refreshing': refreshing }"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M20 7v5h-5M4 17v-5h5M6 6a8 8 0 0 1 13 3M18 18a8 8 0 0 1-13-3" /></svg
+          >{{ $t('Refresh overview') }}
+        </button>
+      </div>
+    </header>
     <HomeCards :ProgressValue="Number(ProgressValue)" />
 
     <EmployeeTasksButton />
@@ -157,37 +203,27 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
 
     <div v-if="showOverlay && !visited" class="container-overlay"></div>
 
-    <template v-if="!projectsLoading">
-      <section class="home-analytics-shell">
-        <!-- <div class="home-analytics-heading">
-          <span>{{ $t('dashboard') }}</span>
-          <h2>{{ $t('overview') }}</h2>
-        </div> -->
-
-        <div class="home-overview-grid">
-          <div class="hse-home-panel home-panel-projects">
-            <ProjectsStatistics
-              :projectStatistics="projects"
-              :totalNumOfProjects="ProjectStatics.pagination?.total"
-            />
-          </div>
-
-          <div class="home-panel-kpis">
-            <StaticsCardPerMonth :homeInspectionState="homeInspectionState" />
-          </div>
-
-          <div class="home-panel-details">
-            <StaticCardsFullDetails :homeInspectionState="homeInspectionState" />
-          </div>
+    <section class="home-analytics-shell" :aria-label="$t('Safety performance dashboard')">
+      <div class="dashboard-section-heading">
+        <div>
+          <span class="dashboard-eyebrow">{{ $t('The monthly picture') }}</span>
+          <h2>{{ $t('This month’s safety pulse') }}</h2>
         </div>
-
-        <EquipmentStaticss :EquipmentStatics="EquipmentStatics" />
-        <InvestegationStatics
-          :OverviewHazardChartstate="OverviewHazardChartstate"
-          :overviewInvestigationsChartstate="overviewInvestigationsChartstate"
-        />
-      </section>
-    </template>
-    <HomeSkelaton v-if="projectsLoading" />
+        <span class="dashboard-period"><DashboardIcon name="clock" />{{ reportingMonth }}</span>
+      </div>
+      <StaticsCardPerMonth :homeInspectionState="homeInspectionState" />
+      <div class="dashboard-overview-grid">
+        <ProjectsStatistics
+          :projectStatistics="projects"
+          :totalNumOfProjects="ProjectStatics.pagination?.total ?? undefined"
+          :state="ProjectStatics"
+        /><StaticCardsFullDetails :homeInspectionState="homeInspectionState" />
+      </div>
+      <EquipmentStaticss :EquipmentStatics="EquipmentStatics" />
+      <InvestegationStatics
+        :OverviewHazardChartstate="OverviewHazardChartstate"
+        :overviewInvestigationsChartstate="overviewInvestigationsChartstate"
+      />
+    </section>
   </div>
 </template>

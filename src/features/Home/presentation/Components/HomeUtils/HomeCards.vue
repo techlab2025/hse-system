@@ -4,13 +4,12 @@ import HomeProjectIcon from '@/shared/icons/HomeProjectIcon.vue'
 import HomeOperationIcon from '@/shared/icons/HomeOperationIcon.vue'
 import HomeEquipmentIcon from '@/shared/icons/HomeEquipmentIcon.vue'
 import HomeEmployeeIcon from '@/shared/icons/HomeEmployeeIcon.vue'
-import HomeSettingIcon from '@/shared/icons/HomeSettingIcon.vue'
 import HomeRoutesCard from './HomeRoutesCard.vue'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { RouterEnum } from '@/features/Home/core/enums/SettingEnum/SettingEnum'
 
-const { ProgressValue } = defineProps<{
+defineProps<{
   ProgressValue: number
 }>()
 </script>
@@ -92,68 +91,5 @@ const { ProgressValue } = defineProps<{
         />
       </router-link>
     </PermissionBuilder>
-
-    <!-- <PermissionBuilder
-      :code="[
-        PermissionsEnum.ORG_EMPLOYEE_ALL,
-        PermissionsEnum.ORG_EMPLOYEE_CREATE,
-        PermissionsEnum.ORG_EMPLOYEE_DELETE,
-        PermissionsEnum.ORG_EMPLOYEE_FETCH,
-        PermissionsEnum.ORG_EMPLOYEE_UPDATE,
-        PermissionsEnum.ORG_EMPLOYEE_DETAILS,
-      ]"
-    >
-      <router-link
-        :to="
-          ProgressValue == 100
-            ? `/organization/certificate?type=1`
-            : `/organization/project-progress`
-        "
-      >
-        <HomeRoutesCard
-          :icon="HomeSettingIcon"
-          :title="`${$t('settings')}`"
-          :description="`${$t('position')} . ${$t('theme')} . ${$t('charts')} `"
-        />
-      </router-link>
-    </PermissionBuilder> -->
-
-    <!-- <PermissionBuilder
-      :code="[
-        PermissionsEnum.ORG_EMPLOYEE_ALL,
-        PermissionsEnum.ORG_EMPLOYEE_CREATE,
-        PermissionsEnum.ORG_EMPLOYEE_DELETE,
-        PermissionsEnum.ORG_EMPLOYEE_FETCH,
-        PermissionsEnum.ORG_EMPLOYEE_UPDATE,
-        PermissionsEnum.ORG_EMPLOYEE_DETAILS,
-      ]"
-    >
-      <router-link :to="`/organization/Investigating`">
-        <HomeRoutesCard
-          :icon="InvisttigationIcon"
-          :title="`${$t('investigation')}`"
-          :description="`${$t('meetings')} . ${$t('tasks')} . ${$t('create')} `"
-        />
-      </router-link>
-    </PermissionBuilder> -->
-
-    <!-- <PermissionBuilder
-      :code="[
-        PermissionsEnum.ORG_EMPLOYEE_ALL,
-        PermissionsEnum.ORG_EMPLOYEE_CREATE,
-        PermissionsEnum.ORG_EMPLOYEE_DELETE,
-        PermissionsEnum.ORG_EMPLOYEE_FETCH,
-        PermissionsEnum.ORG_EMPLOYEE_UPDATE,
-        PermissionsEnum.ORG_EMPLOYEE_DETAILS,
-      ]"
-    >
-      <router-link :to="`/organization/capa`">
-        <HomeRoutesCard
-          :icon="CapaIcon"
-          :title="`${$t('capa')}`"
-          :description="`${$t('incidents')} . ${$t('hazard')} . ${$t('capa')} `"
-        />
-      </router-link>
-    </PermissionBuilder> -->
   </div>
 </template>

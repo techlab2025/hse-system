@@ -1,137 +1,44 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import Chart from 'primevue/chart'
-import { watch } from 'vue'
+import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useThemeMode } from '@/composables/useThemeMode'
-const identityRoot = ref<HTMLElement | null>(null)
-const { isDarkMode } = useThemeMode()
-const chartStyle = () =>
-  getComputedStyle(identityRoot.value?.closest('.hse-identity') ?? document.documentElement)
-
-const props = defineProps<{
-  statics: { rent: number; owned: number }
-}>()
-const { t, locale } = useI18n()
-// watch(() => props.statics, () => {
-//   chartData.value = setChartData();
-//   chartOptions.value = setChartOptions();
-// })
-onMounted(() => {
-  chartData.value = setChartData()
-  chartOptions.value = setChartOptions()
-})
-const Rent = ref(props.statics?.rent)
-const Owned = ref(props.statics?.owned)
-
-const chartData = ref()
-const chartOptions = ref()
-
-const setChartData = () => {
-  const documentStyle = chartStyle()
-
-  return {
-    labels: [t('rent'), t('owned')],
-    datasets: [
-      {
-        data: [Rent.value, Owned.value],
-        backgroundColor: [
-          documentStyle.getPropertyValue('--hse-project-blue') ||
-            documentStyle.getPropertyValue('--p-owned-500'),
-          documentStyle.getPropertyValue('--hse-project-cyan') ||
-            documentStyle.getPropertyValue('--p-rent-500'),
-        ],
-        hoverBackgroundColor: [
-          documentStyle.getPropertyValue('--hse-project-blue') ||
-            documentStyle.getPropertyValue('--p-owned-500'),
-          documentStyle.getPropertyValue('--hse-project-cyan') ||
-            documentStyle.getPropertyValue('--p-rent-500'),
-        ],
-      },
-    ],
-  }
-}
-
-const setChartOptions = () => {
-  const documentStyle = chartStyle()
-  const textColor =
-    documentStyle.getPropertyValue('--hse-project-muted') ||
-    documentStyle.getPropertyValue('--p-text-color')
-
-  return {
-    plugins: {
-      legend: {
-        labels: {
-          usePointStyle: true,
-          font: { family: documentStyle.fontFamily, size: 12 },
-          color: textColor,
-        },
-      },
-    },
-  }
-}
-
-watch(
-  () => props.statics,
-  (newVal) => {
-    console.log(newVal, 'new ')
-    Rent.value = newVal.rent
-    Owned.value = newVal.owned
-    chartData.value = setChartData()
-    chartOptions.value = setChartOptions()
-  },
+import { formatMetric, metricNumber } from '../../utils/dashboardMetrics'
+const props = defineProps<{ statics?: { rent: number; owned: number } | null }>()
+const { locale } = useI18n()
+const owned = computed(() => metricNumber(props.statics?.owned))
+const rent = computed(() => metricNumber(props.statics?.rent))
+const total = computed(() =>
+  owned.value != null && rent.value != null ? owned.value + rent.value : null,
 )
-
-watch(
-  [locale, isDarkMode],
-  () => {
-    chartData.value = setChartData()
-    chartOptions.value = setChartOptions()
-  },
-  { flush: 'post' },
-)
+const ownedShare = computed(() => (total.value ? ((owned.value ?? 0) / total.value) * 100 : 0))
 </script>
 <template>
-  <div ref="identityRoot" class="top-teams-container">
-    <div class="top-teams-header">
-      <span class="static">{{ $t('statistics') }}</span>
-      <p class="static-title">{{ $t('equipment_devices_tools') }}</p>
+  <div class="dashboard-ownership">
+    <div class="dashboard-donut-wrap">
+      <div
+        class="dashboard-donut"
+        :class="{ 'dashboard-donut--empty': !total }"
+        :style="{ '--owned-share': `${ownedShare}%` }"
+        role="img"
+        :aria-label="`${$t('owned')}: ${formatMetric(owned, locale)}, ${$t('rent')}: ${formatMetric(rent, locale)}`"
+      >
+        <div>
+          <strong>{{ formatMetric(total, locale) }}</strong
+          ><span>{{ $t('Total assets') }}</span>
+        </div>
+      </div>
     </div>
-    <!-- <div class="top-teams-container"> -->
-    <div class="machine-statics">
-      <Chart
-        style="max-height: 250px"
-        type="pie"
-        :data="chartData"
-        :options="chartOptions"
-        class="w-full md:w-[20rem]"
-      />
+    <div class="dashboard-ownership__legend">
+      <div>
+        <span><i></i>{{ $t('owned') }}</span
+        ><strong>{{ formatMetric(owned, locale) }}</strong
+        ><small>{{ total ? `${formatMetric(ownedShare, locale)}%` : '—' }}</small>
+      </div>
+      <div>
+        <span><i class="is-rented"></i>{{ $t('rent') }}</span
+        ><strong>{{ formatMetric(rent, locale) }}</strong
+        ><small>{{ total ? `${formatMetric(100 - ownedShare, locale)}%` : '—' }}</small>
+      </div>
     </div>
-    <!-- </div> -->
+    <p v-if="!total" class="dashboard-empty-inline">{{ $t('No equipment data available') }}</p>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.top-teams-container {
-  height: fit-content;
-  //
-}
-.machine-statics {
-  gap: 10px;
-  padding: 10px;
-  border-radius: 10px;
-  // box-shadow: 0px 4px 8px color-mix(in srgb, var(--text-strong) 10%, transparent);
-  width: 100%;
-  // height: 400px;
-}
-.p-chart {
-  display: flex !important;
-  justify-content: center !important;
-  margin-inline: auto !important;
-}
-.top-teams-container {
-  @media (max-width: 1050px) {
-    margin-bottom: 5rem;
-  }
-}
-</style>

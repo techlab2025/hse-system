@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import wordSlice from '@/base/Presentation/utils/word_slice'
+import DashboardIcon from '../Dashboard/DashboardIcon.vue'
 import type { Component } from 'vue'
 
 const props = defineProps<{
@@ -17,7 +17,8 @@ const props = defineProps<{
     </div>
     <div class="card-content">
       <h3 class="title">{{ props?.title }}</h3>
-      <p class="description">{{ wordSlice(props?.description || '', 30) }}</p>
+      <p class="description">{{ props.description }}</p>
     </div>
+    <DashboardIcon name="arrow" class="home-route-arrow" />
   </div>
 </template>

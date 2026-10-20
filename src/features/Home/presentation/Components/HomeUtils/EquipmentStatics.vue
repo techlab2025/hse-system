@@ -1,31 +1,30 @@
 <script setup lang="ts">
-import '../../styles/home-identity.css'
+import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
+import type EquipmentStaticsModel from '@/features/Home/data/Model/EquipmentStaticsModel'
 import MachineStatics from '../HomeStatistics/MachineStatics.vue'
 import TotalMachines from '../HomeStatistics/TotalMachines.vue'
-
-const { EquipmentStatics } = defineProps<{
-  EquipmentStatics: any
-}>()
+import DashboardPanel from '../Dashboard/DashboardPanel.vue'
+defineProps<{ EquipmentStatics: DataState<EquipmentStaticsModel> }>()
 </script>
-
 <template>
-  <div class="hse-identity hse-home-charts">
-    <!-- <div class="dashboard-section-heading">
-      <span>{{ $t('equipment') }}</span>
-      <h3>{{ $t('Equipment Statistics') }}</h3>
-    </div> -->
-
-    <div class="hse-home-chart-grid">
-      <section class="hse-home-panel hse-home-chart-panel">
-        <TotalMachines
-          v-if="EquipmentStatics?.data?.statics?.length! > 0"
-          :totalMachines="EquipmentStatics.data?.statics!"
-        />
-      </section>
-
-      <section class="hse-home-panel hse-home-chart-panel">
-        <MachineStatics :statics="EquipmentStatics.data?.rentEquipments!" />
-      </section>
-    </div>
+  <div class="dashboard-chart-grid">
+    <DashboardPanel
+      :title="$t('Equipment footprint')"
+      :eyebrow="$t('Resources at a glance')"
+      :description="$t('Equipment, devices, and tools by zone.')"
+      icon="equipment"
+      :state="EquipmentStatics"
+      ><TotalMachines :total-machines="EquipmentStatics.data?.statics" /><template #footer
+        ><span>{{ $t('Compare recorded asset counts across zones.') }}</span></template
+      ></DashboardPanel
+    >
+    <DashboardPanel
+      :title="$t('Fleet ownership')"
+      :eyebrow="$t('Asset mix')"
+      :description="$t('The balance between owned and rented assets.')"
+      icon="equipment"
+      :state="EquipmentStatics"
+      ><MachineStatics :statics="EquipmentStatics.data?.rentEquipments"
+    /></DashboardPanel>
   </div>
 </template>
