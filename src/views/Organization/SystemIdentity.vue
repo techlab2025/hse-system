@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import IdentityColorEditor from '@/features/SystemIdentity/components/IdentityColorEditor.vue'
+import IdentitySidebarEditor from '@/features/SystemIdentity/components/IdentitySidebarEditor.vue'
 import IdentityLayoutEditor from '@/features/SystemIdentity/components/IdentityLayoutEditor.vue'
 import IdentityPreview from '@/features/SystemIdentity/components/IdentityPreview.vue'
 import { normalizeAppearance } from '@/features/SystemIdentity/appearance'
@@ -151,7 +152,9 @@ onMounted(() => {
       <div>
         <span class="eyebrow">Organization settings</span>
         <h1>System Identity</h1>
-        <p>Customize the organization logo and color palette used across HSE.Cloud.Ai.</p>
+        <p>
+          Customize your logo, interface colors, header, and sidebar layout across HSE.Cloud.Ai.
+        </p>
       </div>
       <div class="active-badge" :class="{ inactive: !form.isActive }">
         <span></span>{{ form.isActive ? 'Active identity' : 'Identity disabled' }}
@@ -301,6 +304,7 @@ onMounted(() => {
 
     <IdentityColorEditor v-model="form.appearance" />
     <IdentityLayoutEditor v-model="form.appearance" />
+    <IdentitySidebarEditor v-model="form.appearance" />
     <IdentityPreview :identity="form" />
 
     <button class="save-button" type="button" :disabled="isSaving" @click="save">

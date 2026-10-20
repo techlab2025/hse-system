@@ -1,3 +1,4 @@
+import { fontStack, setGoogleFont } from '@/features/SystemIdentity/typography'
 import { computed, ref } from 'vue'
 import {
   colorFields,
@@ -59,6 +60,19 @@ const applyIdentity = (value: SystemIdentity) => {
     if (color) root.style.setProperty(`--identity-${key}`, color)
     else root.style.removeProperty(`--identity-${key}`)
     root.toggleAttribute(`data-identity-${key.toLowerCase()}`, Boolean(color))
+  }
+  const typography = active.appearance.typography
+  setGoogleFont(typography.fontFamily, 'saved')
+  for (const [key, value] of Object.entries({
+    fontFamily: fontStack(typography.fontFamily),
+    fontSize: typography.fontSize ? `${typography.fontSize}px` : '',
+    headingSize: typography.headingSize ? `${typography.headingSize}px` : '',
+    fontColor: typography.fontColor,
+    headingColor: typography.headingColor,
+  })) {
+    if (value) root.style.setProperty(`--identity-${key}`, value)
+    else root.style.removeProperty(`--identity-${key}`)
+    root.toggleAttribute(`data-identity-${key.toLowerCase()}`, Boolean(value))
   }
   root.dataset.identityBreadcrumbPosition = active.appearance.breadcrumbPosition
 

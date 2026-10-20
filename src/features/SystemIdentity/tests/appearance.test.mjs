@@ -63,3 +63,52 @@ test('section colors persist independently and default to no override', () => {
   assert.equal(defaultAppearance().colors.sectionBackground, undefined)
   assert.equal(defaultAppearance().colors.sectionText, undefined)
 })
+
+test('sidebar orders migrate partial layouts and keep every available destination', () => {
+  const defaults = defaultAppearance()
+  const result = normalizeAppearance({
+    sidebarOrder: ['reports', 'reports', 'unknown'],
+    sidebarItemOrder: {
+      operations: ['Inspection', 'Inspection', 'missing', 'Projects'],
+      'operations/equipment': ['Machines', 'Tools'],
+      unknown: ['fake-route'],
+    },
+  })
+  assert.equal(result.sidebarOrder[0], 'reports')
+  assert.deepEqual(new Set(result.sidebarOrder), new Set(defaults.sidebarOrder))
+  assert.deepEqual(result.sidebarItemOrder.operations.slice(0, 2), ['Inspection', 'Projects'])
+  assert.deepEqual(
+    new Set(result.sidebarItemOrder.operations),
+    new Set(defaults.sidebarItemOrder.operations),
+  )
+  assert.deepEqual(result.sidebarItemOrder['operations/equipment'], [
+    'Machines',
+    'Tools',
+    'Devices',
+  ])
+  assert.equal(result.sidebarItemOrder.unknown, undefined)
+})
+
+test('saved sidebar drafts are independent and survive serialization', () => {
+  const saved = defaultAppearance()
+  const draft = normalizeAppearance(saved)
+  draft.sidebarOrder.reverse()
+  draft.sidebarItemOrder.operations.reverse()
+  assert.equal(saved.sidebarOrder[0], 'overview')
+  assert.equal(saved.sidebarItemOrder.operations[0], 'Projects')
+  assert.deepEqual(normalizeAppearance(JSON.parse(JSON.stringify(draft))), draft)
+})
+
+test('tag, active navigation, and input overrides persist without changing old identities', () => {
+  const colors = {
+    tagBackground: '#123456',
+    tagText: '#ffffff',
+    sidebarActiveBackground: '#234567',
+    sidebarActiveText: '#fefefe',
+    inputBackground: '#345678',
+    inputText: '#efefef',
+    inputBorder: '#456789',
+  }
+  assert.deepEqual(normalizeAppearance({ colors }).colors, colors)
+  assert.deepEqual(normalizeAppearance({}).colors, {})
+})

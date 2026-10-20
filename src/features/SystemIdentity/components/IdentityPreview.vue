@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { organizationNavigation } from '@/shared/LayoutComponents/organizationNavigation'
 import { useSystemIdentity, type SystemIdentity } from '@/composables/useSystemIdentity'
 import { headerFields, headerActionFields } from '../appearance'
 const props = defineProps<{ identity: SystemIdentity }>()
+const { t } = useI18n()
 const { defaultIdentity } = useSystemIdentity()
 const preview = computed(() => (props.identity.isActive ? props.identity : defaultIdentity.value))
 const colors = computed(() => preview.value.appearance.colors)
@@ -21,7 +24,20 @@ const colors = computed(() => preview.value.appearance.colors)
           color: colors.sidebarText || '#c7d7eb',
         }"
       >
-        ☰<span>Projects</span><span>Reports</span>
+        ☰<span
+          v-for="(group, index) in preview.appearance.sidebarOrder"
+          :key="group"
+          :class="{ 'identity-preview-nav-active': index === 0 }"
+          :style="
+            index === 0
+              ? {
+                  background: colors.sidebarActiveBackground || '#256df4',
+                  color: colors.sidebarActiveText || '#ffffff',
+                }
+              : undefined
+          "
+          >{{ t(organizationNavigation.find((item) => item.key === group)!.label) }}</span
+        >
       </aside>
       <div class="identity-preview-main">
         <header
@@ -64,6 +80,24 @@ const colors = computed(() => preview.value.appearance.colors)
           >
             <h3>{{ preview.name }}</h3>
             <p>Your workspace appearance</p>
+            <span
+              class="identity-preview-tag"
+              :style="{
+                background: colors.tagBackground || '#e8f0ff',
+                color: colors.tagText || '#256df4',
+              }"
+              >Sample tag</span
+            >
+            <div
+              class="identity-preview-input"
+              :style="{
+                background: colors.inputBackground || 'var(--hse-project-input-bg)',
+                color: colors.inputText || 'var(--hse-project-ink)',
+                borderColor: colors.inputBorder || 'var(--hse-project-line)',
+              }"
+            >
+              Sample field
+            </div>
             <div class="identity-preview-actions">
               <span
                 :style="{

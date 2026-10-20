@@ -135,8 +135,135 @@ html[data-identity-sectiontext]
       .p-multiselect *,
       .p-datepicker *,
       .hse-breadcrumb-bar *,
+      .tag,
+      .tag *,
+      .badge,
+      .badge *,
+      .p-tag,
+      .p-tag *,
+      .hse-project-badge,
+      .hse-project-badge *,
+      .status-badge,
+      .status-badge *,
+      .investigation-status-badge,
+      .investigation-status-badge *,
+      .incident-investigation-badge,
+      .incident-investigation-badge *,
       .identity-shell-preview *
     )
   ) {
   color: var(--identity-sectionText) !important;
+}
+
+/* Explicit active colors take precedence over the general sidebar text color. */
+html[data-identity-sidebaractivebackground]
+  .modern-sidebar
+  :is(.side-rail-btn.is-active, .side-rail-btn.is-selected, .side-btn.active) {
+  background: var(--identity-sidebarActiveBackground) !important;
+}
+html[data-identity-sidebaractivetext]
+  .modern-sidebar
+  :is(.side-rail-btn.is-active, .side-rail-btn.is-selected, .side-btn.active) {
+  color: var(--identity-sidebarActiveText) !important;
+}
+html[data-identity-tagbackground]
+  .main-content
+  :is(
+    .tag,
+    .badge,
+    .p-tag,
+    .hse-project-badge,
+    .status-badge,
+    .investigation-status-badge,
+    .incident-investigation-badge
+  ) {
+  background: var(--identity-tagBackground) !important;
+}
+html[data-identity-tagtext]
+  .main-content
+  :is(
+    .tag,
+    .badge,
+    .p-tag,
+    .hse-project-badge,
+    .status-badge,
+    .investigation-status-badge,
+    .incident-investigation-badge
+  ),
+html[data-identity-tagtext]
+  .main-content
+  :is(
+    .tag,
+    .badge,
+    .p-tag,
+    .hse-project-badge,
+    .status-badge,
+    .investigation-status-badge,
+    .incident-investigation-badge
+  )
+  * {
+  color: var(--identity-tagText) !important;
+}
+
+/* Keep disabled, validation, and focus indicators provided by the controls. */
+html[data-identity-inputbackground]
+  .main-content
+  :is(
+    input:not(
+      [type='color'],
+      [type='checkbox'],
+      [type='radio'],
+      [type='range'],
+      [type='file'],
+      [type='hidden'],
+      [type='submit'],
+      [type='button']
+    ),
+    textarea,
+    .p-select,
+    .p-multiselect
+  ):not(:disabled, .p-disabled) {
+  background: var(--identity-inputBackground) !important;
+}
+html[data-identity-inputtext]
+  .main-content
+  :is(
+    input:not(
+      [type='color'],
+      [type='checkbox'],
+      [type='radio'],
+      [type='range'],
+      [type='file'],
+      [type='hidden'],
+      [type='submit'],
+      [type='button']
+    ),
+    textarea,
+    .p-select,
+    .p-multiselect
+  ):not(:disabled, .p-disabled),
+html[data-identity-inputtext]
+  .main-content
+  :is(.p-select, .p-multiselect):not(.p-disabled)
+  :is(.p-select-label, .p-multiselect-label):not(.p-placeholder) {
+  color: var(--identity-inputText) !important;
+}
+html[data-identity-inputborder]
+  .main-content
+  :is(
+    input:not(
+      [type='color'],
+      [type='checkbox'],
+      [type='radio'],
+      [type='range'],
+      [type='file'],
+      [type='hidden'],
+      [type='submit'],
+      [type='button']
+    ),
+    textarea,
+    .p-select,
+    .p-multiselect
+  ):not(:disabled, .p-disabled, :focus, :focus-within, .p-invalid, [aria-invalid='true']) {
+  border-color: var(--identity-inputBorder) !important;
 }

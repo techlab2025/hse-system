@@ -218,3 +218,52 @@
 .identity-preview-section :is(h3, p) {
   color: inherit;
 }
+
+.identity-color-group {
+  min-width: 0;
+  margin: 20px 0 0;
+  padding: 14px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: 12px;
+}
+.identity-color-group legend {
+  padding: 0 8px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.identity-editor-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.identity-sidebar-details {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+.identity-sidebar-details summary {
+  cursor: pointer;
+  padding: 8px 0;
+  font-size: 13px;
+}
+.identity-sidebar-details[open] > .identity-order-list {
+  margin-top: 10px;
+}
+.identity-preview-tag {
+  display: inline-block;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 11px;
+  margin: 10px 0;
+}
+.identity-preview-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid;
+  border-radius: 9px;
+}
+.identity-preview-nav-active {
+  padding: 6px;
+  border-radius: 6px;
+}
