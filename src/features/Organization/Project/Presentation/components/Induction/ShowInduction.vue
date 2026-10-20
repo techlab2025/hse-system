@@ -115,16 +115,20 @@ onMounted(() => {
 
 <template>
   <PermissionBuilder :code="detailsPermissions">
-    <div data-hse-project v-project-panels class="hse-project-root hse-project-state-host">
+    <div
+      data-hse-project
+      v-project-panels
+      class="hse-identity hse-project-root hse-project-state-host"
+    >
       <DataStatus :controller="state">
         <template #success>
           <section
             data-hse-project
             v-project-panels
             v-if="induction"
-            class="hse-project-root hse-project-page induction-show"
+            class="hse-identity hse-project-root hse-project-page induction-show"
           >
-            <header data-hse-project-head class="hse-project-page-head induction-hero">
+            <div class="induction-hero">
               <div class="induction-hero__main">
                 <span class="induction-hero__icon" aria-hidden="true">
                   <Icon icon="uil:book-open" />
@@ -140,7 +144,7 @@ onMounted(() => {
                 </div>
               </div>
 
-              <div class="metric-grid" :aria-label="$t('session_details')">
+              <div class="induction-metrics" :aria-label="$t('session_details')">
                 <article
                   v-for="metric in heroMetrics"
                   :key="metric.label"
@@ -154,9 +158,9 @@ onMounted(() => {
                   <p>{{ $t(metric.label) }}</p>
                 </article>
               </div>
-            </header>
+            </div>
 
-            <section class="detail-grid" :aria-label="$t('induction_identity')">
+            <section class="induction-details" :aria-label="$t('induction_identity')">
               <article
                 v-for="item in detailItems"
                 :key="item.label"
@@ -173,7 +177,7 @@ onMounted(() => {
               </article>
             </section>
 
-            <div class="show-grid">
+            <div class="induction-sections">
               <section class="show-panel topics-panel">
                 <header class="panel-header">
                   <span class="panel-header__icon" aria-hidden="true">
@@ -236,14 +240,19 @@ onMounted(() => {
                   </div>
                 </header>
 
-                <div v-if="attachments.length" class="attachment-grid">
+                <div v-if="attachments.length" class="induction-attachments">
                   <article
                     v-for="(file, index) in attachments"
                     :key="file + '-' + index"
                     class="attachment-item"
                   >
-                    <Image :src="file" alt="Image" preview image-class="attachment-image" />
-                    <span>{{ index + 1 }}</span>
+                    <Image
+                      :src="file"
+                      :alt="`${$t('evidence_files')} ${index + 1}`"
+                      preview
+                      image-class="attachment-image"
+                    />
+                    <span class="attachment-index" aria-hidden="true">{{ index + 1 }}</span>
                   </article>
                 </div>
                 <p v-else class="empty-text">{{ $t('No attachments') }}</p>
@@ -275,32 +284,35 @@ onMounted(() => {
 <style scoped>
 .induction-show {
   display: grid;
-  gap: 18px;
-  padding: 16px;
+  gap: var(--hse-project-space-xl);
+  min-width: 0;
+  padding: 0;
 }
 
-.induction-hero {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.72fr);
-  gap: 16px;
-  align-items: stretch;
+.induction-hero,
+.show-panel {
   min-width: 0;
-  padding: 18px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 16%, var(--main-border));
-  border-radius: 16px;
-  background:
-    linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--PrimaryColor) 12%, transparent),
-      transparent 42%
-    ),
-    color-mix(in srgb, var(--surface-1) 96%, #f8fbff);
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
+  background: white !important;
+  box-shadow: var(--hse-project-shadow-panel);
+  padding: 10px !important;
+}
+
+.induction-show .induction-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.85fr);
+  align-items: center;
+  gap: var(--hse-project-space-2xl);
+  padding: var(--hse-project-space-2xl);
+  border-block-start: 3px solid var(--hse-project-blue);
+  margin: 0;
 }
 
 .induction-hero__main {
   display: flex;
-  gap: 14px;
-  align-items: center;
+  align-items: flex-start;
+  gap: var(--hse-project-space-lg);
   min-width: 0;
 }
 
@@ -311,19 +323,23 @@ onMounted(() => {
   display: grid;
   flex: 0 0 auto;
   place-items: center;
+  color: var(--induction-accent, var(--hse-project-blue));
+  background: color-mix(
+    in srgb,
+    var(--induction-accent, var(--hse-project-blue)) 9%,
+    var(--hse-project-surface)
+  );
+  border-radius: var(--hse-project-radius-control);
 }
 
 .induction-hero__icon {
-  width: 58px;
-  height: 58px;
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--PrimaryColor) 13%, transparent);
-  color: var(--PrimaryColor);
+  width: 52px;
+  height: 52px;
 }
 
 .induction-hero__icon svg {
-  width: 30px;
-  height: 30px;
+  width: 26px;
+  height: 26px;
 }
 
 .induction-hero__copy {
@@ -332,259 +348,212 @@ onMounted(() => {
 
 .induction-hero__copy p,
 .induction-hero__copy h1,
-.induction-hero__chips,
 .metric-card p,
+.detail-card p,
 .panel-header h2,
 .panel-header p {
   margin: 0;
 }
 
 .induction-hero__copy p {
-  color: var(--text-soft);
-  font-size: 0.78rem;
-  font-weight: 800;
+  color: var(--hse-project-blue);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }
 
-.induction-hero__copy h1 {
-  margin-top: 4px;
-  overflow: hidden;
-  color: var(--text-strong);
-  font-size: clamp(1.35rem, 2.4vw, 2rem);
-  font-weight: 900;
-  line-height: 1.15;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.induction-show .induction-hero__copy h1 {
+  margin-block-start: 8px;
+  color: var(--hse-project-ink);
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 700;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
 .induction-hero__chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 6px;
+  margin-block-start: var(--hse-project-space-md);
 }
 
 .induction-hero__chips span {
-  display: inline-flex;
-  align-items: center;
-  max-width: 230px;
-  min-height: 30px;
-  padding: 5px 10px;
-  overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 14%, var(--main-border));
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--surface-1) 84%, transparent);
-  color: var(--text-soft);
-  font-size: 0.78rem;
-  font-weight: 800;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  max-width: 100%;
+  padding: 5px 9px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-small);
+  background: var(--hse-project-surface-soft);
+  color: var(--hse-project-muted);
+  font-size: 11px;
+  font-weight: 500;
+  overflow-wrap: anywhere;
 }
 
-.metric-grid {
+.induction-metrics {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 10px;
+  gap: var(--hse-project-space-sm);
 }
 
 .metric-card {
   display: grid;
-  gap: 7px;
-  align-content: center;
-  min-height: 112px;
-  padding: 14px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 13%, var(--main-border));
-  border-radius: 14px;
-  background: var(--surface-1);
+  align-content: start;
+  gap: 10px;
+  min-width: 0;
+  padding: var(--hse-project-space-lg);
+  border: 1px solid var(--hse-project-line-soft);
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-surface-soft);
 }
 
 .metric-card__icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background: color-mix(in srgb, var(--PrimaryColor) 10%, transparent);
-  color: var(--PrimaryColor);
+  width: 32px;
+  height: 32px;
 }
 
-.metric-card[data-tone='green'] .metric-card__icon {
-  color: #16805d;
-  background: color-mix(in srgb, #16a34a 12%, transparent);
+[data-tone='green'] {
+  --induction-accent: var(--hse-project-green);
 }
 
-.metric-card[data-tone='amber'] .metric-card__icon {
-  color: #93610d;
-  background: color-mix(in srgb, #f59e0b 14%, transparent);
+[data-tone='amber'] {
+  --induction-accent: var(--hse-project-amber);
+}
+
+[data-tone='slate'] {
+  --induction-accent: var(--hse-project-muted);
 }
 
 .metric-card strong {
-  color: var(--text-strong);
-  font-size: 1.55rem;
-  font-weight: 900;
-  line-height: 1;
+  color: var(--hse-project-ink);
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
 }
 
-.metric-card p {
-  color: var(--text-soft);
-  font-size: 0.76rem;
-  font-weight: 800;
+.metric-card p,
+.detail-card p {
+  color: var(--hse-project-muted);
+  font-size: 11px;
+  line-height: 1.5;
 }
 
-.detail-grid {
+.induction-details {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: var(--hse-project-space-md);
 }
 
 .detail-card {
   display: flex;
   align-items: center;
-  gap: 11px;
+  gap: var(--hse-project-space-md);
   min-width: 0;
-  min-height: 76px;
-  padding: 13px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 11%, var(--main-border));
-  border-radius: 14px;
-  background: var(--surface-1);
+  padding: var(--hse-project-space-lg);
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-surface);
 }
 
-.detail-card__icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 11px;
-  background: color-mix(in srgb, var(--PrimaryColor) 10%, transparent);
-  color: var(--PrimaryColor);
-}
-
-.detail-card[data-tone='green'] .detail-card__icon {
-  color: #16805d;
-  background: color-mix(in srgb, #16a34a 12%, transparent);
-}
-
-.detail-card[data-tone='amber'] .detail-card__icon {
-  color: #93610d;
-  background: color-mix(in srgb, #f59e0b 14%, transparent);
-}
-
-.detail-card[data-tone='violet'] .detail-card__icon {
-  color: #6554c0;
-  background: color-mix(in srgb, #7c3aed 11%, transparent);
-}
-
-.detail-card[data-tone='slate'] .detail-card__icon {
-  color: var(--text-soft);
-  background: color-mix(in srgb, var(--text-soft) 10%, transparent);
+.detail-card__icon,
+.panel-header__icon {
+  width: 38px;
+  height: 38px;
 }
 
 .detail-card div {
   min-width: 0;
 }
 
-.detail-card p,
-.detail-card strong {
-  margin: 0;
-}
-
-.detail-card p {
-  color: var(--text-soft);
-  font-size: 0.72rem;
-  font-weight: 800;
-}
-
 .detail-card strong {
   display: block;
-  overflow: hidden;
-  color: var(--text-strong);
-  font-size: 0.92rem;
-  font-weight: 900;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin-block-start: 4px;
+  color: var(--hse-project-ink);
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
-.show-grid {
+.induction-sections {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: 14px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--hse-project-space-xl);
+  align-items: start;
 }
 
 .show-panel {
-  display: grid;
-  gap: 13px;
-  align-content: start;
-  min-width: 0;
-  padding: 14px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 11%, var(--main-border));
-  border-radius: 16px;
-  background: var(--surface-1);
+  overflow: hidden;
 }
 
 .evidence-panel {
   grid-column: 1 / -1;
 }
 
-.panel-header {
+.induction-show .panel-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-width: 0;
-}
-
-.panel-header__icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 11px;
-  background: color-mix(in srgb, var(--PrimaryColor) 10%, transparent);
-  color: var(--PrimaryColor);
+  gap: var(--hse-project-space-md);
+  width: 100%;
+  margin: 0;
+  padding: var(--hse-project-space-lg) var(--hse-project-space-xl);
+  border-block-end: 1px solid var(--hse-project-line-soft);
 }
 
 .metric-card__icon svg,
 .detail-card__icon svg,
 .panel-header__icon svg {
-  width: 20px;
-  height: 20px;
+  width: 19px;
+  height: 19px;
 }
 
 .panel-header div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+  gap: 10px;
   min-width: 0;
 }
 
-.panel-header h2 {
-  overflow: hidden;
-  color: var(--text-strong);
-  font-size: 1rem;
-  font-weight: 900;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.induction-show .panel-header h2 {
+  color: var(--hse-project-ink);
+  font-size: 15px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 .panel-header p {
-  color: var(--text-soft);
-  font-size: 0.78rem;
-  font-weight: 800;
+  display: grid;
+  place-items: center;
+  min-width: 28px;
+  height: 28px;
+  padding-inline: 7px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-small);
+  color: var(--hse-project-muted);
+  background: var(--hse-project-surface-soft);
+  font-size: 11px;
+  font-weight: 600;
 }
 
 .topic-list,
 .attendee-list {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 9px;
-}
-@media (max-width: 600px) {
-  .topic-list,
-  .attendee-list {
-    grid-template-columns: 1fr;
-  }
+  gap: var(--hse-project-space-sm);
+  padding: var(--hse-project-space-lg);
 }
 
 .topic-item,
 .attendee-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--hse-project-space-md);
   min-width: 0;
-  min-height: 50px;
-  padding: 10px;
-  border: 1px solid color-mix(in srgb, var(--main-border) 86%, transparent);
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--surface-1) 96%, #eef4ff);
+  padding: var(--hse-project-space-md);
+  border: 1px solid var(--hse-project-line-soft);
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-surface-soft);
 }
 
 .topic-item span,
@@ -592,140 +561,137 @@ onMounted(() => {
   display: grid;
   flex: 0 0 auto;
   place-items: center;
-  color: var(--PrimaryColor);
-  font-weight: 900;
+  width: 34px;
+  height: 34px;
+  border-radius: var(--hse-project-radius-small);
+  color: var(--hse-project-blue);
+  background: var(--hse-project-ice);
+  font-size: 11px;
+  font-weight: 700;
 }
 
-.topic-item span {
-  width: 30px;
-  height: 30px;
-  border-radius: 9px;
-  background: color-mix(in srgb, var(--PrimaryColor) 11%, transparent);
-  font-size: 0.8rem;
-}
-
-.topic-item strong {
-  overflow: hidden;
-  color: var(--text-strong);
-  font-size: 0.91rem;
-  font-weight: 900;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.attendee-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: color-mix(in srgb, var(--PrimaryColor) 11%, transparent);
-  font-size: 0.78rem;
+.topic-item strong,
+.attendee-copy strong {
+  color: var(--hse-project-ink);
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
 }
 
 .attendee-copy {
   display: grid;
+  gap: 3px;
   min-width: 0;
 }
 
-.attendee-copy strong,
 .attendee-copy small {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  color: var(--hse-project-muted);
+  font-size: 11px;
+  overflow-wrap: anywhere;
 }
 
-.attendee-copy strong {
-  color: var(--text-strong);
-  font-size: 0.92rem;
-  font-weight: 900;
-}
-
-.attendee-copy small {
-  color: var(--text-soft);
-  font-size: 0.76rem;
-  font-weight: 700;
-}
-
-.attachment-grid {
+.induction-attachments {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(154px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
+  gap: var(--hse-project-space-md);
+  padding: var(--hse-project-space-lg);
 }
 
 .attachment-item {
   position: relative;
   overflow: hidden;
   aspect-ratio: 16 / 10;
-  border: 1px solid color-mix(in srgb, var(--main-border) 84%, transparent);
-  border-radius: 14px;
-  background: var(--surface-2);
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-surface-soft);
 }
 
 .attachment-item :deep(.p-image),
-.attachment-item :deep(.p-image img) {
+.attachment-item :deep(.attachment-image) {
+  display: block;
   width: 100%;
   height: 100%;
 }
 
 .attachment-item :deep(.attachment-image) {
-  width: 100%;
-  height: 100%;
   object-fit: cover;
 }
 
-.attachment-item span {
+.attachment-index {
   position: absolute;
   inset-block-start: 8px;
   inset-inline-start: 8px;
   display: grid;
-  width: 28px;
-  height: 28px;
   place-items: center;
-  border-radius: 9px;
-  background: color-mix(in srgb, var(--surface-1) 94%, transparent);
-  color: var(--PrimaryColor);
-  font-size: 0.78rem;
-  font-weight: 900;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-small);
+  background: var(--hse-project-surface);
+  color: var(--hse-project-ink);
+  font-size: 11px;
+  font-weight: 600;
+  pointer-events: none;
 }
 
 .empty-text {
-  margin: 0;
-  padding: 16px;
-  border: 1px dashed color-mix(in srgb, var(--PrimaryColor) 20%, var(--main-border));
-  border-radius: 12px;
-  color: var(--text-soft);
-  font-size: 0.86rem;
-  font-weight: 800;
+  margin: var(--hse-project-space-lg);
+  padding: var(--hse-project-space-xl);
+  border: 1px dashed var(--hse-project-line);
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-surface-soft);
+  color: var(--hse-project-muted);
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
 }
 
 @media (max-width: 1120px) {
-  .induction-hero,
-  .show-grid {
+  .induction-show .induction-hero {
     grid-template-columns: 1fr;
+    gap: var(--hse-project-space-xl);
   }
 }
 
 @media (max-width: 860px) {
-  .detail-grid,
-  .metric-grid {
+  .induction-details {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .induction-sections {
     grid-template-columns: 1fr;
   }
 }
 
-@media (max-width: 640px) {
-  .induction-show,
-  .induction-hero,
-  .show-panel {
-    padding: 12px;
+@media (max-width: 540px) {
+  .induction-show .induction-hero {
+    padding: var(--hse-project-space-lg);
   }
 
   .induction-hero__main {
-    align-items: flex-start;
+    gap: var(--hse-project-space-md);
   }
 
-  .induction-hero__copy h1,
-  .detail-card strong,
-  .panel-header h2 {
-    white-space: normal;
+  .induction-hero__icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .induction-hero__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .induction-details {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-card {
+    padding: 10px;
+  }
+
+  .metric-card strong {
+    font-size: 22px;
   }
 }
 </style>
