@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import '../styles/observation-identity.css'
 import { useRoute } from 'vue-router'
 import ShowHazardParams from '../../../Core/params/showHazardParams'
 import ShowHazardController from '../../controllers/showHazardController'
@@ -57,89 +58,83 @@ const GetHeader = (value: number) => {
 }
 </script>
 <template>
-  <DataStatus :controller="state">
-    <template #success>
-      <div class="is-work-stopped" v-if="state.data?.isWorkStopped">
-        <WarningIcon />
-        <span class="title"> {{ $t('This Hazared caused the project to be halted') }}. </span>
-      </div>
+  <div class="hse-observation-identity record-details-page">
+    <DataStatus :controller="state">
+      <template #success>
+        <header v-if="state.data" class="record-details-heading">
+          <h1>{{ $t(GetHeader(state.data.type)) }} {{ $t('Report') }}</h1>
+          <span v-if="state.data.serialName" class="record-reference"
+            >{{ $t('Serial') }} · {{ state.data.serialName }}</span
+          >
+        </header>
+        <div class="is-work-stopped" v-if="state.data?.isWorkStopped">
+          <WarningIcon />
+          <span class="title"> {{ $t('This Hazared caused the project to be halted') }}. </span>
+        </div>
 
-      <div class="show-observation-container observation-details-card">
-        <ObservationCard :data="state.data" @update:data="ShowData" />
+        <div class="show-observation-container observation-details-card">
+          <ObservationCard :data="state.data" @update:data="ShowData" />
 
-        <template v-if="state.data?.type != Observation.ObservationType">
-          <div class="observation-type-container">
-            <ObservationFactoryGenralInfo :data="state.data" />
-          </div>
+          <template v-if="state.data?.type != Observation.ObservationType">
+            <div class="observation-type-container">
+              <ObservationFactoryGenralInfo :data="state.data" />
+            </div>
 
-          <ObservationFactoryInspection
-            v-if="state?.data?.taskResultItemAnswer"
-            :data="state?.data?.taskResultItemAnswer"
-            :templateId="state?.data?.task?.template_id"
-            :taskId="state?.data?.task?.task_id"
+            <ObservationFactoryInspection
+              v-if="state?.data?.taskResultItemAnswer"
+              :data="state?.data?.taskResultItemAnswer"
+              :templateId="state?.data?.task?.template_id"
+              :taskId="state?.data?.task?.task_id"
+            />
+
+            <ObservationInjuriesShow
+              v-if="state.data?.injuries?.length"
+              :data="state.data?.injuries"
+            />
+
+            <ObservationWitnessStatements
+              v-if="state.data?.witnessStatements?.length"
+              :data="state.data?.witnessStatements"
+            />
+
+            <ObservationDeths v-if="state.data?.deaths?.length" :data="state.data?.deaths" />
+          </template>
+        </div>
+
+        <div v-if="state.data?.investigation" class="show-observation-container investigation-card">
+          <ObservationInvestigationDetails :data="state.data?.investigation" />
+        </div>
+      </template>
+      <template #loader>
+        <ShowObservationSkeleton />
+      </template>
+      <template #initial>
+        <ShowObservationSkeleton />
+      </template>
+      <template #empty>
+        <PermissionBuilder
+          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_OBSERVATION_CREATE]"
+        >
+          <DataEmpty
+            :link="`/organization/equipment-mangement/observation/add`"
+            addText="Add Observation"
+            description="You have no Observation .. All your joined customers will appear here when you add your customer data"
+            title="You have No Observation"
           />
-
-          <ObservationInjuriesShow
-            v-if="state.data?.injuries?.length"
-            :data="state.data?.injuries"
+        </PermissionBuilder>
+      </template>
+      <template #failed>
+        <PermissionBuilder
+          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_OBSERVATION_CREATE]"
+        >
+          <DataFailed
+            :link="`/organization/equipment-mangement/observation/add`"
+            addText="Add Observation"
+            description="You have no Observation .. All your joined customers will appear here when you add your customer data"
+            title="You have No Observation"
           />
-
-          <ObservationWitnessStatements
-            v-if="state.data?.witnessStatements?.length"
-            :data="state.data?.witnessStatements"
-          />
-
-          <ObservationDeths v-if="state.data?.deaths?.length" :data="state.data?.deaths" />
-        </template>
-      </div>
-
-      <div v-if="state.data?.investigation" class="show-observation-container investigation-card">
-        <ObservationInvestigationDetails :data="state.data?.investigation" />
-      </div>
-    </template>
-    <template #loader>
-      <ShowObservationSkeleton />
-    </template>
-    <template #initial>
-      <ShowObservationSkeleton />
-    </template>
-    <template #empty>
-      <PermissionBuilder
-        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_OBSERVATION_CREATE]"
-      >
-        <DataEmpty
-          :link="`/organization/equipment-mangement/observation/add`"
-          addText="Add Observation"
-          description="You have no Observation .. All your joined customers will appear here when you add your customer data"
-          title="You have No Observation"
-        />
-      </PermissionBuilder>
-    </template>
-    <template #failed>
-      <PermissionBuilder
-        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.ORG_OBSERVATION_CREATE]"
-      >
-        <DataFailed
-          :link="`/organization/equipment-mangement/observation/add`"
-          addText="Add Observation"
-          description="You have no Observation .. All your joined customers will appear here when you add your customer data"
-          title="You have No Observation"
-        />
-      </PermissionBuilder>
-    </template>
-  </DataStatus>
+        </PermissionBuilder>
+      </template>
+    </DataStatus>
+  </div>
 </template>
-
-<style scoped>
-.index-table-card-container {
-  margin-top: 20px;
-}
-
-.observation-details-card {
-  margin-bottom: 16px;
-}
-
-.investigation-card {
-  padding: 18px;
-}
-</style>

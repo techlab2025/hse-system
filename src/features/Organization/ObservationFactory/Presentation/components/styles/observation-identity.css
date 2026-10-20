@@ -1,0 +1,395 @@
+/* Opt-in identity for the incident list, observation list, and observation details only. */
+.hse-observation-identity {
+  --record-primary: var(--identity-primary, var(--hse-color-primary));
+  --record-accent: var(--identity-accent, var(--hse-color-info));
+  --record-surface: var(--identity-sectionBackground, var(--hse-color-surface));
+  --record-subtle: color-mix(in srgb, var(--record-surface) 96%, var(--record-primary));
+  --record-tint: color-mix(in srgb, var(--record-surface) 92%, var(--record-primary));
+  --record-border: var(--hse-color-border);
+  --record-text: var(--identity-sectionText, var(--identity-fontColor, var(--hse-color-text)));
+  --record-heading: var(
+    --identity-headingColor,
+    var(--identity-sectionText, var(--hse-color-text))
+  );
+  --record-muted: var(--identity-sectionText, var(--hse-color-text-muted));
+  --record-on-primary: var(--identity-primaryButtonText, #ffffff);
+  --record-font: var(--identity-fontFamily, var(--hse-font-sans));
+  /* Shared detail and loading components keep their existing variable names. */
+  --surface-1: var(--record-surface);
+  --surface-2: var(--record-subtle);
+  --main-border: var(--record-border);
+  --brand-primary-100: var(--record-border);
+  --brand-primary-50: var(--record-tint);
+  --brand-primary-500: var(--record-primary);
+  --brand-primary-900: var(--record-heading);
+  --GrayText-1: var(--record-muted);
+  --text-strong: var(--record-text);
+  --BgWhite: var(--record-surface);
+  min-width: 0;
+  width: 100%;
+  color: var(--record-text);
+  font-family: var(--record-font) !important;
+  font-size: var(--identity-fontSize, var(--hse-text-base));
+}
+.hse-observation-identity:dir(rtl) {
+  --record-font: var(--identity-fontFamily, var(--hse-font-arabic));
+}
+.hse-observation-identity
+  :is(div, h1, h2, h3, h4, h5, h6, p, span, a, button, label, strong, small):not(
+    :where(.pi, .pi *)
+  ) {
+  font-family: var(--record-font) !important;
+}
+.hse-observation-identity.hse-operations-page .index-table-card {
+  background: var(--record-surface);
+  border-radius: var(--hse-radius-card);
+}
+.hse-observation-identity.hse-operations-page .index-table-card-container {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.hse-observation-identity .project-filter-panel .idnex-header {
+  gap: var(--hse-space-2);
+}
+.hse-observation-identity .project-filter-controls .categories-container {
+  flex: 1 1 auto;
+  min-height: 46px;
+}
+.hse-observation-identity .project-filter-heading {
+  margin-bottom: 0;
+}
+.hse-observation-identity :is(.index-title-line .title, .record-details-heading h1) {
+  color: var(--record-heading);
+  font-size: var(--identity-headingSize, var(--hse-text-display));
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+.hse-observation-identity :is(.index-title-icon, .filter-symbol, .project-filter-symbol) {
+  border-radius: var(--hse-radius-input);
+  background: var(--record-tint);
+  color: var(--record-primary);
+  box-shadow: none;
+}
+.hse-observation-identity
+  :is(.project-filter-panel, .incident-filter-area, .observation-filter-area) {
+  border-color: var(--record-border);
+  background: var(--record-subtle);
+  box-shadow: none;
+}
+.hse-observation-identity
+  :is(.project-filter-heading p, .incident-filter-heading p, .observation-filter-heading p) {
+  color: var(--record-heading);
+  font-size: var(--identity-fontSize, var(--hse-text-base));
+  font-weight: 700;
+}
+.hse-observation-identity
+  :is(
+    .index-subtitle,
+    .project-filter-heading span,
+    .incident-filter-heading div > span,
+    .observation-filter-heading div > span
+  ) {
+  color: var(--record-muted);
+}
+.hse-observation-identity :is(.category, .filter) {
+  min-height: 38px;
+  border-radius: var(--hse-radius-badge);
+  border: 1px solid var(--record-border);
+  background: var(--record-surface);
+  color: var(--record-primary);
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
+  font-weight: 600;
+  box-shadow: none;
+}
+.hse-observation-identity :is(.category.active, .filter.active) {
+  border-color: var(--record-primary);
+  background: var(--record-primary);
+  color: var(--record-on-primary);
+  box-shadow: none;
+}
+.hse-observation-identity :is(.btn-primary, .create-incident-btn, .create-observation-btn) {
+  border-radius: var(--hse-radius-button);
+  background: var(--identity-primaryButtonBackground, var(--record-primary));
+  color: var(--record-on-primary);
+  box-shadow: var(--hse-shadow-sm);
+}
+.hse-observation-identity :is(.create-copy strong, .create-icon) {
+  color: var(--record-on-primary);
+}
+.hse-observation-identity :is(.view-incident-action, .view-observation-action) {
+  border-radius: var(--hse-radius-button);
+  box-shadow: none;
+}
+.hse-observation-identity :is(.incident-mark, .observation-mark) {
+  background: var(--record-tint);
+  color: var(--record-primary);
+  border-radius: var(--hse-radius-input);
+  box-shadow: none;
+}
+.hse-observation-identity :is(.incident-card-header, .observation-card-header) {
+  background: var(--record-surface);
+}
+.hse-observation-identity :is(.incident-title-group h3, .observation-title-group h3) {
+  color: var(--record-heading);
+  font-size: var(--identity-fontSize, var(--hse-text-lg));
+  font-weight: 700;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.hse-observation-identity :is(.incident-card-footer, .observation-card-footer) {
+  background: var(--record-subtle);
+}
+.hse-observation-identity .index-table-card:focus-within {
+  border-color: var(--record-primary);
+}
+.hse-observation-identity :is(a, button, [role='switch']):focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--record-primary) 55%, transparent);
+  outline-offset: 3px;
+}
+/* Card badges use the explicit tag settings while retaining their default semantic colors. */
+html[data-identity-tagbackground]
+  .hse-observation-identity
+  :is(
+    .investigation-status-badge,
+    .incident-status-chip,
+    .observation-type-chip,
+    .observation-risk-level,
+    .incident-investigation-badge,
+    .observation-investigation-badge,
+    .record-reference,
+    .card_status
+  ) {
+  background: var(--identity-tagBackground) !important;
+}
+html[data-identity-tagtext]
+  .hse-observation-identity
+  :is(
+    .investigation-status-badge,
+    .incident-status-chip,
+    .observation-type-chip,
+    .observation-risk-level,
+    .incident-investigation-badge,
+    .observation-investigation-badge,
+    .record-reference,
+    .card_status
+  ),
+html[data-identity-tagtext]
+  .hse-observation-identity
+  :is(
+    .investigation-status-badge,
+    .incident-status-chip,
+    .observation-type-chip,
+    .observation-risk-level,
+    .incident-investigation-badge,
+    .observation-investigation-badge,
+    .record-reference,
+    .card_status
+  )
+  * {
+  color: var(--identity-tagText) !important;
+}
+/* Detail children also serve other workflows; all overrides stay behind this page root. */
+.record-details-page {
+  display: grid;
+  gap: var(--hse-space-5);
+}
+.record-details-page > div > div {
+  display: grid;
+  min-width: 0;
+  gap: var(--hse-space-5);
+}
+.record-details-page .record-details-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--hse-space-3);
+  padding-block: var(--hse-space-2);
+}
+.record-details-page .record-details-heading h1 {
+  margin: 0;
+}
+.record-details-page .record-reference {
+  border: 1px solid var(--record-border);
+  border-radius: var(--hse-radius-badge);
+  background: var(--record-tint);
+  padding: var(--hse-space-2) var(--hse-space-3);
+  color: var(--record-primary);
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
+}
+.record-details-page .show-observation-container {
+  min-width: 0;
+  margin: 0;
+  padding: var(--hse-space-5);
+  border: 1px solid var(--record-border);
+  border-radius: var(--hse-radius-card);
+  background: var(--record-surface);
+  box-shadow: var(--hse-shadow-sm);
+  color: var(--record-text);
+}
+.record-details-page .show-observation-container .observation-card {
+  margin: 0;
+  padding: 0 0 var(--hse-space-5);
+  border: 0;
+  border-bottom: 1px solid var(--record-border);
+  border-radius: 0;
+  background: var(--record-surface);
+  box-shadow: none;
+}
+.record-details-page .show-observation-container .observation-card .header-container {
+  align-items: flex-start;
+  gap: var(--hse-space-4);
+  font-family: var(--record-font);
+}
+.record-details-page .show-observation-container .observation-card .observation-title {
+  color: var(--record-heading);
+  font-size: var(--identity-fontSize, var(--hse-text-xl));
+  font-family: var(--record-font);
+  font-weight: 700;
+  cursor: auto;
+}
+.record-details-page .show-observation-container .observation-card .Description {
+  color: var(--record-text);
+  font-size: var(--identity-fontSize, var(--hse-text-base));
+  font-weight: 400;
+}
+.record-details-page .show-observation-container .observation-card .card-header {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.record-details-page
+  .observation-card
+  :is(.label-item-primary, .label-item-secondary, .label-employee, .card-header > .flex.flex-col) {
+  min-width: 0;
+  border: 1px solid var(--record-border);
+  border-radius: var(--hse-radius-input);
+  background: var(--record-subtle);
+  box-shadow: none;
+  color: var(--record-muted);
+  overflow-wrap: anywhere;
+}
+.record-details-page
+  .observation-card
+  :is(.label-item-primary, .label-item-secondary, .label-employee)
+  span {
+  font-family: var(--record-font);
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
+}
+.record-details-page
+  .observation-card
+  :is(.label-item-primary, .label-item-secondary, .label-employee)
+  span:last-child {
+  font-family: var(--record-font);
+  font-size: var(--identity-fontSize, var(--hse-text-base));
+  color: var(--record-text);
+}
+.record-details-page .show-observation-container .observation-card .card_status {
+  flex-shrink: 0;
+  padding: var(--hse-space-3);
+  border: 1px solid var(--record-border);
+  border-radius: var(--hse-radius-input);
+  background: var(--record-tint);
+  box-shadow: none;
+  color: var(--record-primary);
+}
+.record-details-page
+  :is(
+    .observation-type-container,
+    .injury-header-container,
+    .observation-inspection-card,
+    .capa-header-container,
+    .capa-content-container,
+    .investigation-container-new,
+    .investigation-container-inprogress
+  ) {
+  min-width: 0;
+  border-color: var(--record-border);
+  border-radius: var(--hse-radius-card);
+  background: var(--record-surface);
+  box-shadow: none;
+}
+.record-details-page
+  :is(
+    .observation-genral-info,
+    .hazard-info,
+    .take-action-container,
+    .all_injured,
+    .witnessStatement,
+    .death_all_card
+  ) {
+  min-width: 0;
+  border-color: var(--record-border);
+  border-radius: var(--hse-radius-input);
+  background: var(--record-subtle);
+  box-shadow: none;
+}
+.record-details-page
+  :is(.observation-genral-info-conatiner, .injury-header-container)
+  :is(p, span, h6) {
+  font-family: var(--record-font);
+}
+.record-details-page :is(.Description, .note, .employee-note) {
+  color: var(--record-text);
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.record-details-page .is-work-stopped {
+  display: flex;
+  align-items: center;
+  gap: var(--hse-space-3);
+  margin: 0;
+  border: 1px solid var(--hse-color-danger);
+  border-radius: var(--hse-radius-input);
+  background: var(--hse-color-danger-subtle);
+  box-shadow: none;
+}
+.record-details-page .is-work-stopped .title {
+  color: var(--hse-color-danger);
+  font-family: var(--record-font);
+}
+@media (max-width: 800px) {
+  .record-details-page .show-observation-container .observation-card .card-header {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 540px) {
+  .record-details-page .show-observation-container {
+    padding: var(--hse-space-4);
+  }
+  .record-details-page .show-observation-container .observation-card .card-header,
+  .record-details-page
+    :is(.card_Injured, .witnessStatement-container, .death_name_note, .observation-genral-info) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .record-details-page .show-observation-container .observation-card .header-container {
+    flex-direction: column;
+  }
+  .record-details-page :is(.observation-type-container, .injury-header-container) {
+    padding: var(--hse-space-3);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hse-observation-identity :is(.index-table-card, .create-incident-btn, .create-observation-btn),
+  .hse-observation-identity
+    :is(.index-table-card, .create-incident-btn, .create-observation-btn):hover {
+    transition: none;
+    transform: none;
+  }
+}
+
+.record-details-page .card_status::before,
+.record-details-page .card_status::after {
+  display: none;
+}
+
+.hse-observation-identity .data-state-card,
+.hse-observation-identity .show-observation-skeleton .skeleton-card {
+  border: 1px solid var(--record-border);
+  border-radius: var(--hse-radius-card);
+  background: var(--record-surface);
+  box-shadow: var(--hse-shadow-sm);
+}
+.hse-observation-identity .state-orb {
+  display: none;
+}

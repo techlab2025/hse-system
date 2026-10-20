@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import '../styles/observation-identity.css'
 import { computed, onMounted, ref, watch } from 'vue'
 import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 import { debounce } from '@/base/Presentation/utils/debouced'
@@ -465,15 +466,13 @@ const canCreateRecord = computed(() =>
 
 <template>
   <div
-    class="grid grid-cols-12 gap-4 observation-index-page hse-operations-page"
+    class="grid grid-cols-12 gap-4 observation-index-page hse-operations-page hse-observation-identity"
     :class="{ 'is-dark': isDarkMode }"
   >
     <IndexEquipmentMangement class="col-span-2" />
     <div :class="route?.query?.isAll ? 'col-span-12' : 'col-span-12'">
       <template v-if="canViewObservations">
         <div class="observation-control-center hse-operations-command">
-          <div class="observation-control-glow" aria-hidden="true"></div>
-
           <div class="observation-control-header">
             <IndexHazardHeader
               :title="isReportView ? 'observation report' : 'observation'"
@@ -864,9 +863,9 @@ const canCreateRecord = computed(() =>
 <style scoped lang="scss">
 .observation-report-board {
   overflow-x: auto;
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--record-border);
   border-radius: 16px;
-  background: var(--BgWhite);
+  background: var(--record-surface);
 }
 
 .observation-report-table {
@@ -879,7 +878,7 @@ const canCreateRecord = computed(() =>
   gap: 4px;
 
   small {
-    color: var(--text-soft);
+    color: var(--record-muted);
   }
 }
 
@@ -889,7 +888,7 @@ const canCreateRecord = computed(() =>
 }
 
 .small-text {
-  font-size: 12px !important;
+  font-size: var(--identity-fontSize, 12px) !important;
   color: #475569 !important;
 }
 .observation-control-center {
@@ -898,34 +897,14 @@ const canCreateRecord = computed(() =>
   overflow: hidden;
   margin-bottom: 24px;
   padding: 20px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
-  border-radius: 22px;
-  background:
-    linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
-      transparent 48%
-    ),
-    var(--BgWhite);
-  box-shadow: 0 18px 45px color-mix(in srgb, var(--text-strong) 9%, transparent);
-}
-
-.observation-control-glow {
-  position: absolute;
-  z-index: -1;
-  top: -90px;
-  inset-inline-end: -70px;
-  width: 240px;
-  height: 240px;
-  border-radius: 50%;
-  background: color-mix(in srgb, var(--PrimaryColor) 16%, transparent);
-  filter: blur(45px);
-  pointer-events: none;
+  border: 1px solid color-mix(in srgb, var(--record-primary) 18%, var(--record-border));
+  border-radius: var(--hse-radius-card);
+  background: var(--record-surface);
+  box-shadow: var(--hse-shadow-sm);
 }
 
 .observation-control-header {
   padding-bottom: 18px;
-  // border-bottom: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
 }
 
 .observation-control-header :deep(.idnex-header) {
@@ -950,9 +929,9 @@ const canCreateRecord = computed(() =>
 .observation-filter-area {
   min-width: 0;
   padding: 14px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 11%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--record-primary) 11%, var(--record-border));
   border-radius: 16px;
-  background: color-mix(in srgb, var(--surface-1) 88%, transparent);
+  background: color-mix(in srgb, var(--record-surface) 88%, transparent);
   box-shadow: inset 0 1px 0 color-mix(in srgb, white 65%, transparent);
 }
 
@@ -971,8 +950,8 @@ const canCreateRecord = computed(() =>
   height: 38px;
   flex: 0 0 38px;
   border-radius: 12px;
-  background: color-mix(in srgb, var(--PrimaryColor) 11%, transparent);
-  color: var(--PrimaryColor);
+  background: color-mix(in srgb, var(--record-primary) 11%, transparent);
+  color: var(--record-primary);
 }
 
 .filter-symbol svg {
@@ -982,14 +961,14 @@ const canCreateRecord = computed(() =>
 
 .observation-filter-heading p {
   margin: 0;
-  color: var(--header-page-color);
-  font-size: 0.9rem;
+  color: var(--record-heading);
+  font-size: var(--identity-fontSize, 0.9rem);
   font-weight: 900;
 }
 
 .observation-filter-heading div > span {
-  color: var(--GrayText-1);
-  font-size: 0.76rem;
+  color: var(--record-muted);
+  font-size: var(--identity-fontSize, 0.76rem);
   font-weight: 600;
 }
 
@@ -1014,7 +993,7 @@ const canCreateRecord = computed(() =>
   scroll-behavior: smooth;
   scroll-snap-type: x proximity;
   scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--brand-primary-400) 50%, transparent) transparent;
+  scrollbar-color: color-mix(in srgb, var(--record-primary) 50%, transparent) transparent;
 }
 
 .observation-zone-filter :deep(.filter) {
@@ -1022,12 +1001,12 @@ const canCreateRecord = computed(() =>
   margin: 0;
   min-height: 36px;
   padding: 8px 14px;
-  border: 1px solid var(--brand-primary-100);
+  border: 1px solid var(--record-border);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--surface-1) 86%, transparent);
-  color: var(--brand-primary-600);
-  font-family: 'Bold';
-  font-size: 12px;
+  background: color-mix(in srgb, var(--record-surface) 86%, transparent);
+  color: var(--record-primary);
+  font-family: var(--record-font);
+  font-size: var(--identity-fontSize, 12px);
   font-weight: 800;
   letter-spacing: 0;
   white-space: nowrap;
@@ -1042,16 +1021,16 @@ const canCreateRecord = computed(() =>
 
 .observation-zone-filter :deep(.filter:hover) {
   transform: translateY(-1px);
-  border-color: var(--brand-primary-200);
-  background: var(--brand-primary-50);
-  color: var(--brand-primary-500);
+  border-color: var(--record-border);
+  background: var(--record-tint);
+  color: var(--record-primary);
 }
 
 .observation-zone-filter :deep(.filter.active) {
   border-color: color-mix(in srgb, var(--status-success) 50%, transparent);
-  background: var(--PrimaryColor);
-  color: var(--text-on-brand);
-  box-shadow: 0 10px 22px color-mix(in srgb, var(--brand-primary-500) 20%, transparent);
+  background: var(--record-primary);
+  color: var(--record-on-primary);
+  box-shadow: var(--hse-shadow-sm);
 }
 
 .observation-create-action {
@@ -1066,15 +1045,15 @@ const canCreateRecord = computed(() =>
   min-height: 48px;
   padding-inline: 18px;
   border-radius: 12px;
-  box-shadow: 0 10px 24px color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+  box-shadow: var(--hse-shadow-sm);
   transition:
     transform 0.18s ease,
     box-shadow 0.18s ease;
 }
 
 .create-observation-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 30px color-mix(in srgb, var(--PrimaryColor) 30%, transparent);
+  transform: translateY(-1px);
+  box-shadow: var(--hse-shadow-sm);
 }
 
 .create-icon {
@@ -1099,14 +1078,14 @@ const canCreateRecord = computed(() =>
 
 .create-copy small {
   color: color-mix(in srgb, white 72%, transparent);
-  font-size: 0.64rem;
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
   font-weight: 700;
   line-height: 1;
 }
 
 .create-copy strong {
-  color: white;
-  font-size: 0.8rem;
+  color: var(--record-on-primary);
+  font-size: var(--identity-fontSize, 0.8rem);
   font-weight: 900;
   line-height: 1.15;
 }
@@ -1114,7 +1093,7 @@ const canCreateRecord = computed(() =>
 @media (max-width: 860px) {
   .observation-control-center {
     padding: 16px;
-    border-radius: 18px;
+    border-radius: var(--hse-radius-card);
   }
 
   .observation-control-toolbar {
@@ -1135,18 +1114,17 @@ const canCreateRecord = computed(() =>
 }
 
 .observation-card {
-  --card-accent: var(--brand-primary-500);
-  --card-accent-soft: color-mix(in srgb, var(--brand-primary-500) 9%, transparent);
+  --card-accent: var(--record-primary);
+  --card-accent-soft: color-mix(in srgb, var(--record-primary) 9%, transparent);
   position: relative;
   isolation: isolate;
   display: block;
   overflow: hidden;
   padding: 0;
-  border: 1px solid color-mix(in srgb, var(--card-accent) 20%, var(--main-border));
-  border-radius: 20px;
-  background:
-    radial-gradient(circle at 100% 0%, var(--card-accent-soft), transparent 34%), var(--surface-1);
-  box-shadow: 0 14px 38px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--card-accent) 20%, var(--record-border));
+  border-radius: var(--hse-radius-card);
+  background: var(--record-surface);
+  box-shadow: var(--hse-shadow-sm);
   transition:
     transform 0.22s ease,
     border-color 0.22s ease,
@@ -1160,27 +1138,13 @@ const canCreateRecord = computed(() =>
   inset-block: 0;
   inset-inline-start: 0;
   width: 5px;
-  background: linear-gradient(180deg, var(--card-accent), var(--brand-accent-500));
-}
-
-.observation-card::after {
-  content: '';
-  position: absolute;
-  z-index: -1;
-  top: -74px;
-  inset-inline-end: -54px;
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: var(--card-accent-soft);
-  filter: blur(12px);
-  pointer-events: none;
+  background: var(--card-accent);
 }
 
 .observation-card:hover {
-  transform: translateY(-3px);
-  border-color: color-mix(in srgb, var(--card-accent) 38%, var(--main-border));
-  box-shadow: 0 20px 46px color-mix(in srgb, var(--brand-primary-900) 13%, transparent);
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--card-accent) 38%, var(--record-border));
+  box-shadow: var(--hse-shadow-sm);
 }
 
 .observation-card.risk-low {
@@ -1188,7 +1152,7 @@ const canCreateRecord = computed(() =>
 }
 
 .observation-card.risk-medium {
-  --card-accent: var(--brand-accent-500);
+  --card-accent: var(--record-accent);
 }
 
 .observation-card.risk-high,
@@ -1203,8 +1167,8 @@ const canCreateRecord = computed(() =>
   gap: 14px;
   min-height: 58px;
   padding: 12px 18px 12px 22px;
-  border-bottom: 1px solid color-mix(in srgb, var(--card-accent) 13%, var(--main-border));
-  background: color-mix(in srgb, var(--surface-2) 74%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--card-accent) 13%, var(--record-border));
+  background: color-mix(in srgb, var(--record-subtle) 74%, transparent);
 }
 
 .observation-card-reference,
@@ -1224,8 +1188,8 @@ const canCreateRecord = computed(() =>
 }
 
 .reference-label {
-  color: var(--text-soft);
-  font-size: 0.68rem;
+  color: var(--record-muted);
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1238,8 +1202,8 @@ const canCreateRecord = computed(() =>
   border-radius: 9px;
   background: var(--card-accent-soft);
   color: var(--card-accent);
-  font-family: 'Bold';
-  font-size: 0.76rem;
+  font-family: var(--record-font);
+  font-size: var(--identity-fontSize, 0.76rem);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1262,15 +1226,15 @@ const canCreateRecord = computed(() =>
   border-radius: 999px;
   background: var(--card-accent-soft);
   color: var(--card-accent);
-  font-size: 0.72rem;
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
   font-weight: 900;
   white-space: nowrap;
 }
 
 .observation-investigation-badge {
-  border-color: color-mix(in srgb, var(--brand-primary-500) 30%, transparent);
-  background: color-mix(in srgb, var(--brand-primary-500) 10%, var(--surface-1));
-  color: var(--brand-primary-600);
+  border-color: color-mix(in srgb, var(--record-primary) 30%, transparent);
+  background: color-mix(in srgb, var(--record-primary) 10%, var(--record-surface));
+  color: var(--record-primary);
   text-decoration: none;
   transition:
     transform 0.18s ease,
@@ -1281,8 +1245,8 @@ const canCreateRecord = computed(() =>
 .observation-investigation-badge:hover,
 .observation-investigation-badge:focus-visible {
   transform: translateY(-1px);
-  border-color: var(--brand-primary-500);
-  background: color-mix(in srgb, var(--brand-primary-500) 16%, var(--surface-1));
+  border-color: var(--record-primary);
+  background: color-mix(in srgb, var(--record-primary) 16%, var(--record-surface));
   outline: none;
 }
 
@@ -1292,14 +1256,14 @@ const canCreateRecord = computed(() =>
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: var(--brand-primary-500);
-  color: var(--text-on-brand);
-  font-size: 0.65rem;
+  background: var(--record-primary);
+  color: var(--record-on-primary);
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
   font-weight: 900;
 }
 
 .investigation-badge-arrow {
-  font-size: 0.86rem;
+  font-size: var(--identity-fontSize, 0.86rem);
   transition: transform 0.18s ease;
 }
 
@@ -1316,16 +1280,12 @@ const canCreateRecord = computed(() =>
   padding: 5px 11px;
   border: 1px solid color-mix(in srgb, var(--investigation-status-color) 28%, transparent);
   border-radius: 999px;
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--investigation-status-color) 13%, var(--surface-1)),
-    color-mix(in srgb, var(--investigation-status-color) 5%, var(--surface-1))
-  );
+  background: color-mix(in srgb, var(--investigation-status-color) 10%, var(--record-surface));
   box-shadow:
-    inset 0 1px 0 color-mix(in srgb, var(--surface-1) 70%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--record-surface) 70%, transparent),
     0 5px 14px color-mix(in srgb, var(--investigation-status-color) 10%, transparent);
   color: var(--investigation-status-color);
-  font-size: 0.72rem;
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
   font-weight: 900;
   letter-spacing: 0.01em;
   white-space: nowrap;
@@ -1335,10 +1295,10 @@ const canCreateRecord = computed(() =>
   width: 8px;
   height: 8px;
   flex: 0 0 auto;
-  border: 2px solid color-mix(in srgb, var(--surface-1) 70%, transparent);
+  border: 2px solid color-mix(in srgb, var(--record-surface) 70%, transparent);
   border-radius: 50%;
   background: currentColor;
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--investigation-status-color) 14%, transparent);
+  box-shadow: var(--hse-shadow-sm);
 }
 
 .investigation-status-badge--new,
@@ -1359,7 +1319,7 @@ const canCreateRecord = computed(() =>
 }
 
 .investigation-status-badge--closed {
-  --investigation-status-color: var(--text-soft);
+  --investigation-status-color: var(--record-muted);
 }
 
 .investigation-status-badge--completed {
@@ -1369,11 +1329,11 @@ const canCreateRecord = computed(() =>
 @keyframes investigation-status-pulse {
   0%,
   100% {
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--investigation-status-color) 12%, transparent);
+    box-shadow: var(--hse-shadow-sm);
   }
 
   50% {
-    box-shadow: 0 0 0 7px color-mix(in srgb, var(--investigation-status-color) 5%, transparent);
+    box-shadow: var(--hse-shadow-sm);
   }
 }
 
@@ -1390,7 +1350,7 @@ const canCreateRecord = computed(() =>
   height: 7px;
   border-radius: 50%;
   background: currentColor;
-  box-shadow: 0 0 0 4px color-mix(in srgb, currentColor 13%, transparent);
+  box-shadow: var(--hse-shadow-sm);
 }
 
 .observation-type-chip.positive {
@@ -1435,10 +1395,10 @@ const canCreateRecord = computed(() =>
   flex: 0 0 42px;
   border: 1px solid color-mix(in srgb, var(--card-accent) 22%, transparent);
   border-radius: 13px;
-  background: linear-gradient(145deg, var(--card-accent-soft), var(--surface-2));
+  background: var(--record-tint);
   color: var(--card-accent);
-  font-family: 'Bold';
-  font-size: 0.76rem;
+  font-family: var(--record-font);
+  font-size: var(--identity-fontSize, 0.76rem);
   font-weight: 900;
 }
 
@@ -1452,8 +1412,8 @@ const canCreateRecord = computed(() =>
 .observer-copy span,
 .observation-card-heading > span,
 .detail-chip small {
-  color: var(--text-soft);
-  font-size: 0.66rem;
+  color: var(--record-muted);
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -1461,9 +1421,9 @@ const canCreateRecord = computed(() =>
 
 .observer-copy strong {
   overflow: hidden;
-  color: var(--text-strong);
-  font-family: 'Bold';
-  font-size: 0.88rem;
+  color: var(--record-text);
+  font-family: var(--record-font);
+  font-size: var(--identity-fontSize, 0.88rem);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1473,8 +1433,8 @@ const canCreateRecord = computed(() =>
   align-items: center;
   gap: 6px;
   margin-inline-start: auto;
-  color: var(--text-soft);
-  font-size: 0.73rem;
+  color: var(--record-muted);
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
   font-weight: 750;
   white-space: nowrap;
 }
@@ -1482,9 +1442,9 @@ const canCreateRecord = computed(() =>
 .observation-date small {
   padding: 4px 7px;
   border-radius: 7px;
-  background: var(--surface-2);
-  color: var(--text-strong);
-  font-size: 0.68rem;
+  background: var(--record-subtle);
+  color: var(--record-text);
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
 }
 
 .observation-card-heading {
@@ -1495,8 +1455,8 @@ const canCreateRecord = computed(() =>
 
 .observation-card-heading h3 {
   margin: 0;
-  color: var(--text-strong);
-  font-family: 'Bold';
+  color: var(--record-text);
+  font-family: var(--record-font);
   font-size: clamp(1rem, 1.6vw, 1.2rem);
   font-weight: 900;
   line-height: 1.4;
@@ -1514,11 +1474,11 @@ const canCreateRecord = computed(() =>
   min-width: 150px;
   min-height: 42px;
   padding: 7px 11px;
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--record-border);
   border-radius: 12px;
-  background: color-mix(in srgb, var(--surface-2) 76%, transparent);
-  color: var(--text-strong);
-  font-size: 0.76rem;
+  background: color-mix(in srgb, var(--record-subtle) 76%, transparent);
+  color: var(--record-text);
+  font-size: var(--identity-fontSize, 0.76rem);
   font-weight: 800;
 }
 
@@ -1543,8 +1503,8 @@ const canCreateRecord = computed(() =>
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Bold';
-  font-size: 0.65rem;
+  font-family: var(--record-font);
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
 }
 
 .observation-card .card-info {
@@ -1557,10 +1517,10 @@ const canCreateRecord = computed(() =>
   width: 168px;
   height: 132px;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--card-accent) 17%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--card-accent) 17%, var(--record-border));
   border-radius: 15px;
-  background: var(--surface-2);
-  box-shadow: 0 8px 20px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
+  background: var(--record-subtle);
+  box-shadow: var(--hse-shadow-sm);
 }
 
 .observation-card .card-info :deep(.p-image img) {
@@ -1576,7 +1536,7 @@ const canCreateRecord = computed(() =>
 
 .observation-card .card-info :deep(.p-image-preview-mask) {
   border-radius: 15px;
-  background: color-mix(in srgb, var(--brand-primary-900) 55%, transparent);
+  background: color-mix(in srgb, var(--record-heading) 55%, transparent);
 }
 
 .perview {
@@ -1586,9 +1546,9 @@ const canCreateRecord = computed(() =>
   padding: 7px 10px;
   border: 1px solid color-mix(in srgb, white 28%, transparent);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--brand-primary-900) 55%, transparent);
-  color: white;
-  font-size: 0.72rem;
+  background: color-mix(in srgb, var(--record-heading) 55%, transparent);
+  color: var(--record-on-primary);
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
   font-weight: 850;
   backdrop-filter: blur(5px);
 }
@@ -1598,14 +1558,14 @@ const canCreateRecord = computed(() =>
   gap: 12px;
   min-height: 54px;
   padding: 10px 18px 10px 22px;
-  border-top: 1px solid var(--main-border);
-  background: color-mix(in srgb, var(--surface-2) 70%, transparent);
+  border-top: 1px solid var(--record-border);
+  background: color-mix(in srgb, var(--record-subtle) 70%, transparent);
 }
 
 .work-stopped-control {
   gap: 8px;
   color: var(--status-danger);
-  font-size: 0.74rem;
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
   font-weight: 900;
 }
 
@@ -1617,7 +1577,7 @@ const canCreateRecord = computed(() =>
   height: 24px;
   border-radius: 8px;
   background: color-mix(in srgb, var(--status-danger) 10%, transparent);
-  font-family: 'Bold';
+  font-family: var(--record-font);
 }
 
 .show-more {
@@ -1626,12 +1586,12 @@ const canCreateRecord = computed(() =>
   min-height: 34px;
   margin-inline-start: auto;
   padding: 6px 11px;
-  border: 1px solid color-mix(in srgb, var(--card-accent) 18%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--card-accent) 18%, var(--record-border));
   border-radius: 10px;
-  background: var(--surface-1);
+  background: var(--record-surface);
   color: var(--card-accent);
   font: inherit;
-  font-size: 0.73rem;
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
   font-weight: 850;
   cursor: pointer;
   transition:
@@ -1657,7 +1617,7 @@ const canCreateRecord = computed(() =>
 .observation-card .card-description {
   margin: 0 18px 18px 22px;
   padding: 14px 16px;
-  border: 1px solid color-mix(in srgb, var(--card-accent) 15%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--card-accent) 15%, var(--record-border));
   border-radius: 13px;
   background: var(--card-accent-soft);
 }
@@ -1665,8 +1625,8 @@ const canCreateRecord = computed(() =>
 .observation-card .card-description .title {
   margin: 0 0 5px;
   color: var(--card-accent);
-  font-family: 'Bold';
-  font-size: 0.72rem;
+  font-family: var(--record-font);
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
   font-weight: 900;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -1674,8 +1634,8 @@ const canCreateRecord = computed(() =>
 
 .observation-card .card-description .description {
   margin: 0;
-  color: var(--text-soft);
-  font-size: 0.82rem;
+  color: var(--record-muted);
+  font-size: var(--identity-fontSize, 0.82rem);
   line-height: 1.7;
 }
 
@@ -1757,14 +1717,8 @@ const canCreateRecord = computed(() =>
 
 /* Clear, information-first observation card */
 .observation-card {
-  border-radius: 24px;
-  background:
-    linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--card-accent) 5%, transparent),
-      transparent 40%
-    ),
-    var(--surface-1);
+  border-radius: var(--hse-radius-card);
+  background: var(--record-surface);
 }
 
 .observation-card-header {
@@ -1773,8 +1727,8 @@ const canCreateRecord = computed(() =>
   justify-content: space-between;
   gap: 20px;
   padding: 22px 22px 18px 26px;
-  border-bottom: 1px solid var(--main-border);
-  background: color-mix(in srgb, var(--surface-2) 68%, transparent);
+  border-bottom: 1px solid var(--record-border);
+  background: color-mix(in srgb, var(--record-subtle) 68%, transparent);
 }
 
 .observation-title-group {
@@ -1797,11 +1751,11 @@ const canCreateRecord = computed(() =>
   flex: 0 0 48px;
   border: 1px solid color-mix(in srgb, var(--card-accent) 25%, transparent);
   border-radius: 15px;
-  background: linear-gradient(145deg, var(--card-accent), var(--brand-primary-700));
-  box-shadow: 0 10px 22px color-mix(in srgb, var(--card-accent) 24%, transparent);
-  color: white;
-  font-family: 'Bold';
-  font-size: 1rem;
+  background: var(--record-primary);
+  box-shadow: var(--hse-shadow-sm);
+  color: var(--record-on-primary);
+  font-family: var(--record-font);
+  font-size: var(--identity-fontSize, 1rem);
   font-weight: 900;
 }
 
@@ -1809,7 +1763,7 @@ const canCreateRecord = computed(() =>
   display: block;
   margin-bottom: 4px;
   color: var(--card-accent);
-  font-size: 0.68rem;
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
   font-weight: 900;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1822,8 +1776,8 @@ const canCreateRecord = computed(() =>
 .observation-title-group h3 {
   overflow: hidden;
   margin: 0;
-  color: var(--text-strong);
-  font-family: 'Bold';
+  color: var(--record-text);
+  font-family: var(--record-font);
   font-size: clamp(1.12rem, 1.8vw, 1.38rem);
   font-weight: 900;
   line-height: 1.35;
@@ -1863,16 +1817,16 @@ const canCreateRecord = computed(() =>
   min-height: 72px;
   gap: 11px;
   padding: 12px;
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--record-border);
   border-radius: 14px;
-  background: color-mix(in srgb, var(--surface-2) 76%, transparent);
+  background: color-mix(in srgb, var(--record-subtle) 76%, transparent);
   transition:
     border-color 0.18s ease,
     background 0.18s ease;
 }
 
 .meta-item:hover {
-  border-color: color-mix(in srgb, var(--card-accent) 25%, var(--main-border));
+  border-color: color-mix(in srgb, var(--card-accent) 25%, var(--record-border));
   background: var(--card-accent-soft);
 }
 
@@ -1886,8 +1840,8 @@ const canCreateRecord = computed(() =>
 .meta-label,
 .description-label,
 .media-label {
-  color: var(--text-soft);
-  font-size: 0.66rem;
+  color: var(--record-muted);
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
   font-weight: 850;
   letter-spacing: 0.06em;
   text-transform: uppercase;
@@ -1895,9 +1849,9 @@ const canCreateRecord = computed(() =>
 
 .meta-item strong {
   overflow: hidden;
-  color: var(--text-strong);
-  font-family: 'Bold';
-  font-size: 0.82rem;
+  color: var(--record-text);
+  font-family: var(--record-font);
+  font-size: var(--identity-fontSize, 0.82rem);
   font-weight: 850;
   line-height: 1.4;
   text-overflow: ellipsis;
@@ -1917,8 +1871,8 @@ const canCreateRecord = computed(() =>
   border-radius: 12px;
   background: var(--card-accent-soft);
   color: var(--card-accent);
-  font-family: 'Bold';
-  font-size: 0.73rem;
+  font-family: var(--record-font);
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
   font-weight: 900;
 }
 
@@ -1954,7 +1908,7 @@ const canCreateRecord = computed(() =>
   height: 15px;
   border: 2px solid currentColor;
   border-radius: 50%;
-  box-shadow: inset 0 0 0 3px var(--surface-2);
+  box-shadow: inset 0 0 0 3px var(--record-subtle);
   background: currentColor;
 }
 
@@ -1962,7 +1916,7 @@ const canCreateRecord = computed(() =>
   position: relative;
   min-height: 90px;
   padding: 15px 16px 15px 20px;
-  border: 1px solid color-mix(in srgb, var(--card-accent) 14%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--card-accent) 14%, var(--record-border));
   border-radius: 15px;
   background: var(--card-accent-soft);
 }
@@ -1981,8 +1935,8 @@ const canCreateRecord = computed(() =>
   display: -webkit-box;
   overflow: hidden;
   margin: 7px 0 0;
-  color: var(--text-strong);
-  font-size: 0.84rem;
+  color: var(--record-text);
+  font-size: var(--identity-fontSize, 0.84rem);
   font-weight: 650;
   line-height: 1.65;
   -webkit-box-orient: vertical;
@@ -1995,9 +1949,9 @@ const canCreateRecord = computed(() =>
   flex-direction: column;
   gap: 8px;
   padding: 10px;
-  border: 1px solid var(--main-border);
+  border: 1px solid var(--record-border);
   border-radius: 17px;
-  background: color-mix(in srgb, var(--surface-2) 78%, transparent);
+  background: color-mix(in srgb, var(--record-subtle) 78%, transparent);
 }
 
 .media-label {
@@ -2027,11 +1981,11 @@ const canCreateRecord = computed(() =>
   flex: 1;
   flex-direction: column;
   gap: 9px;
-  border: 1px dashed color-mix(in srgb, var(--card-accent) 22%, var(--main-border));
+  border: 1px dashed color-mix(in srgb, var(--card-accent) 22%, var(--record-border));
   border-radius: 12px;
-  background: var(--surface-1);
-  color: var(--text-soft);
-  font-size: 0.72rem;
+  background: var(--record-surface);
+  color: var(--record-muted);
+  font-size: var(--identity-fontSize, var(--hse-text-sm));
   font-weight: 750;
 }
 
@@ -2045,7 +1999,7 @@ const canCreateRecord = computed(() =>
 .observation-card-footer {
   min-height: 62px;
   padding: 11px 22px 11px 26px;
-  background: color-mix(in srgb, var(--surface-2) 72%, transparent);
+  background: color-mix(in srgb, var(--record-subtle) 72%, transparent);
 }
 
 .view-observation-action {
@@ -2057,10 +2011,10 @@ const canCreateRecord = computed(() =>
   margin-inline-start: auto;
   padding: 8px 9px 8px 15px;
   border-radius: 12px;
-  background: var(--card-accent);
-  box-shadow: 0 8px 18px color-mix(in srgb, var(--card-accent) 22%, transparent);
-  color: white;
-  font-size: 0.76rem;
+  background: var(--identity-primaryButtonBackground, var(--record-primary));
+  box-shadow: var(--hse-shadow-sm);
+  color: var(--record-on-primary);
+  font-size: var(--identity-fontSize, 0.76rem);
   font-weight: 900;
   text-decoration: none;
   transition:
@@ -2069,8 +2023,8 @@ const canCreateRecord = computed(() =>
 }
 
 .view-observation-action:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 11px 22px color-mix(in srgb, var(--card-accent) 28%, transparent);
+  transform: translateY(-1px);
+  box-shadow: var(--hse-shadow-sm);
 }
 
 .action-arrow {
@@ -2081,7 +2035,7 @@ const canCreateRecord = computed(() =>
   height: 24px;
   border-radius: 8px;
   background: color-mix(in srgb, white 18%, transparent);
-  font-size: 1rem;
+  font-size: var(--identity-fontSize, 1rem);
   line-height: 1;
 }
 
@@ -2128,7 +2082,7 @@ const canCreateRecord = computed(() =>
 
 @media (max-width: 540px) {
   .observation-card {
-    border-radius: 18px;
+    border-radius: var(--hse-radius-card);
   }
 
   .observation-title-group {
@@ -2166,16 +2120,10 @@ const canCreateRecord = computed(() =>
   :deep(.card-header-container),
   :deep(.observation-dwspcription-more),
   :deep(.card-description) {
-    border-color: var(--main-border) !important;
-    background:
-      radial-gradient(
-        circle at 100% 0%,
-        color-mix(in srgb, var(--PrimaryColor) 8%, transparent),
-        transparent 38%
-      ),
-      linear-gradient(180deg, var(--surface-1), var(--surface-2)) !important;
-    color: var(--text-strong) !important;
-    box-shadow: 0 14px 34px color-mix(in srgb, var(--text-strong) 22%, transparent) !important;
+    border-color: var(--record-border) !important;
+    background: var(--record-surface) !important;
+    color: var(--record-text) !important;
+    box-shadow: var(--hse-shadow-sm) !important;
   }
 
   :deep(.card-content),
@@ -2189,32 +2137,32 @@ const canCreateRecord = computed(() =>
   :deep(.label-item-primary),
   :deep(.label-item-secondary),
   :deep(.observation-dwspcription-more .show-more) {
-    border-color: var(--main-border) !important;
-    background: var(--surface-2) !important;
-    color: var(--text-soft) !important;
+    border-color: var(--record-border) !important;
+    background: var(--record-subtle) !important;
+    color: var(--record-muted) !important;
   }
 
   :deep(.title),
   :deep(.card-details .title),
   :deep(.label-item-primary span),
   :deep(.label-item-secondary span) {
-    color: var(--text-strong) !important;
+    color: var(--record-text) !important;
   }
 
   :deep(.subtitle),
   :deep(.description),
   :deep(.card-description .description) {
-    color: var(--text-soft) !important;
+    color: var(--record-muted) !important;
   }
 
   :deep(.p-image img) {
-    border: 1px solid var(--main-border) !important;
-    background: var(--surface-3) !important;
+    border: 1px solid var(--record-border) !important;
+    background: var(--record-subtle) !important;
   }
 
   :deep(.observation-risk-level) {
-    border-color: color-mix(in srgb, var(--card-accent) 34%, var(--main-border)) !important;
-    background: color-mix(in srgb, var(--card-accent) 13%, var(--surface-2)) !important;
+    border-color: color-mix(in srgb, var(--card-accent) 34%, var(--record-border)) !important;
+    background: color-mix(in srgb, var(--card-accent) 13%, var(--record-subtle)) !important;
     color: var(--card-accent) !important;
   }
 
@@ -2222,14 +2170,14 @@ const canCreateRecord = computed(() =>
   .observation-card-footer,
   .meta-item,
   .observation-media-panel {
-    border-color: var(--main-border);
-    background: color-mix(in srgb, var(--surface-2) 82%, transparent);
+    border-color: var(--record-border);
+    background: color-mix(in srgb, var(--record-subtle) 82%, transparent);
   }
 
   .observation-description,
   .no-media {
-    border-color: color-mix(in srgb, var(--card-accent) 24%, var(--main-border));
-    background: color-mix(in srgb, var(--card-accent) 8%, var(--surface-2));
+    border-color: color-mix(in srgb, var(--card-accent) 24%, var(--record-border));
+    background: color-mix(in srgb, var(--card-accent) 8%, var(--record-subtle));
   }
 }
 </style>
