@@ -474,13 +474,7 @@ onMounted(() => {
 .notifications-control :deep(.circle-icon path) {
   stroke: currentColor;
 }
-.notifications-control :deep(.image-refresh) {
-  width: 32px;
-  height: 32px;
-  margin: 0;
-  border-radius: 9px;
-  background: var(--hse-project-navy);
-}
+
 .user {
   gap: 10px;
   min-width: 0;

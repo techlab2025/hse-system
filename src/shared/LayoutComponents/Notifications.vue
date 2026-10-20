@@ -16,7 +16,6 @@ import {
 import RefreshNotificationTokenController from '@/features/notification/Presentation/controllers/RefreshNotificationTokenController.ts'
 import RefreshNotificationParams from '@/features/notification/Core/params/RefreshNotificationParams.ts'
 // import { NOTIFICATION_SOUND_BASE64 } from '@/base/Presentation/utils/notification_ring.ts'
-import refreshIcon from '@/assets/images/refresh-icon.svg'
 
 defineOptions({ name: 'NotificationsMenu' })
 // const emit = defineEmits(['rerfreshToken'])
@@ -314,26 +313,42 @@ watch(
   },
   { immediate: true },
 )
+const isRefreshing = ref(false)
 const RefreshToken = async () => {
-  const refreshNotificationTokenController = RefreshNotificationTokenController.getInstance()
-  const result = await refreshNotificationTokenController.RefreshToken(
-    new RefreshNotificationParams(),
-  )
-  newRefreshToken.value = result.value.data?.notificationSocketToken
-  // emit('rerfreshToken', newRefreshToken.value);
-  await reconnectWebSocket(newRefreshToken.value)
+  if (isRefreshing.value) return
+  isRefreshing.value = true
+  try {
+    const refreshNotificationTokenController = RefreshNotificationTokenController.getInstance()
+    const result = await refreshNotificationTokenController.RefreshToken(
+      new RefreshNotificationParams(),
+    )
+    newRefreshToken.value = result.value.data?.notificationSocketToken
+    await reconnectWebSocket(newRefreshToken.value)
+  } finally {
+    isRefreshing.value = false
+  }
 }
 </script>
 <template>
   <div class="notification-center">
-    <img
+    <button
       v-if="!wsConnected"
+      type="button"
+      class="notification-refresh"
+      :class="{ 'is-refreshing': isRefreshing }"
+      :disabled="isRefreshing"
+      :aria-busy="isRefreshing"
+      :aria-label="$t('Refresh notifications')"
+      :title="$t('Refresh notifications')"
       @click="RefreshToken"
-      :src="refreshIcon"
-      alt="refresh"
-      width="40"
-      class="image-refresh"
-    />
+    >
+      <span class="refresh-orbit" aria-hidden="true"></span>
+      <svg class="refresh-symbol" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M19.5 9a8 8 0 0 0-13-3L3.5 9M3.5 4.5V9H8" />
+        <path d="M4.5 15a8 8 0 0 0 13 3l3-3M20.5 19.5V15H16" />
+      </svg>
+      <span class="refresh-spark" aria-hidden="true"></span>
+    </button>
     <button
       class="notification"
       type="button"
@@ -450,13 +465,93 @@ const RefreshToken = async () => {
   </div>
 </template>
 <style lang="scss" scoped>
-.image-refresh {
-  margin-inline: 10px;
+.notification-refresh {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  margin-inline-end: 8px;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--brand-primary-500) 28%, var(--surface-1));
+  border-radius: 13px;
+  color: var(--brand-primary-600);
+  background: linear-gradient(145deg, var(--surface-1), var(--brand-primary-50));
+  box-shadow:
+    inset 0 1px 0 var(--surface-1),
+    0 3px 10px color-mix(in srgb, var(--brand-primary-500) 12%, transparent);
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
 }
-.image-refresh:hover {
-  transform: rotate(90deg) translateY(-2px);
+
+.refresh-orbit {
+  position: absolute;
+  inset: 4px;
+  border: 1px dashed color-mix(in srgb, var(--brand-primary-500) 25%, transparent);
+  border-radius: 50%;
+}
+
+.refresh-symbol {
+  width: 21px;
+  height: 21px;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 350ms ease;
+}
+
+.refresh-spark {
+  position: absolute;
+  top: 3px;
+  inset-inline-end: 3px;
+  width: 7px;
+  height: 7px;
+  border: 2px solid var(--surface-1);
+  border-radius: 50%;
+  background: var(--brand-primary-500);
+}
+
+.notification-refresh:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 14px color-mix(in srgb, var(--brand-primary-500) 20%, transparent);
+}
+
+.notification-refresh:hover:not(:disabled) .refresh-symbol {
+  transform: rotate(45deg);
+}
+
+.notification-refresh:focus-visible {
+  outline: 2px solid var(--brand-primary-500);
+  outline-offset: 3px;
+}
+
+.notification-refresh:disabled {
+  cursor: wait;
+}
+
+.is-refreshing .refresh-symbol {
+  animation: notification-refresh-spin 900ms linear infinite;
+}
+
+@keyframes notification-refresh-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .notification-refresh,
+  .refresh-symbol {
+    transition: none;
+  }
+  .is-refreshing .refresh-symbol {
+    animation: none;
+  }
 }
 .p-popover {
   border-radius: 16px !important;
