@@ -1,6 +1,15 @@
 export const googleFonts = [
-  'Inter', 'Roboto', 'Open Sans', 'Lato', 'Poppins', 'Montserrat', 'Nunito',
-  'Cairo', 'Tajawal', 'Noto Sans Arabic', 'IBM Plex Sans Arabic',
+  'Inter',
+  'Roboto',
+  'Open Sans',
+  'Lato',
+  'Poppins',
+  'Montserrat',
+  'Nunito',
+  'Cairo',
+  'Tajawal',
+  'Noto Sans Arabic',
+  'IBM Plex Sans Arabic',
 ] as const
 
 export interface Typography {
@@ -12,7 +21,11 @@ export interface Typography {
 }
 
 export const defaultTypography = (): Typography => ({
-  fontFamily: '', fontSize: null, headingSize: null, fontColor: '', headingColor: '',
+  fontFamily: '',
+  fontSize: null,
+  headingSize: null,
+  fontColor: '',
+  headingColor: '',
 })
 
 export const normalizeFontFamily = (value: unknown): string => {
@@ -26,9 +39,13 @@ export const normalizeTypography = (value: unknown): Typography => {
   if (!value || typeof value !== 'object') return result
   const candidate = value as Partial<Typography>
   result.fontFamily = normalizeFontFamily(candidate.fontFamily)
-  for (const [key, min, max] of [['fontSize', 12, 24], ['headingSize', 18, 48]] as const) {
+  for (const [key, min, max] of [
+    ['fontSize', 12, 24],
+    ['headingSize', 18, 48],
+  ] as const) {
     const size = candidate[key]
-    if (typeof size === 'number' && Number.isFinite(size)) result[key] = Math.min(max, Math.max(min, Math.round(size)))
+    if (typeof size === 'number' && Number.isFinite(size))
+      result[key] = Math.min(max, Math.max(min, Math.round(size)))
   }
   for (const key of ['fontColor', 'headingColor'] as const) {
     const color = candidate[key]
@@ -37,16 +54,23 @@ export const normalizeTypography = (value: unknown): Typography => {
   return result
 }
 
-export const fontStack = (family: string) => family
-  ? `"${normalizeFontFamily(family)}", "Regular", ui-sans-serif, sans-serif`
-  : ''
+export const fontStack = (family: string): string => {
+  const name = normalizeFontFamily(family)
+  return name ? `"${name}", "Regular", ui-sans-serif, sans-serif` : ''
+}
 
 export const googleFontUrl = (family: string): string => {
   const name = normalizeFontFamily(family)
-  return name ? `https://fonts.googleapis.com/css2?family=${encodeURIComponent(name).replace(/%20/g, '+')}:wght@400;700&display=swap` : ''
+  const weights = googleFonts.some((family) => family === name) ? ':wght@400;700' : ''
+  return name
+    ? `https://fonts.googleapis.com/css2?family=${encodeURIComponent(name).replace(/%20/g, '+')}${weights}&display=swap`
+    : ''
 }
 
-export const setGoogleFont = (family: string, scope: 'saved' | 'preview'): HTMLLinkElement | null => {
+export const setGoogleFont = (
+  family: string,
+  scope: 'saved' | 'preview',
+): HTMLLinkElement | null => {
   const id = `identity-google-font-${scope}`
   const existing = document.getElementById(id) as HTMLLinkElement | null
   const url = googleFontUrl(family)
@@ -61,8 +85,20 @@ export const setGoogleFont = (family: string, scope: 'saved' | 'preview'): HTMLL
   link.rel = 'stylesheet'
   link.href = url
   link.dataset.state = 'loading'
-  link.addEventListener('load', () => { link.dataset.state = 'loaded' }, { once: true })
-  link.addEventListener('error', () => { link.dataset.state = 'error' }, { once: true })
+  link.addEventListener(
+    'load',
+    () => {
+      link.dataset.state = 'loaded'
+    },
+    { once: true },
+  )
+  link.addEventListener(
+    'error',
+    () => {
+      link.dataset.state = 'error'
+    },
+    { once: true },
+  )
   document.head.append(link)
   return link
 }

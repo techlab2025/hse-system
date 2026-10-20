@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import IdentityTypographyEditor from '@/features/SystemIdentity/components/IdentityTypographyEditor.vue'
 import IdentityColorEditor from '@/features/SystemIdentity/components/IdentityColorEditor.vue'
 import IdentitySidebarEditor from '@/features/SystemIdentity/components/IdentitySidebarEditor.vue'
 import IdentityLayoutEditor from '@/features/SystemIdentity/components/IdentityLayoutEditor.vue'
@@ -153,7 +154,8 @@ onMounted(() => {
         <span class="eyebrow">Organization settings</span>
         <h1>System Identity</h1>
         <p>
-          Customize your logo, interface colors, header, and sidebar layout across HSE.Cloud.Ai.
+          Customize your logo, interface colors, typography, header, and sidebar layout across
+          HSE.Cloud.Ai.
         </p>
       </div>
       <div class="active-badge" :class="{ inactive: !form.isActive }">
@@ -303,6 +305,7 @@ onMounted(() => {
     </section>
 
     <IdentityColorEditor v-model="form.appearance" />
+    <IdentityTypographyEditor v-model="form.appearance.typography" />
     <IdentityLayoutEditor v-model="form.appearance" />
     <IdentitySidebarEditor v-model="form.appearance" />
     <IdentityPreview :identity="form" />

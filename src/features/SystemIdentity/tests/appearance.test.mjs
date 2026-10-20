@@ -1,6 +1,7 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { defaultAppearance, normalizeAppearance } from '../appearance.ts'
+import { fontStack, googleFontUrl } from '../typography.ts'
 
 test('old identities without appearance keep current styling and layout', () => {
   assert.deepEqual(normalizeAppearance(undefined), defaultAppearance())
@@ -111,4 +112,64 @@ test('tag, active navigation, and input overrides persist without changing old i
   }
   assert.deepEqual(normalizeAppearance({ colors }).colors, colors)
   assert.deepEqual(normalizeAppearance({}).colors, {})
+})
+
+test('old identities keep default typography and typography drafts stay independent', () => {
+  const saved = normalizeAppearance({})
+  const draft = normalizeAppearance(saved)
+  draft.typography.fontFamily = 'Cairo'
+  draft.typography.fontSize = 18
+  draft.typography.fontColor = '#123456'
+  assert.equal(saved.typography.fontFamily, '')
+  assert.equal(saved.typography.fontSize, null)
+  assert.equal(saved.typography.fontColor, '')
+  assert.deepEqual(normalizeAppearance(JSON.parse(JSON.stringify(draft))), draft)
+})
+
+test('typography accepts Google family names and validates sizes and colors', () => {
+  assert.deepEqual(
+    normalizeAppearance({
+      typography: {
+        fontFamily: '  Noto   Sans Arabic  ',
+        fontSize: 17.6,
+        headingSize: 90,
+        fontColor: '#112233',
+        headingColor: 'red',
+      },
+    }).typography,
+    {
+      fontFamily: 'Noto Sans Arabic',
+      fontSize: 18,
+      headingSize: 48,
+      fontColor: '#112233',
+      headingColor: '',
+    },
+  )
+  const invalid = normalizeAppearance({
+    typography: {
+      fontFamily: 'url(https://example.com)',
+      fontSize: '18px',
+      headingSize: NaN,
+      fontColor: 'var(--color)',
+      headingColor: '#fff',
+    },
+  }).typography
+  assert.deepEqual(invalid, defaultAppearance().typography)
+  assert.equal(
+    normalizeAppearance({ typography: { fontSize: -10, headingSize: 0 } }).typography.fontSize,
+    12,
+  )
+})
+
+test('Google font requests support curated weights and custom families with one available weight', () => {
+  assert.equal(
+    googleFontUrl('Cairo'),
+    'https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap',
+  )
+  assert.equal(
+    googleFontUrl('Bebas Neue'),
+    'https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap',
+  )
+  assert.equal(googleFontUrl('url(bad)'), '')
+  assert.equal(fontStack('bad"font'), '')
 })

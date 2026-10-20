@@ -267,3 +267,73 @@
   padding: 6px;
   border-radius: 6px;
 }
+
+.identity-typography-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 18px;
+}
+.identity-typography-field {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  min-width: 0;
+}
+.identity-typography-field label {
+  font-size: 13px;
+  font-weight: 600;
+}
+.identity-typography-field :is(input, select) {
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: 9px;
+  background: var(--hse-project-input-bg);
+  color: var(--hse-project-ink);
+}
+.identity-typography-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.identity-typography-input-row button {
+  flex-shrink: 0;
+}
+.identity-typography-field :is(small, a),
+.identity-typography-note {
+  font-size: 12px;
+}
+.identity-typography-note {
+  margin-top: 16px;
+}
+.identity-typography-sample {
+  margin-top: 18px;
+  padding: 20px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: 12px;
+  overflow-wrap: anywhere;
+}
+.identity-typography-sample-heading {
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.identity-typography-sample p {
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  margin: 8px 0;
+}
+.identity-typography-sample-arabic {
+  direction: rtl !important;
+  unicode-bidi: isolate !important;
+  text-align: right !important;
+  rotate: 180deg;
+}
+@media (max-width: 600px) {
+  .identity-typography-grid {
+    grid-template-columns: 1fr;
+  }
+}

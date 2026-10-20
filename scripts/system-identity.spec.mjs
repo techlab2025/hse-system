@@ -94,3 +94,76 @@ test('identity colors and sidebar orders preview, save, reload, disable, and res
   await expect(groups.locator(':scope > li').first()).toHaveAttribute('data-field', 'overview')
   expect(await page.evaluate(() => localStorage.getItem('hse-system-identity'))).toBeNull()
 })
+
+for (const locale of ['en', 'ar']) {
+  test(`Google Fonts and typography preview, persist, and reset: ${locale}`, async ({ page }) => {
+    page.setDefaultTimeout(15000)
+    await installFixtures(page, { locale })
+    await page.route('https://fonts.googleapis.com/**', (route) => {
+      if (route.request().url().includes('Missing+Font'))
+        return route.fulfill({ status: 400, body: 'Unknown font' })
+      return route.fulfill({
+        contentType: 'text/css',
+        body: '/* Google Fonts request intercepted for deterministic testing. */',
+      })
+    })
+    await page.goto(`${baseURL}/organization/system-identity`, { waitUntil: 'domcontentloaded' })
+    await page.locator('#identity-font-family').selectOption('Cairo')
+    await page.locator('#identity-fontSize').fill('18')
+    await page.locator('#identity-fontSize').blur()
+    await page.locator('#identity-headingSize').fill('32')
+    await page.locator('#identity-headingSize').blur()
+    await page.locator('#identity-fontColor').fill('#112233')
+    await page.locator('#identity-headingColor').fill('#543210')
+    const sample = page.locator('.identity-typography-sample')
+    await expect(sample).toHaveCSS('font-family', /Cairo/)
+    await expect(sample.locator('.identity-typography-sample-body')).toHaveCSS('font-size', '18px')
+    await expect(sample.locator('.identity-typography-sample-body')).toHaveCSS(
+      'color',
+      'rgb(17, 34, 51)',
+    )
+    await expect(page.locator('html')).not.toHaveAttribute('data-identity-fontfamily')
+    await expect(page.locator('#identity-google-font-preview')).toHaveAttribute(
+      'href',
+      /family=Cairo:wght@400;700&display=swap/,
+    )
+    await page.locator('.identity-page .save-button').click()
+    await expect(page.getByRole('status')).toHaveText('System identity has been saved and applied.')
+    await expect(page.locator('html')).toHaveAttribute('data-identity-fontfamily')
+    await expect(page.locator('.identity-page > header h1')).toHaveCSS('font-family', /Cairo/)
+    await expect(page.locator('.identity-page > header h1')).toHaveCSS('font-size', '32px')
+    await expect(page.locator('.identity-page > header h1')).toHaveCSS('color', 'rgb(84, 50, 16)')
+    await expect(page.locator('.identity-page > header p')).toHaveCSS('font-size', '18px')
+    await expect(page.locator('.identity-page > header p')).toHaveCSS('color', 'rgb(17, 34, 51)')
+    await page.reload({ waitUntil: 'domcontentloaded' })
+    await expect(page.locator('#identity-font-family')).toHaveValue('Cairo')
+    await expect(page.locator('#identity-fontSize')).toHaveValue('18')
+    await expect(page.locator('#identity-google-font-saved')).toHaveAttribute(
+      'href',
+      /family=Cairo/,
+    )
+    await page.locator('#identity-custom-font').fill('Missing Font')
+    await page.getByRole('button', { name: 'Add font', exact: true }).click()
+    await expect(page.getByRole('alert').filter({ hasText: 'could not be loaded' })).toBeVisible()
+    await page.locator('#identity-custom-font').fill('Noto Sans')
+    await page.getByRole('button', { name: 'Add font', exact: true }).click()
+    await expect(page.locator('#identity-font-family')).toHaveValue('Noto Sans')
+    await expect(page.locator('.identity-page > header h1')).toHaveCSS('font-family', /Cairo/)
+    await expect(sample).toHaveCSS('font-family', /Noto Sans/)
+    for (const width of [390, 1440]) {
+      await page.setViewportSize({ width, height: 950 })
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+      ).toBe(true)
+    }
+    await page.getByRole('button', { name: 'Restore default typography', exact: true }).click()
+    await expect(page.locator('#identity-font-family')).toHaveValue('')
+    await expect(page.locator('#identity-google-font-preview')).toHaveCount(0)
+    await expect(page.locator('html')).toHaveAttribute('data-identity-fontfamily')
+    await page.locator('.identity-page .save-button').click()
+    await expect(page.locator('html')).not.toHaveAttribute('data-identity-fontfamily')
+    await expect(page.locator('html')).not.toHaveAttribute('data-identity-fontsize')
+    await expect(page.locator('html')).not.toHaveAttribute('data-identity-fontcolor')
+    await expect(page.locator('#identity-google-font-saved')).toHaveCount(0)
+  })
+}

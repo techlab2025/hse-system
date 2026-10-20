@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { organizationNavigation } from '@/shared/LayoutComponents/organizationNavigation'
 import { useSystemIdentity, type SystemIdentity } from '@/composables/useSystemIdentity'
+import { fontStack } from '../typography'
 import { headerFields, headerActionFields } from '../appearance'
 const props = defineProps<{ identity: SystemIdentity }>()
 const { t } = useI18n()
@@ -16,7 +17,11 @@ const colors = computed(() => preview.value.appearance.colors)
     <p>Draft changes stay here until you save. Disabled identities use the system defaults.</p>
     <div
       class="identity-shell-preview"
-      :style="{ background: colors.systemBackground || 'var(--hse-project-bg)' }"
+      :style="{
+        background: colors.systemBackground || 'var(--hse-project-bg)',
+        fontFamily:
+          fontStack(preview.appearance.typography.fontFamily) || 'var(--hse-control-font)',
+      }"
     >
       <aside
         :style="{
@@ -75,10 +80,25 @@ const colors = computed(() => preview.value.appearance.colors)
             class="identity-preview-section"
             :style="{
               background: colors.sectionBackground || 'var(--hse-project-surface)',
-              color: colors.sectionText || 'var(--hse-project-ink)',
+              color:
+                colors.sectionText ||
+                preview.appearance.typography.fontColor ||
+                'var(--hse-project-ink)',
+              fontSize: preview.appearance.typography.fontSize
+                ? `${preview.appearance.typography.fontSize}px`
+                : undefined,
             }"
           >
-            <h3>{{ preview.name }}</h3>
+            <h3
+              :style="{
+                color: preview.appearance.typography.headingColor || 'inherit',
+                fontSize: preview.appearance.typography.headingSize
+                  ? `${Math.max(14, preview.appearance.typography.headingSize * 0.65)}px`
+                  : undefined,
+              }"
+            >
+              {{ preview.name }}
+            </h3>
             <p>Your workspace appearance</p>
             <span
               class="identity-preview-tag"

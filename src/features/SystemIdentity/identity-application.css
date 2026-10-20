@@ -149,6 +149,7 @@ html[data-identity-sectiontext]
       .investigation-status-badge *,
       .incident-investigation-badge,
       .incident-investigation-badge *,
+      .identity-typography-sample *,
       .identity-shell-preview *
     )
   ) {
@@ -266,4 +267,147 @@ html[data-identity-inputborder]
     .p-multiselect
   ):not(:disabled, .p-disabled, :focus, :focus-within, .p-invalid, [aria-invalid='true']) {
   border-color: var(--identity-inputBorder) !important;
+}
+
+/* Typography only overrides defaults when a setting has been saved. Keep icon fonts and draft previews independent. */
+html[data-identity-fontfamily]
+  :is(
+    #app,
+    .p-dialog,
+    .p-select-overlay,
+    .p-multiselect-overlay,
+    .p-datepicker-panel,
+    .p-popover,
+    .p-toast
+  )
+  :is(
+    div,
+    p,
+    span,
+    a,
+    button,
+    input,
+    textarea,
+    select,
+    option,
+    label,
+    legend,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    strong,
+    small,
+    b,
+    em,
+    li,
+    dt,
+    dd,
+    td,
+    th,
+    summary
+  ):not(
+    :where(
+      .pi,
+      .pi *,
+      .material-icons,
+      .material-symbols-outlined,
+      .identity-typography-sample,
+      .identity-typography-sample *,
+      .identity-shell-preview,
+      .identity-shell-preview *
+    )
+  ) {
+  font-family: var(--identity-fontFamily) !important;
+}
+html[data-identity-fontsize]
+  #app
+  :is(
+    p,
+    label,
+    legend,
+    td,
+    th,
+    dt,
+    dd,
+    li,
+    summary,
+    button,
+    input,
+    textarea,
+    select,
+    .side-label,
+    .side-rail-btn,
+    .side-pane-heading,
+    .side-pane-heading strong
+  ):not(:where(.identity-typography-sample *, .identity-shell-preview *)) {
+  font-size: var(--identity-fontSize) !important;
+}
+html[data-identity-fontsize]
+  #app
+  :is(p, label, legend, td, th, dt, dd, li, summary, button)
+  :is(span, strong, small, a):not(
+    :where(.pi, .pi *, .identity-typography-sample *, .identity-shell-preview *)
+  ) {
+  font-size: inherit !important;
+}
+html[data-identity-headingsize] #app h1:not(:where(.identity-shell-preview *)) {
+  font-size: var(--identity-headingSize) !important;
+}
+html[data-identity-headingsize] #app h2:not(:where(.identity-shell-preview *)) {
+  font-size: max(16px, calc(var(--identity-headingSize) * 0.8)) !important;
+}
+html[data-identity-headingsize] #app :is(h3, h4, h5, h6):not(:where(.identity-shell-preview *)) {
+  font-size: max(14px, calc(var(--identity-headingSize) * 0.65)) !important;
+}
+html[data-identity-headingsize]
+  #app
+  :is(h1, h2, h3, h4, h5, h6)
+  :is(span, strong, small):not(:where(.pi, .identity-shell-preview *)) {
+  font-size: inherit !important;
+}
+html[data-identity-fontcolor]
+  .main-content
+  :is(p, label, legend, dt, dd, td, th, li, small, strong, span):not(
+    :where(
+      button *,
+      a *,
+      [role='button'] *,
+      h1 *,
+      h2 *,
+      h3 *,
+      h4 *,
+      h5 *,
+      h6 *,
+      .hse-control *,
+      .p-select *,
+      .p-multiselect *,
+      .p-datepicker *,
+      .tag,
+      .tag *,
+      .badge,
+      .badge *,
+      .p-tag,
+      .p-tag *,
+      [class*='badge'],
+      [class*='badge'] *,
+      .hse-breadcrumb-bar *,
+      .identity-typography-sample *,
+      .identity-shell-preview *
+    )
+  ) {
+  color: var(--identity-fontColor) !important;
+}
+html[data-identity-headingcolor]
+  #app
+  .main-content
+  :is(h1, h2, h3, h4, h5, h6):not(:where(.identity-shell-preview *)),
+html[data-identity-headingcolor]
+  #app
+  .main-content
+  :is(h1, h2, h3, h4, h5, h6)
+  :is(span, strong, small):not(:where(.identity-shell-preview *)) {
+  color: var(--identity-headingColor) !important;
 }
