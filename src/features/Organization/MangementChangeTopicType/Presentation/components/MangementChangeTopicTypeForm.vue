@@ -164,8 +164,8 @@ const mangementChangeTopicType = ref<TitleInterface>(
     <LangTitleInput
       :langs="languages"
       :model-value="titles"
-      :label="$t('Management Change Topic Type Title')"
-      :placeholder="$t('enter management change topic type title')"
+      :label="$t('Management Change Topic Type ')"
+      :placeholder="$t('enter management change topic type ')"
       @update:model-value="setTitles"
     />
     <p v-if="requiredFieldErrors.title" class="required-field-message">

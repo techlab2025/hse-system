@@ -145,7 +145,7 @@ onMounted(fetchAll)
         <div>
           <small>Total assessments</small><strong>{{ items.length }}</strong>
         </div>
-        <span class="summary-card__trend">Register</span>
+        <!-- <span class="summary-card__trend">Register</span> -->
       </article>
       <!-- <article class="summary-card">
         <span class="summary-card__icon" aria-hidden="true">⌁</span>
@@ -160,7 +160,7 @@ onMounted(fetchAll)
           <small>Latest assessment</small
           ><strong class="summary-card__date">{{ latestAssessmentDate }}</strong>
         </div>
-        <span class="summary-card__trend">Updated</span>
+        <!-- <span class="summary-card__trend">Updated</span> -->
       </article>
     </section>
 
@@ -204,7 +204,9 @@ onMounted(fetchAll)
                   <span class="activity-avatar">{{ activityInitial(item.activity) }}</span>
                   <span
                     ><strong>{{ item.activity || 'Untitled activity' }}</strong
-                    ><small>Risk assessment</small></span
+                    >
+                    <!-- <small>Risk assessment</small> -->
+                    </span
                   >
                 </span>
               </td>

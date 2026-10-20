@@ -147,7 +147,7 @@ const ClearTitle = () => {
 
       <div class="template-fields-grid">
         <div class="input-wrapper field-required">
-          <label for="item-title">{{ $t('inspection_exemined_title') }}</label>
+          <label for="item-title">{{ $t('inspection_exemined_item') }}</label>
           <input
             type="text"
             id="item-title"
@@ -158,7 +158,7 @@ const ClearTitle = () => {
           />
         </div>
         <div class="input-wrapper field-required">
-          <label for="item-category">{{ $t('inspection_exemined_tag') }}</label>
+          <label for="item-category">{{ $t('inspection_exemined_title') }}</label>
           <input
             type="text"
             id="item-category"

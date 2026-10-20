@@ -345,6 +345,48 @@ defineExpose({
             @input="setCompanyAddress"
           />
         </div>
+
+         <div class="input-wrapper" data-required-field="Scope">
+          <UpdatedCustomInputSelect
+            id="Scope"
+            :modelValue="Scope"
+            class="input"
+            :controller="indexScopeController"
+            :params="indexScopeParams"
+            :label="$t('scope of service')"
+            placeholder="Select scope of service"
+            :type="2"
+            :isDialog="true"
+            v-model:dialogVisible="scopeDialogRef"
+            @update:modelValue="setScope"
+            @close="scopeDialogRef = false"
+          >
+            <template #LabelHeader>
+              <button class="inline-create-action" type="button" @click="scopeDialogRef = true">
+                + New
+              </button>
+            </template>
+            <template #Dialog>
+              <AddScope @update:data="scopeDialogRef = false" />
+            </template>
+          </UpdatedCustomInputSelect>
+          <p v-if="getFieldError('Scope')" class="required-field-message">
+            {{ getFieldError('Scope') }}
+          </p>
+        </div>
+
+        <div class="input-wrapper contractor-field--wide contractor-status-field">
+          <CustomSelectInput
+            id="Status"
+            :modelValue="SelectedStatus"
+            class="input"
+            :static-options="StatusList"
+            :label="$t('status')"
+            :reload="false"
+            placeholder="Select contractor status"
+            @update:modelValue="setStatus"
+          />
+        </div>
       </div>
     </section>
 
@@ -397,47 +439,7 @@ defineExpose({
           </p>
         </div>
 
-        <div class="input-wrapper" data-required-field="Scope">
-          <UpdatedCustomInputSelect
-            id="Scope"
-            :modelValue="Scope"
-            class="input"
-            :controller="indexScopeController"
-            :params="indexScopeParams"
-            :label="$t('scope of service')"
-            placeholder="Select scope of service"
-            :type="2"
-            :isDialog="true"
-            v-model:dialogVisible="scopeDialogRef"
-            @update:modelValue="setScope"
-            @close="scopeDialogRef = false"
-          >
-            <template #LabelHeader>
-              <button class="inline-create-action" type="button" @click="scopeDialogRef = true">
-                + New
-              </button>
-            </template>
-            <template #Dialog>
-              <AddScope @update:data="scopeDialogRef = false" />
-            </template>
-          </UpdatedCustomInputSelect>
-          <p v-if="getFieldError('Scope')" class="required-field-message">
-            {{ getFieldError('Scope') }}
-          </p>
-        </div>
-
-        <div class="input-wrapper contractor-field--wide contractor-status-field">
-          <CustomSelectInput
-            id="Status"
-            :modelValue="SelectedStatus"
-            class="input"
-            :static-options="StatusList"
-            :label="$t('status')"
-            :reload="false"
-            placeholder="Select contractor status"
-            @update:modelValue="setStatus"
-          />
-        </div>
+       
       </div>
     </section>
 

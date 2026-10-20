@@ -2002,7 +2002,7 @@
   "training_expiry_date": "Training expiry date",
   "training_image": "Training image",
   "CertificateExpireDate": "Training expiry date",
-  "require_certificate": "Training required",
+  "require_certificate": "Certificate required",
   "Functional Training": "Training",
   "Taken Training": "Taken Training",
   "Not Taken Training": "Not Taken Training",
@@ -2017,7 +2017,7 @@
   "location_name": "location name",
   "zone_name": "Zone Name",
   "incident_type_name": "Incident type name",
-  "equipment_type_name": "Equipment type name",
+  "equipment_type_name": "Equipment Brand",
   "team_name": "Team Name",
   "root_cause_name": "RootCause Name",
   "import traning sheet": "import traning sheet",
@@ -2502,8 +2502,8 @@
   "Drill Type": "Drill Type",
   "drill_types": "Drill Types",
   "add_drill_type": "Add Drill Type",
-  "drill_type_title": "Drill Type Title",
-  "enter_drill_type_title": "Enter drill type title",
+  "drill_type_title": "Drill Type ",
+  "enter_drill_type_title": "Enter drill type ",
   "drill_type_description": "Drill Type Description",
   "enter_drill_type_description": "Enter drill type description",
   "no_drill_types": "No Drill Types",
@@ -2565,7 +2565,7 @@
   "Saving...": "Saving...",
   "ppe_items": "PPE Items",
   "add_ppe_item": "Add PPE Item",
-  "ppe_item_title": "PPE Item Title",
+  "ppe_item_title": "PPE Item ",
   "enter_ppe_item_title": "Enter PPE item title",
   "no_ppe_items": "No PPE Items",
   "no_ppe_items_description": "You have not added any PPE items yet.",
@@ -4621,5 +4621,6 @@
     "continue": "Continue",
     "viewHint": "Select a project to view records.",
     "createHint": "Choose the project inside the create form."
-  }
+  },
+  "inspection_exemined_item": "Inspection examined item"
 }

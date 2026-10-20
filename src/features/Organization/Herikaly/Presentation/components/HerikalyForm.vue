@@ -19,6 +19,7 @@ import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import IndexHerikalyController from '../controllers/indexHerikalyController'
 import IndexHerikalyParams from '../../Core/params/indexHerikalyParams'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
+import { CertificateTypeEnum } from '@/features/setting/Certificate/Core/Enums/CertificateTypeEnum'
 
 const emit = defineEmits(['update:data'])
 
@@ -144,16 +145,16 @@ const updateData = () => {
 
   const params = props.data?.id
     ? new EditHerikalyParams(
-        props?.data?.id,
-        translationsParams,
-        effectiveParentId.value,
-        props.mode === 'department' ? [] : Certificate.value.map((item) => item.id),
-      )
+      props?.data?.id,
+      translationsParams,
+      effectiveParentId.value,
+      props.mode === 'department' ? [] : Certificate.value.map((item) => item.id),
+    )
     : new AddHerikalyParams(
-        translationsParams,
-        props.mode === 'department' ? [] : Certificate.value.map((item) => item.id),
-        effectiveParentId.value,
-      )
+      translationsParams,
+      props.mode === 'department' ? [] : Certificate.value.map((item) => item.id),
+      effectiveParentId.value,
+    )
 
   emit('update:data', params)
 }
@@ -299,43 +300,38 @@ watch(
   },
   { immediate: true },
 )
+
+const GetCertificateTypeTitle = (type: CertificateTypeEnum) => {
+  switch (type) {
+    case CertificateTypeEnum.AWARENESS:
+      return 'Awareness'
+    case CertificateTypeEnum.KNOWLEDGE:
+      return 'Knowledge'
+    case CertificateTypeEnum.SCALE:
+      return 'Scale'
+    default:
+      return ''
+  }
+}
 </script>
 
 <template>
-  <div
-    class="col-span-4 md:col-span-2 depart"
-    v-if="showDepartmentSelect"
-    data-required-field="department"
-  >
+  <div class="col-span-4 md:col-span-2 depart" v-if="showDepartmentSelect" data-required-field="department">
     <div class="input-wrapper">
-      <UpdatedCustomInputSelect
-        :modelValue="SelectedDepartment"
-        :params="HerikalyParams"
-        :controller="indexHerikalyController"
-        class="input"
-        :label="$t('Department')"
-        :required="props.mode === 'position'"
-        id="herikaly"
-        :placeholder="$t('Select department')"
-        @update:modelValue="updatedDepartment"
-      />
+      <UpdatedCustomInputSelect :modelValue="SelectedDepartment" :params="HerikalyParams"
+        :controller="indexHerikalyController" class="input" :label="$t('Department')"
+        :required="props.mode === 'position'" id="herikaly" :placeholder="$t('Select department')"
+        @update:modelValue="updatedDepartment" />
       <p v-if="getFieldError('department')" class="required-field-message">
         {{ getFieldError('department') }}
       </p>
     </div>
   </div>
   <div class="col-span-4 md:col-span-2" data-required-field="langs">
-    <LangTitleInput
-      type="text"
-      :langs="langDefault"
-      :modelValue="langs"
-      :label="
-        isPosition || route.fullPath.includes('organization-employee/add')
-          ? $t('position_name')
-          : $t('Department Name')
-      "
-      @update:modelValue="setLangs"
-    />
+    <LangTitleInput type="text" :langs="langDefault" :modelValue="langs" :label="isPosition || route.fullPath.includes('organization-employee/add')
+      ? $t('position_name')
+      : $t('Department Name')
+      " @update:modelValue="setLangs" />
     <p v-if="getFieldError('langs')" class="required-field-message">
       {{ getFieldError('langs') }}
     </p>
@@ -347,12 +343,8 @@ watch(
         <label class="training-selector-label">{{ $t('certificate') }}</label>
         <div class="training-selector-actions">
           <label class="training-select-all">
-            <input
-              type="checkbox"
-              :checked="areAllCertificatesSelected"
-              :disabled="isLoadingCertificates || !certificateOptions.length"
-              @change="toggleAllCertificates"
-            />
+            <input type="checkbox" :checked="areAllCertificatesSelected"
+              :disabled="isLoadingCertificates || !certificateOptions.length" @change="toggleAllCertificates" />
             <span>{{ $t('select_all') }}</span>
           </label>
           <span class="training-selected-count">
@@ -362,12 +354,9 @@ watch(
       </div>
 
       <div class="training-search">
-        <input
-          v-model="certificateSearch"
-          type="search"
-          :placeholder="$t('search certificates')"
-          @keydown.enter.prevent
-        />
+        <input v-model="certificateSearch" type="search" :placeholder="$t('search certificates')"
+          @keydown.enter.prevent />
+
       </div>
 
       <div class="training-options" role="group" :aria-label="$t('certificate')">
@@ -376,21 +365,17 @@ watch(
         </div>
 
         <template v-else-if="filteredCertificateOptions.length">
-          <label
-            v-for="certificate in filteredCertificateOptions"
-            :key="certificate.id"
-            class="training-option"
-            :class="{ selected: isCertificateSelected(certificate.id) }"
-          >
-            <input
-              type="checkbox"
-              :checked="isCertificateSelected(certificate.id)"
-              @change="toggleCertificate(certificate)"
-            />
+          <label v-for="certificate in filteredCertificateOptions" :key="certificate.id" class="training-option"
+            :class="{ selected: isCertificateSelected(certificate.id) }">
+            <input type="checkbox" :checked="isCertificateSelected(certificate.id)"
+              @change="toggleCertificate(certificate)" />
             <span class="training-option-check" aria-hidden="true">
               <span>✓</span>
             </span>
-            <span class="training-option-title">{{ certificate.title || '—' }}</span>
+            <span class="training-option-title">{{ certificate.title || '—' }} - <span class="optional">
+                {{ GetCertificateTypeTitle(certificate.certificateType!) }}
+              </span>
+            </span>
           </label>
         </template>
 
@@ -406,9 +391,14 @@ watch(
 </template>
 
 <style scoped>
+.optional{
+  font-size: 0.75rem;
+  color: var(--text-muted, #64748b);
+}
 .depart {
   height: 100% !important;
 }
+
 .required-field-message {
   margin-top: 0.35rem;
   color: var(--status-danger);
@@ -578,7 +568,7 @@ watch(
   transition: all 0.2s ease;
 }
 
-.training-option input:focus-visible + .training-option-check {
+.training-option input:focus-visible+.training-option-check {
   outline: 3px solid rgb(37 83 219 / 18%);
   outline-offset: 2px;
 }

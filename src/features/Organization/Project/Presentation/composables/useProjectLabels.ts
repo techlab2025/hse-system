@@ -40,7 +40,7 @@ const messages = {
     quick: 'Quick access',
     quickNote: 'Continue to project safety workflows.',
     start: 'Start date',
-    end: 'Target completion',
+    end: 'End Date',
     readiness: 'Setup readiness',
     details: 'Open full project details',
   },
