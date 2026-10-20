@@ -2567,38 +2567,38 @@ export const OrgPermissions: PermissionItem = {
           ],
         },
         {
-          key: PermissionsEnum.PROJECT_ZOON_ALL,
-          code: PermissionsEnum.PROJECT_ZOON_ALL,
+          key: PermissionsEnum.PROJECT_ZONE_ALL,
+          code: PermissionsEnum.PROJECT_ZONE_ALL,
           label: 'Project Zones',
           permissions: [
             {
-              key: PermissionsEnum.PROJECT_ZOON_ALL,
-              code: PermissionsEnum.PROJECT_ZOON_ALL,
+              key: PermissionsEnum.PROJECT_ZONE_ALL,
+              code: PermissionsEnum.PROJECT_ZONE_ALL,
               label: 'All',
             },
             {
-              key: PermissionsEnum.PROJECT_ZOON_FETCH,
-              code: PermissionsEnum.PROJECT_ZOON_FETCH,
+              key: PermissionsEnum.PROJECT_ZONE_FETCH,
+              code: PermissionsEnum.PROJECT_ZONE_FETCH,
               label: 'Table',
             },
             {
-              key: PermissionsEnum.PROJECT_ZOON_DETAILS,
-              code: PermissionsEnum.PROJECT_ZOON_DETAILS,
+              key: PermissionsEnum.PROJECT_ZONE_DETAILS,
+              code: PermissionsEnum.PROJECT_ZONE_DETAILS,
               label: 'Details',
             },
             {
-              key: PermissionsEnum.PROJECT_ZOON_CREATE,
-              code: PermissionsEnum.PROJECT_ZOON_CREATE,
+              key: PermissionsEnum.PROJECT_ZONE_CREATE,
+              code: PermissionsEnum.PROJECT_ZONE_CREATE,
               label: 'Create',
             },
             {
-              key: PermissionsEnum.PROJECT_ZOON_UPDATE,
-              code: PermissionsEnum.PROJECT_ZOON_UPDATE,
+              key: PermissionsEnum.PROJECT_ZONE_UPDATE,
+              code: PermissionsEnum.PROJECT_ZONE_UPDATE,
               label: 'Update',
             },
             {
-              key: PermissionsEnum.PROJECT_ZOON_DELETE,
-              code: PermissionsEnum.PROJECT_ZOON_DELETE,
+              key: PermissionsEnum.PROJECT_ZONE_DELETE,
+              code: PermissionsEnum.PROJECT_ZONE_DELETE,
               label: 'Delete',
             },
           ],
@@ -2866,154 +2866,154 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
-        {
-          key: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_ALL,
-          code: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_ALL,
-          label: 'Task Result Item Answers',
-          permissions: [
-            {
-              key: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_ALL,
-              code: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_ALL,
-              label: 'All',
-            },
-            {
-              key: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_FETCH,
-              code: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_FETCH,
-              label: 'Table',
-            },
-            {
-              key: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_DETAILS,
-              code: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_DETAILS,
-              label: 'Details',
-            },
-            {
-              key: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_CREATE,
-              code: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_CREATE,
-              label: 'Create',
-            },
-            {
-              key: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_UPDATE,
-              code: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_UPDATE,
-              label: 'Update',
-            },
-            {
-              key: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_DELETE,
-              code: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_DELETE,
-              label: 'Delete',
-            },
-          ],
-        },
-        {
-          key: PermissionsEnum.INVESTIGATION_TASK_ALL,
-          code: PermissionsEnum.INVESTIGATION_TASK_ALL,
-          label: 'Investigation Tasks',
-          permissions: [
-            {
-              key: PermissionsEnum.INVESTIGATION_TASK_ALL,
-              code: PermissionsEnum.INVESTIGATION_TASK_ALL,
-              label: 'All',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_TASK_FETCH,
-              code: PermissionsEnum.INVESTIGATION_TASK_FETCH,
-              label: 'Table',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_TASK_DETAILS,
-              code: PermissionsEnum.INVESTIGATION_TASK_DETAILS,
-              label: 'Details',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_TASK_CREATE,
-              code: PermissionsEnum.INVESTIGATION_TASK_CREATE,
-              label: 'Create',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_TASK_UPDATE,
-              code: PermissionsEnum.INVESTIGATION_TASK_UPDATE,
-              label: 'Update',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_TASK_DELETE,
-              code: PermissionsEnum.INVESTIGATION_TASK_DELETE,
-              label: 'Delete',
-            },
-          ],
-        },
-        {
-          key: PermissionsEnum.INVESTIGATION_EMPLOYEE_ALL,
-          code: PermissionsEnum.INVESTIGATION_EMPLOYEE_ALL,
-          label: 'Investigation Employees',
-          permissions: [
-            {
-              key: PermissionsEnum.INVESTIGATION_EMPLOYEE_ALL,
-              code: PermissionsEnum.INVESTIGATION_EMPLOYEE_ALL,
-              label: 'All',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_EMPLOYEE_FETCH,
-              code: PermissionsEnum.INVESTIGATION_EMPLOYEE_FETCH,
-              label: 'Table',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_EMPLOYEE_DETAILS,
-              code: PermissionsEnum.INVESTIGATION_EMPLOYEE_DETAILS,
-              label: 'Details',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_EMPLOYEE_CREATE,
-              code: PermissionsEnum.INVESTIGATION_EMPLOYEE_CREATE,
-              label: 'Create',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_EMPLOYEE_UPDATE,
-              code: PermissionsEnum.INVESTIGATION_EMPLOYEE_UPDATE,
-              label: 'Update',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_EMPLOYEE_DELETE,
-              code: PermissionsEnum.INVESTIGATION_EMPLOYEE_DELETE,
-              label: 'Delete',
-            },
-          ],
-        },
-        {
-          key: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_ALL,
-          code: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_ALL,
-          label: 'Investigation Task Employees',
-          permissions: [
-            {
-              key: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_ALL,
-              code: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_ALL,
-              label: 'All',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_FETCH,
-              code: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_FETCH,
-              label: 'Table',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_DETAILS,
-              code: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_DETAILS,
-              label: 'Details',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_CREATE,
-              code: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_CREATE,
-              label: 'Create',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_UPDATE,
-              code: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_UPDATE,
-              label: 'Update',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_DELETE,
-              code: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_DELETE,
-              label: 'Delete',
-            },
-          ],
-        },
+        // {
+        //   key: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_ALL,
+        //   code: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_ALL,
+        //   label: 'Task Result Item Answers',
+        //   permissions: [
+        //     {
+        //       key: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_ALL,
+        //       code: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_ALL,
+        //       label: 'All',
+        //     },
+        //     {
+        //       key: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_FETCH,
+        //       code: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_FETCH,
+        //       label: 'Table',
+        //     },
+        //     {
+        //       key: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_DETAILS,
+        //       code: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_DETAILS,
+        //       label: 'Details',
+        //     },
+        //     {
+        //       key: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_CREATE,
+        //       code: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_CREATE,
+        //       label: 'Create',
+        //     },
+        //     {
+        //       key: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_UPDATE,
+        //       code: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_UPDATE,
+        //       label: 'Update',
+        //     },
+        //     {
+        //       key: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_DELETE,
+        //       code: PermissionsEnum.TASK_RESULT_ITEM_ANSWER_DELETE,
+        //       label: 'Delete',
+        //     },
+        //   ],
+        // },
+        // {
+        //   key: PermissionsEnum.INVESTIGATION_TASK_ALL,
+        //   code: PermissionsEnum.INVESTIGATION_TASK_ALL,
+        //   label: 'Investigation Tasks',
+        //   permissions: [
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_TASK_ALL,
+        //       code: PermissionsEnum.INVESTIGATION_TASK_ALL,
+        //       label: 'All',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_TASK_FETCH,
+        //       code: PermissionsEnum.INVESTIGATION_TASK_FETCH,
+        //       label: 'Table',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_TASK_DETAILS,
+        //       code: PermissionsEnum.INVESTIGATION_TASK_DETAILS,
+        //       label: 'Details',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_TASK_CREATE,
+        //       code: PermissionsEnum.INVESTIGATION_TASK_CREATE,
+        //       label: 'Create',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_TASK_UPDATE,
+        //       code: PermissionsEnum.INVESTIGATION_TASK_UPDATE,
+        //       label: 'Update',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_TASK_DELETE,
+        //       code: PermissionsEnum.INVESTIGATION_TASK_DELETE,
+        //       label: 'Delete',
+        //     },
+        //   ],
+        // },
+        // {
+        //   key: PermissionsEnum.INVESTIGATION_EMPLOYEE_ALL,
+        //   code: PermissionsEnum.INVESTIGATION_EMPLOYEE_ALL,
+        //   label: 'Investigation Employees',
+        //   permissions: [
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_EMPLOYEE_ALL,
+        //       code: PermissionsEnum.INVESTIGATION_EMPLOYEE_ALL,
+        //       label: 'All',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_EMPLOYEE_FETCH,
+        //       code: PermissionsEnum.INVESTIGATION_EMPLOYEE_FETCH,
+        //       label: 'Table',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_EMPLOYEE_DETAILS,
+        //       code: PermissionsEnum.INVESTIGATION_EMPLOYEE_DETAILS,
+        //       label: 'Details',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_EMPLOYEE_CREATE,
+        //       code: PermissionsEnum.INVESTIGATION_EMPLOYEE_CREATE,
+        //       label: 'Create',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_EMPLOYEE_UPDATE,
+        //       code: PermissionsEnum.INVESTIGATION_EMPLOYEE_UPDATE,
+        //       label: 'Update',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_EMPLOYEE_DELETE,
+        //       code: PermissionsEnum.INVESTIGATION_EMPLOYEE_DELETE,
+        //       label: 'Delete',
+        //     },
+        //   ],
+        // },
+        // {
+        //   key: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_ALL,
+        //   code: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_ALL,
+        //   label: 'Investigation Task Employees',
+        //   permissions: [
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_ALL,
+        //       code: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_ALL,
+        //       label: 'All',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_FETCH,
+        //       code: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_FETCH,
+        //       label: 'Table',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_DETAILS,
+        //       code: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_DETAILS,
+        //       label: 'Details',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_CREATE,
+        //       code: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_CREATE,
+        //       label: 'Create',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_UPDATE,
+        //       code: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_UPDATE,
+        //       label: 'Update',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_DELETE,
+        //       code: PermissionsEnum.INVESTIGATION_TASK_EMPLOYEE_DELETE,
+        //       label: 'Delete',
+        //     },
+        //   ],
+        // },
         {
           key: PermissionsEnum.INVESTIGATION_TASK_RESULT_ALL,
           code: PermissionsEnum.INVESTIGATION_TASK_RESULT_ALL,
@@ -3034,15 +3034,15 @@ export const OrgPermissions: PermissionItem = {
               code: PermissionsEnum.INVESTIGATION_TASK_RESULT_DETAILS,
               label: 'Details',
             },
-            {
-              key: PermissionsEnum.INVESTIGATION_TASK_RESULT_CREATE,
-              code: PermissionsEnum.INVESTIGATION_TASK_RESULT_CREATE,
-              label: 'Create',
-            },
+            // {
+            //   key: PermissionsEnum.INVESTIGATION_TASK_RESULT_CREATE,
+            //   code: PermissionsEnum.INVESTIGATION_TASK_RESULT_CREATE,
+            //   label: 'Create',
+            // },
             {
               key: PermissionsEnum.FULL_INVESTIGATION_MEETING_RESULT_CREATE,
               code: PermissionsEnum.FULL_INVESTIGATION_MEETING_RESULT_CREATE,
-              label: 'Create Full Investigation Meeting Result',
+              label: 'Create ',
             },
             {
               key: PermissionsEnum.INVESTIGATION_TASK_RESULT_UPDATE,
@@ -3056,232 +3056,232 @@ export const OrgPermissions: PermissionItem = {
             },
           ],
         },
-        {
-          key: PermissionsEnum.INVESTIGATION_FACTOR_ALL,
-          code: PermissionsEnum.INVESTIGATION_FACTOR_ALL,
-          label: 'Investigation Factors',
-          permissions: [
-            {
-              key: PermissionsEnum.INVESTIGATION_FACTOR_ALL,
-              code: PermissionsEnum.INVESTIGATION_FACTOR_ALL,
-              label: 'All',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_FACTOR_FETCH,
-              code: PermissionsEnum.INVESTIGATION_FACTOR_FETCH,
-              label: 'Table',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_FACTOR_DETAILS,
-              code: PermissionsEnum.INVESTIGATION_FACTOR_DETAILS,
-              label: 'Details',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_FACTOR_CREATE,
-              code: PermissionsEnum.INVESTIGATION_FACTOR_CREATE,
-              label: 'Create',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_FACTOR_UPDATE,
-              code: PermissionsEnum.INVESTIGATION_FACTOR_UPDATE,
-              label: 'Update',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_FACTOR_DELETE,
-              code: PermissionsEnum.INVESTIGATION_FACTOR_DELETE,
-              label: 'Delete',
-            },
-          ],
-        },
-        {
-          key: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_ALL,
-          code: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_ALL,
-          label: 'Investigation Factor Items',
-          permissions: [
-            {
-              key: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_ALL,
-              code: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_ALL,
-              label: 'All',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_FETCH,
-              code: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_FETCH,
-              label: 'Table',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_DETAILS,
-              code: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_DETAILS,
-              label: 'Details',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_CREATE,
-              code: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_CREATE,
-              label: 'Create',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_UPDATE,
-              code: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_UPDATE,
-              label: 'Update',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_DELETE,
-              code: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_DELETE,
-              label: 'Delete',
-            },
-          ],
-        },
-        {
-          key: PermissionsEnum.INVESTIGATION_MEETING_ALL,
-          code: PermissionsEnum.INVESTIGATION_MEETING_ALL,
-          label: 'Investigation Meetings',
-          permissions: [
-            {
-              key: PermissionsEnum.INVESTIGATION_MEETING_ALL,
-              code: PermissionsEnum.INVESTIGATION_MEETING_ALL,
-              label: 'All',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_MEETING_FETCH,
-              code: PermissionsEnum.INVESTIGATION_MEETING_FETCH,
-              label: 'Table',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_MEETING_DETAILS,
-              code: PermissionsEnum.INVESTIGATION_MEETING_DETAILS,
-              label: 'Details',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_MEETING_CREATE,
-              code: PermissionsEnum.INVESTIGATION_MEETING_CREATE,
-              label: 'Create',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_MEETING_UPDATE,
-              code: PermissionsEnum.INVESTIGATION_MEETING_UPDATE,
-              label: 'Update',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_MEETING_DELETE,
-              code: PermissionsEnum.INVESTIGATION_MEETING_DELETE,
-              label: 'Delete',
-            },
-          ],
-        },
-        {
-          key: PermissionsEnum.INVESTIGATION_DOCUMENTATION_ALL,
-          code: PermissionsEnum.INVESTIGATION_DOCUMENTATION_ALL,
-          label: 'Investigation Documentation',
-          permissions: [
-            {
-              key: PermissionsEnum.INVESTIGATION_DOCUMENTATION_ALL,
-              code: PermissionsEnum.INVESTIGATION_DOCUMENTATION_ALL,
-              label: 'All',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_DOCUMENTATION_FETCH,
-              code: PermissionsEnum.INVESTIGATION_DOCUMENTATION_FETCH,
-              label: 'Table',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_DOCUMENTATION_DETAILS,
-              code: PermissionsEnum.INVESTIGATION_DOCUMENTATION_DETAILS,
-              label: 'Details',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_DOCUMENTATION_CREATE,
-              code: PermissionsEnum.INVESTIGATION_DOCUMENTATION_CREATE,
-              label: 'Create',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_DOCUMENTATION_UPDATE,
-              code: PermissionsEnum.INVESTIGATION_DOCUMENTATION_UPDATE,
-              label: 'Update',
-            },
-            {
-              key: PermissionsEnum.INVESTIGATION_DOCUMENTATION_DELETE,
-              code: PermissionsEnum.INVESTIGATION_DOCUMENTATION_DELETE,
-              label: 'Delete',
-            },
-          ],
-        },
-        {
-          key: PermissionsEnum.WITNESS_STATEMENT_ALL,
-          code: PermissionsEnum.WITNESS_STATEMENT_ALL,
-          label: 'Witness Statements',
-          permissions: [
-            {
-              key: PermissionsEnum.WITNESS_STATEMENT_ALL,
-              code: PermissionsEnum.WITNESS_STATEMENT_ALL,
-              label: 'All',
-            },
-            {
-              key: PermissionsEnum.WITNESS_STATEMENT_FETCH,
-              code: PermissionsEnum.WITNESS_STATEMENT_FETCH,
-              label: 'Table',
-            },
-            {
-              key: PermissionsEnum.WITNESS_STATEMENT_DETAILS,
-              code: PermissionsEnum.WITNESS_STATEMENT_DETAILS,
-              label: 'Details',
-            },
-            {
-              key: PermissionsEnum.WITNESS_STATEMENT_CREATE,
-              code: PermissionsEnum.WITNESS_STATEMENT_CREATE,
-              label: 'Create',
-            },
-            {
-              key: PermissionsEnum.WITNESS_STATEMENT_UPDATE,
-              code: PermissionsEnum.WITNESS_STATEMENT_UPDATE,
-              label: 'Update',
-            },
-            {
-              key: PermissionsEnum.WITNESS_STATEMENT_DELETE,
-              code: PermissionsEnum.WITNESS_STATEMENT_DELETE,
-              label: 'Delete',
-            },
-          ],
-        },
-        {
-          key: PermissionsEnum.MEDIA_DELETE,
-          code: PermissionsEnum.MEDIA_DELETE,
-          label: 'Media',
-          permissions: [
-            {
-              key: PermissionsEnum.MEDIA_DELETE,
-              code: PermissionsEnum.MEDIA_DELETE,
-              label: 'Delete',
-            },
-          ],
-        },
-        {
-          key: PermissionsEnum.ZOON_ALL,
-          code: PermissionsEnum.ZOON_ALL,
-          label: 'Zones',
-          permissions: [
-            { key: PermissionsEnum.ZOON_ALL, code: PermissionsEnum.ZOON_ALL, label: 'All' },
-            { key: PermissionsEnum.ZOON_FETCH, code: PermissionsEnum.ZOON_FETCH, label: 'Table' },
-            {
-              key: PermissionsEnum.ZOON_DETAILS,
-              code: PermissionsEnum.ZOON_DETAILS,
-              label: 'Details',
-            },
-            {
-              key: PermissionsEnum.ZOON_CREATE,
-              code: PermissionsEnum.ZOON_CREATE,
-              label: 'Create',
-            },
-            {
-              key: PermissionsEnum.ZOON_UPDATE,
-              code: PermissionsEnum.ZOON_UPDATE,
-              label: 'Update',
-            },
-            {
-              key: PermissionsEnum.ZOON_DELETE,
-              code: PermissionsEnum.ZOON_DELETE,
-              label: 'Delete',
-            },
-          ],
-        },
+        // {
+        //   key: PermissionsEnum.INVESTIGATION_FACTOR_ALL,
+        //   code: PermissionsEnum.INVESTIGATION_FACTOR_ALL,
+        //   label: 'Investigation Factors',
+        //   permissions: [
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_FACTOR_ALL,
+        //       code: PermissionsEnum.INVESTIGATION_FACTOR_ALL,
+        //       label: 'All',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_FACTOR_FETCH,
+        //       code: PermissionsEnum.INVESTIGATION_FACTOR_FETCH,
+        //       label: 'Table',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_FACTOR_DETAILS,
+        //       code: PermissionsEnum.INVESTIGATION_FACTOR_DETAILS,
+        //       label: 'Details',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_FACTOR_CREATE,
+        //       code: PermissionsEnum.INVESTIGATION_FACTOR_CREATE,
+        //       label: 'Create',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_FACTOR_UPDATE,
+        //       code: PermissionsEnum.INVESTIGATION_FACTOR_UPDATE,
+        //       label: 'Update',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_FACTOR_DELETE,
+        //       code: PermissionsEnum.INVESTIGATION_FACTOR_DELETE,
+        //       label: 'Delete',
+        //     },
+        //   ],
+        // },
+        // {
+        //   key: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_ALL,
+        //   code: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_ALL,
+        //   label: 'Investigation Factor Items',
+        //   permissions: [
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_ALL,
+        //       code: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_ALL,
+        //       label: 'All',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_FETCH,
+        //       code: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_FETCH,
+        //       label: 'Table',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_DETAILS,
+        //       code: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_DETAILS,
+        //       label: 'Details',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_CREATE,
+        //       code: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_CREATE,
+        //       label: 'Create',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_UPDATE,
+        //       code: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_UPDATE,
+        //       label: 'Update',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_DELETE,
+        //       code: PermissionsEnum.INVESTIGATION_FACTOR_ITEM_DELETE,
+        //       label: 'Delete',
+        //     },
+        //   ],
+        // },
+        // {
+        //   key: PermissionsEnum.INVESTIGATION_MEETING_ALL,
+        //   code: PermissionsEnum.INVESTIGATION_MEETING_ALL,
+        //   label: 'Investigation Meetings',
+        //   permissions: [
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_MEETING_ALL,
+        //       code: PermissionsEnum.INVESTIGATION_MEETING_ALL,
+        //       label: 'All',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_MEETING_FETCH,
+        //       code: PermissionsEnum.INVESTIGATION_MEETING_FETCH,
+        //       label: 'Table',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_MEETING_DETAILS,
+        //       code: PermissionsEnum.INVESTIGATION_MEETING_DETAILS,
+        //       label: 'Details',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_MEETING_CREATE,
+        //       code: PermissionsEnum.INVESTIGATION_MEETING_CREATE,
+        //       label: 'Create',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_MEETING_UPDATE,
+        //       code: PermissionsEnum.INVESTIGATION_MEETING_UPDATE,
+        //       label: 'Update',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_MEETING_DELETE,
+        //       code: PermissionsEnum.INVESTIGATION_MEETING_DELETE,
+        //       label: 'Delete',
+        //     },
+        //   ],
+        // },
+        // {
+        //   key: PermissionsEnum.INVESTIGATION_DOCUMENTATION_ALL,
+        //   code: PermissionsEnum.INVESTIGATION_DOCUMENTATION_ALL,
+        //   label: 'Investigation Documentation',
+        //   permissions: [
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_DOCUMENTATION_ALL,
+        //       code: PermissionsEnum.INVESTIGATION_DOCUMENTATION_ALL,
+        //       label: 'All',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_DOCUMENTATION_FETCH,
+        //       code: PermissionsEnum.INVESTIGATION_DOCUMENTATION_FETCH,
+        //       label: 'Table',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_DOCUMENTATION_DETAILS,
+        //       code: PermissionsEnum.INVESTIGATION_DOCUMENTATION_DETAILS,
+        //       label: 'Details',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_DOCUMENTATION_CREATE,
+        //       code: PermissionsEnum.INVESTIGATION_DOCUMENTATION_CREATE,
+        //       label: 'Create',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_DOCUMENTATION_UPDATE,
+        //       code: PermissionsEnum.INVESTIGATION_DOCUMENTATION_UPDATE,
+        //       label: 'Update',
+        //     },
+        //     {
+        //       key: PermissionsEnum.INVESTIGATION_DOCUMENTATION_DELETE,
+        //       code: PermissionsEnum.INVESTIGATION_DOCUMENTATION_DELETE,
+        //       label: 'Delete',
+        //     },
+        //   ],
+        // },
+        // {
+        //   key: PermissionsEnum.WITNESS_STATEMENT_ALL,
+        //   code: PermissionsEnum.WITNESS_STATEMENT_ALL,
+        //   label: 'Witness Statements',
+        //   permissions: [
+        //     {
+        //       key: PermissionsEnum.WITNESS_STATEMENT_ALL,
+        //       code: PermissionsEnum.WITNESS_STATEMENT_ALL,
+        //       label: 'All',
+        //     },
+        //     {
+        //       key: PermissionsEnum.WITNESS_STATEMENT_FETCH,
+        //       code: PermissionsEnum.WITNESS_STATEMENT_FETCH,
+        //       label: 'Table',
+        //     },
+        //     {
+        //       key: PermissionsEnum.WITNESS_STATEMENT_DETAILS,
+        //       code: PermissionsEnum.WITNESS_STATEMENT_DETAILS,
+        //       label: 'Details',
+        //     },
+        //     {
+        //       key: PermissionsEnum.WITNESS_STATEMENT_CREATE,
+        //       code: PermissionsEnum.WITNESS_STATEMENT_CREATE,
+        //       label: 'Create',
+        //     },
+        //     {
+        //       key: PermissionsEnum.WITNESS_STATEMENT_UPDATE,
+        //       code: PermissionsEnum.WITNESS_STATEMENT_UPDATE,
+        //       label: 'Update',
+        //     },
+        //     {
+        //       key: PermissionsEnum.WITNESS_STATEMENT_DELETE,
+        //       code: PermissionsEnum.WITNESS_STATEMENT_DELETE,
+        //       label: 'Delete',
+        //     },
+        //   ],
+        // },
+        // {
+        //   key: PermissionsEnum.MEDIA_DELETE,
+        //   code: PermissionsEnum.MEDIA_DELETE,
+        //   label: 'Media',
+        //   permissions: [
+        //     {
+        //       key: PermissionsEnum.MEDIA_DELETE,
+        //       code: PermissionsEnum.MEDIA_DELETE,
+        //       label: 'Delete',
+        //     },
+        //   ],
+        // },
+        // {
+        //   key: PermissionsEnum.ZOON_ALL,
+        //   code: PermissionsEnum.ZOON_ALL,
+        //   label: 'Zones',
+        //   permissions: [
+        //     { key: PermissionsEnum.ZOON_ALL, code: PermissionsEnum.ZOON_ALL, label: 'All' },
+        //     { key: PermissionsEnum.ZOON_FETCH, code: PermissionsEnum.ZOON_FETCH, label: 'Table' },
+        //     {
+        //       key: PermissionsEnum.ZOON_DETAILS,
+        //       code: PermissionsEnum.ZOON_DETAILS,
+        //       label: 'Details',
+        //     },
+        //     {
+        //       key: PermissionsEnum.ZOON_CREATE,
+        //       code: PermissionsEnum.ZOON_CREATE,
+        //       label: 'Create',
+        //     },
+        //     {
+        //       key: PermissionsEnum.ZOON_UPDATE,
+        //       code: PermissionsEnum.ZOON_UPDATE,
+        //       label: 'Update',
+        //     },
+        //     {
+        //       key: PermissionsEnum.ZOON_DELETE,
+        //       code: PermissionsEnum.ZOON_DELETE,
+        //       label: 'Delete',
+        //     },
+        //   ],
+        // },
         {
           key: PermissionsEnum.TICKET_ALL,
           code: PermissionsEnum.TICKET_ALL,

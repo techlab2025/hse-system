@@ -693,6 +693,7 @@ export enum PermissionsEnum {
   PROJECT_LOCATION_DELETE = 'PL05', // Not directly in controller but good to have
 
   // PROJECT ZOON
+
   PROJECT_ZOON_ALL = 'PZN00',
   PROJECT_ZOON_FETCH = 'PZN01',
   PROJECT_ZOON_DETAILS = 'PZN02',
