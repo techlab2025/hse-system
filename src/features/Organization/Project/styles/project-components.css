@@ -91,9 +91,11 @@
 }
 .hse-project-root[data-hse-project] .hse-project-button--icon {
   flex: 0 0 42px;
-  width: 42px;
+  width: 20px;
+  height: 20px;
   padding: 0;
   color: var(--hse-project-muted);
+  min-height: fit-content !important;
 }
 .hse-project-root[data-hse-project] .hse-project-button svg {
   width: 18px;
