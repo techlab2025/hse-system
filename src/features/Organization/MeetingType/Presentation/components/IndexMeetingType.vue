@@ -29,6 +29,12 @@ import DeleteMeetingTypeParams from '../../Core/params/deleteMeetingTypeParams'
 import DeleteMeetingTypeController from '../controllers/deleteMeetingTypeController'
 import SystemMeetingTypes from '../supcomponents/SystemMeetingTypes.vue'
 import UploadMeetingTypeExcelSheet from './UploadMeetingTypeExcelSheet.vue'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import {
+  meetingTypeExcelFields,
+  meetingTypeTemplateRows,
+  meetingTypeExportRows,
+} from '../utils/meetingTypeExcel'
 import { getPeriodicTypeLabel, PeriodicTypeEnum } from '../../Core/Enum/periodic_type_enum'
 
 const { t } = useI18n()
@@ -128,40 +134,30 @@ const periodLabel = (type: number) => {
   return key ? t(key) : String(type ?? '')
 }
 
+const isAdmin = computed(() => user?.type === OrganizationTypeEnum.ADMIN)
+
 const saveWorkbook = (rows: Record<string, unknown>[], filename: string) => {
-  const worksheet = XLSX.utils.json_to_sheet(rows)
+  const worksheet = XLSX.utils.json_to_sheet(rows, {
+    header: meetingTypeExcelFields(isAdmin.value),
+  })
+  worksheet['!cols'] = meetingTypeExcelFields(isAdmin.value).map((key) => ({
+    wch: key === 'title' ? 36 : 22,
+  }))
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Meeting Types')
   XLSX.writeFile(workbook, filename)
 }
 
-const exportExcel = () =>
-  saveWorkbook(
-    (state.value.data ?? []).map((item: any) => ({
-      title: item.title ?? '',
-      description: item.description ?? '',
-      periodic_type: item.periodicType ?? '',
-      number_of_days: item.periodicType === PeriodicTypeEnum.DAILY ? '' : (item.numberOfDays ?? ''),
-    })),
-    'meeting_types.xlsx',
-  )
+const exportExcel = () => {
+  if (!state.value.data?.length) {
+    new OpenWarningDilaog('No data available to export').openDialog()
+    return
+  }
+  saveWorkbook(meetingTypeExportRows(state.value.data, isAdmin.value), 'meeting_types.xlsx')
+}
 
 const downloadExample = () =>
-  saveWorkbook(
-    [
-      {
-        title: 'Daily operations meeting',
-        periodic_type: PeriodicTypeEnum.DAILY,
-        number_of_days: '',
-      },
-      {
-        title: 'Weekly safety meeting',
-        periodic_type: PeriodicTypeEnum.WEEKLY,
-        number_of_days: 6,
-      },
-    ],
-    'meeting_type_template.xlsx',
-  )
+  saveWorkbook(meetingTypeTemplateRows(isAdmin.value), 'meeting_type_template.xlsx')
 
 const showUploadDialog = ref(false)
 const pendingFile = ref<File | null>(null)
@@ -177,7 +173,8 @@ const onFileSelected = (event: Event) => {
 const onUploaded = () => {
   showUploadDialog.value = false
   pendingFile.value = null
-  fetchMeetingTypes()
+  currentPage.value = 1
+  fetchMeetingTypes(word.value, 1, countPerPage.value)
 }
 
 const headerActions = () => [
@@ -250,12 +247,10 @@ const headerActions = () => [
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
                 <td>{{ item.title }}</td>
-                <td>{{ periodLabel(Number(JSON.parse(item.subtitle).periodicType)) }}</td>
+                <td>{{ periodLabel(item.periodicType) }}</td>
                 <td>
                   {{
-                    Number(JSON.parse(item.subtitle).numberOfDays) === PeriodicTypeEnum.DAILY
-                      ? '-'
-                      : (JSON.parse(item.subtitle).numberOfDays ?? '-')
+                    item.periodicType === PeriodicTypeEnum.DAILY ? '-' : (item.numberOfDays ?? '-')
                   }}
                 </td>
                 <td><DropList :action-list="rowActions(item.id)" /></td>
@@ -297,10 +292,15 @@ const headerActions = () => [
     v-model:visible="showUploadDialog"
     modal
     :dismissable-mask="true"
-    :header="$t('import_meeting_types')"
+    :header="$t('upload_excel')"
+    @hide="pendingFile = null"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <UploadMeetingTypeExcelSheet :initial-file="pendingFile" @uploaded="onUploaded" />
+    <UploadMeetingTypeExcelSheet
+      v-if="showUploadDialog"
+      :initial-file="pendingFile"
+      @uploaded="onUploaded"
+    />
   </Dialog>
   <input
     ref="fileInputRef"
@@ -312,7 +312,7 @@ const headerActions = () => [
 </template>
 
 <style scoped>
-.Meeting_Types_index{
+.Meeting_Types_index {
   align-items: center;
 }
 </style>

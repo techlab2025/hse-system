@@ -3,9 +3,11 @@ import type { PeriodicTypeEnum } from '../Enum/periodic_type_enum'
 
 export interface MeetingTypeExcelRow {
   title: string
-  description: string
+  description?: string
   periodic_type: PeriodicTypeEnum
   number_of_days: number | null
+  all_industries?: 0 | 1
+  industry_ids?: number[]
 }
 
 export default class AddMeetingTypeExcelParams implements Params {
@@ -15,7 +17,7 @@ export default class AddMeetingTypeExcelParams implements Params {
     this.data = data.data
   }
 
-  toMap(): Record<string, any> {
+  toMap(): Record<string, unknown> {
     return { data: this.data }
   }
 }

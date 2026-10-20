@@ -3,12 +3,16 @@ import { PeriodicTypeEnum } from '../../Core/Enum/periodic_type_enum'
 export default class MeetingTypeModel extends TitleInterface {
   public periodicType: PeriodicTypeEnum
   public numberOfDays: number | null
+  public allIndustries: boolean
+  public industries: { id: number; title?: string }[]
 
   constructor(
     id: number,
     title: string,
     periodicType: PeriodicTypeEnum = PeriodicTypeEnum.DAILY,
     numberOfDays: number | null = null,
+    allIndustries = false,
+    industries: { id: number; title?: string }[] = [],
   ) {
     super({
       id,
@@ -19,6 +23,8 @@ export default class MeetingTypeModel extends TitleInterface {
 
     this.periodicType = periodicType
     this.numberOfDays = numberOfDays
+    this.allIndustries = allIndustries
+    this.industries = industries
   }
 
   static fromMap(data: any): MeetingTypeModel {
@@ -33,6 +39,8 @@ export default class MeetingTypeModel extends TitleInterface {
       data.title,
       Number(data.periodic_type ?? data.periodicType) as PeriodicTypeEnum,
       numberOfDays,
+      data.all_industries === true || Number(data.all_industries) === 1,
+      data.industries ?? [],
     )
   }
 

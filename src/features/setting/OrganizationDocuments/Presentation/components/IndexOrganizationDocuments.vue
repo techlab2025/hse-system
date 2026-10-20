@@ -2,8 +2,8 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import * as XLSX from 'xlsx'
-import { saveAs } from 'file-saver'
+// import * as XLSX from 'xlsx'
+// import { saveAs } from 'file-saver'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
@@ -20,7 +20,14 @@ import IndexOrganizationDocumentsController from '../controllers/indexOrganizati
 import IndexOrganizationDocumentsParams from '../../Core/params/indexOrganizationDocumentsParams'
 import DeleteOrganizationDocumentsController from '../controllers/deleteOrganizationDocumentsController'
 import DeleteOrganizationDocumentsParams from '../../Core/params/deleteOrganizationDocumentsParams'
-import OrganizationDocumentsActionsButtons from './OrganizationDocumentsActionsButtons.vue'
+// import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
+// import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
+// import ExceIcon from '@/shared/icons/ExceIcon.vue'
+import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
+// import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
+// import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
+import Dialog from 'primevue/dialog'
+import UploadOrganizationDocumentsExeclSheet from './UploadOrganizationDocumentsExeclSheet.vue'
 import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
 
 const { t } = useI18n()
@@ -31,6 +38,22 @@ const word = ref(String(route.query.word ?? ''))
 const currentPage = ref(Number(route.query.page ?? 1))
 const countPerPage = ref(10)
 const filterDate = ref('')
+const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+const onFileSelected = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  input.value = ''
+}
+const onUploaded = () => {
+  showUploadDialog.value = false
+  pendingFile.value = null
+  void fetchDocuments()
+}
 const controller = IndexOrganizationDocumentsController.getInstance()
 const state = computed(() => controller.state.value)
 
@@ -101,6 +124,7 @@ const actionList = (id: number) => [
     ],
   },
 ]
+/* Temporarily hidden index actions.
 const exportExcel = () => {
   const rows =
     state.value.data?.map((item) => ({
@@ -120,6 +144,64 @@ const exportExcel = () => {
     'organization_documents.xlsx',
   )
 }
+const downloadTemplate = () => {
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(
+    workbook,
+    XLSX.utils.json_to_sheet([
+      {
+        document_title: 'Safety Policy',
+        document_ref: 'DOC-001',
+        document_version: '1.0',
+        issue_date: '2026-10-06',
+        nex_review_date: '2027-10-06',
+        document_category_id: 1,
+        document_file: 'data:application/pdf;base64,...',
+        notes: '',
+      },
+    ]),
+    'Documents',
+  )
+  saveAs(
+    new Blob([XLSX.write(workbook, { type: 'array', bookType: 'xlsx' })]),
+    'organization_documents_template.xlsx',
+  )
+}
+
+*/
+
+const createPermissions = [
+  PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
+  PermissionsEnum.ORGANIZATION_DOCUMENTS_CREATE,
+]
+/*
+const indexActionList = computed(() => [
+  {
+    text: t('export_to_excel'),
+    icon: ExceIcon,
+    action: exportExcel,
+    type: ActionItemsTypeEnum.Success,
+    permission: [
+      PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
+      PermissionsEnum.ORGANIZATION_DOCUMENTS_FETCH,
+    ],
+  },
+  {
+    text: t('upload_complated_template'),
+    icon: UploadExcelIcon,
+    action: () => fileInputRef.value?.click(),
+    type: ActionItemsTypeEnum.Warning,
+    permission: createPermissions,
+  },
+  {
+    text: t('download_excel_template'),
+    icon: ExceIcon,
+    action: downloadTemplate,
+    type: ActionItemsTypeEnum.Success,
+    permission: createPermissions,
+  },
+])
+*/
 onMounted(fetchDocuments)
 </script>
 
@@ -141,17 +223,24 @@ onMounted(fetchDocuments)
         @apply="applyFilters"
         @reset="resetFilters"
       />
-      <PermissionBuilder
-        :code="[
-          PermissionsEnum.ORGANIZATION_DOCUMENTS_ALL,
-          PermissionsEnum.ORGANIZATION_DOCUMENTS_FETCH,
-        ]"
-      >
-        <button type="button" class="btn btn-secondary" @click="exportExcel">
-          {{ $t('export_to_excel') }}
-        </button>
+      <PermissionBuilder :code="createPermissions">
+        <router-link :to="`${baseRoute}/add`" class="btn btn-primary">
+          <ActionsListAddIcon />
+          <span>{{ $t('add_organization_documents') }}</span>
+        </router-link>
       </PermissionBuilder>
-      <OrganizationDocumentsActionsButtons />
+      <!-- Actions are temporarily hidden.
+      <ActionsList
+        feature-name="organization_documents"
+        :show-actions="true"
+        :action-list="indexActionList"
+        :actions-number="4"
+      >
+        <template #custom>
+          <ExportPdf :is-drop-list="true" />
+        </template>
+      </ActionsList>
+      -->
     </div>
   </div>
   <PermissionBuilder
@@ -217,12 +306,32 @@ onMounted(fetchDocuments)
       </template>
       <template #failed>
         <DataFailed
-         :link="`${baseRoute}/add`"
-            :add-text="$t('add_organization_documents')"
+          :link="`${baseRoute}/add`"
+          :add-text="$t('add_organization_documents')"
           :title="$t('organization_documents')"
           :description="$t('organization_documents_load_failed')"
         />
       </template>
     </DataStatus>
   </PermissionBuilder>
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :dismissable-mask="true"
+    :header="$t('upload_excel')"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <UploadOrganizationDocumentsExeclSheet
+      v-if="showUploadDialog"
+      :initial-file="pendingFile"
+      @uploaded="onUploaded"
+    />
+  </Dialog>
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>
