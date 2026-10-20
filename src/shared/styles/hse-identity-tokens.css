@@ -23,27 +23,28 @@
 .hse-identity,
 .hse-project-root,
 .hse-project-overlay {
-  --hse-project-bg: #f4f7fb;
-  --hse-project-surface: #fff;
-  --hse-project-ink: #10243f;
-  --hse-project-muted: #6c7d92;
-  --hse-project-line: #e2e9f2;
-  --hse-project-line-soft: #edf1f6;
-  --hse-project-surface-soft: #f8fafc;
-  --hse-project-input-bg: #fcfdff;
+  --hse-project-bg: var(--hse-color-page, #f4f7fb);
+  --hse-project-surface: var(--hse-color-surface, #fff);
+  --hse-project-ink: var(--hse-color-text, #10243f);
+  --hse-project-muted: var(--hse-color-text-muted, #6c7d92);
+  --hse-project-line: var(--hse-color-border, #e2e9f2);
+  --hse-project-line-soft: var(--hse-color-divider, #edf1f6);
+  --hse-project-surface-soft: var(--hse-color-surface-muted, #f8fafc);
+  --hse-project-input-bg: var(--hse-color-surface, #fcfdff);
   --hse-project-shadow-primary: 0 10px 22px rgb(37 109 244 / 18%);
-  --hse-project-navy: #0c2a4d;
-  --hse-project-navy2: #173e6b;
-  --hse-project-blue: #256df4;
-  --hse-project-blue2: #76a4ff;
-  --hse-project-cyan: #11a5c5;
-  --hse-project-green: #079a70;
-  --hse-project-green-soft: #e9faf4;
-  --hse-project-amber: #d98a12;
-  --hse-project-amber-soft: #fff7e7;
-  --hse-project-red: #d94755;
-  --hse-project-red-soft: #fff0f2;
-  --hse-project-ice: #eef5ff;
+  --hse-project-navy: var(--identity-secondary, var(--hse-color-navy, #0c2a4d));
+  --hse-project-navy2: var(--hse-color-navy-secondary, #173e6b);
+  --hse-project-blue: var(--identity-primary, var(--hse-color-primary, #256df4));
+  --hse-project-on-primary: #fff;
+  --hse-project-blue2: color-mix(in srgb, var(--hse-project-blue) 60%, white);
+  --hse-project-cyan: var(--identity-accent, var(--hse-color-info, #11a5c5));
+  --hse-project-green: var(--hse-color-success, #079a70);
+  --hse-project-green-soft: var(--hse-color-success-subtle, #e9faf4);
+  --hse-project-amber: var(--hse-color-warning, #d98a12);
+  --hse-project-amber-soft: var(--hse-color-warning-subtle, #fff7e7);
+  --hse-project-red: var(--hse-color-danger, #d94755);
+  --hse-project-red-soft: var(--hse-color-danger-subtle, #fff0f2);
+  --hse-project-ice: color-mix(in srgb, var(--hse-project-blue) 7%, var(--hse-project-surface));
   --hse-project-radius-card: 17px;
   --hse-project-radius-panel: 16px;
   --hse-project-radius-control: 11px;
@@ -79,7 +80,7 @@
   --text-strong: var(--hse-project-ink);
   --text-soft: var(--hse-project-muted);
   --surface-1: var(--hse-project-surface);
-  --surface-2: #f8fafc;
+  --surface-2: var(--hse-project-surface-soft);
   --brand-primary-500: var(--hse-project-blue);
   --brand-primary-100: var(--hse-project-ice);
   --brand-primary-900: var(--hse-project-navy);

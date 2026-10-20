@@ -144,4 +144,17 @@
   --hse-color-surface-muted: #0e2a4d;
   --hse-color-border: #36516c;
   --hse-color-divider: #294662;
+  /* Legacy dark declarations otherwise override the compatibility bridge above. */
+  --app-bg: var(--hse-color-page);
+  --surface-1: var(--hse-color-surface);
+  --surface-2: var(--hse-color-surface-muted);
+  --surface-3: var(--hse-color-surface-elevated);
+  --text-primary: var(--hse-color-text);
+  --text-strong: var(--hse-color-text);
+  --text-soft: var(--hse-color-text-secondary);
+  --text-muted: var(--hse-color-text-muted);
+  --main-border: var(--hse-color-border);
+  --BgWhite: var(--hse-color-surface);
+  --Gray-1: var(--hse-color-surface-muted);
+  --GrayText-1: var(--hse-color-text-muted);
 }

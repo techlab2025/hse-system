@@ -61,15 +61,15 @@
 }
 .hse-project-root[data-hse-project] .hse-project-button--primary,
 .hse-project-overlay .hse-project-button--primary {
-  background: linear-gradient(135deg, #2167ee, #347cff);
-  color: var(--hse-project-surface);
-  border-color: #1f65f6;
+  background: var(--hse-project-blue);
+  color: var(--hse-project-on-primary);
+  border-color: var(--hse-project-blue);
   box-shadow: var(--hse-project-shadow-primary);
 }
 .hse-project-root[data-hse-project] .hse-project-button--primary:hover:not(:disabled),
 .hse-project-overlay .hse-project-button--primary:hover:not(:disabled) {
-  background: linear-gradient(135deg, #165fcb, #2377f1);
-  color: var(--hse-project-surface);
+  background: color-mix(in srgb, var(--hse-project-blue) 88%, var(--hse-project-navy));
+  color: var(--hse-project-on-primary);
 }
 .hse-project-root[data-hse-project] .hse-project-button--danger {
   color: var(--hse-project-red);

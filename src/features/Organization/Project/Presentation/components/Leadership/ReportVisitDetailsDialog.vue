@@ -33,7 +33,7 @@ const mediaName = (url: string, index: number) =>
     modal
     dismissable-mask
     :style="{ width: 'min(920px, 96vw)' }"
-    class="hse-project-root hse-project-overlay report-details-dialog"
+    class="hse-project-root hse-project-assurance hse-project-overlay report-details-dialog"
     @update:visible="(visible: boolean) => !visible && emit('close')"
   >
     <template #header>
@@ -148,25 +148,25 @@ const mediaName = (url: string, index: number) =>
 <style scoped>
 :deep(.report-details-dialog) {
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
-  border-radius: 22px;
-  background: var(--surface-1);
-  box-shadow: 0 30px 80px color-mix(in srgb, var(--text-strong) 20%, transparent);
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 18%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
+  background: var(--hse-project-surface);
+  box-shadow: 0 30px 80px color-mix(in srgb, var(--hse-project-ink) 20%, transparent);
 }
 
 :deep(.report-details-dialog .p-dialog-header) {
   padding: 22px 26px;
-  border-bottom: 1px solid var(--main-border);
+  border-bottom: 1px solid var(--hse-project-line);
   background: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1)),
-    var(--surface-1)
+    color-mix(in srgb, var(--hse-project-blue) 9%, var(--hse-project-surface)),
+    var(--hse-project-surface)
   );
 }
 
 :deep(.report-details-dialog .p-dialog-content) {
   padding: clamp(18px, 3vw, 28px);
-  background: color-mix(in srgb, var(--surface-2) 68%, var(--surface-1));
+  background: color-mix(in srgb, var(--hse-project-surface-soft) 68%, var(--hse-project-surface));
 }
 
 .details-heading {
@@ -181,9 +181,9 @@ const mediaName = (url: string, index: number) =>
   width: 50px;
   height: 50px;
   flex: none;
-  border-radius: 15px;
-  color: var(--text-on-brand);
-  background: linear-gradient(145deg, var(--status-success), var(--brand-primary-700));
+  border-radius: var(--hse-project-radius-panel);
+  color: var(--hse-project-on-primary);
+  background: linear-gradient(145deg, var(--hse-project-green), var(--hse-project-navy2));
   font-size: 1.25rem;
   font-weight: 900;
 }
@@ -191,7 +191,7 @@ const mediaName = (url: string, index: number) =>
 .details-heading span,
 .details-section__heading span,
 .summary-grid article > span {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
   font-size: 0.7rem;
   font-weight: 850;
   letter-spacing: 0.1em;
@@ -201,7 +201,7 @@ const mediaName = (url: string, index: number) =>
 .details-heading h2,
 .details-section__heading h3 {
   margin: 3px 0;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 
 .details-heading p,
@@ -211,7 +211,7 @@ const mediaName = (url: string, index: number) =>
 .details-unavailable p,
 .empty-copy {
   margin: 0;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   line-height: 1.6;
 }
 
@@ -226,9 +226,9 @@ const mediaName = (url: string, index: number) =>
   gap: 14px;
   min-height: 120px;
   padding: 20px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
-  border-radius: 15px;
-  background: var(--surface-1);
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 18%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
+  background: var(--hse-project-surface);
 }
 
 .details-feedback > span {
@@ -238,22 +238,22 @@ const mediaName = (url: string, index: number) =>
   height: 42px;
   flex: none;
   border-radius: 50%;
-  color: var(--text-on-brand);
-  background: var(--PrimaryColor);
+  color: var(--hse-project-on-primary);
+  background: var(--hse-project-blue);
   font-weight: 900;
 }
 
 .details-feedback strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 
 .details-feedback--error {
-  border-color: color-mix(in srgb, var(--status-danger) 28%, var(--main-border));
-  background: var(--status-danger-soft);
+  border-color: color-mix(in srgb, var(--hse-project-red) 28%, var(--hse-project-line));
+  background: var(--hse-project-red-soft);
 }
 
 .details-feedback--error > span {
-  background: var(--status-danger);
+  background: var(--hse-project-red);
 }
 
 .loading-spinner {
@@ -277,9 +277,9 @@ const mediaName = (url: string, index: number) =>
 .summary-grid article,
 .details-section {
   padding: 18px;
-  border: 1px solid var(--main-border);
-  border-radius: 16px;
-  background: var(--surface-1);
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
+  background: var(--hse-project-surface);
 }
 
 .summary-grid article {
@@ -308,9 +308,9 @@ const mediaName = (url: string, index: number) =>
   place-items: center;
   width: 34px;
   height: 34px;
-  border-radius: 10px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 10%, var(--surface-1));
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 10%, var(--hse-project-surface));
 }
 
 .improvement-grid {
@@ -323,9 +323,9 @@ const mediaName = (url: string, index: number) =>
   display: grid;
   gap: 12px;
   padding: 15px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 14%, var(--main-border));
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--surface-2) 58%, var(--surface-1));
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 14%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
+  background: color-mix(in srgb, var(--hse-project-surface-soft) 58%, var(--hse-project-surface));
 }
 
 .improvement-detail__top {
@@ -339,21 +339,21 @@ const mediaName = (url: string, index: number) =>
   place-items: center;
   width: 30px;
   height: 30px;
-  border-radius: 9px;
-  color: var(--text-on-brand);
-  background: var(--PrimaryColor);
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-on-primary);
+  background: var(--hse-project-blue);
   font-size: 0.7rem;
   font-weight: 850;
 }
 
 .improvement-detail__top strong {
   min-width: 0;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 
 .improvement-detail__top small {
   margin-inline-start: auto;
-  color: var(--status-danger);
+  color: var(--hse-project-red);
   font-weight: 750;
 }
 
@@ -367,9 +367,9 @@ const mediaName = (url: string, index: number) =>
 .detail-tags span,
 .attachment-grid a {
   padding: 7px 10px;
-  border-radius: 9px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 8%, var(--surface-1));
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 8%, var(--hse-project-surface));
   font-size: 0.75rem;
   font-weight: 750;
   text-decoration: none;
@@ -385,7 +385,7 @@ const mediaName = (url: string, index: number) =>
   display: grid;
   gap: 7px;
   min-width: 0;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.75rem;
   text-decoration: none;
 }
@@ -397,14 +397,14 @@ const mediaName = (url: string, index: number) =>
   width: 100%;
   height: 100px;
   overflow: hidden;
-  border: 1px solid var(--main-border);
-  border-radius: 10px;
-  background: var(--surface-2);
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-surface-soft);
   object-fit: cover;
 }
 
 .media-item__file {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
   font-size: 1.5rem;
 }
 
@@ -419,9 +419,9 @@ const mediaName = (url: string, index: number) =>
   align-items: center;
   gap: 14px;
   padding: 18px;
-  border: 1px dashed color-mix(in srgb, var(--PrimaryColor) 28%, var(--main-border));
-  border-radius: 15px;
-  background: color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-1));
+  border: 1px dashed color-mix(in srgb, var(--hse-project-blue) 28%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
+  background: color-mix(in srgb, var(--hse-project-blue) 5%, var(--hse-project-surface));
 }
 
 .details-unavailable > span {
@@ -430,14 +430,14 @@ const mediaName = (url: string, index: number) =>
   width: 38px;
   height: 38px;
   flex: none;
-  border-radius: 12px;
-  color: var(--text-on-brand);
-  background: var(--PrimaryColor);
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-on-primary);
+  background: var(--hse-project-blue);
   font-weight: 900;
 }
 
 .details-unavailable strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 
 @media (max-width: 640px) {

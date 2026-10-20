@@ -209,7 +209,7 @@ onMounted(async () => {
     v-if="canFetch"
     data-hse-project
     v-project-panels
-    class="hse-project-root hse-project-page leadership-page"
+    class="hse-project-root hse-project-assurance hse-project-page leadership-page"
   >
     <header data-hse-project-head class="hse-project-page-head hero">
       <div class="hero__art" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -424,7 +424,7 @@ onMounted(async () => {
                           v-if="canCreate"
                           :aria-label="$t('delete')"
                           type="button"
-                          class="hse-project-button--icon hse-project-button hse-project-button--danger remove-button"
+                          class="hse-project-button hse-project-button--danger remove-button"
                           @click="monthVisits[month.key]?.splice(index, 1)"
                         >
                           Remove
@@ -446,7 +446,7 @@ onMounted(async () => {
                             <span>Date <b>*</b></span>
                           </label>
                           <DatePicker
-                            panel-class="hse-project-overlay"
+                            panel-class="hse-project-overlay hse-project-assurance"
                             :input-id="`visit-date-${month.key}-${index}`"
                             :model-value="parseDate(visit.date)"
                             date-format="yy-mm-dd"
@@ -638,10 +638,10 @@ onMounted(async () => {
   /* background:
     radial-gradient(
       circle at 8% 4%,
-      color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+      color-mix(in srgb, var(--hse-project-blue) 7%, transparent),
       transparent 24rem
     ),
-    var(--surface-2); */
+    var(--hse-project-surface-soft); */
 }
 
 .hero {
@@ -653,20 +653,20 @@ onMounted(async () => {
   gap: 24px;
   overflow: hidden;
   padding: 20px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
-  border-radius: 28px;
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 18%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
   background:
     radial-gradient(
       circle at 87% 12%,
-      color-mix(in srgb, var(--PrimaryColor) 20%, transparent),
+      color-mix(in srgb, var(--hse-project-blue) 20%, transparent),
       transparent 34%
     ),
     linear-gradient(
       125deg,
-      color-mix(in srgb, var(--brand-primary-900) 96%, var(--surface-1)),
-      color-mix(in srgb, var(--PrimaryColor) 76%, var(--brand-primary-900))
+      color-mix(in srgb, var(--hse-project-navy) 96%, var(--hse-project-surface)),
+      color-mix(in srgb, var(--hse-project-blue) 76%, var(--hse-project-navy))
     );
-  box-shadow: 0 24px 55px color-mix(in srgb, var(--brand-primary-900) 20%, transparent);
+  box-shadow: 0 24px 55px color-mix(in srgb, var(--hse-project-navy) 20%, transparent);
 }
 
 /* .hero::after {
@@ -676,7 +676,7 @@ onMounted(async () => {
   width: 220px;
   height: 105px;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--PrimaryColor) 36%, transparent);
+  background: color-mix(in srgb, var(--hse-project-blue) 36%, transparent);
   filter: blur(52px);
   pointer-events: none;
 } */
@@ -695,7 +695,7 @@ onMounted(async () => {
   flex: none;
   width: 72px;
   height: 72px;
-  border-radius: 22px;
+  border-radius: var(--hse-project-radius-panel);
   border: 1px solid color-mix(in srgb, white 24%, transparent);
   color: white;
   background: color-mix(in srgb, white 12%, transparent);
@@ -760,7 +760,7 @@ onMounted(async () => {
 }
 
 .eyebrow {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
   font-size: 0.7rem;
   font-weight: 850;
   text-transform: uppercase;
@@ -768,7 +768,7 @@ onMounted(async () => {
 }
 
 .hero .eyebrow {
-  color: color-mix(in srgb, white 68%, var(--PrimaryColor));
+  color: color-mix(in srgb, white 68%, var(--hse-project-blue));
 }
 
 .back-link {
@@ -780,7 +780,7 @@ onMounted(async () => {
   flex: none;
   padding: 11px 15px;
   border: 1px solid color-mix(in srgb, white 20%, transparent);
-  border-radius: 12px;
+  border-radius: var(--hse-project-radius-control);
   color: white;
   background: color-mix(in srgb, white 10%, transparent);
   backdrop-filter: blur(12px);
@@ -806,13 +806,13 @@ onMounted(async () => {
 
 .back-link--primary {
   border-color: color-mix(in srgb, white 55%, transparent);
-  color: var(--brand-primary-900);
+  color: var(--hse-project-navy);
   background: white;
 }
 
 .back-link--primary:hover {
-  color: var(--brand-primary-900);
-  background: color-mix(in srgb, white 90%, var(--PrimaryColor));
+  color: var(--hse-project-navy);
+  background: color-mix(in srgb, white 90%, var(--hse-project-blue));
 }
 
 .notice {
@@ -820,7 +820,7 @@ onMounted(async () => {
   align-items: center;
   gap: 10px;
   padding: 14px 16px;
-  border-radius: 12px;
+  border-radius: var(--hse-project-radius-control);
   font-weight: 700;
 }
 
@@ -829,27 +829,27 @@ onMounted(async () => {
   place-items: center;
   width: 24px;
   height: 24px;
-  border-radius: 8px;
+  border-radius: var(--hse-project-radius-control);
 }
 
 .notice--error {
-  color: var(--status-danger);
-  background: var(--status-danger-soft);
+  color: var(--hse-project-red);
+  background: var(--hse-project-red-soft);
 }
 
 .notice--success {
-  color: var(--status-success);
-  background: var(--status-success-soft);
+  color: var(--hse-project-green);
+  background: var(--hse-project-green-soft);
 }
 
 .workspace-card {
   position: relative;
   overflow: hidden;
   padding: clamp(20px, 3vw, 30px);
-  border: 1px solid var(--main-border);
-  border-radius: 22px;
-  background: var(--surface-1);
-  box-shadow: 0 16px 42px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
+  background: var(--hse-project-surface);
+  box-shadow: 0 16px 42px color-mix(in srgb, var(--hse-project-navy) 7%, transparent);
 }
 
 /* .workspace-card::before {
@@ -859,8 +859,8 @@ onMounted(async () => {
   height: 3px;
   background: linear-gradient(
     90deg,
-    var(--PrimaryColor),
-    color-mix(in srgb, var(--PrimaryColor) 18%, transparent) 54%,
+    var(--hse-project-blue),
+    color-mix(in srgb, var(--hse-project-blue) 18%, transparent) 54%,
     transparent
   );
 } */
@@ -875,13 +875,13 @@ onMounted(async () => {
 
 .section-intro h2 {
   margin: 5px 0 6px;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: clamp(1.3rem, 2vw, 1.7rem);
 }
 
 .section-intro p {
   margin: 0;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 }
 
 .date-range {
@@ -889,31 +889,31 @@ onMounted(async () => {
   gap: 6px;
   min-width: 260px;
   padding: 13px 16px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 15%, var(--main-border));
-  border-radius: 15px;
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 15%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
   background: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--PrimaryColor) 8%, var(--surface-1)),
-    var(--surface-1)
+    color-mix(in srgb, var(--hse-project-blue) 8%, var(--hse-project-surface)),
+    var(--hse-project-surface)
   );
   box-shadow: inset 0 1px 0 color-mix(in srgb, white 45%, transparent);
 }
 
 .date-range span {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.72rem;
   font-weight: 700;
 }
 
 .date-range strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 0.86rem;
   white-space: nowrap;
 }
 
 .date-range i {
   margin: 0 4px;
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
   font-style: normal;
 }
 
@@ -932,12 +932,12 @@ onMounted(async () => {
   gap: 12px;
   min-width: 0;
   padding: 16px;
-  border: 1px solid var(--main-border);
-  border-radius: 16px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
   background: linear-gradient(
     140deg,
-    color-mix(in srgb, var(--surface-2) 76%, var(--surface-1)),
-    var(--surface-1)
+    color-mix(in srgb, var(--hse-project-surface-soft) 76%, var(--hse-project-surface)),
+    var(--hse-project-surface)
   );
   transition:
     transform 0.2s ease,
@@ -952,13 +952,13 @@ onMounted(async () => {
   height: 80px;
   inset: -48px -34px auto auto;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--PrimaryColor) 9%, transparent);
+  background: color-mix(in srgb, var(--hse-project-blue) 9%, transparent);
 }
 
 .overview__item:hover {
   transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--PrimaryColor) 28%, var(--main-border));
-  box-shadow: 0 12px 25px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
+  border-color: color-mix(in srgb, var(--hse-project-blue) 28%, var(--hse-project-line));
+  box-shadow: 0 12px 25px color-mix(in srgb, var(--hse-project-navy) 6%, transparent);
 }
 
 .overview__icon {
@@ -967,10 +967,10 @@ onMounted(async () => {
   width: 44px;
   height: 44px;
   flex: none;
-  border-radius: 14px;
-  color: var(--text-on-brand);
-  background: linear-gradient(145deg, var(--PrimaryColor), var(--brand-primary-700));
-  box-shadow: 0 8px 18px color-mix(in srgb, var(--PrimaryColor) 20%, transparent);
+  border-radius: var(--hse-project-radius-panel);
+  color: var(--hse-project-on-primary);
+  background: linear-gradient(145deg, var(--hse-project-blue), var(--hse-project-navy2));
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--hse-project-blue) 20%, transparent);
   font-size: 1.4rem;
 }
 
@@ -980,11 +980,11 @@ onMounted(async () => {
 }
 
 .overview__item small {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 }
 
 .overview__item strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 1.3rem;
 }
 
@@ -996,14 +996,14 @@ onMounted(async () => {
 .month-panel {
   position: relative;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
-  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 12%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
   background: linear-gradient(
     130deg,
-    color-mix(in srgb, var(--surface-2) 42%, var(--surface-1)),
-    var(--surface-1) 54%
+    color-mix(in srgb, var(--hse-project-surface-soft) 42%, var(--hse-project-surface)),
+    var(--hse-project-surface) 54%
   );
-  box-shadow: 0 7px 20px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
+  box-shadow: 0 7px 20px color-mix(in srgb, var(--hse-project-navy) 4%, transparent);
   transition:
     transform 0.25s ease,
     border-color 0.2s ease,
@@ -1018,7 +1018,7 @@ onMounted(async () => {
   z-index: 2;
   width: 4px;
   border-radius: 0 8px 8px 0;
-  background: linear-gradient(180deg, var(--PrimaryColor), var(--brand-primary-700));
+  background: linear-gradient(180deg, var(--hse-project-blue), var(--hse-project-navy2));
   opacity: 0;
   transform: scaleY(0.35);
   transition:
@@ -1028,14 +1028,14 @@ onMounted(async () => {
 
 .month-panel:hover {
   transform: translateY(-2px);
-  border-color: color-mix(in srgb, var(--PrimaryColor) 32%, var(--main-border));
-  box-shadow: 0 14px 32px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
+  border-color: color-mix(in srgb, var(--hse-project-blue) 32%, var(--hse-project-line));
+  box-shadow: 0 14px 32px color-mix(in srgb, var(--hse-project-navy) 8%, transparent);
 }
 
 .month-panel.p-accordionpanel-active {
-  border-color: color-mix(in srgb, var(--PrimaryColor) 36%, var(--main-border));
-  background: var(--surface-1);
-  box-shadow: 0 18px 38px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
+  border-color: color-mix(in srgb, var(--hse-project-blue) 36%, var(--hse-project-line));
+  background: var(--hse-project-surface);
+  box-shadow: 0 18px 38px color-mix(in srgb, var(--hse-project-navy) 10%, transparent);
 }
 
 .month-panel.p-accordionpanel-active::before {
@@ -1063,12 +1063,12 @@ onMounted(async () => {
   height: 66px;
   flex: none;
   border: 1px solid color-mix(in srgb, white 20%, transparent);
-  border-radius: 18px;
-  color: var(--text-on-brand);
+  border-radius: var(--hse-project-radius-panel);
+  color: var(--hse-project-on-primary);
   background:
     radial-gradient(circle at 80% 12%, color-mix(in srgb, white 24%, transparent), transparent 32%),
-    linear-gradient(145deg, var(--PrimaryColor), var(--brand-primary-700));
-  box-shadow: 0 10px 22px color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+    linear-gradient(145deg, var(--hse-project-blue), var(--hse-project-navy2));
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--hse-project-blue) 24%, transparent);
 }
 
 .month-heading__badge::after {
@@ -1102,7 +1102,7 @@ onMounted(async () => {
 }
 
 .month-heading__kicker {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
   font-size: 0.61rem;
   font-weight: 850;
   text-transform: uppercase;
@@ -1110,7 +1110,7 @@ onMounted(async () => {
 }
 
 .month-heading__details > strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 1rem;
   line-height: 1.25;
 }
@@ -1119,7 +1119,7 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   gap: 6px;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.75rem;
 }
 
@@ -1127,14 +1127,14 @@ onMounted(async () => {
   width: 14px;
   height: 14px;
   flex: none;
-  stroke: var(--PrimaryColor);
+  stroke: var(--hse-project-blue);
   stroke-width: 1.8;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
 
 .month-heading__details > small i {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
   font-style: normal;
 }
 
@@ -1144,10 +1144,10 @@ onMounted(async () => {
   gap: 8px;
   margin-inline-start: auto;
   padding: 7px 12px 7px 7px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 16%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 16%, var(--hse-project-line));
   border-radius: 999px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1));
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 7%, var(--hse-project-surface));
   font-size: 0.68rem;
   font-weight: 800;
   white-space: nowrap;
@@ -1159,20 +1159,20 @@ onMounted(async () => {
   width: 27px;
   height: 27px;
   border-radius: 50%;
-  color: var(--text-on-brand);
-  background: var(--PrimaryColor);
-  box-shadow: 0 5px 12px color-mix(in srgb, var(--PrimaryColor) 22%, transparent);
+  color: var(--hse-project-on-primary);
+  background: var(--hse-project-blue);
+  box-shadow: 0 5px 12px color-mix(in srgb, var(--hse-project-blue) 22%, transparent);
   font-size: 0.74rem;
 }
 
 .visit-count--empty {
-  color: var(--text-soft);
-  background: color-mix(in srgb, var(--surface-2) 70%, var(--surface-1));
+  color: var(--hse-project-muted);
+  background: color-mix(in srgb, var(--hse-project-surface-soft) 70%, var(--hse-project-surface));
 }
 
 .visit-count--empty b {
-  color: var(--text-soft);
-  background: color-mix(in srgb, var(--text-soft) 10%, var(--surface-1));
+  color: var(--hse-project-muted);
+  background: color-mix(in srgb, var(--hse-project-muted) 10%, var(--hse-project-surface));
   box-shadow: none;
 }
 
@@ -1186,9 +1186,9 @@ onMounted(async () => {
   align-items: center;
   gap: 15px;
   padding: 22px;
-  border: 1px dashed color-mix(in srgb, var(--PrimaryColor) 24%, var(--main-border));
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--PrimaryColor) 3%, var(--surface-1));
+  border: 1px dashed color-mix(in srgb, var(--hse-project-blue) 24%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
+  background: color-mix(in srgb, var(--hse-project-blue) 3%, var(--hse-project-surface));
 }
 
 .month-empty__symbol,
@@ -1198,9 +1198,9 @@ onMounted(async () => {
   width: 48px;
   height: 48px;
   flex: none;
-  border-radius: 13px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 10%, var(--surface-1));
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 10%, var(--hse-project-surface));
   font-size: 1.5rem;
 }
 
@@ -1210,13 +1210,13 @@ onMounted(async () => {
 
 .month-empty strong,
 .empty-state strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 
 .month-empty p,
 .empty-state p {
   margin: 4px 0 0;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.82rem;
 }
 
@@ -1234,9 +1234,9 @@ onMounted(async () => {
   position: relative;
   overflow: hidden;
   padding: 16px;
-  border: 1px solid var(--main-border);
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--surface-2) 68%, var(--surface-1));
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
+  background: color-mix(in srgb, var(--hse-project-surface-soft) 68%, var(--hse-project-surface));
 }
 
 .draft-card::before {
@@ -1245,7 +1245,7 @@ onMounted(async () => {
   inset-block: 0;
   inset-inline-start: 0;
   width: 3px;
-  background: linear-gradient(var(--PrimaryColor), var(--brand-primary-700));
+  background: linear-gradient(var(--hse-project-blue), var(--hse-project-navy2));
 }
 
 .draft-card__top {
@@ -1261,9 +1261,9 @@ onMounted(async () => {
   width: 38px;
   height: 38px;
   flex: none;
-  border-radius: 10px;
-  color: var(--text-on-brand);
-  background: var(--PrimaryColor);
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-on-primary);
+  background: var(--hse-project-blue);
   font-weight: 850;
 }
 
@@ -1273,18 +1273,18 @@ onMounted(async () => {
 }
 
 .draft-card__top strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 
 .draft-card__top small {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.7rem;
 }
 
 .remove-button {
   margin-inline-start: auto;
   border: 0;
-  color: var(--status-danger);
+  color: var(--hse-project-red);
   background: transparent;
   cursor: pointer;
   font-weight: 750;
@@ -1302,10 +1302,10 @@ onMounted(async () => {
   gap: 10px;
   min-width: 0;
   padding: 14px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 10%, var(--main-border));
-  border-radius: 15px;
-  background: var(--surface-1);
-  box-shadow: 0 5px 16px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 10%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
+  background: var(--hse-project-surface);
+  box-shadow: 0 5px 16px color-mix(in srgb, var(--hse-project-navy) 4%, transparent);
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease,
@@ -1314,8 +1314,8 @@ onMounted(async () => {
 
 .visit-field:hover,
 .visit-field:focus-within {
-  border-color: color-mix(in srgb, var(--PrimaryColor) 34%, var(--main-border));
-  box-shadow: 0 10px 24px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
+  border-color: color-mix(in srgb, var(--hse-project-blue) 34%, var(--hse-project-line));
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--hse-project-navy) 7%, transparent);
   transform: translateY(-1px);
 }
 
@@ -1325,7 +1325,7 @@ onMounted(async () => {
   justify-content: start;
   gap: 9px;
   min-width: 0;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 0.8rem;
   font-weight: 800;
   line-height: 1.25;
@@ -1336,7 +1336,7 @@ onMounted(async () => {
 }
 
 .visit-field__label b {
-  color: var(--status-danger);
+  color: var(--hse-project-red);
   font-weight: 850;
 }
 
@@ -1346,9 +1346,9 @@ onMounted(async () => {
   width: 28px;
   height: 28px;
   flex: none;
-  border-radius: 9px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 10%, var(--surface-1));
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 10%, var(--hse-project-surface));
 }
 
 .visit-field__icon svg {
@@ -1366,19 +1366,19 @@ onMounted(async () => {
   width: 100%;
   min-height: 46px;
   padding: 11px 13px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 10%, var(--main-border));
-  border-radius: 11px;
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 10%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-control);
   outline: none;
-  color: var(--text-strong);
-  background: color-mix(in srgb, var(--surface-2) 52%, var(--surface-1));
+  color: var(--hse-project-ink);
+  background: color-mix(in srgb, var(--hse-project-surface-soft) 52%, var(--hse-project-surface));
   font: inherit;
   font-weight: 500;
 }
 
 .visit-fields input:focus,
 .visit-fields select:focus {
-  border-color: var(--PrimaryColor);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 14%, transparent);
+  border-color: var(--hse-project-blue);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--hse-project-blue) 14%, transparent);
 }
 
 .visit-fields :deep(.p-datepicker),
@@ -1390,9 +1390,9 @@ onMounted(async () => {
 
 .visit-fields :deep(.p-select) {
   min-height: 46px;
-  border-color: color-mix(in srgb, var(--PrimaryColor) 10%, var(--main-border));
-  border-radius: 11px;
-  background: color-mix(in srgb, var(--surface-2) 52%, var(--surface-1));
+  border-color: color-mix(in srgb, var(--hse-project-blue) 10%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-control);
+  background: color-mix(in srgb, var(--hse-project-surface-soft) 52%, var(--hse-project-surface));
 }
 
 .visit-field--select.updated-custom-input-select {
@@ -1413,7 +1413,7 @@ onMounted(async () => {
 
 .visit-field--select :deep(.p-select-dropdown) {
   width: 44px;
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 }
 
 @media (min-width: 1380px) {
@@ -1436,7 +1436,7 @@ onMounted(async () => {
   gap: 7px;
   padding: 11px 15px;
   border: 1px solid transparent;
-  border-radius: 11px;
+  border-radius: var(--hse-project-radius-control);
   cursor: pointer;
   font-weight: 800;
   transition:
@@ -1446,20 +1446,20 @@ onMounted(async () => {
 }
 
 .button--primary {
-  color: var(--text-on-brand);
-  background: linear-gradient(135deg, var(--PrimaryColor), var(--brand-primary-700));
-  box-shadow: 0 9px 20px color-mix(in srgb, var(--PrimaryColor) 22%, transparent);
+  color: var(--hse-project-on-primary);
+  background: linear-gradient(135deg, var(--hse-project-blue), var(--hse-project-navy2));
+  box-shadow: 0 9px 20px color-mix(in srgb, var(--hse-project-blue) 22%, transparent);
 }
 
 .button--primary:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 13px 26px color-mix(in srgb, var(--PrimaryColor) 28%, transparent);
+  box-shadow: 0 13px 26px color-mix(in srgb, var(--hse-project-blue) 28%, transparent);
 }
 
 .button--outline {
-  border-color: color-mix(in srgb, var(--PrimaryColor) 40%, var(--main-border));
-  color: var(--PrimaryColor);
-  background: var(--surface-1);
+  border-color: color-mix(in srgb, var(--hse-project-blue) 40%, var(--hse-project-line));
+  color: var(--hse-project-blue);
+  background: var(--hse-project-surface);
 }
 
 .button:disabled {
@@ -1478,13 +1478,13 @@ onMounted(async () => {
 }
 
 :deep(.p-accordionheader:hover) {
-  background: color-mix(in srgb, var(--PrimaryColor) 3%, transparent) !important;
+  background: color-mix(in srgb, var(--hse-project-blue) 3%, transparent) !important;
 }
 
 .month-panel.p-accordionpanel-active :deep(.p-accordionheader) {
   background: linear-gradient(
     90deg,
-    color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+    color-mix(in srgb, var(--hse-project-blue) 7%, transparent),
     transparent 48%
   ) !important;
 }
@@ -1496,24 +1496,24 @@ onMounted(async () => {
   padding: 5px;
   box-sizing: content-box;
   border-radius: 50%;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1));
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 9%, var(--hse-project-surface));
   transition:
     transform 0.25s ease,
     background 0.2s ease;
 }
 
 .month-panel.p-accordionpanel-active :deep(.p-accordionheader-toggle-icon) {
-  background: color-mix(in srgb, var(--PrimaryColor) 15%, var(--surface-1));
+  background: color-mix(in srgb, var(--hse-project-blue) 15%, var(--hse-project-surface));
 }
 
 :deep(.p-accordioncontent-content) {
   padding: 14px 20px 20px;
-  border-top: 1px solid color-mix(in srgb, var(--PrimaryColor) 10%, var(--main-border));
+  border-top: 1px solid color-mix(in srgb, var(--hse-project-blue) 10%, var(--hse-project-line));
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--PrimaryColor) 2%, var(--surface-1)),
-    var(--surface-1) 80px
+    color-mix(in srgb, var(--hse-project-blue) 2%, var(--hse-project-surface)),
+    var(--hse-project-surface) 80px
   ) !important;
 }
 
@@ -1521,7 +1521,7 @@ button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 select:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+  outline: 3px solid color-mix(in srgb, var(--hse-project-blue) 24%, transparent);
   outline-offset: 2px;
 }
 
@@ -1583,7 +1583,7 @@ select:focus-visible {
   .month-heading__badge {
     width: 52px;
     height: 56px;
-    border-radius: 14px;
+    border-radius: var(--hse-project-radius-panel);
   }
 
   .month-heading__badge::after {
@@ -1638,33 +1638,33 @@ select:focus-visible {
 
 .saved-visits-table h3 {
   margin-bottom: 12px;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 1rem;
 }
 
 .saved-visits-table table {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid var(--main-border);
-  border-radius: 12px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-control);
   overflow: hidden;
 }
 
 .saved-visits-table th {
   padding: 12px;
   text-align: start;
-  background: var(--surface-2);
-  color: var(--text-strong);
+  background: var(--hse-project-surface-soft);
+  color: var(--hse-project-ink);
   font-weight: 800;
 }
 
 .saved-visits-table td {
   padding: 12px;
-  border-top: 1px solid var(--main-border);
-  color: var(--text-soft);
+  border-top: 1px solid var(--hse-project-line);
+  color: var(--hse-project-muted);
 }
 
 .saved-visits-table tbody tr:hover {
-  background: color-mix(in srgb, var(--PrimaryColor) 5%, transparent);
+  background: color-mix(in srgb, var(--hse-project-blue) 5%, transparent);
 }
 </style>

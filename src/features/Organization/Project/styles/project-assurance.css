@@ -1,0 +1,439 @@
+/* Leadership and risk workflows share the system identity, including teleported panels. */
+.hse-project-root.hse-project-assurance[data-hse-project],
+.hse-project-overlay.hse-project-assurance {
+  --hse-project-font: var(--font-family, 'HSE Inter', sans-serif);
+  font-family: var(--hse-project-font);
+  color: var(--hse-project-ink);
+  min-width: 0;
+  --p-primary-color: var(--hse-project-blue);
+  --p-primary-contrast-color: var(--hse-project-on-primary);
+}
+
+.hse-project-assurance :is(button, a, input, textarea, label, .p-component) {
+  font-family: inherit;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project].hse-project-page {
+  display: grid;
+  gap: var(--hse-space-5);
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  :is(.hero, .risk-hero, .form-header, .report-hero, .visits-hero) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--hse-space-5);
+  margin: 0;
+  padding: var(--hse-space-6);
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
+  background: var(--hse-project-surface);
+  color: var(--hse-project-ink);
+  box-shadow: var(--hse-project-shadow-panel);
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] :is(.hero__art, .hero-art, .header-art) {
+  display: none;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] .summary-card::after,
+.hse-project-root.hse-project-assurance[data-hse-project] .overview__item::after {
+  display: none;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] .form-footer {
+  margin: 0;
+  padding: var(--hse-space-4) var(--hse-space-5);
+  max-width: 100%;
+  backdrop-filter: none;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] :is(h1, .hero__content h1) {
+  margin: 0;
+  color: var(--hse-project-ink);
+  font-size: var(--hse-text-display);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  overflow-wrap: anywhere;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] :is(h2, .panel-heading h2) {
+  color: var(--hse-project-ink);
+  font-size: var(--hse-text-lg);
+  font-weight: 700;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  :is(.hero, .risk-hero, .form-header, .report-hero, .visits-hero)
+  p {
+  margin: 8px 0 0;
+  color: var(--hse-project-muted);
+  font-size: var(--hse-text-sm);
+  line-height: 1.6;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] .eyebrow {
+  color: var(--hse-project-blue);
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  :is(.hero-icon, .hero__symbol, .header-icon, .report-hero__icon, .visits-hero__icon) {
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-blue);
+  background: var(--hse-project-ice);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  :is(.hero-icon, .hero__symbol, .header-icon, .report-hero__icon)
+  svg {
+  width: 25px;
+  height: 25px;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  :is(.hero__content, .hero-copy, .hero-title, .header-content, .hero__actions, .section-intro) {
+  min-width: 0;
+  gap: var(--hse-space-4);
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  :is(
+    .workspace-card,
+    .visits-card,
+    .form-section,
+    .risk-panel,
+    .summary-card,
+    .form-shell,
+    .form-footer
+  ) {
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
+  background: var(--hse-project-surface);
+  box-shadow: var(--hse-project-shadow-panel);
+  min-width: 0;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] .form-shell {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  :is(.workspace-card, .visits-card, .form-section) {
+  padding: var(--hse-space-5);
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] .form-shell > form {
+  padding: var(--hse-space-5) 0 0;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  :is(.overview__item, .date-range, .summary-card, .improvement-card, .draft-card, .visit-context) {
+  border-color: var(--hse-project-line);
+  background: var(--hse-project-surface-soft);
+  box-shadow: none;
+  transform: none;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  :is(.overview__icon, .summary-card__icon, .section-icon, .draft-card__number, .step-number) {
+  color: var(--hse-project-blue);
+  background: var(--hse-project-ice);
+  box-shadow: none;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  :is(
+    .back-link,
+    .hero-link,
+    .button,
+    .primary-button,
+    .empty-action,
+    .add-button,
+    .report-link,
+    .refresh-button,
+    .details-button,
+    .cancel-button
+  ) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--hse-space-2);
+  min-height: var(--hse-project-control-height);
+  padding: 10px 15px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-ink);
+  background: var(--hse-project-surface);
+  box-shadow: none;
+  backdrop-filter: none;
+  font-size: var(--hse-text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transform: none;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  :is(
+    .back-link,
+    .hero-link,
+    .button,
+    .add-button,
+    .report-link,
+    .refresh-button,
+    .details-button
+  ):hover:not(:disabled) {
+  color: var(--hse-project-blue);
+  border-color: var(--hse-project-blue);
+  background: var(--hse-project-ice);
+  box-shadow: none;
+  transform: none;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  :is(
+    .hse-project-button--primary,
+    .back-link--primary,
+    .button--primary,
+    .primary-button,
+    .empty-action,
+    .form-footer button[type='submit']
+  ) {
+  border-color: var(--identity-primaryButtonBackground, var(--hse-project-blue));
+  background: var(--identity-primaryButtonBackground, var(--hse-project-blue));
+  color: var(--identity-primaryButtonText, var(--hse-project-on-primary));
+  box-shadow: var(--hse-shadow-sm);
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  :is(
+    .hse-project-button--primary,
+    .back-link--primary,
+    .button--primary,
+    .primary-button,
+    .empty-action,
+    .form-footer button[type='submit']
+  ):hover:not(:disabled) {
+  background: color-mix(
+    in srgb,
+    var(--identity-primaryButtonBackground, var(--hse-project-blue)) 88%,
+    var(--hse-project-navy)
+  );
+  color: var(--identity-primaryButtonText, var(--hse-project-on-primary));
+  transform: none;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] .primary-button__icon {
+  color: inherit;
+  background: transparent;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] :is(.field, .visit-field) {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  gap: var(--hse-space-2);
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  :is(
+    .field input,
+    .field textarea,
+    .visit-fields input,
+    .visit-fields select,
+    .p-select,
+    .p-multiselect
+  ) {
+  min-height: var(--hse-project-control-height);
+  border-color: var(--hse-project-line);
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-input-bg);
+  color: var(--hse-project-ink);
+  font-size: var(--hse-text-base);
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  :is(.field textarea, textarea.hse-project-input) {
+  min-height: 120px;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] .month-panel {
+  border-color: var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
+  box-shadow: none;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] .p-accordionheader {
+  min-height: 76px;
+  background: var(--hse-project-surface);
+  color: var(--hse-project-ink);
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  :is(.p-accordionpanel-active .p-accordionheader, .month-heading__badge) {
+  background: var(--hse-project-ice);
+  color: var(--hse-project-blue);
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] .month-heading__badge {
+  border-color: var(--hse-project-line);
+  box-shadow: none;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] .month-heading__badge :is(small, strong) {
+  color: var(--hse-project-blue);
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] .month-heading__badge::after {
+  background: var(--hse-project-line);
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] .remove-button {
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] .improvement-card__heading {
+  flex-wrap: wrap;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  :is(.section-title > span, .section-title__copy > span) {
+  color: var(--hse-project-blue);
+  background: var(--hse-project-ice);
+  box-shadow: none;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] .filters {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.6fr);
+  align-items: end;
+  gap: var(--hse-space-4);
+  margin-block-end: var(--hse-space-5);
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project]
+  .filters
+  :is(.search, .date-filter, .input-search) {
+  min-width: 0;
+  width: 100%;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] :is(.table-scroll, .saved-visits-table) {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.hse-project-root.hse-project-assurance[data-hse-project] :is(.table-responsive, .visits-table) {
+  overflow-x: auto;
+}
+
+/* These roots are on the teleported Dialog itself; descendant-only :deep rules cannot skin it. */
+.hse-project-overlay.hse-project-assurance.p-dialog {
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-radius-dialog);
+  background: var(--hse-project-surface);
+  box-shadow: var(--hse-shadow-dialog);
+  max-width: calc(100vw - 24px);
+}
+
+.hse-project-overlay.hse-project-assurance.p-dialog .p-dialog-header {
+  padding: var(--hse-space-5);
+  border-block-end: 1px solid var(--hse-project-line);
+  background: var(--hse-project-surface);
+  color: var(--hse-project-ink);
+}
+
+.hse-project-overlay.hse-project-assurance.p-dialog .p-dialog-content {
+  padding: var(--hse-space-5);
+  background: var(--hse-project-surface-soft);
+}
+
+.hse-project-overlay.hse-project-assurance .dialog-content {
+  padding: 0;
+}
+
+.hse-project-overlay.hse-project-assurance
+  :is(.dialog-heading__icon, .details-heading__icon, .overview-icon, .section-number) {
+  color: var(--hse-project-blue);
+  background: var(--hse-project-ice);
+  box-shadow: none;
+}
+
+.hse-project-overlay.hse-project-assurance :is(.dialog-heading h2, .details-heading h2) {
+  color: var(--hse-project-ink);
+  font-size: var(--hse-text-xl);
+  overflow-wrap: anywhere;
+}
+
+.hse-project-overlay.hse-project-assurance
+  :is(
+    .detail-section,
+    .details-section,
+    .summary-grid article,
+    .overview-grid article,
+    .improvement-detail,
+    .media-card
+  ) {
+  border-color: var(--hse-project-line);
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-surface);
+  box-shadow: none;
+  min-width: 0;
+}
+
+.hse-project-overlay.hse-project-assurance
+  :is(.p-select-option-selected, .p-multiselect-option-selected, .p-datepicker-day-selected) {
+  color: var(--hse-project-blue);
+  background: var(--hse-project-ice);
+}
+
+@media (max-width: 700px) {
+  .hse-project-root.hse-project-assurance[data-hse-project]
+    :is(
+      .hero,
+      .risk-hero,
+      .form-header,
+      .report-hero,
+      .visits-hero,
+      .workspace-card,
+      .visits-card,
+      .form-section
+    ) {
+    padding: var(--hse-space-4);
+  }
+  .hse-project-root.hse-project-assurance[data-hse-project]
+    :is(.filters, .visit-fields, .form-grid, .fields) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .hse-project-root.hse-project-assurance[data-hse-project] .hero__actions {
+    width: 100%;
+  }
+  .hse-project-root.hse-project-assurance[data-hse-project]
+    :is(.hero__actions > *, .primary-button, .footer-actions) {
+    width: 100%;
+    min-width: 0;
+  }
+  .hse-project-root.hse-project-assurance[data-hse-project] .panel-heading {
+    padding: var(--hse-space-4);
+    flex-wrap: wrap;
+  }
+  .hse-project-overlay.hse-project-assurance.p-dialog :is(.p-dialog-header, .p-dialog-content) {
+    padding: var(--hse-space-4);
+  }
+}

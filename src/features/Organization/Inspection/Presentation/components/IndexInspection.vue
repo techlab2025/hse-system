@@ -278,7 +278,7 @@ const InspectionsResultsTasks = async (
  */
 
 const getSelectedZonesFilter = () =>
-  SelectedZonesFilter.value.length ? SelectedZonesFilter.value : undefined
+  !isAuditPage.value && SelectedZonesFilter.value.length ? SelectedZonesFilter.value : undefined
 
 /**
  * Existing Inspection Flow
@@ -368,10 +368,10 @@ const changeAuditTab = (tab: 'all' | 'mine') => {
  */
 
 watch(
-  () => [route.query.typeId, route.query.inspectionType, auditProjectId.value],
+  () => [route.query.typeId, route.query.inspectionType, auditProjectId.value, route.name],
 
   (values, previousValues) => {
-    if (!previousValues || values[2] !== previousValues[2]) {
+    if (!previousValues || values[2] !== previousValues[2] || values[3] !== previousValues[3]) {
       selectedProjctesFilters.value = auditProjectId.value ?? selectedProject.getProjectId()
       SelectedZonesFilter.value = []
     }
@@ -656,12 +656,13 @@ const fetchMyZonesController = FetchMyZonesController.getInstance()
 const FetchMyZones = async () => {
   const projectId = selectedProjctesFilters.value
   Filters.value = []
+  if (isAuditPage.value) return
   const params = new FetchMyZonesParams(projectId)
 
   if (projectId) {
     const response = await fetchMyZonesController.FetchMyZones(params, router)
 
-    if (projectId !== selectedProjctesFilters.value) return
+    if (isAuditPage.value || projectId !== selectedProjctesFilters.value) return
     Filters.value = response.value.data ?? []
     if (Filters.value.length === 1) {
       ApplayFilter([Filters.value[0].id])

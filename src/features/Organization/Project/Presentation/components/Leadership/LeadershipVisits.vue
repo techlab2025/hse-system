@@ -15,6 +15,8 @@ import type LeadershipVisitDetailsModel from '../../../Data/models/Leadership/Le
 import ReportVisitDetailsDialog from './ReportVisitDetailsDialog.vue'
 import { debounce } from '@/base/Presentation/utils/debouced.ts'
 import DatePicker from 'primevue/datepicker'
+import Search from '@/shared/icons/Search.vue'
+import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format.ts'
 
 defineOptions({ name: 'ProjectLeadershipVisits' })
@@ -52,7 +54,6 @@ const detailsLoading = ref(false)
 const detailsError = ref('')
 const loadingVisitId = ref<number | null>(null)
 let detailsRequestSequence = 0
-const reportCreated = computed(() => route.query.report === 'created')
 
 const fetchReportDetails = async (visitId: number) => {
   if (!canViewDetails.value) return
@@ -119,9 +120,9 @@ const searchVisits = debounce(() => {
   fetchAllVisits({ word: word.value })
 })
 const Customdate = ref<Date | null>(null)
-const DateUpdate = (date?: Date) => {
-  if (date) {
-    fetchAllVisits({ date: String(formatJoinDate(date!)) })
+const DateUpdate = (date: unknown) => {
+  if (date instanceof Date) {
+    fetchAllVisits({ date: String(formatJoinDate(date)) })
   }
 }
 </script>
@@ -131,7 +132,7 @@ const DateUpdate = (date?: Date) => {
     v-if="canFetch"
     data-hse-project
     v-project-panels
-    class="hse-project-root hse-project-page visits-page"
+    class="hse-project-root hse-project-assurance hse-project-page visits-page"
   >
     <section class="hse-project-panel visits-card">
       <div class="section-heading">
@@ -144,12 +145,15 @@ const DateUpdate = (date?: Date) => {
 
       <div class="filters">
         <div class="search">
-          <div class="input-search col-span-1">
-            <label class="hse-project-field-label" for="">visit location</label>
+          <label class="hse-project-field-label" for="leadership-visit-search"
+            >Visit location</label
+          >
+          <div class="input-search">
             <span class="icon-remove" @click="((word = ''), searchVisits())">
               <Search />
             </span>
             <input
+              id="leadership-visit-search"
               v-model="word"
               :placeholder="'search'"
               class="hse-project-input input"
@@ -161,12 +165,14 @@ const DateUpdate = (date?: Date) => {
         <div class="date-filter">
           <div class="hse-project-field input-wrapper">
             <div class="hse-project-field field-label">
-              <label class="hse-project-field-label" for="drill_date">{{ $t('date') }}</label>
+              <label class="hse-project-field-label" for="leadership-filter-date">{{
+                $t('date')
+              }}</label>
               <FieldHelpIcon text="Select the date." />
             </div>
             <DatePicker
-              panel-class="hse-project-overlay"
-              id="drill_date"
+              panel-class="hse-project-overlay hse-project-assurance"
+              id="leadership-filter-date"
               v-model="Customdate"
               date-format="yy-mm-dd"
               show-icon
@@ -224,23 +230,36 @@ const DateUpdate = (date?: Date) => {
                     </span>
                   </td> -->
                   <td data-label="Action">
-                    <button
-                      v-if="(visit.hasReport || visit.report) && canViewDetails"
-                      type="button"
-                      class="report-link report-link--details"
-                      :disabled="detailsLoading"
-                      @click="fetchReportDetails(visit.id)"
-                    >
-                      {{ loadingVisitId === visit.id ? 'Loading…' : 'Report details' }}
-                      <span v-if="loadingVisitId !== visit.id" aria-hidden="true">⌕</span>
-                    </button>
-                    <a
-                      v-else-if="!visit.hasReport && !visit.report && canCreate"
-                      :href="`/organization/project-details/${projectId}/leadership/visits/${visit.id}/report`"
-                      class="report-link"
-                    >
-                      Report visit <span aria-hidden="true">↗</span>
-                    </a>
+                    <div class="visit-actions">
+                      <button
+                        v-if="(visit.hasReport || visit.report) && canViewDetails"
+                        type="button"
+                        class="btn btn-secondary hse-project-button hse-project-button--secondary report-link report-link--details"
+                        :disabled="detailsLoading"
+                        :aria-busy="loadingVisitId === visit.id"
+                        @click="fetchReportDetails(visit.id)"
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
+                          <circle cx="12" cy="12" r="3" />
+                        </svg>
+                        <span>{{
+                          loadingVisitId === visit.id ? 'Loading…' : 'Report details'
+                        }}</span>
+                      </button>
+                      <RouterLink
+                        v-else-if="!visit.hasReport && !visit.report && canCreate"
+                        :to="`/organization/project-details/${projectId}/leadership/visits/${visit.id}/report`"
+                        class="btn btn-primary hse-project-button hse-project-button--primary report-link"
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                          <path
+                            d="M8 4H6a2 2 0 0 0-2 2v14h16V6a2 2 0 0 0-2-2h-2M8 3h8v4H8V3ZM8 12h8M8 16h5"
+                          />
+                        </svg>
+                        <span>Report visit</span>
+                      </RouterLink>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -282,19 +301,9 @@ const DateUpdate = (date?: Date) => {
 </template>
 
 <style scoped lang="scss">
-.filters {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-
-  div {
-    width: 100% !important;
-  }
-
-  // .search {
-  //   width: 50% !important;
-  // }
+.search {
+  display: grid;
+  gap: var(--hse-space-2);
 }
 
 .visits-page {
@@ -305,10 +314,10 @@ const DateUpdate = (date?: Date) => {
   /* background:
     radial-gradient(
       circle at 8% 4%,
-      color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+      color-mix(in srgb, var(--hse-project-blue) 7%, transparent),
       transparent 24rem
     ),
-    var(--surface-2); */
+    var(--hse-project-surface-soft); */
 }
 
 .visits-hero {
@@ -319,12 +328,12 @@ const DateUpdate = (date?: Date) => {
   gap: 22px;
   overflow: hidden;
   padding: clamp(26px, 4vw, 42px);
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
-  border-radius: 26px;
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 18%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
   background:
     radial-gradient(circle at 88% 8%, color-mix(in srgb, white 12%, transparent), transparent 30%),
-    linear-gradient(125deg, var(--brand-primary-900), var(--PrimaryColor));
-  box-shadow: 0 22px 52px color-mix(in srgb, var(--brand-primary-900) 19%, transparent);
+    linear-gradient(125deg, var(--hse-project-navy), var(--hse-project-blue));
+  box-shadow: 0 22px 52px color-mix(in srgb, var(--hse-project-navy) 19%, transparent);
 }
 
 .visits-hero__content {
@@ -340,14 +349,14 @@ const DateUpdate = (date?: Date) => {
   height: 66px;
   flex: none;
   border: 1px solid color-mix(in srgb, white 22%, transparent);
-  border-radius: 20px;
+  border-radius: var(--hse-project-radius-panel);
   color: white;
   background: color-mix(in srgb, white 12%, transparent);
   font-size: 2rem;
 }
 
 .eyebrow {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
   font-size: 0.7rem;
   font-weight: 850;
   letter-spacing: 0.13em;
@@ -355,7 +364,7 @@ const DateUpdate = (date?: Date) => {
 }
 
 .visits-hero .eyebrow {
-  color: color-mix(in srgb, white 72%, var(--PrimaryColor));
+  color: color-mix(in srgb, white 72%, var(--hse-project-blue));
 }
 
 .visits-hero h1 {
@@ -368,7 +377,7 @@ const DateUpdate = (date?: Date) => {
 .section-heading p,
 .empty-state p {
   margin: 0;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 }
 
 .visits-hero p {
@@ -379,7 +388,7 @@ const DateUpdate = (date?: Date) => {
   flex: none;
   padding: 11px 15px;
   border: 1px solid color-mix(in srgb, white 22%, transparent);
-  border-radius: 12px;
+  border-radius: var(--hse-project-radius-control);
   color: white;
   background: color-mix(in srgb, white 10%, transparent);
   font-weight: 750;
@@ -388,10 +397,10 @@ const DateUpdate = (date?: Date) => {
 
 .visits-card {
   padding: clamp(20px, 3vw, 30px);
-  border: 1px solid var(--main-border);
-  border-radius: 22px;
-  background: var(--surface-1);
-  box-shadow: 0 16px 42px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
+  background: var(--hse-project-surface);
+  box-shadow: 0 16px 42px color-mix(in srgb, var(--hse-project-navy) 7%, transparent);
 }
 
 .section-heading {
@@ -404,15 +413,15 @@ const DateUpdate = (date?: Date) => {
 
 .section-heading h2 {
   margin: 5px 0 6px;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: clamp(1.25rem, 2vw, 1.65rem);
 }
 
 .total-pill {
   padding: 9px 13px;
   border-radius: 999px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 10%, var(--surface-1));
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 10%, var(--hse-project-surface));
   font-size: 0.78rem;
   font-weight: 850;
   white-space: nowrap;
@@ -420,8 +429,8 @@ const DateUpdate = (date?: Date) => {
 
 .visits-table {
   overflow: hidden;
-  border: 1px solid var(--main-border);
-  border-radius: 16px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
 }
 
 .visits-table .main-table {
@@ -429,15 +438,15 @@ const DateUpdate = (date?: Date) => {
 }
 
 .visits-table th {
-  color: var(--text-soft);
-  background: var(--surface-2);
+  color: var(--hse-project-muted);
+  background: var(--hse-project-surface-soft);
   font-size: 0.69rem;
   letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
 .visits-table td {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 
 .visits-table tbody tr {
@@ -445,7 +454,7 @@ const DateUpdate = (date?: Date) => {
 }
 
 .visits-table tbody tr:hover {
-  background: color-mix(in srgb, var(--PrimaryColor) 4%, var(--surface-1));
+  background: color-mix(in srgb, var(--hse-project-blue) 4%, var(--hse-project-surface));
 }
 
 .employee-cell {
@@ -461,8 +470,8 @@ const DateUpdate = (date?: Date) => {
   height: 34px;
   flex: none;
   border-radius: 50%;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 11%, var(--surface-1));
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 11%, var(--hse-project-surface));
   font-weight: 850;
 }
 
@@ -476,57 +485,49 @@ const DateUpdate = (date?: Date) => {
   align-items: center;
   gap: 6px;
   padding: 7px 10px;
-  border-radius: 9px;
-  background: var(--surface-2);
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-surface-soft);
   font-size: 0.75rem;
   font-weight: 750;
   white-space: nowrap;
 }
 
 .status-pill {
-  color: var(--status-warning);
-  background: var(--status-warning-soft);
+  color: var(--hse-project-amber);
+  background: var(--hse-project-amber-soft);
 }
 
 .status-pill--complete {
-  color: var(--status-success);
-  background: var(--status-success-soft);
+  color: var(--hse-project-green);
+  background: var(--hse-project-green-soft);
 }
 
-.report-link {
-  display: inline-flex;
+.visit-actions {
+  display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 9px 12px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 35%, var(--main-border));
-  border-radius: 10px;
-  color: white !important;
-  background: var(--PrimaryColor);
-  cursor: pointer;
-  font: inherit;
-  font-weight: 800;
-  text-decoration: none;
+  gap: var(--hse-space-2);
+}
+
+.visits-page .visit-actions .report-link {
+  min-height: 36px;
+  padding: 8px 12px;
+  font-size: var(--hse-text-sm);
+  font-weight: 600;
   white-space: nowrap;
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
 }
 
-.report-link--details {
-  color: var(--PrimaryColor) !important;
-  background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1));
-}
-
-.report-link:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 9px 20px color-mix(in srgb, var(--PrimaryColor) 22%, transparent);
+.report-link svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .report-link:disabled {
-  opacity: 0.58;
   cursor: wait;
-  transform: none;
-  box-shadow: none;
 }
 
 .empty-state {
@@ -534,32 +535,32 @@ const DateUpdate = (date?: Date) => {
   place-items: center;
   gap: 9px;
   padding: 42px 20px;
-  border: 1px dashed color-mix(in srgb, var(--PrimaryColor) 25%, var(--main-border));
-  border-radius: 16px;
+  border: 1px dashed color-mix(in srgb, var(--hse-project-blue) 25%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
   text-align: center;
-  background: color-mix(in srgb, var(--PrimaryColor) 3%, var(--surface-1));
+  background: color-mix(in srgb, var(--hse-project-blue) 3%, var(--hse-project-surface));
 }
 
 .empty-state > span {
   font-size: 2rem;
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 }
 
 .empty-state strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 
 .empty-state a {
   margin-top: 5px;
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
   font-weight: 800;
 }
 
 .notice--error {
   padding: 14px 16px;
-  border-radius: 12px;
-  color: var(--status-danger);
-  background: var(--status-danger-soft);
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-red);
+  background: var(--hse-project-red-soft);
   font-weight: 750;
 }
 
@@ -568,9 +569,9 @@ const DateUpdate = (date?: Date) => {
   align-items: center;
   gap: 9px;
   padding: 14px 16px;
-  border-radius: 12px;
-  color: var(--status-success);
-  background: var(--status-success-soft);
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-green);
+  background: var(--hse-project-green-soft);
   font-weight: 750;
 }
 
@@ -579,9 +580,9 @@ const DateUpdate = (date?: Date) => {
   place-items: center;
   width: 25px;
   height: 25px;
-  border-radius: 8px;
+  border-radius: var(--hse-project-radius-control);
   color: white;
-  background: var(--status-success);
+  background: var(--hse-project-green);
 }
 
 @media (max-width: 760px) {
@@ -610,7 +611,7 @@ const DateUpdate = (date?: Date) => {
 
   .visits-table tr {
     padding: 12px;
-    border-bottom: 1px solid var(--main-border);
+    border-bottom: 1px solid var(--hse-project-line);
   }
 
   .visits-table td {
@@ -624,7 +625,7 @@ const DateUpdate = (date?: Date) => {
 
   .visits-table td::before {
     content: attr(data-label);
-    color: var(--text-soft);
+    color: var(--hse-project-muted);
     font-size: 0.72rem;
     font-weight: 800;
     text-transform: uppercase;

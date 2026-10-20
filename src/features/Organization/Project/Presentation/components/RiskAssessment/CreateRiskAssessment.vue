@@ -97,7 +97,11 @@ async function create() {
 </script>
 
 <template>
-  <main data-hse-project v-project-panels class="hse-project-root hse-project-page create-page">
+  <main
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-assurance hse-project-page create-page"
+  >
     <div class="form-shell">
       <header data-hse-project-head class="hse-project-page-head form-header">
         <div class="header-art" aria-hidden="true"><span></span><span></span></div>
@@ -216,7 +220,7 @@ async function create() {
                 ><span>Date <b>*</b></span></span
               >
               <DatePicker
-                panel-class="hse-project-overlay"
+                panel-class="hse-project-overlay hse-project-assurance"
                 input-id="risk-assessment-date"
                 :model-value="parseDate(form.date)"
                 date-format="yy-mm-dd"
@@ -297,21 +301,21 @@ async function create() {
   /* max-width: 1020px; */
   margin: auto;
   /* padding: 26px; */
-  color: var(--text-primary, #172334);
+  color: var(--hse-project-ink);
 }
 
 .back-link {
   display: inline-block;
   margin-bottom: 20px;
-  color: var(--PrimaryColor, #087d80);
+  color: var(--hse-project-blue);
   font-weight: 750;
   text-decoration: none;
 }
 
 .form-shell {
-  border: 1px solid var(--main-border, #e5eaf0);
-  border-radius: 24px;
-  background: var(--surface-2, #fff);
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
+  background: var(--hse-project-surface-soft);
   box-shadow: 0 20px 55px rgba(22, 45, 65, 0.07);
   overflow: hidden;
 }
@@ -321,18 +325,18 @@ async function create() {
   background:
     radial-gradient(
       circle at 90% 5%,
-      color-mix(in srgb, var(--PrimaryColor, #087d80) 16%, transparent),
+      color-mix(in srgb, var(--hse-project-blue) 16%, transparent),
       transparent 38%
     ),
-    var(--surface-1, #f8fafb);
-  border-bottom: 1px solid var(--main-border, #e5eaf0);
+    var(--hse-project-surface);
+  border-bottom: 1px solid var(--hse-project-line);
 }
 
 .eyebrow {
   font-size: 0.72rem;
   letter-spacing: 0.14em;
   font-weight: 800;
-  color: var(--PrimaryColor, #087d80);
+  color: var(--hse-project-blue);
 }
 
 h1 {
@@ -341,7 +345,7 @@ h1 {
 }
 
 p {
-  color: var(--text-secondary, #687787);
+  color: var(--hse-project-muted);
   margin: 0;
 }
 
@@ -362,16 +366,16 @@ form {
 }
 
 .field b {
-  color: var(--status-danger, #bf3333);
+  color: var(--hse-project-red);
 }
 
 input,
 textarea {
   width: 100%;
   padding: 13px 15px;
-  border: 1px solid var(--main-border, #d9e1e8);
-  border-radius: 12px;
-  background: var(--surface-1, #fff);
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-surface);
   color: inherit;
   font: inherit;
   font-weight: 400;
@@ -380,8 +384,8 @@ textarea {
 
 input:focus,
 textarea:focus {
-  border-color: var(--PrimaryColor, #087d80);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor, #087d80) 14%, transparent);
+  border-color: var(--hse-project-blue);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--hse-project-blue) 14%, transparent);
 }
 
 textarea {
@@ -393,13 +397,13 @@ textarea {
 }
 
 small {
-  color: var(--text-secondary, #687787);
+  color: var(--hse-project-muted);
   font-weight: 400;
 }
 
 .error {
   margin-top: 20px;
-  color: var(--status-danger, #bf3333);
+  color: var(--hse-project-red);
 }
 
 footer {
@@ -409,14 +413,14 @@ footer {
   gap: 14px;
   margin-top: 30px;
   padding-top: 22px;
-  border-top: 1px solid var(--main-border, #e5eaf0);
+  border-top: 1px solid var(--hse-project-line);
 }
 
 footer button {
   border: 0;
-  border-radius: 12px;
+  border-radius: var(--hse-project-radius-control);
   padding: 13px 20px;
-  background: var(--PrimaryColor, #087d80);
+  background: var(--hse-project-blue);
   color: #fff;
   font-weight: 750;
   cursor: pointer;
@@ -428,7 +432,7 @@ footer button:disabled {
 }
 
 .cancel-button {
-  color: var(--text-secondary, #687787);
+  color: var(--hse-project-muted);
   text-decoration: none;
   font-weight: 700;
 }
@@ -456,19 +460,19 @@ footer button:disabled {
   background:
     radial-gradient(
       circle at 8% 3%,
-      color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+      color-mix(in srgb, var(--hse-project-blue) 7%, transparent),
       transparent 26rem
     ),
-    var(--surface-2); */
-  color: var(--text-strong);
+    var(--hse-project-surface-soft); */
+  color: var(--hse-project-ink);
 }
 
 .form-shell {
   overflow: hidden;
-  border-color: var(--main-border);
-  border-radius: 28px;
-  background: var(--surface-1);
-  box-shadow: 0 24px 60px color-mix(in srgb, var(--brand-primary-900) 10%, transparent);
+  border-color: var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
+  background: var(--hse-project-surface);
+  box-shadow: 0 24px 60px color-mix(in srgb, var(--hse-project-navy) 10%, transparent);
 }
 
 .form-header {
@@ -476,17 +480,17 @@ footer button:disabled {
   isolation: isolate;
   overflow: hidden;
   padding: clamp(26px, 4vw, 42px);
-  border-bottom-color: color-mix(in srgb, var(--PrimaryColor) 18%, transparent);
+  border-bottom-color: color-mix(in srgb, var(--hse-project-blue) 18%, transparent);
   background:
     radial-gradient(
       circle at 88% 10%,
-      color-mix(in srgb, var(--PrimaryColor) 24%, transparent),
+      color-mix(in srgb, var(--hse-project-blue) 24%, transparent),
       transparent 35%
     ),
     linear-gradient(
       125deg,
-      color-mix(in srgb, var(--brand-primary-900) 96%, var(--surface-1)),
-      color-mix(in srgb, var(--PrimaryColor) 76%, var(--brand-primary-900))
+      color-mix(in srgb, var(--hse-project-navy) 96%, var(--hse-project-surface)),
+      color-mix(in srgb, var(--hse-project-blue) 76%, var(--hse-project-navy))
     );
 }
 
@@ -547,7 +551,7 @@ footer button:disabled {
   height: 66px;
   flex: none;
   border: 1px solid color-mix(in srgb, white 22%, transparent);
-  border-radius: 20px;
+  border-radius: var(--hse-project-radius-panel);
   color: white;
   background: color-mix(in srgb, white 11%, transparent);
   box-shadow:
@@ -565,7 +569,7 @@ footer button:disabled {
 }
 
 .eyebrow {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
   font-size: 0.67rem;
   font-weight: 850;
   letter-spacing: 0.14em;
@@ -573,7 +577,7 @@ footer button:disabled {
 }
 
 .form-header .eyebrow {
-  color: color-mix(in srgb, white 68%, var(--PrimaryColor));
+  color: color-mix(in srgb, white 68%, var(--hse-project-blue));
 }
 
 .form-header h1 {
@@ -593,17 +597,17 @@ form {
   display: grid;
   gap: 18px;
   padding: clamp(18px, 3vw, 30px);
-  background: color-mix(in srgb, var(--surface-2) 62%, var(--surface-1));
+  background: color-mix(in srgb, var(--hse-project-surface-soft) 62%, var(--hse-project-surface));
 }
 
 .form-section {
   display: grid;
   gap: 22px;
   padding: clamp(19px, 3vw, 26px);
-  border: 1px solid var(--main-border);
-  border-radius: 20px;
-  background: var(--surface-1);
-  box-shadow: 0 10px 28px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
+  background: var(--hse-project-surface);
+  box-shadow: 0 10px 28px color-mix(in srgb, var(--hse-project-navy) 4%, transparent);
 }
 
 .section-heading {
@@ -619,12 +623,12 @@ form {
 
 .section-heading h2 {
   margin: 2px 0;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 1.25rem;
 }
 
 .section-heading p {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.8rem;
 }
 
@@ -634,10 +638,10 @@ form {
   width: 44px;
   height: 44px;
   flex: none;
-  border-radius: 14px;
-  color: var(--text-on-brand);
-  background: linear-gradient(145deg, var(--PrimaryColor), var(--brand-primary-700));
-  box-shadow: 0 9px 20px color-mix(in srgb, var(--PrimaryColor) 22%, transparent);
+  border-radius: var(--hse-project-radius-panel);
+  color: var(--hse-project-on-primary);
+  background: linear-gradient(145deg, var(--hse-project-blue), var(--hse-project-navy2));
+  box-shadow: 0 9px 20px color-mix(in srgb, var(--hse-project-blue) 22%, transparent);
   font-size: 0.73rem;
   font-weight: 850;
 }
@@ -651,9 +655,9 @@ form {
   gap: 10px;
   min-width: 0;
   padding: 14px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 10%, var(--main-border));
-  border-radius: 15px;
-  background: color-mix(in srgb, var(--surface-2) 50%, var(--surface-1));
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 10%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
+  background: color-mix(in srgb, var(--hse-project-surface-soft) 50%, var(--hse-project-surface));
   font-weight: 700;
   transition:
     border-color 0.2s ease,
@@ -664,8 +668,8 @@ form {
 .field:hover,
 .field:focus-within {
   transform: translateY(-1px);
-  border-color: color-mix(in srgb, var(--PrimaryColor) 34%, var(--main-border));
-  box-shadow: 0 10px 24px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
+  border-color: color-mix(in srgb, var(--hse-project-blue) 34%, var(--hse-project-line));
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--hse-project-navy) 7%, transparent);
 }
 
 .field-label {
@@ -673,7 +677,7 @@ form {
   align-items: center;
   gap: 9px;
   min-width: 0;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 0.8rem;
   font-weight: 800;
 }
@@ -684,13 +688,13 @@ form {
   width: 28px;
   height: 28px;
   flex: none;
-  border-radius: 9px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 10%, var(--surface-1));
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 10%, var(--hse-project-surface));
 }
 
 .field b {
-  color: var(--status-danger);
+  color: var(--hse-project-red);
 }
 
 input,
@@ -698,10 +702,10 @@ textarea {
   min-width: 0;
   min-height: 46px;
   padding: 11px 13px;
-  border-color: color-mix(in srgb, var(--PrimaryColor) 10%, var(--main-border));
-  border-radius: 11px;
-  color: var(--text-strong);
-  background: var(--surface-1);
+  border-color: color-mix(in srgb, var(--hse-project-blue) 10%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-ink);
+  background: var(--hse-project-surface);
 }
 
 textarea {
@@ -711,8 +715,8 @@ textarea {
 
 input:focus,
 textarea:focus {
-  border-color: var(--PrimaryColor);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 14%, transparent);
+  border-color: var(--hse-project-blue);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--hse-project-blue) 14%, transparent);
 }
 
 .field--select.updated-custom-input-select {
@@ -729,9 +733,9 @@ textarea:focus {
 .field--select :deep(.p-select) {
   width: 100%;
   min-height: 46px;
-  border-color: color-mix(in srgb, var(--PrimaryColor) 10%, var(--main-border));
-  border-radius: 11px;
-  background: var(--surface-1);
+  border-color: color-mix(in srgb, var(--hse-project-blue) 10%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-surface);
 }
 
 .field--select :deep(.p-select-label) {
@@ -742,7 +746,7 @@ textarea:focus {
 
 .field--select :deep(.p-select-dropdown) {
   width: 44px;
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 }
 
 .field :deep(.p-datepicker),
@@ -753,23 +757,23 @@ textarea:focus {
 
 .field :deep(.p-datepicker-input) {
   min-height: 46px;
-  border-color: color-mix(in srgb, var(--PrimaryColor) 10%, var(--main-border));
-  border-radius: 11px;
-  color: var(--text-strong);
-  background: var(--surface-1);
+  border-color: color-mix(in srgb, var(--hse-project-blue) 10%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-ink);
+  background: var(--hse-project-surface);
 }
 
 .field :deep(.p-datepicker-dropdown) {
   width: 46px;
   border-start-end-radius: 11px;
   border-end-end-radius: 11px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 8%, var(--surface-1));
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 8%, var(--hse-project-surface));
 }
 
 .field :deep(.p-datepicker:not(.p-disabled).p-focus .p-datepicker-input) {
-  border-color: var(--PrimaryColor);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 14%, transparent);
+  border-color: var(--hse-project-blue);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--hse-project-blue) 14%, transparent);
 }
 
 .evidence-layout {
@@ -781,11 +785,11 @@ textarea:focus {
 
 .upload-field {
   padding: 16px;
-  background: var(--surface-1);
+  background: var(--hse-project-surface);
 }
 
 .upload-field small {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.7rem;
 }
 
@@ -794,21 +798,21 @@ textarea:focus {
 }
 
 .upload-field :deep(.upload-label) {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 0.8rem;
   font-weight: 800;
 }
 
 .upload-field :deep(.upload-area) {
   min-height: 132px;
-  border: 1.5px dashed color-mix(in srgb, var(--PrimaryColor) 34%, var(--main-border));
-  border-radius: 14px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 4%, var(--surface-1));
+  border: 1.5px dashed color-mix(in srgb, var(--hse-project-blue) 34%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 4%, var(--hse-project-surface));
 }
 
 .upload-field :deep(.upload-area:hover:not(.disabled)) {
-  background: color-mix(in srgb, var(--PrimaryColor) 8%, var(--surface-1));
+  background: color-mix(in srgb, var(--hse-project-blue) 8%, var(--hse-project-surface));
 }
 
 .upload-field :deep(.upload-icon) {
@@ -816,14 +820,14 @@ textarea:focus {
   place-items: center;
   width: 38px;
   height: 38px;
-  border-radius: 12px;
-  color: var(--text-on-brand);
-  background: linear-gradient(145deg, var(--PrimaryColor), var(--brand-primary-700));
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-on-primary);
+  background: linear-gradient(145deg, var(--hse-project-blue), var(--hse-project-navy2));
   font-size: 1.15rem;
 }
 
 .upload-field :deep(.upload-text) {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
   font-weight: 750;
 }
 
@@ -832,12 +836,12 @@ textarea:focus {
   align-items: flex-start;
   gap: 11px;
   padding: 18px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
-  border-radius: 15px;
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 18%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
   background: linear-gradient(
     135deg,
-    color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1)),
-    var(--surface-1)
+    color-mix(in srgb, var(--hse-project-blue) 7%, var(--hse-project-surface)),
+    var(--hse-project-surface)
   );
 }
 
@@ -847,9 +851,9 @@ textarea:focus {
   width: 30px;
   height: 30px;
   flex: none;
-  border-radius: 10px;
-  color: var(--text-on-brand);
-  background: var(--PrimaryColor);
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-on-primary);
+  background: var(--hse-project-blue);
   font-family: serif;
   font-weight: 800;
 }
@@ -860,12 +864,12 @@ textarea:focus {
 }
 
 .evidence-note strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 0.82rem;
 }
 
 .evidence-note p {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.75rem;
   line-height: 1.55;
 }
@@ -876,10 +880,10 @@ textarea:focus {
   gap: 9px;
   margin: 0;
   padding: 13px 15px;
-  border-inline-start: 4px solid var(--status-danger);
-  border-radius: 11px;
-  color: var(--status-danger);
-  background: var(--status-danger-soft);
+  border-inline-start: 4px solid var(--hse-project-red);
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-red);
+  background: var(--hse-project-red-soft);
   font-weight: 700;
 }
 
@@ -890,7 +894,7 @@ textarea:focus {
   height: 22px;
   border-radius: 7px;
   color: white;
-  background: var(--status-danger);
+  background: var(--hse-project-red);
 }
 
 .form-footer {
@@ -900,8 +904,8 @@ textarea:focus {
   justify-content: space-between;
   margin: 0 calc(clamp(18px, 3vw, 30px) * -1) calc(clamp(18px, 3vw, 30px) * -1);
   padding: 16px clamp(18px, 3vw, 30px);
-  border-top: 1px solid var(--main-border);
-  background: color-mix(in srgb, var(--surface-1) 92%, transparent);
+  border-top: 1px solid var(--hse-project-line);
+  background: color-mix(in srgb, var(--hse-project-surface) 92%, transparent);
   backdrop-filter: blur(14px);
 }
 
@@ -916,9 +920,9 @@ textarea:focus {
   place-items: center;
   width: 32px;
   height: 32px;
-  border-radius: 10px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 10%, var(--surface-1));
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 10%, var(--hse-project-surface));
   font-weight: 850;
 }
 
@@ -928,12 +932,12 @@ textarea:focus {
 }
 
 .footer-note strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 0.78rem;
 }
 
 .footer-note small {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.68rem;
 }
 
@@ -945,10 +949,10 @@ textarea:focus {
 
 .cancel-button {
   padding: 11px 15px;
-  border: 1px solid var(--main-border);
-  border-radius: 11px;
-  color: var(--text-strong);
-  background: var(--surface-1);
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-ink);
+  background: var(--hse-project-surface);
 }
 
 .form-footer button {
@@ -958,10 +962,10 @@ textarea:focus {
   gap: 9px;
   min-height: 44px;
   padding: 11px 18px;
-  border-radius: 11px;
-  color: var(--text-on-brand);
-  background: linear-gradient(135deg, var(--PrimaryColor), var(--brand-primary-700));
-  box-shadow: 0 10px 22px color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-on-primary);
+  background: linear-gradient(135deg, var(--hse-project-blue), var(--hse-project-navy2));
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--hse-project-blue) 24%, transparent);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -969,14 +973,14 @@ textarea:focus {
 
 .form-footer button:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: 0 14px 28px color-mix(in srgb, var(--PrimaryColor) 30%, transparent);
+  box-shadow: 0 14px 28px color-mix(in srgb, var(--hse-project-blue) 30%, transparent);
 }
 
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 textarea:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+  outline: 3px solid color-mix(in srgb, var(--hse-project-blue) 24%, transparent);
   outline-offset: 2px;
 }
 
@@ -992,7 +996,7 @@ textarea:focus-visible {
   }
 
   .form-shell {
-    border-radius: 21px;
+    border-radius: var(--hse-project-radius-panel);
   }
 
   .form-header {
@@ -1006,7 +1010,7 @@ textarea:focus-visible {
   .header-icon {
     width: 52px;
     height: 52px;
-    border-radius: 16px;
+    border-radius: var(--hse-project-radius-panel);
   }
 
   .header-icon svg {
@@ -1019,7 +1023,7 @@ textarea:focus-visible {
 
   .form-section {
     padding: 16px;
-    border-radius: 16px;
+    border-radius: var(--hse-project-radius-panel);
   }
 
   .form-footer {

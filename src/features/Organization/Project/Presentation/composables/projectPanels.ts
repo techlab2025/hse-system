@@ -24,6 +24,7 @@ function syncPanels() {
         if (!panel || root.contains(panel) || ownedPanels.has(panel)) continue
         panel.classList.add('hse-project-overlay')
         if (control.closest('.hse-project-planning')) panel.classList.add('hse-project-planning')
+        if (control.closest('.hse-project-assurance')) panel.classList.add('hse-project-assurance')
         panel.dir = getComputedStyle(root).direction
         ownedPanels.set(panel, root)
       }
@@ -32,7 +33,7 @@ function syncPanels() {
   for (const [panel, root] of ownedPanels) {
     if (!panel.isConnected) ownedPanels.delete(panel)
     else if (!root.isConnected) {
-      panel.classList.remove('hse-project-overlay', 'hse-project-planning')
+      panel.classList.remove('hse-project-overlay', 'hse-project-planning', 'hse-project-assurance')
       panel.removeAttribute('dir')
       ownedPanels.delete(panel)
     }

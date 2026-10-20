@@ -33,7 +33,7 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
     modal
     :dismissable-mask="true"
     :style="{ width: 'min(920px, 96vw)' }"
-    class="hse-project-root hse-project-overlay risk-details-dialog"
+    class="hse-project-root hse-project-assurance hse-project-overlay risk-details-dialog"
     @update:visible="
       (value: boolean) => {
         if (!value) emit('close')
@@ -170,36 +170,36 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
 <style scoped>
 :deep(.risk-details-dialog) {
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
-  border-radius: 24px;
-  background: var(--surface-1);
-  box-shadow: 0 30px 90px color-mix(in srgb, var(--brand-primary-900) 24%, transparent);
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 18%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
+  background: var(--hse-project-surface);
+  box-shadow: 0 30px 90px color-mix(in srgb, var(--hse-project-navy) 24%, transparent);
 }
 :deep(.risk-details-dialog .p-dialog-header) {
   position: relative;
   overflow: hidden;
   padding: 23px clamp(20px, 4vw, 32px);
-  border-bottom: 1px solid color-mix(in srgb, var(--PrimaryColor) 14%, var(--main-border));
+  border-bottom: 1px solid color-mix(in srgb, var(--hse-project-blue) 14%, var(--hse-project-line));
   background:
     radial-gradient(
       circle at 88% 10%,
-      color-mix(in srgb, var(--PrimaryColor) 17%, transparent),
+      color-mix(in srgb, var(--hse-project-blue) 17%, transparent),
       transparent 30%
     ),
     linear-gradient(
       135deg,
-      color-mix(in srgb, var(--PrimaryColor) 8%, var(--surface-1)),
-      var(--surface-1)
+      color-mix(in srgb, var(--hse-project-blue) 8%, var(--hse-project-surface)),
+      var(--hse-project-surface)
     );
 }
 :deep(.risk-details-dialog .p-dialog-content) {
   padding: 0;
-  background: color-mix(in srgb, var(--surface-2) 70%, var(--surface-1));
+  background: color-mix(in srgb, var(--hse-project-surface-soft) 70%, var(--hse-project-surface));
 }
 :deep(.risk-details-dialog .p-dialog-close-button) {
   z-index: 1;
-  border: 1px solid var(--main-border);
-  background: var(--surface-1);
+  border: 1px solid var(--hse-project-line);
+  background: var(--hse-project-surface);
 }
 
 .dialog-heading {
@@ -213,10 +213,10 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
   width: 56px;
   height: 56px;
   flex: none;
-  border-radius: 17px;
-  color: var(--text-on-brand);
-  background: linear-gradient(145deg, var(--PrimaryColor), var(--brand-primary-700));
-  box-shadow: 0 11px 25px color-mix(in srgb, var(--PrimaryColor) 25%, transparent);
+  border-radius: var(--hse-project-radius-panel);
+  color: var(--hse-project-on-primary);
+  background: linear-gradient(145deg, var(--hse-project-blue), var(--hse-project-navy2));
+  box-shadow: 0 11px 25px color-mix(in srgb, var(--hse-project-blue) 25%, transparent);
 }
 .dialog-heading__icon svg {
   width: 28px;
@@ -226,7 +226,7 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
   stroke-linejoin: round;
 }
 .eyebrow {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
   font-size: 0.66rem;
   font-weight: 850;
   letter-spacing: 0.14em;
@@ -234,12 +234,12 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
 }
 .dialog-heading h2 {
   margin: 3px 0;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: clamp(1.25rem, 3vw, 1.65rem);
 }
 .dialog-heading p {
   margin: 0;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.8rem;
 }
 .dialog-content {
@@ -254,17 +254,17 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
   align-items: center;
   gap: 13px;
   padding: 22px;
-  border-radius: 16px;
+  border-radius: var(--hse-project-radius-panel);
 }
 .dialog-loading {
-  border: 1px dashed color-mix(in srgb, var(--PrimaryColor) 25%, var(--main-border));
-  background: var(--surface-1);
+  border: 1px dashed color-mix(in srgb, var(--hse-project-blue) 25%, var(--hse-project-line));
+  background: var(--hse-project-surface);
 }
 .loading-spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid color-mix(in srgb, var(--PrimaryColor) 18%, transparent);
-  border-top-color: var(--PrimaryColor);
+  border: 3px solid color-mix(in srgb, var(--hse-project-blue) 18%, transparent);
+  border-top-color: var(--hse-project-blue);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -280,23 +280,23 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
 }
 .dialog-loading strong,
 .dialog-error strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 .dialog-loading small {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 }
 .dialog-error {
-  color: var(--status-danger);
-  background: var(--status-danger-soft);
+  color: var(--hse-project-red);
+  background: var(--hse-project-red-soft);
 }
 .dialog-error > span {
   display: grid;
   place-items: center;
   width: 34px;
   height: 34px;
-  border-radius: 10px;
+  border-radius: var(--hse-project-radius-control);
   color: white;
-  background: var(--status-danger);
+  background: var(--hse-project-red);
   font-weight: 850;
 }
 
@@ -311,9 +311,9 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
   gap: 10px;
   min-width: 0;
   padding: 14px;
-  border: 1px solid var(--main-border);
-  border-radius: 15px;
-  background: var(--surface-1);
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
+  background: var(--hse-project-surface);
 }
 .overview-icon {
   display: grid;
@@ -321,9 +321,9 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
   width: 36px;
   height: 36px;
   flex: none;
-  border-radius: 11px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 10%, var(--surface-1));
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 10%, var(--hse-project-surface));
 }
 .overview-grid article > div {
   display: grid;
@@ -331,12 +331,12 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
   gap: 3px;
 }
 .overview-grid small {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.68rem;
 }
 .overview-grid strong {
   overflow: hidden;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 0.82rem;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -346,10 +346,10 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
   display: grid;
   gap: 15px;
   padding: 19px;
-  border: 1px solid var(--main-border);
-  border-radius: 18px;
-  background: var(--surface-1);
-  box-shadow: 0 8px 22px color-mix(in srgb, var(--brand-primary-900) 4%, transparent);
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
+  background: var(--hse-project-surface);
+  box-shadow: 0 8px 22px color-mix(in srgb, var(--hse-project-navy) 4%, transparent);
 }
 .section-heading {
   display: flex;
@@ -362,9 +362,9 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
   width: 38px;
   height: 38px;
   flex: none;
-  border-radius: 12px;
-  color: var(--text-on-brand);
-  background: linear-gradient(145deg, var(--PrimaryColor), var(--brand-primary-700));
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-on-primary);
+  background: linear-gradient(145deg, var(--hse-project-blue), var(--hse-project-navy2));
   font-size: 0.7rem;
   font-weight: 850;
 }
@@ -374,20 +374,20 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
 }
 .section-heading h3 {
   margin: 0;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 0.95rem;
 }
 .section-heading p {
   margin: 0;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.72rem;
 }
 .file-count {
   margin-inline-start: auto;
   padding: 6px 9px;
   border-radius: 999px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1));
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 9%, var(--hse-project-surface));
   font-size: 0.68rem;
   font-weight: 800;
 }
@@ -397,8 +397,8 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
   align-items: center;
   gap: 11px;
   padding: 13px;
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--surface-2) 68%, var(--surface-1));
+  border-radius: var(--hse-project-radius-panel);
+  background: color-mix(in srgb, var(--hse-project-surface-soft) 68%, var(--hse-project-surface));
 }
 .approver-avatar {
   display: grid;
@@ -406,9 +406,9 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
   width: 42px;
   height: 42px;
   flex: none;
-  border-radius: 13px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 11%, var(--surface-1));
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 11%, var(--hse-project-surface));
   font-weight: 850;
 }
 .approver-copy {
@@ -417,22 +417,22 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
   gap: 3px;
 }
 .approver-copy strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 .approver-copy span,
 .approver-phone {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.72rem;
 }
 .approver-phone {
   margin-inline-start: auto;
   padding: 7px 10px;
-  border-radius: 9px;
-  background: var(--surface-1);
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-surface);
 }
 .description-text {
   margin: 0;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   line-height: 1.7;
   white-space: pre-wrap;
 }
@@ -448,10 +448,10 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
   gap: 11px;
   min-width: 0;
   padding: 11px;
-  border: 1px solid var(--main-border);
-  border-radius: 13px;
-  color: var(--text-strong);
-  background: color-mix(in srgb, var(--surface-2) 65%, var(--surface-1));
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-ink);
+  background: color-mix(in srgb, var(--hse-project-surface-soft) 65%, var(--hse-project-surface));
   text-decoration: none;
   transition:
     border-color 0.2s ease,
@@ -460,8 +460,8 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
 }
 .media-card:hover {
   transform: translateY(-1px);
-  border-color: color-mix(in srgb, var(--PrimaryColor) 35%, var(--main-border));
-  box-shadow: 0 9px 20px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
+  border-color: color-mix(in srgb, var(--hse-project-blue) 35%, var(--hse-project-line));
+  box-shadow: 0 9px 20px color-mix(in srgb, var(--hse-project-navy) 6%, transparent);
 }
 .media-preview {
   display: grid;
@@ -470,9 +470,9 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
   width: 46px;
   height: 46px;
   flex: none;
-  border-radius: 11px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1));
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 9%, var(--hse-project-surface));
 }
 .media-preview img {
   width: 100%;
@@ -498,37 +498,37 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
   font-size: 0.78rem;
 }
 .media-copy small {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.66rem;
 }
 .open-icon {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
 }
 .media-empty {
   display: flex;
   align-items: center;
   gap: 11px;
   padding: 17px;
-  border: 1px dashed var(--main-border);
-  border-radius: 14px;
-  color: var(--text-soft);
-  background: var(--surface-2);
+  border: 1px dashed var(--hse-project-line);
+  border-radius: var(--hse-project-radius-panel);
+  color: var(--hse-project-muted);
+  background: var(--hse-project-surface-soft);
 }
 .media-empty > span {
   display: grid;
   place-items: center;
   width: 36px;
   height: 36px;
-  border-radius: 11px;
-  color: var(--PrimaryColor);
-  background: var(--surface-1);
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-blue);
+  background: var(--hse-project-surface);
 }
 .media-empty div {
   display: grid;
   gap: 3px;
 }
 .media-empty strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 0.8rem;
 }
 .media-empty small {
@@ -542,7 +542,7 @@ const mediaName = (media: RiskAssessmentMediaModel, index: number) =>
   .dialog-heading__icon {
     width: 48px;
     height: 48px;
-    border-radius: 15px;
+    border-radius: var(--hse-project-radius-panel);
   }
   .dialog-heading p {
     display: none;

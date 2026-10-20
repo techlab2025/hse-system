@@ -67,7 +67,7 @@ export default class IndexInspectionParams implements Params {
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.id) data['employee_ids'] = this.id
-    if (this.zoneIds) data['zone_ids'] = this.zoneIds
+    if (!this.isAudit && this.zoneIds) data['zone_ids'] = this.zoneIds
     if (this.isOverDue) data['is_over_due'] = this.isOverDue
     if (projectIds.length > 0) data['project_ids'] = projectIds
     if (this.taskId) data['task_id'] = this.taskId

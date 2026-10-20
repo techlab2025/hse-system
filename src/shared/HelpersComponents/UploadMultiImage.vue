@@ -95,9 +95,9 @@ const extraCount = computed(() => images.value.length - 3)
   min-height: 88px;
   gap: 14px;
   padding: 14px 16px;
-  border: 1px dashed color-mix(in srgb, var(--brand-primary-600, #1d4ed8) 42%, transparent);
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--brand-primary-600, #1d4ed8) 5%, transparent);
+  border: 1px dashed color-mix(in srgb, var(--identity-primary) 42%, transparent);
+  border-radius: var(--hse-radius-card);
+  background: color-mix(in srgb, var(--identity-primary) 5%, transparent);
   transition:
     border-color 180ms ease,
     background 180ms ease,
@@ -105,8 +105,8 @@ const extraCount = computed(() => images.value.length - 3)
 }
 
 .multi-image-upload--evidence .upload-trigger:hover {
-  border-color: var(--brand-primary-600, #1d4ed8);
-  background: color-mix(in srgb, var(--brand-primary-600, #1d4ed8) 9%, transparent);
+  border-color: var(--identity-primary);
+  background: color-mix(in srgb, var(--identity-primary) 9%, transparent);
   transform: translateY(-1px);
 }
 
@@ -117,8 +117,8 @@ const extraCount = computed(() => images.value.length - 3)
   flex: 0 0 48px;
   place-items: center;
   border-radius: 14px;
-  background: var(--surface-card, #fff);
-  box-shadow: 0 8px 24px rgb(29 78 216 / 12%);
+  background: var(--hse-color-surface);
+  box-shadow: var(--hse-shadow-sm);
 }
 
 .upload-copy {
@@ -129,12 +129,12 @@ const extraCount = computed(() => images.value.length - 3)
 }
 
 .upload-copy strong {
-  color: var(--text-color, #172033);
+  color: var(--hse-color-text);
   font-size: 0.92rem;
 }
 
 .upload-copy small {
-  color: var(--text-color-secondary, #667085);
+  color: var(--hse-color-text-muted);
   font-size: 0.78rem;
 }
 
@@ -146,9 +146,9 @@ const extraCount = computed(() => images.value.length - 3)
   width: 100%;
   justify-content: space-between;
   padding: 10px;
-  border: 1px solid color-mix(in srgb, var(--brand-primary-600, #1d4ed8) 22%, transparent);
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--brand-primary-600, #1d4ed8) 4%, transparent);
+  border: 1px solid color-mix(in srgb, var(--identity-primary) 22%, transparent);
+  border-radius: var(--hse-radius-card);
+  background: color-mix(in srgb, var(--identity-primary) 4%, transparent);
 }
 
 .preview-grid {
@@ -161,7 +161,7 @@ const extraCount = computed(() => images.value.length - 3)
   width: 54px;
   height: 54px;
   overflow: hidden;
-  border-radius: 12px;
+  border-radius: var(--hse-control-radius);
 }
 
 .preview-tile img {
@@ -182,15 +182,15 @@ const extraCount = computed(() => images.value.length - 3)
 
 .replace-trigger {
   gap: 8px;
-  color: var(--brand-primary-700, #1d4ed8);
+  color: var(--identity-primary);
   font-size: 0.82rem;
   font-weight: 700;
 }
 
 .multi-image-upload--evidence .replace-trigger {
   padding: 8px 10px;
-  border-radius: 12px;
-  background: var(--surface-card, #fff);
+  border-radius: var(--hse-control-radius);
+  background: var(--hse-color-surface);
 }
 
 .replace-trigger .image-upload {

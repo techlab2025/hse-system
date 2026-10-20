@@ -127,7 +127,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main data-hse-project v-project-panels class="hse-project-root hse-project-page report-page">
+  <main
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-assurance hse-project-page report-page"
+  >
     <!-- <header class="report-hero">
       <div class="report-hero__content">
         <span class="report-hero__icon" aria-hidden="true">
@@ -245,7 +249,7 @@ onMounted(async () => {
                   <button
                     :aria-label="$t('delete')"
                     type="button"
-                    class="hse-project-button--icon hse-project-button hse-project-button--danger remove-button"
+                    class="hse-project-button hse-project-button--danger remove-button"
                     :disabled="improvements.length === 1"
                     @click="improvements.splice(index, 1)"
                   >
@@ -391,10 +395,10 @@ onMounted(async () => {
   /* background:
     radial-gradient(
       circle at 8% 4%,
-      color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+      color-mix(in srgb, var(--hse-project-blue) 7%, transparent),
       transparent 24rem
     ),
-    var(--surface-2); */
+    var(--hse-project-surface-soft); */
 }
 
 .report-hero {
@@ -404,12 +408,12 @@ onMounted(async () => {
   gap: 22px;
   overflow: hidden;
   padding: clamp(26px, 4vw, 42px);
-  border-radius: 26px;
+  border-radius: var(--hse-project-radius-panel);
   color: white;
   background:
     radial-gradient(circle at 88% 8%, color-mix(in srgb, white 13%, transparent), transparent 30%),
-    linear-gradient(125deg, var(--brand-primary-900), var(--PrimaryColor));
-  box-shadow: 0 22px 52px color-mix(in srgb, var(--brand-primary-900) 19%, transparent);
+    linear-gradient(125deg, var(--hse-project-navy), var(--hse-project-blue));
+  box-shadow: 0 22px 52px color-mix(in srgb, var(--hse-project-navy) 19%, transparent);
 }
 
 .report-hero__content,
@@ -433,7 +437,7 @@ onMounted(async () => {
   height: 66px;
   flex: none;
   border: 1px solid color-mix(in srgb, white 22%, transparent);
-  border-radius: 20px;
+  border-radius: var(--hse-project-radius-panel);
   background: color-mix(in srgb, white 12%, transparent);
 }
 
@@ -446,7 +450,7 @@ onMounted(async () => {
 }
 
 .eyebrow {
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
   font-size: 0.68rem;
   font-weight: 850;
   letter-spacing: 0.14em;
@@ -454,7 +458,7 @@ onMounted(async () => {
 }
 
 .report-hero .eyebrow {
-  color: color-mix(in srgb, white 72%, var(--PrimaryColor));
+  color: color-mix(in srgb, white 72%, var(--hse-project-blue));
 }
 
 .report-hero h1 {
@@ -471,7 +475,7 @@ onMounted(async () => {
   flex: none;
   padding: 11px 15px;
   border: 1px solid color-mix(in srgb, white 22%, transparent);
-  border-radius: 12px;
+  border-radius: var(--hse-project-radius-control);
   color: white;
   background: color-mix(in srgb, white 10%, transparent);
   font-weight: 750;
@@ -490,9 +494,9 @@ onMounted(async () => {
 .form-footer,
 .loader-card,
 .page-state {
-  border: 1px solid var(--main-border);
-  background: var(--surface-1);
-  box-shadow: 0 12px 34px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
+  border: 1px solid var(--hse-project-line);
+  background: var(--hse-project-surface);
+  box-shadow: 0 12px 34px color-mix(in srgb, var(--hse-project-navy) 6%, transparent);
 }
 
 .visit-context {
@@ -501,12 +505,12 @@ onMounted(async () => {
   justify-content: space-between;
   gap: 18px;
   padding: 17px 20px;
-  border-color: color-mix(in srgb, var(--PrimaryColor) 20%, var(--main-border));
-  border-radius: 18px;
+  border-color: color-mix(in srgb, var(--hse-project-blue) 20%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
   background: linear-gradient(
     110deg,
-    color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1)),
-    var(--surface-1)
+    color-mix(in srgb, var(--hse-project-blue) 9%, var(--hse-project-surface)),
+    var(--hse-project-surface)
   );
 }
 
@@ -520,12 +524,12 @@ onMounted(async () => {
 }
 
 .visit-context__main strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 1rem;
 }
 
 .visit-context__main small {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 }
 
 .visit-context__pin {
@@ -534,9 +538,9 @@ onMounted(async () => {
   width: 44px;
   height: 44px;
   flex: none;
-  border-radius: 13px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 12%, var(--surface-1));
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 12%, var(--hse-project-surface));
   font-size: 1.3rem;
   font-weight: 900;
 }
@@ -554,8 +558,8 @@ onMounted(async () => {
   gap: 6px;
   padding: 8px 11px;
   border-radius: 999px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1));
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 7%, var(--hse-project-surface));
   font-size: 0.78rem;
   font-weight: 800;
 }
@@ -570,9 +574,9 @@ onMounted(async () => {
   gap: 9px;
   margin: 0;
   padding: 13px 15px;
-  border-radius: 12px;
-  color: var(--status-danger);
-  background: var(--status-danger-soft);
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-red);
+  background: var(--hse-project-red-soft);
   font-weight: 750;
 }
 
@@ -581,16 +585,16 @@ onMounted(async () => {
   place-items: center;
   width: 24px;
   height: 24px;
-  border-radius: 8px;
+  border-radius: var(--hse-project-radius-control);
   color: white;
-  background: var(--status-danger);
+  background: var(--hse-project-red);
 }
 
 .form-section {
   display: grid;
   gap: 20px;
   padding: clamp(19px, 3vw, 28px);
-  border-radius: 20px;
+  border-radius: var(--hse-project-radius-panel);
 }
 
 .section-title {
@@ -613,22 +617,22 @@ onMounted(async () => {
   width: 43px;
   height: 43px;
   flex: none;
-  border-radius: 13px;
-  color: var(--text-on-brand);
-  background: linear-gradient(145deg, var(--PrimaryColor), var(--brand-primary-700));
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-on-primary);
+  background: linear-gradient(145deg, var(--hse-project-blue), var(--hse-project-navy2));
   font-size: 0.74rem;
   font-weight: 850;
 }
 
 .section-title h2 {
   margin: 0 0 4px;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 1.08rem;
 }
 
 .section-title p {
   margin: 0;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.82rem;
 }
 
@@ -650,13 +654,13 @@ onMounted(async () => {
 }
 
 .field__label {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 0.82rem;
   font-weight: 800;
 }
 
 .field__label b {
-  color: var(--status-danger);
+  color: var(--hse-project-red);
 }
 
 .field input,
@@ -664,11 +668,11 @@ onMounted(async () => {
   width: 100%;
   min-width: 0;
   padding: 12px 14px !important;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 10%, var(--main-border));
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 10%, var(--hse-project-line));
   border-radius: 12px !important;
   outline: 0;
-  color: var(--text-strong);
-  background: color-mix(in srgb, var(--surface-2) 48%, var(--surface-1));
+  color: var(--hse-project-ink);
+  background: color-mix(in srgb, var(--hse-project-surface-soft) 48%, var(--hse-project-surface));
   font: inherit;
   font-weight: 500;
   transition:
@@ -679,9 +683,9 @@ onMounted(async () => {
 
 .field input:focus,
 .field textarea:focus {
-  border-color: var(--PrimaryColor);
-  background: var(--surface-1);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--PrimaryColor) 13%, transparent);
+  border-color: var(--hse-project-blue);
+  background: var(--hse-project-surface);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--hse-project-blue) 13%, transparent);
 }
 
 .field textarea {
@@ -708,9 +712,9 @@ onMounted(async () => {
   position: relative;
   overflow: hidden;
   padding: 18px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 13%, var(--main-border));
-  border-radius: 17px;
-  background: color-mix(in srgb, var(--surface-2) 67%, var(--surface-1));
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 13%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
+  background: color-mix(in srgb, var(--hse-project-surface-soft) 67%, var(--hse-project-surface));
 }
 
 .improvement-card::before {
@@ -719,7 +723,7 @@ onMounted(async () => {
   inset-block: 0;
   inset-inline-start: 0;
   width: 3px;
-  background: var(--PrimaryColor);
+  background: var(--hse-project-blue);
 }
 
 .improvement-card__heading {
@@ -738,11 +742,11 @@ onMounted(async () => {
 }
 
 .improvement-card__heading strong {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 
 .improvement-card__heading small {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.72rem;
 }
 
@@ -751,9 +755,9 @@ onMounted(async () => {
   place-items: center;
   width: 36px;
   height: 36px;
-  border-radius: 11px;
-  color: var(--PrimaryColor);
-  background: var(--surface-1);
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-blue);
+  background: var(--hse-project-surface);
   font-size: 0.72rem;
   font-weight: 850;
 }
@@ -764,9 +768,9 @@ onMounted(async () => {
   gap: 5px;
   padding: 8px 10px;
   border: 0;
-  border-radius: 9px;
-  color: var(--status-danger);
-  background: var(--status-danger-soft);
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-red);
+  background: var(--hse-project-red-soft);
   cursor: pointer;
   font: inherit;
   font-weight: 750;
@@ -782,10 +786,10 @@ onMounted(async () => {
   align-items: center;
   gap: 7px;
   padding: 10px 13px;
-  border: 1px dashed var(--PrimaryColor);
-  border-radius: 11px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 6%, var(--surface-1));
+  border: 1px dashed var(--hse-project-blue);
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 6%, var(--hse-project-surface));
   cursor: pointer;
   font: inherit;
   font-weight: 800;
@@ -795,13 +799,13 @@ onMounted(async () => {
   display: grid;
   gap: 8px;
   padding: 16px;
-  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 12%, var(--main-border));
-  border-radius: 15px;
-  background: color-mix(in srgb, var(--surface-2) 55%, var(--surface-1));
+  border: 1px solid color-mix(in srgb, var(--hse-project-blue) 12%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-panel);
+  background: color-mix(in srgb, var(--hse-project-surface-soft) 55%, var(--hse-project-surface));
 }
 
 .report-upload-field > small {
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
   font-size: 0.75rem;
 }
 
@@ -810,7 +814,7 @@ onMounted(async () => {
 }
 
 .report-upload-field :deep(.upload-label) {
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
   font-size: 0.82rem;
   font-weight: 800;
 }
@@ -822,10 +826,10 @@ onMounted(async () => {
   gap: 9px;
   min-height: 92px;
   padding: 18px;
-  border: 1px dashed color-mix(in srgb, var(--PrimaryColor) 42%, var(--main-border));
-  border-radius: 13px;
-  color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 5%, var(--surface-1));
+  border: 1px dashed color-mix(in srgb, var(--hse-project-blue) 42%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-control);
+  color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 5%, var(--hse-project-surface));
   cursor: pointer;
   transition:
     border-color 0.2s ease,
@@ -834,8 +838,8 @@ onMounted(async () => {
 }
 
 .report-upload-field :deep(.report-file-input:hover:not(.disabled)) {
-  border-color: var(--PrimaryColor);
-  background: color-mix(in srgb, var(--PrimaryColor) 9%, var(--surface-1));
+  border-color: var(--hse-project-blue);
+  background: color-mix(in srgb, var(--hse-project-blue) 9%, var(--hse-project-surface));
   transform: translateY(-1px);
 }
 
@@ -851,9 +855,9 @@ onMounted(async () => {
 .report-upload-field :deep(.preview-item) {
   width: 112px;
   height: 112px;
-  border-color: color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
-  border-radius: 13px;
-  background: var(--surface-1);
+  border-color: color-mix(in srgb, var(--hse-project-blue) 18%, var(--hse-project-line));
+  border-radius: var(--hse-project-radius-control);
+  background: var(--hse-project-surface);
 }
 
 .form-footer {
@@ -864,8 +868,8 @@ onMounted(async () => {
   justify-content: flex-end;
   gap: 10px;
   padding: 15px;
-  border-radius: 16px;
-  background: color-mix(in srgb, var(--surface-1) 90%, transparent);
+  border-radius: var(--hse-project-radius-panel);
+  background: color-mix(in srgb, var(--hse-project-surface) 90%, transparent);
   backdrop-filter: blur(14px);
 }
 
@@ -876,8 +880,8 @@ onMounted(async () => {
   gap: 8px;
   min-height: 45px;
   padding: 11px 18px;
-  border: 1px solid var(--main-border);
-  border-radius: 11px;
+  border: 1px solid var(--hse-project-line);
+  border-radius: var(--hse-project-radius-control);
   cursor: pointer;
   font: inherit;
   font-weight: 800;
@@ -885,15 +889,15 @@ onMounted(async () => {
 }
 
 .button--quiet {
-  color: var(--text-strong);
-  background: var(--surface-1);
+  color: var(--hse-project-ink);
+  background: var(--hse-project-surface);
 }
 
 .button--primary {
-  color: var(--text-on-brand);
-  border-color: var(--PrimaryColor);
-  background: linear-gradient(135deg, var(--PrimaryColor), var(--brand-primary-700));
-  box-shadow: 0 10px 22px color-mix(in srgb, var(--PrimaryColor) 23%, transparent);
+  color: var(--hse-project-on-primary);
+  border-color: var(--hse-project-blue);
+  background: linear-gradient(135deg, var(--hse-project-blue), var(--hse-project-navy2));
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--hse-project-blue) 23%, transparent);
 }
 
 .button:disabled {
@@ -906,7 +910,7 @@ onMounted(async () => {
   width: min(1120px, 100%);
   margin-inline: auto;
   padding: clamp(22px, 4vw, 40px);
-  border-radius: 20px;
+  border-radius: var(--hse-project-radius-panel);
 }
 
 .page-state {
@@ -921,31 +925,31 @@ onMounted(async () => {
   place-items: center;
   width: 52px;
   height: 52px;
-  border-radius: 16px;
+  border-radius: var(--hse-project-radius-panel);
   color: white;
-  background: var(--status-success);
+  background: var(--hse-project-green);
   font-size: 1.4rem;
   font-weight: 900;
 }
 
 .page-state h2 {
   margin: 4px 0 0;
-  color: var(--text-strong);
+  color: var(--hse-project-ink);
 }
 
 .page-state p {
   margin: 0;
-  color: var(--text-soft);
+  color: var(--hse-project-muted);
 }
 
 .page-state a {
   margin-top: 6px;
-  color: var(--PrimaryColor);
+  color: var(--hse-project-blue);
   font-weight: 800;
 }
 
 .page-state--error > span {
-  background: var(--status-danger);
+  background: var(--hse-project-red);
 }
 
 @media (max-width: 720px) {
@@ -977,7 +981,7 @@ onMounted(async () => {
   .report-hero__icon {
     width: 52px;
     height: 52px;
-    border-radius: 16px;
+    border-radius: var(--hse-project-radius-panel);
   }
 
   .form-section {
