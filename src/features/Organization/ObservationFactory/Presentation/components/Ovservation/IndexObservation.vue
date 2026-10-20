@@ -93,8 +93,8 @@ const fetchHazard = async (
   withPage = 1,
   projectZoneLozationId?: number[],
   projectLocationIds?: number[],
-  zoonIds?: number[],
-  projectIds?: number,
+  zoonIds: number[] = SelectedZonesFilter.value,
+  projectIds: number | undefined = selectedProjctesFilters.value,
 ) => {
   if (!canViewObservations.value) return
   const params = new IndexHazardParams(
@@ -278,6 +278,9 @@ const FetchMyProjects = async () => {
     const res = await fetchMyProjectsController.getData(fetchMyProjectsParams, router, true)
     if (res.value.data) {
       Projects.value = res.value.data
+      if (Projects.value.length === 1 && !selectedProjctesFilters.value) {
+        setSelectedProjectFilter(Projects.value[0].id)
+      }
     }
   } finally {
     isProjectsLoading.value = false
@@ -300,10 +303,15 @@ const observationCreateLink = computed(() => {
 const Filters = ref<MyZonesModel[]>()
 const fetchMyZonesController = FetchMyZonesController.getInstance()
 const FetchMyZones = async () => {
-  const fetchMyZonesParams = new FetchMyZonesParams(selectedProjctesFilters.value)
+  const projectId = selectedProjctesFilters.value
+  Filters.value = []
+  if (!projectId) return
+  const fetchMyZonesParams = new FetchMyZonesParams(projectId)
   const response = await fetchMyZonesController.FetchMyZones(fetchMyZonesParams, router)
-  if (response.value.data) {
-    Filters.value = response.value.data
+  if (projectId !== selectedProjctesFilters.value) return
+  Filters.value = response.value.data ?? []
+  if (Filters.value.length === 1) {
+    ApplayFilter([Filters.value[0].ProjectZoneId])
   }
 }
 
@@ -316,9 +324,9 @@ const ApplayFilter = (data: number[]) => {
 const setSelectedProjectFilter = (data?: number) => {
   selectedProjctesFilters.value = data
   SelectedZonesFilter.value = []
+  Filters.value = []
 
   if (!data) {
-    Filters.value = []
     fetchHazard('', 1, 10, 1)
     return
   }
@@ -471,6 +479,7 @@ const canCreateRecord = computed(() =>
               :title="isReportView ? 'observation report' : 'observation'"
               :length="state?.pagination?.total || 0"
               :projects="Projects"
+              :selected-project-id="selectedProjctesFilters"
               :isProjectsLoading="isProjectsLoading"
               subtitle="Manage, filter, and review workplace observations"
               variant="observation"
@@ -544,6 +553,7 @@ const canCreateRecord = computed(() =>
                   :key="selectedProjctesFilters"
                   class="observation-zone-filter"
                   :filters="Filters"
+                  :selected-zone-ids="SelectedZonesFilter"
                   @update:data="ApplayFilter"
                   :link="observationCreateLink"
                   :linkText="'Create Observation'"

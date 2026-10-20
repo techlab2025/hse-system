@@ -13,6 +13,7 @@ const props = defineProps<{
   title: string
   length: number
   projects: ProjectModel[]
+  selectedProjectId?: number
   isProjectsLoading?: boolean
   subtitle?: string
   variant?: 'observation' | 'incident'
@@ -70,7 +71,10 @@ const hasSelectedProject = computed(
       </div>
     </div>
 
-    <div v-if="!hasSelectedProject" class="project-filter-content project-filter-panel">
+    <div
+      v-if="!hasSelectedProject && (isProjectsLoading || projects?.length)"
+      class="project-filter-content project-filter-panel"
+    >
       <div v-if="isProjectsLoading" class="projects-filter-skeleton" aria-hidden="true">
         <span v-for="item in 4" :key="item"></span>
       </div>
@@ -78,6 +82,9 @@ const hasSelectedProject = computed(
         v-else
         class="noborder"
         :projects="projects"
+        :controlled="true"
+        :show-single-project="true"
+        :selected-project-id="selectedProjectId ?? ActiveTap"
         @update:data="UpdateData"
       />
     </div>

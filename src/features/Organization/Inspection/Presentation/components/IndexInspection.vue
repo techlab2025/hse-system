@@ -637,6 +637,9 @@ const FetchMyProjects = async () => {
 
   if (res.value.data) {
     Projects.value = res.value.data
+    if (Projects.value.length === 1 && !selectedProjctesFilters.value) {
+      setSelectedProjectFilter(Projects.value[0].id)
+    }
   }
 }
 
@@ -651,13 +654,17 @@ const Filters = ref<MyZonesModel[]>()
 const fetchMyZonesController = FetchMyZonesController.getInstance()
 
 const FetchMyZones = async () => {
-  const params = new FetchMyZonesParams(selectedProjctesFilters.value)
+  const projectId = selectedProjctesFilters.value
+  Filters.value = []
+  const params = new FetchMyZonesParams(projectId)
 
-  if (selectedProjctesFilters.value) {
+  if (projectId) {
     const response = await fetchMyZonesController.FetchMyZones(params, router)
 
-    if (response.value.data) {
-      Filters.value = response.value.data
+    if (projectId !== selectedProjctesFilters.value) return
+    Filters.value = response.value.data ?? []
+    if (Filters.value.length === 1) {
+      ApplayFilter([Filters.value[0].id])
     }
   } else {
     Filters.value = []
@@ -882,6 +889,7 @@ const canCreateRecord = computed(() =>
                 class="inspection-zone-filter"
                 :SelectdProject="selectedProjctesFilters"
                 :filters="Filters"
+                :selected-zone-ids="SelectedZonesFilter"
                 @update:data="ApplayFilter"
                 link=""
                 :linkTitle="'Create Inspection'"

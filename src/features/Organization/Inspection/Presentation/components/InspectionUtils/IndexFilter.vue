@@ -1,29 +1,27 @@
 <script setup lang="ts">
 import type MyZonesModel from '@/features/Organization/ObservationFactory/Data/models/MyZonesModel'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useThemeMode } from '@/composables/useThemeMode'
 const emit = defineEmits(['update:data'])
 const { isDarkMode } = useThemeMode()
 
 const props = defineProps<{
   filters: MyZonesModel[]
+  selectedZoneIds?: number[]
   link: string
   linkTitle: string
   SelectdProject: number[]
 }>()
 
-const SelectedFilter = ref<number[]>([])
+const localSelectedFilter = ref<number[]>([])
+const SelectedFilter = computed(() => props.selectedZoneIds ?? localSelectedFilter.value)
 
 const UpdateData = (data: number) => {
-  console.log(data, 'zonw dta')
-  if (SelectedFilter.value.includes(data)) {
-    SelectedFilter.value = SelectedFilter.value.filter((i) => i !== data)
-    emit('update:data', SelectedFilter.value)
-    return
-  }
-
-  SelectedFilter.value.push(data)
-  emit('update:data', SelectedFilter.value)
+  const selection = SelectedFilter.value.includes(data)
+    ? SelectedFilter.value.filter((id) => id !== data)
+    : [...SelectedFilter.value, data]
+  localSelectedFilter.value = selection
+  emit('update:data', selection)
 }
 </script>
 <template>

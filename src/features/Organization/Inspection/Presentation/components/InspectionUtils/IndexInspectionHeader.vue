@@ -60,12 +60,13 @@ const { isDarkMode } = useThemeMode()
       </div>
     </div>
 
-    <div class="inspection-project-panel" v-if="!isProject">
+    <div class="inspection-project-panel" v-if="!isProject && projects?.length">
       <HeaderProjectsFilter
         class="noborder"
         :projects="projects"
         :selected-project-id="selectedProjectId"
         :controlled="true"
+        :show-single-project="true"
         @update:data="emit('update:data', $event)"
       />
     </div>

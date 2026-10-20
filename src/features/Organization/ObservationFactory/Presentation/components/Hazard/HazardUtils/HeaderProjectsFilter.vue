@@ -9,6 +9,7 @@ const emit = defineEmits<{
 const props = defineProps<{
   projects: ProjectModel[]
   isForm?: boolean
+  showSingleProject?: boolean
   controlled?: boolean
   selectedProjectId?: number
 }>()
@@ -27,7 +28,7 @@ const ActiveTap = ref<number | undefined>(
 const AllProjects = ref(props.projects)
 
 const UpdateData = (Id?: number) => {
-  if (!props.isForm && ActiveTap.value === Id) {
+  if (!props.isForm && props.projects.length > 1 && ActiveTap.value === Id) {
     ActiveTap.value = undefined
     emit('update:data', undefined)
     return
@@ -71,7 +72,7 @@ watch(
   <div
     v-if="
       AllProjects &&
-      (props.isForm ? AllProjects.length > 0 : AllProjects.length > 1) &&
+      (props.isForm || props.showSingleProject ? AllProjects.length > 0 : AllProjects.length > 1) &&
       ProjectStore.showProjectsFilter()
     "
     class="idnex-header noborder"
@@ -103,7 +104,7 @@ watch(
     <div class="project-filter-controls">
       <div class="categories-container">
         <button
-          v-if="!props.isForm"
+          v-if="!props.isForm && AllProjects.length > 1"
           type="button"
           class="category"
           :class="{ active: ActiveTap === undefined }"
