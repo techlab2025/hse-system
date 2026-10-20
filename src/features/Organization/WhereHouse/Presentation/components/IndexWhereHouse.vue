@@ -30,7 +30,6 @@ const indexWhereHouseController = IndexWhereHouseController.getInstance()
 const state = ref(indexWhereHouseController.state.value)
 const route = useRoute()
 
-
 const fetchWhereHouse = async (
   query: string = '',
   pageNumber: number = 1,
@@ -119,12 +118,20 @@ watch(
       <span class="icon-remove" @click="((word = ''), searchWhereHouse())">
         <Search />
       </span>
-      <input v-model="word" :placeholder="$t('search')" class="input" type="text" @input="searchWhereHouse" />
+      <input
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        type="text"
+        @input="searchWhereHouse"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <!-- <ExportExcel :data="state.data" /> -->
       <ExportPdf />
-      <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_CREATE]">
+      <PermissionBuilder
+        :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_CREATE]"
+      >
         <router-link to="/organization/where-house/add" class="btn btn-primary">
           {{ $t('add_warehouse') }}
         </router-link>
@@ -132,14 +139,16 @@ watch(
     </div>
   </div>
 
-  <PermissionBuilder :code="[
-    PermissionsEnum.ORGANIZATION_EMPLOYEE,
-    PermissionsEnum.WHIERE_HOUSE_ALL,
-    PermissionsEnum.WHIERE_HOUSE_DELETE,
-    PermissionsEnum.WHIERE_HOUSE_FETCH,
-    PermissionsEnum.WHIERE_HOUSE_UPDATE,
-    PermissionsEnum.WHIERE_HOUSE_CREATE,
-  ]">
+  <PermissionBuilder
+    :code="[
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.WHIERE_HOUSE_ALL,
+      PermissionsEnum.WHIERE_HOUSE_DELETE,
+      PermissionsEnum.WHIERE_HOUSE_FETCH,
+      PermissionsEnum.WHIERE_HOUSE_UPDATE,
+      PermissionsEnum.WHIERE_HOUSE_CREATE,
+    ]"
+  >
     <DataStatus :controller="state">
       <template #success>
         <div class="table-responsive">
@@ -148,7 +157,7 @@ watch(
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">{{ $t('title') }}</th>
-                <th scope="col">{{ $t('wherehouse Type') }}</th>
+                <th scope="col">{{ $t('Warehouse Type') }}</th>
                 <!-- <th scope="col">{{ $t('actions') }}</th> -->
                 <th class="empty"></th>
               </tr>
@@ -156,19 +165,27 @@ watch(
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link :to="`/organization/where-house/${item.id}`">{{ index + 1 }}
+                  <router-link :to="`/organization/where-house/${item.id}`"
+                    >{{ index + 1 }}
                   </router-link>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
                 <td data-label="Wherehouse Type">{{ wordSlice(item?.warehouse_type?.title) }}</td>
                 <td data-label="Actions">
-                  <DropList :actionList="actionList(item.id, deleteWhereHouse)" @delete="deleteWhereHouse(item.id)" />
+                  <DropList
+                    :actionList="actionList(item.id, deleteWhereHouse)"
+                    @delete="deleteWhereHouse(item.id)"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <Pagination :pagination="state.pagination" @changePage="handleChangePage" @countPerPage="handleCountPerPage" />
+        <Pagination
+          :pagination="state.pagination"
+          @changePage="handleChangePage"
+          @countPerPage="handleCountPerPage"
+        />
       </template>
       <template #loader>
         <TableLoader :cols="3" :rows="10" />
@@ -177,27 +194,37 @@ watch(
         <TableLoader :cols="3" :rows="10" />
       </template>
       <template #empty>
-        <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_CREATE]">
-
-          <DataEmpty :link="`/organization/where-house/add`" addText="Add WhereHouse"
-            description="You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
-            title="You have No WhereHouse" />
+        <PermissionBuilder
+          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_CREATE]"
+        >
+          <DataEmpty
+            :link="`/organization/where-house/add`"
+            addText="Add Warehouse"
+            description="You have no Warehouse .. All your joined customers will appear here when you add your customer data"
+            title="You have No Warehouse"
+          />
         </PermissionBuilder>
       </template>
       <template #failed>
-        <PermissionBuilder :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_CREATE]">
-
-          <DataFailed :link="`/organization/where-house/add`" addText="Add WhereHouse"
-            description="You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
-            title="You have No WhereHouse" />
+        <PermissionBuilder
+          :code="[PermissionsEnum?.ORGANIZATION_EMPLOYEE, PermissionsEnum?.WHIERE_HOUSE_CREATE]"
+        >
+          <DataFailed
+            :link="`/organization/where-house/add`"
+            addText="Add Warehouse"
+            description="You have no Warehouse .. All your joined customers will appear here when you add your customer data"
+            title="You have No Warehouse"
+          />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
-      <DataFailed addText="Have not  Permission"
-        description="You have no WhereHouse .. All your joined customers will appear here when you add your customer data"
-        link="" />
+      <DataFailed
+        addText="Have not  Permission"
+        description="You have no Warehouse .. All your joined customers will appear here when you add your customer data"
+        link=""
+      />
     </template>
   </PermissionBuilder>
 </template>

@@ -115,8 +115,8 @@ const GetObservationType = (type: number) => {
   switch (type) {
     case Observation.ObservationType:
       return 'Observation'
-      case Observation.AccidentsType:
-        return 'incident'
+    case Observation.AccidentsType:
+      return 'incident'
     case Observation.HazardType:
       return 'Observation'
   }
@@ -267,7 +267,7 @@ watch(
                           <strong>{{ item?.observer?.name || '—' }}</strong>
                         </div>
                       </div> -->
-<!--
+                      <!--
                       <div class="capa-meta-item">
                         <span class="capa-meta-icon zone-symbol" aria-hidden="true"></span>
                         <div>
@@ -322,11 +322,8 @@ watch(
                     </span>
 
                     <div class="capa-card-actions">
-                      <router-link
-                        :to="getSourceDetailsPath(item)"
-                        class="source-details-btn"
-                      >
-                      <!-- observation type -->
+                      <router-link :to="getSourceDetailsPath(item)" class="source-details-btn">
+                        <!-- observation type -->
                         <span>{{ $t(`${getSourceType(item)} Details`) }}</span>
                         <span class="button-arrow" aria-hidden="true">↗</span>
                       </router-link>
@@ -366,6 +363,7 @@ watch(
               <DataEmpty
                 description="You have no CAPA .. All your joined customers will appear here when you add your customer data"
                 :link="`/organization`"
+                :withbtn="false"
                 title="You have No CAPA"
               />
             </PermissionBuilder>
@@ -380,6 +378,7 @@ watch(
               <DataFailed
                 description="You have no CAPA .. All your joined customers will appear here when you add your customer data"
                 :link="`/organization`"
+                :withbtn="false"
                 title="You have No CAPA"
               />
             </PermissionBuilder>
@@ -388,6 +387,7 @@ watch(
         <template #notPermitted>
           <DataFailed
             addText="Have not  Permission"
+            :withbtn="false"
             description="You have no Observation .. All your joined customers will appear here when you add your customer data"
           />
         </template>

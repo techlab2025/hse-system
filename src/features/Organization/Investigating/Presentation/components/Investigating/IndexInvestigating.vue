@@ -610,17 +610,20 @@ const GerIncidantCount = (data: any): number => {
       <DataEmpty
         description="You have no investigations .. All your joined customers will appear here when you add your customer data"
         title="You have No investigations"
+        :withbtn="false"
       />
     </template>
     <template #failed>
       <DataEmpty
         description="You have no investigations .. All your joined customers will appear here when you add your customer data"
         title="You have No investigations"
+        :withbtn="false"
       />
     </template>
 
     <template #notPermitted>
       <DataFailed
+        :withbtn="false"
         addText="Have not Permission"
         description="You have no Investigating .. All your joined customers will appear here when you add your customer data"
       />

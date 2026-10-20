@@ -151,7 +151,9 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
       <div>
         <span class="matrix-kicker">{{ $t('Certificate matrix') }}</span>
         <h1>{{ $t('Employee traning') }}</h1>
-        <p>{{ $t('Track validity, expiry, renewals, and missing certificates across employees.') }}</p>
+        <p>
+          {{ $t('Track validity, expiry, renewals, and missing certificates across employees.') }}
+        </p>
       </div>
 
       <div class="matrix-stats">
@@ -277,7 +279,8 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
         <template #empty>
           <DataFailed
             title="You have No Employee in this heirarchy"
-            link="/organization"
+            :withbtn="false"
+            link=" "
             description="You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
           />
         </template>
@@ -285,7 +288,8 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
         <template #failed>
           <DataFailed
             title="You have No Employee in this heirarchy"
-            link="/organization"
+            :withbtn="false"
+            link=" "
             description="You have no Employee in this heirarchy .. All your joined employees will appear here when you add your employee data"
           />
         </template>
@@ -313,7 +317,11 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 76%, transparent);
   border-radius: 24px;
-  background: radial-gradient(circle at 0 0, color-mix(in srgb, var(--brand-primary-500) 13%, transparent), transparent 34%);
+  background: radial-gradient(
+    circle at 0 0,
+    color-mix(in srgb, var(--brand-primary-500) 13%, transparent),
+    transparent 34%
+  );
   box-shadow: 0 18px 42px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
 }
 
@@ -413,7 +421,11 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 78%, transparent);
   border-radius: 24px;
   background:
-    radial-gradient(circle at 0 0, color-mix(in srgb, var(--brand-primary-500) 10%, transparent), transparent 28%),
+    radial-gradient(
+      circle at 0 0,
+      color-mix(in srgb, var(--brand-primary-500) 10%, transparent),
+      transparent 28%
+    ),
     linear-gradient(135deg, var(--surface-1), var(--brand-primary-50));
   box-shadow: 0 20px 48px color-mix(in srgb, var(--brand-primary-900) 8%, transparent);
 }
@@ -438,7 +450,12 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
   text-transform: none !important;
   white-space: normal !important;
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--brand-primary-500) 8%, transparent), color-mix(in srgb, var(--status-success) 6%, transparent)), var(--brand-primary-50) !important;
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--brand-primary-500) 8%, transparent),
+      color-mix(in srgb, var(--status-success) 6%, transparent)
+    ),
+    var(--brand-primary-50) !important;
 }
 
 .table-responsive table.main-table thead tr th:first-child {
@@ -450,7 +467,11 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
   border-start-start-radius: 16px;
   border-end-start-radius: 16px;
   text-align: start !important;
-  background: linear-gradient(135deg, var(--brand-primary-800), var(--brand-primary-500)) !important;
+  background: linear-gradient(
+    135deg,
+    var(--brand-primary-800),
+    var(--brand-primary-500)
+  ) !important;
   color: var(--text-on-brand) !important;
 }
 
@@ -478,17 +499,24 @@ const certificateCount = computed(() => AllCertificates.value?.length || 0)
   border-start-start-radius: 16px;
   border-end-start-radius: 16px;
   text-align: start !important;
-  background: linear-gradient(90deg, var(--surface-1) 78%, transparent), var(--surface-1) !important;
+  background:
+    linear-gradient(90deg, var(--surface-1) 78%, transparent), var(--surface-1) !important;
   box-shadow: 16px 0 24px color-mix(in srgb, var(--brand-primary-900) 7%, transparent);
 }
 
 .employee-certificates-matrix .main-table tbody tr:hover td {
   background:
-    linear-gradient(135deg, color-mix(in srgb, var(--brand-primary-500) 4.5%, transparent), color-mix(in srgb, var(--status-success) 3.5%, transparent)), var(--surface-1) !important;
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--brand-primary-500) 4.5%, transparent),
+      color-mix(in srgb, var(--status-success) 3.5%, transparent)
+    ),
+    var(--surface-1) !important;
 }
 
 .employee-certificates-matrix .main-table tbody tr:hover td:first-child {
-  background: linear-gradient(90deg, var(--brand-primary-50) 78%, transparent), var(--brand-primary-50) !important;
+  background:
+    linear-gradient(90deg, var(--brand-primary-50) 78%, transparent), var(--brand-primary-50) !important;
 }
 
 .employee-info-container .employee-info {
