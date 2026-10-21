@@ -96,7 +96,7 @@ const actionList = () => [
 <template>
   <div class="flex justify-end gap-2">
     <ActionsList
-      feature-name="action_feature_ppe_item"
+      :feature-name="`${$t('action_feature_ppe_item')}`"
       :show-actions="true"
       :actionList="actionList()"
       :actionsNumber="2"

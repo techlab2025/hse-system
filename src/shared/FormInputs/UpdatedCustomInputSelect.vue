@@ -631,6 +631,10 @@ function closeDialog(): void {
 </template>
 
 <style scoped lang="scss">
+.updated-custom-input-select.hse-identity label.input-label {
+  font-size: var(--md-size) !important;
+}
+
 .add-dialog {
   width: 20px;
   height: 20px;

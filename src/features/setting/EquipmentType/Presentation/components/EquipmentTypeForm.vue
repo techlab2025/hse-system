@@ -221,6 +221,17 @@ const UpdateActiveTap = (data) => {
   console.log(EquipmentType.value, ' EquipmentType.value ')
   updateData()
 }
+
+const GettypeName = (type: EquipmentTypesEnum) => {
+  switch (type) {
+    case EquipmentTypesEnum.EQUIPMENT:
+      return 'Equipment'
+    case EquipmentTypesEnum.TOOL:
+      return 'Tool'
+    case EquipmentTypesEnum.DEVICE:
+      return 'device'
+  }
+}
 </script>
 
 <template>
@@ -228,7 +239,12 @@ const UpdateActiveTap = (data) => {
     <Tabs @update:activeTab="UpdateActiveTap" :activeTabData="activeTab" />
   </div>
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :label="`${$t('equipment_type_name')}`" :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+    <LangTitleInput
+      :label="`${GettypeName(activeTab)} ${$t('equipment_type_name')}`"
+      :langs="langDefault"
+      :modelValue="langs"
+      @update:modelValue="setLangs"
+    />
   </div>
 
   <!-- Has Certificate -->

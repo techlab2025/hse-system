@@ -46,7 +46,8 @@
   box-shadow: inset -3px 0 var(--hse-nav-accent);
 }
 .side-rail-btn span {
-  font: 600 10px/1.35 var(--hse-project-font);
+  font-size: 10px !important;
+  /* font: 600 10px var(--hse-project-font); */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
