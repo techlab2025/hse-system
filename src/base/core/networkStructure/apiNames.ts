@@ -34,6 +34,11 @@ class ApiNames {
     return this.baseUrl + this.getPrefix()
   }
 
+  // Organization email integration. Backend contract: docs/email-integration.md.
+  public get EmailIntegration() { return this.baseUrl + this.organizationPrefix + 'integrations/email' }
+  public get EmailSentCheck() { return this.EmailIntegration + '/sent-check' }
+  public get EmailSentRetry() { return this.EmailIntegration + '/sent-retry' }
+
   // ----------------- API endpoints (all as getters) -----------------
 
   // languages

@@ -30,6 +30,11 @@ const OrganizationSetting = ref<OrganizationSettingItem[]>([
       'partners . projects . certifications . templet . methods . contractors . management . roles',
     routes: [
       {
+        route: '/organization/integrations/email',
+        Name: t('email_integration'),
+        permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_ALL, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+      },
+      {
         route: '/organization/partner',
         Name: t('partners'),
         permissions: [

@@ -1,0 +1,705 @@
+@import '../../../../../shared/styles/hse-identity-tokens.css';
+
+.email-settings {
+  --email-primary: var(--hse-project-blue);
+  --email-border: var(--hse-project-line);
+  --email-surface: var(--hse-project-surface);
+  --email-muted: var(--hse-project-muted);
+  width: 100%;
+  min-width: 0;
+  margin: 0 auto;
+  padding: 12px 8px 32px;
+  color: var(--hse-project-ink);
+  font-family: var(--identity-fontFamily, var(--hse-project-font));
+}
+.email-settings *,
+.email-settings *::before,
+.email-settings *::after {
+  box-sizing: border-box;
+}
+.email-settings .email-icon {
+  flex-shrink: 0;
+}
+.email-settings .email-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--email-muted);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 0;
+  text-decoration: none;
+}
+.email-settings .email-back:hover {
+  color: var(--email-primary);
+}
+.email-settings:dir(rtl) .email-back svg {
+  transform: rotate(180deg);
+}
+.email-settings .email-heading {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  padding: 32px;
+  margin: 14px 0 28px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--email-primary) 17%, var(--email-border));
+  border-radius: 22px;
+  background: linear-gradient(115deg, var(--email-surface) 20%, var(--hse-project-ice));
+  box-shadow: var(--hse-project-shadow-panel);
+}
+.email-settings .email-heading::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  width: 280px;
+  height: 280px;
+  border: 45px solid color-mix(in srgb, var(--email-primary) 4%, transparent);
+  border-radius: 50%;
+  inset-inline-end: -90px;
+  top: -125px;
+  pointer-events: none;
+}
+.email-settings .email-heading-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  min-width: 0;
+}
+.email-settings .email-hero-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 19px;
+  color: var(--hse-project-on-primary);
+  background: linear-gradient(
+    145deg,
+    var(--email-primary),
+    color-mix(in srgb, var(--email-primary) 70%, var(--hse-project-navy))
+  );
+  box-shadow:
+    0 10px 22px color-mix(in srgb, var(--email-primary) 22%, transparent),
+    inset 0 1px 0 #ffffff35;
+  transform: rotate(-5deg);
+}
+.email-settings .email-hero-icon svg {
+  transform: rotate(5deg);
+}
+.email-settings .email-eyebrow {
+  display: block;
+  color: var(--email-primary);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  margin-bottom: 8px;
+}
+.email-settings h1 {
+  margin: 0 0 8px;
+  color: var(--identity-headingColor, var(--hse-project-ink));
+  font-size: clamp(23px, 2.2vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.3;
+}
+.email-settings h2 {
+  color: var(--identity-headingColor, var(--hse-project-ink));
+  font-size: 15px;
+  font-weight: 750;
+  line-height: 1.5;
+  margin: 0 0 8px;
+  letter-spacing: -0.025em;
+}
+.email-settings p {
+  line-height: 1.8;
+}
+.email-settings .email-heading p {
+  max-width: 570px;
+  margin: 0;
+  color: var(--email-muted);
+  font-size: 12px;
+}
+.email-settings .email-heading-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+  flex-shrink: 0;
+}
+.email-settings .email-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 12px;
+  border: 1px solid var(--email-border);
+  border-radius: 30px;
+  background: var(--email-surface);
+  color: var(--email-muted);
+  font-size: 11px;
+  font-weight: 600;
+}
+.email-settings .email-status i,
+.email-settings .email-actions > span i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--hse-project-muted);
+  flex-shrink: 0;
+}
+.email-settings .email-protocols {
+  display: flex;
+  gap: 7px;
+}
+.email-settings .email-protocols span {
+  color: var(--email-primary);
+  font: 700 9px var(--hse-project-font);
+  letter-spacing: 0.06em;
+  padding: 4px 8px;
+  border-radius: 5px;
+  border: 1px solid color-mix(in srgb, var(--email-primary) 12%, transparent);
+  background: color-mix(in srgb, var(--email-surface) 60%, transparent);
+}
+.email-settings form {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.email-settings fieldset {
+  display: grid;
+  gap: 18px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  min-width: 0;
+}
+.email-settings .email-panel {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.7fr) minmax(0, 2fr);
+  align-items: start;
+  gap: 32px;
+  padding: 28px;
+  margin: 0;
+  background: var(--email-surface);
+  border: 1px solid var(--email-border);
+  border-radius: 18px;
+  box-shadow: 0 3px 14px color-mix(in srgb, var(--hse-project-navy) 3%, transparent);
+}
+.email-settings .email-panel > header {
+  display: flex;
+  align-items: start;
+  gap: 13px;
+}
+.email-settings .email-panel header p {
+  margin: 0;
+  color: var(--email-muted);
+  font-size: 11px;
+  line-height: 1.8;
+}
+.email-settings .email-section-icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  color: var(--email-primary);
+  background: var(--hse-project-ice);
+  border: 1px solid color-mix(in srgb, var(--email-primary) 10%, transparent);
+  border-radius: 12px;
+}
+.email-settings .email-section-icon small {
+  position: absolute;
+  top: -7px;
+  inset-inline-start: -7px;
+  padding: 1px 4px;
+  border: 2px solid var(--email-surface);
+  border-radius: 5px;
+  background: var(--email-primary);
+  color: var(--hse-project-on-primary);
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.email-settings .email-section-body {
+  min-width: 0;
+}
+.email-settings .email-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 22px 20px;
+}
+.email-settings .email-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.email-settings .email-field label {
+  display: block;
+  color: var(--hse-project-ink);
+  font-size: var(--md-size, 12px);
+  font-weight: 650;
+  line-height: 1.5;
+}
+.email-settings .email-field label span {
+  color: var(--email-primary);
+  margin-inline-start: 2px;
+}
+.email-settings input:not([type='checkbox']),
+.email-settings select {
+  width: 100%;
+  min-width: 0;
+  height: 46px;
+  border: 1px solid var(--email-border);
+  border-radius: 10px;
+  background: var(--hse-project-input-bg);
+  color: var(--hse-project-ink);
+  padding: 11px 13px;
+  font: 500 12px var(--identity-fontFamily, var(--hse-project-font));
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--hse-project-navy) 2%, transparent);
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    background 160ms ease;
+}
+.email-settings input::placeholder {
+  color: color-mix(in srgb, var(--email-muted) 76%, transparent);
+  font-weight: 400;
+}
+.email-settings input:not([type='checkbox']):hover:not(:disabled),
+.email-settings select:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--email-primary) 35%, var(--email-border));
+}
+.email-settings input:not([type='checkbox']):focus,
+.email-settings select:focus {
+  border-color: var(--email-primary);
+  background: var(--email-surface);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--email-primary) 10%, transparent);
+  outline: none;
+}
+.email-settings input[readonly] {
+  background: var(--hse-project-surface-soft);
+  color: var(--email-muted);
+}
+.email-settings .email-input-wrap {
+  display: flex;
+  align-items: stretch;
+  position: relative;
+  gap: 0;
+}
+.email-settings .email-input-wrap:has(.email-reveal) input {
+  padding-inline-end: 62px;
+}
+.email-settings button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  max-width: 100%;
+  border: 1px solid var(--email-border);
+  border-radius: 9px;
+  padding: 10px 15px;
+  font: 650 12px var(--identity-fontFamily, var(--hse-project-font));
+  background: var(--email-surface);
+  cursor: pointer;
+  color: var(--hse-project-ink);
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+.email-settings button:hover:not(:disabled) {
+  background: var(--hse-project-ice);
+  border-color: color-mix(in srgb, var(--email-primary) 30%, var(--email-border));
+}
+.email-settings button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.email-settings :is(button, a, input, select):focus-visible {
+  outline: 2px solid var(--email-primary);
+  outline-offset: 3px;
+}
+.email-settings .email-reveal {
+  position: absolute;
+  inset-inline-end: 5px;
+  top: 7px;
+  bottom: 7px;
+  padding: 4px 9px;
+  border: 0;
+  border-radius: 6px;
+  color: var(--email-primary);
+  background: var(--hse-project-ice);
+  font-size: 10px;
+}
+.email-settings small {
+  color: var(--email-muted);
+  font-size: 10px;
+  line-height: 1.8;
+}
+.email-settings .email-field > small {
+  max-width: 46ch;
+}
+.email-settings .email-language {
+  display: flex;
+  gap: 3px;
+  width: fit-content;
+  padding: 3px;
+  margin-bottom: 10px;
+  background: var(--hse-project-surface-soft);
+  border: 1px solid var(--email-border);
+  border-radius: 8px;
+}
+.email-settings .email-language button {
+  padding: 3px 9px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--email-muted);
+  font-size: 10px;
+}
+.email-settings .email-language button[aria-pressed='true'] {
+  background: var(--email-surface);
+  border-color: var(--email-border);
+  color: var(--email-primary);
+  box-shadow: 0 1px 4px color-mix(in srgb, var(--hse-project-navy) 6%, transparent);
+}
+.email-settings .email-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 17px;
+  margin: 0 0 22px;
+  border: 1px solid var(--email-border);
+  background: var(--hse-project-surface-soft);
+  border-radius: 11px;
+  color: var(--hse-project-ink);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.6;
+  cursor: pointer;
+}
+.email-settings .email-toggle:has(input:checked) {
+  background: var(--hse-project-ice);
+  border-color: color-mix(in srgb, var(--email-primary) 23%, var(--email-border));
+}
+.email-settings .email-toggle input[type='checkbox'] {
+  appearance: none;
+  position: relative;
+  width: 36px;
+  height: 21px;
+  flex: 0 0 36px;
+  margin: 0;
+  border: 1px solid var(--email-border);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--email-muted) 25%, var(--email-surface));
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+.email-settings .email-toggle input::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 2px;
+  inset-inline-start: 2px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px #0002;
+  transition: transform 160ms ease;
+}
+.email-settings .email-toggle input:checked {
+  background: var(--email-primary);
+  border-color: var(--email-primary);
+}
+.email-settings .email-toggle input:checked::after {
+  transform: translateX(15px);
+}
+.email-settings:dir(rtl) .email-toggle input:checked::after {
+  transform: translateX(-15px);
+}
+.email-settings .email-grid + .email-toggle {
+  margin-top: 22px;
+}
+.email-settings .email-note {
+  position: relative;
+  padding: 0 0 0 13px;
+  margin: 20px 0;
+  border: 0;
+  border-inline-start: 2px solid color-mix(in srgb, var(--email-primary) 25%, transparent);
+  padding-inline-start: 13px;
+  padding-inline-end: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--email-muted);
+  font-size: 11px;
+  line-height: 1.85;
+}
+.email-settings .email-counts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin: 22px 0 0;
+}
+.email-settings .email-counts > div {
+  position: relative;
+  padding: 14px 16px;
+  border: 1px solid var(--email-border);
+  border-radius: 11px;
+  background: var(--hse-project-surface-soft);
+}
+.email-settings .email-counts dt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--email-muted);
+  font-size: 10px;
+  font-weight: 600;
+}
+.email-settings .email-counts dt::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--email-primary);
+  flex-shrink: 0;
+}
+.email-settings .email-counts [data-state='saved'] dt::before {
+  background: var(--hse-project-green);
+}
+.email-settings .email-counts [data-state='failed'] dt::before {
+  background: var(--hse-project-red);
+}
+.email-settings .email-counts dd {
+  color: var(--hse-project-ink);
+  font-size: 23px;
+  font-weight: 750;
+  line-height: 1.3;
+  margin: 7px 0 0;
+  letter-spacing: -0.04em;
+}
+.email-settings .email-secondary-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+.email-settings .email-secondary-actions small {
+  flex-basis: 100%;
+}
+.email-settings .email-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid var(--email-border);
+}
+.email-settings .email-actions > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--email-muted);
+  font-size: 10px;
+}
+.email-settings .email-actions > span.is-dirty {
+  color: var(--hse-project-amber);
+}
+.email-settings .email-actions > span.is-dirty i {
+  background: var(--hse-project-amber);
+}
+.email-settings .email-actions > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.email-settings .email-primary {
+  color: var(--hse-project-on-primary);
+  background: var(--email-primary);
+  border-color: var(--email-primary);
+  box-shadow: 0 4px 9px color-mix(in srgb, var(--email-primary) 18%, transparent);
+}
+.email-settings .email-primary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--email-primary) 85%, var(--hse-project-navy));
+  border-color: var(--email-primary);
+  box-shadow: 0 6px 14px color-mix(in srgb, var(--email-primary) 25%, transparent);
+}
+.email-settings .email-alert {
+  border: 1px solid var(--email-border);
+  border-radius: 12px;
+  padding: 15px 18px;
+  margin: 16px 0;
+  background: var(--hse-project-surface-soft);
+  font-size: 12px;
+  line-height: 1.8;
+  white-space: pre-line;
+}
+.email-settings .email-alert.error {
+  border-color: color-mix(in srgb, var(--hse-project-red) 30%, var(--email-border));
+  color: var(--hse-project-red);
+  background: var(--hse-project-red-soft);
+}
+.email-settings .email-alert.success {
+  border-color: color-mix(in srgb, var(--hse-project-green) 30%, var(--email-border));
+  color: var(--hse-project-green);
+  background: var(--hse-project-green-soft);
+}
+.email-settings .email-reload {
+  display: flex;
+  margin: 20px 0 0 auto;
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+  color: var(--email-muted);
+  background: transparent;
+  border-color: transparent;
+  font-size: 11px;
+}
+@media (min-width: 1450px) {
+  .email-settings .email-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 1050px) {
+  .email-settings .email-panel {
+    grid-template-columns: minmax(160px, 0.6fr) minmax(0, 2fr);
+    gap: 24px;
+    padding: 24px;
+  }
+  .email-settings .email-heading {
+    padding: 26px;
+  }
+  .email-settings .email-hero-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 16px;
+  }
+  .email-settings .email-heading-meta {
+    max-width: 200px;
+  }
+}
+@media (max-width: 780px) {
+  .email-settings .email-panel {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .email-settings .email-panel > header {
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--hse-project-line-soft);
+  }
+  .email-settings .email-heading {
+    align-items: start;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .email-settings .email-heading-meta {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: none;
+    gap: 10px;
+  }
+}
+@media (max-width: 520px) {
+  .email-settings {
+    padding: 8px 0 24px;
+  }
+  .email-settings .email-heading {
+    padding: 22px 18px;
+    border-radius: 16px;
+    margin-bottom: 18px;
+  }
+  .email-settings .email-heading-content {
+    gap: 13px;
+    align-items: start;
+  }
+  .email-settings .email-hero-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+  }
+  .email-settings .email-hero-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+  .email-settings .email-eyebrow {
+    font-size: 8px;
+    letter-spacing: 0.06em;
+  }
+  .email-settings h1 {
+    font-size: 23px;
+  }
+  .email-settings .email-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .email-settings .email-panel {
+    padding: 22px 18px;
+    border-radius: 14px;
+  }
+  .email-settings .email-counts {
+    gap: 7px;
+  }
+  .email-settings .email-counts > div {
+    padding: 12px 10px;
+  }
+  .email-settings .email-counts dt {
+    font-size: 9px;
+  }
+  .email-settings .email-actions > div {
+    width: 100%;
+  }
+  .email-settings .email-actions button {
+    flex: 1;
+    padding-inline: 10px;
+  }
+  .email-settings .email-toggle {
+    padding: 13px;
+    font-size: 11px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .email-settings *,
+  .email-settings *::after {
+    transition: none !important;
+  }
+}
+/* The app's legacy form skin uses !important; keep these structural wrappers
+   transparent so the identity cards are the only visible form containers. */
+.email-settings form,
+.email-settings fieldset {
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.email-settings .email-toggle input[type='checkbox'] {
+  min-width: 36px !important;
+  max-width: 36px !important;
+  width: 36px !important;
+  min-height: 21px !important;
+  max-height: 21px !important;
+  height: 21px !important;
+  padding: 0 !important;
+  border-radius: 20px !important;
+}
+/* A legacy global [dir=rtl] rule rotates elements; keep this page and its
+   Arabic text fields upright while using logical properties for direction. */
+.email-settings[dir='rtl'],
+.email-settings [dir='rtl'] {
+  transform: none;
+}

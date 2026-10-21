@@ -53,7 +53,7 @@ const langs = defineModel<LangTitleValue[]>('langs', { required: true })
 const langsDescription = defineModel<LangDescriptionValue[]>('langsDescription', {
   required: true,
 })
-const contractorIds = defineModel<TitleInterface[]>('contractorIds', { required: true })
+const contractorIds = defineModel<TitleInterface[]>('contractorIds', { required: false })
 const locations = defineModel<TitleInterface[]>('locations', { required: true })
 
 const contractorDialog = ref(false)
