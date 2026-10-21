@@ -15,7 +15,6 @@ import Search from '@/shared/icons/Search.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from 'xlsx'
-import { saveAs } from 'file-saver'
 import IndexTraningTopicController from '../controllers/indexTraningTopicController'
 import DeleteTraningTopicController from '../controllers/deleteTraningTopicController'
 import IndexTraningTopicParams from '../../Core/params/indexTraningTopicParams'
@@ -36,7 +35,6 @@ const state = ref(indexController.state.value)
 
 const fetchPermissions = [
   PermissionsEnum.ADMIN,
-  PermissionsEnum.ORGANIZATION_EMPLOYEE,
   PermissionsEnum.TRANING_TOPIC_ALL,
   PermissionsEnum.TRANING_TOPIC_FETCH,
   PermissionsEnum.ORG_TRANING_TOPIC_ALL,
@@ -45,7 +43,6 @@ const fetchPermissions = [
 
 const updatePermissions = [
   PermissionsEnum.ADMIN,
-  PermissionsEnum.ORGANIZATION_EMPLOYEE,
   PermissionsEnum.TRANING_TOPIC_ALL,
   PermissionsEnum.TRANING_TOPIC_UPDATE,
   PermissionsEnum.ORG_TRANING_TOPIC_ALL,
@@ -54,7 +51,6 @@ const updatePermissions = [
 
 const deletePermissions = [
   PermissionsEnum.ADMIN,
-  PermissionsEnum.ORGANIZATION_EMPLOYEE,
   PermissionsEnum.TRANING_TOPIC_ALL,
   PermissionsEnum.TRANING_TOPIC_DELETE,
   PermissionsEnum.ORG_TRANING_TOPIC_ALL,
@@ -67,9 +63,7 @@ const fetchTraningTopics = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  await indexController.getData(
-    new IndexTraningTopicParams(query, pageNumber, perPage, withPage),
-  )
+  await indexController.getData(new IndexTraningTopicParams(query, pageNumber, perPage, withPage))
 }
 
 onMounted(() => fetchTraningTopics())
@@ -120,32 +114,18 @@ const rowActions = (id: number) => [
   },
 ]
 
-const exportExcel = () => {
-  const data = state.value.data ?? []
-  if (!data.length) return
-
-  const worksheetData = data.map((item: TraningTopicModel) => ({
-    title: item.title ?? '',
-  }))
-
-  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
+const saveWorkbook = (rows: Record<string, unknown>[], filename: string) => {
   const workbook = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'TraningTopics')
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
-  saveAs(new Blob([excelBuffer], { type: 'application/octet-stream' }), 'traning_topics.xlsx')
+  XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(rows), 'Training Topics')
+  XLSX.writeFile(workbook, filename)
 }
-
-const downloadTemplate = () => {
-  const worksheetData = [
-    { title: 'Example Traning Topic' },
-    { title: 'Example Traning Topic 2' },
-  ]
-  const worksheet = XLSX.utils.json_to_sheet(worksheetData)
-  const workbook = XLSX.utils.book_new()
-  XLSX.utils.book_append_sheet(workbook, worksheet, 'TraningTopics')
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
-  saveAs(new Blob([excelBuffer], { type: 'application/octet-stream' }), 'traning_topic_form.xlsx')
-}
+const exportExcel = () =>
+  saveWorkbook(
+    (state.value.data ?? []).map((item: TraningTopicModel) => ({ title: item.title ?? '' })),
+    'traning_topics.xlsx',
+  )
+const downloadTemplate = () =>
+  saveWorkbook([{ title: 'Training Topic 1' }], 'traning_topic_template.xlsx')
 </script>
 
 <template>
@@ -192,13 +172,10 @@ const downloadTemplate = () => {
 
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
-                <td>{{ index + 1 }}</td>
+                <td>{{ (currentPage - 1) * countPerPage + index + 1 }}</td>
                 <td>{{ item.title }}</td>
                 <td>
-                  <DropList
-                    :actionList="rowActions(item.id)"
-                    @delete="deleteTraningTopic(item.id)"
-                  />
+                  <DropList :action-list="rowActions(item.id)" />
                 </td>
               </tr>
             </tbody>

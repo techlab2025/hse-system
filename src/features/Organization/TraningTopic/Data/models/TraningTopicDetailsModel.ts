@@ -1,6 +1,4 @@
-import TranslationsParams, {
-  type TitleLocale,
-} from '@/base/core/params/translations_params.ts'
+import TranslationsParams, { type TitleLocale } from '@/base/core/params/translations_params.ts'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
 type IndustryDetails = { id: number; title?: string; titles?: TitleLocale[] }
@@ -8,7 +6,7 @@ type TraningTopicDetailsResponse = {
   id: number
   titles?: TitleLocale[]
   translations?: TitleLocale[] | { titles?: TitleLocale[] }
-  all_industries?: number | boolean
+  all_industries?: number | boolean | '0' | '1'
   industries?: IndustryDetails[]
 }
 
@@ -29,17 +27,28 @@ export default class TraningTopicDetailsModel {
       ? data.titles
       : Array.isArray(data.translations)
         ? data.translations
-        : data.translations && !Array.isArray(data.translations) && Array.isArray(data.translations.titles)
+        : data.translations &&
+            !Array.isArray(data.translations) &&
+            Array.isArray(data.translations.titles)
           ? data.translations.titles
           : []
     return new TraningTopicDetailsModel(
       data.id,
       TranslationsParams.fromMap(titles),
-      Boolean(data.all_industries),
-      (data.industries ?? []).map((industry) => new TitleInterface({
-        id: industry.id,
-        title: industry.title ?? industry.titles?.find((title: TitleLocale) => title.locale === localStorage.getItem('lang'))?.title ?? industry.titles?.[0]?.title ?? '',
-      })),
+      Number(data.all_industries) === 1,
+      (data.industries ?? []).map(
+        (industry) =>
+          new TitleInterface({
+            id: industry.id,
+            title:
+              industry.title ??
+              industry.titles?.find(
+                (title: TitleLocale) => title.locale === localStorage.getItem('lang'),
+              )?.title ??
+              industry.titles?.[0]?.title ??
+              '',
+          }),
+      ),
     )
   }
 }

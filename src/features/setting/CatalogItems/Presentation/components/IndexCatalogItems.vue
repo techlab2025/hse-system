@@ -288,8 +288,8 @@ watch(
           <DataEmpty
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/add`"
             addText="Add Catalog Item"
-            description="You have no Catalog .. All your joined customers will appear here when you add your customer data"
-            title="You have No Catalog"
+            description="You have no Catalog item.. All your joined customers will appear here when you add your customer data"
+            title="You have No Catalog item"
           />
         </permission-builder>
       </template>
@@ -304,8 +304,8 @@ watch(
           <DataFailed
             :link="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/catalog-items/add`"
             addText="Add Catalog Item"
-            description="You have no Catalog .. All your joined customers will appear here when you add your customer data"
-            title="You have No Catalog"
+            description="You have no Catalog item .. All your joined customers will appear here when you add your customer data"
+            title="You have No Catalog item"
           />
         </permission-builder>
       </template>

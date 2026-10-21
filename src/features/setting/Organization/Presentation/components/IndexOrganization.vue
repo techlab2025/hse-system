@@ -224,9 +224,9 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
         <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_CREATE]">
           <DataEmpty
             :link="`/add/HazardType`"
-            addText="Add Hazard Classification"
-            description="You have no HazardTypeuages .. All your joined customers will appear here when you add your customer data"
-            title="You have No HazardTypeuages"
+            addText="Add Organizations"
+            description="You have no Organizations .. All your joined customers will appear here when you add your customer data"
+            title="You have No Organizations"
           />
         </PermissionBuilder>
       </template>
@@ -234,9 +234,9 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
         <PermissionBuilder :code="[PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_CREATE]">
           <DataFailed
             :link="`/add/HazardType`"
-            addText="Add Hazard Classification"
-            description="You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
-            title="You have No HazardTypeuages"
+            addText="Add Organizations"
+            description="You have no Organizations .. All your joined customers will appear here when you add your customer data"
+            title="You have No Organizations"
           />
         </PermissionBuilder>
       </template>
@@ -245,7 +245,7 @@ const actionList = (id: number, deleteOrganization: (id: number) => void) => [
     <template #notPermitted>
       <DataFailed
         addText="Have not  Permission"
-        description="You have no HazardTypeuage .. All your joined customers will appear here when you add your customer data"
+        description="You have no Organizations .. All your joined customers will appear here when you add your customer data"
       />
     </template>
   </PermissionBuilder>

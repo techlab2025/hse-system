@@ -1,8 +1,9 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import Dialog from 'primevue/dialog'
 import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
+import ExportPdf from '@/shared/HelpersComponents/ExportPdf.vue'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
@@ -21,10 +22,23 @@ const emit = defineEmits<{
 const { t } = useI18n()
 const { user } = useUserStore()
 const showUploadDialog = ref(false)
+const pendingFile = ref<File | null>(null)
+const fileInputRef = ref<HTMLInputElement | null>(null)
+const busy = ref(false)
+const onFileSelected = (event: Event) => {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+  pendingFile.value = file
+  showUploadDialog.value = true
+  input.value = ''
+}
+watch(showUploadDialog, (visible) => {
+  if (!visible) pendingFile.value = null
+})
 
 const fetchPermissions = [
   PermissionsEnum.ADMIN,
-  PermissionsEnum.ORGANIZATION_EMPLOYEE,
   PermissionsEnum.TRANING_TOPIC_ALL,
   PermissionsEnum.TRANING_TOPIC_FETCH,
   PermissionsEnum.ORG_TRANING_TOPIC_ALL,
@@ -33,7 +47,6 @@ const fetchPermissions = [
 
 const createPermissions = [
   PermissionsEnum.ADMIN,
-  PermissionsEnum.ORGANIZATION_EMPLOYEE,
   PermissionsEnum.TRANING_TOPIC_ALL,
   PermissionsEnum.TRANING_TOPIC_CREATE,
   PermissionsEnum.ORG_TRANING_TOPIC_ALL,
@@ -58,7 +71,7 @@ const actionList = () => [
   },
   {
     text: t('upload_complated_template'),
-    action: () => (showUploadDialog.value = true),
+    action: () => fileInputRef.value?.click(),
     icon: UploadExcelIcon,
     type: ActionItemsTypeEnum.Warning,
     permission: createPermissions,
@@ -82,15 +95,35 @@ const handleUploaded = () => {
   <ActionsList
     feature-name="action_feature_traning_topics"
     :show-actions="true"
-    :actionList="actionList()"
-    :actionsNumber="4"
+    :action-list="actionList()"
+    :actions-number="5"
   >
     <template #custom>
-      <slot name="custom" />
+      <slot name="custom"><ExportPdf :is-drop-list="true" /></slot>
     </template>
   </ActionsList>
 
-  <Dialog v-model:visible="showUploadDialog" modal :header="$t('import_traning_topics')">
-    <UploadTraningTopicExcelSheet @uploaded="handleUploaded" />
+  <Dialog
+    v-model:visible="showUploadDialog"
+    modal
+    :header="$t('import_traning_topics')"
+    :dismissable-mask="!busy"
+    :closable="!busy"
+    :close-on-escape="!busy"
+    :style="{ width: '80vw', maxWidth: '900px' }"
+  >
+    <UploadTraningTopicExcelSheet
+      v-if="showUploadDialog"
+      :initial-file="pendingFile"
+      @uploaded="handleUploaded"
+      @busy="busy = $event"
+    />
   </Dialog>
+  <input
+    ref="fileInputRef"
+    type="file"
+    accept=".xls,.xlsx"
+    style="display: none"
+    @change="onFileSelected"
+  />
 </template>

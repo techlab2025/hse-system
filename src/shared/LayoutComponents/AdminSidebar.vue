@@ -36,7 +36,7 @@ const SettingsRoutes = ref<Routes[]>([
   {
     link: '/admin/team',
     name: 'team',
-    icon: 'team',
+    icon: 'shield-check',
     permissions: [
       PermissionsEnum.TEAM_ALL,
       PermissionsEnum.TEAM_FETCH,
@@ -332,7 +332,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/admin/audit-standards',
     name: 'Audit Standards',
-    icon: 'clipboard-check',
+    icon: 'shield-check',
     permissions: [
       PermissionsEnum.AUDIT_STANDARDS_ALL,
       PermissionsEnum.AUDIT_STANDARDS_FETCH,
@@ -345,7 +345,7 @@ const LockUpsRoutes = ref<Routes[]>([
   {
     link: '/admin/audit-activities',
     name: 'Audit Activities',
-    icon: 'clipboard-list',
+    icon: 'shield-check',
     permissions: [
       PermissionsEnum.AUDIT_ACTIVITIES_ALL,
       PermissionsEnum.AUDIT_ACTIVITIES_FETCH,

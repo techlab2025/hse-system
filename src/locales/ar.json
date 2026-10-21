@@ -1,4 +1,14 @@
 {
+  "factor_item_excel_select_factor": "اختر عاملًا لهذه البنود.",
+  "action_feature_factors": "العوامل",
+  "action_feature_factor_items": "بنود العوامل",
+  "import_factors": "استيراد العوامل",
+  "import_factor_items": "استيراد بنود العوامل",
+  "factor_id": "معرّف العامل",
+  "excel_required_cell": "الصف {row}: حقل {field} مطلوب.",
+  "factor_item_excel_invalid": "الصف {row}: أدخل معرّف عامل صحيحًا موجبًا ورقمًا تسلسليًا صحيحًا غير سالب، أو اترك الرقم التسلسلي فارغًا.",
+  "factor_item_excel_hint": "ارفع ملف Excel يحتوي على عمود title فقط، ثم اختر العامل أعلى المعاينة. يُرسل العامل المختار مع جميع البنود.",
+
   "email_integration": "ربط البريد الإلكتروني",
   "emailSettings": {
     "back": "إعدادات المؤسسة",

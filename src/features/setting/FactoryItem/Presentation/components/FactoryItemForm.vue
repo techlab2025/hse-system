@@ -143,6 +143,11 @@ const updateData = () => {
   emit('update:data', params)
 }
 
+const setAllIndustries = (value: boolean) => {
+  allIndustries.value = value
+  updateData()
+}
+
 const setIndustry = (data: TitleInterface[]) => {
   // console.log(data, 'data')
   industry.value = data
@@ -173,8 +178,8 @@ watch(
 
       // langs.value = newData?.code
       // hasCertificate.value = newData?.hasCertificate
-      allIndustries.value = newData?.allIndustries! ?? false
-      industry.value = newData?.industries!
+      allIndustries.value = Number(newData?.allIndustries) === 1
+      industry.value = newData?.industries ?? []
       factory.value = newData?.factory!
     }
   },
@@ -232,7 +237,12 @@ const fields = ref([
     class="input-wrapper col-span-4 md:col-span-2"
     v-if="user.user?.type == OrganizationTypeEnum?.ADMIN"
   >
-    <CustomCheckbox :index="3" :title="`all_industries`" @update:checked="allIndustries = $event" />
+    <CustomCheckbox
+      :index="3"
+      :title="`all_industries`"
+      :checked="allIndustries"
+      @update:checked="setAllIndustries"
+    />
   </div>
   <div
     class="input-wrapper col-span-4 md:col-span-2"

@@ -1,4 +1,14 @@
 {
+  "factor_item_excel_select_factor": "Select a factor for these items.",
+  "action_feature_factors": "Factors",
+  "action_feature_factor_items": "Factor Items",
+  "import_factors": "Import Factors",
+  "import_factor_items": "Import Factor Items",
+  "factor_id": "Factor ID",
+  "excel_required_cell": "Row {row}: {field} is required.",
+  "factor_item_excel_invalid": "Row {row}: enter a positive integer Factor ID and a nonnegative integer serial number (or leave the serial number blank).",
+  "factor_item_excel_hint": "Upload a title-only Excel file and select one factor above the preview. The selected factor is sent with every item.",
+
   "email_integration": "Email integration",
   "emailSettings": {
     "back": "Organization settings",
