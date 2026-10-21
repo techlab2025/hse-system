@@ -174,7 +174,7 @@ const safetyHeading = computed(() =>
 
 const quickLinks = computed(() => [
   {
-    title: 'Leadership',
+    title: 'Leadership Engagement',
     description: 'Engagements, visits and reports',
     to: `/organization/project-details/${projectId.value}/leadership`,
     mark: 'L',

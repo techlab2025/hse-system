@@ -29,7 +29,7 @@ export const ObjectiveTargetTypeOptions = [
 
 export const ObjectiveDirectionOptions = [
   new TitleInterface({ id: ObjectiveDirectionEnum.Increase, title: 'Increase' }),
-  new TitleInterface({ id: ObjectiveDirectionEnum.Reduce, title: 'Reduce' }),
+  new TitleInterface({ id: ObjectiveDirectionEnum.Reduce, title: 'Decrease' }),
 ]
 
 export const ObjectiveFrequencyOptions = [

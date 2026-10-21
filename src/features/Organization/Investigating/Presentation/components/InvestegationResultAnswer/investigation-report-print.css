@@ -1,0 +1,223 @@
+@page {
+  size: A4;
+  margin: 14mm 13mm 16mm;
+
+  @bottom-left {
+    content: 'HSE / Investigation report';
+    color: #52687a;
+    font:
+      8pt Arial,
+      sans-serif;
+  }
+
+  @bottom-right {
+    content: 'Page ' counter(page) ' of ' counter(pages);
+    color: #52687a;
+    font:
+      8pt Arial,
+      sans-serif;
+  }
+}
+
+html,
+body.investigation-print {
+  margin: 0;
+  padding: 0;
+  background: #fff !important;
+  color: #18324a;
+  color-scheme: light;
+}
+
+body.investigation-print {
+  --surface-1: #fff;
+  --surface-2: #f3f6fa;
+  --brand-primary-50: #f1f6fb;
+  --brand-primary-100: #dce6ef;
+  --brand-primary-200: #c8d8e5;
+  --brand-primary-400: #56768f;
+  --brand-primary-500: #245d88;
+  --brand-primary-600: #304e66;
+  --brand-primary-700: #24425c;
+  --brand-primary-900: #18324a;
+  --brand-accent-50: #fff4e8;
+  --text-strong: #18324a;
+  --text-soft: #52687a;
+  --text-muted: #52687a;
+  --text-on-brand: #fff;
+  --status-success: #187c68;
+  --status-success-soft: #eaf6f1;
+  --status-danger: #ad3744;
+  --status-danger-soft: #fff0f1;
+  --PrimaryColor: #245d88;
+  --main-border: #dce6ef;
+  --header-page-color: #18324a;
+  --BgWhite: #fff;
+  --Gray-1: #f3f6fa;
+  --GrayText-1: #52687a;
+  --green: #187c68;
+  font:
+    10pt/1.55 Arial,
+    sans-serif;
+}
+
+.investigation-print *,
+.investigation-print *::before,
+.investigation-print *::after {
+  box-sizing: border-box;
+  box-shadow: none !important;
+  animation: none !important;
+  transition: none !important;
+  text-transform: none !important;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.investigation-print .investegation-result-answer-container {
+  display: block;
+  max-width: none;
+  padding: 0;
+  margin: 0;
+  background: #fff;
+}
+
+.investigation-print .investigation-report-cover {
+  break-inside: avoid;
+  margin-bottom: 6mm;
+}
+
+.investigation-print .final-answer-section {
+  overflow: visible;
+  padding: 5mm;
+  margin-bottom: 5mm;
+  border: 1px solid #dce6ef;
+  background: #fff;
+  break-inside: auto;
+}
+
+.investigation-print .final-section-heading {
+  break-after: avoid;
+}
+
+.investigation-print .final-section-heading h2 {
+  font-size: 13pt;
+}
+
+.investigation-print .answer-info-grid,
+.investigation-print .answer-person-grid,
+.investigation-print .answer-card-grid,
+.investigation-print .similar-observations-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+/* Normal block flow lets long sections continue naturally onto the next page. */
+.investigation-print
+  :is(
+    .task-lanes,
+    .tasks-answer .content,
+    .meeting-overview-answer .content,
+    .attachments-answer .content,
+    .vieawers-answer .content,
+    .answer-timeline
+  ) {
+  display: block !important;
+  width: 100%;
+}
+
+.investigation-print
+  :is(
+    .task-lane,
+    .investegaion-task-card,
+    .investegaion-meeting-card,
+    .investegaion-attachment-card,
+    .answer-timeline article
+  ) {
+  width: 100%;
+  margin-bottom: 4mm;
+}
+
+.investigation-print
+  :is(
+    .answer-info-grid article,
+    .answer-card-grid article,
+    .answer-person-grid article,
+    .answer-timeline article,
+    .investegaion-task-card,
+    .investegaion-meeting-card,
+    .similar-observation-card,
+    .report-summary-item
+  ) {
+  break-inside: avoid;
+}
+
+.investigation-print :is(p, strong, small, .meeting-note, .task-description) {
+  overflow: visible !important;
+  max-height: none !important;
+  -webkit-line-clamp: unset !important;
+  text-overflow: clip !important;
+  overflow-wrap: anywhere;
+}
+
+.investigation-print .meeting-note {
+  display: block !important;
+}
+
+.investigation-print :is(.answer-note, .answer-timeline p, .task-description, .meeting-note) {
+  white-space: pre-wrap;
+  orphans: 3;
+  widows: 3;
+}
+
+.investigation-print .investegation-result-answer-container .investegaion-attachment-card-media {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4mm;
+}
+
+.investigation-print
+  .investegation-result-answer-container
+  .investegaion-attachment-card-media
+  img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  max-height: 75mm;
+  object-fit: contain;
+  break-inside: avoid;
+}
+
+.investigation-print
+  :is(.tasks-answer, .task-lane, .meeting-overview-answer, .attachments-answer, .vieawers-answer) {
+  display: block !important;
+}
+
+.investigation-print .task-lane-header {
+  break-after: avoid;
+  margin-bottom: 3mm;
+}
+
+.investigation-print .evidence-item {
+  margin: 0;
+  min-width: 0;
+  break-inside: avoid;
+}
+
+.investigation-print .similar-observations-section,
+.investigation-print .similar-observations-empty,
+.investigation-print .similar-observation-card {
+  min-height: 0;
+}
+
+.investigation-print .report-summary {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.investigation-print .tasks-answer > .header,
+.investigation-print .meeting-overview-answer > .header,
+.investigation-print .attachments-answer > .header,
+.investigation-print [data-report-no-print] {
+  display: none !important;
+}
+
+.investigation-print .report-footer {
+  margin-top: 6mm;
+}

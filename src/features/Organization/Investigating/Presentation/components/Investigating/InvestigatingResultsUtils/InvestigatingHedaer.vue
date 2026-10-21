@@ -261,7 +261,7 @@ const getObservationType = (type: number | undefined) => {
   );
   box-shadow: 0 10px 28px color-mix(in srgb, var(--identity-primary) 12%, transparent);
   color: var(--text-strong);
-  font-size: clamp(22px, 2.4vw, 32px);
+  font-size: 22px;
   font-weight: 900;
   line-height: 1.2;
   letter-spacing: -0.02em;

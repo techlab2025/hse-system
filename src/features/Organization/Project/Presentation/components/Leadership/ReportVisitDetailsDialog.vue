@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import '../../../styles/project.css'
 
+import { ref } from 'vue'
 import Dialog from 'primevue/dialog'
 import type LeadershipVisitDetailsModel from '../../../Data/models/Leadership/LeadershipVisitDetailsModel'
 
@@ -13,6 +14,71 @@ defineProps<{
   error?: string
 }>()
 const emit = defineEmits<{ close: [] }>()
+const reportContent = ref<HTMLElement | null>(null)
+const printing = ref(false)
+const printError = ref('')
+
+const printReport = async () => {
+  if (!reportContent.value || printing.value) return
+  printing.value = true
+  printError.value = ''
+  const frame = document.createElement('iframe')
+  frame.title = 'Printable leadership visit report'
+  frame.setAttribute('aria-hidden', 'true')
+  frame.tabIndex = -1
+  frame.style.cssText = 'position:fixed;left:-10000px;top:0;width:900px;height:1px;border:0;'
+  try {
+    const styles = Array.from(document.querySelectorAll('style, link[rel="stylesheet"]'))
+      .map((style) => style.outerHTML)
+      .join('')
+    const loaded = new Promise<void>((resolve, reject) => {
+      frame.onload = () => resolve()
+      frame.onerror = () => reject(new Error('Unable to prepare report'))
+    })
+    frame.srcdoc = `<!doctype html><html><head><meta charset="utf-8">${styles}
+      <style>
+        @page { size: A4; margin: 14mm; }
+        html, body { margin: 0; background: white; color: #172c40; }
+        body { padding: 0; font-family: Arial, sans-serif; }
+        .print-report { color-scheme: light; --hse-project-ink: #172c40;
+          --hse-project-muted: #526577; --hse-project-surface: #fff;
+          --hse-project-surface-soft: #f3f7fa; --hse-project-line: #dce4eb;
+          --hse-project-blue: #176b8c; --hse-project-on-primary: #fff;
+          --hse-project-red: #b33d42; }
+        * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .details-content { display: block !important; }
+        .details-content > * { margin-bottom: 16px; }
+        .report-cover, .summary-grid article, .improvement-detail, .media-item {
+          break-inside: avoid; }
+        .details-section { display: block !important; }
+        .details-section__heading { break-after: avoid; margin-bottom: 14px; }
+        .improvement-grid { display: block !important; }
+        .improvement-detail { margin-bottom: 12px; }
+        .media-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+        .media-item img { height: auto !important; max-height: 240px; object-fit: contain !important; }
+        .p-image-preview-mask, .p-image-mask { display: none !important; }
+        a { color: inherit; overflow-wrap: anywhere; }
+      </style></head><body><main class="hse-project-root hse-project-assurance print-report"
+      dir="${reportContent.value.closest('[dir]')?.getAttribute('dir') === 'rtl' ? 'rtl' : 'ltr'}">
+      ${reportContent.value.outerHTML}</main></body></html>`
+    document.body.appendChild(frame)
+    await loaded
+    const printWindow = frame.contentWindow
+    if (!printWindow) throw new Error('Unable to open print preview')
+    printWindow.document.title = 'Leadership visit report'
+    await printWindow.document.fonts.ready
+    printWindow.addEventListener('afterprint', () => frame.remove(), { once: true })
+    printWindow.focus()
+    printWindow.print()
+    // Some browsers do not emit afterprint for embedded documents.
+    window.setTimeout(() => frame.remove(), 60_000)
+  } catch {
+    frame.remove()
+    printError.value = 'Unable to prepare the report. Please try printing again.'
+  } finally {
+    printing.value = false
+  }
+}
 
 const unsafeTypeLabel = (value: number | null) => {
   if (value === 1) return 'Unsafe act'
@@ -37,16 +103,40 @@ const mediaName = (url: string, index: number) =>
     @update:visible="(visible: boolean) => !visible && emit('close')"
   >
     <template #header>
-      <div class="details-heading">
-        <!-- <span class="details-heading__icon" aria-hidden="true">✓</span> -->
-        <div>
-          <!-- <span>Leadership visit</span> -->
-          <h2>Report details</h2>
-          <p v-if="visit">Report #{{ visit.id }} · {{ visit.date || '—' }}</p>
-          <p v-else>{{ loading ? 'Loading selected visit…' : 'Selected visit report' }}</p>
+      <div class="details-toolbar">
+        <div class="details-heading">
+          <span class="details-heading__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <path d="M6 3h9l3 3v15H6zM14 3v5h4M9 12h6M9 16h4" />
+            </svg>
+          </span>
+          <div>
+            <span>Leadership engagement</span>
+            <h2>Visit report</h2>
+            <p>Insights, actions &amp; evidence</p>
+          </div>
         </div>
+        <button
+          type="button"
+          class="report-print-button"
+          :disabled="!visit || loading || !!error || printing"
+          @click="printReport"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            aria-hidden="true"
+          >
+            <path d="M7 8V3h10v5M7 17H4V9h16v8h-3M7 14h10v7H7zM16 11h1" />
+          </svg>
+          {{ printing ? 'Preparing…' : 'Print report' }}
+        </button>
       </div>
     </template>
+
+    <p v-if="printError" class="print-error" role="alert">{{ printError }}</p>
 
     <div v-if="loading" class="details-feedback" role="status">
       <span class="loading-spinner" aria-hidden="true"></span>
@@ -64,7 +154,35 @@ const mediaName = (url: string, index: number) =>
       </div>
     </div>
 
-    <div v-else-if="visit" class="details-content">
+    <div v-else-if="visit" ref="reportContent" class="details-content">
+      <header class="report-cover">
+        <div class="report-cover__intro">
+          <span class="report-eyebrow">HSE / LEADERSHIP ENGAGEMENT</span>
+          <h2>Leadership in action.</h2>
+          <p>A record of engagement, observations and opportunities to improve.</p>
+        </div>
+        <div class="report-meta">
+          <div>
+            <span>Report reference</span
+            ><strong>{{ visit.serial_name || visit.serial || `Report #${visit.id}` }}</strong>
+          </div>
+          <div>
+            <span>Visit date</span><strong>{{ visit.date || '—' }}</strong>
+          </div>
+          <div>
+            <span>Improvements</span
+            ><strong>{{ String(visit.areasOfImprovement.length).padStart(2, '0') }}</strong>
+          </div>
+          <div>
+            <span>Attachments</span
+            ><strong>{{ String(visit.media.length).padStart(2, '0') }}</strong>
+          </div>
+        </div>
+      </header>
+      <div class="report-section-title">
+        <span>01</span>
+        <h3>Engagement &amp; observations</h3>
+      </div>
       <section class="summary-grid">
         <article>
           <span>Topic</span>
@@ -75,7 +193,7 @@ const mediaName = (url: string, index: number) =>
           <p>{{ visit.engagementDiscussion || '—' }}</p>
         </article>
         <article class="summary-grid__wide">
-          <span>Observations</span>
+          <span>Positive observations</span>
           <p>{{ visit.positiveObservations || '—' }}</p>
         </article>
       </section>
@@ -83,8 +201,8 @@ const mediaName = (url: string, index: number) =>
       <section class="details-section">
         <div class="details-section__heading">
           <div>
-            <span>Actions</span>
-            <h3>Improvements</h3>
+            <span>02 / ACTIONS &amp; FOLLOW-UP</span>
+            <h3>Opportunities for improvement</h3>
           </div>
           <strong>{{ visit.areasOfImprovement.length }}</strong>
         </div>
@@ -99,7 +217,10 @@ const mediaName = (url: string, index: number) =>
               <strong>{{ improvement.areaForImprovement || 'Improvement' }}</strong>
               <small>{{ unsafeTypeLabel(improvement.uaUc) }}</small>
             </div>
-            <p>{{ improvement.interventionCarriedOut || '—' }}</p>
+            <div class="intervention">
+              <span>Intervention carried out</span>
+              <p>{{ improvement.interventionCarriedOut || '—' }}</p>
+            </div>
             <div class="detail-tags">
               <span>{{ improvement.leadershipTheme?.title || 'No theme' }}</span>
               <span>{{ improvement.leadershipCategory?.title || 'No category' }}</span>
@@ -112,8 +233,8 @@ const mediaName = (url: string, index: number) =>
       <section class="details-section">
         <div class="details-section__heading">
           <div>
-            <span>Attachments</span>
-            <!-- <h3>Media</h3> -->
+            <span>03 / EVIDENCE</span>
+            <h3>Attachments &amp; field notes</h3>
           </div>
           <strong>{{ visit.media.length }}</strong>
         </div>
@@ -126,13 +247,19 @@ const mediaName = (url: string, index: number) =>
               width="250"
               preview
             />
-            <!-- <img  :src="media" :alt="mediaName(media, index)" /> -->
-            <!-- <span v-else class="media-item__file" aria-hidden="true">▤</span>
-            <span>{{ mediaName(media, index) }}</span> -->
+            <a v-else :href="media" target="_blank" rel="noopener noreferrer" class="media-file">
+              <span class="media-item__file" aria-hidden="true">↗</span>
+              Open attachment
+            </a>
+            <span>{{ mediaName(media, index) }}</span>
           </div>
         </div>
         <p v-else class="empty-copy">No media attached to this report.</p>
       </section>
+      <footer class="report-footer">
+        <strong>Leadership engagement report</strong
+        ><span>Report #{{ visit.id }} · Visit #{{ visit.visitId }}</span>
+      </footer>
     </div>
 
     <div v-else class="details-unavailable">
@@ -146,7 +273,188 @@ const mediaName = (url: string, index: number) =>
 </template>
 
 <style scoped>
-:deep(.report-details-dialog) {
+.details-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  width: 100%;
+}
+.details-heading__icon svg {
+  width: 27px;
+  height: 27px;
+}
+.report-print-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 11px 17px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--hse-project-blue);
+  color: var(--hse-project-on-primary);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.report-print-button svg {
+  width: 19px;
+  height: 19px;
+}
+.report-print-button:hover {
+  filter: brightness(0.92);
+}
+.report-print-button:focus-visible {
+  outline: 3px solid var(--hse-project-blue);
+  outline-offset: 3px;
+}
+.report-print-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.print-error {
+  color: var(--hse-project-red);
+}
+.report-cover {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--hse-project-line);
+  border-radius: 16px;
+  background: var(--hse-project-surface);
+}
+.report-cover__intro {
+  padding: 30px;
+  border-inline-start: 5px solid #57c5b0;
+  background: linear-gradient(120deg, #122e45, #1b5971);
+  color: white;
+}
+.report-eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.17em;
+  font-weight: 700;
+  color: #b5e9e3;
+}
+.details-content .report-cover .report-cover__intro h2 {
+  margin: 12px 0 8px;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  line-height: 1.15;
+  color: white;
+  letter-spacing: -0.04em;
+}
+.report-cover__intro p {
+  margin: 0;
+  max-width: 420px;
+  color: #d4e6ee;
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+.report-meta {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr 1fr;
+  gap: 16px;
+  padding: 20px 26px;
+}
+.report-meta div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-width: 0;
+}
+.report-meta span {
+  color: var(--hse-project-muted);
+  font-size: 0.7rem;
+}
+.report-meta strong {
+  color: var(--hse-project-ink);
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+.report-section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.report-section-title > span {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--hse-project-blue);
+  border: 1px solid var(--hse-project-line);
+  border-radius: 50%;
+  padding: 8px;
+}
+.report-section-title h3 {
+  font-size: 1rem;
+  margin: 0;
+  color: var(--hse-project-ink);
+}
+.summary-grid p,
+.intervention p {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.summary-grid__wide {
+  border-inline-start: 3px solid #299e87 !important;
+}
+.intervention > span {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--hse-project-muted);
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.improvement-detail__top {
+  flex-wrap: wrap;
+}
+.improvement-detail__top > span {
+  flex-shrink: 0;
+}
+.improvement-detail__top strong {
+  overflow-wrap: anywhere;
+}
+.media-item :deep(.p-image) {
+  width: 100%;
+}
+.media-file {
+  display: grid;
+  gap: 8px;
+  color: var(--hse-project-blue);
+  text-decoration: none;
+}
+.report-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  border-top: 1px solid var(--hse-project-line);
+  padding-top: 16px;
+  color: var(--hse-project-muted);
+  font-size: 0.7rem;
+}
+@media (max-width: 640px) {
+  .details-toolbar {
+    flex-wrap: wrap;
+  }
+  .details-heading__icon {
+    display: none !important;
+  }
+  .report-meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding: 18px;
+  }
+  .report-cover__intro {
+    padding: 22px;
+  }
+  .report-footer {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+:global(.report-details-dialog.hse-project-root.hse-project-assurance) {
   overflow: hidden;
   border: 1px solid color-mix(in srgb, var(--hse-project-blue) 18%, var(--hse-project-line));
   border-radius: var(--hse-project-radius-panel);
@@ -154,7 +462,7 @@ const mediaName = (url: string, index: number) =>
   box-shadow: 0 30px 80px color-mix(in srgb, var(--hse-project-ink) 20%, transparent);
 }
 
-:deep(.report-details-dialog .p-dialog-header) {
+:global(.report-details-dialog.hse-project-root.hse-project-assurance .p-dialog-header) {
   padding: 22px 26px;
   border-bottom: 1px solid var(--hse-project-line);
   background: linear-gradient(
@@ -164,7 +472,7 @@ const mediaName = (url: string, index: number) =>
   );
 }
 
-:deep(.report-details-dialog .p-dialog-content) {
+:global(.report-details-dialog.hse-project-root.hse-project-assurance .p-dialog-content) {
   padding: clamp(18px, 3vw, 28px);
   background: color-mix(in srgb, var(--hse-project-surface-soft) 68%, var(--hse-project-surface));
 }
@@ -198,10 +506,14 @@ const mediaName = (url: string, index: number) =>
   text-transform: uppercase;
 }
 
-.details-heading h2,
+.report-details-dialog.hse-project-root .details-heading h2,
 .details-section__heading h3 {
   margin: 3px 0;
   color: var(--hse-project-ink);
+}
+
+.report-details-dialog.hse-project-root .details-heading h2 {
+  font-size: 1.15rem;
 }
 
 .details-heading p,
@@ -377,7 +689,7 @@ const mediaName = (url: string, index: number) =>
 
 .media-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
   gap: 10px;
 }
 
@@ -390,12 +702,12 @@ const mediaName = (url: string, index: number) =>
   text-decoration: none;
 }
 
-.media-item img,
+.media-item :deep(img),
 .media-item__file {
   display: grid;
   place-items: center;
   width: 100%;
-  height: 100px;
+  height: 160px;
   overflow: hidden;
   border: 1px solid var(--hse-project-line);
   border-radius: var(--hse-project-radius-control);

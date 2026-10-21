@@ -2,8 +2,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
-  width: fit-content;
-  border-radius: var(--hse-radius-badge);
+  /* width: fit-content; */
+  /* border-radius: var(--hse-radius-badge); */
   font-size: var(--hse-text-xs);
   font-weight: 700;
   line-height: 1.2;

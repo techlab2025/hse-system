@@ -371,18 +371,7 @@ const OrganizationRoutes: SidebarRoute[] = [
       PermissionsEnum.CODING_SYSTEM_UPDATE,
     ],
   },
-  {
-    link: '/organization/hazard',
-    name: 'risk',
-    icon: 'shield-exclamation',
-    permissions: [
-      PermissionsEnum.ORG_HAZARD_ALL,
-      PermissionsEnum.ORG_HAZARD_CREATE,
-      PermissionsEnum.ORG_HAZARD_DELETE,
-      PermissionsEnum.ORG_HAZARD_FETCH,
-      PermissionsEnum.ORG_HAZARD_UPDATE,
-    ],
-  },
+ 
   {
     link: '/organization/factory',
     name: 'factor',
@@ -725,6 +714,18 @@ const LockUpsRoutes: SidebarRoute[] = [
       PermissionsEnum.ORG_EQUIPMENT_TYPE_CREATE,
       PermissionsEnum.ORG_EQUIPMENT_TYPE_UPDATE,
       PermissionsEnum.ORG_EQUIPMENT_TYPE_DELETE,
+    ],
+  },
+   {
+    link: '/organization/hazard',
+    name: 'risk',
+    icon: 'shield-exclamation',
+    permissions: [
+      PermissionsEnum.ORG_HAZARD_ALL,
+      PermissionsEnum.ORG_HAZARD_CREATE,
+      PermissionsEnum.ORG_HAZARD_DELETE,
+      PermissionsEnum.ORG_HAZARD_FETCH,
+      PermissionsEnum.ORG_HAZARD_UPDATE,
     ],
   },
   {

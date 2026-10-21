@@ -383,6 +383,7 @@ onDeactivated(() => {
         :audit-serial-name="details.auditNumber"
         :ncrs="ncrs"
         :ncr-error="ncrError"
+        class="diable"
       />
       <p v-if="documentError" class="message error" role="alert">{{ documentError }}</p>
       <InternalAuditReportDocument
@@ -432,14 +433,7 @@ onDeactivated(() => {
               :disabled="isReported || previewMode"
             ></textarea>
           </label>
-          <label class="field"
-            ><span>Conclusion <b>*</b></span
-            ><textarea
-              v-model="conclusion"
-              rows="4"
-              :disabled="isReported || previewMode"
-            ></textarea>
-          </label>
+       
           <HandleFIlesUpload
             v-if="!isReported && !previewMode"
             label="Report attachments (optional)"
@@ -449,6 +443,14 @@ onDeactivated(() => {
             :max-files="10"
             @change="setAttachments"
           />
+             <label class="field"
+            ><span>Conclusion <b>*</b></span
+            ><textarea
+              v-model="conclusion"
+              rows="4"
+              :disabled="isReported || previewMode"
+            ></textarea>
+          </label>
         </section>
         <p v-if="!isReported && !canIssueReport" class="stage-note">
           The report can be issued after the plan is published and the audit start date is reached.
@@ -469,6 +471,10 @@ onDeactivated(() => {
   </section>
 </template>
 <style scoped>
+.diable{
+  pointer-events: none;
+  opacity: 0.6;
+}
 :deep(.upload-area) {
   border: 1px solid lightgray !important;
 }

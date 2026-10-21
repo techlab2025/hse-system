@@ -9,6 +9,7 @@ import { DataSuccess } from '@/base/core/networkStructure/Resources/dataState/da
 import {
   ObjectiveTargetTypeEnum as Type,
   ObjectiveDirectionEnum as Direction,
+  ObjectiveFrequencyEnum as Frequency,
 } from '../../../Core/enums/objectivesEnums'
 import { useObjectiveProgress } from '../composables/useObjectiveProgress'
 import {
@@ -91,6 +92,22 @@ const actualLabel = computed(() =>
       ? 'op.currentActual'
       : 'op.cumulativeActual',
 )
+const isPeriodicFrequency = computed(() => objective.value?.targetType === Type.PeriodicFrequency)
+const isAnnualFrequency = computed(
+  () => isPeriodicFrequency.value && objective.value?.frequency === Frequency.Annually,
+)
+const actualResultOptions = computed(() => {
+  if (!isPeriodicFrequency.value) return []
+  switch (objective.value?.frequency) {
+    case Frequency.Annually:
+    case Frequency.SemiAnnually:
+    case Frequency.Quarterly:
+    case Frequency.Monthly:
+      return Array.from({ length: objective.value.frequency }, (_, index) => index + 1)
+    default:
+      return []
+  }
+})
 const existingFiles = computed(
   () =>
     record.value?.attachments.filter((file) => draft.retainedAttachmentIds.includes(file.id)) ?? [],
@@ -108,7 +125,7 @@ watch(objective, async (value) => {
   errors.value = {}
   Object.assign(draft, {
     period: '',
-    actualResult: null,
+    actualResult: isAnnualFrequency.value ? 1 : null,
     notes: '',
     files: [],
     attachments: [],
@@ -142,7 +159,7 @@ watch(objective, async (value) => {
   record.value = data
   Object.assign(draft, {
     period: data.period,
-    actualResult: data.actualResult,
+    actualResult: isAnnualFrequency.value ? 1 : data.actualResult,
     notes: data.notes ?? '',
     files: [],
     attachments: [],
@@ -171,6 +188,12 @@ async function save() {
     reportingFrequency: contract.reportingFrequency,
     ...contract.attachments,
   })
+  if (
+    isPeriodicFrequency.value &&
+    (draft.actualResult === null || !actualResultOptions.value.includes(draft.actualResult))
+  ) {
+    errors.value.actualResult = 'op.invalidActual'
+  }
   if (Object.keys(errors.value).length) return
 
   const request = generation
@@ -256,18 +279,31 @@ async function save() {
           <div class="op-field">
             <label for="objective-actual-result"
               >{{ $t(actualLabel) }} {{ actualUnit(objective) }} <span class="red">*</span></label
-            ><input
+            ><Select
+              v-if="isPeriodicFrequency"
+              input-id="objective-actual-result"
+              v-model="draft.actualResult"
+              :options="actualResultOptions"
+              :disabled="saving || isAnnualFrequency"
+              :invalid="Boolean(errors.actualResult)"
+              aria-describedby="actual-error"
+            />
+            <input
+              v-else
               id="objective-actual-result"
               v-model="draft.actualResult"
               class="op-number-input"
               type="number"
               inputmode="decimal"
               :min="0"
-              :step="objective.targetType === Type.PeriodicFrequency ? 1 : 'any'"
+              step="any"
               :disabled="saving"
               :aria-invalid="Boolean(errors.actualResult)"
               aria-describedby="actual-help actual-error"
             />
+            <small v-if="errors.actualResult" id="actual-error" class="op-error">
+              {{ $t(errors.actualResult) }}
+            </small>
             <!-- <small id="actual-help">{{
               $t(
                 contract.semantics === 'period-specific'

@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { computed, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { printInvestigationReport } from './printInvestigationReport'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import TableLoader from '@/shared/DataStatues/TableLoader.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
@@ -17,6 +19,26 @@ import SimilarObservationController from '../../controllers/similarObservation/S
 import type HazardDetailsModel from '@/features/Organization/ObservationFactory/Data/models/hazardDetailsModel.ts'
 import SimilarObservatioParams from '../../../Core/params/SimilarObservation/SimilarObservatioParams.ts'
 import { Observation } from '../../../Core/Enums/ObservationTypeEnum.ts'
+
+const { locale } = useI18n()
+const reportContent = ref<HTMLElement | null>(null)
+const printing = ref(false)
+const printError = ref('')
+const printReport = async () => {
+  if (!reportContent.value || printing.value || similarObservationsLoading.value) return
+  printing.value = true
+  printError.value = ''
+  try {
+    await printInvestigationReport(
+      reportContent.value,
+      `Investigation report - ${investigationData.value?.serialName || id}`,
+    )
+  } catch {
+    printError.value = 'Unable to prepare the report. Please try printing again.'
+  } finally {
+    printing.value = false
+  }
+}
 
 const route = useRoute()
 const id = route.params.id
@@ -215,77 +237,155 @@ const getObservationType = (type: number | undefined) => {
 <template>
   <DataStatus :controller="state">
     <template #success>
-      <div class="investegation-result-answer-container">
-        <!-- <InvestigatingResultAnswerHedaer
-          :meetingsNumber="meetings.length"
-          :victim="observation?.observer?.name"
-          :date="investigationData?.createdAt"
-          :meetingDate="latestMeeting?.date"
-          :TeamLeader="investigationData?.investigationTeamLeader"
-          :createdAt="investigationData?.date"
-          :TeamNumbers="teamMembers.length"
-          :solvedTasks="solvedTasks"
-          :ToltalTasks="allTasks.length"
-          :investegationType="observation?.type"
-        /> -->
+      <div class="investigation-report-page" :dir="locale.startsWith('ar') ? 'rtl' : 'ltr'">
+        <div class="report-toolbar" data-report-no-print>
+          <div>
+            <span class="report-eyebrow">HSE / INVESTIGATION</span>
+            <h1>Investigation results</h1>
+            <p>Findings, evidence and actions in one complete report.</p>
+          </div>
+          <div class="report-print-actions">
+            <button
+              type="button"
+              class="report-print-button"
+              :disabled="printing || similarObservationsLoading"
+              @click="printReport"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.7"
+                aria-hidden="true"
+              >
+                <path d="M7 8V3h10v5M7 17H4V9h16v8h-3M7 14h10v7H7zM16 11h1" />
+              </svg>
+              {{
+                printing
+                  ? 'Preparing report…'
+                  : similarObservationsLoading
+                    ? 'Loading report…'
+                    : 'Print / Save PDF'
+              }}
+            </button>
+            <small>Choose “Save as PDF” in the print dialog.</small>
+          </div>
+        </div>
+        <p v-if="printError" class="report-print-error" role="alert">{{ printError }}</p>
+        <main ref="reportContent" class="investegation-result-answer-container" :lang="locale">
+          <header class="investigation-report-cover">
+            <div class="report-cover-intro">
+              <span class="report-eyebrow">INVESTIGATION REPORT</span>
+              <h2>{{ observation?.title || 'Investigation findings' }}</h2>
+              <p>
+                A complete record of the incident, its causes and the actions to prevent recurrence.
+              </p>
+              <div class="report-cover-meta">
+                <div>
+                  <span>Report reference</span
+                  ><strong>{{ investigationData?.serialName || `#${id}` }}</strong>
+                </div>
+                <div>
+                  <span>Incident reference</span
+                  ><strong>{{ observation?.serial_name || observation?.serial || '—' }}</strong>
+                </div>
+                <div>
+                  <span>Investigation date</span
+                  ><strong>{{
+                    investigationData?.date || investigationData?.createdAt || '—'
+                  }}</strong>
+                </div>
+                <div>
+                  <span>Team leader</span
+                  ><strong>{{ investigationData?.investigationTeamLeader?.name || '—' }}</strong>
+                </div>
+              </div>
+            </div>
+            <div class="report-summary">
+              <div class="report-summary-item">
+                <strong>{{ String(teamMembers.length).padStart(2, '0') }}</strong
+                ><span>Team members</span>
+              </div>
+              <div class="report-summary-item">
+                <strong>{{ String(allTasks.length).padStart(2, '0') }}</strong
+                ><span>Action items</span>
+              </div>
+              <div class="report-summary-item">
+                <strong>{{ String(meetings.length).padStart(2, '0') }}</strong
+                ><span>Meetings</span>
+              </div>
+              <div class="report-summary-item">
+                <strong>{{
+                  String(investigationData?.investigationDocumentations?.length || 0).padStart(
+                    2,
+                    '0',
+                  )
+                }}</strong
+                ><span>Evidence records</span>
+              </div>
+            </div>
+          </header>
+          <section class="final-answer-section">
+            <div class="final-section-heading">
+              <span>01</span>
+              <h2>{{ getObservationType(observation?.type) }} Identification</h2>
+            </div>
+            <div class="answer-info-grid">
+              <article>
+                <span>Incident title</span>
+                <strong>{{ observation?.title || '-' }}</strong>
+              </article>
+              <article>
+                <span>Incident reference</span>
+                <strong>{{
+                  observation?.serial_name ||
+                  observation?.serial ||
+                  investigationData?.serialName ||
+                  '-'
+                }}</strong>
+              </article>
+              <article>
+                <span>Investigation reference</span>
+                <strong>{{ state.data?.serialName ?? '-' }}</strong>
+              </article>
+              <article>
+                <span>Incident type</span>
+                <strong>{{ getTitle(observation?.type_model) }}</strong>
+              </article>
+              <article>
+                <span>Work Area / Facility</span>
+                <strong>{{ observation?.place || '-' }}</strong>
+              </article>
+              <article>
+                <span>Equipment</span>
+                <strong>{{ getTitle(observation?.equipment) }}</strong>
+              </article>
+              <article>
+                <span>Shift</span>
+                <strong>{{ getTitle(observation?.work_shift) }}</strong>
+              </article>
+            </div>
+            <div v-if="incidentDescription" class="incident-description">
+              <span>Incident description</span>
+              <p>{{ incidentDescription }}</p>
+            </div>
+          </section>
 
-        <section class="final-answer-section">
-          <div class="final-section-heading">
-            <span>01</span>
-            <h2>{{ getObservationType(observation?.type) }} Identification</h2>
-          </div>
-          <div class="answer-info-grid">
-            <article>
-              <span>incident title</span>
-              <strong>{{ observation?.title || '-' }}</strong>
-            </article>
-            <article>
-              <span>incident Serial</span>
-              <strong>{{
-                observation?.serial_name ||
-                observation?.serial ||
-                investigationData?.serialName ||
-                '-'
-              }}</strong>
-            </article>
-            <article>
-              <span>Investigation Serial</span>
-              <strong>{{ state.data?.serialName ?? '-' }}</strong>
-            </article>
-            <article>
-              <span>Incident type</span>
-              <strong>{{ getTitle(observation?.type_model) }}</strong>
-            </article>
-            <article>
-              <span>Work Area / Facility</span>
-              <strong>{{ observation?.place || '-' }}</strong>
-            </article>
-            <article>
-              <span>Equipment</span>
-              <strong>{{ getTitle(observation?.equipment) }}</strong>
-            </article>
-            <article>
-              <span>Shift</span>
-              <strong>{{ getTitle(observation?.work_shift) }}</strong>
-            </article>
-          </div>
-        </section>
-
-        <section class="final-answer-section">
-          <div class="final-section-heading">
-            <span>02</span>
-            <h2>Investigation Team Setup</h2>
-          </div>
-          <div class="answer-info-grid">
-            <article>
-              <span>Investigation team leader</span>
-              <strong>{{ investigationData?.investigationTeamLeader?.name || '-' }}</strong>
-            </article>
-            <article>
-              <span>Team members</span>
-              <strong>{{ teamMembers.length }}</strong>
-            </article>
-            <!-- <article>
+          <section class="final-answer-section">
+            <div class="final-section-heading">
+              <span>02</span>
+              <h2>Investigation Team Setup</h2>
+            </div>
+            <div class="answer-info-grid">
+              <article>
+                <span>Investigation team leader</span>
+                <strong>{{ investigationData?.investigationTeamLeader?.name || '-' }}</strong>
+              </article>
+              <article>
+                <span>Team members</span>
+                <strong>{{ teamMembers.length }}</strong>
+              </article>
+              <!-- <article>
               <span>Meeting date</span>
               <strong>{{
                 investigationData?.investigationMeetingDate || latestMeeting?.date || '-'
@@ -297,212 +397,207 @@ const getObservationType = (type: number | undefined) => {
                 investigationData?.investigationMeetingTime || latestMeeting?.time || '-'
               }}</strong>
             </article> -->
-          </div>
-          <div v-if="teamMembers.length" class="answer-person-grid">
-            <article v-for="member in teamMembers" :key="member.id">
-              <img
-                :src="
-                  member?.organizationEmployee?.image ||
-                  member?.organization_employee?.image ||
-                  'https://cyber.comolho.com/static/img/avatar.png'
-                "
-                alt=""
-              />
-              <div>
-                <strong>{{
-                  getEmployeeName(
-                    member?.organizationEmployee ?? member?.organization_employee ?? member,
-                  )
-                }}</strong>
-                <span>{{ member?.is_leader ? 'Team leader' : 'Team member' }}</span>
-              </div>
-            </article>
-          </div>
-        </section>
+            </div>
+            <div v-if="teamMembers.length" class="answer-person-grid">
+              <article v-for="member in teamMembers" :key="member.id">
+                <img
+                  :src="
+                    member?.organizationEmployee?.image ||
+                    member?.organization_employee?.image ||
+                    'https://cyber.comolho.com/static/img/avatar.png'
+                  "
+                  alt=""
+                />
+                <div>
+                  <strong>{{
+                    getEmployeeName(
+                      member?.organizationEmployee ?? member?.organization_employee ?? member,
+                    )
+                  }}</strong>
+                  <span>{{ member?.is_leader ? 'Team leader' : 'Team member' }}</span>
+                </div>
+              </article>
+            </div>
+          </section>
 
-        <section class="final-answer-section">
-          <div class="final-section-heading">
-            <span>03</span>
-            <h2>Immediate Action Evaluation</h2>
-          </div>
-          <div class="answer-info-grid">
-            <article class="wide">
-              <span>Immediate Action Retrieval</span>
-              <strong>{{ observation?.action || '-' }}</strong>
-            </article>
-            <!-- <article>
+          <section class="final-answer-section">
+            <div class="final-section-heading">
+              <span>03</span>
+              <h2>Immediate Action Evaluation</h2>
+            </div>
+            <div class="answer-info-grid">
+              <article class="wide">
+                <span>Immediate Action Retrieval</span>
+                <strong>{{ observation?.action || '-' }}</strong>
+              </article>
+              <!-- <article>
               <span>Action correct</span>
               <strong>{{ formatBoolean(investigationData?.isActionCorrect) }}</strong>
             </article> -->
-            <!-- <article class="wide">
+              <!-- <article class="wide">
               <span>Notes</span>
               <strong>{{ investigationData?.explainWhyText || '-' }}</strong>
             </article> -->
-          </div>
-          <InvestegationResultTakeActionAnswer
-            v-if="hasImmediateAction"
-            :actions="investigationData?.explainWhyText"
-            :isCorrect="investigationData?.isActionCorrect"
-          />
-        </section>
+            </div>
+            <InvestegationResultTakeActionAnswer
+              v-if="hasImmediateAction"
+              :actions="investigationData?.explainWhyText"
+              :isCorrect="investigationData?.isActionCorrect"
+            />
+          </section>
 
           <section class="final-answer-section">
-          <div class="final-section-heading">
-            <span>04</span>
-            <h2>Witnesses Management</h2>
-          </div>
-          <InvestegationResultViewersAnswer
-            v-if="viewerResults.length > 0"
-            :viewers="viewerResults"
-          />
-          <p v-else class="answer-empty">No witnesses statements were added.</p>
-        </section>
-
-        <section class="final-answer-section">
-          <div class="final-section-heading">
-            <span>05</span>
-            <h2>Events Timeline Builder</h2>
-          </div>
-          <div class="answer-timeline" v-if="eventTimelines.length">
-            <article v-for="(event, index) in eventTimelines" :key="index">
-              <span>{{ index + 1 }}</span>
-              <div>
-                <strong>{{ event.time || event.event_time || '-' }}</strong>
-                <p>{{ event.description || event.event_description || '-' }}</p>
-              </div>
-            </article>
-          </div>
-          <!-- <p v-else class="answer-empty">
-            {{ incidentDescription || 'No timeline events were added.' }}
-          </p> -->
-        </section>
-
-        <section class="final-answer-section">
-          <div class="final-section-heading">
-            <span>06</span>
-            <h2>Health Impact Integration</h2>
-          </div>
-          <div v-if="healthImpactItems.length" class="answer-card-grid">
-            <article v-for="item in healthImpactItems" :key="`${item.impactType}-${item.id}`">
-              <span> {{ item.impactType }}</span>
-              <strong>name : {{ getEmployeeName(item) }}</strong>
-              <p>description : {{ item.note || '-' }}</p>
-              <small>injury type : {{ getTitle(item.injury_type, '') }}</small>
-            </article>
-          </div>
-          <p v-else class="answer-empty">No health impact records were added.</p>
-        </section>
-
-
-
-        
-
-        <section class="final-answer-section">
-          <div class="final-section-heading">
-            <span>07</span>
-            <h2>Root Analysis (5 Whys)</h2>
-          </div>
-          <div v-if="fiveWhyQuestions.length" class="answer-card-grid">
-            <article v-for="question in fiveWhyQuestions" :key="question.id">
-              <span>Question</span>
-              <strong>{{ question.question || '-' }}</strong>
-              <p>{{ question.answer || '-' }}</p>
-            </article>
-          </div>
-        </section>
-
-        <section class="final-answer-section">
-          <div class="final-section-heading">
-            <span>08</span>
-            <h2>Root Causes</h2>
-          </div>
-          <div v-if="rootCauses.length" class="answer-tags">
-            <span v-for="rootCause in rootCauses" :key="rootCause.id">{{
-              getTitle(rootCause)
-            }}</span>
-          </div>
-          <CauseOfAccidantAnswer
-            v-if="state.data?.investigationFactors?.length > 0"
-            class="w-full"
-            :Factors="state.data?.investigationFactors"
-          />
-        </section>
-
-        <section class="final-answer-section">
-          <div class="final-section-heading">
-            <span>09</span>
-            <h2>Action Plan : Corrective and Preventive Actions</h2>
-          </div>
-          <InvestegationResultTasksAnswer
-            v-if="hasActionPlan"
-            :correctiveTasks="correctiveTasks"
-            :preventiveTasks="preventiveTasks"
-            :tasks="legacyTasks"
-            @answered="GetInvestegationDetails"
-          />
-          <p v-else class="answer-empty">No CAPA actions were added.</p>
-        </section>
-
-        <section class="final-answer-section">
-          <div class="final-section-heading">
-            <span>10</span>
-            <h2>Lessons Learned</h2>
-          </div>
-          <p class="answer-note">{{ lessonLearnt || 'No lesson learnt was added.' }}</p>
-          <p v-if="recommendation" class="answer-note subtle">{{ recommendation }}</p>
-        </section>
-
-        <section class="final-answer-section">
-          <div class="final-section-heading">
-            <span>11</span>
-            <h2>Similar incident Retrieval</h2>
-          </div>
-          <!-- <p class="answer-empty"> -->
-          <section class="similar-observations-section">
-            <div v-if="similarObservationsLoading" class="similar-observations-grid">
-              <div v-for="item in 3" :key="item" class="similar-observation-card loading">
-                <span></span>
-                <strong></strong>
-                <small></small>
-              </div>
+            <div class="final-section-heading">
+              <span>04</span>
+              <h2>Witness statements</h2>
             </div>
+            <InvestegationResultViewersAnswer
+              v-if="viewerResults.length > 0"
+              :viewers="viewerResults"
+            />
+            <p v-else class="answer-empty">No witnesses statements were added.</p>
+          </section>
 
-            <div v-else-if="SimilarObservations?.length" class="similar-observations-grid">
-              <article
-                v-for="observation in SimilarObservations"
-                :key="observation.id"
-                class="similar-observation-card"
-              >
-                <span>#{{ observation.serialName || observation.serial || 'N/A' }}</span>
-                <strong>{{ observation.title || 'Untitled observation' }}</strong>
-                <small>{{ observation.date || 'N/A' }}</small>
+          <section class="final-answer-section">
+            <div class="final-section-heading">
+              <span>05</span>
+              <h2>Sequence of events</h2>
+            </div>
+            <div class="answer-timeline" v-if="eventTimelines.length">
+              <article v-for="(event, index) in eventTimelines" :key="index">
+                <span>{{ index + 1 }}</span>
+                <div>
+                  <strong>{{ event.time || event.event_time || '-' }}</strong>
+                  <p>{{ event.description || event.event_description || '-' }}</p>
+                </div>
               </article>
             </div>
-
-            <p v-else class="similar-observations-empty">No similar incidents found.</p>
+            <p v-else class="answer-empty">No timeline events were added.</p>
           </section>
-          <!-- </p> -->
-        </section>
 
-        <section class="final-answer-section">
-          <div class="final-section-heading">
-            <span>12</span>
-            <h2>Attachments</h2>
-          </div>
-          <InvestegationResultAttachmentAnswer
-            v-if="state.data?.investigationDocumentations?.length > 0"
-            :attachments="state.data?.investigationDocumentations"
-          />
-          <p v-else class="answer-empty">No attachments were added.</p>
-        </section>
+          <section class="final-answer-section">
+            <div class="final-section-heading">
+              <span>06</span>
+              <h2>Health impact</h2>
+            </div>
+            <div v-if="healthImpactItems.length" class="answer-card-grid">
+              <article v-for="item in healthImpactItems" :key="`${item.impactType}-${item.id}`">
+                <span> {{ item.impactType }}</span>
+                <strong>name : {{ getEmployeeName(item) }}</strong>
+                <p>description : {{ item.note || '-' }}</p>
+                <small>injury type : {{ getTitle(item.injury_type, '') }}</small>
+              </article>
+            </div>
+            <p v-else class="answer-empty">No health impact records were added.</p>
+          </section>
 
-        <section class="final-answer-section">
-          <div class="final-section-heading">
-            <span>13</span>
-            <h2>Meeting</h2>
-          </div>
-          <!-- <div class="answer-info-grid"> -->
-          <!-- <article>
+          <section class="final-answer-section">
+            <div class="final-section-heading">
+              <span>07</span>
+              <h2>Root Analysis (5 Whys)</h2>
+            </div>
+            <div v-if="fiveWhyQuestions.length" class="answer-card-grid">
+              <article v-for="question in fiveWhyQuestions" :key="question.id">
+                <span>Question</span>
+                <strong>{{ question.question || '-' }}</strong>
+                <p>{{ question.answer || '-' }}</p>
+              </article>
+            </div>
+            <p v-else class="answer-empty">No root analysis questions were added.</p>
+          </section>
+
+          <section class="final-answer-section">
+            <div class="final-section-heading">
+              <span>08</span>
+              <h2>Root Causes</h2>
+            </div>
+            <div v-if="rootCauses.length" class="answer-tags">
+              <span v-for="rootCause in rootCauses" :key="rootCause.id">{{
+                getTitle(rootCause)
+              }}</span>
+            </div>
+            <CauseOfAccidantAnswer
+              v-if="state.data?.investigationFactors?.length > 0"
+              class="w-full"
+              :Factors="state.data?.investigationFactors"
+            />
+          </section>
+
+          <section class="final-answer-section">
+            <div class="final-section-heading">
+              <span>09</span>
+              <h2>Corrective &amp; preventive actions</h2>
+            </div>
+            <InvestegationResultTasksAnswer
+              v-if="hasActionPlan"
+              :correctiveTasks="correctiveTasks"
+              :preventiveTasks="preventiveTasks"
+              :tasks="legacyTasks"
+              @answered="GetInvestegationDetails"
+            />
+            <p v-else class="answer-empty">No CAPA actions were added.</p>
+          </section>
+
+          <section class="final-answer-section">
+            <div class="final-section-heading">
+              <span>10</span>
+              <h2>Lessons Learned</h2>
+            </div>
+            <p class="answer-note">{{ lessonLearnt || 'No lesson learnt was added.' }}</p>
+            <p v-if="recommendation" class="answer-note subtle">{{ recommendation }}</p>
+          </section>
+
+          <section class="final-answer-section">
+            <div class="final-section-heading">
+              <span>11</span>
+              <h2>Related incidents</h2>
+            </div>
+            <!-- <p class="answer-empty"> -->
+            <section class="similar-observations-section">
+              <div v-if="similarObservationsLoading" class="similar-observations-grid">
+                <div v-for="item in 3" :key="item" class="similar-observation-card loading">
+                  <span></span>
+                  <strong></strong>
+                  <small></small>
+                </div>
+              </div>
+
+              <div v-else-if="SimilarObservations?.length" class="similar-observations-grid">
+                <article
+                  v-for="observation in SimilarObservations"
+                  :key="observation.id"
+                  class="similar-observation-card"
+                >
+                  <span>#{{ observation.serialName || observation.serial || 'N/A' }}</span>
+                  <strong>{{ observation.title || 'Untitled observation' }}</strong>
+                  <small>{{ observation.date || 'N/A' }}</small>
+                </article>
+              </div>
+
+              <p v-else class="similar-observations-empty">No similar incidents found.</p>
+            </section>
+            <!-- </p> -->
+          </section>
+
+          <section class="final-answer-section">
+            <div class="final-section-heading">
+              <span>12</span>
+              <h2>Attachments</h2>
+            </div>
+            <InvestegationResultAttachmentAnswer
+              v-if="state.data?.investigationDocumentations?.length > 0"
+              :attachments="state.data?.investigationDocumentations"
+            />
+            <p v-else class="answer-empty">No attachments were added.</p>
+          </section>
+
+          <section class="final-answer-section">
+            <div class="final-section-heading">
+              <span>13</span>
+              <h2>Investigation meetings</h2>
+            </div>
+            <!-- <div class="answer-info-grid"> -->
+            <!-- <article>
               <span>Next meeting date</span>
               <strong>{{ nextMeetingDate || '-' }}</strong>
             </article>
@@ -510,9 +605,15 @@ const getObservationType = (type: number | undefined) => {
               <span>Next meeting time</span>
               <strong>{{ nextMeetingTime || '-' }}</strong>
             </article> -->
-          <!-- </div> -->
-          <MeetingOverviewAnswer v-if="meetings.length > 0" :meetings="meetings" />
-        </section>
+            <!-- </div> -->
+            <MeetingOverviewAnswer v-if="meetings.length > 0" :meetings="meetings" />
+            <p v-else class="answer-empty">No investigation meetings were added.</p>
+          </section>
+          <footer class="report-footer">
+            <strong>HSE · Investigation report</strong>
+            <span>{{ investigationData?.serialName || `#${id}` }} · End of report</span>
+          </footer>
+        </main>
       </div>
     </template>
     <template #loader>
@@ -548,31 +649,270 @@ const getObservationType = (type: number | undefined) => {
 </template>
 
 <style scoped>
+.investigation-report-page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 8px 0 28px;
+  --brand-primary-900: var(--text-strong, #18324a);
+}
+.report-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 10px 0 26px;
+}
+.report-eyebrow {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  color: var(--brand-primary-500, #245d88);
+}
+.report-toolbar h1 {
+  margin: 8px 0 6px;
+  font-size: clamp(23px, 3vw, 30px);
+  letter-spacing: -0.035em;
+  color: var(--text-strong, #18324a);
+  font-weight: 750;
+}
+.report-toolbar p {
+  margin: 0;
+  color: var(--text-soft, #61758a);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.report-print-actions {
+  display: grid;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.report-print-actions small {
+  color: var(--text-soft, #61758a);
+  font-size: 10px;
+  text-align: center;
+}
+.report-print-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 0;
+  border-radius: 11px;
+  background: var(--brand-primary-500, #245d88);
+  color: #fff;
+  padding: 13px 20px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+}
+.report-print-button svg {
+  width: 20px;
+  height: 20px;
+}
+.report-print-button:hover:not(:disabled) {
+  filter: brightness(0.94);
+}
+.report-print-button:focus-visible {
+  outline: 3px solid var(--brand-primary-400, #56768f);
+  outline-offset: 3px;
+}
+.report-print-button:disabled {
+  cursor: wait;
+  opacity: 0.6;
+}
+.report-print-error {
+  padding: 14px;
+  border-radius: 10px;
+  color: var(--status-danger, #ad3744);
+  background: var(--status-danger-soft, #fff0f1);
+}
+.investigation-report-cover {
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid var(--brand-primary-100, #dce6ef);
+}
+.report-cover-intro {
+  padding: clamp(24px, 4vw, 40px);
+  background: linear-gradient(120deg, #142e46, #245d76);
+  border-inline-start: 5px solid #58c5b0;
+  color: #fff;
+}
+.report-cover-intro .report-eyebrow {
+  color: #b6e8df;
+}
+.report-cover-intro h2 {
+  margin: 14px 0 10px;
+  color: #fff;
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 750;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  overflow-wrap: anywhere;
+}
+.report-cover-intro > p {
+  max-width: 580px;
+  margin: 0;
+  color: #d6e6ef;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.report-cover-meta {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid #ffffff30;
+}
+.report-cover-meta div {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  min-width: 0;
+}
+.report-cover-meta span {
+  color: #bed3df;
+  font-size: 11px;
+}
+.report-cover-meta strong {
+  color: white;
+  font-size: 13px;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+.report-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  background: var(--surface-1, #fff);
+  padding: 22px 12px;
+}
+.report-summary-item {
+  display: grid;
+  gap: 5px;
+  text-align: center;
+  padding: 0 12px;
+}
+.report-summary-item + .report-summary-item {
+  border-inline-start: 1px solid var(--brand-primary-100, #dce6ef);
+}
+.report-summary-item strong {
+  color: var(--brand-primary-900, #18324a);
+  font-size: 25px;
+  font-weight: 750;
+}
+.report-summary-item span {
+  color: var(--text-soft, #61758a);
+  font-size: 11px;
+}
+.incident-description {
+  margin-top: 14px;
+  padding: 16px;
+  border-inline-start: 3px solid var(--brand-primary-500, #245d88);
+  background: var(--brand-primary-50, #f1f6fb);
+  border-radius: 8px;
+}
+.incident-description > span {
+  color: var(--text-soft, #61758a);
+  font-size: 11px;
+  font-weight: 750;
+}
+.incident-description p {
+  margin: 8px 0 0;
+  color: var(--brand-primary-900, #18324a);
+  font-size: 13px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.answer-note,
+.answer-timeline p,
+.answer-card-grid p,
+.answer-info-grid strong {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.report-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 4px 0;
+  border-top: 1px solid var(--brand-primary-100, #dce6ef);
+  font-size: 11px;
+  color: var(--text-soft, #61758a);
+}
+@media (max-width: 640px) {
+  .report-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .report-cover-meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+  .report-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 0;
+  }
+  .report-summary-item:nth-child(3) {
+    border-inline-start: 0;
+  }
+  .report-footer {
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
 .investegation-result-answer-container {
   display: flex;
   flex-direction: column;
+  align-items: stretch;
   gap: 18px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.investigation-report-page :deep(*) {
+  text-transform: none;
+}
+
+.investegation-result-answer-container :deep(.attachments-answer .content) {
+  grid-template-columns: 1fr;
+}
+
+.investegation-result-answer-container :deep(.investegaion-attachment-card-media),
+.investegation-result-answer-container :deep(.meeting-overview-answer .content) {
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+}
+
+.investegation-result-answer-container :deep(.investegaion-attachment-card .evidence-item img) {
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+
+.investegation-result-answer-container :deep(.meeting-note) {
+  display: block;
+  -webkit-line-clamp: unset;
+  white-space: pre-wrap;
+}
+
+.investegation-result-answer-container :deep(.investegaion-meeting-card) {
+  align-items: stretch;
 }
 
 .final-answer-section {
-  width: 100% !important;
+  width: 100%;
+  box-sizing: border-box;
   position: relative;
   overflow: hidden;
   padding: 18px;
   border: 1px solid color-mix(in srgb, var(--brand-primary-100) 90%, transparent);
   border-radius: 18px;
-  background:
-    linear-gradient(
-      135deg,
-      color-mix(in srgb, var(--surface-1) 98%, transparent),
-      color-mix(in srgb, var(--brand-primary-50) 94%, transparent)
-    ),
-    linear-gradient(
-      90deg,
-      color-mix(in srgb, var(--brand-primary-500) 5%, transparent),
-      color-mix(in srgb, var(--status-success) 5%, transparent)
-    );
-  box-shadow: 0 18px 38px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
+  background: var(--surface-1, #fff);
+  box-shadow: 0 4px 18px color-mix(in srgb, var(--brand-primary-900) 3%, transparent);
 }
 
 .final-answer-section::before {
@@ -608,7 +948,7 @@ const getObservationType = (type: number | undefined) => {
   margin: 0;
   color: var(--brand-primary-900);
   font-size: 18px;
-  font-weight: 900;
+  font-weight: 750;
 }
 
 .answer-info-grid,

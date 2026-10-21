@@ -578,7 +578,7 @@ const GerIncidantCount = (data: any): number => {
                               :to="`/organization/Investigating-result-answer/${item?.Investegationid}`"
                             >
                               <button class="btn btn-primary w-full">
-                                <span>{{ $t('Investigating closed') }}</span>
+                                <span>{{ $t('Investigating Report') }}</span>
                               </button>
                             </router-link>
                           </div>

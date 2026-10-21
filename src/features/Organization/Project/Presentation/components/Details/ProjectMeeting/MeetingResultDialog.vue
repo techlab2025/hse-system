@@ -731,24 +731,13 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
               </button>
             </div>
 
-            <div class="action-form-grid">
-              <!-- Action Type -->
-              <UpdatedCustomInputSelect
-                :id="`action_type_${index}`"
-                v-model="action.type"
-                :label="$t('Action Type')"
-                :placeholder="$t('Select Action Type')"
-                :static-options="ActionTypeSelectionOptions"
-                @update:model-value="UpdateActionType(index, $event)"
-              />
-
-              <!-- Title -->
-              <div v-if="showTitle(action)" class="hse-project-field input-wrapper">
+             <!-- Title -->
+              <div class="hse-project-field input-wrapper">
                 <label
                   :for="`action_title_${index}`"
                   class="hse-project-field-label hse-project-field field-label"
                 >
-                  {{ $t('title') }}
+                  {{ $t('action') }}
 
                   <!-- <span class="required-star"> * </span> -->
                 </label>
@@ -761,6 +750,19 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
                   :placeholder="$t('Enter action title')"
                 />
               </div>
+
+            <div class="action-form-grid">
+              <!-- Action Type -->
+              <UpdatedCustomInputSelect
+                :id="`action_type_${index}`"
+                v-model="action.type"
+                :label="$t('Action Status')"
+                :placeholder="$t('Select Action Status')"
+                :static-options="ActionTypeSelectionOptions"
+                @update:model-value="UpdateActionType(index, $event)"
+              />
+
+             
 
               <!-- Task Due Date -->
               <div v-if="isTask(action)" class="hse-project-field input-wrapper">
@@ -999,7 +1001,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
         <div class="meeting-show-section-header">
           <div>
             <h3>
-              {{ $t('Employees') }}
+              {{ $t('Participants') }}
             </h3>
 
             <p>
@@ -1144,7 +1146,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
             <!-- Action Details -->
             <div class="meeting-show-action-details">
               <!-- Title -->
-              <div v-if="action.title" class="meeting-action-detail">
+              <!-- <div v-if="action.title" class="meeting-action-detail">
                 <span>
                   {{ $t('Title') }}
                 </span>
@@ -1152,7 +1154,7 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
                 <strong>
                   {{ action.title }}
                 </strong>
-              </div>
+              </div> -->
 
               <!-- Due Date -->
               <div
@@ -2167,12 +2169,9 @@ const getEmployeeImage = (employee?: { image?: string | null } | null) => {
 
 .meeting-action-type {
   flex: 0 0 auto;
-
   padding: 6px 10px;
-
-  border-radius: 20px;
-
-  font-size: 0.75rem;
+  border-radius: 10px;
+  font-size: 1rem;
   font-weight: 800;
 }
 

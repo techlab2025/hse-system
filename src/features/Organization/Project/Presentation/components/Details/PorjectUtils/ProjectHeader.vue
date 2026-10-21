@@ -205,7 +205,7 @@ defineProps<{
             </svg>
           </span>
           <span class="action-copy">
-            <strong>Leadership visits</strong>
+            <strong>Leadership Engagement</strong>
             <small>Plan visits and submit reports</small>
           </span>
           <span class="action-arrow" aria-hidden="true">→</span>

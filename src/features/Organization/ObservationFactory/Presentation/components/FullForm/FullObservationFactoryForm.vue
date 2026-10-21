@@ -370,6 +370,8 @@ const GetObservationType = (type) => {
 const indexObservatioTyepController = IndexObserverationTypeController.getInstance()
 const indexObservationTypeParams = new IndexObserverationTypeParams('', 1, 10, 0)
 const SelectedObservationType = ref<TitleInterface>()
+// Set to false to send the selected observation type as uauc instead of typeId.
+const sendObservationTypeAsTypeId = true
 const setSelectedObservationType = (data: TitleInterface) => {
   SelectedObservationType.value = data
   updateData()
@@ -518,12 +520,14 @@ const updateData = () => {
         image: image.value?.map((el) => el?.file) ?? null,
         typeId:
           ObservationFactoryType.value == Observation.ObservationType
-            ? undefined
+            ? sendObservationTypeAsTypeId
+              ? (SelectedObservationType.value?.id ?? null)
+              : null
             : ObservationFactoryType.value == Observation.AccidentsType
               ? AccidentsType.value?.id
               : HazardType.value?.id,
         uauc:
-          ObservationFactoryType.value == Observation.ObservationType
+          ObservationFactoryType.value == Observation.ObservationType && !sendObservationTypeAsTypeId
             ? SelectedObservationType.value?.id
             : 0,
         type: ObservationFactoryType.value,
@@ -1046,13 +1050,13 @@ defineExpose({
       data-required-field="SelectedObservationType"
       v-if="ObservationFactoryType == Observation.ObservationType"
     >
-      <!-- <CustomSelectInput
+      <CustomSelectInput
       :required="false" :modelValue="SelectedObservationType"
         :controller="indexObservatioTyepController"
         :params="indexObservationTypeParams"
          label="Observation Type "
         id="Equipment" placeholder="Select Observation Type"
-        @update:modelValue="setSelectedObservationType" /> -->
+        @update:modelValue="setSelectedObservationType" />
 
       <!-- <CustomSelectInput
                  New Update => Custom input Select inspection Observisoon Form
@@ -1060,7 +1064,7 @@ defineExpose({
 
       <!-- :controller="indexObservatioTyepController"
         :params="indexObservationTypeParams" -->
-      <UpdatedCustomInputSelect
+      <!-- <UpdatedCustomInputSelect
         :required="true"
         :static-options="ObservationTypeStaticOptions"
         :modelValue="SelectedObservationType"
@@ -1079,7 +1083,7 @@ defineExpose({
         <template #Dialog>
           <AddObserverationType @update:data="observationTypeDialog = false" />
         </template>
-      </UpdatedCustomInputSelect>
+      </UpdatedCustomInputSelect> -->
       <p v-if="getFieldError('SelectedObservationType')" class="required-field-message">
         {{ getFieldError('SelectedObservationType') }}
       </p>
@@ -1293,7 +1297,7 @@ defineExpose({
     <!-- Image -->
     <div class="col-span-6 md:col-span-6 input-wrapper w-full">
       <div class="field-label">
-        <label>{{ $t('Incident Photos ') }}</label
+        <label>{{ $t(`${ GetHeader(ObservationFactoryType) } Photos `) }}</label
         ><FieldHelpIcon
           text="Attach photos that help document the location, condition, damage, or evidence."
         />

@@ -124,8 +124,12 @@ const rowsForMonth = (key: string) => monthVisits[key] ?? []
 const savedVisitsForMonth = (key: string) => {
   return visits.value.filter((visit) => visit.date.slice(0, 7) === key)
 }
+const maxVisitsPerMonth = 4
+const visitCountForMonth = (key: string) =>
+  rowsForMonth(key).length + savedVisitsForMonth(key).length
+const canAddVisit = (key: string) => canCreate.value && visitCountForMonth(key) < maxVisitsPerMonth
 const addVisit = (key: string) => {
-  if (!canCreate.value) return
+  if (!canAddVisit(key)) return
   if (!monthVisits[key]) monthVisits[key] = []
   monthVisits[key].push(newVisit())
 }
@@ -142,6 +146,10 @@ const saveMonth = async (month: ProjectMonth) => {
   successMessage.value = ''
   const rows = rowsForMonth(month.key)
   if (!rows.length) return
+  if (visitCountForMonth(month.key) > maxVisitsPerMonth) {
+    errorMessage.value = `You can add a maximum of ${maxVisitsPerMonth} visits per month.`
+    return
+  }
   if (
     rows.some(
       (row) =>
@@ -341,7 +349,7 @@ onMounted(async () => {
                       <p>Add a visit with its date, location, employee, and activity.</p>
                     </div>
                     <button
-                      v-if="canCreate"
+                      v-if="canAddVisit(month.key)"
                       type="button"
                       class="hse-project-button hse-project-button--primary button button--primary"
                       @click="addVisit(month.key)"
@@ -351,7 +359,7 @@ onMounted(async () => {
                   </div>
                   <div v-if="savedVisitsForMonth(month.key).length" class="month-actions">
                     <button
-                      v-if="canCreate"
+                      v-if="canAddVisit(month.key)"
                       type="button"
                       class="hse-project-button button button--outline"
                       @click="addVisit(month.key)"
@@ -568,7 +576,7 @@ onMounted(async () => {
                     </div> -->
                     <div class="month-actions">
                       <button
-                        v-if="canCreate"
+                        v-if="canAddVisit(month.key)"
                         type="button"
                         class="hse-project-button button button--outline"
                         @click="addVisit(month.key)"

@@ -301,14 +301,14 @@ const handleFilesChange = (files: UploadedFile[]) => {
             </div>
             <div class="hse-project-field ptw-field" data-required-field="Name">
               <label class="hse-project-field-label" for="name">
-                {{ $t('Permit Code') }}
+                {{ $t('Permit Number') }}
                 <span class="required-mark">*</span>
               </label>
               <InputText
                 id="name"
                 v-model="ptwNum"
                 class="ptw-control"
-                :placeholder="$t('Enter permit Code')"
+                :placeholder="$t('Enter permit Number')"
                 @input="setptwNo"
               />
               <p v-if="getFieldError('Name')" class="hse-project-field required-field-message">
@@ -492,7 +492,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
             </div>
             <div class="hse-project-field ptw-field ptw-control management-change-upload-field">
               <HandleFIlesUpload
-                :label="$t('attachments')"
+                :label="$t('PTW attachments')"
                 accept=".pdf,.doc,.docx,.xls,.xlsx,image/*"
                 :max-files="1"
                 :multiple="false"
