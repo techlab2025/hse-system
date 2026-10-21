@@ -137,7 +137,11 @@
 }
 
 .hse-project-root.hse-project-assurance[data-hse-project] .form-shell > form {
-  padding: var(--hse-space-5) 0 0;
+  /* padding: var(--hse-space-5) 0 0;
+   */
+  padding: 0 !important;
+  padding-top: 0 !important;
+  margin-top: 20px;
 }
 
 .hse-project-root.hse-project-assurance[data-hse-project]

@@ -26,6 +26,9 @@ const projects = computed(() => {
   }
   return options
 })
+const selectedProject = computed(() =>
+  projects.value.find((project) => project.id === props.modelValue),
+)
 
 watch(
   () => [props.autoSelectFirst, props.modelValue, projects.value[0]?.id] as const,
@@ -60,7 +63,17 @@ onMounted(() => {
     <label :for="id" class="hse-project-field-label">
       {{ $t('project') }} <span aria-hidden="true" class="red">*</span>
     </label>
+    <input
+      v-if="disabled && modelValue"
+      :id="id"
+      type="text"
+      class="hse-project-input input"
+      :value="selectedProject?.title || selectedProject?.name || `${$t('project')} #${modelValue}`"
+      readonly
+      :aria-describedby="failed ? `${id}-error` : undefined"
+    />
     <select
+      v-else
       :id="id"
       :value="modelValue ?? ''"
       class="hse-project-input input"
@@ -98,7 +111,8 @@ onMounted(() => {
   gap: 10px;
   min-width: 0;
 }
-.project-form-select select {
+.project-form-select select,
+.project-form-select input {
   width: 100%;
   min-width: 0;
   min-height: 46px;
