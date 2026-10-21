@@ -350,29 +350,66 @@
 .email-settings .email-field > small {
   max-width: 46ch;
 }
-.email-settings .email-language {
+.email-settings .email-sender-name {
+  min-width: 0;
+}
+.email-settings .email-sender-name .input-wrapper {
   display: flex;
-  gap: 3px;
-  width: fit-content;
+  flex-direction: column;
+  gap: 8px;
+  padding: 0;
+  margin: 0;
+}
+.email-settings .email-sender-name .label-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 22px;
+}
+.email-settings .email-sender-name .label-wrapper > label {
+  font-size: var(--md-size, 12px);
+  font-weight: 650;
+  margin: 0;
+}
+.email-settings .email-sender-name .languages {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.email-settings .email-sender-name .input-lang {
+  position: relative;
+}
+.email-settings .email-sender-name .input-lang input[type='radio'] {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+}
+.email-settings .email-sender-name .icon-lng {
+  display: grid;
+  place-items: center;
+  cursor: pointer;
   padding: 3px;
-  margin-bottom: 10px;
-  background: var(--hse-project-surface-soft);
   border: 1px solid var(--email-border);
-  border-radius: 8px;
+  border-radius: 6px;
 }
-.email-settings .email-language button {
-  padding: 3px 9px;
-  border: 1px solid transparent;
-  border-radius: 5px;
-  background: transparent;
+.email-settings .email-sender-name .icon-lng > svg {
+  width: 22px;
+  height: 16px;
+}
+.email-settings .email-sender-name input:checked + .icon-lng {
+  border-color: var(--email-primary);
+  background: var(--hse-project-ice);
+}
+.email-settings .email-sender-name input:focus-visible + .icon-lng {
+  outline: 2px solid var(--email-primary);
+  outline-offset: 2px;
+}
+.email-settings .email-sender-name .select-lang {
+  font-size: 9px;
   color: var(--email-muted);
-  font-size: 10px;
-}
-.email-settings .email-language button[aria-pressed='true'] {
-  background: var(--email-surface);
-  border-color: var(--email-border);
-  color: var(--email-primary);
-  box-shadow: 0 1px 4px color-mix(in srgb, var(--hse-project-navy) 6%, transparent);
 }
 .email-settings .email-toggle {
   display: flex;

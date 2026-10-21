@@ -15,7 +15,7 @@ export function validateEmailDraft(draft: EmailDraft, saved: EmailIntegrationMod
     !draft.from_name.trim()
   )
     return 'requiredFields'
-  if (!draft.translations.from_name.ar?.trim() && !draft.translations.from_name.en?.trim())
+  if (!Object.values(draft.translations.from_name).some((name) => name.trim()))
     return 'senderRequired'
   const smtpChanged =
     draft.host.trim() !== saved.config.host || draft.username.trim() !== saved.config.username

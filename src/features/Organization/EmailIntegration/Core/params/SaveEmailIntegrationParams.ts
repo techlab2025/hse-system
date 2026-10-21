@@ -36,10 +36,12 @@ export default class SaveEmailIntegrationParams implements Params {
         from_name: c.from_name.trim(),
         reply_to: c.reply_to?.trim() || null,
         translations: {
-          from_name: {
-            ar: c.translations.from_name.ar?.trim() || '',
-            en: c.translations.from_name.en?.trim() || '',
-          },
+          from_name: Object.fromEntries(
+            Object.entries(c.translations.from_name).map(([language, name]) => [
+              language,
+              name.trim(),
+            ]),
+          ),
         },
         sent_copy: {
           enabled: sent.enabled,

@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import { computed, onMounted, onBeforeUnmount, ref } from 'vue'
+import { computed, markRaw, onMounted, onBeforeUnmount, ref, type Component } from 'vue'
 import { onBeforeRouteLeave } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import EmailIntegrationController from '../controllers/EmailIntegrationController'
 import EmailField from './EmailField.vue'
 import EmailIcon from './EmailIcon.vue'
+import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
+import IndexLangController from '@/features/setting/languages/Presentation/controllers/indexLangController'
+import IndexLangParams from '@/features/setting/languages/Core/params/indexLangParams'
+import { LangsMap } from '@/constant/langs'
+import { useUserStore } from '@/stores/user'
+import USA from '@/shared/icons/USA.vue'
+import SA from '@/shared/icons/SA.vue'
 import './email-integration.css'
 
 const { t, locale } = useI18n()
@@ -24,18 +31,54 @@ const {
   noticeKey,
   checkedFolder,
 } = controller
-const senderLocale = ref<'ar' | 'en'>(locale.value.startsWith('ar') ? 'ar' : 'en')
+type LanguageOption = { locale: string; title: string; icon?: Component | string }
+const user = useUserStore()
+const languages = ref<LanguageOption[]>([
+  { locale: 'en', title: '', icon: markRaw(USA) },
+  { locale: 'ar', title: '', icon: markRaw(SA) },
+])
 const ports = computed(() => (draft.value.security === 'tls' ? [465] : [587, 2525]))
-const senderName = computed({
-  get: () => draft.value.translations.from_name[senderLocale.value] || '',
-  set: (value) => {
-    draft.value.translations.from_name[senderLocale.value] = value
-    draft.value.from_name =
-      draft.value.translations.from_name.ar?.trim() ||
-      draft.value.translations.from_name.en?.trim() ||
-      ''
-  },
-})
+const titles = computed(() =>
+  languages.value.map((language) => ({
+    locale: language.locale,
+    title: draft.value.translations.from_name[language.locale] || '',
+  })),
+)
+const setTitles = (value: { locale: string; title?: string }[]) => {
+  if (
+    value.every(
+      (item) => (item.title || '') === (draft.value.translations.from_name[item.locale] || ''),
+    )
+  )
+    return
+  value.forEach((item) => {
+    draft.value.translations.from_name[item.locale] = item.title || ''
+  })
+  const names = draft.value.translations.from_name
+  draft.value.from_name =
+    names.ar?.trim() ||
+    names.en?.trim() ||
+    Object.values(names)
+      .find((name) => name.trim())
+      ?.trim() ||
+    ''
+}
+const fetchLanguages = async () => {
+  try {
+    const available = user.user?.languages?.length
+      ? user.user.languages
+      : (await IndexLangController.getInstance().getData(new IndexLangParams('', 1, 10, 0))).value
+          .data
+    if (available?.length) {
+      languages.value = available.map((item: { code: string }) => {
+        const icon = LangsMap[item.code as keyof typeof LangsMap]?.icon
+        return { locale: item.code, title: '', icon: icon ? markRaw(icon) : undefined }
+      })
+    }
+  } catch {
+    // Keep Arabic/English available if the language service cannot be reached.
+  }
+}
 const statusText = computed(() =>
   !saved.value?.updated_at
     ? text('notConfigured')
@@ -57,6 +100,7 @@ onBeforeRouteLeave(() => {
 })
 onMounted(() => {
   controller.load()
+  fetchLanguages()
   window.addEventListener('beforeunload', guardUnload)
 })
 onBeforeUnmount(() => {
@@ -175,31 +219,17 @@ onBeforeUnmount(() => {
             </header>
             <div class="email-section-body">
               <div class="email-grid">
-                <div>
-                  <div
-                    class="email-language"
-                    role="group"
-                    :aria-label="text('nameLanguage')"
-                    dir="ltr"
-                  >
-                    <button
-                      v-for="language in ['ar', 'en'] as const"
-                      :key="language"
-                      type="button"
-                      :aria-pressed="senderLocale === language"
-                      aria-controls="smtp-from-name"
-                      @click="senderLocale = language"
-                    >
-                      {{ language.toUpperCase() }}
-                    </button>
-                  </div>
-                  <EmailField
-                    id="smtp-from-name"
-                    v-model="senderName"
-                    :label="text('fromName')"
+                <div class="email-sender-name">
+                  <LangTitleInput
+                    :langs="languages"
+                    :model-value="titles"
+                    label="emailSettings.fromName"
+                    :placeholder="text('fromName')"
                     :maxlength="160"
-                    :dir="senderLocale === 'ar' ? 'rtl' : 'ltr'"
-                    :hint="text('senderNameHint')"
+                    :required="!titles.some((item) => item.title.trim())"
+                    :disabled="busy || !canManage"
+                    :help-text="text('senderNameHint')"
+                    @update:model-value="setTitles"
                   />
                 </div>
                 <EmailField

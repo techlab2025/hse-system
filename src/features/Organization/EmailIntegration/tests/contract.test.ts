@@ -64,3 +64,17 @@ assert.equal(saved.config.host, 'smtp.example.com')
 assert.equal(saved.config.translations.from_name.en, 'HSE')
 assert.equal(EmailIntegrationModel.fromMap({}).can_manage, false)
 console.log('Email integration contract checks passed')
+
+const french = saved.toDraft()
+french.translations.from_name = { fr: ' Alertes HSE ' }
+french.from_name = 'Alertes HSE'
+assert.equal(validateEmailDraft(french, saved), null)
+assert.equal(
+  new SaveEmailIntegrationParams(3, true, 'confirm', french).toMap().config.translations.from_name
+    .fr,
+  'Alertes HSE',
+)
+const frenchResponse = EmailIntegrationModel.fromMap({
+  config: { translations: { from_name: { fr: 'Alertes HSE' } } },
+})
+assert.equal(frenchResponse.toDraft().translations.from_name.fr, 'Alertes HSE')

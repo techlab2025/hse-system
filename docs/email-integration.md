@@ -32,7 +32,7 @@ Follow the existing PPETool layering. Services contain HTTP details, repositorie
 1. GET on entry. Display loading, errors with retry, or the saved configuration. GET HTTP 404 opens manual setup; other failed GET requests show an error rather than an editable default form.
 2. A successful fetch with empty `data` (`null`, omitted, `[]`, or `{}`) opens the blank setup form with version 0, so settings can be entered manually. For this empty setup response, editing is enabled unless the response explicitly sets `can_manage: false`. For populated configurations, server-provided `can_manage` controls editing. Read access and update authorization are enforced separately by the backend.
 3. SMTP defaults: STARTTLS/587; STARTTLS allows 587 or 2525, TLS allows 465. Changing security resets the port. IMAP is fixed at TLS/993.
-4. Sender name supports AR/EN. At least one language must be nonempty; `from_name` is the nonempty Arabic name, otherwise English. Both translations travel in `config.translations.from_name`.
+4. Sender name uses the shared `LangTitleInput`, with account languages or the language API, matching the PPE Tool form; Arabic/English are the fallback if unavailable. At least one language must be nonempty; `from_name` prefers Arabic, then English, then the first nonempty configured language. All locale values travel in `config.translations.from_name`.
 5. Existing passwords remain blank with saved-password hints. Empty SMTP and IMAP passwords are omitted from requests, never sent as a request to erase stored secrets. Changing the SMTP or independent IMAP host/username requires re-entering the corresponding secret. Password whitespace is preserved.
 6. IMAP details appear only when enabled. Separate username/password appear only when SMTP credential reuse is off. A hidden independent IMAP password is not sent while reuse is on.
 7. Save requires an account password and a dirty draft. Controls lock during requests. The successful response supplies the new version and becomes the reset baseline. Saving does not test SMTP or send mail.
@@ -94,7 +94,7 @@ HTTP 200 and the standard HSE envelope; `data` must be a non-null object for `Re
 
 `version`: integer >= 0, incremented atomically on every configuration save. Initial GET returns version 0, `updated_at: null`, `status: "not_configured"`, `enabled: false`, empty strings, SMTP587/starttls, IMAP993/reuse true, no stored-password flags, zero counters, and the caller's computed `can_manage`. Prefer returning this default object with 200 for a tenant without settings. A successful empty response is also supported and opens the manual setup form; an explicit `can_manage: false` in the envelope preserves read-only access. The frontend also treats GET HTTP 404 as an unconfigured state and opens manual setup, including when the endpoint is awaiting backend delivery. PUT/action errors still surface normally; displaying the form does not mean the backend can save settings. Authentication, permission, network and server errors remain errors.
 
-`status`: `not_configured` or `saved` for this scope; saving is never evidence that a connection was tested. `updated_at`: nullable ISO8601 UTC. `can_manage`, enabled flags and stored-password flags are JSON booleans (not 0/1 or strings). Counts are nonnegative integers. Credentials are never returned, including encrypted ciphertext or masked placeholders. `from_name` provides a default sender display name, translations preserve both languages.
+`status`: `not_configured` or `saved` for this scope; saving is never evidence that a connection was tested. `updated_at`: nullable ISO8601 UTC. `can_manage`, enabled flags and stored-password flags are JSON booleans (not 0/1 or strings). Counts are nonnegative integers. Credentials are never returned, including encrypted ciphertext or masked placeholders. `from_name` provides a default sender display name, translations preserve all configured languages.
 
 ### PUT request
 
@@ -139,7 +139,7 @@ If `use_smtp_credentials:false`, send the independent `sent_copy.username` and o
 | config.password                       | Optional nonempty string, max2048; required for first setup or changed SMTP host/username                |
 | config.from_email                     | Required valid email, max254; sender must be authorized by provider                                      |
 | config.from_name                      | Required trimmed string, max160; disallow CR/LF/header injection                                         |
-| config.translations.from_name         | Object, ar/en strings max160 each, at least one nonblank                                                 |
+| config.translations.from_name         | Object keyed by configured locale codes, strings max160 each, at least one nonblank                      |
 | config.reply_to                       | Nullable valid email, max254                                                                             |
 | config.sent_copy.enabled              | Required boolean                                                                                         |
 | config.sent_copy.host                 | Max253; required valid hostname when sent_copy.enabled                                                   |

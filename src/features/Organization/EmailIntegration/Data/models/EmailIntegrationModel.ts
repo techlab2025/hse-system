@@ -14,7 +14,7 @@ export interface EmailConfig {
   from_email: string
   from_name: string
   reply_to: string | null
-  translations: { from_name: { ar?: string; en?: string } }
+  translations: { from_name: Record<string, string> }
   sent_copy: SentCopyConfig
 }
 export interface SentCopyCounts {
@@ -61,6 +61,11 @@ export default class EmailIntegrationModel {
         reply_to: config.reply_to ?? null,
         translations: {
           from_name: {
+            ...Object.fromEntries(
+              Object.entries(config.translations?.from_name ?? {}).filter(
+                ([, name]) => typeof name === 'string',
+              ),
+            ),
             ar: config.translations?.from_name?.ar ?? '',
             en: config.translations?.from_name?.en ?? '',
           },
