@@ -474,7 +474,7 @@ const closeOnboarding = () => {
 
           <div
             class="project-progress-body-content"
-            v-if="selectedPage"
+            v-if="selectedPage && setupProgress != 100"
             :class="{ 'highlight-active': showOverlay && startNextNote }"
           >
             <div v-if="showOverlay && startNextNote" class="overlay-note content-tip">

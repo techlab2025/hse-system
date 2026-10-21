@@ -1,0 +1,729 @@
+/* A feature-wide finish for portfolio, operations, forms, widgets and portals. */
+.hse-project-root[data-hse-project],
+.hse-project-overlay {
+  min-width: 0;
+  accent-color: var(--hse-project-blue);
+  scrollbar-color: var(--hse-project-line) transparent;
+  scrollbar-width: thin;
+
+  :is(h1, h2, h3, h4, h5, h6) {
+    text-wrap: balance;
+  }
+
+  :is(p, a, strong, label, td, dd) {
+    overflow-wrap: anywhere;
+  }
+
+  :is(button, a, summary, input, textarea, select, .p-select, .p-multiselect) {
+    transition:
+      background-color var(--hse-project-motion),
+      border-color var(--hse-project-motion),
+      box-shadow var(--hse-project-motion),
+      color var(--hse-project-motion),
+      transform var(--hse-project-motion);
+  }
+
+  :is(button, a, summary, input, textarea, select, [tabindex]):focus-visible {
+    outline: 2px solid var(--hse-project-blue);
+    outline-offset: 3px;
+  }
+
+  &:is(
+    .hse-project-panel,
+    .hse-project-card,
+    .team-card,
+    .location-card,
+    .equipment-card,
+    .tool-card,
+    .member-card
+  ),
+  :is(
+    .hse-project-panel,
+    .workspace-card,
+    .risk-panel,
+    .resource-card,
+    .team-card,
+    .location-card,
+    .equipment-card,
+    .tool-card,
+    .member-card,
+    .employee-card,
+    .position-card,
+    .permit-card,
+    .talk-card,
+    .today-talk-card,
+    .discussion-card,
+    .attendance-card,
+    .detail-card,
+    .drill-card,
+    .meeting-card,
+    .improvement-card,
+    .group-card,
+    .show-panel,
+    .visits-card,
+    .deliveries-card,
+    .statistics-card,
+    .metric-card,
+    .summary-card,
+    .loss-time-card
+  ) {
+    min-width: 0;
+    border: 1px solid var(--hse-project-line);
+    border-radius: var(--hse-project-radius-card);
+    background: var(--hse-project-surface);
+    color: var(--hse-project-ink);
+    box-shadow: var(--hse-project-shadow-card);
+  }
+
+  :is(
+    .card-header,
+    .team-card-header,
+    .location-header,
+    .equipment-card-header-container,
+    .tool-card-header,
+    .panel-header,
+    .meeting-show-section-header,
+    .details-section__heading
+  ) {
+    border-color: var(--hse-project-line-soft);
+    gap: 12px;
+  }
+
+  :is(.form-section, .induction-section, .detail-section, .meeting-show-section, .details-section) {
+    min-width: 0;
+    border-color: var(--hse-project-line);
+    border-radius: var(--hse-project-radius-panel);
+    background: var(--hse-project-surface);
+    color: var(--hse-project-ink);
+  }
+
+  :is(.section-heading, .section-title, .section-header, .induction-section__header) {
+    gap: 14px;
+  }
+
+  :is(
+    .section-icon,
+    .stat-icon,
+    .statistics-icon,
+    .metric-card__icon,
+    .detail-card__icon,
+    .induction-section__icon,
+    .panel-header__icon,
+    .resource-card__avatar,
+    .hero-icon
+  ) {
+    border-radius: 14px;
+    background: var(--hse-project-ice);
+    color: var(--hse-project-blue);
+  }
+
+  :is(.hse-project-button, .btn-primary, .btn-secondary, .btn-cancel, .p-button) {
+    min-height: 42px;
+    border-radius: var(--hse-project-radius-control);
+    font-weight: 650;
+    letter-spacing: 0;
+  }
+
+  :is(
+    .hse-project-button--primary,
+    .btn-primary,
+    .p-button:not(.p-button-text):not(.p-button-outlined):not(.p-button-secondary):not(
+        .p-button-danger
+      )
+  ) {
+    background: var(--hse-project-blue);
+    border-color: var(--hse-project-blue);
+    color: var(--hse-project-on-primary);
+    box-shadow: var(--hse-project-shadow-primary);
+  }
+
+  :is(.hse-project-button--ghost, .btn-secondary, .btn-cancel) {
+    background: var(--hse-project-surface);
+    border: 1px solid var(--hse-project-line);
+    color: var(--hse-project-ink);
+    box-shadow: none;
+  }
+
+  :is(.input-wrapper, .field, .form-field) {
+    min-width: 0;
+  }
+
+  :is(
+      .hse-project-input,
+      .input,
+      .ptw-control,
+      .p-inputtext,
+      .p-textarea,
+      input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']):not(
+          [type='hidden']
+        ),
+      textarea,
+      select
+    ):not(.p-select-filter):not(.p-multiselect-filter) {
+    min-width: 0;
+    max-width: 100%;
+    min-height: var(--hse-project-control-height);
+    border-color: var(--hse-project-line);
+    background-color: var(--hse-project-input-bg);
+    color: var(--hse-project-ink);
+    border-radius: var(--hse-project-radius-control) !important;
+  }
+
+  :is(input, textarea)::placeholder {
+    color: var(--hse-project-muted);
+    opacity: 0.8;
+  }
+
+  :is(input, textarea, select):focus:not(:disabled),
+  :is(.p-select, .p-multiselect):focus-within {
+    border-color: var(--hse-project-blue);
+    box-shadow: var(--hse-project-focus);
+  }
+
+  :is(input, textarea, select):disabled {
+    background: var(--hse-project-surface-soft);
+    color: var(--hse-project-muted);
+    cursor: not-allowed;
+  }
+
+  :is(.p-invalid, [aria-invalid='true'], .field-invalid) {
+    border-color: var(--hse-project-red);
+  }
+
+  :is(.field-error, .required-field-message, .validation-error, .p-error) {
+    color: var(--hse-project-red);
+  }
+
+  :is(.helper-text, .field-helper, .form-hint, .hint) {
+    color: var(--hse-project-muted);
+    line-height: 1.6;
+  }
+
+  :is(.hse-project-tabs, .p-tablist-tab-list) {
+    padding: 6px;
+    gap: 5px;
+    border-radius: 15px;
+    background: var(--hse-project-surface);
+    border-color: var(--hse-project-line);
+    box-shadow: 0 3px 10px rgb(15 35 65 / 3%);
+  }
+
+  :is(.hse-project-tabs a, .hse-project-tabs button, .p-tab) {
+    border-radius: 10px;
+    min-height: 40px;
+    color: var(--hse-project-muted);
+  }
+
+  :is(
+    .hse-project-tabs [aria-current='page'],
+    .hse-project-tabs [aria-pressed='true'],
+    .p-tab-active
+  ) {
+    background: var(--hse-project-ice);
+    color: var(--hse-project-blue);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--hse-project-blue) 16%, transparent);
+  }
+
+  :is(
+    .hse-project-table,
+    .main-table,
+    .project-table,
+    .delivery-table,
+    .tool-table,
+    .matrix-table,
+    .visits-table
+  ) {
+    width: 100%;
+    border-color: var(--hse-project-line);
+    color: var(--hse-project-ink);
+    font-variant-numeric: tabular-nums;
+
+    th {
+      background: var(--hse-project-surface-soft);
+      color: var(--hse-project-muted);
+      border-color: var(--hse-project-line);
+      padding-block: 14px;
+      font-weight: 650;
+    }
+
+    td {
+      border-color: var(--hse-project-line-soft);
+      padding-block: 16px;
+    }
+
+    tbody tr:hover {
+      background: var(--hse-project-ice);
+    }
+  }
+
+  :is(
+    .table-scroll,
+    .table-responsive,
+    .table-scroll-shell,
+    .delivery-table-wrap,
+    .tool-table-wrap
+  ) {
+    max-width: 100%;
+    overflow-x: auto;
+    border-radius: 14px;
+    overscroll-behavior-inline: contain;
+  }
+
+  :is(
+    .empty-state,
+    .resource-empty,
+    .section-empty,
+    .empty-teams,
+    .empty-zone,
+    .empty-zoon,
+    .empty-zones-equipment,
+    .drill-empty-state,
+    .meeting-empty-state,
+    .permits-empty,
+    .talk-empty,
+    .selection-empty,
+    .topic-selection__empty,
+    .site-empty,
+    .hierarchy-empty
+  ) {
+    min-width: 0;
+    border: 1px dashed var(--hse-project-line);
+    border-radius: var(--hse-project-radius-panel);
+    padding: clamp(20px, 4vw, 40px);
+    background: linear-gradient(
+      135deg,
+      var(--hse-project-surface),
+      var(--hse-project-surface-soft)
+    );
+    color: var(--hse-project-muted);
+    box-shadow: none;
+  }
+
+  :is(.empty-icon, .empty-map-icon, .empty-zone-mark, .permits-empty-icon) {
+    border-radius: 20px;
+    color: var(--hse-project-blue);
+    background: var(--hse-project-ice);
+    box-shadow: 0 0 0 8px color-mix(in srgb, var(--hse-project-blue) 4%, transparent);
+  }
+
+  :is(.widgets-types, .selctors-container, .zone-titles-form, .setting-form) {
+    border-color: var(--hse-project-line);
+    border-radius: 16px;
+    background-color: var(--hse-project-surface);
+  }
+
+  :is(.skeleton-panel, .skeleton-line, .skeleton-card-image, .skeleton-block) {
+    border-color: var(--hse-project-line-soft);
+    background-color: var(--hse-project-surface-soft);
+  }
+}
+
+/* Portfolio: a command header, generous image cards and quiet metrics. */
+.hse-project-root[data-hse-project].hse-project-page {
+  width: 100%;
+  background: var(--hse-project-page-background);
+}
+
+.hse-project-root[data-hse-project] .hse-project-page-head {
+  align-items: center;
+  gap: 24px;
+  padding: clamp(22px, 3vw, 34px);
+  border-radius: 24px;
+  background: var(--hse-project-hero-background);
+  box-shadow: var(--hse-project-shadow-panel);
+  color: var(--hse-project-hero-ink);
+
+  h1 {
+    color: var(--hse-project-hero-ink);
+    font-size: clamp(28px, 3vw, 40px);
+    letter-spacing: -0.04em;
+  }
+
+  .hse-project-subtitle {
+    color: var(--hse-project-hero-muted);
+    margin-top: 10px;
+    font-size: 13px;
+  }
+
+  .hse-project-button:not(.hse-project-button--primary) {
+    background: rgb(255 255 255 / 8%);
+    color: var(--hse-project-hero-ink);
+    border-color: var(--hse-project-hero-line);
+  }
+}
+
+.hse-project-root[data-hse-project] .hse-project-portfolio-strip {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-radius: 18px;
+  box-shadow: var(--hse-project-shadow-card);
+
+  > div {
+    padding: 18px 22px;
+  }
+
+  .hse-project-portfolio-strip__lead {
+    background: var(--hse-project-ice);
+  }
+}
+
+.hse-project-root[data-hse-project] .hse-project-toolbar {
+  margin-block: 22px 20px;
+}
+
+.hse-project-root[data-hse-project] .hse-project-grid {
+  gap: 22px;
+}
+
+.hse-project-root[data-hse-project].hse-project-card {
+  border-radius: var(--hse-project-radius-card);
+  transition:
+    box-shadow var(--hse-project-motion),
+    transform var(--hse-project-motion),
+    border-color var(--hse-project-motion);
+
+  .hse-project-card__photo {
+    height: 180px;
+    border-radius: 21px 21px 0 0;
+  }
+
+  .hse-project-card__body {
+    padding: 22px;
+  }
+
+  .hse-project-card__facts {
+    background: var(--hse-project-surface-soft);
+    border-color: var(--hse-project-line-soft);
+    border-radius: 14px;
+  }
+
+  .hse-project-card__status {
+    background: var(--hse-project-surface);
+    color: var(--hse-project-ink);
+    padding: 7px 11px;
+    font-size: 10px;
+  }
+
+  .hse-project-card__code {
+    font-size: 11px;
+    color: #f5faff;
+  }
+}
+
+.hse-project-root[data-hse-project] .hse-project-progress {
+  height: 6px;
+  background: var(--hse-project-line-soft);
+
+  > span {
+    background: linear-gradient(90deg, var(--hse-project-blue), var(--hse-project-accent));
+  }
+}
+
+/* The overview has its own namespace because it composes many nested feature roots. */
+.hse-project-root.hse-project-overview.hse-project-state-host[data-hse-project] {
+  --hse-overview-radius: var(--hse-project-radius-panel);
+  --hse-overview-shadow: var(--hse-project-shadow-panel);
+  --hse-overview-blue-soft: var(--hse-project-ice);
+
+  :is(.project-summary-page, .project-details-section) {
+    gap: 24px;
+    background: var(--hse-project-page-background);
+  }
+
+  :is(.summary-hero, .project-header-container) {
+    padding: clamp(22px, 3vw, 34px);
+    border: 0;
+    background: var(--hse-project-hero-background);
+    color: var(--hse-project-hero-ink);
+    box-shadow: var(--hse-project-shadow-panel);
+  }
+
+  :is(.summary-identity h1, .project-name) {
+    font-size: clamp(26px, 3vw, 38px);
+    color: var(--hse-project-hero-ink);
+  }
+
+  :is(.summary-eyebrow, .project-eyebrow) {
+    color: #91d9ee;
+  }
+
+  :is(.summary-identity p, .summary-hero__meta span, .project-meta span) {
+    color: var(--hse-project-hero-muted);
+  }
+
+  :is(.summary-hero__meta strong, .project-meta strong) {
+    color: var(--hse-project-hero-ink);
+  }
+
+  :is(.summary-hero__meta, .project-meta, .summary-hero__meta > div) {
+    border-color: var(--hse-project-hero-line);
+  }
+
+  :is(.project-reference, .project-serial) {
+    background: rgb(255 255 255 / 8%);
+    border-color: var(--hse-project-hero-line);
+    color: var(--hse-project-hero-ink);
+  }
+
+  .project-serial :is(span, strong) {
+    color: var(--hse-project-hero-ink);
+  }
+
+  .full-details-link {
+    border-radius: 12px;
+    background: var(--hse-project-blue);
+    border-color: var(--hse-project-blue);
+  }
+
+  :is(
+    .safety-stat-card,
+    .operational-stat,
+    .quick-link,
+    .operations-panel,
+    .loss-time-card,
+    .project-location,
+    .locations-teams,
+    .equipment-section,
+    .main-objective
+  ) {
+    background: var(--hse-project-surface);
+    border-color: var(--hse-project-line);
+    border-radius: var(--hse-project-radius-panel);
+    box-shadow: var(--hse-project-shadow-card);
+  }
+
+  :is(.safety-stat-card, .quick-link) {
+    padding: 24px;
+  }
+
+  .safety-stat-card strong {
+    font-size: 30px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.04em;
+  }
+
+  .safety-stat-card__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
+
+  .operations-panel__intro {
+    background: var(--hse-project-surface-soft);
+    border-color: var(--hse-project-line-soft);
+  }
+
+  .hse-project-tabs {
+    padding: 6px;
+    border-radius: 15px;
+    background: var(--hse-project-surface);
+  }
+
+  .hse-project-tabs button[aria-pressed='true'] {
+    background: var(--hse-project-ice);
+    color: var(--hse-project-blue);
+    border-color: transparent;
+  }
+}
+
+/* All workflow headers use the same restrained accent treatment. */
+.hse-project-root.hse-project-assurance[data-hse-project],
+.hse-project-root[data-hse-project] {
+  :is(
+    .hero,
+    .risk-hero,
+    .form-header,
+    .report-hero,
+    .visits-hero,
+    .talks-header,
+    .induction-hero,
+    .assignment-hero,
+    .resource-hero,
+    .ptw-hero,
+    .page-header
+  ) {
+    border: 1px solid var(--hse-project-line);
+    border-radius: var(--hse-project-radius-panel);
+    background:
+      radial-gradient(
+        ellipse at 100% 0%,
+        color-mix(in srgb, var(--hse-project-blue) 8%, transparent),
+        transparent 65%
+      ),
+      var(--hse-project-surface);
+    box-shadow: var(--hse-project-shadow-panel);
+    color: var(--hse-project-ink);
+  }
+}
+
+/* Teleported content uses the same surfaces without styling unrelated application dialogs. */
+.hse-project-overlay.p-dialog {
+  border-radius: 24px;
+  box-shadow: var(--hse-project-shadow);
+
+  :is(.p-dialog-header, .p-dialog-footer) {
+    background: var(--hse-project-surface);
+    border-color: var(--hse-project-line-soft);
+  }
+
+  .p-dialog-header {
+    padding: 24px;
+    border-radius: 24px 24px 0 0;
+  }
+
+  .p-dialog-content {
+    padding: 24px;
+    background: var(--hse-project-surface);
+    color: var(--hse-project-ink);
+  }
+
+  .p-dialog-footer {
+    padding: 18px 24px;
+    border-radius: 0 0 24px 24px;
+  }
+}
+
+.hse-project-overlay :is(.p-select-option, .p-multiselect-option) {
+  margin-block: 2px;
+  border-radius: 10px;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .hse-project-root[data-hse-project].hse-project-card:hover,
+  .hse-project-root[data-hse-project] :is(.resource-card, .permit-card, .today-talk-card):hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--hse-project-blue) 28%, var(--hse-project-line));
+    box-shadow: var(--hse-project-shadow-hover);
+  }
+
+  .hse-project-root.hse-project-overview.hse-project-state-host[data-hse-project]
+    :is(.safety-stat-card, .quick-link):hover {
+    transform: translateY(-2px);
+    border-color: var(--hse-project-blue);
+    box-shadow: var(--hse-project-shadow-hover);
+  }
+}
+
+@media (max-width: 767px) {
+  .hse-project-root[data-hse-project] {
+    .hse-project-page-head {
+      align-items: stretch;
+      flex-direction: column;
+      border-radius: 20px;
+    }
+
+    .hse-project-page-head__actions {
+      flex-wrap: wrap;
+    }
+
+    .hse-project-portfolio-strip {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+
+      > div:first-child {
+        grid-column: 1 / -1;
+        border-inline-end: 0;
+        border-block-end: 1px solid var(--hse-project-line);
+      }
+
+      > div {
+        padding: 16px;
+      }
+    }
+
+    .hse-project-toolbar {
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+  }
+
+  .hse-project-overlay.p-dialog :is(.p-dialog-header, .p-dialog-content, .p-dialog-footer) {
+    padding: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hse-project-root[data-hse-project] *,
+  .hse-project-overlay * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.hse-project-root[data-hse-project].add-dialog,
+.hse-project-root[data-hse-project] .add-dialog {
+  display: inline-flex;
+  align-items: center;
+  width: max-content;
+  min-width: 28px;
+  height: auto;
+}
+
+.hse-project-root[data-hse-project] .hse-project-page-head .btn-secondary {
+  background: rgb(255 255 255 / 8%) !important;
+  border-color: var(--hse-project-hero-line) !important;
+  color: var(--hse-project-hero-ink) !important;
+}
+
+.hse-project-root[data-hse-project] .hse-project-search input.hse-project-input {
+  background: transparent !important;
+  color: var(--hse-project-ink) !important;
+}
+
+.hse-project-root.hse-project-overview.hse-project-state-host[data-hse-project] {
+  .operational-stat {
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  :is(.operational-stat strong, .quick-link strong) {
+    color: var(--hse-project-ink);
+  }
+
+  .full-details-link {
+    color: var(--hse-project-on-primary) !important;
+  }
+}
+
+/* The legacy dark stylesheet sets white backgrounds with !important.
+   Restore feature surfaces only where those shared rules reach Project. */
+[data-theme='dark'] .hse-project-root[data-hse-project],
+[data-theme='dark'] .hse-project-overlay {
+  :is(
+    input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']):not(
+        [type='hidden']
+      ),
+    textarea,
+    select
+  ) {
+    background-color: var(--hse-project-input-bg) !important;
+    color: var(--hse-project-ink) !important;
+    border-color: var(--hse-project-line) !important;
+  }
+
+  :is(label, legend) {
+    color: var(--hse-project-ink) !important;
+  }
+
+  :is(.zone-switch, .zone-selector, .zone-data-container, .flow-actions, .upload-area) {
+    background-color: var(--hse-project-surface-soft) !important;
+    color: var(--hse-project-ink) !important;
+    border-color: var(--hse-project-line) !important;
+  }
+
+  :is(.zone-switch strong, .zone-switch small, .zone-selector strong, .upload-area p) {
+    color: var(--hse-project-ink) !important;
+  }
+
+  :is(.btn-cancel, .flow-actions button:not(.btn-primary)) {
+    background-color: var(--hse-project-surface) !important;
+    color: var(--hse-project-ink) !important;
+    border-color: var(--hse-project-line) !important;
+  }
+
+  table :is(th, thead) {
+    background-color: var(--hse-project-surface-soft) !important;
+    color: var(--hse-project-muted) !important;
+    border-color: var(--hse-project-line) !important;
+  }
+}
