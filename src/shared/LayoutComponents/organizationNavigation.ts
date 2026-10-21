@@ -177,12 +177,12 @@ const CompanyRoutes: SidebarRoute[] = [
 ]
 
 const OrganizationRoutes: SidebarRoute[] = [
-  {
-    link: '/organization/integrations/email',
-    name: 'email_integration',
-    icon: 'envelope',
-    permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_ALL, PermissionsEnum.ORGANIZATION_EMPLOYEE],
-  },
+  // {
+  //   link: '/organization/integrations/email',
+  //   name: 'email_integration',
+  //   icon: 'envelope',
+  //   permissions: [PermissionsEnum.ADMIN, PermissionsEnum.ORGANIZATION_ALL, PermissionsEnum.ORGANIZATION_EMPLOYEE],
+  // },
   {
     link: '/organization/system-identity',
     name: 'system_preferences',
