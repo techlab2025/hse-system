@@ -137,21 +137,6 @@ defineExpose({
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Name">
-    <label for="name">{{ $t('name') }}</label>
-    <input
-      type="text"
-      id="name"
-      class="input"
-      v-model="Name"
-      @input="setName"
-      :placeholder="$t('Enter Name')"
-    />
-    <p v-if="getFieldError('Name')" class="required-field-message">
-      {{ getFieldError('Name') }}
-    </p>
-  </div>
-
   <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
     <label for="serialNumber">{{ $t('serial_number') }}</label>
     <input
@@ -166,6 +151,21 @@ defineExpose({
           : 'Enter Your Serial Number'
       "
     />
+  </div>
+
+  <div class="col-span-4 md:col-span-2 input-wrapper field-required" data-required-field="Name">
+    <label for="name">{{ $t('name') }}</label>
+    <input
+      type="text"
+      id="name"
+      class="input"
+      v-model="Name"
+      @input="setName"
+      :placeholder="$t('Enter Name')"
+    />
+    <p v-if="getFieldError('Name')" class="required-field-message">
+      {{ getFieldError('Name') }}
+    </p>
   </div>
 
   <div class="col-span-4 md:col-span-2 input-wrapper" data-required-field="SelectedWhereHouseType">

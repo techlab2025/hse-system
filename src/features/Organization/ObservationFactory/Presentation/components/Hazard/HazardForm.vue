@@ -244,6 +244,16 @@ const UpdateSerial = (data) => {
     </div>
   </div>
 
+  <!-- Serial -->
+  <div class="col-span-2 md:grid-cols-12" v-if="!data?.id">
+    <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :switch_reverse="true"
+      @update:value="UpdateSerial"
+    />
+  </div>
+
   <!-- Date -->
   <div class="col-span-6 md:col-span-2 input-wrapper">
     <label for="date">Date</label>
@@ -260,16 +270,6 @@ const UpdateSerial = (data) => {
       @update:model-value="updateData"
       input-id="time"
       :time-only="true"
-    />
-  </div>
-
-  <!-- Serial -->
-  <div class="col-span-2 md:grid-cols-12" v-if="!data?.id">
-    <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :switch_reverse="true"
-      @update:value="UpdateSerial"
     />
   </div>
 

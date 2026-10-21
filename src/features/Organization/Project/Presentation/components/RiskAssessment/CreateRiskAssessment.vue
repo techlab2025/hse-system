@@ -135,13 +135,6 @@ async function create() {
             </div>
           </div>
           <div class="form-grid">
-            <ProjectFormSelect
-              id="risk-assessment-project"
-              v-model="projectId"
-              class="field"
-              :disabled="!canSelectProject"
-              :auto-select-first="canSelectProject"
-            />
             <div class="hse-project-field field">
               <span class="hse-project-field field-label"
                 ><span>{{ $t('serial_number') }}</span
@@ -160,6 +153,17 @@ async function create() {
               />
               <small v-if="serialIsAuto">{{ $t('Automatic serial numbering is enabled') }}</small>
             </div>
+
+            <ProjectFormSelect
+              id="risk-assessment-project"
+              v-model="projectId"
+              class="field"
+              :disabled="!canSelectProject"
+              :auto-select-first="canSelectProject"
+            />
+
+
+            
             <label class="hse-project-field-label hse-project-field field">
               <span class="hse-project-field field-label"
                 ><span class="hse-project-field field-icon" aria-hidden="true">◇</span

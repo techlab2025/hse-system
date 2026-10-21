@@ -225,10 +225,6 @@ const fields = ref([
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
-  </div>
-
   <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
     <SwitchInput
       :fields="fields"
@@ -238,6 +234,11 @@ const fields = ref([
       @update:value="UpdateSerial"
     />
   </div>
+
+  <div class="col-span-4 md:col-span-2">
+    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+  </div>
+
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum.ADMIN">
     <label>{{ $t('all_industries') }}</label>
     <input type="checkbox" :value="true" v-model="allIndustries" @change="updateData" />

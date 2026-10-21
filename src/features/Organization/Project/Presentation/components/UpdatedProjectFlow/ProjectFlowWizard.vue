@@ -300,7 +300,6 @@ const validateStep = () => {
       ...(!langs.value.some((item) => item.title.trim()) && {
         projectName: 'Project name is required.',
       }),
-      ...(!contractorIds.value.length && { contractors: 'Select at least one contractor.' }),
       ...(!locations.value.length && { locations: 'Select at least one location.' }),
       ...(!basic.value.startDate && { startDate: 'Start date is required.' }),
       ...(!basic.value.endDate && { endDate: 'End date is required.' }),

@@ -270,10 +270,6 @@ watch(() => props.details, initializeForm, { immediate: true })
         </div>
       </div>
       <div class="form-grid">
-        <label class="field">
-          <span>Audit No.</span>
-          <input :value="auditSerialName" type="text" disabled placeholder="Audit serial name" />
-        </label>
         <label v-if="isExisting" class="field">
           <span>Serial Number</span>
           <input
@@ -281,6 +277,11 @@ watch(() => props.details, initializeForm, { immediate: true })
             type="text"
             disabled
           />``
+        </label>
+
+        <label class="field">
+          <span>Audit No.</span>
+          <input :value="auditSerialName" type="text" disabled placeholder="Audit serial name" />
         </label>
         <label class="field">
           <span>NCR Date</span>

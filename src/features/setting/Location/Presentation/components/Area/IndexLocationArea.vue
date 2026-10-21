@@ -235,9 +235,9 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
           <DataEmpty :link="user?.type == OrganizationTypeEnum.ADMIN
               ? '/admin/areas/add'
               : '/organization/areas/add'
-            " addText="Add Area"
-            description="You have no areas .. All your joined customers will appear here when you add your customer data"
-            title="You have No areas" />
+            " addText="Add Location"
+            description="You have no Locations .. All your joined customers will appear here when you add your customer data"
+            title="You have No Locations" />
         </PermissionBuilder>
       </template>
       <template #failed>
@@ -250,16 +250,16 @@ const actionList = (id: number, deleteLocation: (id: number) => void) => [
           <DataFailed :link="user?.type == OrganizationTypeEnum.ADMIN
               ? '/admin/areas/add'
               : '/organization/areas/add'
-            " addText="Add Area"
-            description="You have no areas .. All your joined customers will appear here when you add your customer data"
-            title="You have No areas" />
+            " addText="Add Locations"
+            description="You have no Locations .. All your joined customers will appear here when you add your customer data"
+            title="You have No Locations" />
         </PermissionBuilder>
       </template>
     </DataStatus>
 
     <template #notPermitted>
       <DataFailed addText="Have not  Permission"
-        description="You have no areas .. All your joined customers will appear here when you add your customer data" />
+        description="You have no Locations .. All your joined customers will appear here when you add your customer data" />
     </template>
   </PermissionBuilder>
 </template>

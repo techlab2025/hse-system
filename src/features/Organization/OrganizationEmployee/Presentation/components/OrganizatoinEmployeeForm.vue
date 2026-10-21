@@ -402,25 +402,6 @@ defineExpose({
       </div>
 
       <div class="employee-field-grid">
-        <div class="input-wrapper field-required" data-required-field="Name">
-          <label for="name" class="flex items-center gap-2">
-            {{ $t('employee_name') }}
-            <FieldHelpIcon
-              text="Enter the employee's full name as it should appear in the system."
-            />
-          </label>
-          <input
-            id="name"
-            v-model="Name"
-            type="text"
-            :placeholder="$t('enter your name')"
-            @input="UpdateName"
-          />
-          <p v-if="getFieldError('Name')" class="required-field-message">
-            {{ getFieldError('Name') }}
-          </p>
-        </div>
-
         <div v-if="!data?.id" class="input-wrapper">
           <label for="serialNumber" class="flex items-center gap-2">
             {{ $t('serial_number') }}
@@ -440,6 +421,25 @@ defineExpose({
             "
             @input="UpdateSerial"
           />
+        </div>
+
+        <div class="input-wrapper field-required" data-required-field="Name">
+          <label for="name" class="flex items-center gap-2">
+            {{ $t('employee_name') }}
+            <FieldHelpIcon
+              text="Enter the employee's full name as it should appear in the system."
+            />
+          </label>
+          <input
+            id="name"
+            v-model="Name"
+            type="text"
+            :placeholder="$t('enter your name')"
+            @input="UpdateName"
+          />
+          <p v-if="getFieldError('Name')" class="required-field-message">
+            {{ getFieldError('Name') }}
+          </p>
         </div>
 
         <div class="input-wrapper">

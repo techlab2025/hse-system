@@ -16,7 +16,7 @@ export default class CreateRiskAssessmentParams implements Params {
 
   static readonly validation = new ClassValidation().setRules({
     activity: { required: true },
-    desctiprion: { required: true },
+    desctiprion: { required: false },
     workAreaStrign: { required: true },
     date: { required: true },
     employeeApproverId: { required: true, min: 1 },

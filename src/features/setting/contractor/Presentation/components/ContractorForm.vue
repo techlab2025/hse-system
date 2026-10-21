@@ -275,21 +275,6 @@ defineExpose({
       </div>
 
       <div class="contractor-field-grid">
-        <div class="input-wrapper field-required" data-required-field="Name">
-          <label for="name">{{ $t('name') }}</label>
-          <input
-            id="name"
-            v-model="Name"
-            type="text"
-            class="input"
-            :placeholder="$t('name')"
-            @input="setName"
-          />
-          <p v-if="getFieldError('Name')" class="required-field-message">
-            {{ getFieldError('Name') }}
-          </p>
-        </div>
-
         <div v-if="!data?.id" class="input-wrapper">
           <label for="serialNumber">{{ $t('serial_number') }}</label>
           <input
@@ -305,6 +290,21 @@ defineExpose({
             @input="UpdateSerial"
           />
           <small class="field-helper">A unique reference can be generated automatically.</small>
+        </div>
+
+        <div class="input-wrapper field-required" data-required-field="Name">
+          <label for="name">{{ $t('name') }}</label>
+          <input
+            id="name"
+            v-model="Name"
+            type="text"
+            class="input"
+            :placeholder="$t('name')"
+            @input="setName"
+          />
+          <p v-if="getFieldError('Name')" class="required-field-message">
+            {{ getFieldError('Name') }}
+          </p>
         </div>
 
         <div class="input-wrapper field-required" data-required-field="phoneNumber">

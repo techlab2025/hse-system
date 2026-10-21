@@ -399,23 +399,6 @@ defineExpose({
     data-hse-project
     v-project-panels
     class="hse-project-root hse-project-field col-span-4 md:col-span-2 input-wrapper"
-    data-required-field="langs"
-  >
-    <LangTitleInput
-      :label="`Project Name`"
-      :langs="langDefault"
-      :modelValue="langs"
-      help-text="Enter the project name in each available language so it is clear throughout the system."
-      @update:modelValue="setLangTitles"
-    />
-    <p v-if="getFieldError('langs')" class="hse-project-field required-field-message">
-      {{ getFieldError('langs') }}
-    </p>
-  </div>
-  <div
-    data-hse-project
-    v-project-panels
-    class="hse-project-root hse-project-field col-span-4 md:col-span-2 input-wrapper"
     v-if="!data?.id"
   >
     <SwitchInput
@@ -439,6 +422,24 @@ defineExpose({
           : 'Enter Your Serial Number'
       "
     /> -->
+  </div>
+
+  <div
+    data-hse-project
+    v-project-panels
+    class="hse-project-root hse-project-field col-span-4 md:col-span-2 input-wrapper"
+    data-required-field="langs"
+  >
+    <LangTitleInput
+      :label="`Project Name`"
+      :langs="langDefault"
+      :modelValue="langs"
+      help-text="Enter the project name in each available language so it is clear throughout the system."
+      @update:modelValue="setLangTitles"
+    />
+    <p v-if="getFieldError('langs')" class="hse-project-field required-field-message">
+      {{ getFieldError('langs') }}
+    </p>
   </div>
   <div
     data-hse-project

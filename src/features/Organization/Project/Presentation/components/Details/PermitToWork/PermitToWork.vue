@@ -259,34 +259,6 @@ const handleFilesChange = (files: UploadedFile[]) => {
           </div>
 
           <div class="ptw-grid ptw-grid--two">
-            <div class="hse-project-field ptw-field" data-required-field="Project">
-              <ProjectFormSelect
-                id="permit-project"
-                v-model="projectId"
-                :disabled="!canSelectProject"
-                :auto-select-first="canSelectProject"
-              />
-              <p v-if="getFieldError('Project')" class="required-field-message">
-                {{ getFieldError('Project') }}
-              </p>
-            </div>
-            <div class="hse-project-field ptw-field" data-required-field="Name">
-              <label class="hse-project-field-label" for="name">
-                {{ $t('Permit Code') }}
-                <span class="required-mark">*</span>
-              </label>
-              <InputText
-                id="name"
-                v-model="ptwNum"
-                class="ptw-control"
-                :placeholder="$t('Enter permit Code')"
-                @input="setptwNo"
-              />
-              <p v-if="getFieldError('Name')" class="hse-project-field required-field-message">
-                {{ getFieldError('Name') }}
-              </p>
-            </div>
-
             <div class="hse-project-field ptw-field">
               <label
                 class="hse-project-field-label hse-project-field ptw-field-label--with-action"
@@ -313,6 +285,34 @@ const handleFilesChange = (files: UploadedFile[]) => {
               <small v-if="serialIsAuto">{{ $t('Automatic serial numbering is enabled') }}</small>
               <p v-if="getFieldError('serial')" class="hse-project-field required-field-message">
                 {{ getFieldError('serial') }}
+              </p>
+            </div>
+
+            <div class="hse-project-field ptw-field" data-required-field="Project">
+              <ProjectFormSelect
+                id="permit-project"
+                v-model="projectId"
+                :disabled="!canSelectProject"
+                :auto-select-first="canSelectProject"
+              />
+              <p v-if="getFieldError('Project')" class="required-field-message">
+                {{ getFieldError('Project') }}
+              </p>
+            </div>
+            <div class="hse-project-field ptw-field" data-required-field="Name">
+              <label class="hse-project-field-label" for="name">
+                {{ $t('Permit Code') }}
+                <span class="required-mark">*</span>
+              </label>
+              <InputText
+                id="name"
+                v-model="ptwNum"
+                class="ptw-control"
+                :placeholder="$t('Enter permit Code')"
+                @input="setptwNo"
+              />
+              <p v-if="getFieldError('Name')" class="hse-project-field required-field-message">
+                {{ getFieldError('Name') }}
               </p>
             </div>
 

@@ -441,25 +441,6 @@ defineExpose({
       />
     </div>
 
-    <!-- Assignment setup (only in create mode) -->
-    <section v-if="!id && !isAuditCreation" class="form-stage hse-form-stage assignment-stage">
-      <div class="stage-heading">
-        <span class="stage-number">01</span>
-        <div>
-          <h2>{{ $t('Choose assignment target') }}</h2>
-          <p>{{ $t('Select who or what will receive this inspection task') }}</p>
-        </div>
-      </div>
-
-      <TaskAssignTo
-        class="modern-assign-selector"
-        :title="$t('Assign task to')"
-        :options="AssignToOptions"
-        :showHeader="false"
-        @update:data="GetSelectedAssigned"
-      />
-    </section>
-
     <section v-if="!data?.id" class="form-stage hse-form-stage serial-stage">
       <div class="serial-stage-copy">
         <span class="field-icon" aria-hidden="true">
@@ -496,6 +477,25 @@ defineExpose({
           "
         />
       </div>
+    </section>
+
+    <!-- Assignment setup (only in create mode) -->
+    <section v-if="!id && !isAuditCreation" class="form-stage hse-form-stage assignment-stage">
+      <div class="stage-heading">
+        <span class="stage-number">01</span>
+        <div>
+          <h2>{{ $t('Choose assignment target') }}</h2>
+          <p>{{ $t('Select who or what will receive this inspection task') }}</p>
+        </div>
+      </div>
+
+      <TaskAssignTo
+        class="modern-assign-selector"
+        :title="$t('Assign task to')"
+        :options="AssignToOptions"
+        :showHeader="false"
+        @update:data="GetSelectedAssigned"
+      />
     </section>
 
     <section class="form-stage hse-form-stage details-stage">

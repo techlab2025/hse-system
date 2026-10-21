@@ -359,6 +359,17 @@ const setSelectedObservationType = (data: TitleInterface) => {
 
     <!-- first section -->
     <div class="first-section lg:grid grid-cols-12 md:grid-cols-12 sm:grid-cols-1 gap-4">
+      <!-- Serial -->
+      <div class="col-span-4 md:grid-cols-12" v-if="!data?.id">
+        <SwitchInput
+          :fields="fields"
+          :switch_title="$t('auto')"
+          :switch_reverse="true"
+          :is-auto="true"
+          @update:value="UpdateSerial"
+        />
+      </div>
+
       <!-- Date -->
       <div
         class="date-picker-container flex flex-col gap-2 input-wrapper col-span-4 md:grid-cols-12"
@@ -380,17 +391,6 @@ const setSelectedObservationType = (data: TitleInterface) => {
           @update:model-value="updateData"
           input-id="time"
           :time-only="true"
-        />
-      </div>
-
-      <!-- Serial -->
-      <div class="col-span-4 md:grid-cols-12" v-if="!data?.id">
-        <SwitchInput
-          :fields="fields"
-          :switch_title="$t('auto')"
-          :switch_reverse="true"
-          :is-auto="true"
-          @update:value="UpdateSerial"
         />
       </div>
 

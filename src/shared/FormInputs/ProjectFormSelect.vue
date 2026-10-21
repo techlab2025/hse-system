@@ -58,7 +58,7 @@ onMounted(() => {
 <template>
   <div class="hse-project-field project-form-select">
     <label :for="id" class="hse-project-field-label">
-      {{ $t('project') }} <span aria-hidden="true">*</span>
+      {{ $t('project') }} <span aria-hidden="true" class="red">*</span>
     </label>
     <select
       :id="id"
@@ -102,5 +102,8 @@ onMounted(() => {
   width: 100%;
   min-width: 0;
   min-height: 46px;
+}
+.red {
+  color: red;
 }
 </style>

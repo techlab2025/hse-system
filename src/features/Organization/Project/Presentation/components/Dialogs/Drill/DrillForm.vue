@@ -103,6 +103,28 @@ onMounted(loadTeams)
     </div>
 
     <div class="drill-form-grid">
+      <div class="hse-project-field input-wrapper drill-serial">
+        <div class="hse-project-field field-label">
+          <label class="hse-project-field-label" for="drill_serial">{{ $t('serial_number') }}</label
+          ><FieldHelpIcon
+            :text="
+              serialIsAuto
+                ? 'The serial will be generated automatically.'
+                : 'Enter the drill serial number.'
+            "
+          />
+        </div>
+        <input
+          id="drill_serial"
+          v-model="serial"
+          class="hse-project-input input"
+          type="text"
+          :disabled="serialIsAuto"
+          :placeholder="serialIsAuto ? $t('Auto-generated') : $t('Enter serial number')"
+        />
+        <small v-if="serialIsAuto">{{ $t('Automatic serial numbering is enabled') }}</small>
+      </div>
+
       <UpdatedCustomInputSelect
         id="drill_type_id"
         v-model="drillType"
@@ -148,28 +170,6 @@ onMounted(loadTeams)
           hour-format="12"
           fluid
         />
-      </div>
-
-      <div class="hse-project-field input-wrapper drill-serial">
-        <div class="hse-project-field field-label">
-          <label class="hse-project-field-label" for="drill_serial">{{ $t('serial_number') }}</label
-          ><FieldHelpIcon
-            :text="
-              serialIsAuto
-                ? 'The serial will be generated automatically.'
-                : 'Enter the drill serial number.'
-            "
-          />
-        </div>
-        <input
-          id="drill_serial"
-          v-model="serial"
-          class="hse-project-input input"
-          type="text"
-          :disabled="serialIsAuto"
-          :placeholder="serialIsAuto ? $t('Auto-generated') : $t('Enter serial number')"
-        />
-        <small v-if="serialIsAuto">{{ $t('Automatic serial numbering is enabled') }}</small>
       </div>
 
       <!-- <div class="input-wrapper full-field">

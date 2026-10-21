@@ -198,6 +198,16 @@ const fields = ref([
 </script>
 
 <template>
+  <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
+    <SwitchInput
+      :fields="fields"
+      :switch_title="$t('auto')"
+      :switch_reverse="true"
+      :is-auto="true"
+      @update:value="UpdateSerial"
+    />
+  </div>
+
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput
       :langs="langDefault"
@@ -215,15 +225,6 @@ const fields = ref([
       @change="updateData"
       class="input"
       placeholder="Enter Your phone"
-    />
-  </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <SwitchInput
-      :fields="fields"
-      :switch_title="$t('auto')"
-      :switch_reverse="true"
-      :is-auto="true"
-      @update:value="UpdateSerial"
     />
   </div>
 </template>

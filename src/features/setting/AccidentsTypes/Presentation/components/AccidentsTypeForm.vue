@@ -193,6 +193,22 @@ const updateAllIndustries = (data: boolean) => {
 </script>
 
 <template>
+  <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
+    <label for="serialNumber">{{ $t('serial_number') }}</label>
+    <input
+      type="text"
+      v-model="SerialNumber"
+      @input="UpdateSerial"
+      id="serialNumber"
+      :disabled="projtecStateus.isSerialNumberAuto()"
+      :placeholder="
+        projtecStateus.isSerialNumberAuto()
+          ? 'You can leave it (auto-generated)'
+          : 'Enter Your Serial Number'
+      "
+    />
+  </div>
+
   <div class="col-span-4 md:col-span-2">
     <LangTitleInput :label="`${$t('incident_type_name')}`" :langs="langDefault"
     :modelValue="langs" @update:modelValue="setLangs" />
@@ -211,21 +227,6 @@ const updateAllIndustries = (data: boolean) => {
       :title="`all_industries`"
       :checked="allIndustries"
       @update:checked="updateAllIndustries"
-    />
-  </div>
-  <div class="col-span-4 md:col-span-2 input-wrapper" v-if="!data?.id">
-    <label for="serialNumber">{{ $t('serial_number') }}</label>
-    <input
-      type="text"
-      v-model="SerialNumber"
-      @input="UpdateSerial"
-      id="serialNumber"
-      :disabled="projtecStateus.isSerialNumberAuto()"
-      :placeholder="
-        projtecStateus.isSerialNumberAuto()
-          ? 'You can leave it (auto-generated)'
-          : 'Enter Your Serial Number'
-      "
     />
   </div>
 
