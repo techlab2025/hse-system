@@ -289,7 +289,7 @@ const handleCountPerPage = (count: number) => {
       <template #empty>
         <DataEmpty
           link="/organization/internal-audit"
-          add-text="Create audit"
+          add-text="New audit Plan"
           title="No internal audits"
           description="Your internal audit plans will appear here."
         />
@@ -297,7 +297,7 @@ const handleCountPerPage = (count: number) => {
       <template #failed>
         <DataEmpty
           link="/organization/internal-audit"
-          add-text="Create audit"
+          add-text="New audit Plan"
           title="Could not load audits"
           description="Try again or create a new audit plan."
         />
