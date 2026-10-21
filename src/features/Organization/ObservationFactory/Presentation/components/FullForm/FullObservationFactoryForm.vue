@@ -870,26 +870,6 @@ defineExpose({
       </div>
     </div>
     <!-- Serial -->
-    <div class="input-wrapper col-span-2 md:grid-cols-12" v-if="!data?.id">
-      <div class="field-label">
-        <label for="serialNumber">{{ GetHeader(ObservationFactoryType) }} {{ $t(`serial`) }}.</label
-        ><FieldHelpIcon
-          text="The unique reference number for this report. It may be generated automatically."
-        />
-      </div>
-      <input
-        type="text"
-        v-model="SerialNumber"
-        @input="UpdateSerial"
-        id="serialNumber"
-        :disabled="projtecStateus.isSerialNumberAuto()"
-        :placeholder="
-          projtecStateus.isSerialNumberAuto()
-            ? 'You can leave it (auto-generated)'
-            : 'Enter Your Serial Number'
-        "
-      />
-    </div>
 
     <div
       class="form-filter-panel form-projects-panel col-span-6 md:col-span-6"
@@ -973,7 +953,26 @@ defineExpose({
         {{ getFieldError('ObservationTitle') }}
       </p>
     </div> -->
-
+    <div class="input-wrapper col-span-2 md:grid-cols-12" v-if="!data?.id">
+      <div class="field-label">
+        <label for="serialNumber">{{ GetHeader(ObservationFactoryType) }} {{ $t(`serial`) }}.</label
+        ><FieldHelpIcon
+          text="The unique reference number for this report. It may be generated automatically."
+        />
+      </div>
+      <input
+        type="text"
+        v-model="SerialNumber"
+        @input="UpdateSerial"
+        id="serialNumber"
+        :disabled="projtecStateus.isSerialNumberAuto()"
+        :placeholder="
+          projtecStateus.isSerialNumberAuto()
+            ? 'You can leave it (auto-generated)'
+            : 'Enter Your Serial Number'
+        "
+      />
+    </div>
     <!-- Property title (incident only) -->
     <div
       v-if="ObservationFactoryType === Observation.AccidentsType"

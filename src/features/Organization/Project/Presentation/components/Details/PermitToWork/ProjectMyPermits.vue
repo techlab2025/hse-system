@@ -269,14 +269,11 @@ onMounted(FetchMyProjectPermits)
   margin-bottom: 20px;
   padding: 18px 20px;
   border: 1px solid color-mix(in srgb, var(--PrimaryColor) 17%, var(--main-border));
-  border-radius: 16px;
-  background:
-    radial-gradient(
-      circle at top right,
-      color-mix(in srgb, var(--PrimaryColor) 12%, transparent),
-      transparent 42%
-    ),
-    linear-gradient(135deg, var(--surface-1), var(--surface-2));
+  border-radius: 16px !important;
+  background: white !important;
+  margin-block: 12px !important;
+  border-radius: 12px;
+
   box-shadow: 0 10px 26px color-mix(in srgb, var(--brand-primary-900) 6%, transparent);
 }
 
@@ -358,6 +355,9 @@ onMounted(FetchMyProjectPermits)
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px;
+  background-color: white;
+  padding: 12px;
+  border-radius: 12px;
 }
 
 /* ==========================================================================

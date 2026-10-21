@@ -1030,7 +1030,8 @@
   margin-bottom: 0;
   border: 0;
   border-radius: 0;
-  background: transparent;
+  background: white;
+  border-radius: 12px;
   color: var(--hse-project-ink);
   box-shadow: none;
   padding: 24px;
