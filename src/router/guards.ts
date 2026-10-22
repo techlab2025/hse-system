@@ -2,25 +2,21 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 import { useUserStore } from '@/stores/user'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import type { NavigationGuard } from 'vue-router'
+import { canAccessEmployeeRoute, EMPLOYEE_HOME } from './employeeInterfaceAccess'
 
-export function authGuard(to, from, next) {
+export const authGuard: NavigationGuard = (to, from, next) => {
   const userData = useUserStore()
   const shouldUseEmployeeInterface = () =>
     ConditionHandler.getInstance().shouldUseEmployeeInterface()
   const Path = ref<boolean>(to.path == '' || to.path == '/' || to.path == '/login')
 
   const loginPages = ['Login', 'Organization Login']
-  const router = useRouter()
-  const route = router.getRoutes().find((r) => r.name === to.name)
-  if (!route) {
-    router.push({ name: 'Not Found' })
-  }
 
   //  NOT AUTHENTICATED
   if (!userData.isAuth) {
     // Allow login pages always
-    if (loginPages.includes(to.name)) {
+    if (loginPages.includes(String(to.name))) {
       return next()
     }
 
@@ -38,16 +34,12 @@ export function authGuard(to, from, next) {
     return next({ path: '/login/organization' })
   }
 
-  if (
-    shouldUseEmployeeInterface() &&
-    to.path !== '/organization/employee-interface' &&
-    (to.path == '/organization' || to.path == '/admin' || to.path == '/')
-  ) {
-    return next({ path: '/organization/employee-interface' })
+  if (shouldUseEmployeeInterface() && !canAccessEmployeeRoute(to, userData.user?.id)) {
+    return next({ path: EMPLOYEE_HOME, replace: true })
   }
 
   // AUTHENTICATED
-  if (loginPages.includes(to.name)) {
+  if (loginPages.includes(String(to.name))) {
     const redirectPath = shouldUseEmployeeInterface()
       ? '/organization/employee-interface'
       : userData.user?.type === OrganizationTypeEnum.ADMIN
