@@ -48,6 +48,7 @@ const printReport = async () => {
         * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         .details-content { display: block !important; }
         .details-content > * { margin-bottom: 16px; }
+        .report-cover { display: block !important; }
         .report-cover, .summary-grid article, .improvement-detail, .media-item {
           break-inside: avoid; }
         .details-section { display: block !important; }
@@ -319,6 +320,7 @@ const mediaName = (url: string, index: number) =>
   color: var(--hse-project-red);
 }
 .report-cover {
+  display: none;
   position: relative;
   overflow: hidden;
   border: 1px solid var(--hse-project-line);
