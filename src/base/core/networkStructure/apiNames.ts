@@ -2341,6 +2341,10 @@ class ApiNames {
   public get clone_traning_topic() {
     return this.prefix + 'clone_traning_topic'
   }
+  public get EditLeadershipVisit() {
+    return this.baseUrl + this.organizationPrefix + 'edit_visit'
+  }
+
   public get CreateLeadershipPlan() {
     return this.baseUrl + this.organizationPrefix + 'create_leadership_engagement'
   }

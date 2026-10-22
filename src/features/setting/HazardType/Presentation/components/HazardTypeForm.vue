@@ -208,7 +208,7 @@ const updateAllIndustries = (data) => {
 </script>
 
 <template>
-  <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
+  <!-- <div class="input-wrapper col-span-4 md:col-span-2" v-if="!data?.id">
     <label for="serialNumber">{{ $t('serial_number') }}</label>
     <input
       type="text"
@@ -222,10 +222,10 @@ const updateAllIndustries = (data) => {
           : 'Enter Your Serial Number'
       "
     />
-  </div>
+  </div> -->
 
   <div class="col-span-4 md:col-span-2">
-    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" />
+    <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" :label="$t('hazard classification')"/>
   </div>
 
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum.ADMIN">

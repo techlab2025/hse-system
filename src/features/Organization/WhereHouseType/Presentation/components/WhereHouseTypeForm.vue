@@ -245,6 +245,7 @@ defineExpose({
     <LangTitleInput
       :langs="langDefault"
       :modelValue="langs"
+      :label="`${$t('warehouse type')}`"
       @update:modelValue="(val) => (langs = val)"
     />
     <p v-if="getFieldError('langs')" class="required-field-message">

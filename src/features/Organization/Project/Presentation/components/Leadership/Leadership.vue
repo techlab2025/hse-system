@@ -10,6 +10,7 @@ import AccordionPanel from 'primevue/accordionpanel'
 import AccordionHeader from 'primevue/accordionheader'
 import AccordionContent from 'primevue/accordioncontent'
 import DatePicker from 'primevue/datepicker'
+import Dialog from 'primevue/dialog'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -27,6 +28,9 @@ import FetchAllLeadershipVisitsParams from '../../../Core/params/Leadership/Fetc
 import CreateLeadershipPlanController from '../../controllers/Leadership/CreateLeadershipPlanController'
 import FetchAllLeadershipVisitsController from '../../controllers/Leadership/FetchAllLeadershipVisitsController'
 import LeadershipPlanVisitParams from '../../../Core/params/Leadership/LeadershipPlanVisitParams'
+import EditLeadershipVisitParams from '../../../Core/params/Leadership/EditLeadershipVisitParams'
+import EditLeadershipVisitController from '../../controllers/Leadership/EditLeadershipVisitController'
+import type LeadershipVisitModel from '../../../Data/models/Leadership/LeadershipVisitModel'
 
 defineOptions({ name: 'ProjectLeadership' })
 
@@ -53,6 +57,13 @@ const canCreate = computed(() =>
   ]),
 )
 const route = useRoute()
+const canEdit = computed(() =>
+  PermissionHandler.Instance.handle([
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.LEADERSHIP_ALL,
+    PermissionsEnum.LEADERSHIP_UPDATE,
+  ]),
+)
 const projectId = computed(() => Number(route.params.id))
 const projectController = ShowProjectDetailsController.getInstance()
 const projectState = projectController.state
@@ -67,6 +78,12 @@ const visitsState = visitsController.state
 const monthVisits = reactive<Record<string, LeadershipVisitInput[]>>({})
 const errorMessage = ref('')
 const successMessage = ref('')
+const editController = EditLeadershipVisitController.getInstance()
+const editDialogVisible = ref(false)
+const editingVisit = ref<LeadershipVisitModel | null>(null)
+const editedDate = ref<Date | null>(null)
+const savingDate = ref(false)
+const editError = ref('')
 
 const newVisit = (): LeadershipVisitInput => ({
   date: '',
@@ -139,6 +156,53 @@ const refreshVisits = async () => {
     await visitsController.fetchVisits(
       new FetchAllLeadershipVisitsParams({ projectId: projectId.value }),
     )
+}
+const openEditVisit = (visit: LeadershipVisitModel) => {
+  if (!canEdit.value) return
+  editingVisit.value = visit
+  editedDate.value = parseDate(visit.date.slice(0, 10))
+  editError.value = ''
+  editDialogVisible.value = true
+}
+const saveVisitDate = async () => {
+  if (!canEdit.value || !editingVisit.value || savingDate.value) return
+  editError.value = ''
+  const date = editedDate.value
+  if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
+    editError.value = 'Choose a valid visit date.'
+    return
+  }
+  const dateText = formatDate(date)
+  const month = months.value.find(
+    (month) => dateText >= month.firstDate && dateText <= month.lastDate,
+  )
+  if (!month) {
+    editError.value = 'Choose a date within the project dates.'
+    return
+  }
+  if (
+    editingVisit.value.date.slice(0, 7) !== month.key &&
+    visitCountForMonth(month.key) >= maxVisitsPerMonth
+  ) {
+    editError.value = `You can add a maximum of ${maxVisitsPerMonth} visits per month.`
+    return
+  }
+  savingDate.value = true
+  try {
+    await editController.editVisit(new EditLeadershipVisitParams(editingVisit.value.id, dateText))
+    if (!editController.isDataSuccess()) {
+      editError.value =
+        editController.state.value.error?.title ?? 'Unable to update the visit date.'
+      return
+    }
+    editingVisit.value.date = dateText
+    editDialogVisible.value = false
+    await refreshVisits()
+  } catch {
+    editError.value = 'Unable to update the visit date.'
+  } finally {
+    savingDate.value = false
+  }
 }
 const saveMonth = async (month: ProjectMonth) => {
   if (!canCreate.value) return
@@ -378,6 +442,7 @@ onMounted(async () => {
                           <th>Date</th>
                           <th>Visit Location</th>
                           <th>Report Status</th>
+                          <th v-if="canEdit">Actions</th>
                           <!-- <th>Employee</th> -->
                           <!-- <th>Activity</th> -->
                         </tr>
@@ -399,6 +464,15 @@ onMounted(async () => {
                           </td>
                           <td>
                             {{ visit.hasReport ? `Report Submitted` : `not submitted yet` }}
+                          </td>
+                          <td v-if="canEdit">
+                            <button
+                              type="button"
+                              class="hse-project-button hse-project-button--secondary"
+                              @click="openEditVisit(visit)"
+                            >
+                              Edit
+                            </button>
                           </td>
 
                           <!-- <td>
@@ -614,6 +688,54 @@ onMounted(async () => {
         <div class="notice notice--error">Unable to load project dates.</div>
       </template>
     </DataStatus>
+    <Dialog
+      v-model:visible="editDialogVisible"
+      data-hse-project
+      :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
+      modal
+      header="Edit visit date"
+      class="hse-project-root hse-project-assurance hse-project-overlay"
+      :style="{ width: 'min(420px, 96vw)' }"
+      :closable="!savingDate"
+      :close-on-escape="!savingDate"
+    >
+      <form id="edit-leadership-visit-date" @submit.prevent="saveVisitDate">
+        <div class="hse-project-field">
+          <label for="edit-visit-date" class="hse-project-field-label">Date</label>
+          <DatePicker
+            v-model="editedDate"
+            input-id="edit-visit-date"
+            panel-class="hse-project-overlay hse-project-assurance"
+            date-format="yy-mm-dd"
+            show-icon
+            fluid
+            :disabled="savingDate"
+            :min-date="parseDate(months[0]?.firstDate ?? '') ?? undefined"
+            :max-date="parseDate(months[months.length - 1]?.lastDate ?? '') ?? undefined"
+            placeholder="Select visit date"
+          />
+        </div>
+        <p v-if="editError" class="notice notice--error" role="alert">{{ editError }}</p>
+      </form>
+      <template #footer>
+        <button
+          type="button"
+          class="hse-project-button hse-project-button--secondary"
+          :disabled="savingDate"
+          @click="editDialogVisible = false"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          form="edit-leadership-visit-date"
+          class="hse-project-button hse-project-button--primary"
+          :disabled="savingDate || !editedDate"
+        >
+          {{ savingDate ? 'Saving…' : 'Save' }}
+        </button>
+      </template>
+    </Dialog>
   </main>
   <p v-else role="status">{{ $t('have_not_permission') }}</p>
 </template>

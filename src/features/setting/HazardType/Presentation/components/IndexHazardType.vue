@@ -263,7 +263,7 @@ const DownloadExample = () => {
   XLSX.utils.book_append_sheet(workbook, worksheet, 'HazardClassifications')
   const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
   const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
-  saveAs(blob, 'hazard_type_form.xlsx')
+  saveAs(blob, 'hazard_classification_form.xlsx')
 }
 
 const handleUploadCompleted = async () => {
