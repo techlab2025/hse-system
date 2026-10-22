@@ -2,6 +2,8 @@
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, onMounted, ref, watch } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { printInductionReport } from './printInductionReport'
 import { useRoute } from 'vue-router'
 import { Icon } from '@iconify/vue'
 import Image from 'primevue/image'
@@ -13,6 +15,31 @@ import ShowInductionParams from '../../../Core/params/induction/showInductionPar
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import PermissionHandler from '@/base/Presentation/utils/permission_handler'
+
+const { t, locale } = useI18n()
+const printContent = ref<HTMLElement | null>(null)
+const printing = ref(false)
+const printError = ref('')
+const printReport = async () => {
+  if (
+    !printContent.value ||
+    printing.value ||
+    !PermissionHandler.Instance.handle(detailsPermissions)
+  )
+    return
+  printing.value = true
+  printError.value = ''
+  try {
+    await printInductionReport(
+      printContent.value,
+      `${t('Induction report')} - ${induction.value?.title || id.value}`,
+    )
+  } catch {
+    printError.value = t('Unable to prepare the report. Please try printing again.')
+  } finally {
+    printing.value = false
+  }
+}
 
 const route = useRoute()
 const id = computed(() => Number(route.params.id))
@@ -128,6 +155,18 @@ onMounted(() => {
             v-if="induction"
             class="hse-identity hse-project-root hse-project-page induction-show"
           >
+            <div class="induction-print-actions">
+              <button
+                type="button"
+                class="hse-project-button hse-project-button--primary"
+                :disabled="printing"
+                @click="printReport"
+              >
+                <Icon icon="uil:print" aria-hidden="true" />
+                {{ printing ? $t('Preparing report…') : $t('Print / Save PDF') }}
+              </button>
+            </div>
+            <p v-if="printError" class="induction-print-error" role="alert">{{ printError }}</p>
             <div class="induction-hero">
               <div class="induction-hero__main">
                 <span class="induction-hero__icon" aria-hidden="true">
@@ -258,6 +297,100 @@ onMounted(() => {
                 <p v-else class="empty-text">{{ $t('No attachments') }}</p>
               </section>
             </div>
+            <div hidden aria-hidden="true">
+              <article
+                ref="printContent"
+                class="induction-report"
+                :lang="locale"
+                :dir="locale.startsWith('ar') ? 'rtl' : 'ltr'"
+              >
+                <header class="report-cover">
+                  <div class="report-cover-copy">
+                    <span class="report-kicker">HSE / {{ $t('Induction report') }}</span>
+                    <h1>{{ induction.title }}</h1>
+                    <p>{{ induction.projectTitle || '—' }} · {{ induction.date || '—' }}</p>
+                    <span class="report-reference">{{ $t('Induction report') }} #{{ id }}</span>
+                  </div>
+                  <div class="report-metrics">
+                    <div v-for="metric in heroMetrics" :key="metric.label">
+                      <strong>{{ String(metric.value).padStart(2, '0') }}</strong
+                      ><span>{{ $t(metric.label) }}</span>
+                    </div>
+                  </div>
+                </header>
+                <section class="report-section">
+                  <div class="report-section-heading">
+                    <span>01</span>
+                    <h2>{{ $t('session_details') }}</h2>
+                  </div>
+                  <div class="report-details">
+                    <div v-for="item in detailItems" :key="item.label">
+                      <span>{{ $t(item.label) }}</span
+                      ><strong>{{ item.value }}</strong>
+                    </div>
+                  </div>
+                </section>
+                <section class="report-section">
+                  <div class="report-section-heading">
+                    <span>02</span>
+                    <h2>{{ $t('training_topics') }}</h2>
+                  </div>
+                  <div
+                    v-for="(topic, index) in induction.trainingTopic"
+                    :key="index"
+                    class="report-topic"
+                  >
+                    <span>{{ String(index + 1).padStart(2, '0') }}</span
+                    ><strong>{{ topic.displayTitle }}</strong>
+                  </div>
+                  <p v-if="!trainingTopicCount" class="report-empty">
+                    {{ $t('No training topics selected') }}
+                  </p>
+                </section>
+                <section class="report-section">
+                  <div class="report-section-heading">
+                    <span>03</span>
+                    <h2>{{ $t('attendees') }}</h2>
+                  </div>
+                  <table v-if="attendeeCount">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>{{ $t('attendees') }}</th>
+                        <th>{{ $t('Details') }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(employee, index) in induction.organisationEmployee" :key="index">
+                        <td>{{ index + 1 }}</td>
+                        <td>{{ employee.displayTitle }}</td>
+                        <td>{{ employee.displaySubtitle || $t('external_attendee') }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <p v-else class="report-empty">{{ $t('No attendees selected') }}</p>
+                </section>
+                <section class="report-section">
+                  <div class="report-section-heading">
+                    <span>04</span>
+                    <h2>{{ $t('evidence_files') }}</h2>
+                  </div>
+                  <div v-if="attachments.length" class="report-evidence">
+                    <figure v-for="(file, index) in attachments" :key="index">
+                      <img :src="file" :alt="`${$t('evidence_files')} ${index + 1}`" />
+                      <figcaption>
+                        {{ $t('evidence_files') }} · {{ String(index + 1).padStart(2, '0') }}
+                      </figcaption>
+                    </figure>
+                  </div>
+                  <p v-else class="report-empty">{{ $t('No attachments') }}</p>
+                </section>
+                <footer class="report-footer">
+                  <strong>HSE · {{ $t('Induction report') }}</strong
+                  ><span>#{{ id }} · {{ induction.date || '—' }}</span>
+                </footer>
+              </article>
+            </div>
           </section>
         </template>
 
@@ -282,6 +415,25 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.induction-print-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.induction-print-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.induction-print-actions button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.induction-print-error {
+  margin: 0;
+  color: var(--hse-project-red, #ad3744);
+  font-size: 13px;
+}
+
 .induction-show {
   display: grid;
   gap: var(--hse-project-space-xl);

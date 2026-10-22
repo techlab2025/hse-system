@@ -41,10 +41,10 @@ const statusOptions = [
     label: 'Ineffective',
     value: VerificationEnum.NotEffective,
   },
-  {
-    label: 'Pending',
-    value: VerificationEnum.Pending,
-  },
+  // {
+  //   label: 'Pending',
+  //   value: VerificationEnum.Pending,
+  // },
 ] as const
 
 const emitData = () => {
@@ -209,6 +209,8 @@ const submitVerification = async () => {
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
+  align-items: flex-start;
+  width: 100%;
 }
 
 .editor-field label,

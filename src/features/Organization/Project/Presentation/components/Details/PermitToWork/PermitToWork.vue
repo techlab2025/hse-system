@@ -203,9 +203,9 @@ const handleFilesChange = (files: UploadedFile[]) => {
           </svg>
         </span>
         <div>
-          <span class="ptw-eyebrow">{{ $t('Work authorization') }}</span>
-          <h1>{{ $t('Create permit to work') }}</h1>
-          <p>{{ $t('Complete the permit details before work begins.') }}</p>
+          <!-- <span class="ptw-eyebrow">{{ $t('Work authorization') }}</span> -->
+          <h1 class="white">{{ $t('Create permit to work') }}</h1>
+          <p class="white">{{ $t('Complete the permit details before work begins.') }}</p>
         </div>
       </div>
 
@@ -363,7 +363,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
 
             <div class="hse-project-field ptw-field" data-required-field="OrganizationEmployee">
               <label class="hse-project-field-label" for="organization_employee">
-                {{ $t('Permit Applicant') }}
+                {{ $t('Audit Permit to Work Assigned To') }}
                 <span class="required-mark">*</span>
               </label>
               <UpdatedCustomInputSelect
@@ -375,7 +375,7 @@ const handleFilesChange = (files: UploadedFile[]) => {
                 :model-value="organizationEmployee"
                 :controller="indexOrganizationEmployeeController"
                 :params="indexOrganizationEmployeeParams"
-                :placeholder="$t('Permit Applicant')"
+                :placeholder="$t('Audit Permit to Work Assigned To')"
                 @update:model-value="updateOrganizationEmployee"
               />
               <p v-else>{{ $t('employeeProjectAction.selectProject') }}</p>
@@ -757,6 +757,9 @@ const handleFilesChange = (files: UploadedFile[]) => {
   align-items: center;
   gap: 10px;
   margin-bottom: 16px;
+}
+.white{
+  color: white !important;
 }
 
 .ptw-card-header > span {

@@ -73,6 +73,7 @@ export default class IndexCapaModel {
     createdAt: string,
     updatedAt: string,
     public internalAuditNcrId: number | null = null,
+    public investigationId: number | null = null,
   ) {
     this.id = id
     this.title = title
@@ -158,6 +159,11 @@ export default class IndexCapaModel {
       data?.created_at,
       data?.updated_at,
       ncrId != null ? Number(ncrId) : null,
+      data.investigation_id != null
+        ? Number(data.investigation_id)
+        : data.investigation?.id != null
+          ? Number(data.investigation.id)
+          : null,
     )
   }
 }

@@ -1,4 +1,11 @@
 {
+  "Induction report": "Induction report",
+  "Print / Save PDF": "Print / Save PDF",
+  "Preparing report…": "Preparing report…",
+  "Unable to prepare the report. Please try printing again.": "Unable to prepare the report. Please try printing again.",
+  "NCR": "NCR",
+  "CAPA source": "CAPA source",
+  "No CAPA records match this source.": "No CAPA records match this source.",
   "Department Name": "Department Name",
   "ppe_delivery_change_activity_title": "Change activity?",
   "ppe_delivery_change_activity_warning": "Changing or clearing the activity will delete the selected employees and their PPE tool selections. Do you want to continue?",

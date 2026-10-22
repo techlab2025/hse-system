@@ -1,4 +1,11 @@
 {
+  "Induction report": "تقرير التعريف والتوعية",
+  "Print / Save PDF": "طباعة / حفظ PDF",
+  "Preparing report…": "جارٍ تجهيز التقرير…",
+  "Unable to prepare the report. Please try printing again.": "تعذر تجهيز التقرير. يرجى محاولة الطباعة مرة أخرى.",
+  "NCR": "عدم المطابقة",
+  "CAPA source": "مصدر الإجراءات التصحيحية والوقائية",
+  "No CAPA records match this source.": "لا توجد سجلات إجراءات تصحيحية ووقائية لهذا المصدر.",
   "Department Name": "اسم القسم",
   "ppe_delivery_change_activity_title": "تغيير النشاط؟",
   "ppe_delivery_change_activity_warning": "سيؤدي تغيير النشاط أو إلغاؤه إلى حذف الموظفين المحددين واختيارات معدات الوقاية الشخصية الخاصة بهم. هل تريد المتابعة؟",

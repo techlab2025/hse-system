@@ -1,0 +1,240 @@
+@page {
+  size: A4;
+  margin: 14mm 14mm 17mm;
+  @bottom-left {
+    content: 'HSE / Induction';
+    color: #617587;
+    font:
+      8pt Arial,
+      sans-serif;
+  }
+  @bottom-right {
+    content: counter(page) ' / ' counter(pages);
+    color: #617587;
+    font:
+      8pt Arial,
+      sans-serif;
+  }
+}
+* {
+  box-sizing: border-box;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  color: #18334b;
+  background: white;
+  font:
+    10pt/1.6 Arial,
+    sans-serif;
+}
+h1,
+h2,
+p,
+figure {
+  margin: 0;
+}
+.induction-report {
+  width: 100%;
+}
+.report-cover {
+  overflow: hidden;
+  border: 1px solid #dce6ed;
+  border-radius: 16px;
+  break-inside: avoid;
+  margin-bottom: 6mm;
+}
+.report-cover-copy {
+  padding: 9mm;
+  border-inline-start: 5px solid #58c7b2;
+  background: linear-gradient(120deg, #143148, #245e75);
+  color: white;
+}
+.report-kicker {
+  color: #b6e8e0;
+  font-size: 8pt;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+}
+.report-cover h1 {
+  margin: 3mm 0;
+  font-size: 25pt;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.report-cover-copy > p {
+  color: #d6e7ef;
+  font-size: 10pt;
+}
+.report-reference {
+  display: block;
+  margin-top: 5mm;
+  font-size: 9pt;
+  color: #c3dce6;
+}
+.report-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 6mm 0;
+}
+.report-metrics div {
+  display: grid;
+  text-align: center;
+  gap: 1mm;
+  padding: 0 3mm;
+}
+.report-metrics div + div {
+  border-inline-start: 1px solid #dce6ed;
+}
+.report-metrics strong {
+  font-size: 20pt;
+  line-height: 1.3;
+}
+.report-metrics span {
+  font-size: 9pt;
+  color: #617587;
+}
+.report-section {
+  margin: 0 0 6mm;
+}
+.report-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 3mm;
+  padding-bottom: 3mm;
+  margin-bottom: 4mm;
+  border-bottom: 1px solid #dce6ed;
+  break-after: avoid;
+}
+.report-section-heading > span {
+  display: grid;
+  place-items: center;
+  width: 8mm;
+  height: 8mm;
+  border-radius: 50%;
+  background: #edf5f8;
+  color: #23657f;
+  font-size: 8pt;
+  font-weight: 700;
+}
+.report-section-heading h2 {
+  font-size: 13pt;
+  font-weight: 700;
+}
+.report-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3mm;
+}
+.report-details > div {
+  padding: 4mm;
+  border: 1px solid #dce6ed;
+  border-radius: 9px;
+  break-inside: avoid;
+}
+.report-details span {
+  display: block;
+  margin-bottom: 1mm;
+  color: #617587;
+  font-size: 8pt;
+}
+.report-details strong {
+  font-size: 10pt;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.report-topic {
+  display: flex;
+  align-items: baseline;
+  gap: 4mm;
+  margin-bottom: 2mm;
+  padding: 3mm 4mm;
+  border: 1px solid #dce6ed;
+  border-radius: 8px;
+  break-inside: avoid;
+}
+.report-topic span {
+  color: #23657f;
+  font-size: 9pt;
+  font-weight: 700;
+}
+.report-topic strong {
+  font-size: 10pt;
+  font-weight: 600;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
+  font-size: 10pt;
+}
+thead {
+  display: table-header-group;
+}
+th {
+  background: #edf5f8;
+  color: #426276;
+  font-size: 8pt;
+  text-align: start;
+}
+th,
+td {
+  padding: 3mm;
+  border-bottom: 1px solid #dce6ed;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+th:first-child {
+  width: 12mm;
+}
+th:last-child {
+  width: 38%;
+}
+tr {
+  break-inside: avoid;
+}
+.report-evidence {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4mm;
+}
+.report-evidence figure {
+  min-width: 0;
+  padding: 3mm;
+  border: 1px solid #dce6ed;
+  border-radius: 10px;
+  break-inside: avoid;
+}
+.report-evidence img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 75mm;
+  object-fit: contain;
+}
+.report-evidence figcaption {
+  margin-top: 2mm;
+  color: #617587;
+  font-size: 8pt;
+}
+.report-empty {
+  padding: 4mm;
+  border: 1px dashed #dce6ed;
+  border-radius: 8px;
+  color: #617587;
+}
+.report-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 4mm;
+  border-top: 1px solid #dce6ed;
+  padding-top: 4mm;
+  color: #617587;
+  font-size: 8pt;
+}

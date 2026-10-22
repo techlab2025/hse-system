@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import PaginationModel from '@/base/core/Models/pagination_model'
 import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
@@ -25,6 +26,51 @@ const currentPage = ref(1)
 const countPerPage = ref(10)
 const indexCapaController = IndexCapaController.getInstance()
 const state = ref(indexCapaController.state.value)
+type CapaSource = 'all' | 'ncr' | 'investigation'
+const selectedSource = ref<CapaSource>('all')
+const sourceTabs: { value: CapaSource; label: string }[] = [
+  { value: 'all', label: 'all' },
+  { value: 'ncr', label: 'NCR' },
+  { value: 'investigation', label: 'Investigation' },
+]
+const sourceCounts = computed(() => {
+  const items = state.value.data ?? []
+  return {
+    all: items.length,
+    ncr: items.filter((item) => Boolean(item.internalAuditNcrId)).length,
+    investigation: items.filter((item) => Boolean(item.investigationId)).length,
+  }
+})
+const filteredItems = computed(() =>
+  (state.value.data ?? []).filter((item) =>
+    selectedSource.value === 'ncr'
+      ? Boolean(item.internalAuditNcrId)
+      : selectedSource.value === 'investigation'
+        ? Boolean(item.investigationId)
+        : true,
+  ),
+)
+const visibleItems = computed(() =>
+  filteredItems.value.slice(
+    (currentPage.value - 1) * countPerPage.value,
+    currentPage.value * countPerPage.value,
+  ),
+)
+const pagination = computed(() => {
+  const total = filteredItems.value.length
+  const last = Math.max(1, Math.ceil(total / countPerPage.value))
+  return new PaginationModel(
+    total ? (currentPage.value - 1) * countPerPage.value + 1 : 0,
+    countPerPage.value,
+    Math.min(currentPage.value * countPerPage.value, total),
+    currentPage.value,
+    last,
+    total,
+  )
+})
+watch([selectedSource, countPerPage, () => state.value.data], () => {
+  currentPage.value = 1
+})
 const route = useRoute()
 const router = useRouter()
 const Projects = ref<ProjectModel[]>([])
@@ -37,7 +83,7 @@ const fetchCapa = async (
   query = '',
   pageNumber = 1,
   perPage = 10,
-  withPage = 1,
+  withPage = 0,
   projectZoneLozationId?: number[],
   projectLocationIds?: number[],
   zoonIds?: number[],
@@ -47,6 +93,7 @@ const fetchCapa = async (
     word: query,
     pageNumber: pageNumber,
     perPage: perPage,
+    // Filter the complete result set before applying the local pagination.
     withPage: withPage,
     type: [Observation.ObservationType, Observation.HazardType],
     projectId:
@@ -73,12 +120,10 @@ onMounted(() => {
 
 const handleChangePage = (page: number) => {
   currentPage.value = page
-  fetchCapa('', currentPage.value, countPerPage.value)
 }
 
 const handleCountPerPage = (count: number) => {
   countPerPage.value = count
-  fetchCapa('', currentPage.value, countPerPage.value)
 }
 
 const FetchMyProjects = async () => {
@@ -100,13 +145,13 @@ const FetchMyZones = async () => {
 
 const ApplayFilter = (data: number[]) => {
   SelectedZonesFilter.value = data
-  fetchCapa('', 1, 10, 1, [], [], SelectedZonesFilter.value, selectedProjctesFilters.value)
+  fetchCapa('', 1, 10, 0, [], [], SelectedZonesFilter.value, selectedProjctesFilters.value)
 }
 
 const setSelectedProjectFilter = (data: any) => {
   selectedProjctesFilters.value = data
   if (data) {
-    fetchCapa('', 1, 10, 1, [], [], [], data)
+    fetchCapa('', 1, 10, 0, [], [], [], data)
     FetchMyZones()
   }
 }
@@ -188,7 +233,7 @@ watch(
           /> -->
           <IndexHazardHeader
             :title="`CAPA`"
-            :length="state?.pagination?.total || 0"
+            :length="filteredItems.length"
             @update:data="setSelectedProjectFilter"
           />
 
@@ -203,13 +248,31 @@ watch(
             </PermissionBuilder>
           </div>
         </div>
+        <div class="capa-source-tabs" role="group" :aria-label="$t('CAPA source')">
+          <button
+            v-for="tab in sourceTabs"
+            :key="tab.value"
+            type="button"
+            class="capa-source-tab"
+            :class="{ 'is-active': selectedSource === tab.value }"
+            :aria-pressed="selectedSource === tab.value"
+            aria-controls="capa-results"
+            @click="selectedSource = tab.value"
+          >
+            <span>{{ $t(tab.label) }}</span>
+            <span class="capa-source-count">{{ sourceCounts[tab.value] }}</span>
+          </button>
+        </div>
         <DataStatus :controller="state">
           <template #success>
-            <div class="table-responsive">
+            <div id="capa-results" class="table-responsive" aria-live="polite">
+              <p v-if="!filteredItems.length" class="capa-source-empty">
+                {{ $t('No CAPA records match this source.') }}
+              </p>
               <div class="index-table-card-container capa-card-list">
                 <article
                   class="index-table-card capa-card"
-                  v-for="(item, index) in state.data"
+                  v-for="(item, index) in visibleItems"
                   :key="item?.capa?.capaId || index"
                 >
                   <header class="capa-card-header">
@@ -342,7 +405,7 @@ watch(
               </div>
             </div>
             <Pagination
-              :pagination="state.pagination"
+              :pagination="pagination"
               @changePage="handleChangePage"
               @countPerPage="handleCountPerPage"
             />
@@ -397,6 +460,73 @@ watch(
 </template>
 
 <style scoped lang="scss">
+.capa-source-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+  gap: 6px;
+  margin: 18px 0;
+  padding: 6px;
+  box-sizing: border-box;
+  border: 1px solid var(--main-border);
+  border-radius: 16px;
+  background: var(--surface-1);
+}
+
+.capa-source-tab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-width: 0;
+  min-height: 48px;
+  padding: 10px 6px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  background: transparent;
+  color: var(--text-soft);
+  font: inherit;
+  font-size: clamp(11px, 2vw, 14px);
+  font-weight: 700;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+
+  &:hover {
+    background: color-mix(in srgb, var(--PrimaryColor) 7%, var(--surface-1));
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--PrimaryColor);
+    outline-offset: 2px;
+  }
+
+  &.is-active {
+    background: var(--PrimaryColor);
+    color: white;
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--PrimaryColor) 20%, transparent);
+  }
+}
+
+.capa-source-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 25px;
+  min-height: 24px;
+  padding-inline: 5px;
+  border-radius: 7px;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+  font-size: 11px;
+}
+
+.capa-source-empty {
+  padding: 32px 16px;
+  border: 1px dashed var(--main-border);
+  border-radius: 16px;
+  color: var(--text-soft);
+  text-align: center;
+}
+
 .btn-investegation-observation {
   width: 100%;
   display: flex;
