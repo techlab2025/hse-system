@@ -6,6 +6,7 @@ import {
   createLookupExcelBuffer,
   lookupExcelHints,
   lookupExcelHintText,
+  lookupExcelAdminHint,
   readLookupRows,
 } from '../src/shared/utils/lookupExcel'
 import AddPPEToolExcelParams from '../src/features/Organization/PPETool/Core/params/addPPEToolExcelParams'
@@ -53,7 +54,7 @@ test('lookup downloads lock hints, headings and other fields, and unlock only Ti
   const buffer = await createLookupExcelBuffer(workbook)
   const result = XLSX.read(buffer, { type: 'array' })
   assert.equal(result.Sheets.Lookups!.A1.v, lookupExcelHintText)
-  assert.deepEqual(result.Sheets.Lookups!['!merges'], [{ s: { r: 0, c: 0 }, e: { r: 1, c: 2 } }])
+  assert.deepEqual(result.Sheets.Lookups!['!merges'], [{ s: { r: 0, c: 0 }, e: { r: 1, c: 10 } }])
   assert.equal(result.Sheets.Lookups!.B3.v, 'Title')
   assert.deepEqual(readLookupRows(result.Sheets.Lookups!, { header: 1 }), [
     ['id', 'title', 'description'],
@@ -86,6 +87,8 @@ test('lookup downloads lock hints, headings and other fields, and unlock only Ti
     assert.match(xfs[styleAt(`${titleLetter}4`)]!, /<protection locked="0"/)
     assert.match(xfs[styleAt(`${titleLetter}3`)]!, /<protection locked="1"/)
     assert.match(xfs[styleAt('A1')]!, /<protection locked="1"/)
+    assert.match(xfs[styleAt('A1')]!, /horizontal="center"/)
+    assert.match(xfs[styleAt('A1')]!, /vertical="center"/)
     const hintFont = Number(xfs[styleAt('A1')]!.match(/fontId="(\d+)"/)![1])
     assert.match(fonts[hintFont]!, /<color rgb="FFCC0000"/)
     assert.match(fonts[hintFont]!, /<b\/>/)
@@ -108,7 +111,7 @@ test('imports still accept old files and empty exports keep an editable Title co
   const buffer = await createLookupExcelBuffer(workbook)
   const result = XLSX.read(buffer)
   assert.equal(result.Sheets.Empty!.A3.v, 'Title')
-  assert.deepEqual(result.Sheets.Empty!['!merges'], [{ s: { r: 0, c: 0 }, e: { r: 1, c: 0 } }])
+  assert.deepEqual(result.Sheets.Empty!['!merges'], [{ s: { r: 0, c: 0 }, e: { r: 1, c: 10 } }])
   assert.deepEqual(readLookupRows(result.Sheets.Empty!, { header: 1 }), [['title']])
   const previousTemplate = XLSX.utils.aoa_to_sheet([
     [lookupExcelHints[0]],
@@ -117,4 +120,18 @@ test('imports still accept old files and empty exports keep an editable Title co
     ['Previous title'],
   ])
   assert.deepEqual(readLookupRows(previousTemplate, { header: 1 }), [['title'], ['Previous title']])
+})
+
+test('only admin downloads include the all industries hint and both formats upload cleanly', async () => {
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet([{ title: 'Example' }]), 'Lookup')
+  for (const allIndustries of [false, true]) {
+    const buffer = await createLookupExcelBuffer(workbook, { allIndustries })
+    const sheet = XLSX.read(buffer).Sheets.Lookup!
+    assert.equal(String(sheet.A1.v).includes(lookupExcelAdminHint), allIndustries)
+    assert.deepEqual(
+      readLookupRows(sheet, { header: 1, raw: false, defval: '', blankrows: false }),
+      [['title'], ['Example']],
+    )
+  }
 })

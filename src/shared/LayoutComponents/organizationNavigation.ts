@@ -706,7 +706,7 @@ const LockUpsRoutes: SidebarRoute[] = [
   },
   {
     link: '/organization/equipment-types',
-    name: 'equipment_types',
+    name: 'equipment_brands',
     icon: 'wrench',
     permissions: [
       PermissionsEnum.ORG_EQUIPMENT_TYPE_ALL,

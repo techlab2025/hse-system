@@ -1,12 +1,15 @@
 import * as XLSX from 'xlsx'
 import JSZip from 'jszip'
 import FileSaver from 'file-saver'
+import { useUserStore } from '../../stores/user'
+import { OrganizationTypeEnum } from '../../features/auth/Core/Enum/organization_type'
 
 export const lookupExcelHints = [
   'Please fill in the cells under the Title column, starting from row 4.',
   'Only Title cells are editable. Instructions, column headings and all other fields are locked.',
 ] as const
 export const lookupExcelHintText = lookupExcelHints.join('\n')
+export const lookupExcelAdminHint = 'This data is for all industries.'
 
 // Keep accepting older files whose headings are on the first row.
 export function readLookupRows<T = unknown[]>(
@@ -44,13 +47,28 @@ export function readLookupRows<T = unknown[]>(
       importSheet[address] = { ...importSheet[address], v: 'title', w: 'title' }
     }
   }
+  let headerLastColumn = 0
+  for (let column = 0; column <= lastColumn; column++) {
+    const address = XLSX.utils.encode_cell({ r: headerRow, c: column })
+    if (String(importSheet[address]?.v ?? '').trim()) headerLastColumn = column
+  }
   return XLSX.utils.sheet_to_json<T>(importSheet, {
     ...options,
-    ...(headerRow > 0 ? { range: headerRow } : {}),
+    ...(headerRow > 0
+      ? {
+          range: {
+            s: { r: headerRow, c: 0 },
+            e: { r: XLSX.utils.decode_range(sheet['!ref'] ?? 'A1').e.r, c: headerLastColumn },
+          },
+        }
+      : {}),
   })
 }
 
-export async function createLookupExcelBuffer(source: XLSX.WorkBook): Promise<ArrayBuffer> {
+export async function createLookupExcelBuffer(
+  source: XLSX.WorkBook,
+  options: { allIndustries?: boolean } = {},
+): Promise<ArrayBuffer> {
   const workbook = XLSX.utils.book_new()
   const titleColumns: number[] = []
   for (const name of source.SheetNames) {
@@ -69,7 +87,10 @@ export async function createLookupExcelBuffer(source: XLSX.WorkBook): Promise<Ar
     if (titleColumn < 0) throw new Error('Lookup Excel files must contain a Title column.')
     titleColumns.push(titleColumn)
     rows[0]![titleColumn] = 'Title'
-    const sheet = XLSX.utils.aoa_to_sheet([[lookupExcelHintText], [], ...rows])
+    const hintText = options.allIndustries
+      ? `${lookupExcelHintText}\n${lookupExcelAdminHint}`
+      : lookupExcelHintText
+    const sheet = XLSX.utils.aoa_to_sheet([[hintText], [], ...rows])
     sheet['!cols'] = rows[0]!.map((_, index) => {
       const contentWidth = Math.max(...rows.map((row) => String(row[index] ?? '').length), 12)
       return { wch: Math.min(50, Math.max(index === titleColumn ? 36 : 22, contentWidth + 3)) }
@@ -81,7 +102,10 @@ export async function createLookupExcelBuffer(source: XLSX.WorkBook): Promise<Ar
       ...rows.slice(1).map(() => ({ hpt: 30 })),
     ]
     const lastColumn = Math.max(rows[0]!.length - 1, 0)
-    sheet['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 1, c: lastColumn } }]
+    sheet['!merges'] = [{ s: { r: 0, c: 0 }, e: { r: 1, c: 10 } }]
+    const range = XLSX.utils.decode_range(sheet['!ref'] ?? 'A1')
+    range.e.c = Math.max(range.e.c, 10)
+    sheet['!ref'] = XLSX.utils.encode_range(range)
     if (lastColumn === 0) {
       sheet['!cols'] = [{ wch: 70 }]
     }
@@ -101,8 +125,8 @@ export async function createLookupExcelBuffer(source: XLSX.WorkBook): Promise<Ar
   const headerStyle = styleCount + 3
   const fontCount = Number(styles.match(/<fonts count="(\d+)"/)?.[1])
   const fillCount = Number(styles.match(/<fills count="(\d+)"/)?.[1])
-  const xf = (locked: boolean, fontId = 0, fillId = 0) =>
-    `<xf numFmtId="0" fontId="${fontId}" fillId="${fillId}" borderId="0" xfId="0" applyFont="1" applyFill="1" applyProtection="1" applyAlignment="1"><alignment wrapText="1" vertical="center"/><protection locked="${locked ? 1 : 0}"/></xf>`
+  const xf = (locked: boolean, fontId = 0, fillId = 0, centered = false) =>
+    `<xf numFmtId="0" fontId="${fontId}" fillId="${fillId}" borderId="0" xfId="0" applyFont="1" applyFill="1" applyProtection="1" applyAlignment="1"><alignment wrapText="1" vertical="center"${centered ? ' horizontal="center"' : ''}/><protection locked="${locked ? 1 : 0}"/></xf>`
   zip.file(
     'xl/styles.xml',
     styles
@@ -119,7 +143,7 @@ export async function createLookupExcelBuffer(source: XLSX.WorkBook): Promise<Ar
       .replace(/<cellXfs count="\d+"/, `<cellXfs count="${styleCount + 4}"`)
       .replace(
         '</cellXfs>',
-        `${xf(true)}${xf(false)}${xf(true, fontCount)}${xf(true, fontCount + 1, fillCount)}</cellXfs>`,
+        `${xf(true)}${xf(false)}${xf(true, fontCount, 0, true)}${xf(true, fontCount + 1, fillCount)}</cellXfs>`,
       ),
   )
 
@@ -153,7 +177,9 @@ export async function createLookupExcelBuffer(source: XLSX.WorkBook): Promise<Ar
 }
 
 export async function downloadLookupWorkbook(workbook: XLSX.WorkBook, filename: string) {
-  const buffer = await createLookupExcelBuffer(workbook)
+  const buffer = await createLookupExcelBuffer(workbook, {
+    allIndustries: useUserStore().user?.type === OrganizationTypeEnum.ADMIN,
+  })
   FileSaver.saveAs(
     new Blob([buffer], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
