@@ -39,6 +39,7 @@ import { formatTime } from '@/base/Presentation/utils/time_format.ts'
 import { useThemeMode } from '@/composables/useThemeMode'
 import { InvestegationStatusEnum } from '@/features/Organization/Investigating/Core/Enums/InvestegationStatusEnum'
 import ExportReportPdf from '@/features/Organization/TaskReports/Presentation/subComponents/ExportReportPdf.vue'
+import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus.ts'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
 const { t } = useI18n()
 const { isDarkMode } = useThemeMode()
@@ -345,6 +346,8 @@ const canCreateRecord = computed(() =>
     PermissionsEnum.ORG_INCEDANT_CREATE,
   ]),
 )
+
+// const { user } = useUserStore()
 </script>
 
 <template>
@@ -452,7 +455,9 @@ const canCreateRecord = computed(() =>
 
                     <div class="incident-card-statuses">
                       <router-link
-                        v-if="item.investigationId"
+                        v-if="
+                          item.investigationId && user?.employeeType == EmployeeStatusEnum.Admin
+                        "
                         :to="getInvestigationRoute(item)"
                         class="incident-investigation-badge"
                         :title="$t('Investigation')"

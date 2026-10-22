@@ -19,6 +19,8 @@ import ObservationWitnessStatements from '../FactoryUtils/ShowFactoryUtils/Obser
 import ObservationDeths from '../FactoryUtils/ShowFactoryUtils/ObservationDeths.vue'
 import ObservationInvestigationDetails from '../FactoryUtils/ShowFactoryUtils/ObservationInvestigationDetails.vue'
 import ShowObservationSkeleton from './ShowObservationSkeleton.vue'
+import { useUserStore } from '@/stores/user.ts'
+import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus.ts'
 
 const route = useRoute()
 const id = route.params?.id
@@ -56,6 +58,8 @@ const GetHeader = (value: number) => {
       ? 'Hazard'
       : 'incident'
 }
+
+const {user} = useUserStore();
 </script>
 <template>
   <div class="hse-observation-identity record-details-page">
@@ -101,7 +105,7 @@ const GetHeader = (value: number) => {
           </template>
         </div>
 
-        <div v-if="state.data?.investigation" class="show-observation-container investigation-card">
+        <div v-if="state.data?.investigation && user?.employeeType == EmployeeStatusEnum.Admin" class="show-observation-container investigation-card">
           <ObservationInvestigationDetails :data="state.data?.investigation" />
         </div>
       </template>
