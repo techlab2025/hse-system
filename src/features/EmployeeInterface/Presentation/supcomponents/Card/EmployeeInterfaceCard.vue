@@ -198,26 +198,26 @@ const cards = computed<EmpCard[]>(() => [
       },
     ],
   },
-  {
-    type: empCardEnum.PermitToWork,
-    title: 'Permit to Work',
-    eyebrow: 'Work safely',
-    subtitle: 'Request a work permit and track your permits for the selected project.',
-    img: permitImg,
-    requiresProject: true,
-    permissions: [PermissionsEnum.PTW_ALL, PermissionsEnum.PTW_CREATE, PermissionsEnum.PTW_FETCH],
-    actions: [
-      {
-        title: 'Request Permit',
-        route: `/organization/project-permit/create${projectQuery.value}`,
-        permissions: [PermissionsEnum.PTW_ALL, PermissionsEnum.PTW_CREATE],
-      },
-      projectAction('My Permits', `/organization/project-my-permits/${projectId.value}`, [
-        PermissionsEnum.PTW_ALL,
-        PermissionsEnum.PTW_FETCH,
-      ]),
-    ],
-  },
+  // {
+  //   type: empCardEnum.PermitToWork,
+  //   title: 'Permit to Work',
+  //   eyebrow: 'Work safely',
+  //   subtitle: 'Request a work permit and track your permits for the selected project.',
+  //   img: permitImg,
+  //   requiresProject: true,
+  //   permissions: [PermissionsEnum.PTW_ALL, PermissionsEnum.PTW_CREATE, PermissionsEnum.PTW_FETCH],
+  //   actions: [
+  //     {
+  //       title: 'Request Permit',
+  //       route: `/organization/project-permit/create${projectQuery.value}`,
+  //       permissions: [PermissionsEnum.PTW_ALL, PermissionsEnum.PTW_CREATE],
+  //     },
+  //     projectAction('My Permits', `/organization/project-my-permits/${projectId.value}`, [
+  //       PermissionsEnum.PTW_ALL,
+  //       PermissionsEnum.PTW_FETCH,
+  //     ]),
+  //   ],
+  // },
   {
     type: empCardEnum.Induction,
     title: 'Induction',

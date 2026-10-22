@@ -1,6 +1,7 @@
 import ConditionHandler from '@/base/Presentation/utils/condition_handler'
 import { canAccessEmployeeRoute } from '@/router/employeeInterfaceAccess'
 import { useUserStore } from '@/stores/user'
+import ShowHerikalyController from '@/features/Organization/Herikaly/Presentation/controllers/showHerikalyController'
 import type { RouteLocationMatched } from 'vue-router'
 
 type BreadCrumbItem = {
@@ -10,6 +11,25 @@ type BreadCrumbItem = {
 
 export const buildBreadcrumb = (route: any, router: any): BreadCrumbItem[] => {
   const result: BreadCrumbItem[] = []
+  const hierarchyDetails =
+    route.name === 'Edit Hierarchy'
+      ? ShowHerikalyController.getInstance().state.value.data
+      : null
+  const isDepartmentPage =
+    (route.name === 'Add Hierarchy' && !route.params.parent_id) ||
+    (hierarchyDetails?.id === Number(route.params.id) &&
+      !hierarchyDetails?.parent?.id &&
+      !hierarchyDetails?.parent_id)
+
+  const getLabel = (r: RouteLocationMatched) => {
+    if (isDepartmentPage) {
+      if (r.name === 'Hierarchy') return 'Departments'
+      if (r.name === 'Add Hierarchy') return 'add_department'
+      if (r.name === 'Edit Hierarchy') return 'edit_department'
+    }
+    if (r.name === 'Edit Hierarchy') return 'edit_position'
+    return (r.meta.breadcrumb || r.name) as string
+  }
 
   const getProjectContextId = () => {
     const rawValue = route.query.project_id ?? route.params.project_id
@@ -80,7 +100,7 @@ export const buildBreadcrumb = (route: any, router: any): BreadCrumbItem[] => {
       label:
         r.meta.subType && (route.params.parent_id || route.query.hazard == 1)
           ? (r.meta.subType as string)
-          : ((r.meta.breadcrumb || r.name) as string),
+          : getLabel(r),
       url: getRouteUrl(r),
     })
 

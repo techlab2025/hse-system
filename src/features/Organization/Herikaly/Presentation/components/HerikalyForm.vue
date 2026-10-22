@@ -261,12 +261,14 @@ const isPosition = computed(
   () =>
     props.mode === 'position' ||
     (props.mode === 'auto' &&
-      Boolean(ParentId || props.data?.parent?.id || SelectedDepartment.value?.id)),
+      Boolean(
+        ParentId || props.data?.parent?.id || props.data?.parent_id || SelectedDepartment.value?.id,
+      )),
 )
 const showDepartmentSelect = computed(
   () =>
     props.mode === 'position' ||
-    (props.mode === 'auto' && !route.path.includes('/herikaly/add') && props.data?.parent !== null),
+    (props.mode === 'auto' && !route.path.includes('/herikaly/add') && isPosition.value),
 )
 
 const updatedDepartment = (data: TitleInterface | TitleInterface[] | null) => {

@@ -14,10 +14,7 @@ import IndexEquipmentParams from '@/features/setting/Equipment/Core/params/index
 import HandleFIlesUpload, {
   type UploadedFile,
 } from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
-import {
-  filesToBase64,
-  type FileBase64,
-} from '@/base/Presentation/utils/file_to_base_64'
+import { filesToBase64, type FileBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import { MangementChangeTopicTypeEnum } from '@/features/Organization/MangementChangeTopicType/Core/Core/MangementChangeTopicTypeEnum'
 import IndexMangementChangeTopicTypeParams from '@/features/Organization/MangementChangeTopicType/Core/params/indexMangementChangeTopicTypeParams'
 import IndexMangementChangeTopicTypeController from '@/features/Organization/MangementChangeTopicType/Presentation/controllers/indexMangementChangeTopicTypeController'
@@ -38,7 +35,9 @@ const props = defineProps<{ data?: MangementChangeModel }>()
 const route = useRoute()
 const { t } = useI18n()
 const projectId = computed(() => {
-  const value = route.query.project_id ?? route.params.project_id ??
+  const value =
+    route.query.project_id ??
+    route.params.project_id ??
     (route.path.includes('/project-details/') ? route.params.id : undefined)
   const id = Number(Array.isArray(value) ? value[0] : value)
   return Number.isInteger(id) && id > 0 ? id : undefined
@@ -52,9 +51,7 @@ const facilty = ref('')
 const area = ref('')
 const date = ref<Date | null>(new Date())
 const changeType = ref(ChangeTypeMangementEnum.temp)
-const topicType = ref<MangementChangeTopicTypeEnum>(
-  MangementChangeTopicTypeEnum.employee,
-)
+const topicType = ref<MangementChangeTopicTypeEnum>(MangementChangeTopicTypeEnum.employee)
 const selectedTopicType = ref<number | null>(null)
 const status = ref(ChangeApprovalMangementEnum.approve)
 const approvalBy = ref<number | null>(null)
@@ -75,33 +72,27 @@ const serialIsAuto = computed(() => statusStore.isSerialNumberAuto())
 
 const indexMangementChangeTopicTypeController =
   IndexMangementChangeTopicTypeController.getInstance()
-const indexMangementChangeTopicTypeParams =
-  new IndexMangementChangeTopicTypeParams('', 0, 0, 0)
+const indexMangementChangeTopicTypeParams = new IndexMangementChangeTopicTypeParams('', 0, 0, 0)
 
 const indexEquipmentController = IndexEquipmentController.getInstance()
 const indexEquipmentParams = new IndexEquipmentParams('', 0, 0, 0)
 
-const indexOrganizatoinEmployeeController =
-  IndexOrganizatoinEmployeeController.getInstance()
-const indexOrganizatoinEmployeeParams =
-  new IndexOrganizatoinEmployeeParams('', 0, 0, 0)
-  
-const indexOrganizatoinEmployeeidParams =
-  new IndexOrganizatoinEmployeeParams(
-    '',
-    0,
-    0,
-    0,
-    null,
-    undefined,
-    undefined,
-    undefined,
-    undefined,
-    false,
-    projectId.value !== undefined
-      ? projectId.value
-      : null,
-  )
+const indexOrganizatoinEmployeeController = IndexOrganizatoinEmployeeController.getInstance()
+const indexOrganizatoinEmployeeParams = new IndexOrganizatoinEmployeeParams('', 0, 0, 0)
+
+const indexOrganizatoinEmployeeidParams = new IndexOrganizatoinEmployeeParams(
+  '',
+  0,
+  0,
+  0,
+  null,
+  undefined,
+  undefined,
+  undefined,
+  undefined,
+  false,
+  projectId.value !== undefined ? projectId.value : null,
+)
 
 const ChangeTypeMangementList = computed<TitleInterface[]>(() => [
   new TitleInterface({
@@ -116,9 +107,8 @@ const ChangeTypeMangementList = computed<TitleInterface[]>(() => [
 
 const selectedChangeTypeMangement = computed(
   () =>
-    ChangeTypeMangementList.value.find(
-      (item) => item.id === changeType.value,
-    ) ?? ChangeTypeMangementList.value[0],
+    ChangeTypeMangementList.value.find((item) => item.id === changeType.value) ??
+    ChangeTypeMangementList.value[0],
 )
 
 const ChangeApprovalMangementList = computed<TitleInterface[]>(() => [
@@ -134,46 +124,45 @@ const ChangeApprovalMangementList = computed<TitleInterface[]>(() => [
 
 const selectedChangeApprovalMangement = computed(
   () =>
-    ChangeApprovalMangementList.value.find(
-      (item) => item.id === status.value,
-    ) ?? ChangeApprovalMangementList.value[0],
+    ChangeApprovalMangementList.value.find((item) => item.id === status.value) ??
+    ChangeApprovalMangementList.value[0],
 )
 
-const formParams = computed(() => [
-  riskAssismentFile.value,
-  images.value.map((image) => image.file),
-  changerRequestId.value,
-  facilty.value,
-  area.value,
-  date.value,
-  changeType.value,
-  Number(Selectedmangement.value?.id ?? 0),
-  status.value,
-  approvalBy.value,
-  employeeId.value ?? undefined,
-  topicType.value === MangementChangeTopicTypeEnum.equipment
-    ? equipmentId.value ?? undefined
-    : undefined,
-  topicType.value === MangementChangeTopicTypeEnum.other
-    ? topicText.value || undefined
-    : undefined,
-  initiatorEmployeeId.value ?? undefined,
-  serial.value.trim(),
-] as const)
+const formParams = computed(
+  () =>
+    [
+      riskAssismentFile.value,
+      images.value.map((image) => image.file),
+      changerRequestId.value,
+      facilty.value,
+      area.value,
+      date.value,
+      changeType.value,
+      Number(Selectedmangement.value?.id ?? 0),
+      status.value,
+      approvalBy.value,
+      employeeId.value ?? undefined,
+      topicType.value === MangementChangeTopicTypeEnum.equipment
+        ? (equipmentId.value ?? undefined)
+        : undefined,
+      topicType.value === MangementChangeTopicTypeEnum.other
+        ? topicText.value || undefined
+        : undefined,
+      initiatorEmployeeId.value ?? undefined,
+      serial.value.trim(),
+    ] as const,
+)
 
 const updateData = () => {
-   error.value = ''
-   if (!serialIsAuto.value && !serial.value.trim()) {
+  error.value = ''
+  if (!serialIsAuto.value && !serial.value.trim()) {
     error.value = 'Serial number is required when manual serial numbering is enabled.'
     return
   }
   emit(
     'update:data',
     props.data?.id
-      ? new EditMangementChangeParams(
-        props.data.id,
-        ...formParams.value,
-      )
+      ? new EditMangementChangeParams(props.data.id, ...formParams.value)
       : new AddMangementChangeParams(...formParams.value, projectId.value),
   )
 }
@@ -202,12 +191,8 @@ const setManagement = (data: TitleInterface | null) => {
     return
   }
 
-  selectedTopicType.value =
-    data.type !== null && data.type !== undefined
-      ? Number(data.type)
-      : null
-  topicType.value =
-    selectedTopicType.value as MangementChangeTopicTypeEnum
+  selectedTopicType.value = data.type !== null && data.type !== undefined ? Number(data.type) : null
+  topicType.value = selectedTopicType.value as MangementChangeTopicTypeEnum
   Selectedemployeeid.value = null
   Selectedequipment.value = null
   employeeId.value = null
@@ -216,12 +201,12 @@ const setManagement = (data: TitleInterface | null) => {
 }
 
 const setinitiatorEmployee = (data: TitleInterface | TitleInterface[] | null) => {
-  const employee = Array.isArray(data) ? data[0] ?? null : data
+  const employee = Array.isArray(data) ? (data[0] ?? null) : data
   Selectedinitiatoremployeeid.value = employee
   initiatorEmployeeId.value = employee?.id ?? null
 }
 const setEmployee = (data: TitleInterface | TitleInterface[] | null) => {
-  const employee = Array.isArray(data) ? data[0] ?? null : data
+  const employee = Array.isArray(data) ? (data[0] ?? null) : data
   Selectedemployeeid.value = employee
   employeeId.value = employee?.id ?? null
 }
@@ -232,13 +217,12 @@ const setApprovalBy = (data: TitleInterface | null) => {
 }
 
 const setequipment = (data: TitleInterface | TitleInterface[] | null) => {
-  const equipment = Array.isArray(data) ? data[0] ?? null : data
+  const equipment = Array.isArray(data) ? (data[0] ?? null) : data
   Selectedequipment.value = equipment
   equipmentId.value = equipment?.id ?? null
 }
 
 const setFormData = (change?: MangementChangeModel) => {
-  
   if (!change) {
     updateData()
     return
@@ -256,16 +240,12 @@ const setFormData = (change?: MangementChangeModel) => {
 
   if (change.date) {
     const parsedDate = new Date(change.date)
-    date.value = Number.isNaN(parsedDate.getTime())
-      ? null
-      : parsedDate
+    date.value = Number.isNaN(parsedDate.getTime()) ? null : parsedDate
   } else {
     date.value = null
   }
 
-  changeType.value = (
-    change.change_type ?? ChangeTypeMangementEnum.temp
-  ) as ChangeTypeMangementEnum
+  changeType.value = (change.change_type ?? ChangeTypeMangementEnum.temp) as ChangeTypeMangementEnum
 
   const hasManagementTopic = Boolean(change.management_change_topic_type_id)
   const topicValue = hasManagementTopic
@@ -274,9 +254,8 @@ const setFormData = (change?: MangementChangeModel) => {
 
   topicType.value = topicValue ?? MangementChangeTopicTypeEnum.employee
   selectedTopicType.value = topicValue ? Number(topicValue) : null
-  status.value = (
-    change.status ?? ChangeApprovalMangementEnum.approve
-  ) as ChangeApprovalMangementEnum
+  status.value = (change.status ??
+    ChangeApprovalMangementEnum.approve) as ChangeApprovalMangementEnum
   approvalBy.value = change.approval_by
   employeeId.value = change.management_change_topic_employee_id
   initiatorEmployeeId.value = change.initiatore_employee_id
@@ -285,43 +264,35 @@ const setFormData = (change?: MangementChangeModel) => {
 
   Selectedmangement.value = change.management_change_topic_type_id
     ? new TitleInterface({
-      id: change.management_change_topic_type_id,
-      title:
-        change.topicTitle ??
-        `Management #${change.management_change_topic_type_id}`,
-      type: Number(topicValue ?? MangementChangeTopicTypeEnum.employee),
-    })
+        id: change.management_change_topic_type_id,
+        title: change.topicTitle ?? `Management #${change.management_change_topic_type_id}`,
+        type: Number(topicValue ?? MangementChangeTopicTypeEnum.employee),
+      })
     : null
   Selectedemployee.value = change.approval_by
     ? new TitleInterface({
-      id: change.approval_by,
-      title:
-        change.approvalByName ??
-        `Employee #${change.approval_by}`,
-    })
+        id: change.approval_by,
+        title: change.approvalByName ?? `Employee #${change.approval_by}`,
+      })
     : null
-  Selectedemployeeid.value = change.management_change_topic_employee_id  ? new TitleInterface({
-      id: change.management_change_topic_employee_id,
-      title:
-        change.employeeName ??
-        `Employee #${change.management_change_topic_employee_id}`,
-    })
+  Selectedemployeeid.value = change.management_change_topic_employee_id
+    ? new TitleInterface({
+        id: change.management_change_topic_employee_id,
+        title: change.employeeName ?? `Employee #${change.management_change_topic_employee_id}`,
+      })
     : null
   Selectedequipment.value = change.management_change_topic_equipment_id
     ? new TitleInterface({
-      id: change.management_change_topic_equipment_id,
-      title:
-        change.equipmentTitle ??
-        `Equipment #${change.management_change_topic_equipment_id}`,
-    })
+        id: change.management_change_topic_equipment_id,
+        title: change.equipmentTitle ?? `Equipment #${change.management_change_topic_equipment_id}`,
+      })
     : null
 
-      Selectedinitiatoremployeeid.value = change.initiatore_employee_id  ? new TitleInterface({
-      id: change.initiatore_employee_id,
-      title:
-        change.initiatorEmployeeName ??
-        `Employee #${change.initiatore_employee_id}`,
-    })
+  Selectedinitiatoremployeeid.value = change.initiatore_employee_id
+    ? new TitleInterface({
+        id: change.initiatore_employee_id,
+        title: change.initiatorEmployeeName ?? `Employee #${change.initiatore_employee_id}`,
+      })
     : null
 
   formKey.value++
@@ -444,10 +415,10 @@ onMounted(updateData)
         <Icon icon="uil:exchange" />
       </span>
       <div>
-        <p class="management-change-form__eyebrow">
+        <!-- <p class="management-change-form__eyebrow">
           {{ $t('Management of change') }}
-        </p>
-        <h1>{{ $t('management of change') }}</h1>
+        </p> -->
+        <h1 class="white">{{ $t('management of change') }}</h1>
         <p class="management-change-form__subtitle">
           {{ $t('Record the change, its scope, and the approvals needed before work starts.') }}
         </p>
@@ -469,16 +440,28 @@ onMounted(updateData)
     </div>
 
     <div class="management-change-fields">
-
-      <div class="input-wrapper  drill-serial">
-        <div class="field-label"><label for="management_change_serial">{{ $t('serial_number') }}</label><FieldHelpIcon :text="serialIsAuto ? 'The serial will be generated automatically.' : 'Enter the serial number.'" /></div>
-        <input id="management_change_serial" v-model="serial" class="input" type="text" :disabled="serialIsAuto" :placeholder="serialIsAuto ? $t('Auto-generated') : $t('Enter serial number')" />
+      <div class="input-wrapper drill-serial">
+        <div class="field-label">
+          <label for="management_change_serial">{{ $t('serial_number') }}</label
+          ><FieldHelpIcon
+            :text="
+              serialIsAuto
+                ? 'The serial will be generated automatically.'
+                : 'Enter the serial number.'
+            "
+          />
+        </div>
+        <input
+          id="management_change_serial"
+          v-model="serial"
+          class="input"
+          type="text"
+          :disabled="serialIsAuto"
+          :placeholder="serialIsAuto ? $t('Auto-generated') : $t('Enter serial number')"
+        />
         <small v-if="serialIsAuto">{{ $t('Automatic serial numbering is enabled') }}</small>
       </div>
-       <div
-        class="management-change-field input-wrapper"
-        data-required-field="initiatorEmployee"
-      >
+      <div class="management-change-field input-wrapper" data-required-field="initiatorEmployee">
         <UpdatedCustomInputSelect
           :model-value="Selectedinitiatoremployeeid"
           :controller="indexOrganizatoinEmployeeController"
@@ -489,16 +472,13 @@ onMounted(updateData)
           required
           @update:model-value="setinitiatorEmployee"
         />
-       
+
         <p v-if="requiredFieldErrors.initiatorEmployee" class="required-field-message">
           {{ requiredFieldErrors.initiatorEmployee }}
         </p>
       </div>
 
-      <div
-        class="management-change-field input-wrapper"
-        data-required-field="facilty"
-      >
+      <div class="management-change-field input-wrapper" data-required-field="facilty">
         <label for="facilty">
           {{ $t('facility') }}
           <!-- <span class="management-change-required-mark">*</span> -->
@@ -508,17 +488,13 @@ onMounted(updateData)
           v-model="facilty"
           :placeholder="$t('Enter the facility')"
           class="input"
-          
         />
         <p v-if="requiredFieldErrors.facilty" class="required-field-message">
           {{ requiredFieldErrors.facilty }}
         </p>
       </div>
 
-      <div
-        class="management-change-field input-wrapper"
-        data-required-field="area"
-      >
+      <div class="management-change-field input-wrapper" data-required-field="area">
         <label for="area">
           {{ $t('area') }}
           <span class="management-change-required-mark">*</span>
@@ -535,43 +511,32 @@ onMounted(updateData)
         </p>
       </div>
 
-      <div
-        class="management-change-field input-wrapper"
-        data-required-field="date"
-      >
+      <div class="management-change-field input-wrapper" data-required-field="date">
         <label for="date">
           {{ $t('date') }}
           <span class="management-change-required-mark">*</span>
         </label>
-        <DatePicker
-          v-model="date"
-          input-id="date"
-          :placeholder="$t('Select the date')"
-          show-icon
-        />
+        <DatePicker v-model="date" input-id="date" :placeholder="$t('Select the date')" show-icon />
         <p v-if="requiredFieldErrors.date" class="required-field-message">
           {{ requiredFieldErrors.date }}
         </p>
       </div>
 
-     
+      <div class="management-change-field input-wrapper" data-required-field="changeType">
+        <UpdatedCustomInputSelect
+          :model-value="selectedChangeTypeMangement"
+          :static-options="ChangeTypeMangementList"
+          label="change type"
+          id="change-type"
+          :placeholder="$t('Select change type')"
+          required
+          @update:model-value="changeType = $event.id"
+        />
+        <p v-if="requiredFieldErrors.changeType" class="required-field-message">
+          {{ requiredFieldErrors.changeType }}
+        </p>
+      </div>
 
-       <div class="management-change-field input-wrapper" data-required-field="changeType">
-          <UpdatedCustomInputSelect
-            :model-value="selectedChangeTypeMangement"
-            :static-options="ChangeTypeMangementList"
-            label="change type"
-            id="change-type"
-            :placeholder="$t('Select change type')"
-            required
-            @update:model-value="changeType = $event.id"
-          />
-          <p v-if="requiredFieldErrors.changeType" class="required-field-message">
-            {{ requiredFieldErrors.changeType }}
-          </p>
-        </div>
-   
-      
       <div
         class="management-change-field input-wrapper management-change-field--full"
         data-required-field="management"
@@ -609,7 +574,7 @@ onMounted(updateData)
           required
           @update:model-value="setEmployee"
         />
-       
+
         <p v-if="requiredFieldErrors.topicEmployee" class="required-field-message">
           {{ requiredFieldErrors.topicEmployee }}
         </p>
@@ -657,31 +622,26 @@ onMounted(updateData)
         </p>
       </div>
     </div>
-     
-   
   </section>
 
   <section class="management-change-section">
-     <div class="management-change-fields">
+    <div class="management-change-fields">
+      <div class="management-change-field input-wrapper" data-required-field="changeApproval">
+        <UpdatedCustomInputSelect
+          :model-value="selectedChangeApprovalMangement"
+          :static-options="ChangeApprovalMangementList"
+          label="change approval"
+          id="change-approval"
+          :placeholder="$t('Select approval status')"
+          required
+          @update:model-value="status = $event.id"
+        />
 
-      
-  
-        <div class="management-change-field input-wrapper" data-required-field="changeApproval">
-          <UpdatedCustomInputSelect
-            :model-value="selectedChangeApprovalMangement"
-            :static-options="ChangeApprovalMangementList"
-            label="change approval"
-            id="change-approval"
-            :placeholder="$t('Select approval status')"
-            required
-            @update:model-value="status = $event.id"
-          />
-          
-          <p v-if="requiredFieldErrors.changeApproval" class="required-field-message">
-            {{ requiredFieldErrors.changeApproval }}
-          </p>
-        </div>
-           <div class="management-change-field input-wrapper" data-required-field="approvalBy">
+        <p v-if="requiredFieldErrors.changeApproval" class="required-field-message">
+          {{ requiredFieldErrors.changeApproval }}
+        </p>
+      </div>
+      <div class="management-change-field input-wrapper" data-required-field="approvalBy">
         <UpdatedCustomInputSelect
           :model-value="Selectedemployee"
           :controller="indexOrganizatoinEmployeeController"
@@ -692,12 +652,12 @@ onMounted(updateData)
           required
           @update:model-value="setApprovalBy"
         />
-     
+
         <p v-if="requiredFieldErrors.approvalBy" class="required-field-message">
           {{ requiredFieldErrors.approvalBy }}
         </p>
       </div>
-     </div>
+    </div>
     <!-- <div class="management-change-section__heading">
       <span class="management-change-section__number">02</span>
       <div>
@@ -744,7 +704,7 @@ onMounted(updateData)
           required
           @update:model-value="setEmployee"
         />
-       
+
         <p v-if="requiredFieldErrors.topicEmployee" class="required-field-message">
           {{ requiredFieldErrors.topicEmployee }}
         </p>
@@ -803,7 +763,9 @@ onMounted(updateData)
       </div>
     </div> -->
 
-    <div class="management-change-fields management-change-fields--attachments management-change-fields-full">
+    <div
+      class="management-change-fields management-change-fields--attachments management-change-fields-full"
+    >
       <div
         :key="formKey"
         class="management-change-upload-field"
@@ -837,7 +799,10 @@ onMounted(updateData)
 </template>
 
 <style scoped>
-.management-change-fields-full{
+.white {
+  color: white;
+}
+.management-change-fields-full {
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 /* :deep(.p-datepicker-dropdown) {
@@ -848,14 +813,14 @@ onMounted(updateData)
   background: transparent !important;
   color: var(--brand-primary-500) !important;
 } */
- .drill-serial #management_change_serial{
+.drill-serial #management_change_serial {
   min-height: 48px;
   border: 1px solid var(--management-change-border) !important;
   border-radius: 12px !important;
   background: var(--management-change-soft) !important;
   color: var(--text-strong) !important;
   box-shadow: none !important;
- }
+}
 .required-field-message {
   margin-top: 0.35rem;
   color: var(--status-danger);

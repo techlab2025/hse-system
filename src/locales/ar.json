@@ -1,4 +1,5 @@
 {
+  "Department Name": "اسم القسم",
   "ppe_delivery_change_activity_title": "تغيير النشاط؟",
   "ppe_delivery_change_activity_warning": "سيؤدي تغيير النشاط أو إلغاؤه إلى حذف الموظفين المحددين واختيارات معدات الوقاية الشخصية الخاصة بهم. هل تريد المتابعة؟",
   "ppe_delivery_change_activity_confirm": "مسح الاختيارات والمتابعة",

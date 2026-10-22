@@ -777,7 +777,7 @@ onMounted(() => {
           />
           <span>
             <strong>{{ topic.title }}</strong>
-            <small>{{ $t('training_topic_number', { number: topic.id }) }}</small>
+            <!-- <small>{{ $t('training_topic_number') }}</small> -->
           </span>
         </label>
       </div>
