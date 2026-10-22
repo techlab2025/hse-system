@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+import { computed, ref, watch, onMounted } from 'vue'
+import { DataEmpty, DataSuccess } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import { useRoute } from 'vue-router'
 import Button from 'primevue/button'
 import IndexOwnTaskController from '../../controllers/employeeTask/indexOwnTaskController'
@@ -28,6 +29,11 @@ const statusClasses: Record<number, string> = {
 const route = useRoute()
 const controller = IndexOwnTaskController.getInstance()
 const state = ref(controller.state.value)
+const hasNoTasks = computed(
+  () =>
+    (state.value instanceof DataSuccess || state.value instanceof DataEmpty) &&
+    !state.value.data?.length,
+)
 
 const dialogVisible = ref(false)
 const selectedTaskId = ref<number>(0)
@@ -59,6 +65,19 @@ watch(
 
 <template>
   <div class="tasks_wrapper">
+    <div v-if="hasNoTasks" class="tasks_empty" role="status">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        aria-hidden="true"
+      >
+        <path d="M9 4H6a2 2 0 0 0-2 2v14h16V6a2 2 0 0 0-2-2h-3M9 3h6v4H9zM8 12h8M8 16h5" />
+      </svg>
+      <h3>{{ $t('employee_tasks_empty_title') }}</h3>
+      <p>{{ $t('employee_tasks_empty_description') }}</p>
+    </div>
     <article
       v-for="task in state?.data ?? []"
       :key="task.id"
@@ -156,6 +175,35 @@ watch(
   grid-template-columns: repeat(2, 1fr);
   gap: 18px;
   width: 100%;
+}
+
+.tasks_empty {
+  grid-column: 1 / -1;
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 40px 20px;
+  border: 1px dashed var(--brand-primary-100);
+  border-radius: 8px;
+  background: var(--surface-1);
+  text-align: center;
+}
+
+.tasks_empty svg {
+  width: 44px;
+  height: 44px;
+  color: var(--brand-primary-500);
+}
+
+.tasks_empty h3 {
+  margin: 0;
+  color: var(--text-strong);
+  font-size: 1.1rem;
+}
+
+.tasks_empty p {
+  margin: 0;
+  color: var(--text-muted);
 }
 
 .task_card {

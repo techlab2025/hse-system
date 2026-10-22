@@ -193,7 +193,7 @@ const quickLinks = computed(() => [
   //   mark: 'P',
   // },
   {
-    title: 'Project meetings',
+    title: 'meetings',
     description: 'Meeting schedule and outcomes',
     to: `/organization/project-meetings/${projectId.value}`,
     mark: 'M',

@@ -1,4 +1,6 @@
 {
+  "employee_tasks_empty_title": "No tasks yet",
+  "employee_tasks_empty_description": "There are no tasks assigned to this employee.",
   "factor_item_excel_select_factor": "Select a factor for these items.",
   "action_feature_factors": "Factors",
   "action_feature_factor_items": "Factor Items",
