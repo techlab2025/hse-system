@@ -266,18 +266,7 @@ const OrganizationRoutes: SidebarRoute[] = [
       PermissionsEnum.ORG_EMPLOYEE_DETAILS,
     ],
   },
-  {
-    link: '/organization/team',
-    name: 'team',
-    icon: 'user-check',
-    permissions: [
-      PermissionsEnum.ORG_TEAM_ALL,
-      PermissionsEnum.ORG_TEAM_CREATE,
-      PermissionsEnum.ORG_TEAM_DELETE,
-      PermissionsEnum.ORG_TEAM_FETCH,
-      PermissionsEnum.ORG_TEAM_UPDATE,
-    ],
-  },
+
   {
     link: '/organization/contractor',
     name: 'sub contractors',
@@ -371,7 +360,7 @@ const OrganizationRoutes: SidebarRoute[] = [
       PermissionsEnum.CODING_SYSTEM_UPDATE,
     ],
   },
- 
+
   {
     link: '/organization/factory',
     name: 'factor',
@@ -626,6 +615,18 @@ const LockUpsRoutes: SidebarRoute[] = [
     ],
   },
   {
+    link: '/organization/team',
+    name: 'team',
+    icon: 'user-check',
+    permissions: [
+      PermissionsEnum.ORG_TEAM_ALL,
+      PermissionsEnum.ORG_TEAM_CREATE,
+      PermissionsEnum.ORG_TEAM_DELETE,
+      PermissionsEnum.ORG_TEAM_FETCH,
+      PermissionsEnum.ORG_TEAM_UPDATE,
+    ],
+  },
+  {
     link: '/organization/drill-types',
     name: 'drill_types',
     icon: 'clipboard-notes',
@@ -716,7 +717,7 @@ const LockUpsRoutes: SidebarRoute[] = [
       PermissionsEnum.ORG_EQUIPMENT_TYPE_DELETE,
     ],
   },
-   {
+  {
     link: '/organization/hazard',
     name: 'risk',
     icon: 'shield-exclamation',

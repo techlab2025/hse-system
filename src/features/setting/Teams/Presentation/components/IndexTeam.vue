@@ -38,7 +38,7 @@ import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
 import Dialog from 'primevue/dialog'
 import * as XLSX from 'xlsx'
-import { saveAs } from 'file-saver'
+import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import UploadTeamExcelSheet from './UploadTeamExcelSheet.vue'
 
 const { t } = useI18n()
@@ -173,8 +173,7 @@ const exportExcel = () => {
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Teams')
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
-  saveAs(new Blob([excelBuffer], { type: 'application/octet-stream' }), 'teams.xlsx')
+  return downloadLookupWorkbook(workbook, 'teams.xlsx')
 }
 
 const downloadExcelTemplate = () => {
@@ -184,8 +183,7 @@ const downloadExcelTemplate = () => {
   ])
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Teams')
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
-  saveAs(new Blob([excelBuffer], { type: 'application/octet-stream' }), 'team_form.xlsx')
+  return downloadLookupWorkbook(workbook, 'team_form.xlsx')
 }
 
 const teamFetchPermissions = [

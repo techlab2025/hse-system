@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import * as XLSX from 'xlsx'
+import { readLookupRows } from '@/shared/utils/lookupExcel'
 import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue'
 import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue'
 import AddTeamExcelParams from '../../Core/params/AddTeamExcelParams'
@@ -24,7 +25,7 @@ const readExcelFile = async (file: File) => {
   try {
     const workbook = XLSX.read(await file.arrayBuffer(), { type: 'array' })
     const sheet = workbook.Sheets[workbook.SheetNames[0]]
-    const data = XLSX.utils.sheet_to_json<unknown[]>(sheet, {
+    const data = readLookupRows<unknown[]>(sheet, {
       header: 1,
       raw: false,
       defval: '',
