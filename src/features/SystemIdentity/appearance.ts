@@ -112,7 +112,14 @@ export const normalizeAppearance = (value: unknown): Appearance => {
   ]
   result.sidebarOrder = normalizeOrder(candidate.sidebarOrder, result.sidebarOrder)
   for (const [key, defaults] of Object.entries(result.sidebarItemOrder)) {
-    result.sidebarItemOrder[key] = normalizeOrder(candidate.sidebarItemOrder?.[key], defaults)
+    const savedOrder = candidate.sidebarItemOrder?.[key]
+    const migratedOrder =
+      key === 'lockups' && Array.isArray(savedOrder)
+        ? savedOrder.map((name) =>
+            name === 'PPE Activity' || name === 'PPE Tools' ? 'PPE Matrix' : name,
+          )
+        : savedOrder
+    result.sidebarItemOrder[key] = normalizeOrder(migratedOrder, defaults)
   }
   for (const { key } of colorFields) {
     const color = candidate.colors?.[key]

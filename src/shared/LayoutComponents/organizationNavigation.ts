@@ -1,3 +1,4 @@
+import { ppeMatrixTabs } from '@/features/Organization/PPEMatrix/ppeMatrixTabs'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
 export interface SidebarRoute {
@@ -498,29 +499,15 @@ const LocationRoutes: SidebarRoute[] = [
 
 const LockUpsRoutes: SidebarRoute[] = [
   {
-    link: '/organization/ppe-activities',
-    name: 'PPE Activity',
+    link: '/organization/ppe-matrix-settings',
+    name: 'PPE Matrix',
     icon: 'shield-check',
-    permissions: [
-      PermissionsEnum.ORG_PPE_ACTIVITY_ALL,
-      PermissionsEnum.ORG_PPE_ACTIVITY_FETCH,
-      PermissionsEnum.ORG_PPE_ACTIVITY_DETAILS,
-      PermissionsEnum.ORG_PPE_ACTIVITY_CREATE,
-      PermissionsEnum.ORG_PPE_ACTIVITY_UPDATE,
-      PermissionsEnum.ORG_PPE_ACTIVITY_DELETE,
-    ],
-  },
-  {
-    link: '/organization/ppe-tools',
-    name: 'PPE Tools',
-    icon: 'shield-check',
-    permissions: [
-      PermissionsEnum.ORG_PPE_TOOLS_ALL,
-      PermissionsEnum.ORG_PPE_TOOLS_FETCH,
-      PermissionsEnum.ORG_PPE_TOOLS_DETAILS,
-      PermissionsEnum.ORG_PPE_TOOLS_CREATE,
-      PermissionsEnum.ORG_PPE_TOOLS_UPDATE,
-      PermissionsEnum.ORG_PPE_TOOLS_DELETE,
+    permissions: ppeMatrixTabs.flatMap((tab) => tab.permissions),
+    activePrefixes: [
+      '/organization/ppe-activities',
+      '/organization/ppe-tools',
+      '/organization/ppe-activity/',
+      '/organization/ppe-tool/',
     ],
   },
   {

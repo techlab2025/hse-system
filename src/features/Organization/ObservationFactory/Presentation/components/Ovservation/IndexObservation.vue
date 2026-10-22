@@ -48,6 +48,8 @@ import IndexFilterDialog from '@/shared/HelpersComponents/IndexFilterDialog.vue'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
 import { InvestegationStatusEnum } from '@/features/Organization/Investigating/Core/Enums/InvestegationStatusEnum.ts'
 // import FilterDialog from '../Hazard/HazardUtils/filterDialog.vue'
+import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
+
 const { t } = useI18n()
 const { isDarkMode } = useThemeMode()
 const ProjectSelect = useProjectSelectStore()
@@ -659,7 +661,7 @@ const canCreateRecord = computed(() =>
 
                     <div class="observation-card-statuses">
                       <router-link
-                        v-if="item.investigationId"
+                        v-if="item.investigationId && user.employeeType == EmployeeStatusEnum.Admin"
                         :to="getInvestigationRoute(item)"
                         class="observation-investigation-badge"
                         :title="$t('Investigation')"

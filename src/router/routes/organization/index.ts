@@ -40,6 +40,7 @@ import { managementChangeTopicRoutes } from './MangementChangeTopicType'
 import { managementChangeRoutes } from './MangementOfChange'
 import { attachmentMatrixRoutes } from './attachmentMatrix'
 import { internalAuditRoutes } from './internalAudit'
+import { ppeMatrixRoutes } from './ppeMatrix'
 
 export const organizationRoutes: RouteRecordRaw[] = [
   {
@@ -48,6 +49,7 @@ export const organizationRoutes: RouteRecordRaw[] = [
     component: () => import('@/views/AppHome.vue'),
   },
   ...partnerRoutes,
+  ...ppeMatrixRoutes,
   ...projectRoutes,
   ...projectZoneRoutes,
   ...organizationEmployeeRoutes,
