@@ -72,6 +72,7 @@ export type HeaderActionField = (typeof headerActionFields)[number]['key']
 export type HeaderField = (typeof headerFields)[number]['key']
 export const breadcrumbPositions = ['left', 'center', 'right'] as const
 export interface Appearance {
+  sidebarMode: 'compact' | 'expanded'
   typography: Typography
   colors: Partial<Record<AppearanceColor, string>>
   headerOrder: HeaderField[]
@@ -81,6 +82,7 @@ export interface Appearance {
   breadcrumbPosition: (typeof breadcrumbPositions)[number]
 }
 export const defaultAppearance = (): Appearance => ({
+  sidebarMode: 'compact',
   typography: defaultTypography(),
   colors: {},
   headerOrder: headerFields.map((field) => field.key),
@@ -100,6 +102,7 @@ export const normalizeAppearance = (value: unknown): Appearance => {
   const result = defaultAppearance()
   if (!value || typeof value !== 'object') return result
   const candidate = value as Partial<Appearance>
+  result.sidebarMode = candidate.sidebarMode === 'expanded' ? 'expanded' : 'compact'
   result.typography = normalizeTypography(candidate.typography)
   const normalizeOrder = (order: unknown, defaults: string[]) => [
     ...new Set([

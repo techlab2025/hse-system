@@ -14,10 +14,12 @@ import {
 import { useSystemIdentity } from '@/composables/useSystemIdentity'
 import { defaultAppearance } from '@/features/SystemIdentity/appearance'
 import SidebarUnicon from '@/shared/icons/SidebarUnicon.vue'
+import { useSidebarMode } from '@/composables/useSidebarMode'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 // import { EquipmentTypeEnum } from '@/features/Home/core/enums/SettingEnum/EquipmentTypeEnum'
 
 const props = defineProps<{ open: boolean }>()
+const { isExpandedSidebar } = useSidebarMode()
 
 const route = useRoute()
 const { t } = useI18n()
@@ -124,7 +126,12 @@ const clearSearch = () => {
 
 const visibleRouteGroups = computed<RouteGroup[]>(() => {
   const query = searchTerm.value.trim().toLocaleLowerCase()
-  const groups = query ? routeGroups.value : activeGroup.value ? [activeGroup.value] : []
+  const groups =
+    query || isExpandedSidebar.value
+      ? routeGroups.value
+      : activeGroup.value
+        ? [activeGroup.value]
+        : []
 
   return groups
     .filter(
@@ -191,6 +198,7 @@ const hidePane = () => {
 }
 
 const scheduleClosePane = () => {
+  if (isExpandedSidebar.value) return
   clearClosePaneTimer()
 
   closePaneTimer = window.setTimeout(() => {
@@ -233,8 +241,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="modern-sidebar hse-identity">
-    <nav class="side-rail-nav" :aria-label="$t('main_sidebar_groups')">
+  <div class="modern-sidebar hse-identity" :class="{ 'expanded-navigation': isExpandedSidebar }">
+    <nav v-if="!isExpandedSidebar" class="side-rail-nav" :aria-label="$t('main_sidebar_groups')">
       <template v-for="group in routeGroups" :key="group.key">
         <PermissionBuilder
           v-if="
@@ -271,7 +279,7 @@ onBeforeUnmount(() => {
 
     <Transition name="side-pane">
       <aside
-        v-if="isPaneVisible && activeGroup"
+        v-if="(isExpandedSidebar || isPaneVisible) && activeGroup"
         id="organization-sidebar-pane"
         class="side-pane"
         @mouseenter="keepPaneOpen"
@@ -285,7 +293,9 @@ onBeforeUnmount(() => {
               <SidebarUnicon :name="activeGroup.icon" />
             </span>
             <div>
-              <strong>{{ activeGroup.label }}</strong>
+              <strong>{{
+                isExpandedSidebar ? $t('sidebar_navigation') : activeGroup.label
+              }}</strong>
               <!-- <span>{{ activeGroup.eyebrow }}</span> -->
             </div>
           </div>
@@ -324,7 +334,7 @@ onBeforeUnmount(() => {
         >
           <div class="side-pane-routes__inner">
             <template v-for="group in visibleRouteGroups" :key="group.key">
-              <PermissionBuilder v-if="isSearching" :code="group.permissions">
+              <PermissionBuilder v-if="isSearching || isExpandedSidebar" :code="group.permissions">
                 <p class="side-route-group-title">{{ group.label }}</p>
               </PermissionBuilder>
 

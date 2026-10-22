@@ -4,6 +4,25 @@
   min-height: 0;
   color: var(--hse-nav-text);
 }
+.expanded-navigation {
+  width: 100%;
+}
+.expanded-navigation .side-pane {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  padding: 12px 8px;
+  border: 0;
+  box-shadow: none;
+}
+.expanded-navigation .side-route-group-title {
+  margin-top: 22px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid color-mix(in srgb, var(--hse-nav-text) 22%, transparent);
+  font-weight: 800;
+}
 .side-rail-nav {
   display: flex;
   flex: 0 0 74px;
@@ -102,7 +121,7 @@
   place-items: center;
   width: 38px;
   height: 38px;
-  padding: 9px;
+  /* padding: 9px; */
   border-radius: 11px;
   background: var(--hse-nav-active);
   color: #9bbdff;

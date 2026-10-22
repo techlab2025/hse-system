@@ -7,6 +7,7 @@ import OrganizationSidebar from './OrganizationSidebar.vue'
 import AdminSidebar from './AdminSidebar.vue'
 import SidebarUnicon from '@/shared/icons/SidebarUnicon.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
+import { useSidebarMode } from '@/composables/useSidebarMode'
 
 const props = defineProps<{ open: boolean }>()
 
@@ -15,11 +16,14 @@ const route = useRoute()
 const sidebarRef = ref<HTMLElement | null>(null)
 const isMobileSidebar = ref(false)
 const { isDarkMode } = useThemeMode()
+const { isExpandedSidebar } = useSidebarMode()
 const isOrganizationSidebar = computed(() => user.user?.type === OrganizationTypeEnum.ORGANIZATION)
 const isModernSidebar = computed(
   () => isOrganizationSidebar.value || user.user?.type === OrganizationTypeEnum.ADMIN,
 )
-const shouldRenderCompactRail = computed(() => isModernSidebar.value || isMobileSidebar.value)
+const shouldRenderCompactRail = computed(
+  () => !isExpandedSidebar.value && (isModernSidebar.value || isMobileSidebar.value),
+)
 const sidebarDisplayState = computed(() =>
   shouldRenderCompactRail.value ? 'close' : props.open ? 'open' : 'close',
 )
@@ -105,6 +109,7 @@ const logout = () => {
       {
         'is-dark': isDarkMode,
         'organization-modern': isModernSidebar,
+        'expanded-sidebar': isExpandedSidebar,
         'hse-identity': isModernSidebar,
       },
     ]"
@@ -779,5 +784,19 @@ const logout = () => {
   .sidebar.organization-modern.close:dir(rtl) {
     right: -320px !important;
   }
+}
+.sidebar.organization-modern.expanded-sidebar {
+  width: 300px !important;
+  max-width: 85vw;
+}
+.sidebar.organization-modern.expanded-sidebar .sidebar-back {
+  width: 100% !important;
+  flex-direction: row !important;
+  justify-content: flex-start !important;
+  gap: 12px;
+  padding-inline: 12px !important;
+}
+.sidebar.organization-modern.expanded-sidebar .sidebar-back > span:not(.home-icon) {
+  max-width: none;
 }
 </style>

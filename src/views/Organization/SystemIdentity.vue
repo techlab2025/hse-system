@@ -307,6 +307,35 @@ onMounted(() => {
     <IdentityColorEditor v-model="form.appearance" />
     <IdentityTypographyEditor v-model="form.appearance.typography" />
     <IdentityLayoutEditor v-model="form.appearance" />
+    <section class="identity-shell">
+      <header class="section-header">
+        <div>
+          <h2>Sidebar navigation</h2>
+          <p>
+            Choose how sidebar groups and routes appear. Click Save and apply identity to apply your
+            choice.
+          </p>
+        </div>
+      </header>
+      <label class="toggle-row" for="identity-sidebar-expanded">
+        <input
+          id="identity-sidebar-expanded"
+          v-model="form.appearance.sidebarMode"
+          type="checkbox"
+          role="switch"
+          true-value="expanded"
+          false-value="compact"
+        />
+        <span class="toggle" aria-hidden="true"></span>
+        <span>
+          <b>Always-open sidebar</b>
+          <small
+            >Show all group titles and available routes together. Turn off to use the compact
+            sidebar.</small
+          >
+        </span>
+      </label>
+    </section>
     <IdentitySidebarEditor v-model="form.appearance" />
     <IdentityPreview :identity="form" />
 
@@ -509,12 +538,20 @@ input[type='text']:focus {
   opacity: 0;
 }
 .toggle {
+  flex-shrink: 0;
   position: relative;
   width: 44px;
   height: 24px;
   border-radius: 999px;
   background: var(--surface-3);
   transition: 0.2s;
+}
+#identity-sidebar-expanded + .toggle {
+  pointer-events: none;
+}
+.toggle-row input:focus-visible + .toggle {
+  outline: 3px solid var(--PrimaryColor);
+  outline-offset: 3px;
 }
 .toggle::after {
   content: '';

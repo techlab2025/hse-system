@@ -8,10 +8,12 @@ import NewSidebar from '../LayoutComponents/NewSidebar.vue'
 import BreadCrumb from '../LayoutComponents/BreadCrumb.vue'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 import { useThemeMode } from '@/composables/useThemeMode'
+import { useSidebarMode } from '@/composables/useSidebarMode'
 
 const { user } = useUserStore()
 const route = useRoute()
 const { isDarkMode } = useThemeMode()
+const { isExpandedSidebar } = useSidebarMode()
 
 const isSidebarOpen = ref(true)
 const isMobileScreen = ref(false)
@@ -23,7 +25,7 @@ const isModernSidebar = computed(
 const checkScreenSize = () => {
   isMobileScreen.value = window.innerWidth <= 768
 
-  if (isModernSidebar.value || isMobileScreen.value) {
+  if ((isModernSidebar.value && !isExpandedSidebar.value) || isMobileScreen.value) {
     isSidebarOpen.value = false
   } else {
     isSidebarOpen.value = true
@@ -32,7 +34,7 @@ const checkScreenSize = () => {
 
 const toggleSidebar = () => {
   if (isModernSidebar.value && !isMobileScreen.value) {
-    isSidebarOpen.value = false
+    isSidebarOpen.value = isExpandedSidebar.value
     return
   }
 
@@ -58,7 +60,7 @@ watch(
   },
 )
 
-watch(isModernSidebar, () => {
+watch([isModernSidebar, isExpandedSidebar], () => {
   checkScreenSize()
 })
 
@@ -79,6 +81,7 @@ const showSidebar = computed(() => {
       :class="{
         'sidebar-open': isSidebarOpen,
         'organization-sidebar-container': isModernSidebar,
+        'expanded-sidebar-container': isExpandedSidebar,
       }"
     >
       <NewSidebar v-if="showSidebar" v-model:open="isSidebarOpen" />
@@ -300,6 +303,10 @@ const showSidebar = computed(() => {
     &.organization-sidebar-container.sidebar-open:dir(rtl) :deep(.sidebar.organization-modern) {
       left: auto !important;
       right: 0 !important;
+    }
+
+    &.expanded-sidebar-container.sidebar-open :deep(.sidebar.organization-modern) {
+      width: min(300px, 85vw) !important;
     }
 
     .sidebar-backdrop {
