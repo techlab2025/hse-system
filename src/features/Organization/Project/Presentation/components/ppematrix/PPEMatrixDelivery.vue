@@ -253,84 +253,90 @@ onMounted(async () => {
       <p v-if="!activities.length" class="muted">No PPE activities available.</p>
     </section>
 
-    <section v-if="selectedActivityId && availableTools.length > 0" class="hse-project-panel card">
+    <section v-if="selectedActivityId" class="hse-project-panel card delivery-matrix-panel">
       <div class="section-heading">
         <div>
           <h2>3. Assign PPE tools to employees</h2>
-          <p>Only tools linked to the selected activity are listed.</p>
+          <p>Select employees, then check the PPE tools delivered to each employee.</p>
         </div>
       </div>
-      <p v-if="toolsController.isDataLoading()" class="muted">Loading activity tools…</p>
-      <p v-else-if="toolsController.isDataFailed()" class="notice notice--error">
+
+      <p v-if="toolsController.isDataLoading()" class="muted" role="status">
+        Loading activity tools…
+      </p>
+      <p v-else-if="toolsController.isDataFailed()" class="notice notice--error" role="alert">
         Unable to load this activity’s PPE tools.
       </p>
       <p v-else-if="!availableTools.length" class="muted">
         This activity has no PPE tools. Add them in the matrix first.
       </p>
+      <template v-else>
+        <UpdatedCustomInputSelect
+          id="delivery-employees"
+          label="Employees"
+          placeholder="Select employees"
+          type="multiselect"
+          :required="true"
+          :reload="false"
+          :controller="employeeController"
+          :params="employeeParams"
+          :model-value="selectedEmployees"
+          @update:model-value="setEmployees"
+        />
 
-      <UpdatedCustomInputSelect
-        id="delivery-employees"
-        label=" employees"
-        placeholder="Select employees"
-        type="multiselect"
-        :required="true"
-        :reload="false"
-        :controller="employeeController"
-        :params="employeeParams"
-        :model-value="selectedEmployees"
-        @update:model-value="setEmployees"
-      />
-
-      <div v-for="(row, index) in rows" :key="row.key" class="employee-card">
-        <div class="section-heading">
-          <h3>{{ selectedEmployees[index]?.title ?? `Employee ${index + 1}` }}</h3>
-          <button
-            :aria-label="$t('delete')"
-            type="button"
-            class="hse-project-button--icon hse-project-button hse-project-button--danger remove-button"
-            @click="removeEmployee(row.employeeId)"
-          >
-            Remove
-          </button>
-        </div>
-        <div class="tool-table-wrap">
-          <table class="hse-project-table main-table tool-table">
+        <div v-if="rows.length" class="tool-table-wrap matrix-scroll" role="region"
+          aria-label="PPE delivery matrix" tabindex="0">
+          <table class="hse-project-table main-table tool-table delivery-matrix">
             <thead>
               <tr>
-                <th scope="col">PPE tool</th>
-                <th scope="col">Delivered</th>
+                <th scope="col" class="recipient-col">Recipient</th>
+                <th v-for="tool in availableTools" :key="tool.id" scope="col" class="tool-col">
+                  {{ tool.title }}
+                </th>
+                <th scope="col" class="action-col">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="tool in availableTools" :key="tool.id">
-                <th scope="row">{{ tool.title }}</th>
-                <td>
+              <tr v-for="(row, index) in rows" :key="row.key">
+                <th scope="row" class="recipient-col">
+                  {{ selectedEmployees.find(employee => employee.id === row.employeeId)?.title ?? `Employee ${index + 1}` }}
+                </th>
+                <td v-for="tool in availableTools" :key="tool.id" class="tool-col">
                   <Checkbox
                     :input-id="`delivery-tool-${row.key}-${tool.id}`"
                     :model-value="hasTool(row, tool.id)"
                     binary
-                    :aria-label="`${tool.title} delivered to employee ${index + 1}`"
+                    :aria-label="`${tool.title} delivered to ${selectedEmployees.find(employee => employee.id === row.employeeId)?.title ?? `Employee ${index + 1}`}`"
                     @update:model-value="(checked) => setTool(row, tool.id, Boolean(checked))"
                   />
+                </td>
+                <td class="action-col">
+                  <button type="button"
+                    class="hse-project-button hse-project-button--danger remove-button matrix-remove"
+                    :aria-label="`Remove employee ${selectedEmployees.find(employee => employee.id === row.employeeId)?.title ?? index + 1}`"
+                    @click="removeEmployee(row.employeeId)">
+                    Remove
+                  </button>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-      </div>
-      <button
-        type="button"
-        class="hse-project-button hse-project-button--primary button-primary"
-        :disabled="deliveryController.isDataLoading() || !rows.length"
-        @click="submit"
-      >
-        {{ deliveryController.isDataLoading() ? 'Saving…' : 'Save PPE delivery' }}
-      </button>
-    </section>
+        <p v-else class="muted">Select employees to start assigning PPE tools.</p>
 
+        <button
+          type="button"
+          class="hse-project-button hse-project-button--primary button-primary"
+          :disabled="deliveryController.isDataLoading() || !rows.length"
+          @click="submit"
+        >
+          {{ deliveryController.isDataLoading() ? 'Saving…' : 'Save PPE delivery' }}
+        </button>
+      </template>
+    </section>
     <section v-else class="hse-project-panel card empty">
       <div class="section-heading">
-        <h2>No Tools Assigned To This Activity</h2>
+        <h2>Select an activity to view its PPE matrix</h2>
       </div>
     </section>
   </main>
@@ -1291,4 +1297,59 @@ button:disabled {
     width: 100%;
   }
 }
+/* One table: employees are rows, PPE tools are columns. */
+.delivery-matrix-panel { min-width: 0; }
+.matrix-scroll {
+  width: 100%;
+  max-width: 100%;
+  margin: 20px 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 1px solid var(--ppe-border);
+  border-radius: 15px;
+  -webkit-overflow-scrolling: touch;
+}
+.delivery-matrix {
+  width: 100%;
+  min-width: max-content;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+.delivery-matrix th,
+.delivery-matrix td {
+  height: 52px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--ppe-border);
+  white-space: nowrap;
+}
+.delivery-matrix thead th { text-align: center; }
+.delivery-matrix thead .recipient-col { text-align: start; }
+.delivery-matrix .recipient-col {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 1;
+  min-width: 180px;
+  max-width: 280px;
+  text-align: start;
+  background: var(--ppe-surface);
+}
+.delivery-matrix thead .recipient-col {
+  z-index: 2;
+  background: color-mix(in srgb, var(--ppe-primary) 7%, var(--ppe-surface));
+}
+.delivery-matrix .tool-col { min-width: 138px; text-align: center; }
+.delivery-matrix .action-col { width: 105px; min-width: 105px; text-align: center; }
+.delivery-matrix td .p-checkbox { vertical-align: middle; }
+.delivery-matrix .matrix-remove { min-height: 32px; padding: 6px 10px; }
+.delivery-matrix tbody tr:hover .recipient-col {
+  background: color-mix(in srgb, var(--ppe-primary) 4%, var(--ppe-surface));
+}
+.delivery-matrix tbody tr:last-child > * { border-bottom: none; }
+.matrix-scroll:focus-visible { outline: 2px solid var(--ppe-primary); outline-offset: 3px; }
+@media (max-width: 720px) {
+  .delivery-matrix { min-width: max-content; }
+  .delivery-matrix .recipient-col { min-width: 135px; }
+  .delivery-matrix .tool-col { min-width: 125px; }
+}
+
 </style>
