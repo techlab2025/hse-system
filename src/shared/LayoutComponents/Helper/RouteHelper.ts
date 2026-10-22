@@ -1,4 +1,6 @@
 import ConditionHandler from '@/base/Presentation/utils/condition_handler'
+import { canAccessEmployeeRoute } from '@/router/employeeInterfaceAccess'
+import { useUserStore } from '@/stores/user'
 import type { RouteLocationMatched } from 'vue-router'
 
 type BreadCrumbItem = {
@@ -87,10 +89,17 @@ export const buildBreadcrumb = (route: any, router: any): BreadCrumbItem[] => {
 
   route.matched.forEach(addRoute)
 
-  // ✅ Make last breadcrumb not clickable
-  if (result.length > 0) {
-    delete result[result.length - 1].url
+  const visibleItems = ConditionHandler.getInstance().shouldUseEmployeeInterface()
+    ? result.filter(
+        (item) =>
+          !item.url || canAccessEmployeeRoute(router.resolve(item.url), useUserStore().user?.id),
+      )
+    : result
+
+  // Make the current page non-clickable after inaccessible parents are removed.
+  if (visibleItems.length > 0) {
+    delete visibleItems[visibleItems.length - 1].url
   }
 
-  return result
+  return visibleItems
 }

@@ -109,3 +109,41 @@ test('organization admins and masters keep access to organization pages', async 
   })
   expect(decisions).toEqual(['allowed', 'allowed', 'allowed', 'allowed'])
 })
+
+test('employee breadcrumbs hide inaccessible parents and preserve allowed feature links', async ({
+  page,
+}) => {
+  await setupEmployee(page)
+  const trails = await page.evaluate(async () => {
+    const { default: router } = await import('/src/router/index.ts')
+    const { buildBreadcrumb } = await import('/src/shared/LayoutComponents/Helper/RouteHelper.ts')
+    const { useUserStore } = await import('/src/stores/user.ts')
+    const paths = [
+      '/organization/project-details/433/leadership/visits',
+      '/organization/induction/add?project_id=433',
+      '/organization/organization-employee-tasks/1',
+    ]
+    const employee = paths.map((path) => buildBreadcrumb(router.resolve(path), router))
+    useUserStore().user.employeeType = 2
+    const admin = buildBreadcrumb(router.resolve(paths[0]), router)
+    return { employee, admin }
+  })
+  expect(trails.employee[0]).toEqual([
+    { label: 'Home', url: '/organization/employee-interface' },
+    { label: 'Leadership', url: '/organization/project-details/433/leadership' },
+    { label: 'Leadership Visits' },
+  ])
+  for (const trail of trails.employee) {
+    expect(trail.map((item) => item.label)).not.toContain('Projects')
+    expect(trail.map((item) => item.label)).not.toContain('Project Details')
+    expect(trail.some((item) => item.url === '/organization/organization-employee')).toBe(false)
+    expect(trail.at(-1).url).toBeUndefined()
+  }
+  expect(trails.admin.map((item) => item.label)).toEqual([
+    'Home',
+    'Projects',
+    'Project Details',
+    'Leadership',
+    'Leadership Visits',
+  ])
+})

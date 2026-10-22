@@ -38,7 +38,10 @@ const employeeRoutes = new Set([
   'Create Risk Assessment',
 ])
 
-export function canAccessEmployeeRoute(to: RouteLocationNormalized, employeeId?: number) {
+export function canAccessEmployeeRoute(
+  to: Pick<RouteLocationNormalized, 'name' | 'path' | 'params'>,
+  employeeId?: number,
+) {
   if (!to.path.startsWith('/organization/')) return false
 
   if (to.name === 'Organization Employee Tasks') {
