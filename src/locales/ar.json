@@ -1,4 +1,7 @@
 {
+  "ppe_delivery_change_activity_title": "تغيير النشاط؟",
+  "ppe_delivery_change_activity_warning": "سيؤدي تغيير النشاط أو إلغاؤه إلى حذف الموظفين المحددين واختيارات معدات الوقاية الشخصية الخاصة بهم. هل تريد المتابعة؟",
+  "ppe_delivery_change_activity_confirm": "مسح الاختيارات والمتابعة",
   "PPE Matrix": "مصفوفة معدات الوقاية الشخصية",
   "lookup_excel_industry_required": "اختر قطاعًا واحدًا على الأقل أو فعّل خيار جميع القطاعات.",
   "sidebar_navigation": "التنقل",

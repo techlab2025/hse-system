@@ -4,6 +4,7 @@ import { vProjectPanels } from '../../composables/projectPanels'
 import { computed, onMounted, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import Checkbox from 'primevue/checkbox'
+import Dialog from 'primevue/dialog'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import IndexPPEActivityController from '@/features/Organization/PPEActivity/Presentation/controllers/indexPPEActivityController'
@@ -39,6 +40,11 @@ const shiftsDialog = ref(false)
 const employeeParams = new IndexOrganizatoinEmployeeParams('', 0, 0, 0)
 const activities = computed(() => activityController.state.value.data ?? [])
 const selectedActivityId = ref<number | null>(null)
+const pendingActivityId = ref<number | null>(null)
+const activityWarningVisible = ref(false)
+const displayedActivityId = computed(() =>
+  activityWarningVisible.value ? pendingActivityId.value : selectedActivityId.value,
+)
 const selectedProject = ref<TitleInterface | null>(null)
 const selectedProjectLocation = ref<TitleInterface | null>(null)
 const selectedProjectZone = ref<TitleInterface | null>(null)
@@ -99,6 +105,25 @@ const setTool = (row: DeliveryRow, toolId: number, checked: boolean) => {
   row.ppeToolIds = checked
     ? [...row.ppeToolIds, toolId]
     : row.ppeToolIds.filter((id) => id !== toolId)
+}
+const requestActivityChange = (activityId: number | null) => {
+  if (activityId === selectedActivityId.value) return
+  if (selectedEmployees.value.length || rows.value.length) {
+    pendingActivityId.value = activityId
+    activityWarningVisible.value = true
+    return
+  }
+  selectedActivityId.value = activityId
+}
+const confirmActivityChange = () => {
+  if (!activityWarningVisible.value) return
+  selectedActivityId.value = pendingActivityId.value
+  activityWarningVisible.value = false
+  pendingActivityId.value = null
+}
+const cancelActivityChange = () => {
+  activityWarningVisible.value = false
+  pendingActivityId.value = null
 }
 
 watch(selectedActivityId, async (activityId) => {
@@ -239,13 +264,9 @@ onMounted(async () => {
         >
           <Checkbox
             :input-id="`delivery-activity-${activity.id}`"
-            :model-value="selectedActivityId === activity.id"
+            :model-value="displayedActivityId === activity.id"
             binary
-            @update:model-value="
-              (checked) => {
-                selectedActivityId = checked ? activity.id : null
-              }
-            "
+            @update:model-value="(checked) => requestActivityChange(checked ? activity.id : null)"
           />
           <span>{{ activity.title }}</span>
         </label>
@@ -284,8 +305,13 @@ onMounted(async () => {
           @update:model-value="setEmployees"
         />
 
-        <div v-if="rows.length" class="tool-table-wrap matrix-scroll" role="region"
-          aria-label="PPE delivery matrix" tabindex="0">
+        <div
+          v-if="rows.length"
+          class="tool-table-wrap matrix-scroll"
+          role="region"
+          aria-label="PPE delivery matrix"
+          tabindex="0"
+        >
           <table class="hse-project-table main-table tool-table delivery-matrix">
             <thead>
               <tr>
@@ -299,22 +325,27 @@ onMounted(async () => {
             <tbody>
               <tr v-for="(row, index) in rows" :key="row.key">
                 <th scope="row" class="recipient-col">
-                  {{ selectedEmployees.find(employee => employee.id === row.employeeId)?.title ?? `Employee ${index + 1}` }}
+                  {{
+                    selectedEmployees.find((employee) => employee.id === row.employeeId)?.title ??
+                    `Employee ${index + 1}`
+                  }}
                 </th>
                 <td v-for="tool in availableTools" :key="tool.id" class="tool-col">
                   <Checkbox
                     :input-id="`delivery-tool-${row.key}-${tool.id}`"
                     :model-value="hasTool(row, tool.id)"
                     binary
-                    :aria-label="`${tool.title} delivered to ${selectedEmployees.find(employee => employee.id === row.employeeId)?.title ?? `Employee ${index + 1}`}`"
+                    :aria-label="`${tool.title} delivered to ${selectedEmployees.find((employee) => employee.id === row.employeeId)?.title ?? `Employee ${index + 1}`}`"
                     @update:model-value="(checked) => setTool(row, tool.id, Boolean(checked))"
                   />
                 </td>
                 <td class="action-col">
-                  <button type="button"
+                  <button
+                    type="button"
                     class="hse-project-button hse-project-button--danger remove-button matrix-remove"
-                    :aria-label="`Remove employee ${selectedEmployees.find(employee => employee.id === row.employeeId)?.title ?? index + 1}`"
-                    @click="removeEmployee(row.employeeId)">
+                    :aria-label="`Remove employee ${selectedEmployees.find((employee) => employee.id === row.employeeId)?.title ?? index + 1}`"
+                    @click="removeEmployee(row.employeeId)"
+                  >
                     Remove
                   </button>
                 </td>
@@ -339,6 +370,29 @@ onMounted(async () => {
         <h2>Select an activity to view its PPE matrix</h2>
       </div>
     </section>
+    <Dialog
+      v-model:visible="activityWarningVisible"
+      modal
+      :header="$t('ppe_delivery_change_activity_title')"
+      :dir="$i18n.locale.startsWith('ar') ? 'rtl' : 'ltr'"
+      class="hse-project-root hse-project-assurance hse-project-overlay"
+      :style="{ width: 'min(480px, 94vw)' }"
+      aria-describedby="ppe-delivery-activity-warning"
+    >
+      <p id="ppe-delivery-activity-warning">{{ $t('ppe_delivery_change_activity_warning') }}</p>
+      <template #footer>
+        <button type="button" class="hse-project-button" @click="cancelActivityChange">
+          {{ $t('cancel') }}
+        </button>
+        <button
+          type="button"
+          class="hse-project-button hse-project-button--danger"
+          @click="confirmActivityChange"
+        >
+          {{ $t('ppe_delivery_change_activity_confirm') }}
+        </button>
+      </template>
+    </Dialog>
   </main>
 </template>
 
@@ -1298,7 +1352,9 @@ button:disabled {
   }
 }
 /* One table: employees are rows, PPE tools are columns. */
-.delivery-matrix-panel { min-width: 0; }
+.delivery-matrix-panel {
+  min-width: 0;
+}
 .matrix-scroll {
   width: 100%;
   max-width: 100%;
@@ -1322,8 +1378,12 @@ button:disabled {
   border-bottom: 1px solid var(--ppe-border);
   white-space: nowrap;
 }
-.delivery-matrix thead th { text-align: center; }
-.delivery-matrix thead .recipient-col { text-align: start; }
+.delivery-matrix thead th {
+  text-align: center;
+}
+.delivery-matrix thead .recipient-col {
+  text-align: start;
+}
 .delivery-matrix .recipient-col {
   position: sticky;
   inset-inline-start: 0;
@@ -1337,19 +1397,41 @@ button:disabled {
   z-index: 2;
   background: color-mix(in srgb, var(--ppe-primary) 7%, var(--ppe-surface));
 }
-.delivery-matrix .tool-col { min-width: 138px; text-align: center; }
-.delivery-matrix .action-col { width: 105px; min-width: 105px; text-align: center; }
-.delivery-matrix td .p-checkbox { vertical-align: middle; }
-.delivery-matrix .matrix-remove { min-height: 32px; padding: 6px 10px; }
+.delivery-matrix .tool-col {
+  min-width: 138px;
+  text-align: center;
+}
+.delivery-matrix .action-col {
+  width: 105px;
+  min-width: 105px;
+  text-align: center;
+}
+.delivery-matrix td .p-checkbox {
+  vertical-align: middle;
+}
+.delivery-matrix .matrix-remove {
+  min-height: 32px;
+  padding: 6px 10px;
+}
 .delivery-matrix tbody tr:hover .recipient-col {
   background: color-mix(in srgb, var(--ppe-primary) 4%, var(--ppe-surface));
 }
-.delivery-matrix tbody tr:last-child > * { border-bottom: none; }
-.matrix-scroll:focus-visible { outline: 2px solid var(--ppe-primary); outline-offset: 3px; }
-@media (max-width: 720px) {
-  .delivery-matrix { min-width: max-content; }
-  .delivery-matrix .recipient-col { min-width: 135px; }
-  .delivery-matrix .tool-col { min-width: 125px; }
+.delivery-matrix tbody tr:last-child > * {
+  border-bottom: none;
 }
-
+.matrix-scroll:focus-visible {
+  outline: 2px solid var(--ppe-primary);
+  outline-offset: 3px;
+}
+@media (max-width: 720px) {
+  .delivery-matrix {
+    min-width: max-content;
+  }
+  .delivery-matrix .recipient-col {
+    min-width: 135px;
+  }
+  .delivery-matrix .tool-col {
+    min-width: 125px;
+  }
+}
 </style>

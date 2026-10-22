@@ -1,4 +1,7 @@
 {
+  "ppe_delivery_change_activity_title": "Change activity?",
+  "ppe_delivery_change_activity_warning": "Changing or clearing the activity will delete the selected employees and their PPE tool selections. Do you want to continue?",
+  "ppe_delivery_change_activity_confirm": "Clear selections and continue",
   "PPE Matrix": "PPE Matrix",
   "lookup_excel_industry_required": "Select at least one industry or enable All industries.",
   "sidebar_navigation": "Navigation",
