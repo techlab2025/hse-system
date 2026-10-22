@@ -20,6 +20,7 @@ import IndexHerikalyController from '../controllers/indexHerikalyController'
 import IndexHerikalyParams from '../../Core/params/indexHerikalyParams'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { CertificateTypeEnum } from '@/features/setting/Certificate/Core/Enums/CertificateTypeEnum'
+import AddHerikaly from './AddHerikaly.vue'
 
 const emit = defineEmits(['update:data'])
 
@@ -248,6 +249,7 @@ defineExpose({
 const indexHerikalyController = IndexHerikalyController.getInstance()
 const HerikalyParams = new IndexHerikalyParams('', 1, 10, 0, true, null)
 const SelectedDepartment = ref<TitleInterface>()
+const departmentDialogVisible = ref(false)
 const effectiveParentId = computed(() =>
   props.mode === 'department'
     ? undefined
@@ -321,14 +323,31 @@ const GetCertificateTypeTitle = (type: CertificateTypeEnum) => {
       <UpdatedCustomInputSelect :modelValue="SelectedDepartment" :params="HerikalyParams"
         :controller="indexHerikalyController" class="input" :label="$t('Department')"
         :required="props.mode === 'position'" id="herikaly" :placeholder="$t('Select department')"
-        @update:modelValue="updatedDepartment" />
+        :is-dialog="true"
+        v-model:dialogVisible="departmentDialogVisible"
+        @update:modelValue="updatedDepartment"
+      >
+        <template #LabelHeader>
+          <button class="inline-create-action" type="button" @click="departmentDialogVisible = true">
+            + New
+          </button>
+        </template>
+        <template #Dialog>
+          <AddHerikaly
+            v-if="departmentDialogVisible"
+            mode="department"
+            stay-on-page
+            @update:data="departmentDialogVisible = false"
+          />
+        </template>
+      </UpdatedCustomInputSelect>
       <p v-if="getFieldError('department')" class="required-field-message">
         {{ getFieldError('department') }}
       </p>
     </div>
   </div>
   <div class="col-span-4 md:col-span-2" data-required-field="langs">
-    <LangTitleInput type="text" :langs="langDefault" :modelValue="langs" :label="isPosition || route.fullPath.includes('organization-employee/add')
+    <LangTitleInput type="text" :langs="langDefault" :modelValue="langs" :label="isPosition || (props.mode === 'auto' && route.fullPath.includes('organization-employee/add'))
       ? $t('position_name')
       : $t('Department Name')
       " @update:modelValue="setLangs" />
@@ -391,6 +410,18 @@ const GetCertificateTypeTitle = (type: CertificateTypeEnum) => {
 </template>
 
 <style scoped>
+.inline-create-action {
+  width: auto;
+  min-height: 1.75rem;
+  margin-inline-start: auto;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--brand-primary-300, #93b0ff);
+  border-radius: 6px;
+  background: var(--brand-primary-50, #eff6ff);
+  color: var(--brand-primary-700, #1d4ed8);
+  font: inherit;
+  cursor: pointer;
+}
 .optional{
   font-size: 0.75rem;
   color: var(--text-muted, #64748b);

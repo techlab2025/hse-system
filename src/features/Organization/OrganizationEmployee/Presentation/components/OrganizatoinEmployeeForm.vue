@@ -545,7 +545,9 @@ defineExpose({
                 + New
               </button>
             </template>
-            <template #Dialog><AddHerikaly @update:data="PositionDialog = false" /></template>
+            <template #Dialog>
+              <AddHerikaly mode="position" stay-on-page @update:data="PositionDialog = false" />
+            </template>
           </UpdatedCustomInputSelect>
           <p v-if="getFieldError('Heirarchy')" class="required-field-message">
             {{ getFieldError('Heirarchy') }}
