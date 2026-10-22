@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
+import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
+
 import { readLookupRows } from '@/shared/utils/lookupExcel'
 import { ref, watch } from 'vue'
 import * as XLSX from 'xlsx'
@@ -104,6 +107,7 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 const addMangementChangeTopicTypeController = AddMangementChangeTopicTypeController.getInstance()
 
 const addMangementChangeTopicTypes = async () => {
+  if (!validateIndustryScope()) return
   if (!mappedData.value) return
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
@@ -118,7 +122,7 @@ const addMangementChangeTopicTypes = async () => {
     }
   })
 
-  const orgData = new AddMangementChangeTopicTypeExcelParams({ data: dataAsObjects })
+  const orgData = new AddMangementChangeTopicTypeExcelParams({ data: dataAsObjects }, getIndustryScope())
   await addMangementChangeTopicTypeController.addMangementChangeTopicType(orgData, router)
   if (addMangementChangeTopicTypeController.isDataSuccess()) {
     emit('uploaded')
@@ -143,9 +147,12 @@ const onMappingClose = () => {
     sheetData.value = null
   }
 }
+
+const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndustryScope()
 </script>
 
 <template>
+  <LookupIndustryScope v-model="industryScope" />
   <div class="page-wrapper">
     <div v-if="errorMsg" class="error-banner">{{ errorMsg }}</div>
 

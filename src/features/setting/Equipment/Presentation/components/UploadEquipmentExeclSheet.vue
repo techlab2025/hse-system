@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
+import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
+
 import { computed, onMounted, ref, watch } from 'vue'
 
 const props = defineProps<{ initialFile?: File | null }>()
@@ -331,6 +334,7 @@ const formatPreviewValue = (apiKey: keyof EquipmentExcelRow | null, value: unkno
 const addEquipmentController = AddEquipmentController.getInstance()
 
 const AddOrgEmployee = async () => {
+  if (!validateIndustryScope()) return
   if (!mappedData.value) return
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
@@ -358,7 +362,7 @@ const AddOrgEmployee = async () => {
     return obj as EquipmentExcelRow
   })
 
-  const orgData = new AddEquipmentExcelParams({ data: dataAsObjects })
+  const orgData = new AddEquipmentExcelParams({ data: dataAsObjects }, getIndustryScope())
   await addEquipmentController.addEquipment(orgData, router)
   if (addEquipmentController.isDataSuccess()) {
     emit('uploaded')
@@ -401,9 +405,12 @@ watch(
 onMounted(() => {
   GetEquipmentType()
 })
+
+const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndustryScope()
 </script>
 
 <template>
+  <LookupIndustryScope v-model="industryScope" />
   <div class="page-wrapper">
     <!-- <div class="excel-warning">
       <div class="warning-header flex item-center gap-2 justify-between w-full">

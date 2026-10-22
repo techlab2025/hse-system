@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
+import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
+
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -25,6 +28,7 @@ const createPermissions = [
   PermissionsEnum.ORG_FACTORY_CREATE,
 ]
 const submit = async (rows: ExcelImportRow[]) => {
+  if (!validateIndustryScope()) return
   if (busy.value) return
   busy.value = true
   emit('busy', true)
@@ -32,7 +36,7 @@ const submit = async (rows: ExcelImportRow[]) => {
   try {
     const controller = AddFactoryController.getInstance()
     await controller.addFactory(
-      new AddFactorExcelParams({ data: rows.map((row) => ({ title: row.title.trim() })) }),
+      new AddFactorExcelParams({ data: rows.map((row) => ({ title: row.title.trim() })) }, getIndustryScope()),
       router,
       true,
     )
@@ -43,8 +47,11 @@ const submit = async (rows: ExcelImportRow[]) => {
     emit('busy', false)
   }
 }
+
+const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndustryScope()
 </script>
 <template>
+  <LookupIndustryScope v-model="industryScope" />
   <PermissionBuilder :code="createPermissions">
     <ExcelRowsImport
       :initial-file="props.initialFile"

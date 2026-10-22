@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
+import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
+
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
@@ -22,12 +25,13 @@ const createPermissions = [
   PermissionsEnum.ORG_VISIT_THEME_CREATE,
 ]
 const submit = async (titles: string[]) => {
+  if (!validateIndustryScope()) return
   if (submitting.value) return
   submitting.value = true
   errorMessage.value = ''
   try {
     const controller = AddVisitThemeController.getInstance()
-    await controller.importVisitThemes(titles, router)
+    await controller.importVisitThemes(titles, router, getIndustryScope())
     if (controller.isDataSuccess()) emit('uploaded')
     else errorMessage.value = controller.state.value.error?.title ?? t('error_occurred')
   } catch (error) {
@@ -36,9 +40,12 @@ const submit = async (titles: string[]) => {
     submitting.value = false
   }
 }
+
+const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndustryScope()
 </script>
 
 <template>
+  <LookupIndustryScope v-model="industryScope" />
   <PermissionBuilder :code="createPermissions">
     <p v-if="errorMessage" class="text-red-500" role="alert">{{ errorMessage }}</p>
     <TitleExcelImport :initial-file="props.initialFile" :submitting="submitting" @imported="submit" />

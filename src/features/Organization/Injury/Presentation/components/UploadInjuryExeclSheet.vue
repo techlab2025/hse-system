@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
+import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
+
 import { readLookupRows, downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import { ref, watch } from 'vue'
@@ -167,6 +170,7 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 const addInjuryController = AddInjuryController.getInstance()
 
 const AddInjuries = async () => {
+  if (!validateIndustryScope()) return
   if (!mappedData.value) return
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
@@ -179,7 +183,7 @@ const AddInjuries = async () => {
     return obj
   })
 
-  const orgData = new AddInjuryExcelParams({ data: dataAsObjects })
+  const orgData = new AddInjuryExcelParams({ data: dataAsObjects }, getIndustryScope())
   await addInjuryController.addInjury(orgData, router)
   if (addInjuryController.isDataSuccess()) {
     emit('uploaded')
@@ -217,9 +221,12 @@ const downloadLookupTemplate = () => {
   )
   return downloadLookupWorkbook(workbook, 'injury_template.xlsx')
 }
+
+const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndustryScope()
 </script>
 
 <template>
+  <LookupIndustryScope v-model="industryScope" />
   <div class="page-wrapper">
     <div class="excel-warning">
       <div class="warning-header flex item-center gap-2 justify-between w-full">

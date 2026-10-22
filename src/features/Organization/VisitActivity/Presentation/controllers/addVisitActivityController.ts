@@ -1,3 +1,4 @@
+import type { LookupIndustryFields } from '@/shared/utils/lookupIndustryScope'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
@@ -69,7 +70,7 @@ export default class AddVisitActivityController extends ControllerInterface<Visi
     return this.state
   }
 
-  async importVisitActivities(titles: string[], router: Router) {
+  async importVisitActivities(titles: string[], router: Router, industryScope?: LookupIndustryFields) {
     try {
       const data = titles
         .map((title) => ({ title: String(title ?? '').trim() }))
@@ -80,7 +81,7 @@ export default class AddVisitActivityController extends ControllerInterface<Visi
       }
 
       const dataState: DataState<VisitActivityModel> = await this.addVisitActivityUseCase.call(
-        new AddVisitActivityExcelParams({ data }),
+        new AddVisitActivityExcelParams({ data }, industryScope),
       )
       this.setLoading()
       this.setState(dataState)

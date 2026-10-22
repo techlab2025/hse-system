@@ -3,8 +3,10 @@
 
 .action-list-trigger {
   background-color: color-mix(in srgb, var(--brand-primary-500) 5.1%, transparent);
-  padding: $MdSize;
-  border-radius: calc($XlSize2 + 4px);
+  // padding: $MdSize;
+  // border-radius: calc($XlSize2 + 4px);
+  padding: 16px !important;
+  border-radius: 12px !important;
   width: 250px;
   cursor: pointer;
   @include flex-row(nowrap, space-between, center);

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
+import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
+
 import { readLookupRows } from '@/shared/utils/lookupExcel'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import { ref, watch } from 'vue'
@@ -164,6 +167,7 @@ const route = useRoute()
 const addHazardTypeController = AddHazardTypeController.getInstance()
 
 const AddHazardType = async () => {
+  if (!validateIndustryScope()) return
   if (!mappedData.value) return
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
@@ -176,7 +180,7 @@ const AddHazardType = async () => {
     return obj
   })
 
-  const orgData = new AddHazardTypeExcelParams({ data: dataAsObjects })
+  const orgData = new AddHazardTypeExcelParams({ data: dataAsObjects }, getIndustryScope())
   await addHazardTypeController.addHazardType(orgData, router, route)
   if (addHazardTypeController.isDataSuccess()) {
     emit('uploaded')
@@ -205,9 +209,12 @@ const onMappingClose = () => {
     extractedImages.value = []
   }
 }
+
+const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndustryScope()
 </script>
 
 <template>
+  <LookupIndustryScope v-model="industryScope" />
   <div class="page-wrapper">
     <!-- <div class="excel-warning">
       <div class="warning-header flex item-center gap-2 justify-between w-full">

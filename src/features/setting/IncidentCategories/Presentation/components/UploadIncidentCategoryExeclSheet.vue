@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
+import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
+
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import { ref, watch } from 'vue'
 import * as XLSX from 'xlsx'
@@ -177,6 +180,7 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 const addIncidentCategoryController = AddIncidentCategoryController.getInstance()
 
 const AddIncidentCategory = async () => {
+  if (!validateIndustryScope()) return
   if (!mappedData.value) return
   const incidentTypeId = Number(incidentType.value?.id)
   if (!incidentTypeId) {
@@ -198,7 +202,7 @@ const AddIncidentCategory = async () => {
     }
   })
 
-  const orgData = new AddIncidentCategoryExcelParams({ data: dataAsObjects })
+  const orgData = new AddIncidentCategoryExcelParams({ data: dataAsObjects }, getIndustryScope())
   await addIncidentCategoryController.addIncidentCategory(orgData, router)
   if (addIncidentCategoryController.isDataSuccess()) {
     emit('uploaded')
@@ -227,9 +231,12 @@ const onMappingClose = () => {
     extractedImages.value = []
   }
 }
+
+const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndustryScope()
 </script>
 
 <template>
+  <LookupIndustryScope v-model="industryScope" />
   <div class="page-wrapper">
     <!-- <div class="excel-warning">
       <div class="warning-header flex item-center gap-2 justify-between w-full">

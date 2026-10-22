@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
+import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
+
 import { readLookupRows } from '@/shared/utils/lookupExcel'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import * as XLSX from 'xlsx'
@@ -28,7 +31,7 @@ const isSubmitting = ref(false)
 const errorMsg = ref('')
 const router = useRouter()
 let uploadRevision = 0
-const SendData = computed(() => meetingTypeExcelFields(isAdmin.value))
+const SendData = computed(() => meetingTypeExcelFields(false))
 const SendDataLabels: Record<string, string> = {
   title: 'Meeting Type Title',
   periodic_type: 'Periodic Type (1 Daily, 2 Weekly, 3 Monthly, 4 Yearly, 5 Dates)',
@@ -111,13 +114,14 @@ const onMappingClose = () => {
 }
 const addMeetingTypeController = AddMeetingTypeController.getInstance()
 const addMeetingTypes = async () => {
+  if (!validateIndustryScope()) return
   if (isSubmitting.value || !mappedData.value) return
   errorMsg.value = ''
   let params: AddMeetingTypeExcelParams
   try {
     params = new AddMeetingTypeExcelParams({
-      data: buildMeetingTypeExcelRows(mappedData.value, isAdmin.value),
-    })
+      data: buildMeetingTypeExcelRows(mappedData.value, false),
+    }, getIndustryScope())
   } catch (error) {
     errorMsg.value = error instanceof Error ? error.message : 'Check the imported rows.'
     new OpenWarningDilaog(errorMsg.value).openDialog()
@@ -134,9 +138,12 @@ const addMeetingTypes = async () => {
     isSubmitting.value = false
   }
 }
+
+const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndustryScope()
 </script>
 
 <template>
+  <LookupIndustryScope v-model="industryScope" />
   <div class="page-wrapper meeting-type-excel-import">
     <div class="excel-warning">
       <div class="warning-header"><span class="title">Meeting Type Excel Rules</span></div>
@@ -146,9 +153,7 @@ const addMeetingTypes = async () => {
         positive whole number: Weekly up to 6, Monthly up to 29, Yearly up to 364.
       </div>
       <p v-if="isAdmin" class="rule-description">
-        all_industries: 1 = all industries, 0 = selected industries. For selected industries, enter
-        their actual IDs separated by commas in industry_ids. Industry IDs are ignored when
-        all_industries is 1.
+        Choose All industries or select industries above. Your selection applies to every imported row.
       </p>
     </div>
     <div v-if="errorMsg" class="error-banner" role="alert">{{ errorMsg }}</div>

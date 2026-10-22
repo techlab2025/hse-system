@@ -1214,8 +1214,8 @@ html[dir=rtl] .input-search .icon-remove {
 }
 .action-list-trigger {
   background-color: color-mix(in srgb, var(--brand-primary-500) 5.1%, transparent);
-  padding: var(--md-size);
-  border-radius: calc(var(--xl-size-1) + 4px);
+  padding: 16px !important;
+  border-radius: 12px !important;
   width: 250px;
   cursor: pointer;
   display: flex;
@@ -26394,4 +26394,18 @@ label {
 .side-pane-icon svg {
   width: 37px !important;
   height: 35px !important;
+}
+
+p,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+a,
+li {
+  text-transform: capitalize !important;
 }/*# sourceMappingURL=main.css.map */

@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
+import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
+
 import { readLookupRows } from '@/shared/utils/lookupExcel'
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -106,6 +109,7 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 const addDocumentCategoryController = AddDocumentCategoryController.getInstance()
 
 const addDocumentCategories = async () => {
+  if (!validateIndustryScope()) return
   if (!mappedData.value) return
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
@@ -120,7 +124,7 @@ const addDocumentCategories = async () => {
     }
   })
 
-  const orgData = new AddDocumentCategoryExcelParams({ data: dataAsObjects })
+  const orgData = new AddDocumentCategoryExcelParams({ data: dataAsObjects }, getIndustryScope())
   await addDocumentCategoryController.addDocumentCategory(orgData, router)
   if (addDocumentCategoryController.isDataSuccess()) {
     emit('uploaded')
@@ -151,9 +155,12 @@ const createPermissions = [
   PermissionsEnum.ORG_DOCUMENT_CATEGORY_ALL,
   PermissionsEnum.ORG_DOCUMENT_CATEGORY_CREATE,
 ]
+
+const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndustryScope()
 </script>
 
 <template>
+  <LookupIndustryScope v-model="industryScope" />
   <PermissionBuilder :code="createPermissions">
     <div class="page-wrapper">
       <div v-if="errorMsg" class="error-banner">{{ errorMsg }}</div>

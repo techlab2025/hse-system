@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
+import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
+
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -26,6 +29,7 @@ const createPermissions = [
   PermissionsEnum.ORG_TRANING_TOPIC_CREATE,
 ]
 const submit = async (rows: ExcelImportRow[]) => {
+  if (!validateIndustryScope()) return
   if (busy.value) return
   busy.value = true
   emit('busy', true)
@@ -33,7 +37,7 @@ const submit = async (rows: ExcelImportRow[]) => {
   try {
     const controller = AddTraningTopicController.getInstance()
     await controller.addTraningTopic(
-      new AddTraningTopicExcelParams({ data: rows.map((row) => ({ title: row.title.trim() })) }),
+      new AddTraningTopicExcelParams({ data: rows.map((row) => ({ title: row.title.trim() })) }, getIndustryScope()),
       router,
       true,
     )
@@ -46,8 +50,11 @@ const submit = async (rows: ExcelImportRow[]) => {
     emit('busy', false)
   }
 }
+
+const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndustryScope()
 </script>
 <template>
+  <LookupIndustryScope v-model="industryScope" />
   <PermissionBuilder :code="createPermissions">
     <ExcelRowsImport
       :initial-file="props.initialFile"

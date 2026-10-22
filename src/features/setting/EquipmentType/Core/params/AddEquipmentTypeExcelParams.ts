@@ -1,8 +1,9 @@
+import { applyLookupIndustryScope, type LookupIndustryFields } from '@/shared/utils/lookupIndustryScope'
 import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
-interface Data {
+interface Data extends LookupIndustryFields {
   translation: TranslationsParams
   hasCertificate: number
   allIndustries: number | null
@@ -17,8 +18,8 @@ export default class AddEquipmentTypeExcelParams implements Params {
     // translation: { required: true },
     // type: { required: true },
   })
-  constructor(data: { data: Data[] }) {
-    this.data = data.data
+  constructor(data: { data: Data[] }, industryScope?: LookupIndustryFields) {
+    this.data = applyLookupIndustryScope(data.data, industryScope)
   }
 
   toMap(): Record<string, any> {

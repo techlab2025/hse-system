@@ -4,7 +4,7 @@ import { ref, watch } from 'vue';
 const props = defineProps<{
   title: string,
   checked?: boolean
-  index: number
+  index: number | string
 
 }>()
 const emit = defineEmits(['update:checked'])

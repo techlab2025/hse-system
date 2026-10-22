@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
+import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
+
 import { readLookupRows } from '@/shared/utils/lookupExcel'
 import { ref, watch } from 'vue'
 import * as XLSX from 'xlsx'
@@ -105,6 +108,7 @@ const onColumnMapping = (mapping: Record<string, string>) => {
 const addDrillTypeController = AddDrillTypeController.getInstance()
 
 const addDrillTypes = async () => {
+  if (!validateIndustryScope()) return
   if (!mappedData.value) return
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
@@ -120,7 +124,7 @@ const addDrillTypes = async () => {
     }
   })
 
-  const orgData = new AddDrillTypeExcelParams({ data: dataAsObjects })
+  const orgData = new AddDrillTypeExcelParams({ data: dataAsObjects }, getIndustryScope())
   await addDrillTypeController.addDrillType(orgData, router)
   if (addDrillTypeController.isDataSuccess()) {
     emit('uploaded')
@@ -145,9 +149,12 @@ const onMappingClose = () => {
     sheetData.value = null
   }
 }
+
+const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndustryScope()
 </script>
 
 <template>
+  <LookupIndustryScope v-model="industryScope" />
   <div class="page-wrapper">
     <div v-if="errorMsg" class="error-banner">{{ errorMsg }}</div>
 

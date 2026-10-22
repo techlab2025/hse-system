@@ -2,7 +2,6 @@
 import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
 import * as XLSX from 'xlsx'
 import Dialog from 'primevue/dialog'
 import { debounce } from '@/base/Presentation/utils/debouced'
@@ -22,7 +21,7 @@ import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
-import TitleExcelImport from '@/shared/HelpersComponents/TitleExcelImport.vue'
+import UploadVisitCategoryExcelSheet from './UploadVisitCategoryExcelSheet.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
@@ -30,10 +29,8 @@ import IndexVisitCategoryController from '../controllers/indexVisitCategoryContr
 import IndexVisitCategoryParams from '../../Core/params/indexVisitCategoryParams'
 import DeleteVisitCategoryController from '../controllers/deleteVisitCategoryController'
 import DeleteVisitCategoryParams from '../../Core/params/deleteVisitCategoryParams'
-import AddVisitCategoryController from '../controllers/addVisitCategoryController'
 import SystemVisitCategories from '../supcomponents/SystemVisitCategories.vue'
 const { t } = useI18n()
-const router = useRouter()
 const { user } = useUserStore()
 const word = ref('')
 const currentPage = ref(1)
@@ -68,7 +65,9 @@ const changePageSize = (limit: number) => {
   fetchVisitCategories(word.value, currentPage.value, limit)
 }
 const deleteVisitCategory = async (id: number) => {
-  await DeleteVisitCategoryController.getInstance().deleteVisitCategory(new DeleteVisitCategoryParams(id))
+  await DeleteVisitCategoryController.getInstance().deleteVisitCategory(
+    new DeleteVisitCategoryParams(id),
+  )
   await fetchVisitCategories(word.value, currentPage.value, countPerPage.value)
 }
 const saveWorkbook = (rows: Record<string, unknown>[], filename: string) => {
@@ -82,7 +81,8 @@ const exportExcel = () =>
     (state.value.data ?? []).map((item: any) => ({ title: item.title ?? '' })),
     'visit_categories.xlsx',
   )
-const downloadExample = () => saveWorkbook([{ title: 'Visit Category 1' }], 'visit_category_template.xlsx')
+const downloadExample = () =>
+  saveWorkbook([{ title: 'Visit Category 1' }], 'visit_category_template.xlsx')
 const onFileSelected = (event: Event) => {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
@@ -91,14 +91,10 @@ const onFileSelected = (event: Event) => {
   showUploadDialog.value = true
   input.value = ''
 }
-const onImported = async (titles: string[]) => {
-  const controller = AddVisitCategoryController.getInstance()
-  await controller.importVisitCategories(titles, router)
-  if (controller.isDataSuccess()) {
-    showUploadDialog.value = false
-    pendingFile.value = null
-    await fetchVisitCategories(word.value, currentPage.value, countPerPage.value)
-  }
+const onUploaded = async () => {
+  showUploadDialog.value = false
+  pendingFile.value = null
+  await fetchVisitCategories(word.value, currentPage.value, countPerPage.value)
 }
 const rowActions = (id: number) => [
   {
@@ -149,7 +145,12 @@ const headerActions = () => [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <span class="icon-remove" @click="((word = ''), searchVisitCategories())"><Search /></span
-      ><input v-model="word" :placeholder="$t('search')" class="input" @input="searchVisitCategories" />
+      ><input
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        @input="searchVisitCategories"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ActionsList
@@ -223,7 +224,11 @@ const headerActions = () => [
     :header="$t('import_visit_categories')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <TitleExcelImport :initial-file="pendingFile" @imported="onImported" />
+    <UploadVisitCategoryExcelSheet
+      v-if="showUploadDialog"
+      :initial-file="pendingFile"
+      @uploaded="onUploaded"
+    />
   </Dialog>
   <input
     ref="fileInputRef"

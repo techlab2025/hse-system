@@ -1,7 +1,8 @@
+import { applyLookupIndustryScope, type LookupIndustryFields } from '@/shared/utils/lookupIndustryScope'
 import type Params from '@/base/core/params/params'
 import type TranslationsParams from '@/base/core/params/translations_params.ts'
 
-interface Data {
+interface Data extends LookupIndustryFields {
   translation: TranslationsParams
   allIndustries: boolean | null
   industries: number[]
@@ -10,8 +11,8 @@ interface Data {
 export default class AddObserverationTypeExcelParams implements Params {
   data: Data[]
 
-  constructor(data: { data: Data[] }) {
-    this.data = data.data
+  constructor(data: { data: Data[] }, industryScope?: LookupIndustryFields) {
+    this.data = applyLookupIndustryScope(data.data, industryScope)
   }
 
   toMap(): Record<string, any> {

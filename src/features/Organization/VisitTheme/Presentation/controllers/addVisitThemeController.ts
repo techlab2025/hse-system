@@ -1,3 +1,4 @@
+import type { LookupIndustryFields } from '@/shared/utils/lookupIndustryScope'
 import { ControllerInterface } from '@/base/Presentation/Controller/controller_interface'
 import type { DataState } from '@/base/core/networkStructure/Resources/dataState/data_state'
 import DialogSelector from '@/base/Presentation/Dialogs/dialog_selector'
@@ -61,7 +62,7 @@ export default class AddVisitThemeController extends ControllerInterface<VisitTh
     return this.state
   }
 
-  async importVisitThemes(titles: string[], router: Router) {
+  async importVisitThemes(titles: string[], router: Router, industryScope?: LookupIndustryFields) {
     try {
       const data = titles
         .map((title) => ({ title: String(title ?? '').trim() }))
@@ -72,7 +73,7 @@ export default class AddVisitThemeController extends ControllerInterface<VisitTh
       }
 
       const dataState: DataState<VisitThemeModel> = await this.useCase.call(
-        new AddVisitThemeExcelParams({ data }),
+        new AddVisitThemeExcelParams({ data }, industryScope),
       )
       this.setLoading()
       this.setState(dataState)

@@ -1,3 +1,4 @@
+import { applyLookupIndustryScope, type LookupIndustryFields } from '@/shared/utils/lookupIndustryScope'
 import type Params from '@/base/core/params/params'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
@@ -31,8 +32,8 @@ export default class AddEquipmentExcelParams implements Params {
 
   public static readonly validation = new ClassValidation().setRules({})
 
-  constructor({ data }: { data: EquipmentExcelRow[] }) {
-    this.data = data
+  constructor({ data }: { data: EquipmentExcelRow[] }, industryScope?: LookupIndustryFields) {
+    this.data = applyLookupIndustryScope(data, industryScope)
   }
 
   // ─── Helpers ──────────────────────────────────────────────────────────────

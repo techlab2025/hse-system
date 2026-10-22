@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
+import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
+
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ExcelRowsImport, {
@@ -34,6 +37,7 @@ const setFactor = (value: TitleInterface | TitleInterface[] | null) => {
   error.value = ''
 }
 const submit = async (rows: ExcelImportRow[]) => {
+  if (!validateIndustryScope()) return
   if (busy.value) return
   error.value = ''
   const factoryId = Number(factor.value?.id)
@@ -46,6 +50,7 @@ const submit = async (rows: ExcelImportRow[]) => {
   try {
     await controller.importRows(
       rows.map((row) => ({ title: row.title.trim(), factory_id: factoryId })),
+      getIndustryScope(),
     )
     if (controller.isDataSuccess()) emit('uploaded')
     else error.value = controller.state.value.error?.title || t('error_occurred')
@@ -54,8 +59,11 @@ const submit = async (rows: ExcelImportRow[]) => {
     emit('busy', false)
   }
 }
+
+const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndustryScope()
 </script>
 <template>
+  <LookupIndustryScope v-model="industryScope" />
   <PermissionBuilder :code="createPermissions">
     <ExcelRowsImport
       :initial-file="props.initialFile"

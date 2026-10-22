@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import LookupIndustryScope from '@/shared/HelpersComponents/LookupIndustryScope.vue'
+import { useLookupIndustryScope } from '@/composables/useLookupIndustryScope'
+
 import { ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import * as XLSX from 'xlsx'
@@ -83,6 +86,7 @@ const deleteRow = (rowIndex: number) => {
 }
 
 const submitTeams = async () => {
+  if (!validateIndustryScope()) return
   if (!mappedRows.value?.length || isSubmitting.value) return
 
   const headers = mappedRows.value[0].map((header) => String(header).trim().toLowerCase())
@@ -106,14 +110,17 @@ const submitTeams = async () => {
 
   isSubmitting.value = true
   const controller = AddTeamController.getInstance()
-  await controller.addTeam(new AddTeamExcelParams({ data }), router, true)
+  await controller.addTeam(new AddTeamExcelParams({ data }, getIndustryScope()), router, true)
   isSubmitting.value = false
 
   if (controller.isDataSuccess()) emit('uploaded')
 }
+
+const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndustryScope()
 </script>
 
 <template>
+  <LookupIndustryScope v-model="industryScope" />
   <div class="upload-team-sheet">
     <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
     <p v-if="isLoading" class="loading-message">Processing file…</p>

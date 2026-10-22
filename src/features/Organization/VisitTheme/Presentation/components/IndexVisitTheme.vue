@@ -2,7 +2,6 @@
 import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
 import * as XLSX from 'xlsx'
 import Dialog from 'primevue/dialog'
 import { debounce } from '@/base/Presentation/utils/debouced'
@@ -22,7 +21,7 @@ import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
-import TitleExcelImport from '@/shared/HelpersComponents/TitleExcelImport.vue'
+import UploadVisitThemeExcelSheet from './UploadVisitThemeExcelSheet.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
@@ -30,10 +29,8 @@ import IndexVisitThemeController from '../controllers/indexVisitThemeController'
 import IndexVisitThemeParams from '../../Core/params/indexVisitThemeParams'
 import DeleteVisitThemeController from '../controllers/deleteVisitThemeController'
 import DeleteVisitThemeParams from '../../Core/params/deleteVisitThemeParams'
-import AddVisitThemeController from '../controllers/addVisitThemeController'
 import SystemVisitThemes from '../supcomponents/SystemVisitThemes.vue'
 const { t } = useI18n()
-const router = useRouter()
 const { user } = useUserStore()
 const word = ref('')
 const currentPage = ref(1)
@@ -82,7 +79,8 @@ const exportExcel = () =>
     (state.value.data ?? []).map((item: any) => ({ title: item.title ?? '' })),
     'visit_themes.xlsx',
   )
-const downloadExample = () => saveWorkbook([{ title: 'Visit Theme 1' }], 'visit_theme_template.xlsx')
+const downloadExample = () =>
+  saveWorkbook([{ title: 'Visit Theme 1' }], 'visit_theme_template.xlsx')
 const onFileSelected = (event: Event) => {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
@@ -91,14 +89,10 @@ const onFileSelected = (event: Event) => {
   showUploadDialog.value = true
   input.value = ''
 }
-const onImported = async (titles: string[]) => {
-  const controller = AddVisitThemeController.getInstance()
-  await controller.importVisitThemes(titles, router)
-  if (controller.isDataSuccess()) {
-    showUploadDialog.value = false
-    pendingFile.value = null
-    await fetchVisitThemes(word.value, currentPage.value, countPerPage.value)
-  }
+const onUploaded = async () => {
+  showUploadDialog.value = false
+  pendingFile.value = null
+  await fetchVisitThemes(word.value, currentPage.value, countPerPage.value)
 }
 const rowActions = (id: number) => [
   {
@@ -223,7 +217,11 @@ const headerActions = () => [
     :header="$t('import_visit_themes')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <TitleExcelImport :initial-file="pendingFile" @imported="onImported" />
+    <UploadVisitThemeExcelSheet
+      v-if="showUploadDialog"
+      :initial-file="pendingFile"
+      @uploaded="onUploaded"
+    />
   </Dialog>
   <input
     ref="fileInputRef"

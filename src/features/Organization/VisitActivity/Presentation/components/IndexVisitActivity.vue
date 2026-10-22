@@ -2,7 +2,6 @@
 import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
 import * as XLSX from 'xlsx'
 import Dialog from 'primevue/dialog'
 import { debounce } from '@/base/Presentation/utils/debouced'
@@ -22,7 +21,7 @@ import ActionsListAddIcon from '@/shared/icons/ActionsListAddIcon.vue'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import UploadExcelIcon from '@/shared/icons/UploadExcelIcon.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
-import TitleExcelImport from '@/shared/HelpersComponents/TitleExcelImport.vue'
+import UploadVisitActivityExcelSheet from './UploadVisitActivityExcelSheet.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { useUserStore } from '@/stores/user'
@@ -30,11 +29,9 @@ import IndexVisitActivityController from '../controllers/indexVisitActivityContr
 import IndexVisitActivityParams from '../../Core/params/indexVisitActivityParams'
 import DeleteVisitActivityController from '../controllers/deleteVisitActivityController'
 import DeleteVisitActivityParams from '../../Core/params/deleteVisitActivityParams'
-import AddVisitActivityController from '../controllers/addVisitActivityController'
 import SystemVisitActivities from '../supcomponents/SystemVisitActivities.vue'
 
 const { t } = useI18n()
-const router = useRouter()
 const { user } = useUserStore()
 const word = ref('')
 const currentPage = ref(1)
@@ -89,7 +86,8 @@ const exportExcel = () =>
     (state.value.data ?? []).map((item: any) => ({ title: item.title ?? '' })),
     'visit_activities.xlsx',
   )
-const downloadExample = () => saveWorkbook([{ title: 'Visit Activity 1' }], 'visit_activity_template.xlsx')
+const downloadExample = () =>
+  saveWorkbook([{ title: 'Visit Activity 1' }], 'visit_activity_template.xlsx')
 const onFileSelected = (event: Event) => {
   const input = event.target as HTMLInputElement
   const file = input.files?.[0]
@@ -98,13 +96,10 @@ const onFileSelected = (event: Event) => {
   showUploadDialog.value = true
   input.value = ''
 }
-const onImported = async (titles: string[]) => {
-  await AddVisitActivityController.getInstance().importVisitActivities(titles, router)
-  if (AddVisitActivityController.getInstance().isDataSuccess()) {
-    showUploadDialog.value = false
-    pendingFile.value = null
-    await fetchVisitActivities(word.value, currentPage.value, countPerPage.value)
-  }
+const onUploaded = async () => {
+  showUploadDialog.value = false
+  pendingFile.value = null
+  await fetchVisitActivities(word.value, currentPage.value, countPerPage.value)
 }
 
 const rowActions = (id: number) => [
@@ -158,7 +153,12 @@ const headerActions = () => [
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mb-4">
     <div class="input-search col-span-1">
       <span class="icon-remove" @click="((word = ''), searchVisitActivities())"><Search /></span>
-      <input v-model="word" :placeholder="$t('search')" class="input" @input="searchVisitActivities" />
+      <input
+        v-model="word"
+        :placeholder="$t('search')"
+        class="input"
+        @input="searchVisitActivities"
+      />
     </div>
     <div class="col-span-2 flex justify-end gap-2">
       <ActionsList
@@ -235,7 +235,11 @@ const headerActions = () => [
     :header="$t('import_visit_activities')"
     :style="{ width: '80vw', maxWidth: '900px' }"
   >
-    <TitleExcelImport :initial-file="pendingFile" @imported="onImported" />
+    <UploadVisitActivityExcelSheet
+      v-if="showUploadDialog"
+      :initial-file="pendingFile"
+      @uploaded="onUploaded"
+    />
   </Dialog>
   <input
     ref="fileInputRef"

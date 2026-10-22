@@ -4,14 +4,15 @@ import AddFactoryItemExcelParams, {
 } from '../../Core/params/addFactoryItemExcelParams'
 import AddFactoryItemUseCase from '../../Domain/useCase/addFactoryItemUseCase'
 import type FactoryItemModel from '../../Data/models/factoryItemModel'
+import type { LookupIndustryFields } from '@/shared/utils/lookupIndustryScope'
 
 export default class ImportFactoryItemController extends ControllerInterface<FactoryItemModel> {
   constructor() {
     super()
   }
-  async importRows(rows: FactoryItemExcelRow[]) {
+  async importRows(rows: FactoryItemExcelRow[], industryScope?: LookupIndustryFields) {
     this.setLoading()
-    this.setState(await new AddFactoryItemUseCase().call(new AddFactoryItemExcelParams(rows)))
+    this.setState(await new AddFactoryItemUseCase().call(new AddFactoryItemExcelParams(rows, industryScope)))
     return this.state
   }
 }
