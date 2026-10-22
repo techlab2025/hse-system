@@ -42,6 +42,14 @@ const saveAndNew = async () => {
 const setParams = (data: Params) => {
   params.value = data
 }
+
+const routeToTemplate = () => {
+  if (route.fullPath.includes('admin')) {
+    router.push('/admin/template')
+  } else {
+    router.push('/organization/template')
+  }
+}
 </script>
 
 <template>
@@ -57,7 +65,9 @@ const setParams = (data: Params) => {
       <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">
         {{ $t('save and new') }}
       </button>
-      <button type="submit" class="btn btn-primary w-full">confirm</button>
+      <button type="button" @click.prevent="routeToTemplate" class="btn btn-primary w-full">
+        confirm
+      </button>
     </div>
   </form>
 </template>
