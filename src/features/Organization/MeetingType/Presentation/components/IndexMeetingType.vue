@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { debounce } from '@/base/Presentation/utils/debouced'
@@ -145,7 +146,7 @@ const saveWorkbook = (rows: Record<string, unknown>[], filename: string) => {
   }))
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Meeting Types')
-  XLSX.writeFile(workbook, filename)
+  return downloadLookupWorkbook(workbook, filename)
 }
 
 const exportExcel = () => {

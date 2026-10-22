@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -24,7 +25,6 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from 'xlsx'
-import { saveAs } from 'file-saver'
 import SystemIncidantTypes from '../supcomponents/SystemIncidantTypes.vue'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
@@ -154,9 +154,7 @@ const exportExcel = () => {
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Invoices')
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
-  const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
-  saveAs(data, 'incidant-type.xlsx')
+  return downloadLookupWorkbook(workbook, 'incidant-type.xlsx')
 }
 
 const DownloadExample = () => {
@@ -164,9 +162,7 @@ const DownloadExample = () => {
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'AccidentsTypes')
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
-  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
-  saveAs(blob, 'incidant_type_form.xlsx')
+  return downloadLookupWorkbook(workbook, 'incidant_type_form.xlsx')
 }
 
 const IndexIncidantTypeactionList = () => [

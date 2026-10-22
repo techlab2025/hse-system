@@ -12,6 +12,7 @@ export default class CreatePPEMatrixDeliveryParams implements Params {
     public employees: PPEMatrixDeliveryEmployee[],
     public projectLocationId: number | null = null,
     public projectLocationZoneId: number | null = null,
+    public workShiftId: number | null = null,
   ) {}
 
   toMap(): Record<string, unknown> {
@@ -25,6 +26,7 @@ export default class CreatePPEMatrixDeliveryParams implements Params {
 
     if (this.projectId != null) data.project_id = this.projectId
     if (this.projectLocationId != null) data.project_location_id = this.projectLocationId
+    if (this.workShiftId != null) data.work_shift_id = this.workShiftId
     if (this.projectLocationZoneId != null) {
       data.project_location_zone_id = this.projectLocationZoneId
     }

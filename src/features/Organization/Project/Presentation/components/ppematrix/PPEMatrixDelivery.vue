@@ -19,6 +19,9 @@ import CreatePPEMatrixDeliveryController from '../../controllers/ppematrix/Creat
 import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
 import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
 import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
+import IndexShiftController from '@/features/Organization/Shifts/Presentation/controllers/IndexShiftController'
+import IndexShiftParams from '@/features/Organization/Shifts/Core/params/IndexAShiftParams'
+import AddShift from '@/features/Organization/Shifts/Presentation/components/AddShift.vue'
 
 interface DeliveryRow extends PPEMatrixDeliveryEmployee {
   key: number
@@ -29,6 +32,10 @@ const toolsController = FetchPPEActivityToolsController.getInstance()
 const deliveryController = CreatePPEMatrixDeliveryController.getInstance()
 const projectController = IndexProjectController.getInstance()
 const projectParams = new IndexProjectParams('', 1, 1000, 0)
+const shiftsController = IndexShiftController.getInstance()
+const shiftsParams = new IndexShiftParams('', 1, 10, 0)
+const selectedShift = ref<TitleInterface | null>(null)
+const shiftsDialog = ref(false)
 const employeeParams = new IndexOrganizatoinEmployeeParams('', 0, 0, 0)
 const activities = computed(() => activityController.state.value.data ?? [])
 const selectedActivityId = ref<number | null>(null)
@@ -81,6 +88,9 @@ const setProjectLocation = (value: TitleInterface | TitleInterface[] | null) => 
 const setProjectZone = (value: TitleInterface | TitleInterface[] | null) => {
   selectedProjectZone.value = Array.isArray(value) ? null : value
 }
+const setShifts = (value: TitleInterface | TitleInterface[] | null) => {
+  selectedShift.value = Array.isArray(value) ? null : value
+}
 const removeEmployee = (employeeId: number) => {
   setEmployees(selectedEmployees.value.filter((employee) => employee.id !== employeeId))
 }
@@ -125,6 +135,7 @@ const submit = async () => {
         rows.value.map((row) => ({ employeeId: row.employeeId, ppeToolIds: row.ppeToolIds })),
         Number(selectedProjectLocation.value?.id) || null,
         Number(selectedProjectZone.value?.id) || null,
+        Number(selectedShift.value?.id) || null,
       ),
     )
     if (!deliveryController.isDataSuccess()) throw new Error('Delivery failed')
@@ -171,7 +182,6 @@ onMounted(async () => {
           @update:model-value="setProject"
         />
         <UpdatedCustomInputSelect
-          v-if="selectedProject"
           id="delivery-project-location"
           :model-value="selectedProjectLocation"
           label="Location"
@@ -182,7 +192,6 @@ onMounted(async () => {
           @update:model-value="setProjectLocation"
         />
         <UpdatedCustomInputSelect
-          v-if="selectedProjectLocation"
           id="delivery-project-zone"
           :model-value="selectedProjectZone"
           label="Zone"
@@ -192,6 +201,31 @@ onMounted(async () => {
           optional
           @update:model-value="setProjectZone"
         />
+        <UpdatedCustomInputSelect
+          id="delivery-shift"
+          :model-value="selectedShift"
+          v-model:dialogVisible="shiftsDialog"
+          :controller="shiftsController"
+          :params="shiftsParams"
+          placeholder="Select Shift"
+          :label="$t('work shift')"
+          help-text="The work shift during which the PPE delivery occurred."
+          :reload="true"
+          :isDialog="true"
+          :type="1"
+          optional
+          @update:model-value="setShifts"
+          @close="shiftsDialog = false"
+        >
+          <template #LabelHeader>
+            <button type="button" class="add-dialog" @click="shiftsDialog = true">
+              {{ $t('New') }}
+            </button>
+          </template>
+          <template #Dialog>
+            <AddShift @close:dialog="shiftsDialog = false" />
+          </template>
+        </UpdatedCustomInputSelect>
       </div>
     </section>
 

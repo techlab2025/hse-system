@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import * as XLSX from 'xlsx'
+import { readLookupRows } from '@/shared/utils/lookupExcel'
 import ExcelSheetColumnsHandle from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/ExcelSheetColumnsHandle.vue'
 import FileUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/ExcelSheetHandle/FileUpload.vue'
 import IconDelete from '@/shared/icons/IconDelete.vue'
@@ -58,8 +59,12 @@ const parseFile = async (file?: File | null) => {
     const workbook = XLSX.read(await file.arrayBuffer(), { type: 'array' })
     const sheet = workbook.Sheets[workbook.SheetNames[0]]
     if (!sheet) throw new Error('Missing worksheet')
-    source.value = XLSX.utils
-      .sheet_to_json<unknown[]>(sheet, { header: 1, raw: false, defval: '', blankrows: false })
+    source.value = readLookupRows<unknown[]>(sheet, {
+      header: 1,
+      raw: false,
+      defval: '',
+      blankrows: false,
+    })
       .map((row) => row.map((value) => String(value ?? '').trim()))
       .filter((row) => row.some(Boolean))
     if (source.value.length < 2) {

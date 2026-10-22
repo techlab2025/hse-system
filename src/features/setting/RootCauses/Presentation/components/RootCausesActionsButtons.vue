@@ -1,6 +1,6 @@
 <script lang="ts" setup>
+import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import * as XLSX from 'xlsx'
-import { saveAs } from 'file-saver'
 import { onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/user'
@@ -60,9 +60,7 @@ const exportExcel = () => {
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Invoices')
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
-  const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
-  saveAs(data, 'root-causes.xlsx')
+  return downloadLookupWorkbook(workbook, 'root-causes.xlsx')
 }
 
 const DownloadExample = () => {
@@ -70,9 +68,7 @@ const DownloadExample = () => {
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'RootCauses')
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
-  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
-  saveAs(blob, 'root_causes_form.xlsx')
+  return downloadLookupWorkbook(workbook, 'root_causes_form.xlsx')
 }
 
 const actionList = () => [

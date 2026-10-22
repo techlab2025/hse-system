@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import DropList from '@/shared/HelpersComponents/DropList.vue'
@@ -28,7 +29,6 @@ import DeleteInjuryParams from '../../Core/params/deleteInjuryParams'
 import DeleteInjuryController from '../controllers/deleteInjuryController'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
 
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
@@ -154,9 +154,7 @@ const exportExcel = () => {
   const worksheet = XLSX.utils.json_to_sheet(worksheetData);
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
-  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
-  saveAs(data, "injury.xlsx");
+  return downloadLookupWorkbook(workbook, "injury.xlsx")
 };
 
 const { user } = useUserStore()
@@ -180,9 +178,7 @@ const DownloadExample = () => {
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Injuries')
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
-  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
-  saveAs(blob, 'injury_form.xlsx')
+  return downloadLookupWorkbook(workbook, 'injury_form.xlsx')
 }
 
 const IndexInjuryactionList = () => [

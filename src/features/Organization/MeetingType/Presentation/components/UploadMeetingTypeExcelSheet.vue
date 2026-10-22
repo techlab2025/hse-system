@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { readLookupRows } from '@/shared/utils/lookupExcel'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import * as XLSX from 'xlsx'
 import { useRouter } from 'vue-router'
@@ -51,7 +52,7 @@ const fileUpload = async (file: File | null) => {
     if (revision !== uploadRevision) return
     const sheet = workbook.Sheets[workbook.SheetNames[0]]
     if (!sheet) throw new Error('The workbook does not contain a worksheet.')
-    const data = XLSX.utils.sheet_to_json(sheet, {
+    const data = readLookupRows(sheet, {
       header: 1,
       raw: false,
       defval: '',

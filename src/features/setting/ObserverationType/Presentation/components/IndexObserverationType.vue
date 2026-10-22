@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import IndexObserverationTypeParams from '@/features/setting/ObserverationType/Core/params/indexObserverationTypeParams'
 import IndexObserverationTypeController from '@/features/setting/ObserverationType/Presentation/controllers/indexObserverationTypeController'
 
@@ -26,7 +27,6 @@ import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from "xlsx";
-import { saveAs } from "file-saver";
 import SystemObservationTypes from '../supcomponents/SystemObservationTypes.vue'
 import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
@@ -174,9 +174,7 @@ const exportExcel = () => {
   const worksheet = XLSX.utils.json_to_sheet(worksheetData);
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Invoices");
-  const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
-  const data = new Blob([excelBuffer], { type: "application/octet-stream" });
-  saveAs(data, "observeration-type.xlsx");
+  return downloadLookupWorkbook(workbook, "observeration-type.xlsx")
 };
 
 const DownloadExample = () => {
@@ -187,9 +185,7 @@ const DownloadExample = () => {
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'ObservationTypes')
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
-  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
-  saveAs(blob, 'observation_type_form.xlsx')
+  return downloadLookupWorkbook(workbook, 'observation_type_form.xlsx')
 }
 
 const IndexObservationTypesactionList = () => [

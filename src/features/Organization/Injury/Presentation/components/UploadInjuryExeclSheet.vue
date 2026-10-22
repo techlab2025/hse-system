@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { readLookupRows, downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import { filesToBase64 } from '@/base/Presentation/utils/file_to_base_64'
 import { ref, watch } from 'vue'
 import * as XLSX from 'xlsx'
@@ -94,7 +95,7 @@ const readExcelFile = (file: File): Promise<any[]> =>
         const arrayBuffer = e.target?.result
         const workbook = XLSX.read(arrayBuffer, { type: 'array' })
         const sheet = workbook.Sheets[workbook.SheetNames[0]]
-        const data = XLSX.utils.sheet_to_json(sheet, {
+        const data = readLookupRows(sheet, {
           header: 1,
           raw: false,
           defval: '',
@@ -207,6 +208,15 @@ const onMappingClose = () => {
     extractedImages.value = []
   }
 }
+const downloadLookupTemplate = () => {
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(
+    workbook,
+    XLSX.utils.json_to_sheet([{ title: 'Example Injury' }]),
+    'Injuries',
+  )
+  return downloadLookupWorkbook(workbook, 'injury_template.xlsx')
+}
 </script>
 
 <template>
@@ -222,7 +232,7 @@ const onMappingClose = () => {
           </div>
         </div>
 
-        <a href="/ExcelForm.xlsx" class="flex item-center gap-2" download>
+        <a href="#" class="flex item-center gap-2" @click.prevent="downloadLookupTemplate">
           <ExcelSheetIcon class="icon" />
           <span class="download-title">Download Excel Sheet</span>
         </a>

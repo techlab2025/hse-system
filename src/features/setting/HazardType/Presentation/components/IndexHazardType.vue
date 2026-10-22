@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import IndexHazardTypeParams from '@/features/setting/HazardType/Core/params/indexHazardTypeParams'
 import IndexHazardTypeController from '@/features/setting/HazardType/Presentation/controllers/indexHazardTypeController'
 
@@ -28,7 +29,6 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import { HazardTypeParentEnum } from '../../Core/Enums/HazardTypeEnum'
 import ActionsTableEdit from '@/shared/icons/ActionsTableEdit.vue'
 import * as XLSX from 'xlsx'
-import { saveAs } from 'file-saver'
 import ActionsList from '@/shared/HelpersComponents/ActionsList.vue'
 import ExceIcon from '@/shared/icons/ExceIcon.vue'
 import { ActionItemsTypeEnum } from '@/base/core/params/actions_items_type_enum'
@@ -248,9 +248,7 @@ const exportExcel = () => {
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'Invoices')
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
-  const data = new Blob([excelBuffer], { type: 'application/octet-stream' })
-  saveAs(data, 'Hazard-type.xlsx')
+  return downloadLookupWorkbook(workbook, 'Hazard-type.xlsx')
 }
 
 const DownloadExample = () => {
@@ -261,9 +259,7 @@ const DownloadExample = () => {
   const worksheet = XLSX.utils.json_to_sheet(worksheetData)
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, worksheet, 'HazardClassifications')
-  const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
-  const blob = new Blob([excelBuffer], { type: 'application/octet-stream' })
-  saveAs(blob, 'hazard_classification_form.xlsx')
+  return downloadLookupWorkbook(workbook, 'hazard_classification_form.xlsx')
 }
 
 const handleUploadCompleted = async () => {

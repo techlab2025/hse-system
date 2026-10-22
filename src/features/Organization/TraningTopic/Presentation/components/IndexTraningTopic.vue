@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { downloadLookupWorkbook } from '@/shared/utils/lookupExcel'
 import { onMounted, ref, watch } from 'vue'
 import { debounce } from '@/base/Presentation/utils/debouced'
 import { useI18n } from 'vue-i18n'
@@ -117,7 +118,7 @@ const rowActions = (id: number) => [
 const saveWorkbook = (rows: Record<string, unknown>[], filename: string) => {
   const workbook = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(workbook, XLSX.utils.json_to_sheet(rows), 'Training Topics')
-  XLSX.writeFile(workbook, filename)
+  return downloadLookupWorkbook(workbook, filename)
 }
 const exportExcel = () =>
   saveWorkbook(
