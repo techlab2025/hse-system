@@ -35,9 +35,15 @@ class ApiNames {
   }
 
   // Organization email integration. Backend contract: docs/email-integration.md.
-  public get EmailIntegration() { return this.baseUrl + this.organizationPrefix + 'integrations/email' }
-  public get EmailSentCheck() { return this.EmailIntegration + '/sent-check' }
-  public get EmailSentRetry() { return this.EmailIntegration + '/sent-retry' }
+  public get EmailIntegration() {
+    return this.baseUrl + this.organizationPrefix + 'integrations/email'
+  }
+  public get EmailSentCheck() {
+    return this.EmailIntegration + '/sent-check'
+  }
+  public get EmailSentRetry() {
+    return this.EmailIntegration + '/sent-retry'
+  }
 
   // ----------------- API endpoints (all as getters) -----------------
 
@@ -2342,7 +2348,7 @@ class ApiNames {
     return this.prefix + 'clone_traning_topic'
   }
   public get EditLeadershipVisit() {
-    return this.baseUrl + this.organizationPrefix + 'edit_visit'
+    return this.baseUrl + this.organizationPrefix + 'update_leadership_engagement_visit'
   }
 
   public get CreateLeadershipPlan() {
