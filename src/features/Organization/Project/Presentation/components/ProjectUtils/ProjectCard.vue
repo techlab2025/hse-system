@@ -187,18 +187,26 @@ const getProjectStatusClass = (status?: ProjectStatusEnum) => {
           ><span>{{ $t('Inspection') }}</span>
         </div>
       </div>
-      <div class="hse-project-card__records">
-        <span
-          >{{ $t('observation') }}
-          <b>{{ data.observations_count + data.observation_hazards_count }}</b></span
-        >
-        <span
-          >{{ $t('incident') }} <b>{{ data.observation_accidents_count || 0 }}</b></span
-        >
-        <span
-          >{{ $t('Investigation') }} <b>{{ data.investigation_count || 0 }}</b></span
-        >
+
+          <div class="hse-project-card__facts">
+        <div>
+          <strong>{{ data.observations_count + data.observation_hazards_count  }}</strong
+          ><span>{{ $t('observation') }}</span>
+        </div>
+        <div>
+          <strong>{{ data.observation_accidents_count || 0  }}</strong
+          ><span>{{ $t('incident') }}</span>
+        </div>
+        <div>
+          <strong>{{ data.investigation_count || 0}}</strong
+          ><span>{{ $t('Investigation') }}</span>
+        </div>
       </div>
+
+
+  
+
+
       <footer class="hse-project-card__actions">
         <RouterLink
           class="hse-project-button hse-project-button--primary"

@@ -4,8 +4,8 @@ import { defineAsyncComponent } from 'vue'
 import EmployeeTasksButton from '@/shared/HelpersComponents/EmployeeTasksButton.vue'
 import ProjectsStatistics from './HomeStatistics/ProjectsStatistics.vue'
 import HomeCards from './HomeUtils/HomeCards.vue'
-import { computed, onMounted, ref, watch } from 'vue'
-import ProjectProgressHeader from '@/features/Organization/ProjectPrgoress/Presentation/supcomponents/ProjectProgressHeader.vue'
+import HomeSetupHint from './HomeUtils/HomeSetupHint.vue'
+import { computed, onMounted, watch } from 'vue'
 import IndexProjectProgressController from '@/features/Organization/ProjectPrgoress/Presentation/controllers/indexProjectProgressController'
 import IndexProjectProgressParams from '@/features/Organization/ProjectPrgoress/Core/params/indexProjectProgressParams'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
@@ -39,18 +39,22 @@ const StaticsCardPerMonth = defineAsyncComponent(
 )
 const { isDarkMode } = useThemeMode()
 
-const ProgressValue = ref<number | null>(null)
+const indexProjectProgressController = IndexProjectProgressController.getInstance()
+const ProgressValue = computed(
+  () => indexProjectProgressController.state.value.data?.progress ?? null,
+)
+const setupItems = computed(
+  () => indexProjectProgressController.state.value.data?.progressItems ?? [],
+)
 const ProjectAppStatusStore = useProjectAppStatusStore()
 const { visited, setVisited } = useOrganizationOnboarding('visited')
 const fetchHomeInspectionController = FetchHomeInspectionController.getInstance()
 const homeInspectionState = computed(() => fetchHomeInspectionController.state.value)
-const indexProjectProgressController = IndexProjectProgressController.getInstance()
 const indexProjectController = IndexProjectController.getInstance()
 const ProjectStatics = computed(() => indexProjectController.state.value)
 const projects = computed(() => ProjectStatics.value.data ?? [])
 const projectsLoading = computed(
-  () =>
-    ProjectStatics.value instanceof DataInitial || ProjectStatics.value instanceof DataLoading,
+  () => ProjectStatics.value instanceof DataInitial || ProjectStatics.value instanceof DataLoading,
 )
 const overviewHazardChartController = OverviewHazardChartController.getInstance()
 const OverviewHazardChartstate = computed(() => overviewHazardChartController.state.value)
@@ -69,7 +73,6 @@ const getProjectProgress = async () => {
   const indexProjectProgressParams = new IndexProjectProgressParams('', 1, 10, 0)
   const response = await indexProjectProgressController.getData(indexProjectProgressParams)
   if (response.value?.data) {
-    ProgressValue.value = response.value?.data?.progress
     ProjectAppStatusStore.setProjectAppStatus(response.value?.data)
   }
 }
@@ -118,7 +121,6 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
     ProjectAppStatusStore.setProjectAppStatus(UpdatedProjectProgressState)
   }
 })
-
 </script>
 <template>
   <div
@@ -130,14 +132,12 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
     <HomeCards :ProgressValue="Number(ProgressValue)" />
 
     <EmployeeTasksButton />
-    <router-link
-      @click="setVisited"
-      to="/organization/project-progress"
-      class="mb-5"
+    <section
+      class="home-setup-reminder"
       :class="{ 'highlight-active': showOverlay && !visited }"
-      v-if="(ProgressValue || ProgressValue == 0) && ProgressValue < 100"
+      v-if="ProgressValue !== null && ProgressValue < 100"
     >
-      <ProjectProgressHeader :progressValue="ProgressValue" style="margin-block: 20px" />
+      <HomeSetupHint :items="setupItems" :progress-value="ProgressValue" @continue="setVisited" />
       <div v-if="showOverlay && !visited" class="overlay-note sidebar-note">
         <span class="tip-kicker">{{ $t('step_1_of_3') }}</span>
         <h3>{{ $t('Step_1_Click_Here_To_Start_Adding_Your_Data') }}</h3>
@@ -149,7 +149,7 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
         </div>
         <span class="tip-action">{{ $t('click_setup_card_to_continue') }}</span>
       </div>
-    </router-link>
+    </section>
 
     <div v-if="showOverlay && !visited" class="container-overlay"></div>
 

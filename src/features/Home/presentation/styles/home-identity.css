@@ -291,3 +291,9 @@
   background: var(--hse-project-surface-soft) !important;
   color: var(--hse-project-muted) !important;
 }
+
+.hse-home-dashboard .home-setup-reminder {
+  position: relative;
+  min-width: 0;
+  margin-block: 20px;
+}

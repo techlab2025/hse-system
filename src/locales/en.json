@@ -1,4 +1,107 @@
 {
+  "home_setup_overview_short": "Overview",
+  "home_setup_hint_title": "Finish your organization setup",
+  "home_setup_remaining": "Remaining setup items: {count}",
+  "home_setup_review_remaining": "Open Overview to review the remaining setup requirements.",
+  "home_setup_open_overview": "Complete setup in Overview",
+  "home_setup_required": "Required",
+  "home_setup_optional": "Optional",
+  "home_setup_more_steps": "Show {count} more setup items",
+  "home_setup_step_fallback": "Review this item in Overview and add the missing information.",
+  "organization_setup_steps": {
+    "preset": {
+      "title": "Preset data",
+      "hint": "Optionally copy the available preset lookup data."
+    },
+    "coding": {
+      "title": "Coding system",
+      "hint": "Set up how reference and serial numbers are generated."
+    },
+    "training": {
+      "title": "Training",
+      "hint": "Add the training records required by your organization."
+    },
+    "templates": {
+      "title": "Templates",
+      "hint": "Create the templates used for inspections and assessments."
+    },
+    "employees": {
+      "title": "Employees",
+      "hint": "Register employees and assign their organization roles."
+    },
+    "departments": {
+      "title": "Departments",
+      "hint": "Add the departments that positions will belong to."
+    },
+    "positions": {
+      "title": "Positions",
+      "hint": "Add positions under their departments and select required training."
+    },
+    "countries": {
+      "title": "Countries",
+      "hint": "Add the countries where your organization operates."
+    },
+    "states": {
+      "title": "States",
+      "hint": "Add states or governorates under the relevant countries."
+    },
+    "cities": {
+      "title": "Cities",
+      "hint": "Add cities under the relevant states or governorates."
+    },
+    "locations": {
+      "title": "Locations",
+      "hint": "Add your organization’s work locations."
+    },
+    "zones": {
+      "title": "Zones",
+      "hint": "Define the zones used to organize work and inspections."
+    },
+    "observation_types": {
+      "title": "Observation types",
+      "hint": "Add the observation types your team will use when reporting."
+    },
+    "incident_types": {
+      "title": "Incident types",
+      "hint": "Add the incident types used to classify incident reports."
+    },
+    "hazard_classifications": {
+      "title": "Hazard classifications",
+      "hint": "Define the classifications used to organize hazards and risks."
+    },
+    "risks": {
+      "title": "Risks",
+      "hint": "Add the risks associated with your hazard classifications."
+    },
+    "equipment_brands": {
+      "title": "Equipment brands",
+      "hint": "Add the equipment brands needed for your equipment records."
+    },
+    "equipment": {
+      "title": "Equipment",
+      "hint": "Register the equipment, tools, and devices used by your team."
+    },
+    "teams": {
+      "title": "Teams",
+      "hint": "Create the teams used to assign work and responsibilities."
+    },
+    "root_causes": {
+      "title": "Root causes",
+      "hint": "Add the root causes used to classify investigation findings."
+    },
+    "factors": {
+      "title": "Factors",
+      "hint": "Add the factors used to describe hazards and their causes."
+    },
+    "drill_types": {
+      "title": "Drill types",
+      "hint": "Add the drill types used for emergency preparedness."
+    },
+    "ppe_items": {
+      "title": "PPE items",
+      "hint": "Add the personal protective equipment items used by your organization."
+    }
+  },
   "eq_certificate_expiry_date": "Certificate expiry date",
   "eq_rental_details": "Rental details",
   "eq_rental_start_date": "Rental start date",

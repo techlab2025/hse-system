@@ -415,7 +415,9 @@ const scrollToRequiredField = async (key: string) => {
 
 const validateRequiredFields = async () => {
   clearResolvedRequiredErrors()
-  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors
@@ -439,10 +441,11 @@ defineExpose({
     <div class="inspection-page-header">
       <PagesHeader
         :title="isAuditCreation ? $t('Audit Assignment Center') : $t('Task Assignment Center')"
-        :subtitle="
-          $t('Distribute responsibilities across users and zones to streamline project workflows')
-        "
+        :subtitle="``"
       />
+      <!-- :subtitle="
+          $t('Distribute responsibilities across users and zones to streamline project workflows')
+        " -->
     </div>
 
     <section v-if="!data?.id" class="form-stage hse-form-stage serial-stage">
@@ -545,7 +548,7 @@ defineExpose({
               :controller="indexEquipmentController"
               :params="indexEquipmentParams"
               :label="$t('Equipment')"
-              :placeholder="$t('select your Machine')"
+              :placeholder="$t('select your Equipment')"
               @update:modelValue="setEquipment"
               :isDialog="true"
               v-model:dialogVisible="inspectionDoalouge"
@@ -739,7 +742,7 @@ defineExpose({
 }
 
 .inspection-page-header :deep(.employee-header) {
-  min-height: 8.75rem;
+ /* min-height: 8.75rem;*/
   margin: 0;
   border: 1px solid color-mix(in srgb, var(--brand-primary-500) 14%, var(--main-border));
   border-radius: inherit;
