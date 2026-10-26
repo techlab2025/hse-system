@@ -67,7 +67,7 @@ const ownershipOptions = [
 ]
 const filterFields = computed(() => [
   { key: 'status', label: 'Rent Type', options: ownershipOptions },
-  { key: 'equipmentType', label: 'Equipment Type', options: equipmentTypeOptions.value },
+{ key: 'equipmentType', label: 'Equipment Type', options: equipmentTypeOptions.value },
 ])
 const indexEquipmentController = IndexEquipmentController.getInstance()
 const state = ref(indexEquipmentController.state.value)

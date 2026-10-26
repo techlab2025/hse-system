@@ -77,9 +77,9 @@ const stepLink = (hash: string) => ({
                   <span aria-hidden="true">{{ playing ? '■' : '▶' }}</span>
                   {{ playing ? labels.stop : labels.play }}
                 </button>
-                <a :href="guide.recording.gif" class="documentation-button" download>{{
+                <!-- <a :href="guide.recording.gif" class="documentation-button" download>{{
                   labels.download
-                }}</a>
+                }}</a> -->
               </figcaption>
             </figure>
           </section>
