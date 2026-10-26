@@ -16,7 +16,7 @@ export default class EditInductionParams implements Params {
     public organisationEmployee: InductionOrganisationEmployee[],
   ) {}
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/Project/Core/params/induction/editInductionParams").setRules({
     id: { required: true },
     instractor_id: { required: true },
     date: { required: true },

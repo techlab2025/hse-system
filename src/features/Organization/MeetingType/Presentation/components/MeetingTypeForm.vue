@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { computed, markRaw, nextTick, onMounted, ref, watch, type Component } from 'vue'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
@@ -28,6 +30,8 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 type LanguageOption = { locale: string; title: string; icon?: Component | string }
 type LocalizedTitle = { locale: string; title: string }
 type LocalizedDescription = { locale: string; description: string }
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('MeetingTypeForm')
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddMeetingTypeParams | EditMeetingTypeParams): void
@@ -195,11 +199,21 @@ const requiredFields = computed(() => [
     message: getNumberOfDaysError(),
     isMissing: () => Boolean(getNumberOfDaysError()),
   },
+  {
+    key: 'industry',
+    message: '',
+    isMissing: () =>
+      user.user?.type === OrganizationTypeEnum.ADMIN &&
+      !allIndustries.value &&
+      !industry.value?.length,
+  },
 ])
 const requiredFieldErrors = ref<Record<string, string>>({})
 
 const validateRequiredFields = async () => {
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) =>
+    field.isMissing(),
+  )
   requiredFieldErrors.value = Object.fromEntries(
     missedFields.map((field) => [field.key, field.message]),
   )
@@ -248,7 +262,7 @@ onMounted(fetchLanguages)
     </p>
   </div>
 
-  <div
+  <!-- <div
     v-if="showNumberOfDays"
     class="col-span-4 md:col-span-2 input-wrapper"
     data-required-field="number_of_days"
@@ -266,7 +280,7 @@ onMounted(fetchLanguages)
     <p v-if="requiredFieldErrors.number_of_days" class="required-field-message">
       {{ requiredFieldErrors.number_of_days }}
     </p>
-  </div>
+  </div> -->
   <div
     v-if="user.user?.type === OrganizationTypeEnum.ADMIN"
     class="input-wrapper col-span-4 md:col-span-2"
@@ -279,6 +293,7 @@ onMounted(fetchLanguages)
     />
   </div>
   <div
+    data-required-field="industry"
     v-if="!allIndustries && user.user?.type === OrganizationTypeEnum.ADMIN"
     class="col-span-4 md:col-span-2"
   >
@@ -292,6 +307,9 @@ onMounted(fetchLanguages)
       :type="2"
       @update:model-value="setIndustry"
     />
+    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">
+      {{ requiredFieldErrors.industry }}
+    </p>
   </div>
 </template>
 

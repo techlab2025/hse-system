@@ -4,7 +4,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 export default class AddPPEToolClonesParams implements Params {
   clonesIds: number[]
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/PPETool/Core/params/AddPPEToolClonesParams").setRules({
     clonesIds: { required: true },
   })
 

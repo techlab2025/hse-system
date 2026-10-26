@@ -12,7 +12,7 @@ export default class AddOrganizationParams implements Params {
   location_ids: number[]
   getDataFromAdmin: boolean
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/Organization/Core/params/addOrganizationParams").setRules({
     name: { required: true, minLength: 2, maxLength: 100 },
     phone: { required: true, pattern: /^\+?[\d\s-()]+$/ },
     email: { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },

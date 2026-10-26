@@ -55,7 +55,7 @@ export default class AddHazardParams implements Params {
   public complianceNotification: number[]
   public uauc?: number
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/ObservationFactory/Core/params/addHazardParams").setRules({
     // title: { required: true, minLength: 2, maxLength: 100 },
     // typeId: { required: true },
   })

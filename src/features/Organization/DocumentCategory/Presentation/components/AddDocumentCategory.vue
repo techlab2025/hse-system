@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
@@ -21,6 +22,7 @@ const addDocumentCategoryController = AddDocumentCategoryController.getInstance(
 
 const addDocumentCategory = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'DocumentCategoryForm')
   await addDocumentCategoryController.addDocumentCategory(
     params.value as AddDocumentCategoryParams,
     router,
@@ -30,6 +32,7 @@ const addDocumentCategory = async () => {
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'DocumentCategoryForm')
   addDocumentCategoryController.setLoading()
   await addDocumentCategoryController.addDocumentCategory(
     params.value as AddDocumentCategoryParams,
@@ -55,7 +58,7 @@ const allowedPermissions = [
 
 <template>
   <PermissionBuilder :code="allowedPermissions">
-    <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addDocumentCategory">
+    <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addDocumentCategory">
       <DocumentCategoryForm :key="formKey" ref="formRef" @update:data="setParams" />
 
       <div class="col-span-4 button-wrapper create-form-actions">

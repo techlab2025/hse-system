@@ -9,7 +9,7 @@ export default class AddFactoryItemParams implements Params {
   factoryId: number
   serialNumber: string
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/FactoryItem/Core/params/addFactoryItemParams").setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
     factoryId: { required: true },
   })

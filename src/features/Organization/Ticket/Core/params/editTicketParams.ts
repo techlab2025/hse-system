@@ -9,7 +9,7 @@ export default class EditTicketParams implements Params {
   type: number
   title: string
   image: string
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/Ticket/Core/params/editTicketParams").setRules({
     translation: { required: true },
   })
   constructor(

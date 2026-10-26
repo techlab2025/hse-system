@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useSubmissionValidation } from '@/composables/useSubmissionValidation'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -8,6 +10,8 @@ import type Params from '@/base/core/params/params'
 import AddEmployeeCertificateController from '../controllers/addEmployeeCertificateController'
 import type AddEmployeeCertificateParams from '../../Core/params/AddEmplyeeCertificateParams'
 
+const validateSubmission = useSubmissionValidation('Organization/EmployeesCertificates/Core/params/AddEmplyeeCertificateParams')
+
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
 const params = ref<Params | null>(null)
@@ -16,6 +20,8 @@ const formKey = ref(0)
 const addEmployeeCertificateController = AddEmployeeCertificateController.getInstance()
 
 const addEmployeeCertificate = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   await addEmployeeCertificateController.addEmployeeCertificate(
     params.value as AddEmployeeCertificateParams,
     router,
@@ -23,6 +29,8 @@ const addEmployeeCertificate = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   addEmployeeCertificateController.setLoading()
   await addEmployeeCertificateController.addEmployeeCertificate(
     params.value as AddEmployeeCertificateParams,
@@ -39,7 +47,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addEmployeeCertificate">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addEmployeeCertificate">
     <EmployeeCertificateForm :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useSubmissionValidation } from '@/composables/useSubmissionValidation'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -9,6 +11,8 @@ import AddAdminController from '../controllers/add_admin_controller'
 import type AddAdminParams from '../../Core/Params/add_admin_params'
 import AdminForm from './AdminForm.vue'
 
+const validateSubmission = useSubmissionValidation('users/Admin/Core/Params/add_admin_params')
+
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
 const params = ref<Params | null>(null)
@@ -17,10 +21,14 @@ const formKey = ref(0)
 const addAdminController = AddAdminController.getInstance()
 
 const addAdmin = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   await addAdminController.addAdmin(params.value as AddAdminParams, router)
 }
 
 const saveAndNew = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   addAdminController.setLoading()
   await addAdminController.addAdmin(params.value as AddAdminParams, stayOnPageRouter)
   if (addAdminController.isDataSuccess()) {
@@ -35,7 +43,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-2 gap-5" @submit.prevent="addAdmin">
+  <form novalidate class="grid grid-cols-2 gap-5" @submit.prevent="addAdmin">
     <AdminForm :key="formKey" @update:updateData="setParams" />
 
     <div class="button-wrapper create-form-actions">

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -18,6 +19,7 @@ const addIncidentCategoryController = AddIncidentCategoryController.getInstance(
 
 const addIncidentCategory = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'IncidentCategoryForm')
   await addIncidentCategoryController.addIncidentCategory(
     params.value as AddIncidentCategoryParams,
     router,
@@ -27,6 +29,7 @@ const addIncidentCategory = async () => {
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'IncidentCategoryForm')
   const state = addIncidentCategoryController.setLoading()
   await addIncidentCategoryController.addIncidentCategory(
     params.value as AddIncidentCategoryParams,
@@ -45,7 +48,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addIncidentCategory">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addIncidentCategory">
     <IncidentCategoryForm ref="formRef" :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

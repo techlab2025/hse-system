@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { onMounted, ref, watch } from 'vue'
@@ -31,6 +32,7 @@ onMounted(() => {
 
 const editAuditActivity = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'AuditActivityForm')
   await EditAuditActivityController.getInstance().editAuditActivity(params.value!, router)
 }
 
@@ -66,7 +68,7 @@ const allowedPermissions = [
         <!--              {{ state.data?.titles }}-->
 
         <!--      </pre>-->
-        <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="editAuditActivity">
+        <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="editAuditActivity">
           <AuditActivityForm ref="formRef" @update:data="setParams" :data="state.data!" />
           <div class="col-span-4 button-wrapper">
             <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>

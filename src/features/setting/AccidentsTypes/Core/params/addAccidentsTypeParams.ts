@@ -10,7 +10,7 @@ export default class AddAccidentsTypeParams implements Params {
   serialNumber: string
   isLossTime: boolean
   isFalilty: boolean
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/AccidentsTypes/Core/params/addAccidentsTypeParams").setRules({
     translation: { required: true },
   })
 

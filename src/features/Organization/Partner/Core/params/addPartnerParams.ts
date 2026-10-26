@@ -7,7 +7,7 @@ export default class AddPartnerParams implements Params {
   phone: string
   serialNumber: number
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/Partner/Core/params/addPartnerParams").setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
     phone: { required: true, minLength: 11, maxLength: 20, pattern: /^\+?\d[\d\s\-()]{4,}$/ },
   })

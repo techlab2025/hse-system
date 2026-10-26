@@ -3,7 +3,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddSystemIncidentCategoryParams implements Params {
   cloneIds: number[]
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/IncidentCategories/Core/params/addSystemIncidentCategoryParams").setRules({
     cloneIds: { required: true },
   })
 

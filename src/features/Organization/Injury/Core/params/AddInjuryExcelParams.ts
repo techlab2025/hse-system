@@ -10,7 +10,7 @@ interface Data extends LookupIndustryFields {
 
 export default class AddInjuryExcelParams implements Params {
   public data: Data[]
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/Injury/Core/params/AddInjuryExcelParams").setRules({
     // translation: { required: true, minLength: 2, maxLength: 100 },
   })
 

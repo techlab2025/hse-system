@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { PpeItemEnum } from '../../../Core/Enums/ppe_enum'
@@ -68,6 +70,8 @@ import { useProjectSelectStore } from '@/stores/ProjectSelect.ts'
 import IndexPpeItemController from '@/features/Organization/ppeItem/Presentation/controllers/indexPpeItemController.ts'
 import IndexPpeItemParams from '@/features/Organization/ppeItem/Core/params/indexPpeItemParams.ts'
 import { ObservationTypeStaticOptions } from '@/features/setting/ObserverationType/Core/Enum/ObservationTypeEnum.ts'
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('FullObservationFactoryForm')
 
 const emit = defineEmits(['update:data'])
 const { isDarkMode } = useThemeMode()
@@ -838,7 +842,7 @@ const scrollToRequiredField = async (key: string) => {
 
 const validateRequiredFields = async () => {
   clearResolvedRequiredErrors()
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors

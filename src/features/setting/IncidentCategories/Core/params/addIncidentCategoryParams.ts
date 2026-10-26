@@ -3,7 +3,7 @@ import type TranslationsParams from '@/base/core/params/translations_params.ts'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddIncidentCategoryParams implements Params {
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/IncidentCategories/Core/params/addIncidentCategoryParams").setRules({
     translation: { required: true },
     incidentTypeId: { required: true, min: 1 },
   })

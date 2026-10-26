@@ -30,7 +30,7 @@ export interface EquipmentExcelRow {
 export default class AddEquipmentExcelParams implements Params {
   data: EquipmentExcelRow[] = []
 
-  public static readonly validation = new ClassValidation().setRules({})
+  public static readonly validation = new ClassValidation("setting/Equipment/Core/params/AddEquipmentExcelParams").setRules({})
 
   constructor({ data }: { data: EquipmentExcelRow[] }, industryScope?: LookupIndustryFields) {
     this.data = applyLookupIndustryScope(data, industryScope)

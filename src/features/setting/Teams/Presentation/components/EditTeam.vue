@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -30,6 +31,7 @@ onMounted(() => {
 
 const EditTeam = async (draft: boolean) => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'TeamForm')
   if (draft) {
     await EditTeamController.getInstance().editTeam(params.value!, router)
   } else {
@@ -59,7 +61,7 @@ const setParams = (data: Params) => {
       <!--              {{ state.data?.titles }}-->
 
       <!--      </pre>-->
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditTeam">
+      <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditTeam">
         <TeamForm ref="formRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>

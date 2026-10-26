@@ -13,7 +13,7 @@ interface Data extends LookupIndustryFields {
 }
 export default class AddHazardTypeExcelParams implements Params {
   data: Data[]
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/HazardType/Core/params/addHazardExcelParams").setRules({
     // translation: { required: true },
   })
   constructor(data: { data: Data[] }, industryScope?: LookupIndustryFields) {

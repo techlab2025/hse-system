@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useSubmissionValidation } from '@/composables/useSubmissionValidation'
+
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type Params from '@/base/core/params/params'
@@ -6,6 +8,8 @@ import type AddLocationParams from '../../../Core/params/addLocationParams'
 import AddLocationController from '../../controllers/addLocationController'
 import LocationStateForm from './LocationStateForm.vue'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
+
+const validateSubmission = useSubmissionValidation('setting/Location/Core/params/addLocationParams')
 
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
@@ -16,6 +20,8 @@ const emit = defineEmits(['update:data'])
 const addLocationController = AddLocationController.getInstance()
 
 const addLocation = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   const isSuccess = await addLocationController.addLocation(
     params.value as AddLocationParams,
     router,
@@ -24,6 +30,8 @@ const addLocation = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   addLocationController.setLoading()
   const isSuccess = await addLocationController.addLocation(
     params.value as AddLocationParams,
@@ -42,7 +50,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addLocation">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addLocation">
     <LocationStateForm :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

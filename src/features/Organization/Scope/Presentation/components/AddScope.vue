@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -18,12 +19,14 @@ const addScopeController = AddScopeController.getInstance()
 
 const addScope = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'ScopeForm')
   await addScopeController.addScope(params.value as AddScopeParams, router)
   emit('update:data')
 }
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'ScopeForm')
   addScopeController.setLoading()
   await addScopeController.addScope(params.value as AddScopeParams, stayOnPageRouter)
   if (addScopeController.isDataSuccess()) {
@@ -37,7 +40,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addScope">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addScope">
     <ScopeForm :key="formKey" ref="formRef" @update:data="setParams" />
     <div class="col-span-4 button-wrapper create-form-actions">
       <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">

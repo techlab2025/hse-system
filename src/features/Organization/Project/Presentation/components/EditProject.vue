@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { vProjectPanels } from '../composables/projectPanels'
 
 import { ref, watch } from 'vue'
@@ -29,6 +30,7 @@ const fetchProjectDetails = async (id: string | string[]) => {
 
 const EditProject = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'ProjectForm')
   if (!params.value) return
   await EditProjectController.getInstance().editProject(params.value, router)
 }
@@ -57,7 +59,7 @@ const setParams = (data: Params) => {
   <div data-hse-project v-project-panels class="hse-project-root hse-project-state-host">
     <DataStatus :controller="state">
       <template #success>
-        <form
+        <form novalidate
           data-hse-project
           v-project-panels
           class="hse-project-root hse-project-page grid grid-cols-1 md:grid-cols-4 gap-4"

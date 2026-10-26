@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -18,6 +19,7 @@ const addOrganizationDocumentsController = AddOrganizationDocumentsController.ge
 
 const addOrganizationDocuments = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'OrganizationDocumentsForm')
   addOrganizationDocumentsController.setLoading()
   await addOrganizationDocumentsController.addOrganizationDocuments(
     params.value as AddOrganizationDocumentsParams,
@@ -31,6 +33,7 @@ const setParams = (data: Params) => {
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'OrganizationDocumentsForm')
   addOrganizationDocumentsController.setLoading()
   await addOrganizationDocumentsController.addOrganizationDocuments(
     params.value as AddOrganizationDocumentsParams,
@@ -46,7 +49,7 @@ const route = useRoute()
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addOrganizationDocuments">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addOrganizationDocuments">
     <OrganizationDocumentsForm ref="formRef" :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

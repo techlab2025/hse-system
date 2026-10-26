@@ -1,7 +1,10 @@
 import DialogSelector from '../Dialogs/dialog_selector'
 import warning from '@/assets/images/warning.png'
+import { formValidation, requestValidation } from '@/shared/config/formValidation'
+import { getFormValidationScope } from '@/shared/utils/formValidationScope'
 
 export interface ValidationRule {
+  message?: string
   required?: boolean
   minLength?: number
   maxLength?: number
@@ -23,6 +26,8 @@ export interface ValidationResult {
 
 export class ClassValidation {
   private rules: Map<string, ValidationRule> = new Map()
+
+  constructor(private readonly configurationKey?: string) {}
 
   /**
    * Define validation rules for fields
@@ -66,8 +71,20 @@ export class ClassValidation {
    */
   validate(obj: object | null | undefined): ValidationResult {
     const errors: ValidationFieldError[] = []
+    const settings = this.configurationKey ? requestValidation[this.configurationKey] : undefined
+    const formKey = (obj && getFormValidationScope(obj)) || settings?.form
+    const form = formKey ? formValidation.forms[formKey] : undefined
+    if (!formValidation.enabled || settings?.enabled === false || form?.enabled === false)
+      return { isValid: true, errors }
 
-    this.rules.forEach((rule, field) => {
+    const rules = new Map(this.rules)
+    for (const [field, overrides] of Object.entries(settings?.fields ?? {})) {
+      const formField = form?.fields[overrides.formField ?? field]
+      if (overrides.enabled === false || formField?.enabled === false) rules.delete(field)
+      else rules.set(field, { ...rules.get(field), ...overrides })
+    }
+
+    rules.forEach((rule, field) => {
       const value = obj ? (obj as Record<string, unknown>)[field] : undefined
 
       if (rule.required && this.isEmpty(value)) {
@@ -123,6 +140,12 @@ export class ClassValidation {
       }
     })
 
+    // A configured message overrides every failed constraint for that field.
+    for (const error of errors) {
+      const rule = rules.get(error.field)
+      if (rule?.message) error.message = rule.message
+    }
+
     return {
       isValid: errors.length === 0,
       errors,
@@ -148,6 +171,18 @@ export class ClassValidation {
     if (value === null || value === undefined) return true
     if (typeof value === 'string' && value.trim() === '') return true
     if (Array.isArray(value) && value.length === 0) return true
+    // A TranslationsParams instance exists even when every localized input is blank.
+    if (value && typeof value === 'object' && 'translations' in value) {
+      const translations = value.translations
+      if (translations && typeof translations === 'object') {
+        return !Object.values(translations).some(
+          (locales) =>
+            locales &&
+            typeof locales === 'object' &&
+            Object.values(locales).some((text) => typeof text === 'string' && text.trim()),
+        )
+      }
+    }
     return false
   }
 }

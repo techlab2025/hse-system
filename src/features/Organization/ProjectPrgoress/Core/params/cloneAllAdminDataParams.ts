@@ -2,7 +2,7 @@ import type Params from '@/base/core/params/params'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class CloneAllAdminDataParams implements Params {
-  public static readonly validation = new ClassValidation().setRules({})
+  public static readonly validation = new ClassValidation("Organization/ProjectPrgoress/Core/params/cloneAllAdminDataParams").setRules({})
 
   constructor() {}
 

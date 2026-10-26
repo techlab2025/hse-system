@@ -9,7 +9,7 @@ export default class EditLangParams implements Params {
   public translation: TranslationsParams
   public code: string
   public status?: number
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/languages/Core/params/editLangParams").setRules({
     translation: { required: true },
     code: { required: true },
   })

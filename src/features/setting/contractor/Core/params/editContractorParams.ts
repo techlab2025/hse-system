@@ -15,7 +15,7 @@ export default class EditContractorParams implements Params {
   SelectedStatus?: number
   date?: string
   contract_file?: string
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/contractor/Core/params/editContractorParams").setRules({
     Name: { required: true, minLength: 2, maxLength: 100 },
     phoneNumber: { required: true, minLength: 11, maxLength: 20, pattern: /^\+?\d[\d\s\-()]{4,}$/ },
   })

@@ -17,7 +17,7 @@ export default class AddContractorParams implements Params {
   date?: string
   serialNumber?: string
   contract_file?: string
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/contractor/Core/params/addContractorParams").setRules({
     Name: { required: true, minLength: 2, maxLength: 100 },
     ContractorNumber: {
       required: true,

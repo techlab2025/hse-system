@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import USA from '@/shared/icons/USA.vue'
 import SA from '@/shared/icons/SA.vue'
@@ -33,6 +35,8 @@ import type RoleModel from '@/features/Organization/Role/Data/models/RoleModel'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { adminPermissions, type PermissionItem } from '@/constant/adminPremission'
 import { OrgPermissions } from '@/constant/organizationPremission'
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('OrganizatoinEmployeeForm')
 
 const toast = useToast()
 
@@ -357,7 +361,7 @@ const scrollToRequiredField = async (key: string) => {
 }
 
 const validateRequiredFields = async () => {
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors

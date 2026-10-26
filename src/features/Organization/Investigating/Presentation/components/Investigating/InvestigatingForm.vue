@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import type ShowInvestigatingTypeModel from '@/features/setting/InvestigatingType/Data/models/hazardTypeDetailsModel'
@@ -32,6 +34,8 @@ import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog.t
 import fingerprintInvestigation from '@/assets/images/fingerprintInvestigation.png'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import AddOrganizatoinEmployee from '@/features/Organization/OrganizationEmployee/Presentation/components/AddOrganizatoinEmployee.vue'
+const { configureRules: configureValidationRules } = useConfiguredValidation('InvestigatingForm')
+
 const emit = defineEmits(['update:data'])
 const props = defineProps<{
   data?: ShowInvestigatingTypeModel
@@ -239,7 +243,7 @@ const scrollToRequiredField = async (key: string) => {
 
 const validateRequiredFields = async () => {
   clearResolvedRequiredErrors()
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((acc, field) => {
     acc[field.key] = field.message
     return acc

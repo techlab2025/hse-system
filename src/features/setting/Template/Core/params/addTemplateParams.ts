@@ -14,7 +14,7 @@ export default class AddTemplateParams implements Params {
   template_type: number | null
   isInLiberary: number | null
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/Template/Core/params/addTemplateParams").setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
     // items: { required: true },
   })

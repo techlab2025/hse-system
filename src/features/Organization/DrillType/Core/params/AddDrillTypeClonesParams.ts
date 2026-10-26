@@ -4,7 +4,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 export default class AddDrillTypeClonesParams implements Params {
   clonesIds: number[]
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/DrillType/Core/params/AddDrillTypeClonesParams").setRules({
     clonesIds: { required: true },
   })
 

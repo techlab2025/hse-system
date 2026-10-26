@@ -7,7 +7,7 @@ export default class AddLangParams implements Params {
   code: string
   status?: number
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/languages/Core/params/addLangParams").setRules({
     translation: { required: true },
     code: { required: true },
   })

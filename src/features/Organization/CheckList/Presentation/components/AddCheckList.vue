@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useSubmissionValidation } from '@/composables/useSubmissionValidation'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -7,6 +9,8 @@ import type Params from '@/base/core/params/params'
 import CheckListForm from './CheckListForm.vue'
 import AddCheckListController from '../controllers/addCheckListController'
 import type AddCheckListParams from '../../Core/params/addCheckListParams'
+
+const validateSubmission = useSubmissionValidation('Organization/CheckList/Core/params/addCheckListParams')
 
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
@@ -17,11 +21,15 @@ const emit = defineEmits(['update:data'])
 const addCheckListController = AddCheckListController.getInstance()
 
 const addCheckList = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   await addCheckListController.addCheckList(params.value as AddCheckListParams, router)
   emit('update:data')
 }
 
 const saveAndNew = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   addCheckListController.setLoading()
   await addCheckListController.addCheckList(params.value as AddCheckListParams, stayOnPageRouter)
   if (addCheckListController.isDataSuccess()) {
@@ -35,7 +43,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addCheckList">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addCheckList">
     <CheckListForm :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

@@ -9,7 +9,7 @@ export default class AddPPEToolParams implements Params {
     public industries: number[] = [],
   ) {}
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/PPETool/Core/params/addPPEToolParams").setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
   })
 

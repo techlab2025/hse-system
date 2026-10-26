@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useSubmissionValidation } from '@/composables/useSubmissionValidation'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -9,6 +11,8 @@ import AddFactoryItemController from '@/features/setting/FactoryItem/Presentatio
 import type AddFactoryItemParams from '@/features/setting/FactoryItem/Core/params/addFactoryItemParams.ts'
 import FactoryItemForm from './FactoryItemForm.vue'
 
+const validateSubmission = useSubmissionValidation('setting/FactoryItem/Core/params/addFactoryItemParams')
+
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
 const params = ref<Params | null>(null)
@@ -17,10 +21,14 @@ const formKey = ref(0)
 const addFactoryController = AddFactoryItemController.getInstance()
 
 const addFactory = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   await addFactoryController.addFactory(params.value as AddFactoryItemParams, router)
 }
 
 const saveAndNew = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   addFactoryController.setLoading()
   await addFactoryController.addFactory(params.value as AddFactoryItemParams, stayOnPageRouter)
   if (addFactoryController.isDataSuccess()) {
@@ -34,7 +42,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addFactory">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addFactory">
     <FactoryItemForm :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

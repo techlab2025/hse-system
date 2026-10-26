@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useSubmissionValidation } from '@/composables/useSubmissionValidation'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -9,6 +11,8 @@ import AddTemplateController from '../controllers/addTemplateController'
 import type AddTemplateParams from '../../Core/params/addTemplateParams'
 import { useUserStore } from '@/stores/user'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
+
+const validateSubmission = useSubmissionValidation('setting/Template/Core/params/addTemplateParams')
 
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
@@ -21,6 +25,8 @@ const addTemplateController = AddTemplateController.getInstance()
 const { user } = useUserStore()
 
 const addTemplate = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   console.log(params.value, 'Add params')
   const state = await addTemplateController.addTemplate(params.value as AddTemplateParams, router)
   emit('update:data')
@@ -32,6 +38,8 @@ const addTemplate = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   console.log(params.value, 'Add params')
   addTemplateController.setLoading()
   await addTemplateController.addTemplate(params.value as AddTemplateParams, stayOnPageRouter)
@@ -46,7 +54,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addTemplate">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addTemplate">
     <TemplateForm :key="formKey" @update:data="setParams" />
     <div class="col-span-4 button-wrapper create-form-actions">
       <button type="button" class="btn btn-secondary" @click.prevent="saveAndNew">

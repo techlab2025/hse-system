@@ -10,7 +10,7 @@ export default class AddEquipmentTypeParams implements Params {
   parentId: number
   image: string
   type: number
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/EquipmentType/Core/params/addEquipmentTypeParams").setRules({
     translation: { required: true },
     type: { required: true },
   })

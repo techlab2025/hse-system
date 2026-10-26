@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useSubmissionValidation } from '@/composables/useSubmissionValidation'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -8,6 +10,8 @@ import OrganizationForm from './OrganizationForm.vue'
 import AddOrganizationController from '../controllers/addOrganizationController'
 import type AddOrganizationParams from '../../Core/params/addOrganizationParams'
 
+const validateSubmission = useSubmissionValidation('setting/Organization/Core/params/addOrganizationParams')
+
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
 const params = ref<Params | null>(null)
@@ -16,10 +20,14 @@ const formKey = ref(0)
 const addOrganizationController = AddOrganizationController.getInstance()
 
 const addOrganization = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   await addOrganizationController.addOrganization(params.value as AddOrganizationParams, router)
 }
 
 const saveAndNew = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   addOrganizationController.setLoading()
   await addOrganizationController.addOrganization(
     params.value as AddOrganizationParams,
@@ -36,7 +44,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addOrganization">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addOrganization">
     <OrganizationForm :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

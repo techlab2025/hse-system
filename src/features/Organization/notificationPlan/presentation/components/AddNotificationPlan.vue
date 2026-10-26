@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { computed, nextTick, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
@@ -18,6 +20,8 @@ import { NotificationPlanActionEnum } from '../../Core/enums/notification_plan_a
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('AddNotificationPlan')
 
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
@@ -137,7 +141,7 @@ const scrollToRequiredField = async (key: string) => {
 }
 
 const validateRequiredFields = async () => {
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   setRequiredErrors(missedFields)
 
   if (!missedFields.length) return true

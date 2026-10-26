@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -19,6 +20,7 @@ const addMeetingTypeController = AddMeetingTypeController.getInstance()
 
 const addMeetingType = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'MeetingTypeForm')
   await addMeetingTypeController.addMeetingType(
     params.value as AddMeetingTypeParams,
     router,
@@ -28,6 +30,7 @@ const addMeetingType = async () => {
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'MeetingTypeForm')
   addMeetingTypeController.setLoading()
   await addMeetingTypeController.addMeetingType(
     params.value as AddMeetingTypeParams,
@@ -44,7 +47,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addMeetingType">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addMeetingType">
     <MeetingTypeForm :key="formKey" ref="formRef" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

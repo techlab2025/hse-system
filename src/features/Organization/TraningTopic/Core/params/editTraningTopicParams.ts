@@ -3,7 +3,7 @@ import type TranslationsParams from '@/base/core/params/translations_params.ts'
 import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class EditTraningTopicParams implements Params {
-  static validation = new ClassValidation().setRules({
+  static validation = new ClassValidation("Organization/TraningTopic/Core/params/editTraningTopicParams").setRules({
     id: { required: true },
     translation: { required: true },
   })

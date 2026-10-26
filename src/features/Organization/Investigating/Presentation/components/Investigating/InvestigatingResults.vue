@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import InjuryDetailsModel from '@/features/Organization/ObservationFactory/Data/models/InjuryModel'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import InvestigatingHedaer from './InvestigatingResultsUtils/InvestigatingHedaer.vue'
@@ -78,6 +80,8 @@ type CauseOfActionPayload = {
   factors: InvestigationFactorPayload[]
   hasEmptyOtherFactor: boolean
 }
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('InvestigatingResults')
 
 const route = useRoute()
 const id = route.params.id
@@ -686,7 +690,7 @@ const scrollToRequiredField = async (field: RequiredFieldRule) => {
 
 const validateRequiredFields = async () => {
   clearResolvedRequiredErrors()
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors

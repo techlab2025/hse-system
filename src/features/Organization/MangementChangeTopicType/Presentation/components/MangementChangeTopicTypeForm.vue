@@ -1,4 +1,6 @@
 MangementChangeTopicType<script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
@@ -19,6 +21,8 @@ import AddMangementChangeTopicTypeParams from '../../Core/params/addMangementCha
 
 type LanguageOption = { locale: string; title: string; icon?: any }
 type LocalizedTitle = { locale: string; title: string }
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('MangementChangeTopicTypeForm')
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddMangementChangeTopicTypeClonesParams | EditMangementChangeTopicTypeParams): void
@@ -115,11 +119,12 @@ const requiredFields = computed(() => [
     message: 'PPE Item Title Is Required',
     isMissing: () => !titles.value.some((item) => hasText(item.title)),
   },
+  { key: 'mangementChangeTopicType', message: '', isMissing: () => !mangementChangeTopicType.value?.id },
 ])
 const requiredFieldErrors = ref<Record<string, string>>({})
 
 const validateRequiredFields = async () => {
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = Object.fromEntries(
     missedFields.map((field) => [field.key, field.message]),
   )
@@ -172,7 +177,7 @@ const mangementChangeTopicType = ref<TitleInterface>(
       {{ requiredFieldErrors.title }}
     </p>
   </div>
-    <div class="col-span-4 md:col-span-2">
+    <div data-required-field="mangementChangeTopicType" class="col-span-4 md:col-span-2">
     <CustomSelectInput
       :modelValue="mangementChangeTopicType"
       :static-options="mangementChangeTopicTypes"
@@ -181,6 +186,7 @@ const mangementChangeTopicType = ref<TitleInterface>(
       :placeholder="$t('select_management_change_topic_type')"
       @update:modelValue="updateMangementChangeTopicType"
     />
+    <p v-if="requiredFieldErrors.mangementChangeTopicType" class="required-field-message" role="alert">{{ requiredFieldErrors.mangementChangeTopicType }}</p>
   </div>
 
 </template>

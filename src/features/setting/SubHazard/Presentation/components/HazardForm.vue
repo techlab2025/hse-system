@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useRequiredFields, hasSelectedValue } from '@/composables/useRequiredFields'
+
 import { markRaw, onMounted, ref, watch } from 'vue'
 import type { Component } from 'vue'
 
@@ -222,6 +224,17 @@ const fields = ref([
     enabled: props?.data?.id ? false : true,
   },
 ])
+
+const { requiredFieldErrors, validateRequiredFields: validateFields } = useRequiredFields('HazardForm', () => [
+  { key: 'langs', message: '', isMissing: () => !langs.value.some((item) => String(item.title ?? '').trim().length > 0) },
+  { key: 'industry', message: '', isMissing: () => user.user?.type === OrganizationTypeEnum.ADMIN && !allIndustries.value && !hasSelectedValue(industry.value) },
+  { key: 'HazardType', message: '', isMissing: () => !props.hazardTypeId && !route.params.parent_id && !HazardType.value?.id },
+])
+const validateRequiredFields = async () => {
+  updateData()
+  return validateFields()
+}
+defineExpose({ validateRequiredFields })
 </script>
 
 <template>
@@ -235,13 +248,14 @@ const fields = ref([
     />
   </div> -->
 
-  <div class="col-span-4 md:col-span-2">
+  <div data-required-field="langs" class="col-span-4 md:col-span-2">
     <LangTitleInput
       :langs="langDefault"
       :modelValue="langs"
       @update:modelValue="setLangs"
       :label="$t('risk')"
     />
+    <p v-if="requiredFieldErrors.langs" class="required-field-message" role="alert">{{ requiredFieldErrors.langs }}</p>
   </div>
 
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum.ADMIN">
@@ -259,7 +273,7 @@ const fields = ref([
       @update:checked="allIndustries = $event"
     />
   </div>
-  <div
+  <div data-required-field="industry"
     class="input-wrapper col-span-4 md:col-span-2"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
   >
@@ -273,6 +287,7 @@ const fields = ref([
       :type="2"
       @update:modelValue="setIndustry"
     />
+    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">{{ requiredFieldErrors.industry }}</p>
   </div>
 
   <!-- <div class="input-wrapper col-span-4 md:col-span-2">
@@ -287,7 +302,7 @@ const fields = ref([
       @update:modelValue="setFactor"
     />
   </div> -->
-  <div
+  <div data-required-field="HazardType"
     class="input-wrapper col-span-4 md:col-span-2"
     v-if="!route.params.parent_id && !props.hazardTypeId"
   >
@@ -301,5 +316,10 @@ const fields = ref([
       placeholder="Select Hazard Classification"
       @update:modelValue="setHazrdType"
     />
+    <p v-if="requiredFieldErrors.HazardType" class="required-field-message" role="alert">{{ requiredFieldErrors.HazardType }}</p>
   </div>
 </template>
+
+<style scoped>
+.required-field-message { margin-top: .35rem; color: var(--status-danger); font-size: .82rem; font-weight: 700; }
+</style>

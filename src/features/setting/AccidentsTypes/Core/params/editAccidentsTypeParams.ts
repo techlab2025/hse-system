@@ -9,7 +9,7 @@ export default class EditAccidentsTypeParams implements Params {
   industries: number[]
   isLossTime: boolean
   isFalilty: boolean
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/AccidentsTypes/Core/params/editAccidentsTypeParams").setRules({
     translation: { required: true },
   })
   constructor(

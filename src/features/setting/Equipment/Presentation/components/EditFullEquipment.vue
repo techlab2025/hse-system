@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
+import { ref as validationRef } from 'vue'
+
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -8,6 +11,8 @@ import FullEquipmentFrom from './FullEquipmentFrom.vue'
 import ShowEquipmentController from '../controllers/showEquipmentController'
 import EditEquipmentController from '../controllers/editEquipmentController'
 import ShowEquipmentParams from '../../Core/params/showEquipmentParams'
+
+const validationFormRef = validationRef<InstanceType<typeof FullEquipmentFrom> | null>(null)
 
 const route = useRoute()
 const router = useRouter()
@@ -28,6 +33,9 @@ onMounted(() => {
 })
 
 const EditEquipment = async (draft: boolean) => {
+  if (!(await validationFormRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'FullEquipmentFrom')
+
   if (draft) {
     await EditEquipmentController.getInstance().editEquipment(params.value!, router)
   } else {
@@ -53,8 +61,8 @@ const setParams = (data: Params) => {
 <template>
   <DataStatus :controller="state">
     <template #success>
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditEquipment">
-        <FullEquipmentFrom @update:data="setParams" :data="state.data!" />
+      <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditEquipment">
+        <FullEquipmentFrom ref="validationFormRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">Edit</button>
         </div>

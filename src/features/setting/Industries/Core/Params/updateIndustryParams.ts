@@ -6,7 +6,7 @@ export default class UpdateIndustryParams implements Params {
   industryId: number
   title: TranslationsParams
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/Industries/Core/Params/updateIndustryParams").setRules({
     title: { required: true },
   })
   constructor(industryId: number, title: TranslationsParams) {

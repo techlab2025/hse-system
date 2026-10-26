@@ -5,7 +5,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 export default class CreateIndustryParams implements Params {
   title: TranslationsParams
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/Industries/Core/Params/createIndustryParams").setRules({
     title: { required: true },
   })
 

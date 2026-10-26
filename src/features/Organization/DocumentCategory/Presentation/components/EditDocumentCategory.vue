@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { onMounted, ref, watch } from 'vue'
@@ -31,6 +32,7 @@ onMounted(() => {
 
 const editDocumentCategory = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'DocumentCategoryForm')
   await EditDocumentCategoryController.getInstance().editDocumentCategory(params.value!, router)
 }
 
@@ -66,7 +68,7 @@ const allowedPermissions = [
         <!--              {{ state.data?.titles }}-->
 
         <!--      </pre>-->
-        <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="editDocumentCategory">
+        <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="editDocumentCategory">
           <DocumentCategoryForm ref="formRef" @update:data="setParams" :data="state.data!" />
           <div class="col-span-4 button-wrapper">
             <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>

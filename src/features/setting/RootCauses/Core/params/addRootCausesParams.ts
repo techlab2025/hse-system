@@ -7,7 +7,7 @@ export default class AddRootCausesParams implements Params {
   allIndustries: number | null
   industries: number[]
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/RootCauses/Core/params/addRootCausesParams").setRules({
     translation: { required: true },
   })
   constructor(

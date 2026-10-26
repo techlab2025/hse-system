@@ -12,7 +12,7 @@ export default class AddTemplateItemParams implements Params {
   imageType: number
   tag?: string
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/TemplateItem/Core/params/addTemplateItemParams").setRules({
     title: { required: true, minLength: 2, maxLength: 100 },
   })
   constructor(

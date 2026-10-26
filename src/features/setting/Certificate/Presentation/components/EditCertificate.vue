@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
+import { ref as validationRef } from 'vue'
+
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -8,6 +11,8 @@ import type Params from '@/base/core/params/params'
 import ShowCertificateParams from '../../Core/params/showCertificateParams'
 import ShowCertificateController from '../controllers/showCertificateController'
 import EditCertificateController from '../controllers/editCertificateController'
+
+const validationFormRef = validationRef<InstanceType<typeof CertificateForm> | null>(null)
 
 const route = useRoute()
 const router = useRouter()
@@ -26,6 +31,9 @@ onMounted(() => {
 })
 
 const EditCertificate = async (draft: boolean) => {
+  if (!(await validationFormRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'CertificateForm')
+
   if (draft) {
     await EditCertificateController.getInstance().editCertificate(params.value!, router)
   } else {
@@ -55,8 +63,8 @@ const setParams = (data: Params) => {
       <!--              {{ state.data?.titles }}-->
 
       <!--      </pre>-->
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditCertificate">
-        <CertificateForm @update:data="setParams" :data="state.data!" />
+      <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditCertificate">
+        <CertificateForm ref="validationFormRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary ">{{ $t('save') }}</button>
         </div>

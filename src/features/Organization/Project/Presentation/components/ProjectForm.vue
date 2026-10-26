@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { vProjectPanels } from '../composables/projectPanels'
 
 import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
@@ -34,6 +36,8 @@ import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 import HandleFIlesUpload, {
   type UploadedFile,
 } from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('ProjectForm')
 
 const emit = defineEmits(['update:data'])
 const SerialNumber = ref<string>('')
@@ -373,7 +377,7 @@ const scrollToRequiredField = async (key: string) => {
 }
 
 const validateRequiredFields = async () => {
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors

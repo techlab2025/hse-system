@@ -9,7 +9,7 @@ interface Data extends LookupIndustryFields {
 export default class AddDrillTypeExcelParams implements Params {
   public data: Data[]
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/DrillType/Core/params/addDrillTypeExcelParams").setRules({
     // translation: { required: true, minLength: 2, maxLength: 100 },
   })
   constructor(data: { data: Data[] }, industryScope?: LookupIndustryFields) {

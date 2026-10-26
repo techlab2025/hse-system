@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
@@ -21,6 +23,8 @@ import IndexHerikalyParams from '../../Core/params/indexHerikalyParams'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { CertificateTypeEnum } from '@/features/setting/Certificate/Core/Enums/CertificateTypeEnum'
 import AddHerikaly from './AddHerikaly.vue'
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('HerikalyForm')
 
 const emit = defineEmits(['update:data'])
 
@@ -229,7 +233,7 @@ const scrollToRequiredField = async (key: string) => {
 }
 
 const validateRequiredFields = async () => {
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors

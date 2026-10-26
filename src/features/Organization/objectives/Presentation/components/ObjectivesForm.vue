@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { computed, nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import DatePicker from 'primevue/datepicker'
@@ -21,6 +23,8 @@ import {
 } from '../../Core/enums/objectivesEnums'
 import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
 import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('ObjectivesForm')
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddObjectivesParams | EditObjectivesParams): void
@@ -344,7 +348,7 @@ const requiredFields = computed(() => [
 ])
 
 const validateRequiredFields = async () => {
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = Object.fromEntries(
     missedFields.map((field) => [field.key, field.message]),
   )

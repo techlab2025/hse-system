@@ -7,7 +7,7 @@ export default class EditTicketTypeParams implements Params {
   translation: TranslationsParams
   allIndustries: boolean | null
   industries: number[]
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/TicketType/Core/params/editTicketTypeParams").setRules({
     translation: { required: true },
   })
   constructor(

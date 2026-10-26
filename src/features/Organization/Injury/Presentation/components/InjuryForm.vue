@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useRequiredFields, hasSelectedValue } from '@/composables/useRequiredFields'
+
 import { markRaw, onMounted, ref, watch } from 'vue'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
@@ -172,16 +174,27 @@ const setIndustry = (data: TitleInterface[]) => {
   industry.value = data
   updateData()
 }
+
+const { requiredFieldErrors, validateRequiredFields: validateFields } = useRequiredFields('InjuryForm', () => [
+  { key: 'langs', message: '', isMissing: () => !langs.value.some((item) => String(item.title ?? '').trim().length > 0) },
+  { key: 'industry', message: '', isMissing: () => user.user?.type === OrganizationTypeEnum.ADMIN && !allIndustries.value && !hasSelectedValue(industry.value) },
+])
+const validateRequiredFields = async () => {
+  updateData()
+  return validateFields()
+}
+defineExpose({ validateRequiredFields })
 </script>
 
 <template>
-  <div class="col-span-4 md:col-span-2">
+  <div data-required-field="langs" class="col-span-4 md:col-span-2">
     <LangTitleInput
       :langs="langDefault"
       :modelValue="langs"
       @update:modelValue="(val) => (langs = val)"
       :label="$t('injury')"
     />
+    <p v-if="requiredFieldErrors.langs" class="required-field-message" role="alert">{{ requiredFieldErrors.langs }}</p>
   </div>
   <div
     class="input-wrapper col-span-4 md:col-span-2"
@@ -194,7 +207,7 @@ const setIndustry = (data: TitleInterface[]) => {
       @update:checked="updateAllIndustries"
     />
   </div>
-  <div
+  <div data-required-field="industry"
     class="col-span-4 md:col-span-2"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
   >
@@ -208,6 +221,7 @@ const setIndustry = (data: TitleInterface[]) => {
       :type="2"
       @update:modelValue="setIndustry"
     />
+    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">{{ requiredFieldErrors.industry }}</p>
   </div>
 
   <!-- <div class="col-span-4 md:col-span-2" v-if="!data?.id">
@@ -220,3 +234,7 @@ const setIndustry = (data: TitleInterface[]) => {
     />
   </div> -->
 </template>
+
+<style scoped>
+.required-field-message { margin-top: .35rem; color: var(--status-danger); font-size: .82rem; font-weight: 700; }
+</style>

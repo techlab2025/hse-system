@@ -9,7 +9,7 @@ export default class AddVisitThemeParams implements Params {
     public industries: number[] = [],
   ) {}
 
-  static readonly validation = new ClassValidation().setRules({
+  static readonly validation = new ClassValidation("Organization/VisitTheme/Core/params/addVisitThemeParams").setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
   })
 

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useRequiredFields, hasSelectedValue } from '@/composables/useRequiredFields'
+
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
@@ -205,6 +207,17 @@ const updateAllIndustries = (data) => {
   allIndustries.value = data
   updateData()
 }
+
+const { requiredFieldErrors, validateRequiredFields: validateFields } = useRequiredFields('HazardTypeForm', () => [
+  { key: 'langs', message: '', isMissing: () => !langs.value.some((item) => String(item.title ?? '').trim().length > 0) },
+  { key: 'industry', message: '', isMissing: () => user.user?.type === OrganizationTypeEnum.ADMIN && !allIndustries.value && !hasSelectedValue(industry.value) },
+  { key: 'Factor', message: '', isMissing: () => Boolean(route.params.parent_id || route.query.parent_id) && !Factor.value?.length },
+])
+const validateRequiredFields = async () => {
+  updateData()
+  return validateFields()
+}
+defineExpose({ validateRequiredFields })
 </script>
 
 <template>
@@ -224,8 +237,9 @@ const updateAllIndustries = (data) => {
     />
   </div> -->
 
-  <div class="col-span-4 md:col-span-2">
+  <div data-required-field="langs" class="col-span-4 md:col-span-2">
     <LangTitleInput :langs="langDefault" :modelValue="langs" @update:modelValue="setLangs" :label="$t('hazard classification')"/>
+    <p v-if="requiredFieldErrors.langs" class="required-field-message" role="alert">{{ requiredFieldErrors.langs }}</p>
   </div>
 
   <!-- <div class="col-span-4 md:col-span-2 input-wrapper check-box" v-if="user.user?.type == OrganizationTypeEnum.ADMIN">
@@ -243,7 +257,7 @@ const updateAllIndustries = (data) => {
       @update:checked="updateAllIndustries"
     />
   </div>
-  <div
+  <div data-required-field="industry"
     class="col-span-4 md:col-span-2"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum.ADMIN"
   >
@@ -257,9 +271,10 @@ const updateAllIndustries = (data) => {
       :type="2"
       @update:modelValue="setIndustry"
     />
+    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">{{ requiredFieldErrors.industry }}</p>
   </div>
 
-  <div class="col-span-4 md:col-span-2" v-if="route.params.parent_id || route.query.parent_id">
+  <div data-required-field="Factor" class="col-span-4 md:col-span-2" v-if="route.params.parent_id || route.query.parent_id">
     <CustomSelectInput
       :modelValue="Factor"
       :controller="indexFactoryController"
@@ -270,5 +285,10 @@ const updateAllIndustries = (data) => {
       :type="2"
       @update:modelValue="setFactor"
     />
+    <p v-if="requiredFieldErrors.Factor" class="required-field-message" role="alert">{{ requiredFieldErrors.Factor }}</p>
   </div>
 </template>
+
+<style scoped>
+.required-field-message { margin-top: .35rem; color: var(--status-danger); font-size: .82rem; font-weight: 700; }
+</style>

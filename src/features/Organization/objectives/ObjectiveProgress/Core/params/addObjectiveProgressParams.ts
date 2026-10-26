@@ -8,7 +8,7 @@ export default class AddObjectiveProgressParams implements Params {
     public draft: ProgressDraft,
   ) {}
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/objectives/ObjectiveProgress/Core/params/addObjectiveProgressParams").setRules({
     objectiveId: { required: true, min: 1 },
     draft: {
       required: true,

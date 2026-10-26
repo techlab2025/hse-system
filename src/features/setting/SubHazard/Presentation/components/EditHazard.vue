@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
+import { ref as validationRef } from 'vue'
+
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import ShowHazardTypeParams from '@/features/setting/HazardType/Core/params/showHazardTypeParams'
@@ -8,6 +11,8 @@ import type Params from '@/base/core/params/params'
 import HazardForm from './HazardForm.vue'
 import ShowHazardTypeController from '../controllers/showHazardController'
 import EditHazardTypeController from '../controllers/editHazardController'
+
+const validationFormRef = validationRef<InstanceType<typeof HazardForm> | null>(null)
 
 const route = useRoute()
 const router = useRouter()
@@ -27,6 +32,9 @@ onMounted(() => {
 })
 
 const EditHazardType = async (draft: boolean) => {
+  if (!(await validationFormRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'HazardForm')
+
   if (draft) {
     await EditHazardTypeController.getInstance().editHazardType(params.value!, router)
   } else {
@@ -56,8 +64,8 @@ const setParams = (data: Params) => {
       <!--              {{ state.data?.titles }}-->
 
       <!--      </pre>-->
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditHazardType">
-        <HazardForm @update:data="setParams" :data="state.data!" />
+      <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditHazardType">
+        <HazardForm ref="validationFormRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>

@@ -5,7 +5,7 @@ export default class ReplaceTicketParams implements Params {
   public ticketId: number
   public reply: string
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/Ticket/Core/params/replaceTicketParams").setRules({
     ticketId: { required: true },
     reply: { required: true },
   })

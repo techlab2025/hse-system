@@ -6,7 +6,7 @@ import type { MangementChangeTopicTypeEnum } from '../Core/MangementChangeTopicT
 export default class AddMangementChangeTopicTypeParams implements Params {
   constructor(public translation: TranslationsParams, public status?: MangementChangeTopicTypeEnum) {}
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/MangementChangeTopicType/Core/params/addMangementChangeTopicTypeParams").setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
     status: { required: false }
   })

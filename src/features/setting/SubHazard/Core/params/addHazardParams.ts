@@ -9,7 +9,7 @@ export default class AddHazardTypeParams implements Params {
   industries: number[]
   FcatorIds: HazardFactorParams[]
   ParentId?: number
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/SubHazard/Core/params/addHazardParams").setRules({
     translation: { required: true },
   })
   constructor(

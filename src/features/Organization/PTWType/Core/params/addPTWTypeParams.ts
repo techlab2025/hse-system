@@ -10,7 +10,7 @@ export default class AddPTWTypeParams implements Params {
     public industries: number[] = [],
   ) {}
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/PTWType/Core/params/addPTWTypeParams").setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
     ptw_color: { required: true },
   })

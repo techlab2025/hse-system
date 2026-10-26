@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useRequiredFields } from '@/composables/useRequiredFields'
 import { markRaw, onMounted, ref, watch, type Component } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
@@ -10,7 +11,6 @@ import TranslationsParams from '@/base/core/params/translations_params.ts'
 import AddTraningTopicParams from '../../Core/params/addTraningTopicParams'
 import EditTraningTopicParams from '../../Core/params/editTraningTopicParams'
 import type TraningTopicDetailsModel from '../../Data/models/TraningTopicDetailsModel'
-import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import CustomSelectInput from '@/shared/FormInputs/CustomSelectInput.vue'
@@ -36,7 +36,6 @@ const { t } = useI18n()
 const user = useUserStore()
 const langs = ref<LangTitleValue[]>([])
 const langDefault = ref<LangTitleValue[]>([])
-const requiredFields = ref<Record<string, string>>({})
 const allIndustries = ref(false)
 const industry = ref<TitleInterface[]>([])
 const industryController = IndexIndustryController.getInstance()
@@ -109,26 +108,24 @@ const setLangs = (value: { locale: string; title?: string }[]) => {
   langs.value = value.map((item) => ({ locale: item.locale, title: item.title ?? '' }))
 }
 
-const validateRequiredFields = () => {
-  requiredFields.value = {}
-
-  const firstMissing = langs.value.find((lang) => !lang.title?.trim())
-  if (firstMissing) {
-    requiredFields.value.title = t('title_required_all_languages')
-    new OpenWarningDilaog(t('title_required')).openDialog()
-
-    requestAnimationFrame(() => {
-      document.querySelector('[data-field="traning-topic-title"]')?.scrollIntoView({
-        behavior: 'smooth',
-        block: 'center',
-      })
-    })
-
-    return false
-  }
-
-  return true
-}
+const { requiredFieldErrors: requiredFields, validateRequiredFields } = useRequiredFields(
+  'TraningTopicForm',
+  () => [
+    {
+      key: 'title',
+      message: '',
+      isMissing: () => !langs.value.some((lang) => Boolean(lang.title?.trim())),
+    },
+    {
+      key: 'industry',
+      message: '',
+      isMissing: () =>
+        user.user?.type === OrganizationTypeEnum.ADMIN &&
+        !allIndustries.value &&
+        !industry.value.length,
+    },
+  ],
+)
 
 watch(
   () => langs.value,
@@ -157,7 +154,7 @@ defineExpose({ validateRequiredFields })
 </script>
 
 <template>
-  <div data-field="traning-topic-title">
+  <div data-required-field="title">
     <LangTitleInput
       :label="$t('traning_topic_title')"
       :langs="langDefault"
@@ -168,12 +165,30 @@ defineExpose({ validateRequiredFields })
       {{ requiredFields.title }}
     </small>
   </div>
-  <div v-if="user.user?.type === OrganizationTypeEnum.ADMIN" class="input-wrapper col-span-4 md:col-span-2">
-    <CustomCheckbox :index="3" title="all_industries" :checked="allIndustries" @update:checked="updateAllIndustries" />
+  <div
+    v-if="user.user?.type === OrganizationTypeEnum.ADMIN"
+    class="input-wrapper col-span-4 md:col-span-2"
+  >
+    <CustomCheckbox
+      :index="3"
+      title="all_industries"
+      :checked="allIndustries"
+      @update:checked="updateAllIndustries"
+    />
   </div>
-  <div v-if="!allIndustries && user.user?.type === OrganizationTypeEnum.ADMIN" class="col-span-4 md:col-span-2">
-    <CustomSelectInput :model-value="industry" :controller="industryController" :params="industryParams"
-      label="industry" id="traning-topic-industry" placeholder="Select industry" :type="2"
-      @update:model-value="setIndustry" />
+  <div
+    v-if="!allIndustries && user.user?.type === OrganizationTypeEnum.ADMIN"
+    class="col-span-4 md:col-span-2"
+  >
+    <CustomSelectInput
+      :model-value="industry"
+      :controller="industryController"
+      :params="industryParams"
+      label="industry"
+      id="traning-topic-industry"
+      placeholder="Select industry"
+      :type="2"
+      @update:model-value="setIndustry"
+    />
   </div>
 </template>

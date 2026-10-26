@@ -8,7 +8,7 @@ export default class EditAdminParams implements Params {
   public password: string
   public phone: string
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("users/Admin/Core/Params/edit_admin_params").setRules({
     name: { required: true, minLength: 2, maxLength: 100 },
     phone: { required: true, pattern: /^\+?[\d\s-()]+$/ },
     email: { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },

@@ -23,7 +23,7 @@ export default class EditObjectivesParams implements Params {
     public annualOccurrences: number | null = null,
   ) {}
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/objectives/Core/params/editObjectivesParams").setRules({
     id: { required: true },
     year: { required: true },
     objective: { required: true, minLength: 2 },

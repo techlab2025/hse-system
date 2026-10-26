@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useSubmissionValidation } from '@/composables/useSubmissionValidation'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -6,6 +8,8 @@ import type Params from '@/base/core/params/params'
 import AddDocumentRefrenceController from '../controllers/AddDocumentRefrenceController'
 import type AddDocumentRefrenceParams from '../../Core/params/AddDocumentRefrenceParams'
 import DocumentRefrenceForm from './DocumentRefrenceForm.vue'
+
+const validateSubmission = useSubmissionValidation('Organization/DocumentRefrence/Core/params/AddDocumentRefrenceParams')
 
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
@@ -16,6 +20,8 @@ const emit = defineEmits(['close:dialog'])
 const addDocumentRefrenceController = AddDocumentRefrenceController.getInstance()
 
 const addDocumentRefrence = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   await addDocumentRefrenceController.addDocumentRefrence(
     params.value as AddDocumentRefrenceParams,
     router,
@@ -24,6 +30,8 @@ const addDocumentRefrence = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   addDocumentRefrenceController.setLoading()
   await addDocumentRefrenceController.addDocumentRefrence(
     params.value as AddDocumentRefrenceParams,
@@ -40,7 +48,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addDocumentRefrence">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addDocumentRefrence">
     <DocumentRefrenceForm :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

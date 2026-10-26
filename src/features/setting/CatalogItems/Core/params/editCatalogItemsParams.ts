@@ -15,7 +15,7 @@ export default class implements Params {
    guideCategoryItems?: CatalogItemsParams
    link?: string
 
-      public static readonly validation = new ClassValidation().setRules({
+      public static readonly validation = new ClassValidation("setting/CatalogItems/Core/params/editCatalogItemsParams").setRules({
         parentId: { required: true },
       
       })

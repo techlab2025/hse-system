@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
+import { ref as validationRef } from 'vue'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -9,6 +12,8 @@ import TraningTopicForm from '@/features/Organization/TraningTopic/Presentation/
 import AddTraningTopicController from '@/features/Organization/TraningTopic/Presentation/controllers/addTraningTopicController.ts'
 import AddTraningTopicParams from '@/features/Organization/TraningTopic/Core/params/addTraningTopicParams.ts'
 import type Params from '@/base/core/params/params'
+
+const validationFormRef = validationRef<InstanceType<typeof TraningTopicForm> | null>(null)
 
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
@@ -32,6 +37,9 @@ const setParams = (data: Params) => {
 }
 
 const addTraningTopic = async () => {
+  if (!(await validationFormRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'TraningTopicForm')
+
   if (!params.value) return
 
   addTraningTopicController.setLoading()
@@ -44,6 +52,9 @@ const addTraningTopic = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!(await validationFormRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'TraningTopicForm')
+
   if (!params.value) return
 
   addTraningTopicController.setLoading()
@@ -62,8 +73,8 @@ const saveAndNew = async () => {
 
 <template>
   <PermissionBuilder :code="createPermissions">
-    <form class="grid grid-cols-1 md:grid-cols-2 gap-4" @submit.prevent="addTraningTopic">
-      <TraningTopicForm :key="formKey" @update:data="setParams" />
+    <form novalidate class="grid grid-cols-1 md:grid-cols-2 gap-4" @submit.prevent="addTraningTopic">
+      <TraningTopicForm ref="validationFormRef" :key="formKey" @update:data="setParams" />
 
       <div class="col-span-4 button-wrapper create-form-actions">
         <button type="button" @click.prevent="saveAndNew" class="btn btn-secondary">

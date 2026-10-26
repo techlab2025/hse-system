@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useSubmissionValidation } from '@/composables/useSubmissionValidation'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -6,6 +8,8 @@ import AddTicketTypeController from '@/features/Organization/TicketType/Presenta
 import AddTicketTypeParams from '@/features/Organization/TicketType/Core/params/addTicketTypeParams.ts'
 import type Params from '@/base/core/params/params'
 import TicketTypeForm from './TicketTypeForm.vue'
+
+const validateSubmission = useSubmissionValidation('Organization/TicketType/Core/params/addTicketTypeParams')
 
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
@@ -16,11 +20,15 @@ const formKey = ref(0)
 const addTicketTypeController = AddTicketTypeController.getInstance()
 
 const addTicketType = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   await addTicketTypeController.addTicketType(params.value as AddTicketTypeParams, router)
   emit('close:data')
 }
 
 const saveAndNew = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   addTicketTypeController.setLoading()
   await addTicketTypeController.addTicketType(params.value as AddTicketTypeParams, stayOnPageRouter)
   if (addTicketTypeController.isDataSuccess()) {
@@ -34,7 +42,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addTicketType">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addTicketType">
     <TicketTypeForm :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

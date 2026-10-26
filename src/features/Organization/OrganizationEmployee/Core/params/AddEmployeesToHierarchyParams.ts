@@ -6,7 +6,7 @@ export default class AddEmployeeToHierarchyParams implements Params {
   hierarchyId: number
   employeeIds: AddEmployeeIdToHierarchyParams[]
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/OrganizationEmployee/Core/params/AddEmployeesToHierarchyParams").setRules({
     hierarchyId: { required: true },
     employeeIds: { required: true },
   })

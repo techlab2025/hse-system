@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -32,6 +33,7 @@ const addHerikalyController = AddHerikalyController.getInstance()
 
 const addHerikaly = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'HerikalyForm')
   console.log(params.value, 'params')
   addHerikalyController.setLoading()
   await addHerikalyController.addHerikaly(
@@ -49,6 +51,7 @@ const addHerikaly = async () => {
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'HerikalyForm')
   addHerikalyController.setLoading()
   await addHerikalyController.addHerikaly(params.value as AddHerikalyParams, stayOnPageRouter, true)
   if (addHerikalyController.isDataSuccess()) {
@@ -63,7 +66,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addHerikaly">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addHerikaly">
     <HerikalyForm
       ref="formRef"
       :key="formKey"

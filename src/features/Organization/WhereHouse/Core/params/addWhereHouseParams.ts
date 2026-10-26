@@ -7,8 +7,8 @@ export default class AddWhereHouseParams implements Params {
   name: string
   serialNumber: number
 
-  public static readonly validation = new ClassValidation().setRules({
-    name: { required: true, minLength: 2, maxLength: 100 },
+  public static readonly validation = new ClassValidation("Organization/WhereHouse/Core/params/addWhereHouseParams").setRules({
+    // name: { required: true, minLength: 2, maxLength: 100 },
   })
 
   constructor(warehouseTypeId: number, name: string, serialNumber: number) {

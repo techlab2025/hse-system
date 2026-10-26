@@ -4,7 +4,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 export default class AddMangementChangeTopicTypeClonesParams implements Params {
   clonesIds: number[]
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/MangementChangeTopicType/Core/params/AddMangementChangeTopicTypeParams").setRules({
     clonesIds: { required: true },
   })
 

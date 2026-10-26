@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { computed, markRaw, nextTick, onMounted, ref, watch, type Component } from 'vue'
 import { useI18n } from 'vue-i18n'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
@@ -22,6 +24,8 @@ import type PPEActivityDetailsModel from '../../Data/models/PPEActivityDetailsMo
 
 type LanguageOption = { locale: string; title: string; icon?: Component | string }
 type LocalizedTitle = { locale: string; title: string }
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('PPEActivityForm')
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddPPEActivityParams | EditPPEActivityParams): void
@@ -114,11 +118,12 @@ const requiredFields = computed(() => [
     message: t('ppe_activity_title_required'),
     isMissing: () => !titles.value.some((item) => hasText(item.title)),
   },
+  { key: 'industry', message: '', isMissing: () => user.user?.type === OrganizationTypeEnum.ADMIN && !allIndustries.value && !industry.value?.length },
 ])
 const requiredFieldErrors = ref<Record<string, string>>({})
 
 const validateRequiredFields = async () => {
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = Object.fromEntries(
     missedFields.map((field) => [field.key, field.message]),
   )
@@ -152,10 +157,11 @@ onMounted(fetchLanguages)
   <div v-if="user.user?.type === OrganizationTypeEnum.ADMIN" class="input-wrapper col-span-4 md:col-span-2">
     <CustomCheckbox :index="3" title="all_industries" :checked="allIndustries" @update:checked="updateAllIndustries" />
   </div>
-  <div v-if="!allIndustries && user.user?.type === OrganizationTypeEnum.ADMIN" class="col-span-4 md:col-span-2">
+  <div data-required-field="industry" v-if="!allIndustries && user.user?.type === OrganizationTypeEnum.ADMIN" class="col-span-4 md:col-span-2">
     <CustomSelectInput :model-value="industry" :controller="industryController" :params="industryParams"
       label="industry" id="ppe-activity-industry" placeholder="Select industry" :type="2"
       @update:model-value="setIndustry" />
+    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">{{ requiredFieldErrors.industry }}</p>
   </div>
 </template>
 

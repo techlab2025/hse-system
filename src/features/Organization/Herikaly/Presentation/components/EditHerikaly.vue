@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -28,6 +29,7 @@ onMounted(() => {
 
 const EditHerikaly = async (draft: boolean) => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'HerikalyForm')
   if (draft) {
     await EditHerikalyController.getInstance().editHerikaly(params.value!, router)
   } else {
@@ -53,7 +55,7 @@ const setParams = (data: Params) => {
 <template>
   <DataStatus :controller="state">
     <template #success>
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditHerikaly">
+      <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditHerikaly">
         <HerikalyForm ref="formRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>

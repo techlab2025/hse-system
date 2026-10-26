@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
+import { ref as validationRef } from 'vue'
+
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
@@ -12,6 +15,8 @@ import EditTraningTopicController from '@/features/Organization/TraningTopic/Pre
 import ShowTraningTopicParams from '@/features/Organization/TraningTopic/Core/params/showTraningTopicParams'
 import type EditTraningTopicParams from '@/features/Organization/TraningTopic/Core/params/editTraningTopicParams'
 import type Params from '@/base/core/params/params'
+
+const validationFormRef = validationRef<InstanceType<typeof TraningTopicForm> | null>(null)
 
 const route = useRoute()
 const router = useRouter()
@@ -60,6 +65,9 @@ watch(
 )
 
 const editTraningTopic = async () => {
+  if (!(await validationFormRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'TraningTopicForm')
+
   if (!params.value) return
 
   editTraningTopicController.setLoading()
@@ -74,8 +82,8 @@ const editTraningTopic = async () => {
   <PermissionBuilder :code="detailsPermissions">
     <DataStatus :controller="state">
       <template #success>
-        <form class="grid grid-cols-1 md:grid-cols-2 gap-4" @submit.prevent="editTraningTopic">
-          <TraningTopicForm :data="state.data!" @update:data="setParams" />
+        <form novalidate class="grid grid-cols-1 md:grid-cols-2 gap-4" @submit.prevent="editTraningTopic">
+          <TraningTopicForm ref="validationFormRef" :data="state.data!" @update:data="setParams" />
 
           <PermissionBuilder :code="updatePermissions">
             <div class="col-span-4 button-wrapper create-form-actions">

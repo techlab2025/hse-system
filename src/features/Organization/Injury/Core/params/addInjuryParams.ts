@@ -8,7 +8,7 @@ export default class AddInjuryParams implements Params {
   allIndustries: boolean | null
   industries: number[]
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/Injury/Core/params/addInjuryParams").setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
   })
 

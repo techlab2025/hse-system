@@ -11,7 +11,7 @@ export default class AddHazardTypeParams implements Params {
   FcatorIds: HazardFactorParams[]
   ParentId?: number
   SerialNumber?: string
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/HazardType/Core/params/addHazardTypeParams").setRules({
     translation: { required: true },
   })
   constructor(

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
@@ -16,6 +18,8 @@ import AddIncidentCategoryParams from '../../Core/params/addIncidentCategoryPara
 import EditIncidentCategoryParams from '../../Core/params/editIncidentCategoryParams'
 import type IncidentCategoryDetailsModel from '../../Data/models/IncidentCategoryDetailsModel'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('IncidentCategoryForm')
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{ data?: IncidentCategoryDetailsModel }>()
@@ -104,7 +108,7 @@ const scrollToRequiredField = async (key: string) => {
 }
 
 const validateRequiredFields = async () => {
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors

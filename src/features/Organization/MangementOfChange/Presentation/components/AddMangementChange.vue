@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import type Params from '@/base/core/params/params'
@@ -27,6 +28,7 @@ const listPath = computed(() =>
 
 const addMangementChange = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'MangementChangeForm')
   await addMangementChangeController.addMangementChange(
     params.value as AddMangementChangeParams,
   )
@@ -38,6 +40,7 @@ const addMangementChange = async () => {
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'MangementChangeForm')
   addMangementChangeController.setLoading()
   await addMangementChangeController.addMangementChange(
     params.value as AddMangementChangeParams,
@@ -55,7 +58,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form
+  <form novalidate
     class="management-change-form"
     @submit.prevent="addMangementChange"
   >

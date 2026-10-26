@@ -4,7 +4,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 export default class AddPTWTypeClonesParams implements Params {
   clonesIds: number[]
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/PTWType/Core/params/AddPTWTypeClonesParams").setRules({
     clonesIds: { required: true },
   })
 

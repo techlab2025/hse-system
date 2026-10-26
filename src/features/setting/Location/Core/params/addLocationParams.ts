@@ -9,7 +9,7 @@ export default class AddLocationParams implements Params {
   ParentId?: number
   serialNumber?: number
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/Location/Core/params/addLocationParams").setRules({
     title: { required: true, minLength: 2, maxLength: 100 },
     type: { required: true },
     // code: { required: true, minLength: 1, maxLength: 5 },

@@ -7,7 +7,7 @@ export default class AddShiftParams implements Params {
   startTime: string
   endTime: string
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/Shifts/Core/params/AddShiftParams").setRules({
     translation: { required: true },
     startTime: { required: true },
     endTime: { required: true },

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 // import PrimaryButton from "@/components/HelpersComponents/PrimaryButton.vue";
@@ -18,12 +19,14 @@ const addObservationController = AddHazardController.getInstance()
 
 const addObservation = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'FullObservationFactoryForm')
   console.log(params.value, 'params')
   await addObservationController.addHazard(params.value as AddHazardParams, router)
 }
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'FullObservationFactoryForm')
 
   addObservationController.setLoading()
   await addObservationController.addHazard(params.value as AddHazardParams, stayOnPageRouter)
@@ -39,7 +42,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-6 gap-4" @submit.prevent="addObservation">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-6 gap-4" @submit.prevent="addObservation">
     <!-- <ObservationForm @update:data="setParams" /> -->
     <FullObservationFactoryForm :key="formKey" ref="formRef" @update:data="setParams" />
 

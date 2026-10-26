@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -16,6 +17,7 @@ const addObjectivesController = AddObjectivesController.getInstance()
 
 const addObjectives = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'ObjectivesForm')
   await addObjectivesController.addObjectives(
     params.value as AddObjectivesParams,
     router,
@@ -26,6 +28,7 @@ const addObjectives = async () => {
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'ObjectivesForm')
   addObjectivesController.setLoading()
   await addObjectivesController.addObjectives(params.value as AddObjectivesParams, stayOnPageRouter)
   if (addObjectivesController.isDataSuccess()) {
@@ -39,7 +42,7 @@ const setParams = (data: AddObjectivesParams) => {
 </script>
 
 <template>
-  <form class="objective-editor-form" @submit.prevent="addObjectives">
+  <form novalidate class="objective-editor-form" @submit.prevent="addObjectives">
     <ObjectivesForm :key="formKey" ref="formRef" @update:data="setParams" />
 
     <div class="objective-action-bar create-form-actions">

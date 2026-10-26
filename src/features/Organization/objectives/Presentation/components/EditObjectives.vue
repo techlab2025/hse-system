@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -31,6 +32,7 @@ onMounted(() => {
 
 const editObjectives = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'ObjectivesForm')
   await EditObjectivesController.getInstance().editObjectives(params.value!, router)
 }
 
@@ -52,7 +54,7 @@ const setParams = (data: AddObjectivesParams | EditObjectivesParams) => {
 <template>
   <DataStatus :controller="state">
     <template #success>
-      <form class="objective-editor-form" @submit.prevent="editObjectives">
+      <form novalidate class="objective-editor-form" @submit.prevent="editObjectives">
         <ObjectivesForm ref="formRef" @update:data="setParams" :data="state.data!" />
         <div class="objective-action-bar create-form-actions">
           <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>

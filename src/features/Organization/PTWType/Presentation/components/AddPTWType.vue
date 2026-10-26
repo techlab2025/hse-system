@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -19,6 +20,7 @@ const addPTWTypeController = AddPTWTypeController.getInstance()
 
 const addPTWType = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'PTWTypeForm')
   console.log(params.value, 'params.value')
   await addPTWTypeController.addPTWType(params.value as AddPTWTypeParams, router)
   emit('update:data')
@@ -26,6 +28,7 @@ const addPTWType = async () => {
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'PTWTypeForm')
   addPTWTypeController.setLoading()
   await addPTWTypeController.addPTWType(params.value as AddPTWTypeParams, stayOnPageRouter)
   if (addPTWTypeController.isDataSuccess()) {
@@ -39,7 +42,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addPTWType">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addPTWType">
     <PTWTypeForm :key="formKey" ref="formRef" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -19,6 +20,7 @@ const addPpeItemController = AddPpeItemController.getInstance()
 
 const addPpeItem = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'PpeItemForm')
   await addPpeItemController.addPpeItem(
     params.value as AddPpeItemParams,
     router,
@@ -28,6 +30,7 @@ const addPpeItem = async () => {
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'PpeItemForm')
   addPpeItemController.setLoading()
   await addPpeItemController.addPpeItem(
     params.value as AddPpeItemParams,
@@ -44,7 +47,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addPpeItem">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addPpeItem">
     <PpeItemForm :key="formKey" ref="formRef" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

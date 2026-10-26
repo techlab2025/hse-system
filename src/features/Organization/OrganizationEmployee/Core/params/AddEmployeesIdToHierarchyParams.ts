@@ -4,7 +4,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 export default class AddEmployeeIdToHierarchyParams implements Params {
   organization_employee_id: number
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/OrganizationEmployee/Core/params/AddEmployeesIdToHierarchyParams").setRules({
     organization_employee_id: { required: true },
   })
   constructor(organization_employee_id: number) {

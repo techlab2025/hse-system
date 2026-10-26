@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { ref } from 'vue'
@@ -28,12 +29,14 @@ const createPermissions = [
 
 const addInduction = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'InductionForm')
   await addInductionController.addInduction(params.value as AddInductionParams, router)
   if (addInductionController.isDataSuccess()) emit('update:data')
 }
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'InductionForm')
   await addInductionController.addInduction(
     params.value as AddInductionParams,
     stayOnPageRouter,
@@ -52,7 +55,7 @@ const setParams = (data: Params) => {
 
 <template>
   <PermissionBuilder :code="createPermissions">
-    <form
+    <form novalidate
       data-hse-project
       v-project-panels
       class="hse-project-root hse-project-page grid grid-cols-1 md:grid-cols-4 gap-4 induction-entry-form"

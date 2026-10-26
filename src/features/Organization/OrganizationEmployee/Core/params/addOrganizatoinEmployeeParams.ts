@@ -22,7 +22,7 @@ export default class AddOrganizatoinEmployeeParams implements Params {
 
   // certificateId: number[]
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/OrganizationEmployee/Core/params/addOrganizatoinEmployeeParams").setRules({
     name: { required: true, minLength: 2, maxLength: 100 },
     positions: { required: true },
     phone: { required: true, pattern: /^\+?[\d\s-()]+$/ },

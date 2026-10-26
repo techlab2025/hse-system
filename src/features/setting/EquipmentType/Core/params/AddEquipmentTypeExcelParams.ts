@@ -14,7 +14,7 @@ interface Data extends LookupIndustryFields {
 }
 export default class AddEquipmentTypeExcelParams implements Params {
   public data: Data[]
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/EquipmentType/Core/params/AddEquipmentTypeExcelParams").setRules({
     // translation: { required: true },
     // type: { required: true },
   })

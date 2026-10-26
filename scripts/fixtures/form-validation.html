@@ -1,0 +1,81 @@
+<!doctype html>
+<html class="hse-cloud-identity" lang="en">
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      import '/src/assets/styles/main.scss'
+      import '/src/assets/styles/design-system/index.css'
+      import { createApp, h } from 'vue'
+      import { createPinia, setActivePinia } from 'pinia'
+      import { createI18n } from 'vue-i18n'
+      import { createMemoryHistory, createRouter, RouterView } from 'vue-router'
+      import PrimeVue from 'primevue/config'
+      import HseCloudPreset from '/src/config/hseCloudPreset'
+      import en from '/src/locales/en.json'
+      import RootForm from '/src/features/setting/RootCauses/Presentation/components/AddRootCauses.vue'
+      import TrainingForm from '/src/features/Organization/TraningTopic/Presentation/components/AddTraningTopic.vue'
+      import AddRootController from '/src/features/setting/RootCauses/Presentation/controllers/addRootCausesController'
+      import IndustryController from '/src/features/setting/Industries/Presentation/controllers/indexIndustryController'
+      import { setFormValidationScope } from '/src/shared/utils/formValidationScope'
+      import AddTrainingController from '/src/features/Organization/TraningTopic/Presentation/controllers/addTraningTopicController'
+      import { useUserStore } from '/src/stores/user'
+      import DialogSelector from '/src/base/Presentation/Dialogs/dialog_selector'
+      import { DataSuccess } from '/src/base/core/networkStructure/Resources/dataState/data_state'
+      import { formValidation, requestValidation } from '/src/shared/config/formValidation'
+      import { ClassValidation } from '/src/base/Presentation/utils/class_validation'
+      import TranslationsParams from '/src/base/core/params/translations_params'
+      window.setFormValidationScope = setFormValidationScope
+      window.formValidation = formValidation
+      window.requestValidation = requestValidation
+      window.ClassValidation = ClassValidation
+      window.TranslationsParams = TranslationsParams
+      window.messages = []
+      window.saves = 0
+      window.loads = 0
+      DialogSelector.instance.failedDialog.openDialog = (p) =>
+        window.messages.push(p.messageContent)
+      const pinia = createPinia()
+      setActivePinia(pinia)
+      useUserStore().user = { isMaster: 1, type: 2, languages: [{ code: 'en' }, { code: 'ar' }] }
+      window.userStore = useUserStore()
+      IndustryController.getInstance().getData = async function () {
+        this.setState(new DataSuccess({ data: [] }))
+        return this.state
+      }
+      for (const [controller, method] of [
+        [AddRootController.getInstance(), 'addRootCauses'],
+        [AddTrainingController.getInstance(), 'addTraningTopic'],
+      ]) {
+        controller.setLoading = () => {
+          window.loads++
+        }
+        controller[method] = async function (params) {
+          window.lastRequestValidation = params?.validate?.()
+          window.saves++
+          this.setState(new DataSuccess({ data: { id: 1 } }))
+          return this.state
+        }
+      }
+      const router = createRouter({
+        history: createMemoryHistory(),
+        routes: [
+          { path: '/root', component: RootForm },
+          { path: '/training', component: TrainingForm },
+        ],
+      })
+      await router.push('/root')
+      window.router = router
+      createApp({
+        render: () => h('main', { style: 'max-width:1000px;margin:32px auto' }, [h(RouterView)]),
+      })
+        .use(pinia)
+        .use(router)
+        .use(createI18n({ legacy: false, locale: 'en', fallbackLocale: 'en', messages: { en } }))
+        .use(PrimeVue, { theme: { preset: HseCloudPreset } })
+        .mount('#app')
+    </script>
+  </body>
+</html>

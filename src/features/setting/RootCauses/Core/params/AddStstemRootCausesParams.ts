@@ -4,7 +4,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 export default class AddSystemRootCausesParams implements Params {
   clonesIds: number[]
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/RootCauses/Core/params/AddStstemRootCausesParams").setRules({
     clonesIds: { required: true },
   })
 

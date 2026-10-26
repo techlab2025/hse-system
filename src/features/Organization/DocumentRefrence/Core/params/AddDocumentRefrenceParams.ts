@@ -5,7 +5,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 export default class AddDocumentRefrenceParams implements Params {
   translation: TranslationsParams
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/DocumentRefrence/Core/params/AddDocumentRefrenceParams").setRules({
     translation: { required: true },
   })
 

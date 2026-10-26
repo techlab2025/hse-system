@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
 import type ContractorDetailsModel from '../../Data/models/ContractorDetailsModel'
@@ -17,6 +19,8 @@ import AddScope from '@/features/Organization/Scope/Presentation/components/AddS
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import HandleFIlesUpload from '@/features/Organization/OrganizationEmployee/Presentation/supcomponents/HandleFIlesUpload.vue'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('ContractorForm')
 
 const emit = defineEmits(['update:data'])
 
@@ -226,7 +230,7 @@ const scrollToRequiredField = async (key: string) => {
 }
 
 const validateRequiredFields = async () => {
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors

@@ -4,7 +4,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddScopeParams implements Params {
   translation: TranslationsParams
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/Scope/Core/params/addScopeParams").setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
   })
 

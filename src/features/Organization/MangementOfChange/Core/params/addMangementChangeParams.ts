@@ -37,7 +37,7 @@ export default class AddMangementChangeParams implements Params {
     public projectId?: number,
   ) {}
 
-  public static readonly validation = new ClassValidation().setRules({})
+  public static readonly validation = new ClassValidation("Organization/MangementOfChange/Core/params/addMangementChangeParams").setRules({})
 
   toMap(): Record<string, unknown> {
     const data: Record<string, unknown> = {

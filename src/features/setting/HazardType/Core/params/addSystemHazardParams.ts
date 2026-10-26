@@ -3,7 +3,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 
 export default class AddSystemHazardParams implements Params {
   cloneIds: number[]
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/HazardType/Core/params/addSystemHazardParams").setRules({
     cloneIds: { required: true },
   })
   constructor(data: { cloneIds: number[] }) {

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -43,6 +44,7 @@ onMounted(() => {
 
 const editMangementChange = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'MangementChangeForm')
   await EditMangementChangeController.getInstance().editMangementChange(
     params.value as EditMangementChangeParams,
   )
@@ -69,7 +71,7 @@ const setParams = (data: Params) => {
 <template>
   <DataStatus :controller="state">
     <template #success>
-      <form
+      <form novalidate
         class="management-change-form"
         @submit.prevent="editMangementChange"
       >

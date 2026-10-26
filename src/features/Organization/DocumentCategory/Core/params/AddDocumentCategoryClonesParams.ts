@@ -4,7 +4,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 export default class AddDocumentCategoryClonesParams implements Params {
   clonesIds: number[]
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/DocumentCategory/Core/params/AddDocumentCategoryClonesParams").setRules({
     clonesIds: { required: true },
   })
 

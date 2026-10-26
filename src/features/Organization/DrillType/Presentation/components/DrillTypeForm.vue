@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { computed, markRaw, nextTick, onMounted, ref, watch, type Component } from 'vue'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
 import USA from '@/shared/icons/USA.vue'
@@ -22,6 +24,8 @@ import type DrillTypeDetailsModel from '../../Data/models/DrillTypeDetailsModel'
 type LanguageOption = { locale: string; title: string; icon?: Component | string }
 type LocalizedTitle = { locale: string; title: string }
 type LocalizedDescription = { locale: string; description: string }
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('DrillTypeForm')
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddDrillTypeParams | EditDrillTypeParams): void
@@ -140,11 +144,12 @@ const requiredFields = computed(() => [
     message: 'Drill Type Description Is Required',
     isMissing: () => !descriptions.value.some((item) => hasText(item.description)),
   },
+  { key: 'industry', message: '', isMissing: () => user.user?.type === OrganizationTypeEnum.ADMIN && !allIndustries.value && !industry.value?.length },
 ])
 const requiredFieldErrors = ref<Record<string, string>>({})
 
 const validateRequiredFields = async () => {
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = Object.fromEntries(
     missedFields.map((field) => [field.key, field.message]),
   )
@@ -201,7 +206,7 @@ onMounted(fetchLanguages)
       @update:checked="updateAllIndustries"
     />
   </div>
-  <div
+  <div data-required-field="industry"
     v-if="!allIndustries && user.user?.type === OrganizationTypeEnum.ADMIN"
     class="col-span-4 md:col-span-2"
   >
@@ -215,6 +220,7 @@ onMounted(fetchLanguages)
       :type="2"
       @update:model-value="setIndustry"
     />
+    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">{{ requiredFieldErrors.industry }}</p>
   </div>
 </template>
 

@@ -12,7 +12,7 @@ export default class AddMeetingTypeParams implements Params {
     public industries: number[] = [],
   ) {}
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/MeetingType/Core/params/addMeetingTypeParams").setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
     periodicType: { required: true },
   })

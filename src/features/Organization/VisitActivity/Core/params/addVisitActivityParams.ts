@@ -9,7 +9,7 @@ export default class AddVisitActivityParams implements Params {
     public industries: number[] = [],
   ) {}
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/VisitActivity/Core/params/addVisitActivityParams").setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
   })
 

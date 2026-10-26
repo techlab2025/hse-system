@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -18,6 +19,7 @@ const addCertificateController = AddCertificateController.getInstance()
 
 const addCertificate = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'CertificateForm')
   addCertificateController.setLoading()
   await addCertificateController.addCertificate(params.value as AddCertificateParams, router)
   if (addCertificateController.isDataSuccess()) emit('update:data')
@@ -28,6 +30,7 @@ const setParams = (data: Params) => {
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'CertificateForm')
   addCertificateController.setLoading()
   await addCertificateController.addCertificate(
     params.value as AddCertificateParams,
@@ -43,7 +46,7 @@ const route = useRoute()
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addCertificate">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addCertificate">
     <CertificateForm ref="formRef" :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

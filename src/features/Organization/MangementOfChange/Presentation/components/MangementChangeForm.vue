@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import MultiImagesInput from '@/shared/FormInputs/MultiImagesInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
@@ -26,6 +28,8 @@ import type MangementChangeModel from '../../Data/models/MangementChangeModel'
 import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSelect.vue'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('MangementChangeForm')
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddMangementChangeParams | EditMangementChangeParams): void
@@ -390,7 +394,7 @@ const requiredFields = computed(() => [
 ])
 
 const validateRequiredFields = async () => {
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = Object.fromEntries(
     missedFields.map((field) => [field.key, field.message]),
   )

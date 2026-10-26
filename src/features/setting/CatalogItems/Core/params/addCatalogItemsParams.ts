@@ -15,7 +15,7 @@ export default class AddCatalogItemsParams implements Params {
   link?: string
   // serial_number: string
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/CatalogItems/Core/params/addCatalogItemsParams").setRules({
     parentId: { required: true },
   })
   constructor(

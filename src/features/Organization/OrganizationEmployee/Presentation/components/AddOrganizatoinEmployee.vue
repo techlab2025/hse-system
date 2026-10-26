@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -22,6 +23,7 @@ const addOrganizatoinEmployeeController = AddOrganizatoinEmployeeController.getI
 
 const addOrganizatoinEmployee = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'OrganizatoinEmployeeForm')
   console.log(params.value, 'params value')
   addOrganizatoinEmployeeController.setLoading()
   const state = await addOrganizatoinEmployeeController.addOrganizatoinEmployee(
@@ -37,6 +39,7 @@ const addOrganizatoinEmployee = async () => {
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'OrganizatoinEmployeeForm')
   addOrganizatoinEmployeeController.setLoading()
   const state = await addOrganizatoinEmployeeController.addOrganizatoinEmployee(
     params.value as AddOrganizatoinEmployeeParams,
@@ -60,7 +63,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addOrganizatoinEmployee">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addOrganizatoinEmployee">
     <OrganizatoinEmployeeForm
       ref="formRef"
       :key="formKey"

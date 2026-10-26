@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
@@ -49,6 +51,8 @@ import { EquipmentCondition } from '../../Core/enum/equipmentConditionEnum.ts'
 import { EquipmentUsed } from '../../Core/enum/EquipemntUsedENum.ts'
 import { EquipmentOfHavyStatus } from '../../Core/enum/equipmentOfHavyEnum.ts'
 // import AddWhereHouse from '@/views/Organization/WhereHouse/AddWhereHouse.vue'
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('FullEquipmentFrom')
 
 const emit = defineEmits(['update:data'])
 const props = defineProps<{ data?: EquipmentDetailsModel }>()
@@ -855,7 +859,7 @@ const scrollToRequiredField = async (key: string) => {
 
 const validateRequiredFields = async () => {
   clearResolvedRequiredErrors()
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors

@@ -20,7 +20,7 @@ export default class EditOrganizatoinEmployeeParams implements Params {
   // certificateId: number[]
   allPermissions: boolean
   image: string | null | undefined
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/OrganizationEmployee/Core/params/editOrganizatoinEmployeeParams").setRules({
     name: { required: true, minLength: 2, maxLength: 100 },
     phone: { required: true, pattern: /^\+?[\d\s-()]+$/ },
     email: { required: true, pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ },

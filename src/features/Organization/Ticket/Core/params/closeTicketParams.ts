@@ -5,7 +5,7 @@ export default class CloseTicketParams implements Params {
   public ticketId: number
   public status: StatusEnum
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/Ticket/Core/params/closeTicketParams").setRules({
     ticketId: { required: true },
     status: { required: true },
   })

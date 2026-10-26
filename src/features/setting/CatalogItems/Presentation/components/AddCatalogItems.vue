@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useSubmissionValidation } from '@/composables/useSubmissionValidation'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -11,6 +13,8 @@ import type AddCatalogItemsParams from '../../Core/params/addCatalogItemsParams'
 import AddCatalogItemsController from '../controllers/addCatalogItemsController'
 import CatalogItemsForm from './CatalogItemsForm.vue'
 
+const validateSubmission = useSubmissionValidation('setting/CatalogItems/Core/params/addCatalogItemsParams')
+
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
 const params = ref<Params | null>(null)
@@ -19,11 +23,15 @@ const formKey = ref(0)
 const addCatalogItemsController = AddCatalogItemsController.getInstance()
 
 const addCatalogItems = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   console.log(params.value, 'params')
   await addCatalogItemsController.addCatalogItems(params.value as AddCatalogItemsParams, router)
 }
 
 const saveAndNew = async () => {
+  if (!(await validateSubmission(params.value))) return
+
   console.log(params.value, 'params')
   addCatalogItemsController.setLoading()
   await addCatalogItemsController.addCatalogItems(
@@ -41,7 +49,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-8" @submit.prevent="addCatalogItems">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-8" @submit.prevent="addCatalogItems">
     <CatalogItemsForm :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

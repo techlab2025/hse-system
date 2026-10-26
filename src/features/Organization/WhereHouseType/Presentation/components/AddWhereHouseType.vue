@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -19,6 +20,7 @@ const addWhereHouseTypeController = AddWhereHouseTypeController.getInstance()
 
 const addWhereHouseType = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'WhereHouseTypeForm')
   await addWhereHouseTypeController.addWhereHouseType(
     params.value as AddWhereHouseTypeParams,
     router,
@@ -28,6 +30,7 @@ const addWhereHouseType = async () => {
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'WhereHouseTypeForm')
   addWhereHouseTypeController.setLoading()
   await addWhereHouseTypeController.addWhereHouseType(
     params.value as AddWhereHouseTypeParams,
@@ -44,7 +47,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addWhereHouseType">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addWhereHouseType">
     <WhereHouseTypeForm :key="formKey" ref="formRef" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

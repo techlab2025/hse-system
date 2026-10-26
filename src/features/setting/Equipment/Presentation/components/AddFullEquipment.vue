@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -19,6 +20,7 @@ const emit = defineEmits(['update:data', 'close:dialog'])
 
 const addEquipment = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'FullEquipmentFrom')
   console.log(params.value, 'params')
   addEquipmentController.setLoading()
   await addEquipmentController.addEquipment(params.value as AddEquipmentParams, router)
@@ -27,6 +29,7 @@ const addEquipment = async () => {
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'FullEquipmentFrom')
   addEquipmentController.setLoading()
   await addEquipmentController.addEquipment(
     params.value as AddEquipmentParams,
@@ -45,7 +48,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-8" @submit.prevent="addEquipment">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-8" @submit.prevent="addEquipment">
     <FullEquipmentFrom ref="formRef" :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

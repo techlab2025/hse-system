@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
+import { ref as validationRef } from 'vue'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -6,6 +9,8 @@ import RootCausesForm from '@/features/setting/RootCauses/Presentation/component
 import AddRootCausesController from '@/features/setting/RootCauses/Presentation/controllers/addRootCausesController.ts'
 import AddRootCausesParams from '@/features/setting/RootCauses/Core/params/addRootCausesParams.ts'
 import type Params from '@/base/core/params/params'
+
+const validationFormRef = validationRef<InstanceType<typeof RootCausesForm> | null>(null)
 
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
@@ -17,6 +22,9 @@ const formKey = ref(0)
 const addRootCausesController = AddRootCausesController.getInstance()
 
 const addRootCauses = async () => {
+  if (!(await validationFormRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'RootCausesForm')
+
   addRootCausesController.setLoading()
   await addRootCausesController.addRootCauses(params.value as AddRootCausesParams, router)
   if (addRootCausesController.isDataSuccess()) {
@@ -26,6 +34,9 @@ const addRootCauses = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!(await validationFormRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'RootCausesForm')
+
   addRootCausesController.setLoading()
   await addRootCausesController.addRootCauses(
     params.value as AddRootCausesParams,
@@ -44,8 +55,8 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addRootCauses">
-    <RootCausesForm :key="formKey" @update:data="setParams" />
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addRootCauses">
+    <RootCausesForm ref="validationFormRef" :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">
       <button type="button" @click.prevent="saveAndNew" class="btn btn-secondary">

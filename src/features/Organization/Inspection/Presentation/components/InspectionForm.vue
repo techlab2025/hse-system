@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 /* =========================
  * Imports
  * ========================= */
@@ -42,6 +44,8 @@ import { ProjectCustomLocationEnum } from '@/features/Organization/Project/Core/
 /* =========================
  * Route & Props
  * ========================= */
+const { configureRules: configureValidationRules } = useConfiguredValidation('InspectionForm')
+
 const route = useRoute()
 const id = route.params?.equipment_id
 const routeProjectId = computed(() => Number(route.query.project_id) || null)
@@ -411,7 +415,7 @@ const scrollToRequiredField = async (key: string) => {
 
 const validateRequiredFields = async () => {
   clearResolvedRequiredErrors()
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors

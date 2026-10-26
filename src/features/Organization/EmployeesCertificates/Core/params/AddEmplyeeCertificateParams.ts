@@ -10,7 +10,7 @@ export default class AddEmployeeCertificateParams implements Params {
   certificate_image: string
   issueDate: string
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/EmployeesCertificates/Core/params/AddEmplyeeCertificateParams").setRules({
     certificateId: { required: true },
     organizationEmployeeId: { required: true },
   })

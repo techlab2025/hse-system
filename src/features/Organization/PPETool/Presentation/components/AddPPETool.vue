@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
@@ -21,12 +22,14 @@ const addPPEToolController = AddPPEToolController.getInstance()
 
 const addPPETool = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'PPEToolForm')
   await addPPEToolController.addPPETool(params.value as AddPPEToolParams, router)
   emit('update:data')
 }
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'PPEToolForm')
   addPPEToolController.setLoading()
   await addPPEToolController.addPPETool(params.value as AddPPEToolParams, stayOnPageRouter)
   if (addPPEToolController.isDataSuccess()) {
@@ -49,7 +52,7 @@ const allowedPermissions = [
 
 <template>
   <PermissionBuilder :code="allowedPermissions">
-    <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addPPETool">
+    <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addPPETool">
       <PPEToolForm :key="formKey" ref="formRef" @update:data="setParams" />
 
       <div class="col-span-4 button-wrapper create-form-actions">

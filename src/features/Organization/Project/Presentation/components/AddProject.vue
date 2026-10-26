@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { vProjectPanels } from '../composables/projectPanels'
 
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
@@ -19,6 +20,7 @@ const addProjectController = AddProjectController.getInstance()
 const loading = ref(false)
 const addProject = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'ProjectForm')
   loading.value = true
   const state = await addProjectController.addProject(params.value as AddProjectParams, router)
   if (state.value.data) {
@@ -29,6 +31,7 @@ const addProject = async () => {
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'ProjectForm')
   loading.value = true
   addProjectController.setLoading()
   await addProjectController.addProject(params.value as AddProjectParams, stayOnPageRouter)
@@ -44,7 +47,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form
+  <form novalidate
     data-hse-project
     v-project-panels
     class="hse-project-root hse-project-page grid grid-cols-1 md:grid-cols-4 gap-4"

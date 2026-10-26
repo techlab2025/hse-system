@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import LangTitleInput from '@/shared/HelpersComponents/LangTitleInput.vue'
@@ -22,6 +24,8 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import CustomCheckbox from '@/shared/HelpersComponents/CustomCheckbox.vue'
 import { CertificateTypeEnum } from '../../Core/Enums/CertificateTypeEnum'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('CertificateForm')
 
 const emit = defineEmits(['update:data'])
 
@@ -365,7 +369,7 @@ const scrollToRequiredField = async (key: string) => {
 
 const validateRequiredFields = async () => {
   clearResolvedRequiredErrors()
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors

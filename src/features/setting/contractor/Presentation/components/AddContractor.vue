@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -20,6 +21,7 @@ const loading = ref(false)
 
 const addContractor = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'ContractorForm')
   loading.value = true
 
   try {
@@ -37,6 +39,7 @@ const addContractor = async () => {
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'ContractorForm')
   loading.value = true
 
   try {
@@ -60,7 +63,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-8" @submit.prevent="addContractor">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-8" @submit.prevent="addContractor">
     <ContractorForm :key="formKey" ref="formRef" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

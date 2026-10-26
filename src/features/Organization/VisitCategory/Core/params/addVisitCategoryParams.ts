@@ -9,7 +9,7 @@ export default class AddVisitCategoryParams implements Params {
     public industries: number[] = [],
   ) {}
 
-  static readonly validation = new ClassValidation().setRules({
+  static readonly validation = new ClassValidation("Organization/VisitCategory/Core/params/addVisitCategoryParams").setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
   })
 

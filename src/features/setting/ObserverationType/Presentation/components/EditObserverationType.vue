@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
+import { ref as validationRef } from 'vue'
+
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import EditObserverationTypeController from '@/features/setting/ObserverationType/Presentation/controllers/editObserverationTypeController'
@@ -8,6 +11,8 @@ import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
 import FormLoader from '@/shared/DataStatues/FormLoader.vue'
 import ObserverationTypeForm from '@/features/setting/ObserverationType/Presentation/components/ObserverationTypeForm.vue'
 import type Params from '@/base/core/params/params'
+
+const validationFormRef = validationRef<InstanceType<typeof ObserverationTypeForm> | null>(null)
 
 const route = useRoute()
 const router = useRouter()
@@ -27,6 +32,9 @@ onMounted(() => {
 })
 
 const EditObserverationType = async (draft: boolean) => {
+  if (!(await validationFormRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'ObserverationTypeForm')
+
   if (draft) {
     await EditObserverationTypeController.getInstance().editObserverationType(params.value!, router)
   } else {
@@ -56,8 +64,8 @@ const setParams = (data: Params) => {
       <!--              {{ state.data?.titles }}-->
 
       <!--      </pre>-->
-      <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditObserverationType">
-        <ObserverationTypeForm @update:data="setParams" :data="state.data!" />
+      <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="EditObserverationType">
+        <ObserverationTypeForm ref="validationFormRef" @update:data="setParams" :data="state.data!" />
         <div class="col-span-4 button-wrapper">
           <button type="submit" class="btn btn-primary">{{ $t('save') }}</button>
         </div>

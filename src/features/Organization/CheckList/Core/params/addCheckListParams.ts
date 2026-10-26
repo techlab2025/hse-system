@@ -5,7 +5,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 export default class AddCheckListParams implements Params {
   translation: TranslationsParams
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/CheckList/Core/params/addCheckListParams").setRules({
     translation: { required: true },
   })
   constructor(data: { translation: TranslationsParams }) {

@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
@@ -21,12 +22,14 @@ const addAuditStandardController = AddAuditStandardController.getInstance()
 
 const addAuditStandard = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'AuditStandardForm')
   await addAuditStandardController.addAuditStandard(params.value as AddAuditStandardParams, router)
   emit('update:data')
 }
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'AuditStandardForm')
   addAuditStandardController.setLoading()
   await addAuditStandardController.addAuditStandard(
     params.value as AddAuditStandardParams,
@@ -52,7 +55,7 @@ const allowedPermissions = [
 
 <template>
   <PermissionBuilder :code="allowedPermissions">
-    <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addAuditStandard">
+    <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addAuditStandard">
       <AuditStandardForm :key="formKey" ref="formRef" @update:data="setParams" />
 
       <div class="col-span-4 button-wrapper create-form-actions">

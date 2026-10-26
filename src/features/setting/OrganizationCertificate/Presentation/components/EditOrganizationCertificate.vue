@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -30,6 +31,7 @@ onMounted(() => {
 
 const editOrganizationCertificate = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'OrganizationCertificateForm')
   await EditOrganizationCertificateController.getInstance().editOrganizationCertificate(
     params.value!,
     router,
@@ -58,7 +60,7 @@ const setParams = (data: Params) => {
       <!--              {{ state.data?.titles }}-->
 
       <!--      </pre>-->
-      <form
+      <form novalidate
         class="grid grid-cols-1 md:grid-cols-4 gap-4"
         @submit.prevent="editOrganizationCertificate"
       >

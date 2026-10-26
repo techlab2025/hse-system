@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
 import { nextTick, reactive, ref, watch } from 'vue'
 import DatePicker from 'primevue/datepicker'
 import FileUpload from '@/shared/FormInputs/FileUpload.vue'
@@ -97,7 +98,7 @@ const setFile = (files: File | File[] | null) => {
     : null
 }
 
-const getMissingFields = () => {
+const collectMissingFields = () => {
   const errors: Record<string, string> = {}
   if (!form.certification_name.trim()) errors.certification_name = 'Certification name is required'
   if (!form.issuing_body.trim()) errors.issuing_body = 'Issuing body is required'
@@ -108,6 +109,20 @@ const getMissingFields = () => {
     errors.certificate_file = fileError.value || 'Certificate file is required'
   return errors
 }
+
+const { configureRules: configureValidationRules } = useConfiguredValidation(
+  'OrganizationCertificateForm',
+)
+const getMissingFields = () =>
+  Object.fromEntries(
+    configureValidationRules(
+      Object.entries(collectMissingFields()).map(([key, message]) => ({
+        key,
+        message,
+        isMissing: () => true,
+      })),
+    ).map((field) => [field.key, field.message]),
+  )
 
 watch(
   [form, issueDate, expiryDate, expiredate, certificateFile],
@@ -233,7 +248,7 @@ defineExpose({ validateRequiredFields })
   font-size: 0.82rem;
   font-weight: 700;
 }
-label span{
-  color:red;
+label span {
+  color: red;
 }
 </style>

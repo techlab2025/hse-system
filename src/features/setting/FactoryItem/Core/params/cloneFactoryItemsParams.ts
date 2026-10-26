@@ -4,7 +4,7 @@ import { ClassValidation } from '@/base/Presentation/utils/class_validation'
 export default class CloneFactoryItemsParams implements Params {
   public clonesIds: number[]
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/FactoryItem/Core/params/cloneFactoryItemsParams").setRules({
     clonesIds: { required: true },
   })
 

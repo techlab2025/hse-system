@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -18,6 +19,7 @@ const addTeamController = AddTeamController.getInstance()
 
 const addTeam = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'TeamForm')
   console.log(params.value, 'params')
   addTeamController.setLoading()
   await addTeamController.addTeam(params.value as AddTeamParams, router)
@@ -26,6 +28,7 @@ const addTeam = async () => {
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'TeamForm')
   addTeamController.setLoading()
   await addTeamController.addTeam(params.value as AddTeamParams, stayOnPageRouter, true)
   if (addTeamController.isDataSuccess()) {
@@ -40,7 +43,7 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-8" @submit.prevent="addTeam">
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-8" @submit.prevent="addTeam">
     <TeamForm ref="formRef" :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">

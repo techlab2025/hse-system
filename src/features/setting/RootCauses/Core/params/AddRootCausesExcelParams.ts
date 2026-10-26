@@ -10,7 +10,7 @@ interface Data extends LookupIndustryFields {
 }
 export default class AddRootCausesExcelParams implements Params {
   public data: Data[]
-  public static readonly validation = new ClassValidation().setRules({})
+  public static readonly validation = new ClassValidation("setting/RootCauses/Core/params/AddRootCausesExcelParams").setRules({})
   constructor(data: { data: Data[] }, industryScope?: LookupIndustryFields) {
     this.data = applyLookupIndustryScope(data.data, industryScope)
   }

@@ -26,7 +26,7 @@ export default class EditHazardParams implements Params {
   public ptwStatus: number | null
   public complianceNotification: number[]
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("Organization/ObservationFactory/Core/params/editHazardParams").setRules({
     title: { required: true, minLength: 2, maxLength: 100 },
   })
 

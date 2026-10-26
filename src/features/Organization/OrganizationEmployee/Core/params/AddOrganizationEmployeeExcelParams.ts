@@ -14,7 +14,7 @@ export default class AddOrganizationEmployeeExcelParams implements Params {
   public data: Data[] = []
   public isValid: boolean
 
-  public static readonly validation = new ClassValidation().setRules({})
+  public static readonly validation = new ClassValidation("Organization/OrganizationEmployee/Core/params/AddOrganizationEmployeeExcelParams").setRules({})
   constructor(data: { data: Data[]; isValid: boolean }) {
     this.data = data.data
     this.isValid = data.isValid

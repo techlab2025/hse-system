@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
@@ -23,6 +24,7 @@ const addAuditActivityController = AddAuditActivityController.getInstance()
 
 const addAuditActivity = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'AuditActivityForm')
   await addAuditActivityController.addAuditActivity(
     params.value as AddAuditActivityParams,
     props.stayOnPage ? stayOnPageRouter : router,
@@ -38,6 +40,7 @@ const addAuditActivity = async () => {
 
 const saveAndNew = async () => {
   if (!(await formRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'AuditActivityForm')
   addAuditActivityController.setLoading()
   await addAuditActivityController.addAuditActivity(
     params.value as AddAuditActivityParams,
@@ -63,7 +66,7 @@ const allowedPermissions = [
 
 <template>
   <PermissionBuilder :code="allowedPermissions">
-    <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addAuditActivity">
+    <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addAuditActivity">
       <AuditActivityForm :key="formKey" ref="formRef" @update:data="setParams" />
 
       <div class="col-span-4 button-wrapper create-form-actions">

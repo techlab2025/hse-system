@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
+import { ref as validationRef } from 'vue'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -6,6 +9,8 @@ import EquipmentTypeForm from '@/features/setting/EquipmentType/Presentation/com
 import AddEquipmentTypeController from '@/features/setting/EquipmentType/Presentation/controllers/addEquipmentTypeController.ts'
 import AddEquipmentTypeParams from '@/features/setting/EquipmentType/Core/params/addEquipmentTypeParams.ts'
 import type Params from '@/base/core/params/params'
+
+const validationFormRef = validationRef<InstanceType<typeof EquipmentTypeForm> | null>(null)
 
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
@@ -17,6 +22,9 @@ const formKey = ref(0)
 const addEquipmentTypeController = AddEquipmentTypeController.getInstance()
 
 const addEquipmentType = async () => {
+  if (!(await validationFormRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'EquipmentTypeForm')
+
   addEquipmentTypeController.setLoading()
   await addEquipmentTypeController.addEquipmentType(params.value as AddEquipmentTypeParams, router)
   if (addEquipmentTypeController.isDataSuccess()) {
@@ -26,6 +34,9 @@ const addEquipmentType = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!(await validationFormRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'EquipmentTypeForm')
+
   addEquipmentTypeController.setLoading()
   await addEquipmentTypeController.addEquipmentType(
     params.value as AddEquipmentTypeParams,
@@ -44,8 +55,8 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addEquipmentType">
-    <EquipmentTypeForm :key="formKey" @update:data="setParams" />
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addEquipmentType">
+    <EquipmentTypeForm ref="validationFormRef" :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">
       <button type="button" @click.prevent="saveAndNew" class="btn btn-secondary">

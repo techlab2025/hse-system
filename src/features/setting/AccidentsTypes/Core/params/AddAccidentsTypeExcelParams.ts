@@ -10,7 +10,7 @@ interface Data extends LookupIndustryFields {
 }
 export default class AddAccidentsTypeExcelParams implements Params {
   data: Data[]
-  public static readonly validation = new ClassValidation().setRules({})
+  public static readonly validation = new ClassValidation("setting/AccidentsTypes/Core/params/AddAccidentsTypeExcelParams").setRules({})
 
   constructor(data: { data: Data[] }, industryScope?: LookupIndustryFields) {
     this.data = applyLookupIndustryScope(data.data, industryScope)

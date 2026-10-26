@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useRequiredFields, hasSelectedValue } from '@/composables/useRequiredFields'
+
 import { markRaw, onMounted, ref, watch } from 'vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 
@@ -232,19 +234,31 @@ const GettypeName = (type: EquipmentTypesEnum) => {
       return 'device'
   }
 }
+
+const { requiredFieldErrors, validateRequiredFields: validateFields } = useRequiredFields('EquipmentTypeForm', () => [
+  { key: 'langs', message: '', isMissing: () => !langs.value.some((item) => String(item.title ?? '').trim().length > 0) },
+  { key: 'industry', message: '', isMissing: () => user.user?.type === OrganizationTypeEnum.ADMIN && !allIndustries.value && !hasSelectedValue(industry.value) },
+  { key: 'image', message: '', isMissing: () => !image.value },
+])
+const validateRequiredFields = async () => {
+  updateData()
+  return validateFields()
+}
+defineExpose({ validateRequiredFields })
 </script>
 
 <template>
   <div class="w-full col-span-6 equipment-form">
     <Tabs @update:activeTab="UpdateActiveTap" :activeTabData="activeTab" />
   </div>
-  <div class="col-span-4 md:col-span-2">
+  <div data-required-field="langs" class="col-span-4 md:col-span-2">
     <LangTitleInput
       :label="`${GettypeName(activeTab)} ${$t('equipment_type_name')}`"
       :langs="langDefault"
       :modelValue="langs"
       @update:modelValue="setLangs"
     />
+    <p v-if="requiredFieldErrors.langs" class="required-field-message" role="alert">{{ requiredFieldErrors.langs }}</p>
   </div>
 
   <!-- Has Certificate -->
@@ -288,7 +302,7 @@ const GettypeName = (type: EquipmentTypesEnum) => {
   </div>
 
   <!--industry  -->
-  <div
+  <div data-required-field="industry"
     class="col-span-4 md:col-span-2"
     v-if="!allIndustries && user.user?.type == OrganizationTypeEnum?.ADMIN"
   >
@@ -302,10 +316,11 @@ const GettypeName = (type: EquipmentTypesEnum) => {
       :type="2"
       @update:modelValue="setIndustry"
     />
+    <p v-if="requiredFieldErrors.industry" class="required-field-message" role="alert">{{ requiredFieldErrors.industry }}</p>
   </div>
 
   <!-- image -->
-  <div class="col-span-4 md:col-span-4 input-wrapper">
+  <div data-required-field="image" class="col-span-4 md:col-span-4 input-wrapper">
     <label for="image">Image</label>
     <SingleFileUpload
       v-model="image"
@@ -314,7 +329,12 @@ const GettypeName = (type: EquipmentTypesEnum) => {
       id="image"
       placeholder="Select image"
     />
+    <p v-if="requiredFieldErrors.image" class="required-field-message" role="alert">{{ requiredFieldErrors.image }}</p>
   </div>
 
   <!-- <button @click="updateData; $emit('close:data')" class="btn btn-primary w-full" style="margin-top: 10px;">ADD</button> -->
 </template>
+
+<style scoped>
+.required-field-message { margin-top: .35rem; color: var(--status-danger); font-size: .82rem; font-weight: 700; }
+</style>

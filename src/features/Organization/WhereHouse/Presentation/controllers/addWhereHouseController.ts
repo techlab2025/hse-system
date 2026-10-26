@@ -7,6 +7,8 @@ import type { Router } from 'vue-router'
 import AddWhereHouseteUseCase from '../../Domain/useCase/addWhereHouseUseCase'
 import type AddWhereHouseParams from '../../Core/params/addWhereHouseParams'
 import type WhereHouseModel from '../../Data/models/WhereHouseModel'
+import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+import { formValidation } from '@/shared/config/formValidation'
 
 export default class AddWhereHouseController extends ControllerInterface<WhereHouseModel> {
   private static instance: AddWhereHouseController
@@ -26,12 +28,24 @@ export default class AddWhereHouseController extends ControllerInterface<WhereHo
     // useLoaderStore().setLoadingWithDialog();
     try {
       this.setLoading()
-
+      const warehouseRules = formValidation.forms.WhereHouseForm
+      if (
+        formValidation.enabled &&
+        warehouseRules?.enabled !== false &&
+        warehouseRules?.fields.Name?.enabled !== false &&
+        !String(params?.name ?? '').trim()
+      ) {
+        new OpenWarningDilaog(
+          warehouseRules?.fields.Name?.message || 'Warehouse Name Is Required',
+        ).openDialog()
+        return
+      }
       params.validate()
       if (!params.validate()?.isValid) {
         params.validateOrThrow()
         return
       }
+
       const dataState: DataState<WhereHouseModel> = await this.AddWhereHouseUseCase.call(params)
       this.setState(dataState)
       if (this.isDataSuccess()) {

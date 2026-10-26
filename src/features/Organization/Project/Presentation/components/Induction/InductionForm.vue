@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
@@ -25,6 +27,8 @@ import UpdatedCustomInputSelect from '@/shared/FormInputs/UpdatedCustomInputSele
 import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
 import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
 import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('InductionForm')
 
 const emit = defineEmits<{
   (event: 'update:data', value: AddInductionParams | EditInductionParams): void
@@ -482,7 +486,7 @@ const requiredFields = computed(() => {
 })
 
 const validateRequiredFields = async () => {
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = Object.fromEntries(
     missedFields.map((field) => [field.key, field.message]),
   )

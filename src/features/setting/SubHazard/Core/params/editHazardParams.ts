@@ -11,7 +11,7 @@ export default class EditHazardTypeParams implements Params {
   FcatorIds: HazardFactorParams[]
   ParentId?: number
 
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/SubHazard/Core/params/editHazardParams").setRules({
     translation: { required: true },
   })
   constructor(

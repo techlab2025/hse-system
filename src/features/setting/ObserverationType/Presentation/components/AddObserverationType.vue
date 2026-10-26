@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
+import { ref as validationRef } from 'vue'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -6,6 +9,8 @@ import ObserverationTypeForm from '@/features/setting/ObserverationType/Presenta
 import AddObserverationTypeController from '@/features/setting/ObserverationType/Presentation/controllers/addObserverationTypeController.ts'
 import AddObserverationTypeParams from '@/features/setting/ObserverationType/Core/params/addObserverationTypeParams.ts'
 import type Params from '@/base/core/params/params'
+
+const validationFormRef = validationRef<InstanceType<typeof ObserverationTypeForm> | null>(null)
 
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
@@ -16,6 +21,9 @@ const emit = defineEmits(['update:data'])
 const addObserverationTypeController = AddObserverationTypeController.getInstance()
 
 const addObserverationType = async () => {
+  if (!(await validationFormRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'ObserverationTypeForm')
+
   console.log(params.value, 'params')
   addObserverationTypeController.setLoading()
   await addObserverationTypeController.addObserverationType(
@@ -26,6 +34,9 @@ const addObserverationType = async () => {
 }
 
 const saveAndNew = async () => {
+  if (!(await validationFormRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'ObserverationTypeForm')
+
   addObserverationTypeController.setLoading()
   await addObserverationTypeController.addObserverationType(
     params.value as AddObserverationTypeParams,
@@ -44,8 +55,8 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addObserverationType">
-    <ObserverationTypeForm :key="formKey" @update:data="setParams" />
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addObserverationType">
+    <ObserverationTypeForm ref="validationFormRef" :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">
       <button type="button" @click.prevent="saveAndNew" class="btn btn-secondary">

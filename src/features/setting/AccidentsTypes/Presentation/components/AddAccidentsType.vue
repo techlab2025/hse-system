@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import { setFormValidationScope } from '@/shared/utils/formValidationScope'
+import { ref as validationRef } from 'vue'
+
 import { createStayOnPageRouter } from '@/shared/utils/createStayOnPageRouter'
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -6,6 +9,8 @@ import AddHazardTypeParams from '@/features/setting/HazardType/Core/params/addHa
 import type Params from '@/base/core/params/params'
 import AddAccidentsTypeController from '../controllers/addAccidentsTypeController'
 import AccidentsTypeForm from './AccidentsTypeForm.vue'
+
+const validationFormRef = validationRef<InstanceType<typeof AccidentsTypeForm> | null>(null)
 
 const router = useRouter()
 const stayOnPageRouter = createStayOnPageRouter(router)
@@ -16,12 +21,18 @@ const emit = defineEmits(['update:data'])
 const addAccidentsTypeController = AddAccidentsTypeController.getInstance()
 
 const addAccidentsType = async () => {
+  if (!(await validationFormRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'AccidentsTypeForm')
+
   addAccidentsTypeController.setLoading()
   await addAccidentsTypeController.addAccidentsType(params.value as AddHazardTypeParams, router)
   if (addAccidentsTypeController.isDataSuccess()) emit('update:data')
 }
 
 const saveAndNew = async () => {
+  if (!(await validationFormRef.value?.validateRequiredFields())) return
+  setFormValidationScope(params.value, 'AccidentsTypeForm')
+
   addAccidentsTypeController.setLoading()
   await addAccidentsTypeController.addAccidentsType(
     params.value as AddHazardTypeParams,
@@ -40,8 +51,8 @@ const setParams = (data: Params) => {
 </script>
 
 <template>
-  <form class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addAccidentsType">
-    <AccidentsTypeForm :key="formKey" @update:data="setParams" />
+  <form novalidate class="grid grid-cols-1 md:grid-cols-4 gap-4" @submit.prevent="addAccidentsType">
+    <AccidentsTypeForm ref="validationFormRef" :key="formKey" @update:data="setParams" />
 
     <div class="col-span-4 button-wrapper create-form-actions">
       <button type="button" @click.prevent="saveAndNew" class="btn btn-secondary">

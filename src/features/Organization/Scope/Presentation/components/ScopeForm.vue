@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { useConfiguredValidation } from '@/composables/useConfiguredValidation'
+
 import { computed, markRaw, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import AddScopeParams from '../../Core/params/addScopeParams'
@@ -13,6 +15,8 @@ import IndexLangController from '@/features/setting/languages/Presentation/contr
 import { useUserStore } from '@/stores/user'
 import TranslationsParams from '@/base/core/params/translations_params'
 import { OpenWarningDilaog } from '@/base/Presentation/utils/OpenWarningDialog'
+
+const { configureRules: configureValidationRules } = useConfiguredValidation('ScopeForm')
 
 const route = useRoute()
 const emit = defineEmits(['update:data'])
@@ -168,7 +172,7 @@ const scrollToRequiredField = async (key: string) => {
 }
 
 const validateRequiredFields = async () => {
-  const missedFields = requiredFields.value.filter((field) => field.isMissing())
+  const missedFields = configureValidationRules(requiredFields.value).filter((field) => field.isMissing())
   requiredFieldErrors.value = missedFields.reduce<Record<string, string>>((errors, field) => {
     errors[field.key] = field.message
     return errors

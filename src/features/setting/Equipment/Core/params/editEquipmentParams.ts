@@ -31,7 +31,7 @@ export default class EditEquipmentParams implements Params {
   SelectedWhereHosue: number
   WorkedHours?: string
   ivhm?: boolean
-  public static readonly validation = new ClassValidation().setRules({
+  public static readonly validation = new ClassValidation("setting/Equipment/Core/params/editEquipmentParams").setRules({
     translation: { required: true, minLength: 2, maxLength: 100 },
     equipmentTypeId: { required: true },
   })
