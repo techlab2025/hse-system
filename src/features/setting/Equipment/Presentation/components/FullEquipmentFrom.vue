@@ -32,6 +32,7 @@ import IndexContractorController from '@/features/setting/contractor/Presentatio
 import IndexContractorParams from '@/features/setting/contractor/Core/params/indexContractorParams'
 import type EquipmentTypeModel from '@/features/setting/EquipmentType/Data/models/equipmentTypeModel'
 import { RentTypeEnum } from '../../Core/enum/RentTypeEnum'
+import { calculateRentalEndDate } from '../../Core/utils/calculateRentalEndDate'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import IndexWhereHouseController from '@/features/Organization/WhereHouse/Presentation/controllers/indexWhereHouseController'
 import IndexWhereHouseParams from '@/features/Organization/WhereHouse/Core/params/indexWhereHouseParams'
@@ -713,30 +714,7 @@ const setEndDate = (data) => {
 }
 
 const calculateEndDate = () => {
-  if (!StartDate.value || !Rent.value || !SelectedRentType.value) {
-    EndDate.value = null
-    return
-  }
-
-  const start = new Date(StartDate.value)
-  const end = new Date(start)
-
-  switch (SelectedRentType.value.id) {
-    case RentTypeEnum.HOUR:
-      end.setHours(end.getHours() + Number(Rent.value))
-      break
-    case RentTypeEnum.DAY:
-      end.setDate(end.getDate() + Number(Rent.value))
-      break
-    case RentTypeEnum.MONTH:
-      end.setMonth(end.getMonth() + Number(Rent.value))
-      break
-    case RentTypeEnum.YEAR:
-      end.setFullYear(end.getFullYear() + Number(Rent.value))
-      break
-  }
-
-  EndDate.value = end
+  EndDate.value = calculateRentalEndDate(StartDate.value, Rent.value, SelectedRentType.value?.id)
   updateData()
 }
 

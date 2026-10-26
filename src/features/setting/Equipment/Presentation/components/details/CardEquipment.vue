@@ -21,6 +21,7 @@ import placeholder from '@/assets/images/EmptyEquipment.png'
 const props = defineProps<{ equipmentData: EquipmentDetailsModel }>()
 const { t } = useI18n()
 const userStore = useUserStore()
+const ownershipStatus = computed(() => Number(props.equipmentData.status))
 const actions = computed(() => [
   {
     text: t('edit'),
@@ -121,13 +122,10 @@ function imageFallback(event: Event) {
       <div class="eq-summary-title">
         <h2>{{ equipmentData.title || '—' }}</h2>
         <span
-          v-if="
-            equipmentData.status === EquipmentStatus.RENT ||
-            equipmentData.status === EquipmentStatus.OWN
-          "
+          v-if="ownershipStatus === EquipmentStatus.RENT || ownershipStatus === EquipmentStatus.OWN"
           class="eq-badge"
-          :class="{ 'eq-badge--rent': equipmentData.status === EquipmentStatus.RENT }"
-          >{{ $t(equipmentData.status === EquipmentStatus.RENT ? 'Rent' : 'Owned') }}</span
+          :class="{ 'eq-badge--rent': ownershipStatus === EquipmentStatus.RENT }"
+          >{{ $t(ownershipStatus === EquipmentStatus.RENT ? 'Rent' : 'Owned') }}</span
         >
       </div>
       <dl class="eq-specs">
@@ -148,7 +146,7 @@ function imageFallback(event: Event) {
           image-class="eq-certificate-image"
         />
         <div>
-          <span class="eq-muted">{{ $t('CertificateExpireDate') }}</span
+          <span class="eq-muted">{{ $t('eq_certificate_expiry_date') }}</span
           ><strong>{{ equipmentData.date || '—' }}</strong>
         </div>
       </div>

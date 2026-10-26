@@ -17,12 +17,39 @@ import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_typ
 import { useUserStore } from '@/stores/user'
 import { usePrint } from '@/stores/PrintPart'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
+import { EquipmentStatus } from '../../../Core/enum/equipmentStatus'
+import { RentTypeEnum } from '../../../Core/enum/RentTypeEnum'
+import { calculateRentalEndDate } from '../../../Core/utils/calculateRentalEndDate'
+import { formatJoinDate } from '@/base/Presentation/utils/date_format'
+import { formatTime } from '@/base/Presentation/utils/time_format'
 const route = useRoute()
 const userStore = useUserStore()
 const { t } = useI18n()
 const controller = ShowEquipmentController.getInstance()
 const state = computed(() => controller.state.value)
 const equipment = computed(() => state.value.data)
+const isRental = computed(() => Number(equipment.value?.status) === EquipmentStatus.RENT)
+const rentalType = computed(() => {
+  const type = Number(equipment.value?.RentType)
+  return [RentTypeEnum.HOUR, RentTypeEnum.DAY, RentTypeEnum.MONTH, RentTypeEnum.YEAR].includes(type)
+    ? (type as RentTypeEnum)
+    : undefined
+})
+const rentalEndDate = computed(() =>
+  calculateRentalEndDate(
+    equipment.value?.checkinDate,
+    equipment.value?.RentTime,
+    equipment.value?.RentType,
+  ),
+)
+const rentalDate = (value?: string | Date | null) => {
+  if (!value) return '—'
+  const parsedDate = value instanceof Date ? value : new Date(value)
+  if (!Number.isFinite(parsedDate.getTime())) return '—'
+  return rentalType.value === RentTypeEnum.HOUR
+    ? `${formatJoinDate(value)} ${formatTime(value)}`
+    : formatJoinDate(value)
+}
 const InspectionStatus = ref(EquipmentInspectionEnum.Inspection)
 const { printArea, print } = usePrint({ isolated: true })
 const backLink = computed(
@@ -87,7 +114,29 @@ function tabKeydown(event: KeyboardEvent, index: number) {
             > -->
           </header>
           <div class="eq-overview">
-            <CardEquipment :equipment-data="equipment" />
+            <div class="eq-main-column">
+              <CardEquipment :equipment-data="equipment" />
+              <section v-if="isRental" class="eq-panel eq-rental-details">
+                <header class="eq-rental-heading">
+                  <h2>{{ $t('eq_rental_details') }}</h2>
+                  <span class="eq-badge eq-badge--rent">{{ $t('Rent') }}</span>
+                </header>
+                <dl class="eq-rental-fields">
+                  <div>
+                    <dt>{{ $t('contractor') }}</dt>
+                    <dd>{{ equipment.contractor?.name || '—' }}</dd>
+                  </div>
+                  <div>
+                    <dt>{{ $t('eq_rental_start_date') }}</dt>
+                    <dd dir="ltr">{{ rentalDate(equipment.checkinDate) }}</dd>
+                  </div>
+                  <div>
+                    <dt>{{ $t('eq_rental_end_date') }}</dt>
+                    <dd dir="ltr">{{ rentalDate(rentalEndDate) }}</dd>
+                  </div>
+                </dl>
+              </section>
+            </div>
             <aside class="eq-panel eq-identification">
               <header class="eq-identification-header">
                 <ProjectIcon name="equipment" />
@@ -106,9 +155,11 @@ function tabKeydown(event: KeyboardEvent, index: number) {
                   :serial="equipment.serial_name || String(equipment.id)"
                   :license-number="equipment.licensePlateNumber || equipment.licenseNumber"
                   :start-date="equipment.checkinDate"
-                  :EndDate="equipment.checkout_date"
+                  :EndDate="isRental ? rentalEndDate : equipment.checkout_date"
                   :expiredate="equipment.certificateExppiredDate || equipment.date"
                   :device-status="equipment.status"
+                  :rent-type="rentalType"
+                  :contractor-name="equipment.contractor?.name"
                   :inspection-duration="equipment.inspectionDuration"
                 />
               </div>

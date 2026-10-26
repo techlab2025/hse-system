@@ -1,4 +1,8 @@
 {
+  "eq_certificate_expiry_date": "Certificate expiry date",
+  "eq_rental_details": "Rental details",
+  "eq_rental_start_date": "Rental start date",
+  "eq_rental_end_date": "Rental end date",
   "Induction report": "Induction report",
   "Print / Save PDF": "Print / Save PDF",
   "Preparing report…": "Preparing report…",

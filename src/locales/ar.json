@@ -1,4 +1,8 @@
 {
+  "eq_certificate_expiry_date": "تاريخ انتهاء الشهادة",
+  "eq_rental_details": "بيانات الإيجار",
+  "eq_rental_start_date": "تاريخ بداية الإيجار",
+  "eq_rental_end_date": "تاريخ نهاية الإيجار",
   "Induction report": "تقرير التعريف والتوعية",
   "Print / Save PDF": "طباعة / حفظ PDF",
   "Preparing report…": "جارٍ تجهيز التقرير…",
