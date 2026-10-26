@@ -297,10 +297,10 @@ const indexTeamActionList = () => [
             <tbody>
               <tr v-for="(item, index) in state.data" :key="item.id">
                 <td data-label="#">
-                  <router-link
+                  <p
                     :to="`/${user?.type == OrganizationTypeEnum.ADMIN ? 'admin' : 'organization'}/team/edit/${item.id}`">{{
                     index + 1 }}
-                  </router-link>
+                  </p>
                 </td>
                 <td data-label="Name">{{ wordSlice(item.title) }}</td>
 
