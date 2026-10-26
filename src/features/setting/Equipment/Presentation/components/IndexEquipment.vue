@@ -404,7 +404,7 @@ const IndexEquipmentactionList = () => [
           @reset="resetFilters"
         />
         <ActionsList
-          feature-name="action_feature_equipment"
+          :feature-name="`action_feature_equipment`"
           :show-actions="true"
           :actionList="IndexEquipmentactionList()"
           :actionsNumber="5"

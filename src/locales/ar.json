@@ -4822,5 +4822,9 @@
     "continue": "متابعة",
     "viewHint": "اختر مشروعًا لعرض السجلات.",
     "createHint": "اختر المشروع داخل نموذج الإنشاء."
-  }
+  },
+  "documentation": "التوثيق",
+  "documentation_home": "جميع الأدلة",
+  "project_guide": "المشروع",
+  "documentation_feature_guide": "دليل الميزة"
 }

@@ -4834,5 +4834,9 @@
   "action_feature_ppe_item": "Action Feature PPE Item",
   "warehouse type": "warehouse type",
   "equipment_brands": "Equipment Brands",
-  "induction_traning_topics": "Induction Traning Topics"
+  "induction_traning_topics": "Induction Traning Topics",
+  "documentation": "Documentation",
+  "documentation_home": "All guides",
+  "project_guide": "Project",
+  "documentation_feature_guide": "Feature guide"
 }

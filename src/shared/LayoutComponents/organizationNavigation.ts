@@ -1,3 +1,4 @@
+import { featureGuides } from '@/features/Documentation/guides'
 import { ppeMatrixTabs } from '@/features/Organization/PPEMatrix/ppeMatrixTabs'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 
@@ -881,6 +882,31 @@ const ReportsRoutes: SidebarRoute[] = [
   },
 ]
 
+const DocumentationRoutes: SidebarRoute[] = [
+  {
+    link: '/organization/documentation',
+    name: 'documentation_home',
+    icon: 'book-open',
+    permissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.PROJECT_ALL,
+      PermissionsEnum.PROJECT_FETCH,
+    ],
+  },
+  ...featureGuides.map((guide) => ({
+    link: `/organization/documentation/${guide.slug}`,
+    name: guide.navigationKey,
+    icon: guide.icon,
+    permissions: [
+      PermissionsEnum.ADMIN,
+      PermissionsEnum.ORGANIZATION_EMPLOYEE,
+      PermissionsEnum.PROJECT_ALL,
+      PermissionsEnum.PROJECT_FETCH,
+    ],
+  })),
+]
+
 export const organizationNavigation = [
   { key: 'overview', label: 'overview', icon: 'dashboard', routes: GauideRoutes },
   {
@@ -899,6 +925,7 @@ export const organizationNavigation = [
   },
   { key: 'locations', label: 'location', icon: 'map-marker-alt', routes: LocationRoutes },
   { key: 'lockups', label: 'Lockups', icon: 'lock', routes: LockUpsRoutes },
+  { key: 'documentation', label: 'documentation', icon: 'book-open', routes: DocumentationRoutes },
   { key: 'support', label: 'support', icon: 'ticket', routes: TicketRoutes },
 ] as const
 

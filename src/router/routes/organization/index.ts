@@ -1,4 +1,5 @@
 import type { RouteRecordRaw } from '@/router/types'
+import { documentationRoutes } from './documentation'
 import { partnerRoutes } from '@/router/routes/organization/partner.ts'
 import { projectRoutes } from '@/router/routes/organization/project.ts'
 import { projectZoneRoutes } from '@/router/routes/organization/projectZone.ts'
@@ -90,6 +91,7 @@ export const organizationRoutes: RouteRecordRaw[] = [
   ...managementChangeRoutes,
   ...attachmentMatrixRoutes,
   ...internalAuditRoutes,
+  ...documentationRoutes,
   {
     path: 'permission/:id',
     name: 'Permission Organization',

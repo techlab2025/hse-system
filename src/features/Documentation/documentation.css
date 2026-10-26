@@ -1,0 +1,376 @@
+.documentation-page {
+  text-transform: none;
+  --docs-primary: var(--PrimaryColor, #246bfe);
+  --docs-surface: var(--hse-project-surface, var(--BgWhite, #fff));
+  --docs-line: var(--hse-project-line, var(--main-border, #dce5f1));
+  --docs-ink: var(--hse-project-ink, #10243f);
+  --docs-muted: var(--hse-project-muted, #62748b);
+  width: 100%;
+  /* max-width: 1320px; */
+  margin: 0 auto;
+  padding: 16px 0 32px;
+  color: var(--docs-ink);
+  font-family: var(--hse-control-font, inherit);
+}
+.documentation-page,
+.documentation-page * {
+  text-transform: none !important;
+}
+.documentation-page :is(h1, h2, h3, p) {
+  margin: 0;
+}
+.documentation-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 28px;
+  margin-bottom: 24px;
+  border: 1px solid var(--docs-line);
+  border-radius: 18px;
+  background: var(--docs-surface);
+}
+.documentation-eyebrow {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--docs-primary);
+  font-size: 12px;
+  font-weight: 700;
+}
+.documentation-hero h1 {
+  font-size: clamp(25px, 3vw, 34px);
+  font-weight: 800;
+  line-height: 1.3;
+}
+.documentation-hero p {
+  max-width: 720px;
+  margin-top: 10px;
+  color: var(--docs-muted);
+  line-height: 1.75;
+  font-size: 14px;
+}
+.documentation-hero-icon,
+.documentation-card-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  color: var(--docs-primary);
+  background: color-mix(in srgb, var(--docs-primary) 9%, var(--docs-surface));
+}
+.documentation-hero-icon svg,
+.documentation-card-icon svg {
+  width: 26px;
+  height: 26px;
+}
+.documentation-catalog {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr));
+  gap: 18px;
+}
+.documentation-guide-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-content: start;
+  gap: 18px;
+  padding: 26px;
+  border: 1px solid var(--docs-line);
+  border-radius: 16px;
+  background: var(--docs-surface);
+  color: var(--docs-ink);
+  text-decoration: none;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+.documentation-guide-card:hover {
+  border-color: var(--docs-primary);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--docs-primary) 8%, transparent);
+}
+.documentation-guide-card h2 {
+  font-size: 21px;
+}
+.documentation-guide-card p {
+  margin: 8px 0 14px;
+  line-height: 1.75;
+  font-size: 14px;
+  color: var(--docs-muted);
+}
+.documentation-step-count,
+.documentation-format {
+  display: inline-block;
+  padding: 5px 9px;
+  border-radius: 7px;
+  color: var(--docs-primary);
+  background: color-mix(in srgb, var(--docs-primary) 7%, var(--docs-surface));
+  font-size: 12px;
+  font-weight: 600;
+}
+.documentation-card-action {
+  grid-column: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--docs-primary);
+  font-size: 13px;
+  font-weight: 700;
+}
+.documentation-coming-next {
+  margin-top: 20px !important;
+  color: var(--docs-muted);
+  font-size: 13px;
+}
+.documentation-back {
+  display: inline-flex;
+  margin-bottom: 18px;
+  color: var(--docs-primary);
+  font-size: 13px;
+  text-decoration: none;
+}
+.documentation-button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 10px 16px;
+  border: 1px solid var(--docs-line);
+  border-radius: 9px;
+  color: var(--docs-ink);
+  background: var(--docs-surface);
+  text-decoration: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+}
+.documentation-page .documentation-button-primary {
+  color: #fff;
+  background: var(--docs-primary);
+  border-color: var(--docs-primary);
+}
+.documentation-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 235px;
+  gap: 24px;
+  align-items: start;
+}
+.documentation-article {
+  display: grid;
+  gap: 22px;
+  min-width: 0;
+}
+.documentation-introduction {
+  font-size: 15px;
+  line-height: 1.9;
+  padding: 4px 2px;
+}
+.documentation-section {
+  padding: 24px;
+  border: 1px solid var(--docs-line);
+  border-radius: 16px;
+  background: var(--docs-surface);
+  scroll-margin-top: 108px;
+}
+.documentation-section h2 {
+  font-size: 20px;
+  line-height: 1.4;
+  margin-bottom: 14px;
+}
+.documentation-section p {
+  font-size: 14px;
+  line-height: 1.9;
+  color: var(--docs-muted);
+}
+.documentation-prerequisites,
+.documentation-instructions {
+  display: grid;
+  gap: 12px;
+  padding-inline-start: 22px;
+  margin: 14px 0 0;
+  font-size: 14px;
+  line-height: 1.9;
+}
+.documentation-prerequisites {
+  list-style: disc;
+}
+.documentation-instructions {
+  list-style: decimal;
+}
+.documentation-prerequisites li::marker,
+.documentation-instructions li::marker {
+  color: var(--docs-primary);
+  font-weight: 700;
+}
+.documentation-section-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 14px;
+}
+.documentation-recording {
+  margin: 18px 0 0;
+}
+.documentation-recording img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--docs-line);
+  border-radius: 10px;
+  background: var(--docs-surface);
+}
+.documentation-recording figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+.documentation-steps {
+  display: grid;
+  gap: 22px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.documentation-step-heading {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+.documentation-step-heading > span {
+  display: grid;
+  place-items: center;
+  flex: 0 0 42px;
+  height: 42px;
+  color: var(--docs-primary);
+  background: color-mix(in srgb, var(--docs-primary) 9%, var(--docs-surface));
+  border-radius: 11px;
+  font-weight: 800;
+  font-size: 16px;
+}
+.documentation-step-heading small {
+  color: var(--docs-muted);
+  font-size: 11px;
+}
+.documentation-step-heading h2 {
+  margin: 3px 0 0;
+}
+.documentation-page .documentation-note {
+  margin-top: 18px;
+  padding: 12px 15px;
+  border-inline-start: 3px solid var(--docs-primary);
+  border-radius: 0 8px 8px 0;
+  background: color-mix(in srgb, var(--docs-primary) 5%, var(--docs-surface));
+  color: var(--docs-ink);
+  font-size: 13px;
+}
+.documentation-next-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.documentation-next-actions h3 {
+  font-size: 14px;
+  margin-bottom: 7px;
+}
+.documentation-next-actions p {
+  font-size: 13px;
+}
+.documentation-question {
+  border-top: 1px solid var(--docs-line);
+  padding: 14px 0;
+}
+.documentation-question summary {
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.7;
+}
+.documentation-question p {
+  margin-top: 10px;
+  font-size: 13px;
+}
+.documentation-contents {
+  position: sticky;
+  top: 96px;
+  padding: 18px;
+  border: 1px solid var(--docs-line);
+  border-radius: 13px;
+  background: var(--docs-surface);
+}
+.documentation-contents > strong {
+  display: block;
+  font-size: 13px;
+  margin-bottom: 12px;
+}
+.documentation-contents nav {
+  display: grid;
+  gap: 4px;
+}
+.documentation-contents a {
+  padding: 8px 5px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--docs-muted);
+  text-decoration: none;
+  border-radius: 6px;
+}
+.documentation-contents a span {
+  color: var(--docs-primary);
+  margin-inline-end: 6px;
+  font-weight: 700;
+}
+.documentation-contents a:hover {
+  color: var(--docs-primary);
+  background: color-mix(in srgb, var(--docs-primary) 5%, var(--docs-surface));
+}
+.documentation-page :is(a, button, summary):focus-visible {
+  outline: 2px solid var(--docs-primary);
+  outline-offset: 4px;
+}
+.documentation-unavailable {
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+  text-align: center;
+}
+@media (max-width: 1000px) {
+  .documentation-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .documentation-contents {
+    position: static;
+    grid-row: 1;
+  }
+  .documentation-contents nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 600px) {
+  .documentation-hero {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 20px;
+  }
+  .documentation-hero-icon {
+    display: none;
+  }
+  .documentation-section {
+    padding: 18px;
+  }
+  .documentation-guide-card {
+    padding: 20px;
+    gap: 12px;
+  }
+  .documentation-next-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .documentation-contents nav {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
