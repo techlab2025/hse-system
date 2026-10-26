@@ -8,7 +8,8 @@
     <script type="module">
       import '/src/assets/styles/main.scss'
       import '/src/assets/styles/design-system/index.css'
-      import { createApp, h } from 'vue'
+      import { createApp, defineComponent, h, ref } from 'vue'
+      import { useSubmissionValidation } from '/src/composables/useSubmissionValidation'
       import { createPinia, setActivePinia } from 'pinia'
       import { createI18n } from 'vue-i18n'
       import { createMemoryHistory, createRouter, RouterView } from 'vue-router'
@@ -59,11 +60,42 @@
           return this.state
         }
       }
+      requestValidation.__fieldHighlightRegression = {
+        enabled: true,
+        fields: { name: { enabled: true, required: true, minLength: 3 } },
+      }
+      const RequestForm = defineComponent({
+        setup() {
+          const name = ref('')
+          const validate = useSubmissionValidation('__fieldHighlightRegression')
+          return () =>
+            h(
+              'form',
+              {
+                onSubmit: (event) => {
+                  event.preventDefault()
+                  validate({ name: name.value })
+                },
+              },
+              [
+                h('input', {
+                  id: 'name',
+                  value: name.value,
+                  onInput: (event) => {
+                    name.value = event.target.value
+                  },
+                }),
+                h('button', { type: 'submit' }, 'Save'),
+              ],
+            )
+        },
+      })
       const router = createRouter({
         history: createMemoryHistory(),
         routes: [
           { path: '/root', component: RootForm },
           { path: '/training', component: TrainingForm },
+          { path: '/request-validation', component: RequestForm },
         ],
       })
       await router.push('/root')

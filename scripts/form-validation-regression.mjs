@@ -1,5 +1,5 @@
 /** With Vite running: node scripts/form-validation-regression.mjs [http://127.0.0.1:5180] */
-import { chromium } from '@playwright/test'
+import { chromium, expect } from '@playwright/test'
 import assert from 'node:assert/strict'
 const origin = process.argv[2] || 'http://127.0.0.1:5180'
 const browser = await chromium.launch({ channel: 'chromium', headless: true })
@@ -9,10 +9,19 @@ try {
   page.on('pageerror', (e) => errors.push(e.message))
   await page.goto(`${origin}/scripts/fixtures/form-validation.html`)
   await page.waitForSelector('input.lang-input')
+  const dangerColor = await page.evaluate(() => {
+    const probe = document.createElement('span')
+    probe.style.color = 'var(--hse-color-danger)'
+    document.body.append(probe)
+    const color = getComputedStyle(probe).color
+    probe.remove()
+    return color
+  })
   for (const selector of ['button[type="submit"]', 'button[type="button"].btn-secondary']) {
     await page.locator(selector).click()
     assert.equal(await page.evaluate(() => window.saves), 0)
     assert.equal(await page.evaluate(() => window.loads), 0)
+    await expect(page.locator('input.lang-input')).toHaveCSS('border-top-color', dangerColor)
     assert.ok(
       (await page.locator('.required-field-message').allTextContents()).some((s) =>
         s.includes('Root Cause'),
@@ -30,6 +39,10 @@ try {
     'Please enter the cause name',
   )
   await page.locator('input.lang-input').fill('Guard missing')
+  await page.waitForFunction(
+    () => !document.querySelector('[data-required-field=langs] .required-field-message'),
+  )
+  await expect(page.locator('input.lang-input')).not.toHaveCSS('border-top-color', dangerColor)
   await page.evaluate(() => (window.userStore.user.type = 1))
   await page.locator('button[type="submit"]').click()
   assert.ok(
@@ -38,6 +51,7 @@ try {
     ),
   )
   assert.equal(await page.evaluate(() => window.saves), 0)
+  await expect(page.locator('.p-multiselect')).toHaveCSS('border-top-color', dangerColor)
   await page.locator('label[for="title-3"]').click()
   await page.locator('button[type="button"].btn-secondary').click()
   await page.waitForFunction(() => window.saves === 1)
@@ -109,9 +123,20 @@ try {
   assert.equal(core.translated.isValid, false)
   assert.equal(core.zeroFalse.isValid, true)
   assert.equal(core.scopedOff.isValid, true)
+  await page.evaluate(() => window.router.push('/request-validation'))
+  await page.waitForSelector('input#name')
+  await page.locator('button[type="submit"]').click()
+  await page.waitForFunction(
+    () => document.querySelector('#name')?.getAttribute('aria-invalid') === 'true',
+  )
+  await expect(page.locator('#name')).toHaveCSS('border-top-color', dangerColor)
+  await page.locator('#name').fill('Valid name')
+  assert.equal(await page.locator('#name').getAttribute('aria-invalid'), null)
+  await page.locator('button[type="submit"]').click()
+  await expect(page.locator('#name')).not.toHaveCSS('border-top-color', dangerColor)
   assert.deepEqual(errors, [])
   console.log(
-    'PASS: Save and Save & New block before loading; inline errors; editable messages; successful reset; field/global switches; training form; request constraints; multilingual blanks; valid zero/false.',
+    'PASS: Save and Save & New block before loading; inline errors and red input/select borders; request field highlights and cleanup; editable messages; successful reset; field/global switches; training form; request constraints; multilingual blanks; valid zero/false.',
   )
 } finally {
   await browser.close()

@@ -320,3 +320,40 @@
     width: 100%;
   }
 }
+
+/* An inline error belongs to its field wrapper, including controls inside shared inputs. */
+.hse-cloud-identity
+  :is([data-required-field], .input-wrapper, .form-field, .form-group):has(
+    > :is(.required-field-message, .error-message, .p-error, .text-red-500):not(:empty):not(
+        [hidden]
+      )
+  )
+  :is(
+    input:not([type='checkbox']):not([type='radio']):not([type='hidden']):not([type='button']):not(
+        [type='submit']
+      ),
+    textarea,
+    select,
+    .p-select,
+    .p-multiselect,
+    .p-autocomplete,
+    .ql-container,
+    .upload-area,
+    .input-file,
+    [class*='drop-zone']
+  ):not(:disabled, .p-disabled),
+.hse-cloud-identity .form-validation-invalid:not(:disabled, .p-disabled) {
+  border: 1px solid var(--hse-color-danger, var(--status-danger, #e14a57)) !important;
+  box-shadow: none !important;
+}
+
+.hse-cloud-identity
+  :is([data-required-field], .input-wrapper, .form-field, .form-group):has(
+    > :is(.required-field-message, .error-message, .p-error, .text-red-500):not(:empty):not(
+        [hidden]
+      )
+  )
+  :is(input, textarea, select, .p-select, .p-multiselect, .p-autocomplete):focus-within,
+.hse-cloud-identity .form-validation-invalid:focus-within {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--hse-color-danger, #e14a57) 14%, transparent) !important;
+}
