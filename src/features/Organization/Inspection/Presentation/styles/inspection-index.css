@@ -1,0 +1,459 @@
+/* =========================
+   Audit Tabs
+========================= */
+
+.audit-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 16px 20px;
+  border-radius: 18px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+      transparent 50%
+    ),
+    var(--BgWhite);
+}
+
+.task-tabs {
+  margin-bottom: 20px;
+  padding: 6px;
+  border: 1px solid var(--main-border);
+  border-radius: 16px;
+  background: var(--BgWhite);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.task-tabs button {
+  flex: 1;
+  min-width: 0;
+
+  padding: 10px 20px;
+
+  border-radius: 12px;
+
+  border: 1px solid var(--main-border);
+
+  background: transparent;
+
+  color: var(--header-page-color);
+
+  font-family: 'Bold';
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.task-tabs button:hover {
+  transform: translateY(-1px);
+
+  border-color: var(--PrimaryColor);
+}
+
+.task-tabs button.active {
+  background: var(--PrimaryColor);
+
+  color: white;
+
+  border-color: var(--PrimaryColor);
+
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--PrimaryColor) 25%, transparent);
+}
+
+.audit-tabs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.audit-tabs button {
+  min-width: 140px;
+
+  padding: 10px 20px;
+
+  border-radius: 12px;
+
+  border: 1px solid var(--main-border);
+
+  background: transparent;
+
+  color: var(--header-page-color);
+
+  font-family: 'Bold';
+
+  font-size: 14px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.audit-tabs button:hover {
+  transform: translateY(-1px);
+
+  border-color: var(--PrimaryColor);
+}
+
+.audit-tabs button.active {
+  background: var(--PrimaryColor);
+
+  color: white;
+
+  border-color: var(--PrimaryColor);
+
+  box-shadow: 0 8px 20px color-mix(in srgb, var(--PrimaryColor) 25%, transparent);
+}
+
+/* Dark mode */
+
+.is-dark .audit-wrapper {
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--PrimaryColor) 12%, transparent),
+      transparent 55%
+    ),
+    var(--BgWhite);
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+  .audit-wrapper {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .audit-tabs,
+  .task-tabs {
+    width: 100%;
+  }
+
+  .audit-tabs button,
+  .task-tabs button {
+    flex: 1;
+
+    min-width: auto;
+  }
+}
+
+.inspection-controls-panel {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin-bottom: 24px;
+  padding: 20px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 18%, var(--main-border));
+  border-radius: 22px;
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--PrimaryColor) 7%, transparent),
+      transparent 48%
+    ),
+    var(--BgWhite);
+  box-shadow: 0 18px 45px color-mix(in srgb, var(--text-strong) 9%, transparent);
+}
+
+.audit-create-action {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.inspection-controls-panel :deep(.idnex-header) {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.inspection-controls-panel :deep(.idnex-header > .title),
+.inspection-controls-panel :deep(.index-title-row > .title) {
+  font-size: clamp(1.35rem, 2vw, 1.8rem);
+  letter-spacing: -0.02em;
+  text-transform: capitalize;
+}
+
+.inspection-zone-section {
+  margin-top: 18px;
+  padding: 14px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 11%, var(--main-border));
+  border-radius: 16px;
+  background: color-mix(in srgb, var(--surface-1) 88%, transparent);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, white 65%, transparent);
+}
+
+.inspection-filter-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.filter-symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--PrimaryColor) 11%, transparent);
+  color: var(--PrimaryColor);
+}
+
+.filter-symbol svg {
+  width: 20px;
+  height: 20px;
+}
+
+.inspection-filter-heading p {
+  margin: 0;
+  color: var(--header-page-color);
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.inspection-filter-heading div > span {
+  color: var(--GrayText-1);
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.inspection-zone-filter :deep(.idnex-filter) {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.inspection-zone-filter :deep(.filter-container) {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 100%;
+  padding: 2px 2px 8px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--brand-primary-400) 50%, transparent) transparent;
+}
+
+.inspection-zone-filter :deep(.filter) {
+  flex: 0 0 auto;
+  margin: 0;
+  min-height: 36px;
+  padding: 8px 14px;
+  border: 1px solid var(--brand-primary-100);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface-1) 86%, transparent);
+  color: var(--brand-primary-600);
+  font-family: 'Bold';
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.inspection-zone-filter :deep(.filter:hover) {
+  transform: translateY(-1px);
+  border-color: var(--brand-primary-200);
+  background: var(--brand-primary-50);
+  color: var(--brand-primary-500);
+}
+
+.inspection-zone-filter :deep(.filter.active) {
+  border-color: color-mix(in srgb, var(--status-success) 50%, transparent);
+  background: var(--PrimaryColor);
+  color: var(--text-on-brand);
+  box-shadow: 0 10px 22px color-mix(in srgb, var(--brand-primary-500) 20%, transparent);
+}
+
+.create-inspection-btn {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: auto;
+  min-width: max-content;
+  min-height: 52px;
+  padding: 7px 9px 7px 10px;
+  border: 1px solid color-mix(in srgb, var(--PrimaryColor) 24%, transparent);
+  border-radius: 15px;
+  background: linear-gradient(
+    135deg,
+    var(--PrimaryColor),
+    color-mix(in srgb, var(--PrimaryColor) 78%, var(--status-success))
+  );
+  color: white;
+  white-space: nowrap;
+  box-shadow:
+    0 10px 22px color-mix(in srgb, var(--PrimaryColor) 22%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 24%, transparent);
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    filter 0.18s ease;
+}
+
+.create-inspection-btn::before {
+  content: '';
+  position: absolute;
+  top: -36px;
+  inset-inline-end: -22px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: color-mix(in srgb, white 12%, transparent);
+  pointer-events: none;
+}
+
+.create-inspection-btn:hover {
+  color: white;
+  filter: saturate(1.08);
+  transform: translateY(-2px);
+  box-shadow:
+    0 15px 28px color-mix(in srgb, var(--PrimaryColor) 28%, transparent),
+    inset 0 1px 0 color-mix(in srgb, white 28%, transparent);
+}
+
+.create-icon {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  border: 1px solid color-mix(in srgb, white 18%, transparent);
+  border-radius: 11px;
+  background: color-mix(in srgb, white 14%, transparent);
+}
+
+.create-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+.create-copy {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  text-align: start;
+}
+
+.create-copy small {
+  color: color-mix(in srgb, white 72%, transparent);
+  font-size: 0.64rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.create-copy strong {
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 900;
+  line-height: 1.15;
+}
+
+.create-arrow {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 34px;
+  border-radius: 10px;
+  background: color-mix(in srgb, white 10%, transparent);
+  transition: transform 0.18s ease;
+}
+
+.create-arrow svg {
+  width: 16px;
+  height: 16px;
+}
+
+.create-inspection-btn:hover .create-arrow {
+  transform: translateX(2px);
+}
+
+[dir='rtl'] .create-arrow svg {
+  transform: rotate(180deg);
+}
+
+[dir='rtl'] .create-inspection-btn:hover .create-arrow {
+  transform: translateX(-2px);
+}
+
+@media (max-width: 768px) {
+  .inspection-controls-panel {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .create-inspection-btn {
+    width: 100%;
+  }
+}
+
+.table-responsive {
+  padding: 0 !important;
+  border: none !important;
+  background-color: var(--surface-1) !important;
+}
+.index-table-card-container-inspection {
+  width: 100% !important;
+  max-width: none !important;
+  background-color: var(--surface-1) !important;
+}
+
+.inspection-list-panel,
+.inspection-list-panel .header-container,
+.inspection-table-responsive {
+  width: 100% !important;
+  max-width: none !important;
+}

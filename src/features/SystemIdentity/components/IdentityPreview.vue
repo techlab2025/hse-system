@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { organizationNavigation } from '@/shared/LayoutComponents/organizationNavigation'
+import { buildSidebarGroups } from '../sidebarLayout'
 import { useSystemIdentity, type SystemIdentity } from '@/composables/useSystemIdentity'
 import { fontStack } from '../typography'
 import { headerFields, headerActionFields } from '../appearance'
@@ -10,6 +10,7 @@ const { t } = useI18n()
 const { defaultIdentity } = useSystemIdentity()
 const preview = computed(() => (props.identity.isActive ? props.identity : defaultIdentity.value))
 const colors = computed(() => preview.value.appearance.colors)
+const groups = computed(() => buildSidebarGroups(preview.value.appearance, t))
 </script>
 <template>
   <section class="identity-editor">
@@ -30,8 +31,8 @@ const colors = computed(() => preview.value.appearance.colors)
         }"
       >
         ☰<span
-          v-for="(group, index) in preview.appearance.sidebarOrder"
-          :key="group"
+          v-for="(group, index) in groups"
+          :key="group.key"
           :class="{ 'identity-preview-nav-active': index === 0 }"
           :style="
             index === 0
@@ -41,7 +42,7 @@ const colors = computed(() => preview.value.appearance.colors)
                 }
               : undefined
           "
-          >{{ t(organizationNavigation.find((item) => item.key === group)!.label) }}</span
+          >{{ group.label }}</span
         >
       </aside>
       <div class="identity-preview-main">

@@ -1,5 +1,9 @@
 import { defaultTypography, normalizeTypography, type Typography } from './typography'
-import { organizationNavigation } from '@/shared/LayoutComponents/organizationNavigation'
+import {
+  defaultSidebarLayout,
+  normalizeSidebarLayout,
+  type SidebarLayoutSettings,
+} from './sidebarLayout'
 
 export const colorFields = [
   { key: 'sidebarBackground', label: 'Sidebar background', fallback: '#0b294c', group: 'Sidebar' },
@@ -71,14 +75,12 @@ export const headerActionFields = [
 export type HeaderActionField = (typeof headerActionFields)[number]['key']
 export type HeaderField = (typeof headerFields)[number]['key']
 export const breadcrumbPositions = ['left', 'center', 'right'] as const
-export interface Appearance {
+export interface Appearance extends SidebarLayoutSettings {
   sidebarMode: 'compact' | 'expanded'
   typography: Typography
   colors: Partial<Record<AppearanceColor, string>>
   headerOrder: HeaderField[]
   headerActionOrder: HeaderActionField[]
-  sidebarOrder: string[]
-  sidebarItemOrder: Record<string, string[]>
   breadcrumbPosition: (typeof breadcrumbPositions)[number]
 }
 export const defaultAppearance = (): Appearance => ({
@@ -87,15 +89,7 @@ export const defaultAppearance = (): Appearance => ({
   colors: {},
   headerOrder: headerFields.map((field) => field.key),
   headerActionOrder: headerActionFields.map((field) => field.key),
-  sidebarOrder: organizationNavigation.map((group) => group.key),
-  sidebarItemOrder: Object.fromEntries(
-    organizationNavigation.flatMap((group) => [
-      [group.key, group.routes.map((route) => route.name)],
-      ...group.routes
-        .filter((route) => route.children?.length)
-        .map((route) => [`${group.key}/${route.name}`, route.children!.map((child) => child.name)]),
-    ]),
-  ),
+  ...defaultSidebarLayout(),
   breadcrumbPosition: 'left',
 })
 export const normalizeAppearance = (value: unknown): Appearance => {
@@ -104,23 +98,7 @@ export const normalizeAppearance = (value: unknown): Appearance => {
   const candidate = value as Partial<Appearance>
   result.sidebarMode = candidate.sidebarMode === 'expanded' ? 'expanded' : 'compact'
   result.typography = normalizeTypography(candidate.typography)
-  const normalizeOrder = (order: unknown, defaults: string[]) => [
-    ...new Set([
-      ...(Array.isArray(order) ? order.filter((key) => defaults.includes(key)) : []),
-      ...defaults,
-    ]),
-  ]
-  result.sidebarOrder = normalizeOrder(candidate.sidebarOrder, result.sidebarOrder)
-  for (const [key, defaults] of Object.entries(result.sidebarItemOrder)) {
-    const savedOrder = candidate.sidebarItemOrder?.[key]
-    const migratedOrder =
-      key === 'lockups' && Array.isArray(savedOrder)
-        ? savedOrder.map((name) =>
-            name === 'PPE Activity' || name === 'PPE Tools' ? 'PPE Matrix' : name,
-          )
-        : savedOrder
-    result.sidebarItemOrder[key] = normalizeOrder(migratedOrder, defaults)
-  }
+  Object.assign(result, normalizeSidebarLayout(candidate))
   for (const { key } of colorFields) {
     const color = candidate.colors?.[key]
     if (typeof color === 'string' && /^#[0-9a-f]{6}$/i.test(color)) result.colors[key] = color

@@ -6,11 +6,11 @@ import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/user'
 import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
+import PermissionHandler from '@/base/Presentation/utils/permission_handler'
 import {
-  organizationNavigation,
-  orderByKeys,
-  type SidebarRoute as Routes,
-} from './organizationNavigation'
+  buildSidebarGroups,
+  type LayoutRoute as Routes,
+} from '@/features/SystemIdentity/sidebarLayout'
 import { useSystemIdentity } from '@/composables/useSystemIdentity'
 import { defaultAppearance } from '@/features/SystemIdentity/appearance'
 import SidebarUnicon from '@/shared/icons/SidebarUnicon.vue'
@@ -53,34 +53,30 @@ const appearance = computed(() =>
 )
 const routeGroups = computed<RouteGroup[]>(() => {
   const layout = appearance.value
-  return orderByKeys(organizationNavigation, layout.sidebarOrder, (group) => group.key)
-    .filter((group) => group.key !== 'overview' || shouldShowOverviewGroup.value)
+  return buildSidebarGroups(layout, t)
+    .filter(
+      (group) =>
+        (group.key !== 'overview' || shouldShowOverviewGroup.value) && group.routes.length > 0,
+    )
     .map((group) => ({
-      key: group.key,
-      label: t(group.label),
-      eyebrow: t(group.label),
-      icon: group.icon,
+      ...group,
+      eyebrow: group.label,
       adminOnly: group.key === 'overview',
       permissions:
         group.key === 'locations'
-          ? [PermissionsEnum.LOCATION_ORG_ALL]
+          ? [
+              PermissionsEnum.LOCATION_ORG_ALL,
+              ...flattenPermissions(
+                group.routes.filter((item) => !item.identityKey.startsWith('locations/')),
+              ),
+            ]
           : flattenPermissions(group.routes),
-      routes: orderByKeys(
-        group.routes,
-        layout.sidebarItemOrder[group.key] ?? [],
-        (item) => item.name,
-      ).map((item) => ({
-        ...item,
-        children: item.children
-          ? orderByKeys(
-              item.children,
-              layout.sidebarItemOrder[`${group.key}/${item.name}`] ?? [],
-              (child) => child.name,
-            )
-          : undefined,
-      })),
     }))
 })
+
+const canViewRoute = (item: Routes) =>
+  PermissionHandler.Instance.handle(item.permissions) &&
+  item.permissionGroups.every((permissions) => PermissionHandler.Instance.handle(permissions))
 
 const activeRouteGroupKey = ref('operations')
 const paneGroupKey = ref('operations')
@@ -141,10 +137,10 @@ const visibleRouteGroups = computed<RouteGroup[]>(() => {
     .map((group) => {
       const routes = query
         ? group.routes.filter((item) => {
-            const routeName = t(item.name).toLocaleLowerCase()
+            const routeName = item.label.toLocaleLowerCase()
             const groupName = group.label.toLocaleLowerCase()
             const hasMatchingChild = item.children?.some((child) =>
-              t(child.name).toLocaleLowerCase().includes(query),
+              child.label.toLocaleLowerCase().includes(query),
             )
 
             return routeName.includes(query) || groupName.includes(query) || hasMatchingChild
@@ -216,7 +212,7 @@ watch(
 )
 
 watch(
-  () => route.fullPath,
+  [() => route.fullPath, routeGroups],
   () => {
     const currentRouteGroup = routeGroups.value.find(
       (group) => group.key === activeRouteGroupKey.value && groupHasActiveRoute(group),
@@ -338,24 +334,24 @@ onBeforeUnmount(() => {
                 <p class="side-route-group-title">{{ group.label }}</p>
               </PermissionBuilder>
 
-              <PermissionBuilder
-                v-for="sidebarRoute in group.routes"
-                :key="`${group.key}-${String(sidebarRoute.link)}`"
-                :code="sidebarRoute.permissions"
-              >
-                <div class="side-route-entry">
+              <template v-for="sidebarRoute in group.routes" :key="sidebarRoute.identityKey">
+                <div
+                  v-if="canViewRoute(sidebarRoute) || sidebarRoute.children?.some(canViewRoute)"
+                  class="side-route-entry"
+                >
                   <router-link
+                    v-if="canViewRoute(sidebarRoute)"
                     :to="sidebarRoute.link"
                     active-class=""
                     exact-active-class=""
                     :aria-current-value="isParentLinkActive(sidebarRoute) ? 'page' : 'false'"
                     :class="['side-btn', { active: isParentLinkActive(sidebarRoute) }]"
-                    :title="$t(sidebarRoute.name)"
+                    :title="sidebarRoute.label"
                     @click="activateRouteGroup(group.key)"
                   >
                     <SidebarUnicon :name="sidebarRoute.icon" class="side-icon" />
                     <span class="side-label-wrap">
-                      <span class="side-label">{{ $t(sidebarRoute.name) }}</span>
+                      <span class="side-label">{{ sidebarRoute.label }}</span>
                       <span v-if="isSearching" class="side-label-parent">{{ group.label }}</span>
                     </span>
                   </router-link>
@@ -367,6 +363,7 @@ onBeforeUnmount(() => {
                       :code="childRoute.permissions"
                     >
                       <router-link
+                        v-if="canViewRoute(childRoute)"
                         :to="childRoute.link"
                         active-class=""
                         exact-active-class=""
@@ -375,16 +372,16 @@ onBeforeUnmount(() => {
                           'side-btn side-btn--child',
                           { active: isLinkActive(childRoute.link) },
                         ]"
-                        :title="$t(childRoute.name)"
+                        :title="childRoute.label"
                         @click="activateRouteGroup(group.key)"
                       >
                         <SidebarUnicon :name="childRoute.icon" class="side-icon" />
-                        <span class="side-label">{{ $t(childRoute.name) }}</span>
+                        <span class="side-label">{{ childRoute.label }}</span>
                       </router-link>
                     </PermissionBuilder>
                   </div>
                 </div>
-              </PermissionBuilder>
+              </template>
             </template>
 
             <p v-if="!visibleRouteGroups.length" class="side-pane-empty">

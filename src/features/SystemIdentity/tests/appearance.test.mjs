@@ -75,7 +75,8 @@ test('sidebar orders migrate partial layouts and keep every available destinatio
       unknown: ['fake-route'],
     },
   })
-  assert.equal(result.sidebarOrder[0], 'reports')
+  assert.equal(result.sidebarOrder[0], 'overview')
+  assert.equal(result.sidebarOrder[1], 'reports')
   assert.deepEqual(new Set(result.sidebarOrder), new Set(defaults.sidebarOrder))
   assert.deepEqual(result.sidebarItemOrder.operations.slice(0, 2), ['Inspection', 'Projects'])
   assert.deepEqual(
@@ -93,7 +94,10 @@ test('sidebar orders migrate partial layouts and keep every available destinatio
 test('saved sidebar drafts are independent and survive serialization', () => {
   const saved = defaultAppearance()
   const draft = normalizeAppearance(saved)
-  draft.sidebarOrder.reverse()
+  draft.sidebarOrder = [
+    'overview',
+    ...draft.sidebarOrder.filter((key) => key !== 'overview').reverse(),
+  ]
   draft.sidebarItemOrder.operations.reverse()
   assert.equal(saved.sidebarOrder[0], 'overview')
   assert.equal(saved.sidebarItemOrder.operations[0], 'Projects')

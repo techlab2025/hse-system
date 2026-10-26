@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      import { createApp, defineComponent, h, nextTick } from 'vue'
+      import { createPinia, setActivePinia } from 'pinia'
+      import { createMemoryHistory, createRouter, RouterView } from 'vue-router'
+      import { useInspectionIndex } from '/src/features/Organization/Inspection/Presentation/composables/useInspectionIndex'
+      import IndexController from '/src/features/Organization/Inspection/Presentation/controllers/indexInspectionController'
+      import TasksController from '/src/features/Organization/Inspection/Presentation/controllers/FetchAllTasksController'
+      import ResultsController from '/src/features/Organization/Inspection/Presentation/controllers/FetchInspectionsResultsController'
+      import ProjectsController from '/src/features/Organization/ObservationFactory/Presentation/controllers/FetchMyProjectsController'
+      import ZonesController from '/src/features/Organization/ObservationFactory/Presentation/controllers/FetchMyZonesController'
+      import { DataSuccess } from '/src/base/core/networkStructure/Resources/dataState/data_state'
+      import { useUserStore } from '/src/stores/user'
+      import { useProjectSelectStore } from '/src/stores/ProjectSelect'
+
+      const pinia = createPinia()
+      setActivePinia(pinia)
+      const params = new URLSearchParams(location.search)
+      window.calls = []
+      window.options = { projects: params.has('multiple') ? [{ id: 7 }, { id: 8 }] : [{ id: 7 }] }
+      window.pendingZones = new Map()
+      window.pendingLists = []
+      window.deferZones = false
+      window.deferLists = false
+      window.failList = false
+      useUserStore().user = { isMaster: 1, type: 2 }
+      window.projectStore = useProjectSelectStore()
+      window.userStore = useUserStore()
+      for (const [type, controller] of [
+        ['mine', IndexController.getInstance()],
+        ['all', TasksController.getInstance()],
+        ['results', ResultsController.getInstance()],
+      ]) {
+        controller.getData = async function (params) {
+          window.calls.push({ type, payload: params.toMap() })
+          if (window.deferLists) await new Promise((resolve) => window.pendingLists.push(resolve))
+          if (window.failList) throw new Error('Expected list failure')
+          this.setState(new DataSuccess({ data: [] }))
+          return this.state
+        }
+      }
+      ProjectsController.getInstance().getData = async function () {
+        window.calls.push({ type: 'projects' })
+        this.setState(new DataSuccess({ data: window.options.projects }))
+        return this.state
+      }
+      ZonesController.getInstance().FetchMyZones = async function (params) {
+        const projectId = params.projectId
+        window.calls.push({ type: 'zones', projectId })
+        if (window.deferZones)
+          await new Promise((resolve) => window.pendingZones.set(projectId, resolve))
+        this.setState(new DataSuccess({ data: [{ id: projectId * 10, title: 'Zone' }] }))
+        return this.state
+      }
+      const Screen = defineComponent({
+        setup() {
+          window.index = useInspectionIndex()
+          return () =>
+            h(
+              'div',
+              { id: 'ready' },
+              JSON.stringify({
+                project: window.index.selectedProjectId.value,
+                zones: window.index.selectedZoneIds.value,
+              }),
+            )
+        },
+      })
+      const router = createRouter({
+        history: createMemoryHistory(),
+        routes: [
+          { path: '/inspection', name: 'Inspections', component: Screen },
+          { path: '/audit', name: 'Audits', component: Screen },
+        ],
+      })
+      window.router = router
+      window.nextTick = nextTick
+      window.unmount = () => app.unmount()
+      await router.push(params.has('audit') ? '/audit?project_id=2' : '/inspection')
+      await router.isReady()
+      const app = createApp({ render: () => h(RouterView) })
+        .use(pinia)
+        .use(router)
+      app.mount('#app')
+    </script>
+  </body>
+</html>

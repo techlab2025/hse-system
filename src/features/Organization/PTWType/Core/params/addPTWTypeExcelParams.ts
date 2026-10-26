@@ -3,6 +3,7 @@ import type Params from '@/base/core/params/params'
 
 interface Data extends LookupIndustryFields {
   title: string
+  color: string
 }
 
 export default class AddPTWTypeExcelParams implements Params {
@@ -12,7 +13,7 @@ export default class AddPTWTypeExcelParams implements Params {
     this.data = applyLookupIndustryScope(data.data, industryScope)
   }
 
-  toMap(): Record<string, any> {
+  toMap(): { data: Data[] } {
     return { data: this.data }
   }
 }
