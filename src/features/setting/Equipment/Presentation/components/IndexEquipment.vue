@@ -67,7 +67,7 @@ const ownershipOptions = [
 ]
 const filterFields = computed(() => [
   { key: 'status', label: 'Rent Type', options: ownershipOptions },
-{ key: 'equipmentType', label: 'Equipment Type', options: equipmentTypeOptions.value },
+  { key: 'equipmentType', label: 'Equipment Type', options: equipmentTypeOptions.value },
 ])
 const indexEquipmentController = IndexEquipmentController.getInstance()
 const state = ref(indexEquipmentController.state.value)
@@ -340,7 +340,7 @@ const IndexEquipmentactionList = () => [
   },
   {
     text: t(
-      `${routeEquipmentType.value == 1 ? `add equipment` : routeEquipmentType.value == 2 ? `add device` : `add tool`}`,
+      `${routeEquipmentType.value == 1 || routeEquipmentType.value == null ? `add equipment` : routeEquipmentType.value == 2 ? `add device` : `add tool`}`,
     ),
     link: addEquipmentLink.value,
     icon: ActionsListAddIcon,
@@ -406,7 +406,7 @@ const IndexEquipmentactionList = () => [
           @reset="resetFilters"
         />
         <ActionsList
-          :feature-name="`action_feature_equipment`"
+          :feature-name="`${routeEquipmentType == 1 ? `Equipment Actions` : routeEquipmentType == 2 ? `Device Actions` : `Tools Actions`}`"
           :show-actions="true"
           :actionList="IndexEquipmentactionList()"
           :actionsNumber="5"

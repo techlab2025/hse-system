@@ -12,10 +12,17 @@ const guide = computed(() =>
   featureGuides.find((item) => item.slug === String(route.params.feature).toLowerCase()),
 )
 const playing = ref(false)
+const recordingIndex = ref(0)
+const recording = computed(() => guide.value?.recordings[recordingIndex.value])
+const selectRecording = (index: number) => {
+  recordingIndex.value = index
+  playing.value = false
+}
 watch(
   () => route.params.feature,
   () => {
     playing.value = false
+    recordingIndex.value = 0
   },
 )
 const stepLink = (hash: string) => ({
@@ -40,7 +47,7 @@ const stepLink = (hash: string) => ({
         <RouterLink
           :to="guide.startRoute"
           class="documentation-button documentation-button-primary"
-          >{{ labels.try }}</RouterLink
+          >{{ text(guide.actionLabel) }}</RouterLink
         >
       </header>
       <div class="documentation-layout">
@@ -57,31 +64,47 @@ const stepLink = (hash: string) => ({
               <h2>{{ labels.watch }}</h2>
               <span class="documentation-format">GIF</span>
             </div>
-            <p>{{ labels.recordingDescription }}</p>
-            <figure class="documentation-recording">
-              <img
-                :key="playing ? 'playing' : 'poster'"
-                :src="playing ? guide.recording.gif : guide.recording.poster"
-                :alt="`${text(guide.title)} — ${labels.watch}`"
-                width="1440"
-                height="1000"
-                loading="lazy"
-              />
-              <figcaption>
-                <button
-                  type="button"
-                  class="documentation-button documentation-button-primary"
-                  :aria-pressed="playing"
-                  @click="playing = !playing"
-                >
-                  <span aria-hidden="true">{{ playing ? '■' : '▶' }}</span>
-                  {{ playing ? labels.stop : labels.play }}
-                </button>
-                <!-- <a :href="guide.recording.gif" class="documentation-button" download>{{
-                  labels.download
-                }}</a> -->
-              </figcaption>
-            </figure>
+            <div
+              v-if="guide.recordings.length > 1"
+              class="documentation-recording-choices"
+              :aria-label="labels.watch"
+            >
+              <button
+                v-for="(item, index) in guide.recordings"
+                :key="item.id"
+                type="button"
+                class="documentation-button"
+                :class="{ 'documentation-button-primary': recordingIndex === index }"
+                :aria-pressed="recordingIndex === index"
+                @click="selectRecording(index)"
+              >
+                {{ text(item.title) }}
+              </button>
+            </div>
+            <template v-if="recording">
+              <p>{{ text(recording.description) }}</p>
+              <figure class="documentation-recording">
+                <img
+                  :key="`${recording.id}-${playing}`"
+                  :src="playing ? recording.gif : recording.poster"
+                  :alt="`${text(recording.title)} — ${labels.watch}`"
+                  width="1440"
+                  height="1000"
+                  loading="lazy"
+                />
+                <figcaption>
+                  <button
+                    type="button"
+                    class="documentation-button documentation-button-primary"
+                    :aria-pressed="playing"
+                    @click="playing = !playing"
+                  >
+                    <span aria-hidden="true">{{ playing ? '■' : '▶' }}</span>
+                    {{ playing ? labels.stop : labels.play }}
+                  </button>
+                </figcaption>
+              </figure>
+            </template>
           </section>
           <ol class="documentation-steps" :aria-label="labels.steps">
             <li

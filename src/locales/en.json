@@ -4838,5 +4838,9 @@
   "documentation": "Documentation",
   "documentation_home": "All guides",
   "project_guide": "Project",
-  "documentation_feature_guide": "Feature guide"
+  "documentation_feature_guide": "Feature guide",
+  "equipment_guide": "Equipment",
+  "employee_guide": "Employees",
+  "observation_guide": "Observations",
+  "incident_guide": "Incidents"
 }

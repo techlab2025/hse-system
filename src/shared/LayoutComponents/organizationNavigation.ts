@@ -882,29 +882,36 @@ const ReportsRoutes: SidebarRoute[] = [
   },
 ]
 
+const documentationFeaturePermissions: Record<string, PermissionsEnum[]> = {
+  project: [PermissionsEnum.PROJECT_ALL, PermissionsEnum.PROJECT_FETCH],
+  equipment: [
+    PermissionsEnum.EQUIPMENT_ALL,
+    PermissionsEnum.EQUIPMENT_FETCH,
+    PermissionsEnum.ORG_EQUIPMENT_ALL,
+    PermissionsEnum.ORG_EQUIPMENT_FETCH,
+  ],
+  employee: [PermissionsEnum.ORG_EMPLOYEE_ALL, PermissionsEnum.ORG_EMPLOYEE_FETCH],
+  observation: [PermissionsEnum.ORG_OBSERVATION_ALL, PermissionsEnum.ORG_OBSERVATION_FETCH],
+  incident: [PermissionsEnum.ORG_INCEDANT_ALL, PermissionsEnum.ORG_INCEDANT_FETCH],
+}
+const documentationFeatureRoutes: SidebarRoute[] = featureGuides.map((guide) => ({
+  link: `/organization/documentation/${guide.slug}`,
+  name: guide.navigationKey,
+  icon: guide.icon,
+  permissions: [
+    PermissionsEnum.ADMIN,
+    PermissionsEnum.ORGANIZATION_EMPLOYEE,
+    ...(documentationFeaturePermissions[guide.slug] ?? []),
+  ],
+}))
 const DocumentationRoutes: SidebarRoute[] = [
   {
     link: '/organization/documentation',
     name: 'documentation_home',
     icon: 'book-open',
-    permissions: [
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.PROJECT_ALL,
-      PermissionsEnum.PROJECT_FETCH,
-    ],
+    permissions: [...new Set(documentationFeatureRoutes.flatMap((route) => route.permissions))],
   },
-  ...featureGuides.map((guide) => ({
-    link: `/organization/documentation/${guide.slug}`,
-    name: guide.navigationKey,
-    icon: guide.icon,
-    permissions: [
-      PermissionsEnum.ADMIN,
-      PermissionsEnum.ORGANIZATION_EMPLOYEE,
-      PermissionsEnum.PROJECT_ALL,
-      PermissionsEnum.PROJECT_FETCH,
-    ],
-  })),
+  ...documentationFeatureRoutes,
 ]
 
 export const organizationNavigation = [

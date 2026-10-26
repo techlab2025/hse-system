@@ -374,3 +374,10 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+.documentation-recording-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}

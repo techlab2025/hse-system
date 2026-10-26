@@ -4826,5 +4826,9 @@
   "documentation": "التوثيق",
   "documentation_home": "جميع الأدلة",
   "project_guide": "المشروع",
-  "documentation_feature_guide": "دليل الميزة"
+  "documentation_feature_guide": "دليل الميزة",
+  "equipment_guide": "المعدات",
+  "employee_guide": "الموظفون",
+  "observation_guide": "الملاحظات",
+  "incident_guide": "الحوادث"
 }
