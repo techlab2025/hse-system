@@ -830,7 +830,7 @@ const LockUpsRoutes: SidebarRoute[] = [
   },
   {
     link: '/organization/traning-topics',
-    name: 'induction traning_topics',
+    name: 'induction_traning_topics',
     icon: 'medical-square',
     permissions: [
       PermissionsEnum.ORG_TRANING_TOPIC_ALL,

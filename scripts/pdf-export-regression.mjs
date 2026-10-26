@@ -104,7 +104,13 @@ try {
         <tbody><tr><td>Site C</td><td>Edit</td></tr></tbody></table>
       <table id="grouped"><thead><tr><th rowspan="2">Name</th><th colspan="2">Details</th></tr>
         <tr><th>Status</th><th>Actions</th></tr></thead>
-        <tbody><tr><td>Site D</td><td>Open</td><td>Edit</td></tr></tbody></table>`
+        <tbody><tr><td>Site D</td><td>Open</td><td>Edit</td></tr></tbody></table>
+      <table id="report-columns"><colgroup><col><col><col><col></colgroup><thead><tr>
+        <th>Task</th><th><button class="header-hint-trigger">Responsible person<span class="header-hint-icon">?</span></button></th>
+        <th data-pdf-exclude>Related records</th><th data-pdf-exclude>إجراءات التقرير</th>
+        </tr></thead><tbody><tr><td>Repair equipment</td><td>Safety manager</td>
+        <td><a href="/investigation/1">Investigation 1</a></td><td>View results</td></tr>
+        <tr><td colspan="4">Report summary</td></tr></tbody></table>`
     window.removePdfActions(target)
     return {
       controls: target.querySelectorAll('button, [role="button"], input, .list-trigger').length,
@@ -116,6 +122,12 @@ try {
       arabicCells: target.querySelectorAll('#arabic td').length,
       groupedCells: target.querySelectorAll('#grouped tbody td').length,
       groupedSpan: target.querySelector('#grouped thead tr th:nth-child(2)').colSpan,
+      reportHeadings: [...target.querySelectorAll('#report-columns th')].map(
+        (node) => node.textContent,
+      ),
+      reportCells: target.querySelector('#report-columns tbody tr').cells.length,
+      reportColumns: target.querySelectorAll('#report-columns col').length,
+      reportSummarySpan: target.querySelector('#report-columns tbody tr:last-child td').colSpan,
       content: target.textContent,
     }
   })
@@ -128,6 +140,12 @@ try {
   assert.equal(cleaned.arabicCells, 1)
   assert.equal(cleaned.groupedCells, 2)
   assert.equal(cleaned.groupedSpan, 1)
+  assert.deepEqual(cleaned.reportHeadings, ['Task', 'Responsible person'])
+  assert.equal(cleaned.reportCells, 2)
+  assert.equal(cleaned.reportColumns, 2)
+  assert.equal(cleaned.reportSummarySpan, 2)
+  assert.ok(!cleaned.content.includes('Investigation 1'))
+  assert.ok(!cleaned.content.includes('View results'))
   assert.ok(cleaned.content.includes('Repair equipment'))
   assert.ok(!cleaned.content.includes('Edit'))
   const original = await page.locator('#report').innerHTML()

@@ -28,7 +28,7 @@ const props = withDefaults(
     isDropList: false,
     targetSelector: '.table-responsive',
     fileName: 'report',
-    orientation: 'portrait',
+    orientation: 'landscape',
     buttonLabel: 'Export PDF',
     excelButtonLabel: 'Export Excel',
     margin: 8,

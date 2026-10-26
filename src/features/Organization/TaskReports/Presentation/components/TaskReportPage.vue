@@ -571,7 +571,7 @@ onMounted(() => fetchReport())
                         <span class="header-hint-icon" aria-hidden="true">?</span>
                       </button>
                     </th>
-                    <th>{{ $t('lessons_related_records') }}</th>
+                    <th data-pdf-exclude>{{ $t('lessons_related_records') }}</th>
                   </tr>
                 </thead>
 
@@ -627,7 +627,7 @@ onMounted(() => fetchReport())
                       <span class="person-value">{{ getAssignedTo(task) }}</span>
                     </td>
 
-                    <td class="related-cell">
+                    <td class="related-cell" data-pdf-exclude>
                       <div
                         v-if="buildRelatedLinks(task).length"
                         class="table-related-links"

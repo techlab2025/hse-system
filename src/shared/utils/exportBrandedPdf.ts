@@ -49,6 +49,7 @@ export function removePdfActions(target: HTMLElement) {
           if (cell.tagName === 'TH') labels.push(cell.textContent)
           const hasAction =
             labels.some((label) => actionLabel.test(label?.trim() ?? '')) ||
+            cell.matches('[data-pdf-exclude], [data-html2canvas-ignore]') ||
             cell.matches(actionMarker) ||
             [...cell.querySelectorAll(actionMarker)].some((node) => node.closest('table') === table)
           cells.push({ cell, start: column, span })
@@ -82,6 +83,12 @@ export function removePdfActions(target: HTMLElement) {
       }
     }
   }
+
+  // Tooltip triggers in headings contain report labels, not row actions.
+  target.querySelectorAll<HTMLElement>('th .header-hint-trigger').forEach((trigger) => {
+    trigger.querySelectorAll('.header-hint-icon').forEach((icon) => icon.remove())
+    trigger.replaceWith(target.ownerDocument.createTextNode(trigger.textContent?.trim() ?? ''))
+  })
 
   target
     .querySelectorAll(
@@ -148,13 +155,39 @@ const reportStyles = `
 .hse-pdf-content input:disabled, .hse-pdf-content select:disabled {
   opacity: 1 !important; color: #172334 !important;
 }
-.hse-pdf-content table { border-collapse: collapse !important; width: 100% !important; }
+.hse-pdf-content table {
+  border-collapse: collapse !important; border-spacing: 0 !important;
+  width: 100% !important; min-width: 0 !important; table-layout: auto !important;
+  font-size: 13px !important; line-height: 1.5 !important;
+}
+.hse-pdf-content th, .hse-pdf-content td {
+  width: auto !important; min-width: 0 !important; max-width: none !important;
+  height: auto !important; text-align: start !important; vertical-align: top !important;
+  font-size: 13px !important; line-height: 1.5 !important;
+  white-space: normal !important; overflow-wrap: anywhere !important;
+  border: 1px solid #dce3ed !important; border-radius: 0 !important;
+}
 .hse-pdf-content th {
   background: var(--pdf-secondary) !important; color: #ffffff !important;
-  font-weight: 700 !important; padding: 12px !important;
-  border: 1px solid var(--pdf-secondary) !important;
+  font-size: 13px !important; font-weight: 700 !important; padding: 10px !important;
+  letter-spacing: normal !important; text-transform: none !important;
 }
-.hse-pdf-content td { padding: 11px 12px !important; border-bottom: 1px solid #dce3ed !important; }
+.hse-pdf-content td { padding: 10px !important; color: #172334 !important; }
+.hse-pdf-content td * {
+  max-width: none !important; min-width: 0 !important; max-height: none !important;
+  white-space: normal !important; overflow: visible !important;
+  text-overflow: clip !important; -webkit-line-clamp: unset !important; line-clamp: unset !important;
+  font-size: inherit !important; color: inherit !important;
+}
+.hse-pdf-content td a { text-decoration: none !important; }
+.hse-pdf-content .number-cell span, .hse-pdf-content .task-status-pill,
+.hse-pdf-content .investigation-status, .hse-pdf-content .investigation-status-badge,
+.hse-pdf-content .table-reference-link {
+  background: transparent !important; border: 0 !important; border-radius: 0 !important;
+  padding: 0 !important; box-shadow: none !important; height: auto !important;
+}
+.hse-pdf-content .reference-mark, .hse-pdf-content .reference-arrow,
+.hse-pdf-content .task-reason-indicator { display: none !important; }
 .hse-pdf-content tbody tr:nth-child(even) td { background: #f3f6fa !important; }
 .hse-pdf-content tbody tr:nth-child(odd) td { background: #ffffff !important; }
 .hse-pdf-content h1, .hse-pdf-content h2, .hse-pdf-content h3 { color: var(--pdf-secondary) !important; }
@@ -337,7 +370,9 @@ export async function exportBrandedPdf(options: PdfReportOptions): Promise<void>
         doc.head.append(styles)
         target.classList.add('hse-pdf-content')
         setColors(target, options.identity)
-        target.style.width = `${naturalWidth}px`
+        // Use the printable page width; screen tables can be thousands of pixels wide.
+        target.style.setProperty('width', `${Math.round(width * 4)}px`, 'important')
+        target.style.setProperty('min-width', '0', 'important')
         target.style.height = 'auto'
         removePdfActions(target)
         target.querySelectorAll<HTMLTextAreaElement>('textarea').forEach((textarea) => {
