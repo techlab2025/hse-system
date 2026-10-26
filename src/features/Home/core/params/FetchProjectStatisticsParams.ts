@@ -1,3 +1,4 @@
+import { withProjectId } from '@/shared/utils/projectScope'
 import type Params from '@/base/core/params/params'
 // import { ClientStatusEnum } from '@/features/users/clients/clients/Core/enums/clientStatusEnum.ts'
 // import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
@@ -21,6 +22,6 @@ export default class FetchProjectStatisticsParams implements Params {
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
-    return data
+    return withProjectId(data)
   }
 }

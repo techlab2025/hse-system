@@ -1,3 +1,4 @@
+import { withProjectId } from '@/shared/utils/projectScope'
 import type Params from '@/base/core/params/params'
 
 export default class IndexInductionParams implements Params {
@@ -15,6 +16,7 @@ export default class IndexInductionParams implements Params {
     withPage: number = 1,
     isPaginate: boolean = false,
     isSystemOnly?: boolean,
+    public projectId?: number,
   ) {
     this.word = word
     this.withPage = withPage
@@ -31,6 +33,6 @@ export default class IndexInductionParams implements Params {
     if (!this.isPaginate) data['page'] = this.pageNumber
     if (!this.isPaginate) data['limit'] = this.perPage
     if (this.isSystemOnly || this.isSystemOnly == false) data['is_system_only'] = this.isSystemOnly
-    return data
+    return this.isSystemOnly ? data : withProjectId(data, this.projectId)
   }
 }

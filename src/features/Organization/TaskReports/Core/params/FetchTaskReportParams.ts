@@ -1,3 +1,4 @@
+import { withProjectId } from '@/shared/utils/projectScope'
 import type Params from '@/base/core/params/params'
 
 export default class FetchTaskReportParams implements Params {
@@ -26,6 +27,6 @@ export default class FetchTaskReportParams implements Params {
     if (this.toDate?.trim()) data.to_date = this.toDate.trim()
     if (this.projectId) data.project_id = this.projectId
 
-    return data
+    return withProjectId(data, this.projectId)
   }
 }

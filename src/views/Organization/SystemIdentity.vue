@@ -312,8 +312,8 @@ onMounted(() => {
         <div>
           <h2>Sidebar navigation</h2>
           <p>
-            Choose how sidebar groups and routes appear. Click Save and apply identity to apply your
-            choice.
+            Rename sidebar tabs and items, change their order, or move items between groups. Click
+            Save and apply identity to apply your choice.
           </p>
         </div>
       </header>

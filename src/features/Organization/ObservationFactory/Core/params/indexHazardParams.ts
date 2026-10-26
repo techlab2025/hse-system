@@ -1,7 +1,7 @@
 import type Params from '@/base/core/params/params'
 import type { Observation } from '../Enums/ObservationTypeEnum'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
-import { useProjectSelectStore } from '@/stores/ProjectSelect'
+import { withProjectIds } from '@/shared/utils/projectScope'
 // import { ClientStatusEnum } from '@/features/users/clients/clients/Core/enums/clientStatusEnum.ts'
 // import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
 
@@ -68,20 +68,11 @@ export default class IndexHazardParams implements Params {
 
   toMap(): Record<string, string | number | number[] | null> {
     const data: Record<string, string | number | number[] | null> = {}
-    const selectedHeaderProjectId = Number(useProjectSelectStore().getProjectId())
-    const projectIds =
-      this.projectId.length > 0
-        ? this.projectId.filter((id) => Number(id) > 0)
-        : selectedHeaderProjectId > 0
-          ? [selectedHeaderProjectId]
-          : []
-
     if (this.word) data['word'] = this.word
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.type) data['type'] = this.type
-    if (projectIds.length > 0) data['project_ids'] = projectIds
     if (this.projectZoonIds) data['project_zoon_ids'] = this.projectZoonIds
     if (this.projectLocationIds) data['location_ids'] = this.projectLocationIds
     if (this.zoonIds) data['zoon_ids'] = this.zoonIds
@@ -94,6 +85,6 @@ export default class IndexHazardParams implements Params {
     if (this.equipmentTypeIds) data['equipment_type_ids'] = this.equipmentTypeIds
     if (this.equipmentSubTypeIds) data['equipment_sub_type_ids'] = this.equipmentSubTypeIds
     // if (this.code) data['code'] = this.code
-    return data
+    return withProjectIds(data, this.projectId)
   }
 }

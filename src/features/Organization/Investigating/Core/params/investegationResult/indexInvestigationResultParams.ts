@@ -1,3 +1,4 @@
+import { withProjectId } from '@/shared/utils/projectScope'
 import type Params from '@/base/core/params/params'
 import type { RiskLevelEnum } from '../../Enums/risk_level_enum'
 
@@ -45,6 +46,6 @@ export default class IndexInvestigationResultParams implements Params {
     if (this.observationType != null) data['observation_type'] = this.observationType
     if (this.projectId) data['project_id'] = this.projectId
 
-    return data
+    return withProjectId(data, this.projectId)
   }
 }

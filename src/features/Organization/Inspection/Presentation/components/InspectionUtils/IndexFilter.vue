@@ -10,7 +10,7 @@ const props = defineProps<{
   selectedZoneIds?: number[]
   link: string
   linkTitle: string
-  SelectdProject: number[]
+  SelectdProject?: number
 }>()
 
 const localSelectedFilter = ref<number[]>([])

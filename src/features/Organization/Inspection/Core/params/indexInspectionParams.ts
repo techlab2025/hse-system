@@ -1,5 +1,5 @@
 import type Params from '@/base/core/params/params'
-import { useProjectSelectStore } from '@/stores/ProjectSelect'
+import { withProjectIds } from '@/shared/utils/projectScope'
 // import { ClientStatusEnum } from '@/features/users/clients/clients/Core/enums/clientStatusEnum.ts'
 // import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
 
@@ -49,19 +49,6 @@ export default class IndexInspectionParams implements Params {
 
   toMap(): Record<string, string | number | number[] | null | any> {
     const data: Record<string, string | number | number[] | null | any> = {}
-    const headerProjectId = Number(useProjectSelectStore().getProjectId())
-    const explicitProjectIds = Array.isArray(this.projectIds)
-      ? this.projectIds
-      : this.projectIds
-        ? [this.projectIds]
-        : []
-    const projectIds =
-      explicitProjectIds.length > 0
-        ? explicitProjectIds.filter((id) => Number(id) > 0)
-        : headerProjectId > 0
-          ? [headerProjectId]
-          : []
-
     if (this.word) data['word'] = this.word
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
@@ -69,12 +56,11 @@ export default class IndexInspectionParams implements Params {
     if (this.id) data['employee_ids'] = this.id
     if (!this.isAudit && this.zoneIds) data['zone_ids'] = this.zoneIds
     if (this.isOverDue) data['is_over_due'] = this.isOverDue
-    if (projectIds.length > 0) data['project_ids'] = projectIds
     if (this.taskId) data['task_id'] = this.taskId
     if (this.inspectionType != null) data['inspection_type'] = this.inspectionType
     if (this.date) data['date'] = this.date
     if (this.isAudit) data['is_audit'] = this.isAudit
     // if (this.code) data['code'] = this.code
-    return data
+    return withProjectIds(data, this.projectIds)
   }
 }

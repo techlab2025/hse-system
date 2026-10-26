@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        margin: 0;
+      }
+      .spacer {
+        height: 900px;
+      }
+      body.nested .before {
+        height: 80px;
+      }
+      body.nested #scroll-container {
+        height: 500px;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="spacer before"></div>
+    <div id="scroll-container"><div id="app"></div></div>
+    <div class="spacer"></div>
+    <script type="module">
+      import { createApp, h, ref } from 'vue'
+      import { createI18n } from 'vue-i18n'
+      import Editor from '/src/features/SystemIdentity/components/IdentitySidebarEditor.vue'
+      import { defaultAppearance } from '/src/features/SystemIdentity/appearance'
+      import '/src/features/SystemIdentity/identity-editor.css'
+      if (new URLSearchParams(location.search).has('nested')) document.body.classList.add('nested')
+      const appearance = ref(defaultAppearance())
+      const app = createApp({
+        render: () =>
+          h(Editor, {
+            modelValue: appearance.value,
+            'onUpdate:modelValue': (value) => {
+              appearance.value = value
+            },
+          }),
+      }).use(createI18n({ legacy: false, locale: 'en', messages: { en: {} } }))
+      app.mount('#app')
+      window.destroyEditor = () => app.unmount()
+    </script>
+  </body>
+</html>

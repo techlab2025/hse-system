@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import type MyProjectsModel from '@/features/Organization/ObservationFactory/Data/models/MyProjectsModel'
+import type ProjectModel from '@/features/Organization/Project/Data/models/ProjectModel'
 import HeaderProjectsFilter from '@/features/Organization/ObservationFactory/Presentation/components/Hazard/HazardUtils/HeaderProjectsFilter.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
 const emit = defineEmits(['update:data'])
 defineProps<{
   title: string
   length: number
-  projects: MyProjectsModel[]
+  projects: ProjectModel[]
   isProject?: number
   selectedProjectId?: number
 }>()

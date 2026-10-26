@@ -4,13 +4,13 @@ import { useProjectSelectStore } from '@/stores/ProjectSelect'
 // import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
 
 export default class IndexLocationHierarchyEmployeeParams implements Params {
-  public projectId?: number = 1
+  public projectId?: number
   public locationId?: number = 1
   public hierarchyId?: number | null
   public isLeader?: boolean
 
   constructor(
-    projectId: number = 1,
+    projectId?: number,
     locationId: number = 1,
     hierarchyId?: number | null,
     isLeader?: boolean,
@@ -27,7 +27,7 @@ export default class IndexLocationHierarchyEmployeeParams implements Params {
       data['project_id'] = useProjectSelectStore().SelectedProjectId(this.projectId)
     if (this.locationId) data['location_id'] = this.locationId
     if (this.hierarchyId) data['hierarchy_id'] = this.hierarchyId
-    data['is_leader'] = this.isLeader
+    if (this.isLeader != null) data['is_leader'] = this.isLeader
 
     return data
   }

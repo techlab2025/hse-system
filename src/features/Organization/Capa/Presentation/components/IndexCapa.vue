@@ -5,6 +5,7 @@ import Pagination from '@/shared/HelpersComponents/Pagination.vue'
 import DataEmpty from '@/shared/DataStatues/DataEmpty.vue'
 import DataFailed from '@/shared/DataStatues/DataFailed.vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
 import PermissionBuilder from '@/shared/HelpersComponents/PermissionBuilder.vue'
 import { PermissionsEnum } from '@/features/users/Admin/Core/Enum/permission_enum'
 import DataStatus from '@/shared/DataStatues/DataStatusBuilder.vue'
@@ -74,7 +75,9 @@ watch([selectedSource, countPerPage, () => state.value.data], () => {
 const route = useRoute()
 const router = useRouter()
 const Projects = ref<ProjectModel[]>([])
-const selectedProjctesFilters = ref<number>()
+const selectedProjctesFilters = ref<number | undefined>(
+  Number(route.query.project_id) || useProjectSelectStore().getProjectId(),
+)
 const Filters = ref<MyZonesModel[]>()
 const SelectedZonesFilter = ref<number[]>([])
 const fetchMyZonesController = FetchMyZonesController.getInstance()
@@ -87,7 +90,7 @@ const fetchCapa = async (
   projectZoneLozationId?: number[],
   projectLocationIds?: number[],
   zoonIds?: number[],
-  projectIds?: number,
+  projectIds: number | undefined = selectedProjctesFilters.value,
 ) => {
   const params = new IndexCapaParams({
     word: query,
@@ -136,8 +139,10 @@ const FetchMyProjects = async () => {
 }
 
 const FetchMyZones = async () => {
-  const fetchMyZonesParams = new FetchMyZonesParams(selectedProjctesFilters.value)
+  const projectId = selectedProjctesFilters.value
+  const fetchMyZonesParams = new FetchMyZonesParams(projectId)
   const response = await fetchMyZonesController.FetchMyZones(fetchMyZonesParams, router)
+  if (projectId !== selectedProjctesFilters.value) return
   if (response.value.data) {
     Filters.value = response.value.data
   }
@@ -148,12 +153,14 @@ const ApplayFilter = (data: number[]) => {
   fetchCapa('', 1, 10, 0, [], [], SelectedZonesFilter.value, selectedProjctesFilters.value)
 }
 
-const setSelectedProjectFilter = (data: any) => {
+const setSelectedProjectFilter = (data?: number) => {
+  if (selectedProjctesFilters.value === data) return
   selectedProjctesFilters.value = data
-  if (data) {
-    fetchCapa('', 1, 10, 0, [], [], [], data)
-    FetchMyZones()
-  }
+  SelectedZonesFilter.value = []
+  Filters.value = []
+  currentPage.value = 1
+  fetchCapa('', 1, countPerPage.value, 0, [], [], [], data)
+  if (data) FetchMyZones()
 }
 
 const GetObservationType = (type: number) => {
@@ -234,6 +241,7 @@ watch(
           <IndexHazardHeader
             :title="`CAPA`"
             :length="filteredItems.length"
+            :projects="[]"
             @update:data="setSelectedProjectFilter"
           />
 

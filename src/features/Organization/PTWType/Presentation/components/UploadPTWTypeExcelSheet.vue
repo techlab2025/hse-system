@@ -18,19 +18,20 @@ import AddPTWTypeExcelParams from '../../Core/params/addPTWTypeExcelParams'
 
 // ─── State ────────────────────────────────────────────────────────────────────
 const sheetData = ref<PTWTypeModel[] | null>(null)
-const Data = ref<any[]>([])
-const mappedData = ref<any[] | null>(null)
+const Data = ref<string[][]>([])
+const mappedData = ref<string[][] | null>(null)
 const isLoading = ref(false)
 const errorMsg = ref<string | null>(null)
+const ptwColor = ref('#ff0000')
 
 const router = useRouter()
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
-const getBodyData = (data: any[]) => PTWTypeModel.transformData(data.slice(1))
+const getBodyData = (data: string[][]) => PTWTypeModel.transformData(data.slice(1))
 
 // ─── Image Extraction ─────────────────────────────────────────────────────────
 // ─── File Reading ─────────────────────────────────────────────────────────────
-const readExcelFile = (file: File): Promise<any[]> =>
+const readExcelFile = (file: File): Promise<string[][]> =>
   new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = (e) => {
@@ -38,7 +39,7 @@ const readExcelFile = (file: File): Promise<any[]> =>
         const arrayBuffer = e.target?.result
         const workbook = XLSX.read(arrayBuffer, { type: 'array' })
         const sheet = workbook.Sheets[workbook.SheetNames[0]]
-        const data = readLookupRows(sheet, {
+        const data = readLookupRows<string[]>(sheet, {
           header: 1,
           raw: false,
           defval: '',
@@ -96,7 +97,7 @@ const onColumnMapping = (mapping: Record<string, string>) => {
   for (const [sentKey, excelCol] of Object.entries(mapping)) {
     if (excelCol) reverseMapping[excelCol] = sentKey
   }
-  const cloned: any[] = Data.value.map((row: any[]) => [...row])
+  const cloned = Data.value.map((row) => [...row])
   cloned[0] = cloned[0].map((col: string) => reverseMapping[col] ?? col)
 
   mappedData.value = cloned
@@ -112,13 +113,14 @@ const addPTWTypes = async () => {
   const headers = mappedData.value[0] as string[]
   const rows = mappedData.value.slice(1)
 
-  const dataAsObjects = rows.map((row: any[]) => {
-    const obj: Record<string, any> = {}
+  const dataAsObjects = rows.map((row) => {
+    const obj: Record<string, string> = {}
     headers.forEach((key, i) => {
       if (key && key.trim() !== '') obj[key] = row[i]
     })
     return {
       title: String(obj.title ?? ''),
+      color: ptwColor.value,
     }
   })
 
@@ -181,6 +183,25 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
       />
 
       <template v-if="mappedData && mappedData.length > 0">
+        <div class="ptw-color-field">
+          <label class="ptw-color-field__label" for="ptw_excel_color">
+            {{ $t('main_color') }}
+          </label>
+          <div class="ptw-color-field__control">
+            <input
+              id="ptw_excel_color"
+              v-model="ptwColor"
+              class="ptw-color-field__picker"
+              name="ptw_excel_color"
+              type="color"
+              :aria-label="$t('main_color')"
+            />
+            <output class="ptw-color-field__value" for="ptw_excel_color">
+              {{ ptwColor.toUpperCase() }}
+            </output>
+          </div>
+        </div>
+
         <div class="table-container">
           <div class="table-header">
             <h3 class="table-title">Mapped Data Preview</h3>
@@ -221,6 +242,63 @@ const { industryScope, getIndustryScope, validateIndustryScope } = useLookupIndu
 </template>
 
 <style scoped>
+.ptw-color-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ptw-color-field__label {
+  color: var(--GrayText-1);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.ptw-color-field__control {
+  display: flex;
+  min-height: 48px;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--main-border);
+  border-radius: 0.5rem;
+  background: var(--BgWhite);
+}
+
+.ptw-color-field__picker {
+  width: 42px;
+  height: 34px;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0.375rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+.ptw-color-field__picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.ptw-color-field__picker::-webkit-color-swatch,
+.ptw-color-field__picker::-moz-color-swatch {
+  border: 0;
+  border-radius: 0.375rem;
+}
+
+.ptw-color-field__picker:focus-visible {
+  outline: 2px solid var(--PrimaryColor);
+  outline-offset: 2px;
+}
+
+.ptw-color-field__value {
+  color: var(--GrayText-1);
+  font-family: monospace;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
 .last {
   display: table-cell !important;
 }

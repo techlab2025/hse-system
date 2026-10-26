@@ -1,3 +1,4 @@
+import { withProjectId } from '@/shared/utils/projectScope'
 import type Params from '@/base/core/params/params'
 
 export default class GetTodayTalkParams implements Params {
@@ -12,6 +13,6 @@ export default class GetTodayTalkParams implements Params {
     if (this.isAssignedToProject != null) {
       data.is_assigned_to_project = Number(this.isAssignedToProject)
     }
-    return data
+    return withProjectId(data, this.projectId)
   }
 }

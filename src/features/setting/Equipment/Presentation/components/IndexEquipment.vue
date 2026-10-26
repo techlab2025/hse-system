@@ -339,7 +339,9 @@ const IndexEquipmentactionList = () => [
     ],
   },
   {
-    text: t('Add_Equipment'),
+    text: t(
+      `${routeEquipmentType.value == 1 ? `add equipment` : routeEquipmentType.value == 2 ? `add device` : `add tool`}`,
+    ),
     link: addEquipmentLink.value,
     icon: ActionsListAddIcon,
     primary: true,

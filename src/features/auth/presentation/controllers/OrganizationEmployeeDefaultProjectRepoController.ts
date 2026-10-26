@@ -28,6 +28,7 @@ export default class OrganizationEmployeeDefaultProjectRepoController extends Co
     draft: boolean = false,
   ) {
     // useLoaderStore().setLoadingWithDialog();
+    this.setLoading()
     try {
       const dataState: DataState<UserModel> =
         await this.organizationEmployeeDefaultProjectRepoUseCase.call(params)
@@ -39,7 +40,7 @@ export default class OrganizationEmployeeDefaultProjectRepoController extends Co
         //   imageElement: successImage,
         //   messageContent: null,
         // })
-        location.reload()
+        // The header applies the selection and refreshes the current project view.
       } else {
         // DialogSelector.instance.failedDialog.openDialog({
         //   dialogName: 'dialog-error',

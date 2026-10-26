@@ -1,3 +1,4 @@
+import { withProjectId } from '@/shared/utils/projectScope'
 import type Params from '@/base/core/params/params'
 
 export default class IndexMangementChangeParams implements Params {
@@ -20,6 +21,6 @@ export default class IndexMangementChangeParams implements Params {
       data.project_id = this.projectId
     }
 
-    return data
+    return withProjectId(data, this.projectId)
   }
 }

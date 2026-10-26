@@ -1,20 +1,47 @@
 <script setup lang="ts" generic="T extends string">
 import { ref } from 'vue'
 const model = defineModel<T[]>({ required: true })
-defineProps<{ items: readonly { key: T; label: string }[]; label: string }>()
+const props = withDefaults(
+  defineProps<{
+    items: readonly { key: T; label: string }[]
+    label: string
+    locked?: readonly T[]
+    externalDrag?: boolean
+    draggingKey?: string | null
+    dropBefore?: string
+    dropAfter?: string
+  }>(),
+  { locked: () => [] },
+)
+const emit = defineEmits<{
+  dragItemStart: [event: DragEvent, field: T]
+  dragItemEnd: []
+  dragItemOver: [event: DragEvent, field: T]
+  dropItem: [event: DragEvent, field: T]
+}>()
 const dragged = ref<string | null>(null)
 const startDrag = (event: DragEvent, field: T) => {
-  dragged.value = field
-  event.dataTransfer?.setData('text/plain', field)
+  if (props.locked.includes(field)) return
+  if (!props.externalDrag) {
+    dragged.value = field
+    event.dataTransfer?.setData('text/plain', field)
+  }
+  emit('dragItemStart', event, field)
+}
+const endDrag = () => {
+  dragged.value = null
+  emit('dragItemEnd')
 }
 const move = (from: number, to: number) => {
   if (from < 0 || to < 0 || to >= model.value.length) return
+  if (props.locked.includes(model.value[from]) || props.locked.includes(model.value[to])) return
   const order = [...model.value]
   const [field] = order.splice(from, 1)
   order.splice(to, 0, field)
   model.value = order
 }
-const drop = (target: T) => {
+const drop = (event: DragEvent, target: T) => {
+  emit('dropItem', event, target)
   const source = model.value.findIndex((field) => field === dragged.value)
   if (source >= 0) move(source, model.value.indexOf(target))
   dragged.value = null
@@ -25,19 +52,29 @@ const drop = (target: T) => {
     <li
       v-for="(field, index) in model"
       :key="field"
-      draggable="true"
+      :draggable="!locked.includes(field)"
       :data-field="field"
+      :class="{
+        'is-dragging': draggingKey === field,
+        'is-drop-before': dropBefore === field,
+        'is-drop-after': dropAfter === field,
+      }"
       @dragstart.stop="startDrag($event, field)"
-      @dragend.stop="dragged = null"
-      @dragover.prevent.stop
-      @drop.prevent.stop="drop(field)"
+      @dragend.stop="endDrag"
+      @dragover.prevent.stop="emit('dragItemOver', $event, field)"
+      @drop.prevent.stop="drop($event, field)"
     >
-      <span aria-hidden="true">⠿</span
-      ><strong>{{ items.find((item) => item.key === field)?.label }}</strong>
+      <slot name="handle" :item="field"
+        ><span class="identity-order-drag-handle" aria-hidden="true">⠿</span></slot
+      ><strong
+        ><slot name="label" :item="field">{{
+          items.find((item) => item.key === field)?.label
+        }}</slot></strong
+      >
       <button
         type="button"
         :aria-label="`Move ${field} earlier`"
-        :disabled="index === 0"
+        :disabled="index === 0 || locked.includes(field) || locked.includes(model[index - 1])"
         @click="move(index, index - 1)"
       >
         ↑
@@ -45,7 +82,9 @@ const drop = (target: T) => {
       <button
         type="button"
         :aria-label="`Move ${field} later`"
-        :disabled="index === model.length - 1"
+        :disabled="
+          index === model.length - 1 || locked.includes(field) || locked.includes(model[index + 1])
+        "
         @click="move(index, index + 1)"
       >
         ↓
