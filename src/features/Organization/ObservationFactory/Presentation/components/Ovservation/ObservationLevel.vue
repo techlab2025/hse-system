@@ -91,7 +91,7 @@ watch(
         <div class="status-container">
           <label class="status-option">
             <input type="radio" v-model="selectedStatus" :value="1" class="radio-input" />
-            <span class="status-value">{{ $t('nermiss') }}</span>
+            <span class="status-value">{{ $t('near miss') }}</span>
           </label>
 
           <label class="status-option">

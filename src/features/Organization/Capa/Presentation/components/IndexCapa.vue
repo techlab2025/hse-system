@@ -83,7 +83,7 @@ const fetchCapa = async (
   query = '',
   pageNumber = 1,
   perPage = 10,
-  withPage = 0,
+  withPage = 1,
   projectZoneLozationId?: number[],
   projectLocationIds?: number[],
   zoonIds?: number[],

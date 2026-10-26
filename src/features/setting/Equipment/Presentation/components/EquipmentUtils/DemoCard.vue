@@ -77,8 +77,12 @@ const rentUnits: Record<number, string> = {
 }
 const rentalUnit = computed(() => rentUnits[Number(props.rentType)])
 const labelDates = computed(() => [
-  { label: isRental.value ? 'eq_rental_start_date' : 'eq_start_date', value: props.startDate },
-  { label: isRental.value ? 'eq_rental_end_date' : 'eq_end_date', value: props.EndDate },
+  ...(isRental.value
+    ? [
+        { label: 'eq_rental_start_date', value: props.startDate },
+        { label: 'eq_rental_end_date', value: props.EndDate },
+      ]
+    : []),
   { label: 'eq_certificate_expiry_date', value: props.expiredate },
 ])
 const displayDate = (value: string | Date | null | undefined, includeTime = true) => {

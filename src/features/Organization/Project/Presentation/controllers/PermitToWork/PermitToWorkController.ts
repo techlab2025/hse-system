@@ -8,8 +8,6 @@ import errorImage from '@/assets/images/error.png'
 import type { Router } from 'vue-router'
 import PermitToWorkUseCase from '../../../Domain/useCase/PermitToWork/PermitToWorkUseCase'
 import type ProjectModel from '../../../Data/models/ProjectModel'
-import { useUserStore } from '@/stores/user'
-import { EmployeeStatusEnum } from '@/features/Organization/OrganizationEmployee/Core/Enum/EmployeeStatus'
 
 export default class PermitToWorkController extends ControllerInterface<ProjectModel> {
   private static instance: PermitToWorkController
@@ -30,7 +28,6 @@ export default class PermitToWorkController extends ControllerInterface<ProjectM
     try {
       const dataState: DataState<ProjectModel> = await this.permitToWorkUseCase.call(params)
       this.setState(dataState)
-      const { user } = useUserStore()
       if (this.isDataSuccess()) {
         DialogSelector.instance.successDialog.openDialog({
           dialogName: 'dialog-success',
@@ -38,9 +35,9 @@ export default class PermitToWorkController extends ControllerInterface<ProjectM
           imageElement: successImage,
           messageContent: null,
         })
-        // if (!draft) await router.push('/organization/project-details')
-        if (user?.employeeType == EmployeeStatusEnum.Admin) {
-          await router.push(`/organization/project-details/${params.toMap().project_id}`)
+        const projectId = Number(params.toMap().project_id)
+        if (!draft && Number.isInteger(projectId) && projectId > 0) {
+          await router.push(`/organization/project-summary/${projectId}`)
         }
 
         // useLoaderStore().endLoadingWithDialog();

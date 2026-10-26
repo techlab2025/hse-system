@@ -66,13 +66,18 @@ export default class IndexCapaParams implements Params {
 
   toMap(): Record<string, string | number | number[] | null> {
     const data: Record<string, string | number | number[] | null> = {}
+    const projectIds = (this.projectId ?? [])
+      .map(Number)
+      .filter((id) => Number.isInteger(id) && id > 0)
+    const headerProjectId = Number(useProjectSelectStore().getProjectId())
     if (this.word) data['word'] = this.word
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.type) data['type'] = this.type
-    if (this.projectId || useProjectSelectStore().getProjectId())
-      data['project_ids'] = useProjectSelectStore().SelectedProjectId(this.projectId!)
+    if (projectIds.length) data['project_ids'] = projectIds
+    else if (Number.isInteger(headerProjectId) && headerProjectId > 0)
+      data['project_ids'] = [headerProjectId]
     if (this.projectZoonIds) data['project_zoon_ids'] = this.projectZoonIds
     if (this.projectLocationIds) data['location_ids'] = this.projectLocationIds
     if (this.zoonIds) data['zoon_ids'] = this.zoonIds
