@@ -1,3 +1,4 @@
+import { withProjectId } from '@/shared/utils/projectScope'
 import type Params from '@/base/core/params/params'
 
 export default class FetchEquipmentStaticsParams implements Params {
@@ -10,6 +11,6 @@ export default class FetchEquipmentStaticsParams implements Params {
   toMap(): Record<string, string | number | number[] | null> {
     const data: Record<string, string | number | number[] | null> = {}
     if (this.project_id) data['project_id'] = this.project_id
-    return data
+    return withProjectId(data, this.project_id)
   }
 }

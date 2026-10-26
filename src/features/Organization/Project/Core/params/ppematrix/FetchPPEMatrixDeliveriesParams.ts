@@ -1,3 +1,4 @@
+import { withProjectId } from '@/shared/utils/projectScope'
 import type Params from '@/base/core/params/params'
 
 export default class FetchPPEMatrixDeliveriesParams implements Params {
@@ -10,6 +11,6 @@ export default class FetchPPEMatrixDeliveriesParams implements Params {
   toMap(): Record<string, number> {
     const data: Record<string, number> = {}
     if (this.projectId != null) data.project_id = this.projectId
-    return data
+    return withProjectId(data, this.projectId)
   }
 }

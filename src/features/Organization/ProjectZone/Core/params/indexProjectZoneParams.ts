@@ -1,3 +1,4 @@
+import { withProjectId } from '@/shared/utils/projectScope'
 import type Params from '@/base/core/params/params'
 // import { ClientStatusEnum } from '@/features/users/clients/clients/Core/enums/clientStatusEnum.ts'
 // import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
@@ -42,6 +43,6 @@ export default class IndexProjectZoneParams implements Params {
     if (this.projectId != null) data['project_id'] = this.projectId
     // if (this.id) data['parent_id'] = this.id
     // if (this.code) data['code'] = this.code
-    return data
+    return withProjectId(data, this.projectId)
   }
 }

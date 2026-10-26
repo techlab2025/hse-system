@@ -1,3 +1,4 @@
+import { withProjectId } from '@/shared/utils/projectScope'
 import type Params from '@/base/core/params/params'
 
 export default class FetchRiskAssessmentsParams implements Params {
@@ -7,8 +8,11 @@ export default class FetchRiskAssessmentsParams implements Params {
   }
 
   toMap(): Record<string, any> {
-    return {
-      project_id: this.projectId!,
-    }
+    return withProjectId(
+      {
+        project_id: this.projectId!,
+      },
+      this.projectId,
+    )
   }
 }

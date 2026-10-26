@@ -1,3 +1,4 @@
+import { withProjectId } from '@/shared/utils/projectScope'
 import type Params from '@/base/core/params/params'
 
 export default class IndexOrganizatoinEmployeeParams implements Params {
@@ -61,6 +62,6 @@ export default class IndexOrganizatoinEmployeeParams implements Params {
     if (this.projectId != null) data['project_id'] = this.projectId
 
     // if (this.code) data['code'] = this.code
-    return data
+    return withProjectId(data, this.projectId)
   }
 }

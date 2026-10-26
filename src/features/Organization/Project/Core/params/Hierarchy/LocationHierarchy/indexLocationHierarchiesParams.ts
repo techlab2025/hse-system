@@ -4,9 +4,9 @@ import { useProjectSelectStore } from '@/stores/ProjectSelect'
 // import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
 
 export default class IndexLocationHierarchyParams implements Params {
-  public projectId: number = 1
+  public projectId?: number
 
-  constructor(projectId: number = 1) {
+  constructor(projectId?: number) {
     this.projectId = projectId
   }
 

@@ -38,16 +38,19 @@ export const useProjectSelectStore = defineStore(
       return project.value
     }
 
-    function SelectedProjectId(projectId: number | number[]) {
-      if (projectId) {
-        return projectId
+    function SelectedProjectId(projectId?: number | number[] | null) {
+      const validId = (value: unknown) => {
+        const id = Number(value)
+        return Number.isSafeInteger(id) && id > 0 ? id : undefined
       }
-      if (project.value?.id != -1 && project.value?.id != null) {
-        return project.value.id
-      } else if (project.value?.id != null) {
-        return projectId
+      const headerId = validId(getProjectId())
+      if (Array.isArray(projectId)) {
+        const ids = [
+          ...new Set(projectId.map(validId).filter((id): id is number => id !== undefined)),
+        ]
+        return ids.length ? ids : headerId ? [headerId] : null
       }
-      return null
+      return validId(projectId) ?? headerId ?? null
     }
 
     return {
@@ -64,7 +67,7 @@ export const useProjectSelectStore = defineStore(
   },
   {
     persist: {
-      enabled: true,
+      pick: ['project', 'AllProjects'],
     },
   },
 )

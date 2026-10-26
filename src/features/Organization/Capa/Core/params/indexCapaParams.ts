@@ -2,7 +2,7 @@ import type Params from '@/base/core/params/params'
 import { formatJoinDate } from '@/base/Presentation/utils/date_format'
 import type { ActionStatusEnum } from '@/features/Organization/ObservationFactory/Core/Enums/ActionStatusEnum'
 import type { Observation } from '@/features/Organization/ObservationFactory/Core/Enums/ObservationTypeEnum'
-import { useProjectSelectStore } from '@/stores/ProjectSelect'
+import { withProjectIds } from '@/shared/utils/projectScope'
 
 export default class IndexCapaParams implements Params {
   public word: string
@@ -66,18 +66,11 @@ export default class IndexCapaParams implements Params {
 
   toMap(): Record<string, string | number | number[] | null> {
     const data: Record<string, string | number | number[] | null> = {}
-    const projectIds = (this.projectId ?? [])
-      .map(Number)
-      .filter((id) => Number.isInteger(id) && id > 0)
-    const headerProjectId = Number(useProjectSelectStore().getProjectId())
     if (this.word) data['word'] = this.word
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.type) data['type'] = this.type
-    if (projectIds.length) data['project_ids'] = projectIds
-    else if (Number.isInteger(headerProjectId) && headerProjectId > 0)
-      data['project_ids'] = [headerProjectId]
     if (this.projectZoonIds) data['project_zoon_ids'] = this.projectZoonIds
     if (this.projectLocationIds) data['location_ids'] = this.projectLocationIds
     if (this.zoonIds) data['zoon_ids'] = this.zoonIds
@@ -90,6 +83,6 @@ export default class IndexCapaParams implements Params {
     if (this.date) data['date'] = formatJoinDate(this.date)
     if (this.equipmentTypeIds) data['equipment_type_ids'] = this.equipmentTypeIds
     if (this.equipmentSubTypeIds) data['equipment_sub_type_ids'] = this.equipmentSubTypeIds
-    return data
+    return withProjectIds(data, this.projectId)
   }
 }

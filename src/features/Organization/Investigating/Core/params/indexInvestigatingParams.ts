@@ -1,3 +1,4 @@
+import { withProjectId } from '@/shared/utils/projectScope'
 import type Params from '@/base/core/params/params'
 import type { Observation } from '../Enums/ObservationTypeEnum'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
@@ -45,6 +46,6 @@ export default class IndexHazardParams implements Params {
       data['project_id'] = useProjectSelectStore().SelectedProjectId(this.projectId)
     if (this.projectZoonIds) data['zoon_ids'] = this.projectZoonIds
     // if (this.code) data['code'] = this.code
-    return data
+    return withProjectId(data, this.projectId)
   }
 }

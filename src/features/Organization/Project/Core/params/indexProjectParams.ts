@@ -18,6 +18,7 @@ export default class IndexProjectParams implements Params {
     withPage: number = 1,
     id?: number,
     date?: string,
+    public projectId?: number,
     // code?: LangEnum,
   ) {
     this.word = word
@@ -36,6 +37,8 @@ export default class IndexProjectParams implements Params {
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.date) data['date'] = this.date
+    if (this.projectId != null && Number.isSafeInteger(this.projectId) && this.projectId > 0)
+      data['project_id'] = this.projectId
     // if (this.code) data['code'] = this.code
     return data
   }

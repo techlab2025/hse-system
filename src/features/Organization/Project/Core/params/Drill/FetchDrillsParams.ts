@@ -1,3 +1,4 @@
+import { withProjectId } from '@/shared/utils/projectScope'
 import type Params from '@/base/core/params/params'
 
 export default class FetchDrillsParams implements Params {
@@ -9,11 +10,14 @@ export default class FetchDrillsParams implements Params {
   ) {}
 
   toMap(): Record<string, number> {
-    return {
-      project_id: this.projectId,
-      paginate: this.paginate,
-      page: this.page,
-      limit: this.limit,
-    }
+    return withProjectId(
+      {
+        project_id: this.projectId,
+        paginate: this.paginate,
+        page: this.page,
+        limit: this.limit,
+      },
+      this.projectId,
+    )
   }
 }

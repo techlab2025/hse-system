@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { resolveProjectId } from '@/shared/utils/projectScope'
 import { vProjectPanels } from '../../composables/projectPanels'
 
 import { computed, onMounted, ref, watch } from 'vue'
@@ -37,7 +38,10 @@ const routeProjectId = computed(() => {
   const rawValue = Array.isArray(routeValue) ? routeValue[0] : routeValue
   const parsedValue = Number(rawValue)
 
-  return Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : null
+  return (
+    resolveProjectId(Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : undefined) ??
+    null
+  )
 })
 const projectQuery = computed(() =>
   routeProjectId.value ? `?project_id=${routeProjectId.value}` : '',
@@ -68,7 +72,17 @@ const canCreate = computed(() => PermissionHandler.Instance.handle(createPermiss
 
 const fetchInductions = async (query: string = '', page: number = 1, limit: number = 10) => {
   if (!canFetch.value) return
-  await controller.getData(new IndexInductionParams(query, page, limit, 1))
+  await controller.getData(
+    new IndexInductionParams(
+      query,
+      page,
+      limit,
+      1,
+      false,
+      undefined,
+      routeProjectId.value ?? undefined,
+    ),
+  )
 }
 
 const searchInductions = debounce(() => fetchInductions(word.value))

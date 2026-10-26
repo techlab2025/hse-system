@@ -1,3 +1,4 @@
+import { withProjectId } from '@/shared/utils/projectScope'
 import type Params from '@/base/core/params/params'
 
 export default class FetchAllLeadershipVisitsParams implements Params {
@@ -8,17 +9,14 @@ export default class FetchAllLeadershipVisitsParams implements Params {
   public projectId?: number | null
   public date?: string | null
 
-  constructor(
-    data: {
-      word?: string,
-      pageNumber?: number
-      perPage?: number
-      withPage?: number
-      projectId?: number
-      date?: string
-    }
-
-  ) {
+  constructor(data: {
+    word?: string
+    pageNumber?: number
+    perPage?: number
+    withPage?: number
+    projectId?: number
+    date?: string
+  }) {
     this.pageNumber = data.pageNumber
     this.word = data.word
     this.perPage = data.perPage
@@ -28,14 +26,16 @@ export default class FetchAllLeadershipVisitsParams implements Params {
   }
 
   toMap(): Record<string, number | string> {
-    return {
-      word: this.word!,
-      paginate: this.withPage!,
-      page: this.pageNumber!,
-      limit: this.perPage!,
-      project_id: this.projectId!,
-      date: this.date!
-
-    }
+    return withProjectId(
+      {
+        word: this.word!,
+        paginate: this.withPage!,
+        page: this.pageNumber!,
+        limit: this.perPage!,
+        project_id: this.projectId!,
+        date: this.date!,
+      },
+      this.projectId,
+    )
   }
 }

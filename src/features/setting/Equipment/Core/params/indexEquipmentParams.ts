@@ -1,3 +1,4 @@
+import { withProjectId } from '@/shared/utils/projectScope'
 import type Params from '@/base/core/params/params'
 // import { ClientStatusEnum } from '@/features/users/clients/clients/Core/enums/clientStatusEnum.ts'
 // import type { LangEnum } from '@/features/setting/languages/Core/enums/langEnum.ts'
@@ -67,6 +68,6 @@ export default class IndexEquipmentParams implements Params {
       data['not_include_assigned'] = this.notIncludedAssigned
     }
     // if (this.code) data['code'] = this.code
-    return data
+    return withProjectId(data, this.projectId)
   }
 }

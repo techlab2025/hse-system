@@ -1,3 +1,4 @@
+import { withProjectId } from '@/shared/utils/projectScope'
 import type Params from '@/base/core/params/params'
 
 export default class IndexInternalAuditPlanParams implements Params {
@@ -13,7 +14,7 @@ export default class IndexInternalAuditPlanParams implements Params {
   ) {}
 
   toMap() {
-    return {
+    return withProjectId({
       ...(this.word ? { word: this.word } : {}),
       ...(this.fromDate ? { from_date: this.fromDate } : {}),
       ...(this.toDate ? { to_date: this.toDate } : {}),
@@ -22,6 +23,6 @@ export default class IndexInternalAuditPlanParams implements Params {
       paginate: this.withPage,
       page: this.pageNumber,
       limit: this.perPage,
-    }
+    })
   }
 }

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import '../styles/home-identity.css'
+import { useProjectSelectStore } from '@/stores/ProjectSelect'
 import { defineAsyncComponent } from 'vue'
 import EmployeeTasksButton from '@/shared/HelpersComponents/EmployeeTasksButton.vue'
 import ProjectsStatistics from './HomeStatistics/ProjectsStatistics.vue'
@@ -52,7 +53,17 @@ const fetchHomeInspectionController = FetchHomeInspectionController.getInstance(
 const homeInspectionState = computed(() => fetchHomeInspectionController.state.value)
 const indexProjectController = IndexProjectController.getInstance()
 const ProjectStatics = computed(() => indexProjectController.state.value)
-const projects = computed(() => ProjectStatics.value.data ?? [])
+const projectSelection = useProjectSelectStore()
+const projects = computed(() => {
+  const items = ProjectStatics.value.data ?? []
+  const projectId = projectSelection.getProjectId()
+  return projectId ? items.filter((item) => Number(item.id) === Number(projectId)) : items
+})
+const totalProjects = computed(() =>
+  projectSelection.getProjectId()
+    ? projects.value.length
+    : (ProjectStatics.value.pagination?.total ?? 0),
+)
 const projectsLoading = computed(
   () => ProjectStatics.value instanceof DataInitial || ProjectStatics.value instanceof DataLoading,
 )
@@ -86,7 +97,16 @@ const fetchProject = async (
   perPage: number = 10,
   withPage: number = 1,
 ) => {
-  const indexProjects = new IndexProjectParams(query, pageNumber, perPage, withPage)
+  const projectId = projectSelection.getProjectId()
+  const indexProjects = new IndexProjectParams(
+    query,
+    pageNumber,
+    perPage,
+    projectId ? 0 : withPage,
+    undefined,
+    undefined,
+    projectId,
+  )
   await indexProjectController.getData(indexProjects)
 }
 
@@ -162,10 +182,7 @@ watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectP
 
         <div class="home-overview-grid">
           <div class="hse-home-panel home-panel-projects">
-            <ProjectsStatistics
-              :projectStatistics="projects"
-              :totalNumOfProjects="ProjectStatics.pagination?.total"
-            />
+            <ProjectsStatistics :projectStatistics="projects" :totalNumOfProjects="totalProjects" />
           </div>
 
           <div class="home-panel-kpis">

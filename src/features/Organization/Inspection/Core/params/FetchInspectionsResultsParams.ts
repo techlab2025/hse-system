@@ -1,5 +1,5 @@
 import type Params from '@/base/core/params/params'
-import { useProjectSelectStore } from '@/stores/ProjectSelect'
+import { withProjectIds } from '@/shared/utils/projectScope'
 
 export default class FetchInspectionsResultsParams implements Params {
   public word: string
@@ -39,32 +39,18 @@ export default class FetchInspectionsResultsParams implements Params {
     // this.id = id
   }
 
-  toMap(): Record<string, number | string | number[] |any> {
-    const data: Record<string, number | string | number[]  |any> = {}
-    const headerProjectId = Number(useProjectSelectStore().getProjectId())
-    const explicitProjectIds = Array.isArray(this.projectIds)
-      ? this.projectIds
-      : this.projectIds
-        ? [this.projectIds]
-        : []
-    const projectIds =
-      explicitProjectIds.length > 0
-        ? explicitProjectIds.filter((id) => Number(id) > 0)
-        : headerProjectId > 0
-          ? [headerProjectId]
-          : []
-
+  toMap(): Record<string, number | string | number[] | any> {
+    const data: Record<string, number | string | number[] | any> = {}
     data['word'] = this.word
     data['paginate'] = this.withPage
     data['page'] = this.pageNumber
     data['limit'] = this.perPage
     if (this.zoneIds) data['zone_ids'] = this.zoneIds
-    if (projectIds.length > 0) data['project_ids'] = projectIds
     if (this.inspectionType != null) data['inspection_type'] = this.inspectionType
     if (this.date) data['date'] = this.date
     if (this.isAudit) data['is_audit'] = this.isAudit
 
     // data['task_id'] = this.id
-    return data
+    return withProjectIds(data, this.projectIds)
   }
 }

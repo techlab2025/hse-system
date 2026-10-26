@@ -1,3 +1,4 @@
+import { withProjectId } from '@/shared/utils/projectScope'
 import type Params from '@/base/core/params/params'
 
 export default class FetchPPEActivityToolsParams implements Params {
@@ -12,6 +13,6 @@ export default class FetchPPEActivityToolsParams implements Params {
     const data: Record<string, number> = {}
     if (this.ppeActivityId != null) data.ppe_activity_id = this.ppeActivityId
     if (this.projectId != null) data.project_id = this.projectId
-    return data
+    return withProjectId(data, this.projectId)
   }
 }

@@ -15,6 +15,8 @@ import { useSystemIdentity } from '@/composables/useSystemIdentity'
 import CustomSelectInput from '../FormInputs/CustomSelectInput.vue'
 import TitleInterface from '@/base/Data/Models/title_interface'
 import { useProjectSelectStore } from '@/stores/ProjectSelect'
+import { routeProjectId } from '@/shared/utils/headerProjectRoutes'
+import { applyHeaderProjectSelection } from '@/composables/useHeaderProjectSelection'
 import OrganizationEmployeeDefaultProjectRepoController from '@/features/auth/presentation/controllers/OrganizationEmployeeDefaultProjectRepoController'
 import OrganizationEmployeeDefaultProjectParams from '@/features/auth/Core/Params/OrganizationEmployeeDefaultProjectParams'
 import FetchMyProjectsController from '@/features/Organization/ObservationFactory/Presentation/controllers/FetchMyProjectsController'
@@ -138,11 +140,11 @@ const { user } = useUserStore()
 const ProjectSelector = useProjectSelectStore()
 
 const SelectProject = computed(() => {
-  const routeProjectId = Number(route.query.project_id)
-  if (routeProjectId > 0) {
+  const currentProjectId = routeProjectId(route)
+  if (currentProjectId) {
     return (
-      ProjectSelector.AllProjects.find((project) => project.id === routeProjectId) ??
-      new TitleInterface({ id: routeProjectId, title: `Project #${routeProjectId}` })
+      ProjectSelector.AllProjects.find((project) => project.id === currentProjectId) ??
+      new TitleInterface({ id: currentProjectId, title: `Project #${currentProjectId}` })
     )
   }
   return ProjectSelector.getProject()
@@ -176,24 +178,22 @@ onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleMenuKeydown)
 })
 
+const isChangingProject = ref(false)
 const setSelectedProject = async (project: TitleInterface | null) => {
-  const organizationEmployeeDefaultProjectRepoController =
-    OrganizationEmployeeDefaultProjectRepoController.getInstance()
-  const organizationEmployeeDefaultProjectParams = new OrganizationEmployeeDefaultProjectParams(
-    user?.id,
-    project?.id === -1 || !project ? null : project.id,
-  )
-  await organizationEmployeeDefaultProjectRepoController.SetorganizationEmployeeDefaultProject(
-    organizationEmployeeDefaultProjectParams,
-    router,
-  )
-  // SelectProject.value = project
-  if (project?.id === -1 || !project) {
-    ProjectSelector.clearProject()
-  } else {
-    ProjectSelector.setProjectId(project)
+  if (isChangingProject.value || !user?.id) return
+  isChangingProject.value = true
+  try {
+    const controller = OrganizationEmployeeDefaultProjectRepoController.getInstance()
+    const params = new OrganizationEmployeeDefaultProjectParams(
+      user?.id,
+      project && project.id > 0 ? project.id : null,
+    )
+    await controller.SetorganizationEmployeeDefaultProject(params, router)
+    if (!controller.isDataSuccess()) return
+    await applyHeaderProjectSelection(router, route, project)
+  } finally {
+    isChangingProject.value = false
   }
-  // location.reload()
 }
 
 const showProjectSelect = ref<boolean>(false)
@@ -201,7 +201,6 @@ onMounted(() => {
   showProjectSelect.value =
     user?.type == OrganizationTypeEnum.ADMIN || conditionHandler.shouldUseEmployeeInterface()
 })
-
 </script>
 
 <template>
@@ -258,6 +257,7 @@ onMounted(() => {
             <!-- label="Project" -->
             <CustomSelectInput
               :modelValue="SelectProject"
+              :disabled="isChangingProject"
               class="hse-identity hse-control hse-select-control"
               panel-class="hse-identity hse-select-panel"
               :pt="{ overlay: { dir: $i18n.locale.startsWith('ar') ? 'rtl' : 'ltr' } }"
