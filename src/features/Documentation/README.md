@@ -27,7 +27,7 @@ Guides now live in `content/`, with their shared types in `types.ts` and registr
 
 Each guide has a `recordings` array. Equipment has Owned and Rented recordings; the viewer switches the poster and description and stops playback whenever another recording or guide is selected. Each GIF is requested only after Play is selected.
 
-Additional recordings were made on 2026-10-26 using actual form submissions in the supplied test company account:
+Original recordings were made on 2026-10-26 using actual form submissions in the supplied test company account. Equipment and incident recordings were replaced on 2026-10-27 as described below:
 
 | Cycle            | Created record                            | Result                                                                                                                                               |
 | ---------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -48,3 +48,17 @@ python3 scripts/build-documentation-gif.py /path/to/recording public/documentati
 ```
 
 Input is `frames.json` with `{ "file": "frame-00000.png", "duration": 250 }` entries and a sibling `frames/` directory. `--start-index` trims navigation from the preceding feature; idle duplicates are shortened. The script also writes a WebP poster using the final recorded frame. It does not log in, submit forms, or synthesize screens. The browser verification fixtures intercept remote API requests, including writes.
+
+## Equipment and incident re-recording — 2026-10-27
+
+The current owned/rented equipment and incident GIFs were re-recorded using the current local checkout at `http://127.0.0.1:5173`, authenticated against the real production API. Equipment application code, styling, and guide content were preserved. The existing GIF and poster paths were replaced.
+
+| Current recording | Created record                               | Verified result                                                                                                                                                     |
+| ----------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Owned equipment   | 87, Documentation Demo - Owned Equipment v2  | Saved, displayed in the registry, opened in details; rental dates hidden                                                                                            |
+| Rented equipment  | 88, Documentation Demo - Rented Equipment v2 | Saved with contractor and 2 months from 2026-11-01 to 2027-01-01                                                                                                    |
+| Incident          | 36                                           | Test Project; one staff witness, one injury with left forearm selected and Safety Gloves / Good, and one staff fatality; saved and changed to Closed, then reloaded |
+
+Employee 67 (Documentation Demo Employee, an existing demo profile) was used for the witness and injury. A separate regular employee with dashboard access disabled was created specifically for the fatality: 70, Documentation Fatality Demo - 2026-10-27. The scenario and all notes explicitly state that no real injury or fatality occurred.
+
+The fatality employee was present in the employee list before submission. After saving the incident, fresh active employee selectors excluded employee 70, while the administrative employee list still returned the profile. The incident retained all three people sections and the fatality name. The GIF shows all three expanded form sections, the body map front/back views, saved people records, closure, the employee dropdown excluding the fatality profile, and a return to the saved incident. The bilingual guide distinguishes hiding from active selectors from deleting the administrative profile or incident history.

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="app" style="width: 320px; margin: 32px"></div>
+    <script type="module">
+      import { createApp, h, reactive } from 'vue'
+      import { createPinia } from 'pinia'
+      import { createI18n } from 'vue-i18n'
+      import PrimeVue from 'primevue/config'
+      import UpdatedCustomInputSelect from '/src/shared/FormInputs/UpdatedCustomInputSelect.vue'
+      import TitleInterface from '/src/base/Data/Models/title_interface'
+
+      const state = reactive({
+        id: 'choice',
+        label: 'Choice',
+        reload: false,
+        type: 1,
+        modelValue: new TitleInterface({ id: 0, title: '' }),
+        options: [
+          { id: 1, title: 'First' },
+          { id: 2, title: 'Second', parent: { title: 'Department' } },
+        ],
+        prependOptions: [],
+        excludedOptionIds: [],
+        autoFill: false,
+      })
+      window.selectState = state
+      window.setFetchedOptions = (options) => {
+        state.options = undefined
+        state.autoFill = true
+        state.params = {}
+        state.controller = {
+          fetch: async () => options,
+          isDataSuccess: () => true,
+          isDataFailed: () => false,
+        }
+      }
+      createApp({
+        render: () =>
+          h(UpdatedCustomInputSelect, {
+            ...state,
+            'onUpdate:modelValue': (value) => {
+              state.modelValue = value
+            },
+          }),
+      })
+        .use(createPinia())
+        .use(PrimeVue)
+        .use(createI18n({ legacy: false, locale: 'en', messages: { en: { Choice: 'Choice' } } }))
+        .mount('#app')
+    </script>
+  </body>
+</html>

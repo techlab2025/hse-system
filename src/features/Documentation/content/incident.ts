@@ -10,8 +10,8 @@ export const incidentGuide: FeatureGuide = {
     'أنشئ تقرير حادث ووثّق بيانات الأشخاص والامتثال ثم راجع السجل المحفوظ.',
   ),
   introduction: text(
-    'Incident reporting captures an event in a specific project and zone, including its type, context, immediate response, and any affected people. The walkthrough records a labelled documentation scenario with no injuries or fatalities. Select additional sections only when they apply to the incident being reported.',
-    'يوثق تقرير الحادث واقعة في مشروع ومنطقة محددين بما يشمل النوع والسياق والاستجابة الفورية والأشخاص المتأثرين. يسجل الشرح سيناريو توضيحياً مسمى دون إصابات أو وفيات. فعّل الأقسام الإضافية فقط عند انطباقها على الحادث المبلغ عنه.',
+    'Incident reporting captures an event in a specific project and zone, including its type, context, immediate response, and any affected people. The walkthrough opens witnesses, injuries, and fatalities in a clearly labelled documentation scenario. It uses demo profiles for the witness, injured person, and fatality; the fatality profile was created specifically for this recording. In real reports, include only sections that apply to the event.',
+    'يوثق تقرير الحادث واقعة في مشروع ومنطقة محددين بما يشمل النوع والسياق والاستجابة الفورية والأشخاص المتأثرين. يفتح الشرح أقسام الشهود والإصابات والوفيات في سيناريو توضيحي مسمى بوضوح، ويستخدم ملفات تجريبية للشاهد والمصاب والمتوفى؛ تم إنشاء ملف المتوفى خصيصاً لهذا التسجيل. في التقارير الفعلية فعّل الأقسام المنطبقة على الواقعة فقط.',
   ),
   startRoute: '/organization/equipment-mangement/incedant?isAll=1',
   actionLabel: text('Open Incidents', 'افتح الحوادث'),
@@ -20,8 +20,8 @@ export const incidentGuide: FeatureGuide = {
       id: 'incident',
       title: text('Create an incident', 'إضافة حادث'),
       description: text(
-        'Select the project and zone, complete the incident details and immediate response, review the people sections, submit, and open the saved report.',
-        'اختر المشروع والمنطقة وأكمل بيانات الحادث والاستجابة الفورية وراجع أقسام الأشخاص ثم أرسل وافتح التقرير المحفوظ.',
+        'Choose the project and zone, record the incident and immediate response, then add a witness statement, an injury with body location, and a staff fatality. Submit and review all three sections in the saved report.',
+        'اختر المشروع والمنطقة وسجّل الحادث والاستجابة الفورية، ثم أضف شهادة شاهد وإصابة مع موضعها ووفاة لموظف. أرسل التقرير وراجع الأقسام الثلاثة بعد الحفظ.',
       ),
       gif: '/documentation/incident/incident.gif',
       poster: '/documentation/incident/incident-poster.webp',
@@ -109,18 +109,22 @@ export const incidentGuide: FeatureGuide = {
           'للشهود اختر نعم عند وجود من أدلى بشهادة. أضف كل شاهد باختيار موظف أو باستخدام إدخال الاسم اليدوي المتاح ثم سجّل أقواله.',
         ),
         text(
-          'For injuries, choose Yes only when an injury occurred. Complete each person and the applicable injury details, categories, supporting images, locations, and PPE information.',
-          'للإصابات اختر نعم فقط عند حدوث إصابة، وأكمل بيانات كل شخص والتفاصيل والفئات والصور والمواضع ومعلومات معدات الحماية المنطبقة.',
+          'For injuries, choose Yes only when an injury occurred. Choose Staff Injured to select an employee, or Not Staff Injured to enter a name. Select Type and Nature of Injury, select affected body regions using the front/back body map or its region list, describe the injury, and complete PPE and evidence fields when applicable.',
+          'للإصابات اختر نعم فقط عند حدوث إصابة، اختر مصاب من الموظفين لاختيار موظف أو مصاب من خارج الموظفين لإدخال الاسم. حدد نوع وطبيعة الإصابة ومواضعها من خريطة الجسم الأمامية أو الخلفية أو قائمة المناطق، ثم صف الإصابة وأكمل معلومات معدات الحماية والأدلة المنطبقة.',
         ),
         text(
-          'For fatalities, choose Yes only when applicable and enter the affected person and available details. Keep No for sections that do not apply, as shown in this demonstration.',
-          'للوفيات اختر نعم فقط عند انطباقها وأدخل الشخص والتفاصيل المتاحة. اترك لا للأقسام غير المنطبقة كما في هذا المثال.',
+          'For fatalities, choose Yes only when applicable. Choose Staff Deceased and select the employee, or Not Staff Deceased and enter an external person’s name. Describe the circumstances and attach authorized evidence if needed. The recording selects a dedicated demo employee, not a real employee.',
+          'للوفيات اختر نعم فقط عند انطباقها. اختر متوفى من الموظفين وحدد الموظف أو متوفى من خارج الموظفين وأدخل اسم الشخص الخارجي. صف الظروف وأرفق الأدلة المصرح بها عند الحاجة. يختار التسجيل موظفاً تجريبياً مخصصاً وليس موظفاً حقيقياً.',
         ),
         text(
           'Remove unused rows. An added witness, injury, or fatality row needs an identified person before submission.',
           'احذف الصفوف غير المستخدمة. يحتاج كل صف شاهد أو إصابة أو وفاة مضاف إلى تحديد الشخص قبل الإرسال.',
         ),
       ],
+      note: text(
+        'Saving a fatality for a selected staff member hides that employee from active employee selectors. Their administrative employee profile and the saved incident history are retained. Verify the person before submitting. A manually entered non-staff name is not an existing employee account.',
+        'عند حفظ وفاة لموظف محدد يُخفى من قوائم اختيار الموظفين النشطين، مع الاحتفاظ بملفه الإداري وسجله داخل الحادث. تحقق من الشخص قبل الإرسال. الاسم المدخل يدوياً لشخص من خارج الموظفين ليس حساب موظف موجوداً.',
+      ),
     },
     {
       id: 'incident-save',
@@ -169,6 +173,16 @@ export const incidentGuide: FeatureGuide = {
     },
   ],
   questions: [
+    {
+      question: text(
+        'What happens to an employee added under fatalities?',
+        'ماذا يحدث للموظف الذي تتم إضافته ضمن الوفيات؟',
+      ),
+      answer: text(
+        'When the incident is saved with a staff fatality, that employee is hidden from active employee selectors. The administrative employee list can still display the profile, and the incident retains their details as history. Check the selected person carefully before submission.',
+        'عند حفظ الحادث مع وفاة لموظف يُخفى من قوائم اختيار الموظفين النشطين. قد تستمر قائمة الموظفين الإدارية في عرض ملفه وتبقى تفاصيله داخل سجل الحادث. راجع الشخص المحدد بعناية قبل الإرسال.',
+      ),
+    },
     {
       question: text('Why is the incident date rejected?', 'لماذا يُرفض تاريخ الحادث؟'),
       answer: text(

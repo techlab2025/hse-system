@@ -138,11 +138,9 @@ const mergedOptions = computed<TitleInterface[]>(() => {
         ? props.options
         : dynamicOptions.value
 
-  const selectedOptions = Array.isArray(props.modelValue)
-    ? props.modelValue
-    : props.modelValue
-      ? [props.modelValue]
-      : []
+  const selectedOptions = (
+    Array.isArray(props.modelValue) ? props.modelValue : props.modelValue ? [props.modelValue] : []
+  ).filter(hasOptionLabel)
 
   const optionKeys = new Set<string>()
   const selectedOptionKeys = new Set(selectedOptions.map(getOptionKey).filter(Boolean))
@@ -152,19 +150,21 @@ const mergedOptions = computed<TitleInterface[]>(() => {
    * A filtered endpoint may intentionally omit already-assigned records.
    * Keep the current value in the options so PrimeVue can still render its label.
    */
-  return [...props.prependOptions, ...availableOptions, ...selectedOptions].filter((option) => {
-    const key = getOptionKey(option)
+  return [...props.prependOptions, ...availableOptions, ...selectedOptions]
+    .filter(hasOptionLabel)
+    .filter((option) => {
+      const key = getOptionKey(option)
 
-    if (!key) return true
+      if (!key) return true
 
-    if (excludedOptionKeys.has(key) && !selectedOptionKeys.has(key)) return false
+      if (excludedOptionKeys.has(key) && !selectedOptionKeys.has(key)) return false
 
-    if (optionKeys.has(key)) return false
+      if (optionKeys.has(key)) return false
 
-    optionKeys.add(key)
+      optionKeys.add(key)
 
-    return true
-  })
+      return true
+    })
 })
 
 /*
@@ -337,6 +337,10 @@ function ensureSingle(value: unknown): TitleInterface | null {
   return null
 }
 
+function hasOptionLabel(option: TitleInterface | null | undefined): option is TitleInterface {
+  return getSelectOptionLabel(option).trim().length > 0
+}
+
 function getOptionKey(option: TitleInterface): string {
   const item = option as TitleInterface & {
     id?: string | number
@@ -453,11 +457,12 @@ function updateControllerState(): void {
 }
 
 function handleAutoFill(options: TitleInterface[]): void {
-  if (!props.autoFill || options.length !== 1) {
+  const selectableOptions = options.filter(hasOptionLabel)
+  if (!props.autoFill || selectableOptions.length !== 1) {
     return
   }
 
-  const option = options[0]
+  const option = selectableOptions[0]
 
   if (!option) {
     return
