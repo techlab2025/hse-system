@@ -143,7 +143,7 @@ const userStore = useUserStore()
   stroke-linejoin: round;
 }
 
-:global([dir='rtl']) .tasks-link svg {
+:global([dir='rtl'] .tasks-link svg) {
   transform: scaleX(-1);
 }
 

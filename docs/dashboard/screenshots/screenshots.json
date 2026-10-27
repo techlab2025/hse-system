@@ -1,0 +1,98 @@
+[
+  {
+    "file": "organization-dashboard-en-1440.png",
+    "locale": "en",
+    "width": 1440,
+    "fixtureData": true,
+    "height": 2294,
+    "horizontalOverflow": false
+  },
+  {
+    "file": "organization-dashboard-en-1536.png",
+    "locale": "en",
+    "width": 1536,
+    "fixtureData": true,
+    "height": 2294,
+    "horizontalOverflow": false
+  },
+  {
+    "file": "organization-dashboard-en-1920.png",
+    "locale": "en",
+    "width": 1920,
+    "fixtureData": true,
+    "height": 2301,
+    "horizontalOverflow": false
+  },
+  {
+    "file": "organization-dashboard-en-1024.png",
+    "locale": "en",
+    "width": 1024,
+    "fixtureData": true,
+    "height": 3318,
+    "horizontalOverflow": false
+  },
+  {
+    "file": "organization-dashboard-en-768.png",
+    "locale": "en",
+    "width": 768,
+    "fixtureData": true,
+    "height": 3531,
+    "horizontalOverflow": false
+  },
+  {
+    "file": "organization-dashboard-en-375.png",
+    "locale": "en",
+    "width": 375,
+    "fixtureData": true,
+    "height": 5380,
+    "horizontalOverflow": false
+  },
+  {
+    "file": "organization-dashboard-ar-1440.png",
+    "locale": "ar",
+    "width": 1440,
+    "fixtureData": true,
+    "height": 2294,
+    "horizontalOverflow": false
+  },
+  {
+    "file": "organization-dashboard-ar-1536.png",
+    "locale": "ar",
+    "width": 1536,
+    "fixtureData": true,
+    "height": 2294,
+    "horizontalOverflow": false
+  },
+  {
+    "file": "organization-dashboard-ar-1920.png",
+    "locale": "ar",
+    "width": 1920,
+    "fixtureData": true,
+    "height": 2301,
+    "horizontalOverflow": false
+  },
+  {
+    "file": "organization-dashboard-ar-1024.png",
+    "locale": "ar",
+    "width": 1024,
+    "fixtureData": true,
+    "height": 3309,
+    "horizontalOverflow": false
+  },
+  {
+    "file": "organization-dashboard-ar-768.png",
+    "locale": "ar",
+    "width": 768,
+    "fixtureData": true,
+    "height": 3507,
+    "horizontalOverflow": false
+  },
+  {
+    "file": "organization-dashboard-ar-375.png",
+    "locale": "ar",
+    "width": 375,
+    "fixtureData": true,
+    "height": 5182,
+    "horizontalOverflow": false
+  }
+]

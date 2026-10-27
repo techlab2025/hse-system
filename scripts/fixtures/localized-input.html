@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <div id="app" style="max-width: 600px; margin: 32px"></div>
+    <script type="module">
+      import '/src/assets/styles/main.scss'
+      import '/src/localization/direction.css'
+      import { createApp, h } from 'vue'
+      import { createI18n } from 'vue-i18n'
+      import LangTitleInput from '/src/shared/HelpersComponents/LangTitleInput.vue'
+      // Load the shell styles that previously rotated every explicitly RTL element.
+      import '/src/shared/LayoutComponents/Notifications.vue'
+
+      createApp({
+        render: () =>
+          h('main', [
+            ...['text', 'textarea'].map((type) =>
+              h(LangTitleInput, {
+                type,
+                label: type === 'text' ? 'Title' : 'Description',
+                langs: [
+                  { title: 'English', locale: 'en' },
+                  { title: 'Arabic', locale: 'ar' },
+                ],
+              }),
+            ),
+            h('div', { dir: 'rtl' }, [
+              h('span', { class: 'notification-arrow' }, [
+                h('svg', { 'data-testid': 'directional-arrow' }),
+              ]),
+            ]),
+          ]),
+      })
+        .use(createI18n({ legacy: false, locale: 'en', messages: { en: {} } }))
+        .mount('#app')
+    </script>
+  </body>
+</html>

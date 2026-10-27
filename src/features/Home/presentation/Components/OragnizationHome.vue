@@ -1,206 +1,264 @@
 <script lang="ts" setup>
-import '../styles/home-identity.css'
-import { useProjectSelectStore } from '@/stores/ProjectSelect'
-import { defineAsyncComponent } from 'vue'
-import EmployeeTasksButton from '@/shared/HelpersComponents/EmployeeTasksButton.vue'
-import ProjectsStatistics from './HomeStatistics/ProjectsStatistics.vue'
-import HomeCards from './HomeUtils/HomeCards.vue'
+import { computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useOrganizationDashboard } from '../composables/useOrganizationDashboard'
+import { useUserStore } from '@/stores/user'
+import DashboardIndustrialBanner from './Dashboard/DashboardIndustrialBanner.vue'
+import DashboardCorrective from './Dashboard/DashboardCorrective.vue'
+import DashboardQuickActions from './Dashboard/DashboardQuickActions.vue'
+import DashboardActivities from './Dashboard/DashboardActivities.vue'
+import DashboardIcon from './Dashboard/DashboardIcon.vue'
+import DashboardMetric from './Dashboard/DashboardMetric.vue'
+import DashboardAttention from './Dashboard/DashboardAttention.vue'
+import DashboardInspection from './Dashboard/DashboardInspection.vue'
+import DashboardSafety from './Dashboard/DashboardSafety.vue'
+import DashboardEquipment from './Dashboard/DashboardEquipment.vue'
+import DashboardProjects from './Dashboard/DashboardProjects.vue'
+import DashboardWorkforce from './Dashboard/DashboardWorkforce.vue'
 import HomeSetupHint from './HomeUtils/HomeSetupHint.vue'
-import { computed, onMounted, watch } from 'vue'
+import EmployeeTasksButton from '@/shared/HelpersComponents/EmployeeTasksButton.vue'
 import IndexProjectProgressController from '@/features/Organization/ProjectPrgoress/Presentation/controllers/indexProjectProgressController'
 import IndexProjectProgressParams from '@/features/Organization/ProjectPrgoress/Core/params/indexProjectProgressParams'
 import { useProjectAppStatusStore } from '@/stores/ProjectStatus'
-import IndexProjectController from '@/features/Organization/Project/Presentation/controllers/indexProjectController'
-import IndexProjectParams from '@/features/Organization/Project/Core/params/indexProjectParams'
-import FetchHomeInspectionController from '../Controllers/FetchHomeInspectionController'
-import FetchHomeInspectionParams from '../../core/params/FetchHomeInspectionParams'
-import OverviewHazardChartController from '../Controllers/OverviewHazardChartController'
-import OverviewHazardChartParams from '../../core/params/OverviewHazardChartParams'
-import OverviewInvestigationsChartController from '../Controllers/OverviewInvestigationsChartController'
-import FetchEquipmentStaticsController from '../Controllers/FetchEquipmentStaticsController'
-import FetchEquipmentStaticsParams from '../../core/params/FetchEquipmentStaticsParams'
-import OverviewInvestigationsChartParams from '../../core/params/OverviewInvestigationsChartParams'
-import HomeSkelaton from '../subComponent/HomeSkelaton.vue'
-import { useThemeMode } from '@/composables/useThemeMode'
 import { useOrganizationOnboarding } from '@/composables/useOrganizationOnboarding'
-import {
-  DataInitial,
-  DataLoading,
-} from '@/base/core/networkStructure/Resources/dataState/data_state'
+import { DataLoading } from '@/base/core/networkStructure/Resources/dataState/data_state'
+import './Dashboard/dashboard.css'
 
-const InvestegationStatics = defineAsyncComponent(
-  () => import('./HomeUtils/InvestegationStatics.vue'),
+const { t, locale } = useI18n()
+const userStore = useUserStore()
+const welcome = computed(() =>
+  userStore.user?.organizationName
+    ? t('command.welcome', { name: userStore.user.organizationName })
+    : t('command.title'),
 )
-const EquipmentStaticss = defineAsyncComponent(() => import('./HomeUtils/EquipmentStatics.vue'))
-const StaticCardsFullDetails = defineAsyncComponent(
-  () => import('./HomeUtils/StaticCardsFullDetails.vue'),
+const { state, access, projectId, projectSelection, busy, retrievedAt, refresh, retry, goToPage } =
+  useOrganizationDashboard()
+const scopeName = computed(() =>
+  projectId.value
+    ? projectSelection.getProject()?.title || t('command.selectedProject')
+    : t('command.organizationScope'),
 )
-const StaticsCardPerMonth = defineAsyncComponent(
-  () => import('./HomeUtils/StaticsCardPerMonth.vue'),
+const retrieved = computed(() =>
+  retrievedAt.value
+    ? new Intl.DateTimeFormat(locale.value, { hour: '2-digit', minute: '2-digit' }).format(
+        retrievedAt.value,
+      )
+    : '',
 )
-const { isDarkMode } = useThemeMode()
-
-const indexProjectProgressController = IndexProjectProgressController.getInstance()
-const ProgressValue = computed(
-  () => indexProjectProgressController.state.value.data?.progress ?? null,
+const metrics = computed(() =>
+  [
+    {
+      key: 'incidents',
+      subtitle: t('command.metricNoteIncidents'),
+      label: t('command.incidents'),
+      value: state.summary.data?.incidents ?? null,
+      tone: 'red',
+      icon: 'incident',
+      link: '/organization/equipment-mangement/incedant?isAll=1',
+      show: access.value.incidents,
+    },
+    {
+      key: 'risk',
+      subtitle: t('command.metricNoteRisk'),
+      label: t('command.highRiskObservations'),
+      value: state.summary.data?.highRiskObservations ?? null,
+      tone: 'amber',
+      icon: 'risk',
+      link: '/organization/equipment-mangement/observation?isAll=1&type=2&risk_level=3',
+      show: access.value.observations,
+    },
+    {
+      key: 'inspections',
+      subtitle: t('command.metricNoteInspections'),
+      label: t('command.delayedInspections'),
+      value: state.summary.data?.inspections.delayed ?? null,
+      tone: 'blue',
+      icon: 'inspection',
+      link: '/organization/equipment-mangement/inspection?inspectionType=1',
+      show: access.value.inspections,
+    },
+    {
+      key: 'completed',
+      subtitle: t('command.metricNoteCompleted'),
+      label: t('command.finishedResults'),
+      value: state.summary.data?.inspections.finishedResults ?? null,
+      tone: 'blue',
+      icon: 'inspection',
+      link: '/organization/equipment-mangement/inspection?inspectionType=1',
+      show: access.value.inspections,
+    },
+    {
+      key: 'certificates',
+      subtitle: t('command.metricNoteCertificates'),
+      label: t('command.expiredCertificateCount'),
+      value: state.summary.data?.certificates.expired ?? null,
+      tone: 'amber',
+      icon: 'people',
+      link: '/organization/employee-certificate',
+      show: access.value.certificates,
+    },
+    {
+      key: 'corrective',
+      subtitle: t('command.metricNoteCorrective'),
+      label: t('command.openCorrective'),
+      value: state.summary.data?.openCorrectiveActions ?? null,
+      tone: 'purple',
+      icon: 'corrective',
+      link: '/organization/capa',
+      show: access.value.corrective,
+    },
+  ].filter((item) => item.show),
 )
-const setupItems = computed(
-  () => indexProjectProgressController.state.value.data?.progressItems ?? [],
-)
-const ProjectAppStatusStore = useProjectAppStatusStore()
-const { visited, setVisited } = useOrganizationOnboarding('visited')
-const fetchHomeInspectionController = FetchHomeInspectionController.getInstance()
-const homeInspectionState = computed(() => fetchHomeInspectionController.state.value)
-const indexProjectController = IndexProjectController.getInstance()
-const ProjectStatics = computed(() => indexProjectController.state.value)
-const projectSelection = useProjectSelectStore()
-const projects = computed(() => {
-  const items = ProjectStatics.value.data ?? []
-  const projectId = projectSelection.getProjectId()
-  return projectId ? items.filter((item) => Number(item.id) === Number(projectId)) : items
-})
-const totalProjects = computed(() =>
-  projectSelection.getProjectId()
-    ? projects.value.length
-    : (ProjectStatics.value.pagination?.total ?? 0),
-)
-const projectsLoading = computed(
-  () => ProjectStatics.value instanceof DataInitial || ProjectStatics.value instanceof DataLoading,
-)
-const overviewHazardChartController = OverviewHazardChartController.getInstance()
-const OverviewHazardChartstate = computed(() => overviewHazardChartController.state.value)
-const overviewInvestigationsChartController = OverviewInvestigationsChartController.getInstance()
-const overviewInvestigationsChartstate = computed(
-  () => overviewInvestigationsChartController.state.value,
-)
-const fetchEquipmentStaticsController = FetchEquipmentStaticsController.getInstance()
-const EquipmentStatics = computed(() => fetchEquipmentStaticsController.state.value)
-const GetHomeInspection = async () => {
-  const fetchHomeInspectionParams = new FetchHomeInspectionParams()
-  await fetchHomeInspectionController.getData(fetchHomeInspectionParams)
-}
-
-const getProjectProgress = async () => {
-  const indexProjectProgressParams = new IndexProjectProgressParams('', 1, 10, 0)
-  const response = await indexProjectProgressController.getData(indexProjectProgressParams)
-  if (response.value?.data) {
-    ProjectAppStatusStore.setProjectAppStatus(response.value?.data)
-  }
-}
-const showOverlay = computed(() => {
-  return ProgressValue.value == 0
-})
-
-const fetchProject = async (
-  query: string = '',
-  pageNumber: number = 1,
-  perPage: number = 10,
-  withPage: number = 1,
-) => {
-  const projectId = projectSelection.getProjectId()
-  const indexProjects = new IndexProjectParams(
-    query,
-    pageNumber,
-    perPage,
-    projectId ? 0 : withPage,
-    undefined,
-    undefined,
-    projectId,
-  )
-  await indexProjectController.getData(indexProjects)
-}
-
-const fetchOverviewHazardChart = async () => {
-  const overviewHazardChartParams = new OverviewHazardChartParams()
-  await overviewHazardChartController.getData(overviewHazardChartParams)
-}
-
-const fetchoverviewInvestigationsCharts = async () => {
-  const overviewInvestigationsChartParams = new OverviewInvestigationsChartParams()
-  await overviewInvestigationsChartController.getData(overviewInvestigationsChartParams)
-}
-
-const GetEquipmentStatics = async () => {
-  const fetchEquipmentStaticsParams = new FetchEquipmentStaticsParams()
-  await fetchEquipmentStaticsController.getData(fetchEquipmentStaticsParams)
-}
-
+const progressController = IndexProjectProgressController.getInstance()
+const setup = computed(() => progressController.state.value.data)
+const { setVisited } = useOrganizationOnboarding('visited')
 onMounted(async () => {
-  await Promise.allSettled([
-    GetEquipmentStatics(),
-    fetchProject(),
-    getProjectProgress(),
-    GetHomeInspection(),
-    fetchOverviewHazardChart(),
-    fetchoverviewInvestigationsCharts(),
-  ])
-})
-
-watch([() => indexProjectProgressController.state.value.data], ([UpdatedProjectProgressState]) => {
-  if (UpdatedProjectProgressState) {
-    ProjectAppStatusStore.setProjectAppStatus(UpdatedProjectProgressState)
+  if (!access.value.projects) return
+  try {
+    if (!setup.value && !(progressController.state.value instanceof DataLoading))
+      await progressController.getData(new IndexProjectProgressParams('', 1, 10, 0))
+    if (setup.value) useProjectAppStatusStore().setProjectAppStatus(setup.value)
+  } catch {
+    /* Setup assistance never blocks independently loaded analytics. */
   }
 })
 </script>
 <template>
-  <div
-    :class="[
-      'home-page organization-home-page hse-identity hse-home-dashboard',
-      { 'is-dark': isDarkMode },
-    ]"
-  >
-    <HomeCards :ProgressValue="Number(ProgressValue)" />
-
-    <EmployeeTasksButton />
-    <section
-      class="home-setup-reminder"
-      :class="{ 'highlight-active': showOverlay && !visited }"
-      v-if="ProgressValue !== null && ProgressValue < 100"
-    >
-      <HomeSetupHint :items="setupItems" :progress-value="ProgressValue" @continue="setVisited" />
-      <div v-if="showOverlay && !visited" class="overlay-note sidebar-note">
-        <span class="tip-kicker">{{ $t('step_1_of_3') }}</span>
-        <h3>{{ $t('Step_1_Click_Here_To_Start_Adding_Your_Data') }}</h3>
-        <p>{{ $t('Fill_All_Data_From_this_page') }}</p>
-        <div class="tip-progress" aria-hidden="true">
-          <span class="active"></span>
-          <span></span>
-          <span></span>
+  <main class="org-command hse-identity" data-testid="organization-command-center">
+    <header class="command-heading command-hero">
+      <DashboardIndustrialBanner />
+      <div class="command-hero-copy">
+        <h1>{{ welcome }}</h1>
+        <p class="command-intro">{{ $t('command.heroSubtitle') }}</p>
+        <div class="command-hero-scope">
+          <!-- <span
+            ><DashboardIcon name="project" /><bdi dir="auto">{{ scopeName }}</bdi></span
+          >
+          <span v-if="retrieved">{{ $t('command.retrievedAt', { time: retrieved }) }}</span> -->
+          <!-- <button
+            type="button"
+            class="command-snapshot-refresh"
+            :disabled="busy"
+            :aria-label="$t('command.refresh')"
+            :title="$t('command.refresh')"
+            @click="refresh"
+          >
+            <DashboardIcon name="refresh" />
+          </button> -->
         </div>
-        <span class="tip-action">{{ $t('click_setup_card_to_continue') }}</span>
       </div>
+    </header>
+    <div
+      v-if="access.projects && setup && Number.isFinite(setup.progress) && setup.progress < 100"
+      class="command-setup"
+    >
+      <HomeSetupHint
+        :items="setup.progressItems"
+        :progress-value="setup.progress"
+        @continue="setVisited"
+      />
+    </div>
+    <EmployeeTasksButton />
+    <section v-if="metrics.length" class="command-kpis" :aria-label="$t('command.keyMetrics')">
+      <DashboardMetric
+        v-for="metric in metrics"
+        :key="metric.key"
+        :data-testid="`metric-${metric.key}`"
+        :label="metric.label"
+        :subtitle="metric.subtitle"
+        :value="metric.value"
+        :tone="metric.tone"
+        :icon="metric.icon"
+        :link="metric.link"
+        :status="state.summary.status"
+      />
     </section>
-
-    <div v-if="showOverlay && !visited" class="container-overlay"></div>
-
-    <template v-if="!projectsLoading">
-      <section class="home-analytics-shell">
-        <!-- <div class="home-analytics-heading">
-          <span>{{ $t('dashboard') }}</span>
-          <h2>{{ $t('overview') }}</h2>
-        </div> -->
-
-        <div class="home-overview-grid">
-          <div class="hse-home-panel home-panel-projects">
-            <ProjectsStatistics :projectStatistics="projects" :totalNumOfProjects="totalProjects" />
-          </div>
-
-          <div class="home-panel-kpis">
-            <StaticsCardPerMonth :homeInspectionState="homeInspectionState" />
-          </div>
-
-          <div class="home-panel-details">
-            <StaticCardsFullDetails :homeInspectionState="homeInspectionState" />
-          </div>
-        </div>
-
-        <EquipmentStaticss :EquipmentStatics="EquipmentStatics" />
-        <InvestegationStatics
-          :OverviewHazardChartstate="OverviewHazardChartstate"
-          :overviewInvestigationsChartstate="overviewInvestigationsChartstate"
+    <p v-if="state.summary.status === 'forbidden'" class="command-access-note">
+      {{ $t('command.summaryAccessNote') }}
+    </p>
+    <div class="command-grid" :class="{ 'is-restricted': !access.summary }">
+      <DashboardSafety
+        v-if="access.safety"
+        class="command-safety"
+        :resource="state.safety"
+        :link="access.observations"
+        :summary="access.summary ? state.summary : undefined"
+        data-testid="safety-panel"
+        @retry="retry('safety')"
+      />
+      <DashboardInspection
+        v-if="access.inspections"
+        class="command-inspection"
+        :resource="state.summary"
+        :link="access.inspections"
+        data-testid="inspection-panel"
+        @retry="retry('summary')"
+      />
+      <DashboardEquipment
+        v-if="access.equipment"
+        class="command-equipment"
+        :resource="state.equipment"
+        :link="access.equipment"
+        data-testid="equipment-panel"
+        @retry="retry('equipment')"
+      />
+      <DashboardCorrective
+        v-if="access.corrective"
+        class="command-corrective"
+        :resource="state.summary"
+        :link="access.corrective"
+        data-testid="corrective-panel"
+        @retry="retry('summary')"
+      />
+      <DashboardWorkforce
+        v-if="access.certificates"
+        class="command-workforce"
+        :resource="state.summary"
+        :link="access.certificates"
+        data-testid="workforce-panel"
+        @retry="retry('summary')"
+      />
+      <DashboardProjects
+        v-if="access.projects"
+        class="command-projects"
+        :resource="state.projects"
+        :can-open="access.projectDetails"
+        :show-incidents="access.incidents"
+        :show-equipment="access.equipment"
+        :show-inspections="access.inspections"
+        data-testid="projects-panel"
+        @retry="retry('projects')"
+        @page="goToPage"
+      >
+        <DashboardActivities
+          class="command-activities"
+          :access="access"
+          data-testid="activities-panel"
         />
-      </section>
-    </template>
-    <HomeSkelaton v-if="projectsLoading" />
-  </div>
+      </DashboardProjects>
+      <div class="command-side-stack">
+        <DashboardQuickActions :access="access" data-testid="quick-actions" /><DashboardAttention
+          v-if="access.summary"
+          :resource="state.summary"
+          :investigations="access.investigations"
+          data-testid="attention-panel"
+          @retry="retry('summary')"
+        />
+      </div>
+    </div>
+    <!-- <footer class="command-dashboard-note">
+      <DashboardIcon name="shield" />
+      <p>{{ $t('command.coverageNote') }}</p>
+      <button
+        type="button"
+        class="command-snapshot-refresh"
+        :disabled="busy"
+        :aria-label="$t('command.refresh')"
+        :title="[scopeName, retrieved].filter(Boolean).join(' · ')"
+        @click="refresh"
+      >
+        <DashboardIcon name="refresh" />
+      </button>
+    </footer> -->
+  </main>
 </template>

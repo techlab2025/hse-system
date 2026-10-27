@@ -337,7 +337,7 @@ watch(
   transition: transform 0.2s ease;
 }
 
-:global([dir='rtl']) .picker-button-arrow {
+:global([dir='rtl'] .picker-button-arrow) {
   transform: rotate(180deg);
 }
 
@@ -345,7 +345,7 @@ watch(
   transform: translateX(3px);
 }
 
-:global([dir='rtl']) .inspection-template-button:hover .picker-button-arrow {
+:global([dir='rtl'] .inspection-template-button:hover .picker-button-arrow) {
   transform: rotate(180deg) translateX(3px);
 }
 

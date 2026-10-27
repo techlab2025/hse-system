@@ -1630,11 +1630,11 @@ const RefreshToken = async () => {
   background: var(--status-success);
 }
 
-:global([dir='rtl']) .notification-card:hover {
+:global([dir='rtl'] .notification-card:hover) {
   transform: translateX(-2px);
 }
 
-:global([dir='rtl']) .notification-arrow svg {
+:global([dir='rtl'] .notification-arrow svg) {
   transform: rotate(180deg);
 }
 

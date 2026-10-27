@@ -1,0 +1,222 @@
+{
+  "date": "2026-10-27",
+  "reference": "design-references/HSE Safety Dashboard Overview.png",
+  "environment": "local production preview; isolated HTTP fixtures; no production mutations",
+  "build": {
+    "status": "passed",
+    "command": "npm run build",
+    "warnings": [
+      "Existing application chunk-size warnings"
+    ]
+  },
+  "eslint": {
+    "status": "passed",
+    "scope": "Dashboard components and OragnizationHome.vue"
+  },
+  "unitTests": {
+    "passed": 15,
+    "failed": 0
+  },
+  "localizationContractTests": {
+    "passed": 14,
+    "failed": 0
+  },
+  "browserTests": {
+    "passed": 17,
+    "failed": 0,
+    "durationSeconds": 37.9,
+    "viewports": [
+      320,
+      375,
+      768,
+      1024,
+      1440,
+      1920
+    ],
+    "locales": [
+      "en",
+      "ar"
+    ],
+    "coverage": [
+      "responsive overflow",
+      "visual typography scale",
+      "categorical chart counts",
+      "ownership denominator",
+      "unknown vs zero",
+      "retry",
+      "request deduplication",
+      "project scoping and stale response races",
+      "pagination",
+      "read/create permissions",
+      "route validity",
+      "mobile closed drawer paint and reopen rule",
+      "readable internally scrolling mobile table",
+      "single location has three exact semantic colors in rendered Chart.js canvas",
+      "absent root causes reserve no subsection",
+      "many locations use responsive chart pagination"
+    ]
+  },
+  "typeCheck": {
+    "status": "failed",
+    "repositoryDiagnostics": 3606,
+    "dashboardDiagnostics": 0,
+    "note": "Repository-wide errors remain outside the implemented dashboard files; do not claim a clean application type check."
+  },
+  "screenshots": [
+    {
+      "file": "organization-dashboard-en-1440.png",
+      "locale": "en",
+      "width": 1440,
+      "fixtureData": true,
+      "height": 2294,
+      "horizontalOverflow": false
+    },
+    {
+      "file": "organization-dashboard-en-1536.png",
+      "locale": "en",
+      "width": 1536,
+      "fixtureData": true,
+      "height": 2294,
+      "horizontalOverflow": false
+    },
+    {
+      "file": "organization-dashboard-en-1920.png",
+      "locale": "en",
+      "width": 1920,
+      "fixtureData": true,
+      "height": 2301,
+      "horizontalOverflow": false
+    },
+    {
+      "file": "organization-dashboard-en-1024.png",
+      "locale": "en",
+      "width": 1024,
+      "fixtureData": true,
+      "height": 3318,
+      "horizontalOverflow": false
+    },
+    {
+      "file": "organization-dashboard-en-768.png",
+      "locale": "en",
+      "width": 768,
+      "fixtureData": true,
+      "height": 3531,
+      "horizontalOverflow": false
+    },
+    {
+      "file": "organization-dashboard-en-375.png",
+      "locale": "en",
+      "width": 375,
+      "fixtureData": true,
+      "height": 5380,
+      "horizontalOverflow": false
+    },
+    {
+      "file": "organization-dashboard-ar-1440.png",
+      "locale": "ar",
+      "width": 1440,
+      "fixtureData": true,
+      "height": 2294,
+      "horizontalOverflow": false
+    },
+    {
+      "file": "organization-dashboard-ar-1536.png",
+      "locale": "ar",
+      "width": 1536,
+      "fixtureData": true,
+      "height": 2294,
+      "horizontalOverflow": false
+    },
+    {
+      "file": "organization-dashboard-ar-1920.png",
+      "locale": "ar",
+      "width": 1920,
+      "fixtureData": true,
+      "height": 2301,
+      "horizontalOverflow": false
+    },
+    {
+      "file": "organization-dashboard-ar-1024.png",
+      "locale": "ar",
+      "width": 1024,
+      "fixtureData": true,
+      "height": 3309,
+      "horizontalOverflow": false
+    },
+    {
+      "file": "organization-dashboard-ar-768.png",
+      "locale": "ar",
+      "width": 768,
+      "fixtureData": true,
+      "height": 3507,
+      "horizontalOverflow": false
+    },
+    {
+      "file": "organization-dashboard-ar-375.png",
+      "locale": "ar",
+      "width": 375,
+      "fixtureData": true,
+      "height": 5182,
+      "horizontalOverflow": false
+    }
+  ],
+  "visualReview": {
+    "status": "performed",
+    "compared": [
+      "header",
+      "KPI cards",
+      "charts",
+      "grid",
+      "colors",
+      "typography",
+      "icons",
+      "spacing",
+      "shadows",
+      "borders",
+      "density",
+      "composition"
+    ],
+    "observations": [
+      "Larger readable type and colored metric treatments",
+      "Sparse root causes embedded within related chart",
+      "Real grouped categorical columns replace uniform progress bars",
+      "Unsupported CAPA status rows and fake activity panel removed",
+      "Mobile closed navigation background defect fixed within dashboard scope",
+      "No horizontal overflow in 12 exported captures",
+      "Inspected grouped Chart.js single/multiple/RTL/mobile captures against supplied reference",
+      "White shared hover tooltip shows full location and exact series counts",
+      "No progress-bar fallback at any location count"
+    ],
+    "limitations": [
+      "Original vector illustration rather than the reference photograph",
+      "No fabricated historical lines, training donut, activity chronology or completion rates",
+      "Fixture screenshots verify presentation, not live organization totals"
+    ]
+  },
+  "productionAuthenticatedReview": {
+    "status": "unverified",
+    "note": "No authenticated production data reconciliation; no production records modified."
+  },
+  "focusedChartScreenshots": [
+    {
+      "file": "docs/dashboard/screenshots/safety-chart-many-locations-rtl.png",
+      "fixtureData": true
+    },
+    {
+      "file": "docs/dashboard/screenshots/safety-chart-mobile-rtl.png",
+      "fixtureData": true
+    },
+    {
+      "file": "docs/dashboard/screenshots/safety-chart-multiple-locations.png",
+      "fixtureData": true
+    },
+    {
+      "file": "docs/dashboard/screenshots/safety-chart-one-location.png",
+      "fixtureData": true
+    },
+    {
+      "file": "docs/dashboard/screenshots/safety-chart-tooltip.png",
+      "fixtureData": true
+    }
+  ]
+}

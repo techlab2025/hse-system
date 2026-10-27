@@ -813,11 +813,11 @@ const updatetabValue = (value: any) => {
   }
 }
 
-:global([dir='rtl']) .all-employees-view svg {
+:global([dir='rtl'] .all-employees-view svg) {
   transform: rotate(180deg);
 }
 
-:global([dir='rtl']) .all-employees-view:hover {
+:global([dir='rtl'] .all-employees-view:hover) {
   transform: translateX(-2px);
 }
 </style>

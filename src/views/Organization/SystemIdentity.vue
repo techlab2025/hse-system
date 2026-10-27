@@ -1,6 +1,6 @@
 <script lang="ts">
 // false = localStorage only; true = fetch/save the organization identity through the API.
-export const USE_SYSTEM_IDENTITY_API = true
+export const USE_SYSTEM_IDENTITY_API = false
 </script>
 
 <script setup lang="ts">

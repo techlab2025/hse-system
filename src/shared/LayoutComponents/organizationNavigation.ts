@@ -801,7 +801,7 @@ const LockUpsRoutes: SidebarRoute[] = [
   },
   {
     link: '/organization/meeting-types',
-    name: 'meeting-types',
+    name: 'meeting_types',
     icon: 'medical-square',
     permissions: [
       PermissionsEnum.ORG_MEETING_TYPE_ALL,
@@ -813,7 +813,7 @@ const LockUpsRoutes: SidebarRoute[] = [
   },
   {
     link: '/organization/ptw-types',
-    name: 'ptw-types',
+    name: 'ptw_types',
     icon: 'medical-square',
     permissions: [
       PermissionsEnum.ORG_PTW_TYPE_ALL,

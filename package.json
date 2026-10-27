@@ -19,7 +19,9 @@
     "i18n:audit": "node scripts/localization/audit.mjs --check",
     "i18n:test": "tsx --tsconfig tsconfig.app.json --test scripts/localization-contract.test.ts",
     "i18n:browser": "playwright test -c scripts/localization/playwright.config.mjs",
-    "i18n:routes": "node scripts/localization/routes-smoke.mjs"
+    "i18n:routes": "node scripts/localization/routes-smoke.mjs",
+    "dashboard:test": "tsx --tsconfig tsconfig.app.json --test scripts/dashboard/organization-dashboard.test.ts",
+    "dashboard:browser": "playwright test -c scripts/dashboard/playwright.config.mjs"
   },
   "dependencies": {
     "@iconify-json/uil": "^1.2.3",

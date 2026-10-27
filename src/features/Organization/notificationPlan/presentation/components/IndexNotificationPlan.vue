@@ -398,7 +398,7 @@ const handleCountPerPage = (count: number) => {
   transform: translateX(15px);
 }
 
-:global([dir='rtl']) .status-toggle.is-active .toggle-track i {
+:global([dir='rtl'] .status-toggle.is-active .toggle-track i) {
   transform: translateX(-15px);
 }
 

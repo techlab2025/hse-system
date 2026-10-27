@@ -729,7 +729,7 @@ watch(
     transform: rotate(360deg);
   }
 }
-:global([dir='rtl']) .back-btn svg {
+:global([dir='rtl'] .back-btn svg) {
   transform: rotate(180deg);
 }
 @media (max-width: 760px) {

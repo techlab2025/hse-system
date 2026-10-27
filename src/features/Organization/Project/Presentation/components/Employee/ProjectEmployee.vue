@@ -79,7 +79,7 @@ const route = useRoute()
   stroke-width: 2;
 }
 
-:global([dir='rtl']) .back-btn svg {
+:global([dir='rtl'] .back-btn svg) {
   transform: rotate(180deg);
 }
 
