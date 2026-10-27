@@ -1,0 +1,141 @@
+{
+  "name": "Example organization",
+  "logo": "",
+  "primaryColor": "#246bfe",
+  "secondaryColor": "#0e2a4d",
+  "accentColor": "#11a5c5",
+  "extractedColors": [],
+  "isActive": true,
+  "appearance": {
+    "sidebarMode": "compact",
+    "typography": {
+      "fontFamily": "Cairo",
+      "fontSize": null,
+      "headingSize": null,
+      "fontColor": "",
+      "headingColor": ""
+    },
+    "colors": {
+      "headerBackground": "#ffffff"
+    },
+    "headerOrder": ["brand", "project", "actions"],
+    "headerActionOrder": ["language", "notifications", "profile"],
+    "sidebarCustomGroups": [
+      {
+        "key": "custom:safety",
+        "label": "Safety workspace"
+      }
+    ],
+    "sidebarOrder": [
+      "overview",
+      "operations",
+      "company",
+      "reports",
+      "organization",
+      "locations",
+      "lockups",
+      "documentation",
+      "support",
+      "custom:safety"
+    ],
+    "sidebarItemOrder": {
+      "overview": ["overview"],
+      "operations": [
+        "Projects",
+        "equipment",
+        "Incidents",
+        "observations",
+        "investigations",
+        "CAPA"
+      ],
+      "company": [
+        "Inductions",
+        "PPE Matrix & Log",
+        "objectives",
+        "Internal Audit",
+        "My Internal Audit"
+      ],
+      "reports": [
+        "investigation_report",
+        "incident_report",
+        "observation report",
+        "corrective_report",
+        "preventive_report",
+        "lessons_learnt_report"
+      ],
+      "organization": [
+        "system_preferences",
+        "certificates",
+        "organization_certificate",
+        "organization_documents",
+        "templates",
+        "positions",
+        "employees",
+        "sub contractors",
+        "roles",
+        "notification_plan",
+        "Attachment Matrix",
+        "contractor_scope",
+        "warehouse",
+        "employee_certificate",
+        "coding_system",
+        "factor",
+        "factor item",
+        "Document Refrence",
+        "shifts"
+      ],
+      "locations": ["location", "zones"],
+      "lockups": [
+        "PPE Matrix",
+        "Document Categories",
+        "Audit Standards",
+        "Audit Activities",
+        "ppe_items",
+        "visit_activities",
+        "visit_themes",
+        "visit_categories",
+        "team",
+        "drill_types",
+        "warehouse_types",
+        "hazard_classifications",
+        "incident_types",
+        "observation_type",
+        "equipment_brands",
+        "risk",
+        "root_causes",
+        "injury",
+        "meeting-types",
+        "ptw-types",
+        "Management Change Topic Type",
+        "induction_traning_topics"
+      ],
+      "documentation": [
+        "documentation_home",
+        "project_guide",
+        "equipment_guide",
+        "employee_guide",
+        "observation_guide",
+        "incident_guide",
+        "inspection_guide",
+        "investigation_guide",
+        "capa_guide",
+        "induction_guide",
+        "ppe_matrix_guide",
+        "ppe_delivery_guide",
+        "objectives_guide",
+        "internal_audit_guide"
+      ],
+      "support": ["support"],
+      "operations/equipment": ["Tools", "Devices", "Machines"],
+      "custom:safety": ["operations/Inspection"]
+    },
+    "sidebarItemParents": {
+      "operations/Inspection": "custom:safety"
+    },
+    "sidebarLabels": {
+      "group:reports": "Safety reports",
+      "operations/Inspection": "Site inspections"
+    },
+    "breadcrumbPosition": "left"
+  }
+}

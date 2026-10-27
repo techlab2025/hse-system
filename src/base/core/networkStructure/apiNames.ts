@@ -45,6 +45,14 @@ class ApiNames {
     return this.EmailIntegration + '/sent-retry'
   }
 
+  // Organization identity. Backend contract: docs/system-identity-api.md.
+  public get CreateSystemIdentity() {
+    return this.baseUrl + this.organizationPrefix + 'creat_system_identity'
+  }
+  public get FetchSystemIdentity() {
+    return this.baseUrl + this.organizationPrefix + 'fetch_system_identity'
+  }
+
   // ----------------- API endpoints (all as getters) -----------------
 
   // languages

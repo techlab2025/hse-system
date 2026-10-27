@@ -74,6 +74,7 @@ export async function installFixtures(
   { locale = 'en', permitted = true, listState = 'success' } = {},
 ) {
   const requests = []
+  let systemIdentity
   await page.addInitScript(
     ({ locale, permitted }) => {
       localStorage.setItem('lang', locale)
@@ -107,7 +108,19 @@ export async function installFixtures(
     }
     requests.push({ endpoint, body, raw: route.request().postData() })
     let data = []
-    if (endpoint === 'fetch_projects') {
+    if (endpoint === 'fetch_system_identity') {
+      systemIdentity ??= await page.evaluate(() => {
+        try {
+          return JSON.parse(localStorage.getItem('hse-system-identity'))
+        } catch {
+          return null
+        }
+      })
+      data = { identity: systemIdentity ?? null, updated_at: null }
+    } else if (endpoint === 'creat_system_identity') {
+      systemIdentity = body
+      data = { identity: systemIdentity, updated_at: '2026-10-27T12:00:00Z' }
+    } else if (endpoint === 'fetch_projects') {
       const rows =
         listState === 'empty'
           ? []

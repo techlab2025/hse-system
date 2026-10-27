@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted } from 'vue'
+import { computed, defineAsyncComponent, onMounted, watch } from 'vue'
 import MainDialog from './base/Presentation/Dialogs/MainDialogs/MainDialog.vue'
 import Toast from 'primevue/toast'
 import TicketIcon from './shared/icons/TicketIcon.vue'
@@ -8,6 +8,9 @@ import { useRoute } from 'vue-router'
 import ErrorDialog from './base/Presentation/Dialogs/MainDialogs/ErrorDialog.vue'
 import { useThemeMode } from '@/composables/useThemeMode'
 import { useSystemIdentity } from '@/composables/useSystemIdentity'
+import { USE_SYSTEM_IDENTITY_API } from '@/views/Organization/SystemIdentity.vue'
+import { useUserStore } from '@/stores/user'
+import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 
 const LoaderDialog = defineAsyncComponent(
   () => import('./base/Presentation/Dialogs/LoaderDialogs/LoaderDialog.vue'),
@@ -20,7 +23,28 @@ const TicketDialog = defineAsyncComponent(
 const ticketStore = useTicketStore()
 const route = useRoute()
 const { initThemeMode } = useThemeMode()
-const { loadIdentity } = useSystemIdentity()
+const userStore = useUserStore()
+const { loadOrganizationIdentity, clearOrganizationIdentity, setIdentityStorageMode } =
+  useSystemIdentity()
+setIdentityStorageMode(USE_SYSTEM_IDENTITY_API)
+watch(
+  () =>
+    [
+      route.path.startsWith('/organization'),
+      userStore.isAuth,
+      userStore.user?.type,
+      userStore.user?.organizationId,
+      userStore.user?.apiToken,
+    ] as const,
+  ([inOrganization, authenticated, type]) => {
+    if (inOrganization && authenticated && type === OrganizationTypeEnum.ORGANIZATION) {
+      void loadOrganizationIdentity()
+    } else if (!authenticated || !inOrganization || type !== OrganizationTypeEnum.ORGANIZATION) {
+      clearOrganizationIdentity()
+    }
+  },
+  { immediate: true },
+)
 const showTicketTools = computed(() => {
   const path = route.path
 
@@ -29,7 +53,6 @@ const showTicketTools = computed(() => {
 
 onMounted(() => {
   initThemeMode()
-  loadIdentity()
 })
 </script>
 

@@ -1,3 +1,8 @@
+<script lang="ts">
+// false = localStorage only; true = fetch/save the organization identity through the API.
+export const USE_SYSTEM_IDENTITY_API = false
+</script>
+
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import IdentityTypographyEditor from '@/features/SystemIdentity/components/IdentityTypographyEditor.vue'
@@ -10,7 +15,23 @@ import '@/features/SystemIdentity/identity-editor.css'
 import FieldHelpIcon from '@/shared/FormInputs/FieldHelpIcon.vue'
 import { useSystemIdentity, type SystemIdentity } from '@/composables/useSystemIdentity'
 
-const { identity, defaultIdentity, loadIdentity, saveIdentity, resetIdentity } = useSystemIdentity()
+const {
+  identity,
+  defaultIdentity,
+  loadOrganizationIdentity,
+  saveIdentity,
+  resetIdentity,
+  identityLoadError,
+  identityCacheWarning,
+} = useSystemIdentity()
+const isInitializing = ref(true)
+const copySavedIdentity = () => {
+  form.value = {
+    ...identity.value,
+    extractedColors: [...identity.value.extractedColors],
+    appearance: normalizeAppearance(identity.value.appearance),
+  }
+}
 
 const form = ref<SystemIdentity>({
   ...defaultIdentity.value,
@@ -107,6 +128,7 @@ const restoreDefaults = () => {
 }
 
 const save = async () => {
+  if (isSaving.value || isInitializing.value) return
   if (!form.value.name.trim()) {
     message.value = 'Identity name is required.'
     return
@@ -114,37 +136,44 @@ const save = async () => {
   isSaving.value = true
   message.value = ''
   try {
-    saveIdentity({ ...form.value, name: form.value.name.trim() })
-  } catch {
+    await saveIdentity({ ...form.value, name: form.value.name.trim() })
+    copySavedIdentity()
+    message.value = 'System identity has been saved and applied.'
+  } catch (error) {
+    message.value = `${error instanceof Error ? error.message : 'Could not save the organization identity.'} Your draft is still here.`
+  } finally {
     isSaving.value = false
-    message.value =
-      'Could not save identity. Browser storage may be full or unavailable. Your draft is still here.'
-    return
   }
-  await new Promise((resolve) => window.setTimeout(resolve, 250))
-  isSaving.value = false
-  message.value = 'System identity has been saved and applied.'
 }
 
-const reset = () => {
+const reset = async () => {
+  if (isSaving.value || isInitializing.value) return
+  isSaving.value = true
+  message.value = ''
   try {
-    resetIdentity()
-  } catch {
-    message.value = 'Could not reset browser storage.'
-    return
+    await resetIdentity()
+    copySavedIdentity()
+    message.value = 'Default system identity has been restored.'
+  } catch (error) {
+    message.value =
+      error instanceof Error ? error.message : 'Could not reset the organization identity.'
+  } finally {
+    isSaving.value = false
   }
-  form.value = { ...identity.value, appearance: normalizeAppearance(identity.value.appearance) }
-  message.value = 'Default system identity has been restored.'
 }
 
-onMounted(() => {
-  loadIdentity()
-  form.value = {
-    ...identity.value,
-    extractedColors: [...identity.value.extractedColors],
-    appearance: normalizeAppearance(identity.value.appearance),
+let loadGeneration = 0
+const load = async (retry = false) => {
+  const request = ++loadGeneration
+  isInitializing.value = true
+  try {
+    await loadOrganizationIdentity(retry)
+    if (request === loadGeneration) copySavedIdentity()
+  } finally {
+    if (request === loadGeneration) isInitializing.value = false
   }
-})
+}
+onMounted(() => void load())
 </script>
 
 <template>
@@ -165,187 +194,217 @@ onMounted(() => {
 
     <p v-if="message" class="identity-message" role="status">{{ message }}</p>
 
-    <section class="identity-shell">
-      <header class="section-header">
-        <div>
-          <span class="eyebrow">Brand controls</span>
-          <h2>Identity details</h2>
-          <p>Manage the logo, active palette, and live system preview.</p>
-        </div>
-        <button type="button" class="button ghost danger" @click="reset">Reset identity</button>
-      </header>
-
-      <div class="identity-grid">
-        <section class="identity-card logo-card">
-          <div class="field-group">
-            <div class="field-label">
-              <label for="identity-name">Identity name</label>
-              <FieldHelpIcon text="A recognizable name for this organization identity profile." />
-            </div>
-            <input id="identity-name" v-model="form.name" type="text" placeholder="HSE.Cloud.Ai" />
+    <p v-if="identityLoadError" class="identity-message" role="alert">
+      Could not load the organization identity. The available browser cache or HSE defaults are
+      shown.
+      {{ identityLoadError }}
+      <button
+        type="button"
+        class="button ghost"
+        :disabled="isInitializing || isSaving"
+        @click="load(true)"
+      >
+        Retry loading
+      </button>
+    </p>
+    <p v-if="identityCacheWarning" class="identity-message" role="status">
+      {{ identityCacheWarning }}
+    </p>
+    <p v-if="isInitializing" class="identity-message" role="status">
+      Loading organization identity…
+    </p>
+    <fieldset v-else class="identity-controls" :disabled="isSaving">
+      <section class="identity-shell">
+        <header class="section-header">
+          <div>
+            <span class="eyebrow">Brand controls</span>
+            <h2>Identity details</h2>
+            <p>Manage the logo, active palette, and live system preview.</p>
           </div>
+          <button type="button" class="button ghost danger" @click="reset">Reset identity</button>
+        </header>
 
-          <div class="field-label">
-            <span>Organization logo</span>
-            <FieldHelpIcon
-              text="Upload a logo to use in the application header and automatically extract a matching palette."
-            />
-          </div>
-          <button type="button" class="logo-dropzone" @click="fileInput?.click()">
-            <img v-if="form.logo" :src="form.logo" alt="Organization logo preview" />
-            <span v-else class="logo-placeholder"><b>+</b> Upload organization logo</span>
-            <small>{{
-              isExtracting ? 'Extracting colors…' : 'PNG, JPG, SVG or WebP · max 3.5 MB'
-            }}</small>
-          </button>
-          <input
-            ref="fileInput"
-            class="sr-only"
-            type="file"
-            accept="image/*"
-            @change="uploadLogo"
-          />
-
-          <label class="toggle-row" for="identity-active">
-            <input id="identity-active" v-model="form.isActive" type="checkbox" />
-            <span class="toggle"></span>
-            <span
-              ><b>Active identity</b><small>Apply this identity throughout the system.</small></span
-            >
-            <FieldHelpIcon
-              text="Disable this option to temporarily use the default HSE identity without deleting your saved choices."
-            />
-          </label>
-        </section>
-
-        <section class="identity-card palette-card">
-          <div class="card-heading">
-            <div>
-              <span class="eyebrow">Color system</span>
-              <h3>Current palette</h3>
-            </div>
-            <div class="palette-dots">
-              <i :style="{ background: form.primaryColor }"></i
-              ><i :style="{ background: form.secondaryColor }"></i
-              ><i :style="{ background: form.accentColor }"></i>
-            </div>
-          </div>
-
-          <div
-            v-for="field in [
-              {
-                key: 'primaryColor',
-                label: 'Primary color',
-                help: 'Used for primary buttons, links, active navigation, and key highlights.',
-              },
-              {
-                key: 'secondaryColor',
-                label: 'Secondary color',
-                help: 'Used for strong headings, supporting surfaces, and contrasting brand elements.',
-              },
-              {
-                key: 'accentColor',
-                label: 'Accent color',
-                help: 'Used for emphasis, alerts, badges, and complementary visual details.',
-              },
-            ]"
-            :key="field.key"
-            class="color-row"
-          >
-            <div class="field-label">
-              <label :for="`identity-${field.key}`">{{ field.label }}</label
-              ><FieldHelpIcon :text="field.help" />
-            </div>
-            <div class="color-control">
+        <div class="identity-grid">
+          <section class="identity-card logo-card">
+            <div class="field-group">
+              <div class="field-label">
+                <label for="identity-name">Identity name</label>
+                <FieldHelpIcon text="A recognizable name for this organization identity profile." />
+              </div>
               <input
-                :id="`identity-${field.key}`"
-                v-model="form[field.key as keyof SystemIdentity]"
-                type="color"
-              /><strong>{{ form[field.key as keyof SystemIdentity] }}</strong>
-            </div>
-          </div>
-
-          <div class="extracted-block">
-            <div class="field-label">
-              <span>Colors extracted from logo</span
-              ><FieldHelpIcon
-                text="These dominant colors were detected from the uploaded logo. Select one to use it as the primary color."
+                id="identity-name"
+                v-model="form.name"
+                type="text"
+                placeholder="HSE.Cloud.Ai"
               />
             </div>
-            <div v-if="form.extractedColors.length" class="swatches">
-              <button
-                v-for="color in form.extractedColors"
-                :key="color"
-                type="button"
-                :style="{ background: color }"
-                :title="`Use ${color}`"
-                @click="form.primaryColor = color"
+
+            <div class="field-label">
+              <span>Organization logo</span>
+              <FieldHelpIcon
+                text="Upload a logo to use in the application header and automatically extract a matching palette."
+              />
+            </div>
+            <button type="button" class="logo-dropzone" @click="fileInput?.click()">
+              <img v-if="form.logo" :src="form.logo" alt="Organization logo preview" />
+              <span v-else class="logo-placeholder"><b>+</b> Upload organization logo</span>
+              <small>{{
+                isExtracting ? 'Extracting colors…' : 'PNG, JPG, SVG or WebP · max 3.5 MB'
+              }}</small>
+            </button>
+            <input
+              ref="fileInput"
+              class="sr-only"
+              type="file"
+              accept="image/*"
+              @change="uploadLogo"
+            />
+
+            <label class="toggle-row" for="identity-active">
+              <input id="identity-active" v-model="form.isActive" type="checkbox" />
+              <span class="toggle"></span>
+              <span
+                ><b>Active identity</b
+                ><small>Apply this identity throughout the system.</small></span
               >
-                <span>{{ color }}</span>
+              <FieldHelpIcon
+                text="Disable this option to temporarily use the default HSE identity without deleting your saved choices."
+              />
+            </label>
+          </section>
+
+          <section class="identity-card palette-card">
+            <div class="card-heading">
+              <div>
+                <span class="eyebrow">Color system</span>
+                <h3>Current palette</h3>
+              </div>
+              <div class="palette-dots">
+                <i :style="{ background: form.primaryColor }"></i
+                ><i :style="{ background: form.secondaryColor }"></i
+                ><i :style="{ background: form.accentColor }"></i>
+              </div>
+            </div>
+
+            <div
+              v-for="field in [
+                {
+                  key: 'primaryColor',
+                  label: 'Primary color',
+                  help: 'Used for primary buttons, links, active navigation, and key highlights.',
+                },
+                {
+                  key: 'secondaryColor',
+                  label: 'Secondary color',
+                  help: 'Used for strong headings, supporting surfaces, and contrasting brand elements.',
+                },
+                {
+                  key: 'accentColor',
+                  label: 'Accent color',
+                  help: 'Used for emphasis, alerts, badges, and complementary visual details.',
+                },
+              ]"
+              :key="field.key"
+              class="color-row"
+            >
+              <div class="field-label">
+                <label :for="`identity-${field.key}`">{{ field.label }}</label
+                ><FieldHelpIcon :text="field.help" />
+              </div>
+              <div class="color-control">
+                <input
+                  :id="`identity-${field.key}`"
+                  v-model="form[field.key as keyof SystemIdentity]"
+                  type="color"
+                /><strong>{{ form[field.key as keyof SystemIdentity] }}</strong>
+              </div>
+            </div>
+
+            <div class="extracted-block">
+              <div class="field-label">
+                <span>Colors extracted from logo</span
+                ><FieldHelpIcon
+                  text="These dominant colors were detected from the uploaded logo. Select one to use it as the primary color."
+                />
+              </div>
+              <div v-if="form.extractedColors.length" class="swatches">
+                <button
+                  v-for="color in form.extractedColors"
+                  :key="color"
+                  type="button"
+                  :style="{ background: color }"
+                  :title="`Use ${color}`"
+                  @click="form.primaryColor = color"
+                >
+                  <span>{{ color }}</span>
+                </button>
+              </div>
+              <p v-else>Upload a logo to generate a suggested color palette.</p>
+            </div>
+
+            <div class="button-row">
+              <button
+                type="button"
+                class="button"
+                :disabled="form.extractedColors.length < 3"
+                @click="applyDetectedColors"
+              >
+                Apply detected colors
+              </button>
+              <button type="button" class="button ghost" @click="restoreDefaults">
+                Use HSE defaults
               </button>
             </div>
-            <p v-else>Upload a logo to generate a suggested color palette.</p>
-          </div>
-
-          <div class="button-row">
-            <button
-              type="button"
-              class="button"
-              :disabled="form.extractedColors.length < 3"
-              @click="applyDetectedColors"
-            >
-              Apply detected colors
-            </button>
-            <button type="button" class="button ghost" @click="restoreDefaults">
-              Use HSE defaults
-            </button>
-          </div>
-        </section>
-      </div>
-    </section>
-
-    <IdentityColorEditor v-model="form.appearance" />
-    <IdentityTypographyEditor v-model="form.appearance.typography" />
-    <IdentityLayoutEditor v-model="form.appearance" />
-    <section class="identity-shell">
-      <header class="section-header">
-        <div>
-          <h2>Sidebar navigation</h2>
-          <p>
-            Rename sidebar tabs and items, change their order, or move items between groups. Click
-            Save and apply identity to apply your choice.
-          </p>
+          </section>
         </div>
-      </header>
-      <label class="toggle-row" for="identity-sidebar-expanded">
-        <input
-          id="identity-sidebar-expanded"
-          v-model="form.appearance.sidebarMode"
-          type="checkbox"
-          role="switch"
-          true-value="expanded"
-          false-value="compact"
-        />
-        <span class="toggle" aria-hidden="true"></span>
-        <span>
-          <b>Always-open sidebar</b>
-          <small
-            >Show all group titles and available routes together. Turn off to use the compact
-            sidebar.</small
-          >
-        </span>
-      </label>
-    </section>
-    <IdentitySidebarEditor v-model="form.appearance" />
-    <IdentityPreview :identity="form" />
+      </section>
 
-    <button class="save-button" type="button" :disabled="isSaving" @click="save">
-      {{ isSaving ? 'Saving identity…' : 'Save and apply identity' }}
-    </button>
+      <IdentityColorEditor v-model="form.appearance" />
+      <IdentityTypographyEditor v-model="form.appearance.typography" />
+      <IdentityLayoutEditor v-model="form.appearance" />
+      <section class="identity-shell">
+        <header class="section-header">
+          <div>
+            <h2>Sidebar navigation</h2>
+            <p>
+              Rename sidebar tabs and items, change their order, or move items between groups. Click
+              Save and apply identity to apply your choice.
+            </p>
+          </div>
+        </header>
+        <label class="toggle-row" for="identity-sidebar-expanded">
+          <input
+            id="identity-sidebar-expanded"
+            v-model="form.appearance.sidebarMode"
+            type="checkbox"
+            role="switch"
+            true-value="expanded"
+            false-value="compact"
+          />
+          <span class="toggle" aria-hidden="true"></span>
+          <span>
+            <b>Always-open sidebar</b>
+            <small
+              >Show all group titles and available routes together. Turn off to use the compact
+              sidebar.</small
+            >
+          </span>
+        </label>
+      </section>
+      <IdentitySidebarEditor v-model="form.appearance" />
+      <IdentityPreview :identity="form" />
+
+      <button class="save-button" type="button" :disabled="isSaving" @click="save">
+        {{ isSaving ? 'Saving identity…' : 'Save and apply identity' }}
+      </button>
+    </fieldset>
   </main>
 </template>
 
 <style scoped>
+.identity-controls {
+  display: contents;
+}
 .identity-page {
   display: flex;
   flex-direction: column;
