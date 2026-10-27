@@ -1,6 +1,6 @@
 # Feature documentation
 
-The organization sidebar exposes Documentation → All guides, Project, Equipment, Employees, Observations, and Incidents.
+The organization sidebar exposes Documentation → All guides and 13 feature guides: Project, Equipment, Employees, Observations, Incidents, Inspections, Investigations, CAPA, Induction, PPE Matrix, PPE Delivery, Objectives & Progress, and Internal Audit.
 The catalog is `/organization/documentation`; guides use `/organization/documentation/:feature`.
 
 To add another feature:
@@ -62,3 +62,36 @@ The current owned/rented equipment and incident GIFs were re-recorded using the 
 Employee 67 (Documentation Demo Employee, an existing demo profile) was used for the witness and injury. A separate regular employee with dashboard access disabled was created specifically for the fatality: 70, Documentation Fatality Demo - 2026-10-27. The scenario and all notes explicitly state that no real injury or fatality occurred.
 
 The fatality employee was present in the employee list before submission. After saving the incident, fresh active employee selectors excluded employee 70, while the administrative employee list still returned the profile. The incident retained all three people sections and the fatality name. The GIF shows all three expanded form sections, the body map front/back views, saved people records, closure, the employee dropdown excluding the fatality profile, and a return to the saved incident. The bilingual guide distinguishes hiding from active selectors from deleting the administrative profile or incident history.
+
+## Expanded workflows — 2026-10-27
+
+Documentation now includes Inspection, Investigation, CAPA, Induction, PPE Matrix, PPE Delivery,
+Objectives & Progress, and Internal Audit, with English and Arabic instructions. Inspection covers
+Employee, Machine/equipment and Zone assignments, AD-HOC and every Periodic schedule mode.
+Internal Audit has three selectable recordings: plan/attendance, NCR, and report.
+
+These recordings use the production UI at `sys.hse.techlabeg.com` and real submissions under the
+supplied test company account. No mock data was injected into the recorded UI. Each new safety
+record states that it is a documentation simulation. Existing equipment recordings are preserved.
+
+| Recording           | Demo record / verified outcome                                                                                                                                                                                                   |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Updated incident    | Incident 37 / serial 7, witness and injury employee 67, dedicated fatality employee 71; clicked Left Forearm on the actual body diagram, opened all three saved sections, changed action status to Closed                        |
+| Employee inspection | Task 18; Test Project, dsadas zone, emp 1, OSHA 1926 system checklist, AD-HOC; saved assignment and checklist preview, opened its empty results history (no inspection submission was claimed)                                   |
+| Investigation       | Investigation 33 / serial 8, meeting 14; team and leader assigned, In Progress evidence/timeline/5 Whys/action plan entered, closed and opened its complete saved report                                                         |
+| CAPA                | CAPA 47 / serial 45, corrective task 48; In Progress → Completed, effectiveness review 2 saved as Effective; preventive task remains Not Started                                                                                 |
+| Induction           | Induction 9; TestCompany instructor, employee 67 and a demonstration visitor, PPE training topic; saved and opened overview                                                                                                      |
+| PPE matrix          | New activity 76, Documentation demo - manual handling; linked protective gloves tool 14                                                                                                                                          |
+| PPE delivery        | Project 2 with location/zone; activity 76, employee 67, gloves 14; successful save and checkmark in PPE log                                                                                                                      |
+| Objectives          | Objective 26, target 10 briefings; progress record 43 for October 2026, actual 3, displayed progress 30%                                                                                                                         |
+| Internal audit      | Audit 8 / serial 2; published today, both meeting attendance values saved for employees 3 and 67; NCR 15 / serial 2 saved with actions and report issued, then reopened in Preview with persisted attendance, NCR and conclusion |
+
+The investigation form rejected an “Other” factor with a backend validation error; the successful
+record uses a listed factor instead. No duplicate result was created. The recordings show real
+interface states, including validation where encountered. The final report does not imply that
+all NCR actions are complete. Raw recording frames, browser authentication and write audit logs
+remain outside the repository; published assets contain no login or credential screens.
+
+Browser documentation tests cover every registered guide, all recording assets and controls,
+Arabic mobile layout, sidebar navigation and restricted employee permission access. They use
+local request fixtures and make no production changes.

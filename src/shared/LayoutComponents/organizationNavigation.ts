@@ -893,6 +893,23 @@ const documentationFeaturePermissions: Record<string, PermissionsEnum[]> = {
   employee: [PermissionsEnum.ORG_EMPLOYEE_ALL, PermissionsEnum.ORG_EMPLOYEE_FETCH],
   observation: [PermissionsEnum.ORG_OBSERVATION_ALL, PermissionsEnum.ORG_OBSERVATION_FETCH],
   incident: [PermissionsEnum.ORG_INCEDANT_ALL, PermissionsEnum.ORG_INCEDANT_FETCH],
+  inspection: [PermissionsEnum.ORG_INSPECTION_ALL, PermissionsEnum.ORG_INSPECTION_FETCH],
+  investigation: [PermissionsEnum.INVESTIGATION_ALL, PermissionsEnum.INVESTIGATION_FETCH],
+  capa: [PermissionsEnum.CAPA_ALL, PermissionsEnum.CAPA_FETCH],
+  'ppe-matrix': [
+    PermissionsEnum.ORG_PPE_ACTIVITY_ALL,
+    PermissionsEnum.ORG_PPE_ACTIVITY_FETCH,
+    PermissionsEnum.ORG_PPE_TOOLS_ALL,
+    PermissionsEnum.ORG_PPE_TOOLS_FETCH,
+  ],
+  'ppe-delivery': [
+    PermissionsEnum.ORG_PPE_ACTIVITY_ALL,
+    PermissionsEnum.ORG_PPE_ACTIVITY_FETCH,
+    PermissionsEnum.ORG_PPE_TOOLS_ALL,
+    PermissionsEnum.ORG_PPE_TOOLS_FETCH,
+  ],
+  objectives: [PermissionsEnum.OBJECTIVE_ORG_ALL, PermissionsEnum.OBJECTIVE_ORG_FETCH],
+  'internal-audit': [PermissionsEnum.INTERNAL_AUDIT_ALL, PermissionsEnum.INTERNAL_AUDIT_FETCH],
 }
 const documentationFeatureRoutes: SidebarRoute[] = featureGuides.map((guide) => ({
   link: `/organization/documentation/${guide.slug}`,

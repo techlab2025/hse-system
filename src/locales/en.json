@@ -4842,5 +4842,13 @@
   "equipment_guide": "Equipment",
   "employee_guide": "Employees",
   "observation_guide": "Observations",
-  "incident_guide": "Incidents"
+  "incident_guide": "Incidents",
+  "inspection_guide": "Inspection guide",
+  "investigation_guide": "Investigation guide",
+  "capa_guide": "CAPA guide",
+  "induction_guide": "Induction guide",
+  "ppe_matrix_guide": "PPE matrix guide",
+  "ppe_delivery_guide": "PPE delivery guide",
+  "objectives_guide": "Objectives guide",
+  "internal_audit_guide": "Internal audit guide"
 }

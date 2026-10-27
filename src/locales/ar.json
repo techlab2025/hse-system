@@ -4830,5 +4830,13 @@
   "equipment_guide": "المعدات",
   "employee_guide": "الموظفون",
   "observation_guide": "الملاحظات",
-  "incident_guide": "الحوادث"
+  "incident_guide": "الحوادث",
+  "inspection_guide": "دليل التفتيش",
+  "investigation_guide": "دليل التحقيقات",
+  "capa_guide": "دليل الإجراءات التصحيحية والوقائية",
+  "induction_guide": "دليل التدريب التعريفي",
+  "ppe_matrix_guide": "دليل مصفوفة الوقاية",
+  "ppe_delivery_guide": "دليل تسليم الوقاية",
+  "objectives_guide": "دليل الأهداف والتقدم",
+  "internal_audit_guide": "دليل التدقيق الداخلي"
 }

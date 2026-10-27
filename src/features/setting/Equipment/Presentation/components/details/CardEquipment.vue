@@ -6,6 +6,7 @@ import type EquipmentDetailsModel from '../../../Data/models/equipmentDetailsMod
 import { EquipmentStatus } from '../../../Core/enum/equipmentStatus'
 import { EquipmentCondition } from '../../../Core/enum/equipmentConditionEnum'
 import { EquipmentUsed } from '../../../Core/enum/EquipemntUsedENum'
+import { EquipmentOfHavyStatus } from '../../../Core/enum/equipmentOfHavyEnum'
 import { EquipmentTypesEnum } from '@/features/setting/Template/Core/Enum/EquipmentsTypeEnum'
 import { OrganizationTypeEnum } from '@/features/auth/Core/Enum/organization_type'
 import { PermissionsEnum as P } from '@/features/users/Admin/Core/Enum/permission_enum'
@@ -71,7 +72,10 @@ const specs = computed(() => {
     },
     { label: 'Mainfactury Year', value: d.mainfacturyDate, icon: 'clock' as const },
     {
-      label: 'Equipment Worked Hours',
+      label:
+        Number(d.equipmentOfHavyStatus) === EquipmentOfHavyStatus.light
+          ? 'Mileage'
+          : 'Equipment Worked Hours',
       value: d.equipmentWorkedHeavy || d.workedHoures || d.WorkedHours,
       icon: 'clock' as const,
     },

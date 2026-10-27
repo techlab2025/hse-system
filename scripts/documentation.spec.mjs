@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test'
+import { featureGuides } from '../src/features/Documentation/guides.ts'
 import { installFixtures } from '../src/features/Organization/Project/tests/project-fixtures.mjs'
 
 const baseURL = process.env.PROJECT_TEST_URL || 'http://127.0.0.1:5173'
@@ -59,47 +60,28 @@ test('the Arabic guide works on mobile and unknown guides provide a return link'
   await expect(page).toHaveURL(/\/documentation$/)
 })
 
-const featureCases = [
-  {
-    slug: 'equipment',
-    title: 'Equipment',
-    ar: 'المعدات',
-    action: 'Open Equipment',
-    route: '/organization/equipments',
-  },
-  {
-    slug: 'employee',
-    title: 'Employees',
-    ar: 'الموظفون',
-    action: 'Open Employees',
-    route: '/organization/organization-employee?type=3',
-  },
-  {
-    slug: 'observation',
-    title: 'Observations',
-    ar: 'الملاحظات',
-    action: 'Open Observations',
-    route: '/organization/equipment-mangement/observation?isAll=1&type=2',
-  },
-  {
-    slug: 'incident',
-    title: 'Incidents',
-    ar: 'الحوادث',
-    action: 'Open Incidents',
-    route: '/organization/equipment-mangement/incedant?isAll=1',
-  },
-]
+const featureCases = featureGuides
+  .filter((guide) => guide.slug !== 'project')
+  .map((guide) => ({
+    slug: guide.slug,
+    title: guide.title.en,
+    ar: guide.title.ar,
+    action: guide.actionLabel.en,
+    route: guide.startRoute,
+    steps: guide.steps.length,
+    recordings: guide.recordings,
+  }))
 for (const feature of featureCases) {
   test(`${feature.title} guide opens from the catalog with its real recording and correct feature link`, async ({
     page,
   }) => {
     await installFixtures(page)
     await page.goto(`${baseURL}/organization/documentation`)
-    await expect(page.locator('.documentation-guide-card')).toHaveCount(5)
+    await expect(page.locator('.documentation-guide-card')).toHaveCount(featureGuides.length)
     await page.getByRole('link', { name: `Open guide: ${feature.title}`, exact: true }).click()
     await expect(page).toHaveURL(new RegExp(`/documentation/${feature.slug}$`))
     await expect(page.getByRole('heading', { name: feature.title, exact: true })).toBeVisible()
-    await expect(page.locator('.documentation-steps > li')).toHaveCount(5)
+    await expect(page.locator('.documentation-steps > li')).toHaveCount(feature.steps)
     await expect(page.getByRole('link', { name: feature.action, exact: true })).toHaveAttribute(
       'href',
       feature.route,
@@ -107,14 +89,20 @@ for (const feature of featureCases) {
     const image = page.locator('.documentation-recording img')
     await expect(image).toHaveAttribute('src', /-poster\.webp$/)
     await expect.poll(() => image.evaluate((element) => element.naturalWidth)).toBe(1152)
-    await page.getByRole('button', { name: 'Play walkthrough GIF', exact: true }).click()
-    const src = await image.getAttribute('src')
-    expect(src).toMatch(/\.gif$/)
-    const asset = await page.request.get(`${baseURL}${src}`)
-    expect(asset.ok()).toBeTruthy()
-    expect((await asset.body()).subarray(0, 6).toString()).toMatch(/^GIF8[79]a$/)
-    await page.getByRole('button', { name: 'Stop animation', exact: true }).click()
-    await expect(image).toHaveAttribute('src', /-poster\.webp$/)
+    for (const recording of feature.recordings) {
+      if (feature.recordings.length > 1) {
+        await page.getByRole('button', { name: recording.title.en, exact: true }).click()
+      }
+      await expect(image).toHaveAttribute('src', recording.poster)
+      await expect.poll(() => image.evaluate((element) => element.naturalWidth)).toBe(1152)
+      await page.getByRole('button', { name: 'Play walkthrough GIF', exact: true }).click()
+      await expect(image).toHaveAttribute('src', recording.gif)
+      const asset = await page.request.get(`${baseURL}${recording.gif}`)
+      expect(asset.ok()).toBeTruthy()
+      expect((await asset.body()).subarray(0, 6).toString()).toMatch(/^GIF8[79]a$/)
+      await page.getByRole('button', { name: 'Stop animation', exact: true }).click()
+      await expect(image).toHaveAttribute('src', recording.poster)
+    }
     await page.locator('.side-rail-nav button[title="Documentation"]').hover()
     await expect(
       page.locator(`.sidebar a[href="/organization/documentation/${feature.slug}"]`).first(),
@@ -166,7 +154,7 @@ test('all new guides have readable Arabic layouts on mobile', async ({ page }) =
   for (const feature of featureCases) {
     await page.goto(`${baseURL}/organization/documentation/${feature.slug}`)
     await expect(page.getByRole('heading', { name: feature.ar, exact: true })).toBeVisible()
-    await expect(page.locator('.documentation-steps > li')).toHaveCount(5)
+    await expect(page.locator('.documentation-steps > li')).toHaveCount(feature.steps)
     expect(
       await page
         .locator('.documentation-page')

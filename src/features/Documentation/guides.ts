@@ -4,6 +4,14 @@ import { equipmentGuide } from './content/equipment'
 import { employeeGuide } from './content/employee'
 import { observationGuide } from './content/observation'
 import { incidentGuide } from './content/incident'
+import { inspectionGuide } from './content/inspection'
+import { investigationGuide } from './content/investigation'
+import { capaGuide } from './content/capa'
+import { inductionGuide } from './content/induction'
+import { ppeMatrixGuide } from './content/ppe-matrix'
+import { ppeDeliveryGuide } from './content/ppe-delivery'
+import { objectivesGuide } from './content/objectives'
+import { internalAuditGuide } from './content/internal-audit'
 export type { FeatureGuide, GuideRecording, GuideStep, GuideText } from './types'
 
 export const featureGuides: FeatureGuide[] = [
@@ -12,6 +20,14 @@ export const featureGuides: FeatureGuide[] = [
   employeeGuide,
   observationGuide,
   incidentGuide,
+  inspectionGuide,
+  investigationGuide,
+  capaGuide,
+  inductionGuide,
+  ppeMatrixGuide,
+  ppeDeliveryGuide,
+  objectivesGuide,
+  internalAuditGuide,
 ]
 
 export const documentationLabels = {

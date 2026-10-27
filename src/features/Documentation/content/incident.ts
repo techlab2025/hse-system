@@ -20,8 +20,8 @@ export const incidentGuide: FeatureGuide = {
       id: 'incident',
       title: text('Create an incident', 'إضافة حادث'),
       description: text(
-        'Choose the project and zone, record the incident and immediate response, then add a witness statement, an injury with body location, and a staff fatality. Submit and review all three sections in the saved report.',
-        'اختر المشروع والمنطقة وسجّل الحادث والاستجابة الفورية، ثم أضف شهادة شاهد وإصابة مع موضعها ووفاة لموظف. أرسل التقرير وراجع الأقسام الثلاثة بعد الحفظ.',
+        'Choose the project and zone, record the incident and immediate response, then add a witness statement, an injury by clicking Left Forearm on the body diagram, and a staff fatality. Submit, review all three saved sections, and close the incident action.',
+        'اختر المشروع والمنطقة وسجّل الحادث والاستجابة الفورية، ثم أضف شهادة شاهد وإصابة بالنقر على الساعد الأيسر في مخطط الجسم ووفاة لموظف. أرسل التقرير وراجع الأقسام الثلاثة بعد الحفظ ثم أغلق إجراء الحادث.',
       ),
       gif: '/documentation/incident/incident.gif',
       poster: '/documentation/incident/incident-poster.webp',
